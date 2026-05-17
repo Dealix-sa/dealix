@@ -104,6 +104,16 @@ class RevenuePipeline:
             "total_revenue_sar": total_revenue_sar,
         }
 
+    def bulk_load(self, leads: Iterable[Lead]) -> int:
+        """Load already-validated leads into the store (startup hydration
+        from the durable table). Returns the count loaded."""
+        n = 0
+        with self._lock:
+            for lead in leads:
+                self._leads[lead.id] = lead
+                n += 1
+        return n
+
     def reset(self) -> None:
         """Test-only — wipe all leads."""
         with self._lock:

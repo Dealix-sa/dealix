@@ -186,6 +186,22 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     except Exception as exc:
         log.warning("approval_store_hydrate_skipped", error=str(exc))
 
+    # ── Hydrate the Revenue Pipeline from durable storage ──────────────
+    # Same restart-data-loss class as the approval queue: tracked leads
+    # and deals lived only in memory. Reload them so a redeploy never
+    # drops the founder's pipeline.
+    try:
+        from auto_client_acquisition.revenue_pipeline import (
+            persistence as pipeline_persistence,
+        )
+        from auto_client_acquisition.revenue_pipeline.pipeline import (
+            get_default_pipeline,
+        )
+        loaded = await pipeline_persistence.hydrate_into(get_default_pipeline())
+        log.info("revenue_pipeline_hydrate_complete", loaded=loaded)
+    except Exception as exc:
+        log.warning("revenue_pipeline_hydrate_skipped", error=str(exc))
+
     yield
     log.info("app_shutdown")
 

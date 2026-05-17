@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from auto_client_acquisition.revenue_pipeline import (
     PipelineStage,
+    persistence,
     snapshot_revenue_truth,
 )
 from auto_client_acquisition.revenue_pipeline.lead import Lead
@@ -49,14 +50,19 @@ class _AdvanceRequest(BaseModel):
 @router.get("/status")
 async def revenue_pipeline_status() -> dict[str, Any]:
     pipeline = get_default_pipeline()
+    # Probe durable storage so `degraded` reflects reality, not a constant.
+    db_reachable = await persistence.ping()
     return {
         "service": "revenue_pipeline",
         "module": "revenue_pipeline",
         "status": "operational",
         "version": "rx-v1",
-        "degraded": False,
+        "degraded": not db_reachable,
         "active_leads": len(pipeline.list_all()),
-        "checks": {"in_memory_store": "ok"},
+        "checks": {
+            "in_memory_store": "ok",
+            "durable_store": "ok" if db_reachable else "unreachable",
+        },
         "hard_gates": _HARD_GATES,
         "next_action_ar": "أنشئ lead ثم advance بشكل متوافق مع stage_policy",
         "next_action_en": "Create a lead then advance per stage_policy.",
@@ -73,7 +79,13 @@ async def create_lead(req: _CreateLeadRequest) -> dict[str, Any]:
         relationship_strength=req.relationship_strength,
     )
     pipeline.add(lead)
-    return {"lead": lead.model_dump(mode="json"), "hard_gates": _HARD_GATES}
+    persisted = await persistence.upsert(lead)
+    return {
+        "lead": lead.model_dump(mode="json"),
+        "persisted": persisted,
+        "degraded": not persisted,
+        "hard_gates": _HARD_GATES,
+    }
 
 
 @router.post("/advance")
@@ -91,7 +103,13 @@ async def advance_lead(req: _AdvanceRequest) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return {"lead": updated.model_dump(mode="json"), "hard_gates": _HARD_GATES}
+    persisted = await persistence.upsert(updated)
+    return {
+        "lead": updated.model_dump(mode="json"),
+        "persisted": persisted,
+        "degraded": not persisted,
+        "hard_gates": _HARD_GATES,
+    }
 
 
 def _count_real_proof_events() -> int:

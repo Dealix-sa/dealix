@@ -1065,3 +1065,41 @@ class ApprovalTicketRecord(Base):
     __table_args__ = (
         Index("ix_approval_tickets_status_created", "status", "created_at"),
     )
+
+
+# ── Revenue Pipeline persistence ───────────────────────────────────
+
+class PipelineLeadRecord(Base):
+    """Durable storage for the Revenue Pipeline.
+
+    RevenuePipeline keeps leads in memory as the working set; this table
+    makes the pipeline survive process restarts. ``payload`` holds the
+    full serialized Lead — the promoted columns exist only so the
+    pipeline can be filtered without deserializing every row.
+
+    No PII by design: the Lead model is placeholder-shaped (slot ids,
+    evidence references), never real names / emails / phones.
+    """
+
+    __tablename__ = "pipeline_leads"
+
+    id: Mapped[str] = mapped_column(String(40), primary_key=True)
+    slot_id: Mapped[str] = mapped_column(String(40), default="", index=True)
+    sector: Mapped[str] = mapped_column(String(64), default="tbd")
+    region: Mapped[str] = mapped_column(String(64), default="tbd")
+    relationship_strength: Mapped[str] = mapped_column(String(32), default="warm_intro")
+    consent_status: Mapped[str] = mapped_column(String(32), default="not_yet_asked")
+    stage: Mapped[str] = mapped_column(String(48), default="warm_intro_selected", index=True)
+    last_touch_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    expected_amount_sar: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    actual_amount_sar: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    commitment_evidence: Mapped[str] = mapped_column(Text, default="")
+    payment_evidence: Mapped[str] = mapped_column(Text, default="")
+    notes_placeholder: Mapped[str] = mapped_column(Text, default="")
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow, index=True)
+
+    __table_args__ = (
+        Index("ix_pipeline_leads_stage_updated", "stage", "updated_at"),
+    )
