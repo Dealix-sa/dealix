@@ -467,4 +467,4 @@ def test_booking_request_includes_calendly(monkeypatch):
         json={"email": "book@test.sa", "preferred_channel": "email", "notes": "hi"},
     )
     assert r.status_code == 200, r.text
-    assert "calendly.com" in r.json().get("calendly_url", "")
+    assert r.json().get("calendly_url") == "https://calendly.com/test/demo"
