@@ -62,6 +62,46 @@ def test_print_only_mode_writes_to_stdout(capsys):
     assert result.provider == "print_only"
 
 
+def test_digest_includes_founder_action_list(capsys):
+    """The digest body appends the bilingual founder action list."""
+    sys.argv = ["dealix_morning_digest.py", "--print"]
+    args = digest.parse_args()
+
+    fake_loop = {
+        "schema_version": 1,
+        "generated_at": "2026-05-04T07:00:00+00:00",
+        "decisions": [{"title_ar": "tester", "title_en": "tester"}],
+        "service_to_promote": {},
+        "partner_focus": {},
+        "seo_gap_pages": [],
+        "perimeter_status": {},
+        "open_loops": [],
+        "guardrails": {
+            "no_live_send": True,
+            "no_scraping": True,
+            "no_cold_outreach": True,
+            "approval_required_for_external_actions": True,
+        },
+    }
+    with patch.object(digest.daily_growth_loop, "build_today", return_value=fake_loop):
+        asyncio.run(digest._build_and_send(args))
+
+    out = capsys.readouterr().out
+    assert "Founder Daily Action List" in out
+
+
+def test_action_list_only_mode(capsys):
+    """--action-list-only prints just the action list and never sends."""
+    sys.argv = ["dealix_morning_digest.py", "--action-list-only"]
+    args = digest.parse_args()
+    result = asyncio.run(digest._build_and_send(args))
+
+    out = capsys.readouterr().out
+    assert "Founder Daily Action List" in out
+    assert result.success is True
+    assert result.provider == "action_list_only"
+
+
 def test_dry_run_logs_but_does_not_send(capsys):
     sys.argv = ["dealix_morning_digest.py", "--dry-run"]
     args = digest.parse_args()

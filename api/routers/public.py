@@ -130,6 +130,34 @@ async def demo_request(req: Request) -> dict[str, Any]:
         log.exception("transactional_confirmation_failed")
         transactional_status = "exception_caught"
 
+    # Funnel auto-routing: qualify the inbound lead and draft a proposal
+    # into the approval queue. Best-effort — never 5xx the public form.
+    # Doctrine violations in the message force a polite decline (no proposal).
+    funnel: dict[str, Any] = {"status": "skipped"}
+    try:
+        from auto_client_acquisition.content_os.funnel_routing import (
+            route_and_draft_proposal,
+        )
+        from auto_client_acquisition.sales_os.qualification import qualify
+
+        qr = qualify(
+            raw_request_text=message,
+            sector=sector,
+            accepts_governance=consent,
+            owner_present=True,
+            pain_clear=bool(message),
+        )
+        funnel = route_and_draft_proposal(
+            qr,
+            lead_id=lead_id,
+            company=company,
+            sector=sector,
+            email=email,
+        )
+    except Exception:
+        log.exception("funnel_routing_failed")
+        funnel = {"status": "error"}
+
     return {
         "ok": True,
         "calendly_url": CALENDLY_URL,
@@ -137,6 +165,7 @@ async def demo_request(req: Request) -> dict[str, Any]:
         "lead_id": lead_id,
         "transactional_confirmation": transactional_status,
         "governance_decision": "allow",
+        "funnel": funnel,
     }
 
 

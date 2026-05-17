@@ -28,6 +28,7 @@ from datetime import UTC, datetime
 # Adjust path so we can import from repo root when run as a script.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from auto_client_acquisition.content_os.action_list import build_action_list
 from auto_client_acquisition.self_growth_os import daily_growth_loop  # noqa: E402
 from core.config.settings import get_settings  # noqa: E402
 from integrations.email import EmailClient, EmailResult  # noqa: E402
@@ -51,10 +52,18 @@ def parse_args() -> argparse.Namespace:
         "--dry-run", action="store_true",
         help="render + print + log what WOULD be sent (no actual send)",
     )
+    p.add_argument(
+        "--action-list-only", action="store_true",
+        help="print only the founder action list and exit",
+    )
     return p.parse_args()
 
 
 async def _build_and_send(args: argparse.Namespace) -> EmailResult:
+    if args.action_list_only:
+        print(build_action_list())
+        return EmailResult(success=True, provider="action_list_only")
+
     settings = get_settings()
     recipient = settings.dealix_founder_email
     if not recipient and not args.print_only and not args.dry_run:
@@ -66,6 +75,7 @@ async def _build_and_send(args: argparse.Namespace) -> EmailResult:
 
     loop = daily_growth_loop.build_today()
     body_text = daily_growth_loop.to_markdown(loop)
+    body_text = f"{body_text}\n\n---\n\n{build_action_list()}"
 
     if args.print_only:
         print(body_text)
@@ -97,7 +107,7 @@ def main() -> int:
         return 1
 
     if result.success:
-        if not (args.print_only or args.dry_run):
+        if not (args.print_only or args.dry_run or args.action_list_only):
             print(f"OK: digest sent via {result.provider} (message_id={result.message_id})")
         return 0
     print(f"FAIL: {result.provider}: {result.error}", file=sys.stderr)

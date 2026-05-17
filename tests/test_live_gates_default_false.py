@@ -87,6 +87,7 @@ def test_known_live_gates_present_and_false():
         # Add to this list when a new live-gate field is intentionally
         # introduced. Each addition pins the default = False contract.
         "whatsapp_allow_live_send",
+        "social_publish_allow_live",
     ],
 )
 def test_each_known_live_gate_default_false(field_name: str):

@@ -159,6 +159,13 @@ class Settings(BaseSettings):
     # Env: WHATSAPP_ALLOW_LIVE_SEND (default false).
     whatsapp_allow_live_send: bool = False
 
+    # ── Social publishing handoff ───────────────────────────────
+    # Live handoff of an APPROVED social post to n8n — MUST remain False
+    # until the founder connects their own LinkedIn/X accounts inside n8n.
+    # Dealix never holds LinkedIn/X credentials; publishing is founder-owned.
+    # Env: SOCIAL_PUBLISH_ALLOW_LIVE (default false).
+    social_publish_allow_live: bool = False
+
     # ── Email ───────────────────────────────────────────────────
     email_provider: Literal["resend", "sendgrid", "smtp"] = "resend"
     email_from: str = "noreply@ai-company.sa"

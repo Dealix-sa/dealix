@@ -356,6 +356,21 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
     }
 
 
+# ── Daily operating engine ────────────────────────────────────────
+@router.post("/automation/daily-engine/run")
+async def daily_engine_run(body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
+    """Run the full daily operating loop once (idempotent per day).
+
+    Composes the revenue machine, social content drafting, partner-intro
+    surfacing, the approval expire-sweep, and the founder action list.
+    Nothing is sent or charged — everything lands in the approval queue.
+    Body: ``{"force": bool}`` to re-run on a day that already ran.
+    """
+    from auto_client_acquisition.content_os.daily_engine import run_daily_engine
+
+    return await run_daily_engine(force=bool(body.get("force", False)))
+
+
 # ── Gmail draft endpoints ─────────────────────────────────────────
 @router.post("/gmail/drafts/create")
 async def gmail_drafts_create(body: dict[str, Any] = Body(...)) -> dict[str, Any]:

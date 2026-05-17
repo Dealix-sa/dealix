@@ -117,12 +117,12 @@ def test_approval_id_separate_from_action_id() -> None:
 
 
 def test_canonical_action_type_recognized() -> None:
-    """All 11 canonical Wave 12 action types pass is_canonical_action_type()."""
+    """All canonical Wave 12 action types pass is_canonical_action_type()."""
     canonical = [
         "prepare_diagnostic", "draft_email", "draft_linkedin_manual",
         "call_script", "follow_up_task", "support_reply_draft",
         "payment_reminder", "delivery_task", "proof_request",
-        "upsell_recommendation", "partner_intro",
+        "upsell_recommendation", "partner_intro", "draft_social_post",
     ]
     for action in canonical:
         assert is_canonical_action_type(action), \

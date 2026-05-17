@@ -39,9 +39,12 @@ class ApprovalStatus(StrEnum):
     BLOCKED = "blocked"
 
 
-# Wave 12 §32.3.6 — canonical 11 action types. ``action_type`` field stays
+# Wave 12 §32.3.6 — canonical action types. ``action_type`` field stays
 # ``str`` for backward-compat (existing callers pass arbitrary strings),
 # but new code should use ActionType Literal for type-checked values.
+# ``draft_social_post`` was added for the content_os daily engine: a
+# founder-owned social post drafted into the queue (draft_only, channel
+# "social") — never an outbound message to a third party.
 ActionType = Literal[
     "prepare_diagnostic",        # build a diagnostic report for a prospect
     "draft_email",               # compose an outbound email (draft_only)
@@ -54,11 +57,12 @@ ActionType = Literal[
     "proof_request",             # request proof event from delivery
     "upsell_recommendation",     # generate next-best-offer suggestion
     "partner_intro",             # introduce two parties (founder-mediated)
+    "draft_social_post",         # founder-owned social post draft (draft_only)
 ]
 
 
 def is_canonical_action_type(value: str) -> bool:
-    """Is ``value`` one of the 11 canonical Wave 12 action types?
+    """Is ``value`` one of the canonical Wave 12 action types?
 
     Returns True for Literal-valid values, False for legacy free-form
     strings (which remain accepted for backward compat).
@@ -67,7 +71,7 @@ def is_canonical_action_type(value: str) -> bool:
         "prepare_diagnostic", "draft_email", "draft_linkedin_manual",
         "call_script", "follow_up_task", "support_reply_draft",
         "payment_reminder", "delivery_task", "proof_request",
-        "upsell_recommendation", "partner_intro",
+        "upsell_recommendation", "partner_intro", "draft_social_post",
     }
 
 
