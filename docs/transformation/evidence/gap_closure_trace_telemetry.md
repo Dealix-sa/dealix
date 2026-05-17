@@ -27,4 +27,6 @@ Last captured output (trimmed):
 GLOBAL AI TRANSFORMATION: PASS
 ```
 
+**Last verified (CTO plan):** 2026-05-16 — `python3 scripts/verify_global_ai_transformation.py`
+
 **KPI numeric closure:** update `reliability_posture_score` / `unauthorized_external_action_count` in [dealix/transformation/kpi_baselines.yaml](dealix/transformation/kpi_baselines.yaml) when incident/SIEM summaries exist.

@@ -1,0 +1,26 @@
+# مثال — انسخ إلى kpi_founder_commercial_import.yaml (غير متتبع في git) وعبّئ من CRM حقيقي.
+# لا تلتزم هذا الملف في git بأرقام وهمية.
+
+version: 1
+founder_attestation: "أقر أن source_ref يشير إلى تصدير CRM/مالية فعلي"
+updated_period_iso: "2026-05-16"
+
+entries:
+  measured_customer_value_sar:
+    value_numeric: 0.0
+    source_ref: "REPLACE:crm:export:period=YYYY-QN"
+  governance_integrity_rate:
+    value_numeric: 0.0
+    source_ref: "REPLACE:governance:weekly_report:YYYY-Wnn"
+  expansion_quality_ratio:
+    value_numeric: 0.0
+    source_ref: "REPLACE:crm:expansion_cohort:period=YYYY-QN"
+  time_to_proof_days:
+    value_numeric: 0.0
+    source_ref: "REPLACE:proof_ledger:pilot:account_id"
+  approval_cycle_time_hours:
+    value_numeric: 0.0
+    source_ref: "REPLACE:approval_center:median:YYYY-Wnn"
+  conversion_discovery_to_pilot:
+    value_numeric: 0.0
+    source_ref: "REPLACE:crm:funnel:discovery_to_pilot:period=YYYY-QN"

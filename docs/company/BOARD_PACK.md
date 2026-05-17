@@ -1,5 +1,9 @@
 # Dealix Board Pack
 
+**الخطة التشغيلية الشاملة:** [`../strategy/DEALIX_FULL_OPS_MASTER_PLAN_AR.md`](../strategy/DEALIX_FULL_OPS_MASTER_PLAN_AR.md)
+
+يعاد تعبئة هذا الملف **شهرياً** كأداة مساءلة — حتى من دون مجلس إدارة رسمي.
+
 ## 1. Revenue
 
 - booked revenue  

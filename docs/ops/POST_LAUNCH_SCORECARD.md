@@ -2,6 +2,8 @@
 
 > Filled by the release captain (currently founder). Single source of truth for "did GA actually go well".
 
+**Pre-GA commercial drainage (Pilots + Proof weekly):** [COMMERCIAL_WEEKLY_SCORECARD_AR.md](../commercial/operations/COMMERCIAL_WEEKLY_SCORECARD_AR.md) — use until public launch; then merge key numbers into sections below.
+
 ## How to use
 - At each milestone (T+1, T+7, T+30), copy the template block at the bottom into a new dated section above it.
 - Hard numbers only. No vibes-based assessment.

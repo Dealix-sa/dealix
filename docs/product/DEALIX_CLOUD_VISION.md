@@ -2,6 +2,8 @@
 
 Dealix Cloud is the platform expression of the Dealix Method.
 
+**UI map (routes + APIs):** [DEALIX_CLOUD_UI_MAP.md](DEALIX_CLOUD_UI_MAP.md) — operator hub at `/[locale]/cloud` in the Next.js app.
+
 ## Modules
 
 - Client Workspace  

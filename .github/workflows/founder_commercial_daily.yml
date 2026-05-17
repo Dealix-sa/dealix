@@ -1,0 +1,52 @@
+name: Founder Commercial Daily
+
+# Sovereign GTM morning digest (no external send). ~08:00 KSA (05:00 UTC Sun-Thu).
+
+on:
+  schedule:
+    - cron: "0 5 * * 0-4"
+  workflow_dispatch:
+
+concurrency:
+  group: founder-commercial-daily
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  commercial-digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install minimal deps
+        run: pip install pyyaml
+
+      # Required repo secrets for live War Room + evidence sync:
+      # DEALIX_API_BASE, DEALIX_ADMIN_API_KEY, optional DEALIX_SYNC_EVIDENCE=1
+      - name: Run founder commercial day
+        env:
+          DEALIX_SYNC_EVIDENCE: ${{ secrets.DEALIX_SYNC_EVIDENCE || '0' }}
+          DEALIX_API_BASE: ${{ secrets.DEALIX_API_BASE }}
+          DEALIX_ADMIN_API_KEY: ${{ secrets.DEALIX_ADMIN_API_KEY }}
+          PYTHONIOENCODING: utf-8
+        run: |
+          chmod +x scripts/run_founder_commercial_day.sh scripts/run_dealix_daily_ops.py
+          bash scripts/run_founder_commercial_day.sh
+
+      - name: Upload digest artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: founder-commercial-${{ github.run_id }}
+          path: |
+            data/founder_briefs/
+            data/war_room_today.json
+          retention-days: 14
+          if-no-files-found: ignore

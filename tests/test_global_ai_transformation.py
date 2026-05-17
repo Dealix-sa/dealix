@@ -2,11 +2,27 @@
 
 from __future__ import annotations
 
+import os
 import shutil
 import sys
 from pathlib import Path
 from subprocess import run
 from types import SimpleNamespace
+
+import pytest
+
+
+def _bash_or_skip() -> str:
+    bash = shutil.which("bash")
+    if bash:
+        return bash
+    for candidate in (
+        r"C:\Program Files\Git\bin\bash.exe",
+        r"C:\Program Files (x86)\Git\bin\bash.exe",
+    ):
+        if Path(candidate).is_file():
+            return candidate
+    pytest.skip("bash not available (Git Bash required on Windows for shell verify scripts)")
 
 from auto_client_acquisition.delivery_os.control_tower import (
     DeliveryRisk,
@@ -165,13 +181,15 @@ def test_category_expansion_gate_checker_passes() -> None:
 
 def test_verify_category_expansion_shell_wrapper() -> None:
     root = Path(__file__).resolve().parents[1]
-    bash = shutil.which("bash") or "/usr/bin/bash"
+    bash = _bash_or_skip()
+    env = {**os.environ, "PYTHON_BIN": sys.executable}
     proc = run(  # noqa: S603
         [bash, str(root / "scripts/verify_category_expansion_before_scale.sh")],
         cwd=root,
         capture_output=True,
         text=True,
         check=False,
+        env=env,
     )
     assert proc.returncode == 0, proc.stderr or proc.stdout
     assert "CATEGORY_EXPANSION_GATES: PASS" in proc.stdout
@@ -179,13 +197,15 @@ def test_verify_category_expansion_shell_wrapper() -> None:
 
 def test_verify_ceo_signal_readiness_routes_transformation() -> None:
     root = Path(__file__).resolve().parents[1]
-    bash = shutil.which("bash") or "/usr/bin/bash"
+    bash = _bash_or_skip()
+    env = {**os.environ, "PYTHON_BIN": sys.executable}
     proc = run(  # noqa: S603
         [bash, str(root / "scripts/verify_ceo_signal_readiness.sh"), "transformation"],
         cwd=root,
         capture_output=True,
         text=True,
         check=False,
+        env=env,
     )
     assert proc.returncode == 0, proc.stderr or proc.stdout
     assert "GLOBAL AI TRANSFORMATION: PASS" in proc.stdout

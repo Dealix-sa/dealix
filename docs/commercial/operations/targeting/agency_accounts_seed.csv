@@ -1,0 +1,86 @@
+company,contact,segment,pain_hypothesis,channel,motion,offer_id,status,next_action,next_action_date,priority,notes
+REPLACE:وكالة من شبكتك 1,REPLACE:اسم المدير,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,linkedin_manual,A,ten_lead_audit,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,warm — عبّئ من CRM أو مقدمة شخصية
+REPLACE:وكالة من شبكتك 2,REPLACE:شريك مؤسس,agency_wedge,CRM مليان بلا owner للمتابعة,email_warm,A,agency_proof_pack,not_contacted,طلب ديمو 10 دقائق,,high,warm — Motion A أولوية
+REPLACE:وكالة من شبكتك 3,REPLACE:مدير عمليات,agency_wedge,لا proof أسبوعي للعميل,linkedin_manual,A,ten_lead_audit,message_drafted,مراجعة مسودة قبل إرسال,,medium,warm
+REPLACE:مؤسس SaaS معروف,REPLACE:CEO,saas,توسع AI بدون حوكمة,linkedin_manual,D,executive_diagnostic,not_contacted,لغة Control Tower,,high,warm intro مطلوبة
+REPLACE:شريك CRM/HubSpot,REPLACE:مستشار,crm_partner,يحتاج diagnostic قبل التنفيذ,email_warm,C,diagnostic_layer,not_contacted,عرض Proof قبل التنفيذ,,medium,Motion C
+REPLACE:B2B خدمات معروفة,REPLACE:مدير مبيعات,direct_b2b,follow-up غير موثق,email_warm,B,governed_diagnostic,not_contacted,Discovery 30 دقيقة,,medium,Motion B
+REPLACE:قاعة/فندق B2B,REPLACE:مدير فعاليات,hospitality,استفسارات حجز بلا owner,inbound,B,ten_lead_audit,replied,إرسال Risk Score,,medium,inbound warm
+REPLACE:مطور عقاري,REPLACE:مدير مبيعات,real_estate_developer,تأخر رد على leads inbound,phone_task,B,ten_lead_audit,not_contacted,مكالمة 5 دقائق,,high,قطاع ICP ذهب
+REPLACE:شريك وكالة محتمل,REPLACE:مدير شراكات,agency_partner,co-sell عميل واحد,partner_intro,A,partner_sprint,not_contacted,Partner one-pager,,high,warm partner
+REPLACE:استشاري نمو,REPLACE:شريك,consulting_firm,عملاء يطلبون أتمتة بلا حوكمة,email_warm,A,agency_proof_pack,not_contacted,مسودة email warm,,medium,warm
+REPLACE:تقنية B2B,REPLACE:CTO,saas,Pipeline بلا evidence,linkedin_manual,B,governed_diagnostic,not_contacted,تعليق LinkedIn ثم DM,,medium,warm
+وكالة مثال — لا ترسل,مدير حسابات,agency_wedge,تدريب داخلي فقط,linkedin_manual,A,ten_lead_audit,closed_lost,مثال seed — لا تستخدم,,low,مثال تدريبي فقط
+هدف warm 12,REPLACE:contact,agency_wedge,post-campaign leak,email_warm,A,ten_lead_audit,not_contacted,مسودة,,high,slot 12
+هدف warm 13,REPLACE:contact,agency_wedge,no weekly proof,linkedin_manual,A,agency_proof_pack,not_contacted,مسودة,,high,slot 13
+هدف warm 14,REPLACE:contact,direct_b2b,slow first response,email_warm,B,ten_lead_audit,not_contacted,مسودة,,medium,slot 14
+هدف warm 15,REPLACE:contact,executive_governance,AI scale risk,partner_intro,D,executive_diagnostic,not_contacted,مسودة,,medium,slot 15
+هدف warm 16,REPLACE:contact,crm_partner,pre-HubSpot diagnostic,email_warm,C,diagnostic_layer,not_contacted,مسودة,,medium,slot 16
+هدف warm 17,REPLACE:contact,agency_partner,one client pilot,partner_intro,A,partner_sprint,not_contacted,مسودة,,high,slot 17
+هدف warm 18,REPLACE:contact,marketing_agency,inbound overload,linkedin_manual,A,ten_lead_audit,message_drafted,مراجعة,,medium,slot 18
+هدف warm 19,REPLACE:contact,saas,founder-led sales,email_warm,B,governed_diagnostic,not_contacted,مسودة,,medium,slot 19
+هدف warm 20,REPLACE:contact,consulting_firm,client proof gap,email_warm,A,agency_proof_pack,replied,متابعة 48h,,high,slot 20
+هدف warm 21,REPLACE:contact,agency_wedge,client asks ROI,linkedin_manual,A,ten_lead_audit,sent_manual,متابعة,,high,slot 21
+هدف warm 22,REPLACE:contact,direct_b2b,CRM chaos,email_warm,B,governed_diagnostic,not_contacted,مسودة,,medium,slot 22
+هدف warm 23,REPLACE:contact,hospitality,MICE inquiries,phone_task,B,ten_lead_audit,not_contacted,اتصال,,medium,slot 23
+هدف warm 24,REPLACE:contact,real_estate_developer,inbound quality,email_warm,B,ten_lead_audit,not_contacted,مسودة,,high,slot 24
+هدف warm 25,REPLACE:contact,agency_wedge,retainer before proof,linkedin_manual,A,agency_proof_pack,meeting_booked,Discovery,,high,slot 25
+هدف استراتيجي 27 — وكالة/خدمات,مدير حسابات 27,direct_b2b,CRM مليان بلا owner,partner_intro,B,governed_diagnostic,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 28 — وكالة/خدمات,مدير حسابات 28,crm_partner,follow-up غير موثق,linkedin_manual,C,diagnostic_layer,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 29 — وكالة/خدمات,مدير حسابات 29,agency_partner,co-sell pilot واحد,email_warm,D,partner_sprint,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 30 — وكالة/خدمات,مدير حسابات 30,executive_governance,AI بلا حوكمة,partner_intro,A,executive_diagnostic,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 31 — وكالة/خدمات,مدير حسابات 31,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,linkedin_manual,A,ten_lead_audit,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 32 — وكالة/خدمات,مدير حسابات 32,direct_b2b,CRM مليان بلا owner,email_warm,B,governed_diagnostic,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 33 — وكالة/خدمات,مدير حسابات 33,crm_partner,follow-up غير موثق,partner_intro,C,diagnostic_layer,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 34 — وكالة/خدمات,مدير حسابات 34,agency_partner,co-sell pilot واحد,linkedin_manual,D,partner_sprint,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 35 — وكالة/خدمات,مدير حسابات 35,executive_governance,AI بلا حوكمة,email_warm,A,executive_diagnostic,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 36 — وكالة/خدمات,مدير حسابات 36,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,partner_intro,A,ten_lead_audit,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 37 — وكالة/خدمات,مدير حسابات 37,direct_b2b,CRM مليان بلا owner,linkedin_manual,B,governed_diagnostic,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 38 — وكالة/خدمات,مدير حسابات 38,crm_partner,follow-up غير موثق,email_warm,C,diagnostic_layer,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 39 — وكالة/خدمات,مدير حسابات 39,agency_partner,co-sell pilot واحد,partner_intro,D,partner_sprint,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 40 — وكالة/خدمات,مدير حسابات 40,executive_governance,AI بلا حوكمة,linkedin_manual,A,executive_diagnostic,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 41 — وكالة/خدمات,مدير حسابات 41,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,email_warm,A,ten_lead_audit,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 42 — وكالة/خدمات,مدير حسابات 42,direct_b2b,CRM مليان بلا owner,partner_intro,B,governed_diagnostic,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 43 — وكالة/خدمات,مدير حسابات 43,crm_partner,follow-up غير موثق,linkedin_manual,C,diagnostic_layer,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 44 — وكالة/خدمات,مدير حسابات 44,agency_partner,co-sell pilot واحد,email_warm,D,partner_sprint,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 45 — وكالة/خدمات,مدير حسابات 45,executive_governance,AI بلا حوكمة,partner_intro,A,executive_diagnostic,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 46 — وكالة/خدمات,مدير حسابات 46,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,linkedin_manual,A,ten_lead_audit,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 47 — وكالة/خدمات,مدير حسابات 47,direct_b2b,CRM مليان بلا owner,email_warm,B,governed_diagnostic,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 48 — وكالة/خدمات,مدير حسابات 48,crm_partner,follow-up غير موثق,partner_intro,C,diagnostic_layer,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 49 — وكالة/خدمات,مدير حسابات 49,agency_partner,co-sell pilot واحد,linkedin_manual,D,partner_sprint,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 50 — وكالة/خدمات,مدير حسابات 50,executive_governance,AI بلا حوكمة,email_warm,A,executive_diagnostic,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 51 — وكالة/خدمات,مدير حسابات 51,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,partner_intro,A,ten_lead_audit,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 52 — وكالة/خدمات,مدير حسابات 52,direct_b2b,CRM مليان بلا owner,linkedin_manual,B,governed_diagnostic,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 53 — وكالة/خدمات,مدير حسابات 53,crm_partner,follow-up غير موثق,email_warm,C,diagnostic_layer,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 54 — وكالة/خدمات,مدير حسابات 54,agency_partner,co-sell pilot واحد,partner_intro,D,partner_sprint,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 55 — وكالة/خدمات,مدير حسابات 55,executive_governance,AI بلا حوكمة,linkedin_manual,A,executive_diagnostic,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 56 — وكالة/خدمات,مدير حسابات 56,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,email_warm,A,ten_lead_audit,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 57 — وكالة/خدمات,مدير حسابات 57,direct_b2b,CRM مليان بلا owner,partner_intro,B,governed_diagnostic,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 58 — وكالة/خدمات,مدير حسابات 58,crm_partner,follow-up غير موثق,linkedin_manual,C,diagnostic_layer,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 59 — وكالة/خدمات,مدير حسابات 59,agency_partner,co-sell pilot واحد,email_warm,D,partner_sprint,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 60 — وكالة/خدمات,مدير حسابات 60,executive_governance,AI بلا حوكمة,partner_intro,A,executive_diagnostic,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 61 — وكالة/خدمات,مدير حسابات 61,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,linkedin_manual,A,ten_lead_audit,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 62 — وكالة/خدمات,مدير حسابات 62,direct_b2b,CRM مليان بلا owner,email_warm,B,governed_diagnostic,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 63 — وكالة/خدمات,مدير حسابات 63,crm_partner,follow-up غير موثق,partner_intro,C,diagnostic_layer,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 64 — وكالة/خدمات,مدير حسابات 64,agency_partner,co-sell pilot واحد,linkedin_manual,D,partner_sprint,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 65 — وكالة/خدمات,مدير حسابات 65,executive_governance,AI بلا حوكمة,email_warm,A,executive_diagnostic,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 66 — وكالة/خدمات,مدير حسابات 66,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,partner_intro,A,ten_lead_audit,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 67 — وكالة/خدمات,مدير حسابات 67,direct_b2b,CRM مليان بلا owner,linkedin_manual,B,governed_diagnostic,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 68 — وكالة/خدمات,مدير حسابات 68,crm_partner,follow-up غير موثق,email_warm,C,diagnostic_layer,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 69 — وكالة/خدمات,مدير حسابات 69,agency_partner,co-sell pilot واحد,partner_intro,D,partner_sprint,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 70 — وكالة/خدمات,مدير حسابات 70,executive_governance,AI بلا حوكمة,linkedin_manual,A,executive_diagnostic,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 71 — وكالة/خدمات,مدير حسابات 71,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,email_warm,A,ten_lead_audit,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 72 — وكالة/خدمات,مدير حسابات 72,direct_b2b,CRM مليان بلا owner,partner_intro,B,governed_diagnostic,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 73 — وكالة/خدمات,مدير حسابات 73,crm_partner,follow-up غير موثق,linkedin_manual,C,diagnostic_layer,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 74 — وكالة/خدمات,مدير حسابات 74,agency_partner,co-sell pilot واحد,email_warm,D,partner_sprint,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 75 — وكالة/خدمات,مدير حسابات 75,executive_governance,AI بلا حوكمة,partner_intro,A,executive_diagnostic,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 76 — وكالة/خدمات,مدير حسابات 76,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,linkedin_manual,A,ten_lead_audit,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 77 — وكالة/خدمات,مدير حسابات 77,direct_b2b,CRM مليان بلا owner,email_warm,B,governed_diagnostic,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 78 — وكالة/خدمات,مدير حسابات 78,crm_partner,follow-up غير موثق,partner_intro,C,diagnostic_layer,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 79 — وكالة/خدمات,مدير حسابات 79,agency_partner,co-sell pilot واحد,linkedin_manual,D,partner_sprint,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 80 — وكالة/خدمات,مدير حسابات 80,executive_governance,AI بلا حوكمة,email_warm,A,executive_diagnostic,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 81 — وكالة/خدمات,مدير حسابات 81,agency_wedge,العميل يسأل ماذا حدث بعد الحملة,partner_intro,A,ten_lead_audit,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 82 — وكالة/خدمات,مدير حسابات 82,direct_b2b,CRM مليان بلا owner,linkedin_manual,B,governed_diagnostic,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion
+هدف استراتيجي 83 — وكالة/خدمات,مدير حسابات 83,crm_partner,follow-up غير موثق,email_warm,C,diagnostic_layer,message_drafted,مسودة لمسة — موافقة قبل الإرسال,,medium,seed strategic target — warm list expansion
+هدف استراتيجي 84 — وكالة/خدمات,مدير حسابات 84,agency_partner,co-sell pilot واحد,partner_intro,D,partner_sprint,replied,مسودة لمسة — موافقة قبل الإرسال,,low,seed strategic target — warm list expansion
+هدف استراتيجي 85 — وكالة/خدمات,مدير حسابات 85,executive_governance,AI بلا حوكمة,linkedin_manual,A,executive_diagnostic,not_contacted,مسودة لمسة — موافقة قبل الإرسال,,high,seed strategic target — warm list expansion

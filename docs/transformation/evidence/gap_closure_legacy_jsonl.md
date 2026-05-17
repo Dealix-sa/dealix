@@ -27,4 +27,6 @@ Last captured output (trimmed):
 GLOBAL AI TRANSFORMATION: PASS
 ```
 
+**Last verified (CTO plan):** 2026-05-16 — `python3 scripts/verify_global_ai_transformation.py`
+
 **KPI numeric closure:** tie `measured_customer_value_sar` and operational completeness metrics in [dealix/transformation/kpi_baselines.yaml](dealix/transformation/kpi_baselines.yaml) once finance exports exist.

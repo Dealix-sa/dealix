@@ -28,6 +28,8 @@ Last captured output — verify (trimmed):
 GLOBAL AI TRANSFORMATION: PASS
 ```
 
+**Last verified (CTO plan):** 2026-05-16 — `python3 scripts/verify_global_ai_transformation.py`
+
 Last captured output — scorecard (trimmed):
 
 ```text

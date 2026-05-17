@@ -58,6 +58,7 @@ ENTERPRISE_PACKAGE_FILES = (
 )
 
 CONTROL_ARTIFACTS = (
+    "dealix/transformation/global_ai_transformation_index.yaml",
     "dealix/transformation/todo_registry.yaml",
     "dealix/transformation/kpi_registry.yaml",
     "dealix/transformation/kpi_baselines.yaml",
@@ -77,6 +78,7 @@ ENTERPRISE_RUNBOOK_FILES = (
 
 MODULE_IMPORTS = (
     "auto_client_acquisition.governance_os.workflow_control_registry",
+    "auto_client_acquisition.governance_os.governance_inventory_loader",
     "auto_client_acquisition.revenue_os.data_flywheel",
     "auto_client_acquisition.reliability_os.mission_critical_program",
     "auto_client_acquisition.observability_v10.contract_registry",

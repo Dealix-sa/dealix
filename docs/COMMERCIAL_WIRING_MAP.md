@@ -178,6 +178,33 @@ If any of the three disagree, the deploy is broken. Roll back per `docs/RAILWAY_
 
 ---
 
+## 7. Founder daily revenue operations — تشغيل يومي للمؤسس
+
+| Surface | Endpoint / command | Notes |
+|---------|-------------------|--------|
+| **Morning bundle (canonical)** | `bash scripts/run_founder_commercial_day.sh` | brief · KPI · war room sync (P0 rotation) · digest · social · AEO verdict |
+| **Wrapper (+ Business NOW)** | `bash scripts/run_founder_revenue_day.sh` | calls commercial day with `--with-business-now` |
+| **Verify bundle** | `bash scripts/verify_founder_operating_system.sh` | dry-run + pytest → `FOUNDER_OPERATING_SYSTEM_VERDICT` |
+| **Dry-run** | `bash scripts/run_founder_commercial_day.sh --dry-run` | plan only via `founder_revenue_day_runner.py` |
+| **Targeting rotation** | `dealix/commercial_ops/targeting_rotation.py` · `python scripts/rotate_agency_targets.py --dry-run` | 10 P0/day from `agency_accounts_seed.csv` |
+| **War Room summary** | `GET /api/v1/ops-autopilot/war-room/summary` | admin `X-Admin-API-Key` |
+| **War Room rows** | `GET /api/v1/ops-autopilot/war-room` | top targets, filters |
+| **Founder dashboard** | `GET /api/v1/ops-autopilot/founder-dashboard` | GTM + evidence week stats |
+| **Social today** | `GET /api/v1/ops-autopilot/marketing/social-today` | governed draft |
+| **Queue approval** | `POST /api/v1/ops-autopilot/marketing/queue-approval` | thin wrapper → Approval Center |
+| **Weekly content (canonical)** | `python scripts/generate_weekly_content_drafts.py` | `var/content_drafts/YYYY-Www.json` |
+| **Content pack export** | `python scripts/generate_commercial_content_pack.py` | markdown in `docs/commercial/operations/drafts/` |
+| **Queue drafts (CLI)** | `python scripts/queue_content_drafts_for_approval.py` | `--dry-run` or local store |
+| **Evidence append** | `POST /api/v1/evidence/events` | audit trail (admin) |
+| **Anti-waste (pre-send)** | `POST /api/v1/revenue-os/anti-waste/check` | before external draft |
+| **UI hub** | `/ar/ops` · `/ar/ops/founder` · `/ar/ops/war-room` · `/ar/ops/marketing` · `/ar/ops/approvals` | founder operating surfaces |
+
+**Docs:** [FOUNDER_OPERATING_SYSTEM_AR.md](ops/FOUNDER_OPERATING_SYSTEM_AR.md) · [FOUNDER_REVENUE_DAY_ONE_AR.md](ops/FOUNDER_REVENUE_DAY_ONE_AR.md) · [DEALIX_UNIFIED_REVENUE_ATLAS_AR.md](commercial/DEALIX_UNIFIED_REVENUE_ATLAS_AR.md) · [DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md](commercial/DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md)
+
+**Governance:** no cold WhatsApp · no live external send without approval · no revenue before `invoice_paid`.
+
+---
+
 ## Footer
 
 > Estimated outcomes are not guaranteed outcomes / النتائج التقديرية ليست نتائج مضمونة.

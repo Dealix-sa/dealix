@@ -1,5 +1,7 @@
 version: 1
 program: global_ai_transformation
+execution_index: dealix/transformation/global_ai_transformation_index.yaml
+master_bundle: scripts/run_global_ai_transformation_bundle.sh
 todos:
   - id: doctrine-lock
     owner_os: strategy

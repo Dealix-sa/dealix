@@ -17,6 +17,13 @@ import {
   Zap,
   Shield,
   Building2,
+  Cloud,
+  Briefcase,
+  Sparkles,
+  ClipboardList,
+  Layers,
+  FileText,
+  Megaphone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -29,6 +36,18 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { key: "dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { key: "dealixDiagnostic", href: "/dealix-diagnostic", icon: Sparkles },
+  { key: "businessNow", href: "/business-now", icon: Briefcase },
+  { key: "cloud", href: "/cloud", icon: Cloud },
+  { key: "opsHub", href: "/ops", icon: Layers },
+  { key: "opsFounder", href: "/ops/founder", icon: ClipboardList },
+  { key: "opsWarRoom", href: "/ops/war-room", icon: Briefcase },
+  { key: "opsTargeting", href: "/ops/targeting", icon: GitBranch },
+  { key: "opsSales", href: "/ops/sales", icon: Layers },
+  { key: "opsMarketing", href: "/ops/marketing", icon: Megaphone },
+  { key: "opsPartners", href: "/ops/partners", icon: Users },
+  { key: "opsEvidence", href: "/ops/evidence", icon: FileText },
+  { key: "opsSupport", href: "/ops/support", icon: Shield },
   { key: "pipeline", href: "/pipeline", icon: GitBranch },
   { key: "agents", href: "/agents", icon: Bot },
   { key: "approvals", href: "/approvals", icon: CheckSquare },
@@ -142,6 +161,18 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
                       {t(
                         item.key as
                           | "dashboard"
+                          | "dealixDiagnostic"
+                          | "opsHub"
+                          | "opsFounder"
+                          | "opsWarRoom"
+                          | "opsTargeting"
+                          | "opsMarketing"
+                          | "opsPartners"
+                          | "opsSales"
+                          | "opsEvidence"
+                          | "opsSupport"
+                          | "businessNow"
+                          | "cloud"
                           | "pipeline"
                           | "agents"
                           | "approvals"

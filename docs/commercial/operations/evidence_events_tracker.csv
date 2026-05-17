@@ -1,0 +1,11 @@
+event_id,event_date,event_type,company,contact,motion,offer_id,owner,source_channel,notes,next_action,next_action_date,war_room_status
+,2026-05-17,message_sent_manual,,,,,founder,,,,
+,2026-05-17,reply_received,,,,,founder,,,,
+,2026-05-17,demo_booked,,,,,founder,,,,
+,2026-05-17,scope_requested,,,,,founder,,,,
+,2026-05-17,invoice_sent,,,,,founder,,,,
+,2026-05-17,payment_received,,,,,founder,,,,
+,2026-05-17,proof_pack_delivered,,,,,founder,,,,
+,2026-05-17,partner_intro_created,,,,,founder,,,,
+,2026-05-17,referral_requested,,,,,founder,,,,
+,2026-05-17,scope_requested,founder_launch_day,,,ten_lead_audit,,,launch_day — first revenue day orchestrator,,,

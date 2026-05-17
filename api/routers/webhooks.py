@@ -79,16 +79,21 @@ async def whatsapp_incoming(
 @router.post("/calendly")
 async def calendly_webhook(payload: dict[str, Any]) -> dict[str, Any]:
     """Receive Calendly event lifecycle notifications."""
+    from dealix.revenue_ops_autopilot.webhook_handlers import handle_calendly_webhook
+
     event = payload.get("event") or payload.get("type") or "unknown"
     logger.info("calendly_webhook_received", event=event)
-    return {"ok": True, "event": event}
+    result = handle_calendly_webhook(payload)
+    return result
 
 
 # ── HubSpot ────────────────────────────────────────────────────
 @router.post("/hubspot")
 async def hubspot_webhook(payload: dict[str, Any]) -> dict[str, Any]:
     """Receive HubSpot subscription events."""
+    from dealix.revenue_ops_autopilot.webhook_handlers import handle_hubspot_webhook
+
     logger.info(
         "hubspot_webhook_received", n_events=len(payload) if isinstance(payload, list) else 1
     )
-    return {"ok": True}
+    return handle_hubspot_webhook(payload)

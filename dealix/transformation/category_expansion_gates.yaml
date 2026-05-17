@@ -33,3 +33,15 @@ sectors:
     region: SA
     quality_bar: proof_pack_required
     decision_passport_required: true
+  - id: saudi_fintech_b2b
+    region: SA
+    quality_bar: proof_pack_required
+    decision_passport_required: true
+    minimum_closed_sprints_with_l4: 3
+    tracker_ref: docs/transformation/evidence/pilot_sprint_tracker.yaml
+    notes_ar: >-
+      توسع قطاع fintech B2B فقط بعد 3 sprints مغلقة L4+ في المتتبع
+      وPASS لبوابات gates أعلاه.
+    verification_commands:
+      - bash scripts/run_pre_scale_gate_bundle.sh
+      - python3 scripts/verify_global_ai_transformation.py --check-category-expansion

@@ -31,3 +31,21 @@ def test_procurement_intake_is_governed() -> None:
 def test_back_office_automation_is_governed() -> None:
     assert workflow_domain_is_governed("back_office_automation")
     assert "irreversible_action" in control_classes_for("back_office_automation")
+
+
+def test_compliance_pdpl_is_governed() -> None:
+    assert workflow_domain_is_governed("compliance_pdpl")
+    assert "data_export" in control_classes_for("compliance_pdpl")
+
+
+def test_billing_collections_is_governed() -> None:
+    assert workflow_domain_is_governed("billing_collections")
+    assert "pricing_commitment" in control_classes_for("billing_collections")
+
+
+def test_inventory_matches_registry() -> None:
+    from auto_client_acquisition.governance_os.governance_inventory_loader import (
+        inventory_matches_registry,
+    )
+
+    assert inventory_matches_registry()
