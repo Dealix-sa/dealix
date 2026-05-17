@@ -165,13 +165,9 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     "agency-partner.html": {
         "cold": "NEGATION",
     },
-    # Homepage (Tier-1 redesign) — hero subheadline and #for-who NOT-FOR
-    # list explicitly state "بدون cold WhatsApp ولا scraping" as part of
-    # the safety promise. Pure NEGATION throughout.
-    "index.html": {
-        "cold": "NEGATION",
-        "scraping": "NEGATION",
-    },
+    # Homepage hero now states the safety promise in pure Arabic
+    # ("بدون تواصل بارد عبر واتساب ولا سحب بيانات") — no literal English
+    # forbidden tokens remain, so no allowlist entry is needed.
     # Comparison pages (Track D3) — describe competitor mechanics
     # ("blast model", "cold sequences") explicitly as anti-patterns
     # Dealix rejects. Pure NEGATION context throughout.
