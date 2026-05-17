@@ -10,6 +10,14 @@ from dealix.business_now.commercial_strategy import build_commercial_strategy_sn
 client = TestClient(app)
 
 
+def test_simulate_invalid_budget_returns_422() -> None:
+    res = client.post(
+        "/api/v1/business-now/commercial-strategy/simulate",
+        json={"monthly_budget_sar": "not-a-number"},
+    )
+    assert res.status_code == 422
+
+
 def test_simulate_endpoint() -> None:
     res = client.post(
         "/api/v1/business-now/commercial-strategy/simulate",

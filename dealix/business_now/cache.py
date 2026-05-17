@@ -15,7 +15,10 @@ CACHE_PATH = _REPO / "dealix" / "transformation" / "business_now_cache.yaml"
 def load_cache() -> dict[str, Any] | None:
     if not CACHE_PATH.exists():
         return None
-    data = yaml.safe_load(CACHE_PATH.read_text(encoding="utf-8"))
+    try:
+        data = yaml.safe_load(CACHE_PATH.read_text(encoding="utf-8"))
+    except yaml.YAMLError:
+        return None
     return data if isinstance(data, dict) else None
 
 

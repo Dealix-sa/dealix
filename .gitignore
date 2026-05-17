@@ -140,6 +140,7 @@ node_modules/
 .next/
 out/
 .cache/
+*.tsbuildinfo
 
 # ─────────────────────────────────────────────────────────────
 # 🧪 Temporary

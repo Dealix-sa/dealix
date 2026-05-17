@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import os
 from typing import Any
 
 from fastapi import APIRouter, Header, HTTPException, Query, Request
@@ -77,21 +79,78 @@ async def whatsapp_incoming(
 
 # ── Calendly ───────────────────────────────────────────────────
 @router.post("/calendly")
-async def calendly_webhook(payload: dict[str, Any]) -> dict[str, Any]:
+async def calendly_webhook(
+    request: Request,
+    calendly_webhook_signature: str = Header(default="", alias="Calendly-Webhook-Signature"),
+) -> dict[str, Any]:
     """Receive Calendly event lifecycle notifications."""
+    from api.security.webhook_signatures import verify_calendly_signature
     from dealix.revenue_ops_autopilot.webhook_handlers import handle_calendly_webhook
+
+    body = await request.body()
+    settings = get_settings()
+    has_secret = bool(getattr(settings, "calendly_webhook_secret", None) or os.environ.get("CALENDLY_WEBHOOK_SECRET"))
+
+    if has_secret and settings.app_env in ("staging", "production"):
+        if not verify_calendly_signature(body=body, header=calendly_webhook_signature or None):
+            logger.warning("calendly_missing_or_invalid_signature_strict_env")
+            raise HTTPException(status_code=403, detail="missing_or_invalid_signature")
+    elif calendly_webhook_signature and has_secret:
+        if not verify_calendly_signature(body=body, header=calendly_webhook_signature):
+            logger.warning("calendly_invalid_signature")
+            raise HTTPException(status_code=403, detail="Invalid signature")
+
+    try:
+        payload = json.loads(body.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON: {exc}") from exc
 
     event = payload.get("event") or payload.get("type") or "unknown"
     logger.info("calendly_webhook_received", event=event)
-    result = handle_calendly_webhook(payload)
-    return result
+    return handle_calendly_webhook(payload)
 
 
 # ── HubSpot ────────────────────────────────────────────────────
 @router.post("/hubspot")
-async def hubspot_webhook(payload: dict[str, Any]) -> dict[str, Any]:
+async def hubspot_webhook(
+    request: Request,
+    x_hubspot_signature_v3: str = Header(default="", alias="X-HubSpot-Signature-v3"),
+    x_hubspot_request_timestamp: str = Header(default="", alias="X-HubSpot-Request-Timestamp"),
+) -> dict[str, Any]:
     """Receive HubSpot subscription events."""
+    from api.security.webhook_signatures import verify_hubspot_signature
     from dealix.revenue_ops_autopilot.webhook_handlers import handle_hubspot_webhook
+
+    body = await request.body()
+    settings = get_settings()
+    has_secret = bool(getattr(settings, "hubspot_app_secret", None) or os.environ.get("HUBSPOT_APP_SECRET"))
+    url = str(request.url)
+
+    if has_secret and settings.app_env in ("staging", "production"):
+        if not verify_hubspot_signature(
+            method=request.method,
+            url=url,
+            body=body,
+            timestamp=x_hubspot_request_timestamp or None,
+            signature=x_hubspot_signature_v3 or None,
+        ):
+            logger.warning("hubspot_missing_or_invalid_signature_strict_env")
+            raise HTTPException(status_code=403, detail="missing_or_invalid_signature")
+    elif x_hubspot_signature_v3 and has_secret:
+        if not verify_hubspot_signature(
+            method=request.method,
+            url=url,
+            body=body,
+            timestamp=x_hubspot_request_timestamp or None,
+            signature=x_hubspot_signature_v3 or None,
+        ):
+            logger.warning("hubspot_invalid_signature")
+            raise HTTPException(status_code=403, detail="Invalid signature")
+
+    try:
+        payload = json.loads(body.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON: {exc}") from exc
 
     logger.info(
         "hubspot_webhook_received", n_events=len(payload) if isinstance(payload, list) else 1

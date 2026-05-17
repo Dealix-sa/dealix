@@ -1229,6 +1229,17 @@ async def ops_targeting_import(body: TargetingImportPayload) -> dict[str, Any]:
         if f not in fieldnames:
             fieldnames.append(f)
 
+    if not body.replace and path.is_file():
+        existing = load_targets(path)
+        seen = {(r.get("company") or "").strip().lower() for r in existing}
+        merged = list(existing)
+        for row in rows:
+            key = (row.get("company") or "").strip().lower()
+            if key and key not in seen:
+                merged.append(row)
+                seen.add(key)
+        rows = merged
+
     with path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
