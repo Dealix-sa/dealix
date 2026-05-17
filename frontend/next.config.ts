@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     serverComponentsExternalPackages: [],
   },
   images: {
-    domains: ["api.dealix.ai", "localhost"],
+    domains: ["api.dealix.me", "localhost"],
   },
   async headers() {
     return [
