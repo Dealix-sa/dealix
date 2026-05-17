@@ -299,6 +299,72 @@ async def operating_scorecard() -> dict[str, Any]:
     }
 
 
+def _approval_brief() -> dict[str, Any]:
+    """Pending-approval summary for the morning brief, including how
+    many have passed their expiry window (so a queue never rots)."""
+    from auto_client_acquisition.approval_center import (
+        list_pending,
+        render_approval_card,
+    )
+    pending = list_pending()
+    now = datetime.now(UTC)
+    overdue = 0
+    for req in pending:
+        exp = getattr(req, "expires_at", None)
+        if exp is None:
+            continue
+        try:
+            if exp.tzinfo is None:
+                exp = exp.replace(tzinfo=UTC)
+            if exp < now:
+                overdue += 1
+        except (AttributeError, TypeError):
+            continue
+    return {
+        "pending": len(pending),
+        "overdue": overdue,
+        "first_3": [render_approval_card(p) for p in pending[:3]],
+    }
+
+
+def _pipeline_brief() -> dict[str, Any]:
+    """Revenue-pipeline summary — counts only, no PII."""
+    from auto_client_acquisition.revenue_pipeline.pipeline import (
+        get_default_pipeline,
+    )
+    return get_default_pipeline().summary()
+
+
+@router.get("/daily-brief")
+async def daily_brief() -> dict[str, Any]:
+    """The founder's morning brief — one tight, fast, mobile-friendly call.
+
+    Read-only. Composes exactly what the founder must act on each day:
+    the approval queue (with overdue count), the revenue pipeline, and
+    the single next action. Distinct from /dashboard, which runs the
+    full heavy v10 aggregation.
+    """
+    approvals = _safe(_approval_brief, default={"pending": 0, "overdue": 0, "first_3": []})
+    pipeline = _safe(_pipeline_brief, default={})
+    next_action = _safe(_next_founder_action, default="no_action_today")
+    return {
+        "schema_version": 1,
+        "generated_at": datetime.now(UTC).isoformat(),
+        "approvals": approvals,
+        "pipeline": pipeline,
+        "next_action": next_action,
+        "headline_ar": (
+            f"{approvals['pending']} موافقة بانتظارك"
+            f"{' — منها ' + str(approvals['overdue']) + ' متأخرة' if approvals.get('overdue') else ''}."
+        ),
+        "headline_en": (
+            f"{approvals['pending']} approvals awaiting you"
+            f"{' — ' + str(approvals['overdue']) + ' overdue' if approvals.get('overdue') else ''}."
+        ),
+        "guardrails": {"read_only": True, "no_live_send": True},
+    }
+
+
 @router.get("/status")
 async def status() -> dict:
     return {
@@ -309,7 +375,7 @@ async def status() -> dict:
             "no_cold_outreach": True,
             "approval_required_for_external_actions": True,
         },
-        "endpoints": ["/dashboard", "/operating-scorecard"],
+        "endpoints": ["/dashboard", "/operating-scorecard", "/daily-brief"],
     }
 
 

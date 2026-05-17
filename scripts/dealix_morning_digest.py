@@ -37,6 +37,39 @@ def _today_label() -> str:
     return datetime.now(UTC).strftime("%Y-%m-%d")
 
 
+def _approvals_section() -> str:
+    """Bilingual approval-queue summary appended to the digest, so a
+    pending or overdue queue never sits unseen. Degrades to empty on
+    any error — the digest must still send."""
+    try:
+        from auto_client_acquisition.approval_center import list_pending
+        pending = list_pending()
+        now = datetime.now(UTC)
+        overdue = 0
+        for req in pending:
+            exp = getattr(req, "expires_at", None)
+            if exp is None:
+                continue
+            try:
+                if exp.tzinfo is None:
+                    exp = exp.replace(tzinfo=UTC)
+                if exp < now:
+                    overdue += 1
+            except (AttributeError, TypeError):
+                continue
+        overdue_ar = f" — منها {overdue} متأخرة" if overdue else ""
+        overdue_en = f" — {overdue} overdue" if overdue else ""
+        return (
+            "\n\n## طابور الموافقات / Approval queue\n"
+            f"- {len(pending)} موافقة بانتظارك{overdue_ar}.\n"
+            f"- {len(pending)} approvals awaiting you{overdue_en}.\n"
+            "- راجِعها من مركز القيادة ← الموافقات / Review them in the "
+            "Command Center → Approvals.\n"
+        )
+    except Exception:  # the digest must send even if this section fails
+        return ""
+
+
 def _build_subject() -> str:
     return f"Dealix · موجز اليوم · {_today_label()}"
 
@@ -65,7 +98,7 @@ async def _build_and_send(args: argparse.Namespace) -> EmailResult:
         )
 
     loop = daily_growth_loop.build_today()
-    body_text = daily_growth_loop.to_markdown(loop)
+    body_text = daily_growth_loop.to_markdown(loop) + _approvals_section()
 
     if args.print_only:
         print(body_text)
