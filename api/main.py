@@ -171,6 +171,21 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
             log.warning("db_init_skipped", error=str(exc))
     else:
         log.info("db_init_skipped", reason="use_alembic_migrations")
+
+    # ── Hydrate the Approval Command Center queue from durable storage ──
+    # The in-memory store loses its queue on every restart; reload the
+    # pending+historical approvals so a redeploy never drops a founder's
+    # work. Degrades to an empty store if the DB is unreachable.
+    try:
+        from auto_client_acquisition.approval_center import (
+            get_default_approval_store,
+        )
+        from auto_client_acquisition.approval_center import persistence
+        loaded = await persistence.hydrate_into(get_default_approval_store())
+        log.info("approval_store_hydrate_complete", loaded=loaded)
+    except Exception as exc:
+        log.warning("approval_store_hydrate_skipped", error=str(exc))
+
     yield
     log.info("app_shutdown")
 

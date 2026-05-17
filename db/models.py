@@ -1032,3 +1032,36 @@ class CustomerWebhookDelivery(Base):
                          name="uq_webhook_subscription_event"),
         Index("ix_cwd_event_type_created", "event_type", "delivered_at"),
     )
+
+
+# ── Approval Command Center persistence ────────────────────────────
+
+class ApprovalTicketRecord(Base):
+    """Durable storage for the Approval Command Center queue.
+
+    The in-memory ApprovalStore is the working set; this table makes the
+    queue survive process restarts (Railway redeploys). ``payload`` holds
+    the full serialized ApprovalRequest — the promoted columns exist only
+    so the queue can be filtered without deserializing every row.
+    """
+
+    __tablename__ = "approval_tickets"
+
+    approval_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    object_type: Mapped[str] = mapped_column(String(64), default="")
+    object_id: Mapped[str] = mapped_column(String(128), default="")
+    action_type: Mapped[str] = mapped_column(String(64), index=True, default="")
+    action_mode: Mapped[str] = mapped_column(String(32), default="approval_required")
+    status: Mapped[str] = mapped_column(String(32), default="pending", index=True)
+    risk_level: Mapped[str] = mapped_column(String(16), default="low")
+    channel: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    proof_impact: Mapped[str] = mapped_column(String(255), default="")
+    customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    lead_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow, index=True)
+
+    __table_args__ = (
+        Index("ix_approval_tickets_status_created", "status", "created_at"),
+    )

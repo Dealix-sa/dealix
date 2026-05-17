@@ -90,8 +90,11 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
         candidate_pool_size: int = 200
         sectors: list[str] | None
         cities: list[str] | None
-        approval_mode: 'draft_only' (default) | 'auto_send_low_risk'
         create_gmail_drafts_in_inbox: bool = False (only if Gmail OAuth configured)
+
+    Doctrine: this endpoint only ever drafts. Nothing is sent here — Gmail
+    messages.send happens exclusively on /api/v1/email/send-approved after
+    explicit founder approval. There is no autonomous-send path.
     """
     n_gmail = int(body.get("gmail_drafts") or 50)
     n_linkedin = int(body.get("linkedin_drafts") or 20)

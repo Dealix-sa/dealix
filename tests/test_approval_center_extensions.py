@@ -87,8 +87,8 @@ def test_expire_overdue_flips_pending_to_expired() -> None:
     store.create(fresh_req)
     store.create(no_expiry_req)
 
-    count = store.expire_overdue()
-    assert count == 1
+    expired = store.expire_overdue()
+    assert len(expired) == 1
     assert store.get("apv_old").status == ApprovalStatus.EXPIRED
     assert store.get("apv_new").status == ApprovalStatus.PENDING
     assert store.get("apv_forever").status == ApprovalStatus.PENDING

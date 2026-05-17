@@ -158,14 +158,15 @@ class ApprovalStore:
         rows.sort(key=lambda r: r.updated_at, reverse=True)
         return rows[:limit]
 
-    def expire_overdue(self) -> int:
+    def expire_overdue(self) -> list[ApprovalRequest]:
         """Sweep pending requests whose expires_at has passed.
 
-        Flips status pending → expired. Returns count of expired items.
+        Flips status pending → expired. Returns the list of expired
+        requests so callers can write the change through to storage.
         Designed to be called by a background job (cron / sleeper).
         """
         now = datetime.now(UTC)
-        expired_count = 0
+        expired: list[ApprovalRequest] = []
         with self._lock:
             for req in self._items.values():
                 if (
@@ -178,8 +179,8 @@ class ApprovalStore:
                     req.edit_history.append(
                         self._audit_entry("system", "expire", {})
                     )
-                    expired_count += 1
-        return expired_count
+                    expired.append(req)
+        return expired
 
     def bulk_approve(
         self,
@@ -227,6 +228,17 @@ class ApprovalStore:
             "failed": failed,
             "total": len(approved) + len(failed),
         }
+
+    # ─── Hydration ───────────────────────────────────────────────
+
+    def bulk_load(self, requests: list[ApprovalRequest]) -> int:
+        """Load already-validated requests into the store (startup
+        hydration from the durable table). Does NOT re-run safety policy —
+        these rows were validated when first created. Returns the count."""
+        with self._lock:
+            for req in requests:
+                self._items[req.approval_id] = req
+        return len(requests)
 
     # ─── Test helpers ────────────────────────────────────────────
 

@@ -14,12 +14,14 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import APIRouter, Body, HTTPException, Query
+from pydantic import ValidationError
 
 from auto_client_acquisition.approval_center import (
     ApprovalRequest,
     get_default_approval_store,
     render_approval_card,
 )
+from auto_client_acquisition.approval_center import persistence
 from core.logging import get_logger
 
 router = APIRouter(prefix="/api/v1/approvals", tags=["approval-center"])
@@ -30,8 +32,8 @@ log = get_logger(__name__)
 async def status() -> dict[str, Any]:
     return {
         "module": "approval_center",
-        "backend": "in_memory",
-        "swappable_to_redis": True,
+        "backend": "postgres_durable",
+        "survives_restart": True,
         "guardrails": {
             "no_live_send": True,
             "blocked_cannot_be_approved": True,
@@ -69,6 +71,7 @@ async def create(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
     except ValidationError as exc:
         raise HTTPException(status_code=422, detail=exc.errors()) from exc
     stored = get_default_approval_store().create(req)
+    await persistence.upsert(stored)
     log.info("approval_center_create", approval_id=stored.approval_id, action_type=stored.action_type)
     return {
         "approval": stored.model_dump(mode="json"),
@@ -88,6 +91,7 @@ async def approve_endpoint(
         stored = get_default_approval_store().approve(approval_id, who)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    await persistence.upsert(stored)
     log.info("approval_center_approve", approval_id=approval_id, who=who)
     return {
         "approval": stored.model_dump(mode="json"),
@@ -110,6 +114,7 @@ async def reject_endpoint(
         stored = get_default_approval_store().reject(approval_id, who, reason)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    await persistence.upsert(stored)
     log.info("approval_center_reject", approval_id=approval_id, who=who)
     return {
         "approval": stored.model_dump(mode="json"),
@@ -132,6 +137,7 @@ async def edit_endpoint(
         stored = get_default_approval_store().edit(approval_id, who, patch)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    await persistence.upsert(stored)
     return {
         "approval": stored.model_dump(mode="json"),
         "card": render_approval_card(stored),
@@ -154,8 +160,10 @@ async def expire_sweep() -> dict[str, Any]:
     Designed for a background job; safe to call ad-hoc. Returns count.
     """
     expired = get_default_approval_store().expire_overdue()
+    if expired:
+        await persistence.upsert_many(expired)
     return {
-        "expired_count": expired,
+        "expired_count": len(expired),
         "guardrails": {
             "no_live_send": True,
             "expiry_is_terminal": True,
@@ -183,9 +191,12 @@ async def bulk_approve(payload: dict[str, Any] = Body(default_factory=dict)) -> 
             status_code=422,
             detail="either 'proof_impact_prefix' or 'approval_ids' required",
         )
-    result = get_default_approval_store().bulk_approve(
+    store = get_default_approval_store()
+    result = store.bulk_approve(
         who=who,
         proof_impact_prefix=proof_impact_prefix,
         approval_ids=approval_ids,
     )
+    approved = [store.get(aid) for aid in result.get("approved", [])]
+    await persistence.upsert_many([r for r in approved if r is not None])
     return result
