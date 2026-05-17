@@ -63,9 +63,17 @@ curl -fsS "$API/api/v1/automation/revenue-machine/export?format=csv" \
   | jq '{gmail_export, linkedin_export, gmail_count, linkedin_count}'
 
 echo ""
+echo "═══ 6. Draft this week's social posts (governed — draft only) ═══"
+curl -fsS -X POST "$API/api/v1/automation/social/draft" \
+  -H 'Content-Type: application/json' \
+  -d "{\"count\": ${SOCIAL_POSTS:-7}}" \
+  | jq '{drafted, approval_mode, note}'
+
+echo ""
 echo "═══════════════════════════════════════════════════════════════"
 echo "  ✅  Daily run complete."
+echo "  Open the Command Center → Approvals → review + approve the queue"
 echo "  Open Gmail Drafts folder → review + send manually"
-echo "  Open dashboard.html → Local Lead Engine demo + status"
+echo "  Social posts are queued as approvals — approve, then post manually"
 echo "  Check docs/ops/daily_reports/ for today's MD report + CSVs"
 echo "═══════════════════════════════════════════════════════════════"

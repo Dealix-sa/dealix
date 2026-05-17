@@ -4,6 +4,7 @@ Automation router — daily targeting, follow-ups, compliance gate, replies.
 Endpoints:
     POST /api/v1/automation/daily-targeting/run    — generate today's 50
     POST /api/v1/automation/followups/run          — schedule +2/+5/+10
+    POST /api/v1/automation/social/draft           — queue governed social posts
     POST /api/v1/compliance/check-outreach         — single-row gate
     POST /api/v1/automation/reply/classify         — classify a reply text
     GET  /api/v1/automation/status                 — health + counts
@@ -38,6 +39,12 @@ from auto_client_acquisition.email.compliance import (
 from auto_client_acquisition.email.reply_classifier import (
     classify_reply,
 )
+from auto_client_acquisition.approval_center import (
+    ApprovalRequest,
+    get_default_approval_store,
+)
+from auto_client_acquisition.approval_center import persistence
+from auto_client_acquisition.growth_beast.content_engine import draft_content
 from db.models import (
     AccountRecord,
     ContactRecord,
@@ -367,6 +374,90 @@ def _followup_template(step: int, prev_subject: str) -> str:
             "سامي\n— لإلغاء الاستلام نهائياً: ردّ بـ STOP."
         )
     return ""
+
+
+# ── Social content drafts (governed) ──────────────────────────────
+
+# A week's rotation of content types so the founder gets variety, not
+# seven identical posts. Pure templates — see content_engine.draft_content.
+_SOCIAL_ROTATION: list[tuple[str, str]] = [
+    ("linkedin_post", "بطء الردّ على العملاء المحتملين"),
+    ("diagnostic_cta", "تشخيص مجاني خلال 24 ساعة"),
+    ("sector_insight", "غياب نظام تشغيل أسبوعي واضح"),
+    ("objection_post", "جرّبنا أدوات كثيرة وما نفعت"),
+    ("case_snippet", "أسبوع واحد من Proof Sprint"),
+    ("linkedin_post", "قرارات بدون أدلّة موثّقة"),
+    ("diagnostic_cta", "ابدأ بخطوة صغيرة بلا التزام"),
+]
+
+_DEFAULT_SOCIAL_SECTORS = ["real_estate", "logistics", "retail", "professional_services"]
+
+
+@router.post("/automation/social/draft")
+async def run_social_drafts(body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
+    """Generate a governed batch of social-media post drafts and queue
+    them in the Approval Command Center.
+
+    Doctrine: draft-and-queue ONLY. Nothing is published. Every draft
+    lands as a pending approval the founder reviews — and then posts
+    manually. There is no auto-publish path and none may be added.
+
+    Body (all optional):
+        count: int = 7         — how many posts to draft (one per day)
+        sectors: list[str]     — sector rotation (default: 4 Saudi sectors)
+        start_date: ISO date   — first suggested publish date (default tomorrow)
+    """
+    count = max(1, min(int(body.get("count") or 7), 30))
+    sectors = body.get("sectors") or _DEFAULT_SOCIAL_SECTORS
+    if not isinstance(sectors, list) or not sectors:
+        sectors = _DEFAULT_SOCIAL_SECTORS
+
+    start_raw = body.get("start_date")
+    if start_raw:
+        try:
+            start = datetime.fromisoformat(str(start_raw))
+        except ValueError:
+            start = _utcnow() + timedelta(days=1)
+    else:
+        start = _utcnow() + timedelta(days=1)
+
+    store = get_default_approval_store()
+    queued: list[ApprovalRequest] = []
+    for i in range(count):
+        content_type, angle = _SOCIAL_ROTATION[i % len(_SOCIAL_ROTATION)]
+        sector = sectors[i % len(sectors)]
+        draft = draft_content(sector=sector, angle=angle, content_type=content_type)
+        publish_at = start + timedelta(days=i)
+        req = ApprovalRequest(
+            object_type="social_post",
+            object_id=_new_id("soc_"),
+            action_type="social_post",
+            action_mode="draft_only",
+            summary_ar=draft["draft_ar"],
+            summary_en=draft["draft_en"],
+            risk_level="low",
+            proof_impact=f"social:{content_type}:{sector}",
+            due_date=publish_at,
+        )
+        queued.append(store.create(req))
+
+    persisted = await persistence.upsert_many(queued)
+
+    return {
+        "status": "ok",
+        "drafted": len(queued),
+        "persisted": persisted,
+        "approval_mode": "draft_only",
+        "note": "queued in the Approval Command Center; founder reviews then posts manually",
+        "approvals": [
+            {
+                "approval_id": r.approval_id,
+                "content_type": r.proof_impact,
+                "suggested_publish_date": r.due_date.isoformat() if r.due_date else None,
+            }
+            for r in queued
+        ],
+    }
 
 
 # ── Reply classifier endpoint ─────────────────────────────────────
