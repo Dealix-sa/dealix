@@ -142,11 +142,22 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
     },
     # Trust Center (Tier-1 redesign) — frames the 8 hard gates as features.
-    # Copy explicitly states what Dealix DOES NOT do: "لا scraping",
-    # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
+    # Copy explicitly states what Dealix DOES NOT do: "لا scraping".
+    # Pure NEGATION throughout.
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+    },
+    # Data Pack offer page — safety bullets enumerate what the offer will
+    # NOT do: "صفر cold WhatsApp / LinkedIn", "لا scraping. لا إرسال آلي".
+    # Pure NEGATION.
+    "data-pack.html": {
+        "cold": "NEGATION",
+        "scraping": "NEGATION",
+    },
+    # Roadmap page — explicitly lists "LinkedIn scraping automation" as a
+    # policy-blocked anti-pattern Dealix rejects. Pure NEGATION.
+    "roadmap.html": {
+        "scraping": "NEGATION",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can

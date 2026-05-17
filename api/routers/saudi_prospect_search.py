@@ -98,29 +98,46 @@ async def search_prospects(
             "note": "DB layer unavailable; returning empty result set.",
         }
 
+    def _col(*names: str):
+        """Return the first model column matching one of ``names``.
+
+        The CompanyRecord schema does not carry every filter dimension as a
+        dedicated column (e.g. ``region`` is stored as ``city``). Resolving
+        the column by name keeps the filter optional instead of raising
+        AttributeError when a dimension is not modelled.
+        """
+        for name in names:
+            col = getattr(CompanyRecord, name, None)
+            if col is not None:
+                return col
+        return None
+
     async with async_session_factory()() as session:
         stmt = select(CompanyRecord)
         count_stmt = select(func.count()).select_from(CompanyRecord)
 
-        if sector is not None:
-            stmt = stmt.where(CompanyRecord.industry == sector)
-            count_stmt = count_stmt.where(CompanyRecord.industry == sector)
-        if region is not None:
-            stmt = stmt.where(CompanyRecord.region == region)
-            count_stmt = count_stmt.where(CompanyRecord.region == region)
-        if size_band is not None:
-            stmt = stmt.where(CompanyRecord.size_band == size_band)
-            count_stmt = count_stmt.where(CompanyRecord.size_band == size_band)
+        sector_col = _col("industry", "sector")
+        region_col = _col("region", "city")
+        size_col = _col("size_band")
+        name_col = _col("name")
+        domain_col = _col("domain", "website")
+
+        if sector is not None and sector_col is not None:
+            stmt = stmt.where(sector_col == sector)
+            count_stmt = count_stmt.where(sector_col == sector)
+        if region is not None and region_col is not None:
+            stmt = stmt.where(region_col == region)
+            count_stmt = count_stmt.where(region_col == region)
+        if size_band is not None and size_col is not None:
+            stmt = stmt.where(size_col == size_band)
+            count_stmt = count_stmt.where(size_col == size_band)
         if q:
             pattern = f"%{q}%"
-            stmt = stmt.where(
-                or_(CompanyRecord.name.ilike(pattern),
-                    CompanyRecord.domain.ilike(pattern))
-            )
-            count_stmt = count_stmt.where(
-                or_(CompanyRecord.name.ilike(pattern),
-                    CompanyRecord.domain.ilike(pattern))
-            )
+            text_cols = [c for c in (name_col, domain_col) if c is not None]
+            if text_cols:
+                clause = or_(*(c.ilike(pattern) for c in text_cols))
+                stmt = stmt.where(clause)
+                count_stmt = count_stmt.where(clause)
 
         stmt = stmt.order_by(CompanyRecord.name).limit(limit).offset(offset)
         try:

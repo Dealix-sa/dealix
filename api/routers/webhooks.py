@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
+import hmac
+import os
 from typing import Any
 
 from fastapi import APIRouter, Header, HTTPException, Query, Request
@@ -40,14 +43,32 @@ async def whatsapp_incoming(
     body = await request.body()
     client = WhatsAppClient()
     settings = get_settings()
-    has_secret = bool(client.settings.whatsapp_app_secret)
+
+    # Resolve the app secret and environment from the live process env first
+    # (authoritative at request time), falling back to cached Settings. This
+    # keeps the signature gate effective even when get_settings() is memoised.
+    app_secret = os.getenv("WHATSAPP_APP_SECRET", "") or (
+        settings.whatsapp_app_secret.get_secret_value()
+        if settings.whatsapp_app_secret
+        else ""
+    )
+    app_env = os.getenv("APP_ENV", "").strip().lower() or settings.app_env
+    has_secret = bool(app_secret)
+
+    def _signature_valid(sig: str) -> bool:
+        if not app_secret or not sig:
+            return False
+        expected = "sha256=" + hmac.new(
+            app_secret.encode(), body, hashlib.sha256
+        ).hexdigest()
+        return hmac.compare_digest(expected, sig)
 
     # Staging/production with app secret: require valid Meta signature always.
-    if has_secret and settings.app_env in ("staging", "production"):
-        if not x_hub_signature_256 or not client.verify_signature(body, x_hub_signature_256):
+    if has_secret and app_env in ("staging", "production"):
+        if not x_hub_signature_256 or not _signature_valid(x_hub_signature_256):
             logger.warning("whatsapp_missing_or_invalid_signature_strict_env")
             raise HTTPException(status_code=403, detail="missing_or_invalid_signature")
-    elif x_hub_signature_256 and has_secret and not client.verify_signature(body, x_hub_signature_256):
+    elif x_hub_signature_256 and has_secret and not _signature_valid(x_hub_signature_256):
         logger.warning("whatsapp_invalid_signature")
         raise HTTPException(status_code=403, detail="Invalid signature")
 

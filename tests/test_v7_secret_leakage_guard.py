@@ -175,6 +175,63 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "sales-kit hosted-checkout doc names the prefix in policy copy",
     "docs/sales-kit/dealix_1_riyal_test.sh":
         "sales-kit 1-riyal test shell script names the prefix in env",
+    # ── launch-readiness code / redaction modules ──
+    "api/routers/founder_launch_status.py":
+        "launch-status router names the key prefix in its readiness check",
+    "auto_client_acquisition/agent_observability/redaction.py":
+        "redaction module regex names the prefix to scrub it from traces",
+    "auto_client_acquisition/observability_adapters/redaction.py":
+        "redaction adapter regex names the prefix to scrub it from logs",
+    # ── Moyasar live-cutover docs + scripts (name sk_live_ in policy) ──
+    "docs/LLM_PROVIDERS_SETUP.md":
+        "provider setup doc names the API-key prefix in its env template",
+    "docs/MOYASAR_LIVE_CUTOVER.md":
+        "Moyasar live-cutover doc names sk_live_ in cutover policy copy",
+    "docs/RAILWAY_DEPLOY_CHECKLIST.md":
+        "deploy checklist names the prefix in its env-var template",
+    "docs/WAVE11_FIRST3_PAID_PILOTS_EVIDENCE_TABLE.md":
+        "evidence table cell names the prefix as a forbidden token",
+    "docs/integrations/PAYMENT_MOYASAR_LIVE.md":
+        "Moyasar live integration doc names sk_live_ in policy copy",
+    "docs/ops/GO_LIVE_INDEX.md":
+        "go-live index names the prefix in its checklist text",
+    "docs/ops/MOYASAR_KYC_CHECKLIST.md":
+        "KYC checklist names sk_live_ in its key-handling policy copy",
+    "docs/ops/PRODUCTION_ENV_TEMPLATE.md":
+        "production env template names the prefix as a placeholder",
+    "docs/sales-kit/CUSTOMER_1_GO_LIVE_RUNBOOK.md":
+        "customer-1 go-live runbook names the prefix in policy copy",
+    "docs/security/KEY_ROTATION.md":
+        "key-rotation doc names the prefix in its rotation procedure",
+    # ── verifier scripts that grep the repo for these prefixes ──
+    "scripts/dealix_integration_plan_quality_check.py":
+        "quality-check script greps the repo for these prefixes",
+    "scripts/dealix_master_full_execution_verify.sh":
+        "master verifier shell script greps the repo for these prefixes",
+    "scripts/generate_production_env.sh":
+        "env generator names the prefix as a placeholder value",
+    "scripts/integration_upgrade_verify.sh":
+        "integration verifier shell script greps for these prefixes",
+    "scripts/moyasar_live_cutover.py":
+        "Moyasar cutover script names sk_live_ in its cutover guard",
+    "scripts/preflight_check.py":
+        "preflight check greps for these prefixes before deploy",
+    "scripts/reconcile_moyasar.py":
+        "Moyasar reconcile script references the key prefix in policy",
+    "scripts/ultimate_upgrade_verify.sh":
+        "ultimate upgrade verifier greps the repo for these prefixes",
+    "scripts/wave11_first3_paid_pilots_verify.sh":
+        "wave11 verifier shell script greps for these prefixes",
+    "scripts/wave12_saudi_revenue_command_center_verify.sh":
+        "wave12 verifier shell script greps for these prefixes",
+    "scripts/wave6_revenue_activation_verify.sh":
+        "wave6 verifier shell script greps for these prefixes",
+    "scripts/wave7_5_service_truth_verify.sh":
+        "wave7.5 verifier shell script greps for these prefixes",
+    "scripts/wave8_customer_data_boundary_check.sh":
+        "wave8 boundary check greps for these prefixes",
+    "scripts/wave8_customer_ready_verify.sh":
+        "wave8 verifier shell script greps for these prefixes",
 }
 
 

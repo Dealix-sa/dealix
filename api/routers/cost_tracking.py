@@ -67,9 +67,12 @@ TIER_VARIABLE_COSTS = {
         "llm_inference": 60000,   # 600 SAR   (5000 leads, full agent workforce)
         "lead_adapters": 25000,   # 250 SAR
         "moyasar_fees":   2400,   # 24 SAR
-        "support_time":  30000,   # 300 SAR
+        "support_time":   5000,   # 50 SAR    (CS time amortized — scale runs
+                                  #            the full agent workforce, so
+                                  #            per-customer founder/CS time
+                                  #            does not grow with seat count)
         "infra_share":    1725,   # 17 SAR
-        "total_per_month": 119125, # 1,191 SAR/mo
+        "total_per_month": 94125, # 941 SAR/mo
     },
 }
 

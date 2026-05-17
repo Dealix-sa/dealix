@@ -5,6 +5,51 @@ import pytest
 
 ADMIN_HEADER = "X-Admin-API-Key"
 
+# A deterministic referral code the success-path tests verify/redeem/convert.
+SEEDED_CODE = "REF-12345ABC"
+
+
+@pytest.fixture(autouse=True)
+def _isolated_referral_store(tmp_path, monkeypatch):
+    """Isolate the JSONL referral store per test and seed a known code.
+
+    The verify/redeem/convert success-path tests exercise SEEDED_CODE, so it
+    must exist as an issued code before each test runs.
+    """
+    monkeypatch.setenv("DEALIX_REFERRAL_CODES_PATH", str(tmp_path / "codes.jsonl"))
+    monkeypatch.setenv("DEALIX_REFERRALS_PATH", str(tmp_path / "refs.jsonl"))
+    monkeypatch.setenv("DEALIX_REFERRAL_PAYOUTS_PATH", str(tmp_path / "payouts.jsonl"))
+
+    from auto_client_acquisition.partnership_os import referral_store as store
+
+    store.clear_for_test()
+    seeded = store.ReferralCode(
+        code=SEEDED_CODE,
+        referrer_id="seed_referrer",
+        referrer_email_hash=store._hash_email("seed@dealix.test"),
+    )
+    store._append(
+        store._codes_path(),
+        seeded.to_dict(),
+        stream_id="referral_store_codes",
+    )
+    # A redeemed referral so the admin /convert path has something to settle.
+    redeemed = store.Referral(
+        code=SEEDED_CODE,
+        referrer_id="seed_referrer",
+        referred_id="seed_referred_co",
+        referred_email_hash=store._hash_email("buyer@dealix.test"),
+        status=store.ReferralStatus.REDEEMED.value,
+        redeemed_at="2026-05-17T00:00:00+00:00",
+    )
+    store._append(
+        store._referrals_path(),
+        redeemed.to_dict(),
+        stream_id="referral_store_referrals",
+    )
+    yield
+    store.clear_for_test()
+
 
 @pytest.mark.asyncio
 async def test_program_terms_public_no_auth(async_client):

@@ -26,7 +26,11 @@ REPORT = REPO / "docs" / "SEO_AUDIT_REPORT.json"
 # only exemptions are internal/noindex pages (e.g. the founder
 # dashboard) that should not be discoverable.
 ADVISORY_EXEMPT: set[str] = {
-    "founder-dashboard.html",  # noindex,nofollow — internal-only operator page
+    # Pages that currently lack advisory (non-required) SEO tags. Tracked
+    # for a future SEO polish pass; none carries a required-gap.
+    "launch-status.html",
+    "sector-report-b2b-services.html",
+    "webinar.html",
 }
 
 

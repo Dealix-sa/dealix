@@ -14,13 +14,22 @@ from __future__ import annotations
 import hashlib
 import logging
 import os
+import threading
+import time
 from typing import Any
 
 log = logging.getLogger(__name__)
 
+# Process-local fallback used when Redis is not configured. Keeping this
+# shared across instances means idempotency still holds within a single
+# process (e.g. tests, single-worker deployments) instead of failing open.
+_MEMORY_STORE: dict[str, float] = {}
+_MEMORY_LOCK = threading.Lock()
+
 
 class IdempotencyStore:
-    """Redis-backed idempotency set with TTL."""
+    """Idempotency set with TTL. Redis-backed when configured, otherwise
+    backed by a process-local store so duplicates are still rejected."""
 
     def __init__(self, prefix: str = "idem:", redis_client: Any | None = None):
         self.prefix = prefix
@@ -53,18 +62,41 @@ class IdempotencyStore:
     def _key(self, key: str) -> str:
         return f"{self.prefix}{key}"
 
+    @staticmethod
+    def _memory_seen(key: str) -> bool:
+        now = time.time()
+        with _MEMORY_LOCK:
+            expiry = _MEMORY_STORE.get(key)
+            if expiry is None:
+                return False
+            if expiry <= now:
+                _MEMORY_STORE.pop(key, None)
+                return False
+            return True
+
+    @staticmethod
+    def _memory_claim(key: str, ttl_seconds: int) -> bool:
+        """First caller to claim wins. Returns True on first claim, False after."""
+        now = time.time()
+        with _MEMORY_LOCK:
+            expiry = _MEMORY_STORE.get(key)
+            if expiry is not None and expiry > now:
+                return False
+            _MEMORY_STORE[key] = now + ttl_seconds
+            return True
+
     def seen(self, key: str) -> bool:
         if not self._redis:
-            return False
+            return self._memory_seen(self._key(key))
         try:
             return bool(self._redis.exists(self._key(key)))
         except Exception:  # pragma: no cover
-            return False
+            return self._memory_seen(self._key(key))
 
     def mark(self, key: str, ttl_seconds: int = 86400) -> bool:
         """Mark key as processed. Returns True if newly marked, False if already existed."""
         if not self._redis:
-            return True
+            return self._memory_claim(self._key(key), ttl_seconds)
         try:
             # SET NX EX — atomic check-and-set
             result = self._redis.set(self._key(key), "1", nx=True, ex=ttl_seconds)
@@ -72,7 +104,7 @@ class IdempotencyStore:
         except Exception as exc:  # pragma: no cover
             key_fp = hashlib.sha256(key.encode("utf-8")).hexdigest()[:12]
             log.warning("idem_mark_failed key_fp=%s err_type=%s", key_fp, type(exc).__name__)
-            return True
+            return self._memory_claim(self._key(key), ttl_seconds)
 
     def claim(self, key: str, ttl_seconds: int = 86400) -> bool:
         """Atomic: returns True if caller owns this key (first to claim).

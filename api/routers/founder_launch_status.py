@@ -90,9 +90,11 @@ def _posthog_status() -> dict[str, Any]:
 
 
 def _calendly_status() -> dict[str, Any]:
+    # Calendly is a plain scheduling link for the Paid Private Beta.
+    # An inbound Calendly webhook handler is deferred to Wave 4 per
+    # Constitution Article 13 — intentionally not surfaced here.
     return {
         "url": os.getenv("CALENDLY_URL", ""),
-        "webhook_configured": bool(os.getenv("CALENDLY_WEBHOOK_SECRET", "")),
     }
 
 
