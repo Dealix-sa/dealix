@@ -23,6 +23,11 @@ export default function CustomerPortalPage() {
     }
   };
 
+  const promiseAr =
+    data && typeof data === "object" && "promise_ar" in data
+      ? String((data as { promise_ar: unknown }).promise_ar)
+      : null;
+
   return (
     <AppLayout title={t("title")} subtitle={t("subtitle")}>
       <div className="flex flex-wrap gap-3 items-end mb-6">
@@ -35,10 +40,10 @@ export default function CustomerPortalPage() {
         </Button>
       </div>
 
-      {data && typeof data === "object" && data !== null && "promise_ar" in data && (
+      {promiseAr && (
         <div className="mb-4 rounded-xl border border-border p-4 bg-muted/20">
           <h3 className="text-sm font-semibold mb-2">{t("promiseTitle")}</h3>
-          <p className="text-sm leading-relaxed">{(data as { promise_ar: string }).promise_ar}</p>
+          <p className="text-sm leading-relaxed">{promiseAr}</p>
         </div>
       )}
 
