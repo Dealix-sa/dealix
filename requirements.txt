@@ -104,3 +104,4 @@ ummalqura>=1.0.4
 
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9
+pytest-asyncio>=0.24.0,<1
