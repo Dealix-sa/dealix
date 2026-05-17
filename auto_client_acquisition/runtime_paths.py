@@ -64,10 +64,28 @@ def resolve_phase_e_dir() -> Path:
     return _REPO_ROOT / "docs" / "phase-e"
 
 
+def resolve_proposals_dir() -> Path:
+    """Path where generated proposal artifacts (HTML) are written.
+
+    Resolution order:
+      1. ``DEALIX_PROPOSALS_DIR`` env override (absolute, writable path —
+         use this when ``docs/`` is read-only in the deploy image)
+      2. Repo-relative ``docs/proposals`` — created on demand.
+
+    Callers must ``mkdir(parents=True, exist_ok=True)`` and degrade
+    gracefully if the directory is not writable.
+    """
+    override = os.getenv("DEALIX_PROPOSALS_DIR")
+    if override:
+        return Path(override)
+    return _REPO_ROOT / "docs" / "proposals"
+
+
 __all__ = [
     "registry_dir_exists",
     "resolve_phase_e_dir",
     "resolve_proof_events_dir",
+    "resolve_proposals_dir",
     "resolve_registry_dir",
     "resolve_repo_root",
     "resolve_seo_audit_report",

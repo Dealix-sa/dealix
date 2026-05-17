@@ -134,6 +134,12 @@ PLANS: dict[str, dict[str, Any]] = {
         "monthly": False,
         "kind": "one_off",
     },  # 499 SAR one-off — founder-led pilot per v4 §3 R1
+    "data_pack": {
+        "name": "Revenue Data Pack",
+        "amount_halalas": 150000,
+        "monthly": False,
+        "kind": "one_off",
+    },  # 1,500 SAR one-off — offer-ladder rung 3 (between Sprint and Managed Ops)
     "laas_per_reply": {
         "name": "Lead-as-a-Service · Per Reply",
         "amount_halalas": 2500,

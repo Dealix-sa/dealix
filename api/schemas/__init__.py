@@ -146,6 +146,8 @@ class ProposalResponse(BaseModel):
     currency: str
     valid_until: datetime
     created_at: datetime
+    artifact_url: str | None = None
+    artifact_status: str = "not_generated"
 
 
 # ══════════════════════════════════════════════════════════════
