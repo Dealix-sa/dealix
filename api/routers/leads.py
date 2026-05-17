@@ -177,6 +177,60 @@ async def create_lead(
     return _pipeline_response_from_result(result)
 
 
+@router.get("")
+async def list_leads(
+    limit: int = 50,
+    offset: int = 0,
+    status: str | None = None,
+) -> dict[str, Any]:
+    """List persisted leads, most recent first, with pagination.
+
+    Standard envelope: ``{data, meta, errors}``.
+    """
+    limit = max(1, min(limit, 200))
+    offset = max(0, offset)
+    try:
+        async with async_session_factory() as session:
+            stmt = (
+                select(LeadRecord)
+                .where(LeadRecord.deleted_at.is_(None))
+                .order_by(LeadRecord.created_at.desc())
+            )
+            if status:
+                stmt = stmt.where(LeadRecord.status == status)
+            rows = (
+                await session.execute(stmt.limit(limit).offset(offset))
+            ).scalars().all()
+    except Exception as exc:  # noqa: BLE001
+        log.warning("list_leads_store_unavailable: %s", exc)
+        raise HTTPException(
+            status_code=503, detail="lead store temporarily unavailable"
+        ) from exc
+    data = [
+        {
+            "id": r.id,
+            "source": r.source,
+            "company_name": r.company_name,
+            "contact_name": r.contact_name,
+            "contact_email": r.contact_email,
+            "contact_phone": r.contact_phone,
+            "sector": r.sector,
+            "region": r.region,
+            "status": r.status,
+            "fit_score": r.fit_score,
+            "urgency_score": r.urgency_score,
+            "locale": r.locale,
+            "created_at": r.created_at.isoformat() if r.created_at else None,
+        }
+        for r in rows
+    ]
+    return {
+        "data": data,
+        "meta": {"count": len(data), "limit": limit, "offset": offset},
+        "errors": [],
+    }
+
+
 @router.post("/batch", response_model=LeadsBatchResponse)
 async def create_leads_batch(
     body: LeadsBatchRequest,

@@ -49,7 +49,10 @@ def app():
         patch("db.session.init_db", new=AsyncMock()),
     ):
         from api.main import create_app
-        return create_app()
+        # Keep the patched environment active for the lifetime of the app
+        # fixture — the API-key middleware reads API_KEYS / APP_ENV at
+        # request time, so the patch must outlive create_app().
+        yield create_app()
 
 
 @pytest.fixture(scope="module")
