@@ -111,6 +111,7 @@ Dashboard يعرض أرقاماً — Dealix يجهّز next action ودليلا
 
 | الموضوع | المصدر القانوني |
 |---------|------------------|
+| محرك التشغيل الذاتي (Full Ops) | [`docs/full_ops_sales_os/`](../full_ops_sales_os/README.md) |
 | سلم الخدمات والأسعار | [`docs/OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md) |
 | برنامج الشركاء وrev-share | [`docs/AGENCY_PARTNER_PROGRAM.md`](../AGENCY_PARTNER_PROGRAM.md) |
 | برنامج الإحالة والإفصاح | [`docs/sales-kit/dealix_referral_program.md`](../sales-kit/dealix_referral_program.md) |
