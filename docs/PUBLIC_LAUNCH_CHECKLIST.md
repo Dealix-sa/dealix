@@ -1,5 +1,8 @@
 # قائمة التدشين التجاري العام — Dealix
 
+> **مُدمجة في / Superseded by:** [`LAUNCH_GO_LIVE_RUNBOOK.md`](LAUNCH_GO_LIVE_RUNBOOK.md) — استخدم الـrunbook لقرار go/no-go؛ هذه القائمة محفوظة كمرجع.
+> Use the runbook for the go/no-go decision; this checklist is kept for reference.
+
 ## قانوني
 
 - [ ] سياسة خصوصية منشورة
