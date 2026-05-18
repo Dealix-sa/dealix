@@ -1,5 +1,7 @@
 # 🎬 Dealix — Video Scripts (60s + 3min + 10min)
 
+> ⚠️ **تصحيح رواية / Narrative correction (2026-05-18).** قد يحتوي هذا الملف عبارات بالرواية القديمة ("يرد خلال 45 ثانية"، "يحجز تلقائياً"، سعر "1 ريال"). الرواية المعتمدة: **Dealix يصيغ الردود والتأهيل في ثوانٍ، والمؤسس يراجع ويوافق قبل أي إرسال — لا إرسال تلقائي، لا حجز تلقائي، لا نتائج مضمونة. سعر الـ Sprint الحي 499 ريال.** المصدر المعتمد: [`FOUNDER_SALES_KIT.md`](FOUNDER_SALES_KIT.md) §0.
+
 **للاستخدام:**
 - 60s: Social media (LinkedIn, Twitter, Instagram Reels)
 - 3min: Landing page hero + email attachment

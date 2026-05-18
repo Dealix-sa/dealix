@@ -1,5 +1,7 @@
 # Dealix — Email Drip Sequences
 
+> ⚠️ **تصحيح رواية / Narrative correction (2026-05-18).** قد يحتوي هذا الملف عبارات بالرواية القديمة ("يرد خلال 45 ثانية"، "يحجز تلقائياً"، سعر "1 ريال"). الرواية المعتمدة: **Dealix يصيغ الردود والتأهيل في ثوانٍ، والمؤسس يراجع ويوافق قبل أي إرسال — لا إرسال تلقائي، لا حجز تلقائي، لا نتائج مضمونة. سعر الـ Sprint الحي 499 ريال.** المصدر المعتمد: [`FOUNDER_SALES_KIT.md`](FOUNDER_SALES_KIT.md) §0.
+
 **5-email sequence per persona.** Used when a prospect engages (opens email / clicks link) but doesn't book demo after Day 0.
 
 All emails:

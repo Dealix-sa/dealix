@@ -1,5 +1,7 @@
 # Dealix — Day 1 Operating Playbook
 
+> ⚠️ **تصحيح رواية / Narrative correction (2026-05-18).** قد يحتوي هذا الملف عبارات بالرواية القديمة ("يرد خلال 45 ثانية"، "يحجز تلقائياً"، سعر "1 ريال"). الرواية المعتمدة: **Dealix يصيغ الردود والتأهيل في ثوانٍ، والمؤسس يراجع ويوافق قبل أي إرسال — لا إرسال تلقائي، لا حجز تلقائي، لا نتائج مضمونة. سعر الـ Sprint الحي 499 ريال.** المصدر المعتمد: [`FOUNDER_SALES_KIT.md`](../sales-kit/FOUNDER_SALES_KIT.md) §0.
+
 100 Saudi B2B accounts queued. Zero auto-send. This file is your morning script.
 
 ## What's in this folder

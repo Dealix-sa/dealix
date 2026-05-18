@@ -2,6 +2,22 @@
 
 **Status:** Backend live at https://web-dealix.up.railway.app. Landing live at https://voxc2.github.io/dealix/
 
+> ⚠️ **تصحيح رواية — Narrative correction (2026-05-18).**
+> بعض المحتوى أدناه كُتب بالرواية القديمة: "مندوب AI يرد خلال 45 ثانية ويحجز
+> demo تلقائياً" وسعر "1 ريال". الرواية المعتمدة الآن هي عقيدة الحوكمة:
+> **Dealix يصيغ الردود والتأهيل في ثوانٍ، والمؤسس يراجع ويوافق قبل أي
+> إرسال — لا إرسال تلقائي، لا حجز تلقائي، لا نتائج مضمونة.** سعر الـ Sprint
+> الحي هو **499 ريال** (لا 1 ريال — "1 ريال" شحنة اختبار تقنية فقط).
+> قبل نشر أي منشور من هنا، طابقه على المصدر المعتمد:
+> [`docs/sales-kit/FOUNDER_SALES_KIT.md`](../sales-kit/FOUNDER_SALES_KIT.md) §0.
+>
+> Some content below uses the old narrative ("AI rep replies in 45 seconds,
+> auto-books a demo", "1 SAR"). The adopted narrative is the governance
+> doctrine: **Dealix drafts replies and qualification in seconds; the founder
+> reviews and approves before anything is sent — no auto-send, no auto-booking,
+> no guaranteed results.** The live Sprint price is **499 SAR**. Reconcile any
+> post against `docs/sales-kit/FOUNDER_SALES_KIT.md` §0 before publishing.
+
 All content below is in final Arabic form, ready to paste.
 
 ---
@@ -14,15 +30,14 @@ All content below is in final Arabic form, ready to paste.
 الفكرة بسيطة:
 كل شركة عندها leads، لكن الرد يتأخر والمتابعة تضيع.
 
-Dealix = مندوب مبيعات AI بالعربي:
-• يرد على lead خلال 45 ثانية
-• يسأل أسئلة تأهيل BANT
-• يحجز demo
-• يرسل ملخص لفريق المبيعات
-• يختصر أول 30-50% من دورة البيع
+Dealix = طبقة عمليات إيراد محكومة بالعربي:
+• يصيغ ردّ تأهيل لكل lead في ثوانٍ — وأنت توافق قبل الإرسال
+• يضع أسئلة تأهيل BANT في المسوّدة
+• يجهّز ملخصاً ومقترح خطوة تالية لفريق المبيعات
+• كل فعل خارجي يمرّ بموافقتك — لا إرسال تلقائي، لا نتائج مضمونة
 
-أبحث عن 3 شركات B2B نجرب معها pilot هذا الأسبوع.
-اللي عنده leads كثيرة ويريد رد أسرع — تواصل معي.
+أبحث عن 3 شركات B2B نجرب معها Sprint إثبات إيراد 7 أيام (499 ريال) هذا الأسبوع.
+اللي عنده leads كثيرة ويريد رداً أسرع ومحكوماً — تواصل معي.
 
 🌐 voxc2.github.io/dealix
 📅 calendly.com/sami-assiri11/dealix-demo
