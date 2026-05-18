@@ -1,5 +1,18 @@
 # AGENTS.md
 
+> **Canonical reference:** see [`CLAUDE.md`](CLAUDE.md) for repository architecture,
+> the five planes, the canonical OS module layout, conventions, and CI gates.
+> This file (`AGENTS.md`) covers Cursor-cloud-specific **operational commands**.
+>
+> **The 11 non-negotiables** (no scraping · no cold WhatsApp · no LinkedIn
+> automation · no fake/un-sourced claims · no guaranteed sales outcomes · no PII in
+> logs · no source-less knowledge answers · no external action without approval ·
+> no agent without identity · no project without Proof Pack · no project without
+> Capital Asset) are binding. They are enforced in code by
+> `auto_client_acquisition/safe_send_gateway/doctrine.py` and
+> `dealix/commercial_ops/doctrine.py`, and tested in
+> `tests/test_doctrine_guardrails.py`. Full detail and enforcement map: `CLAUDE.md` §3.
+
 ## Cursor Cloud specific instructions
 
 ### Services Overview
