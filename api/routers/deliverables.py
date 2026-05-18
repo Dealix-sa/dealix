@@ -31,6 +31,7 @@ from auto_client_acquisition.deliverables import (
     get_deliverable,
     list_by_session,
     render_deliverable_html,
+    save_rendered_artifact,
 )
 
 router = APIRouter(prefix="/api/v1/deliverables", tags=["Deliverables"])
@@ -155,7 +156,11 @@ async def render_endpoint(
         )
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
-    return HTMLResponse(content=html_doc)
+    # Persist the rendered artifact so the deliverable's artifact_uri
+    # references a real file by the time it reaches `delivered`.
+    artifact_uri = save_rendered_artifact(rec, html_doc)
+    headers = {"X-Dealix-Artifact-Uri": artifact_uri} if artifact_uri else {}
+    return HTMLResponse(content=html_doc, headers=headers)
 
 
 @router.post("/{deliverable_id}/advance")

@@ -29,6 +29,7 @@ from auto_client_acquisition.deliverables.store import (
     create_deliverable,
     get_deliverable,
     list_by_session,
+    save_rendered_artifact,
 )
 
 __all__ = [
@@ -46,4 +47,5 @@ __all__ = [
     "render_diagnostic_report_html",
     "render_proof_pack_html",
     "render_proof_pack_pdf",
+    "save_rendered_artifact",
 ]

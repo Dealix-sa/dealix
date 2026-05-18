@@ -97,8 +97,26 @@ def resolve_proposals_dir() -> Path:
     return _REPO_ROOT / "docs" / "proposals"
 
 
+def resolve_deliverables_dir() -> Path:
+    """Path where rendered rung 0-1 deliverable artifacts (HTML) are written.
+
+    Resolution order:
+      1. ``DEALIX_DELIVERABLES_DIR`` env override (absolute, writable path —
+         use when ``docs/`` is read-only in the deploy image)
+      2. Repo-relative ``docs/deliverables`` — created on demand.
+
+    Callers must ``mkdir(parents=True, exist_ok=True)`` and degrade
+    gracefully if the directory is not writable.
+    """
+    override = os.getenv("DEALIX_DELIVERABLES_DIR")
+    if override:
+        return Path(override)
+    return _REPO_ROOT / "docs" / "deliverables"
+
+
 __all__ = [
     "registry_dir_exists",
+    "resolve_deliverables_dir",
     "resolve_ledgers_dir",
     "resolve_phase_e_dir",
     "resolve_proof_events_dir",

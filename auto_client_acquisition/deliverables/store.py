@@ -11,13 +11,18 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 
 from auto_client_acquisition.deliverables.schemas import (
     Deliverable,
     DeliverableType,
 )
+from auto_client_acquisition.runtime_paths import resolve_deliverables_dir
+from core.logging import get_logger
+
+log = get_logger(__name__)
 
 _JSONL_PATH = os.path.join("data", "wave13", "deliverables.jsonl")
 _INDEX: dict[str, Deliverable] = {}
@@ -63,8 +68,8 @@ def create_deliverable(
         proof_related=proof_related,
         proof_event_id=proof_event_id,
         artifact_uri=artifact_uri,
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
     )
     if persist:
         _persist(rec)
@@ -87,6 +92,31 @@ def list_by_session(session_id: str, *, customer_visible_only: bool = False) -> 
         items = [d for d in items if d.customer_visible]
     items.sort(key=lambda d: d.created_at)
     return items
+
+
+def save_rendered_artifact(rec: Deliverable, html: str) -> str | None:
+    """Persist a rendered HTML artifact to disk and set ``artifact_uri``.
+
+    Writes the self-contained HTML to the deliverables artifact directory,
+    updates the record's ``artifact_uri`` + ``updated_at``, and re-persists
+    so the ``delivered`` transition references a real file.
+
+    Degrades gracefully: a write failure logs a warning and returns None
+    — rendering still succeeds, the record simply keeps no ``artifact_uri``.
+    """
+    try:
+        out_dir = resolve_deliverables_dir()
+        out_dir.mkdir(parents=True, exist_ok=True)
+        safe_id = re.sub(r"[^A-Za-z0-9_-]", "_", rec.deliverable_id)
+        path = out_dir / f"{rec.type}_{safe_id}.html"
+        path.write_text(html, encoding="utf-8")
+        rec.artifact_uri = str(path)
+        rec.updated_at = datetime.now(UTC)
+        _persist(rec)
+        return str(path)
+    except Exception as exc:  # never fail rendering on artifact I/O
+        log.warning("deliverable_artifact_write_failed", error=str(exc))
+        return None
 
 
 def reset_for_test() -> None:
