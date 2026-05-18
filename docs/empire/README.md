@@ -35,3 +35,7 @@
 
 - [FOUNDER_OPERATING_SYSTEM_AR.md](../ops/FOUNDER_OPERATING_SYSTEM_AR.md)
 - [DEALIX_UNIFIED_REVENUE_ATLAS_AR.md](../commercial/DEALIX_UNIFIED_REVENUE_ATLAS_AR.md)
+
+## Full Ops — الأتمتة الكاملة
+
+- [../architecture/FULL_OPS_BLUEPRINT.md](../architecture/FULL_OPS_BLUEPRINT.md) — المخطط المعماري الشامل: هرم الوكلاء، مقياس الاستقلالية L0–L5، محرك المبيعات، الماكينة الداخلية، لوحة Full Ops، خطة البناء على مراحل
