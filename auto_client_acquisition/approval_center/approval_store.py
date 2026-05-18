@@ -254,11 +254,66 @@ class ApprovalStore:
 
 
 # Module-level singleton (process-scoped).
-_DEFAULT: ApprovalStore | None = None
+_DEFAULT: Any = None
+
+import logging as _logging  # noqa: E402
+
+_LOG = _logging.getLogger(__name__)
 
 
-def get_default_approval_store() -> ApprovalStore:
+def _approval_backend() -> str:
+    """Resolve the configured backend, defaulting to ``"memory"``."""
+    try:
+        from core.config.settings import get_settings
+
+        return (getattr(get_settings(), "approval_store_backend", "memory") or "memory").lower().strip()
+    except Exception:  # noqa: BLE001 — settings import never blocks the store
+        return "memory"
+
+
+def _approval_sync_url() -> str | None:
+    try:
+        from core.config.settings import get_settings
+
+        from auto_client_acquisition.persistence.db_sync_url import sync_sqlalchemy_url
+
+        url = getattr(get_settings(), "database_url", "") or ""
+        return sync_sqlalchemy_url(url) if url else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def get_default_approval_store() -> Any:
+    """Return the configured ApprovalStore singleton.
+
+    ``approval_store_backend=postgres`` returns a restart-durable
+    :class:`PostgresApprovalStore`; any other value (or a missing
+    ``DATABASE_URL``, or an unreachable engine) falls back to the
+    in-memory :class:`ApprovalStore`. Both expose the same contract.
+    """
     global _DEFAULT
-    if _DEFAULT is None:
-        _DEFAULT = ApprovalStore()
+    if _DEFAULT is not None:
+        return _DEFAULT
+    if _approval_backend() == "postgres":
+        url = _approval_sync_url()
+        if url:
+            try:
+                from auto_client_acquisition.approval_center.postgres_store import (
+                    PostgresApprovalStore,
+                )
+
+                # `approval_requests` is a new, isolated table with no FK
+                # into the app schema — create_all (IF NOT EXISTS) is safe
+                # on Postgres and avoids an Alembic single-head migration.
+                _DEFAULT = PostgresApprovalStore(database_url=url, create_tables=True)
+                return _DEFAULT
+            except Exception as exc:  # noqa: BLE001
+                _LOG.warning("approval_store_postgres_unavailable:%s", type(exc).__name__)
+    _DEFAULT = ApprovalStore()
     return _DEFAULT
+
+
+def reset_default_approval_store() -> None:
+    """Test helper: drop the cached singleton so the next call re-evaluates."""
+    global _DEFAULT
+    _DEFAULT = None

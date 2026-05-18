@@ -12,6 +12,10 @@ from auto_client_acquisition.approval_center.approval_renderer import (
 from auto_client_acquisition.approval_center.approval_store import (
     ApprovalStore,
     get_default_approval_store,
+    reset_default_approval_store,
+)
+from auto_client_acquisition.approval_center.postgres_store import (
+    PostgresApprovalStore,
 )
 from auto_client_acquisition.approval_center.schemas import (
     ActionType,
@@ -56,7 +60,9 @@ __all__ = [
     "ApprovalRequest",
     "ApprovalStatus",
     "ApprovalStore",
+    "PostgresApprovalStore",
     "get_default_approval_store",
+    "reset_default_approval_store",
     "create_approval",
     "approve",
     "reject",

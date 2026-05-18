@@ -70,7 +70,7 @@ only the gaps, in governed form, and reuse everything that exists.
 
 | # | Gap | Why it matters |
 |---|---|---|
-| M1 | **`ApprovalStore` is in-memory** — pending approvals lost on restart | CRITICAL production blocker — a governed system that forgets the approval queue is not governed |
+| M1 | ✅ **BUILT** — `PostgresApprovalStore` persists the approval queue across restarts; `approval_store_backend=postgres` opt-in, in-memory fallback | CRITICAL production blocker — now closed |
 | M2 | **No in-process scheduler** — daily ops run only via GitHub Actions cron | No reliable self-running loop inside the deployment |
 | M3 | **No single orchestration entrypoint** — 6+ overlapping `run_*` scripts | No observable, composable "run the day" operator |
 | M4 | **No durable event log / blocked-actions audit log** | Cannot answer "which gate blocked what, when" |

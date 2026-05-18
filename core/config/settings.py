@@ -124,6 +124,19 @@ class Settings(BaseSettings):
             "operational_stream_backend",
         ),
     )
+    # Approval Center store persistence. In-memory is the default (fast,
+    # zero-config) but loses the pending queue on restart; "postgres"
+    # survives restarts — required before governed autopilot is credible.
+    # Valid values: "memory" | "postgres".
+    approval_store_backend: str = Field(
+        default="memory",
+        validation_alias=AliasChoices(
+            "DEALIX_APPROVAL_STORE_BACKEND",
+            "APPROVAL_STORE_BACKEND",
+            "approval_store_backend",
+        ),
+    )
+
     # Optional OpenTelemetry span events alongside contract_trace_hook buffer.
     otel_contract_trace_export: bool = Field(
         default=False,
