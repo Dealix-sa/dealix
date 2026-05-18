@@ -27,8 +27,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install minimal deps
-        run: pip install pyyaml fastapi httpx structlog pydantic-settings python-multipart
+      - name: Install API deps for smoke import
+        run: pip install -r requirements.txt
 
       - name: Verify full autonomous ops stack
         env:
