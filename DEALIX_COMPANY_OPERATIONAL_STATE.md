@@ -1,7 +1,7 @@
 # 🚀 Dealix — Company Operational State (Live)
 
 **Status:** LAUNCHED (backend + landing live). Blocked on Moyasar account activation for REVENUE VERIFIED.
-**Last verified:** 2026-04-24
+**Last verified:** 2026-05-18 (Launch Truth Table re-verified — workstream W4)
 **Base URL:** https://api.dealix.me
 **Landing:** https://voxc2.github.io/dealix/
 
@@ -93,21 +93,33 @@ Ready in `docs/ops/launch_content_queue.md`. Sami opens LinkedIn → pastes → 
 
 ## 🎯 Launch Truth Table
 
+**Re-verified 2026-05-18** (W4). Readiness scores from `scripts/verify_dealix_ready.py`,
+`scripts/dealix_capability_verify.sh`, `scripts/revenue_os_master_verify.sh`.
+
 | Area | Status |
 |------|--------|
-| GitHub main + CI | ✅ VERIFIED READY (SHA ahead of 44cc3513e3) |
+| GitHub main + CI | ✅ VERIFIED READY (branch `claude/business-strategy-launch-qD5um`, HEAD `fe25274`) |
+| Readiness gates 0–8 | ✅ VERIFIED READY — all PASS; `DEALIX_READY_FOR_SALES=true`, decision `SELL_READY_STACK` |
+| Capability suite | ✅ VERIFIED READY — `DEALIX_READY=true`, `READY_SERVICES=6/6`, 27 tests pass |
+| Revenue OS suite | ✅ VERIFIED READY — `DEALIX_REVENUE_OS_VERDICT=PASS`, 73 tests pass, 5/5 doctrine non-negotiables pass |
 | Landing pages live | ✅ VERIFIED READY |
 | Backend production | ✅ VERIFIED READY (api.dealix.me) |
 | Demo form → backend | ✅ VERIFIED READY |
 | Partner form → backend | ✅ VERIFIED READY |
-| Moyasar live payments | 🔴 BLOCKED (account activation) |
+| Moyasar live payments | 🔴 BLOCKED (account KYC not submitted — `docs/ops/MOYASAR_KYC_CHECKLIST.md`) |
 | Moyasar webhook | ❌ NOT READY (depends on above) |
-| 1 SAR verified | ❌ NOT READY (depends on above) |
-| Sentry DSN | 🟡 EMPTY (waiting for DSN) |
-| UptimeRobot | ❌ NOT READY |
-| First DM sent | ❌ NOT READY (Sami identity) |
+| 1 SAR verified | ❌ NOT READY (depends on above; `sk_test_` flow can be exercised now without real money) |
+| Sentry DSN | 🟡 EMPTY (waiting for DSN — founder action) |
+| UptimeRobot | ❌ NOT READY (founder action) |
+| First warm-intro sent | ❌ NOT READY (founder action — Sami identity) |
+| First PAID pilot | ❌ NOT READY — North Star; Commercial Freeze exit condition |
+| Customer-approved Proof Pack (L3+) | ❌ NOT READY — North Star |
 | CRM tracker | ✅ VERIFIED READY (`docs/ops/pipeline_tracker.csv`) |
 | Launch content queue | ✅ VERIFIED READY (`docs/ops/launch_content_queue.md`) |
+
+**Truth:** the platform is build-complete and verified sell-ready. The only remaining
+constraint on revenue is **founder-led selling + Moyasar activation** — see
+`docs/ops/FOUNDER_ACTION_CHECKLIST.md`.
 
 ---
 

@@ -28,7 +28,7 @@ A **Saudi B2B Revenue Engine** with three layers:
 2. **Service Engine** — 7 productized AI services (Diagnostic, AI Sales Assistant, Decision Passport, Customer Health, Proof Curation, Growth Signals, Executive Command Center). See `/api/v1/...` endpoints.
 3. **Trust Engine** — PDPL Art. 5/13/14/18/21 wiring, ZATCA Phase 2 e-invoice, decision audit trail. The defensible moat against translated US tools.
 
-**7 revenue streams** monetize the 3 engines: Managed Pilot (499 SAR), SaaS Subscription (999/2,999/7,999 SAR/mo), Lead-as-a-Service (25 SAR/replied lead), Sector Reports (1.5K-10K SAR), Bespoke AI Setup (5K-25K SAR), Agency White-Label (1K setup + 25% rev share), Enterprise PMO (25K-100K SAR/mo).
+**Commercial model — canonical source:** [`docs/OFFER_LADDER_AND_PRICING.md`](docs/OFFER_LADDER_AND_PRICING.md). Dealix is sold as a **6-rung offer ladder**, not a SaaS tier list: Free AI Ops Diagnostic → 7-Day Revenue Proof Sprint (499 SAR) → Data-to-Revenue Pack (1,500 SAR) → Managed Revenue Ops (2,999–4,999 SAR/mo) → Executive Command Center (7,500–15,000 SAR/mo) → Agency Partner OS (custom + rev-share). Each rung unlocks only after a documented proof from the prior rung. Positioning + ICP: [`docs/POSITIONING_AND_ICP.md`](docs/POSITIONING_AND_ICP.md).
 
 ## 🎯 What's in this repo
 

@@ -1,3 +1,14 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> This file carries the retired narrative ("AI sales rep", "45-second
+> reply", "1 SAR pilot", "999 SAR Starter"). It is kept only as a raw
+> lead-source archive. **The single live pipeline is
+> [`docs/ops/pipeline_tracker.csv`](../ops/pipeline_tracker.csv)** — all
+> 20 named contacts here are already rows 1–21 in that tracker. Run the
+> warm-list motion from
+> [`docs/sales-kit/FOUNDER_SALES_KIT.md`](./FOUNDER_SALES_KIT.md), not
+> from this doc. Do NOT use the messages or pricing below.
+
 # 🎯 Dealix — قائمة 20 lead حقيقية جاهزة للإطلاق
 
 **تاريخ البناء:** 23 أبريل 2026

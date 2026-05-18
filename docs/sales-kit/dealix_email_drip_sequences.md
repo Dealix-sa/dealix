@@ -1,3 +1,5 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+
 # Dealix — Email Drip Sequences
 
 **5-email sequence per persona.** Used when a prospect engages (opens email / clicks link) but doesn't book demo after Day 0.

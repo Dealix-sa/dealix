@@ -113,9 +113,13 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
         "scraping": "NEGATION",
     },
-    # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
+    # Diagnostic intake — "صفر cold outreach" promise + the standard
+    # outcome-disclaimer footer ("Estimated outcomes are not guaranteed
+    # outcomes / النتائج التقديرية ليست نتائج مضمونة"). Pure NEGATION.
     "diagnostic.html": {
         "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
@@ -146,7 +150,9 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+        # Outcome-disclaimer footer — NEGATION.
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -170,6 +176,71 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     "compare-salesloft.html": {
         "blast": "NEGATION",
         "cold": "NEGATION",
+    },
+    # Standard outcome-disclaimer footer rolled out across the service /
+    # report / console pages: "Estimated outcomes are not guaranteed
+    # outcomes / النتائج التقديرية ليست نتائج مضمونة." Pure NEGATION —
+    # the page surface explicitly says outcomes are NOT guaranteed.
+    "architecture.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "bespoke-ai.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "customer-portal.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "dpo.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "launch-status.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "pricing.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "sector-report-b2b-services.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "security.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "sprint-sample.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "webinar.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Data-to-Revenue Pack page — outcome-disclaimer footer + the
+    # 11-non-negotiables block ("صفر cold WhatsApp / LinkedIn",
+    # "لا scraping. لا إرسال آلي."). Pure NEGATION throughout.
+    "data-pack.html": {
+        "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "scraping": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Roadmap — "LinkedIn scraping automation — policy-blocked in code".
+    # Describes a blocked anti-pattern. Pure NEGATION.
+    "roadmap.html": {
+        "scraping": "NEGATION",
+    },
+    # Pilot case-study example — "7-day money-back guarantee" (a refund
+    # promise, not a revenue/outcome guarantee). Same REVIEW_PENDING
+    # treatment as roi.html's refund wording: founder decides keep /
+    # qualify / rephrase. Allowed here to avoid a unilateral copy change.
+    "case-study-pilot-example.html": {
+        "guaranteed": "REVIEW_PENDING",
     },
 }
 
@@ -232,9 +303,10 @@ def test_review_pending_items_have_a_reason():
     # This is informational, not a failure. We assert the *count* so
     # that whenever a founder rephrases or formally approves a phrase,
     # they remember to update this number too.
-    assert len(review_pending) == 2, (
-        "REVIEW_PENDING list changed; expected 2 "
-        "(roi.html: 'نضمن'; academy.html: 'cold'). "
+    assert len(review_pending) == 3, (
+        "REVIEW_PENDING list changed; expected 3 "
+        "(roi.html: 'نضمن'; academy.html: 'cold'; "
+        "case-study-pilot-example.html: 'guaranteed'). "
         "Update this assertion after the founder approves or rephrases. "
         f"Current: {review_pending}"
     )

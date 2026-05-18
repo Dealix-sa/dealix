@@ -1,3 +1,5 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+
 # ⚔️ Dealix — Competitor Battlecards
 
 **للإستخدام:** قبل وأثناء demos، للرد على "كيف تختلف عن X؟"

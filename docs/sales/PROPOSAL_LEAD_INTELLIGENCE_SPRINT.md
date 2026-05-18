@@ -1,3 +1,9 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> Pricing here (SAR 9,500–18,000, 10-day Sprint) is retired. The current
+> entry offer is the 499 SAR 7-Day Revenue Proof Sprint. Use
+> docs/sales-kit/SPRINT_PROPOSAL_499.md.
+
 # Proposal: Lead Intelligence Sprint
 
 ## Problem

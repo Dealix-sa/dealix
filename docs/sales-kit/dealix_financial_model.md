@@ -1,3 +1,10 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> This model is built on the retired pricing (999/2,999/7,999 SAR tiers,
+> "ARPA 2,449") and the retired "AI sales rep" product. Current pricing
+> doctrine is the 6-rung ladder (Free Diagnostic → 499 SAR Sprint → …).
+> Do NOT quote these projections. Full rebuild deferred — out of W3 scope.
+
 # 💰 Dealix — النموذج المالي 12 شهر
 
 **تاريخ البدء:** مايو 2026 (إطلاق رسمي)

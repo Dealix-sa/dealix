@@ -1,3 +1,10 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> Retired narrative: "AI sales rep", "45-second reply", auto-booking,
+> "1 SAR pilot", 999/2,999/7,999 SAR tiers. Current doctrine: Dealix is an
+> approval-first AI Ops radar; entry is the Free Diagnostic then the
+> 499 SAR 7-Day Revenue Proof Sprint. Do NOT send this one-pager.
+
 # Dealix — مندوب مبيعات AI بالعربي الخليجي
 
 **One-page overview للإرسال قبل demos**

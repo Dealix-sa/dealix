@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response
 from pydantic import BaseModel, ConfigDict, Field
 
 from auto_client_acquisition.compliance_trust_os.approval_engine import GovernanceDecision
@@ -125,6 +125,66 @@ async def diagnostic_report_markdown(payload: DiagnosticRequest) -> str:
     """Customer-facing 1-page bilingual diagnostic report (markdown)."""
     result = generate_diagnostic(payload)
     return _diagnostic_report_markdown(result)
+
+
+class DiagnosticReportBody(BaseModel):
+    """Diagnostic request plus an optional payment->delivery audit reference.
+
+    The rung 0 diagnostic is free, so the valid audit link is a written
+    commitment (e.g. a signed intake). When supplied, the link is recorded
+    in the existing capital ledger and embedded in the rendered HTML footer.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    request: DiagnosticRequest
+    customer_id: str | None = Field(default=None, max_length=120)
+    engagement_id: str | None = Field(default=None, max_length=120)
+    written_commitment_id: str | None = Field(default=None, max_length=200)
+
+
+@router.post("/report/html", response_class=HTMLResponse)
+async def diagnostic_report_html(body: DiagnosticReportBody) -> str:
+    """Customer-facing rung 0 diagnostic report as self-contained bilingual HTML.
+
+    If ``customer_id``, ``engagement_id`` and ``written_commitment_id`` are all
+    provided, the payment->delivery audit link is recorded in the capital
+    ledger and embedded in the rendered footer for traceability.
+    """
+    from auto_client_acquisition.proof_to_market.delivery_audit import (
+        RUNG0_DIAGNOSTIC,
+        WRITTEN_COMMITMENT_REF,
+        DeliveryAuditError,
+        record_delivery_audit_link,
+    )
+    from auto_client_acquisition.proof_to_market.html_renderer import (
+        render_deliverable_html,
+    )
+
+    result = generate_diagnostic(body.request)
+    md = _diagnostic_report_markdown(result)
+
+    audit_link = None
+    if body.customer_id and body.engagement_id and body.written_commitment_id:
+        try:
+            audit_link = record_delivery_audit_link(
+                customer_id=body.customer_id,
+                engagement_id=body.engagement_id,
+                deliverable_kind=RUNG0_DIAGNOSTIC,
+                reference_kind=WRITTEN_COMMITMENT_REF,
+                reference_id=body.written_commitment_id,
+            )
+        except DeliveryAuditError as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={"en": str(exc), "ar": "تعذّر تسجيل رابط التدقيق"},
+            ) from exc
+
+    return render_deliverable_html(
+        md,
+        title=f"Dealix Diagnostic — {result.company}",
+        audit_link=audit_link,
+    )
 
 
 @router.post("/report/pdf")

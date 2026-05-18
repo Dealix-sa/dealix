@@ -1,3 +1,5 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+
 # 🎬 Dealix — سكريبت Demo الـ 30 دقيقة
 
 **الهدف النهائي:** ينتهي الـ demo بـ "موافق على بايلوت 1 ريال / 7 أيام"

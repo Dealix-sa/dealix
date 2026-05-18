@@ -71,6 +71,54 @@ def test_render_pdf_or_markdown_fallback():
         assert "Dealix Proof Pack" in r.text
 
 
+def test_render_html_is_arabic_first_proof_pack():
+    r = client.post(
+        "/api/v1/sprint/render/html",
+        json={"customer_handle": "Acme Saudi", "proof_pack": _proof_pack()},
+    )
+    assert r.status_code == 200, r.text
+    assert "text/html" in r.headers.get("content-type", "")
+    body = r.text
+    assert body.startswith("<!doctype html>")
+    assert "dir='rtl'" in body
+    assert "Dealix Proof Pack" in body
+    assert "Acme Saudi" in body
+    assert "النتائج التقديرية ليست نتائج مضمونة" in body
+    # No audit reference without a payment id.
+    assert "مرجع التدقيق" not in body
+
+
+def test_render_html_embeds_payment_audit_link():
+    r = client.post(
+        "/api/v1/sprint/render/html",
+        json={
+            "customer_handle": "Acme Saudi",
+            "engagement_id": "eng_render_1",
+            "customer_id": "Acme Saudi",
+            "payment_id": "pay_test_1",
+            "proof_pack": _proof_pack(),
+        },
+    )
+    assert r.status_code == 200, r.text
+    assert "pay_test_1" in r.text
+    assert "مرجع التدقيق" in r.text
+
+
+def test_render_html_rung1_rejects_missing_payment_for_audit():
+    """If only customer_id is given (no payment_id), no audit link is
+    recorded and the render still succeeds without an audit reference."""
+    r = client.post(
+        "/api/v1/sprint/render/html",
+        json={
+            "customer_handle": "Acme Saudi",
+            "customer_id": "Acme Saudi",
+            "proof_pack": _proof_pack(),
+        },
+    )
+    assert r.status_code == 200, r.text
+    assert "مرجع التدقيق" not in r.text
+
+
 def test_render_email_body():
     r = client.post(
         "/api/v1/sprint/render/email-body",

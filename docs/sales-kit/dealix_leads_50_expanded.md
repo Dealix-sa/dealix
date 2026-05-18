@@ -1,3 +1,14 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> This file carries the retired narrative ("AI sales rep", "1 SAR pilot",
+> "999 SAR") AND a non-compliant motion (cold outreach, paid ads, scraped
+> sources, "50 messages in 24 hours"). Dealix is warm-list only, no cold
+> WhatsApp, no automation. It is kept only as a raw sector-idea archive.
+> **The single live pipeline is
+> [`docs/ops/pipeline_tracker.csv`](../ops/pipeline_tracker.csv).** Run the
+> motion from [`docs/sales-kit/FOUNDER_SALES_KIT.md`](./FOUNDER_SALES_KIT.md).
+> Do NOT use the messages, pricing, or 24-hour sprint plan below.
+
 # 🎯 Dealix — قائمة 50 Lead للاستهداف الواسع (24-48 ساعة)
 
 **الهدف:** أول عميل مدفوع خلال 24 ساعة.

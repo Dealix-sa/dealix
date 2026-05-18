@@ -1,3 +1,5 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+
 # 🛡️ Dealix — معالج الاعتراضات (10 اعتراضات + ردود محكمة)
 
 **قاعدة عامة:** لا تدافع. لا تجادل. اعترف ثم اقلب.

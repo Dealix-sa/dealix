@@ -1,3 +1,10 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> Pricing here (9,500 SAR Sprint, 22,000 SAR Pilot upgrade) is retired.
+> The entry offer is the Free Diagnostic then the **499 SAR 7-Day Revenue
+> Proof Sprint**. The doctrine-aligned proposal is
+> [`docs/sales-kit/SPRINT_PROPOSAL_499.md`](../sales-kit/SPRINT_PROPOSAL_499.md).
+
 # عرض Dealix — Lead Intelligence Sprint
 
 **السعر المعتمد:** 9,500 ريال سعودي  

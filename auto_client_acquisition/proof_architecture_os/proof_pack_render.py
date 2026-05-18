@@ -120,6 +120,29 @@ def proof_pack_to_markdown(
     return "\n".join(lines)
 
 
+def proof_pack_to_html(
+    pack: dict[str, Any] | None,
+    *,
+    customer_handle: str,
+    audit_link: Any | None = None,
+) -> str:
+    """Render the Proof Pack as a self-contained bilingual HTML deliverable.
+
+    ``audit_link`` -- an optional ``DeliveryAuditLink`` whose reference is
+    embedded in the footer so the deliverable is traceable to a paid pilot.
+    """
+    from auto_client_acquisition.proof_to_market.html_renderer import (
+        render_deliverable_html,
+    )
+
+    md = proof_pack_to_markdown(pack, customer_handle=customer_handle)
+    return render_deliverable_html(
+        md,
+        title=f"Dealix Proof Pack — {customer_handle or '(customer)'}",
+        audit_link=audit_link,
+    )
+
+
 def proof_pack_to_pdf(
     pack: dict[str, Any] | None, *, customer_handle: str
 ) -> bytes | None:
@@ -187,6 +210,7 @@ def proof_pack_email_body(
 
 __all__ = [
     "proof_pack_email_body",
+    "proof_pack_to_html",
     "proof_pack_to_markdown",
     "proof_pack_to_pdf",
 ]

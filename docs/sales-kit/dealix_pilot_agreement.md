@@ -1,3 +1,5 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+
 # اتفاقية Pilot 7 أيام — Dealix
 
 **الإصدار:** 1.0 · **تاريخ التفعيل:** [DATE]

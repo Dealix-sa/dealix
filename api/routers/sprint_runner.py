@@ -15,7 +15,7 @@ import re
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response
 from pydantic import BaseModel, Field
 
 router = APIRouter(prefix="/api/v1/sprint", tags=["sprint"])
@@ -43,6 +43,11 @@ class _ProofPackRenderBody(BaseModel):
     engagement_id: str = "proof_pack"
     proof_pack: dict[str, Any] | None = None
     run: dict[str, Any] | None = None
+    # Optional payment->delivery audit link inputs. The rung 1 Proof Pack
+    # is a paid deliverable, so a real payment reference is required to
+    # record the audit link in the existing capital ledger.
+    customer_id: str | None = Field(default=None, max_length=120)
+    payment_id: str | None = Field(default=None, max_length=200)
 
     def pack(self) -> dict[str, Any] | None:
         if self.proof_pack is not None:
@@ -113,6 +118,48 @@ async def render_proof_pack_pdf(body: _ProofPackRenderBody):
         headers={
             "Content-Disposition": f'inline; filename="proof_pack_{safe_id}.pdf"'
         },
+    )
+
+
+@router.post("/render/html", response_class=HTMLResponse)
+async def render_proof_pack_html(body: _ProofPackRenderBody) -> str:
+    """Render an existing Proof Pack as a self-contained bilingual HTML
+    deliverable. Does not run the Sprint.
+
+    If ``customer_id`` and ``payment_id`` are both supplied, the
+    payment->delivery audit link is recorded in the capital ledger and
+    embedded in the rendered footer for traceability to the paid pilot.
+    """
+    from auto_client_acquisition.proof_architecture_os.proof_pack_render import (
+        proof_pack_to_html,
+    )
+    from auto_client_acquisition.proof_to_market.delivery_audit import (
+        PAYMENT_REF,
+        RUNG1_PROOF_PACK,
+        DeliveryAuditError,
+        record_delivery_audit_link,
+    )
+
+    audit_link = None
+    if body.customer_id and body.payment_id:
+        try:
+            audit_link = record_delivery_audit_link(
+                customer_id=body.customer_id,
+                engagement_id=body.engagement_id,
+                deliverable_kind=RUNG1_PROOF_PACK,
+                reference_kind=PAYMENT_REF,
+                reference_id=body.payment_id,
+            )
+        except DeliveryAuditError as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={"en": str(exc), "ar": "تعذّر تسجيل رابط التدقيق"},
+            ) from exc
+
+    return proof_pack_to_html(
+        body.pack(),
+        customer_handle=body.customer_handle,
+        audit_link=audit_link,
     )
 
 

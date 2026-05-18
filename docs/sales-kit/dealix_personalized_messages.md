@@ -1,3 +1,12 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> These messages sell the retired "AI sales rep / 45-second reply / 1 SAR
+> pilot" narrative and link a Calendly demo. The doctrine-aligned warm
+> outreach drafts are in
+> [`docs/sales-kit/FOUNDER_SALES_KIT.md`](./FOUNDER_SALES_KIT.md) and
+> [`docs/ops/launch_content_queue.md`](../ops/launch_content_queue.md).
+> Do NOT send the messages below.
+
 # ✍️ Dealix — 5 رسائل مخصّصة فرداً بفرد
 
 **مبدأ:** كل رسالة مكتوبة لشخص واحد بعينه. ممنوع نسخ/لصق. المصداقية ≠ الحجم.

@@ -1,3 +1,5 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+
 # 📅 Dealix — Content Calendar 30 يوم
 
 **الهدف:** بناء inbound pipeline بدل outbound فقط

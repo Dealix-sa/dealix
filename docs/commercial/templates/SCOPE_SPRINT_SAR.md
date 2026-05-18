@@ -1,3 +1,9 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> Default price reference here (9,500 SAR) is retired. The 499 SAR 7-Day
+> Revenue Proof Sprint scope and price live in
+> docs/sales-kit/SPRINT_PROPOSAL_499.md.
+
 # نطاق عمل (SOW) — Lead Intelligence Sprint — قالب
 
 **العميل:** __________________  

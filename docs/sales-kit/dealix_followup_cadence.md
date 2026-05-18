@@ -1,3 +1,10 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> This 7-message / 21-day cadence depends on the retired "AI sales rep"
+> messages. The doctrine-aligned follow-up cadence is day +2 / +5 / +10 —
+> see [`docs/sales-kit/FOUNDER_SALES_KIT.md`](./FOUNDER_SALES_KIT.md) and
+> [`docs/ops/launch_content_queue.md`](../ops/launch_content_queue.md).
+
 # 📬 Dealix — تسلسل متابعة 7 رسائل
 
 **الحقيقة:** 80% من الصفقات تُغلق في متابعة 3-7، لا في الرسالة الأولى.

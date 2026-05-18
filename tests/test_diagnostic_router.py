@@ -104,3 +104,45 @@ def test_diagnostic_report_pdf_or_markdown_fallback(client: TestClient):
     else:
         assert resp.headers.get("X-PDF-Renderer", "").startswith("unavailable")
         assert "Acme Saudi Co." in resp.text
+
+
+def test_diagnostic_report_html_is_arabic_first(client: TestClient):
+    resp = client.post(
+        "/api/v1/diagnostic/report/html",
+        json={
+            "request": {
+                "company": "Acme Saudi Co.",
+                "sector": "b2b_services",
+                "region": "riyadh",
+            }
+        },
+    )
+    assert resp.status_code == 200
+    assert "text/html" in resp.headers.get("content-type", "")
+    body = resp.text
+    assert body.startswith("<!doctype html>")
+    assert "dir='rtl'" in body
+    assert "Acme Saudi Co." in body
+    assert "النتائج التقديرية ليست نتائج مضمونة" in body
+    # No audit reference when no commitment id is supplied.
+    assert "مرجع التدقيق" not in body
+
+
+def test_diagnostic_report_html_embeds_audit_link(
+    client: TestClient, tmp_path, monkeypatch
+):
+    monkeypatch.setenv(
+        "DEALIX_CAPITAL_LEDGER_PATH", str(tmp_path / "cap.jsonl")
+    )
+    resp = client.post(
+        "/api/v1/diagnostic/report/html",
+        json={
+            "request": {"company": "Acme Saudi Co.", "sector": "b2b_services"},
+            "customer_id": "c1",
+            "engagement_id": "e1",
+            "written_commitment_id": "commit_42",
+        },
+    )
+    assert resp.status_code == 200
+    assert "commit_42" in resp.text
+    assert "مرجع التدقيق" in resp.text

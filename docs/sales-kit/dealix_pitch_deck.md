@@ -1,4 +1,23 @@
-# 🎤 Dealix — Pitch Deck (15 شريحة)
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md and docs/POSITIONING_AND_ICP.md. Retained for archive only.
+>
+> **لا تُقدَّم هذه النسخة لأي مستثمر.** تبيع Dealix كـ "مندوب مبيعات AI يرد
+> خلال 45 ثانية ويحجز demos تلقائياً" بباقات SaaS 999/2,999/7,999 ريال — وهذه
+> رواية مُلغاة. تخالف قاعدة عدم الإرسال التلقائي وسجل عدم المبالغة
+> (`dealix/registers/no_overclaim.yaml`). الدكترينة الحالية: Dealix رادار
+> عمليات بالذكاء الاصطناعي، **الموافقة أولاً**، ينتج **مسودات فقط**، بسلم
+> خدمات من ست درجات يبدأ بتشخيص مجاني ثم 7-Day Revenue Proof Sprint بـ 499
+> ريال. عند الحاجة لعرض مستثمرين، يُبنى deck جديد على الدكترينة الحالية —
+> لا يُعدَّل هذا الملف.
+>
+> **Do not present this version to any investor.** It sells a "45-second
+> auto-reply / auto-booking AI sales rep" on SaaS tiers 999/2,999/7,999 SAR —
+> a retired narrative that violates the no-auto-send rule and the no-overclaim
+> register. Current doctrine: approval-first AI Ops radar, draft-only, 6-rung
+> ladder starting with a Free Diagnostic then a 499 SAR 7-Day Revenue Proof
+> Sprint. A new investor deck, if needed, is built fresh on the current
+> doctrine — this file is not edited.
+
+# 🎤 Dealix — Pitch Deck (15 شريحة) — [STALE / مؤرشف]
 
 **للإستخدام:** Seed round fundraising، partnership meetings، board updates
 **المدة المقترحة:** 10-12 دقيقة + Q&A

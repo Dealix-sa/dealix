@@ -28,7 +28,7 @@ Hi [Name],
 
 Many B2B teams already have potential opportunities in spreadsheets, CRM exports, or WhatsApp notes — but they lack prioritization, follow-up structure, and proof of what to do next.
 
-Dealix runs a 10-day Revenue Intelligence Sprint that turns existing business data into:
+Dealix runs a 7-day Revenue Proof Sprint that turns existing business data into:
 - cleaned account list
 - ranked top opportunities
 - outreach draft pack

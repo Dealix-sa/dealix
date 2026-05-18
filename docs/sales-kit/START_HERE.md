@@ -1,3 +1,9 @@
+> ⚠️ STALE — superseded by docs/OFFER_LADDER_AND_PRICING.md. Archive only.
+>
+> This runsheet targets the retired "999 SAR / 1 SAR pilot / AI sales rep"
+> motion. The current single entry point for the founder is
+> [`docs/sales-kit/FOUNDER_SALES_KIT.md`](./FOUNDER_SALES_KIT.md).
+
 # 🚀 START HERE — Dealix Sales Kit
 
 **مرحباً سامي.** هذي خريطة واضحة لإقفال أول 999 ريال. اقرأ هذي الصفحة مرة واحدة، ثم اتبع الخطوات بالترتيب.

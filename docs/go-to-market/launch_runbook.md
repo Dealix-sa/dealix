@@ -1,141 +1,171 @@
-# 🚀 Dealix — حزمة الإقفال النهائية
+# Dealix — Launch Runbook — دليل الإطلاق
 
-**الحالة:** كل ما يمكنني تنفيذه برمجياً — تم. يتبقى **3 خطوات يدوية** عليك فقط (تحتاج تسجيل دخول شخصي).
+> Reconciled 2026-05-18 to the canonical doctrine. Source of truth:
+> [`../OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md) and
+> [`../POSITIONING_AND_ICP.md`](../POSITIONING_AND_ICP.md).
+> The previous version sold a "1 SAR pilot" and SaaS tiers 999/2,999/7,999
+> SAR/mo with auto-reply/auto-booking — that narrative is retired. It violated
+> the no-auto-send rule and the no-overclaim register
+> (`dealix/registers/no_overclaim.yaml`).
 
-**آخر تحديث:** 23 أبريل 2026، 5:57م +03
+**الدكترينة في سطر:** Dealix رادار عمليات بالذكاء الاصطناعي للشركات السعودية
+B2B. ينتج **مسودات** قرارات ورسائل وإثبات نتائج — **لا يرسل أي رسالة دون
+موافقة بشرية**. العربية أولاً، بلا ضمانات، بلا ادعاءات مبالغ فيها.
 
----
-
-## ✅ ما تم تنفيذه تلقائياً هذه الجلسة
-
-### 1. Backend جاهز للبيع
-- ✅ PR #69 مدموج: `/app/start.sh` wrapper (يحل خطأ Railway port)
-- ✅ PR #70 مدموج: `/api/v1/public/demo-request` (landing form → Calendly)
-- ✅ `/api/v1/checkout` يولّد Moyasar invoice قابل للدفع (كان موجود مسبقاً)
-- ✅ `/api/v1/webhooks/moyasar` يستقبل تأكيد الدفع ويطلق PostHog events
-- ✅ `/api/v1/pricing/plans` يعرض الباقات (Starter 999 / Growth 2,999 / Scale 7,999 ريال)
-- ✅ CI كاملة خضراء على main
-
-### 2. Landing محدّث ومنشور
-- ✅ Form يرسل لـ `/api/v1/public/demo-request`
-- ✅ بعد submit → redirect تلقائي لـ Calendly
-- ✅ `window.DEALIX_API_BASE` يشير لـ Railway backend
-- ✅ منشور جديد على pplx.app (تم مشاركته في هذه الجلسة)
-
-### 3. Outreach package جاهز
-- ✅ 3 نسخ رسائل (SaaS / Enterprise / Distribution)
-- ✅ نسخة بريد + جدول tracking + قواعد المتابعة
-- ✅ سيناريو تحويل من demo → pilot 1 ريال → Starter 999 ريال
+**Doctrine in one line:** Dealix is an approval-first AI Ops radar for Saudi
+B2B. It produces **drafts** of decisions, messages, and proof — it **never
+auto-sends**. Arabic-first, no guarantees, no overclaims.
 
 ---
 
-## 🔴 3 خطوات يدوية (10 دقائق) لتصير دفعة حقيقية
+## نطاق هذا الإطلاق — Launch scope
 
-### الخطوة 1 — Railway Settings (3 دقائق)
+هذا الإطلاق يستهدف **أول Pilot مدفوع واحد** ضمن مسار الإطلاق التجاري
+(Workstream W1)، تحت التجميد التجاري النشط
+([`../ops/COMMERCIAL_FREEZE.md`](../ops/COMMERCIAL_FREEZE.md)).
 
-1. افتح: https://railway.com/project/54bb60b4-d059-4dd1-af57-bc44c702b9f0
-2. اختر خدمة `dealix` → **Settings** → **Deploy**
-3. **Start Command**: امسحه بالكامل (يستخدم Dockerfile CMD = `/app/start.sh`)
-4. اذهب لـ **Variables** → **Raw Editor**
-5. افتح الملف `dealix_railway_vars` والصق محتواه كامل
-6. **Save** — Railway سيعيد النشر تلقائياً
+- باب الدخول: **التشخيص المجاني للعمليات بالذكاء الاصطناعي** (15 دقيقة).
+- العرض القابل للبيع: **7-Day Revenue Proof Sprint بـ 499 ريال** (الدرجة 1).
+- لا "1 ريال"، لا باقات SaaS بأسعار ثابتة، لا عرض للدرجات 2–5 خارج شروط فتحها.
+- شرط الخروج من التجميد: تسليم أول Pilot مدفوع + Proof Pack موافَق عليه من
+  العميل (مستوى إثبات L3 أو أعلى).
 
-**تحقق:** بعد 90 ثانية، افتح Deployments → آخر deploy يكون **Active** (أخضر)
-
-### الخطوة 2 — Moyasar Webhook (دقيقتين)
-
-1. افتح: https://dashboard.moyasar.com/webhooks
-2. انسخ Railway URL (من Service Settings → Networking → Public Domain)
-3. **Add Webhook**:
-   - **URL:** `https://<railway-url>/api/v1/webhooks/moyasar`
-   - **Events:** `payment_paid`, `payment_failed`, `payment_refunded`
-   - **Secret:** قيمة `MOYASAR_WEBHOOK_SECRET` (محفوظة في Railway vars منفصلاً — لا تدفعها لـ Git)
-4. **Save**
-
-**تحقق:** Moyasar يرسل ping اختباري → يرجع 200
-
-### الخطوة 3 — تحديث Landing بـ Railway URL (دقيقة)
-
-بعد ما Railway ينشر، شوف الـ public domain. إذا مختلف عن `dealix-production.up.railway.app`:
-
-1. افتح: `/home/user/workspace/dealix-clean/landing/index.html`
-2. غيّر السطر:
-   ```html
-   window.DEALIX_API_BASE = 'https://dealix-production.up.railway.app';
-   ```
-   لعنوان Railway الفعلي
-3. قلي "أعد نشر landing" وسأعيد النشر خلال ثواني
+This launch targets **one first paid pilot** under the active Commercial
+Freeze. The only sellable offer is the 499 SAR 7-Day Revenue Proof Sprint;
+rungs 2–5 are not pitched outside their stated entry conditions.
 
 ---
 
-## 🧪 اختبار دورة البيع الكاملة (5 دقائق)
+## سلم الخدمات الست — The 6-rung offer ladder
 
-بعد إكمال الـ 3 خطوات:
+| الدرجة | الخدمة | السعر | متى تُفتح |
+|--------|--------|-------|-----------|
+| 0 | AI Ops Diagnostic | مجاني | متاح الآن — باب الدخول |
+| 1 | 7-Day Revenue Proof Sprint | **499 SAR** | متاح الآن — Pilot Gate |
+| 2 | Data-to-Revenue Pack | 1,500 SAR | بعد Sprint موثّق |
+| 3 | Managed Revenue Ops | 2,999–4,999 SAR/شهر | بعد pilot ناجح |
+| 4 | Executive Command Center | 7,500–15,000 SAR/شهر | بعد 3 pilots |
+| 5 | Agency Partner OS | مخصص + rev-share 15–30% | بعد 3 proof packs |
 
-```bash
-# 1. Health check
-bash /home/user/workspace/dealix_smoke_test.sh
+كل درجة تُفتح فقط بعد إثبات حقيقي من الدرجة السابقة. التفاصيل الكاملة
+ومقاييس الإثبات في [`../OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md).
 
-# 2. Pricing check
-curl https://<railway-url>/api/v1/pricing/plans
-
-# 3. Test demo request
-curl -X POST https://<railway-url>/api/v1/public/demo-request \
-  -H "Content-Type: application/json" \
-  -d '{"name":"سامي تجربة","company":"Test","email":"test@dealix.me","phone":"+966500000000","consent":true}'
-
-# 4. Test Moyasar checkout (1 SAR pilot)
-curl -X POST https://<railway-url>/api/v1/checkout \
-  -H "Content-Type: application/json" \
-  -d '{"plan":"pilot_1sar","email":"you@dealix.me"}'
-```
-
-التوقع: الـ 4 ترجع 200 + `payment_url` قابلة للفتح في متصفح. افتحها وادفع 1 ريال بكارتك → ✅ أول دفعة حقيقية.
+> **ملاحظة نمط التسليم:** الدرجتان 0 و1 تُسلَّمان عبر منتج مُتحقَّق منه. الدرجات
+> 3–5 اليوم بقيادة المؤسس / شبه-مؤتمتة — لا تُعرض كخدمات مُدارة بالكامل.
 
 ---
 
-## 💰 مسار الإيراد من الآن
+## نظرة عامة على الأسبوع — Week-at-a-glance
 
-### هذا الأسبوع (7 أيام)
-1. **اليوم:** نفّذ الـ 3 خطوات أعلاه + دفع 1 ريال تجريبي (يثبت النظام شغّال)
-2. **غداً:** استخدم `dealix_day1_outreach` → ابعت 20 رسالة
-3. **يوم 3-5:** 5 demos محجوزة
-4. **يوم 6-7:** 1-2 pilot بـ 1 ريال
-
-### الأسبوع الثاني (يوم 8-14)
-1. **pilot → Starter conversion** — أول 999 ريال
-2. تابع 30 lead جديد
-3. الهدف: **3 عملاء مدفوعين × 999 = 2,997 ريال/شهر MRR**
-
-### تذكير — Feature Freeze 14 يوم
-- ❌ لا Next.js frontend
-- ❌ لا dashboard جديد
-- ❌ لا auth flows
-- ✅ Operation + Sell + Measure فقط
-
-بعد أول 3 عملاء مدفوعين → نقرر هل نبني dashboard أو نزيد 10 عملاء أولاً.
+| اليوم | الهدف الأساسي |
+|-------|----------------|
+| يوم 0 | تجهيز قبل الإطلاق + اختبار مسار الدفع 499 ريال |
+| يوم 1 | منشور إطلاق المؤسس + أول دفعة رسائل مخصصة |
+| يوم 2–3 | متابعة + حجز أول تشخيصات مجانية |
+| يوم 4–5 | تنفيذ التشخيصات + عرض Proof Sprint بـ 499 ريال |
+| يوم 6–7 | إقفال أول Pilot مدفوع + بدء التسليم |
 
 ---
 
-## 📦 الملفات المسلمة هذه الجلسة
+## يوم 0 — التجهيز قبل الإطلاق — Pre-launch checklist
 
-| الملف | الوصف |
-|-------|-------|
-| `dealix_final_closeout` | هذا الملف — خريطة الإقفال |
-| `dealix_railway_vars` | env vars كاملة للصق في Railway |
-| `dealix_smoke_test` | سكريبت اختبار بعد redeploy |
-| `dealix_day1_outreach` | رسائل + قواعد outreach |
-| `dealix-clean/landing` | Landing منشور مع backend hook |
+العمل المسموح به هنا هو **إنهاء تسليم الدرجة 0–1 فقط** كما يسمح التجميد.
+لا بناء قدرات للدرجات 2–5، لا dashboards جديدة، لا إعادة تصميم واجهات.
+
+1. **التشخيص المجاني جاهز** — صفحة `/diagnostic.html` تستقبل 6 أسئلة وتُنتج
+   تقريراً تشخيصياً من صفحة واحدة + 3 أولويات. مراجعة يدوية 30 دقيقة قبل
+   الإرسال للعميل.
+2. **مسار الدفع 499 ريال** — تأكد أن فاتورة الـ 499 ريال للـ Proof Sprint
+   تُولَّد وتُدفع، وأن تأكيد الدفع يُسجَّل في سجل التسليم
+   ([`../ledgers/DELIVERY_LEDGER.md`](../ledgers/DELIVERY_LEDGER.md)).
+   **لا تُنشئ أو تَعرض خطة دفع بـ 1 ريال** — هذا السعر مُلغى.
+3. **قائمة الدخول الدافئة** — جهّز قائمة الشركات والوكالات في
+   [`../ops/pipeline_tracker.csv`](../ops/pipeline_tracker.csv). فقط شرائح
+   متوافقة: مؤسسون + حسابات أعمال + شركاء محتملون. لا استخراج بيانات
+   (no scraping)، لا قوائم B2C جماهيرية.
+4. **محتوى الإطلاق** — كل المنشورات والرسائل جاهزة في
+   [`../ops/launch_content_queue.md`](../ops/launch_content_queue.md)
+   بصيغتها النهائية بالعربية. راجعها قبل النشر.
+5. **سجلات جاهزة** — تأكد أن سجل الطلبات والتسليم والإثبات في
+   [`../ledgers/`](../ledgers/) جاهزة للتدوين.
 
 ---
 
-## ⚠️ ما لم أستطع تنفيذه (لأنه يتطلب دخولك الشخصي)
+## يوم 1 — الإطلاق — Launch day
 
-| الإجراء | لماذا يحتاج منك | الوقت |
-|---------|----------------|------|
-| Railway UI (Start Command + Vars) | dashboard بتسجيل دخولك | 3 دقائق |
-| Moyasar webhook setup | dashboard بتسجيل دخولك | 2 دقائق |
-| Outreach فعلي (إرسال رسائل) | WhatsApp/LinkedIn بحسابك | 2 ساعة |
-| Demos live | تحتاج أنت في المكالمة | 30 د لكل demo |
+1. **منشور الإطلاق** — انشر POST 1 من
+   [`../ops/launch_content_queue.md`](../ops/launch_content_queue.md) على
+   LinkedIn/X بين 9–11 ص بتوقيت السعودية.
+2. **الدفعة الأولى من الرسائل** — أرسل LINKEDIN DM #1 (الدخول الدافئ عبر
+   معرفة المؤسس) — **بحد أقصى 5 رسائل مخصصة في الساعة**. كل رسالة تُكتب
+   وتُرسَل يدوياً من المؤسس.
+3. **سجّل كل رسالة** في [`../ops/pipeline_tracker.csv`](../ops/pipeline_tracker.csv).
+4. **سرعة الرد** — عند وصول رد، تابِع خلال 30 دقيقة. سرعة الرد للمؤسس أهم من
+   سرعة الإرسال.
 
-**كل شي غير هذا — جاهز. البيع الآن مسؤوليتك فقط.**
+> **قاعدة الأتمتة:** Dealix لا يرسل أي رسالة خارجية — لا واتساب، لا LinkedIn،
+> لا بريد. كل تواصل يدوي بقيادة المؤسس. لا أتمتة تواصل بارد.
+
+---
+
+## يوم 2–3 — المتابعة + حجز التشخيصات
+
+1. اتبع إيقاع المتابعة (Day +2 / +5 / +10) من
+   [`../ops/launch_content_queue.md`](../ops/launch_content_queue.md).
+2. الهدف: حجز أول **تشخيصات مجانية** (15 دقيقة) على pipeline فعلي للعميل.
+3. احترم طلبات إيقاف التواصل فوراً — حالة `opted_out`، ولا تواصل مجدداً.
+4. انشر POST 3 (زاوية المشكلة) لتغذية الوعي.
+
+---
+
+## يوم 4–5 — تنفيذ التشخيص + عرض Proof Sprint
+
+1. **نفّذ التشخيص المجاني** — سلّم تقرير صفحة واحدة + 3 أولويات + توصية
+   الخطوة التالية. مقياس النجاح: هل أوصل العميل إلى عرض الـ 499 ريال؟
+2. **اعرض 7-Day Revenue Proof Sprint** — السعر 499 ريال، دفعة واحدة مسبقة،
+   المدة 7 أيام تقويمية. المخرجات: تقرير تشخيصي مفصل، 5 مسودات رسائل جاهزة
+   للموافقة، Proof Pack يوم 7، تقرير تنفيذي، خطة 30 يوم.
+3. **اللغة المسموحة:** "فرص مُثبتة بأدلة" — **لا** "نضمن مبيعات" ولا أي وعد
+   بأرقام مبيعات أو نسب تحويل. القيمة المذكورة دائماً تقديرية.
+4. انشر POST 5 (عرض Proof Sprint) إن لزم.
+
+---
+
+## يوم 6–7 — إقفال أول Pilot + بدء التسليم
+
+1. **الإقفال** — العميل يدفع 499 ريال مسبقاً. سجّل الطلب في
+   [`../ledgers/REQUEST_LEDGER.md`](../ledgers/REQUEST_LEDGER.md) والتسليم في
+   [`../ledgers/DELIVERY_LEDGER.md`](../ledgers/DELIVERY_LEDGER.md).
+2. **بدء التسليم** — اطلب وصولاً للـ pipeline الحالي + قائمة العملاء
+   المحتملين + حالة 3 صفقات حالية.
+3. **حدود الـ Sprint** — لا إرسال مباشر (draft_only)، لا ضمان صفقات، لا وصول
+   للأنظمة الداخلية للعميل.
+4. انشر POST 7 (ملخّص الأسبوع) بأرقام فعلية من لوحة النتائج.
+
+---
+
+## ما بعد الإطلاق — After the launch
+
+- **شرط الخروج من التجميد:** تسليم Pilot واحد مدفوع + Proof Pack موافَق عليه
+  من العميل (L3+). عند تحققه، تحكم خطة الـ 90 يوم
+  ([`../90_DAY_BUSINESS_EXECUTION_PLAN.md`](../90_DAY_BUSINESS_EXECUTION_PLAN.md))
+  ما الذي يُفتح بعدها.
+- **الترقية** — بعد Sprint موثّق فقط: → Data-to-Revenue Pack (1,500 ريال) أو
+  Managed Revenue Ops (2,999–4,999 ريال/شهر). لا ترقية قبل نتيجة موثقة.
+- **شراكة الوكالات** — تُفتح بعد 3 Proof Packs موثقة + اتفاقية موقّعة، بنموذج
+  rev-share 15–30%. لا أرقام عمولة محددة قبل اتفاقية موقّعة.
+
+---
+
+## قواعد لا يُتنازل عنها — Non-negotiables
+
+1. **لا إرسال تلقائي.** Dealix ينتج مسودات فقط؛ المؤسس/العميل يوافق ويرسل.
+2. **لا "1 ريال" ولا باقات SaaS ثابتة.** باب الدخول تشخيص مجاني ثم 499 ريال.
+3. **لا ضمانات.** "فرص مُثبتة بأدلة" بدل "نضمن مبيعات".
+4. **لا استخراج بيانات، لا تواصل بارد عبر واتساب، لا أتمتة LinkedIn.**
+5. **لا بيانات شخصية (PII)** في أي محتوى عام أو case study.
+6. **العربية أولاً** في كل مخرج موجّه لقارئ سعودي.
+
+---
+
+> Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.
