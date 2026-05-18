@@ -21,7 +21,7 @@ Paired with `FIRST_CUSTOMER_DELIVERY_TEMPLATE.md` (tactical) and `first_customer
 |------|------------------|---------------------|
 | **Product question** | Answer via FAQ + route complex to Sami within 2h | Answered accurately within hours |
 | **Pricing question** | Route to demo OR quote within 4h | Clear quote same day |
-| **Pilot explanation** | 1 SAR × 7 days, unlimited refund — explain upfront | Full clarity, no surprise |
+| **Sprint explanation** | 7-Day Revenue Proof Sprint, 499 SAR — explain scope upfront | Full clarity, no surprise |
 | **Privacy objection** | Send PDPL compliance sheet + answer data-residency | Sheet within 1h |
 | **Arabic quality doubt** | Send 3 live sample threads + offer 20-min Zoom demo | Samples within 30min |
 | **Integration limit** | Confirm HubSpot/Salesforce/Zoho/Bitrix/webhook | Same-day answer |
@@ -40,30 +40,30 @@ Paired with `FIRST_CUSTOMER_DELIVERY_TEMPLATE.md` (tactical) and `first_customer
 
 ### Day 1 — Kickoff call (45 min)
 Agenda (hard time-boxed):
-- **0-5 min:** Welcome, confirm scope of pilot
+- **0-5 min:** Welcome, confirm scope of the 7-Day Revenue Proof Sprint
 - **5-20 min:** Intake form (see `first_customer_delivery_template.md`)
 - **20-35 min:** Walk through how Dealix will work for their specific business
-- **35-40 min:** Set success metric (e.g., "respond to 20 leads within 45 sec, 5 demos booked")
+- **35-40 min:** Set success metric (e.g., "draft approved follow-ups for 20 leads, 5 demo bookings prepared for approval")
 - **40-45 min:** Daily check-in schedule + next steps
 
 ### Day 2-6 — Manual delivery
 Sami does this manually for first 10 customers:
-- Every incoming lead → Sami reads → crafts Arabic reply (use Dealix prompt as draft) → sends → logs
-- Daily 10-minute check-in message to customer: "اليوم: رددنا على X leads، حجزنا Y demos"
+- Every incoming lead → Sami reads → drafts Arabic reply (use Dealix prompt as draft) → customer approves → sends → logs
+- Daily 10-minute check-in message to customer: "اليوم: جهّزنا مسودات متابعة لـ X leads، واقتراحات حجز لـ Y demos جاهزة لموافقتك"
 - Capture:
   - Which objections appeared?
   - Which messages converted best?
   - Did the customer express delight or frustration?
 
-### Day 7 — Pilot review
+### Day 7 — Sprint review
 - [ ] 30-min review call
 - [ ] Share metrics + learnings
-- [ ] Upgrade path: Pilot → Starter (999 SAR/mo)
+- [ ] Upgrade path: Sprint → Data-to-Revenue Pack (1,500 SAR) or Managed Revenue Ops (2,999–4,999 SAR/mo)
 - [ ] Ask for testimonial (even if they don't upgrade)
 - [ ] Ask for referral
 
 ### Day 8+ — If they upgrade
-- [ ] Switch to Starter billing
+- [ ] Switch to Managed Revenue Ops billing
 - [ ] Weekly check-ins for first month
 - [ ] Monthly optimization review
 - [ ] Move to automation as trust builds
@@ -89,13 +89,13 @@ Track in `docs/ops/customer_success_tracker.csv` (create on first customer):
 
 ---
 
-## Conversion from pilot → Starter
+## Conversion from Sprint → Managed Revenue Ops
 
 **Day 5 soft ask:**
-> "أيام قليلة باقية في pilot. بناءً على النتائج حتى الآن، هل تتوقع الاستمرار؟"
+> "أيام قليلة باقية في الـ Sprint. بناءً على النتائج حتى الآن، هل تتوقع الاستمرار؟"
 
 **Day 7 firm ask:**
-> "الـ pilot انتهى اليوم. النتائج كانت [X leads, Y demos, Z response time]. تبغى تكمل Starter (999 ريال/شهر) من الاثنين؟"
+> "الـ Sprint انتهى اليوم. النتائج كانت [X مسودات موافق عليها, Y اقتراحات حجز]. تبغى تكمل Managed Revenue Ops (2,999 ريال/شهر) من الاثنين؟"
 
 If yes → continue.
 If no → ask: "ما اللي منع الاستمرار؟" → log → make them feel great about saying no (it's valuable data).

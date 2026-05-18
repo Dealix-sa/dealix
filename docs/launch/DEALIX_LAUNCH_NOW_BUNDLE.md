@@ -12,7 +12,7 @@
 | 0–5 دقائق | Security (Phase 0) | 5 |
 | 5–25 دقيقة | Railway deploy (Phase 1) | 20 |
 | 25–40 دقيقة | Moyasar setup (Phase 2) | 15 |
-| 40–55 دقيقة | 1 SAR test (Phase 3) | 15 |
+| 40–55 دقيقة | Checkout test (Phase 3) | 15 |
 | 55–70 دقيقة | UptimeRobot + Sentry (Phase 5) | 15 |
 | 70–90 دقيقة | First LinkedIn DM (Phase 7) | 20 |
 
@@ -158,7 +158,7 @@ TEST EVENT SENT
 
 ---
 
-## 🟢 PHASE 3 — 1 SAR E2E TEST (15 دقيقة)
+## 🟢 PHASE 3 — CHECKOUT E2E TEST (15 دقيقة)
 
 ### A) Create Invoice (من Terminal)
 
@@ -169,7 +169,7 @@ RAILWAY_URL="https://dealix-production-XXXX.up.railway.app"
 curl -X POST "$RAILWAY_URL/api/v1/checkout" \
   -H "Content-Type: application/json" \
   -d '{
-    "plan": "pilot_1sar",
+    "plan": "sprint_499",
     "email": "sami.assiri11@gmail.com"
   }'
 ```
@@ -179,17 +179,16 @@ curl -X POST "$RAILWAY_URL/api/v1/checkout" \
 {
   "invoice_id": "inv_xxxx",
   "status": "initiated",
-  "amount_sar": 1.0,
+  "amount_sar": 499.0,
   "payment_url": "https://invoice.moyasar.com/invoices/inv_xxxx",
-  "plan": "pilot_1sar"
+  "plan": "sprint_499"
 }
 ```
 
-### B) Pay 1 SAR
+### B) Test the Checkout
 
 1. افتح `payment_url` في المتصفح
-2. ادفع ببطاقتك الحقيقية (Visa/Mada — 1 ريال فقط)
-3. **أو** استخدم بطاقة اختبار Moyasar:
+2. استخدم بطاقة اختبار Moyasar للتحقق من المسار:
    - Card: `4111 1111 1111 1111`
    - CVV: `123` | Expiry: `12/30` | OTP: `1234`
 
@@ -203,7 +202,7 @@ curl -X POST "$RAILWAY_URL/api/v1/checkout" \
 
 ### D) رد بـ:
 ```
-PAID 1 SAR
+CHECKOUT TESTED
 MOYASAR STATUS: paid
 WEBHOOK LOGGED: yes/no
 ```
@@ -276,10 +275,10 @@ Lead | Company | Segment | Source | LinkedIn | Email | Phone | Status | Last Tou
 ```
 السلام عليكم أستاذ عبدالله،
 أنا سامي العسيري — مؤسس Dealix.
-بنيت أول AI sales rep بالعربي الخليجي الحقيقي.
-يرد على leads خلال 45 ثانية، يؤهّل BANT، يحجز demos.
+بنيت رادار عمليات إيراد محكوم بالعربي الخليجي الحقيقي.
+يجهّز مسودات متابعة وتأهيل BANT جاهزة لموافقة فريقك — لا إرسال تلقائي.
 Lucidya رائدة CXM — فريقك يستحق هذا الدعم.
-عرض: pilot بـ 1 ريال × 7 أيام.
+عرض الدخول: 7-Day Revenue Proof Sprint بـ 499 ريال.
 voxc2.github.io/dealix
 تستحق 20 دقيقة demo؟
 ```
@@ -291,12 +290,12 @@ voxc2.github.io/dealix
 أنا سامي العسيري من الرياض — مؤسس Dealix.
 قرابة الاسم جعلتني أبدأ بك قبل أي أحد.
 
-بنيت Dealix كأول AI sales rep بالعربي الخليجي الحقيقي — مش ترجمة.
-يرد على leads خلال 45 ثانية، يؤهّل BANT، يحجز demos 24/7.
+بنيت Dealix كرادار عمليات إيراد محكوم بالعربي الخليجي الحقيقي — مش ترجمة.
+يجهّز مسودات متابعة وتأهيل BANT واقتراحات حجز جاهزة لموافقة فريقك — لا يرسل شيئاً تلقائياً.
 
-Lucidya تقود سوق CXM في المنطقة، وفريق BDR عندكم يستحق هذا المستوى من الأتمتة.
+Lucidya تقود سوق CXM في المنطقة، وفريق BDR عندكم يستحق هذا المستوى من الانضباط في العمليات.
 
-عرض خاص: Pilot بـ 1 ريال × 7 أيام (استرداد كامل لو ما أعجبك).
+عرض الدخول: 7-Day Revenue Proof Sprint بـ 499 ريال.
 
 تستحق 20 دقيقة demo الأسبوع؟
 الثلاثاء 10 ص أو الخميس 2 ظ؟
@@ -343,7 +342,7 @@ Lucidya تقود سوق CXM في المنطقة، وفريق BDR عندكم يس
 أستاذ عبدالله،
 إحصائية Gartner 2025: 42% من B2B leads في السعودية تُفقد بسبب تأخر الرد.
 في شركة بحجم Lucidya، كل lead ضائع = عشرات الآلاف سنوياً.
-Dealix يحل هذا تحديداً — 45 ثانية، 24/7.
+Dealix يعالج هذا تحديداً — يجهّز مسودات متابعة جاهزة لموافقة فريقك.
 رابط الباقات: voxc2.github.io/dealix/pricing.html
 سامي
 ```
@@ -381,10 +380,10 @@ PHASE 2 — Moyasar
   [ ] Webhook added with URL + secret
   [ ] Test event sent
 
-PHASE 3 — 1 SAR Test
+PHASE 3 — Checkout Test
   [ ] Checkout invoice created
   [ ] Payment link opened
-  [ ] 1 SAR paid
+  [ ] Checkout tested
   [ ] Moyasar shows paid
   [ ] Webhook logged in Railway
 
@@ -429,7 +428,7 @@ PHASE 7 — First DM
 - إضافة Moyasar webhook + secret rotated + checkout يعمل
 
 **REVENUE VERIFIED** عند:
-- 1 SAR paid + webhook logged + Moyasar shows paid
+- Checkout tested + webhook logged + Moyasar shows paid
 
 **ACQUISITION STARTED** عند:
 - DM مُرسل + CRM مُحدّث + Follow-ups مُجدولة

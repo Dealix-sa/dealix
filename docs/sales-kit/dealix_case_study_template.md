@@ -1,14 +1,19 @@
 # Dealix — Case Study Template
 
-**Fill this within 48 hours of first pilot success. Publish within 7 days. Every new customer after = publish theirs too.**
+**Fill this within 48 hours of first Sprint success. Publish within 7 days. Every new customer after = publish theirs too.**
 
 The #1 sales asset is a real customer story. One real case study = worth 100 cold DMs.
+
+> **Labeling rule:** Until a named customer gives written permission and verified
+> numbers, any draft built from this template must be labeled
+> "Hypothetical / case-safe template" and use no fabricated metrics. Estimated
+> figures must be marked "case-safe estimate".
 
 ---
 
 ## Pre-flight checklist (before writing)
 
-- [ ] Customer pilot completed (7+ days of usage)
+- [ ] Customer 7-Day Revenue Proof Sprint completed (7+ days of usage)
 - [ ] Customer gave verbal permission to use their story
 - [ ] At least 3 metrics captured (response time, leads handled, demos booked)
 - [ ] At least 1 quote from the customer (voice message or text)
@@ -19,9 +24,9 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 ## Case Study — Template
 
-## [Company Name] cut response time from [X hours] to [Y seconds] with Dealix
+## [Company Name] tightened lead follow-up with Dealix
 
-*[Subtitle: specific outcome — "Booked 12 demos in 7 days" or "Closed 3 new customers in first month"]*
+*[Subtitle: specific verified outcome — "Approved 12 follow-up drafts in 7 days" or "Prepared 8 booking suggestions for approval". Use verified numbers only.]*
 
 ---
 
@@ -43,7 +48,7 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 **Key numbers before Dealix:**
 - Monthly leads: [X]
-- Average response time: [Y hours]
+- Follow-up consistency: [describe gap]
 - Demo booking rate: [%]
 - Lead-to-customer conversion: [%]
 
@@ -53,29 +58,29 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 [2-3 sentences: what specifically Dealix did for them. Which channels? What was configured? Manual vs automated?]
 
-**Pilot scope:**
-- Duration: [7 days / X weeks]
-- Leads handled: [X]
-- Channels: [WhatsApp / Email / Web chat / LinkedIn]
+**7-Day Revenue Proof Sprint scope:**
+- Duration: [7 days]
+- Leads handled (drafts prepared for approval): [X]
+- Channels: [WhatsApp / Email / Web chat]
 - Integration: [HubSpot / Salesforce / Calendly / none]
 
 ---
 
 ### The Results
 
-**After Dealix (7 days):**
+**After the 7-Day Revenue Proof Sprint (verified numbers only):**
 | Metric | Before | After | Change |
 |--------|--------|-------|--------|
-| Avg response time | [X] | [Y] | [Δ%] |
-| Leads qualified | [X] | [Y] | [Δ%] |
-| Demos booked | [X] | [Y] | [Δ%] |
+| Follow-up drafts approved | [X] | [Y] | [Δ%] |
+| Leads qualified in drafts | [X] | [Y] | [Δ%] |
+| Booking suggestions prepared for approval | [X] | [Y] | [Δ%] |
 | Arabic conversations/day | [X] | [Y] | [Δ%] |
 | CSAT (customer satisfaction) | [X/10] | [Y/10] | [Δ] |
 
-**Revenue impact (extrapolated):**
-- Recovered leads: [X per month]
-- Estimated new revenue: [Y SAR/month]
-- ROI: [pilot cost vs. recovered revenue]
+**Revenue impact (case-safe estimate — not a guarantee):**
+- Recovered leads: [X per month] — case-safe estimate
+- Estimated value of evidenced opportunities: [Y SAR/month] — estimated, not verified
+- No ROI is promised as fact; figures are illustrative of this customer's data only
 
 ---
 
@@ -94,8 +99,8 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 3 specific things that made this work:
 
 1. **[Differentiator 1]** — e.g., "Arabic Khaliji tone customized for [Company]'s brand voice"
-2. **[Differentiator 2]** — e.g., "Response time under 45 seconds on WhatsApp, 24/7"
-3. **[Differentiator 3]** — e.g., "Qualified leads only — sales team didn't waste time on tire-kickers"
+2. **[Differentiator 2]** — e.g., "A ready-to-approve follow-up draft prepared for every WhatsApp lead — the team stayed in control of every send"
+3. **[Differentiator 3]** — e.g., "Qualified drafts only — sales team didn't waste time on tire-kickers"
 
 ---
 
@@ -104,8 +109,8 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 [1-2 sentences: what's next for the customer?]
 
 **Next steps:**
-- [e.g., "Upgrading from Pilot to Starter (999 SAR/month)"]
-- [e.g., "Expanding to email + LinkedIn channels"]
+- [e.g., "Upgrading from the Sprint to Managed Revenue Ops (2,999 SAR/month)"]
+- [e.g., "Expanding to email + web chat channels"]
 - [e.g., "Training Dealix on 3 new product categories"]
 
 ---
@@ -114,7 +119,7 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 If you're a [Saudi SaaS / F&B / Proptech / ...] company with similar challenges:
 
-- **Pilot:** 1 SAR × 7 days, refund 100% if not satisfied
+- **Entry offer:** 7-Day Revenue Proof Sprint — 499 SAR (see `docs/OFFER_LADDER_AND_PRICING.md`)
 - **Book demo:** https://calendly.com/sami-assiri11/dealix-demo
 - **Read other case studies:** https://dealix.me/customers
 
@@ -126,7 +131,7 @@ If you're a [Saudi SaaS / F&B / Proptech / ...] company with similar challenges:
 
 ## Publishing workflow
 
-### Phase 1 — Within 48 hours of pilot completion
+### Phase 1 — Within 48 hours of Sprint completion
 - [ ] Customer confirms metrics in writing (email/WhatsApp)
 - [ ] Schedule 15-min interview call to get 1-3 direct quotes
 - [ ] Request logo + permission to use (written confirmation)
@@ -160,9 +165,9 @@ Subject: إذن للنشر — Dealix Case Study [اسم الشركة]
 
 السلام عليكم [اسم العميل],
 
-شكراً على ثقتكم في Dealix خلال pilot الـ 7 أيام الماضية.
+شكراً على ثقتكم في Dealix خلال الـ 7-Day Revenue Proof Sprint الماضي.
 
-بناءً على النتائج (response time من [X] إلى [Y]، [Z] demos محجوزة)، أود أن أطلب إذنكم لنشر الحالة كـ case study على dealix.me.
+بناءً على النتائج المُتحقَّقة ([Z] مسودة متابعة موافق عليها، [Y] اقتراح حجز جاهز للموافقة)، أود أن أطلب إذنكم لنشر الحالة كـ case study على dealix.me.
 
 ما سيُنشر:
 - اسم الشركة + logo (إذا سمحتم)
@@ -199,10 +204,10 @@ Write case studies in this order — SaaS first (highest social proof), agency f
 
 ## Metrics to Always Include
 
-### Quantitative (mandatory):
-- Response time (before → after)
+### Quantitative (mandatory — verified only):
+- Follow-up drafts approved (before → after)
 - Leads handled per day/week
-- Demos booked
+- Booking suggestions prepared for approval
 - Conversion rate
 
 ### Qualitative (at least 1):

@@ -69,13 +69,13 @@ Yet Saudi companies treat it reactively: a human agent checks a shared inbox bet
 
 ### The AI opportunity
 
-Arabic-first AI on WhatsApp can:
-- Respond in < 45 seconds, 24/7
-- Ask qualifying questions in natural Khaliji
-- Hand off to human only when buyer commits
-- Log every conversation to CRM automatically
+A governed Arabic-first revenue-ops layer on WhatsApp can:
+- Draft a qualifying follow-up for every inbound message, ready for human approval
+- Phrase qualifying questions in natural Khaliji
+- Route the conversation to a human for the decision and the send
+- Log every conversation to CRM with the human in control
 
-This is not a "chatbot" — it's an Arabic AI SDR that runs on a channel Saudi buyers already trust.
+This is not a "chatbot" and it does not auto-reply — it is a governed revenue-ops radar that prepares Arabic drafts for the team to review and send on a channel Saudi buyers already trust.
 
 ---
 
@@ -170,9 +170,9 @@ For the AI SaaS: 10 customers acquired through ONE agency, at near-zero CAC.
 ## 6. The Dealix Thesis (Why This Wins)
 
 ### Positioning
-> **Arabic-first lead-to-revenue automation and GTM intelligence for Saudi businesses.**
+> **A governed, Arabic-first revenue-operations radar for Saudi businesses — it drafts replies, follow-ups, and bookings for human approval.**
 
-Not a chatbot. Not a database. Not a CRM. It's the operational response + qualification + booking layer that makes existing investments actually work.
+Not a chatbot. Not a database. Not a CRM. It's the governed operational layer — drafting qualified follow-ups and booking suggestions for the team to approve — that makes existing investments actually work. It never auto-sends.
 
 ### Differentiators (in order of moat depth)
 
@@ -197,7 +197,7 @@ If you're running a Saudi B2B company with 50+ leads/month:
 
 1. **Measure your current response time** this week. If it's > 30 min, you're leaking revenue.
 2. **Audit your WhatsApp inbox** for qualifying-question consistency. If every agent asks different questions, you have a scaling problem.
-3. **Don't buy another tool.** Build a response process on top of what you have. Or hire an agency to do it. Or try Dealix for 7 days at 1 SAR.
+3. **Don't buy another tool.** Build a response process on top of what you have. Or hire an agency to do it. Or try the Dealix 7-Day Revenue Proof Sprint at 499 SAR.
 4. **Look at your competitor's response time.** If they reply in 5 min and you reply in 4 hours, you're losing deals you don't even know about.
 
 ---
@@ -207,7 +207,7 @@ If you're running a Saudi B2B company with 50+ leads/month:
 If you run a marketing/CRM/automation agency:
 
 1. **Your clients need response automation more than they need another campaign.** Campaigns drive leads. Response converts them.
-2. **AI Arabic SDR is a new revenue stream.** Setup fee + 20-30% MRR on a 999-7,999 SAR SaaS.
+2. **A governed Arabic revenue-ops radar is a new revenue stream.** Setup fee + 20-30% MRR on the Dealix offer ladder (Managed Revenue Ops 2,999–4,999 SAR/mo, Executive Command Center 7,500–15,000 SAR/mo).
 3. **Don't build this in-house.** Partner. Focus on what your agency is great at (client relationships, implementation, reporting). Dealix handles the product.
 4. **First customer is the hardest.** We'll support you on the first 2 closes as partner onboarding.
 
@@ -228,9 +228,9 @@ Sample: 26 companies with full tech detection + 40 additional with partial signa
 
 ## About Dealix
 
-Dealix is an Arabic-first AI sales operator for Saudi B2B. Launched April 2026 by Sami Assiri (سامي العسيري).
+Dealix is a governed, Arabic-first revenue-operations radar for Saudi B2B — it drafts replies, follow-ups, and bookings for human approval and never auto-sends. Launched April 2026 by Sami Assiri (سامي العسيري).
 
-**For demos or pilots:**
+**For demos or the 7-Day Revenue Proof Sprint:**
 - dealix.me
 - calendly.com/sami-assiri11/dealix-demo
 - sami.assiri11@gmail.com
@@ -244,7 +244,7 @@ Dealix is an Arabic-first AI sales operator for Saudi B2B. Launched April 2026 b
 
 ### For Dealix internally
 - Share on LinkedIn + X (extracted insights as threads)
-- Email as lead magnet to prospects who ask "what do you mean by Arabic AI SDR?"
+- Email as lead magnet to prospects who ask "what do you mean by a governed Arabic revenue-ops radar?"
 - Reference in demos ("based on our live analysis of 60+ Saudi B2B sites...")
 - Use the agency section as onboarding material for new partners
 

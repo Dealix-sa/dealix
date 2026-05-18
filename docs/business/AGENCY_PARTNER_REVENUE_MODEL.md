@@ -11,7 +11,7 @@
 **Sami sends:**
 
 > أهلاً [الشريك],
-> فكرة سريعة: لو وصلتك شركة سعودية تواجه مشكلة الرد على leads بالعربي، رشحلها Dealix.
+> فكرة سريعة: لو وصلتك شركة سعودية تواجه مشكلة متابعة leads بالعربي، رشحلها Dealix.
 > أعطيك 10% من اشتراكها لمدة سنة كاملة.
 > رابط متابعة المراجعات: dealix.me/partners
 > لا التزام، لا setup. فقط تنبيه.
@@ -42,7 +42,7 @@
 
 **Sami's pitch:**
 
-> [الوكالة], عندكم عملاء سعوديين يحتاجون AI sales rep بالعربي.
+> [الوكالة], عندكم عملاء سعوديين يحتاجون رادار عمليات إيراد محكوم بالعربي.
 > نحن نبنيه. أنتم تبيعونه. كل عميل = 625 ريال/شهر passive لكم لمدى الشراكة.
 > أول 3 عملاء — Dealix يدفع لكم setup مجاني.
 > 30 دقيقة هذا الأسبوع نوضح؟
@@ -72,8 +72,8 @@
 **Partner does:** Sends qualified leads to Dealix customers (e.g., real-estate referral platforms, lead gen agencies).
 
 **You give:**
-- 25 SAR per qualified Arabic-replied lead
-- 150 SAR per booked demo
+- 25 SAR per qualified Arabic lead delivered
+- 150 SAR per demo booked through human approval
 - 5–10% success fee on closed customers
 
 **Why later:** Need lead-quality measurement before paying per outcome.

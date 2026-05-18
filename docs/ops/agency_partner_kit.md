@@ -6,7 +6,7 @@
 
 ## Partner pitch (60-second version)
 
-> "أنت وكالة تسويق في السعودية. عملاءك يدفعون لك آلاف ريالات شهرياً لتجيب leads. المشكلة الحقيقية؟ الـ leads تدخل CRM العميل، وما يُرَد عليها بسرعة. هنا Dealix يدخل: تضيف طبقة AI sales rep بالعربي فوق كل عميل، تأخذ 20-30% من MRR كل عميل دائم، + setup fee لمرة واحدة. كل 5 عملاء = 5,000-15,000 ريال إضافي شهرياً، صفر tech work."
+> "أنت وكالة تسويق في السعودية. عملاءك يدفعون لك آلاف ريالات شهرياً لتجيب leads. المشكلة الحقيقية؟ الـ leads تدخل CRM العميل، ولا تُتابَع بانتظام. هنا Dealix يدخل: تضيف طبقة رادار عمليات إيراد محكوم بالعربي فوق كل عميل — تجهّز مسودات متابعة جاهزة لموافقة فريق العميل، لا إرسال تلقائي. تأخذ 20-30% من MRR كل عميل دائم، + setup fee لمرة واحدة. كل 5 عملاء = 5,000-15,000 ريال إضافي شهرياً، صفر tech work."
 
 ---
 
@@ -35,7 +35,7 @@
 - Monthly optimization review
 
 ### Dealix (the product) delivers
-- The AI sales rep product
+- The governed revenue-ops radar product (drafts for human approval — no auto-send)
 - Saudi Arabic prompt engineering
 - All infrastructure (Railway, hosting, SSL)
 - Product updates
@@ -69,7 +69,7 @@
 ## Objection handling (agency-specific)
 
 **"How do I explain this to my client?"**
-> "One-pager + demo link. Most clients buy in 15 minutes when we show the 45-second response time."
+> "One-pager + demo link. Most clients understand it in 15 minutes when we show how Dealix drafts a ready-to-approve follow-up for every lead — the client's team stays in control of what goes out."
 
 **"What if client cancels after setup?"**
 > "Cancellation in first 30 days = 50% of setup fee refunded to client by Dealix (agency keeps portion). After 30 days: standard cancellation policy."
@@ -124,7 +124,7 @@ See `docs/ops/lead_machine/TOP_5_PARTNERS.csv` for scored priorities.
 ```
 السلام عليكم [الاسم]،
 
-أنا سامي من Dealix — طبقة AI sales rep بالعربي تستقبل leads العميل، تؤهّلهم، وتحجز demo — كل ذلك قبل ما يصل للموظف.
+أنا سامي من Dealix — رادار عمليات إيراد محكوم بالعربي يستقبل leads العميل، يؤهّلهم، ويجهّز مسودات متابعة واقتراحات حجز جاهزة لموافقة فريق العميل — لا إرسال تلقائي.
 
 للوكالات مثلكم: setup 3-15K + 20-30% من MRR كل عميل دائم. عميل واحد = 200-800 ريال شهرياً لكم، وبعد 5 عملاء تصير revenue stream قوية.
 

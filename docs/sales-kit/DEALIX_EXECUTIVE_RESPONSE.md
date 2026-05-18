@@ -69,7 +69,7 @@
 - On-call: **FOUNDER IS ON-CALL 24/7 (single point of failure)**
 
 ### C) Revenue
-- Pricing: **DEFINED** (999/2999/7999)
+- Pricing: **DEFINED** — per `docs/OFFER_LADDER_AND_PRICING.md` (499 Sprint / 1,500 Pack / 2,999–4,999 Managed / 7,500–15,000 Command)
 - Moyasar integration: **CODED, NOT LIVE**
 - Webhook: **CODED, NOT CONFIGURED IN MOYASAR**
 - Invoice generation: **TEMPLATE ONLY, NOT AUTOMATED**
@@ -188,8 +188,8 @@
 | # | Action | Time | Purpose |
 |---|--------|------|---------|
 | P2.1 | CR (company registration) | 1-3 days | Enterprise contracts |
-| P2.2 | First signed pilot (1 SAR) | External | Proof |
-| P2.3 | First paid customer (999+ SAR) | External | Revenue |
+| P2.2 | First signed 7-Day Revenue Proof Sprint (499 SAR) | External | Proof |
+| P2.3 | First Managed Revenue Ops customer (2,999+ SAR/mo) | External | Revenue |
 | P2.4 | First case study drafted | 1 day | Social proof |
 | P2.5 | Partner outreach — 10 agencies | 5 days | Growth |
 | P2.6 | Weekly content cadence active | Ongoing | Inbound |
@@ -231,9 +231,9 @@
 
 Path A — **Use Dealix** (in-house marketer)
 - Who: In-house marketing/growth lead at a B2B company
-- What: Automate lead capture, qualification, booking
-- Value: Replace 2-3 BDR hires with AI
-- CTA: `جرّب pilot بـ 1 ريال`
+- What: Govern lead capture, qualification, and approval-ready booking drafts
+- Value: A governed revenue-ops radar that prepares the work your BDR team approves and sends
+- CTA: `ابدأ 7-Day Revenue Proof Sprint بـ 499 ريال`
 
 Path B — **Deliver services with Dealix** (freelancer/consultant)
 - Who: Freelance marketer, growth consultant, CRM specialist
@@ -245,7 +245,7 @@ Path B — **Deliver services with Dealix** (freelancer/consultant)
 Path C — **Agency partner** (full agency)
 - Who: Marketing agency (15-100 employees)
 - What: Service exchange OR white-label reseller
-- Value: Offer AI sales rep to all your clients without building it
+- Value: Offer a governed revenue-ops radar to all your clients without building it
 - Revenue: 25% of MRR commission OR free Dealix in exchange for services
 - CTA: `احجز partner meeting`
 
@@ -256,8 +256,8 @@ Workflow bank (each is a sellable service):
 2. Qualification scripting (BANT customized per industry)
 3. Calendar integration (Calendly/Google/Outlook)
 4. CRM sync (HubSpot/Zoho/Salesforce)
-5. WhatsApp automation
-6. Email nurture sequences
+5. WhatsApp draft-and-approve workflow setup
+6. Email nurture draft sequences (human-approved before send)
 7. Proposal routing
 8. ROI reporting for end-client
 9. A/B test optimization
@@ -384,7 +384,7 @@ Day 90: Tier promotion eligibility
 
 ### Anti-abuse rules
 - No cold-calling Dealix's existing customers
-- No off-price reselling (minimum 999 SAR/month for end customer)
+- No off-price reselling (align to `docs/OFFER_LADDER_AND_PRICING.md` — Managed Revenue Ops floor 2,999 SAR/month for end customer)
 - No competing with Dealix in same segment
 - Clear territorial respect
 
@@ -400,10 +400,9 @@ Day 90: Tier promotion eligibility
 ### The 7 layers of revenue (verify each)
 
 **Layer 1 — Pricing Architecture** ✅ DONE
-- 999 / 2,999 / 7,999 SAR
-- Pilot 1 SAR / 7 days
-- Annual discount 15%
-- Enterprise custom
+- Per `docs/OFFER_LADDER_AND_PRICING.md`: 7-Day Revenue Proof Sprint 499 SAR → Data-to-Revenue Pack 1,500 SAR → Managed Revenue Ops 2,999–4,999 SAR/mo → Executive Command Center 7,500–15,000 SAR/mo
+- Free AI Ops Diagnostic as entry door
+- Enterprise / Agency Partner OS custom
 
 **Layer 2 — Quote Path** 🟡 PARTIAL
 - Enterprise proposal template: exists
@@ -636,7 +635,7 @@ All 7 layers must be verified with a real 1 SAR transaction that:
 **Risk 3 — First customer churns due to product not truly ready**
 - Probability: Medium
 - Impact: Negative reference, damaged reputation in small Saudi tech community
-- Mitigation: Pilot 1 SAR gives 7-day safe window; don't aggressively sell before first 3 customers succeed
+- Mitigation: the 7-Day Revenue Proof Sprint (499 SAR) gives a defined low-commitment window; don't aggressively sell before first 3 customers succeed
 
 ### Other risks to monitor
 - Competitor launches similar product (low, reactive response only)
@@ -699,8 +698,8 @@ These are the honest gates. Code-complete without them is just expensive documen
 
 | Deliverable | Owner | DoD | Metric |
 |-------------|-------|-----|--------|
-| First pilot signed | Sami + customer | 1 SAR paid | Pilot active |
-| First paid customer | Sami + customer | 999+ SAR paid | First MRR |
+| First Sprint signed | Sami + customer | 499 SAR paid | Sprint active |
+| First Managed Revenue Ops customer | Sami + customer | 2,999+ SAR/mo paid | First MRR |
 | First case study drafted | Sami | 2-page doc | Customer quote |
 | 10 partner contacts | Sami | 10 LinkedIn messages | 2 partner calls booked |
 | CR registration (if revenue confirmed) | Sami | CR number issued | Bank linked |

@@ -9,7 +9,7 @@
 - حسابات social نشطة
 
 ## Headline Pain
-العملاء يطلبون AI sales rep بالعربي، الوكالة بدون حل جاهز
+العملاء يطلبون رادار عمليات إيراد محكوم بالعربي، الوكالة بدون حل جاهز
 
 ## Primary Offer
 شريك resell — 25% MRR شهرياً + setup 1,000 ريال للوكالة
@@ -24,14 +24,14 @@ agency clients signed × MRR share
 ## Channel Strategy
 linkedin_manual_then_call
 
-## Pilot Success Metrics
-- Arabic replies sent / inbound lead: 100%
-- avg response time: < 60s
-- demos booked: ≥ 2 in 7 days
+## Sprint Success Metrics
+- Arabic follow-up drafts prepared / inbound lead: 100%
+- approved drafts: ≥ 3 in 7 days
+- booking suggestions prepared for approval: ≥ 2 in 7 days
 - customer NPS: ≥ 8/10
 
-## Case Study Template
-- Before Dealix: [response time / lost leads / conversion %]
-- After 7-day Pilot: [Arabic replies, demos booked, qualified leads]
-- Customer quote: [verified post-pilot]
-- Outcome: [upgraded to Starter / referred N companies / etc.]
+## Case Study Template (Hypothetical / case-safe — fill with verified data only)
+- Before Dealix: [follow-up gaps / lost leads / conversion %]
+- After 7-Day Revenue Proof Sprint: [Arabic drafts approved, booking suggestions prepared, qualified leads]
+- Customer quote: [verified post-Sprint only — no fabricated quotes]
+- Outcome: [upgraded to Data-to-Revenue Pack or Managed Revenue Ops / referred N companies / etc.]

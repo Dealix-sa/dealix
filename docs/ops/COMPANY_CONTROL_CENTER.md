@@ -6,7 +6,7 @@ Last updated: 2026-04-24 · Keep this file fresh — update it before/after ever
 
 > 🌅 **Start here every morning:** [`docs/ops/TODAY.md`](TODAY.md) — the 60-minute command page.
 > 💰 **When a prospect says yes:** [`docs/ops/FIRST_REVENUE_ATTEMPT.md`](FIRST_REVENUE_ATTEMPT.md) — 15-min close-to-paid script.
-> 🧾 **Generate an invoice:** `bash docs/ops/moyasar_live_test.sh customer@email.com 999 starter`
+> 🧾 **Generate an invoice:** `bash docs/ops/moyasar_live_test.sh customer@email.com 499 sprint`
 
 ---
 
@@ -106,7 +106,7 @@ Rest of week:
 - Day +3: Reply to 3 relevant tweets with Dealix angle
 - Day +4: Customer pain post
 - Day +5: Partner invitation post
-- Day +6: AI sales rep positioning post
+- Day +6: Governed revenue-ops radar positioning post
 
 All copy is ready. Publishing requires Sami's LinkedIn/X identity.
 
@@ -116,7 +116,7 @@ All copy is ready. Publishing requires Sami's LinkedIn/X identity.
 
 10 agency targets in tracker (rows 22-29 + 2 freelance). Partner DM template ready in `launch_content_queue.md`. Send max 2/day to avoid burn.
 
-Partner packages:
+Partner packages (per `docs/OFFER_LADDER_AND_PRICING.md` rung 5 — Agency Partner OS, custom + rev-share):
 - **Starter:** 3,000 SAR setup + 20% of client MRR
 - **Growth:** 8,000 SAR setup + 25% of client MRR
 - **Scale:** 25,000 SAR setup + 30% of client MRR + white-label option
@@ -185,7 +185,7 @@ Tomorrow change  |        | __
 |------|---------|
 | `docs/ops/TODAY.md` | 🌅 Morning 60-min command page — open this first |
 | `docs/ops/FIRST_REVENUE_ATTEMPT.md` | 💰 15-min close-to-paid playbook |
-| `docs/ops/moyasar_live_test.sh` | 🧾 One-command invoice generator (Pilot/Starter/Growth/Scale) |
+| `docs/ops/moyasar_live_test.sh` | 🧾 One-command invoice generator (Sprint/Pack/Managed/Command) |
 | `docs/ops/pipeline_tracker.csv` | 50 leads, source of truth |
 | `docs/ops/launch_content_queue.md` | All outreach + content copy |
 | `docs/ops/today_send_queue.md` | Today's ready-to-send 10 messages |
@@ -240,7 +240,7 @@ Full math in `THREE_CUSTOMERS_PER_DAY_OPERATING_MODEL.md`.
 
 ## ⚡ If a customer says yes TODAY
 
-1. Confirm plan (Starter 999 / Growth 2,999 / Scale 7,999 / Pilot 1 SAR)
+1. Confirm plan per `docs/OFFER_LADDER_AND_PRICING.md` (7-Day Revenue Proof Sprint 499 / Data-to-Revenue Pack 1,500 / Managed Revenue Ops 2,999–4,999/mo / Executive Command Center 7,500–15,000/mo)
 2. Send manual invoice from `MANUAL_PAYMENT_SOP.md` (bank IBAN + STC Pay)
 3. Customer pays → Sami confirms within 30 min
 4. Sami updates `pipeline_tracker.csv` row: `payment_status=paid, revenue_sar=[amount]`

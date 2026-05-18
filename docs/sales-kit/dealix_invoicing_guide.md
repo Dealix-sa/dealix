@@ -19,7 +19,7 @@
 - **حساب بنكي تجاري** = للاستلام الرسمي
 - **فواتير بسيطة** بدون VAT
 
-#### 📈 بعد نجاح الـ Pilot (شهر 3-6):
+#### 📈 بعد نجاح الـ 7-Day Revenue Proof Sprint (شهر 3-6):
 - تسجيل **CR (شركة شخص واحد)**
 - تسجيل **VAT** اختياري (أو إجباري عند 375K)
 - تحويل للـ ZATCA e-invoicing
@@ -117,36 +117,32 @@ IBAN: SA00 0000 0000 0000 0000 0000
 
 ## 📊 سيناريوهات الفوترة
 
-### السيناريو 1: Pilot بـ 1 ريال
+### السيناريو 1: 7-Day Revenue Proof Sprint (499 ريال)
 
 **الفاتورة:**
-- Dealix Pilot — 7 أيام · 1 ريال
-- VAT: 0.15 ريال (إذا مسجّل)
-- Total: 1.15 ريال
+- Dealix — 7-Day Revenue Proof Sprint · 499 ريال
+- VAT 15%: 74.85 ريال (إذا مسجّل)
+- **Total: 573.85 ريال**
 
 **طريقة الدفع:** Moyasar link فقط (بسيط + سريع)
 
 **بعد 7 أيام:**
-- إذا cancelled → refund 1 ريال
-- إذا continued → invoice شهري جديد
+- يُسلَّم Proof Pack + تقرير تنفيذي
+- إذا continued → invoice الترقية إلى Data-to-Revenue Pack أو Managed Revenue Ops
 
-### السيناريو 2: Starter شهري (999 ريال)
+### السيناريو 2: Data-to-Revenue Pack (1,500 ريال)
 
 **الفاتورة:**
-- Dealix Starter — شهر 1 · 999 ريال
-- Setup fee: 500 ريال (one-time)
-- Subtotal: 1,499 ريال
-- Discount 20% (أول شهر): -299.80
-- Subtotal after discount: 1,199.20
-- VAT 15%: 179.88
-- **Total: 1,379.08 ريال**
+- Dealix — Data-to-Revenue Pack (مشروع واحد) · 1,500 ريال
+- VAT 15%: 225 ريال
+- **Total: 1,725 ريال**
 
 **طريقة الدفع:** Moyasar أو BT
 
-### السيناريو 3: Growth سنوي (with 15% discount)
+### السيناريو 3: Managed Revenue Ops سنوي (with 15% discount)
 
 **الفاتورة:**
-- Dealix Growth — سنوي · 12 × 2,999 = 35,988
+- Dealix — Managed Revenue Ops — سنوي · 12 × 2,999 = 35,988
 - Discount 15%: -5,398.20
 - Subtotal: 30,589.80
 - Setup: 1,000
@@ -157,18 +153,15 @@ IBAN: SA00 0000 0000 0000 0000 0000
 
 **طريقة الدفع:** BT (للمبالغ > 5,000 ريال)
 
-### السيناريو 4: Enterprise (Scale)
+### السيناريو 4: Executive Command Center
 
 **الفاتورة:**
-- Dealix Scale — 12 شهر custom · 96,000
+- Dealix — Executive Command Center — 12 شهر · حسب النطاق المتفق عليه (7,500–15,000/شهر)
 - Setup + Integration: 10,000
 - Dedicated success: شامل
 - Training × 3 sessions: شامل
-- Subtotal: 106,000
-- Discount 10% (Enterprise): -10,600
-- Subtotal after: 95,400
-- VAT 15%: 14,310
-- **Total: 109,710 ريال**
+- VAT 15%: تُحتسب على الإجمالي
+- **Total: حسب النطاق المتفق عليه**
 
 **طريقة الدفع:** Bank Transfer + عقد PDF موقّع
 
