@@ -14,7 +14,7 @@
 - **مع من نشارك:** Subprocessors محددون (STC Cloud، Moyasar، PostHog، Sentry) — لا غيرهم
 - **حقوقك:** الوصول، التصحيح، الحذف، النقل، الاعتراض — مُعرّفة بوضوح أدناه
 - **مدة الاحتفاظ:** تشغيلي 30 يوم بعد الإلغاء، ثم حذف نهائي
-- **التواصل:** privacy@dealix.sa (Data Protection Officer)
+- **التواصل:** privacy@dealix.me (Data Protection Officer)
 
 ---
 
@@ -28,7 +28,7 @@
 
 **مسؤول حماية البيانات (DPO):**
 - سامي العسيري (مؤقتاً)
-- privacy@dealix.sa
+- privacy@dealix.me
 
 **نحن نعالج البيانات كـ:**
 - **Controller:** لبيانات حسابك الشخصي كمستخدم Dealix
@@ -110,10 +110,10 @@
 |------|----------|----------|
 | **الوصول** — ماذا لديكم عني؟ | dashboard → Settings → Export | فوري |
 | **التصحيح** | dashboard → Settings → Edit | فوري |
-| **الحذف** | privacy@dealix.sa | ≤ 30 يوم |
+| **الحذف** | privacy@dealix.me | ≤ 30 يوم |
 | **النقل** (Portability) | dashboard → Export (CSV/JSON) | فوري |
-| **الاعتراض** على المعالجة | privacy@dealix.sa | ≤ 30 يوم |
-| **تقييد المعالجة** | privacy@dealix.sa | ≤ 30 يوم |
+| **الاعتراض** على المعالجة | privacy@dealix.me | ≤ 30 يوم |
+| **تقييد المعالجة** | privacy@dealix.me | ≤ 30 يوم |
 | **سحب الموافقة** | dashboard → Settings → Privacy | فوري |
 
 ### 5.2 حق الشكوى
@@ -180,7 +180,7 @@
 - Third-party trackers
 - Social media pixels
 
-إدارة الـ cookies: dealix.sa/cookie-preferences
+إدارة الـ cookies: dealix.me/cookie-preferences
 
 ---
 
@@ -207,14 +207,14 @@ Dealix خدمة B2B — غير مُعدّة لأطفال تحت 18 سنة. لا 
 
 - تغييرات جوهرية: إشعار قبل 30 يوم عبر البريد
 - تغييرات تحريرية: تحديث الصفحة فقط
-- الإصدارات السابقة: dealix.sa/privacy/archive
+- الإصدارات السابقة: dealix.me/privacy/archive
 
 ---
 
 ## 13. التواصل
 
 **مسؤول حماية البيانات (DPO):**
-- privacy@dealix.sa
+- privacy@dealix.me
 - موعد الرد: ≤ 48 ساعة
 
 **العنوان البريدي:**

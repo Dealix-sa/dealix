@@ -85,7 +85,7 @@
 - **الرسوم:** 2.75% + 1 ريال
 - **الدفع:** بطاقات + STC Pay + Apple Pay
 - **Settlement:** T+1 يوم
-- **URL شكل:** `dealix.ai/pay/INV-XXX`
+- **URL شكل:** `dealix.me/pay/INV-XXX`
 
 **Setup:**
 1. حساب في moyasar.com
@@ -117,36 +117,36 @@ IBAN: SA00 0000 0000 0000 0000 0000
 
 ## 📊 سيناريوهات الفوترة
 
-### السيناريو 1: Pilot بـ 1 ريال
+### السيناريو 0 (داخلي): اختبار قناة الدفع `pilot_1sar`
+
+> هذا اختبار داخلي للتحقّق من Moyasar — **ليس فاتورة عميل**.
+- Dealix internal payment-channel test · 1 ريال
+- يدفعها الفريق بنفسه للتأكد أن القناة والـ webhook يعملان.
+
+### السيناريو 1: Revenue Proof Sprint (499 ريال — عرض الدخول)
 
 **الفاتورة:**
-- Dealix Pilot — 7 أيام · 1 ريال
-- VAT: 0.15 ريال (إذا مسجّل)
-- Total: 1.15 ريال
+- Dealix — Revenue Proof Sprint (مرة واحدة) · 499 ريال
+- VAT 15%: 74.85 ريال (إذا مسجّل)
+- **Total: 573.85 ريال**
 
-**طريقة الدفع:** Moyasar link فقط (بسيط + سريع)
+**طريقة الدفع:** Moyasar link
 
-**بعد 7 أيام:**
-- إذا cancelled → refund 1 ريال
-- إذا continued → invoice شهري جديد
-
-### السيناريو 2: Starter شهري (999 ريال)
+### السيناريو 2: Growth Ops Monthly (2,999 ريال/شهر)
 
 **الفاتورة:**
-- Dealix Starter — شهر 1 · 999 ريال
-- Setup fee: 500 ريال (one-time)
-- Subtotal: 1,499 ريال
-- Discount 20% (أول شهر): -299.80
-- Subtotal after discount: 1,199.20
-- VAT 15%: 179.88
-- **Total: 1,379.08 ريال**
+- Dealix — Growth Ops Monthly · شهر 1 · 2,999 ريال
+- Setup fee: 1,000 ريال (one-time، اختياري)
+- Subtotal: 3,999 ريال
+- VAT 15%: 599.85 ريال
+- **Total: 4,598.85 ريال**
 
 **طريقة الدفع:** Moyasar أو BT
 
-### السيناريو 3: Growth سنوي (with 15% discount)
+### السيناريو 3: Growth Ops Monthly — اشتراك سنوي (with 15% discount)
 
 **الفاتورة:**
-- Dealix Growth — سنوي · 12 × 2,999 = 35,988
+- Dealix — Growth Ops Monthly، اشتراك سنوي · 12 × 2,999 = 35,988
 - Discount 15%: -5,398.20
 - Subtotal: 30,589.80
 - Setup: 1,000
@@ -157,18 +157,18 @@ IBAN: SA00 0000 0000 0000 0000 0000
 
 **طريقة الدفع:** BT (للمبالغ > 5,000 ريال)
 
-### السيناريو 4: Enterprise (Scale)
+### السيناريو 4: Executive Command Center (اشتراك سنوي)
 
 **الفاتورة:**
-- Dealix Scale — 12 شهر custom · 96,000
+- Dealix — Executive Command Center · 12 شهر · 12 × 7,500 = 90,000
 - Setup + Integration: 10,000
 - Dedicated success: شامل
 - Training × 3 sessions: شامل
-- Subtotal: 106,000
-- Discount 10% (Enterprise): -10,600
-- Subtotal after: 95,400
-- VAT 15%: 14,310
-- **Total: 109,710 ريال**
+- Subtotal: 100,000
+- Discount 10% (سنوي): -10,000
+- Subtotal after: 90,000
+- VAT 15%: 13,500
+- **Total: 103,500 ريال**
 
 **طريقة الدفع:** Bank Transfer + عقد PDF موقّع
 

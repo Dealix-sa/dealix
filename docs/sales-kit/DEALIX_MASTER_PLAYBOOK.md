@@ -208,12 +208,15 @@
 
 | الباقة | السعر | الجمهور |
 |--------|-------|---------|
-| Pilot | 1 ر.س (7 أيام) | الاختبار |
-| Starter | 999 ر.س/شهر | شركات صغيرة |
-| Growth | 2,999 ر.س/شهر | متوسطة |
-| Scale | 7,999 ر.س/شهر | Enterprise |
+| Free Mini Diagnostic | 0 | مدخل القمع |
+| Revenue Proof Sprint | 499 ر.س (مرة واحدة) | عرض الدخول |
+| Data-to-Revenue Pack | 1,500 ر.س (مرة واحدة) | إضافة |
+| Growth Ops Monthly | 2,999 ر.س/شهر | الاشتراك التشغيلي الأساسي |
+| Support OS Add-on | 1,500 ر.س/شهر | إضافة دعم |
+| Executive Command Center | 7,500 ر.س/شهر | الشريحة العليا |
+| Agency Partner OS | مخصّص + حصة إيرادات 15–30% | الوكالات |
 
-**المزيج المستهدف**: 40% Starter / 30% Growth / 10% Scale → **ARPU: 2,099 ر.س**
+**ملاحظة:** "1 ريال" ليست سعر منتج — هي فقط اختبار الدفع الداخلي `pilot_1sar`. عرض الدخول للعميل هو Revenue Proof Sprint بـ 499 ريال. كل أرقام المزيج تقديرية.
 
 ---
 
@@ -238,7 +241,7 @@
 
 ## 🔗 الروابط المهمة
 
-- **Production**: https://dealix.sa (قيد الإطلاق)
+- **Production**: https://dealix.me (قيد الإطلاق)
 - **Calendly (Demo)**: https://calendly.com/sami-assiri11/dealix-demo
 - **Railway**: https://railway.com/project/54bb60b4-d059-4dd1-af57-bc44c702b9f0
 - **Moyasar Dashboard**: https://dashboard.moyasar.com

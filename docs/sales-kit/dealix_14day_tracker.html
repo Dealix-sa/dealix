@@ -43,7 +43,7 @@
 <div class="container">
   <div class="header">
     <h1>🎯 Dealix — 14 Day Revenue Tracker</h1>
-    <p class="subtitle">من الإرسال لأول 999 ريال. حدّث كل مساء.</p>
+    <p class="subtitle">من الإرسال لأول عميل مدفوع (Revenue Proof Sprint، 499 ريال). حدّث كل مساء.</p>
   </div>
 
   <div class="goals">
@@ -186,7 +186,7 @@ function updateGoals(){
   document.getElementById('goal-replies').textContent = replied + '/5';
   document.getElementById('goal-demos').textContent = demo + '/3';
   document.getElementById('goal-paid').textContent = paid + '/1';
-  document.getElementById('goal-revenue').textContent = (paid*999).toLocaleString('ar') + ' ريال';
+  document.getElementById('goal-revenue').textContent = (paid*499).toLocaleString('ar') + ' ريال';
 
   document.getElementById('p-msg').style.width = Math.min(100, (sent/20)*100) + '%';
   document.getElementById('p-rep').style.width = Math.min(100, (replied/5)*100) + '%';

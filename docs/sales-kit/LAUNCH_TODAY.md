@@ -41,13 +41,14 @@ curl https://<your-domain>/healthz
    - Events: `payment_paid`, `payment_failed`, `payment_refunded`
 3. Send Test Event → يجب أن يرجع 200 في Railway logs
 
-#### Step 1.4 — 1 SAR E2E Test (15 دقيقة)
+#### Step 1.4 — 1 SAR E2E Test (15 دقيقة) — اختبار داخلي للتحقّق فقط
 ```bash
 bash dealix_1_riyal_test.sh https://<your-domain>
 ```
-- يولّد invoice 1 ريال
-- ادفع ببطاقتك الحقيقية (أو test card: 4111 1111 1111 1111)
-- تحقق: payment في Moyasar ✅ + webhook في logs ✅ + record في DB ✅
+- يولّد invoice 1 ريال — هذا هو الـ `pilot_1sar` charge: **اختبار داخلي للتحقّق من قناة الدفع، وليس عرضاً للعملاء**.
+- ادفعها بنفسك ببطاقتك الحقيقية (أو test card: 4111 1111 1111 1111).
+- تحقق: payment في Moyasar + webhook في logs + record في DB.
+- تذكير: عرض الدخول للعميل هو **Revenue Proof Sprint بـ 499 ريال**، وليس 1 ريال.
 
 #### Step 1.5 — Rotate Moyasar Secret (5 دقائق)
 ⚠️ **مهم:** الـ secret كان مسرّب في git history سابقاً.
@@ -108,13 +109,13 @@ bash dealix_1_riyal_test.sh https://<your-domain>
 #### Step 3.3 — Schedule Follow-ups (5 دقائق)
 Calendar reminders:
 - يوم +3: Follow-up #1 ("رسالتي قبل 3 أيام")
-- يوم +7: Value-add (إحصائية Gartner)
-- يوم +11: Case snippet
+- يوم +7: Value-add (ملاحظة عملية من السوق — بلا أرقام منسوبة لجهات خارجية)
+- يوم +11: Case snippet (case-safe)
 - يوم +15: Strategic question
 
 #### Step 3.4 — LinkedIn Post #1 (30 دقيقة)
 انشر Post اليوم 1 من `dealix_content_calendar.md`:
-- Hook: "أنا سامي. قررت أبني AI sales rep بالعربي الخليجي..."
+- Hook: "أنا سامي. قررت أبني رادار متابعة بالعربي يجهّز مسودّة الرد للمراجعة..."
 - End: اطلب متابعة + like
 
 ---
@@ -131,13 +132,13 @@ vercel --prod
 
 الخيار 2 — Netlify:
 - Drag & drop `landing/` folder at netlify.com
-- Custom domain → `dealix.ai`
+- Custom domain → `dealix.me`
 
 التحقق:
-- `https://dealix.ai/` → index.html loads
-- `https://dealix.ai/marketers` → marketers.html
-- `https://dealix.ai/pricing` → pricing.html
-- `https://dealix.ai/partners` → partners.html
+- `https://dealix.me/` → index.html loads
+- `https://dealix.me/marketers` → marketers.html
+- `https://dealix.me/pricing` → pricing.html
+- `https://dealix.me/partners` → partners.html
 
 #### Step 4.2 — Partner Form → Formspree (10 دقيقة)
 1. `https://formspree.io` → Create account → New Form
@@ -147,9 +148,9 @@ vercel --prod
 
 #### Step 4.3 — Google Search Console (10 دقيقة)
 1. `https://search.google.com/search-console`
-2. Add property: `https://dealix.ai`
+2. Add property: `https://dealix.me`
 3. Verify via DNS TXT record
-4. Submit sitemap: `https://dealix.ai/sitemap.xml`
+4. Submit sitemap: `https://dealix.me/sitemap.xml`
 5. Request indexing for key pages
 
 #### Step 4.4 — First Partner Outreach (20 دقيقة)
@@ -169,7 +170,7 @@ vercel --prod
 - [ ] Sentry alert في Slack (من `_test_sentry`)
 - [ ] UptimeRobot alert في SMS/Email
 - [ ] PostHog يظهر live events
-- [ ] `https://dealix.ai` يفتح ويلود
+- [ ] `https://dealix.me` يفتح ويلود
 - [ ] LinkedIn DM للـ عبدالله العسيري مُرسل (double check mark)
 - [ ] LinkedIn post publicly visible
 - [ ] First partner email/DM sent

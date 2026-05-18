@@ -44,7 +44,7 @@ Dealix Data Room/
 | Product Roadmap | `dealix_product_roadmap.md` | ✅ |
 | Demo Video (3min) | `dealix_video_scripts.md` | 🟡 قيد التصوير |
 | Demo Video (10min tech) | `dealix_video_scripts.md` | 🟡 قيد التصوير |
-| Live Demo Access | app.dealix.sa (test account) | ✅ |
+| Live Demo Access | app.dealix.me (test account) | ✅ |
 | Product Screenshots | `/assets/screenshots/` | ✅ |
 | Feature Matrix | Slide 7 من pitch deck | ✅ |
 | Customer Journey | Section في onboarding.md | ✅ |
@@ -59,7 +59,7 @@ Dealix Data Room/
 | Tech Stack Document | Section في roadmap | ✅ |
 | Security FAQ | `dealix_security_faq.md` | ✅ |
 | SOC 2 Readiness Plan | Q3 2026 roadmap | 🟡 |
-| API Documentation | `https://api.dealix.sa/docs` | ✅ |
+| API Documentation | `https://api.dealix.me/docs` | ✅ |
 | Infrastructure (Railway + AWS) | Railway project ID مشترك | ✅ |
 | Monitoring (Sentry + Uptime) | `sentry_setup.md`, `uptime_robot_setup.md` | ✅ |
 | CI/CD Pipeline | GitHub Actions workflows | ✅ |

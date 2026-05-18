@@ -67,15 +67,15 @@ Yet Saudi companies treat it reactively: a human agent checks a shared inbox bet
 - **No single source of truth per customer conversation**
 - **No qualification before high-value agent time is spent**
 
-### The AI opportunity
+### The opportunity: a governed, draft-only follow-up radar
 
-Arabic-first AI on WhatsApp can:
-- Respond in < 45 seconds, 24/7
-- Ask qualifying questions in natural Khaliji
-- Hand off to human only when buyer commits
-- Log every conversation to CRM automatically
+An Arabic-first, approval-first Revenue Ops layer can:
+- Surface which leads need follow-up and rank them by who is overdue
+- Draft the next message in natural Khaliji for a human to review
+- Keep a single source of truth per customer conversation
+- Sync leads and follow-up notes to the CRM
 
-This is not a "chatbot" — it's an Arabic AI SDR that runs on a channel Saudi buyers already trust.
+The human reviews, approves, and sends. There is no auto-reply, no auto-book, no auto-send. This is not a "chatbot" — it is a Post-Lead Revenue Ops radar where the team stays in control of every message.
 
 ---
 
@@ -148,7 +148,7 @@ Saudi B2B has ~200+ marketing/CRM/automation agencies. These agencies:
 
 ### The agency opportunity for AI tools
 
-An agency with 10 B2B clients × $500/mo setup + 20% MRR on a $999 AI SaaS = **$5,000 setup + $2,000/mo recurring** for the agency. Over 12 months: $29,000 per agency.
+An agency that brings clients onto a governed follow-up radar earns a 5,000 SAR referral per closed deal, or a 15–30% revenue share under Agency Partner OS — on a recurring ladder anchored at Growth Ops Monthly (2,999 SAR/mo). All figures are estimates and depend on actual closes.
 
 For the AI SaaS: 10 customers acquired through ONE agency, at near-zero CAC.
 
@@ -170,9 +170,9 @@ For the AI SaaS: 10 customers acquired through ONE agency, at near-zero CAC.
 ## 6. The Dealix Thesis (Why This Wins)
 
 ### Positioning
-> **Arabic-first lead-to-revenue automation and GTM intelligence for Saudi businesses.**
+> **Arabic-first Post-Lead Revenue & Governed AI Operations OS for Saudi businesses.**
 
-Not a chatbot. Not a database. Not a CRM. It's the operational response + qualification + booking layer that makes existing investments actually work.
+Not a chatbot. Not a database. Not a CRM. It is an approval-first, draft-only follow-up radar: it shows which leads need follow-up and drafts the next message — the human reviews, approves, and sends. It makes existing GTM investments actually convert.
 
 ### Differentiators (in order of moat depth)
 
@@ -206,8 +206,8 @@ If you're running a Saudi B2B company with 50+ leads/month:
 
 If you run a marketing/CRM/automation agency:
 
-1. **Your clients need response automation more than they need another campaign.** Campaigns drive leads. Response converts them.
-2. **AI Arabic SDR is a new revenue stream.** Setup fee + 20-30% MRR on a 999-7,999 SAR SaaS.
+1. **Your clients need disciplined follow-up more than they need another campaign.** Campaigns drive leads. Consistent, reviewed follow-up converts them.
+2. **A governed follow-up radar is a new revenue stream.** Setup fee + 5,000 SAR referral per closed deal, or 15–30% revenue share under Agency Partner OS. Underlying ladder: Free Mini Diagnostic 0 → Revenue Proof Sprint 499 → Growth Ops Monthly 2,999/mo → Executive Command Center 7,500/mo.
 3. **Don't build this in-house.** Partner. Focus on what your agency is great at (client relationships, implementation, reporting). Dealix handles the product.
 4. **First customer is the hardest.** We'll support you on the first 2 closes as partner onboarding.
 
@@ -244,7 +244,7 @@ Dealix is an Arabic-first AI sales operator for Saudi B2B. Launched April 2026 b
 
 ### For Dealix internally
 - Share on LinkedIn + X (extracted insights as threads)
-- Email as lead magnet to prospects who ask "what do you mean by Arabic AI SDR?"
+- Email as lead magnet to prospects who ask "what do you mean by an Arabic-first follow-up radar?"
 - Reference in demos ("based on our live analysis of 60+ Saudi B2B sites...")
 - Use the agency section as onboarding material for new partners
 

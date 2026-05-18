@@ -10,13 +10,13 @@ Paired with `dealix_demo_script_30min.md` (structural) and `dealix_battlecards.m
 > **سامي:** "السلام عليكم [الاسم]. شكراً على الوقت. قبل ما نبدأ، هل تبغى أشرح Dealix سريع أو نقف 30 ثانية على شغلكم الحالي؟"
 
 **If they say "خلاص اشرح":**
-> "تمام. Dealix بسيط: AI sales rep بالعربي الخليجي. يرد على leads شركتكم خلال 45 ثانية، يؤهلهم، ويحجز demos. 3 أشياء تميزه:
-> 1. عربي طبيعي — ما يترجم
-> 2. يركب فوق CRM/booking اللي تستخدمونه
-> 3. يبدأ يدوي وبعدها automation — صفر مخاطرة"
+> "تمام. Dealix بسيط: نظام عمليات إيرادات بأسلوب الموافقة أولاً، بالعربي الخليجي. يُظهر أي lead يحتاج متابعة الآن، ويصيغ مسودّة الرسالة التالية — وفريقكم يراجع ويوافق ويرسل. 3 أشياء تميزه:
+> 1. مسودّات بعربي طبيعي — ما يترجم
+> 2. يركب فوق CRM اللي تستخدمونه
+> 3. الإنسان يراجع كل مسودّة قبل الإرسال — لا رد تلقائي ولا إرسال تلقائي"
 
 **If they say "خلنا نتكلم عن شغلنا أول":**
-> "تمام. كم lead شهرياً تستقبلون من الـ inbound؟ وكم % تعتقد يبرد قبل ما يوصل للمبيعات؟"
+> "تمام. كم lead شهرياً تستقبلون من الـ inbound؟ ومن يتابعهم — وكيف تعرفون بأيهم تبدأون؟"
 
 ---
 
@@ -40,26 +40,26 @@ Paired with `dealix_demo_script_30min.md` (structural) and `dealix_battlecards.m
 **Screen share:** dealix.me + backend dashboard
 
 ### Slide 1 — Problem (2 min)
-> "في السعودية، متوسط الرد على lead B2B = 4 ساعات. خلال هالساعات، 50% من العملاء قرّبوا منافس. هذا تسريب revenue."
+> "في السوق السعودي، كثير من الـ leads تدخل بلا نظام يُذكّر بمتابعتها. المنافس الذي يتابع أولاً يكسب الصفقة. هذا تسريب إيرادات بعد دخول الـ lead."
 
-### Slide 2 — Dealix in 30 seconds (3 min)
-Show the landing page prospector widget.
+### Slide 2 — Dealix radar in 30 seconds (3 min)
+Show the landing page radar widget.
 
-> "هذا الـ widget مباشر على dealix.me. أي زائر يكتب ICP، نرجع له قائمة leads مطابقة. جرب:"
+> "هذا الرادار مباشر على dealix.me. يرتّب الـ leads بالأولوية حسب إشارات المتابعة. جرب:"
 
 **Type a scenario related to their business:**
 > "شركات SaaS سعودية بحجم 20-100 موظف تستخدم HubSpot"
 
 Show it returning real results.
 
-### Slide 3 — Real Arabic conversation (3 min)
-Open WhatsApp-style mockup. Type a fake lead question:
-> "السلام عليكم، كم سعر باقة Enterprise؟"
+### Slide 3 — Draft message review (3 min)
+Open the draft-review panel. Show a sample lead context:
+> "lead سأل عن باقة Enterprise وما تابعه أحد منذ يومين."
 
-Show Dealix response in 45 seconds:
+Show the Dealix-drafted follow-up message:
 > "وعليكم السلام، Enterprise يعتمد على عدد الموظفين. ممكن تخبرني كم موظف في شركتكم حالياً؟ وإيش المشكلة الأساسية اللي تحاولون حلها؟"
 
-> **سامي:** "شفت الفرق؟ هذا رد طبيعي سعودي، يسأل البيانات المهمة، ويحجز demo في 3 رسائل كحد أقصى."
+> **سامي:** "شفت؟ Dealix صاغ هذه المسودّة بالعربي السعودي الطبيعي. الموظف عندكم يراجعها، يعدّلها لو حب، يوافق، ثم يرسلها بنفسه. Dealix ما يرسل شيء — والقرار يبقى عندكم."
 
 ### Slide 4 — Tech stack detection (2 min)
 Open `/api/v1/prospect/enrich-tech` with their domain:
@@ -67,16 +67,16 @@ Open `/api/v1/prospect/enrich-tech` with their domain:
 > **سامي:** "خلنا نشوف شركتكم تحديداً..." 
 
 Enter their domain. Show detected tools.
-> "مثلاً، شفت إن موقعكم يستخدم HubSpot + WhatsApp widget. Dealix يركب فوق الاثنين — الـ WhatsApp يصير autopilot، والـ HubSpot يصير CRM للـ leads المؤهلة."
+> "مثلاً، شفت إن موقعكم يستخدم HubSpot. Dealix يركب فوقه — يقرأ الـ leads من HubSpot، يرتّبها في الرادار، ويصيغ مسودّات المتابعة. الإرسال يبقى بيدكم عبر قنواتكم المعتمدة."
 
-### Slide 5 — Pilot offer (3 min)
-> "خلنا نتحدث عن الـ pilot. 7 أيام، ريال واحد، قابل للاسترداد 100% إذا ما أعجبك.
+### Slide 5 — Entry offer (3 min)
+> "خلنا نتحدث عن نقطة الدخول. تبدأ بتشخيص مصغّر مجاني — 0 ريال. بعده Revenue Proof Sprint بـ 499 ريال، مرة واحدة.
 >
-> ما يسير خلال الـ 7 أيام:
-> - أنا شخصياً أضبط الـ prompts لشركتكم
-> - أرد على 10-25 lead حقيقي خلال الأسبوع
-> - يومياً ترسل لك تقرير قصير: كم lead، كم مؤهل، كم حجز موعد
-> - بعد 7 أيام، نحكي — تكمّل Starter (999) أو نقف بدون التزام."
+> ما يسير خلال الـ Sprint:
+> - أضبط الرادار والمسودّات لسياق شركتكم
+> - Dealix يُظهر متابعات leads حقيقية ويصيغ المسودّات لمراجعة فريقكم
+> - تقرير قصير: كم lead في الرادار، كم مسودّة جاهزة للمراجعة
+> - بعد الـ Sprint، نحكي — تنتقلون إلى Growth Ops Monthly (2,999 ريال/شهر) أو نقف بدون التزام."
 
 ---
 
@@ -85,19 +85,19 @@ Enter their domain. Show detected tools.
 **Common objections (have scripts ready):**
 
 ### "كم السعر؟"
-> "Starter 999 شهري، Growth 2,999، Scale 7,999. الاختيار يعتمد على حجم leads. بس قبل ما ندخل في الأسعار، هل أقدر أسأل: الـ pilot بريال واحد، معقول؟"
+> "السلّم: تشخيص مجاني، ثم Revenue Proof Sprint 499 ريال مرة واحدة، ثم Data-to-Revenue Pack 1,500 ريال، ثم Growth Ops Monthly 2,999 ريال/شهر. بس قبل ما ندخل في الأسعار: نبدأ بالتشخيص المجاني، معقول؟"
 
 ### "هل العربي مضبوط؟"
-> "جربت ChatGPT العربي؟ سيء جداً. Dealix مختلف — prompts مخصصة للخليجي. أقدر أرسل لك الآن 3 أمثلة من ردود فعلية قبل ما نقفل — لو ما عجبتك، نوقف."
+> "Dealix يصيغ المسودّات بعربي خليجي طبيعي. أقدر أعرض لك الآن أمثلة من مسودّات فعلية — وأنت تحكم. وتذكّر: المسودّة دائماً تمر بمراجعة موظفكم قبل الإرسال."
 
 ### "عندنا CRM"
-> "Dealix ما يستبدل CRM. يشتغل قبله: يرد، يأهل، ويسلم الـ CRM قائمة جاهزة. تكامل مباشر HubSpot/Salesforce/Zoho، أو webhook مع أي أداة."
+> "Dealix ما يستبدل CRM. يشتغل فوقه: يقرأ الـ leads، يرتّبها في رادار أولوية، ويصيغ مسودّات المتابعة. تكامل مباشر HubSpot/Salesforce/Zoho، أو webhook مع أي أداة."
 
 ### "خلنا ندرس ونرجع لك"
 > "تمام. سؤال بسيط: إيش بالضبط تبغى تقرر فيه؟ قد يكون شي أقدر أجيب عليه الآن. وإذا لا، أعطني تاريخ محدد نرجع فيه."
 
 ### "ما عندنا ميزانية"
-> "أفهم. Pilot بريال واحد لمدة 7 أيام — هدفه بالظبط يحل هذا: نثبت القيمة قبل أي التزام. بعد 7 أيام، تقرر ببيانات فعلية."
+> "أفهم. التشخيص المصغّر مجاني — 0 ريال — وهدفه بالضبط يحل هذا: نُظهر القيمة قبل أي التزام. بعده، Sprint بـ 499 ريال مرة واحدة. تقرر ببيانات فعلية."
 
 ---
 
@@ -106,13 +106,13 @@ Enter their domain. Show detected tools.
 Three possible closes:
 
 ### Strong close (if they're engaged):
-> "خلنا نبدأ pilot الاثنين الجاي. أرسل لك تفاصيل الدفع (ريال واحد) وعقد الـ pilot الآن. مناسب؟"
+> "خلنا نبدأ بالتشخيص المجاني هذا الأسبوع، وإذا ناسبكم ننتقل لـ Revenue Proof Sprint (499 ريال). أرسل لك التفاصيل الآن. مناسب؟"
 
 ### Medium close:
 > "هل تتوقع القرار خلال 48 ساعة؟ أضع لك reminder وأتابع معك."
 
 ### Soft close:
-> "إذا تبغى، أرسل لك الـ pilot agreement الآن، وتراجعه على راحتك. لو قررت المشي، ترد بـ 'نعم' وأبدأ الـ onboarding."
+> "إذا تبغى، أرسل لك تفاصيل التشخيص المجاني واتفاقية الـ Sprint الآن، وتراجعها على راحتك. لو قررت المشي، ترد بـ 'نعم' وأبدأ الـ onboarding."
 
 **Always end with one concrete next step + a specific date.**
 
@@ -131,10 +131,10 @@ Before hanging up:
 
 شكراً على الوقت اليوم. ملخص النقاط اللي تكلمنا عنها:
 
-- الوضع الحالي: [X leads/month]، [Y response time]
+- الوضع الحالي: [X leads/month]، [كيف تتم المتابعة اليوم]
 - المشكلة الأساسية: [specific pain they mentioned]
-- حل Dealix: AI sales rep بالعربي، يرد 45s، يؤهل، يحجز demo
-- التكلفة: Starter 999 شهري / Pilot 1 ريال × 7 أيام
+- حل Dealix: رادار يُظهر أولوية المتابعة + مسودّات بالعربي بموافقة بشرية، بلا إرسال تلقائي
+- نقطة الدخول: تشخيص مصغّر مجاني (0 ريال) ثم Revenue Proof Sprint (499 ريال، مرة واحدة)
 
 الخطوة التالية:
 [Specific next step + date]

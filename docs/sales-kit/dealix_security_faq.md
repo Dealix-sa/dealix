@@ -177,9 +177,9 @@ Dealix مستضاف على AWS في منطقة Frankfurt (eu-central-1) افتر
 | Penetration Test Report | Enterprise | email + NDA |
 | DPA (Data Processing Agreement) | كل العملاء | توقيع مع العقد |
 | Security Whitepaper | public | download |
-| Privacy Policy | public | dealix.ai/privacy |
-| Terms of Service | public | dealix.ai/terms |
-| Sub-processors List | public | dealix.ai/subprocessors |
+| Privacy Policy | public | dealix.me/privacy |
+| Terms of Service | public | dealix.me/terms |
+| Sub-processors List | public | dealix.me/subprocessors |
 
 ---
 
@@ -200,9 +200,9 @@ SIG Lite مُتاح مكتمل.
 
 ## 📞 تواصل Security
 
-**Security reports:** security@dealix.ai (coming — حالياً sami.assiri11@gmail.com)
+**Security reports:** security@dealix.me (coming — حالياً sami.assiri11@gmail.com)
 **Bug bounty:** hackerone.com/dealix (private — request invite)
-**Abuse/compliance:** legal@dealix.ai
+**Abuse/compliance:** legal@dealix.me
 **DPO contact:** sami.assiri11@gmail.com
 
 **Response time للـ security reports:**

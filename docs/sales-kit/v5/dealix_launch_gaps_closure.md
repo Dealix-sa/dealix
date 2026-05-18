@@ -30,8 +30,8 @@
 - **Why this matters**: Everything else is theoretical until a real payment flows
 - **Steps**:
   1. Verify Moyasar secret rotated (urgent manual step)
-  2. Create a test invoice: `python -c "import asyncio; from dealix.payments.moyasar import MoyasarClient; c = MoyasarClient(); print(asyncio.run(c.create_invoice(amount=100, currency='SAR', description='Test', callback_url='https://dealix.sa/payment/callback')))"`
-  3. Pay 1 SAR via returned invoice URL
+  2. Create the internal `pilot_1sar` test invoice: `python -c "import asyncio; from dealix.payments.moyasar import MoyasarClient; c = MoyasarClient(); print(asyncio.run(c.create_invoice(amount=100, currency='SAR', description='pilot_1sar internal test', callback_url='https://dealix.me/payment/callback')))"`
+  3. Pay 1 SAR via returned invoice URL (internal payment-verification test only — NOT a customer offer)
   4. Confirm webhook received: `tail -f /var/log/dealix/webhooks.log`
   5. Confirm lead status updated in DB: `SELECT * FROM leads WHERE status='paid' LIMIT 1`
 - **DoD**: Invoice URL → payment → webhook → DB row updated — all 4 steps green

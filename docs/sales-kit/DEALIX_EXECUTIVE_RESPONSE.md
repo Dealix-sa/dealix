@@ -23,7 +23,7 @@
 - 0 paying customers
 - 0 active leads in CRM
 - No CRM setup (HubSpot empty)
-- No domain (`dealix.ai` not resolving)
+- No domain (`dealix.me` not resolving)
 - No Moyasar merchant account verified (unknown — unverifiable from outside)
 - No ZATCA e-invoicing workflow defined operationally
 - No case studies, no social proof, no reviews
@@ -69,7 +69,7 @@
 - On-call: **FOUNDER IS ON-CALL 24/7 (single point of failure)**
 
 ### C) Revenue
-- Pricing: **DEFINED** (999/2999/7999)
+- Pricing: **DEFINED** (Free Mini Diagnostic 0 / Revenue Proof Sprint 499 one-time / Data-to-Revenue Pack 1,500 / Growth Ops Monthly 2,999/mo / Support OS Add-on 1,500/mo / Executive Command Center 7,500/mo / Agency Partner OS custom)
 - Moyasar integration: **CODED, NOT LIVE**
 - Webhook: **CODED, NOT CONFIGURED IN MOYASAR**
 - Invoice generation: **TEMPLATE ONLY, NOT AUTOMATED**
@@ -172,10 +172,10 @@
 
 | # | Action | Time | Blocker |
 |---|--------|------|---------|
-| P1.1 | Domain `dealix.ai` or `dealix.sa` registered + DNS | 30 min | Brand |
+| P1.1 | Domain `dealix.me` registered + DNS | 30 min | Brand |
 | P1.2 | Landing page deployed (Vercel/Netlify) | 30 min | Conversion |
 | P1.3 | Marketers Page deployed | 60 min | Partner motion |
-| P1.4 | Google Workspace email (`sami@dealix.ai`) | 20 min | Credibility |
+| P1.4 | Google Workspace email (`sami@dealix.me`) | 20 min | Credibility |
 | P1.5 | HubSpot Free configured + forms | 60 min | CRM |
 | P1.6 | Calendly account with demo event type | 15 min | Booking |
 | P1.7 | 4 more LinkedIn DMs sent | 80 min | Pipeline |
@@ -188,8 +188,8 @@
 | # | Action | Time | Purpose |
 |---|--------|------|---------|
 | P2.1 | CR (company registration) | 1-3 days | Enterprise contracts |
-| P2.2 | First signed pilot (1 SAR) | External | Proof |
-| P2.3 | First paid customer (999+ SAR) | External | Revenue |
+| P2.2 | First signed Revenue Proof Sprint (499 SAR) | External | Proof |
+| P2.3 | First recurring customer (Growth Ops Monthly, 2,999 SAR/mo) | External | Revenue |
 | P2.4 | First case study drafted | 1 day | Social proof |
 | P2.5 | Partner outreach — 10 agencies | 5 days | Growth |
 | P2.6 | Weekly content cadence active | Ongoing | Inbound |
@@ -218,7 +218,7 @@
 **Purpose:** Convert marketers, agencies, and freelancers into either direct users, service providers, or partners.
 **Not:** A second landing page. A strategic revenue page.
 
-### URL: `dealix.ai/for-marketers`
+### URL: `dealix.me/for-marketers`
 
 ### Page sections (in order)
 
@@ -231,56 +231,56 @@
 
 Path A — **Use Dealix** (in-house marketer)
 - Who: In-house marketing/growth lead at a B2B company
-- What: Automate lead capture, qualification, booking
-- Value: Replace 2-3 BDR hires with AI
-- CTA: `جرّب pilot بـ 1 ريال`
+- What: Surface which leads need follow-up; review and approve the drafted reply
+- Value: Less time lost tracking follow-ups; the team decides on every message
+- CTA: `ابدأ بالتشخيص المجاني`
 
 Path B — **Deliver services with Dealix** (freelancer/consultant)
 - Who: Freelance marketer, growth consultant, CRM specialist
-- What: Use Dealix as the engine for client implementations
-- Value: Offer "Sales Automation Setup" as a service
-- Revenue: Bill 5,000-15,000 SAR per client setup + 20% ongoing commission
+- What: Use Dealix as the follow-up radar for client implementations
+- Value: Offer "Follow-up Radar Setup" as a service
+- Revenue: Bill 5,000-15,000 SAR per client setup + 5,000 SAR referral bonus per closed deal
 - CTA: `سجّل كـ service provider`
 
 Path C — **Agency partner** (full agency)
 - Who: Marketing agency (15-100 employees)
-- What: Service exchange OR white-label reseller
-- Value: Offer AI sales rep to all your clients without building it
-- Revenue: 25% of MRR commission OR free Dealix in exchange for services
+- What: Agency Partner OS — managed service OR white-label (white-label unlocks after 3 proof packs)
+- Value: Offer a governed, draft-only follow-up radar to all your clients without building it
+- Revenue: 15–30% revenue share on managed client subscriptions
 - CTA: `احجز partner meeting`
 
 **Section 3 — What Marketers Can Do With Dealix**
 
 Workflow bank (each is a sellable service):
-1. Lead capture setup (forms + Dealix chat on client site)
-2. Qualification scripting (BANT customized per industry)
-3. Calendar integration (Calendly/Google/Outlook)
+1. Lead capture setup (forms on client site feeding the follow-up radar)
+2. Follow-up radar setup (which leads surface, and when)
+3. Calendar integration — suggested slots as drafts the client team confirms
 4. CRM sync (HubSpot/Zoho/Salesforce)
-5. WhatsApp automation
-6. Email nurture sequences
+5. WhatsApp draft replies (queued for human approval, no auto-send)
+6. Email draft sequences (approved by the client team)
 7. Proposal routing
-8. ROI reporting for end-client
-9. A/B test optimization
+8. Pipeline reporting for end-client
+9. Draft A/B test optimization
 10. Multi-channel attribution
 
 Each workflow = 1 sellable deliverable with pricing guidance.
 
 **Section 4 — Service Packages (Suggested)**
 
-Starter Service Package — 3,000 SAR one-time
+Setup Service Package — 3,000 SAR one-time
 - Setup Dealix for 1 client
-- Configure 1 qualification flow
+- Configure 1 follow-up radar
 - Connect 1 CRM
 - 60-minute handoff training
 
-Growth Service Package — 8,000 SAR one-time + 20% of client's Dealix MRR
-- All of Starter
-- Custom BANT scripting
-- WhatsApp + Email integration
+Managed Service Package — 8,000 SAR one-time + share of client's Dealix subscription
+- All of Setup Service
+- Sector-tuned draft templates
+- WhatsApp + Email draft integration
 - 30-day optimization support
 
-Scale Service Package — 25,000 SAR one-time + 25% ongoing
-- All of Growth
+Agency Service Package — 25,000 SAR one-time + revenue share
+- All of Managed Service
 - Multi-language
 - Advanced dashboards
 - Ongoing monthly optimization
@@ -384,7 +384,7 @@ Day 90: Tier promotion eligibility
 
 ### Anti-abuse rules
 - No cold-calling Dealix's existing customers
-- No off-price reselling (minimum 999 SAR/month for end customer)
+- No off-price reselling (Growth Ops Monthly at 2,999 SAR/month is the standard recurring price for end customers)
 - No competing with Dealix in same segment
 - Clear territorial respect
 
@@ -400,10 +400,10 @@ Day 90: Tier promotion eligibility
 ### The 7 layers of revenue (verify each)
 
 **Layer 1 — Pricing Architecture** ✅ DONE
-- 999 / 2,999 / 7,999 SAR
-- Pilot 1 SAR / 7 days
+- Free Mini Diagnostic 0 → Revenue Proof Sprint 499 SAR (one-time) → Data-to-Revenue Pack 1,500 → Growth Ops Monthly 2,999/mo → Support OS Add-on 1,500/mo → Executive Command Center 7,500/mo
+- Agency Partner OS custom + 15–30% revenue share; referral 5,000 SAR/closed deal
+- `pilot_1sar` 1 SAR charge = internal Moyasar payment-verification test only — NOT a customer offer
 - Annual discount 15%
-- Enterprise custom
 
 **Layer 2 — Quote Path** 🟡 PARTIAL
 - Enterprise proposal template: exists
@@ -540,7 +540,7 @@ All 7 layers must be verified with a real 1 SAR transaction that:
 15. Configure Sentry email alerts
 
 ### Rest of this week (8 hours total, spread over 4 days)
-16. Register `dealix.ai` or `dealix.sa` (whichever available)
+16. Register `dealix.me` (official domain)
 17. Deploy landing page to Vercel/Netlify with domain
 18. Deploy marketers page
 19. Google Workspace setup
@@ -580,7 +580,7 @@ All 7 layers must be verified with a real 1 SAR transaction that:
 - [ ] Follow-up scheduled for day +3
 
 ### Marketers Page is DONE when:
-- [ ] Page live at `dealix.ai/for-marketers`
+- [ ] Page live at `dealix.me/for-marketers`
 - [ ] All 10 sections present
 - [ ] Form submissions working (test)
 - [ ] CTA flow tested (application → Calendly)
@@ -686,9 +686,9 @@ These are the honest gates. Code-complete without them is just expensive documen
 
 | Deliverable | Owner | DoD | Metric |
 |-------------|-------|-----|--------|
-| Domain + DNS live | Sami | dealix.ai resolves | Response 200 |
+| Domain + DNS live | Sami | dealix.me resolves | Response 200 |
 | Landing + Marketers Page | Sami + me | Published on domain | Analytics pixel fires |
-| Google Workspace email | Sami | sami@dealix.ai works | Test email sent |
+| Google Workspace email | Sami | sami@dealix.me works | Test email sent |
 | HubSpot Free CRM | Sami | 1 contact created | Contact visible |
 | 4 more LinkedIn DMs | Sami | Logged in tracker | 5 total sent |
 | First demo (if reply) | Sami | Conducted | Recording saved |
@@ -699,8 +699,8 @@ These are the honest gates. Code-complete without them is just expensive documen
 
 | Deliverable | Owner | DoD | Metric |
 |-------------|-------|-----|--------|
-| First pilot signed | Sami + customer | 1 SAR paid | Pilot active |
-| First paid customer | Sami + customer | 999+ SAR paid | First MRR |
+| First Revenue Proof Sprint signed | Sami + customer | 499 SAR paid | Sprint active |
+| First recurring customer | Sami + customer | Growth Ops Monthly 2,999 SAR paid | First MRR |
 | First case study drafted | Sami | 2-page doc | Customer quote |
 | 10 partner contacts | Sami | 10 LinkedIn messages | 2 partner calls booked |
 | CR registration (if revenue confirmed) | Sami | CR number issued | Bank linked |

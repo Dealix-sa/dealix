@@ -1,19 +1,22 @@
-# 🗺️ Dealix — Product Roadmap Q2-Q4 2026
+# Dealix — Product Roadmap Q2-Q4 2026
 
-**مبدأ البناء:** Ship → Measure → Iterate (أسبوعياً)
-**فلسفة التركيز:** Revenue-first features فقط
-**القيد:** لا feature بدون customer request موثّق (3+ طلبات)
+**ما هو Dealix:** نظام تشغيل الإيرادات بعد وصول الـ lead والعمليات المُدارة بحوكمة — رادار متابعة قائم على الموافقة، يعمل بمبدأ المسودّة فقط. يُظهر أي عميل يحتاج رداً، ويجهّز مسودّة الرسالة التالية؛ الإنسان يراجع ويوافق ويرسل.
+
+**مبدأ البناء:** Ship ← Measure ← Iterate (أسبوعياً)
+**فلسفة التركيز:** ميزات تخدم الإيراد أولاً.
+**القيد:** لا feature بدون customer request موثّق (3+ طلبات).
+
+> **حدود ثابتة في كل المراحل:** لا رد آلي، لا حجز آلي، لا إرسال آلي، لا تأهيل BANT آلي. أي مخرَج للعميل الخارجي يمرّ بمراجعة وموافقة بشرية.
 
 ---
 
-## 🎯 رؤية المنتج
+## رؤية المنتج
 
 **في Q4 2026، Dealix يكون:**
-- AI sales rep الأكثر دقة في اللهجة الخليجية
-- متكامل مع 15+ أداة sales/CRM
-- يخدم 120+ شركة سعودية/خليجية
-- Net Revenue Retention > 120%
-- مُعيار Category في "AI BDR للسوق العربي"
+- رادار المتابعة الأدق في اللهجة الخليجية لمسودّات الردود.
+- متكامل مع عدد من أدوات المبيعات/الـ CRM.
+- يخدم عدداً متنامياً من الشركات السعودية/الخليجية.
+- مرجعاً في فئة "نظام تشغيل الإيرادات بعد الـ lead للسوق العربي".
 
 ---
 
@@ -37,22 +40,20 @@
 #### يونيو — Integrations v1
 - [ ] HubSpot integration (read/write contacts)
 - [ ] Zoho CRM integration
-- [ ] Google Calendar direct booking
-- [ ] Calendly native integration
-- [ ] WhatsApp Business API (send/receive)
+- [ ] Google Calendar — اقتراح مواعيد كمسودّة للموافقة (لا حجز آلي)
+- [ ] WhatsApp Business API — مسودّات صادرة بانتظار موافقة المرسِل (لا إرسال آلي)
 
 #### يوليو — Polish
 - [ ] Analytics dashboard للعملاء (conversion funnel)
-- [ ] A/B test framework للـ prompts
+- [ ] إطار اختبار A/B لقوالب المسودّات
 - [ ] Multi-language support (عربي + انجليزي hybrid)
 - [ ] Role-based access (admin/user/viewer)
 - [ ] API للعملاء (BYO use cases)
 
-### Q2 Milestones
-- 🎯 20 عميل مدفوع
-- 🎯 60K MRR
-- 🎯 NPS > 50
-- 🎯 Zero critical outages
+### Q2 Milestones (مستهدفات تقديرية)
+- أول مجموعة عملاء مدفوعين عبر Revenue Proof Sprint.
+- استقرار تشغيلي بلا انقطاعات حرجة.
+- مؤشر رضا عملاء إيجابي.
 
 ---
 
@@ -66,31 +67,29 @@
 ### Features (Q3)
 
 #### أغسطس — Self-Serve
-- [ ] Public signup (dealix.ai/signup)
-- [ ] Free trial flow (7 days, credit card-free)
+- [ ] Public signup (dealix.me/signup)
+- [ ] مسار الدخول عبر Free Mini Diagnostic
 - [ ] In-app onboarding tutorial
 - [ ] Self-service integrations (no code)
-- [ ] Template library (BANT questions per industry)
+- [ ] Template library (قوالب مسودّات حسب القطاع)
 
-#### سبتمبر — Advanced AI
-- [ ] Sentiment analysis (know if lead is frustrated)
-- [ ] Multi-turn reasoning (complex sales scenarios)
-- [ ] Voice mode (AI يتكلم بالصوت للـ WhatsApp)
-- [ ] Personality tuning (formal/casual per brand)
-- [ ] Memory per lead (remembers previous conversations)
+#### سبتمبر — Advanced Drafting
+- [ ] Sentiment analysis (تمييز إن كان العميل منزعجاً) — كإشارة للمراجِع
+- [ ] Multi-turn reasoning لمسودّات السيناريوهات المعقّدة
+- [ ] صياغة المسودّات بنبرة قابلة للضبط (رسمية/ودّية حسب العلامة)
+- [ ] Memory per lead (سياق المحادثات السابقة)
 
 #### أكتوبر — Retention
-- [ ] Health score (predict churn)
-- [ ] Success manager workflows (proactive check-ins)
-- [ ] Usage alerts (low activity triggers)
-- [ ] Expansion prompts (upsell opportunities)
-- [ ] Referral program launch
+- [ ] Health score (مؤشر مبكّر لاحتمال التسرّب)
+- [ ] Success manager workflows (متابعات استباقية)
+- [ ] Usage alerts (تنبيهات انخفاض النشاط)
+- [ ] Expansion prompts (فرص توسّع مُثبتة بأدلة)
+- [ ] إطلاق برنامج الإحالات
 
-### Q3 Milestones
-- 🎯 60 عميل
-- 🎯 165K MRR
-- 🎯 Churn < 3%
-- 🎯 50% من الـ signups self-serve
+### Q3 Milestones (مستهدفات تقديرية)
+- نمو قاعدة العملاء.
+- نسبة معتبرة من التسجيلات عبر المسار الذاتي.
+- تدفّق inbound عضوي يتجاوز الاكتساب المدفوع.
 
 ---
 
@@ -107,9 +106,9 @@
 - [ ] SSO (SAML, Google, Microsoft)
 - [ ] Role hierarchy (multi-team orgs)
 - [ ] Audit logs
-- [ ] Custom domain (chat.yourcompany.com)
-- [ ] White-label option
-- [ ] SLA guarantees
+- [ ] Custom domain (app.yourcompany.com)
+- [ ] White-label option (مرتبط بـ Agency Partner OS بعد 3 حزم إثبات)
+- [ ] التزامات SLA تشغيلية موثّقة
 
 #### ديسمبر — UAE Launch
 - [ ] Arabic dialect UAE tuning
@@ -119,17 +118,15 @@
 - [ ] Case studies from UAE
 
 #### يناير 2027 — Intelligence Layer
-- [ ] Lead scoring AI (beyond BANT)
-- [ ] Conversation insights (what works, what doesn't)
-- [ ] Industry benchmarks (see how you compare)
-- [ ] Predictive pipeline (forecast next quarter)
-- [ ] Auto-optimization (AI improves itself)
+- [ ] Lead prioritization signals (إشارات ترتيب أولوية المتابعة)
+- [ ] Conversation insights (ما الذي ينجح وما لا ينجح)
+- [ ] Industry benchmarks (مقارنة مجمّعة)
+- [ ] Predictive pipeline (توقّع تقديري للربع القادم)
+- [ ] تحسين القوالب بناءً على نتائج المراجعة البشرية
 
-### Q4 Milestones
-- 🎯 120 عميل
-- 🎯 360K MRR (4.3M ARR)
-- 🎯 10 عميل UAE
-- 🎯 Seed round closed ($1-2M)
+### Q4 Milestones (مستهدفات تقديرية)
+- توسّع قاعدة العملاء داخل السعودية مع أول عملاء في الإمارات.
+- إغلاق جولة تمويل أولية.
 
 ---
 
@@ -192,10 +189,10 @@
 
 **Q2 OKRs (مثال):**
 - **O:** Launch Dealix للإنتاج بنجاح
-  - **KR1:** 20 عميل مدفوع (pilot → Starter)
-  - **KR2:** 99.9% uptime
+  - **KR1:** أول مجموعة عملاء مدفوعين (Free Mini Diagnostic ← Revenue Proof Sprint ← Growth Ops Monthly)
+  - **KR2:** استقرار تشغيلي عالٍ بلا انقطاعات حرجة
   - **KR3:** 3 integrations live
-  - **KR4:** NPS > 50
+  - **KR4:** مؤشر رضا عملاء إيجابي
 
 **تحديث أسبوعي، مراجعة شهرية، retrospective quarterly.**
 
@@ -205,16 +202,15 @@
 
 ### Pending tests (نجربها بعد MVP):
 
-1. **Pricing A/B test:** 999 vs 1,299 لـ Starter
-2. **Free trial length:** 7 vs 14 يوم
-3. **Onboarding video:** مع vs بدون
-4. **BANT questions:** 5 vs 8 vs 12
-5. **Handoff timing:** فوراً vs 1 دقيقة delay
-6. **Booking friction:** 1-click vs verify-then-book
-7. **Language mix:** عربي فقط vs ثنائي
-8. **Voice hybrid:** نص + صوت notes
+1. **Diagnostic-to-Sprint conversion:** صياغات مختلفة لعرض Revenue Proof Sprint (499 ريال)
+2. **Onboarding video:** مع vs بدون
+3. **عمق المسودّة:** ملخّص مختصر vs ملخّص موسّع لكل lead
+4. **توقيت اقتراح المتابعة:** فوري vs مع تأخير قصير
+5. **شكل المراجعة:** مسودّة واحدة vs بدائل متعددة للموافقة
+6. **Language mix:** عربي فقط vs ثنائي
+7. **قوالب المسودّات:** نبرة رسمية vs ودّية حسب القطاع
 
-كل experiment: 2 أسابيع، minimum 50 عينة، إما ship أو kill.
+كل experiment: 2 أسابيع، عيّنة كافية، إما ship أو kill.
 
 ---
 
@@ -285,22 +281,22 @@
 ## 🎯 نقاط التحقق النجاح
 
 ### Q2 end:
-- [ ] 20 عملاء
-- [ ] زمن رد أول lead: < 60 ثانية
-- [ ] 0 outages >5 دقائق
-- [ ] 3+ positive case studies
+- [ ] أول مجموعة عملاء مدفوعين
+- [ ] الرادار يُظهر leads المتابعة ويجهّز المسودّة خلال زمن قصير من الإشارة
+- [ ] لا انقطاعات تشغيلية تتجاوز 5 دقائق
+- [ ] 3+ حزم إثبات (proof packs) — case-safe ما لم يوافق العميل على الذكر بالاسم
 
 ### Q3 end:
-- [ ] 60 عميل
-- [ ] Self-serve: 50%+ signups
-- [ ] Organic inbound > paid acquisition
-- [ ] Arabic dialect accuracy > 95% (measured)
+- [ ] نمو قاعدة العملاء
+- [ ] نسبة معتبرة من التسجيلات ذاتية الخدمة
+- [ ] inbound عضوي يتجاوز الاكتساب المدفوع
+- [ ] دقّة قابلة للقياس في اللهجة الخليجية لمسودّات الردود
 
 ### Q4 end:
-- [ ] 120 عملاء
-- [ ] UAE market: 10 عملاء
-- [ ] Seed round: closed
-- [ ] Team: 5-7 شخص
+- [ ] توسّع قاعدة العملاء داخل السعودية
+- [ ] أول عملاء في سوق الإمارات
+- [ ] إغلاق جولة تمويل أولية
+- [ ] فريق 5-7 أشخاص
 
 ---
 
