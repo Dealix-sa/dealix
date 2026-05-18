@@ -76,18 +76,18 @@ _LEGACY_OFFER_ROUTES: dict[str, dict[str, Any]] = {
         "best_channel": "phone_task_then_email", "pricing_tier": "Pilot 499",
     },
     "construction": {
-        "primary_offer": "pilot_999_quote_request_qualification",
+        "primary_offer": "pilot_499_quote_request_qualification",
         "value_prop": "نفرز RFQs ونجمع المواصفات قبل تسعير المشروع",
         "headline_pain": "RFQ تتوزع بين قنوات متعددة بدون فرز موحد",
         "kpi": "RFQs qualified × pricing-engineer time saved",
-        "best_channel": "phone_task", "pricing_tier": "Pilot 999",
+        "best_channel": "phone_task", "pricing_tier": "Pilot 499",
     },
     "hospitality": {
-        "primary_offer": "pilot_999_booking_inquiry_assistant",
+        "primary_offer": "pilot_499_booking_inquiry_assistant",
         "value_prop": "نرد فوراً على استفسارات MICE/قاعات/إفطار-سحور ونحجز معاينات",
         "headline_pain": "استفسارات بأي ساعة + موظف غير متاح = حجز ضائع",
         "kpi": "MICE inquiries × site visits booked",
-        "best_channel": "phone_task_or_email", "pricing_tier": "Pilot 999",
+        "best_channel": "phone_task_or_email", "pricing_tier": "Pilot 499",
     },
     "events": {
         "primary_offer": "pilot_499_event_inquiry_with_viewing_booking",
@@ -111,18 +111,18 @@ _LEGACY_OFFER_ROUTES: dict[str, dict[str, Any]] = {
         "best_channel": "phone_task", "pricing_tier": "Pilot 499",
     },
     "logistics": {
-        "primary_offer": "pilot_999_RFQ_response_under_60_seconds",
+        "primary_offer": "pilot_499_RFQ_response_under_60_seconds",
         "value_prop": "نرد على RFQ شحن خلال دقيقة بالعربي",
         "headline_pain": "10 دقائق فرق في الرد = خسارة عقد لمنافس",
         "kpi": "RFQs answered <60s × dispatch tickets opened",
-        "best_channel": "phone_or_email", "pricing_tier": "Pilot 999",
+        "best_channel": "phone_or_email", "pricing_tier": "Pilot 499",
     },
     "saas": {
-        "primary_offer": "pilot_999_saudi_arabic_inbound_response_layer",
+        "primary_offer": "pilot_499_saudi_arabic_inbound_response_layer",
         "value_prop": "رادار عمليات محكوم بالعربي الخليجي يكمل CRMكم — مسودات فقط، أنت توافق على كل إرسال",
         "headline_pain": "Saudi inbound leads باللغة العربية، الفريق يرد بالإنجليزية/ترجمة",
         "kpi": "Arabic-lead-to-demo conversion uplift",
-        "best_channel": "linkedin_manual_then_email", "pricing_tier": "Pilot 999",
+        "best_channel": "linkedin_manual_then_email", "pricing_tier": "Pilot 499",
     },
     "marketing_agency": {
         "primary_offer": "agency_partner_25pct_mrr",
@@ -447,7 +447,7 @@ async def customer_proof_pack(customer_id: str) -> dict[str, Any]:
         f"### اقتباس العميل\n"
         f"> [Sami: agree on quote with customer post-pilot]\n\n"
         f"### النتيجة\n"
-        f"العميل أكمل إلى Starter بـ 999 SAR/شهر.\n"
+        f"العميل أكمل إلى عمليات النمو الشهرية بـ 2,999 SAR/شهر.\n"
     )
 
     testimonial_request = (

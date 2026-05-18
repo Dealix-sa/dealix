@@ -548,15 +548,15 @@ async def inbound_handle(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
         "opt_out":              "تمام، تم إيقاف الرسائل. شكراً لوقتك.",
         "interested":           f"هلا! شكراً على اهتمامك. خلني أحجز معك 20 دقيقة demo بدون أي التزام — تقدر تختار موعدك هنا: {CAL}",
         "wants_demo":           f"ممتاز، نسوي demo. 20 دقيقة، اختار موعد: {CAL}",
-        "price":                f"Starter 999/شهر، Growth 2,999، Scale 7,999. في pilot بريال × 7 أيام بدون التزام. 20 دقيقة demo أفصّل الباقة المناسبة: {CAL}",
+        "price":                f"نبدأ بسبرنت إثبات الإيرادات 499 ريال × 7 أيام (مرة واحدة). بعدها عمليات النمو الشهرية 2,999 ريال/شهر، أو غرفة قيادة الإدارة 7,500 ريال/شهر. 20 دقيقة demo أفصّل العرض المناسب: {CAL}",
         "send_details":         f"تفاصيل سريعة: Dealix رادار عمليات محكوم — يعرض حالة كل عميل محتمل بعد وصوله، ويكتب الرسالة التالية المقترحة كمسودة في طابور موافقة. مسودات فقط؛ أنت توافق على كل إرسال. الأفضل نشوفه معاً في 20 دقيقة على سيناريو شركتكم: {CAL}\nأو تصفح: https://dealix.me",
         "later":                "تمام. متى الوقت المناسب يحتمل يكون؟ سأرجع في نفس اليوم بالظبط.",
         "not_relevant":         "أحترم ذلك. سؤال أخير: هل تعرف شخص/شركة سعودية قد تستفيد من رادار عمليات محكوم للمتابعة بالعربي؟ 10% من MRR لـ 12 شهر لكل referral. شكراً على وقتك.",
-        "budget_objection":     "أفهم. عرضنا pilot بريال واحد × 7 أيام — قابل للاسترداد 100% — هدفه يثبت ROI قبل أي التزام. مناسب؟",
+        "budget_objection":     "أفهم. سبرنت إثبات الإيرادات 499 ريال × 7 أيام — استرداد كامل 100% خلال 14 يوم — هدفه يثبت القيمة قبل أي التزام شهري. مناسب؟",
         "already_has_crm":      "Dealix ما يستبدل CRM — يشتغل كطبقة أولى فوقه. يرد بالعربي، يؤهّل، ويسلّم الـ CRM قائمة leads جاهزة. تكامل مباشر HubSpot/Salesforce/Zoho/webhook. 20 دقيقة demo: " + CAL,
         "arabic_concern":       f"نقطة مهمة. Dealix خليجي حقيقي، ما يكتب 'حضرتك' و'تعطفكم'. 20 دقيقة demo تختبره بنفسك على سيناريو شركتكم: {CAL}",
         "privacy_concern":      f"مصمم PDPL-compliant: بياناتكم في سيرفرات السعودية، opt-out في كل email، audit log كامل. 20 دقيقة نناقش compliance + demo: {CAL}",
-        "partnership_interest": f"ممتاز. 3 tiers:\n- Referral: 10% MRR × 12 شهر\n- Agency: setup 3-15K + 20-30% MRR\n- White-label (Scale)\n20 دقيقة partner call: https://dealix.me/partners.html",
+        "partnership_interest": f"ممتاز. 3 مسارات شراكة:\n- Referral: 10% MRR × 12 شهر\n- Agency: setup 3-15K + 20-30% MRR\n- White-label عبر Agency Partner OS\n20 دقيقة partner call: https://dealix.me/partners.html",
         "referral_opportunity": "شكراً! 10% من MRR × 12 شهر لأي عميل يجي عبرك. ممكن تخبرني بمعلومات الشركة والشخص؟",
     }
     response_ar = responses.get(classification, responses["interested"])

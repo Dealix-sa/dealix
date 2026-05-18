@@ -111,23 +111,23 @@ async def _persist_payment_event(
 #   "metered"      — billed per usage event (LaaS R3 model)
 PLANS: dict[str, dict[str, Any]] = {
     "starter": {
-        "name": "Starter",
-        "amount_halalas": 99900,
-        "monthly": True,
-        "kind": "subscription",
-    },  # 999 SAR/mo
+        "name": "Revenue Proof Sprint",
+        "amount_halalas": 49900,
+        "monthly": False,
+        "kind": "one_off",
+    },  # 499 SAR one-off — revenue_proof_sprint_499 (canonical entry offer)
     "growth": {
-        "name": "Growth",
+        "name": "Growth Ops Monthly",
         "amount_halalas": 299900,
         "monthly": True,
         "kind": "subscription",
-    },  # 2,999 SAR/mo
+    },  # 2,999 SAR/mo — growth_ops_monthly_2999 (canonical)
     "scale": {
-        "name": "Scale",
-        "amount_halalas": 799900,
+        "name": "Executive Command Center",
+        "amount_halalas": 750000,
         "monthly": True,
         "kind": "subscription",
-    },  # 7,999 SAR/mo
+    },  # 7,500 SAR/mo — executive_command_center_7500 (canonical)
     "pilot_managed": {
         "name": "Managed Pilot (7 days)",
         "amount_halalas": 49900,

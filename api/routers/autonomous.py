@@ -373,12 +373,13 @@ async def company_intake(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
         "human_required": ["linkedin", "investor", "high_value_enterprise"],
     }
     offer_ladder = {
-        "free_audit": "20-min audit",
-        "pilot": "1 SAR × 7 days",
-        "starter": "999 SAR/mo",
-        "growth": "2,999 SAR/mo",
-        "scale": "7,999 SAR/mo",
-        "agency_partner": "Setup 3-15K + 20-30% MRR",
+        "free_diagnostic": "Free Mini Diagnostic — 0 SAR",
+        "revenue_proof_sprint": "Revenue Proof Sprint — 499 SAR one-time",
+        "data_to_revenue_pack": "Data-to-Revenue Pack — 1,500 SAR one-time",
+        "growth_ops": "Growth Ops Monthly — 2,999 SAR/mo",
+        "support_os_addon": "Support OS Add-on — 1,500 SAR/mo",
+        "executive_command_center": "Executive Command Center — 7,500 SAR/mo",
+        "agency_partner": "Agency Partner OS — custom",
     }
     automation_policy = {
         "default": "auto_inbound + human_approval_outbound",

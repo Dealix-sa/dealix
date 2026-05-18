@@ -26,10 +26,14 @@ async def test_list_plans_hides_pilot_1sar(async_client):
 async def test_list_plans_includes_subscription_tiers(async_client):
     res = await async_client.get("/api/v1/pricing/plans")
     plans = res.json()["plans"]
+    # `starter` maps to the canonical 499 Revenue Proof Sprint (one_off entry
+    # offer); `growth` and `scale` are the recurring canonical retainers.
     for key in ("starter", "growth", "scale"):
-        assert key in plans, f"missing subscription plan: {key}"
-        assert plans[key]["kind"] == "subscription"
+        assert key in plans, f"missing plan: {key}"
         assert plans[key]["amount_sar"] > 0
+    for key in ("growth", "scale"):
+        assert plans[key]["kind"] == "subscription"
+    assert plans["starter"]["kind"] == "one_off"
 
 
 @pytest.mark.asyncio
