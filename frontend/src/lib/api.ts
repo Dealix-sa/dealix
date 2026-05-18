@@ -170,6 +170,12 @@ export const api = {
   postApprovalReject: (approvalId: string, who: string, reason: string) =>
     apiClient.post(`/api/v1/approvals/${approvalId}/reject`, { who, reason }),
 
+  postApprovalBulkApprove: (approvalIds: string[], who: string) =>
+    apiClient.post("/api/v1/approvals/bulk-approve", {
+      who,
+      approval_ids: approvalIds,
+    }),
+
   getGmailDraftsToday: () =>
     apiClient.get("/api/v1/gmail/drafts/today"),
 

@@ -18,7 +18,7 @@ export function RegisterForm() {
   const locale = useLocale();
   const isAr = locale === "ar";
   const router = useRouter();
-  const { login } = useAuth();
+  const { register } = useAuth();
   const [form, setForm] = useState({
     fullName: "",
     company: "",
@@ -27,25 +27,36 @@ export function RegisterForm() {
     confirmPassword: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
-      toast.error(isAr ? "كلمات المرور غير متطابقة" : "Passwords do not match");
+      const msg = isAr ? "كلمات المرور غير متطابقة" : "Passwords do not match";
+      setError(msg);
+      toast.error(msg);
       return;
     }
     setIsLoading(true);
+    setError(null);
     try {
-      // In real app would call authApi.register(...)
-      // For demo, simulate login
-      await new Promise((r) => setTimeout(r, 1000));
+      await register({
+        email: form.email.trim(),
+        password: form.password,
+        fullName: form.fullName.trim(),
+        company: form.company.trim(),
+      });
       router.push(`/${locale}/dashboard`);
-    } catch {
-      toast.error(isAr ? "حدث خطأ في التسجيل" : "Registration failed");
+    } catch (err: unknown) {
+      const fallback = isAr ? "حدث خطأ في التسجيل" : "Registration failed";
+      const msg = err instanceof Error && err.message ? err.message : fallback;
+      setError(msg);
+      toast.error(msg);
     } finally {
       setIsLoading(false);
     }
@@ -134,6 +145,12 @@ export function RegisterForm() {
                 dir="ltr"
               />
             </div>
+
+            {error && (
+              <p className="text-sm text-destructive text-center" role="alert">
+                {error}
+              </p>
+            )}
 
             <Button type="submit" variant="gold" className="w-full" size="lg" disabled={isLoading}>
               {isLoading ? (

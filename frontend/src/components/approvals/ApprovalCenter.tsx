@@ -67,10 +67,16 @@ function ApprovalCard({
   request,
   onApprove,
   onReject,
+  selectable = false,
+  selected = false,
+  onToggleSelect,
 }: {
   request: ApprovalRequest;
   onApprove: (id: string) => void;
   onReject: (id: string) => void;
+  selectable?: boolean;
+  selected?: boolean;
+  onToggleSelect?: (id: string) => void;
 }) {
   const t = useTranslations("approvals");
   const locale = useLocale();
@@ -106,6 +112,15 @@ function ApprovalCard({
       <div className="p-5">
         <div className="flex items-start justify-between gap-3 mb-4">
           <div className="flex items-center gap-3">
+            {selectable && (
+              <input
+                type="checkbox"
+                checked={selected}
+                onChange={() => onToggleSelect?.(request.id)}
+                className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                aria-label={`select-${request.id}`}
+              />
+            )}
             <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center text-base">
               {agentIconMap[request.agentType]}
             </div>
@@ -197,10 +212,13 @@ export function ApprovalCenter() {
   const [policy, setPolicy] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [batchBusy, setBatchBusy] = useState(false);
 
   const loadAll = useCallback(async () => {
     setLoading(true);
     setError(null);
+    setSelected(new Set());
     try {
       const [pRes, hRes, gRes, lRes, polRes] = await Promise.all([
         api.getApprovalsPending(),
@@ -270,6 +288,71 @@ export function ApprovalCenter() {
     }
   };
 
+  const toggleSelect = useCallback((id: string) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const toggleSelectAll = useCallback(() => {
+    setSelected((prev) =>
+      prev.size === pending.length
+        ? new Set()
+        : new Set(pending.map((a) => a.id)),
+    );
+  }, [pending]);
+
+  const handleBatchApprove = async () => {
+    const ids = Array.from(selected);
+    if (ids.length === 0) return;
+    setBatchBusy(true);
+    try {
+      await api.postApprovalBulkApprove(ids, APPROVAL_WHO);
+      toast.success(
+        isAr
+          ? `تمت الموافقة على ${ids.length} عنصر`
+          : `Approved ${ids.length} item(s)`,
+      );
+      await loadAll();
+    } catch {
+      toast.error(isAr ? "فشلت الموافقة الجماعية" : "Batch approve failed");
+    } finally {
+      setBatchBusy(false);
+    }
+  };
+
+  const handleBatchReject = async () => {
+    const ids = Array.from(selected);
+    if (ids.length === 0) return;
+    setBatchBusy(true);
+    const reason = isAr
+      ? "مرفوض جماعياً من لوحة الموافقات"
+      : "Batch-rejected from approvals UI";
+    try {
+      const results = await Promise.allSettled(
+        ids.map((id) => api.postApprovalReject(id, APPROVAL_WHO, reason)),
+      );
+      const failed = results.filter((r) => r.status === "rejected").length;
+      if (failed === 0) {
+        toast.success(
+          isAr ? `تم رفض ${ids.length} عنصر` : `Rejected ${ids.length} item(s)`,
+        );
+      } else {
+        toast.error(
+          isAr
+            ? `فشل رفض ${failed} من ${ids.length}`
+            : `${failed} of ${ids.length} rejections failed`,
+        );
+      }
+      await loadAll();
+    } finally {
+      setBatchBusy(false);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
@@ -326,16 +409,58 @@ export function ApprovalCenter() {
                 <p className="font-medium">{isAr ? "لا توجد موافقات معلقة" : "No pending approvals"}</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {pending.map((approval) => (
-                  <ApprovalCard
-                    key={approval.id}
-                    request={approval}
-                    onApprove={handleApprove}
-                    onReject={handleReject}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4 p-3 rounded-xl border border-border bg-muted/30">
+                  <label className="flex items-center gap-2 text-xs cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selected.size === pending.length && pending.length > 0}
+                      onChange={toggleSelectAll}
+                      className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                      aria-label="select-all-pending"
+                    />
+                    <span className="text-muted-foreground">
+                      {isAr
+                        ? `محدد ${selected.size} من ${pending.length}`
+                        : `${selected.size} of ${pending.length} selected`}
+                    </span>
+                  </label>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="emerald"
+                      size="sm"
+                      disabled={selected.size === 0 || batchBusy}
+                      onClick={() => void handleBatchApprove()}
+                    >
+                      <Check className="w-3.5 h-3.5 me-1.5" />
+                      {isAr ? "موافقة جماعية" : "Batch approve"}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-destructive border-destructive/30 hover:bg-destructive/10"
+                      disabled={selected.size === 0 || batchBusy}
+                      onClick={() => void handleBatchReject()}
+                    >
+                      <X className="w-3.5 h-3.5 me-1.5" />
+                      {isAr ? "رفض جماعي" : "Batch reject"}
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  {pending.map((approval) => (
+                    <ApprovalCard
+                      key={approval.id}
+                      request={approval}
+                      onApprove={handleApprove}
+                      onReject={handleReject}
+                      selectable
+                      selected={selected.has(approval.id)}
+                      onToggleSelect={toggleSelect}
+                    />
+                  ))}
+                </div>
+              </>
             )}
           </AnimatePresence>
         </TabsContent>
