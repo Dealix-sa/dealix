@@ -11,7 +11,7 @@
 ```
 ████████████████████████████████
         Dealix
-  مندوب مبيعات AI بالعربي الخليجي
+  رادار عمليات الإيراد المحكوم بالعربي
 ████████████████████████████████
 
 Sami Assiri · Founder
@@ -45,14 +45,14 @@ April 2026 · Seed Round
 ## الشريحة 3: Solution
 
 ```
-Dealix = أول AI sales rep عربي خليجي حقيقي
+Dealix = رادار عمليات الإيراد المحكوم — أول نظام عربي للسوق السعودي
 
-✅ يرد على كل lead خلال 45 ثانية
-✅ يؤهّل بـ BANT تلقائياً
-✅ يحجز demos مع فريقك
-✅ يعمل 24/7 باللهجة الطبيعية
+✅ يجهّز مسودة رد لكل lead جاهزة لموافقتك
+✅ يقترح تأهيل BANT — أنت تعتمد
+✅ يجهّز اقتراحات حجز demos لفريقك
+✅ يعمل بحوكمة: مسودة ← موافقة ← تنفيذ ← Proof
 
-= فريقك يبدأ يومه بـ leads مؤهلة، لا reactive firefighting
+= فريقك يبدأ يومه بـ leads مؤهلة وnext step واضح، لا reactive firefighting
 ```
 
 **Visual:** screenshot من Dealix في action، conversation حقيقية بالعربي.
@@ -125,9 +125,9 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 ```
 3 باقات SaaS + Enterprise
 
-• Starter  — 999 ريال/شهر (1-3 مندوبين)
-• Growth   — 2,999 ريال/شهر (4-10 مندوبين) ⭐
-• Scale    — 7,999 ريال/شهر (+10 مندوبين)
+• 7-Day Revenue Proof Sprint — 499 ريال (بداية مدفوعة، مرة واحدة)
+• Managed Revenue Ops — 2,999–4,999 ريال/شهر ⭐
+• Executive Command Center — 7,500–15,000 ريال/شهر
 
 ARPA: 2,449 ريال/شهر
 Gross Margin: 87%
