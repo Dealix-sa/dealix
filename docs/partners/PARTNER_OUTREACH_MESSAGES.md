@@ -16,9 +16,9 @@ See `docs/sales-kit/MULTI_CHANNEL_OUTREACH_PACK.md` for 50+ templates covering:
 [Agency name] works with [type of clients]. Dealix can help you
 deliver 3 new services without building anything:
 
-1. Lead-to-booking automation setup (3,000 SAR setup)
-2. Sales qualification workflow (20% of client's Dealix MRR)
-3. White-label AI sales rep (for Scale-tier partners)
+1. Lead-to-follow-up draft setup (3,000 SAR setup) — Dealix drafts, the client reviews and approves before sending
+2. Sales qualification draft workflow (20% of client's Dealix MRR)
+3. White-label governed revenue-ops radar (for Scale-tier partners) — approval-first, no external auto-send
 
 We're opening 3 Stage-1 agency partner slots. 15-min call?
 https://calendly.com/sami-assiri11/dealix-partner
@@ -30,7 +30,7 @@ https://calendly.com/sami-assiri11/dealix-partner
 
 شفت عملك في [client/project]. رائع.
 
-نحن نبني برنامج Service Providers لـ Dealix — AI sales rep عربي.
+نحن نبني برنامج Service Providers لـ Dealix — رادار عمليات إيراد عربي محوكم.
 الفكرة: تستخدم Dealix لعملائك، تقدّم خدمة implementation + monthly retainer.
 
 العمولة: 20% من MRR العميل دائمة + freedom في تسعير الـ implementation.

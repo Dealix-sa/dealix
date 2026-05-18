@@ -13,7 +13,7 @@
 **Proof angle:** Series A/B/C startups lose 20-30% of leads in the first 4 hours of silence.
 
 **Opening line template:**
-> "الشركات السعودية B2B اللي تجمع $10M+ تواجه نفس المشكلة: فريق مبيعات بطيء في الرد بسبب LinkedIn/email/forms ما يتزامنون. Dealix يرد خلال 45 ثانية بالعربي على كل المنصات."
+> "الشركات السعودية B2B اللي تجمع $10M+ تواجه نفس المشكلة: فريق مبيعات بطيء في الرد بسبب LinkedIn/email/forms ما يتزامنون. Dealix يجهّز مسودة ردّ بالعربي جاهزة للاعتماد على كل المنصات، فالمتابعة تصير أسرع."
 
 **First 3 Dealix AI questions on a lead:**
 1. كم موظف sales / BDR عندكم حالياً؟

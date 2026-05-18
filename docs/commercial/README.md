@@ -53,3 +53,17 @@
 | [SALES_QA_AR.md](SALES_QA_AR.md) | مراجعة جودة محادثات البيع الأسبوعية |
 | [DELIVERY_QA_AR.md](DELIVERY_QA_AR.md) | بوّابة جودة Proof Pack — قائمة 10 نقاط |
 | [REVENUE_TRUTH_LABELS_AR.md](REVENUE_TRUTH_LABELS_AR.md) | تسميات صدق النتائج — مطابقة لمستويات `value_os` |
+
+## نظام التدشين — Launch & Commercialization System
+
+طبقة تدشين متوافقة مع التجميد التجاري: تُفعّل مكائن البيع والعمليات الجاهزة دون بناء درجات جديدة. الهدف الواحد: أول Pilot مدفوع → Proof Pack معتمد (L3+) → رفع التجميد.
+
+| Document | Purpose |
+|----------|---------|
+| [LAUNCH_MASTER_PLAN_AR.md](LAUNCH_MASTER_PLAN_AR.md) | **الوثيقة المرجعية**: الأطروحة، التجميد، الورش السبع، جدول 90 يوماً، أفعال المؤسس |
+| [MESSAGE_HOUSE_AR.md](MESSAGE_HOUSE_AR.md) | بيت الرسالة — ما نقوله وما لا نقوله؛ توحيد الرواية مع العقيدة |
+| [FOUNDER_SALES_MACHINE_AR.md](FOUNDER_SALES_MACHINE_AR.md) | مكينة بيع المؤسس — تسع مراحل من القائمة الدافئة إلى Proof Pack |
+| [OPS_AUTOMATION_MAP_AR.md](OPS_AUTOMATION_MAP_AR.md) | خريطة أتمتة العمليات — المؤتمت آلياً مقابل اليدوي بالعقيدة |
+| [LAUNCH_GATES_STATUS_AR.md](LAUNCH_GATES_STATUS_AR.md) | لوحة حالة بوابات الإطلاق الخمس |
+| [LAUNCH_SCORECARD_AR.md](LAUNCH_SCORECARD_AR.md) | لوحة قياس الإطلاق — مؤشرات قائدة، محرّك المال، بوابات القرار |
+| [RUNG_01_DELIVERY_STATUS_AR.md](RUNG_01_DELIVERY_STATUS_AR.md) | جاهزية تسليم الدرجتين 0–1 — حالة المكوّنات وما يعيق أول Pilot |

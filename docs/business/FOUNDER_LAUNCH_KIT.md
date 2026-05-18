@@ -8,8 +8,9 @@ Three assets you ship publicly to manufacture inbound + signal.
 
 > 🚀 أطلقنا Dealix.
 >
-> AI sales rep بالعربي الخليجي يرد على leads إنبوند خلال 45 ثانية.
-> يأخذ التفاصيل، ييؤهل العميل، ويحجز موعد مع المندوب — قبل ما يبرد الـ lead.
+> رادار عمليات إيراد عربي محوكم — مسودات وموافقة، لا إرسال تلقائي.
+> يجهّز ردّاً مسوّداً جاهزاً بالعربية الخليجية على كل lead إنبوند، تراجعه وتعتمده قبل الإرسال.
+> يجهّز أسئلة التأهيل كمسودة، ومسودة دعوة اجتماع ترسلها بنفسك — قبل ما يبرد الـ lead.
 >
 > بنيناه عشان السوق السعودي:
 > • عربي خليجي طبيعي مو ترجمة
@@ -31,7 +32,7 @@ Three assets you ship publicly to manufacture inbound + signal.
 
 ```
 أطلقنا Dealix —
-AI sales rep سعودي يرد على leads بالعربي الخليجي خلال 45 ثانية.
+رادار عمليات إيراد عربي محوكم: يجهّز مسودات ردّ خليجية تراجعها وتعتمدها قبل الإرسال.
 
 7-day pilot بـ 499 ريال.
 
@@ -41,7 +42,7 @@ Thread 🧵👇
 Thread parts:
 1. The problem (Saudi B2B response time = 11h average)
 2. Why generic AI tools fail (English / formal Arabic / no Mada)
-3. What Dealix does (45-sec response in Khaliji + handoff to closer)
+3. What Dealix does (AI drafts a Khaliji reply + qualification draft, you review and approve, then send — handoff to closer)
 4. Pricing (Pilot 499 → Starter 999 → Pro 5K)
 5. Why now (PDPL + Vision 2030 + huge Saudi B2B demand)
 6. CTA: "ابعثوا Dealix لـ DM إذا تبون نحجز Pilot"

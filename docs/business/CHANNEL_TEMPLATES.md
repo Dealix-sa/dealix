@@ -9,7 +9,7 @@ All channels: `approval_required=True` for first 30 days.
 
 > السلام عليكم، معك سامي من Dealix. اتصل في أوقاتكم؟
 > [انتظر الرد]
-> أنا أشتغل على AI sales rep بالعربي يخدم شركات [القطاع] السعودية — يرد على lead خلال 45 ثانية بدلاً من نصف يوم. لاحظنا [الشركة] في [المدينة] فحبيت أتأكد: هل تواجهون مشكلة وقت الرد على leads الـ inbound؟
+> أنا أشتغل على Dealix — رادار عمليات إيراد عربي محوكم يخدم شركات [القطاع] السعودية — يجهّز مسودة ردّ خليجية جاهزة على الـ lead خلال دقائق، تراجعها وتعتمدها قبل الإرسال بدلاً من نصف يوم انتظار. لاحظنا [الشركة] في [المدينة] فحبيت أتأكد: هل تواجهون مشكلة وقت المتابعة على leads الـ inbound؟
 
 **If yes:**
 
@@ -28,7 +28,7 @@ All channels: `approval_required=True` for first 30 days.
 ## 2. Cold Email — with mandatory opt-out
 
 **Subject lines (A/B test):**
-- `Dealix — AI sales rep بالعربي يرد خلال 45 ثانية`
+- `Dealix — مسودات ردّ عربية جاهزة لكل lead، أنت تعتمد`
 - `[الشركة] — لا تخسرون leads بسبب وقت الرد`
 - `Pilot 7 أيام بـ 499 ريال لشركات العقار السعودية`
 
@@ -38,11 +38,11 @@ All channels: `approval_required=True` for first 30 days.
 السلام عليكم {الشركة},
 
 كل lead عقاري متأخر دقيقة = احتمال خسارة العميل لمنافس.
-Dealix يرد بالعربي الخليجي خلال 45 ثانية، يأخذ:
+Dealix يجهّز مسودة ردّ بالعربي الخليجي تراجعونها وتعتمدونها قبل الإرسال، وأسئلة تأهيل مُجهّزة كمسودة:
 - الميزانية
 - الموقع
 - موعد المعاينة
-ثم يسلم العميل المؤهل لمندوبكم جاهز للإغلاق.
+ثم يسلّم ملخص العميل المؤهّل لمندوبكم جاهزاً للإغلاق.
 
 عرضنا الافتتاحي:
 Pilot 7 أيام بـ 499 ريال — نشغل Dealix على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون.
@@ -93,7 +93,7 @@ LinkedIn forbids automation. Dealix uses LinkedIn for:
 أهلاً {الاسم},
 
 لاحظت [signal personalized — e.g., funding round, hiring sales, recent post about Arabic CX].
-نحن نبني Dealix — AI sales rep بالعربي الخليجي يرد على leads خلال 45 ثانية.
+نحن نبني Dealix — رادار عمليات إيراد عربي محوكم يجهّز مسودات ردّ خليجية على leads تراجعها وتعتمدها قبل الإرسال.
 هل عندك دقيقة هذا الأسبوع نتكلم؟
 
 سامي
@@ -108,19 +108,19 @@ LinkedIn forbids automation. Dealix uses LinkedIn for:
 
 After `GOOGLE_LEAD_FORM_WEBHOOK_KEY` is set:
 - Customer's Google Ads lead form → webhook to `/api/v1/integrations/google-lead-form`
-- Dealix stores + responds in Arabic within 45 seconds
-- This is the autonomous channel customers PAY for.
+- Dealix ingests the lead and prepares a ready Arabic draft reply
+- The customer reviews and approves the draft before anything is sent — no external auto-send
 
 ## 6. Meta Lead Form (post-deploy)
 
 Same pattern as Google Lead Form:
 - `/api/v1/integrations/meta-lead-form`
 - Pull leads from Facebook/Instagram lead ads
-- Respond in Arabic within 45 seconds.
+- Prepare an Arabic draft reply for the customer to review and approve before sending.
 
-## 7. Phone Call Auto-Routing (Pilot Pro tier)
+## 7. Phone Call Follow-up Draft (Pilot Pro tier)
 
-For Pilot Pro customers: incoming missed call → Dealix sends Arabic SMS within 2 minutes asking what they need, books a callback if it's a real lead.
+For Pilot Pro customers: incoming missed call → Dealix prepares a draft Arabic SMS asking what they need; the customer reviews and approves it before it is sent, then a callback can be scheduled if it is a real lead.
 
 ## Channel × Sector Decision Matrix
 
