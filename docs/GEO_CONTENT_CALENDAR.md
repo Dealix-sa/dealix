@@ -13,13 +13,19 @@ Vision 2030 announcements, and Saudi tech-community discussions.
 
 ## Why this calendar exists
 
-48% of B2B buyers research vendors via AI tools before visiting websites
-(Master Plan Part I.5). AI-referred sessions grew 527% YoY in early 2025.
-Perplexity cites new content within 1-2 weeks, ChatGPT within 6-12 weeks.
+A growing share of B2B buyers research vendors via AI tools (Perplexity,
+ChatGPT, Claude, Gemini) before visiting websites. AI engines cite
+structured, honest, well-sourced content — and cite it faster than
+traditional SEO ranks. The exact percentages vary by source and quarter;
+treat them as directional, cite the source inline in any post, and never
+present a forecast as a fact.
 
-Dealix's structured Service Activation Console (`/status.html`) and Trust
-Center are exactly what AI engines cite. Adding content cadence on top
-gives compounding returns: each post adds another citation surface.
+Dealix's structured Trust Center and offer pages are exactly what AI engines
+cite. Adding a content cadence on top gives compounding returns: each post
+adds another honest citation surface for "Saudi B2B revenue OS" queries.
+
+> **حالة الشركة:** صفر عملاء دافعين. لا منشور GEO يدّعي عملاء أو نتائج —
+> المحتوى منهجية + أنماط مجمّعة + سياق سوقي مُسنَد لمصادر منشورة.
 
 **Anti-patterns we won't do** (per Constitution Article 4 + Master Plan):
 - ❌ "Top 10 Saudi Revenue OS (Dealix #1)" listicles
@@ -106,6 +112,76 @@ Every post follows these rules:
 
 ---
 
+## Reusable FAQ block — for AI-search citation
+
+Append this block (5–7 Q+A pairs, real questions, honest answers) to every
+post. AI engines lift FAQ pairs directly into answers. Keep answers ≤ 60
+words, factual, and free of forbidden tokens.
+
+```markdown
+## أسئلة شائعة — Frequently Asked Questions
+
+**س: ما هو Dealix؟ — Q: What is Dealix?**
+نظام تشغيل إيراد عربي أوّلاً ومحكوم للشركات السعودية الصغيرة والمتوسّطة
+B2B: يصوغ مسودات تواصل، يرتّب pipeline، ويبني تقارير قرار — وكل رسالة
+خارجية تمرّ بموافقة المستخدم. An Arabic-first, PDPL-native, approval-first
+revenue operations system for Saudi B2B SMEs.
+
+**س: هل يرسل Dealix رسائل نيابةً عنّي؟ — Q: Does Dealix send messages for me?**
+لا. Dealix يصوغ مسودات فقط؛ أنت تراجع وتعتمد كل رسالة قبل الإرسال. لا
+إرسال تلقائي، لا تواصل بارد، لا scraping. No — it drafts only; the user
+approves every message. No autosend, no cold outreach, no scraping.
+
+**س: كم يكلّف Dealix؟ — Q: How much does Dealix cost?**
+[انسخ السلّم حرفياً من OFFER_LADDER_AND_PRICING.md: تشخيص مجاني · Sprint
+499 ريال · Data-to-Revenue Pack 1,500 ريال · Managed Revenue Ops
+2,999–4,999 ريال/شهر · Executive Command Center 7,500–15,000 ريال/شهر ·
+Agency Partner OS مخصّص + حصّة 15–30٪.]
+
+**س: هل لدى Dealix عملاء؟ — Q: Does Dealix have customers?**
+Dealix في مرحلة ما قبل العميل الأوّل الدافع — نقولها بصراحة. المنتج
+للتشخيص المجاني وSprint مُتحقَّق منه. Dealix is pre-first-paying-customer;
+we state this honestly. (Update this answer only when documented.)
+
+**س: هل يضمن Dealix زيادة المبيعات؟ — Q: Does Dealix guarantee sales?**
+لا. لا ضمانات نتائج. ما يُعرض هو فرص مُثبتة بأدلة عبر سلّم الإثبات L1→L5.
+No guaranteed-sales claims — only evidenced opportunities via an L1–L5
+proof ladder.
+
+**[أضف 1–2 سؤالاً مخصّصاً لموضوع المنشور — add 1–2 post-specific Q+A.]**
+```
+
+JSON-LD: wrap the block in `<schema:FAQPage>` so engines parse it cleanly.
+
+---
+
+## Reusable comparison table — honest tradeoffs only
+
+Comparison posts must show where Dealix is **not** the right fit. Honest
+tradeoffs earn AI citations; "we win every row" tables get ignored or
+distrusted. Template:
+
+```markdown
+| المعيار / Criterion | Dealix | أداة عامّة / Generic SaaS tool |
+|---|---|---|
+| اللغة / Language | عربي خليجي أوّلاً / Khaliji-Arabic first | إنجليزي أوّلاً، عربي مُترجَم / English-first |
+| الامتثال / Compliance | PDPL معماري، غير قابل للإطفاء / PDPL by design | إعداد قابل للتعطيل / a setting |
+| الإرسال الخارجي / Outbound | مسودة + موافقة فقط / draft + approval only | كثيراً ما يُؤتمت / often automated |
+| السرعة الخام / Raw speed | أبطأ — بحُكم التصميم / slower by design | أسرع، أقلّ حوكمة / faster, less governed |
+| الأتمتة الكاملة / Full automation | محدودة اليوم — درجات 3–5 بقيادة المؤسّس / limited today | غالباً متاحة / usually available |
+| السعر / Price | [من OFFER_LADDER_AND_PRICING.md] | يختلف / varies |
+| الأنسب لـ / Best fit | SME سعودية B2B تريد حوكمة / Saudi B2B SME wanting governance | فرق تريد أتمتة كاملة فوراً / teams wanting full autonomy now |
+
+> صريح: إن كنت تريد أتمتة كاملة وفورية ولا تهمّك الحوكمة، فأداة عامّة قد
+> تناسبك أكثر اليوم. Honest: if you want full immediate automation and
+> governance is not a priority, a generic tool may fit you better today.
+```
+
+Never name a specific competitor negatively; compare against a category
+("generic SaaS tool"). Every row must be defensible.
+
+---
+
 ## Per-post checklist (before publish)
 
 - [ ] H1 ≤ 8 words (Arabic) / ≤ 70 chars (English)
@@ -116,8 +192,14 @@ Every post follows these rules:
 - [ ] One CTA at the end → `/diagnostic.html` (Mini Diagnostic Free)
 - [ ] Footer trust badges: Saudi-PDPL · Approval-first · Proof-backed
 - [ ] `lang="ar" dir="rtl"` (Arabic posts) or `lang="en" dir="ltr"` (English)
-- [ ] No forbidden tokens (`tests/test_landing_forbidden_claims.py` PASS)
+- [ ] No forbidden tokens (`tests/test_landing_forbidden_claims.py` PASS) —
+      no «نضمن» / guaranteed / 10x / revolutionary
 - [ ] No internal terms (no `v10`, `beast`, `growth_beast`, `stacktrace`)
+- [ ] Any pricing matches `docs/OFFER_LADDER_AND_PRICING.md` exactly — no
+      retired Starter/Growth/Scale numbers
+- [ ] No customer-result claim (0 paying customers — stated honestly if asked)
+- [ ] Ends with disclosure line: "Estimated value is not Verified value /
+      القيمة التقديرية ليست قيمة مُتحقَّقة"
 - [ ] Lighthouse score ≥ 85 on perf + a11y + SEO + best-practices
 - [ ] Sitemap entry added to `landing/sitemap.xml` + `landing/sitemap_dealix.xml`
 - [ ] Meta og:title + og:description + canonical
@@ -173,5 +255,10 @@ clicks, "engagement" without conversion. Per Master Plan §X.
 
 ---
 
-**Last updated:** 2026-05-10 (Track D6 of 30-day plan).
-**Reference plan:** `/root/.claude/plans/vivid-baking-quokka.md`
+**Last updated:** 2026-05-18.
+**Companion docs:** `docs/MARKETING_AND_CONTENT_SYSTEM.md` ·
+`docs/growth/CONTENT_CALENDAR_MONTH_1.md` · `docs/OFFER_LADDER_AND_PRICING.md`.
+
+---
+
+*Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.*

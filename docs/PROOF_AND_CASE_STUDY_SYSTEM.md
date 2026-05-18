@@ -1,9 +1,18 @@
 # Dealix — Proof & Case Study System
-<!-- PHASE 6 | Owner: Founder | Date: 2026-05-07 -->
+<!-- PHASE 6 | Owner: Founder | Updated: 2026-05-18 -->
 <!-- NO_FAKE_PROOF | NO_PUBLIC_WITHOUT_CONSENT -->
 
 > **القاعدة الأساسية:** لا دليل = لا ادعاء. لا موافقة = لا نشر.
 > كل case study يمر بـ 4 مراحل: إثبات → توثيق → موافقة → نشر.
+
+> **حالة الشركة:** صفر عملاء دافعين. لا يوجد Proof Pack حقيقي بعد. القالب
+> في §8 أدناه **قالب فارغ بحقول نائبة** — يُملأ فقط بأدلة موثّقة من Sprint
+> فعلي. لا يُملأ مسبقاً بنتائج وهمية تحت أي ظرف.
+>
+> **Company status:** zero paying customers. No real Proof Pack exists yet.
+> The template in §8 is an **empty, placeholder-only** template — filled
+> only with documented evidence from an actual Sprint. Never pre-filled with
+> fabricated results.
 
 ---
 
@@ -203,4 +212,84 @@ notes: ""
 
 ---
 
-*Version 1.0 | NO_FAKE_PROOF gate enforced | All public content requires explicit consent*
+---
+
+## 8. قالب Proof Pack القابل لإعادة الاستخدام (Reusable Proof Pack TEMPLATE)
+
+> ⚠️ **هذا قالب فارغ.** كل `[ ]` حقل نائب يُملأ بدليل موثّق فقط — من Proof
+> Pack اليوم 7 لـ Sprint فعلي. لا يُملأ بأرقام مفترضة. لا يُنشر خارجياً
+> إلا بعد موافقة نشر موقّعة (راجع §3 و§4).
+>
+> ⚠️ **This is an empty template.** Every `[ ]` is a placeholder filled only
+> with documented evidence from a real Sprint's Day-7 Proof Pack. Never
+> filled with assumed numbers. Not published externally without signed
+> publication consent.
+
+```markdown
+# Proof Pack — [client_id] — [التاريخ / Date]
+<!-- INTERNAL until signed publication consent. Status: TEMPLATE — empty -->
+
+## 0. الميتاداتا / Metadata
+- proof_id: [PLX-NNN]
+- sprint_id: [SPR-NNN]
+- client_sector: [قطاع — بدون اسم حتى الموافقة / sector — no name until consent]
+- client_size: [نطاق تقريبي / approximate range]
+- delivery_mode: [verified product (Rung 0–1) / founder-assisted (Rung 3–5)]
+- prepared_by: [Founder]
+- public_permission: [none | sector_only | partial | full]
+
+## 1. ملخص الإثبات / Proof Summary
+- أعلى مستوى دليل تحقّق / Highest evidence level reached: [L1 | L2 | L3 | L4 | L5]
+- عدد أحداث الإثبات الموثّقة / Documented proof events: [N]
+- ملاحظة: لا يُذكر أي ادّعاء لا يسنده حدث موثّق أدناه.
+
+## 2. أحداث الإثبات / Proof Events (evidence-backed only)
+| الحدث / Event | المستوى / Level | التاريخ / Date | الدليل / Evidence ref |
+|---|---|---|---|
+| [diagnostic_delivered] | [L1] | [Day 1] | [ملف/لقطة موثّقة / file ref] |
+| [draft_approved ×N] | [L2] | [Day N] | [رسالة موافقة العميل / approval msg ref] |
+| [meeting_booked] | [L4] | [Day N] | [دليل الحجز / booking proof ref] |
+| [ ... ] | [ ] | [ ] | [ ] |
+
+## 3. المؤشّرات / KPIs (entered by client or measured — never assumed)
+| المؤشّر / Metric | قبل / Baseline | نهاية Sprint / End | المصدر / Source |
+|---|---|---|---|
+| [حجم pipeline / pipeline size] | [insufficient_data أو رقم العميل] | [ ] | [client-entered] |
+| [مسودات مُسلّمة / drafts delivered] | [—] | [ ] | [Dealix log] |
+| [مسودات موافَق عليها / drafts approved] | [—] | [ ] | [client approval] |
+| [اجتماعات محجوزة / meetings booked] | [insufficient_data] | [ ] | [documented] |
+
+> أي خانة بلا دليل = `insufficient_data`. لا تُملأ بتقدير.
+> Any cell without evidence = `insufficient_data`. Never estimated.
+
+## 4. القيمة / Value framing
+- القيمة التقديرية / Estimated value: [محسوبة من مدخلات العميل فقط / from
+  client inputs only — clearly labelled estimate]
+- القيمة المُتحقَّقة / Verified value: [فقط إن وُجد دليل L5 + موافقة /
+  only with L5 evidence + consent — otherwise: not available]
+
+## 5. حدود وإفصاحات / Limitations & disclosures
+- [ما الذي لم يُقَس؟ / what was not measured]
+- [ما الذي يتطلّب فترة أطول لإثباته؟ / what needs longer to prove]
+- نمط التسليم لهذه الدرجة / delivery mode disclosure: [ ]
+
+## 6. الموافقة / Consent status
+- DPA موقّع / signed: [نعم/لا — راجع docs/DPA_PILOT_TEMPLATE.md]
+- موافقة نشر / publication consent: [none — انظر
+  docs/wave8/PROOF_PUBLICATION_CONSENT_TEMPLATE.md]
+- مستوى الإفصاح المسموح / disclosure level allowed: [ ]
+
+---
+Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.
+```
+
+**أين يُحفظ:** القالب المملوء يُحفظ داخلياً في `/proof_ledger` فقط. لا
+يتحوّل إلى case study عام إلا عبر مراحل §3–§4 وبموافقة نشر موقّعة.
+
+---
+
+*Version 1.1 | NO_FAKE_PROOF gate enforced | All public content requires explicit consent | Reusable Proof Pack template added 2026-05-18 — empty placeholders only*
+
+---
+
+*Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.*

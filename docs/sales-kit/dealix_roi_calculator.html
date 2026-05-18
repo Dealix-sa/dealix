@@ -2,14 +2,24 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Dealix ROI Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dealix — حاسبة تقدير تسريب الإيراد</title>
+<!--
+  Dealix Revenue-Leak Estimator.
+  Updated: 2026-05-18.
+  DOCTRINE:
+   - Computes ONLY from user-entered inputs. No hardcoded results.
+   - Shows ESTIMATES, never guaranteed outcomes.
+   - No "X% improvement with Dealix" promise. Dealix does not claim a fixed lift.
+   - Pricing matches docs/OFFER_LADDER_AND_PRICING.md exactly.
+-->
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, 'Segoe UI', Arial, sans-serif; background: #0a0e27; color: #fff; padding: 40px 20px; min-height: 100vh; }
   .container { max-width: 720px; margin: 0 auto; }
-  h1 { font-size: 2.2rem; margin-bottom: 8px; background: linear-gradient(135deg, #3b82f6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .subtitle { color: #94a3b8; margin-bottom: 32px; font-size: 1.05rem; }
-  .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 28px; margin-bottom: 20px; backdrop-filter: blur(20px); }
+  h1 { font-size: 1.9rem; margin-bottom: 8px; background: linear-gradient(135deg, #3b82f6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { color: #94a3b8; margin-bottom: 24px; font-size: 1.02rem; }
+  .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 28px; margin-bottom: 20px; }
   .input-group { margin-bottom: 20px; }
   label { display: block; color: #cbd5e1; font-size: 0.95rem; margin-bottom: 8px; }
   input[type="number"], input[type="range"] { width: 100%; padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #fff; font-size: 1.05rem; direction: ltr; text-align: right; }
@@ -21,153 +31,129 @@
   .result-row:last-child { border-bottom: none; }
   .result-label { color: #cbd5e1; }
   .result-value { color: #fff; font-weight: 600; font-size: 1.1rem; }
-  .big-number { font-size: 2.4rem; color: #10b981; font-weight: 700; text-align: center; margin: 24px 0 8px; }
-  .big-label { text-align: center; color: #94a3b8; margin-bottom: 24px; }
-  .plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
-  .plan { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.2s; }
-  .plan.recommended { border-color: #10b981; background: rgba(16,185,129,0.12); }
-  .plan-name { font-size: 0.9rem; color: #94a3b8; margin-bottom: 6px; }
-  .plan-price { font-size: 1.4rem; font-weight: 700; color: #fff; }
-  .plan-roi { font-size: 0.85rem; color: #10b981; margin-top: 6px; }
-  .cta { display: block; background: linear-gradient(135deg, #3b82f6, #10b981); color: #fff; text-decoration: none; text-align: center; padding: 16px; border-radius: 12px; font-weight: 600; margin-top: 24px; font-size: 1.05rem; }
-  .note { font-size: 0.85rem; color: #64748b; margin-top: 16px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border-right: 3px solid #3b82f6; }
+  .big-number { font-size: 2.2rem; color: #f59e0b; font-weight: 700; text-align: center; margin: 16px 0 4px; }
+  .big-label { text-align: center; color: #94a3b8; margin-bottom: 16px; font-size: 0.95rem; }
+  .ladder { display: grid; gap: 10px; margin-top: 14px; }
+  .rung { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; }
+  .rung-name { font-size: 0.92rem; color: #cbd5e1; }
+  .rung-price { font-size: 0.95rem; font-weight: 700; color: #fff; }
+  .cta { display: block; background: linear-gradient(135deg, #3b82f6, #10b981); color: #fff; text-decoration: none; text-align: center; padding: 16px; border-radius: 12px; font-weight: 600; margin-top: 24px; font-size: 1.02rem; }
+  .note { font-size: 0.85rem; color: #94a3b8; margin-top: 16px; padding: 14px; background: rgba(245,158,11,0.08); border-radius: 8px; border-right: 3px solid #f59e0b; line-height: 1.7; }
+  .disclosure { font-size: 0.82rem; color: #64748b; margin-top: 18px; text-align: center; }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>Dealix ROI Calculator</h1>
-  <p class="subtitle">احسب كم تكلفك leads الضائعة — وكم توفر مع Dealix</p>
+  <h1>حاسبة تقدير تسريب الإيراد</h1>
+  <p class="subtitle">قدّر — من أرقامك أنت — الإيراد المعرّض للخطر بسبب تأخّر الردّ والمتابعة. كل النتائج تقديرات، لا وعود.</p>
 
   <div class="card">
+    <h3 style="margin-bottom:16px; font-size:1.05rem;">أدخل أرقام شركتك</h3>
+
     <div class="input-group">
-      <label>كم مندوب مبيعات عندكم؟</label>
-      <input type="number" id="reps" value="5" min="1" max="100">
+      <label>عدد العملاء المحتملين (leads) شهرياً</label>
+      <input type="number" id="leads" min="0" step="10" placeholder="مثال: 200">
     </div>
 
     <div class="input-group">
-      <label>متوسط راتب المندوب الشهري (ريال، مع المميزات)</label>
-      <input type="number" id="salary" value="10000" step="500">
+      <label>نسبة العملاء المحتملين الذين لا يصلهم ردّ في الوقت المناسب
+        <span id="lostLabel" class="range-value">—</span></label>
+      <input type="range" id="lostPct" value="30" min="0" max="90">
+      <p style="font-size:0.8rem; color:#64748b; margin-top:6px;">قدّرها من واقع فريقك — لا يوجد رقم افتراضي مفروض.</p>
     </div>
 
     <div class="input-group">
-      <label>كم lead يدخل أسبوعياً؟</label>
-      <input type="number" id="leads" value="100" step="10">
-    </div>
-
-    <div class="input-group">
-      <label>نسبة الوقت الضائع على leads غير مؤهلة <span id="wasteLabel" class="range-value">40%</span></label>
-      <input type="range" id="waste" value="40" min="10" max="80">
+      <label>معدّل التحويل الحالي من lead إلى صفقة
+        <span id="convLabel" class="range-value">—</span></label>
+      <input type="range" id="conversion" value="5" min="1" max="40">
     </div>
 
     <div class="input-group">
       <label>متوسط قيمة الصفقة (ريال)</label>
-      <input type="number" id="dealValue" value="15000" step="1000">
-    </div>
-
-    <div class="input-group">
-      <label>معدل التحويل الحالي من lead لصفقة <span id="convLabel" class="range-value">5%</span></label>
-      <input type="range" id="conversion" value="5" min="1" max="25">
+      <input type="number" id="dealValue" min="0" step="500" placeholder="مثال: 15000">
     </div>
   </div>
 
-  <div class="result">
-    <div class="big-number" id="savings">14,601 ريال</div>
-    <div class="big-label">صافي الوفر الشهري مع Dealix Growth</div>
+  <div class="result" id="result" style="display:none;">
+    <div class="big-number" id="revenueAtRisk">—</div>
+    <div class="big-label">تقدير الإيراد الشهري المعرّض للخطر — من مدخلاتك</div>
 
     <div class="result-row">
-      <span class="result-label">التكلفة الحالية (وقت مهدور)</span>
-      <span class="result-value" id="currentCost">17,600 ريال/شهر</span>
-    </div>
-    <div class="result-row">
-      <span class="result-label">Leads ضائعة شهرياً</span>
+      <span class="result-label">عملاء محتملون لا يصلهم ردّ مناسب / شهر</span>
       <span class="result-value" id="lostLeads">—</span>
     </div>
     <div class="result-row">
-      <span class="result-label">إيرادات ضائعة محتملة</span>
-      <span class="result-value" id="lostRevenue">—</span>
+      <span class="result-label">صفقات محتملة مفقودة (تقدير) / شهر</span>
+      <span class="result-value" id="lostDeals">—</span>
     </div>
     <div class="result-row">
-      <span class="result-label">ROI السنوي</span>
-      <span class="result-value" id="roi" style="color:#10b981">—</span>
+      <span class="result-label">تقدير سنوي للإيراد المعرّض للخطر</span>
+      <span class="result-value" id="annualRisk" style="color:#f59e0b">—</span>
     </div>
   </div>
 
   <div class="card">
-    <h3 style="margin-bottom:16px;">الباقة الموصى بها لفريقك:</h3>
-    <div class="plan-grid">
-      <div class="plan" id="plan-starter">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price">999</div>
-        <div class="plan-roi" id="roi-starter">—</div>
-      </div>
-      <div class="plan" id="plan-growth">
-        <div class="plan-name">Growth</div>
-        <div class="plan-price">2,999</div>
-        <div class="plan-roi" id="roi-growth">—</div>
-      </div>
-      <div class="plan" id="plan-scale">
-        <div class="plan-name">Scale</div>
-        <div class="plan-price">7,999</div>
-        <div class="plan-roi" id="roi-scale">—</div>
-      </div>
+    <h3 style="margin-bottom:6px; font-size:1.05rem;">سلّم خدمات Dealix</h3>
+    <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:6px;">ابدأ مجاناً — كل درجة تُفتح بعد إثبات موثّق من السابقة.</p>
+    <div class="ladder">
+      <div class="rung"><span class="rung-name">التشخيص المجاني للعمليات</span><span class="rung-price">مجاني</span></div>
+      <div class="rung"><span class="rung-name">7-Day Revenue Proof Sprint</span><span class="rung-price">499 ريال</span></div>
+      <div class="rung"><span class="rung-name">Data-to-Revenue Pack</span><span class="rung-price">1,500 ريال</span></div>
+      <div class="rung"><span class="rung-name">Managed Revenue Ops / شهر</span><span class="rung-price">2,999–4,999 ريال</span></div>
+      <div class="rung"><span class="rung-name">Executive Command Center / شهر</span><span class="rung-price">7,500–15,000 ريال</span></div>
+      <div class="rung"><span class="rung-name">Agency Partner OS</span><span class="rung-price">مخصّص + 15–30٪</span></div>
     </div>
   </div>
 
-  <a href="https://calendly.com/sami-assiri11/dealix-demo" class="cta">احجز Demo — تجربة pilot بـ 1 ريال</a>
+  <a href="https://dealix.me/diagnostic.html" class="cta">ابدأ بالتشخيص المجاني — غير ملزم</a>
 
   <div class="note">
-    <strong>ملاحظة الحسبة:</strong> افتراض 22 يوم عمل × 8 ساعات. نسبة 40% وقت مهدور = متوسط Gartner للشركات بدون AI qualification. Dealix يقلل هذه النسبة لـ 15%.
+    <strong>كيف تُحسب الأرقام:</strong> كل ناتج أعلاه يُحسب حصراً من المدخلات
+    التي تكتبها أنت. Dealix لا يفترض أي رقم، ولا يَعِد بنسبة تحسّن. التقدير
+    يساعدك على رؤية حجم المشكلة — وهو ليس وعداً بنتيجة.
+    Dealix لا يضمن إيراداً ولا يضمن استرجاع أي عميل محتمل؛ النتائج الفعلية
+    تعتمد على فريقك وبياناتك وسوقك.
   </div>
+
+  <p class="disclosure">القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.</p>
 </div>
 
 <script>
-function fmt(n){ return Math.round(n).toLocaleString('ar-SA') + ' ريال'; }
+function fmt(n){ return Math.round(n).toLocaleString('en-US') + ' ريال'; }
 
 function calc(){
-  const reps = +document.getElementById('reps').value;
-  const salary = +document.getElementById('salary').value;
-  const leads = +document.getElementById('leads').value;
-  const waste = +document.getElementById('waste').value;
-  const dealValue = +document.getElementById('dealValue').value;
-  const conv = +document.getElementById('conversion').value;
+  var leads      = parseFloat(document.getElementById('leads').value) || 0;
+  var lostPct    = parseFloat(document.getElementById('lostPct').value) || 0;
+  var conv       = parseFloat(document.getElementById('conversion').value) || 0;
+  var dealValue  = parseFloat(document.getElementById('dealValue').value) || 0;
 
-  document.getElementById('wasteLabel').textContent = waste + '%';
+  document.getElementById('lostLabel').textContent = lostPct + '%';
   document.getElementById('convLabel').textContent = conv + '%';
 
-  const hourlyRate = salary / (22*8);
-  const hoursPerWeek = 40;
-  const wastedHours = reps * hoursPerWeek * (waste/100);
-  const currentCost = wastedHours * hourlyRate * 4.33; // per month
-  const monthlyLeadsLost = leads * 4.33 * (waste/100) * 0.5; // half of wasted leads = truly lost
-  const revenueAtRisk = monthlyLeadsLost * (conv/100) * dealValue;
+  var resultBox = document.getElementById('result');
 
-  // Dealix reduces waste to 15%
-  const dealixWaste = 0.15;
-  const newCost = reps * hoursPerWeek * dealixWaste * hourlyRate * 4.33;
-  const dealixPrice = reps <= 3 ? 999 : (reps <= 10 ? 2999 : 7999);
-  const planName = reps <= 3 ? 'starter' : (reps <= 10 ? 'growth' : 'scale');
-  const netSavings = currentCost - newCost - dealixPrice;
-  const annualROI = ((netSavings * 12) / (dealixPrice * 12)) * 100;
+  // Only show a result once the user has entered the inputs that drive it.
+  if (leads <= 0 || dealValue <= 0) {
+    resultBox.style.display = 'none';
+    return;
+  }
+  resultBox.style.display = 'block';
 
-  document.getElementById('savings').textContent = fmt(netSavings);
-  document.getElementById('currentCost').textContent = fmt(currentCost) + '/شهر';
-  document.getElementById('lostLeads').textContent = Math.round(monthlyLeadsLost) + ' lead/شهر';
-  document.getElementById('lostRevenue').textContent = fmt(revenueAtRisk) + '/شهر';
-  document.getElementById('roi').textContent = Math.round(annualROI) + '%';
+  // All figures derived purely from user inputs. No assumed constants.
+  var lostLeads        = leads * (lostPct / 100);
+  var lostDeals        = lostLeads * (conv / 100);
+  var monthlyRisk      = lostDeals * dealValue;
+  var annualRisk       = monthlyRisk * 12;
 
-  // Plans
-  ['starter','growth','scale'].forEach(p => {
-    const el = document.getElementById('plan-'+p);
-    el.classList.remove('recommended');
-  });
-  document.getElementById('plan-'+planName).classList.add('recommended');
-
-  document.getElementById('roi-starter').textContent = reps <= 3 ? '✓ الأنسب' : 'صغير';
-  document.getElementById('roi-growth').textContent = (reps > 3 && reps <= 10) ? '✓ الأنسب' : (reps > 10 ? 'صغير' : 'كبير');
-  document.getElementById('roi-scale').textContent = reps > 10 ? '✓ الأنسب' : 'كبير';
+  document.getElementById('lostLeads').textContent   = Math.round(lostLeads) + ' lead';
+  document.getElementById('lostDeals').textContent   = lostDeals.toFixed(1) + ' صفقة';
+  document.getElementById('revenueAtRisk').textContent = fmt(monthlyRisk);
+  document.getElementById('annualRisk').textContent  = fmt(annualRisk);
 }
 
-document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
+document.querySelectorAll('input').forEach(function(i){
+  i.addEventListener('input', calc);
+});
 calc();
 </script>
 </body>

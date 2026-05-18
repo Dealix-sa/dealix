@@ -1,221 +1,231 @@
-# Dealix — Case Study Template
+# Dealix — Case Study TEMPLATE (consent-gated) — قالب دراسة الحالة
+<!-- Owner: Founder | Updated: 2026-05-18 | Arabic primary -->
 
-**Fill this within 48 hours of first pilot success. Publish within 7 days. Every new customer after = publish theirs too.**
+> ⚠️ **هذا قالب فارغ بحقول نائبة.** لا يُملأ إلا بعد إتمام Sprint فعلي،
+> وبأدلة موثّقة بمستوى L4+ فقط، وبموافقة نشر موقّعة من العميل. لا يُنشر
+> أبداً بنتائج مفترضة أو شهادات وهمية أو أرقام لم تحدث.
+>
+> ⚠️ **This is an empty, placeholder-only template.** Filled only after a
+> real Sprint, only with documented L4+ evidence, and only with signed
+> publication consent. Never published with assumed results, fabricated
+> testimonials, or numbers that did not occur.
 
-The #1 sales asset is a real customer story. One real case study = worth 100 cold DMs.
+> **حالة الشركة:** صفر عملاء دافعين — لا توجد دراسة حالة حقيقية بعد. هذا
+> القالب جاهز ليوم وجود أوّل عميل موثّق.
+>
+> دراسة حالة حقيقية واحدة أقوى من مئة رسالة تواصل — لكن فقط إن كانت حقيقية
+> وبموافقة. A single real, consented case study outweighs a hundred outreach
+> messages — but only if it is real and consented.
 
----
+**التسعير:** أي رقم في دراسة الحالة يطابق `docs/OFFER_LADDER_AND_PRICING.md`
+حرفياً: تشخيص مجاني · Sprint 499 ريال · Data-to-Revenue Pack 1,500 ريال ·
+Managed Revenue Ops 2,999–4,999 ريال/شهر.
 
-## Pre-flight checklist (before writing)
-
-- [ ] Customer pilot completed (7+ days of usage)
-- [ ] Customer gave verbal permission to use their story
-- [ ] At least 3 metrics captured (response time, leads handled, demos booked)
-- [ ] At least 1 quote from the customer (voice message or text)
-- [ ] Customer's logo + permission to use it (email confirmation)
-- [ ] Specific before/after numbers
-
----
-
-## Case Study — Template
-
-## [Company Name] cut response time from [X hours] to [Y seconds] with Dealix
-
-*[Subtitle: specific outcome — "Booked 12 demos in 7 days" or "Closed 3 new customers in first month"]*
-
----
-
-### The Company
-
-**Name:** [Name]
-**Sector:** [Saudi SaaS / F&B / Proptech / ...]
-**Size:** [X employees]
-**Location:** [Riyadh / Jeddah / Dammam / etc.]
-**Website:** [URL]
-
-[One paragraph about what they do, in simple language.]
+**مراجع:** منهجية الإثبات `docs/PROOF_AND_CASE_STUDY_SYSTEM.md` · قالب
+موافقة النشر `docs/wave8/PROOF_PUBLICATION_CONSENT_TEMPLATE.md`.
 
 ---
 
-### The Challenge
+## بوّابة الموافقة قبل الكتابة — Consent gate (before writing)
 
-[Write 2-3 sentences describing the specific pain point. Avoid generic "we needed to grow sales." Get specific: which lead source? How many leads? What was bleeding?]
+لا تكتب سطراً واحداً قبل استيفاء كل ما يلي:
 
-**Key numbers before Dealix:**
-- Monthly leads: [X]
-- Average response time: [Y hours]
-- Demo booking rate: [%]
-- Lead-to-customer conversion: [%]
+- [ ] Sprint مكتمل (7+ أيام استخدام فعلي).
+- [ ] Proof Pack موثّق موجود في `/proof_ledger` بمستوى L4+.
+- [ ] موافقة نشر **موقّعة** — نموذج `PROOF_PUBLICATION_CONSENT_TEMPLATE.md`.
+- [ ] مستوى الإفصاح محدّد: مجهول / قطاع فقط / جزئي / كامل.
+- [ ] كل رقم سيُذكر له دليل في Proof Pack — لا تقدير، لا استقراء معروض كحقيقة.
+- [ ] العميل وافق على مراجعة المسودة قبل النشر.
 
----
-
-### The Solution
-
-[2-3 sentences: what specifically Dealix did for them. Which channels? What was configured? Manual vs automated?]
-
-**Pilot scope:**
-- Duration: [7 days / X weeks]
-- Leads handled: [X]
-- Channels: [WhatsApp / Email / Web chat / LinkedIn]
-- Integration: [HubSpot / Salesforce / Calendly / none]
+> بدون موافقة موقّعة = لا نشر. بدون دليل L4+ = لا ادّعاء نتيجة. هذا حدّ غير
+> قابل للتفاوض. No signed consent = no publish. No L4+ evidence = no result
+> claim. Non-negotiable.
 
 ---
 
-### The Results
+## القالب — Case Study Template
 
-**After Dealix (7 days):**
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| Avg response time | [X] | [Y] | [Δ%] |
-| Leads qualified | [X] | [Y] | [Δ%] |
-| Demos booked | [X] | [Y] | [Δ%] |
-| Arabic conversations/day | [X] | [Y] | [Δ%] |
-| CSAT (customer satisfaction) | [X/10] | [Y/10] | [Δ] |
-
-**Revenue impact (extrapolated):**
-- Recovered leads: [X per month]
-- Estimated new revenue: [Y SAR/month]
-- ROI: [pilot cost vs. recovered revenue]
+> استبدل كل `[ ]` بمحتوى موثّق. احذف أي قسم لا يوجد له دليل بدلاً من ملئه
+> بتقدير.
 
 ---
 
-### In Their Words
+### العنوان / Headline
 
-> "[Direct quote from the customer — 1-3 sentences. Arabic preferred for Saudi audience, with English translation if needed]"
+**[نوع الشركة بحسب مستوى الإفصاح] — [نتيجة محدّدة موثّقة] خلال [إطار زمني]**
 
-— **[Customer name, Title]**, [Company]
-
-[Optional: photo of the customer with permission, or logo]
-
----
-
-### What Dealix Did Differently
-
-3 specific things that made this work:
-
-1. **[Differentiator 1]** — e.g., "Arabic Khaliji tone customized for [Company]'s brand voice"
-2. **[Differentiator 2]** — e.g., "Response time under 45 seconds on WhatsApp, 24/7"
-3. **[Differentiator 3]** — e.g., "Qualified leads only — sales team didn't waste time on tire-kickers"
+> أمثلة بنية مقبولة (تُملأ بدليل): "شركة خدمات B2B سعودية — وثّقت 5 مسودات
+> تواصل معتمَدة في Sprint من 7 أيام." لا تستخدم "زاد الإيراد X٪" دون دليل
+> L4+ موثّق ومراجَع.
 
 ---
 
-### The Path Forward
+### الشركة / The Company
 
-[1-2 sentences: what's next for the customer?]
+- **الاسم / Name:** [اسم الشركة — فقط إن كان الإفصاح "كامل" بموافقة موقّعة]
+- **القطاع / Sector:** [ ]
+- **الحجم / Size:** [نطاق تقريبي]
+- **الموقع / Location:** [ ]
 
-**Next steps:**
-- [e.g., "Upgrading from Pilot to Starter (999 SAR/month)"]
-- [e.g., "Expanding to email + LinkedIn channels"]
-- [e.g., "Training Dealix on 3 new product categories"]
-
----
-
-### For Companies Like [Customer]
-
-If you're a [Saudi SaaS / F&B / Proptech / ...] company with similar challenges:
-
-- **Pilot:** 1 SAR × 7 days, refund 100% if not satisfied
-- **Book demo:** https://calendly.com/sami-assiri11/dealix-demo
-- **Read other case studies:** https://dealix.me/customers
+[فقرة واحدة عمّا تفعله الشركة، بلغة بسيطة — بحدود الإفصاح المسموح.]
 
 ---
 
-*Published [Date] · [Word count] · Written by Sami Assiri, Dealix Founder*
+### التحدّي / The Challenge
+
+[٢–٣ جمل تصف الألم المحدّد — لا "احتجنا نمواً" العامّة. كن دقيقاً: أي مصدر
+عملاء؟ ما الذي كان يتسرّب؟]
+
+**أرقام قبل Dealix (من العميل، موثّقة):**
+- [مؤشّر 1]: [قيمة العميل أو `insufficient_data`]
+- [مؤشّر 2]: [ ]
 
 ---
 
-## Publishing workflow
+### الحلّ / The Solution
 
-### Phase 1 — Within 48 hours of pilot completion
-- [ ] Customer confirms metrics in writing (email/WhatsApp)
-- [ ] Schedule 15-min interview call to get 1-3 direct quotes
-- [ ] Request logo + permission to use (written confirmation)
-- [ ] Draft case study in this template
-- [ ] Send draft to customer for approval
+[٢–٣ جمل: ما الذي قدّمه Dealix تحديداً؟ أي درجة من السلّم؟ نمط التسليم —
+منتج مُتحقَّق منه (درجة 0–1) أو بقيادة المؤسّس (درجة 3–5)؟]
 
-### Phase 2 — Within 7 days
-- [ ] Customer approves final draft (written)
-- [ ] Publish on dealix.me/case-studies/[customer-slug]
-- [ ] Post LinkedIn announcement with customer tagged (with permission)
-- [ ] Post X/Twitter thread with key metrics
-- [ ] Send to email list (once email list exists)
-- [ ] Add to partner enablement kit
-- [ ] Reference in next 10 sales calls
-
-### Phase 3 — Within 30 days
-- [ ] Video testimonial (30-90 seconds) with customer
-- [ ] Case study one-pager PDF for enterprise sales
-- [ ] SEO optimize (target: "[customer sector] Arabic AI case study")
-- [ ] Share with partner agencies as "how to sell Dealix"
-- [ ] Capture referrals from the customer's network
+**نطاق العمل / Scope:**
+- الخدمة / Service: [7-Day Revenue Proof Sprint — 499 ريال / Data-to-Revenue
+  Pack — 1,500 ريال / Managed Revenue Ops — 2,999–4,999 ريال/شهر]
+- المدّة / Duration: [ ]
+- المخرجات المُسلّمة / Deliverables: [مسودات معتمَدة، تقرير تشخيصي، Proof Pack]
+- ملاحظة: Dealix لم يرسل أي رسالة نيابةً عن العميل — كل إرسال بموافقة العميل.
 
 ---
 
-## Legal / Permission Email Template
+### النتائج / The Results
 
-Send this to every pilot customer:
+> هذا القسم يُملأ **فقط** بأدلة L4+ موثّقة في Proof Pack. أي خانة بلا دليل
+> = `insufficient_data` — لا تُحذف الخانة ولا تُقدَّر.
+
+| المؤشّر / Metric | قبل / Before | بعد / After | المصدر / Source |
+|---|---|---|---|
+| [ ] | [ ] | [ ] | [Proof Pack ref] |
+| [ ] | [ ] | [ ] | [client-entered] |
+
+**تأطير القيمة / Value framing:**
+- القيمة التقديرية / Estimated value: [محسوبة من مدخلات العميل — تُوصَف
+  صراحةً كتقدير، لا كنتيجة مضمونة].
+- القيمة المُتحقَّقة / Verified value: [فقط مع دليل L5 + موافقة — وإلا:
+  غير متاحة].
+
+---
+
+### بكلماتهم / In Their Words
+
+> "[اقتباس مباشر من العميل — فقط إن وافق صراحةً وراجعه. عربي مُفضّل، مع
+> ترجمة إنجليزية.]"
+>
+> — **[اسم العميل ومسمّاه — فقط بإفصاح كامل وموافقة موقّعة]**
+
+> إن لم توجد موافقة على شهادة: احذف هذا القسم كاملاً. لا تخترع اقتباساً.
+
+---
+
+### ما الذي ميّز Dealix / What Dealix Did Differently
+
+ثلاثة عناصر محدّدة وموثّقة جعلت العمل ناجحاً:
+
+1. **[عنصر 1]** — [مثال: نبرة عربية خليجية مضبوطة على صوت علامة العميل].
+2. **[عنصر 2]** — [مثال: كل مسودة بموافقة العميل قبل الإرسال].
+3. **[عنصر 3]** — [مثال: Proof Pack موثّق بدلاً من screenshots].
+
+---
+
+### الخطوة التالية / The Path Forward
+
+[١–٢ جملة عمّا اختاره العميل بعد Sprint — فقط إن كان قراراً فعلياً موثّقاً.]
+
+**الخطوات التالية الممكنة (إن انطبقت):**
+- [الترقية إلى Data-to-Revenue Pack — 1,500 ريال]
+- [أو الترقية إلى Managed Revenue Ops — 2,999–4,999 ريال/شهر]
+
+---
+
+### لشركات مثل [العميل] / For Companies Like [Customer]
+
+إن كنت شركة [قطاع] سعودية B2B تواجه تحدّياً مشابهاً:
+
+- **ابدأ مجاناً:** التشخيص المجاني للعمليات — `dealix.me/diagnostic.html`.
+- **أو جرّب:** 7-Day Revenue Proof Sprint — 499 ريال.
+- **اقرأ المنهجية:** `docs/PROOF_AND_CASE_STUDY_SYSTEM.md`.
+
+---
+
+*نُشر [التاريخ] · كتبه سامي — Dealix · بموافقة نشر موقّعة رقم [مرجع].*
+
+*Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.*
+
+---
+
+## سير عمل النشر — Publishing workflow
+
+### المرحلة 1 — خلال 48 ساعة من اكتمال Sprint
+- [ ] العميل يؤكّد المؤشّرات كتابياً.
+- [ ] جلسة 15 دقيقة لجمع 1–3 اقتباسات مباشرة (إن وافق).
+- [ ] طلب موافقة نشر موقّعة — `PROOF_PUBLICATION_CONSENT_TEMPLATE.md`.
+- [ ] صياغة المسودة في هذا القالب — بأدلة Proof Pack فقط.
+- [ ] إرسال المسودة للعميل للمراجعة.
+
+### المرحلة 2 — خلال 7 أيام
+- [ ] العميل يعتمد المسودة النهائية (كتابياً).
+- [ ] النشر على `dealix.me/case-studies/[slug]`.
+- [ ] إعلان LinkedIn — مع وسم العميل فقط بموافقته.
+- [ ] الإضافة إلى عدّة تمكين الشركاء.
+
+### المرحلة 3 — خلال 30 يوماً
+- [ ] شهادة فيديو (30–90 ثانية) — بموافقة منفصلة.
+- [ ] نسخة PDF من صفحة واحدة.
+- [ ] تحسين GEO/SEO للقطاع.
+
+---
+
+## رسالة طلب الموافقة — Permission request (warm, post-Sprint only)
+
+> ترسَل فقط لعميل أتمّ Sprint فعلياً. مسودة → مراجعة المؤسّس → إرسال.
 
 ```
-Subject: إذن للنشر — Dealix Case Study [اسم الشركة]
+الموضوع: إذن النشر — دراسة حالة Dealix [اسم الشركة]
 
-السلام عليكم [اسم العميل],
+السلام عليكم [اسم العميل]،
 
-شكراً على ثقتكم في Dealix خلال pilot الـ 7 أيام الماضية.
+شكراً على ثقتكم في Dealix خلال Sprint السبعة أيّام.
 
-بناءً على النتائج (response time من [X] إلى [Y]، [Z] demos محجوزة)، أود أن أطلب إذنكم لنشر الحالة كـ case study على dealix.me.
+بناءً على ما وثّقناه في Proof Pack، أودّ طلب إذنكم لنشر الحالة
+كدراسة حالة.
 
-ما سيُنشر:
-- اسم الشركة + logo (إذا سمحتم)
-- المقاييس الرقمية (قبل/بعد)
-- اقتباسات مباشرة (إذا تبغون تراجعوها قبل النشر)
-- شرح عام للتحدي والحل
+ما يُنشر (وفق ما توافقون عليه فقط):
+- اسم الشركة + الشعار (اختياري — يحتاج إفصاحاً كاملاً)
+- المؤشّرات الموثّقة (قبل/بعد) — كما في Proof Pack
+- اقتباسات مباشرة — تراجعونها قبل النشر
+- شرح عامّ للتحدّي والحلّ
 
-ما لن يُنشر:
+ما لا يُنشر أبداً:
 - بيانات عملائكم
-- أسرار مالية
-- أي معلومة لم توافقوا عليها
+- أرقام مالية لم توافقوا عليها صراحةً
+- أي معلومة لم تعتمدوها
 
-هل لديكم موافقة؟ إذا نعم، رد بـ "موافق" وسأرسل المسودة خلال 24 ساعة لمراجعتكم.
+إن وافقتم، أرسل لكم نموذج موافقة النشر للتوقيع، ثم المسودة
+خلال 24 ساعة لمراجعتكم.
 
 شكراً،
-سامي العسيري — Dealix
+سامي — Dealix
 ```
 
 ---
 
-## Case Study Ideas to Write First
+## ما يجب تجنّبه دائماً — Always avoid
 
-Based on `SAUDI_LEAD_GRAPH_MASTER.csv`, these sectors will likely convert first (highest Tier 1 probability):
-
-1. **Saudi SaaS (B2B)** — tech-forward, values speed, appreciates AI nuance
-2. **F&B franchise inquiries** — clear metrics (quote→contract time), tangible value
-3. **Real estate agent** — WhatsApp-heavy, easy to measure booking increase
-4. **Saudi marketing agency** — wants case study to sell to their clients (multiplier)
-5. **Saudi B2B marketplace** — merchant success stories resonate
-
-Write case studies in this order — SaaS first (highest social proof), agency fifth (multiplier effect).
+- ❌ أرقام إيراد دون دليل L4+ موثّق وموافقة صريحة.
+- ❌ شهادات أو اقتباسات مخترعة أو معاد صياغتها دون مراجعة العميل.
+- ❌ أي رقم تسعير غير مطابق لـ `OFFER_LADDER_AND_PRICING.md`.
+- ❌ ذكر باقات مُلغاة (Starter / Growth / Scale) أو "1 ريال pilot".
+- ❌ كلمات: «نضمن» / guaranteed / 10x / revolutionary.
+- ❌ النشر قبل موافقة نشر موقّعة.
 
 ---
 
-## Metrics to Always Include
-
-### Quantitative (mandatory):
-- Response time (before → after)
-- Leads handled per day/week
-- Demos booked
-- Conversion rate
-
-### Qualitative (at least 1):
-- Customer direct quote
-- Team workflow change
-- Team time savings
-- Customer satisfaction
-
-### Avoid:
-- Revenue numbers unless customer explicitly approves
-- Anything that could expose their customer data
-- Claims you can't back up
-
----
-
-*The difference between "Dealix works" and "Dealix has 5 real case studies from Saudi companies" = order of magnitude in conversion. Write the first one the moment pilot completes.*
+*Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.*

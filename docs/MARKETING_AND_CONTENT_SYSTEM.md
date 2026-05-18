@@ -1,6 +1,18 @@
 # Dealix — Marketing & Content System
-<!-- PHASE 11 | Owner: Founder | Date: 2026-05-07 -->
+<!-- PHASE 11 | Owner: Founder | Updated: 2026-05-18 -->
 <!-- Arabic primary | No guaranteed claims | Proof not promises -->
+
+> **حالة الشركة اليوم:** صفر عملاء دافعين. كل محتوى يصف ما يفعله المنتج، لا
+> ما حقّقه عملاء — حتى يوجد عميل موثّق بموافقة. لا اختراع نتائج، لا شهادات
+> وهمية، لا أرقام لم تحدث.
+>
+> **Company status today:** zero paying customers. All content describes what
+> the product does, never what customers achieved — until a documented,
+> consented customer exists. No invented results, no fake testimonials.
+
+> **مصدر التسعير الوحيد:** `docs/OFFER_LADDER_AND_PRICING.md`. أي رقم في أي
+> أصل تسويقي يجب أن يطابقه حرفياً. Single pricing source of truth — every
+> marketing asset must match it exactly.
 
 ---
 
@@ -24,13 +36,20 @@ Anti-claim banner (مطلوب في الصفحة):
 
 ### Launchpad / Start Page (dealix.me/start.html)
 ```
-العنوان: "7 أيام. 499 SAR. نتيجة حقيقية أو نوضح لك كيف تتحسن."
-الجسم: [قائمة 5 مخرجات Sprint]
+العنوان: "7 أيام. 499 ريال. مُخرجات حقيقية — أو نوضح لك كيف تتحسن."
+الجسم: [قائمة مخرجات 7-Day Revenue Proof Sprint من OFFER_LADDER_AND_PRICING.md]
 Trust signals:
   ✓ بياناتك تحت سيطرتك (PDPL)
-  ✓ لا إرسال تلقائي — أنت توافق على كل رسالة
+  ✓ لا إرسال تلقائي — أنت توافق على كل مسودة
   ✓ فاتورة رسمية مع كل دفعة
+  ✓ التشخيص المبدئي مجاني — تبدأ قبل أي دفع
 ```
+
+> **توافق التسعير — Pricing alignment.** السلم المعروض في كل صفحة:
+> التشخيص مجاني → Sprint 499 ريال → Pack 1,500 ريال → Managed Revenue Ops
+> 2,999–4,999 ريال/شهر → Executive Command Center 7,500–15,000 ريال/شهر.
+> لا تذكر أبداً باقات قديمة (Starter 999 / Growth 2,999 / Scale 7,999) — هذه
+> أرقام مُلغاة. Never reference retired Starter/Growth/Scale tiers.
 
 ### Radar Page (dealix.me/ai-team.html)
 ```
@@ -184,6 +203,25 @@ Dealix مصمم لـ 3 قرارات يومية، لا 300 رقم."
 
 ---
 
+## 4b. القنوات والإيقاع (Channels & Cadence)
+
+| القناة | الدور | الإيقاع | الملكية |
+|--------|------|---------|---------|
+| LinkedIn (شخصي للمؤسس) | السلطة الفكرية + inbound | منشور قصير 3×/أسبوع + long-form 1×/أسبوع | المؤسس |
+| المدونة `dealix.me/blog` | GEO/AIO + SEO طويل المدى | 1 عربي + 1 إنجليزي/أسبوع | المؤسس |
+| النشرة البريدية | تثقيف warm-list (بعد 100+ مشترك) | ملخص أسبوعي | المؤسس |
+| WhatsApp Status | لقطات قصيرة + روابط | عند كل منشور رئيسي | المؤسس |
+
+**قاعدة draft-only:** كل منشور يُكتب كمسودة، يراجعه المؤسس، ثم يُنشر يدوياً.
+لا جدولة آلية لمنصات خارجية. لا أتمتة LinkedIn. لا إرسال جماعي.
+Every post is drafted, founder-reviewed, then manually published. No
+external-platform scheduling automation, no LinkedIn automation, no bulk send.
+
+**مرجع التقويم:** `docs/growth/CONTENT_CALENDAR_MONTH_1.md` (محتوى عام) +
+`docs/GEO_CONTENT_CALENDAR.md` (محتوى استشهاد الذكاء الاصطناعي).
+
+---
+
 ## 5. رسائل ضد الادعاءات (Anti-Claim Messaging)
 
 ### في كل قناة خارجية
@@ -196,4 +234,18 @@ Dealix مصمم لـ 3 قرارات يومية، لا 300 رقم."
 
 ---
 
-*Version 1.0 | Content strategy: proof-first | Arabic primary*
+---
+
+## 6. الإفصاح الإلزامي (Mandatory Disclosure)
+
+كل أصل تسويقي موجّه للعميل ينتهي بهذا السطر:
+
+> القيمة التقديرية ليست قيمة مُتحقَّقة / Estimated value is not Verified value.
+
+أي رقم يُعرض في حاسبة أو منشور هو **تقدير من مدخلات المستخدم** — ليس وعداً
+ولا نتيجة موثّقة. أي ادعاء نتيجة يتطلب Proof Pack موثّق بمستوى L4+ وموافقة
+نشر — راجع `docs/PROOF_AND_CASE_STUDY_SYSTEM.md`.
+
+---
+
+*Version 1.1 | Content strategy: proof-first | Arabic primary | 0 paying customers — stated honestly | Pricing aligned to OFFER_LADDER_AND_PRICING.md*

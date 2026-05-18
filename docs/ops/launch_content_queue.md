@@ -1,352 +1,207 @@
-# Dealix — Launch Content Queue
+# Dealix — Launch Content Queue — قائمة محتوى الإطلاق
+<!-- Owner: Founder (Marketing) | Updated: 2026-05-18 | Arabic primary -->
 
-**Status:** Backend live at https://web-dealix.up.railway.app. Landing live at https://voxc2.github.io/dealix/
+> **النطاق:** هذا الملف يملك **محتوى التسويق** للإطلاق فقط — منشورات تُنشر
+> على قنوات Dealix العامّة. مسودات **التواصل** مع القائمة الدافئة (رسائل
+> مباشرة، بريد أوّل) يملكها فريق المبيعات في
+> `docs/sales-kit/OUTREACH_DRAFTS_QUEUED.md` و `WARM_LIST_WORKFLOW.md` —
+> لا تُحرَّر هنا ولا تُكرَّر هنا.
+>
+> **Scope:** this file owns launch **marketing content** only — posts
+> published on Dealix's own public channels. Warm-list **outreach** drafts
+> are owned by the sales workstream — not edited or duplicated here.
 
-All content below is in final Arabic form, ready to paste.
+> **حالة الشركة:** صفر عملاء دافعين. كل منشور أدناه يصف المنتج والمنهجية —
+> لا يدّعي عملاء أو نتائج أو أرقام pilot لم تحدث.
+>
+> **التسعير:** يطابق `docs/OFFER_LADDER_AND_PRICING.md` حرفياً — تشخيص
+> مجاني · Sprint 499 ريال · Pack 1,500 ريال · Managed Revenue Ops
+> 2,999–4,999 ريال/شهر · Executive Command Center 7,500–15,000 ريال/شهر.
 
----
-
-## POST 1 — LinkedIn/X Founder Launch (post first)
-
-```
-أطلقت Dealix اليوم.
-
-الفكرة بسيطة:
-كل شركة عندها leads، لكن الرد يتأخر والمتابعة تضيع.
-
-Dealix = مندوب مبيعات AI بالعربي:
-• يرد على lead خلال 45 ثانية
-• يسأل أسئلة تأهيل BANT
-• يحجز demo
-• يرسل ملخص لفريق المبيعات
-• يختصر أول 30-50% من دورة البيع
-
-أبحث عن 3 شركات B2B نجرب معها pilot هذا الأسبوع.
-اللي عنده leads كثيرة ويريد رد أسرع — تواصل معي.
-
-🌐 voxc2.github.io/dealix
-📅 calendly.com/sami-assiri11/dealix-demo
-
-#BuildInPublic #SaudiSaaS #AI
-```
+> **دوكترين:** لا تواصل بارد · لا أتمتة LinkedIn · لا scraping · لا إرسال
+> جماعي · لا «نضمن» · لا أرقام مخترعة. كل منشور: مسودة → مراجعة المؤسّس →
+> نشر يدوي. لا جدولة آلية لمنصات خارجية.
 
 ---
 
-## POST 2 — Agency Angle
+## القناة والتسلسل — Channel & sequence
+
+ينشر المؤسّس هذه المنشورات على LinkedIn (وX اختيارياً) خلال أسبوع الإطلاق،
+بمعدّل منشور كل يومين، بين 09:00 و11:00 بتوقيت الرياض. كل منشور قصير
+(150–280 كلمة) ما لم يُذكر غير ذلك. المنشورات الطويلة في
+`docs/sales-kit/linkedin_longform_posts.md`.
+
+---
+
+## POST 1 — منشور الإطلاق
 
 ```
-للشركات والوكالات التسويقية:
+أطلقت Dealix.
 
-Dealix ليس فقط أداة — ممكن يكون خدمة تبيعونها لعملائكم.
+الفكرة باختصار: كل شركة B2B تستقبل عملاء محتملين، لكن الردّ يتأخّر
+والمتابعة تتبعثر — لا لأنّ الفريق مقصّر، بل لأن المسؤولية غير محدّدة.
 
-Setup + automation + lead qualification + booking.
-Commission model جاهز (10-20% من اشتراك العميل).
+Dealix نظام تشغيل إيراد عربي أوّلاً ومحكوم:
+• يصوغ مسودات ردود ومتابعات بالعربية الطبيعية
+• يرتّب pipeline ويُظهر حالة كل صفقة
+• يبني تقارير قرار واضحة
+• وكل رسالة خارجية تمرّ بموافقتك — لا إرسال تلقائي
 
-إذا عندك عملاء تدير لهم حملات وتضيع منهم leads،
-خلنا نجربها على عميل واحد هذا الأسبوع.
+أبني علناً، وأبدأ بصراحة: Dealix لم يجمع بعد عميله الأوّل الدافع.
 
-👇
-voxc2.github.io/dealix/partners.html
+نقطة البداية مجانية وغير ملزمة — التشخيص المجاني للعمليات:
+🌐 dealix.me/diagnostic.html
+
+#SaudiB2B #RevenueOps #ArabicAI #BuildInPublic
 ```
 
 ---
 
-## POST 3 — Problem Angle
+## POST 2 — لماذا لا نبني تواصلاً بارداً
 
 ```
-أكبر تسريب في المبيعات ليس السعر.
+يُطلب منّي أسبوعياً: "ابنوا لنا أداة ترسل واتساب جماعي للعملاء."
+
+الجواب: لا. وهذا قرار تصميمي دائم، لا قيد مؤقّت.
+
+التواصل البارد والإرسال الجماعي على واتساب مخاطرة على رقمك،
+على سمعة علامتك، وعلى امتثالك لنظام حماية البيانات السعودي.
+
+Dealix يفعل العكس: يصوغ مسودة ردّ بالعربية الطبيعية، تظهر لك،
+تعدّلها وتوافق، ثم ترسل أنت بضغطة واحدة.
+
+الإرسال الصحيح أهمّ من الإرسال السريع.
+
+🌐 dealix.me
+
+#SaudiB2B #PDPL #GovernedAI
+```
+
+---
+
+## POST 3 — منشور المشكلة
+
+```
+أكبر تسريب في المبيعات غالباً ليس السعر.
 
 غالباً هو:
-• تأخر الرد (متوسط 4 ساعات في السعودية)
-• عدم تأهيل العميل قبل المكالمة
-• عدم المتابعة بعد Demo
-• عدم حجز الموعد بسرعة
+• تأخّر الردّ على العميل المحتمل
+• الدخول للمكالمة بدون سياق كافٍ عن العميل
+• غياب المتابعة بعد الاجتماع الأوّل
+• بطء في تثبيت الموعد التالي
 
-Dealix يحاول يحل هذه النقطة تحديداً بالعربي الخليجي.
-مو chatbot — مندوب مبيعات AI كامل.
+Dealix يستهدف هذه النقاط تحديداً — كنظام عمليات إيراد محكوم،
+لا chatbot، ولا أداة ترسل نيابةً عنك.
 
-Demo: voxc2.github.io/dealix
+ابدأ بالتشخيص المجاني: dealix.me/diagnostic.html
 ```
 
 ---
 
-## LINKEDIN DM #1 — Abdullah Al-Assiri / Lucidya (highest priority)
-
-**Platform:** LinkedIn Connect+Note OR direct DM
-**Why first:** Surname affinity = highest probability of response
+## POST 4 — منشور المنهجية: الإثبات
 
 ```
-السلام عليكم أستاذ عبدالله،
+سؤال يستحق الطرح قبل أي أداة AI: كيف ستعرف أنها نفعتك فعلاً؟
 
-أنا سامي العسيري — مؤسس Dealix (AI sales rep بالعربي الخليجي).
-قرابة الاسم جعلتني أبدأ بك.
+Dealix يستخدم سلّم أدلة من خمسة مستويات:
+L1 تم التسليم → L2 تمت الموافقة → L3 تمّ التطبيق →
+L4 أثر موثّق → L5 نتيجة مُثبتة بموافقة موقّعة.
 
-Lucidya تقود CXM في المنطقة، فريق BDR عندكم يستحق automation حقيقي.
+screenshot ليس إثباتاً. الادّعاء بلا دليل = لا ادّعاء.
 
-Dealix يرد خلال 45 ثانية، يؤهّل BANT، يحجز demos.
-Pilot بـ 1 ريال × 7 أيام.
-
-يناسبك 20 دقيقة demo الثلاثاء 10 ص أو الأربعاء 2 ظ؟
-📅 calendly.com/sami-assiri11/dealix-demo
-
-شاكر وقتك،
-سامي
-```
-
----
-
-## LINKEDIN DM #2 — Ahmad Al-Zaini / Foodics
-
-```
-الله يسعدك أحمد،
-
-مبروك على Series C — Foodics مثال يحتذى في MENA SaaS.
-
-أنا سامي، بنيت Dealix: AI sales rep بالعربي الخليجي.
-يرد على restaurant leads خلال 45 ثانية بلهجة طبيعية، يحجز demos.
-
-Foodics تتوسع جغرافياً — فريقك بـ 3 لهجات مختلفة الآن. Dealix مبني لذلك.
-
-20 دقيقة demo على سيناريو restaurant onboarding؟
-📅 calendly.com/sami-assiri11/dealix-demo
-
-سامي
-```
-
----
-
-## LINKEDIN DM #3 — Nawaf Hariri / Salla
-
-```
-أستاذ نواف،
-
-من فترة أتابع توجه سلة لتمكين التجار.
-
-فكرة سريعة: Dealix = AI sales rep بالعربي الخليجي.
-هل تفكرون في عرضه كـ add-on app داخل سلة؟
-التاجر يدفع شهرياً، سلة تأخذ commission (30%).
-
-70K+ تاجر = distribution غير مسبوق.
-
-20 دقيقة لنستكشف الفكرة؟
-📅 calendly.com/sami-assiri11/dealix-demo
-
-سامي
-```
-
----
-
-## LINKEDIN DM #4 — Hisham Al-Falih / Lean Technologies
-
-```
-هشام السلام عليكم،
-
-Lean API علّمني كيف تُبنى منتجات fintech بعناية.
-
-سؤال مباشر: كم lead من 300+ عميل Lean يتحوّل بعد demo SE؟
-أتوقع 30-40% سقف.
-
-Dealix يسبق SE — 8 أسئلة technical discovery، تأهيل use case، حجز SE moment.
-يوفّر 70% من وقت solutions engineering.
-
-20 دقيقة demo مع سيناريو bank integration؟
-📅 calendly.com/sami-assiri11/dealix-demo
-
-سامي
-```
-
----
-
-## LINKEDIN DM #5 — Ibrahim Manna / BRKZ
-
-```
-إبراهيم مرحبا،
-
-$30M debt من Stride إشارة قوية — BRKZ يركب موجة $3T pipeline.
-
-Insight من تقنية المقاولات: فريق inside sales يصرف نصف يومه على quotes،
-وبعضها يموت قبل ما يوصل للعميل.
-
-Dealix (AI sales rep عربي) يأخذ الطلب، يعدّ quote أولي من catalog، يحجز اجتماع تفاوض.
-
-صراحة — أحتاج عميل enterprise construction واحد لإثبات use case.
-لو قنعت، pilot مجاني 30 يوم.
-
-20 دقيقة على سيناريو "500 كرتون blocks NEOM"؟
-📅 calendly.com/sami-assiri11/dealix-demo
-
-سامي
-```
-
----
-
-## AGENCY DMs (10+) — ready-to-personalize
-
-Template:
-```
-السلام عليكم [الاسم]،
-
-شفت إن [اسم الوكالة] تقدّم خدمات تسويق/CRM/automation لعملاء B2B.
-
-Dealix (AI sales rep عربي) ممكن يصير طبقة تنفيذ لكم:
-يلتقط lead → يؤهل → يحجز الموعد → يرسل ملخص.
-
-تقدرون تبيعونه كـ setup + retainer (5K-15K ريال setup + 20% من MRR العميل).
-3-10 عملاء فقط = revenue stream ممتاز.
-
-demo 20 دقيقة ونشوف إذا يناسب شراكة تنفيذ؟
-📅 calendly.com/sami-assiri11/dealix-demo
-🤝 voxc2.github.io/dealix/partners.html
-
-سامي
-```
-
-Target agencies:
-- Peak Content
-- Digital8
-- Brand Lounge
-- Qatar Digital
-- Wavy
-- Serviceplan Saudi
-- Intermarkets
-- MSL Saudi
-- + 2 freelance consultants on LinkedIn
-
----
-
-## FOLLOW-UP CADENCE
-
-**Day +2 (if no reply):**
-```
-أستاذ [الاسم]،
-رسالتي قبل يومين. أفترض الانشغال.
-سؤال واحد: في فريقكم، متوسط زمن الرد الأولي على leads؟
-أي إجابة تساعدني.
-سامي
-```
-
-**Day +5:**
-```
-[الاسم]،
-إحصائية Gartner 2025: 42% من B2B leads في السعودية تُفقد بسبب تأخر الرد.
-في شركة بحجم [الشركة]، كل lead ضائع = عشرات الآلاف سنوياً.
-Dealix يحل هذا تحديداً.
-voxc2.github.io/dealix
-سامي
-```
-
-**Day +10 (final):**
-```
-[الاسم]،
-آخر رسالة. إذا تغيرت الظروف خلال السنة، رد على رسالتي. سأعود في نفس اليوم.
-بالتوفيق،
-سامي
-```
-
----
-
-## 🚦 Execution rules
-
-1. **Do NOT bulk-blast.** Send max 5 personalized per hour.
-2. **Log every message in `docs/ops/pipeline_tracker.csv`** (or Google Sheets copy).
-3. **Respect opt-outs** immediately — add `opted_out` status, never message again.
-4. **Target compliant segments only:** founders + business accounts + partner prospects. NO B2C mass DMs.
-5. **Speed of reply** matters more than speed of sending. When someone replies: respond within 30 minutes.
-
----
-
-## POST 4 — Day 4 — Proof / Early Learning Post
-
-```
-3 أيام منذ إطلاق Dealix. 3 أشياء تعلمتها:
-
-1. شركات B2B في السعودية يستقبلون 100-500 lead شهرياً ويردون على 30-40% فقط.
-   النصف الآخر يبرد خلال 24 ساعة.
-
-2. Dealix (AI sales rep بالخليجي) يرد خلال 45 ثانية على كل lead.
-   معناه: مضاعفة الـ conversion بدون توظيف SDR.
-
-3. الشركات اللي جربوها في 3 أيام - أكثر objection واحد سمعته:
-   "هل يتكلم عربي بشكل طبيعي؟"
-   الجواب: جرّبه بنفسك. 20 دقيقة demo بدون التزام.
-
-🌐 dealix.me
-📅 calendly.com/sami-assiri11/dealix-demo
-
-#BuildInPublic #SaudiSaaS #AI #Arabic
-```
-
-**Publishing rule:** Sami publishes at 9-11am Saudi time for max engagement.
-
----
-
-## POST 5 — Day 5 — Manual Pilot Offer Post
-
-```
-عرض مفتوح — 7 أيام، 1 ريال.
-
-Dealix (AI sales rep بالخليجي) للشركات B2B:
-- يرد على leads خلال 45 ثانية
-- يؤهّل BANT
-- يحجز demos
-- يسلّم ملخص جاهز لفريق المبيعات
-
-الـ Pilot:
-✓ 7 أيام
-✓ 1 ريال فقط (قابل للاسترداد)
-✓ يدوي أولاً، ثم أتمتة
-✓ استرداد كامل لو ما أعجبك
-
-محدود — أول 5 شركات B2B سعودية.
-
-🌐 dealix.me
-📅 calendly.com/sami-assiri11/dealix-demo
-```
-
----
-
-## POST 6 — Day 6 — Partner Invitation Post
-
-```
-للوكالات التسويقية في السعودية:
-
-Dealix = طبقة AI sales rep بالعربي تضعها فوق عملائك الحاليين.
-
-النتيجة المالية:
-- Setup: 3,000 - 15,000 ريال (يدفع العميل، تأخذ 100%)
-- Commission: 20-30% من MRR دائم (500 - 2,500 ريال شهري لكل عميل)
-- 5 عملاء = 2,500 - 12,500 ريال شهري إضافي
-
-صفر tech work. صفر code. عرض جاهز.
-
-5 وكالات فقط هذا الشهر.
-
-🤝 dealix.me/partners.html
-📅 calendly.com/sami-assiri11/dealix-demo
-```
-
----
-
-## POST 7 — Day 7 — Recap + Next Week Teaser
-
-```
-أسبوع كامل من Dealix الإطلاق. النتائج الأولية:
-
-✓ [XX] DMs مرسلة
-✓ [XX] demos محجوزة
-✓ [XX] pilots مباشرة
-✓ أول [XX] ريال revenue
-
-التعلم الأكبر: الوعي بـ "سرعة الرد = فلوس ضائعة" موجود عند الجميع، لكن الحل الحقيقي نادر.
-
-الأسبوع القادم:
-- أول 3 case studies عامة
-- 10 وكالات شركاء
-- Moyasar automation كامل
-
-تابع #BuildInPublic مع Dealix.
+وبصراحة: Dealix لم يجمع بعد عميله الأوّل الدافع — لذا لا أعرض
+دراسات حالة لا توجد. ما أعرضه منهجية واضحة تعرف بها متى تحقّقت
+قيمة فعلية.
 
 🌐 dealix.me
 ```
 
-**Fill in [XX] with actual metrics from scorecard before publishing.**
+---
+
+## POST 5 — منشور عرض البداية منخفض المخاطر
+
+```
+لمن يريد تجربة عملية محدودة المخاطر:
+
+7-Day Revenue Proof Sprint — 499 ريال (دفعة واحدة):
+✓ تشخيص مفصّل لـ pipeline الحالي
+✓ 5 مسودات تواصل جاهزة لموافقتك (لا إرسال تلقائي)
+✓ Proof Pack موثّق في اليوم السابع + تقرير تنفيذي + خطة 30 يوم
+
+سبعة أيام لنرى معاً مُخرجات حقيقية — لا «سبعة أيام ونضمن صفقات».
+وقبلها، التشخيص المجاني متاح بدون أي التزام.
+
+🌐 dealix.me
+
+(القيمة التقديرية ليست قيمة مُتحقَّقة.)
+```
+
+---
+
+## POST 6 — دعوة الوكالات
+
+```
+للوكالات السعودية:
+
+Agency Partner OS من Dealix طبقة عمليات إيراد عربية محكومة
+تقدّمونها لعملائكم الذين يثقون بكم أصلاً — تواصل دافئ فقط.
+
+النموذج المالي: مخصّص + حصّة إيراد 15–30٪، تُحدّد في اتفاقية
+الشراكة. شروط الفتح: إتمام ≥ 3 Proof Packs موثّقة + اتفاقية موقّعة.
+
+إفصاح: هذه الدرجة اليوم بقيادة المؤسّس / شبه-مؤتمتة، وDealix لم
+يجمع بعد عميله الأوّل الدافع — لا حوافز مرتبطة بإنجازات لم تحدث.
+
+من رأى فيها قيمة — نبدأ بمحادثة استكشاف صريحة. 🌐 dealix.me
+```
+
+---
+
+## POST 7 — منشور ختام أسبوع الإطلاق
+
+```
+أسبوع من البناء العلني مع Dealix.
+
+ما تعلّمته: الوعي بأن «تأخّر الردّ = إيراد ضائع» موجود عند معظم
+المؤسّسين — لكن الحلّ المحكوم والعربي نادر.
+
+ما لن أفعله: نشر أرقام نتائج لا توجد. Dealix لا يزال قبل عميله
+الأوّل الدافع، وسأقول ذلك بصراحة حتى يتغيّر — بدليل موثّق.
+
+الأسبوع القادم: محتوى منهجية أكثر، والتشخيص المجاني متاح
+للشركات السعودية B2B المهتمّة.
+
+🌐 dealix.me
+```
+
+> **ملاحظة:** لا تكتب «✓ XX demos» أو «✓ XX ريال إيراد» في منشور الختام.
+> صفر عملاء دافعين يعني لا أرقام نتائج تُنشر. ينشر المؤسّس تعلّماً نوعياً
+> فقط حتى يوجد دليل موثّق.
+
+---
+
+## قواعد التنفيذ — Execution rules
+
+1. **لا إرسال جماعي ولا أتمتة.** كل منشور يُنشر يدوياً من المؤسّس.
+2. **مسودة → مراجعة المؤسّس → نشر.** لا منشور يخرج بلا مراجعة.
+3. **التسعير يطابق `OFFER_LADDER_AND_PRICING.md` حرفياً** في كل منشور.
+4. **لا أرقام نتائج، لا عملاء وهميون، لا «1 ريال pilot».** السعر 499 ريال.
+5. **مسودات التواصل ليست هنا.** راجع ملفات المبيعات — لا تُحرَّر من هنا.
+6. **سرعة الردّ على التفاعل** أهمّ من سرعة النشر: ردّ خلال 30 دقيقة.
+7. **سجّل النشر** في سجل المحتوى — مشاهدات وتفاعل فقط، لا أرقام متوقّعة.
+
+---
+
+## مراجع — References
+
+- نظام التسويق: `docs/MARKETING_AND_CONTENT_SYSTEM.md`
+- تقويم المحتوى: `docs/growth/CONTENT_CALENDAR_MONTH_1.md`
+- المنشورات الطويلة: `docs/sales-kit/linkedin_longform_posts.md`
+- محتوى GEO: `docs/GEO_CONTENT_CALENDAR.md`
+- مسودات التواصل (المبيعات — لا تُحرَّر هنا):
+  `docs/sales-kit/OUTREACH_DRAFTS_QUEUED.md` · `WARM_LIST_WORKFLOW.md`
+- التسعير: `docs/OFFER_LADDER_AND_PRICING.md`
+
+---
+
+*Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.*
