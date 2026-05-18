@@ -124,7 +124,7 @@ publish a clearly labeled case-safe template instead.
 
 If you're a [Saudi SaaS / F&B / Proptech / ...] company with similar challenges:
 
-- **Pilot:** 1 SAR × 7 days, refund 100% if not satisfied
+- **Start:** free Mini Diagnostic, then the 499 SAR 7-Day Revenue Proof Sprint
 - **Book demo:** https://calendly.com/sami-assiri11/dealix-demo
 - **Read other case studies:** https://dealix.me/customers
 

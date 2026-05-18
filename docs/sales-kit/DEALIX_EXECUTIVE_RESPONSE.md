@@ -188,7 +188,7 @@
 | # | Action | Time | Purpose |
 |---|--------|------|---------|
 | P2.1 | CR (company registration) | 1-3 days | Enterprise contracts |
-| P2.2 | First signed pilot (1 SAR) | External | Proof |
+| P2.2 | First signed pilot (499 SAR Sprint) | External | Proof |
 | P2.3 | First paid customer (999+ SAR) | External | Revenue |
 | P2.4 | First case study drafted | 1 day | Social proof |
 | P2.5 | Partner outreach — 10 agencies | 5 days | Growth |
@@ -636,7 +636,7 @@ All 7 layers must be verified with a real 1 SAR transaction that:
 **Risk 3 — First customer churns due to product not truly ready**
 - Probability: Medium
 - Impact: Negative reference, damaged reputation in small Saudi tech community
-- Mitigation: Pilot 1 SAR gives 7-day safe window; don't aggressively sell before first 3 customers succeed
+- Mitigation: the 499 SAR 7-Day Revenue Proof Sprint is a small, bounded first engagement; don't aggressively sell before first 3 customers succeed
 
 ### Other risks to monitor
 - Competitor launches similar product (low, reactive response only)
