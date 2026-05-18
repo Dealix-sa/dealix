@@ -1,0 +1,18 @@
+# CEO GTM agent roster — supervisor + daily deliverables
+version: "1"
+task_queue: dealix/config/founder_agent_task_queue.yaml
+supervisor:
+  id: dealix-pm
+  daily_outputs: [queue_seeded, north_star_snapshot, priorities_1_to_3]
+  never: [external_send, charge_customer]
+
+agents:
+  - id: dealix-engineer
+    daily_commands:
+      - python scripts/verify_railway_production_config.py --skip-live
+  - id: dealix-sales
+    daily_outputs: [qualification_drafts]
+  - id: dealix-delivery
+    daily_outputs: [proof_pack_checklist]
+  - id: dealix-content
+    daily_outputs: [content_drafts_for_approval]

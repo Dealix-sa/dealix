@@ -1,0 +1,20 @@
+# Five-rung SKU ladder — see docs/commercial/COMMERCIAL_SKU_LADDER_AR.md
+currency: SAR
+rungs:
+  - id: sku_r0_free_diagnostic
+    rung: 0
+    price_sar: 0
+  - id: sku_r1_sprint_499
+    rung: 1
+    price_sar: 499
+  - id: sku_r2_data_pack_1500
+    rung: 2
+    price_sar: 1500
+  - id: sku_r3_managed_ops
+    rung: 3
+    price_sar_min: 2999
+    price_sar_max: 4999
+  - id: sku_r4_custom_ai
+    rung: 4
+    price_sar_min: 5000
+    price_sar_max: 25000

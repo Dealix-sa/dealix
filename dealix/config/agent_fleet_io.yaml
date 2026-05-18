@@ -1,0 +1,40 @@
+# Agent fleet I/O — links task queue, roster, and Cursor subagents.
+# Doc: docs/agentic_operations/AGENT_FLEET_OPERATING_SYSTEM_AR.md
+version: "1.0"
+task_queue: dealix/config/founder_agent_task_queue.yaml
+roster: dealix/config/ceo_agent_roster.yaml
+runtime_queue: data/founder_agent/queue_today.json
+learning_log: data/founder_agent/weekly_learning.yaml
+plan_90_day: data/commercial/90_day_activation_plan.yaml
+sku_ladder: dealix/config/commercial_sku_ladder.yaml
+icp_playbook: docs/commercial/operations/ICP_HYBRID_GTM_PLAYBOOK_AR.md
+north_star: dealix/config/founder_north_star_metrics.yaml
+
+daily_commands:
+  commercial_day: scripts/run_founder_commercial_day.sh
+  fleet_rhythm: scripts/run_founder_agent_fleet_rhythm.sh
+  north_star: scripts/founder_north_star_status.py
+  railway_align: scripts/railway_ui_alignment.sh
+
+shared_inputs:
+  - data/commercial/90_day_activation_plan.yaml
+  - dealix/config/commercial_sku_ladder.yaml
+  - dealix/config/icp_hybrid_gtm.yaml
+
+shared_outputs:
+  governance_decision_required: true
+  external_send: approval_center_only
+
+agents:
+  dealix-pm:
+    reads: [plan_90_day, task_queue, north_star]
+    writes: [session_priorities, delegation_briefs]
+  dealix-engineer:
+    reads: [dealix/config/railway_ui_canonical.yaml]
+    verify: [scripts/verify_railway_production_config.py]
+  dealix-sales:
+    reads: [icp_playbook]
+  dealix-delivery:
+    reads: [sku_ladder]
+  dealix-content:
+    reads: [sku_ladder, icp_playbook]

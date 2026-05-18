@@ -1,0 +1,15 @@
+version: "1.0"
+extends_icp_config: dealix/config/icp_agency_wedge.yaml
+icps:
+  - id: icp_agency_wedge
+    name_ar: "وكالات تسويق — Motion A"
+    entry_sku: sku_r0_free_diagnostic
+    plg_paths: [/dealix-diagnostic, /risk-score]
+  - id: icp_b2b_saas_services
+    name_ar: "B2B SaaS وخدمات"
+    entry_sku: sku_r0_free_diagnostic
+    upgrade_sku: sku_r2_data_pack_1500
+  - id: icp_crm_partner
+    name_ar: "شركاء CRM/تنفيذ"
+    entry_sku: sku_r1_sprint_499
+    plg_paths: [/partners]

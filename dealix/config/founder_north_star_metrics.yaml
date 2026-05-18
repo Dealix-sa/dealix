@@ -1,0 +1,11 @@
+# Founder north-star metrics — product / commercial / compliance
+version: "1.0"
+cadence:
+  daily_script: scripts/run_founder_commercial_day.sh
+  weekly_script: scripts/founder_weekly_loop.sh
+weekly_one_metric:
+  ar: "Pilots النشطة + Proof Packs المسلّمة هذا الأسبوع"
+day_90_targets:
+  mrr_sar: "8000-15000"
+  cumulative_sar: "40000-55000"
+  active_retainers_min: 3

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none" role="img" aria-label="Dealix">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e4bf2e"/>
+      <stop offset="1" stop-color="#956414"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="4" width="40" height="40" rx="12" fill="url(#gold)"/>
+  <path d="M14 32V16h6.2c4.2 0 7 2.4 7 6.1 0 2.2-1 3.9-2.8 4.8L28 32h-5.4l-3.2-5.6H20v5.6H14zm6-9.6c1.8 0 2.8-1 2.8-2.5s-1-2.5-2.8-2.5H20v5h0z" fill="#fff"/>
+  <text x="52" y="32" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#f5f5f5">Dealix</text>
+  <text x="52" y="44" font-family="system-ui, sans-serif" font-size="9" font-weight="600" letter-spacing="0.2em" fill="#C9A96E">AI REVOPS</text>
+</svg>

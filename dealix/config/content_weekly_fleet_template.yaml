@@ -1,0 +1,8 @@
+version: 1
+sections:
+  - id: why_now_saudi
+    title_ar: "لماذا الآن — السوق السعودي"
+  - id: product_technical_status
+    title_ar: "حالة المنتج التقني"
+  - id: proof_status
+    title_ar: "حالة الإثبات"

@@ -1,0 +1,17 @@
+/**
+ * Dealix marketing brand tokens — aligned with docs/marketing-system/brand/brand-tokens.yaml
+ */
+:root {
+  --dealix-deep-green: #0a4d3f;
+  --dealix-deep-green-hover: #083d32;
+  --dealix-gold: #c9a961;
+  --dealix-gold-bright: #c9a96e;
+  --dealix-sand: #f4f0e8;
+  --dealix-charcoal: #1a1a1a;
+  --dealix-warm-gray: #6b6b6b;
+  --dealix-cool-gray: #e5e5e5;
+  --dealix-success: #2d7a4f;
+  --dealix-warning: #e8a33d;
+  --dealix-error: #c73e3e;
+  --dealix-info: #3b6b8c;
+}

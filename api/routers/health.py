@@ -142,6 +142,21 @@ async def health_deep() -> dict[str, object]:
     return {"status": overall, "checks": checks, "version": get_settings().app_version}
 
 
+@router.get("/version", include_in_schema=False)
+async def version() -> dict[str, object]:
+    """Deploy identity — mirrors platform_meta for probes and curl smoke tests."""
+    settings = get_settings()
+    return {
+        "service": "dealix-api",
+        "status": "ok",
+        "version": settings.app_version,
+        "env": settings.app_env,
+        "git_sha": settings.git_sha,
+        "health": "/healthz",
+        "meta": "/api/v1/meta",
+    }
+
+
 @router.get("/healthz", include_in_schema=False)
 async def healthz(deep: bool = False) -> dict[str, object]:
     """Standard healthz alias for UptimeRobot/K8s probes.
