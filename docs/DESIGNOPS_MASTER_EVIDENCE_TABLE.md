@@ -1,3 +1,5 @@
+> ⚠️ **مُستبدَلة — SUPERSEDED.** وثيقة تاريخية. مصدر الحقيقة للتدشين التجاري هو [`COMMERCIAL_LAUNCH_MASTER_PLAN.md`](COMMERCIAL_LAUNCH_MASTER_PLAN.md). *Historical — superseded by the Commercial Launch Master Plan.*
+
 # DesignOps Master Evidence Table
 
 Per-row evidence of what is shipped vs. what is planned. Status legend:

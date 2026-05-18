@@ -1,3 +1,5 @@
+> ⚠️ **مُستبدَلة — SUPERSEDED.** وثيقة تاريخية. مصدر الحقيقة للتدشين التجاري هو [`COMMERCIAL_LAUNCH_MASTER_PLAN.md`](COMMERCIAL_LAUNCH_MASTER_PLAN.md). *Historical — superseded by the Commercial Launch Master Plan.*
+
 # Dealix v5 — Master Evidence Table
 
 > Final evidence of every v5 layer. **12 of 12 layers code-shipped.**

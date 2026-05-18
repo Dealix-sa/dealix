@@ -1,3 +1,5 @@
+> ⚠️ **مُستبدَلة — SUPERSEDED.** وثيقة تاريخية. مصدر الحقيقة للتدشين التجاري هو [`COMMERCIAL_LAUNCH_MASTER_PLAN.md`](COMMERCIAL_LAUNCH_MASTER_PLAN.md). *Historical — superseded by the Commercial Launch Master Plan.*
+
 # Dealix Master Execution — Evidence Table
 
 > Per-row audit ledger for the 30-row Master Execution Matrix.
