@@ -11,7 +11,7 @@
 ```
 ████████████████████████████████
         Dealix
-  مندوب مبيعات AI بالعربي الخليجي
+  رادار عمليات محكوم بالعربي الخليجي
 ████████████████████████████████
 
 Sami Assiri · Founder
@@ -45,14 +45,14 @@ April 2026 · Seed Round
 ## الشريحة 3: Solution
 
 ```
-Dealix = أول AI sales rep عربي خليجي حقيقي
+Dealix = رادار عمليات محكوم بالعربي الخليجي
 
-✅ يرد على كل lead خلال 45 ثانية
-✅ يؤهّل بـ BANT تلقائياً
-✅ يحجز demos مع فريقك
-✅ يعمل 24/7 باللهجة الطبيعية
+✅ يعرض حالة كل lead بعد وصوله: مَن ردّ، مَن ينتظر
+✅ يكتب الرسالة التالية المقترحة في طابور موافقة
+✅ كل توصية مرتبطة بالبيانات — سلسلة أدلة قابلة للمراجعة
+✅ مسودات فقط؛ المؤسس يوافق على كل إرسال
 
-= فريقك يبدأ يومه بـ leads مؤهلة، لا reactive firefighting
+= فريقك يبدأ يومه بصورة واضحة وخطوة تالية جاهزة للموافقة
 ```
 
 **Visual:** screenshot من Dealix في action، conversation حقيقية بالعربي.
@@ -90,14 +90,14 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 1️⃣ LEAD INGEST
    موقع / WhatsApp / Instagram / CRM webhook
    ↓
-2️⃣ AI CONVERSATION
-   Dealix يسأل 8 أسئلة BANT ذكية
-   يتكلم لهجة خليجية طبيعية
+2️⃣ RADAR + DRAFT
+   Dealix يعرض حالة كل lead بعد وصوله
+   يكتب الرسالة التالية المقترحة بلهجة خليجية طبيعية
    ↓  
-3️⃣ DELIVER
-   يحجز demo في calendar فريقك
-   ملخّص 1-صفحة قبل الـ demo
-   CRM sync تلقائي
+3️⃣ APPROVE & SEND
+   المسودة تدخل طابور موافقة المؤسس
+   ملخّص 1-صفحة + سلسلة أدلة لكل توصية
+   لا إرسال خارجي دون موافقة صريحة
 ```
 
 **Visual:** 3 screenshots متتابعة تظهر flow.
@@ -123,18 +123,19 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 ## الشريحة 7: Business Model
 
 ```
-3 باقات SaaS + Enterprise
+عرض أول مدفوع + مسار توسّع + اشتراك شهري
 
-• Starter  — 999 ريال/شهر (1-3 مندوبين)
-• Growth   — 2,999 ريال/شهر (4-10 مندوبين) ⭐
-• Scale    — 7,999 ريال/شهر (+10 مندوبين)
+• نقطة البداية: Revenue Proof Sprint (مخرج 7 أيام)
+• التوسّع: حزمة من البيانات إلى الإيراد
+• الاشتراك: عمليات النمو الشهرية
+• المؤسسات: غرفة قيادة الإدارة
 
-ARPA: 2,449 ريال/شهر
+السجل الرسمي للعروض السبعة والأسعار وSKU كل عرض:
+docs/COMMERCIAL_WIRING_MAP.md (المصدر الوحيد للحقيقة)
+
 Gross Margin: 87%
 Sales Cycle: 14-21 يوم
 Monthly Churn: < 3% (target)
-
-LTV:CAC = 35:1 (السنة الأولى)
 ```
 
 **Visual:** جدول باقات مقارن بالمنافسة.
@@ -172,13 +173,13 @@ LTV:CAC = 35:1 (السنة الأولى)
                    | Dealix | Drift/Intercom | Local Chatbots | BDR Agencies
                    |--------|----------------|-----------------|---------------
 Arabic Khaliji     |  ✅    |       ❌       |    ترجمة       |      ✅
-Qualifies BANT     |  ✅    |       ⚠️       |       ❌        |      ✅
-Books demos        |  ✅    |       ⚠️       |       ❌        |      ✅
-24/7               |  ✅    |       ✅       |       ✅        |      ❌
-Cost per lead      | 2 ريال | 8 ريال         |  5 ريال         |  45 ريال
+Lead-state radar   |  ✅    |       ⚠️       |       ❌        |      ⚠️
+Approval-first draft|  ✅   |       ❌       |       ❌        |      ❌
+Auditable evidence |  ✅    |       ⚠️       |       ❌        |      ❌
 Scalability        |  ✅✅  |       ✅       |       ⚠️        |      ❌
 
-Positioning: "نحن Drift، ولكن للعربي. نحن BDR، ولكن بلا تكلفة."
+Positioning: "رادار عمليات محكوم — مسودات فقط، موافقة قبل أي إرسال.
+لا أتمتة إرسال، لا حجز تلقائي."
 ```
 
 ---
@@ -389,3 +390,11 @@ Founder, Dealix
 ---
 
 **Pro tip:** بعد كل pitch، سجّل ملاحظات في `dealix_pitch_feedback.md` — وطوّر الـ deck كل 3 meetings.
+
+> ملاحظة عقيدة: كل الأرقام في هذا الـ deck تقديرية/مستهدفة وليست نتائج
+> مضمونة. السردية الرسمية في `NARRATIVE_VCURRENT.md` والأسعار في
+> `docs/COMMERCIAL_WIRING_MAP.md`.
+
+---
+
+القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.

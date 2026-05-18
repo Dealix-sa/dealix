@@ -22,32 +22,31 @@
 [الثانية 3-8] وجه المؤسس يظهر:
 "السلام عليكم، أنا سامي."
 "مؤسس Dealix."
-"مندوب مبيعات AI بالعربي الخليجي."
+"رادار عمليات محكوم بالعربي الخليجي."
 
 [الثانية 8-20] Split-screen:
   اليسار: موظف متعب أمام الكمبيوتر
   اليمين: رسائل لم يُرد عليها
 
 "الواقع: فريق مبيعاتك يفتح جواله الصباح،
-يشوف 50 lead من أمس، ما قدر يرد على أحد."
+يشوف 50 lead من أمس، ما يعرف مَن ردّ ومَن ينتظر."
 
 [الثانية 20-30] Screen recording:
-Dealix يستقبل lead ويرد خلال 45 ثانية بالعربي
+Dealix يعرض حالة كل lead ويكتب مسودة في طابور الموافقة
 
-"Dealix يرد على كل lead خلال 45 ثانية."
-"يسأل أسئلة التأهيل."
-"يحجز demo في تقويم فريقك."
+"Dealix يخبرك بما حدث بعد وصول كل lead."
+"يكتب الرسالة التالية المقترحة."
+"تدخل طابور موافقتك — أنت توافق على كل إرسال."
 
 [الثانية 30-40] النتائج على الشاشة:
-✓ 38% معدل تأهيل (vs 11%)
-✓ 12 ساعة BDR محرّرة أسبوعياً
-✓ 0 leads ضائعة
-
-"نتائج أول عميل: [أرقام حقيقية]"
+✓ رؤية موحّدة لحالة كل lead
+✓ مسودات جاهزة للموافقة
+✓ سلسلة أدلة قابلة للمراجعة
+(النتائج تقديرية وتختلف بين الحالات)
 
 [الثانية 40-55] CTA قوي:
-"Pilot لأسبوع بـ 1 ريال."
-"لو ما أعجبك، نرد لك الريال."
+"ابدأ بـ Revenue Proof Sprint — مخرج 7 أيام."
+"تشخيص، مسودات جاهزة للموافقة، وProof Pack."
 "ابدأ اليوم: dealix.ai"
 
 [الثانية 55-60] End card:
@@ -107,47 +106,46 @@ Visual: أرقام متحركة:
 Visual: chart يتحول من أحمر لأخضر
 
 "لكن ماذا لو..."
-"كل lead يُرد عليه خلال 45 ثانية، 24/7؟"
-"كل محادثة تبدأ بسؤال ذكي بالعربي الخليجي؟"
-"كل lead مؤهّل ومحجوز له demo — قبل ما تفتح جوالك؟"
+"عرفت حالة كل lead بعد وصوله — مَن ردّ، مَن ينتظر؟"
+"وجدت مسودة الرسالة التالية مكتوبة بالعربي الخليجي؟"
+"وكل توصية مرتبطة بدليل قابل للمراجعة — وأنت توافق قبل أي إرسال؟"
 
 [1:00-1:40] Dealix Demo Live
 Visual: Screen recording لـ Dealix in action
 
 "هذا Dealix."
-"مندوب مبيعات AI بالعربي الخليجي."
+"رادار عمليات محكوم بالعربي الخليجي."
 "بنيته لشركات سعودية تواجه هذه المشكلة بالضبط."
 
-[عرض المحادثة:]
-- Lead يدخل
-- Dealix يرد فوراً بالعربي
-- يسأل 8 أسئلة تأهيل ذكية
-- يصنّف الـ lead (A/B/C/D)
-- يحجز demo تلقائياً
+[عرض الرادار:]
+- Lead يصل
+- Dealix يعرض حالته: مَن ردّ، مَن ينتظر
+- يصنّف الـ lead (A/B/C/D) مع سلسلة أدلة
+- يكتب مسودة الرسالة التالية
+- المسودة تدخل طابور موافقة المؤسس
 
 [1:40-2:15] التكاملات والنتائج
 Visual: logos: HubSpot, Zoho, Calendly, WhatsApp
 
 "يتكامل مع أدواتك الحالية:
 HubSpot، Zoho، Calendly، WhatsApp.
-خلال 48 ساعة من الاشتراك، Dealix يعمل لحسابك."
+يبدأ بـ Revenue Proof Sprint — مخرج خلال 7 أيام."
 
-"عملاؤنا الأوائل يرون:
-- 38% معدل تأهيل (ارتفاع من 11%)
-- 12 ساعة/أسبوع موفّرة لكل BDR
-- Zero leads ضائعة"
+"العملاء الأوائل يرون نمطاً آمناً للحالة:
+- رؤية موحّدة لحالة كل lead
+- مسودات جاهزة للموافقة
+- سلسلة أدلة قابلة للمراجعة
+(النتائج تقديرية وتختلف بين الشركات)"
 
-[2:15-2:45] الأسعار + العرض
-Visual: 3 باقات على الشاشة
+[2:15-2:45] العرض الأول
+Visual: بطاقة Revenue Proof Sprint على الشاشة
 
-"3 باقات، ما تحتاج بناء داخلي، ما تحتاج 6 شهور setup.
-Starter: 999 ريال/شهر.
-Growth: 2,999 ريال/شهر.
-Scale: 7,999 ريال/شهر."
+"تبدأ بـ Revenue Proof Sprint: مخرج 7 أيام —
+تشخيص، مسودات جاهزة للموافقة، وProof Pack من 14 قسماً.
+الأسعار وSKU كل عرض في خريطة الربط التجاري."
 
-"بدون التزام طويل.
-جرّب pilot أسبوع بـ 1 ريال.
-لو ما أعجبك، نرد لك الريال."
+"بدون أتمتة إرسال، بدون حجز تلقائي.
+مسودات فقط — أنت توافق على كل إرسال."
 
 [2:45-3:00] CTA
 Visual: founder يظهر، rustic office في الرياض
@@ -191,10 +189,10 @@ dealix.ai — احجز demo اليوم."
 - احصائيات محددة من Gartner + Saudi studies
 
 #### Chapter 2: How Dealix Works (1:30-4:00)
-- Screen recording: Lead entry → response → booking
+- Screen recording: Lead arrives → radar state → drafted next message → approval queue
 - Explain: Why Arabic-khaliji native matters
-- Show: BANT framework in action
-- Integration points
+- Show: lead-state radar and evidence chain in action
+- Drafts only — the founder approves every send
 
 #### Chapter 3: Technology Deep-Dive (4:00-6:00)
 - Built on Anthropic Claude (latest model)
@@ -209,11 +207,11 @@ dealix.ai — احجز demo اليوم."
 - Quote from customer
 - ROI calculation
 
-#### Chapter 5: Pricing & Packaging (7:30-8:30)
-- 3 tiers + pilot offer
-- What's included in each
-- When to choose which
-- Enterprise custom
+#### Chapter 5: Offer & Packaging (7:30-8:30)
+- Revenue Proof Sprint as the first paid offer (7-day deliverable)
+- What the Sprint includes: diagnostic, approval-ready drafts, Proof Pack
+- Expansion and monthly offers — see the Commercial Wiring Map
+- Prices and SKUs: `docs/COMMERCIAL_WIRING_MAP.md` (single source of truth)
 
 #### Chapter 6: Onboarding Process (8:30-9:30)
 - Week 1: Setup
@@ -224,7 +222,7 @@ dealix.ai — احجز demo اليوم."
 
 #### Chapter 7: Getting Started (9:30-10:00)
 - Book a demo (Calendly link)
-- Free pilot offer
+- Start with the Revenue Proof Sprint (7-day deliverable)
 - Contact info
 - "Founder-led, reachable directly"
 
@@ -319,7 +317,7 @@ Try different openings on 60-sec videos:
 2. **Question hook:** "كم عميل ضاع عندك هذا الأسبوع؟"
 3. **Story hook:** "قبل شهر، فقدت صفقة 200K بسبب رد متأخر..."
 4. **Contrast hook:** "في أمريكا، chatbots تعمل. في السعودية، تفشل. اليوم..."
-5. **Bold claim:** "Dealix = مندوب مبيعات 24/7 بـ 999 ريال/شهر."
+5. **Bold claim:** "Dealix = رادار عمليات محكوم — تعرف حالة كل lead، ومسودة جاهزة لموافقتك."
 
 **Test, measure, double down على الأعلى retention.**
 
@@ -350,3 +348,9 @@ Try different openings on 60-sec videos:
 ---
 
 **الفيديو = أسرع طريقة لبناء credibility. استثمر 10 ساعات في 60 seconds — يخدم شركتك سنوات.**
+
+> السردية الرسمية في `NARRATIVE_VCURRENT.md`. الأسعار في `docs/COMMERCIAL_WIRING_MAP.md`.
+
+---
+
+القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.
