@@ -1,0 +1,11 @@
+version: "1"
+trigger: before_first_paid_invoice_above_sar_5000_or_monthly_retainer
+disclaimer_ar: "قائمة تشغيلية — ليست استشارة ضريبية أو قانونية."
+items:
+  - {id: legal_entity, title_ar: "كيان قانوني جاهز للفوترة"}
+  - {id: vat_registration, title_ar: "تسجيل ضريبة القيمة المضافة إن انطبق"}
+  - {id: moyasar_live, title_ar: "Moyasar live بعد sandbox"}
+  - {id: invoice_template, title_ar: "قالب فاتورة ثنائي اللغة"}
+  - {id: zatca_wave, title_ar: "تقييم موجة ZATCA/FATOORA"}
+  - {id: pdpl_dpa, title_ar: "PDPL + DPA جاهزان"}
+  - {id: refund_policy, title_ar: "سياسة استرداد مكتوبة"}

@@ -1,0 +1,86 @@
+# CEO/Founder execution backlog — 72 tasks (machine-readable)
+version: "1"
+title_ar: "خطة تنفيذ المؤسس × Dealix"
+sections:
+  exec: { label_ar: "استراتيجية وقرار", count: 8 }
+  daily: { label_ar: "إيقاع يومي", count: 10 }
+  offers: { label_ar: "سلم العروض", count: 10 }
+  gtm: { label_ar: "GTM ومحتوى", count: 10 }
+  eng: { label_ar: "هندسة ونشر", count: 12 }
+  agents: { label_ar: "وكلاء", count: 8 }
+  cs: { label_ar: "نجاح عميل", count: 6 }
+  finance: { label_ar: "مالية وامتثال", count: 8 }
+
+tasks:
+  - {id: E01, section: exec, title_ar: "قرار أسبوعي واحد في founder_weekly_one_decision.yaml"}
+  - {id: E02, section: exec, title_ar: "مراجعة Soft vs Paid أسبوعياً"}
+  - {id: E03, section: exec, title_ar: "no-build قبل أول دفع + Proof Pack"}
+  - {id: E04, section: exec, title_ar: "ريترو 30 دقيقة + scorecard"}
+  - {id: E05, section: exec, title_ar: "Counter-signals للقرار"}
+  - {id: E06, section: exec, title_ar: "Truth Matrix أسبوعي"}
+  - {id: E07, section: exec, title_ar: "KPI من CRM فقط — لا اختراع"}
+  - {id: E08, section: exec, title_ar: "تجربة رسالة واحدة/أسبوع"}
+  - {id: D01, section: daily, title_ar: "run_ceo_gtm_operating_system.py daily"}
+  - {id: D02, section: daily, title_ar: "War Room — data/war_room_today.json"}
+  - {id: D03, section: daily, title_ar: "حدث أدلة واحد في evidence_events_tracker.csv"}
+  - {id: D04, section: daily, title_ar: "3 لمسات بشرية بعد الموجز"}
+  - {id: D05, section: daily, title_ar: "موافقة مسودات /ops/approvals"}
+  - {id: D06, section: daily, title_ar: "Friction واحد → إجراء صغير"}
+  - {id: D07, section: daily, title_ar: "brief يومي في data/founder_briefs/"}
+  - {id: D08, section: daily, title_ar: "تحقق healthz بعد أي نشر"}
+  - {id: D09, section: daily, title_ar: "بذرة طابور وكلاء --seed-today"}
+  - {id: D10, section: daily, title_ar: "مراجعة GTM surfaces عامة"}
+  - {id: O01, section: offers, title_ar: "Rung 0 DoD — تشخيص مجاني"}
+  - {id: O02, section: offers, title_ar: "Rung 1 DoD — Sprint 499"}
+  - {id: O03, section: offers, title_ar: "Rung 2 DoD — Data Pack 1500"}
+  - {id: O04, section: offers, title_ar: "Managed 2999 بطاقة ICP"}
+  - {id: O05, section: offers, title_ar: "Managed 4999 بطاقة ICP"}
+  - {id: O06, section: offers, title_ar: "Custom 5k–25k نطاق موقّع"}
+  - {id: O07, section: offers, title_ar: "Proof Pack ≥70 قبل upsell"}
+  - {id: O08, section: offers, title_ar: "Capital Asset لكل مشروع مدفوع"}
+  - {id: O09, section: offers, title_ar: "إخلاء مسؤولية ثنائي اللغة"}
+  - {id: O10, section: offers, title_ar: "ربط عرض بحزمة دليل L3+"}
+  - {id: G01, section: gtm, title_ar: "قائمة ICP وكالات سعودية"}
+  - {id: G02, section: gtm, title_ar: "مسودة LinkedIn 1/أسبوع"}
+  - {id: G03, section: gtm, title_ar: "Landing /dealix-diagnostic"}
+  - {id: G04, section: gtm, title_ar: "Landing /learn"}
+  - {id: G05, section: gtm, title_ar: "ورشة شركاء — لا spam"}
+  - {id: G06, section: gtm, title_ar: "تسجيل demo_booked في الأدلة"}
+  - {id: G07, section: gtm, title_ar: "objection engine مراجعة"}
+  - {id: G08, section: gtm, title_ar: "Motion A أسبوعي"}
+  - {id: G09, section: gtm, title_ar: "محتوى طابور موافقة"}
+  - {id: G10, section: gtm, title_ar: "Partners pack مراجعة"}
+  - {id: N01, section: eng, title_ar: "Railway Start Command فارغ أو /app/start.sh"}
+  - {id: N02, section: eng, title_ar: "Railway Pre-deploy railway_predeploy.sh"}
+  - {id: N03, section: eng, title_ar: "verify_railway_production_config.py PASS"}
+  - {id: N04, section: eng, title_ar: "curl /healthz و /version بعد النشر"}
+  - {id: N05, section: eng, title_ar: "Wait for CI على main"}
+  - {id: N06, section: eng, title_ar: "Alembic head واحد قبل migrate"}
+  - {id: N07, section: eng, title_ar: "لا NEXT_PUBLIC لمفاتيح admin"}
+  - {id: N08, section: eng, title_ar: "POST /api/v1/leads smoke"}
+  - {id: N09, section: eng, title_ar: "SLO مراجعة docs/SLO.md"}
+  - {id: N10, section: eng, title_ar: "Regression pytest مختصر قبل merge كبير"}
+  - {id: N11, section: eng, title_ar: "commercial launch ready script"}
+  - {id: N12, section: eng, title_ar: "founder_go_live_verify عند الحاجة"}
+  - {id: A01, section: agents, title_ar: "dealix-pm تنسيق صباحي"}
+  - {id: A02, section: agents, title_ar: "dealix-sales 3 مسودات"}
+  - {id: A03, section: agents, title_ar: "dealix-delivery Proof checklist"}
+  - {id: A04, section: agents, title_ar: "dealix-engineer gates"}
+  - {id: A05, section: agents, title_ar: "dealix-content مسودة LinkedIn"}
+  - {id: A06, section: agents, title_ar: "weekly_learning.yaml تحديث"}
+  - {id: A07, section: agents, title_ar: "لا cold WhatsApp/LinkedIn auto"}
+  - {id: A08, section: agents, title_ar: "11 non-negotiables في الاختبارات"}
+  - {id: C01, section: cs, title_ar: "Sprint kickoff يوم 0"}
+  - {id: C02, section: cs, title_ar: "مكالمة +7"}
+  - {id: C03, section: cs, title_ar: "إشارة +21 تجديد/تمديد"}
+  - {id: C04, section: cs, title_ar: "رضا ≥4/5 استبيان يدوي"}
+  - {id: C05, section: cs, title_ar: "ترقية فقط بعد Proof"}
+  - {id: C06, section: cs, title_ar: "إغلاح باحترام إن لا fit"}
+  - {id: F01, section: finance, title_ar: "billing_zatca_readiness قبل فاتورة كبيرة"}
+  - {id: F02, section: finance, title_ar: "Moyasar live cutover"}
+  - {id: F03, section: finance, title_ar: "قالب فاتورة AR/EN"}
+  - {id: F04, section: finance, title_ar: "ZATCA wave assessment مع محاسب"}
+  - {id: F05, section: finance, title_ar: "DPA موقّع"}
+  - {id: F06, section: finance, title_ar: "سياسة استرداد"}
+  - {id: F07, section: finance, title_ar: "تسجيل payment_received"}
+  - {id: F08, section: finance, title_ar: "وحدة اقتصادية Sprint vs Retainer"}

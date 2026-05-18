@@ -1,0 +1,126 @@
+/**
+ * Dealix marketing collateral — shared tokens
+ * Used by: docs/sales-kit/*.html, digital-sales-room/hub.html
+ * Canonical YAML: brand-tokens.yaml
+ */
+:root {
+  --dealix-deep-green: #0a4d3f;
+  --dealix-deep-green-hover: #083d32;
+  --dealix-gold: #c9a961;
+  --dealix-gold-bright: #c9a96e;
+  --dealix-sand: #f4f0e8;
+  --dealix-charcoal: #1a1a1a;
+  --dealix-warm-gray: #6b6b6b;
+  --dealix-cool-gray: #e5e5e5;
+  --dealix-white: #ffffff;
+  --dealix-success: #2d7a4f;
+  --dealix-warning: #e8a33d;
+  --dealix-error: #c73e3e;
+  --dealix-info: #3b6b8c;
+  --dealix-font-ar: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Tajawal", system-ui, sans-serif;
+  --dealix-font-en: Inter, system-ui, sans-serif;
+  --dealix-radius-md: 8px;
+  --dealix-radius-lg: 12px;
+  --dealix-shadow-card: 0 2px 8px rgba(10, 77, 63, 0.08);
+  --dealix-max-width: 720px;
+}
+
+.dealix-marketing {
+  font-family: var(--dealix-font-ar);
+  color: var(--dealix-charcoal);
+  background: var(--dealix-sand);
+  line-height: 1.6;
+}
+
+.dealix-marketing[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+.dealix-marketing h1,
+.dealix-marketing h2,
+.dealix-marketing h3 {
+  color: var(--dealix-deep-green);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.dealix-marketing .dealix-container {
+  max-width: var(--dealix-max-width);
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
+
+.dealix-marketing .dealix-card {
+  background: var(--dealix-white);
+  border: 1px solid var(--dealix-cool-gray);
+  border-radius: var(--dealix-radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--dealix-shadow-card);
+}
+
+.dealix-marketing .dealix-btn-primary {
+  display: inline-block;
+  background: var(--dealix-deep-green);
+  color: var(--dealix-white);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--dealix-radius-md);
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dealix-marketing .dealix-btn-primary:hover {
+  background: var(--dealix-deep-green-hover);
+}
+
+.dealix-marketing .dealix-btn-accent {
+  background: var(--dealix-gold);
+  color: var(--dealix-charcoal);
+  font-weight: 700;
+}
+
+.dealix-marketing .dealix-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(10, 77, 63, 0.1);
+  color: var(--dealix-deep-green);
+}
+
+.dealix-marketing input[type="number"],
+.dealix-marketing input[type="range"],
+.dealix-marketing select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--dealix-cool-gray);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.dealix-marketing label {
+  display: block;
+  color: var(--dealix-warm-gray);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.dealix-marketing .dealix-result-highlight {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dealix-success);
+  text-align: center;
+}
+
+.dealix-marketing .dealix-note {
+  font-size: 0.85rem;
+  color: var(--dealix-warm-gray);
+  border-inline-end: 3px solid var(--dealix-gold);
+  padding: 0.75rem;
+  background: rgba(10, 77, 63, 0.04);
+  border-radius: var(--dealix-radius-md);
+}

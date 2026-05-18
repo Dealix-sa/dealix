@@ -1,0 +1,78 @@
+# Dealix — canonical brand tokens (presentations, web, collateral)
+# Source of truth: align with docs/sales-kit/dealix_brand_guidelines.md
+version: "1.0"
+updated: "2026-05"
+
+colors:
+  deep_green: "#0A4D3F"
+  deep_green_hover: "#083D32"
+  gold: "#C9A961"
+  gold_bright: "#C9A96E"
+  sand: "#F4F0E8"
+  charcoal: "#1A1A1A"
+  warm_gray: "#6B6B6B"
+  cool_gray: "#E5E5E5"
+  white: "#FFFFFF"
+  success: "#2D7A4F"
+  warning: "#E8A33D"
+  error: "#C73E3E"
+  info: "#3B6B8C"
+
+typography:
+  arabic:
+    family: "IBM Plex Sans Arabic"
+    fallback: "Noto Sans Arabic, Tajawal, system-ui"
+    weights:
+      heading: 700
+      body: 400
+      caption: 300
+  english:
+    family: Inter
+    fallback: "system-ui, sans-serif"
+    weights:
+      heading: 600
+      body: 400
+  mono:
+    family: "JetBrains Mono"
+  scale:
+    h1_ar: "3rem"
+    h1_en: "2.5rem"
+    h2_ar: "2.25rem"
+    h2_en: "2rem"
+    h3_ar: "1.75rem"
+    h3_en: "1.5rem"
+    body_ar: "1.125rem"
+    body_en: "1rem"
+    caption: "0.875rem"
+    line_height_heading: 1.2
+    line_height_body: 1.6
+
+layout:
+  slide_ratio: "16:9"
+  slide_safe_margin_px: 48
+  grid_columns: 12
+  grid_gutter_px: 24
+  max_words_per_slide: 30
+  one_message_per_slide: true
+
+spacing:
+  xs: "0.25rem"
+  sm: "0.5rem"
+  md: "1rem"
+  lg: "1.5rem"
+  xl: "2rem"
+  card_padding: "1.5rem"
+  radius_sm: "6px"
+  radius_md: "8px"
+  radius_lg: "12px"
+
+shadows:
+  card: "0 2px 8px rgba(10, 77, 63, 0.08)"
+  card_hover: "0 4px 16px rgba(10, 77, 63, 0.12)"
+
+rules:
+  color_60_30_10: "60% neutral (sand/white), 30% deep_green, 10% gold accent"
+  gold_is_accent_only: true
+  rtl_full_mirror: true
+  numbers_narrative: "arabic_indic"
+  numbers_tables: "western"

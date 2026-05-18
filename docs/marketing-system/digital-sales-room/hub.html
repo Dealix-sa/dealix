@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dealix — غرفة عميل</title>
+  <link rel="stylesheet" href="../brand/marketing-shared.css">
+  <style>
+    .dealix-hero { background: var(--dealix-deep-green); color: var(--dealix-white); padding: 2rem 1.25rem; }
+    .dealix-hero h1 { color: var(--dealix-white); margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .dealix-hero p { opacity: 0.9; margin: 0; }
+    .dealix-grid { display: grid; gap: 1rem; }
+    @media (min-width: 720px) { .dealix-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .dealix-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .dealix-link-list { list-style: none; padding: 0; margin: 0; }
+    .dealix-link-list li { margin-bottom: 0.5rem; }
+    .dealix-link-list a { color: var(--dealix-deep-green); font-weight: 600; text-decoration: none; }
+    .dealix-link-list a:hover { text-decoration: underline; }
+    .dealix-section-title { font-size: 1.1rem; margin: 0 0 0.75rem; color: var(--dealix-deep-green); }
+  </style>
+</head>
+<body class="dealix-marketing" dir="rtl">
+  <header class="dealix-hero">
+    <h1 id="room-title">غرفة عمل — Dealix</h1>
+    <p id="room-subtitle">مواد مرتبة لمراجعتكم — مسودات فقط، لا إرسال آلي</p>
+  </header>
+
+  <main class="dealix-container" style="max-width: 960px;">
+    <p class="dealix-badge">Draft-first · PDPL-aware · Proof-backed</p>
+
+    <div class="dealix-grid" style="margin-top: 1.5rem;">
+      <section class="dealix-card">
+        <h2 class="dealix-section-title">القصة والعرض</h2>
+        <ul class="dealix-link-list">
+          <li><a href="../presentations/live-deck-b2b-ar.md">عرض مباشر B2B</a></li>
+          <li><a href="../presentations/leave-behind-b2b-ar.md">Leave-behind</a></li>
+          <li><a href="../collateral/executive-one-pager-ar.html">ملخص تنفيذي</a></li>
+          <li><a href="../collateral/founder-story-ar.md">قصة المؤسس</a></li>
+        </ul>
+      </section>
+
+      <section class="dealix-card">
+        <h2 class="dealix-section-title">لجنة الشراء</h2>
+        <ul class="dealix-link-list">
+          <li><a href="../presentations/committee/cfo-slide-ar.md">CFO</a></li>
+          <li><a href="../presentations/committee/it-slide-ar.md">IT / Legal</a></li>
+          <li><a href="../presentations/committee/revops-slide-ar.md">RevOps</a></li>
+          <li><a href="../collateral/competitive-executive-ar.md">مقارنة تنفيذية</a></li>
+        </ul>
+      </section>
+
+      <section class="dealix-card">
+        <h2 class="dealix-section-title">الأعمال</h2>
+        <ul class="dealix-link-list">
+          <li><a href="../../sales-kit/dealix_roi_calculator.html">حاسبة ROI</a></li>
+          <li><a href="../collateral/pricing-table-ar.md">التسعير</a></li>
+          <li><a href="../../commercial/DEALIX_REVOPS_PACKAGES_AR.md">حزم RevOps</a></li>
+        </ul>
+      </section>
+
+      <section class="dealix-card">
+        <h2 class="dealix-section-title">الامتثال</h2>
+        <ul class="dealix-link-list">
+          <li><a href="../presentations/appendix-technical-ar.md">Appendix فني</a></li>
+          <li><a href="../../sales-kit/dealix_security_faq.md">FAQ أمني</a></li>
+          <li><a href="../../sales-kit/dealix_privacy_policy_ar.md">الخصوصية</a></li>
+        </ul>
+      </section>
+
+      <section class="dealix-card">
+        <h2 class="dealix-section-title">Champion</h2>
+        <ul class="dealix-link-list">
+          <li><a href="../email-sequences/champion-enable-ar.md">حزمة داخلية</a></li>
+          <li><a href="../sales-enablement/objection-matrix-ar.md">اعتراضات</a></li>
+        </ul>
+      </section>
+
+      <section class="dealix-card">
+        <h2 class="dealix-section-title">الإغلاق</h2>
+        <ul class="dealix-link-list">
+          <li><a href="MAP_TEMPLATE.md">MAP</a></li>
+          <li><a href="../../sales-kit/dealix_pilot_agreement.md">اتفاقية تجربة</a></li>
+          <li><a href="../sales-enablement/mutual-close-checklist-ar.md">قائمة إغلاق</a></li>
+          <li><a href="../FOUNDER_GTM_PLAYBOOK.md">دليل المؤسس</a></li>
+        </ul>
+      </section>
+    </div>
+
+    <p class="dealix-note" style="margin-top: 1.5rem;">بعد كل اجتماع: حدّث MAP. لا ترفع بيانات شخصية خام في Git.</p>
+    <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--dealix-warm-gray); text-align: center;">
+      Dealix · Revenue OS · <span id="year"></span>
+    </p>
+  </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    const client = new URLSearchParams(location.search).get("client");
+    if (client) document.getElementById("room-title").textContent = "غرفة عمل — Dealix × " + client;
+  </script>
+</body>
+</html>

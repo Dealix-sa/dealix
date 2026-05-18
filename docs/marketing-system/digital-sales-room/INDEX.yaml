@@ -1,0 +1,61 @@
+# Dealix Digital Sales Room — standard asset index
+# Copy to clients/{slug}/INDEX.yaml and fill client-specific fields
+
+version: "1.0"
+room_title_ar: "غرفة عمل — Dealix × {client_name}"
+created: "{YYYY-MM-DD}"
+owner: "Sami Assiri"
+status: discovery | demo | proposal | negotiation | closed
+
+sections:
+  - id: story
+    title_ar: "القصة والنتيجة"
+    assets:
+      - id: live_deck
+        type: pdf
+        path: "presentations/live-deck-b2b-ar.pdf"
+        source_md: "../presentations/live-deck-b2b-ar.md"
+      - id: leave_behind
+        type: pdf
+        path: "presentations/leave-behind-b2b-ar.pdf"
+        source_md: "../presentations/leave-behind-b2b-ar.md"
+      - id: one_pager
+        type: html
+        path: "../../sales-kit/dealix_onepager.html"
+
+  - id: proof
+    title_ar: "الإثبات والامتثال"
+    assets:
+      - id: appendix_technical
+        type: pdf
+        path: "presentations/appendix-technical-ar.pdf"
+        source_md: "../presentations/appendix-technical-ar.md"
+      - id: security_faq
+        type: md
+        path: "../../sales-kit/dealix_security_faq.md"
+      - id: privacy
+        type: md
+        path: "../../sales-kit/dealix_privacy_policy_ar.md"
+
+  - id: business_case
+    title_ar: "الأعمال"
+    assets:
+      - id: roi_calculator
+        type: html
+        path: "../../sales-kit/dealix_roi_calculator.html"
+      - id: packages
+        type: md
+        path: "../../commercial/DEALIX_REVOPS_PACKAGES_AR.md"
+
+  - id: closing
+    title_ar: "الإغلاق"
+    assets:
+      - id: pilot_agreement
+        type: md
+        path: "../../sales-kit/dealix_pilot_agreement.md"
+      - id: map
+        type: md
+        path: "MAP.md"
+        template: "MAP_TEMPLATE.md"
+
+governance_note_ar: "جميع قنوات التواصل في هذه الغرفة مسودات — لا إرسال آلي."

@@ -1,0 +1,6 @@
+version: "1"
+policy_ar: "مسودات فقط — لا إرسال خارجي بدون موافقة المؤسس."
+forbidden: [cold_whatsapp_automation, linkedin_dm_automation, gmail_send_without_approval]
+stages: [intake, qualify, draft_outreach, founder_review, manual_send, reply_classify]
+approval_ui: /ar/ops/approvals
+evidence_csv: docs/commercial/operations/evidence_events_tracker.csv

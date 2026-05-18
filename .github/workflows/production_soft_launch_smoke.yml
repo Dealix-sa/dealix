@@ -1,0 +1,41 @@
+name: Production Soft Launch Smoke
+
+on:
+  schedule:
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Live healthz
+        env:
+          DEALIX_API_BASE: ${{ secrets.DEALIX_API_BASE }}
+        run: |
+          BASE="${DEALIX_API_BASE:-https://api.dealix.me}"
+          curl -fsS --max-time 20 "${BASE%/}/healthz"
+
+      - name: Agent queue API
+        env:
+          DEALIX_API_BASE: ${{ secrets.DEALIX_API_BASE }}
+          DEALIX_ADMIN_API_KEY: ${{ secrets.DEALIX_ADMIN_API_KEY }}
+        run: |
+          if [ -z "${DEALIX_ADMIN_API_KEY:-}" ]; then
+            echo "Skip admin endpoints — set DEALIX_ADMIN_API_KEY"
+            exit 0
+          fi
+          BASE="${DEALIX_API_BASE:-https://api.dealix.me}"
+          curl -fsS --max-time 30 "${BASE%/}/api/v1/founder/agent-queue" \
+            -H "X-Admin-API-Key: $DEALIX_ADMIN_API_KEY" | head -c 400
+          echo

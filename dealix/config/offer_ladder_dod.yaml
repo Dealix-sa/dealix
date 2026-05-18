@@ -1,0 +1,14 @@
+# Definition of Done per rung — CEO GTM
+version: "1"
+no_build_rule_ar: "لا مزايا جديدة قبل أول Diagnostic مدفوع + Proof Pack مسلّم"
+rungs:
+  - rung: 0
+    checks: [decision_passport_issued, diagnostic_summary_ar, disclaimer_bilingual, sprint_499_recommended]
+  - rung: 1
+    checks: [payment_received, source_passport, proof_pack_score_gte_70, capital_asset_min_1, cs_day7_call]
+  - rung: 2
+    checks: [pdpl_contactability, data_remediation_plan, proof_pack_score_gte_70]
+  - rung: 3
+    checks: [approval_center_configured, weekly_cadence_live, monthly_proof_pack]
+  - rung: 4
+    checks: [signed_scope, integration_truth_matrix, proof_pack_score_gte_70, cs_day21_signal]

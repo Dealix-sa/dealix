@@ -1,0 +1,54 @@
+name: Founder Agent Fleet Daily
+
+on:
+  schedule:
+    - cron: "45 4 * * 0-4"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fleet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install minimal deps
+        run: pip install pyyaml
+
+      - name: Seed agent queue + work packets
+        env:
+          PYTHONIOENCODING: utf-8
+        run: |
+          python3 scripts/founder_agent_queue_status.py --seed-today
+          python3 scripts/print_agent_work_packets.py --cadence daily || true
+
+      - name: Upload queue artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: founder-agent-queue-${{ github.run_id }}
+          path: data/founder_agent/queue_today.json
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Production queue API (optional)
+        env:
+          DEALIX_API_BASE: ${{ secrets.DEALIX_API_BASE }}
+          DEALIX_ADMIN_API_KEY: ${{ secrets.DEALIX_ADMIN_API_KEY }}
+        run: |
+          if [ -z "${DEALIX_API_BASE:-}" ] || [ -z "${DEALIX_ADMIN_API_KEY:-}" ]; then
+            echo "Skip API seed — set DEALIX_API_BASE + DEALIX_ADMIN_API_KEY"
+            exit 0
+          fi
+          BASE="${DEALIX_API_BASE%/}"
+          curl -fsS -X POST "$BASE/api/v1/founder/agent-queue/seed-today" \
+            -H "X-Admin-API-Key: $DEALIX_ADMIN_API_KEY"
+          curl -fsS "$BASE/api/v1/founder/agent-queue" \
+            -H "X-Admin-API-Key: $DEALIX_ADMIN_API_KEY" | head -c 500
+          echo

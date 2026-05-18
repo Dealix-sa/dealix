@@ -1,0 +1,30 @@
+name: Railway config verify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - railway.toml
+      - railway.json
+      - Dockerfile
+      - scripts/railway_predeploy.sh
+      - dealix/commercial_ops/railway_production.py
+  pull_request:
+    branches: [main]
+    paths:
+      - railway.toml
+      - railway.json
+      - Dockerfile
+      - scripts/railway_predeploy.sh
+      - dealix/commercial_ops/railway_production.py
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify railway.toml matches canonical
+        run: python scripts/verify_railway_production_config.py --skip-live

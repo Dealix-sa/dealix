@@ -1,0 +1,56 @@
+version: "1"
+policy_ar: "مسودات فقط — لا إرسال خارجي بدون موافقة المؤسس."
+
+agents:
+  dealix-pm: {label_ar: "منسّق PM", owns: [orchestrate, weekly_decision, backlog_status]}
+  dealix-sales: {label_ar: "مبيعات", owns: [qualify, outreach_draft]}
+  dealix-delivery: {label_ar: "تسليم", owns: [proof_pack, onboarding]}
+  dealix-engineer: {label_ar: "هندسة", owns: [railway, gates, pytest]}
+  dealix-content: {label_ar: "محتوى", owns: [linkedin_draft, learn_outline]}
+
+daily_templates:
+  - id: pm_morning
+    agent: dealix-pm
+    priority: P0
+    title_ar: "CEO GTM status + بذرة طابور"
+    commands:
+      - "py -3 scripts/run_ceo_gtm_operating_system.py status"
+      - "py -3 scripts/verify_railway_production_config.py --skip-live"
+      - "py -3 scripts/founder_agent_queue_status.py --seed-today"
+    approval_required: false
+
+  - id: sales_touches
+    agent: dealix-sales
+    priority: P0
+    title_ar: "3 لمسات War Room — مسودات"
+    evidence_hint: message_sent_manual
+    approval_required: true
+
+  - id: delivery_proof
+    agent: dealix-delivery
+    priority: P1
+    title_ar: "Proof Pack checklist أقرب عميل"
+    evidence_hint: proof_pack_delivered
+    approval_required: false
+
+  - id: engineer_gates
+    agent: dealix-engineer
+    priority: P1
+    title_ar: "Railway + healthz/version"
+    commands:
+      - "py -3 scripts/verify_railway_production_config.py"
+    approval_required: false
+
+  - id: content_draft
+    agent: dealix-content
+    priority: P2
+    title_ar: "مسودة LinkedIn — موافقة"
+    approval_required: true
+
+weekly_templates:
+  - id: pm_weekly
+    agent: dealix-pm
+    title_ar: "weekly + metrics + قرار"
+    commands:
+      - "py -3 scripts/run_ceo_gtm_operating_system.py weekly --init-decision"
+      - "py -3 scripts/founder_weekly_metrics_bundle.py"
