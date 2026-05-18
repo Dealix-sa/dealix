@@ -43,6 +43,10 @@ _ALLOWLIST_PATHS = frozenset({
     "docs/PR_MERGE_TRIAGE_2026_05_09.md",
     # Wave 11 evidence table — records the lockdown audit row by name
     "docs/WAVE11_FIRST3_PAID_PILOTS_EVIDENCE_TABLE.md",
+    # Enterprise-architecture required-tests index — lists this lockdown
+    # test by file path and states it "locks repo against linkedin_scraper".
+    # Documentation reference in negation context only.
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # Wave 11 E2E pytest — invokes the lockdown test by file path string
     "tests/test_dealix_master_customer_journey_e2e.py",
     # Wave 11 verifier scripts — they invoke the lockdown test by file path
