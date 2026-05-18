@@ -24,6 +24,10 @@ The registry is authoritative — any disagreement with this table means **the c
 
 السجل هو المرجع الرسمي — أي تعارض مع هذا الجدول يعني أن **الكود، وليس الجدول، هو الخطأ**.
 
+> The maturity narrative on top of this registry — one offer per stage with
+> unlock triggers — is in [`COMPANY_SERVICE_LADDER.md`](COMPANY_SERVICE_LADDER.md)
+> and [`strategy/DEALIX_COMMERCIAL_PROOF_MODE_AR.md`](strategy/DEALIX_COMMERCIAL_PROOF_MODE_AR.md).
+
 ---
 
 ## 2. Per-offer wiring — الربط لكل عرض
@@ -199,7 +203,7 @@ If any of the three disagree, the deploy is broken. Roll back per `docs/RAILWAY_
 | **Anti-waste (pre-send)** | `POST /api/v1/revenue-os/anti-waste/check` | before external draft |
 | **UI hub** | `/ar/ops` · `/ar/ops/founder` · `/ar/ops/war-room` · `/ar/ops/marketing` · `/ar/ops/approvals` | founder operating surfaces |
 
-**Docs:** [FOUNDER_OPERATING_SYSTEM_AR.md](ops/FOUNDER_OPERATING_SYSTEM_AR.md) · [FOUNDER_REVENUE_DAY_ONE_AR.md](ops/FOUNDER_REVENUE_DAY_ONE_AR.md) · [DEALIX_UNIFIED_REVENUE_ATLAS_AR.md](commercial/DEALIX_UNIFIED_REVENUE_ATLAS_AR.md) · [DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md](commercial/DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md)
+**Docs:** [FOUNDER_OPERATING_SYSTEM_AR.md](ops/FOUNDER_OPERATING_SYSTEM_AR.md) · [FOUNDER_REVENUE_DAY_ONE_AR.md](ops/FOUNDER_REVENUE_DAY_ONE_AR.md) · [DEALIX_UNIFIED_REVENUE_ATLAS_AR.md](commercial/DEALIX_UNIFIED_REVENUE_ATLAS_AR.md) · [DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md](commercial/DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md) · [DEALIX_COMMERCIAL_PROOF_MODE_AR.md](strategy/DEALIX_COMMERCIAL_PROOF_MODE_AR.md)
 
 **Governance:** no cold WhatsApp · no live external send without approval · no revenue before `invoice_paid`.
 

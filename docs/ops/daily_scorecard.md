@@ -271,4 +271,58 @@ Case studies:   __ published  / 0 target
 
 ---
 
+## Commercial Control Tower
+
+The Commercial Proof Mode operating board. A review that does not end in a
+decision — **Double / Fix / Kill / No-build** — has failed.
+See [`../strategy/DEALIX_COMMERCIAL_PROOF_MODE_AR.md`](../strategy/DEALIX_COMMERCIAL_PROOF_MODE_AR.md).
+
+### Daily — يومياً
+
+```
+Messages sent:            __
+Follow-ups:               __
+Positive replies:         __
+Demos booked:             __
+Scopes requested:         __
+Invoices sent:            __
+Payments received:        __ SAR
+Proof Packs delivered:    __
+Partner conversations:    __
+Blocked risky actions:    __
+Best message today:       __
+Worst channel today:      __
+Tomorrow's priority:      __
+```
+
+### Weekly — أسبوعياً
+
+```
+Best segment:             __
+Best message:             __
+Best offer:               __
+Where the funnel stalled: __
+Most repeated objection:  __
+Partner that brought quality: __
+Double down on:           __
+Stop doing:               __
+Do NOT build:             __
+Decision (Double/Fix/Kill/No-build): __
+```
+
+### Monthly — شهرياً
+
+```
+Revenue:                  __ SAR
+Pipeline:                 __
+Delivery (Proof Packs):   __
+Support:                  __
+Partners (active):        __
+Governance (blocked / approvals): __
+Learning:                 __
+Next strategic bet:       __
+```
+
+---
+
 **This file is the single scorecard for Dealix company operations.**

@@ -22,6 +22,19 @@ affiliate_submits_copy
   → commission_eligible
 ```
 
+## بوابة استحقاق العمولة (الكل مطلوب)
+
+العمولة تُصرف فقط عند تحقق **كل** الشروط التالية:
+
+- `invoice_paid` مثبت  
+- لا **refund** مفتوح على الفاتورة  
+- الـlead **غير مكرر**  
+- النسخة المعتمدة **متوافقة** (compliant)  
+- **disclosure** ظاهر في الحملة
+
+العمولة موصى بها كنطاق تقديري (مثلاً **15–25%** من أول دفعة أو أول 3 أشهر) —
+يُحدَّد لكل شريك، ولا يُعلن كرقم ثابت.
+
 ## شروط عدم الأهلية (أمثلة)
 
 - Lead **مكرر**  
@@ -41,3 +54,4 @@ affiliate_submits_copy
 - [TRUST_LAYER.md](TRUST_LAYER.md)
 - [PARTNER_ECONOMY.md](PARTNER_ECONOMY.md)
 - [docs/affiliates/AFFILIATE_PROGRAM.md](../affiliates/AFFILIATE_PROGRAM.md) (إن وُجد)
+- [docs/strategy/DEALIX_COMMERCIAL_PROOF_MODE_AR.md](../strategy/DEALIX_COMMERCIAL_PROOF_MODE_AR.md) — المرجع الاستراتيجي

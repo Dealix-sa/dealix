@@ -281,7 +281,7 @@ export function BusinessNowContent() {
   const docHref =
     "https://github.com/dealix-me/dealix/blob/main/docs/business/DEALIX_BUSINESS_NOW_AR.md";
   const strategyDocHref =
-    "https://github.com/dealix-me/dealix/blob/main/docs/business/DEALIX_COMMERCIAL_STRATEGY_AR.md";
+    "https://github.com/dealix-me/dealix/blob/main/docs/strategy/DEALIX_COMMERCIAL_PROOF_MODE_AR.md";
 
   const focusOffer = strategy?.offers_playbook?.find(
     (o) => o.service_id === strategy?.focus?.primary_offer_id,
@@ -377,6 +377,22 @@ export function BusinessNowContent() {
           {strategy && (
             <section id="strategy" className="space-y-4 scroll-mt-20">
               <h2 className="text-lg font-semibold">{tc("title")}</h2>
+              <Card className="border-gold-500/40 bg-gradient-to-br from-gold-500/10 to-transparent">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">{tc("proofModeTitle")}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-1 text-sm">
+                  <p>• {tc("proofModeLine1")}</p>
+                  <p>• {tc("proofModeLine2")}</p>
+                  <p>• {tc("proofModeLine3")}</p>
+                  <Button asChild variant="ghost" size="sm" className="mt-1">
+                    <a href={strategyDocHref} target="_blank" rel="noopener noreferrer">
+                      {tc("proofModeDocCta")}
+                      <ExternalLink className="w-3 h-3 ms-1 inline" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
               <Card className="border-amber-600/30 bg-amber-600/5">
                 <CardContent className="py-3 text-xs space-y-1">
                   {(strategy.guardrails_ar || []).map((g) => (
