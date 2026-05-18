@@ -1,5 +1,29 @@
 # تقرير جاهزية إطلاق Dealix
 
+> ## لقطة التحقق الحيّة — Live verifier snapshot (2026-05-18)
+>
+> أحدث من التقرير المُولَّد أدناه. مصدرها تشغيل فعلي لسكربتات التحقق اليوم.
+>
+> | المُحقِّق | النتيجة |
+> |-----------|---------|
+> | `business_readiness_verify.sh` | **PASS** — 39 pass / 0 fail / 0 warn |
+> | — `SELLABLE_NOW` | **YES** — 7-Day Revenue Proof Sprint 499 SAR (warm intros + manual payment) |
+> | — `PILOT_READY` | **YES** · `MONTHLY_READY` = after 2 pilots |
+> | `print_service_readiness_matrix.py` | 6 خدمات بدرجة 90–100 — كلها Sellable/Excellent |
+> | `revenue_os_master_verify.sh` | **PARTIAL** — PROOF_ENGINE / COMMAND_CENTER / FRONTEND / SECURITY / COMPLIANCE / OBSERVABILITY / LEARNING_LOOP = pass؛ REVENUE_INTELLIGENCE + OPERATING_EXECUTION = fail (ربط مقاييس البوابة + ProofEvent — نطاق الدرجات 2–5 المُجمَّد) |
+> | الحوكمة (5 حُرّاس) | NO_COLD_WHATSAPP / NO_SCRAPING / NO_LIVE_SEND_DEFAULT / NO_FAKE_PROOF / NO_FAKE_REVENUE = **pass** |
+> | `launch_readiness_check.py` | لم يُشغَّل — يتطلب `STAGING_BASE_URL` (فحص HTTP حيّ) |
+>
+> **الخلاصة:** الدرجتان 0–1 **قابلتان للبيع وجاهزتان للـPilot الآن**. القيد ليس
+> الكود — بل تفعيل Moyasar وأول Pilot مدفوع. الإخفاقان في `revenue_os` يخصّان
+> الدرجات 2–5 المُجمَّدة ولا يُعالَجان أثناء التجميد.
+> **الخطوة التالية للمؤسس:** `docs/ops/DAY_1_LAUNCH_KIT.md` — أرسل 5 تعريفات دافئة اليوم.
+>
+> ⚠️ التقرير المُفصَّل أدناه مُولَّد آلياً بتاريخ 2026-05-06 (يسبق التجميد) وبعض
+> بنوده قديمة (يذكر Stripe بدل Moyasar) — يُحتفظ به كمرجع تاريخي فقط.
+
+---
+
 - **تاريخ التوليد:** 2026-05-06T04:08:01.745925+00:00
 - **الدرجة الإجمالية:** 58 / 100
 

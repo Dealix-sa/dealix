@@ -1,5 +1,15 @@
 # الخطة الرئيسية للتدشين التجاري — Dealix
 
+> **الحالة الحاكمة الحالية — Current governing state (2026-05-18):** المشروع
+> تحت **تجميد تجاري نشط** ([`ops/COMMERCIAL_FREEZE.md`](ops/COMMERCIAL_FREEZE.md)).
+> المنصة جاهزة؛ القيد هو البيع بقيادة المؤسس وتفعيل الدفع، لا الكود. **المسار
+> الحرج الوحيد** الآن = أول Pilot مدفوع مُسلَّم + Proof Pack موافق عليه (L3+)،
+> والعائق #1 هو تفعيل Moyasar ([`ops/MOYASAR_KYC_CHECKLIST.md`](ops/MOYASAR_KYC_CHECKLIST.md)).
+> المراحل التسعة أدناه تبقى مرجعاً؛ لا تُستأنف الدرجات 2–5 إلا بعد الخروج من
+> التجميد، وعندها يحكم [`90_DAY_BUSINESS_EXECUTION_PLAN.md`](90_DAY_BUSINESS_EXECUTION_PLAN.md).
+> The 9 phases below remain a reference — the freeze and the first-paid-pilot
+> critical path take precedence until the freeze exits.
+
 **خطة إكمال شاملة (عربي — دمج + CI + نشر + Level 1 + أول إيراد):** [COMPREHENSIVE_COMPLETION_PLAN_AR.md](COMPREHENSIVE_COMPLETION_PLAN_AR.md)
 
 ## المراحل
