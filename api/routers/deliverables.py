@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import Any, Literal
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
 from auto_client_acquisition.deliverables import (
@@ -29,6 +30,7 @@ from auto_client_acquisition.deliverables import (
     create_deliverable,
     get_deliverable,
     list_by_session,
+    render_deliverable_html,
 )
 
 router = APIRouter(prefix="/api/v1/deliverables", tags=["Deliverables"])
@@ -59,6 +61,16 @@ class CreateDeliverableRequest(BaseModel):
 class AdvanceDeliverableRequest(BaseModel):
     target_status: DeliverableStatus
     reason: str = ""
+
+
+class RenderDeliverableRequest(BaseModel):
+    """Content for the rung 0-1 customer-facing render.
+
+    ``content`` is the section map: for ``diagnostic_report`` the diagnostic
+    sections, for ``proof_pack`` ``{"sections": {...}, "score": ..., "tier": ...}``.
+    """
+
+    content: dict[str, Any] = Field(default_factory=dict)
 
 
 def _serialize(d: Deliverable) -> dict[str, Any]:
@@ -120,6 +132,30 @@ async def get_endpoint(deliverable_id: str) -> dict[str, Any]:
         "deliverable": _serialize(rec),
         "hard_gates": _HARD_GATES,
     }
+
+
+@router.post("/{deliverable_id}/render", response_class=HTMLResponse)
+async def render_endpoint(
+    deliverable_id: str,
+    req: RenderDeliverableRequest,
+) -> HTMLResponse:
+    """Render a rung 0-1 deliverable to a self-contained bilingual HTML file.
+
+    Supports ``diagnostic_report`` (rung 0) and ``proof_pack`` (rung 1) only.
+    The rendered artifact is a DRAFT — this endpoint never sends anything.
+    """
+    rec = get_deliverable(deliverable_id)
+    if rec is None:
+        raise HTTPException(status_code=404, detail="deliverable_not_found")
+    try:
+        html_doc = render_deliverable_html(
+            deliverable_type=rec.type,
+            content=req.content,
+            customer_handle=rec.customer_handle,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    return HTMLResponse(content=html_doc)
 
 
 @router.post("/{deliverable_id}/advance")

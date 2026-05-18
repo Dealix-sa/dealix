@@ -150,6 +150,18 @@ def kickoff_delivery(
     rec.status = "delivery_kickoff"
     rec.delivery_kickoff_id = f"dk_{uuid.uuid4().hex[:8]}"
     _persist(rec)
+    # Audit link: record the payment -> delivery handoff to the append-only
+    # delivery ledger. A ledger I/O failure must never block kickoff.
+    from auto_client_acquisition.deliverables.delivery_ledger import (
+        record_delivery_kickoff,
+    )
+
+    record_delivery_kickoff(
+        payment_id=rec.payment_id,
+        delivery_kickoff_id=rec.delivery_kickoff_id,
+        customer_handle=rec.customer_handle,
+        amount_sar=rec.amount_sar,
+    )
     return (rec, "delivery_kicked_off")
 
 

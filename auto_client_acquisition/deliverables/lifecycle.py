@@ -68,4 +68,18 @@ def advance(
 
     rec.status = target
     rec.updated_at = datetime.now(timezone.utc)
+
+    # Audit link: when a Proof Pack reaches 'delivered' it is finalized —
+    # record it to the append-only PROOF_LEDGER. A ledger I/O failure must
+    # never block the lifecycle transition.
+    if target == "delivered" and rec.type == "proof_pack":
+        from auto_client_acquisition.deliverables.delivery_ledger import (
+            record_proof_pack_finalized,
+        )
+
+        record_proof_pack_finalized(
+            deliverable_id=rec.deliverable_id,
+            customer_handle=rec.customer_handle,
+            proof_event_id=rec.proof_event_id,
+        )
     return rec

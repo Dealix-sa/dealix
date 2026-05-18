@@ -104,20 +104,24 @@ strong { color: #0f172a; }
 """
 
 
-def build_proposal_artifact(
+def build_html_document(
     *,
     body_markdown: str,
-    engagement_id: str,
-    customer_name: str = "",
-    proposal_date: str = "",
+    title: str,
+    meta_line: str = "",
 ) -> str:
-    """Return a single self-contained bilingual HTML proposal artifact."""
-    date = proposal_date or datetime.now(UTC).strftime("%Y-%m-%d")
-    title = f"Dealix Proposal — {customer_name}".strip(" —")
+    """Return a single self-contained bilingual HTML document.
+
+    Shared HTML engine: inline CSS, ``dir="auto"`` per block, HTML-escaped,
+    no remote assets. Reused by every customer-facing rendered deliverable
+    (proposal artifact, diagnostic report, Proof Pack) so the wrapper is
+    defined once.
+    """
     inner = markdown_to_html(body_markdown)
     meta = (
-        f'<div class="dealix-meta" dir="auto">Engagement: '
-        f"{html.escape(engagement_id)} &middot; {html.escape(date)}</div>"
+        f'<div class="dealix-meta" dir="auto">{html.escape(meta_line)}</div>\n'
+        if meta_line
+        else ""
     )
     footer = (
         f'<div class="dealix-footer" dir="auto">{html.escape(_NON_GUARANTEE)}<br>'
@@ -130,7 +134,23 @@ def build_proposal_artifact(
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
         f"<title>{html.escape(title)}</title>\n"
         f"<style>{_STYLE}</style>\n</head>\n<body>\n"
-        f"{meta}\n{inner}\n{footer}\n</body>\n</html>\n"
+        f"{meta}{inner}\n{footer}\n</body>\n</html>\n"
+    )
+
+
+def build_proposal_artifact(
+    *,
+    body_markdown: str,
+    engagement_id: str,
+    customer_name: str = "",
+    proposal_date: str = "",
+) -> str:
+    """Return a single self-contained bilingual HTML proposal artifact."""
+    date = proposal_date or datetime.now(UTC).strftime("%Y-%m-%d")
+    title = f"Dealix Proposal — {customer_name}".strip(" —")
+    meta_line = f"Engagement: {engagement_id} · {date}"
+    return build_html_document(
+        body_markdown=body_markdown, title=title, meta_line=meta_line
     )
 
 
@@ -142,6 +162,7 @@ def proposal_artifact_filename(engagement_id: str) -> str:
 
 
 __all__ = [
+    "build_html_document",
     "build_proposal_artifact",
     "markdown_to_html",
     "proposal_artifact_filename",

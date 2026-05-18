@@ -26,6 +26,25 @@ os.environ.setdefault("GOOGLE_API_KEY", "test-google-key")
 from core.llm.base import LLMResponse
 
 
+@pytest.fixture(autouse=True, scope="session")
+def _isolate_ledgers(tmp_path_factory: pytest.TempPathFactory) -> Iterator[None]:
+    """Redirect append-only ledger writes to a temp dir for the whole run.
+
+    Keeps tests that exercise delivery-kickoff / Proof Pack finalization
+    from mutating the repo's ``docs/ledgers/*.md`` audit files. Individual
+    tests may still override ``DEALIX_LEDGERS_DIR`` for their own assertions.
+    """
+    prev = os.environ.get("DEALIX_LEDGERS_DIR")
+    os.environ["DEALIX_LEDGERS_DIR"] = str(tmp_path_factory.mktemp("ledgers"))
+    try:
+        yield
+    finally:
+        if prev is None:
+            os.environ.pop("DEALIX_LEDGERS_DIR", None)
+        else:
+            os.environ["DEALIX_LEDGERS_DIR"] = prev
+
+
 @pytest.fixture
 def mock_llm_response() -> LLMResponse:
     return LLMResponse(

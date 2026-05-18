@@ -14,6 +14,12 @@ from auto_client_acquisition.deliverables.lifecycle import (
     advance,
     is_terminal,
 )
+from auto_client_acquisition.deliverables.render import (
+    render_deliverable_html,
+    render_diagnostic_report_html,
+    render_proof_pack_html,
+    render_proof_pack_pdf,
+)
 from auto_client_acquisition.deliverables.schemas import (
     Deliverable,
     DeliverableStatus,
@@ -26,14 +32,18 @@ from auto_client_acquisition.deliverables.store import (
 )
 
 __all__ = [
+    "DELIVERABLE_TRANSITIONS",
     "Deliverable",
     "DeliverableStatus",
     "DeliverableType",
-    "DELIVERABLE_TRANSITIONS",
     "InvalidTransitionError",
     "advance",
     "create_deliverable",
     "get_deliverable",
     "is_terminal",
     "list_by_session",
+    "render_deliverable_html",
+    "render_diagnostic_report_html",
+    "render_proof_pack_html",
+    "render_proof_pack_pdf",
 ]

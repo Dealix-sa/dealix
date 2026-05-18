@@ -64,6 +64,22 @@ def resolve_phase_e_dir() -> Path:
     return _REPO_ROOT / "docs" / "phase-e"
 
 
+def resolve_ledgers_dir() -> Path:
+    """Path to ``docs/ledgers/`` — the append-only audit ledgers.
+
+    Resolution order:
+      1. ``DEALIX_LEDGERS_DIR`` env override (absolute path — use when
+         ``docs/`` is read-only in the deploy image)
+      2. Repo-relative ``docs/ledgers``.
+
+    Callers must degrade gracefully if the directory is not writable.
+    """
+    override = os.getenv("DEALIX_LEDGERS_DIR")
+    if override:
+        return Path(override)
+    return _REPO_ROOT / "docs" / "ledgers"
+
+
 def resolve_proposals_dir() -> Path:
     """Path where generated proposal artifacts (HTML) are written.
 
@@ -83,6 +99,7 @@ def resolve_proposals_dir() -> Path:
 
 __all__ = [
     "registry_dir_exists",
+    "resolve_ledgers_dir",
     "resolve_phase_e_dir",
     "resolve_proof_events_dir",
     "resolve_proposals_dir",
