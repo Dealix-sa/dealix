@@ -123,15 +123,17 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 ## الشريحة 7: Business Model
 
 ```
-3 باقات SaaS + Enterprise
+سلم العروض المعتمد (المصدر: docs/OFFER_LADDER_AND_PRICING.md)
 
-• Starter  — 999 ريال/شهر (1-3 مندوبين)
-• Growth   — 2,999 ريال/شهر (4-10 مندوبين) ⭐
-• Scale    — 7,999 ريال/شهر (+10 مندوبين)
+• Free AI Ops Diagnostic       — مجّاني (باب الدخول)
+• 7-Day Revenue Proof Sprint   — 499 ريال (دفعة واحدة) ⭐
+• Data-to-Revenue Pack         — 1,500 ريال (مشروع واحد)
+• Managed Revenue Ops          — 2,999–4,999 ريال/شهر (بعد pilot)
+• Executive Command Center     — 7,500–15,000 ريال/شهر (بعد 3 pilots)
+• Agency Partner OS            — مخصّص + rev-share 15–30%
 
-ARPA: 2,449 ريال/شهر
-Gross Margin: 87%
-Sales Cycle: 14-21 يوم
+Gross Margin: ~85% على Sprint · ~70% على التشغيل الشهري
+Sales Cycle: تشخيص مجّاني → Sprint 7 أيّام → ترقية بعد proof موثّق
 Monthly Churn: < 3% (target)
 
 LTV:CAC = 35:1 (السنة الأولى)

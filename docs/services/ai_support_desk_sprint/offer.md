@@ -1,12 +1,20 @@
 # Service Offer — AI Support Desk Sprint
 
+> **تنبيه تسعير / Pricing notice.** هذا العرض ليس درجة قياسية في سلم العروض.
+> أي عمل تنفيذي مخصّص بهذا الحجم يُسعّر ضمن **Rung 5 — Agency Partner OS
+> (مخصص + rev-share 15–30%)** أو عبر SOW منفصل، ولا يُعلن سعراً ثابتاً على
+> الموقع العام. مصدر التسعير الرسمي هو
+> [`docs/OFFER_LADDER_AND_PRICING.md`](../../OFFER_LADDER_AND_PRICING.md).
+> This is not a standard ladder rung; price it as a Rung 5 / separate-SOW
+> custom engagement. The old fixed "SAR 12,000–30,000" band is retired.
+
 ## Promise
 
 Improve customer support speed and consistency with AI-suggested replies (draft-only by default).
 
 ## Price
 
-SAR 12,000–30,000
+Custom — scoped per engagement (Rung 5 / separate SOW). Not a fixed public price.
 
 ## Duration
 

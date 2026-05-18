@@ -113,18 +113,26 @@ Per `auto_client_acquisition/revenue_profitability/gross_margin.py` patterns.
 | **Cash margin** | **~449 SAR positive** |
 | **Opportunity-adjusted margin** | **~-7,551 SAR (loss-leader by design)** |
 
-### Partner customer (4-month commit)
+### Managed Revenue Ops retainer customer (Rung 3, 4-month basis)
+
+> **Reconciled to canonical ladder.** There is no "12,000 SAR Partner" tier.
+> Figures below recompute the example at **Managed Revenue Ops = 4,999 SAR/mo**
+> (Rung 3 ceiling; canonical band 2,999–4,999 SAR/mo per
+> [`OFFER_LADDER_AND_PRICING.md`](OFFER_LADDER_AND_PRICING.md)).
 
 | Item | Value (4 months) |
 |---|---|
-| Revenue | 48,000 SAR (12,000 × 4) |
+| Revenue | 19,996 SAR (4,999 × 4) |
 | Direct cost (Anthropic + Moyasar fees) | ~1,500 SAR |
 | Founder hours (~80h × 200) | 16,000 SAR (NOT cash) |
 | Tools allocation | ~1,400 SAR |
-| **Cash margin** | **~46,500 SAR (97%)** |
-| **Opportunity-adjusted margin** | **~30,500 SAR (63%)** |
+| **Cash margin** | **~18,496 SAR (~92%)** |
+| **Opportunity-adjusted margin** | **~2,496 SAR (~12%)** |
 
-**Net per Sprint→Partner pair:** -7,551 + 30,500 = **+22,949 SAR over 4 months** (60% margin opportunity-adjusted).
+**Net per Sprint→Retainer pair (4 months):** -7,551 + 2,496 = **-5,055 SAR
+opportunity-adjusted** — i.e. a single 4-month retainer does not yet cover the
+founder opportunity cost; the model relies on retainer renewal beyond month 4
+and on portfolio scale. Cash-wise the pair is **+449 + 18,496 = +18,945 SAR**.
 
 > **Hard rule:** every margin number is `is_estimate=True` (per `revenue_truth.py`). No "guaranteed margin" claims to investors.
 
@@ -158,7 +166,8 @@ Runway: cash / effective_burn months
 
 - All Dealix invoices in Wave 7 should include VAT line
 - Sprint 499 SAR = 433.91 ex-VAT + 65.09 VAT
-- Partner 12,000 SAR = 10,434.78 ex-VAT + 1,565.22 VAT/month
+- Managed Revenue Ops 4,999 SAR/mo = 4,346.96 ex-VAT + 652.04 VAT/month
+  (Rung 3 ceiling; canonical band 2,999–4,999 SAR/mo — there is no 12,000 tier)
 - Filed quarterly via ZATCA portal
 - E-invoicing (Phase 2 of ZATCA) deferred — manual invoicing OK until ZATCA notifies (per `INVOICING_ZATCA_READINESS.md`)
 

@@ -41,8 +41,8 @@ Saudi enterprises are racing to adopt AI while meeting strict digital-sovereignt
 ## Availability
 
 - Available today at https://dealix.sa
-- Plans: Pilot (1 SAR), Starter (999 SAR/mo), Growth (2,999), Scale (7,999)
-- **Agency Partner Program** with multi-tier commissions
+- Offer ladder: Free AI Ops Diagnostic, then 7-Day Revenue Proof Sprint (499 SAR, one-time), Data-to-Revenue Pack (1,500 SAR), Managed Revenue Ops (2,999–4,999 SAR/mo), Executive Command Center (7,500–15,000 SAR/mo), Agency Partner OS (custom + 15–30% rev-share)
+- **Agency Partner OS** — revenue-share partnership program for local agencies
 
 ## About Dealix
 

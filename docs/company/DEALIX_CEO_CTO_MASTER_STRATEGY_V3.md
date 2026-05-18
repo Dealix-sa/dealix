@@ -143,10 +143,12 @@ Diagnostic → Sprint → Pilot → Retainer → Enterprise
 
 ## 7. أول 4 عروض/منتجات يجب تثبيتها
 
-1. **Revenue Intelligence Sprint** — SAR 9,500–18,000 — جاهزية بيانات، ترتيب حسابات، إجراءات، مسودات، لوحة مصغّرة، proof pack.  
-2. **AI Quick Win Sprint** — SAR 7,500–15,000 — workflow map، خطوة AI، موافقة، SOP، توفير وقت، proof.  
-3. **Company Brain Sprint** — SAR 20,000–60,000 — مصدرregistry، أسئلة بمراجع، insufficient evidence، جودة معرفة.  
-4. **AI Governance Review** — SAR 7,500–25,000 — جرد استخدام، مخاطر بيانات، مسموح/ممنوع، موافقات، دليل موظفين، استجابة حوادث.
+> **مصدر التسعير الرسمي:** [`docs/OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md) (الدرجات 0–5).
+
+1. **Free AI Ops Diagnostic** — مجاني — تقرير تشخيصي صفحة واحدة + 3 أولويات + توصية الخطوة التالية.  
+2. **7-Day Revenue Proof Sprint** — SAR 499 (دفعة واحدة) — جاهزية بيانات، ترتيب حسابات، إجراءات، 5 مسودات، لوحة مصغّرة، Proof Pack.  
+3. **Data-to-Revenue Pack** — SAR 1,500 (مشروع واحد) — تحليل pipeline، خريطة فرص، 10 مسودات استهداف، تقرير ROI basis، playbook.  
+4. **Managed Revenue Ops** — SAR 2,999–4,999/شهر — تقرير أسبوعي، ≤20 مسودة/شهر، Proof Pack شهري، KPIs، جلسة استراتيجية شهرية.
 
 ---
 
@@ -463,7 +465,7 @@ Full SaaS billing · Marketplace · Academy · autonomous external agents · col
 
 ## 28. What To Build Now
 
-Service Catalog · Revenue Intelligence / Lead Intelligence Sprint · AI Quick Win · Company Brain · Data OS · Governance OS · Revenue OS · Reporting OS · Delivery OS · Proof Pack · Capital Ledger · Founder Command Center  
+Service Catalog · 7-Day Revenue Proof Sprint · Data-to-Revenue Pack · Managed Revenue Ops · Data OS · Governance OS · Revenue OS · Reporting OS · Delivery OS · Proof Pack · Capital Ledger · Founder Command Center  
 
 ---
 

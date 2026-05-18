@@ -38,17 +38,18 @@ operating in Riyadh, Jeddah, Eastern Province.
 or anyone seeking guaranteed sales results — Dealix commits to clearer
 operations, faster decisions, and reviewable outputs, not guaranteed revenue.
 
-## Pricing ladder (May 2026, locked until 3+ proofs)
+## Pricing ladder (canonical — see docs/OFFER_LADDER_AND_PRICING.md)
 
-- **Mini Diagnostic** — Free, 24h turnaround
-- **Revenue Proof Sprint** — 499 SAR, one-time, 7 days
-- **Growth OS (Growth Ops Monthly)** — 2,999 SAR/month
-- **Scale OS** — 7,999 SAR/month
-- **Executive Command Center (Partner)** — 12,000 SAR/month
-- **Enterprise** — Custom
+- **Free AI Ops Diagnostic** — Free, 24h turnaround
+- **7-Day Revenue Proof Sprint** — 499 SAR, one-time, 7 days
+- **Data-to-Revenue Pack** — 1,500 SAR, one-time
+- **Managed Revenue Ops** — 2,999–4,999 SAR/month (after a successful pilot)
+- **Executive Command Center** — 7,500–15,000 SAR/month (after 3+ pilots)
+- **Agency Partner OS** — custom + 15–30% revenue share
 
-VAT 15% included. ZATCA-readiness. Refund policy: full refund if we
-don't reply to a single Arabic lead.
+VAT 15% included. ZATCA-readiness. Rungs 0–1 ship a verified product
+deliverable; Rungs 3–5 are founder-assisted / semi-automated today.
+Estimated outcomes are not guaranteed outcomes.
 
 ## Core surfaces
 

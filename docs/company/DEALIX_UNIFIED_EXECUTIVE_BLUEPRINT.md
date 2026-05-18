@@ -398,23 +398,25 @@ Enterprise AI OS · Multi-Branch RevOps · Governed AI Operations Platform
 
 ## 13. أفضل 3 عروض للبداية
 
-### 1) Lead Intelligence Sprint
+> **مصدر التسعير الرسمي:** [`docs/OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md).
+
+### 1) 7-Day Revenue Proof Sprint
 
 - **الوعد:** بيانات عملاء/حسابات → فرص مرتبة، رسائل للمراجعة، pipeline واضح.  
-- **السعر:** SAR 9,500–18,000  
-- **المخرجات:** cleaned list · data quality · dedupe · top 50 · top 10 actions · draft pack · mini pipeline · proof pack  
+- **السعر:** SAR 499 (دفعة واحدة — الدرجة 1)  
+- **المخرجات:** cleaned list · data quality · dedupe · top 50 · top 10 actions · 5 draft pack · mini pipeline · proof pack  
 
-### 2) AI Quick Win Sprint
+### 2) Data-to-Revenue Pack
 
-- **الوعد:** عملية يدوية متكررة → workflow مدعوم بـ AI مع موافقة بشرية.  
-- **السعر:** SAR 7,500–15,000  
-- **المخرجات:** workflow map · AI step · approval · SOP · time saved · proof report  
+- **الوعد:** بيانات عميل غير مستثمرة → خريطة فرص + playbook مبيعات.  
+- **السعر:** SAR 1,500 (مشروع واحد — الدرجة 2)  
+- **المخرجات:** تحليل pipeline · خريطة فرص مرتّبة · 10 مسودات استهداف · تقرير ROI basis · playbook  
 
-### 3) Company Brain Sprint
+### 3) Managed Revenue Ops
 
-- **الوعد:** ملفات مبعثرة → مساعد معرفة **بمصادر فقط**.  
-- **السعر:** SAR 20,000–60,000  
-- **المخرجات:** source registry · ingestion · Q&A مع citations · insufficient evidence · quality report · update workflow  
+- **الوعد:** تشغيل إيرادات شهري مستمر بعد pilot ناجح.  
+- **السعر:** SAR 2,999–4,999/شهر (الدرجة 3)  
+- **المخرجات:** تقرير أسبوعي · ≤20 مسودة/شهر · Proof Pack شهري · KPIs · جلسة استراتيجية شهرية  
 
 ---
 
@@ -423,11 +425,12 @@ Enterprise AI OS · Multi-Branch RevOps · Governed AI Operations Platform
 تسعير **Productized Service + Software-Assisted Delivery** — ليس SaaS رخيص في البداية.
 
 ```text
-Diagnostic: SAR 3,500–7,500
-Sprint: SAR 7,500–25,000
-Pilot: SAR 22,000–60,000
-Retainer: SAR 8,000–60,000/month
-Enterprise: SAR 85,000–300,000+
+Free AI Ops Diagnostic:        Free
+7-Day Revenue Proof Sprint:    SAR 499 (one-time)
+Data-to-Revenue Pack:          SAR 1,500 (one-time)
+Managed Revenue Ops:           SAR 2,999–4,999/month
+Executive Command Center:      SAR 7,500–15,000/month
+Agency Partner OS:             custom + 15–30% rev-share
 ```
 
 ### Premiums
@@ -790,7 +793,7 @@ complex vector architecture · multi-region infra
 ## 38. «Build Now» List
 
 ```text
-Service Catalog · Lead Intelligence Sprint · AI Quick Win Sprint · Company Brain Sprint
+Service Catalog · 7-Day Revenue Proof Sprint · Data-to-Revenue Pack · Managed Revenue Ops
 Data OS · Governance OS · Revenue OS · Reporting OS · Delivery OS
 Proof Pack · Capital Ledger · Founder Command Center
 ```

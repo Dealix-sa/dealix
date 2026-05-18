@@ -19,11 +19,22 @@
 - **Turnaround:** 3-5 business days bank transfer · 2 business days Moyasar live
 - **Ledger entry:** `dealix_payment_confirmation_stub.py --action refund --evidence-note "..."`
 
-### Partner (12,000 SAR/month · 4-month commitment)
+### Managed Revenue Ops retainer (Rung 3 · 2,999–4,999 SAR/month)
 
-- **Window:** any time during the 4-month commitment if KPI commitment unmet
-- **Coverage:** pro-rata refund of unused months IF +20% lift on agreed KPI not achieved (per `docs/WAVE6_PILOT_TO_MONTHLY_UPSELL_AR_EN.md` §2D)
-- **Alternative remedy:** founder works free until KPI achieved (this is the COMMITMENT, not refund)
+> **Reconciled to canonical ladder.** There is no "12,000 SAR Partner" tier —
+> the monthly retainer is **Managed Revenue Ops, 2,999–4,999 SAR/month** per
+> [`docs/OFFER_LADDER_AND_PRICING.md`](OFFER_LADDER_AND_PRICING.md).
+>
+> **⚠️ Doctrine conflict — founder + lawyer review needed.** The legacy
+> "+20% KPI lift" / "founder works free until KPI achieved" language is a
+> **guaranteed-outcome claim** and conflicts with the non-negotiable "estimated
+> outcomes are not guaranteed outcomes / النتائج التقديرية ليست نتائج مضمونة".
+> Do not present it to customers as written; reframe as an estimated,
+> non-guaranteed target before use.
+
+- **Window:** any time during the agreed commitment term, per the signed SOW
+- **Coverage:** pro-rata refund of unused months per the refund terms in the
+  signed engagement agreement
 - **Mechanism:** prorated by completed days, refunded via original payment channel
 - **Turnaround:** 5-7 business days
 

@@ -1,4 +1,7 @@
-# Lead Intelligence Sprint
+# 7-Day Revenue Proof Sprint
+
+> **مصدر التسعير الرسمي / Canonical pricing source:** [`docs/OFFER_LADDER_AND_PRICING.md`](../../OFFER_LADDER_AND_PRICING.md) — Rung 1.
+> (Formerly named "Lead Intelligence Sprint" — that name is retired.)
 
 ## Promise
 
@@ -6,11 +9,11 @@ Turn scattered account and lead data into ranked revenue opportunities, complian
 
 ## Price
 
-SAR 9,500–18,000
+SAR 499 (one-time, paid upfront) — Rung 1 of the canonical offer ladder.
 
 ## Duration
 
-10 business days
+7 calendar days
 
 ## Best For
 

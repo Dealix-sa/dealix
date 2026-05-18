@@ -1,5 +1,22 @@
 # Dealix Turnkey Package — Master Service Spec
 
+> **⚠️ تنبيه تسعير — مطلوب مراجعة المؤسس / PRICING CORRECTION — FOUNDER REVIEW NEEDED.**
+> الأسعار في هذا الملف **لا تطابق** سلم العروض المعتمد
+> [`docs/OFFER_LADDER_AND_PRICING.md`](OFFER_LADDER_AND_PRICING.md). الأرقام
+> المعتمدة الوحيدة للعرض على العميل:
+> - "Sector Sprint 5,000 SAR" → **7-Day Revenue Proof Sprint = 499 SAR (دفعة واحدة، Rung 1)**.
+> - "Managed AI Partner 12,000 SAR/month" → **لا يوجد تير 12,000**؛ يُعاد للـ
+>   **Rung 3 Managed Revenue Ops (2,999–4,999 SAR/شهر)** أو **Rung 4 Executive
+>   Command Center (7,500–15,000 SAR/شهر)** حسب النطاق.
+>
+> **مشكلة عقيدة إضافية:** بند "KPI guarantee: ≥20% lift OR founder works free"
+> هو **ادعاء نتيجة مضمونة** ويخالف قاعدة "النتائج التقديرية ليست نتائج مضمونة".
+> يجب على المؤسس إعادة صياغته كـ *هدف تقديري غير مضمون* قبل أي استخدام.
+>
+> The two-SKU model and the KPI guarantee in this file are stale/non-compliant.
+> This doc's pricing is too entangled for a safe blanket recompute — **flagged
+> for founder.** Until reconciled, quote only the canonical ladder.
+
 **Version:** v1.0 · May 2026
 **Status:** Closed scope · Production-ready · Buy-today-deliver-tomorrow
 **Sales surface:** `dealix.me/launchpad.html`

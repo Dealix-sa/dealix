@@ -94,20 +94,28 @@ with compliance*.
 
 ### IV.A The Pricing Ladder (Refined)
 
+> **Canonical-price banner / تنبيه التسعير.** The **only** customer-quotable
+> prices are the canonical offer ladder in
+> [`docs/OFFER_LADDER_AND_PRICING.md`](OFFER_LADDER_AND_PRICING.md): Free
+> Diagnostic, 7-Day Revenue Proof Sprint **499 SAR**, Data-to-Revenue Pack
+> **1,500 SAR**, Managed Revenue Ops **2,999–4,999 SAR/mo**, Executive Command
+> Center **7,500–15,000 SAR/mo**, Agency Partner OS **custom + 15–30%
+> rev-share**. The table below is a *forward-looking what-if projection* only —
+> the "After 3 Proofs" / "After 10 Customers" columns are NOT live prices and
+> must never be quoted. الأرقام أدناه سيناريو مستقبلي وليست أسعاراً معتمدة.
+
 Current ladder vs recommended evolution. **No pricing changes
 yet** — recommendations only, in line with the master prompt's
 "don't change pricing" rule.
 
-| Tier | Now | After 3 Proofs | After 10 Customers | Locks In |
+| Tier (canonical name) | Now (live) | After 3 Proofs (projection) | After 10 Customers (projection) | Notes |
 |---|---:|---:|---:|---|
-| Free Diagnostic | Free | Free | Free | Wedge — only marketing cost |
-| Growth Starter Pilot | 499 SAR | 499 SAR (Pilot only) | retire as a SKU | First-payment friction reducer |
-| Growth Starter | — | 990 SAR (one-shot) | 1,490 SAR | Post-proof first paid service |
-| Data to Revenue | 1,500 SAR | 1,500 SAR | 2,500 SAR | One-shot data project |
-| Executive Growth OS | 2,999 SAR/mo | 2,999 SAR/mo | 3,999 SAR/mo | Recurring core |
-| Executive Growth OS Plus | — | 5,999 SAR/mo | 8,999 SAR/mo | Heavier delivery |
-| Partnership Growth | 3,000–7,500 SAR | same | 5,000–12,000 SAR | Project-based |
-| Full Control Tower | Custom | Custom | Custom (50K+ SAR/mo) | Enterprise anchor |
+| Free AI Ops Diagnostic | Free | Free | Free | Wedge — only marketing cost |
+| 7-Day Revenue Proof Sprint | 499 SAR | 499 SAR | 499 SAR | First-payment friction reducer |
+| Data-to-Revenue Pack | 1,500 SAR | 1,500 SAR | 1,500 SAR | One-shot data project |
+| Managed Revenue Ops | 2,999–4,999 SAR/mo | same | same | Recurring core (Rung 3) |
+| Executive Command Center | 7,500–15,000 SAR/mo | same | same | Heavier delivery (Rung 4) |
+| Agency Partner OS | custom + 15–30% rev-share | same | same | Project / partner (Rung 5) |
 
 **Pricing logic:**
 - Pilot 499 SAR is a *cost of customer acquisition*, not a profit

@@ -204,16 +204,19 @@
 
 ---
 
-## 💰 نموذج التسعير (Confirmed)
+## 💰 نموذج التسعير — سلم العروض المعتمد
 
-| الباقة | السعر | الجمهور |
-|--------|-------|---------|
-| Pilot | 1 ر.س (7 أيام) | الاختبار |
-| Starter | 999 ر.س/شهر | شركات صغيرة |
-| Growth | 2,999 ر.س/شهر | متوسطة |
-| Scale | 7,999 ر.س/شهر | Enterprise |
+> المصدر الرسمي: [`docs/OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md).
+> التسميات القديمة (Pilot 1 ريال / Starter / Growth / Scale) **مُلغاة**.
 
-**المزيج المستهدف**: 40% Starter / 30% Growth / 10% Scale → **ARPU: 2,099 ر.س**
+| الدرجة | الباقة | السعر | الجمهور |
+|--------|--------|-------|---------|
+| 0 | Free AI Ops Diagnostic | مجّاني | باب الدخول |
+| 1 | 7-Day Revenue Proof Sprint | 499 ر.س (دفعة واحدة) | إثبات سريع |
+| 2 | Data-to-Revenue Pack | 1,500 ر.س (مشروع واحد) | مشروع بيانات |
+| 3 | Managed Revenue Ops | 2,999–4,999 ر.س/شهر | تشغيل شهري بعد pilot |
+| 4 | Executive Command Center | 7,500–15,000 ر.س/شهر | قيادة تنفيذيّة |
+| 5 | Agency Partner OS | مخصّص + rev-share 15–30% | وكالات |
 
 ---
 

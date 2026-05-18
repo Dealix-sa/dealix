@@ -13,6 +13,13 @@
 > **approved, opt-in** messaging only. Cold WhatsApp automation, scraping, and
 > LinkedIn automation are forbidden by the non-negotiables and blocked at
 > runtime — they are never sold.
+>
+> **Figures note:** every SAR range below is an *illustrative bespoke-engagement*
+> band for custom consulting scoping only — it is **not** a customer-quotable
+> ladder price. Never quote a customer from this file; quote from
+> `docs/OFFER_LADDER_AND_PRICING.md`. The "Starter/Growth/Enterprise" column
+> headers in the sample-proposal table are price-anchoring labels for a custom
+> SOW, not the retired Starter/Growth/Scale SaaS tiers.
 
 ## 💰 Default pricing tiers
 

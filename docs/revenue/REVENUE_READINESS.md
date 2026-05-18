@@ -74,27 +74,25 @@ Onboarding sequence starts
 
 ## Pricing Architecture
 
-### Self-serve Tiers
-| Plan | Price/mo (SAR) | Target |
-|------|----------------|--------|
-| Pilot | 1 (7-day trial) | Evaluation |
-| Starter | 999 | 1-3 reps |
-| Growth | 2,999 | 4-10 reps |
-| Scale | 7,999 | 10+ reps |
+> **Canonical pricing source:** [`docs/OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md)
+> (rungs 0–5). Old Pilot/Starter/Growth/Scale tiers are retired.
 
-### Setup Fees (one-time, optional)
-| Service | Price (SAR) |
-|---------|-------------|
-| Basic setup | 1,000 |
-| CRM integration | 3,000 |
-| White-label | 15,000 |
+### Canonical offer ladder
+| Rung | Package | Price | Target |
+|------|---------|-------|--------|
+| 0 | Free AI Ops Diagnostic | Free | Evaluation |
+| 1 | 7-Day Revenue Proof Sprint | 499 SAR (one-time) | Wants fast proof |
+| 2 | Data-to-Revenue Pack | 1,500 SAR (one-time) | Has data to mine |
+| 3 | Managed Revenue Ops | 2,999–4,999 SAR/mo | Post-pilot, 4–10 reps |
+| 4 | Executive Command Center | 7,500–15,000 SAR/mo | 10+ reps, daily decisions |
+| 5 | Agency Partner OS | custom + 15–30% rev-share | Agencies, post 3 proof packs |
 
 ### Partner Pricing (commissions paid from MRR)
 | Partner type | Commission % |
 |--------------|--------------|
 | Referral only | 10% for 12 months |
 | Service provider | 20% lifetime |
-| Agency partner | 25% lifetime |
+| Agency partner | 15–30% rev-share (Agency Partner OS) |
 
 ---
 

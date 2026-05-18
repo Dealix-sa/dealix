@@ -150,8 +150,10 @@ For every Sprint:
 - Sami sets aside 65.09 SAR for VAT (filed quarterly via ZATCA portal)
 - Sami sets aside ~13 SAR (3%) as Zakat reserve
 
-For every Partner monthly invoice:
-- 12,000 SAR = 10,434.78 ex-VAT + 1,565.22 VAT/month
+For every Managed Revenue Ops retainer monthly invoice (Rung 3, canonical
+band 2,999–4,999 SAR/mo — there is no 12,000 SAR tier):
+- 2,999 SAR = 2,607.83 ex-VAT + 391.17 VAT/month (band floor)
+- 4,999 SAR = 4,346.96 ex-VAT + 652.04 VAT/month (band ceiling)
 - Filed quarterly
 
 E-invoicing (ZATCA Phase 2) deferred — manual invoicing OK until ZATCA notifies (per `INVOICING_ZATCA_READINESS.md`).

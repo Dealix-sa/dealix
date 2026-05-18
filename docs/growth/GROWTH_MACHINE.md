@@ -62,9 +62,9 @@ Company type: B2B services
 Team size: 5–50
 Location: Riyadh / Jeddah / Eastern Province
 Pain: leads, follow-up, proposals, weak CRM
-Budget: SAR 7.5k–25k for sprint
+Budget: SAR 499 for the Sprint (Rung 1); retainers 2,999–4,999/mo after proof
 Buyer: founder, GM, sales manager
-Best offer: Lead Intelligence Sprint or AI Quick Win Sprint
+Best offer: 7-Day Revenue Proof Sprint (499 SAR)
 ```
 
 ## Campaign: B2B Revenue Cleanup
@@ -79,9 +79,9 @@ Best offer: Lead Intelligence Sprint or AI Quick Win Sprint
 ### Offer
 
 ```text
-Lead Intelligence Sprint
-SAR 9,500–18,000
-10 أيام
+7-Day Revenue Proof Sprint
+SAR 499 (one-time)
+7 أيام تقويمية
 ```
 
 ### Week plan

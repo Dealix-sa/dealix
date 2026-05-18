@@ -374,7 +374,10 @@ Price = Base + data complexity + governance risk + urgency
         + integration complexity + stakeholder complexity
 ```
 
-**مثال Lead Intelligence:** Base e.g. SAR 12,000 · بيانات فوضوية +20% · PII حساس +30% · إلحاح +25% · تكامل = نطاق منفصل.
+**مثال 7-Day Revenue Proof Sprint:** السعر القياسي ثابت SAR 499 (الدرجة 1).
+صيغة التعديل بالمخاطر أعلاه تنطبق فقط على عمل تنفيذي مخصّص ضمن **Rung 5 / SOW
+منفصل** — لا على درجات السلم القياسية ذات السعر الثابت. مصدر التسعير الرسمي:
+[`OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md).
 
 **لماذا؟** المشاريع الأصعب تستهلك **مخاطر ووقتًا** أكبر.
 

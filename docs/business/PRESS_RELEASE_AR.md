@@ -41,8 +41,8 @@
 ## التوفّر
 
 - **متاح اليوم** عبر https://dealix.sa
-- **خطط:** Pilot (1 ريال)، Starter (999 ريال/شهر)، Growth (2,999)، Scale (7,999)
-- **شراكة الوكالات:** برنامج عمولة متعدد الطبقات للوكالات المحلية
+- **سلم العروض:** تشخيص مجّاني (Free AI Ops Diagnostic)، ثم 7-Day Revenue Proof Sprint (499 ريال، دفعة واحدة)، Data-to-Revenue Pack (1,500 ريال)، Managed Revenue Ops (2,999–4,999 ريال/شهر)، Executive Command Center (7,500–15,000 ريال/شهر)، Agency Partner OS (مخصّص + rev-share 15–30%)
+- **شراكة الوكالات:** Agency Partner OS — برنامج شراكة بحصّة إيراد للوكالات المحلية
 
 ## عن Dealix
 

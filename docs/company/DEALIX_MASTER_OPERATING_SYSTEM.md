@@ -148,6 +148,19 @@ Platform
 
 ## 2. Dealix Service Catalog — النسخة التشغيلية الكاملة
 
+> **تنبيه تسعير معتمد / Canonical-price banner.** الأسعار الوحيدة القابلة
+> للعرض على العميل هي سلم العروض في
+> [`docs/OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md):
+> Free Diagnostic (مجاني) · 7-Day Revenue Proof Sprint **499 SAR** ·
+> Data-to-Revenue Pack **1,500 SAR** · Managed Revenue Ops **2,999–4,999
+> SAR/شهر** · Executive Command Center **7,500–15,000 SAR/شهر** · Agency
+> Partner OS (مخصص + rev-share 15–30%). أي خدمة في هذا الكتالوج ليست درجة
+> قياسية (Pilot Conversion، Monthly RevOps OS، AI Support Desk، Workflow
+> Automation، Company Brain، إلخ) تُسعّر فقط كعمل تنفيذي مخصّص ضمن **Rung 5
+> أو SOW منفصل** — لا تُعرض بسعر ثابت على العميل. النطاقات أدناه تخطيط داخلي
+> وليست أسعاراً معتمدة. Ranges below are internal planning only — never quote
+> them; quote the ladder.
+
 ### الباب الأول: Grow Revenue
 
 #### Revenue Diagnostic
@@ -165,10 +178,10 @@ Platform
 - recommendation للـSprint
 ```
 
-#### Lead Intelligence Sprint
+#### 7-Day Revenue Proof Sprint (الدرجة 1 — السعر المعتمد)
 
 ```text
-السعر: SAR 9,500–18,000
+السعر: SAR 499 (دفعة واحدة) — الدرجة 1 من سلم العروض
 
 المخرجات:
 - cleaned account list
@@ -1161,16 +1174,16 @@ Would it be useful if I shared a sample proof report?
 
 ---
 
-## 18. Proposal Template (Lead Intelligence Sprint)
+## 18. Proposal Template (7-Day Revenue Proof Sprint)
 
 ```markdown
-# Proposal: Lead Intelligence Sprint
+# Proposal: 7-Day Revenue Proof Sprint
 
 ## Problem
 Your company has scattered lead/account data and unclear prioritization.
 
 ## Goal
-Create a ranked opportunity list and action plan within 10 days.
+Create a ranked opportunity list and action plan within 7 days.
 
 ## Scope Included
 - data review
@@ -1192,7 +1205,7 @@ Create a ranked opportunity list and action plan within 10 days.
 - CRM integration unless separately scoped
 
 ## Timeline
-10 business days.
+7 calendar days.
 
 ## Client Inputs
 - lead/account file
@@ -1201,7 +1214,7 @@ Create a ranked opportunity list and action plan within 10 days.
 - existing CRM/export if available
 
 ## Price
-SAR 9,500–18,000
+SAR 499 (one-time, paid upfront) — Rung 1 of the canonical offer ladder.
 
 ## Success Metrics
 - accounts cleaned
@@ -1211,7 +1224,7 @@ SAR 9,500–18,000
 - proof report delivered
 
 ## Next Step
-Pilot Conversion Sprint or Monthly RevOps OS.
+Data-to-Revenue Pack (1,500 SAR) or Managed Revenue Ops (2,999–4,999 SAR/mo).
 ```
 
 مرجع رسمي في الريبو: [`../sales/PROPOSAL_REVENUE_PROOF_SPRINT.md`](../sales/PROPOSAL_REVENUE_PROOF_SPRINT.md).
@@ -1241,9 +1254,9 @@ Logistics
 - unclear ICP
 
 ## Best Offers
-1. Lead Intelligence Sprint
-2. AI Quick Win Sprint
-3. Monthly RevOps OS
+1. 7-Day Revenue Proof Sprint (499 SAR)
+2. Data-to-Revenue Pack (1,500 SAR)
+3. Managed Revenue Ops (2,999–4,999 SAR/mo)
 
 ## Data Needed
 - account list
@@ -1590,9 +1603,9 @@ Dealix جاهزة كـFull Operating MVP إذا:
 
 ```text
 1. 3 خدمات قابلة للبيع:
-   Lead Intelligence Sprint
-   AI Quick Win Sprint
-   Company Brain Sprint
+   7-Day Revenue Proof Sprint (499 SAR)
+   Data-to-Revenue Pack (1,500 SAR)
+   Managed Revenue Ops (2,999–4,999 SAR/mo)
 
 2. كل خدمة لها:
    offer
