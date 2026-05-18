@@ -14,26 +14,27 @@ All emails:
 
 ### Email 1 (Day 0) — First touch (already covered in TODAY_20_MESSAGES)
 
-### Email 2 (Day +3) — Value: Response-time data
+### Email 2 (Day +3) — Value: where revenue hides
 
-**Subject:** `رقم قد يفاجئك عن leads شركتك`
+**Subject:** `أين تختبئ فرص الإيراد في شركتك؟`
 
 ```
 السلام عليكم [الاسم]،
 
-حسبت رقم سريع على شركات B2B سعودية بحجمكم:
+في معظم شركات B2B السعودية، فرص إيراد حقيقية تبقى غير مرئية —
+مدفونة في رسائل واتساب متفرقة وبيانات pipeline غير مُحلّلة.
+المشكلة ليست نقص الفرص، بل غياب طريقة منظمة لرؤيتها بالأدلة.
 
-200 lead × 5% close × 1,500 ريال ACV = 15,000 ريال MRR ممكن.
-متوسط الرد 4 ساعات = 50% فقد → 7,500 ريال فقط.
-الفرق: 7,500 ريال شهرياً × 12 = 90,000 ريال سنوياً ضائعة.
+Dealix رادار عمليات إيرادات محكوم: يحلّل pipeline شركتك،
+يكتشف فرص الإيراد، ويرتّبها بالأدلة — كل نتيجة مدعومة بإثبات.
 
-Dealix يسد هذي الفجوة بالرد خلال 45 ثانية.
-
-هل أقدر أشارك تحليل دقيق لشركتكم تحديداً في 20 دقيقة؟
+أبدأ بتشخيص مجاني 15 دقيقة: تقرير أولويات لشركتكم تحديداً.
 
 📅 https://calendly.com/sami-assiri11/dealix-demo
 
 سامي — Dealix
+
+ملاحظة: أي أرقام نشاركها تقديرية — القيمة التقديرية ليست قيمة مُتحقَّقة.
 
 ---
 لإيقاف الرسائل: رد "إيقاف"
@@ -48,10 +49,10 @@ Dealix يسد هذي الفجوة بالرد خلال 45 ثانية.
 
 أصدرنا تقرير تحليلي عن السوق السعودي B2B — تحليل مباشر على 60+ شركة سعودية.
 
-أهم 3 نتائج:
-1. 42% من الشركات ترد بعد 1-4 ساعات (= فقد 50% من leads)
-2. 58% يستخدمون WhatsApp كقناة مبيعات، 0% لديهم AI response
-3. معظم الشركات عندها HubSpot/Calendly لكن ما تستخدمها فعلياً
+أهم 3 أنماط مجمّعة (methodology + aggregated patterns فقط):
+1. أغلب الشركات تدير علاقات العملاء عبر واتساب وبريد متفرقين
+2. بيانات pipeline موجودة لكنها غير مُحلّلة لاستخراج فرص الإيراد
+3. صعوبة إثبات أين الإيراد الحقيقي لمجلس الإدارة بالأدلة
 
 التقرير كامل هنا: [رابط التقرير]
 
@@ -64,23 +65,23 @@ Dealix يسد هذي الفجوة بالرد خلال 45 ثانية.
 إيقاف: رد "إيقاف"
 ```
 
-### Email 4 (Day +14) — Social proof + low-risk offer
+### Email 4 (Day +14) — Low-commitment proof step
 
-**Subject:** `pilot بريال واحد — 7 أيام بدون التزام`
+**Subject:** `Sprint إثبات الإيرادات — 7 أيام بـ 499 ريال`
 
 ```
 السلام عليكم [الاسم]،
 
 أعرف أن القرارات تحتاج وقت.
 
-لو تبغى تجرب Dealix قبل أي التزام:
-- Pilot بريال واحد × 7 أيام
-- أنا شخصياً أرد على 10-25 lead عندكم
-- تقرير يومي قصير
-- استرداد 100% لو ما أعجبك
+لو تبغى ترى نتيجة حقيقية قبل أي التزام أكبر:
+- Sprint إثبات الإيرادات: 7 أيام بـ 499 ريال
+- نحلّل pipeline شركتكم ونكتشف فرص الإيراد ونرتّبها بالأدلة
+- 5 مسودات تواصل عربية جاهزة لموافقتكم — لا يُرسل شيء بدون موافقة
+- Proof Pack موثّق يوم 7 + تقرير تنفيذي + خطة 30 يوم
 
-هل أحد من فريقكم مهتم يشوف كيف يشتغل؟
-20 دقيقة demo: https://calendly.com/sami-assiri11/dealix-demo
+وقبلها: تشخيص مجاني 15 دقيقة لتقييم الفرصة.
+📅 https://calendly.com/sami-assiri11/dealix-demo
 
 سامي
 
@@ -99,8 +100,8 @@ Dealix يسد هذي الفجوة بالرد خلال 45 ثانية.
 
 لو تغير الوضع خلال السنة، رد على هذه الرسالة وسأرجع في نفس اليوم.
 
-سؤال أخير: هل تعرف شركة سعودية B2B ترى تستفيد من AI sales rep بالعربي؟
-Referral commission 10% من MRR لـ 12 شهر.
+سؤال أخير: هل تعرف شركة سعودية B2B قد تستفيد من رادار عمليات إيرادات
+يكتشف فرصها بالأدلة؟ Referral commission 10% من MRR لـ 12 شهر.
 
 بالتوفيق،
 سامي
@@ -122,12 +123,13 @@ Referral commission 10% من MRR لـ 12 شهر.
 ```
 السلام عليكم [الاسم]،
 
-حساب سريع لوكالة في حجم [اسم الوكالة]:
+نموذج الشراكة لوكالة في حجم [اسم الوكالة]:
 
-5 عملاء × (500 ريال setup + 200 ريال MRR × 20%) = 5,000 ريال setup + 2,000 ريال MRR
-10 عملاء = 10,000 ريال setup + 4,000 ريال MRR دائم
+تقدّمون Dealix لعملائكم؛ كل عميل يبدأ بتشخيص مجاني ثم Sprint بـ 499 ريال،
+ويرقّى فقط بعد proof موثّق. حصة الوكالة عبر rev-share متفق عليه في اتفاقية
+الشراكة (راجع OFFER_LADDER_AND_PRICING.md — الخدمة 5).
 
-صفر tech work. صفر development. فقط positioning + client relationship.
+أي أرقام عائد تقديرية فقط — لا ضمانات. صفر تطوير من جهتكم.
 
 هل أقدر أشرح الـ partner flow في 20 دقيقة؟
 🤝 https://dealix.me/partners.html
@@ -149,9 +151,9 @@ Referral commission 10% من MRR لـ 12 شهر.
 إذا كنت تفكر في Dealix كخدمة جديدة لعملائكم، الـ onboarding بسيط:
 
 الأسبوع 1: تختار عميل مناسب (نساعدكم في التأهيل)
-الأسبوع 2: Setup + Arabic prompts + WhatsApp integration
-الأسبوع 3-4: Manual pilot — Dealix يرد، وكالتكم تراقب
-الشهر 2+: Automation كامل + MRR يبدأ
+الأسبوع 2: تشخيص مجاني للعميل + تجهيز السياق العربي
+الأسبوع 3-4: Sprint إثبات الإيرادات — مخرجات مُرتّبة بالأدلة، وكالتكم تراجع
+الشهر 2+: بعد proof موثّق، يُفتح مسار Managed Revenue Ops (بقيادة المؤسس)
 
 شاركت لك checklist الـ onboarding كامل في [رابط].
 
@@ -197,7 +199,7 @@ Referral commission 10% من MRR لـ 12 شهر.
 آخر رسالة.
 
 لو Dealix مو الوقت المناسب، تمام — لكن سؤال:
-هل تعرف وكالة ثانية في السعودية ممكن تستفيد من AI sales rep كمنتج يبيعونه؟
+هل تعرف وكالة ثانية في السعودية ممكن تستفيد من رادار عمليات إيرادات محكوم كخدمة تقدّمها لعملائها؟
 
 Referral commission 10% من MRR لـ 12 شهر لكل عميل يجي عبرك.
 
@@ -223,13 +225,13 @@ Referral commission 10% من MRR لـ 12 شهر لكل عميل يجي عبرك.
 
 فكرت في تكامل Dealix مع [اسم المنصة]:
 
-- التاجر في [المنصة] ينشئ Dealix account بضغطة واحدة (OAuth)
-- Dealix يسحب leads من [المنصة] تلقائياً
-- يرد بالعربي خلال 45 ثانية
-- ينشئ طلب جديد في [المنصة] عند قفل deal
+- الشركة على [المنصة] تربط بياناتها مع Dealix بموافقتها (OAuth)
+- Dealix يحلّل pipeline الشركة ويكتشف فرص الإيراد ويرتّبها بالأدلة
+- يُعدّ مسودات تواصل عربية جاهزة لموافقة الشركة — لا إرسال تلقائي
+- كل نتيجة مدعومة بإثبات يمكن مراجعته
 
-هذي طبقة مبيعات جاهزة بدون تطوير من جهتكم.
-Commission لكم: 30% من MRR كل تاجر.
+هذي طبقة عمليات إيرادات محكومة، تكامل اختياري بموافقة كل شركة.
+Commission مقترح: حسب اتفاقية الشراكة بعد proof packs موثقة.
 
 20 دقيقة نرسم التكامل على الورق؟
 📅 https://calendly.com/sami-assiri11/dealix-demo
@@ -247,7 +249,7 @@ Commission لكم: 30% من MRR كل تاجر.
 
 لست متأكداً إذا كان الوقت مناسب. اسمح لي بسؤال واحد:
 
-هل [المنصة] تفكر في إضافة AI-powered tools لتجاركم خلال 2026؟
+هل [المنصة] تفكر في إضافة أدوات عمليات إيرادات لتجاركم خلال 2026؟
 لو نعم، Dealix جاهز كـ pilot partner.
 لو لا، ممكن نؤجل الحوار حتى الوقت المناسب.
 
@@ -310,7 +312,7 @@ Dealix وصل لـ [X] عملاء في السعودية بعد [Y] أيام من
 4. **Opt-out in every email:** PDPL requirement
 5. **No attachments** in first 3 emails (spam trigger)
 6. **Send times:** Sunday-Wednesday 09:00-11:00 Saudi time (best open rates)
-7. **Max 50 emails/day** from single sender (avoid spam flagging)
+7. **Warm recipients only** — these sequences are for prospects who already engaged or were warm-introduced. No bulk sends, no purchased lists.
 8. **Track opens but not clicks** in first emails (builds trust)
 
 ---
@@ -329,4 +331,6 @@ When recipient opens / clicks / replies, update:
 
 ---
 
-*Tested email sequences from 15 years of B2B. Conversion rate expectation: 2-5% email-to-meeting in cold, 8-15% in warm.*
+> القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.
+
+*Email sequences for warm, founder-led nurture only. No guaranteed conversion rates — any figures are estimates, not facts.*

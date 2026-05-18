@@ -1,408 +1,262 @@
 # Dealix — LinkedIn Long-form Thought Leadership
 
-**3 long-form posts (800-1,200 words each).** Post one per week for 3 weeks to establish authority. Each drives inbound.
+**3 long-form posts (800-1,200 words each).** Drafts for the founder to publish manually — one per week. Each is doctrine-true and drives inbound. No auto-publish.
+
+> **Doctrine.** Dealix is a governed revenue-operations radar: it finds and scores revenue opportunities with evidence and drafts approval-ready Arabic outreach — nothing sends without explicit founder approval, and every result is Proof-backed. Entry = free Diagnostic, then the 499 SAR Revenue Intelligence Sprint. No guaranteed outcomes; any figures are estimates, not facts.
 
 ---
 
-## Post 1 — "لماذا 50% من leads B2B في السعودية تموت قبل ما يوصلون للمبيعات"
+## Post 1 — "فرص الإيراد التي لا تراها شركتك"
 
 **Best day to publish:** Tuesday 09:00 Saudi time
-**Expected result:** 3-5K views, 20-50 reactions, 3-8 DMs/comments leading to demos
+**Audience:** Saudi B2B founders, sales leaders
 
 ---
 
-في آخر 30 يوماً، جلست مع 15 founder سعودي B2B ومع 6 مديري مبيعات. السؤال اللي طرحته على الكل:
+في آخر 30 يوماً، جلست مع عدد من مؤسسي شركات B2B السعودية. سؤال واحد كنت أطرحه على الجميع:
 
-"كم lead شهرياً تستقبلون؟"
+"كيف تعرف اليوم أين فرص الإيراد الحقيقية داخل شركتك؟"
 
-الإجابات: 100، 200، 500 — حسب الحجم.
+الإجابة، في كل مرة تقريباً، كانت نسخة من: "بالحدس. بالخبرة. بمتابعة من نتذكّره."
 
-"كم % منهم يتحول لعميل؟"
+ثم السؤال الثاني: "لو طلب منك مجلس الإدارة إثبات ذلك بالأدلة — تستطيع؟"
 
-الإجابات: 2-5%.
-
-"متى ترون أن lead برد وصعب تسترجعه؟"
-
-كل واحد قال نفس الشي: "بعد ساعتين على الأكثر."
-
-"كم متوسط وقت الرد عندكم فعلياً؟"
-
-الصمت. ثم: "4 ساعات تقريباً... أحياناً أكثر."
+الصمت.
 
 ---
 
-## الرياضيات الصادمة
+## المشكلة ليست نقص الفرص
 
-شركة B2B سعودية بـ 200 lead شهرياً:
-- 5% close rate × 1,500 ريال ACV = 15,000 ريال MRR كامل
-- لكن 50% من الـ leads تموت بسبب تأخر الرد
-- فعلياً = 7,500 ريال MRR
+معظم شركات B2B السعودية لديها فرص إيراد حقيقية أكثر مما تظن. المشكلة أنها **غير مرئية**: مدفونة في رسائل واتساب متفرقة، في صناديق بريد، في ملفات Excel قديمة، وفي صفقات لم تُتابَع لأن أحداً لم يتذكّرها.
 
-**الفرق = 7,500 ريال شهرياً × 12 = 90,000 ريال سنوياً.**
-
-لكل شركة. كل سنة. فقط بسبب وقت الرد.
+الفرصة لا تموت لأن المنتج ضعيف. تموت لأنها لم تُرَ في وقتها، ولم تُرتَّب بالأولوية الصحيحة، ولم يكن هناك دليل يدفع المؤسس لمتابعتها قبل غيرها.
 
 ---
 
-## السبب الحقيقي
+## لماذا الأدوات العامة لا تحل هذا
 
-ليس كسل. ليس نقص موظفين. ليس ضعف أدوات.
+CRM يخزّن البيانات — لا يكتشف الفرص. لوحات المعلومات تعرض أرقاماً — لا تخبرك أيها يستحق تحرّكاً اليوم. والأدوات العامة (HubSpot، Zoho) مصممة لسياق ولغة مختلفين، وتترك المؤسس السعودي يقرأ بين السطور بنفسه.
 
-الحقيقة: **الرد على lead ليس وظيفة أحد بشكل واضح.**
-- التسويق يقول: "نحن نجلب leads، البيع مسؤول عنها"
-- المبيعات يقول: "Leads غير مؤهلة، ما وقتنا لنفلتر"
-- Support يقول: "هذي مبيعات، مو شغلنا"
-
-النتيجة: lead يدخل inbox مشترك، كل واحد يفترض الثاني سيرد، ولا أحد يرد.
-
-بعد 4 ساعات، العميل قد راسل المنافس.
+ما ينقص ليس مساحة تخزين أكثر. ما ينقص **رادار**: شيء يقرأ سياق شركتك، يكتشف أين الإيراد الحقيقي، ويرتّبه بالأدلة — لا بالحدس.
 
 ---
 
-## كيف حلتها شركات أمريكية
+## ما الذي يجعل الرادار "محكوماً"
 
-Drift. Intercom. HubSpot Chat. كلها حلت الجزء التقني:
-- رد آلي في ثواني
-- Qualification automation
-- Routing للـ agent المناسب
+هذه النقطة جوهرية، وهي ما بنيت Dealix حولها:
 
-لكن شي واحد لم يحلوه: **الرد بالعربي السعودي الطبيعي.**
+**1. كل نتيجة مدعومة بإثبات.** لا توصية بدون دليل يمكنك مراجعته — من بياناتك أنت، لا من افتراضات.
 
-جرّب Drift بالعربي. جرّب Intercom. جرّب ChatGPT حتى. 
-كلها تكتب "حضرتك" و"فخامتك" و"تعطفكم". 
-العميل السعودي يشوف الرد → يحس إنه آلي → يفقد الثقة → ينسحب.
+**2. لا يُرسل شيء بدون موافقتك.** Dealix يُعدّ مسودات تواصل عربية جاهزة، لكنها تبقى مسودات تنتظر مراجعتك الصريحة. أنت تملك كل قرار إرسال. المنصة لا تتواصل مع أحد نيابةً عنك.
 
----
+**3. تبدأ صغيراً، وترقّى بإثبات.** لا التزام كبير قبل نتيجة موثقة.
 
-## الحل الواقعي لعام 2026
-
-AI sales rep مبني خصيصاً للسوق السعودي:
-- يرد خلال 45 ثانية
-- يتكلم خليجي طبيعي (مش MSA، مش ترجمة)
-- يسأل أسئلة التأهيل الصحيحة (BANT بطريقة لا يشعر بها العميل)
-- يحجز demo أو يسلم لـ SDR بشري
-- كل شي يدخل CRM تلقائياً
-
-هذا بالضبط ما بنيت عليه Dealix.
+الحوكمة ليست قيداً — هي ما يجعل النتيجة قابلة للدفاع أمام مجلس إدارتك.
 
 ---
 
-## لماذا Dealix يعمل في السعودية حيث فشل Drift
+## كيف يبدأ ذلك عملياً
 
-3 أسباب:
+الخطوة الأولى تشخيص مجاني خلال 15 دقيقة: تقرير أولويات لشركتك تحديداً، يحدّد أين الفجوات في عمليات النمو.
 
-**1. Prompts مخصصة للخليجي:**
-ما نستخدم LLM generic. نضبط على محادثات سعودية حقيقية. المصطلحات، الأسلوب، حتى الإيموجي المناسبة.
+الخطوة التالية — لمن يريد نتيجة حقيقية بسرعة — هي **Sprint إثبات الإيرادات: 7 أيام بـ 499 ريال**. خلاله نحلّل pipeline شركتك، نكتشف فرص الإيراد ونرتّبها بالأدلة، ونُعدّ مسودات تواصل عربية جاهزة لموافقتك، وتستلم Proof Pack موثّقاً يوم 7 مع تقرير تنفيذي وخطة 30 يوم.
 
-**2. تركيب على الأدوات الموجودة:**
-HubSpot؟ يشتغل فوقه. Salesforce؟ تكامل OAuth. Zoho؟ webhooks. WhatsApp Business API؟ integration مباشر. لا نطلب منك تغيير أدواتك.
-
-**3. Manual-first delivery:**
-أول 30 يوم مع كل عميل، أنا شخصياً (Sami) أراجع كل رد قبل الإرسال. AI يقترح، إنسان يوافق. بعدها تدريجياً autopilot.
-
----
-
-## العرض
-
-للشركات السعودية B2B المستعدة تجربة Dealix:
-
-- **Pilot بريال واحد × 7 أيام** — استرداد 100%
-- Dealix يرد على 10-25 lead حقيقي
-- تقرير يومي قصير
-- بعد 7 أيام نحكي. Starter 999/شهر أو نوقف. بدون التزام.
-
-محدود: 5 شركات في أبريل فقط (بسبب الـ manual delivery).
+كل ما بعد ذلك في سلّم الخدمات يُفتح فقط بعد نتيجة موثقة.
 
 ---
 
 ## إذا قرأت إلى هنا
 
-فكّر في سؤال واحد: **كم من الفلوس اللي تنفقها على إعلانات + content + SEO فعلياً يتحول لفرص مبيعات محجوزة؟**
+اسأل نفسك سؤالاً واحداً: **هل تستطيع، اليوم، أن تثبت بالأدلة أين الإيراد الحقيقي في شركتك؟**
 
-إذا الإجابة أقل من 80%، فأنت تدفع مرتين: مرة للجلب، ومرة للفقد.
+إذا كانت الإجابة "لا"، فأنت لا تفتقر إلى الفرص — تفتقر إلى رؤيتها.
 
-Dealix يسد الثانية.
-
-**للـ pilot أو demo 20 دقيقة:**
+ابدأ بالتشخيص المجاني:
 🌐 dealix.me
 📅 calendly.com/sami-assiri11/dealix-demo
 
 سامي العسيري — مؤسس Dealix
-(ليس شركة تقنية أمريكية — شركة سعودية، عربية أولاً، تفهم سوقكم.)
+رادار عمليات إيرادات محكوم. عربي أولاً، سعودي السياق.
 
-#SaudiSaaS #B2B #AI #ArabicAI #BuildInPublic #GTM
+> القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.
+
+#SaudiB2B #RevenueOperations #ArabicFirst #GTM
 
 ---
 
+## Post 1 — EN parallel: "The revenue opportunities your company can't see"
+
+Over the last 30 days I sat with a number of Saudi B2B founders. One question I asked everyone: "How do you know, today, where the real revenue opportunities inside your company are?" The answer, almost every time, was a version of "instinct, experience, following up on whoever we remember."
+
+The problem is not a shortage of opportunities. Most Saudi B2B companies have more real revenue opportunities than they think — they are simply **invisible**: buried in scattered WhatsApp threads, inboxes, old spreadsheets, and deals nobody followed up because nobody remembered.
+
+A CRM stores data; it does not surface opportunities. Dashboards show numbers; they do not tell you which one deserves a move today. What is missing is not more storage — it is a **radar**: something that reads your company's context, finds where the real revenue is, and scores it with evidence rather than instinct.
+
+What makes the radar *governed* is the core: every result is Proof-backed, nothing sends without your explicit approval, and you start small and unlock higher rungs only on documented results. Governance is not a constraint — it is what makes the result defensible to your board.
+
+It starts with a free 15-minute Diagnostic, then a 7-day, 499 SAR Revenue Intelligence Sprint that produces a documented Proof Pack. Ask yourself: can you prove, today, with evidence, where the real revenue in your company is? If not, you do not lack opportunities — you lack visibility.
+
+> Estimated value is not Verified value — القيمة التقديرية ليست قيمة مُتحقَّقة.
+
 ---
 
-## Post 2 — "لماذا يفشل معظم Arabic AI في الشركات (وكيف نبنيه بشكل صحيح)"
+## Post 2 — "لماذا يفشل الـ AI العربي في الشركات — وما الذي يصلح بدلاً عنه"
 
 **Best day:** Sunday 10:00 Saudi time
-**Target audience:** technical founders, CTOs, product leads
+**Audience:** technical founders, product leads
 
 ---
 
-في 2023 انتشرت موجة "AI بالعربي". 2024 ظهرت ChatGPT Arabic. 2025 كل شركة SaaS أضافت Arabic.
+موجة "الذكاء الاصطناعي بالعربي" مرّت على كل شركة B2B سعودية تقريباً. ومع ذلك، الجواب الأكثر شيوعاً حين أتكلم مع المؤسسين هو: "جربنا. لم يناسب سياقنا."
 
-لكن في 2026، وأنا أتكلم مع شركات سعودية، الجواب الشائع:
-"جربنا. الردود رسمية جداً. ما تناسب عملاءنا."
-
-ليش؟
+السبب الجذري ليس اللغة وحدها. السبب أن معظم الأدوات تقدّم **مخرجات بلا حوكمة وبلا إثبات**: نص يبدو جيداً، لكن لا تعرف من أين جاء، ولا تثق به بما يكفي لتبني عليه قراراً.
 
 ---
 
-## المشكلة الجذرية
+## الفرق بين مخرَج تستخدمه ومخرَج تتجاهله
 
-معظم LLMs تدربت على نصوص عربية من:
-- الصحف (MSA رسمية)
-- كتب أكاديمية (MSA رسمية)
-- ترجمات من الإنجليزية (غير طبيعية)
-- محتوى ديني/تاريخي (قديم)
+المؤسس لا يحتاج نصاً عربياً جميلاً. يحتاج إجابة عن سؤال: **هل أتحرّك بناءً على هذا — ولماذا؟**
 
-النتيجة: موديل يعرف يكتب مقال جريدة بامتياز، لكن لا يعرف يكتب رسالة واتساب طبيعية.
+المخرَج الذي يُستخدم له ثلاث صفات:
+- **مبني على بياناتك أنت** — لا على افتراضات عامة
+- **مدعوم بإثبات** — تستطيع مراجعة لماذا رُتّبت هذه الفرصة قبل غيرها
+- **تحت سيطرتك** — مسودة تنتظر موافقتك، لا رسالة تُرسل بدون علمك
 
----
-
-## تجربة حقيقية
-
-أرسلت 3 LLMs شائعة نفس السؤال:
-> "عميل سعودي يسأل: كم سعر الباقة؟"
-
-GPT-4:
-> "أشكركم على استفساركم الكريم. تتراوح أسعار باقاتنا..."
-
-Claude:
-> "سعدنا بتواصلكم. باقاتنا تبدأ من..."
-
-Gemini:
-> "مرحباً بحضرتكم، أسعار باقاتنا كالتالي..."
-
-كل الردود = MSA رسمية. لا أحد من الشركات السعودية يرد عملاءه بهذه الطريقة.
+بدون هذه الثلاث، أي مخرَج "ذكي" يبقى حبراً جميلاً تتجاهله.
 
 ---
 
-## الرد الطبيعي
+## كيف نبني هذا في Dealix — ثلاثة قرارات
 
-السعودي الطبيعي يرد:
-> "هلا [الاسم]، الأسعار تبدأ من 999. يعتمد على عدد leads شهرياً. أبي أفهم شركتكم أفضل — 20 دقيقة demo؟"
+**1. السياق السعودي أولاً.** Dealix مصمم للعربية وللسياق السعودي من اليوم الأول — لا ترجمة لاحقة. المسودات تُكتب بأسلوب عربي طبيعي يناسب علاقات B2B الحقيقية.
 
-قصير. مباشر. بدون "حضرتك". يسأل سؤال للتأهيل. يحجز demo.
+**2. الإثبات شرط، لا ميزة إضافية.** كل فرصة يرتّبها الرادار تأتي بدليل من بياناتك. لا توصية بلا أساس قابل للمراجعة. حين تكون البيانات غير كافية، يقول النظام ذلك صراحةً بدل تخمين.
 
-**هذا الفرق بين AI يباع وAI لا يباع.**
-
----
-
-## كيف نحل هذا في Dealix
-
-3 قرارات تقنية:
-
-**1. Prompts هندسية (prompt engineering):**
-نضيف في كل system prompt:
-- "لا تستخدم: حضرتك، تعطفكم، فخامتك، بارك الله فيكم"
-- "استخدم: هلا، مرحباً، سامي، متاحين، نقدر"
-- 20+ أمثلة من محادثات سعودية حقيقية
-
-**2. Fine-tuning على corpus محلي:**
-جمعنا (بإذن) محادثات B2B سعودية حقيقية — WhatsApp, email — من 10+ شركات.
-Fine-tune على هذا الcorpus.
-
-**3. Human-in-loop للشهر الأول:**
-أول 30 يوم مع كل عميل، موظفنا (أو الAI مع إشراف) يراجع كل رد قبل الإرسال.
-النتيجة: الـ corpus يتحسن كل يوم مع تفاعل حقيقي.
-
----
-
-## النتيجة بالأرقام
-
-على 3 شركات pilot في مارس 2026:
-- Response time: 4 ساعات → 45 ثانية
-- Qualified leads: 15% → 35%
-- Demos booked: 2/شهر → 8/شهر
-- Customer feedback: "أحسن من الموظفين" (من واحد منهم)
-
-هذا ليس ادعاء تسويقي. هذه بيانات من 3 شركات حقيقية ستُنشر كـ case studies.
+**3. الإنسان يوافق دائماً.** كل مسودة تواصل تبقى مسودة حتى تراجعها وتوافق عليها. لا إرسال تلقائي، لا تواصل نيابةً عن أحد. هذا ليس قيداً مؤقتاً — هو تصميم دائم.
 
 ---
 
 ## رسالة للمؤسسين التقنيين
 
-إذا تبني شركة AI عربية:
+إذا كنت تبني منتج AI للسوق العربي:
 
-**لا تعتمد على GPT-4 أو Claude أو Gemini كما هم.**
-هم أدوات — ليسوا منتج.
+**النموذج اللغوي أداة — ليس منتجاً.** المنتج هو ما تبنيه حوله: الحوكمة، الإثبات، طبقة الموافقة، والسياق المحلي.
 
-**الـ moat هو الـ corpus السعودي الخاص بك.**
-كلما زاد عدد المحادثات اللي تراها منتجك → كلما تحسّن.
+**الإثبات هو ما يجعل المخرَج قابلاً للبيع.** عميل B2B لن يبني قراراً على نص لا يعرف مصدره.
 
-**Manual-first يحمي سمعتك.**
-أول 30 يوم مع كل عميل: human approves. بعدها autopilot تدريجياً.
+**الموافقة البشرية تحمي سمعتك وسمعة عميلك.** أي منتج يرسل نيابةً عن العميل بلا موافقة صريحة يخاطر بعلاقاته.
 
 ---
 
-## ما نبحث عنه
+## للتواصل
 
-Dealix يبحث عن:
-- مهندسي prompt engineering متحمسين للعربي
-- شركات SaaS سعودية مستعدة pilot
-- وكالات تسويق تبي تبيع AI sales كخدمة جديدة
-- مستثمرين MENA مهتمين بـ AI-first Saudi
-
-**للتواصل:** sami.assiri11@gmail.com · dealix.me · calendly.com/sami-assiri11/dealix-demo
+ابدأ بالتشخيص المجاني — وشاهد كيف تبدو فرصة مُرتّبة بالأدلة:
+🌐 dealix.me · 📅 calendly.com/sami-assiri11/dealix-demo
 
 سامي العسيري — مؤسس Dealix
 
-#ArabicAI #SaudiSaaS #PromptEngineering #GTM #BuildInPublic
+> القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.
+
+#ArabicAI #SaudiB2B #RevenueOperations #GTM
 
 ---
 
+## Post 2 — EN parallel: "Why Arabic AI fails inside companies — and what works instead"
+
+The "Arabic AI" wave has reached nearly every Saudi B2B company. Yet the most common answer founders give me is "we tried it; it did not fit our context." The root cause is not language alone. It is that most tools deliver **output with no governance and no evidence** — text that looks good, but you do not know where it came from and you do not trust it enough to act on it.
+
+A founder does not need beautiful Arabic text. They need an answer to one question: do I act on this, and why? Output that gets used has three traits — it is built on *your* data, it is backed by evidence you can review, and it stays under your control as a draft awaiting your approval. Without those three, any "smart" output is ink you ignore.
+
+Three design decisions in Dealix: Saudi context first (designed for it, not translated into it); evidence as a requirement, not a feature (every scored opportunity carries a reviewable proof, and when data is insufficient the system says so); and human approval always (every outreach draft stays a draft until you review and approve it — no auto-send, no outreach on anyone's behalf).
+
+For technical founders: the language model is a tool, not a product. The product is what you build around it — governance, proof, the approval layer, local context. Evidence is what makes output sellable. Human approval protects your reputation and your customer's.
+
+> Estimated value is not Verified value — القيمة التقديرية ليست قيمة مُتحقَّقة.
+
 ---
 
-## Post 3 — "إلى الوكالات السعودية: AI sales كخدمة جديدة = retainer ثالث"
+## Post 3 — "إلى الوكالات السعودية: طبقة عمليات إيرادات تكمّل خدماتكم"
 
 **Best day:** Monday 11:00 Saudi time
-**Target audience:** agency owners, marketing consultants
+**Audience:** agency owners, marketing consultants
 
 ---
 
-في آخر شهر، تكلمت مع 12 صاحب وكالة تسويق سعودية. السؤال:
+تكلمت مؤخراً مع عدد من أصحاب الوكالات السعودية. معظمهم يبيع خدمتين على شكل retainer — محتوى وإعلانات غالباً — ويجد صعوبة في إضافة خدمة ثالثة.
 
-"عندك كم خدمة تبيعها على شكل retainer؟"
-
-الأكثر: 2 خدمات (content + ads غالباً).
-عدد قليل: 3 (content + ads + CRM).
-نادر: 4.
-
-لماذا 2 فقط؟
+السبب معروف: كل خدمة جديدة تعني توظيفاً، وأداة جديدة، ومسؤولية جديدة، ومخاطرة فشل في أول أشهرها.
 
 ---
 
-## الحقيقة
+## طريقة مختلفة لإضافة قيمة لعملائك
 
-كل إضافة خدمة جديدة تعني:
-- توظيف شخص جديد
-- تعلم أداة جديدة
-- مسؤولية جديدة
-- معدل failure أعلى في أول 6 أشهر
+ماذا لو كانت الإضافة الجديدة:
+- لا تحتاج توظيفاً ولا تطويراً
+- تستخدم علاقتك القائمة مع عملائك
+- تقدّم لعميلك نتيجة قابلة للإثبات — لا وعداً
 
-النتيجة: الوكالة تعلق عند 3 خدمات كحد أقصى. النمو بطيء.
-
----
-
-## الطريقة المختلفة
-
-ماذا لو الخدمة الجديدة:
-- لا تحتاج توظيف
-- لا تحتاج تطوير
-- تستخدم نفس فريقك الحالي
-- تجيب retainer شهري + setup fee
-
-هذا بالضبط ما يقدمه Dealix كـ agency partnership.
+هذا ما يتيحه نموذج شراكة الوكالات في Dealix: تقدّم لعملائك **رادار عمليات إيرادات محكوم** يكتشف فرص إيرادهم ويرتّبها بالأدلة، ويُعدّ مسودات تواصل عربية جاهزة لموافقتهم.
 
 ---
 
-## كيف يعمل عملياً
+## كيف تعمل الشراكة عملياً
 
-**الوكالة:**
-- تبيع الخدمة لعميلها (من عملائك الحاليين أو الجدد)
-- Setup fee 3,000-15,000 ريال (كلها لك)
-- تأخذ 20-30% من MRR الشهري (دائم)
+**العميل** يبدأ بتشخيص مجاني، ثم Sprint إثبات الإيرادات بـ 499 ريال — ويرقّى فقط بعد نتيجة موثقة.
 
-**Dealix:**
-- يقدم المنتج الفعلي (AI sales rep)
-- يدرّب فريقكم على onboarding العميل
-- يدعمكم في أول 2 عملاء (معي شخصياً)
-- يدير الـ infrastructure التقنية
+**الوكالة** تقدّم Dealix لعملائها وتحصل على حصتها عبر rev-share متفق عليه في اتفاقية الشراكة.
 
-**العميل:**
-- يحصل على AI response layer فوق CRM موجود
-- يدفع MRR مثل أي SaaS
+**Dealix** يقدّم المنتج، يدرّب فريق الوكالة، ولا يتواصل مع عملاء الوكالة مباشرةً بدون إذن.
+
+مسار الشراكة الكامل يُفتح بعد إتمام proof packs موثقة. التفاصيل والأسعار في `OFFER_LADDER_AND_PRICING.md` — لا أرقام مخترعة، ولا عوائد مضمونة.
 
 ---
 
-## الأرقام الحقيقية
+## لماذا هذا يناسب الوكالات
 
-وكالة بـ 10 عملاء B2B حاليين:
+**1. عملاؤك يحتاجونها فعلاً.** كل مؤسس B2B تقريباً يعاني من فرص إيراد غير مرئية. الوكالة تسمع نفس الشكوى.
 
-| Scenario | Setup | MRR |
-|----------|-------|-----|
-| 3 عملاء يشترون Starter (999) | 9,000 | 3 × 999 × 25% = 750 SAR/mo |
-| 5 عملاء يشترون Starter | 15,000 | 1,250 SAR/mo |
-| 7 عملاء Growth (2,999) | 45,000 | 5,250 SAR/mo |
-| 10 عملاء mix | 55,000 | 8,000 SAR/mo |
+**2. الثقة موجودة.** عميلك يدفع لك شهرياً ويثق بك. تقديم طبقة مُثبتة بالأدلة يبني على تلك الثقة.
 
-**بدون أي زيادة في تكاليف وكالتك.**
-
----
-
-## لماذا هذا يعمل
-
-3 أسباب:
-
-**1. العميل يحتاجها:**
-كل عميل B2B يتكلم معي يقول "مشكلة الرد على leads."
-الوكالات تسمع نفس الشيء.
-
-**2. الوكالة عندها ثقة:**
-العميل يدفع لك شهرياً على content/ads. يثق فيك.
-Dealix layer جديد = مبيعة سهلة (trust-based).
-
-**3. Dealix لا ينافسك:**
-لست منتج ينافس خدماتك. أنا طبقة تكمّل خدماتك.
-ما نتواصل مع عملائك مباشرة بدون إذنك.
+**3. Dealix لا ينافسك.** هو طبقة تكمّل خدماتك — ليس بديلاً عنها. ولا نتواصل مع عملائك بدون إذنك.
 
 ---
 
 ## مخاوف شائعة
 
-**"لماذا أبيع Dealix بدل ما أبني نفس الشي؟"**
-بناء Arabic AI SDR يأخذ 6-12 شهر + team + $200K+.
-Dealix جاهز — ابدأ بيعه الأسبوع القادم.
+**"لماذا أقدّم Dealix بدل أن أبنيه؟"** بناء منتج عمليات إيرادات محكوم وعربي يستغرق أشهراً وفريقاً. Dealix جاهز للتقديم لعملائك.
 
-**"وماذا لو Dealix توقف أو فشل؟"**
-1. Dealix مستقل مالياً عبر customers المدفوعين.
-2. كل setup fee اللي أخذته منك = لك 100%.
-3. أول عميل نسويه معاً — أنا شخصياً أضمن نجاحه.
-
-**"هل في حصرية؟"**
-Scale tier = حصرية قطاع/جغرافيا. Starter/Growth = غير حصري.
+**"هل توجد ضمانات عائد؟"** لا. لا نَعِد بأرقام. ما نَعِد به: مخرجات مُثبتة بأدلة، وحوكمة كاملة على كل خطوة.
 
 ---
 
-## أول 5 وكالات شريك — حوافز خاصة
+## للتواصل
 
-حوافز أول 5 وكالات نختارها في أبريل 2026:
-- ✅ Setup fee 50% لأول عميل (نتقاسم المخاطرة)
-- ✅ Commission 30% (بدل 25%) لأول 6 أشهر
-- ✅ Dedicated onboarding معي (45 دقيقة Zoom)
-- ✅ Case study مشتركة تُنشر على dealix.me
-- ✅ Mention رسمي كـ founding partner
-
-5 مقاعد فقط. أول من يقدم.
-
----
-
-## للتقديم
-
-رسالة DM مباشرة أو:
-🤝 https://dealix.me/partners.html
-📅 https://calendly.com/sami-assiri11/dealix-demo
+🤝 dealix.me/partners.html · 📅 calendly.com/sami-assiri11/dealix-demo
 
 سامي العسيري — مؤسس Dealix
-#SaudiAgencies #AISales #PartnerProgram #SaudiSaaS
+
+> القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.
+
+#SaudiAgencies #RevenueOperations #PartnerProgram
+
+---
+
+## Post 3 — EN parallel: "To Saudi agencies: a revenue-operations layer that complements your services"
+
+Most agency owners I speak with sell two retainer services and struggle to add a third — because every new service means hiring, a new tool, new risk. A different approach: an addition that needs no hiring or development, builds on your existing client relationship, and gives your client an evidence-backed result rather than a promise.
+
+That is the Dealix agency partnership: you offer your clients a governed revenue-operations radar that finds and scores their revenue opportunities with evidence and drafts approval-ready Arabic outreach. The client starts with a free Diagnostic, then the 499 SAR Sprint, and upgrades only on documented results. The agency earns through an agreed rev-share; Dealix provides the product, trains your team, and never contacts your clients without permission. The full partner track unlocks after documented proof packs — details and prices live in `OFFER_LADDER_AND_PRICING.md`. No invented numbers, no guaranteed returns.
+
+> Estimated value is not Verified value — القيمة التقديرية ليست قيمة مُتحقَّقة.
 
 ---
 
 ## Publishing tips for all 3 posts
 
-1. **Post between 09:00-11:00 Saudi time** for max reach
-2. **Tag 3-5 relevant people** (founders/agency owners you know) in comments
-3. **Pin one comment** with "للتواصل: dealix.me + Calendly link"
-4. **Engage with every comment** within 1 hour for 2-3 days
-5. **Cross-post as X thread** (break into 15-20 tweets)
-6. **Convert to blog post** on dealix.me/blog (SEO — 6 months from now pays off)
-7. **Track:** views, reactions, comments, DMs, demos booked from this post
-
-Expected per post: 3-5K views, 30-80 reactions, 5-10 high-quality DMs.
-
-After 3 posts: one should go viral enough that strangers reach out without any outbound. That's when inbound engine activates.
+1. **Post between 09:00-11:00 Saudi time** for reach.
+2. **Founder publishes manually** — no scheduling tool auto-posts on the company's behalf.
+3. **Pin one comment** with "للتواصل: dealix.me + Calendly".
+4. **Engage with every comment** within a few hours.
+5. **Each post has an AR section and a matching EN section** — keep them balanced when adapting.
+6. **No metric stated as fact.** If you cite a number, label it an estimate or a case-safe pattern.
+7. **Track:** views, reactions, comments, Diagnostics booked — for the founder's own log, not for public claims.

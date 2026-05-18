@@ -1,221 +1,193 @@
-# Dealix — Case Study Template
+# Dealix — Case Study Template — قالب دراسة الحالة
 
-**Fill this within 48 hours of first pilot success. Publish within 7 days. Every new customer after = publish theirs too.**
+**Fill this within 48 hours of the first paid Revenue Intelligence Sprint completing. Publish only after written customer approval.**
 
-The #1 sales asset is a real customer story. One real case study = worth 100 cold DMs.
+A real, evidence-backed customer story is the strongest sales asset. This template is doctrine-true: it documents what the Sprint produced — Proof-backed — not promised outcomes.
+
+> **Rules baked into this template.** No fabricated customers — if no customer is named, label the case "Hypothetical / case-safe template". No PII (email, phone, national ID, real names) — use anonymized labels. No guaranteed outcomes — describe evidenced opportunities, never "guaranteed sales". No revenue figures unless the customer explicitly approves, and always labelled estimated.
 
 ---
 
 ## Pre-flight checklist (before writing)
 
-- [ ] Customer pilot completed (7+ days of usage)
-- [ ] Customer gave verbal permission to use their story
-- [ ] At least 3 metrics captured (response time, leads handled, demos booked)
-- [ ] At least 1 quote from the customer (voice message or text)
-- [ ] Customer's logo + permission to use it (email confirmation)
-- [ ] Specific before/after numbers
+- [ ] Revenue Intelligence Sprint completed (7-day deliverable shipped)
+- [ ] Customer gave **written** permission to use their story
+- [ ] Proof Pack from the Sprint is documented and reviewable
+- [ ] At least 1 direct quote from the customer (text or voice)
+- [ ] Customer confirmed which details are publishable and which are not
+- [ ] Anonymization decided: named case (with logo permission) OR anonymized labels
 
 ---
 
-## Case Study — Template
+## Case Study — Template — القالب
 
-## [Company Name] cut response time from [X hours] to [Y seconds] with Dealix
+# [Company / anonymized label] — how a 7-day Revenue Intelligence Sprint surfaced evidenced opportunities
 
-*[Subtitle: specific outcome — "Booked 12 demos in 7 days" or "Closed 3 new customers in first month"]*
+# [الشركة / تسمية مجهّلة] — كيف كشف Sprint إثبات الإيرادات فرصاً مُثبتة بالأدلة في 7 أيام
 
----
-
-### The Company
-
-**Name:** [Name]
-**Sector:** [Saudi SaaS / F&B / Proptech / ...]
-**Size:** [X employees]
-**Location:** [Riyadh / Jeddah / Dammam / etc.]
-**Website:** [URL]
-
-[One paragraph about what they do, in simple language.]
+*[Subtitle / عنوان فرعي: a specific, evidence-backed outcome — e.g., "N revenue opportunities surfaced and prioritized with evidence" — never a guaranteed sales number]*
 
 ---
 
-### The Challenge
+### The Company — الشركة
 
-[Write 2-3 sentences describing the specific pain point. Avoid generic "we needed to grow sales." Get specific: which lead source? How many leads? What was bleeding?]
+**Label:** [Anonymized label, e.g., "Riyadh B2B services firm" / "وكالة تسويق B2B في جدة"]
+**Sector — القطاع:** [Saudi B2B services / agency / consulting / ...]
+**Size — الحجم:** [5–50 employees band]
+**Location — الموقع:** [Riyadh / Jeddah / Eastern Province]
 
-**Key numbers before Dealix:**
-- Monthly leads: [X]
-- Average response time: [Y hours]
-- Demo booking rate: [%]
-- Lead-to-customer conversion: [%]
-
----
-
-### The Solution
-
-[2-3 sentences: what specifically Dealix did for them. Which channels? What was configured? Manual vs automated?]
-
-**Pilot scope:**
-- Duration: [7 days / X weeks]
-- Leads handled: [X]
-- Channels: [WhatsApp / Email / Web chat / LinkedIn]
-- Integration: [HubSpot / Salesforce / Calendly / none]
+**EN —** [One paragraph: what they do, in plain language. No PII.]
+**AR —** [فقرة واحدة: ماذا تعمل الشركة، بلغة بسيطة. بدون أي معلومة تعريفية.]
 
 ---
 
-### The Results
+### The Challenge — العائق
 
-**After Dealix (7 days):**
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| Avg response time | [X] | [Y] | [Δ%] |
-| Leads qualified | [X] | [Y] | [Δ%] |
-| Demos booked | [X] | [Y] | [Δ%] |
-| Arabic conversations/day | [X] | [Y] | [Δ%] |
-| CSAT (customer satisfaction) | [X/10] | [Y/10] | [Δ] |
+**EN —** [2-3 sentences on the specific pain. Be concrete: scattered WhatsApp/email data? No way to prioritize opportunities? Couldn't prove where revenue was to leadership? Avoid generic "needed to grow sales".]
 
-**Revenue impact (extrapolated):**
-- Recovered leads: [X per month]
-- Estimated new revenue: [Y SAR/month]
-- ROI: [pilot cost vs. recovered revenue]
+**AR —** [2-3 جمل عن العائق المحدد: بيانات متفرقة على واتساب وبريد؟ لا ترتيب للفرص بالأولوية؟ تعذّر إثبات أين الإيراد لمجلس الإدارة؟]
 
 ---
 
-### In Their Words
+### The Sprint — Sprint إثبات الإيرادات
 
-> "[Direct quote from the customer — 1-3 sentences. Arabic preferred for Saudi audience, with English translation if needed]"
+**EN —** What the 7-day Revenue Intelligence Sprint covered (governed, founder-assisted delivery):
+- pipeline data analyzed (CRM export or Excel — no scraping)
+- revenue opportunities discovered and scored with evidence
+- approval-ready Arabic outreach drafts prepared — nothing sent without the customer's explicit approval
+- Proof Pack documented on day 7 + executive report + 30-day plan
 
-— **[Customer name, Title]**, [Company]
-
-[Optional: photo of the customer with permission, or logo]
-
----
-
-### What Dealix Did Differently
-
-3 specific things that made this work:
-
-1. **[Differentiator 1]** — e.g., "Arabic Khaliji tone customized for [Company]'s brand voice"
-2. **[Differentiator 2]** — e.g., "Response time under 45 seconds on WhatsApp, 24/7"
-3. **[Differentiator 3]** — e.g., "Qualified leads only — sales team didn't waste time on tire-kickers"
+**AR —** ما غطّاه Sprint إثبات الإيرادات (تسليم محكوم بقيادة المؤسس):
+- تحليل بيانات pipeline (تصدير CRM أو Excel — لا استخراج بيانات)
+- اكتشاف فرص الإيراد وترتيبها بالأدلة
+- إعداد مسودات تواصل عربية جاهزة للموافقة — لا يُرسل شيء بدون موافقة العميل الصريحة
+- Proof Pack موثّق يوم 7 + تقرير تنفيذي + خطة 30 يوم
 
 ---
 
-### The Path Forward
+### The Proof — الإثبات
 
-[1-2 sentences: what's next for the customer?]
+Document only what the Proof Pack actually evidences. Every row must be backed by a reviewable artifact.
 
-**Next steps:**
-- [e.g., "Upgrading from Pilot to Starter (999 SAR/month)"]
-- [e.g., "Expanding to email + LinkedIn channels"]
-- [e.g., "Training Dealix on 3 new product categories"]
+| Proof item — عنصر الإثبات | What the Sprint produced — ما أنتجه Sprint |
+|---|---|
+| Revenue opportunities surfaced — فرص إيراد مكتشفة | [N, each with attached evidence] |
+| Opportunities prioritized with evidence — فرص مُرتّبة بالأدلة | [N] |
+| Arabic outreach drafts approved by customer — مسودات وافق عليها العميل | [N — drafts only, customer-sent] |
+| Documented Proof event — Proof event موثّق | [describe the documented event] |
+| Customer satisfaction — رضا العميل | [X/5, if shared] |
 
----
-
-### For Companies Like [Customer]
-
-If you're a [Saudi SaaS / F&B / Proptech / ...] company with similar challenges:
-
-- **Pilot:** 1 SAR × 7 days, refund 100% if not satisfied
-- **Book demo:** https://calendly.com/sami-assiri11/dealix-demo
-- **Read other case studies:** https://dealix.me/customers
+> **Estimated value, if any, is labelled as such.** If the customer approves a revenue estimate, write it as "estimated [Y] SAR — not a verified figure". Never present an estimate as fact.
 
 ---
 
-*Published [Date] · [Word count] · Written by Sami Assiri, Dealix Founder*
+### In Their Words — بكلماتهم
+
+> **EN —** "[Direct customer quote, 1-3 sentences. No PII.]"
+> **AR —** "[اقتباس مباشر من العميل، 1-3 جمل. بدون معلومات تعريفية.]"
+
+— **[Anonymized role only, e.g., "Founder, Riyadh B2B services firm" / "مؤسس شركة خدمات B2B"]**
+
+---
+
+### What Made It Work — ما الذي صنع الفرق
+
+3 specific, defensible things — كل واحدة قابلة للدفاع:
+
+1. **EN —** [e.g., "Every prioritized opportunity carried evidence from the company's own data"] · **AR —** [مثلاً: كل فرصة ذات أولوية جاءت بدليل من بيانات الشركة نفسها]
+2. **EN —** [e.g., "Outreach drafts were Arabic-first and stayed under the founder's approval"] · **AR —** [المسودات عربية أولاً وبقيت تحت موافقة المؤسس]
+3. **EN —** [e.g., "Governed delivery — nothing sent without explicit approval"] · **AR —** [تسليم محكوم — لا إرسال بدون موافقة صريحة]
+
+---
+
+### The Path Forward — الخطوة التالية
+
+**EN —** [1-2 sentences: what the customer chose next. Upgrade is unlocked only on a documented Proof result.]
+**AR —** [1-2 جملة: ماذا اختار العميل بعد ذلك. الترقية تُفتح فقط بعد نتيجة موثقة.]
+
+---
+
+### For Companies Like This — لشركات مماثلة
+
+If you are a Saudi B2B company (5–50 employees) managing relationships over WhatsApp and email:
+
+- **Start free — ابدأ مجاناً:** AI Ops Diagnostic — 15-minute diagnostic, no commitment
+- **Then — ثم:** 499 SAR Revenue Intelligence Sprint (7 days) — see `OFFER_LADDER_AND_PRICING.md`
+- **Book — احجز:** https://calendly.com/sami-assiri11/dealix-demo
+
+---
+
+> القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.
+
+*Published [Date] · Written by Sami Assiri, Dealix Founder · Customer-approved [date]*
 
 ---
 
 ## Publishing workflow
 
-### Phase 1 — Within 48 hours of pilot completion
-- [ ] Customer confirms metrics in writing (email/WhatsApp)
-- [ ] Schedule 15-min interview call to get 1-3 direct quotes
-- [ ] Request logo + permission to use (written confirmation)
-- [ ] Draft case study in this template
-- [ ] Send draft to customer for approval
+### Phase 1 — Within 48 hours of Sprint completion
+- [ ] Customer confirms in writing which Proof items are publishable
+- [ ] 15-min interview call for 1-3 direct quotes
+- [ ] Decide named vs anonymized; if named, get written logo permission
+- [ ] Draft in this template
+- [ ] Send full draft to customer for written approval
 
-### Phase 2 — Within 7 days
-- [ ] Customer approves final draft (written)
-- [ ] Publish on dealix.me/case-studies/[customer-slug]
-- [ ] Post LinkedIn announcement with customer tagged (with permission)
-- [ ] Post X/Twitter thread with key metrics
-- [ ] Send to email list (once email list exists)
+### Phase 2 — After written approval only
+- [ ] Publish under `docs/case-studies/case_NNN_anonymized.md` (or named, if approved)
+- [ ] Founder posts the LinkedIn / X announcement manually — no auto-publish
 - [ ] Add to partner enablement kit
-- [ ] Reference in next 10 sales calls
 
 ### Phase 3 — Within 30 days
-- [ ] Video testimonial (30-90 seconds) with customer
-- [ ] Case study one-pager PDF for enterprise sales
-- [ ] SEO optimize (target: "[customer sector] Arabic AI case study")
-- [ ] Share with partner agencies as "how to sell Dealix"
-- [ ] Capture referrals from the customer's network
+- [ ] Optional video testimonial (with written permission)
+- [ ] One-pager PDF for sales conversations
 
 ---
 
-## Legal / Permission Email Template
+## Legal / Permission Email Template — قالب طلب الإذن
 
-Send this to every pilot customer:
+Send this to every Sprint customer before writing anything:
 
 ```
-Subject: إذن للنشر — Dealix Case Study [اسم الشركة]
+Subject: إذن للنشر — Dealix Case Study
 
-السلام عليكم [اسم العميل],
+السلام عليكم [اسم العميل]،
 
-شكراً على ثقتكم في Dealix خلال pilot الـ 7 أيام الماضية.
+شكراً على ثقتكم في Dealix خلال Sprint إثبات الإيرادات.
 
-بناءً على النتائج (response time من [X] إلى [Y]، [Z] demos محجوزة)، أود أن أطلب إذنكم لنشر الحالة كـ case study على dealix.me.
+بناءً على Proof Pack الموثّق، أود طلب إذنكم لنشر الحالة كدراسة حالة.
+يمكنكم اختيار النشر باسم الشركة أو بتسمية مجهّلة بالكامل.
 
-ما سيُنشر:
-- اسم الشركة + logo (إذا سمحتم)
-- المقاييس الرقمية (قبل/بعد)
-- اقتباسات مباشرة (إذا تبغون تراجعوها قبل النشر)
-- شرح عام للتحدي والحل
+ما سيُنشر (بموافقتكم فقط):
+- وصف عام للقطاع والحجم — بدون أي معلومة تعريفية
+- عناصر الإثبات من Proof Pack (ما توافقون على نشره)
+- اقتباسات مباشرة تراجعونها قبل النشر
 
 ما لن يُنشر:
-- بيانات عملائكم
-- أسرار مالية
+- بيانات عملائكم أو أي PII
+- أرقام إيراد إلا بموافقة صريحة، وتُكتب كتقدير لا كحقيقة
 - أي معلومة لم توافقوا عليها
 
-هل لديكم موافقة؟ إذا نعم، رد بـ "موافق" وسأرسل المسودة خلال 24 ساعة لمراجعتكم.
+للموافقة، ردّوا بـ "موافق" وسأرسل المسودة خلال 24 ساعة لمراجعتكم.
 
-شكراً،
-سامي العسيري — Dealix
+شكراً، سامي العسيري — Dealix
 ```
 
 ---
 
-## Case Study Ideas to Write First
+## Metrics to Always Include — ومتجنّبه
 
-Based on `SAUDI_LEAD_GRAPH_MASTER.csv`, these sectors will likely convert first (highest Tier 1 probability):
+### Always document (Proof-backed):
+- Revenue opportunities surfaced and scored with evidence
+- Arabic drafts prepared and customer-approved (drafts only)
+- The documented Proof event
+- A customer quote
 
-1. **Saudi SaaS (B2B)** — tech-forward, values speed, appreciates AI nuance
-2. **F&B franchise inquiries** — clear metrics (quote→contract time), tangible value
-3. **Real estate agent** — WhatsApp-heavy, easy to measure booking increase
-4. **Saudi marketing agency** — wants case study to sell to their clients (multiplier)
-5. **Saudi B2B marketplace** — merchant success stories resonate
-
-Write case studies in this order — SaaS first (highest social proof), agency fifth (multiplier effect).
-
----
-
-## Metrics to Always Include
-
-### Quantitative (mandatory):
-- Response time (before → after)
-- Leads handled per day/week
-- Demos booked
-- Conversion rate
-
-### Qualitative (at least 1):
-- Customer direct quote
-- Team workflow change
-- Team time savings
-- Customer satisfaction
-
-### Avoid:
-- Revenue numbers unless customer explicitly approves
-- Anything that could expose their customer data
-- Claims you can't back up
+### Never include:
+- Guaranteed sales numbers or conversion rates
+- Revenue figures unless explicitly approved — and always labelled estimated
+- Any PII or customer-of-customer data
+- Claims that cannot be backed by a reviewable artifact
 
 ---
 
-*The difference between "Dealix works" and "Dealix has 5 real case studies from Saudi companies" = order of magnitude in conversion. Write the first one the moment pilot completes.*
+*See `docs/case-studies/case_001_anonymized.md` and `case_002_anonymized.md` for anonymized examples already in the repo.*

@@ -1,366 +1,74 @@
-# 📅 Dealix — Content Calendar 30 يوم
+# Dealix — Content Calendar (Starter, 30 Days) — تقويم المحتوى
 
-**الهدف:** بناء inbound pipeline بدل outbound فقط
-**المنصة الأساسية:** LinkedIn (+Twitter/X كـ amplification)
-**المدّة:** 30 يوم = 30 post = 30 نقطة اتصال مع السوق
-**الاستراتيجية:** Build-in-Public — الشفافية = المصداقية
+**Purpose:** a 30-day starter content plan for the founder's first month on LinkedIn.
+**Canonical 12-week plan:** the full bilingual cadence lives in [`docs/content/LINKEDIN_CADENCE_PLAN.md`](../content/LINKEDIN_CADENCE_PLAN.md). This file is the on-ramp; the cadence plan is the source of truth. Do not duplicate it.
 
----
-
-## 🎯 لماذا Build-in-Public
-
-Founders مثل Pieter Levels، Marc Lou، Arvid Kahl بنوا شركات بـ $1M+ ARR بدون ميزانية تسويق — فقط build-in-public.
-
-**قواعد:**
-1. شارك الأرقام الحقيقية (MRR, users, churn)
-2. شارك الإخفاقات قبل النجاحات
-3. شارك تعلّمات (ليس ترويج)
-4. كن محدداً، لا مجرّداً
+> **Doctrine.** Dealix is a governed revenue-operations radar: it finds and scores revenue opportunities with evidence and drafts approval-ready Arabic outreach — nothing sends without explicit founder approval. Entry = free Diagnostic, then the 499 SAR Revenue Intelligence Sprint. No guaranteed outcomes; any figure is an estimate, not a fact. No emojis, no model names, no client names in posts.
 
 ---
 
-## 📆 خطة الأسابيع الأربعة
+## How this works — كيف يعمل
 
-### الأسبوع 1: الإعلان (Launch Week)
-- **الرسالة:** "أبنى AI sales rep بالعربي. هذه قصتي."
-- **الهدف:** 100 متابع جديد + 20 تفاعل مُعتبر
-
-### الأسبوع 2: المشكلة + الحل
-- **الرسالة:** "ليش السوق السعودي يحتاج هذا تحديداً"
-- **الهدف:** 5 DMs من leads مهتمين
-
-### الأسبوع 3: المنتج + الـ Demo
-- **الرسالة:** "هذا ما بنيت. شاهده."
-- **الهدف:** 3 demos محجوزة inbound
-
-### الأسبوع 4: النتائج + الـ Case Studies
-- **الرسالة:** "أول عميل، أول نتائج، أول تعلّمات"
-- **الهدف:** أول SaaS newsletter feature
+- The founder publishes every post **manually**. No scheduling tool posts on the company's behalf.
+- Three lanes rotate: **Technical proof / إثبات تقني**, **Case-safe pattern / نمط آمن**, **Counter-narrative / الموقف المضاد** — same lanes as the 12-week cadence plan.
+- Each post has an AR section and a matching EN section, parallel in structure and length.
+- Every post closes with the disclosure line.
 
 ---
 
-## 📝 30 Post مكتوبة
-
-### يوم 1: الإعلان (Hook Post)
-```
-أنا سامي.
-قررت أبني AI sales rep بالعربي الخليجي.
-
-لماذا؟
-• 42% من leads في السعودية تضيع بسبب التأخر في الرد
-• Chatbots الأجنبية فاشلة في فهم لهجتنا
-• فرق المبيعات تقضي 60% من وقتها في متابعة leads ميتة
-
-اسم المشروع: Dealix
-الهدف: أول عميل مدفوع خلال 14 يوم.
-
-سأشارك كل شي — الأرقام، الإخفاقات، التعلّمات.
-
-تابعني لو عندك اهتمام بـ SaaS وmarketing سعودي.
-
-#BuildInPublic #SaaS #Startups
-```
-
-**Call to action:** تابع + Like إذا تهتم.
-
-### يوم 2: لماذا هذا السوق
-```
-السعودية = فرصة AI ضخمة.
-
-لماذا؟
-1️⃣ ميزانية Vision 2030: $3T في mega-projects
-2️⃣ 70% من الاقتصاد B2B (مبيعات طويلة)
-3️⃣ 85% من leads الآن رقمية
-4️⃣ Chatbots الإنجليزية فاشلة في العربي
-
-الشركات التي تبني AI ناطق خليجي الآن = السوق لها في 3 سنوات.
-
-Dealix هدفه يكون أول one.
-
-#SaudiArabia #AI #SaaS
-```
-
-### يوم 3: الـ Pain Point الأول
-```
-BDR في شركة SaaS سعودية يقضي:
-
-🕐 2 ساعة: رد على emails جديدة
-🕑 3 ساعات: متابعة leads من أمس
-🕒 2 ساعة: تحديث CRM
-🕓 1 ساعة: تحضير demos
-
-= 8 ساعات. 70% منها repetitive work.
-
-Dealix يأخذ 5 ساعات من هذه الـ 8.
-BDR يبقى مع 3 ساعات للـ "deep work" الفعلي.
-
-#SalesOps #B2B
-```
-
-### يوم 4: رحلة بناء MVP
-```
-30 يوم من الآن:
-• 0 سطر كود
-• فكرة في ورقة
-
-اليوم:
-• Backend كامل (FastAPI + PostgreSQL)
-• Moyasar integration للمدفوعات
-• WhatsApp ready
-• 11 CI/CD workflow خضراء
-
-كيف؟ Claude + Cursor + 14 ساعة/يوم.
-
-الأدوات:
-- Claude Opus 4.7 (1M context) — الأساس
-- Cursor (IDE)
-- Railway (deploy)
-- PostgreSQL
-- FastAPI
-
-عدد PRs في آخر أسبوع: 72
-عدد الأخطاء اللي صلّحتها Claude بدوني: 45+
-
-Founders: AI يختصر 90% من التطوير. استثمر فيه.
-
-#IndieHackers #AI #Productivity
-```
-
-### يوم 5: الأسعار
-```
-أسعار Dealix قررتها اليوم.
-
-Pilot: 1 ريال × 7 أيام (استرداد كامل)
-Starter: 999 ريال/شهر (1-3 مندوبين)
-Growth: 2,999 ريال/شهر (4-10)
-Scale: 7,999 ريال/شهر (+10)
-
-المبدأ:
-- Starter = أقل من راتب BDR بـ 10 مرات
-- Growth = أقل من راتب BDR بـ 3 مرات
-- Scale = أقل من 3 BDRs
-
-القيمة: يحرر 10-30 ساعة/أسبوع من فريقك.
-
-رأيك؟
-```
-
-### يوم 6: أول 20 lead
-```
-20 lead حقيقي جمعتهم من:
-- Crunchbase (Series A سعودية)
-- LinkedIn (مدراء مبيعات)
-- Wellfound (شركات تقنية)
-
-أسماء الشركات:
-Salla, Zid, Foodics, Lucidya, Lean Tech,
-BRKZ, Sary, Retailo, Tamara, Mozn...
-
-الخطة:
-• 5 رسائل/يوم
-• كل رسالة مخصّصة
-• متابعة بعد 3 أيام
-• Breakup بعد 19 يوم
-
-أهدف لـ 3 demos هذا الأسبوع.
-
-#ColdOutreach #SaaS
-```
-
-### يوم 7: أول رد
-```
-أرسلت 5 رسائل بالأمس.
-اليوم استلمت 2 ردود.
-
-1 "نعم، نحن مهتمون"
-1 "نحتاج وقت — ربما Q3"
-
-معدل الرد بعد 24 ساعة: 40%.
-
-التفسير:
-- الرسائل كانت شخصية (ليست قوالب)
-- تحدّثت عن شركتهم بالذات
-- لم أبِع — عرضت قيمة
-
-الدرس: جودة > كمية. دائماً.
-
-#OutboundSales
-```
-
-### يوم 8-14: النجاحات اليومية + التعلّمات
-*(يُكتب يومياً بناءً على ما يحدث)*
-
-### يوم 15: النصف
-```
-مراجعة نصف الشهر:
-
-✅ 20 رسالة مُرسلة
-✅ 8 ردود (40%)
-✅ 3 demos محجوزة
-⏳ 0 عميل مدفوع حتى الآن
-⏳ 0 ريال MRR
-
-الـ 3 demos هذا الأسبوع ستحدد النتيجة.
-
-تعلّمات:
-1. عبدالله العسيري من Lucidya رد بسرعة — قرابة الاسم فرقت
-2. رسائل Twitter > LinkedIn لـ founders
-3. "لا" المبكرة أفضل من "ربما" المستمرة
-
-#BuildInPublic
-```
-
-### يوم 16: أول Demo
-*(فعلي بعد أول demo)*
-
-### يوم 17: Follow-up
-*(ماذا أرسلت بعد الـ demo)*
-
-### يوم 18: الأخطاء
-```
-أكبر 3 أخطاء سويتها الأسبوع الماضي:
-
-1️⃣ ذكرت السعر في رسالة الـ outreach
-→ Demo لم يُحجز. العميل سحب. لا تبعْ في الرسالة الأولى.
-
-2️⃣ طلبت intro من شخص لم أبنِ علاقة معه
-→ تم تجاهلي. Build rapport أولاً، اسأل ثانياً.
-
-3️⃣ استخدمت نفس الرسالة لـ 3 أشخاص
-→ أحدهم لاحظ وأرسلها للـ 2 الآخرين. awkward.
-
-التعلّم: كل lead يستحق 10 دقائق من البحث قبل الرسالة.
-
-#SalesLessons
-```
-
-### يوم 19: الإحصائية المفاجئة
-```
-تحقّقت من بيانات 50 شركة SaaS سعودية:
-
-68% يردون على leads بعد أكثر من 4 ساعات.
-28% بعد أكثر من 24 ساعة.
-4% لا يردون أبداً.
-
-الدراسة تقول: Lead يُرد عليه خلال 5 دقائق = 21X أعلى احتمالاً للتحويل.
-
-هذا = $X مليون مفقودة سنوياً في السوق السعودي فقط.
-
-Dealix يحل هذا بالضبط.
-
-#MarketAnalysis #SaaS
-```
-
-### يوم 20-25: قصص Demos + Lessons
-*(يومياً)*
-
-### يوم 26: أول Case Study
-```
-أول عميل Dealix: [شركة X في قطاع Y].
-
-بعد 7 أيام من pilot:
-• 340 lead دخل
-• 127 lead تأهّل (37%)
-• 42 demo محجوز (vs 8 في الأسبوع السابق)
-• 12 ساعة BDR مُحرّرة
-• NPS من الفريق: 9/10
-
-صاحبها كتب لي: "Dealix أنقذ مبيعات Q2"
-
-خمس ساعات اتصال قبل التوقيع.
-سبع ساعات setup.
-نتيجة: عميل سعيد.
-
-هذا ليه أبني.
-
-#CustomerSuccess
-```
-
-### يوم 27: الشكر + الـ Community
-### يوم 28: ما التالي
-### يوم 29: Call for feedback
-### يوم 30: Month 1 Wrap-up
-```
-شهر كامل من build-in-public. النتائج:
-
-📊 المتابعون: 850 جديد
-📨 DMs: 43
-📞 Demos: 11
-💰 عملاء: 2 مدفوع
-💵 MRR: 3,998 ريال (999 + 2,999)
-
-تعلّمات:
-1. LinkedIn > كل منصة ثانية في السعودية
-2. الشفافية = مصداقية = مبيعات
-3. كل post يحتاج رقم محدد
-4. الـ community يساعد أكثر من ما توقعت
-
-الشهر القادم:
-• 5,000 MRR (2 عميل Growth)
-• أول hire (BDR متفرّغ)
-• مقالة featured في Arab News
-
-أهلاً بالرحلة. 🚀
-
-#BuildInPublic #Dealix
-```
+## Week 1 — Why governance is the product / لماذا الحوكمة هي المنتج
+
+| Day | Lane | Hook (AR) | Hook (EN) |
+|---|---|---|---|
+| 1 | Counter-narrative | أطلقت Dealix — رادار عمليات إيرادات محكوم. هذا ما يعنيه. | I launched Dealix — a governed revenue-operations radar. Here is what that means. |
+| 3 | Technical proof | كل بيان يدخل Dealix يحمل جواز مصدر قبل أن يُلمَس. | Every datum entering Dealix carries a Source Passport before it is touched. |
+| 5 | Case-safe pattern | فرص إيراد حقيقية تختبئ في رسائل واتساب متفرقة — نمط متكرر. | Real revenue opportunities hide in scattered WhatsApp threads — a recurring pattern. |
+
+## Week 2 — Proof, not promises / إثبات لا وعود
+
+| Day | Lane | Hook (AR) | Hook (EN) |
+|---|---|---|---|
+| 8 | Technical proof | لا نُغلق Sprint بدون Proof Pack موثّق. لا استثناء. | We do not close a Sprint without a documented Proof Pack. No exception. |
+| 10 | Counter-narrative | لماذا نرفض ضمان الصفقات: القيمة التقديرية ليست قيمة مُتحقَّقة. | Why we refuse guaranteed sales: estimated value is not verified value. |
+| 12 | Case-safe pattern | نمط آمن: كيف يبدو ترتيب فرص الإيراد بالأدلة. | Case-safe: what scoring revenue opportunities with evidence looks like. |
+
+## Week 3 — The entry offer / نقطة الدخول
+
+| Day | Lane | Hook (AR) | Hook (EN) |
+|---|---|---|---|
+| 15 | Technical proof | لماذا 499 ريال ولماذا 7 أيام: السبرنت سبرنت. | Why 499 SAR and 7 days: a sprint is a sprint. |
+| 17 | Counter-narrative | لماذا نرفض الإرسال نيابةً عن العميل بدون موافقة صريحة. | Why we refuse to send on a customer's behalf without explicit approval. |
+| 19 | Case-safe pattern | نمط آمن: مسار شركة خدمات B2B من تشخيص مجاني إلى Proof Pack. | Case-safe: a B2B services firm's path from free Diagnostic to Proof Pack. |
+
+## Week 4 — Sector reality / واقع القطاعات
+
+| Day | Lane | Hook (AR) | Hook (EN) |
+|---|---|---|---|
+| 22 | Case-safe pattern | نمط قطاع العقارات: الفرص الراكدة ليست ميتة، بل غير مُصنَّفة. | Real-estate pattern: dormant enquiries are not dead, they are unclassified. |
+| 24 | Technical proof | كل توصية مدعومة بدليل من بيانات العميل — لا حدس. | Every recommendation is backed by evidence from the customer's data — no guessing. |
+| 26 | Counter-narrative | لماذا نرفض الكشط والقوائم الباردة المشتراة. | Why we refuse scraping and purchased cold lists. |
+| 30 | Case-safe pattern | مراجعة الشهر: ما نشرناه، وما تعلّمناه — بلا أرقام مضمونة. | Month review: what we published and learned — no guaranteed numbers. |
 
 ---
 
-## 📊 مقاييس النجاح
+## Reusable post material — مادة قابلة لإعادة الاستخدام
 
-| الأسبوع | المتابعون الجُدد | Impressions | Demo inbound |
-|---------|-------------------|-------------|---------------|
-| 1 | 100 | 10K | 0 |
-| 2 | 200 | 25K | 1 |
-| 3 | 300 | 50K | 2 |
-| 4 | 500 | 100K | 3 |
+The three published long-form posts and the six numbered LinkedIn posts are ready to adapt:
 
-إذا أقل بـ 30% → غيّر hook في الـ headline.
-إذا أكثر بـ 50% → كثّف التدفق.
+- [`linkedin_longform_posts.md`](./linkedin_longform_posts.md) — 3 bilingual long-form drafts.
+- [`docs/content/LINKEDIN_POST_001.md`](../content/LINKEDIN_POST_001.md) through `LINKEDIN_POST_006.md`.
 
 ---
 
-## 🎯 قواعد النشر
+## Publishing rules — قواعد النشر
 
-1. **وقت النشر:** 8-10 صباحاً (سعودي) — أعلى engagement
-2. **التكرار:** post/يوم بدون استثناء لأول 30 يوم
-3. **الصيغة:**
-   - Hook في السطر الأول (سؤال أو رقم)
-   - 3-5 سطور main
-   - Bullet points إذا قائمة
-   - CTA واضح في النهاية
-4. **Hashtags:** 3-5 فقط (ليس 30)
-5. **الردود:** رد خلال ساعتين من أي comment
+1. **Founder publishes manually.** No auto-publish, no automation posting as the company.
+2. **One post per scheduled day.** Skip rather than batch.
+3. **No metric stated as fact.** Label any figure an estimate or a case-safe pattern.
+4. **No emojis, no model names, no client names.**
+5. **Reply to comments** in the commenter's language within 24 hours; redact any PII and move the conversation to the standard intake.
+6. **Measure** Diagnostics booked, not vanity follower counts.
 
 ---
 
-## 💬 قوالب Reply للـ comments
-
-**"فكرة عظيمة — أتمنى لك النجاح"**
-→ "شكراً [الاسم]! وشّ أكثر جزء استلفت انتباهك؟ [سؤال إضافي]"
-
-**"هل يناسب شركتي [X]؟"**
-→ "يعتمد على حجم فريق مبيعاتك. ممكن نتكلم 10 دقائق؟ [Calendly link]"
-
-**"المنافسة مع Y — كيف تختلف؟"**
-→ "السؤال ممتاز. أكتب thread كامل عن هذا غداً. تابعني لا تفوّته."
-
-**"كيف تعلّمت [تقنية X]؟"**
-→ "Claude + 6 أشهر ممارسة. المهم ليس الأداة، المهم build + iterate."
-
----
-
-## 🏆 Content "Pillars" (مواضيع متكررة)
-
-استخدم بتنوع:
-
-1. **Build updates** (40%): "اليوم أضفت X"
-2. **Metrics/transparency** (20%): الأرقام الحقيقية
-3. **Lessons/failures** (20%): ما تعلّمت من خطأ
-4. **Industry insights** (10%): إحصائيات السوق
-5. **Personal** (10%): رحلتك كـ founder
-
----
-
-**آخر نصيحة:** لا تنتظر الـ "perfect post". انشر، حسّن بعدها، كرّر. المحتوى الأفضل في شهر #6 بسبب 180 post قبله.
+> القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.
