@@ -1,6 +1,7 @@
 {
   "nav": {
     "dashboard": "Dashboard",
+    "fullOps": "Full Ops Console",
     "pipeline": "Lead Pipeline",
     "agents": "Agent Activity",
     "approvals": "Approval Center",
@@ -154,5 +155,74 @@
     "handleLabel": "Customer handle",
     "load": "Load",
     "promiseTitle": "Service promise"
+  },
+  "fullOps": {
+    "title": "Full Ops Console",
+    "subtitle": "The entire autonomous operation, live",
+    "sections": {
+      "pyramid": "Agent Pyramid",
+      "cycle": "Autonomous Cycle",
+      "queue": "Approval Queue",
+      "commandCenter": "Daily Command Center"
+    },
+    "pyramid": {
+      "orchestrator": "Orchestrator",
+      "directors": "Directors",
+      "operators": "Operators",
+      "maxAutonomy": "Max autonomy",
+      "empty": "Agent hierarchy is not available yet."
+    },
+    "cycle": {
+      "runNow": "Run cycle now",
+      "empty": "No autonomous cycle has run yet today.",
+      "nextActions": "Next actions",
+      "hardGates": "Hard gates",
+      "approvalsPending": "Approvals pending",
+      "accept": "Accept",
+      "diagnostic": "Diagnostic",
+      "reject": "Reject",
+      "stages": {
+        "intake": "Intake",
+        "enriched": "Enriched",
+        "scored": "Scored",
+        "qualified": "Qualified",
+        "drafts": "Drafts",
+        "proof": "Proof events"
+      }
+    },
+    "queue": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "bulkApprove": "Bulk approve",
+      "empty": "No pending approvals.",
+      "count": "{count} pending approval(s)",
+      "humanTouchpoint": "The only place a human acts",
+      "risk": {
+        "high": "High risk",
+        "medium": "Medium risk",
+        "low": "Low risk"
+      }
+    },
+    "commandCenter": {
+      "topDecisions": "Today's top 3 decisions",
+      "noDecisions": "No decisions logged today.",
+      "queuesTitle": "Queues per OS",
+      "queueEmpty": "Queue is empty.",
+      "executiveSummary": "Executive summary",
+      "totalItems": "Total items",
+      "complianceAlerts": "Compliance alerts",
+      "alerts": "Alerts",
+      "escalated": "Escalated",
+      "blockedActions": "Blocked actions",
+      "hardGates": "Hard gates",
+      "empty": "Command center snapshot is not available yet.",
+      "queues": {
+        "growth": "Growth",
+        "sales": "Sales",
+        "support": "Support",
+        "cs": "Customer success",
+        "delivery": "Delivery"
+      }
+    }
   }
 }

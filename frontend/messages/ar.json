@@ -1,6 +1,7 @@
 {
   "nav": {
     "dashboard": "لوحة التحكم",
+    "fullOps": "لوحة العمليات الكاملة",
     "pipeline": "خط الصفقات",
     "agents": "نشاط الوكلاء",
     "approvals": "مركز الموافقات",
@@ -154,5 +155,74 @@
     "handleLabel": "معرّف العميل",
     "load": "تحميل",
     "promiseTitle": "التزام الخدمة"
+  },
+  "fullOps": {
+    "title": "لوحة العمليات الكاملة",
+    "subtitle": "العملية الذاتية بالكامل، مباشرةً",
+    "sections": {
+      "pyramid": "هرم الوكلاء",
+      "cycle": "الدورة الذاتية",
+      "queue": "قائمة الموافقات",
+      "commandCenter": "مركز القيادة اليومي"
+    },
+    "pyramid": {
+      "orchestrator": "المنسّق",
+      "directors": "المدراء",
+      "operators": "المشغّلون",
+      "maxAutonomy": "أقصى استقلالية",
+      "empty": "هرم الوكلاء غير متاح بعد."
+    },
+    "cycle": {
+      "runNow": "تشغيل الدورة الآن",
+      "empty": "لم تُشغَّل أي دورة ذاتية اليوم بعد.",
+      "nextActions": "الإجراءات التالية",
+      "hardGates": "البوابات الصارمة",
+      "approvalsPending": "موافقات معلّقة",
+      "accept": "قبول",
+      "diagnostic": "تشخيصي",
+      "reject": "رفض",
+      "stages": {
+        "intake": "الاستقبال",
+        "enriched": "الإثراء",
+        "scored": "التقييم",
+        "qualified": "المؤهلون",
+        "drafts": "المسودات",
+        "proof": "أحداث الإثبات"
+      }
+    },
+    "queue": {
+      "approve": "موافقة",
+      "reject": "رفض",
+      "bulkApprove": "موافقة جماعية",
+      "empty": "لا توجد موافقات معلّقة.",
+      "count": "{count} موافقة معلّقة",
+      "humanTouchpoint": "المكان الوحيد الذي يتدخّل فيه الإنسان",
+      "risk": {
+        "high": "مخاطر عالية",
+        "medium": "مخاطر متوسطة",
+        "low": "مخاطر منخفضة"
+      }
+    },
+    "commandCenter": {
+      "topDecisions": "أهم 3 قرارات اليوم",
+      "noDecisions": "لا قرارات مسجّلة اليوم.",
+      "queuesTitle": "قوائم كل نظام",
+      "queueEmpty": "القائمة فارغة.",
+      "executiveSummary": "الملخّص التنفيذي",
+      "totalItems": "إجمالي العناصر",
+      "complianceAlerts": "تنبيهات الامتثال",
+      "alerts": "تنبيهات",
+      "escalated": "مُصعَّدة",
+      "blockedActions": "إجراءات محظورة",
+      "hardGates": "البوابات الصارمة",
+      "empty": "لقطة مركز القيادة غير متاحة بعد.",
+      "queues": {
+        "growth": "النمو",
+        "sales": "المبيعات",
+        "support": "الدعم",
+        "cs": "نجاح العملاء",
+        "delivery": "التسليم"
+      }
+    }
   }
 }

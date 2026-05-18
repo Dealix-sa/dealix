@@ -181,6 +181,25 @@ export const api = {
 
   getCustomerPortal: (handle = "Slot-A") =>
     apiClient.get(`/api/v1/customer-portal/${encodeURIComponent(handle)}`),
+
+  // Full Ops Console
+  getFullOpsHierarchy: () =>
+    apiClient.get("/api/v1/full-ops/autonomous/hierarchy"),
+
+  getFullOpsLatestCycle: () =>
+    apiClient.get("/api/v1/full-ops/autonomous/latest"),
+
+  postFullOpsRunCycle: () =>
+    apiClient.post("/api/v1/full-ops/autonomous/run"),
+
+  getFullOpsCommandCenter: () =>
+    apiClient.get("/api/v1/full-ops/daily-command-center"),
+
+  postApprovalsBulkApprove: (body: {
+    who: string;
+    proof_impact_prefix?: string;
+    approval_ids?: string[];
+  }) => apiClient.post("/api/v1/approvals/bulk-approve", body),
 };
 
 export default api;
