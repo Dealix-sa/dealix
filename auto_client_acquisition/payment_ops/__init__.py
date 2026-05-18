@@ -8,6 +8,13 @@ Hard rules (Article 8 / NO_FAKE_REVENUE):
   payment_evidence_uploaded → possible revenue
   payment_confirmed       = revenue
 """
+from auto_client_acquisition.payment_ops.delivery_audit_link import (
+    chain_is_complete,
+    read_chain,
+    record_delivery_started,
+    record_invoice_paid,
+    record_proof_pack_delivered,
+)
 from auto_client_acquisition.payment_ops.orchestrator import (
     confirm_payment,
     create_invoice_intent,
@@ -17,9 +24,14 @@ from auto_client_acquisition.payment_ops.orchestrator import (
 )
 
 __all__ = [
+    "chain_is_complete",
     "confirm_payment",
     "create_invoice_intent",
     "get_payment_state",
     "kickoff_delivery",
+    "read_chain",
+    "record_delivery_started",
+    "record_invoice_paid",
+    "record_proof_pack_delivered",
     "upload_manual_evidence",
 ]

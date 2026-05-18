@@ -15,6 +15,12 @@
 | تم استلام بيانات onboarding (pipeline / ICP / قائمة عملاء) | مطلوب | مؤسس |
 | تم إعطاء العميل reference code DLX-XXXX | مطلوب | النظام |
 | تم تحديد موعد يومي / 15 دقيقة للتواصل | مطلوب | مؤسس |
+| تم تأكيد الدفعة + بدء التسليم (`kickoff-delivery`) | مطلوب | مؤسس |
+
+> **رابط التدقيق payment→delivery:** عند `kickoff-delivery` يُسجَّل تلقائياً
+> حدثا `invoice.paid` و `proof.pack_requested` في سجل
+> `var/delivery-audit-link.jsonl` (correlation_id = `payment_id`). هذا يربط
+> الدفعة بالتسليم بصيغة قابلة للتدقيق. راجع القسم الأخير لإكمال السلسلة.
 
 ---
 
@@ -151,6 +157,15 @@
 - [ ] العميل يملك نسخة من كل المخرجات
 - [ ] لا نشر عام قبل الحصول على موافقة مكتوبة
 - [ ] تم حفظ السجل في `/proof_ledger`
+
+**إغلاق رابط التدقيق payment→delivery:**
+- [ ] بعد تسليم Proof Pack، سجّل الحلقة الأخيرة من السلسلة عبر
+  `record_proof_pack_delivered(...)` (وحدة
+  `auto_client_acquisition.payment_ops.delivery_audit_link`) — مع
+  `correlation_id` = `payment_id` ودرجة/مستوى الـ Proof Pack.
+- [ ] تحقّق أن `chain_is_complete(payment_id)` تُرجع `True` — أي أن
+  السلسلة `invoice.paid → proof.pack_requested → proof.pack_delivered`
+  مكتملة وقابلة للتدقيق في `var/delivery-audit-link.jsonl`.
 
 ---
 

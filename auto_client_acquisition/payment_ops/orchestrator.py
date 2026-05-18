@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import os
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from auto_client_acquisition.full_ops_contracts.schemas import (
@@ -132,9 +132,40 @@ def confirm_payment(
         return (None, "confirmed_by_required")
     rec.status = "payment_confirmed"
     rec.confirmed_by = confirmed_by
-    rec.confirmed_at = datetime.now(timezone.utc)
+    rec.confirmed_at = datetime.now(UTC)
     _persist(rec)
     return (rec, "payment_confirmed")
+
+
+def _record_audit_link(rec: PaymentStateRecord) -> None:
+    """Record the payment->delivery audit chain (invoice.paid + delivery
+    started). Non-fatal: a missing module must never block delivery kickoff.
+    The pilot's payment_id is the chain correlation_id so every link joins.
+    """
+    try:
+        from auto_client_acquisition.payment_ops.delivery_audit_link import (
+            record_delivery_started,
+            record_invoice_paid,
+        )
+
+        paid = record_invoice_paid(
+            customer_id=rec.customer_handle,
+            payment_id=rec.payment_id,
+            amount_sar=rec.amount_sar,
+            correlation_id=rec.payment_id,
+            evidence_reference=rec.evidence_reference or "",
+            actor=rec.confirmed_by or "founder",
+        )
+        record_delivery_started(
+            customer_id=rec.customer_handle,
+            payment_id=rec.payment_id,
+            delivery_kickoff_id=rec.delivery_kickoff_id or "",
+            correlation_id=rec.payment_id,
+            causation_event_id=paid.event_id,
+            actor=rec.confirmed_by or "founder",
+        )
+    except Exception:  # recording must never break delivery
+        pass
 
 
 def kickoff_delivery(
@@ -150,6 +181,7 @@ def kickoff_delivery(
     rec.status = "delivery_kickoff"
     rec.delivery_kickoff_id = f"dk_{uuid.uuid4().hex[:8]}"
     _persist(rec)
+    _record_audit_link(rec)
     return (rec, "delivery_kicked_off")
 
 
