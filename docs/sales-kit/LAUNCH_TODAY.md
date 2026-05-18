@@ -114,7 +114,7 @@ Calendar reminders:
 
 #### Step 3.4 — LinkedIn Post #1 (30 دقيقة)
 انشر Post اليوم 1 من `dealix_content_calendar.md`:
-- Hook: "أنا سامي. قررت أبني AI sales rep بالعربي الخليجي..."
+- Hook: "أنا سامي. قررت أبني Dealix: عمليات إيراد و AI مُحوكَمة بالعربي الخليجي..."
 - End: اطلب متابعة + like
 
 ---

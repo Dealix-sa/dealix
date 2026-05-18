@@ -1,8 +1,18 @@
 # Dealix — Case Study Template
 
-**Fill this within 48 hours of first pilot success. Publish within 7 days. Every new customer after = publish theirs too.**
+> **Doctrine note (2026-05-18):** Use this template only after a real customer
+> completes the 7-Day Revenue Proof Sprint **and explicitly approves** the story.
+> If no real customer is named, the document MUST be labeled "Hypothetical /
+> case-safe template". Never invent customers, never use PII (names, emails,
+> phone numbers, national IDs) — use anonymized labels. Never state sales,
+> conversion, or ROI numbers as fact: "estimated outcomes are not guaranteed
+> outcomes". Dealix is governed revenue & AI operations — it drafts and ranks;
+> the customer approves every external action.
 
-The #1 sales asset is a real customer story. One real case study = worth 100 cold DMs.
+**Fill this within 48 hours of first Sprint completion. Publish only with customer approval.**
+
+A real, customer-approved story is the #1 sales asset. If you don't have one yet,
+publish a clearly labeled case-safe template instead.
 
 ---
 
@@ -93,9 +103,9 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 3 specific things that made this work:
 
-1. **[Differentiator 1]** — e.g., "Arabic Khaliji tone customized for [Company]'s brand voice"
-2. **[Differentiator 2]** — e.g., "Response time under 45 seconds on WhatsApp, 24/7"
-3. **[Differentiator 3]** — e.g., "Qualified leads only — sales team didn't waste time on tire-kickers"
+1. **[Differentiator 1]** — e.g., "Arabic Khaliji draft tone customized for [Company]'s brand voice"
+2. **[Differentiator 2]** — e.g., "Opportunities ranked by fit x revenue value, with clear reasoning"
+3. **[Differentiator 3]** — e.g., "Every external action reviewed and approved by the team — governed, with a decision ledger"
 
 ---
 

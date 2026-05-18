@@ -231,22 +231,22 @@
 
 Path A — **Use Dealix** (in-house marketer)
 - Who: In-house marketing/growth lead at a B2B company
-- What: Automate lead capture, qualification, booking
-- Value: Replace 2-3 BDR hires with AI
-- CTA: `جرّب pilot بـ 1 ريال`
+- What: Governed revenue ops — score opportunities, draft qualification messages; the founder reviews and approves every external action
+- Value: An organized, evidenced revenue process
+- CTA: `ابدأ بتشخيص مجاني`
 
 Path B — **Deliver services with Dealix** (freelancer/consultant)
 - Who: Freelance marketer, growth consultant, CRM specialist
-- What: Use Dealix as the engine for client implementations
-- Value: Offer "Sales Automation Setup" as a service
-- Revenue: Bill 5,000-15,000 SAR per client setup + 20% ongoing commission
+- What: Use Dealix as the governed revenue-ops engine for client implementations
+- Value: Offer a governed, evidenced revenue-ops service
+- Revenue: Clear commission model per step (free Mini Diagnostic → 499 SAR Sprint → expanded scope)
 - CTA: `سجّل كـ service provider`
 
 Path C — **Agency partner** (full agency)
 - Who: Marketing agency (15-100 employees)
 - What: Service exchange OR white-label reseller
-- Value: Offer AI sales rep to all your clients without building it
-- Revenue: 25% of MRR commission OR free Dealix in exchange for services
+- Value: Offer governed revenue & AI operations to your clients without building it — draft-and-approve, no autonomous send
+- Revenue: Clear partner commission model
 - CTA: `احجز partner meeting`
 
 **Section 3 — What Marketers Can Do With Dealix**
@@ -399,11 +399,11 @@ Day 90: Tier promotion eligibility
 
 ### The 7 layers of revenue (verify each)
 
-**Layer 1 — Pricing Architecture** ✅ DONE
-- 999 / 2,999 / 7,999 SAR
-- Pilot 1 SAR / 7 days
-- Annual discount 15%
-- Enterprise custom
+**Layer 1 — Offer Architecture** ✅ DONE
+- Mini Diagnostic — free (rung 0)
+- 7-Day Revenue Proof Sprint — 499 SAR (rung 1)
+- Expanded scope — priced after an approved Proof Pack
+- Note: the 1 SAR transaction is an internal end-to-end payment test only — never a marketed price
 
 **Layer 2 — Quote Path** 🟡 PARTIAL
 - Enterprise proposal template: exists

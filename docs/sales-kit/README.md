@@ -1,6 +1,13 @@
 # Sales Kit — Dealix
 
-**الحزمة الكاملة:** من أول رسالة لنمو مستدام، seed round، وإدارة الأزمات. 31 ملف محتوى + README.
+**الحزمة الكاملة:** من أول رسالة لنمو مستدام، seed round، وإدارة الأزمات.
+
+> **ملاحظة دكترين (2026-05-18):** Dealix = عمليات إيراد و AI مُحوكَمة. النظام
+> يحلّل ويرتّب ويصيغ المسودات، والمؤسس يراجع ويعتمد كل إجراء خارجي — لا
+> مندوب آلي، لا رد/حجز تلقائي. العرض المبدئي: تشخيص مجاني (Mini Diagnostic)
+> ثم سبرنت إثبات إيراد 7 أيام بـ 499 ريال. "1 ريال" في خطوات الإعداد التقني
+> هو اختبار دفع داخلي end-to-end فقط — ليس سعراً معروضاً. النتائج التقديرية
+> ليست نتائج مضمونة.
 
 ## ابدأ من هنا
 
@@ -26,7 +33,7 @@
 - [dealix_onepager.html](./dealix_onepager.html) — صفحة A4 قابلة للطباعة
 
 ### ✍️ إغلاق الصفقات
-- [dealix_pilot_agreement.md](./dealix_pilot_agreement.md) — عقد تجربة 7 أيام (Starter)
+- [dealix_pilot_agreement.md](./dealix_pilot_agreement.md) — اتفاقية سبرنت إثبات الإيراد 7 أيام (499 ريال)
 - [dealix_enterprise_proposal.md](./dealix_enterprise_proposal.md) — قالب proposal للـ Scale tier
 
 ### 🔒 الأمان والامتثال
@@ -71,7 +78,7 @@
 | أول رسالة | `personalized_messages` |
 | المتابعة | `followup_cadence` |
 | Demo | `demo_script_30min` + `objection_handler` + `onepager` + `roi_calculator` |
-| الإغلاق (Starter) | `pilot_agreement` |
+| الإغلاق (سبرنت 499) | `pilot_agreement` |
 | الإغلاق (Scale) | `enterprise_proposal` + `security_faq` |
 | قانوني | `privacy_policy_ar` + `terms_of_service_ar` |
 | بعد التوقيع | `customer_onboarding` |
@@ -91,20 +98,19 @@
 
 ## 🎯 الهدف
 
-**أول 999 ريال في الحساب خلال 14 يوم. 125k ر.س MRR بنهاية 2026. Seed round Q4 2026.**
+**أول سبرنت إثبات إيراد (499 ريال) مدفوع خلال 14 يوم — ثم توسيع مُثبت بالأدلة.**
 
 المسار:
 ```
 Railway 12د
-  → اختبار 1 ريال 2د
+  → اختبار دفع داخلي 1 ريال (end-to-end فقط) 2د
   → تواصل 20د
   → انتظار 3-7 أيام
   → Demo 30د
-  → Pilot 7 أيام
-  → Starter ✅
-  → 10 عملاء → LLC
-  → 30k MRR → Seed conversations
-  → 125k MRR → Close seed
+  → تشخيص مجاني (Mini Diagnostic)
+  → سبرنت إثبات إيراد 7 أيام بـ 499 ريال ✅
+  → حزمة إثبات معتمدة
+  → توسيع النطاق عند إثبات القيمة
 ```
 
 ---

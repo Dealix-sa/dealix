@@ -67,13 +67,13 @@ Yet Saudi companies treat it reactively: a human agent checks a shared inbox bet
 - **No single source of truth per customer conversation**
 - **No qualification before high-value agent time is spent**
 
-### The AI opportunity
+### The governed AI opportunity
 
-Arabic-first AI on WhatsApp can:
-- Respond in < 45 seconds, 24/7
-- Ask qualifying questions in natural Khaliji
-- Hand off to human only when buyer commits
-- Log every conversation to CRM automatically
+Arabic-first, governed revenue & AI operations can:
+- Analyze the pipeline and rank opportunities by fit x revenue value
+- Draft qualification and follow-up messages in natural Khaliji
+- Surface every draft to the founder for review and approval — nothing is sent automatically
+- Log every approved decision to a governance ledger
 
 This is not a "chatbot" — it's an Arabic AI SDR that runs on a channel Saudi buyers already trust.
 
@@ -197,7 +197,7 @@ If you're running a Saudi B2B company with 50+ leads/month:
 
 1. **Measure your current response time** this week. If it's > 30 min, you're leaking revenue.
 2. **Audit your WhatsApp inbox** for qualifying-question consistency. If every agent asks different questions, you have a scaling problem.
-3. **Don't buy another tool.** Build a response process on top of what you have. Or hire an agency to do it. Or try Dealix for 7 days at 1 SAR.
+3. **Don't buy another tool.** Build a governed revenue process on top of what you have. Or hire an agency to do it. Or start with a free Dealix Mini Diagnostic, then a 499 SAR 7-Day Revenue Proof Sprint.
 4. **Look at your competitor's response time.** If they reply in 5 min and you reply in 4 hours, you're losing deals you don't even know about.
 
 ---

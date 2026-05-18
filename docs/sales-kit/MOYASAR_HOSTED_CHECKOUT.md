@@ -30,9 +30,9 @@
 عبر WhatsApp / Email / LinkedIn:
 ```
 رابط الدفع: https://invoice.moyasar.com/invoices/inv_xxxx
-المبلغ: 1 ريال
-مدة Pilot: 7 أيام
-استرداد: كامل لو ما أعجبك
+المبلغ: 499 ريال — سبرنت إثبات الإيراد
+المدة: 7 أيام
+يسبقه: تشخيص مجاني تطّلع فيه على عيّنة المخرجات قبل الدفع
 ```
 
 **النتيجة:** العميل يدفع → Moyasar يخبرك → الفلوس تصل بنكك خلال 24 ساعة.
@@ -74,13 +74,23 @@ curl -X POST https://api.moyasar.com/v1/invoices \
 
 ## 📝 قوالب Invoices الجاهزة
 
-### Pilot (1 ريال)
+### 7-Day Revenue Proof Sprint — العرض المبدئي (499 ريال)
 ```bash
+curl -X POST https://api.moyasar.com/v1/invoices \
+  -u "$MOYASAR_SECRET:" \
+  -d "amount=49900" \
+  -d "currency=SAR" \
+  -d "description=Dealix — سبرنت إثبات الإيراد 7 أيام"
+```
+
+### اختبار دفع داخلي end-to-end (1 ريال — ليس عرضاً للعملاء)
+```bash
+# للاستخدام الداخلي فقط: التحقق من مسار الدفع. لا يُرسَل لأي عميل.
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
   -d "amount=100" \
   -d "currency=SAR" \
-  -d "description=Dealix Pilot — تجربة 7 أيام (قابل للاسترداد)"
+  -d "description=Dealix internal E2E payment test"
 ```
 
 ### Starter (999 ريال)
@@ -139,7 +149,7 @@ Moyasar يدعم webhooks مباشرة. أرسل إشعار لـ Slack:
 ```
 1. عميل يفتح: https://voxc2.github.io/dealix/pricing.html
    ↓
-2. يختار "Pilot 1 ريال"
+2. يبدأ بالتشخيص المجاني، ثم سبرنت إثبات الإيراد (499 ريال)
    ↓
 3. يضغط الـ CTA → (رابط تواصل معك على WhatsApp/Calendly)
    ↓
@@ -165,9 +175,9 @@ Moyasar يدعم webhooks مباشرة. أرسل إشعار لـ Slack:
 
 حتى backend يصير live، استخدم Google Sheet بسيط:
 
-| التاريخ | العميل | الشركة | المبلغ | Invoice ID | Status | Plan |
+| التاريخ | العميل | الشركة | المبلغ | Invoice ID | Status | المرحلة |
 |---------|---------|---------|---------|------------|---------|------|
-| 2026-04-24 | عبدالله | Lucidya | 1 SAR | inv_abc123 | paid | pilot |
+| YYYY-MM-DD | [مجهول] | [مجهول] | 499 SAR | inv_xxxx | paid | Revenue Proof Sprint |
 | ... | ... | ... | ... | ... | ... | ... |
 
 ---

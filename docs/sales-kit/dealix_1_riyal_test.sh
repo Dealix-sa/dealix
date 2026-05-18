@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Dealix — 1 Riyal End-to-End Test
+# Dealix — 1 Riyal Internal End-to-End Payment Test
+# اختبار دفع داخلي فقط — للتحقق من مسار الدفع. ليس عرضاً يُقدَّم لأي عميل.
+# العرض المعلَن للعملاء: تشخيص مجاني ثم سبرنت إثبات إيراد 7 أيام بـ 499 ريال.
 # يختبر كامل دورة الدفع: health → pricing → demo request → checkout
 #
 # الاستخدام:
 #   bash dealix_1_riyal_test.sh
 #   bash dealix_1_riyal_test.sh https://your-railway-url.up.railway.app
 #
-# بعد النجاح: افتح payment_url في المتصفح وادفع 1 ريال
+# بعد النجاح: افتح payment_url في المتصفح وادفع 1 ريال (اختبار داخلي)
 
 set -euo pipefail
 
@@ -98,7 +100,7 @@ fi
 echo ""
 
 # ── Test 5: Checkout (1 SAR Pilot) ──
-info "5/5 اختبار POST /api/v1/checkout (Pilot 1 ريال)"
+info "5/5 اختبار POST /api/v1/checkout (اختبار دفع داخلي 1 ريال — ليس سعراً معروضاً)"
 CHECKOUT=$(curl -s -w "\n%{http_code}" -X POST "$BASE_URL/api/v1/checkout" \
   -H "Content-Type: application/json" \
   -d "{

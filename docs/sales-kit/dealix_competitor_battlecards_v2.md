@@ -25,7 +25,7 @@ Paired with existing `dealix_battlecards.md` (MENA-specific: Foodics/Lucidya/Sal
 - **Low-friction pricing for SMB** — $49/user/mo minimum, multi-seat often needed
 
 ### Dealix angle
-> "Apollo is powerful for US/Europe — not the Saudi market. Dealix is Arabic-first, WhatsApp-native, and you can start with 1 SAR for a 7-day pilot to prove value on your actual Saudi leads. If Apollo works for you today, keep it — Dealix can layer on top."
+> "Apollo is powerful for US/Europe — not the Saudi market. Dealix is Arabic-first and governance-led: it scores and drafts, your team reviews and approves every external action — nothing is sent automatically. Start with a free Mini Diagnostic on your actual Saudi pipeline, then a 499 SAR 7-Day Revenue Proof Sprint. If Apollo works for you today, keep it — Dealix can layer on top."
 
 ### When Apollo wins: large enterprise with global outbound motion, English-first
 ### When Dealix wins: Saudi/GCC B2B, WhatsApp-heavy, Arabic-first
@@ -120,7 +120,7 @@ Paired with existing `dealix_battlecards.md` (MENA-specific: Foodics/Lucidya/Sal
 - **Manual-first delivery** — designed for scale from day 1, not first-10-customers mode
 
 ### Dealix angle
-> "Agentforce is the Mercedes of AI SDR for enterprises already on Salesforce. For Saudi SMB/mid-market, the economics don't make sense until you're past 500 employees. Dealix is the Toyota: does 90% of what matters, works on any stack, starts at 1 SAR for a pilot. When you grow to enterprise scale, Agentforce may make sense — we'll both be celebrating."
+> "Agentforce is built for enterprises already deep on Salesforce. For Saudi SMB/mid-market, the economics rarely make sense at that scale. Dealix is governed revenue ops: it scores and drafts, your founder approves every external action — no autonomous sending. You start with a free Mini Diagnostic, then a 499 SAR 7-Day Revenue Proof Sprint, on any stack. When you grow to enterprise scale, Agentforce may make sense — we'll both be celebrating."
 
 ### When Agentforce wins: Salesforce Enterprise customers 500+ employees
 ### When Dealix wins: Saudi SMB/mid-market, any CRM (or no CRM)
@@ -163,7 +163,7 @@ When prospect says "how are you different from [X]?":
 > "Where Dealix is different for Saudi market specifically: [one concrete point — Arabic / WhatsApp / Saudi signals / manual-first / entry pricing]"
 
 ### Step 4 — Bridge (offer coexistence)
-> "You can use both. [X] for [their strength], Dealix for [Saudi/Arabic/WhatsApp coverage]. The 1 SAR pilot lets you test without switching."
+> "You can use both. [X] for [their strength], Dealix for [Saudi/Arabic governed revenue ops]. The free Mini Diagnostic lets you test the value on your real pipeline without switching anything."
 
 ### Step 5 — Redirect (to value)
 > "The better question isn't which tool. It's: what's your cost of a 4-hour response time on Saudi leads right now?"
