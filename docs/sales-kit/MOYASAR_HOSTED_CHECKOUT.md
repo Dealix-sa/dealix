@@ -47,15 +47,17 @@
 # Set your keys
 export MOYASAR_SECRET=sk_live_xxxxxxxxx   # من Moyasar Dashboard → API Keys
 
-# Create an invoice for 1 SAR pilot
+# Create a 1 SAR end-to-end payment TEST invoice (verifies the payment pipeline — not a customer offer)
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
   -d "amount=100" \
   -d "currency=SAR" \
-  -d "description=Dealix Pilot — 7 days (1 SAR refundable)" \
+  -d "description=Dealix — 1 SAR payment pipeline test" \
   -d "callback_url=https://voxc2.github.io/dealix/thank-you.html" \
-  -d "metadata[plan]=pilot" \
+  -d "metadata[plan]=payment_test" \
   -d "metadata[customer_email]=$CUSTOMER_EMAIL"
+
+# For a real customer invoice, use the 7-Day Revenue Proof Sprint template below (amount=49900).
 ```
 
 **Response مثال:**
@@ -74,40 +76,42 @@ curl -X POST https://api.moyasar.com/v1/invoices \
 
 ## 📝 قوالب Invoices الجاهزة
 
-### Pilot (1 ريال)
+<!-- CORRECTED 2026-05-18: offer/pricing invoice templates aligned to docs/OFFER_LADDER_AND_PRICING.md. The paid entry offer is the 499 SAR 7-Day Revenue Proof Sprint — there is no 1 SAR customer pilot offer and no 999 SAR tier. The 1 SAR payment test lives in dealix_1_riyal_test.sh and is unchanged. -->
+
+### 7-Day Revenue Proof Sprint (499 ريال)
 ```bash
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
-  -d "amount=100" \
+  -d "amount=49900" \
   -d "currency=SAR" \
-  -d "description=Dealix Pilot — تجربة 7 أيام (قابل للاسترداد)"
+  -d "description=Dealix — 7-Day Revenue Proof Sprint (7 أيام، ينتهي بـ Proof Pack موثق)"
 ```
 
-### Starter (999 ريال)
+### Data-to-Revenue Pack (1,500 ريال)
 ```bash
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
-  -d "amount=99900" \
+  -d "amount=150000" \
   -d "currency=SAR" \
-  -d "description=Dealix Starter — اشتراك شهر أول"
+  -d "description=Dealix — Data-to-Revenue Pack (مشروع واحد)"
 ```
 
-### Growth (2,999 ريال)
+### Managed Revenue Ops (2,999 ريال — الحد الأدنى)
 ```bash
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
   -d "amount=299900" \
   -d "currency=SAR" \
-  -d "description=Dealix Growth — اشتراك شهر أول (4-10 مندوبين)"
+  -d "description=Dealix — Managed Revenue Ops (اشتراك شهر أول)"
 ```
 
-### Scale (7,999 ريال)
+### Executive Command Center (7,500 ريال — الحد الأدنى)
 ```bash
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
-  -d "amount=799900" \
+  -d "amount=750000" \
   -d "currency=SAR" \
-  -d "description=Dealix Scale — اشتراك شهر أول (Enterprise)"
+  -d "description=Dealix — Executive Command Center (اشتراك شهر أول)"
 ```
 
 **ملاحظة:** المبلغ في Moyasar API بالـ **halalas** (1 SAR = 100 halalas).
@@ -139,7 +143,7 @@ Moyasar يدعم webhooks مباشرة. أرسل إشعار لـ Slack:
 ```
 1. عميل يفتح: https://voxc2.github.io/dealix/pricing.html
    ↓
-2. يختار "Pilot 1 ريال"
+2. يختار "7-Day Revenue Proof Sprint (499 ريال)"
    ↓
 3. يضغط الـ CTA → (رابط تواصل معك على WhatsApp/Calendly)
    ↓

@@ -117,36 +117,35 @@ IBAN: SA00 0000 0000 0000 0000 0000
 
 ## 📊 سيناريوهات الفوترة
 
-### السيناريو 1: Pilot بـ 1 ريال
+<!-- CORRECTED 2026-05-18: billing scenarios aligned to docs/OFFER_LADDER_AND_PRICING.md. The paid entry offer is the 499 SAR 7-Day Revenue Proof Sprint — there is no 1 SAR customer pilot offer and no 999 SAR tier. The 1 SAR payment test (dealix_1_riyal_test.sh) is a separate ops procedure, unchanged. -->
+
+### السيناريو 1: 7-Day Revenue Proof Sprint (499 ريال)
 
 **الفاتورة:**
-- Dealix Pilot — 7 أيام · 1 ريال
-- VAT: 0.15 ريال (إذا مسجّل)
-- Total: 1.15 ريال
+- Dealix — 7-Day Revenue Proof Sprint · 7 أيام · 499 ريال
+- VAT 15%: 74.85 ريال
+- **Total: 573.85 ريال**
 
 **طريقة الدفع:** Moyasar link فقط (بسيط + سريع)
 
 **بعد 7 أيام:**
-- إذا cancelled → refund 1 ريال
-- إذا continued → invoice شهري جديد
+- يُسلَّم Proof Pack موثق
+- إذا continued → عرض الترقية على سلم العروض (Data Pack أو اشتراك شهري)
+- الاسترداد بحسب شروط اتفاقية الـ pilot الموقعة — لا ضمان نتائج
 
-### السيناريو 2: Starter شهري (999 ريال)
+### السيناريو 2: Data-to-Revenue Pack (1,500 ريال)
 
 **الفاتورة:**
-- Dealix Starter — شهر 1 · 999 ريال
-- Setup fee: 500 ريال (one-time)
-- Subtotal: 1,499 ريال
-- Discount 20% (أول شهر): -299.80
-- Subtotal after discount: 1,199.20
-- VAT 15%: 179.88
-- **Total: 1,379.08 ريال**
+- Dealix — Data-to-Revenue Pack · مشروع واحد · 1,500 ريال
+- VAT 15%: 225 ريال
+- **Total: 1,725 ريال**
 
 **طريقة الدفع:** Moyasar أو BT
 
-### السيناريو 3: Growth سنوي (with 15% discount)
+### السيناريو 3: Managed Revenue Ops سنوي (with 15% discount)
 
-**الفاتورة:**
-- Dealix Growth — سنوي · 12 × 2,999 = 35,988
+**الفاتورة (مثال على 2,999 ريال/شهر):**
+- Dealix — Managed Revenue Ops — سنوي · 12 × 2,999 = 35,988
 - Discount 15%: -5,398.20
 - Subtotal: 30,589.80
 - Setup: 1,000
@@ -157,15 +156,15 @@ IBAN: SA00 0000 0000 0000 0000 0000
 
 **طريقة الدفع:** BT (للمبالغ > 5,000 ريال)
 
-### السيناريو 4: Enterprise (Scale)
+### السيناريو 4: Executive Command Center
 
-**الفاتورة:**
-- Dealix Scale — 12 شهر custom · 96,000
+**الفاتورة (مثال على 8,000 ريال/شهر):**
+- Dealix — Executive Command Center · 12 شهر · 96,000
 - Setup + Integration: 10,000
 - Dedicated success: شامل
 - Training × 3 sessions: شامل
 - Subtotal: 106,000
-- Discount 10% (Enterprise): -10,600
+- Discount 10%: -10,600
 - Subtotal after: 95,400
 - VAT 15%: 14,310
 - **Total: 109,710 ريال**

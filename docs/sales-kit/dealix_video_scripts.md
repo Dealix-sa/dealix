@@ -22,7 +22,7 @@
 [الثانية 3-8] وجه المؤسس يظهر:
 "السلام عليكم، أنا سامي."
 "مؤسس Dealix."
-"مندوب مبيعات AI بالعربي الخليجي."
+"رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي."
 
 [الثانية 8-20] Split-screen:
   اليسار: موظف متعب أمام الكمبيوتر
@@ -32,22 +32,22 @@
 يشوف 50 lead من أمس، ما قدر يرد على أحد."
 
 [الثانية 20-30] Screen recording:
-Dealix يستقبل lead ويرد خلال 45 ثانية بالعربي
+Dealix يقرأ lead، يرتّب الفرصة، ويصيغ مسودة رد بالعربي للموافقة
 
-"Dealix يرد على كل lead خلال 45 ثانية."
-"يسأل أسئلة التأهيل."
-"يحجز demo في تقويم فريقك."
+"Dealix يرتّب فرص pipeline حسب الأولوية."
+"يصيغ مسودات تواصل بالعربي جاهزة لموافقتك."
+"لا إرسال تلقائي ولا حجز تلقائي — القرار لك."
 
 [الثانية 30-40] النتائج على الشاشة:
-✓ 38% معدل تأهيل (vs 11%)
-✓ 12 ساعة BDR محرّرة أسبوعياً
-✓ 0 leads ضائعة
+✓ فرص مرتّبة حسب الأولوية
+✓ مسودات تواصل جاهزة للموافقة
+✓ متابعة أكثر انتظاماً
 
-"نتائج أول عميل: [أرقام حقيقية]"
+"نتائج Sprint الإثبات: Proof Pack موثق خلال 7 أيام"
 
 [الثانية 40-55] CTA قوي:
-"Pilot لأسبوع بـ 1 ريال."
-"لو ما أعجبك، نرد لك الريال."
+"تشخيص مجاني، ثم 7-Day Revenue Proof Sprint بـ 499 ريال."
+"ينتهي بـ Proof Pack موثق."
 "ابدأ اليوم: dealix.ai"
 
 [الثانية 55-60] End card:
@@ -107,23 +107,23 @@ Visual: أرقام متحركة:
 Visual: chart يتحول من أحمر لأخضر
 
 "لكن ماذا لو..."
-"كل lead يُرد عليه خلال 45 ثانية، 24/7؟"
-"كل محادثة تبدأ بسؤال ذكي بالعربي الخليجي؟"
-"كل lead مؤهّل ومحجوز له demo — قبل ما تفتح جوالك؟"
+"كل فرصة في pipeline مرتّبة حسب الأولوية؟"
+"كل رد له مسودة جاهزة بالعربي الخليجي تنتظر موافقتك؟"
+"كل فرصة لها ملخص جاهز قبل ما تفتح جوالك؟"
 
 [1:00-1:40] Dealix Demo Live
 Visual: Screen recording لـ Dealix in action
 
 "هذا Dealix."
-"مندوب مبيعات AI بالعربي الخليجي."
+"رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي."
 "بنيته لشركات سعودية تواجه هذه المشكلة بالضبط."
 
 [عرض المحادثة:]
 - Lead يدخل
-- Dealix يرد فوراً بالعربي
-- يسأل 8 أسئلة تأهيل ذكية
-- يصنّف الـ lead (A/B/C/D)
-- يحجز demo تلقائياً
+- Dealix يقرأ السياق ويرتّب الفرصة حسب الأولوية
+- يصيغ قراءة تأهيل للمراجعة البشرية
+- يصيغ مسودة رد بالعربي
+- المؤسس يراجع، يوافق، ويرسل بنفسه
 
 [1:40-2:15] التكاملات والنتائج
 Visual: logos: HubSpot, Zoho, Calendly, WhatsApp
@@ -132,22 +132,21 @@ Visual: logos: HubSpot, Zoho, Calendly, WhatsApp
 HubSpot، Zoho، Calendly، WhatsApp.
 خلال 48 ساعة من الاشتراك، Dealix يعمل لحسابك."
 
-"عملاؤنا الأوائل يرون:
-- 38% معدل تأهيل (ارتفاع من 11%)
-- 12 ساعة/أسبوع موفّرة لكل BDR
-- Zero leads ضائعة"
+"ما يمكن أن تراه الشركات (نتائج تقديرية، لا مضمونة):
+- ترتيب أوضح للفرص حسب الأولوية
+- وقت إعداد أقل بمسودات تواصل جاهزة
+- متابعة أكثر انتظاماً للفرص"
 
 [2:15-2:45] الأسعار + العرض
-Visual: 3 باقات على الشاشة
+Visual: سلم العروض على الشاشة
 
-"3 باقات، ما تحتاج بناء داخلي، ما تحتاج 6 شهور setup.
-Starter: 999 ريال/شهر.
-Growth: 2,999 ريال/شهر.
-Scale: 7,999 ريال/شهر."
+"باب الدخول تشخيص مجاني، ما تحتاج بناء داخلي، ما تحتاج 6 شهور setup.
+7-Day Revenue Proof Sprint: 499 ريال.
+Data-to-Revenue Pack: 1,500 ريال.
+Managed Revenue Ops: 2,999–4,999 ريال/شهر."
 
 "بدون التزام طويل.
-جرّب pilot أسبوع بـ 1 ريال.
-لو ما أعجبك، نرد لك الريال."
+ابدأ بتشخيص مجاني، ثم Sprint إثبات بـ 499 ريال ينتهي بـ Proof Pack موثق."
 
 [2:45-3:00] CTA
 Visual: founder يظهر، rustic office في الرياض
@@ -191,13 +190,13 @@ dealix.ai — احجز demo اليوم."
 - احصائيات محددة من Gartner + Saudi studies
 
 #### Chapter 2: How Dealix Works (1:30-4:00)
-- Screen recording: Lead entry → response → booking
+- Screen recording: Lead entry → pipeline ranking → draft outreach for approval
 - Explain: Why Arabic-khaliji native matters
-- Show: BANT framework in action
+- Show: a drafted qualification read reviewed by a human
 - Integration points
 
 #### Chapter 3: Technology Deep-Dive (4:00-6:00)
-- Built on Anthropic Claude (latest model)
+- Built on Anthropic (latest model)
 - AWS Frankfurt hosting
 - Moyasar for payments
 - Security: SOC 2, PDPL, GDPR
@@ -319,7 +318,7 @@ Try different openings on 60-sec videos:
 2. **Question hook:** "كم عميل ضاع عندك هذا الأسبوع؟"
 3. **Story hook:** "قبل شهر، فقدت صفقة 200K بسبب رد متأخر..."
 4. **Contrast hook:** "في أمريكا، chatbots تعمل. في السعودية، تفشل. اليوم..."
-5. **Bold claim:** "Dealix = مندوب مبيعات 24/7 بـ 999 ريال/شهر."
+5. **Bold claim:** "Dealix = رادار عمليات إيراد بمنطق الموافقة أولاً — ابدأ بـ Sprint إثبات بـ 499 ريال."
 
 **Test, measure, double down على الأعلى retention.**
 

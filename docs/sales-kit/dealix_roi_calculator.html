@@ -96,27 +96,27 @@
     <h3 style="margin-bottom:16px;">الباقة الموصى بها لفريقك:</h3>
     <div class="plan-grid">
       <div class="plan" id="plan-starter">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price">999</div>
+        <div class="plan-name">7-Day Revenue Proof Sprint</div>
+        <div class="plan-price">499</div>
         <div class="plan-roi" id="roi-starter">—</div>
       </div>
       <div class="plan" id="plan-growth">
-        <div class="plan-name">Growth</div>
+        <div class="plan-name">Managed Revenue Ops</div>
         <div class="plan-price">2,999</div>
         <div class="plan-roi" id="roi-growth">—</div>
       </div>
       <div class="plan" id="plan-scale">
-        <div class="plan-name">Scale</div>
-        <div class="plan-price">7,999</div>
+        <div class="plan-name">Executive Command Center</div>
+        <div class="plan-price">7,500</div>
         <div class="plan-roi" id="roi-scale">—</div>
       </div>
     </div>
   </div>
 
-  <a href="https://calendly.com/sami-assiri11/dealix-demo" class="cta">احجز Demo — تجربة pilot بـ 1 ريال</a>
+  <a href="https://calendly.com/sami-assiri11/dealix-demo" class="cta">احجز Demo — ابدأ بتشخيص مجاني ثم 7-Day Revenue Proof Sprint (499 ريال)</a>
 
   <div class="note">
-    <strong>ملاحظة الحسبة:</strong> افتراض 22 يوم عمل × 8 ساعات. نسبة 40% وقت مهدور = متوسط Gartner للشركات بدون AI qualification. Dealix يقلل هذه النسبة لـ 15%.
+    <strong>ملاحظة الحسبة:</strong> افتراض 22 يوم عمل × 8 ساعات. نسبة 40% وقت مهدور = متوسط Gartner للشركات بدون ترتيب منظّم للفرص. هذه أرقام تقديرية لأغراض التخطيط — القيمة التقديرية ليست قيمة مُتحقَّقة، والنتائج فرص مُثبتة بأدلة لا نتائج مضمونة.
   </div>
 </div>
 
@@ -144,7 +144,7 @@ function calc(){
   // Dealix reduces waste to 15%
   const dealixWaste = 0.15;
   const newCost = reps * hoursPerWeek * dealixWaste * hourlyRate * 4.33;
-  const dealixPrice = reps <= 3 ? 999 : (reps <= 10 ? 2999 : 7999);
+  const dealixPrice = reps <= 3 ? 499 : (reps <= 10 ? 2999 : 7500);
   const planName = reps <= 3 ? 'starter' : (reps <= 10 ? 'growth' : 'scale');
   const netSavings = currentCost - newCost - dealixPrice;
   const annualROI = ((netSavings * 12) / (dealixPrice * 12)) * 100;

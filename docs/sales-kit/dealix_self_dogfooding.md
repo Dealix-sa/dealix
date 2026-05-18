@@ -43,16 +43,18 @@ Sami يحجز demo يدوياً
 **بعد dogfooding:**
 ```
 Lead يدخل موقع Dealix →
-Dealix AI يرد خلال 45 ثانية (بنفس الـ AI اللي يستخدمه العملاء!) →
-Dealix يؤهّل BANT →
-Dealix يحجز demo تلقائياً →
-Sami يحضر demo جاهزاً تماماً
+Dealix يقرأ السياق ويرتّب الفرصة حسب الأولوية (بنفس المنتج اللي يستخدمه العملاء!) →
+Dealix يصيغ قراءة تأهيل ومسودة رد بالعربي الخليجي →
+Sami يراجع ويوافق ثم يحجز demo بنفسه →
+Sami يحضر demo بملخص فرصة جاهز
 ```
 
 **النتيجة:**
-- وقت Sami محرّر 80%
-- Response time 45 ثانية (بدل 4 ساعات)
-- معدل التحويل ×3
+- وقت Sami في الإعداد والترتيب مختصر بشكل ملموس
+- كل lead يصل بملخص فرصة ومسودة جاهزة للموافقة
+- متابعة أكثر انتظاماً للفرص
+
+> ملاحظة: Dealix يصيغ مسودات فقط — لا إرسال تلقائي ولا حجز تلقائي ولا تأهيل آلي مُلزم. القرار للمؤسس.
 
 ### المرحلة 2: Self-Nurture (Dealix يتابع عملاء Dealix)
 
@@ -86,8 +88,8 @@ Sami يحضر demo جاهزاً تماماً
 **المهام:**
 - [ ] تركيب Dealix على dealix.ai (website نفسه)
 - [ ] Connect HubSpot CRM
-- [ ] Configure BANT questions لمبيعات Dealix
-- [ ] Connect Calendly للـ demo booking
+- [ ] إعداد قراءة التأهيل (qualification read) لمبيعات Dealix — للمراجعة البشرية لا التأهيل الآلي المُلزم
+- [ ] Connect Calendly — الحجز يتم يدوياً بعد موافقة المؤسس
 - [ ] Test مع 10 fake leads
 
 **النتيجة:** موقع Dealix عنده Dealix AI على الـ chat widget.
@@ -114,7 +116,7 @@ Sami يحضر demo جاهزاً تماماً
 ### الأسبوع 4: Optimization Loop
 
 **المهام:**
-- [ ] A/B test BANT questions (3 versions)
+- [ ] A/B test صياغة قراءة التأهيل (3 versions)
 - [ ] A/B test booking flow (1-step vs 2-step)
 - [ ] A/B test Arabic dialect (formal vs casual)
 - [ ] Measure + implement winners
@@ -201,11 +203,11 @@ Dealix يتعلّم من بيانات العملاء الحاليين:
 
 ### Dynamic Pricing
 
-Dealix يقدر يقترح أسعار مخصّصة:
-- شركة صغيرة + ميزانية محدودة → Pilot 1 ريال
-- شركة متوسطة + ميزانية عادية → Starter
-- شركة كبيرة + urgent need → Growth
-- Enterprise → Custom proposal
+Dealix يقدر يقترح الدرجة المناسبة من سلم العروض:
+- شركة تستكشف لأول مرة → Free AI Ops Diagnostic ثم 7-Day Revenue Proof Sprint (499 ريال)
+- شركة أتمت Sprint وتريد عمقاً أكبر → Data-to-Revenue Pack (1,500 ريال)
+- شركة تريد استمرارية شهرية → Managed Revenue Ops (2,999–4,999 ريال/شهر)
+- Enterprise → Executive Command Center أو Custom proposal
 
 **كل اقتراح مبني على data من محادثات سابقة ناجحة.**
 

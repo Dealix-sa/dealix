@@ -11,7 +11,7 @@
 ```
 ████████████████████████████████
         Dealix
-  مندوب مبيعات AI بالعربي الخليجي
+  رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي
 ████████████████████████████████
 
 Sami Assiri · Founder
@@ -123,19 +123,21 @@ Dealix = رادار عمليات الإيرادات بمنطق "الموافقة
 
 ## الشريحة 7: Business Model
 
+<!-- CORRECTED 2026-05-18: pricing slide aligned to docs/OFFER_LADDER_AND_PRICING.md. No 999 SAR Starter and no 7,999 SAR Scale tier. -->
 ```
-3 باقات SaaS + Enterprise
+سلم عروض متدرّج — كل درجة تُفتح بعد إثبات حقيقي
 
-• Starter  — 999 ريال/شهر (1-3 مندوبين)
-• Growth   — 2,999 ريال/شهر (4-10 مندوبين) ⭐
-• Scale    — 7,999 ريال/شهر (+10 مندوبين)
+• Free AI Ops Diagnostic        — مجاني (باب الدخول)
+• 7-Day Revenue Proof Sprint    — 499 ريال (عرض الدخول المدفوع)
+• Data-to-Revenue Pack          — 1,500 ريال (مشروع واحد)
+• Managed Revenue Ops           — 2,999–4,999 ريال/شهر ⭐
+• Executive Command Center      — 7,500–15,000 ريال/شهر
+• Agency Partner OS             — مخصص + rev-share
 
-ARPA: 2,449 ريال/شهر
-Gross Margin: 87%
 Sales Cycle: 14-21 يوم
 Monthly Churn: < 3% (target)
 
-LTV:CAC = 35:1 (السنة الأولى)
+الأرقام التشغيلية تقديرية لأغراض التخطيط، لا نتائج مضمونة.
 ```
 
 **Visual:** جدول باقات مقارن بالمنافسة.

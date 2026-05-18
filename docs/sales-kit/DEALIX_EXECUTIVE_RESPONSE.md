@@ -188,8 +188,8 @@
 | # | Action | Time | Purpose |
 |---|--------|------|---------|
 | P2.1 | CR (company registration) | 1-3 days | Enterprise contracts |
-| P2.2 | First signed pilot (1 SAR) | External | Proof |
-| P2.3 | First paid customer (999+ SAR) | External | Revenue |
+| P2.2 | First signed 7-Day Revenue Proof Sprint (499 SAR) | External | Proof |
+| P2.3 | First upgrade on the offer ladder (1,500 SAR+ Data Pack / monthly) | External | Revenue |
 | P2.4 | First case study drafted | 1 day | Social proof |
 | P2.5 | Partner outreach — 10 agencies | 5 days | Growth |
 | P2.6 | Weekly content cadence active | Ongoing | Inbound |
@@ -231,9 +231,9 @@
 
 Path A — **Use Dealix** (in-house marketer)
 - Who: In-house marketing/growth lead at a B2B company
-- What: Automate lead capture, qualification, booking
-- Value: Replace 2-3 BDR hires with AI
-- CTA: `جرّب pilot بـ 1 ريال`
+- What: Rank pipeline opportunities and draft Gulf-Arabic outreach for human approval
+- Value: Cut opportunity-prep time; the team keeps the decision and the send
+- CTA: `ابدأ بتشخيص مجاني` (ثم 7-Day Revenue Proof Sprint بـ 499 ريال)
 
 Path B — **Deliver services with Dealix** (freelancer/consultant)
 - Who: Freelance marketer, growth consultant, CRM specialist
@@ -245,7 +245,7 @@ Path B — **Deliver services with Dealix** (freelancer/consultant)
 Path C — **Agency partner** (full agency)
 - Who: Marketing agency (15-100 employees)
 - What: Service exchange OR white-label reseller
-- Value: Offer AI sales rep to all your clients without building it
+- Value: Offer an approval-first revenue operations radar to all your clients without building it
 - Revenue: 25% of MRR commission OR free Dealix in exchange for services
 - CTA: `احجز partner meeting`
 
@@ -400,10 +400,13 @@ Day 90: Tier promotion eligibility
 ### The 7 layers of revenue (verify each)
 
 **Layer 1 — Pricing Architecture** ✅ DONE
-- 999 / 2,999 / 7,999 SAR
-- Pilot 1 SAR / 7 days
-- Annual discount 15%
-- Enterprise custom
+- Free AI Ops Diagnostic (entry)
+- 7-Day Revenue Proof Sprint 499 SAR / 7 days (paid entry offer)
+- Data-to-Revenue Pack 1,500 SAR
+- Managed Revenue Ops 2,999–4,999 SAR/mo
+- Executive Command Center 7,500–15,000 SAR/mo
+- Agency Partner OS custom + rev-share
+- See docs/OFFER_LADDER_AND_PRICING.md
 
 **Layer 2 — Quote Path** 🟡 PARTIAL
 - Enterprise proposal template: exists
@@ -636,7 +639,7 @@ All 7 layers must be verified with a real 1 SAR transaction that:
 **Risk 3 — First customer churns due to product not truly ready**
 - Probability: Medium
 - Impact: Negative reference, damaged reputation in small Saudi tech community
-- Mitigation: Pilot 1 SAR gives 7-day safe window; don't aggressively sell before first 3 customers succeed
+- Mitigation: the 7-Day Revenue Proof Sprint (499 SAR) gives a bounded 7-day proof window ending in a documented Proof Pack; don't aggressively sell before first 3 customers succeed
 
 ### Other risks to monitor
 - Competitor launches similar product (low, reactive response only)

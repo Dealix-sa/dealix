@@ -1,16 +1,22 @@
 # Dealix — Case Study Template
 
-**Fill this within 48 hours of first pilot success. Publish within 7 days. Every new customer after = publish theirs too.**
+<!-- CORRECTED 2026-05-18: removed "45-second response", auto-book/auto-qualify claims, the "1 SAR pilot" offer and the unconditional refund guarantee, and stale 999 SAR tier. Aligned to docs/OFFER_LADDER_AND_PRICING.md. Dealix drafts; the founder/customer approves. -->
 
-The #1 sales asset is a real customer story. One real case study = worth 100 cold DMs.
+> **Hypothetical / case-safe template.** This is a blank template. Every bracketed
+> placeholder must be filled with real, customer-approved numbers before publishing.
+> Do not publish with sample figures, and never include customer PII.
+
+**Fill this within 48 hours of first Sprint completion. Publish within 7 days, only with written customer approval. Every new customer after = publish theirs too (with approval).**
+
+The #1 sales asset is a real customer story. One real, approved case study = worth far more than cold outreach.
 
 ---
 
 ## Pre-flight checklist (before writing)
 
-- [ ] Customer pilot completed (7+ days of usage)
-- [ ] Customer gave verbal permission to use their story
-- [ ] At least 3 metrics captured (response time, leads handled, demos booked)
+- [ ] Customer Sprint completed (7-Day Revenue Proof Sprint)
+- [ ] Customer gave written permission to use their story
+- [ ] At least 3 metrics captured (opportunities ranked, drafts approved, demos booked by the customer)
 - [ ] At least 1 quote from the customer (voice message or text)
 - [ ] Customer's logo + permission to use it (email confirmation)
 - [ ] Specific before/after numbers
@@ -19,9 +25,9 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 ## Case Study — Template
 
-## [Company Name] cut response time from [X hours] to [Y seconds] with Dealix
+## [Company Name] ranked and acted on its pipeline in 7 days with Dealix
 
-*[Subtitle: specific outcome — "Booked 12 demos in 7 days" or "Closed 3 new customers in first month"]*
+*[Subtitle: specific, customer-approved outcome — e.g. "Approved 12 outreach drafts and booked 4 demos in 7 days". Use evidenced numbers only.]*
 
 ---
 
@@ -43,7 +49,7 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 **Key numbers before Dealix:**
 - Monthly leads: [X]
-- Average response time: [Y hours]
+- Pipeline opportunities left un-actioned: [Y]
 - Demo booking rate: [%]
 - Lead-to-customer conversion: [%]
 
@@ -51,12 +57,13 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 ### The Solution
 
-[2-3 sentences: what specifically Dealix did for them. Which channels? What was configured? Manual vs automated?]
+[2-3 sentences: what specifically Dealix did for them. It read their pipeline, ranked opportunities by priority, and drafted Gulf-Arabic outreach for human approval. Every external action was draft-only — the customer approved each message before any send.]
 
-**Pilot scope:**
-- Duration: [7 days / X weeks]
-- Leads handled: [X]
-- Channels: [WhatsApp / Email / Web chat / LinkedIn]
+**Sprint scope:**
+- Duration: 7 days (7-Day Revenue Proof Sprint)
+- Opportunities ranked: [X]
+- Drafts produced for approval: [X]
+- Outreach approval: customer-approved, no auto-send
 - Integration: [HubSpot / Salesforce / Calendly / none]
 
 ---
@@ -66,16 +73,16 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 **After Dealix (7 days):**
 | Metric | Before | After | Change |
 |--------|--------|-------|--------|
-| Avg response time | [X] | [Y] | [Δ%] |
-| Leads qualified | [X] | [Y] | [Δ%] |
-| Demos booked | [X] | [Y] | [Δ%] |
-| Arabic conversations/day | [X] | [Y] | [Δ%] |
+| Opportunities ranked | [X] | [Y] | [Δ%] |
+| Drafts approved by customer | [X] | [Y] | [Δ%] |
+| Demos booked by customer | [X] | [Y] | [Δ%] |
+| Arabic outreach drafts/day | [X] | [Y] | [Δ%] |
 | CSAT (customer satisfaction) | [X/10] | [Y/10] | [Δ] |
 
-**Revenue impact (extrapolated):**
-- Recovered leads: [X per month]
-- Estimated new revenue: [Y SAR/month]
-- ROI: [pilot cost vs. recovered revenue]
+**Revenue impact (estimated):**
+- Re-activated opportunities: [X]
+- Estimated value of evidenced opportunities: [Y SAR]
+- These are estimated figures, not guaranteed results. Estimated value is not Verified value.
 
 ---
 
@@ -93,9 +100,9 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 3 specific things that made this work:
 
-1. **[Differentiator 1]** — e.g., "Arabic Khaliji tone customized for [Company]'s brand voice"
-2. **[Differentiator 2]** — e.g., "Response time under 45 seconds on WhatsApp, 24/7"
-3. **[Differentiator 3]** — e.g., "Qualified leads only — sales team didn't waste time on tire-kickers"
+1. **[Differentiator 1]** — e.g., "Gulf-Arabic outreach drafts matched to [Company]'s brand voice"
+2. **[Differentiator 2]** — e.g., "Approval-first: every draft reviewed by the team before any send"
+3. **[Differentiator 3]** — e.g., "Pipeline ranked by priority so the team worked the opportunities most likely to move"
 
 ---
 
@@ -104,9 +111,9 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 [1-2 sentences: what's next for the customer?]
 
 **Next steps:**
-- [e.g., "Upgrading from Pilot to Starter (999 SAR/month)"]
-- [e.g., "Expanding to email + LinkedIn channels"]
-- [e.g., "Training Dealix on 3 new product categories"]
+- [e.g., "Moving from the 7-Day Revenue Proof Sprint to the 1,500 SAR Data-to-Revenue Pack"]
+- [e.g., "Continuing on Managed Revenue Ops (2,999–4,999 SAR/month)"]
+- [e.g., "Extending the priority radar to 3 new product categories"]
 
 ---
 
@@ -114,7 +121,8 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 If you're a [Saudi SaaS / F&B / Proptech / ...] company with similar challenges:
 
-- **Pilot:** 1 SAR × 7 days, refund 100% if not satisfied
+- **Start free:** Free AI Ops Diagnostic — no cost
+- **Paid entry:** 7-Day Revenue Proof Sprint — 499 SAR, ending in a documented Proof Pack (pilot terms per the signed pilot agreement)
 - **Book demo:** https://calendly.com/sami-assiri11/dealix-demo
 - **Read other case studies:** https://dealix.me/customers
 
@@ -160,9 +168,9 @@ Subject: إذن للنشر — Dealix Case Study [اسم الشركة]
 
 السلام عليكم [اسم العميل],
 
-شكراً على ثقتكم في Dealix خلال pilot الـ 7 أيام الماضية.
+شكراً على ثقتكم في Dealix خلال 7-Day Revenue Proof Sprint الماضي.
 
-بناءً على النتائج (response time من [X] إلى [Y]، [Z] demos محجوزة)، أود أن أطلب إذنكم لنشر الحالة كـ case study على dealix.me.
+بناءً على النتائج (عدد الفرص المرتّبة [X]، عدد المسودات الموافق عليها [Y]، [Z] demos حجزها فريقكم)، أود أن أطلب إذنكم لنشر الحالة كـ case study على dealix.me.
 
 ما سيُنشر:
 - اسم الشركة + logo (إذا سمحتم)
@@ -200,9 +208,9 @@ Write case studies in this order — SaaS first (highest social proof), agency f
 ## Metrics to Always Include
 
 ### Quantitative (mandatory):
-- Response time (before → after)
-- Leads handled per day/week
-- Demos booked
+- Opportunities ranked (before → after)
+- Drafts approved per day/week
+- Demos booked by the customer
 - Conversion rate
 
 ### Qualitative (at least 1):

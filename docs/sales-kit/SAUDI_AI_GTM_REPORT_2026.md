@@ -69,13 +69,13 @@ Yet Saudi companies treat it reactively: a human agent checks a shared inbox bet
 
 ### The AI opportunity
 
-Arabic-first AI on WhatsApp can:
-- Respond in < 45 seconds, 24/7
-- Ask qualifying questions in natural Khaliji
-- Hand off to human only when buyer commits
-- Log every conversation to CRM automatically
+An approval-first, Arabic-first revenue radar can:
+- Read the pipeline and rank opportunities by priority
+- Draft qualification reads in natural Khaliji for human review
+- Draft outreach for human approval — no auto-send, no auto-booking, no binding auto-qualification
+- Log every conversation to CRM, with the team deciding the next action
 
-This is not a "chatbot" — it's an Arabic AI SDR that runs on a channel Saudi buyers already trust.
+This is not a "chatbot" and not an autonomous SDR — it is an approval-first revenue operations radar. The founder or customer approves every external action.
 
 ---
 
@@ -148,7 +148,7 @@ Saudi B2B has ~200+ marketing/CRM/automation agencies. These agencies:
 
 ### The agency opportunity for AI tools
 
-An agency with 10 B2B clients × $500/mo setup + 20% MRR on a $999 AI SaaS = **$5,000 setup + $2,000/mo recurring** for the agency. Over 12 months: $29,000 per agency.
+An agency with 10 B2B clients × setup fee + 20% MRR on a monthly Managed Revenue Ops subscription (2,999–4,999 SAR/mo) earns a recurring share on each client. Over 12 months this compounds into a meaningful recurring line for the agency. (Illustrative, estimated — not a guaranteed result.)
 
 For the AI SaaS: 10 customers acquired through ONE agency, at near-zero CAC.
 
@@ -197,7 +197,7 @@ If you're running a Saudi B2B company with 50+ leads/month:
 
 1. **Measure your current response time** this week. If it's > 30 min, you're leaking revenue.
 2. **Audit your WhatsApp inbox** for qualifying-question consistency. If every agent asks different questions, you have a scaling problem.
-3. **Don't buy another tool.** Build a response process on top of what you have. Or hire an agency to do it. Or try Dealix for 7 days at 1 SAR.
+3. **Don't buy another tool.** Build a response process on top of what you have. Or hire an agency to do it. Or start with the free Dealix diagnostic, then the 499 SAR 7-Day Revenue Proof Sprint.
 4. **Look at your competitor's response time.** If they reply in 5 min and you reply in 4 hours, you're losing deals you don't even know about.
 
 ---
@@ -207,7 +207,7 @@ If you're running a Saudi B2B company with 50+ leads/month:
 If you run a marketing/CRM/automation agency:
 
 1. **Your clients need response automation more than they need another campaign.** Campaigns drive leads. Response converts them.
-2. **AI Arabic SDR is a new revenue stream.** Setup fee + 20-30% MRR on a 999-7,999 SAR SaaS.
+2. **An approval-first Arabic revenue radar is a new revenue stream.** Setup fee + 20-30% MRR on a monthly subscription (2,999–4,999 SAR Managed Revenue Ops, up to 7,500–15,000 SAR Executive Command Center).
 3. **Don't build this in-house.** Partner. Focus on what your agency is great at (client relationships, implementation, reporting). Dealix handles the product.
 4. **First customer is the hardest.** We'll support you on the first 2 closes as partner onboarding.
 
@@ -244,7 +244,7 @@ Dealix is an Arabic-first AI sales operator for Saudi B2B. Launched April 2026 b
 
 ### For Dealix internally
 - Share on LinkedIn + X (extracted insights as threads)
-- Email as lead magnet to prospects who ask "what do you mean by Arabic AI SDR?"
+- Email as lead magnet to prospects who ask "what do you mean by an approval-first Arabic revenue radar?"
 - Reference in demos ("based on our live analysis of 60+ Saudi B2B sites...")
 - Use the agency section as onboarding material for new partners
 
