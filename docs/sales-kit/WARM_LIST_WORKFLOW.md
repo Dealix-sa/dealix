@@ -2,7 +2,7 @@
 
 > Founder-only sales kit for the first revenue motion at Dealix. Twenty named personal contacts, five per day over four days. No cold outreach. No automation. Every reply is governed at the qualification gate before any draft is sent. Bilingual (AR + EN), no emojis, no model names.
 >
-> Cross-link: [FIRST_10_WARM_MESSAGES_AR_EN.md](../FIRST_10_WARM_MESSAGES_AR_EN.md), [OBJECTION_HANDLING_V6.md](../OBJECTION_HANDLING_V6.md), [03_commercial_mvp/DIAGNOSTIC_DELIVERY_SOP.md](../03_commercial_mvp/DIAGNOSTIC_DELIVERY_SOP.md), [ops/FIRST_CUSTOMER_ONBOARDING.md](../ops/FIRST_CUSTOMER_ONBOARDING.md).
+> Cross-link: [START_HERE.md](START_HERE.md), [dealix_personalized_messages.md](dealix_personalized_messages.md), [dealix_objection_handler.md](dealix_objection_handler.md), [FREE_DIAGNOSTIC_OFFER.md](FREE_DIAGNOSTIC_OFFER.md), [dealix_demo_script_30min.md](dealix_demo_script_30min.md), [dealix_pilot_agreement.md](dealix_pilot_agreement.md), [dealix_followup_cadence.md](dealix_followup_cadence.md).
 
 ---
 
