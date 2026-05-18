@@ -1,0 +1,69 @@
+name: Daily Evening Digest
+
+# WS-E (Daily Founder-Approved Autopilot) — close-of-day founder digest.
+# 16:00 UTC = 19:00 Asia/Riyadh. Reports what was approved/sent today, what
+# closed, and tomorrow's setup, by reusing the existing close-of-day
+# scorecard tooling. Glue only — no product features, routers, or tables.
+#
+# Approval-first doctrine: this workflow only reports and emails the founder.
+# It never sends an external message to a prospect.
+
+on:
+  schedule:
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
+# Read-only — produces a founder email, never pushes.
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-daily-evening-digest
+  cancel-in-progress: false
+
+jobs:
+  evening-digest:
+    name: Send founder evening digest
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check required secrets (skip gracefully if missing)
+        id: secrets_gate
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          # Mirror daily-revenue-machine.yml: until RESEND_API_KEY is
+          # configured in repo secrets, exit 0 with a clear message instead
+          # of crashing. The Send-digest step gates on this output.
+          if [ -z "${RESEND_API_KEY}" ]; then
+            echo "ℹ️  RESEND_API_KEY not yet configured — skipping evening digest"
+            echo "    Set via Settings → Secrets and variables → Actions"
+            echo "secrets_present=false" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+          echo "✅ RESEND_API_KEY present"
+          echo "secrets_present=true" >> "${GITHUB_OUTPUT}"
+
+      - name: Send evening digest
+        if: steps.secrets_gate.outputs.secrets_present == 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DEALIX_FOUNDER_EMAIL: ${{ secrets.DEALIX_FOUNDER_EMAIL || 'sami.assiri11@gmail.com' }}
+          EMAIL_PROVIDER: "resend"
+          EMAIL_FROM: "noreply@dealix.me"
+          EMAIL_FROM_NAME: "Dealix Autopilot"
+          APP_ENV: production
+        run: python3 scripts/dealix_evening_digest.py

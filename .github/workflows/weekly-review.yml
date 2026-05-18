@@ -1,0 +1,72 @@
+name: Weekly Review
+
+# WS-E (Daily Founder-Approved Autopilot) — auto-scheduled weekly review.
+# Sunday 05:00 UTC = 08:00 Asia/Riyadh. Runs the friction-log review and a
+# readiness re-check by invoking existing verify/readiness scripts plus the
+# existing weekly brief runner. Pure orchestration of scripts that already
+# exist — no product features, routers, or tables.
+#
+# Approval-first doctrine: this workflow only generates briefs and runs
+# verifiers. It never sends an external message.
+
+on:
+  schedule:
+    # Sunday is the start of the work week in KSA.
+    - cron: "0 5 * * 0"
+  workflow_dispatch:
+
+# Read-only — produces artifacts, never pushes.
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-weekly-review
+  cancel-in-progress: false
+
+jobs:
+  weekly-review:
+    name: Run weekly review
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Weekly brief + friction-log review
+        run: |
+          # Reuses scripts/weekly_brief_runner.py: per active retainer
+          # customer it combines value_os, friction_log.aggregate, adoption,
+          # and recent proof events. Exits 0 with no customers selected.
+          python3 scripts/weekly_brief_runner.py --all-active | tee weekly_brief.json
+
+      - name: Readiness re-check (verify_dealix_ready)
+        continue-on-error: true
+        run: |
+          python3 scripts/verify_dealix_ready.py | tee weekly_readiness.txt
+
+      - name: Governance re-check (verify_governance)
+        continue-on-error: true
+        run: |
+          python3 scripts/verify_governance.py | tee weekly_governance.txt
+
+      - name: Upload weekly review artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-weekly-review-${{ github.run_id }}
+          path: |
+            weekly_brief.json
+            weekly_readiness.txt
+            weekly_governance.txt
+          retention-days: 30
+          if-no-files-found: warn

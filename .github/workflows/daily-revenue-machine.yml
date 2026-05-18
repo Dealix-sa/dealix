@@ -118,7 +118,46 @@ jobs:
             -H "Authorization: Bearer $API_KEY" | tee export.json
           jq . export.json
 
-      - name: 5. Upload run artifacts
+      - name: Set up Python (for consolidated digest)
+        if: steps.secrets_gate.outputs.secrets_present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps (for consolidated digest)
+        if: steps.secrets_gate.outputs.secrets_present == 'true'
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 5. Consolidated founder digest
+        if: steps.secrets_gate.outputs.secrets_present == 'true'
+        env:
+          # WS-E: one consolidated morning digest covering drafts generated,
+          # follow-ups due, the founder approval-queue pending count, overdue
+          # approvals, and revenue-vs-target. Emails the founder only — never
+          # a prospect. Nothing auto-sends; the founder approves the queue.
+          DEALIX_API_BASE: ${{ secrets.DEALIX_API_BASE }}
+          DEALIX_API_KEY: ${{ secrets.DEALIX_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DEALIX_FOUNDER_EMAIL: ${{ secrets.DEALIX_FOUNDER_EMAIL || 'sami.assiri11@gmail.com' }}
+          EMAIL_PROVIDER: "resend"
+          EMAIL_FROM: "noreply@dealix.me"
+          EMAIL_FROM_NAME: "Dealix Autopilot"
+          APP_ENV: production
+        run: |
+          # If RESEND_API_KEY is unset the digest still renders to the log
+          # via --print, so the morning run never fails on a missing
+          # email secret (mirrors the skip-gracefully pattern).
+          if [ -z "${RESEND_API_KEY}" ]; then
+            echo "ℹ️  RESEND_API_KEY not set — rendering digest to log only"
+            python3 scripts/dealix_autopilot_morning_digest.py --print
+          else
+            python3 scripts/dealix_autopilot_morning_digest.py
+          fi
+
+      - name: 6. Upload run artifacts
         if: always() && steps.secrets_gate.outputs.secrets_present == 'true'
         uses: actions/upload-artifact@v7
         with:
@@ -130,7 +169,7 @@ jobs:
             export.json
           retention-days: 14
 
-      - name: 6. Open issue on failure
+      - name: 7. Open issue on failure
         if: failure() && steps.secrets_gate.outputs.secrets_present == 'true'
         uses: actions/github-script@v9
         with:
