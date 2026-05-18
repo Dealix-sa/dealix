@@ -1,6 +1,16 @@
-# 📊 Dealix — Daily Scorecard
+# Dealix — Daily Scorecard / لوحة النتائج اليومية
 
-**Update at end of each working day (17:00 Saudi time).**
+<!-- Owner: Founder | Cadence: end of each working day (17:00 Saudi time) -->
+<!-- Arabic primary · English secondary -->
+
+**حدّث هذا الملف في نهاية كل يوم عمل (17:00 بتوقيت السعودية). أرقام صلبة فقط.**
+**Update at the end of each working day (17:00 Saudi time). Hard numbers only.**
+
+> هذا المصدر اليومي الوحيد لأرقام تشغيل Dealix. الحلقة اليومية: [`DAILY_OPERATING_LOOP.md`](DAILY_OPERATING_LOOP.md).
+> المقاييس وقمع KPI ومعالم 30/60/90 يوم: [`POST_LAUNCH_SCORECARD.md`](POST_LAUNCH_SCORECARD.md).
+> يتغذّى ملخّص الأسبوع في الاجتماع التشغيلي الأسبوعي: [`../operating_rhythm/WEEKLY_OPERATING_MEETING.md`](../operating_rhythm/WEEKLY_OPERATING_MEETING.md).
+
+**ملاحظة الدكترين / Doctrine note:** كل لمسة دافئة (warm) — لا outreach بارد. القمع: warm touch → free diagnostic → paid 499 Sprint → documented proof → retainer.
 
 ---
 
@@ -167,53 +177,57 @@
 
 ---
 
-## Template — Day N
+## Template — Day N / قالب اليوم
 
-Copy this block each day:
+Copy this block each day. Funnel order: warm touch → free diagnostic → paid 499 → proof → retainer.
 
 ```
 ## Day N — YYYY-MM-DD
 
-**Production:** ✅ / ❌ [explain if red]
+**Production / الإنتاج:** ✅ / ❌ [explain if red]
 
-### Inputs
-| Metric            | Target | Actual |
-|-------------------|--------|--------|
-| New leads added   | 10     | __     |
-| DMs sent          | 5      | __     |
-| Agency DMs sent   | 2      | __     |
-| Follow-ups sent   | 5      | __     |
-| Content posts     | 1      | __     |
+### Inputs / المدخلات
+| Metric / المقياس              | Target | Actual |
+|-------------------------------|--------|--------|
+| Warm touches / لمسات دافئة     | 10     | __     |
+| Follow-ups sent / متابعات      | 5      | __     |
+| Agency/partner touches / شركاء | 2      | __     |
+| Content posts / منشورات        | 1      | __     |
 
-### Responses
-| Metric            | Target | Actual |
-|-------------------|--------|--------|
-| Positive replies  | 1-2    | __     |
-| Demos booked      | 0-1    | __     |
-| Demos completed   | 0-1    | __     |
+### Responses / الاستجابات
+| Metric / المقياس                       | Target | Actual |
+|-----------------------------------------|--------|--------|
+| Positive replies / ردود إيجابية         | 1-2    | __     |
+| Free diagnostics booked / تشخيص محجوز   | 0-1    | __     |
+| Free diagnostics completed / تشخيص منجز | 0-1    | __     |
 
-### Revenue
-| Metric             | Target | Actual     |
-|--------------------|--------|------------|
-| Pilots started     | 0-1    | __         |
-| Payments requested | 0-1    | __         |
-| Payments received  | 0 SAR  | __ SAR     |
-| Cumulative MRR     | 0 SAR  | __ SAR     |
+### Revenue / الإيراد
+| Metric / المقياس                         | Target | Actual |
+|------------------------------------------|--------|--------|
+| Paid 499 Sprints closed / Sprints مدفوعة | 0-1    | __     |
+| Payments requested / دفعات مطلوبة        | 0-1    | __     |
+| Payments received / دفعات مستلمة         | 0 SAR  | __ SAR |
+| Retainer (Rung 3) conversations / محادثات| 0      | __     |
+| Cumulative revenue / إيراد تراكمي        | 0 SAR  | __ SAR |
 
-### Blockers
+### Proof & Governance / الإثبات والحوكمة
+- Proof events documented today / أحداث إثبات موثقة: __
+- Friction / governance flag today / علامة احتكاك أو حوكمة: __
+
+### Blockers / المعوقات
 - [list open blockers]
 
-### Tomorrow's Top 5 Actions
-1. 
-2. 
-3. 
-4. 
-5. 
+### Tomorrow's Top 5 Actions / أهم 5 إجراءات للغد
+1.
+2.
+3.
+4.
+5.
 
-### Learning
-- Best channel today: __
-- Biggest blocker: __
-- Change for tomorrow: __
+### Learning / التعلّم
+- Best channel today / أفضل قناة: __
+- Biggest blocker / أكبر معوّق: __
+- Change for tomorrow / تغيير للغد: __
 ```
 
 ---
@@ -223,12 +237,12 @@ Copy this block each day:
 ```
 ## Week N Review — YYYY-MM-DD
 
-### Funnel Conversion
-- Touches: __
+### Funnel Conversion / تحويل القمع
+- Warm touches: __
 - Reply rate: __% (target 5%)
-- Demo booking rate: __% (target 40% of replies)
-- Demo show rate: __% (target 70%)
-- Close rate: __% (target 20%)
+- Diagnostic booking rate: __% (target 40% of replies)
+- Diagnostic show rate: __% (target 70%)
+- Diagnostic → paid 499 close rate: __% (target 20%)
 - Payment completion: __% (target 80%)
 
 ### Revenue
@@ -251,24 +265,25 @@ Copy this block each day:
 
 ---
 
-## 30-Day Cumulative Dashboard
+## 30-Day Cumulative Dashboard / لوحة 30 يوم
 
-Update this section on 30-day mark:
+> Targets aligned with [`../90_DAY_BUSINESS_EXECUTION_PLAN.md`](../90_DAY_BUSINESS_EXECUTION_PLAN.md) — do not invent other numbers.
 
 ```
 ## 30-Day Dashboard — YYYY-MM-DD
 
-Leads:          __ contacted  / 250 target
-Demos:          __ completed  / 20 target
-Pilots:         __ started    / 5 target
-Paid:           __ customers  / 2 target
-MRR:            __ SAR        / 4,000 SAR target
-
-Partners:       __ signed     / 1 target
-Referrals:      __ received   / 0 target
-Case studies:   __ published  / 0 target
+Warm touches:   __ contacted   / ~250 target
+Diagnostics:    __ completed   / 6 target
+Paid Sprints:   __ closed (499)/ 2-3 target
+Proof events:   __ documented  / 3 target
+Revenue:        __ SAR         / ~998 SAR target
+Managed Ops:    __ retainers   / 0 target (first retainer expected Day 60+)
+Case studies:   __ published   / 1 target
 ```
+
+Full 30/60/90 milestone scorecard: [`POST_LAUNCH_SCORECARD.md`](POST_LAUNCH_SCORECARD.md).
 
 ---
 
-**This file is the single scorecard for Dealix company operations.**
+**This file is the single daily scorecard for Dealix company operations.**
+**هذا الملف هو لوحة النتائج اليومية الوحيدة لعمليات Dealix.**

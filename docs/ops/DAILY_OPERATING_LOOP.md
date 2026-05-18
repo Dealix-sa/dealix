@@ -1,167 +1,142 @@
-# 🌅 Dealix — Daily Operating Loop
+# Dealix — Daily Operating Loop / حلقة التشغيل اليومية
 
-**Run this every Sun-Thu. 3-4 focused hours.**
+<!-- Owner: Founder | Cadence: every working day (Sun–Thu) | Status: canonical daily loop -->
+<!-- Arabic primary · English secondary -->
 
----
+> **القاعدة:** شغّل هذه الحلقة كل يوم عمل (الأحد–الخميس) — 3–4 ساعات تركيز.
+> ابدأ من **القرارات**، لا من صندوق الوارد.
+>
+> **Rule:** Run this loop every working day (Sun–Thu) — 3–4 focused hours. Start from **decisions**, not the inbox.
 
-## Morning (8:00 - 11:00)
-
-### 8:00 — Systems Check (10 min)
-- [ ] GitHub Actions healthcheck passing? (last run within 15 min)
-- [ ] web-dealix.up.railway.app/healthz returns 200 in browser?
-- [ ] Any email notifications from Sami's accounts (payments, replies)?
-
-### 8:15 — Pipeline Review (15 min)
-- [ ] Open `docs/ops/pipeline_tracker.csv`
-- [ ] Find all rows where `next_followup` ≤ today
-- [ ] Move any paid → onboarding list
-
-### 8:30 — Today's outreach batch (2 hours)
-- [ ] Open `docs/ops/launch_content_queue.md`
-- [ ] Send 5 LinkedIn DMs (from priority leads 1-50)
-- [ ] Send 5 follow-ups (Day +2/+5/+10)
-- [ ] Send 2 agency partner messages
-- [ ] Update tracker with `sent_at` for each
+**الحالة الصريحة / Honest baseline:** 0 عملاء يدفعون · الإيراد محجوب حتى اكتمال Moyasar KYC · المسار اليدوي للدفع جاهز (`MANUAL_PAYMENT_SOP.md`) فلا يضيع عميل قال «نعم».
 
 ---
 
-## Midday (11:00 - 14:00)
+## الصباح / Morning (08:00–11:00)
 
-### 11:00 — Reply Handling (continuous)
-- [ ] Respond to every reply within 30 min during business hours
-- [ ] Book demos via Calendly link
-- [ ] Log "Replied" → "Demo Booked" in tracker
+### 08:00 — فحص الأنظمة / Systems check (10 min)
+- [ ] GitHub Actions healthcheck يمرّ؟ (آخر تشغيل خلال 15 دقيقة) / passing within 15 min?
+- [ ] `web-dealix.up.railway.app/healthz` يرجع 200 في المتصفح؟ / returns 200?
+- [ ] أي إشعارات دفع/ردود في بريد المؤسس؟ / any payment or reply notifications?
 
-### 12:00 — Demos (if booked)
-- [ ] Pre-read the prospect 10 min before call
-- [ ] Follow demo script from `docs/sales-kit/dealix_demo_script_30min.md`
-- [ ] Always end with Pilot offer (1 SAR via manual invoice until Moyasar active)
-- [ ] Post-demo: send Moyasar hosted invoice or bank details from `MANUAL_PAYMENT_SOP.md`
+### 08:10 — فحص CEO اليومي / Daily CEO check (10 min)
+شغّل الأسئلة الخمس من [`../operating_rhythm/DAILY_CEO_CHECK.md`](../operating_rhythm/DAILY_CEO_CHECK.md):
+أعلى فرصة إيراد · أعلى خطر تسليم · أعلى خطر حوكمة · أي proof يتحسّن · ما لا يستحق الوقت اليوم.
 
-### 13:00 — Payment check
-- [ ] Check bank for new transfers
-- [ ] Check STC Pay notifications
-- [ ] If payment received: update tracker + start onboarding
+### 08:20 — مراجعة الـ pipeline / Pipeline review (15 min)
+- [ ] افتح `docs/ops/pipeline_tracker.csv`
+- [ ] كل صف فيه `next_followup ≤ today` → جهّز المتابعة / queue the follow-up
+- [ ] أي عميل دفع → انقله إلى قائمة الـ onboarding
 
----
-
-## Afternoon (14:00 - 17:00)
-
-### 14:00 — Content (if M/W/F)
-- [ ] Publish 1 post from `launch_content_queue.md`
-- [ ] Engage with 10 target accounts (comment, like)
-
-### 15:00 — Partner motion
-- [ ] Send 2-3 agency DMs
-- [ ] Respond to any partner inquiries
-- [ ] Update partner tracker column
-
-### 16:00 — Tomorrow prep
-- [ ] Which 10 leads tomorrow?
-- [ ] Research + personalize messages
-- [ ] Calendar block demos
+### 08:35 — دفعة التواصل الدافئ / Warm outreach batch (2 hrs)
+> دكترين: **لا outreach بارد**. كل لمسة دافئة (معرفة سابقة / إحالة / موافقة)، أو تمرّ عبر طابور الموافقة.
+- [ ] افتح `docs/ops/launch_content_queue.md` + قائمة الـ 50 الدافئة
+- [ ] أرسل 5 رسائل دافئة (من leads الأولوية)
+- [ ] أرسل 5 متابعات (يوم +2 / +5 / +10)
+- [ ] أرسل 2 رسالة شريك وكالة / agency partner
+- [ ] حدّث الـ tracker بـ `sent_at` لكل واحدة
 
 ---
 
-## Evening (17:00 - 18:00)
+## منتصف اليوم / Midday (11:00–14:00)
 
-### 17:00 — Daily Scoreboard
-Write this in a Google Sheet or here:
+### 11:00 — معالجة الردود / Reply handling (continuous)
+- [ ] رُدّ على كل ردّ خلال 30 دقيقة في ساعات العمل
+- [ ] احجز Free Diagnostic عبر رابط Calendly (Rung 0)
+- [ ] سجّل «Replied» → «Diagnostic Booked» في الـ tracker
 
-```
-Date: ____
-INPUTS
-  Leads contacted: __
-  Follow-ups sent: __
-  Agency DMs: __
-  Content posts: __
+### 12:00 — التشخيص المجاني / Free diagnostics (if booked)
+- [ ] اقرأ ملف العميل 10 دقائق قبل المكالمة
+- [ ] اتبع سكربت التشخيص: `docs/FIRST_3_DIAGNOSTIC_SCRIPT.md`
+- [ ] اختم دائمًا بعرض **Rung 1 — 7-Day Revenue Proof Sprint 499 SAR**
+- [ ] بعد المكالمة: أرسل فاتورة Moyasar مستضافة أو تفاصيل التحويل (`MANUAL_PAYMENT_SOP.md`)
 
-RESPONSES
-  Positive replies: __
-  Demos booked: __
-  Demos completed: __
-
-REVENUE
-  Pilots started: __
-  Payments received: __
-  New MRR: __ SAR
-  Total cumulative: __ SAR
-
-LEARNING
-  Best channel today: __
-  Biggest blocker: __
-  Change for tomorrow: __
-```
-
-### 17:30 — Improve
-- [ ] Any message that got 0 replies in 10 sends? Rewrite.
-- [ ] Any message that got multiple replies? Double down.
-
-### 18:00 — STOP
-Close laptop. Recovery = strategy.
+### 13:00 — فحص الدفع / Payment check
+- [ ] راجع الحساب البنكي + إشعارات STC Pay
+- [ ] دفعة وصلت؟ → حدّث الـ tracker + ابدأ الـ onboarding (`CUSTOMER_ONBOARDING_DAY_BY_DAY.md`)
 
 ---
 
-## Weekly (Friday afternoon)
+## بعد الظهر / Afternoon (14:00–17:00)
 
-- [ ] Review total funnel metrics
-- [ ] Kill weak segments
-- [ ] Double down on best segment
-- [ ] Update landing copy if objections repeat
-- [ ] Update `FOLLOW_UP_CADENCE.md` based on what's working
-- [ ] Plan next week's 50 leads
+### 14:00 — المحتوى / Content (Sun / Tue / Thu)
+- [ ] انشر منشورًا واحدًا من `launch_content_queue.md`
+- [ ] تفاعل مع 10 حسابات مستهدفة (تعليق / إعجاب)
+
+### 15:00 — حركة الشركاء / Partner motion
+- [ ] أرسل 2–3 رسائل وكالة دافئة
+- [ ] رُدّ على أي استفسار شريك + حدّث عمود الـ tracker
+
+### 16:00 — تجهيز الغد / Prep for tomorrow
+- [ ] أي 10 leads للغد؟ ابحث وخصّص الرسائل
+- [ ] احجز خانات التشخيص في التقويم
 
 ---
 
-## 7-Day Target
+## المساء / Evening (17:00–18:00)
 
-| Day | Touches | Follow-ups | Demos | Paid |
-|-----|---------|-----------|-------|------|
+### 17:00 — لوحة النتائج اليومية / Daily scorecard
+عبّئ كتلة «Day N» في [`daily_scorecard.md`](daily_scorecard.md) — أرقام صلبة فقط، لا انطباعات.
+
+### 17:30 — تحسين / Improve
+- [ ] رسالة حصلت على 0 ردود في 10 إرسالات؟ → أعد كتابتها
+- [ ] رسالة حصلت على ردود متعددة؟ → ضاعِف استخدامها
+
+### 18:00 — توقّف / STOP
+أغلق اللابتوب. التعافي = استراتيجية.
+
+---
+
+## أهداف 7 أيام / 7-Day target
+
+| اليوم / Day | لمسات / Touches | متابعات / Follow-ups | تشخيص / Diagnostics | مدفوع / Paid 499 |
+|-------------|-----------------|----------------------|---------------------|------------------|
 | 1 | 10 | 0 | 0 | 0 |
 | 2 | 10 | 3 | 0 | 0 |
-| 3 | 10 | 3 | 1-2 | 0 |
-| 4 | 10 | 5 | 1-2 | 0 |
-| 5 | 10 | 5 | 2 | 0-1 |
-| 6 | 5 (partial Fri) | 5 | 1 | 0-1 |
-| 7 | Off | 0 | 0 | 0 |
-| **Week** | **55** | **21** | **5-7** | **0-2** |
+| 3 | 10 | 3 | 1–2 | 0 |
+| 4 | 10 | 5 | 1–2 | 0 |
+| 5 | 10 | 5 | 2 | 0–1 |
+| 6 (جزئي) | 5 | 5 | 1 | 0–1 |
+| 7 | إجازة | 0 | 0 | 0 |
+| **الأسبوع** | **55** | **21** | **5–7** | **0–1** |
 
-**Week 1 realistic outcome:** 1-2 pilots signed, 0-1 paid (pending Moyasar).
-
----
-
-## 30-Day Target
-
-- 250 touches
-- 100 follow-ups
-- 20-25 demos
-- 5-10 pilots
-- 2-3 paid customers (after Moyasar active)
-- 1 agency partner signed
-- 500+ LinkedIn followers gained
+**النتيجة الواقعية للأسبوع 1 / Realistic Week-1 outcome:** أول Sprint 499 مُغلق أو مجدول (Day 7 هدف خطة الـ 90 يوم).
 
 ---
 
-## 90-Day Target (Stage 3 exit)
+## أهداف 30 / 60 / 90 يوم — مُوحّدة مع خطة الـ 90 يوم
 
-- 750 touches
-- 60-80 demos
-- 25-30 pilots
-- 10-15 paid customers (realistic)
-- 3-5 agency partners
-- First referral won
-- First case study published
-- First $10K+ MRR
+> الأرقام هنا **مطابقة** لـ [`../90_DAY_BUSINESS_EXECUTION_PLAN.md`](../90_DAY_BUSINESS_EXECUTION_PLAN.md) — لا تستخدم أرقامًا أخرى.
+> هذه أهداف تشغيلية، **لا ضمانات**.
+
+| المقياس / Metric | يوم 30 / Day 30 | يوم 60 / Day 60 | يوم 90 / Day 90 |
+|------------------|-----------------|-----------------|-----------------|
+| تشخيصات / Diagnostics (تراكمي) | 6 | 12 | 20 |
+| Pilots مدفوعة (499) | ~2–3 | 5 | 10 |
+| Proof Events موثقة | 3 | 8 | 15 |
+| عملاء Managed Ops (Rung 3 retainer) | 0 | 2 | 3 |
+| MRR (SAR) | ~998 | ~5,998 | ~8,997–14,997 |
+| Case studies منشورة | 1 | 2 | 3 |
+
+تفاصيل المعالم الكاملة في [`POST_LAUNCH_SCORECARD.md`](POST_LAUNCH_SCORECARD.md) §«30/60/90 Milestone Scorecard».
 
 ---
 
-## Bottleneck Signals
+## إشارات الاختناق / Bottleneck signals
 
-Watch for:
-- Reply rate < 2% → rewrite opening
-- Demo booking rate < 20% from replies → shorten ask
-- Demo show rate < 60% → add 24h confirmation
-- Close rate < 10% → fix demo script or pricing
-- Payment completion < 60% → simplify checkout (once Moyasar active)
+عالِج أضيق نقطة في القمع أولًا:
 
-Fix narrowest funnel point first.
+- معدل الرد < 2% → أعد كتابة الافتتاحية
+- حجز تشخيص < 20% من الردود → اختصر الطلب
+- حضور التشخيص < 60% → أضف تأكيدًا قبل 24 ساعة
+- إغلاق Sprint < 10% → أصلح سكربت التشخيص أو السعر
+- اكتمال الدفع < 60% → بسّط الـ checkout (بعد تفعيل Moyasar)
+
+---
+
+## الأسبوعي / Weekly handoff
+
+كل أسبوع، تتغذّى مخرجات هذه الحلقة في **الاجتماع التشغيلي الأسبوعي**:
+[`../operating_rhythm/WEEKLY_OPERATING_MEETING.md`](../operating_rhythm/WEEKLY_OPERATING_MEETING.md)
+(3 قرارات CEO · 3 التزامات · 1 مخاطرة مُخفّضة · 1 proof مُقوّى · 1 شيء مُوقَف · مراجعة friction log).
+</content>
