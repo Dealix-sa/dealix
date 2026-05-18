@@ -91,17 +91,17 @@
 
 ## 🎯 الهدف
 
-**أول 999 ريال في الحساب خلال 14 يوم. 125k ر.س MRR بنهاية 2026. Seed round Q4 2026.**
+**أول 499 ريال (7-Day Revenue Proof Sprint) في الحساب خلال 14 يوم. 125k ر.س MRR بنهاية 2026. Seed round Q4 2026.**
 
 المسار:
 ```
 Railway 12د
-  → اختبار 1 ريال 2د
+  → اختبار دفع 2د
   → تواصل 20د
   → انتظار 3-7 أيام
   → Demo 30د
-  → Pilot 7 أيام
-  → Starter ✅
+  → 499 ريال — 7-Day Revenue Proof Sprint
+  → ترقية مُدارة ✅
   → 10 عملاء → LLC
   → 30k MRR → Seed conversations
   → 125k MRR → Close seed

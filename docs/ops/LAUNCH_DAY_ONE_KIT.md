@@ -15,9 +15,9 @@ Copy · paste · send · log · move on.
 ```
 السلام عليكم عبدالله،
 
-أنا سامي، أشتغل على Dealix — مندوب مبيعات AI بالعربي للشركات اللي عندها leads كثيرة وتحتاج تأهيل وحجز مواعيد أسرع.
+أنا سامي، أشتغل على Dealix — رادار عمليات الإيراد المحكوم بالعربي للشركات اللي عندها leads كثيرة وتحتاج تأهيل ومتابعة منظّمة.
 
-الفكرة بسيطة: يرد على العميل، يسأله أسئلة التأهيل، يحجز demo، ويجهز فريق المبيعات للصفقة.
+الفكرة بسيطة: يجهّز مسودة رد للعميل، يقترح أسئلة التأهيل، يجهّز اقتراح حجز demo — كله جاهز لموافقتك قبل أي إرسال.
 
 أبي أوريك تجربة 20 دقيقة على سيناريو قريب من Lucidya، بدون عرض بيع طويل.
 
@@ -35,11 +35,11 @@ Reply `SENT` to Claude after you click Send.
 ```
 أطلقنا Dealix 🚀
 
-Dealix هو مندوب مبيعات AI بالعربي للشركات اللي عندها leads كثيرة وتحتاج رد أسرع، تأهيل أفضل، وحجز مواعيد بدون ما تضيع الفرص.
+Dealix هو رادار عمليات الإيراد المحكوم بالعربي للشركات اللي عندها leads كثيرة وتحتاج متابعة منظّمة، تأهيل أفضل، وتجهيز مواعيد بدون ما تضيع الفرص.
 
-الفكرة بسيطة: العميل يترك بياناته → Dealix يرد عليه → يسأله أسئلة التأهيل → يحجز موعد → يجهز فريق المبيعات بالمعلومات المهمة.
+الفكرة بسيطة: العميل يترك بياناته → Dealix يجهّز مسودة رد → يقترح أسئلة التأهيل → يجهّز اقتراح حجز موعد → كله جاهز لموافقتك قبل الإرسال.
 
-نبدأ الآن بـ pilot يدوي/AI-assisted لأول الشركات، عشان نثبت القيمة بسرعة قبل أي تعقيد تقني.
+نبدأ الآن بـ 7-Day Revenue Proof Sprint بـ 499 ريال لأول الشركات، عشان نثبت القيمة بسرعة قبل أي تعقيد تقني.
 
 إذا عندك leads تضيع بسبب بطء الرد أو ضعف المتابعة، أقدر أوريك تجربة 20 دقيقة.
 
@@ -60,7 +60,7 @@ Reply `PUBLISHED + URL` after publishing.
 ```
 السلام عليكم،
 
-أنا سامي من Dealix — طبقة AI sales rep بالعربي تساعد الوكالات ترد على leads عملائها، تأهلهم، وتحجز مواعيد تلقائياً.
+أنا سامي من Dealix — رادار عمليات إيراد محكوم بالعربي يساعد الوكالات تجهّز مسودات رد لـ leads عملائها، تأهّلهم، وتجهّز اقتراحات حجز جاهزة للموافقة.
 
 اقتراح شراكة: تبيعونها فوق خدمتكم الحالية — setup 3,000 + 20-25% من MRR كل عميل دائم. 3-5 عملاء = 1,500-3,750 ريال شهري لكم بدون tech work.
 
@@ -84,7 +84,7 @@ Reply `PARTNER_SENT` after sending.
 
 من فترة أتابع توجه سلة لتمكين التجار.
 
-فكرة سريعة: Dealix = AI sales rep بالعربي الخليجي يخدم التاجر بعد البيع. هل تفكرون في عرضه كـ add-on app داخل سلة؟
+فكرة سريعة: Dealix = رادار عمليات الإيراد المحكوم بالعربي الخليجي يخدم التاجر بعد البيع. هل تفكرون في عرضه كـ add-on app داخل سلة؟
 التاجر يدفع شهرياً، سلة تأخذ commission (30%).
 
 70K+ تاجر = distribution غير مسبوق لشركة AI محلية.
@@ -122,7 +122,7 @@ Reply `EMAIL_SENT 3` after batch.
 متوسط الرد على lead جديد = 4 ساعات.
 خلال هذه الساعات، العميل قرّب المنافس.
 
-Dealix يرد خلال 45 ثانية بالعربي الخليجي.
+Dealix يجهّز لك مسودة رد متابعة بالعربي الخليجي جاهزة لموافقتك.
 
 dealix.me
 ```
@@ -131,9 +131,9 @@ dealix.me
 ```
 70% من leads في السعودية تمر عبر WhatsApp.
 80% من الشركات تستخدم موظف بشري يرد.
-100% من هؤلاء ينامون ليلاً.
+المتابعة تتأخر وتُكتب على عجل.
 
-AI sales rep عربي = الحل.
+رادار عمليات إيراد محكوم بالعربي يجهّز المسودات لموافقتك = الحل.
 dealix.me
 ```
 
@@ -155,7 +155,7 @@ For 3 warm contacts (friends/colleagues/ex-customers):
 
 ```
 السلام عليكم [الاسم]،
-أطلقت Dealix — AI sales rep بالعربي الخليجي. أبحث عن 3 founders سعوديين B2B أجرّب معهم pilot بريال لـ 7 أيام.
+أطلقت Dealix — رادار عمليات الإيراد المحكوم بالعربي الخليجي. أبحث عن 3 founders سعوديين B2B لـ 7-Day Revenue Proof Sprint بـ 499 ريال.
 تعرف أحد مناسب؟ referral commission 10% من MRR لـ 12 شهر.
 ```
 
@@ -166,7 +166,7 @@ Reply `REFERRAL_ASKED 3` after sending.
 ## 🟢 If anyone replies positively — First-Yes flow
 
 1. Respond within 30 min with: "تمام. خلّني أرسل لك Calendly للـ demo 20 دقيقة: https://calendly.com/sami-assiri11/dealix-demo"
-2. After demo → offer 7-day pilot (1 SAR): use the pilot offer text below
+2. After demo → offer the 7-Day Revenue Proof Sprint (499 SAR): use the Sprint offer text below
 3. Verbal yes → send payment message within 15 min
 4. Proof received → mark PAID + kickoff call booked within 4 hours
 5. Send `REPLY: <their message>` to Claude for classification + exact response
@@ -176,16 +176,16 @@ Reply `REFERRAL_ASKED 3` after sending.
 ## 💳 Manual Payment message (when prospect says yes)
 
 ```
-تمام، نقدر نبدأ بـ pilot بسيط لمدة 7 أيام.
+تمام، نبدأ بـ 7-Day Revenue Proof Sprint لمدة 7 أيام.
 
 النطاق:
 - نجهز سيناريو الرد والتأهيل
-- نتعامل مع 10-25 lead
-- نحجز المواعيد المناسبة
-- تقرير يومي مختصر
+- نجهّز مسودات متابعة لـ 10-25 lead جاهزة لموافقتك
+- نجهّز اقتراحات حجز المواعيد لاعتمادك
+- تقرير يومي مختصر + Proof Pack في اليوم 7
 - تعديلات حسب النتائج
 
-المبلغ: 1 ريال (رمزي — قابل للاسترداد)
+المبلغ: 499 ريال (دفعة واحدة — 7-Day Revenue Proof Sprint)
 طرق الدفع: تحويل بنكي / STC Pay / فاتورة يدوية
 
 IBAN: [ضع IBAN الحساب هنا]
@@ -203,7 +203,7 @@ Reply `PAYMENT_REQUESTED` after sending invoice. Reply `PAID` after proof receiv
 - Open `docs/sales-kit/dealix_demo_script_30min.md`
 - Open `docs/sales-kit/dealix_battlecards.md` for their sector
 - Rehearse 10 minutes before call
-- Bring: sample Arabic conversation, ROI framing, pilot offer
+- Bring: sample Arabic conversation, ROI framing, 7-Day Revenue Proof Sprint offer
 
 ---
 
@@ -211,8 +211,8 @@ Reply `PAYMENT_REQUESTED` after sending invoice. Reply `PAID` after proof receiv
 
 | They say | Reply |
 |----------|-------|
-| كم السعر؟ | "Pilot 1 ريال × 7 أيام بدون التزام. إذا اشتغل، Starter 999/شهر." |
-| عندنا CRM | "Dealix ما يستبدل CRM — يركب فوقه: يرد بالعربي، يأهّل، يسلّم للـ CRM." |
+| كم السعر؟ | "7-Day Revenue Proof Sprint بـ 499 ريال — نطاق محدد ومخرج حقيقي. بعد إثبات النتيجة نتكلم عن الترقية." |
+| عندنا CRM | "Dealix ما يستبدل CRM — يركب فوقه: يجهّز مسودات رد بالعربي للموافقة، يأهّل، يسجّل في الـ CRM." |
 | هل عربي طبيعي؟ | "جرّبه 20 دقيقة على سيناريو شغلكم. لو ما أعجبك، ما نكمل." |
 | لاحقاً | "تمام، متى بالظبط؟ سأرجع لك في نفس اليوم." |
 | أرسل تفاصيل | "One-pager في dealix.me. الأفضل 20 دقيقة demo — أخصّصه لشركتكم." |

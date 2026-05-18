@@ -9,9 +9,9 @@ Each lane has its own `top50_<segment>.csv` in this folder.
 **Pool size:** 2,042 deduped accounts
 **Day 1 quota:** 8 calls
 
-**Pain:** A real-estate inbound lead waits an average of 11 hours before first reply in Saudi B2B. Dealix replies in 45 seconds, captures budget + location + viewing time, and routes to the closer.
+**Pain:** A real-estate inbound lead waits an average of 11 hours before first reply in Saudi B2B. Dealix drafts an Arabic follow-up ready for the team's approval, captures budget + location + viewing time, and routes to the closer.
 
-**Pilot offer:** 7 days × 25 leads × 999 SAR. Money-back if Dealix misses a single Arabic reply.
+**Sprint offer:** 7-Day Revenue Proof Sprint — 499 SAR. Real Proof Pack delivered on Day 7; every draft stays approval-first.
 
 **Channels:** phone_task (primary), email (only when business domain), in-person follow-up after first reply.
 
@@ -23,7 +23,7 @@ Each lane has its own `top50_<segment>.csv` in this folder.
 
 **Pain:** Quote requests scatter across WhatsApp, calls, email; ~30% leak before pricing engineer replies. Dealix gathers specs + budget + timeline + decision-maker upfront, surfaces the ready-to-quote queue.
 
-**Pilot offer:** 7 days × 50 RFQ → 1,500 SAR. Refund if zero responded inside 1h.
+**Sprint offer:** 7-Day Revenue Proof Sprint — 499 SAR; after proof, Data-to-Revenue Pack (1,500 SAR) for full RFQ pipeline analysis.
 
 **Channels:** phone_task (primary). Construction firms rarely answer cold email.
 
@@ -33,9 +33,9 @@ Each lane has its own `top50_<segment>.csv` in this folder.
 **Pool size:** 675 deduped (mix of fنادق + قاعات حفلات + تأجير حفلات)
 **Day 1 quota:** 4 calls
 
-**Pain:** A wedding-hall inquiry that waits 30 minutes loses to the next hall. Dealix replies instantly, captures date + headcount + package + budget, and books a viewing on the team calendar.
+**Pain:** A wedding-hall inquiry that waits 30 minutes loses to the next hall. Dealix drafts an Arabic reply ready for approval, captures date + headcount + package + budget, and prepares a viewing-booking suggestion on the team calendar.
 
-**Pilot offer:** 999 SAR for 7 days. Replace 1 receptionist shift with Dealix Arabic auto-reply.
+**Sprint offer:** 7-Day Revenue Proof Sprint — 499 SAR. Dealix prepares Arabic follow-up drafts; a human approves before any send.
 
 **Channels:** phone_task + email (when business domain).
 
@@ -47,7 +47,7 @@ Each lane has its own `top50_<segment>.csv` in this folder.
 
 **Pain:** Catering / franchise / branch inquiries get lost between WhatsApp staff phones. Dealix sorts inquiries by serious vs. tire-kicker, books real prospects with management.
 
-**Pilot offer:** 499 SAR pilot. Auto-reply to 50 inbound restaurant inquiries.
+**Sprint offer:** 7-Day Revenue Proof Sprint — 499 SAR. Dealix drafts approval-ready Arabic replies for inbound restaurant inquiries.
 
 **Channels:** phone_task primary. Email second.
 
@@ -57,9 +57,9 @@ Each lane has its own `top50_<segment>.csv` in this folder.
 **Pool size:** 570 deduped (شحن + نقل across all major cities)
 **Day 1 quota:** 4 calls
 
-**Pain:** RFQ for shipping is high-frequency, low-touch. Slow Arabic response = the prospect is gone in 10 minutes. Dealix gathers weight + destination + date + cargo type, opens a CRM ticket.
+**Pain:** RFQ for shipping is high-frequency, low-touch. Slow Arabic response = the prospect is gone in 10 minutes. Dealix gathers weight + destination + date + cargo type, drafts an approval-ready Arabic reply, and opens a CRM ticket.
 
-**Pilot offer:** 999 SAR / 7 days. Money-back if RFQ response time doesn't drop below 5 minutes.
+**Sprint offer:** 7-Day Revenue Proof Sprint — 499 SAR. Real Proof Pack on Day 7; estimated outcomes only, never guaranteed.
 
 **Channels:** phone_task primary. Some logistics co's answer email.
 
@@ -69,9 +69,9 @@ Each lane has its own `top50_<segment>.csv` in this folder.
 **Pool size:** 35 deduped
 **Day 1 quota:** 2 (use as ICP-match for product research, not just sales)
 
-**Pain:** They sell SaaS in Saudi but don't have an Arabic-native AI sales rep. Dealix is in their stack.
+**Pain:** They sell SaaS in Saudi but don't have an Arabic-native governed revenue-ops radar. Dealix is in their stack.
 
-**Pilot offer:** Free pilot in exchange for design partnership + case study.
+**Sprint offer:** 7-Day Revenue Proof Sprint at a design-partner rate in exchange for a case-safe summary.
 
 **Channels:** LinkedIn manual research → email (most have business domains).
 

@@ -10,7 +10,7 @@
 | `saudi_directory_normalized.csv` | All 6,957 unique Saudi B2B companies after dedupe + scoring. Master record. |
 | `import_payload_high_fit.json` | 1,000-row payload to POST to `/api/v1/data/import` after deploy. |
 | `day1_scorecard.json` | Pipeline metrics for the build. |
-| `PRICING_AND_PACKAGES.md` | Pilot 499 SAR → Starter 999 SAR → Pro 5K SAR ladder. |
+| `PRICING_AND_PACKAGES.md` | 7-Day Revenue Proof Sprint 499 SAR → Data-to-Revenue Pack 1,500 SAR → Managed Revenue Ops 2,999–4,999 SAR/mo ladder. |
 
 ## Queue split (100 accounts)
 
@@ -33,7 +33,7 @@ Open `day1_outreach_queue.csv` in Excel. Sort by `total_score` descending.
 ### 9:30 — Top 5 phone calls
 First 5 P2 real-estate Riyadh accounts. Script (Khaliji Arabic):
 
-> السلام عليكم، أنا سامي من Dealix. اتصلت لأن نشتغل على AI sales rep بالعربي يخدم شركات التطوير العقاري السعودية — يرد على lead خلال 45 ثانية بدل ما يعلق نص يوم.
+> السلام عليكم، أنا سامي من Dealix. اتصلت لأن نشتغل على رادار عمليات إيراد محكوم بالعربي يخدم شركات التطوير العقاري السعودية — يجهّز مسودة رد ومتابعة لكل lead جاهزة لموافقتكم بدل ما تُكتب على عجل.
 > هل تواجهون مشكلة وقت الرد على leads الـ inbound؟
 
 **Stop after 5 calls.** Log results in `pipeline_tracker.csv` (create if missing).
@@ -48,7 +48,7 @@ Pick 1 Saudi SaaS founder from the queue. Send a personalized note referencing t
 
 ### 16:00 — Pricing-page demo
 Walk a real prospect through the demo using `PRICING_AND_PACKAGES.md` as reference.
-Lead with: *"Pilot 499 ريال، 7 أيام، نرد على leadsكم بدلاً منكم. لو ما اقتنعتم — استرجاع كامل خلال 3 أيام."*
+Lead with: *"7-Day Revenue Proof Sprint بـ 499 ريال — نجهّز مسودات رد ومتابعة لـ leadsكم جاهزة لموافقتكم، وتستلمون Proof Pack حقيقي في اليوم 7."*
 
 ### 18:00 — End-of-day scorecard
 Update `day1_scorecard.json` with:

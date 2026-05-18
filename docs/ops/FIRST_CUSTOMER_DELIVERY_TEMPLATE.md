@@ -142,9 +142,9 @@ Date | Lead Source | Lead Name | Contact | Qualification Score | Demo Booked? | 
 
 ### Daily for this customer (30-60 min each)
 - Morning: Check customer's incoming leads (forwarded to Sami)
-- Within 1 hour: Reply to each lead using Dealix BANT framework manually
-  - Use Claude or own AI to help draft responses in < 45 seconds
-  - Be the "Dealix AI" until product is automated
+- Within business hours: Draft a reply to each lead using the Dealix BANT framework
+  - Use the Dealix radar to prepare a draft reply ready for founder approval
+  - Operate the governed revenue-ops radar manually until the product handles drafting end-to-end
 - Book demos in customer's Calendly
 - Send qualification summary to customer's team via Slack/email
 - Evening: Update per-customer tracking sheet
@@ -202,7 +202,7 @@ Demos attended: __ (%__)
 Pipeline value: __ SAR
 
 ⏱️ TIMING
-Avg first response: __ min (target: <60 sec after Moyasar automation)
+Avg first response: __ min (draft prepared for approval; no auto-send)
 Avg qualification: __ min
 Demo booking rate: __%
 
@@ -238,7 +238,7 @@ When self-serve dashboard is ready (post-Moyasar + post-10 customers):
 
 ## Refund / Cancellation Path
 
-**Pilot (1 SAR, 7 days):** Unconditional refund if requested. Bank-to-bank within 7 days.
+**7-Day Revenue Proof Sprint (499 SAR):** Unconditional refund if requested. Bank-to-bank within 7 days.
 
 **Paid month (Starter/Growth/Scale):**
 - First 30 days: Prorated refund
@@ -268,7 +268,7 @@ When self-serve dashboard is ready (post-Moyasar + post-10 customers):
 - Promise features not in product
 - Commit to response times you can't keep manually
 - Take on more than 3 customers manually before automation
-- Discount below Pilot 1 SAR floor
+- Discount below the 499 SAR Sprint floor
 - Skip the intake form (it makes manual work 10x harder without context)
 
 ---

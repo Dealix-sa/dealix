@@ -1,28 +1,29 @@
-# Dealix Managed Pilot — 7-day offer
+# Dealix — 7-Day Revenue Proof Sprint offer
 
-The first revenue motion. Sami runs Dealix manually behind the scenes for 7 days, customer pays a small entry fee, then upgrades to Starter (999 SAR/mo).
+The first revenue motion. Sami runs Dealix behind the scenes for 7 days — preparing drafts for the customer's approval — the customer pays the 499 SAR entry fee, then upgrades to Data-to-Revenue Pack or Managed Revenue Ops after proof.
 
 ## Offer (one-pager Sami sends to prospect)
 
-> **Dealix — Managed Pilot 7 Days × 499 SAR**
+> **Dealix — 7-Day Revenue Proof Sprint × 499 SAR**
 >
-> نحن نشغل Dealix على leadsكم لمدة 7 أيام كاملة، نرد بالعربي الخليجي خلال 45 ثانية، نأخذ التفاصيل، ونسلم لكم العملاء المؤهلين جاهزين للإغلاق.
+> نشغّل Dealix على leadsكم لمدة 7 أيام: نجهّز مسودات رد ومتابعة بالعربي الخليجي جاهزة لموافقتكم، نأخذ التفاصيل، ونسلّم Proof Pack حقيقي في اليوم 7.
 >
 > **ما يشمله:**
 > - استلام leads من website / WhatsApp / inbound email
-> - رد عربي خليجي خلال 45 ثانية
+> - مسودة رد عربي خليجي جاهزة لموافقتكم لكل lead
 > - تأهيل (الميزانية، الموقع، الجدول الزمني)
-> - حجز موعد مع مندوبكم في Calendly/Hubspot
-> - تقرير يومي بكل lead + الحالة
+> - اقتراح حجز موعد مع مندوبكم في Calendly/Hubspot لاعتمادكم
+> - تقرير يومي بكل lead + الحالة، وProof Pack في اليوم 7
 >
 > **ما لا يشمله (نحدد بوضوح):**
+> - أي إرسال خارجي بدون موافقتكم — لا إرسال تلقائي إطلاقاً
 > - رسائل خارجة عشوائية
 > - واتساب بارد
 > - LinkedIn scraping
 >
-> **السعر:** 499 ريال × 7 أيام (تشمل ضريبة القيمة المضافة).
-> **الاسترجاع:** 100% خلال 3 أيام إذا لم يصل أي رد عربي.
-> **بعد 7 أيام:** Starter بـ 999 ريال/شهر، أو إنهاء بدون التزام.
+> **السعر:** 499 ريال — دفعة واحدة لـ Sprint مدته 7 أيام (تشمل ضريبة القيمة المضافة).
+> **المخرج:** Proof Pack حقيقي + 5 مسودات رسائل جاهزة للموافقة.
+> **بعد 7 أيام:** ترقية اختيارية إلى Data-to-Revenue Pack (1,500 ريال) أو Managed Revenue Ops (2,999–4,999 ريال/شهر)، أو إنهاء بدون التزام.
 
 ## How Sami delivers it manually (first 10 customers)
 
@@ -38,61 +39,62 @@ The first revenue motion. Sami runs Dealix manually behind the scenes for 7 days
 - Get sample of 5 historical leads + the responses they got
 - Set Day-7 review date
 
-**Day 2-6 — Manual delivery:**
-- Every incoming lead → Sami reads → crafts Arabic reply (uses Dealix prompt as draft) → sends from customer's channel → logs
+**Day 2-6 — Approval-first delivery:**
+- Every incoming lead → Dealix drafts Arabic reply → Sami reviews → customer approves → only then sent from the customer's channel → logs
 - Daily 10-min check-in via Slack/WhatsApp
 - Capture: which messages converted, which objections, customer reaction
 
-**Day 7 — Pilot review:**
+**Day 7 — Sprint review:**
 - 30-min review call
-- Share: leads_handled, demos_booked, response_time_avg, customer_quote
-- Upgrade ask: "تكمل Starter بـ 999/شهر من الاثنين؟"
+- Share the Proof Pack: leads_handled, demos suggested, drafts approved, customer_quote
+- Upgrade ask: "نرتقي إلى Data-to-Revenue Pack أو Managed Revenue Ops؟"
 - If no → ask: "ما اللي منع الاستمرار؟" → log
 
-## When pilot succeeds
+## When the Sprint succeeds
 
 | Metric | Day 7 target |
 |---|---:|
 | Leads handled | ≥ 10 |
-| Avg response time | ≤ 60 seconds |
-| Demos booked | ≥ 2 |
+| Approved follow-up drafts delivered | ≥ 5 |
+| Booking suggestions prepared | ≥ 2 |
 | Customer NPS | ≥ 8/10 |
 | Upgrade ask outcome | 50%+ convert |
 
 ## Refund triggers (full 499 SAR back)
 
-- Dealix replied to fewer than 50% of incoming Arabic leads
-- Avg response time > 5 minutes for 3+ consecutive days
-- Customer reports "the Arabic was wrong" (manual quality issue)
+- Dealix prepared approved-ready drafts for fewer than 50% of incoming Arabic leads
+- No Proof Pack delivered by Day 7
+- Customer reports "the Arabic was wrong" (draft quality issue)
 - Customer was not contactable for 3 consecutive days (their fault, not ours, but refund anyway for goodwill)
 
-## Pilot → Starter upgrade flow
+## Sprint → upgrade flow
 
 **Day 5 soft ask:**
 
-> أيام قليلة باقية في pilot. بناءً على النتائج حتى الآن، هل تتوقع الاستمرار؟
+> أيام قليلة باقية في الـ Sprint. بناءً على النتائج حتى الآن، هل تتوقع الترقية؟
 
 **Day 7 firm ask:**
 
-> الـ pilot انتهى اليوم. النتائج كانت [X leads, Y demos, Z response time].
-> تبغى تكمل Starter (999 ريال/شهر) من الاثنين؟
+> الـ Sprint انتهى اليوم، وهذا الـ Proof Pack: [X leads، Y مسودة معتمدة، Z اقتراح حجز].
+> نرتقي إلى Data-to-Revenue Pack (1,500 ريال) أو Managed Revenue Ops (2,999–4,999 ريال/شهر)؟
 
-If yes → switch to Starter billing in Moyasar, kickoff Week 2 onboarding.
+If yes → set up the next-rung billing in Moyasar, kickoff Week 2 onboarding.
 If no → graceful close: "شكرًا، لو غيرت رأيك خلال 30 يوم نحتفظ لك بنفس السعر."
 
-## What pilot does NOT include
+## What the Sprint does NOT include
 
 - No custom integrations beyond standard CRM (HubSpot/Salesforce/Zoho/Bitrix/Webhook)
-- No prompt customization per customer in pilot — only after first month of Starter
+- No prompt customization per customer in the Sprint — only after upgrade
 - No commitment to any specific number of leads
+- No auto-send: every external message requires customer approval
 - No outbound cold messaging from Dealix
-- No data export of pilot leads after close (customer keeps their CRM)
+- No data export of Sprint leads after close (customer keeps their CRM)
 
-## Pilot risk register
+## Sprint risk register
 
 | Risk | Mitigation |
 |---|---|
-| Customer expects autonomous, gets manual | Set expectation upfront ("Sami runs it manually for first 10 customers") |
+| Customer expects auto-send, gets approval-first | Set expectation upfront ("Dealix drafts; a human approves before any send — always") |
 | Customer's Arabic-quality threshold higher than ours | Daily review with customer, adjust prompts |
 | Customer ghosts after Day 1 | Daily check-in, flag at Day 3 if silent |
 | Customer extracts our prompt and copies it | Include light NDA in confirmation email |

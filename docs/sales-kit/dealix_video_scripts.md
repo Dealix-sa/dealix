@@ -22,7 +22,7 @@
 [الثانية 3-8] وجه المؤسس يظهر:
 "السلام عليكم، أنا سامي."
 "مؤسس Dealix."
-"مندوب مبيعات AI بالعربي الخليجي."
+"رادار عمليات الإيراد المحكوم بالعربي الخليجي."
 
 [الثانية 8-20] Split-screen:
   اليسار: موظف متعب أمام الكمبيوتر
@@ -32,22 +32,22 @@
 يشوف 50 lead من أمس، ما قدر يرد على أحد."
 
 [الثانية 20-30] Screen recording:
-Dealix يستقبل lead ويرد خلال 45 ثانية بالعربي
+Dealix يستقبل lead ويجهّز مسودة رد بالعربي جاهزة للموافقة
 
-"Dealix يرد على كل lead خلال 45 ثانية."
-"يسأل أسئلة التأهيل."
-"يحجز demo في تقويم فريقك."
+"Dealix يجهّز لكل lead مسودة رد متابعة جاهزة لموافقتك."
+"يقترح أسئلة التأهيل."
+"يجهّز اقتراح حجز demo في تقويم فريقك لاعتمادك."
 
 [الثانية 30-40] النتائج على الشاشة:
-✓ 38% معدل تأهيل (vs 11%)
-✓ 12 ساعة BDR محرّرة أسبوعياً
-✓ 0 leads ضائعة
+✓ تأهيل أوضح للـ leads
+✓ وقت متكرر أقل لكل BDR
+✓ متابعة أكثر اتساقاً
 
-"نتائج أول عميل: [أرقام حقيقية]"
+"نتائج تقديرية — القيمة التقديرية ليست قيمة مُتحقَّقة."
 
 [الثانية 40-55] CTA قوي:
-"Pilot لأسبوع بـ 1 ريال."
-"لو ما أعجبك، نرد لك الريال."
+"7-Day Revenue Proof Sprint بـ 499 ريال."
+"نطاق محدد ومخرج حقيقي خلال 7 أيام."
 "ابدأ اليوم: dealix.ai"
 
 [الثانية 55-60] End card:
@@ -107,23 +107,23 @@ Visual: أرقام متحركة:
 Visual: chart يتحول من أحمر لأخضر
 
 "لكن ماذا لو..."
-"كل lead يُرد عليه خلال 45 ثانية، 24/7؟"
+"كل lead عنده مسودة رد متابعة جاهزة لموافقتك؟"
 "كل محادثة تبدأ بسؤال ذكي بالعربي الخليجي؟"
-"كل lead مؤهّل ومحجوز له demo — قبل ما تفتح جوالك؟"
+"كل lead مؤهّل ومعه اقتراح حجز demo جاهز لاعتمادك؟"
 
 [1:00-1:40] Dealix Demo Live
 Visual: Screen recording لـ Dealix in action
 
 "هذا Dealix."
-"مندوب مبيعات AI بالعربي الخليجي."
+"رادار عمليات الإيراد المحكوم بالعربي الخليجي."
 "بنيته لشركات سعودية تواجه هذه المشكلة بالضبط."
 
 [عرض المحادثة:]
 - Lead يدخل
-- Dealix يرد فوراً بالعربي
-- يسأل 8 أسئلة تأهيل ذكية
+- Dealix يجهّز مسودة رد بالعربي جاهزة للموافقة
+- يقترح 8 أسئلة تأهيل ذكية
 - يصنّف الـ lead (A/B/C/D)
-- يحجز demo تلقائياً
+- يجهّز اقتراح حجز demo لاعتمادك
 
 [1:40-2:15] التكاملات والنتائج
 Visual: logos: HubSpot, Zoho, Calendly, WhatsApp
@@ -132,22 +132,22 @@ Visual: logos: HubSpot, Zoho, Calendly, WhatsApp
 HubSpot، Zoho، Calendly، WhatsApp.
 خلال 48 ساعة من الاشتراك، Dealix يعمل لحسابك."
 
-"عملاؤنا الأوائل يرون:
-- 38% معدل تأهيل (ارتفاع من 11%)
-- 12 ساعة/أسبوع موفّرة لكل BDR
-- Zero leads ضائعة"
+"الأنماط المتوقعة (تقديرية، لا ضمان):
+- تأهيل أوضح للـ leads
+- وقت متكرر أقل لكل BDR
+- متابعة أكثر اتساقاً"
 
 [2:15-2:45] الأسعار + العرض
-Visual: 3 باقات على الشاشة
+Visual: سلم الخدمات على الشاشة
 
-"3 باقات، ما تحتاج بناء داخلي، ما تحتاج 6 شهور setup.
-Starter: 999 ريال/شهر.
-Growth: 2,999 ريال/شهر.
-Scale: 7,999 ريال/شهر."
+"ابدأ بإثبات، ثم ارتقِ بعد نتيجة موثقة.
+7-Day Revenue Proof Sprint: 499 ريال.
+Data-to-Revenue Pack: 1,500 ريال.
+Managed Revenue Ops: 2,999–4,999 ريال/شهر."
 
-"بدون التزام طويل.
-جرّب pilot أسبوع بـ 1 ريال.
-لو ما أعجبك، نرد لك الريال."
+"نقطة الدخول واضحة:
+7-Day Revenue Proof Sprint بـ 499 ريال —
+نطاق محدد ومخرج حقيقي خلال 7 أيام."
 
 [2:45-3:00] CTA
 Visual: founder يظهر، rustic office في الرياض
@@ -210,8 +210,8 @@ dealix.ai — احجز demo اليوم."
 - ROI calculation
 
 #### Chapter 5: Pricing & Packaging (7:30-8:30)
-- 3 tiers + pilot offer
-- What's included in each
+- Service ladder starting with the 499 SAR 7-Day Revenue Proof Sprint
+- What's included in each rung
 - When to choose which
 - Enterprise custom
 
@@ -224,7 +224,7 @@ dealix.ai — احجز demo اليوم."
 
 #### Chapter 7: Getting Started (9:30-10:00)
 - Book a demo (Calendly link)
-- Free pilot offer
+- 7-Day Revenue Proof Sprint — 499 SAR entry offer
 - Contact info
 - "Founder-led, reachable directly"
 
@@ -319,7 +319,7 @@ Try different openings on 60-sec videos:
 2. **Question hook:** "كم عميل ضاع عندك هذا الأسبوع؟"
 3. **Story hook:** "قبل شهر، فقدت صفقة 200K بسبب رد متأخر..."
 4. **Contrast hook:** "في أمريكا، chatbots تعمل. في السعودية، تفشل. اليوم..."
-5. **Bold claim:** "Dealix = مندوب مبيعات 24/7 بـ 999 ريال/شهر."
+5. **Bold claim:** "Dealix = رادار عمليات الإيراد المحكوم — ابدأ بـ 7-Day Revenue Proof Sprint بـ 499 ريال."
 
 **Test, measure, double down على الأعلى retention.**
 

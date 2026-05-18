@@ -262,7 +262,7 @@ https://dealix.sa
 CTA: حدد موعد demo قبل ازدحام الـ launch week.
 
 ### N02 — Launch day (T-0)
-**Subject:** 🚀 Dealix متاح الآن — ابدأ بـ 1 ريال
+**Subject:** 🚀 Dealix متاح الآن — ابدأ بـ 7-Day Revenue Proof Sprint (499 ريال)
 
 محتوى: 600 كلمة، تشمل:
 - إعلان قصير

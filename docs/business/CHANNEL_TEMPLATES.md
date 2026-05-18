@@ -9,11 +9,11 @@ All channels: `approval_required=True` for first 30 days.
 
 > السلام عليكم، معك سامي من Dealix. اتصل في أوقاتكم؟
 > [انتظر الرد]
-> أنا أشتغل على AI sales rep بالعربي يخدم شركات [القطاع] السعودية — يرد على lead خلال 45 ثانية بدلاً من نصف يوم. لاحظنا [الشركة] في [المدينة] فحبيت أتأكد: هل تواجهون مشكلة وقت الرد على leads الـ inbound؟
+> أنا أشتغل على رادار عمليات إيراد محكوم بالعربي يخدم شركات [القطاع] السعودية — يجهّز مسودة رد ومتابعة لكل lead جاهزة لموافقتكم بدل أن تُكتب على عجل. لاحظنا [الشركة] في [المدينة] فحبيت أتأكد: هل تواجهون مشكلة وقت الرد على leads الـ inbound؟
 
 **If yes:**
 
-> ممتاز. عندنا Pilot 7 أيام بـ 499 ريال — نشغل Dealix على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون. لو ما أعجبكم، استرجاع 100%. ودك 20 دقيقة هذا الأسبوع نوضح كيف يطبق على وضعكم؟
+> ممتاز. عندنا 7-Day Revenue Proof Sprint بـ 499 ريال — نشغّل Dealix على leadsكم، نجهّز مسودات لموافقتكم، وتستلمون Proof Pack حقيقي في اليوم 7، ثم تقرّرون. ودك 20 دقيقة هذا الأسبوع نوضح كيف يطبق على وضعكم؟
 
 **If no / not interested:**
 
@@ -28,9 +28,9 @@ All channels: `approval_required=True` for first 30 days.
 ## 2. Cold Email — with mandatory opt-out
 
 **Subject lines (A/B test):**
-- `Dealix — AI sales rep بالعربي يرد خلال 45 ثانية`
+- `Dealix — رادار عمليات الإيراد المحكوم بالعربي يجهّز مسودات متابعتكم`
 - `[الشركة] — لا تخسرون leads بسبب وقت الرد`
-- `Pilot 7 أيام بـ 499 ريال لشركات العقار السعودية`
+- `7-Day Revenue Proof Sprint بـ 499 ريال لشركات العقار السعودية`
 
 **Body (Khaliji):**
 
@@ -38,15 +38,14 @@ All channels: `approval_required=True` for first 30 days.
 السلام عليكم {الشركة},
 
 كل lead عقاري متأخر دقيقة = احتمال خسارة العميل لمنافس.
-Dealix يرد بالعربي الخليجي خلال 45 ثانية، يأخذ:
+Dealix يجهّز لكم مسودة رد بالعربي الخليجي جاهزة للموافقة، تأخذ:
 - الميزانية
 - الموقع
 - موعد المعاينة
-ثم يسلم العميل المؤهل لمندوبكم جاهز للإغلاق.
+ثم تعتمدونها ويُسلَّم العميل المؤهل لمندوبكم جاهزاً للإغلاق.
 
-عرضنا الافتتاحي:
-Pilot 7 أيام بـ 499 ريال — نشغل Dealix على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون.
-لو ما اقتنعتم — استرجاع كامل 100%.
+عرض الدخول:
+7-Day Revenue Proof Sprint بـ 499 ريال — نشغّل Dealix على leadsكم، نجهّز مسودات لموافقتكم، وتستلمون Proof Pack حقيقي في اليوم 7.
 
 تناسبكم 20 دقيقة هذا الأسبوع؟
 📅 https://calendly.com/sami-assiri11/dealix-demo
@@ -93,7 +92,7 @@ LinkedIn forbids automation. Dealix uses LinkedIn for:
 أهلاً {الاسم},
 
 لاحظت [signal personalized — e.g., funding round, hiring sales, recent post about Arabic CX].
-نحن نبني Dealix — AI sales rep بالعربي الخليجي يرد على leads خلال 45 ثانية.
+نحن نبني Dealix — رادار عمليات الإيراد المحكوم بالعربي الخليجي يجهّز مسودات رد ومتابعة لـ leads جاهزة للموافقة.
 هل عندك دقيقة هذا الأسبوع نتكلم؟
 
 سامي
@@ -108,19 +107,19 @@ LinkedIn forbids automation. Dealix uses LinkedIn for:
 
 After `GOOGLE_LEAD_FORM_WEBHOOK_KEY` is set:
 - Customer's Google Ads lead form → webhook to `/api/v1/integrations/google-lead-form`
-- Dealix stores + responds in Arabic within 45 seconds
-- This is the autonomous channel customers PAY for.
+- Dealix stores the lead and drafts an Arabic reply ready for the customer's approval
+- Nothing is sent externally without an explicit human approval.
 
 ## 6. Meta Lead Form (post-deploy)
 
 Same pattern as Google Lead Form:
 - `/api/v1/integrations/meta-lead-form`
 - Pull leads from Facebook/Instagram lead ads
-- Respond in Arabic within 45 seconds.
+- Draft an Arabic reply ready for approval — no auto-send.
 
-## 7. Phone Call Auto-Routing (Pilot Pro tier)
+## 7. Phone Call Routing (Managed Revenue Ops tier)
 
-For Pilot Pro customers: incoming missed call → Dealix sends Arabic SMS within 2 minutes asking what they need, books a callback if it's a real lead.
+For Managed Revenue Ops customers: incoming missed call → Dealix drafts an Arabic SMS asking what they need and prepares a callback suggestion — the customer approves before anything is sent.
 
 ## Channel × Sector Decision Matrix
 

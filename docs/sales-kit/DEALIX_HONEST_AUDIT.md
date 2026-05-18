@@ -1,3 +1,6 @@
+> **ملاحظة محرّر — لقطة تاريخية مُتجاوَزة / Editor's note — superseded historical snapshot.** هذه الوثيقة مؤرّخة أبريل 2026 وتُحفظ كسجل تاريخي. لا تعكس العقيدة الحالية. العقيدة المعتمدة الآن: Dealix هو رادار عمليات الإيراد المحكوم — يجهّز مسودات للموافقة البشرية ولا يرسل تلقائياً — وعرض الدخول هو 7-Day Revenue Proof Sprint بسعر 499 ريال. راجع `docs/OFFER_LADDER_AND_PRICING.md`.
+> This document is dated April 2026 and is kept as a historical record. It does not reflect current doctrine. Current canonical doctrine: Dealix is a governed revenue-ops radar — it drafts for human approval and never auto-sends — and the entry offer is the 499 SAR 7-Day Revenue Proof Sprint. See `docs/OFFER_LADDER_AND_PRICING.md`.
+
 # 🔍 Dealix — Audit صادق (100-Point Checklist)
 
 **تاريخ الفحص:** 23 أبريل 2026

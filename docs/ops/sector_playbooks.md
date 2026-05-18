@@ -1,6 +1,6 @@
 # Dealix Saudi Sector Playbooks
 
-**For each sector: ICP, typical pain, proof angle, opening line template, first 3 questions Dealix AI should ask a lead, pricing tier fit.**
+**For each sector: ICP, typical pain, proof angle, opening line template, first 3 questions the Dealix governed revenue-ops radar should draft for a lead, pricing tier fit.**
 
 ---
 
@@ -13,14 +13,14 @@
 **Proof angle:** Series A/B/C startups lose 20-30% of leads in the first 4 hours of silence.
 
 **Opening line template:**
-> "الشركات السعودية B2B اللي تجمع $10M+ تواجه نفس المشكلة: فريق مبيعات بطيء في الرد بسبب LinkedIn/email/forms ما يتزامنون. Dealix يرد خلال 45 ثانية بالعربي على كل المنصات."
+> "الشركات السعودية B2B اللي تجمع $10M+ تواجه نفس المشكلة: متابعة الـ leads تتأخّر لأن LinkedIn/email/forms ما يتزامنون. Dealix يجهّز مسودة ردّ ومتابعة بالعربي جاهزة لموافقة فريقك على كل المنصات."
 
-**First 3 Dealix AI questions on a lead:**
+**First 3 questions the Dealix radar drafts for a lead:**
 1. كم موظف sales / BDR عندكم حالياً؟
 2. كم lead شهرياً من inbound؟
 3. متوسط وقت الرد على lead جديد كم؟
 
-**Tier fit:** Growth (2,999) → Scale (7,999).
+**Tier fit:** 7-Day Revenue Proof Sprint (499 SAR) → Managed Revenue Ops → Executive Command Center.
 
 ---
 
@@ -33,14 +33,14 @@
 **Proof angle:** Foodics + ChowNow دراسات: الرد خلال 10 دقائق = 3× conversion.
 
 **Opening line template:**
-> "مطاعم 5+ فروع في السعودية تستقبل 50-200 استفسار franchise أو supplier شهرياً. اللي يرد في 45 ثانية بالعربي يوقّع أول. Dealix يحمي هذه الـ leads."
+> "مطاعم 5+ فروع في السعودية تستقبل 50-200 استفسار franchise أو supplier شهرياً. المتابعة المنظّمة بالعربي تحمي هذه الفرص. Dealix يجهّز مسودات ردود ومتابعة جاهزة لموافقتك على هذه الـ leads."
 
-**First 3 Dealix AI questions:**
+**First 3 questions the Dealix radar drafts:**
 1. استفسارك عن franchise، supplier، أو event?
 2. منطقتك والميزانية التقريبية؟
 3. متى تبغى تبدأ؟
 
-**Tier fit:** Starter (999) → Growth.
+**Tier fit:** 7-Day Revenue Proof Sprint (499 SAR) → Managed Revenue Ops.
 
 ---
 
@@ -55,12 +55,12 @@
 **Opening line template:**
 > "في العقار، 70% من الـ WhatsApp inquiries ما هم buyers جادين. sales agent يصرف نصف يومه مع tire-kickers. Dealix يفرز قبل ما يوصل للـ agent."
 
-**First 3 Dealix AI questions:**
+**First 3 questions the Dealix radar drafts:**
 1. هل تبغى شراء أو استئجار أو استثمار؟
 2. الميزانية / العائد المتوقع؟
 3. متى تبغى تنتقل / تستلم / تبدأ الاستثمار؟
 
-**Tier fit:** Growth → Scale.
+**Tier fit:** 7-Day Revenue Proof Sprint (499 SAR) → Managed Revenue Ops → Executive Command Center.
 
 ---
 
@@ -73,14 +73,14 @@
 **Proof angle:** 60% من appointments تحجز في أوقات الليل والعطلات.
 
 **Opening line template:**
-> "العيادات السعودية تفقد نصف الحجوزات الممكنة لأن inquiries تيجي ليلاً وما في من يرد. Dealix AI يحجز أثناء الليل، يؤكد مع المريض، ويوصلك قائمة جاهزة الصباح."
+> "العيادات السعودية تفقد نصف الحجوزات الممكنة لأن inquiries تيجي ليلاً وما في متابعة منظّمة. Dealix يجهّز مسودات ردود واقتراح حجز جاهزة لموافقتك، فتوصلك قائمة جاهزة الصباح."
 
-**First 3 Dealix AI questions:**
+**First 3 questions the Dealix radar drafts:**
 1. إيش الخدمة المطلوبة؟
 2. أول موعد مناسب عندك؟
 3. تفضل استشارة حضور أو أونلاين؟
 
-**Tier fit:** Starter → Growth.
+**Tier fit:** 7-Day Revenue Proof Sprint (499 SAR) → Managed Revenue Ops.
 
 ---
 
@@ -93,14 +93,14 @@
 **Proof angle:** Peak season bottleneck = lost enrollments = lost year's revenue.
 
 **Opening line template:**
-> "موسم التسجيل في المدارس السعودية = 3 أسابيع ضاغطة. Dealix AI يجاوب على 200 ولي أمر يومياً، يؤهلهم، ويحجز مقابلات القبول — بدون ما فريقك يتكسر."
+> "موسم التسجيل في المدارس السعودية = 3 أسابيع ضاغطة. Dealix يجهّز مسودات ردود لـ 200 ولي أمر يومياً، يؤهلهم، ويقترح مقابلات القبول لموافقة فريقك — بدون ما فريقك يتكسر."
 
-**First 3 Dealix AI questions:**
+**First 3 questions the Dealix radar drafts:**
 1. طفلك في أي مرحلة دراسية؟
 2. تفضل المنهج السعودي، الأمريكي، أو البريطاني؟
 3. تبغى جولة للمدرسة أو مقابلة online؟
 
-**Tier fit:** Growth (موسمي).
+**Tier fit:** 7-Day Revenue Proof Sprint (499 SAR) → Managed Revenue Ops (موسمي).
 
 ---
 
@@ -115,12 +115,12 @@
 **Opening line template:**
 > "Recruiters في السعودية يقضون 60% من الوقت في فلترة CVs غير مطابقة. Dealix يسأل candidate 5 أسئلة تأهيل، ويسلّم للـ recruiter فقط الـ shortlist."
 
-**First 3 Dealix AI questions:**
+**First 3 questions the Dealix radar drafts:**
 1. إيش الدور الوظيفي الذي تبحث عنه؟
 2. الخبرات الإلزامية + المميزات؟
 3. موقع العمل ونطاق الراتب؟
 
-**Tier fit:** Growth.
+**Tier fit:** 7-Day Revenue Proof Sprint (499 SAR) → Managed Revenue Ops.
 
 ---
 
@@ -135,12 +135,12 @@
 **Opening line template:**
 > "شركات اللوجستيك السعودية تفقد 40% من quote requests لأن sales engineering بطيء. Dealix يأخذ المواصفات في الدقيقة الأولى، يعد pre-quote، ويحجز مكالمة negotiation."
 
-**First 3 Dealix AI questions:**
+**First 3 questions the Dealix radar drafts:**
 1. نوع البضاعة وحجم الشحنة (السنوية أو الشهرية)؟
 2. المصدر → الوجهة؟
 3. هل تحتاج warehouse / customs / delivery؟
 
-**Tier fit:** Growth → Scale.
+**Tier fit:** 7-Day Revenue Proof Sprint (499 SAR) → Managed Revenue Ops → Executive Command Center.
 
 ---
 
@@ -153,14 +153,14 @@
 **Proof angle:** 30% من استفسارات WhatsApp ببياع لو رد البايع خلال 5 دقائق.
 
 **Opening line template:**
-> "متاجر Salla/Zid اللي عندها 1K+ طلب شهرياً تصرف 6 ساعات يومياً على رد WhatsApp. Dealix يرد بالخليجي، يؤكد الطلب، ويرسل الـ agent فقط عند negotiation."
+> "متاجر Salla/Zid اللي عندها 1K+ طلب شهرياً تصرف 6 ساعات يومياً على رد WhatsApp. Dealix يجهّز مسودات ردود بالخليجي جاهزة لموافقتك، ويقترح تحويل الـ agent عند negotiation."
 
-**First 3 Dealix AI questions:**
+**First 3 questions the Dealix radar drafts:**
 1. المنتج اللي تبغاه؟
 2. العدد والمقاس / اللون؟
 3. منطقتك للتوصيل؟
 
-**Tier fit:** Starter → Growth.
+**Tier fit:** 7-Day Revenue Proof Sprint (499 SAR) → Managed Revenue Ops.
 
 ---
 

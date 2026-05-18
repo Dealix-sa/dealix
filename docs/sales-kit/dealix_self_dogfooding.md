@@ -43,26 +43,26 @@ Sami يحجز demo يدوياً
 **بعد dogfooding:**
 ```
 Lead يدخل موقع Dealix →
-Dealix AI يرد خلال 45 ثانية (بنفس الـ AI اللي يستخدمه العملاء!) →
-Dealix يؤهّل BANT →
-Dealix يحجز demo تلقائياً →
-Sami يحضر demo جاهزاً تماماً
+Dealix يجهّز مسودة رد بالعربي جاهزة لموافقة Sami (بنفس النظام اللي يستخدمه العملاء!) →
+Dealix يجهّز تأهيل BANT →
+Dealix يجهّز اقتراح حجز demo لموافقة Sami →
+Sami يراجع ويعتمد ويحضر demo جاهزاً تماماً
 ```
 
 **النتيجة:**
-- وقت Sami محرّر 80%
-- Response time 45 ثانية (بدل 4 ساعات)
-- معدل التحويل ×3
+- وقت Sami المتكرر منخفض بشكل ملحوظ
+- مسودات متابعة جاهزة للاعتماد بدل الكتابة من الصفر
+- فرص مُثبتة بأدلة بدل leads خاملة
 
-### المرحلة 2: Self-Nurture (Dealix يتابع عملاء Dealix)
+### المرحلة 2: Self-Nurture (Dealix يجهّز متابعات عملاء Dealix)
 
-**Dealix يرسل:**
+**Dealix يجهّز مسودات جاهزة للموافقة:**
 - Welcome email للعملاء الجدد
 - Feature updates شهرياً
-- Retention campaigns للـ at-risk customers
+- Retention drafts للـ at-risk customers
 - Referral asks بعد 90 يوم
 
-**كله تلقائي، بنفس Dealix.**
+**كل مسودة تُراجع وتُعتمد بشرياً قبل أي إرسال.**
 
 ### المرحلة 3: Self-Analytics (Dealix يقيس Dealix)
 
@@ -105,11 +105,11 @@ Sami يحضر demo جاهزاً تماماً
 ### الأسبوع 3: Content Automation
 
 **المهام:**
-- [ ] Dealix يكتب LinkedIn posts (با Claude)
-- [ ] Dealix يبعث email newsletters (با sendgrid + prompts)
-- [ ] Dealix يرد على social media comments (مع human review)
+- [ ] Dealix يجهّز مسودات LinkedIn posts للمراجعة
+- [ ] Dealix يجهّز مسودات email newsletters للموافقة قبل الإرسال
+- [ ] Dealix يجهّز مسودات ردود على social media comments (مع مراجعة بشرية إلزامية)
 
-**النتيجة:** 80% من content routine = automated.
+**النتيجة:** جزء كبير من إعداد المحتوى يصبح مسودات جاهزة للاعتماد.
 
 ### الأسبوع 4: Optimization Loop
 
@@ -154,12 +154,12 @@ User asks: "تقدرون تضيفون X?"
 ```
 Usage drops for Customer X
 → Dealix alerts: "at-risk"
-→ Auto-trigger: CEO email
-→ Intervention call booked
+→ Dealix يجهّز مسودة CEO email للموافقة
+→ بعد الاعتماد: اقتراح حجز intervention call
 → Save or offboard gracefully
 ```
 
-**Cadence:** يومي (automated)
+**Cadence:** رصد يومي + مسودات جاهزة للاعتماد
 
 ### Loop 4: Pricing Optimization
 
@@ -201,13 +201,13 @@ Dealix يتعلّم من بيانات العملاء الحاليين:
 
 ### Dynamic Pricing
 
-Dealix يقدر يقترح أسعار مخصّصة:
-- شركة صغيرة + ميزانية محدودة → Pilot 1 ريال
-- شركة متوسطة + ميزانية عادية → Starter
-- شركة كبيرة + urgent need → Growth
-- Enterprise → Custom proposal
+Dealix يقدر يجهّز اقتراح المسار المناسب لموافقتك:
+- أي حجم → نقطة الدخول: 7-Day Revenue Proof Sprint (499 ريال)
+- بعد إثبات النتيجة → Data-to-Revenue Pack (1,500 ريال)
+- بعد pilot ناجح → Managed Revenue Ops
+- Enterprise → Executive Command Center
 
-**كل اقتراح مبني على data من محادثات سابقة ناجحة.**
+**كل اقتراح مبني على data من محادثات سابقة، ويبقى مسودة تعتمدها بنفسك.**
 
 ---
 
@@ -215,19 +215,19 @@ Dealix يقدر يقترح أسعار مخصّصة:
 
 | KPI | Target | Current |
 |-----|--------|---------|
-| Self-response time | < 45s | — |
-| Self-qualification rate | > 30% | — |
-| Self-demo booking rate | > 15% | — |
-| Self-close rate | > 20% | — |
-| Founder time on repeat tasks | < 20% | — |
+| Self-draft turnaround | مسودة جاهزة للمراجعة بسرعة | — |
+| Self-qualification rate | تقديري | — |
+| Booking-suggestion approval rate | تقديري | — |
+| Sprint-to-upsell rate | تقديري | — |
+| Founder time on repeat tasks | منخفض | — |
 | AI improvement cycles/month | > 4 | — |
 
 ---
 
 ## 💡 أفكار ابداعية للـ Dogfooding
 
-### 1. "Built by Dealix, Sold by Dealix"
-اعرض علنياً: "Our only salesperson is our own AI."
+### 1. "Built by Dealix, Run on Dealix"
+اعرض علنياً: "رادار عمليات الإيراد لدينا يجهّز مسوداتنا — والمؤسس يراجع ويعتمد."
 
 **إشارة قوية للسوق:** إذا Dealix يعمل لـ Dealix، يعمل لك.
 
@@ -246,13 +246,13 @@ Dealix يقدر يقترح أسعار مخصّصة:
 YouTube/Blog: كل ميزة جديدة، اشرح كيف بُنيت باستخدام Dealix نفسه.
 
 ### 5. AI Founder's Digest
-Newsletter أسبوعي، 100% written by Dealix:
+Newsletter أسبوعي، مسودته يجهّزها Dealix:
 - Industry news
 - Product updates
 - Customer wins
 - Open positions
 
-**100% automated. Founder يراجع فقط.**
+**Dealix يجهّز المسودة. Founder يراجع ويعتمد قبل الإرسال.**
 
 ---
 
@@ -268,9 +268,9 @@ Newsletter أسبوعي، 100% written by Dealix:
 **الخطوة التالية:**
 - اليوم: تركيب Dealix على dealix.ai
 - الأسبوع: Live operations
-- الشهر: Complete automation
+- الشهر: مسودات جاهزة للاعتماد عبر كل قناة
 - الربع: Self-improving system
 
-**Dealix في 2027:** 95% من operations automated, founder يركّز فقط على strategy.
+**Dealix في 2027:** معظم العمل المتكرر يصبح مسودات جاهزة للاعتماد، والقرار النهائي يبقى دائماً بشرياً.
 
 هذا الممكن. لكن يبدأ من **الخطوة الأولى: ضع Dealix على موقعك اليوم.**

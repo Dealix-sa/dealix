@@ -28,11 +28,11 @@ Pairs with `objection_library_ar.md` (which handles deeper objection psychology)
 ## 2. Price question / "كم السعر؟"
 
 **Arabic:**
-> "3 باقات: Starter 999 ريال شهري، Growth 2,999، Scale 7,999. الاختيار الصحيح يعتمد على حجم leads عندكم — 20 دقيقة demo وأفصل لك الباقة المناسبة. فيه pilot بريال واحد لمدة 7 أيام لو تبغى تجرّب قبل ما تقرر.
+> "نبدأ دائماً بـ 7-Day Revenue Proof Sprint بـ 499 ريال — نطاق محدد ومخرج حقيقي خلال 7 أيام. بعد إثبات النتيجة نرتقي: Data-to-Revenue Pack 1,500 ريال، ثم Managed Revenue Ops 2,999–4,999 ريال/شهر. 20 دقيقة demo نحدد فيها المسار المناسب.
 > 📅 https://calendly.com/sami-assiri11/dealix-demo"
 
 **English:**
-> "Three tiers: Starter 999 SAR/mo, Growth 2,999, Scale 7,999. Right fit depends on lead volume — 20-min demo to size it. 1 SAR × 7-day pilot available.
+> "Everyone starts with the 7-Day Revenue Proof Sprint — 499 SAR, fixed scope, real deliverable in 7 days. After proof: Data-to-Revenue Pack 1,500 SAR, then Managed Revenue Ops 2,999–4,999 SAR/mo. 20-min demo to map the right path.
 > 📅 https://calendly.com/sami-assiri11/dealix-demo"
 
 **Next action:** BOOK_DEMO
@@ -94,7 +94,7 @@ If they don't → "سأرجع بعد 30 يوم، بالتوفيق."
 ## 7. Not relevant / "ما يناسبنا" / "مو مناسب"
 
 **Arabic:**
-> "أحترم. سؤال أخير قبل ما أخرج من وقتك: هل عندكم شركات B2B سعودية تعرفونها تستفيد من AI sales rep بالعربي؟ 10% من MRR لـ 12 شهر لكل عميل يجي عبركم."
+> "أحترم. سؤال أخير قبل ما أخرج من وقتك: هل عندكم شركات B2B سعودية تعرفونها تستفيد من رادار عمليات الإيراد المحكوم بالعربي؟ 10% من MRR لـ 12 شهر لكل عميل يجي عبركم."
 
 If they say yes → referral path.
 If they say no → "تمام، شكراً لوقتك."
@@ -107,9 +107,9 @@ If they say no → "تمام، شكراً لوقتك."
 ## 8. Budget objection / "ما عندنا budget"
 
 **Arabic:**
-> "صح، شهر كامل من Starter 999 ريال قد يكون صعب بدون إثبات. عرضنا الـ pilot بريال واحد لمدة 7 أيام — يدوي، قابل للاسترداد، هدفه يثبت لكم ROI قبل أي altزام. مناسب؟"
+> "صح، الالتزام الشهري قد يكون صعب بدون إثبات. عرض الدخول هو 7-Day Revenue Proof Sprint بـ 499 ريال — نطاق محدد، مخرج حقيقي (Proof Pack)، هدفه يثبت لكم القيمة قبل أي التزام أكبر. مناسب؟"
 
-**Next action:** ROUTE_TO_MANUAL_PAYMENT (1 SAR pilot)
+**Next action:** ROUTE_TO_MANUAL_PAYMENT (499 SAR — 7-Day Revenue Proof Sprint)
 **Tracker:** `reply_status=budget_objection`
 
 ---
@@ -117,7 +117,7 @@ If they say no → "تمام، شكراً لوقتك."
 ## 9. Timing objection / "مش الوقت المناسب"
 
 **Arabic:**
-> "أفهمك، Q-end / رمضان / عطل / الخ. سؤال: هل عندكم كل شهر شركات جايبة leads كثيرة وتتأخرون بالرد؟ إذا نعم، كل يوم تأخير = leads تذبل. الـ pilot بريال 7 أيام — إذا شفت أثر، نكمل. إذا ما شفت، نوقف."
+> "أفهمك، Q-end / رمضان / عطل / الخ. سؤال: هل عندكم كل شهر شركات جايبة leads كثيرة وتتأخرون بالمتابعة؟ إذا نعم، كل يوم تأخير = leads تذبل. 7-Day Revenue Proof Sprint بـ 499 ريال — نطاق محدد ومخرج حقيقي خلال أسبوع، وبعدها تقرر."
 
 **Next action:** ROUTE_TO_MANUAL_PAYMENT OR FOLLOW_UP +30d
 **Tracker:** `reply_status=timing_objection`
@@ -127,7 +127,7 @@ If they say no → "تمام، شكراً لوقتك."
 ## 10. Trust objection / "ما نثق في AI"
 
 **Arabic:**
-> "موقف عادل. نبدأ assist mode — AI يجهّز الرد، موظفكم يوافق قبل الإرسال. بعد 2-3 أسابيع من الجودة، تتحولون autopilot تدريجياً. صفر مخاطرة سمعة."
+> "موقف عادل. Dealix يعمل بنمط الموافقة دائماً — AI يجهّز مسودة الرد، وموظفكم يراجع ويوافق قبل أي إرسال. لا إرسال تلقائي إطلاقاً. صفر مخاطرة سمعة."
 
 **Next action:** PREPARE_DEMO_FLOW (emphasize assist mode)
 **Tracker:** `reply_status=trust_objection`
@@ -137,7 +137,7 @@ If they say no → "تمام، شكراً لوقتك."
 ## 11. Already has CRM / "عندنا CRM"
 
 **Arabic:**
-> "CRM عندكم يخزّن الـ leads. Dealix يرد عليهم خلال 45 ثانية بالعربي قبل ما ينسون اسم شركتكم. هم يشتغلون مع بعض، مو بدائل. CRM = ذاكرة، Dealix = يدين تشتغل. نتكامل مع HubSpot / Salesforce / Zoho / أي شي webhook."
+> "CRM عندكم يخزّن الـ leads. Dealix يجهّز لهم مسودات رد ومتابعة بالعربي جاهزة لموافقتكم قبل ما ينسون اسم شركتكم. هم يشتغلون مع بعض، مو بدائل. CRM = ذاكرة، Dealix = يجهّز المسودات. نتكامل مع HubSpot / Salesforce / Zoho / أي شي webhook."
 
 **Next action:** BOOK_DEMO (emphasize integration)
 **Tracker:** `reply_status=crm_concern`
@@ -207,7 +207,7 @@ If they say no → "تمام، شكراً لوقتك."
 3. **Never send all details at once. Use "hook → call → details" sequence.**
 4. **For every category → one follow-up only, unless they re-engage.**
 5. **Never promise features not built.**
-6. **Sell the smallest pilot that proves value (1 SAR × 7 days).**
+6. **Lead with the entry offer that proves value: 7-Day Revenue Proof Sprint — 499 SAR.**
 
 ---
 
@@ -221,7 +221,7 @@ REPLY RECEIVED
      ├── question about price/details/demo? → Reframe → Book demo
      │
      ├── objection? → Use matching response from above
-     │    └── still objecting? → Pilot 1 SAR offer OR disqualify gracefully
+     │    └── still objecting? → 7-Day Revenue Proof Sprint (499 SAR) offer OR disqualify gracefully
      │
      ├── "later/not now"? → Get specific date OR +30d follow-up
      │

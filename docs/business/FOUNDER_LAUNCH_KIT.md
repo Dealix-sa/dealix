@@ -8,8 +8,8 @@ Three assets you ship publicly to manufacture inbound + signal.
 
 > 🚀 أطلقنا Dealix.
 >
-> AI sales rep بالعربي الخليجي يرد على leads إنبوند خلال 45 ثانية.
-> يأخذ التفاصيل، ييؤهل العميل، ويحجز موعد مع المندوب — قبل ما يبرد الـ lead.
+> رادار عمليات الإيراد المحكوم بالعربي الخليجي يجهّز مسودة رد ومتابعة لكل lead إنبوند جاهزة لموافقتك.
+> يأخذ التفاصيل، يؤهّل العميل، ويجهّز اقتراح حجز موعد مع المندوب لاعتمادك — قبل ما يبرد الـ lead.
 >
 > بنيناه عشان السوق السعودي:
 > • عربي خليجي طبيعي مو ترجمة
@@ -17,8 +17,8 @@ Three assets you ship publicly to manufacture inbound + signal.
 > • متوافق مع PDPL من اليوم الأول
 > • integration مع HubSpot / Salesforce / Zoho / Bitrix
 >
-> Pilot 7 أيام بـ 499 ريال — تشتغل لكم في خلفية، تشوفون النتائج، ثم تقررون.
-> الاسترجاع 100% لو ما اقتنعتم.
+> 7-Day Revenue Proof Sprint بـ 499 ريال — نطاق محدد، نجهّز مسودات لموافقتكم،
+> وتستلمون Proof Pack حقيقي في اليوم 7، ثم تقررون.
 >
 > العقار، الفنادق، الشحن، التدريب: لو leadsكم تنزل سرعتها بسبب وقت الرد، ابعثوا "Dealix" — أرتب 20 دقيقة.
 >
@@ -31,9 +31,9 @@ Three assets you ship publicly to manufacture inbound + signal.
 
 ```
 أطلقنا Dealix —
-AI sales rep سعودي يرد على leads بالعربي الخليجي خلال 45 ثانية.
+رادار عمليات الإيراد المحكوم السعودي يجهّز مسودات رد ومتابعة بالعربي الخليجي جاهزة لموافقتك.
 
-7-day pilot بـ 499 ريال.
+7-Day Revenue Proof Sprint بـ 499 ريال.
 
 Thread 🧵👇
 ```
@@ -41,10 +41,10 @@ Thread 🧵👇
 Thread parts:
 1. The problem (Saudi B2B response time = 11h average)
 2. Why generic AI tools fail (English / formal Arabic / no Mada)
-3. What Dealix does (45-sec response in Khaliji + handoff to closer)
-4. Pricing (Pilot 499 → Starter 999 → Pro 5K)
+3. What Dealix does (drafts a Khaliji follow-up ready for approval + handoff to closer)
+4. Pricing ladder (7-Day Revenue Proof Sprint 499 → Data-to-Revenue Pack 1,500 → Managed Revenue Ops 2,999–4,999/mo)
 5. Why now (PDPL + Vision 2030 + huge Saudi B2B demand)
-6. CTA: "ابعثوا Dealix لـ DM إذا تبون نحجز Pilot"
+6. CTA: "ابعثوا Dealix لـ DM إذا تبون نبدأ 7-Day Revenue Proof Sprint"
 
 ## 2. Payment request template
 
@@ -53,13 +53,13 @@ Thread parts:
 ```
 أهلاً {اسم العميل},
 
-شكراً للثقة. هذا تأكيد ال Pilot:
+شكراً للثقة. هذا تأكيد الـ Sprint:
 
-📦 Dealix Managed Pilot 7 Days
+📦 Dealix — 7-Day Revenue Proof Sprint
 💰 499 ريال (شامل ضريبة القيمة المضافة)
 📅 يبدأ: {التاريخ}
 🔚 ينتهي: {التاريخ + 7 أيام}
-💸 الاسترجاع: 100% خلال 3 أيام لو لم نرد على lead واحد بالعربي
+📋 المخرج: Proof Pack حقيقي في اليوم 7 + 5 مسودات رسائل جاهزة لموافقتكم
 
 طرق الدفع:
 1. رابط Moyasar (Mada / STC Pay / Apple Pay):

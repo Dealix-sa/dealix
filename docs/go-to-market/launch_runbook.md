@@ -13,7 +13,7 @@
 - ✅ PR #70 مدموج: `/api/v1/public/demo-request` (landing form → Calendly)
 - ✅ `/api/v1/checkout` يولّد Moyasar invoice قابل للدفع (كان موجود مسبقاً)
 - ✅ `/api/v1/webhooks/moyasar` يستقبل تأكيد الدفع ويطلق PostHog events
-- ✅ `/api/v1/pricing/plans` يعرض الباقات (Starter 999 / Growth 2,999 / Scale 7,999 ريال)
+- ✅ `/api/v1/pricing/plans` يعرض سلم الخدمات (7-Day Revenue Proof Sprint 499 / Data-to-Revenue Pack 1,500 / Managed Revenue Ops 2,999–4,999 ريال)
 - ✅ CI كاملة خضراء على main
 
 ### 2. Landing محدّث ومنشور
@@ -25,7 +25,7 @@
 ### 3. Outreach package جاهز
 - ✅ 3 نسخ رسائل (SaaS / Enterprise / Distribution)
 - ✅ نسخة بريد + جدول tracking + قواعد المتابعة
-- ✅ سيناريو تحويل من demo → pilot 1 ريال → Starter 999 ريال
+- ✅ سيناريو تحويل من demo → 7-Day Revenue Proof Sprint 499 ريال → ترقية بعد إثبات النتيجة
 
 ---
 
@@ -97,15 +97,15 @@ curl -X POST https://<railway-url>/api/v1/checkout \
 ## 💰 مسار الإيراد من الآن
 
 ### هذا الأسبوع (7 أيام)
-1. **اليوم:** نفّذ الـ 3 خطوات أعلاه + دفع 1 ريال تجريبي (يثبت النظام شغّال)
+1. **اليوم:** نفّذ الـ 3 خطوات أعلاه + دفعة اختبار تجريبية (تثبت النظام شغّال)
 2. **غداً:** استخدم `dealix_day1_outreach` → ابعت 20 رسالة
 3. **يوم 3-5:** 5 demos محجوزة
-4. **يوم 6-7:** 1-2 pilot بـ 1 ريال
+4. **يوم 6-7:** 1-2 اشتراك في 7-Day Revenue Proof Sprint بـ 499 ريال
 
 ### الأسبوع الثاني (يوم 8-14)
-1. **pilot → Starter conversion** — أول 999 ريال
+1. **Sprint → ترقية** — أول Data-to-Revenue Pack أو Managed Revenue Ops بعد إثبات النتيجة
 2. تابع 30 lead جديد
-3. الهدف: **3 عملاء مدفوعين × 999 = 2,997 ريال/شهر MRR**
+3. الهدف (تقديري): **3 عملاء يبدأون 7-Day Revenue Proof Sprint × 499 ريال**
 
 ### تذكير — Feature Freeze 14 يوم
 - ❌ لا Next.js frontend

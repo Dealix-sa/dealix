@@ -109,7 +109,7 @@
 **AR:**
 > "Dealix لا يفعّل WhatsApp تلقائي للعملاء. السبب: PDPL + meta policy للـ WhatsApp Business + risk على رقمك (banned). كل رسالة تصدر منك يدوياً (موافقتك). البديل العملي:
 >
-> - Dealix يجهّز لك draft الردّ السعودي خلال ٤٥ ثانية بعد وصول رسالة العميل
+> - Dealix يجهّز لك مسودة ردّ سعودي جاهزة لموافقتك بعد وصول رسالة العميل
 > - Dealix يقترح وقت الإرسال (يحترم quiet hours + 24h window)
 > - أنت تضغط زرّ واحد على الجوّال = تمّ الإرسال
 >
@@ -118,7 +118,7 @@
 **EN:**
 > "Dealix does not enable WhatsApp customer outbound automation. Reason: PDPL + Meta WhatsApp Business policy + risk to your number (banned). Every message goes through you manually. Practical alternative:
 >
-> - Dealix drafts a Saudi-Arabic reply within 45 seconds of customer message
+> - Dealix drafts a Saudi-Arabic reply ready for your approval after a customer message
 > - Dealix suggests send time (respects quiet hours + 24h window)
 > - You tap one button on mobile = sent
 >
@@ -131,10 +131,10 @@
 ### If customer commits
 
 **AR:**
-> "ممتاز. أرسل لك Service Agreement + رابط بنكي للدفع الأوّل خلال ساعة. نبدأ Managed Revenue Ops بكره. الباقي يشتغل تلقائياً + بموافقتك على كل خطوة."
+> "ممتاز. أرسل لك Service Agreement + رابط بنكي للدفع الأوّل خلال ساعة. نبدأ Managed Revenue Ops بكره. كل خطوة خارجية تحتاج موافقتك."
 
 **EN:**
-> "Great. I'll send the Service Agreement + bank link for the first payment within an hour. Managed Revenue Ops starts tomorrow. Everything runs + every step requires your approval."
+> "Great. I'll send the Service Agreement + bank link for the first payment within an hour. Managed Revenue Ops starts tomorrow. Every external step requires your approval."
 
 **Founder homework after this call:**
 1. Run `dealix_demo_outcome.py --outcome paid --evidence-note "..."` (after payment confirmed)
