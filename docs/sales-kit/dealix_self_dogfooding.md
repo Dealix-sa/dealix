@@ -9,60 +9,59 @@
 
 ### الأسباب:
 
-1. **Proof of concept في الإنتاج الحقيقي**
-   - "نستخدمه ليوم، يفوز 12 صفقة أسبوعياً" = أقوى case study
-   - عملاء يرون النظام يعمل فعلاً
+1. **Proof في الإنتاج الحقيقي**
+   - استخدام Dealix لإدارة عمليات إيرادات Dealix نفسها = دليل حقيقي
+   - أي رقم نذكره يكون تقديرياً أو من Proof Pack موثق
 
 2. **اكتشاف bugs قبل العملاء**
    - إذا Dealix يفشل، نحن أول من يعرف
    - تحسينات سريعة
 
-3. **تدريب AI على محادثات حقيقية**
-   - كل محادثة = data point للتحسين
-   - Feedback loop مستمر
+3. **تجربة رحلة العميل بأنفسنا**
+   - نمرّ بنفس تجربة الموافقة على المسودات
+   - Feedback loop مستمر على جودة الصياغة
 
-4. **خفض CAC الفعلي**
-   - AI يتولّى الـ outreach → founder يركّز على الـ strategic
-   - كل ساعة موفّرة = قيمة
+4. **انضباط تشغيلي للمؤسس**
+   - رادار يُظهر من يحتاج متابعة → المؤسس يركّز ويوافق ويرسل
+   - لا متابعة تضيع
 
 ---
 
 ## 🔄 حلقة الـ Dogfooding الكاملة
 
-### المرحلة 1: Self-Outreach (Dealix ينشر Dealix)
+### المرحلة 1: Self-Radar (Dealix يُظهر لـ Dealix من يحتاج متابعة)
 
 **الحالي (manual):**
 ```
 Lead يدخل موقع Dealix →
 Form submission →
-Email لـ sami@dealix →
-Sami يرد خلال 4 ساعات →
-Sami يحجز demo يدوياً
+Lead يظهر في founder dashboard →
+Sami يراجع يدوياً →
+Sami يتابع يدوياً
 ```
 
 **بعد dogfooding:**
 ```
 Lead يدخل موقع Dealix →
-Dealix AI يرد خلال 45 ثانية (بنفس الـ AI اللي يستخدمه العملاء!) →
-Dealix يؤهّل BANT →
-Dealix يحجز demo تلقائياً →
+Dealix يُظهر الـ lead في الرادار مع أولويته →
+Dealix يصوغ مسودة الرسالة التالية →
+Sami يراجع المسودة ويوافق ويرسل بنفسه →
 Sami يحضر demo جاهزاً تماماً
 ```
 
 **النتيجة:**
-- وقت Sami محرّر 80%
-- Response time 45 ثانية (بدل 4 ساعات)
-- معدل التحويل ×3
+- Sami يبدأ يومه بقائمة أولويات واضحة ومسودات جاهزة
+- لا متابعة تضيع بلا مالك أو خطوة تالية
+- Sami يبقى من يقرر ويرسل — Dealix لا يرسل نيابة عنه
 
-### المرحلة 2: Self-Nurture (Dealix يتابع عملاء Dealix)
+### المرحلة 2: Self-Follow-up (Dealix يصوغ مسودات متابعة عملاء Dealix)
 
-**Dealix يرسل:**
-- Welcome email للعملاء الجدد
-- Feature updates شهرياً
-- Retention campaigns للـ at-risk customers
-- Referral asks بعد 90 يوم
+**Dealix يصوغ مسودات للمراجعة:**
+- مسودة رسالة ترحيب للعملاء الجدد
+- مسودات تحديثات عند ظهور جديد حقيقي
+- مسودات متابعة للعملاء المعرّضين للتسرّب
 
-**كله تلقائي، بنفس Dealix.**
+**كل مسودة يراجعها Sami ويوافق ويرسل يدوياً — لا إرسال تلقائي. هذا يطابق `no_live_send`.**
 
 ### المرحلة 3: Self-Analytics (Dealix يقيس Dealix)
 
@@ -81,45 +80,42 @@ Sami يحضر demo جاهزاً تماماً
 
 ## 📊 خطة التنفيذ (4 أسابيع)
 
-### الأسبوع 1: Self-Install
+### الأسبوع 1: Self-Setup
 
 **المهام:**
-- [ ] تركيب Dealix على dealix.ai (website نفسه)
-- [ ] Connect HubSpot CRM
-- [ ] Configure BANT questions لمبيعات Dealix
-- [ ] Connect Calendly للـ demo booking
-- [ ] Test مع 10 fake leads
+- [ ] ربط Dealix بمصادر leads الخاصة بـ dealix.me (بموافقة، بلا استخراج)
+- [ ] إعداد founder dashboard للرادار
+- [ ] Test مع بيانات تجريبية
+- [ ] التأكد أن كل مسودة تتطلب موافقة قبل الإرسال
 
-**النتيجة:** موقع Dealix عنده Dealix AI على الـ chat widget.
+**النتيجة:** رادار ما بعد الـ lead يعمل على عمليات Dealix نفسها.
 
 ### الأسبوع 2: Live Operations
 
 **المهام:**
-- [ ] أعلن publicly: "Dealix يستخدم Dealix — شوف live"
-- [ ] مشاركة analytics live على LinkedIn
-- [ ] اجمع feedback من أول 20 محادثة حقيقية
-- [ ] Adjust prompts based on feedback
+- [ ] أعلن publicly: "Dealix يستخدم Dealix — رادار محكوم بالموافقة"
+- [ ] مراجعة المسودات والموافقة عليها يدوياً قبل أي إرسال
+- [ ] اجمع feedback من أول الحالات الحقيقية
+- [ ] حسّن صياغة المسودات بناءً على الـ feedback
 
-**النتيجة:** Case study حية + credibility boost.
+**النتيجة:** تجربة تشغيلية حقيقية + مصداقية.
 
-### الأسبوع 3: Content Automation
+### الأسبوع 3: Founder Content
 
 **المهام:**
-- [ ] Dealix يكتب LinkedIn posts (با Claude)
-- [ ] Dealix يبعث email newsletters (با sendgrid + prompts)
-- [ ] Dealix يرد على social media comments (مع human review)
+- [ ] Dealix يصوغ مسودات LinkedIn posts، والمؤسس يراجع وينشر
+- [ ] لا نشر ولا رد تلقائي — كل محتوى يخرج بموافقة بشرية
 
-**النتيجة:** 80% من content routine = automated.
+**النتيجة:** مسودات جاهزة، والمؤسس يبقى المسيطر على النشر.
 
 ### الأسبوع 4: Optimization Loop
 
 **المهام:**
-- [ ] A/B test BANT questions (3 versions)
-- [ ] A/B test booking flow (1-step vs 2-step)
-- [ ] A/B test Arabic dialect (formal vs casual)
-- [ ] Measure + implement winners
+- [ ] قارن نسخ صياغة المسودات (أيها أوضح)
+- [ ] راجع جودة أولويات الرادار
+- [ ] حسّن بناءً على feedback حقيقي
 
-**النتيجة:** Continuous improvement infrastructure.
+**النتيجة:** بنية تحسين مستمر، كل خطوة تحت موافقة.
 
 ---
 
@@ -153,24 +149,17 @@ User asks: "تقدرون تضيفون X?"
 
 ```
 Usage drops for Customer X
-→ Dealix alerts: "at-risk"
-→ Auto-trigger: CEO email
-→ Intervention call booked
+→ Dealix يُظهر العميل كـ "at-risk" في الرادار
+→ Dealix يصوغ مسودة رسالة متابعة
+→ المؤسس يراجع ويوافق ويرسل، أو يحجز مكالمة
 → Save or offboard gracefully
 ```
 
-**Cadence:** يومي (automated)
+**Cadence:** يومي (الرادار يُظهر، المؤسس يقرر)
 
-### Loop 4: Pricing Optimization
+### Loop 4: Pricing — ثابت ومعلن
 
-```
-Dealix tracks: which price point converts highest
-→ Monthly analysis
-→ If clear winner: change pricing
-→ Grandfather existing customers
-```
-
-**Cadence:** ربعي
+التسعير في Dealix **ثابت ومعلن** في السلم الرسمي (`docs/OFFER_LADDER_AND_PRICING.md`) — لا تسعير ديناميكي ولا تسعير مخفي (`no_hidden_pricing`). أي مراجعة للأسعار تتم يدوياً وتُوثَّق، ولا تُطبَّق تلقائياً.
 
 ---
 
@@ -199,15 +188,14 @@ Dealix يتعلّم من بيانات العملاء الحاليين:
 - يرفض leads شبيه الفاشلين
 - Self-improving lead qualification
 
-### Dynamic Pricing
+### توصية الدرجة المناسبة من السلم
 
-Dealix يقدر يقترح أسعار مخصّصة:
-- شركة صغيرة + ميزانية محدودة → Pilot 1 ريال
-- شركة متوسطة + ميزانية عادية → Starter
-- شركة كبيرة + urgent need → Growth
-- Enterprise → Custom proposal
+Dealix يقدر يقترح **الدرجة المناسبة من السلم الرسمي** (السعر معلن دائماً، لا تسعير مخصّص):
+- مستكشف لأول مرة → التشخيص المجاني (0 ريال)
+- يريد دليلاً حقيقياً خلال أسبوع → سبرنت إثبات الإيرادات (499 ريال)
+- بعد دليل موثق → الدرجات الأعلى من السلم
 
-**كل اقتراح مبني على data من محادثات سابقة ناجحة.**
+**كل توصية مبنية على وضع العميل، والقرار النهائي للمؤسس. لا ترقية قبل دليل موثق.**
 
 ---
 
@@ -215,62 +203,52 @@ Dealix يقدر يقترح أسعار مخصّصة:
 
 | KPI | Target | Current |
 |-----|--------|---------|
-| Self-response time | < 45s | — |
-| Self-qualification rate | > 30% | — |
-| Self-demo booking rate | > 15% | — |
-| Self-close rate | > 20% | — |
-| Founder time on repeat tasks | < 20% | — |
-| AI improvement cycles/month | > 4 | — |
+| Leads مُظهَرة في الرادار بأولوية | كل الـ leads | — |
+| مسودات مصوغة وجاهزة للموافقة | لكل صفقة تحتاج متابعة | — |
+| نسبة المسودات الموافَق عليها بعد مراجعة | — | — |
+| متابعات ضائعة بلا مالك | 0 | — |
+| دورات تحسين صياغة/شهر | — | — |
+
+> كل الأرقام تقديرية وتُقاس على بيانات حقيقية — لا أهداف نتائج مضمونة.
 
 ---
 
 ## 💡 أفكار ابداعية للـ Dogfooding
 
-### 1. "Built by Dealix, Sold by Dealix"
-اعرض علنياً: "Our only salesperson is our own AI."
+### 1. "We run Dealix on Dealix"
+اعرض علنياً: "نحن نستخدم Dealix لإدارة عمليات إيرادات Dealix — رادار محكوم بالموافقة، والمؤسس يوافق ويرسل."
 
-**إشارة قوية للسوق:** إذا Dealix يعمل لـ Dealix، يعمل لك.
+**إشارة قوية للسوق:** إذا الرادار يعمل لنا، يعمل لك.
 
-### 2. Live Demo Page
-صفحة على الموقع تظهر محادثات Dealix مع leads الحقيقيين (anonymized).
+### 2. Live Transparency Page
+صفحة على الموقع تشرح كيف نستخدم الرادار داخلياً (بلا أي PII، أمثلة anonymized فقط).
 
 **Transparency = Trust.**
 
-### 3. Monthly "Dealix vs Dealix" Reports
-نشر تقرير شهري يقارن:
-- Dealix AI performance (as our salesperson)
-- Industry benchmarks
-- Lessons learned
+### 3. Monthly Learnings Report
+نشر تقرير شهري بالدروس التشغيلية — أنماط مجمّعة فقط، بلا مقاييس سرية.
 
 ### 4. "How We Built This" Series
-YouTube/Blog: كل ميزة جديدة، اشرح كيف بُنيت باستخدام Dealix نفسه.
+Blog: اشرح كيف بُني كل جزء.
 
-### 5. AI Founder's Digest
-Newsletter أسبوعي، 100% written by Dealix:
-- Industry news
-- Product updates
-- Customer wins
-- Open positions
-
-**100% automated. Founder يراجع فقط.**
+### 5. Founder Digest (بموافقة)
+Newsletter دوري — Dealix يصوغ المسودة، والمؤسس يراجع ويوافق وينشر يدوياً. لا نشر تلقائي.
 
 ---
 
 ## 🚀 الخلاصة
 
-**Self-Dogfooding = أقوى Marketing.**
+**Self-Dogfooding = أصدق دليل.**
 
 **3 فوائد مباشرة:**
-1. Proof ضخم للعملاء
-2. Continuous improvement للمنتج
-3. CAC = 0 للكثير من الـ leads
+1. دليل حقيقي على أن الرادار يعمل
+2. تحسين مستمر للمنتج وجودة المسودات
+3. انضباط تشغيلي للمؤسس — لا متابعة تضيع
 
-**الخطوة التالية:**
-- اليوم: تركيب Dealix على dealix.ai
-- الأسبوع: Live operations
-- الشهر: Complete automation
-- الربع: Self-improving system
+**القاعدة الثابتة:** Dealix رادار محكوم بالموافقة — يُظهر ويصوغ مسودة، والمؤسس يوافق ويرسل. لا إرسال تلقائي، لا رد تلقائي، لا حجز تلقائي. هذا يطابق `no_live_send`.
 
-**Dealix في 2027:** 95% من operations automated, founder يركّز فقط على strategy.
+**Dealix في المستقبل:** أتمتة محكومة بالموافقة — الإنسان يبقى في حلقة القرار دائماً.
 
-هذا الممكن. لكن يبدأ من **الخطوة الأولى: ضع Dealix على موقعك اليوم.**
+---
+
+> Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.

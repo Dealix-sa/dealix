@@ -1,27 +1,28 @@
 # Dealix — Case Study Template
 
-**Fill this within 48 hours of first pilot success. Publish within 7 days. Every new customer after = publish theirs too.**
+**Fill this within 48 hours of the first customer-approved Proof Pack. Publish within 7 days. Every new customer after = publish theirs too.**
 
-The #1 sales asset is a real customer story. One real case study = worth 100 cold DMs.
+The #1 sales asset is a real customer story backed by a real Proof Pack. One evidenced case study = worth 100 cold DMs. If there is no named, consenting customer, label the asset clearly as "Hypothetical / case-safe template".
 
 ---
 
 ## Pre-flight checklist (before writing)
 
-- [ ] Customer pilot completed (7+ days of usage)
-- [ ] Customer gave verbal permission to use their story
-- [ ] At least 3 metrics captured (response time, leads handled, demos booked)
+- [ ] 7-Day Revenue Proof Sprint completed (499 SAR, paid)
+- [ ] Customer-approved Proof Pack assembled (evidence level L3+)
+- [ ] Customer gave written permission to use their story
+- [ ] At least 3 evidenced data points captured (deals surfaced, drafts approved, follow-up gaps closed)
 - [ ] At least 1 quote from the customer (voice message or text)
 - [ ] Customer's logo + permission to use it (email confirmation)
-- [ ] Specific before/after numbers
+- [ ] Every number traceable to a real source — no fabricated metrics
 
 ---
 
 ## Case Study — Template
 
-## [Company Name] cut response time from [X hours] to [Y seconds] with Dealix
+## [Company Name] made post-lead follow-up provable with Dealix
 
-*[Subtitle: specific outcome — "Booked 12 demos in 7 days" or "Closed 3 new customers in first month"]*
+*[Subtitle: specific, evidenced outcome — e.g. "Surfaced 14 stalled deals with no owner in 7 days" or "Produced an approved Proof Pack of evidenced opportunities". Never claim guaranteed sales or ROI.]*
 
 ---
 
@@ -39,43 +40,43 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 ### The Challenge
 
-[Write 2-3 sentences describing the specific pain point. Avoid generic "we needed to grow sales." Get specific: which lead source? How many leads? What was bleeding?]
+[Write 2-3 sentences describing the specific post-lead pain point. Avoid generic "we needed to grow sales." Get specific: which leads had no owner? How many deals stalled with no clear next step? What could they not prove?]
 
-**Key numbers before Dealix:**
-- Monthly leads: [X]
-- Average response time: [Y hours]
-- Demo booking rate: [%]
-- Lead-to-customer conversion: [%]
+**The five questions they could not answer with evidence:**
+- Who replied? — [their answer / "no documented answer"]
+- Who followed up? — [...]
+- Who approved the outbound message? — [...]
+- What is the next message per deal? — [...]
+- Where is the evidence? — [...]
 
 ---
 
 ### The Solution
 
-[2-3 sentences: what specifically Dealix did for them. Which channels? What was configured? Manual vs automated?]
+[2-3 sentences: what specifically Dealix did. Remember: Dealix surfaces what needs follow-up and drafts the next message — the customer reviews, approves, and sends. Dealix does not auto-send, auto-reply, or auto-book.]
 
-**Pilot scope:**
-- Duration: [7 days / X weeks]
-- Leads handled: [X]
-- Channels: [WhatsApp / Email / Web chat / LinkedIn]
-- Integration: [HubSpot / Salesforce / Calendly / none]
+**Revenue Proof Sprint scope:**
+- Offer: 7-Day Revenue Proof Sprint (499 SAR, one-time)
+- Deals reviewed: [X]
+- Drafts prepared for approval: [X]
+- Drafts approved by the customer: [X]
 
 ---
 
 ### The Results
 
-**After Dealix (7 days):**
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| Avg response time | [X] | [Y] | [Δ%] |
-| Leads qualified | [X] | [Y] | [Δ%] |
-| Demos booked | [X] | [Y] | [Δ%] |
-| Arabic conversations/day | [X] | [Y] | [Δ%] |
-| CSAT (customer satisfaction) | [X/10] | [Y/10] | [Δ] |
+**After the Sprint (7 days) — evidenced, not estimated:**
+| Item | Evidence |
+|--------|----------|
+| Stalled deals surfaced with no owner | [X] |
+| Next-message drafts prepared for approval | [X] |
+| Drafts the customer reviewed and approved | [X] |
+| Follow-up gaps documented | [X] |
+| Customer-approved Proof Pack | [Yes — evidence level L3+] |
 
-**Revenue impact (extrapolated):**
-- Recovered leads: [X per month]
-- Estimated new revenue: [Y SAR/month]
-- ROI: [pilot cost vs. recovered revenue]
+**Evidenced opportunities (not guaranteed outcomes):**
+- Opportunities surfaced and documented in the Proof Pack: [X]
+- Any forward-looking figure here is an estimate / case-safe pattern — never stated as fact.
 
 ---
 
@@ -93,9 +94,9 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 3 specific things that made this work:
 
-1. **[Differentiator 1]** — e.g., "Arabic Khaliji tone customized for [Company]'s brand voice"
-2. **[Differentiator 2]** — e.g., "Response time under 45 seconds on WhatsApp, 24/7"
-3. **[Differentiator 3]** — e.g., "Qualified leads only — sales team didn't waste time on tire-kickers"
+1. **[Differentiator 1]** — e.g., "Arabic next-message drafts in a natural tone, every one reviewed and approved by the customer before sending"
+2. **[Differentiator 2]** — e.g., "Approval-first: nothing was sent on the customer's behalf — every outbound message had a human approval and an auditable record"
+3. **[Differentiator 3]** — e.g., "Every stalled deal got a named owner and a clear next step"
 
 ---
 
@@ -104,9 +105,9 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 [1-2 sentences: what's next for the customer?]
 
 **Next steps:**
-- [e.g., "Upgrading from Pilot to Starter (999 SAR/month)"]
-- [e.g., "Expanding to email + LinkedIn channels"]
-- [e.g., "Training Dealix on 3 new product categories"]
+- [e.g., "Moving from the 499 SAR Sprint to the Data-to-Revenue Pack (1,500 SAR)"]
+- [e.g., "Considering Growth Ops Monthly (2,999 SAR/month) after a documented result"]
+- [Each rung unlocks only on evidence from the previous one.]
 
 ---
 
@@ -114,7 +115,8 @@ The #1 sales asset is a real customer story. One real case study = worth 100 col
 
 If you're a [Saudi SaaS / F&B / Proptech / ...] company with similar challenges:
 
-- **Pilot:** 1 SAR × 7 days, refund 100% if not satisfied
+- **Start free:** Free Mini Diagnostic (0 SAR)
+- **First paid step:** 7-Day Revenue Proof Sprint (499 SAR, one-time)
 - **Book demo:** https://calendly.com/sami-assiri11/dealix-demo
 - **Read other case studies:** https://dealix.me/customers
 
@@ -160,9 +162,9 @@ Subject: إذن للنشر — Dealix Case Study [اسم الشركة]
 
 السلام عليكم [اسم العميل],
 
-شكراً على ثقتكم في Dealix خلال pilot الـ 7 أيام الماضية.
+شكراً على ثقتكم في Dealix خلال سبرنت إثبات الإيرادات (7 أيام).
 
-بناءً على النتائج (response time من [X] إلى [Y]، [Z] demos محجوزة)، أود أن أطلب إذنكم لنشر الحالة كـ case study على dealix.me.
+بناءً على المخرجات الموثقة في الـ Proof Pack ([X] صفقة مُظهَرة بلا متابعة، [Z] مسودة موافَق عليها)، أود أن أطلب إذنكم لنشر الحالة كـ case study على dealix.me.
 
 ما سيُنشر:
 - اسم الشركة + logo (إذا سمحتم)
@@ -199,23 +201,28 @@ Write case studies in this order — SaaS first (highest social proof), agency f
 
 ## Metrics to Always Include
 
-### Quantitative (mandatory):
-- Response time (before → after)
-- Leads handled per day/week
-- Demos booked
-- Conversion rate
+### Evidenced (mandatory — every one traceable to the Proof Pack):
+- Stalled deals surfaced with no owner
+- Next-message drafts prepared for approval
+- Drafts the customer reviewed and approved
+- Follow-up gaps documented
 
 ### Qualitative (at least 1):
 - Customer direct quote
 - Team workflow change
-- Team time savings
 - Customer satisfaction
 
 ### Avoid:
-- Revenue numbers unless customer explicitly approves
-- Anything that could expose their customer data
-- Claims you can't back up
+- Revenue, conversion-rate, or ROI numbers stated as fact — always "estimated" or "case-safe pattern"
+- Any guaranteed-outcome language
+- Speed claims, auto-reply / auto-book claims (Dealix is approval-first, draft-only)
+- Anything that could expose their customer data (no PII)
+- Claims you can't back up with a real source
 
 ---
 
-*The difference between "Dealix works" and "Dealix has 5 real case studies from Saudi companies" = order of magnitude in conversion. Write the first one the moment pilot completes.*
+*The difference between "Dealix works" and "Dealix has 5 evidenced case studies from Saudi companies" = order of magnitude in conversion. Write the first one the moment the customer approves their Proof Pack.*
+
+---
+
+> Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.
