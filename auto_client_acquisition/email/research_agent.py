@@ -52,7 +52,7 @@ SECTOR_BRIEFS: dict[str, dict[str, Any]] = {
     "real_estate_developer": {
         "brief": "مطور عقاري سعودي يستقبل leads من الإعلانات + الموقع + WhatsApp.",
         "pain": "leads متعددة في وقت قصير — تأخر الرد دقيقة واحدة قد يخسر العميل لمنافس.",
-        "fit": "Dealix يرد بالعربي خلال 45 ثانية، يأخذ الميزانية + الموقع + موعد المعاينة، ويحجز للمندوب الجاهز.",
+        "fit": "Dealix يعرض حالة كل lead ويجهّز مسودة الرد بالعربي مع الميزانية + الموقع + موعد المعاينة في طابور موافقة — مسودات فقط، أنتم توافقون على كل إرسال.",
         "gain": "غالباً 5-15 lead دافئ إضافي شهرياً عند تحسين زمن الرد بـ 80%.",
         "objections": ["budget_for_pilot", "concern_about_arabic_quality", "already_uses_simple_chat_widget"],
         "first_sentence": "كل lead عقاري متأخر دقيقة = احتمال خسارة العميل لمنافس.",
@@ -115,7 +115,7 @@ SECTOR_BRIEFS: dict[str, dict[str, Any]] = {
     "saas": {
         "brief": "شركة SaaS سعودية تبيع للسوق المحلي.",
         "pain": "leads inbound باللغة العربية، الفريق غالباً يرد بالإنجليزية/ترجمة آلية.",
-        "fit": "Dealix هو AI sales rep بالعربي الخليجي يتكامل مع HubSpot/Salesforce/Zoho. يكمل لا يستبدل.",
+        "fit": "Dealix رادار عمليات محكوم بالعربي الخليجي يتكامل مع HubSpot/Salesforce/Zoho — مسودات فقط، أنتم توافقون على كل إرسال. يكمل لا يستبدل.",
         "gain": "غالباً تحسين Arabic-lead-to-demo بـ 40%+.",
         "objections": ["already_has_AI_tool", "build_vs_buy"],
         "first_sentence": "إذا تبيعون SaaS داخل السعودية، الرد العربي السريع = ميزة تنافسية.",
@@ -123,7 +123,7 @@ SECTOR_BRIEFS: dict[str, dict[str, Any]] = {
     },
     "marketing_agency": {
         "brief": "وكالة تسويق سعودية تخدم عملاء B2B/B2C.",
-        "pain": "العملاء يطلبون من الوكالة \"AI sales rep بالعربي\" — الوكالة بدون حل جاهز.",
+        "pain": "العملاء يطلبون من الوكالة \"متابعة محكومة بالعربي\" — الوكالة بدون حل جاهز.",
         "fit": "Dealix شريك resell — الوكالة تبيعه لعملائها وتحصل 25% MRR شهرياً.",
         "gain": "غالباً 5-15 عميل وكالة × 25% = 5K-15K ريال passive recurring شهرياً.",
         "objections": ["white_label_requirement", "control_over_messaging"],
@@ -136,7 +136,7 @@ SECTOR_BRIEFS: dict[str, dict[str, Any]] = {
 DEFAULT_BRIEF = {
     "brief": "شركة سعودية في قطاع B2B.",
     "pain": "غالباً تستقبل استفسارات لكن الرد قد يتأخر أو يضيع بين القنوات.",
-    "fit": "Dealix يرد على inbound leads بالعربي الخليجي خلال 45 ثانية ويفرزها للمبيعات.",
+    "fit": "Dealix يعرض حالة inbound leads ويجهّز مسودة الرد بالعربي الخليجي للموافقة ويفرزها للمبيعات.",
     "gain": "غالباً تحسين conversion ratio على inbound — نقيس بدقة خلال 7 أيام.",
     "objections": ["unsure_fit"],
     "first_sentence": "سرعة الرد على العميل = ميزة تنافسية مباشرة.",

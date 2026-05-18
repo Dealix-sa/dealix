@@ -117,9 +117,9 @@ RESPONSE_TEMPLATES: dict[str, dict[str, Any]] = {
         "followup_days": 2,
     },
     "ask_details": {
-        "ar": "Dealix يستقبل leads من website / WhatsApp / inbound email، "
-              "يرد بالعربي خلال 45 ثانية، يأخذ التفاصيل (الميزانية + الموقع + الموعد)، "
-              "ويسلم العميل المؤهل لمندوبكم. تبغوا أرسل لكم demo جاهز أم نتقابل 20 دقيقة؟",
+        "ar": "Dealix يعرض حالة كل lead من website / WhatsApp / inbound email، "
+              "يجهّز مسودة الرد بالعربي مع التفاصيل (الميزانية + الموقع + الموعد) في طابور موافقة، "
+              "مسودات فقط وأنتم توافقون على كل إرسال. تبغوا أرسل لكم demo جاهز أم نتقابل 20 دقيقة؟",
         "auto_send_allowed": False,
         "next_action": "send_explainer_then_demo_ask", "deal_stage": "info_sent",
         "followup_days": 3,
@@ -148,9 +148,9 @@ RESPONSE_TEMPLATES: dict[str, dict[str, Any]] = {
         "followup_days": 3,
     },
     "already_has_crm": {
-        "ar": "ممتاز. Dealix يتكامل مع HubSpot/Salesforce/Zoho/Bitrix كـ AI sales rep "
+        "ar": "ممتاز. Dealix يتكامل مع HubSpot/Salesforce/Zoho/Bitrix كرادار عمليات محكوم "
               "يجلس فوق CRM الحالي ويسلم العميل المؤهل لـ pipelineكم. لا نستبدل، "
-              "نضيف طبقة الرد السريع بالعربي. تبغوا 20 دقيقة نشرح كيف؟",
+              "نضيف طبقة تعرض حالة كل عميل وتجهّز مسودة المتابعة بالعربي للموافقة. تبغوا 20 دقيقة نشرح كيف؟",
         "auto_send_allowed": False,
         "next_action": "explain_layered_integration", "deal_stage": "qualified",
         "followup_days": 3,

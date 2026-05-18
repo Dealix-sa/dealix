@@ -135,14 +135,15 @@ CATALOG: tuple[PartnerCategory, ...] = (
             "their monthly client reports."
         ),
         warm_intro_draft_ar=(
-            "[اسم]، عميلكم بيدفع SAR على إعلانات؛ ٤٠٪ من leads تروح "
-            "للمنافس اللي يردّ خلال ساعة. عندنا حلّ عربي ساعة الردّ "
-            "فيه ٤٥ ثانية، شراكة ٢٥٪ Y1. ١٥ دقيقة؟"
+            "[اسم]، عميلكم بيدفع SAR على إعلانات؛ leads كثيرة تضيع "
+            "في المتابعة. عندنا رادار عمليات محكوم بالعربي يعرض حالة "
+            "كل lead ويجهّز مسودة الرد للموافقة، شراكة ٢٥٪ Y1. ١٥ دقيقة؟"
         ),
         warm_intro_draft_en=(
-            "[name], your client pays for ads but ~40% of leads go to "
-            "whoever replies within 1 hour. We close that to 45s in "
-            "Arabic. 25% Y1 partnership. 15 min?"
+            "[name], your client pays for ads but many leads slip in "
+            "follow-up. We give a governed ops radar in Arabic that "
+            "surfaces each lead's state and drafts the reply for approval. "
+            "25% Y1 partnership. 15 min?"
         ),
         co_branded_proof_idea=(
             "تقرير مشترك يربط cost-per-lead لـ paid → first-touch SLA "
@@ -184,7 +185,7 @@ CATALOG: tuple[PartnerCategory, ...] = (
             "15-min walk-through?"
         ),
         co_branded_proof_idea=(
-            "محتوى مشترك: 'كيف يبدو يوم مندوب مبيعات سعودي مع Dealix' "
+            "محتوى مشترك: 'كيف يبدو يوم فريق مبيعات سعودي مع Dealix' "
             "— المستشار يضيفه لمنهجه."
         ),
         risk_notes=(

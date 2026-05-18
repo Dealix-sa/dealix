@@ -119,7 +119,7 @@ _LEGACY_OFFER_ROUTES: dict[str, dict[str, Any]] = {
     },
     "saas": {
         "primary_offer": "pilot_999_saudi_arabic_inbound_response_layer",
-        "value_prop": "AI sales rep بالعربي الخليجي يكمل CRMكم",
+        "value_prop": "رادار عمليات محكوم بالعربي الخليجي يكمل CRMكم — مسودات فقط، أنت توافق على كل إرسال",
         "headline_pain": "Saudi inbound leads باللغة العربية، الفريق يرد بالإنجليزية/ترجمة",
         "kpi": "Arabic-lead-to-demo conversion uplift",
         "best_channel": "linkedin_manual_then_email", "pricing_tier": "Pilot 999",
@@ -127,7 +127,7 @@ _LEGACY_OFFER_ROUTES: dict[str, dict[str, Any]] = {
     "marketing_agency": {
         "primary_offer": "agency_partner_25pct_mrr",
         "value_prop": "Dealix شريك resell — أنتم تبيعونه، نحن نبنيه، 25% MRR",
-        "headline_pain": "العملاء يطلبون AI sales rep بالعربي والوكالة بدون حل جاهز",
+        "headline_pain": "العملاء يطلبون متابعة محكومة بالعربي والوكالة بدون حل جاهز",
         "kpi": "agency clients signed × MRR share",
         "best_channel": "linkedin_manual_then_call", "pricing_tier": "Partnership",
     },
@@ -156,7 +156,7 @@ _LEGACY_OFFER_ROUTES: dict[str, dict[str, Any]] = {
 
 _LEGACY_DEFAULT_OFFER = {
     "primary_offer": "pilot_499_managed",
-    "value_prop": "Dealix يرد على inbound leads بالعربي الخليجي خلال 45 ثانية",
+    "value_prop": "Dealix يعرض حالة inbound leads ويجهّز مسودة الرد بالعربي الخليجي — أنت توافق على كل إرسال",
     "headline_pain": "سرعة الرد على العميل = ميزة تنافسية مباشرة",
     "kpi": "qualified leads × demos booked",
     "best_channel": "phone_or_email", "pricing_tier": "Pilot 499",
@@ -441,8 +441,8 @@ async def customer_proof_pack(customer_id: str) -> dict[str, Any]:
         f"- معدل التحويل من inquiry → demo: [X%]\n"
         f"- leads مهملة شهرياً: [X]\n\n"
         f"### بعد Dealix (7 أيام)\n"
-        f"- وقت الرد: 45 ثانية\n"
-        f"- demos محجوزة: [X]\n"
+        f"- حالة كل lead ظاهرة في الرادار + مسودة الرد التالية جاهزة للموافقة\n"
+        f"- demos محجوزة (بعد موافقة الفريق على كل إرسال): [X]\n"
         f"- leads جادة معالجة: [X]\n\n"
         f"### اقتباس العميل\n"
         f"> [Sami: agree on quote with customer post-pilot]\n\n"

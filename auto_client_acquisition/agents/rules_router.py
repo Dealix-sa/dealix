@@ -120,8 +120,8 @@ NEXT_ACTION_BY_TYPE = {
 
 MESSAGE_ANGLES = {
     "DIRECT_CUSTOMER": (
-        "AI sales rep بالعربي يرد على leads خلال 45 ثانية، يؤهّل، ويحجز demo — "
-        "يركب فوق CRM الحالي ويسلّم sequence جاهزة للـ SDR."
+        "رادار عمليات محكوم بالعربي يعرض حالة كل lead بعد وصوله ويجهّز مسودة الرسالة التالية — "
+        "مسودات فقط، أنت توافق على كل إرسال — يركب فوق CRM الحالي ويسلّم sequence جاهزة للـ SDR."
     ),
     "AGENCY_PARTNER": (
         "للوكالات: setup 3-15K + 20-30% من MRR كل عميل دائم. "
@@ -417,17 +417,17 @@ def generate_messages(
     def linkedin_direct() -> str:
         hook = ""
         if "WhatsApp" in sig_evid:
-            hook = f"لاحظت إن {company} تستخدم WhatsApp كقناة مبيعات رئيسية — Dealix يضاعف الاستجابة بردود عربية خلال 45 ثانية، يؤهّل، ويحجز demo قبل ما يبرد."
+            hook = f"لاحظت إن {company} تستخدم WhatsApp كقناة مبيعات رئيسية — Dealix يعرض حالة كل عميل ويجهّز مسودة الرد التالية بالعربي للموافقة قبل ما يبرد."
         elif "CRM" in sig_name:
             hook = f"لاحظت إن {company} تستخدم {sig_evid} — Dealix يركب فوقه: يرد بالعربي، يؤهّل BANT، ويسلّم سجل جاهز داخل نفس الـ CRM."
         elif "booking" in sig_name:
-            hook = f"لاحظت {sig_evid} عند {company} — Dealix يسبقه: يرد، يؤهّل، ويحجز slot في نفس الأداة."
+            hook = f"لاحظت {sig_evid} عند {company} — Dealix يعرض حالة كل عميل ويجهّز مسودة الخطوة التالية للموافقة في نفس الأداة."
         elif "paid ads" in sig_name or "ads" in sig_name:
-            hook = f"{company} تدير حملات مدفوعة. المشكلة الشائعة بعد click: lead يدخل funnel، الرد بطيء، CPA يرتفع. Dealix يرد بالعربي خلال 45 ثانية."
+            hook = f"{company} تدير حملات مدفوعة. المشكلة الشائعة بعد click: lead يدخل funnel، المتابعة بطيئة، CPA يرتفع. Dealix يعرض حالة كل lead ويجهّز مسودة الرد بالعربي للموافقة."
         elif "Salla" in sig_evid or "Zid" in sig_evid or "ecom_mena" in sig_name:
             hook = f"{company} على منصة {sig_evid} — Dealix يرد على استفسارات المتجر بالعربي، يؤكد الطلب، ويسلّم للـ agent فقط عند negotiation."
         else:
-            hook = f"Dealix = AI sales rep بالعربي يرد على leads خلال 45 ثانية، يؤهّل، ويحجز demo — فوق CRM الحالي."
+            hook = f"Dealix = رادار عمليات محكوم بالعربي يعرض حالة كل lead ويجهّز مسودة الرسالة التالية للموافقة — فوق CRM الحالي."
         return (
             f"{name} مرحباً،\n\n{hook}\n\n"
             f"20 دقيقة demo نشوف مناسبته لـ {company}؟\n"
@@ -439,7 +439,7 @@ def generate_messages(
         return (
             f"{name} السلام عليكم،\n\n"
             f"{company} تقدّم خدمات تسويق/CRM/automation لعملاء B2B. Dealix يضاعف قيمة خدمتك:\n"
-            f"- AI sales rep بالعربي فوق عملاء {company}\n"
+            f"- رادار عمليات محكوم بالعربي فوق عملاء {company} — مسودات فقط، الموافقة لهم\n"
             f"- setup 3-15K ريال + 20-30% من MRR كل عميل دائم\n"
             f"- 3-5 عملاء = 1,500-3,750 ريال شهري إضافي بدون tech build\n\n"
             f"20 دقيقة partner meeting هذا الأسبوع؟\n"
@@ -473,7 +473,7 @@ def generate_messages(
     def whatsapp_warm() -> str:
         return (
             f"السلام عليكم،\n"
-            f"سامي من Dealix. AI sales rep بالعربي — يرد، يؤهّل، يحجز demo.\n"
+            f"سامي من Dealix. رادار عمليات محكوم بالعربي — يعرض حالة كل عميل ويجهّز مسودة الخطوة التالية للموافقة.\n"
             f"مناسب نتكلم 10 دقائق؟"
         )
 
