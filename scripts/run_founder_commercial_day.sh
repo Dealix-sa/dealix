@@ -56,6 +56,19 @@ echo "  date: $DATE"
 echo "  dry_run: $DRY_RUN"
 echo ""
 
+echo "== 0a/7 Agent work packets (today) =="
+$PYTHON_BIN "$ROOT/scripts/print_agent_work_packets.py" --cadence daily || true
+echo ""
+
+echo "== 0b/7 GTM public surfaces (repo) =="
+$PYTHON_BIN "$ROOT/scripts/verify_gtm_public_surfaces.py" --skip-live || true
+echo ""
+
+PROD_API="${DEALIX_API_BASE:-https://api.dealix.me}"
+echo "== 0c/7 Production gates (Railway + live API) =="
+$PYTHON_BIN "$ROOT/scripts/run_founder_production_gates.py" --api-base "$PROD_API" || true
+echo ""
+
 echo "== Expand stack (targeting + social + content) =="
 $PYTHON_BIN "$ROOT/scripts/expand_commercial_operating_stack.py" --daily || true
 echo ""

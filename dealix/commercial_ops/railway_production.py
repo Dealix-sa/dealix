@@ -90,33 +90,70 @@ def check_repo_railway_config() -> dict[str, Any]:
     }
 
 
-def probe_healthz(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any]:
-    """GET {api_base}/healthz — returns status without raising."""
+def probe_get(api_base: str, path: str, *, timeout_sec: float = 12.0, max_bytes: int = 4096) -> dict[str, Any]:
+    """GET {api_base}{path} — returns status without raising."""
     base = (api_base or "").strip().rstrip("/")
     if not base:
         return {"probed": False, "reason": "no_api_base"}
-    url = f"{base}/healthz"
+    url = f"{base}{path}"
     try:
         req = urllib.request.Request(url, method="GET")
         with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
             code = resp.getcode()
-            body = resp.read(256).decode("utf-8", errors="replace")
-            return {"probed": True, "url": url, "status": code, "ok": code == 200, "snippet": body[:120]}
+            body = resp.read(max_bytes).decode("utf-8", errors="replace")
+            return {
+                "probed": True,
+                "url": url,
+                "status": code,
+                "ok": code == 200,
+                "snippet": body[:200],
+            }
     except urllib.error.HTTPError as exc:
         return {"probed": True, "url": url, "status": exc.code, "ok": False, "error": str(exc)}
     except Exception as exc:  # noqa: BLE001
         return {"probed": True, "url": url, "ok": False, "error": str(exc)}
 
 
+def probe_healthz(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any]:
+    """GET {api_base}/healthz — returns status without raising."""
+    return probe_get(api_base, "/healthz", timeout_sec=timeout_sec)
+
+
+def probe_trust_layer(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any]:
+    """Probe GTM trust endpoints on production API."""
+    paths = ("/healthz", "/version", "/api/v1/meta", "/health")
+    probes = {p.strip("/").replace("/", "_") or "root": probe_get(api_base, p, timeout_sec=timeout_sec) for p in paths}
+    healthz = probes.get("healthz") or {}
+    snippet = (healthz.get("snippet") or "").lower()
+    deploy_stale = healthz.get("ok") and "version" not in snippet
+    version_missing = (probes.get("version") or {}).get("status") == 404
+    meta_missing = (probes.get("api_v1_meta") or {}).get("status") == 404
+    ok = all(p.get("ok") for p in probes.values() if p.get("probed"))
+    return {
+        "probes": probes,
+        "deploy_stale_hint_ar": (
+            "النشر الحي قديم — /healthz بلا version أو /version غير منشور. انتظر CI + Railway deploy."
+            if deploy_stale or version_missing or meta_missing
+            else ""
+        ),
+        "ok": ok and not deploy_stale and not version_missing,
+    }
+
+
 def analyze_railway_production(*, api_base: str | None = None) -> dict[str, Any]:
     repo = check_repo_railway_config()
-    live = probe_healthz(api_base or DEFAULT_API_BASE) if api_base is not False else {"probed": False}
+    base = (api_base or DEFAULT_API_BASE) if api_base is not False else ""
+    live = probe_healthz(base) if base else {"probed": False}
+    trust = probe_trust_layer(base) if base else {"probed": False}
     verdict = "PASS" if repo["ok"] else "FAIL"
     if repo["ok"] and live.get("probed") and not live.get("ok"):
+        verdict = "WARN"
+    if repo["ok"] and trust.get("deploy_stale_hint_ar"):
         verdict = "WARN"
     return {
         "repo": repo,
         "live_healthz": live,
+        "live_trust_layer": trust,
         "canonical_start_command": CANONICAL_START,
         "canonical_predeploy": CANONICAL_PREDEPLOY,
         "verdict": verdict,

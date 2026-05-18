@@ -24,6 +24,12 @@ jobs:
         run: bash scripts/founder_weekly_loop.sh
       - name: Strongest plan pytest
         run: pytest tests/test_founder_strongest_plan.py -q --no-cov
+      - name: GTM + Railway + weekly metrics pytest
+        run: |
+          pytest tests/test_gtm_public_surfaces.py \
+            tests/test_railway_production_config.py \
+            tests/test_founder_weekly_metrics.py \
+            tests/test_founder_production_gates.py -q --no-cov
       - uses: actions/upload-artifact@v4
         with:
           name: founder-weekly-verify-${{ github.run_id }}

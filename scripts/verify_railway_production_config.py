@@ -71,6 +71,13 @@ def main() -> int:
             print(f"  live /healthz: {live.get('url')} -> {status}")
         else:
             print("  live /healthz: skipped")
+        trust = blob.get("live_trust_layer") or {}
+        hint = trust.get("deploy_stale_hint_ar")
+        if hint:
+            print(f"  FOUNDER_ACTION (deploy): {hint}")
+        for key, row in (trust.get("probes") or {}).items():
+            if row.get("probed"):
+                print(f"  live {key}: {row.get('url')} -> {row.get('status', row.get('error'))}")
         if drift:
             print(f"  FOUNDER_ACTION (start): {drift}")
         if predeploy_drift:

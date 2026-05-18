@@ -25,3 +25,8 @@ def test_ui_predeploy_drift_no_migration_stub() -> None:
     hint = parse_railway_ui_predeploy_drift('echo "no migration needed"')
     assert hint is not None
     assert "railway_predeploy" in hint
+
+
+def test_analyze_skips_live_when_api_base_false() -> None:
+    blob = analyze_railway_production(api_base=False)
+    assert blob["live_healthz"].get("probed") is False
