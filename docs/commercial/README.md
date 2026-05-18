@@ -36,3 +36,16 @@
 | [DEMAND_MODEL.md](DEMAND_MODEL.md) | نموذج الطلب ومزيج القنوات |
 | [SALES_QA.md](SALES_QA.md) | ضمان جودة المبيعات الأسبوعي |
 | [DELIVERY_QA.md](DELIVERY_QA.md) | ضمان جودة التسليم — بطاقة 10 نقاط لـ Proof Pack |
+
+## خطة التدشين والتوسع — Launch & Scale Master Plan
+
+خطة الرئيس التنفيذي للتدشين: سلّم أتمتة مرتبط بالإيراد — كل المحركات تُصمَّم الآن، وكل محرك يُبنى عند فتح بوابته.
+
+| Document | Purpose |
+|----------|---------|
+| [LAUNCH_MASTER_PLAN.md](LAUNCH_MASTER_PLAN.md) | الخطة الرئيسية — الاستراتيجية، 12 محرك، 5 مراحل ببوابات |
+| [ENGINE_SPECS.md](ENGINE_SPECS.md) | مواصفات المحركات الاثني عشر E1–E12 |
+| [GATE_CRITERIA.md](GATE_CRITERIA.md) | معايير بوابات القرار G0–G4 القابلة للتحقق |
+| [FINANCIAL_MODEL.md](FINANCIAL_MODEL.md) | النموذج المالي وآلة المال — أهداف MRR ووحدات اقتصادية |
+| [AGENT_OPERATING_MODEL.md](AGENT_OPERATING_MODEL.md) | نموذج تشغيل الوكلاء — من يشغّل ماذا + RACI |
+| [FULL_OPS_AUTOMATION_ARCHITECTURE.md](FULL_OPS_AUTOMATION_ARCHITECTURE.md) | معمارية الأتمتة الكاملة — الطبقات الثلاث |
