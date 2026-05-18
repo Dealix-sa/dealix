@@ -116,14 +116,6 @@ const CHECKLIST_90_AR = [
   "85–90: أدلة + KPI",
 ];
 
-type SocialPost = {
-  title_ar?: string;
-  pillar?: string;
-  status?: string;
-  cta_ar?: string;
-  calendar_date?: string;
-};
-
 type WarRoomTarget = {
   company?: string;
   target?: string;
@@ -133,4 +125,118 @@ type WarRoomTarget = {
   outreach_draft_ar?: string;
 };
 
+type CockpitResponse = {
+  comprehensive_plan?: ComprehensivePlan;
+};
+
+export function OpsFounderWarRoom() {
+  const locale = useLocale();
+  const isAr = locale === "ar";
+  const [plan, setPlan] = useState<ComprehensivePlan | null>(null);
+  const [targets, setTargets] = useState<WarRoomTarget[]>([]);
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!isOpsConfigured()) {
+      setErr(opsMissingKeyMessage(isAr));
+      setLoading(false);
+      return;
+    }
+    const key = getAdminApiKey();
+    setLoading(true);
+    setErr("");
+    Promise.all([
+      api.getFounderCockpit(key, 10, "morning"),
+      api.getWarRoom(key, { top_n: 6 }),
+    ])
+      .then(([cockpitRes, warRes]) => {
+        setPlan((cockpitRes.data as CockpitResponse)?.comprehensive_plan ?? null);
+        setTargets((warRes.data as { items?: WarRoomTarget[] })?.items ?? []);
+      })
+      .catch(() => setErr(isAr ? "تعذّر تحميل غرفة الحرب" : "Failed to load war room"))
+      .finally(() => setLoading(false));
+  }, [isAr]);
+
+  return (
+    <Card className="p-4 space-y-3">
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="text-sm font-semibold">
+          {isAr ? "غرفة حرب المؤسس" : "Founder war room"}
+        </h3>
+        <Button asChild variant="outline" size="sm">
+          <Link href={`/${locale}/ops/war-room`}>
+            {isAr ? "افتح غرفة الحرب" : "Open war room"}
+          </Link>
+        </Button>
+      </div>
+
+      {loading && (
+        <p className="text-xs text-muted-foreground">
+          {isAr ? "جارٍ التحميل…" : "Loading…"}
+        </p>
+      )}
+      {err && <p className="text-xs text-destructive">{err}</p>}
+
+      {!loading && !err && (
+        <>
+          {plan && (
+            <div className="space-y-2">
+              <MasterPhaseStrip plan={plan} isAr={isAr} />
+              <WeeklyDecisionBlock plan={plan} isAr={isAr} />
+            </div>
+          )}
+
+          <div>
+            <p className="text-xs text-muted-foreground mb-1">
+              {isAr ? "إيقاع الـ90 دقيقة" : "90-minute cadence"}
+            </p>
+            <ul className="text-xs space-y-0.5 list-disc ps-4">
+              {CHECKLIST_90_AR.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-xs text-muted-foreground mb-1">
+              {isAr ? "أهداف اليوم" : "Today's targets"}
+            </p>
+            {targets.length === 0 ? (
+              <p className="text-xs text-muted-foreground">
+                {isAr
+                  ? "لا أهداف — استورد قائمة في غرفة الحرب."
+                  : "No targets — import a list in the war room."}
+              </p>
+            ) : (
+              <ul className="space-y-1" role="list">
+                {targets.map((tgt, i) => (
+                  <li
+                    key={`${tgt.company ?? tgt.target ?? "row"}-${i}`}
+                    className="text-xs border rounded px-2 py-1"
+                  >
+                    <span className="font-medium">
+                      {tgt.company ?? tgt.target ?? "—"}
+                    </span>
+                    {tgt.segment ? (
+                      <span className="text-muted-foreground"> · {tgt.segment}</span>
+                    ) : null}
+                    {tgt.status ? (
+                      <span className="text-muted-foreground"> · {tgt.status}</span>
+                    ) : null}
+                    {tgt.next_action ? (
+                      <span className="block text-muted-foreground">
+                        {tgt.next_action}
+                      </span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </>
+      )}
+    </Card>
+  );
+}
 

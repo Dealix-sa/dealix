@@ -38,6 +38,10 @@ eggs/
 .eggs/
 lib/
 lib64/
+# `lib/` above is the Python build-artifact pattern; the Next.js frontend
+# source dir is real source and must stay tracked.
+!frontend/src/lib/
+!frontend/src/lib/**
 parts/
 sdist/
 var/

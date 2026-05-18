@@ -61,8 +61,6 @@ export type CockpitPayload = {
   unified_day_run?: { verdict?: string; artifact_path?: string };
   evening_run?: { verdict?: string };
   weekly_run?: { verdict?: string };
-  complete_autonomous_day?: { verdict?: string; artifact_path?: string };
-  hitl_spectrum_2026_ar?: { level?: string; when_ar?: string; dealix?: string }[];
   daily_cadence?: { evidence_logged_today?: boolean; is_friday_run_scorecard?: boolean };
 };
 
@@ -395,7 +393,7 @@ export function OpsFullAutonomousOpsCard({ data, cockpit, onRefresh }: Props) {
         <>
           <p className="text-xs font-medium">{isAr ? "طابور اليوم (آلي):" : "Autopilot queue:"}</p>
           <ol className="text-xs space-y-1 list-decimal mr-5 mt-1 mb-2">
-            {(c.governed_autopilot.queue ?? []).slice(0, 5).map((q) => (
+            {(c?.governed_autopilot?.queue ?? []).slice(0, 5).map((q) => (
               <li key={q.priority} className={q.blocking ? "font-medium" : ""}>
                 {q.title_ar}
               </li>
