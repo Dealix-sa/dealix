@@ -33,7 +33,7 @@ Dealix = حل يحتاج distribution
 - Dealix يتولّى التركيب + الدعم
 
 **مثال:**
-- وكالة تبيع Dealix Growth (2,999 ريال) لـ 5 عملاء
+- وكالة تبيع Dealix Managed Revenue Ops (2,999 ريال) لـ 5 عملاء
 - عمولة شهرية: 5 × 2,999 × 25% = 3,749 ريال/شهر
 - سنوياً: 44,988 ريال passive income
 
@@ -45,7 +45,7 @@ Dealix = حل يحتاج distribution
 ### نموذج 2: Service Exchange (الأذكى للـ bootstrap)
 
 **كيف يشتغل:**
-- الوكالة تستخدم Dealix مجاناً (Growth = 2,999 ريال)
+- الوكالة تستخدم Dealix مجاناً (Managed Revenue Ops = 2,999 ريال)
 - في المقابل، تقدّم Dealix خدمات تسويقية بقيمة 2,999+ شهرياً
 - Win-Win بدون كاش
 
@@ -119,7 +119,7 @@ Dealix = حل يحتاج distribution
 **الخدمات المتبادلة:**
 
 #### من Dealix للوكالة:
-1. حساب Dealix Growth (قيمة 2,999 ريال/شهر)
+1. حساب Dealix Managed Revenue Ops (قيمة 2,999 ريال/شهر)
 2. تركيب مجاني + تدريب (60 دقيقة)
 3. Priority support خلال ساعة
 4. Account manager مخصّص

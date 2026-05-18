@@ -26,8 +26,8 @@
 - [dealix_onepager.html](./dealix_onepager.html) — صفحة A4 قابلة للطباعة
 
 ### ✍️ إغلاق الصفقات
-- [dealix_pilot_agreement.md](./dealix_pilot_agreement.md) — عقد تجربة 7 أيام (Starter)
-- [dealix_enterprise_proposal.md](./dealix_enterprise_proposal.md) — قالب proposal للـ Scale tier
+- [dealix_pilot_agreement.md](./dealix_pilot_agreement.md) — عقد 7-Day Revenue Proof Sprint (499 ريال)
+- [dealix_enterprise_proposal.md](./dealix_enterprise_proposal.md) — قالب proposal للـ Executive Command Center
 
 ### 🔒 الأمان والامتثال
 - [dealix_security_faq.md](./dealix_security_faq.md) — 20 سؤال أمني + أجوبة IT teams
@@ -71,8 +71,8 @@
 | أول رسالة | `personalized_messages` |
 | المتابعة | `followup_cadence` |
 | Demo | `demo_script_30min` + `objection_handler` + `onepager` + `roi_calculator` |
-| الإغلاق (Starter) | `pilot_agreement` |
-| الإغلاق (Scale) | `enterprise_proposal` + `security_faq` |
+| الإغلاق (Revenue Proof Sprint) | `pilot_agreement` |
+| الإغلاق (Executive Command Center) | `enterprise_proposal` + `security_faq` |
 | قانوني | `privacy_policy_ar` + `terms_of_service_ar` |
 | بعد التوقيع | `customer_onboarding` |
 | النمو العضوي | `content_calendar` + `referral_program` |
@@ -91,17 +91,20 @@
 
 ## 🎯 الهدف
 
-**أول 999 ريال في الحساب خلال 14 يوم. 125k ر.س MRR بنهاية 2026. Seed round Q4 2026.**
+<!-- PRICING UPDATED 2026-05-18: aligned to docs/OFFER_LADDER_AND_PRICING.md. The paid entry offer is the 499 SAR 7-Day Revenue Proof Sprint — no 999 SAR Starter tier. -->
+
+**أول 499 ريال في الحساب خلال 14 يوم. 125k ر.س MRR بنهاية 2026. Seed round Q4 2026.**
 
 المسار:
 ```
 Railway 12د
-  → اختبار 1 ريال 2د
+  → اختبار دفع 2د
   → تواصل 20د
   → انتظار 3-7 أيام
   → Demo 30د
-  → Pilot 7 أيام
-  → Starter ✅
+  → Free AI Ops Diagnostic
+  → 7-Day Revenue Proof Sprint (499 ريال) ✅
+  → Data-to-Revenue Pack / Managed Revenue Ops
   → 10 عملاء → LLC
   → 30k MRR → Seed conversations
   → 125k MRR → Close seed

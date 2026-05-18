@@ -22,13 +22,25 @@ Dealix = **Founder-led, revenue-first, capital-efficient.**
 
 ### هيكل الأسعار
 
-| الباقة | السعر/شهر | الهدف الشهري | COGS | Gross Margin |
-|--------|-----------|---------------|------|--------------|
-| Starter | 999 | 50% من العملاء | 150 | 85% |
-| Growth | 2,999 | 35% من العملاء | 400 | 87% |
-| Scale | 7,999 | 15% من العملاء | 900 | 89% |
+<!-- PRICING UPDATED 2026-05-18: tier names/prices aligned to docs/OFFER_LADDER_AND_PRICING.md.
+     Retired tiers mapped: "Starter 999" → Managed Revenue Ops (2,999–4,999/شهر);
+     "Growth 2,999" → Managed Revenue Ops; "Scale 7,999" → Executive Command Center (7,500–15,000/شهر).
+     ARPA and all MRR/P&L projections below are built on the retired tier prices —
+     projection figures may need a manual refresh against the current ladder. -->
 
-**Weighted Average Revenue Per Account (ARPA):** 2,449 ريال/شهر
+| الدرجة | السعر/شهر | الهدف الشهري | COGS | Gross Margin |
+|--------|-----------|---------------|------|--------------|
+| Managed Revenue Ops | 2,999–4,999 | معظم العملاء المتكررين | 400 | 87% |
+| Executive Command Center | 7,500–15,000 | شريحة Enterprise | 900 | 89% |
+
+*ملاحظات: الدرجة 1 (7-Day Revenue Proof Sprint بـ 499 ريال) والدرجة 2
+(Data-to-Revenue Pack بـ 1,500 ريال) دفعات لمرة واحدة وليست إيراداً متكرراً —
+تُحتسب ضمن إيراد المشاريع لا ضمن MRR. التفاصيل الكاملة في
+`docs/OFFER_LADDER_AND_PRICING.md`.*
+
+**Weighted Average Revenue Per Account (ARPA):** ~2,449 ريال/شهر — هذا الرقم
+محسوب على هيكل الأسعار القديم المُلغى ويحتاج إعادة احتساب يدوية على السلم الحالي
+(تقديري، ليس ضماناً).
 
 ### COGS Breakdown (لكل عميل)
 - Anthropic API (Claude): 60% of COGS
@@ -42,7 +54,7 @@ Dealix = **Founder-led, revenue-first, capital-efficient.**
 
 ### New Customer Acquisition (شهرياً)
 
-| الشهر | Starter | Growth | Scale | Total New | Churn | Net New | Active |
+| الشهر | Managed Ops (low) | Managed Ops (mid) | Exec Command Center | Total New | Churn | Net New | Active |
 |-------|---------|---------|-------|-----------|-------|---------|--------|
 | M1 | 1 | 0 | 0 | 1 | 0 | 1 | 1 |
 | M2 | 2 | 1 | 0 | 3 | 0 | 3 | 4 |
@@ -63,6 +75,10 @@ Dealix = **Founder-led, revenue-first, capital-efficient.**
 - المصادر: 60% outbound، 30% inbound، 10% referral
 
 ### MRR بـ نهاية كل شهر
+
+<!-- PRICING NOTE 2026-05-18: the MRR cascade below was computed on retired tier prices
+     (Starter 999 / Growth 2,999 / Scale 7,999). It is too entangled to recompute mechanically —
+     figures need a manual refresh against the current ladder before external use. -->
 
 | الشهر | MRR | ARR (ٰSimulated) |
 |-------|-----|------------------|
@@ -134,6 +150,9 @@ Dealix = **Founder-led, revenue-first, capital-efficient.**
 
 ## 📊 P&L Projection (السنة الأولى)
 
+<!-- PRICING NOTE 2026-05-18: the P&L Revenue column inherits the retired-tier MRR cascade above
+     and needs the same manual refresh against the current ladder before external use. -->
+
 | الشهر | Revenue | Costs | Net | Cumulative |
 |-------|---------|-------|-----|------------|
 | M1 | 999 | 1,725 | -726 | -726 |
@@ -197,6 +216,8 @@ Dealix = **Founder-led, revenue-first, capital-efficient.**
 - Revenue-funded from M1 onwards
 
 ### Monthly Burn vs. Revenue
+<!-- PRICING NOTE 2026-05-18: Revenue column inherits the retired-tier MRR cascade — manual refresh needed. -->
+
 | الفترة | Burn | Revenue | Net |
 |-------|------|---------|-----|
 | M1 | 1,725 | 999 | -726 |

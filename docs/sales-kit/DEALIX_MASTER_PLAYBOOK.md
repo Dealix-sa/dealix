@@ -206,14 +206,18 @@
 
 ## 💰 نموذج التسعير (Confirmed)
 
-| الباقة | السعر | الجمهور |
-|--------|-------|---------|
-| Pilot | 1 ر.س (7 أيام) | الاختبار |
-| Starter | 999 ر.س/شهر | شركات صغيرة |
-| Growth | 2,999 ر.س/شهر | متوسطة |
-| Scale | 7,999 ر.س/شهر | Enterprise |
+<!-- PRICING UPDATED 2026-05-18: tier prices aligned to docs/OFFER_LADDER_AND_PRICING.md. No 999 SAR Starter and no 7,999 SAR Scale tier. -->
 
-**المزيج المستهدف**: 40% Starter / 30% Growth / 10% Scale → **ARPU: 2,099 ر.س**
+| الدرجة | السعر | الجمهور |
+|--------|-------|---------|
+| Free AI Ops Diagnostic | مجاني | باب الدخول |
+| 7-Day Revenue Proof Sprint | 499 ر.س (دفع واحد) | إثبات سريع |
+| Data-to-Revenue Pack | 1,500 ر.س (مشروع واحد) | upsell بعد Sprint |
+| Managed Revenue Ops | 2,999–4,999 ر.س/شهر | شركات بعد pilot ناجح |
+| Executive Command Center | 7,500–15,000 ر.س/شهر | Enterprise بعد 3 pilots |
+| Agency Partner OS | مخصص + rev-share 15–30% | الوكالات بعد 3 proof packs |
+
+**التفاصيل الكاملة وشروط فتح كل درجة:** `docs/OFFER_LADDER_AND_PRICING.md`
 
 ---
 
