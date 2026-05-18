@@ -58,3 +58,27 @@
 | [ops_client_pack/](ops_client_pack/) | **حزمة Ops:** Runbook عربي + Executive Deck (pptx) للمؤسس |
 | [FULL_OPS_CLOSE_ENGINE_AR.md](FULL_OPS_CLOSE_ENGINE_AR.md) | **محرك إغلاق Full Ops:** هندسة قرار الشراء، Champion Pack، Procurement Pack، والزوايا العشر (مخاطرة، اقتصاديات، شركاء، CS، ثقة، حلقة تحسين) |
 | [../ops/DEALIX_REVENUE_WAR_ROOM_AR.md](../ops/DEALIX_REVENUE_WAR_ROOM_AR.md) | **Revenue War Room:** جدول يومي، قنوات، سلم تحويل، مسودات رسائل، شركاء، مؤشرات — بموافقة بشرية |
+
+---
+
+## طبقة العقيدة التشغيلية — CEO Operating Doctrine
+
+> 14 وثيقة تُجسّد عقيدة تشغيل الشركة في **Commercial Proof Mode**. التسعير في
+> هذه الطبقة يطابق المصدر الرسمي [`../OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md).
+
+| Document | Purpose |
+|----------|---------|
+| [CURRENT_DIRECTION.md](CURRENT_DIRECTION.md) | الاتجاه، التمركز، معيار SOAEN، القرار النهائي، خريطة الطبقة |
+| [OFFER_LADDER.md](OFFER_LADDER.md) | السلم التجاري — يعكس المصدر الرسمي للتسعير |
+| [AGENCY_WEDGE_PLAYBOOK.md](AGENCY_WEDGE_PLAYBOOK.md) | السوق الأول: الوكالات — رسالة، عرض، أدوار |
+| [SALES_SCRIPT.md](SALES_SCRIPT.md) | رسائل البيع + Sales Enablement Kit |
+| [DEMO_FLOW.md](DEMO_FLOW.md) | ديمو 12 دقيقة |
+| [OBJECTION_ENGINE.md](OBJECTION_ENGINE.md) | الاعتراضات → أصول بيعية ومحتوى |
+| [PROOF_PACK_STANDARD.md](PROOF_PACK_STANDARD.md) | معيار Proof Pack + وسوم الحقيقة + Authority Engine |
+| [COMMERCIAL_CONTROL_TOWER.md](COMMERCIAL_CONTROL_TOWER.md) | KPIs، نجاح العميل، Benchmark، Productization |
+| [PARTNER_ECONOMY.md](PARTNER_ECONOMY.md) | اقتصاد الشركاء — أنواع، حوكمة، إيقاع |
+| [AFFILIATE_GOVERNANCE.md](AFFILIATE_GOVERNANCE.md) | حوكمة المسوّقين بالعمولة — شبكة مغلقة |
+| [TRUST_LAYER.md](TRUST_LAYER.md) | وعد الثقة + الـ11 غير القابلة للتفاوض |
+| [TOOL_STACK.md](TOOL_STACK.md) | حزمة الأدوات والمكتبات — 4 مستويات |
+| [DAILY_SCORECARD.md](DAILY_SCORECARD.md) | النظام اليومي — 10 touches، بطاقة يومية، مؤشرات أمان |
+| [30_60_90_PLAN.md](30_60_90_PLAN.md) | خطة 7 / 30 / 90 يوم |
