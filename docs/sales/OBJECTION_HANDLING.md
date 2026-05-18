@@ -1,15 +1,9 @@
 # Objection Handling
 
-## "We can use ChatGPT ourselves"
+The single authoritative objection library lives at
+[`../ops/objection_library_ar.md`](../ops/objection_library_ar.md) — 15 objections,
+bilingual, aligned to the canonical pricing ladder
+([`../OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md)).
 
-Yes, but Dealix gives you process, governance, data quality, reports, and proof.
-
-## "Too expensive"
-
-This is not AI access. This is implementation, delivery, and measurable business output.
-
-## "We don't have clean data"
-
-Then we start with Data Readiness or Cleanup.
-
-More: [`../sales-kit/dealix_objection_handler.md`](../sales-kit/dealix_objection_handler.md).
+Use it during discovery calls, demos, and live reply handling.
+Do not maintain duplicate objection scripts elsewhere.

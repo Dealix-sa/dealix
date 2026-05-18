@@ -8,4 +8,4 @@
 
 **الكود:** `endgame_os/capability_diagnostic.py` — `recommended_sprints`.
 
-**صعود:** [`ENDGAME_OPERATING_DOCTRINE.md`](ENDGAME_OPERATING_DOCTRINE.md) · [`../sales/LEAD_INTELLIGENCE_SALES_PAGE.md`](../sales/LEAD_INTELLIGENCE_SALES_PAGE.md)
+**صعود:** [`ENDGAME_OPERATING_DOCTRINE.md`](ENDGAME_OPERATING_DOCTRINE.md) · [`../sales/REVENUE_PROOF_SPRINT_SALES_PAGE.md`](../sales/REVENUE_PROOF_SPRINT_SALES_PAGE.md)

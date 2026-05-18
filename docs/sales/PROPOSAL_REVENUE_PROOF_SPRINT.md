@@ -1,62 +1,63 @@
-# Proposal: Lead Intelligence Sprint
+# Proposal: 7-Day Revenue Proof Sprint (Rung 1)
+<!-- Canonical pricing: docs/OFFER_LADDER_AND_PRICING.md -->
+<!-- See PROPOSAL_SYSTEM.md for the master template covering all 6 rungs -->
 
-## Problem
+## Client Goal — هدف العميل
 
-Your company has scattered account/lead data and unclear prioritization.
+إثبات حقيقي خلال أسبوع: فرصة موثقة واحدة على الأقل وخطة متابعة واضحة.
 
-## Goal
+## Problem — المشكلة
 
-Create a ranked opportunity list and action plan within 10 days.
+بيانات leads مبعثرة (Sheets / CRM / WhatsApp) وأولوية غير واضحة — لا يُعرف من أين تبدأ المبيعات.
 
-## Scope
+## Proposed Sprint — ما سيُسلَّم
 
-**Included:**
+سبرنت إثبات الإيرادات في 7 أيام: تشخيص + تنظيف + تسجيل نقاط + خريطة فرص + مسودات تواصل + Proof Pack.
 
-- CSV/account data review  
-- data quality score  
-- dedupe  
-- account scoring  
-- top 50 accounts  
-- outreach draft pack  
-- mini CRM board  
-- executive proof report  
+## Scope — النطاق
 
-**Not included:**
+**Included — المتضمَّن:**
+- مراجعة بيانات الحسابات / leads (CSV / تصدير CRM)
+- درجة جودة بيانات + كشف تكرار
+- تسجيل نقاط الحسابات (حتمي وقابل للشرح)
+- خريطة فرص مرتبة
+- 5 مسودات رسائل تواصل (draft-only — موافقة المؤسس قبل أي إرسال)
+- لوحة pipeline مصغّرة
+- تقرير تنفيذي + Proof Pack يوم 7 + خطة 30 يوماً
 
-- automated sending  
-- scraping  
-- guaranteed meetings  
-- live WhatsApp automation  
-- LinkedIn automation  
-- CRM integration unless separately scoped  
+**Excluded — المستثنى:**
+- إرسال تلقائي / cold WhatsApp
+- scraping أو قوائم مشتراة
+- أتمتة LinkedIn / إرسال جماعي
+- ضمان اجتماعات أو مبيعات
+- تكامل CRM كامل (إلا في نطاق منفصل)
 
-## Timeline
+## Timeline — الجدول
 
-10 business days.
+7 أيام تقويمية.
 
-## Client inputs
+## Client Responsibilities — مسؤوليات العميل
 
-- lead/account file  
-- service description  
-- target sectors/cities  
-- current outreach examples if available  
+ملف leads / حسابات · وصف الخدمة · القطاعات / المدن المستهدفة · أمثلة تواصل حالية إن وُجدت · سرعة موافقة على المسودات.
 
-## Price
+## Price & Payment — السعر والدفع
 
-SAR 9,500–18,000 depending on data complexity.
+**499 SAR** (دفع واحد).
+شروط الدفع: 50% عند القبول، 50% عند تسليم Proof Pack.
 
-## Success metrics
+## Success Metric — مقياس النجاح
 
-- accounts cleaned  
-- duplicates found  
-- accounts scored  
-- top actions delivered  
-- proof report delivered  
+المقياس الأساسي: فرصة ≥ 1 مُعرّفة وموثقة + درجة proof ≥ 80 + أصل رأسمالي ≥ 1 (Proof Pack).
 
-## Next step
+## Governance — الحوكمة
 
-Pilot Conversion Sprint or Monthly RevOps OS.
+- كل تواصل **draft-only** حتى موافقة بشرية صريحة.
+- لا scraping، لا cold WhatsApp، لا أتمتة LinkedIn، لا إرسال جماعي.
+- لا ادعاءات إيراد مضمونة.
+- PDPL / قابلية التواصل محترمة.
 
-## Governance
+> النتائج التقديرية ليست نتائج مضمونة / Estimated outcomes are not guaranteed outcomes.
 
-All outreach remains **draft_only** until explicit human approval. No cold WhatsApp.
+## Next Step — الخطوة التالية
+
+فاتورة 50% عبر Moyasar → kickoff. مسار الترقية بعد التسليم: Data-to-Revenue Pack (1,500 SAR) أو Managed Revenue Ops (2,999–4,999 SAR/شهر).

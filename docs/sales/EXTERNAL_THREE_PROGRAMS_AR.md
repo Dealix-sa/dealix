@@ -1,27 +1,29 @@
-# ثلاثة برامج للعرض الخارجي
+# ثلاث درجات للعرض الخارجي — Three Rungs to Pitch
 
-لا تعرض 20 خدمة. اعرض **3 برامج** ثم ربط بالتوسع.
+لا تعرض السلم كاملاً دفعة واحدة. ابدأ بالباب المجاني، ثم اعرض **درجة 1** كأول التزام مدفوع، واربط بالتوسع.
 
-## Program 1: Grow Revenue Sprint
+> مصدر الحقيقة للأسعار: [`../OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md).
 
-**لمن؟** شركات تريد مبيعات أوضح.  
-**المخرج:** فرص مرتبة + مسودات رسائل + pipeline.  
-**السعر:** يبدأ من 9,500 ريال (انظر [`PRICING.md`](../company/PRICING.md)).
+## الباب: Free AI Ops Diagnostic — مجاني
 
-## Program 2: Automate Work Sprint
+**لمن؟** أي مؤسس B2B سعودي مهتم باستكشاف Dealix.
+**المخرج:** تقرير تشخيصي صفحة واحدة + 3 أولويات + توصية الخطوة التالية.
+**السعر:** مجاني.
 
-**لمن؟** شركات عندها عملية متكررة.  
-**المخرج:** workflow يوفر وقت + موافقة بشرية + SOP.  
-**السعر:** يبدأ من 7,500–15,000 ريال حسب النطاق.
+## الدرجة 1: 7-Day Revenue Proof Sprint — 499 ريال
 
-## Program 3: Company Brain Sprint
+**لمن؟** شركات تريد إثباتاً سريعاً لمبيعات أوضح.
+**المخرج:** فرص مرتبة + 5 مسودات رسائل (draft-only) + Proof Pack + خطة 30 يوماً.
+**السعر:** 499 ريال (دفع واحد) — 50% عند القبول، 50% عند تسليم Proof Pack.
 
-**لمن؟** شركات عندها ملفات ومعرفة مبعثرة.  
-**المخرج:** مساعد داخلي بإجابات موثقة (No source = no answer).  
-**السعر:** يبدأ من 20,000 ريال.
+## الدرجة 2: Data-to-Revenue Pack — 1,500 ريال
+
+**لمن؟** شركات لديها بيانات عملاء/مبيعات غير مستثمرة وتحتاج معالجة PII.
+**المخرج:** تحليل pipeline كامل + خريطة فرص + 10 مسودات استهداف + playbook مبيعات.
+**السعر:** 1,500 ريال (مشروع واحد).
 
 ---
 
-> بعد نجاح أول Sprint، نقدّم Monthly AI Ops أو Enterprise AI OS — حسب الجاهزية والحوكمة.
-
-الربط بالمجلدات: [`../services/lead_intelligence_sprint/`](../services/lead_intelligence_sprint/)، [`../services/ai_quick_win_sprint/`](../services/ai_quick_win_sprint/)، [`../services/company_brain_sprint/`](../services/company_brain_sprint/).
+> بعد نجاح Sprint موثق، نقدّم Managed Revenue Ops (2,999–4,999 ريال/شهر) أو الدرجات الأعلى — حسب الجاهزية والحوكمة وشروط الدخول لكل درجة.
+>
+> النتائج التقديرية ليست نتائج مضمونة / Estimated outcomes are not guaranteed outcomes.

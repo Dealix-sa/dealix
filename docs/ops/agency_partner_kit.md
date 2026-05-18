@@ -1,162 +1,152 @@
-# Dealix Agency Partner Kit
+# Dealix Agency Partner Kit — حقيبة الشريك
+<!-- Canonical partner terms: docs/AGENCY_PARTNER_PROGRAM.md -->
+<!-- Canonical pricing ladder: docs/OFFER_LADDER_AND_PRICING.md (Rung 5) -->
 
-**Who this is for:** Saudi marketing / CRM / web / lead-gen agencies that sell services to B2B SMB and enterprise clients. Add Dealix to their offering stack — they earn setup fees + commission on MRR.
+**لمن:** وكالات تسويق / CRM / استشارات سعودية تخدم عملاء B2B SME وتريد إضافة Dealix لعرضها.
 
----
-
-## Partner pitch (60-second version)
-
-> "أنت وكالة تسويق في السعودية. عملاءك يدفعون لك آلاف ريالات شهرياً لتجيب leads. المشكلة الحقيقية؟ الـ leads تدخل CRM العميل، وما يُرَد عليها بسرعة. هنا Dealix يدخل: تضيف طبقة AI sales rep بالعربي فوق كل عميل، تأخذ 20-30% من MRR كل عميل دائم، + setup fee لمرة واحدة. كل 5 عملاء = 5,000-15,000 ريال إضافي شهرياً، صفر tech work."
-
----
-
-## Partner packages
-
-| الباقة | Setup Fee | Commission | يناسب |
-|--------|-----------|------------|--------|
-| **Starter** | 3,000 SAR | 20% من MRR (طول حياة العميل) | وكالات صغيرة، أول 1-3 عملاء |
-| **Growth** | 8,000 SAR | 25% من MRR | وكالات 10-50 عميل |
-| **Scale** | 25,000 SAR | 30% من MRR + white-label option | وكالات enterprise، 50+ عميل |
-| **Referral-only** | 0 | 10% من MRR لـ 12 شهر | من لا يريد setup / implementation |
-
-**Setup fee splits:** 50% upon signing, 50% upon first customer onboarded.
-**Commission:** paid monthly, 15 days after Dealix receives payment from end customer.
+> مصدر الحقيقة لأنواع الشراكة وشروطها: [`../AGENCY_PARTNER_PROGRAM.md`](../AGENCY_PARTNER_PROGRAM.md).
+> الشراكة الرسمية (Rung 5) لا تُفتح إلا بعد ≥ 3 proof packs مكتملة + اتفاقية موقعة.
 
 ---
 
-## What the partner delivers vs what Dealix delivers
+## أنواع الشراكة الثلاثة — Three partner types
 
-### Partner (the agency) delivers
-- Client discovery + sales conversation
-- Client onboarding: kickoff call, Dealix AI config (prompts, FAQ, branding)
-- Client training: how to read Dealix dashboard, handle leads
-- First-30-days support
-- Integration with client's CRM (via Dealix connectors)
-- Monthly optimization review
+| النوع — Type | العمولة / Rev-share | شرط البدء — Entry condition |
+|--------------|---------------------|------------------------------|
+| **شريك إحالة — Referral** | 15% من أول دفعة للعميل المُحال | موافقة شفهية/مكتوبة، لا عقد معقد |
+| **شريك تنفيذ — Implementation** | 20–25% من كل دفعة طوال العلاقة | إتمام ≥ 1 pilot كعميل أولاً + عقد موقّع |
+| **شريك مبيعات مشتركة — Co-selling** | 25–30% من كل دفعة + co-branded proof packs | ≥ 3 proof packs مكتملة + اتفاقية موقّعة |
 
-### Dealix (the product) delivers
-- The AI sales rep product
-- Saudi Arabic prompt engineering
-- All infrastructure (Railway, hosting, SSL)
-- Product updates
-- Partner enablement content + case studies
-- Technical escalation (if client hits a bug)
+**قواعد Rev-share:**
+- لا دفع rev-share قبل استلام دفعة العميل من Dealix.
+- لا rev-share على تكاليف LLM أو infrastructure.
+- كل دفعة rev-share تحتاج فاتورة من الشريك.
+- لا rev-share على عملاء أتوا مباشرة لـ Dealix بلا إحالة مثبتة.
+
+العميل يدفع Dealix بأسعار السلم الرسمي (Free → 499 → 1,500 → 2,999–4,999/شهر → 7,500–15,000/شهر). الشريك لا يضع أسعاراً خاصة به.
 
 ---
 
-## Partner onboarding flow (7 days)
+## من يسلّم ماذا — Who delivers what
 
-**Day 0 — Partner signs Partner Agreement**
-- Sami sends partner intake form
-- Partner chooses tier
-- Setup fee invoiced (50% upfront)
+**الشريك (الوكالة):** علاقة العميل + المحادثة + onboarding العميل + المتابعة + مراجعة شهرية.
 
-**Day 1 — Kickoff**
-- 60-minute partner training session (Zoom)
-- Partner receives: one-pager, battlecard, demo script, objection library AR, sector playbooks
-- Demo Dealix instance provisioned for the agency to show clients
-
-**Day 2-4 — Agency sells first client**
-- Agency uses materials to pitch 3-5 existing clients
-- Sami supports on first 1-2 calls (shadow)
-
-**Day 5-7 — First agency client onboarded**
-- Client pays Dealix directly
-- Commission starts
+**Dealix:** المنتج والمنهجية + Proof Pack + البنية التحتية + تحديثات المنتج + مواد التمكين + التصعيد التقني.
 
 ---
 
-## Objection handling (agency-specific)
+## خارطة طريق التهيئة — Onboarding roadmap
 
-**"How do I explain this to my client?"**
-> "One-pager + demo link. Most clients buy in 15 minutes when we show the 45-second response time."
+```
+الأسبوع 1–2: Dealix يجري discovery call ويقيّم التوافق
+الأسبوع 3–4: الشريك يجرّب Dealix كعميل (7-Day Revenue Proof Sprint — 499 ريال)
+الشهر 2:     الشريك يُحيل أول عميل (بإشراف Dealix)
+الشهر 3:     مراجعة أولى + توقيع اتفاقية رسمية إن نجح المسار
+الشهر 4+:    تفعيل co-branded packs (لو توفّرت 3 proof packs)
+```
 
-**"What if client cancels after setup?"**
-> "Cancellation in first 30 days = 50% of setup fee refunded to client by Dealix (agency keeps portion). After 30 days: standard cancellation policy."
+### قائمة التهيئة — Onboarding checklist
 
-**"What if I want to white-label?"**
-> "Scale tier includes white-label — Dealix runs under your brand. MRR share slightly lower (25% instead of 30%) because branding shifts to you."
+**للبدء:** اجتماع تعريفي مع المؤسس (30 دقيقة) · تجربة Sprint 499 ريال كعميل · فهم سياسة draft-only · توقيع NDA مبدئي.
 
-**"What's my exclusivity?"**
-> "Geography or vertical exclusivity is negotiable at Scale tier. Starter/Growth = non-exclusive."
-
-**"What about existing clients I already sold something to?"**
-> "Dealix layers on top. We tell the client: 'your agency is now adding AI lead qualification.' Your upsell, your commission."
-
----
-
-## Partner KPIs Dealix tracks
-
-For every agency partner:
-- Pipeline of clients (pitched but not closed)
-- Clients signed (and their MRR)
-- Commission paid to agency (monthly)
-- Client churn rate per agency
-- Client satisfaction (from Dealix side)
-
-Reviewed quarterly with each agency partner.
+**للتفعيل الرسمي:** إتمام Sprint ناجح كعميل · إحالة أول عميل مؤهل · توقيع اتفاقية شراكة كاملة · تدريب: منهجية Dealix + pitch + DPA.
 
 ---
 
-## Marketing kit agency receives
+## بطاقة تقييم الشريك — Partner scorecard (ربعي)
 
-- `dealix_onepager.html` (one-page sales asset — ready to email to clients)
-- `dealix_pitch_deck.md` (15-slide deck — customizable)
-- `dealix_demo_script_30min.md` (how to run a 30-min demo)
-- `dealix_battlecards.md` (Foodics, Lucidya, Salla comparison cards)
-- `dealix_roi_calculator.html` (interactive ROI calculator)
-- `dealix_objection_handler.md` (objection library)
-- `sector_playbooks.md` (per-sector positioning)
-- `dealix_brand_guidelines.md` (visual identity for co-branded materials)
+| المعيار | الوزن | الحد الأدنى |
+|---------|-------|------------|
+| عدد العملاء المُحالين | 30% | ≥ 1 / ربع |
+| جودة العملاء (qualified) | 25% | ≥ 75% qualified |
+| إتمام Proof Packs | 25% | ≥ 80% completion |
+| رضا العملاء المُحالين | 20% | ≥ 4/5 |
 
-All ship in the sales-kit directory.
+**التصنيفات:** بلاتيني ≥ 90% + ≥ 3 عملاء/ربع · ذهبي ≥ 75% + ≥ 2 عملاء/ربع · عادي < 75% · مراجعة = ربعان بلا عميل.
 
 ---
 
-## First 5 agency targets (ranked)
+## معالجة اعتراضات الوكالة — Agency-specific objections
 
-See `docs/ops/lead_machine/TOP_5_PARTNERS.csv` for scored priorities.
+**"كيف أشرح هذا لعميلي؟"**
+> "نبدأ بتشخيص مجاني للعميل، ثم Sprint 499 ريال — إثبات سريع منخفض المخاطر. Proof Pack يتكلم عن نفسه."
+
+**"ماذا لو ألغى العميل؟"**
+> "الدرجات 0–1 منخفضة الالتزام بالتصميم. الـ retainer لا يبدأ إلا بعد Proof Pack موثق، فالإلغاء نادر — وسياسة الإلغاء واضحة في الاتفاقية."
+
+**"هل أحصل على white-label؟"**
+> "white-label محدود متاح في شريك المبيعات المشتركة فقط، وبعد ≥ 3 proof packs. لا white-label كامل قبل ذلك."
+
+**"ما حصري السوق لي؟"**
+> "الحصرية الجغرافية/القطاعية قابلة للنقاش ضمن شريك المبيعات المشتركة فقط."
 
 ---
 
-## Agency Partner — first message template
+## ما هو محظور في الشراكة — Partnership red lines
+
+```
+✗ لا cold outreach باسم Dealix على أي قناة (NO_COLD_WHATSAPP / NO_LINKEDIN_AUTOMATION)
+✗ لا scraping ولا قوائم مشتراة
+✗ لا white-label كامل قبل 3 proof packs
+✗ لا مشاركة بيانات عملاء Dealix مع الشركاء
+✗ لا rev-share قبل استلام الدفعة من العميل
+✗ لا ادعاءات "شريك Dealix الحصري" بلا اتفاقية
+✗ لا ضمانات ROI للعملاء باسم الشراكة
+```
+
+### لا توقّع مع وكالة إذا — Do not sign if
+
+- لديها < 5 عملاء حاليين (لا توزيع).
+- سمعتها مرتبطة بالسبام أو ممارسات سيئة.
+- تصرّ على white-label في مرحلة الإحالة.
+- ترفض إدراج تعريف Dealix في onboarding عملائها.
+
+---
+
+## مواد التمكين التي يستلمها الشريك — Partner enablement kit
+
+- [`../sales-kit/dealix_onepager.md`](../sales-kit/dealix_onepager.md) — صفحة تعريف
+- [`../sales-kit/dealix_pitch_deck.md`](../sales-kit/dealix_pitch_deck.md) — العرض التقديمي
+- [`../sales-kit/dealix_demo_script_30min.md`](../sales-kit/dealix_demo_script_30min.md) — سكريبت الـ demo
+- [`objection_library_ar.md`](objection_library_ar.md) — مكتبة الاعتراضات الموحّدة
+- [`sector_playbooks.md`](sector_playbooks.md) — playbooks القطاعات
+- [`../sales-kit/dealix_brand_guidelines.md`](../sales-kit/dealix_brand_guidelines.md) — الهوية البصرية
+
+---
+
+## رسالة الشريك الأولى — Partner first message (DRAFT — FOUNDER APPROVAL REQUIRED — DO NOT AUTO-SEND)
+
+**للاستخدام فقط مع وكالات لدى المؤسس علاقة/تعريف سابق معها — warm فقط، لا cold.**
 
 ```
 السلام عليكم [الاسم]،
 
-أنا سامي من Dealix — طبقة AI sales rep بالعربي تستقبل leads العميل، تؤهّلهم، وتحجز demo — كل ذلك قبل ما يصل للموظف.
+أنا سامي من Dealix — طبقة عمليات إيرادات بالعربي تحوّل بيانات leads المبعثرة
+إلى فرص مرتبة وموثقة ومسودات متابعة جاهزة لمراجعة العميل (draft-only، حوكمة PDPL).
 
-للوكالات مثلكم: setup 3-15K + 20-30% من MRR كل عميل دائم. عميل واحد = 200-800 ريال شهرياً لكم، وبعد 5 عملاء تصير revenue stream قوية.
+بما أننا [سبب العلاقة: التقينا في .. / عرّفنا بنا فلان / تعاملنا سابقاً في ..]،
+خطر لي أن نموذج الشراكة قد يناسب [اسم الوكالة]: ثلاثة مسارات —
+إحالة 15%، تنفيذ 20–25%، أو مبيعات مشتركة 25–30% — والعميل يدفع Dealix
+بأسعار السلم الرسمي (يبدأ من تشخيص مجاني ثم Sprint 499 ريال).
 
-20 دقيقة demo كيف يشتغل معكم ومع عملائكم؟
-📅 https://calendly.com/sami-assiri11/dealix-demo
-🤝 https://dealix.me/partners.html
+يناسبك اجتماع 20–30 دقيقة لاستكشاف التوافق؟
+
+النتائج التقديرية ليست نتائج مضمونة.
 
 سامي
 ```
 
----
-
-## Partner agreement template
-
-Short 2-page agreement covering:
-1. Scope of services (setup + commission + escalation)
-2. Commission terms (25% of MRR, paid monthly, 15-day lag)
-3. Term (12 months, auto-renewal)
-4. Non-exclusive unless Scale tier
-5. Termination (30 days notice from either side; commission on existing clients continues)
-6. Confidentiality
-7. IP ownership (Dealix retains product IP; agency retains client relationship)
-8. Governing law: KSA
-
-Full template in `docs/sales-kit/dealix_agency_partnerships.md` (existing file).
+> روابط الحجز/الموقع يضيفها المؤسس قبل الإرسال. لا إرسال بدون موافقة المؤسس.
 
 ---
 
-## Red flags (do not sign)
+## اتفاقية الشريك — Partner agreement (الخطوط العريضة)
 
-- Agency has < 5 existing clients (no distribution)
-- Agency has reputation for spam / bad practices
-- Agency insists on re-selling under white-label at Starter tier (not offered)
-- Agency wants upfront payment (Dealix pays commission; agency pays setup — we never pay agency upfront)
-- Agency refuses to include Dealix briefing in their client onboarding
+اتفاقية موجزة تغطي: نطاق الخدمات · شروط rev-share (15/20–25/25–30% حسب النوع، تُدفع بعد استلام دفعة العميل) · المدة (12 شهراً، تجديد) · الحصرية (لا حصرية إلا في المبيعات المشتركة) · الإنهاء (إشعار 30 يوماً) · السرية · ملكية الـ IP (Dealix تحتفظ بـ IP المنتج؛ الوكالة تحتفظ بعلاقة العميل) · القانون الحاكم: المملكة العربية السعودية.
+
+> الشروط الرسمية والكاملة للشراكة (الأنواع الثلاثة، Rev-share، Scorecard، الحظر) في
+> [`../AGENCY_PARTNER_PROGRAM.md`](../AGENCY_PARTNER_PROGRAM.md) — هو المرجع الوحيد.
+
+---
+
+*متوافق مع [`../AGENCY_PARTNER_PROGRAM.md`](../AGENCY_PARTNER_PROGRAM.md). أنواع الشراكة وشروطها لا تتغير إلا هناك.*

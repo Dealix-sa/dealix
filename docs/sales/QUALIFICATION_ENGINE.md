@@ -1,32 +1,61 @@
-# Qualification Engine
+# Qualification Engine — محرك التأهيل
+<!-- Authoritative lead scoring. Canonical ladder: docs/OFFER_LADDER_AND_PRICING.md -->
 
-**Before** you quote or open a project folder, run this engine. Bad clients steal time and destroy quality; the best CEOs ask **who we do not sell to** ([`CLIENT_SELECTION_DECISION.md`](CLIENT_SELECTION_DECISION.md)).
+**قبل** أي عرض سعر أو فتح ملف مشروع، شغّل هذا المحرك. العملاء غير المناسبين يستهلكون الوقت ويخفضون الجودة — أفضل المؤسسين يعرفون **لمن لا نبيع**.
 
-## Score (100)
+**Run this before quoting or opening a project folder.** Bad-fit clients drain time and quality.
 
-| المعيار | النقاط |
-|---------|-----:|
-| ألم واضح | 20 |
-| ميزانية / مسار شراء | 20 |
-| صاحب قرار | 15 |
-| بيانات أو عملية موجودة | 15 |
-| يناسب ICP | 15 |
-| يقبل review / approval | 10 |
-| لا يطلب ممنوعات | 5 |
+---
 
-## Decision bands
+## 1. النقاط — Score (100 points)
 
-| Score | Action |
-|-------|--------|
-| **80–100** | Pursue |
-| **60–79** | Diagnostic first ([`../services/ai_ops_diagnostic/README.md`](../services/ai_ops_diagnostic/README.md)) |
-| **40–59** | Nurture |
-| **أقل من 40** | Disqualify |
+| المعيار — Criterion | النقاط — Points |
+|---------------------|----------------:|
+| ألم واضح — Pain is clear and named | 20 |
+| ميزانية / مسار شراء — Budget or a real buying path | 20 |
+| صاحب قرار حاضر — Decision owner present | 15 |
+| بيانات أو عملية موجودة — Data or process exists | 15 |
+| يناسب ICP — Fits ICP (Saudi B2B SME, 5–50 staff, 500K–10M SAR revenue) | 15 |
+| يقبل المراجعة / الموافقة — Accepts review + approval governance | 10 |
+| لا يطلب ممنوعات — Wants safe methods (no scraping / spam / guarantees) | 5 |
+| **المجموع — Total** | **100** |
 
-Disqualifiers: spam, guaranteed sales, no owner, no data path, governance bypass — see [`CLIENT_SELECTION_DECISION.md`](CLIENT_SELECTION_DECISION.md).
+The 8-question intake (`qualification.qualify(...)`) maps onto this rubric:
+pain_clear, owner_present, data_available, accepts_governance, has_budget,
+wants_safe_methods, proof_path_visible, retainer_path_visible.
 
-## Alignment
+---
 
-Same rubric as [`QUALIFICATION_SCORE.md`](QUALIFICATION_SCORE.md); **update both** if weights change.
+## 2. نطاقات القرار — Decision bands
 
-**Next step:** always recorded in CRM / [`../operations/REQUEST_INTAKE_SYSTEM.md`](../operations/REQUEST_INTAKE_SYSTEM.md) decision field.
+| النقاط — Score | القرار — Decision | الإجراء — Action |
+|----------------|-------------------|------------------|
+| **80–100** | ACCEPT — تابع | اعرض الدرجة المناسبة من السلم (عادةً Rung 1 — 499 SAR Sprint). |
+| **60–79** | DIAGNOSTIC_ONLY | ابدأ بـ Free AI Ops Diagnostic؛ لا عرض مدفوع قبل التشخيص. |
+| **40–59** | REFRAME / NURTURE | أعد صياغة النطاق أو ضع في المتابعة؛ لا عرض الآن. |
+| **< 40** | REJECT / REFER_OUT | استبعد بأدب، أو حوّل لجهة أنسب. |
+
+---
+
+## 3. مستبعِدات فورية — Hard disqualifiers
+
+أي واحد من هذه = REJECT بغض النظر عن النقاط:
+
+- يطلب cold WhatsApp / أتمتة LinkedIn / scraping / قوائم مشتراة.
+- يطلب ضمان مبيعات أو نتائج ("اضمنوا لي X صفقة").
+- يطلب تجاوز الحوكمة (إرسال بدون موافقة، بيانات بلا سند).
+- لا يوجد صاحب قرار ولا مسار وصول إليه.
+- لا توجد بيانات ولا عملية يمكن البناء عليها.
+
+**صياغة الرفض الآمن — Clean refusal:** "Dealix لا تقدّم [scraping / cold WhatsApp / أتمتة LinkedIn / ضمان مبيعات]. البديل الآمن هو [مخرجات draft-only / تواصل قائم على الموافقة / فرص مُثبتة بالأدلة]. أرغب أن أجهّز لك العرض البديل؟"
+
+---
+
+## 4. التسجيل — Recording
+
+النتيجة + القرار يُسجَّلان في CRM / حقل القرار في
+[`../operations/REQUEST_INTAKE_SYSTEM.md`](../operations/REQUEST_INTAKE_SYSTEM.md).
+
+**تنبيه مزامنة:** هذا الملف هو المرجع الوحيد لتسجيل النقاط. [`QUALIFICATION_SCORE.md`](QUALIFICATION_SCORE.md) يشير إليه — حدّث هذا الملف فقط عند تغيير الأوزان.
+
+> النتائج التقديرية ليست نتائج مضمونة / Estimated outcomes are not guaranteed outcomes.

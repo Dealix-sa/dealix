@@ -1,100 +1,79 @@
-# Dealix — مندوب مبيعات AI بالعربي الخليجي
+# Dealix — طبقة عمليات الإيرادات المُحوكَمة بالعربي
+# Dealix — Governed Revenue-Operations layer, Arabic-first
+<!-- Canonical ladder: docs/OFFER_LADDER_AND_PRICING.md -->
 
-**One-page overview للإرسال قبل demos**
-
----
-
-## ⚡ في جملة واحدة
-
-Dealix يرد على leads شركتك خلال 45 ثانية بالعربي الخليجي الطبيعي، يؤهّلهم بـ 8 أسئلة ذكية، يحجز demos مع فريقك تلقائياً — بدون تدخل بشري.
+**One-page overview — للإرسال قبل أو بعد Discovery (DRAFT — موافقة المؤسس قبل أي إرسال).**
 
 ---
 
-## 🎯 لمن؟
+## في جملة واحدة — In one line
 
-شركات B2B في السعودية/الخليج:
-- فريق مبيعات 3-50 مندوب
-- +50 lead أسبوعياً
-- عملاء يتواصلون بالعربي
-- قطاعات: SaaS، E-commerce، Fintech، Logistics، B2B Marketplaces
+**AR:** Dealix يحوّل بيانات leads المبعثرة إلى فرص مرتبة وموثقة ومسودات متابعة جاهزة لمراجعة المؤسس — بحوكمة PDPL، بدون سبام ولا أتمتة خطرة.
+
+**EN:** Dealix turns scattered lead data into ranked, evidenced opportunities and approval-ready follow-up drafts — PDPL-native, no spam, no risky automation.
 
 ---
 
-## 💡 المشكلة التي نحلها
+## لمن؟ — Who is it for
 
-في شركتك الحالية:
-- 📉 الرد الأولي يأخذ 4-24 ساعة → 40% من leads تموت
-- ⏰ BDRs يصرفون 60% من وقتهم على leads غير مؤهلة
-- 📞 Demo scheduling يأخذ 8 emails متتالية
-- 🗣️ Chatbots الإنجليزية فاشلة في السوق العربي
-
-Dealix يحلها كلها في منتج واحد.
+شركات B2B سعودية: 5–50 موظفاً، إيراد 500K–10M ريال، لديها leads في Excel / CRM / WhatsApp بدون استثمار واضح.
 
 ---
 
-## 🔧 ما يفعله Dealix
+## المشكلة — The problem
 
-1. **يستقبل** كل lead (من website, WhatsApp, Instagram, أي مصدر)
-2. **يرد** خلال 45 ثانية بلهجة خليجية طبيعية
-3. **يسأل** 8 أسئلة discovery ذكية (BANT + use case)
-4. **يقيم** الـ lead (A/B/C/D) مع reasoning
-5. **يحجز** demo مع الـ account executive المناسب
-6. **يسلّم** ملخّص لفريقك قبل الـ demo
+- leads مبعثرة وأولوية غير واضحة — لا يُعرف من أين تبدأ المبيعات.
+- تقارير أسبوعية يدوية تستهلك ساعات.
+- بيانات عملاء غير مستثمرة، ومخاوف حول PDPL والخصوصية.
 
 ---
 
-## 📊 نتائج متوقعة (من pilots سابقة)
+## ماذا يفعل Dealix — What Dealix does
 
-| المؤشر | قبل Dealix | بعد Dealix |
-|--------|------------|-------------|
-| زمن الرد الأولي | 6 ساعات | 45 ثانية |
-| معدل التأهيل | 12% | 31% |
-| Leads ضائعة | 40% | 8% |
-| Demos محجوزة أسبوعياً | 8 | 22 |
-
----
-
-## 💰 الأسعار
-
-| الباقة | السعر | الأنسب لـ |
-|--------|-------|-----------|
-| **Starter** | 999 ريال/شهر | 1-3 مندوبين، تجربة |
-| **Growth** ⭐ | 2,999 ريال/شهر | 4-10 مندوبين، الأكثر طلباً |
-| **Scale** | 7,999 ريال/شهر | +10 مندوبين، Enterprise |
-
-**Pilot خاص:** 1 ريال × 7 أيام — لو ما أعجبك، نرد لك الريال.
+1. **يستورد** بيانات الحسابات / leads (CSV / تصدير CRM).
+2. **يسجّل** نقاط كل حساب — حتمي وقابل للشرح.
+3. **يرتّب** الفرص في خريطة واضحة.
+4. **يجهّز** مسودات تواصل — **draft-only**، تمرّ على المؤسس قبل أي إرسال.
+5. **يسلّم** Proof Pack موثقاً + تقريراً تنفيذياً + خطة 30 يوماً.
 
 ---
 
-## 🔗 التكاملات
+## السلم والأسعار — The ladder & pricing
 
-- **CRM:** HubSpot, Zoho, Salesforce
-- **Chat:** WhatsApp Business, Instagram, Intercom
-- **Calendar:** Google Calendar, Outlook, Calendly
-- **Analytics:** PostHog, Mixpanel, Google Analytics
+المصدر الوحيد: `docs/OFFER_LADDER_AND_PRICING.md`.
 
----
+| الدرجة — Rung | العرض — Offer | السعر — Price |
+|---------------|---------------|---------------|
+| 0 | Free AI Ops Diagnostic | مجاني — free |
+| 1 | 7-Day Revenue Proof Sprint | 499 ريال (دفع واحد) |
+| 2 | Data-to-Revenue Pack | 1,500 ريال (مشروع واحد) |
+| 3 | Managed Revenue Ops | 2,999–4,999 ريال/شهر |
+| 4 | Executive Command Center | 7,500–15,000 ريال/شهر |
+| 5 | Agency Partner OS | مخصص + 15–30% rev-share |
 
-## 🛡️ الأمان
+شروط الدفع: 50% عند القبول، 50% عند تسليم Proof Pack.
 
-- 🔒 AES-256 encryption
-- 🌍 AWS Frankfurt (GDPR-compliant)
-- 🇸🇦 PDPL-ready (السوق السعودي)
-- 🏆 SOC 2 Type I (Type II في أكتوبر 2026)
-- 📄 DPA كامل متاح
-
----
-
-## 🎬 الخطوة التالية
-
-1. **احجز demo 20 دقيقة** (ليس pitch — نفهم نحتاجك أولاً)
-2. **نُريك سيناريو من قطاعك** (SaaS / E-comm / Fintech — جاهز)
-3. **نبدأ pilot 1 ريال × 7 أيام** إذا اقتنعت
-
-📅 **احجز:** https://calendly.com/sami-assiri11/dealix-demo
-📧 **تواصل:** sami.assiri11@gmail.com
-🌐 **الموقع:** https://dealix.ai
+**إفصاح نمط التسليم:** الدرجتان 0 و1 مُسلَّمتان عبر منتج مُتحقَّق منه. الدرجات 3–5 اليوم **بقيادة المؤسس / شبه-مؤتمتة (founder-assisted / semi-automated)**.
 
 ---
 
-*Dealix مبني من السعودية، للسعودية. Founder-led، sales-focused.*
+## الحوكمة — Governance (non-negotiable)
+
+- لا cold outreach على أي قناة — كل تواصل warm + draft-only + معتمد من المؤسس.
+- لا أتمتة LinkedIn، لا scraping، لا إرسال جماعي، لا قوائم مشتراة.
+- لا ادعاءات مبيعات مضمونة.
+- PDPL-native: معالجة محوكمة، سجل تدقيق، احترام قابلية التواصل.
+
+> النتائج التقديرية ليست نتائج مضمونة / Estimated outcomes are not guaranteed outcomes.
+
+---
+
+## الخطوة التالية — Next step
+
+1. احجز **Free AI Ops Diagnostic** — تقرير صفحة واحدة + 3 أولويات، مجاناً.
+2. إذا الألم واضح والبيانات جاهزة → **7-Day Revenue Proof Sprint** بـ 499 ريال.
+3. الترقية للـ retainer بعد Proof Pack موثق فقط.
+
+التواصل والروابط يضيفها المؤسس قبل الإرسال.
+
+*Dealix — مبني من السعودية، للسعودية. Founder-led، honest by construction.*

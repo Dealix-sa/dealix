@@ -1,35 +1,15 @@
-# Company Brain Sprint — Sales Page (Internal)
+# Company Brain — reconciled into the canonical ladder
 
-## Headline
+> **تم التوحيد.** "Company Brain Sprint" كان اسماً قديماً بسعر 20,000–60,000 ريال
+> يتعارض مع السلم الرسمي. لا يُستخدم هذا الاسم أو السعر بعد الآن.
 
-تحويل وثائق الشركة إلى إجابات داخلية **بمصادر** — أو «أدلة غير كافية» صريحة.
+تحويل وثائق الشركة إلى مساعد داخلي بمصادر هو نطاق **يتجاوز السلم القياسي**،
+ويُعامَل كـ **Rung 4 — Executive Command Center** أو إعداد مخصّص ضمن
+**Rung 5**، وفق [`../OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md).
 
-## Who it is for
+ابدأ دائماً بـ **Rung 0 — Free AI Ops Diagnostic**، ثم **Rung 1 — 7-Day Revenue
+Proof Sprint (499 ريال)** لإثبات الجاهزية قبل أي نطاق أكبر.
 
-فرق لديها سيارات Drive/ملفات مبعثرة وأسئلة تتكرر (مبيعات، عمليات، سياسات).
+مبدأ غير قابل للتفاوض يبقى سارياً: **لا مصدر = لا إجابة** (No source = no answer).
 
-## Promise
-
-- فهرسة وثائق مع سياسة وصول  
-- إجابات مع `source_id` أو insufficient evidence  
-- فجوات معرفية ظاهرة  
-- Proof Pack  
-
-## Non‑negotiable
-
-```text
-No source = no answer (when policy requires citation).
-```
-
-## Not included
-
-- الوصول لبيانات خارج نطاق التفويض  
-- إجابات طبية/قانونية نهائية بدون خبير بشري  
-
-## Price & duration
-
-SAR 20,000–60,000 · 3–4 أسابيع (حسب الحجم)  
-
-## CTA
-
-Discovery → Brain Sprint — راجع [`DISCOVERY_SCRIPT.md`](DISCOVERY_SCRIPT.md).
+قوالب العروض لكل درجة: [`PROPOSAL_SYSTEM.md`](PROPOSAL_SYSTEM.md).

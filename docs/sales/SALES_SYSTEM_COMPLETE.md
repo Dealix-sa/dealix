@@ -18,20 +18,26 @@ Govern AI
 
 («Serve Customers» stays in catalog positioning; hero/marketing may emphasize four pillars — keep catalog as source of truth.)
 
-## Proposal logic
+## Proposal logic (canonical ladder)
+
+Source of truth: [`../OFFER_LADDER_AND_PRICING.md`](../OFFER_LADDER_AND_PRICING.md).
 
 ```text
-If client has messy leads:
-  Lead Intelligence Sprint
-If client has repeated manual task:
-  AI Quick Win Sprint
-If client has scattered documents:
-  Company Brain Sprint
-If client has AI risk concerns:
-  AI Governance Review / AI Readiness & Risk Review
-If client has messy datasets:
-  Data Readiness Assessment
+Any first contact:
+  Rung 0 — Free AI Ops Diagnostic (free)
+Pain clear + owner + data ready:
+  Rung 1 — 7-Day Revenue Proof Sprint (499 SAR)
++ CSV / CRM export, PII handling needed:
+  Rung 2 — Data-to-Revenue Pack (1,500 SAR)
+Proof score >= 80 + adoption >= 70 + workflow owner:
+  Rung 3 — Managed Revenue Ops (2,999-4,999 SAR/mo)
+Scope beyond a single workflow, >=3 pilots completed:
+  Rung 4 — Executive Command Center (7,500-15,000 SAR/mo)
+Agency wants to deliver Dealix to its own clients, >=3 proof packs:
+  Rung 5 — Agency Partner OS (custom + 15-30% rev-share)
 ```
+
+Never quote a price or offer name outside this ladder.
 
 ## Objection responses
 
@@ -49,6 +55,6 @@ If client has messy datasets:
 
 **«عندنا بيانات غير مرتبة»**
 
-هذا بالضبط سبب البداية بـData Readiness أو Lead Intelligence Sprint. لا نبدأ AI فوق بيانات غير مفهومة.
+هذا بالضبط سبب البداية بالتشخيص المجاني ثم 7-Day Revenue Proof Sprint. لا نبدأ AI فوق بيانات غير مفهومة.
 
 Related: [`OBJECTION_HANDLING.md`](OBJECTION_HANDLING.md) · [`PROOF_BASED_SALES.md`](PROOF_BASED_SALES.md) · [`SALES_MESSAGES.md`](SALES_MESSAGES.md).

@@ -1214,7 +1214,7 @@ SAR 9,500–18,000
 Pilot Conversion Sprint or Monthly RevOps OS.
 ```
 
-مرجع رسمي في الريبو: [`../sales/PROPOSAL_LEAD_INTELLIGENCE_SPRINT.md`](../sales/PROPOSAL_LEAD_INTELLIGENCE_SPRINT.md).
+مرجع رسمي في الريبو: [`../sales/PROPOSAL_REVENUE_PROOF_SPRINT.md`](../sales/PROPOSAL_REVENUE_PROOF_SPRINT.md).
 
 ---
 

@@ -131,53 +131,46 @@
         <th style="width: 120px;">المجموع</th>
       </tr>
     </thead>
+    <!--
+      قالب: استبدل البند بالدرجة المناسبة من السلم الرسمي فقط
+      (docs/OFFER_LADDER_AND_PRICING.md):
+        Rung 1 — 7-Day Revenue Proof Sprint — 499.00 SAR (one-time)
+        Rung 2 — Data-to-Revenue Pack — 1,500.00 SAR (one-time)
+        Rung 3 — Managed Revenue Ops — 2,999.00–4,999.00 SAR / month
+        Rung 4 — Executive Command Center — 7,500.00–15,000.00 SAR / month
+      شروط الدفع: 50% عند القبول، 50% عند تسليم Proof Pack.
+      المثال أدناه: فاتورة الدفعة الأولى (50%) لـ Rung 1.
+    -->
     <tbody>
       <tr>
         <td>1</td>
         <td>
-          <strong>Dealix — باقة Growth</strong>
-          <div class="desc">اشتراك شهري · AI sales rep · 10,000 lead/شهر · كامل المميزات</div>
+          <strong>Dealix — 7-Day Revenue Proof Sprint (Rung 1)</strong>
+          <div class="desc">سبرنت إثبات الإيرادات في 7 أيام · السعر الكامل 499.00 ريال · هذه الفاتورة = الدفعة الأولى 50% عند القبول</div>
         </td>
         <td>1</td>
-        <td>2,999.00</td>
-        <td>2,999.00</td>
+        <td>249.50</td>
+        <td>249.50</td>
       </tr>
-      <tr>
-        <td>2</td>
-        <td>
-          <strong>Setup + Training (one-time)</strong>
-          <div class="desc">تركيب النظام · تكامل CRM · تدريب الفريق (60 دقيقة)</div>
-        </td>
-        <td>1</td>
-        <td>1,000.00</td>
-        <td>1,000.00</td>
-      </tr>
+      <!-- الدفعة الثانية (50% = 249.50 ريال) تُفوتَر عند تسليم Proof Pack -->
       <!-- Add more rows as needed -->
     </tbody>
   </table>
 
-  <!-- Totals -->
+  <!-- Totals — مثال: الدفعة الأولى 50% لـ Rung 1 (Sprint 499 ريال) -->
   <div class="totals">
     <table>
       <tr>
         <td>المجموع الفرعي (Subtotal)</td>
-        <td>3,999.00 ريال</td>
-      </tr>
-      <tr>
-        <td>خصم (Discount) — 10%</td>
-        <td>-399.90 ريال</td>
-      </tr>
-      <tr>
-        <td>المجموع بعد الخصم</td>
-        <td>3,599.10 ريال</td>
+        <td>249.50 ريال</td>
       </tr>
       <tr>
         <td>ضريبة القيمة المضافة (VAT) 15%</td>
-        <td>539.87 ريال</td>
+        <td>37.43 ريال</td>
       </tr>
       <tr class="grand">
         <td>الإجمالي (Total Due)</td>
-        <td>4,138.97 ريال</td>
+        <td>286.93 ريال</td>
       </tr>
     </table>
   </div>

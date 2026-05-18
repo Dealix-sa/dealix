@@ -1,152 +1,103 @@
-# Dealix — Partner Send Queue
+# Dealix — Partner Send Queue (DRAFT — FOUNDER APPROVAL REQUIRED — DO NOT AUTO-SEND)
+<!-- Canonical partner terms: docs/AGENCY_PARTNER_PROGRAM.md -->
+<!-- Canonical pricing ladder: docs/OFFER_LADDER_AND_PRICING.md -->
 
-**Top 5 agency/partner messages — queued, not sent.** Sami sends Message 1 on LinkedIn → replies `PARTNER_SENT 1` → I release Message 2.
+**كل رسالة أدناه مسودة فقط.** لا إرسال خارجي بدون موافقة المؤسس الصريحة.
 
-**Rule:** max 2 partner messages per day to avoid agency ecosystem burn.
+**قاعدة الدكترين — WARM ONLY:** كل رسالة في هذا الطابور موجّهة لشريك محتمل **لدى المؤسس علاقة أو تعريف سابق معه** (التقيا، عرّفهما طرف ثالث، أو تعاملا سابقاً). لا cold outreach، لا أتمتة LinkedIn، لا إرسال جماعي. سطر "سبب العلاقة" إلزامي ويجب أن يكون حقيقياً — إذا لم توجد علاقة حقيقية، لا تُرسل الرسالة؛ ابحث عن تعريف warm أولاً.
+
+**القاعدة:** المؤسس يراجع ويعتمد كل رسالة، يخصّص سطر العلاقة، ثم يرسلها بنفسه عبر القناة المناسبة. الحد الأقصى رسالتان شراكة في اليوم.
+
+> أنواع الشراكة الثلاثة: إحالة 15% · تنفيذ 20–25% · مبيعات مشتركة 25–30%.
+> العميل يدفع Dealix بأسعار السلم الرسمي. الشريك لا يضع أسعاراً خاصة.
+> النتائج التقديرية ليست نتائج مضمونة / Estimated outcomes are not guaranteed outcomes.
 
 ---
 
-## 1/5 — Wavy Saudi (white-label candidate, Scale tier)
-
-**Platform:** LinkedIn DM — target senior leadership / partnerships director
-**Why first:** Enterprise agency with deepest client pockets; white-label fit
+## القالب الأساسي — Master partner outreach template (warm, bilingual)
 
 ```
-السلام عليكم،
+السلام عليكم [الاسم]،
 
-Wavy من أقوى الـ digital marketing agencies في السعودية — عملاؤكم enterprise، بيئة مثالية لـ white-label AI sales rep.
+أنا سامي من Dealix — طبقة عمليات إيرادات بالعربي تحوّل بيانات leads المبعثرة
+إلى فرص مرتبة وموثقة، ومسودات متابعة جاهزة لمراجعة العميل (draft-only، حوكمة PDPL).
 
-Dealix (AI sales rep عربي) ممكن يكون منتجكم الخاص — تحت اسم Wavy AI Sales مثلاً.
+[سطر العلاقة — إلزامي وحقيقي: التقينا في .. / عرّفنا بنا فلان / تعاملنا سابقاً في ..]
+خطر لي أن [اسم الوكالة/الشريك] قد تكون شريكاً مناسباً لأنكم [سبب التوافق المحدد].
 
-3 مسارات:
-1. Reseller: 25% من MRR كل عميل
-2. Service Provider: Setup 8K + retainer 25%
-3. White-label (Scale tier): منتج باسمكم، شروط تناقش
+نموذج الشراكة ثلاثة مسارات:
+- إحالة (Referral): 15% من أول دفعة لكل عميل تحيلونه.
+- تنفيذ (Implementation): 20–25% من كل دفعة طوال علاقة العميل.
+- مبيعات مشتركة (Co-selling): 25–30% + co-branded proof packs.
 
-20 دقيقة partner meeting هذا الأسبوع؟
-🤝 https://dealix.me/partners.html
-📅 https://calendly.com/sami-assiri11/dealix-demo
+العميل يدفع Dealix بأسعار السلم الرسمي (تشخيص مجاني ثم Sprint 499 ريال،
+وما فوقه عند الجاهزية). لا حاجة لأي عمل تقني من طرفكم.
+
+يناسبك اجتماع 20–30 دقيقة لاستكشاف التوافق؟
+
+النتائج التقديرية ليست نتائج مضمونة.
 
 سامي
 ```
 
-**After send:** tracker row 26 → `sent_at`, `next_followup=+3d`
+*EN summary for reference: Dealix is a governed, Arabic-first revenue-operations layer. Partner model has three tiers — Referral 15%, Implementation 20-25%, Co-selling 25-30%. The end client pays Dealix at the canonical ladder price. Warm intro only.*
+
+> روابط الحجز/الموقع يضيفها المؤسس قبل الإرسال.
 
 ---
 
-## 2/5 — Peak Content (service exchange target)
+## مسودات الطابور — Queued drafts (warm contacts only)
 
-**Platform:** LinkedIn DM — target founder / MD
+> لكل صف: املأ سطر العلاقة الحقيقي. إذا لم توجد علاقة warm فعلية مع الجهة، **لا تُدرجها هنا** — حوّلها إلى "تحتاج تعريف warm" أدناه.
 
-```
-السلام عليكم،
+### مسودة 1 — [اسم الشريك المحتمل]
 
-Peak Content تنتج محتوى + حملات lead-gen ممتازة. المشكلة الدائمة بعد lead يدخل الـ funnel: الرد بطيء، الـ lead يبرد.
+- **سبب الإدراج (warm):** [التقاه المؤسس في .. / تعريف من ..] — *يملؤه المؤسس*
+- **النوع المقترح:** إحالة / تنفيذ / مبيعات مشتركة — *يحدده المؤسس*
+- **سطر التوافق المخصّص:** ____________________
+- **الرسالة:** القالب الأساسي أعلاه بعد التخصيص.
+- **الحالة:** DRAFT — بانتظار موافقة المؤسس.
 
-Dealix (AI sales rep عربي) يسدّ هذي الفجوة — يرد على lead خلال 45 ثانية، يأهّله، يحجز demo.
+### مسودة 2 — [اسم الشريك المحتمل]
 
-اقتراح شراكة: تبيعونه كـ add-on فوق خدمتكم الحالية، setup 3,000 + 20-25% من MRR كل عميل. 3-5 عملاء فقط = 1,500-3,750 SAR شهرياً لكم دون أي tech work.
+- **سبب الإدراج (warm):** ____________________
+- **النوع المقترح:** ____________________
+- **سطر التوافق المخصّص:** ____________________
+- **الحالة:** DRAFT — بانتظار موافقة المؤسس.
 
-يناسبك 20 دقيقة demo هذا الأسبوع؟
-🤝 https://dealix.me/partners.html
-📅 https://calendly.com/sami-assiri11/dealix-demo
-
-سامي
-```
-
-**After send:** tracker row 22 → `sent_at`, `next_followup=+3d`
-
----
-
-## 3/5 — Digital8 (Growth tier fit)
-
-**Platform:** LinkedIn DM — target head of growth
-
-```
-السلام عليكم،
-
-Digital8 وكالة full-service في السعودية — محتوى، حملات، CRM. كل عميل B2B عندكم يخسر 20-30% من leads بسبب الرد البطيء.
-
-Dealix (AI sales rep بالخليجي) يشتغل فوق خدمتكم: setup 8,000 + 25% من MRR كل عميل، يصير retainer add-on جديد لعملائكم الحاليين.
-
-كم عميل B2B عندكم؟ لو 10+، الإضافة = 5,000+ SAR شهرياً لكم.
-
-20 دقيقة demo + حساب أرقام؟
-📅 https://calendly.com/sami-assiri11/dealix-demo
-🤝 https://dealix.me/partners.html
-
-سامي
-```
+*(كرّر الصف لكل شريك warm. لا تتجاوز رسالتين معتمدتين في اليوم.)*
 
 ---
 
-## 4/5 — Brand Lounge (referral-only, enterprise reach)
+## تحتاج تعريف warm أولاً — Needs a warm intro first
 
-**Platform:** LinkedIn DM — partnerships director
+أي وكالة لا توجد معها علاقة سابقة لا تُرسَل لها رسالة مباشرة. بدلاً من ذلك:
+1. حدّد جهة اتصال مشتركة يمكنها التعريف.
+2. اطلب تعريفاً warm (مقدّمة من الطرف الثالث).
+3. بعد التعريف فقط، انقل الجهة إلى طابور المسودات أعلاه.
 
-```
-السلام عليكم،
-
-Brand Lounge معروفة كبوتيك brand agency للعملاء enterprise في السعودية. هذا الـ profile مثالي لـ referral partnership مع Dealix (AI sales rep عربي).
-
-الاقتراح: referral partner tier — 10% من MRR لـ 12 شهر لكل عميل يجي عبر Brand Lounge. لا setup fee، لا implementation، فقط introduction.
-
-عميل enterprise واحد = 300-800 SAR شهرياً × 12 شهر = 3,600-9,600 SAR per-intro بدون أي جهد.
-
-سؤال بسيط: هل في عملاء B2B عندكم الآن يعانون من slow lead response؟
-🤝 https://dealix.me/partners.html
-
-سامي
-```
+لا تُدرج أسماء وكالات هنا كأهداف cold outreach.
 
 ---
 
-## 5/5 — Intermarkets (B2B white-label path, MENA reach)
+## cadence المتابعة — Follow-up cadence (per partner, draft-only)
 
-**Platform:** LinkedIn DM — business development head
+| اليوم | النوع | المحتوى |
+|------|------|---------|
+| +0 | الأولى | الرسالة المعتمدة أعلاه |
+| +3 | تذكير لطيف | "متابعة لرسالتي — هل فرصة لـ 20–30 دقيقة هذا الأسبوع؟" |
+| +7 | قيمة | إرسال one-pager + مثال proof pack (بدون بيانات عميل) |
+| +14 | آخر لمسة | "بدون ضغط — إذا تغيّر الوضع، يسعدني التواصل" |
+| +30 | رعاية | تحديث منتج أو case study جديد |
 
-```
-السلام عليكم،
-
-Intermarkets Saudi تخدم B2B clients في العراق واﻹمارات والسعودية. Dealix يكمّل محفظتكم بقوة: AI sales rep بالعربي يرد على leads عميل B2B خلال 45 ثانية، يؤهّل، ويحجز demo.
-
-للوكالات الإقليمية: white-label option — Dealix يعمل تحت اسمكم، أنتم تتحكمون في العلاقة مع العميل.
-
-طرق التعاون:
-1. Reseller 25% MRR
-2. White-label (setup 25K + 30% MRR)
-3. Referral 10% لـ 12 شهر
-
-يناسبكم call قصير هذا الأسبوع؟
-🤝 https://dealix.me/partners.html
-📅 https://calendly.com/sami-assiri11/dealix-demo
-
-سامي
-```
+كل رسالة متابعة تبقى مسودة حتى موافقة المؤسس.
 
 ---
 
-## Follow-up cadence per partner
+## ما يُسجَّل بعد كل إرسال — What to log after each send
 
-| Day | Type | Content |
-|-----|------|---------|
-| +0 | Initial | Message above |
-| +3 | Soft bump | "متابعة للرسالة السابقة — هل فرصة لـ 15 دقيقة demo هذا الأسبوع؟" |
-| +7 | Value-add | Send one-pager PDF + a specific sector case study (e.g., Foodics angle) |
-| +14 | Last touch | "بدون لو ما وقتك مناسب، هل ممكن تعرفني على وكالة ثانية ترى الفرصة؟" |
-| +30 | Nurture | Share any new Dealix case study or product update |
+حدّث `pipeline_tracker.csv` و هذا الملف: `sent_at` · القناة · المسودة المستخدمة · `next_followup` · حالة الرد والمشاعر عند الوصول · `opportunity_type=AGENCY_PARTNER`.
 
 ---
 
-## What to track after each send
-
-Update `pipeline_tracker.csv` (row-by-row) and here:
-- `sent_at` timestamp
-- Channel (LinkedIn DM)
-- Variant used (which template)
-- `next_followup` date
-- Reply status + sentiment once received
-
----
-
-**Publication rule:** never send the same message to multiple agencies. Always personalize the "why I think this fits you" line.
+**قاعدة النشر:** خصّص دائماً سطر "لماذا أراها مناسبة لكم". لا ترسل نفس الرسالة لعدة وكالات. لا إرسال بدون موافقة المؤسس.

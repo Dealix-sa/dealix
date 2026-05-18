@@ -1,101 +1,189 @@
-# Dealix — Strategic Partner Send Queue
+# Dealix — Strategic / Seed-Lead Send Queue (DRAFT — FOUNDER APPROVAL REQUIRED — DO NOT AUTO-SEND)
+<!-- Canonical ladder: docs/OFFER_LADDER_AND_PRICING.md -->
+<!-- Doctrine: docs/sales-kit/WARM_LIST_WORKFLOW.md -->
 
-**Top 3 strategic partner messages staged.** Different from agency partners (those sell Dealix to THEIR customers). Strategic partners = platforms/ecosystems where Dealix integrates/bundles.
+> **حالة:** كل رسالة أدناه **مسودة فقط**. لا إرسال خارجي بدون موافقة المؤسس الصريحة، ولا أي إرسال آلي.
 
-Rule: max 1 strategic partner DM per day — high-signal conversations, not volume.
+**Doctrine — WARM ONLY.** كل جهة في هذا الطابور يجب أن تكون **معرفة للمؤسس عبر علاقة أو تعريف سابق**. سطر "أساس العلاقة" إلزامي وحقيقي؛ إذا لم توجد علاقة warm فعلية، يجب تأمين تعريف warm قبل أي إرسال. لا cold outreach، لا أتمتة LinkedIn، لا scraping، لا إرسال جماعي، لا ادعاءات مضمونة.
+
+**نقطة الدخول دائماً:** Free AI Ops Diagnostic (مجاني) → 7-Day Revenue Proof Sprint (499 ريال). لا قفز للأسعار الأعلى في رسالة أولى. لا حديث "add-on app" أو "commission" في الرسالة الأولى — تلك مسارات شراكة منفصلة في [`partner_send_queue.md`](partner_send_queue.md).
+
+> النتائج التقديرية ليست نتائج مضمونة / Estimated outcomes are not guaranteed outcomes.
+
+كل رسالة bilingual. المؤسس يخصّص سطر العلاقة، يضيف روابط الحجز/الموقع، ويرسل يدوياً. الحد الأقصى رسالتان عاليتا الإشارة في اليوم.
 
 ---
 
-## 1/3 — Salla (E-commerce Platform, 70K+ merchants)
-
-**Platform:** Twitter DM → Nawaf Hariri; secondary LinkedIn
-**Angle:** Dealix as app-store add-on — Salla takes commission, merchant pays Dealix monthly.
+## القالب الأساسي — Master seed-lead template (warm, bilingual)
 
 ```
-أستاذ نواف،
+السلام عليكم [الاسم]،
 
-من فترة أتابع توجه سلة لتمكين التجار (خدمة سلة بيزنس).
+أنا سامي العسيري — مؤسس Dealix، طبقة عمليات إيرادات بالعربي تحوّل بيانات
+leads المبعثرة (Excel / CRM / WhatsApp) إلى فرص مرتبة وموثقة ومسودات
+متابعة جاهزة للمراجعة. كل تواصل draft-only ومُحوكَم (PDPL-native).
 
-فكرة سريعة: Dealix = AI sales rep بالعربي الخليجي يخدم التاجر بعد البيع.
-هل تفكرون في عرضه كـ add-on app داخل سلة؟
-التاجر يدفع شهرياً، سلة تأخذ commission (30%).
+[سطر العلاقة الإلزامي — حقيقي: التقينا في .. / عرّفنا بنا فلان / تواصلنا حول ..]
+[سطر التوافق المخصّص — لماذا أرى رأيك / شركتك مناسباً.]
 
-70K+ تاجر = distribution غير مسبوق لشركة AI محلية.
+الخطوة الأولى بسيطة ومجانية: Free AI Ops Diagnostic — تقرير صفحة واحدة
+و3 أولويات. وإذا كان مناسباً، 7-Day Revenue Proof Sprint بـ 499 ريال —
+Proof Pack موثق خلال أسبوع.
 
-20 دقيقة نستكشف الفكرة؟
-📅 https://calendly.com/sami-assiri11/dealix-demo
+يناسبك اجتماع 20–30 دقيقة؟
 
+النتائج التقديرية ليست نتائج مضمونة.
 سامي
 ```
 
-**Follow-up +3:** "تذكير مع case من تاجر سعودي يستخدم Dealix يزيد conversion 2x — أرسله؟"
-**Follow-up +10:** "آخر متابعة — مستعد أقدم pilot مجاني لأول تاجر نختاره مع فريقكم."
+*EN reference: Intro from Sami, founder of Dealix — an Arabic-first, PDPL-native, governed revenue-operations layer. First step is a free AI Ops Diagnostic, then optionally a 499 SAR 7-day proof sprint. Warm only — references a real existing connection.*
 
 ---
 
-## 2/3 — Zid (E-commerce Platform, 15K+ merchants)
+## مسودات البذور الخمس — The 5 seed-lead drafts
 
-**Platform:** LinkedIn DM → Sultan Mofarreh
-**Angle:** Platform add-on similar to Salla approach (non-exclusive).
+### SEED 1 — Abdullah Al-Asiri / Lucidya (CEO) — DRAFT
+
+- **أساس العلاقة (warm — يؤكده المؤسس):** [قرابة الاسم + تعريف/تفاعل سابق]
 
 ```
-سلطان مرحباً،
+السلام عليكم أستاذ عبدالله،
 
-Zid في موقع قوي كمنصة B2B للتجار السعوديين. الشيء اللي لاحظته: تاجر Zid عنده leads من إعلاناته لكن الرد يتأخر.
+أنا سامي العسيري — مؤسس Dealix، طبقة عمليات إيرادات بالعربي تحوّل بيانات
+leads المبعثرة إلى فرص مرتبة وموثقة ومسودات متابعة جاهزة للمراجعة
+(draft-only، حوكمة PDPL).
 
-اقتراح: Dealix (AI sales rep بالعربي) يصير app داخل Zid marketplace — التاجر يفعّله بضغطة، يرد على leads خلال 45 ثانية، Zid تأخذ commission.
+[سطر العلاقة: التقينا في .. / تواصلنا سابقاً حول ..]
+Lucidya مرجع في CXM بالمنطقة، ورأيك على منهجيتنا في تحويل بيانات الـ
+pipeline إلى فرص موثقة سيكون قيّماً لي.
 
-15K تاجر = distribution كبير لمنتج سعودي ناشئ.
+أبدأ بسيطاً: Free AI Ops Diagnostic — تقرير صفحة واحدة و3 أولويات،
+مجاناً. وإذا كان مناسباً، 7-Day Revenue Proof Sprint بـ 499 ريال.
 
-20 دقيقة نتكلم؟
-📅 https://calendly.com/sami-assiri11/dealix-demo
+يناسبك اجتماع 20–30 دقيقة؟
 
+النتائج التقديرية ليست نتائج مضمونة.
+سامي
+```
+
+### SEED 2 — Ahmad Al-Zaini / Foodics (CEO) — DRAFT
+
+- **أساس العلاقة (warm — يؤكده المؤسس):** [تعريف مشترك / لقاء فعالية]
+
+```
+الله يسعدك أستاذ أحمد،
+
+أنا سامي، مؤسس Dealix — طبقة عمليات إيرادات بالعربي تحوّل بيانات leads
+المبعثرة إلى فرص مرتبة وموثقة ومسودات متابعة draft-only، بحوكمة PDPL.
+
+[سطر العلاقة: عرّفنا بنا فلان / التقينا في ..]
+Foodics نموذج يُحتذى في MENA SaaS، وخبرتك في التوسّع تجعل ملاحظاتك مهمة لي.
+
+أبدأ بـ Free AI Ops Diagnostic (مجاناً) — تقرير وأولويات، ثم 7-Day Revenue
+Proof Sprint بـ 499 ريال إن كان مناسباً.
+
+يناسبك 20–30 دقيقة لاستعراض الفكرة؟
+
+النتائج التقديرية ليست نتائج مضمونة.
+سامي
+```
+
+### SEED 3 — Nawaf Hariri / Salla (CEO) — DRAFT
+
+- **أساس العلاقة (warm — يؤكده المؤسس):** [تواصل سابق / تعريف من شبكة Salla]
+
+```
+السلام عليكم أستاذ نواف،
+
+أنا سامي، مؤسس Dealix — طبقة عمليات إيرادات بالعربي تساعد شركات B2B
+السعودية على تحويل بيانات leads إلى فرص موثقة ومسودات متابعة draft-only،
+بحوكمة PDPL.
+
+[سطر العلاقة: تابعت توجه سلة لتمكين التجار وتواصلنا حول ..]
+رأيك على ملاءمة هذا النموذج لمنظومة تجار سلة سيكون مفيداً جداً لي.
+
+أبدأ بسيطاً: Free AI Ops Diagnostic مجاناً، ثم 7-Day Revenue Proof Sprint
+بـ 499 ريال إن ناسب.
+
+يناسبك اجتماع قصير 20–30 دقيقة لاستكشاف الفكرة؟
+
+النتائج التقديرية ليست نتائج مضمونة.
+سامي
+```
+
+> ملاحظة: أي حديث عن "Dealix كتطبيق داخل سلة" أو نموذج commission هو مسار شراكة منفصل — لا يُطرح في الرسالة الأولى؛ يُدار عبر [`partner_send_queue.md`](partner_send_queue.md) بعد محادثة استكشاف.
+
+### SEED 4 — Hisham Al-Falih / Lean Technologies (CEO) — DRAFT
+
+- **أساس العلاقة (warm — يؤكده المؤسس):** [تعريف من شبكة fintech / لقاء سابق]
+
+```
+السلام عليكم أستاذ هشام،
+
+أنا سامي، مؤسس Dealix — طبقة عمليات إيرادات بالعربي، مبنية بعناية على
+الحوكمة (PDPL-native، draft-only، لا أتمتة خطرة).
+
+[سطر العلاقة: Lean مرجع لي في بناء منتجات fintech بعناية، وتواصلنا حول ..]
+خبرتك في بناء منتجات منضبطة تجعل ملاحظاتك على منهجيتنا قيّمة.
+
+أبدأ بـ Free AI Ops Diagnostic مجاناً، ثم 7-Day Revenue Proof Sprint بـ 499
+ريال إن كان مناسباً — إثبات موثق خلال أسبوع.
+
+يناسبك 20–30 دقيقة لأعرض الفكرة؟
+
+النتائج التقديرية ليست نتائج مضمونة.
+سامي
+```
+
+### SEED 5 — Ibrahim Manna / BRKZ (Founder) — DRAFT
+
+- **أساس العلاقة (warm — يؤكده المؤسس):** [تعريف من شبكة المؤسسين / تواصل سابق]
+
+```
+مرحباً أستاذ إبراهيم،
+
+أنا سامي، مؤسس Dealix — طبقة عمليات إيرادات بالعربي تحوّل بيانات leads
+المبعثرة في شركات B2B إلى فرص مرتبة وموثقة ومسودات متابعة draft-only.
+
+[سطر العلاقة: تابعت رحلة BRKZ في تقنية المقاولات وتواصلنا حول ..]
+خبرتك في B2B المقاولات تجعل رأيك على ملاءمة المنهجية مهماً لي.
+
+أبدأ بسيطاً: Free AI Ops Diagnostic مجاناً، ثم 7-Day Revenue Proof Sprint
+بـ 499 ريال إن ناسب — Proof Pack خلال أسبوع.
+
+يناسبك اجتماع 20–30 دقيقة لاستكشاف الفكرة؟
+
+النتائج التقديرية ليست نتائج مضمونة.
 سامي
 ```
 
 ---
 
-## 3/3 — Wafeq (Accounting SaaS — invoice integration opportunity)
+## cadence المتابعة — Follow-up cadence (per seed lead, draft-only)
 
-**Platform:** LinkedIn DM → Wafeq founder
-**Angle:** Dealix generates invoice → Wafeq handles ZATCA e-invoicing → loop closed for Saudi SaaS market.
+| اليوم | النوع | المحتوى |
+|------|------|---------|
+| +0 | الأولى | الرسالة المعتمدة أعلاه |
+| +3 | تذكير لطيف | "متابعة لرسالتي — هل فرصة لـ 20–30 دقيقة هذا الأسبوع؟" |
+| +7 | قيمة | إرسال one-pager (بدون بيانات أو نتائج مزيّفة) |
+| +14 | آخر لمسة | "بدون ضغط — إذا تغيّر الوضع، يسعدني التواصل" |
 
-```
-السلام عليكم،
-
-Wafeq يحل مشكلة حقيقية: فواتير ZATCA-compliant للشركات السعودية. Dealix يحل مشكلة ثانية: الرد السريع على leads بالعربي.
-
-الفكرة: تكامل مباشر — Dealix يقفل deal → invoice يُنشأ تلقائياً في Wafeq → العميل يدفع → confirmation في CRM.
-
-هذا بيفيد:
-1. عملاء Wafeq: يصير عندهم AI SDR جاهز
-2. عملاء Dealix: يصير عندهم حل ZATCA جاهز
-3. الاثنين: cross-sell natural
-
-20 دقيقة نستكشف؟
-🤝 https://dealix.me/partners.html
-
-سامي
-```
+ردّ ثانٍ فقط عند رد الجهة أو عند اتفاق صريح على متابعة. إذا لا رد خلال 7 أيام، تُترك الجهة. كل رسالة متابعة تبقى مسودة حتى موافقة المؤسس.
 
 ---
 
-## Follow-up cadence (all 3)
+## ما يُسجَّل بعد كل إرسال — What to log after each send
 
-| Day | Type | Action |
-|-----|------|--------|
-| +0 | Initial | Above message |
-| +3 | Bump | "متابعة — هل فرصة لـ 20 دقيقة هذا الأسبوع؟" |
-| +7 | Value-add | Send a case study or metrics |
-| +14 | Last touch | "بدون ضغط — إذا تغير الوضع، مستعد" |
-| +30 | Nurture | Quarterly touch with new product update |
+حدّث `pipeline_tracker.csv` وهذا الملف: `sent_at` · القناة (القناة التي تستخدمها العلاقة أصلاً) · المسودة المستخدمة · `next_followup` · حالة الرد عند الوصول · `opportunity_type=SEED_LEAD`.
 
 ---
 
-## Rules
+## القواعد — Rules
 
-- **Never confuse strategic with agency.** Strategic = platform/ecosystem; Agency = service provider who resells.
-- **One strategic DM per day max.** High-signal, high-personalization.
-- **Every strategic conversation = potential for weeks to close.** Don't expect fast yes.
-- **Track in `pipeline_tracker.csv`.** Use `opportunity_type=STRATEGIC_PARTNER`.
-- **If interested → intro call with Dealix founder (Sami), not sales script.**
+- **warm فقط** — لا تُدرج جهة بلا أساس علاقة حقيقي.
+- **draft-only** — لا إرسال بدون موافقة المؤسس.
+- نقطة الدخول دائماً: تشخيص مجاني ثم Sprint 499 ريال.
+- شراكات الوكالات والمنصات: طابور منفصل [`partner_send_queue.md`](partner_send_queue.md).
+- القائمة الدافئة الموسّعة (20 جهة شخصية للمؤسس): [`../sales-kit/OUTREACH_DRAFTS_QUEUED.md`](../sales-kit/OUTREACH_DRAFTS_QUEUED.md).
+
+*Estimated outcomes are not guaranteed outcomes / النتائج التقديرية ليست نتائج مضمونة.*
