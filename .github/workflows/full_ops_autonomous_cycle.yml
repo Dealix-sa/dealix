@@ -1,0 +1,80 @@
+name: Full Ops Autonomous Cycle
+
+# Runs the daily Dealix Full Ops autonomous cycle.
+# 04:30 UTC = 07:30 Asia/Riyadh.
+# Deterministic-to-the-gate: nothing is sent, nothing is charged.
+
+on:
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+    inputs:
+      on_date:
+        description: "Cycle date override (YYYY-MM-DD)"
+        default: ""
+
+# Prevent two runs from racing on the shared cycle report file.
+concurrency:
+  group: dealix-full-ops-autonomous-cycle
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write   # for failure-issue creation
+
+jobs:
+  full-ops-cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --ignore-installed PyYAML
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run Full Ops autonomous cycle
+        id: cycle
+        run: |
+          set -e
+          ARGS=""
+          if [ -n "${{ github.event.inputs.on_date }}" ]; then
+            ARGS="--on-date ${{ github.event.inputs.on_date }}"
+          fi
+          python3 scripts/dealix_full_ops_cycle.py $ARGS | tee cycle_output.txt
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Upload cycle report artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-full-ops-cycle-${{ github.run_id }}
+          path: |
+            cycle_output.txt
+            data/full_ops_cycles/
+          retention-days: 14
+
+      - name: Open issue on failure
+        if: failure()
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0, 10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Full Ops autonomous cycle failed - ${today}`,
+              body: `The Full Ops autonomous cycle workflow failed on ${today}.\n\n` +
+                    `**Run:** ${context.serverUrl}/${context.repo.owner}/` +
+                    `${context.repo.repo}/actions/runs/${context.runId}\n\n` +
+                    `Inspect the uploaded artifact and the friction log.`,
+              labels: ['ops', 'p0'],
+            });
