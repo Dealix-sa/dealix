@@ -34,9 +34,12 @@ PUBLIC_PATHS: set[str] = {
     "/redoc",
     "/openapi.json",
     "/health",
+    "/healthz",
     "/health/live",
     "/health/ready",
     "/health/deep",
+    "/version",
+    "/api/v1/meta",
     # Public pricing list — prospects need to see plans without an API key.
     # Checkout + plan-specific tampering protection stays on /api/v1/checkout.
     "/api/v1/pricing/plans",

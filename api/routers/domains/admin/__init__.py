@@ -28,9 +28,9 @@ from api.routers import (
     full_ops,
     full_os,
     health,
+    platform_meta,
     personal_operator,
     public,
-    revenue_ops_autopilot,
     role_command,
     role_command_os,
     sectors,
@@ -40,6 +40,7 @@ from api.routers import (
 
 _ROUTERS = [
     health.router,
+    platform_meta.router,
     admin.router,
     public.router,
     sectors.router,
@@ -60,7 +61,6 @@ _ROUTERS = [
     full_os.router,
     drafts.router,
     personal_operator.router,
-    *revenue_ops_autopilot.AUTOPILOT_ROUTERS,
     self_growth.router,
     self_improvement_os.router,
     ecosystem.router,

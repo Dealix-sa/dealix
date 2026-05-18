@@ -152,7 +152,14 @@ async def healthz(deep: bool = False) -> dict[str, object]:
     """
     if deep:
         return await health_deep()
-    return {"status": "ok", "service": "dealix"}
+    settings = get_settings()
+    return {
+        "status": "ok",
+        "service": "dealix",
+        "version": settings.app_version,
+        "env": settings.app_env,
+        "git_sha": settings.git_sha,
+    }
 
 
 @router.get("/_test_sentry", include_in_schema=False)
