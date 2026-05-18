@@ -28,7 +28,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install minimal deps
-        run: pip install pyyaml fastapi httpx
+        run: pip install pyyaml fastapi httpx structlog pydantic-settings python-multipart
 
       - name: Verify full autonomous ops stack
         env:
