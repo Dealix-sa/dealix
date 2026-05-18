@@ -8,15 +8,8 @@ from typing import Any
 
 import yaml
 
+from dealix.commercial_ops.doctrine import SOAEN_CHECKLIST_AR
 from dealix.commercial_ops.paths import SOCIAL_QUEUE_YAML
-
-SOAEN_CHECKLIST_AR = [
-    "مصدر الفكرة موثّق (call / Proof / اعتراض)",
-    "مالك النشر والرد على التعليقات محدد",
-    "مراجعة المسودة قبل النشر (Approval)",
-    "لا أرقام إيراد بدون دفع مثبت (Evidence)",
-    "CTA واحد: Risk Score أو Sample Proof أو ديمو 10 دقائق (Next Action)",
-]
 
 
 def load_social_queue(path: Path | None = None) -> dict[str, Any]:

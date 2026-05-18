@@ -209,6 +209,18 @@
     "linkTrust": "الثقة",
     "linkPipeline": "Pipeline",
     "linkDoc": "كتاب التشغيل",
+    "valueMap": {
+      "title": "خريطة القيمة المادية",
+      "subtitle": "مسار إيراد واحد: Diagnostic → Proof → توسعة — بدون إرسال بارد",
+      "docHint": "docs/commercial/COMMERCIAL_VALUE_MAP_AR.md · py -3 scripts/commercial_value_map_status.py",
+      "links": {
+        "founder": "مركز المؤسس",
+        "warRoom": "غرفة الإيراد",
+        "diagnostic": "Diagnostic",
+        "riskScore": "Risk Score",
+        "businessNow": "مركز الأعمال"
+      }
+    },
     "offersCount": "{count} عروض في الكتالوج",
     "kpiPending": "{count} KPIs تجارية معلّقة",
     "transformationVerdict": "التحول: {v}",

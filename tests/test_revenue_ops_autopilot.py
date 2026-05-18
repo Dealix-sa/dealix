@@ -331,6 +331,40 @@ def test_founder_dashboard_sovereign_gtm_keys(monkeypatch):
     assert "marketing_stats" in gtm
     assert "targeting_today_top5" in gtm
     assert "bridge_events_7d" in gtm
+    cp = body.get("comprehensive_plan")
+    assert isinstance(cp, dict)
+    assert "weekly_one_decision" in cp
+    assert "master_execution_phase" in cp
+    assert cp["master_execution_phase"].get("active_phase") is not None
+
+
+def test_founder_comprehensive_plan_endpoint(monkeypatch):
+    from api.main import app
+
+    monkeypatch.setenv("DEALIX_ADMIN_API_KEY", "test-comprehensive-plan")
+    cli = TestClient(app)
+    headers = {"X-Admin-API-Key": "test-comprehensive-plan"}
+    r = cli.get("/api/v1/ops-autopilot/founder/comprehensive-plan", headers=headers)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body.get("max_ops_backlog", {}).get("total", 0) >= 50
+
+
+def test_founder_cockpit_run_unified_quick(monkeypatch):
+    from api.main import app
+
+    monkeypatch.setenv("DEALIX_ADMIN_API_KEY", "test-unified-day")
+    cli = TestClient(app)
+    headers = {"X-Admin-API-Key": "test-unified-day"}
+    r = cli.post(
+        "/api/v1/ops-autopilot/founder/cockpit/run-unified-day",
+        headers=headers,
+        json={"quick": True, "top_n": 5, "run_optional_scripts": False},
+    )
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body.get("unified_day_run", {}).get("verdict") in ("PASS", "DEGRADED")
+    assert body.get("cockpit_verdict")
 
 
 def test_marketing_social_today_and_mark(monkeypatch):

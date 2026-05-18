@@ -132,9 +132,9 @@ def main() -> int:
     BRIEFS_DIR.mkdir(parents=True, exist_ok=True)
 
     if args.dry_run:
-        print("DRY-RUN · Dealix Daily Ops")
+        print("DRY-RUN - Dealix Daily Ops")
         print("1. POST ingest/replay-postgres")
-        print("2. GET full-ops-health → data/founder_briefs/ops_health_DATE.json")
+        print("2. GET full-ops-health -> data/founder_briefs/ops_health_DATE.json")
         print("3. Monday: POST marketing/weekly-pack/apply")
         print("4. apply_kpi_founder_commercial.py --status")
         print("5. commercial_war_room_sync.py")
@@ -145,7 +145,7 @@ def main() -> int:
     degraded = False
 
     if not args.skip_api and _api_base() and _admin_key():
-        print("== 1/6 Postgres → Autopilot replay ==")
+        print("== 1/6 Postgres -> Autopilot replay ==")
         replay = step_replay_postgres(limit=args.replay_limit)
         if replay:
             print(json.dumps(replay, ensure_ascii=False, indent=2))
@@ -157,7 +157,7 @@ def main() -> int:
         if health:
             hp = BRIEFS_DIR / f"ops_health_{date}.json"
             hp.write_text(json.dumps(health, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-            print(f"WROTE · {hp}")
+            print(f"WROTE {hp}")
         else:
             degraded = True
 

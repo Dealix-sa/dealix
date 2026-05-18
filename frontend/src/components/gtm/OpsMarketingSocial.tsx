@@ -114,7 +114,7 @@ export function OpsMarketingSocial() {
         <Button onClick={copyDraft} disabled={!data?.linkedin_draft}>
           {copied ? t("copied") : t("copyLinkedIn")}
         </Button>
-        <Button variant="outline" onClick={queueApproval} disabled={!ADMIN_KEY}>
+        <Button variant="outline" onClick={queueApproval} disabled={!adminKey}>
           {queued
             ? isAr
               ? "في قائمة الموافقات"

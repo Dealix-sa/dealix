@@ -12,6 +12,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+
 WEEKLY_DIR = REPO_ROOT / "var/content_drafts"
 
 
@@ -43,6 +45,7 @@ def _create_via_store(draft: dict) -> dict:
 
 
 def main() -> int:
+    ensure_stdout_utf8()
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--use-http", action="store_true", help="POST to API instead of local store")

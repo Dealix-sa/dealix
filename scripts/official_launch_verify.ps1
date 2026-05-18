@@ -37,7 +37,7 @@ if (Get-Command bash -ErrorAction SilentlyContinue) {
         if ($LASTEXITCODE -ne 0) { $Fail = 1 }
     }
 } else {
-    & powershell -NoProfile -File "$Root/scripts/company_ready_verify.ps1" @crArgs
+    & (Join-Path $PSScriptRoot "company_ready_verify.ps1") @crArgs
     if ($LASTEXITCODE -ne 0) { $Fail = 1 }
 }
 
@@ -46,6 +46,7 @@ if ($LASTEXITCODE -ne 0) { $Fail = 1 }
 
 if (-not $SkipFeBuild -and (Test-Path "$Root/frontend/package.json")) {
     Push-Location "$Root/frontend"
+    if (Test-Path ".next") { Remove-Item -Recurse -Force ".next" }
     npm run build --silent
     if ($LASTEXITCODE -ne 0) { $Fail = 1 }
     Pop-Location

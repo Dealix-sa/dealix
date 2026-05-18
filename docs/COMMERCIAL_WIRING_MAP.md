@@ -205,6 +205,31 @@ If any of the three disagree, the deploy is broken. Roll back per `docs/RAILWAY_
 
 ---
 
+## 8. Next.js public funnel (Soft Launch) — الواجهة الحالية
+
+Legacy `landing/*.html` paths in §2 remain for static/HTML surfaces. **Founder GTM and soft launch** use the Next.js app under `frontend/src/app/[locale]/`:
+
+| Surface | Next.js route | Typical `service_id` / intent |
+|---------|---------------|--------------------------------|
+| Commercial home | `/[locale]` (e.g. `/ar`) | discovery · 5 sections + CTAs |
+| Risk Score | `/[locale]/risk-score` | `free_mini_diagnostic` funnel |
+| Proof Pack sample | `/[locale]/proof-pack` | proof preview before paid |
+| Diagnostic intake | `/[locale]/dealix-diagnostic` | founder-led Diagnostic entry |
+| Partners | `/[locale]/partners` | `agency_partner_os` |
+| Learn / AEO | `/[locale]/learn` · `/[locale]/learn/[slug]` | content · no live send |
+| Founder ops | `/[locale]/ops/founder` | War Room + digest + evidence |
+| War Room | `/[locale]/ops/war-room` | P0 from `agency_accounts_seed.csv` |
+| Approvals | `/[locale]/ops/approvals` | governed drafts |
+| Business NOW | `/[locale]/business-now` | 8 pillars (optional morning) |
+
+**Ops APIs (admin `X-Admin-API-Key`):** `GET /api/v1/ops-autopilot/war-room/today-pack` · `POST .../war-room/import-targets` · `GET .../founder-dashboard` — see [api/routers/revenue_ops_autopilot.py](../api/routers/revenue_ops_autopilot.py).
+
+**Expand all commercial angles (one command):** `powershell -File scripts/founder_commercial_expand.ps1` · `bash scripts/founder_commercial_expand.sh` · `--wave2` for 120-row ABM pool.
+
+**Quick doc map:** [docs/commercial/COMMERCIAL_OPS_QUICK_REFERENCE_AR.md](commercial/COMMERCIAL_OPS_QUICK_REFERENCE_AR.md)
+
+---
+
 ## Footer
 
 > Estimated outcomes are not guaranteed outcomes / النتائج التقديرية ليست نتائج مضمونة.

@@ -2,6 +2,8 @@
 
 **الغرض:** تحويل التوزيع من «خطة تسويق» إلى **نظام نمو بموافقة بشرية**: target → personalize → send → track → convert، مع حدود امتثال غير قابلة للمساومة.
 
+**مرساة اليوم (3 مراجع):** [FOUNDER_DAILY_ANCHOR_AR.md](FOUNDER_DAILY_ANCHOR_AR.md) — مع [MASTER_COMMERCIAL_OPERATING_PLAN_AR.md](../commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md) و [FOUNDER_OPERATING_SYSTEM_AR.md](FOUNDER_OPERATING_SYSTEM_AR.md).
+
 **عداد 30 يوم:** [`REVENUE_WAR_ROOM_30_DAY_TRACKER.yaml`](REVENUE_WAR_ROOM_30_DAY_TRACKER.yaml) · **تشغيل يومي:** `bash scripts/run_revenue_war_room_daily.sh` (Windows: `scripts/run_revenue_war_room_daily.ps1`) · **واجهة:** `/[locale]/ops/founder`
 
 **محاذاة مع المستودع**

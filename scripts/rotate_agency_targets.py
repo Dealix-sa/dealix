@@ -12,6 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 from dealix.commercial_ops.paths import AGENCY_TARGETS_CSV  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
 from dealix.commercial_ops.targeting_csv import TARGET_FIELDS, load_targets  # noqa: E402
 from dealix.commercial_ops.targeting_rotation import (  # noqa: E402
     apply_rotation_touch_dates,
@@ -20,6 +21,7 @@ from dealix.commercial_ops.targeting_rotation import (  # noqa: E402
 
 
 def main() -> int:
+    ensure_stdout_utf8()
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--top-n", type=int, default=10)
     p.add_argument("--cooldown-days", type=int, default=3)

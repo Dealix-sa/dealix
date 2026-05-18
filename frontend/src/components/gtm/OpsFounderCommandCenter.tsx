@@ -4,7 +4,14 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { OpsComprehensivePlanCard } from "@/components/gtm/OpsComprehensivePlanCard";
 import { OpsFounderWarRoom } from "@/components/gtm/OpsFounderWarRoom";
+import { OpsStrongestPlanPanel } from "@/components/gtm/OpsStrongestPlanPanel";
+import {
+  OpsFullAutonomousOpsCard,
+  type AutonomousOpsPayload,
+  type CockpitPayload,
+} from "@/components/gtm/OpsFullAutonomousOpsCard";
 import { OpsGtmStrategyCard, type GtmStackPayload } from "@/components/gtm/OpsGtmStrategyCard";
 import { ValuePlanPanel, type ValuePlanPayload } from "@/components/gtm/ValuePlanPanel";
 import api from "@/lib/api";
@@ -59,6 +66,8 @@ export function OpsFounderCommandCenter() {
   const [dailyPack, setDailyPack] = useState<DailyPackPayload | null>(null);
   const [valuePlan, setValuePlan] = useState<ValuePlanPayload | null>(null);
   const [gtmStack, setGtmStack] = useState<GtmStackPayload | null>(null);
+  const [fullOps, setFullOps] = useState<AutonomousOpsPayload | null>(null);
+  const [cockpit, setCockpit] = useState<CockpitPayload | null>(null);
   const [err, setErr] = useState("");
 
   const load = useCallback(() => {
@@ -76,8 +85,9 @@ export function OpsFounderCommandCenter() {
       api.getFounderDailyPack(adminKey),
       api.getFounderValuePlan(adminKey, 5),
       api.getFounderGtmStack(adminKey, 8),
+      api.getFounderCockpit(adminKey, 15, "morning"),
     ])
-      .then(([pipe, mkt, health, ev, tgt, pack, vp, gtm]) => {
+      .then(([pipe, mkt, health, ev, tgt, pack, vp, gtm, cockpitRes]) => {
         setStages((pipe.data as { stages?: Record<string, number> }).stages ?? {});
         setMktStats((mkt.data as { stats?: Record<string, number> }).stats ?? {});
         const h = health.data as { kpis?: KpiRow[] };
@@ -93,6 +103,14 @@ export function OpsFounderCommandCenter() {
         setGtmStack(
           (gtm.data as GtmStackPayload) ?? packData.gtm_stack ?? (vpData as { gtm_stack?: GtmStackPayload })?.gtm_stack ?? null,
         );
+        const cockpitData = cockpitRes.data as CockpitPayload;
+        setCockpit(cockpitData);
+        setFullOps({
+          automation_readiness: cockpitData.automation_readiness,
+          research_alignment: cockpitData.research_alignment,
+          founder_only_actions_ar: cockpitData.founder_only_actions_ar,
+          comprehensive_plan: cockpitData.comprehensive_plan,
+        });
       })
       .catch(() => setErr(isAr ? "تعذّر تحميل مركز القيادة." : "Command center load failed."));
   }, [adminKey, isAr]);
@@ -111,6 +129,13 @@ export function OpsFounderCommandCenter() {
           : "Unified command center — sales · marketing · targeting · ops health · war room."}
       </p>
       {err && <p className="text-destructive text-sm">{err}</p>}
+
+      <OpsFullAutonomousOpsCard data={fullOps} cockpit={cockpit} onRefresh={load} />
+
+      <OpsComprehensivePlanCard
+        plan={fullOps?.comprehensive_plan}
+        variant="compact"
+      />
 
       {valuePlan && <ValuePlanPanel valuePlan={valuePlan} />}
 
@@ -238,6 +263,7 @@ export function OpsFounderCommandCenter() {
         </div>
       </Card>
 
+      <OpsStrongestPlanPanel />
       <OpsFounderWarRoom />
     </div>
   );

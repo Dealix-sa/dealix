@@ -84,11 +84,39 @@ class AutopilotJSONStore:
             }
 
     def _write_atomic(self, data: dict[str, Any]) -> None:
+        import shutil
+        import time
+
         self._path.parent.mkdir(parents=True, exist_ok=True)
-        tmp = self._path.with_suffix(".tmp")
         data["generated_at"] = _utcnow_iso()
-        tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
-        tmp.replace(self._path)
+        payload = json.dumps(data, ensure_ascii=False, indent=2, default=str)
+        tmp = self._path.with_suffix(".tmp")
+        last_err: OSError | None = None
+        for attempt in range(5):
+            try:
+                tmp.write_text(payload, encoding="utf-8")
+                tmp.replace(self._path)
+                return
+            except OSError as exc:
+                last_err = exc
+                if tmp.is_file():
+                    try:
+                        shutil.copyfile(tmp, self._path)
+                        tmp.unlink(missing_ok=True)
+                        return
+                    except OSError:
+                        pass
+                if attempt < 4:
+                    time.sleep(0.08 * (attempt + 1))
+                    continue
+        try:
+            self._path.write_text(payload, encoding="utf-8")
+            tmp.unlink(missing_ok=True)
+            return
+        except OSError:
+            if last_err:
+                raise last_err
+            raise
 
     def _mutate(self, fn: Any) -> Any:
         with self._lock:

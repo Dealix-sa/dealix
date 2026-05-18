@@ -2,7 +2,12 @@
 
 **الغرض:** نقطة دخول يومية واحدة للمؤسس — يربط الاستراتيجية، الغرفة، الأدلة، المراحل، والحوكمة **دون** تغيير اتجاه المنتج.
 
+**مرساة اليوم (مع War Room + Founder OS):** [../ops/FOUNDER_DAILY_ANCHOR_AR.md](../ops/FOUNDER_DAILY_ANCHOR_AR.md) · **تنفيذ الخطة الشاملة:** [../ops/FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md](../ops/FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md)
+
+**مراجعة شاملة (36 قسمًا):** [COMMERCIAL_OPS_QUICK_REFERENCE_AR.md](COMMERCIAL_OPS_QUICK_REFERENCE_AR.md) · [COMMERCIAL_VALUE_MAP_AR.md](COMMERCIAL_VALUE_MAP_AR.md) · [MARKET_INTELLIGENCE_MASTER_INDEX_AR.md](MARKET_INTELLIGENCE_MASTER_INDEX_AR.md)
+
 **المرجع الشامل (استراتيجية + سوشال + استهداف + تكتيك + تعظيم قيمة):** [DEALIX_UNIFIED_REVENUE_ATLAS_AR.md](DEALIX_UNIFIED_REVENUE_ATLAS_AR.md) · [DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md](DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md).  
+**أقوى خطة موسّعة (134 مهمة + قرار أسبوعي + ريترو):** [FOUNDER_STRONGEST_PLAN_AR.md](FOUNDER_STRONGEST_PLAN_AR.md) · `python scripts/founder_strongest_plan_status.py`  
 **تشغيل يومي موحّد:** [FOUNDER_REVENUE_DAY_ONE_AR.md](../ops/FOUNDER_REVENUE_DAY_ONE_AR.md) · `bash scripts/run_founder_revenue_day.sh` (أو `run_founder_commercial_day.sh` بدون business_now) — هذا الملف **5 دقائق** بعد الموجز.
 
 **القرار الحالي:** لا بناء مزايا جديدة قبل **أول Diagnostic مدفوع + Proof Pack مسلّم**. استخدم ما بُني.
@@ -44,10 +49,12 @@
 
 ## مسار اليوم (5 دقائق)
 
+**أمر واحد (أقصى أتمتة بحوكمة — صباح):** `bash scripts/founder_one_command.sh` · تحقق: `py -3 scripts/verify_full_autonomous_ops_stack.py` · واجهة: `/ar/ops/founder` · [FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md](FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md)
+
 1. **Control Tower** — أجب عن: أفضل شريحة؟ رسالة؟ Proof؟ اعتراض؟ توقف؟ شريك؟ waste؟ no-build؟  
 2. **War Room** — [DEALIX_REVENUE_WAR_ROOM_AR.md](../ops/DEALIX_REVENUE_WAR_ROOM_AR.md) — أعلى 10 targets + متابعات + أحداث أدلة اليوم.  
 3. **Evidence** — سجّل حدثاً واحداً على الأقل في [operations/evidence_events_tracker.csv](operations/evidence_events_tracker.csv).  
-4. **مساءً** — [COMMERCIAL_WEEKLY_SCORECARD_AR.md](operations/COMMERCIAL_WEEKLY_SCORECARD_AR.md) (يوم الجمعة أو أسبوعياً).
+4. **مساءً** — `py -3 scripts/founder_evening_evidence.py --append` · [COMMERCIAL_WEEKLY_SCORECARD_AR.md](operations/COMMERCIAL_WEEKLY_SCORECARD_AR.md) (جمعة).
 
 ---
 
@@ -110,6 +117,9 @@
 ```bash
 bash scripts/run_founder_commercial_day.sh
 # Windows: powershell -File scripts/run_founder_commercial_day.ps1
+# يوم كامل (بوابات + مساء): powershell -File scripts/run_value_plan_day.ps1
+# لقطة موحّدة: py -3 scripts/export_value_plan_snapshot.py
+# API: GET /api/v1/ops-autopilot/founder/value-plan
 ```
 
 **ماذا يشغّل:** موجز مؤسس · مزامنة War Room (`data/war_room_today.json`) · **استيراد أهداف CSV** (`import_war_room_targets.py --apply`) · Commercial Digest · منشور LinkedIn اليوم (مسودة).

@@ -41,7 +41,8 @@ def test_partner_apply_api_blocks_bad_message():
     assert r.json()["detail"]["reason"] == "affiliate_compliance_blocked"
 
 
-def test_targeting_today_endpoint():
+def test_targeting_today_endpoint(monkeypatch):
+    monkeypatch.setenv("ADMIN_API_KEYS", "dev")
     from fastapi.testclient import TestClient
     from api.main import app
 
@@ -55,7 +56,8 @@ def test_targeting_today_endpoint():
     assert "targets" in r.json()
 
 
-def test_marketing_calendar_patch():
+def test_marketing_calendar_patch(monkeypatch):
+    monkeypatch.setenv("ADMIN_API_KEYS", "dev")
     from fastapi.testclient import TestClient
     from api.main import app
 

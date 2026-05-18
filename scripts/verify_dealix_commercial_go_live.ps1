@@ -5,14 +5,28 @@ Set-Location $Root
 $env:APP_ENV = "test"
 $Fail = 0
 
-$Py = if ($env:PY) { $env:PY } elseif (Get-Command py -ErrorAction SilentlyContinue) { "py" } else { "python" }
+$Py = $env:PY
 $PyArgs = @()
-if ($Py -eq "py") { $PyArgs = @("-3") }
+if (-not $Py) {
+  if (Get-Command py -ErrorAction SilentlyContinue) {
+    $Py = "py"
+    $PyArgs = @("-3")
+  } elseif (Test-Path "$env:LOCALAPPDATA\Python\bin\python.exe") {
+    $Py = "$env:LOCALAPPDATA\Python\bin\python.exe"
+  } elseif (Get-Command python3 -ErrorAction SilentlyContinue) {
+    $Py = "python3"
+  } else {
+    Write-Host "DEALIX_COMMERCIAL_GO_LIVE_VERDICT=FAIL"
+    Write-Host "python not found (install py launcher or set PY)"
+    exit 1
+  }
+}
+if ($Py -eq "py" -and $PyArgs.Count -eq 0) { $PyArgs = @("-3") }
 
 Write-Host "== Dealix commercial go-live (unified) =="
 
 Write-Host "`n== 1/4 Founder operating system =="
-& powershell -File scripts/verify_founder_operating_system.ps1
+& (Join-Path $PSScriptRoot "verify_founder_operating_system.ps1")
 if ($LASTEXITCODE -ne 0) { $Fail = 1 }
 
 Write-Host "`n== 2/4 Commercial soft launch =="
@@ -23,7 +37,7 @@ if ($env:DEALIX_VERIFY_WITH_FRONTEND_BUILD -eq "1") { $launchArgs += "--with-fro
 if ($LASTEXITCODE -ne 0) { $Fail = 1 }
 
 Write-Host "`n== 3/4 Company ready =="
-& powershell -File scripts/company_ready_verify.ps1 -SkipGoLive
+& (Join-Path $PSScriptRoot "company_ready_verify.ps1") -SkipGoLive
 if ($LASTEXITCODE -ne 0) { $Fail = 1 }
 
 Write-Host "`n== 4/4 Daily ops dry-run =="

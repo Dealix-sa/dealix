@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import api from "@/lib/api";
+import { ValuePlanPanel, type ValuePlanPayload } from "@/components/gtm/ValuePlanPanel";
+import { OpsExpansionStatusCard } from "@/components/gtm/OpsExpansionStatusCard";
 
 const ADMIN_KEY =
   typeof window !== "undefined"
@@ -33,12 +35,15 @@ export function OpsHubHealthCards() {
   const [healthOk, setHealthOk] = useState<boolean | null>(null);
   const [kpis, setKpis] = useState<HealthKpi[]>([]);
   const [bridge7d, setBridge7d] = useState<number | null>(null);
+  const [valuePlan, setValuePlan] = useState<ValuePlanPayload | null>(null);
 
   useEffect(() => {
     if (!ADMIN_KEY) {
       setHealthOk(null);
+      setValuePlan(null);
       return;
     }
+    api.getFounderValuePlan(ADMIN_KEY, 5).then((r) => setValuePlan(r.data as ValuePlanPayload)).catch(() => setValuePlan(null));
     api
       .getFullOpsHealth(ADMIN_KEY)
       .then((r) => {
@@ -70,6 +75,10 @@ export function OpsHubHealthCards() {
           bash scripts/verify_dealix_commercial_go_live.sh
         </p>
       </Card>
+
+      {valuePlan && <ValuePlanPanel valuePlan={valuePlan} variant="compact" />}
+
+      {ADMIN_KEY && <OpsExpansionStatusCard />}
 
       {ADMIN_KEY && (
         <Card className="p-4">

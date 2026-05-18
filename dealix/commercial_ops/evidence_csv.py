@@ -28,6 +28,31 @@ COMMERCIAL_EVIDENCE_TYPES: frozenset[str] = frozenset(
     }
 )
 
+PLACEHOLDER_COMPANIES: frozenset[str] = frozenset(
+    {
+        "",
+        "founder_launch_day",
+        "dealix soft launch",
+        "dealix founder commercial day",
+    }
+)
+
+
+def is_placeholder_evidence_row(row: dict[str, str]) -> bool:
+    """Template / operating rows — excluded from first-paid and funnel KPI truth."""
+    company = (row.get("company") or "").strip().lower()
+    if not company or company in PLACEHOLDER_COMPANIES:
+        return True
+    notes = (row.get("notes") or "").strip().lower()
+    if notes.startswith("template_"):
+        return True
+    return False
+
+
+def real_evidence_rows(rows: list[dict[str, str]] | None = None) -> list[dict[str, str]]:
+    data = rows if rows is not None else load_evidence_rows()
+    return [r for r in data if not is_placeholder_evidence_row(r)]
+
 
 def load_evidence_rows(path: Path | None = None) -> list[dict[str, str]]:
     p = path or EVIDENCE_TRACKER_CSV
@@ -42,9 +67,12 @@ def count_evidence_events(
     *,
     on_date: date | None = None,
     since_days: int | None = None,
+    exclude_placeholders: bool = False,
 ) -> dict[str, Any]:
     """Count events for today, rolling week, and by type."""
     data = rows if rows is not None else load_evidence_rows()
+    if exclude_placeholders:
+        data = real_evidence_rows(data)
     today = on_date or datetime.now(UTC).date()
     week_start = today - timedelta(days=6)
 

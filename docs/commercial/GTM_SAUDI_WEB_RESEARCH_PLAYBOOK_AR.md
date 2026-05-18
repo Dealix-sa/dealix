@@ -82,8 +82,17 @@ py -3 scripts/import_war_room_targets.py --dry-run
 
 `dealix/commercial_ops/gtm_stack.py` — ABM scoring · dual track · TTV · proof tier لكل status.
 
+### Full Ops Autonomous (أقصى أتمتة بحوكمة)
+
+| ماذا | أين |
+|------|-----|
+| مقارنة 2026 vs Dealix | [FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md](FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md) |
+| لقطة موحّدة | `py -3 scripts/run_full_commercial_ops_autopilot.py --json` |
+| تشغيل نواة صباح | `--execute` |
+| API | `GET/POST .../founder/full-autonomous-ops` |
+
 ### اختبار سريع
 
 ```powershell
-py -3 -m pytest tests/test_gtm_stack.py tests/test_gtm_abm_wave1_config.py -q --no-cov
+py -3 -m pytest tests/test_gtm_stack.py tests/test_full_ops_autopilot.py -q --no-cov
 ```

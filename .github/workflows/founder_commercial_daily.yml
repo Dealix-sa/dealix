@@ -38,7 +38,9 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: |
           chmod +x scripts/run_founder_commercial_day.sh scripts/run_dealix_daily_ops.py
-          bash scripts/run_founder_commercial_day.sh
+          py -3 scripts/run_dealix_unified_founder_day.py --quick
+          python3 scripts/run_founder_full_autopilot.py --mode brief-only
+          python3 scripts/run_full_commercial_ops_autopilot.py --execute --no-scripts
 
       - name: Upload digest artifacts
         if: always()
@@ -48,5 +50,8 @@ jobs:
           path: |
             data/founder_briefs/
             data/war_room_today.json
+            data/founder_briefs/autopilot_*.md
+            data/founder_briefs/autonomous_ops_last_run.json
+          # includes value_plan_*.json, motion_a_*.md, weekly_scorecard_*.md
           retention-days: 14
           if-no-files-found: ignore

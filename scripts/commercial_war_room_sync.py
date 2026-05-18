@@ -20,7 +20,7 @@ from dealix.commercial_ops.targeting_rotation import select_daily_p0_targets  # 
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--top-n", type=int, default=10)
+    p.add_argument("--top-n", type=int, default=15)
     p.add_argument("--trigger-targeting", action="store_true")
     p.add_argument("--no-rotation", action="store_true", help="Use full CSV ranking only")
     p.add_argument("--out", default=str(WAR_ROOM_TODAY_JSON))

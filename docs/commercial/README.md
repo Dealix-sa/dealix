@@ -2,8 +2,10 @@
 
 | Document | Purpose |
 |----------|---------|
+| [**FOUNDER_STRONGEST_PLAN_AR.md**](FOUNDER_STRONGEST_PLAN_AR.md) | **أقوى خطة للمؤسس:** 134 مهمة · قرار أسبوعي (مرحلة 0–5) · ريترو · امتثال · `founder_strongest_plan_status.py` |
 | [**COMMERCIAL_VALUE_MAP_AR.md**](COMMERCIAL_VALUE_MAP_AR.md) | **خريطة القيمة المادية:** يومي/أسبوعي + Soft/Paid + سياق سوق خارجي + أوامر |
 | [**GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md**](GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md) | **بحث ويب + إطار عملي:** ABM موجة 1 · لوب المؤسس · طبقة الأدلة · مساران GTM |
+| [**FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md**](FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md) | **أتمتة كاملة بحوكمة:** مقارنة سوق 2026 · صباح/مساء · API |
 | [**COMMERCIAL_OPS_QUICK_REFERENCE_AR.md**](COMMERCIAL_OPS_QUICK_REFERENCE_AR.md) | **مراجعة شاملة (36 قسمًا):** CI/CD · Railway · Moyasar · approvals · E2E lead · env matrix |
 | [**COMMERCIAL_VALUE_MAP_AR.md**](COMMERCIAL_VALUE_MAP_AR.md) | **خريطة قيمة:** لقطة آلية · سلم بيع · سوق · `commercial_value_map_status.py` |
 | [**MARKET_INTELLIGENCE_MASTER_INDEX_AR.md**](MARKET_INTELLIGENCE_MASTER_INDEX_AR.md) | **استخبارات سوق 2025–2026:** PDPL · RevOps · RFP · Why Now |

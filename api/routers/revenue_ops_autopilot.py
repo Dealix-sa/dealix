@@ -1004,6 +1004,60 @@ async def ops_client_pack_generate(body: ClientPackRequest) -> dict[str, Any]:
     return pack
 
 
+@router_ops.get("/founder/full-autonomous-ops")
+async def ops_founder_full_autonomous_ops(
+    top_n: int = 15,
+    include_value_plan: bool = False,
+    include_nested: bool = False,
+) -> dict[str, Any]:
+    """Unified autonomous ops snapshot — GTM, expansion, comprehensive, value plan."""
+    from dealix.commercial_ops.full_ops_autopilot import build_full_autonomous_ops_snapshot
+
+    n = max(1, min(top_n, 30))
+    return build_full_autonomous_ops_snapshot(
+        top_n=n,
+        include_nested=include_nested,
+        include_value_plan=include_value_plan,
+    )
+
+
+class FounderAutonomousRunBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    dry_run: bool = False
+    top_n: int = Field(default=15, ge=1, le=30)
+    run_optional_scripts: bool = True
+
+
+@router_ops.post("/founder/full-autonomous-ops/run")
+async def ops_founder_full_autonomous_ops_run(
+    body: FounderAutonomousRunBody | None = None,
+) -> dict[str, Any]:
+    """Run governed morning core (War Room, packs, metrics). No external send."""
+    from dealix.commercial_ops.full_ops_autopilot import (
+        build_full_autonomous_ops_snapshot,
+        run_morning_core,
+    )
+
+    req = body or FounderAutonomousRunBody()
+    snap = build_full_autonomous_ops_snapshot(
+        top_n=req.top_n,
+        include_nested=False,
+        include_value_plan=False,
+    )
+    if req.dry_run:
+        snap["morning_run"] = {
+            "verdict": "DRY_RUN",
+            "policy_ar": "لم يُنفَّذ — أرسل dry_run=false للتشغيل.",
+        }
+    else:
+        snap["morning_run"] = run_morning_core(
+            top_n=req.top_n,
+            run_optional_scripts=req.run_optional_scripts,
+        )
+    return snap
+
+
 @router_ops.get("/founder/gtm-stack")
 async def ops_founder_gtm_stack(top_n: int = 10) -> dict[str, Any]:
     """ABM wave 1, dual-track recommendation, TTV, proof stack refs."""
@@ -1032,6 +1086,24 @@ async def ops_founder_expansion_status(top_n: int = 10) -> dict[str, Any]:
 
     n = max(1, min(top_n, 25))
     return build_expansion_status(abm_top_n=n)
+
+
+@router_ops.get("/founder/governed-autopilot")
+async def ops_founder_governed_autopilot(motion_top_n: int = 5) -> dict[str, Any]:
+    """Governed full-ops autopilot status — draft-only preparation, human send/pay gates."""
+    from dealix.commercial_ops.governed_autopilot import build_governed_autopilot_status
+
+    n = max(1, min(motion_top_n, 15))
+    return build_governed_autopilot_status(motion_top_n=n)
+
+
+@router_ops.get("/founder/autonomous-ops/status")
+async def ops_founder_autonomous_ops_status(top_n: int = 10) -> dict[str, Any]:
+    """Full governed autonomous ops — expansion, benchmark, last run (no external send)."""
+    from dealix.commercial_ops.autonomous_ops import build_autonomous_ops_status
+
+    n = max(1, min(top_n, 25))
+    return build_autonomous_ops_status(abm_top_n=n)
 
 
 class FounderEvidenceCsvAppend(BaseModel):
@@ -1064,6 +1136,22 @@ async def ops_founder_evidence_csv_append(body: FounderEvidenceCsvAppend) -> dic
     return {"status": "ok", "row": row, "policy_ar": "لا إرسال خارجي — سجل أدلة فقط."}
 
 
+@router_ops.get("/founder/comprehensive-plan")
+async def ops_founder_comprehensive_plan() -> dict[str, Any]:
+    """Weekly decision, MASTER phases 0–5, backlog summary, dogfooding."""
+    from dealix.commercial_ops.founder_comprehensive_plan import build_comprehensive_status
+
+    return build_comprehensive_status()
+
+
+@router_ops.get("/founder/full-autopilot")
+async def ops_founder_full_autopilot() -> dict[str, Any]:
+    """Governed full autopilot — queue, verdict, PLS/stage bands (no external send)."""
+    from dealix.commercial_ops.founder_full_autopilot import build_autopilot_snapshot
+
+    return build_autopilot_snapshot()
+
+
 @router_ops.get("/founder/value-plan")
 async def ops_founder_value_plan(top_n: int = 5) -> dict[str, Any]:
     """Unified Value Plan snapshot — Motion A, evidence, first paid, weekly KPIs."""
@@ -1071,6 +1159,175 @@ async def ops_founder_value_plan(top_n: int = 5) -> dict[str, Any]:
 
     n = max(1, min(top_n, 20))
     return build_value_plan_snapshot(motion_top_n=n)
+
+
+@router_ops.get("/founder/strongest-plan")
+async def ops_founder_strongest_plan() -> dict[str, Any]:
+    """Founder strongest plan checklist (134+ tasks) + wiring status."""
+    from dealix.commercial_ops.founder_strongest_plan import strongest_plan_snapshot
+
+    return strongest_plan_snapshot()
+
+
+@router_ops.get("/founder/strongest-ops")
+async def ops_founder_strongest_ops(
+    mode: str = "morning",
+    run_checks: bool = False,
+) -> dict[str, Any]:
+    """Autonomous strongest-plan ops snapshot — tasks today, verdict, comprehensive hooks."""
+    from dealix.commercial_ops.founder_strongest_ops import (
+        CadenceMode,
+        build_strongest_ops_snapshot,
+    )
+
+    allowed: tuple[CadenceMode, ...] = ("morning", "evening", "weekly", "full")
+    m: CadenceMode = mode if mode in allowed else "morning"
+    return build_strongest_ops_snapshot(mode=m, run_checks=run_checks)
+
+
+class FounderStrongestOpsRunBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    mode: str = Field(default="morning", description="morning|evening|weekly|full")
+    run_checks: bool = False
+    write_brief: bool = True
+
+
+@router_ops.post("/founder/strongest-ops/run")
+async def ops_founder_strongest_ops_run(
+    body: FounderStrongestOpsRunBody | None = None,
+) -> dict[str, Any]:
+    """Run strongest-plan autonomous brief + checks (no external send)."""
+    from dealix.commercial_ops.founder_strongest_ops import CadenceMode, run_strongest_ops
+
+    req = body or FounderStrongestOpsRunBody()
+    allowed: tuple[CadenceMode, ...] = ("morning", "evening", "weekly", "full")
+    m: CadenceMode = req.mode if req.mode in allowed else "morning"
+    return run_strongest_ops(mode=m, run_checks=req.run_checks, write_brief=req.write_brief)
+
+
+@router_ops.get("/founder/cockpit")
+async def ops_founder_cockpit(
+    top_n: int = 15,
+    mode: str = "morning",
+) -> dict[str, Any]:
+    """Unified founder cockpit — benchmarks, strongest ops, full autonomous, backlog."""
+    from dealix.commercial_ops.founder_cockpit import build_founder_cockpit
+
+    n = max(1, min(top_n, 30))
+    return build_founder_cockpit(top_n=n, strongest_ops_mode=mode)
+
+
+class FounderCockpitRunBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    top_n: int = Field(default=15, ge=1, le=30)
+    run_optional_scripts: bool = True
+
+
+class FounderCockpitUnifiedBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    top_n: int = Field(default=15, ge=1, le=30)
+    quick: bool = False
+    run_optional_scripts: bool = True
+
+
+@router_ops.post("/founder/cockpit/run-unified-day")
+async def ops_founder_cockpit_run_unified_day(
+    body: FounderCockpitUnifiedBody | None = None,
+) -> dict[str, Any]:
+    """Full unified founder day in-process + refreshed cockpit (no external send)."""
+    from dealix.commercial_ops.founder_cockpit import run_cockpit_unified_day
+
+    req = body or FounderCockpitUnifiedBody()
+    return run_cockpit_unified_day(
+        top_n=req.top_n,
+        quick=req.quick,
+        run_optional_scripts=req.run_optional_scripts,
+    )
+
+
+@router_ops.post("/founder/cockpit/run-morning")
+async def ops_founder_cockpit_run_morning(
+    body: FounderCockpitRunBody | None = None,
+) -> dict[str, Any]:
+    """Run governed morning core + return refreshed cockpit (no external send)."""
+    from dealix.commercial_ops.founder_cockpit import run_cockpit_morning
+
+    req = body or FounderCockpitRunBody()
+    return run_cockpit_morning(
+        top_n=req.top_n,
+        run_optional_scripts=req.run_optional_scripts,
+    )
+
+
+@router_ops.post("/founder/cockpit/run-evening")
+async def ops_founder_cockpit_run_evening(
+    body: FounderCockpitRunBody | None = None,
+) -> dict[str, Any]:
+    """Evening cadence — evidence reminder + strongest ops evening brief."""
+    from dealix.commercial_ops.founder_cockpit import run_cockpit_evening
+
+    req = body or FounderCockpitRunBody()
+    return run_cockpit_evening(top_n=req.top_n)
+
+
+@router_ops.post("/founder/cockpit/run-weekly")
+async def ops_founder_cockpit_run_weekly(
+    body: FounderCockpitRunBody | None = None,
+) -> dict[str, Any]:
+    """Weekly cadence — scorecard + strongest ops weekly brief."""
+    from dealix.commercial_ops.founder_cockpit import run_cockpit_weekly
+
+    req = body or FounderCockpitRunBody()
+    return run_cockpit_weekly(
+        top_n=req.top_n,
+        run_optional_scripts=req.run_optional_scripts,
+    )
+
+
+class CompleteAutonomousDayBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    weekly: bool = False
+    evening: bool = False
+    skip_commercial_day: bool = False
+    use_unified_in_process: bool = True
+    top_n: int = Field(default=15, ge=1, le=30)
+
+
+@router_ops.get("/founder/complete-autonomous-day")
+async def ops_founder_complete_autonomous_day_plan(
+    weekly: bool = False,
+    evening: bool = False,
+    skip_commercial_day: bool = False,
+) -> dict[str, Any]:
+    """Dry-run plan + research comparison for complete autonomous day."""
+    from dealix.commercial_ops.complete_autonomous_day import build_complete_autonomous_plan
+
+    return build_complete_autonomous_plan(
+        weekly=weekly,
+        evening=evening,
+        skip_commercial_day=skip_commercial_day,
+    )
+
+
+@router_ops.post("/founder/complete-autonomous-day/run")
+async def ops_founder_complete_autonomous_day_run(
+    body: CompleteAutonomousDayBody | None = None,
+) -> dict[str, Any]:
+    """Run maximum governed autonomous day (no external send)."""
+    from dealix.commercial_ops.founder_cockpit import run_cockpit_complete_autonomous_day
+
+    req = body or CompleteAutonomousDayBody()
+    return run_cockpit_complete_autonomous_day(
+        top_n=req.top_n,
+        weekly=req.weekly,
+        evening=req.evening,
+        skip_commercial_day=req.skip_commercial_day,
+        use_unified_in_process=req.use_unified_in_process,
+    )
 
 
 @router_ops.get("/founder/commercial-value-map")
@@ -1096,10 +1353,17 @@ async def ops_founder_daily_pack() -> dict[str, Any]:
     from dealix.commercial_ops.kpi_snapshot import load_kpi_commercial_status
     from dealix.commercial_ops.social_queue import format_linkedin_draft, get_post_for_date
     from dealix.commercial_ops.strategy_refs import strategy_links_flat
+    from dealix.commercial_ops.founder_full_autopilot import build_autopilot_snapshot
+    from dealix.commercial_ops.full_ops_autopilot import build_full_autonomous_ops_snapshot
     from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 
     digest = build_commercial_digest(skip_no_build=True)
     value_plan = build_value_plan_snapshot(motion_top_n=5)
+    full_autonomous = build_full_autonomous_ops_snapshot(
+        top_n=5,
+        include_nested=False,
+        include_value_plan=False,
+    )
     kpi = load_kpi_commercial_status()
     social = get_post_for_date()
     try:
@@ -1120,6 +1384,13 @@ async def ops_founder_daily_pack() -> dict[str, Any]:
     fp_verdict = (value_plan.get("first_paid_diagnostic") or {}).get("verdict")
     if fp_verdict == "PIPELINE_OPEN":
         checklist_ar.append("بوابة القيمة: أغلق أول Diagnostic مدفوع + Proof (Motion A)")
+
+    autopilot = build_autopilot_snapshot()
+    ap_verdict = autopilot.get("verdict") or {}
+    for item in (autopilot.get("queue") or [])[:3]:
+        title = item.get("title_ar")
+        if title and title not in checklist_ar:
+            checklist_ar.append(title)
 
     return {
         "generated_at": datetime.now(UTC).isoformat(),
@@ -1143,6 +1414,19 @@ async def ops_founder_daily_pack() -> dict[str, Any]:
             **strategy_links_flat(),
         },
         "policy_ar": "حزمة يومية — إرسال خارجي بموافقة يدوية فقط.",
+        "full_autopilot": {
+            "verdict": ap_verdict,
+            "queue": autopilot.get("queue"),
+            "customer_stage": autopilot.get("customer_stage"),
+            "pls_readiness": autopilot.get("pls_readiness"),
+        },
+        "comprehensive_plan_doc": "docs/ops/FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md",
+        "full_autonomous_ops": {
+            "automation_readiness": full_autonomous.get("automation_readiness"),
+            "founder_only_actions_ar": full_autonomous.get("founder_only_actions_ar"),
+            "research_alignment": full_autonomous.get("research_alignment"),
+            "commands": full_autonomous.get("commands"),
+        },
     }
 
 
@@ -1172,9 +1456,14 @@ async def ops_founder_dashboard() -> dict[str, Any]:
     gtm = build_sovereign_gtm_slice()
     ev_week = gtm.get("evidence_events_week") or {}
 
+    from dealix.commercial_ops.founder_comprehensive_plan import build_comprehensive_status
     from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 
     value_plan = build_value_plan_snapshot(motion_top_n=5)
+    comprehensive = build_comprehensive_status()
+    weekly = comprehensive.get("weekly_one_decision") or {}
+    master_phase = comprehensive.get("master_execution_phase") or {}
+    backlog = comprehensive.get("max_ops_backlog") or {}
 
     warnings: list[str] = []
     if len(leads) < 10:
@@ -1215,6 +1504,33 @@ async def ops_founder_dashboard() -> dict[str, Any]:
             "north_star": value_plan.get("north_star"),
             "first_paid_verdict": (value_plan.get("first_paid_diagnostic") or {}).get("verdict"),
             "evidence_today": (value_plan.get("evidence") or {}).get("today_total", 0),
+        },
+        "comprehensive_plan": {
+            "weekly_one_decision": {
+                "verdict": weekly.get("verdict"),
+                "week_id": weekly.get("week_id"),
+                "one_decision": (weekly.get("latest") or {}).get("one_decision"),
+                "supports_phase": (weekly.get("latest") or {}).get("supports_phase"),
+                "stop_list": (weekly.get("latest") or {}).get("stop_list") or [],
+                "latest_path": weekly.get("latest_path"),
+            },
+            "master_execution_phase": master_phase,
+            "phase_0_1_gate": {
+                "verdict": (comprehensive.get("phase_0_1_gate") or {}).get("verdict"),
+                "no_build_until_closed": (comprehensive.get("phase_0_1_gate") or {}).get(
+                    "no_build_until_closed"
+                ),
+                "blockers_ar": (comprehensive.get("phase_0_1_gate") or {}).get("blockers_ar")
+                or [],
+            },
+            "max_ops_backlog": {
+                "verdict": backlog.get("verdict"),
+                "percent_done": backlog.get("percent_done"),
+                "done": backlog.get("done"),
+                "total": backlog.get("total"),
+                "doc": backlog.get("doc"),
+            },
+            "dogfooding": comprehensive.get("dogfooding"),
         },
         "links": {
             "approvals_console": "/ar/approvals",

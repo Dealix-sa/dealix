@@ -7,6 +7,10 @@ daily:
     path: docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md
     label_ar: "خطة التشغيل التجاري (5 دقائق)"
     when_ar: "كل صباح قبل War Room"
+  - id: founder_strongest_plan
+    path: docs/commercial/FOUNDER_STRONGEST_PLAN_AR.md
+    label_ar: "أقوى خطة للمؤسس (134 مهمة + قرار أسبوعي)"
+    when_ar: "أسبوع 0 · ريترو الجمعة · عند ضبط المرحلة 0–5"
   - id: founder_operating_system
     path: docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md
     label_ar: "نظام تشغيل المؤسس"

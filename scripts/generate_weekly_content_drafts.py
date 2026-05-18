@@ -17,6 +17,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
+
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
 AEO_PATH = REPO_ROOT / "docs/commercial/operations/AEO_CONTENT_CALENDAR_AR.md"
 OBJ_PATH = REPO_ROOT / "docs/commercial/operations/objection_engine_registry.yaml"
 OUT_DIR = REPO_ROOT / "var" / "content_drafts"
@@ -156,6 +159,7 @@ def build_drafts(*, week_num: int | None = None, count: int = 5) -> list[dict[st
 
 
 def main(argv: list[str] | None = None) -> int:
+    ensure_stdout_utf8()
     parser = argparse.ArgumentParser(description="Weekly LinkedIn content drafts (no publish)")
     parser.add_argument("--week", type=int, default=None, help="AEO calendar week number (1-12)")
     parser.add_argument("--count", type=int, default=5, help="Number of drafts (default 5)")

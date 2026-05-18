@@ -15,9 +15,11 @@ from dealix.commercial_ops.social_queue import (  # noqa: E402
     format_linkedin_draft,
     get_post_for_date,
 )
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
 
 
 def main() -> int:
+    ensure_stdout_utf8()
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--format", choices=("md", "json"), default="md")
     args = p.parse_args()

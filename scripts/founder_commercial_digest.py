@@ -17,9 +17,11 @@ from dealix.commercial_ops.digest import (  # noqa: E402
     render_digest_markdown,
     write_digest_file,
 )
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
 
 
 def main() -> int:
+    ensure_stdout_utf8()
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--format", choices=("md", "json"), default="md")
     p.add_argument("--out", default=None, help="Write markdown (default: data/founder_briefs/)")

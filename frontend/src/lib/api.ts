@@ -349,10 +349,104 @@ export const api = {
       params: { top_n: topN },
     }),
 
+  getFounderFullAutonomousOps: (
+    adminApiKey: string,
+    topN = 15,
+    opts?: { includeValuePlan?: boolean; includeNested?: boolean },
+  ) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/full-autonomous-ops", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: {
+        top_n: topN,
+        include_value_plan: opts?.includeValuePlan ?? false,
+        include_nested: opts?.includeNested ?? false,
+      },
+    }),
+
+  getFounderCockpit: (adminApiKey: string, topN = 15, mode = "morning") =>
+    apiClient.get("/api/v1/ops-autopilot/founder/cockpit", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN, mode },
+    }),
+
+  postFounderCockpitRunMorning: (
+    adminApiKey: string,
+    body: { top_n?: number; run_optional_scripts?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/cockpit/run-morning", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postFounderCockpitRunUnifiedDay: (
+    adminApiKey: string,
+    body: { top_n?: number; quick?: boolean; run_optional_scripts?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/cockpit/run-unified-day", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      timeout: 120_000,
+    }),
+
+  postFounderCockpitRunEvening: (adminApiKey: string, body: { top_n?: number } = {}) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/cockpit/run-evening", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postFounderCockpitRunWeekly: (
+    adminApiKey: string,
+    body: { top_n?: number; run_optional_scripts?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/cockpit/run-weekly", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      timeout: 90_000,
+    }),
+
+  postFounderCompleteAutonomousDayRun: (
+    adminApiKey: string,
+    body: {
+      weekly?: boolean;
+      evening?: boolean;
+      skip_commercial_day?: boolean;
+      use_unified_in_process?: boolean;
+      top_n?: number;
+    } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/complete-autonomous-day/run", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      timeout: 180_000,
+    }),
+
+  postFounderFullAutonomousOpsRun: (
+    adminApiKey: string,
+    body: { dry_run?: boolean; top_n?: number; run_optional_scripts?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/full-autonomous-ops/run", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
   getFounderCommercialValueMap: (adminApiKey: string, topN = 5) =>
     apiClient.get("/api/v1/ops-autopilot/founder/commercial-value-map", {
       headers: { "X-Admin-API-Key": adminApiKey },
       params: { top_n: topN, include_value_plan: true },
+    }),
+
+  getFounderStrongestPlan: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/strongest-plan", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getFounderStrongestOps: (adminApiKey: string, mode = "morning") =>
+    apiClient.get("/api/v1/ops-autopilot/founder/strongest-ops", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { mode },
+    }),
+
+  postFounderStrongestOpsRun: (
+    adminApiKey: string,
+    body: { mode?: string; run_checks?: boolean; write_brief?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/strongest-ops/run", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      timeout: 120_000,
     }),
 
   getFounderExpansionStatus: (adminApiKey: string, topN = 10) =>

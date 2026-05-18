@@ -7,6 +7,11 @@ import { Card } from "@/components/ui/card";
 
 const OFFERS = ["audit", "agencyProof", "diagnostic"] as const;
 
+const ADMIN_KEY =
+  typeof window !== "undefined"
+    ? process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY || ""
+    : "";
+
 export function CommercialLaunchHome() {
   const locale = useLocale();
   const t = useTranslations("commercialLaunch");
@@ -29,6 +34,11 @@ export function CommercialLaunchHome() {
             <Link href={`${base}/login`} className="text-primary hover:underline">
               {t("navLogin")}
             </Link>
+            {ADMIN_KEY ? (
+              <Link href={`${base}/ops/founder`} className="text-emerald-600 hover:underline">
+                {isAr ? "تشغيل المؤسس" : "Founder ops"}
+              </Link>
+            ) : null}
           </nav>
         </div>
       </header>

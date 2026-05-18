@@ -25,6 +25,8 @@
 | Proof Pack checklist | dealix-delivery | [PROOF_PACK_STANDARD.md](../07_proof_os/PROOF_PACK_STANDARD.md) |
 | فشل pytest / endpoint | dealix-engineer | `scripts/founder_go_live_verify.sh` |
 | «ما التالي أسبوعياً؟» | dealix-pm | `bash scripts/run_executive_weekly_checklist.sh` |
+| مراجعة أقوى خطة (134 مهمة) + سلك YAML | dealix-pm | `python scripts/founder_strongest_plan_status.py` · [FOUNDER_STRONGEST_PLAN_AR.md](../commercial/FOUNDER_STRONGEST_PLAN_AR.md) |
+| حلقة أسبوعية موحّدة (تحققات) | dealix-engineer | `bash scripts/founder_weekly_loop.sh` |
 | رد دعم عميل | dealix-sales + delivery | [support_faq_en.md](../knowledge-base/support_faq_en.md) |
 
 ---

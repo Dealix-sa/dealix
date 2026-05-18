@@ -62,12 +62,14 @@ def build_value_plan_snapshot(*, motion_top_n: int = 5) -> dict[str, Any]:
     weekly = build_weekly_scorecard()
     targets = load_targets()
     from dealix.commercial_ops.expansion_status import build_expansion_status
+    from dealix.commercial_ops.founder_strongest_ops import build_strongest_ops_snapshot
     from dealix.commercial_ops.gtm_stack import build_gtm_stack_snapshot
     from dealix.commercial_ops.motion_pipelines import build_all_motions_summary
 
     gtm = build_gtm_stack_snapshot(abm_top_n=motion_top_n)
     expansion = build_expansion_status(abm_top_n=motion_top_n)
     motions = build_all_motions_summary(top_n=min(3, motion_top_n))
+    strongest_ops = build_strongest_ops_snapshot(mode="morning", run_checks=False)
 
     gates = {
         "soft_launch_doc": "docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md",
@@ -149,7 +151,19 @@ def build_value_plan_snapshot(*, motion_top_n: int = 5) -> dict[str, Any]:
         },
         "gtm_stack": gtm,
         "motions_pipeline": motions,
-        "warnings_ar": _build_warnings(first_paid, evidence, evening, targets, gtm, expansion),
+        "strongest_ops": {
+            "verdict": strongest_ops.get("verdict"),
+            "tasks_today_count": strongest_ops.get("tasks_today_count"),
+            "brief_paths": {
+                "json": f"data/founder_briefs/strongest_ops_{day}.json",
+                "markdown": f"data/founder_briefs/strongest_ops_{day}.md",
+            },
+            "api_path": "/api/v1/ops-autopilot/founder/strongest-ops",
+            "runner": "scripts/run_founder_strongest_ops.py",
+        },
+        "warnings_ar": _build_warnings(
+            first_paid, evidence, evening, targets, gtm, expansion, strongest_ops
+        ),
     }
 
 
@@ -160,8 +174,11 @@ def _build_warnings(
     targets: list[dict[str, str]],
     gtm: dict[str, Any] | None = None,
     expansion: dict[str, Any] | None = None,
+    strongest_ops: dict[str, Any] | None = None,
 ) -> list[str]:
     out: list[str] = []
+    if strongest_ops and strongest_ops.get("verdict") == "FAIL_WIRING":
+        out.append("أقوى خطة: مسارات ناقصة — py -3 scripts/founder_strongest_plan_status.py")
     if first_paid["verdict"] == "PIPELINE_OPEN":
         out.append("بوابة القيمة مفتوحة: أغلق Diagnostic واحد (دفع + Proof) لشركة حقيقية.")
     if int(evidence.get("today_total") or 0) < 1:

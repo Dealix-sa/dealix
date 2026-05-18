@@ -210,6 +210,18 @@
     "linkTrust": "Trust",
     "linkPipeline": "Pipeline",
     "linkDoc": "Operating doc",
+    "valueMap": {
+      "title": "Commercial value map",
+      "subtitle": "One revenue path: Diagnostic → Proof → expand — no cold send",
+      "docHint": "docs/commercial/COMMERCIAL_VALUE_MAP_AR.md · py -3 scripts/commercial_value_map_status.py",
+      "links": {
+        "founder": "Founder command",
+        "warRoom": "War room",
+        "diagnostic": "Diagnostic",
+        "riskScore": "Risk score",
+        "businessNow": "Business HQ"
+      }
+    },
     "offersCount": "{count} offers in catalog",
     "kpiPending": "{count} commercial KPIs pending",
     "transformationVerdict": "Transformation: {v}",

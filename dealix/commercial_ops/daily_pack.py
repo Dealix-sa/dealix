@@ -121,9 +121,19 @@ def _write_index_json(
         from dealix.commercial_ops.gtm_stack import build_gtm_stack_snapshot
 
         gtm_snap = build_gtm_stack_snapshot(abm_top_n=5)
-    vp = build_value_plan_snapshot(motion_top_n=5)
+    from dealix.commercial_ops.full_ops_autopilot import (
+        build_full_autonomous_ops_snapshot,
+        build_value_plan_hint,
+    )
+
+    vp = build_value_plan_hint(top_n=5)
     vp_json = d / f"value_plan_{day}.json"
     vp_json.write_text(json.dumps(vp, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    autonomous_ops = build_full_autonomous_ops_snapshot(
+        top_n=5,
+        include_nested=False,
+        include_value_plan=False,
+    )
     from dealix.commercial_ops.value_map_status import write_value_map_artifacts
 
     vm_paths = write_value_map_artifacts(day=day, motion_top_n=5)
@@ -149,6 +159,12 @@ def _write_index_json(
         "value_plan": vp,
         "gtm_stack": gtm_snap,
         "soft_launch_meetings": fp["soft_launch_tracker"],
+        "full_autonomous_ops": {
+            "schema_version": autonomous_ops.get("schema_version"),
+            "automation_readiness": autonomous_ops.get("automation_readiness"),
+            "founder_only_actions_ar": autonomous_ops.get("founder_only_actions_ar"),
+            "commands": autonomous_ops.get("commands"),
+        },
     }
     index_path = d / "index.json"
     index_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -104,7 +104,19 @@ def _load_registry() -> dict:
     return data.get("commercial_entries") or {}
 
 
+def _ensure_import_file() -> None:
+    if _IMPORT.exists():
+        return
+    bootstrap = _REPO_ROOT / "scripts" / "bootstrap_founder_kpi_import.py"
+    if not bootstrap.is_file():
+        return
+    import subprocess
+
+    subprocess.run([sys.executable, str(bootstrap)], check=False, cwd=_REPO_ROOT)
+
+
 def _status() -> int:
+    _ensure_import_file()
     entries = _load_registry()
     pending = []
     ready = []
@@ -117,7 +129,9 @@ def _status() -> int:
             ready.append(key)
     print(f"commercial_registry_pending={len(pending)} ready={len(ready)}")
     if not _IMPORT.exists():
-        print("hint: copy kpi_founder_commercial_import.example.yaml -> kpi_founder_commercial_import.yaml")
+        print("hint: py -3 scripts/bootstrap_founder_kpi_import.py")
+    else:
+        print("kpi_import: present (fill CRM values; pending refs OK until export)")
     for key in pending:
         print(f"  pending: {key}")
     for key in ready:

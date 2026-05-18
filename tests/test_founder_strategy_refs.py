@@ -24,6 +24,7 @@ def test_strategy_refs_yaml_present() -> None:
 def test_strategy_links_include_master_and_gtm() -> None:
     links = strategy_links_flat()
     assert "master_commercial" in links
+    assert "founder_strongest_plan" in links
     assert "sovereign_gtm" in links
     assert "gtm_saudi_playbook" in links
     assert (REPO / links["master_commercial"]).is_file()

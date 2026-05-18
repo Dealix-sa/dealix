@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale, useTranslations, type TranslationValues } from "next-intl";
 import { motion } from "framer-motion";
 import {
   Briefcase,
@@ -23,6 +23,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import api from "@/lib/api";
 import { CommercialStrategyTools } from "@/components/business/CommercialStrategyTools";
+import { CommercialValueMapStrip } from "@/components/gtm/CommercialValueMapStrip";
+import { ValuePlanPanel, type ValuePlanPayload } from "@/components/gtm/ValuePlanPanel";
+import { getAdminApiKey, isOpsConfigured } from "@/lib/opsAdmin";
 
 type PillarKey =
   | "commercial"
@@ -143,7 +146,7 @@ function pillarStatus(key: PillarKey, snap: Snapshot): "ok" | "warn" | "risk" {
   return "ok";
 }
 
-function pillarFacts(key: PillarKey, p: Record<string, unknown> | undefined, t: (k: string, v?: Record<string, unknown>) => string) {
+function pillarFacts(key: PillarKey, p: Record<string, unknown> | undefined, t: (k: string, v?: TranslationValues) => string) {
   if (!p) return null;
   switch (key) {
     case "commercial":
@@ -209,6 +212,7 @@ export function BusinessNowContent() {
   const [kpi, setKpi] = useState<KpiSnapshot | null>(null);
   const [strategy, setStrategy] = useState<CommercialStrategy | null>(null);
   const [operator, setOperator] = useState<OperatorSignals | null>(null);
+  const [valuePlan, setValuePlan] = useState<ValuePlanPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -236,7 +240,7 @@ export function BusinessNowContent() {
       setKpi(kpiRes.data as KpiSnapshot);
       setStrategy(stratRes.data as CommercialStrategy);
 
-      const adminKey = process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY;
+      const adminKey = getAdminApiKey() || process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY;
       if (adminKey) {
         try {
           const opRes = await api.getBusinessNowOperatorSignals(adminKey);
@@ -244,8 +248,18 @@ export function BusinessNowContent() {
         } catch {
           setOperator(null);
         }
+        if (isOpsConfigured()) {
+          try {
+            const vpRes = await api.getFounderCommercialValueMap(adminKey, 5);
+            const body = vpRes.data as { value_plan?: ValuePlanPayload };
+            setValuePlan(body.value_plan ?? null);
+          } catch {
+            setValuePlan(null);
+          }
+        }
       } else {
         setOperator(null);
+        setValuePlan(null);
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "fetch_failed");
@@ -338,6 +352,27 @@ export function BusinessNowContent() {
               ))}
             </div>
           </section>
+
+          {valuePlan && (
+            <section id="value-plan" className="scroll-mt-20">
+              <h2 className="text-lg font-semibold mb-4">
+                {locale === "ar" ? "خطة القيمة (تشغيل)" : "Value plan (ops)"}
+              </h2>
+              <ValuePlanPanel valuePlan={valuePlan} />
+              <div className="flex flex-wrap gap-2 mt-3">
+                <Button asChild size="sm" variant="outline">
+                  <Link href={`/${locale}/ops/founder`}>
+                    {locale === "ar" ? "مركز المؤسس" : "Founder ops"}
+                  </Link>
+                </Button>
+                <Button asChild size="sm" variant="ghost">
+                  <Link href={`/${locale}/ops/war-room`}>
+                    {locale === "ar" ? "غرفة الإيراد" : "War Room"}
+                  </Link>
+                </Button>
+              </div>
+            </section>
+          )}
 
           {strategy && (
             <section id="strategy" className="space-y-4 scroll-mt-20">
@@ -687,6 +722,8 @@ export function BusinessNowContent() {
               </div>
             </section>
           )}
+
+          <CommercialValueMapStrip />
 
           <section>
             <h2 className="text-lg font-semibold mb-4">{t("offersTitle")}</h2>

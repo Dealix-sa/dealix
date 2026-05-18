@@ -11,11 +11,15 @@
 | [FOUNDER_SALES_LOOP_AR.md](FOUNDER_SALES_LOOP_AR.md) | لوب مكالمة + TTV + مراجعة أسبوعية |
 | [PROOF_STACK_ORDER_AR.md](PROOF_STACK_ORDER_AR.md) | ترتيب أدلة 1–5 (امتثال → pilot → case) |
 | [founder_meeting_debrief_template.yaml](founder_meeting_debrief_template.yaml) | قالب بعد كل discovery/demo |
+| [FOUNDER_GTM_CODIFICATION_AR.md](FOUNDER_GTM_CODIFICATION_AR.md) | ترميز أول 10 صفقات + [founder_gtm_codification_registry.yaml](founder_gtm_codification_registry.yaml) |
+| [founder_pdpl_compliance_pass.yaml](founder_pdpl_compliance_pass.yaml) | قائمة PDPL للمؤسس — [FOUNDER_PDPL_COMPLIANCE_PASS_AR.md](../FOUNDER_PDPL_COMPLIANCE_PASS_AR.md) |
+| [founder_weekly_decision_template.yaml](founder_weekly_decision_template.yaml) | قرار أسبوعي واحد — [FOUNDER_WEEKLY_ONE_DECISION_AR.md](../../ops/FOUNDER_WEEKLY_ONE_DECISION_AR.md) |
 | [targeting/ABM_WAVE1_ICP_AR.md](targeting/ABM_WAVE1_ICP_AR.md) | موجة 1: 30–50 حساب warm + معايير ICP |
 | [GTM_CHANNELS_PLAYBOOK_AR.md](GTM_CHANNELS_PLAYBOOK_AR.md) | قنوات warm · تسلسل لمسة · بوابة إعلان |
 | [GTM_OBJECTION_MATRIX_AR.md](GTM_OBJECTION_MATRIX_AR.md) | ردود حية ↔ objection registry |
 | [GTM_ROI_ONEPAGER_TEMPLATE_AR.md](GTM_ROI_ONEPAGER_TEMPLATE_AR.md) | قالب ROI للمشتريات |
 | [GTM_WEEKLY_REVIEW_CHECKLIST_AR.md](GTM_WEEKLY_REVIEW_CHECKLIST_AR.md) | مراجعة GTM أسبوعية (جمعة) |
+| [../FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md](../FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md) | أتمتة كاملة بحوكمة + مقارنة سوق 2026 |
 | [EVIDENCE_EVENTS_CLOSE_PATH_AR.md](EVIDENCE_EVENTS_CLOSE_PATH_AR.md) | مسار lead→proof + أحداث أدلة |
 | [evidence_events_tracker.csv](evidence_events_tracker.csv) | تتبع يومي (انسخ صفوفاً) |
 | [FIRST_PAID_DIAGNOSTIC_DOD_AR.md](FIRST_PAID_DIAGNOSTIC_DOD_AR.md) | DoD أول إيراد مدفوع |
@@ -33,7 +37,7 @@
 | [GATED_AUTO_SEND_RFC_AR.md](GATED_AUTO_SEND_RFC_AR.md) | استكشاع إرسال تلقائي (معطّل افتراضياً) |
 | [aeo_drafts/](aeo_drafts/) | مسودات صفحات AEO (نشر لاحقاً) |
 
-**سكربتات:** `run_founder_commercial_day.sh` (canonical) · `run_founder_revenue_day.sh` (wrapper + Business NOW) · `verify_dealix_commercial_go_live.sh` · `commercial_war_room_sync.py` (P0 + outreach drafts) · `rotate_agency_targets.py` · `queue_content_drafts_for_approval.py` · **`founder_gtm_status.py`** · **`founder_meeting_debrief_init.py`** · **`verify_gtm_stack.py`**
+**سكربتات:** `run_founder_commercial_day.sh` (canonical) · `founder_cadence.sh` / `.ps1` (صباح/مساء/أسبوع) · `run_founder_revenue_day.sh` (wrapper + Business NOW) · **`founder_comprehensive_plan_status.py`** · **`founder_weekly_decision_init.py`** · `verify_dealix_commercial_go_live.sh` · `commercial_war_room_sync.py` (P0 + outreach drafts) · `rotate_agency_targets.py` · `queue_content_drafts_for_approval.py` · **`founder_gtm_status.py`** · **`founder_meeting_debrief_init.py`** · **`verify_gtm_stack.py`**
 
 **محتوى / سوشال — أي سكربت؟**
 

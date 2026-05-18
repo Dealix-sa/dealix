@@ -35,6 +35,14 @@ def test_daily_pack_index_writes(tmp_path: Path, monkeypatch) -> None:
     text = path.read_text(encoding="utf-8")
     assert "evidence_events_tracker" in text
     assert "DEALIX_API_BASE" in text
+    index = json.loads((tmp_path / "index.json").read_text(encoding="utf-8"))
+    assert index["first_paid_diagnostic"]["verdict"] in (
+        "PIPELINE_OPEN",
+        "IN_PROGRESS",
+        "CLOSED",
+    )
+    assert index["ops_ui"]["founder"] == "/ar/ops/founder"
+    assert (index.get("full_autonomous_ops") or {}).get("automation_readiness", {}).get("verdict")
 
 
 def test_gtm_import_payload_valid():

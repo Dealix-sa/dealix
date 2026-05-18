@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from dealix.commercial_ops.api_client import fetch_founder_dashboard
+from dealix.commercial_ops.doctrine import build_soaen_daily, format_doctrine_markdown
 from dealix.commercial_ops.evidence_csv import (
     count_evidence_events,
     load_evidence_rows,
@@ -18,6 +19,9 @@ from dealix.commercial_ops.evidence_csv import (
 )
 from dealix.commercial_ops.founder_90min import build_founder_90min_sections, render_90min_markdown
 from dealix.commercial_ops.kpi_snapshot import load_kpi_commercial_status
+from dealix.commercial_ops.market_intelligence_refs import build_market_intel_digest_block
+from dealix.commercial_ops.strategy_refs import strategy_links_flat
+from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 from dealix.commercial_ops.paths import (
     EVIDENCE_TRACKER_CSV,
     FOUNDER_BRIEFS_DIR,
@@ -43,7 +47,8 @@ def build_commercial_digest(
     if pull_evidence:
         pull_result = pull_events_from_api(api_base=api_base, admin_key=admin_key)
     rows = load_evidence_rows()
-    evidence = count_evidence_events(rows)
+    evidence = count_evidence_events(rows, exclude_placeholders=True)
+    evidence_all_rows = count_evidence_events(rows)
     war_room_file: dict[str, Any] | None = None
     if WAR_ROOM_TODAY_JSON.is_file():
         try:
@@ -52,8 +57,8 @@ def build_commercial_digest(
             war_room_file = None
     all_targets = load_targets()
     if war_room_file is None:
-        pool = select_daily_p0_targets(all_targets, top_n=10)
-        war_room_file = attach_outreach_drafts(build_war_room_today(pool, top_n=10))
+        pool = select_daily_p0_targets(all_targets, top_n=15)
+        war_room_file = attach_outreach_drafts(build_war_room_today(pool, top_n=15))
     else:
         war_room_file = attach_outreach_drafts(war_room_file)
 
@@ -89,15 +94,38 @@ def build_commercial_digest(
         warnings.append(f"KPI: {hint}")
 
     founder_90 = build_founder_90min_sections(api_base=api_base, admin_key=admin_key)
+    value_plan = build_value_plan_snapshot(motion_top_n=5)
+    market_intel = build_market_intel_digest_block()
+
+    today_focus = [
+        "Control Tower: أفضل شريحة (وكالة P0) · رسالة · Proof · اعتراض · توقف funnel",
+        "War Room: أعلى 10 أهداف + 5 متابعات",
+        "10 لمسات موافَق عليها · 1 شريك · 1 حدث أدلة",
+        "منشور LinkedIn: مسودة جاهزة — راجع SOAEN ثم انشر يدوياً",
+        "مركز الموافقات قبل أي إرسال خارجي",
+    ]
+    pow = market_intel.get("pillar_of_week")
+    if pow and pow.get("topic_ar"):
+        today_focus.append(
+            f"استخبارات السوق — وثيقة الأسبوع: {pow['topic_ar']} (`{pow.get('doc', '')}`)"
+        )
+    if market_intel.get("is_friday_review"):
+        today_focus.append(
+            "جمعة: نفّذ MARKET_INTELLIGENCE_WEEKLY_REVIEW_CHECKLIST_AR (20 دقيقة)"
+        )
 
     return {
         "generated_at": datetime.now(UTC).isoformat(),
-        "schema_version": "1.2",
+        "schema_version": "1.5",
+        "market_intelligence": market_intel,
+        "value_plan": value_plan,
+        "doctrine": build_soaen_daily(),
         "is_estimate": True,
         "rotation_preview_tomorrow": rotation_preview,
         "founder_90min": founder_90,
         "evidence_pull": pull_result,
         "evidence": evidence,
+        "evidence_all_rows": evidence_all_rows,
         "kpi_commercial": kpi_status,
         "evidence_tracker_path": str(EVIDENCE_TRACKER_CSV.relative_to(REPO_ROOT)),
         "war_room": war_room_file,
@@ -105,19 +133,15 @@ def build_commercial_digest(
         "linkedin_draft": linkedin_draft,
         "api_dashboard": api_dash,
         "evidence_sync": sync_result,
-        "today_focus_ar": [
-            "Control Tower: أفضل شريحة (وكالة P0) · رسالة · Proof · اعتراض · توقف funnel",
-            "War Room: أعلى 10 أهداف + 5 متابعات",
-            "10 لمسات موافَق عليها · 1 شريك · 1 حدث أدلة",
-            "منشور LinkedIn: مسودة جاهزة — راجع SOAEN ثم انشر يدوياً",
-            "مركز الموافقات قبل أي إرسال خارجي",
-        ],
+        "today_focus_ar": today_focus,
         "no_build_warnings": warnings,
         "links": {
             "master_plan": "docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md",
             "sovereign_gtm": "docs/commercial/DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md",
+            "founder_operating_system": "docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md",
             "war_room_doc": "docs/ops/DEALIX_REVENUE_WAR_ROOM_AR.md",
             "sample_proof": "docs/commercial/operations/sample_proof_pack/SAMPLE_PROOF_PACK_AGENCY_AR.md",
+            **strategy_links_flat(),
         },
     }
 
@@ -127,8 +151,11 @@ def render_digest_markdown(digest: dict[str, Any]) -> str:
     wr = digest.get("war_room") or {}
     social = digest.get("social_post_due_today") or {}
     f90 = digest.get("founder_90min") or {}
+    doctrine_md = format_doctrine_markdown(digest.get("doctrine"))
     lines = [
         f"# Dealix — Commercial Digest · {ev.get('date', '')}",
+        "",
+        doctrine_md,
         "",
         render_90min_markdown(f90),
         "",
@@ -199,6 +226,25 @@ def render_digest_markdown(digest: dict[str, Any]) -> str:
         for k, v in tiles.items():
             lines.append(f"- `{k}`: {v}")
 
+    vp = digest.get("value_plan") or {}
+    if vp:
+        fp = vp.get("first_paid_diagnostic") or {}
+        lines.extend(
+            [
+                "",
+                "## Value Plan (بوابة القيمة)",
+                "",
+                f"- First paid: `{fp.get('verdict')}` · payment (real): {fp.get('payment_received_real', 0)} · proof: {fp.get('proof_pack_delivered_real', 0)}",
+                f"- Motion A أهداف: {len((vp.get('motion_a') or {}).get('targets') or [])}",
+            ]
+        )
+        for t in (vp.get("motion_a") or {}).get("targets") or []:
+            lines.append(
+                f"  - **{t.get('company')}** · `{t.get('status')}` — {t.get('next_action_ar')}"
+            )
+        for w in vp.get("warnings_ar") or []:
+            lines.append(f"> ⚠️ {w}")
+
     kpi = digest.get("kpi_commercial") or {}
     if kpi.get("registry_exists"):
         lines.extend(
@@ -219,6 +265,21 @@ def render_digest_markdown(digest: dict[str, Any]) -> str:
     for w in digest.get("no_build_warnings") or []:
         lines.append("")
         lines.append(f"> ⚠️ {w}")
+
+    mi = digest.get("market_intelligence") or {}
+    if mi:
+        lines.extend(["", "## استخبارات السوق (توجيه اليوم)", ""])
+        pow_doc = mi.get("pillar_of_week") or {}
+        if pow_doc.get("topic_ar"):
+            lines.append(
+                f"- **وثيقة الأسبوع:** {pow_doc['topic_ar']} — `{pow_doc.get('doc', '')}`"
+            )
+        if mi.get("master_index"):
+            lines.append(f"- **الفهرس:** `{mi['master_index']}`")
+        if mi.get("is_friday_review") and mi.get("friday_checklist"):
+            lines.append(f"- **جمعة:** راجع `{mi['friday_checklist']}`")
+        if not mi.get("status_ok"):
+            lines.append("- ⚠️ بعض مسارات استخبارات السوق ناقصة — راجع `market_intelligence_status`")
 
     lines.extend(
         [
