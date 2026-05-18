@@ -19,32 +19,32 @@ Content-Type: text/html; charset=UTF-8
 </head>
 <body>
 
-<h1>السلام عليكم {first_name} 🙏</h1>
+<h1>السلام عليكم {first_name}</h1>
 
-<p>شكراً لثقتك. تم استلام الـ <strong>499 SAR</strong> وبدأت رسمياً تجربة Dealix Managed Pilot لمدة ٧ أيام.</p>
+<p>شكراً لثقتك. تم استلام مبلغ <strong>499 ريال</strong>، وبدأ رسمياً سبرنت ذكاء الإيرادات لمدة ٧ أيام.</p>
 
 <div class="box">
   <strong>التزامي تجاهك خلال هذه الأيام:</strong>
   <ul>
-    <li>أنا شخصياً (سامي) أُشرف على onboarding كل يوم</li>
-    <li>ردود AI عربية على inbound عملائك، بـ <strong>اعتمادك</strong> أولاً</li>
-    <li>كل قرار خارجي موثّق في Decision Passport قابل للتدقيق</li>
-    <li>بياناتك في خوادم سعودية (me-south-1) تحت <strong>PDPL</strong></li>
-    <li>فواتيرك تطلع عبر <strong>ZATCA Phase 2</strong> e-invoice</li>
+    <li>أنا شخصياً (سامي) أُشرف على الإعداد (onboarding) كل يوم</li>
+    <li>كل مسوّدة رد عربية تُعرَض عليك أولاً — لا تخرج رسالة بلا <strong>اعتمادك</strong></li>
+    <li>كل قرار خارجي موثّق في سجل قرارات قابل للتدقيق</li>
+    <li>بياناتك على خوادم داخل السعودية (me-south-1)، وفق نظام حماية البيانات الشخصية (PDPL)</li>
+    <li>الفوترة جاهزة لمسار الفاتورة الإلكترونية (ZATCA Phase 2) عند الحاجة</li>
   </ul>
 </div>
 
-<div class="day"><span class="day-num">Day 1:</span> Discovery call 30 دقيقة + إعداد تقني كامل (4 ساعات معك)</div>
-<div class="day"><span class="day-num">Day 2-3:</span> أول ردود عربية على inbound — أنت تعتمد كل واحدة</div>
-<div class="day"><span class="day-num">Day 4-5:</span> Mixed-mode — AI auto-send للسهل، أنت تعتمد المهم فقط</div>
-<div class="day"><span class="day-num">Day 6:</span> مراجعة Decision Passport — كل قرار خارجي مع المصدر</div>
-<div class="day"><span class="day-num">Day 7:</span> القرار — Growth plan (2,999/شهر) أو وقف مع refund كامل</div>
+<div class="day"><span class="day-num">اليوم 1:</span> مكالمة تعارف 30 دقيقة + إعداد تقني كامل</div>
+<div class="day"><span class="day-num">اليوم 2-3:</span> أول مسوّدات عربية للردود — تُعرَض عليك لاعتمادها أو تعديلها</div>
+<div class="day"><span class="day-num">اليوم 4-5:</span> ترتيب الفرص + حزمة مسوّدات — كل مسوّدة بانتظار اعتمادك</div>
+<div class="day"><span class="day-num">اليوم 6:</span> مراجعة سجل القرارات — كل قرار خارجي مع مصدره</div>
+<div class="day"><span class="day-num">اليوم 7:</span> القرار — الانتقال لعمليات النمو الشهرية (2,999 ريال/شهر) أو الإيقاف مع استرجاع كامل</div>
 
-<p><strong>أول خطوة:</strong> متى يناسبك الـ Discovery call اليوم أو غداً؟</p>
+<p><strong>أول خطوة:</strong> متى يناسبك موعد مكالمة التعارف اليوم أو غداً؟</p>
 
 <a href="{calendly_link}" class="cta">احجز 30 دقيقة معي</a>
 
-<p>أو رد على هذا البريد وأقترح وقتاً، أو راسلني واتس آب على +966 5X XXX XXXX.</p>
+<p>أو رد على هذا البريد بوقت يناسبك.</p>
 
 <p>سعيد جداً بانضمامك. خلّينا نبدأ.</p>
 
@@ -52,9 +52,10 @@ Content-Type: text/html; charset=UTF-8
 <a href="https://dealix.me">dealix.me</a></p>
 
 <div class="footer">
-  <p>This email is sent because you subscribed to Dealix Managed Pilot ({customer_email}).
+  <p>This email is sent because you started a Dealix Revenue Intelligence Sprint ({customer_email}).
   Your data is processed under Saudi PDPL — you can request export or erasure anytime by replying to this email.</p>
   <p>Dealix · Saudi Arabia · CR {commercial_registration} · VAT {vat_number}</p>
+  <p><strong>Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.</strong></p>
 </div>
 
 </body>

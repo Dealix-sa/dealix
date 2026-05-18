@@ -2,7 +2,9 @@
 
 > A 12-week bilingual content calendar for the Dealix founder voice on LinkedIn. Three posts per week, three rotating topic lanes, fixed publishing days. No emojis. No model names. No client names. Every post ends with the Source Passport disclaimer.
 >
-> Cross-link: [LINKEDIN_POST_001.md](./LINKEDIN_POST_001.md), [LINKEDIN_POST_002.md](./LINKEDIN_POST_002.md), [LINKEDIN_POST_003.md](./LINKEDIN_POST_003.md), [MARKETING_AND_CONTENT_SYSTEM.md](../MARKETING_AND_CONTENT_SYSTEM.md).
+> Cross-link: posts 001–015 drafted in this folder (`LINKEDIN_POST_001.md` … `LINKEDIN_POST_015.md`); [MARKETING_AND_CONTENT_SYSTEM.md](../MARKETING_AND_CONTENT_SYSTEM.md).
+>
+> Drafting status — حالة الصياغة: Weeks 1–2 (posts 001–006) and Weeks 3–5 (posts 007–015) drafted. Weeks 6–12 pending.
 
 ---
 
