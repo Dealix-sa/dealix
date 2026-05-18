@@ -44,21 +44,21 @@
 ## 📆 الشهر الأول (يوم 1-30): Launch + First 3 Customers
 
 ### الأسبوع 1: تأمين الإطلاق
-- يوم 1-2: Railway deploy + Moyasar + 1 SAR test
+- يوم 1-2: Railway deploy + Moyasar + اختبار فاتورة (test mode)
 - يوم 3-4: Sentry → Slack + UptimeRobot alerts
-- يوم 5-7: First 5 LinkedIn DMs
+- يوم 5-7: First 5 LinkedIn DMs (مسوّدات يعتمدها المؤسس قبل الإرسال)
 
 ### الأسبوع 2: الأول demo
 - يوم 8-10: Follow-ups على 5 الأوائل
 - يوم 11-14: First demo إذا رد أحد
 
-### الأسبوع 3: الأول pilot
+### الأسبوع 3: الأول Sprint
 - يوم 15-18: 5 demos محجوزة
-- يوم 19-21: أول pilot 1 SAR signed
+- يوم 19-21: أول 7-Day Revenue Proof Sprint مُوقَّع (499 ريال)
 
 ### الأسبوع 4: الأول paid
-- يوم 22-25: Pilot يتحوّل لـ Starter/Growth
-- يوم 26-28: أول invoice مدفوعة
+- يوم 22-25: تسليم الـ Sprint + Proof Pack موثق
+- يوم 26-28: أول invoice 499 ريال مدفوعة (تُرسَل يدوياً بعد الموافقة)
 - يوم 29-30: Case study draft
 
 ---

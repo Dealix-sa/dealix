@@ -48,7 +48,7 @@ Paired with existing `dealix_battlecards.md` (MENA-specific: Foodics/Lucidya/Sal
 - **Local compliance** — US-data-centric; PDPL treatment unclear
 
 ### Dealix angle
-> "ZoomInfo is the gold standard for US B2B data. For Saudi market, the data gap is significant. Dealix focuses on the next step: after you have the Saudi lead, how do you respond faster in Arabic? ZoomInfo gives you names, Dealix closes them."
+> "ZoomInfo is the gold standard for US B2B data. For Saudi market, the data gap is significant. Dealix focuses on the next step: once the Saudi opportunities are in your pipeline, how do you rank them and draft Arabic follow-ups for your team to approve and send? ZoomInfo gives you names; Dealix helps you prioritize and follow up — every message draft-only, you approve and send."
 
 ### When ZoomInfo wins: US-focused enterprise with $15K+ annual budget
 ### When Dealix wins: Saudi-focused SMB/mid-market with budget <$5K/year
@@ -72,7 +72,7 @@ Paired with existing `dealix_battlecards.md` (MENA-specific: Foodics/Lucidya/Sal
 - **Entry-level pricing** — $149/mo minimum for meaningful features
 
 ### Dealix angle
-> "Clay is brilliant for creative enrichment workflows — I've used it. For the Saudi market, you still hit the same language + local-data gaps. Dealix solves the response layer that Clay doesn't touch: AI Arabic SDR running 24/7 on WhatsApp + email, with Clay-style tech detection as a bonus."
+> "Clay is brilliant for creative enrichment workflows — I've used it. For the Saudi market, you still hit the same language + local-data gaps. Dealix solves the layer Clay doesn't touch: an approval-first revenue operations radar that ranks the opportunities already in your pipeline and drafts Gulf-Arabic follow-ups for your team to review and send. Drafts only — Dealix never sends on your behalf."
 
 ### When Clay wins: technical RevOps teams in US/Europe building custom enrichment
 ### When Dealix wins: Saudi B2B wanting operational response, not data-building

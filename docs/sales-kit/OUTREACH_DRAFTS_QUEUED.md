@@ -224,6 +224,226 @@ does not invent a sixth:
 
 ---
 
+## Part C — First 10 personalized outreach drafts / أول 10 مسوّدات مخصّصة
+
+> **STATUS for every draft below: `QUEUED_FOR_FOUNDER_APPROVAL` — NOT SENT.**
+> Source list: `docs/sales-kit/WARM_LIST_CONSOLIDATED.md` (top ranked rows).
+> Source copy: the corrected LinkedIn DMs in `docs/ops/launch_content_queue.md`.
+>
+> **Founder gate before sending any draft below:**
+> 1. Confirm the recipient is a genuine warm contact or a **named introduction**
+>    has been secured. None of the named-company leads is a cold contact —
+>    if no warm basis exists yet, the draft stays queued and the founder first
+>    asks a personal contact (P1–P20) for an intro.
+> 2. Edit the draft in the founder's own voice; send one human message on the
+>    channel the relationship already uses. No automation, no bulk send.
+> 3. Drafts 9 and 10 target companies whose named founder is still "to confirm"
+>    in the consolidated list — do NOT send until a named contact + warm basis
+>    exists.
+
+### Draft 1 — Abdullah Al-Assiri / Lucidya
+
+- **Target:** Abdullah Al-Assiri, CEO & Co-founder, Lucidya
+- **Channel:** LinkedIn (founder's own account — single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL`
+- **Message:**
+
+> السلام عليكم أستاذ عبدالله،
+>
+> أنا سامي العسيري — مؤسس Dealix (رادار عمليات إيراد بمنطق الموافقة أولاً، بالعربي الخليجي).
+> قرابة الاسم جعلتني أبدأ بك.
+>
+> Lucidya تقود CXM في المنطقة، وفريق BDR عندكم يستحق أدوات ترتّب الفرص وتصيغ المسودات — مع إبقاء كل إرسال تحت موافقة بشرية.
+>
+> Dealix يقرأ pipeline، يرتّب الفرص، ويصيغ مسودات تواصل تراجعونها قبل الإرسال. نقترح 7-Day Revenue Proof Sprint بـ 499 ريال لإثبات النمط على pipeline حقيقي — مخرَج موثق يوم 7، فرص مُثبتة بأدلة لا نتائج مضمونة.
+>
+> هل تناسبك مكالمة 20 دقيقة هذا الأسبوع لنرى إن كان يناسبكم؟
+>
+> شاكر وقتك،
+> سامي
+
+### Draft 2 — Ahmad Al-Zaini / Foodics
+
+- **Target:** Ahmad Al-Zaini, CEO & Co-founder, Foodics
+- **Channel:** LinkedIn (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL`
+- **Message:**
+
+> الله يسعدك أحمد،
+>
+> مبروك على Series C — Foodics مثال يحتذى في MENA SaaS.
+>
+> أنا سامي، بنيت Dealix: رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي. يقرأ pipeline، يرتّب فرص حسابات المطاعم حسب الأولوية، ويصيغ مسودات بلهجة طبيعية يراجعها فريقك ويوافق قبل أي إرسال.
+>
+> Foodics تتوسع جغرافياً — فريقك بعدة لهجات الآن. Dealix يصيغ المسودات بلهجة السوق، وكل مسوّدة تبقى تحت موافقتكم.
+>
+> 20 دقيقة على سيناريو restaurant onboarding، ونختم بشرح 7-Day Revenue Proof Sprint بـ 499 ريال؟
+>
+> سامي
+
+### Draft 3 — Hisham Al-Falih / Lean Technologies
+
+- **Target:** Hisham Al-Falih, CEO & Co-founder, Lean Technologies
+- **Channel:** LinkedIn (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL`
+- **Message:**
+
+> هشام السلام عليكم،
+>
+> Lean API علّمني كيف تُبنى منتجات fintech بعناية.
+>
+> سؤال مباشر: كم فرصة من عملاء Lean تبرد قبل أن يلحقها فريق solutions engineering؟
+>
+> Dealix (رادار عمليات إيراد بمنطق الموافقة أولاً) يرتّب الفرص قبل SE، يصيغ مسودات تواصل، ويجهّز ملخص فرصة — كل إرسال يبقى تحت موافقتكم. الهدف: ترتيب أوضح للأولويات قبل وقت SE الثمين.
+>
+> 20 دقيقة demo مع سيناريو bank integration، ونختم بشرح 7-Day Revenue Proof Sprint بـ 499 ريال؟
+>
+> سامي
+
+### Draft 4 — Ibrahim Manna / BRKZ
+
+- **Target:** Ibrahim Manna, Founder & CEO, BRKZ
+- **Channel:** LinkedIn (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL`
+- **Message:**
+
+> إبراهيم مرحبا،
+>
+> $30M debt من Stride إشارة قوية — BRKZ يركب موجة pipeline ضخمة.
+>
+> Insight من تقنية المقاولات: فريق inside sales يصرف نصف يومه على quotes ومتابعات، وبعض الفرص تبرد قبل أن تُرتَّب أو يُتابعها أحد.
+>
+> Dealix (رادار عمليات إيراد بمنطق الموافقة أولاً) يرتّب الفرص حسب الأولوية، ويصيغ مسودات تواصل ومتابعة جاهزة لمراجعتكم — لا إرسال تلقائي.
+>
+> أبحث عن عميل enterprise construction واحد لإثبات النمط عبر 7-Day Revenue Proof Sprint بـ 499 ريال — مخرَج موثق يوم 7، فرص مُثبتة بأدلة لا نتائج مضمونة.
+>
+> 20 دقيقة على سيناريو من قطاعكم؟
+>
+> سامي
+
+### Draft 5 — Nawaf Hariri / Salla
+
+- **Target:** Nawaf Hariri, CEO & Co-founder, Salla
+- **Channel:** LinkedIn or X — whichever relationship channel exists (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL`
+- **Message:**
+
+> أستاذ نواف،
+>
+> من فترة أتابع توجه سلة لتمكين التجار.
+>
+> فكرة سريعة: Dealix = رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي. يرتّب فرص التاجر ويصيغ مسودات تواصل — كل رسالة بموافقة بشرية، لا إرسال تلقائي.
+>
+> هل تفكرون في عرضه كـ add-on داخل سلة؟ نموذج الشراكة (rev-share) يُفتح بعد إثبات حقيقي عبر عدة Proof Packs — نبدأ بإثبات النمط على عميل واحد عبر 7-Day Revenue Proof Sprint بـ 499 ريال.
+>
+> 20 دقيقة لنستكشف الفكرة؟
+>
+> سامي
+
+### Draft 6 — Sultan Mofarreh / Zid
+
+- **Target:** Sultan Mofarreh, Co-founder, Zid
+- **Channel:** LinkedIn (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL`
+- **Message:**
+
+> أستاذ سلطان، السلام عليكم،
+>
+> أنا سامي العسيري — مؤسس Dealix، رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي.
+>
+> زد تمكّن آلاف التجار، وحسابات التجار pipeline حقيقي يستحق ترتيباً ومتابعة منظّمة. Dealix يقرأ الـ pipeline، يرتّب الفرص حسب الأولوية، ويصيغ مسودات تواصل تراجعونها وترسلونها بأنفسكم — لا إرسال تلقائي.
+>
+> أقترح 7-Day Revenue Proof Sprint بـ 499 ريال لإثبات النمط على سير عمل واحد — مخرَج موثق يوم 7، فرص مُثبتة بأدلة لا نتائج مضمونة.
+>
+> 20 دقيقة هذا الأسبوع لنرى إن كان يناسبكم؟
+>
+> سامي
+
+### Draft 7 — Mohammed Aldossary / Sary
+
+- **Target:** Mohammed Aldossary, Co-founder, Sary
+- **Channel:** LinkedIn (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL`
+- **Message:**
+
+> الله يسعدك محمد،
+>
+> أنا سامي، مؤسس Dealix — رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي.
+>
+> Sary يربط آلاف المتاجر بالموردين، وحسابات الموردين pipeline يبرد جزء منه بلا متابعة منظّمة. Dealix يرتّب هذه الفرص حسب الأولوية ويصيغ مسودات متابعة جاهزة لمراجعتكم — كل رسالة بموافقتكم قبل الإرسال.
+>
+> أقترح 7-Day Revenue Proof Sprint بـ 499 ريال لإثبات النمط على عميل واحد — Proof Pack موثق يوم 7، فرص مُثبتة بأدلة لا نتائج مضمونة.
+>
+> 20 دقيقة لنستكشف؟
+>
+> سامي
+
+### Draft 8 — Talha Ansari / Retailo
+
+- **Target:** Talha Ansari, Co-founder, Retailo
+- **Channel:** LinkedIn (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL`
+- **Message (English — pick the language the relationship uses):**
+
+> Hi Talha,
+>
+> I'm Sami Al-Assiri — founder of Dealix, an approval-first revenue operations radar for Saudi B2B, working in Gulf Arabic.
+>
+> Retailo's retailer accounts are a real pipeline, and some opportunities cool off before anyone ranks or follows up on them. Dealix reads the pipeline, ranks opportunities by priority, and drafts Arabic follow-ups your team reviews and sends — every message draft-only, no auto-send.
+>
+> I'd suggest a 7-Day Revenue Proof Sprint at 499 SAR to prove the pattern on one workflow — an evidenced Proof Pack on day 7, evidenced opportunities not guaranteed results.
+>
+> Would 20 minutes this week work to see if it fits?
+>
+> Sami
+
+### Draft 9 — Founder (to confirm) / Mozn
+
+- **Target:** Mozn founder — **named contact still to confirm in `WARM_LIST_CONSOLIDATED.md`**
+- **Channel:** LinkedIn (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL` — **HOLD: do not send until a named founder + warm basis is confirmed**
+- **Message:**
+
+> السلام عليكم [الاسم]،
+>
+> أنا سامي العسيري — مؤسس Dealix، رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي.
+>
+> شركة AI مثل Mozn تعرف قيمة الحوكمة في أنظمة الذكاء الاصطناعي. Dealix يقرأ pipeline المبيعات، يرتّب الفرص حسب الأولوية، ويصيغ مسودات تواصل — كل مخرَج مسوّدة فقط، تراجعونها وترسلونها بأنفسكم.
+>
+> أقترح 7-Day Revenue Proof Sprint بـ 499 ريال لإثبات النمط — مخرَج موثق يوم 7، فرص مُثبتة بأدلة لا نتائج مضمونة.
+>
+> 20 دقيقة لنرى إن كان يناسبكم؟
+>
+> سامي
+
+### Draft 10 — Founder (to confirm) / Rekaz
+
+- **Target:** Rekaz founder — **named contact still to confirm in `WARM_LIST_CONSOLIDATED.md`**
+- **Channel:** LinkedIn (single human message)
+- **Status:** `QUEUED_FOR_FOUNDER_APPROVAL` — **HOLD: do not send until a named founder + warm basis is confirmed**
+- **Message:**
+
+> السلام عليكم [الاسم]،
+>
+> أنا سامي العسيري — مؤسس Dealix، رادار عمليات إيراد بمنطق الموافقة أولاً بالعربي الخليجي.
+>
+> Rekaz يخدم أصحاب أعمال صغار (جيمات، صالونات، عيادات) — وصياغة المتابعة بالعربي الطبيعي عبء يومي على فرق المبيعات. Dealix يقرأ الـ pipeline، يرتّب الفرص، ويصيغ مسودات تواصل تراجعونها وترسلونها بأنفسكم — لا إرسال تلقائي.
+>
+> أقترح 7-Day Revenue Proof Sprint بـ 499 ريال لإثبات النمط على سير عمل واحد — Proof Pack موثق يوم 7، فرص مُثبتة بأدلة لا نتائج مضمونة.
+>
+> 20 دقيقة هذا الأسبوع؟
+>
+> سامي
+
+---
+
+> **Queue summary:** 10 drafts queued, 0 sent. Drafts 1–8 target named warm /
+> named-introduction leads and are ready for founder review. Drafts 9–10 are on
+> HOLD pending a confirmed named contact. No automated process may send any of
+> these — the founder edits and sends each one manually.
+
+---
+
 **Estimated outcomes are not guaranteed outcomes / النتائج التقديرية ليست نتائج مضمونة.**
 
 **Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.**

@@ -39,6 +39,14 @@
 - تأكّد أن `scripts/war_room_scorecard.py` يقرأ تيار الأحداث ويبني صف اليوم.
 - افتح [`docs/ops/daily_scorecard.md`](../ops/daily_scorecard.md) وانسخ بلوك "Day N".
 - اكتب 10 أهداف مبدئية: مدينة، قطاع، صانع قرار لكلٍّ (مرحلة `target`).
+  الأهداف العشرة تُؤخذ من القائمة الدافئة الموحّدة
+  [`docs/sales-kit/WARM_LIST_CONSOLIDATED.md`](../sales-kit/WARM_LIST_CONSOLIDATED.md)
+  — أعلى 5 صفوف مرتّبة + 5 مقدّمات معارف. لا أهداف باردة.
+
+> **الجسر — Bridge.** القائمة الدافئة الموحّدة هي مصدر الأهداف لهذا
+> السبرنت: warm list → الأيام 2 و8 (مرحلة `target`) → مسوّدات
+> [`docs/sales-kit/OUTREACH_DRAFTS_QUEUED.md`](../sales-kit/OUTREACH_DRAFTS_QUEUED.md)
+> → `scripts/war_room_scorecard.py` لصف اليوم.
 
 **English.** Open the single War Room table (the full funnel) and wire
 the scorecard generator. No outreach today — structure only.
