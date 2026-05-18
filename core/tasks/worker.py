@@ -295,6 +295,60 @@ async def founder_daily_brief(ctx: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+async def cron_own_brand_publish(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Own-brand publish — read cleared weekly-calendar slots for Dealix's OWN
+    LinkedIn / X accounts and publish each via ``publish_own_brand``.
+
+    Own-brand publishing may bypass the founder approval queue (the owner
+    has authorized automated posting to Dealix's own accounts) but NEVER
+    bypasses the safety gate: ``publish_own_brand`` runs the
+    ``safe_publishing_gate`` text check first and routes flagged copy to
+    the approval queue instead of publishing. Prospect / cold channels are
+    rejected by the publisher itself. Runs 09:00 AST (06:00 UTC).
+    """
+    from auto_client_acquisition.gtm_os.content_calendar import (
+        build_weekly_calendar,
+    )
+    from auto_client_acquisition.self_growth_os.social_publisher import (
+        OWN_BRAND_CHANNELS,
+        publish_own_brand,
+    )
+
+    logger.info("cron_own_brand_publish_start")
+    calendar = build_weekly_calendar()
+    own_brand_slots = [
+        s for s in calendar.get("slots", [])
+        if str(s.get("channel", "")) in OWN_BRAND_CHANNELS
+    ]
+    published = 0
+    routed = 0
+    dry_run = 0
+    for slot in own_brand_slots:
+        result = publish_own_brand(slot)
+        outcome = result.get("outcome")
+        if outcome == "published":
+            published += 1
+        elif outcome == "routed_to_approval":
+            routed += 1
+        elif outcome == "dry_run":
+            dry_run += 1
+    logger.info(
+        "cron_own_brand_publish_done",
+        own_brand_slots=len(own_brand_slots),
+        published=published,
+        routed_to_approval=routed,
+        dry_run=dry_run,
+    )
+    return {
+        "status": "ok",
+        "own_brand_slots": len(own_brand_slots),
+        "published": published,
+        "routed_to_approval": routed,
+        "dry_run": dry_run,
+    }
+
+
 async def expire_stale_approvals(ctx: dict[str, Any]) -> dict[str, Any]:
     """
     Stale-approval expire-sweep — flip pending approvals past expires_at to
@@ -311,6 +365,24 @@ async def expire_stale_approvals(ctx: dict[str, Any]) -> dict[str, Any]:
         expired=result.get("expired_count", 0),
     )
     return result
+
+
+# ── Worker lifecycle ──────────────────────────────────────────────
+
+async def worker_on_startup(ctx: dict[str, Any]) -> None:
+    """
+    ARQ worker startup hook — rehydrate the in-memory approval queue from
+    the durable ``approval_records`` table so a worker restart does not
+    lose the founder's pending approvals. Degrades gracefully (no crash)
+    when Postgres is unreachable.
+    """
+    try:
+        from auto_client_acquisition.approval_center import durable_mirror
+
+        count = await durable_mirror.hydrate()
+        logger.info("worker_approval_rehydrate_done", rehydrated=count)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("worker_approval_rehydrate_skipped", error=str(exc))
 
 
 # ── ARQ Worker Settings ───────────────────────────────────────────
@@ -337,8 +409,11 @@ class WorkerSettings:
         cron(daily_targeting, hour=4, minute=0),            # 07:00 AST
         cron(daily_followups, hour=5, minute=0),            # 08:00 AST
         cron(founder_daily_brief, hour=5, minute=30),       # 08:30 AST
+        cron(cron_own_brand_publish, hour=6, minute=0),     # 09:00 AST
         cron(expire_stale_approvals, minute=0),             # hourly, on the hour
     ]
+
+    on_startup = worker_on_startup
 
     @staticmethod
     def redis_settings() -> RedisSettings:

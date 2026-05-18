@@ -171,6 +171,18 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
             log.warning("db_init_skipped", error=str(exc))
     else:
         log.info("db_init_skipped", reason="use_alembic_migrations")
+
+    # Rehydrate the in-memory approval queue from the durable
+    # ``approval_records`` table so a restart does not lose the founder's
+    # pending approvals. Degrades gracefully if Postgres is unreachable.
+    try:
+        from auto_client_acquisition.approval_center import durable_mirror
+
+        rehydrated = await durable_mirror.hydrate()
+        log.info("approval_rehydrate_complete", rehydrated=rehydrated)
+    except Exception as exc:
+        log.warning("approval_rehydrate_skipped", error=str(exc))
+
     yield
     log.info("app_shutdown")
 
