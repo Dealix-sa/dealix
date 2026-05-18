@@ -1,5 +1,26 @@
 # إعدادات إنتاج Railway — مرجع المؤسس (api.dealix.me)
 
+## قائمة تحقق المؤسس (5 دقائق — قبل كل نشر)
+
+افتح **Railway → خدمة API → Settings** وطابق القيم التالية (انحراف UI يلغي [`railway.toml`](../../railway.toml)):
+
+| # | مكان الإعداد | ضع هذا | لا تضع |
+|---|--------------|--------|--------|
+| 1 | Deploy → **Start Command** | **فارغ** أو ` /app/start.sh` | `./start.sh` · `uvicorn ...` |
+| 2 | Deploy → **Pre-deploy** | **فارغ** (يأخذ toml) أو `sh /app/scripts/railway_predeploy.sh` | `echo "no migration needed"` |
+| 3 | Networking → **Target port** | `8080` (أو ما يحقنه Railway) | منفذ ثابت في Start Command |
+| 4 | **Wait for CI** | مفعّل على `main` | — |
+| 5 | بعد الحفظ | أعد النشر ثم شغّل التحقق أدناه | — |
+
+```bash
+bash scripts/railway_ui_alignment.sh --with-smoke
+# محاكاة خطأ لوحتك الحالية (يجب أن يطبع FOUNDER_ACTION):
+RAILWAY_UI_START_COMMAND='./start.sh' RAILWAY_UI_PREDEPLOY='echo "no migration needed"' \
+  bash scripts/railway_ui_alignment.sh
+```
+
+---
+
 **المستودع:** `VoXc2/dealix` · **الفرع:** `main` · **Config-as-code:** [`railway.toml`](../../railway.toml) · [`railway.json`](../../railway.json) · **قائمة نسخ:** [`dealix/config/railway_ui_canonical.yaml`](../../dealix/config/railway_ui_canonical.yaml)
 
 **تحقق محلي (مع محاكاة خطأ UI):**

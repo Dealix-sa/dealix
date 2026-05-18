@@ -65,12 +65,20 @@ def main() -> int:
             print(f"  FAIL: {issue}")
         if repo.get("ok"):
             print("  ok: repo railway config")
-        live = blob["live_healthz"]
-        if live.get("probed"):
-            status = live.get("status", live.get("error", "?"))
-            print(f"  live /healthz: {live.get('url')} -> {status}")
-        else:
-            print("  live /healthz: skipped")
+        for key, label in (
+            ("live_healthz", "/healthz"),
+            ("live_version", "/version"),
+            ("live_meta", "/api/v1/meta"),
+        ):
+            live = blob.get(key) or {}
+            if live.get("probed"):
+                status = live.get("status", live.get("error", "?"))
+                print(f"  live {label}: {live.get('url')} -> {status}")
+            else:
+                print(f"  live {label}: skipped")
+        if blob.get("deploy_note_ar"):
+            print(f"  NOTE: {blob['deploy_note_ar']}")
+            print("  FOUNDER_ACTION: merge+deploy main — /version and /api/v1/meta on health router")
         if drift:
             print(f"  FOUNDER_ACTION (start): {drift}")
         if predeploy_drift:

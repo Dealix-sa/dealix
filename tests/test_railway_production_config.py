@@ -13,6 +13,8 @@ def test_repo_railway_config_ok() -> None:
     blob = analyze_railway_production(api_base=False)
     assert blob["repo"]["ok"], blob["repo"]["issues"]
     assert blob["verdict"] == "PASS"
+    assert "live_version" in blob
+    assert "live_meta" in blob
 
 
 def test_ui_start_command_drift_hint() -> None:

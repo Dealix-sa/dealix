@@ -75,6 +75,29 @@ Copy `.env.example` to `.env`. Key settings for local dev:
 
 Optional — isolated Postgres revenue memory integration test ([`tests/test_isolated_pg_event_store.py`](tests/test_isolated_pg_event_store.py)): set `RUN_REVENUE_PG_ISOLATION_TEST=1` with a reachable `DATABASE_URL` and Alembic-applied `revenue_events` table; default CI/local runs skip this test.
 
+### Founder GTM + agent fleet + Railway (start here for commercial ops)
+
+| Topic | Doc / config | Command |
+| --- | --- | --- |
+| **Executive rise day** | [`docs/ops/FOUNDER_EXECUTIVE_RISE_PLAYBOOK_AR.md`](docs/ops/FOUNDER_EXECUTIVE_RISE_PLAYBOOK_AR.md) | `py -3 scripts/founder_executive_rise_day.py` · `bash scripts/run_founder_daily_operating_loop.sh` |
+| **Morning loop (unified)** | [`docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md`](docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md) | `py -3 scripts/run_dealix_unified_founder_day.py` · `py -3 scripts/founder_executive_production_verify.py` |
+| **Commercial day** | [`docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md`](docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md) | `bash scripts/run_founder_commercial_day.sh` (Windows: `.ps1`) |
+| **Agent queue** | [`dealix/config/founder_agent_task_queue.yaml`](dealix/config/founder_agent_task_queue.yaml) | `py -3 scripts/founder_agent_queue_status.py --seed-today` |
+| **GTM proof** | [`docs/commercial/FOUNDER_STRONGEST_PLAN_AR.md`](docs/commercial/FOUNDER_STRONGEST_PLAN_AR.md) | `py -3 scripts/founder_gtm_proof_loop.py` |
+| **Prod probes** | [`docs/ops/RAILWAY_PRODUCTION_SETTINGS_AR.md`](docs/ops/RAILWAY_PRODUCTION_SETTINGS_AR.md) | `py -3 scripts/verify_railway_production_config.py` · `curl -fsS https://api.dealix.me/healthz` · `curl -fsS https://api.dealix.me/version` |
+| **Weekly loop** | [`docs/commercial/FOUNDER_NORTH_STAR_METRICS_AR.md`](docs/commercial/FOUNDER_NORTH_STAR_METRICS_AR.md) | `bash scripts/founder_weekly_loop.sh` |
+| **CEO GTM OS** | [`docs/ops/CEO_GTM_OPERATING_SYSTEM_AR.md`](docs/ops/CEO_GTM_OPERATING_SYSTEM_AR.md) | `python scripts/run_ceo_gtm_operating_system.py` (`status` \| `daily` \| `weekly` \| `railway` \| `gates` \| `agents`) · 72-task backlog YAML |
+| **SKU ladder** | [`docs/commercial/COMMERCIAL_SKU_LADDER_AR.md`](docs/commercial/COMMERCIAL_SKU_LADDER_AR.md) | `dealix/config/commercial_sku_ladder.yaml` |
+| **ICP hybrid GTM** | [`docs/commercial/operations/ICP_HYBRID_GTM_PLAYBOOK_AR.md`](docs/commercial/operations/ICP_HYBRID_GTM_PLAYBOOK_AR.md) | `dealix/config/icp_hybrid_gtm.yaml` |
+| **Agent fleet** | [`docs/agentic_operations/AGENT_FLEET_OPERATING_SYSTEM_AR.md`](docs/agentic_operations/AGENT_FLEET_OPERATING_SYSTEM_AR.md) · [`TECH_PRODUCT_DISTRIBUTION_OPERATING_SYSTEM_AR.md`](docs/commercial/TECH_PRODUCT_DISTRIBUTION_OPERATING_SYSTEM_AR.md) | `bash scripts/run_founder_agent_fleet_rhythm.sh` · `py -3 scripts/print_railway_ui_fix_card.py` |
+| **90-day plan** | [`data/commercial/90_day_activation_plan.yaml`](data/commercial/90_day_activation_plan.yaml) | Cursor: `dealix-pm` |
+| **North star** | [`dealix/config/founder_north_star_metrics.yaml`](dealix/config/founder_north_star_metrics.yaml) | `python scripts/founder_north_star_status.py` |
+| **Railway prod** | [`docs/ops/RAILWAY_PRODUCTION_SETTINGS_AR.md`](docs/ops/RAILWAY_PRODUCTION_SETTINGS_AR.md) | `bash scripts/railway_ui_alignment.sh --with-smoke` |
+
+Set `DEALIX_VERIFY_PROD=1` on commercial day for live `prod_smoke` against `api.dealix.me`.
+
+**Master founder day:** `bash scripts/run_founder_master_day.sh` · **Production probe:** `powershell -File scripts/founder_production_probe.ps1` · **Executive OS:** [docs/ops/FOUNDER_EXECUTIVE_OPERATING_SYSTEM_AR.md](docs/ops/FOUNDER_EXECUTIVE_OPERATING_SYSTEM_AR.md)
+
 ### Decision Passport (Revenue OS)
 
 - `GET /api/v1/decision-passport/golden-chain` — السلسلة الذهبية (مرجع منتج)

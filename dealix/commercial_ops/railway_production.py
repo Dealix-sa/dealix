@@ -90,37 +90,97 @@ def check_repo_railway_config() -> dict[str, Any]:
     }
 
 
-def probe_healthz(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any]:
-    """GET {api_base}/healthz — returns status without raising."""
+def probe_http_json(
+    api_base: str,
+    path: str,
+    *,
+    timeout_sec: float = 12.0,
+) -> dict[str, Any]:
+    """GET {api_base}{path} — lightweight probe."""
     base = (api_base or "").strip().rstrip("/")
     if not base:
         return {"probed": False, "reason": "no_api_base"}
-    url = f"{base}/healthz"
+    url = f"{base}{path}"
     try:
         req = urllib.request.Request(url, method="GET")
         with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
             code = resp.getcode()
-            body = resp.read(256).decode("utf-8", errors="replace")
-            return {"probed": True, "url": url, "status": code, "ok": code == 200, "snippet": body[:120]}
+            body = resp.read(512).decode("utf-8", errors="replace")
+            return {
+                "probed": True,
+                "url": url,
+                "status": code,
+                "ok": code == 200,
+                "snippet": body[:200],
+            }
     except urllib.error.HTTPError as exc:
         return {"probed": True, "url": url, "status": exc.code, "ok": False, "error": str(exc)}
     except Exception as exc:  # noqa: BLE001
         return {"probed": True, "url": url, "ok": False, "error": str(exc)}
 
 
+def probe_healthz(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any]:
+    """GET {api_base}/healthz — returns status without raising."""
+    return probe_http_json(api_base, "/healthz", timeout_sec=timeout_sec)
+
+
+def probe_version(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any]:
+    return probe_http_json(api_base, "/version", timeout_sec=timeout_sec)
+
+
 def analyze_railway_production(*, api_base: str | None = None) -> dict[str, Any]:
     repo = check_repo_railway_config()
-    live = probe_healthz(api_base or DEFAULT_API_BASE) if api_base is not False else {"probed": False}
+    base = (api_base or DEFAULT_API_BASE) if api_base is not False else ""
+    live_hz = probe_healthz(base) if base else {"probed": False}
+    live_ver = probe_version(base) if base else {"probed": False}
+    live_meta = probe_http_json(base, "/api/v1/meta") if base else {"probed": False}
+
     verdict = "PASS" if repo["ok"] else "FAIL"
-    if repo["ok"] and live.get("probed") and not live.get("ok"):
+    live_failures: list[str] = []
+    for label, probe in (("healthz", live_hz), ("version", live_ver), ("meta", live_meta)):
+        if probe.get("probed") and not probe.get("ok"):
+            live_failures.append(label)
+    if repo["ok"] and live_failures:
         verdict = "WARN"
+
+    deploy_note_ar = None
+    if live_ver.get("status") == 404:
+        deploy_note_ar = (
+            "إذا /version=404 فالإنتاج لم يدمج آخر main — ادفع وانتظر CI ثم أعد النشر"
+        )
+        if live_hz.get("ok") and live_hz.get("snippet"):
+            import json
+
+            try:
+                hz_body = json.loads(live_hz["snippet"])
+            except json.JSONDecodeError:
+                hz_body = {}
+            if hz_body.get("version") or hz_body.get("git_sha"):
+                live_ver = {
+                    **live_ver,
+                    "ok": True,
+                    "via_healthz_fallback": True,
+                    "version": hz_body.get("version"),
+                    "git_sha": hz_body.get("git_sha"),
+                }
+                live_failures = [x for x in live_failures if x != "version"]
+                if not live_failures and repo["ok"]:
+                    verdict = "PASS"
+                deploy_note_ar = (
+                    "استخدم /healthz للإصدار حتى يُنشر /version — ادفع main ثم أعد النشر"
+                )
+
     return {
         "repo": repo,
-        "live_healthz": live,
+        "live_healthz": live_hz,
+        "live_version": live_ver,
+        "live_meta": live_meta,
+        "live_failures": live_failures,
         "canonical_start_command": CANONICAL_START,
         "canonical_predeploy": CANONICAL_PREDEPLOY,
         "verdict": verdict,
         "settings_doc": str(SETTINGS_DOC.relative_to(REPO_ROOT)).replace("\\", "/"),
+        "deploy_note_ar": deploy_note_ar,
     }
 
 
