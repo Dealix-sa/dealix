@@ -96,6 +96,7 @@ SOAEN هو نفس المعيار المستخدم في
 | [TOOL_STACK.md](TOOL_STACK.md) | حزمة الأدوات والمكتبات |
 | [DAILY_SCORECARD.md](DAILY_SCORECARD.md) | النظام اليومي |
 | [30_60_90_PLAN.md](30_60_90_PLAN.md) | خطة 7 / 30 / 90 يوم |
+| [FULL_OPS_AGENT_HIERARCHY.md](FULL_OPS_AGENT_HIERARCHY.md) | هرم Full Ops — الأجنتس الأربع طبقات + الحوكمة |
 
 ---
 

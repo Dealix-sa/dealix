@@ -82,3 +82,4 @@
 | [TOOL_STACK.md](TOOL_STACK.md) | حزمة الأدوات والمكتبات — 4 مستويات |
 | [DAILY_SCORECARD.md](DAILY_SCORECARD.md) | النظام اليومي — 10 touches، بطاقة يومية، مؤشرات أمان |
 | [30_60_90_PLAN.md](30_60_90_PLAN.md) | خطة 7 / 30 / 90 يوم |
+| [FULL_OPS_AGENT_HIERARCHY.md](FULL_OPS_AGENT_HIERARCHY.md) | هرم Full Ops — 4 طبقات أجنتس فوق طبقة الحوكمة، يربط الأجنتس العشرة الحقيقيين + الربط فرونت/باك |
