@@ -6,6 +6,9 @@
 
 المرجع: [`docs/company/DEALIX_STAGE_GATES_AR.md`](docs/company/DEALIX_STAGE_GATES_AR.md).
 
+**الإطلاق الرسمي:** قرار go/no-go ومتتالية التدشين في [`docs/LAUNCH_GO_LIVE_RUNBOOK.md`](docs/LAUNCH_GO_LIVE_RUNBOOK.md) — إجراءات المؤسس في [`docs/FOUNDER_LAUNCH_ACTIONS.md`](docs/FOUNDER_LAUNCH_ACTIONS.md).
+**Official launch:** go/no-go decision and launch sequence live in the runbook; founder-only actions in the action checklist.
+
 التحقق الآلي:
 
 ```bash
@@ -60,15 +63,18 @@ python scripts/verify_dealix_ready.py --skip-tests
 
 ## Critical Gaps
 
-1.
-2.
-3.
+تم التحقق منها بتاريخ 2026-05-18 / Verified 2026-05-18:
+
+1. **P0 — Moyasar KYC غير مُفعّل:** لا يمكن تحصيل مدفوعات حية حتى يكمل المؤسس توثيق حساب ميسر. (Moyasar account KYC inactive — no live payment until founder completes verification.)
+2. **P1 — واجهة الـconsole غير منشورة:** تطبيق Next.js في `frontend/` يبني ويجتاز فحص الأنواع بنجاح لكنه غير منشور على مضيف. (Next.js console builds + typechecks clean but is not deployed.)
+3. **P1 — مراقبة الإنتاج ناقصة:** `SENTRY_DSN` و UptimeRobot و `RESEND_API_KEY` غير مضبوطة (الكود يتدهور بأمان حتى تُضبط). (Production monitoring not yet configured — code degrades gracefully.)
+4. **P2 — دين فني في الاختبارات:** ~59 اختبار خلفي فاشل مسبقًا على `main` (اختبارات تعتمد على البيئة + اختبارات قديمة غير متزامنة مع الكود) — بوابة CI السريعة خضراء (94 نجح). (~59 pre-existing backend test failures on main; the required CI quick-regression gate is green.)
 
 ## Next Build Decisions
 
-1.
-2.
-3.
+1. أكمل بنود **P0** في [`docs/FOUNDER_LAUNCH_ACTIONS.md`](docs/FOUNDER_LAUNCH_ACTIONS.md) قبل قبول أول عميل يدفع.
+2. انشر الـconsole واربط نطاقًا فرعيًا (مثل app.dealix.me).
+3. خصّص جلسة تنظيف للاختبارات الخلفية الفاشلة مسبقًا (خارج نطاق الإطلاق لكنه دين يجب سداده).
 
 ---
 
