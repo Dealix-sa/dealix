@@ -52,12 +52,50 @@ class _ProofPackRenderBody(BaseModel):
         return None
 
 
+# Payment states from which a Sprint may legitimately run — payment is
+# confirmed (revenue recorded) or delivery has been kicked off.
+_SPRINT_READY_PAYMENT_STATES: frozenset[str] = frozenset({
+    "payment_confirmed",
+    "delivery_kickoff",
+})
+
+
 @router.post("/run")
 async def run_sprint_endpoint(body: _SprintRunBody) -> dict[str, Any]:
     """Run the 10-step Sprint orchestrator. Returns the full run record
     including each step's output, the Proof Pack, capital assets, and
-    retainer eligibility."""
+    retainer eligibility.
+
+    Guard: if a payment is linked to this ``engagement_id`` (as the
+    payment's ``service_session_id``), the Sprint refuses to run unless
+    that payment has reached ``payment_confirmed`` or ``delivery_kickoff``.
+    This keeps delivery work behind confirmed revenue. Engagements with no
+    linked payment run unguarded (free / pre-payment diagnostics)."""
     from auto_client_acquisition.delivery_factory.delivery_sprint import run_sprint
+
+    try:
+        from auto_client_acquisition.payment_ops import find_payments_by_session
+
+        linked = find_payments_by_session(body.engagement_id)
+    except Exception:  # noqa: BLE001 — payment lookup never blocks the route
+        linked = []
+    if linked and not any(
+        p.status in _SPRINT_READY_PAYMENT_STATES for p in linked
+    ):
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "error": "payment_not_confirmed",
+                "engagement_id": body.engagement_id,
+                "payment_statuses": sorted({p.status for p in linked}),
+                "required": sorted(_SPRINT_READY_PAYMENT_STATES),
+                "message": (
+                    "A payment is linked to this engagement but is not "
+                    "confirmed; the Sprint cannot run until payment reaches "
+                    "payment_confirmed or delivery_kickoff."
+                ),
+            },
+        )
 
     try:
         run = run_sprint(

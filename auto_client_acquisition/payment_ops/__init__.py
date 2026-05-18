@@ -11,6 +11,7 @@ Hard rules (Article 8 / NO_FAKE_REVENUE):
 from auto_client_acquisition.payment_ops.orchestrator import (
     confirm_payment,
     create_invoice_intent,
+    find_payments_by_session,
     get_payment_state,
     kickoff_delivery,
     upload_manual_evidence,
@@ -19,6 +20,7 @@ from auto_client_acquisition.payment_ops.orchestrator import (
 __all__ = [
     "confirm_payment",
     "create_invoice_intent",
+    "find_payments_by_session",
     "get_payment_state",
     "kickoff_delivery",
     "upload_manual_evidence",

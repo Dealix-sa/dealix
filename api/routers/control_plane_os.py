@@ -9,4 +9,4 @@ router = APIRouter(prefix="/api/v1/control-plane", tags=["control-plane"])
 
 @router.get("/health")
 async def control_plane_health() -> dict[str, str]:
-    return {"system": "26_control_plane", "status": "ok"}
+    return {"system": "26_control_plane", "status": "planned"}

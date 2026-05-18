@@ -9,4 +9,4 @@ router = APIRouter(prefix="/api/v1/runtime-safety", tags=["runtime-safety"])
 
 @router.get("/health")
 async def runtime_safety_health() -> dict[str, str]:
-    return {"system": "31_runtime_safety", "status": "ok"}
+    return {"system": "31_runtime_safety", "status": "planned"}

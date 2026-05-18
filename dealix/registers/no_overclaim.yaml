@@ -231,6 +231,80 @@ claims:
     gaps:
       - "Full control-by-control mapping not yet complete"
 
+  # ───────────── Unbuilt systems — health-only stub routers ─────────────
+  # These routers exist only to answer GET /health with status:planned.
+  # No business logic is implemented. Listed here so no deck/README claim
+  # can present them as built.
+  - id: value_engine_os
+    claim: "Value Engine OS (System 34)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: org_graph_os
+    claim: "Org Graph OS (System 30)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: agent_mesh_os
+    claim: "Agent Mesh OS (System 27)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: control_plane_os
+    claim: "Enterprise Control Plane OS (System 26)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: human_ai_os
+    claim: "Human-AI Oversight OS (System 33)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: simulation_os
+    claim: "Simulation OS (System 32)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: runtime_safety_os
+    claim: "Runtime Safety OS (System 31)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: self_evolving_os
+    claim: "Self-Evolving OS (System 35)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: sandbox_os
+    claim: "Sandbox OS (System 29)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
+  - id: assurance_contract_os
+    claim: "Assurance Contracts OS (System 28)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "health-only stub router; system not built"
+
   # ───────────── Things we do NOT claim ─────────────
   # (Listed here so the register is a positive declaration of limits)
   - id: not_cursor_not_chatbot

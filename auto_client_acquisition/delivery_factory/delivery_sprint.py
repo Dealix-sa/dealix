@@ -346,7 +346,25 @@ def step6_proof_pack(
         "score": score,
         "tier": proof_strength_band(score),
         "governance_blocked": governance_blocked,
+        "evidence_signals": evidence_signals,
     }
+
+
+def _proof_level_from_signals(*, evidence_signals: int, governance_blocked: bool) -> str:
+    """Map real run signals to a proof level (L1-L4).
+
+    A Sprint Proof Pack is never L5 — that rung is reserved for
+    signature-verified revenue evidence (payment confirmation), which the
+    Sprint does not produce. Thin or empty runs (0-1 signals) stay L1 so a
+    template-only run cannot present as proof. A governance block caps the
+    level at L1 regardless of signal count.
+    """
+    if governance_blocked:
+        return "L1"
+    # evidence_signals is 0-4; map 0/1 -> L1, 2 -> L2, 3 -> L3, 4 -> L4.
+    return {0: "L1", 1: "L1", 2: "L2", 3: "L3", 4: "L4"}.get(
+        max(0, min(4, evidence_signals)), "L1"
+    )
 
 
 def step7_capital_assets(
@@ -483,6 +501,54 @@ def run_sprint(
     run.proof_pack = pack
     run.proof_score = float(pack.get("score", 0.0))
     run.proof_tier = pack.get("tier", "weak")
+
+    # Record a sprint_proof_pack ProofEvent into the ledger so the
+    # delivery -> proof chain is auditable. The level is derived from the
+    # real evidence signals computed in step 6 — a thin or empty run stays
+    # weak_proof (L1) and is never fabricated up the ladder.
+    if s6.status == "ran" and isinstance(pack, dict):
+        try:
+            from auto_client_acquisition.proof_ledger import ProofEvent
+            from auto_client_acquisition.proof_ledger.factory import (
+                get_default_ledger,
+            )
+
+            governance_blocked = bool(pack.get("governance_blocked", False))
+            evidence_signals = int(pack.get("evidence_signals", 0) or 0)
+            level = _proof_level_from_signals(
+                evidence_signals=evidence_signals,
+                governance_blocked=governance_blocked,
+            )
+            get_default_ledger().record(ProofEvent(
+                event_type="proof_pack_assembled",
+                customer_handle=customer_id,
+                service_id=engagement_id,
+                level=level,
+                claim=(
+                    f"Sprint Proof Pack assembled for engagement "
+                    f"{engagement_id} (score {run.proof_score:.0f}/100, "
+                    f"tier {run.proof_tier})."
+                ),
+                summary_en=(
+                    f"7-Day Revenue Sprint Proof Pack — score "
+                    f"{run.proof_score:.0f}/100, tier {run.proof_tier}, "
+                    f"{evidence_signals}/4 evidence signal(s)."
+                ),
+                customer_visible=False,
+                publish_consent=False,
+                consent_for_publication=False,
+                approved_by=None,
+                payload={
+                    "kind": "sprint_proof_pack",
+                    "engagement_id": engagement_id,
+                    "proof_score": run.proof_score,
+                    "proof_tier": run.proof_tier,
+                    "evidence_signals": evidence_signals,
+                    "governance_blocked": governance_blocked,
+                },
+            ))
+        except Exception:  # noqa: BLE001 — ledger write never blocks the sprint
+            pass
 
     # Step 7 — capital assets
     s7 = _safe("capital_assets", step7_capital_assets,

@@ -155,3 +155,38 @@ def kickoff_delivery(
 
 def get_payment_state(payment_id: str) -> PaymentStateRecord | None:
     return _INDEX.get(payment_id)
+
+
+def find_payments_by_session(service_session_id: str) -> list[PaymentStateRecord]:
+    """Return all payment-state records linked to one service session.
+
+    Scans the in-memory index first, then the JSONL store so payments
+    created in an earlier process are still visible. The newest record per
+    ``payment_id`` wins (the JSONL is append-only — later lines supersede).
+    Returns an empty list if no payment is linked.
+    """
+    if not service_session_id:
+        return []
+    by_id: dict[str, PaymentStateRecord] = {}
+    if os.path.exists(_JSONL_PATH):
+        try:
+            with open(_JSONL_PATH, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        rec = PaymentStateRecord.model_validate_json(line)
+                    except Exception:  # noqa: BLE001 — skip malformed lines
+                        continue
+                    by_id[rec.payment_id] = rec
+        except OSError:
+            pass
+    # In-memory index is authoritative for this process.
+    for pid, rec in _INDEX.items():
+        by_id[pid] = rec
+    return [
+        rec
+        for rec in by_id.values()
+        if rec.service_session_id == service_session_id
+    ]

@@ -30,7 +30,7 @@
 - [ ] **2.5** Push to Railway env vars:
   - `MOYASAR_SECRET_KEY=sk_live_xxxxx`
   - `MOYASAR_WEBHOOK_SECRET=<64-hex from step 2.3>`
-  - `MOYASAR_MODE=production`
+  - `DEALIX_MOYASAR_MODE=live`
 
 ## Phase 3 — Webhook registration (T-10 → T-7)
 
@@ -63,7 +63,7 @@ Use the `pilot_1sar` plan (1 SAR test charge):
 
 ## Phase 5 — Production cutover (GA day)
 
-- [ ] **5.1** Confirm `MOYASAR_MODE=production` and `sk_live_` is in Railway.
+- [ ] **5.1** Confirm `DEALIX_MOYASAR_MODE=live` and `sk_live_` is in Railway.
 - [ ] **5.2** Remove any test/staging webhook endpoints from Moyasar dashboard.
 - [ ] **5.3** Schedule nightly reconciliation cron at 02:00 AST:
   ```cron

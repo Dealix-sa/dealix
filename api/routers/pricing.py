@@ -104,6 +104,174 @@ async def _persist_payment_event(
                     provider_payment_id, exc)
 
 
+def _record_revenue_proof_event(
+    *, event_id: str, event_type: str, payment: dict[str, Any]
+) -> None:
+    """Record an L5 (Revenue Evidence) proof event for a confirmed payment.
+
+    Only a signature-verified payment confirmation reaches this path, so
+    L5 — the rung reserved for verified revenue — is justified. Failure to
+    write the ledger is non-fatal: payment processing must not break on a
+    ledger outage.
+    """
+    try:
+        from auto_client_acquisition.proof_ledger import ProofEvent
+        from auto_client_acquisition.proof_ledger.factory import get_default_ledger
+
+        metadata = payment.get("metadata") or {}
+        amount_halalas = int(payment.get("amount") or 0)
+        customer_handle = str(metadata.get("customer_handle") or "Saudi B2B customer")
+        get_default_ledger().record(ProofEvent(
+            event_type="payment_confirmed",
+            customer_handle=customer_handle,
+            level="L5",
+            claim=(
+                f"Payment confirmed via Moyasar — {amount_halalas / 100:.2f} "
+                f"{payment.get('currency') or 'SAR'}."
+            ),
+            summary_en=(
+                f"Moyasar {event_type} for plan "
+                f"{metadata.get('plan') or 'unknown'} — "
+                f"{amount_halalas / 100:.2f} SAR."
+            ),
+            evidence_source="moyasar.webhook",
+            evidence_hash=_fingerprint(str(payment.get("id") or event_id)),
+            customer_visible=False,
+            publish_consent=False,
+            consent_for_publication=False,
+            approved_by=None,
+            payload={
+                "kind": "revenue_confirmed",
+                "event_id": event_id,
+                "event_type": event_type,
+                "provider": "moyasar",
+                "provider_payment_id": str(payment.get("id") or ""),
+                "amount_halalas": amount_halalas,
+                "plan": metadata.get("plan"),
+            },
+        ))
+    except Exception as exc:  # noqa: BLE001 — ledger write never blocks payment
+        log.warning("revenue_proof_event_failed event_id=%s error=%s", event_id, exc)
+
+
+async def _set_payment_status(
+    *, provider_payment_id: str, status: str, error_reason: str | None = None
+) -> bool:
+    """Flip the `payments` row status (and optionally error_reason).
+
+    Returns True if a row was updated. Non-fatal on any DB error so a
+    missing migration cannot break webhook processing.
+    """
+    if not provider_payment_id:
+        return False
+    try:
+        from sqlalchemy import select
+
+        from db.models import PaymentRecord
+        from db.session import async_session_factory
+    except Exception as exc:  # noqa: BLE001
+        log.debug("set_payment_status_skipped reason=imports error=%s", exc)
+        return False
+    try:
+        async with async_session_factory()() as session:
+            stmt = select(PaymentRecord).where(
+                PaymentRecord.provider == "moyasar",
+                PaymentRecord.provider_payment_id == provider_payment_id,
+            )
+            row = (await session.execute(stmt)).scalar_one_or_none()
+            if row is None:
+                return False
+            row.status = status[:32]
+            if error_reason is not None:
+                row.error_reason = error_reason[:500]
+            await session.commit()
+            return True
+    except Exception as exc:  # noqa: BLE001
+        log.warning(
+            "set_payment_status_failed provider_payment_id=%s error=%s",
+            provider_payment_id,
+            exc,
+        )
+        return False
+
+
+async def _dispatch_webhook_event(
+    *,
+    event_id: str,
+    event_type: str,
+    event_fp: str,
+    payment: dict[str, Any],
+) -> str:
+    """Branch on the Moyasar event type. Returns a short outcome label.
+
+    - payment_paid / payment_captured -> L5 proof event + revenue log
+    - payment_refunded                -> payments.status := refunded
+    - payment_failed                  -> payments.status := failed + error_reason
+    - anything else (incl. invoice_created) -> recorded only, no revenue
+
+    `invoice_created != revenue`: an invoice being created records nothing
+    here — only a signature-verified payment confirmation is revenue.
+    """
+    provider_payment_id = str(payment.get("id") or "").strip()
+    norm = event_type.strip().lower()
+
+    if norm in ("payment_paid", "payment_captured"):
+        _record_revenue_proof_event(
+            event_id=event_id, event_type=event_type, payment=payment
+        )
+        log.info(
+            "revenue_confirmed source=moyasar event_fp=%s event_type=%s "
+            "provider_payment_id=%s amount_halalas=%s currency=%s plan=%s",
+            event_fp,
+            event_type,
+            provider_payment_id,
+            int(payment.get("amount") or 0),
+            payment.get("currency") or "SAR",
+            (payment.get("metadata") or {}).get("plan"),
+        )
+        return "revenue_confirmed"
+
+    if norm == "payment_refunded":
+        updated = await _set_payment_status(
+            provider_payment_id=provider_payment_id, status="refunded"
+        )
+        log.info(
+            "moyasar_payment_refunded event_fp=%s provider_payment_id=%s updated=%s",
+            event_fp,
+            provider_payment_id,
+            updated,
+        )
+        return "refunded"
+
+    if norm == "payment_failed":
+        reason = (
+            str(payment.get("source", {}).get("message") or "")
+            or str(payment.get("status") or "")
+            or "payment_failed"
+        )
+        updated = await _set_payment_status(
+            provider_payment_id=provider_payment_id,
+            status="failed",
+            error_reason=reason,
+        )
+        log.info(
+            "moyasar_payment_failed event_fp=%s provider_payment_id=%s "
+            "reason=%s updated=%s",
+            event_fp,
+            provider_payment_id,
+            reason[:120],
+            updated,
+        )
+        return "failed"
+
+    log.info(
+        "moyasar_webhook_event_noop event_fp=%s event_type=%s",
+        event_fp,
+        event_type,
+    )
+    return "recorded"
+
+
 # Prices in halalas (SAR x 100). Hidden from landing — only exposed when a lead qualifies.
 # Plan kinds:
 #   "subscription" — recurring monthly Moyasar invoice
@@ -265,6 +433,12 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     callback_url = f"{callback_base}/checkout/return"
 
     client = MoyasarClient()
+    log.info(
+        "checkout_initiated plan=%s email_fp=%s moyasar_key_mode=%s",
+        plan,
+        _fingerprint(email),
+        client.key_mode,
+    )
     try:
         invoice = await client.create_invoice(
             amount_halalas=int(plan_info["amount_halalas"]),
@@ -340,8 +514,22 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
             payment=payment,
             raw_event=body,
         )
-        # TODO: sync to HubSpot via ConnectorFacade in D+2 E2E test
-        return {"status": "ok", "event_id": event_id, "event_type": event_type}
+
+        # Explicit per-event-type dispatch. Only a signature-verified
+        # `payment_paid` / `payment_captured` records revenue — an
+        # `invoice_created` event is NOT revenue and records nothing.
+        handled = await _dispatch_webhook_event(
+            event_id=event_id,
+            event_type=event_type,
+            event_fp=event_fp,
+            payment=payment,
+        )
+        return {
+            "status": "ok",
+            "event_id": event_id,
+            "event_type": event_type,
+            "handled": handled,
+        }
     except Exception as exc:
         log.exception("moyasar_webhook_processing_failed event_fp=%s", event_fp)
         DLQ(WEBHOOKS_DLQ).push(

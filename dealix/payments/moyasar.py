@@ -36,6 +36,21 @@ class MoyasarClient:
     def _headers(self) -> dict[str, str]:
         return {**self._auth_header, "Content-Type": "application/json"}
 
+    @property
+    def key_mode(self) -> str:
+        """Report the key mode inferred from the secret-key prefix.
+
+        Returns ``"test"`` for ``sk_test_`` keys, ``"live"`` for
+        ``sk_live_`` keys, and ``"unknown"`` when the key is missing or has
+        an unrecognised prefix. Used for logging so the founder can see at
+        a glance whether checkout is on test or live keys.
+        """
+        if self.secret_key.startswith("sk_test_"):
+            return "test"
+        if self.secret_key.startswith("sk_live_"):
+            return "live"
+        return "unknown"
+
     async def create_invoice(
         self,
         amount_halalas: int,

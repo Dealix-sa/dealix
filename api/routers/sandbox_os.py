@@ -9,4 +9,4 @@ router = APIRouter(prefix="/api/v1/sandbox", tags=["sandbox"])
 
 @router.get("/health")
 async def sandbox_health() -> dict[str, str]:
-    return {"system": "29_sandbox", "status": "ok"}
+    return {"system": "29_sandbox", "status": "planned"}

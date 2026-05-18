@@ -42,12 +42,20 @@ class RevenueWorkUnitType(StrEnum):
 
 
 class ProofEvent(BaseModel):
-    """A single recorded event. May or may not be customer-public."""
+    """A single recorded event. May or may not be customer-public.
+
+    The ``level`` / ``claim`` / ``evidence_*`` / ``customer_visible`` /
+    ``publish_consent`` / ``consent_signature`` / ``approved_*`` /
+    ``tenant_id`` / ``schema_version`` / ``deleted_at`` fields mirror the
+    ``proof_events`` table defined by migration 004. The Postgres backend
+    persists these columns natively; the file backend keeps them in JSONL.
+    """
 
     model_config = ConfigDict(use_enum_values=True, extra="forbid")
 
     id: str = Field(default_factory=lambda: f"evt_{uuid4().hex[:12]}")
     event_type: ProofEventType
+    tenant_id: str = "default"
     customer_handle: str = "Saudi B2B customer"
     service_id: str | None = None
     summary_ar: str = ""
@@ -60,6 +68,18 @@ class ProofEvent(BaseModel):
     approval_status: str = "approval_required"
     risk_level: str = "low"
     payload: dict[str, Any] = Field(default_factory=dict)
+    # ── proof_events (migration 004) native columns ────────────────
+    level: str = Field(default="L1", pattern=r"^L[1-5]$")
+    claim: str = ""
+    evidence_url: str | None = None
+    evidence_hash: str | None = None
+    customer_visible: bool = False
+    publish_consent: bool = False
+    consent_signature: str | None = None
+    approved_by: str | None = None
+    approved_at: datetime | None = None
+    schema_version: int = 1
+    deleted_at: datetime | None = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     def is_publishable(self) -> bool:

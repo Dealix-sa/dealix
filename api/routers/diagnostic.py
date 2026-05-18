@@ -19,7 +19,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import PlainTextResponse, Response
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from auto_client_acquisition.compliance_trust_os.approval_engine import GovernanceDecision
 from auto_client_acquisition.diagnostic_engine import (
@@ -40,12 +40,34 @@ _CAPABILITY_AXIS_KEYS: tuple[str, ...] = (
 )
 
 
+# Valid payment methods for the optional diagnostic invoice intent — mirrors
+# the ``PaymentMethod`` literal in full_ops_contracts.schemas. Defaults to
+# ``moyasar_test`` so a diagnostic never creates a live charge by accident.
+_VALID_PAYMENT_METHODS: frozenset[str] = frozenset({
+    "moyasar_test",
+    "moyasar_live",
+    "bank_transfer",
+    "cash_in_person",
+    "manual_other",
+})
+
+
 class DiagnosticIntentBody(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     axes_0_5: dict[str, int]
     customer_handle: str | None = Field(default=None, max_length=120)
     diagnostic_amount_sar: float | None = Field(default=None, ge=0, le=500_000)
+    payment_method: str = Field(default="moyasar_test")
+
+    @field_validator("payment_method")
+    @classmethod
+    def _validate_payment_method(cls, v: str) -> str:
+        if v not in _VALID_PAYMENT_METHODS:
+            raise ValueError(
+                f"payment_method must be one of {sorted(_VALID_PAYMENT_METHODS)}"
+            )
+        return v
 
 
 @router.get("/status")
@@ -190,7 +212,7 @@ async def diagnostic_intent(body: DiagnosticIntentBody) -> dict[str, Any]:
             rec = create_invoice_intent(
                 customer_handle=body.customer_handle,
                 amount_sar=float(body.diagnostic_amount_sar),
-                method="moyasar_test",
+                method=body.payment_method,  # type: ignore[arg-type]
                 service_session_id=None,
             )
             invoice = rec.model_dump(mode="json")
