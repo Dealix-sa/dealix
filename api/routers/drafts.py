@@ -44,6 +44,7 @@ from auto_client_acquisition.email.daily_targeting import (
 from auto_client_acquisition.email.gmail_send import (
     create_draft as gmail_create_draft,
     is_configured as gmail_is_configured,
+    send_email as gmail_send_email,
 )
 from auto_client_acquisition.email.research_agent import (
     research_company_with_llm,
@@ -70,6 +71,96 @@ def _new_id(prefix: str = "") -> str:
 
 def _utcnow() -> datetime:
     return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+def _auto_send_low_risk_enabled(approval_mode: str) -> bool:
+    """Gated auto-send — off unless env + RFC warm accounts. See GATED_AUTO_SEND_RFC_AR.md."""
+    if approval_mode != "auto_send_low_risk":
+        return False
+    return os.getenv("DEALIX_ENABLE_AUTO_SEND_LOW_RISK", "").lower() in {"1", "true", "yes"}
+
+
+async def _auto_send_warm_gmail_batch(
+    queue: list[dict[str, Any]],
+    *,
+    sup_emails: set[str],
+    sup_domains: set[str],
+) -> list[dict[str, Any]]:
+    """Send only warm_outreach_eligible + low risk; cap per run."""
+    if not queue or not gmail_is_configured():
+        return []
+    try:
+        cap = max(0, min(int(os.getenv("DEALIX_AUTO_SEND_MAX_PER_RUN", "3")), 10))
+    except ValueError:
+        cap = 3
+    results: list[dict[str, Any]] = []
+    async with async_session_factory() as session:
+        for item in queue[:cap]:
+            chk = check_outreach(
+                to_email=item["to_email"],
+                contact_opt_out=False,
+                risk_score=float(item.get("risk_score") or 0),
+                allowed_use=item.get("allowed_use"),
+                suppression_emails=sup_emails,
+                suppression_domains=sup_domains,
+                bounced_before=False,
+                sent_today_count=0,
+                sent_in_current_batch=len(results),
+                seconds_since_last_batch=99999,
+                is_partner_warm=True,
+            )
+            if not chk.allowed or chk.requires_human_review:
+                results.append(
+                    {
+                        "draft_id": item.get("draft_id"),
+                        "status": "blocked",
+                        "reasons": chk.blocked_reasons,
+                    }
+                )
+                continue
+            body_plain = append_opt_out_line(str(item.get("body_plain") or ""))
+            send_result = await gmail_send_email(
+                to_email=item["to_email"],
+                subject=str(item.get("subject") or ""),
+                body_plain=body_plain,
+                sender_name="Sami | Dealix",
+            )
+            log_status = "sent" if send_result.status == "ok" else "failed"
+            session.add(
+                EmailSendLog(
+                    id=_new_id("es_"),
+                    account_id=item.get("account_id"),
+                    queue_id=None,
+                    to_email=item["to_email"],
+                    subject=str(item.get("subject") or "")[:500],
+                    body_preview=body_plain[:500],
+                    sender_email=os.getenv("GMAIL_SENDER_EMAIL", ""),
+                    status=log_status,
+                    gmail_message_id=getattr(send_result, "message_id", None),
+                    sequence_step=0,
+                    compliance_check={
+                        **chk.to_dict(),
+                        "auto_send_low_risk": True,
+                        "warm_outreach_eligible": True,
+                    },
+                    sent_at=_utcnow() if log_status == "sent" else None,
+                )
+            )
+            results.append(
+                {
+                    "draft_id": item.get("draft_id"),
+                    "to_email": item["to_email"],
+                    "status": log_status,
+                    "gmail_status": send_result.status,
+                    "error": getattr(send_result, "error", None),
+                }
+            )
+        try:
+            await session.commit()
+        except Exception as exc:  # noqa: BLE001
+            await session.rollback()
+            return [{"status": "commit_failed", "error": str(exc)}]
+    return results
 
 
 # ── Daily orchestrator ────────────────────────────────────────────
@@ -99,8 +190,11 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
     n_partners = int(body.get("partner_drafts") or 10)
     pool_size = int(body.get("candidate_pool_size") or 200)
     create_in_gmail = bool(body.get("create_gmail_drafts_in_inbox", False))
+    approval_mode = str(body.get("approval_mode") or "draft_only").strip()
+    auto_send_low_risk = _auto_send_low_risk_enabled(approval_mode)
     sectors_filter = body.get("sectors")
     cities_filter = body.get("cities")
+    auto_send_queue: list[dict[str, Any]] = []
 
     # 1. Pull candidate pool
     excluded = {"opt_out": 0, "suppressed": 0, "recently_contacted": 0,
@@ -183,6 +277,7 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
             "total_score": score.total_score if score else 0,
             "priority": score.priority if score else "P3",
             "recommended_channel": score.recommended_channel if score else None,
+            "warm_outreach_eligible": bool((a.extra or {}).get("warm_outreach_eligible")),
         })
 
     # 3. Bucket selection
@@ -264,6 +359,24 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
                 "research": brief.to_dict(),
                 "gmail_draft_id_in_inbox": draft_record.gmail_draft_id,
             })
+            if (
+                auto_send_low_risk
+                and chk.allowed
+                and not chk.requires_human_review
+                and (cand.get("risk_level") or "").lower() == "low"
+                and cand.get("warm_outreach_eligible")
+            ):
+                auto_send_queue.append(
+                    {
+                        "draft_id": draft_record.id,
+                        "account_id": cand["id"],
+                        "to_email": cand["best_email"],
+                        "subject": subject,
+                        "body_plain": body_with_optout,
+                        "allowed_use": cand["allowed_use"],
+                        "risk_score": 0.0,
+                    }
+                )
 
         # LinkedIn drafts (NEVER auto-send)
         for cand in linkedin_picks:
@@ -331,10 +444,20 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
             await session.rollback()
             return {"status": "commit_failed", "error": str(exc)}
 
+    auto_send_results: list[dict[str, Any]] = []
+    if auto_send_low_risk and auto_send_queue:
+        auto_send_results = await _auto_send_warm_gmail_batch(
+            auto_send_queue,
+            sup_emails=sup_emails,
+            sup_domains=sup_domains,
+        )
+
     # Build daily summary
     return {
         "status": "ok",
         "generated_at": _utcnow().isoformat(),
+        "approval_mode": approval_mode,
+        "auto_send_low_risk_enabled": auto_send_low_risk,
         "candidates_pool": len(accounts),
         "candidates_eligible": len(candidates),
         "excluded": excluded,
@@ -343,15 +466,19 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
             "linkedin_drafts": len(linkedin_drafts_out),
             "call_scripts": len(call_scripts_out),
             "partner_drafts_pool": len(partner_picks),
+            "auto_sent_gmail": sum(1 for r in auto_send_results if r.get("status") == "sent"),
         },
         "gmail_drafts_in_inbox": create_in_gmail and gmail_is_configured(),
         "gmail_drafts": gmail_drafts_out[:n_gmail],
         "linkedin_drafts": linkedin_drafts_out[:n_linkedin],
         "call_scripts": call_scripts_out[:n_calls],
-        "approval_required": True,
+        "auto_send_results": auto_send_results,
+        "approval_required": not auto_send_low_risk,
         "next_action": (
             "Open /api/v1/dashboard/revenue-machine/today to review,"
             " then approve via /api/v1/email/send-approved per row."
+            if not auto_send_low_risk
+            else "Review auto_send_results; LinkedIn remains manual-only."
         ),
     }
 

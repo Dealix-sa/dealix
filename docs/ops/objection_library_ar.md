@@ -94,10 +94,10 @@
 
 **الجذر:** مسؤول legal/compliance متشدد.
 
-**الرد:**
-> "Dealix مصمم PDPL-compliant: بياناتك في سيرفرات السعودية، opt-out في كل رسالة email، audit log لكل interaction، processor agreement جاهز. عندي PDPL compliance sheet إذا تبغى قسم القانوني يراجعه."
+**الرد (نسخة محاذاة امتثال — 2026):**
+> "Dealix مصمم وفق مبادئ PDPL: مسودات خارجية بموافقتك، سجل تدقيق، DPA عند التعاقد، وقائمة معالجين منشورة. منطقة التخزين نحددها في الملحق التقني — أرسل لقسمكم القانوني ملخص الامتثال."
 
-**Re-open hook:** ارسل dealix_privacy_policy_ar.md.
+**Re-open hook:** [`docs/commercial/MARKET_INTELLIGENCE_PDPL_LEGAL_REVIEW_AR.md`](../commercial/MARKET_INTELLIGENCE_PDPL_LEGAL_REVIEW_AR.md) · `landing/privacy-policy.html` · اعتراضات موسّعة: [`MARKET_INTELLIGENCE_OBJECTIONS_PDPL_AR.md`](../commercial/MARKET_INTELLIGENCE_OBJECTIONS_PDPL_AR.md).
 
 ---
 

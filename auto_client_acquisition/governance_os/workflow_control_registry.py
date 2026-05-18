@@ -48,11 +48,45 @@ _WORKFLOW_CONTROL_RULES: dict[str, tuple[ControlRule, ...]] = {
         ControlRule("contract_commitment", True, False),
         ControlRule("external_action", True, False),
     ),
+    "finance_reporting": (
+        ControlRule("data_export", True, False),
+        ControlRule("pricing_commitment", True, False),
+    ),
+    "product_release": (
+        ControlRule("irreversible_action", True, True),
+        ControlRule("autonomy_change", True, False),
+    ),
+    "executive_reporting": (
+        ControlRule("data_export", True, False),
+        ControlRule("external_action", True, False),
+    ),
     "self_evolving": (
         ControlRule("self_evolving_apply", True, True),
         ControlRule("autonomy_change", True, True),
     ),
+    "compliance_pdpl": (
+        ControlRule("data_export", True, False),
+        ControlRule("external_action", True, False),
+        ControlRule("irreversible_action", True, True),
+    ),
+    "billing_collections": (
+        ControlRule("pricing_commitment", True, False),
+        ControlRule("contract_commitment", True, False),
+        ControlRule("external_action", True, False),
+    ),
+    "ai_model_routing": (
+        ControlRule("autonomy_change", True, False),
+        ControlRule("pricing_commitment", True, False),
+        ControlRule("data_export", True, False),
+    ),
+    "capital_allocation": (
+        ControlRule("pricing_commitment", True, False),
+        ControlRule("contract_commitment", True, False),
+        ControlRule("data_export", True, False),
+    ),
 }
+
+_GOVERNED_DOMAIN_COUNT = len(_WORKFLOW_CONTROL_RULES)
 
 
 def workflow_controls(workflow_domain: str) -> tuple[ControlRule, ...]:
@@ -68,9 +102,19 @@ def control_classes_for(workflow_domain: str) -> tuple[str, ...]:
     return tuple(rule.control_class for rule in workflow_controls(workflow_domain))
 
 
+def governed_workflow_domains() -> tuple[str, ...]:
+    return tuple(sorted(_WORKFLOW_CONTROL_RULES.keys()))
+
+
+def governed_domain_count() -> int:
+    return _GOVERNED_DOMAIN_COUNT
+
+
 __all__ = [
     "ControlRule",
     "control_classes_for",
+    "governed_domain_count",
+    "governed_workflow_domains",
     "workflow_controls",
     "workflow_domain_is_governed",
 ]

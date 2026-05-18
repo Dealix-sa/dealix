@@ -30,6 +30,8 @@ from api.routers.domains import deprecated as deprecated_domain
 from api.routers.domains import sales as sales_domain
 from api.routers.domains import webhooks as webhooks_domain
 from api.routers import (
+    business_now as business_now_router,
+    transformation_os as transformation_os_router,
     admin_tenants,
     agent_mesh_os,
     assurance_contract_os,
@@ -311,6 +313,8 @@ def create_app() -> FastAPI:
     app.include_router(nps.router)
     # Wave 14 — Canonical Trust MVP + Retainer Engine (Phase 2)
     app.include_router(friction_log_router.router)
+    app.include_router(transformation_os_router.router, prefix="/api/v1")
+    app.include_router(business_now_router.router, prefix="/api/v1")
     if value_os_router is not None:
         app.include_router(value_os_router.router)
     # Wave 14B — Commercial activation: CSV upload for the Data Pack offer

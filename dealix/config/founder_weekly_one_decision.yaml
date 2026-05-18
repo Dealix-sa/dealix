@@ -1,0 +1,34 @@
+# نسخة أسبوعية — قرار واحد يخدم مرحلة واحدة فقط (0–5).
+# Ref: FOUNDER_STRONGEST_PLAN_AR.md · MASTER_COMMERCIAL_OPERATING_PLAN_AR.md
+
+week_iso: ""  # YYYY-MM-DD (بداية الأسبوع أو يوم الجمعة)
+launch_mode: soft  # soft | paid — لا تخلط الرسائل
+active_phase: 1  # 0 | 1 | 2 | 3 | 4 | 5 — واحدة فقط
+one_decision_ar: ""
+why_this_phase_ar: ""
+no_build_acknowledged: true
+success_by_friday_ar: ""
+evidence_events_to_log:
+  - ""
+blocked_by: ""
+next_week_phase_hint: null  # لا تغيّر المرحلة إلا بعد ريترو + أدلة
+
+phase_prompts:
+  0:
+    question_ar: "هل مسار الإغلاق + Discovery موحّدان قبل أي ديمو؟"
+    doc: docs/commercial/operations/EVIDENCE_EVENTS_CLOSE_PATH_AR.md
+  1:
+    question_ar: "ما الخطوة الوحيدة نحو أول payment_received + proof_pack_delivered؟"
+    doc: docs/commercial/operations/FIRST_PAID_DIAGNOSTIC_DOD_AR.md
+  2:
+    question_ar: "أي رسالة/قناة Motion A نكرّر هذا الأسبوع؟"
+    doc: docs/commercial/operations/motion_a_agency/
+  3:
+    question_ar: "أي شريك تجريبي واحد نفعّل؟"
+    doc: docs/commercial/operations/PARTNER_ONBOARDING_KIT_AR.md
+  4:
+    question_ar: "أي اعتراض/AEO نثبت في السجل؟"
+    doc: docs/commercial/operations/objection_engine_registry.yaml
+  5:
+    question_ar: "أي أصل منصّة يخدم الأدلة المكررة — وليس بناءً عشوائياً؟"
+    doc: docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md

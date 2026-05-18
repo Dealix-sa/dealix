@@ -2,6 +2,14 @@
 
 This directory is the execution spine for the comprehensive transformation from a strong AI product repository into a category-defining governed AI company.
 
+**فهرس CTO الشامل (24 شهرًا):** [CTO_MASTER_OPERATING_INDEX_AR.md](CTO_MASTER_OPERATING_INDEX_AR.md)
+
+## Global AI Company Transformation (blueprint execution)
+
+- **[GLOBAL_AI_TRANSFORMATION_EXECUTION_INDEX_AR.md](GLOBAL_AI_TRANSFORMATION_EXECUTION_INDEX_AR.md)** — فهرس الـ 12 مبادرة + محاور A–L + مراحل التنفيذ
+- [`dealix/transformation/global_ai_transformation_index.yaml`](../dealix/transformation/global_ai_transformation_index.yaml) — ربط آلة للتحقق
+- **حزمة تحقق كاملة:** `bash scripts/run_global_ai_transformation_bundle.sh`
+
 ## Program scope
 
 - Strategic doctrine lock
@@ -52,6 +60,10 @@ This directory is the execution spine for the comprehensive transformation from 
 - **Executive operating checklist (weekly):** `bash scripts/run_executive_weekly_checklist.sh` — يولّد الـ proof pack، يشغّل `verify_global_ai_transformation.py`، ويسجّل سطرًا في `docs/transformation/evidence/weekly_ops_checklist.log`.
 - **دليل تشغيل تنفيذي (عربي):** [EXECUTIVE_OPERATING_CHECKLIST_AR.md](EXECUTIVE_OPERATING_CHECKLIST_AR.md)
 - **خطة الجلسة الواحدة + مقارنة سوقية:** [CEO_ONE_SESSION_MASTER_PLAN_AR.md](CEO_ONE_SESSION_MASTER_PLAN_AR.md)
+- **إيقاع CTO أسبوعي:** [CTO_EXECUTIVE_CADENCE_AR.md](CTO_EXECUTIVE_CADENCE_AR.md) — `bash scripts/run_cto_weekly_anchor.sh`
+- **Backlog الـ12 مبادرة:** [CTO_12_PILLAR_BACKLOG.md](CTO_12_PILLAR_BACKLOG.md) — `bash scripts/run_cto_pillar_verify_bundle.sh`
+- **بوابات امتثال/GTM:** `bash scripts/run_compliance_gtm_gate_bundle.sh`
+- **قطع هندسي PR:** [CUTOVER_PR_CHECKLIST_AR.md](CUTOVER_PR_CHECKLIST_AR.md)
 - **قبل التوسع القطاعي/الإقليمي:** `bash scripts/run_pre_scale_gate_bundle.sh` (بوابات التوسع + `verify_ceo_signal_readiness.sh category_gates`).
 - **دليل القطع الهندسي (إشارة خارجية + PR):** [ENGINEERING_CUTOVER_RUNBOOK_AR.md](ENGINEERING_CUTOVER_RUNBOOK_AR.md)
 - Pick verification gate: `bash scripts/verify_ceo_signal_readiness.sh transformation|control_plane|revenue_os|category_gates|all`
@@ -59,6 +71,7 @@ This directory is the execution spine for the comprehensive transformation from 
 
 ## Verification
 
+- `bash scripts/run_global_ai_transformation_bundle.sh` (recommended — all 12 initiatives + gates)
 - `python3 scripts/verify_global_ai_transformation.py`
 - `bash scripts/verify_global_ai_transformation.sh`
 - `python3 scripts/generate_weekly_operating_proof_pack.py --out docs/transformation/evidence/weekly_proof_latest.md`

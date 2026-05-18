@@ -743,7 +743,28 @@ async def import_google_lead(body: dict[str, Any] = Body(...)) -> dict[str, Any]
         )
         session.add(conv)
         await session.commit()
-    return {"lead_id": rec_id, "source": "google_ads", "status": "captured"}
+    bridge: dict[str, Any] = {}
+    try:
+        from dealix.revenue_ops_autopilot.external_ingest import ingest_postgres_lead_fields
+
+        bridged = ingest_postgres_lead_fields(
+            pg_lead_id=rec_id,
+            source="google_ads",
+            contact_name=name,
+            contact_email=email or None,
+            contact_phone=phone or None,
+            company_name=company,
+            region="Saudi Arabia",
+            message=f"[Google Ads] {message}",
+            utm_source="google",
+            utm_medium="cpc",
+            utm_campaign="lead_form",
+        )
+        bridge = {"autopilot_lead_id": bridged.id, "bridged": True}
+    except Exception as e:  # noqa: BLE001
+        log.warning("autopilot_bridge_google_failed", extra={"error": str(e)[:200]})
+        bridge = {"bridged": False, "error": str(e)[:120]}
+    return {"lead_id": rec_id, "source": "google_ads", "status": "captured", **bridge}
 
 
 @router.post("/leads/import/meta")
@@ -808,7 +829,28 @@ async def import_meta_lead(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
         )
         session.add(conv)
         await session.commit()
-    return {"lead_id": rec_id, "source": "meta_lead_ads", "status": "captured"}
+    bridge: dict[str, Any] = {}
+    try:
+        from dealix.revenue_ops_autopilot.external_ingest import ingest_postgres_lead_fields
+
+        bridged = ingest_postgres_lead_fields(
+            pg_lead_id=rec_id,
+            source="meta_lead_ads",
+            contact_name=name,
+            contact_email=email or None,
+            contact_phone=phone or None,
+            company_name=company,
+            region="Saudi Arabia",
+            message=f"[Meta] {msg}",
+            utm_source="meta",
+            utm_medium="paid_social",
+            utm_campaign="lead_ads",
+        )
+        bridge = {"autopilot_lead_id": bridged.id, "bridged": True}
+    except Exception as e:  # noqa: BLE001
+        log.warning("autopilot_bridge_meta_failed", extra={"error": str(e)[:200]})
+        bridge = {"bridged": False, "error": str(e)[:120]}
+    return {"lead_id": rec_id, "source": "meta_lead_ads", "status": "captured", **bridge}
 
 
 @router.post("/admin/init-db")

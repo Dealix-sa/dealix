@@ -41,12 +41,54 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - [docs/SLO.md](docs/SLO.md) — أهداف التوفر والزمن
 - [docs/ON_CALL.md](docs/ON_CALL.md) — تغطية الطوارئ
 
+### Business NOW (all pillars — today)
+
+- **Doc:** [docs/business/DEALIX_BUSINESS_NOW_AR.md](docs/business/DEALIX_BUSINESS_NOW_AR.md)
+- **One command:** `bash scripts/run_business_now.sh` (Windows: `powershell -File scripts/run_business_now.ps1`)
+- **Verdict cache:** [dealix/transformation/business_now_cache.yaml](dealix/transformation/business_now_cache.yaml) (updated by generator; API reads cache when not running live verify)
+- **API:** `GET /api/v1/business-now/snapshot` · `GET /api/v1/business-now/commercial-strategy` · `POST /api/v1/business-now/commercial-strategy/simulate` · `GET /api/v1/business-now/operator-signals` (admin `X-Admin-API-Key`)
+- **Focus override (optional):** [dealix/transformation/commercial_focus_override.yaml](dealix/transformation/commercial_focus_override.yaml)
+- **Commercial strategy doc:** [docs/business/DEALIX_COMMERCIAL_STRATEGY_AR.md](docs/business/DEALIX_COMMERCIAL_STRATEGY_AR.md) — `python3 scripts/generate_commercial_strategy_doc.py`
+- **Ops client pack (AR):** [docs/commercial/ops_client_pack/](docs/commercial/ops_client_pack/) — runbook + executive deck pptx
+- **Founder go-live (sell + verify + agents):** `bash scripts/founder_go_live_verify.sh` (Windows: `scripts/founder_go_live_verify.ps1`) — [FOUNDER_GO_LIVE_DAY0_AR.md](docs/ops/FOUNDER_GO_LIVE_DAY0_AR.md) · [FOUNDER_INTEGRATION_TRUTH_MATRIX_AR.md](docs/ops/FOUNDER_INTEGRATION_TRUTH_MATRIX_AR.md) · [FOUNDER_AGENT_PLAYBOOK_AR.md](docs/ops/FOUNDER_AGENT_PLAYBOOK_AR.md)
+- **Founder Operating System:** [FOUNDER_OPERATING_SYSTEM_AR.md](docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md) · **Comprehensive plan execution:** [FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md](docs/ops/FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md) · daily anchor [FOUNDER_DAILY_ANCHOR_AR.md](docs/ops/FOUNDER_DAILY_ANCHOR_AR.md) · **`python scripts/founder_comprehensive_plan_status.py`** · **أقوى خطة (138 مهمة):** · **`bash scripts/founder_one_command.sh`** (أمر واحد — أقصى أتمتة) · **`python scripts/verify_full_autonomous_ops_stack.py`** · **`python scripts/run_dealix_complete_autonomous_day.py`** · **`POST /api/v1/ops-autopilot/founder/complete-autonomous-day/run`** [FOUNDER_STRONGEST_PLAN_AR.md](docs/commercial/FOUNDER_STRONGEST_PLAN_AR.md) · **`python scripts/founder_strongest_plan_status.py`** · **`bash scripts/founder_weekly_loop.sh`** (Sunday gates; Windows: `.ps1`) · **`bash scripts/founder_cadence.sh`** (morning/evening/weekly) · **`bash scripts/run_founder_commercial_day.sh`** (canonical morning; Windows: `.ps1`; `--full` syncs evidence both ways) · **`bash scripts/verify_founder_ops_launch.sh`** (launch gate) · **`bash scripts/run_founder_revenue_day.sh`** (wrapper: commercial + `--with-business-now`)
+- **Founder ops UI:** `/[locale]/ops/founder` (90-min cockpit) · war-room · marketing (today + factory) · sales · partners · evidence · support — prod: `NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1` + server `DEALIX_ADMIN_API_KEY` (see `frontend/src/app/api/dealix-proxy/`)
+- **Integrations:** HubSpot sync on lead capture/war-room patch (`HUBSPOT_ACCESS_TOKEN`) · Calendly webhooks → `POST /api/v1/webhooks/calendly` · `CALENDLY_URL` in booking + outreach
+- **Company ready (founder — start here):** [DEALIX_COMPANY_READY_MASTER_AR.md](docs/company/DEALIX_COMPANY_READY_MASTER_AR.md) · `bash scripts/company_ready_verify.sh`
+- **Official Railway launch:** `bash scripts/railway_prod_bootstrap.sh` (Alembic + War Room seed once) · `bash scripts/official_launch_verify.sh` → `OFFICIAL_LAUNCH_VERDICT=PASS` · env matrix: `python3 scripts/railway_launch_env_check.py` · full A–D: `bash scripts/launch_execution_railway.sh`
+- **Unified revenue (founder commercial):** [COMMERCIAL_VALUE_MAP_AR.md](docs/commercial/COMMERCIAL_VALUE_MAP_AR.md) (material value map — all angles) · `python scripts/commercial_value_map_status.py` · [DEALIX_UNIFIED_REVENUE_ATLAS_AR.md](docs/commercial/DEALIX_UNIFIED_REVENUE_ATLAS_AR.md) (thesis) · [DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md](docs/commercial/DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md) (GTM depth) · [MASTER_COMMERCIAL_OPERATING_PLAN_AR.md](docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md) (5 min daily) · [FOUNDER_REVENUE_DAY_ONE_AR.md](docs/ops/FOUNDER_REVENUE_DAY_ONE_AR.md) (day playbook) · **`python scripts/run_dealix_daily_ops.py`** (`--api-only` with `DEALIX_API_BASE` + `DEALIX_ADMIN_API_KEY`; full loop offline with `--skip-api`) — Postgres→Autopilot replay, Full Ops Health JSON, Monday weekly marketing pack — brief in `data/founder_briefs/` · UI: `/[locale]/ops/founder` (command center), `/ops/marketing` · targeting seed: `docs/commercial/operations/targeting/agency_accounts_seed.csv` · War Room [DEALIX_REVENUE_WAR_ROOM_AR.md](docs/ops/DEALIX_REVENUE_WAR_ROOM_AR.md)
+- **Official commercial launch gate:** **`bash scripts/verify_dealix_commercial_go_live.sh`** (Windows: `powershell -File scripts/verify_dealix_commercial_go_live.ps1`) — prints `DEALIX_OFFICIAL_LAUNCH_VERDICT=PASS|FAIL`; optional `DEALIX_VERIFY_WITH_API=1` / `DEALIX_VERIFY_WITH_FRONTEND_BUILD=1` for live API + `npm run build`
+- **Commercial soft launch:** [COMMERCIAL_LAUNCH_CHECKLIST_AR.md](docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md) · `python3 scripts/verify_commercial_launch_ready.py` (`--with-api`, `--with-frontend-build`) · public home **`/[locale]`** (CommercialLaunchHome)
+- **GTM public funnel:** `/[locale]` (launch home) · `/dealix-diagnostic` · `/risk-score` · `/proof-pack` · `/learn/[slug]` · `/partners`
+- **GTM ops (admin key):** `/[locale]/ops` (hub) · `/ops/founder` · `/ops/war-room` · `/ops/marketing` · `/ops/sales` · `/ops/partners` · `/ops/evidence` · `/ops/approvals` — APIs: `GET /api/v1/ops-autopilot/war-room/today-pack` · `POST .../marketing/queue-approval` · `GET .../marketing/social-today` (no live LinkedIn/WhatsApp send)
+- **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
+- **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
+
 ### Global AI transformation (CEO / operating spine)
 
 - Weekly executive checklist: `bash scripts/run_executive_weekly_checklist.sh` (proof pack + `verify_global_ai_transformation.py` + audit log; syncs `weekly_ops.last_checklist_run_iso` when PASS).
+- **CTO weekly anchor:** `bash scripts/run_cto_weekly_anchor.sh` — checklist + platform KPIs + commercial registry status (see [CTO_EXECUTIVE_CADENCE_AR.md](docs/transformation/CTO_EXECUTIVE_CADENCE_AR.md)).
 - **One-session full readiness:** `bash scripts/run_ceo_one_session_readiness.sh` — checklist + platform KPI signals + pre-scale gates + full verify + session report (see [CEO_ONE_SESSION_MASTER_PLAN_AR.md](docs/transformation/CEO_ONE_SESSION_MASTER_PLAN_AR.md)).
+- **12-pillar verify:** `bash scripts/run_cto_pillar_verify_bundle.sh` — transformation + control plane + gap spot checks.
+- **Compliance/GTM gates:** `bash scripts/run_compliance_gtm_gate_bundle.sh` — PDPL artifact + pre-scale + revenue_os + Moyasar/DPA docs.
+- Commercial KPIs: copy `kpi_founder_commercial_import.example.yaml` → `kpi_founder_commercial_import.yaml` (gitignored), fill from CRM, then `python3 scripts/apply_kpi_founder_commercial.py` (never invent CRM numbers in automation).
+- CTO master index: [docs/transformation/CTO_MASTER_OPERATING_INDEX_AR.md](docs/transformation/CTO_MASTER_OPERATING_INDEX_AR.md)
+- KPI snapshot API: `GET /api/v1/transformation/kpi-snapshot`
+- Embeddings readiness: `python3 scripts/check_embeddings_readiness.py`
 - Readiness helper (defaults to **transformation** when run with no args): `bash scripts/verify_ceo_signal_readiness.sh`
 - Doc map: [docs/transformation/README.md](docs/transformation/README.md) — Arabic operating SOP: [docs/transformation/EXECUTIVE_OPERATING_CHECKLIST_AR.md](docs/transformation/EXECUTIVE_OPERATING_CHECKLIST_AR.md)
+
+### Cloud deployment (align with Cursor Cloud dev)
+
+| Concern | Doc / command |
+| --- | --- |
+| Universal deploy | [DEPLOYMENT.md](DEPLOYMENT.md) |
+| API-keys-only quick path | [docs/QUICK_DEPLOY_API_KEYS_ONLY.md](docs/QUICK_DEPLOY_API_KEYS_ONLY.md) |
+| Railway (AR) | [docs/RAILWAY_DEPLOY_GUIDE_AR.md](docs/RAILWAY_DEPLOY_GUIDE_AR.md) |
+| Dealix Cloud UI map | [docs/product/DEALIX_CLOUD_UI_MAP.md](docs/product/DEALIX_CLOUD_UI_MAP.md) — frontend hub at `/[locale]/cloud` |
+| Frontend API base | `NEXT_PUBLIC_API_URL` (default `http://localhost:8000`) |
+
+Production env minimums match `DEPLOYMENT.md` (`APP_SECRET_KEY`, `DATABASE_URL`, Moyasar when billing). Keep `ENVIRONMENT=development` locally; never enable auto external sends in any environment.
 
 ### Environment — frontend API URL
 

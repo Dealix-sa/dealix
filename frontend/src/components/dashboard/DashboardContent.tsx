@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
+import { Briefcase, ChevronRight } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { KPICard } from "./KPICard";
 import { RevenueChart } from "./RevenueChart";
 import { DealPipelineChart } from "./DealPipelineChart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatRelativeTime, getStatusColor } from "@/lib/utils";
 import { api } from "@/lib/api";
@@ -102,6 +105,13 @@ export function DashboardContent() {
   const [activities, setActivities] = useState<Activity[] | null>(null);
   const [loadingKpi, setLoadingKpi] = useState(true);
   const [loadingActivities, setLoadingActivities] = useState(true);
+  const [businessSnap, setBusinessSnap] = useState<{
+    commercial_kpi_pending?: number;
+    transformation_verdict?: string;
+    commercial_focus_stage?: string;
+    commercial_focus_rationale?: string;
+    today_actions?: Array<{ action_ar: string }>;
+  } | null>(null);
 
   const defaultKpiMetrics: KPIMetric[] = [
     {
@@ -220,6 +230,36 @@ export function DashboardContent() {
     return () => { cancelled = true; };
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .getBusinessNowSnapshot()
+      .then((res) => {
+        if (!cancelled && res.data) {
+          const d = res.data as {
+            pillars?: { commercial?: { commercial_kpi_pending?: number }; platform?: { transformation_verdict?: string } };
+            commercial_strategy_summary?: {
+              focus?: { stage?: string; rationale_ar?: string };
+            };
+            today_actions?: Array<{ action_ar: string }>;
+          };
+          setBusinessSnap({
+            commercial_kpi_pending: d.pillars?.commercial?.commercial_kpi_pending,
+            transformation_verdict: d.pillars?.platform?.transformation_verdict,
+            commercial_focus_stage: d.commercial_strategy_summary?.focus?.stage,
+            commercial_focus_rationale: d.commercial_strategy_summary?.focus?.rationale_ar,
+            today_actions: d.today_actions,
+          });
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setBusinessSnap(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const displayedKpi = kpiMetrics ?? defaultKpiMetrics;
   const displayedActivities = activities ?? mockActivities;
 
@@ -232,7 +272,51 @@ export function DashboardContent() {
   };
 
   return (
-    <div className="space-y-6">
+    <motion.div className="space-y-6">
+      {businessSnap && (
+        <Card className="border-gold-500/30 bg-gradient-to-br from-gold-500/5 to-transparent">
+          <CardContent className="py-4 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <Briefcase className="w-8 h-8 text-gold-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold">{t("dashboard.businessNowCardTitle")}</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {t("dashboard.businessNowVerdict", {
+                    v: businessSnap.transformation_verdict ?? "—",
+                  })}
+                  {" · "}
+                  {t("dashboard.businessNowKpiPending", {
+                    count: businessSnap.commercial_kpi_pending ?? 0,
+                  })}
+                </p>
+                {businessSnap.commercial_focus_stage && (
+                  <p className="text-xs text-gold-600/90 mt-2 max-w-xl">
+                    {t("dashboard.commercialFocusTitle")}:{" "}
+                    {t("dashboard.commercialFocusStage", {
+                      stage: businessSnap.commercial_focus_stage,
+                    })}
+                    {businessSnap.commercial_focus_rationale
+                      ? ` — ${businessSnap.commercial_focus_rationale}`
+                      : ""}
+                  </p>
+                )}
+                {businessSnap.today_actions?.[0] && (
+                  <p className="text-xs text-muted-foreground mt-2 max-w-xl">
+                    {businessSnap.today_actions[0].action_ar}
+                  </p>
+                )}
+              </div>
+            </div>
+            <Button asChild variant="outline" size="sm">
+              <Link href={`/${locale}/business-now#strategy`}>
+                {t("dashboard.businessNowCardCta")}
+                <ChevronRight className="w-4 h-4 ms-1" />
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
       {/* KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {loadingKpi
@@ -315,6 +399,6 @@ export function DashboardContent() {
           </CardContent>
         </Card>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }

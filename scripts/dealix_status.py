@@ -59,6 +59,19 @@ def _weekly_scorecard() -> dict[str, Any]:
     return weekly_growth_scorecard.build_scorecard()
 
 
+def _commercial_value_plan() -> dict[str, Any]:
+    from dealix.commercial_ops.value_plan import build_value_plan_snapshot
+
+    snap = build_value_plan_snapshot(motion_top_n=3)
+    return {
+        "first_paid_verdict": (snap.get("first_paid_diagnostic") or {}).get("verdict"),
+        "evidence_today": (snap.get("evidence") or {}).get("today_total", 0),
+        "proof_packs_week": (snap.get("north_star") or {}).get("proof_packs_week", 0),
+        "agency_pool_rows": (snap.get("targeting") or {}).get("agency_pool_rows", 0),
+        "warnings_count": len(snap.get("warnings_ar") or []),
+    }
+
+
 def _review_pending_count() -> int:
     """Count REVIEW_PENDING entries in the forbidden-claims allowlist."""
     test_file = REPO_ROOT / "tests" / "test_landing_forbidden_claims.py"
@@ -137,6 +150,7 @@ def _build_status_payload() -> dict[str, Any]:
         "reliability": _safe(_health_matrix, default={}),
         "daily_loop": _safe(_daily_loop, default={}),
         "weekly_scorecard": _safe(_weekly_scorecard, default={}),
+        "commercial_value_plan": _safe(_commercial_value_plan, default={}),
         "review_pending_count": _review_pending_count(),
         "open_founder_decisions": _open_founder_decisions(),
         "live_gates": _live_gate_status(),

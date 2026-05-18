@@ -2,6 +2,8 @@
 
 لا يُعدّل ملف الخطة في `.cursor/plans/`؛ هذا الملف هو مرجع التنفيذ في الريبو.
 
+**حالة CTO Phase 1–2:** [docs/transformation/PHASE1_2_CTO_STATUS.md](docs/transformation/PHASE1_2_CTO_STATUS.md)
+
 ## Phase 0 — إغلاق PR #125
 
 | البند | الحالة | المرجع |

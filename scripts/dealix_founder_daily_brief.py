@@ -46,6 +46,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from auto_client_acquisition.bottleneck_radar.computer import compute_founder_view  # noqa: E402
 from auto_client_acquisition.service_catalog.registry import list_offerings  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
 
 
 # Article 4: the 8 hard gates that must always be present.
@@ -198,6 +199,7 @@ def render_markdown(brief: dict) -> str:
 
 
 def main() -> int:
+    ensure_stdout_utf8()
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--blocking-approvals", type=int, default=0)
     p.add_argument("--pending-payments", type=int, default=0)

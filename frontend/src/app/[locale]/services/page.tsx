@@ -1,10 +1,5 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
-
-const SprintToolsPanel = dynamic(
-  () => import("@/components/services/SprintToolsPanel"),
-  { ssr: false },
-);
+import { ServicesSprintPanelDynamic } from "@/components/services/ServicesSprintPanelDynamic";
 
 interface ServicesHubProps {
   params: Promise<{ locale: string }>;
@@ -24,9 +19,39 @@ export default async function ServicesHubPage({ params }: ServicesHubProps) {
           <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground">
             خطوط الخدمات الخمس
           </h1>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <div className="rounded-lg border border-primary/30 bg-card/60 p-4">
+              <p className="text-xs text-muted-foreground">10-Lead Audit</p>
+              <p className="mt-1 font-semibold">من 499 ر.س</p>
+              <Link href={`/${locale}/risk-score`} className="mt-3 inline-block text-sm text-primary hover:underline">
+                Risk Score
+              </Link>
+            </div>
+            <div className="rounded-lg border border-border bg-card/40 p-4">
+              <p className="text-xs text-muted-foreground">Agency Proof Pack</p>
+              <p className="mt-1 font-semibold">من 1,500 ر.س</p>
+              <Link href={`/${locale}/proof-pack`} className="mt-3 inline-block text-sm text-primary hover:underline">
+                عيّنة Proof Pack
+              </Link>
+            </div>
+            <div className="rounded-lg border border-border bg-card/40 p-4">
+              <p className="text-xs text-muted-foreground">Governed Diagnostic</p>
+              <p className="mt-1 font-semibold">من 499 ر.س</p>
+              <Link href={`/${locale}/dealix-diagnostic`} className="mt-3 inline-block text-sm text-primary hover:underline">
+                تشخيص 10 دقائق
+              </Link>
+            </div>
+          </div>
+          <p className="mt-8 text-muted-foreground leading-relaxed">
             كل باب يربط تشغيل الشركة بنتائج واضحة، وليس بـ«ذكاء عام» بدون
-            تسليم. التفاصيل الكاملة والكتالوج في وثائق المستودع تحت{" "}
+            تسليم. <strong>المدخل التجاري الوحيد الآن:</strong>{" "}
+            <Link
+              href={`/${locale}/dealix-diagnostic`}
+              className="text-primary font-medium hover:underline"
+            >
+              تشخيص ٧ أيام — Governed Revenue &amp; AI Ops
+            </Link>
+            . التفاصيل في{" "}
             <code className="rounded bg-muted px-1 py-0.5 text-foreground">
               docs/commercial/
             </code>
@@ -87,7 +112,7 @@ export default async function ServicesHubPage({ params }: ServicesHubProps) {
             </li>
           </ul>
 
-          <SprintToolsPanel locale={locale} />
+          <ServicesSprintPanelDynamic locale={locale} />
 
           <div className="mt-12">
             <Link
@@ -111,9 +136,39 @@ export default async function ServicesHubPage({ params }: ServicesHubProps) {
         <h1 className="mt-3 text-3xl font-bold tracking-tight text-foreground">
           Five service lines
         </h1>
-        <p className="mt-4 text-muted-foreground leading-relaxed">
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-lg border border-primary/30 bg-card/60 p-4">
+            <p className="text-xs text-muted-foreground">10-Lead Audit</p>
+            <p className="mt-1 font-semibold">From 499 SAR</p>
+            <Link href={`/${locale}/risk-score`} className="mt-3 inline-block text-sm text-primary hover:underline">
+              Risk Score
+            </Link>
+          </div>
+          <div className="rounded-lg border border-border bg-card/40 p-4">
+            <p className="text-xs text-muted-foreground">Agency Proof Pack</p>
+            <p className="mt-1 font-semibold">From 1,500 SAR</p>
+            <Link href={`/${locale}/proof-pack`} className="mt-3 inline-block text-sm text-primary hover:underline">
+              Sample Proof Pack
+            </Link>
+          </div>
+          <div className="rounded-lg border border-border bg-card/40 p-4">
+            <p className="text-xs text-muted-foreground">Governed Diagnostic</p>
+            <p className="mt-1 font-semibold">From 499 SAR</p>
+            <Link href={`/${locale}/dealix-diagnostic`} className="mt-3 inline-block text-sm text-primary hover:underline">
+              10-min diagnostic
+            </Link>
+          </div>
+        </div>
+        <p className="mt-8 text-muted-foreground leading-relaxed">
           Each line ties AI work to measurable delivery — not generic
-          &quot;AI consulting&quot;. Full catalog lives in the repo under{" "}
+          &quot;AI consulting&quot;. <strong>Primary commercial entry:</strong>{" "}
+          <Link
+            href={`/${locale}/dealix-diagnostic`}
+            className="text-primary font-medium hover:underline"
+          >
+            7-Day Governed Revenue &amp; AI Ops Diagnostic
+          </Link>
+          . Full catalog:{" "}
           <code className="rounded bg-muted px-1 py-0.5 text-foreground">
             docs/commercial/
           </code>
@@ -175,7 +230,7 @@ export default async function ServicesHubPage({ params }: ServicesHubProps) {
           </li>
         </ul>
 
-        <SprintToolsPanel locale={locale} />
+        <ServicesSprintPanelDynamic locale={locale} />
 
         <div className="mt-12">
           <Link

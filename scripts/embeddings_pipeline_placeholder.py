@@ -21,6 +21,7 @@ def main() -> int:
     print("Next: choose embedding model (see docs/EMBEDDINGS_PIPELINE.md + SUPABASE_PROJECT_MEMORY_SETUP.md)")
     print(json.dumps(summary, indent=2, ensure_ascii=False))
     print("STATUS: no_vectors_uploaded")
+    print("Readiness: python3 scripts/check_embeddings_readiness.py")
     return 0
 
 
