@@ -42,17 +42,18 @@ April 2026 · Seed Round
 
 ---
 
+<!-- CORRECTED 2026-05-18: removed "45 ثانية / auto-book / auto-BANT" — Dealix is approval-first, drafts only, no auto-send. See docs/ops/launch_content_queue.md "Canonical positioning". -->
 ## الشريحة 3: Solution
 
 ```
-Dealix = أول AI sales rep عربي خليجي حقيقي
+Dealix = رادار عمليات الإيرادات بمنطق "الموافقة أولاً"
 
-✅ يرد على كل lead خلال 45 ثانية
-✅ يؤهّل بـ BANT تلقائياً
-✅ يحجز demos مع فريقك
-✅ يعمل 24/7 باللهجة الطبيعية
+✅ يقرأ pipeline الحالي ويرتّب الفرص حسب الأولوية
+✅ يصيغ مسودات تواصل بالعربي الخليجي — لا يُرسل تلقائياً
+✅ كل مسودة تمرّ على موافقة المؤسس قبل أي إرسال
+✅ يجهّز ملخص اجتماع جاهز للفريق قبل المكالمة
 
-= فريقك يبدأ يومه بـ leads مؤهلة، لا reactive firefighting
+= فريقك يبدأ يومه بفرص مرتّبة ومسودات جاهزة للموافقة، لا reactive firefighting
 ```
 
 **Visual:** screenshot من Dealix في action، conversation حقيقية بالعربي.
@@ -82,22 +83,22 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 
 ---
 
+<!-- CORRECTED 2026-05-18: AI does not auto-converse or auto-book; it drafts for founder approval. -->
 ## الشريحة 5: Product
 
 ```
 كيف يعمل Dealix (في 3 خطوات)
 
-1️⃣ LEAD INGEST
-   موقع / WhatsApp / Instagram / CRM webhook
+1️⃣ INGEST
+   pipeline الحالي / قائمة العملاء / CRM export
    ↓
-2️⃣ AI CONVERSATION
-   Dealix يسأل 8 أسئلة BANT ذكية
-   يتكلم لهجة خليجية طبيعية
+2️⃣ AI DRAFT
+   Dealix يحلّل الفرص ويصيغ مسودات تواصل
+   بلهجة خليجية طبيعية — مسودة فقط، لا إرسال
    ↓  
-3️⃣ DELIVER
-   يحجز demo في calendar فريقك
-   ملخّص 1-صفحة قبل الـ demo
-   CRM sync تلقائي
+3️⃣ APPROVE & DELIVER
+   المؤسس يراجع كل مسودة ويوافق قبل الإرسال
+   ملخّص 1-صفحة جاهز قبل الاجتماع
 ```
 
 **Visual:** 3 screenshots متتابعة تظهر flow.
@@ -172,13 +173,13 @@ LTV:CAC = 35:1 (السنة الأولى)
                    | Dealix | Drift/Intercom | Local Chatbots | BDR Agencies
                    |--------|----------------|-----------------|---------------
 Arabic Khaliji     |  ✅    |       ❌       |    ترجمة       |      ✅
-Qualifies BANT     |  ✅    |       ⚠️       |       ❌        |      ✅
-Books demos        |  ✅    |       ⚠️       |       ❌        |      ✅
-24/7               |  ✅    |       ✅       |       ✅        |      ❌
-Cost per lead      | 2 ريال | 8 ريال         |  5 ريال         |  45 ريال
-Scalability        |  ✅✅  |       ✅       |       ⚠️        |      ❌
+Approval-first     |  ✅    |       ❌       |       ❌        |      ⚠️
+Drafts outreach    |  ✅    |       ⚠️       |       ❌        |      ✅
+Opportunity radar  |  ✅    |       ⚠️       |       ❌        |      ⚠️
+Cost per opportunity | 2 ريال | 8 ريال       |  5 ريال         |  45 ريال
 
-Positioning: "نحن Drift، ولكن للعربي. نحن BDR، ولكن بلا تكلفة."
+Positioning: "رادار عمليات إيراد عربي بمنطق الموافقة أولاً —
+كل فعل خارجي مسودة تُعتمد بشرياً."
 ```
 
 ---
@@ -339,7 +340,7 @@ Founder, Dealix
 
 ### Q&A (3-5 دقائق):
 - أسئلة متوقعة:
-  1. "كيف تختلف عن ChatGPT API؟" → prompted for sales + Saudi context + BANT
+  1. "كيف تختلف عن ChatGPT API؟" → prompted for sales + Saudi context + approval-first workflow
   2. "ما defensibility؟" → Arabic training data + integrations + brand
   3. "Churn mitigation؟" → customer success + high value
   4. "لماذا لم تُطلق بعد؟" → Railway deploy هذا الأسبوع
