@@ -1,0 +1,61 @@
+# Monthly Cadence — schedules the on-demand per-customer monthly cadence machine.
+#
+# Runs scripts/monthly_cadence_runner.py --all-active --schedule-renewals on the
+# 1st of each month. For each active retainer customer it composes the monthly
+# value report + adoption score + retainer-readiness gate, and queues renewal
+# decisions. NO external send and NO charge — renewals are queued AWAITING
+# FOUNDER per the renewal scheduler. Output uploaded as an artifact.
+#
+# Part of the Master Launch OS — WS3 Machine Orchestration.
+# See docs/launch/MACHINE_ORCHESTRATION_MAP.md
+
+name: Monthly Cadence
+
+on:
+  schedule:
+    # 03:00 UTC on the 1st = 06:00 KSA — start of the month.
+    - cron: "0 3 1 * *"
+  workflow_dispatch: {}
+
+# Read-only — produces an artifact, never pushes, never sends, never charges.
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-monthly-cadence
+  cancel-in-progress: false
+
+jobs:
+  monthly-cadence:
+    name: Compose per-customer monthly reports
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run monthly cadence runner
+        run: |
+          set -e
+          python3 scripts/monthly_cadence_runner.py --all-active --schedule-renewals
+
+      - name: Upload monthly reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monthly-reports-${{ github.run_id }}
+          path: data/monthly_reports/
+          retention-days: 90
+          if-no-files-found: warn

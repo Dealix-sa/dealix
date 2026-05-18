@@ -1,0 +1,61 @@
+# Daily Lead Prep — schedules the on-demand founder lead-prep machine.
+#
+# Runs scripts/dealix_daily_lead_prep.py every morning before the 04:00 UTC
+# founder digest, so the day's scored prospects + bilingual DRAFTS are ready
+# for review. DRAFT-ONLY: the script never sends anything; every output is
+# queued for founder approval. Output is uploaded as an artifact (branch
+# protection refuses bot pushes to main).
+#
+# Part of the Master Launch OS — WS3 Machine Orchestration.
+# See docs/launch/MACHINE_ORCHESTRATION_MAP.md
+
+name: Daily Lead Prep
+
+on:
+  schedule:
+    # 03:30 UTC = 06:30 KSA — ready before the 04:00 UTC founder digest.
+    - cron: "30 3 * * *"
+  workflow_dispatch: {}
+
+# Read-only — produces an artifact, never pushes, never sends.
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-daily-lead-prep
+  cancel-in-progress: false
+
+jobs:
+  lead-prep:
+    name: Prepare founder lead board (drafts only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run daily lead prep
+        run: |
+          set -e
+          python3 scripts/dealix_daily_lead_prep.py
+
+      - name: Upload lead-prep output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-lead-prep-${{ github.run_id }}
+          path: data/wave12/daily_lead_prep/
+          retention-days: 90
+          if-no-files-found: warn

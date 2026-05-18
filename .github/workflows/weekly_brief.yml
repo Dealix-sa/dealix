@@ -1,0 +1,61 @@
+# Weekly Brief — schedules the on-demand per-customer weekly brief machine.
+#
+# Runs scripts/weekly_brief_runner.py --all-active every Sunday (KSA work-week
+# start). For each active retainer customer it composes a weekly brief from
+# value_os + friction_log + adoption_os + proof events. NO external send —
+# briefs are written under data/weekly_briefs/ for founder review and
+# uploaded as an artifact.
+#
+# Part of the Master Launch OS — WS3 Machine Orchestration.
+# See docs/launch/MACHINE_ORCHESTRATION_MAP.md
+
+name: Weekly Brief
+
+on:
+  schedule:
+    # 03:00 UTC Sunday = 06:00 KSA Sunday — start of the KSA work week.
+    - cron: "0 3 * * 0"
+  workflow_dispatch: {}
+
+# Read-only — produces an artifact, never pushes, never sends.
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-weekly-brief
+  cancel-in-progress: false
+
+jobs:
+  weekly-brief:
+    name: Compose per-customer weekly briefs
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run weekly brief runner
+        run: |
+          set -e
+          python3 scripts/weekly_brief_runner.py --all-active
+
+      - name: Upload weekly briefs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-briefs-${{ github.run_id }}
+          path: data/weekly_briefs/
+          retention-days: 90
+          if-no-files-found: warn
