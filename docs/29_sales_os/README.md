@@ -26,3 +26,7 @@
 
 هذه الطبقة جزء من مسار التوسع من MVP إلى شركة تشغيل؛ راجع الموجات في
 [DEALIX_EXECUTION_WAVES_AR.md](../strategic/DEALIX_EXECUTION_WAVES_AR.md).
+
+لطبقة التصريف والتسويق التجاري (علم نفس المشتري، قمع الدخول، الاستبعاد،
+sprint التوسع، محرك الإثبات) راجع
+[Distribution OS](../distribution_os/README.md).
