@@ -48,7 +48,7 @@
 | O1 | OpenTelemetry + Sentry instrumented | ✅ | `dealix.observability.setup_sentry/setup_tracing` active in `create_app` |
 | O2 | `/admin/costs` endpoint live | ✅ | Returns per-model spend, cache hit ratio |
 | O3 | PostHog funnel live (7 events) | 🚫 | **Blocked on PostHog API key from Sami.** Client code wired, will fire on first key configure |
-| O4 | Daily cost alert | 🔴 | DoD: Slack/email ping if daily spend >$10 |
+| O4 | Daily cost alert | 🟡 | Code shipped: `scripts/daily_cost_alert.py` (queries `/api/v1/admin/costs`, exit code 1 if spend ≥ threshold, default $10/day). Closes fully once wired as a prod cron with `MAILTO` / Slack webhook. Tested: `tests/test_daily_cost_alert.py` |
 | O5 | SLO skeleton defined | ✅ | `docs/SLO.md` merged in PR #58 (Tier 1/2/3 + alert policy). Dashboard itself pending external infra |
 
 ## GTM / Funnel (1/5 closed)
@@ -90,8 +90,8 @@
 ## Summary
 
 - **Closed:** 18/30 (+2 this round: I2 on-call, O5 SLO skeleton)
-- **Partial:** 1/30 (I1 runbook — needs Sami review)
-- **Open:** 7/30
+- **Partial:** 2/30 (I1 runbook — needs Sami review; O4 cost alert — code shipped, needs prod cron)
+- **Open:** 6/30
 - **Blocked on Sami:** 4/30 (O3 PostHog, G2 Moyasar, G3 Calendly+HubSpot, I3 UptimeRobot)
 
 **Gap to Launch Claim (24/30):** 6 gates.
@@ -110,6 +110,7 @@
 
 | Gate | Action | ETA |
 |---|---|---|
+| O4 | Wire `scripts/daily_cost_alert.py` as a prod cron (code already shipped + tested) | 10 min |
 | T6 | Run k6 against prod (need API_BASE + API_KEY env from server `.env`) | 15 min |
 | T7 | Rollback drill on prod (deploy a marker commit → roll back → verify `.last_good_sha` path) | 30 min |
 | T8 | Backup restore drill on staging (needs staging env; else document as blocked on staging infra) | 1–2 hr |

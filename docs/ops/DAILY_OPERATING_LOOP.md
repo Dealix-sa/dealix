@@ -4,6 +4,33 @@
 
 ---
 
+## 0. One-command autopilot prep (2 min)
+
+Before the manual loop below, generate today's consolidated draft pack:
+
+```
+python3 scripts/dealix_daily_autopilot.py
+# with a founder-supplied lead list:
+python3 scripts/dealix_daily_autopilot.py --candidates leads.csv --top-n 5
+```
+
+This composes the founder daily brief, content drafts, the weekly content
+calendar, and (optionally) lead targeting into **one** bilingual pack at
+`data/daily_autopilot/{date}.md` — every item queued `draft_only`.
+
+**It never sends, posts, or charges.** It only drafts and queues. You stay
+the approver: open the pack, edit/approve what you want, then do the actual
+sending in the steps below. Rung 2-5 automation stays inert (Commercial
+Freeze) until the first paid pilot's Proof Pack is customer-approved.
+
+Pair it with the cost watch (Launch Gate O4):
+
+```
+python3 scripts/daily_cost_alert.py   # exit 1 if LLM spend ≥ $10/day
+```
+
+---
+
 ## Morning (8:00 - 11:00)
 
 ### 8:00 — Systems Check (10 min)
