@@ -13,7 +13,7 @@
 # ═══════════════════════════════════════════════════════════════════
 
 schema_version: "1.0"
-last_reviewed: "2026-04-21"
+last_reviewed: "2026-05-18"
 
 claims:
   # ───────────── Core platform ─────────────
@@ -74,21 +74,24 @@ claims:
 
   - id: approval_center
     claim: "Approval Center routes A1+ actions to human approvers with TTL"
-    status: Pilot
+    status: Partial
     evidence:
       - dealix/trust/approval.py
+      - db/migrations/versions/20260518_013_launch_persistence.py
     gaps:
-      - "Only in-memory; no persistence"
       - "Notification hooks configured but no real email/Slack integration by default"
+    notes:
+      - "ApprovalStore now persists to Postgres (migration rev 013, commit 'infra(persistence): persist ApprovalStore + audit log to Postgres'). In-memory-only gap removed 2026-05-18."
 
   - id: audit_log
     claim: "Immutable audit log for every Trust-Plane action"
-    status: Pilot
+    status: Partial
     evidence:
       - dealix/trust/audit.py
       - dealix/contracts/audit_log.py
-    gaps:
-      - "Only in-memory sink implemented; Postgres-backed sink is Planned"
+      - db/migrations/versions/20260518_013_launch_persistence.py
+    notes:
+      - "Postgres-backed audit-log persistence shipped (migration rev 013, commit 'infra(persistence): persist ApprovalStore + audit log to Postgres'). In-memory-only gap removed 2026-05-18."
 
   - id: tool_verification
     claim: "Intended-vs-actual action ledger for every tool call"
@@ -247,3 +250,16 @@ claims:
       - dealix/classifications/__init__.py::NEVER_AUTO_EXECUTE
     gaps:
       - "Agent tool calls (LLM tool use) not yet routed through the connector facade"
+
+  - id: no_auto_send_no_guarantee
+    claim: "Dealix does NOT auto-send external messages, does NOT auto-book meetings, and makes NO guaranteed-outcome claims; every external action is a founder-approved draft"
+    status: Production
+    evidence:
+      - docs/CANONICAL_PRODUCT_NARRATIVE.md
+      - dealix/masters/constitution.md (Article II — external commitments)
+      - auto_client_acquisition/governance_os/policy_check.py::policy_check_draft
+      - auto_client_acquisition/governance_os/draft_gate.py::audit_draft_text
+      - tests/test_no_guaranteed_claims.py
+      - tests/test_outreach_draft_only.py
+    notes:
+      - "Positive-limit declaration: outreach is draft_only; the founder reviews and approves every external message before it sends. No auto-send, no auto-book, no guaranteed sales/conversion/ROI."
