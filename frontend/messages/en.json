@@ -3,6 +3,7 @@
     "dashboard": "Dashboard",
     "pipeline": "Lead Pipeline",
     "agents": "Agent Activity",
+    "agentOrg": "Agent Organization",
     "approvals": "Approval Center",
     "trustCheck": "Evidence & anti-waste",
     "customerPortal": "Customer portal",
@@ -154,5 +155,23 @@
     "handleLabel": "Customer handle",
     "load": "Load",
     "promiseTitle": "Service promise"
+  },
+  "agentOrg": {
+    "title": "Agent Organization",
+    "subtitle": "A governed 25-agent pyramid — every external output is draft-only and approval-gated",
+    "runCycle": "Run daily cycle",
+    "running": "Running cycle…",
+    "chief": "Chief of Staff",
+    "director": "Director",
+    "operator": "Operator",
+    "headcount": "Agents",
+    "founderBrief": "Founder brief",
+    "pendingApproval": "Drafts awaiting your approval",
+    "internalDone": "Internal items done",
+    "escalations": "Escalations",
+    "workItems": "Work items from this cycle",
+    "external": "Needs approval",
+    "internal": "Internal",
+    "hint": "The cycle does the work automatically. Nothing is sent — drafts go to the Approval Center."
   }
 }

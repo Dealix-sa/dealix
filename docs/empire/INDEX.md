@@ -57,6 +57,7 @@ deeper strategy library.
 | [`PRODUCTIZATION_PATH.md`](PRODUCTIZATION_PATH.md) | Productization |
 | [`UNIT_ECONOMICS.md`](UNIT_ECONOMICS.md) | Offer / Sales |
 | [`HIRING_GATES.md`](HIRING_GATES.md) | Organization |
+| [`AGENT_ORGANIZATION.md`](AGENT_ORGANIZATION.md) | Organization / cross-layer |
 | [`COMMERCIAL_GATES.md`](COMMERCIAL_GATES.md) | cross-layer |
 
 ---

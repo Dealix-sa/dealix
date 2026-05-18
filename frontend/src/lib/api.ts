@@ -181,6 +181,15 @@ export const api = {
 
   getCustomerPortal: (handle = "Slot-A") =>
     apiClient.get(`/api/v1/customer-portal/${encodeURIComponent(handle)}`),
+
+  getAgentOrgChart: () =>
+    apiClient.get("/api/v1/agent-org/chart"),
+
+  getAgentOrgStatus: () =>
+    apiClient.get("/api/v1/agent-org/status"),
+
+  runAgentOrgDailyCycle: (context: Record<string, unknown> = {}) =>
+    apiClient.post("/api/v1/agent-org/daily-cycle/run", { context }),
 };
 
 export default api;
