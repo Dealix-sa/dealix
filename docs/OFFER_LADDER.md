@@ -1,3 +1,5 @@
+*Superseded — the canonical offer ladder is now [`MONEY_LADDER.md`](MONEY_LADDER.md). This file is historical and must not be used for live quoting. / مَنسوخ — السُّلّم المرجعي الآن [`MONEY_LADDER.md`](MONEY_LADDER.md)، وهذا الملف تاريخي.*
+
 # سلم العروض — Dealix (نتائج أولاً)
 
 **إطار الفئة وسلم التقدم (GTM + Pilot + مراحل تقنية):** راجع القسم 5 في [CATEGORY_DESIGN_AND_MASTER_OPERATING_SYSTEM_AR.md](strategic/CATEGORY_DESIGN_AND_MASTER_OPERATING_SYSTEM_AR.md) مع الحفاظ على هذا الملف كمصدر تفصيلي للعروض داخل الريبو.

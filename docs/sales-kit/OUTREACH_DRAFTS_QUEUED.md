@@ -16,10 +16,20 @@
 > no LinkedIn automation, no guaranteed-outcome claims, no external send without explicit
 > founder approval.
 >
-> _Session note: the once-per-session launch-status check returned no output in this
-> environment (PROD endpoint unreachable / not configured). These are draft-only outputs and
-> carry no send or invoice risk. Before any real proposal or transactional email is sent, the
-> founder must verify Moyasar mode and Gmail OAuth status per the Wave 15 checklist._
+> _Session note (reconciliation pass, 2026-05-18): the once-per-session launch-status check
+> returned no output in this environment (PROD endpoint unreachable / not configured). These
+> are draft-only outputs and carry no send or invoice risk. Before any real proposal or
+> transactional email is sent, the founder must verify Moyasar mode and Gmail OAuth status per
+> the Wave 15 checklist._
+>
+> **Doctrine reconciliation note:** this pass checked every draft below against current
+> doctrine — canonical wedge is the **499 SAR 7-Day Revenue Intelligence Sprint** (no "1 SAR
+> pilot"), canonical identity is a **Governed Revenue & AI Operations OS** (NOT an "AI sales
+> rep that replies in 45 seconds / auto-books meetings"), and no guaranteed outcomes. The
+> drafts in Parts A and B were found compliant and are retained. **The legacy file
+> `dealix_leads_20_real.md` is NOT a valid send list** — it is a cold-sourced prospect list
+> carrying retired doctrine. See `WARM_LIST_QUALIFICATION.md` and §A.0 below. No draft in this
+> file may be sent to any name from that legacy file without a confirmed warm path.
 
 ---
 
@@ -27,10 +37,28 @@
 
 ### A.0 — Scope reminder / تذكير بالنطاق
 
-These drafts are for the founder's **20 named personal contacts** only. The offer entry point
-is a **Free AI Ops Diagnostic**, followed optionally by a **499 SAR 7-Day Revenue Proof
-Sprint**. No revenue outcome is promised at any point. Pick the language variant that matches
-the language the relationship already uses.
+These drafts are for the founder's **genuine personal contacts** only — people the founder has
+met at least once, in person or by named introduction (`WARM_LIST_WORKFLOW.md §1`). The offer
+entry point is a **Free Revenue Diagnostic** (Rung 0, 0 SAR), followed optionally by the
+**499 SAR 7-Day Revenue Intelligence Sprint** (Rung 1). No revenue outcome is promised at any
+point. Pick the language variant that matches the language the relationship already uses.
+
+**Not a valid send list / قائمة غير صالحة للإرسال:** the legacy file `dealix_leads_20_real.md`
+(Salla, Zid, Foodics, Lucidya, BRKZ, and 15 others) is a **cold-sourced target/ICP reference
+list** assembled from Crunchbase/TechCrunch/Tracxn — it is **not** a warm list and **not**
+contactable cold. Per `WARM_LIST_QUALIFICATION.md`, every one of those 20 is
+`WARM-PATH REQUIRED`: a company on it becomes a real, draftable lead only after the founder
+attaches a confirmed warm path (prior relationship or a named, opted-in introduction). The
+legacy file's own instructions — cold LinkedIn DM as first contact, a fabricated family-name
+opener for Lucidya, "1 SAR pilot", "999 SAR" pricing, "AI sales rep / 45 seconds / auto-book
+demos" — are **retired and must not be used**. The drafts in this file describe Dealix as a
+**Governed Revenue & AI Operations OS** (drafts-only, human approval before any external
+send), never as an autonomous AI sales rep.
+
+هذا الملف مخصّص لجهات اتصال شخصية حقيقية فقط. ملف `dealix_leads_20_real.md` قائمة أهداف باردة
+مُجمَّعة، ليست قائمة دافئة ولا يجوز التواصل البارد معها؛ تصبح أي جهة فيها lead فعلياً فقط بعد
+أن يربطها المؤسس بمسار دافئ مؤكَّد. تعليمات الملف القديم (DM بارد، افتتاحية قرابة اسم مُلفّقة،
+"تجربة 1 ريال"، تسعير "999 ريال"، "مندوب AI يرد خلال 45 ثانية") متقاعدة ولا تُستخدَم.
 
 ### A.1 — The one-line ask (canonical) / السطر الواحد
 

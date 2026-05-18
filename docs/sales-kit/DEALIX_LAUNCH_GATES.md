@@ -1,11 +1,17 @@
-# 🚦 Dealix — Launch Gates Checklist (للتنفيذ الفوري)
+# Dealix — Launch Gates Checklist (للتنفيذ الفوري)
 
 **القاعدة:** لا توجد "launch partial". إما كل الـ gates مغلقة أو الـ launch غير مكتمل.
 **المدة المتوقعة:** 2-4 ساعات من وقتك الفعلي، موزّعة على 72 ساعة.
 
+**Doctrine:** This checklist conforms to [`../MONEY_LADDER.md`](../MONEY_LADDER.md)
+and [`../NARRATIVE_STANDARD.md`](../NARRATIVE_STANDARD.md). The launch sells
+Rung 0 (Free Revenue Diagnostic) → Rung 1 (499 SAR 7-Day Revenue Intelligence
+Sprint). There is no "1 SAR pilot". Payment is verified in Moyasar test mode
+only — no live charge is created for verification.
+
 ---
 
-## 🔴 Gate 1 — Backend Deploy (10 دقائق)
+## Gate 1 — Backend Deploy (10 دقائق)
 
 ### الخطوات:
 - [ ] افتح `https://railway.com/project/54bb60b4-d059-4dd1-af57-bc44c702b9f0`
@@ -26,7 +32,7 @@ curl https://<your-domain>.up.railway.app/api/v1/pricing/plans
 
 ---
 
-## 🔴 Gate 2 — Moyasar Webhook (5 دقائق)
+## Gate 2 — Moyasar Webhook (5 دقائق)
 
 ### الخطوات:
 - [ ] افتح `https://dashboard.moyasar.com/webhooks`
@@ -43,34 +49,39 @@ curl https://<your-domain>.up.railway.app/api/v1/pricing/plans
 
 ---
 
-## 🔴 Gate 3 — 1 SAR End-to-End Test (15 دقائق)
+## Gate 3 — Test-Mode Payment Verification (15 دقائق)
+
+**الهدف:** التحقق من مسار الدفع→التسليم بالكامل في **وضع اختبار Moyasar فقط**.
+لا تُنشئ أي رسوم حقيقية للتحقق. السعر الحيّ المعروض على العملاء هو **Sprint
+إثبات الإيراد بـ 499 ريالًا** (الدرجة 1 في [`../MONEY_LADDER.md`](../MONEY_LADDER.md)).
+سعر الـ "1 ريال" القديم مُلغى ولا يُستخدم في أي اختبار أو تسويق.
 
 ### الخطوات:
-- [ ] Terminal:
-  ```bash
-  cd /path/to/workspace
-  bash dealix_1_riyal_test.sh https://<your-domain>.up.railway.app
-  ```
-- [ ] السكريبت ينشئ invoice + يعرض رابط دفع
-- [ ] افتح الرابط في المتصفح
+- [ ] تأكد أن مفاتيح Moyasar في الـ env هي مفاتيح **test mode** (تبدأ بـ `test_`).
+- [ ] أنشئ invoice اختباري للدرجة 1 (Sprint 499 SAR) عبر checkout في وضع الاختبار.
+- [ ] افتح رابط الدفع في المتصفح.
 - [ ] ادفع ببطاقة Moyasar test:
   - Card: `4111 1111 1111 1111`
   - CVV: `123`
   - Expiry: `12/30`
   - OTP: `1234`
-- [ ] ارجع للـ terminal + اضغط Enter للتحقق
+- [ ] ارجع وتحقق من وصول الـ webhook ومن تسجيل العملية.
 
 ### Definition of Done:
-- [ ] Payment يظهر في Moyasar dashboard (status: `paid`)
-- [ ] Webhook event في Railway logs
-- [ ] Record جديد في DB (سأعطيك SQL للفحص)
-- [ ] `payment_succeeded` event في PostHog
+- [ ] Payment يظهر في Moyasar dashboard في وضع الاختبار (status: `paid`).
+- [ ] Webhook event في Railway logs (`moyasar webhook received`).
+- [ ] Record جديد للعملية في DB (سأعطيك SQL للفحص).
+- [ ] `payment_succeeded` event في PostHog.
+- [ ] لا توجد أي رسوم حقيقية — كل ما سبق في وضع الاختبار.
+
+**ملاحظة:** قبل أول عميل حقيقي، يُحوَّل Moyasar إلى live mode، وتُطبَّق فوترة
+50/50 على الدرجة 1 (نصف عند البدء، نصف عند تسليم Proof Pack).
 
 **إذا الـ DB check غير ممكن من الواجهة:** OK، نعتمد على Moyasar + Webhook logs فقط للـ MVP.
 
 ---
 
-## 🔴 Gate 4 — Monitoring (45 دقيقة)
+## Gate 4 — Monitoring (45 دقيقة)
 
 ### PostHog Verification (15 دقيقة):
 - [ ] افتح `https://app.posthog.com` (أو self-hosted)
@@ -100,7 +111,7 @@ curl https://<your-domain>.up.railway.app/api/v1/pricing/plans
 
 ---
 
-## 🔴 Gate 5 — First Real Lead (20 دقيقة)
+## Gate 5 — First Real Lead (20 دقيقة)
 
 ### الخطوات:
 - [ ] افتح `dealix_personalized_messages.md`
@@ -126,16 +137,16 @@ curl https://<your-domain>.up.railway.app/api/v1/pricing/plans
 
 ---
 
-## ✅ كل شي مُغلق — Launch Status: LIVE
+## كل شي مُغلق — Launch Status: LIVE
 
 بعد إكمال الـ 5 gates:
 
 ### ما تحقق:
-- ✅ Backend يقبل traffic حقيقي
-- ✅ نظام دفع حي يعمل
-- ✅ Monitoring + Alerting نشط
-- ✅ أول رسالة outreach مُرسلة
-- ✅ Pipeline بدأ
+- Backend يقبل traffic حقيقي
+- مسار الدفع→التسليم مُتحقَّق منه في وضع الاختبار
+- Monitoring + Alerting نشط
+- أول رسالة outreach مُرسلة يدويًا من المؤسس
+- Pipeline بدأ على الدرجة 0 → الدرجة 1 (Sprint 499 ريالًا)
 
 ### ما يجب أن يحدث تلقائياً:
 - كل lead جديد → PostHog event
@@ -151,7 +162,7 @@ curl https://<your-domain>.up.railway.app/api/v1/pricing/plans
 
 ---
 
-## 📞 إذا علقت في أي gate
+## إذا علقت في أي gate
 
 أرسل لي:
 1. **رقم الـ gate** (1-5)
@@ -162,7 +173,7 @@ curl https://<your-domain>.up.railway.app/api/v1/pricing/plans
 
 ---
 
-## 🎯 Final Rule
+## Final Rule
 
 **لا تقل "Dealix launched" قبل الـ 5 gates كلها مُغلقة.**
 
@@ -172,3 +183,5 @@ Launched = كل الـ 5 gates DONE
 
 **إذا ما نفّذت هذه في 72 ساعة:** لا يوجد حجة.
 إما هناك blocker تقني حقيقي (نحلّه) أو تسويف (يجب مواجهته).
+
+> Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة

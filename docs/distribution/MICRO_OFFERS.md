@@ -1,3 +1,5 @@
+*Superseded — the canonical offer ladder is now [`../MONEY_LADDER.md`](../MONEY_LADDER.md). This file is historical and must not be used for live quoting. / مَنسوخ — السُّلّم المرجعي الآن [`../MONEY_LADDER.md`](../MONEY_LADDER.md)، وهذا الملف تاريخي.*
+
 # Micro-Offers — Sell the First Proof, Not the Platform — العروض المصغّرة — بِع أول إثبات لا المنصة
 
 ## Purpose — الغرض
