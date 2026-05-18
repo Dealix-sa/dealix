@@ -7,6 +7,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from dealix.commercial_ops.doctrine import format_doctrine_markdown
+from dealix.commercial_ops.first_paid_tracker import analyze_first_paid_diagnostic
+from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 from dealix.commercial_ops.paths import (
     FOUNDER_BRIEFS_DIR,
     REPO_ROOT,
@@ -27,6 +30,10 @@ def write_daily_pack_index(
     brief = d / f"brief_{day}.md"
     commercial = digest_path or (d / f"commercial_{day}.md")
     war_room = WAR_ROOM_TODAY_JSON
+    first_paid = analyze_first_paid_diagnostic()
+    from dealix.commercial_ops.gtm_stack import build_gtm_stack_snapshot
+
+    gtm = build_gtm_stack_snapshot(abm_top_n=5)
 
     def _rel(p: Path) -> str:
         try:
@@ -36,6 +43,8 @@ def write_daily_pack_index(
 
     lines = [
         f"# Founder Daily Pack · {day}",
+        "",
+        format_doctrine_markdown(),
         "",
         "راجع بالترتيب (لا إرسال خارجي بدون موافقة):",
         "",
@@ -48,6 +57,21 @@ def write_daily_pack_index(
         "- [ ] سجّل صفاً في `docs/commercial/operations/evidence_events_tracker.csv`",
         "- [ ] راجع مسودة LinkedIn من digest أو `scripts/social_queue_today.py`",
         "- [ ] مركز الموافقات قبل Gmail/LinkedIn",
+        f"- [ ] أول Diagnostic مدفوع: `{first_paid['dod_doc']}`",
+        f"- [ ] اجتماعات Soft Launch: `{first_paid['soft_launch_tracker']}`",
+        "",
+        "## GTM (مسار اليوم + ABM)",
+        "",
+        f"- المسار الموصى: **{gtm['dual_track']['recommended_track']}** — {gtm['dual_track']['reason_ar']}",
+        f"- موجة ABM 1: {gtm['abm_wave1']['active_rows']}/{gtm['abm_wave1']['min_required']} "
+        f"صف فعّال · جاهز={gtm['abm_wave1']['wave1_ready']}",
+        "- [ ] راجع `py -3 scripts/founder_gtm_status.py`",
+        "- [ ] بعد مكالمة: `py -3 scripts/founder_meeting_debrief_init.py --company \"...\"`",
+        f"- [ ] دليل: `{gtm['playbook_path']}`",
+        "",
+        "## سلم الإيراد (لا تخترع أرقاماً)",
+        "",
+        first_paid["revenue_ladder_ar"],
         "",
         "## CI (GitHub Secrets)",
         "",
@@ -69,7 +93,7 @@ def write_daily_pack_index(
     ]
     path = d / f"DAILY_PACK_{day}.md"
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    _write_index_json(day, path, commercial, war_room, brief)
+    _write_index_json(day, path, commercial, war_room, brief, first_paid, gtm)
     return path
 
 
@@ -79,6 +103,8 @@ def _write_index_json(
     commercial: Path,
     war_room: Path,
     brief: Path,
+    first_paid: dict[str, Any] | None = None,
+    gtm: dict[str, Any] | None = None,
 ) -> Path:
     """Machine-readable index for founder UI and CI artifacts."""
     d = pack_md.parent
@@ -89,15 +115,40 @@ def _write_index_json(
         except ValueError:
             return str(p)
 
+    fp = first_paid or analyze_first_paid_diagnostic()
+    gtm_snap = gtm
+    if gtm_snap is None:
+        from dealix.commercial_ops.gtm_stack import build_gtm_stack_snapshot
+
+        gtm_snap = build_gtm_stack_snapshot(abm_top_n=5)
+    vp = build_value_plan_snapshot(motion_top_n=5)
+    vp_json = d / f"value_plan_{day}.json"
+    vp_json.write_text(json.dumps(vp, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    from dealix.commercial_ops.value_map_status import write_value_map_artifacts
+
+    vm_paths = write_value_map_artifacts(day=day, motion_top_n=5)
     payload = {
         "date": day,
         "pack_md": _rel(pack_md),
         "brief_md": _rel(brief),
         "commercial_md": _rel(commercial),
+        "value_plan_json": _rel(vp_json),
+        "commercial_value_map_md": vm_paths.get("md"),
+        "commercial_value_map_json": vm_paths.get("json"),
         "war_room_json": _rel(war_room) if war_room.is_file() else None,
         "brief_exists": brief.is_file(),
         "commercial_exists": commercial.is_file(),
         "war_room_exists": war_room.is_file(),
+        "ops_ui": {
+            "founder": "/ar/ops/founder",
+            "war_room": "/ar/ops/war-room",
+            "approvals": "/ar/ops/approvals",
+            "marketing": "/ar/ops/marketing",
+        },
+        "first_paid_diagnostic": fp,
+        "value_plan": vp,
+        "gtm_stack": gtm_snap,
+        "soft_launch_meetings": fp["soft_launch_tracker"],
     }
     index_path = d / "index.json"
     index_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -107,10 +158,15 @@ def _write_index_json(
 def pack_status(date_str: str | None = None) -> dict[str, Any]:
     day = date_str or datetime.now(UTC).strftime("%Y-%m-%d")
     d = FOUNDER_BRIEFS_DIR
+    pack_path = d / f"DAILY_PACK_{day}.md"
+    try:
+        pack_index = str(pack_path.relative_to(REPO_ROOT)).replace("\\", "/")
+    except ValueError:
+        pack_index = str(pack_path)
     return {
         "date": day,
         "brief_exists": (d / f"brief_{day}.md").is_file(),
         "commercial_exists": (d / f"commercial_{day}.md").is_file(),
         "war_room_exists": WAR_ROOM_TODAY_JSON.is_file(),
-        "pack_index": str((d / f"DAILY_PACK_{day}.md").relative_to(REPO_ROOT)),
+        "pack_index": pack_index,
     }

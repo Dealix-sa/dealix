@@ -1004,6 +1004,90 @@ async def ops_client_pack_generate(body: ClientPackRequest) -> dict[str, Any]:
     return pack
 
 
+@router_ops.get("/founder/gtm-stack")
+async def ops_founder_gtm_stack(top_n: int = 10) -> dict[str, Any]:
+    """ABM wave 1, dual-track recommendation, TTV, proof stack refs."""
+    from dealix.commercial_ops.founder_debrief import list_debriefs
+    from dealix.commercial_ops.gtm_stack import build_gtm_stack_snapshot
+
+    n = max(1, min(top_n, 30))
+    snap = build_gtm_stack_snapshot(abm_top_n=n)
+    snap["recent_debriefs"] = list_debriefs(limit=5)
+    return snap
+
+
+@router_ops.get("/founder/motions-pipeline")
+async def ops_founder_motions_pipeline(top_n: int = 5) -> dict[str, Any]:
+    """Motion A/B/C/D daily pipeline summary."""
+    from dealix.commercial_ops.motion_pipelines import build_all_motions_summary
+
+    n = max(1, min(top_n, 15))
+    return build_all_motions_summary(top_n=n)
+
+
+@router_ops.get("/founder/expansion-status")
+async def ops_founder_expansion_status(top_n: int = 10) -> dict[str, Any]:
+    """Targeting + social + ABM expansion snapshot (no invented revenue)."""
+    from dealix.commercial_ops.expansion_status import build_expansion_status
+
+    n = max(1, min(top_n, 25))
+    return build_expansion_status(abm_top_n=n)
+
+
+class FounderEvidenceCsvAppend(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    event_type: str
+    company: str = Field(min_length=1, max_length=200)
+    notes: str = ""
+    motion: str = "A"
+    offer_id: str = "ten_lead_audit"
+    source_channel: str = "manual"
+
+
+@router_ops.post("/founder/evidence/csv-append")
+async def ops_founder_evidence_csv_append(body: FounderEvidenceCsvAppend) -> dict[str, Any]:
+    """Append one row to evidence_events_tracker.csv (governed types only)."""
+    from dealix.commercial_ops.evidence_append import append_evidence_row
+
+    try:
+        row = append_evidence_row(
+            event_type=body.event_type.strip(),
+            company=body.company.strip(),
+            notes=body.notes.strip(),
+            motion=body.motion.strip(),
+            offer_id=body.offer_id.strip(),
+            source_channel=body.source_channel.strip(),
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return {"status": "ok", "row": row, "policy_ar": "لا إرسال خارجي — سجل أدلة فقط."}
+
+
+@router_ops.get("/founder/value-plan")
+async def ops_founder_value_plan(top_n: int = 5) -> dict[str, Any]:
+    """Unified Value Plan snapshot — Motion A, evidence, first paid, weekly KPIs."""
+    from dealix.commercial_ops.value_plan import build_value_plan_snapshot
+
+    n = max(1, min(top_n, 20))
+    return build_value_plan_snapshot(motion_top_n=n)
+
+
+@router_ops.get("/founder/commercial-value-map")
+async def ops_founder_commercial_value_map(
+    top_n: int = 5,
+    include_value_plan: bool = True,
+) -> dict[str, Any]:
+    """Commercial value map — status, doc catalog, optional unified value_plan."""
+    from dealix.commercial_ops.value_map_status import build_commercial_value_map
+
+    n = max(1, min(top_n, 20))
+    return build_commercial_value_map(
+        include_value_plan=include_value_plan,
+        motion_top_n=n,
+    )
+
+
 @router_ops.get("/founder/daily-pack")
 async def ops_founder_daily_pack() -> dict[str, Any]:
     """Today's governed founder pack — checklist, KPI status, social snippet."""
@@ -1011,8 +1095,11 @@ async def ops_founder_daily_pack() -> dict[str, Any]:
     from dealix.commercial_ops.digest import build_commercial_digest
     from dealix.commercial_ops.kpi_snapshot import load_kpi_commercial_status
     from dealix.commercial_ops.social_queue import format_linkedin_draft, get_post_for_date
+    from dealix.commercial_ops.strategy_refs import strategy_links_flat
+    from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 
     digest = build_commercial_digest(skip_no_build=True)
+    value_plan = build_value_plan_snapshot(motion_top_n=5)
     kpi = load_kpi_commercial_status()
     social = get_post_for_date()
     try:
@@ -1030,23 +1117,30 @@ async def ops_founder_daily_pack() -> dict[str, Any]:
     ]
     if kpi.get("pending_count", 0) > 0:
         checklist_ar.insert(0, f"KPI: {kpi.get('hint_ar') or 'أكمل import من CRM'}")
+    fp_verdict = (value_plan.get("first_paid_diagnostic") or {}).get("verdict")
+    if fp_verdict == "PIPELINE_OPEN":
+        checklist_ar.append("بوابة القيمة: أغلق أول Diagnostic مدفوع + Proof (Motion A)")
 
     return {
         "generated_at": datetime.now(UTC).isoformat(),
         "pack_status": pack_status(),
         "pack_index_path": pack_index_path,
+        "value_plan": value_plan,
         "kpi_commercial": kpi,
         "evidence": digest.get("evidence"),
         "social_post_due_today": social,
         "linkedin_draft_preview": format_linkedin_draft(social)[:500] if social else "",
         "today_focus_ar": digest.get("today_focus_ar") or [],
         "checklist_ar": checklist_ar,
+        "gtm_stack": value_plan.get("gtm_stack") or {},
         "links": {
             "ops_founder": "/ar/ops/founder",
             "ops_marketing": "/ar/ops/marketing",
             "ops_war_room": "/ar/ops/war-room",
             "approvals": "/ar/approvals",
             "master_plan": "docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md",
+            "gtm_playbook": "docs/commercial/GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md",
+            **strategy_links_flat(),
         },
         "policy_ar": "حزمة يومية — إرسال خارجي بموافقة يدوية فقط.",
     }
@@ -1078,11 +1172,18 @@ async def ops_founder_dashboard() -> dict[str, Any]:
     gtm = build_sovereign_gtm_slice()
     ev_week = gtm.get("evidence_events_week") or {}
 
+    from dealix.commercial_ops.value_plan import build_value_plan_snapshot
+
+    value_plan = build_value_plan_snapshot(motion_top_n=5)
+
     warnings: list[str] = []
     if len(leads) < 10:
         warnings.append("Pipeline ledger shows fewer than ten leads — sharpen ICP and proof funnel.")
     if int(ev_week.get("today_total") or 0) < 1:
         warnings.append("سجّل حدث أدلة واحد اليوم في evidence_events_tracker.csv")
+    for w in (value_plan.get("warnings_ar") or [])[:3]:
+        if w not in warnings:
+            warnings.append(w)
 
     quotas = gtm.get("war_room_daily_quotas") or {}
     focus = [
@@ -1110,6 +1211,11 @@ async def ops_founder_dashboard() -> dict[str, Any]:
         "no_build_warnings": warnings,
         "today_focus_ar": focus,
         "sovereign_gtm": gtm,
+        "value_plan": {
+            "north_star": value_plan.get("north_star"),
+            "first_paid_verdict": (value_plan.get("first_paid_diagnostic") or {}).get("verdict"),
+            "evidence_today": (value_plan.get("evidence") or {}).get("today_total", 0),
+        },
         "links": {
             "approvals_console": "/ar/approvals",
             "sales_ops": "/ar/ops/sales",

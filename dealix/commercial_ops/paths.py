@@ -16,3 +16,9 @@ SOCIAL_QUEUE_YAML = REPO_ROOT / "dealix/config/social_content_queue.yaml"
 ICP_AGENCY_YAML = REPO_ROOT / "dealix/config/icp_agency_wedge.yaml"
 WAR_ROOM_TODAY_JSON = REPO_ROOT / "data/war_room_today.json"
 FOUNDER_BRIEFS_DIR = REPO_ROOT / "data/founder_briefs"
+GTM_ABM_WAVE1_YAML = REPO_ROOT / "dealix/config/gtm_abm_wave1.yaml"
+FOUNDER_DEBRIEFS_DIR = REPO_ROOT / "data/founder_debriefs"
+GTM_DEBRIEF_TEMPLATE = (
+    REPO_ROOT
+    / "docs/commercial/operations/founder_meeting_debrief_template.yaml"
+)

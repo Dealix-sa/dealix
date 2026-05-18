@@ -337,6 +337,44 @@ export const api = {
       headers: { "X-Admin-API-Key": adminApiKey },
     }),
 
+  getFounderValuePlan: (adminApiKey: string, topN = 5) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/value-plan", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN },
+    }),
+
+  getFounderGtmStack: (adminApiKey: string, topN = 10) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/gtm-stack", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN },
+    }),
+
+  getFounderCommercialValueMap: (adminApiKey: string, topN = 5) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/commercial-value-map", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN, include_value_plan: true },
+    }),
+
+  getFounderExpansionStatus: (adminApiKey: string, topN = 10) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/expansion-status", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN },
+    }),
+
+  postFounderEvidenceCsvAppend: (
+    adminApiKey: string,
+    body: {
+      event_type: string;
+      company: string;
+      notes?: string;
+      motion?: string;
+      offer_id?: string;
+    },
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/evidence/csv-append", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
   importWarRoomTargets: (adminApiKey: string, body: Record<string, unknown>) =>
     apiClient.post("/api/v1/ops-autopilot/war-room/import-targets", body, {
       headers: { "X-Admin-API-Key": adminApiKey },

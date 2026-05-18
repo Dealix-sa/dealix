@@ -5,6 +5,8 @@ import { useLocale } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { OpsFounderWarRoom } from "@/components/gtm/OpsFounderWarRoom";
+import { OpsGtmStrategyCard, type GtmStackPayload } from "@/components/gtm/OpsGtmStrategyCard";
+import { ValuePlanPanel, type ValuePlanPayload } from "@/components/gtm/ValuePlanPanel";
 import api from "@/lib/api";
 import { getAdminApiKey, isOpsConfigured, opsMissingKeyMessage } from "@/lib/opsAdmin";
 
@@ -32,6 +34,17 @@ type DailyPackPayload = {
   checklist_ar?: string[];
   pack_index_path?: string;
   today_focus_ar?: string[];
+  value_plan?: ValuePlanPayload;
+  gtm_stack?: GtmStackPayload;
+  expansion_status?: {
+    targeting?: {
+      pool_rows?: number;
+      wave2_ready?: boolean;
+      wave3_prep_ready?: boolean;
+    };
+    social?: { posts?: number; cycle_weeks?: number; queue_ready_24w?: boolean };
+    next_actions_ar?: string[];
+  };
 };
 
 export function OpsFounderCommandCenter() {
@@ -44,6 +57,8 @@ export function OpsFounderCommandCenter() {
   const [bridgeCount, setBridgeCount] = useState(0);
   const [targets, setTargets] = useState<TargetRow[]>([]);
   const [dailyPack, setDailyPack] = useState<DailyPackPayload | null>(null);
+  const [valuePlan, setValuePlan] = useState<ValuePlanPayload | null>(null);
+  const [gtmStack, setGtmStack] = useState<GtmStackPayload | null>(null);
   const [err, setErr] = useState("");
 
   const load = useCallback(() => {
@@ -59,8 +74,10 @@ export function OpsFounderCommandCenter() {
       api.getEvidenceLedger(adminKey, 120),
       api.getTargetingToday(adminKey, 5),
       api.getFounderDailyPack(adminKey),
+      api.getFounderValuePlan(adminKey, 5),
+      api.getFounderGtmStack(adminKey, 8),
     ])
-      .then(([pipe, mkt, health, ev, tgt, pack]) => {
+      .then(([pipe, mkt, health, ev, tgt, pack, vp, gtm]) => {
         setStages((pipe.data as { stages?: Record<string, number> }).stages ?? {});
         setMktStats((mkt.data as { stats?: Record<string, number> }).stats ?? {});
         const h = health.data as { kpis?: KpiRow[] };
@@ -69,7 +86,13 @@ export function OpsFounderCommandCenter() {
         setBridgeCount(items.filter((e) => e.event_type === "external_lead_bridged").length);
         const t = (tgt.data as { targets?: { items?: TargetRow[] } }).targets?.items ?? [];
         setTargets(t);
-        setDailyPack(pack.data as DailyPackPayload);
+        const packData = pack.data as DailyPackPayload;
+        setDailyPack(packData);
+        const vpData = (vp.data as ValuePlanPayload) ?? packData.value_plan ?? null;
+        setValuePlan(vpData);
+        setGtmStack(
+          (gtm.data as GtmStackPayload) ?? packData.gtm_stack ?? (vpData as { gtm_stack?: GtmStackPayload })?.gtm_stack ?? null,
+        );
       })
       .catch(() => setErr(isAr ? "تعذّر تحميل مركز القيادة." : "Command center load failed."));
   }, [adminKey, isAr]);
@@ -88,6 +111,10 @@ export function OpsFounderCommandCenter() {
           : "Unified command center — sales · marketing · targeting · ops health · war room."}
       </p>
       {err && <p className="text-destructive text-sm">{err}</p>}
+
+      {valuePlan && <ValuePlanPanel valuePlan={valuePlan} />}
+
+      <OpsGtmStrategyCard gtm={gtmStack} />
 
       {dailyPack?.kpi_commercial && (dailyPack.kpi_commercial.pending_count ?? 0) > 0 && (
         <Card className="p-4 border-amber-500/40 bg-amber-500/5">

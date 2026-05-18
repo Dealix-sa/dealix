@@ -2,8 +2,20 @@
 
 مرتبطة بـ [MASTER_COMMERCIAL_OPERATING_PLAN_AR.md](../MASTER_COMMERCIAL_OPERATING_PLAN_AR.md).
 
+**مراجعة شاملة (36 قسمًا):** [COMMERCIAL_OPS_QUICK_REFERENCE_AR.md](../COMMERCIAL_OPS_QUICK_REFERENCE_AR.md) — CI/CD · Railway · checkout · approvals · North Star · CODE_MAP
+
 | ملف | الغرض |
 |-----|--------|
+| [../GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md](../GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md) | **فهرس GTM (بحث ويب):** ABM · لوب مؤسس · Proof Stack · مساران A/B |
+| [GTM_DUAL_TRACK_CLARIFICATION_AR.md](GTM_DUAL_TRACK_CLARIFICATION_AR.md) | ترويج للعملاء vs ops داخلي — شجرة قرار |
+| [FOUNDER_SALES_LOOP_AR.md](FOUNDER_SALES_LOOP_AR.md) | لوب مكالمة + TTV + مراجعة أسبوعية |
+| [PROOF_STACK_ORDER_AR.md](PROOF_STACK_ORDER_AR.md) | ترتيب أدلة 1–5 (امتثال → pilot → case) |
+| [founder_meeting_debrief_template.yaml](founder_meeting_debrief_template.yaml) | قالب بعد كل discovery/demo |
+| [targeting/ABM_WAVE1_ICP_AR.md](targeting/ABM_WAVE1_ICP_AR.md) | موجة 1: 30–50 حساب warm + معايير ICP |
+| [GTM_CHANNELS_PLAYBOOK_AR.md](GTM_CHANNELS_PLAYBOOK_AR.md) | قنوات warm · تسلسل لمسة · بوابة إعلان |
+| [GTM_OBJECTION_MATRIX_AR.md](GTM_OBJECTION_MATRIX_AR.md) | ردود حية ↔ objection registry |
+| [GTM_ROI_ONEPAGER_TEMPLATE_AR.md](GTM_ROI_ONEPAGER_TEMPLATE_AR.md) | قالب ROI للمشتريات |
+| [GTM_WEEKLY_REVIEW_CHECKLIST_AR.md](GTM_WEEKLY_REVIEW_CHECKLIST_AR.md) | مراجعة GTM أسبوعية (جمعة) |
 | [EVIDENCE_EVENTS_CLOSE_PATH_AR.md](EVIDENCE_EVENTS_CLOSE_PATH_AR.md) | مسار lead→proof + أحداث أدلة |
 | [evidence_events_tracker.csv](evidence_events_tracker.csv) | تتبع يومي (انسخ صفوفاً) |
 | [FIRST_PAID_DIAGNOSTIC_DOD_AR.md](FIRST_PAID_DIAGNOSTIC_DOD_AR.md) | DoD أول إيراد مدفوع |
@@ -21,7 +33,7 @@
 | [GATED_AUTO_SEND_RFC_AR.md](GATED_AUTO_SEND_RFC_AR.md) | استكشاع إرسال تلقائي (معطّل افتراضياً) |
 | [aeo_drafts/](aeo_drafts/) | مسودات صفحات AEO (نشر لاحقاً) |
 
-**سكربتات:** `run_founder_commercial_day.sh` (canonical) · `run_founder_revenue_day.sh` (wrapper + Business NOW) · `verify_dealix_commercial_go_live.sh` · `commercial_war_room_sync.py` (P0 + outreach drafts) · `rotate_agency_targets.py` · `queue_content_drafts_for_approval.py`
+**سكربتات:** `run_founder_commercial_day.sh` (canonical) · `run_founder_revenue_day.sh` (wrapper + Business NOW) · `verify_dealix_commercial_go_live.sh` · `commercial_war_room_sync.py` (P0 + outreach drafts) · `rotate_agency_targets.py` · `queue_content_drafts_for_approval.py` · **`founder_gtm_status.py`** · **`founder_meeting_debrief_init.py`** · **`verify_gtm_stack.py`**
 
 **محتوى / سوشال — أي سكربت؟**
 

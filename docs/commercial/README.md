@@ -2,6 +2,36 @@
 
 | Document | Purpose |
 |----------|---------|
+| [**COMMERCIAL_VALUE_MAP_AR.md**](COMMERCIAL_VALUE_MAP_AR.md) | **خريطة القيمة المادية:** يومي/أسبوعي + Soft/Paid + سياق سوق خارجي + أوامر |
+| [**GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md**](GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md) | **بحث ويب + إطار عملي:** ABM موجة 1 · لوب المؤسس · طبقة الأدلة · مساران GTM |
+| [**COMMERCIAL_OPS_QUICK_REFERENCE_AR.md**](COMMERCIAL_OPS_QUICK_REFERENCE_AR.md) | **مراجعة شاملة (36 قسمًا):** CI/CD · Railway · Moyasar · approvals · E2E lead · env matrix |
+| [**COMMERCIAL_VALUE_MAP_AR.md**](COMMERCIAL_VALUE_MAP_AR.md) | **خريطة قيمة:** لقطة آلية · سلم بيع · سوق · `commercial_value_map_status.py` |
+| [**MARKET_INTELLIGENCE_MASTER_INDEX_AR.md**](MARKET_INTELLIGENCE_MASTER_INDEX_AR.md) | **استخبارات سوق 2025–2026:** PDPL · RevOps · RFP · Why Now |
+| [**MARKET_INTELLIGENCE_PDPL_LEGAL_REVIEW_AR.md**](MARKET_INTELLIGENCE_PDPL_LEGAL_REVIEW_AR.md) | **استخبارات سوق — امتثال:** مراجعة داخلية PDPL/DPA/إقامة + لغة آمنة للعقود |
+| [**POSITIONING_WHY_NOW_SAUDI_ONEPAGER_AR.md**](POSITIONING_WHY_NOW_SAUDI_ONEPAGER_AR.md) | **تموضع:** Why Now السعودية · حوكمة AI · Decision Passport vs CRM |
+| [**INFRA_HOSTING_REGION_RUBRIC_AR.md**](INFRA_HOSTING_REGION_RUBRIC_AR.md) | **بنية:** جدول قرار region · نسخ · subprocessors · مسار DSAR |
+| [**MARKET_INTELLIGENCE_MASTER_INDEX_AR.md**](MARKET_INTELLIGENCE_MASTER_INDEX_AR.md) | **فهرس حزمة استخبارات السوق 2025–2026** (9 وثائق) |
+| [**MARKET_INTELLIGENCE_SAUDI_SAAS_MARKET_AR.md**](MARKET_INTELLIGENCE_SAUDI_SAAS_MARKET_AR.md) | سوق SaaS · ICP · JTBD |
+| [**MARKET_INTELLIGENCE_FOUNDER_REVOPS_GTM_AR.md**](MARKET_INTELLIGENCE_FOUNDER_REVOPS_GTM_AR.md) | مؤسس · RevOps مستمر · سكربتات يومية |
+| [**MARKET_INTELLIGENCE_GOVERNED_AI_CATEGORY_AR.md**](MARKET_INTELLIGENCE_GOVERNED_AI_CATEGORY_AR.md) | Trust Plane · Decision Passport · فئة السوق |
+| [**MARKET_INTELLIGENCE_IMPLEMENTATION_PLAYBOOK_AR.md**](MARKET_INTELLIGENCE_IMPLEMENTATION_PLAYBOOK_AR.md) | كيف تستخدم الحزمة اليوم |
+| [**MARKET_INTELLIGENCE_OBJECTIONS_PDPL_AR.md**](MARKET_INTELLIGENCE_OBJECTIONS_PDPL_AR.md) | اعتراضات مبيعات بلسان PDPL آمن |
+| [**MARKET_INTELLIGENCE_PROCUREMENT_FAQ_AR.md**](MARKET_INTELLIGENCE_PROCUREMENT_FAQ_AR.md) | RFP / security questionnaire |
+| [**MARKET_INTELLIGENCE_CLOUD_CROSS_BORDER_AR.md**](MARKET_INTELLIGENCE_CLOUD_CROSS_BORDER_AR.md) | سحابة · إقامة · نقل عبر الحدود |
+| [**MARKET_INTELLIGENCE_CONTENT_GTM_AR.md**](MARKET_INTELLIGENCE_CONTENT_GTM_AR.md) | محتوى LinkedIn/AEO · 12 أسبوع |
+| [**MARKET_INTELLIGENCE_INVESTOR_PARTNER_AR.md**](MARKET_INTELLIGENCE_INVESTOR_PARTNER_AR.md) | مستثمر · شريك · data room |
+| [**MARKET_INTELLIGENCE_SALES_CHAMPION_PACK_AR.md**](MARKET_INTELLIGENCE_SALES_CHAMPION_PACK_AR.md) | Champion · deck · discovery 45 دقيقة |
+| [**MARKET_INTELLIGENCE_WEEKLY_REVIEW_CHECKLIST_AR.md**](MARKET_INTELLIGENCE_WEEKLY_REVIEW_CHECKLIST_AR.md) | مراجعة أسبوعية/ربع سنوية |
+| [**MARKET_INTELLIGENCE_METRICS_CREDIBILITY_AR.md**](MARKET_INTELLIGENCE_METRICS_CREDIBILITY_AR.md) | TAM/SAM/SOM · مصداقية أرقام |
+| [**MARKET_INTELLIGENCE_EN_EXECUTIVE_SUMMARY.md**](MARKET_INTELLIGENCE_EN_EXECUTIVE_SUMMARY.md) | ملخص تنفيذي EN |
+| `dealix/config/market_intelligence_refs.yaml` | فهرس آلي للوكلاء والـ digest |
+| [**MARKET_INTELLIGENCE_EMAIL_TEMPLATES_AR.md**](MARKET_INTELLIGENCE_EMAIL_TEMPLATES_AR.md) | بريد · واتساب warm |
+| [**MARKET_INTELLIGENCE_DEMO_SCRIPT_AR.md**](MARKET_INTELLIGENCE_DEMO_SCRIPT_AR.md) | ديمو 10 دقائق |
+| [**MARKET_INTELLIGENCE_CATEGORY_BATTLECARD_AR.md**](MARKET_INTELLIGENCE_CATEGORY_BATTLECARD_AR.md) | فئة السوق (داخلي) |
+| [**MARKET_INTELLIGENCE_TRUST_SECURITY_MATRIX_AR.md**](MARKET_INTELLIGENCE_TRUST_SECURITY_MATRIX_AR.md) | L0–L5 · 8 gates · API |
+| [**MARKET_INTELLIGENCE_CUSTOMER_SUCCESS_AR.md**](MARKET_INTELLIGENCE_CUSTOMER_SUCCESS_AR.md) | بعد البيع → Proof → Growth |
+| `dealix/config/market_intelligence_content_calendar.yaml` | تقويم محتوى 12 أسبوع |
+| `scripts/market_intelligence_status.py` | `MARKET_INTELLIGENCE_VERDICT=PASS|FAIL` |
 | [**COMMERCIAL_LAUNCH_CHECKLIST_AR.md**](COMMERCIAL_LAUNCH_CHECKLIST_AR.md) | **Soft Launch:** `verify_dealix_commercial_go_live.sh` · funnel `/ar` |
 | [**PAID_LAUNCH_TRACKER_AR.md**](PAID_LAUNCH_TRACKER_AR.md) | **Paid Launch:** بوابات LAUNCH_GATES + FOUNDER_ACTION |
 | [**DEALIX_COMPANY_READY_MASTER_AR.md**](../company/DEALIX_COMPANY_READY_MASTER_AR.md) | **0 — الشركة جاهزة:** أوامر صباح/تحقق، CI، UI · `company_ready_verify` · `run_founder_commercial_day` |

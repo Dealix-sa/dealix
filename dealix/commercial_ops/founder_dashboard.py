@@ -7,6 +7,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from dealix.commercial_ops.evidence_csv import count_evidence_events, load_evidence_rows
+from dealix.commercial_ops.strategy_refs import load_founder_strategy_refs
 from dealix.commercial_ops.paths import WAR_ROOM_TODAY_JSON
 from dealix.commercial_ops.social_queue import get_post_for_date
 from dealix.commercial_ops.targeting_csv import build_war_room_today, load_targets
@@ -66,6 +67,7 @@ def build_sovereign_gtm_slice() -> dict[str, Any]:
     mkt.ensure_seed_loaded()
     marketing_stats = mkt.stats()
 
+    from dealix.commercial_ops.gtm_stack import build_gtm_stack_snapshot
     from dealix.commercial_ops.outreach_drafts import attach_outreach_drafts
     from dealix.commercial_ops.targeting_rotation import select_daily_p0_targets
 
@@ -85,4 +87,8 @@ def build_sovereign_gtm_slice() -> dict[str, Any]:
         "sample_proof_pack_path": "docs/commercial/operations/sample_proof_pack/SAMPLE_PROOF_PACK_AGENCY_AR.md",
         "master_plan_path": "docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md",
         "sovereign_gtm_path": "docs/commercial/DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md",
+        "founder_operating_system_path": "docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md",
+        "strategy_refs": load_founder_strategy_refs(),
+        "gtm_stack": build_gtm_stack_snapshot(abm_top_n=5),
+        "gtm_playbook_path": "docs/commercial/GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md",
     }
