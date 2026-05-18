@@ -609,6 +609,44 @@ def _parse_response(resp: httpx.Response) -> dict[str, Any]:
     }
 
 
+def build_sample_invoice() -> dict[str, Any]:
+    """Generate a synthetic sandbox invoice for pre-flight verification.
+
+    Returns a dict with the rendered XML, base64 XML and TLV QR code so
+    scripts/zatca_preflight.py can decode the QR and confirm all 5 TLV
+    tags are present. Uses fixed sandbox party values and never contacts
+    the ZATCA API.
+    """
+    payload = build_invoice_payload_from_record(
+        invoice_number="PREFLIGHT-SAMPLE-001",
+        seller_name="Dealix Sandbox Seller",
+        seller_vat="300000000000003",
+        seller_crn="1010000000",
+        seller_street="King Fahd Road",
+        seller_city="Riyadh",
+        seller_postal="12345",
+        buyer_name="Sandbox Buyer",
+        buyer_vat="310000000000003",
+        line_items_data=[
+            {
+                "description": "7-Day Revenue Proof Sprint",
+                "quantity": 1,
+                "unit_price_sar": 499,
+            }
+        ],
+        invoice_type="standard",
+    )
+    xml_string, xml_b64, qr_code_b64 = InvoiceGenerator().generate(payload)
+    return {
+        "invoice_number": payload.invoice_number,
+        "xml": xml_string,
+        "xml_b64": xml_b64,
+        "qr_base64": qr_code_b64,
+        "grand_total_sar": str(payload.grand_total),
+        "vat_total_sar": str(payload.vat_total),
+    }
+
+
 def build_invoice_payload_from_record(
     invoice_number: str,
     seller_name: str,

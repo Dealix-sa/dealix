@@ -130,6 +130,25 @@ def decide(
             safe_alternative="draft_only",
             evidence={"actor": actor, "action_type": normalized_action},
         )
+    # Cold-channel gate: a cold WhatsApp / LinkedIn touch is forbidden at any
+    # action type (NO_COLD_WHATSAPP / NO_LINKEDIN_AUTOMATION). This must run
+    # before the generic low-risk fall-through so a cold draft cannot slip
+    # through as ``allow`` — the demo path happened to be warm/email, which
+    # masked the gap.
+    channel = str(context.get("channel") or "").lower()
+    is_cold = bool(context.get("is_cold"))
+    if is_cold and channel in {"whatsapp", "linkedin"}:
+        return RuntimeDecision(
+            decision=_DecisionLabel("block"),
+            reason=(
+                f"cold {channel} contact is forbidden "
+                "(NO_COLD_WHATSAPP / NO_LINKEDIN_AUTOMATION)"
+            ),
+            risk_level="high",
+            approval_required=True,
+            safe_alternative="warm_intro_only",
+            evidence={"actor": actor, "action_type": normalized_action, "channel": channel},
+        )
     high_risk_actions = {
         "send_external_message",
         "whatsapp.send_message",

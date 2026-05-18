@@ -111,7 +111,8 @@ def step2_data_quality(*, customer_id: str, engagement_id: str, raw_csv: str | b
     if not raw:
         return {"row_count": 0, "dq": 0, "skipped": "no_csv_provided"}
     p = preview(raw)
-    dq = compute_dq_from_preview(preview=p, duplicates_found=0)
+    duplicates = _detect_duplicate_companies(list(p.rows))
+    dq = compute_dq_from_preview(preview=p, duplicates_found=len(duplicates))
     return {
         "row_count": p.row_count,
         "columns": list(p.columns),
@@ -123,7 +124,32 @@ def step2_data_quality(*, customer_id: str, engagement_id: str, raw_csv: str | b
             "format_consistency": dq.format_consistency,
             "source_clarity": dq.source_clarity,
         },
+        "duplicates_found": len(duplicates),
+        "duplicate_groups": duplicates,
     }
+
+
+def _detect_duplicate_companies(rows: list[dict]) -> list[dict]:
+    """Group rows by normalized company name; surface every name that repeats.
+
+    The DQ score already penalizes duplicates via ``duplicate_inverse``, but the
+    customer-facing pack must also *name* them so the founder can decide a
+    merge. Returns one entry per repeated company with its occurrence count.
+    """
+    from auto_client_acquisition.data_os.dedupe import normalize_company_name
+
+    seen: dict[str, int] = {}
+    for r in rows:
+        name = str(r.get("company_name", "")).strip()
+        if not name:
+            continue
+        key = normalize_company_name(name)
+        seen[key] = seen.get(key, 0) + 1
+    return [
+        {"normalized_company": k, "occurrences": n}
+        for k, n in sorted(seen.items())
+        if n > 1
+    ]
 
 
 def step3_account_scoring(*, customer_id: str, engagement_id: str, accounts: list[dict] | None = None) -> dict:
@@ -151,6 +177,7 @@ def step3_account_scoring(*, customer_id: str, engagement_id: str, accounts: lis
             "company_name": acc.get("company_name", f"acct_{i}"),
             "score": score,
             "reasons": _score_reasons(acc, score),
+            "relationship_status": acc.get("relationship_status", "unknown"),
         })
     scored.sort(key=lambda x: x["score"], reverse=True)
     for i, s in enumerate(scored, start=1):
@@ -185,6 +212,9 @@ def step4_draft_pack(*, customer_id: str, engagement_id: str, top_accounts: list
                     f"Opening note for {acc['company_name']} — value-led, decision "
                     "left to the customer, no guaranteed claims."
                 ),
+                "channel": "email",
+                "is_cold": acc.get("relationship_status", "unknown")
+                not in ("warm", "active"),
                 "governance_decision": "draft_only",
             }
             for acc in top_accounts[:10]
@@ -204,8 +234,8 @@ def step5_governance_review(*, customer_id: str, engagement_id: str, drafts: lis
             action="generate_draft",
             context={
                 "text": outline_text,
-                "channel": "email",
-                "is_cold": False,
+                "channel": d.get("channel", "email"),
+                "is_cold": bool(d.get("is_cold", False)),
             },
         )
         reviews.append({
@@ -239,6 +269,7 @@ def step6_proof_pack(
     rows_imported: int = 0,
     accounts_scored: int = 0,
     drafts_reviewed: int = 0,
+    duplicates_found: int = 0,
 ) -> dict:
     """Day 5: Proof Pack assembly — fills the 14 canonical v2 sections.
 
@@ -294,12 +325,20 @@ def step6_proof_pack(
         "problem": problem_summary or "(provided in kickoff)",
         "inputs": (
             f"Customer data import: {rows_imported} row(s). "
-            f"Data-quality score: {dq_score:.2f}/1.00."
+            f"Data-quality score: {dq_score:.1f}/100."
         ),
         "source_passports": passport_desc,
         "work_completed": work_completed_summary or "10-step sprint executed",
         "outputs": outputs_text,
-        "quality_scores": f"Data-quality (DQ) score: {dq_score:.2f}/1.00.",
+        "quality_scores": (
+            f"Data-quality (DQ) score: {dq_score:.1f}/100. "
+            + (
+                f"{duplicates_found} duplicate company group(s) detected — "
+                "flagged for founder merge review."
+                if duplicates_found
+                else "No duplicate company records detected."
+            )
+        ),
         "governance_decisions": f"Draft governance decisions — {gov_lines}.",
         "blocked_risks": (
             "One or more drafts were blocked by governance review — "
@@ -333,7 +372,7 @@ def step6_proof_pack(
             rows_imported > 0,
             accounts_scored > 0,
             drafts_reviewed > 0,
-            dq_score >= 0.5,
+            dq_score >= 50.0,
         )
     )
     score = int(round(completeness * evidence_signals / 4))
@@ -352,18 +391,38 @@ def step6_proof_pack(
 def step7_capital_assets(
     *, customer_id: str, engagement_id: str, asset_specs: list[dict] | None = None
 ) -> dict:
-    """Day 7: Register capital assets — at least 1 reusable artifact."""
+    """Day 7: Register capital assets.
+
+    Doctrine minimum: every engagement deposits at least 1 Trust asset plus 1
+    Knowledge/Product asset. The default spec list satisfies that minimum so a
+    sprint can never close under-depositing — see ``_capital_minimum_met``.
+    """
     from auto_client_acquisition.capital_os.capital_ledger import add_asset
 
     specs = asset_specs or [
+        {
+            "asset_type": "proof_example",
+            "owner": customer_id,
+            "asset_ref": f"sprint_{engagement_id}_proof_pack_v2",
+            "notes": "Anonymized 14-section Proof Pack — reusable as delivery QA "
+            "reference and sales proof (Trust asset).",
+        },
+        {
+            "asset_type": "sector_insight",
+            "owner": customer_id,
+            "asset_ref": f"sprint_{engagement_id}_sector_scoring_delta",
+            "notes": "Sector + relationship-status account-scoring heuristic "
+            "delta observed in this sprint (Knowledge asset).",
+        },
         {
             "asset_type": "scoring_rule",
             "owner": customer_id,
             "asset_ref": f"sprint_{engagement_id}_scoring_v1",
             "notes": "Default sector + relationship-status scoring rule used in this sprint.",
-        }
+        },
     ]
     registered = []
+    registered_types: list[str] = []
     for s in specs:
         try:
             a = add_asset(
@@ -376,9 +435,36 @@ def step7_capital_assets(
                 notes=s.get("notes", ""),
             )
             registered.append(a.asset_id)
+            registered_types.append(s["asset_type"])
         except Exception:  # noqa: BLE001
             continue
-    return {"registered": registered, "count": len(registered)}
+    return {
+        "registered": registered,
+        "count": len(registered),
+        "minimum_met": _capital_minimum_met(registered_types),
+        "registered_types": registered_types,
+    }
+
+
+# Trust = customer-confirmable proof artifacts; Knowledge/Product = reusable
+# playbook or code artifacts. Doctrine: every engagement deposits >=1 of each.
+_TRUST_TYPES = frozenset({"proof_example", "governance_rule"})
+_KNOWLEDGE_PRODUCT_TYPES = frozenset(
+    {
+        "sector_insight",
+        "qa_rubric",
+        "arabic_style_pattern",
+        "scoring_rule",
+        "draft_template",
+        "productization_signal",
+    }
+)
+
+
+def _capital_minimum_met(asset_types: list[str]) -> bool:
+    """True when >=1 Trust asset and >=1 Knowledge/Product asset were registered."""
+    have = set(asset_types)
+    return bool(have & _TRUST_TYPES) and bool(have & _KNOWLEDGE_PRODUCT_TYPES)
 
 
 def step8_retainer_check(
@@ -466,6 +552,7 @@ def run_sprint(
     rows_imported = int(s2.output.get("row_count", 0) or 0)
     accounts_scored = int(s3.output.get("total_scored", 0) or 0)
     drafts_reviewed = len(drafts)
+    duplicates_found = int(s2.output.get("duplicates_found", 0) or 0)
     s6 = _safe("proof_pack", step6_proof_pack,
                customer_id=customer_id, engagement_id=engagement_id,
                passport=source_passport, dq_score=dq_score,
@@ -477,7 +564,8 @@ def run_sprint(
                problem_summary=problem_summary,
                rows_imported=rows_imported,
                accounts_scored=accounts_scored,
-               drafts_reviewed=drafts_reviewed)
+               drafts_reviewed=drafts_reviewed,
+               duplicates_found=duplicates_found)
     run.steps.append(s6)
     pack = s6.output if s6.status == "ran" else {}
     run.proof_pack = pack

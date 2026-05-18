@@ -12,6 +12,8 @@ class CapitalAssetType(StrEnum):
     PROOF_EXAMPLE = "proof_example"
     SECTOR_INSIGHT = "sector_insight"
     PRODUCTIZATION_SIGNAL = "productization_signal"
+    QA_RUBRIC = "qa_rubric"
+    ARABIC_STYLE_PATTERN = "arabic_style_pattern"
 
 
 __all__ = ["CapitalAssetType"]
