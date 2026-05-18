@@ -513,12 +513,102 @@ def run_sprint(
     # Governance envelope on the whole sprint
     if any(s.status == "blocked" for s in run.steps):
         run.governance_decision = "needs_review"
+
+    # Audit trail — link the paid sprint to the auditability_os evidence
+    # chain so the payment->delivery path is traceable end-to-end.
+    _record_audit_trail(run, source_passport=source_passport)
     return run
+
+
+def _record_audit_trail(run: SprintRun, *, source_passport: dict | None) -> None:
+    """Append the sprint's audit events to the customer-scoped audit log.
+
+    Lets ``auditability_os.evidence_chain.build_chain`` reconstruct the
+    payment->delivery chain for a paid Revenue Proof Sprint. Fail-safe: any
+    error is swallowed so a logging failure never breaks delivery.
+    """
+    try:
+        from auto_client_acquisition.auditability_os.audit_event import (
+            AuditEventKind,
+            record_event,
+        )
+    except Exception:  # noqa: BLE001
+        return
+
+    def _emit(kind: AuditEventKind, *, decision: str = "", summary: str = "",
+              source_refs: list[str] | None = None,
+              output_refs: list[str] | None = None) -> None:
+        try:
+            record_event(
+                customer_id=run.customer_id,
+                kind=kind,
+                actor="delivery_sprint",
+                engagement_id=run.engagement_id,
+                decision=decision,
+                summary=summary,
+                source_refs=source_refs or [],
+                output_refs=output_refs or [],
+            )
+        except Exception:  # noqa: BLE001
+            return
+
+    step_by_name = {s.name: s for s in run.steps}
+
+    s1 = step_by_name.get("kickoff_source_passport")
+    if s1 is not None and s1.output.get("passport_provided"):
+        valid = bool(s1.output.get("validation", {}).get("is_valid"))
+        src_id = str((source_passport or {}).get("source_id", "")) or "source_passport"
+        _emit(
+            AuditEventKind.SOURCE_PASSPORT_VALIDATED,
+            decision="valid" if valid else "invalid",
+            summary="Source Passport checked at sprint kickoff.",
+            source_refs=[src_id],
+        )
+
+    s4 = step_by_name.get("draft_pack_outline")
+    if s4 is not None and s4.status == "ran":
+        n_outlines = int(s4.output.get("total_outlines", 0) or 0)
+        _emit(
+            AuditEventKind.AI_RUN,
+            summary=f"Draft outlines structured for {n_outlines} account(s).",
+        )
+
+    s5 = step_by_name.get("governance_review")
+    if s5 is not None and s5.status == "ran":
+        summary = s5.output.get("summary", {}) or {}
+        decision = "block" if summary.get("block", 0) else "allow"
+        _emit(
+            AuditEventKind.GOVERNANCE_DECISION,
+            decision=decision,
+            summary=(
+                "Governance review of draft outlines — "
+                + ", ".join(f"{d}: {n}" for d, n in sorted(summary.items()))
+                if summary
+                else "Governance review of draft outlines."
+            ),
+        )
+
+    pack = run.proof_pack if isinstance(run.proof_pack, dict) else {}
+    if pack:
+        _emit(
+            AuditEventKind.PROOF_PACK_ASSEMBLED,
+            decision=run.proof_tier,
+            summary=f"Proof Pack assembled — score {run.proof_score}/100.",
+            output_refs=[f"proof_pack_{run.engagement_id}"],
+        )
+
+    _emit(
+        AuditEventKind.OUTPUT_DELIVERED,
+        decision=run.governance_decision,
+        summary="Sprint run completed; Proof Pack ready for founder review.",
+        output_refs=[f"sprint_run_{run.engagement_id}"],
+    )
 
 
 __all__ = [
     "SprintRun",
     "SprintStep",
+    "_record_audit_trail",
     "run_sprint",
     "step1_kickoff",
     "step2_data_quality",

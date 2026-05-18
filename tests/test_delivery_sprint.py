@@ -257,6 +257,61 @@ def test_step5_handles_punctuation_and_service_guarantees():
     assert by["C"] != "block"
 
 
+def test_run_sprint_records_audit_trail_for_evidence_chain():
+    """A sprint run must append audit events so a paid Revenue Proof Sprint
+    is traceable end-to-end via auditability_os.evidence_chain.build_chain —
+    this is the payment->delivery audit link."""
+    from auto_client_acquisition.auditability_os.audit_event import (
+        AuditEventKind,
+    )
+    from auto_client_acquisition.auditability_os.evidence_chain import build_chain
+
+    run = run_sprint(
+        engagement_id="dk_audit_1",
+        customer_id="cust_audit_1",
+        source_passport=_GOOD_PASSPORT,
+        raw_csv=_DEMO_CSV,
+        accounts=[
+            {"company_name": "Co1", "sector": "b2b_services", "city": "Riyadh",
+             "relationship_status": "warm", "last_interaction": "2026-05",
+             "notes": "fit"},
+        ],
+        problem_summary="rank Saudi B2B accounts",
+    )
+    chain = build_chain(
+        customer_id="cust_audit_1", engagement_id="dk_audit_1"
+    )
+    kinds = {n.kind for n in chain.nodes}
+    assert AuditEventKind.SOURCE_PASSPORT_VALIDATED.value in kinds
+    assert AuditEventKind.GOVERNANCE_DECISION.value in kinds
+    assert AuditEventKind.PROOF_PACK_ASSEMBLED.value in kinds
+    assert AuditEventKind.OUTPUT_DELIVERED.value in kinds
+    # The proof-pack node carries the engagement-scoped output reference.
+    pp = next(
+        n for n in chain.nodes
+        if n.kind == AuditEventKind.PROOF_PACK_ASSEMBLED.value
+    )
+    assert "proof_pack_dk_audit_1" in pp.output_refs
+    assert run.proof_pack is not None
+
+
+def test_run_sprint_audit_trail_scoped_to_engagement():
+    """Audit events are scoped per engagement so two sprints for the same
+    customer do not cross-link in the evidence chain."""
+    from auto_client_acquisition.auditability_os.evidence_chain import build_chain
+
+    run_sprint(engagement_id="dk_eng_a", customer_id="cust_scope")
+    run_sprint(engagement_id="dk_eng_b", customer_id="cust_scope")
+    chain_a = build_chain(customer_id="cust_scope", engagement_id="dk_eng_a")
+    chain_b = build_chain(customer_id="cust_scope", engagement_id="dk_eng_b")
+    assert chain_a.node_count >= 1
+    assert chain_b.node_count >= 1
+    assert all(n.kind for n in chain_a.nodes)
+    # Engagement filter keeps the two runs separate.
+    full = build_chain(customer_id="cust_scope")
+    assert full.node_count == chain_a.node_count + chain_b.node_count
+
+
 def test_step5_blocks_guarantee_after_unrelated_negation():
     """A negator that negates a *different* word must not let an affirmative
     guarantee bypass the gate ("without risk we guarantee revenue")."""
