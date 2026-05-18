@@ -77,6 +77,12 @@ async def create(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
     }
 
 
+@router.post("")
+async def create_alias(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
+    """Alias for clients using POST /api/v1/approvals directly."""
+    return await create(payload)
+
+
 @router.post("/{approval_id}/approve")
 async def approve_endpoint(
     approval_id: str,
