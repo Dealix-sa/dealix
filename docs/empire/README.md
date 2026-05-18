@@ -1,6 +1,6 @@
 # Dealix Empire — فهرس الاستراتيجية التجارية
 
-ربط وثائق الـ19 بـ Motions والعروض — **بدون تكرار** المحتوى التشغيلي اليومي.
+ربط وثائق الاستراتيجية بـ Motions والعروض — **بدون تكرار** المحتوى التشغيلي اليومي.
 
 | Motion | Empire docs | تشغيل يومي |
 |--------|-------------|-------------|
@@ -8,6 +8,18 @@
 | **B — Direct B2B** | [DEALIX_METHOD.md](DEALIX_METHOD.md) · [OFFER_LADDER.md](OFFER_LADDER.md) | Motion B في Sovereign Master |
 | **C — CRM partner** | [PARTNER_ECONOMY.md](PARTNER_ECONOMY.md) · [AFFILIATE_NETWORK.md](AFFILIATE_NETWORK.md) | [PARTNER_ONBOARDING_KIT_AR.md](../commercial/operations/PARTNER_ONBOARDING_KIT_AR.md) |
 | **D — Executive** | [ENTERPRISE_MOTION.md](ENTERPRISE_MOTION.md) · [COMMERCIAL_CONTROL_TOWER.md](COMMERCIAL_CONTROL_TOWER.md) | Business NOW + Control Tower |
+
+## Commercial Proof Mode — التنفيذ
+
+| ملف | الغرض |
+|-----|--------|
+| [CURRENT_DIRECTION.md](CURRENT_DIRECTION.md) | اتجاه المرحلة + المحاور الخمسة |
+| [SALES_SCRIPT.md](SALES_SCRIPT.md) | سكربت البيع وأسلوب الإغلاق |
+| [DEMO_FLOW.md](DEMO_FLOW.md) | ديمو 12 دقيقة |
+| [OBJECTION_ENGINE.md](OBJECTION_ENGINE.md) | بنك الاعتراضات |
+| [DAILY_SCORECARD.md](DAILY_SCORECARD.md) | لوحة القياس ونظام اللمسات اليومي |
+| [30_60_90_PLAN.md](30_60_90_PLAN.md) | خطة 24h / 7 / 30 / 90 يوم |
+| [TOOL_STACK.md](TOOL_STACK.md) | مكدّس الأدوات بالمستويات |
 
 ## طبقات الاستراتيجية
 
