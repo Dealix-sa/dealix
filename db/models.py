@@ -21,6 +21,7 @@ from datetime import datetime
 from sqlalchemy import (
     JSON,
     Boolean,
+    DateTime,
     Float,
     ForeignKey,
     Index,
@@ -933,8 +934,15 @@ class PaymentRecord(Base):
     last_event_type: Mapped[str | None] = mapped_column(String(64), nullable=True)
     raw_event: Mapped[dict] = mapped_column(JSON, default=dict)
     error_reason: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
-    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+    # Timezone-aware: utcnow() returns an aware datetime, so the column must be
+    # TIMESTAMP WITH TIME ZONE — otherwise asyncpg rejects the INSERT and the
+    # Moyasar webhook silently fails to persist the payment.
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, index=True
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=utcnow, onupdate=utcnow
+    )
 
     __table_args__ = (
         UniqueConstraint("provider", "provider_payment_id", name="uq_payments_provider_id"),

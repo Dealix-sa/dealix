@@ -2,8 +2,7 @@
 
 | Source | Owner | Sensitivity | Allowed Use | AI Access | Freshness | Retention |
 |---|---|---|---|---|---|---|
-| Lead CSV | Client | Medium | scoring/report | Yes | static | project |
-| Policy Docs | Client | High | RAG internal | role-based | monthly | active |
+| _(empty — launch start: no sources registered yet)_ | | | | | | |
 
 ## Rule
 

@@ -16,6 +16,6 @@ Client-facing or governance-sensitive outputs should record where possible:
 
 | ID | Project | Task | Model | Prompt Ver. | Inputs redacted | Output schema | Cost | QA | Risk |
 |----|---------|------|-------|-------------|-----------------|---------------|------:|---:|------|
-| AI-001 | Lead Sprint A | score accounts | *model* | v1.2 | Yes | ScoreBreakdown | 0.40 | 91 | Low |
+| _(empty — launch start: no material AI runs recorded yet)_ | | | | | | | | | |
 
 **Pair with:** [`PROMPT_REGISTRY.md`](PROMPT_REGISTRY.md), [`EVALUATION_REGISTRY.md`](EVALUATION_REGISTRY.md), [`COST_GOVERNANCE.md`](../company/COST_GOVERNANCE.md).

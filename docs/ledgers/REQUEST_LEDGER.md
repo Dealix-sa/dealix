@@ -28,7 +28,6 @@ Block
 
 | ID | Date | Source | Request | Type | Fit | Risk | Decision | Owner | Next Action |
 |----|------|--------|---------|------|----:|------|----------|-------|-------------|
-| R-001 | | LinkedIn | Wants lead scoring | Sales | 85 | Medium | Discovery | | Schedule call |
-| R-002 | | Client | Wants WhatsApp blasting | Client | 40 | High | Block / redirect | | Offer draft-only |
+| _(empty — launch start: no inbound requests recorded yet)_ | | | | | | | | | |
 
 **Rule:** no work without a **Decision** cell filled. Link to [`DECISION_LEDGER.md`](DECISION_LEDGER.md) when material.

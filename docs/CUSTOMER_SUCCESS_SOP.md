@@ -5,7 +5,9 @@
 **Last updated:** 2026-05-07
 **Companion docs:** `docs/sales-kit/dealix_customer_onboarding.md` · `docs/V14_TURNKEY_PACKAGE.md` · `docs/WAVE6_PILOT_TO_MONTHLY_UPSELL_AR_EN.md` · `auto_client_acquisition/crm_v10/customer_health.py` · Plan §23.5.3
 
-> **Why this doc exists:** A 14-day Sprint that ends with a "thanks bye" loses the Partner upsell. A Sprint that ends with a structured Day-7 review + NPS + clear path forward converts at 80%. The difference = this SOP.
+> **Why this doc exists:** A 7-day Sprint that ends with a "thanks bye" loses the Partner upsell. A Sprint that ends with a structured Day-7 review + NPS + clear path forward converts at 80%. The difference = this SOP.
+
+> **Naming note:** The Rung-1 offer is the **7-Day Revenue Intelligence Sprint** (499 SAR) — see `docs/PILOT_DELIVERY_SOP.md`. The close-out + NPS-1 happen on **Day 7**. The "d14" label in the NPS ledger round id (`sprint_d14`) is a historical key kept for backend stability; it refers to the same Sprint close-out NPS.
 
 ---
 
@@ -13,10 +15,11 @@
 
 ```
 Day 0      Sprint kickoff call (30 min)
-Day 1-7    Daily voice notes + decisions queue
-Day 7      Mid-Sprint review (15 min)  ← upsell signal check
-Day 14     Final review + Proof Pack delivery + upsell pitch
-Day 14     NPS-1 deployed (Sprint NPS)
+Day 1-5    Daily voice notes + decisions queue
+Day 5      Mid-Sprint check (15 min)  ← upsell signal check
+Day 6-7    Proof Pack assembly
+Day 7      Final review (30 min) + Proof Pack delivery + upsell pitch
+Day 7      NPS-1 drafted (founder-triggered, manual send)
 ─────────────────────────────────────────────────────────────
 [IF Partner signed]
 Month 1    Weekly Pipeline Audit + 1 founder call/week
@@ -29,7 +32,7 @@ Month 4    Renewal call OR honest exit conversation
 
 ---
 
-## 2. Day 14 close-out — the most important meeting
+## 2. Day 7 close-out — the most important meeting
 
 This is where Sprint becomes Partner. Use `docs/WAVE6_PILOT_TO_MONTHLY_UPSELL_AR_EN.md` Section 1-3 verbatim.
 
@@ -57,7 +60,9 @@ NO middle ground. No "let me think about it for a month" without a calendar entr
 
 Send via WhatsApp (manual, with founder signature).
 
-### NPS-1 (Sprint Day 14, after close-out call)
+> **Doctrine — draft/founder-triggered only:** NPS surveys are NEVER auto-sent. The founder sends manually (WhatsApp, with signature). Recorded responses are appended to the JSONL NPS ledger via `auto_client_acquisition/growth_v10/nps_ledger.py` (`record_response`) or the admin `POST /api/v1/nps/score` route — see §11.
+
+### NPS-1 (Sprint Day 7, after close-out call)
 
 > «شاكر لك على ٧ أيّام Sprint [الاسم]. سؤال واحد بس:
 >
@@ -79,16 +84,18 @@ Send via WhatsApp (manual, with founder signature).
 | 7-8 | Passive | Ask: "وش يخلّيك تعطي ١٠؟" — note for product backlog |
 | 0-6 | Detractor | Schedule 30-min recovery call within 48 hours, founder leads |
 
-**Logging:** append to `docs/wave6/live/nps_log.jsonl` (gitignored), schema:
+**Logging:** responses are recorded to the JSONL NPS ledger (`var/nps-ledger.jsonl`, path overridable via `DEALIX_NPS_LEDGER_PATH`, gitignored). Use `nps_ledger.record_response(...)` — the `verbatim` field is PII-redacted on write. Schema of a stored row:
 
 ```json
 {
+  "response_id": "nps_<hex>",
   "customer_handle": "...",
   "nps_round": "sprint_d14 | partner_m1 | partner_m3",
   "score": 8,
-  "verbatim": "...",
-  "responded_at": "ISO date",
-  "follow_up_taken": "..."
+  "band": "promoter | passive | detractor",
+  "verbatim_redacted": "...",
+  "recorded_by": "founder",
+  "recorded_at": "ISO-8601"
 }
 ```
 
@@ -208,3 +215,21 @@ Use `docs/sales-kit/dealix_customer_onboarding.md` + verify these arrive in cust
 | Days-to-NPS-response | ≤2 | WhatsApp same-day reply rate |
 
 If any target falls below, write 1-line root cause in Friday review. Adjust before scaling.
+
+---
+
+## 11. NPS backend wiring (B4)
+
+The NPS-1/2/3 single-question survey (§3) is wired to a minimal, doctrine-compliant backend. **No auto-sender exists — sends stay draft/founder-triggered.**
+
+| Component | Path | Role |
+|---|---|---|
+| Store module | `auto_client_acquisition/growth_v10/nps_ledger.py` | JSONL ledger; `record_response`, `list_responses`, `aggregate`. Mirrors `capital_ledger.py` pattern. |
+| Store file | `var/nps-ledger.jsonl` (gitignored) | Append-only; one JSON row per response. |
+| API route | `POST /api/v1/nps/score` | Records SOP-round responses (`day_7_post_pilot`→`sprint_d14`, `day_30_first_month`→`partner_m1`, `day_90_early_renewal`→`partner_m3`). |
+| Aggregate route | `GET /api/v1/nps/aggregate` (admin) | NPS = %promoters − %detractors over the ledger, with per-round breakdown. |
+| Test | `tests/test_nps_ledger.py` | Record/list, PII redaction, validation, aggregation. |
+
+**Doctrine guarantees:** `verbatim` is PII-redacted on write (`redact_text`); scores validated to 0–10; rounds validated against `VALID_ROUNDS`; no email/WhatsApp send is triggered anywhere in this path. Detractor escalation (§3 table) remains a manual founder action.
+
+**Scoped follow-up (deferred):** Postgres backend (mirroring `value_ledger_postgres.py`) and a customer-health-score feed are out of scope for launch — the JSONL store is sufficient for the first ~25 customers.

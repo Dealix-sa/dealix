@@ -13,7 +13,6 @@ Outputs must be:
 
 | ID | Client | Service | Output | Date | QA Score | Governance | Delivered | Notes |
 |----|--------|---------|--------|------|----------|------------|-----------|-------|
-| O-001 | Client A | Lead Intelligence | Executive Report | | 91 | Pass | Yes | |
-| O-002 | Client A | Lead Intelligence | Outreach Drafts | | 88 | Draft-only | Yes | |
+| _(empty — launch start: no client-facing artifacts delivered yet)_ | | | | | | | | |
 
 Link: [`../delivery/DELIVERY_DECISION.md`](../delivery/DELIVERY_DECISION.md), workbench `05_outputs/`.

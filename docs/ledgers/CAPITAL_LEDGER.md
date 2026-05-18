@@ -27,8 +27,6 @@ Examples:
 
 | ID | Project | Capital Type | Asset Created | Reusable? | Owner | Next Use |
 |----|---------|--------------|---------------|-----------|-------|----------|
-| C-001 | Lead Sprint A | Trust | anonymized proof pack | Yes | | sales deck |
-| C-002 | Lead Sprint A | Product | import preview script | Yes | | all lead sprints |
-| C-003 | Clinic Sprint | Knowledge | clinics playbook update | Yes | | clinic outreach |
+| _(empty — launch start: no capital assets recorded yet)_ | | | | | | |
 
 **Parent model:** [`DEALIX_CAPITAL_MODEL.md`](../company/DEALIX_CAPITAL_MODEL.md).

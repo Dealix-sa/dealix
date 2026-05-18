@@ -16,7 +16,6 @@ Review Date (if time-bound)
 
 | ID | Date | Decision | Context | Evidence | Risk | Owner | Outcome |
 |----|------|-----------|---------|----------|------|-------|---------|
-| D-001 | | Sell Lead Intelligence officially | Readiness stable | demo + QA + proof templates | Low | | Official |
-| D-002 | | Do not build WhatsApp auto-send now | Compliance + product focus | governance policy; no repeat demand | High | | Blocked |
+| _(empty — launch start: no material decisions recorded yet)_ | | | | | | | |
 
 Tie to [`../company/DECISION_OPERATING_SYSTEM.md`](../company/DECISION_OPERATING_SYSTEM.md).

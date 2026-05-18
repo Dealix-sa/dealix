@@ -14,7 +14,8 @@ Block
 
 | ID | Feature | Source | Repeated | Value | Risk Reduction | Score | Decision |
 |----|---------|--------|----------|-------|----------------|------:|----------|
-| F-001 | Import Preview | Lead projects | Yes | High | High | 92 | Build Now |
-| F-002 | WhatsApp Send | Client request | No | Medium | Low | 25 | Block |
+| _(empty — launch start: no feature candidates recorded yet)_ | | | | | | | |
 
 **Rule:** build after **repetition and evidence**, not because one client asked once ([`BUILD_DECISION.md`](../product/BUILD_DECISION.md)).
+
+**Schema example (illustrative — not an entry):** `F-001 | Import Preview | Lead projects | Yes | High | High | 92 | Build Now`. Note: WhatsApp auto-send is a permanent doctrine `Block` and never enters this ledger as a buildable candidate.

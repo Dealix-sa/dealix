@@ -4,8 +4,7 @@ Weekly view: **load vs limit**. Prevents silent quality burn.
 
 | Week | Active projects | Units used | Max units | Risk |
 |------|-----------------|-----------:|----------:|------|
-| W– | Lead Sprint A, Quick Win B | 4 | 5 | Low |
-| W– | Brain C, Lead D | 6 | 5 | **Over** — fix |
+| _(empty — launch start: no weeks logged yet)_ | | 0 | 5 | |
 
 ## If capacity > 100%
 

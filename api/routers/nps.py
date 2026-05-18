@@ -39,10 +39,20 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from api.security.api_key import require_admin_key
+from auto_client_acquisition.growth_v10 import nps_ledger
 
 log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/nps", tags=["nps"])
+
+# Map lifecycle milestones to the SOP NPS rounds (sprint_d14 / partner_m1 /
+# partner_m3). Milestones outside this map are accepted but not persisted as
+# a scored round (e.g. ad_hoc) — keeps the ledger aligned to the SOP.
+_MILESTONE_TO_ROUND: dict[str, str] = {
+    "day_7_post_pilot": "sprint_d14",
+    "day_30_first_month": "partner_m1",
+    "day_90_early_renewal": "partner_m3",
+}
 
 
 VALID_MILESTONES = {
@@ -82,8 +92,23 @@ async def submit_score(body: _NPSSubmission) -> dict[str, Any]:
         )
 
     band = _classify_score(body.score)
-    email_hash = hashlib.sha256(body.contact_email.encode()).hexdigest()[:12]
-    submission_id = f"nps_{hashlib.sha256(f'{body.customer_handle}:{email_hash}:{body.milestone}:{datetime.now().isoformat(timespec=chr(115)+chr(101)+chr(99)+chr(111)+chr(110)+chr(100)+chr(115))}'.encode()).hexdigest()[:20]}"
+
+    # Persist to the JSONL NPS ledger when the milestone maps to an SOP round.
+    # comment verbatim is PII-redacted inside record_response. No survey is
+    # sent here — sends are draft-only / founder-triggered per doctrine.
+    nps_round = _MILESTONE_TO_ROUND.get(body.milestone)
+    submission_id: str
+    if nps_round is not None:
+        recorded = nps_ledger.record_response(
+            customer_handle=body.customer_handle,
+            nps_round=nps_round,
+            score=body.score,
+            verbatim=body.comment or "",
+        )
+        submission_id = recorded.response_id
+    else:
+        email_hash = hashlib.sha256(body.contact_email.encode()).hexdigest()[:12]
+        submission_id = f"nps_{hashlib.sha256(f'{body.customer_handle}:{email_hash}:{body.milestone}'.encode()).hexdigest()[:12]}"
 
     log.info(
         "nps_submitted customer=%s milestone=%s band=%s score=%d",
@@ -117,26 +142,29 @@ async def submit_score(body: _NPSSubmission) -> dict[str, Any]:
         "next_action": next_action,
         "submitted_at": datetime.now(timezone.utc).isoformat(),
         "note": (
-            "Persistence + automated detractor escalation deferred to "
-            "follow-up commit. Manual review of NPS submissions for "
-            "first 25 customers."
+            "SOP-round responses (sprint_d14 / partner_m1 / partner_m3) are "
+            "persisted to the JSONL NPS ledger. Detractor escalation stays "
+            "manual & founder-led per doctrine — no auto-send."
         ),
     }
 
 
 @router.get("/aggregate", dependencies=[Depends(require_admin_key)])
 async def aggregate_nps() -> dict[str, Any]:
-    """Aggregate NPS this period. Empty when no submissions exist yet."""
-    # Stub: real aggregation needs nps_submissions table + persistence
-    # logic. Schema locked in /score so dashboards can plan against shape.
+    """Aggregate NPS over all recorded responses in the JSONL NPS ledger."""
+    overall = nps_ledger.aggregate()
+    breakdown = {
+        rnd: nps_ledger.aggregate(nps_round=rnd)
+        for rnd in sorted(nps_ledger.VALID_ROUNDS)
+    }
     return {
         "period_start": datetime.now(timezone.utc).replace(day=1).isoformat(),
-        "submissions_count": 0,
-        "nps_score": None,
-        "promoters_count": 0,
-        "passives_count": 0,
-        "detractors_count": 0,
-        "breakdown_by_milestone": {},
+        "submissions_count": overall["responses_count"],
+        "nps_score": overall["nps_score"],
+        "promoters_count": overall["promoters"],
+        "passives_count": overall["passives"],
+        "detractors_count": overall["detractors"],
+        "breakdown_by_milestone": breakdown,
         "benchmarks": {
             "saas_b2b_excellent": "≥ 50",
             "saas_b2b_good": "30-50",
@@ -144,8 +172,8 @@ async def aggregate_nps() -> dict[str, Any]:
             "saas_b2b_concern": "< 0",
         },
         "interpretation": (
-            "Pre-revenue — no NPS data yet. Once customer #1 submits "
-            "their Day-7 NPS, this dashboard populates automatically."
+            "Aggregated from founder-recorded NPS responses in the JSONL "
+            "NPS ledger. Empty until the first response is recorded."
         ),
     }
 

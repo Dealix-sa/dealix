@@ -28,6 +28,7 @@ Dormant
 
 | Client | Sector | Service | Status | Revenue | QA | Proof | Health | Next Step |
 |--------|--------|---------|--------|--------:|---:|-------|-------:|-----------|
-| Client A | B2B Services | Lead Intelligence | Delivered | 9500 | 91 | Yes | 85 | Pilot |
+| _(empty — launch start: no clients recorded yet)_ | | | | | | | | |
 
-**Notes:** Revenue = illustrative; replace with your CRM totals / SAR.
+**Notes:** Revenue = paid-evidence only (Moyasar / bank transfer). No client
+row exists until payment is confirmed. Anonymize in shared repos.

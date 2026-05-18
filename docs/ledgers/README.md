@@ -2,12 +2,17 @@
 
 Append-only **operational memory**. Prefer IDs that match workbench / CRM.
 
+All 13 ledgers below are initialized to a **clean launch-start state**: schema
+headers present, one explicit `_(empty — launch start ...)_` row, no fake
+entries. Rows are appended only as real, paid-evidence-backed events occur.
+
 | Ledger | File |
 |--------|------|
 | Request | [`REQUEST_LEDGER.md`](REQUEST_LEDGER.md) |
 | Decision | [`DECISION_LEDGER.md`](DECISION_LEDGER.md) |
 | Client | [`CLIENT_LEDGER.md`](CLIENT_LEDGER.md) |
 | Delivery | [`DELIVERY_LEDGER.md`](DELIVERY_LEDGER.md) |
+| Capacity | [`CAPACITY_LEDGER.md`](CAPACITY_LEDGER.md) |
 | Governance | [`GOVERNANCE_LEDGER.md`](GOVERNANCE_LEDGER.md) |
 | Proof | [`PROOF_LEDGER.md`](PROOF_LEDGER.md) |
 | Learning | [`LEARNING_LEDGER.md`](LEARNING_LEDGER.md) |
