@@ -162,6 +162,157 @@ async def daily_pipeline_refresh(ctx: dict[str, Any]) -> None:
     pass
 
 
+# ── Governed Autopilot daily motion ───────────────────────────────
+# These cron jobs automate drafting / scoring / scheduling / queuing only.
+# Prospect outreach is NEVER auto-sent here: the daily-targeting job queues
+# drafts into the durable approval queue (approval_required=True). The
+# founder's approval tap remains the only send trigger for prospects.
+#
+# ARQ cron runs in UTC; Riyadh is UTC+3 (AST). The UTC hour for an AST
+# target hour H is (H - 3) mod 24.
+
+async def daily_lead_prep(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Daily lead-prep — find stale unscored accounts and fan out scoring jobs.
+    Runs 06:00 AST (03:00 UTC).
+    """
+    from auto_client_acquisition.automation.daily_runner import run_lead_prep_core
+
+    logger.info("cron_daily_lead_prep_start")
+    result = await run_lead_prep_core()
+    redis = ctx.get("redis")
+    enqueued = 0
+    if redis is not None and result.get("status") == "ok":
+        for account_id in result.get("unscored_account_ids", []):
+            await redis.enqueue_job(
+                "run_lead_scoring", lead_id=account_id, tenant_id="default"
+            )
+            enqueued += 1
+    logger.info(
+        "cron_daily_lead_prep_done",
+        needs_scoring=result.get("needs_scoring", 0),
+        scoring_jobs_enqueued=enqueued,
+    )
+    return {**result, "scoring_jobs_enqueued": enqueued}
+
+
+async def daily_targeting(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Daily-targeting — queue the TOP-50 personalised outreach drafts into the
+    durable approval queue (approval_required=True). NEVER auto-sends.
+    Runs 07:00 AST (04:00 UTC).
+    """
+    from auto_client_acquisition.automation.daily_runner import (
+        run_daily_targeting_core,
+    )
+
+    logger.info("cron_daily_targeting_start")
+    result = await run_daily_targeting_core(daily_target_count=50)
+    logger.info(
+        "cron_daily_targeting_done",
+        selected=result.get("selected_count", 0),
+        status=result.get("status", "ok"),
+    )
+    return result
+
+
+async def daily_followups(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Follow-ups — queue +2/+5/+10 follow-up drafts for unanswered sent emails.
+    Drafts only; approval_required=True. Runs 08:00 AST (05:00 UTC).
+    """
+    from auto_client_acquisition.automation.daily_runner import run_followups_core
+
+    logger.info("cron_daily_followups_start")
+    result = await run_followups_core()
+    logger.info(
+        "cron_daily_followups_done",
+        followups_created=result.get("followups_created", 0),
+    )
+    return result
+
+
+async def founder_daily_brief(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Founder daily brief — email the founder a summary of today's queued
+    drafts, pending approvals, and follow-ups. Runs 08:30 AST (05:30 UTC).
+
+    Emails via the existing EmailClient. The brief is an internal
+    transactional message to the founder — not prospect outreach.
+    """
+    from auto_client_acquisition.approval_center import get_default_approval_store
+    from core.config.settings import get_settings
+    from integrations.email import EmailClient
+
+    logger.info("cron_founder_daily_brief_start")
+    settings = get_settings()
+
+    pending = get_default_approval_store().list_pending()
+    pending_email_drafts = sum(
+        1 for r in pending
+        if r.action_type == "draft_email" and (r.channel or "") == "email"
+    )
+    pending_blocked = sum(
+        1 for r in pending
+        if (r.channel or "").lower() in {"whatsapp", "linkedin", "phone"}
+    )
+
+    subject = f"Dealix daily brief — {len(pending)} approvals waiting"
+    lines = [
+        "Dealix Governed Autopilot — daily brief",
+        "",
+        f"Pending approvals: {len(pending)}",
+        f"  email drafts (executable on approve): {pending_email_drafts}",
+        f"  blocked-channel drafts (draft-only):  {pending_blocked}",
+        "",
+        "Action: review and batch-approve in the Approval Command Center.",
+        "Prospect sends only happen after your approval tap.",
+    ]
+    body_text = "\n".join(lines)
+
+    sent = False
+    try:
+        result = await EmailClient().send(
+            to=settings.dealix_founder_email,
+            subject=subject,
+            body_text=body_text,
+        )
+        sent = result.success
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("cron_founder_daily_brief_email_failed", error=str(exc))
+
+    logger.info(
+        "cron_founder_daily_brief_done",
+        pending=len(pending),
+        email_sent=sent,
+    )
+    return {
+        "status": "ok",
+        "pending_total": len(pending),
+        "pending_email_drafts": pending_email_drafts,
+        "pending_blocked_drafts": pending_blocked,
+        "brief_emailed": sent,
+    }
+
+
+async def expire_stale_approvals(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Stale-approval expire-sweep — flip pending approvals past expires_at to
+    expired. Terminal transition; no send. Runs hourly.
+    """
+    from auto_client_acquisition.automation.daily_runner import (
+        expire_stale_approvals as _expire,
+    )
+
+    logger.info("cron_expire_stale_approvals_start")
+    result = _expire()
+    logger.info(
+        "cron_expire_stale_approvals_done",
+        expired=result.get("expired_count", 0),
+    )
+    return result
+
+
 # ── ARQ Worker Settings ───────────────────────────────────────────
 
 class WorkerSettings:
@@ -179,8 +330,14 @@ class WorkerSettings:
         run_zatca_clearance,
     ]
 
+    # ARQ cron is UTC. Riyadh (AST) = UTC+3, so UTC hour = AST hour - 3.
     cron_jobs = [
-        cron(daily_pipeline_refresh, hour=2, minute=0),  # 02:00 AST daily
+        cron(daily_pipeline_refresh, hour=2, minute=0),     # 05:00 AST
+        cron(daily_lead_prep, hour=3, minute=0),            # 06:00 AST
+        cron(daily_targeting, hour=4, minute=0),            # 07:00 AST
+        cron(daily_followups, hour=5, minute=0),            # 08:00 AST
+        cron(founder_daily_brief, hour=5, minute=30),       # 08:30 AST
+        cron(expire_stale_approvals, minute=0),             # hourly, on the hour
     ]
 
     @staticmethod

@@ -1032,3 +1032,54 @@ class CustomerWebhookDelivery(Base):
                          name="uq_webhook_subscription_event"),
         Index("ix_cwd_event_type_created", "event_type", "delivered_at"),
     )
+
+
+# ── Durable Approval Queue ─────────────────────────────────────────
+# Postgres mirror of the in-memory ApprovalStore. The in-memory store
+# loses its queue on every worker restart (the worker filesystem is
+# ephemeral); this table is the durable source of truth so the founder's
+# approval queue survives restarts and is shared across processes.
+#
+# Doctrine: this is storage only. Approving an item never auto-sends a
+# prospect message. The execution hook (api/routers/approval_center.py)
+# only enqueues a send job for action_type=draft_email + channel=email;
+# blocked channels (whatsapp/linkedin/phone) can be approved as drafts
+# but are NEVER auto-executed.
+
+class ApprovalRecord(Base):
+    """Durable row for one approvable action in the Approval Command Center.
+
+    Field names mirror ``ApprovalRequest`` (the Pydantic schema) so the
+    ``ApprovalStore`` public method signatures and return contracts stay
+    identical. ``edit_history`` is an append-only JSON audit trail.
+    """
+
+    __tablename__ = "approval_records"
+
+    approval_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    object_type: Mapped[str] = mapped_column(String(64), index=True)
+    object_id: Mapped[str] = mapped_column(String(128), index=True)
+    action_type: Mapped[str] = mapped_column(String(64), index=True)
+    action_mode: Mapped[str] = mapped_column(String(32), default="approval_required")
+    channel: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    summary_ar: Mapped[str] = mapped_column(Text, default="")
+    summary_en: Mapped[str] = mapped_column(Text, default="")
+    risk_level: Mapped[str] = mapped_column(String(16), default="low", index=True)
+    proof_impact: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(16), default="pending", index=True)
+    reject_reason: Mapped[str] = mapped_column(Text, default="")
+    edit_history: Mapped[list] = mapped_column(JSON, default=list)
+    expires_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    # Wave 12 §32.3.6 hardening fields (all optional).
+    action_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    lead_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    due_date: Mapped[datetime | None] = mapped_column(nullable=True)
+    audit_ref: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    proof_target: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        Index("ix_approval_records_status_created", "status", "created_at"),
+    )
