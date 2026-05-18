@@ -228,8 +228,16 @@ python scripts/dealix_proof_pack.py --customer-handle "ACME-Pilot" \
   --out docs/proof-events/ACME-pack.md
 ```
 يقرأ ProofEvents من `docs/proof-events/*.jsonl`، يُخرج Markdown ثنائي اللغة.
-لا ينشر تلقائياً — يخرج دائماً بحالة `approval_required`. سلّمه كـ Markdown
-(لصق في Notion/بريد/واتساب) أو افتحه في المتصفح و«حفظ كـ PDF».
+لا ينشر تلقائياً — يخرج دائماً بحالة `approval_required`.
+
+**التسليم المرئي للعميل (HTML/PDF):** بعد مراجعتك، حوّل المخرَج إلى صفحة
+أنيقة جاهزة للطباعة:
+```
+python scripts/dealix_render_html.py --in docs/proof-events/ACME-pack.md \
+  --title "Dealix — Proof Pack"
+```
+افتح ملف `.html` في المتصفح ← Print ← «حفظ كـ PDF» ← سلّمه للعميل.
+نفس الأمر يعمل على مخرَج التشخيص (الدرجة 0).
 
 ---
 

@@ -175,6 +175,65 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "sales-kit hosted-checkout doc names the prefix in policy copy",
     "docs/sales-kit/dealix_1_riyal_test.sh":
         "sales-kit 1-riyal test shell script names the prefix in env",
+    # ── live-mode detection code (the prefix is the policy) ──
+    "api/routers/founder_launch_status.py":
+        "launch-status router uses startswith('sk_live_') to detect live mode",
+    "auto_client_acquisition/agent_observability/redaction.py":
+        "redaction layer regex names the prefixes it scrubs from logs",
+    "auto_client_acquisition/observability_adapters/redaction.py":
+        "observability redaction adapter regex names the prefixes it scrubs",
+    # ── Moyasar / launch setup docs that name the prefix in instructions ──
+    "docs/LLM_PROVIDERS_SETUP.md":
+        "LLM providers setup doc names the AIza key prefix in placeholder text",
+    "docs/MOYASAR_LIVE_CUTOVER.md":
+        "Moyasar live-cutover doc names sk_live_ in policy/setup copy",
+    "docs/RAILWAY_DEPLOY_CHECKLIST.md":
+        "Railway deploy checklist names the prefix in env-var template",
+    "docs/WAVE11_FIRST3_PAID_PILOTS_EVIDENCE_TABLE.md":
+        "wave11 evidence table names the sk_live_ placeholder in an evidence cell",
+    "docs/integrations/PAYMENT_MOYASAR_LIVE.md":
+        "Moyasar live payment integration doc names sk_live_ in policy copy",
+    "docs/ops/GO_LIVE_INDEX.md":
+        "go-live index names the prefix in checklist text",
+    "docs/ops/MOYASAR_KYC_CHECKLIST.md":
+        "Moyasar KYC checklist names the sk_live_ placeholder in setup steps",
+    "docs/ops/PRODUCTION_ENV_TEMPLATE.md":
+        "production env template names the prefix in placeholder env values",
+    "docs/sales-kit/CUSTOMER_1_GO_LIVE_RUNBOOK.md":
+        "go-live runbook names the prefix in setup steps",
+    "docs/sales-kit/FOUNDER_SALES_KIT.md":
+        "founder sales kit names the sk_live_ placeholder in the Moyasar steps",
+    "docs/security/KEY_ROTATION.md":
+        "key-rotation runbook names the prefix in rotation policy",
+    # ── verifier / setup scripts that grep the repo for these prefixes ──
+    "scripts/dealix_integration_plan_quality_check.py":
+        "integration-plan quality checker greps for the live-key prefix",
+    "scripts/dealix_master_full_execution_verify.sh":
+        "master verifier shell script greps repo for these prefixes",
+    "scripts/generate_production_env.sh":
+        "production env generator names the placeholder prefix",
+    "scripts/integration_upgrade_verify.sh":
+        "verifier shell script greps repo for these prefixes",
+    "scripts/moyasar_live_cutover.py":
+        "Moyasar cutover CLI names sk_live_ in setup instructions",
+    "scripts/preflight_check.py":
+        "preflight check greps for an accidental live-key prefix",
+    "scripts/reconcile_moyasar.py":
+        "Moyasar reconcile CLI names sk_live_ in policy copy",
+    "scripts/ultimate_upgrade_verify.sh":
+        "verifier shell script greps repo for these prefixes",
+    "scripts/wave11_first3_paid_pilots_verify.sh":
+        "wave11 verifier greps repo for these prefixes (placeholder fixtures)",
+    "scripts/wave12_saudi_revenue_command_center_verify.sh":
+        "wave12 verifier greps repo for these prefixes (placeholder fixtures)",
+    "scripts/wave6_revenue_activation_verify.sh":
+        "wave6 verifier shell script greps repo for these prefixes",
+    "scripts/wave7_5_service_truth_verify.sh":
+        "wave7.5 verifier shell script greps repo for these prefixes",
+    "scripts/wave8_customer_data_boundary_check.sh":
+        "wave8 data-boundary check greps for the live-key prefix",
+    "scripts/wave8_customer_ready_verify.sh":
+        "wave8 verifier shell script greps repo for these prefixes",
 }
 
 
