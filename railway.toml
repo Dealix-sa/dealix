@@ -3,9 +3,9 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-# Intentionally NO startCommand — Dockerfile's CMD uses `sh -c` which
-# correctly expands Railway's injected $PORT. Overriding here bypasses
-# the shell and breaks ${PORT:-8000} → uvicorn treats it as literal.
+# Intentionally NO startCommand — Dockerfile CMD is /app/start.sh ($PORT).
+# Clear Railway UI Start Command (do not use ./start.sh).
+preDeployCommand = ["sh", "/app/scripts/railway_predeploy.sh"]
 healthcheckPath = "/healthz"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"

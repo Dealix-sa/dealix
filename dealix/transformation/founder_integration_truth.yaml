@@ -1,0 +1,22 @@
+# Founder integration truth matrix — update status after manual verify.
+version: 1
+updated_note_ar: "حدّث status بعد كل اختبار يدوي — green/yellow/red فقط"
+
+ladder:
+  - id: revenue_proof_sprint_499
+    label_ar: "سبرنت إثبات 499"
+    status: green
+  - id: ops_diagnostic
+    label_ar: "Governed Diagnostic"
+    status: yellow
+
+integrations:
+  - id: postgres_redis
+    label_ar: "Postgres + Redis"
+    status: green
+  - id: moyasar_live
+    label_ar: "Moyasar live"
+    status: red
+  - id: gmail_external
+    label_ar: "Gmail external"
+    status: red
