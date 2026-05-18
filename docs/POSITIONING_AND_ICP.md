@@ -134,4 +134,20 @@
 
 ---
 
-*Version 1.0 | Next review: after 10 customers*
+## 7. العبارة المرجعية المعتمدة — Canonical Positioning Statement
+
+> **استخدم هذه العبارة بالحرف** في الموقع، عروض المبيعات، المحتوى، وملفات المستثمرين.
+> لا تُعدّل، ولا تُستبدل بادعاءات قديمة (الرد خلال 45 ثانية، الحجز التلقائي، السعر الرمزي).
+> Use this line verbatim across landing, sales, content, and investor assets.
+
+**العربية:**
+> Dealix رادار عمليات إيرادات محكوم: يكتشف فرص الإيرادات في شركتك ويُرتّبها بالأدلة، ويُعدّ مسودات تواصل عربية جاهزة لموافقتك — لا يُرسل شيء بدون موافقتك الصريحة، وكل نتيجة مدعومة بإثبات.
+
+**English:**
+> Dealix is a governed revenue-operations radar: it finds and scores your revenue opportunities with evidence and drafts approval-ready Arabic outreach — nothing sends without your explicit approval, and every result is Proof-backed.
+
+**نقطة الدخول — Entry offer:** Tier 0 = Free AI Ops Diagnostic · Tier 1 = **499 SAR Revenue Intelligence Sprint** (7 أيام / 7 days). راجع `OFFER_LADDER_AND_PRICING.md` كمصدر وحيد للأسعار.
+
+---
+
+*Version 1.1 | Canonical positioning added 2026-05-18 | Next review: after 10 customers*

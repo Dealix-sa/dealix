@@ -11,7 +11,8 @@
 ```
 ████████████████████████████████
         Dealix
-  مندوب مبيعات AI بالعربي الخليجي
+  رادار عمليات إيرادات محكوم بالعربي
+  Governed Revenue-Operations Radar
 ████████████████████████████████
 
 Sami Assiri · Founder
@@ -26,16 +27,16 @@ April 2026 · Seed Round
 ## الشريحة 2: Problem
 
 ```
-شركات B2B في الخليج تفقد 70% من leads
+شركات B2B في الخليج لا ترى فرص الإيرادات في pipeline ها
 
 ↓ لماذا؟
 
-• ردود البشر تأخر 4-24 ساعة
-• BDRs يقضون 60% على leads غير مؤهلة  
-• Chatbots الأجنبية لا تفهم العربية الخليجية
-• Competition يقفل الصفقات قبل ما يفتحوا جوالهم
+• فرص الإيراد مبعثرة وغير مُرتّبة بالأولوية
+• قرارات التواصل تُتخذ بالحدس لا بالأدلة
+• الأدوات الأجنبية لا تفهم السياق السعودي ولا العربية
+• لا إثبات يربط النشاط بالنتيجة → القيادة لا تثق بالأرقام
 
-النتيجة: 40% churn في أول 30 يوم
+النتيجة: فرص إيراد حقيقية تبرد قبل أي قرار واضح
 ```
 
 **Visual:** قمع مبيعات مع أرقام حمراء على كل مرحلة fall-off.
@@ -45,17 +46,17 @@ April 2026 · Seed Round
 ## الشريحة 3: Solution
 
 ```
-Dealix = أول AI sales rep عربي خليجي حقيقي
+Dealix = رادار عمليات إيرادات محكوم بالعربي
 
-✅ يرد على كل lead خلال 45 ثانية
-✅ يؤهّل بـ BANT تلقائياً
-✅ يحجز demos مع فريقك
-✅ يعمل 24/7 باللهجة الطبيعية
+✅ يكتشف فرص الإيرادات في pipeline ويُرتّبها بالأدلة
+✅ يُعدّ مسودات تواصل عربية جاهزة لموافقة المؤسس
+✅ لا يُرسل أي رسالة بدون موافقة صريحة (approval-gated)
+✅ كل مخرَج مدعوم بإثبات (Proof) — لا ادعاءات
 
-= فريقك يبدأ يومه بـ leads مؤهلة، لا reactive firefighting
+= القيادة تبدأ يومها بقرارات إيراد مُرتّبة بالأدلة، لا تخمين
 ```
 
-**Visual:** screenshot من Dealix في action، conversation حقيقية بالعربي.
+**Visual:** screenshot من رادار الفرص + مسودة تواصل تنتظر زر الموافقة.
 
 ---
 
@@ -87,17 +88,17 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 ```
 كيف يعمل Dealix (في 3 خطوات)
 
-1️⃣ LEAD INGEST
-   موقع / WhatsApp / Instagram / CRM webhook
+1️⃣ SIGNAL INGEST
+   pipeline العميل / CRM export / سياق السوق
    ↓
-2️⃣ AI CONVERSATION
-   Dealix يسأل 8 أسئلة BANT ذكية
-   يتكلم لهجة خليجية طبيعية
+2️⃣ SCORE & RANK
+   Dealix يكتشف فرص الإيرادات ويُرتّبها بالأدلة
+   يبني سياقاً سعودياً لكل فرصة
    ↓  
-3️⃣ DELIVER
-   يحجز demo في calendar فريقك
-   ملخّص 1-صفحة قبل الـ demo
-   CRM sync تلقائي
+3️⃣ DRAFT & APPROVE
+   يُعدّ مسودات تواصل عربية جاهزة للموافقة
+   المؤسس يراجع ويوافق — لا إرسال تلقائي
+   Proof Pack موثّق لكل نتيجة
 ```
 
 **Visual:** 3 screenshots متتابعة تظهر flow.
@@ -108,14 +109,14 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 
 ```
 [4 screenshots:]
-1. Chat widget على موقع العميل
-2. محادثة عربية طبيعية
-3. Qualification summary
-4. Dashboard للعميل
+1. رادار الفرص — قائمة مُرتّبة بالأولوية والأدلة
+2. مسودة تواصل عربية تنتظر زر الموافقة
+3. Proof Pack — إثبات النتيجة
+4. تقرير تنفيذي للعميل
 
 النقطة الرئيسية:
-"لأول مرة، شركة سعودية تبيع لعملاء سعوديين
-عبر AI سعودي حقيقي."
+"لأول مرة، رادار إيرادات محكوم بالعربي —
+كل قرار مدعوم بأدلة، ولا إرسال بدون موافقة."
 ```
 
 ---
@@ -123,21 +124,23 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 ## الشريحة 7: Business Model
 
 ```
-3 باقات SaaS + Enterprise
+سلم خدمات مُثبَت بالنتائج (Proof-gated ladder)
 
-• Starter  — 999 ريال/شهر (1-3 مندوبين)
-• Growth   — 2,999 ريال/شهر (4-10 مندوبين) ⭐
-• Scale    — 7,999 ريال/شهر (+10 مندوبين)
+• Tier 0 — AI Ops Diagnostic ............ مجاني (باب الدخول)
+• Tier 1 — Revenue Intelligence Sprint .. 499 ريال (7 أيام)
+• Tier 2 — Data-to-Revenue Pack ......... 1,500 ريال (مشروع)
+• Tier 3 — Managed Revenue Ops .......... 2,999–4,999 ريال/شهر ⭐
+• Tier 4 — Executive Command Center ..... 7,500–15,000 ريال/شهر
+• Tier 5 — Agency Partner OS ............ مخصص + rev-share 15–30%
 
-ARPA: 2,449 ريال/شهر
-Gross Margin: 87%
+كل درجة تُفتح فقط بعد إثبات موثّق من الدرجة السابقة.
+Gross Margin (Tier 1): ~85%
 Sales Cycle: 14-21 يوم
-Monthly Churn: < 3% (target)
 
-LTV:CAC = 35:1 (السنة الأولى)
+مصدر الأسعار الوحيد: docs/OFFER_LADDER_AND_PRICING.md
 ```
 
-**Visual:** جدول باقات مقارن بالمنافسة.
+**Visual:** سلم الخدمات مع شرط الإثبات بين كل درجة.
 
 ---
 
@@ -167,18 +170,18 @@ LTV:CAC = 35:1 (السنة الأولى)
 ## الشريحة 9: Competition
 
 ```
-نحن في فئة جديدة
+نحن في فئة جديدة — Governed Revenue-Operations Radar
 
-                   | Dealix | Drift/Intercom | Local Chatbots | BDR Agencies
-                   |--------|----------------|-----------------|---------------
-Arabic Khaliji     |  ✅    |       ❌       |    ترجمة       |      ✅
-Qualifies BANT     |  ✅    |       ⚠️       |       ❌        |      ✅
-Books demos        |  ✅    |       ⚠️       |       ❌        |      ✅
-24/7               |  ✅    |       ✅       |       ✅        |      ❌
-Cost per lead      | 2 ريال | 8 ريال         |  5 ريال         |  45 ريال
-Scalability        |  ✅✅  |       ✅       |       ⚠️        |      ❌
+                        | Dealix | HubSpot/Zoho | Local Chatbots | BDR Agencies
+                        |--------|--------------|-----------------|--------------
+Arabic-first / سعودي    |  ✅    |     ❌       |    ترجمة        |     ⚠️
+يُرتّب الفرص بالأدلة     |  ✅    |     ⚠️       |     ❌          |     ⚠️
+مسودات تنتظر الموافقة   |  ✅    |     ❌       |     ❌          |     ❌
+Proof-backed نتائج      |  ✅    |     ⚠️       |     ❌          |     ⚠️
+حوكمة — لا إرسال تلقائي |  ✅    |     ⚠️       |     ❌          |     n/a
 
-Positioning: "نحن Drift، ولكن للعربي. نحن BDR، ولكن بلا تكلفة."
+Positioning: "رادار عمليات إيرادات محكوم بالعربي —
+يكتشف الفرص ويُرتّبها بالأدلة، ولا يُرسل شيئاً بدون موافقة."
 ```
 
 ---
@@ -339,11 +342,11 @@ Founder, Dealix
 
 ### Q&A (3-5 دقائق):
 - أسئلة متوقعة:
-  1. "كيف تختلف عن ChatGPT API؟" → prompted for sales + Saudi context + BANT
-  2. "ما defensibility؟" → Arabic training data + integrations + brand
-  3. "Churn mitigation؟" → customer success + high value
+  1. "كيف تختلف عن ChatGPT API؟" → رادار محكوم: ترتيب فرص بالأدلة + سياق سعودي + حوكمة موافقة
+  2. "ما defensibility؟" → سياق سعودي + بنية الإثبات (Proof) + علاقات التوزيع
+  3. "Churn mitigation؟" → سلم مُثبَت بالنتائج — كل درجة تُفتح بعد إثبات
   4. "لماذا لم تُطلق بعد؟" → Railway deploy هذا الأسبوع
-  5. "Unit economics؟" → 87% margin, 35:1 LTV:CAC
+  5. "Unit economics؟" → ~85% margin على Tier 1 Sprint — راجع OFFER_LADDER_AND_PRICING.md
 
 ### Closing:
 - "المستقبل الأفضل للـ Dealix = partner مثلكم"
