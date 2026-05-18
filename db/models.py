@@ -1032,3 +1032,116 @@ class CustomerWebhookDelivery(Base):
                          name="uq_webhook_subscription_event"),
         Index("ix_cwd_event_type_created", "event_type", "delivered_at"),
     )
+
+
+# ── Launch Persistence (migration 013) ────────────────────────────
+
+class ApprovalRequestRecord(Base):
+    """
+    Persisted ApprovalRequest — every approval-required action survives a
+    process restart instead of living only in the in-memory ApprovalStore.
+
+    Backs auto_client_acquisition/approval_center/schemas.py:ApprovalRequest.
+    List/dict fields (edit_history) are stored as JSON.
+    """
+
+    __tablename__ = "approval_requests"
+
+    approval_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    object_type: Mapped[str] = mapped_column(String(64))
+    object_id: Mapped[str] = mapped_column(String(64))
+    action_type: Mapped[str] = mapped_column(String(64))
+    action_mode: Mapped[str] = mapped_column(String(32), default="approval_required")
+    channel: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    summary_ar: Mapped[str] = mapped_column(Text, default="")
+    summary_en: Mapped[str] = mapped_column(Text, default="")
+    risk_level: Mapped[str] = mapped_column(String(16), default="low")
+    proof_impact: Mapped[str] = mapped_column(Text, default="")
+    status: Mapped[str] = mapped_column(String(16), default="pending", index=True)
+    # pending | approved | rejected | expired | blocked
+    reject_reason: Mapped[str] = mapped_column(Text, default="")
+    edit_history: Mapped[list] = mapped_column(JSON, default=list)
+    expires_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    # Wave 12 §32.3.6 hardening fields
+    action_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    lead_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    customer_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    due_date: Mapped[datetime | None] = mapped_column(nullable=True)
+    audit_ref: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    proof_target: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        Index("ix_approval_requests_customer_status", "customer_id", "status"),
+    )
+
+
+class ManualPaymentRecord(Base):
+    """
+    Bank-transfer / manual payment state machine — persisted source of truth.
+
+    Backs auto_client_acquisition/payment_ops/orchestrator.py, replacing the
+    ephemeral data/payment_states.jsonl file. ``state`` mirrors the
+    PaymentStatus literal (invoice_intent → ... → delivery_kickoff).
+
+    Hard rule (Article 8 / NO_FAKE_REVENUE): only state == payment_confirmed
+    counts as revenue.
+    """
+
+    __tablename__ = "manual_payments"
+
+    payment_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    customer_handle: Mapped[str] = mapped_column(String(128), index=True)
+    service_session_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    invoice_intent_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    amount_sar: Mapped[float] = mapped_column(Float, default=0.0)
+    currency: Mapped[str] = mapped_column(String(8), default="SAR")
+    method: Mapped[str] = mapped_column(String(32))
+    # moyasar_test | moyasar_live | bank_transfer | cash_in_person | manual_other
+    state: Mapped[str] = mapped_column(String(40), default="invoice_intent", index=True)
+    # invoice_intent | invoice_sent_manual | payment_pending |
+    # payment_evidence_uploaded | payment_confirmed | delivery_kickoff |
+    # refunded | voided
+    evidence_reference: Mapped[str | None] = mapped_column(Text, nullable=True)
+    confirmed_by: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    confirmed_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    delivery_kickoff_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    safety_summary: Mapped[str] = mapped_column(
+        String(64), default="no_live_charge_no_fake_revenue"
+    )
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        Index("ix_manual_payments_customer_state", "customer_handle", "state"),
+    )
+
+
+class SocialPostRecord(Base):
+    """
+    Own-channel social post draft + publish lifecycle.
+
+    A post is drafted, linked to an approval_requests row, and only
+    publishable once that approval is approved. external_post_id holds the
+    platform-side id after a successful publish.
+    """
+
+    __tablename__ = "social_posts"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    channel: Mapped[str] = mapped_column(String(32), index=True)  # linkedin/x/instagram
+    body: Mapped[str] = mapped_column(Text, default="")
+    media_url: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    scheduled_for: Mapped[datetime | None] = mapped_column(nullable=True)
+    status: Mapped[str] = mapped_column(String(32), default="draft", index=True)
+    # draft | pending_approval | approved | published | failed
+    external_post_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    approval_request_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        Index("ix_social_posts_channel_status", "channel", "status"),
+        Index("ix_social_posts_status_scheduled", "status", "scheduled_for"),
+    )

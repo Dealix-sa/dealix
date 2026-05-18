@@ -170,6 +170,95 @@ def clear_for_test() -> None:
             path.write_text("", encoding="utf-8")
 
 
+# ── Postgres-backed audit persistence (PDPL Art. 18) ──────────────
+#
+# ``persist_audit_event`` writes an AuditLogRecord row when an async DB
+# session is available, and falls back to the JSONL sink otherwise so
+# audit coverage is never silently lost (e.g. tests without a DB).
+
+async def persist_audit_event(
+    session: Any,
+    *,
+    tenant_id: str,
+    action: str,
+    entity_type: str,
+    entity_id: str | None = None,
+    user_id: str | None = None,
+    diff: dict[str, Any] | None = None,
+    status: str = "ok",
+    request_id: str | None = None,
+) -> str:
+    """Persist one audit row to the ``audit_logs`` Postgres table.
+
+    Returns the new row id. Raises if the write itself fails — callers
+    that want best-effort behaviour should use :func:`record_audit_event`.
+    """
+    from uuid import uuid4
+
+    from db.models import AuditLogRecord
+
+    row = AuditLogRecord(
+        id=f"audit_{uuid4().hex[:16]}",
+        tenant_id=tenant_id or "system",
+        user_id=user_id,
+        action=action,
+        entity_type=entity_type,
+        entity_id=entity_id,
+        diff=diff,
+        status=status,
+        request_id=request_id,
+    )
+    session.add(row)
+    await session.flush()
+    return row.id
+
+
+async def record_audit_event(
+    session: Any | None,
+    *,
+    tenant_id: str,
+    action: str,
+    entity_type: str,
+    entity_id: str | None = None,
+    user_id: str | None = None,
+    diff: dict[str, Any] | None = None,
+    status: str = "ok",
+    request_id: str | None = None,
+    summary: str = "",
+) -> str | None:
+    """Record an audit event to Postgres when a session is given, else to
+    the JSONL fallback sink.
+
+    Used by the DB-backed ApprovalStore so every approve/reject/edit leaves
+    an audit trail regardless of whether a DB session is wired in.
+
+    Returns the audit row id (Postgres path) or ``None`` (JSONL fallback).
+    """
+    if session is not None:
+        return await persist_audit_event(
+            session,
+            tenant_id=tenant_id,
+            action=action,
+            entity_type=entity_type,
+            entity_id=entity_id,
+            user_id=user_id,
+            diff=diff,
+            status=status,
+            request_id=request_id,
+        )
+    # Fallback: JSONL customer-scoped log. Map to the closest audit kind.
+    record_event(
+        customer_id=tenant_id or "system",
+        kind=AuditEventKind.APPROVAL,
+        actor=user_id or "system",
+        engagement_id=entity_id or "",
+        decision=status,
+        policy_checked=action,
+        summary=summary,
+    )
+    return None
+
+
 __all__ = [
     "AuditEvent",
     "AuditEventKind",
@@ -177,5 +266,7 @@ __all__ = [
     "audit_event_valid",
     "clear_for_test",
     "list_events",
+    "persist_audit_event",
+    "record_audit_event",
     "record_event",
 ]
