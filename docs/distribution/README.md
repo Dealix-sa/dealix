@@ -73,9 +73,10 @@ holds execution assets; this layer explains the *why*, the *sequence*, and the
 | 14 | [CUSTOMER_SUCCESS_EXPANSION.md](CUSTOMER_SUCCESS_EXPANSION.md) | نجاح العميل والتوسّع |
 | 15 | [CASE_STUDY_FACTORY.md](CASE_STUDY_FACTORY.md) | مصنع دراسات الحالة |
 | 16 | [BENCHMARK_ENGINE.md](BENCHMARK_ENGINE.md) | محرك المعايير المجمّعة |
+| 17 | [FULL_OPS_OPERATING_MODEL.md](FULL_OPS_OPERATING_MODEL.md) | نموذج التشغيل الكامل: المكائن + فريق الوكلاء + الإيقاع |
 
-> ملاحظة: هذا الملف يفهرس 16 ملفاً شقيقاً. الملفات الـ16 جميعها مُسلّمة مع هذا الفهرس.
-> Note: all 16 sibling files are delivered with this index.
+> ملاحظة: هذا الملف يفهرس 17 ملفاً شقيقاً، جميعها مُسلّمة مع هذا الفهرس.
+> Note: all 17 sibling files are delivered with this index.
 
 ## ربط بالطبقات الأساسية — Anchors
 
