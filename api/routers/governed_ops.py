@@ -65,3 +65,42 @@ async def governance_log_blocked(
 ) -> dict[str, Any]:
     events = governance_log.query_blocked(limit=limit)
     return {"count": len(events), "events": events}
+
+
+# ── M2: in-process scheduler control (incl. the founder kill switch) ──
+
+@router.get("/scheduler/status", dependencies=[Depends(require_admin_key)])
+async def scheduler_status() -> dict[str, Any]:
+    from auto_client_acquisition.orchestrator.governed_scheduler import (
+        get_governed_scheduler,
+    )
+
+    scheduler = get_governed_scheduler()
+    return scheduler.status() if scheduler is not None else {"running": False}
+
+
+@router.post("/scheduler/start", dependencies=[Depends(require_admin_key)])
+async def scheduler_start() -> dict[str, Any]:
+    """Start the governed-day scheduler now (overrides the env default)."""
+    from auto_client_acquisition.orchestrator.governed_scheduler import (
+        start_governed_scheduler,
+    )
+
+    scheduler = start_governed_scheduler(force=True)
+    return scheduler.status() if scheduler is not None else {"running": False}
+
+
+@router.post("/scheduler/stop", dependencies=[Depends(require_admin_key)])
+async def scheduler_stop() -> dict[str, Any]:
+    """Founder kill switch — halt the self-running governed-day loop."""
+    from auto_client_acquisition.orchestrator.governed_scheduler import (
+        get_governed_scheduler,
+        stop_governed_scheduler,
+    )
+
+    stop_governed_scheduler()
+    scheduler = get_governed_scheduler()
+    return {
+        "stopped": True,
+        "running": scheduler.running if scheduler is not None else False,
+    }

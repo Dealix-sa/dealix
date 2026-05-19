@@ -137,6 +137,23 @@ class Settings(BaseSettings):
         ),
     )
 
+    # In-process governed-day scheduler (M2). Default OFF — GitHub Actions
+    # cron stays the fallback. When enabled, a daemon thread runs
+    # run_governed_day() once per day at governed_day_hour_ksa. The governed
+    # day only prepares/sweeps/snapshots — it never sends anything externally.
+    inprocess_scheduler_enabled: bool = Field(
+        default=False,
+        validation_alias=AliasChoices(
+            "DEALIX_INPROCESS_SCHEDULER", "inprocess_scheduler_enabled"
+        ),
+    )
+    governed_day_hour_ksa: int = Field(
+        default=6,
+        validation_alias=AliasChoices(
+            "DEALIX_GOVERNED_DAY_HOUR_KSA", "governed_day_hour_ksa"
+        ),
+    )
+
     # Optional OpenTelemetry span events alongside contract_trace_hook buffer.
     otel_contract_trace_export: bool = Field(
         default=False,

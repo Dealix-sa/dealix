@@ -173,7 +173,29 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
             log.warning("db_init_skipped", error=str(exc))
     else:
         log.info("db_init_skipped", reason="use_alembic_migrations")
+
+    # ── M2: in-process governed-day scheduler (default OFF) ─────
+    try:
+        from auto_client_acquisition.orchestrator.governed_scheduler import (
+            start_governed_scheduler,
+        )
+
+        scheduler = start_governed_scheduler()
+        if scheduler is not None:
+            log.info("governed_scheduler_enabled")
+    except Exception as exc:  # noqa: BLE001 — scheduler must never block startup
+        log.warning("governed_scheduler_start_failed", error=str(exc))
+
     yield
+
+    try:
+        from auto_client_acquisition.orchestrator.governed_scheduler import (
+            stop_governed_scheduler,
+        )
+
+        stop_governed_scheduler()
+    except Exception:  # noqa: BLE001
+        pass
     log.info("app_shutdown")
 
 
