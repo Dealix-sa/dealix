@@ -37,6 +37,7 @@ class ApprovalStore:
         evaluate_safety(req)
         with self._lock:
             self._items[req.approval_id] = req
+        emit_approval_created(req)
         return req
 
     def create_with_founder_rules(
@@ -72,6 +73,7 @@ class ApprovalStore:
                 engine=engine,
             )
             self._items[req.approval_id] = req
+        emit_approval_created(req)
         return req
 
     def approve(self, approval_id: str, who: str) -> ApprovalRequest:
@@ -82,6 +84,7 @@ class ApprovalStore:
             req.status = ApprovalStatus.APPROVED
             req.edit_history.append(self._audit_entry(who, "approve", {}))
             req.updated_at = datetime.now(UTC)
+        emit_approval_decision(req, "approved", who)
         return req
 
     def reject(self, approval_id: str, who: str, reason: str) -> ApprovalRequest:
@@ -95,6 +98,7 @@ class ApprovalStore:
                 self._audit_entry(who, "reject", {"reason": reason})
             )
             req.updated_at = datetime.now(UTC)
+        emit_approval_decision(req, "rejected", who, reason)
         return req
 
     def edit(
@@ -251,6 +255,45 @@ class ApprovalStore:
         }
         entry.update(extra)
         return entry
+
+
+def emit_approval_created(req: ApprovalRequest) -> None:
+    """Record an approval entering (or being blocked at) the governed queue.
+
+    Defensive: a governance-log failure must never break the approval flow.
+    Shared by both the in-memory and Postgres stores.
+    """
+    try:
+        from auto_client_acquisition.governance_os import governance_log
+
+        if ApprovalStatus(req.status) == ApprovalStatus.BLOCKED:
+            governance_log.record_blocked(
+                action_type=req.action_type,
+                reason="policy blocked the request at create time",
+                subject_id=req.approval_id,
+            )
+        else:
+            governance_log.record_approval_created(
+                approval_id=req.approval_id,
+                action_type=req.action_type,
+                risk_level=req.risk_level,
+            )
+    except Exception:  # noqa: BLE001 — governance log is best-effort
+        pass
+
+
+def emit_approval_decision(
+    req: ApprovalRequest, decision: str, who: str, reason: str = ""
+) -> None:
+    """Record an approve / reject decision. Defensive (see above)."""
+    try:
+        from auto_client_acquisition.governance_os import governance_log
+
+        governance_log.record_approval_decision(
+            approval_id=req.approval_id, decision=decision, who=who, reason=reason
+        )
+    except Exception:  # noqa: BLE001
+        pass
 
 
 # Module-level singleton (process-scoped).

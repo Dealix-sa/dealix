@@ -75,6 +75,14 @@ EVENT_TYPES: tuple[str, ...] = (
     # AI quality
     "ai.eval_run",
     "ai.regression_detected",
+    # Governance (M4 — durable governance event log)
+    "governance.action_blocked",
+    "governance.policy_violated",
+    "governance.approval_created",
+    "governance.approval_decision",
+    "governance.phase_started",
+    "governance.phase_completed",
+    "governance.phase_degraded",
     # Pulse
     "pulse.published",
 )

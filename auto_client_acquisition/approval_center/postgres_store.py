@@ -40,6 +40,10 @@ from auto_client_acquisition.approval_center.approval_policy import (
     assert_can_reject,
     evaluate_safety,
 )
+from auto_client_acquisition.approval_center.approval_store import (
+    emit_approval_created,
+    emit_approval_decision,
+)
 from auto_client_acquisition.approval_center.schemas import (
     ApprovalRequest,
     ApprovalStatus,
@@ -134,6 +138,7 @@ class PostgresApprovalStore:
         with self._lock, self._sessionmaker() as session:
             session.merge(ApprovalRequestORM(**_row_from_request(req)))
             session.commit()
+        emit_approval_created(req)
         return req
 
     def create_with_founder_rules(
@@ -155,6 +160,7 @@ class PostgresApprovalStore:
             )
             session.merge(ApprovalRequestORM(**_row_from_request(req)))
             session.commit()
+        emit_approval_created(req)
         return req
 
     def approve(self, approval_id: str, who: str) -> ApprovalRequest:
@@ -167,6 +173,7 @@ class PostgresApprovalStore:
             req.updated_at = datetime.now(UTC)
             self._write(session, row, req)
             session.commit()
+        emit_approval_decision(req, "approved", who)
         return req
 
     def reject(self, approval_id: str, who: str, reason: str) -> ApprovalRequest:
@@ -180,6 +187,7 @@ class PostgresApprovalStore:
             req.updated_at = datetime.now(UTC)
             self._write(session, row, req)
             session.commit()
+        emit_approval_decision(req, "rejected", who, reason)
         return req
 
     def edit(self, approval_id: str, who: str, patch: dict) -> ApprovalRequest:

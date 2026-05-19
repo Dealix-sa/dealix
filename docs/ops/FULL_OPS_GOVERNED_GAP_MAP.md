@@ -72,8 +72,8 @@ only the gaps, in governed form, and reuse everything that exists.
 |---|---|---|
 | M1 | ✅ **BUILT** — `PostgresApprovalStore` persists the approval queue across restarts; `approval_store_backend=postgres` opt-in, in-memory fallback | CRITICAL production blocker — now closed |
 | M2 | **No in-process scheduler** — daily ops run only via GitHub Actions cron | No reliable self-running loop inside the deployment |
-| M3 | **No single orchestration entrypoint** — 6+ overlapping `run_*` scripts | No observable, composable "run the day" operator |
-| M4 | **No durable event log / blocked-actions audit log** | Cannot answer "which gate blocked what, when" |
+| M3 | ✅ **BUILT** — `run_governed_day()` single observable entrypoint + `scripts/dealix_governed_day.py` CLI + `/api/v1/governed-ops` API | Composable "run the day" operator now exists |
+| M4 | ✅ **BUILT** — `governance_log` durable event stream (action_blocked / approval_decision / phase_*) on the append-only event store, queryable via API | Blocked-actions audit log now exists |
 | M5 | **No agent-to-API orchestration SDK** | Agents cannot self-queue tasks / approvals / evidence |
 | M6 | **Value Ledger has no API** (table/tests only) | Capital/value flow not wired end-to-end |
 

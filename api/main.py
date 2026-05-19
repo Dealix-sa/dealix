@@ -323,6 +323,10 @@ def create_app() -> FastAPI:
     app.include_router(sprint_runner_router.router)
     app.include_router(founder_dashboard_router.router)
     app.include_router(audit_export_router.router)
+    # Governed Ops (M3/M4) — single canonical day entrypoint + governance log.
+    from api.routers import governed_ops as governed_ops_router
+
+    app.include_router(governed_ops_router.router)
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)
