@@ -108,6 +108,8 @@ from api.routers import founder_launch_status as founder_launch_status_router
 from api.routers import platform_foundation as platform_foundation_router
 # Full Ops — autonomous agent hierarchy + daily autonomous cycle
 from api.routers import autonomous_full_ops as autonomous_full_ops_router
+# Strategic Autonomy — CEO/board-tier autonomous loop above Full Ops
+from api.routers import autonomous_strategy as autonomous_strategy_router
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -345,6 +347,8 @@ def create_app() -> FastAPI:
     app.include_router(platform_foundation_router.router)
     # Full Ops — /api/v1/full-ops/autonomous/* hierarchy + cycle endpoints
     app.include_router(autonomous_full_ops_router.router)
+    # Strategic Autonomy — /api/v1/strategy/autonomous/* tier + cycle + ledger
+    app.include_router(autonomous_strategy_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

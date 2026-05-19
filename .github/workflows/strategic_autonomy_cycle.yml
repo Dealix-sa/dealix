@@ -1,0 +1,94 @@
+name: Strategic Autonomy Cycle
+
+# Runs the Dealix CEO/board-tier strategic autonomy cycle.
+# Weekly on Sunday 05:00 UTC; monthly on the 1st 05:00 UTC.
+# Strategic decisions are recommended only; irreversible moves are
+# routed to the founder approval queue and never auto-executed.
+
+on:
+  schedule:
+    # Weekly — Sunday 05:00 UTC.
+    - cron: "0 5 * * 0"
+    # Monthly — 1st of the month 05:00 UTC.
+    - cron: "0 5 1 * *"
+  workflow_dispatch:
+    inputs:
+      on_date:
+        description: "Cycle date override (YYYY-MM-DD)"
+        default: ""
+      cadence:
+        description: "Cycle cadence (weekly | monthly | gate)"
+        default: "weekly"
+
+# Prevent two runs from racing on the shared cycle report file.
+concurrency:
+  group: dealix-strategic-autonomy-cycle
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write   # for failure-issue creation
+
+jobs:
+  strategic-cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --ignore-installed PyYAML
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run strategic autonomy cycle
+        id: cycle
+        run: |
+          set -e
+          ARGS=""
+          if [ -n "${{ github.event.inputs.on_date }}" ]; then
+            ARGS="$ARGS --on-date ${{ github.event.inputs.on_date }}"
+          fi
+          # Monthly cron (day 1) selects the monthly cadence; the weekly
+          # cron and dispatch default to weekly unless overridden.
+          CADENCE="${{ github.event.inputs.cadence }}"
+          if [ -z "$CADENCE" ]; then
+            if [ "$(date -u +%d)" = "01" ]; then CADENCE="monthly"; else CADENCE="weekly"; fi
+          fi
+          ARGS="$ARGS --cadence $CADENCE"
+          python3 scripts/dealix_strategic_cycle.py $ARGS | tee strategic_cycle_output.txt
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Upload strategic cycle report artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-strategic-cycle-${{ github.run_id }}
+          path: |
+            strategic_cycle_output.txt
+            data/strategic_cycles/
+          retention-days: 30
+
+      - name: Open issue on failure
+        if: failure()
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0, 10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Strategic autonomy cycle failed - ${today}`,
+              body: `The strategic autonomy cycle workflow failed on ${today}.\n\n` +
+                    `**Run:** ${context.serverUrl}/${context.repo.owner}/` +
+                    `${context.repo.repo}/actions/runs/${context.runId}\n\n` +
+                    `Inspect the uploaded artifact and the friction log.`,
+              labels: ['strategy', 'p0'],
+            });
