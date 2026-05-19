@@ -164,7 +164,11 @@ traces/
 # ─────────────────────────────────────────────────────────────
 # 🤖 Claude Code agent worktrees + runtime ledger artifacts
 # ─────────────────────────────────────────────────────────────
-.claude/
+.claude/*
+# ...but the agent organization is a tracked, first-class repo artifact
+!.claude/agents/
+.claude/agents/*
+!.claude/agents/*.md
 
 # Proof ledger runtime artifacts (template + schema + readme stay tracked)
 docs/proof-events/*.jsonl
