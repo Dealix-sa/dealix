@@ -1,19 +1,25 @@
 """FullOpsOrchestrator — the spine of the Full Ops Sales System.
 
 Sequences the 12-stage golden chain over a control-plane ``WorkflowRun``.
-For each stage it: classifies the stage action against the auto-exec gate,
-emits an ``EventEnvelope`` + a control event, routes non-auto actions to the
-approval queue, and writes an append-only ``AuditEntry``.
+For each stage it: runs the stage business logic, classifies the action
+against the auto-exec gate, emits an ``EventEnvelope`` + a control event,
+routes non-auto actions to both the control-plane queue and the founder
+approval inbox, and writes an append-only ``AuditEntry``.
 
-Wave 18 builds the spine: stage business logic is stubbed; later waves wire
-the real sales / delivery / expansion modules into ``run_stage``.
+Wave 20 wires stages 1-8 (signal intake → approval gate); stages 9-12 are
+stubbed and wired in Wave 21.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from typing import Any
 
+from auto_client_acquisition.approval_center import (
+    ApprovalRequest,
+    get_default_approval_store,
+)
 from auto_client_acquisition.control_plane_os.repositories import (
     InMemoryControlPlaneRepository,
     WorkflowRun,
@@ -25,6 +31,7 @@ from auto_client_acquisition.full_ops_os.agents import (
 )
 from auto_client_acquisition.full_ops_os.auto_exec import BLOCKED, governed_dispatch
 from auto_client_acquisition.full_ops_os.gate import GateDecision
+from auto_client_acquisition.full_ops_os.stage_logic import run_stage_logic
 from auto_client_acquisition.full_ops_os.stages import (
     STAGES,
     Stage,
@@ -52,8 +59,10 @@ class StageResult:
     gate: GateDecision
     auto_executed: bool
     approval_ticket_id: str | None
+    approval_request_id: str | None
     worker_agent: str
     director_agent: str
+    metrics: dict[str, Any]
     event_id: str
     control_event_id: str
     audit_id: str
@@ -67,8 +76,10 @@ class StageResult:
             "gate": self.gate.to_dict(),
             "auto_executed": self.auto_executed,
             "approval_ticket_id": self.approval_ticket_id,
+            "approval_request_id": self.approval_request_id,
             "worker_agent": self.worker_agent,
             "director_agent": self.director_agent,
+            "metrics": self.metrics,
             "event_id": self.event_id,
             "control_event_id": self.control_event_id,
             "audit_id": self.audit_id,
@@ -96,30 +107,38 @@ class FullOpsOrchestrator:
         self,
         *,
         customer_id: str,
+        lead: dict[str, Any] | None = None,
         correlation_id: str | None = None,
         metadata: dict[str, object] | None = None,
     ) -> WorkflowRun:
-        """Register a new Full Ops workflow run."""
+        """Register a new Full Ops workflow run.
+
+        ``lead`` carries the input record (company, sector, request text,
+        discovery flags). It is kept in the run's in-memory metadata only.
+        """
+        run_metadata: dict[str, Any] = dict(metadata or {})
+        run_metadata["lead"] = dict(lead or {})
+        run_metadata["state"] = {}
         run = self.repo.register_workflow_run(
             tenant_id=self.tenant_id,
             workflow_id=WORKFLOW_ID,
             customer_id=customer_id,
             correlation_id=correlation_id,
-            metadata=dict(metadata or {}),
+            metadata=run_metadata,
         )
         self._audit(
             run=run,
             action=AuditAction.WORKFLOW_STARTED,
             outcome="ok",
             reason="full_ops_run_started",
-            details={"customer_id": customer_id},
+            details={"customer_id": customer_id, "lead_fields": sorted(run_metadata["lead"].keys())},
         )
         log.info("full_ops_run_started", run_id=run.run_id, customer_id=customer_id)
         return run
 
     # ── stage execution ──────────────────────────────────────────
     def run_stage(self, run_id: str, stage: Stage) -> StageResult:
-        """Execute one stage: governed dispatch, emit events, audit."""
+        """Execute one stage: stage logic, governed dispatch, emit, audit."""
         run = self.repo.get_run(tenant_id=self.tenant_id, run_id=run_id)
         spec = stage_spec(stage)
         dispatch = governed_dispatch(stage)
@@ -137,6 +156,12 @@ class FullOpsOrchestrator:
             raise ValueError(
                 f"stage {stage.name} blocked by governance: {dispatch.reason}"
             )
+
+        # Stage business logic — deterministic, no external side effects.
+        lead: dict[str, Any] = dict(run.metadata.get("lead", {}))
+        run_state: dict[str, Any] = run.metadata.setdefault("state", {})
+        output = run_stage_logic(stage, lead, run_state)
+        run_state[stage.name] = output.state
 
         envelope = EventEnvelope(
             source=spec.event_source,
@@ -156,10 +181,12 @@ class FullOpsOrchestrator:
                 "module": spec.module,
                 "worker_agent": dispatch.worker_agent,
                 "director_agent": dispatch.director_agent,
+                "metrics": output.metrics,
             },
         )
 
         approval_ticket_id: str | None = None
+        approval_request_id: str | None = None
         if dispatch.auto_executes:
             auto_executed = True
             decision = "auto_executed"
@@ -186,6 +213,9 @@ class FullOpsOrchestrator:
                 },
             )
             approval_ticket_id = ticket.ticket_id
+            approval_request_id = self._queue_founder_approval(
+                run=run, stage=stage, spec=spec, gate=gate
+            )
 
         control_event = self.repo.append_event(
             tenant_id=self.tenant_id,
@@ -202,6 +232,7 @@ class FullOpsOrchestrator:
                 "action_type": spec.action_type,
                 "auto_executed": auto_executed,
                 "approval_ticket_id": approval_ticket_id,
+                "approval_request_id": approval_request_id,
                 "worker_agent": dispatch.worker_agent,
                 "director_agent": dispatch.director_agent,
             },
@@ -219,8 +250,10 @@ class FullOpsOrchestrator:
                 "action_type": spec.action_type,
                 "auto_executed": auto_executed,
                 "approval_ticket_id": approval_ticket_id,
+                "approval_request_id": approval_request_id,
                 "worker_agent": dispatch.worker_agent,
                 "director_agent": dispatch.director_agent,
+                "metrics": output.metrics,
             },
         )
 
@@ -250,12 +283,52 @@ class FullOpsOrchestrator:
             gate=gate,
             auto_executed=auto_executed,
             approval_ticket_id=approval_ticket_id,
+            approval_request_id=approval_request_id,
             worker_agent=dispatch.worker_agent,
             director_agent=dispatch.director_agent,
+            metrics=output.metrics,
             event_id=envelope.id,
             control_event_id=control_event.id,
             audit_id=audit.audit_id,
         )
+
+    def _queue_founder_approval(
+        self,
+        *,
+        run: WorkflowRun,
+        stage: Stage,
+        spec: Any,
+        gate: GateDecision,
+    ) -> str | None:
+        """Queue an approval-required stage into the founder approval inbox.
+
+        The control-plane ticket links the action to the run; this adds the
+        founder-facing card in ``approval_center``. Failure here never aborts
+        the stage — the control-plane ticket remains the authoritative gate.
+        """
+        risk = "high" if gate.approval_class == ApprovalClass.A3 else "medium"
+        request = ApprovalRequest(
+            object_type="full_ops_stage",
+            object_id=f"{run.run_id}:{stage.name}",
+            action_type=spec.action_type,
+            action_mode="approval_required",
+            customer_id=run.customer_id,
+            summary_ar=f"موافقة مطلوبة — مرحلة {stage.name} في تشغيل المبيعات",
+            summary_en=f"Approval required — stage {stage.name} of the sales run",
+            risk_level=risk,
+            proof_impact="full_ops_stage_progression",
+        )
+        try:
+            stored = get_default_approval_store().create(request)
+            return stored.approval_id
+        except Exception as exc:  # noqa: BLE001 — inbox is best-effort
+            log.warning(
+                "full_ops_founder_approval_failed",
+                run_id=run.run_id,
+                stage=stage.name,
+                error=str(exc),
+            )
+            return None
 
     def advance(self, run_id: str) -> StageResult:
         """Run the next not-yet-run stage of the workflow."""
