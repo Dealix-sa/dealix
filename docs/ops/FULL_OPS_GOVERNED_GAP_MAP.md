@@ -84,7 +84,7 @@ only the gaps, in governed form, and reuse everything that exists.
 | M7 | **No persistent sequencing / campaign engine** — FollowUp cadence is in-memory only | Cannot run "N leads × 3-touch sequence" reliably |
 | M7 | ✅ **BUILT** — `sequencing_engine` + `follow_up_tasks` table persists the cadence; `due_tasks`/`mark_task` drive a governed release | Reliable multi-touch sequencing |
 | M8 | ✅ **BUILT** — canonical `LeadLifecycleStage` + forward-only state machine; `leads.lifecycle_stage` + `lead_stage_transitions` table | Durable pipeline state |
-| M9 | **No bulk/batch intake** — pipeline runs one lead at a time | Cannot import-and-process a list |
+| M9 | ✅ **BUILT** — `bulk_intake.normalize_import` lands raw import rows as `captured` leads (dedup + reject); `draft_approval_bridge` auto-queues every agent draft into the governed approval queue | Import-and-process a list; drafts always governed |
 
 ### Frontend cockpit
 
