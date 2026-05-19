@@ -1,0 +1,60 @@
+# Executive Orchestrator Tick — the autonomous top-of-pyramid run.
+#
+# Convenes the 7 role briefs, synthesizes one executive brief, queues
+# every external action for founder approval, and prepares internal
+# jobs. It queues and prepares — it never sends and never charges.
+#
+# 03:00 UTC = 06:00 KSA — one hour before the 04:00 UTC founder digest.
+
+name: Executive Orchestrator Tick
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch: {}
+
+# Read-only — produces an artifact, never pushes, never sends.
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-executive-tick
+  cancel-in-progress: false
+
+jobs:
+  executive-tick:
+    name: Run executive orchestrator tick
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DEALIX_EXECUTIVE_ORCHESTRATOR_ENABLED: "true"
+      DEALIX_EXECUTIVE_BRIEF_PATH: var/executive-brief.jsonl
+      DEALIX_AUDIT_LOG_PATH: var/audit-log.jsonl
+      DEALIX_AGENT_REGISTRY_PATH: var/agents.jsonl
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run executive tick
+        run: python -m core.queue.executive_tick
+
+      - name: Upload executive brief
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: executive-brief-${{ github.run_id }}
+          path: var/executive-brief.jsonl
+          retention-days: 90
+          if-no-files-found: warn

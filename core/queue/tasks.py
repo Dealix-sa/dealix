@@ -116,8 +116,35 @@ async def _dispatch(job_type: str, payload: dict[str, Any], tenant_id: str | Non
         return await _run_embedding_index(payload, tenant_id)
     if job_type == "commercial_sprint_report":
         return await _run_commercial_sprint_report(payload, tenant_id)
+    if job_type == "executive_tick":
+        return await _run_executive_tick(payload, tenant_id)
     # Generic LLM task
     return await _run_generic_llm(payload, tenant_id)
+
+
+async def _run_executive_tick(
+    payload: dict[str, Any],
+    tenant_id: str | None,
+) -> dict[str, Any]:
+    """Run one executive orchestrator tick off the request path."""
+    import asyncio
+
+    from auto_client_acquisition.executive_os import (
+        run_executive_tick,
+        spawn_internal_jobs,
+    )
+
+    dry_run = bool(payload.get("dry_run", False))
+    loop = asyncio.get_running_loop()
+    result = await loop.run_in_executor(
+        None, lambda: run_executive_tick(dry_run=dry_run)
+    )
+    spawned: list[dict[str, Any]] = []
+    if result.ok and not dry_run and result.intended_jobs:
+        spawned = await spawn_internal_jobs(result.intended_jobs)
+    out = result.to_dict()
+    out["spawned_jobs_result"] = spawned
+    return out
 
 
 async def _run_lead_score(payload: dict[str, Any], tenant_id: str | None) -> dict[str, Any]:

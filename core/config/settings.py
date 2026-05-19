@@ -131,6 +131,17 @@ class Settings(BaseSettings):
             "OTEL_CONTRACT_TRACE_EXPORT", "otel_contract_trace_export"
         ),
     )
+    # Executive Orchestrator — the autonomous top-of-pyramid tick.
+    # Default OFF: it queues approvals + prepares internal jobs but never
+    # sends or charges. The founder flips this to expose the /tick API and
+    # the scheduled workflow opts in per-run.
+    executive_orchestrator_enabled: bool = Field(
+        default=False,
+        validation_alias=AliasChoices(
+            "DEALIX_EXECUTIVE_ORCHESTRATOR_ENABLED",
+            "executive_orchestrator_enabled",
+        ),
+    )
 
     @field_validator("database_url", mode="before")
     @classmethod

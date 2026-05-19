@@ -156,6 +156,26 @@ def _role_command_status() -> dict[str, Any]:
     }
 
 
+def _executive_brief() -> dict[str, Any]:
+    """Latest executive orchestrator brief — read-only, degrades safely."""
+    from auto_client_acquisition.executive_os import (  # noqa: PLC0415
+        load_latest_brief,
+    )
+    latest = load_latest_brief()
+    if latest is None:
+        return {"data_status": "no_brief_yet"}
+    return {
+        "data_status": "ok",
+        "generated_at": latest.get("generated_at"),
+        "one_number_that_matters": latest.get("one_number_that_matters"),
+        "headline_ar": latest.get("headline_ar"),
+        "headline_en": latest.get("headline_en"),
+        "queued_approvals_count": len(latest.get("queued_approvals", [])),
+        "ranked_decisions_count": len(latest.get("ranked_decisions", [])),
+        "degraded_roles": latest.get("degraded_roles", []),
+    }
+
+
 def _next_best_action(rev_truth: dict, finance: dict) -> dict[str, str]:
     if not isinstance(rev_truth, dict) or not isinstance(finance, dict):
         return {
@@ -179,6 +199,7 @@ def _build_payload() -> dict[str, Any]:
     proof = _safe("proof_summary", _proof_summary, {}, degraded)
     compliance = _safe("compliance_alerts", _compliance_alerts, {}, degraded)
     roles = _safe("role_command_status", _role_command_status, {}, degraded)
+    executive = _safe("executive_brief", _executive_brief, {}, degraded)
     next_action = _next_best_action(
         rev_truth if isinstance(rev_truth, dict) and not rev_truth.get("_error") else {},
         finance if isinstance(finance, dict) and not finance.get("_error") else {},
@@ -197,6 +218,7 @@ def _build_payload() -> dict[str, Any]:
         "proof_summary": proof,
         "compliance_alerts": compliance,
         "role_command_status": roles,
+        "executive_brief": executive,
         "next_best_action": next_action,
         "hard_gates": _HARD_GATES,
         "degraded": bool(degraded),

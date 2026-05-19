@@ -51,15 +51,23 @@ This document describes a staged roadmap to realize the agent pyramid — and it
 
 ---
 
-## Phase B — بعد أول pilot مدفوع · After the first paid pilot
+## Phase B — مُسرَّعة بقرار المؤسس · Founder-accelerated
+
+> **الحالة · Status:** مُنفَّذة كطبقة تنسيق داخلية بقرار المؤسس الصريح (2026-05) — قبل اكتمال Gate 2/Gate 3. هذه طبقة تنسيق داخلية فقط: لا منتج جديد قابل للبيع، لا إرسال/شحن خارجي، علَم ميزة `DEALIX_EXECUTIVE_ORCHESTRATOR_ENABLED` افتراضيّه OFF. القاعدة الصريحة أدناه تبقى ملزِمة.
+>
+> **Status:** built as an internal coordination layer by explicit founder decision (2026-05) — ahead of the Gate 2/Gate 3 prerequisite. Internal coordination only: no new sellable product, no external send/charge, feature flag `DEALIX_EXECUTIVE_ORCHESTRATOR_ENABLED` defaults OFF. The explicit rule below still binds.
 
 **النطاق · Scope:** توصيل المنسّق التنفيذي (Executive Orchestrator) فوق `RoleBrief`s القائمة عبر `role_command_os`؛ تنسيق أعمق بين Tier 1 و Tier 2 و Tier 3؛ تركيب طابور قرارات المؤسس من بريفات الأدوار.
 
 **Scope:** wire the Executive Orchestrator over existing role briefs via `role_command_os`; deeper orchestration across Tier 1, 2, and 3; compose the founder decision queue from role briefs.
 
-**المتطلبات · Prerequisites:** اجتياز Gate 2 و Gate 3 في [`../commercial/COMMERCIAL_GATES.md`](../commercial/COMMERCIAL_GATES.md) — أول دفعة موثّقة + Proof Pack مُسلَّم خلال 48 ساعة. مراجعة [`../launch/LAUNCH_READINESS_SCORECARD.md`](../launch/LAUNCH_READINESS_SCORECARD.md) بحالة GO.
+**المُنفَّذ · Delivered:** وحدة `auto_client_acquisition/executive_os/` (مُجمِّع البريفات السبعة + التِّيك + سجل البريف + بطاقة الوكيل عند L3) · راوتر `/api/v1/executive` (`/status`، `/brief`، `/tick` المحكوم بمفتاح الإدارة) · دورة مجدولة يومية حيّة `.github/workflows/executive_tick.yml` عند 03:00 UTC · قسم `executive_brief` في `beast-command-center` · إطلاق مهام تحضير داخلية تلقائياً (≤5/تِّيك، أفضل-جهد). يَصفّ ويُحضّر — لا يُرسل ولا يَخصم.
 
-**Prerequisites:** Gate 2 and Gate 3 in `../commercial/COMMERCIAL_GATES.md` cleared — first documented payment + a 48h Proof Pack. The launch scorecard at GO.
+**Delivered:** the `auto_client_acquisition/executive_os/` module (7-brief aggregator + tick + brief store + L3 agent card), the `/api/v1/executive` router (`/status`, `/brief`, admin-gated `/tick`), a live daily cron `.github/workflows/executive_tick.yml` at 03:00 UTC, an `executive_brief` section in `beast-command-center`, and capped best-effort auto-spawn of internal prep jobs (≤5/tick). Queues and prepares — never sends, never charges.
+
+**المتطلبات · Prerequisites:** اجتياز Gate 2 و Gate 3 في [`../commercial/COMMERCIAL_GATES.md`](../commercial/COMMERCIAL_GATES.md) — أول دفعة موثّقة + Proof Pack مُسلَّم خلال 48 ساعة. مراجعة [`../launch/LAUNCH_READINESS_SCORECARD.md`](../launch/LAUNCH_READINESS_SCORECARD.md) بحالة GO. *(تم تجاوزها بقرار المؤسس الصريح؛ القاعدة الصريحة تبقى ملزِمة.)*
+
+**Prerequisites:** Gate 2 and Gate 3 in `../commercial/COMMERCIAL_GATES.md` cleared — first documented payment + a 48h Proof Pack. The launch scorecard at GO. *(Overridden by explicit founder decision; the explicit rule still binds.)*
 
 **القواعد الملزِمة · Non-negotiables that still bind:** الأحد عشر جميعًا — مع تركيز على `no_silent_failures` (كل قرار تنسيق ظاهر) و`no_unverified_outcomes` (تيرات `value_os` تحكم كل عبارة قيمة).
 
@@ -88,7 +96,7 @@ This document describes a staged roadmap to realize the agent pyramid — and it
 | المرحلة · Phase | البوابة المسبقة · Prerequisite gate | المخرج · Exit artifact |
 |---|---|---|
 | A — الآن · Now | لا شيء · none | معمار موثّق + سجل وكلاء + جدولة آمنة · documented architecture + roster + safe scheduling |
-| B — بعد أول pilot · After first pilot | Gate 2 + Gate 3 | Executive Orchestrator موصول فوق `RoleBrief`s · orchestrator wired over role briefs |
+| B — مُسرَّعة بقرار المؤسس · Founder-accelerated | Gate 2 + Gate 3 *(تم تجاوزها · overridden)* | ✅ Executive Orchestrator موصول فوق `RoleBrief`s · orchestrator wired over role briefs |
 | C — بعد 3 pilots · After 3 pilots | Gate 5 | طبقة تنفيذ ذاتي L4 + ops cockpit · L4 execution layer + ops cockpit |
 
 ---

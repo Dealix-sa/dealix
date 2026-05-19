@@ -35,6 +35,7 @@ from api.routers import (
     assurance_contract_os,
     auth,
     control_plane_os,
+    executive_orchestrator,
     compliance_status,
     cost_tracking,
     customer_usage,
@@ -341,6 +342,9 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Executive Orchestrator — autonomous top-of-pyramid tick (self-prefixed
+    # /api/v1/executive; /tick is admin- and feature-flag-gated).
+    app.include_router(executive_orchestrator.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
