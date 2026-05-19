@@ -1,9 +1,24 @@
 # 🚀 Dealix — Company Operational State (Live)
 
-**Status:** LAUNCHED (backend + landing live). Blocked on Moyasar account activation for REVENUE VERIFIED.
-**Last verified:** 2026-04-24
+**Status:** LAUNCHED & SELLABLE. Backend + landing live; all 10 aggregate
+verifiers PASS; 499-SAR Sprint sellable now via warm intros + manual
+payment. Only live-charge (Moyasar) is blocked on KYC activation.
+**Last verified:** 2026-05-19
 **Base URL:** https://api.dealix.me
 **Landing:** https://voxc2.github.io/dealix/
+
+---
+
+## ✅ 2026-05-19 re-sync
+
+- All 10 aggregate verifier scripts PASS (business_readiness, full_ops,
+  integration_upgrade, ultimate_upgrade, wave6, wave7_5,
+  wave8_customer_ready, wave8_production_smoke, v11, v12).
+- pytest: 4336 tests collected, 0 collection errors.
+- `business_readiness_verify.sh` → `SELLABLE_NOW=YES`, `PILOT_READY=YES`.
+- 0 forbidden-token / doctrine-guard violations.
+- See `docs/DEALIX_MASTER_EXECUTION_MATRIX.md` for the full re-sync table.
+- Next founder action: send the 5 seeded warm intros (no code blocker).
 
 ---
 

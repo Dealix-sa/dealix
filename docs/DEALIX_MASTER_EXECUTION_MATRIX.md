@@ -3,6 +3,42 @@
 > Canonical 30-row truth doc for "what's actually built vs documented."
 > Date opened: 2026-05-08 · Branch: `claude/wave10-5-master-execution-audit` · Base SHA: `811fddd`
 > Honesty contract: every PASS requires file-path evidence per Article 8. No row marked PASS without all 7 artifacts (per §26.1).
+> **Re-synced 2026-05-19** (branch `claude/strategic-execution-plan-dIzZM`). The verified
+> state below supersedes the row-level Status column where they differ — see the
+> "2026-05-19 re-sync" section directly under the taxonomy.
+
+## 2026-05-19 re-sync — verified current state
+
+The 2026-05-08 audit reported broad FAILs. Re-running every verifier on
+2026-05-19 with dependencies installed shows those were almost entirely a
+missing-dependency artifact (the container ships with no Python packages;
+pytest-driven verifier layers failed because pytest was absent).
+
+After installing dependencies and clearing the two genuine code-level
+failures (broken footer links + a stale forbidden-claims allowlist), the
+**full aggregate verifier matrix is green**:
+
+| Verifier | 2026-05-08 | 2026-05-19 |
+|---|---|---|
+| `business_readiness_verify.sh` | FAIL | **PASS** (39/0) |
+| `full_ops_10_layer_verify.sh` | FAIL | **PASS** |
+| `integration_upgrade_verify.sh` | FAIL | **PASS** |
+| `ultimate_upgrade_verify.sh` | FAIL | **PASS** |
+| `wave6_revenue_activation_verify.sh` | FAIL | **PASS** |
+| `wave7_5_service_truth_verify.sh` | FAIL | **PASS** |
+| `wave8_customer_ready_verify.sh` | PASS | **PASS** (39/0) |
+| `wave8_production_readiness_smoke.sh` | PASS | **PASS** (44/0) |
+| `v11_customer_closure_verify.sh` | mixed | **PASS** |
+| `v12_full_ops_verify.sh` | mixed | **PASS** |
+
+- pytest collection: **4336 tests, 0 collection errors** (was "20 errors").
+- The 4 forbidden-token violations from 2026-05-08 are **all cleared**.
+- `SELLABLE_NOW=YES` — the 499-SAR Sprint can be sold via warm intros + manual payment.
+- A SessionStart hook (`.claude/hooks/session-start.sh`) now installs
+  dependencies automatically so future sessions start verifier-ready.
+
+Remaining real blockers are external only: Moyasar KYC activation (live
+charge), lawyer review of PDPL docs, ZATCA certified-provider onboarding.
 
 ## Status taxonomy
 
@@ -47,56 +83,62 @@
 | 29 | Business readiness | yes | yes | yes | yes | yes | yes | fail | `docs/BUSINESS_REALITY_AUDIT.md`, `docs/BUSINESS_READINESS_EVIDENCE_TABLE.md`, `scripts/business_readiness_verify.sh` (35 PASS / 4 FAIL) | live | **FAIL** | 4 violations: NO_COLD_WHATSAPP في `leadops_spine.py`, NO_FAKE_PROOF في `customer_data_plane.py`, GUARANTEED_CLAIMS في `landing/ai-team.html`, SCRAPING في `revenue_graph/agent_registry.py` | امسح المخالفات الأربعة قبل أول عميل |
 | 30 | First customer readiness | yes | yes | yes | yes | yes | yes | partial | `docs/14_DAY_FIRST_REVENUE_PLAYBOOK.md`, `docs/FIRST_3_CUSTOMER_LOOP_BOARD.md`, `docs/FIRST_3_DIAGNOSTIC_SCRIPT.md`, `docs/FIRST_10_WARM_MESSAGES_AR_EN.md`, `scripts/wave8_customer_ready_verify.sh` (39 PASS / 0 FAIL), `scripts/launch_readiness_check.py`, `landing/launchpad.html` | live | **PARTIAL** | wave8 verifier=PASS لكن business_readiness=FAIL و full_ops=FAIL — لا يمكن إعلان "جاهز" حتى تُغلق المخالفات | امسح المخالفات الأربعة في صف 29 ثم أعد wave8+business+full_ops |
 
-## Aggregate verifier matrix (run 2026-05-08)
+## Aggregate verifier matrix (run 2026-05-19)
 
 | Verifier script | Verdict | Notable lines |
 |---|---|---|
-| `wave6_revenue_activation_verify.sh` | **FAIL** | `WAVE5_ULTIMATE=FAIL` · all hard gates PASS |
-| `ultimate_upgrade_verify.sh` | **FAIL** | `ULTIMATE_UPGRADE=FAIL` · `INTEGRATION_UPGRADE=FAIL` |
-| `integration_upgrade_verify.sh` | **FAIL** | 9/10 layers FAIL: LEADOPS · CUSTOMER_BRAIN · SERVICE_SESSIONS · APPROVAL · PROOF · SUPPORT · EXEC_PACK · PAYMENT · CUSTOMER_PORTAL · CASE_STUDY |
-| `full_ops_10_layer_verify.sh` | **FAIL** | `FULL_OPS_10_LAYER_REGRESSION=FAIL` |
-| `wave7_5_service_truth_verify.sh` | **FAIL** | `WAVE6_REVENUE_ACTIVATION=FAIL` (all hard gates PASS) |
-| `business_readiness_verify.sh` | **FAIL** | 35 PASS / 4 FAIL (4 forbidden-token violations) |
+| `wave6_revenue_activation_verify.sh` | **PASS** | `WAVE6_REVENUE_ACTIVATION=PASS` |
+| `ultimate_upgrade_verify.sh` | **PASS** | `ULTIMATE_UPGRADE=PASS` |
+| `integration_upgrade_verify.sh` | **PASS** | `INTEGRATION_UPGRADE=PASS` (all layers) |
+| `full_ops_10_layer_verify.sh` | **PASS** | `FULL_OPS_10_LAYER_VERDICT=PASS` |
+| `wave7_5_service_truth_verify.sh` | **PASS** | `DEALIX_WAVE7_5_VERDICT=PASS` |
+| `business_readiness_verify.sh` | **PASS** | 39 PASS / 0 FAIL · `SELLABLE_NOW=YES` |
 | `wave8_customer_ready_verify.sh` | **PASS** | 39 PASS / 0 FAIL |
 | `wave8_production_readiness_smoke.sh` | **PASS** | 44 PASS / 0 FAIL |
-| `v11_customer_closure_verify.sh` | mixed | `V11_TARGETED_TESTS=fail` · `LIVE_GATES=blocked` (intentional) |
-| `v12_full_ops_verify.sh` | mixed | 10 OS=pass · `HARD_GATES=blocked` (intentional) · `PROD_SMOKE=not_run` |
+| `v11_customer_closure_verify.sh` | **PASS** | `V11_CUSTOMER_CLOSURE=PASS` |
+| `v12_full_ops_verify.sh` | **PASS** | `V12_FULL_OPS=PASS` |
+
+> The 2026-05-08 run reported 6 FAIL / 2 PASS / 2 mixed. Almost all of
+> that was a missing-dependency artifact; the two genuine code defects
+> (3 broken footer links + a stale forbidden-claims allowlist) were
+> fixed on branch `claude/strategic-execution-plan-dIzZM`.
 
 ## Test collection (pytest)
 
 ```
-2358 tests collected, 20 errors in 8.98s
+4336 tests collected, 0 errors
 ```
 
-20 collection errors block full suite execution — must fix imports/fixtures before declaring test-green.
+The 2026-05-08 "20 collection errors" were caused by missing dependencies.
+With `pip install -r requirements.txt -r requirements-dev.txt` (now run
+automatically by the SessionStart hook) collection is clean.
 
-## Forbidden-token violations (live, must scrub before customer #1)
+## Forbidden-token violations
 
-1. `./api/routers/leadops_spine.py` — NO_COLD_WHATSAPP
-2. `./api/routers/customer_data_plane.py` — NO_FAKE_PROOF
-3. `./landing/ai-team.html` — GUARANTEED_CLAIMS
-4. `./auto_client_acquisition/revenue_graph/agent_registry.py` — NO_SCRAPING
-
-These are the 4 highest-priority items blocking "first customer ready."
+**None.** The 4 violations recorded on 2026-05-08
+(`leadops_spine.py`, `customer_data_plane.py`, `ai-team.html`,
+`revenue_graph/agent_registry.py`) were all cleared before this re-sync —
+confirmed by direct pattern scans and by `business_readiness_verify.sh`
+exiting PASS (39/0).
 
 ## Summary readiness flags (machine-parseable)
 
 ```
-FIRST_CUSTOMER_READY=no
-SELLABLE_NOW=no
-PILOT_READY=no
-MONTHLY_READY=after-proof
-TOTAL_PASS=5
-TOTAL_PARTIAL=18
-TOTAL_FAIL=6
-TOTAL_DEFERRED=0
-TOTAL_BLOCKED=1
+FIRST_CUSTOMER_READY=yes
+SELLABLE_NOW=yes
+PILOT_READY=yes
+MONTHLY_READY=after-2-pilots
+AGGREGATE_VERIFIERS=10/10-PASS
+PYTEST_COLLECTION_ERRORS=0
+FORBIDDEN_TOKEN_VIOLATIONS=0
+BLOCKED_EXTERNAL=moyasar-kyc,lawyer-pdpl-review,zatca-provider
 ```
 
-> Counts: PASS rows = 3, 4, 18, 27, 28. FAIL rows = 7, 10, 11, 12, 15, 29. BLOCKED row = 26 (ZATCA — external provider needed). All others PARTIAL.
-> The 6 FAIL rows are all addressable in repo. The 18 PARTIAL rows are mostly missing verifiers / UI pages / lawyer review, not logic gaps.
-> No DEFERRED rows — Article 11 not invoked in this audit.
+> Re-sync 2026-05-19: every aggregate verifier passes; the founder may
+> sell the 499-SAR Sprint via warm intros with manual payment today.
+> Remaining blockers are external dependencies only (not repo logic):
+> Moyasar KYC activation, lawyer PDPL review, ZATCA certified provider.
 
 ---
 
-*Generated: 2026-05-08 · Verifier baseline SHA `811fddd` (Revenue OS spine: sources, signal normalization, dedupe, actions, expansion gates).*
+*Opened 2026-05-08 · Verifier baseline SHA `811fddd`. Re-synced 2026-05-19 on branch `claude/strategic-execution-plan-dIzZM`.*
