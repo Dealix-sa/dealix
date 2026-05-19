@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -13,37 +14,19 @@ import {
 import { useTranslations, useLocale } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
+import { api } from "@/lib/api";
 import type { RevenueDataPoint } from "@/types";
 
-const mockData: RevenueDataPoint[] = [
-  { month: "يناير", revenue: 4200000, target: 4000000, deals: 12 },
-  { month: "فبراير", revenue: 3800000, target: 4200000, deals: 10 },
-  { month: "مارس", revenue: 5100000, target: 4500000, deals: 15 },
-  { month: "أبريل", revenue: 4700000, target: 4800000, deals: 13 },
-  { month: "مايو", revenue: 6200000, target: 5000000, deals: 18 },
-  { month: "يونيو", revenue: 5800000, target: 5500000, deals: 16 },
-  { month: "يوليو", revenue: 7100000, target: 6000000, deals: 21 },
-  { month: "أغسطس", revenue: 6500000, target: 6500000, deals: 19 },
-  { month: "سبتمبر", revenue: 8200000, target: 7000000, deals: 24 },
-  { month: "أكتوبر", revenue: 7800000, target: 7500000, deals: 22 },
-  { month: "نوفمبر", revenue: 9100000, target: 8000000, deals: 27 },
-  { month: "ديسمبر", revenue: 8700000, target: 8500000, deals: 25 },
-];
+// `/dashboard/metrics` returns a single point-in-time snapshot, not a
+// monthly series. Backend deals: { revenue_sar_paid, paid } feeds the
+// current-period bar; pipeline (commitments) feeds the target line.
+interface DashboardMetrics {
+  deals?: { total?: number; paid?: number; revenue_sar_paid?: number };
+}
 
-const mockDataEn: RevenueDataPoint[] = [
-  { month: "Jan", revenue: 4200000, target: 4000000, deals: 12 },
-  { month: "Feb", revenue: 3800000, target: 4200000, deals: 10 },
-  { month: "Mar", revenue: 5100000, target: 4500000, deals: 15 },
-  { month: "Apr", revenue: 4700000, target: 4800000, deals: 13 },
-  { month: "May", revenue: 6200000, target: 5000000, deals: 18 },
-  { month: "Jun", revenue: 5800000, target: 5500000, deals: 16 },
-  { month: "Jul", revenue: 7100000, target: 6000000, deals: 21 },
-  { month: "Aug", revenue: 6500000, target: 6500000, deals: 19 },
-  { month: "Sep", revenue: 8200000, target: 7000000, deals: 24 },
-  { month: "Oct", revenue: 7800000, target: 7500000, deals: 22 },
-  { month: "Nov", revenue: 9100000, target: 8000000, deals: 27 },
-  { month: "Dec", revenue: 8700000, target: 8500000, deals: 25 },
-];
+interface PipelineSummary {
+  total_revenue_sar?: number;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -66,7 +49,55 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export function RevenueChart() {
   const t = useTranslations("dashboard");
   const locale = useLocale();
-  const data = locale === "ar" ? mockData : mockDataEn;
+  const isAr = locale === "ar";
+
+  const [data, setData] = useState<RevenueDataPoint[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const [metricsRes, pipelineRes] = await Promise.all([
+          api.getDashboardMetrics(),
+          api.getPipeline(),
+        ]);
+        if (cancelled) return;
+        const metrics = (metricsRes.data?.data ?? metricsRes.data) as
+          | DashboardMetrics
+          | undefined;
+        const pipeline = (pipelineRes.data as { pipeline_summary?: PipelineSummary } | undefined)
+          ?.pipeline_summary;
+
+        const revenue = metrics?.deals?.revenue_sar_paid ?? 0;
+        const deals = metrics?.deals?.paid ?? 0;
+        const target = pipeline?.total_revenue_sar ?? revenue;
+
+        setData([
+          {
+            month: isAr ? "حتى تاريخه" : "To date",
+            revenue,
+            target,
+            deals,
+          },
+        ]);
+        setError(null);
+      } catch {
+        if (!cancelled) {
+          setError(isAr ? "تعذر تحميل بيانات الإيرادات" : "Could not load revenue data");
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAr]);
 
   return (
     <Card className="col-span-2">
@@ -74,6 +105,13 @@ export function RevenueChart() {
         <CardTitle className="text-base font-semibold">{t("revenueChart")}</CardTitle>
       </CardHeader>
       <CardContent>
+        {loading ? (
+          <p className="text-sm text-muted-foreground py-24 text-center">
+            {isAr ? "جاري التحميل…" : "Loading…"}
+          </p>
+        ) : error ? (
+          <p className="text-sm text-destructive py-24 text-center">{error}</p>
+        ) : (
         <ResponsiveContainer width="100%" height={280}>
           <AreaChart data={data} margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
             <defs>
@@ -127,6 +165,7 @@ export function RevenueChart() {
             />
           </AreaChart>
         </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   );

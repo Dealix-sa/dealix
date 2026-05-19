@@ -143,6 +143,12 @@ export const api = {
   getPipeline: () =>
     apiClient.get("/api/v1/revenue-pipeline/summary"),
 
+  getAgentActivity: () =>
+    apiClient.get("/api/v1/full-ops/agents"),
+
+  runFullOpsTick: (body: Record<string, unknown> = {}) =>
+    apiClient.post("/api/v1/full-ops/tick", body),
+
   getDecisionPassportGoldenChain: () =>
     apiClient.get("/api/v1/decision-passport/golden-chain"),
 

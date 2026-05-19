@@ -1,91 +1,87 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { RefreshCw, Filter } from "lucide-react";
+import { Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, formatRelativeTime, getStatusColor } from "@/lib/utils";
-import type { AgentActivity, AgentType } from "@/types";
+import { api } from "@/lib/api";
+import type { AgentActivity, AgentType, AgentStatus } from "@/types";
 
-const mockActivities: AgentActivity[] = [
-  {
-    id: "a1",
-    agentType: "outreach",
-    action: "أرسل رسائل تواصل مخصصة لـ 8 شركات في قطاع النفط",
-    target: "قطاع النفط والطاقة",
-    status: "completed",
-    timestamp: new Date(Date.now() - 3 * 60000).toISOString(),
-    duration: 12400,
-  },
-  {
-    id: "a2",
-    agentType: "scoring",
-    action: "تقييم 23 عميلاً محتملاً بناءً على إشارات التمويل",
-    target: "قاعدة العملاء Q1",
-    status: "completed",
-    timestamp: new Date(Date.now() - 8 * 60000).toISOString(),
-    duration: 5200,
-    requiresApproval: false,
-  },
-  {
-    id: "a3",
-    agentType: "compliance",
-    action: "مراجعة امتثال حملة البريد الإلكتروني للشريعة الإسلامية",
-    target: "حملة رمضان 2025",
-    status: "running",
-    timestamp: new Date(Date.now() - 1 * 60000).toISOString(),
-    requiresApproval: true,
-  },
-  {
-    id: "a4",
-    agentType: "intelligence",
-    action: "رصد إشارات التوظيف في القطاع المالي - اكتشاف 5 فرص",
-    target: "القطاع المالي - MENA",
-    status: "completed",
-    timestamp: new Date(Date.now() - 15 * 60000).toISOString(),
-    duration: 34100,
-  },
-  {
-    id: "a5",
-    agentType: "orchestrator",
-    action: "جدولة 14 مهمة وكيل للدورة اليومية",
-    target: "الدورة اليومية 07-05-2025",
-    status: "completed",
-    timestamp: new Date(Date.now() - 25 * 60000).toISOString(),
-    duration: 800,
-  },
-  {
-    id: "a6",
-    agentType: "outreach",
-    action: "متابعة تلقائية مع 3 عملاء لم يستجيبوا",
-    target: "صندوق المتابعة",
-    status: "pending",
-    timestamp: new Date(Date.now() - 35 * 60000).toISOString(),
-    requiresApproval: true,
-  },
-  {
-    id: "a7",
-    agentType: "scoring",
-    action: "إعادة تقييم العملاء بعد إعلان تمويل جولة B",
-    target: "شركات السلسلة B",
-    status: "failed",
-    timestamp: new Date(Date.now() - 45 * 60000).toISOString(),
-    duration: 2100,
-  },
-  {
-    id: "a8",
-    agentType: "intelligence",
-    action: "تحليل تقارير Q4 من المنافسين الرئيسيين",
-    target: "تحليل السوق السعودي",
-    status: "completed",
-    timestamp: new Date(Date.now() - 60 * 60000).toISOString(),
-    duration: 28700,
-  },
-];
+const POLL_INTERVAL_MS = 15000;
+
+interface RosterAgent {
+  agent_id: string;
+  name: string;
+  autonomy_level: number;
+  capability_tags: string[];
+  registered: boolean;
+  status: string;
+}
+
+interface AgentPyramid {
+  tier_1_chief: RosterAgent[];
+  tier_2_operator: RosterAgent[];
+  tier_3_tool: RosterAgent[];
+  total_agents: number;
+  max_autonomy_level: number;
+  l5_forbidden: boolean;
+}
+
+// Map a capability tag to one of the 5 visual agent types the feed renders.
+function capabilityToAgentType(tags: string[]): AgentType {
+  const joined = tags.join(",");
+  if (joined.includes("compliance")) return "compliance";
+  if (joined.includes("growth")) return "outreach";
+  if (joined.includes("sales") || joined.includes("executive")) return "scoring";
+  if (
+    joined.includes("self_improvement") ||
+    joined.includes("delivery") ||
+    joined.includes("customer_success")
+  )
+    return "intelligence";
+  return "orchestrator";
+}
+
+// Roster status -> the AgentStatus the feed badges understand.
+function rosterStatusToActivityStatus(status: string): AgentStatus {
+  const s = status.toLowerCase();
+  if (s === "active" || s === "running") return "running";
+  if (s === "retired" || s === "failed" || s === "blocked") return "failed";
+  if (s === "approved" || s === "completed") return "completed";
+  return "pending";
+}
+
+// Convert the live Full-Ops agent pyramid into feed rows.
+function pyramidToActivities(p: AgentPyramid, isAr: boolean): AgentActivity[] {
+  const tiers: Array<{ agents: RosterAgent[]; tierAr: string; tierEn: string }> = [
+    { agents: p.tier_1_chief ?? [], tierAr: "قائد", tierEn: "Chief" },
+    { agents: p.tier_2_operator ?? [], tierAr: "مشغّل", tierEn: "Operator" },
+    { agents: p.tier_3_tool ?? [], tierAr: "أداة", tierEn: "Tool" },
+  ];
+  const rows: AgentActivity[] = [];
+  for (const { agents, tierAr, tierEn } of tiers) {
+    for (const a of agents) {
+      const tags = a.capability_tags ?? [];
+      rows.push({
+        id: a.agent_id,
+        agentType: capabilityToAgentType(tags),
+        action: isAr
+          ? `وكيل ${tierAr} «${a.name}» — مستوى استقلالية L${a.autonomy_level}`
+          : `${tierEn} agent "${a.name}" — autonomy L${a.autonomy_level}`,
+        target: tags.length > 0 ? tags.join(", ") : isAr ? "بدون وسوم قدرات" : "no capability tags",
+        status: rosterStatusToActivityStatus(a.status),
+        timestamp: new Date().toISOString(),
+        requiresApproval: a.autonomy_level >= 4,
+      });
+    }
+  }
+  return rows;
+}
 
 const agentIcons: Record<AgentType, string> = {
   outreach: "📤",
@@ -164,17 +160,18 @@ function ActivityItem({ activity, index }: ActivityItemProps) {
   );
 }
 
-// Stats card
-function AgentStats() {
-  const t = useTranslations("agents");
+// Stats card — derives counts from the live activity rows.
+function AgentStats({ activities }: { activities: AgentActivity[] }) {
   const locale = useLocale();
   const isAr = locale === "ar";
 
+  const count = (s: AgentStatus) => activities.filter((a) => a.status === s).length;
+
   const stats = [
-    { label: isAr ? "يعمل" : "Running", value: 2, color: "text-blue-400", bg: "bg-blue-400/10" },
-    { label: isAr ? "مكتمل" : "Completed", value: 156, color: "text-emerald-400", bg: "bg-emerald-400/10" },
-    { label: isAr ? "قيد الانتظار" : "Pending", value: 8, color: "text-gold-400", bg: "bg-gold-400/10" },
-    { label: isAr ? "فشل" : "Failed", value: 3, color: "text-red-400", bg: "bg-red-400/10" },
+    { label: isAr ? "يعمل" : "Running", value: count("running"), color: "text-blue-400", bg: "bg-blue-400/10" },
+    { label: isAr ? "مكتمل" : "Completed", value: count("completed"), color: "text-emerald-400", bg: "bg-emerald-400/10" },
+    { label: isAr ? "قيد الانتظار" : "Pending", value: count("pending"), color: "text-gold-400", bg: "bg-gold-400/10" },
+    { label: isAr ? "فشل" : "Failed", value: count("failed"), color: "text-red-400", bg: "bg-red-400/10" },
   ];
 
   return (
@@ -199,31 +196,43 @@ export function ActivityFeed() {
   const t = useTranslations("agents");
   const locale = useLocale();
   const isAr = locale === "ar";
-  const [activities, setActivities] = useState(mockActivities);
+  const [activities, setActivities] = useState<AgentActivity[]>([]);
   const [isLive, setIsLive] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Simulate live updates
+  const load = useCallback(async () => {
+    try {
+      const res = await api.getAgentActivity();
+      const data = res.data as { pyramid?: AgentPyramid } | undefined;
+      const pyramid = data?.pyramid;
+      if (pyramid) {
+        setActivities(pyramidToActivities(pyramid, isAr));
+        setError(null);
+      }
+    } catch {
+      setError(isAr ? "تعذر تحميل نشاط الوكلاء من الخادم" : "Could not load agent activity from API");
+    } finally {
+      setLoading(false);
+    }
+  }, [isAr]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  // Poll the live agent pyramid while in Live mode.
   useEffect(() => {
     if (!isLive) return;
     const interval = setInterval(() => {
-      const newActivity: AgentActivity = {
-        id: `live-${Date.now()}`,
-        agentType: ["outreach", "scoring", "intelligence"][Math.floor(Math.random() * 3)] as AgentType,
-        action: isAr
-          ? "نشاط جديد من الذكاء الاصطناعي..."
-          : "New AI agent action...",
-        target: isAr ? "هدف تلقائي" : "Auto target",
-        status: "running",
-        timestamp: new Date().toISOString(),
-      };
-      setActivities((prev) => [newActivity, ...prev.slice(0, 19)]);
-    }, 15000);
+      void load();
+    }, POLL_INTERVAL_MS);
     return () => clearInterval(interval);
-  }, [isLive, isAr]);
+  }, [isLive, load]);
 
   return (
     <div>
-      <AgentStats />
+      <AgentStats activities={activities} />
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
@@ -251,11 +260,23 @@ export function ActivityFeed() {
         <CardContent className="p-0">
           <ScrollArea className="h-[calc(100vh-20rem)]">
             <div className="p-2">
-              <AnimatePresence>
-                {activities.map((activity, i) => (
-                  <ActivityItem key={activity.id} activity={activity} index={i} />
-                ))}
-              </AnimatePresence>
+              {loading ? (
+                <p className="p-4 text-sm text-muted-foreground">
+                  {isAr ? "جاري التحميل…" : "Loading…"}
+                </p>
+              ) : error ? (
+                <p className="p-4 text-sm text-destructive">{error}</p>
+              ) : activities.length === 0 ? (
+                <p className="p-4 text-sm text-muted-foreground">
+                  {isAr ? "لا يوجد نشاط وكلاء" : "No agent activity"}
+                </p>
+              ) : (
+                <AnimatePresence>
+                  {activities.map((activity, i) => (
+                    <ActivityItem key={activity.id} activity={activity} index={i} />
+                  ))}
+                </AnimatePresence>
+              )}
             </div>
           </ScrollArea>
         </CardContent>
