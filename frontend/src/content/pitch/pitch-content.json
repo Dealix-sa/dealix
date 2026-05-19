@@ -1,0 +1,704 @@
+{
+  "meta": {
+    "version": "1.0",
+    "updated": "2026-05-19",
+    "note_ar": "كل الأرقام التشغيلية تقديرية ومن تجارب تجريبية ما لم يُذكر خلاف ذلك. لا ضمانات. كل إجراء خارجي يتم بموافقة بشرية.",
+    "note_en": "All operating numbers are estimated and from pilots unless stated otherwise. No guarantees. Every external action runs on human approval."
+  },
+  "ui": {
+    "ar": {
+      "prev": "السابقة",
+      "next": "التالية",
+      "deck": "شرائح",
+      "scroll": "تمرير",
+      "lang": "English",
+      "pdf": "تصدير PDF",
+      "theme": "الوضع",
+      "of": "من",
+      "estimated": "تقديري — من تجارب تجريبية",
+      "illustrative": "مثال توضيحي",
+      "cover_meta": "عرض تقديمي للمبيعات · الرياض، السعودية",
+      "scroll_hint": "مرّر للأسفل لقراءة العرض كاملاً"
+    },
+    "en": {
+      "prev": "Previous",
+      "next": "Next",
+      "deck": "Slides",
+      "scroll": "Scroll",
+      "lang": "العربية",
+      "pdf": "Export PDF",
+      "theme": "Theme",
+      "of": "of",
+      "estimated": "Estimated — from pilots",
+      "illustrative": "Illustrative example",
+      "cover_meta": "Sales presentation · Riyadh, Saudi Arabia",
+      "scroll_hint": "Scroll down to read the full deck"
+    }
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "layout": "cover",
+      "ar": {
+        "kicker": "عربي أولاً · PDPL · بموافقتك",
+        "title": "Dealix",
+        "headline": "أول AI Operating Team للشركات السعودية",
+        "subtitle": "نظام تشغيل النمو والإيراد — يستقبل الـ leads، يؤهّلها، يصيغ الردود بالعربية، ويسلّمها لك للاعتماد قبل الإرسال.",
+        "meta": "سامي العسيري — المؤسس · 19 مايو 2026",
+        "tags": ["5 وكلاء AI", "8 بوابات أمان", "PDPL-native"]
+      },
+      "en": {
+        "kicker": "Arabic-first · PDPL · approval-first",
+        "title": "Dealix",
+        "headline": "The first AI Operating Team for Saudi companies",
+        "subtitle": "A growth & revenue OS — it captures leads, qualifies them, drafts Arabic replies, and hands them to you for approval before anything is sent.",
+        "meta": "Sami Al-Asiri — Founder · 19 May 2026",
+        "tags": ["5 AI agents", "8 safety gates", "PDPL-native"]
+      }
+    },
+    {
+      "id": "problem",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "المشكلة",
+        "title": "70% من الـ leads تُفقد قبل أول تواصل حقيقي",
+        "subtitle": "الشركات السعودية الصغيرة والمتوسطة لا تخسر بسبب ضعف المنتج — تخسر لأن الفرص تموت في الانتظار.",
+        "blocks": [
+          {
+            "type": "cards",
+            "tone": "danger",
+            "items": [
+              { "icon": "⏱️", "title": "تأخّر الرد", "desc": "متوسط زمن الرد في B2B السعودي يقارب 4 ساعات و23 دقيقة. الرد خلال 5 دقائق يرفع التحويل حتى 21 ضعفاً (Harvard Business Review).", "stat": "4س 23د" },
+              { "icon": "🎯", "title": "تأهيل ضعيف", "desc": "نحو 60% من وقت فريق المبيعات يُهدر على leads غير مؤهّلة: طلاب، منافسون، شركات خارج النطاق (Forrester 2025).", "stat": "60%" },
+              { "icon": "💬", "title": "اعتماد على المؤسس", "desc": "الـ leads تأتي من واتساب وإيميل وLinkedIn، والمؤسس وحده يردّ. عند انشغاله، الصفقة تنتظر — ثم تضيع.", "stat": "1 شخص" }
+            ]
+          },
+          { "type": "note", "text": "المصادر: Harvard Business Review، Forrester 2025. الأرقام مرجعية للسوق وليست وعداً بنتيجة." }
+        ]
+      },
+      "en": {
+        "eyebrow": "The problem",
+        "title": "70% of leads are lost before the first real contact",
+        "subtitle": "Saudi SMBs rarely lose because of a weak product — they lose because opportunities die while waiting.",
+        "blocks": [
+          {
+            "type": "cards",
+            "tone": "danger",
+            "items": [
+              { "icon": "⏱️", "title": "Response lag", "desc": "Average Saudi B2B response time is about 4h 23m. Replying within 5 minutes can lift conversion up to 21x (Harvard Business Review).", "stat": "4h 23m" },
+              { "icon": "🎯", "title": "Weak qualification", "desc": "About 60% of sales-team time is wasted on unqualified leads: students, competitors, out-of-fit companies (Forrester 2025).", "stat": "60%" },
+              { "icon": "💬", "title": "Founder bottleneck", "desc": "Leads arrive on WhatsApp, email and LinkedIn — and only the founder replies. When they are busy, the deal waits, then dies.", "stat": "1 person" }
+            ]
+          },
+          { "type": "note", "text": "Sources: Harvard Business Review, Forrester 2025. Figures are market references, not a promised outcome." }
+        ]
+      }
+    },
+    {
+      "id": "why-now",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "لماذا الآن",
+        "title": "السوق السعودي يتحرك — والنافذة مفتوحة الآن",
+        "subtitle": "ثلاث حقائق سوقية تجعل بناء فريق AI عربي أولاً ومتوافق مع PDPL ميزة وقتية، لا رفاهية.",
+        "blocks": [
+          {
+            "type": "kpis",
+            "items": [
+              { "num": "14.63%", "label": "نمو سنوي مركّب لسوق SaaS السعودي", "note": "تقديرات السوق" },
+              { "num": "5M ريال", "label": "أقصى غرامة محتملة لمخالفة نظام حماية البيانات (PDPL)", "note": "48 عقوبة في 2025" },
+              { "num": "48%", "label": "من مشتري B2B يبدأون بحثهم عبر أدوات AI", "note": "اتجاه شراء 2025" }
+            ]
+          },
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "🛡️", "title": "الامتثال أصبح إلزامياً", "desc": "PDPL يُطبّق فعلياً وإقامة البيانات داخل السعودية مطلوبة. النموذج المبني على الامتثال يبدأ من نقطة قوة." },
+              { "icon": "🗣️", "title": "اللغة حاجز حقيقي", "desc": "أدوات الـ chatbots الأجنبية تترجم الإنجليزية حرفياً وتبدو مصطنعة بالعربية. السوق يحتاج عربية خليجية طبيعية." },
+              { "icon": "📉", "title": "البريد البارد مات", "desc": "الإرسال الجماعي البارد لم يعد يعمل. المشترون يكافئون السرعة والاحترام والصلة — وهذا ما يبنيه Dealix." }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "eyebrow": "Why now",
+        "title": "The Saudi market is moving — the window is open now",
+        "subtitle": "Three market facts make an Arabic-first, PDPL-compliant AI team a timing advantage, not a luxury.",
+        "blocks": [
+          {
+            "type": "kpis",
+            "items": [
+              { "num": "14.63%", "label": "CAGR of the Saudi SaaS market", "note": "Market estimate" },
+              { "num": "SAR 5M", "label": "Maximum potential fine for a PDPL data-protection breach", "note": "48 sanctions in 2025" },
+              { "num": "48%", "label": "of B2B buyers start their research with AI tools", "note": "2025 buying trend" }
+            ]
+          },
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "🛡️", "title": "Compliance is now mandatory", "desc": "PDPL is actively enforced and KSA data residency is required. A compliance-built model starts from strength." },
+              { "icon": "🗣️", "title": "Language is a real barrier", "desc": "Foreign chatbots translate English literally and feel artificial in Arabic. The market needs natural Khaliji Arabic." },
+              { "icon": "📉", "title": "Cold email is dead", "desc": "Cold blast outreach no longer works. Buyers reward speed, respect and relevance — exactly what Dealix builds." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "what-is",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "ما هو Dealix",
+        "title": "خمسة وكلاء AI يحلّون محل أول ثلاث توظيفات",
+        "subtitle": "Dealix نظام تشغيل سيادي محكوم بالسياسات للنمو والتنفيذ — يجمع الذكاء الوكيلي، والتنفيذ الحتمي، وضوابط الاعتماد، والرؤية التنفيذية في مكان واحد.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "🤝", "title": "وكيل المبيعات", "desc": "يستقبل الـ lead، يؤهّله بأسئلة ذكية، ويصيغ مسوّدة رد بالعربية الخليجية." },
+              { "icon": "📈", "title": "وكيل النمو", "desc": "يرصد إشارات الفرص ويرتّب الحسابات حسب جاهزيتها للإغلاق." },
+              { "icon": "🎧", "title": "وكيل الدعم", "desc": "يجهّز ردود المتابعة ويبقي العميل دافئاً بين المراحل." },
+              { "icon": "⚙️", "title": "وكيل العمليات", "desc": "ينظّف البيانات، يدمج التكرارات، ويحوّل الفوضى إلى مسار قابل للتدقيق." },
+              { "icon": "🧭", "title": "الوكيل التنفيذي", "desc": "يلخّص الحالة، يبرز القرار التالي، ويعطيك رؤية من أول اقتراح حتى التجديد." }
+            ]
+          },
+          { "type": "note", "text": "Dealix ليس CRM، وليس chatbot بسيطاً، وليس قوالب جاهزة — بل طبقة تشغيل للإيراد فوق أدواتك الحالية." }
+        ]
+      },
+      "en": {
+        "eyebrow": "What is Dealix",
+        "title": "Five AI agents that stand in for your first three hires",
+        "subtitle": "Dealix is a sovereign, policy-governed growth & execution OS — combining agentic intelligence, deterministic execution, approval controls and executive visibility in one place.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "🤝", "title": "Sales agent", "desc": "Captures the lead, qualifies it with smart questions, and drafts a reply in Khaliji Arabic." },
+              { "icon": "📈", "title": "Growth agent", "desc": "Detects opportunity signals and ranks accounts by readiness to close." },
+              { "icon": "🎧", "title": "Support agent", "desc": "Prepares follow-up replies and keeps the customer warm between stages." },
+              { "icon": "⚙️", "title": "Ops agent", "desc": "Cleans data, merges duplicates and turns chaos into an auditable pipeline." },
+              { "icon": "🧭", "title": "Executive agent", "desc": "Summarizes state, surfaces the next decision, and gives visibility from first proposal to renewal." }
+            ]
+          },
+          { "type": "note", "text": "Dealix is not a CRM, not a simple chatbot, and not canned templates — it is a revenue execution layer on top of your existing tools." }
+        ]
+      }
+    },
+    {
+      "id": "how-it-works",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "كيف يعمل",
+        "title": "ذكاء مستقل، تنفيذ معتمد من الإنسان",
+        "subtitle": "القاعدة الأساسية في Dealix: الـ AI يستكشف ويحلّل ويقترح. التنفيذ يتم بمسارات حتمية. الإنسان يعتمد كل خطوة خارجية.",
+        "blocks": [
+          {
+            "type": "flow",
+            "items": [
+              { "icon": "🧠", "title": "الـ AI يحلّل ويقترح", "desc": "يقرأ الإشارات، يؤهّل، ويصيغ مسوّدات — بدون أي إرسال." },
+              { "icon": "✅", "title": "أنت تعتمد", "desc": "تراجع المسوّدة وتوافق أو تعدّل أو ترفض — القرار قرارك." },
+              { "icon": "⚡", "title": "تنفيذ حتمي", "desc": "بعد الاعتماد، مسار محدّد ينفّذ الخطوة ويسجّلها للتدقيق." }
+            ]
+          },
+          {
+            "type": "bullets",
+            "title": "ثلاثة قوانين لا يكسرها النظام",
+            "items": [
+              "لا نمو بلا إثبات — لا إثبات يعني لا ادّعاء.",
+              "ذكاء مستقل، لكن كل إجراء خارجي يحتاج موافقتك.",
+              "لا توسّع قبل إثبات تجاري حقيقي من عميل مدفوع."
+            ]
+          }
+        ]
+      },
+      "en": {
+        "eyebrow": "How it works",
+        "title": "Autonomous intelligence, human-approved execution",
+        "subtitle": "The prime rule in Dealix: AI explores, analyzes and recommends. Deterministic workflows execute. Humans approve every external move.",
+        "blocks": [
+          {
+            "type": "flow",
+            "items": [
+              { "icon": "🧠", "title": "AI analyzes & recommends", "desc": "Reads signals, qualifies, and drafts — with nothing sent." },
+              { "icon": "✅", "title": "You approve", "desc": "Review the draft and approve, edit or reject — the decision is yours." },
+              { "icon": "⚡", "title": "Deterministic execution", "desc": "After approval, a defined workflow runs the step and logs it for audit." }
+            ]
+          },
+          {
+            "type": "bullets",
+            "title": "Three laws the system never breaks",
+            "items": [
+              "No growth without proof — no proof means no claim.",
+              "Autonomous intelligence, but every external action needs your approval.",
+              "No scaling before real commercial proof from a paying customer."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sprint",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "العرض الأساسي",
+        "title": "Sprint إثبات الإيراد — 7 أيام، 499 ريال",
+        "subtitle": "نقطة دخول منخفضة المخاطر: تجربة حقيقية على بياناتك، تنتهي بـ Proof Pack موقّع وقرار واضح للخطوة التالية.",
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "n": "اليوم 1", "title": "التشخيص والإطلاق", "desc": "تشخيص أولي، تحديد نطاق التجربة، وفاتورة عبر Moyasar (وضع اختبار)." },
+              { "n": "الأيام 2–6", "title": "الالتقاط والصياغة", "desc": "التقاط الـ leads، صياغة ردود عربية، ومراجعتك لها قبل الإرسال يدوياً." },
+              { "n": "اليوم 7", "title": "Proof Pack والقرار", "desc": "تسليم Proof Pack ثنائي اللغة، وجدولة مكالمة للخطوة التالية." }
+            ]
+          },
+          {
+            "type": "kpis",
+            "items": [
+              { "num": "10", "label": "فرص مؤهّلة ومرتّبة", "note": "مخرَج متوقّع للتجربة" },
+              { "num": "499 ريال", "label": "سعر التجربة الكامل", "note": "دفعة واحدة" },
+              { "num": "7 أيام", "label": "من البداية إلى Proof Pack", "note": "مدّة ثابتة" }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "eyebrow": "The core offer",
+        "title": "Revenue Proof Sprint — 7 days, SAR 499",
+        "subtitle": "A low-risk entry point: a real run on your own data, ending with a signed Proof Pack and a clear next-step decision.",
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "n": "Day 1", "title": "Diagnostic & kickoff", "desc": "Initial diagnostic, scope the run, and a Moyasar invoice (test mode)." },
+              { "n": "Days 2–6", "title": "Capture & drafting", "desc": "Leads are captured, Arabic replies drafted, and you review them before any manual send." },
+              { "n": "Day 7", "title": "Proof Pack & decision", "desc": "Delivery of a bilingual Proof Pack and a scheduled next-step call." }
+            ]
+          },
+          {
+            "type": "kpis",
+            "items": [
+              { "num": "10", "label": "qualified, ranked opportunities", "note": "Expected sprint output" },
+              { "num": "SAR 499", "label": "full sprint price", "note": "One-time" },
+              { "num": "7 days", "label": "from start to Proof Pack", "note": "Fixed duration" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "proof-pack",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "الإثبات",
+        "title": "Proof Pack — كل ادّعاء مربوط بدليل",
+        "subtitle": "تقرير ثنائي اللغة من 14 قسماً يلخّص ما حدث فعلاً خلال التجربة — بـ proof_score يحدّد جاهزية الترقية.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "📋", "title": "ملخص تنفيذي", "desc": "صورة واضحة للحالة بالعربية: ماذا حدث، وما القرار التالي." },
+              { "icon": "🎯", "title": "فرص مؤهّلة", "desc": "الحسابات المؤهّلة، أفضل المسوّدات، وخطة متابعة لكل فرصة." },
+              { "icon": "🛡️", "title": "قرارات الحوكمة", "desc": "سجلّ متوافق مع PDPL، مع محاولات الإرسال الخطرة التي حُجبت." },
+              { "icon": "📊", "title": "أثر الإيراد المقدّر", "desc": "تقدير الأثر وحساب ROI — موسوم \"تقديري\" حتى يُربط بالـ CRM." }
+            ]
+          },
+          {
+            "type": "kpis",
+            "items": [
+              { "num": "14", "label": "قسماً في كل Proof Pack", "note": "بنية ثابتة" },
+              { "num": "≥ 70", "label": "أدنى proof_score لفتح الترقية", "note": "بوابة جودة" },
+              { "num": "82", "label": "proof_score في دراسة حالة مرجعية", "note": "حالة مجهّلة" }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "eyebrow": "The proof",
+        "title": "Proof Pack — every claim tied to evidence",
+        "subtitle": "A bilingual 14-section report that summarizes what actually happened in the sprint — with a proof_score that decides upgrade readiness.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "📋", "title": "Executive summary", "desc": "A clear picture of state in Arabic: what happened, and the next decision." },
+              { "icon": "🎯", "title": "Qualified opportunities", "desc": "Qualified accounts, the best drafts, and a follow-up plan per opportunity." },
+              { "icon": "🛡️", "title": "Governance decisions", "desc": "A PDPL-compliant log, including the unsafe outreach attempts that were blocked." },
+              { "icon": "📊", "title": "Estimated revenue impact", "desc": "Impact estimate and ROI math — labeled \"estimated\" until linked to the CRM." }
+            ]
+          },
+          {
+            "type": "kpis",
+            "items": [
+              { "num": "14", "label": "sections in every Proof Pack", "note": "Fixed structure" },
+              { "num": "≥ 70", "label": "minimum proof_score to unlock an upgrade", "note": "Quality gate" },
+              { "num": "82", "label": "proof_score in a reference case study", "note": "Anonymized case" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "compare",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "المقارنة",
+        "title": "أين يفوز Dealix",
+        "subtitle": "Dealix ليس بديلاً عن الـ CRM — بل طبقة إيراد بسياق سعودي. هكذا يقارن بالخيارات الشائعة.",
+        "blocks": [
+          {
+            "type": "table",
+            "head": ["المعيار", "Dealix", "HubSpot", "Salesforce", "Gong", "أدوات WhatsApp"],
+            "highlight": 1,
+            "rows": [
+              ["عربي خليجي طبيعي", "✓ أصيل", "ترجمة", "ترجمة", "إنجليزي أولاً", "محدود"],
+              ["متوافق مع PDPL وإقامة بيانات", "✓ مدمج", "جزئي", "جزئي", "جزئي", "✗"],
+              ["اعتماد بشري قبل الإرسال", "✓ إلزامي", "اختياري", "اختياري", "—", "✗ غالباً"],
+              ["وعي بقناة واتساب", "✓ أساسي", "إضافة", "إضافة", "✗", "✓"],
+              ["Proof Pack موقّع لكل تجربة", "✓ دائماً", "✗", "✗", "✗", "✗"],
+              ["تجربة قبل الأتمتة الواسعة", "✓ بـ 499 ريال", "اشتراك", "تطبيق طويل", "اشتراك", "—"]
+            ]
+          },
+          { "type": "note", "text": "تقييم موضعي للسياق السعودي. كل مزوّد قوي في مجاله؛ المقارنة على ملاءمة شركات السعودية الصغيرة والمتوسطة." }
+        ]
+      },
+      "en": {
+        "eyebrow": "The comparison",
+        "title": "Where Dealix wins",
+        "subtitle": "Dealix is not a CRM replacement — it is a revenue layer with Saudi context. Here is how it compares to common options.",
+        "blocks": [
+          {
+            "type": "table",
+            "head": ["Criterion", "Dealix", "HubSpot", "Salesforce", "Gong", "WhatsApp tools"],
+            "highlight": 1,
+            "rows": [
+              ["Natural Khaliji Arabic", "✓ Native", "Translated", "Translated", "English-first", "Limited"],
+              ["PDPL compliance & data residency", "✓ Built-in", "Partial", "Partial", "Partial", "✗"],
+              ["Human approval before send", "✓ Mandatory", "Optional", "Optional", "—", "✗ often"],
+              ["WhatsApp channel awareness", "✓ Core", "Add-on", "Add-on", "✗", "✓"],
+              ["Signed Proof Pack per engagement", "✓ Always", "✗", "✗", "✗", "✗"],
+              ["Pilot before wide automation", "✓ At SAR 499", "Subscription", "Long rollout", "Subscription", "—"]
+            ]
+          },
+          { "type": "note", "text": "A contextual assessment for the Saudi market. Each vendor is strong in its lane; the comparison is on fit for Saudi SMBs." }
+        ]
+      }
+    },
+    {
+      "id": "before-after",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "الأثر",
+        "title": "قبل وبعد Dealix",
+        "subtitle": "أنماط لوحظت في التجارب التجريبية على نفس حجم الـ leads. الأرقام تقديرية وليست وعداً بنتيجة.",
+        "blocks": [
+          {
+            "type": "bars",
+            "items": [
+              { "label": "زمن الرد الأولي", "before": "6 ساعات", "after": "45 ثانية", "beforePct": 100, "afterPct": 6 },
+              { "label": "معدل التأهيل", "before": "12%", "after": "31%", "beforePct": 39, "afterPct": 100 },
+              { "label": "الـ leads الضائعة", "before": "40%", "after": "8%", "beforePct": 100, "afterPct": 20, "lowerBetter": true },
+              { "label": "Demos محجوزة أسبوعياً", "before": "8", "after": "22", "beforePct": 36, "afterPct": 100 }
+            ]
+          },
+          { "type": "note", "text": "تقديري — من تجارب تجريبية. الأرقام تُربط بالـ CRM للتحقق قبل أي اعتمادها كنتيجة مؤكدة." }
+        ]
+      },
+      "en": {
+        "eyebrow": "The impact",
+        "title": "Before and after Dealix",
+        "subtitle": "Patterns observed in pilots on the same lead volume. Figures are estimated and not a promised outcome.",
+        "blocks": [
+          {
+            "type": "bars",
+            "items": [
+              { "label": "First response time", "before": "6 hours", "after": "45 seconds", "beforePct": 100, "afterPct": 6 },
+              { "label": "Qualification rate", "before": "12%", "after": "31%", "beforePct": 39, "afterPct": 100 },
+              { "label": "Lost leads", "before": "40%", "after": "8%", "beforePct": 100, "afterPct": 20, "lowerBetter": true },
+              { "label": "Demos booked per week", "before": "8", "after": "22", "beforePct": 36, "afterPct": 100 }
+            ]
+          },
+          { "type": "note", "text": "Estimated — from pilots. Figures are linked to the CRM for verification before being treated as confirmed results." }
+        ]
+      }
+    },
+    {
+      "id": "roi",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "حساب العائد",
+        "title": "تكلفة فريق مقابل تكلفة Dealix",
+        "subtitle": "مثال توضيحي يقارن تكلفة ثلاثة موظفي تطوير أعمال شهرياً بتكلفة باقة Dealix للنمو.",
+        "blocks": [
+          {
+            "type": "roi",
+            "unit": "ريال / شهرياً",
+            "cols": [
+              { "label": "3 موظفي تطوير أعمال", "value": "46,000", "pct": 100, "tone": "danger", "items": ["رواتب ومزايا", "أدوات واشتراكات", "وقت توظيف وتدريب"] },
+              { "label": "Dealix — باقة النمو", "value": "2,999", "pct": 7, "tone": "ok", "items": ["5 وكلاء AI", "اعتماد بشري قبل الإرسال", "Proof Pack شهري"] }
+            ],
+            "delta": { "label": "الفرق التقريبي", "value": "≈ 43,000 ريال / شهرياً" }
+          },
+          { "type": "note", "text": "مثال توضيحي. الأرقام تعتمد على هيكل تكلفة كل شركة، ولا تُمثّل ضماناً بتوفير أو إيراد." }
+        ]
+      },
+      "en": {
+        "eyebrow": "The ROI",
+        "title": "Cost of a team vs. cost of Dealix",
+        "subtitle": "An illustrative example comparing the monthly cost of three business-development hires with the Dealix growth plan.",
+        "blocks": [
+          {
+            "type": "roi",
+            "unit": "SAR / month",
+            "cols": [
+              { "label": "3 business-development hires", "value": "46,000", "pct": 100, "tone": "danger", "items": ["Salaries & benefits", "Tools & subscriptions", "Hiring & ramp time"] },
+              { "label": "Dealix — Growth plan", "value": "2,999", "pct": 7, "tone": "ok", "items": ["5 AI agents", "Human approval before send", "Monthly Proof Pack"] }
+            ],
+            "delta": { "label": "Approximate difference", "value": "≈ SAR 43,000 / month" }
+          },
+          { "type": "note", "text": "Illustrative example. Numbers depend on each company's cost structure and are not a guarantee of savings or revenue." }
+        ]
+      }
+    },
+    {
+      "id": "ladder",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "التسعير",
+        "title": "سلّم من خمس درجات — كل درجة تُفتح بإثبات",
+        "subtitle": "القاعدة الذهبية: لا ترقية بلا دليل حقيقي من الدرجة السابقة. تبدأ صغيراً، وتكبر مع الإثبات.",
+        "blocks": [
+          {
+            "type": "pricing",
+            "items": [
+              { "tier": "0", "name": "التشخيص المجاني", "price": "مجاناً", "period": "", "badge": "ابدأ هنا", "items": ["تشخيص أولي لعمليات الإيراد", "بدون بطاقة ائتمان", "المؤسس يراجع شخصياً"] },
+              { "tier": "1", "name": "Sprint إثبات الإيراد", "price": "499", "period": "ريال · مرة واحدة", "featured": true, "badge": "الأكثر اختياراً", "items": ["تجربة 7 أيام على بياناتك", "10 فرص مؤهّلة", "Proof Pack موقّع"] },
+              { "tier": "2", "name": "حزمة البيانات للإيراد", "price": "1,500", "period": "ريال · مرة واحدة", "items": ["تنظيف ودمج البيانات", "قواعد تأهيل وتسجيل", "أصول قابلة لإعادة الاستخدام"] },
+              { "tier": "3", "name": "إدارة عمليات الإيراد", "price": "2,999–4,999", "period": "ريال / شهرياً", "items": ["تشغيل شهري مُدار", "Proof Pack شهري", "بعد إثبات التجربة"] },
+              { "tier": "4", "name": "غرفة القيادة التنفيذية", "price": "7,500–15,000+", "period": "ريال / شهرياً", "items": ["رؤية تنفيذية كاملة", "نموذج شريك مخصّص", "بعد عدة تجارب مثبتة"] }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "eyebrow": "Pricing",
+        "title": "A five-rung ladder — each rung unlocks on proof",
+        "subtitle": "The golden rule: no upgrade without real evidence from the rung below. You start small and grow with proof.",
+        "blocks": [
+          {
+            "type": "pricing",
+            "items": [
+              { "tier": "0", "name": "Free Diagnostic", "price": "Free", "period": "", "badge": "Start here", "items": ["Initial revenue-ops diagnostic", "No credit card", "Founder reviews personally"] },
+              { "tier": "1", "name": "Revenue Proof Sprint", "price": "499", "period": "SAR · one-time", "featured": true, "badge": "Most chosen", "items": ["7-day run on your data", "10 qualified opportunities", "Signed Proof Pack"] },
+              { "tier": "2", "name": "Data-to-Revenue Pack", "price": "1,500", "period": "SAR · one-time", "items": ["Data cleanup & dedupe", "Qualification & scoring rules", "Reusable assets"] },
+              { "tier": "3", "name": "Managed Revenue Ops", "price": "2,999–4,999", "period": "SAR / month", "items": ["Managed monthly operation", "Monthly Proof Pack", "After sprint proof"] },
+              { "tier": "4", "name": "Executive Command Center", "price": "7,500–15,000+", "period": "SAR / month", "items": ["Full executive visibility", "Custom partner model", "After several proven pilots"] }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "trust",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "الثقة",
+        "title": "ثماني بوابات أمان مقفلة في الكود",
+        "subtitle": "الثقة في Dealix ليست وعداً تسويقياً — بل قيود مفروضة باختبارات لا يمر الكود بدونها.",
+        "blocks": [
+          {
+            "type": "gates",
+            "items": [
+              { "code": "NO_LIVE_SEND", "label": "لا إرسال آلي بدون اعتماد بشري" },
+              { "code": "NO_LIVE_CHARGE", "label": "لا خصم مالي آلي" },
+              { "code": "NO_COLD_WHATSAPP", "label": "لا واتساب بارد" },
+              { "code": "NO_LINKEDIN_AUTOMATION", "label": "لا أتمتة على LinkedIn" },
+              { "code": "NO_SCRAPING", "label": "لا استخراج بيانات من المصادر العامة" },
+              { "code": "NO_FAKE_PROOF", "label": "لا ادّعاءات غير موثّقة في Proof Pack" },
+              { "code": "NO_FAKE_REVENUE", "label": "فاتورة مسوّدة ليست إيراداً" },
+              { "code": "NO_UNAPPROVED_TESTIMONIALS", "label": "لا اسم عميل بدون إذن موقّع" }
+            ]
+          },
+          { "type": "note", "text": "كل بوابة مغطّاة باختبار دكترين يمنع دمج أي كود يخالفها — الالتزام مفروض هندسياً." }
+        ]
+      },
+      "en": {
+        "eyebrow": "Trust",
+        "title": "Eight safety gates locked in code",
+        "subtitle": "Trust in Dealix is not a marketing promise — it is a set of constraints enforced by tests the code cannot pass without.",
+        "blocks": [
+          {
+            "type": "gates",
+            "items": [
+              { "code": "NO_LIVE_SEND", "label": "No automatic send without human approval" },
+              { "code": "NO_LIVE_CHARGE", "label": "No automatic payment charge" },
+              { "code": "NO_COLD_WHATSAPP", "label": "No cold WhatsApp" },
+              { "code": "NO_LINKEDIN_AUTOMATION", "label": "No LinkedIn automation" },
+              { "code": "NO_SCRAPING", "label": "No scraping of public sources" },
+              { "code": "NO_FAKE_PROOF", "label": "No unverified claims in a Proof Pack" },
+              { "code": "NO_FAKE_REVENUE", "label": "A draft invoice is not revenue" },
+              { "code": "NO_UNAPPROVED_TESTIMONIALS", "label": "No customer name without signed permission" }
+            ]
+          },
+          { "type": "note", "text": "Each gate is covered by a doctrine test that blocks merging any code that violates it — compliance is enforced in engineering." }
+        ]
+      }
+    },
+    {
+      "id": "moat",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "الخندق الدفاعي",
+        "title": "ستة خنادق تجعل Dealix صعب التقليد",
+        "subtitle": "الميزة ليست في ميزة واحدة — بل في تراكب ست طبقات يصعب على المنافس نسخها مجتمعة.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "⚖️", "title": "تنظيمي", "desc": "مسار تدقيق متوافق مع PDPL وإقامة بيانات داخل السعودية — مبني من اليوم الأول." },
+              { "icon": "🗣️", "title": "لغوي", "desc": "عربية خليجية أصيلة في الصياغة والتجربة — لا ترجمة آلية." },
+              { "icon": "🔒", "title": "الثقة", "desc": "معمارية approval-first تجعل الاعتماد البشري جزءاً من النظام لا إضافة." },
+              { "icon": "🪞", "title": "شفافية العلامة", "desc": "لوحة جاهزية الخدمات تعرض ما هو مباشر وما هو قيد التطوير بصدق." },
+              { "icon": "🤝", "title": "التوزيع", "desc": "قنوات شراكة مع وكالات B2B سعودية تفتح وصولاً لا يملكه المنافس." },
+              { "icon": "📊", "title": "البيانات", "desc": "سجلّ ProofEvent يبني مرجعية أداء قطاعية تتحسّن مع كل تجربة." }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "eyebrow": "The moat",
+        "title": "Six moats that make Dealix hard to copy",
+        "subtitle": "The advantage is not a single feature — it is six layers stacked together that a competitor cannot replicate at once.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "⚖️", "title": "Regulatory", "desc": "A PDPL-compliant audit trail and KSA data residency — built from day one." },
+              { "icon": "🗣️", "title": "Linguistic", "desc": "Native Khaliji Arabic in drafting and experience — no machine translation." },
+              { "icon": "🔒", "title": "Trust", "desc": "An approval-first architecture that makes human sign-off part of the system, not an add-on." },
+              { "icon": "🪞", "title": "Brand honesty", "desc": "A service-readiness console that honestly shows what is live and what is in progress." },
+              { "icon": "🤝", "title": "Distribution", "desc": "Partner channels with Saudi B2B agencies open reach a competitor does not have." },
+              { "icon": "📊", "title": "Data", "desc": "A ProofEvent ledger builds sector performance benchmarks that improve with every engagement." }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "readiness",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "الجاهزية",
+        "title": "المنتج جاهز — والتجارب المدفوعة تبدأ الآن",
+        "subtitle": "الهندسة مكتملة الميزات. ما تبقّى هو إثبات تجاري حقيقي — وهذا بالضبط ما يقدّمه هذا العرض.",
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "n": "تم", "title": "بناء المنصة", "desc": "backend وfrontend مكتملان، مع 8 بوابات أمان وتغطية اختبارات." },
+              { "n": "تم", "title": "البنية التشغيلية", "desc": "نشر آلي، فحوص صحة، وامتثال PDPL وZATCA." },
+              { "n": "الآن", "title": "التجارب المدفوعة الأولى", "desc": "تشغيل Sprint إثبات الإيراد مع أوائل العملاء — مايو 2026." }
+            ]
+          },
+          {
+            "type": "bullets",
+            "title": "ما الذي يجعل هذا التوقيت صحيحاً",
+            "items": [
+              "المنتج لم يعد فكرة — هو نظام يعمل وقابل للعرض المباشر.",
+              "نقطة الدخول 499 ريال تجعل القرار سهلاً ومنخفض المخاطر.",
+              "كل تجربة تنتهي بدليل، وكل دليل يفتح الخطوة التالية."
+            ]
+          }
+        ]
+      },
+      "en": {
+        "eyebrow": "Readiness",
+        "title": "The product is ready — paid pilots start now",
+        "subtitle": "Engineering is feature-complete. What remains is real commercial proof — which is exactly what this presentation offers.",
+        "blocks": [
+          {
+            "type": "steps",
+            "items": [
+              { "n": "Done", "title": "Platform built", "desc": "Backend and frontend complete, with 8 safety gates and test coverage." },
+              { "n": "Done", "title": "Operational infrastructure", "desc": "Automated deployment, health checks, and PDPL & ZATCA compliance." },
+              { "n": "Now", "title": "First paid pilots", "desc": "Running the Revenue Proof Sprint with early customers — May 2026." }
+            ]
+          },
+          {
+            "type": "bullets",
+            "title": "Why the timing is right",
+            "items": [
+              "The product is no longer an idea — it is a working system, ready for a live demo.",
+              "A SAR 499 entry point makes the decision easy and low-risk.",
+              "Every sprint ends with evidence, and every piece of evidence unlocks the next step."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "founder",
+      "layout": "standard",
+      "ar": {
+        "eyebrow": "المؤسس",
+        "title": "لماذا أنا، ولماذا الآن",
+        "subtitle": "سامي العسيري — مؤسّس Dealix، أول AI Operating Team متوافق مع نظام حماية البيانات السعودي للشركات الصغيرة والمتوسطة.",
+        "blocks": [
+          {
+            "type": "bullets",
+            "title": "ما الذي أحمله إلى الطاولة",
+            "items": [
+              "بنيت نظاماً يحلّ محل أول ثلاث توظيفات — مبيعات ونمو ودعم — بخمسة وكلاء AI.",
+              "صمّمته عربياً أولاً ومتوافقاً مع PDPL، لأن السوق السعودي يحتاج ذلك لا ترجمته.",
+              "فرضت الانضباط هندسياً: كل إجراء خارجي بموافقة، وكل ادّعاء بدليل.",
+              "الهندسة مكتملة، وأنا الآن أركّز كلياً على الإثبات التجاري مع أوائل العملاء."
+            ]
+          },
+          { "type": "note", "text": "للتواصل المباشر: sami.assiri11@gmail.com — المؤسس يراجع كل طلب شخصياً." }
+        ]
+      },
+      "en": {
+        "eyebrow": "The founder",
+        "title": "Why me, and why now",
+        "subtitle": "Sami Al-Asiri — founder of Dealix, the first AI Operating Team compliant with Saudi data-protection law for small and mid-size companies.",
+        "blocks": [
+          {
+            "type": "bullets",
+            "title": "What I bring to the table",
+            "items": [
+              "I built a system that stands in for the first three hires — sales, growth and support — with five AI agents.",
+              "I designed it Arabic-first and PDPL-compliant, because the Saudi market needs that, not a translation of it.",
+              "I enforced discipline in engineering: every external action on approval, every claim tied to evidence.",
+              "Engineering is complete, and I am now fully focused on commercial proof with early customers."
+            ]
+          },
+          { "type": "note", "text": "Direct contact: sami.assiri11@gmail.com — the founder reviews every request personally." }
+        ]
+      }
+    },
+    {
+      "id": "cta",
+      "layout": "cta",
+      "ar": {
+        "eyebrow": "الخطوة التالية",
+        "title": "ابدأ بتشخيص مجاني — ثم أثبت بـ 499 ريال",
+        "subtitle": "أقل قرار مخاطرةً في خط مبيعاتك: تشخيص مجاني اليوم، ثم تجربة سبعة أيام تنتهي بدليل موقّع.",
+        "buttons": [
+          { "label": "ابدأ التشخيص المجاني", "href": "/diagnostic.html", "primary": true },
+          { "label": "شاهد العرض المباشر", "href": "/dealix-live-demo.html", "primary": false }
+        ],
+        "contact": "سامي العسيري · sami.assiri11@gmail.com · الرياض، السعودية"
+      },
+      "en": {
+        "eyebrow": "Next step",
+        "title": "Start with a free diagnostic — then prove it for SAR 499",
+        "subtitle": "The lowest-risk decision in your sales pipeline: a free diagnostic today, then a seven-day sprint that ends with signed evidence.",
+        "buttons": [
+          { "label": "Start the free diagnostic", "href": "/diagnostic.html", "primary": true },
+          { "label": "Watch the live demo", "href": "/dealix-live-demo.html", "primary": false }
+        ],
+        "contact": "Sami Al-Asiri · sami.assiri11@gmail.com · Riyadh, Saudi Arabia"
+      }
+    }
+  ]
+}

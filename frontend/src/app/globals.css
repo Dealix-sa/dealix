@@ -154,3 +154,31 @@
     animation: shimmer 2s infinite linear;
   }
 }
+
+/* Pitch deck — print to PDF: every slide on its own page, all visible. */
+@media print {
+  .pitch-chrome {
+    display: none !important;
+  }
+  .pitch-root {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  .pitch-slide {
+    display: flex !important;
+    min-height: auto !important;
+    page-break-after: always;
+    break-after: page;
+    padding: 24px !important;
+    animation: none !important;
+  }
+  .pitch-slide:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+  .pitch-slide,
+  .pitch-slide * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
