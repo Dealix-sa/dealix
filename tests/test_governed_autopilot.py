@@ -35,8 +35,9 @@ from core.tasks.worker import WorkerSettings
 
 def test_worker_registers_five_new_cron_jobs() -> None:
     """daily_pipeline_refresh + 5 Governed Autopilot crons + the
-    own-brand publish cron = 7 total."""
-    assert len(WorkerSettings.cron_jobs) == 7
+    own-brand publish cron = 7 daily-motion crons, plus the 6 strategic
+    automation crons (1 daily metrics snapshot + 5 weekly) = 13 total."""
+    assert len(WorkerSettings.cron_jobs) == 13
 
 
 def test_run_outreach_batch_is_a_registered_worker_function() -> None:

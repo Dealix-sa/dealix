@@ -1083,3 +1083,34 @@ class ApprovalRecord(Base):
     __table_args__ = (
         Index("ix_approval_records_status_created", "status", "created_at"),
     )
+
+
+class StrategicBriefRecord(Base):
+    """Durable record for one internally-generated strategic artifact.
+
+    Persists the output of the weekly strategic automation layer (role
+    briefs, weekly executive report, growth scorecard, bottleneck sweep,
+    business-metrics snapshot, strategy-synthesis brief) so the artifacts
+    survive worker restarts and are not lost to ephemeral ``data/`` files.
+
+    These artifacts are INTERNAL ONLY: they are generated for the founder
+    and emailed to the founder. They never contain prospect-facing sends.
+    ``autonomy_level`` is fixed at L3 (Recommend) — the engine recommends,
+    the founder decides.
+    """
+
+    __tablename__ = "strategic_briefs"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    artifact_type: Mapped[str] = mapped_column(String(64), index=True)
+    period_label: Mapped[str] = mapped_column(String(32), index=True, default="")
+    title: Mapped[str] = mapped_column(Text, default="")
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    autonomy_level: Mapped[int] = mapped_column(Integer, default=3)
+    external_send: Mapped[bool] = mapped_column(Boolean, default=False)
+    emailed_to_founder: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+
+    __table_args__ = (
+        Index("ix_strategic_briefs_type_created", "artifact_type", "created_at"),
+    )

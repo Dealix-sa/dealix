@@ -349,6 +349,131 @@ async def cron_own_brand_publish(ctx: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+# ── Strategic automation layer (weekly cadence) ───────────────────
+# These cron jobs run the strategic layer on a self-running cadence.
+# They are INTERNAL ONLY: each generates a brief / report / scorecard
+# and emails the founder. ZERO external sends, no prospect contact.
+# Autonomy L3 (Recommend): the engine recommends; the founder decides.
+# Sunday is the start of the Saudi work week; ARQ cron weekday=6 = Sunday.
+
+async def cron_business_metrics_snapshot(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Business-metrics snapshot — persist the daily metrics shape so the
+    strategic layer has a durable history. Runs 06:30 AST (03:30 UTC).
+    """
+    from auto_client_acquisition.automation.strategic_runner import (
+        run_business_metrics_core,
+    )
+
+    logger.info("cron_business_metrics_snapshot_start")
+    result = await run_business_metrics_core()
+    logger.info(
+        "cron_business_metrics_snapshot_done",
+        persisted_id=result.get("persisted_id"),
+    )
+    return result
+
+
+async def cron_weekly_role_briefs(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Weekly role briefs — build every role brief and email the founder a
+    digest. Internal only. Runs Sunday 07:00 AST (04:00 UTC).
+    """
+    from auto_client_acquisition.automation.strategic_runner import (
+        run_role_briefs_core,
+    )
+
+    logger.info("cron_weekly_role_briefs_start")
+    result = await run_role_briefs_core()
+    logger.info(
+        "cron_weekly_role_briefs_done",
+        roles_briefed=result.get("roles_briefed", 0),
+        emailed=result.get("emailed", False),
+    )
+    return result
+
+
+async def cron_weekly_executive_report(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Weekly executive report — build the founder weekly report + executive
+    pack v2 and email the founder. Internal only.
+    Runs Sunday 07:30 AST (04:30 UTC).
+    """
+    from auto_client_acquisition.automation.strategic_runner import (
+        run_executive_report_core,
+    )
+
+    logger.info("cron_weekly_executive_report_start")
+    result = await run_executive_report_core()
+    logger.info(
+        "cron_weekly_executive_report_done",
+        persisted_id=result.get("persisted_id"),
+        emailed=result.get("emailed", False),
+    )
+    return result
+
+
+async def cron_weekly_scorecard(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Weekly growth scorecard — aggregate in-repo growth signals and email
+    the founder. Internal only. Runs Sunday 08:00 AST (05:00 UTC).
+    """
+    from auto_client_acquisition.automation.strategic_runner import (
+        run_scorecard_core,
+    )
+
+    logger.info("cron_weekly_scorecard_start")
+    result = await run_scorecard_core()
+    logger.info(
+        "cron_weekly_scorecard_done",
+        persisted_id=result.get("persisted_id"),
+        emailed=result.get("emailed", False),
+    )
+    return result
+
+
+async def cron_weekly_bottleneck_sweep(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Weekly bottleneck sweep — assess founder bottleneck severity and email
+    the founder. Internal only. Runs Sunday 08:30 AST (05:30 UTC).
+    """
+    from auto_client_acquisition.automation.strategic_runner import (
+        run_bottleneck_sweep_core,
+    )
+
+    logger.info("cron_weekly_bottleneck_sweep_start")
+    result = await run_bottleneck_sweep_core()
+    logger.info(
+        "cron_weekly_bottleneck_sweep_done",
+        severity=result.get("severity"),
+        emailed=result.get("emailed", False),
+    )
+    return result
+
+
+async def cron_weekly_strategy_synthesis(ctx: dict[str, Any]) -> dict[str, Any]:
+    """
+    Weekly strategy-synthesis brief — aggregate the role briefs, executive
+    report, bottleneck sweep and metrics into one founder Strategy Brief:
+    the top-3 strategic recommendations and the decision forks needing the
+    founder. Internal only; it recommends, the founder decides.
+    Runs Sunday 09:00 AST (06:00 UTC), after the other strategic crons.
+    """
+    from auto_client_acquisition.automation.strategic_runner import (
+        run_strategy_synthesis_core,
+    )
+
+    logger.info("cron_weekly_strategy_synthesis_start")
+    result = await run_strategy_synthesis_core()
+    logger.info(
+        "cron_weekly_strategy_synthesis_done",
+        recommendations=len(result.get("top_3_recommendations", [])),
+        decision_forks=len(result.get("decision_forks_for_founder", [])),
+        emailed=result.get("emailed", False),
+    )
+    return result
+
+
 async def expire_stale_approvals(ctx: dict[str, Any]) -> dict[str, Any]:
     """
     Stale-approval expire-sweep — flip pending approvals past expires_at to
@@ -384,6 +509,20 @@ async def worker_on_startup(ctx: dict[str, Any]) -> None:
     except Exception as exc:  # noqa: BLE001
         logger.warning("worker_approval_rehydrate_skipped", error=str(exc))
 
+    # Seed the Dealix agent organization as in-product entities.
+    # Idempotent — safe on every worker restart.
+    try:
+        from auto_client_acquisition.agent_os.dealix_org import seed_dealix_org
+
+        summary = seed_dealix_org()
+        logger.info(
+            "worker_dealix_org_seeded",
+            registered=len(summary.get("registered", [])),
+            skipped=len(summary.get("skipped", [])),
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("worker_dealix_org_seed_skipped", error=str(exc))
+
 
 # ── ARQ Worker Settings ───────────────────────────────────────────
 
@@ -403,6 +542,7 @@ class WorkerSettings:
     ]
 
     # ARQ cron is UTC. Riyadh (AST) = UTC+3, so UTC hour = AST hour - 3.
+    # ARQ weekday: Monday=0 .. Sunday=6. Sunday starts the Saudi work week.
     cron_jobs = [
         cron(daily_pipeline_refresh, hour=2, minute=0),     # 05:00 AST
         cron(daily_lead_prep, hour=3, minute=0),            # 06:00 AST
@@ -411,6 +551,19 @@ class WorkerSettings:
         cron(founder_daily_brief, hour=5, minute=30),       # 08:30 AST
         cron(cron_own_brand_publish, hour=6, minute=0),     # 09:00 AST
         cron(expire_stale_approvals, minute=0),             # hourly, on the hour
+        # Strategic automation layer — internal only, founder-facing.
+        cron(cron_business_metrics_snapshot,
+             hour=3, minute=30),                            # daily 06:30 AST
+        cron(cron_weekly_role_briefs,
+             weekday=6, hour=4, minute=0),                  # Sun 07:00 AST
+        cron(cron_weekly_executive_report,
+             weekday=6, hour=4, minute=30),                 # Sun 07:30 AST
+        cron(cron_weekly_scorecard,
+             weekday=6, hour=5, minute=0),                  # Sun 08:00 AST
+        cron(cron_weekly_bottleneck_sweep,
+             weekday=6, hour=5, minute=30),                 # Sun 08:30 AST
+        cron(cron_weekly_strategy_synthesis,
+             weekday=6, hour=6, minute=0),                  # Sun 09:00 AST
     ]
 
     on_startup = worker_on_startup
