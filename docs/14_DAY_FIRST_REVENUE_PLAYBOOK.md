@@ -7,16 +7,14 @@
 ## Day 0 — Merge + Deploy + Verify (60 min)
 
 ```bash
-git push origin claude/service-activation-console-IA2JK
-# Open PR via GitHub UI:
-#   base: main, head: claude/service-activation-console-IA2JK
-#   title: feat(v11-v12-rx): launch full-ops + revenue execution layer
+git push origin <your-current-feature-branch>
+# Open PR via GitHub UI: base: main, head: <your-current-feature-branch>
 # Merge → Railway redeploys (~5 min)
 curl -s https://api.dealix.me/health
 bash scripts/v11_customer_closure_verify.sh
 bash scripts/v12_full_ops_verify.sh
-bash scripts/revenue_execution_verify.sh   # NEW
-python scripts/dealix_first10_warm_intros.py    # NEW — empty board
+bash scripts/revenue_execution_verify.sh
+python scripts/dealix_first10_warm_intros.py    # empty board
 python scripts/dealix_phase_e_today.py
 ```
 
