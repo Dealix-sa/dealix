@@ -63,11 +63,15 @@
 
 | المحور | القيم | قاعدة الأتمتة الذاتية |
 |--------|-------|------------------------|
-| `ApprovalClass` | A0 / A1 / A2 / A3 | `A0` فقط |
-| `ReversibilityClass` | R0 / R1 / R2 / R3 | `R0` أو `R1` فقط |
-| `SensitivityClass` | S0 / S1 / S2 / S3 | `S0` أو `S1` فقط |
+| `ApprovalClass` | A0 / A1 / A2 / A3 | `A0` فقط (يعني: لا تحتاج موافقة) |
+| `ReversibilityClass` | R0 / R1 / R2 / R3 | `R0` أو `R1` فقط (الأرخص تراجعاً) |
+| `SensitivityClass` | S0 / S1 / S2 / S3 | كل شيء عدا `S3` (الـ`S3` نطاق PDPL) |
 
-`auto_exec_allowed(action) == (A0) ∧ (R0∨R1) ∧ (S0∨S1) ∧ (action ∉ NEVER_AUTO_EXECUTE)`
+`auto_exec_allowed(action) == (A0) ∧ (R0∨R1) ∧ (S0∨S1∨S2) ∧ (action ∉ NEVER_AUTO_EXECUTE)`
+
+> `A0` وحده يعني "لا تحتاج موافقة"، فبيانات `S2` التجارية الداخلية آمنة
+> للتنفيذ الذاتي؛ خطّ المنع الحقيقي للبيانات هو `S3` (بيانات شخصية/منظَّمة).
+> التطبيق في `auto_client_acquisition/full_ops_os/gate.py`.
 
 أي نوع إجراء جديد يضيفه أي wave **يجب** أن يُصنَّف في `ACTION_CLASSIFICATIONS`
 قبل أن يعمل — لا إجراء بلا تصنيف.
