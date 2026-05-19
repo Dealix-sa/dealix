@@ -3,7 +3,8 @@
 Each handler turns the lead + accumulated state into a deterministic
 output. ``metrics`` is audit-safe (labels, scores, counts — never PII or
 free text); ``state`` is the full output, kept only in the run's
-in-memory metadata. Stages 9-12 are stubbed here and wired in Wave 21.
+in-memory metadata. All 12 stages are wired: 1-8 sales pipeline, 9-12
+delivery / proof / expansion / learning.
 """
 
 from __future__ import annotations
@@ -12,8 +13,19 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
+from auto_client_acquisition.adoption_os.adoption_score import (
+    AdoptionDimensions,
+    adoption_band,
+    adoption_score,
+)
+from auto_client_acquisition.capital_os.asset_types import CapitalAssetType
 from auto_client_acquisition.full_ops_os.pain import extract_pain
 from auto_client_acquisition.full_ops_os.stages import Stage
+from auto_client_acquisition.proof_architecture_os.proof_score import (
+    EnterpriseProofDimensions,
+    enterprise_proof_score,
+    proof_score_band,
+)
 from auto_client_acquisition.revenue_os.scoring import score_account_row
 from auto_client_acquisition.sales_os.qualification import qualify
 
@@ -154,9 +166,99 @@ def _h_approval_gate(lead: Lead, state: RunState) -> StageOutput:
     )
 
 
-def _h_stub(lead: Lead, state: RunState) -> StageOutput:
-    # Stages 9-12 — delivery, proof, expansion, learning — wired in Wave 21.
-    return StageOutput(metrics={"pending_wave": 21}, state={})
+def _h_delivery(lead: Lead, state: RunState) -> StageOutput:
+    draft = state.get(Stage.DRAFT_GENERATION.name, {}).get("draft")
+    decision = str(state.get(Stage.QUALIFICATION.name, {}).get("decision", ""))
+    return StageOutput(
+        metrics={
+            "stages_completed": len(state),
+            "draft_ready": bool(draft),
+            "decision": decision,
+        },
+        state={"delivery_ready": bool(draft), "decision": decision},
+    )
+
+
+def _h_proof(lead: Lead, state: RunState) -> StageOutput:
+    score = int(state.get(Stage.SCORING.name, {}).get("score", 0))
+    coverage = float(state.get(Stage.ENRICHMENT.name, {}).get("coverage", 0.0))
+    qual = state.get(Stage.QUALIFICATION.name, {})
+    decision = str(qual.get("decision", ""))
+    no_violations = not qual.get("doctrine_violations")
+    pain_count = int(state.get(Stage.PAIN_EXTRACTION.name, {}).get("signal_count", 0))
+    intake_ok = bool(state.get(Stage.SIGNAL_INTAKE.name, {}).get("accepted", False))
+    dims = EnterpriseProofDimensions(
+        metric_clarity=score,
+        source_clarity=90 if intake_ok else 40,
+        evidence_quality=int(coverage * 100),
+        governance_confidence=90 if no_violations else 20,
+        business_relevance=85 if decision in ("accept", "reframe") else 45,
+        before_after_comparison=min(100, pain_count * 30),
+        retainer_linkage=80 if decision == "accept" else 40,
+        limitations_honesty=80,
+    )
+    proof = enterprise_proof_score(dims)
+    band = proof_score_band(proof)
+    return StageOutput(
+        metrics={
+            "proof_score": proof,
+            "proof_band": band,
+            "proof_pack_ready": proof >= 70,
+        },
+        state={"proof_score": proof, "proof_band": band},
+    )
+
+
+def _h_expansion(lead: Lead, state: RunState) -> StageOutput:
+    proof = int(state.get(Stage.PROOF.name, {}).get("proof_score", 0))
+    score = int(state.get(Stage.SCORING.name, {}).get("score", 0))
+    coverage = float(state.get(Stage.ENRICHMENT.name, {}).get("coverage", 0.0))
+    decision = str(state.get(Stage.QUALIFICATION.name, {}).get("decision", ""))
+    dims = AdoptionDimensions(
+        executive_sponsor=80 if lead.get("owner_present") else 30,
+        workflow_owner=80 if lead.get("owner_present") else 30,
+        data_readiness=int(coverage * 100),
+        user_engagement=score,
+        approval_completion=70,
+        proof_visibility=proof,
+        monthly_cadence=70 if lead.get("retainer_interest") else 30,
+        expansion_pull=85 if decision == "accept" else 40,
+    )
+    adopt = adoption_score(dims)
+    band = adoption_band(adopt)
+    retainer_ready = band in ("scale_account", "retainer_ready")
+    return StageOutput(
+        metrics={
+            "adoption_score": adopt,
+            "adoption_band": band,
+            "retainer_ready": retainer_ready,
+        },
+        state={
+            "adoption_score": adopt,
+            "adoption_band": band,
+            "retainer_ready": retainer_ready,
+        },
+    )
+
+
+def _h_learning(lead: Lead, state: RunState) -> StageOutput:
+    signals = list(state.get(Stage.PAIN_EXTRACTION.name, {}).get("signals", []))
+    proof_band = str(state.get(Stage.PROOF.name, {}).get("proof_band", ""))
+    decision = str(state.get(Stage.QUALIFICATION.name, {}).get("decision", ""))
+    if proof_band == "case_candidate":
+        asset = CapitalAssetType.PROOF_EXAMPLE.value
+    elif decision == "accept":
+        asset = CapitalAssetType.DRAFT_TEMPLATE.value
+    else:
+        asset = CapitalAssetType.SECTOR_INSIGHT.value
+    return StageOutput(
+        metrics={
+            "friction_signals": signals,
+            "capital_asset_candidate": asset,
+            "learning_captured": True,
+        },
+        state={"capital_asset_candidate": asset},
+    )
 
 
 STAGE_HANDLERS: dict[Stage, StageHandler] = {
@@ -168,10 +270,10 @@ STAGE_HANDLERS: dict[Stage, StageHandler] = {
     Stage.PRIORITIZATION: _h_prioritization,
     Stage.DRAFT_GENERATION: _h_draft,
     Stage.APPROVAL_GATE: _h_approval_gate,
-    Stage.DELIVERY: _h_stub,
-    Stage.PROOF: _h_stub,
-    Stage.EXPANSION: _h_stub,
-    Stage.LEARNING: _h_stub,
+    Stage.DELIVERY: _h_delivery,
+    Stage.PROOF: _h_proof,
+    Stage.EXPANSION: _h_expansion,
+    Stage.LEARNING: _h_learning,
 }
 
 
