@@ -14,6 +14,12 @@ from auto_client_acquisition.full_ops.adapters import (
     from_approval_request,
     from_journey_state,
 )
+from auto_client_acquisition.full_ops.agent_roster import (
+    capability_map,
+    pyramid_status,
+    register_full_ops_agents,
+)
+from auto_client_acquisition.full_ops.operating_loop import run_tick
 from auto_client_acquisition.full_ops.prioritizer import prioritize
 from auto_client_acquisition.full_ops.work_item import (
     ActionMode,
@@ -31,9 +37,13 @@ __all__ = [
     "WorkItem",
     "WorkItemStatus",
     "WorkQueue",
+    "capability_map",
     "from_agent_task",
     "from_approval_request",
     "from_journey_state",
     "get_default_queue",
     "prioritize",
+    "pyramid_status",
+    "register_full_ops_agents",
+    "run_tick",
 ]

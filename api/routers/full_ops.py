@@ -12,12 +12,18 @@ from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter
+from pydantic import BaseModel, ConfigDict, Field
 
 from auto_client_acquisition.full_ops import (
     WorkItem,
     get_default_queue,
     prioritize,
 )
+from auto_client_acquisition.full_ops.agent_roster import (
+    pyramid_status,
+    register_full_ops_agents,
+)
+from auto_client_acquisition.full_ops.operating_loop import run_tick
 
 router = APIRouter(prefix="/api/v1/full-ops", tags=["full-ops"])
 
@@ -252,4 +258,57 @@ async def daily_command_center() -> dict[str, Any]:
         "hard_gates": _HARD_GATES,
         "degraded": bool(degraded),
         "degraded_sections": degraded,
+    }
+
+
+# ── V12 Full-Ops operating loop surface ────────────────────────────
+
+
+class TickRequest(BaseModel):
+    """Body for ``POST /full-ops/tick`` — runs one internal-only cycle."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    tenant_id: str = Field(default="dealix", min_length=1, max_length=64)
+    record_ledger: bool = True
+
+
+@router.post("/tick")
+async def full_ops_tick(body: TickRequest | None = None) -> dict[str, Any]:
+    """Run one operating cycle: sense → prioritize → assign → execute →
+    gate → record.
+
+    INTERNAL ONLY. Every external action is queued as an approval draft
+    (``approval_required`` or ``blocked``); the loop performs zero live
+    sends and zero live charges. Returns 200 with the tick summary.
+    """
+    req = body or TickRequest()
+    summary = run_tick(tenant_id=req.tenant_id, record_ledger=req.record_ledger)
+    return {
+        "schema_version": 1,
+        "title_ar": "تشغيل دورة Full-Ops — مسودات داخلية فقط حتى بوّابة الموافقة",
+        "title_en": "Full-Ops tick — internal drafts only up to the approval gate.",
+        "tick": summary,
+        "governance_decision": "approval_required",
+        "hard_gates": _HARD_GATES,
+    }
+
+
+@router.get("/agents")
+async def full_ops_agents() -> dict[str, Any]:
+    """Live status of the 3-tier Full-Ops agent pyramid.
+
+    Registers the roster (idempotent) then returns each tier's agents,
+    their autonomy levels and the WorkItem-type capability map. Autonomy
+    is capped at L4; L5 is forbidden and never present.
+    """
+    register_full_ops_agents()
+    status = pyramid_status()
+    return {
+        "schema_version": 1,
+        "title_ar": "هرم وكلاء Full-Ops — الحالة الحيّة",
+        "title_en": "Full-Ops agent pyramid — live status.",
+        "pyramid": status,
+        "governance_decision": "approval_required",
+        "hard_gates": _HARD_GATES,
     }
