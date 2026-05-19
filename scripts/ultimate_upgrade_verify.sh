@@ -64,13 +64,12 @@ else
 fi
 
 echo "── Forbidden tokens sweep ─────────────────────────────"
-FORBIDDEN_RE='(\bguaranteed?\b|\bblast\b|\bscraping\b|نضمن|مضمون|cold[[:space:]]+(whatsapp|outreach|email))'
-if grep -qiE "$FORBIDDEN_RE" landing/customer-portal.html landing/executive-command-center.html landing/launchpad.html landing/index.html 2>/dev/null; then
-  results+=("FORBIDDEN_CLAIMS_HTML=FAIL")
-  overall_pass=false
-else
-  results+=("FORBIDDEN_CLAIMS_HTML=PASS")
-fi
+# Delegate to the authoritative negation-aware sweep over the whole
+# landing site (per-file allowlist for disclaimer / negation copy).
+# The previous inline grep had no negation handling and false-flagged
+# the mandated "...not guaranteed outcomes / ...ليست نتائج مضمونة"
+# disclaimer and anti-claim copy like "بدون cold WhatsApp".
+run_check "FORBIDDEN_CLAIMS_HTML" "python3 -m pytest tests/test_landing_forbidden_claims.py -q --no-cov"
 
 echo "── Secret scan ────────────────────────────────────────"
 SECRET_RE='(sk_live_[A-Za-z0-9]{8,}|ghp_[A-Za-z0-9]{30,}|AIza[0-9A-Za-z_-]{30,})'

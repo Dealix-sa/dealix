@@ -74,6 +74,17 @@ def test_no_forbidden_claims_in_customer_pages() -> None:
         html = path.read_text(encoding="utf-8")
         html_visible = re.sub(r"<script[^>]*>.*?</script>", "", html, flags=re.DOTALL | re.IGNORECASE)
         html_visible = re.sub(r"<style[^>]*>.*?</style>", "", html_visible, flags=re.DOTALL | re.IGNORECASE)
+        # Strip negation / disclaimer context — the mandated bilingual
+        # disclaimer "...not guaranteed outcomes / ...ليست نتائج مضمونة"
+        # is required copy, not a forbidden claim.
+        html_visible = re.sub(
+            r"(?:no|not|never|without|zero)\s+(?:any\s+)?guarantee\w*",
+            "", html_visible, flags=re.IGNORECASE,
+        )
+        html_visible = re.sub(
+            r"(?:لا|لن|لم|ما|ليست?|بدون|دون|صفر)(?:\s+\S+){0,4}\s*(?:نضمن|ضمان|مضمون[ةه]?)",
+            "", html_visible,
+        )
         for pat in forbidden:
             assert not pat.search(html_visible), f"{page} contains: {pat.pattern}"
 
