@@ -74,8 +74,8 @@ only the gaps, in governed form, and reuse everything that exists.
 | M2 | ✅ **BUILT** — `GovernedScheduler` daemon thread runs `run_governed_day` once per KSA day; env-gated (default off), founder kill switch via `/governed-ops/scheduler/stop` | Self-running loop inside the deployment |
 | M3 | ✅ **BUILT** — `run_governed_day()` single observable entrypoint + `scripts/dealix_governed_day.py` CLI + `/api/v1/governed-ops` API | Composable "run the day" operator now exists |
 | M4 | ✅ **BUILT** — `governance_log` durable event stream (action_blocked / approval_decision / phase_*) on the append-only event store, queryable via API | Blocked-actions audit log now exists |
-| M5 | **No agent-to-API orchestration SDK** | Agents cannot self-queue tasks / approvals / evidence |
-| M6 | **Value Ledger has no API** (table/tests only) | Capital/value flow not wired end-to-end |
+| M5 | ✅ **BUILT** — `orchestration_sdk` is the one governed import for agents: queue drafts, advance lifecycle, plan sequencing, log governance, run the day | Agents stay on the governed rails by construction |
+| M6 | ✅ **ALREADY COVERED** — `api/routers/value_os.py` exposes `POST /api/v1/value/event/{customer_id}` (tier-disciplined) + monthly report endpoints; the `value_ledger_events` table shipped in migration 012 | No new build — reuse |
 
 ### Sales engine
 
