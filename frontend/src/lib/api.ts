@@ -181,6 +181,28 @@ export const api = {
 
   getCustomerPortal: (handle = "Slot-A") =>
     apiClient.get(`/api/v1/customer-portal/${encodeURIComponent(handle)}`),
+
+  // ── Full Ops Sales System ──────────────────────────────────────
+  getFullOpsStatus: () =>
+    apiClient.get("/api/v1/full-ops-os/status"),
+
+  getFullOpsAgents: () =>
+    apiClient.get("/api/v1/full-ops-os/agents"),
+
+  createFullOpsRun: (customerId: string, lead: Record<string, unknown> = {}) =>
+    apiClient.post("/api/v1/full-ops-os/runs", { customer_id: customerId, lead }),
+
+  runAllFullOpsStages: (runId: string) =>
+    apiClient.post(`/api/v1/full-ops-os/runs/${encodeURIComponent(runId)}/run-all`),
+
+  advanceFullOpsRun: (runId: string) =>
+    apiClient.post(`/api/v1/full-ops-os/runs/${encodeURIComponent(runId)}/advance`),
+
+  getFullOpsRun: (runId: string) =>
+    apiClient.get(`/api/v1/full-ops-os/runs/${encodeURIComponent(runId)}`),
+
+  getFullOpsRunApprovals: (runId: string) =>
+    apiClient.get(`/api/v1/full-ops-os/runs/${encodeURIComponent(runId)}/approvals`),
 };
 
 export default api;
