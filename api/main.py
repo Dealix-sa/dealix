@@ -62,6 +62,7 @@ from api.routers import (
 # Wave 12.7 — Intelligence Layer + Expansion Engine routers
 from api.routers import expansion_engine as expansion_engine_router
 from api.routers import intelligence_layer as intelligence_layer_router
+from api.routers import strategic as strategic_router
 # Wave 13 — Full Ops Productization routers
 from api.routers import bottleneck_radar as bottleneck_radar_router
 from api.routers import business_metrics_board as business_metrics_board_router
@@ -279,6 +280,10 @@ def create_app() -> FastAPI:
     # Both routers self-prefix /api/v1/intelligence and /api/v1/expansion-engine.
     app.include_router(intelligence_layer_router.router)
     app.include_router(expansion_engine_router.router)
+
+    # Strategic layer — self-prefix /api/v1/strategic. Internal read /
+    # analysis only; no external send, no prospect contact.
+    app.include_router(strategic_router.router)
 
     # ── Wave 13 — Full Ops Productization ─────────────────────────
     # Self-prefix /api/v1/services. Registry-only; no live actions.
