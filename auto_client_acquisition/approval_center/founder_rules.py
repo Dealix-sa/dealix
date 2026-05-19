@@ -20,6 +20,10 @@ Hard rules (immutable):
   - NEVER auto-approve WhatsApp / LinkedIn / Phone (per
     CHANNEL_POLICY in approval_policy.py — these channels have
     max_auto_approve_risk=None). Founder rule cannot override.
+  - NEVER auto-approve any action in NEVER_AUTO_EXECUTE
+    (NDA send, pricing/payment-terms commit, regulator comms,
+    sensitive-data export, market-facing statement). Constitution
+    Art. V.3 — executive approval required irrespective of signals.
   - NEVER auto-approve risk_level="high" or "blocked"
   - NEVER auto-approve without rule_id breadcrumb in audit log
   - Rules >30 days old are ignored until refreshed
@@ -48,6 +52,7 @@ from auto_client_acquisition.approval_center.approval_policy import (
     _RISK_ORDER,
 )
 from auto_client_acquisition.approval_center.schemas import ApprovalRequest
+from dealix.classifications import NEVER_AUTO_EXECUTE
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RULES_DIR = REPO_ROOT / "data" / "founder_rules"
@@ -301,6 +306,11 @@ class FounderRuleEngine:
         # Permanent channel block
         channel = (req.channel or "").lower()
         if channel in _BLOCKED_AUTO_CHANNELS:
+            return None
+        # NEVER_AUTO_EXECUTE — actions with irreversible external impact
+        # (NDA send, pricing commit, regulator comms, …) require executive
+        # approval irrespective of channel/risk/rule. Constitution Art. V.3.
+        if (req.action_type or "") in NEVER_AUTO_EXECUTE:
             return None
         # Risk gate — fail-closed on unknown risk labels (e.g. "critical").
         # Don't default unknowns to "low"; refuse instead.

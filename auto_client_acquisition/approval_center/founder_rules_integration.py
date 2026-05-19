@@ -8,6 +8,8 @@ transitions pending → approved and an audit breadcrumb is written.
 
 Hard guarantees (enforced both here AND in founder_rules.py):
   - WhatsApp / LinkedIn / Phone are NEVER auto-approved.
+  - NEVER_AUTO_EXECUTE actions are NEVER auto-approved (Constitution
+    Art. V.3 — executive approval required).
   - High / blocked risk levels are NEVER auto-approved.
   - Idempotent: an already-approved request is returned unchanged.
   - Fail-closed: any unexpected error returns the request unchanged.
@@ -25,6 +27,7 @@ from auto_client_acquisition.approval_center.schemas import (
     ApprovalRequest,
     ApprovalStatus,
 )
+from dealix.classifications import NEVER_AUTO_EXECUTE
 
 _DEFAULT_ENGINE: FounderRuleEngine | None = None
 
@@ -58,6 +61,10 @@ def try_auto_approve_via_founder_rule(
     """
     # ── Hard gates that no rule can bend ────────────────────────
     if (req.channel or "").lower() in _BLOCKED_AUTO_CHANNELS:
+        return req
+    # NEVER_AUTO_EXECUTE actions require executive approval — Constitution
+    # Art. V.3. No founder rule (signed or not) may auto-approve them.
+    if (req.action_type or "") in NEVER_AUTO_EXECUTE:
         return req
     if ApprovalStatus(req.status) != ApprovalStatus.PENDING:
         return req
