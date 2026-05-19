@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pytest
 
+from auto_client_acquisition.agent_os import clear_agent_registry_for_tests
 from auto_client_acquisition.full_ops_os import audit_store
 from auto_client_acquisition.full_ops_os.orchestrator import (
     WORKFLOW_ID,
@@ -13,11 +14,14 @@ from auto_client_acquisition.full_ops_os.stages import STAGES, Stage
 
 
 @pytest.fixture(autouse=True)
-def _isolated_audit(tmp_path, monkeypatch):
+def _isolated(tmp_path, monkeypatch):
     monkeypatch.setenv("DEALIX_FULL_OPS_AUDIT_PATH", str(tmp_path / "audit.jsonl"))
+    monkeypatch.setenv("DEALIX_AGENT_REGISTRY_PATH", str(tmp_path / "agents.jsonl"))
     audit_store.clear_for_test()
+    clear_agent_registry_for_tests()
     yield
     audit_store.clear_for_test()
+    clear_agent_registry_for_tests()
 
 
 def _orch() -> FullOpsOrchestrator:
@@ -41,6 +45,16 @@ def test_run_stage_auto_executes_internal_stage() -> None:
     assert result.auto_executed is True
     assert result.approval_ticket_id is None
     assert result.gate.reason == "internal_safe"
+    assert result.worker_agent == "lead-intake-agent"
+
+
+def test_run_stage_attributes_worker_in_audit() -> None:
+    orch = _orch()
+    run = orch.start_run(customer_id="acme")
+    result = orch.run_stage(run.run_id, Stage.SCORING)
+    trail = orch.audit_trail(run.run_id)
+    entry = next(e for e in trail if e.audit_id == result.audit_id)
+    assert entry.details["worker_agent"] == "scoring-agent"
 
 
 def test_approval_gate_stage_creates_approval_ticket() -> None:

@@ -19,7 +19,12 @@ from auto_client_acquisition.control_plane_os.repositories import (
     WorkflowRun,
 )
 from auto_client_acquisition.full_ops_os import audit_store
-from auto_client_acquisition.full_ops_os.gate import GateDecision, evaluate_gate
+from auto_client_acquisition.full_ops_os.agents import (
+    CONDUCTOR_ID,
+    register_full_ops_agents,
+)
+from auto_client_acquisition.full_ops_os.auto_exec import BLOCKED, governed_dispatch
+from auto_client_acquisition.full_ops_os.gate import GateDecision
 from auto_client_acquisition.full_ops_os.stages import (
     STAGES,
     Stage,
@@ -47,6 +52,8 @@ class StageResult:
     gate: GateDecision
     auto_executed: bool
     approval_ticket_id: str | None
+    worker_agent: str
+    director_agent: str
     event_id: str
     control_event_id: str
     audit_id: str
@@ -60,6 +67,8 @@ class StageResult:
             "gate": self.gate.to_dict(),
             "auto_executed": self.auto_executed,
             "approval_ticket_id": self.approval_ticket_id,
+            "worker_agent": self.worker_agent,
+            "director_agent": self.director_agent,
             "event_id": self.event_id,
             "control_event_id": self.control_event_id,
             "audit_id": self.audit_id,
@@ -74,11 +83,13 @@ class FullOpsOrchestrator:
         repo: InMemoryControlPlaneRepository | None = None,
         *,
         tenant_id: str = "default",
-        actor: str = "revenue-conductor",
+        actor: str = CONDUCTOR_ID,
     ) -> None:
         self.repo = repo or InMemoryControlPlaneRepository()
         self.tenant_id = tenant_id
         self.actor = actor
+        # Identity gate (#9): the agent pyramid must exist before any run.
+        register_full_ops_agents()
 
     # ── lifecycle ────────────────────────────────────────────────
     def start_run(
@@ -108,10 +119,24 @@ class FullOpsOrchestrator:
 
     # ── stage execution ──────────────────────────────────────────
     def run_stage(self, run_id: str, stage: Stage) -> StageResult:
-        """Execute one stage: classify, gate, emit events, audit."""
+        """Execute one stage: governed dispatch, emit events, audit."""
         run = self.repo.get_run(tenant_id=self.tenant_id, run_id=run_id)
         spec = stage_spec(stage)
-        gate = evaluate_gate(spec.action_type)
+        dispatch = governed_dispatch(stage)
+        gate = dispatch.gate
+
+        if dispatch.mode == BLOCKED:
+            self._audit(
+                run=run,
+                action=AuditAction.POLICY_DENIED,
+                outcome="blocked",
+                reason=dispatch.reason,
+                gate=gate,
+                details={"stage": stage.name, "dispatch": dispatch.to_dict()},
+            )
+            raise ValueError(
+                f"stage {stage.name} blocked by governance: {dispatch.reason}"
+            )
 
         envelope = EventEnvelope(
             source=spec.event_source,
@@ -125,11 +150,17 @@ class FullOpsOrchestrator:
             approval_class=gate.approval_class,
             reversibility_class=gate.reversibility_class,
             sensitivity_class=gate.sensitivity_class,
-            data={"stage": stage.name, "run_id": run_id, "module": spec.module},
+            data={
+                "stage": stage.name,
+                "run_id": run_id,
+                "module": spec.module,
+                "worker_agent": dispatch.worker_agent,
+                "director_agent": dispatch.director_agent,
+            },
         )
 
         approval_ticket_id: str | None = None
-        if gate.auto_exec_allowed:
+        if dispatch.auto_executes:
             auto_executed = True
             decision = "auto_executed"
             audit_action = AuditAction.POLICY_ALLOWED
@@ -148,7 +179,11 @@ class FullOpsOrchestrator:
                 subject_type="workflow_run",
                 subject_id=run_id,
                 run_id=run_id,
-                metadata={"stage": stage.name, "gate_reason": gate.reason},
+                metadata={
+                    "stage": stage.name,
+                    "gate_reason": dispatch.reason,
+                    "worker_agent": dispatch.worker_agent,
+                },
             )
             approval_ticket_id = ticket.ticket_id
 
@@ -167,6 +202,8 @@ class FullOpsOrchestrator:
                 "action_type": spec.action_type,
                 "auto_executed": auto_executed,
                 "approval_ticket_id": approval_ticket_id,
+                "worker_agent": dispatch.worker_agent,
+                "director_agent": dispatch.director_agent,
             },
         )
 
@@ -174,7 +211,7 @@ class FullOpsOrchestrator:
             run=run,
             action=audit_action,
             outcome=audit_outcome,
-            reason=gate.reason,
+            reason=dispatch.reason,
             event_id=envelope.id,
             gate=gate,
             details={
@@ -182,6 +219,8 @@ class FullOpsOrchestrator:
                 "action_type": spec.action_type,
                 "auto_executed": auto_executed,
                 "approval_ticket_id": approval_ticket_id,
+                "worker_agent": dispatch.worker_agent,
+                "director_agent": dispatch.director_agent,
             },
         )
 
@@ -211,6 +250,8 @@ class FullOpsOrchestrator:
             gate=gate,
             auto_executed=auto_executed,
             approval_ticket_id=approval_ticket_id,
+            worker_agent=dispatch.worker_agent,
+            director_agent=dispatch.director_agent,
             event_id=envelope.id,
             control_event_id=control_event.id,
             audit_id=audit.audit_id,

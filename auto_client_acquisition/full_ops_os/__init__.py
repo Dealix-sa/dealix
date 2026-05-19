@@ -7,6 +7,20 @@ is routed to ``approval_center``. See ``docs/full_ops_sales_os/``.
 
 from __future__ import annotations
 
+from auto_client_acquisition.full_ops_os.agents import (
+    CONDUCTOR_ID,
+    FULL_OPS_AGENT_SPECS,
+    register_full_ops_agents,
+)
+from auto_client_acquisition.full_ops_os.auto_exec import (
+    DispatchDecision,
+    governed_dispatch,
+)
+from auto_client_acquisition.full_ops_os.dispatcher import (
+    agent_for_stage,
+    director_for_stage,
+    verify_agent_pyramid_integrity,
+)
 from auto_client_acquisition.full_ops_os.gate import (
     GateDecision,
     auto_exec_allowed,
@@ -35,4 +49,12 @@ __all__ = [
     "StageSpec",
     "STAGES",
     "stage_spec",
+    "CONDUCTOR_ID",
+    "FULL_OPS_AGENT_SPECS",
+    "register_full_ops_agents",
+    "DispatchDecision",
+    "governed_dispatch",
+    "agent_for_stage",
+    "director_for_stage",
+    "verify_agent_pyramid_integrity",
 ]
