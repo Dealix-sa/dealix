@@ -224,6 +224,8 @@ class LeadRecord(Base):
     company_size: Mapped[str | None] = mapped_column(String(32), nullable=True)
     budget: Mapped[float | None] = mapped_column(Float, nullable=True)
     status: Mapped[str] = mapped_column(String(32), default="new", index=True)
+    # Canonical lifecycle stage (M8) — see sales_os/lead_lifecycle.py.
+    lifecycle_stage: Mapped[str] = mapped_column(String(32), default="captured", index=True)
     fit_score: Mapped[float] = mapped_column(Float, default=0.0)
     urgency_score: Mapped[float] = mapped_column(Float, default=0.0)
     locale: Mapped[str] = mapped_column(String(4), default="ar")
@@ -238,6 +240,49 @@ class LeadRecord(Base):
     deals: Mapped[list["DealRecord"]] = relationship(back_populates="lead")
 
     __table_args__ = (Index("ix_leads_tenant_status", "tenant_id", "status"),)
+
+
+class LeadStageTransition(Base):
+    """Append-only log of canonical lifecycle-stage transitions (M8).
+
+    One row per forward move (or move to ``lost``). The lead's current
+    stage lives on ``LeadRecord.lifecycle_stage``; this table is the
+    auditable history of how it got there.
+    """
+
+    __tablename__ = "lead_stage_transitions"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    lead_id: Mapped[str] = mapped_column(ForeignKey("leads.id"), index=True)
+    from_stage: Mapped[str] = mapped_column(String(32))
+    to_stage: Mapped[str] = mapped_column(String(32), index=True)
+    actor: Mapped[str] = mapped_column(String(64), default="system")
+    reason: Mapped[str] = mapped_column(Text, default="")
+    occurred_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+
+
+class FollowUpTask(Base):
+    """A scheduled follow-up touch (M7 — persistent sequencing engine).
+
+    The cadence is materialized into rows; a governed-day phase picks the
+    due ones, drafts them, and queues an approval. Nothing here sends —
+    ``draft_approval_id`` links to the governed approval queue.
+    Status: scheduled → drafted → queued → done | skipped.
+    """
+
+    __tablename__ = "follow_up_tasks"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    lead_id: Mapped[str] = mapped_column(ForeignKey("leads.id"), index=True)
+    attempt: Mapped[int] = mapped_column(Integer, default=1)
+    channel: Mapped[str] = mapped_column(String(32), default="email")
+    scheduled_for: Mapped[datetime] = mapped_column(index=True)
+    status: Mapped[str] = mapped_column(String(32), default="scheduled", index=True)
+    draft_approval_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (Index("ix_follow_up_tasks_due", "status", "scheduled_for"),)
 
 
 class DealRecord(Base):

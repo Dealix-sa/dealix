@@ -82,7 +82,8 @@ only the gaps, in governed form, and reuse everything that exists.
 | # | Gap | Why it matters |
 |---|---|---|
 | M7 | **No persistent sequencing / campaign engine** — FollowUp cadence is in-memory only | Cannot run "N leads × 3-touch sequence" reliably |
-| M8 | **No lead lifecycle state machine** — no Intake → Review → Approved → In-Cadence → Won/Lost states persisted | No durable pipeline state |
+| M7 | ✅ **BUILT** — `sequencing_engine` + `follow_up_tasks` table persists the cadence; `due_tasks`/`mark_task` drive a governed release | Reliable multi-touch sequencing |
+| M8 | ✅ **BUILT** — canonical `LeadLifecycleStage` + forward-only state machine; `leads.lifecycle_stage` + `lead_stage_transitions` table | Durable pipeline state |
 | M9 | **No bulk/batch intake** — pipeline runs one lead at a time | Cannot import-and-process a list |
 
 ### Frontend cockpit
