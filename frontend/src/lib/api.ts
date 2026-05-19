@@ -193,6 +193,45 @@ export const api = {
   postApprovalReject: (approvalId: string, who: string, reason: string) =>
     apiClient.post(`/api/v1/approvals/${approvalId}/reject`, { who, reason }),
 
+  // ── Governed Ops (M3/M4/M2) — admin-key gated ──
+  getGovernanceLog: (adminApiKey: string, limit = 100) =>
+    apiClient.get("/api/v1/governed-ops/governance-log", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { limit },
+    }),
+
+  getGovernanceBlocked: (adminApiKey: string, limit = 100) =>
+    apiClient.get("/api/v1/governed-ops/governance-log/blocked", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { limit },
+    }),
+
+  getSchedulerStatus: (adminApiKey: string) =>
+    apiClient.get("/api/v1/governed-ops/scheduler/status", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postSchedulerStart: (adminApiKey: string) =>
+    apiClient.post("/api/v1/governed-ops/scheduler/start", null, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postSchedulerStop: (adminApiKey: string) =>
+    apiClient.post("/api/v1/governed-ops/scheduler/stop", null, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getGovernedDayLast: (adminApiKey: string) =>
+    apiClient.get("/api/v1/governed-ops/governed-day/last", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postGovernedDayRun: (adminApiKey: string, dryRun = false) =>
+    apiClient.post("/api/v1/governed-ops/governed-day/run", null, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { dry_run: dryRun },
+    }),
+
   getGmailDraftsToday: () =>
     apiClient.get("/api/v1/gmail/drafts/today"),
 

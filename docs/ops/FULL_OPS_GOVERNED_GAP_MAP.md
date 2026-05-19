@@ -91,7 +91,7 @@ only the gaps, in governed form, and reuse everything that exists.
 | # | Gap | Why it matters |
 |---|---|---|
 | M10 | `/ops/targeting`, `/ops/support`, `/ops/partners` hollow/missing (APIs exist) | Cockpit incomplete |
-| M11 | No ops-specific **approval queue UI** + no **kill switch** | Founder cannot review/halt governed automation from one place |
+| M11 | ✅ **BUILT** — `GovernedOpsControl` on `/ops/approvals`: scheduler status, Start/Stop **kill switch**, run-day-now, governance log + blocked-actions feed | Founder reviews and halts governed automation from one place |
 | M12 | No unified `ops.*` i18n namespace | Strings scattered, fragile |
 
 ### Agent depth
