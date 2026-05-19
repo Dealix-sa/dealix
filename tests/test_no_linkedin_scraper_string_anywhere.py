@@ -66,6 +66,9 @@ _ALLOWLIST_PATHS = frozenset({
     # Wave 16 docs may exist when PR #222 merges (forward-reference)
     "docs/WAVE16_EVIDENCE_TABLE.md",
     "scripts/dealix_wave16_auto_source_verify.sh",
+    # Enterprise-architecture test catalogue — lists the lockdown test by
+    # file name in its "existing tests, do not duplicate" section.
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # Wave 17 master verifier — invokes the lockdown test by file path
     "scripts/dealix_market_launch_ready_verify.sh",
     # Wave 17 evidence + report + docs — reference this lockdown test by name

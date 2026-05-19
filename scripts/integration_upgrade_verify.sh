@@ -79,8 +79,18 @@ else
 fi
 
 echo "── Forbidden tokens sweep ─────────────────────────────"
-FORBIDDEN_RE='(\bguaranteed?\b|\bblast\b|\bscraping\b|نضمن|مضمون|cold[[:space:]]+(whatsapp|outreach|email))'
-if grep -qiE "$FORBIDDEN_RE" landing/customer-portal.html landing/executive-command-center.html 2>/dev/null; then
+# Customer-facing pages must carry no affirmative forbidden claim.
+# Negation / disclaimer context — the mandated bilingual disclaimer
+# ("...not guaranteed outcomes / ...ليست نتائج مضمونة") and anti-claim
+# copy — is stripped before matching, mirroring §5 of
+# scripts/business_readiness_verify.sh. A bare token inside a
+# disclaimer is not a violation; an affirmative claim is.
+FORBIDDEN_HTML_HITS=$(grep -hE "نضمن|مضمون|guarantee|blast|scraping|cold" \
+  landing/customer-portal.html landing/executive-command-center.html 2>/dev/null \
+  | grep -viE "(no|not|never|without|zero)[[:space:]]+(any[[:space:]]+)?(guarantee|cold|blast|scrap)" \
+  | sed -E 's/(لا|لن|لم|ما|ليست?|بدون|دون|صفر)([[:space:]]+[^[:space:]]+){0,4}[[:space:]]*(نضمن|ضمان|مضمون[ةه]?)/__NEG__/g' \
+  | grep -Ei "نضمن|مضمون|\bguaranteed?\b|\bblast\b|\bscraping\b|cold[[:space:]]+(whatsapp|outreach|email)" || true)
+if [ -n "$FORBIDDEN_HTML_HITS" ]; then
   results+=("FORBIDDEN_CLAIMS_HTML=FAIL")
   overall_pass=false
 else

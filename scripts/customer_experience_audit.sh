@@ -51,9 +51,20 @@ for page in landing/customer-portal.html landing/executive-command-center.html; 
 done
 
 # 3. No forbidden claims
-FORBIDDEN_RE='(\bguaranteed?\b|\bblast\b|\bscraping\b|نضمن|مضمون|cold[[:space:]]+(whatsapp|outreach|email))'
+# Negation / disclaimer context — the mandated bilingual disclaimer
+# ("...not guaranteed outcomes / ...ليست نتائج مضمونة") and anti-claim
+# copy — is stripped before matching, mirroring §5 of
+# scripts/business_readiness_verify.sh. A bare token inside a
+# disclaimer is not a violation; an affirmative claim is.
 for page in landing/customer-portal.html landing/executive-command-center.html; do
-  if [ -f "$page" ] && grep -qiE "$FORBIDDEN_RE" "$page"; then
+  if [ ! -f "$page" ]; then
+    continue
+  fi
+  hits=$(grep -hE "نضمن|مضمون|guarantee|blast|scraping|cold" "$page" 2>/dev/null \
+    | grep -viE "(no|not|never|without|zero)[[:space:]]+(any[[:space:]]+)?(guarantee|cold|blast|scrap)" \
+    | sed -E 's/(لا|لن|لم|ما|ليست?|بدون|دون|صفر)([[:space:]]+[^[:space:]]+){0,4}[[:space:]]*(نضمن|ضمان|مضمون[ةه]?)/__NEG__/g' \
+    | grep -Ei "نضمن|مضمون|\bguaranteed?\b|\bblast\b|\bscraping\b|cold[[:space:]]+(whatsapp|outreach|email)" || true)
+  if [ -n "$hits" ]; then
     fail "$page contains forbidden claims"
   else
     ok_msg "$page free of forbidden claims"

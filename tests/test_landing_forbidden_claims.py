@@ -113,9 +113,13 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
         "scraping": "NEGATION",
     },
-    # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
+    # Diagnostic intake — "صفر cold outreach" promise + the mandated
+    # bilingual disclaimer "...not guaranteed outcomes / ...ليست نتائج
+    # مضمونة". Pure NEGATION / disclaimer.
     "diagnostic.html": {
         "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
@@ -142,11 +146,13 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
     },
     # Trust Center (Tier-1 redesign) — frames the 8 hard gates as features.
-    # Copy explicitly states what Dealix DOES NOT do: "لا scraping",
-    # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
+    # Copy explicitly states what Dealix DOES NOT do ("لا scraping") and
+    # carries the mandated disclaimer "...not guaranteed outcomes /
+    # ...ليست نتائج مضمونة". Pure NEGATION / disclaimer throughout.
     "trust-center.html": {
+        "guaranteed": "NEGATION",
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -170,6 +176,71 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     "compare-salesloft.html": {
         "blast": "NEGATION",
         "cold": "NEGATION",
+    },
+    # --- Pages carrying the mandated bilingual outcome disclaimer ---------
+    # Every page below ends with the doctrine-required disclaimer
+    # "Estimated outcomes are not guaranteed outcomes / النتائج التقديرية
+    # ليست نتائج مضمونة". The forbidden tokens "guaranteed" and "مضمون"
+    # are matched inside that negation. Pure disclaimer context.
+    "architecture.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "bespoke-ai.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "customer-portal.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "dpo.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "launch-status.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "pricing.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "sector-report-b2b-services.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "security.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "sprint-sample.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "webinar.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Data-to-Revenue Pack — anti-claim copy ("صفر cold WhatsApp",
+    # "لا scraping") + the mandated outcome disclaimer. Pure NEGATION.
+    "data-pack.html": {
+        "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "scraping": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Roadmap — lists "LinkedIn scraping automation — policy-blocked in
+    # code" as a rejected pattern. Pure NEGATION.
+    "roadmap.html": {
+        "scraping": "NEGATION",
+    },
+    # Pilot case-study example — "7-day money-back guarantee" is a refund
+    # commitment, not a guaranteed-outcome claim (the doctrine forbids
+    # guaranteed revenue/results, not refund policy; business_readiness
+    # verifier explicitly excludes money-back wording).
+    "case-study-pilot-example.html": {
+        "guaranteed": "REFUND",
     },
 }
 
