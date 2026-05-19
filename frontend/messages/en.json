@@ -223,6 +223,74 @@
         "cs": "Customer success",
         "delivery": "Delivery"
       }
+    },
+    "strategy": {
+      "layerLabel": "Strategic Autonomy Layer",
+      "sections": {
+        "board": "Strategic Board",
+        "cycle": "Strategic Cycle",
+        "ledger": "Decision Ledger",
+        "gates": "Strategic Gates"
+      },
+      "board": {
+        "empty": "Strategic tier is not available yet.",
+        "ceo": "Chief Executive",
+        "ceoTier": "CEO tier",
+        "directors": "Board directors",
+        "maxAutonomy": "Max autonomy",
+        "delegatesTo": "Delegates to operational orchestrator"
+      },
+      "cycle": {
+        "runNow": "Run strategic cycle",
+        "empty": "No strategic cycle has run yet.",
+        "gateEvaluations": "Gate evaluations",
+        "noGates": "No gates were evaluated.",
+        "pass": "Pass",
+        "fail": "Fail",
+        "decisions": "Decisions",
+        "noDecisions": "No decisions produced this cycle.",
+        "delegatedCycles": "Delegated cycles",
+        "delegatedCount": "Delegated",
+        "nextActions": "Next actions",
+        "warnings": "Warnings",
+        "hardGates": "Hard gates",
+        "approvalsPending": "Approvals pending",
+        "col": {
+          "gate": "Gate",
+          "result": "Result",
+          "observed": "Observed",
+          "decisionType": "Decision type",
+          "note": "Note"
+        }
+      },
+      "ledger": {
+        "empty": "No strategic decisions recorded yet.",
+        "filterType": "Decision type",
+        "filterStatus": "Status",
+        "allTypes": "All types",
+        "allStatuses": "All statuses",
+        "irreversible": "Irreversible",
+        "requiresApproval": "Needs approval",
+        "col": {
+          "type": "Type",
+          "target": "Target",
+          "rationale": "Rationale",
+          "score": "Score",
+          "band": "Band",
+          "status": "Status"
+        },
+        "status": {
+          "recommended": "Recommended",
+          "pending_approval": "Pending approval",
+          "approved": "Approved",
+          "rejected": "Rejected",
+          "delegated": "Delegated"
+        }
+      },
+      "gates": {
+        "empty": "Strategic gate catalog is not available yet.",
+        "count": "{count} gate(s)"
+      }
     }
   }
 }

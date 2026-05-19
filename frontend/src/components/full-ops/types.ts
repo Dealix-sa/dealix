@@ -143,3 +143,103 @@ export interface ApprovalsPendingResponse {
   pending: ApprovalCardItem[];
   cards: ApprovalCardItem[];
 }
+
+// Strategic Autonomy Layer.
+// Mirrors the backend API contract for /api/v1/strategy/autonomous/*.
+
+export interface StrategicAgentNode {
+  agent_id: string;
+  name: string;
+  role_ar: string;
+  role_en: string;
+  autonomy_level: number;
+  status: AgentStatus;
+}
+
+export interface StrategicCeoNode extends StrategicAgentNode {
+  delegates_to: string[];
+}
+
+export interface StrategicTierTotals {
+  board_directors: number;
+  max_autonomy_level: number;
+}
+
+export interface StrategicTierResponse {
+  ceo: StrategicCeoNode;
+  board_directors: StrategicAgentNode[];
+  delegates_to_operational: string;
+  totals: StrategicTierTotals;
+}
+
+export interface GateEvaluationItem {
+  gate_id: string;
+  title_ar: string;
+  title_en: string;
+  passed: boolean;
+  observed_value: number;
+  decision_type: string | null;
+  note_ar: string;
+  note_en: string;
+}
+
+export interface StrategicDecisionItem {
+  decision_id: string;
+  decision_type: string;
+  target: string;
+  rationale_ar: string;
+  rationale_en: string;
+  score: number;
+  decision_band: string;
+  status: string;
+  irreversible: boolean;
+  requires_approval: boolean;
+}
+
+export interface DelegatedCycleItem {
+  cycle_id: string;
+  summary: string;
+}
+
+export interface StrategicApprovalsPending {
+  count: number;
+  items: ApprovalCardItem[];
+}
+
+export interface StrategicCycleResponse {
+  cycle_id: string;
+  generated_at: string;
+  on_date: string;
+  cadence: string;
+  title_ar: string;
+  title_en: string;
+  signal_snapshot: Record<string, unknown>;
+  gate_evaluations: GateEvaluationItem[];
+  decisions: StrategicDecisionItem[];
+  approvals_pending: StrategicApprovalsPending;
+  delegated_cycles: DelegatedCycleItem[];
+  next_actions: BilingualText[];
+  hard_gates: string[];
+  report_paths: { json?: string; md?: string };
+  warnings: string[];
+}
+
+export interface GateRuleItem {
+  gate_id: string;
+  source: string;
+  title_ar: string;
+  title_en: string;
+  window_day: number | null;
+  metric: string;
+  comparator: string;
+  threshold: number;
+  severity: string;
+}
+
+export interface StrategicDecisionsResponse {
+  decisions: StrategicDecisionItem[];
+}
+
+export interface StrategicGatesResponse {
+  gates: GateRuleItem[];
+}

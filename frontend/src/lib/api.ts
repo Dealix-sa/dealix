@@ -195,6 +195,26 @@ export const api = {
   getFullOpsCommandCenter: () =>
     apiClient.get("/api/v1/full-ops/daily-command-center"),
 
+  // Strategic Autonomy Layer
+  getStrategicTier: () =>
+    apiClient.get("/api/v1/strategy/autonomous/tier"),
+
+  getStrategicLatest: () =>
+    apiClient.get("/api/v1/strategy/autonomous/latest"),
+
+  postStrategicRunCycle: () =>
+    apiClient.post("/api/v1/strategy/autonomous/run"),
+
+  getStrategicDecisions: (params?: {
+    decision_type?: string;
+    status?: string;
+    limit?: number;
+  }) =>
+    apiClient.get("/api/v1/strategy/autonomous/decisions", { params }),
+
+  getStrategicGates: () =>
+    apiClient.get("/api/v1/strategy/autonomous/gates"),
+
   postApprovalsBulkApprove: (body: {
     who: string;
     proof_impact_prefix?: string;

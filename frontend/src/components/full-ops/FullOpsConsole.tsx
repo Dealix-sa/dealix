@@ -12,12 +12,20 @@ import { AgentPyramid } from "./AgentPyramid";
 import { AutonomousCycle } from "./AutonomousCycle";
 import { ApprovalQueue } from "./ApprovalQueue";
 import { CommandCenter } from "./CommandCenter";
+import { StrategyBoard } from "./StrategyBoard";
+import { StrategicCyclePanel } from "./StrategicCyclePanel";
+import { DecisionLedger } from "./DecisionLedger";
+import { GateBoard } from "./GateBoard";
 import type {
   ApprovalCardItem,
   ApprovalsPendingResponse,
   CommandCenterResponse,
   CycleResponse,
+  GateRuleItem,
   HierarchyResponse,
+  StrategicCycleResponse,
+  StrategicGatesResponse,
+  StrategicTierResponse,
 } from "./types";
 
 function unwrap<T>(payload: unknown): T {
@@ -43,11 +51,22 @@ export function FullOpsConsole() {
     useState<CommandCenterResponse | null>(null);
   const [approvals, setApprovals] = useState<ApprovalCardItem[]>([]);
 
+  const [strategicTier, setStrategicTier] =
+    useState<StrategicTierResponse | null>(null);
+  const [strategicCycle, setStrategicCycle] =
+    useState<StrategicCycleResponse | null>(null);
+  const [strategicGates, setStrategicGates] = useState<GateRuleItem[]>([]);
+
   const [loadingHierarchy, setLoadingHierarchy] = useState(true);
   const [loadingCycle, setLoadingCycle] = useState(true);
   const [loadingCommandCenter, setLoadingCommandCenter] = useState(true);
   const [loadingApprovals, setLoadingApprovals] = useState(true);
   const [running, setRunning] = useState(false);
+
+  const [loadingStrategicTier, setLoadingStrategicTier] = useState(true);
+  const [loadingStrategicCycle, setLoadingStrategicCycle] = useState(true);
+  const [loadingStrategicGates, setLoadingStrategicGates] = useState(true);
+  const [runningStrategic, setRunningStrategic] = useState(false);
 
   const loadHierarchy = useCallback(async () => {
     setLoadingHierarchy(true);
@@ -100,12 +119,61 @@ export function FullOpsConsole() {
     }
   }, []);
 
+  const loadStrategicTier = useCallback(async () => {
+    setLoadingStrategicTier(true);
+    try {
+      const res = await api.getStrategicTier();
+      setStrategicTier(unwrap<StrategicTierResponse>(res.data));
+    } catch {
+      setStrategicTier(null);
+    } finally {
+      setLoadingStrategicTier(false);
+    }
+  }, []);
+
+  const loadStrategicCycle = useCallback(async () => {
+    setLoadingStrategicCycle(true);
+    try {
+      const res = await api.getStrategicLatest();
+      const data = unwrap<StrategicCycleResponse | null>(res.data);
+      setStrategicCycle(data && data.cycle_id ? data : null);
+    } catch {
+      setStrategicCycle(null);
+    } finally {
+      setLoadingStrategicCycle(false);
+    }
+  }, []);
+
+  const loadStrategicGates = useCallback(async () => {
+    setLoadingStrategicGates(true);
+    try {
+      const res = await api.getStrategicGates();
+      const data = unwrap<StrategicGatesResponse>(res.data);
+      setStrategicGates(Array.isArray(data?.gates) ? data.gates : []);
+    } catch {
+      setStrategicGates([]);
+    } finally {
+      setLoadingStrategicGates(false);
+    }
+  }, []);
+
   const loadAll = useCallback(() => {
+    void loadStrategicTier();
+    void loadStrategicCycle();
+    void loadStrategicGates();
     void loadHierarchy();
     void loadCycle();
     void loadCommandCenter();
     void loadApprovals();
-  }, [loadHierarchy, loadCycle, loadCommandCenter, loadApprovals]);
+  }, [
+    loadStrategicTier,
+    loadStrategicCycle,
+    loadStrategicGates,
+    loadHierarchy,
+    loadCycle,
+    loadCommandCenter,
+    loadApprovals,
+  ]);
 
   useEffect(() => {
     loadAll();
@@ -131,11 +199,37 @@ export function FullOpsConsole() {
     }
   }, [isAr, loadCycle, loadApprovals, loadCommandCenter]);
 
+  const handleRunStrategicCycle = useCallback(async () => {
+    setRunningStrategic(true);
+    try {
+      const res = await api.postStrategicRunCycle();
+      const data = unwrap<StrategicCycleResponse | null>(res.data);
+      if (data && data.cycle_id) {
+        setStrategicCycle(data);
+      } else {
+        await loadStrategicCycle();
+      }
+      toast.success(
+        isAr ? "اكتملت الدورة الاستراتيجية" : "Strategic cycle completed",
+      );
+      void loadApprovals();
+    } catch {
+      toast.error(
+        isAr ? "فشل تشغيل الدورة الاستراتيجية" : "Strategic cycle run failed",
+      );
+    } finally {
+      setRunningStrategic(false);
+    }
+  }, [isAr, loadStrategicCycle, loadApprovals]);
+
   const anyLoading =
     loadingHierarchy ||
     loadingCycle ||
     loadingCommandCenter ||
-    loadingApprovals;
+    loadingApprovals ||
+    loadingStrategicTier ||
+    loadingStrategicCycle ||
+    loadingStrategicGates;
 
   return (
     <div className="space-y-6">
@@ -151,6 +245,69 @@ export function FullOpsConsole() {
           />
           {isAr ? "تحديث" : "Refresh"}
         </Button>
+      </div>
+
+      {/* Strategic Autonomy Layer - the CEO loop sits above Full Ops */}
+      <div className="rounded-2xl border border-gold-500/20 bg-gold-500/[0.03] p-1">
+        <p className="px-3 pt-2 pb-1 text-[11px] uppercase tracking-widest text-gold-400">
+          {t("strategy.layerLabel")}
+        </p>
+        <div className="space-y-6 p-1">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold">
+                {t("strategy.sections.board")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <StrategyBoard
+                data={strategicTier}
+                loading={loadingStrategicTier}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold">
+                {t("strategy.sections.cycle")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <StrategicCyclePanel
+                cycle={strategicCycle}
+                loading={loadingStrategicCycle}
+                running={runningStrategic}
+                onRun={handleRunStrategicCycle}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold">
+                {t("strategy.sections.ledger")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DecisionLedger />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold">
+                {t("strategy.sections.gates")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <GateBoard
+                gates={strategicGates}
+                loading={loadingStrategicGates}
+              />
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <Card>

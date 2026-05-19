@@ -223,6 +223,74 @@
         "cs": "نجاح العملاء",
         "delivery": "التسليم"
       }
+    },
+    "strategy": {
+      "layerLabel": "طبقة الاستقلالية الاستراتيجية",
+      "sections": {
+        "board": "المجلس الاستراتيجي",
+        "cycle": "الدورة الاستراتيجية",
+        "ledger": "سجلّ القرارات",
+        "gates": "البوابات الاستراتيجية"
+      },
+      "board": {
+        "empty": "الطبقة الاستراتيجية غير متاحة بعد.",
+        "ceo": "الرئيس التنفيذي",
+        "ceoTier": "طبقة الرئيس التنفيذي",
+        "directors": "مدراء المجلس",
+        "maxAutonomy": "أقصى استقلالية",
+        "delegatesTo": "يفوّض إلى منسّق العمليات"
+      },
+      "cycle": {
+        "runNow": "تشغيل الدورة الاستراتيجية",
+        "empty": "لم تُشغَّل أي دورة استراتيجية بعد.",
+        "gateEvaluations": "تقييمات البوابات",
+        "noGates": "لم تُقيَّم أي بوابات.",
+        "pass": "نجاح",
+        "fail": "فشل",
+        "decisions": "القرارات",
+        "noDecisions": "لم تُنتَج قرارات في هذه الدورة.",
+        "delegatedCycles": "الدورات المفوّضة",
+        "delegatedCount": "مفوّضة",
+        "nextActions": "الإجراءات التالية",
+        "warnings": "تحذيرات",
+        "hardGates": "البوابات الصارمة",
+        "approvalsPending": "موافقات معلّقة",
+        "col": {
+          "gate": "البوابة",
+          "result": "النتيجة",
+          "observed": "المرصود",
+          "decisionType": "نوع القرار",
+          "note": "ملاحظة"
+        }
+      },
+      "ledger": {
+        "empty": "لا قرارات استراتيجية مسجّلة بعد.",
+        "filterType": "نوع القرار",
+        "filterStatus": "الحالة",
+        "allTypes": "كل الأنواع",
+        "allStatuses": "كل الحالات",
+        "irreversible": "غير قابل للتراجع",
+        "requiresApproval": "يتطلّب موافقة",
+        "col": {
+          "type": "النوع",
+          "target": "الهدف",
+          "rationale": "المبرّر",
+          "score": "الدرجة",
+          "band": "الفئة",
+          "status": "الحالة"
+        },
+        "status": {
+          "recommended": "موصى به",
+          "pending_approval": "بانتظار الموافقة",
+          "approved": "معتمد",
+          "rejected": "مرفوض",
+          "delegated": "مفوّض"
+        }
+      },
+      "gates": {
+        "empty": "كتالوج البوابات الاستراتيجية غير متاح بعد.",
+        "count": "{count} بوابة"
+      }
     }
   }
 }
