@@ -61,6 +61,17 @@ class StrategicSignalSnapshot:
     governance_risk_index: float
     capital_asset_count: int
     founder_hours_per_sprint: float
+    # CS + Financial signals pulled from the two sister autonomy layers.
+    cs_at_risk_count: int = 0
+    cs_expansion_ready_count: int = 0
+    cs_renewals_due_count: int = 0
+    cs_nps_detractors_count: int = 0
+    financial_anomaly_count: int = 0
+    financial_violation_count: int = 0
+    runway_months: float = 0.0
+    gross_margin_pct: float = 0.0
+    margin_floor_violation: bool = False
+    runway_critical: bool = False
     # Seven normalized subscores (0-100) for the strategy decision score.
     signal_inputs: dict[str, float] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
@@ -184,6 +195,65 @@ def aggregate_strategic_signals(
     except Exception as exc:  # noqa: BLE001
         warnings.append(f"capital_ledger: {exc}")
 
+    # ── Customer Success autonomy signals ───────────────────────────
+    cs_at_risk_count = 0
+    cs_expansion_ready_count = 0
+    cs_renewals_due_count = 0
+    cs_nps_detractors_count = 0
+    try:
+        from auto_client_acquisition.customer_success_autonomy import (
+            latest_cs_report,
+        )
+
+        cs_report = latest_cs_report()
+        if isinstance(cs_report, dict):
+            cs_summary = cs_report.get("summary") or {}
+            cs_at_risk_count = int(cs_summary.get("at_risk", 0))
+            cs_expansion_ready_count = int(cs_summary.get("expansion_ready", 0))
+            cs_renewals_due_count = int(cs_summary.get("renewals_due", 0))
+            cs_nps_detractors_count = int(cs_summary.get("nps_detractors", 0))
+    except Exception as exc:  # noqa: BLE001
+        warnings.append(f"customer_success_autonomy: {exc}")
+
+    # ── Financial autonomy signals ──────────────────────────────────
+    financial_anomaly_count = 0
+    financial_violation_count = 0
+    runway_months_value = 0.0
+    gross_margin_value = 0.0
+    margin_floor_violation = False
+    runway_critical = False
+    try:
+        from auto_client_acquisition.financial_autonomy import (
+            latest_financial_report,
+        )
+
+        fin_report = latest_financial_report()
+        if isinstance(fin_report, dict):
+            anomalies = fin_report.get("anomalies") or []
+            violations = fin_report.get("threshold_violations") or []
+            financial_anomaly_count = len(anomalies)
+            financial_violation_count = len(violations)
+            metrics = fin_report.get("metrics") or {}
+            try:
+                runway_months_value = float(metrics.get("runway_months", 0.0) or 0.0)
+            except (TypeError, ValueError):
+                runway_months_value = 0.0
+            try:
+                gross_margin_value = float(metrics.get("gross_margin_pct", 0.0) or 0.0)
+            except (TypeError, ValueError):
+                gross_margin_value = 0.0
+            for v in violations:
+                if not isinstance(v, dict):
+                    continue
+                rule = v.get("rule") or {}
+                rule_id = rule.get("rule_id") if isinstance(rule, dict) else None
+                if rule_id == "gross_margin_floor" and v.get("breached"):
+                    margin_floor_violation = True
+                if rule_id == "runway_critical" and v.get("breached"):
+                    runway_critical = True
+    except Exception as exc:  # noqa: BLE001
+        warnings.append(f"financial_autonomy: {exc}")
+
     # ── normalize into the seven strategy subscores ─────────────────
     # Revenue: 40K SAR cumulative is the day-90 target → 100.
     revenue_signal = _clamp(total_revenue_sar / 400.0)
@@ -222,6 +292,16 @@ def aggregate_strategic_signals(
         governance_risk_index=round(governance_risk, 1),
         capital_asset_count=capital_asset_count,
         founder_hours_per_sprint=round(float(founder_hours_per_sprint), 1),
+        cs_at_risk_count=cs_at_risk_count,
+        cs_expansion_ready_count=cs_expansion_ready_count,
+        cs_renewals_due_count=cs_renewals_due_count,
+        cs_nps_detractors_count=cs_nps_detractors_count,
+        financial_anomaly_count=financial_anomaly_count,
+        financial_violation_count=financial_violation_count,
+        runway_months=round(runway_months_value, 1),
+        gross_margin_pct=round(gross_margin_value, 1),
+        margin_floor_violation=margin_floor_violation,
+        runway_critical=runway_critical,
         signal_inputs=signal_inputs,
         warnings=warnings,
     )
