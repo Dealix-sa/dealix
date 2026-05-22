@@ -220,12 +220,11 @@ def _section_retainers(metrics: dict[str, Any], warnings: list[str]) -> dict[str
 def _section_proof(warnings: list[str]) -> dict[str, str]:
     count = 0
     try:
-        from auto_client_acquisition.proof_ledger.factory import (
-            get_default_proof_ledger,
-        )
+        from auto_client_acquisition.proof_ledger.factory import recent_events
+        from datetime import datetime, timedelta, timezone
 
-        ledger = get_default_proof_ledger()
-        events = ledger.list_events(limit=10000)
+        since = datetime.now(timezone.utc) - timedelta(days=35)
+        events = recent_events(since=since, limit=10000)
         count = len(events)
     except Exception as exc:  # noqa: BLE001
         warnings.append(f"proof_section_skipped:{exc}")
