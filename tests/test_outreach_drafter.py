@@ -136,11 +136,10 @@ def test_drafts_written_to_disk_with_approval_gate(tmp_path: Path) -> None:
         drafts_root=tmp_path,
     )
     assert len(drafts) == 3
-    for d in drafts:
-        slug_files = list(tmp_path.glob("*.md"))
-        gate_files = list(tmp_path.glob("*.approval_required.json"))
-        assert slug_files, "expected .md drafts on disk"
-        assert gate_files, "expected approval gates on disk"
+    md_files = {p.name for p in tmp_path.glob("*.md")}
+    gate_files = {p.name for p in tmp_path.glob("*.approval_required.json")}
+    assert len(md_files) == len(drafts), "expected one .md draft per ranked account"
+    assert len(gate_files) == len(drafts), "expected one approval gate per draft"
     sample = json.loads(next(tmp_path.glob("*.approval_required.json")).read_text(encoding="utf-8"))
     assert sample["state"] == "draft_only"
     assert sample["requires_approval_before_send"] is True
