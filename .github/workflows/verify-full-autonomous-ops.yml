@@ -11,6 +11,13 @@ on:
       - "tests/test_full_ops_autopilot.py"
       - "tests/test_complete_autonomous_day.py"
       - "tests/test_founder_cockpit.py"
+      # The script imports api.main (TestClient) and pip-installs the full
+      # stack, so changes to the install graph or app entry must re-run it.
+      # Without these two paths, breakage in either lands on main silently
+      # and only surfaces on the next PR that touches a path above.
+      - "requirements.txt"
+      - "api/main.py"
+      - ".github/workflows/verify-full-autonomous-ops.yml"
   workflow_dispatch:
 
 permissions:
