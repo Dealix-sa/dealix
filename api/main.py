@@ -110,6 +110,14 @@ from api.routers import platform_foundation as platform_foundation_router
 from api.routers import autonomous_full_ops as autonomous_full_ops_router
 # Strategic Autonomy — CEO/board-tier autonomous loop above Full Ops
 from api.routers import autonomous_strategy as autonomous_strategy_router
+# Customer Success Autonomy — daily per-customer retention cycle
+from api.routers import (
+    autonomous_customer_success as autonomous_customer_success_router,
+)
+# Financial Autonomy — weekly metrics + monthly board memo cycle
+from api.routers import (
+    autonomous_financial as autonomous_financial_router,
+)
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -349,6 +357,10 @@ def create_app() -> FastAPI:
     app.include_router(autonomous_full_ops_router.router)
     # Strategic Autonomy — /api/v1/strategy/autonomous/* tier + cycle + ledger
     app.include_router(autonomous_strategy_router.router)
+    # Customer Success Autonomy — /api/v1/customer-success/autonomous/*
+    app.include_router(autonomous_customer_success_router.router)
+    # Financial Autonomy — /api/v1/financial/autonomous/* metrics + board memo
+    app.include_router(autonomous_financial_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

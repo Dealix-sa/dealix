@@ -1,0 +1,208 @@
+name: Customer Success + Financial Cycles
+
+# Three scheduled autonomous cycles + manual dispatch.
+#   - cs_cycle:        daily   06:00 UTC = 09:00 Asia/Riyadh.
+#   - financial_cycle: weekly  Sun 06:30 UTC.
+#   - board_memo:      monthly 1st 07:00 UTC.
+# All three are deterministic-to-the-gate: nothing sent, nothing charged,
+# nothing refunded. Every high-stakes signal becomes a pending approval.
+
+on:
+  schedule:
+    - cron: "0 6 * * *"     # cs_cycle daily
+    - cron: "30 6 * * 0"    # financial_cycle weekly (Sunday)
+    - cron: "0 7 1 * *"     # board_memo monthly (1st)
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Which cycle to run (cs | financial | board_memo)"
+        default: "financial"
+      period_end:
+        description: "Override period end (YYYY-MM-DD) for the financial cycle"
+        default: ""
+      month:
+        description: "Override month (YYYY-MM) for the board memo"
+        default: ""
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  cs_cycle:
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '0 6 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'cs') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: dealix-cs-cycle
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --ignore-installed PyYAML
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run Customer Success autonomous cycle
+        id: cycle
+        run: |
+          set -e
+          python3 scripts/dealix_customer_success_cycle.py | tee cs_output.txt
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Upload CS cycle artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-cs-cycle-${{ github.run_id }}
+          path: |
+            cs_output.txt
+            data/cs_cycles/
+          retention-days: 14
+
+      - name: Open issue on failure
+        if: failure()
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0, 10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Customer success cycle failed - ${today}`,
+              body: `The CS autonomous cycle workflow failed on ${today}.\n\n` +
+                    `**Run:** ${context.serverUrl}/${context.repo.owner}/` +
+                    `${context.repo.repo}/actions/runs/${context.runId}`,
+              labels: ['ops', 'p0'],
+            });
+
+  financial_cycle:
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '30 6 * * 0' || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'financial') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: dealix-financial-cycle
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --ignore-installed PyYAML
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run Financial autonomous cycle
+        id: cycle
+        run: |
+          set -e
+          ARGS="--cadence weekly"
+          if [ -n "${{ github.event.inputs.period_end }}" ]; then
+            ARGS="$ARGS --period-end ${{ github.event.inputs.period_end }}"
+          fi
+          python3 scripts/dealix_financial_cycle.py $ARGS | tee financial_output.txt
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Upload financial cycle artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-financial-cycle-${{ github.run_id }}
+          path: |
+            financial_output.txt
+            data/financial_cycles/
+          retention-days: 14
+
+      - name: Open issue on failure
+        if: failure()
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0, 10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Financial cycle failed - ${today}`,
+              body: `The Financial autonomous cycle workflow failed on ${today}.\n\n` +
+                    `**Run:** ${context.serverUrl}/${context.repo.owner}/` +
+                    `${context.repo.repo}/actions/runs/${context.runId}`,
+              labels: ['ops', 'p0'],
+            });
+
+  board_memo:
+    if: ${{ github.event_name == 'schedule' && github.event.schedule == '0 7 1 * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.target == 'board_memo') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: dealix-board-memo
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --ignore-installed PyYAML
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Compute previous-month YYYY-MM
+        id: compute_month
+        run: |
+          MONTH="${{ github.event.inputs.month }}"
+          if [ -z "$MONTH" ]; then
+            MONTH=$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m)
+          fi
+          echo "month=$MONTH" >> "$GITHUB_OUTPUT"
+
+      - name: Run monthly board memo cycle
+        id: cycle
+        run: |
+          set -e
+          python3 scripts/dealix_board_memo_cycle.py --month "${{ steps.compute_month.outputs.month }}" | tee board_memo_output.txt
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Upload board memo artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-board-memo-${{ github.run_id }}
+          path: |
+            board_memo_output.txt
+            data/board_memos/
+          retention-days: 30
+
+      - name: Open issue on failure
+        if: failure()
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0, 10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Board memo cycle failed - ${today}`,
+              body: `The monthly board memo cycle failed on ${today}.\n\n` +
+                    `**Run:** ${context.serverUrl}/${context.repo.owner}/` +
+                    `${context.repo.repo}/actions/runs/${context.runId}`,
+              labels: ['ops', 'p0'],
+            });
