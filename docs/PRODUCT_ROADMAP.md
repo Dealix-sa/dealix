@@ -1,5 +1,7 @@
 # خارطة المنتج — Dealix
 
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](strategy/FULL_OPS_STRATEGY.md) and [docs/strategy/ROADMAP_30_60_90.md](strategy/ROADMAP_30_60_90.md). The Phase 0–N framing below is retained for historical context; current execution horizons are 48h / 7d / 30d / 60d / 90d in the strategy folder.
+
 ## حارس المنتج (السلسلة الذهبية)
 
 كل مرحلة أدناه يجب أن تخدم **إشارة → Lead → Decision Passport → إجراء معتمد → تسليم → Proof** أو مقياساً تشغيلياً مباشراً (تحويل، تسليم، إثبات، احتفاظ). لا تُضاف ميزات «CRM عام» خارج مسار [DEALIX_MASTER_OPERATING_MODEL_AR.md](strategic/DEALIX_MASTER_OPERATING_MODEL_AR.md). موانع الهدر: كتالوج الإجراءات + `POST /revenue-os/anti-waste/check`؛ مستويات الإثبات L0–L5 و`ProofEvent` — راجع نفس المستند و [LAUNCH_READINESS_REPORT.md](LAUNCH_READINESS_REPORT.md).

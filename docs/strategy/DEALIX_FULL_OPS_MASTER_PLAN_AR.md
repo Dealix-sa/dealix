@@ -1,5 +1,7 @@
 # Dealix — خطة التشغيل الكاملة (Full Ops Master Plan)
 
+> **STATUS (2026-05-22):** Superseded by [`FULL_OPS_STRATEGY.md`](FULL_OPS_STRATEGY.md) in this same directory. The "Revenue Expansion System" / 12-machine framing below is retained for historical context. The current canonical framing is **5 Engines + 10 Super Systems** with the Signal Sample → Sprint → Managed Pilot → Retainer → Dealix OS ladder.
+
 **الغرض:** إطار شركة كاملة حول منتج قوي — بيع، تسويق، خدمة، تسليم، شركاء، مسوقون بالعمولة، حوكمة AI، وتحويل كل ذلك إلى إيراد وأدلة وتكرار.  
 **القاعدة التنفيذية:** منتج قوي → إثبات قوي → قمع قوي → مبيعات قوية → تسليم قوي → دعم قوي → شركاء/عمولة قوية → أدلة قوية → ريتينر → منصة لاحقاً.
 

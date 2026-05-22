@@ -1,5 +1,7 @@
 # Pricing Guide | دليل الأسعار
 
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](strategy/FULL_OPS_STRATEGY.md). The new strategy replaces both the productized 6-rung ladder previously referenced below AND the legacy bespoke pricing (12K–40K setup + 3K–12K retainer) in this file. Retained for historical context. Live code/landing pricing is not changed by this banner; see [docs/strategy/RECONCILIATION.md](strategy/RECONCILIATION.md).
+
 > **⚠️ Canonical offer = the offer ladder (rungs 0–5).** The current commercial
 > offer Dealix sells is the six-rung ladder (rungs `[0]`–`[5]`) in
 > [`docs/OFFER_LADDER_AND_PRICING.md`](OFFER_LADDER_AND_PRICING.md) (Free

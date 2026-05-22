@@ -20,6 +20,12 @@
 
 ---
 
+## 🎯 Strategy (source of truth)
+
+**Dealix is a Saudi revenue operations machine where AI prepares, workflows execute, trust governs, and humans approve critical moves.** Full Full-Ops strategy (2026-05-22, founder-authored): [`docs/strategy/FULL_OPS_STRATEGY.md`](docs/strategy/FULL_OPS_STRATEGY.md) · 30/60/90 plan: [`docs/strategy/ROADMAP_30_60_90.md`](docs/strategy/ROADMAP_30_60_90.md) · reconciliation with prior docs: [`docs/strategy/RECONCILIATION.md`](docs/strategy/RECONCILIATION.md).
+
+---
+
 ## 🎯 What Dealix Is
 
 A **Saudi B2B Revenue Engine** with three layers:

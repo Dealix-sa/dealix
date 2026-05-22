@@ -1,5 +1,7 @@
 # Pricing & Packaging v6 — التسعير والباقات
 
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](strategy/FULL_OPS_STRATEGY.md). The V6 catalog below (Free Diagnostic / 499 Starter / 1,500-3K Data-to-Revenue / 2,999/mo Executive Growth OS / 3K-7.5K Partnership Growth) is retained for historical context. Live code pricing remains untouched per the hard rule below; the new canonical ladder is documented in the strategy folder.
+
 > **Hard rule:** This doc does NOT change live pricing in code.
 > The current `auto_client_acquisition.finance_os.pricing_catalog`
 > stays the source of truth. This doc is the **founder's reference**

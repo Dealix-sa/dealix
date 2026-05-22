@@ -1,5 +1,7 @@
 # استراتيجية التسعير — Dealix
 
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](strategy/FULL_OPS_STRATEGY.md). Founder Operator (299–999/mo) and Growth OS tiers below are retained for historical context. See [docs/strategy/RECONCILIATION.md](strategy/RECONCILIATION.md) for the current canonical pricing ladder.
+
 ## المبدأ
 
 التسعير يعكس **قيمة السياق + التنفيذ الآمن + إثبات العائد**، وليس عدد المستخدمين فقط. طبقة الأداء اختيارية و**تتطلب تعريف تأهيل + نزاعات + عقود** قبل أي فوترة حقيقية.

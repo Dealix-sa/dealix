@@ -1,5 +1,7 @@
 # CEO Strategy
 
+> **STATUS (2026-05-22):** Superseded by [`FULL_OPS_STRATEGY.md`](FULL_OPS_STRATEGY.md) in this same directory. Retained for historical context.
+
 ## Strategic thesis
 
 Companies are experimenting with AI, but struggle to operationalize it. Dealix wins by converting AI into measurable business workflows.

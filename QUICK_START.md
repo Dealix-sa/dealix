@@ -1,5 +1,7 @@
 # 🚀 الخطوات السريعة — ارفع المشروع على GitHub في دقيقة واحدة
 
+> **See also (strategy source of truth, 2026-05-22):** [docs/strategy/FULL_OPS_STRATEGY.md](docs/strategy/FULL_OPS_STRATEGY.md). This doc is the GitHub bootstrap quickstart; commercial strategy lives in the strategy folder.
+
 ## الطريقة الأسهل — سكربت جاهز
 
 ```bash
