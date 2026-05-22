@@ -1,5 +1,7 @@
 # 90-Day Plan
 
+> **STATUS (2026-05-22):** Superseded by [`ROADMAP_30_60_90.md`](ROADMAP_30_60_90.md) in this same directory. Retained for historical context.
+
 See cadence: [`CEO_OPERATING_CADENCE_AR.md`](CEO_OPERATING_CADENCE_AR.md).
 
 ## Month 1 — Service readiness

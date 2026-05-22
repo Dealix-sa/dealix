@@ -1,5 +1,7 @@
 # التموضع
 
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](../strategy/FULL_OPS_STRATEGY.md). Retained for historical context.
+
 ## دور هذه الوثيقة في التنفيذ
 
 لماذا Dealix ليست أداة AI عامة.

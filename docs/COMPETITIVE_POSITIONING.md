@@ -1,5 +1,7 @@
 # التموضع التنافسي — Dealix
 
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](strategy/FULL_OPS_STRATEGY.md). Retained for historical context.
+
 ## الخلاصة
 
 Dealix لا يُباع كـ CRM؛ يُباع كـ **Revenue OS سعودي سياقي** مع **مشغّل عربي** وتنفيذ آمن.

@@ -1,4 +1,7 @@
 # Dealix — Positioning & Ideal Customer Profile (ICP)
+
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](strategy/FULL_OPS_STRATEGY.md). The new positioning is **"Dealix is not an AI tool. Dealix is a Saudi revenue operations machine where AI prepares, workflows execute, trust governs, and humans approve critical moves."** The 3 priority ICP sectors are now (1) agencies / digital services, (2) ERP/CRM/billing/payments companies, (3) contracting / commercial real-estate / B2B services. The "AI Operations Radar" framing below is retained for historical context.
+
 <!-- PHASE 2 | Owner: Founder | Date: 2026-05-07 -->
 <!-- Arabic primary — العربية أولاً -->
 

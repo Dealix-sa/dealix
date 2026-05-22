@@ -1,5 +1,7 @@
 # Dealix — Pricing & Packages (Saudi B2B)
 
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](../strategy/FULL_OPS_STRATEGY.md). The Pilot Lite/Standard/Pro (499/999/1,500 SAR) tiers below differ materially from the new canonical ladder (Signal Sample 199 SAR → Sprint Starter 2,500 / Growth 4,500 / Premium 7,500 → Managed Pilot 9,500–25,000 → Retainer 5,000–20,000/mo). Retained for historical context. Live code/landing pricing is not changed by this banner; see [docs/strategy/RECONCILIATION.md](../strategy/RECONCILIATION.md). Also: the phrase "PDPL compliance" in the line below should now read "PDPL-aware" per the no-overclaim register in the new strategy.
+
 Pricing in SAR. All packages assume PDPL compliance + opt-out + human approval for first 30 days.
 
 ## Tier 1: Managed Pilot (cash-positive in 7 days)

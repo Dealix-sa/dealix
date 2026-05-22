@@ -1,5 +1,7 @@
 # Dealix Readiness Control Center
 
+> **See also (strategy source of truth, 2026-05-22):** [docs/strategy/FULL_OPS_STRATEGY.md](docs/strategy/FULL_OPS_STRATEGY.md) — the new canonical commercial strategy. Readiness gates below remain the operational quality bar.
+
 **لا تثق بالإحساس. ثق بنظام التحقق.**  
 **نظام التشغيل اليومي:** [`docs/company/DEALIX_OPERATING_KERNEL.md`](docs/company/DEALIX_OPERATING_KERNEL.md) — [`docs/company/DECISION_RULES.md`](docs/company/DECISION_RULES.md) — مراجعة أسبوعية [`docs/company/WEEKLY_OPERATING_REVIEW.md`](docs/company/WEEKLY_OPERATING_REVIEW.md) — [`docs/company/SERVICE_REGISTRY.md`](docs/company/SERVICE_REGISTRY.md).  
 سياق السوق: [McKinsey — The State of AI](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai/) — [Gartner — AI-ready data](https://www.gartner.com/en/newsroom/press-releases/2025-02-26-lack-of-ai-ready-data-puts-ai-projects-at-risk).

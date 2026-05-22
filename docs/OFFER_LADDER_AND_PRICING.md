@@ -1,4 +1,7 @@
 # Dealix — Offer Ladder & Pricing
+
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](strategy/FULL_OPS_STRATEGY.md). The new canonical ladder is Signal Sample (199 SAR) → Sprint Starter / Growth / Premium (2,500 / 4,500 / 7,500 SAR) → Managed Pilot (9,500–25,000 SAR) → Revenue Desk Retainer (5,000–20,000 SAR/mo) → Dealix OS (later). The 6-rung ladder below (Free Diagnostic → 499 Sprint → 1,500 Pack → Managed Ops → Command Center → Partner OS) is retained for historical context. Live code/landing pricing is not changed by this banner; see RECONCILIATION.md for the founder-approval queue.
+
 <!-- PHASE 3 | Owner: Founder | Date: 2026-05-07 -->
 <!-- Arabic primary — العربية أولاً -->
 

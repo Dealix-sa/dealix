@@ -1,5 +1,7 @@
 # Go To Market
 
+> **STATUS (2026-05-22):** Superseded by [`FULL_OPS_STRATEGY.md`](FULL_OPS_STRATEGY.md) §GTM Strategy (3 priority sectors: agencies / ERP-CRM-billing / contracting-B2B-services). Retained for historical context.
+
 ## Opening line
 
 We help Saudi companies turn messy operations and data into AI-powered workflows with measurable outcomes.

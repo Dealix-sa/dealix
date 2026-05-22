@@ -1,5 +1,7 @@
 # AGENTS.md
 
+> **See also (strategy source of truth, 2026-05-22):** [docs/strategy/FULL_OPS_STRATEGY.md](docs/strategy/FULL_OPS_STRATEGY.md) — founder's Full-Ops Revenue Machine strategy + [docs/strategy/ROADMAP_30_60_90.md](docs/strategy/ROADMAP_30_60_90.md). The 11 non-negotiables below remain authoritative and are reinforced by the new strategy.
+
 ## Cursor Cloud specific instructions
 
 ### Services Overview

@@ -1,5 +1,7 @@
 # 12-Month Roadmap
 
+> **STATUS (2026-05-22):** Superseded for the 90-day horizon by [`FULL_OPS_STRATEGY.md`](FULL_OPS_STRATEGY.md) + [`ROADMAP_30_60_90.md`](ROADMAP_30_60_90.md). Q4-and-beyond direction will be revisited after day-90 outcomes; this doc is retained for historical context.
+
 ## Q1
 
 - Ship 3 flagship sprints end-to-end

@@ -1,5 +1,7 @@
 # 🚀 Dealix — Company Operational State (Live)
 
+> **See also (strategy source of truth, 2026-05-22):** [docs/strategy/FULL_OPS_STRATEGY.md](docs/strategy/FULL_OPS_STRATEGY.md). This doc reports live operational state; strategy lives in the strategy folder.
+
 **Status:** LAUNCHED (backend + landing live). Blocked on Moyasar account activation for REVENUE VERIFIED.
 **Last verified:** 2026-04-24
 **Base URL:** https://api.dealix.me

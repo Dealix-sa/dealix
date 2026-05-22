@@ -1,5 +1,7 @@
 # Dealix — مركز الاستراتيجية التجارية
 
+> **STATUS (2026-05-22):** Superseded by [docs/strategy/FULL_OPS_STRATEGY.md](../strategy/FULL_OPS_STRATEGY.md). The strategy below (10 layers → 7 offers framing) is retained for historical context. The current canonical strategy is the Full-Ops Revenue Machine with 5 engines, 10 Super Systems, and the Signal Sample → Sprint → Managed Pilot → Retainer → Dealix OS ladder.
+
 **كتاب تشغيل تجاري يومي للمؤسس** — تموضع، سلم قيمة، GTM، توسيع، قطاعات، North Star.
 
 - **واجهة:** `/ar/business-now` (قسم الاستراتيجية)
