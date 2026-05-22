@@ -78,6 +78,15 @@ def main() -> int:
         for key, row in (trust.get("probes") or {}).items():
             if row.get("probed"):
                 print(f"  live {key}: {row.get('url')} -> {row.get('status', row.get('error'))}")
+        sha_check = blob.get("deployed_sha_check") or {}
+        sha_verdict = sha_check.get("verdict")
+        if sha_verdict and sha_verdict != "NOT_PROBED":
+            local = (sha_check.get("local_sha") or "")[:7] or "?"
+            deployed = (sha_check.get("deployed_sha") or "")[:7] or "?"
+            print(f"  deployed SHA: local={local} deployed={deployed} -> {sha_verdict}")
+        sha_hint = sha_check.get("hint_ar")
+        if sha_hint:
+            print(f"  FOUNDER_ACTION (sha): {sha_hint}")
         if drift:
             print(f"  FOUNDER_ACTION (start): {drift}")
         if predeploy_drift:

@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import re
+import subprocess
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -140,20 +142,145 @@ def probe_trust_layer(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any
     }
 
 
+def read_local_git_sha() -> str:
+    """Return the current local HEAD SHA, or empty string if git is unavailable."""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return ""
+    if result.returncode != 0:
+        return ""
+    return result.stdout.strip()
+
+
+def extract_deployed_sha(version_probe: dict[str, Any]) -> str:
+    """Parse the `git_sha` field out of a /version probe response snippet."""
+    if not version_probe.get("ok"):
+        return ""
+    snippet = version_probe.get("snippet") or ""
+    try:
+        payload = json.loads(snippet)
+    except (TypeError, ValueError):
+        return ""
+    sha = payload.get("git_sha") if isinstance(payload, dict) else ""
+    if not isinstance(sha, str):
+        return ""
+    sha = sha.strip()
+    if not sha or sha.lower() == "unknown":
+        return ""
+    return sha
+
+
+def compare_deployed_sha(
+    api_base: str,
+    *,
+    local_sha: str | None = None,
+    timeout_sec: float = 12.0,
+) -> dict[str, Any]:
+    """Compare local HEAD SHA with the SHA reported by the live /version endpoint.
+
+    Returns a dict with `verdict` in {MATCH, DRIFT, UNKNOWN, NOT_PROBED} plus an
+    Arabic hint the founder can act on. UNKNOWN means we reached /version but
+    the deployed SHA is missing/`unknown` (Railway env var not set).
+    """
+    base = (api_base or "").strip().rstrip("/")
+    if not base:
+        return {
+            "verdict": "NOT_PROBED",
+            "reason": "no_api_base",
+            "hint_ar": "",
+            "local_sha": "",
+            "deployed_sha": "",
+        }
+
+    local = (local_sha if local_sha is not None else read_local_git_sha()).strip()
+    version_probe = probe_get(base, "/version", timeout_sec=timeout_sec)
+    deployed = extract_deployed_sha(version_probe)
+
+    if not version_probe.get("ok"):
+        status = version_probe.get("status")
+        hint = (
+            "/version غير منشور بعد — تأكد من اكتمال Railway deploy وأن git_sha مضبوط."
+            if status == 404
+            else "تعذّر الوصول إلى /version — تحقق من سلامة الـ API."
+        )
+        return {
+            "verdict": "NOT_PROBED",
+            "reason": "version_endpoint_unreachable",
+            "status": status,
+            "hint_ar": hint,
+            "local_sha": local,
+            "deployed_sha": "",
+        }
+
+    if not deployed:
+        return {
+            "verdict": "UNKNOWN",
+            "reason": "deployed_sha_missing_or_unknown",
+            "hint_ar": (
+                "git_sha غير معروف على الإنتاج — اضبط GIT_SHA أو فعّل "
+                "RAILWAY_GIT_COMMIT_SHA على الـ service variables."
+            ),
+            "local_sha": local,
+            "deployed_sha": "",
+        }
+
+    if not local:
+        return {
+            "verdict": "UNKNOWN",
+            "reason": "local_sha_unavailable",
+            "hint_ar": "تعذّر قراءة git SHA المحلي — هل أنت داخل مستودع git؟",
+            "local_sha": "",
+            "deployed_sha": deployed,
+        }
+
+    # Normalize for short-vs-full SHA comparisons.
+    short_local = local[:7]
+    short_deployed = deployed[:7]
+    if local == deployed or short_local == short_deployed:
+        return {
+            "verdict": "MATCH",
+            "hint_ar": "",
+            "local_sha": local,
+            "deployed_sha": deployed,
+        }
+
+    return {
+        "verdict": "DRIFT",
+        "hint_ar": (
+            f"الإنتاج يشغّل commit مختلف ({short_deployed}) عن HEAD المحلي ({short_local}). "
+            "نفّذ git push وانتظر اكتمال Railway deploy."
+        ),
+        "local_sha": local,
+        "deployed_sha": deployed,
+    }
+
+
 def analyze_railway_production(*, api_base: str | None = None) -> dict[str, Any]:
     repo = check_repo_railway_config()
     base = (api_base or DEFAULT_API_BASE) if api_base is not False else ""
     live = probe_healthz(base) if base else {"probed": False}
     trust = probe_trust_layer(base) if base else {"probed": False}
+    sha = compare_deployed_sha(base) if base else {"verdict": "NOT_PROBED"}
     verdict = "PASS" if repo["ok"] else "FAIL"
     if repo["ok"] and live.get("probed") and not live.get("ok"):
         verdict = "WARN"
     if repo["ok"] and trust.get("deploy_stale_hint_ar"):
         verdict = "WARN"
+    if repo["ok"] and sha.get("verdict") == "DRIFT":
+        verdict = "WARN"
     return {
         "repo": repo,
         "live_healthz": live,
         "live_trust_layer": trust,
+        "deployed_sha_check": sha,
         "canonical_start_command": CANONICAL_START,
         "canonical_predeploy": CANONICAL_PREDEPLOY,
         "verdict": verdict,

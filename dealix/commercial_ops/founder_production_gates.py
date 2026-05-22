@@ -40,6 +40,11 @@ def build_founder_production_gates(
     if hint:
         founder_actions.append(hint)
 
+    sha_check = railway.get("deployed_sha_check") or {}
+    sha_hint = sha_check.get("hint_ar")
+    if sha_hint:
+        founder_actions.append(sha_hint)
+
     for b in weekly.get("blockers_ar") or []:
         founder_actions.append(b)
 
