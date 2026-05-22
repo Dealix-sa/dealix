@@ -11,13 +11,21 @@ const notoArabic = Noto_Sans_Arabic({
 
 export const metadata: Metadata = {
   title: {
-    default: "Dealix - منصة الذكاء الاصطناعي للإيرادات",
+    default: "Dealix — Post-Lead Revenue OS",
     template: "%s | Dealix",
   },
-  description: "AI-powered RevOps platform for Saudi enterprise clients",
-  keywords: ["RevOps", "AI", "Saudi Arabia", "CRM", "Revenue", "Dealix"],
+  description:
+    "Saudi B2B Post-Lead Revenue Operations OS — proves owner, approval, evidence, and next action after every lead. PDPL-aligned. No cold WhatsApp or LinkedIn automation.",
+  keywords: [
+    "RevOps", "Post-Lead Revenue Ops", "Proof Pack", "Risk Score",
+    "Saudi Arabia", "PDPL", "AI Governance", "Dealix",
+  ],
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/brand/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/brand/favicon.svg",
   },
 };
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Dealix horizontal wordmark — mark + type lockup.
+  Use this version everywhere the mark needs a verbal anchor (footer, email
+  signature, deck title slides). Minimum width 120px.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" width="640" height="160" role="img" aria-label="Dealix">
+  <title>Dealix</title>
+  <!-- Mini mark (left) -->
+  <g transform="translate(8 8) scale(0.281)">
+    <rect width="512" height="512" rx="96" fill="#0A4D3F"/>
+    <path
+      d="M 132 96 L 132 416 L 296 416 C 392 416 432 348 432 256 C 432 164 392 96 296 96 Z M 200 156 L 296 156 C 352 156 372 196 372 256 C 372 316 352 356 296 356 L 200 356 Z"
+      fill="#F4F0E8" fill-rule="evenodd"/>
+    <path d="M 88 380 L 168 156 L 200 156 L 120 380 Z" fill="#C9A961" opacity="0.95"/>
+  </g>
+  <!-- Wordmark (right) -->
+  <text x="172" y="105"
+        font-family="'IBM Plex Sans Arabic', 'Inter', system-ui, sans-serif"
+        font-weight="700"
+        font-size="88"
+        fill="#0A4D3F"
+        letter-spacing="-2">
+    Dealix
+  </text>
+  <!-- Gold tagline accent -->
+  <rect x="172" y="120" width="56" height="3" fill="#C9A961"/>
+  <text x="234" y="132"
+        font-family="'IBM Plex Sans Arabic', 'Inter', system-ui, sans-serif"
+        font-weight="500"
+        font-size="14"
+        fill="#0A4D3F"
+        opacity="0.7">
+    Post-Lead Revenue OS
+  </text>
+</svg>
