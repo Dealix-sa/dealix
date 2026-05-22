@@ -5,6 +5,9 @@
 ### AI revenue, growth, and compliance engine for Saudi B2B — PDPL-native, ZATCA-compliant, approval-first.
 ### محرّك إيرادات ونمو وامتثال بـ AI للشركات السعودية — PDPL أصلاً، ZATCA متوافق، الموافقة-أولاً.
 
+> **Brand v2 — Navy + Emerald Teal · "Intelligent Deals. Real Growth."**
+> All new visual artefacts (decks, proposals, landing, dashboard) follow [`design-systems/dealix/brand-v2/BRAND.md`](design-systems/dealix/brand-v2/BRAND.md). Historical assets may still reference v1 (Deep Green + Gold) until migrated.
+
 [![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)

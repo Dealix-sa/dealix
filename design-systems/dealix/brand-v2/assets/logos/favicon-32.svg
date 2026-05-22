@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Dealix favicon">
+  <rect width="32" height="32" rx="6" fill="#0B1220"/>
+  <path d="M 7 6 L 7 26 L 16 26 C 22 26 26 22 26 16 C 26 10 22 6 16 6 Z M 11 10 L 16 10 C 20 10 22 12.5 22 16 C 22 19.5 20 22 16 22 L 11 22 Z" fill="#FFFFFF"/>
+  <rect x="13" y="19" width="2" height="4" fill="#00D1A1"/>
+  <rect x="16" y="17" width="2" height="6" fill="#00D1A1"/>
+  <rect x="19" y="14" width="2" height="9" fill="#00D1A1"/>
+  <polygon points="22,13 25,13 23.5,10" fill="#34E3B5"/>
+</svg>
