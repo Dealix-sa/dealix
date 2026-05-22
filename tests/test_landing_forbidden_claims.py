@@ -113,9 +113,12 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
         "scraping": "NEGATION",
     },
-    # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
+    # Diagnostic intake — "صفر cold outreach" promise + standard disclaimer
+    # footer (script-injected). All NEGATION.
     "diagnostic.html": {
         "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
@@ -142,11 +145,77 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
     },
     # Trust Center (Tier-1 redesign) — frames the 8 hard gates as features.
-    # Copy explicitly states what Dealix DOES NOT do: "لا scraping",
-    # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
+    # Footer disclaimer: "Estimated outcomes are not guaranteed outcomes /
+    # النتائج التقديرية ليست نتائج مضمونة." Pure NEGATION.
+    # (Note: نضمن no longer appears in the page — entry removed to keep perimeter tight.)
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Architecture, security, DPO, launch-status pages all carry the standard
+    # "Estimated outcomes are not guaranteed outcomes / النتائج التقديرية ليست
+    # نتائج مضمونة." footer disclaimer. Pure NEGATION.
+    "architecture.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "security.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "dpo.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "launch-status.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Bespoke AI, customer portal, pricing, sprint sample, webinar,
+    # sector report — standard disclaimer footer. Pure NEGATION.
+    "bespoke-ai.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "customer-portal.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "pricing.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "sprint-sample.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "webinar.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "sector-report-b2b-services.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Data-pack — standard disclaimer footer + explicit "صفر cold WhatsApp /
+    # LinkedIn" and "لا scraping" safety promises. All NEGATION.
+    "data-pack.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+        "cold": "NEGATION",
+        "scraping": "NEGATION",
+    },
+    # Roadmap — "LinkedIn scraping automation — policy-blocked in code".
+    # Describes a blocked anti-feature. Pure NEGATION.
+    "roadmap.html": {
+        "scraping": "NEGATION",
+    },
+    # Case study pilot example — "7-day money-back guarantee" is a refund
+    # policy promise (same category as roi.html). Needs founder review to
+    # decide whether to keep, qualify with legalese, or rephrase.
+    "case-study-pilot-example.html": {
+        "guaranteed": "REVIEW_PENDING",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -232,9 +301,10 @@ def test_review_pending_items_have_a_reason():
     # This is informational, not a failure. We assert the *count* so
     # that whenever a founder rephrases or formally approves a phrase,
     # they remember to update this number too.
-    assert len(review_pending) == 2, (
-        "REVIEW_PENDING list changed; expected 2 "
-        "(roi.html: 'نضمن'; academy.html: 'cold'). "
+    assert len(review_pending) == 3, (
+        "REVIEW_PENDING list changed; expected 3 "
+        "(roi.html: 'نضمن'; academy.html: 'cold'; "
+        "case-study-pilot-example.html: 'guaranteed' — money-back refund wording). "
         "Update this assertion after the founder approves or rephrases. "
         f"Current: {review_pending}"
     )
