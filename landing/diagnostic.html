@@ -635,7 +635,18 @@
       const res = await fetch(`${API_BASE}/api/v1/diagnostic/report/html`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(lastFormPayload),
+        body: JSON.stringify({
+          request: {
+            company: lastFormPayload.company_handle || 'client',
+            sector: lastFormPayload.sector || 'b2b_services',
+            region: 'ksa',
+            pipeline_state: [
+              lastFormPayload.biggest_problem,
+              lastFormPayload.fastest_lever,
+              lastFormPayload.target_metric,
+            ].filter(Boolean).join(' | '),
+          },
+        }),
       });
 
       if (!res.ok) {
