@@ -164,16 +164,35 @@ class PostgresApprovalStore:
         return req
 
     def approve(self, approval_id: str, who: str) -> ApprovalRequest:
+        """Same chain semantics as the in-memory store (M14, additive)."""
         with self._lock, self._sessionmaker() as session:
             row = self._require(session, approval_id)
             req = _request_from_row(row)
             assert_can_approve(req)
-            req.status = ApprovalStatus.APPROVED
-            req.edit_history.append(_audit_entry(who, "approve", {}))
-            req.updated_at = datetime.now(UTC)
+            chain = list(req.approver_chain or [])
+            if chain:
+                step_index = req.chain_position
+                req.chain_position = step_index + 1
+                req.edit_history.append(
+                    _audit_entry(
+                        who,
+                        "approve_chain_step",
+                        {"step": step_index, "total": len(chain)},
+                    )
+                )
+                req.updated_at = datetime.now(UTC)
+                final_step = req.chain_position >= len(chain)
+                if final_step:
+                    req.status = ApprovalStatus.APPROVED
+            else:
+                req.status = ApprovalStatus.APPROVED
+                req.edit_history.append(_audit_entry(who, "approve", {}))
+                req.updated_at = datetime.now(UTC)
+                final_step = True
             self._write(session, row, req)
             session.commit()
-        emit_approval_decision(req, "approved", who)
+        if final_step:
+            emit_approval_decision(req, "approved", who)
         return req
 
     def reject(self, approval_id: str, who: str, reason: str) -> ApprovalRequest:

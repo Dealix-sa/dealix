@@ -77,14 +77,42 @@ class ApprovalStore:
         return req
 
     def approve(self, approval_id: str, who: str) -> ApprovalRequest:
-        """Mark a request approved. Raises ValueError on illegal transitions."""
+        """Mark a request approved. Raises ValueError on illegal transitions.
+
+        M14 — Multi-step approver chain (additive, opt-in):
+        * ``approver_chain == []`` (default) → one ``approve()`` flips
+          status to APPROVED (today's behavior, untouched).
+        * ``approver_chain`` non-empty → each ``approve()`` advances
+          ``chain_position`` by one and records the step. Status flips
+          to APPROVED only after the last step; intermediate steps stay
+          PENDING. Rejection at any step (via :meth:`reject`) terminates
+          the chain.
+        """
         with self._lock:
             req = self._require(approval_id)
             assert_can_approve(req)
-            req.status = ApprovalStatus.APPROVED
-            req.edit_history.append(self._audit_entry(who, "approve", {}))
-            req.updated_at = datetime.now(UTC)
-        emit_approval_decision(req, "approved", who)
+            chain = list(req.approver_chain or [])
+            if chain:
+                step_index = req.chain_position
+                req.chain_position = step_index + 1
+                req.edit_history.append(
+                    self._audit_entry(
+                        who,
+                        "approve_chain_step",
+                        {"step": step_index, "total": len(chain)},
+                    )
+                )
+                req.updated_at = datetime.now(UTC)
+                final_step = req.chain_position >= len(chain)
+                if final_step:
+                    req.status = ApprovalStatus.APPROVED
+            else:
+                req.status = ApprovalStatus.APPROVED
+                req.edit_history.append(self._audit_entry(who, "approve", {}))
+                req.updated_at = datetime.now(UTC)
+                final_step = True
+        if final_step:
+            emit_approval_decision(req, "approved", who)
         return req
 
     def reject(self, approval_id: str, who: str, reason: str) -> ApprovalRequest:

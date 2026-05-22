@@ -100,7 +100,7 @@ only the gaps, in governed form, and reuse everything that exists.
 | # | Gap | Why it matters |
 |---|---|---|
 | M13 | ✅ **ALREADY COVERED** — `proof_os/proof_score.py` (deterministic completeness scoring with bands + governance penalty), `proof_os/proof_pack.py` (Proof Pack v2 surface), `capital_os/capital_ledger.py` (`CapitalAsset`, `add_asset`, `list_assets` — JSONL-backed); all integrated in delivery sprint + master customer-journey e2e tests | Not stubs — production modules |
-| M14 | No multi-step approval chains (legal → finance → CEO) | Single boolean gate only |
+| M14 | ✅ **BUILT** — optional `approver_chain: list[str]` + `chain_position` on `ApprovalRequest`; empty chain = today's single-step (regression-safe); non-empty chain advances step-by-step, status flips to APPROVED only after the final step; rejection at any step terminates. Both in-memory and Postgres stores. | Legal → finance → CEO sign-off without breaking existing flow |
 
 ---
 

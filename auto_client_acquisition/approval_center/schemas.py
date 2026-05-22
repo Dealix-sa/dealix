@@ -133,3 +133,17 @@ class ApprovalRequest(BaseModel):
     proof_target — without it, the action contributes no compounding value
     and should be blocked or downgraded to draft_only.
     """
+
+    # ─── M14: optional multi-step approver chain (additive, opt-in) ──
+    approver_chain: list[str] = Field(default_factory=list)
+    """Ordered approver roles, e.g. ``["legal", "finance", "ceo"]``.
+
+    Empty (the default) → today's single-step behavior: one ``approve()``
+    flips status to APPROVED. Non-empty → each ``approve()`` advances
+    ``chain_position`` by one; status flips to APPROVED only after the
+    last step. Rejection at any step terminates the chain.
+    """
+
+    chain_position: int = 0
+    """Index of the next chain step awaiting approval. Stays ``0`` when
+    ``approver_chain`` is empty. Bumped by each chain-step ``approve()``."""
