@@ -17,10 +17,9 @@
     "opsFounder": "Ops — Founder",
     "opsWarRoom": "Revenue War Room",
     "opsTargeting": "Targeting — P0 pool",
-    "opsMarketing": "Marketing — Social",
+    "opsMarketing": "Ops — Marketing",
     "opsPartners": "Partners",
     "opsSales": "Ops — Sales Pipe",
-    "opsMarketing": "Ops — Marketing",
     "opsEvidence": "Ops — Evidence",
     "opsSupport": "Ops — Support"
   },
@@ -526,11 +525,26 @@
     },
     "howTitle": "How Dealix works",
     "howSteps": {
-      "0": { "title": "Diagnose", "body": "Risk Score or Diagnostic sets readiness" },
-      "1": { "title": "Govern", "body": "Drafts and approval before any external send" },
-      "2": { "title": "Deliver", "body": "Proof Pack with clear sections and status" },
-      "3": { "title": "Evidence", "body": "Evidence events link touch to close" },
-      "4": { "title": "Expand", "body": "Upsell only after value is proven" }
+      "0": {
+        "title": "Diagnose",
+        "body": "Risk Score or Diagnostic sets readiness"
+      },
+      "1": {
+        "title": "Govern",
+        "body": "Drafts and approval before any external send"
+      },
+      "2": {
+        "title": "Deliver",
+        "body": "Proof Pack with clear sections and status"
+      },
+      "3": {
+        "title": "Evidence",
+        "body": "Evidence events link touch to close"
+      },
+      "4": {
+        "title": "Expand",
+        "body": "Upsell only after value is proven"
+      }
     },
     "offersTitle": "Three surface offers",
     "offers": {
@@ -576,5 +590,28 @@
     "evidenceSubtitle": "Evidence ledger entries persisted to the autopilot JSON store.",
     "supportSubtitle": "Public tickets classified + drafted internally — approvals before reply.",
     "approvalsSubtitle": "Same Approval Center powering billing + outbound guardrails."
+  },
+  "ops": {
+    "governed": {
+      "title": "Governed Ops control",
+      "refresh": "Refresh",
+      "loading": "Loading…",
+      "loadFailed": "Failed to load governed ops",
+      "actionFailed": "Action failed",
+      "scheduler": {
+        "running": "Scheduler running",
+        "stopped": "Scheduler stopped",
+        "nextRun": "Next run",
+        "lastDay": "Last governed day",
+        "start": "Start scheduler",
+        "stopKill": "Stop (kill switch)",
+        "runNow": "Run governed day now"
+      },
+      "log": {
+        "title": "Governance log",
+        "empty": "No events yet.",
+        "blockedSuffix": "blocked"
+      }
+    }
   }
 }

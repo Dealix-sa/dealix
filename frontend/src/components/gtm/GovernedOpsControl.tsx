@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import api from "@/lib/api";
@@ -29,6 +29,9 @@ type GovEvent = {
 export function GovernedOpsControl() {
   const locale = useLocale();
   const isAr = locale === "ar";
+  const t = useTranslations("ops.governed");
+  const ts = useTranslations("ops.governed.scheduler");
+  const tl = useTranslations("ops.governed.log");
   const [scheduler, setScheduler] = useState<SchedulerStatus | null>(null);
   const [events, setEvents] = useState<GovEvent[]>([]);
   const [blockedCount, setBlockedCount] = useState<number>(0);
@@ -55,11 +58,11 @@ export function GovernedOpsControl() {
       setEvents(((logRes.data as { events?: GovEvent[] })?.events) ?? []);
       setBlockedCount(((blockedRes.data as { count?: number })?.count) ?? 0);
     } catch {
-      setErr(isAr ? "تعذّر تحميل حالة العمليات المحكومة" : "Failed to load governed ops");
+      setErr(t("loadFailed"));
     } finally {
       setLoading(false);
     }
-  }, [isAr]);
+  }, [isAr, t]);
 
   useEffect(() => {
     void load();
@@ -73,12 +76,12 @@ export function GovernedOpsControl() {
         await fn();
         await load();
       } catch {
-        setErr(isAr ? "تعذّر تنفيذ الإجراء" : "Action failed");
+        setErr(t("actionFailed"));
       } finally {
         setBusy(false);
       }
     },
-    [isAr, load],
+    [t, load],
   );
 
   const running = scheduler?.running === true;
@@ -86,17 +89,15 @@ export function GovernedOpsControl() {
   return (
     <Card className="p-4 space-y-4">
       <div className="flex items-center justify-between gap-2">
-        <h3 className="text-sm font-semibold">
-          {isAr ? "تحكّم العمليات المحكومة" : "Governed Ops control"}
-        </h3>
+        <h3 className="text-sm font-semibold">{t("title")}</h3>
         <Button variant="ghost" size="sm" onClick={() => void load()} disabled={loading}>
-          {isAr ? "تحديث" : "Refresh"}
+          {t("refresh")}
         </Button>
       </div>
 
       {err && <p className="text-xs text-destructive">{err}</p>}
       {loading && (
-        <p className="text-xs text-muted-foreground">{isAr ? "جارٍ التحميل…" : "Loading…"}</p>
+        <p className="text-xs text-muted-foreground">{t("loading")}</p>
       )}
 
       {!loading && !err && (
@@ -111,19 +112,17 @@ export function GovernedOpsControl() {
                     : "border-muted text-muted-foreground"
                 }`}
               >
-                {running
-                  ? isAr ? "الجدولة تعمل" : "Scheduler running"
-                  : isAr ? "الجدولة متوقفة" : "Scheduler stopped"}
+                {running ? ts("running") : ts("stopped")}
               </span>
               {scheduler?.next_run_utc && (
                 <span className="text-muted-foreground">
-                  {isAr ? "التشغيل التالي" : "Next run"}: {scheduler.next_run_utc}
+                  {ts("nextRun")}: {scheduler.next_run_utc}
                 </span>
               )}
             </div>
             {scheduler?.last_verdict && (
               <p className="text-xs text-muted-foreground">
-                {isAr ? "آخر يوم محكوم" : "Last governed day"}:{" "}
+                {ts("lastDay")}:{" "}
                 <span className="font-mono">{scheduler.last_verdict}</span>
                 {scheduler.last_run_at ? ` · ${scheduler.last_run_at}` : ""}
               </p>
@@ -135,7 +134,7 @@ export function GovernedOpsControl() {
                 disabled={busy || running}
                 onClick={() => void act(() => api.postSchedulerStart(getAdminApiKey()))}
               >
-                {isAr ? "تشغيل الجدولة" : "Start scheduler"}
+                {ts("start")}
               </Button>
               <Button
                 size="sm"
@@ -143,7 +142,7 @@ export function GovernedOpsControl() {
                 disabled={busy || !running}
                 onClick={() => void act(() => api.postSchedulerStop(getAdminApiKey()))}
               >
-                {isAr ? "إيقاف (Kill switch)" : "Stop (kill switch)"}
+                {ts("stopKill")}
               </Button>
               <Button
                 size="sm"
@@ -151,7 +150,7 @@ export function GovernedOpsControl() {
                 disabled={busy}
                 onClick={() => void act(() => api.postGovernedDayRun(getAdminApiKey()))}
               >
-                {isAr ? "تشغيل اليوم المحكوم الآن" : "Run governed day now"}
+                {ts("runNow")}
               </Button>
             </div>
           </div>
@@ -159,18 +158,16 @@ export function GovernedOpsControl() {
           {/* Governance log */}
           <div>
             <p className="text-xs text-muted-foreground mb-1">
-              {isAr ? "سجل الحوكمة" : "Governance log"}
+              {tl("title")}
               {blockedCount > 0 && (
                 <span className="text-destructive">
                   {" "}
-                  · {blockedCount} {isAr ? "إجراء محظور" : "blocked"}
+                  · {blockedCount} {tl("blockedSuffix")}
                 </span>
               )}
             </p>
             {events.length === 0 ? (
-              <p className="text-xs text-muted-foreground">
-                {isAr ? "لا أحداث بعد." : "No events yet."}
-              </p>
+              <p className="text-xs text-muted-foreground">{tl("empty")}</p>
             ) : (
               <ul className="space-y-1" role="list">
                 {events.slice(0, 12).map((ev, i) => (

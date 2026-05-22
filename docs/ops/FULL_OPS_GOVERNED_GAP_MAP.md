@@ -91,15 +91,15 @@ only the gaps, in governed form, and reuse everything that exists.
 
 | # | Gap | Why it matters |
 |---|---|---|
-| M10 | `/ops/targeting`, `/ops/support`, `/ops/partners` hollow/missing (APIs exist) | Cockpit incomplete |
+| M10 | ✅ **ALREADY COVERED** — `OpsTargetingPanel` (148 lines), `SupportQueuePanel` (in `OpsConsoles.tsx`), `OpsPartnersPanel` (101 lines) all real, mounted on routes, fetch live API data | Cockpit pages were not hollow — audit overstated |
 | M11 | ✅ **BUILT** — `GovernedOpsControl` on `/ops/approvals`: scheduler status, Start/Stop **kill switch**, run-day-now, governance log + blocked-actions feed | Founder reviews and halts governed automation from one place |
-| M12 | No unified `ops.*` i18n namespace | Strings scattered, fragile |
+| M12 | ✅ **BUILT** — unified `ops.*` namespace in `frontend/messages/{en,ar}.json` (governed/scheduler/log); `GovernedOpsControl` migrated from inline ternaries to `useTranslations("ops.governed")`; convention documented in `messages/README.md` | One place for cockpit strings going forward |
 
 ### Agent depth
 
 | # | Gap | Why it matters |
 |---|---|---|
-| M13 | `proof_os` + `capital_os` are stubs | Proof Pack scoring + capital asset registration are thin |
+| M13 | ✅ **ALREADY COVERED** — `proof_os/proof_score.py` (deterministic completeness scoring with bands + governance penalty), `proof_os/proof_pack.py` (Proof Pack v2 surface), `capital_os/capital_ledger.py` (`CapitalAsset`, `add_asset`, `list_assets` — JSONL-backed); all integrated in delivery sprint + master customer-journey e2e tests | Not stubs — production modules |
 | M14 | No multi-step approval chains (legal → finance → CEO) | Single boolean gate only |
 
 ---
