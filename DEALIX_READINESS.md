@@ -19,56 +19,78 @@ python scripts/verify_dealix_ready.py --skip-tests
 
 | Field | Value |
 |-------|--------|
-| **Current Stage** | (مثال: Gate 6 Pass — جاهز للبيع للخدمات الثلاث الأولى) |
-| **Officially Sellable Services** | |
-| **Services in Beta** | (Score 70–84 أو ناقص demo فقط) |
-| **Services Not Ready** | (أقل من 70 أو hard fail) |
+| **Current Stage** | Gate 6 Pass + Gates 7, 8 Pass — `SELL_READY_STACK` |
+| **Officially Sellable Services** | 6 خدمات (كلها بدرجة ≥ 90) |
+| **Services in Beta** | (none) |
+| **Services Not Ready** | (none) |
+| **Last Verification** | 2026-05-22 · `python scripts/verify_dealix_ready.py` · exit 0 |
 
 ---
 
-## Gate Scores (يدوي: نقاط / آلي: راجع مخرجات السكربت)
+## Gate Scores (آلي من `scripts/verify_dealix_ready.py` — 2026-05-22)
 
-| Gate | الاسم | قرار (PASS / FIX / BLOCKED) | Score يدوي / ملاحظة |
-|------|--------|-----------------------------|---------------------|
-| 0 | Founder Clarity | | /100 (Pass ≥ 85) |
-| 1 | Offer Readiness | | /100 (Pass ≥ 85 لكل عرض) |
-| 2 | Delivery Readiness | | /100 (Pass ≥ 85) |
-| 3 | Product Readiness | | /100 (Pass ≥ 80 MVP) |
-| 4 | Governance Readiness | | /100 (Pass ≥ 90) |
-| 5 | Demo Readiness | | /100 (Pass ≥ 85) |
-| 6 | Sales Readiness | | /100 (Pass ≥ 85) |
-| 7 | Client Delivery Readiness | | |
-| 8 | Retainer Readiness | | /100 (Pass ≥ 85) |
-| 9 | Scale Readiness | | /100 (Pass ≥ 85) |
-| 10 | World-Class Readiness | | (معيار طموح — انظر [`docs/company/WORLD_CLASS_READINESS_AR.md`](docs/company/WORLD_CLASS_READINESS_AR.md)) |
+| Gate | الاسم | قرار | ملاحظة |
+|------|--------|------|--------|
+| 0 | Founder Clarity | **PASS** | الملفات الخمسة موجودة + `DEALIX_READINESS.md` |
+| 1 | Offer Readiness | **PASS** | 3/3 خدمات بداية ≥ 85 (كلها = 100) + service_files |
+| 2 | Delivery Readiness | **PASS** | الملفات الستة في `docs/delivery/` |
+| 3 | Product Readiness | **PASS** | جميع الحزم الستة في `auto_client_acquisition/` تحوي كود |
+| 4 | Governance Readiness | **PASS** | `verify_governance_rules` + `verify_ai_output_quality` |
+| 5 | Demo Readiness | **PASS** | حزم `demos/` الثلاث كاملة + `DEMO_SCRIPT.md` |
+| 6 | Sales Readiness | **PASS** | 6 ملفات في `docs/sales/` |
+| 7 | Client Delivery Readiness | **PASS** | 6 ملفات `docs/delivery/client_onboarding/` |
+| 8 | Retainer Readiness | **PASS** | `docs/delivery/RETAINER_READINESS.md` |
+| 9 | Scale Readiness | NOT EVALUATED | السكربت لا يقيّمها — تقييم يدوي مطلوب لاحقاً |
+| 10 | World-Class Readiness | NOT EVALUATED | معيار طموح — انظر [`docs/company/WORLD_CLASS_READINESS_AR.md`](docs/company/WORLD_CLASS_READINESS_AR.md) |
+
+**Tests:** PASS (16/16 من الـpytest subset المقيّد).
+**MISSING_FILES:** 0.
+**DEALIX_READY_FOR_SALES:** `true`.
+**Decision:** `SELL_READY_STACK`.
 
 **قرار ثلاثي:** `PASS` → انتقل | `FIX` → أصلح ثم أعد التقييم | `BLOCKED` → لا بيع ولا توسع حتى تُزال المعرقلات.
 
 ---
 
-## Official Services
+## Official Services (Sellable — readiness ≥ 85)
 
-1. Lead Intelligence Sprint — `docs/services/lead_intelligence_sprint/`
-2. AI Quick Win Sprint — `docs/services/ai_quick_win_sprint/`
-3. Company Brain Sprint — `docs/services/company_brain_sprint/`
+| # | Service | Folder | Score |
+|---|---------|--------|------:|
+| 1 | Lead Intelligence Sprint | `docs/services/lead_intelligence_sprint/` | 100 |
+| 2 | AI Quick Win Sprint | `docs/services/ai_quick_win_sprint/` | 100 |
+| 3 | Company Brain Sprint | `docs/services/company_brain_sprint/` | 100 |
+| 4 | AI Support Desk Sprint | `docs/services/ai_support_desk_sprint/` | 90 |
+| 5 | AI Governance Program | `docs/services/ai_governance_program/` | 100 |
+| 6 | Client AI Policy Pack | `docs/services/client_ai_policy_pack/` | 100 |
 
 ## Do Not Sell Yet
 
-1.
-2.
-3.
+(none — كل الخدمات الست عبرت العتبة)
 
 ## Critical Gaps
 
-1.
-2.
-3.
+(لم يكشف المتحقق أي فجوة في 2026-05-22)
 
 ## Next Build Decisions
 
-1.
-2.
-3.
+1. تنظيف doctrine drift في التسعير: `OFFER_LADDER.md` يحوي أرقاماً مختلفة عن `COMPANY_CONTROL_CENTER.md` (راجع `LAUNCH_MASTER.md` §5). قرار مفتوح، لا يحظر الإطلاق.
+2. تقييم يدوي لـGate 9 (Scale Readiness) و10 (World-Class) بعد أول 10 عملاء.
+3. متابعة المسار الحرج للمؤسس في `FOUNDER_LAUNCH_ACTIONS.md` (Moyasar KYC، Sentry، UptimeRobot).
+
+---
+
+## Verification Run — 2026-05-22
+
+```
+$ python scripts/verify_dealix_ready.py
+... 16 passed in 0.73s
+GATE0_PASS=true … GATE8_PASS=true
+TESTS_PASS=true
+DEALIX_READY_FOR_SALES=true
+Decision: SELL_READY_STACK
+```
+
+(المخرج الكامل محفوظ في `/tmp/launch/verify_full.log` أثناء التشغيل؛ لإعادة الإنتاج: شغّل الأمر أعلاه.)
 
 ---
 
