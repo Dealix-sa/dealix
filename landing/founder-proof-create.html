@@ -159,6 +159,7 @@
 
       var data = new FormData(form);
       var levelInput = form.querySelector("input[name=level]:checked");
+      var publishConsent = data.has("publish_consent");
       var payload = {
         customer_handle: data.get("customer_handle"),
         event_type: data.get("event_type"),
@@ -166,7 +167,10 @@
         claim: data.get("claim"),
         evidence_url: data.get("evidence_url") || null,
         customer_visible: data.has("customer_visible"),
-        publish_consent: data.has("publish_consent")
+        publish_consent: publishConsent,
+        // engine expects customer_approved + signed_publish_permission
+        customer_approved: publishConsent,
+        signed_publish_permission: publishConsent,
       };
       try {
         var rawPayload = data.get("payload");
@@ -185,7 +189,7 @@
         var res = await fetch(apiBase + "/api/v1/proof-to-market/snippet", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ event: payload })
         });
         var body = await res.json();
         if (res.ok) {
