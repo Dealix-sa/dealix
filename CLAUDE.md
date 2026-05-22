@@ -110,8 +110,11 @@ dealix/
 │   └── unit/                    # Unit tests (incl. test_m_and_a.py, test_capital_os.py)
 ├── .github/workflows/           # 29 CI/CD workflows
 │   ├── ci.yml                   # Main CI (70% coverage gate)
-│   ├── m_and_a_intelligence_daily.yml  # Daily M&A scan (new)
-│   └── capital_os_weekly.yml    # Weekly Capital OS brief (new)
+│   ├── m_and_a_intelligence_daily.yml  # Daily M&A scan
+│   ├── capital_os_weekly.yml    # Weekly Capital OS brief
+│   ├── customer_health_weekly.yml      # Monday churn scan (Wave 16)
+│   ├── revenue_forecast_weekly.yml     # Wednesday forecast (Wave 16)
+│   └── exit_readiness_monthly.yml      # Monthly exit gate (Wave 16)
 └── docs/                        # 100+ governance + commercial docs
     ├── company/DEALIX_OPERATING_KERNEL.md
     └── commercial/              # GTM playbooks, pricing, proposals
@@ -153,6 +156,15 @@ python scripts/run_m_and_a_radar_scan.py --dry-run
 
 # Capital OS brief (dry-run)
 python scripts/run_capital_os_brief.py --dry-run
+
+# Customer Health scan (dry-run)
+python scripts/run_customer_health_scan.py --dry-run
+
+# Revenue Forecast (dry-run)
+python scripts/run_revenue_forecast.py --dry-run
+
+# Exit Readiness gate check (dry-run)
+python scripts/run_exit_readiness_check.py --dry-run
 ```
 
 ---
@@ -164,6 +176,10 @@ python scripts/run_capital_os_brief.py --dry-run
 | `api/main.py` | Router registration, security gates, lifespan hooks |
 | `api/routers/m_and_a.py` | M&A Radar: evaluate → LOI → ledger |
 | `api/routers/capital_os.py` | Capital OS: assets, PMF, readiness, exit valuation |
+| `api/routers/gcc_expansion.py` | GCC Market Intelligence: sector pulse, city heatmap, signals |
+| `api/routers/customer_health_os.py` | Customer Health: churn predict, expansion signals, playbook |
+| `api/routers/revenue_forecast.py` | Revenue Forecast: 30/60/90-day pipeline forecast + attribution |
+| `api/routers/exit_readiness.py` | Exit Readiness: venture gate, operating chain, governance score |
 | `api/routers/expansion_engine.py` | Expansion readiness + next-best-offer (Wave 12.7 pattern) |
 | `api/routers/payment_ops.py` | Moyasar payments, evidence gate |
 | `auto_client_acquisition/capital_os/` | Capital asset JSONL ledger |
@@ -171,6 +187,7 @@ python scripts/run_capital_os_brief.py --dry-run
 | `frontend/src/lib/api.ts` | All 70+ typed API client methods |
 | `frontend/src/components/gtm/OpsFounderCommandCenter.tsx` | Main ops dashboard pattern |
 | `frontend/src/components/gtm/OpsMandARadar.tsx` | M&A Radar component |
+| `frontend/src/components/gtm/OpsCustomerHealthDashboard.tsx` | Customer Health OS component |
 | `db/models.py` | 32 SQLAlchemy models |
 | `docs/company/DEALIX_OPERATING_KERNEL.md` | 8 core engines + Dealix Standard |
 
@@ -241,18 +258,26 @@ from api.main import create_app
 - Capital OS: asset ledger, PMF score, investor readiness, exit valuation
 - CLAUDE.md: project memory file
 
-### Medium-term (30 days — Wave 16)
-- **GCC Expansion Intelligence**: UAE/Kuwait/Bahrain market radar
-- **Retainer Conversion Engine**: auto-detect Sprint → Retainer upgrade triggers
-- **Customer Health OS**: automated churn prediction + intervention triggers
-- **Revenue Forecasting**: 90-day ARR forecast from pipeline signals
+### Wave 16 (delivered)
+- **GCC Expansion Intelligence**: UAE/KW/BH/QA/OM market radar (`/api/v1/gcc-expansion/`)
+- **Customer Health OS**: churn prediction, expansion signals, intervention playbooks (`/api/v1/customer-health/`)
+- **Revenue Forecast OS**: 30/60/90-day pipeline forecasts, attribution, causal impact (`/api/v1/revenue-forecast/`)
+- **Exit Readiness OS**: venture gate, operating chain progress, governance score (`/api/v1/exit-readiness/`)
+- **Frontend**: OpsCustomerHealthDashboard component + ops page
+- **CI/CD**: 3 new GitHub Actions workflows (Monday churn scan, Wednesday forecast, monthly exit gate)
+- **Scripts**: `run_customer_health_scan.py`, `run_revenue_forecast.py`, `run_exit_readiness_check.py`
 
-### Long-term (90 days — Wave 17)
-- **Exit Readiness Module**: full Series A/exit preparation checklist
+### Wave 17 (next — 30 days)
+- **Retainer Conversion Engine**: auto-detect Sprint → Retainer upgrade triggers
 - **Cross-border Compliance**: UAE DIFC, Kuwait CBK regulatory layer
-- **Enterprise PMO 2.0**: multi-stakeholder governance for enterprise deals
 - **Investor Dashboard**: live investor-ready metrics pack (ARR, NRR, CAC, LTV)
 - **IPO Preparation OS**: financial audit readiness, board reporting automation
+
+### Long-term (90 days — Wave 18)
+- **Enterprise PMO 2.0**: multi-stakeholder governance for enterprise deals
+- **AI Quality Engine**: auto-retrain churn model from cohort data
+- **GCC Regulatory Radar**: Saudi Vision 2030 compliance alerts, SAMA updates
+- **Board-Ready Reporting**: automated board pack with MoM metrics, investor narrative
 
 ---
 
@@ -266,6 +291,7 @@ MOYASAR_SECRET_KEY=...           # Saudi payments
 ADMIN_API_KEYS=...               # For /api/v1/admin/* endpoints
 DEALIX_MA_LEDGER_PATH=...        # M&A proposals ledger (default: var/m_and_a_proposals.jsonl)
 DEALIX_CAPITAL_LEDGER_PATH=...   # Capital assets ledger (default: var/capital-ledger.jsonl)
+DEALIX_GCC_LEDGER_PATH=...       # GCC scan ledger (default: var/gcc_scans.jsonl)
 ```
 
 ---

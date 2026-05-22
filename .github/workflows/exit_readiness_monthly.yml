@@ -1,0 +1,38 @@
+name: Exit Readiness OS — Monthly Gate Check
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"  # 1st of every month at 09:00 AST (06:00 UTC)
+  workflow_dispatch:
+
+concurrency:
+  group: exit-readiness-monthly
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  exit-readiness-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: pip install httpx
+      - name: Run exit readiness check (dry-run)
+        env:
+          PYTHONIOENCODING: utf-8
+          APP_ENV: test
+        run: python3 scripts/run_exit_readiness_check.py --dry-run
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exit-readiness-${{ github.run_id }}
+          path: data/founder_briefs/EXIT_READINESS_*.md
+          retention-days: 30
+          if-no-files-found: ignore

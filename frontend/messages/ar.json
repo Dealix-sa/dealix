@@ -22,7 +22,10 @@
     "opsSales": "تشغيل — خط المبيعات",
     "opsEvidence": "تشغيل — سجل الأدلة",
     "opsSupport": "تشغيل — خدمة العملاء",
-    "opsMandA": "رادار الاستحواذ"
+    "opsMandA": "رادار الاستحواذ",
+    "opsCustomerHealth": "صحة العملاء",
+    "opsRevenueForecast": "توقعات الإيرادات",
+    "opsExitReadiness": "جاهزية الخروج"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",
@@ -586,6 +589,29 @@
     "evidenceSubtitle": "أحداث أدلة مُدامَة ملفياً ضمن المتجر المحلي للـ autopilot.",
     "supportSubtitle": "تذاكر عامة + تصنيف + مسودة داخلية — الموافقة قبل الرد الخارجي.",
     "approvalsSubtitle": "نفس مركز الموافقات المربوط بالفواتير والإرسالات الخارجية."
+  },
+  "customerHealth": {
+    "title": "نظام صحة العملاء",
+    "churnPredict": "توقع التخبط",
+    "customerId": "معرف العميل",
+    "analyze": "تحليل الصحة",
+    "churnScore": "نسبة خطر التخبط",
+    "band": {
+      "safe": "آمن",
+      "watch": "مراقبة",
+      "at_risk": "في خطر",
+      "critical": "حرج"
+    },
+    "playbook": "خطة التدخل",
+    "expansion": "فرصة التوسع"
+  },
+  "revenueForecast": {
+    "title": "توقعات الإيرادات",
+    "forecast": "توقع",
+    "horizon": "الأفق الزمني",
+    "likely": "المتوقع",
+    "best": "الأفضل",
+    "worst": "الأسوأ"
   },
   "mAndA": {
     "title": "رادار الاستحواذ والاندماج",

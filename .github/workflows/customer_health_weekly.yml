@@ -1,0 +1,38 @@
+name: Customer Health OS — Weekly Churn Scan
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"  # Every Monday 08:00 AST (05:00 UTC)
+  workflow_dispatch:
+
+concurrency:
+  group: customer-health-weekly
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  customer-health-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: pip install httpx
+      - name: Run customer health scan (dry-run)
+        env:
+          PYTHONIOENCODING: utf-8
+          APP_ENV: test
+        run: python3 scripts/run_customer_health_scan.py --dry-run
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: customer-health-${{ github.run_id }}
+          path: data/founder_briefs/CUSTOMER_HEALTH_*.md
+          retention-days: 30
+          if-no-files-found: ignore

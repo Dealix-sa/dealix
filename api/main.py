@@ -111,6 +111,10 @@ from api.routers import platform_foundation as platform_foundation_router
 # Wave 15.1 — M&A Radar + Capital OS
 from api.routers import m_and_a as m_and_a_router
 from api.routers import capital_os as capital_os_router
+# Wave 16.0 — GCC Expansion Intelligence + Revenue OS + Exit Readiness
+from api.routers import gcc_expansion as gcc_expansion_router
+from api.routers import revenue_forecast as revenue_forecast_router
+from api.routers import exit_readiness as exit_readiness_router
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -351,6 +355,10 @@ def create_app() -> FastAPI:
     # Wave 15.1 — M&A Radar + Capital OS
     app.include_router(m_and_a_router.router)
     app.include_router(capital_os_router.router)
+    # Wave 16.0 — GCC Expansion Intelligence + Revenue OS + Exit Readiness
+    app.include_router(gcc_expansion_router.router)
+    app.include_router(revenue_forecast_router.router)
+    app.include_router(exit_readiness_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

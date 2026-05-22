@@ -22,7 +22,10 @@
     "opsSales": "Ops — Sales Pipe",
     "opsEvidence": "Ops — Evidence",
     "opsSupport": "Ops — Support",
-    "opsMandA": "M&A Radar"
+    "opsMandA": "M&A Radar",
+    "opsCustomerHealth": "Customer Health",
+    "opsRevenueForecast": "Revenue Forecast",
+    "opsExitReadiness": "Exit Readiness"
   },
   "dashboard": {
     "title": "Executive Dashboard",
@@ -586,6 +589,29 @@
     "evidenceSubtitle": "Evidence ledger entries persisted to the autopilot JSON store.",
     "supportSubtitle": "Public tickets classified + drafted internally — approvals before reply.",
     "approvalsSubtitle": "Same Approval Center powering billing + outbound guardrails."
+  },
+  "customerHealth": {
+    "title": "Customer Health OS",
+    "churnPredict": "Churn Prediction",
+    "customerId": "Customer ID",
+    "analyze": "Analyze Health",
+    "churnScore": "Churn Risk Score",
+    "band": {
+      "safe": "Safe",
+      "watch": "Watch",
+      "at_risk": "At Risk",
+      "critical": "Critical"
+    },
+    "playbook": "Intervention Playbook",
+    "expansion": "Expansion Opportunity"
+  },
+  "revenueForecast": {
+    "title": "Revenue Forecast",
+    "forecast": "Forecast",
+    "horizon": "Horizon",
+    "likely": "Likely",
+    "best": "Best",
+    "worst": "Worst"
   },
   "mAndA": {
     "title": "M&A Radar",
