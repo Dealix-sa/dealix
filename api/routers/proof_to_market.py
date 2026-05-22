@@ -141,3 +141,40 @@ async def sector_learning() -> dict[str, Any]:
     except Exception as exc:  # noqa: BLE001
         return {"learning": {"insufficient_data": True, "error": str(exc)},
                 "events_loaded": 0, "hard_gates": _HARD_GATES}
+
+
+@router.get("/published")
+async def published_proofs() -> dict[str, Any]:
+    """Public read of publishable proof events for the proof.html wall.
+
+    Returns events that have customer_approved=True and
+    signed_publish_permission=True. Empty list until the first real
+    proof event is signed by a paying customer.
+    """
+    try:
+        from auto_client_acquisition.runtime_paths import resolve_proof_events_dir
+        import json
+        proof_dir = resolve_proof_events_dir()
+        events: list[dict] = []
+        if proof_dir.exists():
+            for f in proof_dir.iterdir():
+                if not f.is_file() or f.suffix.lower() not in (".json",):
+                    continue
+                if any(s in f.name.lower() for s in
+                       (".gitkeep", "readme", "schema.example",
+                        ".example.", "template")):
+                    continue
+                try:
+                    events.append(json.loads(f.read_text(encoding="utf-8")))
+                except Exception:  # noqa: BLE001
+                    continue
+        packs = select_publishable_proofs(events)
+        return {
+            "packs": packs,
+            "count": len(packs),
+            "note_ar": "الأصفار طبيعيّة قبل أوّل Pilot مدفوع — هذه بيانات حقيقية فقط.",
+            "note_en": "Zero count is expected before the first paid pilot — real data only.",
+            "hard_gates": _HARD_GATES,
+        }
+    except Exception as exc:  # noqa: BLE001
+        return {"packs": [], "count": 0, "error": str(exc), "hard_gates": _HARD_GATES}
