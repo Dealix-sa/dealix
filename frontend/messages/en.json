@@ -25,7 +25,11 @@
     "opsMandA": "M&A Radar",
     "opsCustomerHealth": "Customer Health",
     "opsRevenueForecast": "Revenue Forecast",
-    "opsExitReadiness": "Exit Readiness"
+    "opsExitReadiness": "Exit Readiness",
+    "opsGCCExpansion": "GCC Radar",
+    "opsStrategy": "Strategy OS",
+    "opsBoardReady": "Board Ready",
+    "opsRetainerConversion": "Retainer Engine"
   },
   "dashboard": {
     "title": "Executive Dashboard",
@@ -630,5 +634,57 @@
     "upfrontCash": "Upfront Cash (60%)",
     "earnout": "Earn-out (40%)",
     "isEstimate": "Estimate"
+  },
+  "gccExpansion": {
+    "title": "GCC Expansion Radar",
+    "subtitle": "Market intelligence across the Gulf",
+    "overview": "GCC Country Overview",
+    "signalDetector": "Signal Detector",
+    "signalType": "Signal Type",
+    "rawData": "Raw Data (JSON)",
+    "detectSignal": "Detect Signal",
+    "detected": "Detected",
+    "notDetected": "Not detected",
+    "confidence": "Confidence",
+    "hotCities": "Hot Cities",
+    "opportunityFeed": "Opportunity Feed",
+    "country": "Country",
+    "heatScore": "Heat score",
+    "urgency": "Urgency",
+    "isEstimate": "is_estimate=True — All results are estimates and require human review before any external action."
+  },
+  "revenueForecast": {
+    "title": "Revenue Forecast OS",
+    "subtitle": "90-day pipeline intelligence",
+    "forecastScenarios": "Forecast Scenarios",
+    "customerId": "Customer ID",
+    "horizonDays": "Horizon (days)",
+    "dealRows": "Deal rows",
+    "addDeal": "Add deal",
+    "companyName": "Company",
+    "stage": "Stage",
+    "valueSar": "Value (SAR)",
+    "daysInStage": "Days in stage",
+    "runForecast": "Run Forecast",
+    "worst": "Worst",
+    "likely": "Likely",
+    "best": "Best",
+    "confidence": "Confidence",
+    "pipelineHealth": "Pipeline Health",
+    "winProbability": "Win Probability",
+    "totalPipeline": "Total Pipeline",
+    "weightedPipeline": "Weighted Pipeline",
+    "horizonComparison": "3-Horizon Comparison",
+    "runAllScenarios": "Run All Scenarios",
+    "isEstimate": "is_estimate=True — probability-weighted estimates. Require human review before any commercial decision.",
+    "forecast": "Forecast",
+    "horizon": "Horizon",
+    "stages": {
+      "prospect": "Prospect",
+      "qualified": "Qualified",
+      "proposal": "Proposal",
+      "negotiation": "Negotiation",
+      "verbal": "Verbal Commit"
+    }
   }
 }
