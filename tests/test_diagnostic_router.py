@@ -146,3 +146,39 @@ def test_diagnostic_report_html_embeds_audit_link(
     assert resp.status_code == 200
     assert "commit_42" in resp.text
     assert "مرجع التدقيق" in resp.text
+
+
+def test_diagnostic_report_html_rejects_flat_payload(client: TestClient):
+    """The frontend used to send a flat payload (company_handle, sector, ...)
+    directly instead of the nested {request: {...}} shape. Confirm that
+    extra='forbid' rejects it with 422 so the bug can't regress silently."""
+    resp = client.post(
+        "/api/v1/diagnostic/report/html",
+        json={
+            "company_handle": "Acme KSA",
+            "sector": "b2b_services",
+            "biggest_problem": "no follow-up",
+            "offer": "7_day_proof_sprint",
+        },
+    )
+    assert resp.status_code == 422
+
+
+def test_diagnostic_report_html_pipeline_state_in_output(client: TestClient):
+    """pipeline_state (mapped from biggest_problem in the frontend) should
+    influence the diagnostic context in the rendered HTML."""
+    resp = client.post(
+        "/api/v1/diagnostic/report/html",
+        json={
+            "request": {
+                "company": "Pipeline Test Co.",
+                "sector": "consulting",
+                "region": "ksa",
+                "pipeline_state": "no CRM, leads in WhatsApp only",
+            }
+        },
+    )
+    assert resp.status_code == 200
+    body = resp.text
+    assert "Pipeline Test Co." in body
+    assert "dir='rtl'" in body
