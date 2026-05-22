@@ -113,9 +113,13 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
         "scraping": "NEGATION",
     },
-    # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
+    # Diagnostic intake — "صفر cold outreach" promise + standard outcomes
+    # disclaimer "Estimated outcomes are not guaranteed outcomes /
+    # النتائج التقديرية ليست نتائج مضمونة." Pure NEGATION throughout.
     "diagnostic.html": {
         "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
@@ -142,11 +146,13 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
     },
     # Trust Center (Tier-1 redesign) — frames the 8 hard gates as features.
-    # Copy explicitly states what Dealix DOES NOT do: "لا scraping",
-    # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
+    # Uses standard disclaimer "Estimated outcomes are not guaranteed outcomes /
+    # النتائج التقديرية ليست نتائج مضمونة." Pure NEGATION throughout.
+    # Note: نضمن was removed from this page (entry dropped to stay tight).
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -170,6 +176,77 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     "compare-salesloft.html": {
         "blast": "NEGATION",
         "cold": "NEGATION",
+    },
+    # Architecture page — standard outcomes disclaimer. Pure NEGATION.
+    "architecture.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Bespoke AI page — standard outcomes disclaimer. Pure NEGATION.
+    "bespoke-ai.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Case study (pilot example) — standard outcomes disclaimer NEGATION +
+    # "money-back guarantee" refund clause. The refund guarantee is a
+    # commercial offer (return of payment, not a performance promise);
+    # founder must decide whether to keep the phrasing or use "money-back
+    # refund" instead.
+    "case-study-pilot-example.html": {
+        "guaranteed": "REVIEW_PENDING",
+    },
+    # Customer portal — standard outcomes disclaimer. Pure NEGATION.
+    "customer-portal.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Data pack page — standard disclaimer + "لا scraping. لا إرسال آلي."
+    # + "صفر cold WhatsApp / LinkedIn". Pure NEGATION throughout.
+    "data-pack.html": {
+        "cold": "NEGATION",
+        "scraping": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # DPO page — standard outcomes disclaimer. Pure NEGATION.
+    "dpo.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Launch status page — standard outcomes disclaimer. Pure NEGATION.
+    "launch-status.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Pricing page — standard outcomes disclaimer. Pure NEGATION.
+    "pricing.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Roadmap — "LinkedIn scraping automation — policy-blocked in code".
+    # Pure NEGATION.
+    "roadmap.html": {
+        "scraping": "NEGATION",
+    },
+    # Sector report B2B services — standard outcomes disclaimer. Pure NEGATION.
+    "sector-report-b2b-services.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Security page — standard outcomes disclaimer. Pure NEGATION.
+    "security.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Sprint sample — standard outcomes disclaimer. Pure NEGATION.
+    "sprint-sample.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # Webinar page — standard outcomes disclaimer. Pure NEGATION.
+    "webinar.html": {
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
 }
 
@@ -232,9 +309,10 @@ def test_review_pending_items_have_a_reason():
     # This is informational, not a failure. We assert the *count* so
     # that whenever a founder rephrases or formally approves a phrase,
     # they remember to update this number too.
-    assert len(review_pending) == 2, (
-        "REVIEW_PENDING list changed; expected 2 "
-        "(roi.html: 'نضمن'; academy.html: 'cold'). "
+    assert len(review_pending) == 3, (
+        "REVIEW_PENDING list changed; expected 3 "
+        "(roi.html: 'نضمن'; academy.html: 'cold'; "
+        "case-study-pilot-example.html: 'guaranteed'). "
         "Update this assertion after the founder approves or rephrases. "
         f"Current: {review_pending}"
     )

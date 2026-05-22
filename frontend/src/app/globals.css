@@ -1,81 +1,91 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=IBM+Plex+Arabic:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+  DEALIX Brand Color Reference
+  ─────────────────────────────
+  Deep Navy    #0B1220  → hsl(222 49% 8%)
+  Emerald Teal #00D1A1  → hsl(165 100% 41%)
+  Soft Silver  #B2BBC6  → hsl(213 13% 74%)
+  Slate        #0F1726  → hsl(218 45% 10%)
+  White        #FFFFFF  → hsl(0 0% 100%)
+*/
+
 @layer base {
   :root {
-    /* Light mode - clean white with gold accents */
-    --background: 0 0% 98%;
-    --foreground: 220 20% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
-    --primary: 37 55% 59%;          /* gold-500 */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 150 45% 38%;       /* emerald-600 */
+    /* Light mode — clean white shell with teal primary */
+    --background:           0 0% 98%;
+    --foreground:           222 49% 8%;       /* deep navy text */
+    --card:                 0 0% 100%;
+    --card-foreground:      222 49% 8%;
+    --popover:              0 0% 100%;
+    --popover-foreground:   222 49% 8%;
+    --primary:              165 100% 41%;     /* Emerald Teal #00D1A1 */
+    --primary-foreground:   0 0% 100%;
+    --secondary:            222 49% 8%;       /* Deep Navy as secondary */
     --secondary-foreground: 0 0% 100%;
-    --muted: 220 10% 95%;
-    --muted-foreground: 220 10% 50%;
-    --accent: 37 55% 59%;
-    --accent-foreground: 220 20% 10%;
-    --destructive: 0 72% 51%;
+    --muted:                213 13% 94%;
+    --muted-foreground:     213 13% 45%;
+    --accent:               165 100% 41%;     /* teal accent */
+    --accent-foreground:    222 49% 8%;
+    --destructive:          0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 10% 90%;
-    --input: 220 10% 90%;
-    --ring: 37 55% 59%;
-    --radius: 0.75rem;
-    --chart-1: 37 55% 59%;
-    --chart-2: 150 45% 38%;
-    --chart-3: 220 70% 55%;
-    --chart-4: 0 72% 51%;
-    --chart-5: 280 60% 55%;
-    --sidebar-background: 220 20% 10%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 37 55% 59%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 18%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 37 55% 59%;
+    --border:               213 13% 88%;
+    --input:                213 13% 88%;
+    --ring:                 165 100% 41%;
+    --radius:               0.75rem;
+    --chart-1:              165 100% 41%;     /* teal */
+    --chart-2:              222 49% 35%;      /* navy-mid */
+    --chart-3:              213 13% 55%;      /* silver */
+    --chart-4:              0 72% 51%;
+    --chart-5:              265 60% 55%;
+    --sidebar-background:   222 49% 8%;       /* deep navy sidebar */
+    --sidebar-foreground:   0 0% 92%;
+    --sidebar-primary:      165 100% 41%;
+    --sidebar-primary-foreground: 222 49% 8%;
+    --sidebar-accent:       218 45% 13%;
+    --sidebar-accent-foreground:  0 0% 88%;
+    --sidebar-border:       218 45% 13%;
+    --sidebar-ring:         165 100% 41%;
   }
 
   .dark {
-    /* Dark mode - deep navy with gold/emerald accents */
-    --background: 220 25% 7%;
-    --foreground: 0 0% 92%;
-    --card: 220 22% 10%;
-    --card-foreground: 0 0% 92%;
-    --popover: 220 22% 10%;
-    --popover-foreground: 0 0% 92%;
-    --primary: 37 62% 62%;          /* gold brighter */
-    --primary-foreground: 220 25% 7%;
-    --secondary: 150 50% 42%;       /* emerald */
-    --secondary-foreground: 0 0% 100%;
-    --muted: 220 20% 15%;
-    --muted-foreground: 220 10% 55%;
-    --accent: 37 62% 62%;
-    --accent-foreground: 220 25% 7%;
-    --destructive: 0 65% 55%;
+    /* Dark mode — DEALIX primary experience: deep navy canvas + teal accents */
+    --background:           222 49% 8%;       /* Deep Navy #0B1220 */
+    --foreground:           0 0% 93%;         /* near-white */
+    --card:                 218 45% 10%;      /* Slate #0F1726 */
+    --card-foreground:      0 0% 93%;
+    --popover:              218 45% 10%;
+    --popover-foreground:   0 0% 93%;
+    --primary:              165 100% 41%;     /* Emerald Teal #00D1A1 */
+    --primary-foreground:   222 49% 8%;
+    --secondary:            213 13% 74%;      /* Soft Silver #B2BBC6 */
+    --secondary-foreground: 222 49% 8%;
+    --muted:                218 45% 14%;
+    --muted-foreground:     213 13% 55%;
+    --accent:               165 100% 41%;
+    --accent-foreground:    222 49% 8%;
+    --destructive:          0 65% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 37 62% 62%;
-    --chart-1: 37 62% 62%;
-    --chart-2: 150 50% 42%;
-    --chart-3: 220 70% 60%;
-    --chart-4: 0 65% 55%;
-    --chart-5: 280 60% 60%;
-    --sidebar-background: 220 28% 6%;
-    --sidebar-foreground: 0 0% 88%;
-    --sidebar-primary: 37 62% 62%;
-    --sidebar-primary-foreground: 220 25% 7%;
-    --sidebar-accent: 220 22% 12%;
-    --sidebar-accent-foreground: 0 0% 85%;
-    --sidebar-border: 220 20% 12%;
-    --sidebar-ring: 37 62% 62%;
+    --border:               218 45% 16%;
+    --input:                218 45% 16%;
+    --ring:                 165 100% 41%;
+    --chart-1:              165 100% 41%;     /* teal */
+    --chart-2:              213 13% 65%;      /* silver */
+    --chart-3:              222 49% 55%;      /* navy-light */
+    --chart-4:              0 65% 55%;
+    --chart-5:              265 60% 60%;
+    --sidebar-background:   222 52% 6%;       /* darkest navy */
+    --sidebar-foreground:   0 0% 88%;
+    --sidebar-primary:      165 100% 41%;
+    --sidebar-primary-foreground: 222 49% 8%;
+    --sidebar-accent:       218 45% 12%;
+    --sidebar-accent-foreground:  0 0% 85%;
+    --sidebar-border:       218 45% 12%;
+    --sidebar-ring:         165 100% 41%;
   }
 }
 
@@ -83,65 +93,88 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
-    font-family: 'Noto Sans Arabic', 'IBM Plex Arabic', system-ui, sans-serif;
+    font-family: 'Manrope', 'IBM Plex Sans Arabic', system-ui, sans-serif;
   }
 
-  /* RTL direction for Arabic */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Sora', 'Space Grotesk', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  }
+
+  /* RTL — Arabic-first layout */
   [dir="rtl"] {
     text-align: right;
+    font-family: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', system-ui, sans-serif;
   }
 
-  /* Scrollbar styling */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    font-family: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', system-ui, sans-serif;
+    font-weight: 700;
   }
-  ::-webkit-scrollbar-track {
-    @apply bg-muted/30;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/50;
-  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar        { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { @apply bg-muted/30; }
+  ::-webkit-scrollbar-thumb  { @apply bg-border rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-muted-foreground/50; }
 }
 
 @layer utilities {
-  .text-gradient-gold {
-    background: linear-gradient(135deg, #C9A96E 0%, #f4e89f 50%, #C9A96E 100%);
+  /* ── DEALIX Brand Gradients ──────────────────────────────────────── */
+
+  .text-gradient-teal {
+    background: linear-gradient(135deg, #00D1A1 0%, #26edbe 60%, #00D1A1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .text-gradient-green {
-    background: linear-gradient(135deg, #059669 0%, #34d399 100%);
+  .text-gradient-navy-teal {
+    background: linear-gradient(135deg, #B2BBC6 0%, #00D1A1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* ── Card Styles ─────────────────────────────────────────────────── */
 
   .card-glass {
     @apply bg-card/80 backdrop-blur-md border border-border/50;
   }
 
-  .card-glow-gold {
-    box-shadow: 0 0 20px rgba(201, 169, 110, 0.08), 0 1px 3px rgba(0,0,0,0.2);
+  .card-glow-teal {
+    box-shadow: 0 0 24px rgba(0, 209, 161, 0.10), 0 1px 3px rgba(0, 0, 0, 0.35);
   }
 
-  .card-glow-emerald {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.08), 0 1px 3px rgba(0,0,0,0.2);
+  .card-glow-navy {
+    box-shadow: 0 0 24px rgba(11, 18, 32, 0.60), 0 1px 3px rgba(0, 0, 0, 0.35);
   }
+
+  /* ── Background Patterns ─────────────────────────────────────────── */
 
   .grid-pattern {
-    background-image: 
-      linear-gradient(rgba(201, 169, 110, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(201, 169, 110, 0.03) 1px, transparent 1px);
+    background-image:
+      linear-gradient(rgba(0, 209, 161, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 209, 161, 0.03) 1px, transparent 1px);
     background-size: 48px 48px;
   }
+
+  .bg-navy-gradient {
+    background: linear-gradient(160deg, #0B1220 0%, #0F1726 50%, #0B1220 100%);
+  }
+
+  .bg-teal-glow {
+    background: radial-gradient(ellipse at 50% 0%, rgba(0, 209, 161, 0.12) 0%, transparent 70%);
+  }
+
+  /* ── Loading / Shimmer ───────────────────────────────────────────── */
 
   .shimmer-loading {
     background: linear-gradient(
@@ -152,5 +185,34 @@
     );
     background-size: 1000px 100%;
     animation: shimmer 2s infinite linear;
+  }
+
+  /* ── CTA / Button Overrides ──────────────────────────────────────── */
+
+  .btn-teal {
+    @apply bg-teal-500 text-navy-900 font-semibold hover:bg-teal-400 transition-colors;
+    animation: pulse-teal 2s infinite;
+  }
+
+  .btn-outlined-teal {
+    @apply border border-teal-500 text-teal-500 font-semibold hover:bg-teal-500/10 transition-colors;
+  }
+
+  /* ── Teal underline accent ───────────────────────────────────────── */
+
+  .teal-underline {
+    position: relative;
+  }
+
+  .teal-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 2px;
+    background: #00D1A1;
+    transform-origin: inline-start;
+    animation: teal-line 0.6s ease-out forwards;
   }
 }
