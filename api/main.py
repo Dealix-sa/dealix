@@ -115,6 +115,11 @@ from api.routers import capital_os as capital_os_router
 from api.routers import gcc_expansion as gcc_expansion_router
 from api.routers import revenue_forecast as revenue_forecast_router
 from api.routers import exit_readiness as exit_readiness_router
+# Wave 17.0 — Strategy OS + Moat + Board Ready + Intelligence + Retainer Conversion
+from api.routers import strategy_os as strategy_os_router
+from api.routers import board_ready_os as board_ready_os_router
+from api.routers import intelligence_compounding as intelligence_compounding_router
+from api.routers import retainer_conversion as retainer_conversion_router
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -359,6 +364,11 @@ def create_app() -> FastAPI:
     app.include_router(gcc_expansion_router.router)
     app.include_router(revenue_forecast_router.router)
     app.include_router(exit_readiness_router.router)
+    # Wave 17.0 — Strategy OS + Moat + Board Ready + Intelligence + Retainer Conversion
+    app.include_router(strategy_os_router.router)
+    app.include_router(board_ready_os_router.router)
+    app.include_router(intelligence_compounding_router.router)
+    app.include_router(retainer_conversion_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

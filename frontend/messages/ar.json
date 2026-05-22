@@ -25,7 +25,11 @@
     "opsMandA": "رادار الاستحواذ",
     "opsCustomerHealth": "صحة العملاء",
     "opsRevenueForecast": "توقعات الإيرادات",
-    "opsExitReadiness": "جاهزية الخروج"
+    "opsExitReadiness": "جاهزية الخروج",
+    "opsGCCExpansion": "رادار الخليج",
+    "opsStrategy": "الاستراتيجية",
+    "opsBoardReady": "جاهزية المجلس",
+    "opsRetainerConversion": "تحويل العقود"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",

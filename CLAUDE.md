@@ -114,7 +114,8 @@ dealix/
 │   ├── capital_os_weekly.yml    # Weekly Capital OS brief
 │   ├── customer_health_weekly.yml      # Monday churn scan (Wave 16)
 │   ├── revenue_forecast_weekly.yml     # Wednesday forecast (Wave 16)
-│   └── exit_readiness_monthly.yml      # Monthly exit gate (Wave 16)
+│   ├── exit_readiness_monthly.yml      # Monthly exit gate (Wave 16)
+│   └── gcc_expansion_weekly.yml        # Tuesday GCC market scan (Wave 17)
 └── docs/                        # 100+ governance + commercial docs
     ├── company/DEALIX_OPERATING_KERNEL.md
     └── commercial/              # GTM playbooks, pricing, proposals
@@ -165,6 +166,9 @@ python scripts/run_revenue_forecast.py --dry-run
 
 # Exit Readiness gate check (dry-run)
 python scripts/run_exit_readiness_check.py --dry-run
+
+# GCC Expansion scan (dry-run)
+python scripts/run_gcc_expansion_scan.py --dry-run
 ```
 
 ---
@@ -180,6 +184,10 @@ python scripts/run_exit_readiness_check.py --dry-run
 | `api/routers/customer_health_os.py` | Customer Health: churn predict, expansion signals, playbook |
 | `api/routers/revenue_forecast.py` | Revenue Forecast: 30/60/90-day pipeline forecast + attribution |
 | `api/routers/exit_readiness.py` | Exit Readiness: venture gate, operating chain, governance score |
+| `api/routers/strategy_os.py` | Strategy OS: AI readiness, use case ranking, competitive moat score |
+| `api/routers/board_ready_os.py` | Board Ready OS: dashboard coverage, memo, due diligence, unit economics |
+| `api/routers/intelligence_compounding.py` | Intelligence OS: compound signals, learning loop, market intelligence |
+| `api/routers/retainer_conversion.py` | Retainer Conversion: Sprint→Retainer eligibility, draft outreach, ledger |
 | `api/routers/expansion_engine.py` | Expansion readiness + next-best-offer (Wave 12.7 pattern) |
 | `api/routers/payment_ops.py` | Moyasar payments, evidence gate |
 | `auto_client_acquisition/capital_os/` | Capital asset JSONL ledger |
@@ -267,11 +275,21 @@ from api.main import create_app
 - **CI/CD**: 3 new GitHub Actions workflows (Monday churn scan, Wednesday forecast, monthly exit gate)
 - **Scripts**: `run_customer_health_scan.py`, `run_revenue_forecast.py`, `run_exit_readiness_check.py`
 
-### Wave 17 (next — 30 days)
-- **Retainer Conversion Engine**: auto-detect Sprint → Retainer upgrade triggers
-- **Cross-border Compliance**: UAE DIFC, Kuwait CBK regulatory layer
-- **Investor Dashboard**: live investor-ready metrics pack (ARR, NRR, CAC, LTV)
+### Wave 17 (delivered)
+- **Strategy OS**: AI readiness scoring, use case prioritization, competitive moat analysis
+- **Board Ready OS**: board dashboard coverage, memo skeleton, due diligence gate, unit economics
+- **Intelligence Compounding OS**: compound signal scoring, learning loop, market intelligence layer
+- **Retainer Conversion Engine**: Sprint→Retainer eligibility gate, draft outreach (founder-approved), JSONL ledger
+- **Frontend**: OpsGCCExpansionRadar + OpsRevenueForecastDashboard components + pages
+- **api.ts**: 25+ new typed Wave 16+17 API client methods
+- **CI/CD**: gcc_expansion_weekly.yml workflow (Tuesday 06:00 AST)
+- **Scripts**: run_gcc_expansion_scan.py
+
+### Wave 18 (next — 30 days)
+- **Cross-border Compliance Layer**: UAE DIFC, Kuwait CBK, Bahrain CBB regulatory intelligence
 - **IPO Preparation OS**: financial audit readiness, board reporting automation
+- **Customer Success Flywheel**: NPS automation + proof delivery triggers
+- **AI Quality Engine**: auto-retrain churn/forecast models from cohort data
 
 ### Long-term (90 days — Wave 18)
 - **Enterprise PMO 2.0**: multi-stakeholder governance for enterprise deals
