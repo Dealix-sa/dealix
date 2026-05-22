@@ -178,21 +178,42 @@ def gate(drafts: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Funnel every external action through the approval gate.
 
     For each draft whose WorkItem is external-facing:
-      1. run ``enforce_doctrine_non_negotiables`` over its risk flags;
-      2. on a doctrine violation create the ApprovalRequest with
+      1. skip if a pending approval already exists for this
+         ``(object_type, object_id, action_type)`` — re-runs of the
+         tick must not pile up duplicate approvals for the same item;
+      2. run ``enforce_doctrine_non_negotiables`` over its risk flags;
+      3. on a doctrine violation create the ApprovalRequest with
          ``action_mode="blocked"`` (approval-center policy makes a blocked
          request impossible to approve);
-      3. otherwise create it with ``action_mode="approval_required"``.
+      4. otherwise create it with ``action_mode="approval_required"``.
 
     Internal-only drafts are passed through untouched — they never create
     an approval and never reach a customer.
     """
     store = get_default_approval_store()
+    # Snapshot pending approvals once so repeated ticks against the
+    # same queued WorkItems are idempotent — see PR #311 review.
+    pending_keys: set[tuple[str, str, str]] = {
+        (r.object_type, r.object_id, r.action_type)
+        for r in store.list_pending()
+    }
     gated: list[dict[str, Any]] = []
     for draft in drafts:
         item: WorkItem = draft["work_item"]
         if not _is_external(item):
             gated.append({**draft, "gate": "internal_only", "approval": None})
+            continue
+
+        dedup_key = ("work_item", item.id, "follow_up_task")
+        if dedup_key in pending_keys:
+            gated.append(
+                {
+                    **draft,
+                    "gate": "dedup_skipped",
+                    "approval": None,
+                    "doctrine_violation": None,
+                }
+            )
             continue
 
         doctrine_kwargs = _doctrine_kwargs(item)
@@ -219,6 +240,9 @@ def gate(drafts: list[dict[str, Any]]) -> list[dict[str, Any]]:
             customer_id=item.customer_id,
         )
         created = store.create(req)
+        # Track newly-created approval so subsequent drafts in the same
+        # tick that target the same key are also deduped.
+        pending_keys.add(dedup_key)
         gated.append(
             {
                 **draft,
@@ -294,6 +318,7 @@ def run_tick(
     approvals_required = [g for g in gated if g["gate"] == "approval_required"]
     approvals_blocked = [g for g in gated if g["gate"] == "blocked"]
     internal_only = [g for g in gated if g["gate"] == "internal_only"]
+    dedup_skipped = [g for g in gated if g["gate"] == "dedup_skipped"]
 
     summary: dict[str, Any] = {
         "tick_id": tick_id,
@@ -310,6 +335,7 @@ def run_tick(
         "approvals_required": [g["approval"] for g in approvals_required],
         "approvals_blocked": [g["approval"] for g in approvals_blocked],
         "internal_only_count": len(internal_only),
+        "dedup_skipped_count": len(dedup_skipped),
         "doctrine_violations": [
             {"work_item_id": g["work_item"].id, "detail": g["doctrine_violation"]}
             for g in gated

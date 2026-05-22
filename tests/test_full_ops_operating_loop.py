@@ -219,3 +219,25 @@ def test_run_tick_hard_gates_present() -> None:
     assert gates["no_live_charge"] is True
     assert gates["l5_forbidden"] is True
     assert gates["max_autonomy_level"] == 4
+
+
+def test_run_tick_is_idempotent_for_queued_external_items() -> None:
+    """Repeated ticks against the same queued WorkItem must NOT pile up
+    duplicate pending approvals. See PR #311 Codex review (P1).
+    """
+    q = WorkQueue()
+    q.add(_external_item())
+
+    first = run_tick(queue=q)
+    second = run_tick(queue=q)
+
+    assert first["work_items_sensed"] == 1
+    assert second["work_items_sensed"] == 1
+    # First tick creates exactly one approval; the second skips it.
+    assert len(first["approvals_required"]) == 1
+    assert first["dedup_skipped_count"] == 0
+    assert len(second["approvals_required"]) == 0
+    assert second["dedup_skipped_count"] == 1
+    # Approval store ends with one pending request, not two.
+    pending = get_default_approval_store().list_pending()
+    assert len(pending) == 1
