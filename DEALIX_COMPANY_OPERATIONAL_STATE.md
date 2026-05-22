@@ -1,7 +1,7 @@
 # 🚀 Dealix — Company Operational State (Live)
 
 **Status:** LAUNCHED (backend + landing live). Blocked on Moyasar account activation for REVENUE VERIFIED.
-**Last verified:** 2026-04-24
+**Last verified:** 2026-05-22 (readiness gates re-run: `DEALIX_READY_FOR_SALES=true`, see `DEALIX_READINESS.md` and `LAUNCH_MASTER.md`)
 **Base URL:** https://api.dealix.me
 **Landing:** https://voxc2.github.io/dealix/
 
