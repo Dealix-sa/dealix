@@ -129,6 +129,23 @@ gh pr create --base main --title "Import curated local assets" --body "Audited v
 - ❌ **لا تحقن** `payment_received` أو `proof_pack_delivered` بدون دفعة وتسليم فعليين
   من عميل حقيقي. هذا ينطبق على الـCSV، الـJSON، الـYAML، وقاعدة البيانات.
 
+## فحص الريبو الكنوني نفسه (Self-Scan)
+
+بالإضافة إلى فحص نسخة محلية مقابل الكنوني، الأداة تدعم وضع **`--scan-canonical`**
+الذي يفحص الريبو الحالي عن أي stubs مسرحية متسرّبة. الـheuristic هنا أضيق
+ومدروس لتجنّب false positives على المصطلحات الشرعية في الريبو
+(`meta_os`, `white_label`, `founder loop`...): فقط **STRONG phrases** تطابق،
+وهي محصورة في أنماط فريدة لجلسات الـtheater (`sovereign_registry`,
+`execute_50_storm`, `ultimate_autonomous_vision_2030`...).
+
+```bash
+python3 scripts/audit_local_artifacts.py --canonical . --scan-canonical --out data/local_artifact_audit
+# للاستخدام في CI:
+python3 scripts/audit_local_artifacts.py --canonical . --scan-canonical --fail-on-stub
+```
+
+النتيجة الحالية على الريبو: **0 stub findings** (نظيف).
+
 ## ما يُنصح به بعد التنظيف
 
 عُد إلى البوابات الموجودة في الريبو الأصلي — هذه حقيقية، مختبرة، وتفعل ما تقوله:
