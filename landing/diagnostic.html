@@ -441,9 +441,10 @@
     `).join('');
 
     const offer = diag.recommended_offer || {};
-    const offerName = offer.name_ar || offer.name_en || offer.name || '7-Day Growth Proof Sprint';
+    const offerName = offer.offer_name_ar || offer.name_ar || offer.name_en || offer.name || '7-Day Growth Proof Sprint';
     const offerPrice = offer.price_sar ? `${offer.price_sar} SAR` : '499 SAR';
-    document.getElementById('dx-recommended').textContent = `${offerName} — ${offerPrice} · ${offer.why_ar || offer.why_en || 'الأنسب لمستوى شركتك الحالي.'}`;
+    const offerWhy = offer.why_ar || offer.why_en || offer.headline_ar || offer.headline_en || 'الأنسب لمستوى شركتك الحالي.';
+    document.getElementById('dx-recommended').textContent = `${offerName} — ${offerPrice} · ${offerWhy}`;
 
     // Pre-fill the start.html link with what we know
     const params = new URLSearchParams({
