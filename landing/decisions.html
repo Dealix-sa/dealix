@@ -259,7 +259,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          actor: 'founder@dealix.me',
+          who: 'founder@dealix.me',
           reason: reason,
         }),
       });
@@ -297,7 +297,7 @@
       const r = await fetch(`${API_BASE}/api/v1/approvals/pending`, { cache: 'no-store' });
       if (!r.ok) throw new Error('HTTP ' + r.status);
       const data = await r.json();
-      let items = (data && data.items) || data || [];
+      let items = (data && data.approvals) || [];
       // Filter
       if (currentRisk) {
         items = items.filter(i => String(i.risk_level || '').toLowerCase() === currentRisk);
@@ -313,7 +313,7 @@
         const h = await fetch(`${API_BASE}/api/v1/approvals/history?limit=1000`, { cache: 'no-store' });
         if (h.ok) {
           const hd = await h.json();
-          const events = (hd && hd.events) || hd || [];
+          const events = (hd && hd.approvals) || [];
           const today = new Date().toISOString().slice(0, 10);
           const todayCount = events.filter(e => (e.ts || e.timestamp || '').startsWith(today)).length;
           document.getElementById('kpi-history').textContent = todayCount;
