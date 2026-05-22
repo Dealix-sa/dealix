@@ -38,7 +38,9 @@ jobs:
       - name: Install minimal deps
         run: pip install pyyaml pytest
       - name: Test renderer
-        run: python -m pytest tests/test_render_stage_status.py -v --no-cov -p no:cacheprovider --noconftest
+        # Override pyproject addopts to avoid pulling pytest-cov / app deps.
+        run: python -m pytest tests/test_render_stage_status.py -v -p no:cacheprovider --noconftest -o addopts=
+
       - name: Render DEALIX_STAGE_STATUS.md
         run: python scripts/render_stage_status.py
       - name: Show summary
