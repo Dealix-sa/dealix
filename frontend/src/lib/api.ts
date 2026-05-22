@@ -149,6 +149,9 @@ export const api = {
   runFullOpsTick: (body: Record<string, unknown> = {}) =>
     apiClient.post("/api/v1/full-ops/tick", body),
 
+  getDailyCommandCenter: () =>
+    apiClient.get("/api/v1/full-ops/daily-command-center"),
+
   getDecisionPassportGoldenChain: () =>
     apiClient.get("/api/v1/decision-passport/golden-chain"),
 

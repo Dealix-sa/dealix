@@ -23,7 +23,7 @@ from auto_client_acquisition.full_ops.agent_roster import (
     pyramid_status,
     register_full_ops_agents,
 )
-from auto_client_acquisition.full_ops.operating_loop import run_tick
+from auto_client_acquisition.full_ops.operating_loop import read_tick_ledger, run_tick
 
 router = APIRouter(prefix="/api/v1/full-ops", tags=["full-ops"])
 
@@ -124,6 +124,25 @@ def _blocked_actions() -> dict[str, Any]:
         "count": len(blocked),
         "first_3": [b.model_dump(mode="json") for b in prioritize(blocked)[:3]],
     }
+
+
+def _recent_ticks() -> list[dict[str, Any]]:
+    """Return at most 10 recent tick summaries, compact shape only."""
+    rows = read_tick_ledger(limit=10)
+    compact: list[dict[str, Any]] = []
+    for row in rows:
+        compact.append(
+            {
+                "tick_id": row.get("tick_id"),
+                "generated_at": row.get("generated_at"),
+                "work_items_sensed": row.get("work_items_sensed", 0),
+                "approvals_created": row.get("approvals_created", 0),
+                "internal_only_count": row.get("internal_only_count", 0),
+                "sends": row.get("sends", 0),
+                "charges": row.get("charges", 0),
+            }
+        )
+    return compact
 
 
 def _today_top_3() -> list[dict[str, Any]]:
@@ -230,6 +249,7 @@ async def daily_command_center() -> dict[str, Any]:
         {"ar": "نفّذ 14_DAY_FIRST_REVENUE_PLAYBOOK", "en": "Run 14_DAY_FIRST_REVENUE_PLAYBOOK"},
         degraded,
     )
+    recent_ticks = _safe("recent_ticks", _recent_ticks, [], degraded)
 
     return {
         "schema_version": 1,
@@ -251,6 +271,7 @@ async def daily_command_center() -> dict[str, Any]:
         },
         "revenue_truth": revenue_truth,
         "revenue_execution_next_step": revenue_next_step,
+        "recent_ticks": recent_ticks,
         "next_best_actions": {
             "ar": "ابدأ بأعلى p0/p1 في كل قائمة، وتجاهل المحظور",
             "en": "Start with the highest p0/p1 in each queue; skip blocked items.",

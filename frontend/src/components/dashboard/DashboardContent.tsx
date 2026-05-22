@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { KPICard } from "./KPICard";
+import { RecentTicks } from "./RecentTicks";
 import { RevenueChart } from "./RevenueChart";
 import { DealPipelineChart } from "./DealPipelineChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -102,6 +103,17 @@ export function DashboardContent() {
   const [activities, setActivities] = useState<Activity[] | null>(null);
   const [loadingKpi, setLoadingKpi] = useState(true);
   const [loadingActivities, setLoadingActivities] = useState(true);
+
+  // Run-Tick control state
+  const [tickRunning, setTickRunning] = useState(false);
+  const [tickResult, setTickResult] = useState<{
+    sensed: number;
+    approvals_created: number;
+    approvals_blocked: number;
+    tick_id: string;
+  } | null>(null);
+  const [tickError, setTickError] = useState<string | null>(null);
+  const [tickKey, setTickKey] = useState(0); // increment to refresh RecentTicks
 
   const defaultKpiMetrics: KPIMetric[] = [
     {
@@ -223,6 +235,30 @@ export function DashboardContent() {
   const displayedKpi = kpiMetrics ?? defaultKpiMetrics;
   const displayedActivities = activities ?? mockActivities;
 
+  async function handleRunTick() {
+    setTickRunning(true);
+    setTickResult(null);
+    setTickError(null);
+    try {
+      const res = await api.runFullOpsTick({});
+      const tick = res.data?.tick ?? {};
+      setTickResult({
+        sensed: tick.work_items_sensed ?? 0,
+        approvals_created: tick.approvals_created ?? 0,
+        approvals_blocked: (tick.approvals_blocked ?? []).length,
+        tick_id: tick.tick_id ?? "unknown",
+      });
+      // Bump key so RecentTicks re-fetches
+      setTickKey((k) => k + 1);
+    } catch {
+      setTickError(
+        isAr ? "تعذّر تشغيل الدورة — راجع السجل" : "Tick failed — check logs"
+      );
+    } finally {
+      setTickRunning(false);
+    }
+  }
+
   const agentLabels: Record<string, string> = {
     outreach: isAr ? "وكيل التواصل" : "Outreach",
     scoring: isAr ? "وكيل التقييم" : "Scoring",
@@ -249,6 +285,60 @@ export function DashboardContent() {
         <RevenueChart />
         <DealPipelineChart />
       </div>
+
+      {/* Run Tick — internal control */}
+      <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-semibold">
+              {isAr ? "تشغيل دورة الآن" : "Run Tick Now"}
+            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {isAr
+                ? "للاستخدام الداخلي فقط — لا يُرسل أي إجراء خارجي"
+                : "Internal use only — no external action is sent"}
+            </p>
+          </div>
+          <button
+            onClick={handleRunTick}
+            disabled={tickRunning}
+            className="inline-flex items-center gap-2 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-opacity hover:opacity-90"
+          >
+            {tickRunning
+              ? (isAr ? "جارٍ التشغيل..." : "Running...")
+              : (isAr ? "تشغيل دورة" : "Run Tick")}
+          </button>
+        </div>
+
+        {tickError && (
+          <p className="text-xs text-destructive">{tickError}</p>
+        )}
+
+        {tickResult && !tickError && (
+          <div className="rounded-lg bg-muted/50 px-3 py-2 text-xs space-y-0.5">
+            <p className="font-mono text-muted-foreground truncate">
+              {tickResult.tick_id}
+            </p>
+            <div className="flex gap-4">
+              <span>
+                {isAr ? "مرصودة: " : "Sensed: "}
+                <strong>{tickResult.sensed}</strong>
+              </span>
+              <span>
+                {isAr ? "موافقات: " : "Approvals: "}
+                <strong>{tickResult.approvals_created}</strong>
+              </span>
+              <span>
+                {isAr ? "محظورة: " : "Blocked: "}
+                <strong>{tickResult.approvals_blocked}</strong>
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Recent Ticks panel */}
+      <RecentTicks key={tickKey} />
 
       {/* Activity Feed */}
       <motion.div
