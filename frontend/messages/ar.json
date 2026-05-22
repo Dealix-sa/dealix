@@ -21,7 +21,8 @@
     "opsPartners": "شركاء",
     "opsSales": "تشغيل — خط المبيعات",
     "opsEvidence": "تشغيل — سجل الأدلة",
-    "opsSupport": "تشغيل — خدمة العملاء"
+    "opsSupport": "تشغيل — خدمة العملاء",
+    "opsMandA": "رادار الاستحواذ"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",
@@ -520,11 +521,26 @@
     },
     "howTitle": "كيف يعمل Dealix",
     "howSteps": {
-      "0": { "title": "تشخيص", "body": "Risk Score أو Diagnostic يحدد الجاهزية" },
-      "1": { "title": "حوكمة", "body": "مسودات وموافقة قبل أي إرسال خارجي" },
-      "2": { "title": "تسليم", "body": "Proof Pack بأقسام واضحة وحالة كل قسم" },
-      "3": { "title": "أدلة", "body": "أحداث Evidence تربط اللمسة بالإغلاق" },
-      "4": { "title": "توسّع", "body": "Upsell فقط بعد إثبات القيمة" }
+      "0": {
+        "title": "تشخيص",
+        "body": "Risk Score أو Diagnostic يحدد الجاهزية"
+      },
+      "1": {
+        "title": "حوكمة",
+        "body": "مسودات وموافقة قبل أي إرسال خارجي"
+      },
+      "2": {
+        "title": "تسليم",
+        "body": "Proof Pack بأقسام واضحة وحالة كل قسم"
+      },
+      "3": {
+        "title": "أدلة",
+        "body": "أحداث Evidence تربط اللمسة بالإغلاق"
+      },
+      "4": {
+        "title": "توسّع",
+        "body": "Upsell فقط بعد إثبات القيمة"
+      }
     },
     "offersTitle": "ثلاثة عروض على السطح",
     "offers": {
@@ -570,5 +586,23 @@
     "evidenceSubtitle": "أحداث أدلة مُدامَة ملفياً ضمن المتجر المحلي للـ autopilot.",
     "supportSubtitle": "تذاكر عامة + تصنيف + مسودة داخلية — الموافقة قبل الرد الخارجي.",
     "approvalsSubtitle": "نفس مركز الموافقات المربوط بالفواتير والإرسالات الخارجية."
+  },
+  "mAndA": {
+    "title": "رادار الاستحواذ والاندماج",
+    "subtitle": "تقييم الشركات المستهدفة وصياغة خطابات النوايا",
+    "targetsEvaluated": "الشركات المقيّمة",
+    "totalPipeline": "إجمالي خط الاستحواذ",
+    "avgMultiple": "متوسط مضاعف EBITDA",
+    "evaluateTarget": "تقييم شركة مستهدفة",
+    "companyName": "اسم الشركة",
+    "annualRevenue": "الإيرادات السنوية (ريال)",
+    "ebitdaMargin": "هامش EBITDA (%)",
+    "sector": "القطاع",
+    "calculateOffer": "احسب العرض",
+    "recentProposals": "آخر المقترحات",
+    "proposedOffer": "العرض المقترح",
+    "upfrontCash": "دفعة فورية (60%)",
+    "earnout": "أداء مرتبط (40%)",
+    "isEstimate": "تقدير"
   }
 }

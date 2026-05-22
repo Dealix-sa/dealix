@@ -1,0 +1,50 @@
+name: Capital OS — Weekly Investor Readiness Brief
+
+# Runs every Sunday at 06:00 AST (03:00 UTC).
+# Governed: --dry-run only. No external writes. Artifacts for founder review.
+
+on:
+  schedule:
+    - cron: "0 3 * * 0"
+  workflow_dispatch:
+
+concurrency:
+  group: capital-os-weekly
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  capital-os-brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install minimal deps
+        run: pip install httpx
+
+      - name: Run Capital OS investor brief (dry-run)
+        env:
+          DEALIX_API_BASE: ${{ secrets.DEALIX_API_BASE }}
+          DEALIX_ADMIN_API_KEY: ${{ secrets.DEALIX_ADMIN_API_KEY }}
+          PYTHONIOENCODING: utf-8
+          APP_ENV: test
+        run: |
+          python3 scripts/run_capital_os_brief.py --dry-run
+
+      - name: Upload Capital OS artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capital-os-${{ github.run_id }}
+          path: |
+            data/founder_briefs/CAPITAL_OS_*.md
+            var/capital-ledger.jsonl
+          retention-days: 30
+          if-no-files-found: ignore
