@@ -1,8 +1,43 @@
-# Dealix Design System — DESIGN.md
+# DEALIX Design System — DESIGN.md
 
-> Bilingual specification for the Dealix DesignOps surface.
+> Bilingual specification for the DEALIX DesignOps surface.
 > Saudi-first, Arabic-primary, English-secondary, evidence-first,
 > approval-gated, no marketing claims that the service registry cannot prove.
+>
+> **Tagline:** Intelligent Deals. Real Growth.
+
+---
+
+## 0. Brand Identity
+
+### Official Color Palette
+
+| Token         | Name           | Hex       | Role                                       |
+|---------------|----------------|-----------|--------------------------------------------|
+| `navy`        | Deep Navy      | `#0B1220` | Primary background — trust, professionalism |
+| `teal`        | Emerald Teal   | `#00D1A1` | Primary CTA — growth, intelligence          |
+| `silver`      | Soft Silver    | `#B2BBC6` | Secondary text — premium chrome             |
+| `slate`       | Slate          | `#0F1726` | Card surfaces — slightly lighter than navy  |
+| `white`       | White          | `#FFFFFF` | Text on dark backgrounds                    |
+
+### Logo Versions (all official, do not create alternatives)
+
+1. **Primary** — full icon + wordmark + tagline, vertical layout
+2. **Icon Only** — standalone D-mark (chart + arrow), usable at ≥ 24px
+3. **Horizontal Wordmark** — icon + `DEALIX` + tagline side-by-side
+4. **Monochrome** — single-color (white or navy), for print / single-ink
+
+### Typography Stack
+
+| Role          | Preferred               | Fallback           | Arabic               |
+|---------------|-------------------------|--------------------|----------------------|
+| Display/H1-H2 | Sora                    | Space Grotesk      | IBM Plex Sans Arabic |
+| Body          | Manrope                 | Plus Jakarta Sans  | IBM Plex Sans Arabic |
+| Mono/Code     | JetBrains Mono          | ui-monospace       | —                    |
+
+### Brand Values (from mark)
+
+Built on Trust · Driven by Growth · Closing Deals · Focused on Results · Global Mindset Local Impact
 
 ---
 
@@ -27,33 +62,35 @@
 
 | Token name        | Role                                            | Light     | Dark      |
 |-------------------|-------------------------------------------------|-----------|-----------|
-| `primary`         | Saudi green; primary actions, brand anchor      | #0A5C36   | #1F8A5A   |
-| `accent`          | Sand-gold; highlights, executive accents        | #C8A86A   | #E0BE7C   |
-| `success`         | Live / approved / proven                        | #1F8A5A   | #2BB07A   |
-| `warn`            | Pilot / partial / needs attention               | #C28A1F   | #E0A744   |
-| `block`           | Blocked / forbidden / requires approval         | #B23A3A   | #D45656   |
-| `surface`         | Page background                                 | #FAFAF7   | #0E1311   |
-| `surface-alt`     | Card / table-row alternate                      | #F1EFE8   | #161D1A   |
-| `text-primary`    | Body / headings                                 | #14201A   | #ECEFEC   |
-| `text-muted`      | Captions, helper, evidence small print          | #5A6661   | #9CA8A2   |
-| `text-inverse`    | Text on `primary` / `block` fills               | #FFFFFF   | #0E1311   |
+| `primary`         | Emerald Teal; primary actions, brand anchor     | #00D1A1   | #00D1A1   |
+| `accent`          | Teal glow; highlights, interactive states       | #26edbe   | #26edbe   |
+| `surface`         | Page background                                 | #F8F9FA   | #0B1220   |
+| `surface-alt`     | Card / table-row alternate                      | #FFFFFF   | #0F1726   |
+| `text-primary`    | Body / headings                                 | #0B1220   | #ECEFF4   |
+| `text-muted`      | Captions, helper, evidence small print          | #5A6B7A   | #B2BBC6   |
+| `text-inverse`    | Text on `primary` fills                         | #0B1220   | #0B1220   |
+| `success`         | Live / approved / proven                        | #00D1A1   | #00D1A1   |
+| `warn`            | Pilot / partial / needs attention               | #F5A623   | #F5A623   |
+| `block`           | Blocked / forbidden / requires approval         | #E53E3E   | #FC6565   |
 
 > Rule: components reference token *names*. Raw hex appears only in
 > the token table above and the generated CSS variables.
+> Canonical implementation: `frontend/src/lib/design-tokens.ts`
 
 ## 3. Typography Tokens
 
-| Token         | Family                                | Size  | Weight | Line-h |
-|---------------|---------------------------------------|-------|--------|--------|
-| `heading-ar`  | "IBM Plex Sans Arabic", system-ar     | 28px  | 600    | 1.35   |
-| `heading-en`  | "Inter", system-ui                    | 26px  | 600    | 1.30   |
-| `body-ar`     | "IBM Plex Sans Arabic", system-ar     | 16px  | 400    | 1.70   |
-| `body-en`     | "Inter", system-ui                    | 15px  | 400    | 1.60   |
-| `mono`        | "JetBrains Mono", ui-monospace        | 13px  | 400    | 1.55   |
+| Token         | Family                                       | Size  | Weight | Line-h |
+|---------------|----------------------------------------------|-------|--------|--------|
+| `heading-ar`  | "IBM Plex Sans Arabic", system-ar            | 28px  | 700    | 1.35   |
+| `heading-en`  | "Sora", "Space Grotesk", system-ui           | 26px  | 600    | 1.30   |
+| `body-ar`     | "IBM Plex Sans Arabic", system-ar            | 16px  | 400    | 1.75   |
+| `body-en`     | "Manrope", "Plus Jakarta Sans", system-ui    | 15px  | 400    | 1.60   |
+| `mono`        | "JetBrains Mono", ui-monospace               | 13px  | 400    | 1.55   |
 
-- Arabic line-height is intentionally taller (1.70) for diacritic safety.
-- Mono is reserved for evidence IDs, hashes, version stamps.
-- All families have local-system fallbacks; no external font CDNs.
+- Arabic line-height is intentionally taller (1.75) for diacritic safety.
+- Mono is reserved for evidence IDs, hashes, version stamps, API keys.
+- Display headings use Sora (EN) / IBM Plex Sans Arabic (AR) — not Inter.
+- All families load via Google Fonts in globals.css with `display=swap`.
 
 ## 4. Spacing Scale
 
