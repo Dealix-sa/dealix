@@ -9,6 +9,15 @@ work automatically; every external output is draft-only and approval-gated.
 
 from __future__ import annotations
 
+from auto_client_acquisition.agent_org.approval_routing import (
+    route_items_to_approvals,
+    route_report_to_approvals,
+)
+from auto_client_acquisition.agent_org.cycle_store import (
+    CycleStore,
+    get_default_cycle_store,
+    reset_default_cycle_store,
+)
 from auto_client_acquisition.agent_org.orchestrator import (
     DailyOrgReport,
     WorkItem,
@@ -27,14 +36,19 @@ from auto_client_acquisition.agent_org.org_chart import (
 
 __all__ = [
     "AgentRole",
+    "CycleStore",
     "DailyOrgReport",
     "WorkItem",
     "all_roles",
     "chief",
     "directors",
+    "get_default_cycle_store",
     "get_role",
     "operators",
     "org_chart_dict",
+    "reset_default_cycle_store",
+    "route_items_to_approvals",
+    "route_report_to_approvals",
     "run_daily_cycle",
     "validate_org",
 ]

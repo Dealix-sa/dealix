@@ -10,6 +10,15 @@ from __future__ import annotations
 import pytest
 from httpx import AsyncClient
 
+from auto_client_acquisition.agent_org.approval_routing import (
+    route_items_to_approvals,
+    route_report_to_approvals,
+)
+from auto_client_acquisition.agent_org.cycle_store import (
+    CycleStore,
+    get_default_cycle_store,
+    reset_default_cycle_store,
+)
 from auto_client_acquisition.agent_org.org_chart import (
     TIER_CHIEF,
     TIER_DIRECTOR,
@@ -30,6 +39,13 @@ from auto_client_acquisition.agent_org.orchestrator import (
     run_daily_cycle,
 )
 from auto_client_acquisition.agent_os.autonomy_levels import AutonomyLevel
+from auto_client_acquisition.approval_center import ApprovalStore
+
+
+@pytest.fixture(autouse=True)
+def _fresh_cycle_store() -> None:
+    """Wipe the process-wide cycle store before every test in this file."""
+    reset_default_cycle_store()
 
 
 # ── Org chart structure ──────────────────────────────────────────────
@@ -232,3 +248,158 @@ async def test_api_daily_cycle_rejects_bad_context(async_client: AsyncClient) ->
         json={"context": "not-an-object"},
     )
     assert resp.status_code == 422
+
+
+# ── Approval routing ─────────────────────────────────────────────────
+
+
+def test_route_report_pushes_every_external_draft() -> None:
+    store = ApprovalStore()
+    report = run_daily_cycle()
+    expected = sum(1 for w in report.work_items if w.external)
+    routed = route_report_to_approvals(report, store=store)
+    assert len(routed) == expected
+    assert len(store.list_pending()) == expected
+
+
+def test_route_report_skips_internal_items() -> None:
+    store = ApprovalStore()
+    report = run_daily_cycle()
+    internal_ids = {w.id for w in report.work_items if not w.external}
+    routed = route_report_to_approvals(report, store=store)
+    routed_object_ids = {r.object_id for r in routed}
+    assert routed_object_ids.isdisjoint(internal_ids)
+
+
+def test_routed_requests_are_draft_only_doctrine() -> None:
+    """The non-negotiable: nothing routed by the org may be approved-to-send."""
+    store = ApprovalStore()
+    report = run_daily_cycle()
+    routed = route_report_to_approvals(report, store=store)
+    assert routed
+    assert all(r.action_mode == "draft_only" for r in routed)
+    assert all(r.object_type == "agent_org_work_item" for r in routed)
+
+
+def test_routed_requests_have_bilingual_summaries() -> None:
+    store = ApprovalStore()
+    report = run_daily_cycle()
+    routed = route_report_to_approvals(report, store=store)
+    for r in routed:
+        assert r.summary_ar and r.summary_en
+
+
+def test_route_items_helper_accepts_iterable() -> None:
+    store = ApprovalStore()
+    report = run_daily_cycle()
+    external = [w for w in report.work_items if w.external]
+    routed = route_items_to_approvals(external, store=store)
+    assert len(routed) == len(external)
+
+
+# ── Cycle store ──────────────────────────────────────────────────────
+
+
+def test_cycle_store_round_trip() -> None:
+    store = CycleStore()
+    report = run_daily_cycle()
+    store.add(report)
+    assert len(store) == 1
+    assert store.get(report.cycle_id) is report
+    assert store.latest() is report
+    assert store.list_recent() == [report]
+
+
+def test_cycle_store_evicts_oldest_when_capped() -> None:
+    store = CycleStore(max_cycles=3)
+    reports = [run_daily_cycle() for _ in range(5)]
+    for r in reports:
+        store.add(r)
+    assert len(store) == 3
+    # The two oldest are gone; the three newest remain.
+    kept = {r.cycle_id for r in store.list_recent(limit=10)}
+    assert kept == {reports[-1].cycle_id, reports[-2].cycle_id, reports[-3].cycle_id}
+
+
+def test_cycle_store_list_recent_is_newest_first() -> None:
+    store = CycleStore()
+    a = run_daily_cycle()
+    b = run_daily_cycle()
+    store.add(a)
+    store.add(b)
+    recent = store.list_recent()
+    assert recent[0] is b
+    assert recent[1] is a
+
+
+def test_default_cycle_store_is_singleton() -> None:
+    assert get_default_cycle_store() is get_default_cycle_store()
+
+
+# ── API: persistence + routing + history ─────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_api_daily_cycle_persists_and_routes(
+    async_client: AsyncClient,
+) -> None:
+    resp = await async_client.post("/api/v1/agent-org/daily-cycle/run", json={})
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["persisted"] is True
+    assert body["routed_to_approvals"] == body["items_pending_approval"]
+    assert len(get_default_cycle_store()) == 1
+
+
+@pytest.mark.asyncio
+async def test_api_daily_cycle_no_route_when_disabled(
+    async_client: AsyncClient,
+) -> None:
+    resp = await async_client.post(
+        "/api/v1/agent-org/daily-cycle/run",
+        json={"route_to_approvals": False, "persist": False},
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["routed_to_approvals"] == 0
+    assert body["persisted"] is False
+    assert len(get_default_cycle_store()) == 0
+
+
+@pytest.mark.asyncio
+async def test_api_cycles_list_and_detail(async_client: AsyncClient) -> None:
+    run_a = await async_client.post("/api/v1/agent-org/daily-cycle/run", json={})
+    run_b = await async_client.post("/api/v1/agent-org/daily-cycle/run", json={})
+    a_id = run_a.json()["cycle_id"]
+    b_id = run_b.json()["cycle_id"]
+
+    listing = await async_client.get("/api/v1/agent-org/cycles?limit=10")
+    assert listing.status_code == 200
+    body = listing.json()
+    assert body["count"] == 2
+    ids = [c["cycle_id"] for c in body["cycles"]]
+    assert ids == [b_id, a_id]  # newest first
+
+    detail = await async_client.get(f"/api/v1/agent-org/cycles/{a_id}")
+    assert detail.status_code == 200
+    assert detail.json()["cycle_id"] == a_id
+
+
+@pytest.mark.asyncio
+async def test_api_cycles_latest_404_when_empty(async_client: AsyncClient) -> None:
+    resp = await async_client.get("/api/v1/agent-org/cycles/latest")
+    assert resp.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_api_cycles_detail_unknown_id_404(async_client: AsyncClient) -> None:
+    resp = await async_client.get("/api/v1/agent-org/cycles/cycle_ghost")
+    assert resp.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_api_cycles_list_rejects_bad_limit(async_client: AsyncClient) -> None:
+    too_big = await async_client.get("/api/v1/agent-org/cycles?limit=999")
+    assert too_big.status_code == 422
+    too_small = await async_client.get("/api/v1/agent-org/cycles?limit=0")
+    assert too_small.status_code == 422

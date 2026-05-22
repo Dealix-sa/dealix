@@ -1,0 +1,107 @@
+name: Agent Org Daily Cycle
+
+# Runs the Dealix Agent Organization's daily executive cycle.
+# 04:15 UTC = 07:15 Asia/Riyadh — fifteen minutes after the existing
+# revenue-machine cron, so the founder's morning queue is complete.
+
+on:
+  schedule:
+    - cron: "15 4 * * *"
+  workflow_dispatch:
+    inputs:
+      route_to_approvals:
+        description: "Push every external draft into /api/v1/approvals (default true)"
+        default: "true"
+      persist:
+        description: "Persist the report into the in-memory cycle history (default true)"
+        default: "true"
+
+concurrency:
+  group: dealix-agent-org-daily-cycle
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write   # for failure-issue creation
+
+jobs:
+  agent-org-cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout (for artifacts only)
+        uses: actions/checkout@v4
+
+      - name: Check required secrets (skip gracefully if missing)
+        id: secrets_gate
+        env:
+          API_BASE: ${{ secrets.DEALIX_API_BASE }}
+          API_KEY: ${{ secrets.DEALIX_API_KEY }}
+        run: |
+          if [ -z "${API_BASE}" ] || [ -z "${API_KEY}" ]; then
+            echo "ℹ️  secrets-not-yet-configured — skipping run"
+            echo "    DEALIX_API_BASE present: $([ -n "${API_BASE}" ] && echo yes || echo no)"
+            echo "    DEALIX_API_KEY present:  $([ -n "${API_KEY}" ] && echo yes || echo no)"
+            echo "    Set repo secrets via Settings → Secrets and variables → Actions"
+            echo "secrets_present=false" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+          echo "✅ secrets present"
+          echo "secrets_present=true" >> "${GITHUB_OUTPUT}"
+
+      - name: Run the daily executive cycle (with retry)
+        id: cycle_run
+        if: steps.secrets_gate.outputs.secrets_present == 'true'
+        env:
+          API_BASE: ${{ secrets.DEALIX_API_BASE }}
+          API_KEY: ${{ secrets.DEALIX_API_KEY }}
+        run: |
+          set -e
+          n=0
+          until [ $n -ge 3 ]; do
+            curl -fsS -X POST "$API_BASE/api/v1/agent-org/daily-cycle/run" \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer $API_KEY" \
+              -d '{
+                "route_to_approvals": ${{ github.event.inputs.route_to_approvals || 'true' }},
+                "persist": ${{ github.event.inputs.persist || 'true' }}
+              }' -o agent_org_cycle.json && break
+            n=$((n+1)); echo "retry $n / 3"; sleep 30
+          done
+          jq '{cycle_id, run_date, agents_run, items_total, items_pending_approval, routed_to_approvals, escalations}' agent_org_cycle.json
+
+      - name: Pull the org chart for the artifact
+        if: steps.secrets_gate.outputs.secrets_present == 'true'
+        env:
+          API_BASE: ${{ secrets.DEALIX_API_BASE }}
+          API_KEY: ${{ secrets.DEALIX_API_KEY }}
+        run: |
+          curl -fsS "$API_BASE/api/v1/agent-org/chart" \
+            -H "Authorization: Bearer $API_KEY" -o agent_org_chart.json
+          jq '{headcount, tiers}' agent_org_chart.json
+
+      - name: Upload run artifacts
+        if: always() && steps.secrets_gate.outputs.secrets_present == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-agent-org-daily-${{ github.run_id }}
+          path: |
+            agent_org_cycle.json
+            agent_org_chart.json
+          retention-days: 14
+
+      - name: Open issue on failure
+        if: failure() && steps.secrets_gate.outputs.secrets_present == 'true'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0,10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔴 Agent Org daily cycle failed — ${today}`,
+              body: `The Agent Org daily executive cycle failed on ${today}.\n\n` +
+                    `**Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n` +
+                    `Endpoint: \`POST /api/v1/agent-org/daily-cycle/run\`.`,
+              labels: ['ops', 'p0'],
+            });
