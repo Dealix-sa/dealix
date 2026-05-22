@@ -675,27 +675,23 @@
     }
   }
 
-  // Store the form payload for download use
-  form.addEventListener('submit', function(e) {
-    // Capture on successful submit (this runs after the main listener)
-    setTimeout(() => {
-      if (result.classList.contains('is-visible')) {
-        lastFormPayload = {
-          company_handle: form.company_handle.value.trim(),
-          sector: form.sector.value,
-          contact_name: form.contact_name.value.trim(),
-          email: form.email.value.trim(),
-          phone: form.phone.value.trim(),
-          biggest_problem: form.biggest_problem.value.trim(),
-          fastest_lever: form.fastest_lever.value.trim(),
-          target_metric: form.target_metric.value.trim(),
-          customer_base: form.customer_base.value,
-          tech_level: form.tech_level.value,
-          current_channels: form.current_channels.value.trim(),
-          offer: '7_day_proof_sprint',
-        };
-      }
-    }, 100);
+  // Capture form values synchronously on every submit so they are available
+  // for the download function regardless of how long the API call takes.
+  form.addEventListener('submit', function() {
+    lastFormPayload = {
+      company_handle: form.company_handle.value.trim(),
+      sector: form.sector.value,
+      contact_name: form.contact_name.value.trim(),
+      email: form.email.value.trim(),
+      phone: form.phone.value.trim(),
+      biggest_problem: form.biggest_problem.value.trim(),
+      fastest_lever: form.fastest_lever.value.trim(),
+      target_metric: form.target_metric.value.trim(),
+      customer_base: form.customer_base.value,
+      tech_level: form.tech_level.value,
+      current_channels: form.current_channels.value.trim(),
+      offer: '7_day_proof_sprint',
+    };
   });
 </script>
 
