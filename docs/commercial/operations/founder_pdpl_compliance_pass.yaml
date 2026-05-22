@@ -1,0 +1,32 @@
+# Founder PDPL pass — operational checklist (not legal sign-off)
+# Ref: FOUNDER_PDPL_COMPLIANCE_PASS_AR.md
+
+meta:
+  version: "2026-05-18"
+  legal_review_required: true
+
+items:
+  - id: privacy_policy_public
+    label_ar: "سياسة خصوصية منشورة ومربوطة من الموقع/التطبيق"
+    done: false
+    ref: "docs/knowledge-base/privacy_pdpl_ar_en.md"
+  - id: dsar_path_tested
+    label_ar: "مسار طلبات أصحاب البيانات (وصول/حذف) موثّق ومُختبر مرة واحدة"
+    done: false
+    ref: "docs/PDPL_DATA_SUBJECT_REQUEST_SOP.md"
+  - id: dpa_vendors
+    label_ar: "DPA مع البائعين الذين يلمسون بيانات أفراد (Hosting, CRM, …)"
+    done: false
+    ref: "docs/SECURITY_PDPL_CHECKLIST.md"
+  - id: breach_runbook
+    label_ar: "تمرين/مرجع خرق بيانات (72h) معروف للفريق"
+    done: false
+    ref: "docs/PDPL_BREACH_RESPONSE_PLAN.md"
+  - id: sales_copy_no_overclaim
+    label_ar: "نسخ المبيعات لا تدّعي امتثالاً كاملاً — محاذاة no_overclaim"
+    done: false
+    ref: "dealix/registers/no_overclaim.yaml"
+  - id: legal_review_scheduled
+    label_ar: "موعد مراجعة قانونية PDPL مجدول أو مكتمل"
+    done: false
+    ref: "docs/commercial/MARKET_INTELLIGENCE_PDPL_LEGAL_REVIEW_AR.md"

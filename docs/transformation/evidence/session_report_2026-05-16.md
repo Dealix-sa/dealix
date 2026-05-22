@@ -42,8 +42,15 @@ SLO review: weekly | owner: observability
 - Update ownership_matrix executive_review.last_ownership_matrix_review_iso after hiring review.
 - Engineering cutover only with external_signal per ENGINEERING_CUTOVER_RUNBOOK_AR.md.
 
+## CTO plan implementation (same day)
+
+- Added `scripts/run_cto_weekly_anchor.sh`, commercial registry + `apply_kpi_founder_commercial.py`
+- Dealix Cloud hub UI at `/[locale]/cloud` — see [DEALIX_CLOUD_UI_MAP.md](../../product/DEALIX_CLOUD_UI_MAP.md)
+- Bundles: `run_cto_pillar_verify_bundle.sh`, `run_compliance_gtm_gate_bundle.sh`
+
 ## Next command
 
 ```bash
 bash scripts/verify_ceo_signal_readiness.sh revenue_os   # when GTM/pipeline changed
+bash scripts/run_cto_weekly_anchor.sh                    # weekly CTO anchor
 ```

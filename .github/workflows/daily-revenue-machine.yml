@@ -9,14 +9,14 @@ on:
   workflow_dispatch:
     inputs:
       gmail_drafts:
-        description: "Gmail drafts to generate"
-        default: "50"
+        description: "Gmail drafts to generate (founder-reviewable daily cap)"
+        default: "15"
       linkedin_drafts:
         description: "LinkedIn drafts to generate"
-        default: "20"
+        default: "8"
       call_scripts:
         description: "Call scripts to generate"
-        default: "10"
+        default: "5"
       create_in_gmail_inbox:
         description: "Create drafts in Gmail Drafts folder (true if OAuth ready)"
         default: "true"
@@ -74,11 +74,11 @@ jobs:
               -H "Content-Type: application/json" \
               -H "Authorization: Bearer $API_KEY" \
               -d '{
-                "daily_candidates": 200,
-                "gmail_drafts": ${{ github.event.inputs.gmail_drafts || 50 }},
-                "linkedin_drafts": ${{ github.event.inputs.linkedin_drafts || 20 }},
-                "call_scripts": ${{ github.event.inputs.call_scripts || 10 }},
-                "partner_intros": 10,
+                "daily_candidates": 120,
+                "gmail_drafts": ${{ github.event.inputs.gmail_drafts || 15 }},
+                "linkedin_drafts": ${{ github.event.inputs.linkedin_drafts || 8 }},
+                "call_scripts": ${{ github.event.inputs.call_scripts || 5 }},
+                "partner_intros": 5,
                 "approval_mode": "draft_only",
                 "create_in_gmail_drafts_in_inbox": ${{ github.event.inputs.create_in_gmail_inbox || 'true' }}
               }' -o revenue_run.json && break

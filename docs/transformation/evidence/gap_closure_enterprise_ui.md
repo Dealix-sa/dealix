@@ -33,4 +33,6 @@ NO_FAKE_REVENUE=pass
 ENTERPRISE CONTROL PLANE: PASS
 ```
 
+**Last verified (CTO plan):** 2026-05-16 — `bash scripts/verify_enterprise_control_plane.sh`
+
 **KPI numeric closure:** when portal metrics exist, record `approval_cycle_time_hours` and `conversion_discovery_to_pilot` in [dealix/transformation/kpi_baselines.yaml](dealix/transformation/kpi_baselines.yaml) with `source_ref` to CRM or ticketing export.

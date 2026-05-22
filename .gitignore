@@ -3,6 +3,7 @@
 # ─────────────────────────────────────────────────────────────
 .env
 .env.*
+dealix/transformation/kpi_founder_commercial_import.yaml
 !.env.example
 !.env.staging.example
 *.pem

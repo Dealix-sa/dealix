@@ -1,5 +1,9 @@
 # حلقة التنفيذ التجاري اليومية — Dealix
 
+للتصريف اليومي على مستوى «غرفة الحرب» (أهداف، لمسات، proof، خطوة تالية، موافقات): **[DEALIX_REVENUE_WAR_ROOM_AR.md](DEALIX_REVENUE_WAR_ROOM_AR.md)**.
+
+**الخطة التشغيلية الشاملة (مرجع المؤسس):** [MASTER_COMMERCIAL_OPERATING_PLAN_AR.md](../commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md) · أحداث أدلة: [evidence_events_tracker.csv](../commercial/operations/evidence_events_tracker.csv) · scorecard أسبوعي: [COMMERCIAL_WEEKLY_SCORECARD_AR.md](../commercial/operations/COMMERCIAL_WEEKLY_SCORECARD_AR.md).
+
 يربط هذا الملف **المراحل التشغيلية** ([COMPREHENSIVE_COMPLETION_PLAN_AR.md](../COMPREHENSIVE_COMPLETION_PLAN_AR.md)) بـ **لوحة ما بعد الإطلاق** ([POST_LAUNCH_SCORECARD.md](POST_LAUNCH_SCORECARD.md)) حتى أول إيراد مدفوع ثم التكرار.
 
 ## يومياً (قبل أول دولار)

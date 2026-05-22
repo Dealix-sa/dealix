@@ -38,4 +38,17 @@ Extend control-plane governance from systems 26–35 into all high-impact workfl
 2. Delivery execution workflows
 3. Customer success and support workflows
 4. Partner and channel workflows
+5. Finance reporting and executive reporting workflows
+6. Product release and self-evolving improvement workflows
+
+## Machine-readable inventory
+
+- Workflow inventory: `auto_client_acquisition/governance_os/governance_workflow_inventory.yaml`
+- Control rules: `auto_client_acquisition/governance_os/workflow_control_registry.py`
+- Verification: `python3 scripts/verify_global_ai_transformation.py --check governance-expansion`
+
+## Governed domain count
+
+Minimum **10** high-impact workflow domains (blueprint expansion beyond legacy systems 26–35).  
+Test: `pytest tests/test_global_ai_transformation_initiatives.py -k governance`
 5. Back-office and executive automation workflows

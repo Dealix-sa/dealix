@@ -1,5 +1,7 @@
 # قائمة تنفيذ — Private Beta (المرحلة 2)
 
+**حالة «الآن»:** [phase2_checklist_status.yaml](../../dealix/transformation/phase2_checklist_status.yaml) · واجهة: [/ar/business-now](/ar/business-now)
+
 ## عملاء (5–10)
 
 - [ ] قائمة أسماء + قطاع واحد متفق عليه

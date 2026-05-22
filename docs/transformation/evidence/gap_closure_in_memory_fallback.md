@@ -28,4 +28,6 @@ Last captured output (trimmed):
 GLOBAL AI TRANSFORMATION: PASS
 ```
 
+**Last verified (CTO plan):** 2026-05-16 — `python3 scripts/verify_global_ai_transformation.py`
+
 **KPI numeric closure:** populate `governance_integrity_rate` / `tenant_isolation_violation_count` in [dealix/transformation/kpi_baselines.yaml](dealix/transformation/kpi_baselines.yaml) when CRM/control-plane exports exist; keep `source_ref` non-empty.

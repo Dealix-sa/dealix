@@ -44,7 +44,30 @@ export const apiClient: AxiosInstance = axios.create({
   timeout: 30_000,
 });
 
+const OPS_PROXY_PREFIXES = [
+  "/api/v1/ops-autopilot",
+  "/api/v1/evidence",
+  "/api/v1/sales/pipeline",
+  "/api/v1/support",
+  "/api/v1/knowledge/search",
+  "/api/v1/invoices",
+];
+
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const publicAdminKey = process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY || "";
+  const useOpsProxy = process.env.NEXT_PUBLIC_USE_DEALIX_OPS_PROXY === "1";
+  const url = config.url || "";
+  if (
+    typeof window !== "undefined" &&
+    useOpsProxy &&
+    !publicAdminKey &&
+    OPS_PROXY_PREFIXES.some((p) => url.startsWith(p))
+  ) {
+    config.url = `/api/dealix-proxy${url}`;
+    if (config.headers) {
+      delete config.headers["X-Admin-API-Key"];
+    }
+  }
   const token = getToken();
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -203,6 +226,392 @@ export const api = {
 
   getFullOpsRunApprovals: (runId: string) =>
     apiClient.get(`/api/v1/full-ops-os/runs/${encodeURIComponent(runId)}/approvals`),
+
+  getBusinessNowSnapshot: () => apiClient.get("/api/v1/business-now/snapshot"),
+
+  getCommercialStrategy: () => apiClient.get("/api/v1/business-now/commercial-strategy"),
+
+  postCommercialStrategySimulate: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/business-now/commercial-strategy/simulate", body),
+
+  postBusinessVerticalRecommend: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/business/verticals/recommend", body),
+
+  postBusinessRecommendPlan: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/business/recommend-plan", body),
+
+  getBusinessGtmFirst10: () => apiClient.get("/api/v1/business/gtm/first-10"),
+
+  getBusinessSalesScript: () => apiClient.get("/api/v1/business/sales-script"),
+
+  getBusinessProofPackDemo: () => apiClient.get("/api/v1/business/proof-pack/demo"),
+
+  getTransformationKpiSnapshot: () =>
+    apiClient.get("/api/v1/transformation/kpi-snapshot"),
+
+  getBusinessNowOperatorSignals: (adminApiKey: string) =>
+    apiClient.get("/api/v1/business-now/operator-signals", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postPublicRiskScore: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/risk-score", body),
+
+  postPublicLead: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/leads", body),
+
+  getPublicKnowledgeAnswer: (q: string) =>
+    apiClient.get("/api/v1/public/knowledge/answer", { params: { q } }),
+
+  postPublicBooking: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/booking-request", body),
+
+  getOpsFounderDashboard: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/founder-dashboard", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getWarRoom: (
+    adminApiKey: string,
+    params?: {
+      due_today?: boolean;
+      needs_follow_up?: boolean;
+      top_n?: number;
+      status_in?: string;
+    },
+  ) =>
+    apiClient.get("/api/v1/ops-autopilot/war-room", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params,
+    }),
+
+  getWarRoomSummary: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/war-room/summary", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  patchWarRoom: (adminApiKey: string, leadId: string, body: Record<string, unknown>) =>
+    apiClient.patch(`/api/v1/ops-autopilot/war-room/${encodeURIComponent(leadId)}`, body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postWarRoomTarget: (adminApiKey: string, body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/ops-autopilot/war-room", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getSalesPipelineAutopilot: (adminApiKey: string) =>
+    apiClient.get("/api/v1/sales/pipeline", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getEvidenceLedger: (adminApiKey: string, limit = 80) =>
+    apiClient.get("/api/v1/evidence/events", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { limit },
+    }),
+
+  getSupportTicketsAutopilot: (adminApiKey: string, limit = 80) =>
+    apiClient.get("/api/v1/support/tickets", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { limit },
+    }),
+
+  kbSearch: (adminApiKey: string, q: string) =>
+    apiClient.get("/api/v1/knowledge/search", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { q },
+    }),
+
+  invoiceDraftAutopilot: (adminApiKey: string, body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/invoices/draft", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getMarketingCalendar: (adminApiKey: string, limit = 80) =>
+    apiClient.get("/api/v1/ops-autopilot/marketing/calendar", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { limit },
+    }),
+
+  buildMarketingUtm: (adminApiKey: string, body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/ops-autopilot/marketing/utm", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  applyMarketingWeeklyPack: (adminApiKey: string, body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/ops-autopilot/marketing/weekly-pack/apply", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getFullOpsHealth: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/full-ops-health", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getWarRoomTodayPack: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/war-room/today-pack", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getFounderDailyPack: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/daily-pack", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getFounderValuePlan: (adminApiKey: string, topN = 5) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/value-plan", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN },
+    }),
+
+  getFounderGtmStack: (adminApiKey: string, topN = 10) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/gtm-stack", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN },
+    }),
+
+  getFounderFullAutonomousOps: (
+    adminApiKey: string,
+    topN = 15,
+    opts?: { includeValuePlan?: boolean; includeNested?: boolean },
+  ) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/full-autonomous-ops", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: {
+        top_n: topN,
+        include_value_plan: opts?.includeValuePlan ?? false,
+        include_nested: opts?.includeNested ?? false,
+      },
+    }),
+
+  getFounderCockpit: (adminApiKey: string, topN = 15, mode = "morning") =>
+    apiClient.get("/api/v1/ops-autopilot/founder/cockpit", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN, mode },
+    }),
+
+  postFounderCockpitRunMorning: (
+    adminApiKey: string,
+    body: { top_n?: number; run_optional_scripts?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/cockpit/run-morning", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postFounderCockpitRunUnifiedDay: (
+    adminApiKey: string,
+    body: { top_n?: number; quick?: boolean; run_optional_scripts?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/cockpit/run-unified-day", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      timeout: 120_000,
+    }),
+
+  postFounderCockpitRunEvening: (adminApiKey: string, body: { top_n?: number } = {}) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/cockpit/run-evening", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postFounderCockpitRunWeekly: (
+    adminApiKey: string,
+    body: { top_n?: number; run_optional_scripts?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/cockpit/run-weekly", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      timeout: 90_000,
+    }),
+
+  postFounderCompleteAutonomousDayRun: (
+    adminApiKey: string,
+    body: {
+      weekly?: boolean;
+      evening?: boolean;
+      skip_commercial_day?: boolean;
+      use_unified_in_process?: boolean;
+      top_n?: number;
+    } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/complete-autonomous-day/run", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      timeout: 180_000,
+    }),
+
+  postFounderFullAutonomousOpsRun: (
+    adminApiKey: string,
+    body: { dry_run?: boolean; top_n?: number; run_optional_scripts?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/full-autonomous-ops/run", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getFounderCommercialValueMap: (adminApiKey: string, topN = 5) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/commercial-value-map", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN, include_value_plan: true },
+    }),
+
+  getFounderStrongestPlan: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/strongest-plan", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getFounderStrongestOps: (adminApiKey: string, mode = "morning") =>
+    apiClient.get("/api/v1/ops-autopilot/founder/strongest-ops", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { mode },
+    }),
+
+  postFounderStrongestOpsRun: (
+    adminApiKey: string,
+    body: { mode?: string; run_checks?: boolean; write_brief?: boolean } = {},
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/strongest-ops/run", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      timeout: 120_000,
+    }),
+
+  getFounderExpansionStatus: (adminApiKey: string, topN = 10) =>
+    apiClient.get("/api/v1/ops-autopilot/founder/expansion-status", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN },
+    }),
+
+  postFounderEvidenceCsvAppend: (
+    adminApiKey: string,
+    body: {
+      event_type: string;
+      company: string;
+      notes?: string;
+      motion?: string;
+      offer_id?: string;
+    },
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/founder/evidence/csv-append", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  importWarRoomTargets: (adminApiKey: string, body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/ops-autopilot/war-room/import-targets", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getMarketingSocialToday: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/marketing/social-today", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postMarketingSocialMark: (adminApiKey: string, body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/ops-autopilot/marketing/social-today/mark", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postMarketingQueueApproval: (adminApiKey: string) =>
+    apiClient.post(
+      "/api/v1/ops-autopilot/marketing/queue-approval",
+      {},
+      { headers: { "X-Admin-API-Key": adminApiKey } },
+    ),
+
+  getSalesObjections: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/sales/objections", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getLeadMeetingBrief: (adminApiKey: string, leadId: string, locale = "ar") =>
+    apiClient.get(
+      `/api/v1/ops-autopilot/leads/${encodeURIComponent(leadId)}/meeting-brief`,
+      { headers: { "X-Admin-API-Key": adminApiKey }, params: { locale } },
+    ),
+
+  advanceLeadStage: (
+    adminApiKey: string,
+    leadId: string,
+    body: Record<string, unknown>,
+  ) =>
+    apiClient.post(
+      `/api/v1/ops-autopilot/leads/${encodeURIComponent(leadId)}/advance-stage`,
+      body,
+      { headers: { "X-Admin-API-Key": adminApiKey } },
+    ),
+
+  getMarketingObjectionDraft: (adminApiKey: string, slug: string) =>
+    apiClient.get("/api/v1/ops-autopilot/marketing/objection-draft", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { slug },
+    }),
+
+  classifySupportTicket: (adminApiKey: string, ticketId: string) =>
+    apiClient.post(
+      `/api/v1/support/tickets/${encodeURIComponent(ticketId)}/classify`,
+      {},
+      { headers: { "X-Admin-API-Key": adminApiKey } },
+    ),
+
+  draftSupportResponse: (adminApiKey: string, ticketId: string) =>
+    apiClient.post(
+      `/api/v1/support/tickets/${encodeURIComponent(ticketId)}/draft-response`,
+      {},
+      { headers: { "X-Admin-API-Key": adminApiKey } },
+    ),
+
+  getOpsLeads: (adminApiKey: string, limit = 80) =>
+    apiClient.get("/api/v1/ops-autopilot/leads", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { limit },
+    }),
+
+  getTargetingToday: (adminApiKey: string, topN = 5) =>
+    apiClient.get("/api/v1/ops-autopilot/targeting/today", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN },
+    }),
+
+  getTargetingPool: (adminApiKey: string) =>
+    apiClient.get("/api/v1/ops-autopilot/targeting/pool", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getTargetingP0Today: (adminApiKey: string, topN = 10) =>
+    apiClient.get("/api/v1/ops-autopilot/targeting/p0-today", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN },
+    }),
+
+  postWarRoomGenerateOutreach: (adminApiKey: string, leadId: string) =>
+    apiClient.post(
+      `/api/v1/ops-autopilot/war-room/${encodeURIComponent(leadId)}/generate-outreach`,
+      {},
+      { headers: { "X-Admin-API-Key": adminApiKey } },
+    ),
+
+  postClientPackGenerate: (
+    adminApiKey: string,
+    body: { company?: string; lead_id?: string; write_disk?: boolean },
+  ) =>
+    apiClient.post("/api/v1/ops-autopilot/client-pack/generate", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  postTargetingImport: (adminApiKey: string, body: { csv_text: string }) =>
+    apiClient.post("/api/v1/ops-autopilot/targeting/import", body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  patchMarketingCalendar: (
+    adminApiKey: string,
+    slotId: string,
+    body: Record<string, unknown>,
+  ) =>
+    apiClient.patch(`/api/v1/ops-autopilot/marketing/calendar/${encodeURIComponent(slotId)}`, body, {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
+  getMarketingPublishKit: (adminApiKey: string, slotId: string) =>
+    apiClient.get(
+      `/api/v1/ops-autopilot/marketing/calendar/${encodeURIComponent(slotId)}/publish-kit`,
+      { headers: { "X-Admin-API-Key": adminApiKey } },
+    ),
 };
 
 export default api;
