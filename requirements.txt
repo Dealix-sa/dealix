@@ -100,7 +100,13 @@ arq>=0.25.0
 numpy>=1.26.0,<3
 
 # Saudi market — Hijri calendar (Um Al-Qura calendar system)
-ummalqura>=1.0.4
+# Optional: integrations/saudi_market.py guards `from ummalqura...` with
+# try/except ImportError and falls back to a Gregorian estimate when the
+# library is absent.  The only PyPI release satisfying >=1.0.4 (2.0.1)
+# has a broken setup.py that calls Debian-only `install_layout` and
+# therefore fails to build on standard CI Ubuntu runners.  Reinstate
+# when upstream ships a wheel or once we switch to hijri-converter.
+# ummalqura>=1.0.4
 
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9

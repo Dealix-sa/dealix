@@ -31,6 +31,8 @@ from api.routers.domains import sales as sales_domain
 from api.routers.domains import webhooks as webhooks_domain
 from api.routers import (
     business_now as business_now_router,
+    marketing_ops as marketing_ops_router,
+    revenue_ops_autopilot as revenue_ops_autopilot_router,
     transformation_os as transformation_os_router,
     admin_tenants,
     agent_mesh_os,
@@ -315,6 +317,22 @@ def create_app() -> FastAPI:
     app.include_router(friction_log_router.router)
     app.include_router(transformation_os_router.router, prefix="/api/v1")
     app.include_router(business_now_router.router, prefix="/api/v1")
+    # Revenue Ops Autopilot — multiple admin-gated routers under
+    # /api/v1/{sales,evidence,support,knowledge,diagnostics,invoices,ops-autopilot}
+    # plus a public /api/v1/public surface.  The module file landed in
+    # commit 84d478c but was never wired up; this enables the
+    # /api/v1/ops-autopilot/founder/* endpoints that the
+    # verify_full_autonomous_ops_stack.py CI gate exercises.
+    app.include_router(revenue_ops_autopilot_router.router_public_addons)
+    app.include_router(revenue_ops_autopilot_router.router_sales_ops)
+    app.include_router(revenue_ops_autopilot_router.router_evidence)
+    app.include_router(revenue_ops_autopilot_router.router_support)
+    app.include_router(revenue_ops_autopilot_router.router_kb)
+    app.include_router(revenue_ops_autopilot_router.router_diag)
+    app.include_router(revenue_ops_autopilot_router.router_inv)
+    app.include_router(revenue_ops_autopilot_router.router_ops)
+    # Marketing factory — /api/v1/ops-autopilot/marketing
+    app.include_router(marketing_ops_router.router_marketing)
     if value_os_router is not None:
         app.include_router(value_os_router.router)
     # Wave 14B — Commercial activation: CSV upload for the Data Pack offer
