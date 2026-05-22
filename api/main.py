@@ -77,6 +77,12 @@ from api.routers import friction_log as friction_log_router
 from api.routers import sprint_runner as sprint_runner_router
 from api.routers import founder_dashboard as founder_dashboard_router
 from api.routers import audit_export as audit_export_router
+# 90-day commercial plan — M&A Radar, Billing Gateway, Autonomous Scheduler, Offer Ladder
+from api.routers import m_and_a as m_and_a_router
+from api.routers import billing_gateway as billing_gateway_router
+from api.routers import autonomous_scheduler as autonomous_scheduler_router
+from api.routers import offer_ladder as offer_ladder_router
+from api.routers import market_radar as market_radar_router
 
 # value_os, data_os and agent_os routers are imported defensively: an
 # optional router with a broken module-level import must not abort app
@@ -345,6 +351,12 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # 90-day commercial plan — M&A Radar, Billing Gateway, Autonomous Scheduler, Offer Ladder, Market Radar
+    app.include_router(m_and_a_router.router)
+    app.include_router(billing_gateway_router.router)
+    app.include_router(autonomous_scheduler_router.router)
+    app.include_router(offer_ladder_router.router)
+    app.include_router(market_radar_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
