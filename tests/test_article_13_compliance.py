@@ -66,6 +66,11 @@ ALLOWLIST_PATHS: list[str] = [
     # demo→delivery pipelines, NOT the bare receiving endpoint.
     "api/routers/webhooks.py",
     "api/security/webhook_signatures.py",
+    # Launch-status diagnostic probe: surfaces "is CALENDLY_WEBHOOK_SECRET
+    # configured?" as a readiness boolean only. Reads the env var, does not
+    # process events or trigger pipelines — strictly less than the
+    # allowlisted bare receiver in api/routers/webhooks.py.
+    "api/routers/founder_launch_status.py",
 ]
 
 

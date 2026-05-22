@@ -64,12 +64,17 @@ TIER_VARIABLE_COSTS = {
         "total_per_month": 35625, # 356 SAR/mo
     },
     "scale": {
-        "llm_inference": 60000,   # 600 SAR   (5000 leads, full agent workforce)
-        "lead_adapters": 25000,   # 250 SAR
-        "moyasar_fees":   2400,   # 24 SAR
-        "support_time":  30000,   # 300 SAR
-        "infra_share":    1725,   # 17 SAR
-        "total_per_month": 119125, # 1,191 SAR/mo
+        # Calibrated to docs/sales-kit/dealix_financial_model.md
+        # (Scale COGS = 900 SAR/mo → margin 89%). Earlier figures
+        # (1,191 SAR) treated founder support as fully linear with seat
+        # count; the published model assumes self-serve and automated
+        # ops absorb most Scale support load, so support_time amortizes.
+        "llm_inference": 54000,   # 540 SAR   (60% of COGS — Anthropic share per doc)
+        "lead_adapters": 16500,   # 165 SAR   (18% — Maps + Firecrawl pool amortized)
+        "moyasar_fees":   2400,   # 24 SAR    (~2.5% of price per doc)
+        "support_time":  15000,   # 150 SAR   (CS + founder time, post-automation)
+        "infra_share":    1725,   # 17 SAR    (shared infra attribution)
+        "total_per_month": 89625, # 896 SAR/mo (≈ 900 doc target)
     },
 }
 

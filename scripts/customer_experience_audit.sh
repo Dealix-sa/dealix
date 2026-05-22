@@ -51,12 +51,24 @@ for page in landing/customer-portal.html landing/executive-command-center.html; 
 done
 
 # 3. No forbidden claims
+#
+# The forbidden patterns catch marketing language we never use (guarantees,
+# blast-style outreach, scraping). They must NOT flag explicit DISCLAIMERS
+# ("estimated outcomes are not guaranteed" / "ليست نتائج مضمونة") — those
+# are the doctrine-honest honesty statements we want on the page.
+#
+# Strategy: strip disclaimer lines first (lines containing the "not
+# guaranteed" / "ليست مضمونة" phrasing), then run the regex over what's
+# left. Any forbidden term that survives is a real claim.
 FORBIDDEN_RE='(\bguaranteed?\b|\bblast\b|\bscraping\b|نضمن|مضمون|cold[[:space:]]+(whatsapp|outreach|email))'
+DISCLAIMER_RE='not[[:space:]]+guaranteed|ليست[[:space:]]+(نتائج[[:space:]]+)?مضمون(ة)?'
 for page in landing/customer-portal.html landing/executive-command-center.html; do
-  if [ -f "$page" ] && grep -qiE "$FORBIDDEN_RE" "$page"; then
-    fail "$page contains forbidden claims"
-  else
-    ok_msg "$page free of forbidden claims"
+  if [ -f "$page" ]; then
+    if grep -ivE "$DISCLAIMER_RE" "$page" | grep -qiE "$FORBIDDEN_RE"; then
+      fail "$page contains forbidden claims"
+    else
+      ok_msg "$page free of forbidden claims"
+    fi
   fi
 done
 
