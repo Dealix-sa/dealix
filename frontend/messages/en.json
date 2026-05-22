@@ -291,6 +291,64 @@
         "empty": "Strategic gate catalog is not available yet.",
         "count": "{count} gate(s)"
       }
+    },
+    "cs": {
+      "layerLabel": "Customer Success + Financial Autonomy",
+      "sectionTitle": "Customer Success Cycle",
+      "empty": "No customer-success cycle has run yet.",
+      "runNow": "Run CS cycle",
+      "opportunities": "Opportunities",
+      "noOpportunities": "No opportunities surfaced this cycle.",
+      "hardGates": "Hard gates",
+      "warnings": "Warnings",
+      "approvalsCreated": "{count} approval(s) queued",
+      "workItemsCreated": "{count} work item(s) created",
+      "summary": {
+        "active": "Active customers",
+        "opportunities": "Opportunities",
+        "atRisk": "At risk",
+        "expansion": "Expansion ready",
+        "renewals": "Renewals due",
+        "detractors": "NPS detractors"
+      }
+    },
+    "financial": {
+      "sectionTitle": "Financial Dashboard",
+      "empty": "No financial cycle has run yet.",
+      "runNow": "Run financial cycle",
+      "violationsTitle": "Threshold violations",
+      "anomaliesTitle": "Anomalies",
+      "hardGates": "Hard gates",
+      "warnings": "Warnings",
+      "observed": "Observed:",
+      "action": "Action:",
+      "approvalsPending": "{count} pending approval(s)",
+      "anomalyCount": "{count} anomaly(ies)",
+      "violationCount": "{count} violation(s)",
+      "metrics": {
+        "mrr": "MRR",
+        "arr": "ARR",
+        "nrr": "NRR",
+        "churn": "Churn / mo",
+        "runway": "Runway",
+        "margin": "Gross margin",
+        "ltv": "LTV",
+        "cacPayback": "CAC payback",
+        "monthsUnit": "months"
+      }
+    },
+    "memo": {
+      "sectionTitle": "Monthly Board Memo",
+      "monthLabel": "Month (YYYY-MM)",
+      "reload": "Reload",
+      "build": "Build memo",
+      "emptyForMonth": "No board memo for {month} yet.",
+      "invalidMonth": "Month must be YYYY-MM.",
+      "complete": "Complete",
+      "incomplete": "Incomplete",
+      "approvalQueued": "Approval queued",
+      "missingSections": "Missing sections",
+      "warnings": "Warnings"
     }
   }
 }

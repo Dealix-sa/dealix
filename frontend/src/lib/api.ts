@@ -220,6 +220,43 @@ export const api = {
     proof_impact_prefix?: string;
     approval_ids?: string[];
   }) => apiClient.post("/api/v1/approvals/bulk-approve", body),
+
+  // Customer Success Autonomy
+  getCustomerSuccessLatest: () =>
+    apiClient.get("/api/v1/customer-success/autonomous/latest"),
+
+  postCustomerSuccessRunCycle: (body?: {
+    customer_ids?: string[];
+    on_date?: string;
+  }) =>
+    apiClient.post("/api/v1/customer-success/autonomous/run", body ?? {}),
+
+  // Financial Autonomy
+  getFinancialLatest: () =>
+    apiClient.get("/api/v1/financial/autonomous/latest"),
+
+  postFinancialRunCycle: (body?: {
+    period_end?: string;
+    cadence?: string;
+    customer_id?: string;
+  }) =>
+    apiClient.post(
+      "/api/v1/financial/autonomous/run",
+      body ?? { cadence: "weekly" },
+    ),
+
+  getFinancialBoardMemo: (month: string) =>
+    apiClient.get(
+      `/api/v1/financial/autonomous/board-memo/${encodeURIComponent(month)}`,
+    ),
+
+  postFinancialBoardMemoRun: (month: string) =>
+    apiClient.post(
+      `/api/v1/financial/autonomous/board-memo/run?month=${encodeURIComponent(month)}`,
+    ),
+
+  getFinancialThresholds: () =>
+    apiClient.get("/api/v1/financial/autonomous/thresholds"),
 };
 
 export default api;

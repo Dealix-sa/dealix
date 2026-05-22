@@ -291,6 +291,64 @@
         "empty": "كتالوج البوابات الاستراتيجية غير متاح بعد.",
         "count": "{count} بوابة"
       }
+    },
+    "cs": {
+      "layerLabel": "نجاح العملاء + الاستقلالية المالية",
+      "sectionTitle": "دورة نجاح العملاء",
+      "empty": "لم تُشغّل أي دورة نجاح عملاء بعد.",
+      "runNow": "تشغيل الدورة الآن",
+      "opportunities": "الفرص",
+      "noOpportunities": "لا توجد فرص في هذه الدورة.",
+      "hardGates": "البوابات الصلبة",
+      "warnings": "تحذيرات",
+      "approvalsCreated": "{count} موافقة في الطابور",
+      "workItemsCreated": "{count} عنصر عمل أُنشئ",
+      "summary": {
+        "active": "عملاء نشطون",
+        "opportunities": "الفرص",
+        "atRisk": "في خطر",
+        "expansion": "جاهز للتوسعة",
+        "renewals": "تجديدات مستحقة",
+        "detractors": "منتقدو NPS"
+      }
+    },
+    "financial": {
+      "sectionTitle": "اللوحة المالية",
+      "empty": "لم تُشغّل أي دورة مالية بعد.",
+      "runNow": "تشغيل الدورة المالية",
+      "violationsTitle": "خروقات العتبات",
+      "anomaliesTitle": "الشذوذات",
+      "hardGates": "البوابات الصلبة",
+      "warnings": "تحذيرات",
+      "observed": "المرصود:",
+      "action": "الإجراء:",
+      "approvalsPending": "{count} موافقة معلّقة",
+      "anomalyCount": "{count} شذوذ",
+      "violationCount": "{count} خرق",
+      "metrics": {
+        "mrr": "MRR",
+        "arr": "ARR",
+        "nrr": "NRR",
+        "churn": "الإلغاء الشهري",
+        "runway": "المسار",
+        "margin": "الهامش الإجمالي",
+        "ltv": "LTV",
+        "cacPayback": "استرداد CAC",
+        "monthsUnit": "شهر"
+      }
+    },
+    "memo": {
+      "sectionTitle": "مذكّرة المجلس الشهرية",
+      "monthLabel": "الشهر (YYYY-MM)",
+      "reload": "إعادة تحميل",
+      "build": "بناء المذكّرة",
+      "emptyForMonth": "لا توجد مذكّرة مجلس لشهر {month}.",
+      "invalidMonth": "صيغة الشهر يجب أن تكون YYYY-MM.",
+      "complete": "مكتملة",
+      "incomplete": "ناقصة",
+      "approvalQueued": "موافقة في الطابور",
+      "missingSections": "أقسام ناقصة",
+      "warnings": "تحذيرات"
     }
   }
 }

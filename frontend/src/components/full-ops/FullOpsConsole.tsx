@@ -16,11 +16,16 @@ import { StrategyBoard } from "./StrategyBoard";
 import { StrategicCyclePanel } from "./StrategicCyclePanel";
 import { DecisionLedger } from "./DecisionLedger";
 import { GateBoard } from "./GateBoard";
+import { CustomerSuccessPanel } from "./CustomerSuccessPanel";
+import { FinancialDashboardPanel } from "./FinancialDashboardPanel";
+import { BoardMemoViewer } from "./BoardMemoViewer";
 import type {
   ApprovalCardItem,
   ApprovalsPendingResponse,
   CommandCenterResponse,
+  CsCycleResponse,
   CycleResponse,
+  FinancialCycleResponse,
   GateRuleItem,
   HierarchyResponse,
   StrategicCycleResponse,
@@ -67,6 +72,15 @@ export function FullOpsConsole() {
   const [loadingStrategicCycle, setLoadingStrategicCycle] = useState(true);
   const [loadingStrategicGates, setLoadingStrategicGates] = useState(true);
   const [runningStrategic, setRunningStrategic] = useState(false);
+
+  const [csCycle, setCsCycle] = useState<CsCycleResponse | null>(null);
+  const [loadingCs, setLoadingCs] = useState(true);
+  const [runningCs, setRunningCs] = useState(false);
+
+  const [financialCycle, setFinancialCycle] =
+    useState<FinancialCycleResponse | null>(null);
+  const [loadingFinancial, setLoadingFinancial] = useState(true);
+  const [runningFinancial, setRunningFinancial] = useState(false);
 
   const loadHierarchy = useCallback(async () => {
     setLoadingHierarchy(true);
@@ -157,10 +171,38 @@ export function FullOpsConsole() {
     }
   }, []);
 
+  const loadCs = useCallback(async () => {
+    setLoadingCs(true);
+    try {
+      const res = await api.getCustomerSuccessLatest();
+      const data = unwrap<CsCycleResponse | null>(res.data);
+      setCsCycle(data && data.cycle_id ? data : null);
+    } catch {
+      setCsCycle(null);
+    } finally {
+      setLoadingCs(false);
+    }
+  }, []);
+
+  const loadFinancial = useCallback(async () => {
+    setLoadingFinancial(true);
+    try {
+      const res = await api.getFinancialLatest();
+      const data = unwrap<FinancialCycleResponse | null>(res.data);
+      setFinancialCycle(data && !data.empty ? data : null);
+    } catch {
+      setFinancialCycle(null);
+    } finally {
+      setLoadingFinancial(false);
+    }
+  }, []);
+
   const loadAll = useCallback(() => {
     void loadStrategicTier();
     void loadStrategicCycle();
     void loadStrategicGates();
+    void loadCs();
+    void loadFinancial();
     void loadHierarchy();
     void loadCycle();
     void loadCommandCenter();
@@ -169,6 +211,8 @@ export function FullOpsConsole() {
     loadStrategicTier,
     loadStrategicCycle,
     loadStrategicGates,
+    loadCs,
+    loadFinancial,
     loadHierarchy,
     loadCycle,
     loadCommandCenter,
@@ -198,6 +242,48 @@ export function FullOpsConsole() {
       setRunning(false);
     }
   }, [isAr, loadCycle, loadApprovals, loadCommandCenter]);
+
+  const handleRunCsCycle = useCallback(async () => {
+    setRunningCs(true);
+    try {
+      const res = await api.postCustomerSuccessRunCycle();
+      const data = unwrap<CsCycleResponse | null>(res.data);
+      if (data && data.cycle_id) {
+        setCsCycle(data);
+      } else {
+        await loadCs();
+      }
+      toast.success(isAr ? "اكتملت دورة نجاح العملاء" : "CS cycle completed");
+      void loadApprovals();
+    } catch {
+      toast.error(
+        isAr ? "فشل تشغيل دورة نجاح العملاء" : "CS cycle run failed",
+      );
+    } finally {
+      setRunningCs(false);
+    }
+  }, [isAr, loadCs, loadApprovals]);
+
+  const handleRunFinancialCycle = useCallback(async () => {
+    setRunningFinancial(true);
+    try {
+      const res = await api.postFinancialRunCycle({ cadence: "weekly" });
+      const data = unwrap<FinancialCycleResponse | null>(res.data);
+      if (data && !data.empty) {
+        setFinancialCycle(data);
+      } else {
+        await loadFinancial();
+      }
+      toast.success(isAr ? "اكتملت الدورة المالية" : "Financial cycle completed");
+      void loadApprovals();
+    } catch {
+      toast.error(
+        isAr ? "فشل تشغيل الدورة المالية" : "Financial cycle run failed",
+      );
+    } finally {
+      setRunningFinancial(false);
+    }
+  }, [isAr, loadFinancial, loadApprovals]);
 
   const handleRunStrategicCycle = useCallback(async () => {
     setRunningStrategic(true);
@@ -229,7 +315,9 @@ export function FullOpsConsole() {
     loadingApprovals ||
     loadingStrategicTier ||
     loadingStrategicCycle ||
-    loadingStrategicGates;
+    loadingStrategicGates ||
+    loadingCs ||
+    loadingFinancial;
 
   return (
     <div className="space-y-6">
@@ -305,6 +393,57 @@ export function FullOpsConsole() {
                 gates={strategicGates}
                 loading={loadingStrategicGates}
               />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* CS + Financial Autonomy — between Strategy and Full Ops */}
+      <div className="rounded-2xl border border-blue-500/20 bg-blue-500/[0.03] p-1">
+        <p className="px-3 pt-2 pb-1 text-[11px] uppercase tracking-widest text-blue-400">
+          {t("cs.layerLabel")}
+        </p>
+        <div className="space-y-6 p-1">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold">
+                {t("cs.sectionTitle")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CustomerSuccessPanel
+                cycle={csCycle}
+                loading={loadingCs}
+                running={runningCs}
+                onRun={handleRunCsCycle}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold">
+                {t("financial.sectionTitle")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <FinancialDashboardPanel
+                cycle={financialCycle}
+                loading={loadingFinancial}
+                running={runningFinancial}
+                onRun={handleRunFinancialCycle}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold">
+                {t("memo.sectionTitle")}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <BoardMemoViewer />
             </CardContent>
           </Card>
         </div>

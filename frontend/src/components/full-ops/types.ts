@@ -243,3 +243,132 @@ export interface StrategicDecisionsResponse {
 export interface StrategicGatesResponse {
   gates: GateRuleItem[];
 }
+
+// Customer Success Autonomy Layer
+// Mirrors the contract for /api/v1/customer-success/autonomous/*.
+
+export interface CsSummary {
+  active_customers?: number;
+  opportunities_total?: number;
+  at_risk?: number;
+  expansion_ready?: number;
+  renewals_due?: number;
+  nps_detractors?: number;
+}
+
+export interface CsOpportunity {
+  type?: string;
+  customer_id?: string;
+  urgency?: string;
+  recommended_action_ar?: string;
+  recommended_action_en?: string;
+  evidence?: string[];
+  [key: string]: unknown;
+}
+
+export interface CsCycleResponse {
+  cycle_id?: string;
+  generated_at?: string;
+  on_date?: string;
+  title_ar?: string;
+  title_en?: string;
+  summary?: CsSummary;
+  opportunities?: CsOpportunity[];
+  approvals_created?: number;
+  work_items_created?: number;
+  hard_gates?: string[];
+  warnings?: string[];
+  report_paths?: { json?: string; md?: string };
+}
+
+// Financial Autonomy Layer
+// Mirrors the contract for /api/v1/financial/autonomous/*.
+
+export interface FinancialMetrics {
+  mrr_sar?: number;
+  arr_sar?: number;
+  nrr_pct?: number;
+  churn_pct_monthly?: number;
+  runway_months?: number;
+  gross_margin_pct?: number;
+  ltv_sar?: number;
+  cac_payback_months?: number;
+  [key: string]: unknown;
+}
+
+export interface FinancialAnomaly {
+  kind?: string;
+  observed?: number;
+  expected?: number;
+  delta_pct?: number;
+  severity?: string;
+  title_ar?: string;
+  title_en?: string;
+  [key: string]: unknown;
+}
+
+export interface FinancialThresholdRule {
+  rule_id?: string;
+  source?: string;
+  title_ar?: string;
+  title_en?: string;
+  metric?: string;
+  comparator?: string;
+  threshold?: number;
+  severity?: string;
+  action_on_violation?: string;
+}
+
+export interface FinancialThresholdViolation {
+  rule?: FinancialThresholdRule;
+  observed_value?: number;
+  breached?: boolean;
+  action_on_violation?: string;
+}
+
+export interface FinancialCycleResponse {
+  empty?: boolean;
+  cycle_id?: string;
+  generated_at?: string;
+  period_end?: string;
+  cadence?: string;
+  title_ar?: string;
+  title_en?: string;
+  metrics?: FinancialMetrics;
+  unit_economics?: Record<string, unknown>;
+  anomalies?: FinancialAnomaly[];
+  threshold_violations?: FinancialThresholdViolation[];
+  approvals_pending?: { count?: number; items?: ApprovalCardItem[] };
+  hard_gates?: string[];
+  warnings?: string[];
+  report_paths?: { json?: string; md?: string };
+}
+
+export interface FinancialThresholdsResponse {
+  thresholds: FinancialThresholdRule[];
+}
+
+export interface BoardMemoSection {
+  title_ar?: string;
+  title_en?: string;
+  body_ar?: string;
+  body_en?: string;
+  [key: string]: unknown;
+}
+
+export interface BoardMemoResponse {
+  empty?: boolean;
+  cycle_id?: string;
+  generated_at?: string;
+  month?: string;
+  title_ar?: string;
+  title_en?: string;
+  approval_id?: string | null;
+  sections?: Record<string, BoardMemoSection>;
+  section_order?: string[];
+  sections_complete?: boolean;
+  missing_sections?: string[];
+  warnings?: string[];
+  report_paths?: { json?: string; md?: string };
+  error?: string;
+}
