@@ -294,12 +294,12 @@ def step6_proof_pack(
         "problem": problem_summary or "(provided in kickoff)",
         "inputs": (
             f"Customer data import: {rows_imported} row(s). "
-            f"Data-quality score: {dq_score:.2f}/1.00."
+            f"Data-quality score: {dq_score:.2f}/100."
         ),
         "source_passports": passport_desc,
         "work_completed": work_completed_summary or "10-step sprint executed",
         "outputs": outputs_text,
-        "quality_scores": f"Data-quality (DQ) score: {dq_score:.2f}/1.00.",
+        "quality_scores": f"Data-quality (DQ) score: {dq_score:.2f}/100.",
         "governance_decisions": f"Draft governance decisions — {gov_lines}.",
         "blocked_risks": (
             "One or more drafts were blocked by governance review — "
