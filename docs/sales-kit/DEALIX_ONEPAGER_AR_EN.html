@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dealix — One-Pager · مختصر مؤسسي</title>
+<style>
+  :root{
+    --bg: hsl(220 30% 6%);
+    --surface: hsl(220 25% 10%);
+    --surface-2: hsl(220 22% 14%);
+    --border: hsl(220 20% 22%);
+    --text: hsl(210 20% 96%);
+    --muted: hsl(215 15% 70%);
+    --emerald: hsl(162 70% 42%);
+    --gold: hsl(42 80% 56%);
+    --amber: hsl(34 90% 58%);
+    --red: hsl(0 70% 56%);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Tajawal,Outfit,system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.55}
+  .page{max-width:1100px;margin:0 auto;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  header.cover{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .wordmark{font-family:Outfit,system-ui,sans-serif;font-weight:700;font-size:32px;letter-spacing:-0.02em}
+  .dot{display:inline-block;width:10px;height:10px;background:var(--emerald);margin:0 2px 8px 0;border-radius:2px;vertical-align:middle}
+  .meta{color:var(--muted);font-size:12px;text-align:end;direction:ltr}
+  .pane{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px}
+  .pane h2{margin:0 0 8px 0;font-size:18px;font-weight:700}
+  .pane h2 .kicker{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px}
+  .pane p{margin:0 0 8px 0;color:var(--text)}
+  .pane.en{direction:ltr;font-family:Outfit,system-ui,sans-serif}
+  ul{margin:8px 0;padding-inline-start:18px}
+  ul li{margin-bottom:4px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+  .chip{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)}
+  .chip b{display:block;color:var(--text);font-size:13px;margin-bottom:2px}
+  .accent{height:3px;background:linear-gradient(90deg,var(--emerald),var(--gold));border-radius:2px;margin:10px 0 14px 0}
+  .rule{color:var(--gold)}
+  .warn{color:var(--red)}
+  .ok{color:var(--emerald)}
+  footer{grid-column:1 / -1;border-top:1px solid var(--border);padding-top:12px;display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+  .btn-print{position:fixed;top:16px;inset-inline-end:16px;background:var(--emerald);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
+  @media print{
+    .btn-print{display:none}
+    html,body{background:#fff;color:#0b0d12}
+    .page{padding:0;max-width:none}
+    .pane{background:#fff;border-color:#d7dbe2;color:#0b0d12;break-inside:avoid}
+    .pane p{color:#0b0d12}
+    .chip{background:#f5f6f9;border-color:#d7dbe2;color:#0b0d12}
+    .chip b{color:#0b0d12}
+    .wordmark,.meta,.muted{color:#0b0d12}
+    .accent{background:linear-gradient(90deg,#0e8a63,#caa44a)}
+    .dot{background:#0e8a63}
+    footer{color:#5b6472}
+    @page{size:A4;margin:14mm}
+  }
+</style>
+</head>
+<body>
+<button class="btn-print" onclick="window.print()">طباعة / Save as PDF</button>
+<main class="page">
+  <header class="cover">
+    <div class="wordmark">deal<span class="dot"></span>ix</div>
+    <div class="meta">
+      <div>One-Pager · مختصر مؤسسي</div>
+      <div>v1 · 2026</div>
+    </div>
+  </header>
+
+  <!-- AR pane -->
+  <section class="pane ar" lang="ar" dir="rtl">
+    <h2><span class="kicker">من نحن</span>عمليات ذكاء اصطناعي محوكمة للمنشآت السعودية</h2>
+    <div class="accent"></div>
+    <p>Dealix ليس CRM إضافي ولا منصة وعود. هو <b>مشغّل عمليات</b> يبني للمنشأة قدرة قابلة للقياس على إدارة الفرص، الدعم، والمعرفة بذكاء اصطناعي محوكم — مع دليل لكل خطوة.</p>
+
+    <h2 style="margin-top:14px"><span class="kicker">المشكلة</span>ما بعد الـ Lead</h2>
+    <p>الحملات تصنع اهتمامًا. السؤال الذي يكلّف الإيرادات: <b>من رد؟ من تابع؟ ما الخطوة التالية؟ وأين الدليل؟</b></p>
+
+    <h2 style="margin-top:14px"><span class="kicker">كيف نعمل · SOAEN</span>كل خطوة محكومة</h2>
+    <ul>
+      <li><b>Source</b> — مصدر مشروع للبيانات</li>
+      <li><b>Owner</b> — مالك واضح لكل فرصة</li>
+      <li><b>Approval</b> — لا فعل خارجي بدون موافقة</li>
+      <li><b>Evidence</b> — حزمة إثبات قابلة للمراجعة</li>
+      <li><b>Next Action</b> — خطوة تالية مجدولة</li>
+    </ul>
+
+    <h2 style="margin-top:14px"><span class="kicker">السلّم</span>كيف نبدأ معًا</h2>
+    <div class="grid-3">
+      <div class="chip"><b>1 · Risk Score</b>تشخيص مجاني لتسرّب Leads</div>
+      <div class="chip"><b>2 · Diagnostic</b>سبرنت 7 أيام على عيّنة Leads</div>
+      <div class="chip"><b>3 · Proof Pack</b>تقرير حوكمة قابل للتسليم</div>
+    </div>
+    <div class="grid-3" style="margin-top:10px">
+      <div class="chip"><b>4 · Retainer</b>تشغيل شهري محكوم</div>
+      <div class="chip"><b>5 · Capability</b>قدرة مؤسسية قابلة لإعادة الاستخدام</div>
+      <div class="chip"><b>—</b><span class="muted">السعر يُحدد بعد التشخيص</span></div>
+    </div>
+
+    <h2 style="margin-top:14px"><span class="kicker">ملتزمون</span>نظام حماية البيانات السعودي (PDPL)</h2>
+    <p>تخزين البيانات محلي، الموافقات صريحة، السجلات قابلة للتدقيق. <span class="warn">لا ندرّب على بيانات حساسة بدون إذن.</span></p>
+
+    <h2 style="margin-top:14px"><span class="kicker">ما لا نفعله</span>حدود واضحة</h2>
+    <ul>
+      <li class="warn">لا أتمتة Outreach باردة على واتساب أو LinkedIn.</li>
+      <li class="warn">لا كَشط (scraping) للبيانات.</li>
+      <li class="warn">لا وعود مضمونة بمبيعات.</li>
+    </ul>
+  </section>
+
+  <!-- EN pane -->
+  <section class="pane en" lang="en" dir="ltr">
+    <h2><span class="kicker">Who we are</span>The governed AI operations partner for Saudi enterprises</h2>
+    <div class="accent"></div>
+    <p>Dealix is not another CRM, and not a promises platform. We're an <b>operations runner</b> — we build measurable AI-governed capability for revenue, support, and knowledge work, with evidence for every step.</p>
+
+    <h2 style="margin-top:14px"><span class="kicker">The problem</span>Post-Lead Revenue Operations</h2>
+    <p>Campaigns produce interest. The question that costs revenue: <b>who replied, who followed up, what's the next action, and where's the proof?</b></p>
+
+    <h2 style="margin-top:14px"><span class="kicker">How we work · SOAEN</span>Every step governed</h2>
+    <ul>
+      <li><b>Source</b> — every fact has a legitimate origin</li>
+      <li><b>Owner</b> — every opportunity has a single owner</li>
+      <li><b>Approval</b> — no external action without consent</li>
+      <li><b>Evidence</b> — a reviewable proof pack, always</li>
+      <li><b>Next Action</b> — scheduled, not implied</li>
+    </ul>
+
+    <h2 style="margin-top:14px"><span class="kicker">The ladder</span>How we start together</h2>
+    <div class="grid-3">
+      <div class="chip"><b>1 · Risk Score</b>Free leak diagnostic on your funnel</div>
+      <div class="chip"><b>2 · Diagnostic</b>7-day sprint on a real lead sample</div>
+      <div class="chip"><b>3 · Proof Pack</b>Reviewable governance report</div>
+    </div>
+    <div class="grid-3" style="margin-top:10px">
+      <div class="chip"><b>4 · Retainer</b>Governed monthly operations</div>
+      <div class="chip"><b>5 · Capability</b>A reusable enterprise capability</div>
+      <div class="chip"><b>—</b><span class="muted">Pricing follows the diagnostic.</span></div>
+    </div>
+
+    <h2 style="margin-top:14px"><span class="kicker">Compliance</span>PDPL-aligned by design</h2>
+    <p>Local data storage, explicit consent, audit-ready logs. <span class="warn">We don't train on sensitive data without permission.</span></p>
+
+    <h2 style="margin-top:14px"><span class="kicker">What we won't do</span>Clear boundaries</h2>
+    <ul>
+      <li class="warn">No cold WhatsApp / LinkedIn outreach automation.</li>
+      <li class="warn">No data scraping.</li>
+      <li class="warn">No guaranteed-revenue claims.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div>Dealix · Riyadh, KSA · dealix.me · PDPL-aligned</div>
+    <div>SOAEN · Source → Owner → Approval → Evidence → Next Action</div>
+  </footer>
+</main>
+</body>
+</html>

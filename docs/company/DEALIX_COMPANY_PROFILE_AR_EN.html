@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dealix — Company Profile · الملف التعريفي</title>
+<style>
+  :root{
+    --bg: hsl(220 30% 6%);
+    --surface: hsl(220 25% 10%);
+    --surface-2: hsl(220 22% 14%);
+    --border: hsl(220 20% 22%);
+    --text: hsl(210 20% 96%);
+    --muted: hsl(215 15% 70%);
+    --emerald: hsl(162 70% 42%);
+    --gold: hsl(42 80% 56%);
+    --red: hsl(0 70% 56%);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Tajawal,Outfit,system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.6}
+  .page{max-width:1100px;margin:0 auto;padding:32px 32px 16px 32px}
+  .cover{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .wordmark{font-family:Outfit,system-ui,sans-serif;font-weight:700;font-size:44px;letter-spacing:-0.02em}
+  .dot{display:inline-block;width:14px;height:14px;background:var(--emerald);margin:0 3px 8px 0;border-radius:3px;vertical-align:middle}
+  .meta{color:var(--muted);font-size:12px;direction:ltr;text-align:end}
+  h1.tagline{font-size:28px;font-weight:700;margin:18px 0 4px 0}
+  h1.tagline-en{font-family:Outfit,system-ui,sans-serif;font-size:24px;font-weight:500;color:var(--muted);margin:0 0 10px 0;direction:ltr;text-align:left}
+  .accent{height:3px;background:linear-gradient(90deg,var(--emerald),var(--gold));border-radius:2px;margin:12px 0 22px 0}
+  section.split{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px;page-break-inside:auto}
+  .pane{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px}
+  .pane h2{margin:0 0 8px 0;font-size:18px;font-weight:700}
+  .pane h2 .kicker{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px}
+  .pane.en{direction:ltr;font-family:Outfit,system-ui,sans-serif}
+  ul{margin:8px 0;padding-inline-start:18px}
+  ul li{margin-bottom:4px}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+  .grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+  .chip{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted)}
+  .chip b{display:block;color:var(--text);font-size:13px;margin-bottom:2px}
+  .warn{color:var(--red)}
+  footer{margin-top:24px;border-top:1px solid var(--border);padding-top:12px;display:flex;justify-content:space-between;color:var(--muted);font-size:11px}
+  .btn-print{position:fixed;top:16px;inset-inline-end:16px;background:var(--emerald);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
+  .page-break{page-break-before:always;break-before:page}
+  @media print{
+    .btn-print{display:none}
+    html,body{background:#fff;color:#0b0d12}
+    .page{padding:0;max-width:none}
+    .pane{background:#fff;border-color:#d7dbe2;color:#0b0d12;break-inside:avoid}
+    .chip{background:#f5f6f9;border-color:#d7dbe2;color:#0b0d12}
+    .chip b{color:#0b0d12}
+    .wordmark,h1.tagline,.meta{color:#0b0d12}
+    h1.tagline-en{color:#5b6472}
+    .accent{background:linear-gradient(90deg,#0e8a63,#caa44a)}
+    .dot{background:#0e8a63}
+    footer{color:#5b6472}
+    @page{size:A4;margin:14mm}
+  }
+</style>
+</head>
+<body>
+<button class="btn-print" onclick="window.print()">طباعة / Save as PDF</button>
+
+<main class="page">
+  <!-- Cover -->
+  <header class="cover">
+    <div>
+      <div class="wordmark">deal<span class="dot"></span>ix</div>
+      <h1 class="tagline">عمليات ذكاء اصطناعي محوكمة للمنشآت السعودية</h1>
+      <h1 class="tagline-en">Governed AI operations partner for Saudi enterprises</h1>
+    </div>
+    <div class="meta">
+      <div>Company Profile · الملف التعريفي</div>
+      <div>v1 · 2026</div>
+      <div>Riyadh, KSA · dealix.me</div>
+    </div>
+  </header>
+
+  <div class="accent"></div>
+
+  <!-- Identity & mission (AR | EN) -->
+  <section class="split">
+    <div class="pane" lang="ar" dir="rtl">
+      <h2><span class="kicker">الهوية</span>من نحن</h2>
+      <p>Dealix شركة سعودية لتشغيل عمليات الذكاء الاصطناعي المحوكم. نحوّل البيانات المتناثرة، والعمليات اليدوية، والمعرفة المتفرّقة إلى <b>قدرات تشغيلية محوكمة</b> مع دليل أداء قابل للقياس.</p>
+      <h2 style="margin-top:14px"><span class="kicker">المهمة</span>ما الذي نلتزم به</h2>
+      <p>أن نمنح كل منشأة سعودية القدرة على تشغيل الذكاء الاصطناعي في <b>سير العمل اليومي</b> دون مخاطر تشغيلية أو رقابية، وبإثبات لكل قرار.</p>
+    </div>
+    <div class="pane en" lang="en">
+      <h2><span class="kicker">Identity</span>Who we are</h2>
+      <p>Dealix is a Saudi-built operator of governed AI operations. We convert scattered data, manual workflows, and tribal knowledge into <b>governed operating capabilities</b> with measurable proof of value.</p>
+      <h2 style="margin-top:14px"><span class="kicker">Mission</span>What we commit to</h2>
+      <p>To give every Saudi enterprise the ability to run AI inside <b>daily workflow</b> — without operational or regulatory risk, and with evidence for every decision.</p>
+    </div>
+  </section>
+
+  <!-- What we build -->
+  <section class="split">
+    <div class="pane" lang="ar" dir="rtl">
+      <h2><span class="kicker">ماذا نبني</span>قدرات قابلة لإعادة الاستخدام</h2>
+      <ul>
+        <li>قدرات الإيرادات (Post-Lead Revenue Ops)</li>
+        <li>قدرات دعم العملاء</li>
+        <li>أتمتة العمليات</li>
+        <li>قدرات معرفة الشركة</li>
+        <li>جاهزية البيانات</li>
+        <li>حوكمة الذكاء الاصطناعي</li>
+        <li>تقارير تنفيذية</li>
+      </ul>
+    </div>
+    <div class="pane en" lang="en">
+      <h2><span class="kicker">What we build</span>Reusable capabilities</h2>
+      <ul>
+        <li>Revenue capabilities (Post-Lead Revenue Ops)</li>
+        <li>Customer-support capabilities</li>
+        <li>Operations automation</li>
+        <li>Company knowledge capabilities</li>
+        <li>Data readiness</li>
+        <li>AI governance</li>
+        <li>Executive reporting</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SOAEN -->
+  <section class="split">
+    <div class="pane" lang="ar" dir="rtl">
+      <h2><span class="kicker">العقيدة التشغيلية</span>SOAEN — لا خطوة بدون دليل</h2>
+      <ul>
+        <li><b>Source</b> — كل بيان مصدره مشروع</li>
+        <li><b>Owner</b> — كل فرصة لها مالك واحد</li>
+        <li><b>Approval</b> — لا فعل خارجي بدون موافقة</li>
+        <li><b>Evidence</b> — حزمة إثبات قابلة للمراجعة</li>
+        <li><b>Next Action</b> — خطوة تالية مجدولة</li>
+      </ul>
+    </div>
+    <div class="pane en" lang="en">
+      <h2><span class="kicker">Operating doctrine</span>SOAEN — no step without evidence</h2>
+      <ul>
+        <li><b>Source</b> — every fact has a legitimate origin</li>
+        <li><b>Owner</b> — every opportunity has a single owner</li>
+        <li><b>Approval</b> — no external action without consent</li>
+        <li><b>Evidence</b> — a reviewable proof pack, always</li>
+        <li><b>Next Action</b> — scheduled, not implied</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="page-break"></div>
+
+  <!-- Offer ladder -->
+  <section>
+    <div class="pane" style="margin-top:18px">
+      <h2><span class="kicker">السلّم · The ladder</span>كيف نبدأ معًا · How we start together</h2>
+      <div class="grid-5">
+        <div class="chip"><b>1 · Risk Score</b>تشخيص مجاني لتسرّب Leads · Free funnel-leak diagnostic</div>
+        <div class="chip"><b>2 · Diagnostic</b>سبرنت 7 أيام على عيّنة Leads · 7-day sprint on a lead sample</div>
+        <div class="chip"><b>3 · Proof Pack</b>تقرير حوكمة قابل للتسليم · Reviewable governance report</div>
+        <div class="chip"><b>4 · Retainer</b>تشغيل شهري محكوم · Governed monthly operations</div>
+        <div class="chip"><b>5 · Capability</b>قدرة مؤسسية قابلة لإعادة الاستخدام · A reusable enterprise capability</div>
+      </div>
+      <p style="margin-top:10px;color:var(--muted)">السعر يُحدد بعد التشخيص — لا أسعار وهمية على الموقع. · Pricing follows the diagnostic — no placeholder numbers.</p>
+    </div>
+  </section>
+
+  <!-- Compliance + Limits -->
+  <section class="split">
+    <div class="pane" lang="ar" dir="rtl">
+      <h2><span class="kicker">الامتثال</span>محاذاة PDPL</h2>
+      <ul>
+        <li>تخزين البيانات داخل المملكة بشكل افتراضي.</li>
+        <li>موافقات صريحة قبل أي مشاركة خارجية.</li>
+        <li>سجلات قابلة للتدقيق لكل قرار حسّاس.</li>
+        <li>اتفاقية معالجة بيانات (DPA) عند البدء.</li>
+        <li>لا تدريب على بيانات حساسة بدون إذن.</li>
+      </ul>
+    </div>
+    <div class="pane en" lang="en">
+      <h2><span class="kicker">Compliance</span>PDPL alignment</h2>
+      <ul>
+        <li>Data resides inside KSA by default.</li>
+        <li>Explicit consent before any external sharing.</li>
+        <li>Audit-ready logs for every sensitive decision.</li>
+        <li>Data-processing agreement at engagement start.</li>
+        <li>No training on sensitive data without permission.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="split">
+    <div class="pane" lang="ar" dir="rtl">
+      <h2><span class="kicker">ما لا نفعله</span>حدود واضحة</h2>
+      <ul>
+        <li class="warn">لا أتمتة Outreach باردة على واتساب أو LinkedIn.</li>
+        <li class="warn">لا كَشط بيانات.</li>
+        <li class="warn">لا وعود مضمونة بالنتائج.</li>
+        <li class="warn">لا "إثباتات" مفبركة لتسريع البوّابات.</li>
+      </ul>
+    </div>
+    <div class="pane en" lang="en">
+      <h2><span class="kicker">What we won't do</span>Clear boundaries</h2>
+      <ul>
+        <li class="warn">No cold WhatsApp or LinkedIn outreach automation.</li>
+        <li class="warn">No data scraping.</li>
+        <li class="warn">No guaranteed-outcome marketing claims.</li>
+        <li class="warn">No fabricated proof to satisfy internal gates.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="split">
+    <div class="pane" lang="ar" dir="rtl">
+      <h2><span class="kicker">للتواصل</span>كيف نبدأ</h2>
+      <p>اطلب Risk Score مجاني عبر الموقع، أو ابعث عيّنة لـ 10–20 Leads قديمة من CRM لديك، نُعيدها لك خلال 7 أيام كحزمة إثبات حقيقية مع خطوة تالية مجدولة.</p>
+    </div>
+    <div class="pane en" lang="en">
+      <h2><span class="kicker">Contact</span>How to start</h2>
+      <p>Request a free Risk Score on the site, or share an export of 10–20 older CRM leads. We return a real Proof Pack within 7 days with a scheduled next action.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div>Dealix · Riyadh, KSA · dealix.me · PDPL-aligned</div>
+    <div>SOAEN · Source → Owner → Approval → Evidence → Next Action</div>
+  </footer>
+</main>
+</body>
+</html>
