@@ -137,6 +137,17 @@ class Settings(BaseSettings):
         ),
     )
 
+    # War-room leads store (M-WR). Default "json" keeps the existing JSON-file
+    # store; "postgres" routes lead reads/writes to `war_room_leads`. Mirrors
+    # the M1 pattern. Valid values: "json" | "postgres".
+    war_room_store_backend: str = Field(
+        default="json",
+        validation_alias=AliasChoices(
+            "DEALIX_WAR_ROOM_STORE_BACKEND",
+            "war_room_store_backend",
+        ),
+    )
+
     # In-process governed-day scheduler (M2). Default OFF — GitHub Actions
     # cron stays the fallback. When enabled, a daemon thread runs
     # run_governed_day() once per day at governed_day_hour_ksa. The governed

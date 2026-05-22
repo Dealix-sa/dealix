@@ -85,6 +85,7 @@ only the gaps, in governed form, and reuse everything that exists.
 | M7 | ✅ **BUILT** — `sequencing_engine` + `follow_up_tasks` table persists the cadence; `due_tasks`/`mark_task` drive a governed release | Reliable multi-touch sequencing |
 | M8 | ✅ **BUILT** — canonical `LeadLifecycleStage` + forward-only state machine; `leads.lifecycle_stage` + `lead_stage_transitions` table | Durable pipeline state |
 | M9 | ✅ **BUILT** — `bulk_intake.normalize_import` lands raw import rows as `captured` leads (dedup + reject); `draft_approval_bridge` auto-queues every agent draft into the governed approval queue | Import-and-process a list; drafts always governed |
+| M-WR | ✅ **BUILT** — `PostgresWarRoomLeadsStore` on the new `war_room_leads` table (migration 014); env-gated (`war_room_store_backend=postgres`), JSON fallback. Leads survive restarts. | War-room leads consistent with the Postgres data plane |
 
 ### Frontend cockpit
 
