@@ -121,6 +121,73 @@ def probe_healthz(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any]:
     return probe_get(api_base, "/healthz", timeout_sec=timeout_sec)
 
 
+VERSION_REQUIRED_FIELDS: tuple[str, ...] = ("service", "status", "version", "git_sha")
+META_REQUIRED_FIELDS: tuple[str, ...] = ("service", "version", "surfaces", "canonical_links")
+
+
+def validate_version_payload(probe: dict[str, Any]) -> dict[str, Any]:
+    """Structural check for /version: JSON shape + required fields + status==ok."""
+    if not probe.get("ok"):
+        return {"valid": False, "reason": "probe_not_ok", "missing": []}
+    snippet = probe.get("snippet") or ""
+    try:
+        payload = json.loads(snippet)
+    except (TypeError, ValueError):
+        return {"valid": False, "reason": "not_json", "missing": []}
+    if not isinstance(payload, dict):
+        return {"valid": False, "reason": "not_object", "missing": []}
+    missing = [f for f in VERSION_REQUIRED_FIELDS if not payload.get(f)]
+    if missing:
+        return {"valid": False, "reason": "missing_fields", "missing": missing}
+    if str(payload.get("status")).lower() != "ok":
+        return {"valid": False, "reason": "status_not_ok", "missing": []}
+    return {"valid": True, "reason": "", "missing": []}
+
+
+def validate_meta_payload(probe: dict[str, Any]) -> dict[str, Any]:
+    """Structural check for /api/v1/meta: JSON shape + non-empty surfaces."""
+    if not probe.get("ok"):
+        return {"valid": False, "reason": "probe_not_ok", "missing": []}
+    snippet = probe.get("snippet") or ""
+    try:
+        payload = json.loads(snippet)
+    except (TypeError, ValueError):
+        return {"valid": False, "reason": "not_json", "missing": []}
+    if not isinstance(payload, dict):
+        return {"valid": False, "reason": "not_object", "missing": []}
+    missing = [f for f in META_REQUIRED_FIELDS if f not in payload]
+    if missing:
+        return {"valid": False, "reason": "missing_fields", "missing": missing}
+    surfaces = payload.get("surfaces")
+    if not isinstance(surfaces, dict) or not surfaces:
+        return {"valid": False, "reason": "empty_surfaces", "missing": []}
+    return {"valid": True, "reason": "", "missing": []}
+
+
+def _shape_hint_ar(version_shape: dict[str, Any], meta_shape: dict[str, Any]) -> str:
+    """Founder-facing Arabic hint when a trust endpoint returns 200 with bad shape."""
+    parts: list[str] = []
+    if not version_shape.get("valid"):
+        reason = version_shape.get("reason")
+        if reason == "not_json":
+            parts.append("/version يرجع 200 لكن المحتوى ليس JSON — راجع CDN/Proxy.")
+        elif reason == "missing_fields":
+            missing = ", ".join(version_shape.get("missing") or [])
+            parts.append(f"/version ناقص حقول: {missing}.")
+        elif reason == "status_not_ok":
+            parts.append("/version لا يعيد status=ok — تحقق من إعدادات النشر.")
+    if not meta_shape.get("valid"):
+        reason = meta_shape.get("reason")
+        if reason == "not_json":
+            parts.append("/api/v1/meta يرجع 200 لكن المحتوى ليس JSON.")
+        elif reason == "missing_fields":
+            missing = ", ".join(meta_shape.get("missing") or [])
+            parts.append(f"/api/v1/meta ناقص حقول: {missing}.")
+        elif reason == "empty_surfaces":
+            parts.append("/api/v1/meta يرجع surfaces فارغ — راجع gtm_public_surfaces.")
+    return " ".join(parts)
+
+
 def probe_trust_layer(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any]:
     """Probe GTM trust endpoints on production API."""
     paths = ("/healthz", "/version", "/api/v1/meta", "/health")
@@ -130,15 +197,29 @@ def probe_trust_layer(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any
     deploy_stale = healthz.get("ok") and "version" not in snippet
     version_missing = (probes.get("version") or {}).get("status") == 404
     meta_missing = (probes.get("api_v1_meta") or {}).get("status") == 404
+
+    version_shape = validate_version_payload(probes.get("version") or {})
+    meta_shape = validate_meta_payload(probes.get("api_v1_meta") or {})
+    shape_hint = _shape_hint_ar(version_shape, meta_shape)
+
     ok = all(p.get("ok") for p in probes.values() if p.get("probed"))
     return {
         "probes": probes,
+        "version_payload": version_shape,
+        "meta_payload": meta_shape,
         "deploy_stale_hint_ar": (
             "النشر الحي قديم — /healthz بلا version أو /version غير منشور. انتظر CI + Railway deploy."
             if deploy_stale or version_missing or meta_missing
             else ""
         ),
-        "ok": ok and not deploy_stale and not version_missing,
+        "shape_drift_hint_ar": shape_hint,
+        "ok": (
+            ok
+            and not deploy_stale
+            and not version_missing
+            and version_shape["valid"]
+            and meta_shape["valid"]
+        ),
     }
 
 
@@ -273,6 +354,8 @@ def analyze_railway_production(*, api_base: str | None = None) -> dict[str, Any]
     if repo["ok"] and live.get("probed") and not live.get("ok"):
         verdict = "WARN"
     if repo["ok"] and trust.get("deploy_stale_hint_ar"):
+        verdict = "WARN"
+    if repo["ok"] and trust.get("shape_drift_hint_ar"):
         verdict = "WARN"
     if repo["ok"] and sha.get("verdict") == "DRIFT":
         verdict = "WARN"

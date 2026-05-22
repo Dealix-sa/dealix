@@ -78,6 +78,9 @@ def main() -> int:
         for key, row in (trust.get("probes") or {}).items():
             if row.get("probed"):
                 print(f"  live {key}: {row.get('url')} -> {row.get('status', row.get('error'))}")
+        shape_hint = trust.get("shape_drift_hint_ar")
+        if shape_hint:
+            print(f"  FOUNDER_ACTION (shape): {shape_hint}")
         sha_check = blob.get("deployed_sha_check") or {}
         sha_verdict = sha_check.get("verdict")
         if sha_verdict and sha_verdict != "NOT_PROBED":

@@ -39,6 +39,9 @@ def build_founder_production_gates(
     hint = trust.get("deploy_stale_hint_ar")
     if hint:
         founder_actions.append(hint)
+    shape_hint = trust.get("shape_drift_hint_ar")
+    if shape_hint:
+        founder_actions.append(shape_hint)
 
     sha_check = railway.get("deployed_sha_check") or {}
     sha_hint = sha_check.get("hint_ar")
