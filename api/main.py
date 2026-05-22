@@ -108,6 +108,11 @@ from api.routers import commercial_map as commercial_map_router
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Wave 16 — Revenue Ops Autopilot: war room, evidence ledger, public addons
+# (public/leads, public/risk-score, partner-apply, etc.) — these were
+# previously defined but never registered, so the customer-facing forms 404'd.
+from api.routers import revenue_ops_autopilot as revenue_ops_autopilot_router
+from api.routers import marketing_ops as marketing_ops_router
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -345,6 +350,24 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+
+    # ── Wave 16 — Revenue Ops Autopilot ───────────────────────────
+    # Customer-facing public endpoints (/api/v1/public/leads etc.) plus
+    # the founder-only Ops surfaces (war room, evidence ledger, sales
+    # pipeline, support, knowledge, diagnostic, invoice intent, marketing
+    # calendar). All self-prefix their paths.
+    for _rop_router in (
+        revenue_ops_autopilot_router.router_public_addons,
+        revenue_ops_autopilot_router.router_sales_ops,
+        revenue_ops_autopilot_router.router_evidence,
+        revenue_ops_autopilot_router.router_support,
+        revenue_ops_autopilot_router.router_kb,
+        revenue_ops_autopilot_router.router_diag,
+        revenue_ops_autopilot_router.router_inv,
+        revenue_ops_autopilot_router.router_ops,
+        marketing_ops_router.router_marketing,
+    ):
+        app.include_router(_rop_router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

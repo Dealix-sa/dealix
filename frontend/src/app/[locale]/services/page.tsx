@@ -114,10 +114,16 @@ export default async function ServicesHubPage({ params }: ServicesHubProps) {
 
           <ServicesSprintPanelDynamic locale={locale} />
 
-          <div className="mt-12">
+          <div className="mt-12 flex flex-wrap gap-3">
+            <Link
+              href={`/${locale}/billing`}
+              className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow transition hover:opacity-90"
+            >
+              ابدأ الدفع الآن
+            </Link>
             <Link
               href={`/${locale}/login`}
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow transition hover:opacity-90"
+              className="inline-flex items-center justify-center rounded-lg border border-border bg-card/40 px-5 py-2.5 text-sm font-medium text-foreground transition hover:border-primary/50"
             >
               تسجيل الدخول
             </Link>
@@ -232,10 +238,16 @@ export default async function ServicesHubPage({ params }: ServicesHubProps) {
 
         <ServicesSprintPanelDynamic locale={locale} />
 
-        <div className="mt-12">
+        <div className="mt-12 flex flex-wrap gap-3">
+          <Link
+            href={`/${locale}/billing`}
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow transition hover:opacity-90"
+          >
+            Start checkout
+          </Link>
           <Link
             href={`/${locale}/login`}
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow transition hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-lg border border-border bg-card/40 px-5 py-2.5 text-sm font-medium text-foreground transition hover:border-primary/50"
           >
             Log in
           </Link>

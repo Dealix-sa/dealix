@@ -590,6 +590,12 @@ export const api = {
       `/api/v1/ops-autopilot/marketing/calendar/${encodeURIComponent(slotId)}/publish-kit`,
       { headers: { "X-Admin-API-Key": adminApiKey } },
     ),
+
+  // Public billing (Moyasar checkout) — used by /[locale]/billing
+  getPricingPlans: () => apiClient.get("/api/v1/pricing/plans"),
+
+  postCheckout: (body: { plan: string; email: string; lead_id?: string }) =>
+    apiClient.post("/api/v1/checkout", body),
 };
 
 export default api;

@@ -133,4 +133,34 @@ type WarRoomTarget = {
   outreach_draft_ar?: string;
 };
 
+// Honest stub — the full War Room composition was never finished by the
+// previous scaffolding pass. The component is exported so OpsFounderCommandCenter
+// can render without crashing. Replace with a real implementation when the
+// founder workflow that consumes it is in scope.
+export function OpsFounderWarRoom() {
+  return (
+    <div className="rounded-xl border border-dashed border-border bg-card/30 p-6 text-sm text-muted-foreground">
+      <p className="font-medium text-foreground">
+        War Room — not wired yet
+      </p>
+      <p className="mt-2">
+        The 90-day checklist, weekly decision block, and master phase strip
+        are defined as helpers in this file but the live React composition
+        hasn&apos;t been built yet. Until it is, this panel intentionally
+        renders nothing actionable instead of pretending to work.
+      </p>
+    </div>
+  );
+}
+
+export default OpsFounderWarRoom;
+
+// Mark helpers as intentionally-unused so tsc --noEmit doesn't complain
+// once strict unused-warning rules are enabled later.
+void MasterPhaseStrip;
+void WeeklyDecisionBlock;
+void CHECKLIST_90_AR;
+type _SocialPost = SocialPost;
+type _WarRoomTarget = WarRoomTarget;
+
 

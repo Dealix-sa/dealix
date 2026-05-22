@@ -58,7 +58,11 @@ docker run -p 8000:8000 --env-file .env dealix
 curl localhost:8000/health
 ```
 
-**Public endpoints (no auth):** `/health`, `/api/v1/public/demo-request`, `/api/v1/pricing/plans`, `/api/v1/checkout`, `/api/v1/webhooks/moyasar`
+**Public endpoints (no auth):** `/health`, `/healthz`, `/api/v1/public/demo-request`, `/api/v1/public/leads`, `/api/v1/public/risk-score`, `/api/v1/public/partner-apply`, `/api/v1/pricing/plans`, `/api/v1/checkout`, `/api/v1/webhooks/moyasar`
+
+**Customer-facing pages (Next.js):** `/[locale]` (home), `/[locale]/services`, `/[locale]/risk-score`, `/[locale]/proof-pack`, `/[locale]/billing`, `/[locale]/checkout/return`, `/[locale]/dealix-diagnostic`, `/[locale]/learn`, `/[locale]/partners`, `/[locale]/login`, `/[locale]/register`. `locale` is `ar` or `en` with full RTL.
+
+**End-to-end smoke test:** `pytest tests/test_e2e_sales_flow.py` — proves the critical path (lead form → pricing → checkout → payment_ops state machine) is wired and Moyasar live-charge is gated on `DEALIX_MOYASAR_MODE=live`.
 
 ---
 

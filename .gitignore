@@ -38,6 +38,10 @@ eggs/
 .eggs/
 lib/
 lib64/
+# `lib/` above is unanchored and would otherwise swallow real source dirs
+# named lib/ inside the repo (e.g. frontend/src/lib/). Whitelist them back.
+!frontend/src/lib/
+!frontend/src/lib/**
 parts/
 sdist/
 var/
