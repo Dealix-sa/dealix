@@ -96,6 +96,13 @@ clean: ## Remove build artifacts, caches
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
 
+# ── Stage gates ────────────────────────────────────────────────
+stage-status: ## Render DEALIX_STAGE_STATUS.md from repo evidence
+	$(PYTHON) scripts/render_stage_status.py
+
+stage-check: ## Exit non-zero if any sales-blocking gate is not PASS
+	$(PYTHON) scripts/render_stage_status.py --check
+
 # ── v5 founder CLIs ────────────────────────────────────────────
 # These wrap the read-only Dealix v5 founder tooling. Each is safe
 # to run any time — none of them write to production or send anything.

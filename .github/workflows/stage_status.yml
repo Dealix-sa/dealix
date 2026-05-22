@@ -1,0 +1,65 @@
+name: Stage Status
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'demos/**'
+      - 'dealix/registers/**'
+      - 'auto_client_acquisition/governance_os/policies/**'
+      - 'scripts/render_stage_status.py'
+      - 'DEALIX_COMPANY_OPERATIONAL_STATE.md'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - 'demos/**'
+      - 'dealix/registers/**'
+      - 'auto_client_acquisition/governance_os/policies/**'
+      - 'scripts/render_stage_status.py'
+      - 'DEALIX_COMPANY_OPERATIONAL_STATE.md'
+  schedule:
+    - cron: '0 7 * * *'  # daily 07:00 UTC = 10:00 Riyadh
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    name: Render Stage Status
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install minimal deps
+        run: pip install pyyaml pytest
+      - name: Test renderer
+        # Override pyproject addopts to avoid pulling pytest-cov / app deps.
+        run: python -m pytest tests/test_render_stage_status.py -v -p no:cacheprovider --noconftest -o addopts=
+
+      - name: Render DEALIX_STAGE_STATUS.md
+        run: python scripts/render_stage_status.py
+      - name: Show summary
+        run: |
+          {
+            echo "## Dealix Stage Status";
+            sed -n '/^## Decision/,/^## Master Table/p' DEALIX_STAGE_STATUS.md;
+            echo "";
+            sed -n '/AUTO:STAGE_STATUS_START/,/AUTO:STAGE_STATUS_END/p' DEALIX_STAGE_STATUS.md;
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Detect uncommitted drift
+        run: |
+          if ! git diff --quiet -- DEALIX_STAGE_STATUS.md; then
+            echo "::warning::DEALIX_STAGE_STATUS.md is out of date. Run 'make stage-status' and commit."
+            git diff -- DEALIX_STAGE_STATUS.md | head -80
+          fi
+      - name: Upload stage status artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-stage-status
+          path: DEALIX_STAGE_STATUS.md
+          retention-days: 30

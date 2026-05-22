@@ -5,10 +5,16 @@
 سياق السوق: [McKinsey — The State of AI](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai/) — [Gartner — AI-ready data](https://www.gartner.com/en/newsroom/press-releases/2025-02-26-lack-of-ai-ready-data-puts-ai-projects-at-risk).
 
 المرجع: [`docs/company/DEALIX_STAGE_GATES_AR.md`](docs/company/DEALIX_STAGE_GATES_AR.md).
+الحالة الحية (مولّدة آلياً): [`DEALIX_STAGE_STATUS.md`](DEALIX_STAGE_STATUS.md) — `PASS / FIX / BLOCKED` لكل بوابة + المسؤول + أول إجراء.
 
 التحقق الآلي:
 
 ```bash
+# الخفيف (بدون مكتبات التطبيق):
+python scripts/render_stage_status.py            # يحدّث DEALIX_STAGE_STATUS.md
+python scripts/render_stage_status.py --check    # exit 1 لو في بوابة مبيعات ما عبرت
+
+# الكامل (يحتاج بيئة التطبيق):
 python scripts/verify_dealix_ready.py
 python scripts/verify_dealix_ready.py --skip-tests
 ```
