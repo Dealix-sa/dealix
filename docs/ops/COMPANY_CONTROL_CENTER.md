@@ -2,7 +2,7 @@
 
 **Single source of truth for today's operating state.** Everything else is reference.
 
-Last updated: 2026-04-24 · Keep this file fresh — update it before/after every operating session.
+Last updated: 2026-05-22 · Keep this file fresh — update it before/after every operating session.
 
 > 🌅 **Start here every morning:** [`docs/ops/TODAY.md`](TODAY.md) — the 60-minute command page.
 > 💰 **When a prospect says yes:** [`docs/ops/FIRST_REVENUE_ATTEMPT.md`](FIRST_REVENUE_ATTEMPT.md) — 15-min close-to-paid script.
