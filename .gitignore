@@ -6,6 +6,7 @@
 dealix/transformation/kpi_founder_commercial_import.yaml
 !.env.example
 !.env.staging.example
+!frontend/.env.local.example
 *.pem
 *.key
 *.p12

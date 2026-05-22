@@ -118,16 +118,24 @@ def test_pricing_ctas_route_to_checkout():
 
 def test_pricing_no_longer_routes_priced_tiers_to_launchpad():
     """Pre-Track-B2 the CTAs went to /launchpad.html (static). After Track B2
-    they go to /checkout.html. The Free Diagnostic still routes to /diagnostic.html."""
+    they go to /checkout.html. The Free Diagnostic still routes to
+    /diagnostic.html, and the Data Pack offer uses /data-pack.html as a
+    pre-checkout landing surface (with an adjacent /checkout.html?tier=data_pack
+    CTA — see test_pricing_ctas_route_to_checkout)."""
     html = _read("pricing.html")
     # Find all .cta hrefs
     ctas = re.findall(r'class="cta"\s+href="([^"]+)"', html)
-    # Allowed targets: /checkout.html?..., /diagnostic.html, mailto:
+    # Allowed targets:
+    #   /checkout.html?...      → real checkout
+    #   /diagnostic.html        → Free Diagnostic landing
+    #   /data-pack.html         → Data Pack pre-checkout landing
+    #   mailto:                 → enterprise inquiries
+    allowed_landings = {"/diagnostic.html", "/data-pack.html"}
     for href in ctas:
         if href.startswith("mailto:"):
             continue
         assert (
-            href.startswith("/checkout.html") or href == "/diagnostic.html"
+            href.startswith("/checkout.html") or href in allowed_landings
         ), f"pricing.html CTA points to unexpected target: {href}"
 
 

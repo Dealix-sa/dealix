@@ -108,6 +108,17 @@ from api.routers import commercial_map as commercial_map_router
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Revenue OS autopilot — bundles 9 routers under /api/v1/{public,sales-ops,
+# evidence,support,kb,diag,inv,ops-autopilot,marketing}/*. Defined in
+# revenue_ops_autopilot.py as AUTOPILOT_ROUTERS; wired here so the public
+# partner-apply / leads / risk-score / proof-pack / booking-request / support
+# endpoints (and the founder ops command center surfaces that consume them)
+# are actually reachable. Without this include they 404.
+try:
+    from api.routers.revenue_ops_autopilot import AUTOPILOT_ROUTERS
+except Exception as _exc:  # noqa: BLE001
+    AUTOPILOT_ROUTERS = []
+    _OPTIONAL_ROUTER_ERRORS["revenue_ops_autopilot"] = repr(_exc)
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -345,6 +356,12 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Revenue OS autopilot — register the 9 bundled routers
+    # (public addons, sales-ops, evidence, support, kb, diag, inv, ops,
+    # marketing). Each router self-prefixes; AUTOPILOT_ROUTERS is the
+    # canonical list maintained in revenue_ops_autopilot.py.
+    for _autopilot_router in AUTOPILOT_ROUTERS:
+        app.include_router(_autopilot_router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
