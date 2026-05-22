@@ -143,6 +143,7 @@
     <div class="ds-row" style="justify-content: center; gap: var(--space-3); flex-wrap: wrap;">
       <a class="ds-btn ds-btn--lg" href="/start.html" data-analytics="cta_sprint_sample_book">احجز Sprint حقيقي 499 SAR · Book a real Sprint</a>
       <a class="ds-btn ds-btn--ghost ds-btn--lg" href="/diagnostic.html" data-analytics="cta_sprint_sample_diagnostic">تشخيص مجّاني أولاً · Free diagnostic</a>
+      <button class="ds-btn ds-btn--ghost ds-btn--lg" id="downloadSampleBtn" onclick="downloadSprintSample()">احفظ هذا المثال · Save this sample</button>
     </div>
   </section>
 
@@ -236,6 +237,30 @@
       document.getElementById('ss-steps').innerHTML = '<p style="color:#fca5a5">فشل تحميل العيّنة · sample failed to load: ' + esc(err.message) + '</p>';
     });
 })();
+
+// Download sprint sample as HTML
+function downloadSprintSample() {
+  const btn = document.getElementById('downloadSampleBtn');
+  const originalText = btn.textContent;
+  btn.textContent = 'جاري التحضير…';
+  btn.disabled = true;
+
+  setTimeout(function() {
+    const html = document.documentElement.outerHTML;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Dealix-Sprint-Sample-${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }, 100);
+}
 </script>
 
 </body>

@@ -315,6 +315,16 @@
       <p class="ds-card__sub" id="dx-recommended">…</p>
     </div>
 
+    <!-- Download diagnostic report as HTML -->
+    <div class="ds-card ds-stack ds-stack--sm" style="background: linear-gradient(135deg, rgba(168,85,247,0.10), rgba(59,130,246,0.10)); border: 1px solid rgba(168,85,247,0.25);">
+      <h3 class="ds-card__title">📄 احفظ تشخيصك</h3>
+      <p class="ds-card__sub">احصل على نسخة HTML من التشخيص يمكنك مشاركتها أو طباعتها.</p>
+      <button class="ds-btn ds-btn--lg" id="downloadDiagnosticBtn" onclick="downloadDiagnosticReport()">
+        <span id="downloadBtnLabel">اطبع أو احفظ تشخيصك →</span>
+      </button>
+      <p id="downloadStatus" class="ds-input__hint" role="status" aria-live="polite" style="margin-top: var(--space-2);"></p>
+    </div>
+
     <!-- Pilot CTA -->
     <div class="ds-card ds-stack ds-stack--sm" style="background: linear-gradient(135deg, rgba(34,197,94,0.10), rgba(14,165,233,0.10)); border: 1px solid rgba(34,197,94,0.25);">
       <h3 class="ds-card__title">🟢 الخطوة التالية — ابدأ الـ 7-Day AI Revenue Team Pilot</h3>
@@ -601,6 +611,80 @@
     } finally {
       setBusy(false);
     }
+  });
+
+  // Download diagnostic report as HTML
+  let lastFormPayload = {};
+
+  async function downloadDiagnosticReport() {
+    const btn = document.getElementById('downloadDiagnosticBtn');
+    const label = document.getElementById('downloadBtnLabel');
+    const status = document.getElementById('downloadStatus');
+
+    if (!Object.keys(lastFormPayload).length) {
+      status.textContent = 'الرجاء إكمال النموذج أولاً.';
+      status.style.color = '#fca5a5';
+      return;
+    }
+
+    btn.disabled = true;
+    label.textContent = 'جاري تحضير التقرير…';
+    status.textContent = '';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/v1/diagnostic/report/html`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lastFormPayload),
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: فشل تحميل التقرير`);
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Dealix-Diagnostic-${lastFormPayload.company_handle || 'report'}-${new Date().toISOString().split('T')[0]}.html`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      status.textContent = '✓ تم تحميل التقرير بنجاح.';
+      status.style.color = '#4ade80';
+    } catch (err) {
+      status.textContent = `خطأ: ${err.message}`;
+      status.style.color = '#fca5a5';
+      console.error('Download error:', err);
+    } finally {
+      btn.disabled = false;
+      label.textContent = 'اطبع أو احفظ تشخيصك →';
+    }
+  }
+
+  // Store the form payload for download use
+  form.addEventListener('submit', function(e) {
+    // Capture on successful submit (this runs after the main listener)
+    setTimeout(() => {
+      if (result.classList.contains('is-visible')) {
+        lastFormPayload = {
+          company_handle: form.company_handle.value.trim(),
+          sector: form.sector.value,
+          contact_name: form.contact_name.value.trim(),
+          email: form.email.value.trim(),
+          phone: form.phone.value.trim(),
+          biggest_problem: form.biggest_problem.value.trim(),
+          fastest_lever: form.fastest_lever.value.trim(),
+          target_metric: form.target_metric.value.trim(),
+          customer_base: form.customer_base.value,
+          tech_level: form.tech_level.value,
+          current_channels: form.current_channels.value.trim(),
+          offer: '7_day_proof_sprint',
+        };
+      }
+    }, 100);
   });
 </script>
 
