@@ -105,6 +105,12 @@ ACTION_CLASSIFICATIONS: dict[str, tuple[ApprovalClass, ReversibilityClass, Sensi
     "enrichment_query": (ApprovalClass.A0, ReversibilityClass.R0, SensitivityClass.S2),
     "competitor_analyze": (ApprovalClass.A0, ReversibilityClass.R0, SensitivityClass.S1),
     "market_research_query": (ApprovalClass.A0, ReversibilityClass.R0, SensitivityClass.S1),
+    # Full Ops orchestrator — internal stages (auto-executable)
+    "pipeline_prioritize": (ApprovalClass.A0, ReversibilityClass.R0, SensitivityClass.S1),
+    "delivery_step": (ApprovalClass.A0, ReversibilityClass.R1, SensitivityClass.S2),
+    "proof_pack_assemble": (ApprovalClass.A0, ReversibilityClass.R0, SensitivityClass.S2),
+    "expansion_assess": (ApprovalClass.A0, ReversibilityClass.R0, SensitivityClass.S1),
+    "learning_capture": (ApprovalClass.A0, ReversibilityClass.R0, SensitivityClass.S1),
     # High-risk / never-auto
     "pricing_offer_commit": (ApprovalClass.A3, ReversibilityClass.R3, SensitivityClass.S3),
     "contract_change": (ApprovalClass.A3, ReversibilityClass.R3, SensitivityClass.S3),

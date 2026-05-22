@@ -108,6 +108,8 @@ from api.routers import commercial_map as commercial_map_router
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Wave 18-22 — Full Ops Sales System orchestrator API
+from api.routers import full_ops_os as full_ops_os_router
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -345,6 +347,8 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Wave 18-22 — Full Ops Sales System orchestrator (/api/v1/full-ops-os/*)
+    app.include_router(full_ops_os_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
