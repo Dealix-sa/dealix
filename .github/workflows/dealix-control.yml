@@ -1,0 +1,22 @@
+name: Dealix Control Checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  dealix-control:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify required docs
+        run: python scripts/verify_docs_complete.py
+      - name: Verify architecture
+        run: python scripts/verify_architecture.py
+      - name: Verify public safety
+        run: python scripts/verify_public_safety.py
+      - name: Compile Python
+        run: python -m compileall api dealix db integrations scripts
