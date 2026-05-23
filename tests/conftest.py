@@ -56,10 +56,16 @@ def mock_router(mock_llm_response: LLMResponse) -> Iterator[AsyncMock]:
 
 @pytest_asyncio.fixture
 async def async_client() -> AsyncGenerator[AsyncClient, None]:
-    """HTTPX async client against the FastAPI app."""
+    """HTTPX async client against the FastAPI app.
+
+    raise_server_exceptions=False converts unhandled server errors (e.g.
+    ModuleNotFoundError: asyncpg not installed) into 500 responses so that
+    tests which assert status_code != 400 still work in environments that
+    don't have all optional DB drivers installed.
+    """
     from api.main import app
 
-    transport = ASGITransport(app=app)
+    transport = ASGITransport(app=app, raise_app_exceptions=False)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         yield client
 
