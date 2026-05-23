@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Dealix CEO Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #071B2E;
+      color: #F4F7FA;
+    }
+    header {
+      padding: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+    .subtitle {
+      color: #9FB3C8;
+      margin-top: 8px;
+    }
+    main {
+      padding: 32px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .label {
+      color: #9FB3C8;
+      font-size: 13px;
+    }
+    .value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .section {
+      margin-top: 32px;
+    }
+    .bottleneck {
+      border-left: 4px solid #00D6A3;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    .severity {
+      color: #00D6A3;
+      font-weight: 700;
+    }
+    code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dealix CEO Dashboard</h1>
+    <div class="subtitle">Revenue, delivery, trust, and operating intelligence.</div>
+  </header>
+
+  <main>
+    <div class="grid" id="metrics"></div>
+
+    <section class="section">
+      <h2>Bottlenecks</h2>
+      <div id="bottlenecks"></div>
+    </section>
+
+    <section class="section">
+      <h2>Operating Rule</h2>
+      <p>
+        AI prepares. Workflows execute. Trust governs. Founder approves critical moves.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    async function loadDashboard() {
+      const response = await fetch('../dashboard_data/demo/company_metrics.demo.json');
+      const data = await response.json();
+      const metrics = data.metrics || {};
+
+      const metricCards = [
+        ['Leads', metrics.lead_count],
+        ['Contacted', metrics.contacted],
+        ['Replies', metrics.replied],
+        ['Samples', metrics.sample_sent],
+        ['Calls', metrics.call_booked],
+        ['Proposals', metrics.proposal_sent],
+        ['Paid', metrics.paid],
+        ['MRR', metrics.mrr],
+        ['Approvals Pending', metrics.approvals_pending]
+      ];
+
+      const metricsRoot = document.getElementById('metrics');
+      metricsRoot.innerHTML = metricCards.map(([label, value]) => `
+        <div class="card">
+          <div class="label">${label}</div>
+          <div class="value">${value ?? 0}</div>
+        </div>
+      `).join('');
+
+      const bottlenecksRoot = document.getElementById('bottlenecks');
+      const bottlenecks = data.bottlenecks || [];
+      bottlenecksRoot.innerHTML = bottlenecks.length
+        ? bottlenecks.map(b => `
+          <div class="bottleneck">
+            <div class="severity">${b.area} / ${b.severity}</div>
+            <div>${b.issue}</div>
+            <div><strong>Recommendation:</strong> ${b.recommendation}</div>
+          </div>
+        `).join('')
+        : '<p>No major bottlenecks detected.</p>';
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>
