@@ -346,6 +346,18 @@ def create_app() -> FastAPI:
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
 
+    # Dealix Sovereign Operating Stack — Founder Console internal API
+    # Mounted defensively: if the package can't import (e.g. missing
+    # filesystem prerequisites), we skip rather than failing app startup.
+    try:
+        from api.routers.internal import founder_console as _founder_console
+
+        app.include_router(_founder_console.router)
+    except Exception as _exc:  # pragma: no cover - defensive boot
+        get_logger(__name__).warning(
+            "founder_console_internal_router_skipped", error=str(_exc)
+        )
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

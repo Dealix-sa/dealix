@@ -1,0 +1,95 @@
+# Dealix Control Policy — Policy-as-Code v1
+#
+# Single source of truth for what AI agents in this repo are allowed to
+# do, what requires founder approval, and what is never automatic.
+#
+# This file is consumed by:
+#   * api/internal/policy_adapter.py        (runtime enforcement)
+#   * scripts/verify_policy_as_code.py      (CI verification)
+#   * the Founder Console /control-plane page (display)
+#
+# Coding-agent rules:
+#   * Never change A3 entries without explicit founder instruction.
+#   * Never remove a rule. Add new ones instead.
+#   * Never increase any agent's allowed approval_class above A2 without
+#     a corresponding entry in registries/agent_registry.yaml AND an
+#     entry in docs/trust/POLICY_AS_CODE_V1.md describing why.
+
+version: 1
+owner: founder
+last_reviewed_by: founder
+
+approval_classes:
+  - id: A0
+    name: internal_read
+    description: Read-only access to private runtime; no writes.
+    requires_approval: false
+  - id: A1
+    name: internal_draft
+    description: Internal drafting, preparation, scoring, summarising.
+    requires_approval: false
+  - id: A2
+    name: external_impact_requires_approval
+    description: External-impact action (send, propose, invoice). Requires founder approval recorded in the audit log before execution.
+    requires_approval: true
+  - id: A3
+    name: high_risk_never_automatic
+    description: High-risk action (pricing change, contract change, refund, public proof, sensitive data export, destructive operation). Never automatic; founder must take the action manually.
+    requires_approval: true
+    never_automatic: true
+
+rules:
+  - name: no_a3_auto
+    description: A3 actions are never automatic. They cannot be triggered by an agent even with founder approval; the founder must perform them out-of-band.
+    severity: blocker
+    applies_to: [A3]
+
+  - name: no_suppressed_outreach
+    description: An outreach draft against an account on the suppression list MUST be blocked.
+    severity: blocker
+    applies_to: [A2]
+
+  - name: high_risk_requires_evidence
+    description: A2 actions require an evidence reference (decision passport / proof record). Without evidence, do not allow approval.
+    severity: blocker
+    applies_to: [A2]
+
+  - name: no_guaranteed_revenue_claims
+    description: Any AI-drafted content claiming guaranteed revenue, guaranteed sales, guaranteed meetings, or guaranteed replies must be rejected before approval.
+    severity: blocker
+    applies_to: [A1, A2]
+
+  - name: approved_a2_can_request_execution
+    description: After a founder approval is recorded, the corresponding A2 action may be queued for execution (still via a deterministic worker, not by the agent itself).
+    severity: info
+    applies_to: [A2]
+
+  - name: public_proof_requires_approval
+    description: Publishing case studies, social posts, or customer logos requires a separate founder approval entry per artifact.
+    severity: blocker
+    applies_to: [A3]
+
+  - name: pricing_commit_requires_approval
+    description: No agent may commit a price change. Public price changes are A3 — performed manually by the founder.
+    severity: blocker
+    applies_to: [A3]
+
+  - name: data_export_requires_escalation
+    description: Exporting customer or financial data outside the trust boundary requires an escalation entry plus a recorded incident.
+    severity: blocker
+    applies_to: [A3]
+
+  - name: payment_terms_require_escalation
+    description: Changes to payment terms require an escalation entry plus a recorded incident.
+    severity: blocker
+    applies_to: [A3]
+
+  - name: contract_change_requires_escalation
+    description: Contract changes require an escalation entry plus a recorded incident.
+    severity: blocker
+    applies_to: [A3]
+
+  - name: destructive_operation_requires_escalation
+    description: Destructive repo operations (force push, history rewrite, branch deletion) require an escalation entry plus a recorded incident.
+    severity: blocker
+    applies_to: [A3]
