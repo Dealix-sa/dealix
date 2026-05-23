@@ -33,6 +33,10 @@ run_hard() {
   else
     FAIL=$((FAIL+1))
     FAIL_NAMES+=("$name")
+    {
+      echo "[FAIL] $name"
+      tail -40 "$log" | sed 's/^/  /'
+    } >&2
     [ "$JSON" -eq 0 ] && { echo "  [FAIL] $name"; tail -5 "$log" | sed 's/^/        /'; }
   fi
 }

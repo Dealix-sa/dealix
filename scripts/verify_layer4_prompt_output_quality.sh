@@ -30,6 +30,11 @@ run_hard() {
     [ "$JSON" -eq 0 ] && echo "  [OK]   $name"
   else
     FAIL=$((FAIL+1)); FAIL_NAMES+=("$name")
+    # Always emit log tail to stderr so the master orchestrator can surface it
+    {
+      echo "[FAIL] $name"
+      tail -40 "$log" | sed 's/^/  /'
+    } >&2
     [ "$JSON" -eq 0 ] && { echo "  [FAIL] $name"; tail -5 "$log" | sed 's/^/        /'; }
   fi
 }

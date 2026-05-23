@@ -27,9 +27,9 @@ def check_pydantic_imports() -> list[str]:
             SensitivityClass,
         )
         from dealix.contracts.audit_log import AuditEntry
-        from dealix.contracts.decision import DecisionOutput
+        from dealix.contracts.decision import DecisionOutput, Evidence
         from dealix.contracts.event_envelope import EventEnvelope
-        from dealix.contracts.evidence_pack import Evidence
+        from dealix.contracts.evidence_pack import EvidencePack
     except Exception as e:
         errors.append(f"import error: {e!r}")
     return errors
