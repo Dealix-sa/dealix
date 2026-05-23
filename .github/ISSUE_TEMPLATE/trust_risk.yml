@@ -1,0 +1,34 @@
+name: Trust risk
+description: Flag a real or suspected trust risk (claim, PII, approval, audit).
+labels: [trust-risk]
+body:
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: ["P0 (data/payment/public-trust)", "P1 (customer impact)", "P2 (internal)", "P3 (improvement)"]
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Overclaim / unapproved public claim
+        - PII / secret leak
+        - Approval bypass
+        - Suppression-list bypass
+        - Audit/log gap
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: Detail (what, where, how reproducible)
+    validations:
+      required: true
+  - type: input
+    id: founder_notified
+    attributes:
+      label: Was the founder notified out-of-band? (Y/N + when)

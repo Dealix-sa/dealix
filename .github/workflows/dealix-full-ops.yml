@@ -1,0 +1,33 @@
+name: dealix-full-ops
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  full-ops:
+    name: Full ops verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify Master Tree completeness
+        run: python scripts/generate_master_tree.py --check
+
+      - name: Verify docs complete
+        run: python scripts/verify_docs_complete.py
+
+      - name: Run full ops verification suite
+        run: python scripts/verify_full_ops.py

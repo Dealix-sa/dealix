@@ -1,0 +1,23 @@
+# safe_language
+# Preferred phrasings for common situations. The content agent prefers
+# these over their unsafe alternatives.
+version: 0.1
+register: safe_language
+
+replacements:
+  - avoid: "guaranteed"
+    prefer: "designed to"
+  - avoid: "10x ROI"
+    prefer: "measurable lift in qualified pipeline"
+  - avoid: "best in class"
+    prefer: "purpose-built for Saudi B2B"
+  - avoid: "world-class"
+    prefer: "production-grade"
+  - avoid: "proven"
+    prefer: "tested with [N] clients"
+  - avoid: "partners with [vendor]"
+    prefer: "integrates with [vendor]"
+  - avoid: "certified"
+    prefer: "aligned to [standard]"
+  - avoid: "unlimited"
+    prefer: "within the agreed scope"

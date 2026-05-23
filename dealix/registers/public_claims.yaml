@@ -1,0 +1,22 @@
+# public_claims
+# Every public claim Dealix makes must be backed by an entry here.
+# claim_guard.py refuses to publish text whose claims are not registered.
+# Status legend: Live | Pilot | Planned
+version: 0.1
+register: public_claims
+
+entries:
+  - id: founder_led_diagnostic
+    claim: "Founder-led revenue diagnostic for Saudi B2B teams"
+    evidence: docs/offers/revenue_sprint/OFFER.md
+    status: Pilot
+
+  - id: 7_day_sprint
+    claim: "Seven-day revenue sprint to a ranked lead list and outreach pack"
+    evidence: docs/delivery/revenue_sprint/DELIVERY_PLAYBOOK.md
+    status: Pilot
+
+  - id: ar_en_bilingual
+    claim: "Bilingual Arabic and English delivery"
+    evidence: README.ar.md
+    status: Live
