@@ -1,0 +1,31 @@
+name: Readiness gap
+description: Report a gap against a readiness gate or scorecard.
+labels: [readiness-gap]
+body:
+  - type: dropdown
+    id: gate
+    attributes:
+      label: Which gate?
+      options:
+        - gate_00_founder_clarity
+        - gate_01_offer
+        - gate_02_delivery
+        - gate_03_product
+        - gate_04_trust
+        - gate_05_sales
+        - gate_06_first_client
+        - gate_07_retainer
+        - gate_08_scale
+        - gate_09_autonomous_company_os
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: What's missing or below standard?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Pointer to evidence (file, log, screenshot)

@@ -1,0 +1,10 @@
+name: Bug Report
+description: Issue template for bug_report
+labels: [bug_report]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the issue
+    validations:
+      required: true

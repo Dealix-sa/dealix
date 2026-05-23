@@ -1,0 +1,26 @@
+# approval_classes
+# Maps action keys to required approval class.
+# Classes: auto | founder | founder_24h | founder_capital | ops_manager | blocked
+version: 0.2
+register: approval_classes
+
+# action_key: approval_class
+send_outbound_message: founder
+publish_public_claim: founder
+publish_case_study: founder
+change_pricing: founder
+issue_refund: founder
+issue_credit: founder
+add_to_suppression: auto
+remove_from_suppression: founder
+export_client_data: founder
+update_offer_definition: founder
+update_doctrine: founder
+update_decision_rules: founder
+deploy_capital_over_5k: founder_capital
+hire_contractor: founder
+hire_employee: founder
+update_lead_scoring_threshold: ops_manager
+update_internal_sop: ops_manager
+auto_send_external_outbound: blocked
+auto_publish_public_claim: blocked

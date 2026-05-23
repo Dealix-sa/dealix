@@ -1,0 +1,10 @@
+name: Documentation Gap
+description: Issue template for documentation_gap
+labels: [documentation_gap]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the issue
+    validations:
+      required: true

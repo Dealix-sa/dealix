@@ -1,0 +1,10 @@
+name: Feature Request
+description: Issue template for feature_request
+labels: [feature_request]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the issue
+    validations:
+      required: true

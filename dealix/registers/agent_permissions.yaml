@@ -1,0 +1,75 @@
+# agent_permissions
+# Each agent declares what it may read, write, and never do.
+version: 0.1
+register: agent_permissions
+
+agents:
+  founder_brief_agent:
+    may_read: [company_state, decision_queue, risk_log]
+    may_write: [daily_brief]
+    never: [send_external_message, modify_doctrine]
+
+  lead_finder_agent:
+    may_read: [icp_register, sector_playbooks]
+    may_write: [internal_lead_drafts]
+    never: [send_external_message, publish_to_landing]
+
+  enrichment_agent:
+    may_read: [internal_lead_drafts]
+    may_write: [internal_lead_drafts]
+    never: [send_external_message]
+
+  scoring_agent:
+    may_read: [internal_lead_drafts, scoring_rules]
+    may_write: [lead_scores]
+    never: [send_external_message]
+
+  message_agent:
+    may_read: [lead_scores, message_templates, safe_language]
+    may_write: [outreach_drafts]
+    never: [send_external_message]
+
+  followup_agent:
+    may_read: [outreach_drafts, response_log]
+    may_write: [followup_drafts]
+    never: [send_external_message]
+
+  proposal_agent:
+    may_read: [client_intake, offer_definitions]
+    may_write: [proposal_drafts]
+    never: [send_external_message, finalize_pricing]
+
+  delivery_report_agent:
+    may_read: [delivery_records]
+    may_write: [delivery_report_drafts]
+    never: [send_external_message]
+
+  qa_agent:
+    may_read: [all_drafts]
+    may_write: [qa_findings]
+    never: [send_external_message, modify_drafts_directly]
+
+  trust_guard_agent:
+    may_read: [all_drafts, registers]
+    may_write: [trust_findings]
+    never: [send_external_message, bypass_policy_engine]
+
+  content_agent:
+    may_read: [content_strategy, founder_voice, safe_language]
+    may_write: [content_drafts]
+    never: [send_external_message, publish_public_claim]
+
+  finance_watch_agent:
+    may_read: [revenue_records, payment_records]
+    may_write: [finance_alerts]
+    never: [issue_refund, change_pricing]
+
+  client_success_agent:
+    may_read: [client_records, health_scores]
+    may_write: [client_alerts]
+    never: [send_external_message]
+
+  learning_agent:
+    may_read: [experiment_log, win_loss_log]
+    may_write: [learning_summaries]
+    never: [send_external_message, modify_doctrine]

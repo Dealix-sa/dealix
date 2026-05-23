@@ -1,0 +1,18 @@
+# workflow_risk_classes
+# Each workflow is tagged with a risk class. The action router uses this
+# to decide whether the workflow may run auto, must be queued, or is blocked.
+version: 0.1
+register: workflow_risk_classes
+
+# workflow_id: risk_class (auto | review_required | founder | blocked)
+dealix.workflows.daily_ceo_brief: auto
+dealix.workflows.daily_lead_discovery: auto
+dealix.workflows.lead_scoring_batch: auto
+dealix.workflows.sample_pack_generation: review_required
+dealix.workflows.founder_outreach_queue: founder
+dealix.workflows.proposal_generation: founder
+dealix.workflows.payment_verification: review_required
+dealix.workflows.delivery_report_generation: review_required
+dealix.workflows.case_study_generation: founder
+dealix.workflows.weekly_ceo_review: auto
+dealix.workflows.monthly_strategy_review: auto

@@ -1,0 +1,25 @@
+name: scorecard
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  company-os-scorecard:
+    name: Compute & export Company OS scorecard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Export company-os status
+        run: python scripts/export_company_os_status.py
+      - name: Generate today's CEO brief
+        run: python scripts/generate_ceo_brief.py
