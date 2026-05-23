@@ -1,0 +1,4 @@
+queue_id,campaign_id,channel,target_segment,message_or_asset,approval_status,send_status,next_action
+queue-001,camp-001,warm_intro,coo_construction_mid_riyadh,asset-001,pending,queued,founder-review
+queue-002,camp-002,founder_linkedin_post,hospitality_cco,asset-003,pending,queued,founder-review
+queue-003,camp-003,partner_referral,head_sales_ops_logistics,asset-004,pending,queued,partner-counter-sign

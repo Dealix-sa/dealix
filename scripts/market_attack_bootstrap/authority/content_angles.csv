@@ -1,0 +1,5 @@
+angle_id,theme,sector,audience,claim,evidence_needed,risk_level,status,next_action
+ang-001,operations-friction,construction,coo_construction_mid,construction-firms-lose-X-hours-on-Y-task,internal-time-study,medium,draft,collect-evidence
+ang-002,pdpl-native,multi,cio_saudi_enterprise,dealix-was-built-on-pdpl-not-translated-to-it,compliance-mapping-doc,low,draft,link-doc
+ang-003,approval-first,multi,founder_saudi_b2b,approval-first-is-a-feature-not-friction,product-screenshot-redacted,low,draft,attach-screenshot
+ang-004,sector-thesis,hospitality,cco_hospitality,saudi-hospitality-buyers-want-X-not-Y,>=3-interview-notes,medium,draft,interview

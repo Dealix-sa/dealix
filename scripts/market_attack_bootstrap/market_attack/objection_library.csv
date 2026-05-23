@@ -1,0 +1,5 @@
+objection_id,sector,stage,objection,frequency,response_angle,asset_needed,owner,status,next_action
+obj-001,construction,cold,we-already-use-another-tool,0,we-sit-on-top-of-it-not-instead-of-it,sector_one_pager,founder,open,draft-onepager
+obj-002,hospitality,discovery,pdpl-makes-this-hard,0,dealix-is-pdpl-native-not-translated,compliance_doc,founder,open,link-compliance-doc
+obj-003,logistics,proposal,we-want-guarantees,0,we-do-not-guarantee-we-instrument-and-iterate,proposal_template,founder,open,update-proposal
+obj-004,construction,negotiation,price-too-high,0,price-is-from-the-ladder-we-do-not-negotiate-off-ladder,pricing_table,founder,open,attach-pricing-doc

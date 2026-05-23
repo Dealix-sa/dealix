@@ -130,3 +130,43 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Market Attack & Scaling System ─────────────────────────────
+# v12 Market Attack Layer. All read-only generators except
+# bootstrap-runtime which only seeds private ops if files are missing.
+# Set PRIVATE_OPS=/path/to/private/ops (defaults to ./.private_ops_sandbox).
+
+.PHONY: bootstrap-runtime beachhead-scorecard strategic-accounts \
+        offer-market-fit campaign-command sales-assets authority-engine \
+        partner-pipeline objection-intel market-attack-system
+
+bootstrap-runtime: ## Seed PRIVATE_OPS with Market Attack CSV templates (idempotent)
+	$(PYTHON) scripts/bootstrap_market_attack_runtime.py
+
+beachhead-scorecard: ## Market Attack: regenerate the beachhead sector scorecard report
+	$(PYTHON) scripts/generate_beachhead_sector_scorecard.py
+
+strategic-accounts: ## Market Attack: regenerate the strategic account list
+	$(PYTHON) scripts/generate_strategic_account_list.py
+
+offer-market-fit: ## Market Attack: regenerate the offer-market fit report
+	$(PYTHON) scripts/generate_offer_market_fit_report.py
+
+campaign-command: ## Market Attack: regenerate the Campaign Command Room report
+	$(PYTHON) scripts/generate_campaign_command_report.py
+
+sales-assets: ## Market Attack: verify the sales asset factory
+	$(PYTHON) scripts/verify_sales_asset_system.py
+
+authority-engine: ## Market Attack: regenerate the Authority Engine queue
+	$(PYTHON) scripts/generate_authority_content_queue.py
+
+partner-pipeline: ## Market Attack: regenerate the partner pipeline report
+	$(PYTHON) scripts/generate_partner_pipeline_report.py
+
+objection-intel: ## Market Attack: regenerate the objection intelligence report
+	$(PYTHON) scripts/generate_objection_intelligence_report.py
+
+market-attack-system: ## Master verifier for the Market Attack & Scaling System
+	$(PYTHON) scripts/verify_market_attack_system.py
+	$(PYTHON) scripts/verify_prompt_output_quality.py

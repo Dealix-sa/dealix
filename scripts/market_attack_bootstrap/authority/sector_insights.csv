@@ -1,0 +1,4 @@
+insight_id,sector,insight,evidence,source,status,approved_for_public,next_action
+ins-001,construction,short-cycle-rfps-create-decision-friction-for-coos,internal-deal-notes-redacted,internal_ledger,draft,no,validate-with-2-more-interviews
+ins-002,hospitality,property-openings-trigger-immediate-revenue-stack-decisions,public-report-and-2-interviews,public_report,validated,no,governance-review
+ins-003,logistics,partner-channel-converts-2x-warm-leads-in-our-sample,internal-results,internal_ledger,draft,no,collect-more-data

@@ -1,0 +1,4 @@
+report_id,sector,title,hypothesis,data_needed,approval_status,next_action
+rep-001,construction,Saudi-Construction-Revenue-Intelligence-Q1,operations-friction-is-the-top-revenue-leak,>=10-interviews-plus-public-data,pending,build-research-plan
+rep-002,hospitality,Saudi-Hospitality-Demand-Stack-2026,property-openings-shift-revenue-stack-decisions,>=5-property-cases-plus-public,pending,outline
+rep-003,logistics,Partner-Channel-Conversion-in-Saudi-Logistics,partner-channel-outperforms-cold-by-2x,internal-results-plus-2-partner-cases,pending,collect-data

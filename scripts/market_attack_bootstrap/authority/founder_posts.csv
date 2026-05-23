@@ -1,0 +1,4 @@
+post_id,theme,sector,draft,approval_status,proof_status,risk_level,next_action
+post-001,operations-friction,construction,observation-from-the-field-no-promises,pending,evidence_required,medium,attach-insight
+post-002,pdpl-native,multi,why-we-built-on-pdpl-from-day-one,pending,evidence_attached,low,founder-review
+post-003,approval-first,multi,what-approval-first-actually-means,pending,evidence_required,low,attach-screenshot

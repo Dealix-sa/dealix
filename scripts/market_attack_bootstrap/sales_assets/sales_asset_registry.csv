@@ -1,0 +1,6 @@
+asset_id,type,sector,offer,title,status,approval_status,proof_status,risk_level,file_path,next_action
+sa-001,one_pager,construction,managed_pilot_499,Dealix-for-construction-v1,draft,pending,evidence_required,medium,assets/sales/one_pagers/onepager_construction_v1.md,draft-content
+sa-002,proposal,construction,managed_pilot_499,Construction-Managed-Pilot-Proposal-v1,draft,pending,n_a,medium,assets/sales/proposals/proposal_managed_pilot_construction_v1.md,draft-content
+sa-003,sample,hospitality,sector_report,Hospitality-Sector-Sample-v1,draft,pending,synthetic,low,assets/sales/samples/sample_hospitality_sector_report_v1.md,redact-or-synthesize
+sa-004,objection,construction,managed_pilot_499,We-already-use-another-tool-v1,draft,pending,evidence_required,low,assets/sales/objections/objection_we_already_use_another_tool_v1.md,draft-response
+sa-005,proof_safe,multi,multi,Proof-Safe-Index-v1,draft,pending,evidence_required,medium,assets/sales/proof_safe/proof_safe_index_v1.md,build-index

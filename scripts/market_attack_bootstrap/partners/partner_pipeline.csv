@@ -1,0 +1,4 @@
+partner_id,company,type,website,relationship_path,offer_fit,referral_potential,white_label_potential,trust_risk,status,next_action
+prt-001,Example Marketing Agency,agency,,founder-direct,managed_pilot+sector_report,high,governance_review,low,prospect,schedule-intro
+prt-002,Example ERP Implementer,erp_crm,,founder-network,ai_sales_assistant_saas,high,governance_review,medium,prospect,scope-integration
+prt-003,Example Cybersecurity Firm,cybersecurity_grc,,partner-of-partner,decision_passport,medium,no,high,prospect,joint-review-pilot
