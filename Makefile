@@ -8,11 +8,15 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        ceo-verify ceo-finance
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
+
+# Private ops directory (override with PRIVATE_OPS=... make ceo-finance)
+PRIVATE_OPS ?= ../dealix-ops-private
 
 help: ## Show this help
 	@echo "🏢 AI Company Saudi — Available commands:"
@@ -130,3 +134,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── CEO business systems ───────────────────────────────────────
+# Founder operating model + financial model + growth system + KPI tree +
+# management cadence. Reads private ops CSV ledgers (override PRIVATE_OPS=...).
+
+ceo-verify: ## CEO: verify CEO business systems docs (presence + size + terms)
+	$(PYTHON) scripts/verify_ceo_business_systems.py
+
+ceo-finance: ## CEO: generate finance review from PRIVATE_OPS (default ../dealix-ops-private)
+	$(PYTHON) cli.py finance --private-ops $(PRIVATE_OPS)
