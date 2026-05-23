@@ -16,19 +16,31 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
-      - name: Install minimal Python deps
+      - name: Show repo state
+        shell: bash
         run: |
+          set -eux
+          pwd
+          ls -la
+          ls -la scripts | head -30
+          ls -la policies registries evals/gates apps/web 2>/dev/null || true
+
+      - name: Install minimal Python deps
+        shell: bash
+        run: |
+          set -eux
           python -m pip install --upgrade pip
-          pip install PyYAML
+          python -m pip install --no-cache-dir PyYAML
 
       - name: Policy check
         run: python scripts/verify_policy_as_code.py
@@ -47,7 +59,7 @@ jobs:
 
       - name: Setup Node
         if: hashFiles('apps/web/package.json') != ''
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "20"
 
