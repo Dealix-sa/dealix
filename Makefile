@@ -8,7 +8,13 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        bootstrap-runtime policy-check agent-registry eval-gate \
+        operating-scorecard sovereign-readiness \
+        founder-console-v5 control-plane-stage ultimate-operating-layer \
+        sovereign-operating-stack smoke-internal-api
+
+PRIVATE_OPS ?= /opt/dealix-ops-private
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +136,41 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Sovereign Operating Stack ───────────────────────────
+# All targets below are local / read-mostly. They do not perform any
+# external send. PRIVATE_OPS defaults to /opt/dealix-ops-private; override
+# on the CLI: `make bootstrap-runtime PRIVATE_OPS=/path/to/private`.
+
+bootstrap-runtime: ## sovereign: create the private-ops CSV runtime tree
+	$(PYTHON) scripts/bootstrap_private_ops_runtime.py --private-ops $(PRIVATE_OPS)
+
+policy-check: ## sovereign: verify policies/dealix_control_policy.yaml
+	$(PYTHON) scripts/verify_policy_as_code.py
+
+agent-registry: ## sovereign: verify registries/agent_registry.yaml
+	$(PYTHON) scripts/verify_agent_registry.py
+
+eval-gate: ## sovereign: verify evals/gates/dealix_agent_eval_gate.yaml
+	$(PYTHON) scripts/verify_eval_gate.py
+
+operating-scorecard: ## sovereign: regenerate the founder operating scorecard
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_operating_scorecard.py --private-ops $(PRIVATE_OPS)
+
+sovereign-readiness: ## sovereign: regenerate the sovereign readiness scorecard
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_sovereign_readiness.py --private-ops $(PRIVATE_OPS)
+
+founder-console-v5: ## sovereign: verify Founder Console v5 file presence
+	$(PYTHON) scripts/verify_ultimate_operating_layer.py
+
+control-plane-stage: ## sovereign: verify Control Plane stage is wired
+	$(PYTHON) scripts/verify_control_plane_stage.py
+
+ultimate-operating-layer: ## sovereign: verify the ultimate operating layer
+	$(PYTHON) scripts/verify_ultimate_operating_layer.py
+
+sovereign-operating-stack: ## sovereign: top-level verifier (runs every check)
+	$(PYTHON) scripts/verify_sovereign_operating_stack.py
+
+smoke-internal-api: ## sovereign: smoke test /api/v1/internal/* (uses $DEALIX_API_BASE)
+	$(PYTHON) scripts/smoke_internal_api.py

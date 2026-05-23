@@ -1,21 +1,47 @@
-import { ApprovalDecisionModal } from "../../components/approvals/ApprovalDecisionModal";
-import { OversightQueue } from "../../components/approvals/OversightQueue";
+import { FounderShell } from "../../components/founder-shell";
+import { getApprovals } from "../../lib/dealix-runtime";
 
-const queueItems = [
-  {
-    ticketId: "apt-100",
-    actionType: "whatsapp.send_message",
-    requestedBy: "sales_agent",
-    state: "pending"
-  }
-];
+export const dynamic = "force-dynamic";
 
-export default function ApprovalsPage() {
+export default async function ApprovalsPage() {
+  const data = await getApprovals();
   return (
-    <main className="grid">
-      <h1>Approvals</h1>
-      <OversightQueue items={queueItems} />
-      <ApprovalDecisionModal />
-    </main>
+    <FounderShell title="Approvals" source={data.source}>
+      <section className="card">
+        <h2>Approval queue</h2>
+        <p className="muted">
+          Decisions are recorded in <code>trust/approval_decisions.csv</code>.
+          No external send happens until the founder approves here.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Action</th>
+              <th>Target</th>
+              <th>Status</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.approvals.length === 0 ? (
+              <tr>
+                <td colSpan={5}>Queue is empty.</td>
+              </tr>
+            ) : (
+              data.approvals.map((row) => (
+                <tr key={row.id}>
+                  <td>{row.id}</td>
+                  <td>{row.action ?? row.action_type ?? "—"}</td>
+                  <td>{row.target ?? row.entity ?? "—"}</td>
+                  <td>{row.status ?? "—"}</td>
+                  <td>{row.created_at ?? "—"}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </section>
+    </FounderShell>
   );
 }

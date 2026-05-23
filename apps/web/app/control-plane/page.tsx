@@ -1,17 +1,28 @@
-import { RunActions } from "../../components/control-plane/RunActions";
-import { RunTable } from "../../components/control-plane/RunTable";
+import { FounderShell, KV } from "../../components/founder-shell";
+import { getControlPlaneSummary } from "../../lib/dealix-runtime";
 
-const runs = [
-  { runId: "run-001", tenantId: "tenant-enterprise", workflowId: "revenue_os", state: "running" },
-  { runId: "run-002", tenantId: "tenant-enterprise", workflowId: "approval_flow", state: "paused" }
-];
+export const dynamic = "force-dynamic";
 
-export default function ControlPlanePage() {
+export default async function ControlPlanePage() {
+  const data = await getControlPlaneSummary();
   return (
-    <main className="grid">
-      <h1>Control Plane</h1>
-      <RunTable runs={runs} />
-      <RunActions runId="run-001" />
-    </main>
+    <FounderShell title="Control Plane" source={data.source}>
+      <section className="card">
+        <h2>Governance counts</h2>
+        <KV k="Policy classes" v={data.policies.classes_count} />
+        <KV k="Policy rules" v={data.policies.rules_count} />
+        <KV k="Agents in registry" v={data.agents.count} />
+        <KV k="Eval suites" v={data.evals.count} />
+        <KV k="Internal API auth mode" v={data.auth_mode} />
+      </section>
+      <section className="card">
+        <h2>Operating scorecard (preview)</h2>
+        <pre>{data.scorecard.scorecard_md ?? "(not generated yet)"}</pre>
+      </section>
+      <section className="card">
+        <h2>Sovereign readiness (preview)</h2>
+        <pre>{data.sovereign.readiness_md ?? "(not generated yet)"}</pre>
+      </section>
+    </FounderShell>
   );
 }

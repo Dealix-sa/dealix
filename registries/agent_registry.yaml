@@ -1,0 +1,310 @@
+# Dealix Agent Registry — single source of truth for every AI agent that
+# operates inside the Dealix Sovereign AI Operating Company.
+#
+# Consumed by:
+#   * api/internal/runtime_reader.py            (display in Control Plane)
+#   * scripts/verify_agent_registry.py          (CI verification)
+#   * docs/ai/AGENT_REGISTRY_SYSTEM.md          (human-readable index)
+#
+# Field meaning:
+#   id                    — stable identifier; used in audit logs.
+#   name                  — human label shown in the console.
+#   purpose               — single sentence: why this agent exists.
+#   approval_class_max    — max approval class the agent may request
+#                           (A0 read, A1 draft, A2 external-impact,
+#                            A3 high-risk → must never be set here).
+#   tools                 — bounded list of tool names the agent can call.
+#   outputs               — what the agent emits (drafts / scores / reports).
+#   external_action_allowed — must be false for every agent. The founder
+#                           is the only path to external impact.
+#   kill_switch           — must be true. Operator can disable from console.
+#   eval_required         — must be true. Agent runs the eval gate.
+#   audit_required        — must be true. Every action is logged.
+#   owner                 — human accountable for this agent.
+#   data_access_level     — which private-runtime subtrees this agent reads.
+#   allowed_write_targets — which CSV/JSON paths this agent is allowed to
+#                           append to (read_only if empty).
+
+version: 1
+owner: founder
+
+agents:
+  - id: ceo_copilot
+    name: CEO Copilot
+    purpose: Summarise the daily founder pulse and recommend the next best action.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [daily_brief, next_best_action]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: full_read
+    allowed_write_targets: ["founder/operating_scorecard.md"]
+
+  - id: revenue_research_agent
+    name: Revenue Research Agent
+    purpose: Research target accounts and produce lead intelligence records.
+    approval_class_max: A1
+    tools: [web_research, runtime_reader]
+    outputs: [lead_intelligence_record]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: intelligence_only
+    allowed_write_targets: ["intelligence/lead_intelligence_base.csv"]
+
+  - id: lead_scoring_agent
+    name: Lead Scoring Agent
+    purpose: Score leads on fit, urgency, and proof confidence.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [lead_score]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: intelligence_only
+    allowed_write_targets: ["intelligence/lead_intelligence_base.csv"]
+
+  - id: outreach_draft_agent
+    name: Outreach Draft Agent
+    purpose: Draft personalised outreach messages; never sends.
+    approval_class_max: A2
+    tools: [llm_drafter]
+    outputs: [outreach_draft]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: outreach_only
+    allowed_write_targets: ["outreach/outreach_queue.csv", "approvals/approval_queue.csv"]
+
+  - id: followup_planner_agent
+    name: Follow-up Planner Agent
+    purpose: Plan the next follow-up touch in the conversation.
+    approval_class_max: A2
+    tools: [llm_drafter]
+    outputs: [followup_draft]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: outreach_only
+    allowed_write_targets: ["outreach/outreach_queue.csv", "approvals/approval_queue.csv"]
+
+  - id: reply_classifier_agent
+    name: Reply Classifier Agent
+    purpose: Classify inbound replies (interested / not interested / out-of-office / objection).
+    approval_class_max: A1
+    tools: [llm_classifier]
+    outputs: [reply_class]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: outreach_only
+    allowed_write_targets: ["outreach/conversation_log.csv"]
+
+  - id: sample_draft_agent
+    name: Sample Draft Agent
+    purpose: Draft a personalised sample for the prospect.
+    approval_class_max: A2
+    tools: [llm_drafter]
+    outputs: [sample_draft]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: outreach_only
+    allowed_write_targets: ["approvals/approval_queue.csv"]
+
+  - id: proposal_draft_agent
+    name: Proposal Draft Agent
+    purpose: Draft a paid proposal scoped to a discovered pain.
+    approval_class_max: A2
+    tools: [llm_drafter]
+    outputs: [proposal_draft]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: sales_only
+    allowed_write_targets: ["sales/proposal_queue.csv", "approvals/approval_queue.csv"]
+
+  - id: payment_followup_agent
+    name: Payment Follow-up Agent
+    purpose: Draft polite reminders for outstanding invoices; never auto-sends.
+    approval_class_max: A2
+    tools: [llm_drafter]
+    outputs: [payment_followup_draft]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: finance_only
+    allowed_write_targets: ["approvals/approval_queue.csv"]
+
+  - id: trust_guardian
+    name: Trust Guardian
+    purpose: Detect prompt injection, suppression hits, missing evidence, unsafe drafts.
+    approval_class_max: A1
+    tools: [policy_adapter, runtime_reader]
+    outputs: [trust_flag]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: full_read
+    allowed_write_targets: ["trust/trust_flags.csv"]
+
+  - id: eval_guardian
+    name: Eval Guardian
+    purpose: Run the eval gate suites against agent outputs.
+    approval_class_max: A1
+    tools: [eval_runner]
+    outputs: [eval_report]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: evals_only
+    allowed_write_targets: ["evals/eval_status.csv"]
+
+  - id: productization_agent
+    name: Productization Agent
+    purpose: Detect recurring delivery patterns that can be packaged.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [productization_candidate]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: full_read
+    allowed_write_targets: ["product/productization_candidates.csv"]
+
+  - id: finance_copilot
+    name: Finance Copilot
+    purpose: Summarise cash, capture, and unit economics.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [finance_summary]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: finance_only
+    allowed_write_targets: []
+
+  - id: delivery_copilot
+    name: Delivery Copilot
+    purpose: Track delivery commitments and surface slippage.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [delivery_summary]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: sales_only
+    allowed_write_targets: []
+
+  - id: security_guardian
+    name: Security Guardian
+    purpose: Watch for secrets, auth misconfig, and policy drift.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [security_finding]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: security_only
+    allowed_write_targets: ["security/security_status.csv"]
+
+  - id: data_migration_agent
+    name: Data Migration Agent
+    purpose: Run idempotent schema/data migrations; never destructive.
+    approval_class_max: A1
+    tools: [migration_runner]
+    outputs: [migration_report]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: data_platform_only
+    allowed_write_targets: []
+
+  - id: observability_agent
+    name: Observability Agent
+    purpose: Collect DORA + revenue metrics from CI and runtime.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [dora_metrics]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: full_read
+    allowed_write_targets: ["runtime/worker_state.csv"]
+
+  - id: partner_revenue_agent
+    name: Partner Revenue Agent
+    purpose: Track partner-sourced opportunities and revenue share.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [partner_report]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: sales_only
+    allowed_write_targets: []
+
+  - id: proof_safety_agent
+    name: Proof Safety Agent
+    purpose: Vet customer proof artifacts for safe public release.
+    approval_class_max: A1
+    tools: [llm_classifier]
+    outputs: [proof_safety_report]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: proof_only
+    allowed_write_targets: []
+
+  - id: incident_response_agent
+    name: Incident Response Agent
+    purpose: Summarise open incidents and recommend mitigations.
+    approval_class_max: A1
+    tools: [runtime_reader]
+    outputs: [incident_brief]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: full_read
+    allowed_write_targets: ["trust/incidents.csv"]
