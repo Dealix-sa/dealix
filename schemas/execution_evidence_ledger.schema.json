@@ -1,0 +1,13 @@
+{
+  "name": "execution_evidence_ledger",
+  "required_headers": [
+    "date",
+    "system",
+    "evidence_type",
+    "evidence_path",
+    "description",
+    "status",
+    "next_action"
+  ],
+  "allowed_statuses": ["Planned", "Done", "Blocked", "Waiting"]
+}

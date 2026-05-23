@@ -1,0 +1,12 @@
+{
+  "name": "pipeline_value",
+  "required_headers": [
+    "company",
+    "offer",
+    "stage",
+    "deal_value_sar",
+    "probability",
+    "weighted_value",
+    "next_action"
+  ]
+}

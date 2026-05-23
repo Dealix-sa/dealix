@@ -1,0 +1,25 @@
+{
+  "name": "revenue_action_log",
+  "required_headers": [
+    "date",
+    "lead_or_client",
+    "action",
+    "type",
+    "status",
+    "next_action",
+    "evidence"
+  ],
+  "allowed_types": [
+    "Lead Added",
+    "Outbound",
+    "Follow-Up",
+    "Sample",
+    "Call",
+    "Proposal",
+    "Payment Follow-Up",
+    "PO Follow-Up",
+    "Delivery",
+    "Retainer Ask"
+  ],
+  "allowed_statuses": ["Planned", "Done", "Blocked", "Waiting"]
+}

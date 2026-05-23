@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        data-quality data-snapshot data-architecture-verify \
+        ceo-data company-check
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,37 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Company Data Architecture ───────────────────────────
+# Public checks plus thin wrappers that point at PRIVATE_OPS (a path to a
+# private ops repo on disk). PRIVATE_OPS is required for any command that
+# reads real customer data — the checks fail loudly if it is missing.
+
+PRIVATE_OPS ?=
+
+data-architecture-verify: ## Verify the public data architecture skeleton
+	$(PYTHON) scripts/verify_company_data_architecture.py
+	$(PYTHON) scripts/verify_data_boundary.py
+
+data-quality: ## Audit private-ops CSV data quality against schemas
+	@test -n "$(PRIVATE_OPS)" || (echo "ERROR: set PRIVATE_OPS=/path/to/private-ops" && exit 1)
+	$(PYTHON) -m dealix_cli data-quality --private-ops $(PRIVATE_OPS)
+
+data-snapshot: ## Write a company snapshot JSON for the local dashboard
+	@test -n "$(PRIVATE_OPS)" || (echo "ERROR: set PRIVATE_OPS=/path/to/private-ops" && exit 1)
+	$(PYTHON) -m dealix_cli snapshot --private-ops $(PRIVATE_OPS)
+
+ceo-data: ## Master CEO data flow: quality + score + assurance + control tower
+	@test -n "$(PRIVATE_OPS)" || (echo "ERROR: set PRIVATE_OPS=/path/to/private-ops" && exit 1)
+	$(PYTHON) -m dealix_cli data-quality --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli business-score --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli assurance --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli control-tower --private-ops $(PRIVATE_OPS)
+
+company-check: ## Full company check: quality + snapshot + assurance + score + tower
+	@test -n "$(PRIVATE_OPS)" || (echo "ERROR: set PRIVATE_OPS=/path/to/private-ops" && exit 1)
+	$(PYTHON) -m dealix_cli data-quality --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli snapshot --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli assurance --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli business-score --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli control-tower --private-ops $(PRIVATE_OPS)
