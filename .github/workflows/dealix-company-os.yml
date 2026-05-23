@@ -22,7 +22,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install minimal deps
-        run: pip install pytest
+        run: pip install pytest pydantic pydantic-settings
 
       - name: Public safety scan
         run: python scripts/verify_public_safety.py
@@ -36,5 +36,16 @@ jobs:
       - name: Company OS end-to-end smoke
         run: python scripts/verify_company_os.py
 
-      - name: Run trust test suite
-        run: pytest -q tests/trust
+      - name: Run trust + Master Tree unit suite
+        # The project root conftest.py imports framework dependencies that
+        # are unrelated to the trust suite. Bypass it for this targeted run.
+        run: |
+          python -m pytest --noconftest -o addopts="" -q \
+            tests/trust \
+            tests/unit/test_decision_engine.py \
+            tests/unit/test_action_router.py \
+            tests/unit/test_risk_engine.py \
+            tests/unit/test_claim_guard.py \
+            tests/unit/test_approval_matrix.py \
+            tests/unit/test_suppression.py \
+            tests/unit/test_scoring.py

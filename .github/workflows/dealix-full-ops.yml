@@ -23,6 +23,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install minimal deps
+        run: pip install pydantic pydantic-settings
+
       - name: Verify Master Tree completeness
         run: python scripts/generate_master_tree.py --check
 

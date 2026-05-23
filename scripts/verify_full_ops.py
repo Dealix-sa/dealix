@@ -1,29 +1,60 @@
 #!/usr/bin/env python3
 """
-verify_full_ops.py — top-level orchestrator.
+verify_full_ops.py — orchestrator for the Master Tree verify scripts.
 
-Runs every verify_* script under scripts/ and reports a single
-pass/fail. The CI workflow `dealix-full-ops.yml` invokes this.
+Runs the verify_* scripts that the Master Tree declares (under
+scripts/generate_master_tree.py) and reports a single pass/fail.
+
+Pre-existing legacy verify scripts under scripts/ are NOT executed here;
+they live behind their own workflows and have their own dependency
+requirements. Use `--all` to run every verify_*.py — primarily useful
+on a developer machine with the full requirements installed.
 """
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 from pathlib import Path
 
 SCRIPTS = Path(__file__).resolve().parent
 REPO = SCRIPTS.parent
+sys.path.insert(0, str(SCRIPTS))
 
-EXCLUDE = {
-    Path(__file__).name,
-}
+from generate_master_tree import SCRIPTS as MASTER_TREE_SCRIPTS  # noqa: E402
 
 
-def main() -> int:
-    targets = sorted(
-        p for p in SCRIPTS.glob("verify_*.py")
-        if p.name not in EXCLUDE
+SELF = Path(__file__).name
+
+
+def master_tree_targets() -> list[Path]:
+    """Return absolute paths to the verify_* scripts declared in the manifest."""
+    names = MASTER_TREE_SCRIPTS["scripts"]
+    out: list[Path] = []
+    for name in names:
+        if not name.startswith("verify_"):
+            continue
+        if name == SELF:
+            continue
+        target = SCRIPTS / name
+        if target.exists():
+            out.append(target)
+    return sorted(out)
+
+
+def all_verify_targets() -> list[Path]:
+    return sorted(p for p in SCRIPTS.glob("verify_*.py") if p.name != SELF)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--all", action="store_true",
+        help="Run every scripts/verify_*.py, not just the Master Tree ones.",
     )
+    args = parser.parse_args(argv)
+
+    targets = all_verify_targets() if args.all else master_tree_targets()
 
     failures: list[str] = []
     for script in targets:
