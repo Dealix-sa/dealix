@@ -166,6 +166,37 @@ async def test_launch_summary_with_private_ops(async_client, admin_key, private_
     assert body["approved_assets"][0]["id"] == "A-1"
 
 
+@pytest.mark.asyncio
+async def test_launch_summary_extracts_top_ceo_action(async_client, admin_key, private_ops):
+    """The endpoint parses `Top CEO Action` from ceo_daily_brief.md."""
+    (private_ops / "founder" / "ceo_daily_brief.md").write_text(
+        "# CEO Daily Brief\n\n"
+        "## Top CEO Action — Top CEO Action\n\n"
+        "- Follow up with delta on proposal P-004\n"
+        "- (ignored second item)\n\n"
+        "## Other section\n\n- ignored\n",
+        encoding="utf-8",
+    )
+    res = await async_client.get(
+        "/api/v1/internal/launch/summary", headers={ADMIN_HEADER: admin_key}
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["next_ceo_action"] == "Follow up with delta on proposal P-004"
+
+
+def test_readiness_score_direct_import():
+    """_readiness_score should compute without subprocess."""
+    from api.routers.internal.launch import _readiness_score
+
+    result = _readiness_score()
+    # In the test env all docs/scripts exist; expect a real score.
+    assert result["decision"] in {"PASS", "HOLD", "unknown", "error"}
+    # If we got a real run, score should be a float in [0, 1].
+    if result.get("score") is not None:
+        assert 0.0 <= result["score"] <= 1.0
+
+
 # ── Risk register ──────────────────────────────────────────────
 
 

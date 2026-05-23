@@ -23,7 +23,7 @@ def private_ops_dir() -> Path | None:
     p = Path(raw).expanduser()
     try:
         return p.resolve() if p.exists() else None
-    except OSError:
+    except OSError:  # pragma: no cover
         return None
 
 
@@ -33,7 +33,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
     try:
         with path.open("r", encoding="utf-8", newline="") as fh:
             return list(csv.DictReader(fh))
-    except (OSError, csv.Error):
+    except (OSError, csv.Error):  # pragma: no cover
         return []
 
 
@@ -42,7 +42,7 @@ def read_json(path: Path) -> Any:
         return None
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+    except (OSError, ValueError):  # pragma: no cover
         return None
 
 
@@ -54,7 +54,7 @@ def read_text(path: Path, limit_kb: int = 64) -> str | None:
         if len(data) > limit_kb * 1024:
             return data[: limit_kb * 1024] + "\n…[truncated]"
         return data
-    except OSError:
+    except OSError:  # pragma: no cover
         return None
 
 

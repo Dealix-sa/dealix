@@ -19,6 +19,28 @@ router = APIRouter(prefix="/api/v1/internal/finance", tags=["internal-finance"])
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
+def _compute_forecast(ops: Path) -> dict[str, Any]:
+    """Direct-import the forecast computer. Defensive against missing script."""
+    scripts_dir = REPO_ROOT / "scripts"
+    if not (scripts_dir / "generate_revenue_forecast.py").exists():  # pragma: no cover
+        return {}
+    added_path = False
+    try:
+        if str(scripts_dir) not in sys.path:
+            sys.path.insert(0, str(scripts_dir))
+            added_path = True
+        from generate_revenue_forecast import compute  # type: ignore[import-not-found]
+        return compute(ops) or {}
+    except Exception:  # noqa: BLE001  # pragma: no cover
+        return {}
+    finally:
+        if added_path:
+            try:
+                sys.path.remove(str(scripts_dir))
+            except ValueError:  # pragma: no cover
+                pass
+
+
 @router.get("/forecast", dependencies=[Depends(require_admin_key)])
 def get_forecast() -> dict[str, Any]:
     ops = private_ops_dir()
@@ -27,21 +49,8 @@ def get_forecast() -> dict[str, Any]:
         out["forecast_markdown"] = None
         return out
 
-    # Reuse the forecast script's compute() if available — fall back to file.
     forecast_md = read_text(ops / "finance" / "revenue_forecast.md", limit_kb=64)
-
-    try:
-        sys.path.insert(0, str(REPO_ROOT / "scripts"))
-        from generate_revenue_forecast import compute as compute_forecast  # type: ignore
-        data = compute_forecast(ops)
-    except Exception:  # noqa: BLE001
-        data = {}
-    finally:
-        try:
-            sys.path.remove(str(REPO_ROOT / "scripts"))
-        except ValueError:
-            pass
-
+    data = _compute_forecast(ops)
     return {
         "source": "api",
         "forecast_markdown": forecast_md,

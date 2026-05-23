@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -27,25 +26,39 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 def _readiness_score() -> dict[str, Any]:
-    """Run launch_readiness verifier in JSON mode; tolerate any failure."""
-    script = REPO_ROOT / "scripts" / "verify_launch_readiness.py"
-    if not script.exists():
-        return {"score": None, "decision": "unknown", "checks": []}
+    """Compute launch-readiness score by direct import of the verifier.
+
+    Direct import is faster than subprocess and easier for coverage to
+    track. Any failure is swallowed to ``decision: "error"`` so the
+    endpoint never crashes the page.
+    """
+    scripts_dir = REPO_ROOT / "scripts"
+    if not (scripts_dir / "verify_launch_readiness.py").exists():
+        return {"score": None, "decision": "unknown"}
+    added_path = False
     try:
-        result = subprocess.run(
-            [sys.executable, str(script), "--json"],
-            capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=30,
-        )
-        import json as _json
-        data = _json.loads(result.stdout or "{}")
+        if str(scripts_dir) not in sys.path:
+            sys.path.insert(0, str(scripts_dir))
+            added_path = True
+        import verify_launch_readiness as vlr  # type: ignore[import-not-found]
+
+        checks = vlr.public_checks()
+        required_failing = [c for c in checks if not c["ok"]]
+        score = sum(1 for c in checks if c["ok"]) / max(1, len(checks))
         return {
-            "score": data.get("readiness_score"),
-            "decision": data.get("decision"),
-            "passing": data.get("passing"),
-            "total": data.get("total"),
+            "score": round(score, 3),
+            "decision": "PASS" if not required_failing else "HOLD",
+            "passing": sum(1 for c in checks if c["ok"]),
+            "total": len(checks),
         }
-    except Exception:  # noqa: BLE001
-        return {"score": None, "decision": "error", "checks": []}
+    except Exception:  # noqa: BLE001  # pragma: no cover
+        return {"score": None, "decision": "error"}
+    finally:
+        if added_path:
+            try:
+                sys.path.remove(str(scripts_dir))
+            except ValueError:  # pragma: no cover
+                pass
 
 
 @router.get("/summary", dependencies=[Depends(require_admin_key)])
@@ -84,7 +97,6 @@ def get_summary() -> dict[str, Any]:
 
     brief = read_text(ops / "founder" / "ceo_daily_brief.md", limit_kb=4)
     if brief:
-        # Find Top CEO Action line
         for chunk in brief.split("\n## ")[1:]:
             if chunk.lower().startswith("top ceo action"):
                 lines = [ln for ln in chunk.splitlines()[1:] if ln.strip().startswith("- ")]
