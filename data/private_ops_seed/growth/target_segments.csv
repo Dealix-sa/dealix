@@ -1,0 +1,6 @@
+segment_id,sector_id,size_band,maturity,compliance_posture,buyer_role,channel_posture,persona_id,score,sample_account_count,note,source
+SEG-erp-100to500-scaleup-regulated,sec-01,100-500,scaleup,regulated,CRO,mixed,P-CRO-MID,,0,"ERP/CRM scale-ups operating under regulated buyers.",seed
+SEG-cyber-50to200-scaleup-audit_led,sec-02,50-200,scaleup,audit_led,COO,mixed,P-COO-ENT,,0,"Cybersecurity vendors selling to enterprises.",seed
+SEG-agency-20to100-founder-light,sec-03,20-100,founder,light,FOUNDER,warm-only,P-FOUNDER-SCALE,,0,"Saudi B2B agencies looking for an operating system.",seed
+SEG-logistics-100to500-mature-regulated,sec-04,100-500,mature,regulated,COO,mixed,P-COO-ENT,,0,"Logistics operators with founder-led decision-making.",seed
+SEG-saas-20to200-scaleup-light,sec-06,20-200,scaleup,light,GROWTH,openly-marketed,P-HEAD-GROWTH-SAAS,,0,"Saudi SaaS scaling B2B GTM.",seed

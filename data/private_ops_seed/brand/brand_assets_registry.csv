@@ -1,0 +1,7 @@
+asset_id,asset_kind,variant,path,minimum_size_px,allowed_backgrounds,source
+brand-logo-full-svg,logo,full,assets/brand/logo/dealix-logo-full.svg,32,navy|slate|white,seed
+brand-mark-svg,logo,mark,assets/brand/icon/dealix-mark.svg,16,navy|slate|white,seed
+brand-wordmark-svg,logo,wordmark,assets/brand/wordmark/dealix-wordmark.svg,18,navy|slate|white,seed
+brand-mark-mono-svg,logo,mark-mono,assets/brand/monochrome/dealix-mark-mono.svg,16,white,seed
+brand-social-card-svg,social,og,assets/brand/social/dealix-social-card.svg,1200x630,navy,seed
+brand-favicon-svg,favicon,favicon,assets/brand/favicons/favicon.svg,16,navy,seed

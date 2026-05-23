@@ -1,0 +1,5 @@
+slot_id,publish_at,surface,theme,headline,draft_id,evidence_ids,founder_approved_at,status,source
+slot-seed-001,,linkedin,trust_gate,"Drafts in. Approvals out. (founder note)",,,,proposed,seed
+slot-seed-002,,linkedin,sector_pulse,"Three signals from Saudi logistics this month",,,,proposed,seed
+slot-seed-003,,sector_pulse,erp_crm,"ERP/CRM implementers — a Dealix sector pulse",,,,proposed,seed
+slot-seed-004,,linkedin,founder_voice,"What I approved this week, and why",,,,proposed,seed

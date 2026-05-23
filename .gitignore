@@ -37,6 +37,8 @@ downloads/
 eggs/
 .eggs/
 lib/
+!apps/web/lib/
+!apps/web/lib/**
 lib64/
 parts/
 sdist/
@@ -101,6 +103,9 @@ dumps/
 !landing/assets/data/service-readiness.json
 # Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
 !data/workflows/
+# Brand-growth operating layer seed (product data, not customer data)
+!data/private_ops_seed/
+!data/private_ops_seed/**
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

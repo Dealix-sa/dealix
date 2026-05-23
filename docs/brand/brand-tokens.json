@@ -1,0 +1,68 @@
+{
+  "brand": {
+    "name": "Dealix",
+    "wordmark": "DEALIX",
+    "tagline_en": "Intelligent Deals. Real Growth.",
+    "tagline_ar": "صفقات ذكية. نمو حقيقي.",
+    "positioning": "Saudi B2B Revenue Operating System for intelligent deal flow, founder-approved growth, and trust-gated AI execution."
+  },
+  "color": {
+    "primary": {
+      "deep_navy":   "#0B1220",
+      "emerald_teal":"#00D1A1",
+      "soft_silver": "#B2BBC6",
+      "slate":       "#0F1726",
+      "white":       "#FFFFFF"
+    },
+    "semantic": {
+      "bg":              "#0B1220",
+      "surface":         "#0F1726",
+      "surface_alt":     "#121C30",
+      "border":          "#1B2740",
+      "text_primary":    "#FFFFFF",
+      "text_secondary":  "#B2BBC6",
+      "accent":          "#00D1A1",
+      "accent_pressed":  "#00B98D",
+      "success":         "#00D1A1",
+      "warning":         "#F2C84B",
+      "danger":          "#FF5A5F",
+      "info":            "#5AB0FF"
+    },
+    "data_viz": ["#00D1A1", "#5AB0FF", "#F2C84B", "#FF8A65", "#B2BBC6", "#A78BFA"]
+  },
+  "typography": {
+    "stack_latin": "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif",
+    "stack_arabic": "\"IBM Plex Sans Arabic\", \"Noto Sans Arabic\", Tahoma, sans-serif",
+    "weights": { "regular": 400, "medium": 500, "semibold": 600, "bold": 700 },
+    "scale": {
+      "display": "44px",
+      "h1": "32px",
+      "h2": "24px",
+      "h3": "18px",
+      "body": "15px",
+      "small": "13px",
+      "caption": "12px"
+    },
+    "line_height": { "tight": 1.2, "normal": 1.5, "relaxed": 1.7 }
+  },
+  "spacing": { "xs": "4px", "sm": "8px", "md": "12px", "lg": "16px", "xl": "24px", "2xl": "32px", "3xl": "48px" },
+  "radius": { "sm": "6px", "md": "10px", "lg": "14px", "xl": "20px", "pill": "999px" },
+  "shadow": {
+    "card": "0 1px 2px rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.18)",
+    "raised": "0 6px 24px rgba(0,0,0,0.30)",
+    "focus_ring": "0 0 0 3px rgba(0,209,161,0.35)"
+  },
+  "motion": {
+    "fast_ms": 120,
+    "base_ms": 200,
+    "slow_ms": 320,
+    "easing_standard": "cubic-bezier(0.2, 0.0, 0.0, 1.0)"
+  },
+  "accessibility": {
+    "min_contrast_normal": 4.5,
+    "min_contrast_large":  3.0,
+    "min_target_px":       44,
+    "focus_visible_required": true,
+    "rtl_supported": true
+  }
+}

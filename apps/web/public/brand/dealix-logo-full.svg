@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 96" width="360" height="96" role="img" aria-label="Dealix — Intelligent Deals. Real Growth.">
+  <title>Dealix full logo</title>
+  <desc>Dealix wordmark with monogram mark, growth arrow, and revenue bars.</desc>
+  <rect x="4" y="14" width="68" height="68" rx="16" fill="#0B1220"/>
+  <path d="M16 28h22a18 18 0 0 1 18 18v0a18 18 0 0 1-18 18H16V28z" fill="none" stroke="#B2BBC6" stroke-width="3"/>
+  <rect x="22" y="52" width="4"  height="10" fill="#00D1A1"/>
+  <rect x="30" y="46" width="4"  height="16" fill="#00D1A1"/>
+  <rect x="38" y="40" width="4"  height="22" fill="#00D1A1"/>
+  <path d="M18 36 L46 24 L50 28 L42 30 L40 26" fill="none" stroke="#00D1A1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M16 68 Q40 76 64 64" fill="none" stroke="#00D1A1" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <text x="92" y="56" fill="#FFFFFF" font-family="Inter, system-ui, sans-serif" font-weight="800" font-size="34" letter-spacing="3">DEALIX</text>
+  <text x="93" y="76" fill="#B2BBC6" font-family="Inter, system-ui, sans-serif" font-weight="500" font-size="11" letter-spacing="3">INTELLIGENT DEALS. REAL GROWTH.</text>
+</svg>

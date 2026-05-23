@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        brand-system growth-system marketing-system product-distribution \
+        brand-growth-operating-layer bootstrap-runtime
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,36 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix brand-growth operating layer ────────────────────────
+# The market-domination stack: brand system, growth intelligence,
+# marketing OS, product distribution. Each target is read-only and
+# safe to run any time.
+
+PRIVATE_OPS ?= ./data/private_ops_seed
+
+brand-system: ## Verify the Dealix brand system (docs, tokens, components, assets, contrast)
+	$(PYTHON) scripts/verify_brand_system.py
+
+growth-system: ## Verify the growth / intelligence / distribution layer
+	$(PYTHON) scripts/verify_growth_system.py
+
+marketing-system: ## Verify the marketing OS (calendar, content, performance loop)
+	$(PYTHON) scripts/verify_marketing_system.py
+
+product-distribution: ## Verify the product ladder and rung-to-channel map
+	$(PYTHON) scripts/verify_product_distribution.py
+
+brand-growth-operating-layer: ## Run all brand-growth verifiers and roll up a verdict
+	$(PYTHON) scripts/verify_brand_growth_operating_layer.py
+
+bootstrap-runtime: ## Copy seed CSVs from this repo into a private-ops volume (PRIVATE_OPS=...)
+	@echo "→ bootstrapping runtime from $(PRIVATE_OPS) (seed source: data/private_ops_seed)"
+	@if [ "$(PRIVATE_OPS)" = "./data/private_ops_seed" ]; then \
+		echo "  using in-repo seed dir (no copy)."; \
+	else \
+		mkdir -p "$(PRIVATE_OPS)"; \
+		cp -R data/private_ops_seed/. "$(PRIVATE_OPS)/"; \
+		echo "  seed copied to $(PRIVATE_OPS)"; \
+	fi
+	@$(PYTHON) scripts/verify_brand_growth_operating_layer.py
