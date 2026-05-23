@@ -209,6 +209,31 @@ feature_requests.jsonl
 signals_output.json
 
 # ─────────────────────────────────────────────────────────────
+# Enterprise Operating Architecture — founder's private ops working
+# tree. The template scaffolds are tracked (so a fresh clone has a
+# starting point), but any non-template content the founder writes
+# locally (CSV rows, learning entries, mission control snapshots,
+# personal dashboards) stays local and must NEVER be committed.
+# ─────────────────────────────────────────────────────────────
+dealix-ops-private/**
+!dealix-ops-private/
+!dealix-ops-private/founder/
+!dealix-ops-private/founder/mission_control.md
+!dealix-ops-private/founder/ceo_audit_trail.csv
+!dealix-ops-private/founder/operating_calendar.md
+!dealix-ops-private/founder/personal_leverage_dashboard.md
+!dealix-ops-private/learning/
+!dealix-ops-private/learning/company_memory.md
+!dealix-ops-private/customer_intelligence/
+!dealix-ops-private/customer_intelligence/buyer_patterns.md
+!dealix-ops-private/customer_intelligence/objection_patterns.md
+!dealix-ops-private/customer_intelligence/sector_insights.md
+!dealix-ops-private/experiments/
+!dealix-ops-private/experiments/market_experiments.csv
+!dealix-ops-private/revenue/
+!dealix-ops-private/revenue/revenue_forecast.md
+
+# ─────────────────────────────────────────────────────────────
 # Wave 11 — First 3 Paid Pilots Closure — runtime state (NEVER commit)
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
