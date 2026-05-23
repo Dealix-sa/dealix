@@ -36,6 +36,12 @@ REQUIRED_COLORS = ["#0B1220", "#00D1A1", "#B2BBC6", "#0F1726", "#FFFFFF"]
 
 
 def main() -> int:
+    print(f"[brand-system] REPO={REPO}", flush=True)
+    print(f"[brand-system] cwd={Path.cwd()}", flush=True)
+    print(f"[brand-system] __file__={__file__}", flush=True)
+    print(f"[brand-system] REPO exists={REPO.exists()}", flush=True)
+    print(f"[brand-system] docs/brand exists={(REPO / 'docs/brand').exists()}", flush=True)
+    print(f"[brand-system] assets/brand exists={(REPO / 'assets/brand').exists()}", flush=True)
     missing = [f for f in REQUIRED_FILES if not (REPO / f).exists()]
     tokens_path = REPO / "docs/brand/brand-tokens.json"
     color_issues: list[str] = []
@@ -45,16 +51,18 @@ def main() -> int:
         for c in REQUIRED_COLORS:
             if c not in present_colors:
                 color_issues.append(f"missing color {c}")
+    else:
+        color_issues.append("brand-tokens.json not readable")
 
-    print("[brand-system]")
-    print(f"  missing files     : {len(missing)}")
+    print("[brand-system]", flush=True)
+    print(f"  missing files     : {len(missing)}", flush=True)
     for m in missing:
-        print(f"    - {m}")
-    print(f"  color issues      : {len(color_issues)}")
+        print(f"    - {m}", flush=True)
+    print(f"  color issues      : {len(color_issues)}", flush=True)
     for c in color_issues:
-        print(f"    - {c}")
+        print(f"    - {c}", flush=True)
     fail = bool(missing) or bool(color_issues)
-    print("RESULT:", "FAIL" if fail else "PASS")
+    print("RESULT:", "FAIL" if fail else "PASS", flush=True)
     return 1 if fail else 0
 
 
