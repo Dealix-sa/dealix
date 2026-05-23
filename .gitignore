@@ -213,3 +213,10 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Master Operations Pack — dashboard data is generated from
+# dealix-ops-private and contains real pipeline / MRR / approvals.
+# NEVER commit.
+# ─────────────────────────────────────────────────────────────
+dashboard_data/*.json
