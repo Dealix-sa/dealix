@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        cli-verify cli-daily cli-weekly cli-dashboard
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,22 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Command CLI ─────────────────────────────────────────
+# Single entry point for daily/weekly/dashboard/verify ops.
+# Override the private ops path with PRIVATE_OPS=... when needed.
+
+PRIVATE_OPS ?= ../dealix-ops-private
+
+cli-verify: ## CLI: run public + private verification checks
+	$(PYTHON) -m dealix_cli verify --private-ops $(PRIVATE_OPS)
+
+cli-daily: ## CLI: generate daily CEO brief + dashboard data
+	$(PYTHON) -m dealix_cli daily --private-ops $(PRIVATE_OPS)
+
+cli-weekly: ## CLI: generate weekly operating intelligence
+	$(PYTHON) -m dealix_cli weekly --private-ops $(PRIVATE_OPS)
+
+cli-dashboard: ## CLI: generate dashboard data and serve locally
+	$(PYTHON) -m dealix_cli dashboard --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m http.server 8080
