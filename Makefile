@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        advance verify-stage-evidence
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,14 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Execution Engine v2: stage evidence automation ─────────────
+# Requires PRIVATE_OPS to point at the private-ops repository root.
+PRIVATE_OPS ?= ../dealix-ops-private
+
+advance: ## Scan evidence, update stage checklist, emit evidence report
+	$(PYTHON) -m dealix_cli advance --private-ops $(PRIVATE_OPS)
+
+verify-stage-evidence: ## Verify execution-engine evidence automation is wired up
+	$(PYTHON) scripts/verify_stage_evidence_automation.py
+	$(PYTHON) -m compileall execution_engine dealix_cli scripts
