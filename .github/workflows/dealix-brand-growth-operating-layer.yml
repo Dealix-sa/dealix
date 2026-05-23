@@ -1,0 +1,96 @@
+name: Dealix Brand-Growth Operating Layer
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - "claude/**"
+    paths:
+      - "docs/brand/**"
+      - "docs/growth/**"
+      - "docs/marketing/**"
+      - "docs/product/**"
+      - "docs/ai/**"
+      - "docs/performance/**"
+      - "apps/web/lib/brand-tokens.ts"
+      - "apps/web/styles/brand.css"
+      - "apps/web/components/brand/**"
+      - "apps/web/components/founder-shell.tsx"
+      - "apps/web/app/**"
+      - "landing/dealix-brand.css"
+      - "data/brand/**"
+      - "data/growth/**"
+      - "data/marketing/**"
+      - "data/product/**"
+      - "scripts/verify_brand_*.py"
+      - "scripts/verify_growth_*.py"
+      - "scripts/verify_marketing_*.py"
+      - "scripts/verify_product_distribution.py"
+      - "scripts/verify_advanced_ai_agents.py"
+      - "scripts/verify_performance_system.py"
+      - ".github/workflows/dealix-brand-growth-operating-layer.yml"
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify brand-growth operating layer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Brand system verifier
+        run: python scripts/verify_brand_system.py
+
+      - name: Growth system verifier
+        run: python scripts/verify_growth_system.py
+
+      - name: Marketing system verifier
+        run: python scripts/verify_marketing_system.py
+
+      - name: Product distribution verifier
+        run: python scripts/verify_product_distribution.py
+
+      - name: Advanced AI agents verifier
+        run: python scripts/verify_advanced_ai_agents.py
+
+      - name: Performance system verifier
+        run: python scripts/verify_performance_system.py
+
+      - name: Brand-growth operating layer (aggregate)
+        run: python scripts/verify_brand_growth_operating_layer.py
+
+  build-web:
+    name: Build apps/web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Build
+        working-directory: apps/web
+        run: npm run build

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://dealix.io/schemas/brand-tokens.v1.json",
+  "brand": {
+    "name": "Dealix",
+    "wordmark": "DEALIX",
+    "tagline": "Intelligent Deals. Real Growth.",
+    "taglineLockup": "INTELLIGENT DEALS. REAL GROWTH.",
+    "taglineAr": "صفقات ذكية. نمو حقيقي.",
+    "pillars": [
+      "Built on Trust",
+      "Driven by Growth",
+      "Closing Deals",
+      "Focused on Results",
+      "Global Mindset, Local Impact"
+    ]
+  },
+  "colors": {
+    "deepNavy":     "#0B1220",
+    "emeraldTeal":  "#00D1A1",
+    "softSilver":   "#B2BBC6",
+    "slate":        "#0F1726",
+    "white":        "#FFFFFF",
+    "amber":        "#F6B73C",
+    "red":          "#FF5C7A"
+  },
+  "semanticColors": {
+    "backgroundPrimary":   "#0B1220",
+    "backgroundSecondary": "#0F1726",
+    "surface":             "#0F1726",
+    "accentPrimary":       "#00D1A1",
+    "accentOnAccent":      "#0B1220",
+    "textPrimary":         "#FFFFFF",
+    "textSecondary":       "#B2BBC6",
+    "borderSubtle":        "rgba(178, 187, 198, 0.18)",
+    "borderStrong":        "rgba(178, 187, 198, 0.42)",
+    "success":             "#00D1A1",
+    "warning":             "#F6B73C",
+    "danger":              "#FF5C7A",
+    "muted":               "#0F1726"
+  },
+  "typography": {
+    "fontDisplay": "Inter, \"IBM Plex Sans Arabic\", system-ui, -apple-system, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+    "fontBody":    "Inter, \"IBM Plex Sans Arabic\", system-ui, -apple-system, \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif",
+    "fontMono":    "\"JetBrains Mono\", ui-monospace, \"Cascadia Mono\", Menlo, Consolas, monospace",
+    "scale": {
+      "xs":   "12px",
+      "sm":   "14px",
+      "base": "16px",
+      "lg":   "18px",
+      "xl":   "20px",
+      "2xl":  "24px",
+      "3xl":  "30px",
+      "4xl":  "36px",
+      "5xl":  "48px",
+      "6xl":  "60px"
+    },
+    "weight": {
+      "regular":   400,
+      "medium":    500,
+      "semibold":  600,
+      "bold":      700,
+      "extrabold": 800
+    }
+  },
+  "radii": {
+    "none": "0",
+    "sm":   "6px",
+    "md":   "10px",
+    "lg":   "16px",
+    "xl":   "20px",
+    "pill": "999px"
+  },
+  "spacing": {
+    "0": "0",
+    "1": "4px",
+    "2": "8px",
+    "3": "12px",
+    "4": "16px",
+    "5": "20px",
+    "6": "24px",
+    "8": "32px",
+    "10": "40px",
+    "12": "48px",
+    "16": "64px"
+  },
+  "elevation": {
+    "none": "none",
+    "sm":   "0 1px 2px rgba(0, 0, 0, 0.18)",
+    "md":   "0 4px 12px rgba(0, 0, 0, 0.24)",
+    "lg":   "0 10px 32px rgba(0, 0, 0, 0.32)"
+  },
+  "motion": {
+    "durationFast":  "120ms",
+    "durationBase":  "200ms",
+    "durationSlow":  "320ms",
+    "easingStandard": "cubic-bezier(0.2, 0, 0, 1)",
+    "easingEnter":    "cubic-bezier(0, 0, 0, 1)",
+    "easingExit":     "cubic-bezier(0.4, 0, 1, 1)"
+  }
+}

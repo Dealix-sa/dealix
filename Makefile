@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        brand-system growth-system marketing-system product-distribution \
+        advanced-ai-agents performance-system brand-growth-operating-layer
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,28 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Brand-Led Autonomous Growth OS ──────────────────────
+# Read-only verifiers for the brand + growth + marketing + product +
+# AI + performance operating layer.
+
+brand-system: ## Verify the Dealix brand system (tokens, docs, components)
+	$(PYTHON) scripts/verify_brand_system.py
+
+growth-system: ## Verify the Strategic Targeting OS + Distribution Machines
+	$(PYTHON) scripts/verify_growth_system.py
+
+marketing-system: ## Verify the Dealix Marketing OS
+	$(PYTHON) scripts/verify_marketing_system.py
+
+product-distribution: ## Verify the Product Distribution OS
+	$(PYTHON) scripts/verify_product_distribution.py
+
+advanced-ai-agents: ## Verify advanced AI agent docs and doctrine
+	$(PYTHON) scripts/verify_advanced_ai_agents.py
+
+performance-system: ## Verify the Performance Improvement OS
+	$(PYTHON) scripts/verify_performance_system.py
+
+brand-growth-operating-layer: ## Verify the full brand-led autonomous growth OS
+	$(PYTHON) scripts/verify_brand_growth_operating_layer.py

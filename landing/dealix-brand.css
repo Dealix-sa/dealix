@@ -1,0 +1,142 @@
+/* =========================================================================
+   Dealix Brand — public marketing surfaces (landing/)
+   ========================================================================= */
+
+:root {
+  --dealix-deep-navy:    #0B1220;
+  --dealix-emerald-teal: #00D1A1;
+  --dealix-soft-silver:  #B2BBC6;
+  --dealix-slate:        #0F1726;
+  --dealix-white:        #FFFFFF;
+  --dealix-amber:        #F6B73C;
+  --dealix-red:          #FF5C7A;
+
+  --dealix-bg:           var(--dealix-deep-navy);
+  --dealix-surface:      var(--dealix-slate);
+  --dealix-accent:       var(--dealix-emerald-teal);
+  --dealix-text:         var(--dealix-white);
+  --dealix-text-muted:   var(--dealix-soft-silver);
+  --dealix-border:       rgba(178, 187, 198, 0.18);
+
+  --dealix-font-display: Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --dealix-font-body:    Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.dealix-brand-surface {
+  background: var(--dealix-bg);
+  color: var(--dealix-text);
+  font-family: var(--dealix-font-body);
+}
+
+.dealix-brand-surface a {
+  color: var(--dealix-accent);
+  text-decoration: none;
+}
+
+.dealix-brand-surface a:hover {
+  text-decoration: underline;
+}
+
+.dealix-hero {
+  background: linear-gradient(180deg, var(--dealix-deep-navy) 0%, var(--dealix-slate) 100%);
+  color: var(--dealix-text);
+  padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 64px);
+  border-bottom: 1px solid var(--dealix-border);
+}
+
+.dealix-hero__eyebrow {
+  color: var(--dealix-accent);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.dealix-hero__title {
+  font-family: var(--dealix-font-display);
+  font-weight: 800;
+  font-size: clamp(36px, 6vw, 60px);
+  line-height: 1.1;
+  margin: 0 0 16px 0;
+  color: var(--dealix-text);
+}
+
+.dealix-hero__subtitle {
+  font-size: clamp(16px, 1.6vw, 20px);
+  line-height: 1.55;
+  color: var(--dealix-text-muted);
+  max-width: 720px;
+  margin: 0 0 24px 0;
+}
+
+.dealix-cta--primary {
+  background: var(--dealix-accent);
+  color: var(--dealix-deep-navy);
+  border: none;
+  border-radius: 10px;
+  padding: 14px 24px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.dealix-cta--ghost {
+  background: transparent;
+  color: var(--dealix-text);
+  border: 1px solid rgba(178, 187, 198, 0.42);
+  border-radius: 10px;
+  padding: 14px 24px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.dealix-section {
+  padding: clamp(48px, 6vw, 96px) clamp(20px, 5vw, 64px);
+  background: var(--dealix-bg);
+  color: var(--dealix-text);
+  border-bottom: 1px solid var(--dealix-border);
+}
+
+.dealix-card {
+  background: var(--dealix-surface);
+  color: var(--dealix-text);
+  border: 1px solid var(--dealix-border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.dealix-card--accent {
+  border-left: 3px solid var(--dealix-accent);
+}
+
+.dealix-pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.dealix-trust-note {
+  border: 1px solid var(--dealix-border);
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(0, 209, 161, 0.06);
+  color: var(--dealix-text-muted);
+  font-size: 14px;
+}
+
+.dealix-trust-note strong {
+  color: var(--dealix-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
