@@ -243,4 +243,40 @@ Google يضع **Timestamp** في العمود **A**، ثم أسئلتك بالت
 
 - [GOOGLE_SHEET_MODEL_AR.md](GOOGLE_SHEET_MODEL_AR.md) — نموذج الأعمدة الكامل  
 - [TURN_ON_FULL_OPS_AR.md](../TURN_ON_FULL_OPS_AR.md) — تفعيل الفورم والربط  
-- [dealix_google_apps_script.gs](dealix_google_apps_script.gs) — المسار مع Apps Script عندما يكون جاهزاً  
+- [dealix_google_apps_script.gs](dealix_google_apps_script.gs) — المسار مع Apps Script عندما يكون جاهزاً
+
+---
+
+## Document Standard Compliance
+
+## Purpose
+Defines this operating document's role inside Dealix Company OS.
+
+## Owner
+Sami (Founder). Reassign to the responsible operator when one is named.
+
+## Review Cadence
+Weekly until stable, then monthly.
+
+## Inputs
+- Relevant company data and signals.
+- Founder decisions and customer evidence.
+
+## Outputs
+- Operating guidance, decisions, or templates produced by this document.
+- Evidence captured for verification.
+
+## Rules
+- Must support revenue, delivery, trust, learning, or founder leverage.
+- Must not introduce unsupported claims.
+- Must preserve public/private boundaries.
+
+## Metrics
+- Completion status of the actions this document drives.
+- Impact on revenue, delivery, trust, or founder leverage.
+
+## Evidence
+- Linked workflow, file, test output, customer interaction, or decision log.
+
+## Last Reviewed
+2026-05-23
