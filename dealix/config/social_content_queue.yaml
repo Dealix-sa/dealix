@@ -158,7 +158,7 @@ posts:
     '
   cta_ar: Sample Proof Pack
   aeo_slug: saudi-agency-follow-up-checklist
-  status: draft
+  status: approved
 - week: 3
   day: 3
   pillar: trust
@@ -170,7 +170,7 @@ posts:
     '
   cta_ar: Trust layer — كيف نبيع
   aeo_slug: trust-layer
-  status: draft
+  status: approved
 - week: 3
   day: 4
   pillar: founder_media
@@ -182,7 +182,7 @@ posts:
     '
   cta_ar: تواصل إن كنت وكالة B2B في السعودية
   aeo_slug: founder-build-in-public
-  status: draft
+  status: approved
 - week: 4
   day: 0
   pillar: proof
@@ -193,7 +193,7 @@ posts:
     '
   cta_ar: احجز ديمو 10 دقائق
   aeo_slug: lead-to-decision-7d
-  status: draft
+  status: approved
 - week: 4
   day: 1
   pillar: objection
@@ -205,7 +205,7 @@ posts:
     '
   cta_ar: Scope Agency Audit
   aeo_slug: price-risk-not-value
-  status: draft
+  status: approved
 - week: 4
   day: 2
   pillar: founder_media
@@ -216,7 +216,7 @@ posts:
     '
   cta_ar: ما هو Post-Lead Revenue Ops؟
   aeo_slug: post-lead-revenue-ops
-  status: draft
+  status: approved
 - week: 4
   day: 3
   pillar: trust
