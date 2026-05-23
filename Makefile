@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        kit kit-verify
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,29 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Revenue Sprint Kit ─────────────────────────────────────────
+# Public kit lives in docs/. Private operating templates live in the
+# dealix-ops-private repo and are not mirrored here.
+
+kit: kit-verify ## Revenue Sprint Kit: verify public files and list private-side checklist
+	@echo ""
+	@echo "Dealix Revenue Sprint Kit"
+	@echo "========================="
+	@echo "Public files:"
+	@echo "  docs/offers/revenue_sprint/REVENUE_SPRINT_KIT.md"
+	@echo "  docs/offers/revenue_sprint/OFFER.md"
+	@echo "  docs/offers/revenue_sprint/PRICING.md"
+	@echo "  docs/offers/revenue_sprint/SCOPE.md"
+	@echo "  docs/delivery/revenue_sprint/QA_CHECKLIST.md"
+	@echo "  docs/trust/NO_OVERCLAIM_POLICY.md"
+	@echo ""
+	@echo "Private-side files (in dealix-ops-private/offers/revenue_sprint/):"
+	@echo "  founder_dm_pack.md, sample_pack_template.md, proposal_fast_template.md,"
+	@echo "  payment_followup_templates.md, client_intake.md, delivery_report_template.md,"
+	@echo "  qa_checklist.md, handoff_template.md, feedback_request.md, retainer_ask.md"
+	@echo ""
+	@echo "Private setup steps are documented in docs/offers/revenue_sprint/PRIVATE_KIT_SETUP.md"
+
+kit-verify: ## Verify the public Revenue Sprint Kit files are present and trust-safe
+	$(PYTHON) scripts/verify_revenue_sprint_kit.py
