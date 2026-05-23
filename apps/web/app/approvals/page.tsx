@@ -1,5 +1,6 @@
 import { ApprovalDecisionModal } from "../../components/approvals/ApprovalDecisionModal";
 import { OversightQueue } from "../../components/approvals/OversightQueue";
+import { FounderShell } from "../../components/founder-shell";
 
 const queueItems = [
   {
@@ -12,10 +13,15 @@ const queueItems = [
 
 export default function ApprovalsPage() {
   return (
-    <main className="grid">
-      <h1>Approvals</h1>
-      <OversightQueue items={queueItems} />
-      <ApprovalDecisionModal />
-    </main>
+    <FounderShell title="Approvals">
+      <p className="lead">
+        A1/A2/A3 actions awaiting founder review. Backed by the existing
+        Trust Plane ApprovalCenter.
+      </p>
+      <div className="grid">
+        <OversightQueue items={queueItems} />
+        <ApprovalDecisionModal />
+      </div>
+    </FounderShell>
   );
 }
