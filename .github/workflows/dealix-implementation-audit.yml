@@ -1,0 +1,44 @@
+name: Dealix Implementation Audit
+
+on:
+  pull_request:
+    paths:
+      - "DEALIX_*.md"
+      - "docs/**"
+      - "dealix_cli/**"
+      - "execution_engine/**"
+      - "scripts/audit_dealix_implementation.py"
+      - "scripts/verify_*.py"
+      - "templates/private_ops_audit_template.py"
+      - ".github/workflows/dealix-implementation-audit.yml"
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-impl-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  implementation-audit:
+    name: Public implementation audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run public implementation audit
+        run: python scripts/audit_dealix_implementation.py
+
+      - name: Audit summary (JSON)
+        if: always()
+        run: python scripts/audit_dealix_implementation.py --json || true

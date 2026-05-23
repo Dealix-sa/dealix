@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        audit verify daily stage advance kit weekly-close init-private
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,33 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Implementation Audit ────────────────────────────────
+# Public-only implementation checks. See DEALIX_IMPLEMENTATION_AUDIT.md.
+# PRIVATE_OPS is the path to the private dealix-ops repo (e.g. ../dealix-ops-private).
+
+PRIVATE_OPS ?= ../dealix-ops-private
+
+verify: ## audit: run only the public verifier scripts
+	$(PYTHON) scripts/audit_dealix_implementation.py
+
+audit: ## audit: full public + private implementation audit (set PRIVATE_OPS=...)
+	$(PYTHON) -m dealix_cli audit --private-ops $(PRIVATE_OPS)
+
+daily: ## audit: print the daily founder brief (set PRIVATE_OPS=...)
+	$(PYTHON) -m dealix_cli daily --private-ops $(PRIVATE_OPS)
+
+stage: ## audit: show current stage + exit criteria (set PRIVATE_OPS=...)
+	$(PYTHON) -m dealix_cli stage --private-ops $(PRIVATE_OPS)
+
+advance: ## audit: advance to the next stage if exit criteria met
+	$(PYTHON) -m dealix_cli advance --private-ops $(PRIVATE_OPS)
+
+kit: ## audit: verify the Revenue Sprint Kit is complete
+	$(PYTHON) -m dealix_cli kit
+
+weekly-close: ## audit: write this week's weekly review template into private ops
+	$(PYTHON) -m dealix_cli weekly-close --private-ops $(PRIVATE_OPS)
+
+init-private: ## audit: bootstrap private-ops directory with file layout
+	$(PYTHON) -m dealix_cli init --private-ops $(PRIVATE_OPS)
