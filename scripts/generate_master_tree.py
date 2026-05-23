@@ -216,7 +216,10 @@ APPS_WEB = {
     "apps/web": ["README.md"],
     "apps/web/app": [".gitkeep"],
     "apps/web/components": [".gitkeep"],
-    "apps/web/lib": [".gitkeep"],
+    # NOTE: apps/web/lib/.gitkeep is intentionally omitted. The root
+    # .gitignore matches "lib/" (a Python build artifact convention),
+    # which silently ignores any file under apps/web/lib/. Adding it to
+    # the manifest would always fail --check on a fresh clone.
     "apps/web/public": [".gitkeep"],
 }
 
