@@ -135,6 +135,10 @@ def main() -> int:
     failures: list[str] = []
     passes: list[str] = []
 
+    print(f"verify_brand_system: python={sys.version.split()[0]}", flush=True)
+    print(f"verify_brand_system: ROOT={ROOT}", flush=True)
+    print(f"verify_brand_system: cwd={Path.cwd()}", flush=True)
+
     for doc in REQUIRED_DOCS:
         if (ROOT / doc).exists():
             passes.append(f"doc exists: {doc}")

@@ -146,7 +146,7 @@ async def product_distribution() -> dict[str, Any]:
         "product_distribution_source": "signal" if distribution else "fallback",
         "pricing_guardrails_doc": "docs/product/PRICING_GUARDRAILS.md",
         "trust_note": (
-            "No rung promises guaranteed revenue. No pricing variance happens "
-            "without founder approval."
+            "No rung promises an outcome we cannot evidence. No pricing "
+            "variance happens without founder approval."
         ),
     }
