@@ -130,3 +130,53 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix v7 Market-Entry Operating Stack ─────────────────────
+# Section A targets. Each is read-only or scaffolding-only — none
+# of them send external messages or write to production.
+
+PRIVATE_OPS ?= /opt/dealix-ops-private
+
+.PHONY: bootstrap-runtime brand-system growth-system marketing-system product-distribution \
+        policy-check agent-registry eval-gate brand-growth-operating-layer \
+        ultimate-operating-layer sovereign-operating-stack market-entry-stack \
+        smoke-internal-api
+
+bootstrap-runtime: ## v7: scaffold private ops CSV ledgers at $$PRIVATE_OPS
+	$(PYTHON) scripts/bootstrap_private_ops_runtime.py --root $(PRIVATE_OPS)
+
+brand-system: ## v7: verify brand tokens, components, and docs
+	$(PYTHON) scripts/verify_brand_system.py
+
+growth-system: ## v7: verify growth + intelligence doc surface
+	$(PYTHON) scripts/verify_growth_system.py
+
+marketing-system: ## v7: verify marketing doc surface
+	$(PYTHON) scripts/verify_marketing_system.py
+
+product-distribution: ## v7: verify product distribution doc surface
+	$(PYTHON) scripts/verify_product_distribution.py
+
+policy-check: ## v7: validate policies/dealix_control_policy.yaml
+	$(PYTHON) scripts/verify_policy_as_code.py
+
+agent-registry: ## v7: validate registries/agent_registry.yaml
+	$(PYTHON) scripts/verify_agent_registry.py
+
+eval-gate: ## v7: validate evals/gates/dealix_agent_eval_gate.yaml
+	$(PYTHON) scripts/verify_eval_gate.py
+
+brand-growth-operating-layer: ## v7: composite brand + growth + marketing
+	$(PYTHON) scripts/verify_brand_growth_operating_layer.py
+
+ultimate-operating-layer: ## v7: composite brand + growth + marketing + policy + agents + evals
+	$(PYTHON) scripts/verify_ultimate_operating_layer.py
+
+sovereign-operating-stack: ## v7: ultimate + security gate
+	$(PYTHON) scripts/verify_sovereign_operating_stack.py
+
+market-entry-stack: ## v7: full scorecard across every verifier
+	$(PYTHON) scripts/verify_market_entry_stack.py
+
+smoke-internal-api: ## v7: probe internal API (safe if server is down)
+	$(PYTHON) scripts/smoke_internal_api.py
