@@ -1,0 +1,32 @@
+name: Dealix Stage Gate Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  stage-gates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify stage gated roadmap
+        run: python scripts/verify_stage_gated_roadmap.py
+
+      - name: Verify full ops
+        run: python scripts/verify_full_ops.py
+
+      - name: Compile
+        run: |
+          dirs=""
+          for d in dealix ops_runtime control_plane operating_intelligence dealix_cli scripts; do
+            if [ -d "$d" ]; then dirs="$dirs $d"; fi
+          done
+          python -m compileall $dirs
