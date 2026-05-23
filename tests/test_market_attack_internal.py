@@ -170,3 +170,131 @@ def test_no_endpoint_returns_5xx(client: TestClient) -> None:
         assert resp.status_code < 500, (
             f"{path} returned {resp.status_code}: {resp.text[:200]}"
         )
+
+
+def test_runtime_path_marks_source_api(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, tmp_path
+) -> None:
+    """When PRIVATE_OPS points at a real ops tree with all CSVs, the
+    response is marked `source=api` (not fallback)."""
+    # Seed every CSV the router reads, with a minimal valid row.
+    (tmp_path / "market_attack").mkdir()
+    (tmp_path / "campaigns").mkdir()
+    (tmp_path / "partners").mkdir()
+    (tmp_path / "sales_assets").mkdir()
+    (tmp_path / "authority").mkdir()
+
+    (tmp_path / "market_attack" / "beachhead_sector_scorecard.csv").write_text(
+        "sector,saudi_relevance,buyer_clarity,pain_urgency,high_ticket_potential,"
+        "proof_fit,delivery_fit,competition_gap,channel_access,trust_risk,"
+        "total_score,priority,next_action\n"
+        "live_sector,5,5,5,5,5,5,5,5,5,45,P0,run\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "market_attack" / "strategic_accounts.csv").write_text(
+        "account_id,company,sector,website,city,buyer_title,why_strategic,"
+        "trigger_event,estimated_value,relationship_path,proof_needed,"
+        "trust_risk,priority,next_action,status\n"
+        "acct-x,Co,live_sector,,Riyadh,COO,why,trig,1,path,proof,low,T0,act,new\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "market_attack" / "objection_library.csv").write_text(
+        "objection_id,sector,stage,objection,frequency,response_angle,"
+        "asset_needed,owner,status,next_action\n"
+        "obj-x,live_sector,cold,obj,5,resp,one_pager,founder,open,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "campaigns" / "campaign_registry.csv").write_text(
+        "campaign_id,name,sector,offer,channel,goal,approval_class,owner,"
+        "status,start_date,end_date,next_action\n"
+        "c1,n,live_sector,o,ch,goal,founder_only,founder,live,,,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "campaigns" / "campaign_queue.csv").write_text(
+        "queue_id,campaign_id,channel,target_segment,message_or_asset,"
+        "approval_status,send_status,next_action\n"
+        "q1,c1,ch,seg,a1,approved,approved,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "campaigns" / "campaign_assets.csv").write_text(
+        "asset_id,campaign_id,type,title,status,approval_status,proof_status,"
+        "risk_level,next_action\n"
+        "a1,c1,one_pager,title,draft,approved,n_a,low,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "campaigns" / "campaign_results.csv").write_text(
+        "date,campaign_id,channel,impressions,clicks,replies,positive_replies,"
+        "samples,proposals,payments,learning,next_action\n"
+        "2026-01-01,c1,ch,10,5,2,1,1,1,1,learn,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "partners" / "partner_pipeline.csv").write_text(
+        "partner_id,company,type,website,relationship_path,offer_fit,"
+        "referral_potential,white_label_potential,trust_risk,status,next_action\n"
+        "p1,Co,agency,,path,fit,high,yes,low,active,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "sales_assets" / "sales_asset_registry.csv").write_text(
+        "asset_id,type,sector,offer,title,status,approval_status,proof_status,"
+        "risk_level,file_path,next_action\n"
+        "sa-x,one_pager,live_sector,o,title,champion,approved,evidence_attached,"
+        "low,path/x.md,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "authority" / "founder_posts.csv").write_text(
+        "post_id,theme,sector,draft,approval_status,proof_status,risk_level,next_action\n"
+        "post-x,theme,live_sector,draft,approved,evidence_attached,low,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "authority" / "sector_insights.csv").write_text(
+        "insight_id,sector,insight,evidence,source,status,approved_for_public,next_action\n"
+        "ins-x,live_sector,insight,ev,internal_ledger,validated,yes,act\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "authority" / "report_ideas.csv").write_text(
+        "report_id,sector,title,hypothesis,data_needed,approval_status,next_action\n"
+        "rep-x,live_sector,title,hyp,data,pending,act\n",
+        encoding="utf-8",
+    )
+
+    monkeypatch.setenv("PRIVATE_OPS", str(tmp_path))
+
+    for path in ENDPOINTS:
+        resp = client.get(path, headers=_auth_headers())
+        assert resp.status_code == 200, f"{path}: {resp.text[:200]}"
+        assert resp.json()["source"] == "api", (
+            f"{path} should report source=api when PRIVATE_OPS is populated"
+        )
+
+    # Verify the champion asset count is picked up from runtime data.
+    sa = client.get(
+        "/api/v1/internal/sales-assets/summary", headers=_auth_headers()
+    ).json()
+    assert sa["championAssets"] == 1
+
+    # Verify high-frequency objection count is picked up.
+    ma = client.get(
+        "/api/v1/internal/market-attack/summary", headers=_auth_headers()
+    ).json()
+    assert ma["highFrequencyObjections"] == 1
+    assert ma["activeT0AndT1Accounts"] == 1
+
+
+def test_safe_int_handles_non_numeric_payload(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch, tmp_path
+) -> None:
+    """A non-numeric value in campaign_results.csv must not crash the
+    endpoint — `_safe_int` falls back to 0."""
+    (tmp_path / "campaigns").mkdir()
+    (tmp_path / "campaigns" / "campaign_results.csv").write_text(
+        "date,campaign_id,channel,impressions,clicks,replies,positive_replies,"
+        "samples,proposals,payments,learning,next_action\n"
+        "2026-01-01,c1,ch,not_a_number,,,,,,,,\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("PRIVATE_OPS", str(tmp_path))
+    resp = client.get(
+        "/api/v1/internal/campaigns/summary", headers=_auth_headers()
+    )
+    assert resp.status_code == 200
+    assert resp.json()["results"]["impressions"] == 0

@@ -66,6 +66,15 @@ def _now() -> str:
     return datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _combine_sources(*sources: str) -> str:
+    """Aggregate per-CSV source labels into a single `api` or `fallback`.
+
+    Returns `fallback` only when *every* input came from the bootstrap;
+    otherwise the runtime is partially live and we call it `api`.
+    """
+    return "fallback" if all(s == "fallback" for s in sources) else "api"
+
+
 def _priority_for(score: int) -> str:
     if score >= 36:
         return "P0"
@@ -130,14 +139,7 @@ def market_attack_summary() -> dict[str, Any]:
         1 for a in accounts if (a.get("priority") or "").strip() in ("T0", "T1")
     )
 
-    source = "api" if "api" in (src1, src2, src3) else "fallback"
-    # If any input came from runtime, we still call it "api"; only when all
-    # three came from bootstrap do we report fallback. This matches what the
-    # UI cares about.
-    if src1 == "fallback" and src2 == "fallback" and src3 == "fallback":
-        source = "fallback"
-    else:
-        source = "api"
+    source = _combine_sources(src1, src2, src3)
 
     return {
         "source": source,
@@ -195,7 +197,7 @@ def campaigns_summary() -> dict[str, Any]:
         ):
             totals[col] += _safe_int(row.get(col))
 
-    source = "fallback" if all(s == "fallback" for s in (s1, s2, s3, s4)) else "api"
+    source = _combine_sources(s1, s2, s3, s4)
 
     return {
         "source": source,
@@ -235,7 +237,7 @@ def partners_pipeline() -> dict[str, Any]:
             white_label += 1
 
     return {
-        "source": "api" if src == "api" else "fallback",
+        "source": _combine_sources(src),
         "generatedAt": _now(),
         "byType": dict(by_type),
         "byStatus": dict(by_status),
@@ -261,7 +263,7 @@ def sales_assets_summary() -> dict[str, Any]:
             champion += 1
 
     return {
-        "source": "api" if src == "api" else "fallback",
+        "source": _combine_sources(src),
         "generatedAt": _now(),
         "total": len(rows),
         "byType": dict(by_type),
@@ -296,7 +298,7 @@ def authority_queue() -> dict[str, Any]:
         1 for i in insights if (i.get("status") or "").strip() == "validated"
     )
 
-    source = "fallback" if all(s == "fallback" for s in (s1, s2, s3)) else "api"
+    source = _combine_sources(s1, s2, s3)
 
     return {
         "source": source,
