@@ -122,8 +122,31 @@ class ReadinessScoreRequest(BaseModel):
 
 @router.get("/readiness-score")
 async def readiness_score_get() -> dict[str, Any]:
-    """Return readiness score based on ledger state (defaults to minimum)."""
-    return _compute_readiness({})
+    """Return readiness score derived from ledger state."""
+    assets = list_assets(limit=500)
+    has_arr = any(
+        getattr(a, "asset_type", None) in ("arr_contract", "retainer_contract")
+        for a in assets
+    )
+    retainer_count = sum(
+        1 for a in assets
+        if getattr(a, "asset_type", None) == "retainer_contract"
+    )
+    proof_count = sum(
+        1 for a in assets
+        if getattr(a, "asset_type", None) == "proof_asset"
+    )
+    inputs = {
+        "has_arr": has_arr,
+        "arr_sар": 0.0,
+        "team_complete": False,
+        "product_live": True,
+        "revenue_12mo_sar": 0.0,
+        "governance_docs_ready": False,
+        "proof_library_count": proof_count,
+        "retainer_customers": retainer_count,
+    }
+    return _compute_readiness(inputs)
 
 
 @router.post("/readiness-score")

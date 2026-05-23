@@ -73,8 +73,25 @@ def run(dry_run: bool) -> None:
         gates_total = len(gate_state)
         gate_pct = gates_passed / gates_total if gates_total else 0
 
-        # Compute governance runtime maturity
-        gov_score = governance_runtime_maturity_score(frozenset())
+        # Detect implemented governance components from actual module/file presence
+        import importlib.util as _ilu
+        _GOV_COMPONENT_MODULES: dict[str, str] = {
+            "policy_engine": "auto_client_acquisition.governance_os",
+            "pii_detection": "auto_client_acquisition.saudi_layer",
+            "audit_log": "api.middleware",
+            "approval_engine": "auto_client_acquisition.governance_os.approval_policy",
+            "allowed_use_checker": "auto_client_acquisition.governance_os",
+            "claim_safety_checker": "auto_client_acquisition.governance_os",
+            "channel_risk_checker": "auto_client_acquisition.governance_os.channel_policy",
+            "ai_run_ledger": "auto_client_acquisition.friction_log",
+            "risk_index": "auto_client_acquisition.governance_os",
+            "escalation_rules": "auto_client_acquisition.governance_os.approval_matrix",
+        }
+        implemented = frozenset(
+            c for c, m in _GOV_COMPONENT_MODULES.items()
+            if _ilu.find_spec(m) is not None
+        )
+        gov_score = governance_runtime_maturity_score(implemented)
         gov_max = len(GOVERNANCE_RUNTIME_COMPONENTS)
 
         # Venture gate pass status
@@ -82,7 +99,7 @@ def run(dry_run: bool) -> None:
 
         print(
             f"[Exit Readiness] Gates: {gates_passed}/{gates_total} "
-            f"({gate_pct:.0%}) | Gov runtime: {gov_score}/{gov_max} | "
+            f"({gate_pct:.0%}) | Gov runtime: {gov_score}/100 | "
             f"Exit gate: {'PASS' if can_exit else 'FAIL'}"
         )
 
@@ -110,7 +127,7 @@ def run(dry_run: bool) -> None:
 
 ## Governance Runtime Maturity
 
-- **Score**: {gov_score} / {gov_max}
+- **Score**: {gov_score} / 100
 - **Components**: {', '.join(sorted(GOVERNANCE_RUNTIME_COMPONENTS)[:5])}{"..." if len(GOVERNANCE_RUNTIME_COMPONENTS) > 5 else ""}
 
 ---
@@ -137,10 +154,14 @@ def run(dry_run: bool) -> None:
     import urllib.request
     api_base = os.environ.get("DEALIX_API_BASE", "https://api.dealix.me")
     admin_key = os.environ.get("DEALIX_ADMIN_API_KEY", "")
+    api_key = os.environ.get("DEALIX_API_KEY", "")
 
     def _get(path: str) -> dict:
         url = f"{api_base}{path}"
-        req = urllib.request.Request(url, headers={"X-Admin-API-Key": admin_key})
+        req = urllib.request.Request(
+            url,
+            headers={"X-API-Key": api_key, "X-Admin-API-Key": admin_key},
+        )
         with urllib.request.urlopen(req, timeout=30) as r:
             return json.loads(r.read())
 

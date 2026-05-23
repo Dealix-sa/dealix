@@ -56,6 +56,7 @@ type FormData = {
   billing_failures_last_90d: number;
   nps: number | null;
   months_as_customer: number;
+  pipeline_added_drop_pct: number;
 };
 
 const BAND_COLORS: Record<ChurnBand, string> = {
@@ -98,6 +99,7 @@ export function OpsCustomerHealthDashboard() {
     billing_failures_last_90d: 0,
     nps: null,
     months_as_customer: 6,
+    pipeline_added_drop_pct: 0.0,
   });
 
   const [loading, setLoading] = useState(false);
@@ -129,6 +131,7 @@ export function OpsCustomerHealthDashboard() {
       billing_failures_last_90d: form.billing_failures_last_90d,
       nps: form.nps,
       months_as_customer: form.months_as_customer,
+      pipeline_added_drop_pct: form.pipeline_added_drop_pct,
     };
 
     const headers = {

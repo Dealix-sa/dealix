@@ -119,6 +119,7 @@ def run(dry_run: bool) -> None:
     import urllib.request
     api_base = os.environ.get("DEALIX_API_BASE", "https://api.dealix.me")
     admin_key = os.environ.get("DEALIX_ADMIN_API_KEY", "")
+    api_key = os.environ.get("DEALIX_API_KEY", "")
 
     def _post(path: str, payload: dict) -> dict:
         url = f"{api_base}{path}"
@@ -128,6 +129,7 @@ def run(dry_run: bool) -> None:
             data=data,
             headers={
                 "Content-Type": "application/json",
+                "X-API-Key": api_key,
                 "X-Admin-API-Key": admin_key,
             },
             method="POST",

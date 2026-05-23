@@ -149,6 +149,7 @@ _is_estimate=True. All revenue projections are estimates. Require founder review
     import urllib.request
     api_base = os.environ.get("DEALIX_API_BASE", "https://api.dealix.me")
     admin_key = os.environ.get("DEALIX_ADMIN_API_KEY", "")
+    api_key = os.environ.get("DEALIX_API_KEY", "")
 
     def _post(path: str, payload: dict) -> dict:
         url = f"{api_base}{path}"
@@ -158,6 +159,7 @@ _is_estimate=True. All revenue projections are estimates. Require founder review
             data=data,
             headers={
                 "Content-Type": "application/json",
+                "X-API-Key": api_key,
                 "X-Admin-API-Key": admin_key,
             },
             method="POST",
@@ -188,9 +190,14 @@ _is_estimate=True. All revenue projections are estimates. Require founder review
 
 ## Forecast Results
 """
-    for scenario in ["best", "likely", "worst"]:
-        s = result.get(scenario, {})
-        brief += f"- **{scenario.title()}**: {_fmt_sar(s.get('revenue_sar', 0))}\n"
+    for horizon, sc in sorted(result.get("scenarios", {}).items()):
+        best = sc.get("best", {})
+        likely = sc.get("likely", {})
+        worst = sc.get("worst", {})
+        brief += f"### {horizon}-Day Horizon\n"
+        brief += f"- Best: {_fmt_sar(best.get('revenue_sar', 0))}\n"
+        brief += f"- Likely: {_fmt_sar(likely.get('revenue_sar', 0))}\n"
+        brief += f"- Worst: {_fmt_sar(worst.get('revenue_sar', 0))}\n\n"
 
     brief += "\n---\n_is_estimate=True. All revenue projections are estimates. Require founder review before external sharing._\n"
     output_path.write_text(brief, encoding="utf-8")

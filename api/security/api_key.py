@@ -126,7 +126,7 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
         allowed = _configured_keys()
         # In production, empty API_KEYS list blocks all protected endpoints.
         # In non-production (dev/test), empty list means auth is not enforced.
-        app_env = os.getenv("APP_ENV", "development")
+        app_env = os.getenv("APP_ENV") or os.getenv("ENVIRONMENT", "development")
         if not allowed:
             if app_env == "production":
                 return JSONResponse(
@@ -135,8 +135,7 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
                 )
             return await call_next(request)
 
-        # Accept key from header or ?api_key= query param
-        provided = request.headers.get("X-API-Key") or request.query_params.get("api_key")
+        provided = request.headers.get("X-API-Key")
         if not verify_api_key(provided, allowed):
             logger.warning("api_key_invalid", path=path, has_key=bool(provided))
             # Return a proper JSONResponse instead of raising HTTPException —

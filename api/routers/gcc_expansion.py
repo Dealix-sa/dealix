@@ -143,8 +143,8 @@ def _pulse_heat_score(pulse: Any) -> float:
     signals = getattr(pulse, "active_signals", 0)
     companies = getattr(pulse, "n_companies_with_signals", 0)
     raw = (signals * 0.6 + companies * 0.4) * trend_weight
-    # Normalise: cap at 100 signals → score of 1.0
-    return round(min(1.0, raw / 100), 4)
+    # Normalise: cap at 100 signals → score of 100 (percentage-style, consistent with city heat)
+    return round(min(100.0, raw), 2)
 
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
@@ -498,7 +498,17 @@ async def signal_detect(req: SignalDetectRequest) -> dict[str, Any]:
         }
 
     runner = _DETECTOR_RUNNERS[signal_type]
-    detections = runner(mi, req.raw_data)
+    try:
+        detections = runner(mi, req.raw_data)
+    except (ValueError, TypeError, KeyError) as exc:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": "invalid_raw_data",
+                "message": str(exc),
+                "signal_type": signal_type,
+            },
+        ) from exc
 
     detected = len(detections) > 0
     confidence = (

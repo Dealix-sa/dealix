@@ -74,10 +74,14 @@ def run(dry_run: bool) -> None:
     import urllib.request
     api_base = os.environ.get("DEALIX_API_BASE", "https://api.dealix.me")
     admin_key = os.environ.get("DEALIX_ADMIN_API_KEY", "")
+    api_key = os.environ.get("DEALIX_API_KEY", "")
 
     def _get(path: str) -> dict:
         url = f"{api_base}{path}"
-        req = urllib.request.Request(url, headers={"X-Admin-API-Key": admin_key})
+        req = urllib.request.Request(
+            url,
+            headers={"X-API-Key": api_key, "X-Admin-API-Key": admin_key},
+        )
         with urllib.request.urlopen(req, timeout=30) as r:
             return json.loads(r.read())
 

@@ -164,8 +164,23 @@ class LoiRequest(BaseModel):
 async def loi_draft(req: LoiRequest) -> dict[str, Any]:
     """Generate a bilingual (AR + EN) Letter of Intent draft.
 
+    Hard gate: proposal_id must reference an existing evaluated proposal in the
+    ledger — LOIs cannot be issued for unreviewed deals.
     Hard rule: output is draft_only — founder must approve before use.
     """
+    existing = _read_proposals(limit=1000)
+    known_ids = {r.get("proposal_id") for r in existing}
+    if req.proposal_id not in known_ids:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "error": "proposal_not_found",
+                "message": f"proposal_id '{req.proposal_id}' not found in ledger. "
+                           "Run /evaluate first to create a proposal before drafting an LOI.",
+                "hard_gate": "loi_requires_evaluated_proposal",
+            },
+        )
+
     today = date.today().isoformat()
 
     loi_en = f"""LETTER OF INTENT (DRAFT — FOR REVIEW ONLY)

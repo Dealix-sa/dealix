@@ -44,7 +44,7 @@ type SignalDetectResult = {
 type CityCard = {
   city: string;
   heat_score: number;
-  top_sector: string | null;
+  sector_leaders: string | null;
 };
 
 type HotCitiesResult = {
@@ -453,9 +453,9 @@ export function OpsGCCExpansionRadar() {
                 <p className="text-white font-medium text-sm">
                   {city.city}
                 </p>
-                {city.top_sector && (
+                {city.sector_leaders && (
                   <p className="text-xs text-zinc-400 mb-2">
-                    {city.top_sector}
+                    {city.sector_leaders}
                   </p>
                 )}
                 <div className="flex items-center gap-2">

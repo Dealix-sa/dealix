@@ -90,9 +90,13 @@ _is_estimate=True. All market intelligence requires founder validation before ac
     import urllib.request
     api_base = os.environ.get("DEALIX_API_BASE", "https://api.dealix.me")
     admin_key = os.environ.get("DEALIX_ADMIN_API_KEY", "")
+    api_key = os.environ.get("DEALIX_API_KEY", "")
     url = f"{api_base}/api/v1/gcc-expansion/gcc-overview"
 
-    req = urllib.request.Request(url, headers={"X-Admin-API-Key": admin_key})
+    req = urllib.request.Request(
+        url,
+        headers={"X-API-Key": api_key, "X-Admin-API-Key": admin_key},
+    )
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read())
