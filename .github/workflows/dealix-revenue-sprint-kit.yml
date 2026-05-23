@@ -1,0 +1,31 @@
+name: Dealix Revenue Sprint Kit Checks
+
+on:
+  pull_request:
+    paths:
+      - "docs/offers/revenue_sprint/**"
+      - "docs/delivery/revenue_sprint/**"
+      - "docs/trust/NO_OVERCLAIM_POLICY.md"
+      - "scripts/verify_revenue_sprint_kit.py"
+      - ".github/workflows/dealix-revenue-sprint-kit.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  revenue-sprint-kit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify public Revenue Sprint Kit
+        run: python scripts/verify_revenue_sprint_kit.py
+
+      - name: Compile kit scripts
+        run: python -m compileall scripts/verify_revenue_sprint_kit.py
