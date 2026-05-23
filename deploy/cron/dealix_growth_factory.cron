@@ -1,0 +1,33 @@
+# Dealix Growth Factory — cron schedule
+#
+# Phase 1: only the two report/cockpit lines below are active.
+# Run-loop lines reference scripts that will land in Phase 2 — leave them
+# commented until those scripts exist. Uncommenting them while the backing
+# scripts are missing will produce cron failures.
+#
+# Source-of-truth doctrine: docs/runtime/REVENUE_FACTORY_RUNTIME_V2.md
+# Worker queue plan:        docs/runtime/WORKER_QUEUE_RUNTIME_V2.md
+#
+# Install on server (one-time):
+#   bash scripts/init_private_ops.sh
+#   crontab deploy/cron/dealix_growth_factory.cron
+#
+# Optional override:
+PRIVATE_OPS=/opt/dealix-ops-private
+
+# ── Phase 1: active ──────────────────────────────────────────────────────────
+# Every 30 minutes: refresh the founder sales cockpit from private-ops CSVs.
+*/30 * * * * cd /opt/dealix && /usr/bin/make sales-cockpit PRIVATE_OPS=$PRIVATE_OPS >> /var/log/dealix/sales-cockpit.log 2>&1
+
+# Daily at 06:15 UTC: refresh the founder approval center surface.
+15 6 * * * cd /opt/dealix && /usr/bin/make approval-center PRIVATE_OPS=$PRIVATE_OPS >> /var/log/dealix/approval-center.log 2>&1
+
+# ── Phase 2: deferred (do NOT uncomment until backing scripts exist) ─────────
+# TODO Phase 2: every 30 min hourly growth prep
+# */30 * * * * cd /opt/dealix && /usr/bin/python3 scripts/run_growth_hourly.py --private-ops $PRIVATE_OPS >> /var/log/dealix/growth-hourly.log 2>&1
+# TODO Phase 2: every 4h reply routing / followups / sample tasks
+# 0 */4 * * * cd /opt/dealix && /usr/bin/python3 scripts/run_growth_4h.py --private-ops $PRIVATE_OPS >> /var/log/dealix/growth-4h.log 2>&1
+# TODO Phase 2: daily distribution rollup
+# 0 8 * * * cd /opt/dealix && /usr/bin/python3 scripts/run_distribution_daily.py --private-ops $PRIVATE_OPS >> /var/log/dealix/distribution-daily.log 2>&1
+# TODO Phase 2: weekly close + decisions
+# 0 16 * * 5 cd /opt/dealix && /usr/bin/make week-close PRIVATE_OPS=$PRIVATE_OPS >> /var/log/dealix/week-close.log 2>&1
