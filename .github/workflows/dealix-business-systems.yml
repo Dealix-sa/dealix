@@ -1,0 +1,26 @@
+name: Dealix Business Systems Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  business-systems:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify CEO business systems
+        run: python scripts/verify_ceo_business_systems.py
+
+      - name: Verify CEO business score
+        run: python scripts/verify_ceo_business_score.py
+
+      - name: Compile business systems
+        run: python -m compileall ops_runtime scripts dealix_cli
