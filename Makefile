@@ -130,3 +130,48 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Acquisition Autopilot (Done-For-You) ───────────────────────
+# Run with PRIVATE_OPS=/path/to/dealix-ops-private make <target>
+
+.PHONY: lead-sources research-queue build-lead-batch outreach-queue \
+        followups route-replies sample-tasks acquisition-report \
+        acquisition-autopilot outreach-autopilot verify-acquisition-autopilot
+
+lead-sources: ## Bootstrap lead source registry into PRIVATE_OPS
+	$(PYTHON) scripts/bootstrap_lead_sources.py --private-ops $(PRIVATE_OPS)
+
+research-queue: ## Build lead research queue from source targets
+	$(PYTHON) scripts/create_research_queue.py --private-ops $(PRIVATE_OPS)
+
+build-lead-batch: ## Build a lead batch (SECTOR="ERP CRM" required)
+	$(PYTHON) scripts/build_lead_batch_from_research.py --private-ops $(PRIVATE_OPS) --sector "$(SECTOR)" --limit 25
+
+outreach-queue: ## Move approved A/B leads into the outreach send queue (BATCH=path CHANNEL=Email)
+	$(PYTHON) scripts/build_outreach_send_queue.py --private-ops $(PRIVATE_OPS) --batch-file "$(BATCH)" --channel "$(CHANNEL)"
+
+followups: ## Schedule follow-ups for sent outreach
+	$(PYTHON) scripts/schedule_followups_from_sent.py --private-ops $(PRIVATE_OPS)
+
+route-replies: ## Route reply types to next actions
+	$(PYTHON) scripts/route_replies.py --private-ops $(PRIVATE_OPS)
+
+sample-tasks: ## Generate sample tasks from positive replies
+	$(PYTHON) scripts/generate_sample_tasks_from_replies.py --private-ops $(PRIVATE_OPS)
+
+acquisition-report: ## Render the daily acquisition report for Sami
+	$(PYTHON) scripts/generate_acquisition_daily_report.py --private-ops $(PRIVATE_OPS)
+
+acquisition-autopilot: ## Refresh sources, research queue, and daily report
+	$(PYTHON) scripts/bootstrap_lead_sources.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/create_research_queue.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/generate_acquisition_daily_report.py --private-ops $(PRIVATE_OPS)
+
+outreach-autopilot: ## Route replies, schedule follow-ups, queue samples, render report
+	$(PYTHON) scripts/route_replies.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/generate_sample_tasks_from_replies.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/schedule_followups_from_sent.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/generate_acquisition_daily_report.py --private-ops $(PRIVATE_OPS)
+
+verify-acquisition-autopilot: ## Verify acquisition autopilot files are in place
+	$(PYTHON) scripts/verify_acquisition_autopilot.py
