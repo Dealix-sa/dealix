@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # L9 — Business Evidence + Private Ops contracts.
-# Wraps verify_company_ready.py + verify_service_readiness_matrix.py.
-# Validates $PRIVATE_OPS CSV headers if set; exits 2 (PARTIAL) if PRIVATE_OPS unset.
+# Hard: verify_service_readiness_matrix.py (CI runs it).
+# Advisory: verify_company_ready.py.
+# CSV contracts: validate if $PRIVATE_OPS set; exit 2 (PARTIAL) if unset.
 set -uo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
@@ -10,6 +11,7 @@ cd "$REPO"
 JSON=0
 PRIVATE_OPS="${PRIVATE_OPS:-}"
 REQUIRE_PRIVATE=0
+STRICT="${DEALIX_STRICT_BUSINESS:-0}"
 for ((i=1; i<=$#; i++)); do
   arg="${!i}"
   case "$arg" in
@@ -17,42 +19,58 @@ for ((i=1; i<=$#; i++)); do
     --private-ops) j=$((i+1)); PRIVATE_OPS="${!j}" ;;
     --private-ops=*) PRIVATE_OPS="${arg#*=}" ;;
     --require-private-ops) REQUIRE_PRIVATE=1 ;;
+    --strict) STRICT=1 ;;
   esac
 done
 
-FAIL=0
-WARN=0
-FAIL_NAMES=()
+FAIL=0; WARN=0
+FAIL_NAMES=(); WARN_NAMES=()
 log_dir="$(mktemp -d)"
 trap 'rm -rf "$log_dir"' EXIT
 
-run_step() {
+run_hard() {
   local name="$1"; shift
   local log="$log_dir/$name.log"
   if "$@" >"$log" 2>&1; then
     [ "$JSON" -eq 0 ] && echo "  [OK]   $name"
   else
-    FAIL=$((FAIL+1))
-    FAIL_NAMES+=("$name")
+    FAIL=$((FAIL+1)); FAIL_NAMES+=("$name")
     [ "$JSON" -eq 0 ] && { echo "  [FAIL] $name"; tail -5 "$log" | sed 's/^/        /'; }
   fi
 }
 
-# 1. Existing business-readiness verifiers
-[ -f scripts/verify_company_ready.py ] && \
-  run_step "verify-company-ready" python3 scripts/verify_company_ready.py
-[ -f scripts/verify_service_readiness_matrix.py ] && \
-  run_step "verify-service-readiness-matrix" python3 scripts/verify_service_readiness_matrix.py
+run_advisory() {
+  local name="$1"; shift
+  local log="$log_dir/$name.log"
+  if "$@" >"$log" 2>&1; then
+    [ "$JSON" -eq 0 ] && echo "  [OK]   $name"
+  elif [ "$STRICT" = "1" ]; then
+    FAIL=$((FAIL+1)); FAIL_NAMES+=("$name")
+    [ "$JSON" -eq 0 ] && { echo "  [FAIL] $name (strict)"; tail -3 "$log" | sed 's/^/        /'; }
+  else
+    WARN=$((WARN+1)); WARN_NAMES+=("$name")
+    [ "$JSON" -eq 0 ] && echo "  [WARN] $name (advisory)"
+  fi
+}
 
-# 2. Private ops CSV contracts
+# Hard: verify_service_readiness_matrix (CI enforces this)
+[ -f scripts/verify_service_readiness_matrix.py ] && \
+  run_hard "verify-service-readiness-matrix" python3 scripts/verify_service_readiness_matrix.py
+
+# Advisory: verify_company_ready (not in main CI)
+[ -f scripts/verify_company_ready.py ] && \
+  run_advisory "verify-company-ready" python3 scripts/verify_company_ready.py
+
+# Private ops CSV contracts
 if [ -z "$PRIVATE_OPS" ]; then
-  WARN=1
+  WARN=$((WARN+1))
+  WARN_NAMES+=("private-ops-unset")
   [ "$JSON" -eq 0 ] && echo "  [WARN] PRIVATE_OPS not set; skipping CSV contracts"
 elif [ ! -d "$PRIVATE_OPS" ]; then
-  WARN=1
+  WARN=$((WARN+1))
+  WARN_NAMES+=("private-ops-missing-dir")
   [ "$JSON" -eq 0 ] && echo "  [WARN] PRIVATE_OPS=$PRIVATE_OPS not a directory; skipping CSV contracts"
 else
-  # Run inline Python helper to validate the 8 canonical CSVs
   PRIVATE_OPS="$PRIVATE_OPS" python3 - "$JSON" <<'PYEOF'
 import csv
 import json as _json
@@ -116,7 +134,6 @@ for rel, required in REQUIRED.items():
     if missing:
         errors.append(f"{rel}: missing headers {missing}")
 
-# Commercial-motion sanity (only if base files exist)
 def safe_rows(rel):
     p = os.path.join(PRIVATE_OPS, rel)
     if not os.path.isfile(p):
@@ -157,9 +174,7 @@ if positive and not proposals:
 if proposals and not payments:
     errors.append("proposals exist but payment_capture_queue empty")
 
-if JSON:
-    pass  # we accumulate; outer shell prints final JSON
-else:
+if not JSON:
     if not errors and not warnings:
         print("  [OK]   private-ops CSV contracts")
     for e in errors:
@@ -167,34 +182,24 @@ else:
     for w in warnings:
         print(f"  [WARN] {w}")
 
-# write a result file the parent shell will inspect
 with open("/tmp/dealix_l9_csv_result.json","w") as f:
     _json.dump({"errors": errors, "warnings": warnings}, f)
 
 sys.exit(1 if errors else 0)
 PYEOF
   py_exit=$?
-  if [ -f /tmp/dealix_l9_csv_result.json ]; then
-    if [ "$py_exit" -ne 0 ]; then
-      FAIL=$((FAIL+1))
-      FAIL_NAMES+=("private-ops-csv-contracts")
-    fi
-  else
-    FAIL=$((FAIL+1))
-    FAIL_NAMES+=("private-ops-csv-helper-crashed")
+  if [ "$py_exit" -ne 0 ]; then
+    FAIL=$((FAIL+1)); FAIL_NAMES+=("private-ops-csv-contracts")
   fi
 fi
 
-# Decide final exit
-EXIT=0
-VERDICT="PASS"
-SUMMARY="business evidence + ops contracts clean"
+EXIT=0; VERDICT="PASS"; SUMMARY="business evidence clean"
 if [ "$FAIL" -gt 0 ]; then
-  EXIT=1; VERDICT="FAIL"; SUMMARY="$FAIL step(s) failed"
-elif [ "$WARN" -eq 1 ] && [ "$REQUIRE_PRIVATE" -eq 1 ]; then
+  EXIT=1; VERDICT="FAIL"; SUMMARY="$FAIL hard step(s) failed"
+elif [ "$REQUIRE_PRIVATE" -eq 1 ] && [ -z "$PRIVATE_OPS" ]; then
   EXIT=1; VERDICT="FAIL"; SUMMARY="PRIVATE_OPS required but not provided"
-elif [ "$WARN" -eq 1 ]; then
-  EXIT=2; VERDICT="PARTIAL"; SUMMARY="PRIVATE_OPS not set; CSV contracts skipped"
+elif [ "$WARN" -gt 0 ]; then
+  EXIT=2; VERDICT="PARTIAL"; SUMMARY="$WARN advisory step(s) warned"
 fi
 
 if [ "$JSON" -eq 1 ]; then
@@ -202,6 +207,11 @@ if [ "$JSON" -eq 1 ]; then
   for i in "${!FAIL_NAMES[@]}"; do
     [ "$i" -gt 0 ] && printf ','
     printf '"%s"' "${FAIL_NAMES[$i]}"
+  done
+  printf '],"warnings":['
+  for i in "${!WARN_NAMES[@]}"; do
+    [ "$i" -gt 0 ] && printf ','
+    printf '"%s"' "${WARN_NAMES[$i]}"
   done
   printf '],"private_ops":%s,"summary":"%s"}\n' \
     "$([ -n "$PRIVATE_OPS" ] && echo "\"$PRIVATE_OPS\"" || echo "null")" \

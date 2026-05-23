@@ -42,10 +42,26 @@ Exit-code contract for every layer:
 | Code | Meaning |
 | --- | --- |
 | 0 | PASS |
-| 1 | FAIL |
-| 2 | PARTIAL (skipped — e.g. `$PRIVATE_OPS` unset) |
+| 1 | FAIL (hard check failed) |
+| 2 | PARTIAL (advisory check warned, or step skipped — e.g. `$PRIVATE_OPS` unset) |
 
 Master aggregation: any `1` → overall `FAIL`; only `2` → overall `PARTIAL`; all `0` → overall `PASS`.
+
+### Hard vs Advisory checks
+
+Inside each layer, individual steps are classified as:
+
+- **Hard** — fails the layer with exit 1. Reserved for things that the current
+  `.github/workflows/ci.yml` actually enforces (compileall, alembic single-head,
+  doctrine tests, evals, service-readiness matrix, secret scan).
+- **Advisory** — emits a warning, returns exit 2. Reserved for tooling the repo
+  has but does not yet enforce in main CI (`make lint` / `type-check` / `security`,
+  `verify_company_ready.py`, `verify_railway_production_config.py`, revenue OS
+  sub-checks, governance verifiers).
+
+Promote advisory → hard per layer with the corresponding `DEALIX_STRICT_*=1` env
+var (`DEALIX_STRICT_LINT`, `DEALIX_STRICT_TRUST`, `DEALIX_STRICT_REVENUE`,
+`DEALIX_STRICT_SERVER`, `DEALIX_STRICT_BUSINESS`) or pass `--strict` to the layer.
 
 ## Layer-by-Layer Mapping
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """L3 — Data Contracts verifier.
 
-Imports Pydantic models in dealix/contracts/, asserts high-stakes evidence rule,
-and runs dealix/contracts/dump_schemas.py comparing output to checked-in schemas.
+Imports Pydantic models in dealix/contracts/, asserts the high-stakes evidence
+validator (decision.py:118-127), and diffs each model's in-memory JSON schema
+against the checked-in dealix/contracts/schemas/*.schema.json files.
 Exit 0=PASS, 1=FAIL.
 """
 
@@ -10,9 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -65,54 +64,47 @@ def check_high_stakes_validator() -> list[str]:
 
 
 def check_schema_drift() -> list[str]:
-    """Run dump_schemas.py and compare its output with checked-in JSON schemas."""
+    """Generate JSON schemas in-memory from Pydantic models and diff against checked-in files."""
     errors: list[str] = []
-    dump = REPO / "dealix" / "contracts" / "dump_schemas.py"
-    if not dump.exists():
-        return [f"missing: {dump.relative_to(REPO)}"]
-
     schema_dir = REPO / "dealix" / "contracts" / "schemas"
-    with tempfile.TemporaryDirectory() as tmp:
-        out_dir = Path(tmp)
-        try:
-            res = subprocess.run(  # noqa: S603
-                [sys.executable, str(dump), "--out-dir", str(out_dir)],
-                capture_output=True,
-                text=True,
-                cwd=REPO,
-                timeout=60,
-            )
-        except subprocess.TimeoutExpired:
-            return ["dump_schemas timed out"]
-        if res.returncode != 0:
-            # Fallback: try with no args (dump to default location)
-            try:
-                res2 = subprocess.run(  # noqa: S603
-                    [sys.executable, str(dump)],
-                    capture_output=True,
-                    text=True,
-                    cwd=REPO,
-                    timeout=60,
-                )
-                if res2.returncode != 0:
-                    return [f"dump_schemas exit {res.returncode}: {res.stderr[:200]}"]
-            except subprocess.TimeoutExpired:
-                return ["dump_schemas timed out"]
-            # If fallback succeeded, skip diff (we don't know where it wrote)
-            return []
+    if not schema_dir.is_dir():
+        return [f"missing schema dir: {schema_dir.relative_to(REPO)}"]
 
-        for expected in schema_dir.glob("*.schema.json"):
-            generated = out_dir / expected.name
-            if not generated.exists():
-                continue  # dump may not produce all
-            try:
-                want = json.loads(expected.read_text())
-                got = json.loads(generated.read_text())
-            except json.JSONDecodeError as e:
-                errors.append(f"{expected.name}: parse error {e}")
-                continue
-            if want != got:
-                errors.append(f"schema drift: {expected.name}")
+    try:
+        from dealix.contracts import (
+            AuditEntry,
+            DecisionOutput,
+            EventEnvelope,
+            EvidencePack,
+        )
+    except Exception as e:
+        return [f"contract import error: {e!r}"]
+
+    targets = {
+        "decision_output.schema.json": DecisionOutput,
+        "event_envelope.schema.json": EventEnvelope,
+        "evidence_pack.schema.json": EvidencePack,
+        "audit_entry.schema.json": AuditEntry,
+    }
+
+    for filename, model in targets.items():
+        expected = schema_dir / filename
+        if not expected.exists():
+            errors.append(f"missing schema file: {filename}")
+            continue
+        try:
+            want = json.loads(expected.read_text())
+        except json.JSONDecodeError as e:
+            errors.append(f"{filename}: parse error {e}")
+            continue
+        generated = model.model_json_schema()
+        # match what dump_schemas.py adds (lines 28-29)
+        generated["$schema"] = "https://json-schema.org/draft/2020-12/schema"
+        generated["$id"] = f"https://dealix.sa/schemas/{filename}"
+        if want != generated:
+            errors.append(
+                f"schema drift: {filename} (regenerate via `python -m dealix.contracts.dump_schemas`)"
+            )
     return errors
 
 
