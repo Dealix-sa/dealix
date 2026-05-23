@@ -1,0 +1,187 @@
+/* Dealix brand CSS variables — derived from docs/brand/brand-tokens.json */
+
+:root {
+  /* Primary palette */
+  --dlx-deep-navy:    #0B1220;
+  --dlx-emerald-teal: #00D1A1;
+  --dlx-soft-silver:  #B2BBC6;
+  --dlx-slate:        #0F1726;
+  --dlx-white:        #FFFFFF;
+
+  /* Semantic tokens */
+  --dlx-bg:             var(--dlx-deep-navy);
+  --dlx-surface:        var(--dlx-slate);
+  --dlx-surface-alt:    #121C30;
+  --dlx-border:         #1B2740;
+  --dlx-text-primary:   var(--dlx-white);
+  --dlx-text-secondary: var(--dlx-soft-silver);
+  --dlx-accent:         var(--dlx-emerald-teal);
+  --dlx-accent-pressed: #00B98D;
+  --dlx-success:        var(--dlx-emerald-teal);
+  --dlx-warning:        #F2C84B;
+  --dlx-danger:         #FF5A5F;
+  --dlx-info:           #5AB0FF;
+
+  /* Typography */
+  --dlx-font-latin: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --dlx-font-arabic: "IBM Plex Sans Arabic", "Noto Sans Arabic", Tahoma, sans-serif;
+
+  /* Radius / shadow / motion */
+  --dlx-radius-md: 10px;
+  --dlx-radius-lg: 14px;
+  --dlx-radius-xl: 20px;
+  --dlx-shadow-card:   0 1px 2px rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.18);
+  --dlx-shadow-raised: 0 6px 24px rgba(0,0,0,0.30);
+  --dlx-shadow-focus:  0 0 0 3px rgba(0,209,161,0.35);
+  --dlx-motion-fast: 120ms;
+  --dlx-motion-base: 200ms;
+}
+
+.dlx-app {
+  background: var(--dlx-bg);
+  color: var(--dlx-text-primary);
+  font-family: var(--dlx-font-latin);
+  min-height: 100vh;
+}
+
+.dlx-app[dir="rtl"], .dlx-app[lang="ar"] {
+  font-family: var(--dlx-font-arabic);
+}
+
+.dlx-card {
+  background: var(--dlx-surface);
+  border: 1px solid var(--dlx-border);
+  border-radius: var(--dlx-radius-lg);
+  box-shadow: var(--dlx-shadow-card);
+  padding: 20px;
+}
+
+.dlx-card--raised {
+  box-shadow: var(--dlx-shadow-raised);
+}
+
+.dlx-heading {
+  color: var(--dlx-text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.dlx-muted {
+  color: var(--dlx-text-secondary);
+}
+
+.dlx-accent {
+  color: var(--dlx-accent);
+}
+
+.dlx-divider {
+  border: 0;
+  border-top: 1px solid var(--dlx-border);
+  margin: 16px 0;
+}
+
+.dlx-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--dlx-surface-alt);
+  border: 1px solid var(--dlx-border);
+  color: var(--dlx-text-secondary);
+  font-size: 12px;
+}
+
+.dlx-pill--accent {
+  background: rgba(0, 209, 161, 0.10);
+  border-color: rgba(0, 209, 161, 0.35);
+  color: var(--dlx-accent);
+}
+
+.dlx-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.dlx-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.dlx-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.dlx-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (max-width: 900px) {
+  .dlx-grid-2, .dlx-grid-3, .dlx-grid-4 { grid-template-columns: 1fr; }
+}
+
+.dlx-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--dlx-border);
+  margin-bottom: 16px;
+}
+
+.dlx-nav a {
+  color: var(--dlx-text-secondary);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: var(--dlx-radius-md);
+  font-size: 14px;
+  transition: color var(--dlx-motion-fast), background var(--dlx-motion-fast);
+}
+
+.dlx-nav a:hover {
+  color: var(--dlx-text-primary);
+  background: var(--dlx-surface-alt);
+}
+
+.dlx-nav a[aria-current="page"] {
+  color: var(--dlx-accent);
+  background: rgba(0, 209, 161, 0.10);
+}
+
+button.dlx-cta, a.dlx-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--dlx-accent);
+  color: var(--dlx-deep-navy);
+  font-weight: 600;
+  padding: 10px 16px;
+  border-radius: var(--dlx-radius-md);
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--dlx-motion-fast), transform var(--dlx-motion-fast);
+}
+
+button.dlx-cta:hover, a.dlx-cta:hover {
+  background: var(--dlx-accent-pressed);
+}
+
+button.dlx-cta:focus-visible, a.dlx-cta:focus-visible {
+  outline: none;
+  box-shadow: var(--dlx-shadow-focus);
+}
+
+button.dlx-cta--ghost, a.dlx-cta--ghost {
+  background: transparent;
+  color: var(--dlx-text-primary);
+  border: 1px solid var(--dlx-border);
+}
+
+.dlx-metric-label {
+  font-size: 12px;
+  color: var(--dlx-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dlx-metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--dlx-text-primary);
+  line-height: 1.2;
+}
+
+.dlx-metric-delta--up { color: var(--dlx-success); }
+.dlx-metric-delta--down { color: var(--dlx-danger); }

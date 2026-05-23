@@ -1,0 +1,9 @@
+sector_id,sector_name,score,deal_size,buyer_accessibility,trust_gate_relevance,data_availability,competitive_density,sample_account_count,fallback_share,collected_at,source
+sec-01,ERP / CRM implementers,,,,,,,0,1.0,,seed
+sec-02,Cybersecurity,,,,,,,0,1.0,,seed
+sec-03,B2B agencies,,,,,,,0,1.0,,seed
+sec-04,Logistics / industrial services,,,,,,,0,1.0,,seed
+sec-05,Consulting / digital transformation,,,,,,,0,1.0,,seed
+sec-06,SaaS / software,,,,,,,0,1.0,,seed
+sec-07,Enterprise services,,,,,,,0,1.0,,seed
+sec-08,Saudi high-ticket B2B providers,,,,,,,0,1.0,,seed

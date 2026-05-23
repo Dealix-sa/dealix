@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Dealix mark">
+  <title>Dealix monogram</title>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#0B1220"/>
+  <path d="M14 16h18a16 16 0 0 1 16 16v0a16 16 0 0 1-16 16H14V16z" fill="none" stroke="#B2BBC6" stroke-width="3"/>
+  <rect x="18" y="38" width="4"  height="10" fill="#00D1A1"/>
+  <rect x="26" y="32" width="4"  height="16" fill="#00D1A1"/>
+  <rect x="34" y="26" width="4"  height="22" fill="#00D1A1"/>
+  <path d="M16 24 L40 14 L44 18 L36 20 L34 16" fill="none" stroke="#00D1A1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M14 54 Q34 60 54 50" fill="none" stroke="#00D1A1" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+</svg>

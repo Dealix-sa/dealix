@@ -1,0 +1,8 @@
+rung,offer_id,name,timebox,outcome,next_rung,doc_path,source
+1,free-diagnostic,Free Sample / Diagnostic,< 1 hour,Scored snapshot,2,docs/product/DEALIX_PRODUCT_LADDER.md,seed
+2,revenue-sprint,Revenue Sprint,7 days,Approved drafts + queue,3,docs/product/DEALIX_PRODUCT_LADDER.md,seed
+3,managed-pilot,Managed Pilot,90 days,Scored pipeline + proof,4,docs/product/DEALIX_PRODUCT_LADDER.md,seed
+4,revenue-desk-retainer,Revenue Desk Retainer,monthly,Founder cockpit + cadence,5,docs/product/DEALIX_PRODUCT_LADDER.md,seed
+5,founder-console,Founder Console / Command Center,annual,Always-on Revenue OS,6,docs/product/DEALIX_PRODUCT_LADDER.md,seed
+6,enterprise-revenue-os,Enterprise Revenue Intelligence OS,multi-year,Multi-BU rollout + PMO,7,docs/product/DEALIX_PRODUCT_LADDER.md,seed
+7,partner-white-label,Partner / White-label Revenue OS,partnership,Dealix engine inside partner brand,,docs/product/DEALIX_PRODUCT_LADDER.md,seed

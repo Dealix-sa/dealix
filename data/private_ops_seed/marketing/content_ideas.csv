@@ -1,0 +1,5 @@
+idea_id,theme,headline,surface,priority,evidence_required,note,source
+idea-seed-001,trust_gate,"Why we drafted, but didn't send.",linkedin,high,founder_anecdote,"Founder narrative on the trust gate.",seed
+idea-seed-002,mechanism,"How the proposal factory closed a deal in 3 days.",linkedin,medium,consented_case,"Needs customer consent.",seed
+idea-seed-003,sector_pulse,"Saudi cybersecurity buyers — three signals this month.",sector_pulse,high,public_signals,"Public-only signals.",seed
+idea-seed-004,founder_voice,"What I approved this week, and why.",linkedin,recurring,internal_ledger,"Weekly founder digest.",seed

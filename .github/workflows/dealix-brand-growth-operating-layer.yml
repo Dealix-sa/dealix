@@ -1,0 +1,99 @@
+name: Dealix Brand-Growth Operating Layer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/brand/**"
+      - "docs/positioning/**"
+      - "docs/intelligence_market/**"
+      - "docs/growth/**"
+      - "docs/marketing/**"
+      - "docs/revenue/**"
+      - "docs/product/**"
+      - "docs/ai/**"
+      - "docs/performance/**"
+      - "data/private_ops_seed/**"
+      - "assets/brand/**"
+      - "apps/web/lib/brand-tokens.ts"
+      - "apps/web/styles/brand.css"
+      - "apps/web/components/brand/**"
+      - "apps/web/app/**"
+      - "apps/web/public/brand/**"
+      - "scripts/verify_brand_system.py"
+      - "scripts/verify_growth_system.py"
+      - "scripts/verify_marketing_system.py"
+      - "scripts/verify_product_distribution.py"
+      - "scripts/verify_brand_growth_operating_layer.py"
+      - "api/routers/market_domination.py"
+      - ".github/workflows/dealix-brand-growth-operating-layer.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "docs/brand/**"
+      - "docs/positioning/**"
+      - "docs/intelligence_market/**"
+      - "docs/growth/**"
+      - "docs/marketing/**"
+      - "docs/revenue/**"
+      - "docs/product/**"
+      - "docs/ai/**"
+      - "docs/performance/**"
+      - "data/private_ops_seed/**"
+      - "assets/brand/**"
+      - "apps/web/lib/brand-tokens.ts"
+      - "apps/web/styles/brand.css"
+      - "apps/web/components/brand/**"
+      - "apps/web/app/**"
+      - "scripts/verify_brand_*.py"
+      - "scripts/verify_growth_system.py"
+      - "scripts/verify_marketing_system.py"
+      - "scripts/verify_product_distribution.py"
+      - "api/routers/market_domination.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-brand-growth-operating-layer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Verify brand system
+        run: python scripts/verify_brand_system.py
+
+      - name: Verify growth / intelligence / distribution
+        run: python scripts/verify_growth_system.py
+
+      - name: Verify marketing OS + performance loop
+        run: python scripts/verify_marketing_system.py
+
+      - name: Verify product ladder + distribution mapping
+        run: python scripts/verify_product_distribution.py
+
+      - name: Roll-up operating-layer verdict
+        run: python scripts/verify_brand_growth_operating_layer.py
+
+      - name: Frontend install
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Frontend build
+        working-directory: apps/web
+        run: npm run build

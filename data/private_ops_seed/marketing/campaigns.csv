@@ -1,0 +1,3 @@
+campaign_id,name,sectors,segments,opens_at,closes_at,owner,status,note,source
+cmp-seed-001,Logistics Diagnostic Wave,logistics,saudi-mid-logistics-founder,,,founder,proposed,"Seed campaign — not active. Founder opens via approval queue.",seed
+cmp-seed-002,ERP Sector Pulse Distribution,erp_crm,saudi-erp-implementer-scaleup,,,founder,proposed,"Distribute monthly pulse to consented look-alikes.",seed
