@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/unified_operating_database.schema.json",
+  "title": "UnifiedOperatingDatabase",
+  "description": "One operating source of truth for revenue, delivery, finance, trust, and productization. The dashboard reads from this database. Workers write to this database. CEO acts from this database.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "3.0",
+      "default": "3.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "name": {
+      "const": "unified_operating_database",
+      "default": "unified_operating_database",
+      "title": "Name",
+      "type": "string"
+    },
+    "locale": {
+      "default": "ar",
+      "enum": ["ar", "en"],
+      "title": "Locale",
+      "type": "string"
+    },
+    "tables": {
+      "title": "Tables",
+      "description": "Core operating tables that back every Dealix workflow.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "accounts",
+          "contacts",
+          "signals",
+          "lead_scores",
+          "suppression_list",
+          "outreach_queue",
+          "conversation_log",
+          "sample_queue",
+          "proposal_queue",
+          "payment_capture_queue",
+          "delivery_queue",
+          "retention_queue",
+          "proof_library",
+          "ai_audit_log",
+          "ceo_decision_log"
+        ],
+        "type": "string"
+      },
+      "default": [
+        "accounts",
+        "contacts",
+        "signals",
+        "lead_scores",
+        "suppression_list",
+        "outreach_queue",
+        "conversation_log",
+        "sample_queue",
+        "proposal_queue",
+        "payment_capture_queue",
+        "delivery_queue",
+        "retention_queue",
+        "proof_library",
+        "ai_audit_log",
+        "ceo_decision_log"
+      ]
+    },
+    "non_negotiable_rules": {
+      "title": "Non Negotiable Rules",
+      "description": "Hard rules enforced across all workflows that touch the unified operating database.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "No outreach to suppressed records",
+        "No external sending without approval",
+        "No proposal without scope and start condition",
+        "No delivery without payment, PO, or written approval",
+        "No public proof without approval"
+      ]
+    }
+  },
+  "required": ["schema_version", "name", "tables", "non_negotiable_rules"]
+}
