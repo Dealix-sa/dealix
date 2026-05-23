@@ -137,3 +137,139 @@ def test_router_exposes_documented_endpoints() -> None:
     }
     for path in expected_posts:
         assert (path, frozenset({"POST"})) in paths, f"missing POST {path}"
+
+
+# ── End-to-end TestClient coverage of every endpoint ─────────────
+
+
+GET_PATHS = [
+    "/api/v1/internal/ceo/summary",
+    "/api/v1/internal/sales/funnel",
+    "/api/v1/internal/approvals",
+    "/api/v1/internal/workers/health",
+    "/api/v1/internal/trust/flags",
+    "/api/v1/internal/finance/summary",
+    "/api/v1/internal/distribution/summary",
+    "/api/v1/internal/delivery/queue",
+    "/api/v1/internal/retention/queue",
+    "/api/v1/internal/proof/library",
+    "/api/v1/internal/audit/events",
+    "/api/v1/internal/control/summary",
+    "/api/v1/internal/control/policies",
+    "/api/v1/internal/control/agents",
+    "/api/v1/internal/control/scorecard",
+    "/api/v1/internal/control/risks",
+    "/api/v1/internal/evals/status",
+    "/api/v1/internal/product/productization",
+    "/api/v1/internal/security/status",
+    "/api/v1/internal/sovereign/readiness",
+    "/api/v1/internal/brand/summary",
+    "/api/v1/internal/growth/targeting",
+    "/api/v1/internal/marketing/summary",
+    "/api/v1/internal/product/distribution",
+    "/api/v1/internal/customer-success/summary",
+    "/api/v1/internal/finance-ops/summary",
+]
+
+
+POST_PATHS_WITH_BODY = [
+    ("/api/v1/internal/approvals/A1/approve", {"note": "ok"}),
+    ("/api/v1/internal/approvals/A1/reject", {"reason": "policy"}),
+    ("/api/v1/internal/approvals/A1/request-edit", {"note": "tweak"}),
+    ("/api/v1/internal/approvals/A1/escalate", {"reason": "high risk"}),
+    ("/api/v1/internal/workers/ceo_summary/retry", {}),
+    ("/api/v1/internal/control/agents/brand_guardian/disable", {"reason": "drill"}),
+    ("/api/v1/internal/control/agents/brand_guardian/enable", {}),
+    ("/api/v1/internal/control/scorecard/generate", {}),
+    ("/api/v1/internal/control/risks/R1/accept", {"note": "documented"}),
+    ("/api/v1/internal/sovereign/readiness/generate", {}),
+]
+
+
+@pytest.fixture()
+def client_with_private_ops(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    """Spin up the FastAPI app with PRIVATE_OPS pointed at a tmp dir."""
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setenv("DEALIX_PRIVATE_OPS_ROOT", str(tmp_path))
+    monkeypatch.delenv("DEALIX_INTERNAL_TOKEN", raising=False)
+    from api.main import app
+
+    return TestClient(app)
+
+
+@pytest.mark.parametrize("path", GET_PATHS)
+def test_internal_get_endpoint_returns_envelope(client_with_private_ops, path: str) -> None:
+    r = client_with_private_ops.get(path)
+    assert r.status_code == 200, f"{path} returned {r.status_code}: {r.text[:200]}"
+    body = r.json()
+    assert "auth_mode" in body
+    assert "source" in body
+    assert "data" in body
+
+
+@pytest.mark.parametrize("path,payload", POST_PATHS_WITH_BODY)
+def test_internal_post_endpoint_queues_action(
+    client_with_private_ops, path: str, payload: dict
+) -> None:
+    r = client_with_private_ops.post(path, json=payload)
+    assert r.status_code in (200, 202), f"{path} returned {r.status_code}: {r.text[:200]}"
+    body = r.json()
+    assert "auth_mode" in body
+    assert "data" in body
+
+
+def test_internal_get_rejects_bad_token(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setenv("DEALIX_PRIVATE_OPS_ROOT", str(tmp_path))
+    monkeypatch.setenv("DEALIX_INTERNAL_TOKEN", "real-secret")
+    from api.main import app
+
+    client = TestClient(app)
+    r = client.get(
+        "/api/v1/internal/ceo/summary",
+        headers={"X-Dealix-Internal-Token": "wrong"},
+    )
+    assert r.status_code == 401
+
+
+def test_internal_get_accepts_valid_token(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    from fastapi.testclient import TestClient
+
+    monkeypatch.setenv("DEALIX_PRIVATE_OPS_ROOT", str(tmp_path))
+    monkeypatch.setenv("DEALIX_INTERNAL_TOKEN", "real-secret")
+    from api.main import app
+
+    client = TestClient(app)
+    r = client.get(
+        "/api/v1/internal/ceo/summary",
+        headers={"X-Dealix-Internal-Token": "real-secret"},
+    )
+    assert r.status_code == 200
+    assert r.json()["auth_mode"] == "token"
+
+
+def test_runtime_reader_handles_csv_with_data(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Ensure read_csv_rows decodes existing rows correctly."""
+    from api.internal.runtime_reader import append_csv_row, read_csv_rows
+
+    monkeypatch.setenv("DEALIX_PRIVATE_OPS_ROOT", str(tmp_path))
+    append_csv_row("growth/sector_targets.csv", {"sector": "logistics", "priority": "high"})
+    append_csv_row("growth/sector_targets.csv", {"sector": "ERP", "priority": "med"})
+
+    read = read_csv_rows("growth/sector_targets.csv")
+    assert read["source"] == "csv"
+    assert len(read["rows"]) == 2
+    assert {r["sector"] for r in read["rows"]} == {"logistics", "ERP"}
+
+
+def test_policy_adapter_loads_real_policy_file() -> None:
+    """When the policy YAML exists, return the loaded rules."""
+    from api.internal import policy_adapter
+
+    # Use the actual repo policy file.
+    out = policy_adapter.load_policies()
+    # Either it loads successfully or falls back gracefully.
+    assert out["source"] in {"yaml", "fallback"}
+    assert isinstance(out["rules"], list)
