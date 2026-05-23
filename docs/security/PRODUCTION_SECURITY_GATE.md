@@ -1,21 +1,68 @@
 # Production Security Gate
 
-The gate that any change must pass before it influences production behavior, customer-facing surfaces, or money flow.
+The Production Security Gate is the last set of checks a change passes before it reaches production. A change that fails the gate does not deploy.
 
-## Checks
+**Source of truth:** CI pipeline config + this doc
+**Owner:** Engineering Lead
+**Trust gate:** A2 — gate rules are policy; changes require founder approval.
 
-1. **Secret hygiene.** No secret committed; all env-var references resolve through the runtime secret manager.
-2. **Auth posture.** All `/api/v1/internal/*` routes require `X-Dealix-Internal-Token`; tenant-scoped routes require tenant-bound JWT.
-3. **PDPL compliance.** PII fields are detected and gated by `auto_client_acquisition/governance_os/`; cross-border transfers are blocked unless covered by the addendum.
-4. **Destructive-op guard.** Schema migrations, deletes, drops, and IAM changes route through founder approval (per `destructive_operation_requires_escalation`).
-5. **Key rotation.** Key rotation log under `docs/security/key_rotation_log.md` reflects an entry within the documented rotation window.
-6. **Rate limits.** Rate-limit configuration in `docs/security/RATE_LIMITS.md` is the active production config.
-7. **Incident drill.** Most recent incident-response drill is no older than the documented cadence.
+## Required checks
 
-## Owner
+| Check | Purpose | Failure |
+|-------|---------|---------|
+| Static analysis | Catch obvious bugs and security smells | Block |
+| Dependency scan | Detect vulnerable libraries | Block on high-severity |
+| Secret scan | Detect inline secrets | Block |
+| Tests | Unit + integration + contract | Block on red |
+| Eval gate | `evals/gates/dealix_agent_eval_gate.yaml` | Block on agent fail |
+| Schema-compatibility check | Output schema changes are backward compatible or coordinated | Block on break |
+| Policy-version pin | Policy version referenced in code matches deployed policy | Block on mismatch |
+| Migration safety | DB migrations are forward-only and reversible | Block on unsafe |
+| Audit-log emission | Code paths that should log do log | Block on omission |
+| Founder approval | For changes touching trust plane, finance, or policy | Block until approved |
 
-Security Guardian agent (advisory) + Founder (approver). Status is recorded in `security/security_status.csv`.
+## Approval matrix
 
-## Failure mode
+| Change type | Approval |
+|-------------|----------|
+| Internal-only, no policy change | Engineering Lead |
+| Trust Plane touch | Founder (A2) |
+| Policy change | Founder (A2) + eval suite expansion |
+| Finance touch | Founder (A2) |
+| External-surface touch | Founder (A2) |
 
-Any failed check blocks release; the verifier `verify_sovereign_operating_stack.py` includes this gate as a required component and will exit non-zero.
+## Deploy windows
+
+- **Default:** business hours, Riyadh time, Sunday-Thursday.
+- **Hotfix:** any time with named approver.
+- **Frozen:** during quarter close (last 3 business days of each quarter) or active P0 incident.
+
+## Rollback
+
+Every deploy carries a rollback plan. If a deploy raises a P0 alarm within 30 minutes, automatic rollback is the default. The default can be overridden only by the founder.
+
+## OWASP / NIST posture
+
+- **LLM05 Supply chain.** Dependency scanning + pinned versions + SBOM.
+- **Govern / Manage.** Required checks codify governance into CI; rollback codifies management.
+
+## Failure modes
+
+- **Gate bypass:** a deploy reaches production without passing the gate. Detection: deploy audit. Recovery: rollback; CI rule strengthened; root cause filed.
+- **Stale check:** a check certifies behaviour that has since changed. Detection: weekly diff. Recovery: refresh, re-run.
+- **Alarm-suppression deploy:** a deploy that hides existing alarms. Detection: alarm coverage diff. Recovery: revert.
+
+## Recovery path
+
+If gate integrity is in doubt, deploys freeze until the gate is recertified. Hotfixes require explicit founder approval per fix.
+
+## Metrics
+
+- Gate pass rate per PR (target: high, with meaningful failures).
+- Time from commit to production (DORA lead time).
+- Rollback rate (DORA change-failure rate).
+- Bypass incidents (target: 0).
+
+## Disclaimer
+
+The gate is a quality and security check, not a guarantee of correctness. Estimated value is not Verified value.
