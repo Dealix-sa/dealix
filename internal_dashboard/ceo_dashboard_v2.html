@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Dealix CEO Command Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #071B2E;
+      --card: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.12);
+      --text: #F4F7FA;
+      --muted: #9FB3C8;
+      --accent: #00D6A3;
+      --red: #ff5c5c;
+      --yellow: #ffd166;
+      --green: #00D6A3;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      padding: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    main {
+      padding: 32px;
+    }
+    .focus {
+      background: linear-gradient(135deg, rgba(0,214,163,0.16), rgba(255,255,255,0.05));
+      border: 1px solid rgba(0,214,163,0.35);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .section {
+      margin-top: 32px;
+    }
+    .alert, .decision, .bottleneck {
+      padding: 14px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 12px;
+    }
+    .red { border-left: 5px solid var(--red); }
+    .yellow { border-left: 5px solid var(--yellow); }
+    .green { border-left: 5px solid var(--green); }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(255,255,255,0.10);
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .progress {
+      height: 10px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .bar {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dealix CEO Command Center</h1>
+    <div class="subtitle">Revenue, trust, delivery, decisions, and founder focus.</div>
+  </header>
+
+  <main>
+    <div class="focus">
+      <div class="badge" id="company-status">Status</div>
+      <h2>Founder Focus</h2>
+      <p id="founder-focus">Loading...</p>
+    </div>
+
+    <section>
+      <h2>Core Metrics</h2>
+      <div class="grid" id="metrics"></div>
+    </section>
+
+    <section class="section">
+      <h2>Target Completion</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="label">Weekly Score</div>
+          <div class="value" id="weekly-score">0%</div>
+          <div class="progress"><div class="bar" id="weekly-bar"></div></div>
+        </div>
+        <div class="card">
+          <div class="label">Monthly Score</div>
+          <div class="value" id="monthly-score">0%</div>
+          <div class="progress"><div class="bar" id="monthly-bar"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Alerts</h2>
+      <div id="alerts"></div>
+    </section>
+
+    <section class="section">
+      <h2>Decision Queue</h2>
+      <div id="decisions"></div>
+    </section>
+
+    <section class="section">
+      <h2>Bottlenecks</h2>
+      <div id="bottlenecks"></div>
+    </section>
+  </main>
+
+  <script>
+    function setProgress(id, value) {
+      document.getElementById(id).style.width = `${Math.max(0, Math.min(100, value))}%`;
+    }
+
+    async function loadDashboard() {
+      const response = await fetch('../dashboard_data/demo/company_metrics.v2.demo.json');
+      const data = await response.json();
+
+      document.getElementById('company-status').textContent = data.summary.company_status;
+      document.getElementById('founder-focus').textContent = data.summary.founder_focus;
+
+      const metrics = data.metrics || {};
+      const metricCards = [
+        ['Leads', metrics.lead_count],
+        ['Contacted', metrics.contacted],
+        ['Replies', metrics.replied],
+        ['Samples', metrics.sample_sent],
+        ['Calls', metrics.call_booked],
+        ['Proposals', metrics.proposal_sent],
+        ['Paid', metrics.paid],
+        ['MRR', metrics.mrr],
+        ['Approvals Pending', metrics.approvals_pending]
+      ];
+
+      document.getElementById('metrics').innerHTML = metricCards.map(([label, value]) => `
+        <div class="card">
+          <div class="label">${label}</div>
+          <div class="value">${value ?? 0}</div>
+        </div>
+      `).join('');
+
+      const weeklyScore = data.target_status.weekly_score || 0;
+      const monthlyScore = data.target_status.monthly_score || 0;
+
+      document.getElementById('weekly-score').textContent = `${weeklyScore}%`;
+      document.getElementById('monthly-score').textContent = `${monthlyScore}%`;
+      setProgress('weekly-bar', weeklyScore);
+      setProgress('monthly-bar', monthlyScore);
+
+      document.getElementById('alerts').innerHTML = (data.alerts || []).map(a => `
+        <div class="alert ${a.level}">
+          <div class="badge">${a.area} / ${a.level}</div>
+          <div><strong>${a.message}</strong></div>
+          <div>${a.action}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('decisions').innerHTML = (data.decisions || []).map(d => `
+        <div class="decision">
+          <div class="badge">Priority ${d.priority} / ${d.type} / ${d.risk}</div>
+          <div><strong>${d.decision}</strong></div>
+          <div>${d.recommendation}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('bottlenecks').innerHTML = (data.bottlenecks || []).map(b => `
+        <div class="bottleneck">
+          <div class="badge">${b.area} / ${b.severity}</div>
+          <div><strong>${b.issue}</strong></div>
+          <div>${b.recommendation}</div>
+        </div>
+      `).join('');
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

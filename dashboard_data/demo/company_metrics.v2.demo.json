@@ -1,0 +1,80 @@
+{
+  "summary": {
+    "date": "2026-05-23",
+    "company_status": "FIX",
+    "founder_focus": "Close the first paid Revenue Sprint and fix payment follow-up."
+  },
+  "metrics": {
+    "lead_count": 25,
+    "new": 8,
+    "contacted": 25,
+    "replied": 5,
+    "sample_sent": 3,
+    "call_booked": 2,
+    "proposal_sent": 1,
+    "paid": 0,
+    "delivered": 0,
+    "retainer": 0,
+    "mrr": 0,
+    "active_retainers": 0,
+    "approvals_total": 2,
+    "approvals_pending": 1,
+    "high_risk_approvals": 1
+  },
+  "targets": {
+    "weekly": {
+      "lead_count": 25,
+      "contacted": 25,
+      "replied": 5,
+      "call_booked": 2,
+      "proposal_sent": 1,
+      "sample_sent": 3
+    },
+    "monthly": {
+      "paid": 1,
+      "delivered": 1,
+      "retainer": 1
+    }
+  },
+  "target_status": {
+    "weekly_score": 100,
+    "monthly_score": 0
+  },
+  "alerts": [
+    {
+      "level": "red",
+      "area": "Revenue",
+      "message": "Proposal sent but no payment recorded.",
+      "action": "Follow up and offer bank transfer / PO fallback."
+    },
+    {
+      "level": "yellow",
+      "area": "Trust",
+      "message": "One high-risk approval is pending.",
+      "action": "Review approval queue before sending proposal."
+    },
+    {
+      "level": "green",
+      "area": "Sales",
+      "message": "Weekly outbound target reached.",
+      "action": "Focus on conversion and follow-up."
+    }
+  ],
+  "bottlenecks": [
+    {
+      "area": "Revenue",
+      "severity": "High",
+      "issue": "Proposal sent but no payment recorded.",
+      "recommendation": "Improve payment path, urgency, and follow-up."
+    }
+  ],
+  "decisions": [
+    {
+      "priority": 1,
+      "decision": "Follow up with proposal recipient",
+      "type": "Fix",
+      "risk": "Medium",
+      "recommendation": "Send payment follow-up today."
+    }
+  ]
+}
