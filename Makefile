@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        internal-api founder-console-v2
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,14 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Founder Console v2 ────────────────────────────────────────
+# Static check for the internal API router + the full Founder Console
+# verifier (file presence + apps/web npm build).
+
+internal-api: ## Founder Console v2: verify internal API layer exists
+	$(PYTHON) scripts/verify_internal_api_layer.py
+
+founder-console-v2: ## Founder Console v2: verify internal API + frontend build
+	$(PYTHON) scripts/verify_internal_api_layer.py
+	$(PYTHON) scripts/verify_founder_console_v2.py
