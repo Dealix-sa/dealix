@@ -8,7 +8,7 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference weekly-close
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +130,11 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Weekly automation ──────────────────────────────────────────
+# Closes the operating week: runs the weekly CLI command against the
+# private ops repo, then runs the deep verifier. Requires PRIVATE_OPS=...
+
+weekly-close: ## Run weekly automation + verify against PRIVATE_OPS=<path>
+	$(PYTHON) -m dealix_cli weekly --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli verify --private-ops $(PRIVATE_OPS)
