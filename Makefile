@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        ceo-daily-brief weekly-growth-review revenue-forecast \
+        machine-registry launch-readiness execution-launch-layer
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,25 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Execution & Market Launch Command System (v11) ──────
+# All targets are read-only diagnostics; none send external messages.
+# `PRIVATE_OPS=/path` is required for targets that read private ops.
+
+ceo-daily-brief: ## v11: generate the CEO Daily Brief (PRIVATE_OPS=/path)
+	$(PYTHON) scripts/generate_ceo_daily_brief.py --private-ops "$(PRIVATE_OPS)"
+
+weekly-growth-review: ## v11: generate Weekly Growth War Room review
+	$(PYTHON) scripts/generate_weekly_growth_review.py --private-ops "$(PRIVATE_OPS)"
+
+revenue-forecast: ## v11: generate revenue forecast (PRIVATE_OPS=/path)
+	$(PYTHON) scripts/generate_revenue_forecast.py --private-ops "$(PRIVATE_OPS)"
+
+machine-registry: ## v11: verify registries/machine_registry.yaml
+	$(PYTHON) scripts/verify_machine_registry.py
+
+launch-readiness: ## v11: verify Launch Asset Checklist (public + optional private)
+	$(PYTHON) scripts/verify_launch_readiness.py --private-ops "$(PRIVATE_OPS)"
+
+execution-launch-layer: ## v11: full Dealix Execution & Launch Command System verifier
+	$(PYTHON) scripts/verify_execution_launch_layer.py

@@ -1,0 +1,12 @@
+risk_id,category,description,severity,likelihood,owner,mitigation,status,next_review
+MER-001,market,"عدم وضوح ICP — استهداف عريض جداً",high,medium,founder,"تركيز قطاع واحد لـ 14 يوم",open,2026-06-01
+MER-003,market,"بطء دورة الشراء B2B السعودية",high,high,founder,"sample مدفوع منخفض + ZATCA-ready",open,2026-06-01
+MER-007,market,"فقدان مصداقية بسبب وعد لم يُنفَّذ",critical,low,founder,"لا وعود مضمونة، كل deliverable يُكتب قبل البيع",open,2026-06-01
+AIR-001,ai_agent,"Hallucination في proposal/Diagnostic",critical,medium,founder,"Eval gate قبل التسليم + founder approval",open,2026-06-01
+AIR-002,ai_agent,"إرسال آلي لرسالة غير معتمدة",critical,low,founder,"distribution = drafts فقط، no auto-send",open,2026-06-01
+AIR-003,ai_agent,"تسريب بيانات عميل في prompts",high,medium,founder,"redact + PII scanner + audit_log",open,2026-06-01
+AIR-005,ai_agent,"Agent يتجاوز scope",critical,low,founder,"policy_as_code + trust_gate=hard_block",open,2026-06-01
+REV-001,revenue,"اعتماد مفرط على عميل واحد",high,medium,founder,"حد 30% من الـ pipeline لأي عميل",open,2026-06-01
+REV-002,revenue,"تأخير payment بعد proposal",high,high,founder,"دفع جزئي مقدم + ZATCA فوري",open,2026-06-01
+OPS-001,operating,"تسريب secret في git",critical,low,founder,"gitleaks + pre-commit",open,2026-06-01
+OPS-003,operating,"فقدان بيانات في <private_ops>",critical,medium,founder,"backup يومي + verify_backup.py",open,2026-06-01

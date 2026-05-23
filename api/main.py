@@ -108,6 +108,19 @@ from api.routers import commercial_map as commercial_map_router
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Dealix Execution & Market Launch Command System — internal endpoints
+# (admin-key gated; read-only; surface <private_ops> data)
+try:
+    from api.routers.internal import launch as internal_launch_router
+    from api.routers.internal import risks as internal_risks_router
+    from api.routers.internal import finance as internal_finance_router
+    from api.routers.internal import learning as internal_learning_router
+except Exception as _exc:  # noqa: BLE001
+    internal_launch_router = None
+    internal_risks_router = None
+    internal_finance_router = None
+    internal_learning_router = None
+    _OPTIONAL_ROUTER_ERRORS["internal_launch_layer"] = repr(_exc)
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -345,6 +358,15 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Dealix Execution & Market Launch Command System (admin-key gated)
+    if internal_launch_router is not None:
+        app.include_router(internal_launch_router.router)
+    if internal_risks_router is not None:
+        app.include_router(internal_risks_router.router)
+    if internal_finance_router is not None:
+        app.include_router(internal_finance_router.router)
+    if internal_learning_router is not None:
+        app.include_router(internal_learning_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

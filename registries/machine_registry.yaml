@@ -1,0 +1,453 @@
+# Dealix Machine Registry
+# Source of truth for every automation / agent / workflow in Dealix.
+# Verifier: scripts/verify_machine_registry.py
+
+version: 1
+machines:
+  - id: brand_system
+    name: Brand System
+    layer: brand
+    purpose: تثبيت هوية Dealix في كل artefact يصدر.
+    owner: founder
+    input: docs/brand/, brand tokens
+    output: artefacts متسقة (logo, colors, voice)
+    source_of_truth: docs/brand/BRAND_TOKENS.md
+    approval_class: low
+    trust_gate: review
+    worker: manual
+    kpi: percentage_of_assets_using_tokens >= 0.95
+    failure_mode: artefact ينشر بدون token (لون/خط خاطئ)
+    recovery_path: تحديث token + re-render artefact
+    disable_switch: DEALIX_BRAND_SYSTEM=off
+
+  - id: founder_console
+    name: Founder Console
+    layer: ops
+    purpose: لوحة المؤسس اليومية — قرار واحد لكل صباح.
+    owner: founder
+    input: ceo_daily_brief.md, revenue_forecast.md
+    output: today.md (action لليوم)
+    source_of_truth: apps/web/app/page.tsx + <private_ops>/founder/
+    approval_class: low
+    trust_gate: none
+    worker: manual
+    kpi: daily_brief_generated_per_day == 1
+    failure_mode: brief فارغ أو لم يُولَّد
+    recovery_path: تشغيل make ceo-daily-brief يدويًا
+    disable_switch: DEALIX_FOUNDER_CONSOLE=off
+
+  - id: control_plane
+    name: Control Plane
+    layer: ops
+    purpose: مراقبة healthcheck لكل ماكينة + إدارة run history.
+    owner: founder
+    input: machine_health.csv, run logs
+    output: dashboard /control-plane
+    source_of_truth: apps/web/app/control-plane/page.tsx
+    approval_class: low
+    trust_gate: none
+    worker: manual
+    kpi: failing_machines == 0 over 24h
+    failure_mode: machine_health.csv قديم
+    recovery_path: تشغيل machine-registry verifier
+    disable_switch: DEALIX_CONTROL_PLANE=off
+
+  - id: ceo_copilot
+    name: CEO Copilot
+    layer: ops
+    purpose: مساعد المؤسس في القرارات اليومية (read-only).
+    owner: founder
+    input: ceo_daily_brief.md
+    output: اقتراحات قرار + روابط evidence
+    source_of_truth: <private_ops>/founder/ceo_daily_brief.md
+    approval_class: low
+    trust_gate: review
+    worker: agent
+    kpi: copilot_suggestions_accepted_rate >= 0.5
+    failure_mode: اقتراح خارج scope
+    recovery_path: تعديل system prompt + إعادة تشغيل
+    disable_switch: DEALIX_CEO_COPILOT=off
+
+  - id: market_intelligence
+    name: Market Intelligence
+    layer: growth
+    purpose: تجميع signals من sources علنية (لا scraping) لإثراء learning memory.
+    owner: founder
+    input: public RSS, LinkedIn organic
+    output: market_learning.csv
+    source_of_truth: <private_ops>/learning/market_learning.csv
+    approval_class: medium
+    trust_gate: review
+    worker: cron
+    kpi: insights_per_week >= 3
+    failure_mode: feed broken
+    recovery_path: تبديل source / تعطيل
+    disable_switch: DEALIX_MARKET_INTEL=off
+
+  - id: account_scoring
+    name: Account Scoring
+    layer: growth
+    purpose: ترتيب accounts من warm list حسب fit.
+    owner: founder
+    input: lead_sources.csv + ICP definition
+    output: scored_accounts.csv
+    source_of_truth: <private_ops>/sales/scored_accounts.csv
+    approval_class: medium
+    trust_gate: review
+    worker: agent
+    kpi: top_10_scored_meets_icp >= 0.8
+    failure_mode: bias في scoring
+    recovery_path: human override + audit
+    disable_switch: DEALIX_ACCOUNT_SCORING=off
+
+  - id: outbound_draft
+    name: Outbound Draft
+    layer: sales
+    purpose: صياغة رسائل outbound — drafts فقط، لا إرسال.
+    owner: founder
+    input: scored_accounts.csv + offer
+    output: drafts في distribution/queues.json
+    source_of_truth: <private_ops>/distribution/queues.json
+    approval_class: high
+    trust_gate: hard_block
+    worker: agent
+    kpi: drafts_approved_rate >= 0.6
+    failure_mode: draft يحتوي ادعاء مضمون
+    recovery_path: Trust gate refusal + retrain prompt
+    disable_switch: DEALIX_OUTBOUND_DRAFT=off
+
+  - id: linkedin_queue
+    name: LinkedIn Queue
+    layer: sales
+    purpose: صياغة LinkedIn messages للـ warm connections — drafts فقط.
+    owner: founder
+    input: warm connections list
+    output: drafts في queues.json
+    source_of_truth: <private_ops>/distribution/queues.json
+    approval_class: high
+    trust_gate: hard_block
+    worker: agent
+    kpi: approved_rate >= 0.5
+    failure_mode: cold connection sent
+    recovery_path: suppression list + audit
+    disable_switch: DEALIX_LINKEDIN_QUEUE=off
+
+  - id: email_draft
+    name: Email Draft
+    layer: sales
+    purpose: صياغة email للـ founder_inbox.
+    owner: founder
+    input: warm contacts + context
+    output: drafts
+    source_of_truth: <private_ops>/distribution/queues.json
+    approval_class: high
+    trust_gate: hard_block
+    worker: agent
+    kpi: approved_rate >= 0.6
+    failure_mode: PII leakage
+    recovery_path: redact + retrain
+    disable_switch: DEALIX_EMAIL_DRAFT=off
+
+  - id: contact_form_queue
+    name: Contact Form Queue
+    layer: sales
+    purpose: استقبال leads من landing page.
+    owner: founder
+    input: landing form
+    output: lead_inbox table
+    source_of_truth: api/routers/lead_inbox.py
+    approval_class: low
+    trust_gate: review
+    worker: cron
+    kpi: response_within_24h >= 0.9
+    failure_mode: lead ضائع
+    recovery_path: manual sweep
+    disable_switch: DEALIX_CONTACT_FORM=off
+
+  - id: followup
+    name: Follow-up
+    layer: sales
+    purpose: تذكير المؤسس بفولو-أب بعد proposal/sample.
+    owner: founder
+    input: proposal_log.csv
+    output: drafts follow-up
+    source_of_truth: <private_ops>/distribution/followups.csv
+    approval_class: medium
+    trust_gate: review
+    worker: cron
+    kpi: followups_sent_on_time >= 0.85
+    failure_mode: followup ممل / مضمون
+    recovery_path: re-prompt + approval
+    disable_switch: DEALIX_FOLLOWUP=off
+
+  - id: reply_router
+    name: Reply Router
+    layer: sales
+    purpose: توجيه ردود العملاء لـ inbox الصحيح + content sanitization.
+    owner: founder
+    input: incoming emails
+    output: classified inbox + alerts
+    source_of_truth: <private_ops>/distribution/inbox.csv
+    approval_class: medium
+    trust_gate: review
+    worker: agent
+    kpi: misclassification_rate < 0.05
+    failure_mode: prompt injection
+    recovery_path: sanitize + quarantine
+    disable_switch: DEALIX_REPLY_ROUTER=off
+
+  - id: sample_factory
+    name: Sample Factory
+    layer: sales
+    purpose: توليد sample diagnostic / data pack لكل قطاع.
+    owner: founder
+    input: sector + ICP + brand tokens
+    output: sample.md / sample.pdf
+    source_of_truth: <private_ops>/factory/samples/
+    approval_class: high
+    trust_gate: hard_block
+    worker: agent
+    kpi: samples_passing_eval >= 0.9
+    failure_mode: hallucination
+    recovery_path: eval gate refusal + retrain
+    disable_switch: DEALIX_SAMPLE_FACTORY=off
+
+  - id: proposal_factory
+    name: Proposal Factory
+    layer: sales
+    purpose: توليد proposal ZATCA-ready مع scope محدد.
+    owner: founder
+    input: discovery notes + offer
+    output: proposal.pdf
+    source_of_truth: <private_ops>/factory/proposals/
+    approval_class: high
+    trust_gate: hard_block
+    worker: agent
+    kpi: proposals_passing_eval >= 0.95
+    failure_mode: claim مضمون
+    recovery_path: eval refusal + founder edit
+    disable_switch: DEALIX_PROPOSAL_FACTORY=off
+
+  - id: payment_capture
+    name: Payment Capture
+    layer: finance
+    purpose: قبض الكاش عبر Moyasar + إصدار ZATCA invoice.
+    owner: founder
+    input: signed proposal
+    output: paid record في cash_collected.csv
+    source_of_truth: <private_ops>/finance/cash_collected.csv
+    approval_class: high
+    trust_gate: review
+    worker: cron
+    kpi: payment_received_within_14d >= 0.7
+    failure_mode: webhook failure
+    recovery_path: manual reconcile
+    disable_switch: DEALIX_PAYMENT_CAPTURE=off
+
+  - id: delivery_qa
+    name: Delivery QA
+    layer: ops
+    purpose: التحقق من تسليم كل deliverable حسب Done definition.
+    owner: founder
+    input: signed proposal + delivery artefacts
+    output: delivery_status.csv
+    source_of_truth: <private_ops>/delivery/status.csv
+    approval_class: high
+    trust_gate: hard_block
+    worker: manual
+    kpi: deliveries_meeting_definition >= 0.95
+    failure_mode: scope creep
+    recovery_path: refund / re-scope
+    disable_switch: DEALIX_DELIVERY_QA=off
+
+  - id: retention
+    name: Retention
+    layer: sales
+    purpose: متابعة العملاء بعد تسليم + اقتراح Managed Ops upgrade.
+    owner: founder
+    input: delivery_status.csv
+    output: retention follow-up drafts
+    source_of_truth: <private_ops>/sales/retention.csv
+    approval_class: medium
+    trust_gate: review
+    worker: cron
+    kpi: retention_followup_within_30d >= 0.9
+    failure_mode: spam
+    recovery_path: pause + retrain
+    disable_switch: DEALIX_RETENTION=off
+
+  - id: proof_approval
+    name: Proof Approval
+    layer: trust
+    purpose: إدارة اعتمادات نشر proof / case studies — Trust hard block.
+    owner: founder
+    input: proposed proof artefact
+    output: approved/rejected
+    source_of_truth: <private_ops>/trust/proof_approvals.csv
+    approval_class: high
+    trust_gate: hard_block
+    worker: manual
+    kpi: zero_publishings_without_approval == true
+    failure_mode: publish without approval
+    recovery_path: immediate takedown + incident
+    disable_switch: DEALIX_PROOF_APPROVAL=off
+
+  - id: partner_referral
+    name: Partner Referral
+    layer: growth
+    purpose: إدارة شركاء referral.
+    owner: founder
+    input: partner MOUs
+    output: partner_pipeline.csv
+    source_of_truth: <private_ops>/sales/partner_pipeline.csv
+    approval_class: high
+    trust_gate: review
+    worker: manual
+    kpi: partner_intros_per_month >= 2
+    failure_mode: conflict of interest
+    recovery_path: legal review + pause
+    disable_switch: DEALIX_PARTNER_REFERRAL=off
+
+  - id: content_to_demand
+    name: Content to Demand
+    layer: growth
+    purpose: تحويل محتوى عضوي إلى inbound demand.
+    owner: founder
+    input: published content (organic)
+    output: tagged leads in lead_inbox
+    source_of_truth: <private_ops>/sales/content_attribution.csv
+    approval_class: medium
+    trust_gate: review
+    worker: manual
+    kpi: leads_per_published_piece >= 1
+    failure_mode: content without CTA
+    recovery_path: review + republish
+    disable_switch: DEALIX_CONTENT_TO_DEMAND=off
+
+  - id: eval_gate
+    name: Eval Gate
+    layer: trust
+    purpose: تقييم جودة كل output من agents قبل التسليم.
+    owner: founder
+    input: agent output
+    output: pass/fail + log
+    source_of_truth: scripts/verify_prompt_output_quality.py
+    approval_class: high
+    trust_gate: hard_block
+    worker: cron
+    kpi: false_pass_rate < 0.05
+    failure_mode: bad output passes
+    recovery_path: tighten rubric + retrain
+    disable_switch: DEALIX_EVAL_GATE=off
+
+  - id: policy_as_code
+    name: Policy as Code
+    layer: trust
+    purpose: تشغيل سياسات Dealix كـ code (non-negotiables, suppression rules).
+    owner: founder
+    input: policy files
+    output: enforcement decisions
+    source_of_truth: docs/00_constitution/NON_NEGOTIABLES.md + policy engine
+    approval_class: high
+    trust_gate: hard_block
+    worker: cron
+    kpi: policy_violations == 0
+    failure_mode: silent bypass
+    recovery_path: incident + tighten
+    disable_switch: DEALIX_POLICY_AS_CODE=off
+
+  - id: audit_log
+    name: Audit Log
+    layer: trust
+    purpose: تسجيل كل decision/event حساس قابل للمراجعة.
+    owner: founder
+    input: app events
+    output: audit_log table
+    source_of_truth: api/routers/audit_export.py
+    approval_class: high
+    trust_gate: hard_block
+    worker: cron
+    kpi: events_logged_completeness >= 0.99
+    failure_mode: lost events
+    recovery_path: replay from logs
+    disable_switch: DEALIX_AUDIT_LOG=off
+
+  - id: worker_orchestrator
+    name: Worker Orchestrator
+    layer: ops
+    purpose: جدولة وتشغيل كل cron/agent workers مع health reporting.
+    owner: founder
+    input: schedule definitions
+    output: machine_health.csv
+    source_of_truth: <private_ops>/ops/machine_health.csv
+    approval_class: medium
+    trust_gate: review
+    worker: cron
+    kpi: missed_runs_per_week == 0
+    failure_mode: silent failure
+    recovery_path: alert + restart
+    disable_switch: DEALIX_WORKER_ORCH=off
+
+  - id: finance_os
+    name: Finance OS
+    layer: finance
+    purpose: تتبع كاش، burn، runway، forecast.
+    owner: founder
+    input: cash_collected.csv + burn.csv
+    output: revenue_forecast.md
+    source_of_truth: <private_ops>/finance/
+    approval_class: high
+    trust_gate: review
+    worker: cron
+    kpi: forecast_accuracy_30d >= 0.7
+    failure_mode: stale data
+    recovery_path: manual entry + recompute
+    disable_switch: DEALIX_FINANCE_OS=off
+
+  - id: data_quality
+    name: Data Quality
+    layer: data
+    purpose: التحقق من جودة بيانات الـ pipeline والـ learning.
+    owner: founder
+    input: all CSVs under <private_ops>
+    output: data_quality_report.md
+    source_of_truth: <private_ops>/data/quality_report.md
+    approval_class: medium
+    trust_gate: review
+    worker: cron
+    kpi: completeness >= 0.9
+    failure_mode: schema drift
+    recovery_path: schema check + correction
+    disable_switch: DEALIX_DATA_QUALITY=off
+
+  - id: security_gate
+    name: Security Gate
+    layer: trust
+    purpose: فحص أمني (secrets, dependencies) قبل أي merge.
+    owner: founder
+    input: PR diffs
+    output: pass/fail
+    source_of_truth: .pre-commit-config.yaml + gitleaks
+    approval_class: high
+    trust_gate: hard_block
+    worker: cron
+    kpi: secrets_detected_in_main == 0
+    failure_mode: secret in repo
+    recovery_path: rotate + scrub history
+    disable_switch: DEALIX_SECURITY_GATE=off
+
+  - id: launch_command
+    name: Launch Command
+    layer: launch
+    purpose: غرفة قيادة الإطلاق — تجميع readiness + blockers + next CEO action.
+    owner: founder
+    input: كل verifiers + <private_ops>/launch/
+    output: /launch frontend + summary endpoint
+    source_of_truth: scripts/verify_launch_readiness.py
+    approval_class: high
+    trust_gate: review
+    worker: cron
+    kpi: readiness_score >= 0.8
+    failure_mode: stale readiness
+    recovery_path: recompute + manual review
+    disable_switch: DEALIX_LAUNCH_COMMAND=off
