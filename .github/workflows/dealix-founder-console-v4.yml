@@ -1,0 +1,51 @@
+name: Dealix Founder Console v4 Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  founder-console-v4:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify Founder Console v4 static runtime
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          required = [
+            "api/internal/runtime_reader.py",
+            "api/routers/internal/founder_console.py",
+            "apps/web/components/founder-shell.tsx",
+            "apps/web/lib/dealix-runtime.ts",
+            "apps/web/app/ceo/page.tsx",
+            "apps/web/app/sales-cockpit/page.tsx",
+            "apps/web/app/approvals/page.tsx",
+          ]
+          missing = [p for p in required if not Path(p).exists()]
+          if missing:
+              raise SystemExit("Missing: " + ", ".join(missing))
+          print("PASS: static Founder Console files exist")
+          PY
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install frontend
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: apps/web
+        run: npm run build

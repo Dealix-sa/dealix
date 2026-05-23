@@ -1,21 +1,37 @@
-import { ApprovalDecisionModal } from "../../components/approvals/ApprovalDecisionModal";
-import { OversightQueue } from "../../components/approvals/OversightQueue";
+import { LiveApprovalsQueue } from "../../components/approvals/LiveApprovalsQueue";
+import { FounderShell } from "../../components/founder-shell";
+import { loadApprovals } from "../../lib/dealix-runtime";
 
-const queueItems = [
-  {
-    ticketId: "apt-100",
-    actionType: "whatsapp.send_message",
-    requestedBy: "sales_agent",
-    state: "pending"
+export const dynamic = "force-dynamic";
+
+export default async function ApprovalsPage() {
+  const result = await loadApprovals();
+
+  if (!result.ok) {
+    return (
+      <FounderShell
+        title="Approvals"
+        subtitle="CEO approval queue · every decision is audited"
+        error={result.error}
+      >
+        <div className="card">
+          <p style={{ margin: 0 }}>
+            Approval queue runtime is unreachable. Start the API and bootstrap
+            Private Ops to see pending approvals.
+          </p>
+        </div>
+      </FounderShell>
+    );
   }
-];
 
-export default function ApprovalsPage() {
   return (
-    <main className="grid">
-      <h1>Approvals</h1>
-      <OversightQueue items={queueItems} />
-      <ApprovalDecisionModal />
-    </main>
+    <FounderShell
+      title="Approvals"
+      subtitle="CEO approval queue · every decision is audited"
+      source="private_ops_csv"
+      lastUpdated={new Date().toISOString()}
+    >
+      <LiveApprovalsQueue initialItems={result.data} />
+    </FounderShell>
   );
 }

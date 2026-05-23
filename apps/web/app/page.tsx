@@ -1,7 +1,9 @@
 const links = [
+  "/ceo",
+  "/sales-cockpit",
+  "/approvals",
   "/control-plane",
   "/agents",
-  "/approvals",
   "/safety",
   "/sandbox",
   "/value-engine",
