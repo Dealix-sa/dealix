@@ -5,6 +5,7 @@ Imports Pydantic models in dealix/contracts/, asserts high-stakes evidence rule,
 and runs dealix/contracts/dump_schemas.py comparing output to checked-in schemas.
 Exit 0=PASS, 1=FAIL.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -21,11 +22,15 @@ sys.path.insert(0, str(REPO))
 def check_pydantic_imports() -> list[str]:
     errors: list[str] = []
     try:
-        from dealix.contracts.decision import DecisionOutput  # noqa: F401
-        from dealix.contracts.evidence_pack import Evidence  # noqa: F401
-        from dealix.contracts.event_envelope import EventEnvelope  # noqa: F401
-        from dealix.contracts.audit_log import AuditEntry  # noqa: F401
-        from dealix.classifications import ApprovalClass, ReversibilityClass, SensitivityClass  # noqa: F401
+        from dealix.classifications import (
+            ApprovalClass,
+            ReversibilityClass,
+            SensitivityClass,
+        )
+        from dealix.contracts.audit_log import AuditEntry
+        from dealix.contracts.decision import DecisionOutput
+        from dealix.contracts.event_envelope import EventEnvelope
+        from dealix.contracts.evidence_pack import Evidence
     except Exception as e:
         errors.append(f"import error: {e!r}")
     return errors
@@ -37,6 +42,7 @@ def check_high_stakes_validator() -> list[str]:
     try:
         from dealix.classifications import ApprovalClass, ReversibilityClass, SensitivityClass
         from dealix.contracts.decision import DecisionOutput
+
         try:
             DecisionOutput(
                 entity_id="ent_test",
@@ -69,18 +75,24 @@ def check_schema_drift() -> list[str]:
     with tempfile.TemporaryDirectory() as tmp:
         out_dir = Path(tmp)
         try:
-            res = subprocess.run(
+            res = subprocess.run(  # noqa: S603
                 [sys.executable, str(dump), "--out-dir", str(out_dir)],
-                capture_output=True, text=True, cwd=REPO, timeout=60,
+                capture_output=True,
+                text=True,
+                cwd=REPO,
+                timeout=60,
             )
         except subprocess.TimeoutExpired:
             return ["dump_schemas timed out"]
         if res.returncode != 0:
             # Fallback: try with no args (dump to default location)
             try:
-                res2 = subprocess.run(
+                res2 = subprocess.run(  # noqa: S603
                     [sys.executable, str(dump)],
-                    capture_output=True, text=True, cwd=REPO, timeout=60,
+                    capture_output=True,
+                    text=True,
+                    cwd=REPO,
+                    timeout=60,
                 )
                 if res2.returncode != 0:
                     return [f"dump_schemas exit {res.returncode}: {res.stderr[:200]}"]
@@ -121,7 +133,17 @@ def main() -> int:
     verdict = "PASS" if not failures else "FAIL"
     summary = f"{len(checks)} checks; failures={len(failures)}"
     if args.json:
-        print(json.dumps({"layer": 3, "verdict": verdict, "checks": {k: bool(v) for k, v in checks.items()}, "errors": failures, "summary": summary}))
+        print(
+            json.dumps(
+                {
+                    "layer": 3,
+                    "verdict": verdict,
+                    "checks": {k: bool(v) for k, v in checks.items()},
+                    "errors": failures,
+                    "summary": summary,
+                }
+            )
+        )
     else:
         print(summary)
         for f in failures:

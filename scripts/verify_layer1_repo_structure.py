@@ -4,6 +4,7 @@
 Checks canonical artifacts (files, dirs, schemas, doctrine tests) exist.
 Pure pathlib; no subprocess. Exit 0=PASS, 1=FAIL.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -100,7 +101,17 @@ def main() -> int:
     verdict = "PASS" if not failures else "FAIL"
     summary = f"{checked - len(failures)}/{checked} required artifacts present"
     if args.json:
-        print(json.dumps({"layer": 1, "verdict": verdict, "checked": checked, "missing": failures, "summary": summary}))
+        print(
+            json.dumps(
+                {
+                    "layer": 1,
+                    "verdict": verdict,
+                    "checked": checked,
+                    "missing": failures,
+                    "summary": summary,
+                }
+            )
+        )
     else:
         print(summary)
         for f in failures:

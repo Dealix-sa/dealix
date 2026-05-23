@@ -4,6 +4,7 @@
 Parses .github/workflows/*.yml; asserts required workflows exist + each has jobs.runs-on.
 No GitHub API calls. Exit 0=PASS, 1=FAIL.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -58,7 +59,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--private-ops", default=None, help="ignored at L8")
-    ap.add_argument("--required", action="append", default=[], help="additional required workflow names")
+    ap.add_argument(
+        "--required", action="append", default=[], help="additional required workflow names"
+    )
     args = ap.parse_args()
 
     required = list(REQUIRED_WORKFLOWS) + list(args.required)
@@ -87,10 +90,18 @@ def main() -> int:
     verdict = "PASS" if not failures else "FAIL"
     summary = f"{workflow_count} workflows parsed; required missing: {len(missing_required)}"
     if args.json:
-        print(json.dumps({
-            "layer": 8, "verdict": verdict, "workflow_count": workflow_count,
-            "missing_required": missing_required, "errors": failures, "summary": summary,
-        }))
+        print(
+            json.dumps(
+                {
+                    "layer": 8,
+                    "verdict": verdict,
+                    "workflow_count": workflow_count,
+                    "missing_required": missing_required,
+                    "errors": failures,
+                    "summary": summary,
+                }
+            )
+        )
     else:
         print(summary)
         for f in failures:
