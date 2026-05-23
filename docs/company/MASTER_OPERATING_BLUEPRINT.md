@@ -142,3 +142,35 @@ Offer → Intake → Data → Governance → AI Output → QA → Delivery → P
 الجملة الختامية:
 
 **Dealix تكون قوية عندما لا تبيع «AI»، بل تبيع قدرة تشغيلية مثبتة: بيانات جاهزة، workflow واضح، AI مساعد، حوكمة وقت التشغيل، تقرير، Proof Pack، وتحسين شهري مستمر.**
+
+---
+
+## Distribution Mega-System
+
+**Purpose:** Run the complete Dealix distribution engine across outbound, inbound, referrals, content, strategic accounts, samples, proposals, and payment capture.
+
+**Core Rule:** Scale intelligence aggressively. Scale sending carefully. Scale delivery with QA. Scale SaaS only after repeated paid workflows.
+
+**Components:**
+- `docs/distribution/DISTRIBUTION_PORTFOLIO_OS.md`
+- `docs/distribution/LEAD_INTELLIGENCE_BASE_OS.md`
+- `docs/distribution/SECTOR_EXPANSION_MACHINES.md`
+- `docs/distribution/INBOUND_ENGINE_OS.md`
+- `docs/distribution/LANDING_PAGE_CONVERSION_SYSTEM.md`
+- `docs/distribution/REFERRAL_ENGINE_OS.md`
+- `docs/distribution/STRATEGIC_ACCOUNT_PLAYBOOK.md`
+- `docs/distribution/CONVERSATION_ROUTING_SYSTEM.md`
+- `docs/distribution/NURTURE_MACHINE_OS.md`
+- `docs/distribution/PROPOSAL_ACCELERATION_SYSTEM.md`
+- `docs/distribution/PAYMENT_CAPTURE_SYSTEM.md`
+- `docs/founder/FOUNDER_5_MINUTE_APPROVAL_WORKFLOW.md`
+
+**Evidence ledgers (private ops):**
+- `lead_intelligence_base.csv`
+- `distribution_command_center.md`
+- `channel_scorecard.csv`
+- `sector_scorecard.csv`
+- Outreach queues, reply logs, sample logs, proposal queues, payment capture queue.
+
+**Daily orchestration:** `make growth-daily PRIVATE_OPS=/opt/dealix-ops-private`
+**CI verification:** `.github/workflows/dealix-distribution-mega-system.yml`
