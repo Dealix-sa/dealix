@@ -39,6 +39,12 @@ eggs/
 lib/
 lib64/
 parts/
+# Python `lib/` pattern above must NOT block frontend source directories.
+# See AGENTS.md "Frontend frontend/src/lib/" note for the long-standing trap.
+!apps/web/lib/
+!apps/web/lib/**
+!frontend/src/lib/
+!frontend/src/lib/**
 sdist/
 var/
 wheels/
