@@ -36,12 +36,6 @@ REQUIRED_COLORS = ["#0B1220", "#00D1A1", "#B2BBC6", "#0F1726", "#FFFFFF"]
 
 
 def main() -> int:
-    print(f"[brand-system] REPO={REPO}", flush=True)
-    print(f"[brand-system] cwd={Path.cwd()}", flush=True)
-    print(f"[brand-system] __file__={__file__}", flush=True)
-    print(f"[brand-system] REPO exists={REPO.exists()}", flush=True)
-    print(f"[brand-system] docs/brand exists={(REPO / 'docs/brand').exists()}", flush=True)
-    print(f"[brand-system] assets/brand exists={(REPO / 'assets/brand').exists()}", flush=True)
     missing = [f for f in REQUIRED_FILES if not (REPO / f).exists()]
     tokens_path = REPO / "docs/brand/brand-tokens.json"
     color_issues: list[str] = []
@@ -54,20 +48,18 @@ def main() -> int:
     else:
         color_issues.append("brand-tokens.json not readable")
 
-    print("[brand-system]", flush=True)
-    print(f"  missing files     : {len(missing)}", flush=True)
+    print("[brand-system]")
+    print(f"  missing files     : {len(missing)}")
     for m in missing:
-        print(f"    - {m}", flush=True)
-    print(f"  color issues      : {len(color_issues)}", flush=True)
+        print(f"    - {m}")
+    print(f"  color issues      : {len(color_issues)}")
     for c in color_issues:
-        print(f"    - {c}", flush=True)
+        print(f"    - {c}")
     fail = bool(missing) or bool(color_issues)
     if fail:
-        # GitHub Actions ::error annotation surfaces in PR check details.
         msg = f"missing={missing} colors={color_issues}"
-        # Trim to keep annotation under GH's 4000 char cap
-        print(f"::error file=scripts/verify_brand_system.py::brand verifier failed: {msg[:3000]}", flush=True)
-    print("RESULT:", "FAIL" if fail else "PASS", flush=True)
+        print(f"::error file=scripts/verify_brand_system.py::brand verifier failed: {msg[:3000]}")
+    print("RESULT:", "FAIL" if fail else "PASS")
     return 1 if fail else 0
 
 

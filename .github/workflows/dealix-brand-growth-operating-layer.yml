@@ -31,20 +31,10 @@ jobs:
           python-version: "3.12"
       - name: Environment
         run: |
-          set -x
           python --version
-          which python
-          pwd
-          ls -la
-          ls -la docs/brand/ | head -10
-          ls -la apps/web/components/brand/ | head -15
-          ls -la assets/brand/source/ | head -5
           python -m pip install pyyaml
       - name: Verify brand
-        run: |
-          set -x
-          pwd
-          python -u scripts/verify_brand_system.py
+        run: python -u scripts/verify_brand_system.py
       - name: Verify growth
         run: python -u scripts/verify_growth_system.py
       - name: Verify marketing

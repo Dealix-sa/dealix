@@ -24,20 +24,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: |
-          set -x
           python --version
-          which python
-          pwd
-          ls -la
-          echo "--- docs/brand contents ---"
-          ls -la docs/brand/ 2>&1 | head
-          echo "--- apps/web/components/brand contents ---"
-          ls -la apps/web/components/brand/ 2>&1 | head -15
-          echo "--- assets/brand/source ---"
-          ls -la assets/brand/source/ 2>&1 | head
-          echo "--- policies, registries, evals ---"
-          ls policies/ registries/ evals/gates/ 2>&1
           python -m pip install pyyaml
-          python -c "import yaml; print('yaml', yaml.__version__)"
       - name: Run Dealix company OS verifier
         run: python -u scripts/verify_company_os.py

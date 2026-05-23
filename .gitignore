@@ -48,6 +48,12 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# Re-include the Next.js Founder Console lib/ directory — the global
+# `lib/` rule above is for Python packaging and would otherwise hide
+# the brand tokens / runtime client / action client TypeScript modules.
+!apps/web/lib/
+!apps/web/lib/**
+
 # Virtual environments
 venv/
 env/
