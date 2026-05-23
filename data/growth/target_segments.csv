@@ -1,0 +1,5 @@
+segment_id,name,layer,description,inclusion_criteria,exclusion_criteria,owner,status,last_review_at
+SEG-001,Pipeline-Starved,behavioural,Companies with weak top-of-funnel,Active sales team AND outbound posture accepted AND no documented pipeline tooling,Companies > 500 headcount,founder,active,
+SEG-002,Pipeline-Rich Slow-Closing,behavioural,Companies with full pipeline but long cycle,Documented pipeline tool AND cycle > 90 days,Sub-2K SAR motion,founder,active,
+SEG-003,Productisation-Seeking,behavioural,Service businesses wanting to productise,Service revenue ≥ 60% AND interest in retainerisation,Pure software vendors,founder,active,
+SEG-004,Partner-Ready,behavioural,Serve same buyer; co-deliver candidate,Same target buyer AND non-competing offer,Competing direct offer,founder,active,

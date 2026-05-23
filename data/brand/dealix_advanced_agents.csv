@@ -1,0 +1,7 @@
+agent_id,worker_name,owner,approval_class_max,eval_required,kill_switch,audit_required,external_send,purpose,doc
+brand_guardian,brand_guardian_worker,founder,A0,true,true,true,false,Refuses brand-doctrine violations on every brand-touched artefact,docs/ai/BRAND_GUARDIAN_AGENT.md
+growth_strategist,growth_strategist_worker,founder,A1,true,true,true,false,Proposes weekly growth experiments and sector recommendations,docs/ai/GROWTH_STRATEGIST_AGENT.md
+distribution_operator,distribution_operator_worker,founder,A2,true,true,true,false,Orchestrates the 15 distribution machines,docs/ai/DISTRIBUTION_OPERATOR_AGENT.md
+content_strategist,content_strategist_worker,founder,A1,true,true,true,false,Drafts content per pillar x persona x week,docs/ai/CONTENT_STRATEGIST_AGENT.md
+offer_architect,offer_architect_worker,founder,A1,true,true,true,false,Proposes refinements to the offer ladder,docs/ai/OFFER_ARCHITECT_AGENT.md
+performance_analyst,performance_analyst_worker,founder,A1,true,true,true,false,Computes KPI tree and proposes experiments,docs/ai/PERFORMANCE_ANALYST_AGENT.md

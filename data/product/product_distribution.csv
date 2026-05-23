@@ -1,0 +1,8 @@
+offer_id,offer_name,primary_channel,supporting_channel,proof_required,owner,target_conversion_from_prev_stage
+OFF-01,Free Sample / Diagnostic,LinkedIn (founder-led),Warm intro,Previous anonymised diagnostic,founder,
+OFF-02,Revenue Sprint,LinkedIn + warm intro,Email,Sector-relevant sample,founder,>=40% from Diagnostic
+OFF-03,Managed Pilot,Founder call + proposal,Partner co-sign,Sprint delivered,founder,>=50% from Sprint
+OFF-04,Revenue Desk Retainer,Customer review meeting,LinkedIn (founder-led),Pilot delivered,founder,>=50% from Pilot or Sprint
+OFF-05,Founder Console / Command Center,Co-located founder review,Partner co-sign,90+ days of Retainer,founder,>=25% from Retainer
+OFF-06,Enterprise Revenue Intelligence OS,Direct executive engagement,Partner co-sign,2 retainers in sector,founder,
+OFF-07,Partner / White-label,Partner network,Founder call,Sprint + partner-fit case,founder,
