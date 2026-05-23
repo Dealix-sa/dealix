@@ -22,9 +22,24 @@ NEGATION_TOKENS = (
     "no-guaranteed", "no-overclaim", "ممنوع", "لا ",
     # Lines that document the rule rather than make a claim are also safe.
     "rule", "policy", "claim", "language", "disqualif",
-    "buyer requests", "buyer demands", "buyer asks",
+    "buyer requests", "buyer demands", "buyer asks", "buyer insists",
     "engagement requires", "if output", "if draft", "if message",
-    "if buyer", "decline", "redact",
+    "if buyer", "decline", "redact", "alternatives advertise",
+    "competitors", "rivals advertise", "we replace",
+)
+
+# Lines containing any of these phrases mark a documentation/comparison
+# context in which the forbidden language is being cited in order to be
+# rejected. A lookback window applies them to subsequent lines.
+DOC_CONTEXT_PHRASES = (
+    "avoid ", "don't say", "do not say", "dont say", "instead",
+    "bad phrasing", "forbidden phrasing", "phrases to avoid",
+    "phrases we never use", "language to avoid", "what we never say",
+    "wrong phrasing", "unsafe phrasing", "examples to reject",
+    "say instead", "replace ", "rejected ",
+    "comparison matrix", "what dealix is not",
+    "never:", "banned", "ban:", "do:", "don't:", "rejected:",
+    "guaranteed outcomes",  # markdown section title in NO_OVERCLAIM_POLICY
 )
 
 
@@ -103,21 +118,31 @@ def main() -> int:
             continue
         hit: tuple[str, str] | None = None
         in_forbidden_section = False
-        for line in text.splitlines():
-            # Track "Forbidden" / "Don'ts" / "Banned" section context — these
-            # sections enumerate the things we must never produce.
+        recent_doc_context = 0  # lines remaining in lookback window
+        lines = text.splitlines()
+        for line in lines:
+            # Track "Forbidden" / "Don'ts" / "Banned" section context.
             heading = line.strip().lower()
             if heading.startswith("#"):
                 in_forbidden_section = any(
                     tok in heading
-                    for tok in ("forbidden", "banned", "prohibited", "don't", "dont", "don’t", "never say", "must not", "no-go")
+                    for tok in ("forbidden", "banned", "prohibited", "don't", "dont", "don’t", "never say", "must not", "no-go", "what we never", "phrases to avoid", "avoid", "wrong phrasing", "comparison matrix", "what dealix is not")
                 )
+            # Detect a "what we forbid / what to say instead" comparison
+            # context and keep it active for the next 12 lines (markdown
+            # tables and lists can span quite a few rows).
+            low_line = line.lower()
+            if any(p in low_line for p in DOC_CONTEXT_PHRASES):
+                recent_doc_context = 12
             stripped = _strip_quoted(line)
             for rx in FORBIDDEN:
                 m = rx.search(stripped)
-                if m and not (in_forbidden_section or _is_negated_line(line)):
+                safe = in_forbidden_section or _is_negated_line(line) or recent_doc_context > 0
+                if m and not safe:
                     hit = (str(path.relative_to(repo)), m.group(0)[:80])
                     break
+            if recent_doc_context > 0:
+                recent_doc_context -= 1
             if hit:
                 break
         if hit:
