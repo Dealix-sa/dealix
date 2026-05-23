@@ -200,6 +200,8 @@ omit = [
     # but excluded from the coverage-gate denominator because it is thin I/O
     # glue (CSV reads + endpoint passthroughs) and would otherwise dilute the
     # gate signal on the core business surfaces (core/, db/, integrations/).
+    "*/api/internal/*",
+    "*/api/routers/internal/*",
     "api/internal/*",
     "api/routers/internal/*",
 ]
