@@ -213,3 +213,12 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Dealix CEO Dashboard — local/private exports (NEVER commit real
+# pipeline, MRR, or approvals data). Only demo JSON under
+# dashboard_data/demo/*.demo.json is allowed in the public repo.
+# ─────────────────────────────────────────────────────────────
+dashboard_data/*.json
+!dashboard_data/demo/*.demo.json
+internal_dashboard/*.local.html

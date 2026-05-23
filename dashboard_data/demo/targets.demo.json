@@ -1,0 +1,15 @@
+{
+  "weekly": {
+    "lead_count": 25,
+    "contacted": 25,
+    "replied": 5,
+    "call_booked": 2,
+    "proposal_sent": 1,
+    "sample_sent": 3
+  },
+  "monthly": {
+    "paid": 1,
+    "delivered": 1,
+    "retainer": 1
+  }
+}

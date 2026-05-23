@@ -1,0 +1,27 @@
+{
+  "metrics": {
+    "lead_count": 25,
+    "new": 10,
+    "contacted": 25,
+    "replied": 5,
+    "sample_sent": 3,
+    "call_booked": 2,
+    "proposal_sent": 1,
+    "paid": 0,
+    "delivered": 0,
+    "retainer": 0,
+    "mrr": 0,
+    "active_retainers": 0,
+    "approvals_total": 2,
+    "approvals_pending": 1,
+    "high_risk_approvals": 1
+  },
+  "bottlenecks": [
+    {
+      "area": "Revenue",
+      "severity": "High",
+      "issue": "Proposal sent but no payment recorded.",
+      "recommendation": "Improve payment path, urgency, and follow-up."
+    }
+  ]
+}
