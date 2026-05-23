@@ -1,0 +1,27 @@
+{
+  "name": "unified_operating_database",
+  "tables": [
+    "accounts",
+    "contacts",
+    "signals",
+    "lead_scores",
+    "suppression_list",
+    "outreach_queue",
+    "conversation_log",
+    "sample_queue",
+    "proposal_queue",
+    "payment_capture_queue",
+    "delivery_queue",
+    "retention_queue",
+    "proof_library",
+    "ai_audit_log",
+    "ceo_decision_log"
+  ],
+  "non_negotiable_rules": [
+    "No outreach to suppressed records",
+    "No external sending without approval",
+    "No proposal without scope and start condition",
+    "No delivery without payment, PO, or written approval",
+    "No public proof without approval"
+  ]
+}
