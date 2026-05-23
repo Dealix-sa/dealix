@@ -76,11 +76,7 @@ def test_internal_linking_returns_summary_issues_graph():
 # authoring the pages, and marketers.html is no longer orphan after
 # the index.html nav + footer link wiring. Any NEW finding fails
 # the test.
-KNOWN_BROKEN_LINKS: set[tuple[str, str]] = {
-    ("case-study-template.html", "case-studies.html"),              # case-studies.html not yet created
-    ("dpo.html", "dpa.html"),                                       # dpa.html renamed to dpo
-    ("sector-report-realestate-sample.html", "privacy-policy.html"),  # cross-link to privacy page
-}
+KNOWN_BROKEN_LINKS: set[tuple[str, str]] = set()
 KNOWN_ORPHAN_CORE: set[str] = set()
 
 
