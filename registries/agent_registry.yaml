@@ -1,0 +1,127 @@
+# Dealix Agent Registry
+# Source of truth for every Dealix AI agent.
+# Verified by scripts/verify_agent_registry.py.
+
+version: 1
+owner: founder
+
+agents:
+  - id: ceo_copilot
+    name: CEO Copilot
+    purpose: Brief the founder daily, surface top action, summarize state.
+    approval_class_max: A1
+    tools: [internal_api_read, scorecard_read]
+    outputs: [ceo_summary, top_action, risk_flags]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: revenue_research_agent
+    name: Revenue Research Agent
+    purpose: Build lead intelligence base from public Saudi B2B sources.
+    approval_class_max: A1
+    tools: [web_search, internal_api_read]
+    outputs: [lead_intelligence_base]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: lead_scoring_agent
+    name: Lead Scoring Agent
+    purpose: Score leads A/B/C using intent, fit, and recency signals.
+    approval_class_max: A1
+    tools: [internal_api_read]
+    outputs: [lead_scores]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: outreach_draft_agent
+    name: Outreach Draft Agent
+    purpose: Draft Arabic/English outreach. Never sends.
+    approval_class_max: A2
+    tools: [template_library, internal_api_read]
+    outputs: [outreach_drafts]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: followup_planner_agent
+    name: Follow-up Planner Agent
+    purpose: Plan sequence and timing for follow-ups; queue for approval.
+    approval_class_max: A2
+    tools: [internal_api_read]
+    outputs: [followup_plans]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: reply_classifier_agent
+    name: Reply Classifier Agent
+    purpose: Classify inbound replies (positive, neutral, negative, OOO).
+    approval_class_max: A1
+    tools: [internal_api_read]
+    outputs: [reply_classification]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: sample_draft_agent
+    name: Sample Draft Agent
+    purpose: Draft sample deliverables tailored to the prospect.
+    approval_class_max: A2
+    tools: [template_library, internal_api_read]
+    outputs: [sample_drafts]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: proposal_draft_agent
+    name: Proposal Draft Agent
+    purpose: Draft bilingual proposals with pricing placeholder. Never commits price.
+    approval_class_max: A2
+    tools: [template_library, internal_api_read]
+    outputs: [proposal_drafts]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: payment_followup_agent
+    name: Payment Follow-up Agent
+    purpose: Draft polite payment follow-ups. Never commits payment terms.
+    approval_class_max: A2
+    tools: [internal_api_read]
+    outputs: [payment_followup_drafts]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: trust_guardian
+    name: Trust Guardian
+    purpose: Inspect every agent output for policy violations before approval.
+    approval_class_max: A1
+    tools: [policy_engine, internal_api_read]
+    outputs: [trust_flags, approval_recommendation]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: eval_guardian
+    name: Eval Guardian
+    purpose: Run the eval gate suites and block agents that fail.
+    approval_class_max: A1
+    tools: [eval_runner]
+    outputs: [eval_status]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+
+  - id: productization_agent
+    name: Productization Agent
+    purpose: Surface repeatable patterns as productization candidates.
+    approval_class_max: A1
+    tools: [internal_api_read]
+    outputs: [productization_candidates]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
