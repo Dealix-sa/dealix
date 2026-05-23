@@ -130,3 +130,26 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Revenue Sprint Kit ─────────────────────────────────────────
+# The Revenue Sprint Kit bundles the founder DM pack, sample pack, proposal,
+# intake, delivery report, QA checklist, handoff, feedback, and retainer
+# templates. The `kit` target prints their paths and runs the private verifier
+# without taking any external action.
+
+PRIVATE_OPS ?= ./private_ops
+
+.PHONY: kit kit-verify kit-public-verify kit-no-autonomy
+
+kit: ## Print Revenue Sprint Kit paths and run private verifier
+	$(PYTHON) scripts/dealix_revenue_sprint_kit.py --private-ops $(PRIVATE_OPS)
+
+kit-verify: ## Run public + private Revenue Sprint Kit verifiers
+	$(PYTHON) scripts/verify_revenue_sprint_kit.py
+	$(PYTHON) $(PRIVATE_OPS)/verify_revenue_sprint_kit.py
+
+kit-public-verify: ## Verify only the public Revenue Sprint Kit docs
+	$(PYTHON) scripts/verify_revenue_sprint_kit.py
+
+kit-no-autonomy: ## Verify the kit takes no autonomous external action
+	$(PYTHON) scripts/verify_no_autonomous_external_actions.py
