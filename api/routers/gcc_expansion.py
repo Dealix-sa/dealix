@@ -370,15 +370,6 @@ class SignalDetectRequest(BaseModel):
     raw_data: dict[str, Any] = {}
 
 
-_SIGNAL_TYPE_HANDLERS: dict[str, str] = {
-    "hiring": "detect_hiring_signal",
-    "website": "detect_website_change",
-    "ads": "detect_ads_signal",
-    "funding": "detect_funding_signal",
-    "tender": "detect_tender_signal",
-}
-
-
 def _run_hiring_detector(mi: dict[str, Any], raw_data: dict[str, Any]) -> list[Any]:
     detect = mi["detect_hiring_signal"]
     company_id = raw_data.get("company", "unknown")

@@ -9,7 +9,12 @@ const ADMIN_KEY =
     : "";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://api.dealix.me";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://api.dealix.me";
+
+const API_KEY =
+  typeof window !== "undefined"
+    ? process.env.NEXT_PUBLIC_API_KEY ?? ""
+    : "";
 
 type ChurnBand = "safe" | "watch" | "at_risk" | "critical";
 
@@ -26,16 +31,19 @@ type ChurnResult = {
 
 type PlaybookResult = {
   customer_id: string;
-  priority: string;
-  actions_ar: string[];
-  actions_en: string[];
-  governance_decision: string;
+  playbook: {
+    priority: string;
+    actions_ar: string[];
+    actions_en: string[];
+    governance_decision: string;
+  };
+  is_estimate: boolean;
 };
 
 type ExpansionResult = {
   customer_id: string;
   expansion_score: number;
-  expansion_band: string;
+  band: string;
   expansion_hint_ar: string;
   governance_decision: string;
 };
@@ -125,6 +133,7 @@ export function OpsCustomerHealthDashboard() {
 
     const headers = {
       "Content-Type": "application/json",
+      "X-API-Key": API_KEY,
       "X-Admin-API-Key": ADMIN_KEY,
     };
 
@@ -370,21 +379,21 @@ export function OpsCustomerHealthDashboard() {
             </h2>
             <span
               className={`px-2 py-0.5 rounded border text-xs font-bold ${
-                PRIORITY_COLORS[playbookResult.priority] ?? "bg-gray-700 text-gray-300"
+                PRIORITY_COLORS[playbookResult.playbook?.priority] ?? "bg-gray-700 text-gray-300"
               }`}
             >
-              {playbookResult.priority}
+              {playbookResult.playbook?.priority}
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {playbookResult.actions_ar.length > 0 && (
+            {(playbookResult.playbook?.actions_ar?.length ?? 0) > 0 && (
               <div>
                 <p className="text-xs text-gray-400 mb-2">
                   {isAr ? "الإجراءات (عربي)" : "Actions (AR)"}
                 </p>
                 <ul className="space-y-1">
-                  {playbookResult.actions_ar.map((a, i) => (
+                  {playbookResult.playbook?.actions_ar.map((a, i) => (
                     <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
                       <span className="text-yellow-400 shrink-0">{i + 1}.</span>
                       <span>{a}</span>
@@ -393,13 +402,13 @@ export function OpsCustomerHealthDashboard() {
                 </ul>
               </div>
             )}
-            {playbookResult.actions_en.length > 0 && (
+            {(playbookResult.playbook?.actions_en?.length ?? 0) > 0 && (
               <div>
                 <p className="text-xs text-gray-400 mb-2">
                   {isAr ? "الإجراءات (إنجليزي)" : "Actions (EN)"}
                 </p>
                 <ul className="space-y-1">
-                  {playbookResult.actions_en.map((a, i) => (
+                  {playbookResult.playbook?.actions_en.map((a, i) => (
                     <li key={i} className="text-sm text-gray-300 flex items-start gap-2">
                       <span className="text-yellow-400 shrink-0">{i + 1}.</span>
                       <span>{a}</span>
@@ -414,8 +423,8 @@ export function OpsCustomerHealthDashboard() {
 
       {/* Expansion Signals */}
       {expansionResult &&
-        (expansionResult.expansion_band === "safe" ||
-          expansionResult.expansion_band === "potential") && (
+        (expansionResult.band === "expand_now" ||
+          expansionResult.band === "potential") && (
           <div className="bg-gray-900/50 border border-green-700/30 rounded-xl p-6 backdrop-blur-sm">
             <h2 className="text-base font-semibold text-green-400/80 mb-3">
               {isAr ? "فرصة التوسع" : "Expansion Opportunity"}
@@ -425,7 +434,7 @@ export function OpsCustomerHealthDashboard() {
                 {Math.round(expansionResult.expansion_score * 100)}%
               </span>
               <span className="px-2 py-0.5 rounded border bg-green-400/10 border-green-400/30 text-green-400 text-xs">
-                {expansionResult.expansion_band}
+                {expansionResult.band}
               </span>
             </div>
             {expansionResult.expansion_hint_ar && (

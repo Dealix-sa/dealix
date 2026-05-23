@@ -82,6 +82,7 @@ async def dashboard_metrics() -> dict[str, Any]:
         "metrics": list(BOARD_DASHBOARD_METRICS),
         "count": len(BOARD_DASHBOARD_METRICS),
         "is_estimate": False,
+        "hard_gates": _HARD_GATES,
     }
 
 

@@ -9,37 +9,50 @@ const ADMIN_KEY =
     : "";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://api.dealix.me";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://api.dealix.me";
+
+const API_KEY =
+  typeof window !== "undefined"
+    ? process.env.NEXT_PUBLIC_API_KEY ?? ""
+    : "";
 
 type DealStage =
-  | "prospect"
+  | "new"
   | "qualified"
+  | "discovery"
+  | "demo"
   | "proposal"
   | "negotiation"
-  | "verbal";
+  | "verbal_yes";
 
 const DEAL_STAGES: DealStage[] = [
-  "prospect",
+  "new",
   "qualified",
+  "discovery",
+  "demo",
   "proposal",
   "negotiation",
-  "verbal",
+  "verbal_yes",
 ];
 
 const STAGE_LABELS_AR: Record<DealStage, string> = {
-  prospect: "عميل محتمل",
+  new: "جديد",
   qualified: "مؤهل",
-  proposal: "عرض",
+  discovery: "استكشاف",
+  demo: "عرض تجريبي",
+  proposal: "عرض سعر",
   negotiation: "تفاوض",
-  verbal: "موافقة شفهية",
+  verbal_yes: "موافقة شفهية",
 };
 
 const STAGE_LABELS_EN: Record<DealStage, string> = {
-  prospect: "Prospect",
+  new: "New",
   qualified: "Qualified",
+  discovery: "Discovery",
+  demo: "Demo",
   proposal: "Proposal",
   negotiation: "Negotiation",
-  verbal: "Verbal Commit",
+  verbal_yes: "Verbal Yes",
 };
 
 type DealRow = {
@@ -50,49 +63,32 @@ type DealRow = {
 };
 
 type ForecastBand = {
-  worst_sar: number;
-  likely_sar: number;
-  best_sar: number;
+  label: string;
+  revenue_sar: number;
+  n_deals_closing: number;
   confidence: number;
 };
 
 type ForecastResult = {
   customer_id: string;
   horizon_days: number;
-  forecast: ForecastBand;
-  deal_count: number;
+  period_label: string;
+  best: ForecastBand;
+  likely: ForecastBand;
+  worst: ForecastBand;
+  deals_breakdown: Array<Record<string, unknown>>;
   is_estimate: boolean;
-  governance_decision: string;
-};
-
-type StageHealth = {
-  stage: DealStage;
-  win_probability: number;
-  deal_count: number;
-  total_value_sar: number;
 };
 
 type PipelineHealthResult = {
-  stages: StageHealth[];
-  total_pipeline_sar: number;
-  weighted_pipeline_sar: number;
+  stage_probabilities: Record<string, number>;
   is_estimate: boolean;
-  governance_decision: string;
-};
-
-type ScenarioResult = {
-  horizon_days: number;
-  likely_sar: number;
-  best_sar: number;
-  worst_sar: number;
-  confidence: number;
 };
 
 type ScenariosResult = {
   customer_id: string;
-  scenarios: ScenarioResult[];
+  scenarios: Record<string, ForecastResult>;
   is_estimate: boolean;
-  governance_decision: string;
 };
 
 function fmt(n: number): string {
@@ -148,7 +144,12 @@ export function OpsRevenueForecastDashboard() {
     try {
       const res = await fetch(
         `${API_BASE}/api/v1/revenue-forecast/pipeline-health`,
-        { headers: { "X-Admin-API-Key": ADMIN_KEY } }
+        {
+          headers: {
+            "X-API-Key": API_KEY,
+            "X-Admin-API-Key": ADMIN_KEY,
+          },
+        }
       );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setHealthResult(await res.json());
@@ -201,12 +202,13 @@ export function OpsRevenueForecastDashboard() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-API-Key": API_KEY,
           "X-Admin-API-Key": ADMIN_KEY,
         },
         body: JSON.stringify({
           customer_id: customerId,
           horizon_days: horizon,
-          deals: deals.filter((d) => d.company_name.trim() && d.value_sar > 0),
+          open_deals: deals.filter((d) => d.company_name.trim() && d.value_sar > 0),
         }),
       });
       if (!res.ok) {
@@ -237,11 +239,12 @@ export function OpsRevenueForecastDashboard() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-API-Key": API_KEY,
           "X-Admin-API-Key": ADMIN_KEY,
         },
         body: JSON.stringify({
           customer_id: customerId,
-          deals: deals.filter((d) => d.company_name.trim() && d.value_sar > 0),
+          open_deals: deals.filter((d) => d.company_name.trim() && d.value_sar > 0),
         }),
       });
       if (!res.ok) {
@@ -442,7 +445,7 @@ export function OpsRevenueForecastDashboard() {
               </h3>
               <span className="px-2 py-0.5 rounded border bg-amber-500/10 border-amber-500/30 text-amber-400 text-xs">
                 {isAr ? "تقدير" : "Estimate"} —{" "}
-                {Math.round(forecastResult.forecast.confidence * 100)}%{" "}
+                {Math.round(forecastResult.likely.confidence * 100)}%{" "}
                 {isAr ? "ثقة" : "confidence"}
               </span>
             </div>
@@ -452,7 +455,7 @@ export function OpsRevenueForecastDashboard() {
                   {isAr ? "الأسوأ" : "Worst"}
                 </p>
                 <p className="text-lg font-bold text-red-400">
-                  {fmt(forecastResult.forecast.worst_sar)}
+                  {fmt(forecastResult.worst.revenue_sar)}
                 </p>
               </div>
               <div className="bg-zinc-900 rounded-lg p-3 border border-amber-500/30">
@@ -460,7 +463,7 @@ export function OpsRevenueForecastDashboard() {
                   {isAr ? "المتوقع" : "Likely"}
                 </p>
                 <p className="text-lg font-bold text-amber-400">
-                  {fmt(forecastResult.forecast.likely_sar)}
+                  {fmt(forecastResult.likely.revenue_sar)}
                 </p>
               </div>
               <div className="bg-zinc-900 rounded-lg p-3 border border-green-500/20">
@@ -468,7 +471,7 @@ export function OpsRevenueForecastDashboard() {
                   {isAr ? "الأفضل" : "Best"}
                 </p>
                 <p className="text-lg font-bold text-green-400">
-                  {fmt(forecastResult.forecast.best_sar)}
+                  {fmt(forecastResult.best.revenue_sar)}
                 </p>
               </div>
             </div>
@@ -507,75 +510,41 @@ export function OpsRevenueForecastDashboard() {
             ))}
           </div>
         ) : healthResult ? (
-          <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-zinc-800">
-                    <th className="text-left text-zinc-400 pb-2 font-normal">
-                      {isAr ? "المرحلة" : "Stage"}
-                    </th>
-                    <th className="text-right text-zinc-400 pb-2 font-normal">
-                      {isAr ? "احتمالية الفوز" : "Win Probability"}
-                    </th>
-                    <th className="text-right text-zinc-400 pb-2 font-normal">
-                      {isAr ? "عدد الصفقات" : "Deals"}
-                    </th>
-                    <th className="text-right text-zinc-400 pb-2 font-normal">
-                      {isAr ? "القيمة الإجمالية" : "Total Value"}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {healthResult.stages.map((s) => (
-                    <tr
-                      key={s.stage}
-                      className="border-b border-zinc-800/50"
-                    >
-                      <td className="py-2 text-white">
-                        {isAr
-                          ? STAGE_LABELS_AR[s.stage] ?? s.stage
-                          : STAGE_LABELS_EN[s.stage] ?? s.stage}
-                      </td>
-                      <td className="py-2 text-right">
-                        <span
-                          className={`px-2 py-0.5 rounded border text-xs font-semibold ${probBg(s.win_probability)}`}
-                        >
-                          {Math.round(s.win_probability * 100)}%
-                        </span>
-                      </td>
-                      <td className="py-2 text-right text-zinc-300">
-                        {s.deal_count}
-                      </td>
-                      <td
-                        className={`py-2 text-right font-medium ${probColor(s.win_probability)}`}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-zinc-800">
+                  <th className="text-left text-zinc-400 pb-2 font-normal">
+                    {isAr ? "المرحلة" : "Stage"}
+                  </th>
+                  <th className="text-right text-zinc-400 pb-2 font-normal">
+                    {isAr ? "احتمالية الفوز" : "Win Probability"}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(healthResult.stage_probabilities).map(([stage, prob]) => (
+                  <tr
+                    key={stage}
+                    className="border-b border-zinc-800/50"
+                  >
+                    <td className="py-2 text-white">
+                      {isAr
+                        ? STAGE_LABELS_AR[stage as DealStage] ?? stage
+                        : STAGE_LABELS_EN[stage as DealStage] ?? stage}
+                    </td>
+                    <td className="py-2 text-right">
+                      <span
+                        className={`px-2 py-0.5 rounded border text-xs font-semibold ${probBg(prob)}`}
                       >
-                        {fmt(s.total_value_sar)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <div className="bg-zinc-800/50 rounded-lg p-3">
-                <p className="text-xs text-zinc-400 mb-1">
-                  {isAr ? "إجمالي الخط" : "Total Pipeline"}
-                </p>
-                <p className="text-lg font-bold text-amber-400">
-                  {fmt(healthResult.total_pipeline_sar)}
-                </p>
-              </div>
-              <div className="bg-zinc-800/50 rounded-lg p-3">
-                <p className="text-xs text-zinc-400 mb-1">
-                  {isAr ? "الخط المرجّح" : "Weighted Pipeline"}
-                </p>
-                <p className="text-lg font-bold text-green-400">
-                  {fmt(healthResult.weighted_pipeline_sar)}
-                </p>
-              </div>
-            </div>
-          </>
+                        {Math.round(prob * 100)}%
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : null}
       </div>
 
@@ -613,13 +582,13 @@ export function OpsRevenueForecastDashboard() {
 
         {scenariosResult && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {scenariosResult.scenarios.map((sc) => (
+            {Object.entries(scenariosResult.scenarios).map(([horizon, sc]) => (
               <div
-                key={sc.horizon_days}
+                key={horizon}
                 className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-4"
               >
                 <p className="text-xs text-zinc-400 mb-3">
-                  {sc.horizon_days} {isAr ? "يوم" : "days"}
+                  {horizon} {isAr ? "يوم" : "days"}
                 </p>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -627,7 +596,7 @@ export function OpsRevenueForecastDashboard() {
                       {isAr ? "الأسوأ" : "Worst"}
                     </span>
                     <span className="text-sm font-medium text-red-400">
-                      {fmt(sc.worst_sar)}
+                      {fmt(sc.worst.revenue_sar)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -635,7 +604,7 @@ export function OpsRevenueForecastDashboard() {
                       {isAr ? "المتوقع" : "Likely"}
                     </span>
                     <span className="text-base font-bold text-amber-400">
-                      {fmt(sc.likely_sar)}
+                      {fmt(sc.likely.revenue_sar)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -643,7 +612,7 @@ export function OpsRevenueForecastDashboard() {
                       {isAr ? "الأفضل" : "Best"}
                     </span>
                     <span className="text-sm font-medium text-green-400">
-                      {fmt(sc.best_sar)}
+                      {fmt(sc.best.revenue_sar)}
                     </span>
                   </div>
                 </div>
@@ -651,7 +620,7 @@ export function OpsRevenueForecastDashboard() {
                   <span className="text-xs text-zinc-500">
                     {isAr ? "الثقة:" : "Confidence:"}{" "}
                     <span className="text-amber-400">
-                      {Math.round(sc.confidence * 100)}%
+                      {Math.round(sc.likely.confidence * 100)}%
                     </span>
                   </span>
                 </div>

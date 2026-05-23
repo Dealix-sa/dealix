@@ -30,7 +30,6 @@ from auto_client_acquisition.capital_os import (
 )
 from auto_client_acquisition.investment_os import (
     FUNDING_READINESS_ITEMS,
-    OPERATING_COVENANTS,
     VALUATION_DRIVERS,
     PmfScoreInputs,
     compute_pmf_score,

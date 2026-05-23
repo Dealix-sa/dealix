@@ -9,7 +9,12 @@ const ADMIN_KEY =
     : "";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://api.dealix.me";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://api.dealix.me";
+
+const API_KEY =
+  typeof window !== "undefined"
+    ? process.env.NEXT_PUBLIC_API_KEY ?? ""
+    : "";
 
 type CountryCode = "SA" | "AE" | "KW" | "BH" | "QA" | "OM";
 
@@ -17,8 +22,7 @@ type CountryCard = {
   country_code: CountryCode;
   country_name_ar: string;
   country_name_en: string;
-  top_sector_ar: string;
-  top_sector_en: string;
+  top_sector: string | null;
   heat_score: number;
 };
 
@@ -38,11 +42,9 @@ type SignalDetectResult = {
 };
 
 type CityCard = {
-  city_name_ar: string;
-  city_name_en: string;
+  city: string;
   heat_score: number;
-  top_sector_ar: string;
-  top_sector_en: string;
+  top_sector: string | null;
 };
 
 type HotCitiesResult = {
@@ -136,7 +138,7 @@ export function OpsGCCExpansionRadar() {
     setOverviewError(null);
     try {
       const res = await fetch(`${API_BASE}/api/v1/gcc-expansion/gcc-overview`, {
-        headers: { "X-Admin-API-Key": ADMIN_KEY },
+        headers: { "X-API-Key": API_KEY, "X-Admin-API-Key": ADMIN_KEY },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setOverview(await res.json());
@@ -168,6 +170,7 @@ export function OpsGCCExpansionRadar() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-API-Key": API_KEY,
           "X-Admin-API-Key": ADMIN_KEY,
         },
         body: JSON.stringify({ signal_type: signalType, raw_data: parsed }),
@@ -190,7 +193,7 @@ export function OpsGCCExpansionRadar() {
     try {
       const res = await fetch(
         `${API_BASE}/api/v1/gcc-expansion/hot-cities?country=${citiesCountry}&top_n=${topN}`,
-        { headers: { "X-Admin-API-Key": ADMIN_KEY } }
+        { headers: { "X-API-Key": API_KEY, "X-Admin-API-Key": ADMIN_KEY } }
       );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setCitiesResult(await res.json());
@@ -207,7 +210,7 @@ export function OpsGCCExpansionRadar() {
     try {
       const res = await fetch(
         `${API_BASE}/api/v1/gcc-expansion/opportunity-feed?country=${oppCountry}`,
-        { headers: { "X-Admin-API-Key": ADMIN_KEY } }
+        { headers: { "X-API-Key": API_KEY, "X-Admin-API-Key": ADMIN_KEY } }
       );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setOppResult(await res.json());
@@ -269,8 +272,7 @@ export function OpsGCCExpansionRadar() {
                       country_code: code,
                       country_name_ar: COUNTRY_NAMES_AR[code],
                       country_name_en: COUNTRY_NAMES_EN[code],
-                      top_sector_ar: "",
-                      top_sector_en: "",
+                      top_sector: null,
                       heat_score: 0,
                     }))
               ).map((card) => (
@@ -284,9 +286,9 @@ export function OpsGCCExpansionRadar() {
                     </span>
                     <span className="text-xs text-zinc-500">{card.country_code}</span>
                   </div>
-                  {(card.top_sector_ar || card.top_sector_en) && (
+                  {card.top_sector && (
                     <p className="text-xs text-zinc-400 mb-2">
-                      {isAr ? card.top_sector_ar : card.top_sector_en}
+                      {card.top_sector}
                     </p>
                   )}
                   <div className="flex items-center gap-2">
@@ -449,11 +451,13 @@ export function OpsGCCExpansionRadar() {
                 className={`bg-zinc-800/60 border rounded-lg p-3 ${heatBorder(city.heat_score)}`}
               >
                 <p className="text-white font-medium text-sm">
-                  {isAr ? city.city_name_ar : city.city_name_en}
+                  {city.city}
                 </p>
-                <p className="text-xs text-zinc-400 mb-2">
-                  {isAr ? city.top_sector_ar : city.top_sector_en}
-                </p>
+                {city.top_sector && (
+                  <p className="text-xs text-zinc-400 mb-2">
+                    {city.top_sector}
+                  </p>
+                )}
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-1.5 bg-zinc-700 rounded-full overflow-hidden">
                     <div

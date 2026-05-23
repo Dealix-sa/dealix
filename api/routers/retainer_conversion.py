@@ -186,6 +186,7 @@ async def batch_check(body: BatchEligibilityRequest) -> dict[str, Any]:
         "blocked_no_proof": blocked,
         "results": results,
         "is_estimate": True,
+        "hard_gates": _HARD_GATES,
     }
 
 

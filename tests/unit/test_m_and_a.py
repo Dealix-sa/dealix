@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import os
-import tempfile
 
 import pytest
 
@@ -13,7 +12,6 @@ from api.routers.m_and_a import (
     _multiplier,
     _read_proposals,
     _write_proposal,
-    _ledger_path,
 )
 
 
@@ -91,7 +89,6 @@ def test_read_proposals_empty_ledger(tmp_path):
 
 # ── FastAPI endpoint smoke tests ─────────────────────────────────────────────
 
-import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 
 

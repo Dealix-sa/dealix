@@ -36,20 +36,10 @@ from auto_client_acquisition.intelligence_compounding_os import (
     CompoundingDecision,
     MarketSignalRecord,
     ProductIntelligenceVerdict,
-    arabic_intelligence_coverage_score,
-    benchmark_candidate_eligible,
-    client_intelligence_coverage_score,
-    data_pattern_actionable,
-    governance_intelligence_coverage_score,
-    intelligence_dashboard_coverage_score,
-    intelligence_event_stream_valid,
-    intelligence_quality_controls_met,
     market_pattern_actionable_repeats,
     market_signal_record_valid,
     pattern_confidence_band,
-    product_intelligence_verdict,
     suggest_compounding_decision,
-    workflow_productization_candidate,
 )
 
 router = APIRouter(

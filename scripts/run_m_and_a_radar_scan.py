@@ -36,8 +36,8 @@ def run(dry_run: bool) -> None:
                 if line:
                     try:
                         rows.append(json.loads(line))
-                    except Exception:
-                        pass
+                    except Exception:  # noqa: BLE001
+                        pass  # skip malformed JSONL lines
 
         total_pipeline = sum(r.get("proposed_offer_sar", 0) for r in rows)
         avg_multiple = (

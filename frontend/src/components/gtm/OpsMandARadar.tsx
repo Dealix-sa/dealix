@@ -11,7 +11,12 @@ const ADMIN_KEY =
     : "";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://api.dealix.me";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://api.dealix.me";
+
+const API_KEY =
+  typeof window !== "undefined"
+    ? process.env.NEXT_PUBLIC_API_KEY ?? ""
+    : "";
 
 type RadarData = {
   targets_evaluated: number;
@@ -74,7 +79,7 @@ export function OpsMandARadar() {
     setError(null);
     try {
       const res = await fetch(`${API_BASE}/api/v1/m-and-a/radar`, {
-        headers: { "X-Admin-API-Key": ADMIN_KEY },
+        headers: { "X-API-Key": API_KEY, "X-Admin-API-Key": ADMIN_KEY },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setRadar(await res.json());
@@ -97,6 +102,7 @@ export function OpsMandARadar() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-API-Key": API_KEY,
           "X-Admin-API-Key": ADMIN_KEY,
         },
         body: JSON.stringify({

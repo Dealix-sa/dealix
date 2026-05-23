@@ -3,11 +3,19 @@
 import { useState, useCallback } from "react";
 import { useLocale } from "next-intl";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_API_KEY || "";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.dealix.me";
+const ADMIN_KEY =
+  typeof window !== "undefined"
+    ? process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY || ""
+    : "";
+const API_KEY =
+  typeof window !== "undefined"
+    ? process.env.NEXT_PUBLIC_API_KEY || ""
+    : "";
 
 const HEADERS = {
   "Content-Type": "application/json",
+  "X-API-Key": API_KEY,
   "X-Admin-API-Key": ADMIN_KEY,
 };
 
@@ -82,6 +90,10 @@ export function OpsRetainerConversionEngine() {
         headers: HEADERS,
         body: JSON.stringify(form),
       });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d?.detail ?? `HTTP ${res.status}`);
+      }
       const data = await res.json();
       setResult(data);
     } catch (e) {
@@ -101,6 +113,10 @@ export function OpsRetainerConversionEngine() {
         headers: HEADERS,
         body: JSON.stringify({ ...form, retainer_tier_sar: result.recommended_retainer_sar || 2999 }),
       });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d?.detail ?? `HTTP ${res.status}`);
+      }
       const data = await res.json();
       setDraft(data);
     } catch (e) {
