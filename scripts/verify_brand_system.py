@@ -62,6 +62,11 @@ def main() -> int:
     for c in color_issues:
         print(f"    - {c}", flush=True)
     fail = bool(missing) or bool(color_issues)
+    if fail:
+        # GitHub Actions ::error annotation surfaces in PR check details.
+        msg = f"missing={missing} colors={color_issues}"
+        # Trim to keep annotation under GH's 4000 char cap
+        print(f"::error file=scripts/verify_brand_system.py::brand verifier failed: {msg[:3000]}", flush=True)
     print("RESULT:", "FAIL" if fail else "PASS", flush=True)
     return 1 if fail else 0
 
