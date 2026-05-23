@@ -245,7 +245,7 @@ class WarRoomImportPayload(BaseModel):
 class SocialMarkPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    week: int = Field(..., ge=1, le=4)
+    week: int = Field(..., ge=1, le=28)
     day: int = Field(..., ge=0, le=6)
     status: str = Field(..., pattern="^(approved|published)$")
 
