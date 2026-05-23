@@ -28,3 +28,119 @@ main {
   display: grid;
   gap: 16px;
 }
+
+/* ── Founder Console v3 shell ─────────────────────────────────── */
+.founder-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .founder-shell {
+    flex-direction: row;
+  }
+}
+
+.founder-shell__nav {
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+  padding: 16px;
+}
+
+@media (min-width: 768px) {
+  .founder-shell__nav {
+    width: 240px;
+    border-right: 1px solid #e2e8f0;
+    border-bottom: none;
+  }
+}
+
+.founder-shell__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.founder-shell__subtitle {
+  font-size: 12px;
+  opacity: 0.6;
+  margin: 4px 0 0 0;
+}
+
+.founder-shell__links {
+  display: grid;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.founder-shell__link {
+  display: block;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  background: #fff;
+  text-decoration: none;
+}
+
+.founder-shell__link:hover {
+  background: #f8fafc;
+}
+
+.founder-shell__main {
+  flex: 1;
+  padding: 24px;
+}
+
+.founder-metric {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.founder-metric__label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.65;
+}
+
+.founder-metric__value {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.founder-metric-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-top: 24px;
+}
+
+.founder-callout {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.founder-callout__label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.founder-callout__title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.founder-source {
+  font-size: 11px;
+  opacity: 0.6;
+}
+

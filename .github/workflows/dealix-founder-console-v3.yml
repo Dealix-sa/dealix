@@ -1,0 +1,94 @@
+name: Dealix Founder Console v3 Checks
+
+on:
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - "api/routers/internal/**"
+      - "api/main.py"
+      - "docs/frontend/**"
+      - "docs/trust/**"
+      - "scripts/verify_founder_console_v3.py"
+      - ".github/workflows/dealix-founder-console-v3.yml"
+      - "tests/test_founder_console_v3_api.py"
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - "api/routers/internal/**"
+      - "api/main.py"
+      - "docs/frontend/**"
+      - "docs/trust/**"
+      - "scripts/verify_founder_console_v3.py"
+      - ".github/workflows/dealix-founder-console-v3.yml"
+      - "tests/test_founder_console_v3_api.py"
+
+jobs:
+  founder-console-v3:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Static file + router verification
+        run: python3 scripts/verify_founder_console_v3.py --skip-build
+
+      - name: Install API test dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install fastapi pydantic httpx
+
+      - name: API contract smoke test
+        run: |
+          python3 - <<'PY'
+          import importlib, os, sys, tempfile
+          sys.path.insert(0, '.')
+          os.environ['DEALIX_APPROVAL_AUDIT_LOG'] = os.path.join(tempfile.mkdtemp(), 'a.csv')
+          from fastapi import FastAPI
+          from fastapi.testclient import TestClient
+          from api.routers.internal import founder_console as fc
+          importlib.reload(fc)
+          app = FastAPI(); app.include_router(fc.router)
+          c = TestClient(app)
+          for path in (
+              '/api/v1/internal/ceo/summary',
+              '/api/v1/internal/sales/funnel',
+              '/api/v1/internal/approvals',
+              '/api/v1/internal/workers/health',
+              '/api/v1/internal/trust/flags',
+              '/api/v1/internal/finance/summary',
+              '/api/v1/internal/distribution/summary',
+              '/api/v1/internal/delivery/queue',
+              '/api/v1/internal/retention/queue',
+              '/api/v1/internal/proof/library',
+          ):
+              r = c.get(path); assert r.status_code == 200, (path, r.text)
+          r = c.post('/api/v1/internal/approvals/x/approve', json={'reason':'ok','approval_class':'A2'})
+          assert r.status_code == 200 and r.json()['external_action_allowed'] is True
+          r = c.post('/api/v1/internal/approvals/x/approve', json={'reason':'r','approval_class':'A3'})
+          assert r.status_code == 200 and r.json()['external_action_allowed'] is False
+          r = c.post('/api/v1/internal/approvals/x/reject', json={'reason':'no'})
+          assert r.status_code == 200 and r.json()['policy_result'] == 'DENY'
+          r = c.post('/api/v1/internal/approvals/x/request-edit', json={'reason':'fix'})
+          assert r.status_code == 200 and r.json()['policy_result'] == 'NEEDS_EDIT'
+          print('Founder Console v3 API contract: PASS')
+          PY
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install frontend
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: apps/web
+        run: npm run build
