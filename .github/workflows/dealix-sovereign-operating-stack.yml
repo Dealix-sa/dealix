@@ -21,6 +21,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml
-      - run: python scripts/verify_policy_as_code.py
-      - run: python scripts/verify_sovereign_operating_stack.py
+      - run: |
+          python --version
+          which python
+          python -m pip install pyyaml
+      - run: python -u scripts/verify_policy_as_code.py
+      - run: python -u scripts/verify_sovereign_operating_stack.py

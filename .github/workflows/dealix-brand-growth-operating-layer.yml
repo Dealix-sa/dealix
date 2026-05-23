@@ -29,15 +29,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install pyyaml
-        run: pip install pyyaml
+      - name: Environment
+        run: |
+          python --version
+          which python
+          python -m pip install pyyaml
       - name: Verify brand
-        run: python scripts/verify_brand_system.py
+        run: python -u scripts/verify_brand_system.py
       - name: Verify growth
-        run: python scripts/verify_growth_system.py
+        run: python -u scripts/verify_growth_system.py
       - name: Verify marketing
-        run: python scripts/verify_marketing_system.py
+        run: python -u scripts/verify_marketing_system.py
       - name: Verify product distribution
-        run: python scripts/verify_product_distribution.py
+        run: python -u scripts/verify_product_distribution.py
       - name: Verify brand+growth composite
-        run: python scripts/verify_brand_growth_operating_layer.py
+        run: python -u scripts/verify_brand_growth_operating_layer.py

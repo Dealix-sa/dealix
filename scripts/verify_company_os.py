@@ -25,16 +25,23 @@ PIPELINE = [
 
 
 def main() -> int:
-    failures: list[str] = []
+    failures: list[tuple[str, int]] = []
     for name, script in PIPELINE:
-        print(f"=== company-os :: {name} ===")
-        rc = subprocess.call([sys.executable, str(REPO / "scripts" / script)], cwd=str(REPO))
+        print(f"=== company-os :: {name} ===", flush=True)
+        rc = subprocess.call(
+            [sys.executable, str(REPO / "scripts" / script)],
+            cwd=str(REPO),
+        )
         if rc != 0:
-            failures.append(name)
-    print()
-    print("===== Dealix Company OS Verifier =====")
-    print(f"  failed steps: {failures}")
-    print("RESULT:", "FAIL" if failures else "PASS")
+            failures.append((name, rc))
+            print(f"  >>> step '{name}' returned non-zero rc={rc}", flush=True)
+    print(flush=True)
+    print("===== Dealix Company OS Verifier =====", flush=True)
+    if failures:
+        print(f"  failed steps: {failures}", flush=True)
+    else:
+        print("  failed steps: []", flush=True)
+    print("RESULT:", "FAIL" if failures else "PASS", flush=True)
     return 1 if failures else 0
 
 
