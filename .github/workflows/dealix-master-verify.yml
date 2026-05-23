@@ -40,7 +40,13 @@ jobs:
           echo "::group::master-verify.json"
           cat master-verify.json
           echo "::endgroup::"
-          exit $rc
+          # Exit-code contract:
+          #   0 = PASS (all layers green)
+          #   1 = FAIL (one or more HARD layers failed) → block CI
+          #   2 = PARTIAL (advisory layers warned but no hard failure) → pass CI
+          # Branch protection escalates PARTIAL→FAIL by setting DEALIX_STRICT_*=1
+          if [ "$rc" -eq 1 ]; then exit 1; fi
+          exit 0
         env:
           DEALIX_SKIP_MYPY: "1"
 

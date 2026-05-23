@@ -63,6 +63,21 @@ Promote advisory → hard per layer with the corresponding `DEALIX_STRICT_*=1` e
 var (`DEALIX_STRICT_LINT`, `DEALIX_STRICT_TRUST`, `DEALIX_STRICT_REVENUE`,
 `DEALIX_STRICT_SERVER`, `DEALIX_STRICT_BUSINESS`) or pass `--strict` to the layer.
 
+### CI behavior
+
+The GitHub workflow (`dealix-master-verify.yml`) treats exit codes as follows:
+
+| Master exit | CI verdict | Why |
+| --- | --- | --- |
+| 0 (PASS) | success | all layers green |
+| 1 (FAIL) | failure | one or more HARD layers failed |
+| 2 (PARTIAL) | success | only advisory layers warned — no hard regression |
+
+This keeps `master-verify` enforceable as a branch-protection check today
+without retroactively requiring the repo to fix advisory debt (e.g. the 1,847
+pre-existing ruff errors that `make lint` surfaces). Promote any advisory
+layer to hard by setting the matching `DEALIX_STRICT_*=1` env in the workflow.
+
 ## Layer-by-Layer Mapping
 
 ### L1 — Repository Structure (`verify_layer1_repo_structure.py`)
