@@ -1,0 +1,92 @@
+# Dealix Control Policy (Policy-as-Code v1)
+# Loaded by api/internal/policy_adapter.py.
+# Every external-impact action must pass through these rules.
+
+version: 1
+name: dealix_control_policy
+owner: founder
+description: >
+  Trust gate for Dealix. Decides whether a proposed agent/action may
+  produce an externally visible side effect. AI prepares; humans approve.
+
+approval_classes:
+  A0:
+    label: info_only
+    description: Read-only intelligence, summaries, internal briefs.
+    external_action_allowed: true
+    requires_human_approval: false
+  A1:
+    label: internal_draft
+    description: Drafts and recommendations for the founder's review.
+    external_action_allowed: false
+    requires_human_approval: false
+  A2:
+    label: external_after_approval
+    description: External-impact actions (send, propose, capture payment).
+    external_action_allowed: false
+    requires_human_approval: true
+    requires_evidence: true
+  A3:
+    label: banned_automated
+    description: Never executed by an agent. Founder-only, manual.
+    external_action_allowed: false
+    requires_human_approval: true
+    auto_reject_if_agent_initiated: true
+
+rules:
+  - id: no_a3_auto
+    description: A3 actions must never be auto-executed by any agent.
+    when:
+      approval_class: A3
+      actor_type: agent
+    decision: deny
+    reason: A3 actions are founder-only and may not be agent-initiated.
+
+  - id: no_suppressed_outreach
+    description: Recipients on the suppression list may not receive outreach.
+    when:
+      action_type: outreach
+      recipient_suppressed: true
+    decision: deny
+    reason: Recipient is on the suppression list.
+
+  - id: high_risk_requires_evidence
+    description: High/critical risk actions require attached evidence.
+    when:
+      risk_level: [high, critical]
+      evidence_present: false
+    decision: deny
+    reason: Evidence is required for high or critical risk actions.
+
+  - id: no_guaranteed_revenue_claims
+    description: Outputs may not promise guaranteed revenue, sales, or replies.
+    when:
+      output_contains_banned_phrases: true
+    decision: deny
+    reason: Output contains banned guarantee phrasing.
+    banned_phrases:
+      - guaranteed revenue
+      - guaranteed sales
+      - guaranteed meetings
+      - guaranteed replies
+      - guaranteed conversions
+      - fully compliant
+      - no-risk
+      - zero risk
+      - sent automatically without approval
+
+  - id: approved_a2_can_request_execution
+    description: A2 actions that have a human-approval decision may proceed.
+    when:
+      approval_class: A2
+      decision_state: approved
+      risk_level_max_allowed: medium
+      evidence_present: true
+      recipient_suppressed: false
+    decision: allow
+    reason: Approved A2 action with evidence and non-suppressed recipient.
+
+defaults:
+  decision_if_unmatched: deny
+  external_action_allowed_if_unmatched: false
+  reason_if_unmatched: No matching policy rule; default deny.

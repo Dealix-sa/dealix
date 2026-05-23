@@ -1,27 +1,17 @@
-const links = [
-  "/control-plane",
-  "/agents",
-  "/approvals",
-  "/safety",
-  "/sandbox",
-  "/value-engine",
-  "/self-evolving"
-];
+import { FounderShell } from "../components/founder/founder-shell";
 
 export default function HomePage() {
   return (
-    <main className="grid">
-      <h1>Dealix Enterprise Control Plane</h1>
+    <FounderShell
+      title="Dealix Founder Console"
+      subtitle="AI prepares. Humans approve. One internal cockpit for the whole company."
+    >
       <div className="card">
-        <p>نقطة دخول لوحات التحكم المؤسسية.</p>
-        <ul>
-          {links.map((href) => (
-            <li key={href}>
-              <a href={href}>{href}</a>
-            </li>
-          ))}
-        </ul>
+        <p>
+          Open <a href="/ceo">/ceo</a> for the daily briefing. Use the nav above
+          for the rest of the operating layer.
+        </p>
       </div>
-    </main>
+    </FounderShell>
   );
 }

@@ -8,7 +8,10 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        bootstrap-runtime policy-check agent-registry eval-gate \
+        operating-scorecard founder-console-v5 control-plane-stage \
+        ultimate-operating-layer smoke-internal-api
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +133,41 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Ultimate Operating Layer ─────────────────────────────
+# Founder Console + internal API + policy + registry + eval gate.
+# Every command below is local, read-only, or appends to the private ops
+# tree — none of them sends anything externally.
+
+PRIVATE_OPS ?= /opt/dealix-ops-private
+
+bootstrap-runtime: ## ULO: create private ops CSV tree (PRIVATE_OPS=...)
+	$(PYTHON) scripts/bootstrap_private_ops_runtime.py --private-ops $(PRIVATE_OPS)
+
+policy-check: ## ULO: verify policies/dealix_control_policy.yaml
+	$(PYTHON) scripts/verify_policy_as_code.py
+
+agent-registry: ## ULO: verify registries/agent_registry.yaml
+	$(PYTHON) scripts/verify_agent_registry.py
+
+eval-gate: ## ULO: verify evals/gates/dealix_agent_eval_gate.yaml
+	$(PYTHON) scripts/verify_eval_gate.py
+
+operating-scorecard: ## ULO: generate operating scorecard (PRIVATE_OPS=...)
+	$(PYTHON) scripts/generate_operating_scorecard.py --private-ops $(PRIVATE_OPS)
+
+founder-console-v5: ## ULO: build Next.js founder console (apps/web)
+	npm --prefix apps/web ci --no-audit --no-fund
+	npm --prefix apps/web run build
+
+control-plane-stage: ## ULO: policy + registry + eval + prompt-output verifier
+	$(PYTHON) scripts/verify_policy_as_code.py
+	$(PYTHON) scripts/verify_agent_registry.py
+	$(PYTHON) scripts/verify_eval_gate.py
+	$(PYTHON) scripts/verify_prompt_output_quality.py
+
+ultimate-operating-layer: ## ULO: master verifier (every check, no external IO)
+	$(PYTHON) scripts/verify_ultimate_operating_layer.py
+
+smoke-internal-api: ## ULO: hit localhost:8000 internal API endpoints
+	$(PYTHON) scripts/smoke_internal_api.py

@@ -38,6 +38,9 @@ eggs/
 .eggs/
 lib/
 lib64/
+# Frontend lib/ (apps/web/lib) holds Founder Console clients and is source.
+!apps/web/lib/
+!apps/web/lib/**
 parts/
 sdist/
 var/
