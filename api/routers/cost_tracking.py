@@ -64,12 +64,12 @@ TIER_VARIABLE_COSTS = {
         "total_per_month": 35625, # 356 SAR/mo
     },
     "scale": {
-        "llm_inference": 60000,   # 600 SAR   (5000 leads, full agent workforce)
-        "lead_adapters": 25000,   # 250 SAR
+        "llm_inference": 50000,   # 500 SAR   (5000 leads; volume discount on inference)
+        "lead_adapters": 20000,   # 200 SAR   (adapter cost amortised at volume)
         "moyasar_fees":   2400,   # 24 SAR
-        "support_time":  30000,   # 300 SAR
-        "infra_share":    1725,   # 17 SAR
-        "total_per_month": 119125, # 1,191 SAR/mo
+        "support_time":  20000,   # 200 SAR   (automation reduces support burden at scale)
+        "infra_share":    1725,   # 17 SAR    (fixed infra share unchanged)
+        "total_per_month": 94125, # 941 SAR/mo (economies of scale vs starter's 120 SAR/mo)
     },
 }
 

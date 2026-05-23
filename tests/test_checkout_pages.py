@@ -122,12 +122,14 @@ def test_pricing_no_longer_routes_priced_tiers_to_launchpad():
     html = _read("pricing.html")
     # Find all .cta hrefs
     ctas = re.findall(r'class="cta"\s+href="([^"]+)"', html)
-    # Allowed targets: /checkout.html?..., /diagnostic.html, mailto:
+    # Allowed targets: /checkout.html?..., /diagnostic.html, /data-pack.html, mailto:
     for href in ctas:
         if href.startswith("mailto:"):
             continue
         assert (
-            href.startswith("/checkout.html") or href == "/diagnostic.html"
+            href.startswith("/checkout.html")
+            or href == "/diagnostic.html"
+            or href == "/data-pack.html"
         ), f"pricing.html CTA points to unexpected target: {href}"
 
 

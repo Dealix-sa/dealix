@@ -26,7 +26,7 @@ posts:
     '
   cta_ar: شاهد Sample Proof Pack للوكالات
   aeo_slug: what-is-proof-pack
-  status: draft
+  status: approved
 - week: 1
   day: 2
   pillar: objection
@@ -38,7 +38,7 @@ posts:
     '
   cta_ar: ديمو 10 دقائق — بدون التزام
   aeo_slug: crm-vs-revenue-ops
-  status: draft
+  status: approved
 - week: 1
   day: 3
   pillar: trust

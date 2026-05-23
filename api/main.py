@@ -120,6 +120,8 @@ from api.routers import strategy_os as strategy_os_router
 from api.routers import board_ready_os as board_ready_os_router
 from api.routers import intelligence_compounding as intelligence_compounding_router
 from api.routers import retainer_conversion as retainer_conversion_router
+# Revenue Ops Autopilot — ops-autopilot router group
+from api.routers.revenue_ops_autopilot import AUTOPILOT_ROUTERS as _autopilot_routers
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -369,6 +371,9 @@ def create_app() -> FastAPI:
     app.include_router(board_ready_os_router.router)
     app.include_router(intelligence_compounding_router.router)
     app.include_router(retainer_conversion_router.router)
+    # Revenue Ops Autopilot — /api/v1/ops-autopilot/* + /api/v1/public/* + /api/v1/sales/* etc.
+    for _autopilot_router in _autopilot_routers:
+        app.include_router(_autopilot_router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

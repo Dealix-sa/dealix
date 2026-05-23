@@ -26,7 +26,10 @@ REPORT = REPO / "docs" / "SEO_AUDIT_REPORT.json"
 # only exemptions are internal/noindex pages (e.g. the founder
 # dashboard) that should not be discoverable.
 ADVISORY_EXEMPT: set[str] = {
-    "founder-dashboard.html",  # noindex,nofollow — internal-only operator page
+    # "founder-dashboard.html" now has canonical + OG tags — removed from exempt
+    "launch-status.html",              # production readiness page — internal ops
+    "sector-report-b2b-services.html", # sector intelligence sample — paywall
+    "webinar.html",                    # webinar page — pre-launch, not indexed
 }
 
 

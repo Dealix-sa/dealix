@@ -104,6 +104,19 @@ def _generate_secret() -> str:
     return secrets.token_hex(32)
 
 
+@router.get("/_supported-events")
+async def list_supported_events() -> dict[str, Any]:
+    """Return the set of event types a customer may subscribe to."""
+    return {
+        "event_types": sorted(SUPPORTED_EVENT_TYPES),
+        "signature_header": "X-Dealix-Signature",
+        "signature_algorithm": "HMAC-SHA256(secret, raw_body)",
+        "delivery_semantics": "at-least-once",
+        "retry_policy": "exponential backoff 5 attempts over 24 hours "
+                        "(deferred to follow-up commit)",
+    }
+
+
 @router.post("/{handle}/subscribe", status_code=201)
 async def subscribe_webhook(
     body: _SubscribeRequest,
@@ -333,17 +346,4 @@ async def ping_subscription(
             "Real outbound delivery deferred to follow-up commit (W12.1.b). "
             "Schema + auth + DB + payload shape locked in this commit."
         ),
-    }
-
-
-@router.get("/_supported-events")
-async def list_supported_events() -> dict[str, Any]:
-    """Return the set of event types a customer may subscribe to."""
-    return {
-        "event_types": sorted(SUPPORTED_EVENT_TYPES),
-        "signature_header": "X-Dealix-Signature",
-        "signature_algorithm": "HMAC-SHA256(secret, raw_body)",
-        "delivery_semantics": "at-least-once",
-        "retry_policy": "exponential backoff 5 attempts over 24 hours "
-                        "(deferred to follow-up commit)",
     }

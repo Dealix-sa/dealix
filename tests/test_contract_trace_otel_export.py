@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import importlib
+
 from unittest.mock import MagicMock, patch
+import pytest
 
 from auto_client_acquisition.observability_v10.contract_trace_hook import (
     record_contract_trace_event,
@@ -10,6 +13,8 @@ from auto_client_acquisition.observability_v10.contract_trace_hook import (
 
 
 def test_otel_export_adds_span_event_when_enabled() -> None:
+    if importlib.util.find_spec("opentelemetry") is None:
+        pytest.skip("opentelemetry not installed in this environment")
     mock_span = MagicMock()
     mock_span.is_recording.return_value = True
 

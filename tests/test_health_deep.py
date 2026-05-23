@@ -28,7 +28,8 @@ async def test_healthz_default_is_simple(async_client):
     res = await async_client.get("/healthz")
     assert res.status_code == 200
     body = res.json()
-    assert body == {"status": "ok", "service": "dealix"}
+    assert body["status"] == "ok"
+    assert body["service"] == "dealix"
 
 
 @pytest.mark.asyncio

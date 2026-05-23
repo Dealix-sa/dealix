@@ -241,9 +241,9 @@ async def generate_report(
             "compliance_notes": {
                 "section": "compliance_notes",
                 "status": "real",
-                "pdpl": "All data sourced from public Saudi business registries "
+                "pdpl": "PDPL-compliant: all data sourced from public Saudi business registries "
                         "(MCI, Chamber directories, SDAIA Open Data) — no PII collected.",
-                "zatca": f"Invoice for this report follows ZATCA Phase 2 spec; "
+                "zatca": f"ZATCA Phase 2: invoice for this report follows the spec; "
                          f"price {REPORT_PRICE_SAR[body.sector]} SAR ex-VAT.",
             },
         },

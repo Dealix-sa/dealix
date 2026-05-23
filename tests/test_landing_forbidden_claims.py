@@ -178,10 +178,7 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "guaranteed": "NEGATION",
         "مضمون": "NEGATION",
     },
-    "customer-portal.html": {
-        "guaranteed": "NEGATION",
-        "مضمون": "NEGATION",
-    },
+    # customer-portal.html: disclaimer reworded to avoid "guaranteed" — no allowlist entry needed
     "pricing.html": {
         "guaranteed": "NEGATION",
         "مضمون": "NEGATION",
