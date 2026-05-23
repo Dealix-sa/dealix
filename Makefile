@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        stage daily close-day advance kit weekly-close audit dashboard \
+        ceo-help
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,41 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── CEO Operating System ───────────────────────────────────────
+# Founder/CEO daily operating commands. See docs/founder/CEO_OPERATING_SYSTEM.md.
+
+ceo-help: ## ceo: list the CEO operating commands
+	@echo "Dealix CEO Operating System — commands:"
+	@echo "  make stage         — scaffold dealix-ops-private/ (gitignored)"
+	@echo "  make daily         — open today's daily command brief"
+	@echo "  make kit           — show the Revenue Sprint Kit"
+	@echo "  make advance       — end-of-day advance check"
+	@echo "  make close-day     — write evening evidence + time log row"
+	@echo "  make weekly-close  — weekly CEO review + dashboard refresh"
+	@echo "  make audit         — doctrine + PII audit on docs/"
+	@echo "  make dashboard     — render the Master CEO Dashboard"
+
+stage: ## ceo: scaffold the gitignored dealix-ops-private/ workspace
+	$(PYTHON) scripts/ceo/stage_private_ops.py
+
+daily: ## ceo: open today's daily command brief
+	$(PYTHON) scripts/ceo/daily_brief.py
+
+close-day: ## ceo: end-of-day evidence + time log
+	$(PYTHON) scripts/ceo/close_day.py
+
+advance: ## ceo: end-of-day advance check
+	$(PYTHON) scripts/ceo/advance.py
+
+kit: ## ceo: show the Revenue Sprint Kit (templates + workspace layout)
+	$(PYTHON) scripts/ceo/kit.py
+
+weekly-close: ## ceo: weekly CEO review + dashboard refresh
+	$(PYTHON) scripts/ceo/weekly_close.py
+
+audit: ## ceo: doctrine + PII audit on docs/
+	$(PYTHON) scripts/ceo/audit.py
+
+dashboard: ## ceo: render the Master CEO Dashboard
+	$(PYTHON) scripts/ceo/dashboard.py

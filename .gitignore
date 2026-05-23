@@ -1,6 +1,12 @@
 # ─────────────────────────────────────────────────────────────
 # 🔒 SECRETS — NEVER COMMIT
 # ─────────────────────────────────────────────────────────────
+
+# Dealix private operations workspace — never commit
+# Mirrors docs/ but contains customer-specific, financial, and
+# operational data. See docs/trust/PUBLIC_PRIVATE_BOUNDARY.md.
+dealix-ops-private/
+
 .env
 .env.*
 dealix/transformation/kpi_founder_commercial_import.yaml
