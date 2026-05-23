@@ -1,0 +1,19 @@
+{
+  "name": "lead_batch",
+  "required_headers": [
+    "company",
+    "sector",
+    "website",
+    "public_contact",
+    "buyer_title",
+    "fit_score",
+    "priority",
+    "why_fit",
+    "source",
+    "suggested_message",
+    "approval_status",
+    "next_action"
+  ],
+  "allowed_priorities": ["A", "B", "C", "Reject"],
+  "allowed_approval_statuses": ["Pending", "Approved", "Rejected", "Needs Edit"]
+}
