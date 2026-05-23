@@ -1,0 +1,112 @@
+name: dealix-market-attack-system
+
+on:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+    paths:
+      - 'docs/market_attack/**'
+      - 'docs/sales_assets/**'
+      - 'docs/authority/**'
+      - 'docs/partners/**'
+      - 'scripts/market_attack_bootstrap/**'
+      - 'scripts/market_attack_common.py'
+      - 'scripts/generate_beachhead_sector_scorecard.py'
+      - 'scripts/generate_strategic_account_list.py'
+      - 'scripts/generate_offer_market_fit_report.py'
+      - 'scripts/generate_campaign_command_report.py'
+      - 'scripts/generate_authority_content_queue.py'
+      - 'scripts/generate_partner_pipeline_report.py'
+      - 'scripts/generate_objection_intelligence_report.py'
+      - 'scripts/verify_sales_asset_system.py'
+      - 'scripts/verify_prompt_output_quality.py'
+      - 'scripts/verify_market_attack_system.py'
+      - 'scripts/bootstrap_market_attack_runtime.py'
+      - 'apps/web/app/market-attack/**'
+      - 'apps/web/app/campaigns/**'
+      - 'apps/web/app/partners/**'
+      - 'apps/web/app/sales-assets/**'
+      - 'apps/web/app/authority/**'
+      - 'apps/web/components/marketAttack/**'
+      - 'api/routers/market_attack_internal.py'
+      - '.github/workflows/dealix-market-attack-system.yml'
+      - 'Makefile'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify Market Attack System
+        run: python scripts/verify_market_attack_system.py
+
+      - name: Verify Sales Asset Factory
+        run: python scripts/verify_sales_asset_system.py
+
+      - name: Verify Prompt Output Quality (proof-safe)
+        run: python scripts/verify_prompt_output_quality.py
+
+      - name: Brand System Verifier (if present)
+        run: |
+          if [ -f scripts/verify_brand_system.py ]; then
+            python scripts/verify_brand_system.py
+          else
+            echo "verify_brand_system.py not present — skipping"
+          fi
+
+      - name: Bootstrap runtime sandbox + sample generators
+        env:
+          PRIVATE_OPS: ${{ github.workspace }}/.private_ops_sandbox
+        run: |
+          python scripts/bootstrap_market_attack_runtime.py
+          python scripts/generate_beachhead_sector_scorecard.py
+          python scripts/generate_strategic_account_list.py
+          python scripts/generate_offer_market_fit_report.py
+          python scripts/generate_campaign_command_report.py
+          python scripts/generate_authority_content_queue.py
+          python scripts/generate_partner_pipeline_report.py
+          python scripts/generate_objection_intelligence_report.py
+
+      - name: Upload generated reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-attack-reports
+          path: .private_ops_sandbox/**/*.md
+          if-no-files-found: warn
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: verify
+    if: ${{ hashFiles('apps/web/package.json') != '' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: apps/web
+        run: npm ci || npm install --no-audit --no-fund
+
+      - name: Build apps/web
+        working-directory: apps/web
+        run: npm run build

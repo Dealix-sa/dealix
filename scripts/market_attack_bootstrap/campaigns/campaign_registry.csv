@@ -1,0 +1,4 @@
+campaign_id,name,sector,offer,channel,goal,approval_class,owner,status,start_date,end_date,next_action
+camp-001,construction-beachhead-q1,construction,managed_pilot_499,warm_intro,signal-test,founder_only,founder,draft,,,prepare-asset-bundle
+camp-002,hospitality-thought-leadership,hospitality,sector_report,founder_linkedin_post,authority,founder_review,founder,draft,,,draft-3-posts
+camp-003,logistics-partner-channel,logistics,ai_sales_assistant_saas,partner_referral,signal-test,partner_and_founder,founder,draft,,,brief-partner-agreement

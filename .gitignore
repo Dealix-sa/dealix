@@ -213,3 +213,9 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Market Attack & Scaling — local runtime sandbox (NEVER commit)
+# The real runtime tree lives at $PRIVATE_OPS outside the repo.
+# ─────────────────────────────────────────────────────────────
+.private_ops_sandbox/

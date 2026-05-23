@@ -1,0 +1,9 @@
+sector,saudi_relevance,buyer_clarity,pain_urgency,high_ticket_potential,proof_fit,delivery_fit,competition_gap,channel_access,trust_risk,total_score,priority,next_action
+construction,5,4,5,5,4,4,3,4,4,38,P0,run-omf-test-managed-pilot
+hospitality,4,4,4,3,3,4,3,4,4,33,P1,intro-meeting-with-mid-tier-group
+logistics,5,3,4,4,3,3,3,3,4,32,P1,authority-content-week-1
+real_estate,4,3,4,4,3,3,3,3,3,30,P1,sector-onepager-draft
+food_and_beverage,3,3,3,3,3,3,3,3,4,28,P2,watch-only
+events,3,3,4,2,3,4,3,3,4,29,P2,partner-channel-test
+saas_local,3,3,3,3,3,3,2,3,3,26,P2,watch-only
+agency_buyers,3,4,3,2,3,4,3,4,4,30,P1,partner-pipeline-only

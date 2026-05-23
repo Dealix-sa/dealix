@@ -1,0 +1,4 @@
+test_id,sector,offer,audience,channel,hypothesis,message_angle,success_metric,result,learning,decision,next_action
+omf-001,construction,managed_pilot_499,coo_construction_mid,warm_intro,if-we-show-redacted-diagnostic-to-cools-they-will-reply,proof-first-no-promise,>=3-positive-replies-in-7-days,pending,,hold,run-test
+omf-002,hospitality,sector_report,cco_hospitality,linkedin_post,sector-specific-insight-outperforms-generic,operations-friction-angle,>=10-comments-from-target-titles,pending,,hold,publish-after-approval
+omf-003,logistics,ai_sales_assistant_saas,head_sales_ops,partner_referral,partner-warm-leads-convert-faster,partner-co-branded-onepager,>=2-pilots-in-21-days,pending,,hold,brief-partner

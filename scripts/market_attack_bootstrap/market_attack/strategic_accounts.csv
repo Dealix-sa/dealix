@@ -1,0 +1,4 @@
+account_id,company,sector,website,city,buyer_title,why_strategic,trigger_event,estimated_value,relationship_path,proof_needed,trust_risk,priority,next_action,status
+acct-001,Example Construction Co,construction,,Riyadh,Director of Operations,proof-unlocks-sector,new-rfp-published,75000,warm-intro-via-partner-A,redacted-decision-passport,medium,T1,draft-intro-email-for-founder-review,new
+acct-002,Example Hospitality Group,hospitality,,Jeddah,Chief Commercial Officer,sector-unlock,opened-new-property,60000,partner-referral,sector-one-pager,low,T1,schedule-intro-meeting,new
+acct-003,Example Logistics Holding,logistics,,Dammam,Head of Sales Operations,large-deal-potential,vp-sales-hired,120000,event-introduction,redacted-diagnostic,medium,T0,prepare-pre-meeting-brief,new

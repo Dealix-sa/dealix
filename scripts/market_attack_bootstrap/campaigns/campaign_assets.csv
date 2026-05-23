@@ -1,0 +1,5 @@
+asset_id,campaign_id,type,title,status,approval_status,proof_status,risk_level,next_action
+asset-001,camp-001,one_pager,construction-onepager-v1,draft,pending,evidence_required,medium,attach-evidence
+asset-002,camp-001,sample,construction-redacted-diagnostic-v1,draft,pending,evidence_required,medium,redact-and-link
+asset-003,camp-002,post,hospitality-friction-post-v1,draft,pending,evidence_required,low,attach-insight-link
+asset-004,camp-003,proposal_template,logistics-managed-pilot-template-v1,draft,pending,n_a,medium,review-with-partner

@@ -1,4 +1,4 @@
-const links = [
+const enterpriseLinks = [
   "/control-plane",
   "/agents",
   "/approvals",
@@ -8,6 +8,14 @@ const links = [
   "/self-evolving"
 ];
 
+const marketAttackLinks = [
+  "/market-attack",
+  "/campaigns",
+  "/partners",
+  "/sales-assets",
+  "/authority"
+];
+
 export default function HomePage() {
   return (
     <main className="grid">
@@ -15,7 +23,21 @@ export default function HomePage() {
       <div className="card">
         <p>نقطة دخول لوحات التحكم المؤسسية.</p>
         <ul>
-          {links.map((href) => (
+          {enterpriseLinks.map((href) => (
+            <li key={href}>
+              <a href={href}>{href}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="card">
+        <h2>Market Attack &amp; Scaling</h2>
+        <p>
+          طبقة Dealix Market Attack — تركيز على القطاع، اختبار العروض،
+          الحملات، الشركاء، وأصول البيع.
+        </p>
+        <ul>
+          {marketAttackLinks.map((href) => (
             <li key={href}>
               <a href={href}>{href}</a>
             </li>
