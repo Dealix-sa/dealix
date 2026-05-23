@@ -1,0 +1,27 @@
+name: Dealix Company OS Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  company-os:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify Company OS files and modules
+        run: python scripts/verify_company_os.py
+
+      - name: Verify Full Ops (smoke each engine)
+        run: python scripts/verify_full_ops.py
+
+      - name: Compile control plane
+        run: python -m compileall control_plane scripts/verify_company_os.py scripts/verify_full_ops.py
