@@ -130,3 +130,60 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ═══════════════════════════════════════════════════════════════
+# Dealix Complete Operating System — brand / growth / company OS
+# All targets below are SAFE: read-only verifiers or local bootstrap
+# scripts. No external sends, no proof publication, no commits.
+# ═══════════════════════════════════════════════════════════════
+
+PRIVATE_OPS ?= /opt/dealix-ops-private
+
+.PHONY: bootstrap-runtime brand-system growth-system marketing-system \
+        product-distribution policy-check agent-registry eval-gate \
+        brand-growth-operating-layer ultimate-operating-layer \
+        sovereign-operating-stack market-entry-stack company-os \
+        smoke-internal-api
+
+bootstrap-runtime: ## Dealix: bootstrap the private ops runtime folder (PRIVATE_OPS=/opt/dealix-ops-private)
+	$(PYTHON) scripts/bootstrap_private_ops_runtime.py --target $(PRIVATE_OPS)
+
+brand-system: ## Dealix: verify brand system files & tokens
+	$(PYTHON) scripts/verify_brand_system.py
+
+growth-system: ## Dealix: verify growth & intelligence docs
+	$(PYTHON) scripts/verify_growth_system.py
+
+marketing-system: ## Dealix: verify marketing OS docs
+	$(PYTHON) scripts/verify_marketing_system.py
+
+product-distribution: ## Dealix: verify product ladder + distribution docs
+	$(PYTHON) scripts/verify_product_distribution.py
+
+policy-check: ## Dealix: verify policy-as-code (policies/dealix_control_policy.yaml)
+	$(PYTHON) scripts/verify_policy_as_code.py
+
+agent-registry: ## Dealix: verify agent registry (registries/agent_registry.yaml)
+	$(PYTHON) scripts/verify_agent_registry.py
+
+eval-gate: ## Dealix: verify eval gate (evals/gates/dealix_agent_eval_gate.yaml)
+	$(PYTHON) scripts/verify_eval_gate.py
+	$(PYTHON) scripts/verify_prompt_output_quality.py
+
+brand-growth-operating-layer: ## Dealix: brand + growth + marketing + positioning combined
+	$(PYTHON) scripts/verify_brand_growth_operating_layer.py
+
+ultimate-operating-layer: ## Dealix: ultimate operating layer (policy + trust + runtime + data + engineering)
+	$(PYTHON) scripts/verify_ultimate_operating_layer.py
+
+sovereign-operating-stack: ## Dealix: Saudi sovereign operating stack
+	$(PYTHON) scripts/verify_sovereign_operating_stack.py
+
+market-entry-stack: ## Dealix: market entry stack (positioning + intelligence + offers + delivery)
+	$(PYTHON) scripts/verify_market_entry_stack.py
+
+company-os: ## Dealix: full company OS verifier (all pillars)
+	$(PYTHON) scripts/verify_company_os.py
+
+smoke-internal-api: ## Dealix: smoke-test internal Founder Console API endpoints
+	$(PYTHON) scripts/smoke_internal_api.py

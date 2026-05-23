@@ -346,6 +346,14 @@ def create_app() -> FastAPI:
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
 
+    # ── Dealix Founder Console — internal-only (token-gated) ─────
+    try:
+        from api.routers import founder_console_internal as _fci
+
+        app.include_router(_fci.router)
+    except Exception as _exc:  # pragma: no cover
+        get_logger(__name__).warning("optional_router_skipped", router="founder_console_internal", error=str(_exc))
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

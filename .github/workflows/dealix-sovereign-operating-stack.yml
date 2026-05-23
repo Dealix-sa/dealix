@@ -1,0 +1,26 @@
+name: dealix-sovereign-operating-stack
+
+on:
+  pull_request:
+    paths:
+      - "docs/security/**"
+      - "docs/trust/**"
+      - "docs/data/**"
+      - "policies/**"
+      - "scripts/verify_policy_as_code.py"
+      - "scripts/verify_sovereign_operating_stack.py"
+      - ".github/workflows/dealix-sovereign-operating-stack.yml"
+  push:
+    branches: ["main", "claude/**"]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - run: python scripts/verify_policy_as_code.py
+      - run: python scripts/verify_sovereign_operating_stack.py

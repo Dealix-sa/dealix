@@ -1,0 +1,246 @@
+# Dealix Agent Registry
+#
+# Every agent must have:
+#   id, name, purpose, approval_class_max (A1/A2 only; A3 banned),
+#   tools, outputs, external_action_allowed (must be false),
+#   kill_switch (true), eval_required, audit_required, owner,
+#   allowed_write_targets (restricted paths in private ops only),
+#   enabled.
+
+version: 1
+generated_at: "2026-05-23"
+banned_approval_classes: [A3]
+trust_principles:
+  - human_approval_for_all_external_action
+  - no_proof_publication_without_approval
+  - no_guaranteed_revenue_claims
+  - audit_every_decision
+
+agents:
+  - id: ceo_copilot
+    name: CEO Copilot
+    purpose: Daily founder brief, weekly scorecard refresh, decision options.
+    approval_class_max: A2
+    tools: [runtime_reader, scorecard_assembler, brief_drafter]
+    outputs: [founder/operating_scorecard.md, founder/sovereign_readiness.md]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [founder/]
+    enabled: true
+
+  - id: brand_guardian
+    name: Brand Guardian
+    purpose: Enforce Dealix brand consistency across drafts and assets.
+    approval_class_max: A1
+    tools: [brand_tokens, asset_registry_reader]
+    outputs: [brand/brand_assets_registry.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [brand/]
+    enabled: true
+
+  - id: growth_strategist
+    name: Growth Strategist
+    purpose: Update sector scoring, surface next-best growth moves.
+    approval_class_max: A2
+    tools: [account_scoring_model, sector_targets_reader]
+    outputs: [growth/sector_targets.csv, growth/account_scores.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [growth/]
+    enabled: true
+
+  - id: distribution_operator
+    name: Distribution Operator
+    purpose: Draft outreach and queue approvals across email/LinkedIn/forms.
+    approval_class_max: A2
+    tools: [outreach_drafter, suppression_check, brand_voice_check]
+    outputs:
+      - outreach/outreach_queue.csv
+      - outreach/linkedin_queue.csv
+      - outreach/contact_form_queue.csv
+      - outreach/followup_queue.csv
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [outreach/]
+    enabled: true
+
+  - id: content_strategist
+    name: Content Strategist
+    purpose: Plan content calendar and draft marketing pieces.
+    approval_class_max: A2
+    tools: [content_calendar, idea_inbox]
+    outputs: [marketing/content_calendar.csv, marketing/content_ideas.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [marketing/]
+    enabled: true
+
+  - id: offer_architect
+    name: Offer Architect
+    purpose: Maintain the offer ladder and productization backlog.
+    approval_class_max: A2
+    tools: [offer_ladder_reader, productization_backlog]
+    outputs: [product/offer_ladder.csv, product/productization_candidates.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [product/]
+    enabled: true
+
+  - id: performance_analyst
+    name: Performance Analyst
+    purpose: Track funnel metrics, surface conversion bottlenecks.
+    approval_class_max: A1
+    tools: [funnel_reader, distribution_scorecard_reader]
+    outputs: [distribution/channel_scorecard.csv, distribution/sector_scorecard.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [distribution/]
+    enabled: true
+
+  - id: trust_guardian
+    name: Trust Guardian
+    purpose: Enforce policy-as-code, raise trust flags, audit decisions.
+    approval_class_max: A1
+    tools: [policy_adapter, suppression_list, audit_appender]
+    outputs: [trust/trust_flags.csv, trust/approval_decisions.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [trust/]
+    enabled: true
+
+  - id: eval_guardian
+    name: Eval Guardian
+    purpose: Run eval gate suites; block agent outputs on regression.
+    approval_class_max: A1
+    tools: [eval_runner, eval_status_writer]
+    outputs: [evals/eval_status.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: false
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [evals/]
+    enabled: true
+
+  - id: finance_copilot
+    name: Finance Copilot
+    purpose: Reconcile cash, AI unit economics, payment capture status.
+    approval_class_max: A2
+    tools: [cash_reader, invoice_reader, ai_unit_economics]
+    outputs: [finance/cash_collected.csv, finance/ai_unit_economics.csv, finance/payment_capture_queue.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [finance/]
+    enabled: true
+
+  - id: delivery_copilot
+    name: Delivery Copilot
+    purpose: Track sample/proposal/sprint delivery state.
+    approval_class_max: A2
+    tools: [proposal_queue_reader, sample_queue_reader]
+    outputs: [sales/proposal_queue.csv, sales/sample_queue.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [sales/]
+    enabled: true
+
+  - id: security_guardian
+    name: Security Guardian
+    purpose: Track secrets scan, dependency scan, PDPL review posture.
+    approval_class_max: A1
+    tools: [security_status_reader]
+    outputs: [security/security_status.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [security/]
+    enabled: true
+
+  - id: productization_agent
+    name: Productization Agent
+    purpose: Promote repeated client work into offers.
+    approval_class_max: A2
+    tools: [productization_backlog]
+    outputs: [product/productization_candidates.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [product/]
+    enabled: true
+
+  - id: partner_revenue_agent
+    name: Partner Revenue Agent
+    purpose: Track partner referrals and revenue share state.
+    approval_class_max: A2
+    tools: [referral_queue_reader]
+    outputs: [customer_success/referral_queue.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [customer_success/]
+    enabled: true
+
+  - id: proof_safety_agent
+    name: Proof Safety Agent
+    purpose: Gate proof publication; redact PII; require approval state.
+    approval_class_max: A1
+    tools: [proof_library_reader, redaction_lints]
+    outputs: [proof/proof_library.csv, proof/proof_approval_queue.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [proof/]
+    enabled: true
+
+  - id: incident_response_agent
+    name: Incident Response Agent
+    purpose: Open/close incident records; track owners and timelines.
+    approval_class_max: A1
+    tools: [incident_writer]
+    outputs: [trust/incidents.csv]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets: [trust/]
+    enabled: true
