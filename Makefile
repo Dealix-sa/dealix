@@ -8,11 +8,16 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        delivery delivery-verify
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
+
+# Private operations workspace (dealix-ops-private).
+# Override with PRIVATE_OPS=/path/to/dealix-ops-private make delivery
+PRIVATE_OPS ?= ../dealix-ops-private
 
 help: ## Show this help
 	@echo "🏢 AI Company Saudi — Available commands:"
@@ -130,3 +135,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Delivery & Client Success OS ────────────────────────────────
+# Public doctrine + verifier. Per-client artifacts live in the private
+# operations workspace pointed to by PRIVATE_OPS (default ../dealix-ops-private).
+
+delivery-verify: ## delivery: verify Delivery & Client Success OS doctrine + templates
+	$(PYTHON) scripts/verify_delivery_client_success_os.py
+
+delivery: ## delivery: print the canonical Delivery & Client Success files (PRIVATE_OPS=...)
+	$(PYTHON) -m dealix_cli delivery --private-ops $(PRIVATE_OPS)
