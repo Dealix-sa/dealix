@@ -1,0 +1,16 @@
+name: Dealix Master Operating Blueprint Checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  master-operating-blueprint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify master operating blueprint
+        run: python scripts/verify_master_operating_blueprint.py
