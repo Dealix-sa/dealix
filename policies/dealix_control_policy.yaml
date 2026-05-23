@@ -1,0 +1,111 @@
+# Dealix Control Policy — Policy-as-Code v1
+#
+# Each rule has:
+#   id            — stable identifier (also used by audit events)
+#   description   — one-line plain English summary
+#   severity      — info | low | medium | high | critical
+#   applies_to    — list of actions this rule guards
+#   deny_when     — keyed match against action context (action is denied
+#                   only when ALL keys match; empty means rule is informational)
+#   reason        — why denial happens
+#   owner         — accountable role
+#
+# Rules are evaluated in order. The first matching deny short-circuits.
+
+version: 1
+generated_at: "2026-05-23"
+owner: founder
+notes: |
+  No external send, proof publication, pricing/contract/payment commitment,
+  data export, or destructive operation may proceed without an explicit
+  human approval recorded in the trust ledger. The Founder Console is the
+  only sanctioned origin for approvals.
+
+rules:
+  - id: no_a3_auto
+    description: A3 (autonomous external action) is disabled. Agents must queue, not execute.
+    severity: critical
+    applies_to: [external_send, outreach_send, post_publish, contract_sign]
+    deny_when: { approval_class: A3 }
+    reason: A3_disabled_in_dealix
+    owner: founder
+
+  - id: no_suppressed_outreach
+    description: Outreach drafts targeting a suppressed identity must not be queued.
+    severity: high
+    applies_to: [outreach_draft, outreach_send]
+    deny_when: { target_suppressed: true }
+    reason: target_on_suppression_list
+    owner: trust_guardian
+
+  - id: high_risk_requires_evidence
+    description: High-risk approvals must carry evidence/links before approval.
+    severity: high
+    applies_to: [approval_approve]
+    deny_when: { risk: high, evidence_present: false }
+    reason: high_risk_evidence_missing
+    owner: trust_guardian
+
+  - id: no_guaranteed_revenue_claims
+    description: Drafts that include guaranteed/promised revenue or sales claims must be rewritten.
+    severity: critical
+    applies_to: [outreach_draft, proposal_draft, marketing_copy_draft, sample_draft]
+    deny_when: { contains_guaranteed_claim: true }
+    reason: guaranteed_revenue_claim_prohibited
+    owner: brand_guardian
+
+  - id: approved_a2_can_request_execution
+    description: A2 (assist) outputs may request external execution only after explicit approval.
+    severity: medium
+    applies_to: [external_send]
+    deny_when: { approval_class: A2, approved: false }
+    reason: a2_needs_approval_before_execution
+    owner: founder
+
+  - id: public_proof_requires_approval
+    description: No proof publication (case study, screenshot, customer name) without trust approval.
+    severity: critical
+    applies_to: [proof_publish]
+    deny_when: { approval_state: draft }
+    reason: proof_requires_approval
+    owner: proof_safety_agent
+
+  - id: pricing_commit_requires_approval
+    description: External pricing/discount/contract commitments require explicit founder approval.
+    severity: critical
+    applies_to: [pricing_commit, discount_commit, contract_commit, refund_commit, payment_terms_commit]
+    deny_when: { approved: false }
+    reason: pricing_or_contract_requires_approval
+    owner: founder
+
+  - id: data_export_requires_escalation
+    description: Customer data exports require trust-plane escalation.
+    severity: critical
+    applies_to: [data_export]
+    deny_when: { escalation_recorded: false }
+    reason: data_export_requires_escalation
+    owner: security_guardian
+
+  - id: payment_terms_require_escalation
+    description: Changes to payment terms require escalation.
+    severity: high
+    applies_to: [payment_terms_change]
+    deny_when: { escalation_recorded: false }
+    reason: payment_terms_requires_escalation
+    owner: finance_copilot
+
+  - id: contract_change_requires_escalation
+    description: Contract changes require escalation.
+    severity: high
+    applies_to: [contract_change]
+    deny_when: { escalation_recorded: false }
+    reason: contract_change_requires_escalation
+    owner: founder
+
+  - id: destructive_operation_requires_escalation
+    description: Destructive ops (delete, drop, force-push, mass-update) require escalation.
+    severity: critical
+    applies_to: [destructive_op]
+    deny_when: { escalation_recorded: false }
+    reason: destructive_op_requires_escalation
+    owner: security_guardian

@@ -1,0 +1,30 @@
+name: dealix-company-os
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "policies/**"
+      - "registries/**"
+      - "evals/gates/**"
+      - "apps/web/components/brand/**"
+      - "apps/web/lib/brand-tokens.ts"
+      - "apps/web/styles/brand.css"
+      - "scripts/verify_*.py"
+      - ".github/workflows/dealix-company-os.yml"
+  push:
+    branches: ["main", "claude/**"]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          python --version
+          python -m pip install pyyaml
+      - name: Run Dealix company OS verifier
+        run: python -u scripts/verify_company_os.py

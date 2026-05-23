@@ -1,0 +1,52 @@
+{
+  "name": "Dealix Brand Tokens",
+  "version": "1.0.0",
+  "wordmark": "DEALIX",
+  "tagline": "INTELLIGENT DEALS. REAL GROWTH.",
+  "positioning": "Saudi B2B Revenue Operating System",
+  "colors": {
+    "deep_navy": "#0B1220",
+    "emerald_teal": "#00D1A1",
+    "soft_silver": "#B2BBC6",
+    "slate": "#0F1726",
+    "white": "#FFFFFF"
+  },
+  "color_roles": {
+    "background": "#0B1220",
+    "surface": "#0F1726",
+    "primary": "#00D1A1",
+    "secondary": "#B2BBC6",
+    "text_primary": "#FFFFFF",
+    "text_muted": "#B2BBC6",
+    "border": "#1f2a3a",
+    "danger": "#ef4444",
+    "warning": "#f59e0b",
+    "success": "#00D1A1"
+  },
+  "typography": {
+    "heading": "Inter, 'IBM Plex Sans Arabic', system-ui, sans-serif",
+    "body": "Inter, 'IBM Plex Sans Arabic', system-ui, sans-serif",
+    "mono": "ui-monospace, SFMono-Regular, Menlo, monospace"
+  },
+  "radius": {
+    "sm": "6px",
+    "md": "10px",
+    "lg": "14px",
+    "pill": "9999px"
+  },
+  "spacing": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "16px",
+    "lg": "24px",
+    "xl": "32px"
+  },
+  "pillars": [
+    "Built on Trust",
+    "Driven by Growth",
+    "Closing Deals",
+    "Focused on Results",
+    "Global Mindset, Local Impact"
+  ],
+  "contrast_notes": "Primary teal #00D1A1 on Deep Navy #0B1220 passes WCAG AA for large text. Use soft silver #B2BBC6 for muted body text; do not place silver on white surfaces."
+}
