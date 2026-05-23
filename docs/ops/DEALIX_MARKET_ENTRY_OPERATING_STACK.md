@@ -1,180 +1,165 @@
 # Dealix Market Entry Operating Stack
 
-This document is the operating-stack overview that binds positioning,
-intelligence, offers, revenue, delivery, finance, and customer success
-into a single, named stack. It is the single page that an investor, a
-partner, or a new operator can read to understand how the system runs
-end-to-end.
+DEALIX · INTELLIGENT DEALS. REAL GROWTH. · Saudi B2B Revenue Operating System.
 
-Wordmark: DEALIX. Tagline: INTELLIGENT DEALS. REAL GROWTH.
-Positioning: Saudi B2B Revenue Operating System.
+Built on Trust · Driven by Growth · Closing Deals · Focused on Results · Global Mindset, Local Impact.
 
-## 1. The stack (top to bottom)
+This document is the meta-overview that ties together every operating
+layer Dealix uses to enter the Saudi B2B market: brand, positioning,
+intelligence, product, revenue motion, delivery, finance, customer
+success, and trust. Each pillar has its own dedicated documentation;
+this file links them into a single stack and explains the seams.
 
-1. Positioning — `docs/positioning/DEALIX_POSITIONING.md`,
-   `docs/positioning/SAUDI_B2B_NARRATIVE.md`.
-2. Market intelligence — `docs/intelligence/`.
-3. Product (offers and ladder) — `docs/product/DEALIX_PRODUCT_LADDER.md`.
-4. Distribution war machine — `docs/growth/`.
-5. Revenue factory — `docs/revenue/`.
-6. Finance — `docs/finance/`.
-7. Delivery — `docs/delivery/`.
-8. Customer success — `docs/customer_success/`,
-   `docs/client_success/`.
-9. Proof — `docs/proof/`.
-10. Trust + policy plane — `policies/`, `registries/`, trust ledger.
-
-## 2. The loop
+## The stack
 
 ```
-Positioning -> Intelligence -> Offers -> Distribution Drafts
-   -> Approval Queue -> Operator Send -> Reply Router
-   -> Sample / Proposal -> Closed Won
-   -> Finance + Delivery + Customer Success
-   -> Proof Approval
-   -> Back into Demand
+                ┌─────────────────────────────────────────────┐
+                │              Trust Plane                     │
+                │   policy + registry + eval + audit           │
+                │   (docs/trust/, policies/, registries/, evals/) │
+                └──────────────────────┬──────────────────────┘
+                                       │
+                                       │ governs every layer below
+                                       ▼
+   ┌──────────────────────────────────────────────────────────────────┐
+   │                          Brand Layer                              │
+   │   Wordmark "DEALIX" + tagline "INTELLIGENT DEALS. REAL GROWTH."   │
+   │   (docs/positioning/, docs/brand/)                                │
+   └──────────────────────┬────────────────────────────────────────────┘
+                          │
+   ┌──────────────────────▼──────────────────────────────────────────┐
+   │                       Positioning Layer                          │
+   │   Saudi B2B Revenue Operating System                              │
+   │   (docs/positioning/DEALIX_POSITIONING.md,                        │
+   │    docs/positioning/SAUDI_B2B_NARRATIVE.md)                       │
+   └──────────────────────┬──────────────────────────────────────────┘
+                          │
+   ┌──────────────────────▼──────────────────────────────────────────┐
+   │                       Intelligence Layer                          │
+   │   Sector map + ICP segmentation + sector ranking                  │
+   │   (docs/intelligence/SAUDI_B2B_MARKET_MAP.md,                     │
+   │    docs/intelligence/ICP_SEGMENTATION_SYSTEM.md,                  │
+   │    docs/intelligence/SECTOR_RANKING_SYSTEM.md)                    │
+   └──────────────────────┬──────────────────────────────────────────┘
+                          │
+   ┌──────────────────────▼──────────────────────────────────────────┐
+   │                        Product Layer                              │
+   │   Offer ladder + productization candidates                        │
+   │   (docs/product/DEALIX_PRODUCT_LADDER.md)                          │
+   └──────────────────────┬──────────────────────────────────────────┘
+                          │
+   ┌──────────────────────▼──────────────────────────────────────────┐
+   │                       Revenue Layer                               │
+   │   Revenue Factory OS + Sample Factory + Proposal Factory           │
+   │   (docs/revenue/REVENUE_FACTORY_OS.md,                             │
+   │    docs/revenue/SAMPLE_FACTORY.md,                                 │
+   │    docs/revenue/PROPOSAL_FACTORY.md)                              │
+   └──────────────────────┬──────────────────────────────────────────┘
+                          │
+   ┌──────────────────────▼──────────────────────────────────────────┐
+   │                       Delivery Layer                              │
+   │   Sprint OS + Handoff & QA + Customer Onboarding                   │
+   │   (docs/delivery/ULTIMATE_DELIVERY_OS.md, etc.)                    │
+   └──────────────────────┬──────────────────────────────────────────┘
+                          │
+   ┌──────────────────────▼──────────────────────────────────────────┐
+   │                       Finance Layer                               │
+   │   Finance OS + Revenue Recognition + AI Unit Economics             │
+   │   (docs/finance/...)                                               │
+   └──────────────────────┬──────────────────────────────────────────┘
+                          │
+   ┌──────────────────────▼──────────────────────────────────────────┐
+   │                  Customer Success Layer                           │
+   │   Health scoring + Renewal/Expansion + Referrals                   │
+   │   (docs/customer_success/...)                                      │
+   └─────────────────────────────────────────────────────────────────┘
 ```
 
-Every transition is approval-gated. Every artefact is auditable.
+The trust plane sits above every layer. The data and runtime layers
+sit underneath. Nothing in this stack operates without the trust
+plane's consent.
 
-## 3. Owners (agent layer)
+## Pillar map
 
-- ceo_copilot — daily founder brief.
-- brand_guardian — brand voice + guarantee scan.
-- growth_strategist — sector ranking, ICP, scoring.
-- distribution_operator — outreach drafts and reply routing.
-- content_strategist — content and community.
-- offer_architect — offer ladder.
-- performance_analyst — channel and pipeline scorecards.
-- trust_guardian — policy-as-code enforcement.
-- eval_guardian — agent evals.
-- finance_copilot — payment capture and reconciliation.
-- delivery_copilot — pipeline + samples + proposals + delivery state.
-- security_guardian — security and PDPL posture.
-- productization_agent — promote client work into offers.
-- partner_revenue_agent — partner referrals.
-- proof_safety_agent — proof approval.
-- incident_response_agent — incident tracking.
+| Pillar              | Primary document                                                       | Owner agent             |
+| ------------------- | ---------------------------------------------------------------------- | ----------------------- |
+| Brand               | `docs/positioning/DEALIX_POSITIONING.md`                                | Brand Guardian.         |
+| Positioning         | `docs/positioning/SAUDI_B2B_NARRATIVE.md`                               | Founder + Brand Guardian.|
+| Intelligence        | `docs/intelligence/SAUDI_B2B_MARKET_MAP.md`                              | Growth Strategist.       |
+| ICP / segmentation  | `docs/intelligence/ICP_SEGMENTATION_SYSTEM.md`                          | Growth Strategist.       |
+| Sector ranking      | `docs/intelligence/SECTOR_RANKING_SYSTEM.md`                            | Growth Strategist.       |
+| Product             | `docs/product/DEALIX_PRODUCT_LADDER.md`                                 | Offer Architect.         |
+| Revenue             | `docs/revenue/REVENUE_FACTORY_OS.md`                                    | Distribution Operator + Delivery Copilot. |
+| Sample factory      | `docs/revenue/SAMPLE_FACTORY.md`                                        | Delivery Copilot.        |
+| Proposal factory    | `docs/revenue/PROPOSAL_FACTORY.md`                                      | Delivery Copilot.        |
+| Delivery            | `docs/delivery/ULTIMATE_DELIVERY_OS.md`                                 | Delivery Copilot.        |
+| Onboarding           | `docs/delivery/CLIENT_ONBOARDING_OS.md`                                 | Delivery Copilot + CS.   |
+| Handoff & QA         | `docs/delivery/HANDOFF_AND_QA_SYSTEM.md`                                | Delivery Copilot.        |
+| Finance             | `docs/finance/ULTIMATE_FINANCE_OS.md`                                   | Finance Copilot.         |
+| Customer success    | `docs/customer_success/CUSTOMER_SUCCESS_OS.md`                          | CS Lead.                 |
+| Health scoring      | `docs/customer_success/CLIENT_HEALTH_SCORE_SYSTEM.md`                   | CS Lead.                 |
+| Referrals           | `docs/customer_success/REFERRAL_SYSTEM.md`                              | Partner Revenue Agent.   |
+| Renewal/expansion   | `docs/customer_success/RENEWAL_AND_EXPANSION_OS.md`                     | CS Lead + Founder.       |
 
-All agents have `external_action_allowed = false` and `kill_switch =
-true`.
+## The seams
 
-## 4. Approval classes used
+| Seam                                              | Owner of the seam                       |
+| ------------------------------------------------- | --------------------------------------- |
+| Brand → Positioning                                | Brand Guardian + Founder.               |
+| Positioning → Intelligence                         | Growth Strategist.                       |
+| Intelligence → Product                            | Offer Architect + Growth Strategist.    |
+| Product → Revenue                                  | Distribution Operator + Offer Architect. |
+| Revenue → Delivery                                  | Delivery Copilot.                       |
+| Delivery → Finance                                   | Finance Copilot.                         |
+| Delivery → Customer Success                          | CS Lead.                                 |
+| Customer Success → Revenue (renewal, expansion)      | CS Lead + Founder.                       |
+| Every layer → Trust Plane                             | Trust Guardian + Founder.                |
 
-- A1 — observe, read, draft only. Allowed for every layer.
-- A2 — assist with explicit approval before external action. Allowed.
-- A3 — autonomous external action. Banned at policy level
-  (`no_a3_auto`).
+A seam without an owner is a place where the stack will leak.
 
-## 5. Trust gate (cross-cutting)
+## How the trust plane shows up at every layer
 
-- Suppression check.
-- Guarantee scan.
-- Brand voice check.
-- Source attribution.
-- Bilingual integrity.
-- Audit ledger entry.
+| Layer              | Trust posture                                                             |
+| ------------------ | ------------------------------------------------------------------------- |
+| Brand              | No overclaim; phrasing matrix in `NO_OVERCLAIM_POLICY.md`.                |
+| Positioning        | Saudi-first; no claims unsupported by proof library.                       |
+| Intelligence       | Account scoring is internal; never published.                              |
+| Product            | Offer ladder rungs are policy-gated for pricing.                          |
+| Revenue            | No external sending without approval; A3 banned.                            |
+| Delivery           | Handoff QA gate; no proof without approval.                                |
+| Finance            | Pricing, terms, refunds are founder decisions.                              |
+| Customer success   | Referrals and proof require consent; renewal is policy-gated.              |
 
-Policy file: `policies/dealix_control_policy.yaml`.
+## Operating cadence
 
-## 6. Source of truth files
+| Cadence       | What happens                                                              |
+| ------------- | ------------------------------------------------------------------------- |
+| Daily         | Founder brief; approvals reviewed; KPI snapshot.                          |
+| Weekly        | Scorecard refresh; performance review; experiment review.                  |
+| Monthly       | KPI tree walk; sector rebalance; finance close; CS deep-dive.              |
+| Quarterly     | Sovereign readiness review; backup drill; access control drill; offer ladder review. |
 
-| Layer | File |
-|---|---|
-| Sectors | `growth/sector_targets.csv` |
-| ICPs | `growth/icp_segments.csv` |
-| Personas | `growth/personas.csv` |
-| Triggers | `growth/trigger_events.csv` |
-| Accounts | `growth/account_scores.csv` |
-| Outreach | `outreach/outreach_queue.csv` |
-| LinkedIn | `outreach/linkedin_queue.csv` |
-| Email | `outreach/email_queue.csv` |
-| Contact form | `outreach/contact_form_queue.csv` |
-| Follow-up | `outreach/followup_queue.csv` |
-| Reply routing | `outreach/reply_routing.csv` |
-| Suppression | `outreach/suppression.csv` |
-| Pipeline | `sales/pipeline.csv` |
-| Samples | `sales/sample_queue.csv` |
-| Proposals | `sales/proposal_queue.csv` |
-| Payment | `finance/payment_capture_queue.csv` |
-| Cash | `finance/cash_collected.csv` |
-| Delivery | `delivery/sprint_log.csv` |
-| Client health | `customer_success/client_health.csv` |
-| Referrals | `customer_success/referral_queue.csv` |
-| Proof | `proof/proof_library.csv` |
-| Trust | `trust/trust_flags.csv`, `trust/incidents.csv` |
-| Evals | `evals/eval_status.csv` |
+## What this stack will not do
 
-## 7. Cadence summary
+- Operate outside the trust plane.
+- Make external claims unsupported by approved proof.
+- Push expansion or referrals to customers without consent.
+- Bypass the founder for any A2 external action.
 
-- Daily — brief; queue triage; send approved; pipeline view.
-- Weekly — sales meeting (Mon); content review (Wed); close (Fri).
-- Monthly — win/loss; channel; objection; sector; finance reconcile;
-  client health.
-- Quarterly — scoring calibration; channel portfolio reset; offer
-  ladder; rhythm self-audit.
+## The brand promise
 
-## 8. KPI roll-up
+DEALIX · INTELLIGENT DEALS. REAL GROWTH. We are the Saudi B2B
+Revenue Operating System. We are built on trust. We are driven by
+growth. We close deals. We focus on results. We hold a global
+mindset and a local impact. The stack above is how that promise is
+operational, not aspirational.
 
-- Pipeline coverage (priority-band accounts in motion).
-- Reply quality (positive replies / approved sends).
-- Sample-to-proposal rate.
-- Proposal win rate.
-- DSO.
-- On-time sprint completion rate.
-- Net retention.
-- Referral conversion rate.
-- Proof library size and freshness.
-- A3 attempts (target: 0).
+## Cross-references
 
-## 9. Risks tracked
-
-- Suppression bleed.
-- Brand voice drift.
-- Source contamination.
-- Channel saturation.
-- Confidentiality breach in proof or delivery.
-- ZATCA rejection.
-- PDPL posture drift.
-
-Each risk has an owner, an alert source, and a documented recovery
-path.
-
-## 10. Saudi context
-
-- Bilingual operating reality.
-- Relationship density.
-- Authority concentration.
-- Procurement realism.
-- Regulator alignment (PDPL, ZATCA, sector regulators).
-
-## 11. What an operator can do today
-
-- Use the registry-listed agents to draft outbound, schedule content,
-  produce samples, and draft proposals.
-- Approve those drafts at the Founder Console.
-- Send approved drafts manually as a named operator.
-- Track pipeline, finance, delivery, and proof in the canonical files.
-- Use the trust ledger as the single audit trail.
-
-## 12. What no operator may do
-
-- Bypass approval.
-- Use A3 patterns.
-- Publish unapproved proof.
-- Scrape or buy lists.
-- Make guaranteed claims.
-- Commit to pricing, terms, or refunds without approval.
-
-## 13. Non-negotiables
-
-These are restated, because they are the spine of the stack:
-
-- No external send by an agent.
-- No guaranteed-revenue / sales / meetings language.
-- No proof publication without approval.
-- No scraping. No purchased lists.
-- A3 banned.
-
-The operating stack is the system Dealix would still be proud of after
-ten public audits. Every layer is designed around that constraint.
+- `DEALIX_FINAL_OPERATING_SYSTEM.md` (this directory) for the
+  highest-level summary across every pillar.
+- The trust plane docs in `docs/trust/`.
+- The performance docs in `docs/performance/`.
+- The runtime and data docs in `docs/runtime/` and `docs/data/`.
+- The engineering docs in `docs/engineering/`.
+- The security docs in `docs/security/`.
