@@ -213,3 +213,29 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ── Dealix CEO Operating System v2 — private operating data ──
+# The scaffold (template files) is committed. Real client data,
+# populated CSVs, and per-client folders must stay local.
+dealix-ops-private/clients/*/
+!dealix-ops-private/clients/.gitkeep
+dealix-ops-private/sales/call_notes/*
+!dealix-ops-private/sales/call_notes/.gitkeep
+dealix-ops-private/sales/proposal_notes/*
+!dealix-ops-private/sales/proposal_notes/.gitkeep
+dealix-ops-private/revenue/invoices/*
+!dealix-ops-private/revenue/invoices/.gitkeep
+dealix-ops-private/revenue/receipts/*
+!dealix-ops-private/revenue/receipts/.gitkeep
+dealix-ops-private/revenue/payments/*
+!dealix-ops-private/revenue/payments/.gitkeep
+dealix-ops-private/delivery/samples/*
+!dealix-ops-private/delivery/samples/.gitkeep
+dealix-ops-private/delivery/research/*
+!dealix-ops-private/delivery/research/.gitkeep
+dealix-ops-private/delivery/reports/*
+!dealix-ops-private/delivery/reports/.gitkeep
+dealix-ops-private/delivery/qa/*
+!dealix-ops-private/delivery/qa/.gitkeep
+dealix-ops-private/delivery/handoffs/*
+!dealix-ops-private/delivery/handoffs/.gitkeep

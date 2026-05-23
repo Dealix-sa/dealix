@@ -130,3 +130,49 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── CEO Operating System v2 ───────────────────────────────────
+# Founder/CEO command surface — see docs/founder/CEO_OPERATING_MODEL.md
+.PHONY: ceo-audit ceo-verify ceo-business-score ceo-daily ceo-weekly-close \
+        ceo-stage ceo-finance ceo-dashboard ceo-kill-defer ceo-help
+
+ceo-help: ## CEO: list all CEO commands
+	@echo "Dealix CEO Operating System v2 — commands:"
+	@echo "  make ceo-verify          # verify 14-layer architecture"
+	@echo "  make ceo-daily           # open daily command brief"
+	@echo "  make ceo-business-score  # weekly business score"
+	@echo "  make ceo-stage           # show current 90-day stage"
+	@echo "  make ceo-finance         # show cash / MRR / runway snapshot"
+	@echo "  make ceo-dashboard       # render master dashboard"
+	@echo "  make ceo-weekly-close    # Sunday weekly close template"
+	@echo "  make ceo-kill-defer      # show kill/defer list"
+	@echo "  make ceo-audit           # business audit (full)"
+
+ceo-verify: ## CEO: verify the 14-layer Founder/CEO architecture
+	$(PYTHON) scripts/verify_founder_ceo_architecture.py
+
+ceo-daily: ## CEO: print the daily command brief template
+	@cat docs/founder/DAILY_COMMAND_BRIEF.md 2>/dev/null || echo "Run make ceo-verify first."
+
+ceo-business-score: ## CEO: compute weekly business score
+	$(PYTHON) scripts/ceo_business_score.py
+
+ceo-stage: ## CEO: show current 90-day stage and gates
+	$(PYTHON) scripts/ceo_stage.py
+
+ceo-finance: ## CEO: show cash / MRR / runway snapshot
+	$(PYTHON) scripts/ceo_finance_snapshot.py
+
+ceo-dashboard: ## CEO: render the master dashboard
+	$(PYTHON) scripts/ceo_master_dashboard.py
+
+ceo-weekly-close: ## CEO: print Sunday weekly close template
+	@cat docs/founder/WEEKLY_CEO_REVIEW.md 2>/dev/null || echo "Run make ceo-verify first."
+
+ceo-kill-defer: ## CEO: show the kill/defer list
+	@cat docs/founder/KILL_LIST.md 2>/dev/null || echo "Run make ceo-verify first."
+
+ceo-audit: ## CEO: full business audit (verify + score + dashboard)
+	@$(MAKE) ceo-verify
+	@$(MAKE) ceo-business-score
+	@$(MAKE) ceo-dashboard
