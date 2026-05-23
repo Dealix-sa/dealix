@@ -9,15 +9,22 @@ ADMIN_HEADER = "X-Admin-API-Key"
 async def _create_test_code(async_client, api_key: str = "test_admin_ref_seed") -> str:
     """Helper: create a referral code via the API and return the code string."""
     import os
+    _orig = os.environ.get("ADMIN_API_KEYS")
     os.environ["ADMIN_API_KEYS"] = api_key
-    res = await async_client.post(
-        "/api/v1/referrals/create",
-        json={"referrer_handle": "acme_saas", "referrer_email": "test@acme.sa"},
-        headers={ADMIN_HEADER: api_key},
-    )
-    if res.status_code != 200:
-        pytest.skip(f"Could not create test referral code: {res.status_code}")
-    return res.json()["code"]
+    try:
+        res = await async_client.post(
+            "/api/v1/referrals/create",
+            json={"referrer_handle": "acme_saas", "referrer_email": "test@acme.sa"},
+            headers={ADMIN_HEADER: api_key},
+        )
+        if res.status_code != 200:
+            pytest.skip(f"Could not create test referral code: {res.status_code}")
+        return res.json()["code"]
+    finally:
+        if _orig is None:
+            os.environ.pop("ADMIN_API_KEYS", None)
+        else:
+            os.environ["ADMIN_API_KEYS"] = _orig
 
 
 @pytest.mark.asyncio
