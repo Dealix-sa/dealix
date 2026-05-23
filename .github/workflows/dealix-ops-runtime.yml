@@ -1,0 +1,24 @@
+name: Dealix Ops Runtime Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  ops-runtime:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify ops runtime
+        run: python scripts/verify_ops_runtime.py
+
+      - name: Compile ops runtime
+        run: python -m compileall ops_runtime scripts
