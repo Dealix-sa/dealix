@@ -1,0 +1,347 @@
+metadata:
+  name: Dealix Agent Registry
+  version: 1
+  created: 2026-05-23
+  owner: founder
+  description: >-
+    Canonical list of Dealix AI agents. Every runtime agent must appear here.
+    Adding or removing an agent requires founder approval. Each agent declares
+    its max approval class, tools, outputs, external-action capability, kill
+    switch path, eval and audit requirements, owner, and the file/path roots
+    it is allowed to write to.
+
+agents:
+  - id: ceo_copilot
+    name: CEO Copilot
+    purpose: >-
+      Brief the founder with daily/weekly operating summaries pulled from
+      private ops CSVs. No external action.
+    approval_class_max: A1
+    tools:
+      - read_private_ops_csv
+      - read_operating_scorecard
+    outputs:
+      - founder/operating_scorecard.md
+      - stdout summary
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_ceo_copilot
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - founder/operating_scorecard.md
+
+  - id: brand_guardian
+    name: Brand Guardian
+    purpose: >-
+      Enforce brand tokens, tagline, palette, and tone. Block off-brand or
+      guaranteed-claim copy before it reaches a customer surface.
+    approval_class_max: A1
+    tools:
+      - load_brand_tokens
+      - lint_copy
+    outputs:
+      - brand/brand_assets_registry.csv
+      - stdout lint report
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_brand_guardian
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - brand/brand_assets_registry.csv
+
+  - id: growth_strategist
+    name: Growth Strategist
+    purpose: >-
+      Score accounts, recommend sector plays, and update target segment
+      ledgers. Recommends only — no outreach.
+    approval_class_max: A2
+    tools:
+      - read_account_scores
+      - read_sector_targets
+      - write_distribution_machines
+    outputs:
+      - growth/account_scores.csv
+      - growth/sector_targets.csv
+      - growth/distribution_machines.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_growth_strategist
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - growth/account_scores.csv
+      - growth/distribution_machines.csv
+
+  - id: distribution_operator
+    name: Distribution Operator
+    purpose: >-
+      Stage outreach batches into outreach/outreach_queue.csv for human send.
+      Never sends externally.
+    approval_class_max: A2
+    tools:
+      - read_target_segments
+      - write_outreach_queue
+      - read_suppression_list
+    outputs:
+      - outreach/outreach_queue.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_distribution_operator
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - outreach/outreach_queue.csv
+
+  - id: content_strategist
+    name: Content Strategist
+    purpose: >-
+      Draft content ideas, calendar entries, and campaign briefs. Sends
+      drafts to the approval queue.
+    approval_class_max: A2
+    tools:
+      - write_content_ideas
+      - write_content_calendar
+      - write_campaigns
+    outputs:
+      - marketing/content_ideas.csv
+      - marketing/content_calendar.csv
+      - marketing/campaigns.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_content_strategist
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - marketing/content_ideas.csv
+      - marketing/content_calendar.csv
+      - marketing/campaigns.csv
+
+  - id: offer_architect
+    name: Offer Architect
+    purpose: >-
+      Design offer ladder entries and productization candidates. Pricing
+      changes require A3 escalation.
+    approval_class_max: A2
+    tools:
+      - write_offer_ladder
+      - write_productization_candidates
+    outputs:
+      - product/offer_ladder.csv
+      - product/productization_candidates.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_offer_architect
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - product/offer_ladder.csv
+      - product/productization_candidates.csv
+
+  - id: performance_analyst
+    name: Performance Analyst
+    purpose: >-
+      Compute channel and sector scorecards from private ops data and
+      surface deltas.
+    approval_class_max: A1
+    tools:
+      - read_private_ops_csv
+      - write_channel_scorecard
+      - write_sector_scorecard
+    outputs:
+      - distribution/channel_scorecard.csv
+      - distribution/sector_scorecard.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_performance_analyst
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - distribution/channel_scorecard.csv
+      - distribution/sector_scorecard.csv
+
+  - id: trust_guardian
+    name: Trust Guardian
+    purpose: >-
+      Watch for policy violations, raise trust flags, and route incidents.
+      May block actions but cannot send externally.
+    approval_class_max: A2
+    tools:
+      - read_policy
+      - write_trust_flags
+      - write_incidents
+    outputs:
+      - trust/trust_flags.csv
+      - trust/incidents.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_trust_guardian
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - trust/trust_flags.csv
+      - trust/incidents.csv
+
+  - id: eval_guardian
+    name: Eval Guardian
+    purpose: >-
+      Run eval suites, gate releases, and write eval status. Does not act
+      on customers.
+    approval_class_max: A1
+    tools:
+      - run_eval_suite
+      - write_eval_status
+    outputs:
+      - evals/eval_status.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_eval_guardian
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - evals/eval_status.csv
+
+  - id: finance_copilot
+    name: Finance Copilot
+    purpose: >-
+      Track cash collected, payment capture, and AI unit economics. Pricing
+      and payment-term changes escalate to founder.
+    approval_class_max: A2
+    tools:
+      - read_finance_csv
+      - write_ai_unit_economics
+      - write_payment_capture_queue
+    outputs:
+      - finance/cash_collected.csv
+      - finance/payment_capture_queue.csv
+      - finance/ai_unit_economics.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_finance_copilot
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - finance/payment_capture_queue.csv
+      - finance/ai_unit_economics.csv
+
+  - id: delivery_copilot
+    name: Delivery Copilot
+    purpose: >-
+      Track client health, delivery milestones, and referral opportunities.
+      Drafts only; never contacts clients directly.
+    approval_class_max: A2
+    tools:
+      - read_client_health
+      - write_referral_queue
+    outputs:
+      - customer_success/client_health.csv
+      - customer_success/referral_queue.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_delivery_copilot
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - customer_success/client_health.csv
+      - customer_success/referral_queue.csv
+
+  - id: security_guardian
+    name: Security Guardian
+    purpose: >-
+      Monitor security posture, key rotation status, and destructive
+      operations. All destructive ops escalate.
+    approval_class_max: A2
+    tools:
+      - read_security_status
+      - write_security_status
+    outputs:
+      - security/security_status.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_security_guardian
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - security/security_status.csv
+
+  - id: productization_agent
+    name: Productization Agent
+    purpose: >-
+      Identify services suitable for productization and route them to the
+      product distribution ledger.
+    approval_class_max: A2
+    tools:
+      - read_productization_candidates
+      - write_product_distribution
+    outputs:
+      - product/product_distribution.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_productization_agent
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - product/product_distribution.csv
+
+  - id: partner_revenue_agent
+    name: Partner Revenue Agent
+    purpose: >-
+      Track agency partner pipeline, partner-sourced revenue, and partner
+      health. Recommends only.
+    approval_class_max: A2
+    tools:
+      - read_partner_pipeline
+      - write_partner_pipeline
+    outputs:
+      - growth/distribution_machines.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_partner_revenue_agent
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - growth/distribution_machines.csv
+
+  - id: proof_safety_agent
+    name: Proof Safety Agent
+    purpose: >-
+      Validate proof items (case studies, testimonials, metrics) and route
+      public-visibility items to the proof approval queue.
+    approval_class_max: A2
+    tools:
+      - read_proof_library
+      - write_proof_approval_queue
+    outputs:
+      - proof/proof_library.csv
+      - proof/proof_approval_queue.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_proof_safety_agent
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - proof/proof_library.csv
+      - proof/proof_approval_queue.csv
+
+  - id: incident_response_agent
+    name: Incident Response Agent
+    purpose: >-
+      Triage incidents, write incident records, and coordinate response.
+      Never communicates externally.
+    approval_class_max: A2
+    tools:
+      - read_incidents
+      - write_incidents
+      - write_trust_flags
+    outputs:
+      - trust/incidents.csv
+      - trust/trust_flags.csv
+    external_action_allowed: false
+    kill_switch: PRIVATE_OPS/runtime/kill_switch_incident_response_agent
+    eval_required: true
+    audit_required: true
+    owner: founder
+    allowed_write_targets:
+      - trust/incidents.csv
+      - trust/trust_flags.csv

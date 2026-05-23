@@ -1,0 +1,113 @@
+metadata:
+  name: Dealix Control Policy
+  version: 1
+  created: 2026-05-23
+  owner: founder
+  description: >-
+    Policy-as-code rules enforced across agents, workflows, and the Dealix
+    runtime. Each rule has a stable id, severity, trigger, and required action.
+    Verifier scripts and the agent runtime read this file as the single source
+    of truth; do not edit a rule's id once published.
+
+rules:
+  - id: no_a3_auto
+    description: >-
+      A3-class actions (external impact, money, contracts, public statements)
+      may never auto-execute. They require a human-approved record in the
+      approval queue.
+    severity: block
+    trigger: action.approval_class == "A3" and action.approval_status != "approved"
+    action: block_and_enqueue_approval
+    owner: founder
+
+  - id: no_suppressed_outreach
+    description: >-
+      No outreach (email, SMS, WhatsApp, call, or DM) may be sent to a contact
+      whose email or phone hash matches an entry in outreach/suppression_list.csv.
+    severity: block
+    trigger: outreach.target in suppression_list
+    action: block_and_log_violation
+    owner: trust_guardian
+
+  - id: high_risk_requires_evidence
+    description: >-
+      Any high-risk action (pricing change, contract change, public proof
+      publication, data export) must reference a stored evidence record id.
+    severity: block
+    trigger: action.risk == "high" and action.evidence_id is null
+    action: block_and_request_evidence
+    owner: trust_guardian
+
+  - id: no_guaranteed_revenue_claims
+    description: >-
+      Marketing, sales, proposal, and public copy must not promise guaranteed
+      revenue, deals, ROI, or absolute outcomes ("100%", "guaranteed", "زيادة
+      مضمونة", "أرباح مضمونة").
+    severity: block
+    trigger: output.text matches forbidden_claims_pattern
+    action: block_and_rewrite
+    owner: brand_guardian
+
+  - id: approved_a2_can_request_execution
+    description: >-
+      A2-class actions (recommendations with execution by humans) may be
+      requested without prior approval, but execution itself must be confirmed.
+    severity: warn
+    trigger: action.approval_class == "A2"
+    action: log_and_route_to_human
+    owner: ceo_copilot
+
+  - id: public_proof_requires_approval
+    description: >-
+      Public proof items (case studies, testimonials, named customer logos,
+      named metrics) must be approved through proof/proof_approval_queue.csv
+      before publication.
+    severity: block
+    trigger: proof.visibility == "public" and proof.approval_status != "approved"
+    action: block_and_enqueue_approval
+    owner: proof_safety_agent
+
+  - id: pricing_commit_requires_approval
+    description: >-
+      Any change to a customer-visible price, discount, or contractual rate
+      must escalate to founder approval before the proposal is sent.
+    severity: escalate
+    trigger: action.kind == "pricing_change"
+    action: escalate_to_founder
+    owner: finance_copilot
+
+  - id: data_export_requires_escalation
+    description: >-
+      Exporting tenant data outside the tenant boundary (download, CSV, API
+      handoff to a third party) requires founder approval.
+    severity: escalate
+    trigger: action.kind == "data_export" and action.target != "tenant_internal"
+    action: escalate_to_founder
+    owner: security_guardian
+
+  - id: payment_terms_require_escalation
+    description: >-
+      Changing payment terms (Net days, refund policy, payment method
+      acceptance) requires founder approval.
+    severity: escalate
+    trigger: action.kind == "payment_terms_change"
+    action: escalate_to_founder
+    owner: finance_copilot
+
+  - id: contract_change_requires_escalation
+    description: >-
+      Any agent-initiated edit to a contract, DPA, MSA, SOW, or partner
+      agreement requires founder approval before sending or signing.
+    severity: escalate
+    trigger: action.kind == "contract_change"
+    action: escalate_to_founder
+    owner: trust_guardian
+
+  - id: destructive_operation_requires_escalation
+    description: >-
+      Destructive operations (delete, drop, truncate, force-push, IAM grant
+      or revoke, schema migration in prod) require founder approval.
+    severity: escalate
+    trigger: action.kind in ["delete", "drop_table", "truncate", "force_push", "iam_change", "prod_migration"]
+    action: escalate_to_founder
+    owner: security_guardian
