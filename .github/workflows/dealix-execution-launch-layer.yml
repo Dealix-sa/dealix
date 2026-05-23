@@ -1,0 +1,82 @@
+name: Dealix Execution & Launch Layer
+
+on:
+  push:
+    branches: [main, claude/**]
+    paths:
+      - docs/launch/**
+      - docs/founder/**
+      - docs/growth/**
+      - docs/ops/**
+      - docs/risk/**
+      - docs/finance/**
+      - docs/playbooks/**
+      - docs/learning/**
+      - registries/machine_registry.yaml
+      - scripts/generate_ceo_daily_brief.py
+      - scripts/generate_weekly_growth_review.py
+      - scripts/generate_revenue_forecast.py
+      - scripts/verify_machine_registry.py
+      - scripts/verify_launch_readiness.py
+      - scripts/verify_execution_launch_layer.py
+      - apps/web/app/launch/**
+      - apps/web/app/risk/**
+      - apps/web/lib/internal-client.ts
+      - api/routers/internal/**
+      - .github/workflows/dealix-execution-launch-layer.yml
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Verify execution-launch-layer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install minimal Python deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml
+
+      - name: Verify machine registry
+        run: python scripts/verify_machine_registry.py
+
+      - name: Verify launch readiness (public + env report)
+        run: python scripts/verify_launch_readiness.py
+        continue-on-error: false
+
+      - name: Verify execution launch layer
+        run: python scripts/verify_execution_launch_layer.py
+
+      - name: Verify prompt output quality (if present)
+        run: |
+          if [ -f scripts/verify_prompt_output_quality.py ]; then
+            python scripts/verify_prompt_output_quality.py || echo "[warn] prompt quality verifier non-zero"
+          else
+            echo "[skip] scripts/verify_prompt_output_quality.py not present"
+          fi
+
+      - name: Set up Node (for apps/web build)
+        if: hashFiles('apps/web/package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install apps/web deps
+        if: hashFiles('apps/web/package.json') != ''
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Build apps/web
+        if: hashFiles('apps/web/package.json') != ''
+        working-directory: apps/web
+        run: npm run build

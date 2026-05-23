@@ -1,4 +1,6 @@
 const links = [
+  "/launch",
+  "/risk",
   "/control-plane",
   "/agents",
   "/approvals",
