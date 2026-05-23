@@ -68,6 +68,7 @@ jobs:
           GOOGLE_API_KEY: test-google-key
         run: |
           pytest -q \
+            --override-ini="addopts=-ra --strict-markers --strict-config" \
             --cov=api --cov=core --cov=db --cov=integrations \
             --cov-report=xml:coverage.xml \
             --cov-report=term-missing \
