@@ -367,8 +367,15 @@ def test_founder_cockpit_run_unified_quick(monkeypatch):
     assert body.get("cockpit_verdict")
 
 
-def test_marketing_social_today_and_mark(monkeypatch):
+def test_marketing_social_today_and_mark(monkeypatch, tmp_path):
+    import shutil
+    from dealix.commercial_ops.paths import SOCIAL_QUEUE_YAML
     from api.main import app
+
+    # Use a temp copy of the yaml so the test doesn't mutate the repo file.
+    tmp_yaml = tmp_path / "social_content_queue.yaml"
+    shutil.copy(SOCIAL_QUEUE_YAML, tmp_yaml)
+    monkeypatch.setattr("dealix.commercial_ops.social_queue.SOCIAL_QUEUE_YAML", tmp_yaml)
 
     monkeypatch.setenv("DEALIX_ADMIN_API_KEY", "test-social")
     cli = TestClient(app)
