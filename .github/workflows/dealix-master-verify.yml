@@ -32,7 +32,13 @@ jobs:
       - name: Master Verify (CI; no PRIVATE_OPS)
         id: verify
         run: |
+          set +e
           python3 scripts/master_verify.py --json-out master-verify.json
+          rc=$?
+          echo "--- master-verify.json (truncated) ---"
+          python3 -c "import json; r=json.load(open('master-verify.json')); print(json.dumps(r, indent=2))" | head -400
+          echo "--- end ---"
+          exit $rc
         env:
           DEALIX_SKIP_MYPY: "1"
 

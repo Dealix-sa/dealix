@@ -42,6 +42,8 @@ def run_layer(script: Path, private_ops: str | None) -> dict:
             "exit_code": 1,
             "summary": f"missing: {script.name}",
             "duration_s": 0.0,
+            "stderr_tail": "",
+            "stdout_tail": "",
         }
     cmd = [str(script)] if script.suffix == ".sh" else [sys.executable, str(script)]
     cmd.append("--json")
@@ -61,6 +63,8 @@ def run_layer(script: Path, private_ops: str | None) -> dict:
             "exit_code": 1,
             "summary": "timeout (>15min)",
             "duration_s": 900.0,
+            "stderr_tail": "",
+            "stdout_tail": "",
         }
     duration = round(time.time() - start, 2)
     verdict = CODE_VERDICT.get(res.returncode, "FAIL")
@@ -75,11 +79,16 @@ def run_layer(script: Path, private_ops: str | None) -> dict:
         pass
     if not summary:
         summary = (last_stdout if res.returncode == 0 else last_stderr or last_stdout)[:200]
+    # Keep tails for failure forensics in CI logs
+    stderr_tail = "\n".join((res.stderr or "").strip().splitlines()[-30:])
+    stdout_tail = "\n".join((res.stdout or "").strip().splitlines()[-30:])
     return {
         "verdict": verdict,
         "exit_code": res.returncode,
         "summary": summary or "(no output)",
         "duration_s": duration,
+        "stderr_tail": stderr_tail,
+        "stdout_tail": stdout_tail,
     }
 
 
@@ -150,6 +159,19 @@ def main() -> int:
         print(fmt_table(rows), file=sys.stderr)
         print(f" Overall: {overall}  (warnings={warnings})", file=sys.stderr)
         print("=" * 64, file=sys.stderr)
+        # Surface failed layers' captured output to stderr so CI logs show details
+        for r in rows:
+            if r["exit_code"] != 0:
+                print(
+                    f"\n----- L{r['layer']} {r['name']} (exit={r['exit_code']}) -----",
+                    file=sys.stderr,
+                )
+                if r.get("stdout_tail"):
+                    print("[stdout tail]", file=sys.stderr)
+                    print(r["stdout_tail"], file=sys.stderr)
+                if r.get("stderr_tail"):
+                    print("[stderr tail]", file=sys.stderr)
+                    print(r["stderr_tail"], file=sys.stderr)
     print(json.dumps(report, separators=(",", ":")))
 
     return {"PASS": 0, "FAIL": 1, "PARTIAL": 2}[overall]
