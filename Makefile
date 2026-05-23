@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        revenue-ops verify-revenue-ops
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,18 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Revenue Ops Playbook v1 ────────────────────────────────────
+# The commercial machine: ICP → DM → sample → proposal → payment → delivery.
+# `verify-revenue-ops` checks the docs are present; `revenue-ops` shows the
+# founder the daily file map and the ranked CEO action queue.
+# Set PRIVATE_OPS to your dealix-ops-private path, e.g.
+#   PRIVATE_OPS=~/dealix-ops-private make revenue-ops
+
+PRIVATE_OPS ?= ./dealix-ops-private
+
+verify-revenue-ops: ## revenue-ops: verify Revenue Operations Playbook docs
+	$(PYTHON) scripts/verify_revenue_operations_playbook.py
+
+revenue-ops: ## revenue-ops: show file map + generate CEO action queue
+	$(PYTHON) -m dealix_cli revenue-ops --private-ops $(PRIVATE_OPS)
