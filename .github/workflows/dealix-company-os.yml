@@ -1,0 +1,74 @@
+name: Dealix Company OS
+
+# Runs the structural + trust checks for the 12 Super Systems on every PR
+# and on every push to main. Designed to be cheap and fast (< 60s) so it
+# can be a required status check on the branch protection policy.
+#
+# See docs/founder/CEO_OPERATING_SYSTEM.md for the operating context.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  company-os:
+    name: Verify 12 Super Systems
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify Company OS file inventory
+        run: python scripts/verify_company_os.py
+
+      - name: Verify Founder Command OS
+        run: python scripts/verify_founder_os.py
+
+      - name: Verify Revenue OS
+        run: python scripts/verify_revenue_os.py
+
+      - name: Verify Delivery OS
+        run: python scripts/verify_delivery_os.py
+
+      - name: Verify Trust OS (docs + modules + smoke tests)
+        run: python scripts/verify_trust_os.py
+
+      - name: Verify Learning OS
+        run: python scripts/verify_learning_os.py
+
+      - name: Verify Public Repo Safety
+        run: python scripts/verify_public_safety.py
+
+  trust-tests:
+    name: Trust module tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+
+      - name: Run Company OS trust tests
+        run: pytest tests/trust/ -v --tb=short
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
