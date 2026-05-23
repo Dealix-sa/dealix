@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        founder-console-v4 founder-api-smoke private-ops-bootstrap
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Founder Console v4 — live runtime + approval audit ─────────
+founder-console-v4: ## v4: static + frontend build gate for Founder Console
+	$(PYTHON) scripts/verify_founder_console_v4.py
+
+founder-api-smoke: ## v4: smoke test internal API (requires API running)
+	$(PYTHON) scripts/smoke_founder_console_api.py
+
+private-ops-bootstrap: ## v4: create empty Private Ops CSVs with headers
+	bash scripts/bootstrap_private_ops.sh
