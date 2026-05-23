@@ -1,0 +1,22 @@
+name: Dealix 24/7 Growth Factory Checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  growth-factory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify 24/7 growth factory
+        run: python scripts/verify_24_7_growth_factory.py
+      - name: Compile growth factory runners
+        run: |
+          python -m py_compile scripts/run_growth_hourly.py
+          python -m py_compile scripts/run_growth_4h.py
+          python -m py_compile scripts/run_growth_daily.py
+          python -m py_compile scripts/verify_24_7_growth_factory.py

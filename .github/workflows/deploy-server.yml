@@ -1,0 +1,14 @@
+name: Deploy Dealix Server
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy placeholder
+        run: |
+          echo "Configure SSH deploy after all required checks are stable."
+          echo "Do not deploy if security/data/trust checks fail."
+          echo "Wire DEALIX_SERVER_HOST secret only after the 24/7 growth"
+          echo "factory verification job has gone green for a full week."
