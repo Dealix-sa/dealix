@@ -210,6 +210,26 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "env generator uses sk_live_xxxxx as a placeholder comment in the template",
     "scripts/integration_upgrade_verify.sh":
         "integration verify shell script greps repo for sk_live_, ghp_, AIza",
+    "scripts/ultimate_upgrade_verify.sh":
+        "ultimate verify shell script greps repo for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/wave6_revenue_activation_verify.sh":
+        "wave 6 verify shell script greps repo for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/wave7_5_service_truth_verify.sh":
+        "wave 7.5 verify shell script greps repo for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/wave8_customer_data_boundary_check.sh":
+        "wave 8 data boundary check greps for sk_live_ to detect accidental secret leakage",
+    "scripts/wave8_customer_ready_verify.sh":
+        "wave 8 customer-ready verify greps for sk_live_ to confirm no live key in codebase",
+    "scripts/wave11_first3_paid_pilots_verify.sh":
+        "wave 11 pilots verify shell script greps for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/wave12_saudi_revenue_command_center_verify.sh":
+        "wave 12 command-center verify greps for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/moyasar_live_cutover.py":
+        "live-cutover script prompts for sk_live_ key and validates its prefix",
+    "scripts/reconcile_moyasar.py":
+        "Moyasar reconcile script documents MOYASAR_SECRET_KEY (sk_live_...) in help text",
+    "scripts/preflight_check.py":
+        "preflight check script names sk_live_... as expected key format in env-var template",
 }
 
 
