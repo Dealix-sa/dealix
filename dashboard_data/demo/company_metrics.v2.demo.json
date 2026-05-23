@@ -1,0 +1,67 @@
+{
+  "as_of": "2026-05-23",
+  "period": "2026-W21",
+  "current_stage": 1,
+  "next_action": "Send three more A1-approved DMs to qualified retail leads.",
+  "pipeline": {
+    "leads_new": 12, "leads_new_delta": 4,
+    "leads_qualified": 7, "leads_qualified_delta": 2,
+    "dms_queued": 4,
+    "dms_sent_with_consent": 8, "dms_sent_with_consent_delta": 3,
+    "samples_sent": 1, "samples_sent_delta": 1,
+    "proposals_out": 0, "proposals_out_delta": 0,
+    "proposals_signed": 0,
+    "estimated_acv_open_sar": 24500,
+    "by_sector": [
+      { "sector": "retail-saudi", "open_count": 5, "estimated_acv_sar": 12000, "signed_last_180d": 0 },
+      { "sector": "f-and-b-saudi", "open_count": 4, "estimated_acv_sar": 8500, "signed_last_180d": 0 },
+      { "sector": "real-estate-saudi", "open_count": 3, "estimated_acv_sar": 4000, "signed_last_180d": 0 }
+    ]
+  },
+  "revenue": {
+    "booked_mtd_sar": 499, "booked_mtd_delta_sar": 499,
+    "booked_qtd_sar": 499,
+    "booked_ytd_sar": 499,
+    "estimated_value_open_sar": 24500,
+    "observed_value_open_sar": 0,
+    "verified_value_closed_sar": 0,
+    "note": "Estimated, Observed, Verified per docs/08_value_os/ESTIMATED_OBSERVED_VERIFIED_VALUE.md"
+  },
+  "delivery": {
+    "sprints_in_flight": 1, "sprints_in_flight_delta": 1,
+    "sprints_on_track": 1,
+    "sprints_at_risk": 0,
+    "sprints_completed_mtd": 0,
+    "evidence_complete_rate": 1.0,
+    "proof_packs_shipped_mtd": 0
+  },
+  "learning": {
+    "experiments_active": 2,
+    "experiments_decided_mtd": 1,
+    "router_promotions_mtd": 0,
+    "case_safe_summaries_total": 3,
+    "latest_decision": "Move retail outreach to morning send window; logged 2026-05-21.",
+    "decisions": [
+      { "date": "2026-05-21", "decision": "Move retail outreach to morning send window.", "owner": "Revenue Lead" },
+      { "date": "2026-05-19", "decision": "Tighten lead scoring threshold from 5 to 6.", "owner": "Revenue Lead" },
+      { "date": "2026-05-15", "decision": "Add bilingual wrap-up brief to sprint deliverables.", "owner": "Delivery Lead" }
+    ]
+  },
+  "trust": {
+    "incidents_open": 0,
+    "incidents_closed_mtd": 0,
+    "approval_queue_depth": 2,
+    "ai_evals_passed_mtd": 14,
+    "ai_evals_failed_mtd": 0,
+    "audit_findings_open": 0,
+    "last_incident": "none in current week",
+    "last_audit": "2026-05-18"
+  },
+  "targets": {
+    "leads": { "actual": 12, "target": 25, "pct": 48 },
+    "dms": { "actual": 8, "target": 25, "pct": 32 },
+    "samples": { "actual": 1, "target": 3, "pct": 33 },
+    "proposals": { "actual": 0, "target": 1, "pct": 0 },
+    "payments": { "actual": 1, "target": 1, "pct": 100 }
+  }
+}

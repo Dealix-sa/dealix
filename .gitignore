@@ -213,3 +213,15 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Dealix Company OS — Private Ops & Dashboard Data
+# ─────────────────────────────────────────────────────────────
+dashboard_data/*.json
+!dashboard_data/demo/*.demo.json
+internal_dashboard/*.local.html
+# Private ops is a separate repo and must never be committed here
+dealix-ops-private/
+# Stage runtime artefacts emitted into the fixture by verify scripts
+tests/fixtures/private_ops/stage/stage_exit_checklist.csv
+tests/fixtures/private_ops/stage/evidence_report.md

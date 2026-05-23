@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        dealix-sprint dealix-kit dealix-stage dealix-daily dealix-advance \
+        dealix-close-day dealix-weekly dealix-dashboard dealix-verify
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,27 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Company OS ─────────────────────────────────────────
+PRIVATE_OPS ?= ../dealix-ops-private
+
+dealix-sprint:  ## Print Revenue Sprint Kit summary
+	python -m dealix_cli sprint --private-ops $(PRIVATE_OPS)
+dealix-kit:  ## Print kit checklist
+	python -m dealix_cli kit --private-ops $(PRIVATE_OPS)
+dealix-stage:  ## Show current stage and evidence checks
+	python -m dealix_cli stage --private-ops $(PRIVATE_OPS)
+dealix-daily:  ## Generate today's CEO brief
+	python -m dealix_cli daily --private-ops $(PRIVATE_OPS)
+dealix-advance:  ## Attempt to advance stage if evidence is complete
+	python -m dealix_cli advance --private-ops $(PRIVATE_OPS)
+dealix-close-day:  ## Close today
+	python -m dealix_cli close-day --private-ops $(PRIVATE_OPS)
+dealix-weekly:  ## Run weekly review + verify
+	python -m dealix_cli weekly --private-ops $(PRIVATE_OPS)
+	python -m dealix_cli verify --private-ops $(PRIVATE_OPS)
+dealix-dashboard:  ## Refresh dashboard data; serve on 8080
+	python -m dealix_cli dashboard --private-ops $(PRIVATE_OPS)
+	python -m http.server 8080
+dealix-verify:  ## Run all Dealix Company OS verify scripts
+	python -m dealix_cli verify --private-ops $(PRIVATE_OPS)

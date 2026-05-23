@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<title>Dealix CEO Dashboard</title>
+<style>
+  :root {
+    --bg: #0e1116;
+    --card: #161b22;
+    --text: #e6edf3;
+    --muted: #9da7b3;
+    --accent: #58a6ff;
+    --good: #3fb950;
+    --bad: #f85149;
+  }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 24px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px; }
+  h1 { margin: 0; font-size: 20px; font-weight: 600; }
+  .meta { color: var(--muted); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border-radius: 8px; padding: 16px; }
+  .card h2 { margin: 0 0 12px; font-size: 14px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  .row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px; }
+  .row .k { color: var(--muted); }
+  .row .v { font-variant-numeric: tabular-nums; }
+  footer { margin-top: 24px; color: var(--muted); font-size: 12px; text-align: center; }
+  .dir-toggle { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Dealix CEO Dashboard</h1>
+  <div>
+    <span class="meta" id="as-of">loading...</span>
+    <button class="dir-toggle" onclick="toggleDir()">RTL</button>
+  </div>
+</header>
+
+<div class="grid">
+  <div class="card" id="card-pipeline">
+    <h2>Pipeline</h2>
+    <div class="row"><span class="k">Leads (new)</span><span class="v" id="leads-new">-</span></div>
+    <div class="row"><span class="k">Leads (qualified)</span><span class="v" id="leads-qualified">-</span></div>
+    <div class="row"><span class="k">Estimated open ACV (SAR)</span><span class="v" id="acv">-</span></div>
+  </div>
+
+  <div class="card" id="card-revenue">
+    <h2>Revenue</h2>
+    <div class="row"><span class="k">DMs sent</span><span class="v" id="dms-sent">-</span></div>
+    <div class="row"><span class="k">Samples sent</span><span class="v" id="samples">-</span></div>
+    <div class="row"><span class="k">Proposals out</span><span class="v" id="proposals">-</span></div>
+    <div class="row"><span class="k">Booked MTD (SAR)</span><span class="v" id="booked">-</span></div>
+  </div>
+
+  <div class="card" id="card-delivery">
+    <h2>Delivery</h2>
+    <div class="row"><span class="k">Active sprints</span><span class="v" id="active">-</span></div>
+    <div class="row"><span class="k">Completed MTD</span><span class="v" id="completed">-</span></div>
+    <div class="row"><span class="k">At risk</span><span class="v" id="at-risk">-</span></div>
+  </div>
+
+  <div class="card" id="card-learning">
+    <h2>Learning</h2>
+    <div class="row"><span class="k">Latest decision</span><span class="v" id="latest-decision">-</span></div>
+    <div class="row"><span class="k">Experiments active</span><span class="v" id="experiments">-</span></div>
+  </div>
+
+  <div class="card" id="card-trust">
+    <h2>Trust</h2>
+    <div class="row"><span class="k">Last incident</span><span class="v" id="last-incident">-</span></div>
+    <div class="row"><span class="k">Last audit</span><span class="v" id="last-audit">-</span></div>
+    <div class="row"><span class="k">Approval queue</span><span class="v" id="approval-queue">-</span></div>
+  </div>
+</div>
+
+<footer id="footer">Estimated, Observed, Verified values per docs/08_value_os/ESTIMATED_OBSERVED_VERIFIED_VALUE.md</footer>
+
+<script>
+function toggleDir() {
+  const html = document.documentElement;
+  html.dir = html.dir === 'rtl' ? 'ltr' : 'rtl';
+  html.lang = html.dir === 'rtl' ? 'ar' : 'en';
+}
+
+function fmt(n) {
+  if (n === null || n === undefined) return '-';
+  if (typeof n === 'number') return n.toLocaleString();
+  return n;
+}
+
+async function load() {
+  const candidates = [
+    '../dashboard_data/company_metrics.json',
+    '../dashboard_data/demo/company_metrics.demo.json'
+  ];
+  let data = null;
+  for (const url of candidates) {
+    try {
+      const r = await fetch(url);
+      if (r.ok) { data = await r.json(); break; }
+    } catch (e) { /* try next */ }
+  }
+  if (!data) {
+    document.getElementById('as-of').textContent = 'no data file found';
+    return;
+  }
+  document.getElementById('as-of').textContent = 'As of ' + data.as_of + ' (' + data.period + ')';
+  document.getElementById('leads-new').textContent = fmt(data.pipeline.leads_new);
+  document.getElementById('leads-qualified').textContent = fmt(data.pipeline.leads_qualified);
+  document.getElementById('acv').textContent = fmt(data.pipeline.estimated_acv_open_sar);
+  document.getElementById('dms-sent').textContent = fmt(data.pipeline.dms_sent_with_consent);
+  document.getElementById('samples').textContent = fmt(data.pipeline.samples_sent);
+  document.getElementById('proposals').textContent = fmt(data.pipeline.proposals_out);
+  document.getElementById('booked').textContent = fmt(data.revenue.booked_mtd_sar);
+  document.getElementById('active').textContent = fmt(data.delivery.sprints_in_flight);
+  document.getElementById('completed').textContent = fmt(data.delivery.sprints_completed_mtd || 0);
+  document.getElementById('at-risk').textContent = fmt(data.delivery.sprints_at_risk);
+  document.getElementById('latest-decision').textContent = (data.learning && data.learning.latest_decision) || '-';
+  document.getElementById('experiments').textContent = fmt(data.learning.experiments_active);
+  document.getElementById('last-incident').textContent = (data.trust && data.trust.last_incident) || '-';
+  document.getElementById('last-audit').textContent = (data.trust && data.trust.last_audit) || '-';
+  document.getElementById('approval-queue').textContent = fmt(data.trust.approval_queue_depth);
+}
+load();
+</script>
+</body>
+</html>

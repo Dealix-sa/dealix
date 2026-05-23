@@ -1,0 +1,32 @@
+name: Dealix Stage Evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "execution_engine/**"
+      - "tests/fixtures/private_ops/**"
+      - "scripts/verify_stage_evidence_automation.py"
+      - ".github/workflows/dealix-stage-evidence.yml"
+  pull_request:
+    paths:
+      - "execution_engine/**"
+      - "tests/fixtures/private_ops/**"
+      - "scripts/verify_stage_evidence_automation.py"
+      - ".github/workflows/dealix-stage-evidence.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pyyaml
+        run: python -m pip install --upgrade pip pyyaml
+      - name: Verify stage evidence automation
+        run: python scripts/verify_stage_evidence_automation.py

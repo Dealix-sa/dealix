@@ -1,0 +1,34 @@
+name: Dealix Full Spectrum
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "scripts/verify_full_spectrum_os.py"
+      - "scripts/verify_document_quality.py"
+      - ".github/workflows/dealix-full-spectrum.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "scripts/verify_full_spectrum_os.py"
+      - "scripts/verify_document_quality.py"
+      - ".github/workflows/dealix-full-spectrum.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pyyaml
+        run: python -m pip install --upgrade pip pyyaml
+      - name: Verify full spectrum OS
+        run: python scripts/verify_full_spectrum_os.py
+      - name: Verify document quality
+        run: python scripts/verify_document_quality.py
