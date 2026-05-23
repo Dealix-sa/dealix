@@ -108,6 +108,8 @@ from api.routers import commercial_map as commercial_map_router
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Founder Console — internal-only token-gated dashboard API
+from api.routers.internal import founder_console as internal_founder_console
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -345,6 +347,8 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Founder Console internal API (token-gated; read CSVs + queue actions)
+    app.include_router(internal_founder_console.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

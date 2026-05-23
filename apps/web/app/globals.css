@@ -1,30 +1,454 @@
+/* Dealix brand globals — keep existing utility classes additive. */
+
+:root {
+  --dealix-deep-navy: #0B1220;
+  --dealix-emerald-teal: #00D1A1;
+  --dealix-soft-silver: #B2BBC6;
+  --dealix-slate: #0F1726;
+  --dealix-white: #FFFFFF;
+
+  --dealix-radius-sm: 6px;
+  --dealix-radius-md: 10px;
+  --dealix-radius-lg: 14px;
+
+  --dealix-space-xs: 4px;
+  --dealix-space-sm: 8px;
+  --dealix-space-md: 16px;
+  --dealix-space-lg: 24px;
+  --dealix-space-xl: 32px;
+  --dealix-space-xxl: 48px;
+
+  --dealix-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.18);
+  --dealix-shadow-md: 0 6px 14px rgba(0, 0, 0, 0.28);
+
+  --dealix-font: Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
-  background: #f4f6fb;
-  color: #0f172a;
+  font-family: var(--dealix-font);
+  background: var(--dealix-deep-navy);
+  color: var(--dealix-white);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
-  color: inherit;
+  color: var(--dealix-emerald-teal);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2, h3, h4 {
+  color: var(--dealix-white);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--dealix-space-sm);
 }
 
 main {
-  padding: 24px;
+  padding: var(--dealix-space-lg);
 }
 
+/* Legacy utility classes (kept for back-compat with existing pages). */
 .card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 16px;
+  background: var(--dealix-slate);
+  border: 1px solid rgba(178, 187, 198, 0.18);
+  border-radius: var(--dealix-radius-md);
+  padding: var(--dealix-space-md);
+  color: var(--dealix-white);
 }
 
 .grid {
   display: grid;
-  gap: 16px;
+  gap: var(--dealix-space-md);
+}
+
+/* ── Dealix shell layout ───────────────────────────────────────── */
+.dealix-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  background: var(--dealix-deep-navy);
+  color: var(--dealix-white);
+}
+
+.dealix-shell__sidebar {
+  background: var(--dealix-slate);
+  border-right: 1px solid rgba(178, 187, 198, 0.12);
+  padding: var(--dealix-space-lg) var(--dealix-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dealix-space-lg);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.dealix-shell__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dealix-space-xs);
+}
+
+.dealix-shell__tagline {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--dealix-soft-silver);
+  text-transform: uppercase;
+}
+
+.dealix-shell__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dealix-shell__nav a {
+  color: var(--dealix-soft-silver);
+  padding: 8px 10px;
+  border-radius: var(--dealix-radius-sm);
+  font-size: 13px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dealix-shell__nav a:hover {
+  background: rgba(0, 209, 161, 0.08);
+  color: var(--dealix-white);
+}
+
+.dealix-shell__topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--dealix-space-md) var(--dealix-space-lg);
+  border-bottom: 1px solid rgba(178, 187, 198, 0.12);
+  background: var(--dealix-slate);
+}
+
+.dealix-shell__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dealix-shell__content {
+  padding: var(--dealix-space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dealix-space-lg);
+}
+
+/* ── Cards & metrics ───────────────────────────────────────────── */
+.dealix-card {
+  background: var(--dealix-slate);
+  border: 1px solid rgba(178, 187, 198, 0.14);
+  border-radius: var(--dealix-radius-md);
+  padding: var(--dealix-space-md);
+  color: var(--dealix-white);
+  box-shadow: var(--dealix-shadow-sm);
+}
+
+.dealix-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--dealix-space-md);
+  gap: var(--dealix-space-sm);
+}
+
+.dealix-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dealix-white);
+  letter-spacing: 0.02em;
+}
+
+.dealix-card__body {
+  color: var(--dealix-soft-silver);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dealix-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--dealix-space-md);
+  border-radius: var(--dealix-radius-md);
+  background: rgba(0, 209, 161, 0.04);
+  border: 1px solid rgba(0, 209, 161, 0.18);
+}
+
+.dealix-metric__value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--dealix-white);
+  line-height: 1.1;
+}
+
+.dealix-metric__label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dealix-soft-silver);
+}
+
+.dealix-metric__delta {
+  font-size: 12px;
+  color: var(--dealix-emerald-teal);
+  margin-top: var(--dealix-space-xs);
+}
+
+.dealix-metric__delta--down {
+  color: #ff7c7c;
+}
+
+/* ── CTAs ──────────────────────────────────────────────────────── */
+.dealix-cta-primary {
+  background: var(--dealix-emerald-teal);
+  color: var(--dealix-deep-navy);
+  border: 1px solid var(--dealix-emerald-teal);
+  border-radius: var(--dealix-radius-sm);
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dealix-cta-primary:hover {
+  filter: brightness(1.05);
+}
+
+.dealix-cta-ghost {
+  background: transparent;
+  color: var(--dealix-emerald-teal);
+  border: 1px solid var(--dealix-emerald-teal);
+  border-radius: var(--dealix-radius-sm);
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dealix-cta-ghost:hover {
+  background: rgba(0, 209, 161, 0.08);
+}
+
+/* ── Status chips ──────────────────────────────────────────────── */
+.dealix-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.dealix-status-ok {
+  color: var(--dealix-emerald-teal);
+  background: rgba(0, 209, 161, 0.12);
+  border-color: rgba(0, 209, 161, 0.4);
+}
+
+.dealix-status-warn {
+  color: #ffd86b;
+  background: rgba(255, 216, 107, 0.1);
+  border-color: rgba(255, 216, 107, 0.35);
+}
+
+.dealix-status-risk {
+  color: #ff8a8a;
+  background: rgba(255, 138, 138, 0.1);
+  border-color: rgba(255, 138, 138, 0.35);
+}
+
+.dealix-status-info {
+  color: var(--dealix-soft-silver);
+  background: rgba(178, 187, 198, 0.08);
+  border-color: rgba(178, 187, 198, 0.3);
+}
+
+/* ── Source pill ───────────────────────────────────────────────── */
+.dealix-source-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dealix-soft-silver);
+  background: rgba(178, 187, 198, 0.08);
+  border: 1px solid rgba(178, 187, 198, 0.18);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.dealix-source-pill--fallback {
+  color: #ffd86b;
+  border-color: rgba(255, 216, 107, 0.35);
+  background: rgba(255, 216, 107, 0.08);
+}
+
+/* ── Misc helpers ──────────────────────────────────────────────── */
+.dealix-grid {
+  display: grid;
+  gap: var(--dealix-space-md);
+}
+
+.dealix-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dealix-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dealix-grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .dealix-shell {
+    grid-template-columns: 1fr;
+  }
+  .dealix-shell__sidebar {
+    position: relative;
+    height: auto;
+  }
+  .dealix-grid--2,
+  .dealix-grid--3,
+  .dealix-grid--4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dealix-section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dealix-space-xs);
+  margin: 0 0 var(--dealix-space-sm);
+}
+
+.dealix-section-heading h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dealix-white);
+  margin: 0;
+}
+
+.dealix-section-heading__rule {
+  height: 2px;
+  width: 56px;
+  background: var(--dealix-emerald-teal);
+  border-radius: 2px;
+}
+
+.dealix-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--dealix-emerald-teal);
+  background: rgba(0, 209, 161, 0.08);
+  border: 1px solid rgba(0, 209, 161, 0.3);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.dealix-trust-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dealix-emerald-teal);
+  box-shadow: 0 0 8px rgba(0, 209, 161, 0.6);
+}
+
+.dealix-wordmark {
+  font-family: var(--dealix-font);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--dealix-white);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dealix-wordmark--sm { font-size: 16px; }
+.dealix-wordmark--md { font-size: 22px; }
+.dealix-wordmark--lg { font-size: 32px; }
+
+.dealix-wordmark__accent {
+  color: var(--dealix-emerald-teal);
+}
+
+.dealix-empty {
+  padding: var(--dealix-space-lg);
+  text-align: center;
+  color: var(--dealix-soft-silver);
+  font-size: 13px;
+  border: 1px dashed rgba(178, 187, 198, 0.25);
+  border-radius: var(--dealix-radius-md);
+}
+
+.dealix-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--dealix-space-xs);
+}
+
+.dealix-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--dealix-space-sm);
+  padding: 8px 10px;
+  border-radius: var(--dealix-radius-sm);
+  background: rgba(15, 23, 38, 0.6);
+  font-size: 13px;
+  color: var(--dealix-soft-silver);
+}
+
+.dealix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.dealix-table th, .dealix-table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(178, 187, 198, 0.1);
+  color: var(--dealix-soft-silver);
+}
+
+.dealix-table th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dealix-soft-silver);
 }
