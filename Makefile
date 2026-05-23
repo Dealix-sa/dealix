@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        company-os-v3 founder-frontend founder-interface
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Company OS v3 / Founder Operating Interface ────────────────
+company-os-v3: ## Verify Dealix Enterprise Company OS v3 scaffolding
+	$(PYTHON) scripts/verify_company_os_v3.py
+
+founder-frontend: ## Verify founder frontend routes + apps/web build
+	$(PYTHON) scripts/verify_founder_frontend.py
+
+founder-interface: ## Verify the full founder operating interface (frontend + API contract)
+	$(PYTHON) scripts/verify_founder_operating_interface.py
