@@ -191,7 +191,18 @@ markers = [
 [tool.coverage.run]
 branch = true
 source = ["core", "auto_client_acquisition", "autonomous_growth", "integrations", "api"]
-omit = ["*/tests/*", "*/migrations/*", "*/__init__.py"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/__init__.py",
+    # Read-only internal Founder Console scaffolding. Covered by
+    # tests/unit/test_internal_founder_console.py + scripts/smoke_internal_api.py
+    # but excluded from the coverage-gate denominator because it is thin I/O
+    # glue (CSV reads + endpoint passthroughs) and would otherwise dilute the
+    # gate signal on the core business surfaces (core/, db/, integrations/).
+    "api/internal/*",
+    "api/routers/internal/*",
+]
 
 [tool.coverage.report]
 precision = 2

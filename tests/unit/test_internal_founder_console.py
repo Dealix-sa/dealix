@@ -7,23 +7,49 @@ isolated FastAPI mount so we don't have to boot the full api.main app graph.
 
 from __future__ import annotations
 
+import importlib
 import os
 from pathlib import Path
 
 import pytest
 
 
+# ── Shared isolation fixture ────────────────────────────────────
+
+
+@pytest.fixture(autouse=True)
+def _isolate_internal_modules(monkeypatch):
+    """Reload api.internal modules around each test so env mutations don't leak.
+
+    The internal auth + runtime_reader modules read env vars at import time and
+    cache module-level state. We monkeypatch env, reload the modules, run the
+    test, then reload once more on teardown with the test-suite default env so
+    later tests in the same session see a clean module.
+    """
+    monkeypatch.delenv("INTERNAL_API_TOKEN", raising=False)
+
+    yield
+
+    # Best-effort restore: reload with no override so subsequent tests get a
+    # consistent module state.
+    os.environ.pop("INTERNAL_API_TOKEN", None)
+    for mod_name in (
+        "api.internal.auth",
+        "api.internal.runtime_reader",
+        "api.routers.internal.founder_console",
+    ):
+        mod = importlib.import_module(mod_name)
+        importlib.reload(mod)
+
+
 # ── api.internal.auth ────────────────────────────────────────────
 
 
-def _reload_auth_with_env(token: str | None):
-    """Helper: reload the auth module with INTERNAL_API_TOKEN set or unset."""
-    import importlib
-
+def _reload_auth_with_env(monkeypatch, token: str | None):
     if token is None:
-        os.environ.pop("INTERNAL_API_TOKEN", None)
+        monkeypatch.delenv("INTERNAL_API_TOKEN", raising=False)
     else:
-        os.environ["INTERNAL_API_TOKEN"] = token
+        monkeypatch.setenv("INTERNAL_API_TOKEN", token)
 
     from api.internal import auth as auth_module
 
@@ -31,43 +57,43 @@ def _reload_auth_with_env(token: str | None):
 
 
 @pytest.mark.asyncio
-async def test_internal_auth_dev_mode_allows_anonymous() -> None:
-    auth = _reload_auth_with_env(None)
+async def test_internal_auth_dev_mode_allows_anonymous(monkeypatch) -> None:
+    auth = _reload_auth_with_env(monkeypatch, None)
     assert auth._expected_token() is None
     result = await auth.require_internal_token(x_internal_token=None)
     assert result == "anonymous-dev"
 
 
 @pytest.mark.asyncio
-async def test_internal_auth_blank_token_treated_as_unset() -> None:
-    auth = _reload_auth_with_env("   ")
+async def test_internal_auth_blank_token_treated_as_unset(monkeypatch) -> None:
+    auth = _reload_auth_with_env(monkeypatch, "   ")
     assert auth._expected_token() is None
     result = await auth.require_internal_token(x_internal_token=None)
     assert result == "anonymous-dev"
 
 
 @pytest.mark.asyncio
-async def test_internal_auth_valid_token_accepted() -> None:
-    auth = _reload_auth_with_env("s3cr3t")
+async def test_internal_auth_valid_token_accepted(monkeypatch) -> None:
+    auth = _reload_auth_with_env(monkeypatch, "s3cr3t")
     result = await auth.require_internal_token(x_internal_token="s3cr3t")
     assert result == "internal"
 
 
 @pytest.mark.asyncio
-async def test_internal_auth_missing_token_rejected() -> None:
+async def test_internal_auth_missing_token_rejected(monkeypatch) -> None:
     from fastapi import HTTPException
 
-    auth = _reload_auth_with_env("s3cr3t")
+    auth = _reload_auth_with_env(monkeypatch, "s3cr3t")
     with pytest.raises(HTTPException) as exc:
         await auth.require_internal_token(x_internal_token=None)
     assert exc.value.status_code == 401
 
 
 @pytest.mark.asyncio
-async def test_internal_auth_invalid_token_rejected() -> None:
+async def test_internal_auth_invalid_token_rejected(monkeypatch) -> None:
     from fastapi import HTTPException
 
-    auth = _reload_auth_with_env("s3cr3t")
+    auth = _reload_auth_with_env(monkeypatch, "s3cr3t")
     with pytest.raises(HTTPException) as exc:
         await auth.require_internal_token(x_internal_token="wrong")
     assert exc.value.status_code == 403
@@ -78,8 +104,6 @@ async def test_internal_auth_invalid_token_rejected() -> None:
 
 def test_runtime_reader_missing_files_returns_empty(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setenv("PRIVATE_OPS_ROOT", str(tmp_path))
-
-    import importlib
 
     from api.internal import runtime_reader
 
@@ -94,8 +118,6 @@ def test_runtime_reader_missing_files_returns_empty(tmp_path: Path, monkeypatch)
 
 def test_runtime_reader_reads_csv(tmp_path: Path, monkeypatch) -> None:
     monkeypatch.setenv("PRIVATE_OPS_ROOT", str(tmp_path))
-
-    import importlib
 
     from api.internal import runtime_reader
 
@@ -186,8 +208,6 @@ def founder_client(tmp_path: Path, monkeypatch):
     monkeypatch.setenv("PRIVATE_OPS_ROOT", str(tmp_path))
     monkeypatch.delenv("INTERNAL_API_TOKEN", raising=False)
 
-    import importlib
-
     from api.internal import auth, runtime_reader
     from api.routers.internal import founder_console
 
@@ -243,8 +263,6 @@ def test_internal_endpoints_require_token_when_set(tmp_path: Path, monkeypatch) 
     monkeypatch.setenv("PRIVATE_OPS_ROOT", str(tmp_path))
     monkeypatch.setenv("INTERNAL_API_TOKEN", "tk-abc")
 
-    import importlib
-
     from api.internal import auth as auth_module
     from api.routers.internal import founder_console
 
@@ -276,10 +294,6 @@ def test_internal_endpoints_require_token_when_set(tmp_path: Path, monkeypatch) 
         == 200
     )
 
-    # Reset to dev-mode for other tests.
-    monkeypatch.delenv("INTERNAL_API_TOKEN", raising=False)
-    importlib.reload(auth_module)
-
 
 def test_internal_workers_reads_runtime_csv(tmp_path: Path, monkeypatch) -> None:
     """Verify the workers endpoint reflects rows from runtime/worker_state.csv."""
@@ -288,8 +302,6 @@ def test_internal_workers_reads_runtime_csv(tmp_path: Path, monkeypatch) -> None
 
     monkeypatch.setenv("PRIVATE_OPS_ROOT", str(tmp_path))
     monkeypatch.delenv("INTERNAL_API_TOKEN", raising=False)
-
-    import importlib
 
     from api.internal import auth, runtime_reader
     from api.routers.internal import founder_console
