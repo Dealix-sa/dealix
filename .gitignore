@@ -38,6 +38,10 @@ eggs/
 .eggs/
 lib/
 lib64/
+# Founder Console v2 — keep Next.js lib tracked even though Python build
+# rules ignore generic lib/ folders above.
+!apps/web/lib/
+!apps/web/lib/**
 parts/
 sdist/
 var/
