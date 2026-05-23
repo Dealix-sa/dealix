@@ -130,3 +130,19 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Enterprise Revenue & Distribution v2 ───────────────────────
+# v2 = founder-facing commercial runtime surfaces, generated from private-ops CSVs.
+# Doctrine: docs/runtime/REVENUE_FACTORY_RUNTIME_V2.md
+# Bootstrap the private-ops tree once per server: bash scripts/init_private_ops.sh
+
+PRIVATE_OPS ?= /opt/dealix-ops-private
+
+sales-cockpit: ## v2: generate the founder Sales Cockpit markdown from private-ops CSVs
+	$(PYTHON) scripts/generate_sales_cockpit.py --private-ops $(PRIVATE_OPS)
+
+approval-center: ## v2: generate the founder Approval Center markdown from private-ops CSVs
+	$(PYTHON) scripts/generate_approval_center.py --private-ops $(PRIVATE_OPS)
+
+revenue-distribution-v2-verify: ## v2: verify all v2 docs/scripts/schema/cron/workflow artifacts exist
+	$(PYTHON) scripts/verify_enterprise_revenue_distribution_v2.py
