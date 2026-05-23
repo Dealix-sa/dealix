@@ -228,7 +228,7 @@ posts:
     '
   cta_ar: Motion D — Executive diagnostic
   aeo_slug: human-approval-selling-point
-  status: draft
+  status: approved
 - week: 4
   day: 4
   pillar: proof
@@ -240,7 +240,7 @@ posts:
     '
   cta_ar: MASTER Commercial Plan — ابدأ صباحاً
   aeo_slug: weekly-commercial-rhythm
-  status: draft
+  status: approved
 - week: 5
   day: 0
   pillar: proof
