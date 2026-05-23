@@ -1,0 +1,33 @@
+name: Dealix Dashboard Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  dashboard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test deps
+        run: pip install pytest pytest-cov
+
+      - name: Verify dashboard v1
+        run: python scripts/verify_dashboard.py
+
+      - name: Verify dashboard v2
+        run: python scripts/verify_dashboard_v2.py
+
+      - name: Compile dashboard runtime
+        run: python -m compileall ops_runtime scripts/export_dashboard_data.py scripts/verify_dashboard.py scripts/verify_dashboard_v2.py
+
+      - name: Run dashboard intelligence tests
+        run: pytest --noconftest -p no:cacheprovider --no-cov tests/unit/test_target_scoring.py tests/unit/test_founder_focus.py tests/unit/test_alerts_generator.py -q

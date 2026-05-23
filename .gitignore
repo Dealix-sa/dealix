@@ -213,3 +213,12 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# CEO Dashboard v2 — generated dashboard JSON from private ops.
+# Real metrics never enter the public repo; only the .demo.json
+# files under dashboard_data/demo/ are tracked.
+# ─────────────────────────────────────────────────────────────
+dashboard_data/*.json
+!dashboard_data/demo/*.demo.json
+internal_dashboard/*.local.html
