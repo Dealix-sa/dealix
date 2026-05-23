@@ -1,0 +1,117 @@
+{
+  "name": "Dealix Brand Tokens",
+  "version": "1.0.0",
+  "wordmark": "DEALIX",
+  "tagline": "INTELLIGENT DEALS. REAL GROWTH.",
+  "tagline_ar": "صفقات ذكية. نمو حقيقي.",
+  "color": {
+    "primary": {
+      "deep_navy": "#0B1220",
+      "emerald_teal": "#00D1A1",
+      "soft_silver": "#B2BBC6",
+      "slate": "#0F1726",
+      "white": "#FFFFFF"
+    },
+    "surface": {
+      "page": "#0B1220",
+      "panel": "#0F1726",
+      "card": "#111B2E",
+      "card_alt": "#142039",
+      "border": "#1E2A44",
+      "border_strong": "#2B3A5A"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#B2BBC6",
+      "muted": "#8693A6",
+      "inverse": "#0B1220",
+      "accent": "#00D1A1"
+    },
+    "semantic": {
+      "success": "#00D1A1",
+      "info": "#3A9CFF",
+      "warning": "#F5B547",
+      "danger": "#F26D6D",
+      "trust": "#00D1A1",
+      "approval_pending": "#F5B547",
+      "approval_blocked": "#F26D6D",
+      "approval_passed": "#00D1A1"
+    },
+    "approval_class": {
+      "A1": "#00D1A1",
+      "A2": "#F5B547",
+      "A3": "#F26D6D"
+    }
+  },
+  "typography": {
+    "font_family": {
+      "sans": "Inter, \"IBM Plex Sans Arabic\", system-ui, -apple-system, sans-serif",
+      "mono": "\"JetBrains Mono\", \"IBM Plex Mono\", ui-monospace, SFMono-Regular, monospace"
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "scale": {
+      "display": "44px",
+      "h1": "32px",
+      "h2": "24px",
+      "h3": "20px",
+      "body": "15px",
+      "small": "13px",
+      "caption": "12px"
+    },
+    "line_height": {
+      "tight": 1.15,
+      "normal": 1.45,
+      "relaxed": 1.6
+    },
+    "letter_spacing": {
+      "wordmark": "0.18em",
+      "tagline": "0.14em",
+      "label": "0.06em"
+    }
+  },
+  "radius": {
+    "sm": "6px",
+    "md": "10px",
+    "lg": "14px",
+    "xl": "20px",
+    "pill": "999px"
+  },
+  "spacing": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "12px",
+    "lg": "16px",
+    "xl": "24px",
+    "2xl": "32px",
+    "3xl": "48px"
+  },
+  "shadow": {
+    "card": "0 1px 2px rgba(0,0,0,0.4), 0 8px 24px -12px rgba(0,209,161,0.10)",
+    "elevated": "0 4px 12px rgba(0,0,0,0.5), 0 16px 48px -20px rgba(0,209,161,0.18)",
+    "focus_ring": "0 0 0 3px rgba(0,209,161,0.35)"
+  },
+  "motion": {
+    "fast": "120ms ease-out",
+    "normal": "200ms ease-out",
+    "slow": "360ms ease-in-out"
+  },
+  "pillars": [
+    "Built on Trust",
+    "Driven by Growth",
+    "Closing Deals",
+    "Focused on Results",
+    "Global Mindset, Local Impact"
+  ],
+  "accessibility": {
+    "min_contrast_text": 4.5,
+    "min_contrast_large_text": 3.0,
+    "min_contrast_ui": 3.0,
+    "focus_visible": true,
+    "rtl_support": true
+  }
+}

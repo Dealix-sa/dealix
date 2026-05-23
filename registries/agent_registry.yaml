@@ -1,0 +1,241 @@
+# Dealix Agent Registry
+# Source of truth for every agent that runs inside the Dealix operating company.
+# Every agent MUST declare scope, tools, outputs, approval_class_max,
+# eval_required, kill_switch, audit_required, owner, allowed_write_targets,
+# data_access_level, and external_action_allowed.
+#
+# Approval classes (mirrors policies/dealix_control_policy.yaml):
+#   A1 — autoroute safe: read-only or internal-only writes, never external
+#   A2 — founder approval required before any external-impact action
+#   A3 — escalation only: never executed without recorded escalation + evidence
+#
+# Hard rules:
+#   - external_action_allowed: false  → agent may only draft/queue/recommend
+#   - external_action_allowed: true   → still requires A2/A3 approval before send
+#   - eval_required: true              → blocked from production until eval gate passes
+#   - kill_switch: true                → can be quarantined at runtime
+#   - audit_required: true             → every invocation appends to audit log
+
+version: 1
+schema_version: "2026-05-23"
+
+defaults:
+  eval_required: true
+  kill_switch: true
+  audit_required: true
+  external_action_allowed: false
+  data_access_level: internal
+  allowed_write_targets:
+    - draft_queue
+    - recommendation_ledger
+  approval_class_max: A1
+
+agents:
+  - id: ceo_copilot
+    name: CEO Copilot
+    purpose: Summarize daily operating picture, surface decisions, recommend focus.
+    tools: [internal_reader, summary_formatter]
+    outputs: [ceo_summary, decision_recommendations]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: founder
+    data_access_level: full_internal
+    allowed_write_targets: [draft_queue, recommendation_ledger, ceo_brief]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: brand_guardian
+    name: Brand Guardian
+    purpose: Enforce brand voice, visual tokens, accessibility on all draft content.
+    tools: [brand_token_reader, copy_checker, contrast_checker]
+    outputs: [brand_violations, brand_passes]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: brand
+    allowed_write_targets: [draft_queue, brand_violation_ledger]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: growth_strategist
+    name: Growth Strategist
+    purpose: Recommend ICP, sector, account, and channel priorities.
+    tools: [account_scoring, sector_ranking]
+    outputs: [growth_recommendations, experiment_proposals]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: growth
+    allowed_write_targets: [draft_queue, experiment_backlog]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: distribution_operator
+    name: Distribution Operator
+    purpose: Draft outbound, follow-ups, queue messages. Never sends externally.
+    tools: [account_reader, draft_writer, follow_up_builder]
+    outputs: [outbound_drafts, follow_up_queue]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: growth
+    allowed_write_targets: [draft_queue, follow_up_queue]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: content_strategist
+    name: Content Strategist
+    purpose: Plan content calendar, draft posts, suggest founder-led content.
+    tools: [calendar_reader, draft_writer]
+    outputs: [content_drafts, calendar_proposals]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: marketing
+    allowed_write_targets: [draft_queue, content_calendar]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: offer_architect
+    name: Offer Architect
+    purpose: Propose offer packaging and rung placement; never commits price.
+    tools: [product_ladder_reader, pricing_guardrail_reader]
+    outputs: [offer_proposals]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: product
+    allowed_write_targets: [draft_queue, productization_candidates]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: performance_analyst
+    name: Performance Analyst
+    purpose: Diagnose funnel drop-offs, propose experiments and tests.
+    tools: [funnel_reader, experiment_writer]
+    outputs: [diagnostics, experiment_proposals]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: growth
+    allowed_write_targets: [experiment_backlog, learning_loop_ledger]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: trust_guardian
+    name: Trust Guardian
+    purpose: Evaluate every action against policy-as-code. Blocks violations.
+    tools: [policy_evaluator, audit_writer]
+    outputs: [trust_flags, policy_results]
+    approval_class_max: A1
+    external_action_allowed: false
+    owner: trust
+    allowed_write_targets: [trust_flag_ledger, audit_log]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: eval_guardian
+    name: Eval Guardian
+    purpose: Run eval suites before any agent / prompt change reaches production.
+    tools: [eval_runner, audit_writer]
+    outputs: [eval_results, gate_decisions]
+    approval_class_max: A1
+    external_action_allowed: false
+    owner: trust
+    allowed_write_targets: [eval_results_ledger, audit_log]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: finance_copilot
+    name: Finance Copilot
+    purpose: Summarize cash, MRR, AI unit cost; flag anomalies.
+    tools: [finance_reader, anomaly_detector]
+    outputs: [finance_summary, finance_alerts]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: finance
+    allowed_write_targets: [finance_summary_ledger, draft_queue]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: delivery_copilot
+    name: Delivery Copilot
+    purpose: Track engagements, QA, handoffs; never commits scope changes.
+    tools: [delivery_reader, qa_checker]
+    outputs: [delivery_status, qa_findings]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: delivery
+    allowed_write_targets: [delivery_status_ledger, draft_queue]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: security_guardian
+    name: Security Guardian
+    purpose: Watch for credential exposure, anomalous tool use, unauth attempts.
+    tools: [audit_reader, secret_scanner]
+    outputs: [security_findings]
+    approval_class_max: A1
+    external_action_allowed: false
+    owner: security
+    allowed_write_targets: [security_finding_ledger]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: productization_agent
+    name: Productization Agent
+    purpose: Identify recurring delivery work that can become a product.
+    tools: [delivery_reader, productization_writer]
+    outputs: [productization_candidates]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: product
+    allowed_write_targets: [productization_candidates, draft_queue]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: partner_revenue_agent
+    name: Partner Revenue Agent
+    purpose: Track partner-sourced opportunities; draft warm intros.
+    tools: [partner_reader, draft_writer]
+    outputs: [partner_pipeline, draft_intros]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: growth
+    allowed_write_targets: [draft_queue, partner_ledger]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: proof_safety_agent
+    name: Proof Safety Agent
+    purpose: Ensure no proof is published without client + internal approval.
+    tools: [proof_reader, policy_evaluator]
+    outputs: [proof_decisions]
+    approval_class_max: A1
+    external_action_allowed: false
+    owner: trust
+    allowed_write_targets: [proof_decision_ledger]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - id: incident_response_agent
+    name: Incident Response Agent
+    purpose: Coordinate triage on production incidents; recommend next steps.
+    tools: [audit_reader, runbook_reader, draft_writer]
+    outputs: [incident_briefs, recommended_actions]
+    approval_class_max: A2
+    external_action_allowed: false
+    owner: security
+    allowed_write_targets: [incident_ledger, draft_queue]
+    eval_required: true
+    kill_switch: true
+    audit_required: true

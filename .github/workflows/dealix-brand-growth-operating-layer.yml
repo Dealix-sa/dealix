@@ -1,0 +1,71 @@
+name: Dealix Brand-Growth Operating Layer
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "apps/web/**"
+      - "assets/brand/**"
+      - "public/brand/**"
+      - "docs/brand/**"
+      - "docs/positioning/**"
+      - "docs/intelligence/**"
+      - "docs/growth/**"
+      - "docs/marketing/**"
+      - "docs/product/**"
+      - "scripts/verify_brand_system.py"
+      - "scripts/verify_growth_system.py"
+      - "scripts/verify_marketing_system.py"
+      - "scripts/verify_product_distribution.py"
+      - "scripts/verify_brand_growth_operating_layer.py"
+      - ".github/workflows/dealix-brand-growth-operating-layer.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Brand system verifier
+        run: python scripts/verify_brand_system.py
+
+      - name: Growth + intelligence verifier
+        run: python scripts/verify_growth_system.py
+
+      - name: Marketing OS verifier
+        run: python scripts/verify_marketing_system.py
+
+      - name: Product ladder + guardrails verifier
+        run: python scripts/verify_product_distribution.py
+
+      - name: Composite verifier
+        run: python scripts/verify_brand_growth_operating_layer.py
+
+      - name: Setup Node (if web present)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install web deps
+        working-directory: apps/web
+        run: npm ci || npm install
+
+      - name: Web build
+        working-directory: apps/web
+        run: npm run build
