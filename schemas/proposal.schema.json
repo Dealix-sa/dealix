@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/proposal.schema.json",
+  "title": "Proposal tracker entry",
+  "type": "object",
+  "required": ["date", "client", "offer", "amount_sar", "status"],
+  "properties": {
+    "date": {"type": "string", "format": "date"},
+    "client": {"type": "string"},
+    "offer": {"type": "string"},
+    "amount_sar": {"type": "number", "minimum": 0},
+    "status": {"type": "string", "enum": ["Draft", "Sent", "Negotiating", "Verbal yes", "Closed-won", "Closed-lost", "Withdrawn"]},
+    "follow_up_date": {"type": "string"},
+    "decision_maker": {"type": "string"},
+    "next_action": {"type": "string"},
+    "notes": {"type": "string"}
+  }
+}

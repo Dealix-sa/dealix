@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/evidence.schema.json",
+  "title": "Execution evidence ledger entry",
+  "type": "object",
+  "required": ["date", "system", "evidence_type", "evidence_path", "description", "status"],
+  "properties": {
+    "date": {"type": "string", "format": "date"},
+    "system": {"type": "string"},
+    "evidence_type": {"type": "string"},
+    "evidence_path": {"type": "string"},
+    "description": {"type": "string"},
+    "status": {"type": "string", "enum": ["Open", "Closed", "In-review", "Blocked"]},
+    "next_action": {"type": "string"}
+  }
+}

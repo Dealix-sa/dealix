@@ -8,7 +8,14 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        implementation-check security-check company-check \
+        bootstrap-private mission-control ceo-action-queue control-tower \
+        ceo-weekly weekly-close business-score assurance \
+        revenue-ops delivery finance-full trust-full content \
+        productization people partners
+
+DEALIX_PRIVATE_ROOT ?= ../dealix-ops-private
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +137,82 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Implementation Sprint Pack ──────────────────────────
+# Targets that operate the sprint pack. Most write to the private ops
+# working tree at $(DEALIX_PRIVATE_ROOT). Public targets touch only the repo.
+
+implementation-check: ## Run the full Implementation Sprint Pack verifier chain
+	$(PYTHON) scripts/verify_implementation_sprint_pack.py
+	$(PYTHON) scripts/verify_master_operating_blueprint.py
+	$(PYTHON) scripts/verify_security_reliability_os.py
+	$(PYTHON) scripts/verify_public_safety_v2.py
+	$(PYTHON) scripts/verify_data_boundary.py
+	$(PYTHON) scripts/verify_company_data_architecture.py
+	$(PYTHON) scripts/verify_revenue_operations_playbook.py
+	$(PYTHON) scripts/verify_delivery_client_success_os.py
+	$(PYTHON) scripts/verify_finance_pricing_os.py
+	$(PYTHON) scripts/verify_trust_ai_risk_os.py
+	$(PYTHON) scripts/verify_brand_proof_content_os.py
+	$(PYTHON) scripts/verify_productization_engineering_os.py
+	$(PYTHON) scripts/verify_people_partner_os.py
+
+security-check: ## Security + public safety + data boundary verifiers
+	$(PYTHON) scripts/verify_security_reliability_os.py
+	$(PYTHON) scripts/verify_public_safety_v2.py
+	$(PYTHON) scripts/verify_data_boundary.py
+
+company-check: ## Company data architecture + private data quality audit
+	$(PYTHON) scripts/verify_company_data_architecture.py
+	$(PYTHON) scripts/audit_private_data_quality.py --root $(DEALIX_PRIVATE_ROOT)
+
+bootstrap-private: ## Bootstrap the dealix-ops-private/ working tree
+	$(PYTHON) scripts/bootstrap_private_ops.py --root $(DEALIX_PRIVATE_ROOT)
+
+mission-control: ## Refresh founder/mission_control.md
+	$(PYTHON) scripts/generate_mission_control.py --root $(DEALIX_PRIVATE_ROOT)
+
+ceo-action-queue: ## Refresh founder/ceo_action_queue.md
+	$(PYTHON) scripts/generate_ceo_action_queue.py --root $(DEALIX_PRIVATE_ROOT)
+
+control-tower: ## Refresh founder/control_tower_brief.md
+	$(PYTHON) scripts/generate_control_tower_brief.py --root $(DEALIX_PRIVATE_ROOT)
+
+business-score: ## Refresh business_audit/ceo_business_score.md
+	$(PYTHON) scripts/generate_ceo_business_score.py --root $(DEALIX_PRIVATE_ROOT)
+
+assurance: ## Refresh evidence/execution_assurance_report.md
+	$(PYTHON) scripts/generate_execution_assurance_report.py --root $(DEALIX_PRIVATE_ROOT)
+
+ceo-weekly: mission-control ceo-action-queue control-tower business-score assurance
+	@echo "PASS: weekly CEO loop refreshed."
+
+weekly-close: business-score assurance
+	@echo "PASS: weekly close complete. Update metrics_history/weekly_metrics.csv next."
+
+revenue-ops: ## Verify revenue ops doctrine
+	$(PYTHON) scripts/verify_revenue_operations_playbook.py
+
+delivery: ## Verify delivery + client success doctrine
+	$(PYTHON) scripts/verify_delivery_client_success_os.py
+
+finance-full: ## Generate finance command report + pricing review
+	$(PYTHON) scripts/generate_finance_command_report.py --root $(DEALIX_PRIVATE_ROOT)
+	$(PYTHON) scripts/generate_pricing_review.py --root $(DEALIX_PRIVATE_ROOT)
+
+trust-full: ## Generate trust review and verify trust/AI risk OS
+	$(PYTHON) scripts/verify_trust_ai_risk_os.py
+	$(PYTHON) scripts/generate_trust_review.py --root $(DEALIX_PRIVATE_ROOT)
+
+content: ## Verify content OS + scan content claims
+	$(PYTHON) scripts/verify_brand_proof_content_os.py
+	$(PYTHON) scripts/review_content_claims.py --root $(DEALIX_PRIVATE_ROOT)/content
+
+productization: ## Generate productization review
+	$(PYTHON) scripts/generate_productization_review.py --root $(DEALIX_PRIVATE_ROOT)
+
+people: ## Verify people/partner OS
+	$(PYTHON) scripts/verify_people_partner_os.py
+
+partners: people
+	@echo "PASS: partner system verified (covered by people target)."

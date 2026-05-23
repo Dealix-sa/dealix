@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/client.schema.json",
+  "title": "Client record",
+  "type": "object",
+  "required": ["client", "offer", "start_date", "stage"],
+  "properties": {
+    "client": {"type": "string"},
+    "offer": {"type": "string"},
+    "start_date": {"type": "string", "format": "date"},
+    "stage": {"type": "string", "enum": ["Intake", "Delivery", "QA", "Handoff", "Feedback", "Retainer"]},
+    "qa_score": {"type": "number", "minimum": 0, "maximum": 100},
+    "health_score": {"type": "number", "minimum": 0, "maximum": 100},
+    "notes": {"type": "string"}
+  }
+}

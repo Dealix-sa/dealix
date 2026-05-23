@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/revenue_action.schema.json",
+  "title": "Revenue action log entry",
+  "type": "object",
+  "required": ["date", "lead_or_client", "action", "type", "status"],
+  "properties": {
+    "date": {"type": "string", "format": "date"},
+    "lead_or_client": {"type": "string"},
+    "action": {"type": "string"},
+    "type": {"type": "string", "enum": ["DM", "Email", "Call", "Sample", "Proposal", "Follow-up", "Payment", "Delivery", "Feedback"]},
+    "status": {"type": "string", "enum": ["Sent", "Replied", "Booked", "Paid", "Lost", "Pending"]},
+    "next_action": {"type": "string"},
+    "evidence": {"type": "string"}
+  }
+}

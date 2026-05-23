@@ -1,0 +1,21 @@
+name: Dealix Security & Reliability Checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  security-reliability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify security OS
+        run: python scripts/verify_security_reliability_os.py
+      - name: Verify public safety
+        run: python scripts/verify_public_safety_v2.py
+      - name: Verify data boundary
+        run: python scripts/verify_data_boundary.py
