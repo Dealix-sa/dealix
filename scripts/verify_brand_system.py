@@ -213,6 +213,17 @@ def main() -> int:
     print(f"FAILED: {len(failures)}")
     for f in failures:
         print(f"  - {f}")
+
+    # Emit GitHub Actions annotations so failures surface on the run page
+    # without needing log auth. One annotation per failure (capped at 10
+    # per step by GitHub).
+    if failures:
+        import os
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            for f in failures[:10]:
+                # Escape % \r \n per Actions workflow-command rules
+                msg = f.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+                print(f"::error title=Brand verifier failure::{msg}")
     return 0 if not failures else 1
 
 

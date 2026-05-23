@@ -116,6 +116,13 @@ def main() -> int:
     for f in failures:
         print(f"  - {f}")
 
+    if failures:
+        import os
+        if os.environ.get("GITHUB_ACTIONS") == "true":
+            for f in failures[:10]:
+                msg = f.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+                print(f"::error title=Composite verifier failure::{msg}")
+
     return 0 if not failures else 1
 
 
