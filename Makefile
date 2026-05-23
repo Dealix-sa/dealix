@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference founder-console-v3 \
+        founder-console-v3-static
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,10 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Founder Console v3 ─────────────────────────────────────────
+founder-console-v3-static: ## Founder Console v3: static file + router check (no build)
+	$(PYTHON) scripts/verify_founder_console_v3.py --skip-build
+
+founder-console-v3: ## Founder Console v3: static check + apps/web build
+	$(PYTHON) scripts/verify_founder_console_v3.py

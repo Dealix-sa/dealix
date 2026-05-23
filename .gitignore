@@ -38,6 +38,9 @@ eggs/
 .eggs/
 lib/
 lib64/
+# Frontend lib directories are application source, not Python build output
+!apps/web/lib/
+!apps/web/lib/**
 parts/
 sdist/
 var/
