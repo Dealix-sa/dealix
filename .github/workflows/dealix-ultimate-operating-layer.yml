@@ -1,0 +1,68 @@
+name: dealix-ultimate-operating-layer
+
+# Verifies the Dealix Ultimate Operating Layer end to end:
+#   policy-as-code  + agent registry + eval gate + prompt/output quality
+#   + control plane stage files + frontend build.
+
+on:
+  push:
+    branches:
+      - main
+      - "claude/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install minimal Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install PyYAML
+
+      - name: Policy check
+        run: python scripts/verify_policy_as_code.py
+
+      - name: Agent registry check
+        run: python scripts/verify_agent_registry.py
+
+      - name: Eval gate check
+        run: python scripts/verify_eval_gate.py
+
+      - name: Prompt/output quality check
+        run: python scripts/verify_prompt_output_quality.py
+
+      - name: Ultimate Operating Layer master verifier
+        run: python scripts/verify_ultimate_operating_layer.py
+
+      - name: Setup Node
+        if: hashFiles('apps/web/package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install apps/web deps
+        if: hashFiles('apps/web/package.json') != ''
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Build apps/web
+        if: hashFiles('apps/web/package.json') != ''
+        working-directory: apps/web
+        run: npm run build
+
+      - name: Frontend missing — fail
+        if: hashFiles('apps/web/package.json') == ''
+        run: |
+          echo "apps/web/package.json missing — Founder Console frontend is required"
+          exit 1

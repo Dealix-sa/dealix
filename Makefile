@@ -8,7 +8,10 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        bootstrap-runtime policy-check agent-registry eval-gate \
+        operating-scorecard founder-console-v5 control-plane-stage \
+        ultimate-operating-layer smoke-internal-api
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +133,37 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Ultimate Operating Layer ─────────────────────────────
+# Internal control plane: founder console + policy/agent/eval gates.
+# PRIVATE_OPS defaults to /opt/dealix-ops-private; override with
+# `make bootstrap-runtime PRIVATE_OPS=/path/to/ops-private`.
+
+PRIVATE_OPS ?= /opt/dealix-ops-private
+
+bootstrap-runtime: ## UOL: create private ops CSV/MD skeleton (PRIVATE_OPS=path)
+	$(PYTHON) scripts/bootstrap_private_ops_runtime.py --private-ops $(PRIVATE_OPS)
+
+policy-check: ## UOL: verify policies/dealix_control_policy.yaml
+	$(PYTHON) scripts/verify_policy_as_code.py
+
+agent-registry: ## UOL: verify registries/agent_registry.yaml
+	$(PYTHON) scripts/verify_agent_registry.py
+
+eval-gate: ## UOL: verify evals/gates/dealix_agent_eval_gate.yaml
+	$(PYTHON) scripts/verify_eval_gate.py
+
+operating-scorecard: ## UOL: generate founder operating scorecard (PRIVATE_OPS=path)
+	$(PYTHON) scripts/generate_operating_scorecard.py --private-ops $(PRIVATE_OPS)
+
+founder-console-v5: ## UOL: verify Founder Console files (frontend + internal API)
+	$(PYTHON) scripts/verify_control_plane_stage.py
+
+control-plane-stage: ## UOL: verify control plane stage (alias of founder-console-v5)
+	$(PYTHON) scripts/verify_control_plane_stage.py
+
+ultimate-operating-layer: ## UOL: master verifier across policy, agents, evals, files
+	$(PYTHON) scripts/verify_ultimate_operating_layer.py
+
+smoke-internal-api: ## UOL: hit /api/v1/internal/* on localhost:8000
+	$(PYTHON) scripts/smoke_internal_api.py

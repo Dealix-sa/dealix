@@ -108,6 +108,16 @@ from api.routers import commercial_map as commercial_map_router
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+
+# Ultimate Operating Layer — internal Founder Console + Control Plane API.
+# Loaded defensively so any import error here cannot kill the rest of the
+# app boot. The router is mounted later in create_app if the import was
+# successful.
+try:
+    from api.routers.internal import founder_console as founder_console_router
+except Exception as _exc:  # noqa: BLE001
+    founder_console_router = None
+    _OPTIONAL_ROUTER_ERRORS["internal_founder_console"] = repr(_exc)
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -345,6 +355,10 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+
+    # Ultimate Operating Layer — /api/v1/internal/* Founder Console + Control Plane.
+    if founder_console_router is not None:
+        app.include_router(founder_console_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

@@ -1,0 +1,115 @@
+# Dealix Control Policy v1 (Policy-as-Code)
+#
+# Authoritative policy file for the Dealix Ultimate Operating Layer.
+# Every external-impact action MUST be evaluated against this policy
+# before execution.
+#
+# Loaded by:  api/internal/policy_adapter.py
+# Verified by: scripts/verify_policy_as_code.py
+# Docs:       docs/trust/POLICY_AS_CODE_V1.md
+
+version: 1
+name: dealix_control_policy
+owner: founder
+
+# ── Approval classes ───────────────────────────────────────────
+# A0 = safe internal action, no approval needed (e.g. read summary)
+# A1 = internal action with audit (e.g. retry worker)
+# A2 = founder approval required (e.g. queue an outreach draft for send)
+# A3 = founder approval + escalation + evidence (e.g. public proof,
+#      pricing commit, sensitive data export, contract change)
+approval_classes:
+  - id: A0
+    label: safe_internal
+    requires_approval: false
+    requires_evidence: false
+    requires_escalation: false
+    audit: true
+  - id: A1
+    label: internal_with_audit
+    requires_approval: false
+    requires_evidence: false
+    requires_escalation: false
+    audit: true
+  - id: A2
+    label: founder_approval
+    requires_approval: true
+    requires_evidence: false
+    requires_escalation: false
+    audit: true
+  - id: A3
+    label: founder_plus_evidence
+    requires_approval: true
+    requires_evidence: true
+    requires_escalation: true
+    audit: true
+
+# ── Rules ──────────────────────────────────────────────────────
+rules:
+  - id: no_a3_auto
+    description: A3 actions can never be executed without explicit founder approval.
+    classes: [A3]
+    auto_execute_allowed: false
+
+  - id: no_suppressed_outreach
+    description: Outreach drafts for suppressed/unsubscribed contacts must be blocked.
+    applies_to: outreach
+    block_when: contact_in_suppression_list
+
+  - id: high_risk_requires_evidence
+    description: High-risk decisions need an evidence link in the approval payload.
+    classes: [A3]
+    requires_evidence: true
+
+  - id: no_guaranteed_revenue_claims
+    description: AI outputs must not promise guaranteed revenue, sales, or replies.
+    applies_to: ai_output
+    forbidden_phrases:
+      - guaranteed revenue
+      - guaranteed sales
+      - guaranteed meetings
+      - guaranteed replies
+      - no risk
+      - sent automatically
+      - fully compliant
+
+  - id: approved_a2_can_request_execution
+    description: An A2 action only proceeds after a recorded founder approval.
+    classes: [A2]
+    requires_approval: true
+
+  - id: public_proof_requires_approval
+    description: Publishing proof publicly is A3.
+    applies_to: proof_publication
+    class: A3
+
+  - id: pricing_commit_requires_approval
+    description: Any external commitment of pricing/discount is A3.
+    applies_to: pricing_commit
+    class: A3
+
+  - id: data_export_requires_escalation
+    description: Exporting sensitive lead/customer data is A3 with escalation.
+    applies_to: data_export
+    class: A3
+    requires_escalation: true
+
+# ── Trust gates ────────────────────────────────────────────────
+trust_gates:
+  - id: outreach_gate
+    blocks: outreach
+    requires: [policy_check, founder_approval, audit_record]
+  - id: proposal_gate
+    blocks: proposal_send
+    requires: [policy_check, founder_approval, audit_record, evidence_link]
+  - id: payment_terms_gate
+    blocks: payment_terms_change
+    requires: [policy_check, founder_approval, audit_record, evidence_link, escalation]
+
+# ── Forbidden actions (hard refuse) ────────────────────────────
+forbidden_actions:
+  - destructive_repo_op
+  - cold_whatsapp_blast
+  - linkedin_automation
+  - scraping_private_data
+  - secrets_in_output
