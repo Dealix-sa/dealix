@@ -1,0 +1,10 @@
+date,sector,source_name,source_url,source_type,status,next_action
+2026-05-23,ERP CRM,Azdan ERP Directory,https://www.azdan.com/blog/erp-companies-ksa,directory,Planned,extract ERP companies and qualify
+2026-05-23,ERP CRM,GoodFirms ERP Saudi Arabia,https://www.goodfirms.co/implementation-services/erp-consulting/saudi-arabia,directory,Planned,extract ERP consulting firms
+2026-05-23,ERP CRM,Odoo Partners Saudi Arabia,https://www.odoo.com/partners,directory,Planned,filter Saudi Arabia Odoo partners
+2026-05-23,ERP CRM,Microsoft Dynamics Partner Directory,https://appsource.microsoft.com/en-us/marketplace/partner-dir,directory,Planned,filter Saudi Arabia Dynamics partners
+2026-05-23,ERP CRM,SAP Partner Finder,https://partneredge.sap.com/en/partnership/partner-finder.html,directory,Planned,filter Saudi Arabia SAP partners
+2026-05-23,ERP CRM,Salesforce AppExchange Consulting,https://appexchange.salesforce.com/consulting,directory,Planned,filter Saudi Arabia Salesforce consultants
+2026-05-23,ERP CRM,HubSpot Solutions Directory,https://ecosystem.hubspot.com/marketplace/services,directory,Planned,filter Saudi Arabia HubSpot solutions partners
+2026-05-23,ERP CRM,Zoho Partner Directory,https://www.zoho.com/partners/,directory,Planned,filter Saudi Arabia Zoho partners
+2026-05-23,ERP CRM,ZATCA E-Invoicing Solution Providers,https://zatca.gov.sa/,directory,Planned,extract ZATCA-certified ERP/billing partners
