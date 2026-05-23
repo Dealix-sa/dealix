@@ -1,12 +1,23 @@
-const links = [
+const founderLinks = [
+  "/ceo",
+  "/sales-cockpit",
+  "/approvals",
+  "/workers",
+  "/trust",
+  "/finance",
+  "/distribution"
+];
+
+const platformLinks = [
   "/control-plane",
   "/agents",
-  "/approvals",
   "/safety",
   "/sandbox",
   "/value-engine",
   "/self-evolving"
 ];
+
+const links = [...founderLinks, ...platformLinks];
 
 export default function HomePage() {
   return (
