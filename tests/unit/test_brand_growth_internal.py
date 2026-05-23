@@ -13,11 +13,15 @@ import asyncio
 import json
 from pathlib import Path
 
-import pytest
-
 
 def _run(coro):
-    return asyncio.get_event_loop().run_until_complete(coro)
+    """Drive a coroutine to completion without leaking a loop.
+
+    Using ``asyncio.run`` instead of ``asyncio.get_event_loop()`` so the
+    test works under pytest-asyncio's auto mode and on Python 3.10+
+    where ``get_event_loop()`` with no running loop is deprecated.
+    """
+    return asyncio.run(coro)
 
 
 def test_brand_summary_returns_pillars_and_palette() -> None:
