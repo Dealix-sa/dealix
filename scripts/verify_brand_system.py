@@ -17,7 +17,6 @@ Exits non-zero on any failure. Prints a bilingual summary at the end.
 from __future__ import annotations
 
 import json
-import math
 import re
 import sys
 from pathlib import Path

@@ -82,6 +82,9 @@ def test_endpoints_are_read_only_and_do_not_mutate_state() -> None:
         "/api/v1/internal/marketing/summary",
         "/api/v1/internal/product/distribution",
     ):
-        assert client.post(path).status_code in (404, 405, 422)
-        assert client.put(path).status_code in (404, 405, 422)
-        assert client.delete(path).status_code in (404, 405, 422)
+        post_status = client.post(path).status_code
+        put_status = client.put(path).status_code
+        delete_status = client.delete(path).status_code
+        assert post_status in (404, 405, 422)
+        assert put_status in (404, 405, 422)
+        assert delete_status in (404, 405, 422)
