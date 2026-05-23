@@ -1,0 +1,9 @@
+sector_id,name_en,name_ar,composite,fit,velocity,arr,proof_ready,capacity,strategic,recommendation,source
+sec-001,ERP / CRM,أنظمة ERP و CRM,72,0.80,0.70,0.75,0.60,0.70,0.80,promote,fallback
+sec-002,Cybersecurity,الأمن السيبراني,78,0.85,0.75,0.80,0.65,0.70,0.85,promote,fallback
+sec-003,B2B agencies,وكالات B2B,55,0.70,0.55,0.50,0.40,0.60,0.50,hold,fallback
+sec-004,Logistics / industrial services,خدمات لوجستية وصناعية,68,0.75,0.65,0.75,0.50,0.65,0.75,promote,fallback
+sec-005,Consulting / digital transformation,الاستشارات والتحول الرقمي,70,0.78,0.65,0.70,0.55,0.65,0.78,promote,fallback
+sec-006,SaaS / software,SaaS وبرمجيات,73,0.80,0.70,0.70,0.60,0.65,0.80,promote,fallback
+sec-007,Enterprise services,خدمات المؤسسات الكبرى,66,0.72,0.60,0.78,0.50,0.60,0.75,hold,fallback
+sec-008,Saudi high-ticket B2B,B2B سعودي عالي القيمة,80,0.85,0.70,0.90,0.55,0.65,0.90,promote,fallback

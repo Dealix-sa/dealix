@@ -1,0 +1,9 @@
+segment_id,name_en,name_ar,tier,lead_offer,ideal_size,ideal_arr_sar,motion,status,source
+seg-001,Founder-led KSA SaaS,شركات SaaS سعودية بقيادة المؤسس,1,Revenue Sprint,30-100,10M-50M,founder-led,active,fallback
+seg-002,KSA cybersecurity vendor,بائع أمن سيبراني سعودي,1,Managed Pilot,50-300,20M-200M,enterprise-led,active,fallback
+seg-003,KSA ERP/CRM integrator,مُكامل ERP/CRM سعودي,1,Retainer,30-200,15M-150M,implementation-led,active,fallback
+seg-004,B2B agency in KSA,وكالة B2B سعودية,2,White-label OS,10-80,3M-30M,project-led,watch,fallback
+seg-005,KSA consulting firm,شركة استشارية سعودية,1,Revenue Desk Retainer,30-300,20M-200M,partner-led,active,fallback
+seg-006,Logistics / industrial services,خدمات لوجستية وصناعية,1,ABM Managed Pilot,100-500,50M-500M,account-led,active,fallback
+seg-007,Saudi high-ticket B2B,B2B سعودي عالي القيمة,1,Founder Command Center,100-500,50M-500M,bespoke,active,fallback
+seg-008,GCC firm with KSA presence,شركة خليجية ذات حضور سعودي,2,Enterprise OS,100-1000,50M-1000M,multi-country,active,fallback

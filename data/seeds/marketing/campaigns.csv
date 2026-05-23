@@ -1,0 +1,6 @@
+campaign_id,name,theme,start_date,end_date,owner,kpi,status,source
+camp-001,Trust Center launch,Built on Trust,2026-05-25,2026-06-25,founder,trust_center_visits,planned,fallback
+camp-002,Sector Report — Cybersecurity,Driven by Growth,2026-06-01,2026-07-01,content_strategist,sector_report_downloads,planned,fallback
+camp-003,Sector Report — ERP/CRM,Driven by Growth,2026-06-15,2026-07-15,content_strategist,sector_report_downloads,planned,fallback
+camp-004,Founder POV — Trust-Gated Automation,AI with Approval,2026-05-25,2026-08-25,founder,founder_post_reach,planned,fallback
+camp-005,Diagnostic offer relaunch,From Leads to Cash,2026-06-08,2026-07-08,sales,diagnostic_requests,planned,fallback

@@ -1,0 +1,9 @@
+account_id,name,sector_id,segment_id,fit,intent,capacity,strategic,score,recommendation,last_updated,source
+acc-0001,Example Cyber KSA,sec-002,seg-002,0.85,0.70,0.60,0.80,76,engage_now,2026-05-23,fallback
+acc-0002,Example ERP House,sec-001,seg-003,0.80,0.55,0.60,0.70,68,engage_soon,2026-05-23,fallback
+acc-0003,Example SaaS Founder,sec-006,seg-001,0.90,0.65,0.55,0.85,77,engage_now,2026-05-23,fallback
+acc-0004,Example Consulting Co,sec-005,seg-005,0.75,0.45,0.55,0.60,60,engage_soon,2026-05-23,fallback
+acc-0005,Example Logistics Grp,sec-004,seg-006,0.78,0.50,0.50,0.65,62,engage_soon,2026-05-23,fallback
+acc-0006,Example High-Ticket B2B,sec-008,seg-007,0.88,0.60,0.50,0.90,75,engage_now,2026-05-23,fallback
+acc-0007,Example GCC Multi,sec-005,seg-008,0.70,0.40,0.45,0.55,55,nurture,2026-05-23,fallback
+acc-0008,Example B2B Agency,sec-003,seg-004,0.60,0.35,0.40,0.50,47,nurture,2026-05-23,fallback

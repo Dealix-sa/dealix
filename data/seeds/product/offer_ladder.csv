@@ -1,0 +1,8 @@
+rung,name,positioning,price_band,upsell_to,proof_required,owner,status,source
+1,Free Sample / Diagnostic,Real diagnostic of a real motion in days,free,2,no,sales,active,fallback
+2,Revenue Sprint,Two weeks of evidence-led work on one revenue lever,within_sprint_guardrail,3,yes,sales,active,fallback
+3,Managed Pilot,Six-week operated motion against one defined outcome,within_pilot_guardrail,4,yes,sales,active,fallback
+4,Revenue Desk Retainer,Monthly retainer operating Distribution + Delivery,within_retainer_guardrail,5,yes,retention_copilot,active,fallback
+5,Founder Command Center,Console + retainer hybrid for founder-led teams,within_command_center_guardrail,6,yes,founder,active,fallback
+6,Enterprise Revenue Intelligence OS,Multi-tenant deployment with sovereign data,custom,7,yes,founder,active,fallback
+7,Partner / White-label Revenue OS,Operate Dealix under a partner brand,custom,7,yes,partner_ops,active,fallback

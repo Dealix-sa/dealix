@@ -1,0 +1,76 @@
+name: Dealix Brand & Growth Operating Layer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/brand/**"
+      - "docs/positioning/**"
+      - "docs/intelligence/**"
+      - "docs/growth/**"
+      - "docs/marketing/**"
+      - "docs/product/**"
+      - "docs/revenue/**"
+      - "docs/delivery/**"
+      - "docs/finance/**"
+      - "docs/client_success/**"
+      - "docs/proof/**"
+      - "docs/ai/**"
+      - "docs/performance/**"
+      - "assets/brand/**"
+      - "apps/web/**"
+      - "data/seeds/**"
+      - "scripts/verify_brand_system.py"
+      - "scripts/verify_growth_system.py"
+      - "scripts/verify_marketing_system.py"
+      - "scripts/verify_product_distribution.py"
+      - "scripts/verify_brand_growth_operating_layer.py"
+      - "api/routers/brand_growth_internal.py"
+      - ".github/workflows/dealix-brand-growth-operating-layer.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify Brand & Growth Operating Layer
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Brand system verifier
+        run: python scripts/verify_brand_system.py
+
+      - name: Growth system verifier
+        run: python scripts/verify_growth_system.py
+
+      - name: Marketing system verifier
+        run: python scripts/verify_marketing_system.py
+
+      - name: Product distribution verifier
+        run: python scripts/verify_product_distribution.py
+
+      - name: Composite operating-layer verifier
+        run: python scripts/verify_brand_growth_operating_layer.py
+
+      - name: Founder Console frontend build (apps/web)
+        working-directory: apps/web
+        run: |
+          npm install --no-audit --no-fund --silent
+          npm run build

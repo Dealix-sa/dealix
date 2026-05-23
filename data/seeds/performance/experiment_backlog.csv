@@ -1,0 +1,6 @@
+experiment_id,hypothesis,metric,duration_days,expected_lift,risk,required_approvals,owner,status,result_summary,source
+exp-001,Cybersecurity persona-specific opening boosts reply quality,reply_quality_per_send,14,+15%,low,founder;brand_guardian,distribution_operator,backlog,,fallback
+exp-002,Proof-led nurture beats insight-led nurture,reengagement_rate,28,+10%,low,founder,distribution_operator,backlog,,fallback
+exp-003,Friday-shipped sector report increases newsletter conversions,newsletter_conversion,21,+20%,low,founder;brand_guardian,content_strategist,backlog,,fallback
+exp-004,Adding diagnostic CTA on Trust Center increases requests,diagnostic_requests,21,+12%,low,founder;brand_guardian,brand_guardian,backlog,,fallback
+exp-005,Cash-collected dashboard inside CEO console improves approval latency,approval_latency,14,-30%,low,founder,performance_analyst,backlog,,fallback

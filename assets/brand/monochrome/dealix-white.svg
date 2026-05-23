@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-label="Dealix monochrome white">
+  <rect width="480" height="120" fill="#0B1220"/>
+  <g transform="translate(28,28) scale(1.6)">
+    <path d="M10 8 H26 C40 8 48 17 48 28 C48 39 40 48 26 48 H10 Z M18 16 V40 H26 C34 40 40 35 40 28 C40 21 34 16 26 16 Z" fill="#FFFFFF"/>
+    <path d="M14 42 L30 26 L38 32 L48 18" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <polygon points="46,14 50,14 50,18" fill="#FFFFFF"/>
+  </g>
+  <text x="150" y="78" font-family="Inter Tight, 'IBM Plex Sans Arabic', system-ui, sans-serif" font-weight="800" font-size="56" fill="#FFFFFF" letter-spacing="5">DEALIX</text>
+</svg>

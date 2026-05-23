@@ -1,0 +1,20 @@
+asset_id,name,path,format,variant,version,owner,checksum,source
+brand-tokens-json,Brand Tokens (JSON),docs/brand/brand-tokens.json,json,tokens,1.0.0,brand_guardian,,signal
+brand-tokens-ts,Brand Tokens (TS),apps/web/lib/brand-tokens.ts,ts,tokens,1.0.0,brand_guardian,,signal
+brand-css,Brand CSS,apps/web/styles/brand.css,css,tokens,1.0.0,brand_guardian,,signal
+logo-full-svg,Logo Full,assets/brand/logo/dealix-full.svg,svg,full,1.0.0,brand_guardian,,signal
+logo-compact-svg,Logo Compact,assets/brand/logo/dealix-compact.svg,svg,compact,1.0.0,brand_guardian,,signal
+mark-svg,Mark Only,assets/brand/icon/dealix-mark.svg,svg,mark,1.0.0,brand_guardian,,signal
+wordmark-svg,Wordmark Only,assets/brand/wordmark/dealix-wordmark.svg,svg,wordmark,1.0.0,brand_guardian,,signal
+mono-white-svg,Monochrome White,assets/brand/monochrome/dealix-white.svg,svg,monochrome,1.0.0,brand_guardian,,signal
+mono-navy-svg,Monochrome Navy,assets/brand/monochrome/dealix-navy.svg,svg,monochrome,1.0.0,brand_guardian,,signal
+linkedin-header,LinkedIn Header,assets/brand/social/linkedin-header.svg,svg,social,1.0.0,brand_guardian,,signal
+og-default,OG Default,assets/brand/social/og-default.svg,svg,social,1.0.0,brand_guardian,,signal
+og-proof,OG Proof,assets/brand/social/og-proof.svg,svg,social,1.0.0,brand_guardian,,signal
+favicon-svg,Favicon SVG,assets/brand/favicons/favicon.svg,svg,favicon,1.0.0,brand_guardian,,signal
+public-mark,Public Mark,public/brand/dealix-mark.svg,svg,mark,1.0.0,brand_guardian,,signal
+public-full,Public Full,public/brand/dealix-full.svg,svg,full,1.0.0,brand_guardian,,signal
+public-og,Public OG,public/brand/og-default.svg,svg,social,1.0.0,brand_guardian,,signal
+console-public-mark,Console Public Mark,apps/web/public/brand/dealix-mark.svg,svg,mark,1.0.0,brand_guardian,,signal
+console-public-compact,Console Public Compact,apps/web/public/brand/dealix-compact.svg,svg,compact,1.0.0,brand_guardian,,signal
+console-favicon,Console Favicon,apps/web/public/brand/favicon.svg,svg,favicon,1.0.0,brand_guardian,,signal

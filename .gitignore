@@ -101,6 +101,9 @@ dumps/
 !landing/assets/data/service-readiness.json
 # Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
 !data/workflows/
+# Brand & Growth Operating Layer seeds — canonical product data, not customer data
+!data/seeds/
+!data/seeds/**
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

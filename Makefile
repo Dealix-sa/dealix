@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        brand-system growth-system marketing-system product-distribution \
+        brand-growth-operating-layer
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,22 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Brand & Growth Operating Layer ─────────────────────────────
+# Verifies brand system, growth intelligence, marketing OS and product
+# distribution scaffolding. Read-only — never sends or commits.
+
+brand-system: ## Verify Dealix brand system (tokens, assets, contrast, banned claims)
+	$(PYTHON) scripts/verify_brand_system.py
+
+growth-system: ## Verify Dealix growth intelligence + distribution machines
+	$(PYTHON) scripts/verify_growth_system.py
+
+marketing-system: ## Verify Dealix marketing OS (docs + seed CSVs)
+	$(PYTHON) scripts/verify_marketing_system.py
+
+product-distribution: ## Verify product ladder + per-rung distribution
+	$(PYTHON) scripts/verify_product_distribution.py
+
+brand-growth-operating-layer: ## Composite verifier for the full Brand & Growth Operating Layer
+	$(PYTHON) scripts/verify_brand_growth_operating_layer.py
