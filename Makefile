@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        founder-frontend founder-layer
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,14 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Founder Operating Layer ────────────────────────────────────
+# Gates that keep the founder frontend (/ceo, /sales-cockpit,
+# /approvals, /workers, /trust, /finance, /distribution) alive and
+# building. Run these before pushing to main.
+
+founder-frontend: ## founder: verify founder frontend routes exist and build
+	$(PYTHON) scripts/verify_founder_frontend.py
+
+founder-layer: ## founder: verify the full Founder Operating Layer (docs + frontend)
+	$(PYTHON) scripts/verify_founder_operating_layer.py
