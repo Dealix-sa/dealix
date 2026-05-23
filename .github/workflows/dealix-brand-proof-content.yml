@@ -1,0 +1,18 @@
+name: Dealix Brand Proof Content Checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  brand-proof-content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify brand proof content OS
+        run: python scripts/verify_brand_proof_content_os.py
+      - name: Compile content modules
+        run: python -m compileall scripts/review_content_claims.py scripts/verify_brand_proof_content_os.py dealix_cli
