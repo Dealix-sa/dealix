@@ -97,7 +97,7 @@ def main() -> int:
         print(f"  verdict: {'CLOSED' if pipe['first_close_ready'] else 'PIPELINE_OPEN'}")
         if pipe["crm_kpi_pending"]:
             print("  FOUNDER_ACTION: sync kpi_founder_commercial_import.yaml from CRM export")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         WARNINGS.append(f"first_paid tracker: {exc}")
 
     if FAILURES:
