@@ -8,11 +8,17 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        bootstrap-public bootstrap-private bootstrap-all \
+        implementation-status market-evidence stoplight \
+        day-start day-close week-close
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
+
+# Private ops directory (override with PRIVATE_OPS=/path make ...)
+PRIVATE_OPS ?= ../dealix-ops-private
 
 help: ## Show this help
 	@echo "🏢 AI Company Saudi — Available commands:"
@@ -130,3 +136,44 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Implementation Automation Pack ─────────────────────────────
+# Bootstrap + sprint + stoplight + day/week loops. Honors the
+# No More Systems Gate: nothing here sends external messages.
+
+bootstrap-public: ## Bootstrap public Dealix OS scaffold (idempotent)
+	$(PYTHON) scripts/bootstrap_dealix_os.py
+
+bootstrap-private: ## Bootstrap private ops directory (PRIVATE_OPS=...)
+	$(PYTHON) scripts/bootstrap_private_ops.py --private-ops $(PRIVATE_OPS)
+
+bootstrap-all: ## Bootstrap both public scaffold and private ops
+	$(PYTHON) scripts/bootstrap_dealix_os.py
+	$(PYTHON) scripts/bootstrap_private_ops.py --private-ops $(PRIVATE_OPS)
+
+implementation-status: ## Report implementation sprint completion
+	$(PYTHON) scripts/implementation_sprint_status.py
+
+market-evidence: ## Gate: market execution evidence must exist
+	$(PYTHON) scripts/verify_market_execution_evidence.py --private-ops $(PRIVATE_OPS)
+
+stoplight: ## Generate strategic stoplight report (red/yellow/green)
+	$(PYTHON) scripts/generate_stoplight_report.py --private-ops $(PRIVATE_OPS)
+
+day-start: ## CEO day-start loop: mission control + stoplight + revenue ops
+	$(PYTHON) -m dealix_cli mission-control --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/generate_stoplight_report.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli revenue-ops --private-ops $(PRIVATE_OPS)
+
+day-close: ## CEO day-close loop: advance + close-day + stoplight
+	$(PYTHON) -m dealix_cli advance --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli close-day --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/generate_stoplight_report.py --private-ops $(PRIVATE_OPS)
+
+week-close: ## CEO week-close loop: weekly + trust + finance + assurance + stoplight
+	$(PYTHON) -m dealix_cli ceo-weekly --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli weekly --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli trust --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli finance-v2 --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli assurance --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/generate_stoplight_report.py --private-ops $(PRIVATE_OPS)
