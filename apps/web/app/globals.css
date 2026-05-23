@@ -28,3 +28,106 @@ main {
   display: grid;
   gap: 16px;
 }
+
+.founder-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.founder-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  border-right: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 24px 16px;
+}
+
+.founder-sidebar h2 {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.founder-nav {
+  display: grid;
+  gap: 6px;
+}
+
+.founder-nav a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 13px;
+  text-decoration: none;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+.founder-nav a:hover {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.founder-main {
+  flex: 1;
+  padding: 32px;
+  min-width: 0;
+}
+
+.founder-main h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.founder-main p.lead {
+  margin: 0 0 24px 0;
+  color: #475569;
+  max-width: 720px;
+}
+
+.kpi {
+  display: grid;
+  gap: 4px;
+}
+
+.kpi .kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.muted {
+  color: #64748b;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  font-size: 11px;
+  color: #3730a3;
+}
+
+@media (max-width: 768px) {
+  .founder-shell {
+    flex-direction: column;
+  }
+  .founder-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+}

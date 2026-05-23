@@ -130,3 +130,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Founder Console v1 ─────────────────────────────────────────
+# Verify the founder console v1: docs + shell + adapter + 10 pages +
+# internal router registration + npm ci + npm run build.
+
+founder-console: ## Verify founder console v1 (docs + shell + pages + router + build)
+	$(PYTHON) scripts/verify_founder_console.py
+
+founder-console-fast: ## Verify founder console v1 without the npm build step
+	$(PYTHON) scripts/verify_founder_console.py --skip-build
