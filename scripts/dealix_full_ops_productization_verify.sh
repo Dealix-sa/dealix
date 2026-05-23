@@ -63,6 +63,9 @@ run_check "PORTAL_SECTIONS_INVARIANT" "python3 -c \"import re; html=open('landin
 # Best-effort: just check key tests still PASS (catches schema-extension breakage)
 run_check "FULL_OPS_CONTRACTS_REGRESSION" "python3 -m pytest tests/test_full_ops_contracts.py -q --no-cov"
 
+# ── Phase G — CEO Operating System v2 (Company OS scorecard) ─────────
+run_check "DEALIX_COMPANY_OS" "python3 scripts/verify_company_os.py --strict"
+
 # ── Final verdict ───────────────────────────────────────────────────
 echo
 echo "════════════════════════════════════════════════════════════"
