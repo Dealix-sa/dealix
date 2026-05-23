@@ -8,7 +8,7 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference kit
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +130,36 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Revenue Sprint Kit ─────────────────────────────────────────
+# `make kit` verifies the public Revenue Sprint Kit and prints the
+# operational template paths. Operational templates themselves live in
+# the private repo `dealix-ops-private/offers/revenue_sprint/`; the
+# `PRIVATE_OPS` variable can point to a local checkout to also run the
+# private verifier.
+PRIVATE_OPS ?= ../dealix-ops-private
+
+kit: ## Revenue Sprint Kit: verify public docs + content claims + list templates
+	@echo ""
+	@echo "Dealix Revenue Sprint Kit"
+	@echo "========================================"
+	$(PYTHON) scripts/verify_revenue_sprint_kit.py
+	$(PYTHON) scripts/verify_no_autonomous_external_actions.py
+	@echo ""
+	@echo "Operational templates (live copies in $(PRIVATE_OPS)/offers/revenue_sprint/):"
+	@for f in founder_dm_pack.md sample_pack_template.md proposal_fast_template.md \
+	          payment_followup_templates.md client_intake.md \
+	          delivery_report_template.md qa_checklist.md handoff_template.md \
+	          feedback_request.md retainer_ask.md; do \
+	    echo "- $(PRIVATE_OPS)/offers/revenue_sprint/$$f"; \
+	done
+	@echo ""
+	@if [ -f "$(PRIVATE_OPS)/verify_revenue_sprint_kit.py" ]; then \
+	    echo "Running private kit verifier in $(PRIVATE_OPS)..."; \
+	    cd "$(PRIVATE_OPS)" && $(PYTHON) verify_revenue_sprint_kit.py; \
+	else \
+	    echo "(Skipping private kit verifier — $(PRIVATE_OPS)/verify_revenue_sprint_kit.py not present.)"; \
+	    echo "Reference copy: docs/offers/revenue_sprint/private_kit_templates/verify_revenue_sprint_kit.py"; \
+	fi
+	@echo ""
+	@echo "PASS: kit command completed."
