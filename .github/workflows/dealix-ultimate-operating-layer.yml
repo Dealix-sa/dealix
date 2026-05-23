@@ -1,0 +1,97 @@
+name: dealix-ultimate-operating-layer
+
+# Verifies the Dealix Ultimate Operating Layer end to end:
+#   policy-as-code  + agent registry + eval gate + prompt/output quality
+#   + control plane stage files + frontend build.
+
+on:
+  push:
+    branches:
+      - main
+      - "claude/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Diagnostics — environment
+        shell: bash
+        run: |
+          set -ux
+          echo "== pwd =="
+          pwd
+          echo "== python --version =="
+          python --version
+          echo "== top-level tree =="
+          ls -la
+          echo "== scripts/ =="
+          ls -la scripts | head -40 || true
+          echo "== policies/ =="
+          ls -la policies || true
+          echo "== registries/ =="
+          ls -la registries || true
+          echo "== evals/gates/ =="
+          ls -la evals/gates || true
+          echo "== apps/web/ =="
+          ls -la apps/web || true
+          echo "== api/internal/ =="
+          ls -la api/internal || true
+          echo "== api/routers/internal/ =="
+          ls -la api/routers/internal || true
+
+      - name: Install PyYAML
+        shell: bash
+        run: |
+          set -eux
+          python -m pip install --upgrade pip
+          python -m pip install --no-cache-dir PyYAML
+          python -c "import yaml; print('PyYAML', yaml.__version__)"
+
+      - name: Verifier — policy
+        run: python scripts/verify_policy_as_code.py
+
+      - name: Verifier — agent registry
+        run: python scripts/verify_agent_registry.py
+
+      - name: Verifier — eval gate
+        run: python scripts/verify_eval_gate.py
+
+      - name: Verifier — prompt/output quality
+        run: python scripts/verify_prompt_output_quality.py
+
+      - name: Verifier — control-plane stage
+        run: python scripts/verify_control_plane_stage.py
+
+      - name: Setup Node
+        if: hashFiles('apps/web/package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install apps/web deps
+        if: hashFiles('apps/web/package.json') != ''
+        working-directory: apps/web
+        run: npm ci
+
+      - name: Build apps/web
+        if: hashFiles('apps/web/package.json') != ''
+        working-directory: apps/web
+        run: npm run build
+
+      - name: Frontend missing — fail
+        if: hashFiles('apps/web/package.json') == ''
+        run: |
+          echo "apps/web/package.json missing — Founder Console frontend is required"
+          exit 1

@@ -1,0 +1,200 @@
+# Dealix Agent Registry v1
+#
+# Source of truth for every AI agent in the Dealix Operating Layer.
+# Verified by: scripts/verify_agent_registry.py
+# Docs:        docs/ai/AGENT_REGISTRY_SYSTEM.md
+#
+# Every agent declares:
+#   - id
+#   - name
+#   - purpose
+#   - approval_class_max (A0/A1/A2/A3 — the highest class it can request)
+#   - tools                 (declared, declared tools only)
+#   - outputs               (what artifacts/states it writes)
+#   - external_action_allowed (must be false for A3-capable agents)
+#   - kill_switch           (must be true — every agent can be disabled)
+#   - eval_required         (must be true — every agent runs eval suite)
+#   - owner                 (founder)
+#   - audit_required        (must be true)
+
+version: 1
+agents:
+  - id: ceo_copilot
+    name: CEO Copilot
+    purpose: Summarize the daily founder view; suggest next best action.
+    approval_class_max: A1
+    tools: [runtime_reader, summarize]
+    outputs: [ceo_summary, next_best_action]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: revenue_research_agent
+    name: Revenue Research Agent
+    purpose: Research target accounts; produce intelligence base entries.
+    approval_class_max: A1
+    tools: [web_research, summarize]
+    outputs: [lead_intelligence_base]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: lead_scoring_agent
+    name: Lead Scoring Agent
+    purpose: Score leads against ICP + intent signals.
+    approval_class_max: A1
+    tools: [score]
+    outputs: [lead_score]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: outreach_draft_agent
+    name: Outreach Draft Agent
+    purpose: Draft outreach (never send) and queue for approval.
+    approval_class_max: A2
+    tools: [draft, suppression_check]
+    outputs: [outreach_queue, approval_queue]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: followup_planner_agent
+    name: Follow-up Planner Agent
+    purpose: Plan follow-ups; never auto-send.
+    approval_class_max: A2
+    tools: [plan]
+    outputs: [followup_queue, approval_queue]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: reply_classifier_agent
+    name: Reply Classifier Agent
+    purpose: Classify replies (positive/negative/neutral/spam).
+    approval_class_max: A1
+    tools: [classify]
+    outputs: [conversation_log]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: sample_draft_agent
+    name: Sample Draft Agent
+    purpose: Draft sample deliverables; queue for review.
+    approval_class_max: A2
+    tools: [draft]
+    outputs: [sample_drafts, approval_queue]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: proposal_draft_agent
+    name: Proposal Draft Agent
+    purpose: Draft proposals; queue for approval (A3 to send).
+    approval_class_max: A3
+    tools: [draft, pricing_lookup]
+    outputs: [proposal_queue, approval_queue]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: payment_followup_agent
+    name: Payment Follow-up Agent
+    purpose: Draft payment follow-ups; never auto-send.
+    approval_class_max: A2
+    tools: [draft]
+    outputs: [payment_capture_queue, approval_queue]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: trust_guardian
+    name: Trust Guardian
+    purpose: Flag policy / claim / overclaim violations; block unsafe outputs.
+    approval_class_max: A1
+    tools: [policy_check, claim_check]
+    outputs: [trust_flags]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: eval_guardian
+    name: Eval Guardian
+    purpose: Run eval suites against agent outputs; block release on fail.
+    approval_class_max: A1
+    tools: [eval]
+    outputs: [eval_status]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: productization_agent
+    name: Productization Agent
+    purpose: Detect repeating manual flows; nominate them as products.
+    approval_class_max: A2
+    tools: [pattern_detect]
+    outputs: [productization_candidates]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: finance_copilot
+    name: Finance Copilot
+    purpose: Summarize cash, MRR, pipeline, payment follow-ups.
+    approval_class_max: A1
+    tools: [runtime_reader, summarize]
+    outputs: [finance_summary]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: delivery_copilot
+    name: Delivery Copilot
+    purpose: Track delivery queue, QA, handoff.
+    approval_class_max: A1
+    tools: [runtime_reader, summarize]
+    outputs: [delivery_queue]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
+
+  - id: security_guardian
+    name: Security Guardian
+    purpose: Check production gates (token, secrets, branch protection).
+    approval_class_max: A1
+    tools: [env_check, secret_scan]
+    outputs: [security_status]
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    owner: founder
+    audit_required: true
