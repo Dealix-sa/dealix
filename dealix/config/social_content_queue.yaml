@@ -1,5 +1,5 @@
 anchor_date: '2026-05-17'
-cycle_weeks: 20
+cycle_weeks: 28
 posts:
 - week: 1
   day: 0
@@ -50,7 +50,7 @@ posts:
     '
   cta_ar: اقرأ سياسة No cold WhatsApp
   aeo_slug: no-cold-whatsapp-policy
-  status: draft
+  status: approved
 - week: 1
   day: 4
   pillar: founder_media
@@ -62,7 +62,7 @@ posts:
     '
   cta_ar: Risk Score لحسابكم
   aeo_slug: soaen-standard
-  status: draft
+  status: approved
 - week: 2
   day: 0
   pillar: proof
@@ -74,7 +74,7 @@ posts:
     '
   cta_ar: Agency Proof Pack — عيّنة
   aeo_slug: agency-proof-for-clients
-  status: draft
+  status: approved
 - week: 2
   day: 1
   pillar: objection
@@ -86,7 +86,7 @@ posts:
     '
   cta_ar: 10-Lead Audit من 499 SAR
   aeo_slug: 10-lead-audit
-  status: draft
+  status: approved
 - week: 2
   day: 2
   pillar: founder_media
@@ -98,7 +98,7 @@ posts:
     '
   cta_ar: قائمة مراجعة مجانية
   aeo_slug: audit-lead-follow-up
-  status: draft
+  status: approved
 - week: 2
   day: 3
   pillar: trust
@@ -110,7 +110,7 @@ posts:
     '
   cta_ar: دليل AI approval للمبيعات
   aeo_slug: ai-approval-sales
-  status: draft
+  status: approved
 - week: 2
   day: 4
   pillar: proof
@@ -122,7 +122,7 @@ posts:
     '
   cta_ar: Governed Diagnostic — نطاق محدود
   aeo_slug: revenue-leakage-after-ads
-  status: draft
+  status: approved
 - week: 3
   day: 0
   pillar: founder_media
@@ -134,7 +134,7 @@ posts:
     '
   cta_ar: Partner intro — ديمو 10 دقائق
   aeo_slug: partner-onboarding
-  status: draft
+  status: approved
 - week: 3
   day: 1
   pillar: objection
@@ -146,7 +146,7 @@ posts:
     '
   cta_ar: Executive Growth OS — للمؤسسين
   aeo_slug: govern-ai-before-scale
-  status: draft
+  status: approved
 - week: 3
   day: 2
   pillar: proof
