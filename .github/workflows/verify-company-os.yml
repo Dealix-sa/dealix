@@ -1,0 +1,54 @@
+name: verify-company-os
+
+on:
+  push:
+    branches: [main, "claude/**"]
+    paths:
+      - "control_plane/**"
+      - "docs/control_plane/**"
+      - "docs/ops/**"
+      - "docs/founder/**"
+      - "docs/learning/**"
+      - "docs/product/**"
+      - "docs/revenue/**"
+      - "docs/client_success/**"
+      - "docs/finance/**"
+      - "docs/strategy/**"
+      - "scripts/verify_company_os.py"
+      - ".github/workflows/verify-company-os.yml"
+  pull_request:
+    paths:
+      - "control_plane/**"
+      - "docs/control_plane/**"
+      - "docs/ops/**"
+      - "docs/founder/**"
+      - "docs/learning/**"
+      - "docs/product/**"
+      - "docs/revenue/**"
+      - "docs/client_success/**"
+      - "docs/finance/**"
+      - "docs/strategy/**"
+      - "scripts/verify_company_os.py"
+      - ".github/workflows/verify-company-os.yml"
+  schedule:
+    # Weekly heartbeat so doctrine decay (deleted/empty files) is caught
+    # even between PRs.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify Company OS doctrine
+        run: python scripts/verify_company_os.py
+      - name: Verify Company OS doctrine (JSON, for logs)
+        if: always()
+        run: python scripts/verify_company_os.py --json
