@@ -58,6 +58,8 @@ jobs:
           git diff --exit-code -- docs/SEO_AUDIT_REPORT.json
 
       - name: Tests with coverage gate
+        id: tests
+        continue-on-error: true
         env:
           APP_ENV: test
           APP_DEBUG: "false"
@@ -72,7 +74,23 @@ jobs:
             --cov=api --cov=core --cov=db --cov=integrations \
             --cov-report=xml:coverage.xml \
             --cov-report=term-missing \
-            --cov-fail-under=5
+            --cov-fail-under=5 2>&1 | tee /tmp/pytest_output.txt
+
+      - name: Post test failures as PR comment
+        if: steps.tests.outcome == 'failure' && github.event_name == 'pull_request'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAIL=$(tail -200 /tmp/pytest_output.txt | head -c 60000)
+          gh pr comment ${{ github.event.pull_request.number }} --body "### CI Test Failures (auto-diagnostic)
+
+          \`\`\`
+          ${TAIL}
+          \`\`\`"
+
+      - name: Fail if tests failed
+        if: steps.tests.outcome == 'failure'
+        run: exit 1
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
