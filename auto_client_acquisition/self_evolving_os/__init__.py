@@ -53,14 +53,15 @@ from auto_client_acquisition.self_evolving_os.learning_store import (
     reset_default_store,
 )
 from auto_client_acquisition.self_evolving_os.repositories import (
+    ImprovementProposal as LegacyImprovementProposal,
+)
+from auto_client_acquisition.self_evolving_os.repositories import (
     InMemorySelfEvolvingRepository,
     ProposalApprovalRequiredError,
 )
-from auto_client_acquisition.self_evolving_os.repositories import (
-    ImprovementProposal as LegacyImprovementProposal,
-)
 
 __all__ = [
+    "SELF_EVOLVING_SHADOW_ONLY",
     "FeedbackEvent",
     "IllegalProposalTransition",
     "ImprovementProposal",
@@ -73,7 +74,6 @@ __all__ = [
     "OutcomeKind",
     "ProposalApprovalRequiredError",
     "ProposalState",
-    "SELF_EVOLVING_SHADOW_ONLY",
     "ShadowModeViolationError",
     "assert_shadow_mode",
     "derive_suggestions",
