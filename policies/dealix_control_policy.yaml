@@ -1,0 +1,111 @@
+# Dealix Control Policy — Policy-as-Code
+# All policies enforced by `scripts/verifiers/verify_policy_as_code.py`.
+# Doctrine source: CLAUDE.md, AGENTS.md, the 11 non-negotiables.
+
+version: 1
+owner: founder@dealix
+last_reviewed: 2026-05-24
+
+non_negotiables:
+  - id: NN1_no_scraping
+    description: No scraping systems. Sources must be founder-submitted or licensed.
+    enforcement:
+      - test: tests/test_no_scraping.py
+      - guard: dealix/governance/approvals.py
+    severity: critical
+
+  - id: NN2_no_cold_whatsapp
+    description: No cold WhatsApp automation; outbound passes approval_center.
+    enforcement:
+      - test: tests/test_no_outbound_without_approval.py
+    severity: critical
+
+  - id: NN3_no_linkedin_automation
+    description: No LinkedIn automation; drafts only, founder sends manually.
+    enforcement:
+      - test: tests/test_no_linkedin_automation.py
+    severity: critical
+
+  - id: NN4_no_unsourced_claims
+    description: Every claim must carry a source_ref.
+    enforcement:
+      - test: tests/test_no_unsourced_claims.py
+    severity: critical
+
+  - id: NN5_no_guaranteed_outcomes
+    description: Copy uses "estimated", never "guaranteed".
+    enforcement:
+      - test: tests/test_no_guaranteed_revenue_claims.py
+    severity: critical
+
+  - id: NN6_no_pii_in_logs
+    description: Middleware redacts email/phone/national-id.
+    enforcement:
+      - middleware: api/middleware/pii_redaction.py
+    severity: critical
+
+  - id: NN7_no_sourceless_rag
+    description: RAG answers must cite passages.
+    enforcement:
+      - test: tests/test_rag_citation_required.py
+    severity: critical
+
+  - id: NN8_no_external_action_without_approval
+    description: All outbound passes approval_center.
+    enforcement:
+      - module: dealix/governance/approvals.py
+    severity: critical
+
+  - id: NN9_no_agent_without_identity
+    description: Every agent in registries/agent_registry.yaml.
+    enforcement:
+      - verifier: scripts/verifiers/verify_agent_registry.py
+    severity: critical
+
+  - id: NN10_no_project_without_proof_pack
+    description: Every paid engagement ships a Proof Pack score >= 70.
+    enforcement:
+      - module: dealix/execution_assurance/proof_pack.py
+    severity: critical
+
+  - id: NN11_no_project_without_capital_asset
+    description: Every paid engagement registers >= 1 reusable asset.
+    enforcement:
+      - module: dealix/registers/capital_assets.py
+    severity: critical
+
+approval_thresholds:
+  outbound_recipients_max_without_approval: 50
+  risk_score_max_without_approval: 0.7
+  amount_sar_max_without_approval: 5000
+  pending_ttl_hours: 24
+
+critical_actions:
+  - outbound_email_campaign
+  - outbound_whatsapp_broadcast
+  - outbound_sms_broadcast
+  - crm_bulk_update
+  - crm_bulk_delete
+  - pricing_change
+  - refund_issue
+  - production_config_change
+  - moyasar_live_mode_flip
+
+proof_pack:
+  minimum_score: 70
+  required_sections:
+    - executive_summary
+    - data_sources_verified
+    - findings_with_evidence
+    - recommendations_with_estimates
+    - bilingual_disclaimer
+
+bilingual_disclaimer:
+  en: "Estimated value is not Verified value"
+  ar: "القيمة التقديرية ليست قيمة مُتحقَّقة"
+
+audit:
+  retention_days: 365
+  destinations:
+    - local: data/audit_log/
+    - external: optional (S3 with founder approval)
