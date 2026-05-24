@@ -133,4 +133,113 @@ type WarRoomTarget = {
   outreach_draft_ar?: string;
 };
 
+export function OpsFounderWarRoom() {
+  const locale = useLocale();
+  const isAr = locale === "ar";
+  const adminKey = getAdminApiKey();
+  const [plan, setPlan] = useState<ComprehensivePlan | null>(null);
+  const [targets, setTargets] = useState<WarRoomTarget[]>([]);
+  const [social, setSocial] = useState<SocialPost[]>([]);
+  const [err, setErr] = useState("");
+
+  useEffect(() => {
+    if (!isOpsConfigured()) {
+      setErr(opsMissingKeyMessage(isAr));
+      return;
+    }
+    const key = adminKey || "";
+    setErr("");
+    Promise.all([
+      api.getFounderCockpit(key, 10, "morning"),
+      api.getTargetingToday(key, 5),
+      api.getWarRoomTodayPack(key),
+      api.getMarketingSocialToday(key),
+    ])
+      .then(([cockpitRes, tgtRes, packRes, socialRes]) => {
+        const cockpit = cockpitRes.data as { comprehensive_plan?: ComprehensivePlan };
+        setPlan(cockpit.comprehensive_plan ?? null);
+        const tgtItems =
+          (tgtRes.data as { targets?: { items?: WarRoomTarget[] } })?.targets?.items ?? [];
+        setTargets(tgtItems);
+        const packTargets =
+          (packRes.data as { targets?: WarRoomTarget[]; top_targets?: WarRoomTarget[] })
+            ?.targets ??
+          (packRes.data as { top_targets?: WarRoomTarget[] })?.top_targets;
+        if (packTargets?.length) {
+          setTargets((prev) => (prev.length ? prev : packTargets));
+        }
+        const posts =
+          (socialRes.data as { posts?: SocialPost[]; items?: SocialPost[] })?.posts ??
+          (socialRes.data as { items?: SocialPost[] })?.items ??
+          [];
+        setSocial(posts.slice(0, 3));
+      })
+      .catch(() => {
+        setErr(isAr ? "تعذّر تحميل غرفة الإيراد المختصرة." : "War room summary load failed.");
+      });
+  }, [adminKey, isAr]);
+
+  return (
+    <Card className="p-4 space-y-4 border-muted">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="font-semibold text-sm">
+          {isAr ? "غرفة الإيراد — 90 دقيقة" : "War room — 90 min"}
+        </h2>
+        <Button variant="outline" size="sm" asChild>
+          <Link href={`/${locale}/ops/war-room`}>
+            {isAr ? "الجدول الكامل" : "Full table"}
+          </Link>
+        </Button>
+      </div>
+      {err && <p className="text-destructive text-sm">{err}</p>}
+      {plan && (
+        <>
+          <MasterPhaseStrip plan={plan} isAr={isAr} />
+          <WeeklyDecisionBlock plan={plan} isAr={isAr} />
+        </>
+      )}
+      <div>
+        <p className="text-xs font-medium text-muted-foreground mb-2">
+          {isAr ? "قائمة 90 دقيقة" : "90-minute checklist"}
+        </p>
+        <ul className="text-xs space-y-1 list-disc mr-5">
+          {CHECKLIST_90_AR.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+      </div>
+      {targets.length > 0 && (
+        <div>
+          <p className="text-xs font-medium text-muted-foreground mb-2">
+            {isAr ? "أهداف اليوم" : "Today targets"}
+          </p>
+          <ul className="space-y-2">
+            {targets.map((t, i) => (
+              <li key={`${t.company ?? t.target ?? i}`} className="text-sm border rounded-md p-2">
+                <span className="font-medium">{t.company ?? t.target ?? "—"}</span>
+                {t.next_action && (
+                  <p className="text-xs text-muted-foreground mt-1">{t.next_action}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {social.length > 0 && (
+        <div>
+          <p className="text-xs font-medium text-muted-foreground mb-2">
+            {isAr ? "محتوى اليوم" : "Social today"}
+          </p>
+          <ul className="text-xs space-y-1">
+            {social.map((p, i) => (
+              <li key={`${p.title_ar ?? i}`}>
+                {p.title_ar ?? p.pillar ?? "—"} · {p.status ?? "—"}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </Card>
+  );
+}
 
