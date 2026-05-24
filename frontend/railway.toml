@@ -1,11 +1,2 @@
-# Dealix Next.js frontend — Railway config (healthcheck /ar)
-[build]
-builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
 
-[deploy]
-healthcheckPath = "/ar"
-healthcheckTimeout = 300
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 3
-numReplicas = 1
+# deploy-trigger: railway web from main

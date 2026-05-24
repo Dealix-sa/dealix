@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from dealix.commercial_ops.evidence_csv import real_evidence_rows, load_evidence_rows
+from dealix.commercial_ops.evidence_csv import load_evidence_rows, real_evidence_rows
 from dealix.commercial_ops.first_paid_tracker import analyze_first_paid_diagnostic
 from dealix.commercial_ops.paths import REPO_ROOT
 
@@ -12,7 +12,6 @@ PHASE_GATE_DOC = REPO_ROOT / "docs/ops/FOUNDER_PHASE_0_1_GATE_AR.md"
 
 
 def build_phase_01_close_path() -> dict[str, Any]:
-    """Executive snapshot for Phase 0–1 gate — evidence-led, no invented revenue."""
     paid = analyze_first_paid_diagnostic()
     real_rows = real_evidence_rows(load_evidence_rows())
     discoveries = sum(
@@ -30,12 +29,7 @@ def build_phase_01_close_path() -> dict[str, Any]:
         blockers.append("حدّث kpi_founder_commercial_import.yaml من CRM (لا أرقام مخترعة)")
 
     gate_open = paid.get("first_close_ready") and discoveries >= 1
-    if gate_open:
-        verdict = "PASS"
-    elif paid.get("verdict") == "IN_PROGRESS":
-        verdict = "IN_PROGRESS"
-    else:
-        verdict = "BLOCKED"
+    verdict = "PASS" if gate_open else ("IN_PROGRESS" if paid.get("verdict") == "IN_PROGRESS" else "BLOCKED")
 
     return {
         "verdict": verdict,
@@ -43,15 +37,9 @@ def build_phase_01_close_path() -> dict[str, Any]:
         "no_platform_v10_until_pass": not gate_open,
         "first_paid": paid,
         "real_evidence_count": len(real_rows),
-        "discovery_events_min_1": discoveries >= 1,
         "discovery_count": discoveries,
         "blockers_ar": blockers,
         "phase_doc": str(PHASE_GATE_DOC.relative_to(REPO_ROOT)).replace("\\", "/")
         if PHASE_GATE_DOC.is_file()
         else None,
-        "next_commands": [
-            "py -3 scripts/founder_motion_a_pipeline.py",
-            "py -3 scripts/founder_phase_01_close_path.py",
-            "powershell -File scripts/run_founder_agent_fleet_rhythm.ps1",
-        ],
     }
