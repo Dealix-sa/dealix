@@ -44,7 +44,13 @@ if ($LASTEXITCODE -eq 0) {
     exit 0
 }
 
-Write-Host "PUSH_MAIN=FAIL - refresh token and clear Windows Credential Manager github.com entries:"
+Write-Host "PUSH_MAIN=trying GitHub API fallback..."
+py -3 scripts/push_via_gh_api.py
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "PUSH_MAIN=OK (via GitHub API)"
+    exit 0
+}
+
+Write-Host "PUSH_MAIN=FAIL - git pull --rebase origin main then retry"
 Write-Host "  gh auth refresh -h github.com -s repo"
-Write-Host "  gh auth setup-git"
 exit 1

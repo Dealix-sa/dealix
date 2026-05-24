@@ -4,6 +4,7 @@ param(
     [switch]$SkipFrontendBuild,
     [switch]$SkipDeploy,
     [switch]$SkipCommercial,
+    [switch]$PdplConfirm,
     [int]$PollMinutes = 12
 )
 
@@ -16,8 +17,8 @@ Write-Host ""
 Write-Host "== Founder One-Session Close ==" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "=== Phase A0: merge secrets from local .env ==="
-py -3 scripts/apply_founder_closure_secrets.py
+Write-Host "=== Phase A0: merge env from local .env ==="
+py -3 scripts/apply_founder_closure_env.py
 if ($LASTEXITCODE -ne 0) { $Fail = 1 }
 
 Write-Host ""
@@ -37,8 +38,10 @@ Write-Host "=== Phase B: commercial closure (intake-driven) ==="
 if ($SkipCommercial) {
     Write-Host "  skipped (-SkipCommercial)"
 } else {
-    py -3 scripts/apply_founder_closure_commercial.py
-    if ($LASTEXITCODE -ne 0) { Write-Host "  commercial closure partial (see above)" -ForegroundColor Yellow; $Fail = 1 }
+    $commArgs = @("scripts/apply_founder_closure_commercial.py")
+    if ($PdplConfirm) { $commArgs += "--pdpl-confirm" }
+    py -3 @commArgs
+    if ($LASTEXITCODE -ne 0) { Write-Host "  commercial closure partial" -ForegroundColor Yellow; $Fail = 1 }
 }
 
 Write-Host ""
@@ -61,6 +64,5 @@ if ($Fail -eq 0) {
     Write-Host "FOUNDER_ONE_SESSION_CLOSE=PARTIAL" -ForegroundColor Yellow
     Write-Host "  docs/ops/RAILWAY_ONE_SHOT_DEPLOY_AR.md"
     Write-Host "  docs/ops/DEALIX_ME_FRONTEND_DNS_RAILWAY_AR.md"
-    Write-Host "  dealix/config/founder_closure_intake.example.yaml"
 }
 exit $Fail
