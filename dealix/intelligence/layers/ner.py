@@ -36,9 +36,12 @@ _RE_PHONE_SA = re.compile(
 )
 _RE_PHONE_GENERIC = re.compile(r"\+?\d{1,3}[\s\-]?\d{2,4}[\s\-]?\d{3,4}[\s\-]?\d{3,4}")
 _RE_MONEY = re.compile(
-    r"(?:(?:SAR|ر\.?س|ريال|USD|\$|EUR|€)\s?[\d,]+(?:\.\d+)?(?:\s?(?:[KMB]|الف|ألف|مليون|مليار))?)"
+    # Currency prefix + amount: SAR 1,234,567.89 K
+    r"(?:SAR|ر\.?س|ريال|USD|\$|EUR|€)\s?\d{1,3}(?:,\d{3})*(?:\.\d{1,4})?"
+    r"(?:\s?(?:[KMB]|الف|ألف|مليون|مليار))?"
     r"|"
-    r"(?:[\d,]+(?:\.\d+)?\s?(?:SAR|ر\.?س|ريال|USD|\$|EUR|€|الف|ألف|مليون|مليار))",
+    # Amount + currency suffix
+    r"\d{1,3}(?:,\d{3})*(?:\.\d{1,4})?\s?(?:SAR|ر\.?س|ريال|USD|\$|EUR|€|الف|ألف|مليون|مليار)",
     re.IGNORECASE,
 )
 _RE_PERCENT = re.compile(r"\b\d+(?:\.\d+)?\s?%|\b\d+(?:\.\d+)?\s?بالمائة|\b\d+(?:\.\d+)?\s?بالمئة")

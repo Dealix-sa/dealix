@@ -95,8 +95,10 @@ class TestVectorStore:
     def test_delete(self) -> None:
         store = VectorStore()
         store.upsert("a", "x")
-        assert store.delete("a")
-        assert not store.delete("a")  # already gone
+        first = store.delete("a")
+        second = store.delete("a")  # already gone
+        assert first is True
+        assert second is False
 
     def test_persistence_roundtrip(self, tmp_path) -> None:
         path = tmp_path / "store.json"
@@ -404,7 +406,8 @@ class TestKnowledgeGraph:
         kg.add("Dealix", "offers", "Free Diagnostic")
         assert len(kg.query(subject="Dealix")) == 2
         assert len(kg.query(predicate="located_in")) == 1
-        assert kg.delete("Dealix", "located_in", "Riyadh")
+        deleted = kg.delete("Dealix", "located_in", "Riyadh")
+        assert deleted is True
         assert len(kg.query(predicate="located_in")) == 0
 
     def test_neighbors_bfs(self) -> None:

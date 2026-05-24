@@ -15,7 +15,7 @@ import inspect
 import time
 import traceback
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Callable
+from typing import Any, Callable
 
 StepFn = Callable[[dict[str, Any]], Any]
 

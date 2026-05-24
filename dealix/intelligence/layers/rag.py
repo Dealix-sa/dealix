@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Sequence
 
-from dealix.intelligence.layers.chunker import Chunk, SmartChunker
+from dealix.intelligence.layers.chunker import SmartChunker
 from dealix.intelligence.layers.embeddings import EmbeddingModel
 from dealix.intelligence.layers.vector_store import VectorRecord, VectorStore
 

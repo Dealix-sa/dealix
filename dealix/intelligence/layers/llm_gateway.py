@@ -16,7 +16,7 @@ from __future__ import annotations
 import asyncio
 import time
 from dataclasses import dataclass, field
-from typing import Any, Awaitable, Callable, Iterable, Literal
+from typing import Any, Awaitable, Callable, Literal
 
 from dealix.intelligence.layers.prompt_cache import PromptCache
 from dealix.intelligence.layers.safety import SafetyClassifier, SafetyResult
