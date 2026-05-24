@@ -1,0 +1,69 @@
+# Dealix Control Policy — thin wrapper over canonical policy sources.
+#
+# This file IS NOT the source of truth. It is a single-surface union of:
+#   - dealix/config/approval_policy.yaml          (approval gates per action class)
+#   - dealix/config/claim_policy.yaml             (claim guards: ROI/guarantee, security, revenue)
+#   - auto_client_acquisition/governance_os/policies/default_registry.yaml
+#                                                  (forbidden customer-facing actions, risk categories)
+#
+# Verifiers (scripts/verify_policy_as_code.py) load the canonical files
+# and only consult this file for the documented invariants below.
+#
+# DO NOT add new bans here. Add them to the canonical source files.
+#
+# Reference: docs/governance/AI_ACTION_CONTROL.md,
+#            docs/governance/HUMAN_IN_THE_LOOP_MATRIX.md
+
+version: 1
+kind: dealix.control_policy
+status: thin_wrapper
+
+extends:
+  - dealix/config/approval_policy.yaml
+  - dealix/config/claim_policy.yaml
+  - auto_client_acquisition/governance_os/policies/default_registry.yaml
+
+# Invariants that verify_policy_as_code.py must confirm hold across the
+# canonical sources. If any of these flip, the verifier fails.
+invariants:
+  NO_LIVE_SEND:
+    description: External customer messaging requires explicit founder approval.
+    check: approval_policy.external_message.requires_approval == true
+  NO_LIVE_CHARGE:
+    description: Production payment processing is gated; test mode only.
+    check: claim_policy.rules.revenue_recognition.require_payment_proof == true
+  NO_COLD_WHATSAPP:
+    description: Cold WhatsApp automation is forbidden.
+    check: governance_os.forbidden_customer_facing_actions contains cold_whatsapp_auto_send
+  NO_LINKEDIN_AUTOMATION:
+    description: LinkedIn DM automation is banned.
+    check: governance_os.forbidden_customer_facing_actions contains linkedin_dm_automation
+  NO_SCRAPING:
+    description: No production web scraping or purchased list blasting.
+    check: governance_os.forbidden_customer_facing_actions contains production_web_scraping
+  NO_FAKE_PROOF:
+    description: Proof claims must be source-backed; case_study_publish requires approval + evidence.
+    check: approval_policy.case_study_publish.requires_approval == true
+  NO_FAKE_REVENUE:
+    description: Revenue = payment evidence only.
+    check: claim_policy.rules.revenue_recognition.require_payment_proof == true
+  NO_UNAPPROVED_TESTIMONIAL:
+    description: No customer name/logo public mention without signed permission.
+    check: approval_policy.case_study_publish.creates_evidence == true
+  NO_PROOF_LEVEL_OVERCLAIMING:
+    description: Proof level L0-L1 blocks external marketing.
+    check: docs.governance.HUMAN_IN_THE_LOOP_MATRIX defines proof levels
+  NO_UNSOURCED_NUMERIC_CLAIM:
+    description: Numeric claims in customer packs need source OR is_estimate=true.
+    check: claim_policy.rules.numeric_claim_in_customer_pack.must_have_source_or == is_estimate_true
+  NO_ROI_OR_GUARANTEE:
+    description: ROI or guarantee claims unconditional ban.
+    check: claim_policy.rules.roi_or_guarantee.allowed == false
+
+# Surface-level read for the Founder Console policy adapter.
+# api/internal/policy_adapter.py returns this merged view.
+exposed_view:
+  approval_gates_path: dealix/config/approval_policy.yaml
+  claim_guards_path: dealix/config/claim_policy.yaml
+  forbidden_actions_path: auto_client_acquisition/governance_os/policies/default_registry.yaml
+  agent_permissions_path: dealix/config/agent_permissions.yaml

@@ -1,0 +1,37 @@
+name: dealix-everything
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  verify-everything:
+    name: verify everything (Dealix Company OS)
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          # Install just enough to run the verifiers.
+          # PyYAML + pydantic are needed for the registries / schemas.
+          python -m pip install pyyaml pydantic fastapi
+      - name: Run master verifier
+        run: |
+          # Master verifier covers every new layer. Existing verifiers
+          # are NOT included here to keep this workflow targeted; the
+          # existing CI workflow covers them separately.
+          python scripts/verify_everything.py
+      - name: Bootstrap private-ops scaffold (sandbox path)
+        run: |
+          # In CI, use a scratch path so the verifier never touches /opt.
+          python scripts/bootstrap_private_ops_runtime.py --private-ops "${{ runner.temp }}/dealix-ops"
+          python scripts/bootstrap_private_ops_runtime.py --private-ops "${{ runner.temp }}/dealix-ops"  # idempotency
