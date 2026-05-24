@@ -11,6 +11,7 @@ arrives in Phase 2.
 from __future__ import annotations
 
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
@@ -19,6 +20,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from dealix.hermes.core.decisions import Decision
 from dealix.hermes.core.opportunities import ScoredOpportunity
 from dealix.hermes.core.schemas import utcnow
+from dealix.trust._jsonl_store import JsonlStore
 
 
 def _new_pack_id() -> str:
@@ -88,11 +90,36 @@ class EvidenceBuilder:
 
 
 class EvidenceStore:
-    """In-memory EvidencePack store."""
+    """EvidencePack store (optionally JSONL-backed).
 
-    def __init__(self) -> None:
+    Behaviour with `persist_path=None` is unchanged from Wave 1. With a
+    path supplied, every save appends to the file and `__init__`
+    rehydrates from disk. A read-only filesystem causes the store to
+    silently degrade to in-memory state.
+    """
+
+    def __init__(self, persist_path: Path | str | None = None) -> None:
         self._packs: dict[str, EvidencePack] = {}
         self._by_entity: dict[str, list[str]] = {}
+        self._store: JsonlStore | None = None
+        if persist_path is not None:
+            store = JsonlStore(persist_path)
+            if store.ensure_parent():
+                self._store = store
+                self._rehydrate()
+
+    def _rehydrate(self) -> None:
+        if self._store is None:
+            return
+        for record in self._store.load_all():
+            entity_ref = record.pop("__entity_ref__", None)
+            try:
+                pack = EvidencePack.model_validate(record)
+            except Exception:
+                continue
+            self._packs[pack.pack_id] = pack
+            if isinstance(entity_ref, str) and entity_ref:
+                self._by_entity.setdefault(entity_ref, []).append(pack.pack_id)
 
     def save(self, pack: EvidencePack, entity_ref: str | None = None) -> str:
         if pack.pack_id in self._packs:
@@ -100,6 +127,14 @@ class EvidenceStore:
         self._packs[pack.pack_id] = pack
         if entity_ref:
             self._by_entity.setdefault(entity_ref, []).append(pack.pack_id)
+        if self._store is not None:
+            record = pack.model_dump(mode="json")
+            if entity_ref:
+                record["__entity_ref__"] = entity_ref
+            try:
+                self._store.append(record)
+            except OSError:
+                self._store = None
         return pack.pack_id
 
     def get(self, pack_id: str) -> EvidencePack:

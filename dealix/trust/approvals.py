@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta
 from enum import StrEnum
+from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
@@ -21,6 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from dealix.hermes.core.schemas import utcnow
 from dealix.hermes.sovereignty import SovereigntyLevel
+from dealix.trust._jsonl_store import JsonlStore
 from dealix.trust.approval import ApprovalStatus as LegacyApprovalStatus
 
 
@@ -92,15 +94,53 @@ class ApprovalTicket(BaseModel):
 
 
 class ApprovalQueue:
-    """In-memory approval queue used by HermesOrchestrator."""
+    """In-memory approval queue (optionally JSONL-backed).
 
-    def __init__(self) -> None:
+    Behaviour with `persist_path=None` is unchanged. With a path supplied,
+    every mutation appends to that file and `__init__` rehydrates from it.
+    If the directory cannot be created (e.g. read-only filesystem) the
+    queue silently falls back to pure in-memory state.
+    """
+
+    def __init__(self, persist_path: Path | str | None = None) -> None:
         self._tickets: dict[str, ApprovalTicket] = {}
+        self._store: JsonlStore | None = None
+        if persist_path is not None:
+            store = JsonlStore(persist_path)
+            if store.ensure_parent():
+                self._store = store
+                self._rehydrate()
+
+    def _rehydrate(self) -> None:
+        if self._store is None:
+            return
+        for record in self._store.load_all():
+            try:
+                ticket = ApprovalTicket.model_validate(record)
+            except Exception:
+                # Corrupt record — skip silently; never block boot.
+                continue
+            self._tickets[ticket.ticket_id] = ticket
+
+    def _flush(self) -> None:
+        if self._store is None:
+            return
+        records = [t.model_dump(mode="json") for t in self._tickets.values()]
+        try:
+            self._store.replace_all(records)
+        except OSError:
+            # FS went read-only mid-flight — degrade to in-memory only.
+            self._store = None
 
     def submit(self, ticket: ApprovalTicket) -> str:
         if ticket.ticket_id in self._tickets:
             raise ValueError(f"duplicate ticket_id: {ticket.ticket_id}")
         self._tickets[ticket.ticket_id] = ticket
+        if self._store is not None:
+            try:
+                self._store.append(ticket.model_dump(mode="json"))
+            except OSError:
+                self._store = None
         return ticket.ticket_id
 
     def get(self, ticket_id: str) -> ApprovalTicket:
@@ -110,7 +150,9 @@ class ApprovalQueue:
             raise KeyError(f"unknown ticket: {ticket_id}") from exc
 
     def pending(self) -> list[ApprovalTicket]:
-        self._sweep_expired()
+        swept = self._sweep_expired()
+        if swept:
+            self._flush()
         return [t for t in self._tickets.values() if t.status == TicketStatus.PENDING]
 
     def approve(self, ticket_id: str, by: str, note: str | None = None) -> ApprovalTicket:
@@ -120,12 +162,14 @@ class ApprovalQueue:
         if ticket.is_expired():
             ticket.status = TicketStatus.EXPIRED
             ticket.decided_at = utcnow()
+            self._flush()
             return ticket
         ticket.status = TicketStatus.APPROVED
         ticket.decided_by = by
         ticket.decision_note = note
         ticket.decided_at = utcnow()
         self._tickets[ticket_id] = ticket
+        self._flush()
         return ticket
 
     def deny(self, ticket_id: str, by: str, reason: str) -> ApprovalTicket:
@@ -137,6 +181,7 @@ class ApprovalQueue:
         ticket.decision_note = reason
         ticket.decided_at = utcnow()
         self._tickets[ticket_id] = ticket
+        self._flush()
         return ticket
 
     def withdraw(self, ticket_id: str) -> ApprovalTicket:
@@ -145,14 +190,18 @@ class ApprovalQueue:
             return ticket
         ticket.status = TicketStatus.WITHDRAWN
         ticket.decided_at = utcnow()
+        self._flush()
         return ticket
 
-    def _sweep_expired(self) -> None:
+    def _sweep_expired(self) -> bool:
         now = utcnow()
+        swept = False
         for ticket in self._tickets.values():
             if ticket.status == TicketStatus.PENDING and ticket.is_expired(now):
                 ticket.status = TicketStatus.EXPIRED
                 ticket.decided_at = now
+                swept = True
+        return swept
 
 
 __all__ = [
