@@ -35,10 +35,11 @@ export default async function ServicesHubPage({ params }: ServicesHubProps) {
               </Link>
             </div>
             <div className="rounded-lg border border-border bg-card/40 p-4">
-              <p className="text-xs text-muted-foreground">Governed Diagnostic</p>
-              <p className="mt-1 font-semibold">من 499 ر.س</p>
+              <p className="text-xs text-muted-foreground">تشخيص تشغيلي Ops</p>
+              <p className="mt-1 font-semibold">من 4,999 ر.س</p>
+              <p className="mt-1 text-xs text-muted-foreground">R1 Sprint: من 499 ر.س</p>
               <Link href={`/${locale}/dealix-diagnostic`} className="mt-3 inline-block text-sm text-primary hover:underline">
-                تشخيص 10 دقائق
+                مسار 7 أيام
               </Link>
             </div>
           </div>
@@ -151,13 +152,14 @@ export default async function ServicesHubPage({ params }: ServicesHubProps) {
               Sample Proof Pack
             </Link>
           </div>
-          <div className="rounded-lg border border-border bg-card/40 p-4">
-            <p className="text-xs text-muted-foreground">Governed Diagnostic</p>
-            <p className="mt-1 font-semibold">From 499 SAR</p>
-            <Link href={`/${locale}/dealix-diagnostic`} className="mt-3 inline-block text-sm text-primary hover:underline">
-              10-min diagnostic
-            </Link>
-          </div>
+            <div className="rounded-lg border border-border bg-card/40 p-4">
+              <p className="text-xs text-muted-foreground">Ops diagnostic</p>
+              <p className="mt-1 font-semibold">From 4,999 SAR</p>
+              <p className="mt-1 text-xs text-muted-foreground">R1 Sprint: from 499 SAR</p>
+              <Link href={`/${locale}/dealix-diagnostic`} className="mt-3 inline-block text-sm text-primary hover:underline">
+                7-day path
+              </Link>
+            </div>
         </div>
         <p className="mt-8 text-muted-foreground leading-relaxed">
           Each line ties AI work to measurable delivery — not generic

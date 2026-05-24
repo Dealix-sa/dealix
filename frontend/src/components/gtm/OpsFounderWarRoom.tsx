@@ -8,6 +8,28 @@ import { Button } from "@/components/ui/button";
 import api from "@/lib/api";
 import { getAdminApiKey, isOpsConfigured, opsMissingKeyMessage } from "@/lib/opsAdmin";
 
+type CeoMasterPlanSlice = {
+  overall_verdict?: string;
+  daily_five_metrics?: {
+    metrics?: Record<string, number | null>;
+    founder_action_ar?: string;
+    phase_0_1_verdict?: string;
+  };
+  p0_revenue_close?: { verdict?: string; phase_deal?: { company_filled?: boolean } };
+  p0_production_trust?: { verdict?: string; production?: { overall_pct?: number } };
+  p0_ceo_decision?: {
+    verdict?: string;
+    decision?: { one_decision_ar?: string; success_by_friday_ar?: string };
+  };
+  p0_gtm_blitz?: {
+    verdict?: string;
+    icp?: { eligible?: number };
+    conversations?: { qualified?: number; proposals?: number };
+  };
+  p1_trust_pack?: { verdict?: string };
+  p2_repeatability?: { verdict?: string; phase_2_hint_ar?: string };
+};
+
 type ComprehensivePlan = {
   weekly_one_decision?: {
     verdict?: string;
@@ -17,16 +39,16 @@ type ComprehensivePlan = {
     stop_list?: string[];
     latest_path?: string;
   };
+  phase_0_1_gate?: {
+    verdict?: string;
+    blockers_ar?: string[];
+  };
   master_execution_phase?: {
     active_phase?: number;
     active_label_ar?: string;
     phases?: { phase: number; label_ar?: string; is_active?: boolean; is_complete?: boolean }[];
   };
-  phase_0_1_gate?: {
-    verdict?: string;
-    no_build_until_closed?: boolean;
-    blockers_ar?: string[];
-  };
+  ceo_master_plan?: CeoMasterPlanSlice;
   max_ops_backlog?: {
     verdict?: string;
     percent_done?: number;
@@ -41,13 +63,80 @@ type ComprehensivePlan = {
   };
 };
 
-function MasterPhaseStrip({
+function CeoMasterPlanBlock({
+  ceo,
   plan,
   isAr,
 }: {
+  ceo: CeoMasterPlanSlice;
   plan: ComprehensivePlan;
   isAr: boolean;
 }) {
+  const metrics = ceo.daily_five_metrics?.metrics ?? {};
+  const workstreams = [
+    ["revenue", ceo.p0_revenue_close?.verdict],
+    ["production", ceo.p0_production_trust?.verdict],
+    ["decision", ceo.p0_ceo_decision?.verdict],
+    ["gtm", ceo.p0_gtm_blitz?.verdict],
+    ["trust", ceo.p1_trust_pack?.verdict],
+    ["repeat", ceo.p2_repeatability?.verdict],
+  ] as const;
+  const blockers = plan.phase_0_1_gate?.blockers_ar ?? [];
+
+  return (
+    <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-xs font-semibold">
+          {isAr ? "CEO Master Plan" : "CEO Master Plan"} ·{" "}
+          <span className="font-mono">{ceo.overall_verdict ?? "—"}</span>
+        </p>
+        <Link
+          href="/docs/commercial/operations/TRUST_PACK_PROPOSAL_AR.md"
+          className="text-xs text-primary hover:underline"
+          target="_blank"
+        >
+          Trust Pack
+        </Link>
+      </div>
+      <div className="flex flex-wrap gap-1">
+        {workstreams.map(([key, verdict]) => (
+          <span
+            key={key}
+            className={`text-[10px] px-1.5 py-0.5 rounded border font-mono ${
+              verdict === "PASS"
+                ? "border-emerald-500/50 text-emerald-700 dark:text-emerald-400"
+                : "border-muted text-muted-foreground"
+            }`}
+          >
+            {key}:{verdict ?? "—"}
+          </span>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-[10px] font-mono">
+        <span>paid today: {metrics["1_new_paid_revenue_events_today"] ?? 0}</span>
+        <span>payments: {metrics["2_payment_received_real_total"] ?? 0}</span>
+        <span>proofs: {metrics["3_proof_packs_delivered_total"] ?? 0}</span>
+        <span>pipeline: {metrics["4_open_pipeline_leads_real"] ?? 0}</span>
+        <span>layers: {metrics["5_production_layers_pct"] ?? "n/a"}%</span>
+      </div>
+      {ceo.p0_ceo_decision?.decision?.one_decision_ar && (
+        <p className="text-xs">{ceo.p0_ceo_decision.decision.one_decision_ar}</p>
+      )}
+      {blockers.length > 0 && (
+        <ul className="text-xs text-amber-700 dark:text-amber-400 list-disc mr-4 space-y-0.5">
+          {blockers.slice(0, 3).map((b) => (
+            <li key={b}>{b}</li>
+          ))}
+        </ul>
+      )}
+      {ceo.daily_five_metrics?.founder_action_ar && (
+        <p className="text-xs text-muted-foreground">{ceo.daily_five_metrics.founder_action_ar}</p>
+      )}
+    </div>
+  );
+}
+
+function MasterPhaseStrip({ plan, isAr }: { plan: ComprehensivePlan; isAr: boolean }) {
   const phases = plan.master_execution_phase?.phases ?? [];
   const active = plan.master_execution_phase?.active_phase ?? 0;
   if (phases.length === 0) {
@@ -78,13 +167,7 @@ function MasterPhaseStrip({
   );
 }
 
-function WeeklyDecisionBlock({
-  plan,
-  isAr,
-}: {
-  plan: ComprehensivePlan;
-  isAr: boolean;
-}) {
+function WeeklyDecisionBlock({ plan, isAr }: { plan: ComprehensivePlan; isAr: boolean }) {
   const w = plan.weekly_one_decision;
   const decision = (w?.one_decision || "").trim();
   return (
@@ -192,6 +275,9 @@ export function OpsFounderWarRoom() {
         </Button>
       </div>
       {err && <p className="text-destructive text-sm">{err}</p>}
+      {plan?.ceo_master_plan && (
+        <CeoMasterPlanBlock ceo={plan.ceo_master_plan} plan={plan} isAr={isAr} />
+      )}
       {plan && (
         <>
           <MasterPhaseStrip plan={plan} isAr={isAr} />
@@ -242,4 +328,3 @@ export function OpsFounderWarRoom() {
     </Card>
   );
 }
-
