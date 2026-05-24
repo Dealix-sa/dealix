@@ -36,6 +36,7 @@ def test_weak_candidate_scores_lower_than_strong_one() -> None:
     weak_result = scorer.score(weak, _offer())
     strong_result = scorer.score(strong, _offer())
     assert weak_result.score < strong_result.score
+    assert weak_result.score <= 2.5
     assert weak_result.classification in {"weak", "viable"}
 
 
