@@ -82,7 +82,7 @@ Step-Fail $LASTEXITCODE
 
 Write-Host ""
 Write-Host "=== 9 Paid launch ==="
-py -3 scripts/verify_paid_launch_readiness.py --from-railway-env
+py -3 scripts/verify_paid_launch_readiness.py
 Step-Fail $LASTEXITCODE
 
 Write-Host ""
