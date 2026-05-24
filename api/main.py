@@ -78,6 +78,7 @@ from api.routers import friction_log as friction_log_router
 from api.routers import sprint_runner as sprint_runner_router
 from api.routers import founder_dashboard as founder_dashboard_router
 from api.routers import audit_export as audit_export_router
+from api.routers import sovereign_control_plane as sovereign_control_plane_router
 
 # value_os, data_os and agent_os routers are imported defensively: an
 # optional router with a broken module-level import must not abort app
@@ -346,6 +347,8 @@ def create_app() -> FastAPI:
     app.include_router(founder_launch_status_router.router)
     # Systems 26–35 — Enterprise Control Plane hardening
     app.include_router(control_plane_os.router)
+    # Sovereign Value Control Plane — §81–§110
+    app.include_router(sovereign_control_plane_router.router)
     app.include_router(agent_mesh_os.router)
     app.include_router(assurance_contract_os.router)
     app.include_router(sandbox_os.router)
