@@ -8,7 +8,13 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        everything production-env-check railway-readiness live-send-safety \
+        ai-company-os policy-check agent-registry-check machine-registry-check \
+        eval-gate-check prompt-output-check internal-api-smoke \
+        production-certification \
+        ceo-daily-brief capital-allocation strategy-scorecard \
+        revenue-forecast company-memory
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +136,62 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Production AI Certification Layer ───────────────────
+# Single gate: every layer must PASS before Railway is allowed to deploy.
+# Each target below is offline, never sends anything, never prints secrets.
+
+policy-check: ## cert: validate policies/dealix_control_policy.yaml
+	$(PYTHON) scripts/verify_policy_as_code.py
+
+agent-registry-check: ## cert: validate registries/agent_registry.yaml
+	$(PYTHON) scripts/verify_agent_registry.py
+
+machine-registry-check: ## cert: validate registries/machine_registry.yaml
+	$(PYTHON) scripts/verify_machine_registry.py
+
+eval-gate-check: ## cert: validate evals/gates/dealix_agent_eval_gate.yaml
+	$(PYTHON) scripts/verify_eval_gate.py
+
+prompt-output-check: ## cert: scan repo for forbidden user-facing copy
+	$(PYTHON) scripts/verify_prompt_output_quality.py
+
+live-send-safety: ## cert: verify external sending is fully gated
+	$(PYTHON) scripts/verify_live_send_safety.py
+
+railway-readiness: ## cert: verify Railway deployment configuration
+	$(PYTHON) scripts/verify_railway_readiness.py
+
+production-env-check: ## cert: verify env vars (never prints values)
+	$(PYTHON) scripts/verify_production_env.py
+
+ai-company-os: ## cert: verify Founder Console + internal API surfaces
+	$(PYTHON) scripts/verify_ai_company_os.py
+
+everything: ## cert: master roll-up (alias of production-certification)
+	$(PYTHON) scripts/verify_everything.py
+
+production-certification: ## cert: full gate — must PASS before Railway deploy
+	$(PYTHON) scripts/verify_everything.py
+
+internal-api-smoke: ## cert: smoke test internal API (BASE_URL=https://api.dealix.me)
+	$(PYTHON) scripts/smoke_internal_api.py
+
+# ── Daily operating commands (private-ops driven) ──────────────
+# PRIVATE_OPS defaults to /opt/dealix-ops-private; override with PRIVATE_OPS=...
+PRIVATE_OPS ?= /opt/dealix-ops-private
+
+ceo-daily-brief: ## ops: generate the founder's daily brief
+	$(PYTHON) scripts/generate_ceo_daily_brief.py --private-ops $(PRIVATE_OPS)
+
+capital-allocation: ## ops: refresh capital allocation matrix
+	$(PYTHON) scripts/generate_capital_allocation_report.py --private-ops $(PRIVATE_OPS)
+
+strategy-scorecard: ## ops: score strategic assumptions vs. evidence
+	$(PYTHON) scripts/generate_strategy_scorecard.py --private-ops $(PRIVATE_OPS)
+
+revenue-forecast: ## ops: rebuild bottom-up revenue forecast
+	$(PYTHON) scripts/generate_revenue_forecast.py --private-ops $(PRIVATE_OPS)
+
+company-memory: ## ops: roll up decisions, outcomes, learnings
+	$(PYTHON) scripts/generate_company_memory_report.py --private-ops $(PRIVATE_OPS)

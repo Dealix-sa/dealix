@@ -1,0 +1,119 @@
+version: 1
+# Every AI agent the company may run must be declared here.
+# verify_agent_registry.py refuses to ship if any agent has
+# external_action_allowed=true without a policy + approval + audit gate.
+agents:
+  - id: ceo_copilot
+    name: CEO Copilot
+    purpose: Recommend the highest-leverage next action for the founder.
+    approval_class_max: A1
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: internal_summary
+    allowed_write_targets:
+      - founder/ceo_daily_brief.md
+      - founder/decision_log.csv
+
+  - id: capital_allocator
+    name: Capital Allocator
+    purpose: Score capital/time/founder-attention deployment options. Recommend, never execute.
+    approval_class_max: A1
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: internal_summary
+    allowed_write_targets:
+      - finance/capital_allocation.csv
+      - finance/roi_priority_matrix.csv
+
+  - id: revenue_forecaster
+    name: Revenue Forecaster
+    purpose: Produce bottom-up revenue forecasts from the pipeline graph.
+    approval_class_max: A1
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: internal_summary
+    allowed_write_targets:
+      - finance/revenue_forecast.md
+
+  - id: outreach_drafter
+    name: Outreach Drafter
+    purpose: Draft outbound messages for founder approval.
+    approval_class_max: A2
+    external_action_allowed: false   # drafting only; the executor (below) sends.
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: outreach_drafts
+    requires_policy: dealix_control_policy
+    allowed_write_targets:
+      - outreach/outreach_queue.csv
+
+  - id: outreach_executor
+    name: Outreach Executor
+    purpose: Execute founder-approved A2 sends through the gated integration layer only.
+    approval_class_max: A2
+    external_action_allowed: true
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: outreach_approved_only
+    requires_policy: dealix_control_policy
+    requires_integration_gate: true
+    requires_live_send_safety: true
+    allowed_write_targets:
+      - trust/approval_decisions.csv
+      - outreach/followup_queue.csv
+
+  - id: market_attack_planner
+    name: Market Attack Planner
+    purpose: Score beachhead sectors and strategic accounts.
+    approval_class_max: A1
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: internal_summary
+    allowed_write_targets:
+      - market_attack/beachhead_sector_scorecard.csv
+      - market_attack/strategic_accounts.csv
+
+  - id: ai_governance_auditor
+    name: AI Governance Auditor
+    purpose: Inventory every AI system in use, score risk, produce board pack.
+    approval_class_max: A0
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: internal_summary
+    allowed_write_targets:
+      - ai_governance/ai_system_inventory.csv
+      - ai_governance/ai_risk_register.csv
+      - ai_governance/governance_board_pack.csv
+
+  - id: company_memory_curator
+    name: Company Memory Curator
+    purpose: Summarize decisions, learnings, and outcomes into the long-term memory ledger.
+    approval_class_max: A0
+    external_action_allowed: false
+    kill_switch: true
+    eval_required: true
+    audit_required: true
+    owner: founder
+    data_access_level: internal_summary
+    allowed_write_targets:
+      - graph/learnings.csv
+      - founder/decision_log.csv
