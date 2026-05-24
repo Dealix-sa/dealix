@@ -214,6 +214,47 @@ class Settings(BaseSettings):
     zatca_seller_street: str = ""
     zatca_seller_postal: str = ""
 
+    # ── Moyasar (payments) ──────────────────────────────────────
+    # Live-charge gate. Production code MUST NOT initiate a live Moyasar
+    # charge unless moyasar_mode == "live" AND moyasar_live_verified is True.
+    # Non-Negotiable #6 (no live charge without approval) enforced here.
+    moyasar_secret_key: SecretStr | None = None
+    moyasar_public_key: str | None = None
+    moyasar_webhook_secret: SecretStr | None = None
+    moyasar_mode: Literal["test", "live"] = "test"
+    moyasar_live_verified: bool = False
+
+    # ── Autonomous distribution — Phase 0 foundation ────────────
+    # Single scheduler abstraction. Default in-process APScheduler with
+    # Postgres jobstore; GitHub Actions retained only for DR canaries.
+    scheduler_backend: Literal["apscheduler", "github_actions", "temporal"] = "apscheduler"
+    # KSA data residency enforcement. When True, personal data writes
+    # must hit a database hostname in `ksa_residency_allowlist`.
+    ksa_residency_enforce: bool = False
+    ksa_residency_allowlist: str = ""  # comma-separated hostnames
+    # Email deliverability attestation (SPF/DKIM/DMARC verified).
+    email_deliverability_ok: bool = False
+    # SBOM signing key for supply-chain attestation (sigstore/cosign id).
+    sbom_sign_key_id: SecretStr | None = None
+    # Self-serve checkout gate (Phase 1). Off by default.
+    offers_self_serve_enabled: bool = False
+    # Auto-delivery of Sprint workflow (Phase 2). Off by default.
+    sprint_auto_delivery: bool = False
+    # Auto-renewal subscriptions (Phase 3). Off by default.
+    subscriptions_auto_renew: bool = False
+    # Partner self-service portal (Phase 4). Off by default.
+    partners_portal_enabled: bool = False
+
+    @property
+    def ksa_residency_hosts(self) -> list[str]:
+        """Parsed KSA residency allowlist as list."""
+        return [h.strip() for h in self.ksa_residency_allowlist.split(",") if h.strip()]
+
+    @property
+    def moyasar_live_enabled(self) -> bool:
+        """Composite gate: live-mode AND verified. Used by MoyasarClient."""
+        return self.moyasar_mode == "live" and self.moyasar_live_verified
+
     # ── Other ───────────────────────────────────────────────────
     clickbank_api_key: SecretStr | None = None
     hix_ai_api_key: SecretStr | None = None
