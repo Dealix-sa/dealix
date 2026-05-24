@@ -65,7 +65,7 @@ fi
 
 echo "── Forbidden tokens sweep ─────────────────────────────"
 FORBIDDEN_RE='(\bguaranteed?\b|\bblast\b|\bscraping\b|نضمن|مضمون|cold[[:space:]]+(whatsapp|outreach|email))'
-if grep -qiE "$FORBIDDEN_RE" landing/customer-portal.html landing/executive-command-center.html landing/launchpad.html 2>/dev/null; then
+if grep -qiE "$FORBIDDEN_RE" landing/customer-portal.html landing/executive-command-center.html landing/launchpad.html landing/index.html 2>/dev/null; then
   results+=("FORBIDDEN_CLAIMS_HTML=FAIL")
   overall_pass=false
 else

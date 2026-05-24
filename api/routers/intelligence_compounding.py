@@ -146,7 +146,7 @@ def _compound_score(
 # ── Endpoints ──────────────────────────────────────────────────────────────────
 
 
-@router.get("/compounding-status", operation_id="intelligence_compounding_status")
+@router.get("/status", operation_id="intelligence_compounding_status")
 async def status() -> dict[str, Any]:
     """Layer health check and module exports list."""
     return {
