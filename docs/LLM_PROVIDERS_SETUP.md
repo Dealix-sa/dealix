@@ -41,6 +41,18 @@
 
 Copy [`.env.local.example`](../.env.local.example) → `.env.local` (never commit).
 
+### MiniMax Token Plan (M2.7)
+
+| Item | Value |
+|------|--------|
+| Console | https://platform.minimax.io → API Keys |
+| Key format | `sk-api-...` (Token Plan / Credits) — **not** `sk-user-...` |
+| Endpoint | `POST https://api.minimax.io/v1/chat/completions` |
+| Model | `MiniMax-M2.7` or `MiniMax-M2.7-highspeed` |
+| Env | `MINIMAX_API_KEY`, `MINIMAX_BASE_URL`, `MINIMAX_MODEL` |
+
+If API returns `insufficient_balance (1008)`: activate Credits or wait for Token Plan window reset (Starter: 1500 req / 5h).
+
 ---
 
 ## 2. Per-task tier matrix (Wave 7.5 §24.6 E5)
