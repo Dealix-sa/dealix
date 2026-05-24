@@ -8,44 +8,15 @@ isolated FastAPI mount so we don't have to boot the full api.main app graph.
 from __future__ import annotations
 
 import importlib
-import os
 from pathlib import Path
 
 import pytest
 
 
-# ── Shared isolation fixture ────────────────────────────────────
-
-
-@pytest.fixture(autouse=True)
-def _isolate_internal_modules(monkeypatch):
-    """Reload api.internal modules around each test so env mutations don't leak.
-
-    The internal auth + runtime_reader modules read env vars at import time and
-    cache module-level state. We monkeypatch env, reload the modules, run the
-    test, then reload once more on teardown with the test-suite default env so
-    later tests in the same session see a clean module.
-    """
-    monkeypatch.delenv("INTERNAL_API_TOKEN", raising=False)
-
-    yield
-
-    # Best-effort restore: reload with no override so subsequent tests get a
-    # consistent module state.
-    os.environ.pop("INTERNAL_API_TOKEN", None)
-    for mod_name in (
-        "api.internal.auth",
-        "api.internal.runtime_reader",
-        "api.routers.internal.founder_console",
-    ):
-        mod = importlib.import_module(mod_name)
-        importlib.reload(mod)
-
-
 # ── api.internal.auth ────────────────────────────────────────────
 
 
-def _reload_auth_with_env(monkeypatch, token: str | None):
+def _reload_auth_with_env(monkeypatch, token):
     if token is None:
         monkeypatch.delenv("INTERNAL_API_TOKEN", raising=False)
     else:
