@@ -1,0 +1,11 @@
+machine_id,name,queue_file,owner,approval_class,kill_switch,kpi,status,source
+m-001,Outbound Draft Machine,outreach_queue.csv,distribution_operator,founder,enabled,reply_quality,active,fallback
+m-002,LinkedIn Queue Machine,linkedin_queue.csv,distribution_operator,founder,enabled,acceptance_rate,active,fallback
+m-003,Email Draft Machine,outreach_queue.csv,distribution_operator,founder,enabled,reply_rate_per_step,active,fallback
+m-004,Contact Form Queue,contact_form_queue.csv,distribution_operator,founder,enabled,reply_rate,active,fallback
+m-005,Follow-up Planner,followup_queue.csv,distribution_operator,founder,enabled,uplift_vs_first_touch,active,fallback
+m-006,Reply Router,reply_routing_queue.csv,distribution_operator,founder,enabled,routing_precision,active,fallback
+m-007,Nurture Machine,nurture_queue.csv,distribution_operator,founder,enabled,reengagement_rate,active,fallback
+m-008,Partner / Referral Machine,partner_referral_queue.csv,distribution_operator,founder,enabled,referrals_per_quarter,active,fallback
+m-009,ABM Strategic Account Machine,abm_account_queue.csv,distribution_operator,founder,enabled,t1_pipeline_coverage,active,fallback
+m-010,Proof-to-Demand Machine,proof_to_demand_queue.csv,brand_guardian,founder,enabled,proof_uplift,active,fallback

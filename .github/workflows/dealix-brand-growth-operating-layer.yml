@@ -1,0 +1,182 @@
+name: Dealix Brand & Growth Operating Layer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/brand/**"
+      - "docs/positioning/**"
+      - "docs/intelligence/**"
+      - "docs/growth/**"
+      - "docs/marketing/**"
+      - "docs/product/**"
+      - "docs/revenue/**"
+      - "docs/delivery/**"
+      - "docs/finance/**"
+      - "docs/client_success/**"
+      - "docs/proof/**"
+      - "docs/ai/**"
+      - "docs/performance/**"
+      - "assets/brand/**"
+      - "apps/web/**"
+      - "data/seeds/**"
+      - "scripts/verify_brand_system.py"
+      - "scripts/verify_growth_system.py"
+      - "scripts/verify_marketing_system.py"
+      - "scripts/verify_product_distribution.py"
+      - "scripts/verify_brand_growth_operating_layer.py"
+      - "api/routers/brand_growth_internal.py"
+      - ".github/workflows/dealix-brand-growth-operating-layer.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify Brand & Growth Operating Layer
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Environment fingerprint
+        run: |
+          {
+            echo "## Environment fingerprint"
+            echo ""
+            echo "- python: $(python --version 2>&1)"
+            echo "- node:   $(node --version)"
+            echo "- pwd:    $(pwd)"
+            echo "- files (top-level brand surfaces):"
+            ls -la docs/brand docs/positioning docs/intelligence docs/growth docs/marketing docs/product 2>&1 | sed 's/^/    /'
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Brand system verifier
+        run: |
+          set -o pipefail
+          python scripts/verify_brand_system.py 2>&1 | tee brand_verifier.log
+          rc=${PIPESTATUS[0]}
+          {
+            echo "## Brand system verifier"
+            echo ""
+            echo "Exit code: $rc"
+            echo ""
+            echo '```'
+            cat brand_verifier.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $rc
+
+      - name: Growth system verifier
+        if: always()
+        run: |
+          set -o pipefail
+          python scripts/verify_growth_system.py 2>&1 | tee growth_verifier.log
+          rc=${PIPESTATUS[0]}
+          {
+            echo "## Growth system verifier"
+            echo ""
+            echo "Exit code: $rc"
+            echo ""
+            echo '```'
+            cat growth_verifier.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $rc
+
+      - name: Marketing system verifier
+        if: always()
+        run: |
+          set -o pipefail
+          python scripts/verify_marketing_system.py 2>&1 | tee marketing_verifier.log
+          rc=${PIPESTATUS[0]}
+          {
+            echo "## Marketing system verifier"
+            echo ""
+            echo "Exit code: $rc"
+            echo ""
+            echo '```'
+            cat marketing_verifier.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $rc
+
+      - name: Product distribution verifier
+        if: always()
+        run: |
+          set -o pipefail
+          python scripts/verify_product_distribution.py 2>&1 | tee product_verifier.log
+          rc=${PIPESTATUS[0]}
+          {
+            echo "## Product distribution verifier"
+            echo ""
+            echo "Exit code: $rc"
+            echo ""
+            echo '```'
+            cat product_verifier.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $rc
+
+      - name: Composite operating-layer verifier
+        if: always()
+        run: |
+          set -o pipefail
+          python scripts/verify_brand_growth_operating_layer.py 2>&1 | tee composite_verifier.log
+          rc=${PIPESTATUS[0]}
+          {
+            echo "## Composite verifier"
+            echo ""
+            echo "Exit code: $rc"
+            echo ""
+            echo '```'
+            cat composite_verifier.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $rc
+
+      - name: Founder Console frontend build (apps/web)
+        if: always()
+        working-directory: apps/web
+        run: |
+          set -o pipefail
+          npm install --no-audit --no-fund --silent 2>&1 | tee install.log
+          npm run build 2>&1 | tee build.log
+          {
+            echo "## Founder Console build"
+            echo ""
+            echo '```'
+            tail -n 60 build.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload verifier logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brand-growth-verifier-logs
+          path: |
+            brand_verifier.log
+            growth_verifier.log
+            marketing_verifier.log
+            product_verifier.log
+            composite_verifier.log
+            apps/web/install.log
+            apps/web/build.log
+          if-no-files-found: ignore
+          retention-days: 7

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "meta": {
+    "name": "Dealix Brand Tokens",
+    "version": "1.0.0",
+    "owner": "brand-guardian",
+    "source": "docs/brand/DEALIX_BRAND_SYSTEM.md"
+  },
+  "color": {
+    "bg": {
+      "primary":  { "$value": "#0B1220", "$type": "color" },
+      "surface":  { "$value": "#0F1726", "$type": "color" },
+      "elevated": { "$value": "#162038", "$type": "color" },
+      "inverse":  { "$value": "#FFFFFF", "$type": "color" }
+    },
+    "accent": {
+      "primary": { "$value": "#00D1A1", "$type": "color" },
+      "hover":   { "$value": "#00B388", "$type": "color" },
+      "muted":   { "$value": "#0E3A30", "$type": "color" }
+    },
+    "text": {
+      "primary":   { "$value": "#FFFFFF", "$type": "color" },
+      "secondary": { "$value": "#B2BBC6", "$type": "color" },
+      "muted":     { "$value": "#7C8895", "$type": "color" },
+      "inverse":   { "$value": "#0B1220", "$type": "color" }
+    },
+    "border": {
+      "subtle":  { "$value": "#1B2536", "$type": "color" },
+      "strong":  { "$value": "#2A3753", "$type": "color" },
+      "accent":  { "$value": "#00D1A1", "$type": "color" }
+    },
+    "status": {
+      "success": { "$value": "#00D1A1", "$type": "color" },
+      "warning": { "$value": "#F2B33D", "$type": "color" },
+      "danger":  { "$value": "#FF6B6B", "$type": "color" },
+      "info":    { "$value": "#5AC8FA", "$type": "color" }
+    }
+  },
+  "font": {
+    "family": {
+      "display": { "$value": "'Inter Tight', 'IBM Plex Sans Arabic', system-ui, sans-serif", "$type": "fontFamily" },
+      "body":    { "$value": "Inter, 'IBM Plex Sans Arabic', system-ui, sans-serif", "$type": "fontFamily" },
+      "mono":    { "$value": "'JetBrains Mono', ui-monospace, SFMono-Regular, monospace", "$type": "fontFamily" }
+    },
+    "weight": {
+      "regular":  { "$value": 400, "$type": "fontWeight" },
+      "medium":   { "$value": 500, "$type": "fontWeight" },
+      "semibold": { "$value": 600, "$type": "fontWeight" },
+      "bold":     { "$value": 700, "$type": "fontWeight" }
+    },
+    "size": {
+      "xs":  { "$value": "0.75rem",  "$type": "dimension" },
+      "sm":  { "$value": "0.875rem", "$type": "dimension" },
+      "md":  { "$value": "1rem",     "$type": "dimension" },
+      "lg":  { "$value": "1.125rem", "$type": "dimension" },
+      "xl":  { "$value": "1.25rem",  "$type": "dimension" },
+      "2xl": { "$value": "1.5rem",   "$type": "dimension" },
+      "3xl": { "$value": "1.875rem", "$type": "dimension" },
+      "4xl": { "$value": "2.25rem",  "$type": "dimension" },
+      "5xl": { "$value": "3rem",     "$type": "dimension" },
+      "6xl": { "$value": "3.75rem",  "$type": "dimension" }
+    },
+    "lineHeight": {
+      "tight":   { "$value": 1.2,  "$type": "number" },
+      "snug":    { "$value": 1.35, "$type": "number" },
+      "normal":  { "$value": 1.5,  "$type": "number" },
+      "relaxed": { "$value": 1.65, "$type": "number" }
+    }
+  },
+  "radius": {
+    "xs":   { "$value": "4px",  "$type": "dimension" },
+    "sm":   { "$value": "8px",  "$type": "dimension" },
+    "md":   { "$value": "12px", "$type": "dimension" },
+    "lg":   { "$value": "16px", "$type": "dimension" },
+    "xl":   { "$value": "24px", "$type": "dimension" },
+    "pill": { "$value": "9999px", "$type": "dimension" }
+  },
+  "spacing": {
+    "0":  { "$value": "0px",   "$type": "dimension" },
+    "1":  { "$value": "4px",   "$type": "dimension" },
+    "2":  { "$value": "8px",   "$type": "dimension" },
+    "3":  { "$value": "12px",  "$type": "dimension" },
+    "4":  { "$value": "16px",  "$type": "dimension" },
+    "5":  { "$value": "20px",  "$type": "dimension" },
+    "6":  { "$value": "24px",  "$type": "dimension" },
+    "8":  { "$value": "32px",  "$type": "dimension" },
+    "10": { "$value": "40px",  "$type": "dimension" },
+    "12": { "$value": "48px",  "$type": "dimension" },
+    "16": { "$value": "64px",  "$type": "dimension" },
+    "20": { "$value": "80px",  "$type": "dimension" },
+    "24": { "$value": "96px",  "$type": "dimension" }
+  },
+  "shadow": {
+    "sm":     { "$value": "0 1px 2px rgba(0,0,0,0.4)",  "$type": "shadow" },
+    "md":     { "$value": "0 4px 12px rgba(0,0,0,0.45)", "$type": "shadow" },
+    "lg":     { "$value": "0 16px 40px rgba(0,0,0,0.55)", "$type": "shadow" },
+    "accent": { "$value": "0 0 0 1px rgba(0,209,161,0.35), 0 8px 24px rgba(0,209,161,0.18)", "$type": "shadow" }
+  },
+  "motion": {
+    "duration": {
+      "fast":   { "$value": "120ms", "$type": "duration" },
+      "base":   { "$value": "200ms", "$type": "duration" },
+      "slow":   { "$value": "320ms", "$type": "duration" }
+    },
+    "easing": {
+      "standard": { "$value": "cubic-bezier(.2,.8,.2,1)", "$type": "cubicBezier" },
+      "entrance": { "$value": "cubic-bezier(.16,.84,.44,1)", "$type": "cubicBezier" },
+      "exit":     { "$value": "cubic-bezier(.4,.0,.84,.16)", "$type": "cubicBezier" }
+    }
+  },
+  "contrast": {
+    "pairs": [
+      { "fg": "color.text.primary",   "bg": "color.bg.primary",   "minRatio": 12.0 },
+      { "fg": "color.text.secondary", "bg": "color.bg.primary",   "minRatio": 4.5 },
+      { "fg": "color.text.muted",     "bg": "color.bg.primary",   "minRatio": 3.0 },
+      { "fg": "color.accent.primary", "bg": "color.bg.primary",   "minRatio": 4.5 },
+      { "fg": "color.text.inverse",   "bg": "color.accent.primary", "minRatio": 4.5 }
+    ]
+  }
+}

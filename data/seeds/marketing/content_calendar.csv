@@ -1,0 +1,13 @@
+slot_id,date,surface,theme,language,status,proof_required,owner,draft_link,source
+cc-001,2026-05-25,linkedin_founder,Built on Trust,en,idea,no,founder,,fallback
+cc-002,2026-05-27,linkedin_founder,Driven by Growth,bilingual,idea,no,founder,,fallback
+cc-003,2026-05-29,linkedin_founder,From Leads to Cash,en,idea,no,founder,,fallback
+cc-004,2026-05-31,newsletter,Saudi B2B Revenue Intelligence,bilingual,idea,no,content_strategist,,fallback
+cc-005,2026-06-01,linkedin_dealix,AI with Approval,en,idea,no,content_strategist,,fallback
+cc-006,2026-06-03,linkedin_founder,Founder-Controlled Growth,ar,idea,no,founder,,fallback
+cc-007,2026-06-05,landing,Trust-Gated Automation,bilingual,idea,no,brand_guardian,,fallback
+cc-008,2026-06-08,linkedin_founder,Real Growth without Hype,en,idea,no,founder,,fallback
+cc-009,2026-06-10,linkedin_founder,Built on Trust,ar,idea,no,founder,,fallback
+cc-010,2026-06-12,sector_report,Driven by Growth,bilingual,idea,yes,content_strategist,,fallback
+cc-011,2026-06-15,linkedin_founder,From Leads to Cash,en,idea,no,founder,,fallback
+cc-012,2026-06-17,linkedin_founder,Founder-Controlled Growth,en,idea,no,founder,,fallback

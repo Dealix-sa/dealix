@@ -1,0 +1,141 @@
+/* Dealix Brand CSS — derived from docs/brand/brand-tokens.json */
+
+:root {
+  --dx-bg-primary:   #0B1220;
+  --dx-bg-surface:   #0F1726;
+  --dx-bg-elevated:  #162038;
+  --dx-bg-inverse:   #FFFFFF;
+
+  --dx-accent:       #00D1A1;
+  --dx-accent-hover: #00B388;
+  --dx-accent-muted: #0E3A30;
+
+  --dx-text:         #FFFFFF;
+  --dx-text-secondary: #B2BBC6;
+  --dx-text-muted:   #7C8895;
+  --dx-text-inverse: #0B1220;
+
+  --dx-border:        #1B2536;
+  --dx-border-strong: #2A3753;
+
+  --dx-status-success: #00D1A1;
+  --dx-status-warning: #F2B33D;
+  --dx-status-danger:  #FF6B6B;
+  --dx-status-info:    #5AC8FA;
+
+  --dx-radius-sm: 8px;
+  --dx-radius-md: 12px;
+  --dx-radius-lg: 16px;
+
+  --dx-shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --dx-shadow-md: 0 4px 12px rgba(0,0,0,0.45);
+  --dx-shadow-lg: 0 16px 40px rgba(0,0,0,0.55);
+
+  --dx-ease: cubic-bezier(.2,.8,.2,1);
+  --dx-dur:  200ms;
+}
+
+html, body {
+  background: var(--dx-bg-primary);
+  color: var(--dx-text);
+}
+
+.dx-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 600px at 80% -10%, rgba(0,209,161,0.10), transparent 60%),
+    radial-gradient(600px 400px at 0% 10%, rgba(90,200,250,0.06), transparent 60%),
+    var(--dx-bg-primary);
+}
+
+.dx-card {
+  background: var(--dx-bg-surface);
+  border: 1px solid var(--dx-border);
+  border-radius: var(--dx-radius-md);
+  padding: 20px;
+  box-shadow: var(--dx-shadow-sm);
+}
+
+.dx-card--elevated {
+  background: var(--dx-bg-elevated);
+  box-shadow: var(--dx-shadow-md);
+}
+
+.dx-heading {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--dx-text);
+}
+
+.dx-muted {
+  color: var(--dx-text-secondary);
+}
+
+.dx-link {
+  color: var(--dx-accent);
+  text-decoration: none;
+}
+
+.dx-link:hover {
+  color: var(--dx-accent-hover);
+  text-decoration: underline;
+}
+
+.dx-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--dx-radius-sm);
+  border: 1px solid transparent;
+  background: var(--dx-accent);
+  color: var(--dx-text-inverse);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--dx-dur) var(--dx-ease);
+}
+
+.dx-button:hover { background: var(--dx-accent-hover); }
+
+.dx-button--ghost {
+  background: transparent;
+  color: var(--dx-text);
+  border-color: var(--dx-border-strong);
+}
+
+.dx-button--ghost:hover {
+  background: var(--dx-bg-elevated);
+}
+
+.dx-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(0,209,161,0.12);
+  color: var(--dx-accent);
+  border: 1px solid rgba(0,209,161,0.35);
+}
+
+.dx-badge--warn { color: var(--dx-status-warning); background: rgba(242,179,61,0.10); border-color: rgba(242,179,61,0.35); }
+.dx-badge--danger { color: var(--dx-status-danger); background: rgba(255,107,107,0.10); border-color: rgba(255,107,107,0.35); }
+.dx-badge--info { color: var(--dx-status-info); background: rgba(90,200,250,0.10); border-color: rgba(90,200,250,0.35); }
+
+.dx-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.dx-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dx-divider {
+  height: 1px;
+  background: var(--dx-border);
+  margin: 16px 0;
+}

@@ -39,6 +39,12 @@ eggs/
 lib/
 lib64/
 parts/
+# Python `lib/` pattern above must NOT block frontend source directories.
+# See AGENTS.md "Frontend frontend/src/lib/" note for the long-standing trap.
+!apps/web/lib/
+!apps/web/lib/**
+!frontend/src/lib/
+!frontend/src/lib/**
 sdist/
 var/
 wheels/
@@ -101,6 +107,9 @@ dumps/
 !landing/assets/data/service-readiness.json
 # Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
 !data/workflows/
+# Brand & Growth Operating Layer seeds — canonical product data, not customer data
+!data/seeds/
+!data/seeds/**
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
