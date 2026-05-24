@@ -244,6 +244,11 @@ def create_app() -> FastAPI:
             content={"error": exc.__class__.__name__, "detail": str(exc)},
         )
 
+    # Trust layer — /version + /api/v1/meta (public probes; register once at root)
+    from api.routers import platform_meta as platform_meta_router
+
+    app.include_router(platform_meta_router.router)
+
     # ── Routers registered by domain (replaces 90 flat app.include_router calls) ─
     _DOMAIN_GROUPS = [
         admin_domain,
