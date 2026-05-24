@@ -1,12 +1,14 @@
+@import "../styles/brand.css";
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
-  background: #f4f6fb;
-  color: #0f172a;
+  font-family: var(--dx-font-sans);
+  background: var(--dx-surface-page);
+  color: var(--dx-text-primary);
 }
 
 a {
@@ -14,17 +16,19 @@ a {
 }
 
 main {
-  padding: 24px;
+  padding: 0;
 }
 
+/* Legacy class shims so existing pages keep rendering until migrated. */
 .card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 16px;
+  background: var(--dx-surface-card);
+  border: 1px solid var(--dx-border);
+  border-radius: var(--dx-radius-lg);
+  padding: var(--dx-space-lg);
+  color: var(--dx-text-primary);
 }
 
 .grid {
   display: grid;
-  gap: 16px;
+  gap: var(--dx-space-lg);
 }

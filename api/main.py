@@ -346,6 +346,14 @@ def create_app() -> FastAPI:
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
 
+    # ── Founder Console (internal, read-only, X-Internal-Token gated) ──
+    try:
+        from api.routers.internal.founder_console import router as _founder_console_router
+
+        app.include_router(_founder_console_router, prefix="/api/v1/internal")
+    except Exception:  # pragma: no cover - guard against import-time failure
+        pass
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

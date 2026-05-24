@@ -1,0 +1,188 @@
+# Dealix Policy-as-Code — Control Policy
+# This is the canonical control plane policy. Loaded by api/internal/policy_adapter.py
+# and consulted by every agent invocation before any external-impact action.
+#
+# Approval classes:
+#   A1 — automated, safe (read-only or internal-only writes)
+#   A2 — founder approval required before external action executes
+#   A3 — escalation only: must be reviewed, recorded, evidence attached
+#
+# Trust principle: automation drafts, queues, recommends; humans approve external impact.
+# References:
+#   - NIST AI RMF (Govern, Map, Measure, Manage)
+#   - OWASP LLM Top 10 (prompt injection, sensitive data leakage, excessive agency)
+
+version: 1
+schema_version: "2026-05-23"
+
+defaults:
+  approval_class: A2
+  evidence_required: true
+  audit_required: true
+
+approval_classes:
+  A1:
+    description: Safe-by-default, internal-only writes, no external impact.
+    autoroute: true
+    audit_required: true
+  A2:
+    description: External-impact action gated on founder approval.
+    autoroute: false
+    audit_required: true
+    requires_evidence: true
+  A3:
+    description: Escalation-only; never executed without recorded escalation.
+    autoroute: false
+    audit_required: true
+    requires_evidence: true
+    requires_named_approver: true
+
+rules:
+  - id: no_a3_auto
+    description: A3 actions are never executed automatically; escalation required.
+    severity: critical
+    when:
+      action_class: A3
+      auto_execute: true
+    decision: block
+
+  - id: no_suppressed_outreach
+    description: Accounts on the suppression list cannot be contacted.
+    severity: critical
+    when:
+      action_type: outreach
+      target_in_suppression_list: true
+    decision: block
+
+  - id: high_risk_requires_evidence
+    description: High-risk actions require recorded evidence before execution.
+    severity: high
+    when:
+      action_risk: high
+      evidence_attached: false
+    decision: block
+
+  - id: no_guaranteed_revenue_claims
+    description: Generated content must not contain guaranteed revenue / sales / ROI claims.
+    severity: critical
+    when:
+      content_contains_guarantee_claim: true
+    decision: block
+
+  - id: approved_a2_can_request_execution
+    description: A2 items with recorded approval may proceed to execution.
+    severity: info
+    when:
+      action_class: A2
+      approval_recorded: true
+    decision: allow
+
+  - id: public_proof_requires_approval
+    description: No proof, quote, logo, or screenshot is publicly published without client and internal approval.
+    severity: critical
+    when:
+      surface: public
+      asset_type: proof
+      client_approval_recorded: false
+    decision: block
+
+  - id: pricing_commit_requires_approval
+    description: No pricing commitment without explicit founder approval.
+    severity: critical
+    when:
+      action_type: pricing_commit
+      approval_recorded: false
+    decision: block
+
+  - id: data_export_requires_escalation
+    description: Customer data exports require A3 escalation with named approver.
+    severity: critical
+    when:
+      action_type: data_export
+      approval_class: A3
+      named_approver: false
+    decision: block
+
+  - id: payment_terms_require_escalation
+    description: Payment term changes require A3 escalation.
+    severity: critical
+    when:
+      action_type: payment_terms_change
+      approval_class: A3
+      named_approver: false
+    decision: block
+
+  - id: contract_change_requires_escalation
+    description: Contract changes require A3 escalation with evidence.
+    severity: critical
+    when:
+      action_type: contract_change
+      approval_class: A3
+      evidence_attached: false
+    decision: block
+
+  - id: destructive_operation_requires_escalation
+    description: Destructive operations (deletes, schema drops) require A3 escalation.
+    severity: critical
+    when:
+      action_type: destructive
+      approval_class: A3
+      named_approver: false
+    decision: block
+
+  - id: prompt_injection_blocked
+    description: Inputs flagged by injection detector must not trigger external actions.
+    severity: critical
+    when:
+      input_flagged_injection: true
+      external_action_requested: true
+    decision: block
+
+  - id: sensitive_data_leakage_blocked
+    description: Generated content must not echo credentials, PII, or secrets.
+    severity: critical
+    when:
+      content_contains_sensitive: true
+    decision: block
+
+  - id: excessive_agency_blocked
+    description: Agent must not exceed allowed_write_targets declared in registry.
+    severity: high
+    when:
+      write_target_not_in_registry: true
+    decision: block
+
+routing:
+  external_send:
+    minimum_approval_class: A2
+    required_checks:
+      - brand_voice_check
+      - guarantee_claim_check
+      - suppression_check
+      - prompt_injection_check
+  public_publish:
+    minimum_approval_class: A2
+    required_checks:
+      - client_approval_recorded
+      - brand_voice_check
+      - guarantee_claim_check
+  pricing_commit:
+    minimum_approval_class: A2
+    required_checks:
+      - founder_approval_recorded
+      - margin_check
+  data_export:
+    minimum_approval_class: A3
+    required_checks:
+      - named_approver_recorded
+      - retention_policy_check
+  contract_change:
+    minimum_approval_class: A3
+    required_checks:
+      - named_approver_recorded
+      - evidence_attached
+  destructive_operation:
+    minimum_approval_class: A3
+    required_checks:
+      - named_approver_recorded
+      - reversible_or_backup_recorded
