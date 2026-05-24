@@ -34,6 +34,7 @@ def test_gtm_blitz_snapshot_shape():
             f"gtm_blitz_tracker.build_gtm_blitz_snapshot raises {exc!r} — "
             "evidence dict shape drift, pre-existing bug independent of this PR"
         )
+        return  # unreachable; satisfies CodeQL uninitialized-var check
     assert "verdict" in snap
 
 
@@ -46,6 +47,7 @@ def test_agent_eval_harness_passes():
             "verdict.permission is already a str (Enum→str refactor missed this line); "
             "pre-existing bug independent of this PR"
         )
+        return  # unreachable; satisfies CodeQL uninitialized-var check
     assert result["verdict"] == "PASS"
 
 

@@ -88,14 +88,13 @@ def _extract_function_body(text: str, fn_name: str) -> str | None:
     body: list[str] = []
     # Phase 1: signature — keep consuming until the def line ends with ":"
     # (handles multi-line argument lists).
-    in_signature = True
+    sig_end_idx = -1
     for idx, ln in enumerate(lines):
         body.append(ln)
-        if in_signature and ln.rstrip().endswith(":"):
-            in_signature = False
+        if ln.rstrip().endswith(":"):
             sig_end_idx = idx
             break
-    else:
+    if sig_end_idx < 0:
         return "".join(body)
     # Phase 2: body — stop when we hit a line with indent <= def's that is not blank.
     for ln in lines[sig_end_idx + 1:]:
