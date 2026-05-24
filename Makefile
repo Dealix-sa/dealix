@@ -8,11 +8,21 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        bootstrap-runtime brand-system growth-system marketing-system \
+        product-distribution policy-check agent-registry machine-registry \
+        eval-gate company-os everything ceo-daily-brief ceo-weekly-review \
+        capital-allocation strategy-scorecard revenue-forecast \
+        market-attack-system scale-moat-system founder-ceo-hypergrowth-layer \
+        smoke-internal-api
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
+
+# Dealix Company OS — private-ops root.
+# Honors the existing convention: /opt/dealix (override with PRIVATE_OPS=...).
+PRIVATE_OPS ?= /opt/dealix
 
 help: ## Show this help
 	@echo "🏢 AI Company Saudi — Available commands:"
@@ -130,3 +140,67 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Company OS ──────────────────────────────────────────
+# Read-only verifiers + private-ops runtime + CEO report generators.
+# Every target honors the 11 non-negotiables and Article 13 Build Order.
+
+bootstrap-runtime: ## CompanyOS: scaffold private-ops dirs under $(PRIVATE_OPS)
+	$(PYTHON) scripts/bootstrap_private_ops_runtime.py --private-ops $(PRIVATE_OPS)
+
+policy-check: ## CompanyOS: verify the 11 policy invariants resolve
+	$(PYTHON) scripts/verify_policy_as_code.py
+
+agent-registry: ## CompanyOS: verify agent registry YAML mirrors canonical Python
+	$(PYTHON) scripts/verify_agent_registry.py
+
+machine-registry: ## CompanyOS: verify machine registry YAML mirrors canonical
+	$(PYTHON) scripts/verify_machine_registry.py
+
+eval-gate: ## CompanyOS: verify the agent eval gate references real eval files
+	$(PYTHON) scripts/verify_eval_gate.py
+
+brand-system: ## CompanyOS: verify brand tokens + founder shell are wired
+	$(PYTHON) scripts/verify_brand_system.py
+
+growth-system: ## CompanyOS: verify growth surface index exists
+	$(PYTHON) scripts/verify_growth_system.py
+
+marketing-system: ## CompanyOS: verify launch/marketing surface index exists
+	$(PYTHON) scripts/verify_marketing_system.py
+
+product-distribution: ## CompanyOS: verify customer_success surface index exists
+	$(PYTHON) scripts/verify_product_distribution.py
+
+market-attack-system: ## CompanyOS: verify market-attack templates exist + claim-clean
+	$(PYTHON) scripts/verify_market_attack_system.py
+
+scale-moat-system: ## CompanyOS: verify scale/moat surface index exists
+	$(PYTHON) scripts/verify_scale_moat_system.py
+
+founder-ceo-hypergrowth-layer: ## CompanyOS: verify founder console wiring end-to-end
+	$(PYTHON) scripts/verify_founder_ceo_hypergrowth_layer.py
+
+company-os: ## CompanyOS: run the meta verifier (all sub-verifiers)
+	$(PYTHON) scripts/verify_company_os.py
+
+everything: ## CompanyOS: master verifier — final judge for the whole surface
+	$(PYTHON) scripts/verify_everything.py
+
+ceo-daily-brief: ## CompanyOS: assemble CEO daily brief into $(PRIVATE_OPS)/founder/
+	$(PYTHON) scripts/generate_ceo_daily_brief.py --private-ops $(PRIVATE_OPS)
+
+ceo-weekly-review: ## CompanyOS: assemble CEO weekly review into $(PRIVATE_OPS)/founder/
+	$(PYTHON) scripts/generate_ceo_weekly_review.py --private-ops $(PRIVATE_OPS)
+
+capital-allocation: ## CompanyOS: assemble capital allocation report into $(PRIVATE_OPS)/founder/
+	$(PYTHON) scripts/generate_capital_allocation_report.py --private-ops $(PRIVATE_OPS)
+
+strategy-scorecard: ## CompanyOS: assemble strategy scorecard into $(PRIVATE_OPS)/founder/
+	$(PYTHON) scripts/generate_strategy_scorecard.py --private-ops $(PRIVATE_OPS)
+
+revenue-forecast: ## CompanyOS: assemble revenue forecast into $(PRIVATE_OPS)/founder/
+	$(PYTHON) scripts/generate_revenue_forecast.py --private-ops $(PRIVATE_OPS)
+
+smoke-internal-api: ## CompanyOS: smoke /api/v1/internal/founder-console/* endpoints
+	$(PYTHON) scripts/smoke_internal_api.py

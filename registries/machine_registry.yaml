@@ -1,0 +1,57 @@
+# Dealix Machine Registry — thin YAML view over the canonical machine contract.
+#
+# Source of truth: dealix/execution_assurance/registry.yaml
+#
+# Verifier: scripts/verify_machine_registry.py
+#   - loads dealix/execution_assurance/registry.yaml
+#   - mirrors each machine here with owner_role, KPI, failure_mode
+#   - asserts every canonical machine appears in this view
+#
+# Scorecard rubric (0..5):
+#   0 missing | 1 manual | 2 partial + templates | 3 internal automation
+#   4 automation + measurable + approvals
+#   5 automation + measurable + governed + learns
+
+version: 1
+kind: dealix.machine_registry.view
+source_canonical: dealix/execution_assurance/registry.yaml
+
+# Surface-level summary. Verifier enforces presence of these keys in
+# the canonical file, then mirrors them here.
+machines:
+  - name: sales_autopilot
+    name_ar: نظام البيع التلقائي
+    target_grade_before_scale: 4
+    owner_role: Founder / RevOps Lead
+    failure_mode: auto_send_without_approval
+    kpi_targets:
+      high_risk_auto_send_rate_pct: 0
+      lead_scoring_coverage_pct: 95
+    definition_of_done_summary: lead persisted + scored + staged + evidence stub.
+
+  - name: support_autopilot
+    name_ar: نظام الدعم التلقائي
+    target_grade_before_scale: 4
+    owner_role: Founder / CX Lead
+    failure_mode: unsupported_financial_or_security_guarantee
+    kpi_targets:
+      escalation_on_high_risk_intent_pct: 100
+    definition_of_done_summary: KB low-risk answers; high-risk escalates with no auto-send.
+
+  - name: approval_center_and_evidence
+    name_ar: مركز الموافقات والأدلّة
+    target_grade_before_scale: 5
+    owner_role: Founder
+    failure_mode: external_action_executed_without_approval
+    kpi_targets:
+      external_action_approval_coverage_pct: 100
+    definition_of_done_summary: external high-impact actions gated; approvals correlate to funnel moves.
+
+  - name: affiliate_machine
+    name_ar: ماكينة الشركاء
+    target_grade_before_scale: 4
+    owner_role: Founder / Partner Ops
+    failure_mode: commission_paid_without_invoice_paid_evidence
+    kpi_targets:
+      commission_payout_after_invoice_paid_pct: 100
+    definition_of_done_summary: disclosure + approved messaging; commissions only on invoice_paid.

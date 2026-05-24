@@ -1,0 +1,43 @@
+name: dealix-company-os
+
+on:
+  schedule:
+    - cron: "37 6 * * *"  # daily 06:37 UTC
+  workflow_dispatch: {}
+
+jobs:
+  company-os-daily:
+    name: Dealix Company OS — daily meta report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml pydantic fastapi
+      - name: Run meta verifier
+        id: meta
+        run: |
+          python scripts/verify_company_os.py | tee /tmp/company_os.out
+      - name: Bootstrap sandbox private-ops + generate CEO reports
+        run: |
+          PRIVATE_OPS="${{ runner.temp }}/dealix-ops"
+          python scripts/bootstrap_private_ops_runtime.py --private-ops "$PRIVATE_OPS"
+          python scripts/generate_ceo_daily_brief.py --private-ops "$PRIVATE_OPS"
+          python scripts/generate_ceo_weekly_review.py --private-ops "$PRIVATE_OPS"
+          python scripts/generate_capital_allocation_report.py --private-ops "$PRIVATE_OPS"
+          python scripts/generate_strategy_scorecard.py --private-ops "$PRIVATE_OPS"
+          python scripts/generate_revenue_forecast.py --private-ops "$PRIVATE_OPS"
+      - name: Upload reports artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-company-os-daily
+          path: |
+            ${{ runner.temp }}/dealix-ops/founder/*.md
+            /tmp/company_os.out
+          if-no-files-found: warn

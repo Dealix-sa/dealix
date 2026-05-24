@@ -1,0 +1,141 @@
+# Dealix Agent Registry — thin YAML view over the canonical Python source.
+#
+# Source of truth: auto_client_acquisition/agent_governance/agent_registry.py
+# Schema:          auto_client_acquisition/agent_governance/schemas.py
+#
+# Verifier: scripts/verify_agent_registry.py
+#   - imports AGENT_REGISTRY from the canonical Python module
+#   - mirrors each agent's contract here for human review + governance review
+#   - asserts every Python-side agent appears in this YAML
+#   - asserts each entry carries eval_required + kill_switch + audit_required
+#
+# DO NOT edit individual agents here without first editing the Python
+# source AND re-running `python scripts/verify_agent_registry.py`.
+#
+# Autonomy levels (from schemas.AutonomyLevel):
+#   L0_READ_ONLY, L1_DRAFT_ONLY, L2_APPROVAL_REQUIRED,
+#   L3_APPROVED_EXECUTE, L4_INTERNAL_AUTOMATION_ONLY,
+#   L5_BLOCKED_FOR_EXTERNAL
+
+version: 1
+kind: dealix.agent_registry.view
+source_python_module: auto_client_acquisition.agent_governance.agent_registry
+source_schema_module: auto_client_acquisition.agent_governance.schemas
+
+# Cross-cutting governance contract that applies to every agent.
+# Verifier enforces these on every entry.
+default_governance:
+  eval_required: true
+  kill_switch: true
+  audit_required: true
+  logging_required: true
+  human_review_default: true
+
+agents:
+  - agent_id: prospecting
+    max_autonomy: L2_APPROVAL_REQUIRED
+    purpose_en: Find high-fit Saudi companies from licensed sources only.
+    purpose_ar: اكتشاف شركات سعوديّة عالية الملاءمة من مصادر مرخّصة فقط.
+    forbidden_tools: [scrape_web, linkedin_automation, send_whatsapp_live]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: signal
+    max_autonomy: L1_DRAFT_ONLY
+    purpose_en: Detect why-now buying triggers from licensed data.
+    purpose_ar: رصد إشارات شراء (why-now) من بيانات مرخّصة.
+    forbidden_tools: [scrape_web]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: enrichment
+    max_autonomy: L2_APPROVAL_REQUIRED
+    purpose_en: Enrich company/contact context from licensed providers.
+    purpose_ar: إثراء سياق الشركة من مصادر مرخّصة.
+    forbidden_tools: [scrape_web]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: personalization
+    max_autonomy: L1_DRAFT_ONLY
+    purpose_en: Draft Arabic/English outreach with human review.
+    purpose_ar: صياغة مسوّدات تواصل عربيّة وإنجليزيّة بإشراف بشري.
+    forbidden_tools: [send_whatsapp_live, send_email_live, linkedin_automation]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: compliance
+    max_autonomy: L4_INTERNAL_AUTOMATION_ONLY
+    purpose_en: Block PDPL/SDAIA-non-compliant actions before execution.
+    purpose_ar: حظر الإجراءات غير المتوافقة مع PDPL/SDAIA قبل التنفيذ.
+    forbidden_tools: [send_whatsapp_live, send_email_live, scrape_web, linkedin_automation, charge_payment_live]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: outreach
+    max_autonomy: L2_APPROVAL_REQUIRED
+    purpose_en: Queue approved messages — never auto-send.
+    purpose_ar: تجهيز رسائل تواصل تحتاج موافقة قبل أيّ إرسال.
+    forbidden_tools: [send_whatsapp_live, send_email_live, linkedin_automation]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: reply
+    max_autonomy: L2_APPROVAL_REQUIRED
+    purpose_en: Classify replies + suggest next step.
+    purpose_ar: تصنيف ردود العملاء واقتراح المسار التالي.
+    forbidden_tools: []
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: meeting
+    max_autonomy: L2_APPROVAL_REQUIRED
+    purpose_en: Turn positive replies into approved meetings.
+    purpose_ar: تحويل الردود الإيجابيّة إلى اجتماعات مُجدوَلة بالموافقة.
+    forbidden_tools: [send_email_live]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: deal_coach
+    max_autonomy: L1_DRAFT_ONLY
+    purpose_en: Recommend next best deal action.
+    purpose_ar: اقتراح أفضل خطوة قادمة لكلّ صفقة بناءً على البيانات.
+    forbidden_tools: []
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: customer_success
+    max_autonomy: L2_APPROVAL_REQUIRED
+    purpose_en: Track customer delivery and prepare the Proof Pack.
+    purpose_ar: تتبّع تسليم العميل وتجهيز Proof Pack.
+    forbidden_tools: [send_email_live]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: executive_analyst
+    max_autonomy: L1_DRAFT_ONLY
+    purpose_en: Build Arabic executive summaries from data.
+    purpose_ar: تجهيز ملخّصات تنفيذيّة عربيّة من البيانات.
+    forbidden_tools: []
+    eval_required: true
+    kill_switch: true
+    audit_required: true
+
+  - agent_id: finance_assistant
+    max_autonomy: L2_APPROVAL_REQUIRED
+    purpose_en: Draft invoices + track payment status — no auto-charge.
+    purpose_ar: تجهيز مسوّدات الفواتير ومتابعة حالة الدفع — بدون خصم تلقائي.
+    forbidden_tools: [charge_payment_live]
+    eval_required: true
+    kill_switch: true
+    audit_required: true
