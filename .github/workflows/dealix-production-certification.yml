@@ -1,0 +1,105 @@
+name: Dealix Production Certification
+
+# Gate that must pass before merge to main and before Railway deploys.
+# Runs the layered verifiers in CI-safe mode (no real secrets required)
+# and builds the Next.js frontend to catch UI regressions early.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-production-certification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  certification:
+    name: Production certification gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt || true
+          # Verifiers themselves only need pyyaml + pydantic-settings; the
+          # full requirements file is best-effort so transient registry
+          # issues don't block the gate.
+          pip install pydantic-settings pyyaml
+
+      - name: production-env-check (CI mode)
+        run: make production-env-check
+
+      - name: railway-readiness
+        run: make railway-readiness
+
+      - name: live-send-safety
+        run: make live-send-safety
+
+      - name: everything (orchestrator)
+        run: make everything
+
+      - name: Upload readiness report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-final-readiness-report
+          path: |
+            docs/ops/DEALIX_FINAL_READINESS_REPORT.md
+            docs/ops/DEALIX_MISSING_SYSTEMS.md
+          if-no-files-found: warn
+
+  frontend-build:
+    name: Frontend build (Next.js)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect frontend
+        id: detect
+        run: |
+          if [ -f frontend/package.json ]; then
+            echo "dir=frontend" >> "$GITHUB_OUTPUT"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          elif [ -f apps/web/package.json ]; then
+            echo "dir=apps/web" >> "$GITHUB_OUTPUT"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "dir=" >> "$GITHUB_OUTPUT"
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.found == 'true'
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: ${{ steps.detect.outputs.dir }}/package-lock.json
+
+      - name: npm ci
+        if: steps.detect.outputs.found == 'true'
+        working-directory: ${{ steps.detect.outputs.dir }}
+        run: npm ci --no-audit --no-fund
+
+      - name: npm run build
+        if: steps.detect.outputs.found == 'true'
+        working-directory: ${{ steps.detect.outputs.dir }}
+        env:
+          # CI-safe placeholders; real values live on Railway / Vercel.
+          NEXT_PUBLIC_BASE_URL: https://api.dealix.me
+          NEXT_PUBLIC_API_BASE_URL: https://api.dealix.me
+        run: npm run build

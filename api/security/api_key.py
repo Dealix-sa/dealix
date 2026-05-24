@@ -51,6 +51,7 @@ PUBLIC_PREFIXES: tuple[str, ...] = (
     "/api/v1/webhooks/",  # webhooks use signatures instead
     "/api/v1/public/",   # public landing endpoints (demo-request, health)
     "/api/v1/auth/",     # auth endpoints use JWT — no API key required
+    "/api/v1/internal/", # internal endpoints use InternalTokenMiddleware (X-Dealix-Internal-Token or X-API-Key vs ADMIN_API_KEYS)
 )
 
 # FastAPI security scheme header (for OpenAPI schema generation)

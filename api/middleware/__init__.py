@@ -32,10 +32,12 @@ from api.middleware.http_stack import (
     RequestIDMiddleware,
     SecurityHeadersMiddleware,
 )
+from api.middleware.internal_token import InternalTokenMiddleware
 
 __all__ = [
     "AuditLogMiddleware",
     "ETagMiddleware",
+    "InternalTokenMiddleware",
     "RateLimitHeadersMiddleware",
     "RequestIDMiddleware",
     "SecurityHeadersMiddleware",
