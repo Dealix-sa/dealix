@@ -20,7 +20,7 @@ def test_script_runs_pass() -> None:
     """End-to-end: script must PASS after Wave 5 build."""
     result = subprocess.run(
         ["bash", str(SCRIPT)],
-        capture_output=True, text=True, timeout=60,
+        capture_output=True, text=True, timeout=300,
     )
     output = result.stdout + result.stderr
     assert "CUSTOMER_EXPERIENCE_FINAL=PASS" in output

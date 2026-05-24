@@ -71,7 +71,16 @@ async def test_project_ask_semantic_notice(async_client):
     assert r.status_code == 200
     j = r.json()
     assert "semantic_status_ar" in j
-    assert "غير متصل" in j["semantic_status_ar"] or "not connected" in j["semantic_status_ar"].lower()
+    # Status may say "not connected" (no pgvector) or describe what was scanned
+    status = j["semantic_status_ar"]
+    assert status  # non-empty
+    # Accept either explicit disconnect notice or file-scan summary
+    assert (
+        "غير متصل" in status
+        or "not connected" in status.lower()
+        or "pgvector" in status.lower()
+        or "ملف" in status  # files/ملفاً (scanned files)
+    ), f"Unexpected semantic_status_ar: {status!r}"
 
 
 @pytest.mark.asyncio

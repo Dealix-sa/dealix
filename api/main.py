@@ -38,7 +38,6 @@ from api.routers import (
     auth,
     control_plane_os,
     compliance_status,
-    compliance_product,
     cost_tracking,
     customer_usage,
     customer_webhooks,
@@ -109,6 +108,20 @@ from api.routers import commercial_map as commercial_map_router
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Wave 15.1 — M&A Radar + Capital OS
+from api.routers import m_and_a as m_and_a_router
+from api.routers import capital_os as capital_os_router
+# Wave 16.0 — GCC Expansion Intelligence + Revenue OS + Exit Readiness
+from api.routers import gcc_expansion as gcc_expansion_router
+from api.routers import revenue_forecast as revenue_forecast_router
+from api.routers import exit_readiness as exit_readiness_router
+# Wave 17.0 — Strategy OS + Moat + Board Ready + Intelligence + Retainer Conversion
+from api.routers import strategy_os as strategy_os_router
+from api.routers import board_ready_os as board_ready_os_router
+from api.routers import intelligence_compounding as intelligence_compounding_router
+from api.routers import retainer_conversion as retainer_conversion_router
+# Revenue Ops Autopilot — ops-autopilot router group
+from api.routers.revenue_ops_autopilot import AUTOPILOT_ROUTERS as _autopilot_routers
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -245,11 +258,6 @@ def create_app() -> FastAPI:
             content={"error": exc.__class__.__name__, "detail": str(exc)},
         )
 
-    # Trust layer — /version + /api/v1/meta (public probes; register once at root)
-    from api.routers import platform_meta as platform_meta_router
-
-    app.include_router(platform_meta_router.router)
-
     # ── Routers registered by domain (replaces 90 flat app.include_router calls) ─
     _DOMAIN_GROUPS = [
         admin_domain,
@@ -270,7 +278,6 @@ def create_app() -> FastAPI:
     app.include_router(jobs.router, prefix="/api/v1")
     app.include_router(zatca.router)
     app.include_router(pdpl.router)
-    app.include_router(compliance_product.router)
 
     # ── Wave 12.7 — Intelligence Layer + Expansion Engine ─────────
     # Both routers self-prefix /api/v1/intelligence and /api/v1/expansion-engine.
@@ -290,11 +297,6 @@ def create_app() -> FastAPI:
     app.include_router(integration_capability_router.router)
     # Self-prefix /api/v1/metrics. Read-only; tenant-isolated for {handle}.
     app.include_router(business_metrics_board_router.router)
-    # Wave 13B — Founder ops-autopilot (War Room, cockpit, strongest-plan, evidence)
-    from api.routers.revenue_ops_autopilot import AUTOPILOT_ROUTERS
-
-    for _autopilot_router in AUTOPILOT_ROUTERS:
-        app.include_router(_autopilot_router)
     # Wave 7 W7.5 — Tenant theming: GET tenant theme.css + POST admin theme update
     app.include_router(tenant_theming.router)
     # Wave 7 W7.2 — Sector Intelligence (R4 productization)
@@ -357,6 +359,21 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Wave 15.1 — M&A Radar + Capital OS
+    app.include_router(m_and_a_router.router)
+    app.include_router(capital_os_router.router)
+    # Wave 16.0 — GCC Expansion Intelligence + Revenue OS + Exit Readiness
+    app.include_router(gcc_expansion_router.router)
+    app.include_router(revenue_forecast_router.router)
+    app.include_router(exit_readiness_router.router)
+    # Wave 17.0 — Strategy OS + Moat + Board Ready + Intelligence + Retainer Conversion
+    app.include_router(strategy_os_router.router)
+    app.include_router(board_ready_os_router.router)
+    app.include_router(intelligence_compounding_router.router)
+    app.include_router(retainer_conversion_router.router)
+    # Revenue Ops Autopilot — /api/v1/ops-autopilot/* + /api/v1/public/* + /api/v1/sales/* etc.
+    for _autopilot_router in _autopilot_routers:
+        app.include_router(_autopilot_router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

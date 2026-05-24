@@ -13,6 +13,7 @@ from api.routers import (
     customer_brain as customer_brain_router,
     customer_company_portal,
     customer_data_plane,
+    customer_health_os as customer_health_os_router,
     customer_inbox_v10,
     customer_loop,
     customer_success,
@@ -37,6 +38,8 @@ _ROUTERS = [
     service_sessions_router.router,
     support_journey_router.router,
     support_os.router,
+    # Wave 16 — Customer Health OS
+    customer_health_os_router.router,
 ]
 
 

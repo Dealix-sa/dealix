@@ -175,6 +175,61 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "sales-kit hosted-checkout doc names the prefix in policy copy",
     "docs/sales-kit/dealix_1_riyal_test.sh":
         "sales-kit 1-riyal test shell script names the prefix in env",
+    # ── new files added in Wave 15-17 ──
+    "api/routers/founder_launch_status.py":
+        "status check uses startswith('sk_live_') to detect live-mode Moyasar key",
+    "auto_client_acquisition/agent_observability/redaction.py":
+        "redaction module defines regex patterns to scrub live-key shaped secrets",
+    "auto_client_acquisition/observability_adapters/redaction.py":
+        "observability redaction adapter regex pattern scrubs sk_live_ shaped keys",
+    "docs/LLM_PROVIDERS_SETUP.md":
+        "LLM setup doc uses AIza placeholder prefix as example Google API key",
+    "docs/MOYASAR_LIVE_CUTOVER.md":
+        "live-cutover doc documents sk_live_ vs sk_test_ distinction for ops",
+    "docs/RAILWAY_DEPLOY_CHECKLIST.md":
+        "deploy checklist names sk_live_ as the expected production key prefix",
+    "docs/WAVE11_FIRST3_PAID_PILOTS_EVIDENCE_TABLE.md":
+        "evidence table cites sk_live_xxxxx as an example placeholder in audit row",
+    "docs/integrations/PAYMENT_MOYASAR_LIVE.md":
+        "payment integration doc names sk_live_ prefix as env-var placeholder",
+    "docs/ops/GO_LIVE_INDEX.md":
+        "go-live index names sk_live_ issuance as a pending ops step",
+    "docs/ops/MOYASAR_KYC_CHECKLIST.md":
+        "KYC checklist uses sk_live_xxxxx as placeholder for the approved key",
+    "docs/ops/PRODUCTION_ENV_TEMPLATE.md":
+        "production env template uses sk_live_ as the expected key prefix",
+    "docs/sales-kit/CUSTOMER_1_GO_LIVE_RUNBOOK.md":
+        "customer go-live runbook references sk_live_ key in Arabic policy copy",
+    "docs/security/KEY_ROTATION.md":
+        "key rotation doc names sk_live_ prefix in the Moyasar rotation row",
+    "scripts/dealix_integration_plan_quality_check.py":
+        "integration quality check script contains regex to detect sk_live_ secrets",
+    "scripts/dealix_master_full_execution_verify.sh":
+        "master verify shell script greps repo for sk_live_, ghp_, AIza prefixes",
+    "scripts/generate_production_env.sh":
+        "env generator uses sk_live_xxxxx as a placeholder comment in the template",
+    "scripts/integration_upgrade_verify.sh":
+        "integration verify shell script greps repo for sk_live_, ghp_, AIza",
+    "scripts/ultimate_upgrade_verify.sh":
+        "ultimate verify shell script greps repo for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/wave6_revenue_activation_verify.sh":
+        "wave 6 verify shell script greps repo for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/wave7_5_service_truth_verify.sh":
+        "wave 7.5 verify shell script greps repo for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/wave8_customer_data_boundary_check.sh":
+        "wave 8 data boundary check greps for sk_live_ to detect accidental secret leakage",
+    "scripts/wave8_customer_ready_verify.sh":
+        "wave 8 customer-ready verify greps for sk_live_ to confirm no live key in codebase",
+    "scripts/wave11_first3_paid_pilots_verify.sh":
+        "wave 11 pilots verify shell script greps for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/wave12_saudi_revenue_command_center_verify.sh":
+        "wave 12 command-center verify greps for sk_live_, ghp_, AIza secret prefixes",
+    "scripts/moyasar_live_cutover.py":
+        "live-cutover script prompts for sk_live_ key and validates its prefix",
+    "scripts/reconcile_moyasar.py":
+        "Moyasar reconcile script documents MOYASAR_SECRET_KEY (sk_live_...) in help text",
+    "scripts/preflight_check.py":
+        "preflight check script names sk_live_... as expected key format in env-var template",
 }
 
 

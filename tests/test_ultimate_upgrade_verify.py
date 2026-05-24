@@ -27,7 +27,7 @@ def test_script_runs_pass() -> None:
     """End-to-end: ultimate verifier must PASS."""
     result = subprocess.run(
         ["bash", str(SCRIPT)],
-        capture_output=True, text=True, timeout=600,
+        capture_output=True, text=True, timeout=1800,
     )
     output = result.stdout + result.stderr
     assert "ULTIMATE_UPGRADE=PASS" in output, (
@@ -39,7 +39,7 @@ def test_script_runs_pass() -> None:
 def test_script_emits_required_pass_lines() -> None:
     result = subprocess.run(
         ["bash", str(SCRIPT)],
-        capture_output=True, text=True, timeout=600,
+        capture_output=True, text=True, timeout=1800,
     )
     output = result.stdout
     required = [

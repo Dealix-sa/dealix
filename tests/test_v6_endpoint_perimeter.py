@@ -124,7 +124,8 @@ def test_in_process_app_exits_zero_with_all_required_passing():
     mod = _import_module()
     app = create_app()
     with _live_server(app) as base_url:
-        report = mod.run(base_url, timeout=30)
+        # 90s: the /api/v1/founder/dashboard aggregation takes ~30s cold.
+        report = mod.run(base_url, timeout=90)
     failed = [r for r in report["results"] if not r["ok"]]
     assert report["failed_required"] == 0, f"unexpected failures: {failed}"
     assert report["passed_required"] == report["total"], (

@@ -147,6 +147,18 @@ def main(argv: list[str] | None = None) -> int:
                    help="Print to stdout, write nothing.")
     args = p.parse_args(argv)
 
+    if args.print_only:
+        # Redirect all logging to stderr so stdout carries only the JSON.
+        import logging as _logging
+        _logging.basicConfig(stream=sys.stderr, force=True)
+        try:
+            import structlog as _structlog
+            _structlog.configure(
+                logger_factory=_structlog.PrintLoggerFactory(file=sys.stderr),
+            )
+        except Exception:  # noqa: BLE001
+            pass
+
     snap = build_snapshot()
 
     if args.print_only:

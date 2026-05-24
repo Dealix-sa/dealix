@@ -21,7 +21,15 @@
     "opsPartners": "شركاء",
     "opsSales": "تشغيل — خط المبيعات",
     "opsEvidence": "تشغيل — سجل الأدلة",
-    "opsSupport": "تشغيل — خدمة العملاء"
+    "opsSupport": "تشغيل — خدمة العملاء",
+    "opsMandA": "رادار الاستحواذ",
+    "opsCustomerHealth": "صحة العملاء",
+    "opsRevenueForecast": "توقعات الإيرادات",
+    "opsExitReadiness": "جاهزية الخروج",
+    "opsGCCExpansion": "رادار الخليج",
+    "opsStrategy": "الاستراتيجية",
+    "opsBoardReady": "جاهزية المجلس",
+    "opsRetainerConversion": "تحويل العقود"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",
@@ -538,11 +546,26 @@
     },
     "howTitle": "كيف يعمل Dealix",
     "howSteps": {
-      "0": { "title": "تشخيص", "body": "Risk Score أو Diagnostic يحدد الجاهزية" },
-      "1": { "title": "حوكمة", "body": "مسودات وموافقة قبل أي إرسال خارجي" },
-      "2": { "title": "تسليم", "body": "Proof Pack بأقسام واضحة وحالة كل قسم" },
-      "3": { "title": "أدلة", "body": "أحداث Evidence تربط اللمسة بالإغلاق" },
-      "4": { "title": "توسّع", "body": "Upsell فقط بعد إثبات القيمة" }
+      "0": {
+        "title": "تشخيص",
+        "body": "Risk Score أو Diagnostic يحدد الجاهزية"
+      },
+      "1": {
+        "title": "حوكمة",
+        "body": "مسودات وموافقة قبل أي إرسال خارجي"
+      },
+      "2": {
+        "title": "تسليم",
+        "body": "Proof Pack بأقسام واضحة وحالة كل قسم"
+      },
+      "3": {
+        "title": "أدلة",
+        "body": "أحداث Evidence تربط اللمسة بالإغلاق"
+      },
+      "4": {
+        "title": "توسّع",
+        "body": "Upsell فقط بعد إثبات القيمة"
+      }
     },
     "offersTitle": "ثلاثة عروض على السطح",
     "offers": {
@@ -591,5 +614,98 @@
     "evidenceSubtitle": "أحداث أدلة مُدامَة ملفياً ضمن المتجر المحلي للـ autopilot.",
     "supportSubtitle": "تذاكر عامة + تصنيف + مسودة داخلية — الموافقة قبل الرد الخارجي.",
     "approvalsSubtitle": "نفس مركز الموافقات المربوط بالفواتير والإرسالات الخارجية."
+  },
+  "customerHealth": {
+    "title": "نظام صحة العملاء",
+    "churnPredict": "توقع التخبط",
+    "customerId": "معرف العميل",
+    "analyze": "تحليل الصحة",
+    "churnScore": "نسبة خطر التخبط",
+    "band": {
+      "safe": "آمن",
+      "watch": "مراقبة",
+      "at_risk": "في خطر",
+      "critical": "حرج"
+    },
+    "playbook": "خطة التدخل",
+    "expansion": "فرصة التوسع"
+  },
+  "revenueForecast": {
+    "title": "توقعات الإيرادات",
+    "forecast": "توقع",
+    "horizon": "الأفق الزمني",
+    "likely": "المتوقع",
+    "best": "الأفضل",
+    "worst": "الأسوأ"
+  },
+  "mAndA": {
+    "title": "رادار الاستحواذ والاندماج",
+    "subtitle": "تقييم الشركات المستهدفة وصياغة خطابات النوايا",
+    "targetsEvaluated": "الشركات المقيّمة",
+    "totalPipeline": "إجمالي خط الاستحواذ",
+    "avgMultiple": "متوسط مضاعف EBITDA",
+    "evaluateTarget": "تقييم شركة مستهدفة",
+    "companyName": "اسم الشركة",
+    "annualRevenue": "الإيرادات السنوية (ريال)",
+    "ebitdaMargin": "هامش EBITDA (%)",
+    "sector": "القطاع",
+    "calculateOffer": "احسب العرض",
+    "recentProposals": "آخر المقترحات",
+    "proposedOffer": "العرض المقترح",
+    "upfrontCash": "دفعة فورية (60%)",
+    "earnout": "أداء مرتبط (40%)",
+    "isEstimate": "تقدير"
+  },
+  "gccExpansion": {
+    "title": "رادار التوسع الخليجي",
+    "subtitle": "استخباراتك لأسواق الخليج العربي",
+    "overview": "نظرة عامة على دول الخليج",
+    "signalDetector": "كاشف الإشارات",
+    "signalType": "نوع الإشارة",
+    "rawData": "البيانات الخام (JSON)",
+    "detectSignal": "كشف الإشارة",
+    "detected": "مكتشف",
+    "notDetected": "غير مكتشف",
+    "confidence": "الثقة",
+    "hotCities": "المدن الأكثر نشاطاً",
+    "opportunityFeed": "تغذية الفرص",
+    "country": "الدولة",
+    "heatScore": "حرارة السوق",
+    "urgency": "الإلحاح",
+    "isEstimate": "is_estimate=True — جميع النتائج تقديرية وتستلزم مراجعة بشرية قبل أي إجراء خارجي."
+  },
+  "revenueForecast": {
+    "title": "توقعات الإيرادات",
+    "subtitle": "استخبارات الـ 90 يوم القادمة",
+    "forecastScenarios": "توقع السيناريوهات",
+    "customerId": "معرف العميل",
+    "horizonDays": "الأفق الزمني (يوم)",
+    "dealRows": "صفوف الصفقات",
+    "addDeal": "إضافة صفقة",
+    "companyName": "اسم الشركة",
+    "stage": "المرحلة",
+    "valueSar": "القيمة (ريال)",
+    "daysInStage": "أيام في المرحلة",
+    "runForecast": "احسب التوقع",
+    "worst": "الأسوأ",
+    "likely": "المتوقع",
+    "best": "الأفضل",
+    "confidence": "الثقة",
+    "pipelineHealth": "صحة خط الصفقات",
+    "winProbability": "احتمالية الفوز",
+    "totalPipeline": "إجمالي الخط",
+    "weightedPipeline": "الخط المرجّح",
+    "horizonComparison": "مقارنة الأفق الثلاثي",
+    "runAllScenarios": "تشغيل كل السيناريوهات",
+    "isEstimate": "is_estimate=True — تقديرات مرجّحة باحتمالية. تتطلب مراجعة بشرية قبل أي قرار تجاري.",
+    "forecast": "توقع",
+    "horizon": "الأفق الزمني",
+    "stages": {
+      "prospect": "عميل محتمل",
+      "qualified": "مؤهل",
+      "proposal": "عرض",
+      "negotiation": "تفاوض",
+      "verbal": "موافقة شفهية"
+    }
   }
 }

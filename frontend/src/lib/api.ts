@@ -590,6 +590,92 @@ export const api = {
       `/api/v1/ops-autopilot/marketing/calendar/${encodeURIComponent(slotId)}/publish-kit`,
       { headers: { "X-Admin-API-Key": adminApiKey } },
     ),
+
+  // Wave 16 — GCC Expansion
+  gccMarketScan: (country = "SA") =>
+    apiClient.get("/api/v1/gcc-expansion/market-scan", { params: { country } }),
+
+  gccOverview: () =>
+    apiClient.get("/api/v1/gcc-expansion/gcc-overview"),
+
+  gccHotCities: (country = "SA", topN = 5) =>
+    apiClient.get("/api/v1/gcc-expansion/hot-cities", { params: { country, top_n: topN } }),
+
+  detectSignal: (signal_type: string, raw_data: Record<string, unknown>) =>
+    apiClient.post("/api/v1/gcc-expansion/signal-detect", { signal_type, raw_data }),
+
+  // Wave 16 — Customer Health OS
+  predictChurn: (data: Record<string, unknown>) =>
+    apiClient.post("/api/v1/customer-health/churn-predict", data),
+
+  batchChurnPredict: (customers: Record<string, unknown>[]) =>
+    apiClient.post("/api/v1/customer-health/churn-batch", { customers }),
+
+  getInterventionPlaybook: (data: Record<string, unknown>) =>
+    apiClient.post("/api/v1/customer-health/intervention-playbook", data),
+
+  // Wave 16 — Revenue Forecast OS
+  getRevenueForecast: (customer_id: string, open_deals: unknown[], horizon_days = 30) =>
+    apiClient.post("/api/v1/revenue-forecast/forecast", { customer_id, open_deals, horizon_days }),
+
+  getForecastScenarios: (customer_id: string, open_deals: unknown[]) =>
+    apiClient.post("/api/v1/revenue-forecast/scenarios", { customer_id, open_deals }),
+
+  getPipelineHealth: () =>
+    apiClient.get("/api/v1/revenue-forecast/pipeline-health"),
+
+  // Wave 16 — Exit Readiness OS
+  checkVentureGate: (gates: Record<string, boolean>) =>
+    apiClient.post("/api/v1/exit-readiness/venture-gate", gates),
+
+  getOperatingChain: () =>
+    apiClient.get("/api/v1/exit-readiness/operating-chain"),
+
+  getExitReadinessSummary: () =>
+    apiClient.get("/api/v1/exit-readiness/exit-readiness-summary"),
+
+  // Wave 17 — Strategy OS
+  computeAIReadiness: (axes: Record<string, number>) =>
+    apiClient.post("/api/v1/strategy/ai-readiness", axes),
+
+  rankUseCases: (use_cases: unknown[]) =>
+    apiClient.post("/api/v1/strategy/rank-use-cases", { use_cases }),
+
+  getMoatScore: (dimensions: Record<string, number>) =>
+    apiClient.post("/api/v1/strategy/moat-score", dimensions),
+
+  // Wave 17 — Retainer Conversion Engine
+  checkRetainerEligibility: (data: Record<string, unknown>) =>
+    apiClient.post("/api/v1/retainer-conversion/check-eligibility", data),
+
+  draftRetainerOutreach: (data: Record<string, unknown>) =>
+    apiClient.post("/api/v1/retainer-conversion/draft-outreach", data),
+
+  // Wave 17 — Board Ready OS
+  getBoardMetrics: () =>
+    apiClient.get("/api/v1/board-ready/dashboard-metrics"),
+
+  checkBoardCoverage: (metrics_reported: string[]) =>
+    apiClient.post("/api/v1/board-ready/dashboard-coverage", { metrics_reported }),
+
+  getBoardMemoSkeleton: () =>
+    apiClient.get("/api/v1/board-ready/memo-skeleton"),
+
+  // Wave 17 — Intelligence Compounding OS
+  getIntelligenceStatus: () =>
+    apiClient.get("/api/v1/intelligence/status"),
+
+  computeCompoundScore: (data: Record<string, unknown>) =>
+    apiClient.post("/api/v1/intelligence/compound-score", data),
+
+  getIntelligenceSignalTypes: () =>
+    apiClient.get("/api/v1/intelligence/signal-types"),
+
+  analyzeMarketSignals: (data: Record<string, unknown>) =>
+    apiClient.post("/api/v1/intelligence/market-signals", data),
+
+  getIntelligenceLearningLoop: () =>
+    apiClient.get("/api/v1/intelligence/learning-loop"),
 };
 
 export default api;

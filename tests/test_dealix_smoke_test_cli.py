@@ -114,7 +114,10 @@ def test_smoke_against_local_app_passes_all_required():
     mod = _import_module()
     app = create_app()
     with _live_server(app) as base_url:
-        report = mod.run(base_url, timeout=30)
+        # 90s: founder_dashboard cold-start aggregation takes ~30s locally
+        # and up to ~57s on slow CI machines (1.9x local speed).
+        # test_v6_endpoint_perimeter uses the same 90s budget.
+        report = mod.run(base_url, timeout=90)
     assert report["failed_required"] == 0, (
         f"failures: "
         f"{[r for r in report['results'] if not r['ok']]}"

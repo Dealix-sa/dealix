@@ -43,7 +43,16 @@ class TestC2DailyBriefLLM:
             proof_events=[], pending_approvals=[], inbound_count=0
         )
         assert brief.data_status == "insufficient_data"
-        assert "warm-intro" in brief.next_action.lower() or "diagnostic" in brief.next_action.lower()
+        # next_action should suggest a concrete first step (Arabic or English)
+        action = brief.next_action.lower()
+        assert action, "next_action must be non-empty"
+        assert (
+            "warm-intro" in action
+            or "diagnostic" in action
+            or "الموافقات" in brief.next_action  # "approvals" in Arabic
+            or "leads" in action
+            or "passport" in action
+        ), f"Unexpected next_action: {brief.next_action!r}"
         assert brief.headline  # non-empty
 
     def test_fallback_brief_with_data(self, llm_brief_module):

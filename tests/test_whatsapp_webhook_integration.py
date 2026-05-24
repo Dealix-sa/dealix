@@ -60,22 +60,34 @@ async def test_verify_missing_params_returns_422(async_client):
 # ── POST signature enforcement ──────────────────────────────────
 
 @pytest.mark.asyncio
-async def test_post_rejects_invalid_signature_in_production(async_client, monkeypatch):
+async def test_post_rejects_invalid_signature_in_production(async_client):
     """In production with app_secret configured, missing/invalid signature → 403.
 
     This is the security gate that prevents anyone from POSTing arbitrary
     'leads' to our pipeline by impersonating Meta.
     """
-    monkeypatch.setenv("APP_ENV", "production")
-    monkeypatch.setenv("WHATSAPP_APP_SECRET", "test_secret_xyz")
+    from unittest.mock import MagicMock
+    from core.config.settings import get_settings
 
-    res = await async_client.post(
-        "/api/v1/webhooks/whatsapp",
-        content=b'{"entry":[]}',
-        headers={"Content-Type": "application/json"},  # no x-hub-signature-256
-    )
-    # 403 because signature is missing in strict env, OR 422 if APP_ENV
-    # didn't propagate. Both indicate "did not silently accept."
+    # get_settings() is lru_cache'd — patch the module-level reference in the
+    # router so the request handler sees production + app_secret.
+    prod_settings = MagicMock(wraps=get_settings())
+    prod_settings.app_env = "production"
+
+    whatsapp_client = MagicMock()
+    whatsapp_client.settings.whatsapp_app_secret = "test_secret_xyz"
+    whatsapp_client.verify_signature.return_value = False
+
+    with (
+        patch("api.routers.webhooks.get_settings", return_value=prod_settings),
+        patch("api.routers.webhooks.WhatsAppClient", return_value=whatsapp_client),
+    ):
+        res = await async_client.post(
+            "/api/v1/webhooks/whatsapp",
+            content=b'{"entry":[]}',
+            headers={"Content-Type": "application/json"},  # no x-hub-signature-256
+        )
+    # 403 because signature is missing/invalid in strict production env
     assert res.status_code in (403, 422, 503)
 
 

@@ -17,12 +17,19 @@
     "opsFounder": "Ops — Founder",
     "opsWarRoom": "Revenue War Room",
     "opsTargeting": "Targeting — P0 pool",
-    "opsMarketing": "Marketing — Social",
+    "opsMarketing": "Ops — Marketing",
     "opsPartners": "Partners",
     "opsSales": "Ops — Sales Pipe",
-    "opsMarketing": "Ops — Marketing",
     "opsEvidence": "Ops — Evidence",
-    "opsSupport": "Ops — Support"
+    "opsSupport": "Ops — Support",
+    "opsMandA": "M&A Radar",
+    "opsCustomerHealth": "Customer Health",
+    "opsRevenueForecast": "Revenue Forecast",
+    "opsExitReadiness": "Exit Readiness",
+    "opsGCCExpansion": "GCC Radar",
+    "opsStrategy": "Strategy OS",
+    "opsBoardReady": "Board Ready",
+    "opsRetainerConversion": "Retainer Engine"
   },
   "dashboard": {
     "title": "Executive Dashboard",
@@ -539,11 +546,26 @@
     },
     "howTitle": "How Dealix works",
     "howSteps": {
-      "0": { "title": "Diagnose", "body": "Risk Score or Diagnostic sets readiness" },
-      "1": { "title": "Govern", "body": "Drafts and approval before any external send" },
-      "2": { "title": "Deliver", "body": "Proof Pack with clear sections and status" },
-      "3": { "title": "Evidence", "body": "Evidence events link touch to close" },
-      "4": { "title": "Expand", "body": "Upsell only after value is proven" }
+      "0": {
+        "title": "Diagnose",
+        "body": "Risk Score or Diagnostic sets readiness"
+      },
+      "1": {
+        "title": "Govern",
+        "body": "Drafts and approval before any external send"
+      },
+      "2": {
+        "title": "Deliver",
+        "body": "Proof Pack with clear sections and status"
+      },
+      "3": {
+        "title": "Evidence",
+        "body": "Evidence events link touch to close"
+      },
+      "4": {
+        "title": "Expand",
+        "body": "Upsell only after value is proven"
+      }
     },
     "offersTitle": "Three surface offers",
     "offers": {
@@ -592,5 +614,98 @@
     "evidenceSubtitle": "Evidence ledger entries persisted to the autopilot JSON store.",
     "supportSubtitle": "Public tickets classified + drafted internally — approvals before reply.",
     "approvalsSubtitle": "Same Approval Center powering billing + outbound guardrails."
+  },
+  "customerHealth": {
+    "title": "Customer Health OS",
+    "churnPredict": "Churn Prediction",
+    "customerId": "Customer ID",
+    "analyze": "Analyze Health",
+    "churnScore": "Churn Risk Score",
+    "band": {
+      "safe": "Safe",
+      "watch": "Watch",
+      "at_risk": "At Risk",
+      "critical": "Critical"
+    },
+    "playbook": "Intervention Playbook",
+    "expansion": "Expansion Opportunity"
+  },
+  "revenueForecast": {
+    "title": "Revenue Forecast",
+    "forecast": "Forecast",
+    "horizon": "Horizon",
+    "likely": "Likely",
+    "best": "Best",
+    "worst": "Worst"
+  },
+  "mAndA": {
+    "title": "M&A Radar",
+    "subtitle": "Evaluate targets & draft Letters of Intent",
+    "targetsEvaluated": "Targets Evaluated",
+    "totalPipeline": "Total Pipeline",
+    "avgMultiple": "Avg EBITDA Multiple",
+    "evaluateTarget": "Evaluate a Target",
+    "companyName": "Company Name",
+    "annualRevenue": "Annual Revenue (SAR)",
+    "ebitdaMargin": "EBITDA Margin (%)",
+    "sector": "Sector",
+    "calculateOffer": "Calculate Offer",
+    "recentProposals": "Recent Proposals",
+    "proposedOffer": "Proposed Offer",
+    "upfrontCash": "Upfront Cash (60%)",
+    "earnout": "Earn-out (40%)",
+    "isEstimate": "Estimate"
+  },
+  "gccExpansion": {
+    "title": "GCC Expansion Radar",
+    "subtitle": "Market intelligence across the Gulf",
+    "overview": "GCC Country Overview",
+    "signalDetector": "Signal Detector",
+    "signalType": "Signal Type",
+    "rawData": "Raw Data (JSON)",
+    "detectSignal": "Detect Signal",
+    "detected": "Detected",
+    "notDetected": "Not detected",
+    "confidence": "Confidence",
+    "hotCities": "Hot Cities",
+    "opportunityFeed": "Opportunity Feed",
+    "country": "Country",
+    "heatScore": "Heat score",
+    "urgency": "Urgency",
+    "isEstimate": "is_estimate=True — All results are estimates and require human review before any external action."
+  },
+  "revenueForecast": {
+    "title": "Revenue Forecast OS",
+    "subtitle": "90-day pipeline intelligence",
+    "forecastScenarios": "Forecast Scenarios",
+    "customerId": "Customer ID",
+    "horizonDays": "Horizon (days)",
+    "dealRows": "Deal rows",
+    "addDeal": "Add deal",
+    "companyName": "Company",
+    "stage": "Stage",
+    "valueSar": "Value (SAR)",
+    "daysInStage": "Days in stage",
+    "runForecast": "Run Forecast",
+    "worst": "Worst",
+    "likely": "Likely",
+    "best": "Best",
+    "confidence": "Confidence",
+    "pipelineHealth": "Pipeline Health",
+    "winProbability": "Win Probability",
+    "totalPipeline": "Total Pipeline",
+    "weightedPipeline": "Weighted Pipeline",
+    "horizonComparison": "3-Horizon Comparison",
+    "runAllScenarios": "Run All Scenarios",
+    "isEstimate": "is_estimate=True — probability-weighted estimates. Require human review before any commercial decision.",
+    "forecast": "Forecast",
+    "horizon": "Horizon",
+    "stages": {
+      "prospect": "Prospect",
+      "qualified": "Qualified",
+      "proposal": "Proposal",
+      "negotiation": "Negotiation",
+      "verbal": "Verbal Commit"
+    }
   }
 }
