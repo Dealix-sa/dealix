@@ -13,7 +13,7 @@
 # ═══════════════════════════════════════════════════════════════════
 
 schema_version: "1.0"
-last_reviewed: "2026-04-21"
+last_reviewed: "2026-05-24"
 
 claims:
   # ───────────── Core platform ─────────────
@@ -231,6 +231,18 @@ claims:
     gaps:
       - "Full control-by-control mapping not yet complete"
 
+  - id: customer_portal_backend
+    claim: "Authenticated customer-portal API: profile, sprints, proof packs, feedback, invoices"
+    status: Pilot
+    evidence:
+      - api/routers/customer_portal.py
+      - db/models.py::CustomerFeedbackRecord
+      - db/migrations/versions/20260524_014_customer_feedback.py
+      - tests/test_customer_portal.py
+    gaps:
+      - "Sprint + proof-pack data sourced via best-effort module discovery; not all environments wire ServiceSessions/ProofLedger"
+      - "Download endpoint returns markdown only; PDF stays on /api/v1/sprint/render/pdf"
+
   # ───────────── Things we do NOT claim ─────────────
   # (Listed here so the register is a positive declaration of limits)
   - id: not_cursor_not_chatbot
@@ -247,3 +259,14 @@ claims:
       - dealix/classifications/__init__.py::NEVER_AUTO_EXECUTE
     gaps:
       - "Agent tool calls (LLM tool use) not yet routed through the connector facade"
+
+  - id: tap_payment_integration
+    claim: "Tap.company KSA-native payments available as backup processor to Moyasar"
+    status: Pilot
+    evidence:
+      - dealix/payments/tap.py::TapClient
+      - api/routers/tap.py
+      - tests/test_payments_tap.py
+    gaps:
+      - "Webhook side-effects (CRM activation, ledger persistence) not yet wired"
+      - "Live keys pending Tap KYC activation"

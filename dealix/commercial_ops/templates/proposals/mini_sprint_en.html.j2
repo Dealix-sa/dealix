@@ -1,0 +1,16 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_en, scope_en, timeline_en, pricing_block_en, terms_en %}
+
+{% block content %}
+  {{ executive_summary_en(spec) }}
+  {{ scope_en([
+    "Source Passport agreed for every data source before any AI use.",
+    "Data Quality Score with dedupe and normalisation.",
+    "Top-10 account scoring under the agreed model.",
+    "14-section Proof Pack with source citations.",
+    "Every reusable Capital Asset registered in the central ledger."
+  ]) }}
+  {{ timeline_en(spec) }}
+  {{ pricing_block_en(price, price_display) }}
+  {{ terms_en() }}
+{% endblock %}

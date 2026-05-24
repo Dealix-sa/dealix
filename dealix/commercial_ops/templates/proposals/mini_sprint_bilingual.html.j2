@@ -1,0 +1,41 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import
+  executive_summary_ar, executive_summary_en,
+  scope_ar, scope_en,
+  timeline_ar, timeline_en,
+  pricing_block_ar, pricing_block_en,
+  terms_ar, terms_en %}
+
+{% set scope_items_en = [
+  "Source Passport agreed for every data source before any AI use.",
+  "Data Quality Score with dedupe and normalisation.",
+  "Top-10 account scoring under the agreed model.",
+  "14-section Proof Pack with source citations.",
+  "Every reusable Capital Asset registered in the central ledger."
+] %}
+{% set scope_items_ar = [
+  "اعتماد Source Passport لكل مصدر بيانات قبل أي استخدام للذكاء الاصطناعي.",
+  "حساب Data Quality Score مع dedupe و normalisation.",
+  "تقييم Top-10 حسابات حسب النموذج المتفق عليه.",
+  "Proof Pack مكوّن من 14 قسم مع روابط مصدرية.",
+  "تسجيل أي Capital Asset قابل لإعادة الاستخدام في السجلّ المركزي."
+] %}
+
+{% block content %}
+<div class="bilingual-grid">
+  <div class="col-en">
+    {{ executive_summary_en(spec) }}
+    {{ scope_en(scope_items_en) }}
+    {{ timeline_en(spec) }}
+    {{ pricing_block_en(price, price_display) }}
+    {{ terms_en() }}
+  </div>
+  <div class="col-ar">
+    {{ executive_summary_ar(spec) }}
+    {{ scope_ar(scope_items_ar) }}
+    {{ timeline_ar(spec) }}
+    {{ pricing_block_ar(price, price_display) }}
+    {{ terms_ar() }}
+  </div>
+</div>
+{% endblock %}

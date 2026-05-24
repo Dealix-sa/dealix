@@ -1005,6 +1005,36 @@ class CustomerWebhookSubscription(Base):
     )
 
 
+class CustomerFeedbackRecord(Base):
+    """
+    Customer-portal feedback — one row per submission.
+    تغذية راجعة من بوابة العميل — صف واحد لكل إرسال.
+
+    Used by Track B.4 Customer Portal Backend MVP. Customers paying 499 SAR
+    submit a 1–5 rating + optional comment scoped to a sprint engagement
+    (sprint_id may be NULL for portal-level feedback).
+
+    PDPL: comment is stored verbatim but never logged — see
+    api/routers/customer_portal.py for sanitisation rules.
+    """
+
+    __tablename__ = "customer_feedback"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    tenant_id: Mapped[str] = mapped_column(
+        String(64), ForeignKey("tenants.id", ondelete="CASCADE"), index=True
+    )
+    customer_id: Mapped[str] = mapped_column(String(64), index=True)
+    sprint_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    rating: Mapped[int] = mapped_column(Integer)  # 1..5 (validated at API layer)
+    comment: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+
+    __table_args__ = (
+        Index("ix_customer_feedback_tenant_created", "tenant_id", "created_at"),
+    )
+
+
 class CustomerWebhookDelivery(Base):
     """
     Webhook delivery attempts — audit trail of every event delivery.

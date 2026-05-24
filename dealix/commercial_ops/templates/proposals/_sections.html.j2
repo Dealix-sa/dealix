@@ -1,0 +1,93 @@
+{# Reusable section macros for Dealix proposals. #}
+
+{% macro executive_summary_ar(spec) %}
+  <h2>الملخّص التنفيذي</h2>
+  <p>{{ spec.summary_ar }}</p>
+  <p>
+    المدة المقترحة: <strong>{{ spec.duration_days }}</strong> يوم،
+    عدد المخرجات: <strong>{{ spec.deliverable_count }}</strong>.
+  </p>
+{% endmacro %}
+
+{% macro executive_summary_en(spec) %}
+  <h2>Executive Summary</h2>
+  <p>{{ spec.summary_en }}</p>
+  <p>
+    Proposed duration: <strong>{{ spec.duration_days }}</strong> days,
+    deliverables: <strong>{{ spec.deliverable_count }}</strong>.
+  </p>
+{% endmacro %}
+
+{% macro scope_ar(items) %}
+  <h2>النطاق</h2>
+  <ul>
+    {% for item in items %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+{% endmacro %}
+
+{% macro scope_en(items) %}
+  <h2>Scope</h2>
+  <ul>
+    {% for item in items %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+{% endmacro %}
+
+{% macro timeline_ar(spec) %}
+  <h2>الجدول الزمني</h2>
+  <p>تشغيل خلال <strong>{{ spec.duration_days }}</strong> يوم عمل من تاريخ التوقيع.</p>
+{% endmacro %}
+
+{% macro timeline_en(spec) %}
+  <h2>Timeline</h2>
+  <p>Delivered within <strong>{{ spec.duration_days }}</strong> working days from signature.</p>
+{% endmacro %}
+
+{% macro pricing_block_ar(price, price_display) %}
+  <h2>التسعير</h2>
+  <table class="price-table">
+    <thead>
+      <tr><th>البند</th><th>المبلغ</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>المبلغ قبل الضريبة</td><td>{{ price_display.subtotal }}</td></tr>
+      <tr><td>ضريبة القيمة المضافة ({{ price.vat_rate_pct }}%)</td><td>{{ price_display.vat }}</td></tr>
+      <tr class="grand-total"><td>الإجمالي شامل الضريبة</td><td>{{ price_display.total }}</td></tr>
+    </tbody>
+  </table>
+{% endmacro %}
+
+{% macro pricing_block_en(price, price_display) %}
+  <h2>Pricing</h2>
+  <table class="price-table">
+    <thead>
+      <tr><th>Line</th><th>Amount</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Subtotal</td><td>{{ price_display.subtotal }}</td></tr>
+      <tr><td>VAT ({{ price.vat_rate_pct }}%)</td><td>{{ price_display.vat }}</td></tr>
+      <tr class="grand-total"><td>Total (VAT inclusive)</td><td>{{ price_display.total }}</td></tr>
+    </tbody>
+  </table>
+{% endmacro %}
+
+{% macro terms_ar() %}
+  <h2>الشروط والحدود (غير قابلة للتفاوض)</h2>
+  <ul>
+    <li>لا يوجد أي scraping أو سحب بيانات بدون إذن واضح.</li>
+    <li>لا cold WhatsApp ولا أتمتة LinkedIn.</li>
+    <li>لا ضمانات نتائج مبيعات — كل ما يُسلَّم يكون مبنياً على Proof Pack.</li>
+    <li>أي إجراء خارجي يتطلّب موافقة بشرية صريحة (approval-first).</li>
+    <li>كل بيانات شخصية تخضع لنظام حماية البيانات الشخصية (PDPL).</li>
+  </ul>
+{% endmacro %}
+
+{% macro terms_en() %}
+  <h2>Terms (non-negotiable)</h2>
+  <ul>
+    <li>No scraping or data harvesting without explicit consent.</li>
+    <li>No cold WhatsApp; no LinkedIn automation.</li>
+    <li>No guaranteed sales outcomes — every deliverable is backed by a Proof Pack.</li>
+    <li>External actions require explicit human approval (approval-first).</li>
+    <li>All personal data handled under PDPL (Saudi data protection law).</li>
+  </ul>
+{% endmacro %}
