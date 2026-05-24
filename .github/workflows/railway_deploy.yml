@@ -103,21 +103,23 @@ jobs:
         id: healthz
         if: steps.check_token.outputs.token_present == 'true'
         run: |
-          URL="${{ vars.RAILWAY_PUBLIC_URL || 'https://dealix-production-up.railway.app' }}"
+          URL="${{ vars.RAILWAY_PUBLIC_URL || 'https://api.dealix.me' }}"
           echo "url=$URL" >> "$GITHUB_OUTPUT"
-          echo "Smoke-testing: $URL/healthz"
+          echo "Smoke-testing trust layer on $URL"
 
           for i in {1..12}; do
-            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 "$URL/healthz" || echo "000")
-            echo "Attempt $i: $code"
-            if [ "$code" = "200" ]; then
-              echo "✅ /healthz = 200 — backend is live"
+            hz=$(curl -sS --max-time 10 "$URL/healthz" || echo "")
+            ver=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 "$URL/version" || echo "000")
+            meta=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 "$URL/api/v1/meta" || echo "000")
+            echo "Attempt $i: healthz=$(echo "$hz" | head -c 80) version=$ver meta=$meta"
+            if [ "$ver" = "200" ] && [ "$meta" = "200" ] && echo "$hz" | grep -q '"version"'; then
+              echo "✅ trust layer live (/healthz+version, /version, /api/v1/meta)"
               exit 0
             fi
             sleep 15
           done
 
-          echo "::error::/healthz did not return 200 after 3 minutes. Failing deploy."
+          echo "::error::Trust layer not ready after 3 minutes (/version /api/v1/meta /healthz version field)."
           exit 1
 
       - name: Post-deploy smoke pack
