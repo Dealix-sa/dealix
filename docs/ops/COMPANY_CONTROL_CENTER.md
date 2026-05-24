@@ -2,7 +2,55 @@
 
 **Single source of truth for today's operating state.** Everything else is reference.
 
-Last updated: 2026-04-24 · Keep this file fresh — update it before/after every operating session.
+Last updated: 2026-05-24 · Keep this file fresh — update it before/after every operating session.
+
+> **Master plan (overrides all conflicts):** [/MASTER_PLAN.md](../../MASTER_PLAN.md) — 1M SAR ARR in 12 months, Bootstrap, founder-led.
+
+---
+
+## 🚪 Decision Gates — G1 → G7 (12-Month Path)
+
+Evaluate every 30 days. Record GO/NO-GO + date. If NO, follow the stated remedy before progressing.
+
+| Gate | Day | Condition | If NO | Status |
+|---|---|---|---|---|
+| **G1** | 30 | ≥ 1 × 499 SAR payment in Moyasar + ≥ 1 Proof Pack score ≥ 4/5 | Repeat W3-W4 of Phase A | ⏸️ PENDING |
+| **G2** | 60 | ≥ 5 Sprints paid + 1 Managed Ops signed | Stop Sprint sales, re-evaluate ICP | ⏸️ PENDING |
+| **G3** | 90 | ≥ 3 Managed Ops active + churn=0 + ≥ 1 case study | Return to Phase B intensity | ⏸️ PENDING |
+| **G4** | 150 | ≥ 30K MRR + ≥ 1 agency partner signed | Stop partner work, focus Managed | ⏸️ PENDING |
+| **G5** | 180 | ≥ 40K MRR | Repeat Q1 with simpler criteria | ⏸️ PENDING |
+| **G6** | 270 | ≥ 60K MRR + hire-decision triggered | Stay solo; do not hire | ⏸️ PENDING |
+| **G7** | 365 | ≥ 80K MRR ARR (≈ 1M SAR ARR) | Full transparency review, redesign Year 2 | ⏸️ PENDING |
+
+**Universal halt rules (any of these stops everything):**
+- Founder touches/day < 5 for 3 consecutive days → P0 escalation
+- Founder time per sprint > 5h after customer 5 → halt Sprint sales, automate
+- Any non-negotiable violation → immediate stop + remediation
+- New feature requested without paying customer asking → refused
+
+---
+
+## 📈 North Star — 3 Numbers Only
+
+| KPI | Target (Month 12) | Current (update weekly) |
+|---|---|---|
+| **MRR** | 83K SAR | 0 |
+| **Active Paid Customers** | 20-22 | 0 |
+| **Founder Touches/Day** | ≥ 5 | 0 |
+
+Any 4th metric in operating dashboards = delete.
+
+---
+
+## 📋 Weekly Friction Decisions
+
+(Add a row each Wednesday after the friction_log review per `friction_log_review_weekly.md`)
+
+| Date | Friction Event | Severity | Decision | Owner | Due |
+|---|---|---|---|---|---|
+| _yyyy-mm-dd_ | _example_ | _high/med/low_ | _BUILD/DEFER/IGNORE_ | _self/agent_ | _yyyy-mm-dd_ |
+
+---
 
 > 🌅 **Start here every morning:** [`docs/ops/TODAY.md`](TODAY.md) — the 60-minute command page.
 > 💰 **When a prospect says yes:** [`docs/ops/FIRST_REVENUE_ATTEMPT.md`](FIRST_REVENUE_ATTEMPT.md) — 15-min close-to-paid script.

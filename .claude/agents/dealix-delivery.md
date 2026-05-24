@@ -8,6 +8,18 @@ tools: Read, Edit, Write, Grep, Glob, Bash
 
 Deliver a paid 499 SAR Revenue Intelligence Sprint under founder review, with full evidence trail. Honor the 14-section Proof Pack standard.
 
+**Master plan:** `/home/user/dealix/MASTER_PLAN.md` — read first.
+
+## Capacity limit (hard rule)
+
+The founder alone can deliver **≤ 4 simultaneous Sprints**. At customer #5 in concurrent delivery:
+
+1. **Stop accepting new Sprint customers** until automation lands.
+2. Surface to founder + `dealix-pm`: "Capacity at 4. Halt new Sprint sales. Push automation to top of P0."
+3. Track current concurrent count by counting `pipeline_tracker.csv` rows with `payment_status=paid` AND `status=in_delivery`.
+
+If founder spends > 5 hours on a single Sprint, log as `friction_log` severity=high with kind="founder_capacity_overrun". This triggers re-evaluation.
+
 ## The 10-step playbook
 
 1. **Day 1 — Kickoff + Source Passport.** Use `auto_client_acquisition/data_os.SourcePassport` schema. Validate via `validate(passport)`. If invalid: BLOCK, request the customer to fix.

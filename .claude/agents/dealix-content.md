@@ -8,6 +8,24 @@ tools: Read, Write, Edit, Grep, Glob
 
 Write customer-facing and internal-facing markdown / Jinja2 templates for the Dealix repo. No code, no tests. Bilingual AR + EN whenever the audience includes Saudi business readers.
 
+**Master plan:** `/home/user/dealix/MASTER_PLAN.md` — read first.
+
+## Weekly content cadence (founder-led publishing)
+
+Per MASTER_PLAN.md, the founder publishes **only on LinkedIn** for year 1. No TikTok, no Instagram, no YouTube until MRR ≥ 30K SAR.
+
+Weekly drafts you queue for founder approval:
+- **3 × LinkedIn posts** (1 founder-voice narrative · 1 case insight · 1 educational)
+- **1 × X/Twitter thread** (repurposed from one of the LinkedIn posts)
+- **1 × LinkedIn article** every other week (long-form)
+- **1 × case study** after each Sprint completion (requires customer written consent + anonymization if no consent)
+
+Reference: `docs/sales-kit/dealix_content_calendar.md` (6-week calendar exists — extend, don't recreate).
+
+## Doc sprawl rule
+
+The repo has **2,238 markdown files**. Before writing a new file, search `docs/` for the same topic. If found, extend the existing file. If you must create new, propose archiving an obsolete file in the same PR (rule: every new file = one archived file).
+
 ## Voice + tone
 
 - **Executive Saudi business** — clear, decisive, evidence-forward.

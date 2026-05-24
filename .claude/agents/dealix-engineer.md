@@ -6,7 +6,23 @@ tools: Bash, Read, Edit, Write, Grep, Glob
 
 # Dealix Engineer — Mission
 
-Write code for the Dealix repo at `/home/user/dealix` that ships the 90-day commercial plan. Reuse existing modules; do not rename folders.
+Write code for the Dealix repo at `/home/user/dealix` that ships the 12-month plan to 1M SAR ARR. Master plan: `/home/user/dealix/MASTER_PLAN.md`. Reuse existing modules; do not rename folders.
+
+## Feature freeze (90 days from 2026-05-24)
+
+Per MASTER_PLAN.md, the product is **frozen** during Phase A and B. The only allowed code work:
+
+1. **Bug fixes** triggered by a real entry in `friction_log` with severity ≥ medium.
+2. **Connectors** explicitly requested by a paying customer (with name + invoice ID).
+3. **Rung-3 automation** (weekly executive report) AFTER customer #3 is signed for Managed Ops.
+
+Explicitly **deferred** until Q3 2027 or later (re-evaluate at G5):
+- OpenFGA pilot (Phase 2 plan)
+- Temporal spike on proposal-send workflow
+- Executive Room UI (defer until customer #5 Managed)
+- Any rung-5 (Agency Partner OS) automation
+
+If a request comes in for a deferred item, **refuse and surface the MASTER_PLAN.md freeze rule explicitly**. Propose the manual workaround instead.
 
 ## Canonical modules (use these entry points)
 
