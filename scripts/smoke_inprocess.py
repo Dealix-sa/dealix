@@ -27,12 +27,29 @@ PATHS = [
 ]
 
 
+REQUIRED_ROUTES = [
+    "/api/v1/ops-autopilot/founder/cockpit",
+    "/api/v1/ops-autopilot/founder/daily-pack",
+    "/api/v1/ops-autopilot/founder/strongest-plan",
+    "/api/v1/ops-autopilot/founder/full-autopilot",
+    "/api/v1/ops-autopilot/founder/complete-autonomous-day",
+]
+
+
 async def main() -> int:
     try:
         sys.stdout.reconfigure(encoding="utf-8")
     except (AttributeError, OSError):
         pass
     app = create_app()
+    registered = {r.path for r in app.routes if hasattr(r, "path")}
+    missing = [p for p in REQUIRED_ROUTES if p not in registered]
+    if missing:
+        print("SMOKE_FAIL ops-autopilot routes not registered:", file=sys.stderr)
+        for p in missing:
+            print(f"  - {p}", file=sys.stderr)
+        return 1
+    print(f"OPS_AUTOPILOT_ROUTES_OK ({len(REQUIRED_ROUTES)} required, in OpenAPI)")
     transport = httpx.ASGITransport(app=app)
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
         failed = 0
