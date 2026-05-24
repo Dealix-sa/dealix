@@ -1,0 +1,24 @@
+name: dealix-hypergrowth-ceo-layer
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "apps/web/app/ceo/**"
+      - "apps/web/app/ceo-os/**"
+      - "apps/web/app/metrics/**"
+      - "scripts/verify_hypergrowth_ceo_layer.py"
+      - "scripts/verify_founder_ceo_hypergrowth_layer.py"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/verify_hypergrowth_ceo_layer.py
+      - run: python scripts/verify_founder_ceo_hypergrowth_layer.py

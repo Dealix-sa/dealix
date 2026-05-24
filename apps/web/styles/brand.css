@@ -1,0 +1,195 @@
+:root {
+  --dlx-deep-navy: #0B1B2E;
+  --dlx-deep-navy-alt: #10243C;
+  --dlx-soft-silver: #D6DCE4;
+  --dlx-paper: #F5F7FA;
+  --dlx-ink: #0F172A;
+  --dlx-muted: #475569;
+  --dlx-accent: #3B82F6;
+  --dlx-success: #16A34A;
+  --dlx-warning: #D97706;
+  --dlx-danger: #DC2626;
+  --dlx-grid: #1E2E45;
+
+  --dlx-radius-sm: 6px;
+  --dlx-radius-md: 10px;
+  --dlx-radius-lg: 14px;
+  --dlx-radius-xl: 20px;
+  --dlx-shadow-card: 0 1px 2px rgba(11, 27, 46, 0.08), 0 4px 12px rgba(11, 27, 46, 0.06);
+
+  --dlx-font: Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--dlx-font);
+  background: var(--dlx-paper);
+  color: var(--dlx-ink);
+}
+
+a { color: var(--dlx-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.dlx-shell {
+  display: grid;
+  grid-template-columns: var(--dlx-sidebar-width, 260px) 1fr;
+  min-height: 100vh;
+}
+
+.dlx-sidebar {
+  background: var(--dlx-deep-navy);
+  color: var(--dlx-soft-silver);
+  padding: 24px 16px;
+  border-right: 1px solid var(--dlx-grid);
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.dlx-sidebar .dlx-logo {
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dlx-sidebar .dlx-nav-group {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #8FA0B5;
+  letter-spacing: 0.08em;
+  margin: 16px 0 6px;
+}
+
+.dlx-sidebar a {
+  display: block;
+  color: var(--dlx-soft-silver);
+  padding: 6px 10px;
+  border-radius: var(--dlx-radius-sm);
+  font-size: 13px;
+}
+
+.dlx-sidebar a:hover {
+  background: var(--dlx-deep-navy-alt);
+  color: #fff;
+  text-decoration: none;
+}
+
+.dlx-main {
+  padding: 24px 32px;
+  max-width: 1240px;
+}
+
+.dlx-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.dlx-page-header h1 {
+  font-size: 24px;
+  margin: 0;
+  color: var(--dlx-deep-navy);
+}
+
+.dlx-page-header .dlx-subtitle {
+  color: var(--dlx-muted);
+  font-size: 13px;
+}
+
+.dlx-card {
+  background: #fff;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--dlx-radius-md);
+  padding: 16px;
+  box-shadow: var(--dlx-shadow-card);
+  margin-bottom: 16px;
+}
+
+.dlx-card h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: var(--dlx-deep-navy);
+}
+
+.dlx-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.dlx-metric .dlx-metric-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--dlx-deep-navy);
+}
+
+.dlx-metric .dlx-metric-label {
+  font-size: 12px;
+  color: var(--dlx-muted);
+}
+
+.dlx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.dlx-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.dlx-badge.ok      { background: #E6F4EA; color: var(--dlx-success); border-color: #BBE3C7; }
+.dlx-badge.warn    { background: #FEF3C7; color: var(--dlx-warning); border-color: #FACC15; }
+.dlx-badge.danger  { background: #FEE2E2; color: var(--dlx-danger);  border-color: #FCA5A5; }
+.dlx-badge.neutral { background: var(--dlx-soft-silver); color: var(--dlx-deep-navy); }
+
+.dlx-cta {
+  display: inline-block;
+  background: var(--dlx-deep-navy);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: var(--dlx-radius-sm);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+}
+.dlx-cta:hover { background: var(--dlx-deep-navy-alt); text-decoration: none; }
+
+.dlx-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.dlx-table th,
+.dlx-table td {
+  text-align: start;
+  padding: 8px 10px;
+  border-bottom: 1px solid #E2E8F0;
+}
+.dlx-table th { color: var(--dlx-muted); font-weight: 500; font-size: 12px; }
+
+.dlx-source {
+  font-size: 11px;
+  color: var(--dlx-muted);
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .dlx-shell { grid-template-columns: 1fr; }
+  .dlx-sidebar { position: relative; height: auto; }
+}

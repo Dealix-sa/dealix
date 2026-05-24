@@ -1,0 +1,59 @@
+registry: dealix_machine_registry
+version: "1.0.0"
+owner: founder
+
+defaults:
+  approval_required: true
+  external_action_allowed: false
+  kill_switch: documented
+  audit_enabled: true
+  observability: required
+
+machines:
+  - id: outreach_queue_worker
+    purpose: Build outreach drafts and queue for founder approval.
+    state_file: runtime/worker_state.csv
+    kill_switch: scripts/update_worker_state.py
+    external_action_allowed: false
+
+  - id: followup_queue_worker
+    purpose: Maintain follow-up queue for replied conversations.
+    state_file: runtime/worker_state.csv
+    kill_switch: scripts/update_worker_state.py
+    external_action_allowed: false
+
+  - id: payment_capture_worker
+    purpose: Queue payment captures for founder approval.
+    state_file: runtime/worker_state.csv
+    kill_switch: scripts/update_worker_state.py
+    external_action_allowed: false
+
+  - id: proposal_drafter
+    purpose: Draft proposals from approved templates.
+    state_file: runtime/worker_state.csv
+    kill_switch: scripts/update_worker_state.py
+    external_action_allowed: false
+
+  - id: sample_pack_drafter
+    purpose: Draft proof / sample packs.
+    state_file: runtime/worker_state.csv
+    kill_switch: scripts/update_worker_state.py
+    external_action_allowed: false
+
+  - id: campaign_factory
+    purpose: Compose campaigns; queue for approval.
+    state_file: runtime/worker_state.csv
+    kill_switch: scripts/update_worker_state.py
+    external_action_allowed: false
+
+  - id: lead_intelligence_collector
+    purpose: Collect public lead intelligence into base CSV.
+    state_file: runtime/worker_state.csv
+    kill_switch: scripts/update_worker_state.py
+    external_action_allowed: false
+
+  - id: trust_monitor
+    purpose: Scan outputs for forbidden claims and policy violations.
+    state_file: runtime/worker_state.csv
+    kill_switch: scripts/update_worker_state.py
+    external_action_allowed: false

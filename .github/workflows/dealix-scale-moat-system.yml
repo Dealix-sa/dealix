@@ -1,0 +1,23 @@
+name: dealix-scale-moat-system
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "apps/web/app/moat/**"
+      - "apps/web/app/proof-library/**"
+      - "apps/web/app/partner-ecosystem/**"
+      - "apps/web/app/productization/**"
+      - "scripts/verify_scale_moat_system.py"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/verify_scale_moat_system.py

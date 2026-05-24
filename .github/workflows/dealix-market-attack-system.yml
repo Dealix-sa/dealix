@@ -1,0 +1,23 @@
+name: dealix-market-attack-system
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "apps/web/app/market-attack/**"
+      - "scripts/generate_beachhead_sector_scorecard.py"
+      - "scripts/generate_strategic_account_list.py"
+      - "scripts/generate_offer_market_fit_report.py"
+      - "scripts/verify_market_attack_system.py"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/verify_market_attack_system.py

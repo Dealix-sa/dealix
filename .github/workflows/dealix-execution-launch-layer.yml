@@ -1,0 +1,24 @@
+name: dealix-execution-launch-layer
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "apps/web/app/launch/**"
+      - "apps/web/app/sales-cockpit/**"
+      - "apps/web/app/deal-desk/**"
+      - "scripts/verify_launch_readiness.py"
+      - "scripts/verify_execution_launch_layer.py"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/verify_launch_readiness.py
+      - run: python scripts/verify_execution_launch_layer.py
