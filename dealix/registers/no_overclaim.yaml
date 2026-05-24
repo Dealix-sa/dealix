@@ -270,3 +270,16 @@ claims:
     gaps:
       - "Webhook side-effects (CRM activation, ledger persistence) not yet wired"
       - "Live keys pending Tap KYC activation"
+
+  - id: proposal_renderer_pdf
+    claim: "Branded bilingual (AR/EN) proposal PDF renderer with VAT-15% KSA pricing from YAML"
+    status: Pilot
+    evidence:
+      - dealix/commercial_ops/proposal_renderer.py::ProposalRenderer
+      - dealix/commercial_ops/templates/proposals/_base.html.j2
+      - api/routers/proposal_renderer.py
+      - tests/test_proposal_renderer.py
+    gaps:
+      - "WeasyPrint preferred; ReportLab fallback omits full styling"
+      - "Auth dependency not yet enforced (router accepts unauthenticated requests in dev)"
+      - "Bilingual templates use grid layout; full RTL hyphenation pending font review"

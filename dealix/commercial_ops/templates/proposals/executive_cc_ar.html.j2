@@ -1,0 +1,18 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_ar, scope_ar, timeline_ar, pricing_block_ar, terms_ar %}
+
+{% block content %}
+  {{ executive_summary_ar(spec) }}
+  {{ scope_ar([
+    "تقرير ربعي للقيادة التنفيذية مع KPIs محكومة.",
+    "خريطة Capital Stack والأصول القابلة لإعادة الاستخدام.",
+    "Adoption Score على مستوى المؤسسة + توصيات تحسين.",
+    "تنبيهات Friction عالية الأثر مع owners.",
+    "اجتماع ربعي مع المؤسس / المدير العام.",
+    "بطاقة حوكمة (Governance Posture) للقطاع.",
+    "خطّة الربع التالي مع benchmark بياني."
+  ]) }}
+  {{ timeline_ar(spec) }}
+  {{ pricing_block_ar(price, price_display) }}
+  {{ terms_ar() }}
+{% endblock %}
