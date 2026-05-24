@@ -152,8 +152,10 @@ class TestVectorStore:
     def test_delete(self) -> None:
         store = InMemoryVectorStore(dimension=16)
         store.upsert(record_id="r1", text="x", vector=[1.0] * 16, tenant_id="t1")
-        assert store.delete(record_id="r1", tenant_id="t1") is True
-        assert store.delete(record_id="r1", tenant_id="t1") is False
+        first = store.delete(record_id="r1", tenant_id="t1")
+        second = store.delete(record_id="r1", tenant_id="t1")
+        assert first is True
+        assert second is False
 
 
 class TestHybridSearch:
