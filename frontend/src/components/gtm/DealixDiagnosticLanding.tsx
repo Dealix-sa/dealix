@@ -60,10 +60,13 @@ export function DealixDiagnosticLanding() {
         </p>
       </header>
 
+      <p className="text-sm text-muted-foreground">
+        {isAr ? "Ops diagnostic — منفصل عن R1 Sprint (499 ر.س) على الرئيسية." : "Ops diagnostic — separate from R1 Sprint (499 SAR) on home."}
+      </p>
       <div className="grid gap-4 md:grid-cols-3">
         {TIERS.map((t) => (
           <Card key={t.id} className="p-5 border-border/80">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">{t.id}</p>
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">{t.id} Ops</p>
             <p className="mt-2 text-2xl font-semibold">
               {t.sar.toLocaleString(isAr ? "ar-SA" : "en-US")} SAR
             </p>

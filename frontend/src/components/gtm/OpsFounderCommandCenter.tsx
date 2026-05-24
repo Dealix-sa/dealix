@@ -134,7 +134,7 @@ export function OpsFounderCommandCenter() {
 
       <OpsComprehensivePlanCard
         plan={fullOps?.comprehensive_plan}
-        variant="compact"
+        variant="full"
       />
 
       {valuePlan && <ValuePlanPanel valuePlan={valuePlan} />}

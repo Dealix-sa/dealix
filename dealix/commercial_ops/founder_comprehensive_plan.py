@@ -199,7 +199,46 @@ def analyze_pdpl_compliance_pass() -> dict[str, Any]:
 
 
 def analyze_weekly_one_decision() -> dict[str, Any]:
-    """Latest weekly founder decision file (deviation + one decision + stop list)."""
+    """Weekly founder decision — canonical config yaml, legacy data/founder_weekly fallback."""
+    config_path = REPO_ROOT / "dealix/config/founder_weekly_one_decision.yaml"
+    config_data = _load_registry() if False else {}  # noqa: placeholder removed below
+    config_data = {}
+    if config_path.is_file():
+        try:
+            raw = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+            config_data = raw if isinstance(raw, dict) else {}
+        except yaml.YAMLError:
+            config_data = {}
+
+    one_decision_ar = (config_data.get("one_decision_ar") or "").strip()
+    if one_decision_ar:
+        week_iso = (config_data.get("week_iso") or "").strip()
+        week_id = datetime.now(UTC).strftime("%Y-W%V")
+        latest = {
+            "one_decision": one_decision_ar,
+            "one_decision_ar": one_decision_ar,
+            "supports_phase": config_data.get("active_phase"),
+            "active_phase": config_data.get("active_phase"),
+            "success_by_friday_ar": config_data.get("success_by_friday_ar"),
+            "blocked_by": config_data.get("blocked_by"),
+            "stop_list": config_data.get("evidence_events_to_log") or [],
+            "source": "config_yaml",
+        }
+        verdict = "FILLED" if week_iso else "STALE"
+        return {
+            "verdict": verdict,
+            "week_id": week_iso or week_id,
+            "has_this_week": bool(week_iso),
+            "latest_path": str(config_path.relative_to(REPO_ROOT)).replace("\\", "/"),
+            "latest": latest,
+            "template_path": str(
+                FOUNDER_WEEKLY_DECISION_TEMPLATE.relative_to(REPO_ROOT)
+            ).replace("\\", "/")
+            if FOUNDER_WEEKLY_DECISION_TEMPLATE.is_file()
+            else None,
+            "doc": WEEKLY_DECISION_DOC,
+        }
+
     FOUNDER_WEEKLY_DECISION_DIR.mkdir(parents=True, exist_ok=True)
     files = sorted(
         FOUNDER_WEEKLY_DECISION_DIR.glob("decision_*.yaml"),
@@ -217,7 +256,10 @@ def analyze_weekly_one_decision() -> dict[str, Any]:
 
     week_id = datetime.now(UTC).strftime("%Y-W%V")
     has_this_week = any(week_id in f.name for f in files[:3])
-    if latest and isinstance(latest, dict) and (latest.get("one_decision") or "").strip():
+    one_legacy = ""
+    if isinstance(latest, dict):
+        one_legacy = (latest.get("one_decision") or latest.get("one_decision_ar") or "").strip()
+    if one_legacy:
         verdict = "FILLED" if has_this_week else "STALE"
     else:
         verdict = "MISSING"

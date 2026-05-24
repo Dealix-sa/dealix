@@ -4,6 +4,7 @@
 .env
 .env.*
 dealix/transformation/kpi_founder_commercial_import.yaml
+dealix/config/founder_closure_intake.yaml
 !.env.example
 !.env.staging.example
 *.pem

@@ -17,8 +17,13 @@ from dealix.commercial_ops.railway_launch import (  # noqa: E402
     check_railway_frontend_env,
 )
 
+RAILWAY_ENV = ROOT / ".env.railway.generated"
+RAILWAY_FE_ENV = ROOT / ".env.railway.frontend.generated"
+
 FAILURES: list[str] = []
 WARNINGS: list[str] = []
+# Infra go-live strict: drafts-only integrations do not block production layers gate
+OPTIONAL_STRICT_INTEGRATIONS = frozenset({"GMAIL_CLIENT_ID"})
 
 
 def _set(name: str) -> bool:
@@ -36,8 +41,13 @@ def check_integration_env() -> None:
         "GMAIL_CLIENT_ID": "Gmail OAuth (drafts)",
     }
     for key, label in integrations.items():
-        if _set(key):
+        ok = _set(key)
+        if key == "CALENDLY_WEBHOOK_SIGNING_KEY" and not ok:
+            ok = _set("CALENDLY_WEBHOOK_SECRET")
+        if ok:
             print(f"  ok: {label} ({key})")
+        elif key in OPTIONAL_STRICT_INTEGRATIONS:
+            print(f"  optional: {label} — {key} (drafts; not blocking infra strict)")
         else:
             WARNINGS.append(f"{label}: set {key}")
             print(f"  FOUNDER_ACTION: {label} — {key}")
@@ -57,6 +67,22 @@ def check_docs() -> None:
             FAILURES.append(f"missing {rel}")
 
 
+def _load_dotenv_file(path: Path) -> int:
+    if not path.is_file():
+        return 0
+    n = 0
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        key = key.strip()
+        if key and key not in os.environ:
+            os.environ[key] = val.strip().strip('"').strip("'")
+            n += 1
+    return n
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument(
@@ -64,7 +90,17 @@ def main() -> int:
         action="store_true",
         help="Fail if any integration env or payment keys missing",
     )
+    p.add_argument(
+        "--from-railway-env",
+        action="store_true",
+        help="Load .env.railway.generated and .env.railway.frontend.generated (no overwrite)",
+    )
     args = p.parse_args()
+
+    if args.from_railway_env:
+        loaded = _load_dotenv_file(RAILWAY_ENV) + _load_dotenv_file(RAILWAY_FE_ENV)
+        if loaded:
+            print(f"  loaded {loaded} env keys from railway generated files (not printed)")
 
     print("== verify_paid_launch_readiness ==")
     print("\n== Docs ==")
@@ -97,6 +133,7 @@ def main() -> int:
         print(f"  verdict: {'CLOSED' if pipe['first_close_ready'] else 'PIPELINE_OPEN'}")
         if pipe["crm_kpi_pending"]:
             print("  FOUNDER_ACTION: sync kpi_founder_commercial_import.yaml from CRM export")
+            # CRM import is founder ops — not infra deploy gate
     except Exception as exc:  # noqa: BLE001
         WARNINGS.append(f"first_paid tracker: {exc}")
 

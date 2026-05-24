@@ -6,8 +6,8 @@ set -e
 
 cd /app 2>/dev/null || cd "$(dirname "$0")/.." || exit 1
 
-if [ "${RUN_RAILWAY_PRE_DEPLOY_MIGRATE:-1}" = "0" ]; then
-  echo "RAILWAY_PREDEPLOY: SKIP migrations (RUN_RAILWAY_PRE_DEPLOY_MIGRATE=0)"
+if [ "${RUN_RAILWAY_PRE_DEPLOY_MIGRATE:-0}" = "0" ]; then
+  echo "RAILWAY_PREDEPLOY: SKIP migrations (set RUN_RAILWAY_PRE_DEPLOY_MIGRATE=1 to run alembic upgrade head)"
   exit 0
 fi
 

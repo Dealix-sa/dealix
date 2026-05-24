@@ -50,13 +50,28 @@ def check_railway_api_env() -> dict[str, Any]:
 
 
 def check_railway_frontend_env() -> dict[str, Any]:
+    use_proxy = (os.getenv("NEXT_PUBLIC_USE_DEALIX_OPS_PROXY") or "").strip() == "1"
     fe = {
         "NEXT_PUBLIC_API_URL": _set("NEXT_PUBLIC_API_URL"),
+        "NEXT_PUBLIC_USE_DEALIX_OPS_PROXY": use_proxy,
+        "DEALIX_ADMIN_API_KEY": _set("DEALIX_ADMIN_API_KEY"),
         "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY": _set("NEXT_PUBLIC_DEALIX_ADMIN_API_KEY"),
     }
     missing = [k for k, ok in fe.items() if not ok]
+    if use_proxy and not fe["DEALIX_ADMIN_API_KEY"]:
+        if "DEALIX_ADMIN_API_KEY" not in missing:
+            missing.append("DEALIX_ADMIN_API_KEY")
+    if not use_proxy and not fe["NEXT_PUBLIC_DEALIX_ADMIN_API_KEY"]:
+        if "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY" not in missing:
+            missing.append("NEXT_PUBLIC_DEALIX_ADMIN_API_KEY")
     return {
         "frontend": fe,
         "missing": missing,
         "ready_for_fe_deploy": len(missing) == 0,
+        "hint_ar": (
+            "استخدم NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1 + DEALIX_ADMIN_API_KEY على server "
+            "(لا تضع المفتاح في المتصفح)"
+            if use_proxy
+            else "أو فعّل ops proxy — NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1"
+        ),
     }

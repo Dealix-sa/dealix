@@ -1,11 +1,19 @@
+import type { Metadata } from "next";
+import { PublicFunnelLayout } from "@/components/gtm/PublicFunnelLayout";
 import { ProofPackSampleView } from "@/components/gtm/ProofPackSampleView";
+import { buildFunnelMetadata } from "@/lib/gtmMetadata";
+
+type PageProps = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params;
+  return buildFunnelMetadata(locale, "proof-pack");
+}
 
 export default function ProofPackPage() {
   return (
-    <div className="min-h-screen bg-background grid-pattern">
-      <div className="mx-auto max-w-4xl px-6 py-16">
-        <ProofPackSampleView />
-      </div>
-    </div>
+    <PublicFunnelLayout>
+      <ProofPackSampleView />
+    </PublicFunnelLayout>
   );
 }

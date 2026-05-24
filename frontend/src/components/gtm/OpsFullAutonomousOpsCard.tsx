@@ -61,8 +61,6 @@ export type CockpitPayload = {
   unified_day_run?: { verdict?: string; artifact_path?: string };
   evening_run?: { verdict?: string };
   weekly_run?: { verdict?: string };
-  complete_autonomous_day?: { verdict?: string; artifact_path?: string };
-  hitl_spectrum_2026_ar?: { level?: string; when_ar?: string; dealix?: string }[];
   daily_cadence?: { evidence_logged_today?: boolean; is_friday_run_scorecard?: boolean };
 };
 
@@ -209,6 +207,10 @@ export function OpsFullAutonomousOpsCard({ data, cockpit, onRefresh }: Props) {
       setRunningComplete(false);
     }
   }, [isAr, onRefresh]);
+
+  const autopilotQueue = c?.governed_autopilot?.queue ?? [];
+  const customerStage = c?.governed_autopilot?.customer_stage;
+  const plsReadiness = c?.governed_autopilot?.pls_readiness;
 
   return (
     <Card className="p-4 border-violet-500/30 bg-violet-500/5" dir={isAr ? "rtl" : "ltr"}>
@@ -375,27 +377,26 @@ export function OpsFullAutonomousOpsCard({ data, cockpit, onRefresh }: Props) {
       )}
       {runErr && <p className="text-destructive text-xs mb-2">{runErr}</p>}
 
-      {c?.governed_autopilot?.customer_stage && (
+      {customerStage && (
         <p className="text-xs text-muted-foreground mb-2">
           {isAr ? "شريحة عملاء" : "Customer band"}:{" "}
-          <span className="font-medium">{c.governed_autopilot.customer_stage.band}</span>
+          <span className="font-medium">{customerStage.band}</span>
           {" — "}
-          {c.governed_autopilot.customer_stage.focus_ar}
+          {customerStage.focus_ar}
         </p>
       )}
 
-      {c?.governed_autopilot?.pls_readiness && (
+      {plsReadiness && (
         <p className="text-xs text-muted-foreground mb-2">
-          PLS: {c.governed_autopilot.pls_readiness.verdict} —{" "}
-          {c.governed_autopilot.pls_readiness.recommendation_ar}
+          PLS: {plsReadiness.verdict} — {plsReadiness.recommendation_ar}
         </p>
       )}
 
-      {(c?.governed_autopilot?.queue ?? []).length > 0 && (
+      {autopilotQueue.length > 0 && (
         <>
           <p className="text-xs font-medium">{isAr ? "طابور اليوم (آلي):" : "Autopilot queue:"}</p>
           <ol className="text-xs space-y-1 list-decimal mr-5 mt-1 mb-2">
-            {(c.governed_autopilot.queue ?? []).slice(0, 5).map((q) => (
+            {autopilotQueue.slice(0, 5).map((q) => (
               <li key={q.priority} className={q.blocking ? "font-medium" : ""}>
                 {q.title_ar}
               </li>

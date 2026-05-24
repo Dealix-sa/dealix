@@ -1,0 +1,15 @@
+:root {
+  --dealix-deep-green: #0a4d3f;
+  --dealix-deep-green-hover: #083d32;
+  --dealix-gold: #c9a961;
+  --dealix-sand: #f4f0e8;
+  --dealix-charcoal: #1a1a1a;
+  --dealix-success: #2d7a4f;
+}
+.dealix-public { --background: var(--dealix-sand); }
+.text-gradient-brand {
+  background: linear-gradient(135deg, var(--dealix-deep-green) 0%, var(--dealix-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
