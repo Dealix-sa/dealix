@@ -72,11 +72,15 @@ class PartnerFitScorer:
 
 
 def _overlap(candidate: PartnerCandidate, our_offer: Offer) -> float:
-    bag = (candidate.why_relevant + " " + " ".join(candidate.fit_signals)).lower()
+    # Use only the natural-language `why_relevant` for keyword matching;
+    # `fit_signals` are routing tags (e.g. "rule:partner:agency") whose
+    # token form coincidentally collides with offer keywords and would
+    # inflate overlap for off-segment candidates.
+    bag = candidate.why_relevant.lower()
     hits = sum(1 for kw in our_offer.keywords if kw in bag)
     if not our_offer.keywords:
         return 0.5
-    return max(0.0, min(1.0, hits / float(len(our_offer.keywords)) + 0.1))
+    return max(0.0, min(1.0, hits / float(len(our_offer.keywords))))
 
 
 def _classify(score: float) -> str:
