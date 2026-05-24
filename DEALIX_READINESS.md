@@ -81,3 +81,66 @@ python scripts/verify_dealix_ready.py --skip-tests
 ## حزم الـDemo
 
 [`demos/lead_intelligence_demo/`](demos/lead_intelligence_demo/) · [`demos/ai_quick_win_demo/`](demos/ai_quick_win_demo/) · [`demos/company_brain_demo/`](demos/company_brain_demo/)
+
+---
+
+## Phase 0 — Moyasar Live Activation Runbook
+
+**Status gate:** `MOYASAR_LIVE_VERIFIED=true` MUST NOT be set until BOTH of the following are confirmed.
+
+### Pre-flight (founder action — once)
+
+1. Open https://dashboard.moyasar.com → Settings → Business → complete all KYC fields:
+   - Commercial Registration (CR) or freelance license
+   - National ID / Iqama
+   - Bank account (IBAN)
+   - Business address
+2. Submit for review (typical activation: 1–3 business days).
+3. Once activated, rotate `MOYASAR_SECRET_KEY` from the dashboard.
+4. Configure the production webhook:
+   - URL: `https://api.dealix.me/api/v1/webhooks/moyasar`
+   - Events: `payment_paid`, `payment_failed`, `payment_refunded`
+   - Secret: matches `MOYASAR_WEBHOOK_SECRET` in Railway
+
+### Verification (automated, must pass before flipping the flag)
+
+```bash
+# 1. Confirm the secrets audit reports MOYASAR_SECRET_KEY present
+python scripts/secrets_rotation_audit.py | grep moyasar
+
+# 2. Hit Moyasar with the live key, expect HTTP 200 (account active)
+python -c "import asyncio; from dealix.payments.moyasar import MoyasarClient; \
+print(asyncio.run(MoyasarClient(mode='live').verify_account_status()))"
+
+# 3. Run the live-gate regression — every test_no_* doctrine guard must pass
+python -m pytest tests/test_moyasar_live_gate.py \
+  tests/test_phase0_settings_validation.py \
+  tests/test_live_gates_default_false.py -q --no-cov
+```
+
+### Flipping the gate (founder action — once verification is green)
+
+```bash
+# Railway envs
+railway variables set MOYASAR_MODE=live
+railway variables set MOYASAR_LIVE_VERIFIED=true
+railway variables set OFFERS_SELF_SERVE_ENABLED=true  # Phase 1 release
+```
+
+Then trigger a 1 SAR canary checkout to prove end-to-end:
+```bash
+curl -X POST https://api.dealix.me/api/v1/offers/sprint_499/checkout \
+  -H 'Content-Type: application/json' \
+  -d '{"source_passport_id":"canary_001","lawful_basis":"consent","consent_given":true,"customer_handle":"founder"}'
+```
+
+### Rollback (any check fails)
+
+```bash
+railway variables set MOYASAR_MODE=test
+railway variables set MOYASAR_LIVE_VERIFIED=false
+railway variables set OFFERS_SELF_SERVE_ENABLED=false
+```
+
+Non-Negotiable #6 is enforced by `MoyasarClient._enforce_live_gate`: live charges
+abort with `MoyasarLiveGateError` whenever either flag is missing.
