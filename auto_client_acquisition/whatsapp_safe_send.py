@@ -192,6 +192,12 @@ async def safe_send_text(
         )
 
     err = getattr(result, "error", "unknown") or "unknown"
+    if err == "whatsapp_mock_mode_true":
+        return _refuse(
+            "live_send_disabled",
+            ar="وضع المحاكاة مُفعَّل — اضبط WHATSAPP_MOCK_MODE=false بعد certification.",
+            en="Mock mode is on — set WHATSAPP_MOCK_MODE=false after certification.",
+        )
     if err == "whatsapp_allow_live_send_false":
         return _refuse(
             "live_send_disabled",

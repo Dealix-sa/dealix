@@ -62,6 +62,8 @@ async def test_whatsapp_webhook_rejects_missing_signature_on_staging(
 
 @pytest.mark.asyncio
 async def test_whatsapp_meta_send_blocked_when_flag_off(monkeypatch: pytest.MonkeyPatch) -> None:
+    # With mock_mode forced off, the live-send flag is the gate under test.
+    monkeypatch.setenv("WHATSAPP_MOCK_MODE", "false")
     monkeypatch.setenv("WHATSAPP_ALLOW_LIVE_SEND", "false")
     monkeypatch.setenv("WHATSAPP_ACCESS_TOKEN", "dummy-token")
     monkeypatch.setenv("WHATSAPP_PHONE_NUMBER_ID", "123456")
@@ -71,5 +73,22 @@ async def test_whatsapp_meta_send_blocked_when_flag_off(monkeypatch: pytest.Monk
         result = await client.send_text("+966500000001", "hello")
         assert result.success is False
         assert result.error == "whatsapp_allow_live_send_false"
+    finally:
+        get_settings.cache_clear()
+
+
+@pytest.mark.asyncio
+async def test_whatsapp_meta_send_blocked_by_mock_mode(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Mock mode is the outer kill switch — even with live-send flag on it must block.
+    monkeypatch.setenv("WHATSAPP_MOCK_MODE", "true")
+    monkeypatch.setenv("WHATSAPP_ALLOW_LIVE_SEND", "true")
+    monkeypatch.setenv("WHATSAPP_ACCESS_TOKEN", "dummy-token")
+    monkeypatch.setenv("WHATSAPP_PHONE_NUMBER_ID", "123456")
+    get_settings.cache_clear()
+    try:
+        client = WhatsAppClient()
+        result = await client.send_text("+966500000001", "hello")
+        assert result.success is False
+        assert result.error == "whatsapp_mock_mode_true"
     finally:
         get_settings.cache_clear()

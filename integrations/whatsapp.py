@@ -66,6 +66,9 @@ class WhatsAppClient:
         """Send a plain-text WhatsApp message."""
         if not self.configured:
             return WhatsAppMessageResult(success=False, error="WhatsApp not configured")
+        if self.settings.whatsapp_mock_mode:
+            logger.info("whatsapp_meta_send_mocked", to_prefix=to[:6])
+            return WhatsAppMessageResult(success=False, error="whatsapp_mock_mode_true")
         if not self.settings.whatsapp_allow_live_send:
             logger.info("whatsapp_meta_send_blocked_by_policy", to_prefix=to[:6])
             return WhatsAppMessageResult(success=False, error="whatsapp_allow_live_send_false")
@@ -108,6 +111,9 @@ class WhatsAppClient:
         """Send a pre-approved template message."""
         if not self.configured:
             return WhatsAppMessageResult(success=False, error="WhatsApp not configured")
+        if self.settings.whatsapp_mock_mode:
+            logger.info("whatsapp_meta_template_mocked", to_prefix=to[:6])
+            return WhatsAppMessageResult(success=False, error="whatsapp_mock_mode_true")
         if not self.settings.whatsapp_allow_live_send:
             logger.info("whatsapp_meta_template_blocked_by_policy", to_prefix=to[:6])
             return WhatsAppMessageResult(success=False, error="whatsapp_allow_live_send_false")

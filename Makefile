@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        everything production-env-check railway-readiness live-send-safety \
+        production-certification smoke-internal
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,25 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Production certification (Wave 16) ─────────────────────────
+# Layered gates that must all pass before a live deploy is trusted.
+# Each target is independent so CI can fail-fast on a single layer.
+
+production-env-check: ## prod-cert: env-var names only (no values printed)
+	$(PYTHON) scripts/verify_production_env.py --ci
+
+railway-readiness: ## prod-cert: Railway config + frontend secret scan
+	$(PYTHON) scripts/verify_railway_readiness.py
+
+live-send-safety: ## prod-cert: WhatsApp/email/payments live-send gates
+	$(PYTHON) scripts/verify_live_send_safety.py
+
+everything: ## prod-cert: orchestrator (writes DEALIX_FINAL_READINESS_REPORT.md)
+	$(PYTHON) scripts/verify_everything.py --ci
+
+smoke-internal: ## prod-cert: hit /healthz + /api/v1/internal/ceo/summary (BASE=...)
+	$(PYTHON) scripts/smoke_internal_api.py $(if $(BASE),--base $(BASE))
+
+production-certification: production-env-check railway-readiness live-send-safety everything ## prod-cert: full gate
+	@echo "DEALIX PRODUCTION CERTIFICATION: PRODUCTION-GATED READY"

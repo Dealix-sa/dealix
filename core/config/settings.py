@@ -158,6 +158,24 @@ class Settings(BaseSettings):
     # Live WhatsApp Cloud API send — MUST remain False until webhook + opt-in + legal sign-off.
     # Env: WHATSAPP_ALLOW_LIVE_SEND (default false).
     whatsapp_allow_live_send: bool = False
+    # Mock mode keeps integrations from making real network calls even if
+    # whatsapp_allow_live_send is true. Default True (safe). Production must
+    # explicitly set WHATSAPP_MOCK_MODE=false AND complete the live-send
+    # safety certification before any real send.
+    whatsapp_mock_mode: bool = True
+    # Conservative daily send cap for early-stage live sending.
+    whatsapp_daily_limit: int = 10
+
+    # ── Dealix internal control plane ───────────────────────────
+    # Token for /api/v1/internal/* routes. Either this OR ADMIN_API_KEYS
+    # must be set in production. Internal token is preferred for founder/CEO
+    # automation; ADMIN_API_KEYS remains the existing admin channel.
+    dealix_internal_token: SecretStr | None = None
+    # Filesystem path for private ops ledgers (audit logs, approval queue,
+    # KPI snapshots). Default mirrors Railway working dir.
+    dealix_private_ops: str = "/app/private_ops"
+    # Public-facing base URL used by smoke scripts and email links.
+    public_base_url: str = "http://localhost:8000"
 
     # ── Email ───────────────────────────────────────────────────
     email_provider: Literal["resend", "sendgrid", "smtp"] = "resend"
@@ -250,6 +268,33 @@ class Settings(BaseSettings):
     @property
     def is_development(self) -> bool:
         return self.app_env == "development"
+
+    @property
+    def is_live_send_allowed(self) -> bool:
+        """Canonical guard for any outbound external send (WhatsApp/Email/SMS).
+
+        Three independent conditions must all hold:
+          1. ``app_env == "production"`` — never auto-send from dev/test.
+          2. ``whatsapp_allow_live_send`` flag is true.
+          3. ``whatsapp_mock_mode`` is false.
+
+        Caller code must still pass through approval + suppression + audit
+        gates; this property is only the kill-switch layer.
+        """
+        return (
+            self.is_production
+            and self.whatsapp_allow_live_send
+            and not self.whatsapp_mock_mode
+        )
+
+    @property
+    def internal_token_value(self) -> str | None:
+        """Return the configured DEALIX_INTERNAL_TOKEN (string) or None."""
+        tok = self.dealix_internal_token
+        if tok is None:
+            return None
+        val = tok.get_secret_value() if isinstance(tok, SecretStr) else str(tok)
+        return val or None
 
     def require_secret(self, name: str) -> str:
         """Get a required secret or raise ValueError | يجلب سراً مطلوباً أو يرفع خطأ."""
