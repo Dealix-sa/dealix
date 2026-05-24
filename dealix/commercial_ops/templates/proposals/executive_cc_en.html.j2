@@ -1,0 +1,18 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_en, scope_en, timeline_en, pricing_block_en, terms_en %}
+
+{% block content %}
+  {{ executive_summary_en(spec) }}
+  {{ scope_en([
+    "Quarterly executive briefing with governed KPIs.",
+    "Capital Stack map and reusable-asset catalogue.",
+    "Organisation-level Adoption Score and improvement plays.",
+    "High-impact Friction alerts with named owners.",
+    "Quarterly meeting with the founder / general manager.",
+    "Governance Posture card for the sector.",
+    "Next-quarter plan with visual benchmark."
+  ]) }}
+  {{ timeline_en(spec) }}
+  {{ pricing_block_en(price, price_display) }}
+  {{ terms_en() }}
+{% endblock %}

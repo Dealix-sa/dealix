@@ -1,0 +1,122 @@
+{# Base Dealix proposal layout. Sub-templates override `content` only. #}
+<!DOCTYPE html>
+<html lang="{{ language if language != 'bilingual' else 'ar' }}" dir="{{ 'rtl' if language in ('ar', 'bilingual') else 'ltr' }}">
+<head>
+<meta charset="utf-8">
+<title>Dealix Proposal — {{ spec.title_en }}</title>
+<style>
+  @page { size: A4; margin: 18mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "IBM Plex Sans Arabic", "Noto Naskh Arabic", "Tahoma", system-ui, sans-serif;
+    color: {{ brand.ink }};
+    font-size: 11pt;
+    line-height: 1.6;
+    background: #ffffff;
+  }
+  h1, h2, h3 { color: {{ brand.deep_green }}; }
+  h1 { font-size: 22pt; margin-bottom: 6pt; }
+  h2 { font-size: 14pt; margin-top: 14pt; margin-bottom: 6pt; border-bottom: 2px solid {{ brand.gold }}; padding-bottom: 4pt; }
+  h3 { font-size: 12pt; margin-top: 10pt; margin-bottom: 4pt; color: {{ brand.muted }}; }
+  p { margin-bottom: 6pt; }
+  .cover {
+    background: {{ brand.sand }};
+    border-{{ 'right' if language in ('ar', 'bilingual') else 'left' }}: 6px solid {{ brand.gold }};
+    padding: 16pt;
+    margin-bottom: 16pt;
+  }
+  .cover .brand-line { color: {{ brand.deep_green }}; font-weight: bold; font-size: 14pt; }
+  .cover .meta { color: {{ brand.muted }}; font-size: 10pt; margin-top: 6pt; }
+  .price-table { width: 100%; border-collapse: collapse; margin-top: 8pt; }
+  .price-table th, .price-table td {
+    padding: 6pt 8pt;
+    border: 1px solid #d8d8d8;
+    text-align: {{ 'right' if language in ('ar', 'bilingual') else 'left' }};
+  }
+  .price-table thead { background: {{ brand.deep_green }}; color: #ffffff; }
+  .price-table .grand-total { background: {{ brand.gold }}; font-weight: bold; }
+  .bilingual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16pt;
+    margin-top: 8pt;
+  }
+  .bilingual-grid .col-en { direction: ltr; text-align: left; }
+  .bilingual-grid .col-ar { direction: rtl; text-align: right; }
+  .badges {
+    margin-top: 16pt;
+    padding: 8pt;
+    background: {{ brand.sand }};
+    border-top: 2px solid {{ brand.gold }};
+    text-align: center;
+    font-size: 9pt;
+    color: {{ brand.muted }};
+  }
+  .badges .badge {
+    display: inline-block;
+    padding: 3pt 8pt;
+    margin: 0 4pt;
+    background: {{ brand.deep_green }};
+    color: #ffffff;
+    border-radius: 4pt;
+    font-weight: bold;
+  }
+  .signature-block {
+    margin-top: 24pt;
+    border-top: 1px dashed {{ brand.muted }};
+    padding-top: 12pt;
+  }
+  .signature-block .row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14pt;
+  }
+  .signature-block .field {
+    flex: 1;
+    margin: 0 6pt;
+    border-bottom: 1px solid {{ brand.ink }};
+    padding-bottom: 18pt;
+    font-size: 9pt;
+    color: {{ brand.muted }};
+  }
+  ul { padding-{{ 'right' if language in ('ar', 'bilingual') else 'left' }}: 18pt; margin-bottom: 6pt; }
+  li { margin-bottom: 3pt; }
+  .footer-meta { font-size: 8pt; color: {{ brand.muted }}; margin-top: 12pt; text-align: center; }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="brand-line">Dealix — Governed Revenue Operations</div>
+  <h1>{{ spec.title_ar if language == 'ar' else spec.title_en }}</h1>
+  {% if language == 'bilingual' %}
+    <div style="color: {{ brand.muted }}; font-size: 12pt; margin-top: 4pt;">{{ spec.title_ar }}</div>
+  {% endif %}
+  <div class="meta">
+    <div>Lead: {{ lead.id }} | Sector: {{ lead.sector }} | Region: {{ lead.region }}</div>
+    <div>Customer: {{ lead.customer_label }} ({{ lead.customer_handle }})</div>
+    <div>Date (Gregorian): {{ dates.gregorian }} | Date (Hijri): {{ dates.hijri }}</div>
+  </div>
+</header>
+
+{% block content %}{% endblock %}
+
+<section class="signature-block">
+  <h3>{{ 'التوقيع' if language in ('ar', 'bilingual') else 'Signature' }}</h3>
+  <div class="row">
+    <div class="field">{{ 'العميل / Customer' }}</div>
+    <div class="field">{{ 'Dealix' }}</div>
+  </div>
+</section>
+
+<footer class="badges">
+  {% for badge in badges %}
+    <span class="badge">{{ badge }}</span>
+  {% endfor %}
+  <div class="footer-meta">
+    Pricing source: {{ pricing_meta.source }} | Currency: {{ pricing_meta.currency }} | Tier: {{ tier }} | Language: {{ language }}
+  </div>
+</footer>
+
+</body>
+</html>

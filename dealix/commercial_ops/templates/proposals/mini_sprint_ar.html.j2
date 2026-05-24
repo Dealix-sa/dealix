@@ -1,0 +1,16 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_ar, scope_ar, timeline_ar, pricing_block_ar, terms_ar %}
+
+{% block content %}
+  {{ executive_summary_ar(spec) }}
+  {{ scope_ar([
+    "اعتماد Source Passport لكل مصدر بيانات قبل أي استخدام للذكاء الاصطناعي.",
+    "حساب Data Quality Score مع dedupe و normalisation.",
+    "تقييم Top-10 حسابات حسب النموذج المتفق عليه.",
+    "Proof Pack مكوّن من 14 قسم مع روابط مصدرية.",
+    "تسجيل أي Capital Asset قابل لإعادة الاستخدام في السجلّ المركزي."
+  ]) }}
+  {{ timeline_ar(spec) }}
+  {{ pricing_block_ar(price, price_display) }}
+  {{ terms_ar() }}
+{% endblock %}

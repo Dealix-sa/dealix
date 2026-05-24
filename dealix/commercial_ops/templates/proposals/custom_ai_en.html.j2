@@ -1,0 +1,21 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_en, scope_en, timeline_en, pricing_block_en, terms_en %}
+
+{% block content %}
+  {{ executive_summary_en(spec) }}
+  {{ scope_en([
+    "Workshop to select the target workflow (one workflow).",
+    "Design the Governance Runtime with clear per-agent boundaries.",
+    "Build a Source Passport per data feed.",
+    "Implement agents in draft / approval-first mode.",
+    "Reusable Capital Assets shared across engagements.",
+    "Testing phase with a Friction Log dashboard.",
+    "Delivery: code + documentation + Proof Pack.",
+    "Two training sessions for the customer team.",
+    "30 days of post-launch support.",
+    "Hand-over plan (Managed Ops or in-house team)."
+  ]) }}
+  {{ timeline_en(spec) }}
+  {{ pricing_block_en(price, price_display) }}
+  {{ terms_en() }}
+{% endblock %}

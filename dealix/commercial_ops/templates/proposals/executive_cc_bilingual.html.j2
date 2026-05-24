@@ -1,0 +1,45 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import
+  executive_summary_ar, executive_summary_en,
+  scope_ar, scope_en,
+  timeline_ar, timeline_en,
+  pricing_block_ar, pricing_block_en,
+  terms_ar, terms_en %}
+
+{% set scope_items_en = [
+  "Quarterly executive briefing with governed KPIs.",
+  "Capital Stack map and reusable-asset catalogue.",
+  "Organisation-level Adoption Score and improvement plays.",
+  "High-impact Friction alerts with named owners.",
+  "Quarterly meeting with the founder / general manager.",
+  "Governance Posture card for the sector.",
+  "Next-quarter plan with visual benchmark."
+] %}
+{% set scope_items_ar = [
+  "تقرير ربعي للقيادة التنفيذية مع KPIs محكومة.",
+  "خريطة Capital Stack والأصول القابلة لإعادة الاستخدام.",
+  "Adoption Score على مستوى المؤسسة + توصيات تحسين.",
+  "تنبيهات Friction عالية الأثر مع owners.",
+  "اجتماع ربعي مع المؤسس / المدير العام.",
+  "بطاقة حوكمة (Governance Posture) للقطاع.",
+  "خطّة الربع التالي مع benchmark بياني."
+] %}
+
+{% block content %}
+<div class="bilingual-grid">
+  <div class="col-en">
+    {{ executive_summary_en(spec) }}
+    {{ scope_en(scope_items_en) }}
+    {{ timeline_en(spec) }}
+    {{ pricing_block_en(price, price_display) }}
+    {{ terms_en() }}
+  </div>
+  <div class="col-ar">
+    {{ executive_summary_ar(spec) }}
+    {{ scope_ar(scope_items_ar) }}
+    {{ timeline_ar(spec) }}
+    {{ pricing_block_ar(price, price_display) }}
+    {{ terms_ar() }}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import
+  executive_summary_ar, executive_summary_en,
+  scope_ar, scope_en,
+  timeline_ar, timeline_en,
+  pricing_block_ar, pricing_block_en,
+  terms_ar, terms_en %}
+
+{% set scope_items_en = [
+  "Operate the governed revenue pipeline for the month.",
+  "Monthly Proof Pack and Value Ledger report.",
+  "Monthly Adoption Score on the team's outputs.",
+  "Monthly governance review with the business owner.",
+  "Weekly Friction Log with recommendations.",
+  "One integration in scope (CRM or ZATCA).",
+  "Auto-renewal with 14-day notice.",
+  "Capital Assets registered automatically in the central ledger."
+] %}
+{% set scope_items_ar = [
+  "تشغيل خط الإيراد المحكوم على مدار الشهر.",
+  "Proof Pack شهري + تقرير Value Ledger.",
+  "Adoption Score شهري على مخرجات الفريق.",
+  "اجتماع شهري للحوكمة مع المالك التجاري.",
+  "Friction Log أسبوعي مع توصيات.",
+  "تكامل واحد جاهز (CRM أو ZATCA) ضمن نطاق الباقة.",
+  "تجديد آلي بإشعار 14 يوم.",
+  "Capital Assets تُسجَّل تلقائياً في السجلّ المركزي."
+] %}
+
+{% block content %}
+<div class="bilingual-grid">
+  <div class="col-en">
+    {{ executive_summary_en(spec) }}
+    {{ scope_en(scope_items_en) }}
+    {{ timeline_en(spec) }}
+    {{ pricing_block_en(price, price_display) }}
+    {{ terms_en() }}
+  </div>
+  <div class="col-ar">
+    {{ executive_summary_ar(spec) }}
+    {{ scope_ar(scope_items_ar) }}
+    {{ timeline_ar(spec) }}
+    {{ pricing_block_ar(price, price_display) }}
+    {{ terms_ar() }}
+  </div>
+</div>
+{% endblock %}

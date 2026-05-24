@@ -1,0 +1,17 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_ar, scope_ar, timeline_ar, pricing_block_ar, terms_ar %}
+
+{% block content %}
+  {{ executive_summary_ar(spec) }}
+  {{ scope_ar([
+    "اختيار 3-5 مصادر بيانات مع Source Passport لكل مصدر.",
+    "تنظيف وتطبيع البيانات (dedupe، عناوين، أرقام).",
+    "إثراء بحقول قطاعية محقّقة المصدر (لا تخمين).",
+    "Data Quality Score على مستوى الحقل والصف.",
+    "لوحة جودة بيانات قابلة للتحديث.",
+    "Proof Pack مكوّن من 14 قسم وتسليم في صيغة CSV + Parquet."
+  ]) }}
+  {{ timeline_ar(spec) }}
+  {{ pricing_block_ar(price, price_display) }}
+  {{ terms_ar() }}
+{% endblock %}

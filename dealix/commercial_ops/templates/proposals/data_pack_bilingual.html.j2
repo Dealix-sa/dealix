@@ -1,0 +1,43 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import
+  executive_summary_ar, executive_summary_en,
+  scope_ar, scope_en,
+  timeline_ar, timeline_en,
+  pricing_block_ar, pricing_block_en,
+  terms_ar, terms_en %}
+
+{% set scope_items_en = [
+  "Selection of 3-5 data feeds with a Source Passport per feed.",
+  "Cleaning and normalisation (dedupe, addresses, phone numbers).",
+  "Enrichment with sector-validated fields (no guessing).",
+  "Data Quality Score at field and row level.",
+  "Refresh-ready data-quality dashboard.",
+  "14-section Proof Pack and delivery as CSV + Parquet."
+] %}
+{% set scope_items_ar = [
+  "اختيار 3-5 مصادر بيانات مع Source Passport لكل مصدر.",
+  "تنظيف وتطبيع البيانات (dedupe، عناوين، أرقام).",
+  "إثراء بحقول قطاعية محقّقة المصدر (لا تخمين).",
+  "Data Quality Score على مستوى الحقل والصف.",
+  "لوحة جودة بيانات قابلة للتحديث.",
+  "Proof Pack مكوّن من 14 قسم وتسليم في صيغة CSV + Parquet."
+] %}
+
+{% block content %}
+<div class="bilingual-grid">
+  <div class="col-en">
+    {{ executive_summary_en(spec) }}
+    {{ scope_en(scope_items_en) }}
+    {{ timeline_en(spec) }}
+    {{ pricing_block_en(price, price_display) }}
+    {{ terms_en() }}
+  </div>
+  <div class="col-ar">
+    {{ executive_summary_ar(spec) }}
+    {{ scope_ar(scope_items_ar) }}
+    {{ timeline_ar(spec) }}
+    {{ pricing_block_ar(price, price_display) }}
+    {{ terms_ar() }}
+  </div>
+</div>
+{% endblock %}

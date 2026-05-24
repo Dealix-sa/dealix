@@ -1,0 +1,51 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import
+  executive_summary_ar, executive_summary_en,
+  scope_ar, scope_en,
+  timeline_ar, timeline_en,
+  pricing_block_ar, pricing_block_en,
+  terms_ar, terms_en %}
+
+{% set scope_items_en = [
+  "Workshop to select the target workflow (one workflow).",
+  "Design the Governance Runtime with clear per-agent boundaries.",
+  "Build a Source Passport per data feed.",
+  "Implement agents in draft / approval-first mode.",
+  "Reusable Capital Assets shared across engagements.",
+  "Testing phase with a Friction Log dashboard.",
+  "Delivery: code + documentation + Proof Pack.",
+  "Two training sessions for the customer team.",
+  "30 days of post-launch support.",
+  "Hand-over plan (Managed Ops or in-house team)."
+] %}
+{% set scope_items_ar = [
+  "ورشة تحديد العملية المستهدفة (workflow واحد).",
+  "تصميم Governance Runtime مع حدود واضحة لكل وكيل (agent).",
+  "بناء Source Passport لكل مصدر بيانات.",
+  "تنفيذ الوكلاء بصيغة draft/approval-first.",
+  "Capital Assets قابلة لإعادة الاستخدام عبر المشاريع.",
+  "مرحلة اختبار مع لوحة Friction Log.",
+  "تسليم: كود + توثيق + Proof Pack.",
+  "تدريب فريق العميل (جلستان).",
+  "30 يوم دعم بعد الإطلاق.",
+  "خطّة انتقال للصيانة (Managed Ops أو فريق العميل)."
+] %}
+
+{% block content %}
+<div class="bilingual-grid">
+  <div class="col-en">
+    {{ executive_summary_en(spec) }}
+    {{ scope_en(scope_items_en) }}
+    {{ timeline_en(spec) }}
+    {{ pricing_block_en(price, price_display) }}
+    {{ terms_en() }}
+  </div>
+  <div class="col-ar">
+    {{ executive_summary_ar(spec) }}
+    {{ scope_ar(scope_items_ar) }}
+    {{ timeline_ar(spec) }}
+    {{ pricing_block_ar(price, price_display) }}
+    {{ terms_ar() }}
+  </div>
+</div>
+{% endblock %}

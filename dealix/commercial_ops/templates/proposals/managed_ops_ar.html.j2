@@ -1,0 +1,19 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_ar, scope_ar, timeline_ar, pricing_block_ar, terms_ar %}
+
+{% block content %}
+  {{ executive_summary_ar(spec) }}
+  {{ scope_ar([
+    "تشغيل خط الإيراد المحكوم على مدار الشهر.",
+    "Proof Pack شهري + تقرير Value Ledger.",
+    "Adoption Score شهري على مخرجات الفريق.",
+    "اجتماع شهري للحوكمة مع المالك التجاري.",
+    "Friction Log أسبوعي مع توصيات.",
+    "تكامل واحد جاهز (CRM أو ZATCA) ضمن نطاق الباقة.",
+    "تجديد آلي بإشعار 14 يوم.",
+    "Capital Assets تُسجَّل تلقائياً في السجلّ المركزي."
+  ]) }}
+  {{ timeline_ar(spec) }}
+  {{ pricing_block_ar(price, price_display) }}
+  {{ terms_ar() }}
+{% endblock %}

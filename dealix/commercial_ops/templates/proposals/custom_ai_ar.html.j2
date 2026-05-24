@@ -1,0 +1,21 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_ar, scope_ar, timeline_ar, pricing_block_ar, terms_ar %}
+
+{% block content %}
+  {{ executive_summary_ar(spec) }}
+  {{ scope_ar([
+    "ورشة تحديد العملية المستهدفة (workflow واحد).",
+    "تصميم Governance Runtime مع حدود واضحة لكل وكيل (agent).",
+    "بناء Source Passport لكل مصدر بيانات.",
+    "تنفيذ الوكلاء بصيغة draft/approval-first.",
+    "Capital Assets قابلة لإعادة الاستخدام عبر المشاريع.",
+    "مرحلة اختبار مع لوحة Friction Log.",
+    "تسليم: كود + توثيق + Proof Pack.",
+    "تدريب فريق العميل (جلستان).",
+    "30 يوم دعم بعد الإطلاق.",
+    "خطّة انتقال للصيانة (Managed Ops أو فريق العميل)."
+  ]) }}
+  {{ timeline_ar(spec) }}
+  {{ pricing_block_ar(price, price_display) }}
+  {{ terms_ar() }}
+{% endblock %}

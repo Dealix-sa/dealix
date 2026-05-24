@@ -1,0 +1,17 @@
+{% extends "_base.html.j2" %}
+{% from "_sections.html.j2" import executive_summary_en, scope_en, timeline_en, pricing_block_en, terms_en %}
+
+{% block content %}
+  {{ executive_summary_en(spec) }}
+  {{ scope_en([
+    "Selection of 3-5 data feeds with a Source Passport per feed.",
+    "Cleaning and normalisation (dedupe, addresses, phone numbers).",
+    "Enrichment with sector-validated fields (no guessing).",
+    "Data Quality Score at field and row level.",
+    "Refresh-ready data-quality dashboard.",
+    "14-section Proof Pack and delivery as CSV + Parquet."
+  ]) }}
+  {{ timeline_en(spec) }}
+  {{ pricing_block_en(price, price_display) }}
+  {{ terms_en() }}
+{% endblock %}
