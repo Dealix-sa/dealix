@@ -121,10 +121,10 @@ class CheckoutStore(Protocol):
     """Storage interface for idempotent checkout state."""
 
     def get(self, idempotency_key: str) -> CheckoutResult | None:
-        ...  # pragma: no cover
+        """Return cached CheckoutResult for the key, or None."""
 
     def put(self, result: CheckoutResult) -> None:
-        ...  # pragma: no cover
+        """Persist a CheckoutResult keyed by its idempotency_key."""
 
 
 class InMemoryCheckoutStore:
@@ -290,14 +290,13 @@ class OfferCheckoutService:
             verdict=verdict,
         )
         self.store.put(result)
-        # offer_id is validated via OFFER_CATALOG membership above, so it is
-        # closed-set safe to log; the structured `extra` dict bypasses the
-        # log format string entirely (CWE-117 safe).
+        # Static log message — context is keyed by the idempotency key
+        # which is the SHA-256 of (passport_id, offer_id), so the log
+        # carries no user-controlled string (CWE-117 safe).
         log.info(
             "offer_checkout_invoice_created",
             extra={
                 "idem_key": idem_key,
-                "offer_id": offer_id,
                 "amount_halalas": spec["amount_halalas"],
             },
         )

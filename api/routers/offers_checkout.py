@@ -153,10 +153,9 @@ async def offer_checkout(offer_id: str, req: Request) -> dict[str, Any]:
         )
     except RuntimeError as exc:
         # Misconfiguration (e.g. missing hosted_payment_factory).
-        # offer_id is restricted to the closed ALLOWED_OFFER_IDS set; coerce
-        # to a short, log-safe token to prevent CRLF/log injection (CWE-117).
-        safe_offer_id = offer_id if offer_id in ALLOWED_OFFER_IDS else "unknown"
-        log.exception("offer_checkout_misconfigured offer_id=%s", safe_offer_id)
+        # Do NOT log the URL-derived offer_id — log a static message and
+        # let the exception payload carry the request context. CWE-117 safe.
+        log.exception("offer_checkout_misconfigured")
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
     if result.status == "rejected":

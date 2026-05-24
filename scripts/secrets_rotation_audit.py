@@ -3,9 +3,9 @@
 
 Phase 0 / Track E (cross-cutting compliance).
 
-Walks Settings.model_fields, finds every SecretStr-typed field, and prints
-which are configured vs missing. Does NOT print secret values — only
-presence + a SHA-256 prefix hash for change detection across runs.
+Walks Settings.model_fields, finds every SecretStr-typed field, and reports
+which are configured vs missing. Never prints, returns, or stores any
+representation of a secret value — only presence booleans (CWE-532 safe).
 
 Usage:
     python scripts/secrets_rotation_audit.py [--json]
@@ -17,7 +17,6 @@ Exit code:
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import sys
@@ -31,11 +30,6 @@ PRODUCTION_CRITICAL = {
     "jwt_secret_key",
     "app_secret_key",
 }
-
-
-def _short_hash(value: str) -> str:
-    """Return first 8 chars of SHA-256 — change-detectable, not reversible."""
-    return hashlib.sha256(value.encode("utf-8")).hexdigest()[:8]
 
 
 def audit() -> dict[str, Any]:
@@ -58,13 +52,10 @@ def audit() -> dict[str, Any]:
             secret = raw.get_secret_value()
         else:
             secret = raw
+        # Only the presence boolean is retained; the secret itself is
+        # discarded before any caller can read it. No hashes, no prefixes.
         present = bool(secret) and secret not in ("", "change-me")
-        row = {
-            "field": name,
-            "present": present,
-            "hash_prefix": _short_hash(secret) if present and isinstance(secret, str) else None,
-        }
-        rows.append(row)
+        rows.append({"field": name, "present": present})
         if not present and name in PRODUCTION_CRITICAL and s.is_production:
             missing_critical.append(name)
 

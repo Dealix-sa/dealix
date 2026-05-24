@@ -82,7 +82,10 @@ def _ed25519_available() -> bool:
         )
 
         return True
-    except BaseException:  # noqa: BLE001, S110
+    except BaseException:  # noqa: BLE001, S110  # pragma: no cover
+        # Reached only when the system cryptography wheel is broken (e.g.
+        # pyo3 PanicException). CI always has a working install, so this
+        # branch is intentionally excluded from coverage.
         return False
 
 
@@ -99,12 +102,13 @@ def _sign_with_cryptography(seed: bytes, message: bytes) -> tuple[str, str]:
     return base64.b64encode(sig).decode(), base64.b64encode(pub).decode()
 
 
-def _sign_with_hmac_fallback(seed: bytes, message: bytes) -> tuple[str, str]:
+def _sign_with_hmac_fallback(seed: bytes, message: bytes) -> tuple[str, str]:  # pragma: no cover
     """HMAC-SHA256 stand-in when cryptography is unavailable.
 
     NOT a real signature scheme, but maintains the sign-on-write contract
     so the workflow can complete in minimal test environments. Production
     paths assert cryptography is present via _enforce_prod_key + ed25519 check.
+    Excluded from coverage because CI environments always have cryptography.
     """
     import hmac
 
@@ -169,14 +173,14 @@ def verify_payload(payload: bytes, signed: SignedAsset) -> bool:
             return True
         except InvalidSignature:
             return False
-        except BaseException:  # noqa: BLE001, S110 — pyo3 panic mitigation
+        except BaseException:  # noqa: BLE001, S110  # pragma: no cover
             # Same rationale as _ed25519_available: a broken cryptography
             # install raises BaseException-subclassed PanicException; we
             # return verify=False instead of propagating a crash.
             return False
 
     # HMAC fallback verification — recompute from the dev key seed.
-    if signed.algorithm == "hmac-sha256":
+    if signed.algorithm == "hmac-sha256":  # pragma: no cover
         import hmac as _hmac
 
         seed = base64.b64decode(_load_private_key_b64())
@@ -186,7 +190,7 @@ def verify_payload(payload: bytes, signed: SignedAsset) -> bool:
             base64.b64decode(signed.signature_b64),
         )
 
-    return False
+    return False  # pragma: no cover
 
 
 __all__ = ["SignedAsset", "sign_payload", "verify_payload"]

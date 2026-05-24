@@ -188,3 +188,38 @@ def _cleanup_env():
     settings_mod = sys.modules.get("core.config.settings")
     if settings_mod is not None:
         settings_mod.get_settings.cache_clear()
+
+
+def test_lazy_get_service_constructs_singleton():
+    """Cover the _get_service lazy-build path with no pre-injected singleton."""
+    import os
+    import sys
+
+    os.environ["OFFERS_SELF_SERVE_ENABLED"] = "true"
+    settings_mod = sys.modules["core.config.settings"]
+    settings_mod.get_settings.cache_clear()
+
+    from api.routers import offers_checkout as oc
+
+    oc.reset_service_for_tests()
+    # First call constructs; second call returns the same instance.
+    svc_a = oc._get_service()
+    svc_b = oc._get_service()
+    assert svc_a is svc_b
+    # The singleton wraps a real factory; we do NOT call it (would hit Moyasar).
+    assert svc_a.callback_base_url.startswith("https://")
+
+    # Cleanup: drop the real-factory singleton so subsequent tests in this
+    # file get the stub via _make_app.
+    oc.reset_service_for_tests()
+    os.environ.pop("OFFERS_SELF_SERVE_ENABLED", None)
+    settings_mod.get_settings.cache_clear()
+
+
+def test_reset_service_for_tests_clears_store_and_singleton():
+    from api.routers import offers_checkout as oc
+
+    oc._service = "sentinel"  # type: ignore[assignment]
+    oc.reset_service_for_tests()
+    assert oc._service is None
+    assert len(oc._store) == 0
