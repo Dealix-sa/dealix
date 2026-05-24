@@ -40,10 +40,10 @@ def main() -> int:
             run_optional_scripts=not args.no_scripts,
         )
 
+    ar = snap["automation_readiness"]
     if args.json:
         print(json.dumps(snap, ensure_ascii=False, indent=2))
     else:
-        ar = snap["automation_readiness"]
         print(f"DEALIX_FULL_AUTONOMOUS_OPS={ar['verdict']}")
         print(f"track={(snap['gtm_stack']['dual_track'] or {}).get('recommended_track')}")
         for line in ar.get("blockers_ar") or []:
