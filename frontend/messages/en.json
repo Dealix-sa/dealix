@@ -22,7 +22,14 @@
     "opsSales": "Ops — Sales Pipe",
     "opsMarketing": "Ops — Marketing",
     "opsEvidence": "Ops — Evidence",
-    "opsSupport": "Ops — Support"
+    "opsSupport": "Ops — Support",
+    "ceoOs": "CEO OS",
+    "founderLeverage": "Founder Leverage",
+    "capitalAllocation": "Capital Allocation",
+    "strategy": "Strategy & Assumptions",
+    "dealDesk": "Deal Desk",
+    "enterpriseSales": "Enterprise Sales",
+    "metrics": "Hypergrowth Metrics"
   },
   "dashboard": {
     "title": "Executive Dashboard",
