@@ -105,6 +105,8 @@ except Exception as _exc:  # noqa: BLE001
     _OPTIONAL_ROUTER_ERRORS["agent_os"] = repr(_exc)
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
 from api.routers import commercial_map as commercial_map_router
+# Wave 14K — Revenue Marketing Engine (signal->revenue, draft-first)
+from api.routers import revenue_marketing as revenue_marketing_router
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
@@ -342,6 +344,8 @@ def create_app() -> FastAPI:
         get_logger(__name__).warning("optional_router_skipped", router=_name, error=_err)
     # Wave 14J — Commercial wiring map (public)
     app.include_router(commercial_map_router.router)
+    # Wave 14K — Revenue Marketing Engine (governed, draft-first)
+    app.include_router(revenue_marketing_router.router)
     # Wave 15 — Founder launch-status (admin /launch-status + public /launch-status/public)
     app.include_router(founder_launch_status_router.router)
     # Systems 26–35 — Enterprise Control Plane hardening

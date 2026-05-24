@@ -1,0 +1,307 @@
+# Dealix 5-rung revenue ladder.
+# Bilingual names + deliverables. Each offer carries success_metric and
+# scale_kill_rule so quality_gates and the campaign create endpoint can
+# validate ladder integrity before activation.
+offers:
+  # ─────────────────────────── FREE ────────────────────────────
+  - id: off_free_mini_diagnostic
+    name_ar: تشخيص دياليكس المصغر
+    name_en: Dealix Mini Diagnostic
+    rung: free
+    price_min_sar: 0
+    price_max_sar: 0
+    target_segment: founder_or_revenue_lead
+    pain_addressed: leaking_revenue_unknown_root_cause
+    deliverables_ar:
+      - تقرير مبسط من صفحتين
+      - مؤشر مخاطرة أولي
+      - توصية واحدة قابلة للتنفيذ
+    deliverables_en:
+      - Two-page snapshot report
+      - Initial Risk Score
+      - One actionable recommendation
+    success_metric: completed_diagnostics_count
+    scale_kill_rule: drop_if_no_paid_conversion_within_30_days
+
+  - id: off_free_sample_report
+    name_ar: عينة تقرير القطاع
+    name_en: Sector Sample Report
+    rung: free
+    price_min_sar: 0
+    price_max_sar: 0
+    target_segment: cxo_in_target_sector
+    pain_addressed: need_proof_before_paying
+    deliverables_ar:
+      - تقرير عينة بقطاعك
+      - ٣ نقاط ضعف شائعة
+    deliverables_en:
+      - Anonymized sector sample report
+      - Three common failure points
+    success_metric: report_downloads_with_meeting_booked
+    scale_kill_rule: drop_if_meeting_book_rate_below_3_pct_after_500_downloads
+
+  - id: off_free_checklist
+    name_ar: قائمة مراجعة المخاطرة
+    name_en: Risk Checklist
+    rung: free
+    price_min_sar: 0
+    price_max_sar: 0
+    target_segment: ops_or_revenue_lead
+    pain_addressed: no_structured_way_to_self_assess
+    deliverables_ar:
+      - قائمة من ٢٠ بنداً
+      - رابط لحجز جلسة مراجعة
+    deliverables_en:
+      - 20-point structured checklist
+      - Booking link for review session
+    success_metric: opt_in_to_paid_diagnostic
+    scale_kill_rule: drop_if_under_2_pct_paid_uptake_after_300_downloads
+
+  # ─────────────────────────── ENTRY ───────────────────────────
+  - id: off_entry_revenue_hunter
+    name_ar: تجربة صياد الإيرادات
+    name_en: Revenue Hunter Pilot
+    rung: entry
+    price_min_sar: 999
+    price_max_sar: 999
+    target_segment: smb_with_existing_pipeline
+    pain_addressed: leads_not_followed_up_money_lost
+    deliverables_ar:
+      - مراجعة قمع المتابعة لأسبوع
+      - تقرير الفرص الضائعة
+      - خارطة طريق سريعة للإصلاح
+    deliverables_en:
+      - 7-day follow-up funnel review
+      - Lost-opportunity report
+      - Quick-fix roadmap
+    success_metric: identified_lost_revenue_sar
+    scale_kill_rule: kill_if_average_lost_revenue_under_3x_price
+
+  - id: off_entry_ai_trust_diagnostic
+    name_ar: تشخيص الذكاء الاصطناعي الموثوق
+    name_en: AI Trust Diagnostic
+    rung: entry
+    price_min_sar: 5000
+    price_max_sar: 5000
+    target_segment: enterprise_evaluating_ai_adoption
+    pain_addressed: ai_initiatives_without_governance
+    deliverables_ar:
+      - مسح الحوكمة الحالية
+      - تقييم المخاطر التشغيلية
+      - تقرير تنفيذي
+    deliverables_en:
+      - Current governance scan
+      - Operational-risk assessment
+      - Executive report
+    success_metric: governance_gap_score_delivered
+    scale_kill_rule: kill_if_executive_meeting_rate_below_30_pct
+
+  - id: off_entry_workshop
+    name_ar: ورشة عمل الإيرادات
+    name_en: Revenue Workshop
+    rung: entry
+    price_min_sar: 3000
+    price_max_sar: 5000
+    target_segment: revenue_team_3_to_15_people
+    pain_addressed: misaligned_revenue_motion
+    deliverables_ar:
+      - ورشة نصف يوم
+      - خطة عمل ٣٠ يوم
+    deliverables_en:
+      - Half-day workshop
+      - 30-day action plan
+    success_metric: paid_pilot_conversion_count
+    scale_kill_rule: kill_if_under_1_in_3_workshops_converts_to_pilot
+
+  # ─────────────────────────── CORE ────────────────────────────
+  - id: off_core_ai_trust_kit
+    name_ar: حزمة الذكاء الاصطناعي الموثوق
+    name_en: AI Trust Kit
+    rung: core
+    price_min_sar: 25000
+    price_max_sar: 50000
+    target_segment: enterprise_active_ai_program
+    pain_addressed: missing_governance_layer_for_existing_ai
+    deliverables_ar:
+      - سياسات الحوكمة الجاهزة
+      - مكتبة موافقات
+      - لوحة مخاطرة تشغيلية
+    deliverables_en:
+      - Ready-to-apply governance policies
+      - Approval library
+      - Operational-risk dashboard
+    success_metric: signed_governance_charter_count
+    scale_kill_rule: kill_if_below_two_signed_charters_per_quarter
+
+  - id: off_core_monthly_revenue_command
+    name_ar: قيادة الإيرادات الشهرية
+    name_en: Monthly Revenue Command
+    rung: core
+    price_min_sar: 15000
+    price_max_sar: 35000
+    target_segment: founders_and_revenue_leaders
+    pain_addressed: no_repeatable_revenue_review_cadence
+    deliverables_ar:
+      - مراجعة شهرية تنفيذية
+      - مؤشرات قيادة الإيرادات
+      - خطة الشهر القادم
+    deliverables_en:
+      - Monthly executive review
+      - Revenue leading-indicators
+      - Next-month action plan
+    success_metric: retainer_renewal_rate
+    scale_kill_rule: kill_if_renewal_under_70_pct_for_two_quarters
+
+  - id: off_core_agency_whitelabel
+    name_ar: شراكة وكلاء العلامة الخاصة
+    name_en: Agency White-label
+    rung: core
+    price_min_sar: 20000
+    price_max_sar: 60000
+    target_segment: marketing_or_revenue_agency_partners
+    pain_addressed: agency_needs_proof_grade_ops
+    deliverables_ar:
+      - منصة بعلامتك
+      - دعم تشغيلي
+      - برنامج تدريب
+    deliverables_en:
+      - Branded platform
+      - Operations support
+      - Training program
+    success_metric: partner_sourced_revenue_sar
+    scale_kill_rule: kill_if_partner_revenue_under_2x_partner_cost
+
+  # ─────────────────────── EXPANSION ───────────────────────────
+  - id: off_expansion_executive_pmo
+    name_ar: مكتب إدارة المشاريع التنفيذي
+    name_en: Executive PMO
+    rung: expansion
+    price_min_sar: 50000
+    price_max_sar: 150000
+    target_segment: enterprise_multi_program
+    pain_addressed: programs_drift_no_executive_clarity
+    deliverables_ar:
+      - حوكمة برامج تنفيذية
+      - تقارير مجلس الإدارة
+      - مراجعة مخاطر شهرية
+    deliverables_en:
+      - Executive program governance
+      - Board-grade reporting
+      - Monthly risk review
+    success_metric: programs_on_track_pct
+    scale_kill_rule: kill_if_on_track_pct_under_70_for_2_quarters
+
+  - id: off_expansion_governance_os
+    name_ar: نظام تشغيل الحوكمة
+    name_en: Governance OS
+    rung: expansion
+    price_min_sar: 75000
+    price_max_sar: 200000
+    target_segment: regulated_enterprise
+    pain_addressed: governance_fragmented_across_units
+    deliverables_ar:
+      - منصة حوكمة موحدة
+      - مكتبة سياسات
+      - مسارات موافقة
+    deliverables_en:
+      - Unified governance platform
+      - Policy library
+      - Approval workflows
+    success_metric: incidents_avoided_count
+    scale_kill_rule: kill_if_zero_incidents_avoided_in_first_2_quarters
+
+  - id: off_expansion_partner_os
+    name_ar: نظام تشغيل الشركاء
+    name_en: Partner OS
+    rung: expansion
+    price_min_sar: 60000
+    price_max_sar: 180000
+    target_segment: companies_with_channel_revenue
+    pain_addressed: partners_underperform_no_shared_ops
+    deliverables_ar:
+      - منصة الشركاء
+      - دفتر العمل المشترك
+      - تقارير الأداء
+    deliverables_en:
+      - Partner platform
+      - Co-sell playbook
+      - Performance dashboards
+    success_metric: partner_revenue_growth_pct
+    scale_kill_rule: kill_if_partner_revenue_growth_under_15_pct_yoy
+
+  - id: off_expansion_market_radar
+    name_ar: اشتراك رادار السوق
+    name_en: Market Radar Subscription
+    rung: expansion
+    price_min_sar: 30000
+    price_max_sar: 90000
+    target_segment: strategy_or_revenue_leader
+    pain_addressed: blind_to_sector_movements
+    deliverables_ar:
+      - تقرير أسبوعي للقطاع
+      - إشارات السوق المعتمدة
+      - جلسة شهرية
+    deliverables_en:
+      - Weekly sector brief
+      - Validated market signals
+      - Monthly briefing
+    success_metric: signals_acted_upon_count
+    scale_kill_rule: kill_if_zero_acted_signals_in_2_months
+
+  # ─────────────────────── ENTERPRISE ──────────────────────────
+  - id: off_enterprise_control_plane
+    name_ar: لوحة التحكم الوكيلة
+    name_en: Agentic Control Plane
+    rung: enterprise
+    price_min_sar: 250000
+    price_max_sar: 1000000
+    target_segment: enterprise_running_ai_at_scale
+    pain_addressed: no_single_plane_to_govern_agents
+    deliverables_ar:
+      - منصة تحكم مركزية
+      - عقود ضمان
+      - تكامل أمني
+    deliverables_en:
+      - Central control plane
+      - Assurance contracts
+      - Security integration
+    success_metric: governed_agents_in_production
+    scale_kill_rule: kill_if_no_agent_in_production_after_120_days
+
+  - id: off_enterprise_governed_workforce
+    name_ar: قوة عمل الذكاء الاصطناعي الموثوق
+    name_en: Governed AI Workforce
+    rung: enterprise
+    price_min_sar: 400000
+    price_max_sar: 2000000
+    target_segment: enterprise_replacing_ops_with_ai
+    pain_addressed: cannot_safely_delegate_to_ai
+    deliverables_ar:
+      - قوة عمل وكيلة
+      - حوكمة كاملة
+      - دعم تنفيذي
+    deliverables_en:
+      - Agentic workforce
+      - Full governance
+      - Executive support
+    success_metric: workflows_safely_automated_count
+    scale_kill_rule: kill_if_under_3_workflows_safely_automated_per_quarter
+
+  - id: off_enterprise_custom_deployment
+    name_ar: نشر مخصص
+    name_en: Custom Deployment
+    rung: enterprise
+    price_min_sar: 300000
+    price_max_sar: 1500000
+    target_segment: enterprise_with_unique_compliance
+    pain_addressed: off_the_shelf_does_not_fit_environment
+    deliverables_ar:
+      - تصميم مخصص
+      - تكامل عميق
+      - تدريب الفريق
+    deliverables_en:
+      - Bespoke design
+      - Deep integration
+      - Team enablement
+    success_metric: go_live_milestone_count
+    scale_kill_rule: kill_if_no_go_live_in_180_days
