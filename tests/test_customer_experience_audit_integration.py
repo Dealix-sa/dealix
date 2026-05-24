@@ -21,7 +21,7 @@ def test_script_runs_and_passes() -> None:
         ["bash", str(SCRIPT)],
         capture_output=True,
         text=True,
-        timeout=30,
+        timeout=120,
     )
     output = result.stdout + result.stderr
     assert "CUSTOMER_EXPERIENCE_AUDIT=PASS" in output

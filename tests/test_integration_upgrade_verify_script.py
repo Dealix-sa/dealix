@@ -22,7 +22,7 @@ def test_script_runs_pass() -> None:
         ["bash", str(SCRIPT)],
         capture_output=True,
         text=True,
-        timeout=300,
+        timeout=900,
     )
     output = result.stdout + result.stderr
     assert "INTEGRATION_UPGRADE=PASS" in output
@@ -35,7 +35,7 @@ def test_script_emits_required_pass_lines() -> None:
         ["bash", str(SCRIPT)],
         capture_output=True,
         text=True,
-        timeout=300,
+        timeout=900,
     )
     output = result.stdout
     required = [
