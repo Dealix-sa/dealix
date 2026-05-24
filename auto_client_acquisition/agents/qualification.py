@@ -13,6 +13,7 @@ from auto_client_acquisition.agents.intake import Lead, LeadStatus
 from core.agents.base import BaseAgent
 from core.config.models import Task
 from core.llm.base import Message
+from core.llm.dealix_chat import agent_llm_run
 from core.prompts import get_prompt
 
 
@@ -84,11 +85,13 @@ class QualificationAgent(BaseAgent):
         prompt = get_prompt("qualification_questions", locale=lead.locale, context=context)
 
         try:
-            response = await self.router.run(
-                task=Task.REASONING,
-                messages=[Message(role="user", content=prompt)],
+            response = await agent_llm_run(
+                Task.REASONING,
+                [Message(role="user", content=prompt)],
                 max_tokens=800,
                 temperature=0.3,
+                critical=True,
+                text_sample=prompt,
             )
             parsed = self.parse_json_response(response.content)
             raw_questions = parsed.get("questions", [])

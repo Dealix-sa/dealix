@@ -97,12 +97,17 @@ class Settings(BaseSettings):
 
     # ── Dealix runtime AI router (primary → fallback, env-only) ─
     ai_primary_provider: str = Field(
-        default="deepseek",
+        default="minimax",
         validation_alias=AliasChoices("AI_PRIMARY_PROVIDER", "ai_primary_provider"),
     )
     ai_fallback_provider: str = Field(
-        default="minimax",
+        default="openai",
         validation_alias=AliasChoices("AI_FALLBACK_PROVIDER", "ai_fallback_provider"),
+    )
+    # Task router profile: minimax | default | empty (auto from keys)
+    dealix_llm_profile: str = Field(
+        default="",
+        validation_alias=AliasChoices("DEALIX_LLM_PROFILE", "dealix_llm_profile"),
     )
 
     # ── Databases ───────────────────────────────────────────────

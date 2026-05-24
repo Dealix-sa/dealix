@@ -101,46 +101,19 @@ def _format_input_data(
 
 
 async def _call_llm(system_prompt: str, user_input: str) -> tuple[str, str]:
-    """Call LLM — prefers Dealix runtime router (DeepSeek → MiniMax), then task router."""
+    """Call LLM via unified dealix_chat (MiniMax-first when profile=minimax)."""
     from core.config.models import Task
     from core.llm.base import Message
+    from core.llm.dealix_chat import dealix_chat
 
     messages = [Message(role="user", content=user_input)]
-
-    try:
-        from core.config.settings import get_settings
-        from core.llm.runtime_router import get_runtime_router
-
-        settings = get_settings()
-        chain = (
-            settings.ai_primary_provider,
-            settings.ai_fallback_provider,
-        )
-        if any(settings.has_llm_provider(p) for p in chain):
-            runtime = get_runtime_router()
-            response = await asyncio.wait_for(
-                runtime.chat(
-                    messages,
-                    system=system_prompt,
-                    max_tokens=MAX_OUTPUT_TOKENS,
-                    temperature=0.3,
-                ),
-                timeout=LLM_TIMEOUT_SECONDS,
-            )
-            return response.content, f"{response.provider}/{response.model}"
-    except Exception as exc:
-        logger.debug("daily_brief_runtime_router_skip: %s", exc)
-
-    from core.llm.router import get_router
-
-    router = get_router()
     response = await asyncio.wait_for(
-        router.run(
-            Task.SUMMARY,
+        dealix_chat(
             messages,
             system=system_prompt,
             max_tokens=MAX_OUTPUT_TOKENS,
             temperature=0.3,
+            task=Task.SUMMARY,
         ),
         timeout=LLM_TIMEOUT_SECONDS,
     )

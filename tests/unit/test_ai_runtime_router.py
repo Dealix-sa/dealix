@@ -113,7 +113,9 @@ def test_ai_runtime_status_endpoint(monkeypatch):
     from api.main import app
 
     monkeypatch.setenv("ADMIN_API_KEYS", "test_admin_ai_runtime")
-    monkeypatch.setenv("DEEPSEEK_API_KEY", "test-deepseek")
+    monkeypatch.setenv("AI_PRIMARY_PROVIDER", "minimax")
+    monkeypatch.setenv("AI_FALLBACK_PROVIDER", "openai")
+    monkeypatch.setenv("DEALIX_LLM_PROFILE", "minimax")
     monkeypatch.setenv("MINIMAX_API_KEY", "test-minimax")
     get_settings.cache_clear()
     reset_runtime_router()
@@ -130,6 +132,7 @@ def test_ai_runtime_status_endpoint(monkeypatch):
     )
     assert resp.status_code == 200
     body = resp.json()
-    assert body["primary_provider"] == "deepseek"
-    assert body["fallback_provider"] == "minimax"
+    assert body["primary_provider"] == "minimax"
+    assert body["fallback_provider"] == "openai"
+    assert body["dealix_llm_profile"] == "minimax"
     assert "sk-" not in resp.text

@@ -14,12 +14,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any
 
-from core.config.models import (
-    FALLBACK_CHAIN,
-    TASK_ROUTING,
-    Provider,
-    Task,
-)
+from core.config.models import FALLBACK_CHAIN, Provider, Task, get_provider_for_task
 from core.config.settings import Settings, get_settings
 from core.llm.anthropic_client import AnthropicClient
 from core.llm.base import LLMClient, LLMResponse, Message
@@ -149,7 +144,7 @@ class ModelRouter:
         if isinstance(messages, str):
             messages = [Message(role="user", content=messages)]
 
-        primary = preferred_provider or TASK_ROUTING.get(task, Provider.ANTHROPIC)
+        primary = preferred_provider or get_provider_for_task(task, self.settings)
         chain = [primary] + [p for p in FALLBACK_CHAIN.get(primary, []) if p != primary]
 
         last_error: Exception | None = None

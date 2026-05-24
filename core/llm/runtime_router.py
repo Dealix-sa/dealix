@@ -11,7 +11,7 @@ import logging
 import re
 from typing import Any
 
-from core.config.models import Provider
+from core.config.models import Provider, effective_dealix_llm_profile
 from core.config.settings import Settings, get_settings
 from core.llm.base import LLMResponse, Message
 from core.llm.router import ModelRouter, get_router
@@ -86,10 +86,19 @@ class RuntimeLLMRouter:
             configured[name] = self.settings.has_llm_provider(name)
             available[name] = self._model_router.get_client(provider) is not None
 
+        profile = effective_dealix_llm_profile(self.settings)
+        minimax_hint = None
+        if self.settings.has_llm_provider("minimax"):
+            minimax_hint = (
+                "Token Plan uses max_completion_tokens≤2048; "
+                "insufficient_balance (1008) → add Credits at platform.minimax.io"
+            )
+
         return {
             "service": "dealix_ai_runtime",
             "primary_provider": self.primary.value,
             "fallback_provider": self.fallback.value,
+            "dealix_llm_profile": profile,
             "provider_chain": [p.value for p in chain],
             "configured": configured,
             "router_ready": available,
@@ -98,6 +107,7 @@ class RuntimeLLMRouter:
                 Provider.MINIMAX.value: self.settings.minimax_model,
                 Provider.OPENAI.value: self.settings.openai_model,
             },
+            "token_plan_hint": minimax_hint,
             "base_urls_normalized": {
                 Provider.DEEPSEEK.value: _normalize_openai_base_url(
                     self.settings.deepseek_base_url

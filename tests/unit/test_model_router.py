@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from core.config.models import (
     FALLBACK_CHAIN,
     TASK_ROUTING,
@@ -10,6 +12,18 @@ from core.config.models import (
     get_fallbacks,
     get_provider_for_task,
 )
+from core.config.settings import get_settings
+
+
+@pytest.fixture(autouse=True)
+def _default_llm_profile(monkeypatch):
+    """Classic routing table (not MiniMax-first)."""
+    monkeypatch.setenv("DEALIX_LLM_PROFILE", "default")
+    monkeypatch.delenv("MINIMAX_API_KEY", raising=False)
+    monkeypatch.setenv("AI_PRIMARY_PROVIDER", "deepseek")
+    get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
 
 
 def test_every_task_has_provider():

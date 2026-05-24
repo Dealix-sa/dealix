@@ -30,14 +30,16 @@
 
 | Env | Default |
 |-----|---------|
-| `AI_PRIMARY_PROVIDER` | `deepseek` |
-| `AI_FALLBACK_PROVIDER` | `minimax` |
-| `DEEPSEEK_API_KEY` / `MINIMAX_API_KEY` | from `.env.local` or Railway |
+| `AI_PRIMARY_PROVIDER` | `minimax` |
+| `AI_FALLBACK_PROVIDER` | `openai` |
+| `DEALIX_LLM_PROFILE` | `minimax` (auto if MiniMax keyed, no Anthropic) |
+| `MINIMAX_API_KEY` / `DEEPSEEK_API_KEY` | from `.env.local` or Railway |
 
-- Module: [`core/llm/runtime_router.py`](../core/llm/runtime_router.py)
+- Module: [`core/llm/runtime_router.py`](../core/llm/runtime_router.py) · [`core/llm/dealix_chat.py`](../core/llm/dealix_chat.py)
 - API: `GET/POST /api/v1/ai-runtime/*` (admin key)
-- Verify: `python3 scripts/verify_ai_runtime_providers.py` (`--ping` for live)
-- Personal Operator LLM brief prefers runtime router, then task router
+- Verify: `python3 scripts/verify_minimax_dealix.py` · `python3 scripts/verify_ai_runtime_providers.py` (`--ping`)
+- Ops doc: [`docs/ops/MINIMAX_DEALIX_AR.md`](ops/MINIMAX_DEALIX_AR.md)
+- Personal Operator + outreach/proposal/qualification use `dealix_chat` when profile=minimax
 
 Copy [`.env.local.example`](../.env.local.example) → `.env.local` (never commit).
 

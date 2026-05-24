@@ -12,6 +12,7 @@ from auto_client_acquisition.agents.intake import Lead
 from core.agents.base import BaseAgent
 from core.config.models import Task
 from core.llm.base import Message
+from core.llm.dealix_chat import agent_llm_run
 from core.prompts import get_prompt
 
 Channel = Literal["email", "whatsapp", "linkedin", "sms"]
@@ -58,11 +59,12 @@ class OutreachAgent(BaseAgent):
             trigger=trigger,
         )
 
-        response = await self.router.run(
-            task=Task.PAGE_COPY,
-            messages=[Message(role="user", content=prompt)],
+        response = await agent_llm_run(
+            Task.PAGE_COPY,
+            [Message(role="user", content=prompt)],
             max_tokens=400,
             temperature=0.6,
+            text_sample=prompt,
         )
 
         subject: str | None = None

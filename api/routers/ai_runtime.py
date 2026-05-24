@@ -1,5 +1,5 @@
 """
-Dealix AI runtime HTTP surface — DeepSeek primary, MiniMax fallback.
+Dealix AI runtime HTTP surface — MiniMax-first (env: AI_PRIMARY_PROVIDER=minimax).
 
 Keys live in .env.local only. Responses never include API keys or raw upstream bodies.
 """
@@ -57,7 +57,10 @@ async def ai_runtime_chat(body: ChatRequest) -> ChatResponse:
     if not any(runtime.settings.has_llm_provider(p.value) for p in chain):
         raise HTTPException(
             status_code=503,
-            detail="No AI providers configured. Set DEEPSEEK_API_KEY and/or MINIMAX_API_KEY in .env.local",
+            detail=(
+                "No AI providers configured. Set MINIMAX_API_KEY (and optional "
+                "AI_FALLBACK_PROVIDER key) in .env.local or Railway"
+            ),
         )
 
     try:

@@ -7,6 +7,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from core.config.settings import Settings
 
 
 class Provider(StrEnum):
@@ -101,20 +105,86 @@ TASK_ROUTING: dict[Task, Provider] = {
 FALLBACK_CHAIN: dict[Provider, list[Provider]] = {
     Provider.ANTHROPIC: [Provider.OPENAI, Provider.GLM],
     Provider.DEEPSEEK: [Provider.MINIMAX, Provider.ANTHROPIC, Provider.OPENAI],
-    Provider.MINIMAX: [Provider.DEEPSEEK, Provider.OPENAI, Provider.ANTHROPIC],
+    Provider.MINIMAX: [Provider.OPENAI, Provider.DEEPSEEK],
     Provider.GLM: [Provider.ANTHROPIC, Provider.GROQ],
     Provider.GEMINI: [Provider.ANTHROPIC, Provider.OPENAI],
     Provider.GROQ: [Provider.GLM, Provider.DEEPSEEK],
     Provider.OPENAI: [Provider.ANTHROPIC, Provider.GLM],
 }
 
+# When DEALIX_LLM_PROFILE=minimax — reasoning/copy/Arabic → MiniMax
+MINIMAX_TASK_ROUTING: dict[Task, Provider] = {
+    Task.REASONING: Provider.MINIMAX,
+    Task.SUMMARY: Provider.MINIMAX,
+    Task.PROPOSAL: Provider.MINIMAX,
+    Task.PAGE_COPY: Provider.MINIMAX,
+    Task.ORCHESTRATION: Provider.MINIMAX,
+    Task.ARABIC_TASKS: Provider.MINIMAX,
+    Task.CHINESE_TASKS: Provider.GLM,
+    Task.BULK_TASKS: Provider.GLM,
+    Task.CODE: Provider.DEEPSEEK,
+    Task.IMPLEMENTATION: Provider.DEEPSEEK,
+    Task.DEBUG: Provider.DEEPSEEK,
+    Task.RESEARCH: Provider.GEMINI,
+    Task.MULTIMODAL: Provider.GEMINI,
+    Task.SOURCE_ANALYSIS: Provider.GEMINI,
+    Task.CLASSIFICATION: Provider.GROQ,
+    Task.TAGGING: Provider.GROQ,
+    Task.FAST_VARIANTS: Provider.GROQ,
+    Task.TRIAGE: Provider.GROQ,
+}
 
-def get_provider_for_task(task: Task) -> Provider:
+
+def effective_dealix_llm_profile(settings: Settings | None = None) -> str:
+    """
+    Resolved LLM profile: minimax | default.
+
+    Auto-selects minimax when MINIMAX_API_KEY is set, ANTHROPIC_API_KEY is not,
+    and DEALIX_LLM_PROFILE is unset. Explicit DEALIX_LLM_PROFILE wins.
+    """
+    if settings is None:
+        from core.config.settings import get_settings
+
+        settings = get_settings()
+
+    explicit = (settings.dealix_llm_profile or "").strip().lower()
+    if explicit in {"minimax", "default"}:
+        return explicit
+    if explicit:
+        return "default"
+
+    if settings.has_llm_provider("minimax") and not settings.has_llm_provider("anthropic"):
+        return "minimax"
+    if (settings.ai_primary_provider or "").strip().lower() == "minimax":
+        return "minimax"
+    return "default"
+
+
+def _code_provider_for_profile(settings: Settings) -> Provider:
+    """CODE/DEBUG: DeepSeek when keyed, else MiniMax under minimax profile."""
+    if settings.has_llm_provider("deepseek"):
+        return Provider.DEEPSEEK
+    if effective_dealix_llm_profile(settings) == "minimax":
+        return Provider.MINIMAX
+    return Provider.DEEPSEEK
+
+
+def get_provider_for_task(task: Task, settings: Settings | None = None) -> Provider:
     """Get primary provider for a task | المزود الرئيسي للمهمة."""
+    if settings is None:
+        from core.config.settings import get_settings
+
+        settings = get_settings()
+
+    if effective_dealix_llm_profile(settings) == "minimax":
+        if task in {Task.CODE, Task.IMPLEMENTATION, Task.DEBUG}:
+            return _code_provider_for_profile(settings)
+        return MINIMAX_TASK_ROUTING.get(task, Provider.MINIMAX)
+
     return TASK_ROUTING.get(task, Provider.ANTHROPIC)
 
 
-def get_fallbacks(provider: Provider) -> list[Provider]:
+def get_fallbacks(provider: Provider, settings: Settings | None = None) -> list[Provider]:
     """Get fallback chain for a provider | سلسلة الاحتياط للمزود."""
     return FALLBACK_CHAIN.get(provider, [Provider.ANTHROPIC])
 
@@ -206,6 +276,7 @@ def smart_route(
     text_sample: str = "",
     est_tokens: int = 0,
     critical: bool = False,
+    settings: Settings | None = None,
 ) -> ModelConfig:
     """
     Cost-aware router | توجيه ذكي يراعي التكلفة.
@@ -217,10 +288,33 @@ def smart_route(
       4. Research → Gemini Flash
       5. Critical reasoning/proposals → Anthropic (+ caching)
       6. Else → provider from TASK_ROUTING
+
+    When DEALIX_LLM_PROFILE=minimax: critical + Arabic-heavy → MiniMax.
     """
+    if settings is None:
+        from core.config.settings import get_settings
+
+        settings = get_settings()
+
+    minimax_profile = effective_dealix_llm_profile(settings) == "minimax"
+
     # 1. Free tier for classification
     if task in {Task.CLASSIFICATION, Task.TRIAGE, Task.TAGGING, Task.FAST_VARIANTS}:
         return PROVIDER_MODELS[Provider.GROQ]
+
+    if minimax_profile:
+        if critical or task in CRITICAL_TASKS:
+            return PROVIDER_MODELS[Provider.MINIMAX]
+        if text_sample and _arabic_ratio(text_sample) >= ARABIC_THRESHOLD:
+            if task not in {Task.RESEARCH, Task.MULTIMODAL}:
+                return PROVIDER_MODELS[Provider.MINIMAX]
+        if task in {Task.CODE, Task.IMPLEMENTATION, Task.DEBUG}:
+            code_provider = _code_provider_for_profile(settings)
+            return PROVIDER_MODELS[code_provider]
+        if task in {Task.RESEARCH, Task.MULTIMODAL, Task.SOURCE_ANALYSIS}:
+            return PROVIDER_MODELS[Provider.GEMINI]
+        provider = get_provider_for_task(task, settings)
+        return PROVIDER_MODELS[provider]
 
     # 2. Critical reasoning always Anthropic
     if critical or task in CRITICAL_TASKS:
@@ -242,14 +336,20 @@ def smart_route(
         return PROVIDER_MODELS[Provider.GEMINI]
 
     # 6. Default — use static routing table
-    provider = get_provider_for_task(task)
+    provider = get_provider_for_task(task, settings)
     return PROVIDER_MODELS[provider]
 
 
 def ordered_providers(
-    task: Task, *, text_sample: str = "", critical: bool = False
+    task: Task,
+    *,
+    text_sample: str = "",
+    critical: bool = False,
+    settings: Settings | None = None,
 ) -> list[Provider]:
     """Return primary + fallback chain after smart routing."""
-    primary = smart_route(task, text_sample=text_sample, critical=critical).provider
-    chain = [primary] + [p for p in get_fallbacks(primary) if p != primary]
+    primary = smart_route(
+        task, text_sample=text_sample, critical=critical, settings=settings
+    ).provider
+    chain = [primary] + [p for p in get_fallbacks(primary, settings) if p != primary]
     return chain

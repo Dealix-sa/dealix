@@ -15,6 +15,7 @@ from core.agents.base import BaseAgent
 from core.config.models import Task
 from core.config.settings import get_settings
 from core.llm.base import Message
+from core.llm.dealix_chat import agent_llm_run
 from core.prompts import get_prompt
 from core.utils import generate_id, utcnow
 
@@ -90,11 +91,13 @@ class ProposalAgent(BaseAgent):
             start_date=start_date.strftime("%Y-%m-%d"),
         )
 
-        response = await self.router.run(
-            task=Task.PROPOSAL,
-            messages=[Message(role="user", content=prompt)],
+        response = await agent_llm_run(
+            Task.PROPOSAL,
+            [Message(role="user", content=prompt)],
             max_tokens=3000,
             temperature=0.5,
+            critical=True,
+            text_sample=prompt,
         )
 
         proposal = Proposal(

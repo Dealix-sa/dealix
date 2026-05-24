@@ -13,12 +13,17 @@ bash scripts/launch_execution_railway.sh
 ## متغيرات AI Runtime على Railway
 
 ```bash
-DEEPSEEK_API_KEY=...
-MINIMAX_API_KEY=...
-AI_PRIMARY_PROVIDER=deepseek
-AI_FALLBACK_PROVIDER=minimax
+MINIMAX_API_KEY=sk-api-...
+MINIMAX_BASE_URL=https://api.minimax.io/v1
+MINIMAX_MODEL=MiniMax-M2.7
+AI_PRIMARY_PROVIDER=minimax
+AI_FALLBACK_PROVIDER=openai
+DEALIX_LLM_PROFILE=minimax
+# اختياري: DEEPSEEK_API_KEY=... (كود/احتياط)
 ADMIN_API_KEYS=...
 ```
+
+تفاصيل: [`MINIMAX_DEALIX_AR.md`](MINIMAX_DEALIX_AR.md) · تحقق: `python3 scripts/verify_minimax_dealix.py --ping`
 
 ## فرونت اند ops
 

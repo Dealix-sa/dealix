@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from core.config.models import (
     Provider,
     Task,
@@ -9,6 +11,16 @@ from core.config.models import (
     ordered_providers,
     smart_route,
 )
+from core.config.settings import get_settings
+
+
+@pytest.fixture(autouse=True)
+def _default_llm_profile(monkeypatch):
+    monkeypatch.setenv("DEALIX_LLM_PROFILE", "default")
+    monkeypatch.delenv("MINIMAX_API_KEY", raising=False)
+    get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
 
 
 def test_classification_uses_groq():
