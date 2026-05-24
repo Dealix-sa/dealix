@@ -17,7 +17,7 @@ foreach ($s in $required) {
     if ($present) {
         Write-Host "  OK  $($s.Name)" -ForegroundColor Green
     } else {
-        Write-Host "  MISSING  $($s.Name) — $($s.Doc)" -ForegroundColor Yellow
+        Write-Host "  MISSING  $($s.Name) - $($s.Doc)" -ForegroundColor Yellow
         if ($s.Required) { $missing += $s.Name }
     }
 }

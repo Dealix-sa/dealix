@@ -82,7 +82,10 @@ Step-Fail $LASTEXITCODE
 
 Write-Host ""
 Write-Host "=== 9 Paid launch ==="
-py -3 scripts/verify_paid_launch_readiness.py
+$paidArgs = @("scripts/verify_paid_launch_readiness.py")
+if ($Strict) { $paidArgs += "--strict" }
+if (Test-Path (Join-Path $Root ".env.railway.generated")) { $paidArgs += "--from-railway-env" }
+py -3 @paidArgs
 Step-Fail $LASTEXITCODE
 
 Write-Host ""

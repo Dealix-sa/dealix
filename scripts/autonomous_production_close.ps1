@@ -58,7 +58,7 @@ if ($secrets -match "RAILWAY_TOKEN") {
     }
 } else {
     Write-Host ""
-    Write-Host "RAILWAY_TOKEN missing on GitHub — add once:" -ForegroundColor Yellow
+    Write-Host "RAILWAY_TOKEN missing on GitHub - add once:" -ForegroundColor Yellow
     Write-Host "  https://railway.app/account/tokens"
     Write-Host "  gh secret set RAILWAY_TOKEN --repo VoXc2/dealix"
     Write-Host "  Or connect Railway GitHub repo deploy on service linked to api.dealix.me"
@@ -66,7 +66,7 @@ if ($secrets -match "RAILWAY_TOKEN") {
 }
 
 Write-Host ""
-Write-Host "== Poll live trust layer ($PollMinutes min max) ==" -ForegroundColor Cyan
+Write-Host "== Poll live trust layer (${PollMinutes} min max) ==" -ForegroundColor Cyan
 $deadline = (Get-Date).AddMinutes($PollMinutes)
 $liveOk = $false
 while ((Get-Date) -lt $deadline) {
