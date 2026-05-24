@@ -1,0 +1,303 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# dealix_manifest.yaml
+# Source of truth for what counts as "this repository is real and complete".
+#
+# Read by:   scripts/verify_everything.py
+# Enforces: existence + non-emptiness + required keywords + wiring + safety
+# Policy:   docs/ops/DEALIX_FINAL_READINESS_REPORT.md
+#
+# Rules:
+#   - This file is the only place where "what is required" is declared.
+#   - A layer is PASS only if every required_file exists, is above min_size,
+#     contains every required_keyword, and the layer's verifier exits 0.
+#   - A layer is FAIL if any of the above fails.
+#   - Use `optional: true` for nice-to-have files that should be reported but
+#     should not fail the build.
+#   - Use `generated_in_dockerfile: true` for files produced at build time
+#     (e.g. /app/start.sh from a HEREDOC in Dockerfile).
+# ═══════════════════════════════════════════════════════════════════════════════
+version: 2
+name: dealix_company_os_manifest
+owner: founder
+cadence: every commit to main
+source_of_truth: dealix_manifest.yaml
+
+# ── Global rules applied to every file/layer ─────────────────────────────────
+global_rules:
+  min_doc_size_bytes: 600
+  min_script_size_bytes: 500
+  min_yaml_size_bytes: 120
+
+  # Phrases that must NOT appear anywhere in customer-facing docs (case-insensitive).
+  banned_claims:
+    - guaranteed revenue
+    - guaranteed sales
+    - guaranteed meetings
+    - guaranteed customers
+    - guaranteed roi
+    - no-risk
+    - zero risk
+    - 100% compliant
+    - fully compliant
+    - certified secure
+
+  # Any external action surface must require all of these before it can fire.
+  required_external_action_gate:
+    - approval
+    - policy
+    - audit
+    - suppression
+
+  # Files/dirs to exclude when scanning for banned claims (build artifacts,
+  # third-party content, this manifest, the verifier itself).
+  banned_claims_excludes:
+    - dealix_manifest.yaml
+    - scripts/verify_everything.py
+    - scripts/verify_repo_completeness.py
+    - scripts/verify_non_empty_files.py
+    - scripts/verify_business_os.py
+    - scripts/verify_policy_as_code.py
+    - scripts/verify_agent_registry.py
+    - scripts/verify_live_send_safety.py
+    - scripts/verify_railway_readiness.py
+    - scripts/verify_wiring.py
+    - docs/ops/DEALIX_FINAL_READINESS_REPORT.md
+    - docs/ops/DEALIX_IMPLEMENTATION_AUDIT.md
+    - docs/ops/DEALIX_MISSING_SYSTEMS.md
+    - docs/ops/DEALIX_REPO_DISCOVERY_REPORT.md
+    - node_modules
+    - .next
+    - dist
+    - build
+    - .venv
+    - venv
+
+# ── Layers ───────────────────────────────────────────────────────────────────
+# Each layer is a contract. Verifier output is what counts, not prose.
+layers:
+
+  # 1. Founder / CEO operating system
+  # Founder docs live under docs/ops/; CEO operating system under docs/company/.
+  founder_operating_system:
+    description: The founder/CEO operating layer — daily/weekly cadence + decision system.
+    required_files:
+      - path: docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md
+        min_size: 600
+      - path: docs/company/CEO_OPERATING_SYSTEM.md
+        min_size: 600
+      - path: docs/ops/DAILY_OPERATING_LOOP.md
+        min_size: 400
+      - path: scripts/dealix_founder_daily_brief.py
+        min_size: 500
+      - path: scripts/dealix_morning_digest.py
+        min_size: 500
+    verifier: scripts/verify_business_os.py
+
+  # 2. Strategic / capital allocation
+  strategy_and_capital:
+    description: Strategic plan, market attack, capital allocation.
+    required_files:
+      - path: docs/strategic/CEO_TOP50_EXECUTION_SYSTEM_AR.md
+        min_size: 400
+      - path: docs/strategic/CEO_OPERATING_METRICS_AR.md
+        min_size: 400
+      - path: docs/strategy/CEO_STRATEGY.md
+        min_size: 400
+    verifier: scripts/verify_business_os.py
+
+  # 3. Revenue / commercial
+  revenue_factory:
+    description: Revenue OS, commercial loop, sales motion.
+    required_files:
+      - path: docs/ops/DAILY_COMMERCIAL_LOOP_AR.md
+        min_size: 400
+      - path: docs/ops/DEALIX_REVENUE_WAR_ROOM_AR.md
+        min_size: 400
+      - path: docs/ops/FOUNDER_SELL_MOTION_AR.md
+        min_size: 400
+      - path: docs/ops/FIRST_CUSTOMER_ONBOARDING.md
+        min_size: 200
+    verifier: scripts/verify_business_os.py
+
+  # 4. Policy-as-code
+  policy_as_code:
+    description: Approval + claim policies enforced from YAML, not prose.
+    required_files:
+      - path: dealix/config/approval_policy.yaml
+        min_size: 120
+        required_keywords:
+          - requires_approval
+          - creates_evidence
+      - path: dealix/config/claim_policy.yaml
+        min_size: 120
+        required_keywords:
+          - require_payment_proof
+          - allowed
+      - path: dealix/transformation/engineering_cutover_policy.yaml
+        min_size: 120
+    verifier: scripts/verify_policy_as_code.py
+
+  # 5. Agent registry
+  agent_registry:
+    description: Every agent declared, with owner / approval class / kill switch reference.
+    required_files:
+      - path: docs/governance/AGENT_REGISTRY.md
+        min_size: 200
+      - path: docs/governance/AGENT_SPRAWL_PREVENTION.md
+        min_size: 200
+      - path: docs/governance/AI_ACTION_LEVELS.md
+        min_size: 200
+      - path: docs/governance/AI_ACTION_CONTROL.md
+        min_size: 200
+      - path: docs/governance/AGENT_KILL_SWITCH.md
+        min_size: 600
+    verifier: scripts/verify_agent_registry.py
+
+  # 6. Eval gate
+  eval_gate:
+    description: AI quality evaluation must be defined and runnable, not vibe-tested.
+    required_files:
+      - path: evals/governance_eval.yaml
+        min_size: 100
+      - path: evals/arabic_quality_eval.yaml
+        min_size: 100
+      - path: evals/outreach_quality_eval.yaml
+        min_size: 100
+      - path: evals/company_brain_eval.yaml
+        min_size: 100
+      - path: evals/lead_intelligence_eval.yaml
+        min_size: 100
+      - path: scripts/verify_ai_output_quality.py
+        min_size: 300
+    verifier: scripts/verify_eval_gate.py
+
+  # 7. Railway / production
+  railway_production:
+    description: Container + Railway + /healthz must boot in production.
+    required_files:
+      - path: railway.toml
+        min_size: 100
+        required_keywords:
+          - healthcheckPath
+          - preDeployCommand
+      - path: railway.json
+        min_size: 80
+      - path: Dockerfile
+        min_size: 800
+        required_keywords:
+          - HEALTHCHECK
+          - start.sh
+          - EXPOSE
+      - path: scripts/railway_predeploy.sh
+        min_size: 200
+      - path: Procfile
+        min_size: 40
+    verifier: scripts/verify_railway_readiness.py
+
+  # 8. Live-send safety
+  live_send_safety:
+    description: WhatsApp/email/payments — live action must pass approval+policy+audit.
+    required_files:
+      - path: auto_client_acquisition/email/whatsapp_multi_provider.py
+        min_size: 500
+        required_keywords:
+          - WHATSAPP_ALLOW_LIVE_SEND
+          - blocked_by_policy
+      - path: core/config/settings.py
+        min_size: 800
+        required_keywords:
+          - WHATSAPP_ALLOW_LIVE_SEND
+      - path: dealix/governance/approvals.py
+        min_size: 500
+        required_keywords:
+          - request
+          - decide
+    verifier: scripts/verify_live_send_safety.py
+
+  # 9. Trust / legal
+  legal_trust_security:
+    description: Legal, security, on-call runbooks must exist and be non-empty.
+    required_files:
+      - path: SECURITY.md
+        min_size: 400
+      - path: readiness/enterprise_ready.md
+        min_size: 400
+      - path: readiness/production_readiness_gates.md
+        min_size: 400
+    verifier: scripts/verify_business_os.py
+
+  # 10. API surface
+  api_surface:
+    description: FastAPI app + /healthz + health endpoints wired.
+    required_files:
+      - path: api/main.py
+        min_size: 500
+      - path: api/routers/health.py
+        min_size: 200
+        required_keywords:
+          - healthz
+          - health
+    verifier: scripts/verify_wiring.py
+
+  # 11. Frontend
+  frontend_surface:
+    description: Next.js frontend(s) — must have package.json + build target.
+    required_files:
+      - path: frontend/package.json
+        min_size: 200
+      - path: frontend/next.config.ts
+        min_size: 30
+      - path: apps/web/package.json
+        min_size: 200
+        optional: true
+      - path: apps/web/next.config.mjs
+        min_size: 30
+        optional: true
+    verifier: scripts/verify_wiring.py
+
+  # 12. CI / GitHub Actions
+  github_actions:
+    description: Required workflows for everything + production certification.
+    required_files:
+      - path: .github/workflows/ci.yml
+        min_size: 500
+      - path: .github/workflows/dealix-everything.yml
+        min_size: 400
+      - path: .github/workflows/dealix-production-certification.yml
+        min_size: 400
+    verifier: scripts/verify_wiring.py
+
+  # 13. Makefile commands
+  makefile_commands:
+    description: Operator commands — every audit/everything/cert must be runnable.
+    required_files:
+      - path: Makefile
+        min_size: 600
+        required_keywords:
+          - "audit:"
+          - "everything:"
+          - "production-certification:"
+          - "repo-completeness:"
+          - "non-empty-files:"
+          - "wiring-check:"
+          - "business-os:"
+          - "policy-check:"
+          - "agent-registry:"
+          - "eval-gate:"
+          - "live-send-safety:"
+          - "railway-readiness:"
+    verifier: scripts/verify_wiring.py
+
+  # 14. Audit reports
+  audit_reports:
+    description: The audit's own outputs — must be regenerated and non-stale.
+    required_files:
+      - path: docs/ops/DEALIX_REPO_DISCOVERY_REPORT.md
+        min_size: 400
+      - path: docs/ops/DEALIX_IMPLEMENTATION_AUDIT.md
+        min_size: 400
+      - path: docs/ops/DEALIX_MISSING_SYSTEMS.md
+        min_size: 200
+      - path: docs/ops/DEALIX_FINAL_READINESS_REPORT.md
+        min_size: 400
+    verifier: scripts/verify_repo_completeness.py
