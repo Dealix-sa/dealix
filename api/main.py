@@ -107,6 +107,18 @@ except Exception as _exc:  # noqa: BLE001
 from api.routers import commercial_map as commercial_map_router
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
+# Holistic master plan — AI Layers unified router (9 governed layers)
+try:
+    from api.routers import ai_layers as ai_layers_router
+except Exception as _exc:  # noqa: BLE001
+    ai_layers_router = None
+    _OPTIONAL_ROUTER_ERRORS["ai_layers"] = repr(_exc)
+# Holistic master plan — Executive Command Center router (read-only)
+try:
+    from api.routers import executive_command_center as executive_command_center_router
+except Exception as _exc:  # noqa: BLE001
+    executive_command_center_router = None
+    _OPTIONAL_ROUTER_ERRORS["executive_command_center"] = repr(_exc)
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
 from api.security import APIKeyMiddleware, setup_rate_limit
@@ -344,6 +356,12 @@ def create_app() -> FastAPI:
     app.include_router(commercial_map_router.router)
     # Wave 15 — Founder launch-status (admin /launch-status + public /launch-status/public)
     app.include_router(founder_launch_status_router.router)
+    # Holistic master plan — AI Layers unified router
+    if ai_layers_router is not None:
+        app.include_router(ai_layers_router.router)
+    # Holistic master plan — Executive Command Center
+    if executive_command_center_router is not None:
+        app.include_router(executive_command_center_router.router)
     # Systems 26–35 — Enterprise Control Plane hardening
     app.include_router(control_plane_os.router)
     app.include_router(agent_mesh_os.router)
