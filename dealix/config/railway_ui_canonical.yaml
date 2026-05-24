@@ -4,6 +4,21 @@ api_base: https://api.dealix.me
 branch: main
 wait_for_ci: true
 
+services:
+  api:
+    name: dealix
+    public_domain: api.dealix.me
+    public_target_port: 8080
+    private_dns: dealix.railway.internal
+    repo: VoXc2/dealix
+  postgres:
+    template: ghcr.io/railwayapp-templates/postgres-ssl
+    image_tag_example: "18"
+    minor_upgrade_example: "18.4"
+    private_dns: postgres.railway.internal
+    database_url_reference: "${{Postgres.DATABASE_URL}}"
+    canonical_yaml: dealix/config/railway_postgres_canonical.yaml
+
 build:
   builder: DOCKERFILE
   dockerfile_path: Dockerfile
