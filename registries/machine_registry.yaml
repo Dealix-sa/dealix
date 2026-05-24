@@ -1,0 +1,68 @@
+version: 1
+# Non-LLM scheduled "machines" (cron-like processes). Same governance as agents.
+machines:
+  - id: ceo_daily_brief
+    name: CEO Daily Brief
+    purpose: Generate the founder's daily brief from private_ops + repo state.
+    schedule: daily_07_00_AST
+    external_action_allowed: false
+    approval_class_max: A0
+    owner: founder
+    script: scripts/generate_ceo_daily_brief.py
+    writes:
+      - founder/ceo_daily_brief.md
+
+  - id: revenue_forecast_daily
+    name: Daily Revenue Forecast
+    purpose: Refresh bottom-up forecast and write to private_ops.
+    schedule: daily_06_30_AST
+    external_action_allowed: false
+    approval_class_max: A0
+    owner: founder
+    script: scripts/generate_revenue_forecast.py
+    writes:
+      - finance/revenue_forecast.md
+
+  - id: capital_allocation_weekly
+    name: Weekly Capital Allocation Report
+    purpose: Refresh ROI priority matrix and capital allocation deltas.
+    schedule: weekly_monday_07_00_AST
+    external_action_allowed: false
+    approval_class_max: A0
+    owner: founder
+    script: scripts/generate_capital_allocation_report.py
+    writes:
+      - finance/capital_allocation.csv
+      - finance/roi_priority_matrix.csv
+
+  - id: strategy_scorecard_weekly
+    name: Weekly Strategy Scorecard
+    purpose: Score strategic assumptions vs. evidence.
+    schedule: weekly_friday_18_00_AST
+    external_action_allowed: false
+    approval_class_max: A0
+    owner: founder
+    script: scripts/generate_strategy_scorecard.py
+    writes:
+      - founder/strategic_assumptions.csv
+
+  - id: company_memory_weekly
+    name: Weekly Company Memory Rollup
+    purpose: Roll up decisions, outcomes, and learnings into long-term memory.
+    schedule: weekly_sunday_22_00_AST
+    external_action_allowed: false
+    approval_class_max: A0
+    owner: founder
+    script: scripts/generate_company_memory_report.py
+    writes:
+      - graph/learnings.csv
+
+  - id: production_certification
+    name: Production Certification
+    purpose: Run the full Dealix production-certification gate on every push to main.
+    schedule: on_push_to_main
+    external_action_allowed: false
+    approval_class_max: A0
+    owner: ci
+    script: scripts/verify_everything.py
+    writes: []

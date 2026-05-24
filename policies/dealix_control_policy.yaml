@@ -1,0 +1,99 @@
+version: 1
+name: dealix_control_policy
+description: >
+  Dealix master control policy. Every agent, worker, and integration
+  must declare an approval_class and pass the rules below. The
+  verifier (scripts/verify_policy_as_code.py) refuses to ship if any
+  rule is removed or weakened.
+
+approval_classes:
+  A0:
+    description: Internal read or summary. No external impact.
+    external_action_allowed: false
+    approval_required: false
+  A1:
+    description: Internal draft or preparation. Founder-facing only.
+    external_action_allowed: false
+    approval_required: false
+  A2:
+    description: External-impacting action requiring founder approval.
+    external_action_allowed: true
+    approval_required: true
+  A3:
+    description: High-risk action. Never automatic. Always escalate.
+    external_action_allowed: false
+    approval_required: true
+    escalate: true
+
+rules:
+  - id: no_a3_auto
+    description: A3 actions must never be executed without an explicit founder escalation decision.
+    when: { approval_class: A3, founder_escalation: false }
+    result: DENY
+
+  - id: no_suppressed_outreach
+    description: Outreach to any contact on the suppression_list is forbidden.
+    when: { action: external_send, suppressed: true }
+    result: DENY
+
+  - id: high_risk_requires_evidence
+    description: A2 sends require a linked source + evidence ledger entry.
+    when: { approval_class: A2, evidence_attached: false }
+    result: REQUIRE_EVIDENCE
+
+  - id: no_guaranteed_revenue_claims
+    description: No copy may guarantee revenue, sales, meetings, or outcomes.
+    when: { content_contains_guarantee: true }
+    result: DENY
+
+  - id: pricing_commit_requires_approval
+    description: Any pricing commitment or discount must go through founder approval.
+    when: { action: pricing_commit }
+    result: ESCALATE
+
+  - id: public_proof_requires_approval
+    description: Any public proof claim (logos, case studies, metrics) must be approved.
+    when: { action: publish_public_proof }
+    result: ESCALATE
+
+  - id: approved_a2_can_request_execution
+    description: An approved A2 action may execute against an integration that itself passes live-send safety.
+    when: { approval_class: A2, founder_approved: true, live_send_safe: true }
+    result: ALLOW_AFTER_APPROVAL
+
+  - id: a2_without_approval_escalates
+    description: Any A2 action that hasn't been founder-approved must escalate, never auto-execute.
+    when: { approval_class: A2, founder_approved: false }
+    result: ESCALATE
+
+  - id: a3_always_escalates
+    description: A3 actions always escalate, even with an approval flag (escalation must be explicit).
+    when: { approval_class: A3 }
+    result: ESCALATE
+
+  - id: production_internal_api_requires_token
+    description: All /api/v1/internal routes in production require DEALIX_INTERNAL_TOKEN.
+    when: { app_env: production, route_prefix: /api/v1/internal, token_present: false }
+    result: DENY
+
+  - id: no_secret_in_frontend
+    description: Frontend bundles must never embed any MOYASAR/GREEN_API/SMTP/HUBSPOT secret.
+    when: { surface: frontend, embeds_secret: true }
+    result: DENY
+
+  - id: no_frontend_direct_send
+    description: Browser code must never call WhatsApp/SMTP/Moyasar APIs directly. Must go through the gated server route.
+    when: { surface: frontend, calls_external_send: true }
+    result: DENY
+
+immutable_rules:
+  # These rule ids cannot be removed by future edits; verify_policy_as_code.py
+  # will fail the build if any of them disappears or is weakened.
+  - no_a3_auto
+  - no_suppressed_outreach
+  - no_guaranteed_revenue_claims
+  - a2_without_approval_escalates
+  - a3_always_escalates
+  - production_internal_api_requires_token
+  - no_secret_in_frontend
+  - no_frontend_direct_send

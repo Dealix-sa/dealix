@@ -1,0 +1,99 @@
+name: Dealix Production Certification
+
+on:
+  push:
+    branches:
+      - main
+      - "claude/**"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+# This is the workflow Railway "Wait for CI" should wait for.
+# Reference: https://docs.railway.app/guides/github-autodeploys#wait-for-ci
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    name: Production Certification Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      APP_ENV: ci
+      DEALIX_CERT_STRICT: "0"   # WARN does not fail CI; FAIL does
+      DEALIX_PRIVATE_OPS: ${{ github.workspace }}/_private_ops_ci
+      PYTHONIOENCODING: utf-8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install minimal deps (PyYAML for parsers)
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml
+
+      - name: Bootstrap ephemeral private_ops for CI
+        run: |
+          python scripts/bootstrap_private_ops_runtime.py \
+            --private-ops "$DEALIX_PRIVATE_OPS"
+
+      - name: Policy-as-Code
+        run: python scripts/verify_policy_as_code.py
+
+      - name: Agent Registry
+        run: python scripts/verify_agent_registry.py
+
+      - name: Machine Registry
+        run: python scripts/verify_machine_registry.py
+
+      - name: Eval Gate
+        run: python scripts/verify_eval_gate.py
+
+      - name: Prompt / Output Safety
+        run: python scripts/verify_prompt_output_quality.py
+
+      - name: Live Send Safety
+        run: python scripts/verify_live_send_safety.py
+
+      - name: Railway Readiness
+        run: python scripts/verify_railway_readiness.py
+
+      - name: Production Env (CI-safe)
+        run: python scripts/verify_production_env.py
+
+      - name: AI Company OS
+        run: python scripts/verify_ai_company_os.py
+
+      - name: Master roll-up — production-certification
+        run: python scripts/verify_everything.py
+
+  frontend-build:
+    name: Frontend Build (apps/web)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: hashFiles('apps/web/package.json') != ''
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install
+        working-directory: apps/web
+        run: npm ci
+      - name: Build
+        working-directory: apps/web
+        run: npm run build

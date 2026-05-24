@@ -1,0 +1,110 @@
+version: 1
+# Every external integration is declared with its kill switches and policy gates.
+# verify_live_send_safety.py refuses to ship if any live integration is
+# missing approval / suppression / audit / daily-limit / mock-default.
+integrations:
+  - id: whatsapp_greenapi
+    name: WhatsApp (GreenAPI)
+    surface: server_only
+    direction: outbound
+    secrets:
+      - GREEN_API_INSTANCE_ID
+      - GREEN_API_TOKEN
+    kill_switches:
+      live_send_enable_flag: WHATSAPP_ALLOW_LIVE_SEND   # MUST default false
+      mock_mode_flag: WHATSAPP_MOCK_MODE                # MUST default true
+      daily_limit_env: WHATSAPP_DAILY_LIMIT             # MUST be set in production
+    gates:
+      approval_required: A2
+      requires_suppression_check: true
+      requires_audit_write: true
+      requires_policy_decision: ALLOW_AFTER_APPROVAL
+    frontend_direct_call_allowed: false
+
+  - id: email_smtp
+    name: Transactional Email (SMTP)
+    surface: server_only
+    direction: outbound
+    secrets:
+      - SMTP_USER
+      - SMTP_PASSWORD
+    kill_switches:
+      live_send_enable_flag: EMAIL_ALLOW_LIVE_SEND      # default false
+      mock_mode_flag: EMAIL_MOCK_MODE                   # default true
+      daily_limit_env: EMAIL_DAILY_LIMIT
+    gates:
+      approval_required: A2
+      requires_suppression_check: true
+      requires_audit_write: true
+      requires_policy_decision: ALLOW_AFTER_APPROVAL
+    frontend_direct_call_allowed: false
+
+  - id: moyasar_payments
+    name: Moyasar Payments
+    surface: server_only
+    direction: outbound
+    secrets:
+      - MOYASAR_SECRET_KEY
+    kill_switches:
+      live_send_enable_flag: MOYASAR_ALLOW_LIVE_CAPTURE # default false
+      mock_mode_flag: MOYASAR_MOCK_MODE                 # default true
+    gates:
+      approval_required: A2
+      requires_audit_write: true
+      requires_policy_decision: ESCALATE   # any pricing/capture must escalate
+    frontend_direct_call_allowed: false
+    forbidden_in_frontend_bundle: true
+
+  - id: hubspot_crm
+    name: HubSpot CRM
+    surface: server_only
+    direction: bidirectional
+    secrets:
+      - HUBSPOT_ACCESS_TOKEN
+    kill_switches:
+      live_send_enable_flag: HUBSPOT_ALLOW_LIVE_WRITE
+      mock_mode_flag: HUBSPOT_MOCK_MODE
+    gates:
+      approval_required: A1   # CRM writes are A1 (internal record-keeping)
+      requires_audit_write: true
+    frontend_direct_call_allowed: false
+
+  - id: google_search
+    name: Google Programmable Search
+    surface: server_only
+    direction: outbound
+    secrets:
+      - GOOGLE_SEARCH_API_KEY
+      - GOOGLE_SEARCH_CX
+    kill_switches:
+      mock_mode_flag: GOOGLE_SEARCH_MOCK_MODE
+    gates:
+      approval_required: A0   # read-only research
+      requires_audit_write: false
+    frontend_direct_call_allowed: false
+
+  - id: groq_llm
+    name: Groq LLM Gateway
+    surface: server_only
+    direction: outbound
+    secrets:
+      - GROQ_API_KEY
+    kill_switches:
+      mock_mode_flag: GROQ_MOCK_MODE
+    gates:
+      approval_required: A1   # internal drafts only
+      requires_audit_write: true
+      requires_policy_decision: ALLOW_AFTER_APPROVAL
+    frontend_direct_call_allowed: false
+
+  - id: posthog_analytics
+    name: PostHog
+    surface: server_only
+    direction: outbound
+    secrets: []
+    kill_switches:
+      mock_mode_flag: POSTHOG_MOCK_MODE
+    gates:
+      approval_required: A0
+      requires_audit_write: false
+    frontend_direct_call_allowed: false   # use server proxy
