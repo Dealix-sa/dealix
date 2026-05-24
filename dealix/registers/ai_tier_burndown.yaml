@@ -1,0 +1,474 @@
+# ═══════════════════════════════════════════════════════════════════
+# AI Tier Burndown Register — 12-Tier Parallel Execution Tracker
+# ═══════════════════════════════════════════════════════════════════
+# Tracks the parallel implementation of the 12 AI tiers per
+# the Comprehensive Build-Out Plan (6-month compressed timeline,
+# AI-first parallel execution mode).
+#
+# Updated weekly by AI Lead via `scripts/ai_tier_burndown.py`.
+# Gate state moves: scaffolded → in_progress → verifying → PASS.
+# ═══════════════════════════════════════════════════════════════════
+
+schema_version: "1.0"
+plan_horizon_days: 180
+execution_mode: "ai_first_parallel"
+last_reviewed: "2026-05-24"
+ai_lead: "founder"  # transitions to CTO co-founder by Day 60
+
+tiers:
+  - id: 1
+    name: "LLM Router Hardening"
+    anchor: "core/llm/router.py"
+    gate_day: 14
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 1.1
+        name: "Redis-backed response cache"
+        status: planned
+        evidence: []
+      - id: 1.2
+        name: "Streaming outputs via SSE"
+        status: planned
+        evidence: []
+      - id: 1.3
+        name: "Per-customer quotas in budget_policy.py"
+        status: planned
+        evidence: []
+      - id: 1.4
+        name: "Latency p50/p95/p99 tracked per provider"
+        status: planned
+        evidence: []
+      - id: 1.5
+        name: "Provider rate-limit backoff with jitter"
+        status: planned
+        evidence: []
+      - id: 1.6
+        name: "Cost ledger extended with cache_hit/latency/retry fields"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "Cache hit rate > 30% on repeated invocations"
+      - "Streaming SSE first byte < 200ms"
+      - "Per-customer over-budget triggers fallback (verified test)"
+      - "Latency dashboard live"
+
+  - id: 2
+    name: "Agent Maturity"
+    anchor: "core/agents/base.py + 15+ agents"
+    gate_day: 14
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 2.1
+        name: "Pydantic v2 I/O on every agent"
+        status: planned
+        evidence: []
+      - id: 2.2
+        name: "DecisionOutput return on every agent"
+        status: planned
+        evidence: []
+      - id: 2.3
+        name: "Evidence Pack auto-built per agent call"
+        status: planned
+        evidence: []
+      - id: 2.4
+        name: "Auto-emission to verification ledger"
+        status: planned
+        evidence: []
+      - id: 2.5
+        name: "Standardized error taxonomy"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "100% agents emit DecisionOutput (CI grep test green)"
+      - "100% Tier-A/B decisions carry Evidence Pack"
+      - "Every tool call logged in verification ledger"
+
+  - id: 3
+    name: "RAG Production"
+    anchor: "core/memory/revenue_memory.py + embedding_service.py"
+    gate_day: 30
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 3.1
+        name: "pgvector extension enabled + migration"
+        status: planned
+        evidence: []
+      - id: 3.2
+        name: "Three memory tiers: semantic + episodic + working"
+        status: planned
+        evidence: []
+      - id: 3.3
+        name: "Knowledge graph for accounts (Postgres-backed)"
+        status: planned
+        evidence: []
+      - id: 3.4
+        name: "Embedding caching by content hash"
+        status: planned
+        evidence: []
+      - id: 3.5
+        name: "Hybrid retrieval: vector + BM25 + recency + tenant filter"
+        status: planned
+        evidence: []
+      - id: 3.6
+        name: "Per-tenant memory isolation via RLS"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "pgvector live"
+      - "3 memory tiers queryable"
+      - "Knowledge graph 100+ nodes by Day 30, 1K+ by Day 120"
+      - "RLS verified across tenants"
+      - "Hybrid retrieval recall@10 > 0.85 on golden set"
+
+  - id: 4
+    name: "Eval Harness"
+    anchor: "evals/*.yaml + evals/*.jsonl"
+    gate_day: 30
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 4.1
+        name: "LLM-as-judge harness with per-task rubrics"
+        status: planned
+        evidence: []
+      - id: 4.2
+        name: "Regression suites in CI (fail on > 5% drop)"
+        status: planned
+        evidence: []
+      - id: 4.3
+        name: "Golden dataset expansion (50 cases per agent)"
+        status: planned
+        evidence: []
+      - id: 4.4
+        name: "Bilingual eval (AR + EN with localized rubrics)"
+        status: planned
+        evidence: []
+      - id: 4.5
+        name: "Eval dashboard surfaced in /[locale]/ops/eval"
+        status: planned
+        evidence: []
+      - id: 4.6
+        name: "Eval-driven prompt promotion to production"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "15+ eval suites running on every PR"
+      - "50+ golden cases per agent"
+      - "CI regression gate active"
+      - "Dashboard live"
+
+  - id: 5
+    name: "Guardrails"
+    anchor: "auto_client_acquisition/tool_guardrail_gateway/ + api/middleware/bopla_redaction.py"
+    gate_day: 30
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 5.1
+        name: "PII redaction (Presidio + AraBERT NER)"
+        status: planned
+        evidence: []
+      - id: 5.2
+        name: "Prompt injection detection (heuristics + classifier)"
+        status: planned
+        evidence: []
+      - id: 5.3
+        name: "Structured refusal handling with reason codes"
+        status: planned
+        evidence: []
+      - id: 5.4
+        name: "Off-topic detection (intent classifier)"
+        status: planned
+        evidence: []
+      - id: 5.5
+        name: "Output guardrails: forbidden_claims filter"
+        status: planned
+        evidence: []
+      - id: 5.6
+        name: "All guardrail decisions logged with trace IDs"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "Zero PII in LLM logs (sampled audit)"
+      - "Prompt injection corpus 95%+ caught"
+      - "Forbidden claims blocked"
+      - "Refusals structured (not LLM-generated apology)"
+
+  - id: 6
+    name: "Bilingual Depth"
+    anchor: "core/prompts/saudi_dialect.py + auto_client_acquisition/saudi_layer/"
+    gate_day: 60
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 6.1
+        name: "Khaleeji Arabic prompt library (10×+ current 8.7KB)"
+        status: planned
+        evidence: []
+      - id: 6.2
+        name: "Dialect-aware routing (Khaleeji vs MSA)"
+        status: planned
+        evidence: []
+      - id: 6.3
+        name: "RTL/LTR-aware mixed-content formatting"
+        status: planned
+        evidence: []
+      - id: 6.4
+        name: "Saudi sector taxonomy localized (12+ sectors, ISIC)"
+        status: planned
+        evidence: []
+      - id: 6.5
+        name: "Arabic QA + style validator on every Arabic output"
+        status: planned
+        evidence: []
+      - id: 6.6
+        name: "City/region normalizer for Saudi geography"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "All 15+ agents have agent-specific Arabic prompts"
+      - "Arabic QA pass rate > 95%"
+      - "Style validator catches > 90% of issues"
+
+  - id: 7
+    name: "Tool-Use Loop"
+    anchor: "core/agents/tools.py + dealix/trust/tool_verification.py"
+    gate_day: 60
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 7.1
+        name: "Structured tool registry with classifications"
+        status: planned
+        evidence: []
+      - id: 7.2
+        name: "Native Anthropic tool-use API integration"
+        status: planned
+        evidence: []
+      - id: 7.3
+        name: "Auto-emission to verification ledger"
+        status: planned
+        evidence: []
+      - id: 7.4
+        name: "Tool result schema validation"
+        status: planned
+        evidence: []
+      - id: 7.5
+        name: "Tool failure fallback policy"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "100% tool calls logged to ledger"
+      - "Zero string-parsing of tool calls"
+      - "Fallback chain tested"
+
+  - id: 8
+    name: "Agentic Orchestration"
+    anchor: "auto_client_acquisition/orchestrator/ + temporal/"
+    gate_day: 120
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 8.1
+        name: "LangGraph for branching decision flows"
+        status: planned
+        evidence: []
+      - id: 8.2
+        name: "Temporal for durability + replay"
+        status: planned
+        evidence: []
+      - id: 8.3
+        name: "Workflow trace IDs propagated end-to-end"
+        status: planned
+        evidence: []
+      - id: 8.4
+        name: "Saga pattern for cross-service workflows"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "Pipeline runs durable + replayable"
+      - "LangGraph branching live (qualification → booking/nurture)"
+      - "Saga compensation tested"
+
+  - id: 9
+    name: "Cost Controls"
+    anchor: "auto_client_acquisition/llm_gateway_v10/budget_policy.py + cost_tracker.py"
+    gate_day: 120
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 9.1
+        name: "Per-tenant monthly budget enforcement"
+        status: planned
+        evidence: []
+      - id: 9.2
+        name: "Per-day quotas per agent type"
+        status: planned
+        evidence: []
+      - id: 9.3
+        name: "Provider rate-limit backoff"
+        status: planned
+        evidence: []
+      - id: 9.4
+        name: "Cost dashboard (tenant / agent / provider)"
+        status: planned
+        evidence: []
+      - id: 9.5
+        name: "Cost anomaly alerting (3-sigma)"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "Over-budget triggers fallback (verified)"
+      - "Cost dashboard < 5% drift from actual"
+      - "Anomaly alerts fire on synthetic spike"
+
+  - id: 10
+    name: "Self-Improvement Loop"
+    anchor: "auto_client_acquisition/friction_log/ + learning_flywheel/ + self_evolving_os/"
+    gate_day: 180
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 10.1
+        name: "Friction events captured during agent runs"
+        status: planned
+        evidence: []
+      - id: 10.2
+        name: "Friction aggregator producing weekly signals"
+        status: planned
+        evidence: []
+      - id: 10.3
+        name: "Prompt A/B variant generator"
+        status: planned
+        evidence: []
+      - id: 10.4
+        name: "Eval-driven winner promotion (with versioning)"
+        status: planned
+        evidence: []
+      - id: 10.5
+        name: "Jinja2 prompt template versioning system"
+        status: planned
+        evidence: []
+      - id: 10.6
+        name: "Migration of hardcoded prompts to versioned templates"
+        status: planned
+        evidence: []
+      - id: 10.7
+        name: "Founder review required for externally-facing variants"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "Weekly A/B test runs"
+      - "Winning variant promoted (founder-approved)"
+      - "Prompt versions tracked"
+      - "Full friction → variant → eval → promote loop closed"
+
+  - id: 11
+    name: "Observability"
+    anchor: "dealix/observability/otel.py + cost_tracker.py + sentry.py"
+    gate_day: 30
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 11.1
+        name: "Langfuse live capturing every LLM call"
+        status: planned
+        evidence: []
+      - id: 11.2
+        name: "OTel gen_ai.* semantic conventions on every LLM span"
+        status: planned
+        evidence: []
+      - id: 11.3
+        name: "Trace UI (Langfuse recommended)"
+        status: planned
+        evidence: []
+      - id: 11.4
+        name: "Cost dashboard (also Tier 9)"
+        status: planned
+        evidence: []
+      - id: 11.5
+        name: "Eval dashboard (also Tier 4)"
+        status: planned
+        evidence: []
+      - id: 11.6
+        name: "Single trace_id end-to-end (request → audit)"
+        status: planned
+        evidence: []
+      - id: 11.7
+        name: "Sentry + PagerDuty for critical alerts"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "Langfuse dashboard receiving traces"
+      - "OTel gen_ai.* emitted on every LLM span"
+      - "Single trace_id end-to-end (verified sample)"
+      - "Sentry capturing prod errors"
+    priority_note: "Tier 11 ships first (Day 30) — needed for other tiers to verify against trace data."
+
+  - id: 12
+    name: "Multi-Modal"
+    anchor: "core/llm/gemini_client.py + new voice_client.py"
+    gate_day: 180
+    status: scaffolded
+    owner: "founder"
+    deliverables:
+      - id: 12.1
+        name: "Gemini for document understanding (contracts, RFPs, invoices)"
+        status: planned
+        evidence: []
+      - id: 12.2
+        name: "Document ingestion pipeline"
+        status: planned
+        evidence: []
+      - id: 12.3
+        name: "Whisper or Gemini-audio for sales calls"
+        status: planned
+        evidence: []
+      - id: 12.4
+        name: "Post-call summary agent"
+        status: planned
+        evidence: []
+      - id: 12.5
+        name: "Multi-modal evidence in Evidence Packs"
+        status: planned
+        evidence: []
+    success_criteria:
+      - "Contract upload → Gemini extracts clauses → Decision Passport cites clauses"
+      - "Sales call transcribed → pain extracted → memory updated"
+
+# ═══════════════════════════════════════════════════════════════════
+# Gate Synthesis — cross-tier verification points
+# ═══════════════════════════════════════════════════════════════════
+gates:
+  - day: 14
+    name: "Tier 1 + 2 PASS"
+    tiers_required: [1, 2]
+    status: pending
+  - day: 30
+    name: "Tier 3 + 4 + 5 + 11 PASS"
+    tiers_required: [3, 4, 5, 11]
+    status: pending
+  - day: 60
+    name: "Tier 6 + 7 PASS (Tier 11 already PASS)"
+    tiers_required: [6, 7]
+    status: pending
+  - day: 120
+    name: "Tier 8 + 9 PASS"
+    tiers_required: [8, 9]
+    status: pending
+  - day: 180
+    name: "Tier 10 + 12 PASS — ALL 12 TIERS COMPLETE"
+    tiers_required: [10, 12]
+    status: pending
+
+# ═══════════════════════════════════════════════════════════════════
+# Status legend
+# ═══════════════════════════════════════════════════════════════════
+# planned       — not started
+# scaffolded    — file paths declared, owner assigned
+# in_progress   — code being written
+# verifying     — code complete, verification running
+# PASS          — verification green, claim added to no_overclaim.yaml

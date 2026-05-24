@@ -247,3 +247,253 @@ claims:
       - dealix/classifications/__init__.py::NEVER_AUTO_EXECUTE
     gaps:
       - "Agent tool calls (LLM tool use) not yet routed through the connector facade"
+
+  # ═══════════════════════════════════════════════════════════════════
+  # Claims added by the 180-day Build-Out Plan (2026-05-24)
+  # Each starts at Planned/Pilot; target Production by Day 180.
+  # See /root/.claude/plans/eventual-wobbling-swan.md
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: multi_psp_revenue_path
+    claim: "Multi-PSP revenue path (Moyasar + Hyperpay + Tap) uncouples revenue from any single processor"
+    status: Pilot
+    evidence:
+      - dealix/payments/psp_router.py
+      - dealix/payments/hyperpay.py
+      - dealix/payments/moyasar.py
+      - tests/test_psp_router.py
+    gaps:
+      - "Hyperpay live keys + production webhook pending"
+      - "Tap integration scheduled Day 60"
+      - "Webhook normalizers + reconciliation across PSPs pending"
+    target_status: Production
+    target_day: 60
+
+  - id: ai_tier_burndown_register
+    claim: "12 AI tiers tracked weekly via a single source-of-truth register"
+    status: Production
+    evidence:
+      - dealix/registers/ai_tier_burndown.yaml
+      - scripts/ai_tier_burndown.py
+
+  - id: okrs_register
+    claim: "Company OKRs codified with quarterly + monthly review cadence"
+    status: Production
+    evidence:
+      - dealix/registers/okrs_2026.yaml
+
+  - id: dpo_appointment_register
+    claim: "DPO appointment register published; appointment by Day 14"
+    status: Pilot
+    evidence:
+      - dealix/registers/dpo_appointment.yaml
+    gaps:
+      - "Actual DPO appointment pending (Day 14 target)"
+      - "SDAIA registration filing pending (Day 120 target)"
+    target_status: Production
+    target_day: 14
+
+  - id: ropa_register
+    claim: "Record of Processing Activities (PDPL Art. 7) populated per processing activity"
+    status: Pilot
+    evidence:
+      - dealix/registers/ropa.yaml
+      - auto_client_acquisition/compliance_os/ropa.py
+    gaps:
+      - "Quarterly DPO review cadence not yet established"
+      - "Auto-population from production telemetry pending"
+    target_status: Production
+    target_day: 30
+
+  - id: breach_response_runbook
+    claim: "72-hour PDPL breach response runbook with monthly drills"
+    status: Pilot
+    evidence:
+      - docs/25_compliance_trust/BREACH_RUNBOOK.md
+    gaps:
+      - "First quarterly drill pending (Day 60)"
+      - "On-call rotation requires DPO appointment"
+      - "SDAIA notification template requires legal sign-off"
+    target_status: Production
+    target_day: 60
+
+  - id: llm_response_cache
+    claim: "Redis-backed LLM response cache with > 30% hit rate on repeated invocations"
+    status: Planned
+    evidence: []
+    gaps:
+      - "Cache layer not yet wired into core/llm/router.py"
+      - "Cache invalidation policy by task type pending"
+    target_status: Production
+    target_day: 14
+
+  - id: llm_streaming_outputs
+    claim: "Streaming LLM outputs via SSE for customer-facing chat surfaces"
+    status: Planned
+    evidence: []
+    gaps:
+      - "SSE endpoint not yet implemented"
+      - "Streaming token batching pending"
+    target_status: Production
+    target_day: 14
+
+  - id: langfuse_live
+    claim: "Langfuse captures every LLM call with full trace and cost"
+    status: Planned
+    evidence:
+      - dealix/observability/otel.py
+    gaps:
+      - "OTel sender to Langfuse not yet configured in prod"
+      - "Trace ID propagation end-to-end pending"
+    target_status: Production
+    target_day: 30
+
+  - id: temporal_durable_workflows
+    claim: "Temporal-backed durable workflows with replay capability"
+    status: Planned
+    evidence: []
+    gaps:
+      - "Temporal server not yet deployed"
+      - "Phase 8 pipeline not yet migrated to Temporal activities"
+    target_status: Production
+    target_day: 60
+
+  - id: opa_rego_policy_engine
+    claim: "OPA/Rego policy engine handles all policy decisions with per-tenant policies"
+    status: Planned
+    evidence: []
+    gaps:
+      - "OPA sidecar not yet deployed"
+      - "Rego policy files not yet authored"
+    target_status: Production
+    target_day: 60
+
+  - id: pgvector_rag_production
+    claim: "pgvector-backed RAG with 3 memory tiers (semantic + episodic + working) and per-tenant RLS"
+    status: Planned
+    evidence:
+      - core/memory/revenue_memory.py
+      - core/memory/embedding_service.py
+    gaps:
+      - "pgvector extension not yet enabled"
+      - "3 memory tiers not yet differentiated"
+      - "Per-tenant RLS not yet enforced for embeddings"
+    target_status: Production
+    target_day: 30
+
+  - id: eval_harness_ci
+    claim: "LLM-as-judge eval harness gates every PR with regression detection"
+    status: Planned
+    evidence:
+      - evals/arabic_quality_eval.yaml
+      - evals/governance_eval.yaml
+      - evals/lead_intelligence_eval.yaml
+      - evals/outreach_quality_eval.yaml
+      - evals/company_brain_eval.yaml
+    gaps:
+      - "LLM-as-judge harness not yet implemented"
+      - "CI gate not yet wired"
+      - "Golden datasets need expansion (50 per agent target)"
+    target_status: Production
+    target_day: 30
+
+  - id: pii_redaction_live
+    claim: "PII redaction (Presidio + AraBERT NER) on every LLM input"
+    status: Planned
+    evidence:
+      - api/middleware/bopla_redaction.py
+    gaps:
+      - "Presidio + AraBERT integration pending"
+      - "KSA-specific patterns (NID, IBAN, +966 phone) need rule pack"
+    target_status: Production
+    target_day: 30
+
+  - id: prompt_injection_guardrail
+    claim: "Prompt injection detection blocks jailbreak attempts on every user-supplied text"
+    status: Planned
+    evidence:
+      - tests/test_v7_prompt_injection_resistance.py
+    gaps:
+      - "Runtime detection not yet wired (test file exists, guardrail does not)"
+      - "Classifier not yet trained"
+    target_status: Production
+    target_day: 30
+
+  - id: dsar_endpoints
+    claim: "Data Subject Access Request endpoints respond within PDPL window (compressing to 72h)"
+    status: Planned
+    evidence:
+      - auto_client_acquisition/compliance_os/data_subject_requests.py
+    gaps:
+      - "/api/v1/privacy/data-subject-request endpoint not yet wired"
+      - "/api/v1/privacy/my-data endpoint not yet wired"
+      - "30-day → 72h compression requires automation"
+    target_status: Production
+    target_day: 30
+
+  - id: prompt_versioning_jinja2
+    claim: "All prompts versioned as Jinja2 templates with A/B testing infrastructure"
+    status: Planned
+    evidence: []
+    gaps:
+      - "core/prompts/templates/ directory not yet created"
+      - "String formatting in prompts not yet migrated"
+    target_status: Production
+    target_day: 180
+
+  - id: self_improvement_loop
+    claim: "Friction log → prompt A/B variants → eval scoring → versioned promotion"
+    status: Planned
+    evidence:
+      - auto_client_acquisition/friction_log/
+      - auto_client_acquisition/learning_flywheel/
+      - auto_client_acquisition/self_evolving_os/
+    gaps:
+      - "Aggregator → variant generation not yet wired"
+      - "Eval-driven promotion not yet automated"
+      - "Founder-review gate on external-facing variants pending"
+    target_status: Production
+    target_day: 180
+
+  - id: multi_modal_documents
+    claim: "Gemini-based document understanding for contracts, RFPs, ZATCA invoices"
+    status: Planned
+    evidence:
+      - core/llm/gemini_client.py
+    gaps:
+      - "Document ingestion pipeline not yet built"
+      - "Per-document-type schemas not yet defined"
+    target_status: Production
+    target_day: 180
+
+  - id: multi_modal_voice
+    claim: "Whisper/Gemini-audio for sales call transcription with post-call summary agent"
+    status: Planned
+    evidence: []
+    gaps:
+      - "Voice client not yet implemented"
+      - "Post-call summary agent not yet built"
+    target_status: Production
+    target_day: 180
+
+  - id: cost_anomaly_alerting
+    claim: "Per-tenant + per-day LLM cost quotas with 3-sigma anomaly alerting"
+    status: Planned
+    evidence:
+      - dealix/observability/cost_tracker.py
+      - auto_client_acquisition/llm_gateway_v10/budget_policy.py
+    gaps:
+      - "Per-tenant budgets not yet enforced"
+      - "Anomaly detection not yet wired to Sentry"
+    target_status: Production
+    target_day: 120
+
+  - id: knowledge_graph_accounts
+    claim: "Postgres-backed knowledge graph for accounts (company / person / signal / decision / evidence)"
+    status: Planned
+    evidence: []
+    gaps:
+      - "Schema not yet migrated"
+      - "Edge derivation logic not yet implemented"
+    target_status: Production
+    target_day: 120
