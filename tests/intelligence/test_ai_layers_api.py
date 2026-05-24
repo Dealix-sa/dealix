@@ -6,12 +6,13 @@ Integration tests for the /api/v1/ai-layers/* router.
 from __future__ import annotations
 
 import pytest
+import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 
 from api.main import create_app
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def client():
     app = create_app()
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
