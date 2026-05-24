@@ -1,0 +1,59 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/session_start_hook.sh",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(pytest:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(ruff:*)",
+      "Bash(mypy:*)",
+      "Bash(pre-commit run:*)",
+      "Bash(python scripts/dealix_status.py:*)",
+      "Bash(python scripts/dealix_smoke_test.py:*)",
+      "Bash(python scripts/dealix_diagnostic.py:*)",
+      "Bash(python scripts/dealix_morning_digest.py:*)",
+      "Bash(bash scripts/post_redeploy_verify.sh:*)",
+      "Bash(bash scripts/session_start_hook.sh:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Read(*)",
+      "Glob(*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push --force-with-lease:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git clean -fdx:*)",
+      "WebFetch(domain:api.moyasar.com)"
+    ]
+  },
+  "env": {
+    "DEALIX_ENV": "dev",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONUTF8": "1"
+  }
+}
