@@ -464,6 +464,16 @@ def test_config_loader_routing_thresholds():
     assert th["nurture_min"] >= 1
 
 
+def test_ops_autopilot_routes_registered_on_app():
+    """AUTOPILOT_ROUTERS must be included in api.main create_app()."""
+    from api.main import app
+
+    paths = {getattr(route, "path", "") for route in app.routes}
+    assert "/api/v1/ops-autopilot/war-room/today-pack" in paths
+    assert "/api/v1/ops-autopilot/founder/daily-pack" in paths
+    assert "/api/v1/ops-autopilot/marketing/social-today" in paths
+
+
 def test_calendly_webhook_handler():
     from dealix.revenue_ops_autopilot.webhook_handlers import handle_calendly_webhook
 

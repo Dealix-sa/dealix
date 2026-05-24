@@ -259,6 +259,12 @@ def create_app() -> FastAPI:
         for router in domain.get_routers():
             app.include_router(router)
 
+    # ── Revenue Ops Autopilot (War Room, founder cockpit, marketing) ─
+    from api.routers.revenue_ops_autopilot import AUTOPILOT_ROUTERS
+
+    for _autopilot_router in AUTOPILOT_ROUTERS:
+        app.include_router(_autopilot_router)
+
     # ── Enterprise additions ───────────────────────────────────────
     app.include_router(auth.router, prefix="/api/v1")
     app.include_router(jobs.router, prefix="/api/v1")

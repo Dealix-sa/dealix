@@ -20,8 +20,26 @@
 | **DeepSeek** | `deepseek-chat` | balanced_for_drafts | Code · implementation | $0.14 in / $0.28 out |
 | **Zhipu GLM** | `glm-4` | balanced_for_drafts | Arabic-heavy text · bulk | $0.14 in / $0.28 out |
 | **OpenAI** | `gpt-4o-mini` | cheap_for_classification | Fallback general-purpose | $0.15 in / $0.60 out |
+| **MiniMax** | `MiniMax-M2.7` | strong_for_strategy (runtime fallback) | Heavy reasoning · Arabic narrative | see MiniMax pricing |
 
-**Source:** `dealix/observability/cost_tracker.py:38-56` (cost matrix) · `core/config/settings.py:54-81` (defaults).
+**Source:** `dealix/observability/cost_tracker.py:38-56` (cost matrix) · `core/config/settings.py` (defaults).
+
+### Dealix AI Runtime (founder local + Railway)
+
+**Cursor = IDE only (OpenAI).** Production chat uses env-driven router:
+
+| Env | Default |
+|-----|---------|
+| `AI_PRIMARY_PROVIDER` | `deepseek` |
+| `AI_FALLBACK_PROVIDER` | `minimax` |
+| `DEEPSEEK_API_KEY` / `MINIMAX_API_KEY` | from `.env.local` or Railway |
+
+- Module: [`core/llm/runtime_router.py`](../core/llm/runtime_router.py)
+- API: `GET/POST /api/v1/ai-runtime/*` (admin key)
+- Verify: `python3 scripts/verify_ai_runtime_providers.py` (`--ping` for live)
+- Personal Operator LLM brief prefers runtime router, then task router
+
+Copy [`.env.local.example`](../.env.local.example) → `.env.local` (never commit).
 
 ---
 

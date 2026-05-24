@@ -55,6 +55,16 @@ ladder:
     founder_says_ar: "ديمو ECC — لا بيع قبل Proof على طبقة أدنى"
 
 integrations:
+  - id: ops_autopilot_api
+    label_ar: "Ops Autopilot API (War Room + founder cockpit)"
+    status: green
+    verify_script: "pytest tests/test_revenue_ops_autopilot.py; GET /api/v1/ops-autopilot/war-room/today-pack"
+    founder_says_ar: "مسجّل في api/main.py عبر AUTOPILOT_ROUTERS — admin key مطلوب"
+  - id: ai_runtime_router
+    label_ar: "AI Runtime (DeepSeek → MiniMax)"
+    status: yellow
+    verify_script: "python3 scripts/verify_ai_runtime_providers.py --ping"
+    founder_says_ar: "مفاتيح في .env.local فقط — Cursor لا يشغّل المزودين"
   - id: postgres_redis
     label_ar: "Postgres + Redis"
     status: green
@@ -78,8 +88,13 @@ integrations:
   - id: hubspot_crm
     label_ar: "HubSpot CRM"
     status: yellow
-    verify_script: "POST /api/v1/leads (sync skipped without key)"
-    founder_says_ar: "CRM يدوي + kpi_founder_commercial_import.yaml"
+    verify_script: "HUBSPOT_ACCESS_TOKEN + PATCH /api/v1/ops-autopilot/war-room/{id}"
+    founder_says_ar: "ضع HUBSPOT_ACCESS_TOKEN على Railway ثم اختبر sync من War Room"
+  - id: calendly_booking
+    label_ar: "Calendly حجز"
+    status: yellow
+    verify_script: "CALENDLY_URL + POST /api/v1/webhooks/calendly"
+    founder_says_ar: "CALENDLY_URL في العروض — webhook يحتاج CALENDLY_WEBHOOK_SECRET"
   - id: gmail_external
     label_ar: "Gmail خارجي"
     status: red

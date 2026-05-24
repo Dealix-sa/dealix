@@ -6,6 +6,7 @@
 dealix/transformation/kpi_founder_commercial_import.yaml
 !.env.example
 !.env.staging.example
+!.env.local.example
 *.pem
 *.key
 *.p12
@@ -101,6 +102,8 @@ dumps/
 !landing/assets/data/service-readiness.json
 # Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
 !data/workflows/
+!data/agent_work_packets/
+!data/agent_work_packets/daily_packets.yaml
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

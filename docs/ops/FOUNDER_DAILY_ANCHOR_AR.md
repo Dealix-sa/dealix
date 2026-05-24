@@ -30,10 +30,14 @@ py -3 scripts/run_dealix_unified_founder_day.py
 
 ## تسلسل الصباح (10–15 دقيقة)
 
-1. `powershell -File scripts/founder_cadence.ps1` (أو `bash scripts/founder_cadence.sh`)
-2. افتح الموجز: `data/founder_briefs/commercial_YYYY-MM-DD.md`
-3. نفّذ مسار الـ 5 دقائق من MASTER (War Room → Evidence)
-4. `/ar/ops/founder` ثم `/ar/ops/war-room` عند الحاجة
+1. `bash scripts/founder_launch_day0.sh` (بوابة يوم 0 — ops-autopilot + AI runtime)
+2. `bash scripts/run_founder_agent_fleet_rhythm.sh` (حزم الوكلاء)
+3. `bash scripts/run_founder_commercial_day.sh --full` (أو `founder_cadence.sh`)
+4. افتح الموجز: `data/founder_briefs/commercial_YYYY-MM-DD.md`
+5. نفّذ مسار الـ 5 دقائق من MASTER (War Room → Evidence)
+6. `/ar/ops/founder` · `/ar/ops/war-room` · `/ar/ops/approvals` (يتطلب `AUTOPILOT_ROUTERS` في API)
+
+**API محلي:** `GET /api/v1/ops-autopilot/war-room/today-pack` · `GET /api/v1/ai-runtime/status` (مفتاح admin)
 
 **حالة موحّدة:**
 

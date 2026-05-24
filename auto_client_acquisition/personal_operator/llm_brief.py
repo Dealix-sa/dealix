@@ -101,27 +101,50 @@ def _format_input_data(
 
 
 async def _call_llm(system_prompt: str, user_input: str) -> tuple[str, str]:
-    """Call LLM router. Returns (text, model_used). Raises on failure."""
+    """Call LLM — prefers Dealix runtime router (DeepSeek → MiniMax), then task router."""
+    from core.config.models import Task
+    from core.llm.base import Message
+
+    messages = [Message(role="user", content=user_input)]
+
     try:
-        from core.llm.base import Message
-        from core.llm.router import get_router
-    except ImportError as exc:
-        raise RuntimeError(f"LLM router unavailable: {exc}") from exc
+        from core.config.settings import get_settings
+        from core.llm.runtime_router import get_runtime_router
+
+        settings = get_settings()
+        chain = (
+            settings.ai_primary_provider,
+            settings.ai_fallback_provider,
+        )
+        if any(settings.has_llm_provider(p) for p in chain):
+            runtime = get_runtime_router()
+            response = await asyncio.wait_for(
+                runtime.chat(
+                    messages,
+                    system=system_prompt,
+                    max_tokens=MAX_OUTPUT_TOKENS,
+                    temperature=0.3,
+                ),
+                timeout=LLM_TIMEOUT_SECONDS,
+            )
+            return response.content, f"{response.provider}/{response.model}"
+    except Exception as exc:
+        logger.debug("daily_brief_runtime_router_skip: %s", exc)
+
+    from core.llm.router import get_router
 
     router = get_router()
-    messages = [
-        Message(role="system", content=system_prompt),
-        Message(role="user", content=user_input),
-    ]
     response = await asyncio.wait_for(
-        router.complete(
-            messages=messages,
+        router.run(
+            Task.SUMMARY,
+            messages,
+            system=system_prompt,
             max_tokens=MAX_OUTPUT_TOKENS,
             temperature=0.3,
         ),
         timeout=LLM_TIMEOUT_SECONDS,
     )
-    return response.content, getattr(response, "model", "unknown")
+    return response.content, f"{response.provider}/{response.model}"
 
 
 def _parse_brief(text: str) -> tuple[str, str, str]:
