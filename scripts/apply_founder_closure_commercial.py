@@ -283,8 +283,15 @@ def main() -> int:
 
     data = _load_intake()
     if not data:
-        print("FOUNDER_CLOSURE_COMMERCIAL=SKIP (copy founder_closure_intake.example.yaml → founder_closure_intake.yaml)")
-        return 0
+        if args.pdpl_confirm:
+            data = {}
+        else:
+            print(
+                "FOUNDER_CLOSURE_COMMERCIAL=SKIP "
+                "(copy founder_closure_intake.example.yaml to founder_closure_intake.yaml "
+                "or pass --pdpl-confirm for weekly + PDPL only)"
+            )
+            return 0
 
     if args.pdpl_confirm:
         data.setdefault("pdpl", {})["mark_all_done"] = True
