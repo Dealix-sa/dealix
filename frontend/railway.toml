@@ -1,3 +1,4 @@
+# Dealix Next.js frontend — Railway config (healthcheck /ar)
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
