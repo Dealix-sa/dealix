@@ -500,15 +500,33 @@
     "refresh": "تحديث"
   },
   "commercialLaunch": {
-    "eyebrow": "Revenue OS للوكالات والشركات في السعودية",
-    "heroTitle": "Dealix يثبت ماذا يحدث بعد الـ lead",
-    "heroSubtitle": "لا CRM آخر — مسار حوكَم من التشخيص إلى Proof Pack وقرار التوسّع، بموافقة بشرية وبدون واتساب بارد.",
+    "eyebrow": "نظام تشغيل الإيرادات المحكوم — السعودية · رؤية 2030",
+    "heroTitle": "وحّد قرار الإيراد. أثبت كل لمسة. وسّع فقط بعد Proof.",
+    "heroSubtitle": "Dealix ليس CRM آخر — ذاكرة إيرادات + حوكمة + مسار تشخيص → Proof Pack.",
+    "heroProofLine": "مبني لسوق يشتري بالثقة والامتثال.",
+    "ctaPrimary": "ابدأ التشخيص المحكوم",
     "ctaRiskScore": "احسب Risk Score",
     "ctaSampleProof": "عيّنة Proof Pack",
     "ctaDemo": "ديمو 10 دقائق",
     "ctaPartners": "شركاء",
     "navLearn": "تعلّم",
+    "navServices": "خدمات",
     "navLogin": "دخول",
+    "softPayCta": "اطلب فاتورة / احجز مراجعة",
+    "softPayHint": "إطلاق ناعم — الدفع الإلكتروني لاحقاً.",
+    "visionTitle": "لماذا الآن",
+    "visionItems": { "0": "نظام تجاري واحد.", "1": "PDPL قبل الأتمتة.", "2": "إثبات أسبوعياً." },
+    "pillarsTitle": "ست محاور",
+    "pillarsIntro": "ذاكرة، حوكمة، تسليم، امتثال، سوق، مضاد للهدر.",
+    "pillars": {
+      "0": { "title": "ذاكرة إيرادات", "body": "L0–L5." },
+      "1": { "title": "ذكاء محكوم", "body": "مسودات + موافقة." },
+      "2": { "title": "Proof Pack", "body": "7 أيام." },
+      "3": { "title": "PDPL", "body": "لا scraping." },
+      "4": { "title": "رؤية 2030", "body": "تشغيل رقمي." },
+      "5": { "title": "مضاد للهدر", "body": "لا L4-" }
+    },
+    "ceoQuote": "«قرارات قابلة للتدقيق.»",
     "problemTitle": "المشكلة — فجوات SOAEN",
     "problemIntro": "معظم الفرق تملك أدوات؛ القليل يملك سلسلة أدلة قابلة للتدقيق.",
     "problemItems": {
@@ -539,9 +557,9 @@
         "desc": "حزمة إثبات للوكالة — عينة عامة متاحة قبل الشراء."
       },
       "diagnostic": {
-        "label": "Governed Diagnostic",
-        "price": "من 499 ر.س",
-        "desc": "جلسة تشخيص 10 دقائق + مسودة مسار — فاتورة يدوية حتى الدفع الإلكتروني."
+        "label": "تشخيص Ops",
+        "price": "من 4,999 ر.س",
+        "desc": "مسار 7 أيام — Proof Pack."
       }
     },
     "offersCta": "اطلب تشخيصاً",
@@ -552,8 +570,11 @@
       "2": "لا Proof مزيف — مستويات أدلة L0–L5",
       "3": "موافقة بشرية على الإرسال الخارجي"
     },
-    "footer": "Dealix — Revenue OS · Soft Launch · السعودية"
+    "footer": "Dealix — Governed Revenue OS · السعودية",
+    "footerTrustPdpl": "لا واتساب بارد · PDPL",
+    "footerPositioning": "حوكمة وأدلة — توسّع بعد الإثبات."
   },
+  "public": { "home": "الرئيسية", "services": "الخدمات", "sprint": "Sprint", "founder": "المؤسس", "login": "دخول", "footer": "Dealix" },
   "learn": {
     "backHome": "الرئيسية",
     "backLearn": "كل المقالات",

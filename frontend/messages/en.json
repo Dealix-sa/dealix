@@ -501,15 +501,33 @@
     "refresh": "Refresh"
   },
   "commercialLaunch": {
-    "eyebrow": "Revenue OS for agencies and teams in Saudi Arabia",
-    "heroTitle": "Dealix proves what happens after the lead",
-    "heroSubtitle": "Not another CRM — a governed path from diagnostic to Proof Pack and expansion, with human approval and no cold WhatsApp.",
+    "eyebrow": "Governed Revenue OS — Saudi Arabia",
+    "heroTitle": "Unify revenue decisions. Prove every touch. Expand only after proof.",
+    "heroSubtitle": "Not another CRM — Revenue Memory + governance + diagnostic to Proof Pack.",
+    "heroProofLine": "Built for trust and compliance.",
+    "ctaPrimary": "Start governed diagnostic",
     "ctaRiskScore": "Get Risk Score",
     "ctaSampleProof": "Sample Proof Pack",
     "ctaDemo": "10-min demo",
     "ctaPartners": "Partners",
     "navLearn": "Learn",
+    "navServices": "Services",
     "navLogin": "Sign in",
+    "softPayCta": "Request invoice / book review",
+    "softPayHint": "Soft launch — Moyasar when live.",
+    "visionTitle": "Why now",
+    "visionItems": { "0": "One system.", "1": "PDPL first.", "2": "Prove weekly." },
+    "pillarsTitle": "Six pillars",
+    "pillarsIntro": "Memory, governance, delivery, compliance, market, anti-waste.",
+    "pillars": {
+      "0": { "title": "Revenue memory", "body": "L0–L5." },
+      "1": { "title": "Governed AI", "body": "Drafts + approval." },
+      "2": { "title": "Proof Pack", "body": "7 days." },
+      "3": { "title": "PDPL", "body": "No scraping." },
+      "4": { "title": "Vision 2030", "body": "Digital ops." },
+      "5": { "title": "Anti-waste", "body": "No L4-" }
+    },
+    "ceoQuote": "\"Auditable decisions.\"",
     "problemTitle": "The problem — SOAEN gaps",
     "problemIntro": "Most teams have tools; few have an auditable evidence chain.",
     "problemItems": {
@@ -540,9 +558,9 @@
         "desc": "Proof bundle for agencies — public sample before purchase."
       },
       "diagnostic": {
-        "label": "Governed Diagnostic",
-        "price": "From 499 SAR",
-        "desc": "10-minute diagnostic + path draft — manual invoice until live payments."
+        "label": "Ops diagnostic",
+        "price": "From 4,999 SAR",
+        "desc": "7-day path — Proof Pack."
       }
     },
     "offersCta": "Request diagnostic",
@@ -553,8 +571,11 @@
       "2": "No fake proof — evidence levels L0–L5",
       "3": "Human approval on external sends"
     },
-    "footer": "Dealix — Revenue OS · Soft Launch · Saudi Arabia"
+    "footer": "Dealix — Governed Revenue OS · Saudi Arabia",
+    "footerTrustPdpl": "No cold WhatsApp · PDPL",
+    "footerPositioning": "Governance and proof — expand after value."
   },
+  "public": { "home": "Home", "services": "Services", "sprint": "Sprint", "founder": "Founder", "login": "Sign in", "footer": "Dealix" },
   "learn": {
     "backHome": "Home",
     "backLearn": "All articles",
