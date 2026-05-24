@@ -78,6 +78,8 @@ from api.routers import friction_log as friction_log_router
 from api.routers import sprint_runner as sprint_runner_router
 from api.routers import founder_dashboard as founder_dashboard_router
 from api.routers import audit_export as audit_export_router
+# Wave 15 — Unified AI Stack (L1..L11 orchestrator)
+from api.routers import ai_stack as ai_stack_router
 
 # value_os, data_os and agent_os routers are imported defensively: an
 # optional router with a broken module-level import must not abort app
@@ -335,6 +337,8 @@ def create_app() -> FastAPI:
     app.include_router(sprint_runner_router.router)
     app.include_router(founder_dashboard_router.router)
     app.include_router(audit_export_router.router)
+    # Wave 15 — Unified AI Stack (L1..L11 orchestrator + /ar/ai-stack UI backend)
+    app.include_router(ai_stack_router.router)
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)
