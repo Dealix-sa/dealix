@@ -569,3 +569,28 @@ real Proof Packs to real Saudi customers.
 - [GEO Statistics 2026 — Digital Agency Network](https://digitalagencynetwork.com/generative-engine-optimization-statistics/)
 - [Best B2B SaaS Partner Programs 2026 — PartnerStack](https://partnerstack.com/articles/10-star-b2b-saas-partner-programs-in-the-partnerstack-network-for-2026)
 - [Best B2B Referral Software for SaaS 2026 — Cello](https://cello.so/7-best-b2b-referral-software-2026-guide/)
+
+---
+
+## Closure Note — 2026-05-24 (v5 engineering closure)
+
+تم إغلاق v5 على الجانب الهندسي في فرع `claude/sharp-sagan-TdtJw`. كل ما يحرّك الإيراد الآن بيد المؤسس عبر `NEXT_FOUNDER_ACTIONS.md`.
+
+The v5 engineering closure landed on branch `claude/sharp-sagan-TdtJw`. Everything that moves revenue from here is founder-driven via `NEXT_FOUNDER_ACTIONS.md`.
+
+**Closed in this pass:**
+- 9 OS modules verified shipped (data, governance, proof, value, capital, adoption, friction_log, client, sales)
+- CompanyBrain real module live at `auto_client_acquisition/company_brain_v6/`
+- Pre-commit hooks + Service Readiness Matrix validation active
+- 5 sub-agent definitions in `.claude/agents/` + new `.claude/settings.json` + `scripts/session_start_hook.sh`
+- M-1, M-2 (this section), M-3 (dashboard inline in morning digest), M-4 (system overview doc)
+- 11-gate scorecard in `docs/DEALIX_READINESS.md` filled with evidence
+
+**Founder-gated (see `NEXT_FOUNDER_ACTIONS.md`):**
+- Capital activation (Moyasar) — unlocks Gate 8 Retainer + first invoice + M-6 path
+- Observability (Sentry), Uptime (UptimeRobot), first LinkedIn DM, 3 warm intros
+- M-5..M-9 (gated on real customer / 90-day data / decision B4 / customer #3)
+
+**Verdict:** strategy unchanged; engineering caught up to it. Distribution is the next moat.
+
+Closure note: [`V5_CLOSURE_NOTE.md`](V5_CLOSURE_NOTE.md) · Founder actions: [`../NEXT_FOUNDER_ACTIONS.md`](../NEXT_FOUNDER_ACTIONS.md) · Roadmap reconciliation: [`V5_COMPLETION_ROADMAP.md`](V5_COMPLETION_ROADMAP.md)

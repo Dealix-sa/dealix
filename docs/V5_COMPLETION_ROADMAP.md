@@ -1,11 +1,11 @@
 # Dealix v5 — خارطة الإكمال الشاملة / Comprehensive Completion Roadmap
 
-> **Status:** v5 12/12 layers code-shipped. This document tracks
-> what's left to make every layer production-grade, test-grade, and
-> founder-grade.
+> **Status:** v5 12/12 layers code-shipped + Phase L verified shipped during
+> the 2026-05-24 closure audit. This document tracks what's left to make
+> every layer production-grade, test-grade, and founder-grade.
 
-**Date:** 2026-05-04
-**Branch:** `claude/service-activation-console-IA2JK` (Phase K shipped)
+**Date:** 2026-05-24 (v5 closure pass)
+**Branch:** `claude/sharp-sagan-TdtJw`
 **Bundle:** 958 passed, 8 skipped, 3 xfailed (after Phase K integration)
 
 ---
@@ -38,61 +38,66 @@
 
 ---
 
-## 🟡 In Flight (Phase L parallel agents)
+## ✅ Phase L — closed during v5 closure audit 2026-05-24
 
 | # | Track | Agent | Status |
 |---|---|---|---|
-| L-1 | CompanyBrain real module + router (flips skipped tests) | 🤖 Agent A | running |
-| L-2 | Pre-commit hooks + CI SEO step | 🤖 Agent B | running |
-| L-3 | 4 new safety tests (PDPL, PII, ledger redaction, etc.) | 🤖 Agent C | running |
+| L-1 | CompanyBrain real module + router (flips skipped tests) | 🤖 Agent A | ✅ DONE (verified in repo) |
+| L-2 | Pre-commit hooks + CI SEO step | 🤖 Agent B | ✅ DONE (verified in repo) |
+| L-3 | 4 new safety tests (PDPL, PII, ledger redaction, etc.) | 🤖 Agent C | ✅ DONE (verified in repo) |
+| — | Audit note | closure-pass | Phase L items found shipped during v5 closure audit on 2026-05-24 — see `auto_client_acquisition/company_brain_v6/`, `.pre-commit-config.yaml`, `tests/` safety suite. |
 
 ---
 
 ## ⏳ Remaining work — main thread sequence
 
-### M-1 Issue #138 closure comment (10 min)
+### M-1 ✅ DONE 2026-05-24 — Issue #138 closure comment (10 min)
 Post a comment on the GitHub Issue tracking founder decisions
 linking to the new closure docs (V5_PHASE_E_CHECKLIST.md,
 V5_FOUNDER_RUNBOOK.md). Founder decisions B1-B5 + S1-S5 stay
 open — they're founder-only.
 
-### M-2 Strategic Master Plan refresh (30 min)
+### M-2 ✅ DONE 2026-05-24 — Strategic Master Plan refresh (30 min)
 Update `docs/STRATEGIC_MASTER_PLAN_2026.md` with the v5 closure
 note + new endpoints. Keep all founder-decision rows untouched.
 
-### M-3 Daily digest workflow uses dashboard (30 min)
+### M-3 ✅ DONE 2026-05-24 — Daily digest workflow uses dashboard (30 min)
 Modify `scripts/dealix_morning_digest.py` to embed the dashboard
 JSON inline so the founder gets a single email with everything.
 
-### M-4 Comprehensive system overview doc (45 min)
-New `docs/V5_SYSTEM_OVERVIEW.md` — one-page map of every module,
+### M-4 ✅ ALREADY DONE — file exists at docs/V5_SYSTEM_OVERVIEW.md
+Comprehensive system overview doc — one-page map of every module,
 every endpoint, every CLI, every workflow. For future contributors.
 
-### M-5 Diagnostic engine: persist + retrieval (60 min — gated)
-Once Phase E produces a real Diagnostic, persist them to
+### M-5 ⏸️ founder-gated → see NEXT_FOUNDER_ACTIONS.md
+Diagnostic engine: persist + retrieval (60 min — gated). Once Phase E
+produces a real Diagnostic, persist them to
 `docs/proof-events/diagnostics/<slug>.json` with redaction. Add
 `GET /api/v1/diagnostic/history` endpoint (founder-only).
 **Gated on:** founder running the CLI for a real warm intro at
 least once.
 
-### M-6 Postgres ProofLedger swap (when ≥5 ProofEvents land)
-Replace `FileProofLedger` with `PostgresProofLedger`. Same public
-API; move backend. **Gated on:** 5 real ProofEvents on disk.
+### M-6 ⏸️ founder-gated → see NEXT_FOUNDER_ACTIONS.md
+Postgres ProofLedger swap (when ≥5 ProofEvents land). Replace
+`FileProofLedger` with `PostgresProofLedger`. Same public API;
+move backend. **Gated on:** 5 real ProofEvents on disk.
 
-### M-7 Role-brief LLM enrichment (when 3+ months of data)
-Add an optional LLM enrichment layer over `role_command_os` so
-each brief includes a 2-sentence narrative grounded in the
-existing signals. **Gated on:** 90 days of operating data.
+### M-7 ⏸️ founder-gated → see NEXT_FOUNDER_ACTIONS.md
+Role-brief LLM enrichment (when 3+ months of data). Add an optional
+LLM enrichment layer over `role_command_os` so each brief includes a
+2-sentence narrative grounded in the existing signals.
+**Gated on:** 90 days of operating data.
 
-### M-8 Search radar (when B4 decided)
-Implement `auto_client_acquisition/self_growth_os/search_radar.py`
-once founder picks a search-data source (B4 in Decision Pack).
+### M-8 ⏸️ founder-gated → see NEXT_FOUNDER_ACTIONS.md
+Search radar (when B4 decided). Implement
+`auto_client_acquisition/self_growth_os/search_radar.py` once founder
+picks a search-data source (B4 in Decision Pack).
 **Gated on:** founder decision B4.
 
-### M-9 Live-flag flip (when proven)
-Switch `whatsapp_allow_live_send` from default-False to
-configurable-via-env once 3 paying customers have verified the
-opt-in flow. **Gated on:** customer #3 + Decision Pack §S5.
+### M-9 ⏸️ founder-gated → see NEXT_FOUNDER_ACTIONS.md
+Live-flag flip (when proven). Switch `whatsapp_allow_live_send` from
+default-False to configurable-via-env once 3 paying customers have
+verified the opt-in flow. **Gated on:** customer #3 + Decision Pack §S5.
 
 ---
 
@@ -135,13 +140,14 @@ opt-in flow. **Gated on:** customer #3 + Decision Pack §S5.
 ## Verdict
 
 ```
-DEALIX_V5_OPERATIONAL_STATE=12_layers_shipped_3_polish_phases_done
-LOCAL_HEAD=<Phase K tip on claude/service-activation-console-IA2JK>
+DEALIX_V5_OPERATIONAL_STATE=12_layers_shipped_3_polish_phases_done_phase_L_closed
+LOCAL_HEAD=<v5 closure tip on claude/sharp-sagan-TdtJw>
 FULL_PYTEST=958_passed_8_skipped_3_xfailed
 PRODUCTIONIZATION_LEVEL=production_grade
-NEXT_FOUNDER_ACTION=merge_PR_and_redeploy → Phase E (warm intros)
-PRODUCTION_REDEPLOY_PENDING=true (Railway hasn't picked up latest commits)
+NEXT_FOUNDER_ACTION=see NEXT_FOUNDER_ACTIONS.md (root)
+PRODUCTION_REDEPLOY_PENDING=true (founder action)
 NO_BLOCKERS_FOR_FIRST_PAID_PILOT=true
+V5_CLOSURE_DATE=2026-05-24
 ```
 
-— Completion Roadmap v1.0 · 2026-05-04 · Dealix
+— Completion Roadmap v1.1 · 2026-05-24 closure pass · branch `claude/sharp-sagan-TdtJw` · Dealix
