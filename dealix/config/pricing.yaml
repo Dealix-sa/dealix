@@ -1,18 +1,101 @@
-# Reference pricing (SAR). Legal/commercial review before publish.
+# ═══════════════════════════════════════════════════════════════════
+# Dealix Pricing — Canonical Reference (SAR)
+# ═══════════════════════════════════════════════════════════════════
+# Single source of truth for all pricing references in code, proposals,
+# landing, and sales material. VAT (15% KSA) calculated on top at invoice
+# time — these are pre-VAT base prices.
+#
+# Legal/commercial review required before any external publish.
+# See no_overclaim register entry `pricing_5_rung_ladder`.
+# Last reviewed: 2026-05-24 (aligned with master plan v1.0)
+# ═══════════════════════════════════════════════════════════════════
 currency: SAR
+vat_rate: 0.15
+vat_jurisdiction: "KSA / ZATCA Phase 2"
 
+# ── 5-Rung Offer Ladder (master plan: founder-led commercial activation) ──
+ladder:
+  rung_0_free_diagnostic:
+    label: "Free AI Ops Diagnostic"
+    price_sar: 0
+    duration: "10-min audit + 1-page report"
+    purpose: "Lead magnet — qualifies prospect, no commitment"
+
+  rung_1_mini_sprint:
+    label: "Mini Sprint (7-Day Revenue Proof)"
+    price_sar: 499
+    duration: "3-7 days"
+    purpose: "First paid conversion — proves value, lands customer"
+    sla:
+      - "5 approved outreach messages (founder-reviewed)"
+      - "1 Proof Pack (score ≥ 70) by day 7"
+      - "Source Passport documented"
+
+  rung_2_data_pack:
+    label: "Data-to-Revenue Pack (Custom Sector Report)"
+    price_sar: 1500
+    duration: "7 days"
+    purpose: "Upsell after Mini Sprint, prove deeper value"
+    sla:
+      - "Full pipeline analysis + 10 custom plays"
+      - "Sector-specific intelligence (Real Estate / SaaS / F&B / Construction)"
+
+  rung_3_managed_ops:
+    label: "Managed Revenue Ops (Retainer)"
+    tiers:
+      starter:
+        price_sar_monthly: 2999
+        sla: "Weekly + monthly reports, 10 approved drafts/mo"
+      growth:
+        price_sar_monthly: 4999
+        sla: "Bi-weekly war-room, 20 approved drafts/mo, 1 case study/quarter"
+      scale:
+        price_sar_monthly: 7999
+        sla: "Weekly war-room, 40 approved drafts/mo, dedicated CSM"
+    purpose: "Recurring revenue — convert post-sprint customers"
+
+  rung_4_custom_ai:
+    label: "Custom AI Setup (Bespoke)"
+    price_sar_min: 5000
+    price_sar_max: 25000
+    duration: "4-8 weeks"
+    purpose: "Enterprise: bespoke integration + setup"
+    note: "Includes integration with customer's existing data/CRM/HubSpot"
+
+  rung_5_executive_cc:
+    label: "Executive Command Center"
+    setup_sar: 5000
+    monthly_min_sar: 12000
+    monthly_max_sar: 25000
+    duration: "annual contract + setup"
+    purpose: "Strategic accounts — daily briefing + market radar"
+
+# ── Legacy enterprise tiers (preserved for backwards-compat references) ──
+# These tier names appear in older proposals/landing. Map to ladder above.
 diagnostic:
-  starter: 4999
-  standard: 9999
-  executive: 15000
-  enterprise: 25000
+  starter: 499      # = rung_1_mini_sprint (renamed for clarity)
+  standard: 1500    # = rung_2_data_pack
+  executive: 4999   # = rung_3_managed_ops.growth setup
+  enterprise: 25000 # = rung_4_custom_ai.max
 
 sprint:
-  revenue_intelligence_from: 25000
+  revenue_intelligence_from: 499  # = rung_1_mini_sprint (founder-led floor)
+  revenue_intelligence_enterprise_from: 5000  # = rung_4_custom_ai.min
 
 retainer:
-  governed_ops_monthly_min: 4999
-  governed_ops_monthly_max: 35000
+  governed_ops_monthly_min: 2999  # = rung_3_managed_ops.starter
+  governed_ops_monthly_max: 25000 # = rung_5_executive_cc.monthly_max
 
-# Placeholder for future platform / add-ons
-addons: {}
+# ── Add-ons (post-Day-30) ──
+addons:
+  ad_hoc_proof_pack: 750         # one-off
+  partner_referral_commission_rate: 0.25  # 20-30%, founder discretion
+  affiliate_lifetime_rate: 0.05   # 5% on customer-referred deals
+
+# ── Pricing rules (enforced in code) ──
+rules:
+  - "All prices pre-VAT. Add 15% at invoice time (ZATCA Phase 2)."
+  - "Mini Sprint (499) is the floor — never discount below."
+  - "Custom AI proposals require founder approval (Hard Gate per sales playbook)."
+  - "No customer-specific pricing in this file — store overrides in tenant_settings table."
+  - "Annual contracts on retainer: 2 months free (16.7% discount) — founder approval required."

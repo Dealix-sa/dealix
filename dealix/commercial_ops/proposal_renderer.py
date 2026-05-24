@@ -33,9 +33,8 @@ No PII is logged. Pricing lives in YAML, tiers live in the
 from __future__ import annotations
 
 import logging
-import os
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Mapping, Protocol
 

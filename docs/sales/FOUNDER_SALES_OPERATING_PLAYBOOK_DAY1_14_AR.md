@@ -945,6 +945,274 @@ emergency (regulator, security, press, legal) →
 
 ---
 
+# Part 9 — Sector-Specific Discovery Probes
+## أسئلة Discovery خاصة بالقطاع
+
+عند تأكيد القطاع في Q5/Q9، انتقل لأحد المسارات التالية بدل الـ generic 7. الـ score يحسب من 12 نقطة لكل قطاع (مقابل 100 في `QUALIFICATION_SCORE.md`).
+
+## 9.1 Agency probes (4 إضافية)
+
+1. **عدد العملاء النشطين الآن؟** → < 5 = SMB، 5-20 = mid، 20+ = scale.
+2. **متوسط mandate الشهري؟** → < 10K = خفيف، 10K-50K = متوسط، 50K+ = retainer ready.
+3. **هل يطلب العملاء reports تفصيلية أم headlines فقط؟** → "تفصيلية" = Dealix يساعد، "headlines" = pain أقل.
+4. **هل خسرتم عميل في آخر 3 شهور بسبب reporting/proof؟** → نعم = trigger قوي.
+
+## 9.2 SaaS probes (4 إضافية)
+
+1. **MRR الحالي؟** → < 50K = early، 50K-500K = growth، 500K+ = scale.
+2. **CAC payback period؟** → > 18 شهر = pain، < 12 شهر = صحي.
+3. **هل عندكم AE أم product-led فقط؟** → AE = Rung 3 fit، PLG-only = Rung 1/2 لقياس funnel.
+4. **متى آخر churn analysis كامل؟** → "ما عملنا" = فرصة، "monthly" = متقدم.
+
+## 9.3 Retail / E-commerce probes (4 إضافية)
+
+1. **عدد الـ orders/شهر؟** → < 500 = SMB، 500-5K = mid، 5K+ = scale.
+2. **AOV (متوسط قيمة الطلب)؟** → < 200 SAR = transactional، 200-2K = considered، 2K+ = high-touch.
+3. **هل في فريق CX/customer service مستقل؟** → نعم = Dealix integrates، لا = خارج النطاق.
+4. **نسبة الـ abandoned cart الآن؟** → > 70% = pain حاد، < 50% = صحي.
+
+## 9.4 إضافة الـ probes لـ score الإجمالي
+
+أي إجابة "ألم حاد" في الـ probes = +5 نقاط على `QUALIFICATION_SCORE.md`.
+أي إجابة "متقدم/صحي" = +3 نقاط (الأقل ألماً، لكن adoption أسرع).
+
+---
+
+# Part 10 — Saudi Selling Etiquette
+## آداب البيع السعودية
+
+## 10.1 الـ Cultural rules
+
+1. **الـ relationship يسبق الـ transaction** — أول 5-10 دقائق من أي مكالمة = شخصي (الأهل، السفر، المشاريع الجانبية). لا تقفز للـ pitch.
+2. **اللقب يحترم** — أبو فلان / دكتور / مهندس / الأستاذ. لو شك، اسأل: "كيف تحب أناديك؟"
+3. **الـ "إن شاء الله"** = "نشوف، مو الآن". ليست yes. ليست no. اطلب next action محدد.
+4. **التأجيل ≠ رفض** — السوق يأخذ وقت. follow-up بأدب كل 7-10 أيام مقبول.
+5. **الـ silence مهم** — لا تملأ كل لحظة صمت. الـ partner يفكر.
+
+## 10.2 الـ Timing rules
+
+| الوقت | الحالة |
+|-------|--------|
+| Sunday 9-11am | الأفضل للـ Discovery |
+| Sunday-Tuesday 9am-2pm | الأفضل للـ Demo |
+| Wednesday afternoon | غالباً مشغول (نهاية أسبوع عمل) |
+| Thursday-Friday | تجنّب outreach (نهاية أسبوع KSA) |
+| Ramadan | تخفيض 30%، nights better than days |
+| Summer (Jun-Aug) | C-suite يسافر، follow-up أكثر من initial |
+| Hajj/Eid | لا outreach اسبوع كامل قبل وبعد |
+
+## 10.3 الـ Channel rules
+
+| Channel | متى | متى لا |
+|---------|-----|--------|
+| LinkedIn DM | warm intro فقط، personalized | لا للـ bulk |
+| WhatsApp | بعد إذن لفظي صريح في مكالمة | لا cold ever |
+| Email | follow-up رسمي، proposals | لا spam |
+| Phone call | بعد LinkedIn rapport | لا cold call أول مرة |
+| In-person event | الأقوى، استثمر | يحتاج تخطيط |
+
+## 10.4 Language tone
+
+- **عربي** للـ 80% من الجمهور — حتى لو يجاوب إنجليزي، ابدأ عربي
+- **الـ formal "أنتم"** في الكتابة، الـ informal "أنت" في المكالمة بعد الـ rapport
+- **لا تستخدم slang** — يفقد المهنية
+- **الـ emojis** في WhatsApp مقبول معتدل، في email ممنوع، في proposal ممنوع تماماً
+
+---
+
+# Part 11 — Operational Risk Register (First 14 Days)
+## سجل المخاطر التشغيلية — أول 14 يوم
+
+## 11.1 Risk matrix
+
+| ID | Risk | Likelihood | Impact | Mitigation |
+|----|------|-----------|--------|------------|
+| R-01 | Moyasar في test mode عند إرسال invoice حقيقي | متوسط | عالي جداً | run `scripts/moyasar_live_cutover.py` قبل أول proposal، confirm via `/api/v1/founder/launch-status` |
+| R-02 | Gmail OAuth غير مهيأ على Railway | متوسط | عالي | run `scripts/zatca_preflight.py`، fallback إلى founder personal email |
+| R-03 | فقدان أول lead بسبب slow follow-up | عالي | عالي | SLA: contact ≤ 24h، evening loop checklist |
+| R-04 | Demo يظهر feature في `Pilot` status | متوسط | عالي جداً | pre-demo checklist: open `no_overclaim.yaml` |
+| R-05 | Cold WhatsApp accidentally sent | منخفض | حرج | non-negotiable في الـ code، manual review لكل بضاعة |
+| R-06 | Proposal بدون disclaimer | متوسط | عالي | proposal_renderer enforces bilingual disclaimer |
+| R-07 | عميل يطلب refund > 500 SAR | منخفض | متوسط | Hard Gate (Part 8) — founder only |
+| R-08 | Pricing mismatch بين docs و YAML | عالي حالياً | متوسط | Appendix C — reconcile قبل proposal #1 |
+| R-09 | Lead في Tier D يستهلك ساعات founder | عالي | متوسط | qualification rubric صارم، 15-min cap |
+| R-10 | AEO content يخالف no_overclaim | متوسط | عالي | content_block: check register قبل publish |
+| R-11 | Demo recording يخزّن PII عميل | منخفض | حرج (PDPL) | demo بـ synthetic data فقط، recording إذن مكتوب |
+| R-12 | Proposal expires بدون follow-up | عالي | متوسط | day-12 reminder automated في founder calendar |
+
+## 11.2 Weekly risk review (Sunday)
+
+- [ ] أي risk تحقق هذا الأسبوع؟
+- [ ] أي risk جديد ظهر؟
+- [ ] mitigation أي risk فشل؟
+- [ ] هل أي risk يحتاج تصعيد لـ legal/finance؟
+
+---
+
+# Part 12 — Communication Templates (Founder Drafts)
+## نماذج التواصل — مسودات المؤسس
+
+كل template هنا = draft للمؤسس، لا يُرسل تلقائياً. الـ founder ينسخ، يخصص، يرسل يدوياً.
+
+## 12.1 Warm intro LinkedIn DM (3 variants)
+
+**Variant A — Direct value**
+> "أهلاً [الاسم]. شفت [post/announcement محدد]. عندي تشخيص مجاني (10 دقائق) يكشف كم lead بيضيع أسبوعياً من بطء الرد. لو في وقت 15 دقيقة هذا الأسبوع، Sunday 10am يمشي؟"
+
+**Variant B — Mutual connection**
+> "[الاسم]، [اسم مشترك] ذكرك في سياق [topic]. أبني Dealix — Revenue Ops طبقة فوق CRM للسوق السعودي. تشخيص مجاني لو تحب نشوف ناسب — 10 دقائق فقط."
+
+**Variant C — Trigger-based**
+> "[الاسم]، شفت [trigger: announcement, hiring, expansion]. الـ pattern اللي أشوفه: بعد X، الـ leads تزداد بسرعة أكبر من فريق المتابعة. تشخيص مجاني نشوف فيه إذا في فجوة. 10 دقائق هذا الأسبوع؟"
+
+## 12.2 Discovery scheduling email
+
+**Subject:** Discovery 15 دقيقة — Dealix Revenue Ops
+
+> "أهلاً [الاسم]،
+>
+> شكراً للاهتمام. كما اتفقنا — Discovery قصير 15 دقيقة عشان نقيّم هل في fit.
+>
+> الجدول المقترح:
+> - [Day] [Time] KSA
+> - [Day] [Time] KSA
+>
+> Calendly: [link]
+>
+> أرسل لي confirmation أو slot بديل.
+>
+> Bassam Assiri
+> Founder, Dealix
+> bassam.m.assiri@gmail.com"
+
+## 12.3 Pre-demo confirmation email
+
+**Subject:** Demo Dealix غداً [date] — تحضير سريع
+
+> "[الاسم]، تأكيد demo غداً [day] [time] KSA (مدة 30 دقيقة).
+>
+> قبل الديمو، لو تقدر تحضّر:
+> 1. مثال على lead ضاع مؤخراً (بدون PII)
+> 2. تقدير: كم lead/أسبوع، متوسط قيمة الـ deal
+> 3. الـ stack الحالي (CRM، WhatsApp Business، إلخ)
+>
+> Meeting link: [Zoom/Meet]
+>
+> أراك غداً.
+> Bassam"
+
+## 12.4 Post-demo follow-up (within 24h)
+
+**Subject:** ملخص demo + Proposal Dealix Mini Sprint
+
+> "[الاسم]، شكراً للوقت اليوم.
+>
+> الملخص:
+> - الـ pain: [اقتباس Q5]
+> - التكلفة المقدرة: [Q6 رقم]/أسبوع
+> - الـ next step المتفق عليه: Mini Sprint 499 SAR، 3 أيام
+>
+> العرض مرفق (PDF، صالح 14 يوم).
+>
+> الـ payment link لـ 250 SAR مقدم: [Moyasar URL]
+>
+> لو تحب نراجع العرض قبل التوقيع، 15 دقيقة [day] [time]؟
+>
+> Bassam"
+
+## 12.5 Proposal expiry reminder (day 12)
+
+**Subject:** عرض Dealix [REF] — يومين متبقية
+
+> "[الاسم]، فقط تذكير ودي — العرض المرفق [REF] صالح حتى [date]. يومين متبقية.
+>
+> لو تحتاج وقت إضافي، نقدر نمدّد بنفس السعر — أرسل لي طلب تمديد رسمي.
+>
+> لو القرار صار 'لا'، أحترم رأيك — قل لي السبب لو ممكن (يساعدنا نحسن).
+>
+> Bassam"
+
+## 12.6 Nurture sequence (Tier C, monthly)
+
+**Month 1 (post-Discovery):**
+> "[الاسم]، نشرنا تحليل [topic] هذا الأسبوع — قد يهمك: [link]. لا redirect، فقط مشاركة."
+
+**Month 2:**
+> "[الاسم]، شفت [industry event/news]. تذكرتك. لو تغيّرت الأولويات، أنا هنا."
+
+**Month 3:**
+> "[الاسم]، 90 يوم من آخر محادثة. تحب نعيد التشخيص المجاني؟ في features جديدة قد تناسب."
+
+## 12.7 Polite decline (Tier D / disqualified)
+
+> "[الاسم]، شكراً للمحادثة الصريحة. بناءً على ما شاركته، أعتقد إن Dealix مو الـ fit الصحيح حالياً — [reason محدد بأدب].
+>
+> توصية بديلة: [tool/approach مختلف]. لو وضعكم تغير، عندك رقمي.
+>
+> Bassam"
+
+---
+
+# Part 13 — Metrics & Definitions of Done
+## المقاييس وتعريفات الإنجاز
+
+## 13.1 الـ Core 8 metrics (تتبع يومي)
+
+| Metric | Definition | Source | Target W1 | Target W2 |
+|--------|------------|--------|-----------|-----------|
+| warm_contacts_sent | unique people contacted via warm channel | `gtm_conversation_tracker.csv` | 25 | 25 |
+| discovery_completed | 15-min call done + score in tracker | tracker | 5 | 8 |
+| qualification_score_avg | mean Score across week | tracker | 60+ | 65+ |
+| demos_booked | calendar invite + accepted | calendar | 2 | 3 |
+| demos_completed | demo done + debrief filled | `founder_meeting_debrief_template.yaml` | 1 | 3 |
+| proposals_sent | PDF sent + payment link generated | Moyasar + email | 1 | 2 |
+| paid_revenue_sar | actual SAR received | Moyasar dashboard | 0 | 499+ |
+| objections_logged | new objection ids added | `objection_engine_registry.yaml` | 5 | 8 |
+
+## 13.2 Definitions of Done (per stage)
+
+**Discovery DoD:**
+- 10+ من 12 سؤال مجاب
+- Score مسجّل (0-100)
+- Tier محدد (A1/A2/B/C/D)
+- Next action مع date
+- entry في `gtm_conversation_tracker.csv`
+- event `discovery_completed` في `evidence_events_tracker.csv`
+
+**Demo DoD:**
+- 30 دقيقة مكتملة بدون feature خارج Production
+- recording مع إذن (نص فقط)
+- `founder_meeting_debrief_template.yaml` ممتلئ
+- next action صريح (proposal أو pause مع reason)
+- event `demo_completed` مسجّل
+
+**Proposal DoD:**
+- PDF bilingual generated عبر `proposal_renderer`
+- كل ادعاء = no_overclaim Production/Partial
+- VAT 15% line منفصل
+- Disclaimer موجود
+- صلاحية 14 يوم محددة
+- Reference number فريد
+- Payment link Moyasar valid (لا sk_test_ في production)
+- founder signature
+
+**Closed Won DoD:**
+- 50% مقدم في Moyasar (confirmed)
+- ZATCA invoice issued (PDF + XML)
+- Kickoff session مجدول خلال 7 أيام
+- DPA موقّعة
+- entry `closed_won` في tracker
+- Slack/email confirmation للعميل
+
+## 13.3 Quality gates (weekly)
+
+- لو qualification_score_avg < 50 → الـ qualification متساهلة جداً
+- لو demos_completed / demos_booked < 70% → الـ booking ضعيف
+- لو proposals_sent / demos_completed < 50% → الـ demo لا يقفل
+- لو objections_logged < 3 → الـ Discovery سطحي
+
+---
+
 # Appendix A — First 14 Days Action Plan
 
 ## Week 1 (May 24-30)
