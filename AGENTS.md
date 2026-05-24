@@ -64,6 +64,16 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
 - **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
 
+### Hermes — Sovereign Operating Doctrine (Sami-only sovereign layer)
+
+- **Doctrine:** [docs/hermes/SOVEREIGN_DOCTRINE_AR.md](docs/hermes/SOVEREIGN_DOCTRINE_AR.md) — kernel + sovereignty + 7 value outputs.
+- **Package:** [`dealix/hermes/`](dealix/hermes/) — `__init__.py` (doctrine constants), `sovereignty.py` (S0–S4 gate), `core/` (signal → opportunity → decision → execution → outcome → asset → scale), `trust/` (agent + tool registries, permissions, guardrails, evidence, audit, MCP security), `money/`, `products/`, `partners/`, `intelligence/`, `training/`, `customer/`, `ventures/`, `orchestrator.py`, `console.py`.
+- **Sovereign Console (admin):** `GET /api/v1/hermes/console` — fastest cash, top opportunity, pending S2+ approvals, scale/kill verdicts, trust state.
+- **Other endpoints (admin):** `/api/v1/hermes/{signals,opportunities,money/dashboard,offers,sovereignty/propose,sovereignty/approvals/...,trust/agents,trust/tools,trust/permissions/check,trust/audit,trust/mcp/score}`.
+- **Local snapshot (no DB, no network):** `python3 scripts/hermes_console_dump.py`.
+- **Tests:** `pytest tests/hermes/ --confcutdir=tests/hermes --no-cov` — pure-Python; 25 tests cover gate, pipeline, trust, engines, console.
+- **Non-negotiables enforced in code:** `send_external_message` floor = S3 · `publish_public_api` / `publish_marketplace_listing` / `white_label_terms_change` floor = S4 · `OutcomeKind.PAID` requires positive `realised_value_sar` · audit log is hash-chained.
+
 ### Global AI transformation (CEO / operating spine)
 
 - Weekly executive checklist: `bash scripts/run_executive_weekly_checklist.sh` (proof pack + `verify_global_ai_transformation.py` + audit log; syncs `weekly_ops.last_checklist_run_iso` when PASS).
