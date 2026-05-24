@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { FounderShell } from "../../components/founder-console/founder-shell";
 import { getLayer } from "../../lib/dealix-runtime";
 
