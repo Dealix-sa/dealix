@@ -1,0 +1,121 @@
+# Dealix Agent Registry
+# Every agent (AI worker, sub-agent, automation) MUST be listed here.
+# Verifier: scripts/verifiers/verify_agent_registry.py
+# Doctrine: NN9 — no agent without identity.
+
+version: 1
+last_updated: 2026-05-24
+
+agents:
+  - id: dealix-pm
+    name: Dealix PM
+    owner: founder@dealix
+    purpose: Persistent project manager driving the 90-day plan.
+    kpi: weekly_milestones_completed >= 4
+    kill_switch: .claude/agents/dealix-pm.disabled
+    eval_required: true
+    audit_required: true
+    failure_mode: halt_and_alert_founder
+    inputs:
+      - /root/.claude/plans/wiggly-cooking-sketch.md
+      - git status
+      - friction_log aggregator output
+    outputs:
+      - TodoWrite session state
+      - commits to claude/* branches
+    last_eval: pending_first_run
+
+  - id: dealix-engineer
+    name: Dealix Engineer
+    owner: founder@dealix
+    purpose: Implement code, tests, routers, migrations under engineer doctrine.
+    kpi: pr_review_pass_rate >= 0.85
+    kill_switch: .claude/agents/dealix-engineer.disabled
+    eval_required: true
+    audit_required: true
+    failure_mode: rollback_and_surface_diff
+    inputs:
+      - module signature spec from PM
+    outputs:
+      - code files
+      - test files
+      - migration scripts
+    last_eval: pending_first_run
+
+  - id: dealix-content
+    name: Dealix Content
+    owner: founder@dealix
+    purpose: Author docs, case studies, LinkedIn drafts, proposal templates.
+    kpi: bilingual_disclaimer_compliance == 1.0
+    kill_switch: .claude/agents/dealix-content.disabled
+    eval_required: true
+    audit_required: true
+    failure_mode: refuse_publish
+    inputs:
+      - factual brief from founder
+    outputs:
+      - markdown docs (must end with bilingual disclaimer)
+    last_eval: pending_first_run
+
+  - id: dealix-sales
+    name: Dealix Sales
+    owner: founder@dealix
+    purpose: Sales motion — warm-list drafts, qualification scoring, proposal rendering.
+    kpi: drafts_per_week >= 20
+    kill_switch: .claude/agents/dealix-sales.disabled
+    eval_required: true
+    audit_required: true
+    failure_mode: queue_for_founder_review
+    inputs:
+      - warm_list.csv
+      - account scoring inputs
+    outputs:
+      - approval_center pending requests (never direct sends)
+    last_eval: pending_first_run
+
+  - id: dealix-delivery
+    name: Dealix Delivery
+    owner: founder@dealix
+    purpose: Sprint delivery — source passport, DQ score, account scoring, proof pack, capital asset registration.
+    kpi: proof_pack_score >= 70 AND capital_assets_per_engagement >= 1
+    kill_switch: .claude/agents/dealix-delivery.disabled
+    eval_required: true
+    audit_required: true
+    failure_mode: refuse_delivery_without_proof_pack
+    inputs:
+      - sprint scope brief
+      - source registry
+    outputs:
+      - Proof Pack PDF
+      - Capital Asset registry entry
+    last_eval: pending_first_run
+
+  - id: ops-autopilot-daily
+    name: Ops Autopilot Daily
+    owner: founder@dealix
+    purpose: Daily commercial day script (founder commercial day, business now, evidence sync).
+    kpi: daily_run_success_rate >= 0.95
+    kill_switch: env.OPS_AUTOPILOT_DISABLED=1
+    eval_required: false
+    audit_required: true
+    failure_mode: log_and_retry_next_day
+    inputs:
+      - scripts/run_founder_commercial_day.sh
+    outputs:
+      - data/founder_briefs/<date>.md
+    last_eval: 2026-05-23
+
+  - id: approval-center-watcher
+    name: Approval Center Watcher
+    owner: founder@dealix
+    purpose: Process pending outbound approval requests; never auto-approve critical actions.
+    kpi: critical_action_auto_approval_count == 0
+    kill_switch: env.APPROVAL_CENTER_DISABLED=1
+    eval_required: true
+    audit_required: true
+    failure_mode: hold_and_alert_founder
+    inputs:
+      - Redis queue dealix:approvals:pending
+    outputs:
+      - approval decisions persisted with audit trail
+    last_eval: 2026-05-23

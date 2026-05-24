@@ -1,0 +1,85 @@
+# Dealix Machine Registry
+# Every long-running automation / cron / worker / queue consumer MUST be listed.
+# Verifier: scripts/verifiers/verify_machine_registry.py
+
+version: 1
+last_updated: 2026-05-24
+
+machines:
+  - id: founder-commercial-day
+    name: Founder Commercial Day Loop
+    owner: founder@dealix
+    purpose: Daily morning script — pulls warm list, generates drafts, queues for approval.
+    schedule: "07:00 Asia/Riyadh (founder-triggered)"
+    entrypoint: scripts/run_founder_commercial_day.sh
+    kpi: daily_brief_generated == true
+    kill_switch: env.FOUNDER_COMMERCIAL_DAY_DISABLED=1
+    eval_required: false
+    audit_required: true
+    failure_mode: log_and_retry_next_day
+    last_run: 2026-05-23
+
+  - id: ops-autopilot-evening
+    name: Ops Autopilot Evening
+    owner: founder@dealix
+    purpose: Evening evidence sync — proof packs, value ledger, capital assets.
+    schedule: "20:00 Asia/Riyadh"
+    entrypoint: scripts/founder_evening_evidence.py
+    kpi: evidence_synced == true
+    kill_switch: env.OPS_AUTOPILOT_DISABLED=1
+    eval_required: false
+    audit_required: true
+    failure_mode: alert_founder
+    last_run: 2026-05-23
+
+  - id: approval-center-worker
+    name: Approval Center Worker
+    owner: founder@dealix
+    purpose: Process pending outbound approval requests. NEVER auto-approves critical actions.
+    schedule: "continuous (Redis pop)"
+    entrypoint: dealix/governance/approvals.py:run_worker
+    kpi: critical_action_auto_approval_count == 0
+    kill_switch: env.APPROVAL_CENTER_DISABLED=1
+    eval_required: true
+    audit_required: true
+    failure_mode: hold_and_alert_founder
+    last_run: 2026-05-23
+
+  - id: ci-everything-nightly
+    name: CI Everything Nightly
+    owner: founder@dealix
+    purpose: Nightly `make everything` run on main branch.
+    schedule: "02:00 UTC daily"
+    entrypoint: .github/workflows/dealix-everything.yml
+    kpi: nightly_pass_rate >= 0.95
+    kill_switch: workflow_dispatch disable
+    eval_required: false
+    audit_required: true
+    failure_mode: github_actions_alert
+    last_run: pending_first_run
+
+  - id: company-os-daily
+    name: Company OS Daily
+    owner: founder@dealix
+    purpose: Daily `make company-os` run for CEO OS + Founder Mgmt + Hypergrowth verifiers.
+    schedule: "06:00 UTC daily"
+    entrypoint: .github/workflows/dealix-company-os.yml
+    kpi: daily_pass_rate >= 0.95
+    kill_switch: workflow_dispatch disable
+    eval_required: false
+    audit_required: true
+    failure_mode: github_actions_alert
+    last_run: pending_first_run
+
+  - id: weekly-executive-checklist
+    name: Weekly Executive Checklist
+    owner: founder@dealix
+    purpose: Weekly verification of global AI transformation + proof pack.
+    schedule: "Sunday 08:00 Asia/Riyadh"
+    entrypoint: scripts/run_executive_weekly_checklist.sh
+    kpi: weekly_pass_rate >= 0.9
+    kill_switch: env.WEEKLY_CHECKLIST_DISABLED=1
+    eval_required: true
+    audit_required: true
+    failure_mode: hold_release_and_alert
+    last_run: 2026-05-19
