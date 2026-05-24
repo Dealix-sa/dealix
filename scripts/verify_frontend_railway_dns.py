@@ -14,6 +14,9 @@ if str(ROOT) not in sys.path:
 
 from dealix.commercial_ops.production_layers import layer_4_frontend  # noqa: E402
 from dealix.commercial_ops.railway_launch import check_railway_frontend_env  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+
+ensure_stdout_utf8()
 
 
 def main() -> int:
