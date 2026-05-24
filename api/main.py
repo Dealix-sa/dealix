@@ -38,6 +38,7 @@ from api.routers import (
     auth,
     control_plane_os,
     compliance_status,
+    compliance_product,
     cost_tracking,
     customer_usage,
     customer_webhooks,
@@ -269,6 +270,7 @@ def create_app() -> FastAPI:
     app.include_router(jobs.router, prefix="/api/v1")
     app.include_router(zatca.router)
     app.include_router(pdpl.router)
+    app.include_router(compliance_product.router)
 
     # ── Wave 12.7 — Intelligence Layer + Expansion Engine ─────────
     # Both routers self-prefix /api/v1/intelligence and /api/v1/expansion-engine.
@@ -288,6 +290,11 @@ def create_app() -> FastAPI:
     app.include_router(integration_capability_router.router)
     # Self-prefix /api/v1/metrics. Read-only; tenant-isolated for {handle}.
     app.include_router(business_metrics_board_router.router)
+    # Wave 13B — Founder ops-autopilot (War Room, cockpit, strongest-plan, evidence)
+    from api.routers.revenue_ops_autopilot import AUTOPILOT_ROUTERS
+
+    for _autopilot_router in AUTOPILOT_ROUTERS:
+        app.include_router(_autopilot_router)
     # Wave 7 W7.5 — Tenant theming: GET tenant theme.css + POST admin theme update
     app.include_router(tenant_theming.router)
     # Wave 7 W7.2 — Sector Intelligence (R4 productization)

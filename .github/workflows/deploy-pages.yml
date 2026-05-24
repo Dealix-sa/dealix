@@ -51,8 +51,8 @@ jobs:
               || echo "JSON export failed (non-blocking — keeping committed JSON)"
           fi
 
-          # Pages CNAME
-          echo "dealix.me" > _site/CNAME
+          # Do not set dealix.me CNAME here — production Next.js lives on Railway.
+          # See docs/ops/DEALIX_ME_FRONTEND_DNS_RAILWAY_AR.md
 
           echo "── Site built ──"
           find _site -maxdepth 2 -type f | sort | head -40

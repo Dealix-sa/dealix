@@ -1,4 +1,4 @@
-# Push main using GitHub CLI token (fixes 403 when credential manager PAT lacks repo scope)
+# Push main using GitHub CLI token (fixes Windows GCM stale PAT vs bearer header)
 $ErrorActionPreference = "Continue"
 $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
@@ -17,21 +17,34 @@ if (-not $token) {
 }
 $token = $token.Trim()
 $env:GIT_TERMINAL_PROMPT = "0"
+$env:GH_TOKEN = $token
+
+gh auth refresh -h github.com -s repo 2>$null | Out-Null
 gh auth setup-git 2>$null | Out-Null
 
-$remoteUrl = "https://x-access-token:${token}@github.com/VoXc2/dealix.git"
-git -c credential.helper= push $remoteUrl HEAD:main 2>&1
+# Attempt 1: disable credential helper + bearer header (bypasses stale GCM PAT)
+git -c credential.helper= -c "http.extraheader=AUTHORIZATION: bearer $token" push origin main 2>&1
 if ($LASTEXITCODE -eq 0) {
     Write-Host "PUSH_MAIN=OK"
     exit 0
 }
 
+# Attempt 2: embed token in remote URL (no credential helper)
+$remoteUrl = "https://x-access-token:${token}@github.com/VoXc2/dealix.git"
+git -c credential.helper= push $remoteUrl HEAD:main 2>&1
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "PUSH_MAIN=OK (token remote)"
+    exit 0
+}
+
+# Attempt 3: gh-configured credential helper
 git push origin main 2>&1
 if ($LASTEXITCODE -eq 0) {
     Write-Host "PUSH_MAIN=OK (gh credential helper)"
     exit 0
 }
 
-Write-Host "PUSH_MAIN=FAIL - refresh token:"
+Write-Host "PUSH_MAIN=FAIL - refresh token and clear Windows Credential Manager github.com entries:"
 Write-Host "  gh auth refresh -h github.com -s repo"
+Write-Host "  gh auth setup-git"
 exit 1
