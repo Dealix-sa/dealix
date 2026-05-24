@@ -374,6 +374,8 @@ def _run_hiring_detector(mi: dict[str, Any], raw_data: dict[str, Any]) -> list[A
     detect = mi["detect_hiring_signal"]
     company_id = raw_data.get("company", "unknown")
     jobs_count = int(raw_data.get("jobs_count", 0))
+    if jobs_count <= 0:
+        return []
     now = datetime.now(timezone.utc).replace(tzinfo=None)
     from datetime import timedelta
     job_postings = [
@@ -382,7 +384,7 @@ def _run_hiring_detector(mi: dict[str, Any], raw_data: dict[str, Any]) -> list[A
             "posted_at": now - timedelta(days=1),
             "url": raw_data.get("url"),
         }
-    ] * max(1, jobs_count)
+    ] * jobs_count
     return detect(company_id=company_id, job_postings=job_postings)
 
 
@@ -401,23 +403,18 @@ def _run_website_detector(mi: dict[str, Any], raw_data: dict[str, Any]) -> list[
 def _run_ads_detector(mi: dict[str, Any], raw_data: dict[str, Any]) -> list[Any]:
     detect = mi["detect_ads_signal"]
     company_id = raw_data.get("company", "unknown")
-    history = raw_data.get("weekly_ad_spend_history", [10.0, 10.0, 10.0, 20.0])
+    history = raw_data.get("weekly_ad_spend_history")
+    if not history:
+        return []
     return detect(company_id=company_id, weekly_ad_spend_history=history)
 
 
 def _run_funding_detector(mi: dict[str, Any], raw_data: dict[str, Any]) -> list[Any]:
     detect = mi["detect_funding_signal"]
     company_id = raw_data.get("company", "unknown")
-    from datetime import timedelta
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
-    announcements = raw_data.get("announcements", [
-        {
-            "round_type": raw_data.get("round_type", "seed"),
-            "amount_sar": raw_data.get("amount_sar", 500000),
-            "announced_at": now - timedelta(days=10),
-            "url": raw_data.get("url"),
-        }
-    ])
+    announcements = raw_data.get("announcements")
+    if not announcements:
+        return []
     # Normalise string dates
     processed: list[dict[str, Any]] = []
     for a in announcements:
@@ -433,18 +430,9 @@ def _run_funding_detector(mi: dict[str, Any], raw_data: dict[str, Any]) -> list[
 def _run_tender_detector(mi: dict[str, Any], raw_data: dict[str, Any]) -> list[Any]:
     detect = mi["detect_tender_signal"]
     company_id = raw_data.get("company", "unknown")
-    from datetime import timedelta
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
-    tenders = raw_data.get("tenders", [
-        {
-            "title": raw_data.get("title", "General tender"),
-            "body": raw_data.get("body", ""),
-            "published_at": now - timedelta(days=5),
-            "deadline": now + timedelta(days=30),
-            "url": raw_data.get("url"),
-            "value_sar": raw_data.get("value_sar"),
-        }
-    ])
+    tenders = raw_data.get("tenders")
+    if not tenders:
+        return []
     processed: list[dict[str, Any]] = []
     for t in tenders:
         entry = dict(t)

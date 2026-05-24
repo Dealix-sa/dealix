@@ -20,7 +20,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from auto_client_acquisition.capital_os import (
@@ -63,8 +63,9 @@ async def status() -> dict[str, Any]:
 class AddAssetRequest(BaseModel):
     customer_id: str = Field(..., min_length=1)
     engagement_id: str = Field(..., min_length=1)
-    asset_type: str = Field(..., min_length=1,
-        description="One of the CapitalAssetType values")
+    asset_type: CapitalAssetType = Field(
+        ..., description="One of the CapitalAssetType values"
+    )
     owner: str = ""
     reusable: bool = True
     asset_ref: str = ""
@@ -93,7 +94,7 @@ async def assets_add(req: AddAssetRequest) -> dict[str, Any]:
 async def assets_list(
     customer_id: str | None = None,
     engagement_id: str | None = None,
-    limit: int = 100,
+    limit: int = Query(default=100, ge=1, le=500),
 ) -> dict[str, Any]:
     """List capital assets, optionally filtered."""
     rows = list_assets(
@@ -250,11 +251,16 @@ async def valuation_drivers() -> dict[str, Any]:
 
 # ─── Exit valuation ────────────────────────────────────────────────────────────
 
+_VALID_BUSINESS_TYPES: frozenset[str] = frozenset(
+    {"saas", "services", "marketplace", "hardware"}
+)
+
+
 class ExitValuationRequest(BaseModel):
     arr_sar: float = Field(..., gt=0, description="Annual Recurring Revenue in SAR")
     business_type: str = Field(
         default="saas",
-        description="'saas' (5-10x ARR) or 'services' (1-3x ARR)",
+        description="One of: saas, services, marketplace, hardware",
     )
     growth_rate_pct: float = Field(0.0, ge=0.0, le=500.0)
     gross_margin_pct: float = Field(0.0, ge=0.0, le=100.0)
@@ -266,6 +272,17 @@ async def exit_valuation(req: ExitValuationRequest) -> dict[str, Any]:
 
     Hard gate: ARR must be positive (enforced by pydantic gt=0).
     """
+    if req.business_type not in _VALID_BUSINESS_TYPES:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "error": "invalid_business_type",
+                "message": (
+                    f"business_type '{req.business_type}' is not supported. "
+                    f"Valid values: {sorted(_VALID_BUSINESS_TYPES)}"
+                ),
+            },
+        )
     if req.business_type == "saas":
         # Base multiple 5x, premium for growth + margin
         base_multiple = 5.0

@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 
 router = APIRouter(
     prefix="/api/v1/retainer-conversion",
@@ -56,9 +56,9 @@ class RetainerEligibilityRequest(BaseModel):
     current_tier: str = "sprint_499"  # sprint_499, data_pack_1500
     months_as_customer: int = 0
     proof_events_completed: int = 0
-    monthly_engagement_drop_pct: float = 0.0  # 0..1
+    monthly_engagement_drop_pct: float = Field(default=0.0, ge=0.0, le=1.0)  # 0..1
     nps: int | None = None
-    pipeline_added_drop_pct: float = 0.0  # 0..1
+    pipeline_added_drop_pct: float = Field(default=0.0, ge=0.0, le=1.0)  # 0..1
     churn_band: str = "safe"  # safe, watch, at_risk, critical
     arr_so_far_sar: float = 0.0
 
@@ -67,9 +67,21 @@ class BatchEligibilityRequest(BaseModel):
     customers: list[RetainerEligibilityRequest]
 
 
+_VALID_RETAINER_TIERS: frozenset[int] = frozenset({2999, 3999, 4999})
+
+
 class ConversionOutreachRequest(RetainerEligibilityRequest):
     founder_name: str = "المؤسس"
     retainer_tier_sar: int = 2999  # 2999, 3999, or 4999
+
+    @field_validator("retainer_tier_sar")
+    @classmethod
+    def validate_retainer_tier(cls, v: int) -> int:
+        if v not in _VALID_RETAINER_TIERS:
+            raise ValueError(
+                f"retainer_tier_sar must be one of {sorted(_VALID_RETAINER_TIERS)}, got {v}"
+            )
+        return v
 
 
 class ConversionLogRequest(BaseModel):

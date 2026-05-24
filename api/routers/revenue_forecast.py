@@ -15,9 +15,9 @@ Hard rules:
 from __future__ import annotations
 
 from dataclasses import asdict
-from typing import Any
+from typing import Any, Literal
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from auto_client_acquisition.revenue_science.forecast import (
@@ -63,7 +63,7 @@ class DealItem(BaseModel):
 class ForecastRequest(BaseModel):
     customer_id: str
     open_deals: list[DealItem] = []
-    horizon_days: int = Field(default=30, description="30, 60, or 90")
+    horizon_days: Literal[30, 60, 90] = 30
 
 
 class SimulateImpactRequest(BaseModel):
@@ -213,7 +213,21 @@ async def attribution(body: AttributionRequest) -> dict[str, Any]:
         }
     ]
 
+    _VALID_ATTRIBUTION_MODELS = frozenset(
+        {"first_touch", "last_touch", "linear", "time_decay"}
+    )
     model = body.model
+    if model not in _VALID_ATTRIBUTION_MODELS:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "error": "invalid_attribution_model",
+                "message": (
+                    f"model '{model}' is not supported. "
+                    f"Valid values: {sorted(_VALID_ATTRIBUTION_MODELS)}"
+                ),
+            },
+        )
     if model == "first_touch":
         result = compute_first_touch(deals=deals)
     elif model == "last_touch":

@@ -21,7 +21,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from auto_client_acquisition.revenue_science.churn_model import predict_churn
 from auto_client_acquisition.revenue_science.forecast import compute_forecast
@@ -55,7 +55,7 @@ _MAX_BATCH = 50
 class ChurnInput(BaseModel):
     customer_id: str
     days_since_last_login: int = 0
-    monthly_engagement_drop_pct: float = 0.0  # 0..1
+    monthly_engagement_drop_pct: float = Field(default=0.0, ge=0.0, le=1.0)  # 0..1
     support_tickets_open: int = 0
     billing_failures_last_90d: int = 0
     nps: int | None = None

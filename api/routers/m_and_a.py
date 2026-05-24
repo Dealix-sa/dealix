@@ -22,7 +22,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
 router = APIRouter(prefix="/api/v1/m-and-a", tags=["M&A Radar"])
@@ -76,7 +76,7 @@ def _read_proposals(limit: int = 50) -> list[dict[str, Any]]:
                     rows.append(json.loads(line))
                 except Exception:  # noqa: BLE001
                     continue
-    return rows[-limit:]
+    return rows[-max(1, limit):]
 
 
 # ─── Evaluate ────────────────────────────────────────────────────────────────
@@ -138,7 +138,7 @@ async def evaluate(req: EvaluateRequest) -> dict[str, Any]:
 # ─── Proposals ledger ─────────────────────────────────────────────────────────
 
 @router.get("/proposals")
-async def list_proposals(limit: int = 50) -> dict[str, Any]:
+async def list_proposals(limit: int = Query(default=50, ge=1, le=200)) -> dict[str, Any]:
     """Return recent M&A proposals from the ledger."""
     rows = _read_proposals(limit=min(limit, 200))
     return {
