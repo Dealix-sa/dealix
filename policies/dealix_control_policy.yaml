@@ -1,0 +1,68 @@
+policy_name: dealix_control_policy
+version: "1.0.0"
+purpose: >
+  Central policy-as-code for the Dealix Company OS.
+  AI prepares. Workers organize. Founder approves. Trust gates. Audit records.
+
+principles:
+  - id: AI_PREPARES_FOUNDER_APPROVES
+    description: AI may draft and organize; humans approve external action.
+  - id: NO_EXTERNAL_SEND_WITHOUT_APPROVAL
+    description: No outbound message, payment, or commitment goes out without founder approval.
+  - id: NO_GUARANTEED_CLAIMS
+    description: Forbidden to claim guaranteed revenue, sales, meetings, or specific monetary outcomes.
+  - id: AUDIT_EVERY_DECISION
+    description: "Every action records actor, source, freshness, decision, and evidence."
+  - id: KILL_SWITCH_REQUIRED
+    description: Every machine and agent must have a documented kill switch.
+
+agent_tiers:
+  A1:
+    label: Suggester
+    autonomy: read-only; produces drafts; never sends.
+    approval_required: false
+    external_action_allowed: false
+  A2:
+    label: Organizer
+    autonomy: prepares queues, scoring, sorting, internal state changes only.
+    approval_required: true
+    external_action_allowed: false
+  A3:
+    label: External Actor
+    autonomy: would send externally
+    approval_required: true
+    external_action_allowed: false
+    note: A3 is NEVER fully automatic. Every A3 attempt must hit approval_queue.
+
+forbidden_claims:
+  - "guaranteed revenue"
+  - "guaranteed sales"
+  - "guaranteed meetings"
+  - "guaranteed pipeline"
+  - "guaranteed ROI"
+  - "guaranteed customers"
+  - "100% conversion"
+  - "we promise X SAR"
+  - "we promise X riyals"
+  - "we will close X deals"
+
+required_evidence_fields:
+  - source
+  - freshness_iso
+  - actor
+  - approval_state
+  - kill_switch
+
+trust_gates:
+  - block_a3_auto_send
+  - block_unapproved_payment_capture
+  - block_outbound_without_consent_check
+  - block_guaranteed_claims_in_external_assets
+  - enforce_suppression_list
+
+ledgers:
+  - approval_decisions
+  - trust_flags
+  - incidents
+  - customer_trust_packet
+  - decision_log

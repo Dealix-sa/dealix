@@ -1,0 +1,27 @@
+name: dealix-brand-growth-operating-layer
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "apps/web/lib/brand-tokens.ts"
+      - "apps/web/styles/brand.css"
+      - "apps/web/components/brand/**"
+      - "scripts/verify_brand_system.py"
+      - "scripts/verify_growth_system.py"
+      - "scripts/verify_marketing_system.py"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/verify_brand_system.py
+      - run: python scripts/verify_growth_system.py
+      - run: python scripts/verify_marketing_system.py
+      - run: python scripts/verify_product_distribution.py

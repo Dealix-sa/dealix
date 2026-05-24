@@ -1,0 +1,23 @@
+name: dealix-founder-management-system
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "apps/web/app/founder-leverage/**"
+      - "apps/web/app/strategy/**"
+      - "apps/web/app/capital-allocation/**"
+      - "apps/web/app/advisor/**"
+      - "scripts/verify_founder_management_system.py"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/verify_founder_management_system.py

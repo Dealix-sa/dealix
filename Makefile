@@ -130,3 +130,87 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Company OS (commercial / founder console) ─────────────
+# Run from repo root. PRIVATE_OPS defaults to /opt/dealix-ops-private.
+
+PRIVATE_OPS ?= /opt/dealix-ops-private
+
+.PHONY: bootstrap-runtime brand-system growth-system marketing-system \
+        product-distribution policy-check agent-registry machine-registry \
+        eval-gate prompt-output ai-governance launch-readiness \
+        execution-launch-layer market-attack-system scale-moat-system \
+        founder-management-system hypergrowth-ceo-layer \
+        founder-ceo-hypergrowth-layer company-os everything \
+        ceo-daily-brief ceo-weekly-review founder-leverage capital-allocation \
+        strategy-scorecard revenue-forecast beachhead-scorecard \
+        offer-market-fit data-moat company-memory advisor-update \
+        smoke-internal-api
+
+bootstrap-runtime: ## Dealix: seed the private ops workspace (PRIVATE_OPS=...)
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/bootstrap_private_ops_runtime.py --root $(PRIVATE_OPS)
+
+brand-system: ## Dealix: verify brand system
+	$(PYTHON) scripts/verify_brand_system.py
+growth-system: ## Dealix: verify growth system
+	$(PYTHON) scripts/verify_growth_system.py
+marketing-system: ## Dealix: verify marketing system
+	$(PYTHON) scripts/verify_marketing_system.py
+product-distribution: ## Dealix: verify product/distribution surface
+	$(PYTHON) scripts/verify_product_distribution.py
+policy-check: ## Dealix: verify policy-as-code
+	$(PYTHON) scripts/verify_policy_as_code.py
+agent-registry: ## Dealix: verify agent registry
+	$(PYTHON) scripts/verify_agent_registry.py
+machine-registry: ## Dealix: verify machine registry
+	$(PYTHON) scripts/verify_machine_registry.py
+eval-gate: ## Dealix: verify eval gate
+	$(PYTHON) scripts/verify_eval_gate.py
+prompt-output: ## Dealix: scan repo for forbidden guarantee claims
+	$(PYTHON) scripts/verify_prompt_output_quality.py
+ai-governance: ## Dealix: verify AI governance system
+	$(PYTHON) scripts/verify_ai_governance_system.py
+launch-readiness: ## Dealix: verify launch readiness layer
+	$(PYTHON) scripts/verify_launch_readiness.py
+execution-launch-layer: ## Dealix: verify execution / launch layer
+	$(PYTHON) scripts/verify_execution_launch_layer.py
+market-attack-system: ## Dealix: verify market attack system
+	$(PYTHON) scripts/verify_market_attack_system.py
+scale-moat-system: ## Dealix: verify scale / moat system
+	$(PYTHON) scripts/verify_scale_moat_system.py
+founder-management-system: ## Dealix: verify founder management system
+	$(PYTHON) scripts/verify_founder_management_system.py
+hypergrowth-ceo-layer: ## Dealix: verify hypergrowth CEO layer
+	$(PYTHON) scripts/verify_hypergrowth_ceo_layer.py
+founder-ceo-hypergrowth-layer: ## Dealix: verify founder/CEO hypergrowth layer
+	$(PYTHON) scripts/verify_founder_ceo_hypergrowth_layer.py
+company-os: ## Dealix: verify the full Company OS surface
+	$(PYTHON) scripts/verify_company_os.py
+smoke-internal-api: ## Dealix: smoke test the internal Founder Console API
+	$(PYTHON) scripts/smoke_internal_api.py
+everything: ## Dealix: run the master verifier (every layer)
+	$(PYTHON) scripts/verify_everything.py
+
+# Generators (read private ops CSVs, write docs/ markdown)
+ceo-daily-brief: ## Dealix: regenerate CEO daily brief
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_ceo_daily_brief.py
+ceo-weekly-review: ## Dealix: regenerate CEO weekly review
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_ceo_weekly_review.py
+founder-leverage: ## Dealix: regenerate founder leverage report
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_founder_leverage_report.py
+capital-allocation: ## Dealix: regenerate capital allocation report
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_capital_allocation_report.py
+strategy-scorecard: ## Dealix: regenerate strategy scorecard
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_strategy_scorecard.py
+revenue-forecast: ## Dealix: regenerate revenue forecast
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_revenue_forecast.py
+beachhead-scorecard: ## Dealix: regenerate beachhead sector scorecard
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_beachhead_sector_scorecard.py
+offer-market-fit: ## Dealix: regenerate offer-market-fit report
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_offer_market_fit_report.py
+data-moat: ## Dealix: regenerate data moat report
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_data_moat_report.py
+company-memory: ## Dealix: regenerate company memory report
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_company_memory_report.py
+advisor-update: ## Dealix: regenerate monthly advisor update draft
+	DEALIX_PRIVATE_OPS=$(PRIVATE_OPS) $(PYTHON) scripts/generate_monthly_advisor_update.py

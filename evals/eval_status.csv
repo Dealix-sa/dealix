@@ -1,0 +1,25 @@
+recorded_at,layer,result,missing_count,notes
+2026-05-24T14:15:44,Brand OS,PASS,0,Brand OS: PASS
+2026-05-24T14:15:44,Founder Console (frontend pages),PASS,0,
+2026-05-24T14:15:44,Founder Console (internal API),PASS,0,"PASS: founder console smoke (36 pages, approvals queued)"
+2026-05-24T14:15:44,Policy-as-Code,PASS,0,Policy-as-Code: PASS
+2026-05-24T14:15:44,Agent Registry,PASS,0,Agent Registry: PASS   · agents registered: 28
+2026-05-24T14:15:44,Machine Registry,PASS,0,Machine Registry: PASS   · machines registered: 8
+2026-05-24T14:15:44,Eval Gate,PASS,0,Eval Gate: PASS   · required gates: 7
+2026-05-24T14:15:44,Prompt / Output Quality,PASS,0,Prompt / Output Quality: PASS   · files scanned: 2258
+2026-05-24T14:15:44,AI Governance,PASS,0,AI Governance: PASS
+2026-05-24T14:15:44,Market Attack System,PASS,0,Market Attack System: PASS
+2026-05-24T14:15:44,Scale / Moat System,PASS,0,Scale / Moat System: PASS
+2026-05-24T14:15:44,Founder Management System,PASS,0,Founder Management System: PASS
+2026-05-24T14:15:44,Hypergrowth CEO Layer,PASS,0,Hypergrowth CEO Layer: PASS
+2026-05-24T14:15:44,Founder / CEO Hypergrowth Layer,PASS,0,Founder / CEO Hypergrowth Layer: PASS
+2026-05-24T14:15:44,Launch Readiness,PASS,0,Launch Readiness: PASS
+2026-05-24T14:15:44,Execution / Launch Layer,PASS,0,Execution / Launch Layer: PASS
+2026-05-24T14:15:44,Growth System,PASS,0,Growth System: PASS
+2026-05-24T14:15:44,Marketing System,PASS,0,Marketing System: PASS
+2026-05-24T14:15:44,Product / Distribution,PASS,0,Product Distribution: PASS
+2026-05-24T14:15:44,Generator scripts,PASS,0,
+2026-05-24T14:15:44,Docs scaffolding,PASS,0,
+2026-05-24T14:15:44,GitHub workflows,PASS,0,
+2026-05-24T14:15:44,Company OS,PASS,0,Company OS: PASS
+2026-05-24T14:15:44,Frontend build,PASS,0,ue-engine                        258 B           106 kB └ ○ /workers                             258 B           106 kB + First Load JS shared by all            105 kB   ├ chunks/1517-5494ef2f7d623115.js      50.5 kB   ├ chunks/4bd1b696-259f34c1ac118dcd.js  52.9 kB   └ other shared chunks (total)          1.89 kB   ○  (Static)   prerendered as static content ƒ  (Dynamic)  server-rendered on demand

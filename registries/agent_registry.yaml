@@ -1,0 +1,240 @@
+registry: dealix_agent_registry
+version: "1.0.0"
+owner: founder
+
+defaults:
+  approval_required: true
+  external_action_allowed: false
+  kill_switch: documented
+  audit_enabled: true
+
+agents:
+  # ── Founder / CEO ──────────────────────────────────────────
+  - id: ceo_daily_brief
+    tier: A1
+    purpose: Compose the founder's daily brief from internal CSVs.
+    inputs: [private_ops_csv]
+    outputs: [docs/founder/CEO_DAILY_BRIEF.md]
+    approval_required: false
+    kill_switch: scripts/generate_ceo_daily_brief.py
+
+  - id: ceo_weekly_review
+    tier: A1
+    purpose: Compose the founder's weekly review.
+    inputs: [private_ops_csv]
+    outputs: [docs/founder/CEO_WEEKLY_REVIEW.md]
+    approval_required: false
+    kill_switch: scripts/generate_ceo_weekly_review.py
+
+  - id: founder_leverage
+    tier: A1
+    purpose: Identify highest-leverage founder hours.
+    inputs: [private_ops_csv]
+    outputs: [docs/founder/FOUNDER_LEVERAGE.md]
+    approval_required: false
+    kill_switch: scripts/generate_founder_leverage_report.py
+
+  - id: capital_allocation
+    tier: A1
+    purpose: Recommend Double-Down / Cut / Invest decisions.
+    inputs: [private_ops_csv]
+    outputs: [docs/finance/CAPITAL_ALLOCATION.md]
+    approval_required: true
+    kill_switch: scripts/generate_capital_allocation_report.py
+
+  - id: strategy_scorecard
+    tier: A1
+    purpose: Track strategic assumptions and validation.
+    inputs: [private_ops_csv]
+    outputs: [docs/strategy/STRATEGY_SCORECARD.md]
+    approval_required: false
+    kill_switch: scripts/generate_strategy_scorecard.py
+
+  # ── Revenue Factory ────────────────────────────────────────
+  - id: revenue_forecast
+    tier: A1
+    purpose: Forecast cash collection and pipeline.
+    inputs: [private_ops_csv]
+    outputs: [docs/revenue/REVENUE_FORECAST.md]
+    approval_required: false
+    kill_switch: scripts/generate_revenue_forecast.py
+
+  - id: weekly_growth_review
+    tier: A1
+    purpose: Weekly growth review for founder.
+    inputs: [private_ops_csv]
+    outputs: [docs/growth/WEEKLY_GROWTH_REVIEW.md]
+    approval_required: false
+    kill_switch: scripts/generate_weekly_growth_review.py
+
+  # ── Market Attack ──────────────────────────────────────────
+  - id: beachhead_scorecard
+    tier: A1
+    purpose: Score beachhead sectors.
+    inputs: [private_ops_csv]
+    outputs: [docs/market_attack/BEACHHEAD_SCORECARD.md]
+    approval_required: false
+    kill_switch: scripts/generate_beachhead_sector_scorecard.py
+
+  - id: strategic_account_list
+    tier: A2
+    purpose: Maintain prioritized strategic account list.
+    inputs: [private_ops_csv]
+    outputs: [docs/market_attack/STRATEGIC_ACCOUNTS.md]
+    approval_required: true
+    kill_switch: scripts/generate_strategic_account_list.py
+
+  - id: offer_market_fit
+    tier: A1
+    purpose: Track offer-to-market fit signals.
+    inputs: [private_ops_csv]
+    outputs: [docs/market_attack/OFFER_MARKET_FIT.md]
+    approval_required: false
+    kill_switch: scripts/generate_offer_market_fit_report.py
+
+  # ── Campaigns / Distribution ───────────────────────────────
+  - id: campaign_command
+    tier: A2
+    purpose: Track campaign queue and results; drafts only.
+    inputs: [private_ops_csv]
+    outputs: [docs/marketing/CAMPAIGN_COMMAND.md]
+    approval_required: true
+    kill_switch: scripts/generate_campaign_command_report.py
+
+  - id: authority_content_queue
+    tier: A2
+    purpose: Queue authority content drafts for founder approval.
+    inputs: [private_ops_csv]
+    outputs: [docs/marketing/AUTHORITY_CONTENT_QUEUE.md]
+    approval_required: true
+    kill_switch: scripts/generate_authority_content_queue.py
+
+  - id: partner_pipeline
+    tier: A1
+    purpose: Maintain partner pipeline.
+    inputs: [private_ops_csv]
+    outputs: [docs/partners/PARTNER_PIPELINE.md]
+    approval_required: false
+    kill_switch: scripts/generate_partner_pipeline_report.py
+
+  - id: objection_intelligence
+    tier: A1
+    purpose: Compile objection library and resolution rates.
+    inputs: [private_ops_csv]
+    outputs: [docs/intelligence/OBJECTION_INTELLIGENCE.md]
+    approval_required: false
+    kill_switch: scripts/generate_objection_intelligence_report.py
+
+  # ── Revenue Intelligence Graph ─────────────────────────────
+  - id: revenue_intelligence_graph
+    tier: A1
+    purpose: Build revenue intelligence graph snapshot.
+    inputs: [private_ops_csv]
+    outputs: [docs/intelligence/REVENUE_INTELLIGENCE_GRAPH.md]
+    approval_required: false
+    kill_switch: scripts/generate_revenue_intelligence_graph_report.py
+
+  - id: sector_playbook
+    tier: A1
+    purpose: Generate sector-specific playbook.
+    inputs: [private_ops_csv]
+    outputs: [docs/playbooks/SECTOR_PLAYBOOK.md]
+    approval_required: false
+    kill_switch: scripts/generate_sector_playbook_report.py
+
+  - id: message_performance
+    tier: A1
+    purpose: Score message angles by reply / convert rate.
+    inputs: [private_ops_csv]
+    outputs: [docs/intelligence/MESSAGE_PERFORMANCE.md]
+    approval_required: false
+    kill_switch: scripts/generate_message_performance_report.py
+
+  - id: buyer_objection_graph
+    tier: A1
+    purpose: Track buyer objections graph.
+    inputs: [private_ops_csv]
+    outputs: [docs/intelligence/BUYER_OBJECTION_GRAPH.md]
+    approval_required: false
+    kill_switch: scripts/generate_buyer_objection_graph.py
+
+  - id: proof_library
+    tier: A2
+    purpose: Maintain approved proof library.
+    inputs: [private_ops_csv]
+    outputs: [docs/proof/PROOF_LIBRARY.md]
+    approval_required: true
+    kill_switch: scripts/generate_proof_library_report.py
+
+  - id: partner_ecosystem
+    tier: A1
+    purpose: Track partner ecosystem.
+    inputs: [private_ops_csv]
+    outputs: [docs/partners/PARTNER_ECOSYSTEM.md]
+    approval_required: false
+    kill_switch: scripts/generate_partner_ecosystem_report.py
+
+  - id: productization_pipeline
+    tier: A1
+    purpose: Identify productizable patterns.
+    inputs: [private_ops_csv]
+    outputs: [docs/product/PRODUCTIZATION_PIPELINE.md]
+    approval_required: false
+    kill_switch: scripts/generate_productization_pipeline_report.py
+
+  - id: expansion_report
+    tier: A1
+    purpose: Track existing customer expansion opportunities.
+    inputs: [private_ops_csv]
+    outputs: [docs/customer_success/EXPANSION_REPORT.md]
+    approval_required: false
+    kill_switch: scripts/generate_expansion_report.py
+
+  - id: moat_scorecard
+    tier: A1
+    purpose: Track strategic moat strength.
+    inputs: [private_ops_csv]
+    outputs: [docs/moat/MOAT_SCORECARD.md]
+    approval_required: false
+    kill_switch: scripts/generate_moat_scorecard.py
+
+  # ── AI Governance ──────────────────────────────────────────
+  - id: ai_governance_board_pack
+    tier: A1
+    purpose: Compile AI governance board pack.
+    inputs: [policies, registries, evals]
+    outputs: [docs/ai_governance/BOARD_PACK.md]
+    approval_required: false
+    kill_switch: scripts/generate_ai_governance_board_pack.py
+
+  - id: data_moat_report
+    tier: A1
+    purpose: Quantify data moat.
+    inputs: [private_ops_csv]
+    outputs: [docs/data/DATA_MOAT.md]
+    approval_required: false
+    kill_switch: scripts/generate_data_moat_report.py
+
+  - id: talent_gap_report
+    tier: A1
+    purpose: Identify talent gaps.
+    inputs: [private_ops_csv]
+    outputs: [docs/people/TALENT_GAP.md]
+    approval_required: false
+    kill_switch: scripts/generate_talent_gap_report.py
+
+  - id: company_memory_report
+    tier: A1
+    purpose: Compile company memory snapshot.
+    inputs: [private_ops_csv]
+    outputs: [docs/learning/COMPANY_MEMORY.md]
+    approval_required: false
+    kill_switch: scripts/generate_company_memory_report.py
+
+  - id: monthly_advisor_update
+    tier: A2
+    purpose: Draft monthly advisor / board update; approval required.
+    inputs: [private_ops_csv]
+    outputs: [docs/founder/MONTHLY_ADVISOR_UPDATE.md]
+    approval_required: true
+    kill_switch: scripts/generate_monthly_advisor_update.py
