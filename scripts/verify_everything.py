@@ -88,8 +88,8 @@ def list_layers() -> None:
         print(f"{layer.key:<22} {layer.name:<32} {runner}")
 
 
-def run_layer(layer: Layer, verbose: bool) -> tuple[bool, str]:
-    """Run a single verifier; return (passed, last-line)."""
+def run_layer(layer: Layer, verbose: bool) -> tuple[bool, str, str, str]:
+    """Run a single verifier; return (passed, last-line, stdout, stderr)."""
     try:
         proc = subprocess.run(
             layer.runner,
@@ -99,9 +99,9 @@ def run_layer(layer: Layer, verbose: bool) -> tuple[bool, str]:
             timeout=180,
         )
     except FileNotFoundError:
-        return False, f"{layer.name}: FAIL (verifier missing)"
+        return False, f"{layer.name}: FAIL (verifier missing)", "", ""
     except subprocess.TimeoutExpired:
-        return False, f"{layer.name}: FAIL (timeout)"
+        return False, f"{layer.name}: FAIL (timeout)", "", ""
 
     stdout = (proc.stdout or "").strip()
     stderr = (proc.stderr or "").strip()
@@ -116,7 +116,7 @@ def run_layer(layer: Layer, verbose: bool) -> tuple[bool, str]:
     passed = proc.returncode == 0 and last.upper().endswith(": PASS")
     if not passed and not last.upper().endswith(("PASS", "FAIL")):
         last = f"{layer.name}: FAIL ({last[:80] or 'no output'})"
-    return passed, last
+    return passed, last, stdout, stderr
 
 
 def main() -> int:
@@ -139,16 +139,37 @@ def main() -> int:
 
     print("DEALIX EVERYTHING VERIFICATION")
     overall_pass = True
+    failures: list[tuple[Layer, str, str]] = []
     for layer in layers:
-        passed, last = run_layer(layer, verbose=args.verbose)
+        passed, last, stdout, stderr = run_layer(layer, verbose=args.verbose)
         # Normalize line so output is always `<Name>: PASS|FAIL`.
         if last.upper().endswith(": PASS"):
             print(f"{layer.name}: PASS")
         else:
             print(f"{layer.name}: FAIL")
             overall_pass = False
+            failures.append((layer, stdout, stderr))
 
     print(f"RESULT: {'PASS' if overall_pass else 'FAIL'}")
+
+    # On failure, dump each failing layer's output so CI logs are self-diagnosing
+    # even without --verbose.
+    if failures and not args.verbose:
+        print("", file=sys.stderr)
+        print("=" * 72, file=sys.stderr)
+        print("FAILING LAYER DETAILS", file=sys.stderr)
+        print("=" * 72, file=sys.stderr)
+        for layer, stdout, stderr in failures:
+            print(f"\n--- {layer.name} ({' '.join(layer.runner)}) ---", file=sys.stderr)
+            if stdout:
+                print("[stdout]", file=sys.stderr)
+                print(stdout, file=sys.stderr)
+            if stderr:
+                print("[stderr]", file=sys.stderr)
+                print(stderr, file=sys.stderr)
+            if not stdout and not stderr:
+                print("(no output)", file=sys.stderr)
+
     return 0 if overall_pass else 1
 
 
