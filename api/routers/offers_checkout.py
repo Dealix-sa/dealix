@@ -23,7 +23,6 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request
 
-from auto_client_acquisition.governance_os.lawful_basis import LawfulBasis
 from auto_client_acquisition.governance_os.self_serve_intake_guard import (
     ALLOWED_OFFER_IDS,
 )
@@ -154,7 +153,10 @@ async def offer_checkout(offer_id: str, req: Request) -> dict[str, Any]:
         )
     except RuntimeError as exc:
         # Misconfiguration (e.g. missing hosted_payment_factory).
-        log.exception("offer_checkout_misconfigured offer_id=%s", offer_id)
+        # offer_id is restricted to the closed ALLOWED_OFFER_IDS set; coerce
+        # to a short, log-safe token to prevent CRLF/log injection (CWE-117).
+        safe_offer_id = offer_id if offer_id in ALLOWED_OFFER_IDS else "unknown"
+        log.exception("offer_checkout_misconfigured offer_id=%s", safe_offer_id)
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 
     if result.status == "rejected":

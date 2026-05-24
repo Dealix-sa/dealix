@@ -7,12 +7,10 @@ Non-Negotiable #5: signatures tie to content hash so tampering is detected.
 from __future__ import annotations
 
 import base64
-import os
 
 import pytest
 
 from auto_client_acquisition.proof_os.signer import (
-    SignedAsset,
     sign_payload,
     verify_payload,
 )

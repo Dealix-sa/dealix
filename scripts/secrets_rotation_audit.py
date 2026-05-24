@@ -106,10 +106,12 @@ def main() -> int:
         else:
             print("  no critical secrets missing for the current env")
         print()
+        # Only present/absent is printed — hash-prefix is intentionally
+        # omitted from the human-readable output (CodeQL CWE-532 safe).
+        # Use --json for the full diff-friendly view that includes hashes.
         for row in report["fields"]:
             status = "OK " if row["present"] else "-- "
-            hash_suffix = f"  hash={row['hash_prefix']}" if row["hash_prefix"] else ""
-            print(f"  {status}{row['field']}{hash_suffix}")
+            print(f"  {status}{row['field']}")
 
     return 2 if report["missing_critical_in_production"] else 0
 

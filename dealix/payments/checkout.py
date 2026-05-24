@@ -36,7 +36,6 @@ from typing import Any, Protocol
 
 from auto_client_acquisition.governance_os.lawful_basis import LawfulBasis
 from auto_client_acquisition.governance_os.self_serve_intake_guard import (
-    ALLOWED_OFFER_IDS,
     IntakeVerdict,
     evaluate_intake,
     is_auto_approve_offer,
@@ -121,9 +120,11 @@ class CheckoutResult:
 class CheckoutStore(Protocol):
     """Storage interface for idempotent checkout state."""
 
-    def get(self, idempotency_key: str) -> CheckoutResult | None: ...
+    def get(self, idempotency_key: str) -> CheckoutResult | None:
+        ...  # pragma: no cover
 
-    def put(self, result: CheckoutResult) -> None: ...
+    def put(self, result: CheckoutResult) -> None:
+        ...  # pragma: no cover
 
 
 class InMemoryCheckoutStore:
@@ -289,6 +290,9 @@ class OfferCheckoutService:
             verdict=verdict,
         )
         self.store.put(result)
+        # offer_id is validated via OFFER_CATALOG membership above, so it is
+        # closed-set safe to log; the structured `extra` dict bypasses the
+        # log format string entirely (CWE-117 safe).
         log.info(
             "offer_checkout_invoice_created",
             extra={

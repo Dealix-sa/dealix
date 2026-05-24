@@ -72,16 +72,17 @@ def _load_private_key_b64() -> str:
 
 
 def _ed25519_available() -> bool:
-    # BaseException catches pyo3 PanicException from a broken cryptography
-    # install — degrade gracefully to the HMAC fallback instead of crashing
-    # the entire workflow.
+    # BaseException is required (not Exception) because pyo3 raises
+    # PanicException as a BaseException subclass when the cryptography
+    # install is broken — we MUST degrade to HMAC instead of crashing the
+    # Sprint workflow. Suppress lint: this is the documented mitigation.
     try:
         from cryptography.hazmat.primitives.asymmetric.ed25519 import (  # noqa: F401
             Ed25519PrivateKey,
         )
 
         return True
-    except BaseException:  # noqa: BLE001
+    except BaseException:  # noqa: BLE001, S110
         return False
 
 
@@ -168,7 +169,10 @@ def verify_payload(payload: bytes, signed: SignedAsset) -> bool:
             return True
         except InvalidSignature:
             return False
-        except BaseException:  # noqa: BLE001 — pyo3 panics
+        except BaseException:  # noqa: BLE001, S110 — pyo3 panic mitigation
+            # Same rationale as _ed25519_available: a broken cryptography
+            # install raises BaseException-subclassed PanicException; we
+            # return verify=False instead of propagating a crash.
             return False
 
     # HMAC fallback verification — recompute from the dev key seed.
