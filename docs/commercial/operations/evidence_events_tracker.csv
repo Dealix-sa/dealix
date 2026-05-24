@@ -12,3 +12,4 @@ event_id,event_date,event_type,company,contact,motion,offer_id,owner,source_chan
 ,2026-05-18,scope_requested,Dealix Founder Commercial Day,,,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder,2026-05-18,
 24207424,2026-05-22,scope_requested,Dealix Founder Commercial Day,,A,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder and approve touches,2026-05-22,
 28b0cd91,2026-05-23,scope_requested,Dealix Founder Commercial Day,,A,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder and approve touches,2026-05-23,
+1c671251,2026-05-24,scope_requested,Dealix Founder Commercial Day,,A,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder and approve touches,2026-05-24,
