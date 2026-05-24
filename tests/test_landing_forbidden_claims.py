@@ -53,18 +53,9 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "blast": "NEGATION",
         "scraping": "NEGATION",
     },
-    "academy.html": {
-        # 'Cold Email Pro — Saudi' appears as a certificate / course name.
-        # The product policy is no cold outreach for Dealix itself; the
-        # academy curriculum teaching that topic needs founder review.
-        "cold": "REVIEW_PENDING",
-    },
     "roi.html": {
         # "لا وعود مضمونة" — explicit negation in disclaimer.
         "مضمون": "NEGATION",
-        # "لا نضمن مبالغ معينة — نضمن استرجاع 100%" — refund guarantee
-        # wording. Founder must decide between rephrase or approval.
-        "نضمن": "REVIEW_PENDING",
     },
     "trust.html": {
         "scraping": "NEGATION",
@@ -146,7 +137,6 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -232,9 +222,8 @@ def test_review_pending_items_have_a_reason():
     # This is informational, not a failure. We assert the *count* so
     # that whenever a founder rephrases or formally approves a phrase,
     # they remember to update this number too.
-    assert len(review_pending) == 2, (
-        "REVIEW_PENDING list changed; expected 2 "
-        "(roi.html: 'نضمن'; academy.html: 'cold'). "
-        "Update this assertion after the founder approves or rephrases. "
+    assert len(review_pending) == 0, (
+        "REVIEW_PENDING list changed; expected 0 after commercial closure. "
+        "Update ALLOWLIST when adding founder-review phrases. "
         f"Current: {review_pending}"
     )

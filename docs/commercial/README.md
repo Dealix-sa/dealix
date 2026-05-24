@@ -2,6 +2,9 @@
 
 | Document | Purpose |
 |----------|---------|
+| [**COMMERCIAL_OFFER_MESSAGING_AR.md**](COMMERCIAL_OFFER_MESSAGING_AR.md) | **رسالة عرض موحّدة:** 499 wedge + 9,500 Sprint افتراضي |
+| [**FIRST_REVENUE_RUNBOOK_AR.md**](FIRST_REVENUE_RUNBOOK_AR.md) | مسار أول إيراد: Diagnostic → دفع → sprint → Proof |
+| [**SCALE_61_90_PLAYBOOK_AR.md**](SCALE_61_90_PLAYBOOK_AR.md) | أيام 61–90: عميل #2 · وكالة · retainer · case study |
 | [**FOUNDER_STRONGEST_PLAN_AR.md**](FOUNDER_STRONGEST_PLAN_AR.md) | **أقوى خطة للمؤسس:** 134 مهمة · قرار أسبوعي (مرحلة 0–5) · ريترو · امتثال · `founder_strongest_plan_status.py` |
 | [**COMMERCIAL_VALUE_MAP_AR.md**](COMMERCIAL_VALUE_MAP_AR.md) | **خريطة القيمة المادية:** يومي/أسبوعي + Soft/Paid + سياق سوق خارجي + أوامر |
 | [**GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md**](GTM_SAUDI_WEB_RESEARCH_PLAYBOOK_AR.md) | **بحث ويب + إطار عملي:** ABM موجة 1 · لوب المؤسس · طبقة الأدلة · مساران GTM |

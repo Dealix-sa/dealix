@@ -3,6 +3,8 @@
 > The bilingual pitch the founder uses across LinkedIn / website / pitch
 > decks. Honest, specific, anti-hype.
 
+**مصدر العروض الموحّد (2026):** [commercial/COMMERCIAL_OFFER_MESSAGING_AR.md](commercial/COMMERCIAL_OFFER_MESSAGING_AR.md) — Diagnostic → **499 إثبات** أو **9,500 Sprint** (افتراضي) → Retainer.
+
 ---
 
 ## القراءة السريعة (عربي)
@@ -48,17 +50,17 @@ Dealix يحميكم من النموّ العشوائيّ المخالف.
 - Delivery Plan: 10 فرص + مسوّدات عربيّة + خطّة 72 ساعة
 - Proof Pack موقَّع: ما حدث فعلاً، بالأدلّة، بالأرقام
 
-### الباقات
+### الباقات (موحّدة مع RevOps)
 
 | المستوى | الباقة | السعر |
 |---|---|---|
-| ٠ | Diagnostic مجانيّ | 0 ريال |
-| ١ | Growth Starter Pilot | 499 ريال (تعريفيّ، 7 أيّام) |
-| ٢ | Data to Revenue | 1,500–3,000 ريال |
-| ٣ | Executive Growth OS | 2,999 ريال/شهر |
-| ٤ | Partnership Growth | 3,000–7,500 ريال |
+| ٠ | Diagnostic / Mini | 0–3,500 ريال |
+| ١ | Growth Starter Pilot (إثبات) | **499 ريال** (7 أيّام — أول 2–3 عملاء) |
+| ٢ | **Lead Intelligence Sprint** (بيع افتراضي) | **9,500 ريال** |
+| ٣ | Data to Revenue Pack | 1,500 ريال |
+| ٤ | Growth Ops / RevOps OS | 2,999–25,000 ريال/شهر |
 
-السعر التعريفيّ 499 ينتهي بعد العميل الخامس.
+السعر 499 ثابت حتى **3 إثباتات** موقّعة؛ لا Enterprise في العرض العام قبل 3–5 سبرنتات.
 
 ### مسار الترقية
 

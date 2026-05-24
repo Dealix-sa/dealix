@@ -1,0 +1,24 @@
+# Five personalized warm intro drafts (CEO #18) — edit names before send.
+# Generate bulk drafts: python3 scripts/warm_list_outreach.py
+version: 1
+drafts:
+  - slot: 1
+    name: "Founder Friend One"
+    company: "Riyadh Consulting LLC"
+    subject_ar: "فكرة سريعة — ترتيب pipeline بدون إرسال بارد"
+  - slot: 2
+    name: "FILL_NAME"
+    company: "FILL_COMPANY"
+    subject_ar: "هل يناسبكم Diagnostic مجاني لفرص الإيراد؟"
+  - slot: 3
+    name: "FILL_NAME"
+    company: "FILL_COMPANY"
+    subject_ar: "مسودات outreach بموافقتكم — Dealix"
+  - slot: 4
+    name: "FILL_NAME"
+    company: "FILL_COMPANY"
+    subject_ar: "Lead Intelligence Sprint — 9,500 ريال (اختياري بعد Diagnostic)"
+  - slot: 5
+    name: "FILL_NAME"
+    company: "FILL_COMPANY"
+    subject_ar: "Pilot 499 ريال — إثبات 7 أيام مع Proof Pack"
