@@ -25,15 +25,32 @@ import subprocess
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 
 from api.security.api_key import require_admin_key
+from core.config.settings import get_settings
 
 router = APIRouter(prefix="/api/v1/founder", tags=["founder"])
 
 
 def _healthcheck() -> dict[str, Any]:
-    return {"path": "/healthz", "ok": True}
+    settings = get_settings()
+    return {
+        "path": "/healthz",
+        "ok": True,
+        "version": settings.app_version,
+        "git_sha": settings.git_sha,
+        "env": settings.app_env,
+    }
+
+
+def _trust_routes_registered(request: Request) -> dict[str, bool]:
+    paths = {getattr(route, "path", "") for route in request.app.routes}
+    return {
+        "version": "/version" in paths,
+        "api_v1_meta": "/api/v1/meta" in paths,
+        "healthz": "/healthz" in paths,
+    }
 
 
 def _db_status() -> dict[str, Any]:
@@ -90,9 +107,14 @@ def _posthog_status() -> dict[str, Any]:
 
 
 def _calendly_status() -> dict[str, Any]:
+    webhook = bool(
+        os.getenv("CALENDLY_WEBHOOK_SECRET", "")
+        or os.getenv("CALENDLY_WEBHOOK_SIGNING_KEY", "")
+    )
     return {
         "url": os.getenv("CALENDLY_URL", ""),
-        "webhook_configured": bool(os.getenv("CALENDLY_WEBHOOK_SECRET", "")),
+        "webhook_configured": webhook,
+        "api_token_configured": bool(os.getenv("CALENDLY_API_TOKEN", "")),
     }
 
 
@@ -193,8 +215,19 @@ def _top_actions(
     return actions[:3]
 
 
+@router.get("/production-layers", dependencies=[Depends(require_admin_key)])
+async def founder_production_layers(request: Request) -> dict[str, Any]:
+    """Layer 0–5 map + env matrix (no secret values). Admin-key gated."""
+    from dealix.commercial_ops.production_layers import build_production_layers
+
+    blob = build_production_layers(check_env=True)
+    blob["trust_routes_registered"] = _trust_routes_registered(request)
+    blob["runtime_healthcheck"] = _healthcheck()
+    return blob
+
+
 @router.get("/launch-status", dependencies=[Depends(require_admin_key)])
-async def launch_status() -> dict[str, Any]:
+async def launch_status(request: Request) -> dict[str, Any]:
     """Single-pane production readiness JSON. Admin-key gated."""
     moyasar = _moyasar_status()
     gmail = _gmail_status()
@@ -211,6 +244,7 @@ async def launch_status() -> dict[str, Any]:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "healthcheck": _healthcheck(),
+        "trust_routes_registered": _trust_routes_registered(request),
         "database": _db_status(),
         "moyasar": moyasar,
         "zatca": _zatca_status(),
