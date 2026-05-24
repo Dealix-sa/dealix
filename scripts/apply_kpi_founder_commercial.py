@@ -24,6 +24,72 @@ _FORBIDDEN_REF = re.compile(
     re.I,
 )
 
+# Patterns indicating the founder has not yet supplied real CRM data.
+# Any of these in an import file => WAITING_ON_FOUNDER_CRM_EXPORT.
+_PLACEHOLDER_TOKEN = re.compile(
+    r"<fill_from_crm>|<FILL_FROM_CRM>|\bTBD\b|not_synced_yet|pending_founder_export",
+    re.I,
+)
+
+_WAITING_VERDICT = "WAITING_ON_FOUNDER_CRM_EXPORT"
+
+
+def _is_placeholder_value(val: object) -> bool:
+    """Return True if a value is the obvious placeholder default (None or 0)."""
+    if val is None:
+        return True
+    try:
+        return float(val) == 0.0
+    except (TypeError, ValueError):
+        return False
+
+
+def _is_placeholder_ref(ref: str) -> bool:
+    """Return True if a source_ref looks like a placeholder, not a real CRM export ref."""
+    if not ref or not ref.strip():
+        return True
+    return bool(_PLACEHOLDER_TOKEN.search(ref))
+
+
+def check_import_readiness(
+    import_path: Path | None = None,
+) -> tuple[str, list[str]]:
+    """Inspect the founder CRM import file and return (verdict, messages).
+
+    Verdict is either 'READY' or WAITING_ON_FOUNDER_CRM_EXPORT.
+    - Missing file => WAITING_ON_FOUNDER_CRM_EXPORT.
+    - All entries placeholder (value=0/None or ref=<fill_from_crm>/TBD/not_synced_yet)
+      => WAITING_ON_FOUNDER_CRM_EXPORT.
+    """
+    path = import_path or _IMPORT
+    messages: list[str] = []
+    if not path.exists():
+        messages.append(f"missing import file: {path}")
+        return _WAITING_VERDICT, messages
+
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    entries = data.get("entries") or {}
+    if not entries:
+        messages.append("import file has no entries")
+        return _WAITING_VERDICT, messages
+
+    real_count = 0
+    for key, row in entries.items():
+        if not isinstance(row, dict):
+            continue
+        val = row.get("value_numeric")
+        ref = str(row.get("source_ref") or "")
+        if _is_placeholder_value(val) and _is_placeholder_ref(ref):
+            messages.append(f"placeholder: {key}")
+        elif _is_placeholder_value(val) or _is_placeholder_ref(ref):
+            messages.append(f"partial placeholder: {key}")
+        else:
+            real_count += 1
+
+    if real_count == 0:
+        return _WAITING_VERDICT, messages
+    return "READY", messages
+
 
 def _patch_snapshot_line(text: str, key: str, value: float, source_ref: str) -> str:
     lines = text.splitlines(keepends=True)
@@ -144,9 +210,38 @@ def main() -> int:
     parser.add_argument("--status", action="store_true", help="Print pending vs ready keys")
     parser.add_argument("--merge-import-only", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Only check readiness; exit non-zero with WAITING_ON_FOUNDER_CRM_EXPORT if not ready.",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Bypass the founder CRM readiness guard (use only when you know data is real).",
+    )
     args = parser.parse_args()
     if args.status:
         return _status()
+
+    verdict, messages = check_import_readiness()
+    if args.check:
+        for msg in messages:
+            print(msg)
+        print(f"DEALIX_KPI_IMPORT_VERDICT={verdict}")
+        return 0 if verdict == "READY" else 2
+
+    if verdict != "READY" and not args.force:
+        for msg in messages:
+            print(msg, file=sys.stderr)
+        print(f"DEALIX_KPI_IMPORT_VERDICT={verdict}", file=sys.stderr)
+        print(
+            "Refusing to apply: founder has not supplied a real CRM export. "
+            "Doctrine: never invent CRM numbers in automation. "
+            "Re-run with --force to override after manual verification.",
+            file=sys.stderr,
+        )
+        return 2
 
     if _merge_import_into_registry() != 0:
         return 1

@@ -90,6 +90,10 @@ powershell -File scripts/founder_evening.ps1 -Append -Company "اسم الشرك
 
 ---
 
+## قائمة موافقة اليوم (today's approval queue)
+
+مسودات اللمسة الأولى للمؤسس (يومية) تُكتب تحت `data/sales/approval_queue/<YYYY-MM-DD>/` — ملف واحد لكل هدف مع front-matter (`company`, `contact`, `channel`, `relationship_basis`, `expected_offer`, `consent_on_file`). أي هدف بلا `relationship_basis` أو بـ `consent_on_file=no/unknown` يُكتب كملف `SKIP_*.md` يوثّق سبب الحجب (PDPL 2026 — لا مسودة بدون أساس علاقة دافئة). راجع `data/sales/war_room_ranking_<YYYY-MM-DD>.md` لقائمة الترتيب اليومية.
+
 ## روابط
 
 - [GTM_DUAL_TRACK_CLARIFICATION_AR.md](GTM_DUAL_TRACK_CLARIFICATION_AR.md)

@@ -1,9 +1,22 @@
 # فهرس استخبارات السوق والتشغيل — Dealix (2025–2026)
 
-**الغرض:** نقطة دخول واحدة لكل محاور خطة «مختصر استخبارات سوق وتشغيل» — **21 وثيقة** + config آلي + موجز صباحي.  
-**آخر تحديث:** 2026-05-18 · **Config:** [`dealix/config/market_intelligence_refs.yaml`](../../dealix/config/market_intelligence_refs.yaml) · **تقويم:** [`market_intelligence_content_calendar.yaml`](../../dealix/config/market_intelligence_content_calendar.yaml)  
+**الغرض:** نقطة دخول واحدة لكل محاور خطة «مختصر استخبارات سوق وتشغيل» — **21 وثيقة** + config آلي + موجز صباحي + **تحديثات شهرية**.  
+**آخر تحديث:** 2026-05-24 · **Config:** [`dealix/config/market_intelligence_refs.yaml`](../../dealix/config/market_intelligence_refs.yaml) · **تقويم:** [`market_intelligence_content_calendar.yaml`](../../dealix/config/market_intelligence_content_calendar.yaml)  
 **أمر الحالة:** `py -3 scripts/market_intelligence_status.py` · يظهر أيضاً في **Commercial Digest** صباحاً  
 **خريطة القيمة:** [COMMERCIAL_VALUE_MAP_AR.md](COMMERCIAL_VALUE_MAP_AR.md) · `commercial_value_map_status.py --write-md`
+
+---
+
+## 📅 تحديثات شهرية (ابدأ هنا للمؤسس)
+
+> **القاعدة:** تحديث شهري واحد جديد كل أوّل الشهر — لا يحذف السابق (سجل زمني).
+
+| الشهر | الوثيقة | أبرز التغيرات |
+|-------|---------|----------------|
+| **مايو 2026** | [MARKET_INTELLIGENCE_2026_MAY_UPDATE_AR.md](MARKET_INTELLIGENCE_2026_MAY_UPDATE_AR.md) | PDPL ساري الإنفاذ (48 قرار، 5M ريال) · أسعار السوق تؤكّد سلم Dealix · WhatsApp opt-in صريح إلزامي · 3 قرارات مؤسس |
+
+**ملحقات الشهر:**
+- [MARKET_INTELLIGENCE_PDPL_ENFORCEMENT_2026_AR.md](MARKET_INTELLIGENCE_PDPL_ENFORCEMENT_2026_AR.md) — موجز إنفاذ PDPL (يولّده dealix-content)
 
 ---
 

@@ -1,8 +1,17 @@
 # Objection Engine — classify → draft → sales_asset → content_asset → FAQ
 # Workflow: objection_received → classify → response_draft → sales_asset → content_asset → faq_update
 
-version: "1.0"
-updated: "2026-05-17"
+version: "1.1"
+updated: "2026-05-24"
+changelog:
+  - "1.1 (2026-05-24): added 5 PDPL enforcement objections (pdpl_compliance_cost, pdpl_dpo_required, pdpl_ndgp_registration, pdpl_whatsapp_consent, pdpl_consent_explicit_vs_implied)"
+  - "1.0 (2026-05-17): initial 6 objections"
+
+evidence_levels:
+  L1: "direct citation of PDPL article or executive regulation"
+  L2: "general PDPL principle or SDAIA public guidance — no specific article loaded"
+  L3: "SDAIA enforcement precedent reported publicly (no case number disclosed)"
+  L4: "Dealix internal interpretation pending lawyer review"
 
 objections:
   - id: crm_exists
@@ -66,6 +75,93 @@ objections:
     sales_asset: docs/sales-kit/dealix_objection_handler.md
     content_asset_slug: audit-lead-follow-up
     aeo_week: 3
+
+  # ─── PDPL enforcement objections (2026-05-24) ──────────────────────────
+  # Context: SDAIA active enforcement since 2024; ~48 decisions reported
+  # by mid-Jan 2026; fines up to SAR 5M per breach, doubled on repeat.
+
+  - id: pdpl_compliance_cost
+    labels_ar: ["كم تكلفة الامتثال؟", "الامتثال غالي", "ما عندنا ميزانية امتثال"]
+    labels_en: ["how much does PDPL compliance cost", "compliance budget"]
+    classify: pdpl_enforcement
+    evidence_level: L2
+    response_draft_ar: >
+      تكلفة الامتثال التشغيلي الأساسي (سياسة خصوصية + DPA + سجل موافقات + DSAR SOP)
+      أقل بكثير من سقف الغرامة الواحدة وفق نظام PDPL، ومضاعَفة عند التكرار.
+      Dealix يُسلِّم Trust Pack جاهز في كل proposal — تبدأ من أساس مُوثَّق لا من صفر.
+    citation_ar: "نظام حماية البيانات الشخصية (PDPL) — سلّم الجزاءات الإدارية"
+    sales_asset: docs/commercial/operations/TRUST_PACK_PROPOSAL_AR.md
+    content_asset_slug: pdpl-compliance-cost-vs-fine
+    aeo_week: 12
+    faq_snippet_ar: "الامتثال التشغيلي الأساسي تكلفة محدودة؛ الغرامة الواحدة تصل لسقف نظامي مرتفع وتُضاعَف عند التكرار."
+
+  - id: pdpl_dpo_required
+    labels_ar: ["هل أحتاج DPO؟", "لازم مسؤول حماية بيانات؟", "DPO إجباري؟"]
+    labels_en: ["do I need a DPO", "is DPO mandatory"]
+    classify: pdpl_enforcement
+    evidence_level: L2
+    response_draft_ar: >
+      تعيين مسؤول حماية بيانات (DPO) إلزامي في حالات محددة: الجهات العامة،
+      ومعالجة البيانات الحساسة بحجم كبير، والمراقبة المنتظمة لأصحاب البيانات.
+      للشركات خارج هذه الفئات يُوصى بـ «نقطة اتصال حوكمة» موَثَّقة كحد أدنى — Dealix يوفّر قالب التعيين ضمن Trust Pack.
+    citation_ar: "نظام PDPL واللوائح التنفيذية — اشتراطات تعيين مسؤول حماية البيانات"
+    sales_asset: docs/commercial/FOUNDER_PDPL_COMPLIANCE_PASS_AR.md
+    content_asset_slug: pdpl-dpo-when-required
+    aeo_week: 12
+    faq_snippet_ar: "DPO إلزامي للجهات العامة ومعالجي البيانات الحساسة بحجم كبير؛ غير ذلك = نقطة اتصال حوكمة موَثَّقة."
+
+  - id: pdpl_ndgp_registration
+    labels_ar:
+      - "ماذا يحدث لو لم نسجّل بمنصة حوكمة البيانات الوطنية؟"
+      - "لازم نسجل في NDGP؟"
+      - "منصة حوكمة البيانات إجبارية؟"
+    labels_en: ["what if we do not register on NDGP", "national data governance platform mandatory"]
+    classify: pdpl_enforcement
+    evidence_level: L3
+    response_draft_ar: >
+      التسجيل على المنصة الوطنية لحوكمة البيانات (NDGP) إلزامي للجهات العامة،
+      ومعالجي البيانات الحساسة، وجهات النقل عبر الحدود، ومعالجي بيانات الأطفال — وعدم التسجيل عند الإلزام يقع ضمن سلّم جزاءات PDPL.
+      حتى خارج هذه الفئات، التسجيل المبكر ميزة تجارية في عروض القطاع المنظَّم.
+    citation_ar: "موقع SDAIA — المنصة الوطنية لحوكمة البيانات (dgp.sdaia.gov.sa)"
+    sales_asset: docs/commercial/FOUNDER_PDPL_COMPLIANCE_PASS_AR.md
+    content_asset_slug: ndgp-registration-who-must
+    aeo_week: 13
+    faq_snippet_ar: "NDGP إلزامي للجهات العامة + معالجي البيانات الحساسة + النقل عبر الحدود + بيانات الأطفال."
+
+  - id: pdpl_whatsapp_consent
+    labels_ar:
+      - "هل يمكن إرسال WhatsApp تسويقي بدون موافقة موثقة؟"
+      - "واتساب تسويقي بدون opt-in؟"
+      - "نستخدم قوائم أرقام جاهزة"
+    labels_en: ["can we send marketing WhatsApp without documented consent", "bulk whatsapp without opt-in"]
+    classify: pdpl_enforcement
+    evidence_level: L3
+    response_draft_ar: >
+      لا. الاتصالات التسويقية بدون موافقة صريحة موَقَّتة زمنياً من المخالفات المُعلَنة من SDAIA،
+      وقوائم الأرقام المشتراة لا تُعدّ أساساً قانونياً تحت PDPL.
+      Dealix لا يُشغّل إرساليات تسويقية بدون سجل opt-in قابل للاسترجاع — هذه قاعدة منتج لا خيار عميل.
+    citation_ar: "نظام PDPL — اشتراط الموافقة الصريحة للتسويق المباشر + قرارات إنفاذ SDAIA المُعلَنة 2025–2026"
+    sales_asset: docs/commercial/MARKET_INTELLIGENCE_OBJECTIONS_PDPL_AR.md
+    content_asset_slug: whatsapp-marketing-consent-pdpl
+    aeo_week: 13
+    faq_snippet_ar: "WhatsApp تسويقي بدون opt-in موَقَّت = مخالفة PDPL مُعلَنة من SDAIA؛ القوائم المشتراة لا تكفي."
+
+  - id: pdpl_consent_explicit_vs_implied
+    labels_ar:
+      - "ما الفرق بين الموافقة الصريحة والضمنية في PDPL؟"
+      - "الموافقة في الشروط والأحكام تكفي؟"
+      - "checkbox واحد يغطي كل شيء؟"
+    labels_en: ["difference between explicit and implied consent under PDPL", "is T&Cs checkbox enough"]
+    classify: pdpl_enforcement
+    evidence_level: L2
+    response_draft_ar: >
+      PDPL يشترط موافقة حرة، محددة، مستنيرة، قابلة للسحب — ودفنها في الشروط والأحكام (موافقة ضمنية) لا يكفي للتسويق المباشر.
+      المطلوب: checkbox مستقل، غير مُعلَّم مسبقاً، يحدد القناة بالاسم، مع سجل زمني وآلية سحب بنفس سهولة الإعطاء.
+    citation_ar: "نظام PDPL — مبادئ الموافقة (حرة، محددة، مستنيرة، قابلة للسحب)"
+    sales_asset: docs/commercial/FOUNDER_PDPL_COMPLIANCE_PASS_AR.md
+    content_asset_slug: pdpl-explicit-vs-implied-consent
+    aeo_week: 14
+    faq_snippet_ar: "الموافقة الضمنية في T&Cs لا تكفي للتسويق المباشر — يلزم checkbox مستقل + سجل زمني + آلية سحب."
 
 workflow:
   on_objection_received:
