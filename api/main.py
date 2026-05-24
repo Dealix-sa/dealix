@@ -78,6 +78,8 @@ from api.routers import friction_log as friction_log_router
 from api.routers import sprint_runner as sprint_runner_router
 from api.routers import founder_dashboard as founder_dashboard_router
 from api.routers import audit_export as audit_export_router
+# Hermes — Sovereign Operating Doctrine (admin-gated)
+from api.routers import hermes_console as hermes_console_router
 
 # value_os, data_os and agent_os routers are imported defensively: an
 # optional router with a broken module-level import must not abort app
@@ -327,6 +329,8 @@ def create_app() -> FastAPI:
     app.include_router(friction_log_router.router)
     app.include_router(transformation_os_router.router, prefix="/api/v1")
     app.include_router(business_now_router.router, prefix="/api/v1")
+    # Hermes — Sovereign Console + kernel endpoints (admin-gated)
+    app.include_router(hermes_console_router.router, prefix="/api/v1")
     if value_os_router is not None:
         app.include_router(value_os_router.router)
     # Wave 14B — Commercial activation: CSV upload for the Data Pack offer
