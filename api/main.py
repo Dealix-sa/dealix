@@ -103,6 +103,13 @@ try:
 except Exception as _exc:  # noqa: BLE001
     agent_os_router = None
     _OPTIONAL_ROUTER_ERRORS["agent_os"] = repr(_exc)
+
+# Wave 2 — Hermes kernel + Trust plane (admin)
+try:
+    from api.routers import hermes as hermes_router
+except Exception as _exc:  # noqa: BLE001
+    hermes_router = None
+    _OPTIONAL_ROUTER_ERRORS["hermes"] = repr(_exc)
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
 from api.routers import commercial_map as commercial_map_router
 # Wave 15 — Founder launch-status (single-pane production readiness)
@@ -338,6 +345,9 @@ def create_app() -> FastAPI:
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)
+    # Wave 2 — Hermes kernel + Trust plane (admin-gated)
+    if hermes_router is not None:
+        app.include_router(hermes_router.router)
     for _name, _err in _OPTIONAL_ROUTER_ERRORS.items():
         get_logger(__name__).warning("optional_router_skipped", router=_name, error=_err)
     # Wave 14J — Commercial wiring map (public)
