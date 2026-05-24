@@ -1,0 +1,53 @@
+name: Post-Coverage Debug (temporary)
+
+on:
+  push:
+    branches: [claude/dealix-autonomous-systems-abMT0]
+
+jobs:
+  debug-post-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install "pytest>=8.3.0,<9" "pytest-asyncio>=0.24.0,<1" "pytest-cov>=6.0.0,<7" httpx aiosqlite
+
+      - name: Show installed package versions
+        run: |
+          python3 --version
+          pip show fastapi anthropic pydantic httpx pytest pytest-asyncio pytest-cov | grep -E "Name:|Version:"
+
+      - name: In-process API smoke
+        env:
+          APP_ENV: test
+          APP_DEBUG: "false"
+          ANTHROPIC_API_KEY: test-anthropic-key
+          DEEPSEEK_API_KEY: test-deepseek-key
+          GROQ_API_KEY: test-groq-key
+          GLM_API_KEY: test-glm-key
+          GOOGLE_API_KEY: test-google-key
+        run: python3 scripts/smoke_inprocess.py
+
+      - name: Embeddings pipeline placeholder
+        run: python3 scripts/embeddings_pipeline_placeholder.py
+
+      - name: Deterministic eval smoke
+        env:
+          APP_ENV: test
+          APP_DEBUG: "false"
+          ANTHROPIC_API_KEY: test-anthropic-key
+          DEEPSEEK_API_KEY: test-deepseek-key
+          GROQ_API_KEY: test-groq-key
+          GLM_API_KEY: test-glm-key
+          GOOGLE_API_KEY: test-google-key
+        run: python3 scripts/run_evals.py
