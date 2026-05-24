@@ -201,8 +201,8 @@ def test_bilingual_template_uses_two_column_grid() -> None:
 def test_format_sar_ar_uses_arabic_digits() -> None:
     s = format_sar(12_345, language="ar")
     assert "SAR" in s
-    # Must NOT contain Western digits
-    assert not re.search(r"\d", s)
+    # Must NOT contain ASCII Western digits (0-9)
+    assert not re.search(r"[0-9]", s)
     # And SHOULD contain at least one Arabic-Indic digit
     assert any(c in "٠١٢٣٤٥٦٧٨٩" for c in s)
 
@@ -234,10 +234,14 @@ def test_render_html_does_not_leak_customer_phone_or_email() -> None:
         customer_label="Sample Customer Co.",
         customer_handle="sample-customer",
     )
-    # Even when a label is supplied, no PII patterns should appear
-    assert "@" not in html  # no emails
-    assert "+966" not in html  # no Saudi phone
-    assert "Sample Customer Co." in html  # but the supplied label is shown
+    # No email-shaped tokens (user@host.tld) — but CSS at-rules like
+    # ``@page`` and ``@media`` are allowed.
+    assert not re.search(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", html)
+    # No Saudi phone numbers (E.164 or local).
+    assert "+966" not in html
+    assert not re.search(r"\b05\d{8}\b", html)
+    # The supplied label is shown.
+    assert "Sample Customer Co." in html
 
 
 # ─────────────────────────────────────────────────────────────────────
