@@ -340,7 +340,10 @@ def mcp_risk_score(
 
     findings = score_metadata(metadata)
     return {
-        "findings": [f.__dict__ for f in findings],
+        "findings": [
+            {"severity": f.severity, "rule_id": f.rule_id, "summary": f.summary}
+            for f in findings
+        ],
         "metadata_hash": metadata_hash(metadata),
         "blocked": any(f.severity == "block" for f in findings),
     }
