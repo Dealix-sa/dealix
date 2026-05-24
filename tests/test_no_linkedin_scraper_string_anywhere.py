@@ -74,6 +74,14 @@ _ALLOWLIST_PATHS = frozenset({
     "docs/WAVE17_FOUNDER_DAY1_LAUNCH_KIT.md",
     "docs/WAVE17_BRANCH_CLEANUP_LOG.md",
     "docs/WAVE17_VULNERABILITY_TRIAGE.md",
+    # Tests-Required registry — enumerates every doctrine test by file name
+    # for SDAIA / audit disclosure (the test file path itself contains the
+    # forbidden substring, so any registry that names it triggers the scan).
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
+    # Wave 16 (Autonomous Distribution Engine) — verification table and PR
+    # body reference this lockdown test by file path for traceability.
+    "docs/strategy/DEALIX_AUTONOMOUS_DISTRIBUTION_VERIFICATION_AR.md",
+    "docs/strategy/PR_BODY_AUTONOMOUS_DISTRIBUTION.md",
     # The plan file lives outside the repo (in /root/.claude/plans/) so
     # never appears in git ls-files; no allowlist needed.
 })
