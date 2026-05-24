@@ -195,11 +195,46 @@ class Settings(BaseSettings):
     # ── Calendar ────────────────────────────────────────────────
     google_calendar_credentials_file: str | None = None
     google_calendar_id: str = "primary"
-    calendly_api_token: SecretStr | None = None
+    calendly_api_token: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "CALENDLY_API_TOKEN",
+            "CALENDLY_PAT",
+            "CALENDLY_API_KEY",
+            "calendly_api_token",
+        ),
+    )
     calendly_user_uri: str | None = None
+    calendly_webhook_secret: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "CALENDLY_WEBHOOK_SECRET",
+            "CALENDLY_WEBHOOK_SIGNING_KEY",
+            "calendly_webhook_secret",
+        ),
+    )
+    calendly_oauth_client_id: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("CALENDLY_OAUTH_CLIENT_ID", "calendly_oauth_client_id"),
+    )
+    calendly_oauth_client_secret: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "CALENDLY_OAUTH_CLIENT_SECRET",
+            "calendly_oauth_client_secret",
+        ),
+    )
 
     # ── HubSpot ─────────────────────────────────────────────────
-    hubspot_access_token: SecretStr | None = None
+    hubspot_access_token: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "HUBSPOT_ACCESS_TOKEN",
+            "HUBSPOT_API_KEY",
+            "HUBSPOT_PRIVATE_APP_TOKEN",
+            "hubspot_access_token",
+        ),
+    )
     hubspot_portal_id: str | None = None
 
     # ── Automation ──────────────────────────────────────────────

@@ -17,6 +17,10 @@
 | OpenAI | platform.openai.com |
 | DeepSeek | platform.deepseek.com |
 | MiniMax | MiniMax Console |
+| PostHog | PostHog → Project settings → API keys |
+| Calendly PAT + webhook signing | Calendly → Integrations → API & webhooks |
+| Calendly OAuth client secret | Calendly → OAuth app (regenerate if leaked) |
+| HubSpot Private App | HubSpot → Settings → Private Apps |
 | GitHub PAT | GitHub → Settings → Developer settings |
 | `ADMIN_API_KEYS` | أنشئ مفتاحًا جديدًا وحدّث Railway + `frontend` proxy |
 
