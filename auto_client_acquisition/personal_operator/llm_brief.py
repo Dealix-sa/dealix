@@ -101,27 +101,23 @@ def _format_input_data(
 
 
 async def _call_llm(system_prompt: str, user_input: str) -> tuple[str, str]:
-    """Call LLM router. Returns (text, model_used). Raises on failure."""
-    try:
-        from core.llm.base import Message
-        from core.llm.router import get_router
-    except ImportError as exc:
-        raise RuntimeError(f"LLM router unavailable: {exc}") from exc
+    """Call LLM via unified dealix_chat (MiniMax-first when profile=minimax)."""
+    from core.config.models import Task
+    from core.llm.base import Message
+    from core.llm.dealix_chat import dealix_chat
 
-    router = get_router()
-    messages = [
-        Message(role="system", content=system_prompt),
-        Message(role="user", content=user_input),
-    ]
+    messages = [Message(role="user", content=user_input)]
     response = await asyncio.wait_for(
-        router.complete(
-            messages=messages,
+        dealix_chat(
+            messages,
+            system=system_prompt,
             max_tokens=MAX_OUTPUT_TOKENS,
             temperature=0.3,
+            task=Task.SUMMARY,
         ),
         timeout=LLM_TIMEOUT_SECONDS,
     )
-    return response.content, getattr(response, "model", "unknown")
+    return response.content, f"{response.provider}/{response.model}"
 
 
 def _parse_brief(text: str) -> tuple[str, str, str]:

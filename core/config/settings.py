@@ -22,7 +22,8 @@ class Settings(BaseSettings):
     """Single source of truth for configuration | المصدر الوحيد للإعدادات."""
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        # .env.local overrides .env (gitignored — founder keys for local runtime)
+        env_file=(".env", ".env.local"),
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
@@ -88,6 +89,26 @@ class Settings(BaseSettings):
     openai_api_key: SecretStr | None = None
     openai_base_url: str = "https://api.openai.com/v1"
     openai_model: str = "gpt-4o-mini"
+
+    # ── LLM: MiniMax (OpenAI-compatible — heavy reasoning tier) ─
+    minimax_api_key: SecretStr | None = None
+    minimax_base_url: str = "https://api.minimax.io/v1"
+    minimax_model: str = "MiniMax-M2.7"
+
+    # ── Dealix runtime AI router (primary → fallback, env-only) ─
+    ai_primary_provider: str = Field(
+        default="minimax",
+        validation_alias=AliasChoices("AI_PRIMARY_PROVIDER", "ai_primary_provider"),
+    )
+    ai_fallback_provider: str = Field(
+        default="openai",
+        validation_alias=AliasChoices("AI_FALLBACK_PROVIDER", "ai_fallback_provider"),
+    )
+    # Task router profile: minimax | default | empty (auto from keys)
+    dealix_llm_profile: str = Field(
+        default="",
+        validation_alias=AliasChoices("DEALIX_LLM_PROFILE", "dealix_llm_profile"),
+    )
 
     # ── Databases ───────────────────────────────────────────────
     database_url: str = "postgresql+asyncpg://ai_user:ai_password@localhost:5432/ai_company"
@@ -179,11 +200,46 @@ class Settings(BaseSettings):
     # ── Calendar ────────────────────────────────────────────────
     google_calendar_credentials_file: str | None = None
     google_calendar_id: str = "primary"
-    calendly_api_token: SecretStr | None = None
+    calendly_api_token: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "CALENDLY_API_TOKEN",
+            "CALENDLY_PAT",
+            "CALENDLY_API_KEY",
+            "calendly_api_token",
+        ),
+    )
     calendly_user_uri: str | None = None
+    calendly_webhook_secret: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "CALENDLY_WEBHOOK_SECRET",
+            "CALENDLY_WEBHOOK_SIGNING_KEY",
+            "calendly_webhook_secret",
+        ),
+    )
+    calendly_oauth_client_id: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("CALENDLY_OAUTH_CLIENT_ID", "calendly_oauth_client_id"),
+    )
+    calendly_oauth_client_secret: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "CALENDLY_OAUTH_CLIENT_SECRET",
+            "calendly_oauth_client_secret",
+        ),
+    )
 
     # ── HubSpot ─────────────────────────────────────────────────
-    hubspot_access_token: SecretStr | None = None
+    hubspot_access_token: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "HUBSPOT_ACCESS_TOKEN",
+            "HUBSPOT_API_KEY",
+            "HUBSPOT_PRIVATE_APP_TOKEN",
+            "hubspot_access_token",
+        ),
+    )
     hubspot_portal_id: str | None = None
 
     # ── Automation ──────────────────────────────────────────────
@@ -272,6 +328,7 @@ class Settings(BaseSettings):
             "gemini": self.google_api_key,
             "groq": self.groq_api_key,
             "openai": self.openai_api_key,
+            "minimax": self.minimax_api_key,
         }
         key = mapping.get(provider.lower())
         if key is None:

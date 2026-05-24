@@ -9,6 +9,7 @@ from fastapi import APIRouter
 
 from api.routers import (
     admin,
+    ai_runtime,
     approval_center,
     business,
     command_center,
@@ -40,6 +41,7 @@ from api.routers import (
 
 _ROUTERS = [
     health.router,
+    ai_runtime.router,
     platform_meta.router,
     admin.router,
     public.router,

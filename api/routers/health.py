@@ -139,6 +139,42 @@ async def health_deep() -> dict[str, object]:
     if not providers:
         overall = "degraded"
 
+    # Optional MiniMax live ping (costs quota) — DEALIX_HEALTH_MINIMAX_PING=1
+    if os.getenv("DEALIX_HEALTH_MINIMAX_PING", "").strip() in {"1", "true", "yes"}:
+        t0 = time.perf_counter()
+        try:
+            from core.config.models import effective_dealix_llm_profile
+            from core.llm.runtime_router import get_runtime_router
+
+            settings = get_settings()
+            if settings.has_llm_provider("minimax"):
+                import asyncio
+
+                async def _minimax_ping() -> str:
+                    resp = await get_runtime_router().chat(
+                        "ping",
+                        system="Reply DEALIX_OK only.",
+                        max_tokens=16,
+                        temperature=0.0,
+                    )
+                    return f"{resp.provider}/{resp.model}"
+
+                label = asyncio.run(_minimax_ping())
+                checks["minimax_ping"] = {
+                    "status": "ok",
+                    "ms": round((time.perf_counter() - t0) * 1000, 1),
+                    "profile": effective_dealix_llm_profile(settings),
+                    "result": label,
+                }
+            else:
+                checks["minimax_ping"] = {"status": "skip", "reason": "no MINIMAX_API_KEY"}
+        except Exception as e:  # pragma: no cover
+            err = str(e)[:200]
+            checks["minimax_ping"] = {"status": "fail", "error": err}
+            if "insufficient_balance" in err or "1008" in err:
+                checks["minimax_ping"]["hint"] = "add Credits at platform.minimax.io"
+            overall = "degraded"
+
     return {"status": overall, "checks": checks, "version": get_settings().app_version}
 
 

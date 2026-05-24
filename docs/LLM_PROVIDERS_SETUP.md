@@ -20,8 +20,40 @@
 | **DeepSeek** | `deepseek-chat` | balanced_for_drafts | Code · implementation | $0.14 in / $0.28 out |
 | **Zhipu GLM** | `glm-4` | balanced_for_drafts | Arabic-heavy text · bulk | $0.14 in / $0.28 out |
 | **OpenAI** | `gpt-4o-mini` | cheap_for_classification | Fallback general-purpose | $0.15 in / $0.60 out |
+| **MiniMax** | `MiniMax-M2.7` | strong_for_strategy (runtime fallback) | Heavy reasoning · Arabic narrative | see MiniMax pricing |
 
-**Source:** `dealix/observability/cost_tracker.py:38-56` (cost matrix) · `core/config/settings.py:54-81` (defaults).
+**Source:** `dealix/observability/cost_tracker.py:38-56` (cost matrix) · `core/config/settings.py` (defaults).
+
+### Dealix AI Runtime (founder local + Railway)
+
+**Cursor = IDE only (OpenAI).** Production chat uses env-driven router:
+
+| Env | Default |
+|-----|---------|
+| `AI_PRIMARY_PROVIDER` | `minimax` |
+| `AI_FALLBACK_PROVIDER` | `openai` |
+| `DEALIX_LLM_PROFILE` | `minimax` (auto if MiniMax keyed, no Anthropic) |
+| `MINIMAX_API_KEY` / `DEEPSEEK_API_KEY` | from `.env.local` or Railway |
+
+- Module: [`core/llm/runtime_router.py`](../core/llm/runtime_router.py) · [`core/llm/dealix_chat.py`](../core/llm/dealix_chat.py)
+- API: `GET/POST /api/v1/ai-runtime/*` (admin key)
+- Verify: `python3 scripts/verify_minimax_dealix.py` · `python3 scripts/verify_ai_runtime_providers.py` (`--ping`)
+- Ops doc: [`docs/ops/MINIMAX_DEALIX_AR.md`](ops/MINIMAX_DEALIX_AR.md)
+- Personal Operator + outreach/proposal/qualification use `dealix_chat` when profile=minimax
+
+Copy [`.env.local.example`](../.env.local.example) → `.env.local` (never commit).
+
+### MiniMax Token Plan (M2.7)
+
+| Item | Value |
+|------|--------|
+| Console | https://platform.minimax.io → API Keys |
+| Key format | `sk-api-...` (Token Plan / Credits) — **not** `sk-user-...` |
+| Endpoint | `POST https://api.minimax.io/v1/chat/completions` |
+| Model | `MiniMax-M2.7` or `MiniMax-M2.7-highspeed` |
+| Env | `MINIMAX_API_KEY`, `MINIMAX_BASE_URL`, `MINIMAX_MODEL` |
+
+If API returns `insufficient_balance (1008)`: activate Credits or wait for Token Plan window reset (Starter: 1500 req / 5h).
 
 ---
 

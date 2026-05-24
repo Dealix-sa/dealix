@@ -14,6 +14,18 @@
 
 ---
 
+## إيقاع الأسطول (يومي)
+
+```bash
+bash scripts/run_founder_agent_fleet_rhythm.sh
+bash scripts/run_founder_agent_fleet_rhythm.sh --weekly
+python3 scripts/print_agent_work_packets.py --cadence daily
+```
+
+حزم YAML: [`data/agent_work_packets/daily_packets.yaml`](../../data/agent_work_packets/daily_packets.yaml)
+
+---
+
 ## جدول المهام → الوكيل
 
 | المهمة | وكيل Cursor | مرجع |

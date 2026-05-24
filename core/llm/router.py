@@ -14,18 +14,13 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any
 
-from core.config.models import (
-    FALLBACK_CHAIN,
-    TASK_ROUTING,
-    Provider,
-    Task,
-)
+from core.config.models import FALLBACK_CHAIN, Provider, Task, get_provider_for_task
 from core.config.settings import Settings, get_settings
 from core.llm.anthropic_client import AnthropicClient
 from core.llm.base import LLMClient, LLMResponse, Message
 from core.llm.gemini_client import GeminiClient
 from core.llm.glm_client import GLMClient
-from core.llm.openai_compat import DeepSeekClient, GroqClient, OpenAIClient
+from core.llm.openai_compat import DeepSeekClient, GroqClient, MiniMaxClient, OpenAIClient
 
 logger = logging.getLogger(__name__)
 
@@ -71,10 +66,13 @@ class ModelRouter:
             )
 
         if s.deepseek_api_key:
+            deepseek_base = (s.deepseek_base_url or "").rstrip("/")
+            if deepseek_base and not deepseek_base.endswith("/v1"):
+                deepseek_base = f"{deepseek_base}/v1"
             self._clients[Provider.DEEPSEEK] = DeepSeekClient(
                 api_key=s.deepseek_api_key.get_secret_value(),
                 model=s.deepseek_model,
-                base_url=s.deepseek_base_url,
+                base_url=deepseek_base or "https://api.deepseek.com/v1",
             )
 
         if s.glm_api_key:
@@ -102,6 +100,16 @@ class ModelRouter:
                 api_key=s.openai_api_key.get_secret_value(),
                 model=s.openai_model,
                 base_url=s.openai_base_url,
+            )
+
+        if s.minimax_api_key:
+            minimax_base = (s.minimax_base_url or "").rstrip("/")
+            if minimax_base and not minimax_base.endswith("/v1"):
+                minimax_base = f"{minimax_base}/v1"
+            self._clients[Provider.MINIMAX] = MiniMaxClient(
+                api_key=s.minimax_api_key.get_secret_value(),
+                model=s.minimax_model,
+                base_url=minimax_base or "https://api.minimax.io/v1",
             )
 
         configured = [p.value for p in self._clients]
@@ -136,7 +144,7 @@ class ModelRouter:
         if isinstance(messages, str):
             messages = [Message(role="user", content=messages)]
 
-        primary = preferred_provider or TASK_ROUTING.get(task, Provider.ANTHROPIC)
+        primary = preferred_provider or get_provider_for_task(task, self.settings)
         chain = [primary] + [p for p in FALLBACK_CHAIN.get(primary, []) if p != primary]
 
         last_error: Exception | None = None

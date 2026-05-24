@@ -1,0 +1,89 @@
+# Agent work packets — consumed by scripts/print_agent_work_packets.py
+version: 1
+
+packets:
+  pm_morning_orchestrator:
+    cadence: daily
+    agent: dealix-pm
+    inputs:
+      - dealix/transformation/business_now_cache.yaml
+      - dealix/config/founder_weekly_one_decision.yaml
+    outputs:
+      - data/founder_briefs/daily_decisions_{date}.md
+    verify_commands:
+      - python3 scripts/founder_comprehensive_plan_status.py
+      - python3 scripts/founder_strongest_plan_status.py
+
+  sales_war_room_drafts:
+    cadence: daily
+    agent: dealix-sales
+    inputs:
+      - data/war_room_today.json
+      - docs/commercial/operations/targeting/agency_accounts_seed.csv
+    outputs:
+      - data/outreach_drafts/
+    verify_commands:
+      - python3 scripts/commercial_war_room_sync.py --dry-run
+      - "GET /api/v1/ops-autopilot/war-room/today-pack (admin key)"
+
+  marketing_social_today:
+    cadence: daily
+    agent: dealix-content
+    inputs:
+      - dealix/config/social_content_queue.yaml
+    outputs:
+      - data/content_drafts/
+    verify_commands:
+      - python3 scripts/queue_content_drafts_for_approval.py --dry-run
+      - "GET /api/v1/ops-autopilot/marketing/social-today (admin key)"
+
+  growth_business_now:
+    cadence: daily
+    agent: dealix-pm
+    inputs:
+      - dealix/transformation/business_now_cache.yaml
+    outputs:
+      - data/founder_briefs/commercial_{date}.md
+    verify_commands:
+      - bash scripts/run_business_now.sh
+
+  partners_motion:
+    cadence: weekly
+    agent: dealix-sales
+    inputs:
+      - docs/commercial/operations/PARTNER_ONBOARDING_KIT_AR.md
+    outputs:
+      - data/partner_outreach_drafts/
+    verify_commands:
+      - python3 scripts/verify_founder_integration_truth.py
+
+  delivery_proof_checklist:
+    cadence: daily
+    agent: dealix-delivery
+    inputs:
+      - docs/delivery/PROOF_PACK_TEMPLATE.md
+    outputs:
+      - data/proof_packs/
+    verify_commands:
+      - python3 scripts/verify_full_mvp_ready.py --skip-tests
+
+  engineer_gate_smoke:
+    cadence: daily
+    agent: dealix-engineer
+    inputs:
+      - api/main.py
+    outputs:
+      - data/founder_briefs/last_engineer_gate.json
+    verify_commands:
+      - python3 scripts/verify_ai_runtime_providers.py
+      - APP_ENV=test pytest tests/test_revenue_ops_autopilot.py -q --no-cov -x
+
+  weekly_metrics_bundle:
+    cadence: weekly
+    agent: dealix-pm
+    inputs:
+      - dealix/transformation/kpi_founder_commercial_import.yaml
+    outputs:
+      - data/founder_weekly/metrics_{week}.yaml
+    verify_commands:
+      - python3 scripts/founder_weekly_metrics_bundle.py --write
