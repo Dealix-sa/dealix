@@ -8,7 +8,12 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        brand-system growth-system marketing-system product-distribution \
+        policy-check agent-registry machine-registry eval-gate \
+        prompt-safety ai-governance launch-readiness execution-launch-layer \
+        market-attack-system scale-moat-system founder-management-system \
+        hypergrowth-ceo-layer founder-ceo-hypergrowth-layer company-os everything
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +135,66 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Company OS gates ───────────────────────────────────────────
+# Each target verifies one layer of the Dealix Company OS. All are
+# read-only — none of them write to production or send anything.
+# `make everything` runs the master orchestrator and prints a single
+# PASS/FAIL summary across all layers.
+
+brand-system: ## company-os: brand css, logos, brand components
+	$(PYTHON) scripts/verify_brand_system.py
+
+growth-system: ## company-os: growth docs (ICP, lead scoring, GTM)
+	$(PYTHON) scripts/verify_growth_system.py
+
+marketing-system: ## company-os: marketing copy guards (banned claims, draft gate)
+	$(PYTHON) scripts/verify_marketing_system.py
+
+product-distribution: ## company-os: offer ladder + productized services
+	$(PYTHON) scripts/verify_product_distribution.py
+
+policy-check: ## company-os: policies/dealix_control_policy.yaml schema + refs
+	$(PYTHON) scripts/verify_policy_as_code.py
+
+agent-registry: ## company-os: registries/agent_registry.yaml cross-check
+	$(PYTHON) scripts/verify_agent_registry.py
+
+machine-registry: ## company-os: registries/machine_registry.yaml cross-check
+	$(PYTHON) scripts/verify_machine_registry.py
+
+eval-gate: ## company-os: evals/gates/dealix_agent_eval_gate.yaml
+	$(PYTHON) scripts/verify_eval_gate.py
+
+prompt-safety: ## company-os: banned-claim scan + draft_gate exercise
+	$(PYTHON) scripts/verify_prompt_output_quality.py
+
+ai-governance: ## company-os: aggregate policy + registries + eval + prompt safety
+	$(PYTHON) scripts/verify_ai_governance_system.py
+
+launch-readiness: ## company-os: launch bundle + paid launch + workflow gates
+	$(PYTHON) scripts/verify_launch_readiness.py
+
+execution-launch-layer: ## company-os: launch + daily-revenue workflows
+	$(PYTHON) scripts/verify_execution_launch_layer.py
+
+market-attack-system: ## company-os: market / ICP / category docs
+	$(PYTHON) scripts/verify_market_attack_system.py
+
+scale-moat-system: ## company-os: moat + scale docs
+	$(PYTHON) scripts/verify_scale_moat_system.py
+
+founder-management-system: ## company-os: founder command center + KPIs
+	$(PYTHON) scripts/verify_founder_management_system.py
+
+hypergrowth-ceo-layer: ## company-os: CEO operating system + capital model
+	$(PYTHON) scripts/verify_hypergrowth_ceo_layer.py
+
+founder-ceo-hypergrowth-layer: ## company-os: aggregate founder + CEO + hypergrowth
+	$(PYTHON) scripts/verify_founder_ceo_hypergrowth_layer.py
+
+company-os: ## company-os: layer-level existence check
+	$(PYTHON) scripts/verify_company_os.py
+
+everything: ## company-os: MASTER GATE — runs all layer verifiers, prints unified PASS/FAIL
+	$(PYTHON) scripts/verify_everything.py

@@ -1,0 +1,124 @@
+# Dealix Agent Registry (canonical YAML)
+#
+# YAML mirror of auto_client_acquisition/agent_governance/agent_registry.py
+# Every named agent in the code MUST appear here with an autonomy class
+# from policies/dealix_control_policy.yaml.
+#
+# Verifier: scripts/verify_agent_registry.py cross-checks Python <-> YAML.
+# Class mapping:
+#   AutonomyLevel.L1_DRAFT_ONLY            -> A1
+#   AutonomyLevel.L2_APPROVAL_REQUIRED     -> A2
+#   AutonomyLevel.L3_AUTO                  -> A3  (forbidden by default; never used)
+#   AutonomyLevel.L4_INTERNAL_AUTOMATION_ONLY -> A1 (internal-only is draft-like)
+
+version: 1
+source_of_truth: auto_client_acquisition/agent_governance/agent_registry.py
+
+agents:
+  - id: prospecting
+    class: A2
+    owner: founder
+    purpose_en: "Find high-fit Saudi companies from licensed sources only."
+    allowed_actions: [read_public_web, read_internal_docs]
+    forbidden_actions: [scrape_web, linkedin_automation, send_whatsapp_live]
+    eval_gate_id: outreach_quality
+    escalation: founder
+
+  - id: signal
+    class: A1
+    owner: founder
+    purpose_en: "Detect why-now buying triggers from licensed data."
+    allowed_actions: [read_public_web, read_internal_docs]
+    forbidden_actions: [scrape_web]
+    eval_gate_id: outreach_quality
+    escalation: founder
+
+  - id: enrichment
+    class: A2
+    owner: founder
+    purpose_en: "Enrich company/contact context from licensed providers."
+    allowed_actions: [read_public_web, read_internal_docs]
+    forbidden_actions: [scrape_web]
+    eval_gate_id: outreach_quality
+    escalation: founder
+
+  - id: personalization
+    class: A1
+    owner: founder
+    purpose_en: "Draft Arabic/English outreach with human review."
+    allowed_actions: [draft_message, draft_email, draft_whatsapp_reply, read_internal_docs]
+    forbidden_actions: [send_whatsapp_live, send_email_live, linkedin_automation]
+    eval_gate_id: arabic_quality
+    escalation: founder
+
+  - id: compliance
+    class: A1
+    owner: founder
+    purpose_en: "Block PDPL/SDAIA-non-compliant actions before execution."
+    allowed_actions: [read_internal_docs]
+    forbidden_actions: [send_whatsapp_live, send_email_live, scrape_web, linkedin_automation, charge_payment_live]
+    eval_gate_id: governance
+    escalation: founder
+
+  - id: outreach
+    class: A2
+    owner: founder
+    purpose_en: "Queue approved messages — never auto-send."
+    allowed_actions: [draft_message, draft_email, draft_whatsapp_reply, read_internal_docs]
+    forbidden_actions: [send_whatsapp_live, send_email_live, linkedin_automation]
+    eval_gate_id: outreach_quality
+    escalation: founder
+
+  - id: reply
+    class: A2
+    owner: founder
+    purpose_en: "Classify replies + suggest next step."
+    allowed_actions: [read_internal_docs, draft_message]
+    forbidden_actions: []
+    eval_gate_id: arabic_quality
+    escalation: founder
+
+  - id: meeting
+    class: A2
+    owner: founder
+    purpose_en: "Turn positive replies into approved meetings."
+    allowed_actions: [draft_email, read_internal_docs]
+    forbidden_actions: [send_email_live]
+    eval_gate_id: outreach_quality
+    escalation: founder
+
+  - id: deal_coach
+    class: A1
+    owner: founder
+    purpose_en: "Recommend next best deal action."
+    allowed_actions: [read_internal_docs]
+    forbidden_actions: []
+    eval_gate_id: company_brain
+    escalation: founder
+
+  - id: customer_success
+    class: A2
+    owner: founder
+    purpose_en: "Track customer delivery and prepare the Proof Pack."
+    allowed_actions: [read_internal_docs, generate_proof_pack, draft_email]
+    forbidden_actions: [send_email_live]
+    eval_gate_id: company_brain
+    escalation: founder
+
+  - id: executive_analyst
+    class: A1
+    owner: founder
+    purpose_en: "Build Arabic executive summaries from data."
+    allowed_actions: [read_internal_docs]
+    forbidden_actions: []
+    eval_gate_id: arabic_quality
+    escalation: founder
+
+  - id: finance_assistant
+    class: A2
+    owner: founder
+    purpose_en: "Draft invoices + track payment status — no auto-charge."
+    allowed_actions: [create_invoice_draft, read_internal_docs]
+    forbidden_actions: [charge_payment_live]
+    eval_gate_id: governance
+    escalation: founder
