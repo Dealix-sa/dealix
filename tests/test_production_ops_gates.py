@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -19,14 +20,17 @@ def test_action_catalog_has_risk_tier() -> None:
 
 
 def test_railway_frontend_dns_gate_runs() -> None:
+    env = {**dict(os.environ), "PYTHONIOENCODING": "utf-8"}
     r = subprocess.run(
         [sys.executable, str(ROOT / "scripts/railway_frontend_dns_gate.py"), "--json"],
         cwd=ROOT,
         capture_output=True,
         text=True,
         timeout=30,
+        env=env,
     )
-    assert "layer_4_ok" in r.stdout
+    assert r.returncode in (0, 1)
+    assert "layer_4_ok" in (r.stdout or r.stderr)
 
 
 def test_verify_integrations_activation_runs() -> None:

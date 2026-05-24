@@ -1,17 +1,19 @@
 # نسخة أسبوعية — قرار واحد يخدم مرحلة واحدة فقط (0–5).
 # Ref: FOUNDER_STRONGEST_PLAN_AR.md · MASTER_COMMERCIAL_OPERATING_PLAN_AR.md
 
-week_iso: ""  # YYYY-MM-DD (بداية الأسبوع أو يوم الجمعة)
+week_iso: "2026-05-24"
 launch_mode: soft  # soft | paid — لا تخلط الرسائل
 active_phase: 1  # 0 | 1 | 2 | 3 | 4 | 5 — واحدة فقط
-one_decision_ar: ""
-why_this_phase_ar: ""
+one_decision_ar: "إغلاق أول payment_received + proof_pack_delivered من حساب وكالة warm واحد (Motion A) — ليس seed strategic"
+why_this_phase_ar: "Phase 0–1 BLOCKED — لا توسع GTM ولا بناء قبل أول Diagnostic مدفوع + Proof Pack + KPI من HubSpot"
 no_build_acknowledged: true
-success_by_friday_ar: ""
+success_by_friday_ar: "invoice_sent + payment_received مسجّلان في evidence_events_tracker.csv لشركة حقيقية واحدة"
 evidence_events_to_log:
-  - ""
-blocked_by: ""
-next_week_phase_hint: null  # لا تغيّر المرحلة إلا بعد ريترو + أدلة
+  - scope_requested
+  - invoice_sent
+  - payment_received
+blocked_by: "لا شركة حقيقية مغلقة بعد — KPI import pending_founder_export"
+next_week_phase_hint: 1
 
 phase_prompts:
   0:

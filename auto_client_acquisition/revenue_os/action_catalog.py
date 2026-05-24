@@ -28,6 +28,14 @@ class ActionMode(StrEnum):
     BLOCKED = "blocked"
 
 
+class ActionRiskTier(StrEnum):
+    """RevOps 2026 risk-tiered governance — maps to execution autonomy."""
+
+    GREEN = "green"  # autonomous internal (briefs, scoring, logs)
+    YELLOW = "yellow"  # draft + founder one-click approval
+    RED = "red"  # blocked or VP/founder sign-off only
+
+
 # Default per Dealix safety rules — external sends never live-by-default.
 ACTION_DEFAULT_MODE: dict[ActionKind, ActionMode] = {
     ActionKind.PREPARE_DIAGNOSTIC: ActionMode.APPROVAL_REQUIRED,
@@ -44,6 +52,21 @@ ACTION_DEFAULT_MODE: dict[ActionKind, ActionMode] = {
     ActionKind.ASSEMBLE_PROOF_PACK: ActionMode.APPROVAL_REQUIRED,
 }
 
+ACTION_RISK_TIER: dict[ActionKind, ActionRiskTier] = {
+    ActionKind.PREPARE_DIAGNOSTIC: ActionRiskTier.YELLOW,
+    ActionKind.DRAFT_EMAIL: ActionRiskTier.YELLOW,
+    ActionKind.DRAFT_LINKEDIN_MESSAGE: ActionRiskTier.YELLOW,
+    ActionKind.CALL_SCRIPT: ActionRiskTier.GREEN,
+    ActionKind.FOLLOW_UP_TASK: ActionRiskTier.YELLOW,
+    ActionKind.SUPPORT_REPLY_DRAFT: ActionRiskTier.YELLOW,
+    ActionKind.PAYMENT_REMINDER: ActionRiskTier.RED,
+    ActionKind.DELIVERY_TASK: ActionRiskTier.YELLOW,
+    ActionKind.PROOF_REQUEST: ActionRiskTier.YELLOW,
+    ActionKind.UPSELL_RECOMMENDATION: ActionRiskTier.GREEN,
+    ActionKind.PARTNER_INTRO: ActionRiskTier.YELLOW,
+    ActionKind.ASSEMBLE_PROOF_PACK: ActionRiskTier.YELLOW,
+}
+
 
 def list_action_catalog() -> list[dict[str, str]]:
     rows = []
@@ -52,6 +75,7 @@ def list_action_catalog() -> list[dict[str, str]]:
             {
                 "action": ak.value,
                 "default_mode": ACTION_DEFAULT_MODE[ak].value,
+                "risk_tier": ACTION_RISK_TIER[ak].value,
                 "trust_plane": "input_guardrail→policy→consent→channel→pii→approval→audit→output_guardrail",
             }
         )

@@ -240,17 +240,43 @@ class AutopilotJSONStore:
         return None
 
 
-_default_store_singleton: AutopilotJSONStore | None = None
+_BACKEND_ENV = "DEALIX_AUTOPILOT_STORE_BACKEND"
+
+_default_store_singleton: AutopilotJSONStore | Any | None = None
 _singleton_lock = threading.Lock()
 
 
-def get_autopilot_store() -> AutopilotJSONStore:
+def _build_autopilot_store() -> AutopilotJSONStore | Any:
+    backend = os.environ.get(_BACKEND_ENV, "json").strip().lower()
+    if backend == "postgres":
+        from dealix.revenue_ops_autopilot.postgres_store import (
+            AutopilotPostgresStore,
+            sync_database_url_from_env,
+        )
+
+        url = sync_database_url_from_env()
+        if url:
+            try:
+                return AutopilotPostgresStore(database_url=url, create_tables=True)
+            except Exception:  # noqa: BLE001
+                pass
+    return AutopilotJSONStore()
+
+
+def get_autopilot_store() -> AutopilotJSONStore | Any:
     global _default_store_singleton
     if _default_store_singleton is None:
         with _singleton_lock:
             if _default_store_singleton is None:
-                _default_store_singleton = AutopilotJSONStore()
+                _default_store_singleton = _build_autopilot_store()
     return _default_store_singleton
+
+
+def clear_autopilot_store_singleton_for_tests() -> None:
+    """Reset lazy singleton so factory/env tests get a fresh backend."""
+    global _default_store_singleton
+    with _singleton_lock:
+        _default_store_singleton = None
 
 
 def reset_autopilot_store_for_tests(path: Path | None = None) -> AutopilotJSONStore:

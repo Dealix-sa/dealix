@@ -13,6 +13,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DOC = ROOT / "docs/ops/DEALIX_ME_FRONTEND_DNS_RAILWAY_AR.md"
 
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+try:
+    from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
+
+    ensure_stdout_utf8()
+except Exception:
+    pass
+
 
 def _head(url: str, timeout: float = 15.0) -> tuple[int, str]:
     req = urllib.request.Request(url, method="HEAD")

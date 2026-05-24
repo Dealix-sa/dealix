@@ -340,8 +340,22 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
             payment=payment,
             raw_event=body,
         )
-        # TODO: sync to HubSpot via ConnectorFacade in D+2 E2E test
-        return {"status": "ok", "event_id": event_id, "event_type": event_type}
+        side_effects: dict[str, Any] = {}
+        try:
+            from dealix.commercial_ops.moyasar_payment_sync import process_moyasar_payment_side_effects
+
+            side_effects = process_moyasar_payment_side_effects(
+                payment=payment,
+                event_type=event_type,
+            )
+        except Exception as sync_exc:  # noqa: BLE001
+            log.warning("moyasar_side_effects_failed event_fp=%s error=%s", event_fp, sync_exc)
+        return {
+            "status": "ok",
+            "event_id": event_id,
+            "event_type": event_type,
+            "side_effects": side_effects,
+        }
     except Exception as exc:
         log.exception("moyasar_webhook_processing_failed event_fp=%s", event_fp)
         DLQ(WEBHOOKS_DLQ).push(

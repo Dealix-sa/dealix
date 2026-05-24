@@ -9,8 +9,10 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
+
+from api.security.api_key import require_admin_key
 
 from auto_client_acquisition.customer_readiness.scores import compute_pricing_power_score
 from auto_client_acquisition.growth_beast.market_radar import MarketSignal
@@ -26,6 +28,7 @@ from auto_client_acquisition.revenue_os import (
     validate_pipeline_step,
 )
 from auto_client_acquisition.revenue_os.learning_weekly import weekly_learning_report_skeleton
+from dealix.commercial_ops.revenue_learning_loop import build_weekly_learning_report
 
 router = APIRouter(prefix="/api/v1/revenue-os", tags=["Revenue OS"])
 
@@ -130,6 +133,15 @@ async def anti_waste_check(body: AntiWasteRequest) -> dict[str, Any]:
 async def learning_weekly_template() -> dict[str, Any]:
     """Weekly Learning Report structure — hook retention/analytics sources later."""
     return weekly_learning_report_skeleton()
+
+
+@router.get(
+    "/learning/weekly-filled",
+    dependencies=[Depends(require_admin_key)],
+)
+async def learning_weekly_filled() -> dict[str, Any]:
+    """Evidence CSV + KPI registry filled weekly report (admin; no invented CRM)."""
+    return build_weekly_learning_report()
 
 
 @router.get("/scores/pricing-power-demo")
