@@ -18,6 +18,7 @@ class Provider(StrEnum):
     GEMINI = "gemini"
     GROQ = "groq"
     OPENAI = "openai"
+    MINIMAX = "minimax"
 
 
 class Task(StrEnum):
@@ -99,7 +100,8 @@ TASK_ROUTING: dict[Task, Provider] = {
 # سلسلة الاحتياط — إذا فشل المزود الرئيسي جرّب هؤلاء
 FALLBACK_CHAIN: dict[Provider, list[Provider]] = {
     Provider.ANTHROPIC: [Provider.OPENAI, Provider.GLM],
-    Provider.DEEPSEEK: [Provider.ANTHROPIC, Provider.OPENAI],
+    Provider.DEEPSEEK: [Provider.MINIMAX, Provider.ANTHROPIC, Provider.OPENAI],
+    Provider.MINIMAX: [Provider.DEEPSEEK, Provider.OPENAI, Provider.ANTHROPIC],
     Provider.GLM: [Provider.ANTHROPIC, Provider.GROQ],
     Provider.GEMINI: [Provider.ANTHROPIC, Provider.OPENAI],
     Provider.GROQ: [Provider.GLM, Provider.DEEPSEEK],
@@ -160,6 +162,12 @@ PROVIDER_MODELS: dict[Provider, ModelConfig] = {
         max_tokens=4096,
         temperature=0.3,
     ),
+    Provider.MINIMAX: ModelConfig(
+        provider=Provider.MINIMAX,
+        model_id="MiniMax-M2.7",
+        max_tokens=8192,
+        temperature=0.3,
+    ),
 }
 
 
@@ -171,6 +179,7 @@ COST_HINTS: dict[Provider, tuple[float, float]] = {
     Provider.GEMINI: (0.075, 0.30),
     Provider.GROQ: (0.00, 0.00),
     Provider.OPENAI: (0.15, 0.60),
+    Provider.MINIMAX: (0.30, 1.20),
 }
 
 

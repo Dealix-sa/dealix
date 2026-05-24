@@ -130,3 +130,18 @@ class OpenAIClient(OpenAICompatClient):
         timeout: int = 60,
     ) -> None:
         super().__init__(api_key=api_key, model=model, base_url=base_url, timeout=timeout)
+
+
+class MiniMaxClient(OpenAICompatClient):
+    """MiniMax client (OpenAI-compatible chat completions)."""
+
+    provider_name = "minimax"
+
+    def __init__(
+        self,
+        api_key: str,
+        model: str = "MiniMax-M2.7",
+        base_url: str = "https://api.minimax.io/v1",
+        timeout: int = 120,
+    ) -> None:
+        super().__init__(api_key=api_key, model=model, base_url=base_url, timeout=timeout)

@@ -22,7 +22,8 @@ class Settings(BaseSettings):
     """Single source of truth for configuration | المصدر الوحيد للإعدادات."""
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        # .env.local overrides .env (gitignored — founder keys for local runtime)
+        env_file=(".env", ".env.local"),
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
@@ -88,6 +89,21 @@ class Settings(BaseSettings):
     openai_api_key: SecretStr | None = None
     openai_base_url: str = "https://api.openai.com/v1"
     openai_model: str = "gpt-4o-mini"
+
+    # ── LLM: MiniMax (OpenAI-compatible — heavy reasoning tier) ─
+    minimax_api_key: SecretStr | None = None
+    minimax_base_url: str = "https://api.minimax.io/v1"
+    minimax_model: str = "MiniMax-M2.7"
+
+    # ── Dealix runtime AI router (primary → fallback, env-only) ─
+    ai_primary_provider: str = Field(
+        default="deepseek",
+        validation_alias=AliasChoices("AI_PRIMARY_PROVIDER", "ai_primary_provider"),
+    )
+    ai_fallback_provider: str = Field(
+        default="minimax",
+        validation_alias=AliasChoices("AI_FALLBACK_PROVIDER", "ai_fallback_provider"),
+    )
 
     # ── Databases ───────────────────────────────────────────────
     database_url: str = "postgresql+asyncpg://ai_user:ai_password@localhost:5432/ai_company"
@@ -272,6 +288,7 @@ class Settings(BaseSettings):
             "gemini": self.google_api_key,
             "groq": self.groq_api_key,
             "openai": self.openai_api_key,
+            "minimax": self.minimax_api_key,
         }
         key = mapping.get(provider.lower())
         if key is None:
