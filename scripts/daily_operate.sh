@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # daily_operate.sh — local trigger for Dealix daily revenue machine.
+# Prefer unified loop: bash scripts/daily_operate_unified.sh
 # Run: bash scripts/daily_operate.sh
 #
 # Default API: https://api.dealix.me

@@ -32,6 +32,7 @@ from api.routers import (
     revops,
     sales,
     sales_os,
+    strategy_os as strategy_os_router,
 )
 
 _ROUTERS = [
@@ -45,6 +46,7 @@ _ROUTERS = [
     leads.router,
     sales.router,
     sales_os.router,
+    strategy_os_router.router,
     revenue.router,
     revenue_os.router,
     revenue_pipeline.router,

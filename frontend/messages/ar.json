@@ -1,5 +1,7 @@
 {
   "nav": {
+    "operator": "المشغّل الشخصي",
+    "commandCenter": "مركز القيادة",
     "dashboard": "لوحة التحكم",
     "businessNow": "مركز الأعمال",
     "cloud": "Dealix Cloud",
@@ -22,6 +24,34 @@
     "opsSales": "تشغيل — خط المبيعات",
     "opsEvidence": "تشغيل — سجل الأدلة",
     "opsSupport": "تشغيل — خدمة العملاء"
+  },
+  "operator": {
+    "title": "المشغّل الشخصي",
+    "subtitle": "موجزك التنفيذي — مسودات وموافقات فقط",
+    "governanceTitle": "حوكمة التواصل",
+    "governanceNote": "لا إرسال تلقائي للواتساب البارد أو LinkedIn. كل إجراء خارجي يمر بمركز الموافقات.",
+    "badgeDraftOnly": "مسودات فقط",
+    "badgeNoColdWhatsapp": "لا واتساب بارد",
+    "briefTitle": "قرارات اليوم",
+    "readinessTitle": "جاهزية الإطلاق",
+    "ctaApprovals": "مركز الموافقات",
+    "ctaCommandCenter": "مركز القيادة"
+  },
+  "commandCenter": {
+    "title": "مركز القيادة",
+    "subtitle": "قرارات اليوم وطوابير التشغيل"
+  },
+  "leadIntake": {
+    "title": "طلب تشخيص",
+    "company": "الشركة",
+    "name": "الاسم",
+    "email": "البريد",
+    "phone": "الجوال",
+    "sector": "القطاع",
+    "message": "الرسالة",
+    "submit": "إرسال الطلب",
+    "success": "تم استلام طلبك — سنراجعه عبر الحوكمة",
+    "error": "تعذّر الإرسال"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",

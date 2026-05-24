@@ -24,6 +24,8 @@ import {
   Layers,
   FileText,
   Megaphone,
+  Radio,
+  UserCog,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -35,6 +37,8 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+  { key: "operator", href: "/operator", icon: UserCog },
+  { key: "commandCenter", href: "/command-center", icon: Radio },
   { key: "dashboard", href: "/dashboard", icon: LayoutDashboard },
   { key: "dealixDiagnostic", href: "/dealix-diagnostic", icon: Sparkles },
   { key: "businessNow", href: "/business-now", icon: Briefcase },
@@ -160,6 +164,8 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
                     >
                       {t(
                         item.key as
+                          | "operator"
+                          | "commandCenter"
                           | "dashboard"
                           | "dealixDiagnostic"
                           | "opsHub"

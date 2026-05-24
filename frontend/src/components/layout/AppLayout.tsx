@@ -5,6 +5,7 @@ import { useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
+import { AuthGuard } from "@/components/auth/AuthGuard";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -32,7 +33,7 @@ export function AppLayout({ children, title, subtitle }: AppLayoutProps) {
       >
         <Header title={title} subtitle={subtitle} />
         <div className="flex-1 p-6">
-          {children}
+          <AuthGuard>{children}</AuthGuard>
         </div>
       </main>
     </div>

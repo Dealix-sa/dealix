@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LeadIntakeForm } from "@/components/leads/LeadIntakeForm";
 
 interface OfferPageProps {
   params: Promise<{ locale: string }>;
@@ -54,12 +55,14 @@ export default async function LeadIntelligenceSprintOfferPage({
             </p>
           </section>
 
-          <div className="mt-12 flex flex-wrap gap-4 justify-end">
+          <LeadIntakeForm />
+
+          <div className="mt-8 flex flex-wrap gap-4 justify-end">
             <Link
               href={`/${locale}/login`}
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow transition hover:opacity-90"
+              className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium shadow-sm transition hover:bg-muted"
             >
-              تسجيل الدخول / البدء
+              تسجيل الدخول للوحة التشغيل
             </Link>
           </div>
 
@@ -116,12 +119,14 @@ export default async function LeadIntelligenceSprintOfferPage({
           </p>
         </section>
 
-        <div className="mt-12 flex flex-wrap gap-4">
+        <LeadIntakeForm />
+
+        <div className="mt-8 flex flex-wrap gap-4">
           <Link
             href={`/${locale}/login`}
-            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow transition hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium shadow-sm transition hover:bg-muted"
           >
-            Log in / Get started
+            Log in to operations dashboard
           </Link>
         </div>
 

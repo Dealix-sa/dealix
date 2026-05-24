@@ -71,6 +71,7 @@ async def run(body: dict[str, Any]) -> dict[str, Any]:
         "next_action": record.next_action,
         "draft_id": record.draft_id,
         "approval_id": record.approval_id,
+        "outreach_queue_id": record.outreach_queue_id,
         "safety_summary": record.safety_summary,
         "hard_gates": _HARD_GATES,
     }

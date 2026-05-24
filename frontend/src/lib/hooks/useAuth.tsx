@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import type { User, AuthTokens } from "@/types";
+import { setAuthCookie } from "@/components/auth/AuthGuard";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -70,6 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setToken(null);
     removeStored(TOKEN_KEY, REFRESH_KEY, EXPIRES_KEY, USER_KEY);
+    setAuthCookie(false);
   }, []);
 
   const persistAuth = useCallback((tokens: AuthTokens, userData: User) => {
@@ -79,6 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setStored(USER_KEY, userData);
     setToken(tokens.accessToken);
     setUser(userData);
+    setAuthCookie(true);
   }, []);
 
   const refreshToken = useCallback(async (): Promise<string | null> => {

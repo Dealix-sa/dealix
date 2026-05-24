@@ -13,6 +13,7 @@ import { DealPipelineChart } from "./DealPipelineChart";
 import { Badge } from "@/components/ui/badge";
 import { formatRelativeTime, getStatusColor } from "@/lib/utils";
 import { api } from "@/lib/api";
+import { commandCenterActivities, metricsToKpiCards } from "@/lib/dashboardAdapters";
 import type { KPIMetric } from "@/types";
 
 interface Activity {
@@ -155,22 +156,30 @@ export function DashboardContent() {
       try {
         const res = await api.getDashboardMetrics();
         if (!cancelled && res.data) {
-          const data = res.data.data ?? res.data;
-          if (Array.isArray(data.metrics) && data.metrics.length > 0) {
+          const data = res.data as Record<string, unknown>;
+          if (data.leads || data.deals) {
             setKpiMetrics(
-              data.metrics.map((m: Record<string, unknown>, i: number) => ({
-                label:
-                  (m.label as string) ?? defaultKpiMetrics[i]?.label ?? "",
-                value: (m.value as number) ?? defaultKpiMetrics[i]?.value ?? 0,
-                change:
-                  (m.change as number) ?? defaultKpiMetrics[i]?.change ?? 0,
-                trend:
-                  (m.trend as string) ?? defaultKpiMetrics[i]?.trend ?? "neutral",
-                icon:
-                  (m.icon as string) ?? defaultKpiMetrics[i]?.icon ?? "📊",
-                format:
-                  (m.format as string) ?? defaultKpiMetrics[i]?.format ?? "number",
-              }))
+              metricsToKpiCards(data as Parameters<typeof metricsToKpiCards>[0], {
+                leads: t("dashboard.kpi.activeDeals"),
+                deals: t("dashboard.kpi.totalRevenue"),
+                conversations: t("dashboard.kpi.conversionRate"),
+                tasks: t("dashboard.kpi.aiActions"),
+              }).map((m, i) => ({
+                ...m,
+                icon: defaultKpiMetrics[i]?.icon ?? "📊",
+                format: defaultKpiMetrics[i]?.format ?? "number",
+              })),
+            );
+          } else if (Array.isArray(data.metrics) && data.metrics.length > 0) {
+            setKpiMetrics(
+              (data.metrics as Record<string, unknown>[]).map((m, i) => ({
+                label: (m.label as string) ?? defaultKpiMetrics[i]?.label ?? "",
+                value: (m.value as number) ?? 0,
+                change: (m.change as number) ?? 0,
+                trend: (m.trend as string) ?? "neutral",
+                icon: defaultKpiMetrics[i]?.icon ?? "📊",
+                format: (m.format as string) ?? "number",
+              })),
             );
           } else {
             setKpiMetrics(defaultKpiMetrics);
@@ -195,28 +204,36 @@ export function DashboardContent() {
       try {
         const res = await api.getCommandCenter();
         if (!cancelled && res.data) {
-          const data = res.data.data ?? res.data;
-          const items: unknown[] =
-            data.recent_decisions ?? data.decisions ?? data.activities ?? [];
-          if (Array.isArray(items) && items.length > 0) {
-            setActivities(
-              items.map((raw: unknown, i: number) => {
-                const item = raw as Record<string, unknown>;
-                return {
-                id: (item.id as string) ?? String(i + 1),
-                agent: (item.agent as string) ?? (item.agent_type as string) ?? "orchestrator",
-                actionAr: (item.action_ar as string) ?? (item.action as string) ?? "",
-                actionEn: (item.action_en as string) ?? (item.action as string) ?? "",
-                status: (item.status as string) ?? "completed",
-                timestamp:
-                  (item.timestamp as string) ??
-                  (item.created_at as string) ??
-                  new Date().toISOString(),
-                };
-              })
-            );
+          const data = (res.data.data ?? res.data) as Record<string, unknown>;
+          const fromCc = commandCenterActivities(data, isAr);
+          if (fromCc.length > 0) {
+            setActivities(fromCc);
           } else {
-            setActivities(mockActivities);
+            const items: unknown[] =
+              (data.recent_decisions as unknown[]) ??
+              (data.decisions as unknown[]) ??
+              (data.activities as unknown[]) ??
+              [];
+            if (Array.isArray(items) && items.length > 0) {
+              setActivities(
+                items.map((raw: unknown, i: number) => {
+                  const item = raw as Record<string, unknown>;
+                  return {
+                    id: (item.id as string) ?? String(i + 1),
+                    agent: (item.agent as string) ?? "orchestrator",
+                    actionAr: (item.action_ar as string) ?? (item.action as string) ?? "",
+                    actionEn: (item.action_en as string) ?? (item.action as string) ?? "",
+                    status: (item.status as string) ?? "completed",
+                    timestamp:
+                      (item.timestamp as string) ??
+                      (item.created_at as string) ??
+                      new Date().toISOString(),
+                  };
+                }),
+              );
+            } else {
+              setActivities([]);
+            }
           }
         }
       } catch {
