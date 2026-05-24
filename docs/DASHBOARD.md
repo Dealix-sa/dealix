@@ -1,11 +1,72 @@
-# Dashboard Guide — Dealix v3.0.0
+# Dealix Operating Dashboard (Markdown v1)
 
-لوحة التشغيل الأسبوعية/اليومية **بصيغة Markdown** (أرقام وملخص): انظر [`../DASHBOARD.md`](../DASHBOARD.md) في جذر الريبو.
+**Update:** weekly (minimum) — or daily during heavy delivery.
 
-## النظرة العامة
-لوحة Streamlit لمتابعة الإنتاج وإدارة العملاء.
+> For the Streamlit app guide see [`../docs/DASHBOARD.md`](../docs/DASHBOARD.md). For the API-driven HTML founder dashboard see [`V5_FOUNDER_RUNBOOK.md`](V5_FOUNDER_RUNBOOK.md).
 
-## الصفحات
+## Services
+
+**Sellable:**
+
+- Lead Intelligence Sprint
+- AI Quick Win Sprint
+- Company Brain Sprint
+
+**Beta:**
+
+- (none — promoted to Sellable in v5 closure)
+
+**Not Ready:**
+
+- Support Desk
+- Enterprise AI OS
+
+*(Edit to match [`registry/SERVICE_READINESS_MATRIX.yaml`](registry/SERVICE_READINESS_MATRIX.yaml).)*
+
+## Sales
+
+| | This week |
+|---|-----------|
+| Leads | |
+| Calls | |
+| Proposals | |
+| Closed | |
+
+## Delivery
+
+| | Count |
+|---|--------|
+| Active projects | |
+| QA pending | |
+| Proof packs due | |
+
+## Product
+
+| | Notes |
+|---|--------|
+| Features shipped | |
+| Manual steps repeated (candidates) | |
+| Bugs / incidents | |
+
+## Governance
+
+| | Notes |
+|---|--------|
+| PII incidents | |
+| Approvals pending | |
+| Blocked actions | |
+
+## Quality
+
+| | Value |
+|---|--------|
+| Average QA | |
+| Reports delivered | |
+| Rework count | |
+
+## Streamlit app guide
+
+النظرة العامة — لوحة Streamlit لمتابعة الإنتاج وإدارة العملاء.
 
 | الصفحة | المصدر | الوصف |
 |-------|--------|------|
@@ -16,21 +77,16 @@
 | Costs | `/api/v1/admin/costs` | تحليل إنفاق LLM (model/provider/task) |
 | Audit | `/api/v1/admin/audit` | سجل التكاملات |
 
-## التشغيل
+**Run locally:**
 
 ```bash
-# dependencies
 pip install streamlit pandas httpx
-
-# environment
-export DEALIX_API_URL=https://api.dealix.sa
+export DEALIX_API_URL=https://api.dealix.me
 export DEALIX_ADMIN_API_KEY=<admin-key>
-
-# run
 streamlit run dashboard/app.py --server.port 8501
 ```
 
-## Reverse Proxy (nginx)
+**Reverse proxy (nginx):**
 
 ```nginx
 server {
@@ -47,6 +103,6 @@ server {
 }
 ```
 
-## صلاحيات الوصول
-- الدخول عبر X-API-Key (يُستخدم من مفتاح في `DEALIX_ADMIN_API_KEY` جانب الخادم)
-- Dashboard يتصل بـ API من الداخل فقط
+**Access:** X-API-Key only; the dashboard talks to the API internally.
+
+**Last updated:** 2026-05-24 — Owner: ______________

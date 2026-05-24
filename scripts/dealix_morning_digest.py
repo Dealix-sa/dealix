@@ -21,16 +21,68 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import json
 import os
 import sys
 from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
 
 # Adjust path so we can import from repo root when run as a script.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from auto_client_acquisition.self_growth_os import daily_growth_loop  # noqa: E402
-from core.config.settings import get_settings  # noqa: E402
-from integrations.email import EmailClient, EmailResult  # noqa: E402
+from auto_client_acquisition.self_growth_os import daily_growth_loop
+from core.config.settings import get_settings
+from integrations.email import EmailClient, EmailResult
+
+DASHBOARD_SECTION_HEADER = "## Live Dashboard Snapshot"
+DASHBOARD_STUB_MESSAGE = (
+    "dashboard producer not wired — see V5_COMPLETION_ROADMAP M-3 follow-up"
+)
+
+
+def _load_dashboard_inline() -> dict[str, Any]:
+    """Produce the dashboard snapshot in-process.
+
+    Uses ``scripts/dealix_snapshot.build_snapshot`` (the local, no-HTTP
+    producer mirroring ``/api/v1/founder/dashboard``). On any failure we
+    return a deterministic stub so the digest still renders and the test
+    stays offline.
+    """
+    try:
+        scripts_dir = Path(__file__).resolve().parent
+        if str(scripts_dir) not in sys.path:
+            sys.path.insert(0, str(scripts_dir))
+        import dealix_snapshot  # type: ignore[import-not-found]
+
+        return dealix_snapshot.build_snapshot()
+    except BaseException as exc:
+        return {
+            "status": DASHBOARD_STUB_MESSAGE,
+            "_error_type": type(exc).__name__,
+            "_error_message": str(exc)[:200],
+        }
+
+
+def _load_dashboard_from_file(path: Path) -> dict[str, Any]:
+    """Read a pre-rendered dashboard JSON file. Used for back-compat."""
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def render_dashboard_section(payload: dict[str, Any]) -> str:
+    """Render the dashboard JSON inside a fenced markdown section."""
+    body = json.dumps(payload, indent=2, ensure_ascii=False)
+    return "\n".join(
+        [
+            "",
+            DASHBOARD_SECTION_HEADER,
+            "",
+            "```json",
+            body,
+            "```",
+            "",
+        ]
+    )
 
 
 def _today_label() -> str:
@@ -51,6 +103,13 @@ def parse_args() -> argparse.Namespace:
         "--dry-run", action="store_true",
         help="render + print + log what WOULD be sent (no actual send)",
     )
+    p.add_argument(
+        "--dashboard-file", dest="dashboard_file", type=Path, default=None,
+        help=(
+            "read dashboard JSON from this file instead of producing it"
+            " in-process (back-compat)"
+        ),
+    )
     return p.parse_args()
 
 
@@ -66,6 +125,16 @@ async def _build_and_send(args: argparse.Namespace) -> EmailResult:
 
     loop = daily_growth_loop.build_today()
     body_text = daily_growth_loop.to_markdown(loop)
+
+    # M-3: embed live dashboard snapshot inline in the digest body so
+    # the founder receives a single email with everything (no link, no
+    # attachment). --dashboard-file overrides for back-compat.
+    dashboard_file = getattr(args, "dashboard_file", None)
+    if dashboard_file is not None:
+        dashboard_payload = _load_dashboard_from_file(dashboard_file)
+    else:
+        dashboard_payload = _load_dashboard_inline()
+    body_text = body_text + "\n" + render_dashboard_section(dashboard_payload)
 
     if args.print_only:
         print(body_text)
@@ -89,10 +158,16 @@ async def _build_and_send(args: argparse.Namespace) -> EmailResult:
 
 
 def main() -> int:
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except (AttributeError, OSError):
+        # UTF-8 reconfigure is optional; default stream is fine.
+        pass
+
     args = parse_args()
     try:
         result = asyncio.run(_build_and_send(args))
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         print(f"FAIL: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
 
