@@ -1,0 +1,81 @@
+# ════════════════════════════════════════════════════════════════════════
+# Dealix Agent Registry
+#
+# Every autonomous agent in the Dealix runtime is declared here with its
+# owner, risk class, kill switch, eval contract, and audit contract.
+# `verify_agent_registry.py` rejects any agent missing these fields.
+# ════════════════════════════════════════════════════════════════════════
+
+version: 1
+owner: founder
+
+agents:
+
+  ceo_daily_brief:
+    owner: founder
+    description: "Generates the founder's morning brief from internal KPIs."
+    risk_class: A1
+    kill_switch: env:DEALIX_CEO_BRIEF_DISABLED
+    eval_required: false
+    audit_required: true
+    allowed_write_targets:
+      - data/founder_briefs/
+    schedule: "daily 07:00 Asia/Riyadh"
+    auto_execute: true
+
+  outreach_drafter:
+    owner: founder
+    description: "Drafts (never sends) prospect outreach messages for review."
+    risk_class: A2
+    kill_switch: env:DEALIX_OUTREACH_DRAFTER_DISABLED
+    eval_required: true
+    eval_suite: evals/outreach_quality_eval.yaml
+    audit_required: true
+    allowed_write_targets:
+      - data/outreach_drafts/
+      - approval_queue
+    auto_execute: true
+    requires_approval: false
+
+  external_sender:
+    owner: founder
+    description: "Sends approved outreach via WhatsApp / Email after human approval."
+    risk_class: A3
+    kill_switch: env:WHATSAPP_ALLOW_LIVE_SEND
+    eval_required: true
+    eval_suite: evals/outreach_quality_eval.yaml
+    audit_required: true
+    allowed_write_targets:
+      - audit_events
+      - send_log
+    auto_execute: false
+    requires_approval: true
+    approval_required_for: external_send
+    suppression_check_required: true
+    daily_cap: 50
+
+  lead_scorer:
+    owner: founder
+    description: "Scores inbound leads for the founder's daily list."
+    risk_class: A1
+    kill_switch: env:DEALIX_LEAD_SCORER_DISABLED
+    eval_required: true
+    eval_suite: evals/lead_intelligence_eval.yaml
+    audit_required: true
+    allowed_write_targets:
+      - data/lead_scores/
+    auto_execute: true
+
+  governance_auditor:
+    owner: founder
+    description: "Runs verify_everything.py on a schedule and writes audit reports."
+    risk_class: A1
+    kill_switch: env:DEALIX_GOVERNANCE_AUDITOR_DISABLED
+    eval_required: false
+    audit_required: true
+    allowed_write_targets:
+      - docs/ops/DEALIX_IMPLEMENTATION_AUDIT.md
+      - docs/ops/DEALIX_MISSING_SYSTEMS.md
+      - docs/ops/DEALIX_FINAL_READINESS_REPORT.md
+    auto_execute: true
+    schedule: "daily 06:00 UTC"

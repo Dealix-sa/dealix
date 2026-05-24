@@ -1,0 +1,67 @@
+# ════════════════════════════════════════════════════════════════════════
+# Dealix Machine Registry
+#
+# Every recurring automated process (cron job, scheduled workflow,
+# background worker) is declared here. `verify_machine_registry.py`
+# rejects any machine without owner, KPI, failure mode, recovery path,
+# schedule, and surface.
+# ════════════════════════════════════════════════════════════════════════
+
+version: 1
+owner: founder
+
+machines:
+
+  daily_revenue_machine:
+    owner: founder
+    description: "Daily revenue surface generation + commercial signals."
+    surface: ".github/workflows/daily-revenue-machine.yml"
+    schedule: "daily 06:30 Asia/Riyadh"
+    kpi: "Pipeline_value_today, top_3_actions present"
+    failure_mode: "Stale or empty digest, missing top-3 actions."
+    recovery_path: "Re-run workflow; if persistent, founder triages from /ops/founder."
+
+  founder_daily_brief:
+    owner: founder
+    description: "Founder morning brief from internal KPIs."
+    surface: "scripts/dealix_founder_daily_brief.py"
+    schedule: "daily 07:00 Asia/Riyadh"
+    kpi: "Brief generated < 60s, no missing sections."
+    failure_mode: "Missing KPI inputs or empty sections."
+    recovery_path: "Founder runs `make v5-digest` locally; investigate KPI source."
+
+  governance_auditor:
+    owner: founder
+    description: "Runs `make everything` on a schedule and surfaces drift."
+    surface: ".github/workflows/dealix-everything.yml"
+    schedule: "daily 06:00 UTC"
+    kpi: "verify_everything.py exit code 0."
+    failure_mode: "Any layer FAIL in verify_everything output."
+    recovery_path: "Read docs/ops/DEALIX_MISSING_SYSTEMS.md and fix top item."
+
+  railway_predeploy_migrations:
+    owner: founder
+    description: "Run Alembic upgrade head before each Railway release."
+    surface: "scripts/railway_predeploy.sh"
+    schedule: "on-deploy"
+    kpi: "Predeploy exits 0 with alembic upgrade head."
+    failure_mode: "Migration failure or missing DATABASE_URL."
+    recovery_path: "Inspect Railway pre-deploy logs; gate via RUN_RAILWAY_PRE_DEPLOY_MIGRATE=0 if rollback needed."
+
+  weekly_self_improvement:
+    owner: founder
+    description: "Weekly self-improvement loop — drift detection + report."
+    surface: ".github/workflows/weekly_self_improvement.yml"
+    schedule: "weekly Sunday 04:00 UTC"
+    kpi: "Drift report generated, no critical regressions."
+    failure_mode: "Workflow skipped or drift report missing."
+    recovery_path: "Founder runs `make v10-verify` locally and follows readout."
+
+  founder_commercial_daily:
+    owner: founder
+    description: "Daily commercial loop — pipeline + outreach drafts (no live send)."
+    surface: ".github/workflows/founder_commercial_daily.yml"
+    schedule: "daily 06:30 Asia/Riyadh"
+    kpi: "Drafts queued to /ops/approvals; no live external send."
+    failure_mode: "Live send attempted, or drafts not produced."
+    recovery_path: "Disable workflow; investigate via `make verify-live-send-safety`."

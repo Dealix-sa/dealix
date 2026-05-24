@@ -1,0 +1,316 @@
+# ════════════════════════════════════════════════════════════════════════════
+# DEALIX MASTER MANIFEST
+# Source-of-truth contract for every layer in the Dealix Company OS.
+#
+# This file exists so that "موجود" can never be claimed without proof.
+# Every required file, keyword, command, and workflow listed below is
+# verified by `scripts/verify_everything.py` — which must pass before
+# any deploy or merge is considered complete.
+#
+# 5-test rule for every required artifact:
+#   1. Exists       — file is on disk
+#   2. Non-empty    — at least the declared min size
+#   3. Complete     — contains every required_keyword
+#   4. Wired        — referenced by Makefile / workflow / verifier
+#   5. Verified     — passes the layer's verifier with exit code 0
+#
+# When in doubt: if removing the file breaks something a customer can
+# see or a founder relies on, it belongs here.
+# ════════════════════════════════════════════════════════════════════════════
+
+version: 2
+name: dealix_company_os_manifest
+owner: founder
+generated_for: VoXc2/dealix
+
+global_rules:
+  min_doc_size_bytes: 600
+  min_script_size_bytes: 500
+  min_yaml_size_bytes: 200
+  banned_claims:
+    - "guaranteed revenue"
+    - "guaranteed sales"
+    - "guaranteed meetings"
+    - "guaranteed roi"
+    - "no risk"
+    - "no-risk"
+    - "fully compliant"
+    - "100% compliant"
+    - "zero risk"
+    - "instant compliance"
+    - "ايراد مضمون"
+    - "مبيعات مضمونة"
+    - "صفر مخاطر"
+  required_external_action_gates:
+    - approval
+    - policy
+    - audit
+    - suppression_check
+  banned_unsafe_patterns:
+    # raw direct-send patterns must be wrapped behind approval queue
+    - "send_whatsapp_direct"
+    - "linkedin_auto_send"
+    - "send_now_without_approval"
+
+# --------------------------------------------------------------------------
+# Layer contracts. Each layer is independently verifiable.
+# Add a layer here, then add a row in `docs/ops/DEALIX_IMPLEMENTATION_AUDIT.md`.
+# --------------------------------------------------------------------------
+layers:
+
+  # 1. Brand OS -----------------------------------------------------------
+  brand_os:
+    description: "Brand positioning, naming, tone, and category narrative"
+    required_files:
+      - README.md
+      - docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md
+    required_keywords:
+      - "Dealix"
+    verifier: scripts/verify_repo_completeness.py
+
+  # 2. Founder Console ----------------------------------------------------
+  founder_console:
+    description: "Daily/weekly founder operating loop and metrics"
+    required_files:
+      - docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md
+      - docs/ops/FOUNDER_DAILY_ANCHOR_AR.md
+      - docs/ops/FOUNDER_WEEKLY_METRICS_AR.md
+      - scripts/dealix_founder_daily_brief.py
+    # Pre-existing Arabic docs — structure enforced via existence/size only.
+    # English structural sections live in docs/founder/ and are gated by
+    # verify_business_os.py.
+    required_keywords: []
+    verifier: scripts/verify_business_os.py
+
+  # 3. CEO Operating System ----------------------------------------------
+  ceo_operating_system:
+    description: "CEO daily brief, weekly review, decision log"
+    required_files:
+      - docs/founder/CEO_OPERATING_SYSTEM.md
+      - docs/founder/CEO_DAILY_BRIEF_SYSTEM.md
+      - docs/founder/CEO_WEEKLY_REVIEW.md
+      - docs/founder/CEO_DECISION_LOG.md
+    required_keywords:
+      - "owner"
+      - "cadence"
+      - "KPI"
+      - "source of truth"
+      - "failure mode"
+      - "recovery path"
+    verifier: scripts/verify_business_os.py
+
+  # 4. Capital Allocation -------------------------------------------------
+  capital_allocation:
+    description: "How runway, hiring, and spend get prioritized"
+    required_files:
+      - docs/founder/CAPITAL_ALLOCATION_SYSTEM.md
+    required_keywords:
+      - "runway"
+      - "burn"
+      - "owner"
+    verifier: scripts/verify_business_os.py
+
+  # 5. Revenue Factory ----------------------------------------------------
+  revenue_factory:
+    description: "Repeatable revenue pipeline — top of funnel to paid"
+    required_files:
+      - docs/founder/REVENUE_FACTORY.md
+      - docs/commercial/COMMERCIAL_VALUE_MAP_AR.md
+    # Structural English sections enforced only on docs/founder/ via
+    # verify_business_os.py; AR companion is size-only.
+    required_keywords: []
+    verifier: scripts/verify_business_os.py
+
+  # 6. Market Attack ------------------------------------------------------
+  market_attack:
+    description: "Beachhead, ICP, and offensive GTM motion"
+    required_files:
+      - docs/founder/MARKET_ATTACK_SYSTEM.md
+    required_keywords:
+      - "beachhead"
+      - "ICP"
+    verifier: scripts/verify_business_os.py
+
+  # 7. Customer Success OS -----------------------------------------------
+  customer_success_os:
+    description: "Post-sale value delivery + retention guardrails"
+    required_files:
+      - docs/founder/CUSTOMER_SUCCESS_OS.md
+    required_keywords:
+      - "onboarding"
+      - "renewal"
+      - "owner"
+    verifier: scripts/verify_business_os.py
+
+  # 8. Launch Readiness Gate ---------------------------------------------
+  launch_readiness:
+    description: "Gate before any public launch"
+    required_files:
+      - docs/founder/LAUNCH_READINESS_GATE.md
+    required_keywords:
+      - "gate"
+      - "checklist"
+    verifier: scripts/verify_business_os.py
+
+  # 9. AI Governance Management System -----------------------------------
+  ai_governance:
+    description: "Lifecycle controls for AI systems (NIST AI RMF / ISO 42001 aligned)"
+    required_files:
+      - docs/governance/AI_USAGE_POLICY.md
+      - docs/governance/HUMAN_IN_THE_LOOP_MATRIX.md
+      - docs/governance/AUTONOMY_VALIDATION_GATES.md
+      - docs/ai_governance/AI_SYSTEM_INVENTORY.md
+      - docs/ai_governance/AI_GOVERNANCE_OVERVIEW.md
+    required_keywords:
+      - "owner"
+      - "kill_switch"
+      - "audit"
+    verifier: scripts/verify_ai_governance_system.py
+
+  # 10. Policy as Code ----------------------------------------------------
+  policy_as_code:
+    description: "Machine-checked execution policy"
+    required_files:
+      - policies/dealix_control_policy.yaml
+    required_keywords:
+      - "no_guaranteed_revenue_claims"
+      - "no_direct_external_send"
+      - "approval_required_for_external_action"
+      - "audit_required_for_external_action"
+    verifier: scripts/verify_policy_as_code.py
+
+  # 11. Agent Registry ----------------------------------------------------
+  agent_registry:
+    description: "Inventory of every autonomous agent and its guardrails"
+    required_files:
+      - registries/agent_registry.yaml
+    required_keywords:
+      - "kill_switch"
+      - "eval_required"
+      - "audit_required"
+      - "owner"
+      - "allowed_write_targets"
+    verifier: scripts/verify_agent_registry.py
+
+  # 12. Machine Registry --------------------------------------------------
+  machine_registry:
+    description: "Inventory of every automated machine (cron/agent/workflow)"
+    required_files:
+      - registries/machine_registry.yaml
+    required_keywords:
+      - "owner"
+      - "KPI"
+      - "failure_mode"
+      - "recovery_path"
+    verifier: scripts/verify_machine_registry.py
+
+  # 13. Eval Gate ---------------------------------------------------------
+  eval_gate:
+    description: "Required evaluations before any agent change ships"
+    required_files:
+      - evals/governance_eval.yaml
+      - evals/arabic_quality_eval.yaml
+      - evals/outreach_quality_eval.yaml
+      - evals/lead_intelligence_eval.yaml
+    # The eval YAMLs use one of: cases / tests / scenarios / examples / checks.
+    # `verify_eval_gate.py` enforces minimum case count across them.
+    required_keywords:
+      - "eval_id"
+    verifier: scripts/verify_eval_gate.py
+
+  # 14. Live Send Safety --------------------------------------------------
+  live_send_safety:
+    description: "Hard gate on any external messaging path"
+    required_files:
+      - docs/trust/LIVE_SEND_SAFETY_GATE.md
+    required_keywords:
+      - "approval"
+      - "policy"
+      - "audit"
+      - "suppression"
+      - "daily_limit"
+      - "mock_mode"
+      - "kill_switch"
+    verifier: scripts/verify_live_send_safety.py
+
+  # 15. Railway Production -----------------------------------------------
+  railway_production:
+    description: "Railway deploy must have healthcheck + predeploy + safe start"
+    required_files:
+      - railway.toml
+      - railway.json
+      - Dockerfile
+      - scripts/railway_predeploy.sh
+    required_keywords:
+      - "healthz"
+      - "PORT"
+      - "predeploy"
+    verifier: scripts/verify_railway_readiness.py
+
+  # 16. Internal API ------------------------------------------------------
+  internal_api:
+    description: "FastAPI must boot, expose /healthz (in main or routers), and protect admin routes"
+    required_files:
+      - api/main.py
+    required_keywords:
+      - "FastAPI"
+    # The /healthz endpoint may live in api/main.py OR a router under
+    # api/routers/. The router scan is done by verify_production_safety.py.
+    verifier: scripts/verify_production_safety.py
+
+  # 17. Frontend Surfaces -------------------------------------------------
+  frontend_surfaces:
+    description: "Customer + ops Next.js surfaces with fallback-safe data"
+    required_files:
+      - apps/web/package.json
+      - frontend/package.json
+    required_keywords:
+      - "next"
+    verifier: scripts/verify_repo_completeness.py
+
+  # 18. Production Env ----------------------------------------------------
+  production_env:
+    description: ".env.example exposes required keys but never values"
+    required_files:
+      - .env.example
+    required_keywords:
+      - "APP_SECRET_KEY"
+      - "DATABASE_URL"
+    verifier: scripts/verify_production_safety.py
+
+  # 19. GitHub Actions ----------------------------------------------------
+  github_actions:
+    description: "Required CI workflows that gate main"
+    required_files:
+      - .github/workflows/dealix-everything.yml
+      - .github/workflows/ci.yml
+    required_keywords:
+      - "name"
+      - "on"
+      - "jobs"
+    verifier: scripts/verify_repo_completeness.py
+
+  # 20. Makefile Commands ------------------------------------------------
+  makefile_commands:
+    description: "Founder-runnable commands that drive the audit"
+    required_files:
+      - Makefile
+    required_keywords:
+      - "audit"
+      - "everything"
+      - "production-certification"
+      - "verify-non-empty"
+      - "verify-wiring"
+    verifier: scripts/verify_repo_completeness.py
+
+  # 21. Audit Reports -----------------------------------------------------
+  audit_reports:
+    description: "Reports that prove what is done vs. missing"
+    required_files:
+      - docs/ops/DEALIX_REPO_DISCOVERY_REPORT.md
+      - docs/ops/DEALIX_IMPLEMENTATION_AUDIT.md
+      - docs/ops/DEALIX_MISSING_SYSTEMS.md
+      - docs/ops/DEALIX_FINAL_READINESS_REPORT.md
+    required_keywords:
+      - "Overall Result"
+    verifier: scripts/verify_repo_completeness.py

@@ -1,0 +1,97 @@
+# ════════════════════════════════════════════════════════════════════════
+# Dealix Control Policy (policy-as-code)
+#
+# This file is the law machines obey. `verify_policy_as_code.py` proves it
+# is present, enforced, and points at real approval + audit infrastructure.
+# Editing it without updating the verifier and the agent registry will
+# fail CI.
+# ════════════════════════════════════════════════════════════════════════
+
+version: 1
+owner: founder
+last_reviewed: 2026-05-24
+
+# Where approval requests are queued for a human.
+approval_queue:
+  backend: postgres
+  table: approval_requests
+  doc: docs/governance/APPROVAL_POLICY.md
+  ui: /ops/approvals
+
+# Where every external-impact action writes an immutable record.
+audit_log:
+  backend: postgres
+  table: audit_events
+  doc: docs/governance/AUDIT_LOG_POLICY.md
+
+# Action risk classes (kept aligned with docs/governance/AI_ACTION_LEVELS.md).
+action_classes:
+  A1:
+    description: "Read-only / internal. No external impact."
+    auto_execute: true
+  A2:
+    description: "Internal write or external draft. Reversible."
+    auto_execute: true
+    audit_required: true
+  A3:
+    description: "External action with customer-visible side effect."
+    auto_execute: false
+    approval_required: true
+    audit_required: true
+
+# Enforced rules — verify_policy_as_code.py asserts every key here.
+rules:
+
+  no_guaranteed_revenue_claims:
+    enforced: true
+    description: "Forbid 'guaranteed revenue/sales/meetings' anywhere customer-visible."
+    applies_to:
+      - docs/**
+      - apps/web/**
+      - frontend/**
+      - templates/**
+    detection: scripts/verify_prompt_output_quality.py
+
+  no_direct_external_send:
+    enforced: true
+    description: "No code path may call an external messaging API without the approval+audit gate."
+    applies_to:
+      - api/**
+      - dealix/**
+      - auto_client_acquisition/**
+      - scripts/**
+    detection: scripts/verify_live_send_safety.py
+
+  approval_required_for_external_action:
+    enforced: true
+    description: "Every A3 action MUST request approval before execution."
+    detection: scripts/verify_agent_registry.py
+
+  audit_required_for_external_action:
+    enforced: true
+    description: "Every A2/A3 action MUST write an audit record."
+    detection: scripts/verify_agent_registry.py
+
+  no_suppressed_outreach:
+    enforced: true
+    description: "Outreach must check suppression list before send."
+    detection: scripts/verify_live_send_safety.py
+
+  no_a3_auto_execution:
+    enforced: true
+    description: "A3 agents must never auto-execute. Forbidden in agent_registry."
+    detection: scripts/verify_agent_registry.py
+
+  kill_switch_required:
+    enforced: true
+    description: "Every agent must declare a kill_switch reference."
+    detection: scripts/verify_agent_registry.py
+
+# Hard ceilings — enforced by runtime, not just CI.
+guardrails:
+  daily_external_send_cap: 50
+  max_concurrent_agents_per_class:
+    A1: 32
+    A2: 8
+    A3: 0
+  default_mock_mode: true

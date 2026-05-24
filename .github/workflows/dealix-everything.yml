@@ -1,0 +1,224 @@
+name: dealix-everything
+
+# The Audit-First Remediation Layer hard gate.
+# This workflow IS the proof that every layer in dealix_manifest.yaml
+# satisfies the 5-test rule (exists, non-empty, complete, wired, verified).
+#
+# Branch protection on `main` must require this workflow as a status
+# check. Without that, `make everything` failing locally is invisible at
+# merge time.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    # Daily 06:00 UTC — the governance_auditor machine.
+    - cron: "0 6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-everything-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: audit (verify_repo_completeness + non_empty + wiring)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml
+      - name: Repo completeness
+        run: python scripts/verify_repo_completeness.py
+      - name: Non-empty files
+        run: python scripts/verify_non_empty_files.py
+      - name: Wiring
+        run: python scripts/verify_wiring.py
+
+  business-os:
+    name: business-os (founder + CEO + revenue + capital + market + CS + launch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_business_os.py
+
+  ai-governance:
+    name: ai-governance (NIST AI RMF + ISO 42001 alignment)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_ai_governance_system.py
+
+  policy-as-code:
+    name: policy-as-code (dealix_control_policy enforced)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_policy_as_code.py
+
+  agent-registry:
+    name: agent-registry (owner + kill_switch + audit per agent)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_agent_registry.py
+
+  machine-registry:
+    name: machine-registry (owner + KPI + recovery_path per machine)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_machine_registry.py
+
+  eval-gate:
+    name: eval-gate (every required eval suite ≥ 3 cases)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_eval_gate.py
+
+  prompt-output-quality:
+    name: prompt-output-quality (no banned claims anywhere customer-visible)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_prompt_output_quality.py
+
+  live-send-safety:
+    name: live-send-safety (no direct external send paths)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_live_send_safety.py
+
+  railway-readiness:
+    name: railway-readiness (healthz + PORT + predeploy guard)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml tomli
+      - run: python scripts/verify_railway_readiness.py
+
+  production-safety:
+    name: production-safety (.env.example + healthz + no committed secrets)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: audit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml
+      - run: python scripts/verify_production_safety.py
+
+  master-verifier:
+    name: master-verifier (verify_everything.py — the final gate)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs:
+      - business-os
+      - ai-governance
+      - policy-as-code
+      - agent-registry
+      - machine-registry
+      - eval-gate
+      - prompt-output-quality
+      - live-send-safety
+      - railway-readiness
+      - production-safety
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip pyyaml tomli
+      - name: verify_everything.py
+        run: python scripts/verify_everything.py
+      - name: verify_everything.py --json (artifact)
+        run: python scripts/verify_everything.py --json > dealix_audit.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dealix-audit-json
+          path: dealix_audit.json
+
+  audit-tests:
+    name: audit-tests (pytest the verifier suite)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: master-verifier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - run: python -m pip install --upgrade pip pyyaml pytest
+      - run: pytest -v --override-ini="addopts=" --confcutdir=tests/audit tests/audit
