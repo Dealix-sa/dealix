@@ -130,3 +130,100 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Dealix Company OS — 26 layers ──────────────────────────────
+# Supreme + per-layer verifiers. Each verifier prints `<Name>: PASS|FAIL`
+# and exits 0 on PASS. `make everything` aggregates all 26.
+
+.PHONY: everything brand-system founder-console company-os capital-allocation \
+        strategy-scorecard revenue-forecast launch-layer market-attack-system \
+        scale-moat-system founder-ceo-hypergrowth-layer ai-governance \
+        policy-check agent-registry machine-registry eval-gate \
+        bootstrap-runtime worker-orchestrator customer-success \
+        enterprise-sales legal-trust-security company-memory \
+        smoke-internal-api ceo-daily-brief ceo-weekly-review \
+        growth-system marketing-system product-distribution
+
+everything: ## Dealix supreme verifier — runs all 26 layers
+	$(PYTHON) scripts/verify_everything.py
+
+brand-system: ## Dealix: Brand OS verifier
+	$(PYTHON) scripts/verifiers/verify_brand_system.py
+
+founder-console: ## Dealix: Founder Console verifier
+	$(PYTHON) scripts/verifiers/verify_founder_console.py
+
+company-os: ## Dealix: CEO OS + Founder Mgmt + Hypergrowth verifier
+	$(PYTHON) scripts/verifiers/verify_company_os.py
+
+capital-allocation: ## Dealix: Capital Allocation report + verifier
+	$(PYTHON) scripts/generate_capital_allocation_report.py
+	$(PYTHON) scripts/verifiers/verify_capital_allocation.py
+
+strategy-scorecard: ## Dealix: Strategy Metrics scorecard + verifier
+	$(PYTHON) scripts/generate_strategy_scorecard.py
+	$(PYTHON) scripts/verifiers/verify_strategy_metrics.py
+
+revenue-forecast: ## Dealix: Revenue Factory forecast + verifier
+	$(PYTHON) scripts/generate_revenue_forecast.py
+	$(PYTHON) scripts/verifiers/verify_revenue_factory.py
+
+launch-layer: ## Dealix: Launch Layer verifier
+	$(PYTHON) scripts/verifiers/verify_launch_layer.py
+
+market-attack-system: ## Dealix: Market Attack System verifier
+	$(PYTHON) scripts/verifiers/verify_market_attack_system.py
+
+scale-moat-system: ## Dealix: Scale / Moat System verifier
+	$(PYTHON) scripts/verifiers/verify_scale_moat_system.py
+
+founder-ceo-hypergrowth-layer: ## Dealix: Hypergrowth CEO Layer verifier
+	$(PYTHON) scripts/verifiers/verify_founder_ceo_hypergrowth_layer.py
+
+ai-governance: ## Dealix: AI Governance verifier
+	$(PYTHON) scripts/verifiers/verify_ai_governance.py
+
+policy-check: ## Dealix: Policy-as-Code verifier
+	$(PYTHON) scripts/verifiers/verify_policy_as_code.py
+
+agent-registry: ## Dealix: Agent Registry verifier
+	$(PYTHON) scripts/verifiers/verify_agent_registry.py
+
+machine-registry: ## Dealix: Machine Registry verifier
+	$(PYTHON) scripts/verifiers/verify_machine_registry.py
+
+eval-gate: ## Dealix: Eval Gate verifier
+	$(PYTHON) scripts/verifiers/verify_eval_gate.py
+
+bootstrap-runtime: ## Dealix: Private Ops Runtime dry-run (use --apply on host)
+	$(PYTHON) scripts/bootstrap_private_ops_runtime.py
+	$(PYTHON) scripts/verifiers/verify_private_ops_runtime.py
+
+worker-orchestrator: ## Dealix: Worker Orchestrator verifier
+	$(PYTHON) scripts/verifiers/verify_worker_orchestrator.py
+
+customer-success: ## Dealix: Customer Success verifier
+	$(PYTHON) scripts/verifiers/verify_customer_success.py
+
+enterprise-sales: ## Dealix: Enterprise Sales verifier
+	$(PYTHON) scripts/verifiers/verify_enterprise_sales.py
+
+legal-trust-security: ## Dealix: Legal / Trust / Security verifier
+	$(PYTHON) scripts/verifiers/verify_legal_trust_security.py
+
+company-memory: ## Dealix: Company Memory verifier
+	$(PYTHON) scripts/verifiers/verify_company_memory.py
+
+smoke-internal-api: ## Dealix: Internal API smoke test
+	$(PYTHON) scripts/verifiers/smoke_internal_api.py
+
+ceo-daily-brief: ## Dealix: generate today's CEO daily brief
+	$(PYTHON) scripts/generate_ceo_daily_brief.py
+
+ceo-weekly-review: ## Dealix: generate this week's CEO weekly review
+	$(PYTHON) scripts/generate_ceo_weekly_review.py
+
+# Aliases (legacy / convenience names from the founder master order)
+growth-system: revenue-forecast ## Dealix: alias for revenue-forecast
+marketing-system: market-attack-system ## Dealix: alias for market-attack-system
+product-distribution: scale-moat-system ## Dealix: alias for scale-moat-system

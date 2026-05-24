@@ -1,0 +1,28 @@
+name: Dealix Company OS
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every morning at 06:00 UTC (09:00 Asia/Riyadh).
+    - cron: "0 6 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  company-os:
+    name: make company-os (daily)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+      - name: Install PyYAML
+        run: python -m pip install --upgrade pip PyYAML
+      - name: Run company-os verifier
+        run: make company-os
+      - name: Generate CEO daily brief
+        run: make ceo-daily-brief
