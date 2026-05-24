@@ -14,6 +14,7 @@ import {
 } from "@/components/gtm/OpsFullAutonomousOpsCard";
 import { OpsGtmStrategyCard, type GtmStackPayload } from "@/components/gtm/OpsGtmStrategyCard";
 import { ValuePlanPanel, type ValuePlanPayload } from "@/components/gtm/ValuePlanPanel";
+import { CeoOsSection } from "@/components/founder-ceo/CeoOsSection";
 import api from "@/lib/api";
 import { getAdminApiKey, isOpsConfigured, opsMissingKeyMessage } from "@/lib/opsAdmin";
 
@@ -131,6 +132,8 @@ export function OpsFounderCommandCenter() {
       {err && <p className="text-destructive text-sm">{err}</p>}
 
       <OpsFullAutonomousOpsCard data={fullOps} cockpit={cockpit} onRefresh={load} />
+
+      <CeoOsSection />
 
       <OpsComprehensivePlanCard
         plan={fullOps?.comprehensive_plan}

@@ -21,7 +21,14 @@
     "opsPartners": "شركاء",
     "opsSales": "تشغيل — خط المبيعات",
     "opsEvidence": "تشغيل — سجل الأدلة",
-    "opsSupport": "تشغيل — خدمة العملاء"
+    "opsSupport": "تشغيل — خدمة العملاء",
+    "ceoOs": "نظام تشغيل الرئيس التنفيذي",
+    "founderLeverage": "رافعة المؤسس",
+    "capitalAllocation": "توزيع رأس المال",
+    "strategy": "الاستراتيجية والافتراضات",
+    "dealDesk": "مكتب الصفقات",
+    "enterpriseSales": "مبيعات المؤسسات",
+    "metrics": "مقاييس النمو الفائق"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",

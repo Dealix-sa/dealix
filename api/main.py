@@ -78,6 +78,10 @@ from api.routers import friction_log as friction_log_router
 from api.routers import sprint_runner as sprint_runner_router
 from api.routers import founder_dashboard as founder_dashboard_router
 from api.routers import audit_export as audit_export_router
+# Founder/CEO Hypergrowth Layer (P0+P1) — see docs/founder/INDEX.md
+from api.routers import founder_ceo_os as founder_ceo_os_router
+from api.routers import founder_leverage as founder_leverage_router
+from api.routers import founder_capital_allocation as founder_capital_allocation_router
 
 # value_os, data_os and agent_os routers are imported defensively: an
 # optional router with a broken module-level import must not abort app
@@ -335,6 +339,10 @@ def create_app() -> FastAPI:
     app.include_router(sprint_runner_router.router)
     app.include_router(founder_dashboard_router.router)
     app.include_router(audit_export_router.router)
+    # Founder/CEO Hypergrowth Layer (P0+P1)
+    app.include_router(founder_ceo_os_router.router)
+    app.include_router(founder_leverage_router.router)
+    app.include_router(founder_capital_allocation_router.router)
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)

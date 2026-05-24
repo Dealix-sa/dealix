@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        bootstrap-runtime hyper-verify hyper-daily-brief hyper-leverage \
+        hyper-capital hyper-assumptions hyper-sectors hyper-enterprise
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,31 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Founder/CEO Hypergrowth Layer (P0+P1) ──────────────────────
+# Records intent, decisions, and reviews. Never sends external messages.
+# See docs/founder/INDEX.md and docs/founder/DO_NOT_SAY.md.
+
+bootstrap-runtime: ## hyper: create PRIVATE_OPS skeleton (no-op if env unset)
+	$(PYTHON) -c "from dealix.private_ops import bootstrap_skeleton; bootstrap_skeleton()"
+
+hyper-verify: ## hyper: single pass/fail gate for the Founder/CEO Hypergrowth Layer
+	$(PYTHON) scripts/verify_founder_ceo_hypergrowth_layer.py
+
+hyper-daily-brief: ## hyper: CEO daily brief
+	$(PYTHON) scripts/founder_ceo_daily_brief.py
+
+hyper-leverage: ## hyper: founder leverage dashboard
+	$(PYTHON) scripts/founder_leverage_dashboard.py
+
+hyper-capital: ## hyper: quarterly capital allocation snapshot
+	$(PYTHON) scripts/capital_allocation_snapshot.py
+
+hyper-assumptions: ## hyper: strategic assumptions staleness check
+	$(PYTHON) scripts/strategic_assumptions_check.py
+
+hyper-sectors: ## hyper: beachhead sector scorecard
+	$(PYTHON) scripts/beachhead_sector_scorecard.py
+
+hyper-enterprise: ## hyper: enterprise motion health
+	$(PYTHON) scripts/enterprise_motion_health.py

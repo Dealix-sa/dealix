@@ -1,0 +1,51 @@
+name: Founder/CEO Hypergrowth Layer
+
+# Monday 09:00 KSA (06:00 UTC). Read-only verifier + non-sensitive generators.
+# PRIVATE_OPS is intentionally not configured in CI; sensitive scripts no-op
+# with a clear warning.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hypergrowth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install minimal deps
+        run: pip install pyyaml
+      - name: Verifier
+        run: python scripts/verify_founder_ceo_hypergrowth_layer.py
+      - name: Daily brief
+        run: python scripts/founder_ceo_daily_brief.py --stdout-only || true
+      - name: Founder leverage
+        run: python scripts/founder_leverage_dashboard.py || true
+      - name: Capital allocation
+        run: python scripts/capital_allocation_snapshot.py || true
+      - name: Strategic assumptions
+        run: python scripts/strategic_assumptions_check.py || true
+      - name: Beachhead sectors
+        run: python scripts/beachhead_sector_scorecard.py || true
+      - name: Enterprise motion health
+        run: python scripts/enterprise_motion_health.py || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: founder-ceo-hypergrowth-${{ github.run_id }}
+          path: |
+            data/founder_briefs/ceo_daily_brief_*.md
+            data/founder_briefs/founder_leverage_*.md
+            data/founder_briefs/capital_allocation_*.md
+            data/founder_briefs/strategic_assumptions_check_*.md
+            data/founder_briefs/sector_scorecard_*.md
+            data/founder_briefs/enterprise_motion_health_*.md
+          retention-days: 30
+          if-no-files-found: ignore

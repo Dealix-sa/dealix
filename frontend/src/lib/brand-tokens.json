@@ -1,0 +1,50 @@
+{
+  "color": {
+    "deepNavy": "#0B1220",
+    "emeraldTeal": "#00D1A1",
+    "softSilver": "#B2BBC6",
+    "slate": "#0F1726",
+    "white": "#FFFFFF"
+  },
+  "type": {
+    "fontFamily": "'Inter', 'IBM Plex Sans Arabic', system-ui, sans-serif",
+    "scale": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "md": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.5rem",
+      "display": "2rem"
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    }
+  },
+  "spacing": {
+    "xs": "0.25rem",
+    "sm": "0.5rem",
+    "md": "1rem",
+    "lg": "1.5rem",
+    "xl": "2rem",
+    "xxl": "3rem"
+  },
+  "radius": {
+    "sm": "0.25rem",
+    "md": "0.5rem",
+    "lg": "0.75rem",
+    "xl": "1rem"
+  },
+  "shadow": {
+    "card": "0 4px 16px rgba(11, 18, 32, 0.08)",
+    "raised": "0 8px 32px rgba(11, 18, 32, 0.12)"
+  },
+  "doctrine": {
+    "appliesTo": [
+      "frontend/src/components/founder-ceo/*"
+    ],
+    "doesNotReplace": "tailwind.config — Tailwind config stays canonical"
+  }
+}
