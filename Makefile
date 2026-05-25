@@ -8,7 +8,11 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        people partners people-partner-verify
+
+# Default private-ops root (override with PRIVATE_OPS=/path make people)
+PRIVATE_OPS ?= .
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +134,16 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── People, Delegation & Partner OS ────────────────────────────
+# Read-only founder commands — print the private-ops files to review.
+# Override PRIVATE_OPS=/path/to/private-ops to point at a different root.
+
+people: ## People & Delegation: print private-ops review checklist
+	$(PYTHON) -m dealix_cli people --private-ops $(PRIVATE_OPS)
+
+partners: ## Partners: print private-ops review checklist
+	$(PYTHON) -m dealix_cli partners --private-ops $(PRIVATE_OPS)
+
+people-partner-verify: ## Verify People & Partner OS docs are in place
+	$(PYTHON) scripts/verify_people_partner_os.py

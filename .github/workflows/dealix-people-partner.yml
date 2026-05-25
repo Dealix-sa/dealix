@@ -1,0 +1,40 @@
+name: Dealix People Partner Checks
+
+on:
+  pull_request:
+    paths:
+      - "docs/people/**"
+      - "docs/partners/**"
+      - "dealix_cli/**"
+      - "scripts/verify_people_partner_os.py"
+      - ".github/workflows/dealix-people-partner.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docs/people/**"
+      - "docs/partners/**"
+      - "dealix_cli/**"
+      - "scripts/verify_people_partner_os.py"
+      - ".github/workflows/dealix-people-partner.yml"
+
+jobs:
+  people-partner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify People & Partner OS
+        run: python scripts/verify_people_partner_os.py
+
+      - name: Byte-compile dealix_cli and verifier
+        run: python -m compileall dealix_cli scripts/verify_people_partner_os.py
+
+      - name: Smoke-test CLI commands
+        run: |
+          python -m dealix_cli people --private-ops .
+          python -m dealix_cli partners --private-ops .
