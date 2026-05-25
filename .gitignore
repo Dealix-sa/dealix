@@ -214,3 +214,23 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Security/Supply Chain OS v1 — additional private-boundary
+# protections. Anything matching these patterns is local-only
+# founder/operator state and must never appear in the public repo.
+# ─────────────────────────────────────────────────────────────
+tokens/
+dashboard_data/*.json
+!dashboard_data/demo/*.demo.json
+internal_dashboard/*.local.html
+# Private ops must never be nested in the public repo
+dealix-ops-private/
+private_ops/
+ops_private/
+# Local exports
+exports/
+raw_exports/
+*.local.csv
+*.local.json
+*.local.md
