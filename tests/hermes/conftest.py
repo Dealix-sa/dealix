@@ -37,18 +37,13 @@ def evidence_pack_id() -> str:
     return "ep_test_0001"
 
 
-@pytest.fixture(scope="session", autouse=True)
-def _disable_network() -> Iterator[None]:
-    """Fail any accidental socket connect during tests."""
+@pytest.fixture(autouse=True)
+def _disable_network(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
+    """Block accidental socket.connect — function-scoped, restored automatically so it never leaks to non-hermes tests."""
     import socket
-
-    real = socket.socket.connect
 
     def _blocked(self, *args, **kwargs):  # type: ignore[no-untyped-def]
         raise RuntimeError("network disabled in hermes tests")
 
-    socket.socket.connect = _blocked  # type: ignore[assignment]
-    try:
-        yield
-    finally:
-        socket.socket.connect = real  # type: ignore[assignment]
+    monkeypatch.setattr(socket.socket, "connect", _blocked, raising=True)
+    yield
