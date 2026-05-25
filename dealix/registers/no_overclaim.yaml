@@ -231,6 +231,37 @@ claims:
     gaps:
       - "Full control-by-control mapping not yet complete"
 
+  # ───────────── Revenue Marketing OS ─────────────
+  - id: revenue_marketing_os_money_loop
+    claim: "Revenue Marketing OS connects every signal → ICP → offer → campaign → lead → touch → deal → verified revenue → attribution → learning loop"
+    status: Production
+    evidence:
+      - dealix/revenue_marketing_os/__init__.py
+      - dealix/revenue_marketing_os/schemas.py
+      - dealix/revenue_marketing_os/store.py
+      - dealix/revenue_marketing_os/scoring.py
+      - dealix/revenue_marketing_os/attribution.py
+      - dealix/revenue_marketing_os/governance.py
+      - dealix/revenue_marketing_os/dashboard.py
+      - api/routers/revenue_marketing_os.py
+      - tests/test_revenue_marketing_os.py
+
+  - id: revenue_assurance_no_unverified_counting
+    claim: "Revenue is only counted when payment/invoice/agreement is verified — likes, views, and replies are never revenue"
+    status: Production
+    evidence:
+      - dealix/revenue_marketing_os/governance.py::check_revenue
+      - dealix/revenue_marketing_os/scoring.py::revenue_is_real
+      - tests/test_revenue_marketing_os.py::test_revenue_endpoint_refuses_unverified_paid_status
+
+  - id: marketing_no_live_send
+    claim: "Marketing module never sends external messages; every send is a draft pending founder approval"
+    status: Production
+    evidence:
+      - dealix/revenue_marketing_os/governance.py::HARD_GATES
+      - api/routers/revenue_marketing_os.py
+      - tests/test_revenue_marketing_os.py::test_governance_endpoints_block_forbidden_claims_and_actions
+
   # ───────────── Things we do NOT claim ─────────────
   # (Listed here so the register is a positive declaration of limits)
   - id: not_cursor_not_chatbot

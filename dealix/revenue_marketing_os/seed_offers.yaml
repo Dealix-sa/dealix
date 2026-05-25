@@ -1,0 +1,162 @@
+# Revenue Marketing OS — Offer Ladder seed.
+# Loaded on first store boot. Tier order: free → entry → core → expansion → enterprise → platform.
+
+schema_version: 1
+
+offers:
+  - id: free_checklist
+    name: "AI Governance Checklist (free)"
+    tier: free
+    ladder_step: 0
+    starting_price_sar: 0
+    repeatability: 0.9
+    margin: 1.0
+    retainer_potential: 0.1
+    data_moat: 0.4
+    partner_potential: 0.3
+    delivery_burden: 0.1
+
+  - id: revenue_hunter_pilot
+    name: "Revenue Hunter Pilot — 7-day B2B sprint"
+    tier: entry
+    ladder_step: 1
+    starting_price_sar: 999
+    repeatability: 0.7
+    margin: 0.7
+    retainer_potential: 0.5
+    data_moat: 0.4
+    partner_potential: 0.6
+    delivery_burden: 0.4
+
+  - id: ai_trust_diagnostic
+    name: "AI Trust Diagnostic"
+    tier: entry
+    ladder_step: 1
+    starting_price_sar: 5000
+    repeatability: 0.6
+    margin: 0.65
+    retainer_potential: 0.6
+    data_moat: 0.5
+    partner_potential: 0.4
+    delivery_burden: 0.5
+
+  - id: workshop
+    name: "AI Revenue Workshop"
+    tier: entry
+    ladder_step: 1
+    starting_price_sar: 4000
+    repeatability: 0.5
+    margin: 0.7
+    retainer_potential: 0.4
+    data_moat: 0.3
+    partner_potential: 0.5
+    delivery_burden: 0.5
+
+  - id: ai_trust_kit
+    name: "AI Trust Kit (governance toolkit)"
+    tier: core
+    ladder_step: 2
+    starting_price_sar: 15000
+    repeatability: 0.5
+    margin: 0.6
+    retainer_potential: 0.7
+    data_moat: 0.6
+    partner_potential: 0.5
+    delivery_burden: 0.6
+
+  - id: monthly_revenue_command
+    name: "Monthly Revenue Command Retainer"
+    tier: core
+    ladder_step: 3
+    starting_price_sar: 8000
+    repeatability: 0.9
+    margin: 0.7
+    retainer_potential: 1.0
+    data_moat: 0.7
+    partner_potential: 0.4
+    delivery_burden: 0.4
+
+  - id: agency_white_label
+    name: "Agency White-label Kit"
+    tier: core
+    ladder_step: 3
+    starting_price_sar: 9000
+    repeatability: 0.8
+    margin: 0.7
+    retainer_potential: 0.7
+    data_moat: 0.4
+    partner_potential: 1.0
+    delivery_burden: 0.4
+
+  - id: executive_pmo
+    name: "Executive PMO"
+    tier: expansion
+    ladder_step: 4
+    starting_price_sar: 25000
+    repeatability: 0.5
+    margin: 0.5
+    retainer_potential: 0.8
+    data_moat: 0.7
+    partner_potential: 0.4
+    delivery_burden: 0.7
+
+  - id: agent_governance_os
+    name: "Agent Governance OS"
+    tier: enterprise
+    ladder_step: 5
+    starting_price_sar: 50000
+    repeatability: 0.4
+    margin: 0.55
+    retainer_potential: 0.9
+    data_moat: 0.9
+    partner_potential: 0.5
+    delivery_burden: 0.8
+
+  - id: agentic_control_plane
+    name: "Agentic Control Plane (custom deployment)"
+    tier: enterprise
+    ladder_step: 6
+    starting_price_sar: 120000
+    repeatability: 0.3
+    margin: 0.5
+    retainer_potential: 1.0
+    data_moat: 1.0
+    partner_potential: 0.4
+    delivery_burden: 0.9
+
+icps:
+  - id: icp_agency
+    name: "Marketing & growth agencies"
+    buyer: "agency founder"
+    pain: "needs an AI-powered revenue service to sell to clients"
+    ability_to_pay: medium_high
+    urgency: high
+    best_offer_id: agency_white_label
+    best_channel: direct_outreach
+    message_angle: "new revenue line without building tech"
+    entry_offer_id: workshop
+    expansion_offer_id: monthly_revenue_command
+
+  - id: icp_b2b_sme
+    name: "B2B SMEs (10–200 staff)"
+    buyer: "founder or commercial lead"
+    pain: "revenue leakage and weak follow-up"
+    ability_to_pay: medium
+    urgency: high
+    best_offer_id: revenue_hunter_pilot
+    best_channel: warm_intro
+    message_angle: "turn lead generation and follow-up into a system"
+    entry_offer_id: revenue_hunter_pilot
+    expansion_offer_id: monthly_revenue_command
+
+  - id: icp_ai_governance_buyer
+    name: "Companies using AI internally, no governance"
+    buyer: "COO or compliance lead"
+    pain: "AI usage without permissions, approvals, or audit trail"
+    ability_to_pay: high
+    urgency: high
+    best_offer_id: ai_trust_kit
+    best_channel: direct_outreach
+    message_angle: "AI productivity with permissions, approvals, audit"
+    entry_offer_id: ai_trust_diagnostic
+    expansion_offer_id: agent_governance_os

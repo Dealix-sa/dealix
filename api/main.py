@@ -109,6 +109,8 @@ from api.routers import commercial_map as commercial_map_router
 from api.routers import founder_launch_status as founder_launch_status_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Revenue Marketing OS — Hermes Growth (campaigns, leads, touches, attribution, dashboard)
+from api.routers import revenue_marketing_os as revenue_marketing_os_router
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -357,6 +359,9 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Revenue Marketing OS — /api/v1/hermes/growth/* (admin) + /public/* (read-only)
+    for _rm_router in revenue_marketing_os_router.ROUTERS:
+        app.include_router(_rm_router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
