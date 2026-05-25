@@ -55,7 +55,7 @@ _WIRING: dict[str, dict[str, Any]] = {
         "delivery_module": "auto_client_acquisition.delivery_factory.delivery_sprint.run_sprint",
         "delivery_endpoint": "POST /api/v1/sprint/run",
         "sample_endpoint": "GET /api/v1/sprint/sample",
-        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "proof_endpoint": "POST /api/v1/proof-pack/{engagement_id}/generate",
         "case_safe_endpoint": "GET /api/v1/proof-to-market/case-safe/{engagement_id}",
         "founder_surface": "/founder-dashboard.html",
         "next_offer": "growth_ops_monthly_2999",
@@ -68,7 +68,7 @@ _WIRING: dict[str, dict[str, Any]] = {
         "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
         "delivery_module": "auto_client_acquisition.data_os + auto_client_acquisition.delivery_factory.delivery_sprint",
         "delivery_endpoint": "POST /api/v1/sprint/run",
-        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "proof_endpoint": "POST /api/v1/proof-pack/{engagement_id}/generate",
         "founder_surface": "/founder-dashboard.html",
         "next_offer": "growth_ops_monthly_2999",
     },
@@ -285,7 +285,7 @@ async def commercial_map_markdown() -> str:
     lines.append("- Proposal renderer: `auto_client_acquisition/sales_os/proposal_renderer.py`")
     lines.append("- Sprint orchestrator: `auto_client_acquisition/delivery_factory/delivery_sprint.py`")
     lines.append("- Renewal scheduler: `auto_client_acquisition/payment_ops/renewal_scheduler.py`")
-    lines.append("- Proof Pack assembler: `auto_client_acquisition/proof_os/proof_pack.py`")
+    lines.append("- Proof Pack: `POST /api/v1/proof-pack/{engagement_id}/generate` (governed)")
     lines.append("- Trust Pack: `auto_client_acquisition/trust_os/trust_pack.py`")
     lines.append("- Audit + Evidence Control Plane: `auto_client_acquisition/auditability_os/`, `evidence_control_plane_os/`")
     lines.append("- Agent OS + Secure Runtime: `auto_client_acquisition/agent_os/`, `secure_agent_runtime_os/`")

@@ -1,0 +1,18 @@
+{
+  "id": "evt_first_paid_REPLACE",
+  "event_type": "payment_received",
+  "customer_handle": "CUSTOMER_HANDLE",
+  "service_id": "revenue_proof_sprint_499",
+  "summary_ar": "تم استلام أول دفعة مدفوعة — استبدل هذا النص بعد التأكيد من Moyasar/البنك.",
+  "summary_en": "First paid event recorded — replace after Moyasar/bank confirmation.",
+  "evidence_source": "moyasar:invoice:REPLACE_OR_manual_receipt",
+  "confidence": 1.0,
+  "consent_for_publication": false,
+  "approval_status": "approved",
+  "risk_level": "low",
+  "payload": {
+    "amount_sar": 499,
+    "offer_track": "wedge_499_or_sprint_9500"
+  },
+  "created_at": "2026-05-18T12:00:00+00:00"
+}

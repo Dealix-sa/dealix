@@ -2,6 +2,9 @@
 
 NO guarantee claims. NO pressure manipulation. NO fake scarcity.
 Every external messaging output is `draft_only` or `approval_required`.
+
+Qualification is delegated to ``auto_client_acquisition.sales_os.qualification``
+(same path as ``POST /api/v1/service-setup/qualify``).
 """
 from __future__ import annotations
 
@@ -22,13 +25,19 @@ _HARD_GATES = {
 
 
 class _QualifyRequest(BaseModel):
+    """V12 discovery flags; mapped to canonical ``qualify()`` inputs."""
+
     model_config = ConfigDict(extra="forbid")
+
     has_warm_intro: bool = False
     sector: str = "b2b_services"
     pain_described: bool = False
     budget_signal: bool = False
     authority_signal: bool = False
     urgency_signal: bool = False
+    accepts_governance: bool = True
+    data_available: bool = False
+    raw_request_text: str = ""
 
 
 class _ObjectionRequest(BaseModel):
@@ -44,16 +53,66 @@ class _MeetingPrepRequest(BaseModel):
     duration_min: int = 30
 
 
+def _map_v12_to_qualify(req: _QualifyRequest) -> dict[str, Any]:
+    return {
+        "pain_clear": req.pain_described,
+        "owner_present": req.has_warm_intro or req.authority_signal,
+        "data_available": req.data_available or req.pain_described,
+        "accepts_governance": req.accepts_governance,
+        "has_budget": req.budget_signal,
+        "wants_safe_methods": True,
+        "proof_path_visible": req.urgency_signal or req.budget_signal,
+        "retainer_path_visible": req.has_warm_intro,
+        "raw_request_text": req.raw_request_text,
+        "sector": req.sector,
+        "city": "",
+    }
+
+
+def _legacy_next_step(decision: str, score: int, recommended_offer: str) -> tuple[str, str, str]:
+    """Map canonical verdict to V12 ``next_step`` + bilingual recommendation."""
+    if decision == "reject":
+        return (
+            "nurture_only",
+            "غير مؤهَّل حاليّاً — لا تواصل بارد",
+            "Not qualified yet — no cold outreach",
+        )
+    if decision == "accept" or score >= 85:
+        if recommended_offer == "revenue_intelligence_sprint":
+            return (
+                "offer_sprint_9500",
+                "مؤهَّل — قدّم Lead Intelligence Sprint (9,500 ريال)",
+                "Qualified — offer Lead Intelligence Sprint (9,500 SAR)",
+            )
+        return (
+            "offer_pilot",
+            "مؤهَّل — قدّم Pilot 499 ريال",
+            "Qualified — offer 499 SAR Pilot",
+        )
+    if decision in ("diagnostic_only", "reframe") or score >= 45:
+        return (
+            "offer_diagnostic",
+            "نصف مؤهَّل — قدّم Mini Diagnostic مجاني",
+            "Half-qualified — offer free Mini Diagnostic",
+        )
+    return (
+        "nurture_only",
+        "غير مؤهَّل حاليّاً — لا تواصل بارد",
+        "Not qualified yet — no cold outreach",
+    )
+
+
 @router.get("/status")
 async def sales_os_status() -> dict[str, Any]:
     return {
         "service": "sales_os",
-        "module": "crm_v10+reply_classifier",
+        "module": "sales_os.qualification (canonical)",
         "status": "operational",
         "version": "v12",
         "degraded": False,
-        "checks": {"lead_score": "ok", "deal_score": "ok", "reply_classifier": "ok"},
+        "checks": {"qualification": "ok", "deal_score": "ok", "reply_classifier": "ok"},
         "hard_gates": _HARD_GATES,
+        "canonical_qualify_endpoint": "POST /api/v1/service-setup/qualify",
         "next_action_ar": "استخدم /qualify ثم /meeting-prep",
         "next_action_en": "Use /qualify then /meeting-prep.",
     }
@@ -61,37 +120,27 @@ async def sales_os_status() -> dict[str, Any]:
 
 @router.post("/qualify")
 async def sales_qualify(req: _QualifyRequest) -> dict[str, Any]:
-    """Return a deterministic qualification score (0–100) + recommendation."""
-    score = 0
-    if req.has_warm_intro:
-        score += 25
-    if req.pain_described:
-        score += 25
-    if req.budget_signal:
-        score += 20
-    if req.authority_signal:
-        score += 15
-    if req.urgency_signal:
-        score += 15
-    if score >= 75:
-        recommendation_ar = "مؤهَّل — قدّم Pilot 499 ريال"
-        recommendation_en = "Qualified — offer 499 SAR Pilot"
-        next_step = "offer_pilot"
-    elif score >= 40:
-        recommendation_ar = "نصف مؤهَّل — قدّم Mini Diagnostic مجاني"
-        recommendation_en = "Half-qualified — offer free Mini Diagnostic"
-        next_step = "offer_diagnostic"
-    else:
-        recommendation_ar = "غير مؤهَّل حاليّاً — لا تواصل بارد"
-        recommendation_en = "Not qualified yet — no cold outreach"
-        next_step = "nurture_only"
+    """Deterministic qualification — same engine as service-setup/qualify."""
+    from auto_client_acquisition.sales_os.qualification import qualify
+
+    result = qualify(**_map_v12_to_qualify(req))
+    payload = result.to_dict()
+    next_step, rec_ar, rec_en = _legacy_next_step(
+        payload["decision"], payload["score"], payload["recommended_offer"]
+    )
     return {
-        "score": score,
-        "recommendation_ar": recommendation_ar,
-        "recommendation_en": recommendation_en,
+        "score": payload["score"],
+        "decision": payload["decision"],
+        "recommended_offer": payload["recommended_offer"],
+        "reasons": payload.get("reasons", []),
+        "doctrine_violations": payload.get("doctrine_violations", []),
+        "recommendation_ar": rec_ar,
+        "recommendation_en": rec_en,
         "next_step": next_step,
         "action_mode": "suggest_only",
         "hard_gates": _HARD_GATES,
+        "canonical": True,
+        "is_estimate": True,
     }
 
 
@@ -118,25 +167,19 @@ async def sales_objection_response(req: _ObjectionRequest) -> dict[str, Any]:
             "draft_ar": (
                 "أتفهّم. الـ Pilot 499 ريال لمدّة 7 أيّام مع استرجاع كامل لو "
                 "ما طابق التسليم المواصفات. هل نبدأ بـ Mini Diagnostic مجاني "
-                "لتقييم القيمة قبل الالتزام؟"
+                "أولاً؟"
             ),
             "draft_en": (
-                "Understood. The Pilot is 499 SAR for 7 days with a full "
-                "refund if delivery doesn't match spec. Want to start with "
-                "a free Mini Diagnostic first to evaluate value?"
+                "I understand. The 499 SAR Pilot runs 7 days with a full refund "
+                "if delivery misses agreed criteria. Shall we start with a free "
+                "Mini Diagnostic?"
             ),
             "hard_gates": _HARD_GATES,
         }
     return {
         "action_mode": "draft_only",
-        "draft_ar": (
-            "شكراً على الملاحظة. أحتاج فهم أعمق قبل ما أردّ — هل نتكلّم 30 "
-            "دقيقة الأسبوع الجاي؟"
-        ),
-        "draft_en": (
-            "Thanks for the note. Want to talk for 30 min next week so I "
-            "can respond properly?"
-        ),
+        "draft_ar": "شكراً على السؤال — سأراجع مع الفريق وأعود بمسودة مخصّصة.",
+        "draft_en": "Thanks for the question — I'll review with the team and return a tailored draft.",
         "hard_gates": _HARD_GATES,
     }
 
@@ -149,13 +192,13 @@ async def sales_meeting_prep(req: _MeetingPrepRequest) -> dict[str, Any]:
         "agenda_ar": [
             "5 د — تعريف Dealix والوضع الحالي",
             "10 د — ما الفرص الـ 3 التي ترى أنها تستحق؟",
-            "10 د — Pilot 499 ريال — ما هو، وما ليس",
+            "10 د — Diagnostic أو Sprint (499 / 9,500) — ما هو، وما ليس",
             "5 د — الخطوة التالية + اعتماد المسوّدة",
         ],
         "agenda_en": [
             "5 min — Dealix intro + current state",
             "10 min — Which 3 opportunities feel worth pursuing?",
-            "10 min — 499 SAR Pilot — what it is, what it isn't",
+            "10 min — Diagnostic or Sprint (499 / 9,500 SAR) — what it is, what it isn't",
             "5 min — Next step + draft approval",
         ],
         "must_avoid_ar": [

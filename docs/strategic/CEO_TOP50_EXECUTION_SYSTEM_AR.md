@@ -17,7 +17,7 @@
 | 3 | اعتماد scorecard يومي رسمي | 98 | DONE_NOW | قياس يومي موحد بدل الانطباع | `scripts/founder_daily_scorecard.py` |
 | 4 | اعتماد بوابة قرار weekly go/no-go | 97 | DONE_NOW | حكم إطلاق أسبوعي موثّق | `scripts/dealix_market_launch_ready_verify.sh` |
 | 5 | مراجعة friction كل أسبوع | 95 | DONE_NOW | تقرير اختناقات مع أولوية معالجة | `auto_client_acquisition/friction_log/` |
-| 6 | مواءمة 30/60/90 مع مخرجات فعلية | 94 | NEXT_7 | ورقة تنفيذ قصيرة محدثة | `docs/STRATEGIC_MASTER_PLAN_2026.md` |
+| 6 | مواءمة 30/60/90 مع مخرجات فعلية | 94 | DONE_NOW | ورقة تنفيذ قصيرة محدثة | `docs/strategic/30_60_90_EXECUTION_AR.md` |
 
 ## 2) المنتج (7–13)
 
@@ -64,7 +64,7 @@
 | 30 | تشغيل باقة doctrine الأساسية | 100 | DONE_NOW | تأكيد منع المخالفات غير القابلة للتفاوض | `tests/test_no_*.py` |
 | 31 | التحقق المركزي من قواعد governance | 98 | DONE_NOW | تقرير قواعد PASS/FAIL | `scripts/verify_governance.py` |
 | 32 | إبقاء live actions في وضع آمن افتراضيًا | 97 | DONE_NOW | منع أي إرسال/دفع خارجي تلقائي | `scripts/dealix_status.py` |
-| 33 | إغلاق `REVIEW_PENDING` قبل الإطلاق التسويقي | 95 | NEXT_7 | رسائل public خالية من ثغرات claims | `tests/test_landing_forbidden_claims.py` |
+| 33 | إغلاق `REVIEW_PENDING` قبل الإطلاق التسويقي | 95 | DONE_NOW | رسائل public خالية من ثغرات claims | `tests/test_landing_forbidden_claims.py` |
 | 34 | تثبيت سياسة no-source-no-answer | 94 | DONE_NOW | سلامة المحتوى والقرارات | `tests/test_no_source_no_answer.py` |
 | 35 | فرض draft/approval-first لكل قناة خارجية | 93 | DONE_NOW | خط دفاع تشغيلي واضح | `docs/architecture/API_MAP.md` |
 | 36 | تفعيل disclaimer القيمة التقديرية | 90 | DONE_NOW | اتساق تجاري قانوني | `dealix/registers/no_overclaim.yaml` |
