@@ -18,6 +18,12 @@ module.exports = {
         "http://localhost:8765/checkout.html?tier=sprint",
         "http://localhost:8765/customer-decisions.html",
         "http://localhost:8765/login.html",
+        // Founder-facing landing surfaces (P0 from FRONTEND_MUST_HAVE_PAGES.md)
+        "http://localhost:8765/command-center.html",
+        "http://localhost:8765/dashboard.html",
+        "http://localhost:8765/founder-dashboard.html",
+        "http://localhost:8765/executive-command-center.html",
+        "http://localhost:8765/launchpad.html",
       ],
       numberOfRuns: 1,
       settings: {
