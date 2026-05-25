@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        assurance verify-assurance-system
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Execution Assurance System ─────────────────────────────────
+# CEO-level layer. Reads real evidence from your private ops repo
+# (PRIVATE_OPS=/path/to/dealix-ops-private) and renders a report.
+
+assurance: ## Generate execution assurance report (PRIVATE_OPS=...)
+	$(PYTHON) -m dealix_cli assurance --private-ops $(PRIVATE_OPS)
+
+verify-assurance-system: ## Verify execution assurance system files are in place
+	$(PYTHON) scripts/verify_execution_assurance_system.py
