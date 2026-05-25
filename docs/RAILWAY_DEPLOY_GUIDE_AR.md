@@ -29,7 +29,11 @@
 داخل المشروع:
 
 - اضغط **+ New** → **Database** → **Add PostgreSQL**
-- Railway يولد `DATABASE_URL` تلقائياً ويربطه بالتطبيق
+- Railway يستخدم قالب **`ghcr.io/railwayapp-templates/postgres-ssl`** (SSL مفعّل — tag مثل `:18` أو `:18.4`)
+- Private: `postgres.railway.internal` · Public TCP proxy اختياري للأدوات الخارجية
+- على خدمة API: `DATABASE_URL=${{Postgres.DATABASE_URL}}` (Variable Reference)
+
+مرجع كامل: [`docs/ops/RAILWAY_POSTGRES_SSL_AR.md`](ops/RAILWAY_POSTGRES_SSL_AR.md) · [`dealix/config/railway_postgres_canonical.yaml`](../dealix/config/railway_postgres_canonical.yaml)
 
 ### 4. إضافة Environment Variables
 

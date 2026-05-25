@@ -1,6 +1,6 @@
 # إعدادات إنتاج Railway — مرجع المؤسس (api.dealix.me)
 
-**المستودع:** `VoXc2/dealix` · **الفرع:** `main` · **Config-as-code:** [`railway.toml`](../../railway.toml) · [`railway.json`](../../railway.json) · **قائمة نسخ:** [`dealix/config/railway_ui_canonical.yaml`](../../dealix/config/railway_ui_canonical.yaml)
+**المستودع:** `VoXc2/dealix` · **الفرع:** `main` · **Config-as-code:** [`railway.toml`](../../railway.toml) · [`railway.json`](../../railway.json) · **قائمة نسخ:** [`dealix/config/railway_ui_canonical.yaml`](../../dealix/config/railway_ui_canonical.yaml) · **Postgres SSL:** [`dealix/config/railway_postgres_canonical.yaml`](../../dealix/config/railway_postgres_canonical.yaml) · [`RAILWAY_POSTGRES_SSL_AR.md`](RAILWAY_POSTGRES_SSL_AR.md)
 
 **تحقق محلي (مع محاكاة خطأ UI):**
 
@@ -62,6 +62,19 @@ python scripts/verify_railway_production_config.py --ui-predeploy 'echo "no migr
 
 ---
 
+## خدمة Postgres (postgres-ssl)
+
+| البند | القيمة |
+|--------|--------|
+| **Source Image** | `ghcr.io/railwayapp-templates/postgres-ssl:18` (ترقية اختيارية `:18.4`) |
+| **Private** | `postgres.railway.internal` |
+| **Public TCP** | `*.proxy.rlwy.net:<port>` → `:5432` (للأدوات الخارجية فقط) |
+| **متغيرات Railway** | `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`, `POSTGRES_*`, `PGDATA`, `SSL_CERT_DAYS`, … |
+
+مرجع كامل: [`RAILWAY_POSTGRES_SSL_AR.md`](RAILWAY_POSTGRES_SSL_AR.md)
+
+---
+
 ## متغيرات بيئة API (حد أدنى)
 
 | متغير | الغرض |
@@ -103,6 +116,6 @@ bash scripts/verify_dealix_commercial_go_live.sh
 
 ## مراجع
 
-- [`DEPLOYMENT.md`](../../DEPLOYMENT.md) · [`docs/RAILWAY_DEPLOY_GUIDE_AR.md`](../RAILWAY_DEPLOY_GUIDE_AR.md)
+- [`DEPLOYMENT.md`](../../DEPLOYMENT.md) · [`docs/RAILWAY_DEPLOY_GUIDE_AR.md`](../RAILWAY_DEPLOY_GUIDE_AR.md) · [`RAILWAY_POSTGRES_SSL_AR.md`](RAILWAY_POSTGRES_SSL_AR.md)
 - [`docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md`](../commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md)
 - [`docs/commercial/PAID_LAUNCH_INTEGRATIONS_RUNBOOK_AR.md`](../commercial/PAID_LAUNCH_INTEGRATIONS_RUNBOOK_AR.md)
