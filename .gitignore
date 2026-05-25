@@ -214,3 +214,12 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Dealix Acceptance & Certification — runtime artifacts only.
+# Keep the empty folders (.gitkeep) but never commit actual outputs.
+# ─────────────────────────────────────────────────────────────
+outputs/agents/*.json
+outputs/golden/*.txt
+!outputs/agents/.gitkeep
+!outputs/golden/.gitkeep

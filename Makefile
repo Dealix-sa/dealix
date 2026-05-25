@@ -8,11 +8,15 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        verify-all certify prompt-evals agent-outputs verification-brief
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
+
+# Private operating directory (override with PRIVATE_OPS=/your/path make ...)
+PRIVATE_OPS ?= /opt/dealix-ops-private
 
 help: ## Show this help
 	@echo "🏢 AI Company Saudi — Available commands:"
@@ -130,3 +134,29 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Acceptance & Certification ─────────────────────────────────
+# Internal C0–C5 operational readiness gates. Doc:
+# docs/certification/DEALIX_OS_ACCEPTANCE.md
+verify-all: ## Run all 8 C-level verifications (set PRIVATE_OPS=...)
+	$(PYTHON) scripts/verify_repository_structure.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/verify_code_health.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/verify_private_ops_contracts.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/verify_server_runtime.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/verify_revenue_runtime.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/verify_prompt_output_quality.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/verify_trust_security_runtime.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/verify_business_evidence.py --private-ops $(PRIVATE_OPS)
+
+certify: ## Master orchestrator → CERTIFIED / PARTIAL / NOT CERTIFIED
+	$(PYTHON) scripts/certify_dealix_os.py --private-ops $(PRIVATE_OPS)
+
+prompt-evals: ## Run prompt golden tests + static prompt scan
+	$(PYTHON) scripts/run_prompt_golden_tests.py
+	$(PYTHON) scripts/verify_prompt_output_quality.py --private-ops $(PRIVATE_OPS)
+
+agent-outputs: ## Validate agent outputs against the schema contract
+	$(PYTHON) scripts/verify_agent_outputs.py
+
+verification-brief: ## Generate the CEO verification brief
+	$(PYTHON) scripts/generate_ceo_verification_brief.py --private-ops $(PRIVATE_OPS)

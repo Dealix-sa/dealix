@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.local/schemas/agent_output_contract.schema.json",
+  "title": "Dealix Agent Output Contract",
+  "description": "Every output produced by a Dealix agent or worker must comply with this contract before it can be used externally.",
+  "type": "object",
+  "required": [
+    "summary",
+    "evidence",
+    "risk_level",
+    "approval_class",
+    "next_action",
+    "owner",
+    "safe_to_use"
+  ],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "One-paragraph human summary of what this output asserts or proposes."
+    },
+    "evidence": {
+      "oneOf": [
+        {"type": "string", "minLength": 1},
+        {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1}
+      ],
+      "description": "Concrete references, sources, or artifacts that support the summary. Required."
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["Low", "Medium", "High", "Critical"]
+    },
+    "approval_class": {
+      "type": "string",
+      "enum": ["A0", "A1", "A2", "A3"],
+      "description": "A0 internal-no-approval, A1 reviewer-sign-off, A2 founder-approval-required, A3 must-not-automate."
+    },
+    "next_action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "safe_to_use": {
+      "type": "string",
+      "enum": ["Yes", "No", "Needs Review"]
+    }
+  },
+  "additionalProperties": true
+}

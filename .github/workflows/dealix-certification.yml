@@ -1,0 +1,56 @@
+name: Dealix Certification
+
+on:
+  pull_request:
+    paths:
+      - "scripts/certify_dealix_os.py"
+      - "scripts/verify_repository_structure.py"
+      - "scripts/verify_code_health.py"
+      - "scripts/verify_prompt_output_quality.py"
+      - "scripts/verify_agent_outputs.py"
+      - "scripts/run_prompt_golden_tests.py"
+      - "scripts/generate_ceo_verification_brief.py"
+      - "dealix/contracts/schemas/agent_output_contract.schema.json"
+      - "docs/certification/**"
+      - "evals/golden/**"
+      - "outputs/**"
+      - ".github/workflows/dealix-certification.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repo-side-certification:
+    name: Repo-side checks (no private-ops dependency)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PYTHONIOENCODING: utf-8
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Repository structure
+        run: python scripts/verify_repository_structure.py --private-ops /tmp/ops-stub
+
+      - name: Code health
+        run: python scripts/verify_code_health.py --private-ops /tmp/ops-stub
+
+      - name: Prompt and output quality
+        run: python scripts/verify_prompt_output_quality.py --private-ops /tmp/ops-stub
+
+      - name: Agent output contract
+        run: python scripts/verify_agent_outputs.py
+
+      - name: Prompt golden tests
+        run: python scripts/run_prompt_golden_tests.py
