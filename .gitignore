@@ -214,3 +214,9 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Done-For-You Acquisition OS — generated artifacts (NEVER commit)
+# ─────────────────────────────────────────────────────────────
+acquisition/outreach_messages/_rendered/**
+acquisition/send_queues/**
