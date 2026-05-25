@@ -1,0 +1,20 @@
+name: Dealix Board-Level OS Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  board-level-os:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify board-level OS
+        run: python scripts/verify_board_level_os.py
+      - name: Compile
+        run: python -m compileall control_plane scripts dealix_cli ops_runtime

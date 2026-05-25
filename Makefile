@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        board strategic-decision board-level-os-verify
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,18 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Board-Level Operating System ───────────────────────────────
+# Monthly investor-grade discipline. Reads private_ops evidence and
+# writes the monthly board pack and strategic decision report. Set
+# PRIVATE_OPS to the path holding revenue/, pipeline/, finance/,
+# delivery/, trust/, learning/, founder/ subdirectories.
+
+board: ## Board-level: generate the monthly board pack (PRIVATE_OPS=...)
+	$(PYTHON) scripts/generate_board_pack.py --private-ops $(PRIVATE_OPS)
+
+strategic-decision: ## Board-level: emit Build/Fix/Kill/Defer decision (PRIVATE_OPS=...)
+	$(PYTHON) scripts/generate_strategic_decision_report.py --private-ops $(PRIVATE_OPS)
+
+board-level-os-verify: ## Board-level: verify the scaffolding is present and non-empty
+	$(PYTHON) scripts/verify_board_level_os.py
