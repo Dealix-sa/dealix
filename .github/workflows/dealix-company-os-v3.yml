@@ -1,0 +1,25 @@
+name: Dealix Company OS v3 Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  company-os-v3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Verify Company OS v3 docs, schema, and supersedes links
+        run: python scripts/verify_company_os_v3.py
+      - name: Compile Python sources (smoke check)
+        run: python -m compileall -q scripts api dealix auto_client_acquisition autonomous_growth platform_core
