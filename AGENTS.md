@@ -40,6 +40,8 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - [docs/SECURITY_RUNBOOK.md](docs/SECURITY_RUNBOOK.md) — استجابة الحوادث والأسرار
 - [docs/SLO.md](docs/SLO.md) — أهداف التوفر والزمن
 - [docs/ON_CALL.md](docs/ON_CALL.md) — تغطية الطوارئ
+- [docs/enterprise/](docs/enterprise/) — customer-facing governance + security pack (generated from `dealix/hermes/`)
+- [docs/hermes/PRODUCTION_EMPIRE_LAYER.md](docs/hermes/PRODUCTION_EMPIRE_LAYER.md) — Hermes layer (sovereign control plane + verified-revenue OS). Demo: `PYTHONPATH=. python scripts/hermes_demo.py`. Tests (no infra deps): `cd tests/hermes && python -m pytest . --noconftest --override-ini="addopts=" -q` (87 tests).
 
 ### Business NOW (all pillars — today)
 
