@@ -214,3 +214,93 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+.aider*
+
+# ===================== DEALIX FOUNDER OS MANAGED BLOCK v5 =====================
+
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / web
+node_modules/
+.next/
+.nuxt/
+dist/
+build/
+coverage/
+.cache/
+.parcel-cache/
+.turbo/
+.vercel/
+.netlify/
+
+# Aider / AI
+.aider.chat.history.md
+.aider.input.history
+.aider.tags.cache*/
+.aider.repo.map
+*.aider.log
+
+# Dealix runtime
+.dealix/cache/
+.dealix/tmp/
+.dealix/runs/
+.dealix/watchdog/*.pid
+.dealix/watchdog/*.lock
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Heavy generated artifacts
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.sqlite
+*.db
+*.parquet
+*.feather
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.psd
+*.fig
+
+# Frozen / legacy areas
+dealix-archive/
+archive/
+legacy/
+old/
+tmp/
+
+# =================== END DEALIX FOUNDER OS MANAGED BLOCK v5 ===================
