@@ -1,0 +1,28 @@
+name: Dealix Delivery Client Success Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  delivery-client-success:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify delivery client success OS
+        run: python scripts/verify_delivery_client_success_os.py
+
+      - name: Compile dealix_cli
+        run: python -m compileall dealix_cli scripts/verify_delivery_client_success_os.py
+
+      - name: Smoke-test dealix_cli delivery command
+        run: |
+          mkdir -p /tmp/ops_private_smoke
+          python -m dealix_cli delivery --private-ops /tmp/ops_private_smoke
