@@ -1,0 +1,44 @@
+name: Dealix Ultimate Level Checks
+
+on:
+  pull_request:
+    paths:
+      - "docs/company/**"
+      - "docs/architecture/**"
+      - "docs/frontend/**"
+      - "docs/api/**"
+      - "docs/data/**"
+      - "docs/trust/**"
+      - "docs/runtime/**"
+      - "docs/revenue/**"
+      - "docs/delivery/**"
+      - "docs/finance/**"
+      - "docs/product/**"
+      - "docs/engineering/**"
+      - "docs/security/**"
+      - "scripts/verify_ultimate_level.py"
+      - ".github/workflows/dealix-ultimate-level.yml"
+      - "Makefile"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ultimate-level:
+    name: Verify Ultimate Level blueprint
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify ultimate level blueprint
+        run: python scripts/verify_ultimate_level.py
