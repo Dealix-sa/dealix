@@ -1,0 +1,121 @@
+name: Dealix CEO OS — Audit & Verifier
+
+# Read-only gates that protect the founder/CEO operating layer:
+#   - doctrine audit (no overclaim phrases) against docs/
+#   - PII audit against docs/ (no Saudi PII on the public surface)
+#   - stage-script smoke (the scaffolder must remain idempotent)
+#   - dashboard renderer smoke
+#
+# These run on every PR touching the founder/, strategy/, revenue/,
+# trust/, finance/, ai_management/, client_success/, product/, content/,
+# people/, partners/, or delivery/revenue_sprint/ areas, plus on changes
+# to scripts/ceo/.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/founder/**"
+      - "docs/strategy/**"
+      - "docs/revenue/**"
+      - "docs/sales/**"
+      - "docs/trust/**"
+      - "docs/finance/**"
+      - "docs/ai_management/**"
+      - "docs/client_success/**"
+      - "docs/product/**"
+      - "docs/content/**"
+      - "docs/people/**"
+      - "docs/partners/**"
+      - "docs/delivery/revenue_sprint/**"
+      - "scripts/ceo/**"
+      - ".github/workflows/dealix-ceo-os.yml"
+  pull_request:
+    paths:
+      - "docs/founder/**"
+      - "docs/strategy/**"
+      - "docs/revenue/**"
+      - "docs/sales/**"
+      - "docs/trust/**"
+      - "docs/finance/**"
+      - "docs/ai_management/**"
+      - "docs/client_success/**"
+      - "docs/product/**"
+      - "docs/content/**"
+      - "docs/people/**"
+      - "docs/partners/**"
+      - "docs/delivery/revenue_sprint/**"
+      - "scripts/ceo/**"
+      - ".github/workflows/dealix-ceo-os.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  ceo-audit:
+    name: Doctrine + PII audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run doctrine + PII audit
+        run: python scripts/ceo/audit.py
+
+  ceo-stage-smoke:
+    name: Stage scaffolder smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: First run creates structure
+        run: python scripts/ceo/stage_private_ops.py
+      - name: Second run is idempotent (creates nothing new)
+        run: |
+          set -e
+          out=$(python scripts/ceo/stage_private_ops.py)
+          echo "$out"
+          if echo "$out" | grep -q "created : 0"; then
+            echo "stage scaffolder is idempotent"
+          else
+            echo "stage scaffolder is not idempotent — repeat run created files"
+            exit 1
+          fi
+
+  ceo-dashboard-smoke:
+    name: Dashboard renderer smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Stage then render dashboard
+        run: |
+          python scripts/ceo/stage_private_ops.py
+          python scripts/ceo/dashboard.py
+      - name: Confirm dashboard file produced
+        run: |
+          test -f dealix-ops-private/founder/master_dashboard.md \
+            && echo "dashboard rendered"
+
+  ceo-unit-tests:
+    name: CEO OS unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Run CEO OS tests in isolation
+        run: >
+          python -m pytest tests/ceo_os
+          --confcutdir=tests/ceo_os
+          --override-ini=addopts=
+          -p no:cacheprovider
+          -v
