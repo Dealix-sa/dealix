@@ -8,7 +8,8 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        business-score business-audit
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +131,19 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── CEO Business Audit ────────────────────────────────────────
+# CEO Business Score reads evidence from the private ops repo
+# (pipeline, revenue, finance, delivery, trust, learning, founder)
+# and writes business_audit/ceo_business_score.md + score_history.csv.
+# Override the private ops path with PRIVATE_OPS=...
+
+PRIVATE_OPS ?= $(HOME)/dealix-ops-private
+
+business-score: ## CEO: generate the CEO Business Score from private ops evidence
+	$(PYTHON) scripts/generate_ceo_business_score.py --private-ops $(PRIVATE_OPS)
+
+business-audit: ## CEO: verify business systems and refresh the score
+	$(PYTHON) scripts/verify_ceo_business_systems.py
+	$(PYTHON) scripts/verify_ceo_business_score.py
+	$(PYTHON) scripts/generate_ceo_business_score.py --private-ops $(PRIVATE_OPS)
