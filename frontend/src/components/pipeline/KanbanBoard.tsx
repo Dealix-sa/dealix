@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, MoreHorizontal, TrendingUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn, formatCurrency } from "@/lib/utils";
+import { api } from "@/lib/api";
+import { pipelineSummaryToDeals } from "@/lib/dashboardAdapters";
 import type { Deal, DealStage } from "@/types";
 
 const STAGES: { key: DealStage; color: string; dotColor: string }[] = [
@@ -180,12 +182,40 @@ function DealCard({ deal }: { deal: Deal }) {
 export function KanbanBoard() {
   const t = useTranslations();
   const locale = useLocale();
-  const [deals] = useState(mockDeals);
+  const isAr = locale === "ar";
+  const [deals, setDeals] = useState<Record<DealStage, Deal[]>>(mockDeals);
+  const [usingLive, setUsingLive] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all([api.getPipeline(), api.getPipelineLeads()])
+      .then(([summaryRes, leadsRes]) => {
+        if (cancelled) return;
+        const leads = (leadsRes.data?.leads as Array<Record<string, unknown>>) || [];
+        const summary = (summaryRes.data?.pipeline_summary as Record<string, unknown>) || {};
+        if (leads.length > 0) {
+          setDeals(pipelineSummaryToDeals(summary, leads));
+          setUsingLive(true);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setUsingLive(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const getTotalValue = (stage: DealStage) =>
     (deals[stage] ?? []).reduce((sum, d) => sum + d.value, 0);
 
   return (
+    <div className="space-y-3">
+      {usingLive && (
+        <p className="text-xs text-emerald-500">
+          {isAr ? "بيانات خط الإيراد الحية" : "Live revenue pipeline data"}
+        </p>
+      )}
     <div className="flex gap-4 overflow-x-auto pb-4 -mx-1 px-1">
       {STAGES.map((stageConfig, colIdx) => {
         const stageName = t(`pipeline.stages.${stageConfig.key === "closed_won" ? "closed" : stageConfig.key}` as "pipeline.stages.lead");
@@ -234,6 +264,7 @@ export function KanbanBoard() {
           </motion.div>
         );
       })}
+    </div>
     </div>
   );
 }

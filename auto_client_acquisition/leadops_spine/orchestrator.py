@@ -24,6 +24,7 @@ from auto_client_acquisition.leadops_spine.compliance_gate import check_complian
 from auto_client_acquisition.leadops_spine.draft_builder import build_draft
 from auto_client_acquisition.leadops_spine.next_action import suggest_next_action
 from auto_client_acquisition.leadops_spine.offer_router import route_offer
+from auto_client_acquisition.leadops_spine.outreach_link import reserve_outreach_queue_id
 
 _JSONL_PATH = os.path.join("data", "leadops_records.jsonl")
 _RECORDS_INDEX: dict[str, LeadOpsRecord] = {}  # in-memory cache
@@ -147,7 +148,9 @@ def run_pipeline(
 
     draft_id = None
     approval_id = None
+    outreach_queue_id = None
     if compliance["status"] == "allowed" and offer_route_dict:
+        outreach_queue_id = reserve_outreach_queue_id(leadops_id=leadops_id)
         draft = build_draft(
             leadops_id=leadops_id,
             customer_handle=customer_handle,
@@ -179,6 +182,7 @@ def run_pipeline(
         next_action=next_action_dict,
         draft_id=draft_id,
         approval_id=approval_id,
+        outreach_queue_id=outreach_queue_id,
     )
     _persist(record)
     return record
@@ -212,6 +216,7 @@ def debug_lead(leadops_id: str) -> dict[str, Any]:
             "9_next_action": rec.next_action,
             "10_draft_id": rec.draft_id,
             "11_approval_id": rec.approval_id,
+            "12_outreach_queue_id": rec.outreach_queue_id,
         },
         "safety_summary": rec.safety_summary,
         "created_at": rec.created_at.isoformat(),

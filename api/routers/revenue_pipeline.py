@@ -116,6 +116,18 @@ def _count_real_proof_events() -> int:
     return count
 
 
+@router.get("/leads")
+async def list_leads() -> dict[str, Any]:
+    pipeline = get_default_pipeline()
+    leads = pipeline.list_all()
+    return {
+        "schema_version": 1,
+        "count": len(leads),
+        "leads": [lead.model_dump(mode="json") for lead in leads],
+        "hard_gates": _HARD_GATES,
+    }
+
+
 @router.get("/summary")
 async def summary() -> dict[str, Any]:
     pipeline = get_default_pipeline()

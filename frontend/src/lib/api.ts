@@ -155,7 +155,19 @@ export const api = {
     apiClient.get("/api/v1/pricing/plans"),
 
   getCommandCenter: () =>
-    apiClient.get("/api/v1/v3/command-center/snapshot"),
+    apiClient.get("/api/v1/full-ops/daily-command-center"),
+
+  getDailySalesPack: () =>
+    apiClient.get("/api/v1/founder/daily-sales-pack"),
+
+  getPersonalOperatorBrief: () =>
+    apiClient.get("/api/v1/personal-operator/daily-brief"),
+
+  getLaunchReadiness: () =>
+    apiClient.get("/api/v1/personal-operator/launch-readiness"),
+
+  getPipelineLeads: () =>
+    apiClient.get("/api/v1/revenue-pipeline/leads"),
 
   getAIWorkforce: () =>
     apiClient.get("/api/v1/ai-workforce/agents"),

@@ -1,0 +1,39 @@
+# Founder default Saudi targeting profiles — safe Tier1 / Places discovery.
+# Used by scripts/dealix_daily_lead_prep.py and GET /api/v1/founder/targeting-profiles
+schema_version: 1
+profiles:
+  - id: riyadh_dental
+    label_ar: "عيادات أسنان — الرياض"
+    label_en: "Dental clinics — Riyadh"
+    industry_key: dental_clinic
+    city_key: riyadh
+    max_results: 25
+    signal_keywords: ["تأهيل leads", "واتساب"]
+    tier1_source: google_places
+
+  - id: jeddah_logistics
+    label_ar: "لوجستيات — جدة"
+    label_en: "Logistics — Jeddah"
+    industry_key: logistics
+    city_key: jeddah
+    max_results: 25
+    signal_keywords: ["B2B", "مبيعات"]
+    tier1_source: google_places
+
+  - id: riyadh_real_estate
+    label_ar: "عقار — الرياض"
+    label_en: "Real estate — Riyadh"
+    industry_key: real_estate
+    city_key: riyadh
+    max_results: 20
+    signal_keywords: ["تسويق رقمي"]
+    tier1_source: google_places
+
+  - id: dammam_construction
+    label_ar: "مقاولات — الدمام"
+    label_en: "Construction — Dammam"
+    industry_key: construction
+    city_key: dammam
+    max_results: 20
+    signal_keywords: []
+    tier1_source: google_places

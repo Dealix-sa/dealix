@@ -1,5 +1,7 @@
 {
   "nav": {
+    "operator": "Personal Operator",
+    "commandCenter": "Command Center",
     "dashboard": "Dashboard",
     "businessNow": "Business HQ",
     "cloud": "Dealix Cloud",
@@ -23,6 +25,34 @@
     "opsMarketing": "Ops — Marketing",
     "opsEvidence": "Ops — Evidence",
     "opsSupport": "Ops — Support"
+  },
+  "operator": {
+    "title": "Personal Operator",
+    "subtitle": "Executive brief — drafts and approvals only",
+    "governanceTitle": "Outreach governance",
+    "governanceNote": "No cold WhatsApp or LinkedIn automation. External sends require Approval Center.",
+    "badgeDraftOnly": "Draft-only",
+    "badgeNoColdWhatsapp": "No cold WhatsApp",
+    "briefTitle": "Today's decisions",
+    "readinessTitle": "Launch readiness",
+    "ctaApprovals": "Approval Center",
+    "ctaCommandCenter": "Command Center"
+  },
+  "commandCenter": {
+    "title": "Command Center",
+    "subtitle": "Daily decisions and operating queues"
+  },
+  "leadIntake": {
+    "title": "Request diagnostic",
+    "company": "Company",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "sector": "Sector",
+    "message": "Message",
+    "submit": "Submit request",
+    "success": "Request received — we will review under governance",
+    "error": "Could not submit"
   },
   "dashboard": {
     "title": "Executive Dashboard",

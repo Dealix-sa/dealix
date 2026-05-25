@@ -330,6 +330,53 @@ async def dashboard() -> dict:
     return cached_dashboard_payload(build_dashboard_payload)
 
 
+@router.get("/daily-sales-pack")
+async def daily_sales_pack(outreach_limit: int = 25, leads_limit: int = 15) -> dict[str, Any]:
+    """Morning sales pack — brief, approvals, leads, outreach queue (read-only)."""
+    from auto_client_acquisition.founder.daily_sales_pack import (
+        build_daily_sales_pack,
+        fetch_outreach_queue_sample,
+    )
+
+    queue = await fetch_outreach_queue_sample(limit=outreach_limit)
+    return build_daily_sales_pack(outreach_queue=queue, leads_limit=leads_limit)
+
+
+@router.get("/first-revenue-playbook")
+async def first_revenue_playbook() -> dict[str, Any]:
+    """Checklist status for 14-day first revenue playbook (docs + UI wiring)."""
+    import importlib.util
+    from pathlib import Path
+
+    path = Path(__file__).resolve().parents[2] / "scripts" / "first_revenue_playbook_status.py"
+    spec = importlib.util.spec_from_file_location("first_revenue_playbook_status", path)
+    mod = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(mod)
+    return mod.build_status()
+
+
+@router.get("/targeting-profiles")
+async def targeting_profiles() -> dict[str, Any]:
+    """Configured Saudi targeting profiles from data/config YAML."""
+    from auto_client_acquisition.revenue_os.targeting_profiles_config import (
+        list_configured_profiles,
+        load_targeting_profiles_config,
+    )
+
+    return {
+        "schema_version": 1,
+        "config_path": "data/config/saudi_targeting_profiles.yaml",
+        "profiles": list_configured_profiles(),
+        "raw_count": len(load_targeting_profiles_config().get("profiles") or []),
+        "hard_gates": {
+            "no_scraping": True,
+            "no_cold_whatsapp": True,
+            "tier1_required_for_batch": True,
+        },
+    }
+
+
 @router.get("/leads")
 async def leads(
     limit: int = 200,

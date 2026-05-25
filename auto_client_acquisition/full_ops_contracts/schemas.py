@@ -80,6 +80,7 @@ class LeadOpsRecord(BaseModel):
     next_action: dict[str, Any] | None = None
     draft_id: str | None = None  # ApprovalRequest.approval_id
     approval_id: str | None = None
+    outreach_queue_id: str | None = None  # correlation to outreach queue row/meta
     safety_summary: str = "approval_required_for_external_actions"
     created_at: datetime = Field(default_factory=_now_utc)
 
