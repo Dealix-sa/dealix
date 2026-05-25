@@ -231,6 +231,9 @@ class LeadRecord(Base):
     pain_points: Mapped[list] = mapped_column(JSON, default=list)
     meta_json: Mapped[dict] = mapped_column("metadata", JSON, default=dict)
     dedup_hash: Mapped[str] = mapped_column(String(32), default="", index=True)
+    ai_score: Mapped[float | None] = mapped_column(Float, nullable=True, index=True)
+    ai_score_reasoning: Mapped[str | None] = mapped_column(Text, nullable=True)
+    ai_scored_at: Mapped[datetime | None] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
     deleted_at: Mapped[datetime | None] = mapped_column(nullable=True)
@@ -1031,4 +1034,188 @@ class CustomerWebhookDelivery(Base):
         UniqueConstraint("subscription_id", "event_id",
                          name="uq_webhook_subscription_event"),
         Index("ix_cwd_event_type_created", "event_type", "delivered_at"),
+    )
+
+
+# ── v5 Production Engine: 6 new tables ────────────────────────────
+
+
+class ApprovalRecord(Base):
+    """Persistent approval queue (replaces in-memory `InMemoryApprovalStore`).
+
+    Carries the A1/A2/A3, R1/R2/R3, S1/S2/S3 classifications from the
+    `dealix.trust.policy` evaluator so the policy gate can reconstruct
+    a decision later from the row alone.
+    """
+
+    __tablename__ = "approvals"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    tenant_id: Mapped[str | None] = mapped_column(ForeignKey("tenants.id"), nullable=True, index=True)
+    action_type: Mapped[str] = mapped_column(String(64), index=True)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    requester: Mapped[str] = mapped_column(String(128), default="system", index=True)
+    status: Mapped[str] = mapped_column(String(16), default="pending", index=True)
+    # pending | approved | rejected | expired | edited
+    approval_class: Mapped[str] = mapped_column(String(2), default="A2", index=True)  # A1/A2/A3
+    reversibility: Mapped[str] = mapped_column(String(2), default="R2")              # R1/R2/R3
+    sensitivity: Mapped[str] = mapped_column(String(2), default="S2")                # S1/S2/S3
+    evidence_ref: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    risk_level: Mapped[str] = mapped_column(String(16), default="medium")
+    approver: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    decision_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
+    decided_at: Mapped[datetime | None] = mapped_column(nullable=True, index=True)
+    expires_at: Mapped[datetime | None] = mapped_column(nullable=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        Index("ix_approvals_tenant_status", "tenant_id", "status"),
+        Index("ix_approvals_action_status", "action_type", "status"),
+    )
+
+
+class WorkerRecord(Base):
+    """Worker process heartbeat registry. Surfaced via /api/v1/internal/workers/health."""
+
+    __tablename__ = "workers"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    worker_name: Mapped[str] = mapped_column(String(128), index=True)
+    host: Mapped[str] = mapped_column(String(255), default="")
+    pid: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    queue: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    capabilities: Mapped[dict] = mapped_column(JSON, default=dict)
+    version: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    status: Mapped[str] = mapped_column(String(16), default="active", index=True)
+    # active | idle | stale | offline
+    last_heartbeat: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    last_run_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    runs_total: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("worker_name", "host", "pid", name="uq_worker_name_host_pid"),
+    )
+
+
+class EvidenceEventRecord(Base):
+    """Append-only ledger of evidence events (proof packs, signals, audit anchors)."""
+
+    __tablename__ = "evidence_events"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    tenant_id: Mapped[str | None] = mapped_column(ForeignKey("tenants.id"), nullable=True, index=True)
+    lead_id: Mapped[str | None] = mapped_column(ForeignKey("leads.id"), nullable=True, index=True)
+    deal_id: Mapped[str | None] = mapped_column(ForeignKey("deals.id"), nullable=True, index=True)
+    event_type: Mapped[str] = mapped_column(String(64), index=True)
+    # ai_outreach | ai_score | approval | meeting | proof_pack | csv_append | …
+    source: Mapped[str] = mapped_column(String(64), default="system", index=True)
+    actor: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    motion: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    offer_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    redaction_status: Mapped[str] = mapped_column(String(16), default="clean")
+    content_hash: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+
+    __table_args__ = (
+        Index("ix_evidence_tenant_type", "tenant_id", "event_type"),
+        Index("ix_evidence_lead_created", "lead_id", "created_at"),
+    )
+
+
+class SupportTicketRecord(Base):
+    """Inbound support tickets with AI classification + draft response columns."""
+
+    __tablename__ = "support_tickets"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    tenant_id: Mapped[str | None] = mapped_column(ForeignKey("tenants.id"), nullable=True, index=True)
+    customer_id: Mapped[str | None] = mapped_column(ForeignKey("customers.id"), nullable=True, index=True)
+    subject: Mapped[str] = mapped_column(String(500))
+    body: Mapped[str] = mapped_column(Text, default="")
+    locale: Mapped[str] = mapped_column(String(4), default="ar")
+    channel: Mapped[str] = mapped_column(String(32), default="email", index=True)
+    # email | whatsapp | portal | webhook
+    category: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    priority: Mapped[str] = mapped_column(String(8), default="P3", index=True)
+    status: Mapped[str] = mapped_column(String(16), default="open", index=True)
+    # open | classified | drafted | replied | resolved | closed
+    ai_classification: Mapped[dict] = mapped_column(JSON, default=dict)
+    ai_draft_response: Mapped[str | None] = mapped_column(Text, nullable=True)
+    ai_confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+    assignee: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    contact_email: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+    resolved_at: Mapped[datetime | None] = mapped_column(nullable=True)
+
+    __table_args__ = (
+        Index("ix_tickets_tenant_status", "tenant_id", "status"),
+        Index("ix_tickets_priority_status", "priority", "status"),
+    )
+
+
+class MarketingCalendarRecord(Base):
+    """Editorial calendar slot — bilingual copy, approval link, publish kit."""
+
+    __tablename__ = "marketing_calendar"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    tenant_id: Mapped[str | None] = mapped_column(ForeignKey("tenants.id"), nullable=True, index=True)
+    slot_date: Mapped[datetime] = mapped_column(index=True)
+    channel: Mapped[str] = mapped_column(String(32), default="linkedin", index=True)
+    # linkedin | twitter | newsletter | blog | whatsapp_broadcast | landing
+    theme: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    title_ar: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    title_en: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    copy_ar: Mapped[str | None] = mapped_column(Text, nullable=True)
+    copy_en: Mapped[str | None] = mapped_column(Text, nullable=True)
+    locale: Mapped[str] = mapped_column(String(4), default="ar")
+    cta_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    utm_payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    evidence_refs: Mapped[list] = mapped_column(JSON, default=list)
+    publish_kit: Mapped[dict] = mapped_column(JSON, default=dict)
+    status: Mapped[str] = mapped_column(String(16), default="draft", index=True)
+    # draft | queued | approved | published | retired
+    approval_id: Mapped[str | None] = mapped_column(ForeignKey("approvals.id"), nullable=True, index=True)
+    published_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        Index("ix_mcal_tenant_date", "tenant_id", "slot_date"),
+        Index("ix_mcal_channel_status", "channel", "status"),
+    )
+
+
+class KnowledgeBaseRecord(Base):
+    """Bilingual knowledge base used by /public/knowledge/answer + /knowledge/search."""
+
+    __tablename__ = "knowledge_base"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    tenant_id: Mapped[str | None] = mapped_column(ForeignKey("tenants.id"), nullable=True, index=True)
+    slug: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    title_ar: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    title_en: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    body_ar: Mapped[str | None] = mapped_column(Text, nullable=True)
+    body_en: Mapped[str | None] = mapped_column(Text, nullable=True)
+    locale: Mapped[str] = mapped_column(String(4), default="ar")
+    tags: Mapped[list] = mapped_column(JSON, default=list)
+    category: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    visibility: Mapped[str] = mapped_column(String(16), default="public", index=True)
+    # public | internal | partner
+    embedding_ref: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    views_count: Mapped[int] = mapped_column(Integer, default=0)
+    helpful_count: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        Index("ix_kb_tenant_visibility", "tenant_id", "visibility"),
     )
