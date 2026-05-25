@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.local/schemas/growth_database.schema.json",
+  "$comment": "Source-of-truth doc: docs/data/GROWTH_DATABASE_MODEL_V2.md. Every entry below maps to a section in that doc.",
+  "title": "growth_database",
+  "description": "Dealix commercial data model — market universe through cash and retention.",
+  "type": "object",
+  "properties": {
+    "name": { "const": "growth_database" },
+    "tables": {
+      "type": "array",
+      "minItems": 10,
+      "items": { "type": "string" },
+      "const": [
+        "market_accounts",
+        "lead_intelligence",
+        "outreach_queue",
+        "suppression_list",
+        "conversation_log",
+        "sample_queue",
+        "proposal_queue",
+        "payment_capture_queue",
+        "delivery_queue",
+        "retention_queue"
+      ]
+    },
+    "rule": {
+      "type": "string",
+      "const": "No outreach to suppressed records. No external action without required approval."
+    }
+  },
+  "required": ["name", "tables", "rule"],
+  "additionalProperties": false,
+  "name": "growth_database",
+  "tables": [
+    "market_accounts",
+    "lead_intelligence",
+    "outreach_queue",
+    "suppression_list",
+    "conversation_log",
+    "sample_queue",
+    "proposal_queue",
+    "payment_capture_queue",
+    "delivery_queue",
+    "retention_queue"
+  ],
+  "rule": "No outreach to suppressed records. No external action without required approval."
+}

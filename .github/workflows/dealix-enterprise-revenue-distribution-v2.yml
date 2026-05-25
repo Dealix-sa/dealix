@@ -1,0 +1,69 @@
+name: Dealix Enterprise Revenue Distribution v2 Checks
+
+on:
+  pull_request:
+    paths:
+      - "docs/runtime/**"
+      - "docs/data/GROWTH_DATABASE_MODEL_V2.md"
+      - "docs/control_plane/**"
+      - "docs/distribution/**"
+      - "docs/trust/SUPPRESSION_AND_OPTOUT_SYSTEM.md"
+      - "docs/engineering/REVENUE_FACTORY_OBSERVABILITY.md"
+      - "docs/evals/**"
+      - "docs/founder/**"
+      - "docs/partners/PARTNER_REVENUE_MACHINE_V2.md"
+      - "docs/localization/ARABIC_SALES_ENGINE.md"
+      - "docs/product/COMMAND_CENTER_PRODUCT_SPEC_V2.md"
+      - "docs/finance/**"
+      - "docs/security/SUPPLY_CHAIN_HARDENING_ROADMAP_V2.md"
+      - "schemas/growth_database.schema.json"
+      - "scripts/verify_enterprise_revenue_distribution_v2.py"
+      - "scripts/generate_sales_cockpit.py"
+      - "scripts/generate_approval_center.py"
+      - "scripts/init_private_ops.sh"
+      - "deploy/cron/dealix_growth_factory.cron"
+      - ".github/workflows/dealix-enterprise-revenue-distribution-v2.yml"
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: dealix-revenue-distribution-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  enterprise-revenue-distribution-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify enterprise revenue distribution v2 artifacts
+        run: python scripts/verify_enterprise_revenue_distribution_v2.py
+
+      - name: Validate growth_database JSON schema
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("schemas/growth_database.schema.json").read_text(encoding="utf-8"))
+          assert data.get("name") == "growth_database", "schema.name mismatch"
+          assert len(data.get("tables", [])) == 10, "schema.tables count mismatch"
+          print("PASS: schema valid")
+          PY
+
+      - name: Compile generators and verifier
+        run: python -m compileall scripts/generate_sales_cockpit.py scripts/generate_approval_center.py scripts/verify_enterprise_revenue_distribution_v2.py
+
+      - name: Dry-run cockpit generators against empty private-ops
+        run: |
+          mkdir -p /tmp/private-ops-ci
+          python scripts/generate_sales_cockpit.py --private-ops /tmp/private-ops-ci --out /tmp/sales_cockpit.md
+          python scripts/generate_approval_center.py --private-ops /tmp/private-ops-ci --out /tmp/approval_center.md
+          test -s /tmp/sales_cockpit.md
+          test -s /tmp/approval_center.md
+          echo "PASS: generators produce non-empty output on empty input"
