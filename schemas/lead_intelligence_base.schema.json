@@ -1,0 +1,36 @@
+{
+  "name": "lead_intelligence_base",
+  "required_headers": [
+    "company",
+    "sector",
+    "website",
+    "country",
+    "city",
+    "business_type",
+    "offer",
+    "buyer_titles",
+    "public_contact_path",
+    "source",
+    "fit_score",
+    "priority",
+    "status",
+    "last_researched",
+    "last_contacted",
+    "reply_status",
+    "next_action"
+  ],
+  "allowed_priorities": ["A", "B", "C", "Reject"],
+  "allowed_statuses": [
+    "Research",
+    "Qualified",
+    "Approved",
+    "Contacted",
+    "Replied",
+    "Sample",
+    "Proposal",
+    "Payment Follow-Up",
+    "Won",
+    "Lost",
+    "Nurture"
+  ]
+}
