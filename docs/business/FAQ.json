@@ -1,0 +1,106 @@
+{
+  "company": "Dealix",
+  "last_updated": "2026-05-25",
+  "disclosure": {
+    "en": "Estimated value is not Verified value.",
+    "ar": "القيمة التقديرية ليست قيمة مُتحقَّقة."
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "audience": "b2b_smb",
+      "question_en": "Will Dealix send WhatsApp or LinkedIn messages on my behalf?",
+      "question_ar": "هل يرسل Dealix رسائل WhatsApp أو LinkedIn نيابةً عني؟",
+      "answer_en": "No external send happens without explicit approval per message. We do not offer cold WhatsApp or LinkedIn automation. Inbound channels are supported; outbound requires a named owner and a logged approval.",
+      "answer_ar": "لا يحدث أي إرسال خارجي دون موافقة صريحة لكل رسالة. لا نقدّم أتمتة WhatsApp أو LinkedIn الباردة. القنوات الواردة مدعومة؛ أما الصادر فيتطلّب مالكًا مُسمّى وموافقة مُسجَّلة."
+    },
+    {
+      "id": "q02",
+      "audience": "b2b_smb",
+      "question_en": "How fast can I see results from the Revenue Hunter Pilot?",
+      "question_ar": "كم سرعة ظهور النتائج من Revenue Hunter Pilot؟",
+      "answer_en": "Pilot delivers first qualified leads within 14 days. Results are case-safe estimates until each lead has its Evidence Pack. We never quote guaranteed conversion rates.",
+      "answer_ar": "تُسلَّم أول العملاء المؤهلين خلال 14 يومًا. النتائج تقديرات آمنة حالة-بحالة حتى يصدر Evidence Pack لكل عميل. لا نقدّم معدّلات تحويل مضمونة."
+    },
+    {
+      "id": "q03",
+      "audience": "agency",
+      "question_en": "What is the agency rev-share and is exclusivity available?",
+      "question_ar": "ما نسبة شراكة الإيراد للوكالة، وهل تتوفّر حصرية؟",
+      "answer_en": "1,000 SAR/month platform fee plus 25% rev share on agency-originated revenue. Exclusivity is not granted to preserve buyer optionality.",
+      "answer_ar": "1,000 ريال/شهر رسوم منصّة + 25% من إيرادات الوكالة. لا نمنح حصرية للحفاظ على خيارات المشتري."
+    },
+    {
+      "id": "q04",
+      "audience": "agency",
+      "question_en": "Can my agency brand the dashboards and reports?",
+      "question_ar": "هل تستطيع وكالتي تعليم الـ dashboards والتقارير بهويتها؟",
+      "answer_en": "Yes. The Agency White-label Kit provides tenant theming end-to-end: logos, palette, domain, report headers. The Dealix wordmark is not displayed in agency-facing surfaces.",
+      "answer_ar": "نعم. حزمة White-label Kit توفّر هوية مستأجِر كاملة: شعارات، ألوان، نطاق، رؤوس التقارير. لا تظهر علامة Dealix في الواجهات الموجَّهة للوكالة."
+    },
+    {
+      "id": "q05",
+      "audience": "enterprise",
+      "question_en": "How is PDPL Article 21 (DPIA) handled?",
+      "question_ar": "كيف تُعالج المادة 21 من نظام حماية البيانات الشخصية (DPIA)؟",
+      "answer_en": "Each enterprise engagement starts with a DPIA-light note covering data sources, sinks, allowed regions, and retention. The Trust Engine logs PDPL Articles 5, 13, 14, 18, 21, and 32 events. Full DPIA is co-authored with customer DPO.",
+      "answer_ar": "كل ارتباط مؤسسي يبدأ بمذكّرة DPIA مختصرة تغطي مصادر البيانات والمصارف والمناطق المسموح بها وفترة الاحتفاظ. Trust Engine يسجّل أحداث المواد 5 و13 و14 و18 و21 و32. يُكتب DPIA الكامل بالتعاون مع DPO العميل."
+    },
+    {
+      "id": "q06",
+      "audience": "enterprise",
+      "question_en": "Where is data stored, and can it stay in-Kingdom?",
+      "question_ar": "أين تُخزَّن البيانات، وهل يمكن أن تبقى داخل المملكة؟",
+      "answer_en": "Default deployment posture is Saudi residency. Cross-border transfer requires explicit customer approval per PDPL transfer rules. Data boundaries are declared per tenant.",
+      "answer_ar": "الوضع الافتراضي هو إقامة البيانات داخل المملكة. النقل خارج الحدود يتطلب موافقة العميل الصريحة وفق قواعد النقل في PDPL. حدود البيانات مُعلَنة لكل مستأجِر."
+    },
+    {
+      "id": "q07",
+      "audience": "enterprise",
+      "question_en": "What is an Evidence Pack and why does it matter?",
+      "question_ar": "ما هو Evidence Pack ولماذا يهم؟",
+      "answer_en": "An Evidence Pack is the auditable record of a single AI decision or revenue event: intent, context_hash, tool calls, outputs, approvals, audit log, outcome, and the revenue link. It is how Dealix separates claimed revenue from verified revenue.",
+      "answer_ar": "Evidence Pack هو السجل القابل للتدقيق لقرار AI أو حدث إيراد واحد: النية، context_hash، استدعاءات الأدوات، المخرجات، الموافقات، سجل التدقيق، النتيجة، ورابط الإيراد. هو الفرق بين الإيراد المُدَّعى والإيراد المُتحقَّق."
+    },
+    {
+      "id": "q08",
+      "audience": "enterprise",
+      "question_en": "Do you support an Agent Governance Council?",
+      "question_ar": "هل تدعمون مجلس حوكمة الوكلاء؟",
+      "answer_en": "Yes. Governance OS Retainer includes a council operating model with monthly drift reports, quarterly tabletop exercises, and on-demand Tool Permission Matrix change reviews. See enterprise governance docs.",
+      "answer_ar": "نعم. حزمة Governance OS Retainer تتضمّن نموذج تشغيل مجلس مع تقارير انحراف شهرية وتمارين فصلية وفتح مراجعات لمصفوفة صلاحيات الأدوات عند الطلب. راجع وثائق الحوكمة المؤسسية."
+    },
+    {
+      "id": "q09",
+      "audience": "investor",
+      "question_en": "Why Saudi-first, and what stops a US tool from doing the same?",
+      "question_ar": "لماذا السعودية أولًا، وما الذي يمنع أداة أمريكية من تكرار ذلك؟",
+      "answer_en": "Saudi B2B procurement penalizes vendors without PDPL DPA, ZATCA Phase 2 alignment, and Saudi residency. These are not feature flags; they are wired into the code and operating model. A US tool would need a 12-18 month rebuild to match.",
+      "answer_ar": "مشتريات الشركات السعودية تعاقب المزوّدين بدون اتفاقية معالجة بيانات وفق PDPL وامتثال ZATCA المرحلة 2 وإقامة بيانات سعودية. هذه ليست خيارات تبديل؛ هي مدمجة في الكود ونموذج التشغيل. تحتاج الأداة الأمريكية 12-18 شهرًا لإعادة البناء."
+    },
+    {
+      "id": "q10",
+      "audience": "investor",
+      "question_en": "What is verified revenue versus estimated revenue?",
+      "question_ar": "ما الفرق بين الإيراد المُتحقَّق والإيراد التقديري؟",
+      "answer_en": "Verified revenue is revenue with an Evidence Pack linking the AI action to the booked invoice or contract. Estimated revenue is pipeline or projection without such a link. Board reports separate the two lines explicitly.",
+      "answer_ar": "الإيراد المُتحقَّق هو إيراد مع Evidence Pack يربط فعل الـ AI بالفاتورة أو العقد المُسجَّل. الإيراد التقديري هو خط أنابيب أو إسقاط بدون هذا الرابط. تقارير المجلس تفصل الخطّين صراحةً."
+    },
+    {
+      "id": "q11",
+      "audience": "b2b_smb",
+      "question_en": "Do you scrape data?",
+      "question_ar": "هل تعملون scraping للبيانات؟",
+      "answer_en": "No. Lead Engine uses 5 licensed adapters (Google Maps, CSE, Hunter, Firecrawl with consent, Wappalyzer) plus official Saudi sources (Chambers, SDAIA, MCI, ZATCA). We do not scrape sites in violation of their terms.",
+      "answer_ar": "لا. Lead Engine يستخدم 5 محوّلات مرخّصة (Google Maps، CSE، Hunter، Firecrawl بإذن، Wappalyzer) إضافة إلى مصادر سعودية رسمية (الغرف، SDAIA، MCI، ZATCA). لا نقوم بـ scraping للمواقع بما يخالف شروطها."
+    },
+    {
+      "id": "q12",
+      "audience": "investor",
+      "question_en": "What is the moat and why won't a Saudi competitor catch up?",
+      "question_ar": "ما الخندق، ولماذا لن يلحقكم منافس سعودي؟",
+      "answer_en": "Four compounding moats: Saudi Sovereign Trust (PDPL/ZATCA/SDAIA wired into code), Evidence Pack Standard (no competitor publishes one), agency channel (white-label distribution with switch costs), and founder-coded depth (120+ routers, 300+ tests). The moat is the operating model plus the published evidence, not a feature list.",
+      "answer_ar": "أربع خنادق تتراكم: الثقة السيادية السعودية (PDPL/ZATCA/SDAIA مدمجة في الكود)، معيار Evidence Pack (لا منافس ينشر معيارًا مماثلًا)، قناة الوكالات (توزيع white-label بتكاليف تبديل)، وعمق الكود المؤسس (120+ راوتر، 300+ اختبار). الخندق هو نموذج التشغيل والأدلة المنشورة، وليس قائمة ميزات."
+    }
+  ]
+}

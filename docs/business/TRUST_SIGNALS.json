@@ -1,0 +1,97 @@
+{
+  "company": "Dealix",
+  "last_updated": "2026-05-25",
+  "disclosure": {
+    "en": "All counts are case-safe and updated on a defined cadence. Estimated value is not Verified value.",
+    "ar": "جميع الأعداد آمنة حالة-بحالة وتُحدَّث وفق وتيرة معلنة. القيمة التقديرية ليست قيمة مُتحقَّقة."
+  },
+  "customer_logos": {
+    "policy_en": "We display customer logos only with written consent. Until consent is granted, this list stays empty.",
+    "policy_ar": "نعرض شعارات العملاء بموافقة كتابية فقط. حتى تُمنَح الموافقة تبقى القائمة فارغة.",
+    "logos": []
+  },
+  "case_studies": [
+    {
+      "id": "internal_dealix_case_study",
+      "label": "Hypothetical / case-safe template",
+      "path": "docs/business/case_studies/INTERNAL_DEALIX_CASE_STUDY.md"
+    },
+    {
+      "id": "customer_case_study_template",
+      "label": "Template",
+      "path": "docs/business/case_studies/CUSTOMER_CASE_STUDY_TEMPLATE.md"
+    },
+    {
+      "id": "trust_case_study_template",
+      "label": "Template",
+      "path": "docs/business/case_studies/TRUST_CASE_STUDY_TEMPLATE.md"
+    }
+  ],
+  "certifications": [
+    {
+      "id": "iso_27001",
+      "status": "planned",
+      "target_window": "H2 2027-2028"
+    },
+    {
+      "id": "pdpl_alignment",
+      "status": "wired_in_code",
+      "articles": [5, 13, 14, 18, 21, 32]
+    },
+    {
+      "id": "zatca_phase_2",
+      "status": "wired_in_code"
+    },
+    {
+      "id": "sdaia_alignment",
+      "status": "wired_in_code"
+    }
+  ],
+  "policies": [
+    {
+      "id": "ai_use_policy_sample",
+      "path": "docs/trust/AI_USE_POLICY_SAMPLE.md"
+    },
+    {
+      "id": "data_boundaries_sample",
+      "path": "docs/trust/DATA_BOUNDARIES_SAMPLE.md"
+    },
+    {
+      "id": "incident_response_sample",
+      "path": "docs/trust/INCIDENT_RESPONSE_SAMPLE.md"
+    },
+    {
+      "id": "mcp_review_checklist",
+      "path": "docs/trust/MCP_REVIEW_CHECKLIST.md"
+    },
+    {
+      "id": "agent_registry_sample",
+      "path": "docs/trust/AGENT_REGISTRY_SAMPLE.md"
+    },
+    {
+      "id": "tool_permission_matrix_sample",
+      "path": "docs/trust/TOOL_PERMISSION_MATRIX_SAMPLE.md"
+    },
+    {
+      "id": "evidence_pack_sample",
+      "path": "docs/trust/EVIDENCE_PACK_SAMPLE.md"
+    }
+  ],
+  "evidence_packs_published_count": {
+    "value": 0,
+    "as_of": "2026-05-25",
+    "target_h1_2026": 100,
+    "note_en": "Count of Evidence Packs offered to external auditors with customer consent.",
+    "note_ar": "عدد Evidence Packs المُتاحة للمدقّقين الخارجيين بموافقة العملاء."
+  },
+  "partners": {
+    "policy_en": "Partner names are listed only after a signed partnership agreement and partner consent.",
+    "policy_ar": "تُدرَج أسماء الشركاء فقط بعد اتفاقية شراكة موقّعة وموافقة الشريك.",
+    "items": []
+  },
+  "press_mentions": {
+    "policy_en": "Press mentions are listed only after publication.",
+    "policy_ar": "تُدرَج إشارات الصحافة بعد النشر فقط.",
+    "items": []
+  }
+}
