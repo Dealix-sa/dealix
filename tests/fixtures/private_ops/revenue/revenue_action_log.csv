@@ -1,0 +1,2 @@
+action_id,lead_id,action_type,channel,timestamp,operator,note
+ACT-001,LEAD-001,dm_sent,linkedin,2026-05-21T09:15:00Z,founder,A1-approved DM

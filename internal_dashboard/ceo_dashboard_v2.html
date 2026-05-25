@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<title>Dealix CEO Dashboard v2</title>
+<style>
+  :root {
+    --bg: #0e1116;
+    --card: #161b22;
+    --text: #e6edf3;
+    --muted: #9da7b3;
+    --accent: #58a6ff;
+    --good: #3fb950;
+    --warn: #d29922;
+    --bad: #f85149;
+  }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 24px; }
+  header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #2a2f37; }
+  header .left { display: flex; align-items: baseline; gap: 12px; }
+  header h1 { margin: 0; font-size: 20px; font-weight: 600; }
+  header .stage { color: var(--accent); font-size: 13px; }
+  header .next-action { text-align: center; color: var(--muted); font-size: 13px; }
+  header .right { text-align: right; }
+  .targets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
+  .target { background: var(--card); border-radius: 6px; padding: 8px 12px; }
+  .target .label { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+  .target .pct { font-size: 18px; font-variant-numeric: tabular-nums; }
+  .target .bar { height: 4px; background: #2a2f37; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .target .bar-fill { height: 100%; background: var(--good); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 16px; }
+  .card { background: var(--card); border-radius: 8px; padding: 16px; }
+  .card h2 { margin: 0 0 12px; font-size: 14px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  .row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px; }
+  .row .k { color: var(--muted); }
+  .row .v { font-variant-numeric: tabular-nums; }
+  .delta { font-size: 11px; margin-left: 6px; }
+  .delta.up { color: var(--good); }
+  .delta.down { color: var(--bad); }
+  footer { margin-top: 16px; padding-top: 12px; border-top: 1px solid #2a2f37; color: var(--muted); font-size: 12px; text-align: center; }
+  .dir-toggle { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="left">
+    <h1>Dealix CEO Dashboard</h1>
+    <span class="stage" id="stage">stage -</span>
+  </div>
+  <div class="next-action" id="next-action">next action loading...</div>
+  <div class="right">
+    <span class="muted" id="as-of">-</span>
+    <button class="dir-toggle" onclick="toggleDir()">RTL</button>
+  </div>
+</header>
+
+<div class="targets" id="targets">
+  <div class="target"><div class="label">Leads</div><div class="pct" id="t-leads">-</div><div class="bar"><div class="bar-fill" id="b-leads" style="width:0%"></div></div></div>
+  <div class="target"><div class="label">DMs</div><div class="pct" id="t-dms">-</div><div class="bar"><div class="bar-fill" id="b-dms" style="width:0%"></div></div></div>
+  <div class="target"><div class="label">Samples</div><div class="pct" id="t-samples">-</div><div class="bar"><div class="bar-fill" id="b-samples" style="width:0%"></div></div></div>
+  <div class="target"><div class="label">Proposals</div><div class="pct" id="t-proposals">-</div><div class="bar"><div class="bar-fill" id="b-proposals" style="width:0%"></div></div></div>
+  <div class="target"><div class="label">Payments</div><div class="pct" id="t-payments">-</div><div class="bar"><div class="bar-fill" id="b-payments" style="width:0%"></div></div></div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h2>Pipeline</h2>
+    <div class="row"><span class="k">Leads (new)</span><span class="v"><span id="leads-new">-</span><span class="delta" id="d-leads-new"></span></span></div>
+    <div class="row"><span class="k">Leads (qualified)</span><span class="v"><span id="leads-qualified">-</span><span class="delta" id="d-leads-qualified"></span></span></div>
+    <div class="row"><span class="k">Estimated open ACV (SAR)</span><span class="v" id="acv">-</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Revenue</h2>
+    <div class="row"><span class="k">DMs sent</span><span class="v"><span id="dms-sent">-</span><span class="delta" id="d-dms-sent"></span></span></div>
+    <div class="row"><span class="k">Samples sent</span><span class="v"><span id="samples">-</span><span class="delta" id="d-samples"></span></span></div>
+    <div class="row"><span class="k">Proposals out</span><span class="v"><span id="proposals">-</span><span class="delta" id="d-proposals"></span></span></div>
+    <div class="row"><span class="k">Booked MTD (SAR)</span><span class="v"><span id="booked">-</span><span class="delta" id="d-booked"></span></span></div>
+  </div>
+
+  <div class="card">
+    <h2>Delivery</h2>
+    <div class="row"><span class="k">Active sprints</span><span class="v" id="active">-</span></div>
+    <div class="row"><span class="k">Completed MTD</span><span class="v" id="completed">-</span></div>
+    <div class="row"><span class="k">At risk</span><span class="v" id="at-risk">-</span></div>
+    <div class="row"><span class="k">Evidence complete rate</span><span class="v" id="ecr">-</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Learning</h2>
+    <div class="row"><span class="k">Latest decision</span></div>
+    <div class="row"><span class="v" id="latest-decision" style="font-size:13px">-</span></div>
+    <div class="row"><span class="k">Experiments active</span><span class="v" id="experiments">-</span></div>
+    <div class="row"><span class="k">Decided MTD</span><span class="v" id="decided">-</span></div>
+  </div>
+
+  <div class="card">
+    <h2>Trust</h2>
+    <div class="row"><span class="k">Last incident</span><span class="v" id="last-incident">-</span></div>
+    <div class="row"><span class="k">Last audit</span><span class="v" id="last-audit">-</span></div>
+    <div class="row"><span class="k">Approval queue</span><span class="v" id="approval-queue">-</span></div>
+    <div class="row"><span class="k">Open incidents</span><span class="v" id="open-incidents">-</span></div>
+  </div>
+
+  <div class="card">
+    <h2>AI Workforce</h2>
+    <div class="row"><span class="k">EVALs passed MTD</span><span class="v" id="evals-pass">-</span></div>
+    <div class="row"><span class="k">EVALs failed MTD</span><span class="v" id="evals-fail">-</span></div>
+    <div class="row"><span class="k">Audit findings open</span><span class="v" id="audit-open">-</span></div>
+  </div>
+</div>
+
+<footer id="footer">Last updated: <span id="last-updated">-</span> | Estimated, Observed, Verified per Value OS</footer>
+
+<script>
+function toggleDir() {
+  const html = document.documentElement;
+  html.dir = html.dir === 'rtl' ? 'ltr' : 'rtl';
+  html.lang = html.dir === 'rtl' ? 'ar' : 'en';
+}
+function fmt(n) {
+  if (n === null || n === undefined) return '-';
+  if (typeof n === 'number') return n.toLocaleString();
+  return n;
+}
+function delta(el, v) {
+  if (v === null || v === undefined || v === 0) { el.textContent = ''; return; }
+  if (v > 0) { el.textContent = '+' + v; el.classList.add('up'); }
+  else { el.textContent = String(v); el.classList.add('down'); }
+}
+function pct(el, bar, p) {
+  if (p === null || p === undefined) { el.textContent = '-'; return; }
+  el.textContent = p + '%';
+  bar.style.width = Math.min(100, p) + '%';
+}
+
+async function load() {
+  const candidates = [
+    '../dashboard_data/company_metrics.v2.json',
+    '../dashboard_data/demo/company_metrics.v2.demo.json',
+    '../dashboard_data/company_metrics.json',
+    '../dashboard_data/demo/company_metrics.demo.json'
+  ];
+  let data = null;
+  for (const url of candidates) {
+    try {
+      const r = await fetch(url);
+      if (r.ok) { data = await r.json(); break; }
+    } catch (e) { /* try next */ }
+  }
+  if (!data) {
+    document.getElementById('as-of').textContent = 'no data file found';
+    return;
+  }
+  document.getElementById('as-of').textContent = data.as_of + ' (' + data.period + ')';
+  document.getElementById('stage').textContent = 'stage ' + (data.current_stage ?? '-');
+  document.getElementById('next-action').textContent = data.next_action || '-';
+  document.getElementById('last-updated').textContent = data.as_of || '-';
+
+  const p = data.pipeline || {};
+  document.getElementById('leads-new').textContent = fmt(p.leads_new);
+  delta(document.getElementById('d-leads-new'), p.leads_new_delta);
+  document.getElementById('leads-qualified').textContent = fmt(p.leads_qualified);
+  delta(document.getElementById('d-leads-qualified'), p.leads_qualified_delta);
+  document.getElementById('acv').textContent = fmt(p.estimated_acv_open_sar);
+  document.getElementById('dms-sent').textContent = fmt(p.dms_sent_with_consent);
+  delta(document.getElementById('d-dms-sent'), p.dms_sent_with_consent_delta);
+  document.getElementById('samples').textContent = fmt(p.samples_sent);
+  delta(document.getElementById('d-samples'), p.samples_sent_delta);
+  document.getElementById('proposals').textContent = fmt(p.proposals_out);
+  delta(document.getElementById('d-proposals'), p.proposals_out_delta);
+
+  const r = data.revenue || {};
+  document.getElementById('booked').textContent = fmt(r.booked_mtd_sar);
+  delta(document.getElementById('d-booked'), r.booked_mtd_delta_sar);
+
+  const d = data.delivery || {};
+  document.getElementById('active').textContent = fmt(d.sprints_in_flight);
+  document.getElementById('completed').textContent = fmt(d.sprints_completed_mtd || 0);
+  document.getElementById('at-risk').textContent = fmt(d.sprints_at_risk);
+  document.getElementById('ecr').textContent = (typeof d.evidence_complete_rate === 'number') ? (Math.round(d.evidence_complete_rate * 100) + '%') : '-';
+
+  const l = data.learning || {};
+  document.getElementById('latest-decision').textContent = l.latest_decision || '-';
+  document.getElementById('experiments').textContent = fmt(l.experiments_active);
+  document.getElementById('decided').textContent = fmt(l.experiments_decided_mtd);
+
+  const t = data.trust || {};
+  document.getElementById('last-incident').textContent = t.last_incident || '-';
+  document.getElementById('last-audit').textContent = t.last_audit || '-';
+  document.getElementById('approval-queue').textContent = fmt(t.approval_queue_depth);
+  document.getElementById('open-incidents').textContent = fmt(t.incidents_open);
+  document.getElementById('evals-pass').textContent = fmt(t.ai_evals_passed_mtd);
+  document.getElementById('evals-fail').textContent = fmt(t.ai_evals_failed_mtd);
+  document.getElementById('audit-open').textContent = fmt(t.audit_findings_open);
+
+  const tg = data.targets || {};
+  pct(document.getElementById('t-leads'), document.getElementById('b-leads'), tg.leads && tg.leads.pct);
+  pct(document.getElementById('t-dms'), document.getElementById('b-dms'), tg.dms && tg.dms.pct);
+  pct(document.getElementById('t-samples'), document.getElementById('b-samples'), tg.samples && tg.samples.pct);
+  pct(document.getElementById('t-proposals'), document.getElementById('b-proposals'), tg.proposals && tg.proposals.pct);
+  pct(document.getElementById('t-payments'), document.getElementById('b-payments'), tg.payments && tg.payments.pct);
+}
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+name: Dealix Revenue Sprint Kit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/offers/revenue_sprint/**"
+      - "docs/revenue/**"
+      - "scripts/verify_revenue_sprint_kit.py"
+      - "scripts/verify_tier1_revenue.py"
+      - ".github/workflows/dealix-revenue-sprint-kit.yml"
+  pull_request:
+    paths:
+      - "docs/offers/revenue_sprint/**"
+      - "docs/revenue/**"
+      - "scripts/verify_revenue_sprint_kit.py"
+      - "scripts/verify_tier1_revenue.py"
+      - ".github/workflows/dealix-revenue-sprint-kit.yml"
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pyyaml
+        run: python -m pip install --upgrade pip pyyaml
+      - name: Verify revenue sprint kit
+        run: python scripts/verify_revenue_sprint_kit.py
+      - name: Verify tier 1 revenue
+        run: python scripts/verify_tier1_revenue.py
