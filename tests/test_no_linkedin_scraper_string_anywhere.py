@@ -74,6 +74,12 @@ _ALLOWLIST_PATHS = frozenset({
     "docs/WAVE17_FOUNDER_DAY1_LAUNCH_KIT.md",
     "docs/WAVE17_BRANCH_CLEANUP_LOG.md",
     "docs/WAVE17_VULNERABILITY_TRIAGE.md",
+    # Dealix Master Verification System (PR #384) — L1 lists the lockdown
+    # test as a required artifact, L5 invokes it by file path. Both are
+    # part of the audit perimeter, not violations of it.
+    "scripts/verify_layer1_repo_structure.py",
+    "scripts/verify_layer5_trust_security.sh",
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # The plan file lives outside the repo (in /root/.claude/plans/) so
     # never appears in git ls-files; no allowlist needed.
 })
