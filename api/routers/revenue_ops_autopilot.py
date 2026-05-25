@@ -1161,6 +1161,14 @@ async def ops_founder_value_plan(top_n: int = 5) -> dict[str, Any]:
     return build_value_plan_snapshot(motion_top_n=n)
 
 
+@router_ops.get("/founder/ceo-master-plan")
+async def ops_founder_ceo_master_plan() -> dict[str, Any]:
+    """CEO Master Plan — 6 workstreams + daily five metrics."""
+    from dealix.commercial_ops.ceo_master_plan import build_ceo_master_plan_snapshot
+
+    return build_ceo_master_plan_snapshot()
+
+
 @router_ops.get("/founder/strongest-plan")
 async def ops_founder_strongest_plan() -> dict[str, Any]:
     """Founder strongest plan checklist (134+ tasks) + wiring status."""
@@ -1461,6 +1469,9 @@ async def ops_founder_dashboard() -> dict[str, Any]:
 
     value_plan = build_value_plan_snapshot(motion_top_n=5)
     comprehensive = build_comprehensive_status()
+    from dealix.commercial_ops.ceo_master_plan import build_ceo_master_plan_snapshot
+
+    ceo_master = build_ceo_master_plan_snapshot()
     weekly = comprehensive.get("weekly_one_decision") or {}
     master_phase = comprehensive.get("master_execution_phase") or {}
     backlog = comprehensive.get("max_ops_backlog") or {}
@@ -1531,6 +1542,16 @@ async def ops_founder_dashboard() -> dict[str, Any]:
                 "doc": backlog.get("doc"),
             },
             "dogfooding": comprehensive.get("dogfooding"),
+            "ceo_master_plan": {
+                "overall_verdict": ceo_master.get("overall_verdict"),
+                "daily_five_metrics": ceo_master.get("daily_five_metrics"),
+                "p0_revenue_close": ceo_master.get("p0_revenue_close"),
+                "p0_production_trust": ceo_master.get("p0_production_trust"),
+                "p0_ceo_decision": ceo_master.get("p0_ceo_decision"),
+                "p0_gtm_blitz": ceo_master.get("p0_gtm_blitz"),
+                "p1_trust_pack": ceo_master.get("p1_trust_pack"),
+                "p2_repeatability": ceo_master.get("p2_repeatability"),
+            },
         },
         "links": {
             "approvals_console": "/ar/approvals",

@@ -18,6 +18,7 @@ import os
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request
+from pydantic import BaseModel, ConfigDict, Field
 
 from dealix.payments import MoyasarClient, verify_webhook
 from dealix.reliability.dlq import DLQ, WEBHOOKS_DLQ
@@ -366,3 +367,30 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
         )
         # Still 200 so Moyasar doesn't retry forever; we own replay via DLQ.
         return {"status": "dlq", "event_id": event_id}
+
+
+class PricingOutcomeSimulateBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    sku: str = Field(..., min_length=1)
+    proof_packs_delivered: int = Field(default=0, ge=0)
+    agent_actions_monthly: int = Field(default=0, ge=0)
+    measured_roi_sar: float = Field(default=0.0, ge=0.0)
+
+
+@router.post("/api/v1/pricing/outcome-simulate")
+async def pricing_outcome_simulate(body: PricingOutcomeSimulateBody) -> dict[str, Any]:
+    """Wave 3 — simulate fixed vs usage vs outcome-linked pricing (no charge)."""
+    from auto_client_acquisition.revenue_science.pricing_outcome import (
+        PricingOutcomeInput,
+        simulate_pricing_outcome,
+    )
+
+    return simulate_pricing_outcome(
+        PricingOutcomeInput(
+            sku=body.sku,
+            proof_packs_delivered=body.proof_packs_delivered,
+            agent_actions_monthly=body.agent_actions_monthly,
+            measured_roi_sar=body.measured_roi_sar,
+        )
+    )
