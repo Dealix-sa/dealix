@@ -8,7 +8,9 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        lead-template lead-score lead-messages lead-approval lead-export \
+        lead-autopilot lead-verify
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -130,3 +132,33 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Lead & Outreach Autopilot OS ───────────────────────────────
+# Semi-autonomous lead sourcing + outreach prep.
+# Founder approves before any external send.
+# PRIVATE_OPS=/path/to/dealix-ops-private
+# SECTOR="ERP CRM"
+# BATCH=/path/to/lead_batches/<file>.csv
+
+lead-template: ## Lead Autopilot: create empty batch CSV for SECTOR
+	$(PYTHON) scripts/create_lead_batch_template.py --private-ops $(PRIVATE_OPS) --sector "$(SECTOR)"
+
+lead-score: ## Lead Autopilot: score + classify A/B/C/Reject for BATCH
+	$(PYTHON) scripts/score_lead_batch.py --file "$(BATCH)"
+
+lead-messages: ## Lead Autopilot: draft suggested outreach message per row
+	$(PYTHON) scripts/generate_outreach_for_batch.py --file "$(BATCH)"
+
+lead-approval: ## Lead Autopilot: build founder approval queue markdown
+	$(PYTHON) scripts/generate_outreach_approval_queue.py --private-ops $(PRIVATE_OPS) --batch-file "$(BATCH)"
+
+lead-export: ## Lead Autopilot: export Approved A/B leads into pipeline tracker
+	$(PYTHON) scripts/export_approved_leads_to_pipeline.py --private-ops $(PRIVATE_OPS) --batch-file "$(BATCH)"
+
+lead-autopilot: ## Lead Autopilot: score + draft messages + build approval queue
+	$(PYTHON) scripts/score_lead_batch.py --file "$(BATCH)"
+	$(PYTHON) scripts/generate_outreach_for_batch.py --file "$(BATCH)"
+	$(PYTHON) scripts/generate_outreach_approval_queue.py --private-ops $(PRIVATE_OPS) --batch-file "$(BATCH)"
+
+lead-verify: ## Lead Autopilot: verify all required files exist
+	$(PYTHON) scripts/verify_lead_outreach_autopilot.py

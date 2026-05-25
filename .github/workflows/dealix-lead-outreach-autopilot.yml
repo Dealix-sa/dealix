@@ -1,0 +1,20 @@
+name: Dealix Lead Outreach Autopilot Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lead-outreach-autopilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify lead outreach autopilot
+        run: python scripts/verify_lead_outreach_autopilot.py
+      - name: Compile scripts
+        run: python -m compileall scripts
