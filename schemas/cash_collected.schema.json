@@ -1,0 +1,13 @@
+{
+  "name": "cash_collected",
+  "required_headers": [
+    "date",
+    "client",
+    "offer",
+    "amount_sar",
+    "payment_method",
+    "status",
+    "notes"
+  ],
+  "allowed_statuses": ["Pending", "Paid", "Collected", "Refunded", "Cancelled"]
+}

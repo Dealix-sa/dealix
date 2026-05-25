@@ -1,0 +1,13 @@
+{
+  "name": "mrr_tracker",
+  "required_headers": [
+    "client",
+    "plan",
+    "monthly_amount_sar",
+    "status",
+    "start_date",
+    "next_renewal",
+    "notes"
+  ],
+  "allowed_statuses": ["Active", "Paid", "Current", "Paused", "Churned", "Prospect"]
+}

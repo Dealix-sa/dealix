@@ -1,0 +1,14 @@
+{
+  "name": "approval_log",
+  "required_headers": [
+    "date",
+    "item",
+    "type",
+    "risk_level",
+    "decision",
+    "approved_by",
+    "evidence"
+  ],
+  "allowed_risk_levels": ["Low", "Medium", "High", "Critical"],
+  "allowed_decisions": ["Pending", "Approved", "Rejected", "Blocked", "Needs Rewrite"]
+}

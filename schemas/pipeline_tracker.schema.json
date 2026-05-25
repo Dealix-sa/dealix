@@ -1,0 +1,27 @@
+{
+  "name": "pipeline_tracker",
+  "required_headers": [
+    "company",
+    "sector",
+    "contact",
+    "stage",
+    "priority",
+    "next_action",
+    "last_touch",
+    "notes"
+  ],
+  "allowed_stages": [
+    "New",
+    "Qualified",
+    "Contacted",
+    "Replied",
+    "Sample Sent",
+    "Call Booked",
+    "Proposal Sent",
+    "Paid",
+    "Delivered",
+    "Retainer",
+    "Lost"
+  ],
+  "allowed_priorities": ["A", "B", "C", ""]
+}

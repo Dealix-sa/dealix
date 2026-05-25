@@ -214,3 +214,12 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Company Data Architecture — local-only dashboards / snapshots
+# (real metrics never enter the public repo; demo data only)
+# ─────────────────────────────────────────────────────────────
+dashboard_data/company_metrics.json
+dashboard_data/company_snapshot.json
+dashboard_data/revenue_metrics.json
+dashboard_data/trust_metrics.json
