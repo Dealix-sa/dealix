@@ -1,12 +1,15 @@
+@import "../styles/brand.css";
+
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
-  font-family: Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
-  background: #f4f6fb;
-  color: #0f172a;
+  padding: 0;
+  font-family: var(--dealix-font-body);
+  background: var(--dealix-bg);
+  color: var(--dealix-text);
 }
 
 a {
@@ -18,10 +21,11 @@ main {
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  background: var(--dealix-surface);
+  border: 1px solid var(--dealix-border);
+  border-radius: var(--dealix-radius-lg);
   padding: 16px;
+  color: var(--dealix-text);
 }
 
 .grid {

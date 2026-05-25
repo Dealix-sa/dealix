@@ -1,0 +1,140 @@
+/* =========================================================================
+   Dealix Brand — CSS variables
+   Source of truth: apps/web/lib/brand-tokens.ts
+   Mirror: docs/brand/brand-tokens.json
+   ========================================================================= */
+
+:root {
+  /* Core palette */
+  --dealix-deep-navy:     #0B1220;
+  --dealix-emerald-teal:  #00D1A1;
+  --dealix-soft-silver:   #B2BBC6;
+  --dealix-slate:         #0F1726;
+  --dealix-white:         #FFFFFF;
+  --dealix-amber:         #F6B73C;
+  --dealix-red:           #FF5C7A;
+
+  /* Semantic tokens */
+  --dealix-bg:             var(--dealix-deep-navy);
+  --dealix-bg-secondary:   var(--dealix-slate);
+  --dealix-surface:        var(--dealix-slate);
+  --dealix-accent:         var(--dealix-emerald-teal);
+  --dealix-accent-ink:     var(--dealix-deep-navy);
+  --dealix-text:           var(--dealix-white);
+  --dealix-text-muted:     var(--dealix-soft-silver);
+  --dealix-border:         rgba(178, 187, 198, 0.18);
+  --dealix-border-strong:  rgba(178, 187, 198, 0.42);
+  --dealix-success:        var(--dealix-emerald-teal);
+  --dealix-warning:        var(--dealix-amber);
+  --dealix-danger:         var(--dealix-red);
+  --dealix-muted:          var(--dealix-slate);
+
+  /* Type */
+  --dealix-font-display: Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --dealix-font-body:    Inter, "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --dealix-font-mono:    "JetBrains Mono", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+
+  /* Radii */
+  --dealix-radius-sm: 6px;
+  --dealix-radius-md: 10px;
+  --dealix-radius-lg: 16px;
+  --dealix-radius-xl: 20px;
+  --dealix-radius-pill: 999px;
+
+  /* Spacing */
+  --dealix-space-1: 4px;
+  --dealix-space-2: 8px;
+  --dealix-space-3: 12px;
+  --dealix-space-4: 16px;
+  --dealix-space-5: 20px;
+  --dealix-space-6: 24px;
+  --dealix-space-8: 32px;
+
+  /* Elevation */
+  --dealix-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.18);
+  --dealix-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.24);
+  --dealix-shadow-lg: 0 10px 32px rgba(0, 0, 0, 0.32);
+
+  /* Motion */
+  --dealix-duration-fast: 120ms;
+  --dealix-duration-base: 200ms;
+  --dealix-duration-slow: 320ms;
+  --dealix-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Reduced-motion safety */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Brand surface helper classes (opt-in) */
+.dealix-surface {
+  background: var(--dealix-bg);
+  color: var(--dealix-text);
+  font-family: var(--dealix-font-body);
+}
+
+.dealix-card {
+  background: var(--dealix-surface);
+  color: var(--dealix-text);
+  border: 1px solid var(--dealix-border);
+  border-radius: var(--dealix-radius-lg);
+  padding: var(--dealix-space-6);
+  box-shadow: var(--dealix-shadow-md);
+}
+
+.dealix-accent {
+  color: var(--dealix-accent);
+}
+
+.dealix-muted {
+  color: var(--dealix-text-muted);
+}
+
+.dealix-button-primary {
+  background: var(--dealix-accent);
+  color: var(--dealix-accent-ink);
+  font-family: var(--dealix-font-display);
+  font-weight: 700;
+  border: none;
+  border-radius: var(--dealix-radius-md);
+  padding: var(--dealix-space-3) var(--dealix-space-6);
+  cursor: pointer;
+  transition: filter var(--dealix-duration-base) var(--dealix-easing-standard);
+}
+
+.dealix-button-primary:hover {
+  filter: brightness(1.05);
+}
+
+.dealix-button-primary:focus-visible {
+  outline: 2px solid var(--dealix-accent);
+  outline-offset: 2px;
+}
+
+.dealix-button-ghost {
+  background: transparent;
+  color: var(--dealix-text);
+  font-family: var(--dealix-font-display);
+  font-weight: 600;
+  border: 1px solid var(--dealix-border-strong);
+  border-radius: var(--dealix-radius-md);
+  padding: var(--dealix-space-3) var(--dealix-space-6);
+  cursor: pointer;
+}
+
+.dealix-button-ghost:hover {
+  border-color: var(--dealix-accent);
+  color: var(--dealix-accent);
+}
+
+.dealix-tagline {
+  color: var(--dealix-text-muted);
+  font-family: var(--dealix-font-display);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}

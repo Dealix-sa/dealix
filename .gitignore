@@ -39,6 +39,10 @@ eggs/
 .eggs/
 lib/
 lib64/
+
+# Re-include the Next.js web app lib folder (brand tokens, helpers).
+!apps/web/lib/
+!apps/web/lib/**
 parts/
 sdist/
 var/
@@ -102,6 +106,17 @@ dumps/
 !landing/assets/data/service-readiness.json
 # Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
 !data/workflows/
+# Dealix Brand-Led Autonomous Growth OS — canonical operating data
+# (offer ladder, distribution machines, account scoring schemas, etc).
+# Not customer data; safe to commit.
+!data/brand/
+!data/brand/**
+!data/growth/
+!data/growth/**
+!data/marketing/
+!data/marketing/**
+!data/product/
+!data/product/**
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

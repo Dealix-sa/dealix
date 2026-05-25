@@ -1,0 +1,3 @@
+asset_id,name,variant,path,format,treatment,size_px,language,approved,approved_by,approved_at,notes
+DA-001,Dealix lockup (default),lockup,assets/brand/source/dealix-brand-board.jpeg,jpeg,onnavy,1500,en,false,,,Source brand board image — manual placement required
+DA-002,Dealix lockup (inline SVG fallback),lockup,apps/web/components/brand/dealix-logo.tsx,react-svg,onnavy,scalable,bilingual,true,founder,,Inline fallback renders even without exported assets
