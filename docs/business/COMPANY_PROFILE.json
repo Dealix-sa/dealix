@@ -1,0 +1,121 @@
+{
+  "name": "Dealix",
+  "category": "Governed AI Operating System for Revenue + Trust",
+  "one_liner_en": "We convert AI operations into evidence-required revenue, under founder control, with an auditable trust layer.",
+  "one_liner_ar": "نحوّل عمليات الذكاء الاصطناعي إلى إيراد مُثبَت بأدلة، تحت سيطرة المؤسس، مع طبقة ثقة قابلة للتدقيق.",
+  "founder": {
+    "name_en": "Sami Asiri",
+    "name_ar": "سامي عسيري",
+    "role": "Solo founder, technical",
+    "email": "sami@dealix.me"
+  },
+  "hq": {
+    "city_en": "Riyadh",
+    "city_ar": "الرياض",
+    "country_en": "Kingdom of Saudi Arabia",
+    "country_ar": "المملكة العربية السعودية"
+  },
+  "founded": "2026",
+  "mission": {
+    "en": "Build the substrate that lets Saudi companies adopt AI without losing control and without importing foreign vendor risk.",
+    "ar": "نبني الأساس الذي يسمح للشركات السعودية باعتماد الذكاء الاصطناعي دون فقدان السيطرة ودون استيراد مخاطر مزوّدين أجانب."
+  },
+  "promises": [
+    {
+      "id": "evidence_required_revenue",
+      "en": "No revenue counts without an Evidence Pack.",
+      "ar": "لا إيراد يُحتسب بدون Evidence Pack."
+    },
+    {
+      "id": "founder_sovereignty",
+      "en": "Sensitive actions require explicit founder/customer approval.",
+      "ar": "الإجراءات الحساسة تتطلّب موافقة المؤسس/العميل صراحةً."
+    },
+    {
+      "id": "no_external_sends_without_approval",
+      "en": "Dealix does not send externally on the customer's behalf without explicit consent.",
+      "ar": "لا إرسال خارجي نيابةً عن العميل دون إذن صريح."
+    },
+    {
+      "id": "auditable_trust_layer",
+      "en": "Every agent activity is logged with a context_hash in the AI Run Ledger.",
+      "ar": "كل نشاط وكيل مُسجّل في AI Run Ledger مع context_hash."
+    }
+  ],
+  "product_lines": [
+    {
+      "id": "lead_engine",
+      "name_en": "Lead Engine",
+      "name_ar": "محرك الـ Leads",
+      "summary_en": "5 data adapters plus official Saudi sources (Chambers, SDAIA, MCI, ZATCA).",
+      "summary_ar": "5 محوّلات بيانات + مصادر سعودية رسمية (الغرف، SDAIA، MCI، ZATCA)."
+    },
+    {
+      "id": "service_engine",
+      "name_en": "Service Engine",
+      "name_ar": "محرك الخدمات",
+      "summary_en": "7 productized AI services S1-S7 with endpoint surface.",
+      "summary_ar": "7 خدمات AI مُنتَجة S1-S7 بسطح API كامل."
+    },
+    {
+      "id": "trust_engine",
+      "name_en": "Trust Engine",
+      "name_ar": "محرك الثقة",
+      "summary_en": "PDPL, ZATCA, SDAIA, Source Passport, AI Run Ledger.",
+      "summary_ar": "PDPL وZATCA وSDAIA وSource Passport وAI Run Ledger."
+    },
+    {
+      "id": "agentic_control_plane",
+      "name_en": "Agentic Control Plane",
+      "name_ar": "مستوى التحكم الوكيلي",
+      "summary_en": "Agent registry, tool permission matrix, MCP review, Evidence Packs.",
+      "summary_ar": "تسجيل وكلاء، مصفوفة صلاحيات أدوات، مراجعة MCP، Evidence Packs."
+    }
+  ],
+  "offers": [
+    "revenue_hunter_pilot",
+    "ai_trust_kit",
+    "agency_whitelabel_kit",
+    "revenue_command",
+    "market_radar",
+    "agentic_control_plane_setup",
+    "governance_os_retainer",
+    "executive_pmo"
+  ],
+  "moats": [
+    "Saudi Sovereign Trust (PDPL/ZATCA/SDAIA wired into the code)",
+    "Evidence Pack Standard (proof standard competitors do not own)",
+    "Agency Channel (white-label distribution and switch costs)",
+    "Founder-coded depth (120+ routers, 300+ tests, 8 migrations)"
+  ],
+  "roadmap": [
+    {
+      "horizon": "H1",
+      "window": "2026",
+      "goal_en": "30 customers + first Enterprise PMO + 100 Evidence Packs publishable for diligence",
+      "goal_ar": "30 عميلًا + أول عقد Enterprise PMO + 100 Evidence Pack جاهزة للتدقيق"
+    },
+    {
+      "horizon": "H2",
+      "window": "2027-2028",
+      "goal_en": "200 customers + UAE office + ISO 27001",
+      "goal_ar": "200 عميل + مكتب الإمارات + ISO 27001"
+    },
+    {
+      "horizon": "H3",
+      "window": "2029-2032",
+      "goal_en": "500+ customers GCC-wide + Tadawul Nomu readiness",
+      "goal_ar": "500+ عميل خليجيًا + جاهزية Tadawul Nomu"
+    }
+  ],
+  "contact": {
+    "dpo": "dpo@dealix.me",
+    "founder": "sami@dealix.me",
+    "repo": "github.com/VoXc2/dealix",
+    "website": "dealix.me"
+  },
+  "disclosure": {
+    "en": "Estimated value is not Verified value.",
+    "ar": "القيمة التقديرية ليست قيمة مُتحقَّقة."
+  }
+}
