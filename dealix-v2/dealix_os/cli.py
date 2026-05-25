@@ -475,6 +475,103 @@ def cmd_dashboard(args):
     print("4. What risk did we control?")
     print("5. What can become a product module?")
 
+def cmd_score(args):
+    cap, scores = score_problem(args.problem)
+    print(f"Problem: {args.problem}")
+    print(f"Recommended Capability: {cap}")
+    print("Scores:")
+    for capability, score in scores.items():
+        print(f"  - {capability}: {score}")
+
+def cmd_client_pack(args):
+    client_slug = slugify(args.client)
+    client_dir = ROOT / "clients" / client_slug
+    if not client_dir.exists():
+        print(f"Client '{args.client}' not found.")
+        return
+
+    profile_path = client_dir / "CLIENT_PROFILE.md"
+    scorecard_path = client_dir / "CAPABILITY_SCORECARD.md"
+    ai_model_path = client_dir / "AI_OPERATING_MODEL.md"
+    expansion_map_path = client_dir / "EXPANSION_MAP.md"
+
+    print(f"# Client Pack: {args.client}")
+    print("==========================")
+
+    if profile_path.exists():
+        print("\n## Client Profile")
+        print(profile_path.read_text(encoding="utf-8"))
+    else:
+        print("\n## Client Profile (Not Found)")
+
+    if scorecard_path.exists():
+        print("\n## Capability Scorecard")
+        print(scorecard_path.read_text(encoding="utf-8"))
+    else:
+        print("\n## Capability Scorecard (Not Found)")
+
+    if ai_model_path.exists():
+        print("\n## AI Operating Model")
+        print(ai_model_path.read_text(encoding="utf-8"))
+    else:
+        print("\n## AI Operating Model (Not Found)")
+
+    if expansion_map_path.exists():
+        print("\n## Expansion Map")
+        print(expansion_map_path.read_text(encoding="utf-8"))
+    else:
+        print("\n## Expansion Map (Not Found)")
+
+def cmd_value(args):
+    print("Value command executed.")
+    print("This command is intended to interact with value-related data and operations.")
+    print("For now, it serves as a placeholder.")
+    value_ledger_path = ROOT / "ledgers" / "VALUE_LEDGER.md"
+    if value_ledger_path.exists():
+        print("\n--- Value Ledger ---")
+        print(value_ledger_path.read_text(encoding="utf-8"))
+    else:
+        print("\nValue ledger not found.")
+
+def cmd_proposal(args):
+    print("Proposal command executed.")
+    print("This command is intended to generate client proposals.")
+    # Re-using cmd_offer for proposal generation as per the task's implied structure
+    cmd_offer(argparse.Namespace(client=args.client, service=args.service, problem=args.problem))
+
+def cmd_monthly_review(args):
+    print("Dealix Monthly Review")
+    print("=====================")
+    print(f"Review Period: {args.period}")
+
+    print("\nSummary:")
+    print("- Key Performance Indicators (KPIs) will be displayed here.")
+    print("- Client progress and value delivered will be summarized.")
+    print("- Strategic recommendations for the next month will be provided.")
+
+    print("\nLedger Snapshots:")
+    ledger_files = [
+        "VALUE_LEDGER.md",
+        "CLIENT_LEDGER.md",
+        "PIPELINE_LEDGER.md",
+        "CAPITAL_LEDGER.md",
+        "AI_RUN_LEDGER.md",
+        "GOVERNANCE_LEDGER.md",
+    ]
+    for f in ledger_files:
+        p = ROOT / "ledgers" / f
+        if p.exists():
+            rows = [line for line in p.read_text(encoding="utf-8").splitlines() if line.startswith("|") and not line.startswith("|---")]
+            count = max(0, len(rows) - 1)
+            print(f"- {f:24}: {count} entries")
+        else:
+            print(f"- {f:24}: missing")
+
+    print("\nStrategic Recommendations:")
+    print("- Focus on deepening client relationships.")
+    print("- Identify opportunities for service expansion.")
+    print("- Continuously improve AI operating models.")
+
 def main():
     parser = argparse.ArgumentParser(prog="dealix", description="Dealix Founder OS CLI")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -550,6 +647,23 @@ def main():
     p.add_argument("--service", required=True)
     p.add_argument("--problem", required=True)
 
+    p = sub.add_parser("score")
+    p.add_argument("problem")
+
+    p = sub.add_parser("client-pack")
+    p.add_argument("--client", required=True)
+
+    p = sub.add_parser("value")
+    # Add arguments for value command if needed in the future
+
+    p = sub.add_parser("proposal")
+    p.add_argument("--client", required=True)
+    p.add_argument("--service", required=True)
+    p.add_argument("--problem", required=True)
+
+    p = sub.add_parser("monthly-review")
+    p.add_argument("--period", default="current")
+
     sub.add_parser("dashboard")
 
     args = parser.parse_args()
@@ -580,6 +694,16 @@ def main():
         cmd_outreach(args)
     elif args.cmd == "offer":
         cmd_offer(args)
+    elif args.cmd == "score":
+        cmd_score(args)
+    elif args.cmd == "client-pack":
+        cmd_client_pack(args)
+    elif args.cmd == "value":
+        cmd_value(args)
+    elif args.cmd == "proposal":
+        cmd_proposal(args)
+    elif args.cmd == "monthly-review":
+        cmd_monthly_review(args)
     elif args.cmd == "dashboard":
         cmd_dashboard(args)
 

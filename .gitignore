@@ -304,3 +304,15 @@ old/
 tmp/
 
 # =================== END DEALIX FOUNDER OS MANAGED BLOCK v5 ===================
+
+# Dealix local-only worktrees
+dealix-1.worktrees/
+dealix-1/
+.aider.tags.cache*/
+.aider.chat.history.md
+.venv/
+node_modules/
+dist/
+build/
+logs/
+*.log
