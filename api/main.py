@@ -358,6 +358,10 @@ def create_app() -> FastAPI:
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
 
+    # Hermes Universal Kernel — /api/v1/hermes/* sovereign value control plane
+    from api.routers.hermes.composite import build_hermes_router
+    app.include_router(build_hermes_router())
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
