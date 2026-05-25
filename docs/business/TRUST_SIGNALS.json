@@ -1,0 +1,121 @@
+{
+  "version": "2026-05-25",
+  "language": "ar+en",
+  "company": "Dealix",
+  "governance": [
+    {
+      "en": "PDPL-aligned by default across the platform and customer engagements.",
+      "ar": "توافق نظام حماية البيانات الشخصية افتراضيًا في المنصة والارتباطات."
+    },
+    {
+      "en": "Founder sign-off required for enterprise discounts, scope changes, and new MCP servers.",
+      "ar": "اعتماد المؤسس مطلوب للخصومات المؤسسية وتغييرات النطاق وأي خادم MCP جديد."
+    },
+    {
+      "en": "Approval Center routes sensitive actions to a named approver before execution.",
+      "ar": "مركز الموافقات يوجّه الإجراءات الحساسة إلى مُعتمد مُسمّى قبل التنفيذ."
+    },
+    {
+      "en": "Runtime Governance Loop enforces pre-action checks, in-action constraints, and post-action audit.",
+      "ar": "حلقة الحوكمة في وقت التشغيل تفرض الفحص قبل الإجراء والقيود أثناءه والتدقيق بعده."
+    },
+    {
+      "en": "Written policy precedes every agent deployment; no agent runs without a registered policy.",
+      "ar": "سياسة مكتوبة تسبق نشر أي وكيل؛ لا تشغيل بدون سياسة مُسجَّلة."
+    }
+  ],
+  "transparency": [
+    {
+      "en": "Evidence Pack delivered with every engagement: scope, registry, permissions, approvals, outcomes, incidents, sign-off.",
+      "ar": "حقيبة أدلة تُسلَّم مع كل ارتباط: النطاق، السجل، الصلاحيات، الموافقات، النتائج، الحوادث، الاعتماد."
+    },
+    {
+      "en": "Public Agent Registry sample and Tool Permission Matrix sample available for customer review.",
+      "ar": "عيّنة سجل وكلاء وعيّنة مصفوفة صلاحيات متاحتان لمراجعة العميل."
+    },
+    {
+      "en": "Audit ledger captures every privileged action with actor, action, target, and approval reference.",
+      "ar": "سجل تدقيق يلتقط كل إجراء ذي امتياز مع المنفّذ والإجراء والهدف ومرجع الموافقة."
+    },
+    {
+      "en": "Sector reports use methodology and aggregated patterns only; no confidential customer metrics.",
+      "ar": "تقارير القطاعات تعتمد المنهجية والأنماط المُجمَّعة فقط؛ بلا مؤشرات سرية للعملاء."
+    },
+    {
+      "en": "Disclosure clause on every customer-facing output: estimated value is not verified value.",
+      "ar": "جملة إفصاح على كل مخرج للعميل: القيمة التقديرية ليست قيمة مُتحقَّقة."
+    }
+  ],
+  "verified_outcomes": [
+    {
+      "en": "Revenue attribution per agent, channel, and partner — linked to the customer's source-of-truth systems.",
+      "ar": "إسناد الإيراد لكل وكيل وقناة وشريك — مرتبطًا بأنظمة المصدر لدى العميل."
+    },
+    {
+      "en": "No vanity metrics: replies, opens, impressions are not displayed as outcomes.",
+      "ar": "لا مؤشرات شكلية: الردود والفتح والظهور ليست نتائج تُعرض."
+    },
+    {
+      "en": "Pipeline Quality scoring distinguishes evidenced opportunities from estimated ones.",
+      "ar": "تقييم جودة القمع يميّز الفرص المُثبتة عن التقديرية."
+    },
+    {
+      "en": "Retainer conversion is tracked as a primary outcome alongside contract value.",
+      "ar": "تحويل الاشتراكات يُتتبَّع كنتيجة رئيسية إلى جانب قيمة العقود."
+    }
+  ],
+  "sovereignty": [
+    {
+      "en": "Sami-final-approval is a routed step in the system for enterprise-class decisions.",
+      "ar": "اعتماد سامي النهائي خطوة مُوجَّهة في النظام لقرارات فئة المؤسسات."
+    },
+    {
+      "en": "Kill switch on every agent — owned by the founder, exposed to the customer's executive sponsor.",
+      "ar": "مفتاح إيقاف لكل وكيل — بيد المؤسس، ومتاح للراعي التنفيذي لدى العميل."
+    },
+    {
+      "en": "Founder office retains veto on data boundary changes and new tool wiring.",
+      "ar": "مكتب المؤسس يحتفظ بحق الرفض على تغيير حدود البيانات وأي توصيل أدوات جديد."
+    },
+    {
+      "en": "Sovereignty is operational, not theatrical — every claim maps to a system surface.",
+      "ar": "السيادة عملية لا خطابية — كل ادعاء يقابله سطح في النظام."
+    }
+  ],
+  "data_boundaries": [
+    {
+      "en": "Customer data never crosses tenants; tenant isolation is enforced at the runtime layer.",
+      "ar": "لا تعبر بيانات العميل بين المستأجرين؛ يُفرض العزل في طبقة التشغيل."
+    },
+    {
+      "en": "MCP gateway mediates every external tool call with policy enforcement and rate limits.",
+      "ar": "بوابة MCP تتوسط كل نداء أداة خارجية مع إنفاذ السياسة وتحديد المعدلات."
+    },
+    {
+      "en": "Data classification: Public, Internal, Customer-Tenant, Regulated, Secret — each with its own handling rules.",
+      "ar": "تصنيف البيانات: عامة، داخلية، مستأجر العميل، مُنظَّمة، سرية — لكل فئة قواعد معالجتها."
+    },
+    {
+      "en": "KSA-first residency commitment in enterprise deployments; cross-border flows require explicit approval.",
+      "ar": "إقامة البيانات داخل المملكة افتراضيًا في النشر المؤسسي؛ التدفقات العابرة للحدود تحتاج اعتمادًا صريحًا."
+    },
+    {
+      "en": "Retention windows are explicit per data class; redaction is automated where required.",
+      "ar": "نوافذ الاحتفاظ صريحة لكل فئة بيانات؛ التعمية مُؤتمتة حيثما يُطلب."
+    }
+  ],
+  "roadmap_disclosures": [
+    {
+      "en": "SOC2/ISO 27001 posture is in scope and on the roadmap; not claimed as obtained today.",
+      "ar": "وضع SOC2/ISO 27001 في النطاق وعلى خارطة الطريق؛ غير مُدَّعى اليوم."
+    },
+    {
+      "en": "Independent third-party attestation is planned; current evidence is internal and customer-shared.",
+      "ar": "اعتماد طرف ثالث مستقل مُخطَّط له؛ الأدلة الحالية داخلية ومشتركة مع العملاء."
+    }
+  ],
+  "disclosures": {
+    "en": "Estimated value is not Verified value.",
+    "ar": "القيمة التقديرية ليست قيمة مُتحقَّقة."
+  }
+}
