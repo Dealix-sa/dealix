@@ -7,6 +7,7 @@ Usage:
     python cli.py status        # check app status
     python cli.py sector healthcare
     python cli.py demo          # run end-to-end demo
+    python cli.py finance --private-ops /home/user/dealix-ops-private
 """
 
 from __future__ import annotations
@@ -158,6 +159,41 @@ def demo() -> None:
     from scripts.run_demo import main as demo_main
 
     asyncio.run(demo_main())
+
+
+@app.command()
+def finance(
+    private_ops: Annotated[
+        str,
+        typer.Option(
+            "--private-ops",
+            help="Path to dealix-ops-private/ root (CSV ledgers).",
+        ),
+    ],
+) -> None:
+    """Generate a monthly finance review from private ops CSV ledgers."""
+    _banner()
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    private_ops_path = Path(private_ops).expanduser().resolve()
+    if not private_ops_path.exists():
+        console.print(
+            f"[red]FAIL:[/red] private ops directory not found at {private_ops_path}"
+        )
+        raise typer.Exit(code=1)
+
+    script = Path(__file__).resolve().parent / "scripts" / "generate_finance_review.py"
+    result = subprocess.run(
+        [sys.executable, str(script), "--private-ops", str(private_ops_path)],
+        check=False,
+    )
+    if result.returncode != 0:
+        raise typer.Exit(code=result.returncode)
+
+    review_path = private_ops_path / "finance" / "monthly_finance_review.md"
+    console.print(f"\n[green]✓[/green] Review available at: {review_path}")
 
 
 @app.command()
