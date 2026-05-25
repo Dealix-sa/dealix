@@ -13,6 +13,7 @@ from api.routers import (
     full_ops_radar as full_ops_radar_router,
     growth_beast,
     growth_os,
+    growth_os_revenue,
     growth_v10,
     gtm_os,
     partnership_os,
@@ -25,6 +26,7 @@ from api.routers import (
 
 _ROUTERS = [
     growth_os.router,
+    growth_os_revenue.router,
     growth_v10.router,
     growth_beast.router,
     company_growth_beast.router,

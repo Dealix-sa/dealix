@@ -167,3 +167,19 @@ curl -X POST http://localhost:8000/api/v1/leads \
 ```
 
 This exercises intake, ICP matching, pain extraction, BANT qualification, CRM sync (skipped without HubSpot), and booking.
+
+### Growth OS (Revenue Marketing + Assurance + Attribution)
+
+Module path: `dealix/growth_os/`
+
+Covers sections 32–50 of the commercial spec — ICP matrix, ABM pipeline, GEO content blueprint, Content-to-Cash CTA map, the nine marketing operating rules, RevenueRecord doctrine (vanity metrics never count), revenue quality scoring, multi-touch attribution, experiment scale/iterate/kill engine, dashboard with seven red-flag detectors, 25+ stream cards with decide-action logic, three funnels (Revenue Hunter / AI Trust Kit / Agency White-label), partner motion + metrics, case-study template, and bilingual brand positioning.
+
+API root: `/api/v1/growth-os/` (router at `api/routers/growth_os_revenue.py`). All endpoints are read-only or pure-computation; none perform external sends, scraping, or cold automation.
+
+Verify command:
+
+```bash
+bash scripts/growth_os_master_verify.sh
+```
+
+Reference doc (written by the content agent, may not yet exist): `docs/growth/DEALIX_GROWTH_ENGINE_AR.md`.
