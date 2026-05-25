@@ -1,0 +1,15 @@
+workflow_id: market_radar
+steps:
+  - agent: growth_engine
+    output: raw_signals
+  - agent: growth_engine
+    output: ai_visibility_snapshots
+  - agent: proposal_factory
+    output: market_report_draft
+  - agent: value_reporter
+    output: market_report_final
+gates:
+  - trust_check
+  - approval_check
+outcome_required: true
+asset_review_required: true

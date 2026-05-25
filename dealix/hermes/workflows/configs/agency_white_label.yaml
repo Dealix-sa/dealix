@@ -1,0 +1,14 @@
+workflow_id: agency_white_label
+steps:
+  - agent: trust_checker
+    output: approved_claims
+  - agent: proposal_factory
+    output: adapted_playbooks
+  - agent: value_reporter
+    output: quarterly_review
+gates:
+  - trust_check
+  - sovereignty_check
+  - approval_check
+outcome_required: true
+asset_review_required: true

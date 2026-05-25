@@ -1,0 +1,13 @@
+workflow_id: customer_value_report
+steps:
+  - agent: value_reporter
+    output: outcome_summary
+  - agent: value_reporter
+    output: value_report_draft
+  - agent: value_reporter
+    output: value_report_final
+gates:
+  - trust_check
+  - approval_check
+outcome_required: true
+asset_review_required: false

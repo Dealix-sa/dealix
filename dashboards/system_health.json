@@ -1,0 +1,10 @@
+{
+  "dashboard_id": "system_health",
+  "title": "Hermes — System Health",
+  "panels": [
+    {"metric": "agent_runs_total", "type": "counter", "alert": "agent_incident_rate_high"},
+    {"metric": "tool_calls_total", "type": "counter"},
+    {"metric": "trust_blocks_total", "type": "counter", "alert": "external_action_without_approval"},
+    {"metric": "incidents_total", "type": "counter", "alert": "agent_incident_rate_high"}
+  ]
+}
