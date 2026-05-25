@@ -214,3 +214,12 @@ signals_output.json
 # ─────────────────────────────────────────────────────────────
 data/wave11/**
 docs/wave11/live/**
+
+# ─────────────────────────────────────────────────────────────
+# Revenue Ops Playbook v1 — private operating state (NEVER commit)
+# Real pipeline, proposals, samples, client folders live here.
+# Templates for this structure are tracked under
+# docs/templates/revenue_ops_private/.
+# ─────────────────────────────────────────────────────────────
+dealix-ops-private/
+

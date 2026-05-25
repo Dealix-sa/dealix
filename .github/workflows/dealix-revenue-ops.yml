@@ -1,0 +1,18 @@
+name: Dealix Revenue Ops Checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  revenue-ops:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify revenue operations playbook
+        run: python scripts/verify_revenue_operations_playbook.py
+      - name: Compile
+        run: python -m compileall scripts ops_runtime dealix_cli control_plane
