@@ -1,0 +1,257 @@
+# Revenue Marketing Engine — seed catalogue.
+# Loaded once when the JSON store is empty. Aligned with the 5-rung
+# offer ladder from the doctrine (§29) and the 10 content pillars (§10).
+
+offers:
+  # ── Free / Low Friction ─────────────────────────────────────
+  - id: free_ai_governance_checklist
+    name_ar: "قائمة فحص حوكمة AI"
+    name_en: "AI Governance Checklist"
+    tier: free
+    price_min_sar: 0
+    price_max_sar: 0
+    promise_ar: "اكتشف 12 ثغرة حوكمة قبل أن تكلفك صفقة."
+    deliverables_ar: ["PDF 12 خانة", "نموذج Policy Snippet", "Loom 4 دقائق"]
+    target_segments: ["b2b_saudi_using_ai", "agency_owners"]
+    primary_pain: "no_governance_visibility"
+    success_metric: "diagnostic_call_booked"
+    money_quality: 0.4
+
+  - id: free_revenue_leakage_checklist
+    name_ar: "قائمة تسريب الإيراد"
+    name_en: "Revenue Leakage Checklist"
+    tier: free
+    promise_ar: "حدد 7 نقاط تسريب في pipeline خلال 10 دقائق."
+    deliverables_ar: ["PDF 7 خانة", "Template Follow-up"]
+    target_segments: ["b2b_founders_ksa"]
+    primary_pain: "leaky_follow_up"
+    success_metric: "lead_captured"
+    money_quality: 0.4
+
+  # ── Entry ───────────────────────────────────────────────────
+  - id: revenue_hunter_pilot
+    name_ar: "Revenue Hunter Pilot"
+    name_en: "Revenue Hunter Pilot"
+    tier: entry
+    price_min_sar: 999
+    price_max_sar: 999
+    promise_ar: "ولّد 30 فرصة B2B بمسودات رسائل وعروض خلال 7 أيام بحوكمة كاملة."
+    deliverables_ar:
+      - "30 lead مصنف ICP"
+      - "مسودات رسائل 3 زوايا"
+      - "Proposal Skeleton"
+      - "Risk Score + Proof Pack"
+    target_segments: ["b2b_founders_ksa", "agency_owners"]
+    primary_pain: "no_pipeline_motion"
+    success_metric: "qualified_calls_booked"
+    money_quality: 0.85
+
+  - id: ai_trust_diagnostic
+    name_ar: "تشخيص AI Trust"
+    name_en: "AI Trust Diagnostic"
+    tier: entry
+    price_min_sar: 4999
+    price_max_sar: 4999
+    promise_ar: "تشخيص استخدام AI داخل الشركة بمصفوفة صلاحيات وسجل أدلة."
+    deliverables_ar:
+      - "AI Usage Map"
+      - "Permission Matrix"
+      - "Risk Score"
+      - "Roadmap حوكمة 30 يوم"
+    target_segments: ["b2b_saudi_using_ai", "enterprise_pmo"]
+    primary_pain: "ai_used_without_governance"
+    success_metric: "trust_kit_engaged"
+    money_quality: 0.8
+
+  - id: data_pack
+    name_ar: "Data Pack"
+    name_en: "Data Pack — sector intelligence"
+    tier: entry
+    price_min_sar: 1500
+    price_max_sar: 1500
+    promise_ar: "ملف بيانات قطاع جاهز بـ ICP وعروض وزوايا رسائل."
+    deliverables_ar: ["CSV ICP 100 حساب", "3 رسائل/قطاع", "Buyer brief"]
+    target_segments: ["agency_owners", "consultants_ksa"]
+    primary_pain: "no_sector_targeting"
+    success_metric: "data_pack_delivered"
+    money_quality: 0.7
+
+  # ── Core ────────────────────────────────────────────────────
+  - id: ai_trust_kit
+    name_ar: "AI Trust Kit"
+    name_en: "AI Trust Kit — implementation"
+    tier: core
+    price_min_sar: 12000
+    price_max_sar: 25000
+    promise_ar: "طبقة حوكمة جاهزة: Policies, Approvals, Audit, Evidence Packs."
+    deliverables_ar:
+      - "Policy pack موقّع"
+      - "Approval Center"
+      - "Evidence Ledger"
+      - "Training 2 ورش"
+    target_segments: ["b2b_saudi_using_ai", "enterprise_pmo"]
+    primary_pain: "ai_governance_gap"
+    success_metric: "trust_kit_signed"
+    money_quality: 1.1
+
+  - id: monthly_revenue_command
+    name_ar: "Monthly Revenue Command"
+    name_en: "Monthly Revenue Command Retainer"
+    tier: core
+    price_min_sar: 8000
+    price_max_sar: 18000
+    promise_ar: "تشغيل أسبوعي محكوم للإيراد مع تقارير قيمة وفرص أسبوعية."
+    deliverables_ar:
+      - "Weekly War Room"
+      - "30 lead/شهر مصنف"
+      - "Proof Pack شهري"
+      - "Value Report"
+    target_segments: ["b2b_founders_ksa", "saas_b2b"]
+    primary_pain: "no_revenue_rhythm"
+    success_metric: "retainer_active"
+    money_quality: 1.4
+
+  - id: agency_white_label_kit
+    name_ar: "Agency White-Label Kit"
+    name_en: "Agency White-Label Kit"
+    tier: core
+    price_min_sar: 9000
+    price_max_sar: 15000
+    promise_ar: "أضف خدمة AI-powered revenue لعملاء الوكالة بدون بناء التقنية."
+    deliverables_ar:
+      - "Partner one-pager"
+      - "Approved claims"
+      - "Client report template"
+      - "Demo script"
+    target_segments: ["agency_owners", "consultants_ksa"]
+    primary_pain: "agency_cannot_offer_ai_safely"
+    success_metric: "partner_signed"
+    money_quality: 1.2
+
+  # ── Expansion ───────────────────────────────────────────────
+  - id: executive_pmo
+    name_ar: "Executive PMO"
+    name_en: "Executive PMO"
+    tier: expansion
+    price_min_sar: 20000
+    price_max_sar: 45000
+    promise_ar: "تشغيل تنفيذي محكوم: قرارات أسبوعية مدعومة Decision Passport."
+    deliverables_ar:
+      - "CEO weekly board"
+      - "12 pillar verify"
+      - "Strategic backlog"
+    target_segments: ["enterprise_pmo", "family_office"]
+    primary_pain: "no_governed_execution"
+    success_metric: "executive_pmo_active"
+    money_quality: 1.3
+
+  - id: market_radar_subscription
+    name_ar: "Market Radar Subscription"
+    name_en: "Market Radar Subscription"
+    tier: expansion
+    price_min_sar: 6000
+    price_max_sar: 12000
+    promise_ar: "تنبيهات إشارات سوق سعودية أسبوعية مرتبطة بفرص محددة."
+    deliverables_ar: ["Weekly radar", "Sector trend pack", "Opportunity briefs"]
+    target_segments: ["agency_owners", "vc_studio"]
+    primary_pain: "blind_to_market_motion"
+    success_metric: "radar_subscriber_active"
+    money_quality: 1.2
+
+  # ── Enterprise ──────────────────────────────────────────────
+  - id: governance_os
+    name_ar: "Agentic Control Plane"
+    name_en: "Enterprise Agent Governance OS"
+    tier: enterprise
+    price_min_sar: 60000
+    price_max_sar: 250000
+    promise_ar: "منصة حوكمة وكلاء AI داخل المؤسسات: صلاحيات، موافقات، audit، evidence."
+    deliverables_ar:
+      - "Tenant Control Plane"
+      - "Approval Center"
+      - "Evidence Ledger"
+      - "Org Graph + Assurance Contracts"
+    target_segments: ["enterprise_pmo", "regulated_entity_ksa"]
+    primary_pain: "ai_without_enterprise_control"
+    success_metric: "enterprise_contract_signed"
+    money_quality: 1.5
+
+# ── Market signals (founder-provided baseline) ─────────────────
+signals:
+  - id: sig_ksa_ai_adoption_trust_gap
+    source: market_report
+    summary_ar: "93٪ من مستخدمي AI في السعودية قلقون من الخصوصية والمعلومات المضللة."
+    summary_en: "93% of KSA GenAI users worry about privacy & misinformation."
+    segment: b2b_saudi_using_ai
+    pain: ai_used_without_governance
+    suggested_offer_id: ai_trust_kit
+    why_now: "تبني سريع بدون حوكمة → مخاطر تنظيمية وفقدان ثقة عملاء."
+    proof_target: "evidence pack + policy template + approval center demo"
+    confidence: 0.78
+
+  - id: sig_agency_revenue_demand
+    source: founder_observation
+    summary_ar: "وكالات تطلب خدمة AI-powered revenue بدون بناء تقنية."
+    segment: agency_owners
+    pain: agency_cannot_offer_ai_safely
+    suggested_offer_id: agency_white_label_kit
+    why_now: "الطلب أعلى من القدرة على البناء الذاتي."
+    proof_target: "partner one-pager + revenue share calculator"
+    confidence: 0.7
+
+  - id: sig_founder_leaky_followup
+    source: customer_interview
+    summary_ar: "مؤسسون يخسرون فرص بسبب متابعة غير منظمة بعد المعرض/الندوة."
+    segment: b2b_founders_ksa
+    pain: leaky_follow_up
+    suggested_offer_id: revenue_hunter_pilot
+    why_now: "بعد كل event/معرض، نافذة 14 يوم لإغلاق leads."
+    proof_target: "follow-up commander mini case + pilot brief"
+    confidence: 0.8
+
+# ── Content pillars (10) → seed cards ──────────────────────────
+content_cards:
+  - topic_ar: "كيف تعرف أن AI في شركتك خطر قبل أول حادث؟"
+    target_segment: b2b_saudi_using_ai
+    pain: ai_governance_gap
+    offer_id: ai_trust_kit
+    cta_ar: "احجز تشخيص AI Trust"
+    channel: linkedin
+    pillar: ai_needs_governance
+    success_metric: diagnostic_call_booked
+
+  - topic_ar: "لماذا تضيع متابعاتك بعد كل معرض؟"
+    target_segment: b2b_founders_ksa
+    pain: leaky_follow_up
+    offer_id: revenue_hunter_pilot
+    cta_ar: "ابدأ Pilot 7 أيام"
+    channel: linkedin
+    pillar: ai_brings_revenue
+    success_metric: pilot_started
+
+  - topic_ar: "كيف الوكالات تبيع AI بدون بناء التقنية؟"
+    target_segment: agency_owners
+    pain: agency_cannot_offer_ai_safely
+    offer_id: agency_white_label_kit
+    cta_ar: "مكالمة شراكة 20 دقيقة"
+    channel: linkedin
+    pillar: partner_white_label
+    success_metric: partner_call_booked
+
+  - topic_ar: "كيف تجيب 30 lead في أسبوع بدون cold WhatsApp؟"
+    target_segment: b2b_founders_ksa
+    pain: no_pipeline_motion
+    offer_id: revenue_hunter_pilot
+    cta_ar: "Risk Score مجاني"
+    channel: linkedin
+    pillar: ai_brings_revenue
+    success_metric: lead_captured
+
+  - topic_ar: "كيف تقيس قيمة AI داخل شركتك؟"
+    target_segment: enterprise_pmo
+    pain: no_revenue_rhythm
+    offer_id: executive_pmo
+    cta_ar: "احجز جلسة Executive PMO"
+    channel: email_newsletter
+    pillar: founder_productivity
+    success_metric: executive_call_booked

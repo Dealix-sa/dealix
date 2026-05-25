@@ -64,6 +64,15 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
 - **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
 
+### Revenue Marketing Engine
+
+- **Doctrine (AR):** [docs/marketing/DEALIX_REVENUE_MARKETING_ENGINE_AR.md](docs/marketing/DEALIX_REVENUE_MARKETING_ENGINE_AR.md)
+- **Module:** [`dealix/revenue_marketing/`](dealix/revenue_marketing/) — signals, offer ladder, lead scoring, attribution, experiments, funnel, portfolio.
+- **API:** `GET /api/v1/revenue-marketing/doctrine` · `GET /offers/ladder` · `POST /loop/run` · `POST /attribution/record` (rejects `payment_confirmed=False`) · `GET /portfolio/dashboard`.
+- **DB:** Alembic head `014` (`db/migrations/versions/20260525_014_revenue_marketing_engine.py`) — tables `rm_offers`, `rm_signals`, `rm_campaigns`, `rm_marketing_touches`, `rm_revenue_attribution`, `rm_marketing_experiments`, `rm_content_cards`, `rm_funnel_snapshots`.
+- **Hard rule:** No revenue is attributed unless payment is confirmed. No external send — everything stays a draft routed through `/api/v1/ops-autopilot/marketing/queue-approval`.
+- **Tests:** `APP_ENV=test python3 -m pytest tests/test_revenue_marketing_engine.py -q` (22 tests).
+
 ### Global AI transformation (CEO / operating spine)
 
 - Weekly executive checklist: `bash scripts/run_executive_weekly_checklist.sh` (proof pack + `verify_global_ai_transformation.py` + audit log; syncs `weekly_ops.last_checklist_run_iso` when PASS).

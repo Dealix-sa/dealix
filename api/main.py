@@ -74,6 +74,7 @@ from api.routers import integration_capability as integration_capability_router
 from api.routers import service_catalog as service_catalog_router
 # Wave 14 — Canonical Trust MVP + Retainer Engine (Phase 2)
 from api.routers import friction_log as friction_log_router
+from api.routers import revenue_marketing as revenue_marketing_router
 # 90-day commercial activation — Wave 14B
 from api.routers import sprint_runner as sprint_runner_router
 from api.routers import founder_dashboard as founder_dashboard_router
@@ -325,6 +326,8 @@ def create_app() -> FastAPI:
     app.include_router(nps.router)
     # Wave 14 — Canonical Trust MVP + Retainer Engine (Phase 2)
     app.include_router(friction_log_router.router)
+    # Revenue Marketing Engine — signal → offer → campaign → attribution loop
+    app.include_router(revenue_marketing_router.router)
     app.include_router(transformation_os_router.router, prefix="/api/v1")
     app.include_router(business_now_router.router, prefix="/api/v1")
     if value_os_router is not None:
@@ -379,6 +382,9 @@ def create_app() -> FastAPI:
             "revenue_intelligence_import": "/api/v1/revenue-intelligence/{eid}/import",
             "proof_pack_generate": "/api/v1/proof-pack/{eid}/generate",
             "diagnostic_intent": "/api/v1/diagnostic/intent",
+            "revenue_marketing_doctrine": "/api/v1/revenue-marketing/doctrine",
+            "revenue_marketing_offer_ladder": "/api/v1/revenue-marketing/offers/ladder",
+            "revenue_marketing_portfolio": "/api/v1/revenue-marketing/portfolio/dashboard",
         }
 
     return app
