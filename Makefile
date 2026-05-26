@@ -7,7 +7,7 @@
         lint format type-check security security-smoke clean run demo \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
-        env-check openapi-export prod-verify \
+        env-check openapi-export api-contract-check production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference
 
@@ -15,6 +15,7 @@
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 OPENAPI_OUTPUT ?= docs/architecture/openapi.json
+PRODUCTION_BASE_URL ?= https://api.dealix.me
 
 help: ## Show this help
 	@echo "🏢 Dealix — Available commands:"
@@ -60,7 +61,13 @@ env-check: ## Validate .env.example contract and duplicate keys
 openapi-export: ## Export FastAPI OpenAPI schema (OPENAPI_OUTPUT=...)
 	$(PYTHON) scripts/export_openapi.py --output $(OPENAPI_OUTPUT)
 
-prod-verify: env-check security-smoke openapi-export v5-verify ## Canonical production-readiness verification bundle
+api-contract-check: ## Check OpenAPI contract for removed paths/methods
+	$(PYTHON) scripts/check_openapi_contract.py
+
+production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
+	$(PYTHON) scripts/dealix_smoke_test.py --base-url $(PRODUCTION_BASE_URL)
+
+prod-verify: env-check security-smoke api-contract-check v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
 
 # ── Tests ──────────────────────────────────────────────────────
