@@ -13,7 +13,7 @@
 
 **[العربية](README.ar.md)** · **English**
 
-### [🚀 Deploy Runbook](docs/ops/DEPLOY_RUNBOOK.md) · [✅ Production Readiness](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) · [🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md) · [🗺️ API Map](docs/architecture/API_MAP.md) · [📦 Env Template](.env.example)
+### [🚀 Deploy](docs/ops/DEPLOY_RUNBOOK.md) · [✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) · [💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) · [📡 Domain](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md) · [🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)
 
 </div>
 
@@ -73,11 +73,31 @@ make prod-verify
 Useful verification commands:
 
 ```bash
-make env-check        # checks .env.example contract and duplicate keys
-make openapi-export   # exports FastAPI OpenAPI schema
-make test             # test suite with project pytest defaults
-make security         # Bandit + detect-secrets baseline scan when configured
+make env-check             # checks backend and frontend env templates
+make api-contract-check    # checks OpenAPI contract stability
+make security-smoke        # dependency-free repository security smoke
+make production-smoke      # smoke production API when PRODUCTION_BASE_URL is set
+make test                  # test suite with project pytest defaults
+make security              # Bandit + detect-secrets baseline scan when configured
 ```
+
+---
+
+## Live production gates
+
+Before paid traffic, public demos, or enterprise pilots, review these in order:
+
+| Gate | Document / command |
+|---|---|
+| Production readiness | [`docs/ops/PRODUCTION_READINESS_CHECKLIST.md`](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) |
+| Commercial go-live | [`docs/ops/COMMERCIAL_GO_LIVE_GATE.md`](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) |
+| Domain operations | [`docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md`](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md) |
+| Frontend production | [`docs/ops/FRONTEND_PRODUCTION_RUNBOOK.md`](docs/ops/FRONTEND_PRODUCTION_RUNBOOK.md) |
+| Server hardening | [`docs/ops/SERVER_HARDENING_CHECKLIST.md`](docs/ops/SERVER_HARDENING_CHECKLIST.md) |
+| Monitoring | [`docs/ops/MONITORING_MATRIX.md`](docs/ops/MONITORING_MATRIX.md) |
+| Incident drill | [`docs/ops/LIVE_DOMAIN_INCIDENT_DRILL.md`](docs/ops/LIVE_DOMAIN_INCIDENT_DRILL.md) |
+| Founder rhythm | [`docs/ops/FOUNDER_DAILY_OPERATING_RHYTHM.md`](docs/ops/FOUNDER_DAILY_OPERATING_RHYTHM.md) |
+| Finalization status | [`docs/ops/PRODUCTION_FINALIZATION_STATUS.md`](docs/ops/PRODUCTION_FINALIZATION_STATUS.md) |
 
 ---
 
@@ -101,9 +121,13 @@ Dealix now has explicit repository controls for the most important production ri
 
 | Control | File / command |
 |---|---|
-| CI for Python checks, readiness exports, coverage, smoke tests, OpenAPI export, and Next.js build | `.github/workflows/ci.yml` |
+| Python and web CI | `.github/workflows/ci.yml` |
+| CodeQL and dependency review | `.github/workflows/security.yml` |
+| Secret and filesystem vulnerability scans | `.github/workflows/repository-hardening.yml` |
+| OpenSSF Scorecard | `.github/workflows/scorecard.yml` |
+| Web lockfile generation workflow | `.github/workflows/generate-web-lockfile.yml` |
 | Environment contract validation | `scripts/check_env_contract.py`, `make env-check` |
-| OpenAPI contract export | `scripts/export_openapi.py`, `make openapi-export` |
+| OpenAPI contract export/check | `scripts/export_openapi.py`, `scripts/check_openapi_contract.py` |
 | Production launch checklist | `docs/ops/PRODUCTION_READINESS_CHECKLIST.md` |
 | Repository gap register | `docs/architecture/REPO_GAP_AUDIT.md` |
 | Production verification bundle | `make prod-verify` |
@@ -159,7 +183,7 @@ make install-dev
 make lint
 make test
 make env-check
-make openapi-export
+make api-contract-check
 ```
 
 Before a production release:
@@ -171,6 +195,7 @@ make prod-verify
 Then review:
 
 - [`docs/ops/PRODUCTION_READINESS_CHECKLIST.md`](docs/ops/PRODUCTION_READINESS_CHECKLIST.md)
+- [`docs/ops/COMMERCIAL_GO_LIVE_GATE.md`](docs/ops/COMMERCIAL_GO_LIVE_GATE.md)
 - [`docs/architecture/REPO_GAP_AUDIT.md`](docs/architecture/REPO_GAP_AUDIT.md)
 - [`dealix/registers/no_overclaim.yaml`](dealix/registers/no_overclaim.yaml)
 
@@ -182,10 +207,16 @@ Then review:
 |---|---|
 | Master architecture | [`docs/blueprint/master-architecture.md`](docs/blueprint/master-architecture.md) |
 | API map | [`docs/architecture/API_MAP.md`](docs/architecture/API_MAP.md) |
+| API contract policy | [`docs/architecture/API_CONTRACT_POLICY.md`](docs/architecture/API_CONTRACT_POLICY.md) |
 | Gap audit | [`docs/architecture/REPO_GAP_AUDIT.md`](docs/architecture/REPO_GAP_AUDIT.md) |
 | Production readiness | [`docs/ops/PRODUCTION_READINESS_CHECKLIST.md`](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) |
+| Commercial go-live | [`docs/ops/COMMERCIAL_GO_LIVE_GATE.md`](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) |
 | Deploy runbook | [`docs/ops/DEPLOY_RUNBOOK.md`](docs/ops/DEPLOY_RUNBOOK.md) |
-| Customer onboarding | [`docs/ops/CUSTOMER_ONBOARDING_DAY_BY_DAY.md`](docs/ops/CUSTOMER_ONBOARDING_DAY_BY_DAY.md) |
+| Domain operations | [`docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md`](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md) |
+| Frontend production | [`docs/ops/FRONTEND_PRODUCTION_RUNBOOK.md`](docs/ops/FRONTEND_PRODUCTION_RUNBOOK.md) |
+| Server hardening | [`docs/ops/SERVER_HARDENING_CHECKLIST.md`](docs/ops/SERVER_HARDENING_CHECKLIST.md) |
+| Monitoring | [`docs/ops/MONITORING_MATRIX.md`](docs/ops/MONITORING_MATRIX.md) |
+| Founder operating rhythm | [`docs/ops/FOUNDER_DAILY_OPERATING_RHYTHM.md`](docs/ops/FOUNDER_DAILY_OPERATING_RHYTHM.md) |
 | No-overclaim register | [`dealix/registers/no_overclaim.yaml`](dealix/registers/no_overclaim.yaml) |
 | Saudi compliance register | [`dealix/registers/compliance_saudi.yaml`](dealix/registers/compliance_saudi.yaml) |
 
@@ -199,6 +230,6 @@ MIT — see [LICENSE](LICENSE).
 
 <div align="center">
 
-**[📖 Blueprint](docs/blueprint/master-architecture.md)** · **[✅ Production Readiness](docs/ops/PRODUCTION_READINESS_CHECKLIST.md)** · **[🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)** · **[🇸🇦 Compliance](dealix/registers/compliance_saudi.yaml)**
+**[📖 Blueprint](docs/blueprint/master-architecture.md)** · **[✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md)** · **[💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md)** · **[🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)** · **[🇸🇦 Compliance](dealix/registers/compliance_saudi.yaml)**
 
 </div>
