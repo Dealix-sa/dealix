@@ -57,16 +57,17 @@ async def health_deep() -> dict[str, object]:
     checks: dict[str, dict[str, object]] = {}
     overall = "ok"
 
-    # Postgres
+    # Postgres — use psycopg v3 because requirements.txt ships psycopg[binary],
+    # not psycopg2. This keeps /health/deep aligned with the production image.
     t0 = time.perf_counter()
     try:
-        import psycopg2  # type: ignore
+        import psycopg  # type: ignore
 
         dsn = os.getenv("DATABASE_URL") or os.getenv("DATABASE_DSN")
         if dsn:
-            conn = psycopg2.connect(dsn, connect_timeout=3)
-            conn.cursor().execute("SELECT 1")
-            conn.close()
+            with psycopg.connect(dsn, connect_timeout=3) as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT 1")
             checks["postgres"] = {"status": "ok", "ms": round((time.perf_counter() - t0) * 1000, 1)}
         else:
             checks["postgres"] = {"status": "skip", "reason": "no DATABASE_URL"}
