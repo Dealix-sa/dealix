@@ -4,7 +4,7 @@
 # ═══════════════════════════════════════════════════════════════
 
 .PHONY: help install install-dev setup test test-unit test-integration \
-        lint format type-check security clean run demo \
+        lint format type-check security security-smoke clean run demo \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
         env-check openapi-export prod-verify \
@@ -47,9 +47,12 @@ format: ## Auto-format with ruff + black
 type-check: ## Run mypy
 	mypy core auto_client_acquisition autonomous_growth integrations api
 
-security: ## Run security scans
+security: security-smoke ## Run security scans
 	bandit -c pyproject.toml -r core auto_client_acquisition autonomous_growth integrations api
 	detect-secrets scan --baseline .secrets.baseline || true
+
+security-smoke: ## Run dependency-free repository security smoke checks
+	$(PYTHON) scripts/security_smoke.py
 
 env-check: ## Validate .env.example contract and duplicate keys
 	$(PYTHON) scripts/check_env_contract.py
@@ -57,7 +60,7 @@ env-check: ## Validate .env.example contract and duplicate keys
 openapi-export: ## Export FastAPI OpenAPI schema (OPENAPI_OUTPUT=...)
 	$(PYTHON) scripts/export_openapi.py --output $(OPENAPI_OUTPUT)
 
-prod-verify: env-check openapi-export v5-verify ## Canonical production-readiness verification bundle
+prod-verify: env-check security-smoke openapi-export v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
 
 # ── Tests ──────────────────────────────────────────────────────
