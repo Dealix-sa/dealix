@@ -58,8 +58,14 @@ jobs:
           pip install pytest pytest-asyncio pytest-cov httpx aiosqlite
           if [ -f pyproject.toml ]; then pip install -e .; fi
 
+      - name: Environment contract check
+        run: python scripts/check_env_contract.py
+
       - name: Compile check
         run: python -m compileall api auto_client_acquisition autonomous_growth core db integrations dealix scripts
+
+      - name: OpenAPI contract export smoke
+        run: python scripts/export_openapi.py --output /tmp/dealix-openapi.json
 
       - name: Alembic single head
         run: python scripts/check_alembic_single_head.py
