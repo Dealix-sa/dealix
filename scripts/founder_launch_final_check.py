@@ -70,11 +70,17 @@ def normalize_base_url(value: str) -> str:
     return value.rstrip("/")
 
 
+def add_health_probe(urls: list[str], base_url: str | None) -> None:
+    if base_url:
+        urls.append(f"{normalize_base_url(base_url)}/healthz")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Dealix founder final launch check")
     parser.add_argument("--live", action="store_true", help="Probe live deployment health URLs")
     parser.add_argument("--api-base", default=os.getenv("DEALIX_API_BASE", "https://api.dealix.me"))
-    parser.add_argument("--web-base", default=os.getenv("DEALIX_WEB_BASE", "https://dealix.me"))
+    parser.add_argument("--frontend-base", default=os.getenv("DEALIX_FRONTEND_BASE") or os.getenv("DEALIX_FRONTEND_URL") or "https://dealix.me")
+    parser.add_argument("--apps-web-base", default=os.getenv("DEALIX_APPS_WEB_BASE") or os.getenv("DEALIX_WEB_BASE") or os.getenv("DEALIX_WEB_URL"))
     parser.add_argument("--skip-openapi", action="store_true", help="Skip OpenAPI contract check")
     args = parser.parse_args()
 
@@ -92,13 +98,13 @@ def main() -> int:
     if args.live:
         print("\n=== Live health probes ===")
         api_base = normalize_base_url(args.api_base)
-        web_base = normalize_base_url(args.web_base)
         live_urls = [
             f"{api_base}/healthz",
             f"{api_base}/ready",
-            f"{web_base}/healthz",
         ]
-        for url in live_urls:
+        add_health_probe(live_urls, args.frontend_base)
+        add_health_probe(live_urls, args.apps_web_base)
+        for url in dict.fromkeys(live_urls):
             ok = probe_url(url) and ok
 
     if ok:
