@@ -1,5 +1,29 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added a repository gap audit: `docs/architecture/REPO_GAP_AUDIT.md`.
+- Added a production readiness checklist: `docs/ops/PRODUCTION_READINESS_CHECKLIST.md`.
+- Added an environment contract checker: `scripts/check_env_contract.py`.
+- Added an OpenAPI export utility: `scripts/export_openapi.py`.
+- Added repository operating commands: `make env-check`, `make openapi-export`, and `make prod-verify`.
+
+### Changed
+
+- Refreshed `README.md` to match the actual `VoXc2/dealix` repository and current operating workflow.
+- Consolidated CI into a single workflow with backend and web jobs.
+- CI now checks the environment template and verifies OpenAPI schema export.
+- Cleaned `.env.example` to remove duplicate admin key definitions.
+
+### Fixed
+
+- Fixed stale README quick-start commands.
+- Fixed duplicate CI workflow definitions.
+
+---
+
 ## [3.0.0] — 2026-04-23
 
 ### ✨ Features — Dealix v3.0.0 الإطلاق الكامل
