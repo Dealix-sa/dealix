@@ -119,7 +119,7 @@ jobs:
         run: python scripts/run_evals.py
 
   web-build:
-    name: Next.js web build
+    name: Next.js web verify
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -141,5 +141,5 @@ jobs:
       - name: Install web dependencies
         run: npm ci
 
-      - name: Build web app
-        run: npm run build
+      - name: Verify web app
+        run: npm run verify
