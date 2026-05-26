@@ -20,49 +20,58 @@ _TOOL_REGISTRY: dict[str, dict[str, Any]] = {
         "permitted": False,  # default
         "requires_env": ["DEALIX_MOYASAR_MODE=live"],
         "blocked_unless_env": True,
+        "sdaia_risk_tier": "Critical",
     },
     "moyasar_charge_test": {
         "permitted": True,
         "requires_env": [],
         "blocked_unless_env": False,
+        "sdaia_risk_tier": "Low",
     },
     "whatsapp_send_live": {
         "permitted": False,
         "requires_env": [],
         "always_blocked": True,
         "block_reason": "NO_LIVE_SEND constitutional gate",
+        "sdaia_risk_tier": "High",
     },
     "whatsapp_template_internal": {
         "permitted": True,
         "requires_env": [],
         "blocked_unless_env": False,
+        "sdaia_risk_tier": "Limited",
     },
     "linkedin_automate": {
         "permitted": False,
         "requires_env": [],
         "always_blocked": True,
         "block_reason": "NO_LINKEDIN_AUTO constitutional gate",
+        "sdaia_risk_tier": "High",
     },
     "email_send_live": {
         "permitted": False,
         "requires_env": [],
         "requires_approval": True,
+        "sdaia_risk_tier": "High",
     },
     "scrape_external": {
         "permitted": False,
         "requires_env": [],
         "always_blocked": True,
         "block_reason": "NO_SCRAPING constitutional gate",
+        "sdaia_risk_tier": "Limited",
     },
     "public_post": {
         "permitted": False,
         "requires_env": [],
         "requires_approval": True,
+        "sdaia_risk_tier": "High",
     },
     "internal_brief": {
         "permitted": True,
         "requires_env": [],
         "blocked_unless_env": False,
+        "sdaia_risk_tier": "Low",
     },
 }
 
@@ -79,13 +88,17 @@ def check_tool_permission(
             "permitted": False,
             "reason": f"unknown_tool:{tool_name}",
             "action_mode": "blocked",
+            "sdaia_risk_tier": "Critical",
         }
+
+    sdaia_risk = tool.get("sdaia_risk_tier", "High")
 
     if tool.get("always_blocked"):
         return {
             "permitted": False,
             "reason": tool.get("block_reason", "always_blocked"),
             "action_mode": "blocked",
+            "sdaia_risk_tier": sdaia_risk,
         }
 
     if tool.get("blocked_unless_env"):
@@ -98,6 +111,7 @@ def check_tool_permission(
                         "permitted": False,
                         "reason": f"env_required:{var_spec}",
                         "action_mode": "blocked",
+                        "sdaia_risk_tier": sdaia_risk,
                     }
 
     if tool.get("requires_approval"):
@@ -106,12 +120,14 @@ def check_tool_permission(
                 "permitted": False,
                 "reason": "human_approval_required",
                 "action_mode": "approval_required",
+                "sdaia_risk_tier": sdaia_risk,
             }
         # Has explicit human approval → permitted as approved_manual
         return {
             "permitted": True,
             "reason": "approved_with_human_approval",
             "action_mode": "approved_manual",
+            "sdaia_risk_tier": sdaia_risk,
         }
 
     if tool.get("permitted"):
@@ -119,10 +135,12 @@ def check_tool_permission(
             "permitted": True,
             "reason": "tool_in_allowed_set",
             "action_mode": "draft_only",
+            "sdaia_risk_tier": sdaia_risk,
         }
 
     return {
         "permitted": False,
         "reason": "tool_not_permitted_by_default",
         "action_mode": "blocked",
+        "sdaia_risk_tier": sdaia_risk,
     }

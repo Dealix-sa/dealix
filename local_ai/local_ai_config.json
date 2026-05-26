@@ -1,0 +1,10 @@
+{
+  "ollama_url": "http://localhost:11434/api/generate",
+  "primary_model": "qwen2.5-coder:7b",
+  "heavy_model": "qwen2.5-coder:14b",
+  "light_model": "qwen3:4b",
+  "timeout_seconds": 30,
+  "keep_alive": "5m",
+  "fallback_to_mock": true,
+  "default_arabic_fallback": "ديلكس يساعد فريق B2B في السعودية على تشغيل AI والتسليم بدقة أعلى عبر حوكمة، موافقات، تقارير تنفيذية، وحزم إثبات قابلة للمراجعة."
+}

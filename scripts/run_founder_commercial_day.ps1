@@ -55,14 +55,14 @@ if ($DryRun) {
 Write-Host "== Dealix Founder Commercial Day (canonical) =="
 
 Write-Host "`n== 0a/7 Agent work packets (today) =="
-try { Invoke-DealixPy scripts/print_agent_work_packets.py --cadence daily } catch { Write-Host "  (agent packets warning — continuing)" }
+try { Invoke-DealixPy scripts/print_agent_work_packets.py --cadence daily } catch { Write-Host "  (agent packets warning - continuing)" }
 
 Write-Host "`n== 0b/7 GTM public surfaces (repo) =="
-try { Invoke-DealixPy scripts/verify_gtm_public_surfaces.py --skip-live } catch { Write-Host "  (gtm surfaces warning — continuing)" }
+try { Invoke-DealixPy scripts/verify_gtm_public_surfaces.py --skip-live } catch { Write-Host "  (gtm surfaces warning - continuing)" }
 
 $ProdApi = if ($env:DEALIX_API_BASE) { $env:DEALIX_API_BASE } else { "https://api.dealix.me" }
 Write-Host "`n== 0c/7 Production gates (Railway + live API) =="
-try { Invoke-DealixPy scripts/run_founder_production_gates.py --api-base $ProdApi } catch { Write-Host "  (production gates warning — continuing)" }
+try { Invoke-DealixPy scripts/run_founder_production_gates.py --api-base $ProdApi } catch { Write-Host "  (production gates warning - continuing)" }
 
 Write-Host "`n== Expand stack (targeting + social + content) =="
 Invoke-DealixPy scripts/expand_commercial_operating_stack.py --daily

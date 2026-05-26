@@ -50,7 +50,9 @@ def test_count_evidence_events_today():
 
 
 def test_scope_requested_within_days():
-    rows = [{"event_date": "2026-05-10", "event_type": "scope_requested"}]
+    from datetime import datetime, UTC, timedelta
+    event_date = (datetime.now(UTC).date() - timedelta(days=5)).isoformat()
+    rows = [{"event_date": event_date, "event_type": "scope_requested"}]
     assert scope_requested_within_days(14, rows) is True
     assert scope_requested_within_days(3, rows) is False
 

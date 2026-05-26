@@ -89,6 +89,7 @@ async def check(payload: dict[str, Any] = Body(default_factory=dict)) -> dict[st
         "output_check": output_check,
         "cost_check": cost_check,
         "action_mode": tool_check.get("action_mode", "blocked"),
+        "sdaia_risk_tier": tool_check.get("sdaia_risk_tier", "Critical"),
         "reasons": (
             input_check.get("reasons", [])
             + ([tool_check["reason"]] if not tool_check.get("permitted") else [])
@@ -100,7 +101,7 @@ async def check(payload: dict[str, Any] = Body(default_factory=dict)) -> dict[st
     # Audit (never raises)
     audit_decision(
         tool_name=tool_name,
-        decision={"passed": overall_passed, "reasons": decision["reasons"], "severity": "high" if not overall_passed else "info"},
+        decision={"passed": overall_passed, "reasons": decision["reasons"], "severity": "high" if not overall_passed else "info", "sdaia_risk_tier": decision["sdaia_risk_tier"]},
         customer_handle=customer_handle,
     )
 

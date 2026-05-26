@@ -24,12 +24,33 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const isRTL = locale === "ar";
 
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Dealix",
+    "url": "https://dealix.sa",
+    "logo": "https://dealix.sa/logo.png",
+    "description": locale === "ar" ? "نظام تشغيل الإيرادات الأول المدعوم بوكلاء الذكاء الاصطناعي في السعودية" : "The First AI-Powered Revenue Operating System in Saudi Arabia",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+966-50-000-0000",
+      "contactType": "customer service",
+      "availableLanguage": ["Arabic", "English"]
+    }
+  };
+
   return (
     <html
       lang={locale}
       dir={isRTL ? "rtl" : "ltr"}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className="font-arabic antialiased">
         <ThemeProvider
           attribute="class"

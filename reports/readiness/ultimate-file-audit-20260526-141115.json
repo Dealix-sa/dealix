@@ -1,0 +1,432 @@
+{
+  "present": 68,
+  "total": 70,
+  "score": 98.6,
+  "verdict": "PASS",
+  "missing": [
+    "docs/launch/DEALIX_LOCAL_PRODUCTION_OPERATING_MANUAL_AR.md",
+    "docs/hermes/HERMES_CORE_V1_OPERATING_MANUAL_AR.md"
+  ],
+  "rows": [
+    {
+      "group": "01_core_runtime",
+      "file": "dealix.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "01_core_runtime",
+      "file": "dealix_local_ai.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "01_core_runtime",
+      "file": "local_ai/local_ai_config.json",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "01_core_runtime",
+      "file": "scripts/dealix-local-ai-env.ps1",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "01_core_runtime",
+      "file": "scripts/verify_local_ai.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "01_core_runtime",
+      "file": "scripts/dealix-operator-day.ps1",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "01_core_runtime",
+      "file": "scripts/dealix-launch-mode.ps1",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "02_quality_governance_safety",
+      "file": "scripts/score_local_output.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "02_quality_governance_safety",
+      "file": "scripts/local_generate_score_check.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "02_quality_governance_safety",
+      "file": "scripts/ledger_guard.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "02_quality_governance_safety",
+      "file": "scripts/backup_ledgers.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "02_quality_governance_safety",
+      "file": "scripts/runtime_snapshot.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "02_quality_governance_safety",
+      "file": "scripts/restore_latest_snapshot.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "02_quality_governance_safety",
+      "file": "scripts/pipeline_status_machine.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "02_quality_governance_safety",
+      "file": "docs/trust/HERMES_TRUST_MODEL_AR.md",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "data/ledgers/prospects.json",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "scripts/build_manual_send_queue.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "scripts/build_followup_queue.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "scripts/triage_reply.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "scripts/lead_status_report.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "scripts/ceo_close_report.py",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "docs/ops/APPROVED_OUTREACH_TEMPLATES_AR.md",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "docs/sales/APPROVED_REPLY_LIBRARY_AR.md",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "03_sales_execution",
+      "file": "docs/sales/FOLLOW_UP_LIBRARY_AR.md",
+      "present": true,
+      "weight": 5
+    },
+    {
+      "group": "04_revenue_payment",
+      "file": "scripts/proposal_from_lead.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "04_revenue_payment",
+      "file": "scripts/payment_request.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "04_revenue_payment",
+      "file": "scripts/start_paid_delivery.ps1",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "04_revenue_payment",
+      "file": "scripts/confirm_payment.ps1",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "04_revenue_payment",
+      "file": "scripts/revenue_ledger.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "04_revenue_payment",
+      "file": "data/ledgers/revenue_ledger.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "05_delivery_proof_retainer",
+      "file": "scripts/new_client_intake.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "05_delivery_proof_retainer",
+      "file": "scripts/delivery_tracker.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "05_delivery_proof_retainer",
+      "file": "scripts/generate_ai_trust_report.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "05_delivery_proof_retainer",
+      "file": "scripts/generate_delivery_accuracy_report.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "05_delivery_proof_retainer",
+      "file": "scripts/proof_from_lead.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "05_delivery_proof_retainer",
+      "file": "scripts/retainer_offer.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "05_delivery_proof_retainer",
+      "file": "scripts/complete_delivery.ps1",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "05_delivery_proof_retainer",
+      "file": "data/ledgers/delivery_ledger.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_safe_init.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_founder_brief.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_opportunity_radar.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_score.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_capture_signal.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_decision_memo.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_deal_room.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_compound_input.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_log_outcome.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_trust_pack.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes_weekly_review.py",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "06_hermes_core",
+      "file": "scripts/hermes-core-run.ps1",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "07_hermes_partner_productization",
+      "file": "scripts/hermes_partner_init.py",
+      "present": true,
+      "weight": 3
+    },
+    {
+      "group": "07_hermes_partner_productization",
+      "file": "scripts/hermes_partner_os.py",
+      "present": true,
+      "weight": 3
+    },
+    {
+      "group": "07_hermes_partner_productization",
+      "file": "scripts/hermes_partner_pack.py",
+      "present": true,
+      "weight": 3
+    },
+    {
+      "group": "07_hermes_partner_productization",
+      "file": "scripts/hermes_case_study.py",
+      "present": true,
+      "weight": 3
+    },
+    {
+      "group": "07_hermes_partner_productization",
+      "file": "scripts/hermes_productization_gate.py",
+      "present": true,
+      "weight": 3
+    },
+    {
+      "group": "07_hermes_partner_productization",
+      "file": "scripts/hermes-partner-product-run.ps1",
+      "present": true,
+      "weight": 3
+    },
+    {
+      "group": "07_hermes_partner_productization",
+      "file": "docs/partners/HERMES_PARTNER_OS_AR.md",
+      "present": true,
+      "weight": 3
+    },
+    {
+      "group": "07_hermes_partner_productization",
+      "file": "docs/productization/HERMES_PRODUCTIZATION_RULES_AR.md",
+      "present": true,
+      "weight": 3
+    },
+    {
+      "group": "08_key_ledgers",
+      "file": "data/ledgers/hermes_signals.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "08_key_ledgers",
+      "file": "data/ledgers/hermes_opportunities.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "08_key_ledgers",
+      "file": "data/ledgers/hermes_outcomes.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "08_key_ledgers",
+      "file": "data/ledgers/hermes_assets.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "08_key_ledgers",
+      "file": "data/ledgers/hermes_deal_rooms.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "08_key_ledgers",
+      "file": "data/ledgers/hermes_partners.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "08_key_ledgers",
+      "file": "data/ledgers/hermes_productization.json",
+      "present": true,
+      "weight": 4
+    },
+    {
+      "group": "09_manuals",
+      "file": "docs/launch/DEALIX_LOCAL_PRODUCTION_OPERATING_MANUAL_AR.md",
+      "present": false,
+      "weight": 2
+    },
+    {
+      "group": "09_manuals",
+      "file": "docs/hermes/HERMES_CORE_V1_OPERATING_MANUAL_AR.md",
+      "present": false,
+      "weight": 2
+    },
+    {
+      "group": "09_manuals",
+      "file": "docs/trust/HERMES_TRUST_MODEL_AR.md",
+      "present": true,
+      "weight": 2
+    },
+    {
+      "group": "09_manuals",
+      "file": "docs/partners/HERMES_PARTNER_OS_AR.md",
+      "present": true,
+      "weight": 2
+    },
+    {
+      "group": "09_manuals",
+      "file": "docs/productization/HERMES_PRODUCTIZATION_RULES_AR.md",
+      "present": true,
+      "weight": 2
+    }
+  ]
+}

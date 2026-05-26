@@ -48,6 +48,7 @@ class AgentSpec(BaseModel):
     max_autonomy: AutonomyLevel = AutonomyLevel.L2_APPROVAL_REQUIRED
     allowed_tools: list[ToolCategory] = Field(default_factory=list)
     forbidden_tools: list[ToolCategory] = Field(default_factory=list)
+    supported_skills: list[str] = Field(default_factory=list)
     requires_human_review: bool = True
     logging_required: bool = True
     notes: str = ""

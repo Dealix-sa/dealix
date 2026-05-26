@@ -24,6 +24,7 @@ def audit_decision(
                 "passed": decision.get("passed"),
                 "reasons": decision.get("reasons", []),
                 "severity": decision.get("severity", "info"),
+                "sdaia_risk_tier": decision.get("sdaia_risk_tier", "Unknown"),
             },
         )
     safe_call(name="audit_decision", fn=fn, fallback=None)

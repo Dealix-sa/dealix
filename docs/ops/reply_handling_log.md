@@ -95,3 +95,7 @@ Roll up the week:
 ---
 
 *Template aligned with `FIRST_REVENUE_ATTEMPT.md` + `objection_library_ar.md`.*
+
+| 2026-05-26 09:53:08 | call_interest | "أهلاً سامي، مهتمين جداً ونرغب في معرفة الأسعار وا... | call_interest triage complete. |
+
+| 2026-05-26 09:54:22 | call_interest | أهلاً سامي، مهتمين جداً ونرغب في معرفة الأسعار وال... | call_interest triage complete. |

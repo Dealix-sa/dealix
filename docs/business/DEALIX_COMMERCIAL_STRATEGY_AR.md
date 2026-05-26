@@ -96,12 +96,12 @@ Dealix **Revenue OS محكوم** — ليس CRM عاماً:
 ---
 
 <!-- AUTO_GENERATED_START -->
-# Commercial strategy snapshot — 2026-05-16
+# Commercial strategy snapshot — 2026-05-26
 
 ## Focus
-- stage: kpi_hygiene
+- stage: platform_repair
 - primary_offer_id: None
-- rationale: 6 KPIs تجارية معلّقة — عبّئ kpi_founder_commercial_import.yaml قبل توسع GTM
+- rationale: أصلح verify_global_ai_transformation قبل أي توسع مبيعات
 
 ## Offers
 - free_mini_diagnostic: 0.0 SAR — اكتمال النموذج خلال 24 ساعة + جواز قرار أولي

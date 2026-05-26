@@ -1,12 +1,13 @@
-# Business NOW snapshot — 2026-05-16
+# Business NOW snapshot — 2026-05-26
 
 ## Platform
-- transformation_verdict: PASS
-- governed_domains: 16
+- transformation_verdict: FAIL
+- enterprise_control_plane_verdict: UNKNOWN
+- governed_domains: 0
 
 ## Commercial KPIs
-- pending: 6
-- ready: 0
+- pending: 0
+- ready: 6
 
 ## Pilot sprints
 - sprint_001: template_ready
@@ -14,7 +15,7 @@
 - sprint_003: template_ready
 
 ## Today actions
-- P1: عبّئ KPIs التجارية من CRM في kpi_founder_commercial_import.yaml ثم apply
+- P1: أصلح فشل verify_global_ai_transformation قبل أي توسع GTM
 - P2: ابدأ بايلوت sprint_001 — نفّذ PILOT_EXECUTION_RUNBOOK
 - P3: راجع موافقات اليوم — لا إرسال خارجي بدون جواز
 - P4: شغّل anti-waste قبل أي حملة أو رسالة خارجية

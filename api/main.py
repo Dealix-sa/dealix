@@ -78,6 +78,8 @@ from api.routers import friction_log as friction_log_router
 from api.routers import sprint_runner as sprint_runner_router
 from api.routers import founder_dashboard as founder_dashboard_router
 from api.routers import audit_export as audit_export_router
+# Strategic Hermes Integration
+from api.routers import hermes_integration as hermes_integration_router
 
 # value_os, data_os and agent_os routers are imported defensively: an
 # optional router with a broken module-level import must not abort app
@@ -107,6 +109,7 @@ except Exception as _exc:  # noqa: BLE001
 from api.routers import commercial_map as commercial_map_router
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
+from api.routers import founder_sovereign_console as founder_sovereign_console_router
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
 from api.security import APIKeyMiddleware, setup_rate_limit
@@ -335,6 +338,7 @@ def create_app() -> FastAPI:
     app.include_router(sprint_runner_router.router)
     app.include_router(founder_dashboard_router.router)
     app.include_router(audit_export_router.router)
+    app.include_router(hermes_integration_router.router, prefix="/api/v1")
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)

@@ -304,3 +304,10 @@ old/
 tmp/
 
 # =================== END DEALIX FOUNDER OS MANAGED BLOCK v5 ===================
+
+# Dealix Final Operational Runtime
+local_ai/queue/*
+local_ai/followups/*
+reports/launch/*
+reports/board/*
+reports/operator/*
