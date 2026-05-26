@@ -61,6 +61,9 @@ jobs:
       - name: Environment contract check
         run: python scripts/check_env_contract.py
 
+      - name: Railway deploy surface check
+        run: python scripts/verify_railway_surfaces.py
+
       - name: Compile check
         run: python -m compileall api auto_client_acquisition autonomous_growth core db integrations dealix scripts
 
@@ -143,3 +146,50 @@ jobs:
 
       - name: Verify web app
         run: npm run verify
+
+  frontend-build:
+    name: Frontend verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Typecheck frontend
+        run: npm run typecheck
+
+      - name: Build frontend
+        run: npm run build
+
+  railway-docker-builds:
+    name: Railway Docker image builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify API Docker build
+        run: docker build -t dealix-api-ci .
+
+      - name: Verify frontend Docker build
+        run: docker build -t dealix-frontend-ci frontend
+
+      - name: Verify apps web Docker build
+        run: docker build -t dealix-apps-web-ci apps/web
