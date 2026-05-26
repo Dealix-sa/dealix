@@ -1,3 +1,5 @@
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealix.me";
+
 const productAreas = [
   {
     title: "Revenue OS",
@@ -31,9 +33,40 @@ const operationalLinks = [
   ["Self-evolving OS", "/self-evolving"]
 ];
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Dealix",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  url: siteUrl,
+  description:
+    "Saudi-first B2B revenue, growth, and compliance engine with approval-first AI execution.",
+  areaServed: {
+    "@type": "Country",
+    name: "Saudi Arabia"
+  },
+  offers: {
+    "@type": "Offer",
+    priceCurrency: "SAR",
+    availability: "https://schema.org/InStock"
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Dealix",
+    url: siteUrl
+  }
+};
+
 export default function HomePage() {
   return (
     <main className="grid">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <section className="card" aria-labelledby="hero-title">
         <p className="eyebrow">Saudi-first · Approval-first · Revenue-focused</p>
         <h1 id="hero-title">Dealix Enterprise Control Plane</h1>
