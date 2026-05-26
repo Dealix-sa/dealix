@@ -5,7 +5,7 @@
     "dockerfilePath": "Dockerfile"
   },
   "deploy": {
-    "preDeployCommand": "sh /app/scripts/railway_predeploy.sh",
+    "preDeployCommand": "if [ -x /app/scripts/railway_predeploy.sh ]; then sh /app/scripts/railway_predeploy.sh; else echo 'RAILWAY_PREDEPLOY: no API predeploy script in this image'; fi",
     "healthcheckPath": "/healthz",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
