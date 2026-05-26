@@ -1,9 +1,18 @@
 name: CI
 
 on:
-  pull_request:
   push:
     branches:
+      - main
+      - dealix-v3-autonomous-revenue-os
+      - 'copilot/**'
+      - 'feat/**'
+      - 'fix/**'
+      - 'chore/**'
+  pull_request:
+    branches:
+      - main
+      - dealix-v3-autonomous-revenue-os
       - 'copilot/**'
       - 'feat/**'
       - 'fix/**'
@@ -12,9 +21,24 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   python-checks:
+    name: Python quality, tests, readiness
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      APP_ENV: test
+      APP_DEBUG: "false"
+      ANTHROPIC_API_KEY: test-anthropic-key
+      DEEPSEEK_API_KEY: test-deepseek-key
+      GROQ_API_KEY: test-groq-key
+      GLM_API_KEY: test-glm-key
+      GOOGLE_API_KEY: test-google-key
 
     steps:
       - name: Checkout
@@ -24,95 +48,47 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
 
-      - name: Install Python dependencies if requirements exists
+      - name: Install Python dependencies
         shell: bash
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          if [ -f pyproject.toml ]; then pip install -e . || true; fi
-
-      - name: Run tests
-        shell: bash
-        run: |
-          if compgen -G "test*.py" > /dev/null || compgen -G "tests/*.py" > /dev/null; then
-            python -m pytest -o addopts="" -q
-          else
-            echo "No Python tests found."
-          fi
-
-      - name: Compile Python files
-        shell: bash
-        run: |
-          python -m compileall .
-name: CI
-
-on:
-  push:
-    branches: [main, dealix-v3-autonomous-revenue-os, copilot/**, feat/**, fix/**, chore/**]
-  pull_request:
-    branches: [main, dealix-v3-autonomous-revenue-os, copilot/**, feat/**, fix/**, chore/**]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-          cache: pip
-
-      - name: Install dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          pip install -r requirements.txt
           pip install pytest pytest-asyncio pytest-cov httpx aiosqlite
+          if [ -f pyproject.toml ]; then pip install -e .; fi
 
       - name: Compile check
-        run: python3 -m compileall api auto_client_acquisition
+        run: python -m compileall api auto_client_acquisition autonomous_growth core db integrations dealix scripts
 
       - name: Alembic single head
-        run: python3 scripts/check_alembic_single_head.py
+        run: python scripts/check_alembic_single_head.py
 
       - name: Verify Service Readiness Matrix
-        run: python3 scripts/verify_service_readiness_matrix.py
+        run: python scripts/verify_service_readiness_matrix.py
 
-      - name: Quick regression bundle (revenue memory + routing + integrations + v5 + compliance)
-        env:
-          APP_ENV: test
-          APP_DEBUG: "false"
-          ANTHROPIC_API_KEY: test-anthropic-key
-          DEEPSEEK_API_KEY: test-deepseek-key
-          GROQ_API_KEY: test-groq-key
-          GLM_API_KEY: test-glm-key
-          GOOGLE_API_KEY: test-google-key
+      - name: Quick regression bundle
         run: |
-          pytest tests/test_pg_event_store.py tests/test_model_router.py tests/test_integrations.py tests/test_v5_layers.py tests/unit/test_compliance_os.py tests/test_isolated_pg_event_store.py -q --no-cov
+          pytest \
+            tests/test_pg_event_store.py \
+            tests/test_model_router.py \
+            tests/test_integrations.py \
+            tests/test_v5_layers.py \
+            tests/unit/test_compliance_os.py \
+            tests/test_isolated_pg_event_store.py \
+            -q --no-cov
 
       - name: Export Service Readiness JSON
         run: |
-          python3 scripts/export_service_readiness_json.py
-          # Fail CI if the committed JSON is stale relative to the YAML.
+          python scripts/export_service_readiness_json.py
           git diff --exit-code -- landing/assets/data/service-readiness.json
 
-      - name: SEO audit (required-gap must be 0; advisory perimeter locked)
+      - name: SEO audit
         run: |
-          python3 scripts/seo_audit.py
-          # Fail CI if the committed SEO report is stale.
+          python scripts/seo_audit.py
           git diff --exit-code -- docs/SEO_AUDIT_REPORT.json
 
       - name: Tests with coverage gate
-        env:
-          APP_ENV: test
-          APP_DEBUG: "false"
-          ANTHROPIC_API_KEY: test-anthropic-key
-          DEEPSEEK_API_KEY: test-deepseek-key
-          GROQ_API_KEY: test-groq-key
-          GLM_API_KEY: test-glm-key
-          GOOGLE_API_KEY: test-google-key
         run: |
           pytest -q \
             --cov=api --cov=core --cov=db --cov=integrations \
@@ -128,26 +104,36 @@ jobs:
           fail_ci_if_error: false
 
       - name: In-process API smoke
-        env:
-          APP_ENV: test
-          APP_DEBUG: "false"
-          ANTHROPIC_API_KEY: test-anthropic-key
-          DEEPSEEK_API_KEY: test-deepseek-key
-          GROQ_API_KEY: test-groq-key
-          GLM_API_KEY: test-glm-key
-          GOOGLE_API_KEY: test-google-key
-        run: python3 scripts/smoke_inprocess.py
+        run: python scripts/smoke_inprocess.py
 
       - name: Embeddings pipeline placeholder
-        run: python3 scripts/embeddings_pipeline_placeholder.py
+        run: python scripts/embeddings_pipeline_placeholder.py
 
       - name: Deterministic eval smoke
-        env:
-          APP_ENV: test
-          APP_DEBUG: "false"
-          ANTHROPIC_API_KEY: test-anthropic-key
-          DEEPSEEK_API_KEY: test-deepseek-key
-          GROQ_API_KEY: test-groq-key
-          GLM_API_KEY: test-glm-key
-          GOOGLE_API_KEY: test-google-key
-        run: python3 scripts/run_evals.py
+        run: python scripts/run_evals.py
+
+  web-build:
+    name: Next.js web build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install web dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
