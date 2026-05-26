@@ -3,7 +3,7 @@
 
 This script intentionally has no third-party dependencies so it can run early in CI.
 It checks for duplicate keys, malformed assignments, unsafe public-admin exposure hints,
-and required production variables in `.env.example`.
+and required production variables in backend and frontend env templates.
 """
 
 from __future__ import annotations
@@ -15,6 +15,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 ENV_TEMPLATE = ROOT / ".env.example"
+WEB_ENV_TEMPLATE = ROOT / "apps" / "web" / ".env.example"
 
 ASSIGNMENT = re.compile(r"^([A-Z][A-Z0-9_]*)=(.*)$")
 
@@ -26,6 +27,12 @@ REQUIRED_KEYS = {
     "APP_URL",
     "ADMIN_API_KEYS",
     "CORS_ORIGINS",
+}
+
+REQUIRED_WEB_KEYS = {
+    "NEXT_PUBLIC_SITE_URL",
+    "NEXT_PUBLIC_API_URL",
+    "NEXT_PUBLIC_USE_DEALIX_OPS_PROXY",
 }
 
 PUBLIC_ADMIN_KEYS = {
@@ -54,17 +61,17 @@ def parse_env(path: Path) -> tuple[dict[str, list[tuple[int, str]]], list[str]]:
     return keys, errors
 
 
-def main() -> int:
-    keys, errors = parse_env(ENV_TEMPLATE)
+def check_template(path: Path, required: set[str], label: str) -> list[str]:
+    keys, errors = parse_env(path)
 
     duplicates = {key: rows for key, rows in keys.items() if len(rows) > 1}
     for key, rows in duplicates.items():
         locations = ", ".join(f"line {line_no}" for line_no, _ in rows)
-        errors.append(f"Duplicate env key {key} in .env.example at {locations}")
+        errors.append(f"Duplicate env key {key} in {label} at {locations}")
 
-    missing = sorted(REQUIRED_KEYS.difference(keys))
+    missing = sorted(required.difference(keys))
     for key in missing:
-        errors.append(f"Missing required production env key in .env.example: {key}")
+        errors.append(f"Missing required env key in {label}: {key}")
 
     for key in PUBLIC_ADMIN_KEYS.intersection(keys):
         values = [value for _, value in keys[key]]
@@ -74,13 +81,21 @@ def main() -> int:
                 "Prefer NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1 with a server-side key."
             )
 
+    return errors
+
+
+def main() -> int:
+    errors: list[str] = []
+    errors.extend(check_template(ENV_TEMPLATE, REQUIRED_KEYS, ".env.example"))
+    errors.extend(check_template(WEB_ENV_TEMPLATE, REQUIRED_WEB_KEYS, "apps/web/.env.example"))
+
     if errors:
         print("Environment contract check failed:\n", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
 
-    print(f"Environment contract OK: {len(keys)} keys checked from {ENV_TEMPLATE.relative_to(ROOT)}")
+    print("Environment contract OK: backend and frontend templates checked")
     return 0
 
 
