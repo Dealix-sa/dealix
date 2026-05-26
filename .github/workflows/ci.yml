@@ -17,6 +17,20 @@ on:
       - 'feat/**'
       - 'fix/**'
       - 'chore/**'
+  workflow_dispatch:
+    inputs:
+      api_url:
+        description: 'Optional API URL for live Railway smoke'
+        required: false
+        type: string
+      frontend_url:
+        description: 'Optional frontend URL for live Railway smoke'
+        required: false
+        type: string
+      web_url:
+        description: 'Optional apps/web URL for live Railway smoke'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -193,3 +207,20 @@ jobs:
 
       - name: Verify apps web Docker build
         run: docker build -t dealix-apps-web-ci apps/web
+
+  live-railway-smoke:
+    name: Optional live Railway smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run live smoke matrix
+        env:
+          DEALIX_API_URL: ${{ inputs.api_url }}
+          DEALIX_FRONTEND_URL: ${{ inputs.frontend_url }}
+          DEALIX_WEB_URL: ${{ inputs.web_url }}
+        run: python scripts/railway_smoke_matrix.py
