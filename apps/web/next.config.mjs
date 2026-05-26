@@ -38,6 +38,9 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  output: 'standalone',
+  poweredByHeader: false,
+  reactStrictMode: true,
   experimental: {
     typedRoutes: true
   },
