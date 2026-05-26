@@ -64,8 +64,8 @@ jobs:
       - name: Compile check
         run: python -m compileall api auto_client_acquisition autonomous_growth core db integrations dealix scripts
 
-      - name: OpenAPI contract export smoke
-        run: python scripts/export_openapi.py --output /tmp/dealix-openapi.json
+      - name: OpenAPI contract check
+        run: python scripts/check_openapi_contract.py
 
       - name: Alembic single head
         run: python scripts/check_alembic_single_head.py
@@ -135,15 +135,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
 
       - name: Install web dependencies
-        shell: bash
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+        run: npm ci
 
       - name: Build web app
         run: npm run build
