@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════════
-# AI Company Saudi — Makefile
+# Dealix — Makefile
 # الأوامر الشائعة
 # ═══════════════════════════════════════════════════════════════
 
@@ -7,15 +7,17 @@
         lint format type-check security clean run demo \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
+        env-check openapi-export prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
+OPENAPI_OUTPUT ?= docs/architecture/openapi.json
 
 help: ## Show this help
-	@echo "🏢 AI Company Saudi — Available commands:"
+	@echo "🏢 Dealix — Available commands:"
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 # ── Environment setup ──────────────────────────────────────────
@@ -48,6 +50,15 @@ type-check: ## Run mypy
 security: ## Run security scans
 	bandit -c pyproject.toml -r core auto_client_acquisition autonomous_growth integrations api
 	detect-secrets scan --baseline .secrets.baseline || true
+
+env-check: ## Validate .env.example contract and duplicate keys
+	$(PYTHON) scripts/check_env_contract.py
+
+openapi-export: ## Export FastAPI OpenAPI schema (OPENAPI_OUTPUT=...)
+	$(PYTHON) scripts/export_openapi.py --output $(OPENAPI_OUTPUT)
+
+prod-verify: env-check openapi-export v5-verify ## Canonical production-readiness verification bundle
+	@echo "✅ Dealix production verification bundle completed"
 
 # ── Tests ──────────────────────────────────────────────────────
 test: ## Run full test suite with coverage
