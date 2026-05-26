@@ -1,0 +1,60 @@
+{
+  "services": [
+    {
+      "name": "dealix-api",
+      "rootDirectory": ".",
+      "dockerfilePath": "Dockerfile",
+      "railwayConfig": "railway.json",
+      "healthcheckPath": "/healthz",
+      "publicHealthUrl": "https://api.dealix.me/healthz",
+      "requiredEnv": [
+        "APP_ENV",
+        "APP_SECRET_KEY",
+        "JWT_SECRET_KEY",
+        "API_KEYS",
+        "ADMIN_API_KEYS"
+      ],
+      "optionalEnv": [
+        "DATABASE_URL",
+        "REDIS_URL",
+        "SENTRY_DSN",
+        "ANTHROPIC_API_KEY",
+        "OPENAI_API_KEY",
+        "GROQ_API_KEY",
+        "GOOGLE_API_KEY"
+      ],
+      "runsPredeploy": true
+    },
+    {
+      "name": "dealix-frontend",
+      "rootDirectory": "frontend",
+      "dockerfilePath": "Dockerfile",
+      "railwayConfig": "frontend/railway.json",
+      "healthcheckPath": "/healthz",
+      "publicHealthUrl": "https://dealix.me/healthz",
+      "requiredEnv": [
+        "NEXT_PUBLIC_API_URL",
+        "NEXT_PUBLIC_SITE_URL",
+        "NEXT_PUBLIC_USE_DEALIX_OPS_PROXY"
+      ],
+      "optionalEnv": [
+        "DEALIX_OPS_PROXY_SECRET"
+      ],
+      "runsPredeploy": false
+    },
+    {
+      "name": "dealix-apps-web",
+      "rootDirectory": "apps/web",
+      "dockerfilePath": "Dockerfile",
+      "railwayConfig": "apps/web/railway.json",
+      "healthcheckPath": "/healthz",
+      "publicHealthUrl": "https://dealix.me/healthz",
+      "requiredEnv": [
+        "NEXT_PUBLIC_API_URL",
+        "NEXT_PUBLIC_SITE_URL"
+      ],
+      "optionalEnv": [],
+      "runsPredeploy": false
+    }
+  ]
+}
