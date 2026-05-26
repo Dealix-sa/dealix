@@ -1,0 +1,38 @@
+[
+  {
+    "tool_id": "SPL_address_api",
+    "risk_level": "L2",
+    "requires_human_approval": false,
+    "can_access_pii": true,
+    "can_write_external": false,
+    "max_daily_actions": 500,
+    "audit_required": true
+  },
+  {
+    "tool_id": "crm_send_email",
+    "risk_level": "L3",
+    "requires_human_approval": true,
+    "can_access_pii": true,
+    "can_write_external": true,
+    "max_daily_actions": 50,
+    "audit_required": true
+  },
+  {
+    "tool_id": "whatsapp_sms_sender",
+    "risk_level": "L3",
+    "requires_human_approval": true,
+    "can_access_pii": true,
+    "can_write_external": true,
+    "max_daily_actions": 100,
+    "audit_required": true
+  },
+  {
+    "tool_id": "pii_scrubber",
+    "risk_level": "L3",
+    "requires_human_approval": true,
+    "can_access_pii": true,
+    "can_write_external": true,
+    "max_daily_actions": 100,
+    "audit_required": true
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "client_name": "ABC Consulting",
+    "service_name": "revenue-hunter",
+    "impact_value_sar": 15000.0,
+    "proof_pack_path": "proof_pack_ABC_Consulting.md",
+    "created_at": "2026-05-26T02:00:00Z"
+  },
+  {
+    "client_name": "Al-Majd Group",
+    "service_name": "delivery-accuracy",
+    "impact_value_sar": 12500.0,
+    "proof_pack_path": "proof_pack_Al-Majd_Group.md",
+    "created_at": "2026-05-26T00:11:59.576677Z"
+  },
+  {
+    "client_name": "Naqel Express",
+    "service_name": "delivery-accuracy",
+    "impact_value_sar": 12500.0,
+    "proof_pack_path": "proof_pack_Naqel_Express.md",
+    "created_at": "2026-05-26T00:24:06.605186Z"
+  },
+  {
+    "client_name": "Al-Namaa Consulting",
+    "service_name": "ai-trust",
+    "impact_value_sar": 8200.0,
+    "proof_pack_path": "proof_pack_Al-Namaa_Consulting.md",
+    "created_at": "2026-05-26T00:26:59.709571Z"
+  },
+  {
+    "client_name": "Naqel Express",
+    "service_name": "delivery-accuracy",
+    "impact_value_sar": 12500.0,
+    "proof_pack_path": "proof_pack_Naqel_Express.md",
+    "created_at": "2026-05-26T00:35:17.786964Z"
+  },
+  {
+    "client_name": "Naqel Express",
+    "service_name": "delivery-accuracy",
+    "impact_value_sar": 12500.0,
+    "proof_pack_path": "proof_pack_Naqel_Express.md",
+    "created_at": "2026-05-26T00:44:23.272955Z"
+  }
+]

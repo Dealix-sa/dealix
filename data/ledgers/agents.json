@@ -1,0 +1,35 @@
+[
+  {
+    "agent_id": "AGT-001",
+    "name": "sales_agent",
+    "owner_email": "sami@dealix.sa",
+    "risk_level": "L2",
+    "allowed_tools": [
+      "crm_send_email",
+      "objection_resolver"
+    ],
+    "status": "active",
+    "created_at": "2026-05-26T00:00:00Z"
+  },
+  {
+    "agent_id": "AGT-002",
+    "name": "delivery_verification_agent",
+    "owner_email": "sami@dealix.sa",
+    "risk_level": "L3",
+    "allowed_tools": [
+      "SPL_address_api",
+      "whatsapp_sms_sender"
+    ],
+    "status": "active",
+    "created_at": "2026-05-26T00:00:00Z"
+  },
+  {
+    "agent_id": "AGT-003",
+    "name": "support_agent",
+    "owner_email": "sami@dealix.sa",
+    "risk_level": "L2",
+    "allowed_tools": [],
+    "status": "active",
+    "created_at": "2026-05-26T00:12:04.710463Z"
+  }
+]

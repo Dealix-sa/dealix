@@ -1,0 +1,50 @@
+[
+  {
+    "approval_id": "APP-2026-001",
+    "action": "send external campaign outreach to E-Shop SA",
+    "requested_by": "sales_agent",
+    "status": "APPROVED",
+    "approved_by": "sami@dealix.sa",
+    "timestamp": "2026-05-26T03:00:00Z"
+  },
+  {
+    "approval_id": "APP-2026-002",
+    "action": "trigger RTO correction message via WhatsApp for Order 4892",
+    "requested_by": "delivery_verification_agent",
+    "status": "approved",
+    "approved_by": "sami@dealix.sa",
+    "timestamp": "2026-05-26T02:30:00Z"
+  },
+  {
+    "approval_id": "APP-2026-003",
+    "action": "export client email list for marketing",
+    "requested_by": "cli_operator",
+    "status": "APPROVED",
+    "approved_by": "sami@dealix.sa",
+    "timestamp": "2026-05-26T00:12:09.664613Z"
+  },
+  {
+    "approval_id": "APP-2026-004",
+    "action": "أرسل مسودة عقد فني لشركة ناقل إكسبرس",
+    "requested_by": "cli_operator",
+    "status": "APPROVED",
+    "approved_by": "sami@dealix.sa",
+    "timestamp": "2026-05-26T00:24:06.035944Z"
+  },
+  {
+    "approval_id": "APP-2026-005",
+    "action": "أرسل مسودة عقد فني لشركة ناقل إكسبرس",
+    "requested_by": "cli_operator",
+    "status": "APPROVED",
+    "approved_by": "sami@dealix.sa",
+    "timestamp": "2026-05-26T00:35:17.087504Z"
+  },
+  {
+    "approval_id": "APP-2026-006",
+    "action": "أرسل مسودة عقد فني لشركة ناقل إكسبرس",
+    "requested_by": "cli_operator",
+    "status": "APPROVED",
+    "approved_by": "sami@dealix.sa",
+    "timestamp": "2026-05-26T00:44:22.673319Z"
+  }
+]
