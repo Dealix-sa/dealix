@@ -16,19 +16,21 @@ def load_json(name: str, default):
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
-def normalize_prospects(data):
+def normalize_list(data, key: str = ""):
     if isinstance(data, list):
         return data
     if isinstance(data, dict):
-        for key in ("prospects", "leads", "items"):
-            if isinstance(data.get(key), list):
-                return data[key]
+        if key and isinstance(data.get(key), list):
+            return data[key]
+        for k, v in data.items():
+            if isinstance(v, list):
+                return v
     return []
 
 
 def main() -> None:
     REPORTS.mkdir(parents=True, exist_ok=True)
-    prospects = normalize_prospects(load_json("prospects.json", []))
+    prospects = normalize_list(load_json("prospects.json", []), "prospects")
 
     proposals = [
         p for p in prospects
