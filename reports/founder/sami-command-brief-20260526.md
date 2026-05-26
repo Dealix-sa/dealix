@@ -1,5 +1,5 @@
 # 🧠 Sami Assiri's Command Brief — 2026-05-26
-Generated: 2026-05-26 11:12:58 UTC
+Generated: 2026-05-26 11:18:02 UTC
 Hermes Engine: Active
 
 ## ⚡ Active CEO Priority Action List

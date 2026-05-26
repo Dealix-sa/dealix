@@ -1,5 +1,5 @@
 # 📊 تقرير المراجعة الأسبوعية للأعمال (Hermes Weekly Review) — 2026-05-26
-Generated: 2026-05-26 11:12:58 UTC
+Generated: 2026-05-26 11:18:02 UTC
 
 ## 💰 ملخص الإيرادات والتحصيل (B2B Financial Scoreboard)
 * **المبيعات المغلقة (Won):** 1 صفقة (Al-Majd Group) بقيمة 5,000 ريال سعودي.
