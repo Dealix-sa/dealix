@@ -3,9 +3,10 @@
 # الأوامر الشائعة
 # ═══════════════════════════════════════════════════════════════
 
-.PHONY: help install install-dev install-observability install-security install-evals install-docs setup test test-unit test-integration \
+.PHONY: help install install-dev install-observability install-security install-evals install-docs install-hermes setup test test-unit test-integration \
         lint format type-check security security-smoke clean run demo \
         docker-build docker-up docker-down docker-logs \
+        hermes hermes-agent hermes-verify hermes-install-systemd \
         pre-commit-install pre-commit-run db-init requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
@@ -16,6 +17,7 @@ PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 OPENAPI_OUTPUT ?= docs/architecture/openapi.json
 PRODUCTION_BASE_URL ?= https://api.dealix.me
+HERMES_AGENT ?=
 
 help: ## Show this help
 	@echo "🏢 Dealix — Available commands:"
@@ -39,6 +41,9 @@ install-evals: ## Install optional evaluation and analysis tooling
 
 install-docs: ## Install optional documentation site tooling
 	$(PIP) install -e ".[docs]"
+
+install-hermes: ## Install optional Hermes Agent OS dependencies
+	$(PIP) install -r requirements-hermes.txt
 
 setup: install-dev pre-commit-install ## One-time dev setup
 	@test -f .env || (cp .env.example .env && echo "✅ Created .env from template — edit it now")
@@ -85,8 +90,22 @@ release-manifest: ## Export production release manifest
 production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
 	$(PYTHON) scripts/dealix_smoke_test.py --base-url $(PRODUCTION_BASE_URL)
 
-prod-verify: env-check security-smoke api-contract-check dependency-inventory release-manifest v5-verify ## Canonical production-readiness verification bundle
+prod-verify: env-check security-smoke api-contract-check dependency-inventory release-manifest hermes-verify v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
+
+# ── Hermes Agent OS ────────────────────────────────────────────
+hermes: ## Generate all Hermes Agent OS reports
+	$(PYTHON) scripts/hermes_generate_reports.py
+
+hermes-agent: ## Generate one Hermes report, e.g. make hermes-agent HERMES_AGENT=reliability-sre-agent
+	@test -n "$(HERMES_AGENT)" || (echo "Set HERMES_AGENT=<agent-id>" && exit 1)
+	$(PYTHON) scripts/hermes_generate_reports.py --agent $(HERMES_AGENT)
+
+hermes-verify: ## Verify Hermes Agent OS governance files and safety defaults
+	$(PYTHON) scripts/verify_hermes_agent_os.py
+
+hermes-install-systemd: ## Install Hermes hourly timer on self-hosted server (requires sudo)
+	sudo bash scripts/install_hermes_systemd.sh
 
 # ── Tests ──────────────────────────────────────────────────────
 test: ## Run full test suite with coverage
