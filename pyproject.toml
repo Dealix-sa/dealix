@@ -123,12 +123,21 @@ automation = [
     "prefect>=3.0.0",
 ]
 
+agents = [
+    "openai-agents>=0.4.0",
+    "langgraph>=0.2.60",
+    "autogen-agentchat>=0.4.0",
+    "autogen-ext[openai]>=0.4.0",
+    "crewai>=0.95.0",
+]
+
 founder_stack = [
-    "dealix[observability,evaluation,data_quality,analytics,security_advanced,automation]",
+    "dealix[observability,evaluation,data_quality,analytics,security_advanced,automation,agents]",
 ]
 
 [project.scripts]
 ai-company = "cli:app"
+hermes-agents = "hermes_agents.cli:main"
 
 [project.urls]
 Homepage = "https://ai-company.sa"
@@ -141,7 +150,7 @@ Issues = "https://github.com/VoXc2/dealix/issues"
 # ─────────────────────────────────────────────────────────────
 
 [tool.setuptools.packages.find]
-include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*"]
+include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "hermes_agents*"]
 exclude = ["tests*", "docs*", "scripts*"]
 
 [tool.ruff]
