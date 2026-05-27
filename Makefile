@@ -7,7 +7,7 @@
         lint format type-check security security-smoke clean run demo \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
-        env-check openapi-export api-contract-check production-smoke prod-verify \
+        env-check openapi-export api-contract-check dependency-inventory production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference
 
@@ -64,10 +64,13 @@ openapi-export: ## Export FastAPI OpenAPI schema (OPENAPI_OUTPUT=...)
 api-contract-check: ## Check OpenAPI contract for removed paths/methods
 	$(PYTHON) scripts/check_openapi_contract.py
 
+dependency-inventory: ## Export lightweight dependency inventory
+	$(PYTHON) scripts/export_dependency_inventory.py
+
 production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
 	$(PYTHON) scripts/dealix_smoke_test.py --base-url $(PRODUCTION_BASE_URL)
 
-prod-verify: env-check security-smoke api-contract-check v5-verify ## Canonical production-readiness verification bundle
+prod-verify: env-check security-smoke api-contract-check dependency-inventory v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
 
 # ── Tests ──────────────────────────────────────────────────────
