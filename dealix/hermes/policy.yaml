@@ -1,0 +1,63 @@
+version: 1
+system: hermes_agent_governance
+
+runtime:
+  default_mode: dry_run
+  global_switch_env: HERMES_AGENTS_ENABLED
+  live_action_switch_env: HERMES_LIVE_ACTIONS_ENABLED
+  default_timezone: Asia/Riyadh
+  output_root: docs/generated/hermes
+
+approval_classes:
+  read_only:
+    human_approval_required: false
+  internal_write:
+    human_approval_required: true
+  external_low_risk:
+    human_approval_required: true
+  external_high_risk:
+    human_approval_required: true
+    second_review_required: true
+
+memory:
+  allowed:
+    - repository_docs
+    - generated_reports
+    - issue_numbers
+    - public_status_context
+  not_allowed:
+    - private_credentials
+    - payment_material
+    - personal_data_exports
+    - private_customer_messages_without_approval
+
+outputs:
+  required_fields:
+    - generated_at
+    - agent_id
+    - mode
+    - summary
+    - blockers
+    - recommended_next_actions
+  restricted_content:
+    - credentials
+    - private_tokens
+    - private_customer_data
+    - unapproved_external_commitments
+
+audit:
+  every_run_writes_report: true
+  report_format: markdown
+  include_input_sources: true
+  include_stop_rules: true
+  include_human_approval_needed: true
+
+stop_rules:
+  - production_smoke_failing
+  - ci_failing_without_risk_acceptance
+  - domain_readiness_uncertain
+  - demo_routing_unverified
+  - payment_or_webhook_unverified
+  - public_claim_without_evidence
+  - privileged_access_uncertain
+  - rollback_path_unknown
