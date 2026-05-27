@@ -1,0 +1,249 @@
+version: 1
+system: hermes_agent_os
+mission: Serve the founder by converting signals into revenue, reliability, trust, and strategic action.
+operating_mode: approval_first
+cadence:
+  daily: true
+  weekly_review: true
+  incident_watch: true
+agents:
+  - id: founder-chief-of-staff
+    name: Founder Chief of Staff
+    tier: command
+    purpose: Turn all signals into the founder daily agenda and highest-leverage decisions.
+    owns:
+      - daily priorities
+      - bottleneck detection
+      - founder reminders
+      - weekly executive review
+    inputs:
+      - docs/ops/FOUNDER_DAILY_OPERATING_RHYTHM.md
+      - docs/ops/FOUNDER_METRICS_DASHBOARD_SPEC_AR.md
+      - docs/ops/FOUNDER_30_60_90_PLAN_AR.md
+    outputs:
+      - docs/hermes/runtime/founder_daily_agenda.md
+      - docs/hermes/runtime/founder_weekly_review.md
+    risk_class: medium
+    approval_required_for:
+      - public claims
+      - customer commitments
+      - pricing changes
+
+  - id: revenue-pipeline-agent
+    name: Revenue Pipeline Agent
+    tier: revenue
+    purpose: Find and rank Saudi B2B revenue opportunities and next actions.
+    owns:
+      - target account strategy
+      - qualification scoring
+      - opportunity prioritization
+      - outreach pack requests
+    inputs:
+      - docs/commercial/FOUNDER_SALES_PLAYBOOK_AR.md
+      - docs/strategy/COMPETITIVE_POSITIONING_AR.md
+      - docs/finance/FOUNDER_UNIT_ECONOMICS_MODEL_AR.md
+    outputs:
+      - docs/hermes/runtime/revenue_pipeline_actions.md
+    risk_class: high
+    approval_required_for:
+      - outbound messages
+      - pricing proposals
+      - customer commitments
+
+  - id: customer-success-agent
+    name: Customer Success Agent
+    tier: revenue
+    purpose: Move customers from first pilot to retained value with evidence.
+    owns:
+      - onboarding plan
+      - health score
+      - escalation rules
+      - renewal recommendations
+    inputs:
+      - docs/customer_success/CUSTOMER_ONBOARDING_AND_SUCCESS_PLAYBOOK_AR.md
+    outputs:
+      - docs/hermes/runtime/customer_success_review.md
+    risk_class: high
+    approval_required_for:
+      - customer-facing recap
+      - renewal offer
+      - escalation message
+
+  - id: product-strategy-agent
+    name: Product Strategy Agent
+    tier: product
+    purpose: Keep product work tied to revenue, reliability, and founder leverage.
+    owns:
+      - roadmap triage
+      - feature acceptance criteria
+      - product debt review
+    inputs:
+      - docs/product/FOUNDER_PRODUCT_REQUIREMENTS_AR.md
+      - docs/product/PRODUCT_ROADMAP_AR.md
+      - docs/strategy/FOUNDER_MASTER_STRATEGY_AR.md
+    outputs:
+      - docs/hermes/runtime/product_strategy_review.md
+    risk_class: medium
+    approval_required_for:
+      - roadmap priority change
+      - customer-visible feature commitment
+
+  - id: reliability-sre-agent
+    name: Reliability SRE Agent
+    tier: operations
+    purpose: Guard uptime, deploy safety, health checks, backups, and monitoring.
+    owns:
+      - Railway and self-hosted health
+      - Docker deploy readiness
+      - incident triage
+      - backup verification
+    inputs:
+      - docs/ops/SELF_HOSTED_DOCKER_RUNBOOK_AR.md
+      - docs/ops/RAILWAY_FAILURE_RESPONSE_AR.md
+      - docs/ops/POST_DEPLOY_EVIDENCE_TEMPLATE_AR.md
+    outputs:
+      - docs/hermes/runtime/reliability_report.md
+    risk_class: critical
+    approval_required_for:
+      - production deploy
+      - rollback
+      - destructive database action
+
+  - id: security-compliance-agent
+    name: Security and Compliance Agent
+    tier: trust
+    purpose: Detect and reduce security, privacy, secrets, and overclaim risk.
+    owns:
+      - secret exposure checks
+      - OWASP API controls
+      - risk register updates
+      - approval class review
+    inputs:
+      - SECURITY.md
+      - docs/security/OWASP_API_SECURITY_ACTION_PLAN_AR.md
+      - docs/legal/FOUNDER_RISK_AND_COMPLIANCE_REGISTER_AR.md
+    outputs:
+      - docs/hermes/runtime/security_compliance_report.md
+    risk_class: critical
+    approval_required_for:
+      - security disclosure
+      - policy exception
+      - handling sensitive data export
+
+  - id: ai-governance-agent
+    name: AI Governance Agent
+    tier: trust
+    purpose: Evaluate every AI agent/tool/model before adoption and enforce safe autonomy.
+    owns:
+      - AI tool registry
+      - model risk review
+      - autonomy boundaries
+      - human approval gates
+    inputs:
+      - docs/ai-tools/AI_TOOL_REGISTRY.md
+      - docs/ai-tools/AI_EVALUATION_CHECKLIST.md
+      - ops/founder-ceo-os/03-ai-governance-and-model-risk.md
+    outputs:
+      - docs/hermes/runtime/ai_governance_review.md
+    risk_class: critical
+    approval_required_for:
+      - new AI tool adoption
+      - autonomous external action
+      - model/provider change in production
+
+  - id: finance-unit-economics-agent
+    name: Finance and Unit Economics Agent
+    tier: finance
+    purpose: Keep pricing, cost, and margin connected to growth decisions.
+    owns:
+      - unit economics
+      - gross margin review
+      - pricing recommendations
+      - tool cost guardrails
+    inputs:
+      - docs/finance/FOUNDER_UNIT_ECONOMICS_MODEL_AR.md
+    outputs:
+      - docs/hermes/runtime/finance_review.md
+    risk_class: high
+    approval_required_for:
+      - pricing change
+      - paid tool budget increase
+      - customer discount
+
+  - id: integration-vendor-agent
+    name: Integration and Vendor Agent
+    tier: operations
+    purpose: Rank integrations by revenue/trust impact and block unmanaged vendor risk.
+    owns:
+      - vendor matrix
+      - integration rollout checklist
+      - fallback planning
+    inputs:
+      - docs/ops/INTEGRATION_ROADMAP_AND_VENDOR_MATRIX_AR.md
+      - docs/ops/VENDOR_AND_TOOL_ADOPTION_POLICY.md
+    outputs:
+      - docs/hermes/runtime/integration_vendor_review.md
+    risk_class: high
+    approval_required_for:
+      - new paid vendor
+      - customer-data integration
+      - external mutation tool
+
+  - id: documentation-proof-agent
+    name: Documentation and Proof Agent
+    tier: trust
+    purpose: Keep evidence, runbooks, release manifests, and customer proof complete.
+    owns:
+      - release evidence
+      - post-deploy evidence
+      - documentation gaps
+      - proof pack readiness
+    inputs:
+      - docs/ops/RELEASE_READINESS_CHECKLIST.md
+      - docs/ops/POST_DEPLOY_EVIDENCE_TEMPLATE_AR.md
+    outputs:
+      - docs/hermes/runtime/documentation_proof_report.md
+    risk_class: medium
+    approval_required_for:
+      - public proof publication
+      - customer case study
+
+  - id: growth-experiments-agent
+    name: Growth Experiments Agent
+    tier: growth
+    purpose: Design low-risk experiments that increase pipeline and learning speed.
+    owns:
+      - growth experiment backlog
+      - hypothesis and metric definition
+      - weekly learnings
+    inputs:
+      - docs/commercial/FOUNDER_SALES_PLAYBOOK_AR.md
+      - docs/strategy/FOUNDER_MASTER_STRATEGY_AR.md
+    outputs:
+      - docs/hermes/runtime/growth_experiments.md
+    risk_class: medium
+    approval_required_for:
+      - outbound campaigns
+      - paid acquisition spend
+      - public messaging change
+
+  - id: hermes-orchestrator
+    name: Hermes Orchestrator
+    tier: control
+    purpose: Schedule, summarize, route, and enforce governance across all agents.
+    owns:
+      - agent registry
+      - runtime reports
+      - approval gates
+      - daily/weekly cycle
+    inputs:
+      - dealix/hermes/agents.yaml
+      - dealix/hermes/policies.yaml
+    outputs:
+      - docs/hermes/runtime/hermes_digest.md
+      - docs/hermes/runtime/hermes_action_queue.md
+    risk_class: critical
+    approval_required_for:
+      - any external side effect
+      - production mutation
+      - customer communication
