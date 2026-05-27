@@ -41,8 +41,9 @@ def build_gtm_blitz_snapshot() -> dict[str, Any]:
     cfg = _load_yaml(GTM_BLITZ)
     targets = cfg.get("targets") or {}
     evidence = count_evidence_events(exclude_placeholders=True)
-    paid = evidence["by_type"].get("payment_received", 0)
-    proof = evidence["by_type"].get("proof_pack_delivered", 0)
+    by_type = evidence.get("all_time_by_type") or evidence.get("by_type") or {}
+    paid = by_type.get("payment_received", 0)
+    proof = by_type.get("proof_pack_delivered", 0)
     icp_rows = _count_csv_rows(ICP_CSV, min_filled_company=True)
     conv_rows = _count_csv_rows(CONV_CSV, min_filled_company=True)
 

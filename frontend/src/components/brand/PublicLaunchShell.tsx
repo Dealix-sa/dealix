@@ -38,6 +38,9 @@ export function PublicLaunchShell({ children, compactNav = false }: { children: 
         <p className="font-semibold text-[var(--dealix-deep-green)]">{t("footer")}</p>
         <p className="mt-2 text-muted-foreground">{t("footerPositioning")}</p>
         <p className="mt-2 text-xs text-muted-foreground">{t("footerTrustPdpl")}</p>
+        <Link href={`${base}/privacy`} className="mt-2 inline-block text-xs text-[var(--dealix-deep-green)] hover:underline">
+          {isAr ? "سياسة الخصوصية" : "Privacy policy"}
+        </Link>
       </footer>
     </div>
   );

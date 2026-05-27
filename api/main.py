@@ -250,6 +250,10 @@ def create_app() -> FastAPI:
 
     app.include_router(platform_meta_router.router)
 
+    from api.routers import mcp_tools as mcp_tools_router
+
+    app.include_router(mcp_tools_router.router)
+
     # ── Routers registered by domain (replaces 90 flat app.include_router calls) ─
     _DOMAIN_GROUPS = [
         admin_domain,
