@@ -2,7 +2,7 @@
 
 ## هل أقدر أشغل Dealix على نفس السيرفر؟
 
-نعم، تقدر تشغله على VPS أو dedicated server باستخدام Docker Compose. الريبو الآن يحتوي stack إنتاجي يشغل:
+نعم، تقدر تشغله على VPS أو dedicated server باستخدام Docker Compose. الريبو يحتوي stack إنتاجي يشغل:
 
 - API
 - frontend
@@ -11,6 +11,7 @@
 - PgBouncer
 - Redis
 - Caddy reverse proxy مع TLS
+- monitoring اختياري: Prometheus + Grafana + cAdvisor + node-exporter
 
 ## متى يكون مناسب؟
 
@@ -47,13 +48,16 @@
 
 إذا زاد الضغط، افصل قاعدة البيانات إلى managed Postgres أو سيرفر مستقل. API والواجهات أسهل في التوسعة من قاعدة البيانات.
 
-## الملفات المضافة
+## الملفات المهمة
 
 - `docker-compose.prod.yml`
+- `docker-compose.monitoring.yml`
 - `.env.prod.example`
 - `ops/caddy/Caddyfile`
+- `ops/prometheus/config.yml`
 - `scripts/server_bootstrap_ubuntu.sh`
 - `scripts/server_deploy.sh`
+- `scripts/server_deploy_monitoring.sh`
 - `scripts/server_backup.sh`
 - `scripts/server_healthcheck.sh`
 
@@ -88,12 +92,19 @@ DEALIX_DOMAIN
 DEALIX_API_DOMAIN
 NEXT_PUBLIC_API_URL
 NEXT_PUBLIC_SITE_URL
+GRAFANA_ADMIN_PASSWORD
 ```
 
-## النشر
+## النشر الأساسي
 
 ```bash
 bash scripts/server_deploy.sh
+```
+
+## النشر مع monitoring
+
+```bash
+bash scripts/server_deploy_monitoring.sh
 ```
 
 ## فحص الصحة
@@ -182,4 +193,4 @@ docker stats
 
 ## قرار المؤسس
 
-ابدأ بسيرفر واحد قوي، لكن لا تعتمد عليه وحده بدون backups. إذا بدأ عندك عملاء مدفوعين وtraffic ثابت، افصل قاعدة البيانات وأضف monitoring خارجي.
+ابدأ بسيرفر واحد قوي، لكن لا تعتمد عليه وحده بدون backups. إذا بدأ عندك عملاء مدفوعين وtraffic ثابت، افصل قاعدة البيانات وأضف monitoring خارجي أو managed database.
