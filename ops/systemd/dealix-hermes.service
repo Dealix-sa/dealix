@@ -1,0 +1,16 @@
+[Unit]
+Description=Dealix Hermes Agent OS report generator
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/srv/dealix
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 scripts/hermes_generate_reports.py
+User=dealix
+Group=dealix
+Nice=5
+
+[Install]
+WantedBy=multi-user.target
