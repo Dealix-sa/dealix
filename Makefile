@@ -6,7 +6,7 @@
 .PHONY: help install install-dev setup test test-unit test-integration \
         lint format type-check security security-smoke clean run demo \
         docker-build docker-up docker-down docker-logs \
-        ai-gateway-up ai-gateway-down ai-gateway-logs ai-gateway-test \
+        ai-gateway-up ai-gateway-down ai-gateway-logs ai-gateway-test hermes-verify \
         pre-commit-install pre-commit-run db-init requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
@@ -131,6 +131,9 @@ ai-gateway-logs: ## Tail local LiteLLM AI gateway logs
 
 ai-gateway-test: ## Verify local LiteLLM AI gateway aliases
 	$(PYTHON) scripts/verify_ai_gateway.py --base-url $(AI_GATEWAY_BASE_URL) --skip-chat
+
+hermes-verify: ## Verify Hermes agents operating layer manifest
+	$(PYTHON) scripts/verify_hermes_layer.py
 
 # ── Cleanup ────────────────────────────────────────────────────
 clean: ## Remove build artifacts, caches
