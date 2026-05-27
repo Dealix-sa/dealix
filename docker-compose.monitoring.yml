@@ -8,7 +8,7 @@ services:
       - --storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-15d}
       - --web.enable-lifecycle
     volumes:
-      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./ops/prometheus/config.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
     expose:
       - "9090"
