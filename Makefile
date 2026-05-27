@@ -6,6 +6,7 @@
 .PHONY: help install install-dev setup test test-unit test-integration \
         lint format type-check security security-smoke clean run demo \
         docker-build docker-up docker-down docker-logs \
+        ai-gateway-up ai-gateway-down ai-gateway-logs ai-gateway-test \
         pre-commit-install pre-commit-run db-init requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
@@ -16,6 +17,7 @@ PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 OPENAPI_OUTPUT ?= docs/architecture/openapi.json
 PRODUCTION_BASE_URL ?= https://api.dealix.me
+AI_GATEWAY_BASE_URL ?= http://localhost:4000/v1
 
 help: ## Show this help
 	@echo "🏢 Dealix — Available commands:"
@@ -116,6 +118,19 @@ docker-down: ## Stop and remove containers
 
 docker-logs: ## Tail application logs
 	docker compose logs -f app
+
+# ── Local AI gateway ────────────────────────────────────────────
+ai-gateway-up: ## Start local LiteLLM AI gateway
+	docker compose -f docker-compose.ai.yml up -d
+
+ai-gateway-down: ## Stop local LiteLLM AI gateway
+	docker compose -f docker-compose.ai.yml down
+
+ai-gateway-logs: ## Tail local LiteLLM AI gateway logs
+	docker compose -f docker-compose.ai.yml logs -f litellm
+
+ai-gateway-test: ## Verify local LiteLLM AI gateway aliases
+	$(PYTHON) scripts/verify_ai_gateway.py --base-url $(AI_GATEWAY_BASE_URL) --skip-chat
 
 # ── Cleanup ────────────────────────────────────────────────────
 clean: ## Remove build artifacts, caches
