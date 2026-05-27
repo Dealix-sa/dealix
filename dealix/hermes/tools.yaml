@@ -1,0 +1,75 @@
+version: 1
+system: hermes_agent_os
+tool_policy:
+  default_mode: read_only
+  write_actions_require_approval: true
+  external_actions_require_approval: true
+  production_actions_require_approval: true
+tools:
+  - id: repo_reader
+    category: repository
+    mode: read_only
+    description: Read repository files, docs, runbooks, manifests, and CI definitions.
+    allowed_agents:
+      - hermes-orchestrator
+      - founder-chief-of-staff
+      - product-strategy-agent
+      - reliability-sre-agent
+      - security-compliance-agent
+      - documentation-proof-agent
+  - id: report_writer
+    category: repository
+    mode: write_internal
+    description: Write reports under docs/hermes/runtime only.
+    allowed_path_prefixes:
+      - docs/hermes/runtime/
+    approval_required: false
+  - id: action_queue_writer
+    category: repository
+    mode: write_internal
+    description: Append recommended actions to the Hermes action queue.
+    allowed_path_prefixes:
+      - docs/hermes/runtime/
+    approval_required: false
+  - id: github_issue_creator
+    category: github
+    mode: external_side_effect
+    description: Create GitHub issues for approved incidents, founder tasks, and reviews.
+    approval_required: true
+  - id: docker_health_reader
+    category: server
+    mode: read_only
+    description: Read Docker health status and resource usage on a self-hosted server.
+    commands:
+      - bash scripts/server_healthcheck.sh
+    approval_required: false
+  - id: deploy_runner
+    category: server
+    mode: production_mutation
+    description: Deploy Dealix self-hosted stack.
+    commands:
+      - bash scripts/server_deploy.sh
+      - bash scripts/server_deploy_monitoring.sh
+    approval_required: true
+  - id: backup_runner
+    category: server
+    mode: production_mutation
+    description: Create server backup before risky actions.
+    commands:
+      - bash scripts/server_backup.sh
+    approval_required: true
+  - id: web_research
+    category: research
+    mode: read_only
+    description: Research public docs and market information. Summaries must cite sources.
+    approval_required: false
+  - id: customer_message_drafter
+    category: commercial
+    mode: draft_only
+    description: Draft outreach, recap, renewal, and escalation messages. Sending requires founder approval.
+    approval_required: false
+  - id: outbound_sender
+    category: commercial
+    mode: external_side_effect
+    description: Send email/WhatsApp/customer messages through configured providers.
+    approval_required: true
