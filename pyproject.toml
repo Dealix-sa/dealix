@@ -146,9 +146,25 @@ asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
-python_functions = "test_*"
-addopts = ["-ra", "--strict-markers", "--strict-config", "--cov=core", "--cov=auto_client_acquisition", "--cov=autonomous_growth", "--cov=integrations", "--cov=api", "--cov-report=term-missing", "--cov-report=html"]
-markers = ["unit: unit tests", "integration: integration tests", "slow: slow tests", "llm: tests that call real LLMs"]
+python_functions = ["test_*"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=core",
+    "--cov=auto_client_acquisition",
+    "--cov=autonomous_growth",
+    "--cov=integrations",
+    "--cov=api",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+markers = [
+    "unit: unit tests",
+    "integration: integration tests",
+    "slow: slow tests",
+    "llm: tests that call real LLMs",
+]
 
 [tool.coverage.run]
 branch = true
@@ -159,4 +175,9 @@ omit = ["*/tests/*", "*/migrations/*", "*/__init__.py"]
 precision = 2
 show_missing = true
 skip_covered = false
-exclude_lines = ["pragma: no cover", "raise NotImplementedError", "if __name__ == .__main__ .:", "if TYPE_CHECKING:"]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
