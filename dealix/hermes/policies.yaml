@@ -1,0 +1,88 @@
+version: 1
+system: hermes_agent_os
+principles:
+  - founder_interest_first
+  - approval_before_external_action
+  - evidence_before_claims
+  - revenue_trust_leverage_priority
+  - no_secret_exposure
+  - reversible_changes_preferred
+risk_classes:
+  low:
+    description: Internal analysis with no external side effects.
+    allowed_without_approval: true
+    examples:
+      - summarize internal docs
+      - generate private checklist
+      - rank backlog items
+  medium:
+    description: Internal recommendation that may influence roadmap or operations.
+    allowed_without_approval: true
+    requires_evidence: true
+    examples:
+      - roadmap recommendation
+      - founder daily agenda
+      - documentation gap report
+  high:
+    description: Customer, revenue, vendor, or pricing related action.
+    allowed_without_approval: false
+    requires_human_approval: true
+    examples:
+      - outbound draft
+      - pricing proposal
+      - vendor adoption
+      - customer recap
+  critical:
+    description: Production, security, legal, secrets, payments, or destructive action.
+    allowed_without_approval: false
+    requires_founder_approval: true
+    examples:
+      - production deploy
+      - rollback
+      - secret rotation
+      - database migration
+      - legal or compliance response
+approval_gates:
+  external_communication:
+    approval_required: true
+    approver: founder_or_delegate
+  production_mutation:
+    approval_required: true
+    approver: founder_or_engineering_owner
+  customer_data_export:
+    approval_required: true
+    approver: founder_or_compliance_owner
+  paid_vendor_spend:
+    approval_required: true
+    approver: founder
+  public_claim:
+    approval_required: true
+    approver: founder
+hard_blocks:
+  - never_commit_env_prod
+  - never_expose_admin_key_in_next_public
+  - never_open_docker_socket_to_internet
+  - never_send_customer_message_without_approval
+  - never_execute_destructive_database_action_without_backup
+  - never_publish_claim_without_evidence
+runtime:
+  mode: dry_run_by_default
+  external_side_effects: disabled
+  action_queue_required: true
+  evidence_required: true
+  default_report_dir: docs/hermes/runtime
+cadence:
+  daily:
+    local_time: "09:00 Asia/Riyadh"
+    outputs:
+      - hermes_digest.md
+      - hermes_action_queue.md
+  weekly:
+    local_time: "Sunday 10:00 Asia/Riyadh"
+    outputs:
+      - founder_weekly_review.md
+  incident:
+    trigger: manual_or_health_failure
+    outputs:
+      - reliability_report.md
+      - security_compliance_report.md
