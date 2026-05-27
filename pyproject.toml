@@ -87,6 +87,46 @@ dev = [
     "ipython>=8.29.0",
 ]
 
+# Strategic optional extras are intentionally not part of the production runtime.
+# Adopt them only after owner, data, cost, and security review.
+observability = [
+    "opentelemetry-api>=1.27.0",
+    "opentelemetry-sdk>=1.27.0",
+    "opentelemetry-instrumentation-fastapi>=0.48b0",
+    "opentelemetry-exporter-otlp>=1.27.0",
+    "sentry-sdk[fastapi]>=2.19.0",
+]
+
+evaluation = [
+    "ragas>=0.2.0",
+    "deepeval>=1.4.0",
+    "datasets>=3.0.0",
+]
+
+data_quality = [
+    "great-expectations>=1.1.0",
+    "evidently>=0.4.35",
+]
+
+analytics = [
+    "pandas>=2.2.0",
+    "polars>=1.12.0",
+    "duckdb>=1.1.0",
+]
+
+security_advanced = [
+    "semgrep>=1.95.0",
+    "pip-audit>=2.7.0",
+]
+
+automation = [
+    "prefect>=3.0.0",
+]
+
+founder_stack = [
+    "dealix[observability,evaluation,data_quality,analytics,security_advanced,automation]",
+]
+
 [project.scripts]
 ai-company = "cli:app"
 
