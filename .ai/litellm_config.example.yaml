@@ -1,0 +1,50 @@
+# Dealix local AI gateway configuration for LiteLLM.
+# Copy to .ai/litellm_config.yaml and keep real secrets in .env only.
+#
+# Start:
+#   docker compose -f docker-compose.ai.yml up -d
+#
+# Test:
+#   python scripts/verify_ai_gateway.py --base-url http://localhost:4000/v1 --api-key "$LITELLM_MASTER_KEY"
+
+model_list:
+  - model_name: dealix-code
+    litellm_params:
+      model: deepseek/deepseek-chat
+      api_key: os.environ/DEEPSEEK_API_KEY
+      api_base: os.environ/DEEPSEEK_BASE_URL
+
+  - model_name: dealix-smart
+    litellm_params:
+      model: openai/DEALIX_OPENAI_MODEL
+      api_key: os.environ/OPENAI_API_KEY
+      api_base: os.environ/OPENAI_BASE_URL
+
+  - model_name: dealix-fast
+    litellm_params:
+      model: minimax/DEALIX_MINIMAX_MODEL
+      api_key: os.environ/MINIMAX_API_KEY
+      api_base: os.environ/MINIMAX_BASE_URL
+
+litellm_settings:
+  set_verbose: false
+  drop_params: true
+
+router_settings:
+  num_retries: 2
+  timeout: 90
+  fallbacks:
+    - dealix-code:
+        - dealix-smart
+        - dealix-fast
+    - dealix-smart:
+        - dealix-code
+        - dealix-fast
+    - dealix-fast:
+        - dealix-code
+        - dealix-smart
+  context_window_fallbacks:
+    - dealix-code:
+        - dealix-smart
+    - dealix-fast:
+        - dealix-smart
