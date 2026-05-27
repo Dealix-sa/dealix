@@ -81,6 +81,9 @@ jobs:
       - name: Founder operating system check
         run: python scripts/verify_founder_operating_system.py
 
+      - name: Strategic opportunity OS check
+        run: python scripts/verify_strategic_opportunity_os.py
+
       - name: Compile check
         run: python -m compileall api auto_client_acquisition autonomous_growth core db integrations dealix scripts
 
