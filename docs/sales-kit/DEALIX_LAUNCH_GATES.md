@@ -18,8 +18,10 @@
 
 ### Definition of Done:
 ```bash
-curl https://<your-domain>.up.railway.app/api/v1/pricing/plans
-# يجب أن يرجع: JSON مع plans (Starter, Growth, Scale)
+curl https://api.dealix.me/api/v1/commercial-map
+# يجب أن يرجع: JSON مع العروض السبعة الرسمية (Free Mini Diagnostic،
+# Revenue Proof Sprint 499، Data-to-Revenue Pack، Growth Ops Monthly،
+# Support OS Add-on، Executive Command Center، Agency Partner OS)
 ```
 
 **إذا Failed:** أرسل screenshot من Railway Deployments → Logs
@@ -44,6 +46,10 @@ curl https://<your-domain>.up.railway.app/api/v1/pricing/plans
 ---
 
 ## 🔴 Gate 3 — 1 SAR End-to-End Test (15 دقائق)
+
+> هذا فحص داخلي للتحقق من مسار الدفع الحي عبر Moyasar (الخطة `pilot_1sar`).
+> الـ 1 ريال **ليس** عرضاً للعملاء — عرض الدخول المدفوع هو سبرنت إثبات
+> الإيرادات (499 ريال).
 
 ### الخطوات:
 - [ ] Terminal:

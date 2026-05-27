@@ -1,9 +1,11 @@
 """V13 — assert landing/* + critical workflows never reference the
-old Railway URL or the dead ``/healthz`` endpoint.
+old Railway URL.
 
-The canonical production URL is ``https://api.dealix.me`` and the
-canonical health endpoint is ``/health``. This test is the perimeter
-that prevents a regression.
+The canonical production URL is ``https://api.dealix.me``. Both
+``/health`` and ``/healthz`` are valid endpoints — ``/healthz`` is the
+Railway/UptimeRobot probe alias registered in ``api/routers/health.py``
+and wired as ``healthcheckPath`` in ``railway.toml``. This test is the
+perimeter that prevents an old-Railway-URL regression.
 """
 from __future__ import annotations
 
@@ -18,7 +20,6 @@ LANDING_DIR = REPO_ROOT / "landing"
 
 _FORBIDDEN_PATTERNS: tuple[tuple[str, str], ...] = (
     ("web-dealix.up.railway.app", "old Railway URL — use api.dealix.me"),
-    ("/healthz", "old health endpoint name — use /health"),
 )
 
 
@@ -32,14 +33,14 @@ def _scan(path: Path, patterns: tuple[tuple[str, str], ...]) -> list[str]:
     return out
 
 
-def test_landing_html_files_have_no_railway_or_healthz() -> None:
+def test_landing_html_files_have_no_railway_refs() -> None:
     violations: list[str] = []
     for html in sorted(LANDING_DIR.glob("*.html")):
         violations.extend(_scan(html, _FORBIDDEN_PATTERNS))
     assert not violations, "frontend regression:\n  " + "\n  ".join(violations)
 
 
-def test_landing_script_js_has_no_railway_or_healthz() -> None:
+def test_landing_script_js_has_no_railway_refs() -> None:
     js = LANDING_DIR / "script.js"
     assert js.exists(), "landing/script.js missing"
     violations = _scan(js, _FORBIDDEN_PATTERNS)

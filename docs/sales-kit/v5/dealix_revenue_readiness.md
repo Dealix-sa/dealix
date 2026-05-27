@@ -2,15 +2,19 @@
 > End-to-end path: lead → quote → invoice → payment → CRM → fulfillment → renewal.
 
 ## 1) Pricing Path
-| Plan | Price (SAR) | Billing | Lead cap |
-|---|---|---|---|
-| Pilot | 1 | 7-day one-time | 50 |
-| Starter | 999 | monthly | 500 |
-| Growth | 2,999 | monthly | 2,500 |
-| Scale | 7,999 | monthly | unlimited |
+| Plan | Price (SAR) | Billing |
+|---|---|---|
+| Free Mini Diagnostic | 0 | one-time |
+| Revenue Proof Sprint | 499 | one-time (entry offer) |
+| Data-to-Revenue Pack | 1,500 | one-time |
+| Growth Ops Monthly | 2,999 | monthly |
+| Support OS Add-on | 1,500 | monthly |
+| Executive Command Center | 7,500 | monthly |
+| Agency Partner OS | custom + 15–30% rev-share | partner |
 
-**ARPU (40/30/10 mix Starter/Growth/Scale)**: 2,099 SAR
-**Annual value per customer**: ~25,200 SAR (excl. churn)
+> `pilot_1sar` (1 SAR) = internal Moyasar payment-verification test only — NOT a customer offer. Customer entry offer is the 499 SAR Revenue Proof Sprint.
+
+**Recurring ARPU and annual value are estimates** — to be recomputed against the canonical ladder once the active customer mix is observed.
 
 ## 2) Quote Path
 1. Prospect books demo via Calendly
@@ -29,7 +33,7 @@ async def issue_invoice(customer_email: str, amount_sar: int, plan: str):
         amount=amount_sar * 100,  # halalas
         currency="SAR",
         description=f"Dealix {plan} — شهر واحد",
-        callback_url="https://dealix.sa/payment/callback",
+        callback_url="https://dealix.me/payment/callback",
         metadata={"customer": customer_email, "plan": plan}
     )
     # Send inv['url'] via WhatsApp + email

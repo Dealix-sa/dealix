@@ -109,7 +109,9 @@ def test_run_sprint_end_to_end_produces_proof_pack():
     )
     assert run.proof_pack is not None
     assert run.proof_score >= 0  # Pack assembles even with thin data
-    assert len(run.steps) == 8
+    # 8 sprint steps + the proof_pack_persist step that makes the pack durable.
+    assert len(run.steps) == 9
+    assert any(s.name == "proof_pack_persist" for s in run.steps)
     assert len(run.capital_assets_registered) >= 1
     assert run.governance_decision in {"allow", "allow_with_review", "needs_review"}
 
@@ -137,7 +139,9 @@ def test_sprint_run_endpoint_returns_full_run():
     assert body["engagement_id"] == "eng_router_1"
     assert "proof_pack" in body
     assert isinstance(body["steps"], list)
-    assert len(body["steps"]) == 8
+    # 8 sprint steps + the proof_pack_persist step that makes the pack durable.
+    assert len(body["steps"]) == 9
+    assert any(s["name"] == "proof_pack_persist" for s in body["steps"])
 
 
 def test_sprint_sample_endpoint():

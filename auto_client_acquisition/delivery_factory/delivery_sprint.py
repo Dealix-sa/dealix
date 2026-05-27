@@ -502,6 +502,11 @@ def run_sprint(
             else "No capital assets were registered in this run."
         )
 
+    # Persist + audit — the Proof Pack is now final. A blocked step-6
+    # produces an empty dict, so we only persist a pack that actually
+    # carries sections; junk is never written to the proof ledger.
+    _persist_and_audit_proof_pack(run)
+
     # Step 8 — retainer check
     s8 = _safe("retainer_check", step8_retainer_check,
                customer_id=customer_id, engagement_id=engagement_id,
@@ -513,7 +518,186 @@ def run_sprint(
     # Governance envelope on the whole sprint
     if any(s.status == "blocked" for s in run.steps):
         run.governance_decision = "needs_review"
+
+    # Audit: record that the sprint run is complete and delivered.
+    _emit_output_delivered_audit(run)
     return run
+
+
+def _persist_and_audit_proof_pack(run: SprintRun) -> None:
+    """Persist the finalized Proof Pack to the proof ledger and emit an
+    auditability_os audit event referencing the ledger entry.
+
+    Doctrine ``no_silent_failures``: the proof-ledger ``record`` call runs
+    OUTSIDE the per-step ``_safe`` wrapper. A persistence failure is never
+    swallowed — it emits a high-severity friction event, flips the run's
+    governance decision to ``needs_review``, and appends a blocked
+    ``proof_pack_persist`` step so the founder sees the failure.
+
+    Doctrine ``no_fake_proof``: a blocked step-6 yields an empty proof_pack;
+    only a pack carrying a non-empty ``sections`` dict is persisted.
+    """
+    pack = run.proof_pack
+    if not isinstance(pack, dict):
+        return
+    sections = pack.get("sections")
+    if not isinstance(sections, dict) or not sections:
+        return
+
+    from auto_client_acquisition.proof_ledger import (
+        ProofEvent,
+        ProofEventType,
+        get_default_ledger,
+    )
+
+    summary_en = str(sections.get("executive_summary", "")).strip()
+    score = pack.get("score", 0)
+    try:
+        score_num = float(score)
+    except (TypeError, ValueError):
+        score_num = 0.0
+
+    try:
+        recorded = get_default_ledger().record(
+            ProofEvent(
+                event_type=ProofEventType.PROOF_PACK_ASSEMBLED,
+                customer_handle=run.customer_id,
+                service_id=run.engagement_id,
+                summary_en=summary_en,
+                confidence=min(1.0, max(0.0, score_num / 100.0)),
+                payload={
+                    "sections": sections,
+                    "score": score,
+                    "tier": pack.get("tier", ""),
+                    "engagement_id": run.engagement_id,
+                },
+                approval_status="approval_required",
+            )
+        )
+    except Exception as exc:  # noqa: BLE001 — surfaced, never swallowed
+        _emit_persist_friction(
+            run, step="proof_pack_persist", error=f"{type(exc).__name__}: {exc}"
+        )
+        run.governance_decision = "needs_review"
+        run.steps.append(
+            SprintStep(
+                name="proof_pack_persist",
+                status="blocked",
+                output={"error": f"{type(exc).__name__}: {exc}"},
+            )
+        )
+        return
+
+    ledger_entry_id = getattr(recorded, "id", "")
+    run.steps.append(
+        SprintStep(
+            name="proof_pack_persist",
+            status="ran",
+            output={
+                "proof_ledger_entry_id": ledger_entry_id,
+                "score": score,
+                "tier": pack.get("tier", ""),
+            },
+        )
+    )
+
+    # Audit event (1): proof pack assembled, referencing the ledger entry.
+    try:
+        from auto_client_acquisition.auditability_os.audit_event import (
+            AuditEventKind,
+            record_event,
+        )
+
+        record_event(
+            customer_id=run.customer_id,
+            kind=AuditEventKind.PROOF_PACK_ASSEMBLED,
+            engagement_id=run.engagement_id,
+            decision=run.governance_decision,
+            summary=(
+                f"Proof Pack assembled for engagement {run.engagement_id} "
+                f"(score {score}, tier {pack.get('tier', '')}) and persisted "
+                f"to the proof ledger."
+            ),
+            output_refs=[ledger_entry_id] if ledger_entry_id else [],
+        )
+    except Exception as exc:  # noqa: BLE001 — surfaced, never swallowed
+        _emit_persist_friction(
+            run,
+            step="proof_pack_assembled_audit",
+            error=f"{type(exc).__name__}: {exc}",
+        )
+        run.governance_decision = "needs_review"
+        run.steps.append(
+            SprintStep(
+                name="proof_pack_assembled_audit",
+                status="blocked",
+                output={"error": f"{type(exc).__name__}: {exc}"},
+            )
+        )
+
+
+def _emit_output_delivered_audit(run: SprintRun) -> None:
+    """Emit the OUTPUT_DELIVERED audit event for the completed sprint run.
+
+    Same failure discipline as :func:`_persist_and_audit_proof_pack`: runs
+    outside ``_safe``, surfaces failures via friction_log, never swallows.
+    """
+    try:
+        from auto_client_acquisition.auditability_os.audit_event import (
+            AuditEventKind,
+            record_event,
+        )
+
+        record_event(
+            customer_id=run.customer_id,
+            kind=AuditEventKind.OUTPUT_DELIVERED,
+            engagement_id=run.engagement_id,
+            decision=run.governance_decision,
+            summary=(
+                f"Sprint run for engagement {run.engagement_id} completed "
+                f"with {len(run.steps)} steps; proof tier {run.proof_tier}, "
+                f"retainer_eligible={run.retainer_eligible}."
+            ),
+        )
+    except Exception as exc:  # noqa: BLE001 — surfaced, never swallowed
+        _emit_persist_friction(
+            run, step="output_delivered_audit", error=f"{type(exc).__name__}: {exc}"
+        )
+        run.governance_decision = "needs_review"
+        run.steps.append(
+            SprintStep(
+                name="output_delivered_audit",
+                status="blocked",
+                output={"error": f"{type(exc).__name__}: {exc}"},
+            )
+        )
+
+
+def _emit_persist_friction(run: SprintRun, *, step: str, error: str) -> None:
+    """Emit a high-severity friction event for a persistence/audit failure.
+
+    The friction emit is itself best-effort, but the failure has already
+    been surfaced on the SprintRun (blocked step + needs_review decision),
+    so the founder sees it regardless of friction_log availability.
+    """
+    try:
+        from auto_client_acquisition.friction_log.store import emit
+
+        emit(
+            customer_id=run.customer_id,
+            kind="schema_failure",
+            severity="high",
+            workflow_id="delivery_sprint",
+            notes=f"step:{step}:persistence_failure:{error}",
+        )
+    except Exception as friction_exc:  # noqa: BLE001
+        import logging
+
+        logging.getLogger(__name__).error(
+            "delivery_sprint friction emit failed for %s: %s",
+            step,
+            type(friction_exc).__name__,
+        )
 
 
 __all__ = [

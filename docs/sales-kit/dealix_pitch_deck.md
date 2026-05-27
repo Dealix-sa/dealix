@@ -11,7 +11,8 @@
 ```
 ████████████████████████████████
         Dealix
-  مندوب مبيعات AI بالعربي الخليجي
+  نظام إيرادات ما بعد الـ Lead
+  وعمليات AI محكومة (Governed AI Ops OS)
 ████████████████████████████████
 
 Sami Assiri · Founder
@@ -26,59 +27,57 @@ April 2026 · Seed Round
 ## الشريحة 2: Problem
 
 ```
-شركات B2B في الخليج تفقد 70% من leads
+شركات B2B في الخليج تخسر إيرادات بعد دخول الـ lead
 
 ↓ لماذا؟
 
-• ردود البشر تأخر 4-24 ساعة
-• BDRs يقضون 60% على leads غير مؤهلة  
-• Chatbots الأجنبية لا تفهم العربية الخليجية
-• Competition يقفل الصفقات قبل ما يفتحوا جوالهم
+• ردود المتابعة تتأخر أو تُنسى بلا نظام تذكير
+• فرق المبيعات تقضي وقتاً كبيراً على leads غير واضحة الأولوية
+• أدوات الـ CRM الأجنبية لا تُظهر "أي lead يحتاج متابعة الآن"
+• المنافس يتابع أولاً فتُغلق الصفقة عنده
 
-النتيجة: 40% churn في أول 30 يوم
+النتيجة: فرص حقيقية تضيع لأن لا أحد يعرف متى وكيف يتابع
 ```
 
-**Visual:** قمع مبيعات مع أرقام حمراء على كل مرحلة fall-off.
+**Visual:** قمع مبيعات يوضّح نقاط التسرّب بعد دخول الـ lead (وصفي، بلا أرقام مُختلقة).
 
 ---
 
 ## الشريحة 3: Solution
 
 ```
-Dealix = أول AI sales rep عربي خليجي حقيقي
+Dealix = رادار إيرادات بأسلوب "الموافقة أولاً"
 
-✅ يرد على كل lead خلال 45 ثانية
-✅ يؤهّل بـ BANT تلقائياً
-✅ يحجز demos مع فريقك
-✅ يعمل 24/7 باللهجة الطبيعية
+✅ يُظهر أي lead يحتاج متابعة الآن، ومرتّباً بالأولوية
+✅ يصيغ مسودّة الرسالة التالية بالعربي الخليجي
+✅ الإنسان يراجع المسودّة، يعدّلها، ثم يوافق ويرسل
+✅ لا رد تلقائي، لا حجز تلقائي، لا إرسال تلقائي
 
-= فريقك يبدأ يومه بـ leads مؤهلة، لا reactive firefighting
+= فريقك يبدأ يومه بقائمة متابعات واضحة ومسوّدات جاهزة للمراجعة
 ```
 
-**Visual:** screenshot من Dealix في action، conversation حقيقية بالعربي.
+**Visual:** screenshot من لوحة Dealix: قائمة المتابعات + مسودّة بانتظار الموافقة.
 
 ---
 
 ## الشريحة 4: Market
 
 ```
-السوق القابل للخدمة (SOM)
+السوق القابل للخدمة
 
 📍 السعودية
-• 15,000+ شركة B2B
-• $3T Vision 2030 pipeline
-• 85% من الـ leads رقمية (ارتفاع من 45% في 2020)
+• قاعدة واسعة من شركات B2B متوسطة وصغيرة
+• تحوّل رقمي متسارع ضمن رؤية 2030
+• معظم الـ leads تصل عبر قنوات رقمية
 
-📍 الخليج (UAE, Kuwait, Qatar, Bahrain, Oman)  
-• 40,000+ شركة B2B إضافية
-• نفس اللغة + نفس الديناميكيات
+📍 الخليج (UAE, Kuwait, Qatar, Bahrain, Oman)
+• سوق مجاور بنفس اللغة ونفس ديناميكيات المبيعات
 
-📊 TAM: $480M ARR (assuming $1K/company/month)
-💰 SAM: $180M ARR (realistic 3-year capture)
-🎯 SOM (أول سنتين): $18M ARR
+ملاحظة: تقديرات حجم السوق التفصيلية في `dealix_financial_model.md`
+ولا تُعرض كأرقام مؤكدة هنا.
 ```
 
-**Visual:** خريطة الخليج مع أرقام المدن.
+**Visual:** خريطة الخليج توضّح نطاق التوسّع المرحلي.
 
 ---
 
@@ -87,20 +86,19 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 ```
 كيف يعمل Dealix (في 3 خطوات)
 
-1️⃣ LEAD INGEST
-   موقع / WhatsApp / Instagram / CRM webhook
+1️⃣ INGEST
+   leads من الموقع / CRM webhook / إدخال يدوي
    ↓
-2️⃣ AI CONVERSATION
-   Dealix يسأل 8 أسئلة BANT ذكية
-   يتكلم لهجة خليجية طبيعية
-   ↓  
-3️⃣ DELIVER
-   يحجز demo في calendar فريقك
-   ملخّص 1-صفحة قبل الـ demo
-   CRM sync تلقائي
+2️⃣ RADAR + DRAFT
+   Dealix يرتّب الـ leads بالأولوية حسب إشارات المتابعة
+   ويصيغ مسودّة الرسالة التالية بالعربي الخليجي
+   ↓
+3️⃣ APPROVE + SEND
+   الإنسان يراجع المسودّة، يعدّلها، يوافق ثم يرسل
+   ملخّص 1-صفحة لكل lead + سجل تدقيق لكل إجراء
 ```
 
-**Visual:** 3 screenshots متتابعة تظهر flow.
+**Visual:** 3 screenshots متتابعة تُظهر الرادار ثم المسودّة ثم شاشة الموافقة.
 
 ---
 
@@ -108,14 +106,14 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 
 ```
 [4 screenshots:]
-1. Chat widget على موقع العميل
-2. محادثة عربية طبيعية
-3. Qualification summary
-4. Dashboard للعميل
+1. رادار المتابعات: قائمة leads مرتّبة بالأولوية
+2. مسودّة رسالة بالعربي الخليجي بانتظار المراجعة
+3. شاشة الموافقة + سجل التدقيق
+4. لوحة العميل (Dashboard)
 
 النقطة الرئيسية:
-"لأول مرة، شركة سعودية تبيع لعملاء سعوديين
-عبر AI سعودي حقيقي."
+"شركة سعودية تبني أداة عمليات إيرادات
+محكومة، تبقي الإنسان في موضع القرار."
 ```
 
 ---
@@ -123,21 +121,22 @@ Dealix = أول AI sales rep عربي خليجي حقيقي
 ## الشريحة 7: Business Model
 
 ```
-3 باقات SaaS + Enterprise
+سلّم قيمة متدرّج (Value Ladder)
 
-• Starter  — 999 ريال/شهر (1-3 مندوبين)
-• Growth   — 2,999 ريال/شهر (4-10 مندوبين) ⭐
-• Scale    — 7,999 ريال/شهر (+10 مندوبين)
+• Free Mini Diagnostic   — 0 ريال
+• Revenue Proof Sprint   — 499 ريال (مرة واحدة)
+• Data-to-Revenue Pack   — 1,500 ريال
+• Growth Ops Monthly     — 2,999 ريال/شهر ⭐
+• Support OS Add-on      — 1,500 ريال/شهر
+• Executive Command Center — 7,500 ريال/شهر
+• Agency Partner OS      — مخصّص + حصة إيرادات 15–30%
 
-ARPA: 2,449 ريال/شهر
-Gross Margin: 87%
-Sales Cycle: 14-21 يوم
-Monthly Churn: < 3% (target)
-
-LTV:CAC = 35:1 (السنة الأولى)
+عرض الدخول للعميل = Revenue Proof Sprint بـ 499 ريال.
+Gross Margin، دورة البيع، والـ churn المستهدف: التفاصيل في
+`dealix_financial_model.md` وتُعرض كتقديرات لا كأرقام مؤكدة.
 ```
 
-**Visual:** جدول باقات مقارن بالمنافسة.
+**Visual:** جدول السلّم السعري + موضع كل باقة على رحلة العميل.
 
 ---
 
@@ -146,21 +145,21 @@ LTV:CAC = 35:1 (السنة الأولى)
 ```
 حيث نحن اليوم (أبريل 2026)
 
-✅ Backend production-ready (Railway)
-✅ 72 PRs مدموجة، 92% CI coverage  
-✅ Moyasar integration (SAR payments)
-✅ Anthropic Claude as AI layer
-✅ 20 lead حقيقي في outreach
-✅ عقود + policies جاهزة (PDPL, GDPR)
+✅ Backend جاهز للإنتاج (Railway)
+✅ تكامل Moyasar للمدفوعات بالريال
+✅ طبقة AI من Anthropic
+✅ قائمة leads حقيقية قيد المتابعة (warm outreach)
+✅ عقود + سياسات خصوصية متوافقة مع PDPL
 
-في الطريق:
-📅 M1 (مايو): أول 5 عملاء مدفوعين
-📅 M3: 30K MRR
-📅 M6: 100K MRR
-📅 M12: 360K MRR (4.3M ARR)
+في الطريق (أهداف، ليست نتائج مؤكدة):
+📅 M1: أول عملاء مدفوعين على Revenue Proof Sprint
+📅 M3: أول قاعدة عملاء على Growth Ops Monthly
+📅 M6–M12: توسيع القاعدة وإطلاق Executive Command Center
+
+الأرقام المالية التفصيلية في `dealix_financial_model.md`.
 ```
 
-**Visual:** traction chart + screenshot GitHub repo activity.
+**Visual:** traction timeline بالمراحل (بلا أرقام مُختلقة).
 
 ---
 
@@ -169,16 +168,16 @@ LTV:CAC = 35:1 (السنة الأولى)
 ```
 نحن في فئة جديدة
 
-                   | Dealix | Drift/Intercom | Local Chatbots | BDR Agencies
-                   |--------|----------------|-----------------|---------------
-Arabic Khaliji     |  ✅    |       ❌       |    ترجمة       |      ✅
-Qualifies BANT     |  ✅    |       ⚠️       |       ❌        |      ✅
-Books demos        |  ✅    |       ⚠️       |       ❌        |      ✅
-24/7               |  ✅    |       ✅       |       ✅        |      ❌
-Cost per lead      | 2 ريال | 8 ريال         |  5 ريال         |  45 ريال
-Scalability        |  ✅✅  |       ✅       |       ⚠️        |      ❌
+                        | Dealix | Drift/Intercom | Local Chatbots | BDR Agencies
+                        |--------|----------------|-----------------|---------------
+عربي خليجي أصيل         |  ✅    |       ❌       |    ترجمة       |      ✅
+رادار أولوية المتابعة   |  ✅    |       ⚠️       |       ❌        |      ⚠️
+مسودّات بموافقة بشرية   |  ✅    |       ❌       |       ❌        |      ❌
+سجل تدقيق لكل إجراء     |  ✅    |       ⚠️       |       ❌        |      ❌
+عمليات محكومة 24/7      |  ✅    |       ✅       |       ✅        |      ❌
 
-Positioning: "نحن Drift، ولكن للعربي. نحن BDR، ولكن بلا تكلفة."
+Positioning: "ليس chatbot يرد بدلاً منك — بل رادار يُظهر
+المتابعة ويصيغ المسودّة، والقرار يبقى عند فريقك."
 ```
 
 ---
@@ -214,23 +213,20 @@ Phase 4 (Y2): Geographic expansion
 ## الشريحة 11: Financial Projections
 
 ```
-12-Month Projection
+الإسقاطات المالية
 
-M3:  12K MRR   (144K ARR)    · 8 عملاء
-M6:  58K MRR   (696K ARR)   · 29 عميل  ⭐ break-even
-M9:  163K MRR  (1.95M ARR)  · 66 عميل
-M12: 358K MRR  (4.3M ARR)   · 121 عميل
+التفاصيل الكاملة (MRR، ARR، عدد العملاء، الهامش، نقطة التعادل)
+موجودة في النموذج المالي: `dealix_financial_model.md`.
+تُعرض هنا كتقديرات سيناريو، وليست نتائج مؤكدة.
 
-Y2 Base Case: 10.6M ARR
-Y3 Base Case: 24M ARR
-
-Net Profit Y1: 702K (52% EBITDA margin)
-
-يقف على قدميه من M2 — لا يحتاج تمويل للبقاء.
-التمويل = لتسريع النمو، ليس للبقاء.
+المبدأ:
+• الـ Sprint بـ 499 ريال يموّل الدخول منخفض المخاطر للعميل
+• الانتقال إلى Growth Ops Monthly يبني الإيراد المتكرّر
+• Executive Command Center + Agency Partner OS يرفعان ARPA لاحقاً
+• التمويل = لتسريع النمو، وليس شرطاً للبقاء
 ```
 
-**Visual:** growth chart + waterfall profit.
+**Visual:** growth chart بالسيناريوهات (محافظ / أساسي).
 
 ---
 
@@ -273,8 +269,8 @@ Milestones:
   • M6: 30 عميل + Series A readiness
   • M12: 120 عميل + geographic expansion
 
-Valuation target: 15-20M ريال post-money
-(10-15x ARR multiple on $360K ARR)
+Valuation target: يُناقَش بناءً على النموذج المالي
+وقاعدة العملاء عند الجولة.
 ```
 
 ---
@@ -284,12 +280,12 @@ Valuation target: 15-20M ريال post-money
 ```
 لماذا Dealix الآن؟
 
-1. AI ناضج للإنتاج (Claude 4.7 = breakthrough)
-2. السعودية تتبنى AI بسرعة (Vision 2030)
-3. لا منافس محلي جدّي
-4. Saudi VCs نشطون ($1.34B H1 2025)
-5. PDPL يحمي البيانات المحلية (barrier للأجانب)
-6. Solopreneur يقدر يبني في شهور ما كان يحتاج سنوات
+1. نماذج AL ناضجة وجاهزة للإنتاج
+2. السعودية تتبنى الأدوات الرقمية بسرعة ضمن رؤية 2030
+3. لا منافس محلي يقدّم رادار إيرادات محكوماً بالعربية الخليجية
+4. نشاط ملحوظ لمستثمري التقنية في السعودية
+5. PDPL يجعل المعالجة المحلية المتوافقة ميزة تنافسية
+6. فِرق صغيرة تقدر تبني ما كان يحتاج سنوات
 
 "Dealix في 2026 = Salesforce في 1999."
 ```
@@ -316,7 +312,7 @@ Founder, Dealix
 
 📧 sami.assiri11@gmail.com
 📱 +966 [رقم]
-🌐 dealix.ai
+🌐 dealix.me
 📅 calendly.com/sami-assiri11/dealix-demo
 
 نشكركم على وقتكم.
@@ -339,11 +335,12 @@ Founder, Dealix
 
 ### Q&A (3-5 دقائق):
 - أسئلة متوقعة:
-  1. "كيف تختلف عن ChatGPT API؟" → prompted for sales + Saudi context + BANT
-  2. "ما defensibility؟" → Arabic training data + integrations + brand
-  3. "Churn mitigation؟" → customer success + high value
-  4. "لماذا لم تُطلق بعد؟" → Railway deploy هذا الأسبوع
-  5. "Unit economics؟" → 87% margin, 35:1 LTV:CAC
+  0. "هل يرسل Dealix رسائل بدلاً عنا؟" → لا. يصيغ مسودّة فقط؛ فريقك يراجع ويوافق ويرسل
+  1. "كيف تختلف عن ChatGPT API؟" → رادار أولوية + مسودّات بموافقة بشرية + سياق سعودي + سجل تدقيق
+  2. "ما defensibility؟" → عمق العربية الخليجية + التكاملات + نموذج الحوكمة "الموافقة أولاً"
+  3. "Churn mitigation؟" → سلّم قيمة متدرّج يبدأ بـ Sprint منخفض المخاطر + نجاح العميل
+  4. "لماذا لم تُطلق بعد؟" → النشر على Railway قيد الإتمام
+  5. "Unit economics؟" → التفاصيل في `dealix_financial_model.md` (تقديرات لا أرقام مؤكدة)
 
 ### Closing:
 - "المستقبل الأفضل للـ Dealix = partner مثلكم"

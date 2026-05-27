@@ -1,41 +1,45 @@
-# 💳 Dealix — Moyasar Hosted Checkout (بدون Backend)
+# Dealix — Moyasar Hosted Checkout (بدون Backend)
 
-**المشكلة:** Railway backend لسه غير منشور، ما تقدر تستقبل payments عبر API.
+**المشكلة:** الـ backend لسه غير منشور، ما تقدر تستقبل payments عبر API.
 **الحل:** Moyasar يوفّر **hosted invoices** — رابط دفع جاهز بدون أي code.
-**الوقت:** 5 دقائق setup، ثم تستقبل فلوس فوراً.
+**الوقت:** setup سريع، ثم تستقبل فلوس فوراً.
+
+> **تنبيه مهم — الـ 1 ريال:** أي فاتورة بقيمة `1.00 SAR` (الـ `pilot_1sar` charge) المذكورة في هذا الملف هي **اختبار داخلي للتحقّق من قناة الدفع فقط** — يدفعها الفريق بنفسه للتأكد أن Moyasar والـ webhook والبنك يعملون. **هي ليست عرضاً تجارياً للعملاء.** عرض الدخول للعميل هو **Revenue Proof Sprint بـ 499 ريال (مرة واحدة)**.
+
+> **الأسعار القانونية الوحيدة:** Free Mini Diagnostic 0 ← Revenue Proof Sprint 499 ريال (مرة واحدة) ← Data-to-Revenue Pack 1,500 ← Growth Ops Monthly 2,999/شهر ← Support OS Add-on 1,500/شهر ← Executive Command Center 7,500/شهر ← Agency Partner OS مخصّص.
 
 ---
 
-## 🚀 الطريقة 1 — Moyasar Invoices API (الأسرع)
+## الطريقة 1 — Moyasar Invoices API (الأسرع)
 
 ### الخطوة 1: تأكد حسابك Moyasar verified
 1. افتح: https://dashboard.moyasar.com
 2. Settings → Business → تأكد من:
-   - ✅ CR uploaded (أو وثيقة عمل حر)
-   - ✅ Bank account linked
-   - ✅ Account active
+   - CR uploaded (أو وثيقة عمل حر)
+   - Bank account linked
+   - Account active
 
-### الخطوة 2: أنشئ Invoice يدوياً (UI)
+### الخطوة 2 (داخلي): اختبار التحقّق `pilot_1sar`
+> هذه خطوة تحقّق داخلية — يدفعها الفريق بنفسه، **ليست للعملاء**.
 1. Moyasar Dashboard → Invoices → **Create Invoice**
 2. املأ:
-   - **Amount:** `1.00 SAR` (للـ pilot) أو `999.00` (Starter)
-   - **Description:** `Dealix Pilot — 7 days`
-   - **Customer email:** email العميل
+   - **Amount:** `1.00 SAR` — اختبار داخلي للتحقّق من قناة الدفع (`pilot_1sar`)
+   - **Description:** `Dealix internal payment-channel test — pilot_1sar`
+   - **Customer email:** بريد الفريق
    - **Expires:** 7 days
-3. Save → احصل على:
-   - **Invoice ID:** `inv_xxxx`
-   - **Payment URL:** `https://invoice.moyasar.com/invoices/inv_xxxx`
+3. Save → احصل على Invoice ID و Payment URL، ادفعها بنفسك، وتأكد أن الفلوس وصلت البنك والـ webhook اشتغل.
 
-### الخطوة 3: أرسل الرابط للعميل
-عبر WhatsApp / Email / LinkedIn:
+### الخطوة 3: أنشئ فاتورة العميل (Revenue Proof Sprint)
+1. Moyasar Dashboard → Invoices → **Create Invoice**
+2. **Amount:** `499.00 SAR` — عرض الدخول للعميل (Revenue Proof Sprint، مرة واحدة).
+3. **Description:** `Dealix — Revenue Proof Sprint`
+4. أرسل الرابط للعميل بعد موافقته:
 ```
 رابط الدفع: https://invoice.moyasar.com/invoices/inv_xxxx
-المبلغ: 1 ريال
-مدة Pilot: 7 أيام
-استرداد: كامل لو ما أعجبك
+المبلغ: 499 ريال — Revenue Proof Sprint (مرة واحدة)
 ```
 
-**النتيجة:** العميل يدفع → Moyasar يخبرك → الفلوس تصل بنكك خلال 24 ساعة.
+**النتيجة:** العميل يدفع ← Moyasar يخبرك ← الفلوس تصل بنكك خلال 24 ساعة.
 
 ---
 
@@ -47,15 +51,15 @@
 # Set your keys
 export MOYASAR_SECRET=sk_live_xxxxxxxxx   # من Moyasar Dashboard → API Keys
 
-# Create an invoice for 1 SAR pilot
+# Internal payment-channel verification charge (pilot_1sar) — NOT a customer offer
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
   -d "amount=100" \
   -d "currency=SAR" \
-  -d "description=Dealix Pilot — 7 days (1 SAR refundable)" \
-  -d "callback_url=https://voxc2.github.io/dealix/thank-you.html" \
-  -d "metadata[plan]=pilot" \
-  -d "metadata[customer_email]=$CUSTOMER_EMAIL"
+  -d "description=Dealix internal payment-channel test — pilot_1sar" \
+  -d "callback_url=https://dealix.me/thank-you.html" \
+  -d "metadata[plan]=pilot_1sar_internal_test" \
+  -d "metadata[customer_email]=$TEAM_EMAIL"
 ```
 
 **Response مثال:**
@@ -72,42 +76,51 @@ curl -X POST https://api.moyasar.com/v1/invoices \
 
 ---
 
-## 📝 قوالب Invoices الجاهزة
+## قوالب Invoices الجاهزة
 
-### Pilot (1 ريال)
+### اختبار داخلي — pilot_1sar (1 ريال، ليس عرض عميل)
 ```bash
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
   -d "amount=100" \
   -d "currency=SAR" \
-  -d "description=Dealix Pilot — تجربة 7 أيام (قابل للاسترداد)"
+  -d "description=Dealix internal payment-channel test — pilot_1sar"
 ```
 
-### Starter (999 ريال)
+### Revenue Proof Sprint (499 ريال — عرض الدخول للعميل)
 ```bash
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
-  -d "amount=99900" \
+  -d "amount=49900" \
   -d "currency=SAR" \
-  -d "description=Dealix Starter — اشتراك شهر أول"
+  -d "description=Dealix — Revenue Proof Sprint (one-time)"
 ```
 
-### Growth (2,999 ريال)
+### Data-to-Revenue Pack (1,500 ريال)
+```bash
+curl -X POST https://api.moyasar.com/v1/invoices \
+  -u "$MOYASAR_SECRET:" \
+  -d "amount=150000" \
+  -d "currency=SAR" \
+  -d "description=Dealix — Data-to-Revenue Pack"
+```
+
+### Growth Ops Monthly (2,999 ريال/شهر)
 ```bash
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
   -d "amount=299900" \
   -d "currency=SAR" \
-  -d "description=Dealix Growth — اشتراك شهر أول (4-10 مندوبين)"
+  -d "description=Dealix — Growth Ops Monthly (اشتراك شهري)"
 ```
 
-### Scale (7,999 ريال)
+### Executive Command Center (7,500 ريال/شهر)
 ```bash
 curl -X POST https://api.moyasar.com/v1/invoices \
   -u "$MOYASAR_SECRET:" \
-  -d "amount=799900" \
+  -d "amount=750000" \
   -d "currency=SAR" \
-  -d "description=Dealix Scale — اشتراك شهر أول (Enterprise)"
+  -d "description=Dealix — Executive Command Center (اشتراك شهري)"
 ```
 
 **ملاحظة:** المبلغ في Moyasar API بالـ **halalas** (1 SAR = 100 halalas).
@@ -134,18 +147,18 @@ Moyasar يدعم webhooks مباشرة. أرسل إشعار لـ Slack:
 
 ---
 
-## 💰 Flow كامل (Live الآن بدون Railway)
+## Flow كامل (Live الآن بدون backend)
 
 ```
-1. عميل يفتح: https://voxc2.github.io/dealix/pricing.html
+1. عميل يفتح: https://dealix.me/pricing.html
    ↓
-2. يختار "Pilot 1 ريال"
+2. يختار "Revenue Proof Sprint — 499 ريال"
    ↓
 3. يضغط الـ CTA → (رابط تواصل معك على WhatsApp/Calendly)
    ↓
-4. أنت تنشئ invoice يدوياً (30 ثانية)
+4. أنت تنشئ invoice 499 ريال يدوياً
    ↓
-5. ترسل الرابط للعميل عبر WhatsApp
+5. ترسل الرابط للعميل بعد موافقته
    ↓
 6. العميل يدفع → Moyasar يرسل webhook لـ Zapier
    ↓
@@ -167,22 +180,22 @@ Moyasar يدعم webhooks مباشرة. أرسل إشعار لـ Slack:
 
 | التاريخ | العميل | الشركة | المبلغ | Invoice ID | Status | Plan |
 |---------|---------|---------|---------|------------|---------|------|
-| 2026-04-24 | عبدالله | Lucidya | 1 SAR | inv_abc123 | paid | pilot |
+| 2026-05-18 | (فريق Dealix) | — | 1 SAR | inv_test01 | paid | pilot_1sar (اختبار داخلي) |
+| 2026-05-19 | [اسم العميل] | [الشركة] | 499 SAR | inv_abc123 | paid | Revenue Proof Sprint |
 | ... | ... | ... | ... | ... | ... | ... |
 
 ---
 
-## 🎯 الخلاصة
+## الخلاصة
 
-**الواقع:** تقدر تستلم أول 10 عملاء بدون Railway deploy.
+**الواقع:** تقدر تستلم أول 10 عملاء بدون backend deploy كامل.
 **الطريقة:** Moyasar hosted invoices + manual onboarding.
 **الميزة:** تركّز على البيع + Customer Success، ما تنشغل في deploy.
-**متى Railway:** بعد أول 5-10 عملاء (لما الأتمتة تصير قيمة حقيقية).
+**متى الـ backend الكامل:** بعد أول 5-10 عملاء.
 
 **الآن:**
-1. افتح Moyasar dashboard
-2. Create invoice تجريبي 1 ريال بـ email نفسك
-3. افتح الرابط + ادفع ببطاقتك
-4. تأكد الفلوس وصلت بنكك
-
-**هذا Launch حقيقي.** Railway يصير polish لاحقاً.
+1. افتح Moyasar dashboard.
+2. أنشئ فاتورة `pilot_1sar` (1 ريال) بـ email الفريق — **اختبار داخلي للتحقّق فقط**.
+3. افتح الرابط وادفعها بنفسك.
+4. تأكد الفلوس وصلت البنك والـ webhook اشتغل.
+5. بعد نجاح الاختبار، أنشئ فاتورة 499 ريال (Revenue Proof Sprint) لأول عميل.

@@ -9,7 +9,7 @@
 ## 📋 لماذا خدمات إضافية؟
 
 ### السبب التجاري
-- **SaaS subscription** (999-7,999 ر.س/شهر) = الأساس
+- **SaaS subscription** (Growth Ops Monthly 2,999 ر.س/شهر — Executive Command Center 7,500 ر.س/شهر) = الأساس
 - **Services revenue** = 2-5x من الـ subscription
 - يبني **trust** أعمق مع العملاء (stickiness)
 - فرصة للـ **case studies** وshowcases

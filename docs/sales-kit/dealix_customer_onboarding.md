@@ -63,9 +63,9 @@
 
 **5-15 دقيقة:** Discovery عميق
 - "أخبرني أكثر عن أنواع leads اللي تأتي لك"
-- "ما معلومات BANT اللي تريد الـ AI يجمعها؟"
-- "أي leads يجب رفضها فوراً؟ (مثل: طلاب، competitors)"
-- "لو حدّدت 3 shortcuts للـ BDR team، ما هي؟"
+- "ما المعلومات التي تريد أن تظهر في ملخّص كل lead قبل المتابعة؟"
+- "أي leads يجب أن يستبعدها الرادار من قائمة المتابعة؟ (مثل: طلاب، منافسون)"
+- "لو حدّدت 3 أولويات لفريق المبيعات، ما هي؟"
 
 **15-25 دقيقة:** التخصيص
 - Share screen → Dealix admin panel
@@ -103,7 +103,7 @@ Dealix الآن مُتصل بـ [CRM]. إليك ما حصل:
 ✅ Calendar sync: [التاريخ]
 ✅ 10 test leads تُحقن خلال ساعة للمراجعة
 
-راجعها في dashboard.dealix.ai (login attached).
+راجعها في dashboard.dealix.me (login attached).
 
 أنتظر feedback يوم 3.
 

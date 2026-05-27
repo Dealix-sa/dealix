@@ -24,12 +24,12 @@ Dealix API، dashboard، أو payment processing down أكثر من 5 دقائق
 
 ### الإجراء الفوري (0-15 دقيقة)
 1. **Sami أو on-call engineer** يستلم التنبيه من Uptime Robot
-2. **افتح Status Page** — `status.dealix.sa` (يُحدّث يدوياً الآن، auto Q3)
+2. **افتح Status Page** — `status.dealix.me` (يُحدّث يدوياً الآن، auto Q3)
 3. **انشر update**:
    ```
    🔴 We're investigating an issue affecting [component].
    Started: [timestamp AST]
-   Monitoring: https://status.dealix.sa
+   Monitoring: https://status.dealix.me
    ```
 4. **افتح Slack channel** `#incident-YYYY-MM-DD`
 5. **Identify root cause** (logs من Sentry + Railway)
@@ -203,7 +203,7 @@ Categorize الـ churn:
 1. [specific action 1]
 2. [specific action 2]
 
-نتحمّل المسؤولية كاملة. لو عندك أي ملاحظة إضافية، DM أو sami@dealix.sa.
+نتحمّل المسؤولية كاملة. لو عندك أي ملاحظة إضافية، DM أو sami@dealix.me.
 
 — سامي، Founder
 ```

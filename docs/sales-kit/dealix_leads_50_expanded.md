@@ -22,10 +22,11 @@
 **قالب سريع (WhatsApp):**
 ```
 السلام عليكم [الاسم]،
-أطلقت Dealix اليوم — AI sales rep بالعربي الخليجي.
-محتاج 3 أصدقاء يجربون pilot بـ 1 ريال لأسبوع.
+أطلقت Dealix اليوم — نظام تشغيل إيرادات ما بعد الـ lead بالعربي.
+يُظهر للشركة من يحتاج متابعة، يصوغ المسودة، والمؤسس يوافق ويرسل.
+أبحث عن 3 شركات B2B لسبرنت إثبات الإيرادات (499 ريال، 7 أيام).
 فكرت فيك لأن [سبب محدد].
-موقع: voxc2.github.io/dealix
+موقع: dealix.me
 مهتم نتكلم 10 دقائق؟
 ```
 
@@ -94,22 +95,22 @@
 
 ## 🔵 الفئة C — Agencies & Service Providers (10 lead)
 
-**شراكات للبيع لعملائهم:**
+**شراكات للبيع لعملائهم — النموذج الرسمي: Agency Partner OS (حصة إيراد 15–30%) أو إحالة ثابتة 5,000 ريال لكل صفقة مُغلقة. التفاصيل في `docs/distribution/PARTNER_ECONOMICS.md`. White-label لا يُفتح قبل 3 proof packs.**
 
 | # | الوكالة | النوع | Approach |
 |---|----------|-------|----------|
-| 31 | Wavy | Digital marketing | White-label deal |
-| 32 | Peak Content | Content | Service exchange |
-| 33 | Digital8 | Full-service | Reseller |
-| 34 | Brand Lounge | Branding | Referral |
-| 35 | Intermarkets | B2B marketing | White-label |
-| 36-40 | 5 freelance consultants | LinkedIn `"Saudi marketing consultant"` | Service provider |
+| 31 | Wavy | Digital marketing | Agency Partner OS (rev-share 15–30%) |
+| 32 | Peak Content | Content | Agency Partner OS |
+| 33 | Digital8 | Full-service | Agency Partner OS |
+| 34 | Brand Lounge | Branding | إحالة (5,000 ريال/صفقة مُغلقة) |
+| 35 | Intermarkets | B2B marketing | Agency Partner OS |
+| 36-40 | 5 freelance consultants | LinkedIn `"Saudi marketing consultant"` | إحالة (5,000 ريال/صفقة مُغلقة) |
 
 ---
 
 ## 🟣 الفئة D — B2B Service Companies (10 lead)
 
-**شركات خدمات B2B تحتاج AI sales rep:**
+**شركات خدمات B2B تضيع منها متابعة الـ leads:**
 
 | # | القطاع | أمثلة |
 |---|---------|---------|
@@ -156,68 +157,62 @@
 
 ---
 
-## ⚡ Sprint الـ 24 ساعة — 50 رسالة
+## ⚡ خطة الـ outreach — تخصيص فردي، لا bulk-blast
 
-### الساعة 0-2: Setup
+**القاعدة:** حد أقصى 5 رسائل مخصّصة في الساعة. كل رسالة لشخص واحد بعد قراءة سياقه. لا قوائم مستخرجة، لا واتساب بارد، لا أتمتة LinkedIn. (راجع قواعد التنفيذ في `docs/ops/launch_content_queue.md`.)
+
+### اليوم 1: Setup + Warm outreach
 - [ ] افتح Google Sheet جديد `Dealix Outreach Tracker`
 - [ ] Columns: Name, Company, Channel, Sent At, Status, Notes
-- [ ] انسخ القائمة أعلاه + استكمل الأسماء
+- [ ] رسائل WhatsApp مخصّصة لأصدقاء/معارف (5/ساعة كحد أقصى)
+- [ ] LinkedIn DMs مخصّصة للفئة S
 
-### الساعة 2-6: Warm outreach (15 رسالة)
-- [ ] 5 رسائل WhatsApp لأصدقاء/معارف
-- [ ] 10 LinkedIn DMs للفئة S
+### اليوم 2-3: Cold outreach مخصّص
+- [ ] LinkedIn DMs مخصّصة للفئة A (founders + business accounts فقط)
+- [ ] Email مخصّص للفئة B
+- [ ] رسائل مخصّصة للفئتين C + D
 
-### الساعة 6-10: استراحة + متابعة
-- [ ] رد على أي reply فوراً
-- [ ] إذا حجز demo، جهّز نفسك
-
-### الساعة 10-18: Cold outreach (35 رسالة)
-- [ ] 15 LinkedIn DMs (الفئة A)
-- [ ] 10 Email (الفئة B)
-- [ ] 10 رسائل مختلطة (C + D)
-
-### الساعة 18-24: LinkedIn Post + ads
-- [ ] انشر post على LinkedIn عن الإطلاق
-- [ ] احجز $50 على LinkedIn ads (target: Saudi sales directors)
-- [ ] رد على كل تفاعل
+### متابعة
+- [ ] رد على أي reply خلال 30 دقيقة
+- [ ] إذا حجز demo، جهّز نفسك 15 دقيقة قبله
+- [ ] انشر post build-in-public عن الإطلاق
+- [ ] احترم أي opt-out فوراً
 
 ---
 
-## 🎯 الأرقام المتوقعة (واقعية)
+## 🎯 الأرقام المتوقعة (تقديرية)
 
-### من 50 رسالة:
-- 50 × 20% avg reply = 10 ردود
-- 10 × 30% ديمو = 3 demos
-- 3 × 40% pilot = 1.2 pilot
-- 1.2 × 80% paid = **~1 عميل مدفوع**
+### مسار تقديري من قائمة مخصّصة:
+- ردود → demos → تشخيص مجاني → سبرنت إثبات الإيرادات (499 ريال)
+- الأرقام تقديرية وتعتمد على نتائج حقيقية — لا ضمان
 
 ### متى يحدث:
-- **ساعة 4-12:** أول 2-3 ردود (إذا warm leads قوية)
-- **ساعة 12-24:** أول demo محتمل
-- **يوم 2-3:** أول pilot signed
-- **يوم 5-14:** أول payment محوّل
+- **اليوم 1-2:** أول ردود (إذا warm leads قوية)
+- **اليوم 2-3:** أول demo محتمل
+- **اليوم 3-5:** أول تشخيص مجاني يبدأ
+- **اليوم 5-14:** أول سبرنت مدفوع (499 ريال) إذا اقتنع العميل
 
 ### الصدق:
-**24 ساعة للعميل الأول = صعب بدون warm leads.** إذا عندك معرفة شخصية بأحد وقّع بسرعة، الوقت ممكن ينضغط. بدون ذلك، 3-7 أيام هو الواقعي.
+**العميل الأول بسرعة = صعب بدون warm leads.** إذا عندك معرفة شخصية بأحد، الوقت ممكن ينضغط. بدون ذلك، 1-3 أسابيع هو الواقعي.
 
 ---
 
 ## 🚀 المسارات الأسرع للـ "أول عميل"
 
-### Path A — Friend/Family pilot (ساعات)
-- صديق يثق فيك → يدفع 1 ريال pilot → يعطيك case study
+### Path A — Friend/Family (ساعات)
+- صديق يثق فيك → يبدأ بتشخيص مجاني ثم سبرنت إثبات الإيرادات (499 ريال) → يعطيك Proof Pack حقيقي
 - **هذا طبيعي وشائع** — كل SaaS ناجح بدأ هنا
 
 ### Path B — Warm intro (1-2 يوم)
 - طلب intro من someone connected
-- "اسأل في كل WhatsApp group: مين يعرف B2B founder يحتاج AI؟"
+- "اسأل في كل WhatsApp group: مين يعرف مؤسس B2B تضيع منه متابعة الـ leads؟"
 
-### Path C — LinkedIn viral post (3-7 أيام)
+### Path C — LinkedIn build-in-public post (3-7 أيام)
 - Post قوي build-in-public → ينتشر → inbound leads
-- "أطلقت Dealix اليوم — أول AI sales rep عربي. شركتي تبحث عن 5 design partners..."
+- "أطلقت Dealix — نظام تشغيل إيرادات ما بعد الـ lead بالعربي. أبحث عن 3 شركات B2B لسبرنت إثبات الإيرادات..."
 
 ### Path D — Personal outreach (3-7 أيام)
-- 50 رسالة مخصصة → ردود → demos → pilots
+- رسائل مخصصة فردياً (حد أقصى 5/ساعة) → ردود → demos → تشخيص ثم سبرنت
 
 ### Path E — Paid ads (7-14 يوم)
 - LinkedIn ads targeted → leads → conversion
@@ -227,8 +222,12 @@
 
 ## 💡 نصيحة نهائية
 
-**أول عميل ≠ best customer.** أول عميل يعلّمك أكثر مما يدفع. اعطي pilot 1 ريال بحرية — حتى لصديق. الـ case study + التعلّم = قيمة أكبر من المبلغ المبدئي.
+**أول عميل ≠ best customer.** أول عميل يعلّمك أكثر مما يدفع. ابدأ معه بالتشخيص المجاني ثم سبرنت إثبات الإيرادات (499 ريال) — المخرج Proof Pack موثق. الـ case study الحقيقي + التعلّم = قيمة أكبر من المبلغ المبدئي.
 
-**بعد أول عميل ناجح، كل شي يصير أسهل:** social proof، confidence، referrals.
+**بعد أول عميل ناجح، كل شي يصير أسهل:** دليل موثق، ثقة، إحالات.
 
 **ابدأ بـ Path A اليوم. اسأل 5 أصدقاء. واحد بيقول نعم.**
+
+---
+
+> Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.

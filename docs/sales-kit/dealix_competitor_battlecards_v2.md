@@ -25,7 +25,7 @@ Paired with existing `dealix_battlecards.md` (MENA-specific: Foodics/Lucidya/Sal
 - **Low-friction pricing for SMB** — $49/user/mo minimum, multi-seat often needed
 
 ### Dealix angle
-> "Apollo is powerful for US/Europe — not the Saudi market. Dealix is Arabic-first, WhatsApp-native, and you can start with 1 SAR for a 7-day pilot to prove value on your actual Saudi leads. If Apollo works for you today, keep it — Dealix can layer on top."
+> "Apollo is powerful for US/Europe — not the Saudi market. Dealix is Arabic-first, WhatsApp-native, and you can start with a free Mini Diagnostic, then a 499 SAR Revenue Proof Sprint to prove value on your actual Saudi leads. If Apollo works for you today, keep it — Dealix can layer on top."
 
 ### When Apollo wins: large enterprise with global outbound motion, English-first
 ### When Dealix wins: Saudi/GCC B2B, WhatsApp-heavy, Arabic-first
@@ -68,11 +68,11 @@ Paired with existing `dealix_battlecards.md` (MENA-specific: Foodics/Lucidya/Sal
 - **Arabic product UI** — English-only
 - **Arabic message generation** — relies on generic LLMs (GPT-4 class) for output, which produces formal MSA
 - **Saudi-specific data sources** (hiring boards, Wamda press, local CR)
-- **Response automation** — enrichment + outreach, but not real-time AI SDR reply
+- **Governed follow-up drafting** — enrichment + outreach lists, but no draft-and-review follow-up radar in Arabic
 - **Entry-level pricing** — $149/mo minimum for meaningful features
 
 ### Dealix angle
-> "Clay is brilliant for creative enrichment workflows — I've used it. For the Saudi market, you still hit the same language + local-data gaps. Dealix solves the response layer that Clay doesn't touch: AI Arabic SDR running 24/7 on WhatsApp + email, with Clay-style tech detection as a bonus."
+> "Clay is brilliant for creative enrichment workflows — I've used it. For the Saudi market, you still hit the same language + local-data gaps. Dealix solves the follow-up layer that Clay doesn't touch: an approval-first, draft-only radar that surfaces which leads need follow-up and drafts the next message in Khaliji Arabic — the human reviews, approves, and sends."
 
 ### When Clay wins: technical RevOps teams in US/Europe building custom enrichment
 ### When Dealix wins: Saudi B2B wanting operational response, not data-building
@@ -120,7 +120,7 @@ Paired with existing `dealix_battlecards.md` (MENA-specific: Foodics/Lucidya/Sal
 - **Manual-first delivery** — designed for scale from day 1, not first-10-customers mode
 
 ### Dealix angle
-> "Agentforce is the Mercedes of AI SDR for enterprises already on Salesforce. For Saudi SMB/mid-market, the economics don't make sense until you're past 500 employees. Dealix is the Toyota: does 90% of what matters, works on any stack, starts at 1 SAR for a pilot. When you grow to enterprise scale, Agentforce may make sense — we'll both be celebrating."
+> "Agentforce is the Mercedes of enterprise AI for companies already deep on Salesforce. For Saudi SMB/mid-market, the economics don't make sense until you're past 500 employees. Dealix is the Toyota: a governed, draft-only follow-up radar that does what matters, works on any stack, and starts with a free Mini Diagnostic — then a 499 SAR Revenue Proof Sprint. When you grow to enterprise scale, Agentforce may make sense — we'll both be celebrating."
 
 ### When Agentforce wins: Salesforce Enterprise customers 500+ employees
 ### When Dealix wins: Saudi SMB/mid-market, any CRM (or no CRM)
@@ -163,7 +163,7 @@ When prospect says "how are you different from [X]?":
 > "Where Dealix is different for Saudi market specifically: [one concrete point — Arabic / WhatsApp / Saudi signals / manual-first / entry pricing]"
 
 ### Step 4 — Bridge (offer coexistence)
-> "You can use both. [X] for [their strength], Dealix for [Saudi/Arabic/WhatsApp coverage]. The 1 SAR pilot lets you test without switching."
+> "You can use both. [X] for [their strength], Dealix for [Saudi/Arabic/WhatsApp coverage]. The free Mini Diagnostic and 499 SAR Revenue Proof Sprint let you test without switching."
 
 ### Step 5 — Redirect (to value)
 > "The better question isn't which tool. It's: what's your cost of a 4-hour response time on Saudi leads right now?"

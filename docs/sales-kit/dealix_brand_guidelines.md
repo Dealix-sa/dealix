@@ -270,9 +270,9 @@ Fallback: system-ui
 سامي العسيري
 Founder & CEO | Dealix
 
-📧 sami@dealix.sa (سيُفعّل)
+📧 sami@dealix.me (سيُفعّل)
 📅 https://calendly.com/sami-assiri11/dealix-demo
-🌐 dealix.sa
+🌐 dealix.me
 
 —
 Dealix | الذكاء الاصطناعي للتجارة السعودية

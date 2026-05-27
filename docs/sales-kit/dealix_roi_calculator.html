@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Dealix ROI Calculator</title>
+<title>Dealix — حاسبة فجوة ما بعد الـ lead</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, 'Segoe UI', Arial, sans-serif; background: #0a0e27; color: #fff; padding: 40px 20px; min-height: 100vh; }
@@ -35,17 +35,17 @@
 </head>
 <body>
 <div class="container">
-  <h1>Dealix ROI Calculator</h1>
-  <p class="subtitle">احسب كم تكلفك leads الضائعة — وكم توفر مع Dealix</p>
+  <h1>Dealix — حاسبة فجوة ما بعد الـ lead</h1>
+  <p class="subtitle">تقدير لحجم المتابعات التي تضيع بعد وصول الـ lead — الأرقام تقديرية، ليست نتائج مضمونة</p>
 
   <div class="card">
     <div class="input-group">
-      <label>كم مندوب مبيعات عندكم؟</label>
+      <label>كم شخص يتابع العملاء المحتملين عندكم؟</label>
       <input type="number" id="reps" value="5" min="1" max="100">
     </div>
 
     <div class="input-group">
-      <label>متوسط راتب المندوب الشهري (ريال، مع المميزات)</label>
+      <label>متوسط الراتب الشهري للشخص (ريال، مع المميزات)</label>
       <input type="number" id="salary" value="10000" step="500">
     </div>
 
@@ -55,7 +55,7 @@
     </div>
 
     <div class="input-group">
-      <label>نسبة الوقت الضائع على leads غير مؤهلة <span id="wasteLabel" class="range-value">40%</span></label>
+      <label>نسبة الوقت المصروف على متابعة غير منظمة بعد وصول الـ lead <span id="wasteLabel" class="range-value">40%</span></label>
       <input type="range" id="waste" value="40" min="10" max="80">
     </div>
 
@@ -71,52 +71,48 @@
   </div>
 
   <div class="result">
-    <div class="big-number" id="savings">14,601 ريال</div>
-    <div class="big-label">صافي الوفر الشهري مع Dealix Growth</div>
+    <div class="big-number" id="savings">— ريال</div>
+    <div class="big-label">تقدير الإيراد المعرّض للخطر شهرياً بسبب فجوة المتابعة</div>
 
     <div class="result-row">
-      <span class="result-label">التكلفة الحالية (وقت مهدور)</span>
-      <span class="result-value" id="currentCost">17,600 ريال/شهر</span>
+      <span class="result-label">تكلفة الوقت المصروف على متابعة غير منظمة</span>
+      <span class="result-value" id="currentCost">—</span>
     </div>
     <div class="result-row">
-      <span class="result-label">Leads ضائعة شهرياً</span>
+      <span class="result-label">عملاء محتملون بلا متابعة موثقة شهرياً</span>
       <span class="result-value" id="lostLeads">—</span>
     </div>
     <div class="result-row">
-      <span class="result-label">إيرادات ضائعة محتملة</span>
+      <span class="result-label">إيراد تقديري معرّض للخطر</span>
       <span class="result-value" id="lostRevenue">—</span>
-    </div>
-    <div class="result-row">
-      <span class="result-label">ROI السنوي</span>
-      <span class="result-value" id="roi" style="color:#10b981">—</span>
     </div>
   </div>
 
   <div class="card">
-    <h3 style="margin-bottom:16px;">الباقة الموصى بها لفريقك:</h3>
+    <h3 style="margin-bottom:16px;">عرض الدخول المقترح:</h3>
     <div class="plan-grid">
-      <div class="plan" id="plan-starter">
-        <div class="plan-name">Starter</div>
-        <div class="plan-price">999</div>
-        <div class="plan-roi" id="roi-starter">—</div>
+      <div class="plan" id="plan-diagnostic">
+        <div class="plan-name">التشخيص المجاني</div>
+        <div class="plan-price">0</div>
+        <div class="plan-roi">باب الدخول</div>
+      </div>
+      <div class="plan recommended" id="plan-sprint">
+        <div class="plan-name">سبرنت إثبات الإيرادات</div>
+        <div class="plan-price">499</div>
+        <div class="plan-roi">7 أيام · ابدأ هنا</div>
       </div>
       <div class="plan" id="plan-growth">
-        <div class="plan-name">Growth</div>
+        <div class="plan-name">عمليات النمو الشهرية</div>
         <div class="plan-price">2,999</div>
-        <div class="plan-roi" id="roi-growth">—</div>
-      </div>
-      <div class="plan" id="plan-scale">
-        <div class="plan-name">Scale</div>
-        <div class="plan-price">7,999</div>
-        <div class="plan-roi" id="roi-scale">—</div>
+        <div class="plan-roi">بعد إثبات</div>
       </div>
     </div>
   </div>
 
-  <a href="https://calendly.com/sami-assiri11/dealix-demo" class="cta">احجز Demo — تجربة pilot بـ 1 ريال</a>
+  <a href="https://calendly.com/sami-assiri11/dealix-demo" class="cta">احجز Demo — ابدأ بتشخيص مجاني ثم سبرنت 499 ريال</a>
 
   <div class="note">
-    <strong>ملاحظة الحسبة:</strong> افتراض 22 يوم عمل × 8 ساعات. نسبة 40% وقت مهدور = متوسط Gartner للشركات بدون AI qualification. Dealix يقلل هذه النسبة لـ 15%.
+    <strong>ملاحظة الحسبة:</strong> كل الأرقام أعلاه تقديرية لأغراض المحادثة فقط، وليست نتائج مضمونة. متابعة ما بعد الـ lead غالباً تضيع لغياب مالك واضح وخطوة تالية محددة. Dealix يُظهر من يحتاج متابعة ويصوغ المسودة، وأنت توافق وترسل — لا يرسل نيابة عنك.
   </div>
 </div>
 
@@ -134,37 +130,18 @@ function calc(){
   document.getElementById('wasteLabel').textContent = waste + '%';
   document.getElementById('convLabel').textContent = conv + '%';
 
+  // All figures are estimates for conversation only — not guaranteed outcomes.
   const hourlyRate = salary / (22*8);
   const hoursPerWeek = 40;
-  const wastedHours = reps * hoursPerWeek * (waste/100);
-  const currentCost = wastedHours * hourlyRate * 4.33; // per month
-  const monthlyLeadsLost = leads * 4.33 * (waste/100) * 0.5; // half of wasted leads = truly lost
-  const revenueAtRisk = monthlyLeadsLost * (conv/100) * dealValue;
+  const followupHours = reps * hoursPerWeek * (waste/100);
+  const currentCost = followupHours * hourlyRate * 4.33; // per month
+  const monthlyLeadsNoFollowup = leads * 4.33 * (waste/100) * 0.5;
+  const revenueAtRisk = monthlyLeadsNoFollowup * (conv/100) * dealValue;
 
-  // Dealix reduces waste to 15%
-  const dealixWaste = 0.15;
-  const newCost = reps * hoursPerWeek * dealixWaste * hourlyRate * 4.33;
-  const dealixPrice = reps <= 3 ? 999 : (reps <= 10 ? 2999 : 7999);
-  const planName = reps <= 3 ? 'starter' : (reps <= 10 ? 'growth' : 'scale');
-  const netSavings = currentCost - newCost - dealixPrice;
-  const annualROI = ((netSavings * 12) / (dealixPrice * 12)) * 100;
-
-  document.getElementById('savings').textContent = fmt(netSavings);
-  document.getElementById('currentCost').textContent = fmt(currentCost) + '/شهر';
-  document.getElementById('lostLeads').textContent = Math.round(monthlyLeadsLost) + ' lead/شهر';
-  document.getElementById('lostRevenue').textContent = fmt(revenueAtRisk) + '/شهر';
-  document.getElementById('roi').textContent = Math.round(annualROI) + '%';
-
-  // Plans
-  ['starter','growth','scale'].forEach(p => {
-    const el = document.getElementById('plan-'+p);
-    el.classList.remove('recommended');
-  });
-  document.getElementById('plan-'+planName).classList.add('recommended');
-
-  document.getElementById('roi-starter').textContent = reps <= 3 ? '✓ الأنسب' : 'صغير';
-  document.getElementById('roi-growth').textContent = (reps > 3 && reps <= 10) ? '✓ الأنسب' : (reps > 10 ? 'صغير' : 'كبير');
-  document.getElementById('roi-scale').textContent = reps > 10 ? '✓ الأنسب' : 'كبير';
+  document.getElementById('savings').textContent = fmt(revenueAtRisk);
+  document.getElementById('currentCost').textContent = fmt(currentCost) + '/شهر (تقديري)';
+  document.getElementById('lostLeads').textContent = Math.round(monthlyLeadsNoFollowup) + ' عميل محتمل/شهر (تقديري)';
+  document.getElementById('lostRevenue').textContent = fmt(revenueAtRisk) + '/شهر (تقديري)';
 }
 
 document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));

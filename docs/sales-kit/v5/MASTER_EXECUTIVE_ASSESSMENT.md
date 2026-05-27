@@ -179,12 +179,16 @@
 
 ### Pricing path
 ```
-Pilot (7 days)   → 1 SAR
-Starter          → 999 SAR/mo
-Growth           → 2,999 SAR/mo
-Scale            → 7,999 SAR/mo
+Free Mini Diagnostic       → 0
+Revenue Proof Sprint       → 499 SAR (one-time, entry offer)
+Data-to-Revenue Pack       → 1,500 SAR (one-time)
+Growth Ops Monthly         → 2,999 SAR/mo
+Support OS Add-on          → 1,500 SAR/mo
+Executive Command Center   → 7,500 SAR/mo
+Agency Partner OS          → custom + 15–30% rev-share
 ```
-ARPU target mix (40/30/10): **2,099 SAR/mo**.
+`pilot_1sar` (1 SAR) = internal Moyasar payment-verification test only — NOT a customer offer.
+Recurring ARPU is an estimate, to be recomputed against the canonical ladder.
 
 ### Invoice path (Moyasar Invoices API)
 1. Sales confirms deal (manual today)

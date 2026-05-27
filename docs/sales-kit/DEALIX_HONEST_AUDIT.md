@@ -90,18 +90,18 @@ https://dealix-production-up.railway.app/health → يرجع "OK" (نص عادي
 #### يحتاج 1-4 ساعات منك:
 - [ ] 🟡 **إرسال أول رسالة LinkedIn** (عبدالله العسيري)
 - [ ] 🟡 **نشر Landing Page** (Vercel/Netlify)
-- [ ] 🟡 **ربط domain dealix.ai** (إذا مشتراه)
+- [ ] 🟡 **ربط domain dealix.me** (إذا مشتراه)
 - [ ] 🟡 **إنشاء Calendly account** (إذا غير موجود)
 - [ ] 🟡 **إعداد HubSpot Free**
 - [ ] 🟡 **تفعيل Moyasar merchant account**
-- [ ] 🟡 **إعداد email دعم** (support@dealix.ai)
-- [ ] 🟡 **اختبار دفع 1 ريال ببطاقتك**
+- [ ] 🟡 **إعداد email دعم** (support@dealix.me)
+- [ ] 🟡 **اختبار دفع 1 ريال ببطاقتك** (اختبار `pilot_1sar` داخلي للتحقّق فقط — ليس عرض عميل)
 - [ ] 🟡 **إرسال LinkedIn invite لـ 20 lead**
 - [ ] 🟡 **نشر أول LinkedIn post (Build in Public)**
 
 #### يحتاج 1-7 أيام:
 - [ ] 🟡 **Logo احترافي** (Fiverr 50 دولار)
-- [ ] 🟡 **domain + SSL** (dealix.sa/ai)
+- [ ] 🟡 **domain + SSL** (dealix.me)
 - [ ] 🟡 **Professional email** (Google Workspace)
 - [ ] 🟡 **LinkedIn Company Page**
 - [ ] 🟡 **Twitter/X account**
@@ -125,7 +125,7 @@ https://dealix-production-up.railway.app/health → يرجع "OK" (نص عادي
 - [ ] ❌ Backup strategy tested
 
 **Customer-facing Presence (8 نقاط):**
-- [ ] ❌ dealix.ai live website
+- [ ] ❌ dealix.me live website
 - [ ] ❌ LinkedIn Company Page
 - [ ] ❌ Twitter/X brand account
 - [ ] ❌ YouTube channel
@@ -146,8 +146,8 @@ https://dealix-production-up.railway.app/health → يرجع "OK" (نص عادي
 - [ ] ❌ Customer dashboard مبني
 - [ ] ❌ Onboarding wizard داخل المنتج
 - [ ] ❌ In-app support chat
-- [ ] ❌ Knowledge base / docs.dealix.ai
-- [ ] ❌ Status page (status.dealix.ai)
+- [ ] ❌ Knowledge base / docs.dealix.me
+- [ ] ❌ Status page (status.dealix.me)
 - [ ] ❌ Community forum
 
 **Marketing Operations (6 نقاط):**
@@ -175,7 +175,7 @@ https://dealix-production-up.railway.app/health → يرجع "OK" (نص عادي
 
 ### ماذا يحدث إذا عميل دفع اليوم؟
 
-1. يدفع 999 ريال عبر BT
+1. يدفع 499 ريال (Revenue Proof Sprint) عبر BT
 2. يستلم invoice
 3. ينتظر تفعيل Dealix
 4. **لن يتفعّل** — لأن Backend غير جاهز
@@ -212,8 +212,8 @@ https://dealix-production-up.railway.app/health → يرجع "OK" (نص عادي
 3. انتظر رد
 
 **بعد 72 ساعة:** إذا رد → demo
-**بعد 7 أيام:** إذا demo نجح → pilot
-**بعد 14 يوم:** إذا pilot نجح → 999 ريال paid
+**بعد 7 أيام:** إذا demo نجح → Revenue Proof Sprint
+**بعد 14 يوم:** إذا الـ Sprint نجح → أول عميل مدفوع (499 ريال، ثم Growth Ops Monthly عند الجاهزية)
 
 ---
 
@@ -273,9 +273,9 @@ https://dealix-production-up.railway.app/health → يرجع "OK" (نص عادي
 
 ### لو تفتح Railway الآن (12 دقيقة):
 ```
-Backend live → اختبار 1 ريال → أول رسالة →
-3-14 يوم → أول demo → 7 أيام pilot →
-يوم 14-21 → أول 999 ريال
+Backend live → اختبار pilot_1sar داخلي → أول رسالة →
+3-14 يوم → أول demo → 7 أيام Revenue Proof Sprint →
+يوم 14-21 → أول عميل مدفوع (499 ريال)
 ```
 
 ### لو تضيف 10 ملفات إضافية (2 ساعة):

@@ -170,14 +170,13 @@
 ## 📋 Step 7: Domain + Hosting التجاري
 
 ### Domain:
-- **dealix.sa** — إذا متاح ($40/سنة)
-- **dealix.ai** — global ($100/سنة)
-- **dealix.com** — ideal لكن غالي ($15+/سنة)
+- **dealix.me** — الدومين الرسمي المعتمد للموقع والـ API (`dealix.me` / `api.dealix.me`)
+- **dealix.com** — ideal لكن غالي — احجزه دفاعياً إذا أمكن
 
-### الموصى به: احجز الـ 3 جميعاً ($155/سنة)
+### الموصى به: استخدم `dealix.me` كدومين رسمي، واحجز `dealix.com` دفاعياً إن توفّر
 
 ### للـ email الرسمي:
-- **Google Workspace:** sami@dealix.ai ($6/مستخدم/شهر)
+- **Google Workspace:** sami@dealix.me ($6/مستخدم/شهر)
 - **Microsoft 365:** مشابه
 - **ProtonMail:** إذا privacy-first (€5/شهر)
 
@@ -367,7 +366,7 @@
 كل الـ 12 steps
 
 ### إذا عندك ساعة:
-فقط احجز الدومين — `dealix.sa` و `dealix.ai`
+فقط احجز الدومين الرسمي — `dealix.me`
 
 ---
 
