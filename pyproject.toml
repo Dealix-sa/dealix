@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "dealix"
 version = "3.0.0"
-description = "Multi-agent AI system for the Saudi Arabian market | نظام متعدد الوكلاء للسوق السعودي"
+description = "Saudi-first B2B revenue, growth, and compliance engine | محرّك إيرادات ونمو وامتثال للشركات السعودية"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "AI Company Saudi", email = "hello@ai-company.sa" }]
-keywords = ["ai", "agents", "saudi-arabia", "llm", "multi-agent", "fastapi"]
+authors = [{ name = "Dealix", email = "hello@dealix.me" }]
+keywords = ["ai", "agents", "saudi-arabia", "llm", "multi-agent", "fastapi", "revenue", "pdpl"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -88,10 +88,11 @@ dev = [
 ]
 
 [project.scripts]
+dealix = "cli:app"
 ai-company = "cli:app"
 
 [project.urls]
-Homepage = "https://ai-company.sa"
+Homepage = "https://dealix.me"
 Repository = "https://github.com/VoXc2/dealix"
 Documentation = "https://github.com/VoXc2/dealix/tree/main/docs"
 Issues = "https://github.com/VoXc2/dealix/issues"
@@ -101,7 +102,7 @@ Issues = "https://github.com/VoXc2/dealix/issues"
 # ─────────────────────────────────────────────────────────────
 
 [tool.setuptools.packages.find]
-include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*"]
+include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "dealix*"]
 exclude = ["tests*", "docs*", "scripts*"]
 
 [tool.ruff]
