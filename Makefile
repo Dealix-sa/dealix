@@ -3,7 +3,7 @@
 # الأوامر الشائعة
 # ═══════════════════════════════════════════════════════════════
 
-.PHONY: help install install-dev setup test test-unit test-integration \
+.PHONY: help install install-dev install-observability install-security install-evals install-docs setup test test-unit test-integration \
         lint format type-check security security-smoke clean run demo \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init requirements \
@@ -27,6 +27,18 @@ install: ## Install production dependencies
 
 install-dev: ## Install dev dependencies (tests, lint, etc.)
 	$(PIP) install -e ".[dev]"
+
+install-observability: ## Install optional observability stack
+	$(PIP) install -e ".[observability]"
+
+install-security: ## Install optional security and supply-chain tooling
+	$(PIP) install -e ".[security]"
+
+install-evals: ## Install optional evaluation and analysis tooling
+	$(PIP) install -e ".[evals]"
+
+install-docs: ## Install optional documentation site tooling
+	$(PIP) install -e ".[docs]"
 
 setup: install-dev pre-commit-install ## One-time dev setup
 	@test -f .env || (cp .env.example .env && echo "✅ Created .env from template — edit it now")
