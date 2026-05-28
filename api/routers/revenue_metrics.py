@@ -296,6 +296,26 @@ async def cohort_analysis(
     }
 
 
+@router.get("/kpi/today")
+async def kpi_today() -> dict[str, Any]:
+    """Read the most recent daily KPI snapshot.
+
+    Snapshots are written by `auto_client_acquisition.payment_ops.kpi_snapshot
+    .write_snapshot()` — triggered by the daily_kpi_snapshot.yml workflow.
+    If no snapshot exists yet (fresh deploy), compute one inline.
+    """
+    from auto_client_acquisition.payment_ops.kpi_snapshot import (
+        compute_daily_kpi_snapshot,
+        read_latest_snapshot,
+    )
+
+    snap = read_latest_snapshot()
+    if snap is None:
+        snap = compute_daily_kpi_snapshot()
+        snap["note"] = "computed_inline_no_persistence"
+    return snap
+
+
 @router.get("/health-check")
 async def metrics_health() -> dict[str, Any]:
     """Quick check whether revenue metrics pipeline is operational."""

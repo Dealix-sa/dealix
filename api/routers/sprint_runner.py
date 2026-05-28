@@ -5,18 +5,43 @@ POST /api/v1/sprint/run         →  full orchestrated 10-step result
 POST /api/v1/sprint/render/*    →  render an existing Proof Pack (no re-run)
 GET  /api/v1/sprint/sample      → run on demo CSV + accounts (smoke / demo)
 
+Checklist tracker (lightweight JSONL — no migration):
+  POST /api/v1/sprint/start                    → start a tracked sprint
+  GET  /api/v1/sprint/{run_id}/checklist       → 10-step status
+  POST /api/v1/sprint/{run_id}/step/{n}/mark   → mark step done
+
 The ``/render/*`` routes are pure formatting: they take the Proof Pack from
 a prior ``/run`` response and never execute the Sprint again — re-running
 would duplicate ledger and capital-asset side effects.
 """
 from __future__ import annotations
 
+import json
 import re
+import uuid
+from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import PlainTextResponse, Response
 from pydantic import BaseModel, Field
+
+_REPO = Path(__file__).resolve().parents[2]
+SPRINT_TRACKER_DIR = _REPO / "data" / "sprint_runs"
+
+SPRINT_STEPS: tuple[str, ...] = (
+    "kickoff",                  # 1: source-passport + customer agreement
+    "data_intake",              # 2: CSV/CRM data received
+    "data_quality_report",      # 3: DQ scoring complete
+    "icp_match_scoring",        # 4: top-N accounts ranked
+    "intelligence_loop",        # 5: enrichment + competitor brief
+    "draft_assembly",           # 6: outreach + proposals drafted
+    "founder_approval_pass_1",  # 7: founder approves day-3 preview
+    "proof_pack_v1",            # 8: bilingual proof pack drafted
+    "founder_approval_pass_2",  # 9: founder signs off final deliverable
+    "handoff_delivery",         # 10: customer receives proof pack
+)
 
 router = APIRouter(prefix="/api/v1/sprint", tags=["sprint"])
 
@@ -126,6 +151,117 @@ async def render_proof_pack_email_body(body: _ProofPackRenderBody) -> str:
     )
 
     return proof_pack_email_body(body.pack(), customer_handle=body.customer_handle)
+
+
+# ── Lightweight checklist tracker (JSONL-backed, no DB) ────────────────
+
+
+def _tracker_path(run_id: str) -> Path:
+    if not re.fullmatch(r"[a-zA-Z0-9_-]{6,64}", run_id):
+        raise HTTPException(status_code=400, detail="invalid_run_id")
+    SPRINT_TRACKER_DIR.mkdir(parents=True, exist_ok=True)
+    return SPRINT_TRACKER_DIR / f"{run_id}.json"
+
+
+def _read_tracker(run_id: str) -> dict[str, Any]:
+    path = _tracker_path(run_id)
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="sprint_run_not_found")
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"tracker_read_error: {exc}") from exc
+
+
+def _write_tracker(run_id: str, data: dict[str, Any]) -> None:
+    path = _tracker_path(run_id)
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+class SprintStartBody(BaseModel):
+    customer_handle: str = Field(min_length=2, max_length=64)
+    plan_id: str = Field(default="pilot_managed")
+    source_passport: str = Field(default="manual_entry", max_length=120)
+    notes: str = Field(default="", max_length=500)
+
+
+@router.post("/start")
+async def sprint_start(body: SprintStartBody) -> dict[str, Any]:
+    """Create a new tracked Sprint run.
+
+    Persists a JSONL tracker at data/sprint_runs/{run_id}.json. Returns
+    the run_id + initial checklist (all 10 steps pending). Doctrine: no
+    external send — this is record-keeping for the founder's workflow.
+    """
+    run_id = f"sprint_{uuid.uuid4().hex[:12]}"
+    tracker = {
+        "run_id": run_id,
+        "customer_handle": body.customer_handle,
+        "plan_id": body.plan_id,
+        "source_passport": body.source_passport,
+        "notes": body.notes,
+        "started_at": datetime.now(UTC).isoformat(),
+        "current_step": 1,
+        "steps": [
+            {
+                "n": i + 1,
+                "name": name,
+                "status": "pending",
+                "marked_at": None,
+                "evidence_link": None,
+            }
+            for i, name in enumerate(SPRINT_STEPS)
+        ],
+        "doctrine_note": (
+            "Sprint progress is founder-tracked. No autonomous outbound. "
+            "Every deliverable passes founder approval before reaching the customer."
+        ),
+    }
+    _write_tracker(run_id, tracker)
+    return tracker
+
+
+@router.get("/{run_id}/checklist")
+async def sprint_checklist(run_id: str) -> dict[str, Any]:
+    """Return current 10-step checklist for a tracked sprint."""
+    return _read_tracker(run_id)
+
+
+class SprintMarkBody(BaseModel):
+    evidence_link: str = Field(default="", max_length=400)
+    notes: str = Field(default="", max_length=500)
+
+
+@router.post("/{run_id}/step/{step_n}/mark")
+async def sprint_mark_step(
+    run_id: str, step_n: int, body: SprintMarkBody | None = None
+) -> dict[str, Any]:
+    """Mark a sprint step as done (idempotent).
+
+    Records evidence_link + timestamp. Updates current_step to the
+    next pending step. Doctrine: changes are append-only — older
+    snapshots are not deleted.
+    """
+    if not 1 <= step_n <= len(SPRINT_STEPS):
+        raise HTTPException(status_code=400, detail="invalid_step_n")
+    tracker = _read_tracker(run_id)
+    body = body or SprintMarkBody()
+    for step in tracker["steps"]:
+        if step["n"] == step_n:
+            step["status"] = "done"
+            step["marked_at"] = datetime.now(UTC).isoformat()
+            step["evidence_link"] = body.evidence_link or step.get("evidence_link")
+            if body.notes:
+                step["notes"] = body.notes
+    # advance current_step to first pending
+    next_pending = next(
+        (s["n"] for s in tracker["steps"] if s["status"] == "pending"),
+        len(SPRINT_STEPS) + 1,
+    )
+    tracker["current_step"] = next_pending
+    tracker["last_updated_at"] = datetime.now(UTC).isoformat()
+    _write_tracker(run_id, tracker)
+    return tracker
 
 
 @router.get("/sample")
