@@ -114,23 +114,56 @@ async def compute_customer_health(customer_id: str) -> dict[str, Any]:
 
 @router.get("/at-risk")
 async def list_at_risk_customers() -> dict[str, Any]:
-    """Return all customers in at_risk or critical buckets."""
+    """Return all customers in at_risk or critical buckets.
+
+    drafts_approved_last_30d is currently a global signal (GmailDraftRecord
+    has no customer_id FK in the current schema — see
+    docs/reference/KNOWN_LIMITATIONS.md). When the customer↔account link
+    lands, this should switch to per-customer GROUP BY.
+    """
+    cutoff_30d = _utcnow() - timedelta(days=30)
     async with async_session_factory() as session:
         try:
             customers = (await session.execute(select(CustomerRecord))).scalars().all()
+            # Single global query, applied as a baseline for every customer
+            # in the loop. Matches the pattern used by /health/{customer_id}
+            # (lines 70-75) where drafts are also a global signal.
+            global_drafts_sent = int(
+                (
+                    await session.execute(
+                        select(func.count())
+                        .select_from(GmailDraftRecord)
+                        .where(
+                            GmailDraftRecord.created_at >= cutoff_30d,
+                            GmailDraftRecord.status == "sent",
+                        )
+                    )
+                ).scalar()
+                or 0
+            )
         except Exception as exc:
             return {"status": "skipped_db_unreachable", "error": str(exc), "items": []}
 
+    # Best-effort per-customer attribution: weight the global count by
+    # the customer's relative onboarding maturity. A customer in
+    # "kickoff_pending" gets 0; "live" customers share the global pool.
+    live_customers = [c for c in customers if c.onboarding_status != "kickoff_pending"]
+    drafts_per_customer = (
+        global_drafts_sent // len(live_customers) if live_customers else 0
+    )
+
     at_risk: list[dict[str, Any]] = []
     for c in customers:
-        # Simplified: pull the full health score per customer
         days_idle = (_utcnow() - c.updated_at).days if c.updated_at else 0
+        per_customer_drafts = (
+            drafts_per_customer if c.onboarding_status != "kickoff_pending" else 0
+        )
         score = compute_health(
             customer_id=c.id,
             logins_last_30d=max(0, 22 - days_idle),
             nps=c.nps_score,
             days_since_last_login=days_idle,
-            drafts_approved_last_30d=0,  # TODO query per customer
+            drafts_approved_last_30d=per_customer_drafts,
         )
         if score.bucket in {"at_risk", "critical"}:
             at_risk.append(score.to_dict())
@@ -139,6 +172,7 @@ async def list_at_risk_customers() -> dict[str, Any]:
         "count": len(at_risk),
         "customers": sorted(at_risk, key=lambda x: x["overall"]),
         "next_action": "Reach out to critical bucket within 24 hours.",
+        "is_estimate": True,
     }
 
 
