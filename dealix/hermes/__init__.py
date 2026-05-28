@@ -12,6 +12,7 @@ from __future__ import annotations
 from .audit import HermesAuditRecord
 from .governance_gate import GovernanceDecision, GovernanceGate
 from .identity import HermesIdentity, new_run_id
+from .live_executor import LiveLLMExecutor
 from .orchestrator import HermesOrchestrator, HermesTask, HermesTaskResult
 from .router import HermesRouter, TaskClass
 
@@ -24,6 +25,7 @@ __all__ = [
     "HermesRouter",
     "HermesTask",
     "HermesTaskResult",
+    "LiveLLMExecutor",
     "TaskClass",
     "new_run_id",
 ]

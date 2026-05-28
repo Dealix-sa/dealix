@@ -25,10 +25,19 @@ concurrency:
   group: hermes-health-${{ github.ref }}
   cancel-in-progress: true
 
+# Least-privilege per the Hermes Charter §6. Hermes' health check never
+# writes to the repo, never opens PRs, never touches packages — read-only
+# is enough. If the global default rises to read-and-write later this
+# block keeps Hermes itself locked down.
+permissions:
+  contents: read
+
 jobs:
   doctrine-and-routing:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
 

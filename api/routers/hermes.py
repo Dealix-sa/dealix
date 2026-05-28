@@ -65,6 +65,28 @@ def _hint_to_taskclass(hint: Optional[str]) -> Optional[TaskClass]:
         ) from exc
 
 
+def _read_audit_ledger() -> list[dict[str, Any]]:
+    """Lazy-read the JSONL audit ledger (small enough to scan in-process)."""
+    from pathlib import Path
+    import json
+    import os
+    p = Path(os.environ.get("HERMES_AUDIT_PATH", "var/hermes-runs.jsonl"))
+    if not p.is_absolute():
+        from dealix.hermes import audit as _audit  # noqa: PLC0415
+        p = _audit._path()  # noqa: SLF001
+    if not p.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in p.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            rows.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    return rows
+
+
 @router.get("/status")
 async def status() -> dict[str, Any]:
     identity = HermesIdentity.current()
@@ -132,3 +154,42 @@ async def dispatch(
     if not result.success:
         raise HTTPException(status_code=500, detail=body)
     return body
+
+
+@router.get("/metrics")
+async def metrics(window_days: int = 7) -> dict[str, Any]:
+    """Aggregate counts over the last ``window_days`` of audit rows.
+
+    Useful for the founder cockpit and for the CTO weekly anchor. No PII;
+    aggregates only.
+    """
+    from datetime import UTC, datetime, timedelta
+
+    rows = _read_audit_ledger()
+    cutoff = (datetime.now(UTC) - timedelta(days=max(1, min(window_days, 90)))).isoformat()
+    recent = [r for r in rows if r.get("occurred_at", "") >= cutoff]
+
+    by_decision: dict[str, int] = {}
+    by_sub_agent: dict[str, int] = {}
+    by_provider: dict[str, int] = {}
+    success_count = 0
+    for r in recent:
+        gd = r.get("governance_decision") or {}
+        decision = gd.get("decision", "unknown")
+        by_decision[decision] = by_decision.get(decision, 0) + 1
+        sub = r.get("sub_agent") or "unrouted"
+        by_sub_agent[sub] = by_sub_agent.get(sub, 0) + 1
+        prov = r.get("provider") or "none"
+        by_provider[prov] = by_provider.get(prov, 0) + 1
+        if r.get("success"):
+            success_count += 1
+
+    return {
+        "window_days": window_days,
+        "total_runs": len(recent),
+        "success_runs": success_count,
+        "by_decision": by_decision,
+        "by_sub_agent": by_sub_agent,
+        "by_provider": by_provider,
+        "ledger_size": len(rows),
+    }

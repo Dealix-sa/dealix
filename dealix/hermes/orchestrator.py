@@ -22,6 +22,7 @@ from typing import Any, Callable, Optional
 from .audit import HermesAuditRecord, bridge_to_friction_log, write
 from .governance_gate import Decision, GovernanceDecision, GovernanceGate
 from .identity import HermesIdentity, new_run_id
+from .integrations import bridge_to_approval_center, bridge_to_capital_ledger
 from .router import HermesRouter, Route, TaskClass
 
 
@@ -159,6 +160,18 @@ class HermesOrchestrator:
         )
         write(record)
         bridge_to_friction_log(record, decision)
+
+        deliverable_text = str(output.get("deliverable", ""))
+        approval_id = bridge_to_approval_center(
+            record, decision, intent=task.intent
+        )
+        if approval_id:
+            output["approval_id"] = approval_id
+        capital_asset_id = bridge_to_capital_ledger(
+            record, decision, intent=task.intent, deliverable_text=deliverable_text
+        )
+        if capital_asset_id:
+            output["capital_asset_id"] = capital_asset_id
 
         return HermesTaskResult(
             run_id=run_id,
