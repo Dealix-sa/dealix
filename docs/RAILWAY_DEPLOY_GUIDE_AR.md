@@ -21,7 +21,7 @@
 
 - اضغط **New Project**
 - اختر **Deploy from GitHub repo**
-- اختر `VoXc2/dealix`
+- اختر `Dealix-sa/dealix`
 - Railway يكتشف Dockerfile تلقائياً ويبدأ البناء
 
 ### 3. إضافة PostgreSQL

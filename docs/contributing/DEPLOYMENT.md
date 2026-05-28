@@ -58,7 +58,7 @@ SENTRY_DSN=https://...@sentry.io/...
 ### 1) Railway (الموصى به — مجاني تقريباً)
 
 **إعداد أولي:**
-1. افتح https://railway.com → **New Project** → **Deploy from GitHub** → اختر `VoXc2/dealix`
+1. افتح https://railway.com → **New Project** → **Deploy from GitHub** → اختر `Dealix-sa/dealix`
 2. Railway يكتشف `Dockerfile` تلقائياً
 3. أضف Postgres: **+ New** → **Database** → **PostgreSQL**
 4. اذهب لخدمة `dealix` → **Variables** → **Raw Editor**
@@ -74,7 +74,7 @@ curl https://<your-app>.up.railway.app/health
 
 ### 2) Render
 
-1. https://render.com → **New** → **Web Service** → Connect GitHub → `VoXc2/dealix`
+1. https://render.com → **New** → **Web Service** → Connect GitHub → `Dealix-sa/dealix`
 2. اختر **Docker** runtime
 3. Add environment variables من `.env.example`
 4. **Health Check Path:** `/health`
@@ -103,7 +103,7 @@ git push heroku main
 
 ### 5) DigitalOcean App Platform
 
-1. https://cloud.digitalocean.com/apps → **Create App** → GitHub → `VoXc2/dealix`
+1. https://cloud.digitalocean.com/apps → **Create App** → GitHub → `Dealix-sa/dealix`
 2. App Platform يكتشف Dockerfile
 3. أضف managed PostgreSQL
 4. أضف env vars
@@ -113,7 +113,7 @@ git push heroku main
 
 ```bash
 # على السيرفر:
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 cp .env.example .env
 # عبّي المتغيرات في .env
@@ -248,5 +248,5 @@ curl -X POST $BASE_URL/api/v1/checkout \
 
 ## 📞 الدعم
 
-- Issues: https://github.com/VoXc2/dealix/issues
+- Issues: https://github.com/Dealix-sa/dealix/issues
 - Owner: sami.assiri11@gmail.com

@@ -173,7 +173,7 @@ Required touches for 3 paid/day:
 - **Backend:** https://api.dealix.me
 - **Landing:** https://voxc2.github.io/dealix/
 - **Demo booking:** https://calendly.com/sami-assiri11/dealix-demo
-- **GitHub:** https://github.com/VoXc2/dealix
+- **GitHub:** https://github.com/Dealix-sa/dealix
 - **Pipeline tracker:** `docs/ops/pipeline_tracker.csv`
 - **Content queue:** `docs/ops/launch_content_queue.md`
 

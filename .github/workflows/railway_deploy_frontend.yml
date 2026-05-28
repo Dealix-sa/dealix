@@ -1,8 +1,8 @@
 name: Deploy Frontend to Railway
 
 # Deploys Dealix Next.js frontend when RAILWAY_TOKEN is configured.
-# Setup: gh secret set RAILWAY_TOKEN --repo VoXc2/dealix
-# Optional: gh variable set RAILWAY_FRONTEND_SERVICE --repo VoXc2/dealix (default: web)
+# Setup: gh secret set RAILWAY_TOKEN --repo Dealix-sa/dealix
+# Optional: gh variable set RAILWAY_FRONTEND_SERVICE --repo Dealix-sa/dealix (default: web)
 
 on:
   push:

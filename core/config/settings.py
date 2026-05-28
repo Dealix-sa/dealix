@@ -190,6 +190,14 @@ class Settings(BaseSettings):
     n8n_webhook_url: str | None = None
     n8n_encryption_key: SecretStr | None = None
 
+    # ── Inbound customer webhooks ───────────────────────────────
+    # Shared HMAC-SHA256 secret used to verify the X-Dealix-Signature
+    # header on inbound customer-webhook deliveries. Empty/None means
+    # unconfigured: dev/test stay permissive (warn-only); staging and
+    # production reject unsigned/invalid requests with 401.
+    # Env: CUSTOMER_WEBHOOK_SECRET.
+    customer_webhook_secret: SecretStr | None = None
+
     # ── Observability ───────────────────────────────────────────
     langfuse_public_key: SecretStr | None = None
     langfuse_secret_key: SecretStr | None = None

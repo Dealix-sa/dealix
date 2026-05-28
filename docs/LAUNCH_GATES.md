@@ -21,7 +21,7 @@
 | # | Gate | Status | Evidence / DoD |
 |---|---|---|---|
 | T1 | `/health/deep` green in prod | ✅ | `postgres 26.9ms, redis 1.7ms, llm_providers=[groq,openai]` (post-deploy 2026-04-23) |
-| T2 | v3.0.0 tagged + released | ✅ | [Release v3.0.0](https://github.com/VoXc2/dealix/releases/tag/v3.0.0) |
+| T2 | v3.0.0 tagged + released | ✅ | [Release v3.0.0](https://github.com/Dealix-sa/dealix/releases/tag/v3.0.0) |
 | T3 | CI green on main | ✅ | PR #54, #55 merged with all required checks green |
 | T4 | SSH hardened | ✅ | PasswordAuth=no, PermitRootLogin=prohibit-password, MaxAuthTries=3 |
 | T5 | DLQ + retry + idempotency wired in prod | ✅ | PR #54 deployed; `/admin/dlq/stats` live (all 4 queues depth=0). Fault-injection E2E still pending → tracked as D0-NEXT |

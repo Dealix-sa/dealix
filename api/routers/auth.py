@@ -51,6 +51,7 @@ from api.security.jwt import (
     verify_token_hash,
 )
 from api.security.rbac import DEFAULT_TENANT_ROLES, Role
+from core.logging import get_logger
 from db.models import (
     RefreshTokenRecord,
     RoleRecord,
@@ -61,6 +62,8 @@ from db.models import (
 from db.session import get_db
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
+logger = get_logger(__name__)
 
 _pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -84,6 +87,134 @@ def _verify_password(plain: str, hashed: str) -> bool:
 def _verify_totp(secret: str, code: str) -> bool:
     totp = pyotp.TOTP(secret)
     return totp.verify(code, valid_window=1)
+
+
+# ── Transactional email helpers ─────────────────────────────────────
+# Invite + password-reset are pre-whitelisted transactional account
+# messages. They are NOT outreach: they are sent only to an address the
+# tenant admin (invite) or account owner (reset) supplied, in direct
+# response to an authenticated action. They therefore bypass
+# approval_center / channel_policy by design. Never log the raw token.
+
+def _build_invite_email(*, invite_token: str, expires_hours: int) -> tuple[str, str, str]:
+    """Return (subject, body_text, body_html) for an invite, bilingual ar+en."""
+    subject = "تمت دعوتك إلى Dealix / You've been invited to Dealix"
+    body_text = (
+        "تمت دعوتك للانضمام إلى مساحة العمل على Dealix.\n"
+        "لقبول الدعوة، استخدم رمز الدعوة التالي عبر نقطة النهاية "
+        "POST /api/v1/auth/invite/accept:\n\n"
+        f"{invite_token}\n\n"
+        f"تنتهي صلاحية هذا الرمز خلال {expires_hours} ساعة. "
+        "إذا لم تكن تتوقع هذه الدعوة، يمكنك تجاهل هذه الرسالة.\n\n"
+        "------------------------------------------------------------\n\n"
+        "You've been invited to join a workspace on Dealix.\n"
+        "To accept, submit the invite token below to "
+        "POST /api/v1/auth/invite/accept:\n\n"
+        f"{invite_token}\n\n"
+        f"This token expires in {expires_hours} hours. "
+        "If you did not expect this invite, you can ignore this message."
+    )
+    body_html = (
+        "<div dir=\"rtl\" lang=\"ar\">"
+        "<p>تمت دعوتك للانضمام إلى مساحة العمل على Dealix.</p>"
+        "<p>لقبول الدعوة، استخدم رمز الدعوة التالي عبر نقطة النهاية "
+        "<code>POST /api/v1/auth/invite/accept</code>:</p>"
+        f"<p><code>{invite_token}</code></p>"
+        f"<p>تنتهي صلاحية هذا الرمز خلال {expires_hours} ساعة.</p>"
+        "</div><hr>"
+        "<div dir=\"ltr\" lang=\"en\">"
+        "<p>You've been invited to join a workspace on Dealix.</p>"
+        "<p>To accept, submit the invite token below to "
+        "<code>POST /api/v1/auth/invite/accept</code>:</p>"
+        f"<p><code>{invite_token}</code></p>"
+        f"<p>This token expires in {expires_hours} hours.</p>"
+        "</div>"
+    )
+    return subject, body_text, body_html
+
+
+def _build_reset_email(*, reset_token: str) -> tuple[str, str, str]:
+    """Return (subject, body_text, body_html) for a reset, bilingual ar+en."""
+    subject = "إعادة تعيين كلمة المرور / Reset your Dealix password"
+    body_text = (
+        "تلقّينا طلبًا لإعادة تعيين كلمة المرور الخاصة بحسابك على Dealix.\n"
+        "استخدم رمز إعادة التعيين التالي عبر نقطة النهاية "
+        "POST /api/v1/auth/password/reset:\n\n"
+        f"{reset_token}\n\n"
+        "تنتهي صلاحية هذا الرمز خلال ساعة واحدة. إذا لم تطلب إعادة التعيين، "
+        "يمكنك تجاهل هذه الرسالة بأمان.\n\n"
+        "------------------------------------------------------------\n\n"
+        "We received a request to reset the password for your Dealix account.\n"
+        "Use the reset token below with POST /api/v1/auth/password/reset:\n\n"
+        f"{reset_token}\n\n"
+        "This token expires in 1 hour. If you did not request a reset, "
+        "you can safely ignore this message."
+    )
+    body_html = (
+        "<div dir=\"rtl\" lang=\"ar\">"
+        "<p>تلقّينا طلبًا لإعادة تعيين كلمة المرور الخاصة بحسابك على Dealix.</p>"
+        "<p>استخدم رمز إعادة التعيين التالي عبر نقطة النهاية "
+        "<code>POST /api/v1/auth/password/reset</code>:</p>"
+        f"<p><code>{reset_token}</code></p>"
+        "<p>تنتهي صلاحية هذا الرمز خلال ساعة واحدة.</p>"
+        "</div><hr>"
+        "<div dir=\"ltr\" lang=\"en\">"
+        "<p>We received a request to reset the password for your Dealix account.</p>"
+        "<p>Use the reset token below with "
+        "<code>POST /api/v1/auth/password/reset</code>:</p>"
+        f"<p><code>{reset_token}</code></p>"
+        "<p>This token expires in 1 hour.</p>"
+        "</div>"
+    )
+    return subject, body_text, body_html
+
+
+async def _send_invite_email(*, to_email: str, invite_token: str, expires_hours: int) -> bool:
+    """Deliver an invite via the transactional EmailClient.
+
+    Returns True on a successful send, False otherwise. Never raises and never
+    logs the raw token or recipient address — failures are swallowed so the
+    endpoint stays robust and non-revealing.
+    """
+    from integrations.email import EmailClient
+
+    subject, body_text, body_html = _build_invite_email(
+        invite_token=invite_token, expires_hours=expires_hours
+    )
+    try:
+        result = await EmailClient().send(
+            to=to_email, subject=subject, body_text=body_text, body_html=body_html
+        )
+    except Exception as exc:
+        logger.warning("invite_email_send_failed", error=type(exc).__name__)
+        return False
+    if not result.success:
+        logger.warning("invite_email_not_delivered", provider=result.provider)
+        return False
+    return True
+
+
+async def _send_reset_email(*, to_email: str, reset_token: str) -> bool:
+    """Deliver a password-reset token via the transactional EmailClient.
+
+    Returns True on a successful send, False otherwise. Never raises and never
+    logs the raw token or recipient address. The caller's response must stay
+    identical regardless of the outcome (non-revealing reset flow).
+    """
+    from integrations.email import EmailClient
+
+    subject, body_text, body_html = _build_reset_email(reset_token=reset_token)
+    try:
+        result = await EmailClient().send(
+            to=to_email, subject=subject, body_text=body_text, body_html=body_html
+        )
+    except Exception as exc:
+        logger.warning("reset_email_send_failed", error=type(exc).__name__)
+        return False
+    if not result.success:
+        logger.warning("reset_email_not_delivered", provider=result.provider)
+        return False
+    return True
 
 
 # ── Schemas ────────────────────────────────────────────────────────
@@ -497,8 +628,6 @@ async def send_invite(
     )
     db.add(invite_record)
 
-    # TODO(production): deliver invite_token via transactional email (e.g. SendGrid/SES)
-    # instead of returning it in the API response.
     response: dict[str, Any] = {
         "email": body.email,
         "role": body.role.value,
@@ -508,6 +637,14 @@ async def send_invite(
         response["invite_token"] = invite_token
         response["note"] = "Share this token via email — POST /api/v1/auth/invite/accept to redeem"
     else:
+        # Production: deliver the token via pre-whitelisted transactional email
+        # instead of returning it. Delivery is best-effort and never blocks the
+        # endpoint; the response shape stays the same regardless of outcome.
+        await _send_invite_email(
+            to_email=body.email,
+            invite_token=invite_token,
+            expires_hours=settings.jwt_invite_token_expire_hours,
+        )
         response["message"] = "Invite sent. The recipient will receive an email with instructions."
     return response
 
@@ -698,6 +835,11 @@ async def password_reset_request(
     }
     if _settings.app_env in ("development", "test"):
         response["_dev_reset_token"] = token_plaintext
+    elif user and token_plaintext:
+        # Production: send the token via pre-whitelisted transactional email.
+        # Best-effort and non-revealing — the response above is identical
+        # whether or not an account exists or the send succeeds.
+        await _send_reset_email(to_email=body.email, reset_token=token_plaintext)
     return response
 
 

@@ -5,7 +5,7 @@
 ### AI revenue, growth, and compliance engine for Saudi B2B — PDPL-native, ZATCA-aware, approval-first.
 ### محرّك إيرادات ونمو وامتثال بـ AI للشركات السعودية — PDPL أصلاً، ZATCA-aware، والموافقة أولاً.
 
-[![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
+[![CI](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)](https://fastapi.tiangolo.com/)
@@ -48,7 +48,7 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 ## Quick start
 
 ```bash
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env
