@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -50,7 +50,9 @@ def test_count_evidence_events_today():
 
 
 def test_scope_requested_within_days():
-    rows = [{"event_date": "2026-05-10", "event_type": "scope_requested"}]
+    today = date.today()
+    recent = today - timedelta(days=4)
+    rows = [{"event_date": recent.isoformat(), "event_type": "scope_requested"}]
     assert scope_requested_within_days(14, rows) is True
     assert scope_requested_within_days(3, rows) is False
 
