@@ -39,6 +39,7 @@ from api.routers import (
     customer_usage,
     customer_webhooks,
     enterprise_pmo,
+    hermes as hermes_router,
     human_ai_os,
     jobs,
     nps,
@@ -320,6 +321,9 @@ def create_app() -> FastAPI:
     app.include_router(service_setup.router)
     # Wave 8 W8.3 — Customer-facing usage dashboard
     app.include_router(customer_usage.router)
+    # Hermes — top-layer agent orchestrator (X-Admin-API-Key gated).
+    # See docs/institutional/HERMES_CHARTER.md and dealix/hermes/.
+    app.include_router(hermes_router.router)
     # Wave 9 W9.1 — Enterprise PMO (R7 productization)
     app.include_router(enterprise_pmo.router)
     # Wave 9 W9.6 — Live compliance status (PDPL+ZATCA posture, public read-only)
