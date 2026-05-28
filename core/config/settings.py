@@ -162,6 +162,10 @@ class Settings(BaseSettings):
     # ── Email ───────────────────────────────────────────────────
     email_provider: Literal["resend", "sendgrid", "smtp"] = "resend"
     email_from: str = "noreply@ai-company.sa"
+    # Doctrine #1 (no_live_send) — transactional email (invite, reset)
+    # defaults to draft-only. Set EMAIL_ALLOW_LIVE_SEND=1 only after
+    # transactional template + audit trail are reviewed.
+    email_allow_live_send: bool = False
     email_from_name: str = "AI Company Saudi"
     # Founder address that receives intake alerts + daily digest. Reads
     # from DEALIX_FOUNDER_EMAIL env. Empty means notifications are skipped
