@@ -82,27 +82,29 @@ from api.routers import audit_export as audit_export_router
 # value_os, data_os and agent_os routers are imported defensively: an
 # optional router with a broken module-level import must not abort app
 # boot for every other endpoint. A skipped router is logged at
-# registration time.
+# registration time with the full traceback so silent failures are
+# investigable. In development DEALIX_STRICT_OPTIONAL_ROUTERS=1 promotes
+# any skipped optional router to a startup error.
+import os as _os
+import traceback as _traceback
+
 _OPTIONAL_ROUTER_ERRORS: dict[str, str] = {}
 
-try:
-    from api.routers import value_os as value_os_router
-except Exception as _exc:  # noqa: BLE001
-    value_os_router = None
-    _OPTIONAL_ROUTER_ERRORS["value_os"] = repr(_exc)
 
-try:
-    from api.routers import data_os as data_os_router
-except Exception as _exc:  # noqa: BLE001
-    data_os_router = None
-    _OPTIONAL_ROUTER_ERRORS["data_os"] = repr(_exc)
+def _import_optional_router(name: str, module_path: str):
+    try:
+        return __import__(module_path, fromlist=[name])
+    except Exception as exc:  # noqa: BLE001
+        _OPTIONAL_ROUTER_ERRORS[name] = (
+            f"{type(exc).__name__}: {exc}\n{_traceback.format_exc()}"
+        )
+        return None
 
+
+value_os_router = _import_optional_router("value_os", "api.routers.value_os")
+data_os_router = _import_optional_router("data_os", "api.routers.data_os")
 # Wave 14F — Agent OS
-try:
-    from api.routers import agent_os as agent_os_router
-except Exception as _exc:  # noqa: BLE001
-    agent_os_router = None
-    _OPTIONAL_ROUTER_ERRORS["agent_os"] = repr(_exc)
+agent_os_router = _import_optional_router("agent_os", "api.routers.agent_os")
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
 from api.routers import commercial_map as commercial_map_router
 # Wave 15 — Founder launch-status (single-pane production readiness)
@@ -342,8 +344,21 @@ def create_app() -> FastAPI:
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)
+    _strict_optional = _os.getenv("DEALIX_STRICT_OPTIONAL_ROUTERS", "").lower() in (
+        "1", "true", "yes",
+    )
     for _name, _err in _OPTIONAL_ROUTER_ERRORS.items():
-        get_logger(__name__).warning("optional_router_skipped", router=_name, error=_err)
+        get_logger(__name__).error(
+            "optional_router_skipped",
+            router=_name,
+            error=_err,
+            hint="Set DEALIX_STRICT_OPTIONAL_ROUTERS=1 in dev to fail fast.",
+        )
+        if _strict_optional:
+            raise RuntimeError(
+                f"Optional router '{_name}' failed to import and "
+                f"DEALIX_STRICT_OPTIONAL_ROUTERS=1.\n{_err}"
+            )
     # Wave 14J — Commercial wiring map (public)
     app.include_router(commercial_map_router.router)
     # Wave 15 — Founder launch-status (admin /launch-status + public /launch-status/public)
