@@ -270,6 +270,7 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+!frontend/.env.local.example
 
 # Editors / OS
 .vscode/*

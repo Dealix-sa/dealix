@@ -1,5 +1,5 @@
-generated_at: '2026-05-16T20:56:22.831757+00:00'
+generated_at: '2026-05-28T15:54:38.274969+00:00'
 transformation_verdict: PASS
-enterprise_control_plane_verdict: UNKNOWN
+enterprise_control_plane_verdict: FAIL
 governed_domains: 16
 verdict_source: generator

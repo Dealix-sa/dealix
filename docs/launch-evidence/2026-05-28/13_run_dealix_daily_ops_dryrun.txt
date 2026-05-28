@@ -1,0 +1,9 @@
+DRY-RUN - Dealix Daily Ops
+1. POST ingest/replay-postgres
+2. GET full-ops-health -> data/founder_briefs/ops_health_DATE.json
+3. Monday: POST marketing/weekly-pack/apply
+4. apply_kpi_founder_commercial.py --status
+5. commercial_war_room_sync.py
+6. founder_commercial_digest.py
+DEALIX_DAILY_OPS_VERDICT=READY
+EXIT_CODE=0

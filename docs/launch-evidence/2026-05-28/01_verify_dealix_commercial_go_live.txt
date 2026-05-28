@@ -1,0 +1,695 @@
+== Dealix commercial go-live (unified) ==
+
+== 1/4 Founder operating system ==
+== 1/2 Founder commercial day dry-run ==
+== Dealix Founder Commercial Day (canonical) ==
+  repo: /home/user/dealix
+  date: 2026-05-28
+  dry_run: 1
+
+== 0a/7 Agent work packets (today) ==
+MISSING: /home/user/dealix/data/agent_work_packets/daily_packets.yaml
+
+== 0b/7 GTM public surfaces (repo) ==
+== verify_gtm_public_surfaces ==
+  ok: 7 public frontend routes
+DEALIX_GTM_PUBLIC_SURFACES_VERDICT=PASS
+
+== 0c/7 Production gates (Railway + live API) ==
+== Founder production gates ==
+  api: https://api.dealix.me
+  railway: PASS
+  gtm_surfaces_repo: ok
+  weekly_metrics: BLOCKED
+  live healthz: https://api.dealix.me/healthz -> 200
+  live version: https://api.dealix.me/version -> 200
+  live api_v1_meta: https://api.dealix.me/api/v1/meta -> 200
+  live health: https://api.dealix.me/health -> 200
+  ACTION: Truth Matrix red: moyasar_live, whatsapp_business, gmail_external
+FOUNDER_PRODUCTION_GATES_VERDICT=WARN
+
+== Expand stack (targeting + social + content) ==
+== expand_commercial_operating_stack ==
+  >> /usr/local/bin/python3 /home/user/dealix/scripts/expand_commercial_ops_all.py --meetings 10 --touch-drafts 15 --cycle-weeks 20 --wave2 --enrich-warm
+== expand_commercial_ops_all ==
+  target_rows=150 meetings=10 touch_drafts=15
+  targeting: 250 -> 250 rows
+
+== social queue (20w) ==
+EXPAND_SOCIAL_QUEUE: added=0 total=140 cycle_weeks=20
+
+== ABM warm enrich ==
+ENRICH_TARGETING_WARM: {'rows': 250, 'warm_tags_added': 0, 'dry_run': False}
+
+== war room sync ==
+WROTE · /home/user/dealix/data/war_room_today.json · targets=15
+
+== war room import ==
+WAR_ROOM_IMPORT: rows_in_csv=250
+{
+  "imported": 0,
+  "skipped_duplicates": 250,
+  "lead_ids": [],
+  "fields_expected": [
+    "company",
+    "contact",
+    "segment",
+    "pain_hypothesis",
+    "channel",
+    "motion",
+    "offer_id",
+    "status",
+    "next_action",
+    "next_action_date",
+    "priority",
+    "notes"
+  ]
+}
+WAR_ROOM_IMPORT: OK imported=0 skipped=250
+
+== touch drafts ==
+{
+  "drafted": 15,
+  "skipped": 0,
+  "companies": [
+    "هدف استراتيجي 240",
+    "هدف استراتيجي 225",
+    "هدف استراتيجي 210",
+    "هدف استراتيجي 195",
+    "هدف استراتيجي 90",
+    "هدف استراتيجي 55 — وكالة/خدمات",
+    "هدف استراتيجي 52 — وكالة/خدمات",
+    "هدف استراتيجي 49 — وكالة/خدمات",
+    "هدف استراتيجي 46 — وكالة/خدمات",
+    "هدف استراتيجي 43 — وكالة/خدمات",
+    "هدف استراتيجي 40 — وكالة/خدمات",
+    "هدف استراتيجي 37 — وكالة/خدمات",
+    "هدف استراتيجي 34 — وكالة/خدمات",
+    "هدف استراتيجي 31 — وكالة/خدمات",
+    "هدف استراتيجي 28 — وكالة/خدمات"
+  ]
+}
+WAR_ROOM_TOUCH_DRAFTS: OK drafted=15 dry_run=False
+
+== soft launch meetings ==
+SOFT_LAUNCH_MEETINGS: OK slots=10 packs=10
+  tracker: docs/commercial/operations/soft_launch_meetings_tracker.yaml
+  [1] هدف استراتيجي 90 -> data/client_packs/هدف-استراتيجي-90
+  [2] هدف استراتيجي 55 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-55-وكالة-خدمات
+  [3] هدف استراتيجي 52 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-52-وكالة-خدمات
+  [4] هدف استراتيجي 49 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-49-وكالة-خدمات
+  [5] هدف استراتيجي 46 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-46-وكالة-خدمات
+  [6] هدف استراتيجي 43 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-43-وكالة-خدمات
+  [7] هدف استراتيجي 40 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-40-وكالة-خدمات
+  [8] هدف استراتيجي 37 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-37-وكالة-خدمات
+  [9] هدف استراتيجي 34 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-34-وكالة-خدمات
+  [10] هدف استراتيجي 31 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-31-وكالة-خدمات
+
+== weekly content drafts ==
+CONTENT_DRAFTS: wrote 5 drafts -> /home/user/dealix/var/content_drafts/2026-W22.json
+  - [1] ما هو Post-Lead Revenue Ops؟...
+  - [2] ما هو Proof Pack؟...
+  - [3] كيف تراجع متابعة الـ leads؟...
+  - [4] سياسة موافقة AI للمبيعات...
+  - [5] قائمة متابعة leads للوكالات السعودية...
+
+== Motion A ==
+# Motion A — خط أنابيب اليوم
+
+**توليد:** 2026-05-28T15:44:04.619081+00:00
+
+## تركيز
+- Motion A: وكالة (Agency wedge)
+- الأولوية — حتى أول Proof Pack مدفوع
+- بوابة الدفع: PIPELINE_OPEN
+- الأولوية: 3 لمسات P0 + 1 Discovery + سطر evidence اليوم
+
+## أعلى P0
+
+1. **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+2. **هدف استراتيجي 46 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+3. **هدف استراتيجي 40 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+4. **هدف استراتيجي 31 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+5. **هدف استراتيجي 240** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+6. **هدف استراتيجي 213** · `replied` · مرحلة `discovery_to_scope` — احجز Discovery 10 دقائق — سجّل demo_booked
+7. **هدف استراتيجي 198** · `replied` · مرحلة `discovery_to_scope` — احجز Discovery 10 دقائق — سجّل demo_booked
+8. **هدف استراتيجي 150** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+9. **هدف استراتيجي 135** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+10. **هدف warm 17** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+11. **هدف warm 13** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+12. **هدف warm 12** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+13. **REPLACE:وكالة من شبكتك 2** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+14. **REPLACE:وكالة من شبكتك 1** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+15. **REPLACE:شريك وكالة محتمل** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+
+## بوابة أول Diagnostic
+- verdict: `PIPELINE_OPEN`
+- payment_received (real): 0
+- proof_pack_delivered (real): 0
+
+
+MOTION_A_PIPELINE: OK → data/founder_briefs/motion_a_2026-05-28.md
+MOTION_A_PIPELINE_VERDICT=PIPELINE_OPEN
+
+== Motions A-D ==
+# Motions A–D · 2026-05-28
+
+## Motion A — نشط
+- pool: 92 · targets: 5
+- file: `data/founder_briefs/motion_a_2026-05-28.md`
+
+## Motion B — مؤجّل
+- pool: 89 · targets: 5
+- file: `data/founder_briefs/motion_b_2026-05-28.md`
+
+## Motion C — مؤجّل
+- pool: 31 · targets: 5
+- file: `data/founder_briefs/motion_c_2026-05-28.md`
+
+## Motion D — مؤجّل
+- pool: 38 · targets: 5
+- file: `data/founder_briefs/motion_d_2026-05-28.md`
+
+
+MOTIONS_ALL_PIPELINE: OK → data/founder_briefs/motions_all_2026-05-28.json
+
+== weekly scorecard ==
+# Commercial Weekly Scorecard (auto)
+
+**أسبوع ينتهي:** 2026-05-28 · **من:** 2026-05-22
+ · **توليد:** 2026-05-28T15:44:04.812612+00:00
+
+## North Star
+- Proof Packs مسلّمة هذا الأسبوع: **0**
+- Pilots نشطة: _املأ يدوياً من التسليم الجاري_
+
+## Evidence funnel (7 أيام)
+
+| KPI | الفعلي |
+|-----|--------|
+| `message_sent_manual` | 0 |
+| `reply_received` | 0 |
+| `demo_booked` | 0 |
+| `scope_requested` | 0 |
+| `invoice_sent` | 0 |
+| `payment_received` | 0 |
+| `proof_pack_delivered` | 0 |
+| `partner_intro_created` | 0 |
+
+**معدل تحويل demo → invoice:** n/a
+
+## Motion A
+- وكالات في pool: 35
+
+## First paid Diagnostic
+- verdict: `PIPELINE_OPEN`
+
+> أكمل الأعمدة اليدوية في COMMERCIAL_WEEKLY_SCORECARD_AR.md عند الحاجة.
+
+
+WEEKLY_SCORECARD: OK → data/founder_briefs/weekly_scorecard_2026-05-28.md
+WEEKLY_SCORECARD_VERDICT=OK
+
+== P0 rotation preview ==
+ROTATION · selected=10 / pool=250
+  1. هدف استراتيجي 90 · not_contacted · pr=high · مسودة — موافقة قبل الإرسال
+  2. هدف استراتيجي 55 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  3. هدف استراتيجي 52 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  4. هدف استراتيجي 49 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  5. هدف استراتيجي 46 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  6. هدف استراتيجي 43 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  7. هدف استراتيجي 40 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  8. هدف استراتيجي 37 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  9. هدف استراتيجي 34 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  10. هدف استراتيجي 31 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+
+== value plan snapshot ==
+  WROTE data/founder_briefs/value_plan_2026-05-28.md
+  WROTE data/founder_briefs/value_plan_2026-05-28.json
+  targeting_pool=250
+
+== value plan stack verify ==
+
+== commercial_launch_ready ==
+== verify_commercial_launch_ready (soft launch) ==
+  ok: frontend/src/components/gtm/CommercialLaunchHome.tsx
+  ok: frontend/src/app/[locale]/page.tsx
+  ok: frontend/src/app/[locale]/learn/[slug]/page.tsx
+  ok: frontend/src/content/learn/articles.ts
+  ok: frontend/src/app/[locale]/ops/page.tsx
+  ok: frontend/src/components/gtm/OpsFounderCommandCenter.tsx
+  ok: dealix/config/social_content_queue.yaml
+  ok: dealix/config/icp_agency_wedge.yaml
+  ok: dealix/commercial_ops/outreach_drafts.py
+  ok: dealix/revenue_ops_autopilot/affiliate_compliance.py
+  ok: dealix/revenue_ops_autopilot/external_ingest.py
+  ok: dealix/marketing_factory/store.py
+  ok: dealix/execution_assurance/health.py
+  ok: docs/commercial/operations/targeting/agency_accounts_seed.csv
+  ok: docs/commercial/operations/CLIENT_PACK_SOP_AR.md
+  ok: dealix/commercial_ops/client_pack.py
+  ok: dealix/commercial_ops/doctrine.py
+  ok: scripts/founder_soaen_daily.py
+  ok: scripts/verify_commercial_fe_be.py
+  ok: scripts/verify_paid_launch_readiness.py
+  ok: scripts/verify_first_paid_diagnostic_tracker.py
+  ok: scripts/generate_client_pack.py
+  ok: scripts/expand_agency_targets_seed.py
+  ok: scripts/import_war_room_targets.py
+  ok: scripts/generate_war_room_touch_drafts.py
+  ok: scripts/expand_social_queue_12w.py
+  ok: scripts/enrich_targeting_warm.py
+  ok: scripts/founder_all_motions_pipeline.py
+  ok: dealix/commercial_ops/expansion_status.py
+  ok: dealix/commercial_ops/motion_pipelines.py
+  ok: scripts/expand_commercial_operating_stack.py
+  ok: scripts/run_governed_full_ops_autopilot.py
+  ok: scripts/run_governed_full_ops_autopilot.ps1
+  ok: dealix/commercial_ops/governed_autopilot.py
+  ok: scripts/expand_commercial_stack.py
+  ok: scripts/founder_motion_a_pipeline.py
+  ok: scripts/export_value_plan_snapshot.py
+  ok: frontend/src/app/[locale]/learn/page.tsx
+  ok: dealix/config/icp_segments.yaml
+  ok: dealix/config/founder_weekly_strategy_refs.yaml
+  ok: dealix/commercial_ops/strategy_refs.py
+  ok: scripts/founder_morning.ps1
+  ok: scripts/bootstrap_founder_kpi_import.py
+  ok: scripts/log_founder_commercial_day_evidence.py
+  ok: scripts/founder_soft_to_paid_verify.sh
+  ok: scripts/founder_soft_to_paid_verify.ps1
+  ok: scripts/expand_commercial_ops_all.py
+  ok: scripts/run_commercial_expansion.py
+  ok: scripts/run_commercial_expansion.ps1
+  ok: scripts/run_dealix_full_autonomous_ops.py
+  ok: scripts/run_dealix_full_autonomous_ops.ps1
+  ok: scripts/run_dealix_complete_autonomous_day.py
+  ok: scripts/run_full_commercial_ops_autopilot.py
+  ok: scripts/verify_full_autonomous_ops_stack.py
+  ok: scripts/founder_one_command.sh
+  ok: scripts/founder_one_command.ps1
+  ok: dealix/commercial_ops/full_ops_autopilot.py
+  ok: dealix/commercial_ops/complete_autonomous_day.py
+  ok: dealix/commercial_ops/founder_cockpit.py
+  ok: dealix/commercial_ops/autonomous_ops.py
+  ok: docs/commercial/FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md
+  ok: frontend/src/components/gtm/OpsFullAutonomousOpsCard.tsx
+  ok: scripts/founder_commercial_expand.ps1
+  ok: scripts/founder_commercial_expand.sh
+  ok: scripts/founder_expansion_status.py
+  ok: scripts/enrich_targeting_warm.py
+  ok: scripts/founder_all_motions_pipeline.py
+  ok: dealix/commercial_ops/expansion_status.py
+  ok: dealix/commercial_ops/motion_pipelines.py
+  ok: scripts/run_value_plan_day.ps1
+  ok: scripts/run_value_plan_day.sh
+  ok: scripts/founder_evening.ps1
+  ok: scripts/founder_evening_evidence.py
+  ok: scripts/founder_motion_a_pipeline.py
+  ok: scripts/founder_weekly_scorecard.py
+  ok: scripts/founder_paid_launch_gate.py
+  ok: scripts/run_value_plan_day.ps1
+  ok: scripts/run_value_plan_day.sh
+  ok: scripts/export_value_plan_snapshot.py
+  ok: scripts/verify_value_plan_stack.py
+  ok: dealix/commercial_ops/value_plan.py
+  ok: dealix/commercial_ops/value_map_status.py
+  ok: dealix/commercial_ops/gtm_stack.py
+  ok: scripts/commercial_value_map_status.py
+  ok: frontend/src/components/gtm/ValuePlanPanel.tsx
+  ok: .github/workflows/founder_evening_evidence.yml
+  ok: .github/workflows/founder_weekly_scorecard.yml
+  ok: scripts/run_dealix_daily_ops.py
+  ok: scripts/run_founder_commercial_day.sh
+  ok: scripts/verify_dealix_commercial_go_live.sh
+  ok: scripts/verify_dealix_commercial_go_live.ps1
+  ok: docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md
+  ok: docs/commercial/COMMERCIAL_VALUE_MAP_AR.md
+  ok: docs/commercial/COMMERCIAL_OPS_QUICK_REFERENCE_AR.md
+  ok: scripts/commercial_value_map_status.py
+  ok: dealix/commercial_ops/value_map_status.py
+  ok: dealix/commercial_ops/value_map_catalog.py
+  ok: docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md
+  ok: commercial_doctrine rules=5 checklist=5
+  ok: founder_strategy_refs daily=3 weekly=5
+  ok: agency_accounts_seed rows=250
+  ok: social_content_queue posts=140 (20w)
+  ok: build_war_room_today + outreach_drafts
+  ok: import_war_room_targets --dry-run
+  ok: run_dealix_daily_ops --dry-run --skip-api
+  ok: verify_full_autonomous_ops_stack
+  FAIL: pytest bundle: ups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_founder_commercial_digest.py::test_scope_requested_within_days
+1 failed, 47 passed, 2 warnings in 10.10s
+
+2026-05-28 15:44:21 [info     ] request_completed              duration_ms=16.43 method=GET path=/api/v1/ops-autopilot/targeting/today request_id=bc015b6611cc status_code=200
+  ok: GET targeting/today
+2026-05-28 15:44:21 [info     ] request_completed              duration_ms=82.52 method=GET path=/api/v1/ops-autopilot/marketing/calendar request_id=288130196da3 status_code=200
+  ok: GET marketing/calendar
+2026-05-28 15:44:21 [info     ] request_completed              duration_ms=22.97 method=GET path=/api/v1/ops-autopilot/full-ops-health request_id=a38a2cc41113 status_code=200
+  ok: GET full-ops-health
+2026-05-28 15:44:21 [info     ] request_completed              duration_ms=156.33 method=GET path=/api/v1/ops-autopilot/founder/full-autonomous-ops request_id=839f20b2f2cd status_code=200
+  ok: GET founder/full-autonomous-ops
+2026-05-28 15:44:22 [info     ] request_completed              duration_ms=715.82 method=GET path=/api/v1/ops-autopilot/founder/cockpit request_id=b075fd80e8bc status_code=200
+  ok: GET founder/cockpit
+2026-05-28 15:44:22 [info     ] request_completed              duration_ms=6.01 method=POST path=/api/v1/public/partner-apply request_id=77ffd37907c3 status_code=422
+  ok: partner-apply blocks misleading affiliate copy
+2026-05-28 15:44:22 [info     ] request_completed              duration_ms=7.6 method=GET path=/api/v1/public/knowledge/answer request_id=c3777094a588 status_code=200
+  ok: GET /api/v1/public/knowledge/answer
+2026-05-28 15:44:22 [info     ] request_completed              duration_ms=39.29 method=POST path=/api/v1/public/leads request_id=79adacf3c741 status_code=200
+  ok: POST /api/v1/public/leads
+  ok: verify_commercial_fe_be
+
+COMMERCIAL_LAUNCH_READY: FAIL
+  - pytest bundle: ups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_founder_commercial_digest.py::test_scope_requested_within_days
+1 failed, 47 passed, 2 warnings in 10.10s
+
+See docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md
+
+== first_paid_tracker ==
+== first_paid_diagnostic_tracker ==
+  evidence: docs/commercial/operations/evidence_events_tracker.csv (11 rows)
+  real-company events: 0
+  invoice_sent (real): 0
+  payment_received (real): 0
+  proof_pack_delivered (real): 0
+  kpi_import: MISSING
+  crm_kpi_pending: True
+  DoD: docs/commercial/operations/FIRST_PAID_DIAGNOSTIC_DOD_AR.md
+FIRST_PAID_DIAGNOSTIC_VERDICT=PIPELINE_OPEN
+FOUNDER_ACTION: fill CRM KPI yaml + close one real Diagnostic per DoD
+
+== paid_launch_readiness ==
+== verify_paid_launch_readiness ==
+
+== Docs ==
+  ok: docs/commercial/operations/FIRST_PAID_DIAGNOSTIC_DOD_AR.md
+  ok: docs/ops/MANUAL_PAYMENT_SOP.md
+  ok: docs/commercial/PAID_LAUNCH_TRACKER_AR.md
+  ok: docs/LAUNCH_GATES.md
+
+== Integrations (FOUNDER_ACTION until set) ==
+  FOUNDER_ACTION: Moyasar live/test — MOYASAR_SECRET_KEY
+  FOUNDER_ACTION: Moyasar webhook — MOYASAR_WEBHOOK_SECRET
+  FOUNDER_ACTION: HubSpot sync — HUBSPOT_ACCESS_TOKEN
+  FOUNDER_ACTION: Calendly webhooks — CALENDLY_WEBHOOK_SIGNING_KEY
+  FOUNDER_ACTION: Calendly booking link — CALENDLY_URL
+  FOUNDER_ACTION: PostHog analytics — POSTHOG_API_KEY
+  optional: Gmail OAuth (drafts) — GMAIL_CLIENT_ID (drafts; not blocking infra strict)
+
+== Railway / deploy env ==
+
+== First paid Diagnostic pipeline ==
+  pipeline: 0 paid · 0 proof (real companies)
+  verdict: PIPELINE_OPEN
+  FOUNDER_ACTION: sync kpi_founder_commercial_import.yaml from CRM export
+  (pending) Moyasar live/test: set MOYASAR_SECRET_KEY
+  (pending) Moyasar webhook: set MOYASAR_WEBHOOK_SECRET
+  (pending) HubSpot sync: set HUBSPOT_ACCESS_TOKEN
+  (pending) Calendly webhooks: set CALENDLY_WEBHOOK_SIGNING_KEY
+  (pending) Calendly booking link: set CALENDLY_URL
+  (pending) PostHog analytics: set POSTHOG_API_KEY
+  (pending) API env missing: ['DATABASE_URL', 'APP_SECRET_KEY', 'ENVIRONMENT', 'CORS_ORIGINS', 'ADMIN_API_KEYS']
+  (pending) Frontend env missing: ['NEXT_PUBLIC_API_URL', 'NEXT_PUBLIC_USE_DEALIX_OPS_PROXY', 'DEALIX_ADMIN_API_KEY', 'NEXT_PUBLIC_DEALIX_ADMIN_API_KEY']
+  (pending) Payments: ['MOYASAR_SECRET_KEY', 'MOYASAR_WEBHOOK_SECRET']
+
+PAID_LAUNCH_READINESS=ROADMAP_OK (soft — complete FOUNDER_ACTION for paid)
+Next: docs/commercial/PAID_LAUNCH_TRACKER_AR.md · bash scripts/official_launch_verify.sh
+
+== value_plan_pytest ==
+........................                                                 [100%]
+=============================== warnings summary ===============================
+../../../usr/local/lib/python3.11/dist-packages/passlib/utils/__init__.py:854
+  /usr/local/lib/python3.11/dist-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../../../usr/local/lib/python3.11/dist-packages/opentelemetry/util/_importlib_metadata.py:32
+  /usr/local/lib/python3.11/dist-packages/opentelemetry/util/_importlib_metadata.py:32: DeprecationWarning: SelectableGroups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+24 passed, 2 warnings in 9.58s
+
+== commercial_value_map_status ==
+== commercial_value_map_status ==
+  generated: 2026-05-28T15:44:39.487327+00:00
+  brief_latest: 2026-05-28
+  agency_seed_rows: 250 (strict>=80: True)
+  pipeline: PIPELINE_OPEN
+  payment_received (real): 0
+  proof_pack_delivered (real): 0
+  evidence_rows: 11
+  crm_kpi_pending: True
+  ladder: Diagnostic (Ops) 4,999–15,000 SAR → Sprint/Data Pack بعد الدفع → Growth 2,999 بعد Proof
+  doc: docs/commercial/COMMERCIAL_VALUE_MAP_AR.md
+  FOUNDER_ACTION: Close one real Diagnostic per FIRST_PAID_DIAGNOSTIC_DOD
+  FOUNDER_ACTION: Sync kpi_founder_commercial_import.yaml from CRM when ready
+  FOUNDER_ACTION: Complete FOUNDER_ACTION in verify_paid_launch_readiness before Moyasar live
+COMMERCIAL_VALUE_MAP_STATUS=OK
+
+== value_plan_snapshot ==
+VALUE_PLAN_SNAPSHOT: OK json=data/founder_briefs/value_plan_2026-05-28.json md=data/founder_briefs/value_plan_2026-05-28.md
+FIRST_PAID_VERDICT=PIPELINE_OPEN
+
+VALUE_PLAN_STACK: FAIL
+  - commercial_launch_ready
+  WARN: value plan stack verify exit=1
+
+COMMERCIAL_OPS_EXPAND=FAIL
+
+COMMERCIAL_STACK_EXPAND=FAIL
+
+DRY-RUN · Founder Commercial Day (canonical: run_founder_commercial_day.sh)
+1/6 founder daily brief
+2/6 KPI commercial status
+3/6 war room sync (P0 rotation)
+4/6 commercial digest
+5/6 social queue today
+6/6 AEO + War Room summary + evidence reminder
+FOUNDER_REVENUE_DAY_VERDICT=READY
+FOUNDER_COMMERCIAL_DAY: OK (dry-run)
+
+== 2/2 pytest bundle ==
+.............                                                            [100%]
+13 passed in 1.53s
+
+FOUNDER_OPERATING_SYSTEM_VERDICT=PASS
+
+== 2/4 Commercial soft launch ==
+== verify_commercial_launch_ready (soft launch) ==
+  ok: frontend/src/components/gtm/CommercialLaunchHome.tsx
+  ok: frontend/src/app/[locale]/page.tsx
+  ok: frontend/src/app/[locale]/learn/[slug]/page.tsx
+  ok: frontend/src/content/learn/articles.ts
+  ok: frontend/src/app/[locale]/ops/page.tsx
+  ok: frontend/src/components/gtm/OpsFounderCommandCenter.tsx
+  ok: dealix/config/social_content_queue.yaml
+  ok: dealix/config/icp_agency_wedge.yaml
+  ok: dealix/commercial_ops/outreach_drafts.py
+  ok: dealix/revenue_ops_autopilot/affiliate_compliance.py
+  ok: dealix/revenue_ops_autopilot/external_ingest.py
+  ok: dealix/marketing_factory/store.py
+  ok: dealix/execution_assurance/health.py
+  ok: docs/commercial/operations/targeting/agency_accounts_seed.csv
+  ok: docs/commercial/operations/CLIENT_PACK_SOP_AR.md
+  ok: dealix/commercial_ops/client_pack.py
+  ok: dealix/commercial_ops/doctrine.py
+  ok: scripts/founder_soaen_daily.py
+  ok: scripts/verify_commercial_fe_be.py
+  ok: scripts/verify_paid_launch_readiness.py
+  ok: scripts/verify_first_paid_diagnostic_tracker.py
+  ok: scripts/generate_client_pack.py
+  ok: scripts/expand_agency_targets_seed.py
+  ok: scripts/import_war_room_targets.py
+  ok: scripts/generate_war_room_touch_drafts.py
+  ok: scripts/expand_social_queue_12w.py
+  ok: scripts/enrich_targeting_warm.py
+  ok: scripts/founder_all_motions_pipeline.py
+  ok: dealix/commercial_ops/expansion_status.py
+  ok: dealix/commercial_ops/motion_pipelines.py
+  ok: scripts/expand_commercial_operating_stack.py
+  ok: scripts/run_governed_full_ops_autopilot.py
+  ok: scripts/run_governed_full_ops_autopilot.ps1
+  ok: dealix/commercial_ops/governed_autopilot.py
+  ok: scripts/expand_commercial_stack.py
+  ok: scripts/founder_motion_a_pipeline.py
+  ok: scripts/export_value_plan_snapshot.py
+  ok: frontend/src/app/[locale]/learn/page.tsx
+  ok: dealix/config/icp_segments.yaml
+  ok: dealix/config/founder_weekly_strategy_refs.yaml
+  ok: dealix/commercial_ops/strategy_refs.py
+  ok: scripts/founder_morning.ps1
+  ok: scripts/bootstrap_founder_kpi_import.py
+  ok: scripts/log_founder_commercial_day_evidence.py
+  ok: scripts/founder_soft_to_paid_verify.sh
+  ok: scripts/founder_soft_to_paid_verify.ps1
+  ok: scripts/expand_commercial_ops_all.py
+  ok: scripts/run_commercial_expansion.py
+  ok: scripts/run_commercial_expansion.ps1
+  ok: scripts/run_dealix_full_autonomous_ops.py
+  ok: scripts/run_dealix_full_autonomous_ops.ps1
+  ok: scripts/run_dealix_complete_autonomous_day.py
+  ok: scripts/run_full_commercial_ops_autopilot.py
+  ok: scripts/verify_full_autonomous_ops_stack.py
+  ok: scripts/founder_one_command.sh
+  ok: scripts/founder_one_command.ps1
+  ok: dealix/commercial_ops/full_ops_autopilot.py
+  ok: dealix/commercial_ops/complete_autonomous_day.py
+  ok: dealix/commercial_ops/founder_cockpit.py
+  ok: dealix/commercial_ops/autonomous_ops.py
+  ok: docs/commercial/FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md
+  ok: frontend/src/components/gtm/OpsFullAutonomousOpsCard.tsx
+  ok: scripts/founder_commercial_expand.ps1
+  ok: scripts/founder_commercial_expand.sh
+  ok: scripts/founder_expansion_status.py
+  ok: scripts/enrich_targeting_warm.py
+  ok: scripts/founder_all_motions_pipeline.py
+  ok: dealix/commercial_ops/expansion_status.py
+  ok: dealix/commercial_ops/motion_pipelines.py
+  ok: scripts/run_value_plan_day.ps1
+  ok: scripts/run_value_plan_day.sh
+  ok: scripts/founder_evening.ps1
+  ok: scripts/founder_evening_evidence.py
+  ok: scripts/founder_motion_a_pipeline.py
+  ok: scripts/founder_weekly_scorecard.py
+  ok: scripts/founder_paid_launch_gate.py
+  ok: scripts/run_value_plan_day.ps1
+  ok: scripts/run_value_plan_day.sh
+  ok: scripts/export_value_plan_snapshot.py
+  ok: scripts/verify_value_plan_stack.py
+  ok: dealix/commercial_ops/value_plan.py
+  ok: dealix/commercial_ops/value_map_status.py
+  ok: dealix/commercial_ops/gtm_stack.py
+  ok: scripts/commercial_value_map_status.py
+  ok: frontend/src/components/gtm/ValuePlanPanel.tsx
+  ok: .github/workflows/founder_evening_evidence.yml
+  ok: .github/workflows/founder_weekly_scorecard.yml
+  ok: scripts/run_dealix_daily_ops.py
+  ok: scripts/run_founder_commercial_day.sh
+  ok: scripts/verify_dealix_commercial_go_live.sh
+  ok: scripts/verify_dealix_commercial_go_live.ps1
+  ok: docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md
+  ok: docs/commercial/COMMERCIAL_VALUE_MAP_AR.md
+  ok: docs/commercial/COMMERCIAL_OPS_QUICK_REFERENCE_AR.md
+  ok: scripts/commercial_value_map_status.py
+  ok: dealix/commercial_ops/value_map_status.py
+  ok: dealix/commercial_ops/value_map_catalog.py
+  ok: docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md
+  ok: commercial_doctrine rules=5 checklist=5
+  ok: founder_strategy_refs daily=3 weekly=5
+  ok: agency_accounts_seed rows=250
+  ok: social_content_queue posts=140 (20w)
+  ok: build_war_room_today + outreach_drafts
+  ok: import_war_room_targets --dry-run
+  ok: run_dealix_daily_ops --dry-run --skip-api
+  ok: verify_full_autonomous_ops_stack
+  FAIL: pytest bundle: ups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_founder_commercial_digest.py::test_scope_requested_within_days
+1 failed, 47 passed, 2 warnings in 10.32s
+
+2026-05-28 15:44:58 [info     ] request_completed              duration_ms=16.08 method=GET path=/api/v1/ops-autopilot/targeting/today request_id=4db179932bec status_code=200
+  ok: GET targeting/today
+2026-05-28 15:44:58 [info     ] request_completed              duration_ms=75.86 method=GET path=/api/v1/ops-autopilot/marketing/calendar request_id=389d64e69f8e status_code=200
+  ok: GET marketing/calendar
+2026-05-28 15:44:58 [info     ] request_completed              duration_ms=21.29 method=GET path=/api/v1/ops-autopilot/full-ops-health request_id=25c33324ffad status_code=200
+  ok: GET full-ops-health
+2026-05-28 15:44:58 [info     ] request_completed              duration_ms=152.09 method=GET path=/api/v1/ops-autopilot/founder/full-autonomous-ops request_id=b345b1e3ca36 status_code=200
+  ok: GET founder/full-autonomous-ops
+2026-05-28 15:44:59 [info     ] request_completed              duration_ms=734.74 method=GET path=/api/v1/ops-autopilot/founder/cockpit request_id=98e68246195e status_code=200
+  ok: GET founder/cockpit
+2026-05-28 15:44:59 [info     ] request_completed              duration_ms=6.76 method=POST path=/api/v1/public/partner-apply request_id=30410398a0c7 status_code=422
+  ok: partner-apply blocks misleading affiliate copy
+2026-05-28 15:44:59 [info     ] request_completed              duration_ms=7.41 method=GET path=/api/v1/public/knowledge/answer request_id=60a5aed17e03 status_code=200
+  ok: GET /api/v1/public/knowledge/answer
+2026-05-28 15:44:59 [info     ] request_completed              duration_ms=40.09 method=POST path=/api/v1/public/leads request_id=e78a87677546 status_code=200
+  ok: POST /api/v1/public/leads
+  ok: verify_commercial_fe_be
+
+COMMERCIAL_LAUNCH_READY: FAIL
+  - pytest bundle: ups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_founder_commercial_digest.py::test_scope_requested_within_days
+1 failed, 47 passed, 2 warnings in 10.32s
+
+See docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md
+
+== 3/4 Company ready (skip founder go-live) ==
+== Company ready: required docs ==
+  ok: docs/company/DEALIX_COMPANY_READY_MASTER_AR.md
+  ok: docs/commercial/DEALIX_UNIFIED_REVENUE_ATLAS_AR.md
+  ok: docs/commercial/DEALIX_SALES_GTM_SOVEREIGN_MASTER_AR.md
+  ok: docs/commercial/DEALIX_COMPANY_DAILY_AUTOPILOT_AR.md
+  ok: docs/ops/FOUNDER_REVENUE_DAY_ONE_AR.md
+  ok: docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md
+  ok: scripts/run_founder_revenue_day.sh
+  ok: scripts/run_founder_commercial_day.sh
+  ok: scripts/verify_dealix_commercial_go_live.sh
+  ok: scripts/official_launch_verify.sh
+  ok: scripts/railway_prod_bootstrap.sh
+  ok: .github/workflows/daily-revenue-machine.yml
+  ok: .github/workflows/founder_commercial_daily.yml
+  ok: .github/workflows/official-launch-verify.yml
+
+== Company ready: commercial_ops + orchestrator ==
+  imports: PASS
+
+== Company ready: commercial pytest slice ==
+...F.................................................                    [100%]
+=================================== FAILURES ===================================
+_______________________ test_scope_requested_within_days _______________________
+
+    def test_scope_requested_within_days():
+        rows = [{"event_date": "2026-05-10", "event_type": "scope_requested"}]
+>       assert scope_requested_within_days(14, rows) is True
+E       AssertionError: assert False is True
+E        +  where False = scope_requested_within_days(14, [{'event_date': '2026-05-10', 'event_type': 'scope_requested'}])
+
+tests/test_founder_commercial_digest.py:54: AssertionError
+=============================== warnings summary ===============================
+tests/test_revenue_ops_autopilot.py::test_public_capture_lead_api
+  /usr/local/lib/python3.11/dist-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+tests/test_revenue_ops_autopilot.py::test_public_capture_lead_api
+  /usr/local/lib/python3.11/dist-packages/opentelemetry/util/_importlib_metadata.py:32: DeprecationWarning: SelectableGroups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_founder_commercial_digest.py::test_scope_requested_within_days
+1 failed, 52 passed, 2 warnings in 53.75s
+  pytest: FAIL
+
+== Company ready: prod smoke skipped (set DEALIX_API_BASE for live check) ==
+
+COMPANY_READY_VERDICT: FAIL
+
+== 4/4 Daily ops dry-run ==
+DRY-RUN - Dealix Daily Ops
+1. POST ingest/replay-postgres
+2. GET full-ops-health -> data/founder_briefs/ops_health_DATE.json
+3. Monday: POST marketing/weekly-pack/apply
+4. apply_kpi_founder_commercial.py --status
+5. commercial_war_room_sync.py
+6. founder_commercial_digest.py
+DEALIX_DAILY_OPS_VERDICT=READY
+
+DEALIX_COMMERCIAL_GO_LIVE_VERDICT=FAIL
+DEALIX_OFFICIAL_LAUNCH_VERDICT=FAIL
+EXIT_CODE=1

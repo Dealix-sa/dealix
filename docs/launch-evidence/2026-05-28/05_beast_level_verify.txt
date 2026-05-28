@@ -1,0 +1,37 @@
+[beast] 1/7 compileall…
+[beast] 2/7 Beast targeted tests…
+[beast] 3/7 V11 verifier (regression check)…
+[beast] 4/7 V12 verifier (regression check)…
+[beast] 5/7 RX verifier (regression check)…
+[beast] 6/7 In-process Beast endpoints…
+[beast] 7/7 secret prefix scan…
+
+================== DEALIX BEAST LEVEL VERDICT ==================
+DEALIX_BEAST_LEVEL=FAIL
+COMPILEALL=pass
+BEAST_TESTS=pass
+V11_VERIFIER=fail
+V12_VERIFIER=fail
+RX_VERIFIER=fail
+BEAST_SMOKE=pass
+SECRET_SCAN=pass
+REVOPS=pass
+GROWTH_BEAST=pass
+COMPANY_GROWTH_BEAST=pass
+ROLE_COMMAND=pass (9/9 roles)
+PROOF_TO_MARKET=pass
+FOUNDER_BEAST_CC=pass
+CUSTOMER_PORTAL=pass
+GOLDEN_LOOP=pass (13 stages + 5 invariants)
+CONSTITUTION_AUDIT=published
+NO_LIVE_SEND=pass
+NO_LIVE_CHARGE=pass
+NO_COLD_WHATSAPP=pass
+NO_LINKEDIN_AUTOMATION=pass
+NO_SCRAPING=pass
+NO_FAKE_PROOF=pass
+NO_FAKE_REVENUE=pass
+ARABIC_PRIMARY=pass
+NEXT_FOUNDER_ACTION=Inspect failed checks; logs in /tmp/beast_*.log
+=================================================================
+EXIT_CODE=1

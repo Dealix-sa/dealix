@@ -1,11 +1,21 @@
 # تقرير جاهزية إطلاق Dealix
 
-- **تاريخ التوليد:** 2026-05-06T04:08:01.745925+00:00
-- **الدرجة الإجمالية:** 58 / 100
+- **آخر تحقّق رسمي:** 2026-05-28 (commit `646129d`, branch `claude/commercial-launch-prep-a2kJT`)
+- **حُكم البوّابة الرسمية:** `DEALIX_OFFICIAL_LAUNCH_VERDICT=FAIL` — ينحدر من 3 إصلاحات جراحية صغيرة. تفاصيل: [`LAUNCH_EXECUTION_LOG.md`](LAUNCH_EXECUTION_LOG.md)
+- **حزمة الأدلة:** [`launch-evidence/2026-05-28/`](launch-evidence/2026-05-28/) — 19 ملف verdict خام + index
+- **تاريخ التوليد الأصلي للتقرير:** 2026-05-06T04:08:01.745925+00:00
+- **الدرجة الإجمالية (تقدير أوّلي):** 58 / 100 (يحتاج تحديث بمقاييس CI الفعلية بعد إصلاح الفجوات الـ3)
 
 ## ملخص تنفيذي
 
-هذا تقرير أولي يعتمد على مخطط المنتج والكود الحالي؛ ربطه بمقاييس CI والإنتاج يحسّن الدقة.
+هذا تقرير أولي يعتمد على مخطط المنتج والكود الحالي؛ ربطه بمقاييس CI والإنتاج يحسّن الدقة. **تشغيل 2026-05-28 أثبت بالأدلة الخامّة:**
+
+- ✅ Founder OS + Strongest Plan (138/138) + Daily Ops + Commercial Day + GTM Stack + Business NOW: كلها PASS
+- ✅ Single Alembic head (013) + 73 من 75 doctrine guards passing + ops UI endpoints 200 OK
+- ❌ 3 إصلاحات تقنية صغيرة تمنع `PASS` نهائي: missing `frontend/src/lib/opsAdmin.ts` · missing 2 constants in `dealix/commercial_ops/paths.py` · stale-date test `test_scope_requested_within_days`
+- ⏸ 3 cutovers تشغيلية تتطلب credentials حيّة (مهمة المؤسس): Moyasar live، WhatsApp Business، Gmail external
+
+بعد الإصلاحات الـ3، يُتوقَّع أن يقفز الحُكم إلى `PASS`. التشغيل والوثائق التفصيلية في `LAUNCH_EXECUTION_LOG.md`.
 
 ## تفاصيل المجالات
 

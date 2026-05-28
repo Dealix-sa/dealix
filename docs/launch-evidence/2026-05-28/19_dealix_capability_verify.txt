@@ -1,0 +1,56 @@
+== ruff (capability slice) ==
+RUF100 [*] Unused `noqa` directive (non-enabled: `S603`)
+   --> scripts/verify_company_ready.py:746:30
+    |
+745 | def _run(script: str) -> int:
+746 |     return subprocess.call(  # noqa: S603
+    |                              ^^^^^^^^^^^^
+747 |         [sys.executable, str(REPO / "scripts" / script)],
+748 |         cwd=REPO,
+    |
+help: Remove unused `noqa` directive
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `S603`)
+  --> scripts/verify_full_mvp_ready.py:23:30
+   |
+22 | def _run(script: str) -> bool:
+23 |     code = subprocess.call(  # noqa: S603
+   |                              ^^^^^^^^^^^^
+24 |         [sys.executable, str(REPO / "scripts" / script)],
+25 |         cwd=REPO,
+   |
+help: Remove unused `noqa` directive
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `S603`)
+  --> tests/test_company_os_verify.py:15:30
+   |
+14 | def _run_script(name: str) -> int:
+15 |     return subprocess.call(  # noqa: S603
+   |                              ^^^^^^^^^^^^
+16 |         [sys.executable, str(REPO / "scripts" / name)],
+17 |         cwd=REPO,
+   |
+help: Remove unused `noqa` directive
+
+Found 3 errors.
+[*] 3 fixable with the `--fix` option.
+== pytest capability ==
+ImportError while loading conftest '/home/user/dealix/tests/conftest.py'.
+tests/conftest.py:13: in <module>
+    import pytest_asyncio
+E   ModuleNotFoundError: No module named 'pytest_asyncio'
+== verify Company OS (docs + scripts) ==
+SERVICE_FILES_PASS=true
+SERVICE_CATALOG_PASS=true
+GOVERNANCE_DOCS_PASS=true
+PROOF_PACK_PASS=true
+AI_OUTPUT_QUALITY_PASS=true
+SERVICE_FILES_PASS=true
+GOVERNANCE_PASS=true
+QUALITY_PASS=true
+PROOF_PACK_PASS=true
+SALES_ASSETS_PASS=true
+TESTS_PASS=true
+READY_SERVICES=6/6
+DEALIX_READY=true
+EXIT_CODE=1

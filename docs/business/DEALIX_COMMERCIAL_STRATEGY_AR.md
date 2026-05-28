@@ -96,12 +96,12 @@ Dealix **Revenue OS محكوم** — ليس CRM عاماً:
 ---
 
 <!-- AUTO_GENERATED_START -->
-# Commercial strategy snapshot — 2026-05-16
+# Commercial strategy snapshot — 2026-05-28
 
 ## Focus
-- stage: kpi_hygiene
-- primary_offer_id: None
-- rationale: 6 KPIs تجارية معلّقة — عبّئ kpi_founder_commercial_import.yaml قبل توسع GTM
+- stage: pilot_execution
+- primary_offer_id: revenue_proof_sprint_499
+- rationale: بايلوتات جاهزة للقالب — ركّز على Sprint 499 + PILOT_EXECUTION_RUNBOOK
 
 ## Offers
 - free_mini_diagnostic: 0.0 SAR — اكتمال النموذج خلال 24 ساعة + جواز قرار أولي

@@ -1,0 +1,7 @@
+wrote: /home/user/dealix/data/founder_weekly/metrics_2026-W22.yaml
+iso_week: 2026-W22
+kpi pending: 0
+truth red: 3
+  blocker: Truth Matrix red: moyasar_live, whatsapp_business, gmail_external
+FOUNDER_WEEKLY_METRICS_VERDICT=BLOCKED
+EXIT_CODE=2
