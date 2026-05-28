@@ -66,7 +66,11 @@ def test_live_enabled_without_key_marks_skipped(envelope_executor, monkeypatch) 
     exe = LiveLLMExecutor(base_executor=envelope_executor)
     route = HermesRouter().route("write docs for the bilingual report")
     result = exe(_FakeTask("write docs"), route)
-    assert result.get("live_skipped") == "missing_api_key"
+    # Missing key is now a hard failure (ok=False) so callers cannot
+    # mistake a skipped call for a successful one.
+    assert result["ok"] is False
+    assert result["kind"] == "live_skipped_missing_api_key"
+    assert "OPENROUTER_API_KEY" in result["live_skipped"] or "DEEPSEEK_API_KEY" in result["live_skipped"]
 
 
 def test_live_skipped_when_base_returns_not_ok(monkeypatch) -> None:
@@ -99,6 +103,7 @@ def test_cost_budget_blocks_live_call(envelope_executor, monkeypatch, tmp_path) 
             "occurred_at": f"{today}T00:00:00+00:00",
             "provider": "openrouter",
             "success": True,
+            "live": True,
         }
         for _ in range(50)
     ]

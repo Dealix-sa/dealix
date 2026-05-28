@@ -21,7 +21,6 @@ Design notes:
 """
 from __future__ import annotations
 
-import asyncio
 import hashlib
 import json
 import os
@@ -29,7 +28,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Callable, Optional
 
-from .audit import _path as _audit_path  # noqa: PLC2701 — internal-by-design
+from .audit import read_rows as _audit_read_rows
 from .integrations import daily_cost_budget_usd
 from .router import Route
 
@@ -45,40 +44,28 @@ def _idempotency_key(task_intent: str, customer_id: str) -> str:
 
 
 def _today_audit_rows() -> list[dict[str, Any]]:
-    path = _audit_path()
-    if not path.is_file():
-        return []
     today = datetime.now(UTC).strftime("%Y-%m-%d")
-    rows: list[dict[str, Any]] = []
-    try:
-        for line in path.read_text(encoding="utf-8").splitlines():
-            if not line.strip():
-                continue
-            try:
-                row = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            if row.get("occurred_at", "").startswith(today):
-                rows.append(row)
-    except OSError:
-        return []
-    return rows
+    return [
+        r
+        for r in _audit_read_rows()
+        if r.get("occurred_at", "").startswith(today)
+    ]
 
 
 def _today_cost_usd() -> float:
-    """Sum estimated USD costs for today by re-deriving from audit rows."""
-    # The audit ledger doesn't store cost directly to keep its schema
-    # boundary-stable. We approximate today's spend by counting calls
-    # at known per-call ceiling. This is intentionally conservative:
-    # 0.005 USD per non-trivial call (4K-token round-trip on gear 1
-    # priced at ~0.014/$0.028 per 1M comes well under). Override the
-    # multiplier with HERMES_COST_PER_CALL_USD.
+    """Sum estimated USD costs for today by re-deriving from audit rows.
+
+    Only counts rows where ``live=True`` (i.e. a real provider call
+    happened). Envelope-only dispatches (HERMES_LIVE_LLM=0) do not
+    incur LLM cost and must not poison the budget gate.
+    """
     try:
         per_call = float(os.getenv("HERMES_COST_PER_CALL_USD", "0.005"))
     except ValueError:
         per_call = 0.005
     live_rows = [
-        r for r in _today_audit_rows() if r.get("provider") and r.get("success")
+        r for r in _today_audit_rows()
+        if r.get("live") is True and r.get("success") is True
     ]
     return round(per_call * len(live_rows), 6)
 
@@ -99,11 +86,18 @@ def _build_messages(envelope: dict[str, Any]) -> tuple[str, list[dict[str, str]]
     return system, [{"role": "user", "content": user}]
 
 
+_PROVIDER_ENV_KEYS: dict[str, str] = {
+    "openrouter": "OPENROUTER_API_KEY",
+    "direct_deepseek": "DEEPSEEK_API_KEY",
+}
+
+
+def _resolve_env_key_name(provider: str) -> str:
+    return _PROVIDER_ENV_KEYS.get(provider, "UNKNOWN_PROVIDER_API_KEY")
+
+
 def _resolve_api_key(provider: str) -> Optional[str]:
-    env_var = {
-        "openrouter": "OPENROUTER_API_KEY",
-        "direct_deepseek": "DEEPSEEK_API_KEY",
-    }.get(provider)
+    env_var = _PROVIDER_ENV_KEYS.get(provider)
     if not env_var:
         return None
     val = os.getenv(env_var, "").strip()
@@ -117,7 +111,7 @@ def _resolve_base_url(provider: str) -> str:
     }.get(provider, "https://openrouter.ai/api/v1")
 
 
-async def _chat_once(
+def _chat_once(
     *,
     api_key: str,
     base_url: str,
@@ -129,8 +123,12 @@ async def _chat_once(
 ) -> dict[str, Any]:
     """One round-trip to an OpenAI-compatible /chat/completions endpoint.
 
-    Self-contained (uses httpx directly) so it doesn't pull the heavier
-    core.llm.OpenAICompatClient chain into the orchestrator's startup.
+    Sync by design — the orchestrator runs synchronously and FastAPI
+    handlers awaiting `await dispatch(...)` cannot use `asyncio.run`
+    safely (raises ``RuntimeError`` when a loop is already running).
+    Using ``httpx.Client`` here keeps the executor callable from any
+    context. Self-contained (no core.llm dependency) so the orchestrator
+    stays dep-light.
     """
     import httpx  # noqa: PLC0415 — deferred so the orchestrator imports light
 
@@ -146,8 +144,8 @@ async def _chat_once(
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
-    async with httpx.AsyncClient(timeout=timeout) as client:
-        resp = await client.post(
+    with httpx.Client(timeout=timeout) as client:
+        resp = client.post(
             f"{base_url}/chat/completions",
             json=payload,
             headers=headers,
@@ -192,8 +190,16 @@ class LiveLLMExecutor:
         provider = envelope.get("provider") or route.gear_config.provider
         api_key = _resolve_api_key(provider)
         if not api_key:
-            envelope["live_skipped"] = "missing_api_key"
-            return envelope
+            # Live mode was requested but no key for the resolved provider.
+            # Flip ok=False so the caller (and the audit log) cannot mistake
+            # a skipped call for a successful one. The envelope itself is
+            # preserved so the operator can still inspect the routing.
+            return {
+                **envelope,
+                "ok": False,
+                "kind": "live_skipped_missing_api_key",
+                "live_skipped": f"missing_{_resolve_env_key_name(provider)}",
+            }
 
         budget = daily_cost_budget_usd()
         if budget > 0:
@@ -223,16 +229,14 @@ class LiveLLMExecutor:
 
         try:
             system, messages = _build_messages(envelope)
-            result = asyncio.run(
-                _chat_once(
-                    api_key=api_key,
-                    base_url=base_url,
-                    model=model,
-                    system=system,
-                    user_messages=messages,
-                    timeout=timeout,
-                    max_tokens=max_tokens,
-                )
+            result = _chat_once(
+                api_key=api_key,
+                base_url=base_url,
+                model=model,
+                system=system,
+                user_messages=messages,
+                timeout=timeout,
+                max_tokens=max_tokens,
             )
         except Exception as exc:  # noqa: BLE001
             return {

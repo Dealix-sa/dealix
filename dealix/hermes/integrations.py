@@ -129,10 +129,18 @@ def bridge_to_capital_ledger(
         from auto_client_acquisition.capital_os.capital_ledger import add_asset
     except ImportError:
         return None
+    # engagement_id stability: if the caller didn't supply one, derive a
+    # per-customer-per-day identifier so repeat dispatches for the same
+    # engagement on the same day group under one capital row instead of
+    # flooding the ledger with duplicates (one row per run_id).
+    if not engagement_id:
+        from datetime import UTC, datetime  # noqa: PLC0415
+        day = datetime.now(UTC).strftime("%Y-%m-%d")
+        engagement_id = f"hermes_{record.customer_id}_{day}"
     try:
         asset = add_asset(
             customer_id=record.customer_id,
-            engagement_id=engagement_id or record.run_id,
+            engagement_id=engagement_id,
             asset_type=asset_type,
             owner=record.customer_id,
             reusable=True,

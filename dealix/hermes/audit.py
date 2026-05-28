@@ -31,11 +31,46 @@ _DEFAULT_PATH = "var/hermes-runs.jsonl"
 _lock = threading.Lock()
 
 
-def _path() -> Path:
+def path() -> Path:
+    """Resolved absolute path to the audit ledger. Public; safe to call."""
     p = Path(os.environ.get("HERMES_AUDIT_PATH", _DEFAULT_PATH))
     if not p.is_absolute():
         p = Path(__file__).resolve().parent.parent.parent / p
     return p
+
+
+# Backwards-compatible alias for callers that already imported the
+# underscore form. New code should use `path()` instead.
+_path = path
+
+
+def read_rows(*, since_iso: str | None = None) -> list[dict[str, Any]]:
+    """Read audit rows, optionally filtered to rows newer than ``since_iso``.
+
+    Centralizes the JSONL scan so /metrics, the founder dashboard, the live
+    executor's budget gate, and the replay script all share one
+    implementation. Compares ``occurred_at`` lexicographically — safe as
+    long as every writer emits the same isoformat shape (the writer here
+    does, so the invariant holds inside this module).
+    """
+    p = path()
+    if not p.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    try:
+        for line in p.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if since_iso and row.get("occurred_at", "") < since_iso:
+                continue
+            rows.append(row)
+    except OSError:
+        return []
+    return rows
 
 
 @dataclass
@@ -46,6 +81,8 @@ class HermesAuditRecord:
     customer_id: str
     intent_summary: str
     governance_decision: dict[str, Any]
+    intent: str = ""
+    """The full intent text. ``intent_summary`` stays the short label."""
     sub_agent: str = ""
     provider: str = ""
     model_id: str = ""
@@ -53,17 +90,30 @@ class HermesAuditRecord:
     success: bool = False
     error: str = ""
     output_ref: str = ""
+    live: bool = False
+    """True iff a real LLM call happened. Used by the cost-budget gate."""
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
 
 
+class AuditWriteError(RuntimeError):
+    """Raised when an audit row cannot be persisted.
+
+    Charter §6 makes audit writes mandatory; callers must catch this and
+    mark the run ``governance_decision=rejected_audit_failure``.
+    """
+
+
 def write(record: HermesAuditRecord) -> Path:
-    path = _path()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with _lock, path.open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps(record.to_dict(), ensure_ascii=False) + "\n")
-    return path
+    p = path()
+    try:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with _lock, p.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(record.to_dict(), ensure_ascii=False) + "\n")
+    except OSError as exc:
+        raise AuditWriteError(str(exc)) from exc
+    return p
 
 
 def bridge_to_friction_log(

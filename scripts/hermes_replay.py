@@ -52,9 +52,13 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     orch = HermesOrchestrator(executor=route_to_agent_executor)
+    # Prefer the full ``intent`` (added to audit rows) over the
+    # 200-char ``intent_summary`` truncation; otherwise the replay
+    # can classify or refuse differently than the original run.
+    original_intent = row.get("intent") or row.get("intent_summary", "")
     result = orch.dispatch(
         HermesTask(
-            intent=row.get("intent_summary", ""),
+            intent=original_intent,
             customer_id=row.get("customer_id", "dealix_internal"),
         )
     )

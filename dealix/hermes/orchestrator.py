@@ -19,7 +19,12 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any, Callable, Optional
 
-from .audit import HermesAuditRecord, bridge_to_friction_log, write
+from .audit import (
+    AuditWriteError,
+    HermesAuditRecord,
+    bridge_to_friction_log,
+    write,
+)
 from .governance_gate import Decision, GovernanceDecision, GovernanceGate
 from .identity import HermesIdentity, new_run_id
 from .integrations import bridge_to_approval_center, bridge_to_capital_ledger
@@ -146,6 +151,7 @@ class HermesOrchestrator:
             task_class=route.task_class.value if route else "",
             customer_id=task.customer_id,
             intent_summary=task.intent[:200],
+            intent=task.intent,
             governance_decision={
                 "decision": decision.decision,
                 "reason": decision.reason,
@@ -157,21 +163,73 @@ class HermesOrchestrator:
             success=bool(output.get("ok")),
             error=str(output.get("error", "")),
             output_ref=str(output.get("ref", "")),
+            live=output.get("kind") == "live_completion",
         )
-        write(record)
+        # Charter §6: audit writes are mandatory. If the write fails, the
+        # run is marked rejected_audit_failure and the output is replaced
+        # with a refusal payload so callers can't act on a result the
+        # audit trail does not capture.
+        try:
+            write(record)
+        except AuditWriteError as exc:
+            decision = GovernanceDecision(
+                decision=Decision.REJECTED.value,
+                reason="rejected_audit_failure: " + str(exc)[:120],
+                safe_alternative="Investigate audit ledger storage before retrying.",
+            )
+            output = {
+                "ok": False,
+                "kind": "audit_write_failed",
+                "error": str(exc)[:300],
+            }
+            return HermesTaskResult(
+                run_id=run_id,
+                decision=decision,
+                route=None,
+                output=output,
+                signature=signature,
+            )
+
         bridge_to_friction_log(record, decision)
 
-        deliverable_text = str(output.get("deliverable", ""))
-        approval_id = bridge_to_approval_center(
-            record, decision, intent=task.intent
-        )
-        if approval_id:
-            output["approval_id"] = approval_id
-        capital_asset_id = bridge_to_capital_ledger(
-            record, decision, intent=task.intent, deliverable_text=deliverable_text
-        )
-        if capital_asset_id:
-            output["capital_asset_id"] = capital_asset_id
+        # Bridges only fire on truly-successful approved runs. A run that
+        # was gate-approved but failed in the executor (e.g. cost budget
+        # exceeded, live LLM error, no_executor) must NOT trigger an
+        # approval queue entry or a capital-asset registration — that
+        # would be a phantom artefact. record.success captures
+        # output.get("ok") at audit-write time.
+        if record.success:
+            # Capital ledger reads the produced content first (from a
+            # successful live completion), falls back to the envelope's
+            # deliverable description, then the intent. This keeps
+            # non-negotiable #11 honest when live mode is active without
+            # forcing every envelope-only run to register an asset.
+            asset_text = (
+                str(output.get("content", ""))
+                or str(output.get("deliverable", ""))
+            )
+            approval_id = bridge_to_approval_center(
+                record, decision, intent=task.intent
+            )
+            if approval_id:
+                output["approval_id"] = approval_id
+            capital_asset_id = bridge_to_capital_ledger(
+                record, decision, intent=task.intent, deliverable_text=asset_text
+            )
+            if capital_asset_id:
+                output["capital_asset_id"] = capital_asset_id
+
+        # The needs_approval path advertises queued_in=approval_center
+        # even before the bridge runs. If the bridge silently dropped
+        # (missing customer_id, ImportError, store unavailable), correct
+        # the output so the caller knows the queue did not actually
+        # receive the draft.
+        if (
+            decision.decision == Decision.NEEDS_APPROVAL.value
+            and "approval_id" not in output
+        ):
+            output["queued_in"] = "approval_center_unavailable"
+            output["ok"] = False
 
         return HermesTaskResult(
             run_id=run_id,

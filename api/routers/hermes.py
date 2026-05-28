@@ -19,6 +19,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from api.security.api_key import require_admin_key
@@ -148,9 +149,11 @@ async def dispatch(
     if decision == Decision.KILL_SWITCHED.value:
         raise HTTPException(status_code=409, detail=body)
     if decision == Decision.NEEDS_APPROVAL.value:
-        # FastAPI converts 200 → 202 only via status_code in decorator; emit body
-        # with explicit hint so callers can branch on result["governance_decision"].
-        return {"http_hint_status": 202, **body}
+        # The HTTP contract documented in the docstring promises 202 for
+        # approval-queued runs. JSONResponse lets us return the structured
+        # body alongside the non-default status code so callers can branch
+        # on the status as well as on `governance_decision.decision`.
+        return JSONResponse(status_code=202, content=body)
     if not result.success:
         raise HTTPException(status_code=500, detail=body)
     return body
@@ -161,12 +164,14 @@ async def metrics(window_days: int = 7) -> dict[str, Any]:
     """Aggregate counts over the last ``window_days`` of audit rows.
 
     Useful for the founder cockpit and for the CTO weekly anchor. No PII;
-    aggregates only.
+    aggregates only. ``window_days`` is clamped to [1, 90]; the response
+    echoes the clamped value so the body and the data agree.
     """
     from datetime import UTC, datetime, timedelta
 
+    clamped_window = max(1, min(window_days, 90))
     rows = _read_audit_ledger()
-    cutoff = (datetime.now(UTC) - timedelta(days=max(1, min(window_days, 90)))).isoformat()
+    cutoff = (datetime.now(UTC) - timedelta(days=clamped_window)).isoformat()
     recent = [r for r in rows if r.get("occurred_at", "") >= cutoff]
 
     by_decision: dict[str, int] = {}
@@ -185,7 +190,8 @@ async def metrics(window_days: int = 7) -> dict[str, Any]:
             success_count += 1
 
     return {
-        "window_days": window_days,
+        "window_days": clamped_window,
+        "window_days_requested": window_days,
         "total_runs": len(recent),
         "success_runs": success_count,
         "by_decision": by_decision,

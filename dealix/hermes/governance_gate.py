@@ -13,6 +13,7 @@ Decision categories:
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Optional
@@ -29,9 +30,22 @@ FORBIDDEN_CHANNEL_MARKERS: tuple[str, ...] = (
 )
 
 
+def _phrase_matches(text: str, phrase: str) -> bool:
+    """Whole-word match for single tokens; substring match for multi-word phrases.
+
+    Avoids the classic substring trap: 'scrape' matching 'periscrape',
+    'blast' matching 'blast radius', 'doc' matching 'doctor'. For phrases
+    that already contain whitespace ('cold whatsapp', 'send email') the
+    phrase boundary is implicit, so substring matching is safe.
+    """
+    if " " in phrase:
+        return phrase in text
+    return re.search(rf"\b{re.escape(phrase)}\b", text) is not None
+
+
 def is_channel_forbidden(text: str) -> bool:
     low = text.lower()
-    return any(m in low for m in FORBIDDEN_CHANNEL_MARKERS)
+    return any(_phrase_matches(low, m) for m in FORBIDDEN_CHANNEL_MARKERS)
 
 
 class ApprovalRequirement(StrEnum):
@@ -117,9 +131,13 @@ class GovernanceGate:
         text = (intent_text or "").lower()
         matched: list[str] = []
 
-        # Hard refusals — doctrine-protected
+        # Hard refusals — doctrine-protected. Word-boundary regex so
+        # "scrape" matches the verb but not "blast radius" / "decode" /
+        # "doctor"; multi-word phrases ("cold whatsapp") fall back to a
+        # substring check because regex \b on the phrase boundary is
+        # cumbersome but the phrase itself is unambiguous.
         for pat in _HARD_REFUSAL_PATTERNS:
-            if pat in text:
+            if _phrase_matches(text, pat):
                 matched.append(pat)
         if matched:
             return GovernanceDecision(
@@ -134,7 +152,7 @@ class GovernanceGate:
 
         # Channel-level forbidden markers from forbidden_actions
         if is_channel_forbidden(text):
-            triggered = [m for m in FORBIDDEN_CHANNEL_MARKERS if m in text]
+            triggered = [m for m in FORBIDDEN_CHANNEL_MARKERS if _phrase_matches(text, m)]
             return GovernanceDecision(
                 decision=Decision.REJECTED.value,
                 reason="Channel use matches forbidden marker.",
@@ -144,7 +162,7 @@ class GovernanceGate:
 
         # External-send verbs → queue for approval, do not auto-send
         for marker in _EXTERNAL_SEND_MARKERS:
-            if marker in text:
+            if _phrase_matches(text, marker):
                 inferred = channel or self._infer_channel(marker)
                 req = approval_for_external_channel(
                     channel=inferred, has_client_approval=False
