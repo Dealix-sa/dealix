@@ -43,12 +43,18 @@ jobs:
           pip install pydantic pytest
 
       - name: Hermes doctrine + routing tests
+        # --noconftest skips the heavy global tests/conftest.py (httpx, structlog,
+        # tenacity, …) so this workflow stays dependency-light. -o addopts=""
+        # overrides the --cov addopts from pyproject.toml since pytest-cov is
+        # not installed here. -p no:cacheprovider keeps the workspace clean.
+        # Use `python -m pytest` to guarantee the pytest we run is the one we
+        # pip-installed above (same interpreter).
         run: |
-          pytest tests/hermes/ -v
+          python -m pytest tests/hermes/ -v --noconftest -o addopts="" -p no:cacheprovider
 
       - name: Provider-key doctrine guard
         run: |
-          pytest tests/test_no_provider_key_in_repo.py -v
+          python -m pytest tests/test_no_provider_key_in_repo.py -v --noconftest -o addopts="" -p no:cacheprovider
 
       - name: Hermes offline smoke (default provider)
         run: |
