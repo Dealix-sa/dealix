@@ -128,14 +128,33 @@ def _capital_this_week() -> dict[str, Any]:
         return {"count": 0, "items": [], "note": "capital_ledger_unavailable"}
 
 
+def _subscription_summary() -> dict[str, Any]:
+    """Aggregate active managed-ops subscriptions into MRR snapshot."""
+    try:
+        from auto_client_acquisition.payment_ops.renewal_scheduler import list_due
+        # list_due returns schedules whose next_attempt_at has elapsed;
+        # for MRR snapshot we also want the in-flight count
+        due = list_due()
+        return {
+            "due_count": len(due),
+            "due_mrr_sar": sum(s.amount_sar for s in due),
+            "is_estimate": True,
+        }
+    except Exception:
+        return {"due_count": 0, "due_mrr_sar": 0, "note": "renewal_scheduler_unavailable"}
+
+
 @router.get("/dashboard", dependencies=[Depends(require_admin_key)])
 async def founder_dashboard() -> dict[str, Any]:
     """Single consolidated founder view. Admin-key gated."""
+    friction = _friction_last_7d()
     return {
         "generated_at": datetime.now(UTC).isoformat(),
         "leads_waiting_24h_plus": _leads_waiting(),
-        "friction_last_7d": _friction_last_7d(),
+        "friction_last_7d": friction,
+        "frictions_top": friction.get("top_signals", [])[:5] if isinstance(friction, dict) else [],
         "renewals_due_next_7d": _renewals_due(),
+        "subscription_summary": _subscription_summary(),
         "pending_approvals": _pending_approvals(),
         "recent_proof_events": _recent_proof_events(),
         "capital_assets_this_week": _capital_this_week(),

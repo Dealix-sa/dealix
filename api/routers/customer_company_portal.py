@@ -489,6 +489,47 @@ async def customer_portal(customer_handle: str) -> dict[str, Any]:
     return _portal_payload(customer_handle or "Slot-A")
 
 
+@router.get("/{customer_handle}/subscription")
+async def customer_subscription(customer_handle: str) -> dict[str, Any]:
+    """Customer-facing subscription status.
+
+    Composes payment_ops.renewal_scheduler.list_by_customer() into a
+    minimal 5-field response. No internal terminology (per Article 6 #2).
+    No live-charge wiring — pure read.
+    """
+    handle = customer_handle or "Slot-A"
+    try:
+        from auto_client_acquisition.payment_ops.renewal_scheduler import (
+            list_by_customer,
+        )
+        schedules = list_by_customer(handle)
+    except Exception:
+        schedules = []
+
+    if not schedules:
+        return {
+            "customer_handle": handle,
+            "status": "inactive",
+            "plan": None,
+            "mrr_sar": 0,
+            "next_renewal_at": None,
+            "cycles_completed": 0,
+            "source": "renewal_scheduler",
+        }
+
+    # Use the latest schedule (highest cycle_count or last in list)
+    latest = max(schedules, key=lambda s: s.cycle_count)
+    return {
+        "customer_handle": handle,
+        "status": latest.status,
+        "plan": latest.plan,
+        "mrr_sar": latest.amount_sar,
+        "next_renewal_at": latest.next_attempt_at,
+        "cycles_completed": latest.cycle_count,
+        "source": "renewal_scheduler",
+    }
+
+
 # ── Wave 2: Client Workspace MVP ─────────────────────────────────────
 # Operator-facing internal aggregator. Distinct from the public 8-field
 # portal above (Constitution Article 6 #2). Returns 10 panels + status
