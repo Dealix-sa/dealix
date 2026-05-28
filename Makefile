@@ -128,6 +128,12 @@ alembic-heads: ## Fail if alembic reports >1 migration head
 optional-routers: ## Fail if any optional router (value_os, data_os, agent_os) failed silent-import
 	$(PYTHON) scripts/check_optional_routers.py
 
+tenant-audit: ## Generate tenant isolation report (informational, exit 0)
+	$(PYTHON) scripts/audit_tenant_isolation.py
+
+router-inventory: ## Generate unmounted-router inventory
+	$(PYTHON) scripts/inventory_unmounted_routers.py
+
 # ── Database ───────────────────────────────────────────────────
 db-init: ## Initialize database tables (dev only)
 	$(PYTHON) -c "import asyncio; from db.session import init_db; asyncio.run(init_db())"
