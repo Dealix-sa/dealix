@@ -144,6 +144,47 @@ def _subscription_summary() -> dict[str, Any]:
         return {"due_count": 0, "due_mrr_sar": 0, "note": "renewal_scheduler_unavailable"}
 
 
+def _hermes_summary() -> dict[str, Any]:
+    """7-day Hermes run summary for the cockpit (no PII, counts only)."""
+    try:
+        import json as _json
+        from pathlib import Path as _Path
+        from datetime import timedelta as _timedelta
+        p = _Path("var/hermes-runs.jsonl")
+        if not p.is_absolute():
+            from dealix.hermes import audit as _audit
+            p = _audit._path()  # noqa: SLF001
+        if not p.is_file():
+            return {"total_runs": 0, "by_decision": {}, "note": "no_runs_yet"}
+        cutoff = (datetime.now(UTC) - _timedelta(days=7)).isoformat()
+        by_decision: dict[str, int] = {}
+        by_sub_agent: dict[str, int] = {}
+        total = 0
+        for line in p.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                row = _json.loads(line)
+            except _json.JSONDecodeError:
+                continue
+            if row.get("occurred_at", "") < cutoff:
+                continue
+            total += 1
+            gd = row.get("governance_decision") or {}
+            d = gd.get("decision", "unknown")
+            by_decision[d] = by_decision.get(d, 0) + 1
+            sub = row.get("sub_agent") or "unrouted"
+            by_sub_agent[sub] = by_sub_agent.get(sub, 0) + 1
+        return {
+            "window_days": 7,
+            "total_runs": total,
+            "by_decision": by_decision,
+            "by_sub_agent": by_sub_agent,
+        }
+    except Exception:
+        return {"total_runs": 0, "by_decision": {}, "note": "hermes_audit_unavailable"}
+
+
 @router.get("/dashboard", dependencies=[Depends(require_admin_key)])
 async def founder_dashboard() -> dict[str, Any]:
     """Single consolidated founder view. Admin-key gated."""
@@ -158,6 +199,7 @@ async def founder_dashboard() -> dict[str, Any]:
         "pending_approvals": _pending_approvals(),
         "recent_proof_events": _recent_proof_events(),
         "capital_assets_this_week": _capital_this_week(),
+        "hermes_last_7d": _hermes_summary(),
         "governance_decision": "allow",
         "is_estimate": True,
     }

@@ -188,3 +188,33 @@ curl -X POST http://localhost:8000/api/v1/leads \
 ```
 
 This exercises intake, ICP matching, pain extraction, BANT qualification, CRM sync (skipped without HubSpot), and booking.
+
+---
+
+## Hermes — top-layer agent orchestrator
+
+Hermes is the single entry point that routes a high-level founder intent
+through the doctrine-bound dispatch pipeline (gate → router → executor →
+audit). Anchored under `docs/institutional/HERMES_CHARTER.md` and the
+Dealix Constitution.
+
+Three production surfaces:
+
+| Surface | Command | Use case |
+|---|---|---|
+| CLI | `python -m dealix.hermes "<intent>"` | Local terminal, ad-hoc dispatch. |
+| Daily | `python scripts/hermes_daily.py [--out path]` | Morning founder ritual (bilingual brief). |
+| HTTP | `POST /api/v1/hermes/dispatch` + `GET /status` + `GET /metrics` | n8n / WhatsApp / mobile. Admin-key gated. |
+| Replay | `python scripts/hermes_replay.py <run_id>` | Debug a past dispatch. |
+| Smoke | `python scripts/hermes_smoke.py [--provider direct_deepseek] [--live]` | Health check + optional live LLM ping. |
+
+Provider routing: `HERMES_PROVIDER=openrouter` (default) or `direct_deepseek`.
+Live LLM execution: `HERMES_LIVE_LLM=1` + corresponding `*_API_KEY`.
+Cost ceiling: `HERMES_DAILY_BUDGET_USD=10` (soft cap; 0 disables).
+Kill switch: `HERMES_KILL_SWITCH=1` halts every dispatch.
+
+Doctrine refusals — Hermes refuses on cold-WhatsApp, LinkedIn automation,
+scraping, fabricated proof, guaranteed-outcome claims, or any external send
+without approval. Drafts queue automatically into `approval_center`. See
+`docs/ops/HERMES_OPS_GUIDE.md` for the full operating manual and
+`docs/ops/HERMES_SECRET_ROTATION.md` for the key-rotation policy.
