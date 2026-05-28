@@ -1,0 +1,381 @@
+# Saudi Sector Taxonomy · تصنيف القطاعات السعودية
+#
+# Canonical sector enum used across the Dealix prospecting + closing
+# pipeline. Each sector has:
+#   - vertical_code (B2B/B2C/B2G)
+#   - compliance_requirements (PDPL plus sector-specific regulators)
+#   - decision_maker_titles (Saudi-specific common roles)
+#   - sales_cycle_days_range (is_estimate=true)
+#   - avg_deal_size_sar_range (is_estimate=true)
+#   - entry_offer_recommendation (Sprint/Managed Ops/Custom AI)
+#   - signals_to_watch
+#   - icp_weight_overrides (sector-specific scoring weights;
+#     overrides defaults in auto_client_acquisition/icp_scorer.py)
+#
+# Numbers are estimates from public Saudi market reports unless
+# tagged otherwise. Doctrine #6 (NO_UNVERIFIED_OUTCOMES) — no
+# guaranteed-results claims derived from these ranges.
+
+meta:
+  version: 1
+  effective_date: "2026-06-01"
+  next_review: "2026-09-01"
+  source_note: "Estimates from SAGIA, Monsha'at, SAMA, PIF public reports + Wamda + MENA Bytes. Always tagged is_estimate=true at the metric level."
+
+sectors:
+  TECHNOLOGY:
+    name_ar: "التقنية والـ SaaS"
+    name_en: "Technology / SaaS"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, CITC, ZATCA]
+    decision_maker_titles:
+      - Founder/CEO
+      - CTO
+      - VP Engineering
+      - Head of Product
+    typical_company_size_range: "5-200"
+    sales_cycle_days_range: "14-45"
+    avg_deal_size_sar_range: "499-15000"
+    entry_offer_recommendation: pilot_managed
+    competitor_landscape_note: "Fragmented — Saudi-built SaaS startups + global tools. No dominant Saudi-first revenue OS yet."
+    signals_to_watch:
+      - Series A/B funding announcements
+      - Hiring "VP Sales" or "Head of Growth"
+      - Public PDPL gap or governance pain
+      - Expansion to GCC announcements
+    icp_weight_overrides:
+      tech_stack: 25
+      intent: 25
+      sector: 15
+      compliance_posture: 10
+    is_estimate: true
+
+  FINANCE:
+    name_ar: "المالية والـ Fintech"
+    name_en: "Finance / Fintech"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, SAMA, ZATCA, AML/KYC, Open_Banking_Framework]
+    decision_maker_titles:
+      - Chief Compliance Officer
+      - Head of B2B
+      - VP Sales
+      - CEO (for early-stage)
+    typical_company_size_range: "20-500"
+    sales_cycle_days_range: "30-120"
+    avg_deal_size_sar_range: "2999-25000"
+    entry_offer_recommendation: custom_ai_engagement
+    competitor_landscape_note: "SAMA-licensed players + Open Banking new entrants. Trust + audit trail > features."
+    signals_to_watch:
+      - SAMA license tier changes
+      - Open Banking partnership announcements
+      - SOC 2 / ISO 27001 mentions
+      - New compliance officer hire
+    icp_weight_overrides:
+      compliance_signals: 30
+      intent: 25
+      sector: 20
+      size: 15
+    is_estimate: true
+
+  HEALTHCARE:
+    name_ar: "الصحة والـ Health-tech"
+    name_en: "Healthcare / Health-tech"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, SFDA, MOH, ZATCA]
+    decision_maker_titles:
+      - Hospital CEO/Medical Director
+      - VP Operations
+      - Head of Business Development
+      - Founder (for health-tech startups)
+    typical_company_size_range: "50-2000"
+    sales_cycle_days_range: "60-180"
+    avg_deal_size_sar_range: "2999-50000"
+    entry_offer_recommendation: managed_revenue_ops_growth
+    competitor_landscape_note: "Heavily regulated. Trust + clinical evidence > marketing flash."
+    signals_to_watch:
+      - SFDA license updates
+      - PPP partnership with MOH
+      - Insurance reimbursement changes
+      - Clinical trial publications
+    icp_weight_overrides:
+      compliance_signals: 30
+      sector: 20
+      size: 20
+      intent: 15
+    is_estimate: true
+
+  REAL_ESTATE:
+    name_ar: "العقار والـ Prop-tech"
+    name_en: "Real Estate / Prop-tech"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA, REGA]
+    decision_maker_titles:
+      - Property Director
+      - Head of Sales
+      - GM (for developers)
+      - Founder (for prop-tech)
+    typical_company_size_range: "10-500"
+    sales_cycle_days_range: "21-90"
+    avg_deal_size_sar_range: "1500-15000"
+    entry_offer_recommendation: pilot_managed
+    competitor_landscape_note: "Fragmented. WhatsApp dominant channel (warm-only). Sales trust matters more than CRM features."
+    signals_to_watch:
+      - REGA license tier updates
+      - New project launch announcements
+      - Vision 2030 giga-project participation
+      - Mortgage program partnerships
+    icp_weight_overrides:
+      sector: 25
+      size: 20
+      intent: 20
+      tech_stack: 10
+    is_estimate: true
+
+  EDUCATION:
+    name_ar: "التعليم والـ Ed-tech"
+    name_en: "Education / Ed-tech"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, MOE, ETEC, ZATCA]
+    decision_maker_titles:
+      - School Director / University VP
+      - Head of Digital Transformation
+      - Founder (ed-tech startups)
+      - Procurement Manager
+    typical_company_size_range: "10-1000"
+    sales_cycle_days_range: "60-180"
+    avg_deal_size_sar_range: "2999-30000"
+    entry_offer_recommendation: managed_revenue_ops_growth
+    competitor_landscape_note: "Long procurement cycles. Trust + outcomes for parents/students > feature lists."
+    signals_to_watch:
+      - MOE policy changes
+      - Vision 2030 education initiative grants
+      - Academic year procurement windows
+      - PIF education investments
+    icp_weight_overrides:
+      sector: 25
+      size: 20
+      intent: 20
+      compliance_signals: 15
+    is_estimate: true
+
+  RETAIL:
+    name_ar: "التجزئة والـ E-commerce"
+    name_en: "Retail / E-commerce"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA, MOCI]
+    decision_maker_titles:
+      - Founder/CEO
+      - Head of E-commerce
+      - VP Operations
+      - Head of Performance Marketing
+    typical_company_size_range: "5-300"
+    sales_cycle_days_range: "14-60"
+    avg_deal_size_sar_range: "999-7999"
+    entry_offer_recommendation: managed_revenue_ops_starter
+    competitor_landscape_note: "Heavy paid acquisition. Need proof of organic + warm conversion lift."
+    signals_to_watch:
+      - Marketplace expansion (noon, Amazon SA, Salla)
+      - Series A retail funding
+      - Logistics partnership announcements
+      - White Friday / Riyadh Season campaign hires
+    icp_weight_overrides:
+      intent: 30
+      sector: 20
+      size: 15
+      tech_stack: 15
+    is_estimate: true
+
+  MANUFACTURING:
+    name_ar: "التصنيع"
+    name_en: "Manufacturing"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA, MODON, SASO]
+    decision_maker_titles:
+      - GM/Factory Director
+      - Head of Sales (B2B)
+      - Business Development Director
+    typical_company_size_range: "50-2000"
+    sales_cycle_days_range: "45-180"
+    avg_deal_size_sar_range: "2999-50000"
+    entry_offer_recommendation: managed_revenue_ops_growth
+    competitor_landscape_note: "Vision 2030 localization push. ROI mindset; needs verifiable proof events."
+    signals_to_watch:
+      - MODON industrial city expansion
+      - LCV (Local Content Value) announcements
+      - PIF manufacturing investments
+      - New plant inaugurations
+    icp_weight_overrides:
+      sector: 25
+      size: 25
+      intent: 20
+    is_estimate: true
+
+  LOGISTICS:
+    name_ar: "اللوجستيات والـ Supply Chain"
+    name_en: "Logistics / Supply Chain"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA, TGA, Saudi_Customs]
+    decision_maker_titles:
+      - COO/Ops Director
+      - GM
+      - Head of Business Development
+      - Fleet Manager (larger ops)
+    typical_company_size_range: "20-1000"
+    sales_cycle_days_range: "21-90"
+    avg_deal_size_sar_range: "999-15000"
+    entry_offer_recommendation: managed_revenue_ops_starter
+    competitor_landscape_note: "Fragmented; Vision 2030 logistics + tourism trillion-SAR target. Thin margins, ROI-focused."
+    signals_to_watch:
+      - TGA license tier updates
+      - Bonded zone partnerships
+      - Vision 2030 logistics target announcements
+      - Enterprise shipper RFPs
+    icp_weight_overrides:
+      sector: 25
+      size: 25
+      intent: 20
+    is_estimate: true
+
+  CONSTRUCTION:
+    name_ar: "الإنشاءات والـ Con-tech"
+    name_en: "Construction / Con-tech"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA, Saudi_Contractors_Authority]
+    decision_maker_titles:
+      - Project Director
+      - GM
+      - VP Business Development
+      - Procurement Manager
+    typical_company_size_range: "50-5000"
+    sales_cycle_days_range: "60-180"
+    avg_deal_size_sar_range: "2999-50000"
+    entry_offer_recommendation: custom_ai_engagement
+    competitor_landscape_note: "Vision 2030 giga-projects (NEOM, Diriyah, Qiddiya). Procurement-heavy buyers."
+    signals_to_watch:
+      - Vision 2030 giga-project contract awards
+      - Saudi Contractors classification upgrades
+      - PIF contractor partnerships
+    icp_weight_overrides:
+      sector: 25
+      size: 25
+      compliance_signals: 20
+    is_estimate: true
+
+  CONSULTING:
+    name_ar: "الاستشارات"
+    name_en: "Consulting"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA]
+    decision_maker_titles:
+      - Managing Partner
+      - Founder
+      - VP Business Development
+    typical_company_size_range: "5-100"
+    sales_cycle_days_range: "14-60"
+    avg_deal_size_sar_range: "1500-15000"
+    entry_offer_recommendation: pilot_managed
+    competitor_landscape_note: "High overlap with Dealix services. Best treated as channel partners (rev-share)."
+    signals_to_watch:
+      - New senior partner hires
+      - Government tender wins (signal: revenue lift)
+      - Co-branded reports / case studies
+    icp_weight_overrides:
+      sector: 20
+      size: 15
+      intent: 25
+      compliance_signals: 15
+    is_estimate: true
+
+  TOURISM:
+    name_ar: "السياحة والضيافة"
+    name_en: "Tourism / Hospitality"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA, MOT, Saudi_Tourism_Authority]
+    decision_maker_titles:
+      - Hotel GM
+      - VP Operations
+      - Head of Revenue Management
+      - Founder (tourism startups)
+    typical_company_size_range: "20-2000"
+    sales_cycle_days_range: "30-90"
+    avg_deal_size_sar_range: "999-15000"
+    entry_offer_recommendation: managed_revenue_ops_starter
+    competitor_landscape_note: "Vision 2030 tourism push (100M visitors target). Heavy seasonality (Hajj, Riyadh Season)."
+    signals_to_watch:
+      - MOT licensing announcements
+      - New hotel openings
+      - Seasonal campaigns
+      - PIF tourism investments
+    icp_weight_overrides:
+      sector: 25
+      size: 20
+      intent: 20
+    is_estimate: true
+
+  AGENCIES:
+    name_ar: "وكالات التسويق"
+    name_en: "Marketing Agencies"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA]
+    decision_maker_titles:
+      - Agency Founder/CEO
+      - Head of Strategy
+      - Head of Operations
+    typical_company_size_range: "5-100"
+    sales_cycle_days_range: "21-60"
+    avg_deal_size_sar_range: "999-7999"
+    entry_offer_recommendation: managed_revenue_ops_starter
+    competitor_landscape_note: "Potential channel partners > direct customers. Rev-share 15-30% per AGENCY_PARTNER_PROGRAM.md."
+    signals_to_watch:
+      - New client wins (signal: capacity strain)
+      - Agency-of-record announcements
+      - Founder LinkedIn activity
+    icp_weight_overrides:
+      sector: 20
+      intent: 25
+      size: 15
+    is_estimate: true
+
+  MARKETPLACES:
+    name_ar: "الـ B2B Marketplaces"
+    name_en: "B2B Marketplaces"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA, MOCI]
+    decision_maker_titles:
+      - Founder/CEO
+      - VP Supply (merchant acquisition)
+      - VP Demand (buyer acquisition)
+      - Head of Operations
+    typical_company_size_range: "10-200"
+    sales_cycle_days_range: "21-60"
+    avg_deal_size_sar_range: "1500-15000"
+    entry_offer_recommendation: managed_revenue_ops_growth
+    competitor_landscape_note: "Strong PIF backing for some (e.g. SIRC). Need proof of B2B merchant + buyer activation."
+    signals_to_watch:
+      - Series A/B announcements
+      - GMV milestones (public)
+      - New vertical launches
+      - Cross-border expansion announcements
+    icp_weight_overrides:
+      intent: 25
+      sector: 20
+      size: 20
+      tech_stack: 15
+    is_estimate: true
+
+  OTHER:
+    name_ar: "أخرى"
+    name_en: "Other"
+    vertical_code: B2B
+    compliance_requirements: [PDPL, ZATCA]
+    decision_maker_titles:
+      - Founder/CEO
+      - Head of Sales
+    typical_company_size_range: "varies"
+    sales_cycle_days_range: "30-90"
+    avg_deal_size_sar_range: "499-15000"
+    entry_offer_recommendation: pilot_managed
+    competitor_landscape_note: "Catch-all for sectors not yet broken out. Re-classify when 3+ leads land in OTHER."
+    signals_to_watch: []
+    icp_weight_overrides: {}
+    is_estimate: true
