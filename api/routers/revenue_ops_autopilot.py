@@ -7,19 +7,23 @@ from pathlib import Path
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from api.security.api_key import require_admin_key
+from dealix.execution_assurance.health import compute_full_ops_health
 from dealix.revenue_ops_autopilot.knowledge import search_kb
 from dealix.revenue_ops_autopilot.orchestrator import get_default_orchestrator
-from dealix.execution_assurance.health import compute_full_ops_health
-from dealix.revenue_ops_autopilot.policies import INVOICE_DRAFT_ALLOWED_LEAD_STAGES, stage_transition_allowed
+from dealix.revenue_ops_autopilot.policies import (
+    INVOICE_DRAFT_ALLOWED_LEAD_STAGES,
+    stage_transition_allowed,
+)
+from dealix.revenue_ops_autopilot.proof_pack import build_proof_pack_draft
 from dealix.revenue_ops_autopilot.schemas import (
     DiagnosticDeliveryRecord,
     EvidenceEvent,
     InvoiceDraftRecord,
     SupportTicketRecord,
+    WarRoomOutreachStatus,
 )
 from dealix.revenue_ops_autopilot.scoring import compute_lead_score
 from dealix.revenue_ops_autopilot.store import (
@@ -28,7 +32,6 @@ from dealix.revenue_ops_autopilot.store import (
     get_autopilot_store,
     uid,
 )
-from dealix.revenue_ops_autopilot.proof_pack import build_proof_pack_draft
 from dealix.revenue_ops_autopilot.support_pipeline import analyze_support
 from dealix.revenue_ops_autopilot.war_room import (
     CRITICAL_OUTREACH_EVENTS,
@@ -39,7 +42,6 @@ from dealix.revenue_ops_autopilot.war_room import (
     sync_stage_from_war_room,
     war_room_row,
 )
-from dealix.revenue_ops_autopilot.schemas import WarRoomOutreachStatus
 
 
 def append_evidence_event(
@@ -530,7 +532,7 @@ async def ops_advance_stage(lead_id: str, body: AdvanceStagePayload) -> dict[str
         from dealix.revenue_ops_autopilot.crm_bridge import sync_lead_to_hubspot
 
         crm = sync_lead_to_hubspot(nl, store=store)
-    except Exception:  # noqa: BLE001
+    except Exception:
         crm = {"synced": False}
     return {
         "ok": True,
@@ -915,7 +917,7 @@ async def ops_war_room_patch(lead_id: str, body: WarRoomPatchPayload) -> dict[st
         from dealix.revenue_ops_autopilot.crm_bridge import sync_lead_to_hubspot
 
         hubspot = sync_lead_to_hubspot(nl, store=store)
-    except Exception:  # noqa: BLE001
+    except Exception:
         hubspot = {"synced": False}
 
     return {"item": war_room_row(nl), "hubspot": hubspot}
@@ -1358,11 +1360,11 @@ async def ops_founder_daily_pack() -> dict[str, Any]:
     """Today's governed founder pack — checklist, KPI status, social snippet."""
     from dealix.commercial_ops.daily_pack import pack_status, write_daily_pack_index
     from dealix.commercial_ops.digest import build_commercial_digest
+    from dealix.commercial_ops.founder_full_autopilot import build_autopilot_snapshot
+    from dealix.commercial_ops.full_ops_autopilot import build_full_autonomous_ops_snapshot
     from dealix.commercial_ops.kpi_snapshot import load_kpi_commercial_status
     from dealix.commercial_ops.social_queue import format_linkedin_draft, get_post_for_date
     from dealix.commercial_ops.strategy_refs import strategy_links_flat
-    from dealix.commercial_ops.founder_full_autopilot import build_autopilot_snapshot
-    from dealix.commercial_ops.full_ops_autopilot import build_full_autonomous_ops_snapshot
     from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 
     digest = build_commercial_digest(skip_no_build=True)
@@ -1458,7 +1460,7 @@ async def ops_founder_dashboard() -> dict[str, Any]:
         from auto_client_acquisition.approval_center import get_default_approval_store
 
         pending_approval_ct = len(get_default_approval_store().list_pending())
-    except Exception:  # noqa: BLE001
+    except Exception:
         pending_approval_ct = -1
 
     gtm = build_sovereign_gtm_slice()
@@ -1656,7 +1658,11 @@ async def ops_targeting_import(body: TargetingImportPayload) -> dict[str, Any]:
     import io
 
     from dealix.commercial_ops.paths import AGENCY_TARGETS_CSV, REPO_ROOT
-    from dealix.commercial_ops.targeting_csv import TARGET_FIELDS, build_war_room_today, load_targets
+    from dealix.commercial_ops.targeting_csv import (
+        TARGET_FIELDS,
+        build_war_room_today,
+        load_targets,
+    )
 
     reader = csv.DictReader(io.StringIO(body.csv_text.strip()))
     if not reader.fieldnames:
@@ -1730,7 +1736,7 @@ async def ops_replay_postgres_leads(
         async with async_session_factory()() as session:
             q = select(LeadRecord).order_by(LeadRecord.created_at.desc()).limit(limit)
             rows = (await session.execute(q)).scalars().all()
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         raise HTTPException(
             status_code=503,
             detail={"reason": "postgres_unavailable", "error": str(exc)[:200]},
@@ -1743,7 +1749,7 @@ async def ops_replay_postgres_leads(
         try:
             lead = ingest_lead_record_model(row)
             bridged.append(lead.id)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             errors.append({"pg_id": row.id, "error": str(exc)[:120]})
 
     return {
@@ -1920,8 +1926,8 @@ async def invoice_create_draft(body: InvoiceDraftPayload) -> dict[str, Any]:
     )
     get_autopilot_store().append_invoice_draft(inv)
     try:
-        from auto_client_acquisition.approval_center.schemas import ApprovalRequest
         from auto_client_acquisition.approval_center import get_default_approval_store
+        from auto_client_acquisition.approval_center.schemas import ApprovalRequest
 
         get_default_approval_store().create(
             ApprovalRequest(
@@ -1936,7 +1942,7 @@ async def invoice_create_draft(body: InvoiceDraftPayload) -> dict[str, Any]:
                 proof_impact="commercial_close_guarded",
             ),
         )
-    except Exception:  # noqa: BLE001
+    except Exception:
         pass
 
     append_evidence_event(

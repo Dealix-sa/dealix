@@ -79,7 +79,7 @@ class TenantRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
     deleted_at: Mapped[datetime | None] = mapped_column(nullable=True)
 
-    users: Mapped[list["UserRecord"]] = relationship(back_populates="tenant")
+    users: Mapped[list[UserRecord]] = relationship(back_populates="tenant")
 
 
 class TenantThemeRecord(Base):
@@ -172,7 +172,7 @@ class UserRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
     deleted_at: Mapped[datetime | None] = mapped_column(nullable=True)
 
-    tenant: Mapped["TenantRecord | None"] = relationship(back_populates="users")
+    tenant: Mapped[TenantRecord | None] = relationship(back_populates="users")
 
     __table_args__ = (UniqueConstraint("tenant_id", "email", name="uq_user_tenant_email"),)
 
@@ -235,7 +235,7 @@ class LeadRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
     deleted_at: Mapped[datetime | None] = mapped_column(nullable=True)
 
-    deals: Mapped[list["DealRecord"]] = relationship(back_populates="lead")
+    deals: Mapped[list[DealRecord]] = relationship(back_populates="lead")
 
     __table_args__ = (Index("ix_leads_tenant_status", "tenant_id", "status"),)
 
@@ -255,7 +255,7 @@ class DealRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
     deleted_at: Mapped[datetime | None] = mapped_column(nullable=True)
 
-    lead: Mapped["LeadRecord"] = relationship(back_populates="deals")
+    lead: Mapped[LeadRecord] = relationship(back_populates="deals")
 
     __table_args__ = (Index("ix_deals_tenant_stage", "tenant_id", "stage"),)
 

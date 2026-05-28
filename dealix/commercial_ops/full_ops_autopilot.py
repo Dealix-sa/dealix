@@ -9,9 +9,10 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from dealix.commercial_ops.paths import FOUNDER_BRIEFS_DIR, REPO_ROOT, WAR_ROOM_TODAY_JSON
 
@@ -219,7 +220,7 @@ def run_morning_core(
             else:
                 result = fn()
             steps.append({"id": sid, "label_ar": label_ar, **result})
-        except Exception as exc:  # noqa: BLE001 — step boundary
+        except Exception as exc:
             steps.append({"id": sid, "label_ar": label_ar, "ok": False, "error": str(exc)})
 
     if run_optional_scripts:

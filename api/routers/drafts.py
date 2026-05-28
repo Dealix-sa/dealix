@@ -24,7 +24,7 @@ from __future__ import annotations
 import logging
 import os
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -43,7 +43,11 @@ from auto_client_acquisition.email.daily_targeting import (
 )
 from auto_client_acquisition.email.gmail_send import (
     create_draft as gmail_create_draft,
+)
+from auto_client_acquisition.email.gmail_send import (
     is_configured as gmail_is_configured,
+)
+from auto_client_acquisition.email.gmail_send import (
     send_email as gmail_send_email,
 )
 from auto_client_acquisition.email.research_agent import (
@@ -70,7 +74,7 @@ def _new_id(prefix: str = "") -> str:
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc).replace(tzinfo=None)
+    return datetime.now(UTC).replace(tzinfo=None)
 
 
 def _auto_send_low_risk_enabled(approval_mode: str) -> bool:
@@ -157,7 +161,7 @@ async def _auto_send_warm_gmail_batch(
             )
         try:
             await session.commit()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             await session.rollback()
             return [{"status": "commit_failed", "error": str(exc)}]
     return results
@@ -235,7 +239,7 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
                 ).distinct()
             )).scalars().all() if ids else []
             recently = set(recent_logs)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
     # 2. Filter into eligible candidates
@@ -440,7 +444,7 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
 
         try:
             await session.commit()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             await session.rollback()
             return {"status": "commit_failed", "error": str(exc)}
 
@@ -518,7 +522,7 @@ async def gmail_drafts_create(body: dict[str, Any] = Body(...)) -> dict[str, Any
         session.add(record)
         try:
             await session.commit()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             await session.rollback()
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
@@ -540,7 +544,7 @@ async def gmail_drafts_today() -> dict[str, Any]:
                     GmailDraftRecord.created_at >= today_start
                 ).order_by(GmailDraftRecord.created_at.desc())
             )).scalars().all()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return {"status": "skipped_db_unreachable", "error": str(exc), "items": []}
     return {
         "count": len(rows),
@@ -586,7 +590,7 @@ async def linkedin_drafts_create(body: dict[str, Any] = Body(...)) -> dict[str, 
         session.add(rec)
         try:
             await session.commit()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             await session.rollback()
             return {"status": "skipped_db_unreachable", "error": str(exc)}
     return {"status": "ok", "draft_id": rec.id}
@@ -602,7 +606,7 @@ async def linkedin_drafts_today() -> dict[str, Any]:
                     LinkedInDraftRecord.created_at >= today_start
                 ).order_by(LinkedInDraftRecord.created_at.desc())
             )).scalars().all()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return {"status": "skipped_db_unreachable", "error": str(exc), "items": []}
     return {
         "count": len(rows),
@@ -637,7 +641,7 @@ async def linkedin_drafts_mark_sent(draft_id: str) -> dict[str, Any]:
             await session.commit()
         except HTTPException:
             raise
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             await session.rollback()
             return {"status": "skipped_db_unreachable", "error": str(exc)}
     return {"status": "ok", "draft_id": draft_id, "marked_sent_at": rec.sent_at.isoformat()}
@@ -667,7 +671,7 @@ async def linkedin_drafts_manual_capture(
             await session.commit()
         except HTTPException:
             raise
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             await session.rollback()
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
@@ -720,7 +724,7 @@ async def dashboard_revenue_machine_today() -> dict[str, Any]:
                     EmailSendLog.reply_received_at >= today_start
                 )
             )).scalar() or 0)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
     return {
@@ -762,7 +766,7 @@ async def gmail_drafts_create_batch(body: dict[str, Any] = Body(default={})) -> 
                     OutreachQueueRecord.channel.in_(["email", "email_warm", "email_followup"]),
                 ).limit(max_n)
             )).scalars().all()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
         for r in rows:
@@ -777,7 +781,7 @@ async def gmail_drafts_create_batch(body: dict[str, Any] = Body(default={})) -> 
                 acc = (await session.execute(
                     select(AccountRecord).where(AccountRecord.id == r.lead_id)
                 )).scalar_one_or_none()
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 failed.append({"queue_id": r.id, "reason": f"db: {exc}"})
                 continue
             if not contact or not contact.email:
@@ -812,7 +816,7 @@ async def gmail_drafts_create_batch(body: dict[str, Any] = Body(default={})) -> 
 
         try:
             await session.commit()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             await session.rollback()
             return {"status": "commit_failed", "error": str(exc),
                     "created": created, "failed": failed}
@@ -877,7 +881,7 @@ async def dashboard_revenue_machine_history(days: int = 14) -> dict[str, Any]:
             linkedin_rows = (await session.execute(
                 select(LinkedInDraftRecord).where(LinkedInDraftRecord.created_at >= cutoff)
             )).scalars().all()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
     # Aggregate by date
@@ -936,7 +940,7 @@ async def revenue_machine_export(format: str = "csv") -> dict[str, Any]:
                     LinkedInDraftRecord.created_at >= today_start
                 ).order_by(LinkedInDraftRecord.created_at)
             )).scalars().all()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
     out_dir = Path("docs/ops/daily_reports")
@@ -1043,7 +1047,7 @@ async def automation_daily_report_generate() -> dict[str, Any]:
     )
     try:
         file_path.write_text(content, encoding="utf-8")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         return {"status": "write_failed", "error": str(exc), "metrics": metrics}
 
     return {

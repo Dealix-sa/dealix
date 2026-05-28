@@ -104,7 +104,7 @@ def _phase_in_process(label: str, fn: Any, **kwargs: Any) -> dict[str, Any]:
             "elapsed_s": round(time.monotonic() - t0, 1),
             "detail": result,
         }
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         return {
             "label": label,
             "verdict": "FAIL",

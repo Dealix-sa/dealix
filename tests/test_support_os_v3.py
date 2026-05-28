@@ -11,7 +11,7 @@ All hardening fields are optional with safe defaults — back-compat preserved.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 from pydantic import ValidationError
@@ -23,7 +23,6 @@ from auto_client_acquisition.support_os.ticket import (
     create_ticket,
     is_proof_opportunity_category,
 )
-
 
 # ─────────────────────────────────────────────────────────────────────
 # Ticket schema extension (4 tests)
@@ -56,7 +55,7 @@ def test_v1_callers_still_work_via_defaults() -> None:
 
 def test_v3_fields_settable() -> None:
     """All 7 new fields can be set on Ticket construction."""
-    sla = datetime.now(timezone.utc) + timedelta(hours=1)
+    sla = datetime.now(UTC) + timedelta(hours=1)
     t = Ticket(
         id="tkt_x1",
         customer_id="cust_acme",
@@ -82,7 +81,7 @@ def test_v3_fields_settable() -> None:
 
 def test_extra_fields_still_forbidden() -> None:
     """Schema preserves extra='forbid' (typo guard)."""
-    sla = datetime.now(timezone.utc) + timedelta(hours=1)
+    sla = datetime.now(UTC) + timedelta(hours=1)
     with pytest.raises(ValidationError):
         Ticket(
             id="tkt_x", message_text_redacted="x", sla_due_at=sla,
@@ -92,7 +91,7 @@ def test_extra_fields_still_forbidden() -> None:
 
 def test_invalid_sentiment_value_rejected() -> None:
     """Sentiment Literal rejects unknown values."""
-    sla = datetime.now(timezone.utc) + timedelta(hours=1)
+    sla = datetime.now(UTC) + timedelta(hours=1)
     with pytest.raises(ValidationError):
         Ticket(
             id="tkt_y", message_text_redacted="x", sla_due_at=sla,

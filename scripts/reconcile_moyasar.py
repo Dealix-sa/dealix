@@ -29,7 +29,7 @@ import re
 import sys
 import time
 from dataclasses import asdict, dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from typing import Any
 
 logger = logging.getLogger("reconcile")
@@ -55,7 +55,7 @@ def parse_since(s: str) -> datetime:
         raise ValueError(f"--since must look like '48h' or '7d', got {s!r}")
     n, unit = int(m.group(1)), m.group(2).lower()
     delta = timedelta(hours=n) if unit == "h" else timedelta(days=n)
-    return datetime.now(timezone.utc) - delta
+    return datetime.now(UTC) - delta
 
 
 def fetch_moyasar_payments(secret: str, since: datetime) -> list[dict[str, Any]]:
@@ -182,7 +182,7 @@ def alert(webhook_url: str, diffs: list[Discrepancy]) -> None:
         if len(diffs) > 10:
             msg += f"...and {len(diffs)-10} more.\n"
         requests.post(webhook_url, json={"text": msg}, timeout=10)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.warning("alert webhook failed: %s", exc)
 
 
@@ -213,7 +213,7 @@ def main() -> int:
     diffs = reconcile(moyasar, db, args.tolerance_halalas)
     report = {
         "window_start": since.isoformat(),
-        "window_end": datetime.now(timezone.utc).isoformat(),
+        "window_end": datetime.now(UTC).isoformat(),
         "moyasar_count": len(moyasar),
         "db_count": len(db),
         "discrepancies": [asdict(d) for d in diffs],

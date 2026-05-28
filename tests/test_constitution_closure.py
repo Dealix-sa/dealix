@@ -14,7 +14,6 @@ import json
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-
 # ─────────────────── B7.1 Founder Beast Command Center ──────────────
 
 

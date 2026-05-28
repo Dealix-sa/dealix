@@ -343,13 +343,15 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
         )
         side_effects: dict[str, Any] = {}
         try:
-            from dealix.commercial_ops.moyasar_payment_sync import process_moyasar_payment_side_effects
+            from dealix.commercial_ops.moyasar_payment_sync import (
+                process_moyasar_payment_side_effects,
+            )
 
             side_effects = process_moyasar_payment_side_effects(
                 payment=payment,
                 event_type=event_type,
             )
-        except Exception as sync_exc:  # noqa: BLE001
+        except Exception as sync_exc:
             log.warning("moyasar_side_effects_failed event_fp=%s error=%s", event_fp, sync_exc)
         return {
             "status": "ok",

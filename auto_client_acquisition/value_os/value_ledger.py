@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import asdict, dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -55,12 +55,12 @@ def _ledger_backend() -> str:
         from core.config.settings import get_settings
 
         return str(getattr(get_settings(), "value_ledger_backend", "jsonl") or "jsonl").lower().strip()
-    except Exception:  # noqa: BLE001
+    except Exception:
         return "jsonl"
 
 
 def _now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 def _serialize(ev: ValueEvent) -> str:
@@ -117,7 +117,9 @@ def _write_jsonl(event: ValueEvent) -> None:
 
 
 def _pg_store():
-    from auto_client_acquisition.value_os.value_ledger_postgres import get_postgres_value_ledger_store
+    from auto_client_acquisition.value_os.value_ledger_postgres import (
+        get_postgres_value_ledger_store,
+    )
 
     return get_postgres_value_ledger_store()
 
@@ -146,21 +148,21 @@ def _list_jsonl(
                 continue
             try:
                 ev = _deserialize(line)
-            except Exception:  # noqa: BLE001
+            except Exception:
                 continue
             if customer_id and ev.customer_id != customer_id:
                 continue
             rows.append(ev)
     if since_days is not None:
-        cutoff = datetime.now(timezone.utc) - timedelta(days=since_days)
+        cutoff = datetime.now(UTC) - timedelta(days=since_days)
         filtered: list[ValueEvent] = []
         for ev in rows:
             try:
                 ts = datetime.fromisoformat(ev.occurred_at)
-            except Exception:  # noqa: BLE001
+            except Exception:
                 continue
             if ts.tzinfo is None:
-                ts = ts.replace(tzinfo=timezone.utc)
+                ts = ts.replace(tzinfo=UTC)
             if ts >= cutoff:
                 filtered.append(ev)
         rows = filtered
