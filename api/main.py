@@ -372,6 +372,9 @@ def create_app() -> FastAPI:
     app.include_router(commercial_map_router.router)
     # Wave 15 — Founder launch-status (admin /launch-status + public /launch-status/public)
     app.include_router(founder_launch_status_router.router)
+    # Track C4 — Founder Command Bus (natural-language → approval-queued draft)
+    from api.routers import command_bus as command_bus_router
+    app.include_router(command_bus_router.router)
     # Systems 26–35 — Enterprise Control Plane hardening
     app.include_router(control_plane_os.router)
     app.include_router(agent_mesh_os.router)

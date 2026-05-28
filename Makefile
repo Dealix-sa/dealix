@@ -119,11 +119,14 @@ demo: ## Run interactive CLI demo
 cockpit: ## Founder Daily Brief — single-screen status (composes Bottleneck Radar + Hard Gates + Service Catalog)
 	$(PYTHON) scripts/dealix_founder_daily_brief.py
 
-doctor: env-check alembic-heads security-smoke ## Health check — env contract + single alembic head + security smoke
+doctor: env-check alembic-heads security-smoke optional-routers ## Health check — env contract + alembic head + security + optional router imports
 	@echo "✅ Repo doctor passed — see docs/playbooks/FOUNDER_NEXT_STEPS.md for what to do today"
 
 alembic-heads: ## Fail if alembic reports >1 migration head
 	$(PYTHON) scripts/check_alembic_single_head.py
+
+optional-routers: ## Fail if any optional router (value_os, data_os, agent_os) failed silent-import
+	$(PYTHON) scripts/check_optional_routers.py
 
 # ── Database ───────────────────────────────────────────────────
 db-init: ## Initialize database tables (dev only)
