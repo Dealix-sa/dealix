@@ -10,11 +10,11 @@
 
 | السؤال | الملف |
 |--------|------|
-| أول مرة أشغّل الريبو؟ | `/QUICK_START.md` + `make first-setup` |
-| ماذا أفعل اليوم/الأسبوع؟ | `/FOUNDER_NEXT_STEPS.md` |
+| أول مرة أشغّل الريبو؟ | `docs/playbooks/QUICK_START.md` + `make first-setup` |
+| ماذا أفعل اليوم/الأسبوع؟ | `docs/playbooks/FOUNDER_NEXT_STEPS.md` |
 | ما هي doctrine الـ 11؟ | `/AGENTS.md` (sections "non-negotiables") |
-| كيف أنشر للإنتاج؟ | `/DEPLOYMENT.md` + `docs/DEPLOY_CHECKLIST.md` |
-| ما الـ stubs / NotImplementedError؟ | `/KNOWN_LIMITATIONS.md` |
+| كيف أنشر للإنتاج؟ | `docs/contributing/DEPLOYMENT.md` + `docs/DEPLOY_CHECKLIST.md` |
+| ما الـ stubs / NotImplementedError؟ | `docs/reference/KNOWN_LIMITATIONS.md` |
 
 ---
 
@@ -80,9 +80,9 @@
 (مرتبة حسب الأولوية)
 
 1. `/AGENTS.md` — doctrine + module layout
-2. `/FOUNDER_NEXT_STEPS.md` — ماذا تفعل الآن
-3. `/KNOWN_LIMITATIONS.md` — stubs catalog
-4. `/DEALIX_COMPANY_OPERATIONAL_STATE.md` — current state
+2. `docs/playbooks/FOUNDER_NEXT_STEPS.md` — ماذا تفعل الآن
+3. `docs/reference/KNOWN_LIMITATIONS.md` — stubs catalog
+4. `docs/operations/DEALIX_COMPANY_OPERATIONAL_STATE.md` — current state
 5. `docs/COMMERCIAL_LAUNCH_MASTER_PLAN.md`
 6. `docs/BUSINESS_MODEL.md`
 7. `docs/COMPANY_SERVICE_LADDER.md` — 5-rung offer ladder
@@ -99,6 +99,20 @@
 18. `docs/DEPLOY_CHECKLIST.md`
 19. `docs/DAY_1_LAUNCH_KIT.md`
 20. `docs/14_DAY_FIRST_REVENUE_PLAYBOOK.md`
+
+## 📂 منظومة docs/ الجديدة (After cleanup)
+
+```
+docs/
+├── INDEX.md                    ← هذا الملف
+├── architecture/               ← AI_CONVENTIONS, PROMPTS
+├── contributing/               ← CONTRIBUTING, CODE_OF_CONDUCT, DEPLOYMENT
+├── operations/                 ← DEALIX_BUILD_TASK, COMPANY_OPERATIONAL_STATE, READINESS
+├── playbooks/                  ← FOUNDER_NEXT_STEPS, QUICK_START
+├── reference/                  ← KNOWN_LIMITATIONS
+├── archive/                    ← DEALIX_PHASE2_CHEAP_TASK
+└── 00_*, 01_*, ...             ← Constitution layers (428 subdirs)
+```
 
 ---
 

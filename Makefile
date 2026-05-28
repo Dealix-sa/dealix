@@ -107,7 +107,7 @@ cockpit: ## Founder Daily Brief — single-screen status (composes Bottleneck Ra
 	$(PYTHON) scripts/dealix_founder_daily_brief.py
 
 doctor: env-check alembic-heads security-smoke ## Health check — env contract + single alembic head + security smoke
-	@echo "✅ Repo doctor passed — see FOUNDER_NEXT_STEPS.md for what to do today"
+	@echo "✅ Repo doctor passed — see docs/playbooks/FOUNDER_NEXT_STEPS.md for what to do today"
 
 alembic-heads: ## Fail if alembic reports >1 migration head
 	$(PYTHON) scripts/check_alembic_single_head.py
