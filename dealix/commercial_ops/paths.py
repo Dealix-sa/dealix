@@ -40,3 +40,11 @@ DEALIX_INTERNAL_WAR_ROOM_CSV = (
 )
 DEALIX_DOGFOODING_WAR_ROOM_JSON = REPO_ROOT / "data/dealix_dogfooding_war_room.json"
 FOUNDER_MAX_OPS_BACKLOG_YAML = REPO_ROOT / "dealix/config/founder_max_ops_backlog.yaml"
+# Founder agent task queue (config seed is optional — readers guard with .is_file()).
+FOUNDER_AGENT_QUEUE_YAML = REPO_ROOT / "dealix/config/founder_agent_queue.yaml"
+FOUNDER_AGENT_QUEUE_TODAY_JSON = REPO_ROOT / "data/founder_agent_queue_today.json"
+# Founder strategic-OS config seeds (all optional — readers guard with .is_file()).
+FOUNDER_EXCELLENCE_OS_YAML = REPO_ROOT / "dealix/config/founder_excellence_os.yaml"
+FOUNDER_NORTH_STAR_YAML = REPO_ROOT / "dealix/config/founder_north_star.yaml"
+FOUNDER_WELLBEING_YAML = REPO_ROOT / "dealix/config/founder_wellbeing.yaml"
+PLATFORM_V10_BACKLOG_YAML = REPO_ROOT / "dealix/config/platform_v10_backlog.yaml"
