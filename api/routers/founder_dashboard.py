@@ -253,10 +253,88 @@ async def founder_cockpit() -> dict[str, Any]:
         "agent_runs_24h": _agent_runs_24h(),
         "subscription_summary": _subscription_summary(),
         "next_action_today": _next_action(),
+        "hot_deals": _hot_deals(),
+        "stalled_deals": _stalled_deals(),
         "red_lines": alerts,
         "is_estimate": True,
         "doctrine_note": "Drafts only. No autonomous sends. Founder approves all outbound.",
     }
+
+
+def _hot_deals() -> dict[str, Any]:
+    """Prospects with buying_intent_score >= 70.
+
+    Best-effort: reads from data/prospect_briefs/ + any cached
+    buying-signal scores. Returns count + top-5 brief IDs.
+    Doctrine #6: is_estimate=True on score values.
+    """
+    try:
+        from pathlib import Path
+        import json as _json
+        briefs_dir = Path(__file__).resolve().parents[2] / "data" / "prospect_briefs"
+        if not briefs_dir.is_dir():
+            return {"count": 0, "items": []}
+        hot = []
+        for path in briefs_dir.glob("*.json"):
+            if path.name.endswith("_sequence.json"):
+                continue
+            try:
+                brief = _json.loads(path.read_text(encoding="utf-8"))
+                bs = brief.get("buying_signals", {})
+                score = int(bs.get("score", 0))
+                if score >= 70:
+                    hot.append({
+                        "brief_id": brief.get("brief_id"),
+                        "name_en": brief.get("identity", {}).get("name_en"),
+                        "company": brief.get("identity", {}).get("company_name"),
+                        "score": score,
+                    })
+            except Exception:
+                continue
+        hot.sort(key=lambda x: x["score"], reverse=True)
+        return {"count": len(hot), "items": hot[:5], "is_estimate": True}
+    except Exception:
+        return {"count": 0, "items": [], "note": "buying_signals_unavailable"}
+
+
+def _stalled_deals() -> dict[str, Any]:
+    """Prospects in same state > 14 days with no buying signal.
+
+    Conservative heuristic: counts brief_ids older than 14 days
+    whose buying_signals.score < 30.
+    """
+    try:
+        from pathlib import Path
+        import json as _json
+        briefs_dir = Path(__file__).resolve().parents[2] / "data" / "prospect_briefs"
+        if not briefs_dir.is_dir():
+            return {"count": 0, "items": []}
+        now = datetime.now(UTC)
+        stalled = []
+        for path in briefs_dir.glob("*.json"):
+            if path.name.endswith("_sequence.json"):
+                continue
+            try:
+                brief = _json.loads(path.read_text(encoding="utf-8"))
+                created_at_str = brief.get("source_passport", {}).get("created_at", "")
+                if not created_at_str:
+                    continue
+                created_at = datetime.fromisoformat(created_at_str)
+                days_old = (now - created_at).days
+                score = int(brief.get("buying_signals", {}).get("score", 0))
+                if days_old >= 14 and score < 30:
+                    stalled.append({
+                        "brief_id": brief.get("brief_id"),
+                        "name_en": brief.get("identity", {}).get("name_en"),
+                        "company": brief.get("identity", {}).get("company_name"),
+                        "days_silent": days_old,
+                    })
+            except Exception:
+                continue
+        stalled.sort(key=lambda x: x["days_silent"], reverse=True)
+        return {"count": len(stalled), "items": stalled[:5], "is_estimate": True}
+    except Exception:
+        return {"count": 0, "items": [], "note": "stalled_calc_unavailable"}
 
 
 @router.get("/dashboard", dependencies=[Depends(require_admin_key)])
