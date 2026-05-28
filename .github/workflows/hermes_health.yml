@@ -1,0 +1,59 @@
+name: Hermes Health
+
+on:
+  schedule:
+    - cron: "0 4 * * *"  # daily at 04:00 UTC
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+    paths:
+      - 'dealix/hermes/**'
+      - 'dealix/llm/**'
+      - 'tests/hermes/**'
+      - 'scripts/hermes_smoke.py'
+      - '.github/workflows/hermes_health.yml'
+  pull_request:
+    paths:
+      - 'dealix/hermes/**'
+      - 'dealix/llm/**'
+      - 'tests/hermes/**'
+      - 'scripts/hermes_smoke.py'
+
+concurrency:
+  group: hermes-health-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  doctrine-and-routing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pydantic pytest
+
+      - name: Hermes doctrine + routing tests
+        run: |
+          pytest tests/hermes/ -v
+
+      - name: Provider-key doctrine guard
+        run: |
+          pytest tests/test_no_provider_key_in_repo.py -v
+
+      - name: Hermes offline smoke (default provider)
+        run: |
+          python scripts/hermes_smoke.py
+
+      - name: Hermes offline smoke (direct_deepseek)
+        run: |
+          python scripts/hermes_smoke.py --provider direct_deepseek

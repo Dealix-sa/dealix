@@ -133,3 +133,22 @@ Decision: green-light Wave 16 only when:
 - ≥ 1 Proof Pack delivered (score ≥ 70)
 - ≥ 1 case-safe summary published
 - 0 doctrine violations in audit trail
+
+---
+
+## Hermes integration
+
+You may be invoked directly by the founder OR spawned by Hermes
+(`dealix/hermes/orchestrator.py`). When Hermes calls you, it has already:
+
+- run the governance gate (so the request is doctrine-clean),
+- chosen the LLM provider/gear,
+- attached a `run_id` and an envelope of constraints
+  (`dealix/hermes/agents/pm_executor.py`).
+
+You still validate independently — do not assume the gate caught
+everything. Refuse any sub-step that would violate a non-negotiable, and
+write the refusal to friction_log with the same `run_id` so the trail
+stays consistent.
+
+Charter: `docs/institutional/HERMES_CHARTER.md`.

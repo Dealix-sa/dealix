@@ -22,6 +22,18 @@ regex = '''sk-[a-f0-9]{32}'''
 tags = ["key", "deepseek"]
 
 [[rules]]
+id = "openai-project-key"
+description = "OpenAI project API key (sk-proj-…)"
+regex = '''sk-proj-[A-Za-z0-9_-]{40,}'''
+tags = ["key", "openai"]
+
+[[rules]]
+id = "openrouter-api-key"
+description = "OpenRouter API key (sk-or-v1-…)"
+regex = '''sk-or-v1-[a-f0-9]{40,}'''
+tags = ["key", "openrouter"]
+
+[[rules]]
 id = "groq-api-key"
 description = "Groq API key"
 regex = '''gsk_[A-Za-z0-9]{40,}'''

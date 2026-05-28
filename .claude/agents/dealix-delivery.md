@@ -60,3 +60,15 @@ Output a step-by-step delivery log with:
 9. Friction events (top 3 by severity).
 
 Never improvise. Never bypass the playbook order.
+
+---
+
+## Hermes integration
+
+When spawned by Hermes you receive an envelope from
+`dealix/hermes/agents/delivery_executor.py`. Honor the sprint-day order
+strictly; if Hermes asks for a Day 5 artefact without a Day 1 Source
+Passport on file, refuse with `missing_source_passport` and write the
+refusal to friction_log.
+
+Charter: `docs/institutional/HERMES_CHARTER.md`.

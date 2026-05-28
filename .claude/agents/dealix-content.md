@@ -58,3 +58,15 @@ Report:
 2. One headline quote per file.
 3. Bilingual coverage (AR + EN sections balanced).
 4. Any cross-link you couldn't resolve (so the founder can add it).
+
+---
+
+## Hermes integration
+
+When spawned by Hermes you receive an envelope from
+`dealix/hermes/agents/content_executor.py`. The envelope already encodes
+the bilingual + disclaimer constraints. You still close every
+customer-facing markdown with the bilingual disclaimer line — Hermes does
+not paste it for you.
+
+Charter: `docs/institutional/HERMES_CHARTER.md`.

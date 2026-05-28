@@ -17,17 +17,75 @@ class Gear(str, Enum):
     ARCHITECT = "architect"   # Gear 3: Minimax M2.7 - deep reasoning
 
 
+# Provider identifiers used by the engine + Hermes router.
+ProviderName = Literal["openrouter", "direct_deepseek"]
+
+PROVIDER_BASE_URLS: dict[str, str] = {
+    "openrouter": "https://openrouter.ai/api/v1",
+    "direct_deepseek": "https://api.deepseek.com/v1",
+}
+
+PROVIDER_ENV_KEYS: dict[str, str] = {
+    "openrouter": "OPENROUTER_API_KEY",
+    "direct_deepseek": "DEEPSEEK_API_KEY",
+}
+
+# When routed through DeepSeek-direct, the OpenRouter-style "deepseek/deepseek-chat"
+# id must be rewritten to the provider-native id. Anything else cannot be served
+# by direct_deepseek and must fall back to OpenRouter.
+DIRECT_DEEPSEEK_MODEL_MAP: dict[str, str] = {
+    "deepseek/deepseek-chat": "deepseek-chat",
+    "deepseek/deepseek-reasoner": "deepseek-reasoner",
+    "deepseek/deepseek-v3": "deepseek-chat",
+}
+
+
+def active_provider() -> ProviderName:
+    """The provider Hermes/engine resolves to by default."""
+    value = os.getenv("HERMES_PROVIDER", "openrouter").strip().lower()
+    if value not in PROVIDER_BASE_URLS:
+        return "openrouter"
+    return value  # type: ignore[return-value]
+
+
+def fallback_provider() -> ProviderName:
+    value = os.getenv("HERMES_FALLBACK_PROVIDER", "openrouter").strip().lower()
+    if value not in PROVIDER_BASE_URLS:
+        return "openrouter"
+    return value  # type: ignore[return-value]
+
+
 class GearConfig(BaseModel):
     """Configuration for a single gear."""
     gear: Gear
     model_id: str
-    provider: Literal["openrouter"] = "openrouter"
+    provider: ProviderName = "openrouter"
     timeout: int = Field(default=120, ge=30, le=300)
     max_tokens: int = Field(default=4096, ge=256, le=32768)
     cost_per_1m_input: float = 0.0
     cost_per_1m_output: float = 0.0
     use_for: list[str] = []
     risk_level: str = "low"  # low, medium, high
+
+    def resolved_for(self, provider: ProviderName) -> "GearConfig":
+        """Return a copy with model_id / provider adjusted for the target provider."""
+        if provider == "direct_deepseek":
+            native = DIRECT_DEEPSEEK_MODEL_MAP.get(self.model_id)
+            if native is None:
+                # Not serviceable directly — caller should fall back.
+                return self.model_copy(update={"provider": "openrouter"})
+            cost_in = self.cost_per_1m_input
+            cost_out = self.cost_per_1m_output
+            # DeepSeek-direct is cheaper than OpenRouter mark-up.
+            if native == "deepseek-chat":
+                cost_in, cost_out = 0.014, 0.028
+            return self.model_copy(update={
+                "provider": "direct_deepseek",
+                "model_id": native,
+                "cost_per_1m_input": cost_in,
+                "cost_per_1m_output": cost_out,
+            })
+        return self.model_copy(update={"provider": "openrouter"})
 
 
 class TaskType(str, Enum):
@@ -124,19 +182,23 @@ class DealixEngine:
     }
 
     @classmethod
-    def get(cls, gear: Gear | None = None) -> GearConfig:
-        """Get config for a specific gear, or the active gear from env."""
+    def get(cls, gear: Gear | None = None, provider: ProviderName | None = None) -> GearConfig:
+        """Get config for a specific gear, optionally resolved for a provider."""
         if gear is None:
             active = int(os.getenv("ACTIVE_GEAR", "1"))
             gear_map = {1: Gear.DAILY, 2: Gear.POWER, 3: Gear.ARCHITECT}
             gear = gear_map.get(active, Gear.DAILY)
-        return cls._GEARS[gear]
+        base = cls._GEARS[gear]
+        target = provider or active_provider()
+        return base.resolved_for(target)
 
     @classmethod
-    def get_for_task(cls, task: TaskType) -> GearConfig:
-        """Smart gear selection based on task type."""
+    def get_for_task(cls, task: TaskType, provider: ProviderName | None = None) -> GearConfig:
+        """Smart gear selection based on task type, resolved for a provider."""
         gear = TASK_GEAR_MAP.get(task, Gear.DAILY)
-        return cls._GEARS[gear]
+        base = cls._GEARS[gear]
+        target = provider or active_provider()
+        return base.resolved_for(target)
 
     @classmethod
     def list_all(cls) -> dict:

@@ -97,3 +97,16 @@ If `moyasar.mode == "test"` AND the founder is asking to send a real proposal, r
 If `gmail.configured == false` AND a transactional email send is requested, surface the gap to founder: "Gmail OAuth not configured on Railway. Run the OAuth flow or `scripts/zatca_preflight.py` (which also verifies email reachability)."
 
 After the once-per-session check, proceed with the normal sales motion per `docs/sales-kit/WARM_LIST_WORKFLOW.md`.
+
+---
+
+## Hermes integration
+
+When spawned by Hermes you receive an envelope from
+`dealix/hermes/agents/sales_executor.py`. The orchestrator's governance
+gate already refuses cold-WhatsApp / LinkedIn / scraping at the door, but
+you still run the 8-question qualification flow and refuse anything that
+slipped through (e.g. a polite-sounding "blast" framed differently).
+Drafts only — never auto-send.
+
+Charter: `docs/institutional/HERMES_CHARTER.md`.
