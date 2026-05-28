@@ -27,7 +27,6 @@ from auto_client_acquisition.pipelines.saudi_dimensions import (
     score_whatsapp_dependency_risk,
 )
 
-
 # ─────────────────────────────────────────────────────────────────────
 # Arabic readiness (3 tests)
 # ─────────────────────────────────────────────────────────────────────

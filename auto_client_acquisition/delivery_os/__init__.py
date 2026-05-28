@@ -1,20 +1,20 @@
 """Delivery OS — repeatable service delivery phases (not the API delivery_os router)."""
 
-from auto_client_acquisition.delivery_os.delivery_checklist import (
-    checklist_for_phase,
-    delivery_checklist_flat,
-)
 from auto_client_acquisition.delivery_os.change_request import (
     ChangeRequest,
     ChangeRequestType,
     change_request_valid,
 )
 from auto_client_acquisition.delivery_os.control_tower import (
-    DeliveryRisk,
     REQUIRED_STAGE_GATES,
+    DeliveryRisk,
     compute_delivery_risk_score,
     delivery_risk_band,
     stage_gate_passes,
+)
+from auto_client_acquisition.delivery_os.delivery_checklist import (
+    checklist_for_phase,
+    delivery_checklist_flat,
 )
 from auto_client_acquisition.delivery_os.framework import (
     DEFAULT_PHASE_CHECKLISTS,
@@ -51,28 +51,28 @@ from auto_client_acquisition.delivery_os.service_readiness import (
 
 __all__ = [
     "DEFAULT_PHASE_CHECKLISTS",
-    "DeliveryPhase",
+    "REQUIRED_STAGE_GATES",
     "ChangeRequest",
     "ChangeRequestType",
+    "DeliveryPhase",
     "DeliveryRisk",
-    "REQUIRED_STAGE_GATES",
     "RetainerBacklogItem",
+    "change_request_valid",
     "check_readiness_gate",
     "checklist_for_phase",
     "classify_scope_change",
     "clear_retainer_backlog_for_tests",
+    "compute_delivery_risk_score",
     "compute_service_readiness_score",
-    "change_request_valid",
     "default_evidence_for",
     "default_handoff_template_path",
     "delivery_checklist_flat",
-    "compute_delivery_risk_score",
     "delivery_risk_band",
     "enqueue_retainer_backlog_item",
     "forbidden_capability_requested",
+    "list_retainer_backlog",
     "merge_evidence",
     "phases_in_order",
-    "list_retainer_backlog",
     "qa_delivery_score",
     "renewal_recommendation_snippet",
     "service_catalog_entries",

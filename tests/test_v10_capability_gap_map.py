@@ -6,7 +6,6 @@ from pathlib import Path
 
 import pytest
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 GAP_MAP = REPO_ROOT / "docs" / "v10" / "DEALIX_CAPABILITY_GAP_MAP.md"
 DECISION_RECORD = REPO_ROOT / "docs" / "v10" / "DEPENDENCY_DECISION_RECORD.md"

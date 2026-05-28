@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import Any
 
 from auto_client_acquisition.designops.generators.proposal_page import generate_proposal_page
-
 from dealix.commercial_ops.paths import REPO_ROOT
 from dealix.commercial_ops.targeting_csv import load_targets
 
@@ -105,7 +104,7 @@ def build_client_pack_from_row(row: dict[str, str], *, write_disk: bool = True) 
             f"2. Pain — {pain or '—'}",
             f"3. Segment — {segment} · Motion {row.get('motion', 'A')}",
             f"4. Offer — {label} ({price_band} SAR)",
-            f"5. Diagnostic scope — 14 days · founder manual send only",
+            "5. Diagnostic scope — 14 days · founder manual send only",
             "",
             f"Contact placeholder: {contact}",
             "Demo: /ar/business-now#strategy (simulate sector/city/budget)",

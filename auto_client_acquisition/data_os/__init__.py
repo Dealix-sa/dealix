@@ -36,11 +36,11 @@ from auto_client_acquisition.data_os.source_passport import (
 from auto_client_acquisition.data_os.validation_rules import validate_account_row, validate_rows
 
 __all__ = [
-    "DedupeHint",
     "DataQualityScore",
+    "DedupeHint",
+    "SourcePassport",
     "account_row_completeness",
     "column_name_suggests_pii",
-    "SourcePassport",
     "compute_dq",
     "duplicate_ratio_by_field",
     "governance_decision_hints_for_passport_gate",

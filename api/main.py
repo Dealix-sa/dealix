@@ -5,6 +5,14 @@ FastAPI application entry point.
 
 from __future__ import annotations
 
+# value_os, data_os and agent_os routers are imported defensively: an
+# optional router with a broken module-level import must not abort app
+# boot for every other endpoint. A skipped router is logged at
+# registration time with the full traceback so silent failures are
+# investigable. In development DEALIX_STRICT_OPTIONAL_ROUTERS=1 promotes
+# any skipped optional router to a startup error.
+import os as _os
+import traceback as _traceback
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -19,6 +27,63 @@ from api.middleware import (
     RequestIDMiddleware,
     SecurityHeadersMiddleware,
 )
+from api.routers import (
+    admin_tenants,
+    agent_mesh_os,
+    assurance_contract_os,
+    auth,
+    compliance_product,
+    compliance_status,
+    control_plane_os,
+    cost_tracking,
+    customer_usage,
+    customer_webhooks,
+    enterprise_pmo,
+    human_ai_os,
+    jobs,
+    nps,
+    org_graph_os,
+    pdpl,
+    pdpl_dsar,
+    referral_program,
+    revenue_metrics,
+    runtime_safety_os,
+    sandbox_os,
+    saudi_prospect_search,
+    sector_intel,
+    self_evolving_os,
+    service_setup,
+    simulation_os,
+    tenant_theming,
+    value_engine_os,
+    zatca,
+)
+from api.routers import audit_export as audit_export_router
+
+# Wave 13 — Full Ops Productization routers
+from api.routers import bottleneck_radar as bottleneck_radar_router
+from api.routers import business_metrics_board as business_metrics_board_router
+from api.routers import (
+    business_now as business_now_router,
+)
+from api.routers import customer_success_scores as customer_success_scores_router
+from api.routers import deliverables as deliverables_router
+
+# Wave 12.7 — Intelligence Layer + Expansion Engine routers
+from api.routers import expansion_engine as expansion_engine_router
+from api.routers import founder_dashboard as founder_dashboard_router
+
+# Wave 14 — Canonical Trust MVP + Retainer Engine (Phase 2)
+from api.routers import friction_log as friction_log_router
+from api.routers import integration_capability as integration_capability_router
+from api.routers import intelligence_layer as intelligence_layer_router
+from api.routers import service_catalog as service_catalog_router
+
+# 90-day commercial activation — Wave 14B
+from api.routers import sprint_runner as sprint_runner_router
+from api.routers import (
+    transformation_os as transformation_os_router,
+)
 
 # ── Domain router aggregators (replaces 80+ flat imports) ─────────
 from api.routers.domains import admin as admin_domain
@@ -29,84 +94,30 @@ from api.routers.domains import customers as customers_domain
 from api.routers.domains import deprecated as deprecated_domain
 from api.routers.domains import sales as sales_domain
 from api.routers.domains import webhooks as webhooks_domain
-from api.routers import (
-    business_now as business_now_router,
-    transformation_os as transformation_os_router,
-    admin_tenants,
-    agent_mesh_os,
-    assurance_contract_os,
-    auth,
-    control_plane_os,
-    compliance_status,
-    compliance_product,
-    cost_tracking,
-    customer_usage,
-    customer_webhooks,
-    enterprise_pmo,
-    jobs,
-    nps,
-    pdpl,
-    pdpl_dsar,
-    referral_program,
-    revenue_metrics,
-    runtime_safety_os,
-    saudi_prospect_search,
-    sandbox_os,
-    self_evolving_os,
-    sector_intel,
-    service_setup,
-    simulation_os,
-    tenant_theming,
-    human_ai_os,
-    org_graph_os,
-    value_engine_os,
-    zatca,
-)
-# Wave 12.7 — Intelligence Layer + Expansion Engine routers
-from api.routers import expansion_engine as expansion_engine_router
-from api.routers import intelligence_layer as intelligence_layer_router
-# Wave 13 — Full Ops Productization routers
-from api.routers import bottleneck_radar as bottleneck_radar_router
-from api.routers import business_metrics_board as business_metrics_board_router
-from api.routers import customer_success_scores as customer_success_scores_router
-from api.routers import deliverables as deliverables_router
-from api.routers import integration_capability as integration_capability_router
-from api.routers import service_catalog as service_catalog_router
-# Wave 14 — Canonical Trust MVP + Retainer Engine (Phase 2)
-from api.routers import friction_log as friction_log_router
-# 90-day commercial activation — Wave 14B
-from api.routers import sprint_runner as sprint_runner_router
-from api.routers import founder_dashboard as founder_dashboard_router
-from api.routers import audit_export as audit_export_router
 
-# value_os, data_os and agent_os routers are imported defensively: an
-# optional router with a broken module-level import must not abort app
-# boot for every other endpoint. A skipped router is logged at
-# registration time.
 _OPTIONAL_ROUTER_ERRORS: dict[str, str] = {}
 
-try:
-    from api.routers import value_os as value_os_router
-except Exception as _exc:  # noqa: BLE001
-    value_os_router = None
-    _OPTIONAL_ROUTER_ERRORS["value_os"] = repr(_exc)
 
-try:
-    from api.routers import data_os as data_os_router
-except Exception as _exc:  # noqa: BLE001
-    data_os_router = None
-    _OPTIONAL_ROUTER_ERRORS["data_os"] = repr(_exc)
+def _import_optional_router(name: str, module_path: str):
+    try:
+        return __import__(module_path, fromlist=[name])
+    except Exception as exc:
+        _OPTIONAL_ROUTER_ERRORS[name] = (
+            f"{type(exc).__name__}: {exc}\n{_traceback.format_exc()}"
+        )
+        return None
 
+
+value_os_router = _import_optional_router("value_os", "api.routers.value_os")
+data_os_router = _import_optional_router("data_os", "api.routers.data_os")
 # Wave 14F — Agent OS
-try:
-    from api.routers import agent_os as agent_os_router
-except Exception as _exc:  # noqa: BLE001
-    agent_os_router = None
-    _OPTIONAL_ROUTER_ERRORS["agent_os"] = repr(_exc)
+agent_os_router = _import_optional_router("agent_os", "api.routers.agent_os")
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
 from api.routers import commercial_map as commercial_map_router
+
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
+
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
 from api.security import APIKeyMiddleware, setup_rate_limit
@@ -115,7 +126,7 @@ from core.errors import AICompanyError
 from core.logging import configure_logging, get_logger
 
 
-def _validate_production_secrets(settings: "Settings") -> None:  # type: ignore[name-defined]
+def _validate_production_secrets(settings: Settings) -> None:  # type: ignore[name-defined]
     """
     Fail fast if production is started with insecure defaults.
     يرفض تشغيل الإنتاج بإعدادات غير آمنة.
@@ -342,8 +353,21 @@ def create_app() -> FastAPI:
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)
+    _strict_optional = _os.getenv("DEALIX_STRICT_OPTIONAL_ROUTERS", "").lower() in (
+        "1", "true", "yes",
+    )
     for _name, _err in _OPTIONAL_ROUTER_ERRORS.items():
-        get_logger(__name__).warning("optional_router_skipped", router=_name, error=_err)
+        get_logger(__name__).error(
+            "optional_router_skipped",
+            router=_name,
+            error=_err,
+            hint="Set DEALIX_STRICT_OPTIONAL_ROUTERS=1 in dev to fail fast.",
+        )
+        if _strict_optional:
+            raise RuntimeError(
+                f"Optional router '{_name}' failed to import and "
+                f"DEALIX_STRICT_OPTIONAL_ROUTERS=1.\n{_err}"
+            )
     # Wave 14J — Commercial wiring map (public)
     app.include_router(commercial_map_router.router)
     # Wave 15 — Founder launch-status (admin /launch-status + public /launch-status/public)
