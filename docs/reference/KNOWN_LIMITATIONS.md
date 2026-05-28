@@ -49,6 +49,11 @@
 
 **قاعدة:** لا تفعّل live-send flag بدون approval workflow كامل + audit chain.
 
+**جديد بـ phase 3 (claude/real-launch-fleet-cockpit):**
+- `email_allow_live_send` (default False) — يحرس invite + reset emails.
+- `DEALIX_STRICT_OPTIONAL_ROUTERS` (default False، dev=True) — يكسر boot لو optional router فشل بصمت.
+- Daily KPI snapshot workflow + weekly scorecard workflow كلاهما read-only، يكتبان لـ artifacts لا للـ repo.
+
 ---
 
 ## 4) Integrations في حالة "configured-but-gated"
