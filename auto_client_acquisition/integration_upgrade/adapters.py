@@ -6,19 +6,21 @@ Never raises. Never leaks stacktrace to caller.
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import Any
+from typing import Any, TypeVar
 
 from auto_client_acquisition.integration_upgrade.degraded import degraded_section
+
+T = TypeVar("T")
 
 
 def safe_call(
     *,
     name: str,
-    fn: Callable[[], Any],
-    fallback: Any = None,
+    fn: Callable[[], T],
+    fallback: T | None = None,
     reason_ar_template: str = "{name} غير متاح حاليًا.",
     reason_en_template: str = "{name} is currently unavailable.",
-) -> Any:
+) -> T | dict[str, Any]:
     """Run fn() and return its result; on exception return fallback or
     a degraded_section dict.
 

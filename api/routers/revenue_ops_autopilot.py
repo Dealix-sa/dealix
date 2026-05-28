@@ -630,7 +630,7 @@ async def ops_marketing_social_today() -> dict[str, Any]:
 @router_ops.get("/marketing/objection-draft")
 async def ops_marketing_objection_draft(slug: str = Query(..., min_length=2, max_length=80)) -> dict[str, Any]:
     """Template draft from objection_engine_registry.yaml (no LLM)."""
-    import yaml
+    import yaml  # type: ignore[import-untyped]
 
     path = (
         Path(__file__).resolve().parents[2]
@@ -903,7 +903,7 @@ async def ops_war_room_patch(lead_id: str, body: WarRoomPatchPayload) -> dict[st
     store.upsert_lead(nl)
 
     if body.war_room_status and body.war_room_status != prev_status:
-        ev_type = CRITICAL_OUTREACH_EVENTS.get(body.war_room_status)  # type: ignore[arg-type]
+        ev_type = CRITICAL_OUTREACH_EVENTS.get(body.war_room_status)  # type: ignore[call-overload]
         if ev_type:
             append_evidence_event(
                 event_type=ev_type,
@@ -1190,8 +1190,9 @@ async def ops_founder_strongest_ops(
         build_strongest_ops_snapshot,
     )
 
+    from typing import cast
     allowed: tuple[CadenceMode, ...] = ("morning", "evening", "weekly", "full")
-    m: CadenceMode = mode if mode in allowed else "morning"
+    m: CadenceMode = cast(CadenceMode, mode) if mode in allowed else "morning"
     return build_strongest_ops_snapshot(mode=m, run_checks=run_checks)
 
 
@@ -1210,9 +1211,10 @@ async def ops_founder_strongest_ops_run(
     """Run strongest-plan autonomous brief + checks (no external send)."""
     from dealix.commercial_ops.founder_strongest_ops import CadenceMode, run_strongest_ops
 
+    from typing import cast
     req = body or FounderStrongestOpsRunBody()
     allowed: tuple[CadenceMode, ...] = ("morning", "evening", "weekly", "full")
-    m: CadenceMode = req.mode if req.mode in allowed else "morning"
+    m: CadenceMode = cast(CadenceMode, req.mode) if req.mode in allowed else "morning"
     return run_strongest_ops(mode=m, run_checks=req.run_checks, write_brief=req.write_brief)
 
 
