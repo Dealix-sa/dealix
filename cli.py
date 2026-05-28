@@ -161,6 +161,41 @@ def demo() -> None:
 
 
 @app.command()
+def cockpit() -> None:
+    """Print the founder cockpit JSON (7-panel daily view).
+
+    Composes the same panels as GET /api/v1/founder/dashboard/cockpit
+    but runs in-process so the founder can read it offline / over SSH.
+    """
+    import json as _json
+
+    from api.routers.founder_dashboard import (
+        _agent_runs_24h,
+        _friction_last_7d,
+        _mrr_current,
+        _next_action,
+        _pending_approvals,
+        _revenue_today,
+        _subscription_summary,
+    )
+
+    friction = _friction_last_7d()
+    payload = {
+        "revenue_today": _revenue_today(),
+        "mrr_current": _mrr_current(),
+        "pending_approvals": _pending_approvals(),
+        "friction_top_7d": friction.get("top_signals", [])[:5]
+        if isinstance(friction, dict)
+        else [],
+        "agent_runs_24h": _agent_runs_24h(),
+        "subscription_summary": _subscription_summary(),
+        "next_action_today": _next_action(),
+        "is_estimate": True,
+    }
+    console.print(_json.dumps(payload, indent=2, ensure_ascii=False))
+
+
+@app.command()
 def menu() -> None:
     """Interactive menu (Arabic + English)."""
     _banner()

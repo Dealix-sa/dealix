@@ -84,6 +84,12 @@ jobs:
       - name: Compile check
         run: python -m compileall api auto_client_acquisition autonomous_growth core db integrations dealix scripts
 
+      - name: Doctrine compliance gate (11 non-negotiables)
+        run: pytest tests/test_doctrine_guardrails.py -q --no-cov
+
+      - name: Optional routers smoke (defensive imports)
+        run: python scripts/check_optional_routers.py
+
       - name: OpenAPI contract check
         run: python scripts/check_openapi_contract.py
 
