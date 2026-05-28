@@ -66,8 +66,8 @@ def _try_pandoc(md: str, title: str) -> bytes | None:
             fp_in.write(md)
             md_path = Path(fp_in.name)
         out_path = md_path.with_suffix(".pdf")
-        proc = subprocess.run(
-            [
+        proc = subprocess.run(  # noqa: S603 — pandoc args from controlled templates
+            [  # noqa: S607 — PATH-resolved trusted tool
                 "pandoc",
                 str(md_path),
                 "-o",

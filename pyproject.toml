@@ -143,8 +143,13 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101", "S106", "S311"]
-"scripts/**/*.py" = ["S101"]
+# S101  assert  — pytest uses asserts; tests pinky-promise on inputs
+# S106  hard-coded passwords — test fixtures only
+# S311  random() — non-crypto use in test data generation
+# S603  subprocess without shell=True — internal trusted commands
+# S607  partial executable path — git/bash/pandoc are PATH-resolved trusted tools
+"tests/**/*.py" = ["S101", "S106", "S311", "S603", "S607"]
+"scripts/**/*.py" = ["S101", "S603", "S607"]
 
 [tool.bandit]
 # B104 hardcoded 0.0.0.0 bind — intentional for containerized deploy (documented in settings.py)

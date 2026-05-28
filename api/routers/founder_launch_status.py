@@ -124,7 +124,7 @@ def _git_status() -> dict[str, Any]:
     out["git_sha"] = git_sha
     try:
         proc = subprocess.run(
-            ["git", "log", "--oneline", "-5"],
+            ["git", "log", "--oneline", "-5"],  # noqa: S607 — PATH-resolved trusted tool
             check=False, capture_output=True, text=True, timeout=5,
         )
         if proc.returncode == 0:

@@ -37,7 +37,7 @@ def _run_subprocess(
     t0 = time.monotonic()
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", "APP_ENV": os.environ.get("APP_ENV", "test")}
     try:
-        proc = subprocess.run(
+        proc = subprocess.run(  # noqa: S603 — cmd built from internal script list
             cmd,
             cwd=str(REPO_ROOT),
             env=env,
