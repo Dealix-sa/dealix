@@ -79,10 +79,10 @@ curl -fs localhost:8000/health || echo "API down — investigate"
 
 هذه ليست عاجلة، نفّذها لما يكون فيه نَفَس. كلها موثقة في `KNOWN_LIMITATIONS.md`:
 
-1. **Frontend duplication:** `frontend/` (قديم) + `apps/web/` (الحالي) + `dealix-1.worktrees/` (stub). أرشف `frontend/` و `dealix-1.worktrees/` لما يتأكد ولا واحد ينتظر منهم. الكاننوني: `apps/web/`.
-2. **Docs sprawl:** 16 ملف .md في الجذر + 223 مجلد `docs/`. ابدأ بـ `docs/INDEX.md` (تم) ثم انقل التوثيق التشغيلي إلى مجلداته.
+1. **Frontend split (مقصود):** `frontend/` = customer UI (i18n، landing، checkout، portal، login، register، dashboard، offer). `apps/web/` = enterprise admin UI (control plane، agents، sandbox، safety، self-evolving). كلاهما كاننوني ومبني في CI. لا تحذفهما.
+2. **Docs sprawl:** 16 ملف .md في الجذر + 428 مجلد `docs/`. تم تنظيف: `dealix-v2/`, `dashboard/`, `migrations/`, `dealix-1.worktrees/` محذوفة. باقي 11 ملف .md ينقلون لـ `docs/{category}/`.
 3. **Integrations behind feature flags:** WhatsApp/Email/HubSpot لها doctrine gate `whatsapp_allow_live_send` (احترام no_live_send). لو احتجت إرسال حقيقي → اقرأ `docs/ops/LEAD_MACHINE_TOOLING.md` وفعّل الـ flag بعد approval workflow.
-4. **Migrations directories:** `alembic/` (env فقط) + `db/migrations/versions/` (المصدر) + `migrations/` (غير مستخدم) + `supabase/`. وحّد إلى `db/migrations/` (الكاننوني حسب `alembic.ini`).
+4. **Migrations:** `db/migrations/versions/` هو المصدر الوحيد (alembic.ini يشير له فقط). `supabase/migrations/` منفصل لـ Supabase project (لا تخلطه). `alembic/` يحوي env فقط.
 5. **Coverage gate:** الآن 70%. الهدف 80% خلال شهر.
 
 ---

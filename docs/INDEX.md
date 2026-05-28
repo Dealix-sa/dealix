@@ -107,6 +107,7 @@
 - **ترقيم متضارب** (01_category vs 01_category_creation, 16_agents vs 16_capital): مقصود — كل فرع موضوعي رقمه الخاص ضمن باب أكبر. التفاصيل في `DEALIX_MASTER_LAYERS_MAP.md`.
 - **428 مجلد** = طبقة "Constitution" غنية. عادة الفاوندر يعمل مع 6-12 ملف فقط (انظر top-20 فوق).
 - **لا تنقل ملفات** بدون تحديث `DEALIX_MASTER_EXECUTION_MATRIX.md`.
+- **Frontend canonical:** `frontend/` (customer UI) + `apps/web/` (enterprise admin) كلاهما رسمي. لا تخلط.
 
 ---
 

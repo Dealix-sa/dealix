@@ -84,16 +84,23 @@ make run  # يفشل startup لو أي optional router عنده خطأ
 
 ---
 
-## 6) Duplication Cleanup (مؤجل، ليس عاجل)
+## 6) Duplication Cleanup (تم — لا duplicates متبقية)
 
-| العنصر | الحالة | القرار المقترح |
-|--------|--------|---------------|
-| `frontend/` | React قديم | أرشف لـ `archive/legacy-frontend/` بعد تأكيد ولا workflow ينتظره |
-| `dealix-1.worktrees/` | git worktree stub (8K) | احذف |
-| `migrations/` | مجلد فاضي | احذف (المصدر `db/migrations/`) |
-| `dealix-v2/` | غير واضح active | فحص الـ CI workflows أولاً |
+تم حذف 4 directories مكررة/مهجورة:
 
-أنظر `FOUNDER_NEXT_STEPS.md §6` للسياق.
+| العنصر | الحجم | السبب |
+|--------|------|------|
+| `dealix-v2/` | 60K | parallel Python rewrite، صفر imports |
+| `dashboard/` | minor | Streamlit stub، صفر workflow refs |
+| `migrations/` | 8 ملفات | reference DDLs مكررة من `db/migrations/` |
+| `dealix-1.worktrees/` | 8K | empty worktree scaffolding |
+| `DASHBOARD.md` | root | orphan doc لـ dashboard المحذوف |
+
+**ابقاء (مقصود):**
+- `frontend/` = customer-facing Next.js (i18n، login، offer، portal، checkout)
+- `apps/web/` = enterprise admin UI (control plane، agents، sandbox، safety)
+
+كلاهما مبني في `.github/workflows/ci.yml` و CODEOWNERS و railway_deploy_frontend.yml.
 
 ---
 
