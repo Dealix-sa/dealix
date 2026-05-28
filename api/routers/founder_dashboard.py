@@ -237,6 +237,13 @@ async def founder_cockpit() -> dict[str, Any]:
     Admin-key gated.
     """
     friction = _friction_last_7d()
+    try:
+        from auto_client_acquisition.friction_log.redline_alerts import (
+            compute_redline_alerts,
+        )
+        alerts = [a.to_dict() for a in compute_redline_alerts()]
+    except Exception:
+        alerts = []
     return {
         "generated_at": datetime.now(UTC).isoformat(),
         "revenue_today": _revenue_today(),
@@ -246,6 +253,7 @@ async def founder_cockpit() -> dict[str, Any]:
         "agent_runs_24h": _agent_runs_24h(),
         "subscription_summary": _subscription_summary(),
         "next_action_today": _next_action(),
+        "red_lines": alerts,
         "is_estimate": True,
         "doctrine_note": "Drafts only. No autonomous sends. Founder approves all outbound.",
     }
