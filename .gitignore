@@ -47,6 +47,13 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# The Python build rules above (lib/, lib64/, parts/, ...) are unanchored and
+# would otherwise swallow the Next.js TypeScript source libs. Keep those tracked.
+!frontend/src/lib/
+!frontend/src/lib/**
+!apps/web/src/lib/
+!apps/web/src/lib/**
 MANIFEST
 
 # Virtual environments
