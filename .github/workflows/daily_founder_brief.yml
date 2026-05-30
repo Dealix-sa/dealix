@@ -1,0 +1,130 @@
+name: Daily Founder Brief (6 AM Riyadh)
+
+on:
+  schedule:
+    # 3:00 AM UTC = 6:00 AM Riyadh (UTC+3)
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: "Enable debug output"
+        required: false
+        default: "false"
+
+jobs:
+  daily-brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch daily brief from API
+        id: brief
+        run: |
+          API_URL="${{ vars.API_URL || 'https://api.dealix.me' }}"
+          echo "Fetching daily brief from $API_URL"
+
+          RESPONSE=$(curl -sf \
+            -H "X-API-Key: ${{ secrets.DEALIX_ADMIN_API_KEY }}" \
+            "$API_URL/api/v1/commercial/daily-brief" 2>&1) || RESPONSE='{}'
+
+          echo "brief_json<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$RESPONSE" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          # Also get KPI snapshot
+          KPI=$(curl -sf \
+            -H "X-API-Key: ${{ secrets.DEALIX_ADMIN_API_KEY }}" \
+            "$API_URL/api/v1/transformation/kpi-snapshot" 2>&1) || KPI='{}'
+
+          echo "kpi_json<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$KPI" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Generate markdown brief
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          RIYADH_TIME=$(TZ=Asia/Riyadh date +"%Y-%m-%d %H:%M")
+
+          mkdir -p docs/daily-briefs
+
+          cat > "docs/daily-briefs/$TODAY.md" << 'BRIEF_EOF'
+          # تقرير الفاوندر اليومي — $RIYADH_TIME (الرياض)
+
+          ## الحالة العامة
+          BRIEF_EOF
+
+          # Parse JSON if jq available
+          if command -v jq &> /dev/null; then
+            DIAGNOSTICS=$(echo '${{ steps.brief.outputs.brief_json }}' | jq -r '.diagnostics_total // 0' 2>/dev/null || echo "0")
+            PILOTS=$(echo '${{ steps.brief.outputs.brief_json }}' | jq -r '.pilots_active // 0' 2>/dev/null || echo "0")
+            PENDING=$(echo '${{ steps.brief.outputs.brief_json }}' | jq -r '.warm_intros_pending // 0' 2>/dev/null || echo "0")
+            PACKS=$(echo '${{ steps.brief.outputs.brief_json }}' | jq -r '.proof_packs_built // 0' 2>/dev/null || echo "0")
+          else
+            DIAGNOSTICS=0; PILOTS=0; PENDING=0; PACKS=0
+          fi
+
+          cat > "docs/daily-briefs/$TODAY.md" << EOF
+          # تقرير الفاوندر اليومي — $RIYADH_TIME (الرياض)
+
+          > تاريخ: $TODAY | وقت: $RIYADH_TIME
+
+          ## الإحصائيات اليوم
+
+          | المؤشر | القيمة |
+          |--------|--------|
+          | التشخيصات المُنجزة | $DIAGNOSTICS |
+          | البرامج التجريبية النشطة | $PILOTS |
+          | رسائل ترحيبية معلّقة | $PENDING |
+          | أطقم الإثبات المبنية | $PACKS |
+
+          ## أولويات اليوم
+
+          EOF
+
+          # Add actions from API
+          echo '${{ steps.brief.outputs.brief_json }}' | python3 -c "
+          import json, sys
+          try:
+              data = json.load(sys.stdin)
+              actions = data.get('top_actions', [])
+              for i, a in enumerate(actions, 1):
+                  print(f\"{i}. {a.get('action_ar', '')}\")
+          except:
+              print('1. أرسل أول warm intro واجرِ أول تشخيص مجاني اليوم')
+              print('2. تابع البرامج التجريبية النشطة')
+          " >> "docs/daily-briefs/$TODAY.md" 2>/dev/null || true
+
+          cat >> "docs/daily-briefs/$TODAY.md" << EOF
+
+          ## روابط سريعة
+
+          - [واجهة المشغّل](/dealix-diagnostic) — تقديم تشخيص جديد
+          - [API Docs](https://api.dealix.me/docs) — استكشاف الـ API
+          - [مخطط الإيراد](docs/revenue/) — تتبع الإيراد
+
+          ---
+          *تقرير آلي — Dealix Revenue Machine*
+          EOF
+
+          echo "Brief generated: docs/daily-briefs/$TODAY.md"
+          cat "docs/daily-briefs/$TODAY.md"
+
+      - name: Commit brief
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          git config user.name "Dealix Revenue Bot"
+          git config user.email "bot@dealix.me"
+          git add "docs/daily-briefs/$TODAY.md"
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: daily founder brief $TODAY"
+            git push origin HEAD
+          fi

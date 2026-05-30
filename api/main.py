@@ -386,6 +386,15 @@ def create_app() -> FastAPI:
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
 
+    # Commercial Engine — Revenue delivery endpoints /api/v1/commercial/*
+    try:
+        from api.routers.commercial import router as commercial_router
+        app.include_router(commercial_router)
+    except Exception as _ce:
+        import traceback as _tb
+        _tb.print_exc()
+        _logger.warning("commercial router skipped: %s", _ce)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

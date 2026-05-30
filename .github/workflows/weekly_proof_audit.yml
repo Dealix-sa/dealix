@@ -1,0 +1,172 @@
+name: Weekly Proof Audit (Thursday 11 PM Riyadh)
+
+on:
+  schedule:
+    # Thursday 20:00 UTC = Thursday 23:00 Riyadh
+    - cron: "0 20 * * 4"
+  workflow_dispatch:
+
+jobs:
+  proof-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run proof audit
+        run: |
+          WEEK=$(date +%Y-W%V)
+          TODAY=$(date +%Y-%m-%d)
+          RIYADH=$(TZ=Asia/Riyadh date +'%Y-%m-%d %H:%M')
+
+          mkdir -p docs/proof-audits
+
+          python3 - << PYEOF
+          import json, os, glob
+          from datetime import datetime
+
+          week = "$WEEK"
+          today = "$TODAY"
+
+          # Count diagnostics
+          diag_count = 0
+          diag_companies = []
+          if os.path.exists("data/proofs/diagnostics.jsonl"):
+              with open("data/proofs/diagnostics.jsonl") as f:
+                  for line in f:
+                      if line.strip():
+                          try:
+                              d = json.loads(line)
+                              diag_count += 1
+                              diag_companies.append(d.get("company_name", ""))
+                          except:
+                              pass
+
+          # Count pilots
+          pilots = []
+          if os.path.exists("data/pilots"):
+              for f in glob.glob("data/pilots/*.json"):
+                  try:
+                      with open(f) as fp:
+                          pilots.append(json.load(fp))
+                  except:
+                      pass
+
+          # Count proof packs
+          packs = []
+          if os.path.exists("data/proof-packs"):
+              for f in glob.glob("data/proof-packs/*.json"):
+                  if not f.endswith("_ar.md"):
+                      try:
+                          with open(f) as fp:
+                              packs.append(json.load(fp))
+                      except:
+                          pass
+
+          # Count upsell opportunities
+          upsell = []
+          if os.path.exists("data/upsell"):
+              for f in glob.glob("data/upsell/*.json"):
+                  try:
+                      with open(f) as fp:
+                          upsell.append(json.load(fp))
+                  except:
+                      pass
+
+          case_study_eligible = [p for p in packs if p.get("can_use_as_case_study")]
+
+          # Determine revenue state
+          if len(pilots) == 0:
+              phase = "PHASE_0_NO_PILOTS"
+              revenue_sar = 0
+          elif len(packs) == 0:
+              phase = "PHASE_1_PILOTS_NO_PROOF"
+              revenue_sar = len(pilots) * 499
+          elif len([p for p in packs if p.get("evidence_level", 0) >= 3]) >= 2:
+              phase = "PHASE_3_MANAGED_OPS_ELIGIBLE"
+              revenue_sar = len(pilots) * 499
+          else:
+              phase = "PHASE_2_PROOF_BUILDING"
+              revenue_sar = len(pilots) * 499
+
+          report = {
+              "week": week,
+              "date": today,
+              "phase": phase,
+              "metrics": {
+                  "diagnostics_total": diag_count,
+                  "pilots_total": len(pilots),
+                  "proof_packs_total": len(packs),
+                  "case_study_eligible": len(case_study_eligible),
+                  "revenue_sar": revenue_sar,
+                  "upsell_opportunities": len(upsell),
+              },
+              "companies_diagnosed": diag_companies,
+              "pilot_companies": [p.get("company_name") for p in pilots],
+              "gate_status": {
+                  "s1_pilot_eligible": diag_count >= 0,
+                  "s2_data_pack_eligible": len(pilots) >= 1 and len(packs) >= 1,
+                  "s3_managed_ops_eligible": len(pilots) >= 1 and len(packs) >= 1,
+                  "s4_executive_eligible": len(pilots) >= 3 and len(packs) >= 5,
+              },
+              "actions": [],
+          }
+
+          # Generate action items
+          if diag_count == 0:
+              report["actions"].append("🔴 أولوية قصوى: أرسل أول warm intro وأجرِ أول تشخيص مجاني")
+          if len(pilots) == 0 and diag_count > 0:
+              report["actions"].append("🟡 حوّل التشخيصات إلى برامج تجريبية مدفوعة (499 ريال)")
+          if len(pilots) > 0 and len(packs) == 0:
+              report["actions"].append("🟡 أكمل توثيق حدث الإثبات وأنشئ أول طقم إثبات")
+          if len(packs) >= 1 and len(case_study_eligible) == 0:
+              report["actions"].append("🟢 اطلب موافقة العملاء لاستخدام قصص نجاحهم")
+          if len(pilots) >= 1:
+              report["actions"].append(f"🟢 قابل العملاء لعرض الاستمرار في Managed Ops (2,999 ريال/شهر)")
+
+          with open(f"docs/proof-audits/{week}.json", "w") as f:
+              json.dump(report, f, ensure_ascii=False, indent=2)
+
+          # Generate markdown report
+          with open(f"docs/proof-audits/{week}.md", "w") as f:
+              f.write(f"# تقرير الإثبات الأسبوعي — {week}\n\n")
+              f.write(f"> التاريخ: {today} | المرحلة: {phase}\n\n")
+              f.write("## الإحصائيات\n\n")
+              f.write("| المؤشر | القيمة |\n|--------|--------|\n")
+              for k, v in report["metrics"].items():
+                  f.write(f"| {k} | {v} |\n")
+              f.write("\n## الإجراءات المطلوبة\n\n")
+              for action in report["actions"]:
+                  f.write(f"- {action}\n")
+              f.write("\n## حالة بوابات الانتقال\n\n")
+              for gate, status in report["gate_status"].items():
+                  emoji = "✅" if status else "⛔"
+                  f.write(f"- {emoji} {gate}: {'مفتوح' if status else 'مغلق'}\n")
+
+          print(f"Proof audit saved: docs/proof-audits/{week}.md")
+          print(json.dumps(report["metrics"], ensure_ascii=False, indent=2))
+          PYEOF
+
+      - name: Commit audit
+        run: |
+          WEEK=$(date +%Y-W%V)
+          git config user.name "Dealix Revenue Bot"
+          git config user.email "bot@dealix.me"
+          git add docs/proof-audits/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: weekly proof audit $WEEK"
+            git push origin HEAD
+          fi

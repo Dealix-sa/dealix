@@ -1,0 +1,110 @@
+name: Daily Revenue Snapshot (10 PM Riyadh)
+
+on:
+  schedule:
+    # 19:00 UTC = 22:00 Riyadh (UTC+3)
+    - cron: "0 19 * * *"
+  workflow_dispatch:
+
+jobs:
+  revenue-snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch KPI snapshot
+        id: kpi
+        run: |
+          API_URL="${{ vars.API_URL || 'https://api.dealix.me' }}"
+
+          KPI=$(curl -sf \
+            -H "X-API-Key: ${{ secrets.DEALIX_ADMIN_API_KEY }}" \
+            "$API_URL/api/v1/transformation/kpi-snapshot" 2>&1) || KPI='{}'
+
+          BRIEF=$(curl -sf \
+            -H "X-API-Key: ${{ secrets.DEALIX_ADMIN_API_KEY }}" \
+            "$API_URL/api/v1/commercial/daily-brief" 2>&1) || BRIEF='{}'
+
+          echo "kpi_json<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$KPI" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          echo "brief_json<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$BRIEF" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Save revenue snapshot
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          mkdir -p docs/revenue
+
+          cat > "docs/revenue/$TODAY-snapshot.json" << EOF
+          {
+            "date": "$TODAY",
+            "snapshot_time": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "riyadh_time": "$(TZ=Asia/Riyadh date +'%Y-%m-%d %H:%M')",
+            "kpi": ${{ steps.kpi.outputs.kpi_json }},
+            "brief": ${{ steps.kpi.outputs.brief_json }}
+          }
+          EOF
+
+          # Generate weekly rollup on Thursday (KSA weekend eve)
+          WEEKDAY=$(date +%u)
+          if [ "$WEEKDAY" = "4" ]; then
+            WEEK=$(date +%Y-W%V)
+            mkdir -p docs/revenue/weekly
+
+            python3 - << 'PYEOF'
+          import json, os, glob
+          from datetime import datetime, timedelta
+
+          today = datetime.now()
+          week_files = []
+          for i in range(7):
+              d = (today - timedelta(days=i)).strftime("%Y-%m-%d")
+              f = f"docs/revenue/{d}-snapshot.json"
+              if os.path.exists(f):
+                  week_files.append(f)
+
+          week_data = []
+          for f in week_files:
+              try:
+                  with open(f) as fp:
+                      week_data.append(json.load(fp))
+              except:
+                  pass
+
+          week_num = today.strftime("%Y-W%V")
+          rollup = {
+              "week": week_num,
+              "days": len(week_data),
+              "summary": "Weekly revenue rollup",
+              "snapshots": week_data,
+          }
+
+          with open(f"docs/revenue/weekly/{week_num}.json", "w") as fp:
+              json.dump(rollup, fp, ensure_ascii=False, indent=2)
+
+          print(f"Weekly rollup saved: {week_num}")
+          PYEOF
+          fi
+
+      - name: Commit snapshot
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          git config user.name "Dealix Revenue Bot"
+          git config user.email "bot@dealix.me"
+          git add docs/revenue/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: revenue snapshot $TODAY"
+            git push origin HEAD
+          fi
