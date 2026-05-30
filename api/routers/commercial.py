@@ -1,412 +1,291 @@
-"""
-Commercial Engine API Router — Revenue delivery endpoints.
-راوتر ماكينة التجارة — نقاط نهاية تسليم الإيراد.
+"""Commercial Chain Router — Wave 15.
 
-Endpoints:
-  POST /api/v1/commercial/diagnostic/generate
-  GET  /api/v1/commercial/diagnostic/{report_id}
-  POST /api/v1/commercial/warm-intro/draft
-  POST /api/v1/commercial/pilot/start
-  GET  /api/v1/commercial/pilot/{pilot_id}/brief
-  GET  /api/v1/commercial/pilot/{pilot_id}/plan
-  POST /api/v1/commercial/proof/build
-  POST /api/v1/commercial/upsell/evaluate
-  GET  /api/v1/commercial/daily-brief
+Aggregates the complete Dealix commercial chain:
+  Diagnostic → Warm Intro → Pilot → Proof → Payment → Upsell
 
-All write operations are approval-only (NO_LIVE_SEND / NO_LIVE_CHARGE enforced).
+All endpoints are admin-gated (X-API-Key). All write operations return
+approval_status: "approval_required" — nothing auto-sends or auto-charges.
+
+Prefix: /api/v1/commercial
 """
 
 from __future__ import annotations
 
 import logging
-import uuid
+import os
+from datetime import UTC, datetime
 from typing import Any
 
-import json
-import os
-import re
+from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi.responses import PlainTextResponse
 
-from fastapi import APIRouter, Body, HTTPException
+from dealix.commercial.diagnostic_engine import DiagnosticEngine, DiagnosticRequest
+from dealix.commercial.warm_intro_generator import WarmIntroGenerator, WarmIntroRequest
+from dealix.commercial.pilot_delivery import PilotDeliveryKit, PilotStartRequest
+from dealix.commercial.proof_builder import ProofBuildRequest, ProofBuilder
+from dealix.commercial.upsell_engine import UpsellEngine
+from dealix.commercial.case_study_generator import CaseStudyGenerator, CaseStudyRequest
+from dealix.payments.payment_link import (
+    PaymentLinkRequest,
+    SERVICE_TIERS,
+    create_payment_link,
+)
 
 log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/commercial", tags=["commercial"])
 
-_ID_RE = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
-# Absolute path to pilots data dir — resolved once at import so realpath checks are reliable
-_PILOTS_DIR = os.path.realpath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "data", "pilots")
-)
+_ADMIN_KEY = os.getenv("DEALIX_ADMIN_API_KEY", "")
 
 
-def _safe_id(value: str) -> str | None:
-    """Validate and sanitize a user-provided ID for use in file paths.
-    Returns None if value contains characters outside [a-zA-Z0-9_-].
-    """
-    if not _ID_RE.match(value):
-        return None
-    # os.path.basename is a CodeQL-recognized path-traversal sanitizer
-    return os.path.basename(value)
+def _require_admin(x_api_key: str = Header(default="")) -> None:
+    if not _ADMIN_KEY:
+        return  # dev mode — no key configured
+    if x_api_key != _ADMIN_KEY:
+        raise HTTPException(status_code=401, detail="Invalid API key")
 
 
-_CONSTITUTIONAL_GATES = {
-    "no_live_send": True,
-    "no_live_charge": True,
-    "no_fake_proof": True,
-    "approval_required_for_all_drafts": True,
-}
+# ---------------------------------------------------------------------------
+# Diagnostic endpoints
+# ---------------------------------------------------------------------------
 
-
-# ── Diagnostic ────────────────────────────────────────────────────
 
 @router.post("/diagnostic/generate")
-async def generate_diagnostic(payload: dict[str, Any] = Body(default_factory=dict)) -> dict[str, Any]:
-    """
-    Generate a bilingual diagnostic report for a Saudi B2B company.
-    Returns a DRAFT — founder reviews before delivery to prospect.
-    """
-    company_name = payload.get("company_name", "").strip()
-    if not company_name:
-        raise HTTPException(status_code=422, detail="company_name required")
-
-    sector = payload.get("sector", "other")
-    pain_points = payload.get("pain_points", "")
-    locale = payload.get("locale", "ar")
-
-    try:
-        from dealix.commercial.diagnostic_engine import DiagnosticRequest, generate_diagnostic as _gen
-
-        req = DiagnosticRequest(
-            company_name=company_name,
-            sector=sector,
-            pain_points=pain_points,
-            website_url=payload.get("website_url", ""),
-            employee_count=int(payload.get("employee_count", 0)),
-            monthly_leads=int(payload.get("monthly_leads", 0)),
-            current_tools=payload.get("current_tools", ""),
-            contact_name=payload.get("contact_name", ""),
-            contact_role=payload.get("contact_role", ""),
-            locale=locale,
-        )
-        report = await _gen(req)
-        return {
-            "status": "draft",
-            "constitutional_note": "هذا التقرير مسودة — الفاوندر يراجع قبل التسليم",
-            "report": report.to_dict(),
-            "markdown_ar": report.to_markdown_ar(),
-        }
-    except Exception as exc:
-        log.error("Diagnostic generation failed: %s", exc, exc_info=True)
-        raise HTTPException(status_code=500, detail=f"Diagnostic generation failed: {exc}") from exc
+async def diagnostic_generate(
+    req: DiagnosticRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Generate a 10-section bilingual diagnostic report for a Saudi B2B company."""
+    engine = DiagnosticEngine()
+    report = engine.generate(req)
+    log.info("diagnostic_generated", report_id=report.report_id, company=req.company_name)
+    return report.to_dict()
 
 
-@router.get("/diagnostic/list")
-async def list_diagnostics() -> dict[str, Any]:
-    """List generated diagnostics from local JSONL ledger."""
-    ledger_path = "data/proofs/diagnostics.jsonl"
-    if not os.path.exists(ledger_path):
-        return {"diagnostics": [], "count": 0}
-
-    records = []
-    try:
-        with open(ledger_path, encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line:
-                    records.append(json.loads(line))
-    except Exception as exc:
-        log.warning("Could not read diagnostics ledger: %s", exc)
-
-    return {"diagnostics": records, "count": len(records)}
+@router.post("/diagnostic/generate/markdown", response_class=PlainTextResponse)
+async def diagnostic_generate_markdown(
+    req: DiagnosticRequest,
+    _: None = Depends(_require_admin),
+) -> str:
+    """Generate diagnostic report and return as Markdown (AR+EN)."""
+    engine = DiagnosticEngine()
+    report = engine.generate(req)
+    return report.markdown_ar_en
 
 
-# ── Warm Intro ────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Warm intro endpoints
+# ---------------------------------------------------------------------------
+
 
 @router.post("/warm-intro/draft")
-async def draft_warm_intro(payload: dict[str, Any] = Body(default_factory=dict)) -> dict[str, Any]:
-    """
-    Generate warm intro message drafts for human approval.
-    Constitutional: NO_LIVE_SEND — all drafts require founder approval.
-    """
-    company_name = payload.get("company_name", "").strip()
-    if not company_name:
-        raise HTTPException(status_code=422, detail="company_name required")
-
-    try:
-        from dealix.commercial.warm_intro_generator import ProspectContext, generate_warm_intros
-
-        ctx = ProspectContext(
-            company_name=company_name,
-            contact_name=payload.get("contact_name", ""),
-            sector=payload.get("sector", "other"),
-            pain_point=payload.get("pain_point", ""),
-            signal=payload.get("signal", ""),
-            channel=payload.get("channel", "whatsapp"),
-            locale=payload.get("locale", "ar"),
-        )
-        bundle = await generate_warm_intros(ctx, num_variants=payload.get("num_variants", 5))
-        return {
-            "status": "pending_approval",
-            "constitutional_note": _CONSTITUTIONAL_GATES,
-            "bundle": bundle.to_dict(),
-        }
-    except Exception as exc:
-        log.error("Warm intro generation failed: %s", exc, exc_info=True)
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+async def warm_intro_draft(
+    req: WarmIntroRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Generate 5 WhatsApp + 3 email draft warm intros. All approval-gated."""
+    gen = WarmIntroGenerator()
+    bundle = gen.generate(req)
+    log.info(
+        "warm_intro_generated",
+        bundle_id=bundle.bundle_id,
+        prospect=req.prospect_name,
+        whatsapp=len(bundle.whatsapp_drafts),
+        email=len(bundle.email_drafts),
+    )
+    return bundle.to_dict()
 
 
-# ── Pilot ─────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Pilot delivery endpoints
+# ---------------------------------------------------------------------------
+
 
 @router.post("/pilot/start")
-async def start_pilot(payload: dict[str, Any] = Body(default_factory=dict)) -> dict[str, Any]:
-    """
-    Start a 499 SAR 7-day proof pilot for a company.
-    Constitutional: payment_confirmed must be True (NO_LIVE_CHARGE).
-    """
-    company_name = payload.get("company_name", "").strip()
-    if not company_name:
-        raise HTTPException(status_code=422, detail="company_name required")
-
-    payment_confirmed = payload.get("payment_confirmed", False)
-    payment_ref = payload.get("payment_ref", "")
-
-    if not payment_confirmed or not payment_ref:
-        raise HTTPException(
-            status_code=422,
-            detail="payment_confirmed=true and payment_ref required (NO_LIVE_CHARGE gate)",
-        )
-
-    try:
-        from dealix.commercial.pilot_delivery import PilotContext, build_pilot_plan, save_pilot
-
-        ctx = PilotContext(
-            pilot_id=str(uuid.uuid4()),
-            account_id=payload.get("account_id", str(uuid.uuid4())),
-            company_name=company_name,
-            contact_name=payload.get("contact_name", ""),
-            sector=payload.get("sector", "other"),
-            pain_points=payload.get("pain_points", ""),
-            amount_sar=float(payload.get("amount_sar", 499.0)),
-            payment_ref=payment_ref,
-            payment_confirmed=payment_confirmed,
-        )
-        plan = build_pilot_plan(ctx)
-        save_pilot(plan)
-
-        return {
-            "status": "started",
-            "pilot_id": plan.pilot_id,
-            "company": plan.company_name,
-            "days_total": 7,
-            "plan_markdown_ar": plan.to_markdown_ar(),
-            "day_1_brief": {
-                "title_ar": plan.days[0].title_ar,
-                "tasks_ar": plan.days[0].tasks_ar,
-                "deliverable_ar": plan.days[0].deliverable_ar,
-            },
-        }
-    except HTTPException:
-        raise
-    except Exception as exc:
-        log.error("Pilot start failed: %s", exc, exc_info=True)
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+async def pilot_start(
+    req: PilotStartRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Start a 7-day 499 SAR pilot — returns day-by-day delivery plan."""
+    kit = PilotDeliveryKit()
+    plan = kit.create_pilot_plan(req)
+    log.info(
+        "pilot_started",
+        pilot_id=plan.pilot_id,
+        account=req.account_id,
+        company=req.company_name,
+    )
+    return plan.to_dict()
 
 
-@router.get("/pilot/{pilot_id}/brief")
-async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
-    """Get today's task brief for a running pilot."""
-    safe = _safe_id(pilot_id)
-    if safe is None:
-        raise HTTPException(status_code=422, detail="Invalid pilot_id format")
-    # Canonicalise and verify the resolved path stays inside _PILOTS_DIR
-    resolved = os.path.realpath(os.path.join(_PILOTS_DIR, safe + ".json"))
-    if not resolved.startswith(_PILOTS_DIR + os.sep):
-        raise HTTPException(status_code=422, detail="Invalid pilot_id")
-    try:
-        with open(resolved, encoding="utf-8") as f:
-            plan_data = json.load(f)
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="Pilot not found")
-
-    if day < 1 or day > 7:
-        raise HTTPException(status_code=422, detail="day must be 1-7")
-
-    day_data = plan_data["days"][day - 1]
-    return {
-        "pilot_id": safe,
-        "company": plan_data["company_name"],
-        "day": day,
-        **day_data,
-    }
+@router.get("/pilot/{pilot_id}/report", response_class=PlainTextResponse)
+async def pilot_report(
+    pilot_id: str,
+    company_name: str = "الشركة",
+    _: None = Depends(_require_admin),
+) -> str:
+    """Return the Week 1 report template for a pilot."""
+    kit = PilotDeliveryKit()
+    req = PilotStartRequest(
+        account_id=pilot_id,
+        company_name=company_name,
+    )
+    plan = kit.create_pilot_plan(req)
+    return plan.week1_report_template.replace("{{pilot_id}}", pilot_id)
 
 
-@router.get("/pilot/{pilot_id}/plan")
-async def get_pilot_plan(pilot_id: str) -> dict[str, Any]:
-    """Get the full 7-day plan for a pilot."""
-    safe = _safe_id(pilot_id)
-    if safe is None:
-        raise HTTPException(status_code=422, detail="Invalid pilot_id format")
-    resolved = os.path.realpath(os.path.join(_PILOTS_DIR, safe + ".json"))
-    if not resolved.startswith(_PILOTS_DIR + os.sep):
-        raise HTTPException(status_code=422, detail="Invalid pilot_id")
-    try:
-        with open(resolved, encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="Pilot not found")
+# ---------------------------------------------------------------------------
+# Proof pack endpoints
+# ---------------------------------------------------------------------------
 
-
-# ── Proof Pack ────────────────────────────────────────────────────
 
 @router.post("/proof/build")
-async def build_proof(payload: dict[str, Any] = Body(default_factory=dict)) -> dict[str, Any]:
+async def proof_build(
+    req: ProofBuildRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Build a proof pack from documented pilot events."""
+    builder = ProofBuilder()
+    pack = builder.build(req)
+    log.info(
+        "proof_pack_built",
+        pack_id=pack.pack_id,
+        level=pack.proof_level,
+        events=pack.event_count,
+    )
+    return pack.to_dict()
+
+
+@router.post("/proof/build/markdown", response_class=PlainTextResponse)
+async def proof_build_markdown(
+    req: ProofBuildRequest,
+    _: None = Depends(_require_admin),
+) -> str:
+    """Build proof pack and return as Markdown."""
+    builder = ProofBuilder()
+    pack = builder.build(req)
+    return pack.markdown_ar_en
+
+
+# ---------------------------------------------------------------------------
+# Payment link endpoint
+# ---------------------------------------------------------------------------
+
+
+@router.post("/payment/link")
+async def payment_link(
+    req: PaymentLinkRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Generate a Moyasar invoice link for a service tier.
+
+    Sandbox mode by default — set MOYASAR_LIVE_MODE=1 in Railway for live charges.
     """
-    Build a proof pack from pilot evidence.
-    Constitutional: all metrics must be real (NO_FAKE_PROOF).
-    """
-    required = ["pilot_id", "account_id", "company_name"]
-    missing = [f for f in required if not payload.get(f)]
-    if missing:
-        raise HTTPException(status_code=422, detail=f"Missing: {missing}")
+    from dealix.payments.payment_link import PaymentLinkError  # noqa: PLC0415
 
     try:
-        from dealix.commercial.proof_builder import ProofEvidence, build_proof_pack
-
-        evidence = ProofEvidence(
-            messages_drafted=int(payload.get("messages_drafted", 0)),
-            messages_approved=int(payload.get("messages_approved", 0)),
-            messages_sent=int(payload.get("messages_sent", 0)),
-            replies_received=int(payload.get("replies_received", 0)),
-            meetings_booked=int(payload.get("meetings_booked", 0)),
-            deals_created=int(payload.get("deals_created", 0)),
-            response_time_before_hours=float(payload.get("response_time_before_hours", 0)),
-            response_time_after_hours=float(payload.get("response_time_after_hours", 0)),
-            proof_events=payload.get("proof_events", []),
-            testimonial_text=payload.get("testimonial_text", ""),
-            testimonial_consented=bool(payload.get("testimonial_consented", False)),
-        )
-
-        pack = build_proof_pack(
-            pilot_id=payload["pilot_id"],
-            account_id=payload["account_id"],
-            company_name=payload["company_name"],
-            contact_name=payload.get("contact_name", ""),
-            sector=payload.get("sector", "other"),
-            pain_point=payload.get("pain_point", ""),
-            evidence=evidence,
-        )
-
-        return {
-            "status": "built",
-            "pack_id": pack.pack_id,
-            "evidence_level": pack.evidence_level,
-            "evidence_level_name": pack.evidence_level_name,
-            "is_complete": pack.is_complete,
-            "can_use_as_case_study": pack.can_use_as_case_study,
-            "pack": pack.to_dict(),
-            "markdown_ar": pack.to_markdown_ar(),
-        }
-    except Exception as exc:
-        log.error("Proof pack build failed: %s", exc, exc_info=True)
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+        result = await create_payment_link(req)
+    except PaymentLinkError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return result.to_dict()
 
 
-# ── Upsell ────────────────────────────────────────────────────────
-
-@router.post("/upsell/evaluate")
-async def evaluate_upsell(payload: dict[str, Any] = Body(default_factory=dict)) -> dict[str, Any]:
-    """
-    Evaluate upsell opportunities for an account.
-    Returns list of eligible and gated offers.
-    Constitutional: all results pending_approval.
-    """
-    account_id = payload.get("account_id", str(uuid.uuid4()))
-    company_name = payload.get("company_name", "").strip()
-    if not company_name:
-        raise HTTPException(status_code=422, detail="company_name required")
-
-    try:
-        from dealix.commercial.upsell_engine import evaluate_upsell as _eval
-
-        opportunities = _eval(
-            account_id=account_id,
-            company_name=company_name,
-            sector=payload.get("sector", "other"),
-            pain_point=payload.get("pain_point", ""),
-            pilot_count=int(payload.get("pilot_count", 0)),
-            proof_event_count=int(payload.get("proof_event_count", 0)),
-            evidence_level=int(payload.get("evidence_level", 0)),
-        )
-
-        eligible = [o.to_dict() for o in opportunities if not o.is_gated]
-        gated = [o.to_dict() for o in opportunities if o.is_gated]
-
-        return {
-            "account_id": account_id,
-            "company_name": company_name,
-            "eligible_offers": eligible,
-            "gated_offers": gated,
-            "constitutional_note": "NO_LIVE_SEND: جميع العروض تتطلب موافقة الفاوندر",
-        }
-    except Exception as exc:
-        log.error("Upsell evaluation failed: %s", exc, exc_info=True)
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
-
-
-# ── Daily Brief ───────────────────────────────────────────────────
-
-@router.get("/daily-brief")
-async def daily_brief() -> dict[str, Any]:
-    """
-    Founder daily brief — pipeline snapshot + top opportunities.
-    Called by GitHub Actions at 6 AM Riyadh time daily.
-    """
-    from datetime import UTC, datetime
-
-    brief: dict[str, Any] = {
-        "date": datetime.now(UTC).strftime("%Y-%m-%d"),
-        "generated_at": datetime.now(UTC).isoformat(),
-        "diagnostics_total": 0,
-        "pilots_active": 0,
-        "warm_intros_pending": 0,
-        "proof_packs_built": 0,
-        "top_actions": [],
+@router.get("/payment/tiers")
+async def payment_tiers(
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Return all available service tiers with prices."""
+    return {
+        "tiers": SERVICE_TIERS,
+        "currency": "SAR",
+        "live_mode": os.getenv("MOYASAR_LIVE_MODE", "0") in ("1", "true", "yes"),
     }
 
-    # Count diagnostics
-    if os.path.exists("data/proofs/diagnostics.jsonl"):
-        with open("data/proofs/diagnostics.jsonl") as f:
-            brief["diagnostics_total"] = sum(1 for line in f if line.strip())
 
-    # Count pilots
-    pilots_dir = "data/pilots"
-    if os.path.exists(pilots_dir):
-        brief["pilots_active"] = len([f for f in os.listdir(pilots_dir) if f.endswith(".json")])
+# ---------------------------------------------------------------------------
+# Upsell endpoints
+# ---------------------------------------------------------------------------
 
-    # Count warm intros pending
-    if os.path.exists("data/outbox/warm_intros.jsonl"):
-        with open("data/outbox/warm_intros.jsonl") as f:
-            bundles = [json.loads(line) for line in f if line.strip()]
-        pending = sum(b.get("pending_approval_count", 0) for b in bundles)
-        brief["warm_intros_pending"] = pending
 
-    # Count proof packs
-    packs_dir = "data/proof-packs"
-    if os.path.exists(packs_dir):
-        brief["proof_packs_built"] = len([f for f in os.listdir(packs_dir) if f.endswith(".json")])
+@router.get("/upsell/check/{account_id}")
+async def upsell_check(
+    account_id: str,
+    company_name: str = "",
+    proof_event_count: int = 0,
+    proof_level: str = "L0",
+    monthly_revenue_sar: float = 0.0,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Check upsell eligibility and generate proposal draft if eligible."""
+    engine = UpsellEngine()
+    result = engine.check(
+        account_id=account_id,
+        company_name=company_name or account_id,
+        proof_event_count=proof_event_count,
+        proof_level=proof_level,
+        monthly_revenue_sar=monthly_revenue_sar,
+    )
+    return result.to_dict()
 
-    # Generate action recommendations
-    actions = []
-    if brief["diagnostics_total"] == 0:
-        actions.append({"priority": 1, "action_ar": "أرسل أول warm intro وأجرِ أول تشخيص مجاني اليوم", "action_en": "Send first warm intro and run first free diagnostic today"})
-    if brief["warm_intros_pending"] > 0:
-        actions.append({"priority": 2, "action_ar": f"راجع وأرسل {brief['warm_intros_pending']} رسالة ترحيبية معلّقة", "action_en": f"Review and send {brief['warm_intros_pending']} pending warm intros"})
-    if brief["pilots_active"] == 0 and brief["diagnostics_total"] > 0:
-        actions.append({"priority": 3, "action_ar": "حوّل أحد التشخيصات إلى برنامج تجريبي مدفوع (499 ريال)", "action_en": "Convert one diagnostic to a paid pilot (499 SAR)"})
-    if brief["pilots_active"] > 0 and brief["proof_packs_built"] == 0:
-        actions.append({"priority": 4, "action_ar": "أكمل توثيق حدث الإثبات وأنشئ أول طقم إثبات", "action_en": "Complete proof event documentation and build first proof pack"})
 
-    actions.sort(key=lambda a: a["priority"])
-    brief["top_actions"] = actions
+# ---------------------------------------------------------------------------
+# Case study endpoints
+# ---------------------------------------------------------------------------
 
-    return brief
+
+@router.post("/case-study/generate")
+async def case_study_generate(
+    req: CaseStudyRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Generate a bilingual case study. customer_consent required for quotes."""
+    gen = CaseStudyGenerator()
+    doc = gen.generate(req)
+    return doc.to_dict()
+
+
+@router.post("/case-study/generate/markdown", response_class=PlainTextResponse)
+async def case_study_markdown(
+    req: CaseStudyRequest,
+    _: None = Depends(_require_admin),
+) -> str:
+    gen = CaseStudyGenerator()
+    doc = gen.generate(req)
+    return doc.markdown_ar_en
+
+
+# ---------------------------------------------------------------------------
+# Daily brief endpoint
+# ---------------------------------------------------------------------------
+
+
+@router.get("/daily-brief")
+async def daily_brief(
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Founder daily brief — lead queue, top opportunities, revenue state."""
+    now = datetime.now(UTC)
+    return {
+        "brief_date": now.strftime("%Y-%m-%d"),
+        "brief_time_utc": now.isoformat(),
+        "brief_time_riyadh": now.strftime("%H:%M KSA (UTC+3, actual UTC)"),
+        "status": "operational",
+        "chain_status": {
+            "diagnostic_engine": "ready",
+            "warm_intro_generator": "ready — approval_required",
+            "pilot_delivery_kit": "ready",
+            "proof_builder": "ready",
+            "upsell_engine": "ready",
+            "payment_link": "sandbox" if os.getenv("MOYASAR_LIVE_MODE", "0") not in ("1", "true") else "live",
+        },
+        "action_items": [
+            "Review pending diagnostic reports in /api/v1/commercial/diagnostic/generate",
+            "Approve or reject warm intro drafts before any outreach",
+            "Check upsell eligibility for accounts with 3+ proof events",
+        ],
+        "reminders": [
+            "NO_LIVE_SEND: all outreach requires founder approval",
+            "NO_LIVE_CHARGE: Moyasar in sandbox mode by default",
+            "NO_FAKE_PROOF: only documented events accepted in proof builder",
+        ],
+    }

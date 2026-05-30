@@ -114,6 +114,8 @@ data_os_router = _import_optional_router("data_os", "api.routers.data_os")
 agent_os_router = _import_optional_router("agent_os", "api.routers.agent_os")
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
 from api.routers import commercial_map as commercial_map_router
+# Wave 15B — Commercial chain (diagnostic → warm-intro → pilot → proof → payment → upsell)
+from api.routers import commercial as commercial_chain_router
 
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
@@ -370,6 +372,8 @@ def create_app() -> FastAPI:
             )
     # Wave 14J — Commercial wiring map (public)
     app.include_router(commercial_map_router.router)
+    # Wave 15B — Commercial chain: diagnostic → warm-intro → pilot → proof → payment → upsell
+    app.include_router(commercial_chain_router.router)
     # Wave 15 — Founder launch-status (admin /launch-status + public /launch-status/public)
     app.include_router(founder_launch_status_router.router)
     # Systems 26–35 — Enterprise Control Plane hardening

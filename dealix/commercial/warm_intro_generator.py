@@ -1,10 +1,8 @@
-"""
-Warm Intro Generator — Draft first-touch messages for human approval.
-مولّد الرسائل الترحيبية — يُعدّ مسودات الرسائل الأولى للموافقة البشرية.
+"""Warm Intro Generator — draft outreach for Saudi B2B prospects.
 
-CONSTITUTIONAL: NO_LIVE_SEND enforced.
-All drafts queued for founder review — NOTHING is sent automatically.
-The founder approves and sends manually via their channel of choice.
+Produces 5 WhatsApp variants + 3 email variants per prospect.
+Constitutional gate: NO_LIVE_SEND — all drafts stored as approval_required.
+Never triggers any external message send.
 """
 
 from __future__ import annotations
@@ -12,257 +10,273 @@ from __future__ import annotations
 import json
 import logging
 import os
-import uuid
-from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from typing import Any, Literal
+from typing import Any
+
+from pydantic import BaseModel, Field
 
 log = logging.getLogger(__name__)
 
-Channel = Literal["whatsapp", "email", "linkedin"]
-
-# ── Constitutional gate ───────────────────────────────────────────
-_NO_LIVE_SEND = True  # Immutable — never set False
+_NO_LIVE_SEND = True  # hard constitutional gate — never set to False
 
 
-@dataclass
-class ProspectContext:
-    company_name: str
-    contact_name: str = ""
-    sector: str = "other"
-    pain_point: str = ""
-    signal: str = ""  # why_now signal (e.g. "hiring", "funding", "new office")
-    channel: Channel = "whatsapp"
-    locale: str = "ar"
-    account_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+class WarmIntroRequest(BaseModel):
+    prospect_name: str = Field(..., min_length=1)
+    company_name: str = Field(..., min_length=1)
+    sector: str = "b2b_services"
+    pain_context: str = ""
+    previous_interaction: str = ""
+    founder_name: str = "سامي"
+    language: str = "ar"
 
 
-@dataclass
-class WarmIntroDraft:
-    draft_id: str
-    account_id: str
-    channel: Channel
-    subject: str | None  # for email only
-    body: str
-    locale: str
-    variant: int  # 1-5
-    status: str = "pending_approval"  # pending_approval | approved | rejected
-    generated_at: datetime = field(default_factory=lambda: datetime.now(UTC))
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "draft_id": self.draft_id,
-            "account_id": self.account_id,
-            "channel": self.channel,
-            "subject": self.subject,
-            "body": self.body,
-            "locale": self.locale,
-            "variant": self.variant,
-            "status": self.status,
-            "generated_at": self.generated_at.isoformat(),
-        }
+class OutreachDraft(BaseModel):
+    channel: str  # "whatsapp" | "email"
+    variant: int
+    subject_line: str = ""
+    body_ar: str
+    body_en: str
+    tone: str  # "direct" | "empathetic" | "urgency" | "social_proof" | "question"
+    character_count: int = 0
+    approval_status: str = "approval_required"
 
 
-@dataclass
-class WarmIntroDraftBundle:
+class OutreachDraftBundle(BaseModel):
     bundle_id: str
-    account_id: str
+    prospect_name: str
     company_name: str
-    drafts: list[WarmIntroDraft]
-    constitutional_note: str = "NO_LIVE_SEND: جميع المسودات تتطلب موافقة الفاوندر قبل الإرسال"
-    generated_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+    generated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    whatsapp_drafts: list[OutreachDraft]
+    email_drafts: list[OutreachDraft]
+    approval_status: str = "approval_required"
+    llm_used: bool = False
 
     def to_dict(self) -> dict[str, Any]:
-        return {
-            "bundle_id": self.bundle_id,
-            "account_id": self.account_id,
-            "company_name": self.company_name,
-            "drafts": [d.to_dict() for d in self.drafts],
-            "constitutional_note": self.constitutional_note,
-            "generated_at": self.generated_at.isoformat(),
-            "pending_approval_count": sum(1 for d in self.drafts if d.status == "pending_approval"),
-        }
+        return json.loads(self.model_dump_json())
 
 
-# ── Hardcoded WhatsApp variant templates (Arabic-first, compact) ──
-_WHATSAPP_TEMPLATES: list[dict[str, str]] = [
-    {
-        "variant": 1,
-        "label": "المشكلة المحددة",
-        "template_ar": "أهلاً {name}، أنا سامي من Dealix.\n\nلاحظت أن {company} في قطاع {sector_ar} — كثير من الشركات في قطاعكم تخسر صفقات بسبب تأخر الرد على العملاء.\n\nعندنا برنامج تجريبي 7 أيام يثبت نتيجة قابلة للقياس.\n\nهل يناسبك 15 دقيقة هذا الأسبوع؟",
-        "template_en": "Hi {name}, I'm Sami from Dealix.\n\nI noticed {company} is in the {sector_en} space — many companies there lose deals from slow follow-up.\n\nWe have a 7-day pilot that proves measurable results.\n\nCan we find 15 minutes this week?",
-    },
-    {
-        "variant": 2,
-        "label": "الفرصة التنافسية",
-        "template_ar": "مرحباً {name}،\n\nرأيت {company} في السوق — الشركات التي تحل مشكلة الرد السريع الآن ستكون في موقع تنافسي أقوى خلال 6 أشهر.\n\nDealix يساعد شركات {sector_ar} السعودية على هذا بالضبط.\n\nهل تريد أرى كيف؟",
-        "template_en": "Hi {name},\n\nSaw {company} in the market — companies solving fast-response now will have a competitive edge in 6 months.\n\nDealix helps Saudi {sector_en} companies do exactly this.\n\nWant to see how?",
-    },
-    {
-        "variant": 3,
-        "label": "الإشارة التوقيتية",
-        "template_ar": "أهلاً {name}،\n\n{signal_text}\n\nهذا الوقت المناسب لوضع نظام يتابع العملاء المحتملين تلقائياً مع الحفاظ على اللمسة الشخصية.\n\nDealix جرّبناه مع شركات {sector_ar} — هل نكلم؟",
-        "template_en": "Hi {name},\n\n{signal_text}\n\nThis is the right time to put a system that follows up leads automatically while keeping the personal touch.\n\nDealix — proven with {sector_en} companies. Want to talk?",
-    },
-    {
-        "variant": 4,
-        "label": "قصة Dealix نفسها",
-        "template_ar": "مرحباً {name}،\n\nنحن في Dealix نستخدم نظامنا لتنمية أعمالنا — هذه الرسالة نفسها جُهّزت بمساعدة الذكاء الاصطناعي وراجعتها أنا شخصياً قبل الإرسال.\n\nنُثبت له تأثيراً على {company} في 7 أيام.\n\nهل نجرّب؟",
-        "template_en": "Hi {name},\n\nAt Dealix we use our own system to grow — this very message was drafted with AI and I reviewed it personally before sending.\n\nWe can prove its impact on {company} in 7 days.\n\nShall we try?",
-    },
-    {
-        "variant": 5,
-        "label": "السؤال المباشر",
-        "template_ar": "أهلاً {name}، سؤال مباشر:\n\nما هي أكبر مشكلة في متابعة العملاء المحتملين في {company} الآن؟\n\nأسأل لأن Dealix بنيناه خصيصاً لحل هذه المشاكل في السوق السعودي.",
-        "template_en": "Hi {name}, direct question:\n\nWhat's the biggest challenge with lead follow-up at {company} right now?\n\nI ask because Dealix was built specifically to solve these for the Saudi market.",
-    },
-]
+class WarmIntroGenerator:
+    """Generates bilingual warm intro drafts — approval required before use."""
 
-_EMAIL_TEMPLATES: list[dict[str, str]] = [
-    {
-        "variant": 1,
-        "subject_ar": "فكرة لـ {company} — 5 دقائق",
-        "subject_en": "An idea for {company} — 5 minutes",
-        "template_ar": "أهلاً {name}،\n\nأتواصل معك لأن {company} في قطاع {sector_ar} وهذا بالضبط المجال الذي يُحقق فيه عملاؤنا أفضل النتائج.\n\nمشكلة المتابعة اليدوية للعملاء المحتملين تكلّف شركات مثل شركتك صفقات كل شهر.\n\nبرنامج التجربة لدينا (7 أيام، 499 ريال) يُثبت نتيجة قابلة للقياس أو نُكرر مجاناً.\n\nهل تتاح لك 15 دقيقة هذا الأسبوع؟\n\nبالتوفيق،\nسامي\nDealix",
-        "template_en": "Hi {name},\n\nI'm reaching out because {company} is in the {sector_en} space — exactly where our clients see the best results.\n\nManual lead follow-up costs companies like yours deals every month.\n\nOur 7-day proof sprint (499 SAR) delivers a measurable result or we repeat for free.\n\nAre you available for 15 minutes this week?\n\nBest,\nSami\nDealix",
-    },
-    {
-        "variant": 2,
-        "subject_ar": "سؤال سريع عن {company}",
-        "subject_en": "Quick question about {company}",
-        "template_ar": "أهلاً {name}،\n\nسؤال مباشر: كم صفقة تقديرياً تخسرون شهرياً بسبب تأخر الرد على العملاء؟\n\nDealix حل هذه المشكلة لشركات {sector_ar} في السوق السعودي بنتائج قابلة للقياس.\n\nهل نكلم 15 دقيقة؟",
-        "template_en": "Hi {name},\n\nDirect question: how many deals do you estimate you lose monthly from slow lead response?\n\nDealix solved this for Saudi {sector_en} companies with measurable results.\n\nCan we speak for 15 minutes?",
-    },
-    {
-        "variant": 3,
-        "subject_ar": "Dealix × {company} — فرصة للتجربة",
-        "subject_en": "Dealix × {company} — pilot opportunity",
-        "template_ar": "أهلاً {name}،\n\nنُقدم لشركات {sector_ar} السعودية برنامج تجربة 7 أيام (499 ريال) يُثبت:\n• تسريع الرد على العملاء المحتملين\n• متابعة منتظمة دون جهد يدوي\n• نتيجة قابلة للقياس في أسبوع\n\nهل {company} مهتمة بالتجربة؟",
-        "template_en": "Hi {name},\n\nWe offer Saudi {sector_en} companies a 7-day pilot (499 SAR) that proves:\n• Faster lead response\n• Consistent follow-up with no manual effort\n• Measurable result in one week\n\nIs {company} interested in a pilot?",
-    },
-]
+    def generate(self, req: WarmIntroRequest) -> OutreachDraftBundle:
+        assert _NO_LIVE_SEND, "NO_LIVE_SEND constitutional gate violated"
 
+        import hashlib
+        bundle_id = hashlib.sha256(
+            f"{req.company_name}{req.prospect_name}{datetime.now(UTC).date()}".encode()
+        ).hexdigest()[:16]
 
-def _signal_text(signal: str, locale: str) -> str:
-    signals = {
-        "hiring": {
-            "ar": "لاحظت أن {company} يبدو أنها تتوسع (توظيف جديد)",
-            "en": "{company} appears to be expanding (new hires)",
-        },
-        "funding": {
-            "ar": "تهانينا على التمويل الجديد لـ {company}",
-            "en": "Congrats on the recent funding for {company}",
-        },
-        "new_office": {
-            "ar": "لاحظت افتتاح {company} فرع جديد",
-            "en": "Noticed {company} opened a new office",
-        },
-        "event": {
-            "ar": "رأيت {company} في الفعالية مؤخراً",
-            "en": "Saw {company} at the recent event",
-        },
-    }
-    key = locale if locale in ("ar", "en") else "ar"
-    template = signals.get(signal, {}).get(key, "")
-    return template
+        llm_used = False
+        wa_drafts = self._llm_whatsapp(req)
+        email_drafts = self._llm_email(req)
+        if wa_drafts and email_drafts:
+            llm_used = True
+        else:
+            wa_drafts = self._template_whatsapp(req)
+            email_drafts = self._template_email(req)
 
+        return OutreachDraftBundle(
+            bundle_id=bundle_id,
+            prospect_name=req.prospect_name,
+            company_name=req.company_name,
+            whatsapp_drafts=wa_drafts,
+            email_drafts=email_drafts,
+            llm_used=llm_used,
+        )
 
-async def generate_warm_intros(ctx: ProspectContext, num_variants: int = 5) -> WarmIntroDraftBundle:
-    """
-    Generate warm intro drafts for human approval.
-    Returns a bundle of drafts — ALL pending_approval, NOTHING sent.
-
-    Constitutional: NO_LIVE_SEND = True (cannot be changed here)
-    """
-    assert _NO_LIVE_SEND, "NO_LIVE_SEND gate violated — this should never happen"
-
-    from auto_client_acquisition.revenue_memory.events import EVENT_TYPES
-
-    sector_info_map = {
-        "marketing_agency": ("وكالة تسويق", "Marketing Agency"),
-        "consulting": ("استشارات", "Consulting"),
-        "real_estate": ("عقارات", "Real Estate"),
-        "logistics": ("لوجستيات", "Logistics"),
-        "events": ("فعاليات", "Events"),
-        "training": ("تدريب", "Training"),
-        "other": ("خدمات B2B", "B2B Services"),
-    }
-    sector_ar, sector_en = sector_info_map.get(ctx.sector, ("خدمات B2B", "B2B Services"))
-    name = ctx.contact_name or "مدير {company}".format(company=ctx.company_name) if ctx.locale == "ar" else ctx.contact_name or ctx.company_name
-    signal_text = _signal_text(ctx.signal, ctx.locale).format(company=ctx.company_name) if ctx.signal else ""
-
-    drafts: list[WarmIntroDraft] = []
-
-    if ctx.channel == "whatsapp":
-        templates = _WHATSAPP_TEMPLATES[:num_variants]
-        for tpl in templates:
-            key = "template_ar" if ctx.locale == "ar" else "template_en"
-            body = tpl[key].format(
-                name=name,
-                company=ctx.company_name,
-                sector_ar=sector_ar,
-                sector_en=sector_en,
-                signal_text=signal_text or f"أهلاً بك في {ctx.company_name}",
+    def _llm_whatsapp(self, req: WarmIntroRequest) -> list[OutreachDraft]:
+        api_key = os.getenv("ANTHROPIC_API_KEY", "")
+        if not api_key:
+            return []
+        try:
+            import anthropic
+            client = anthropic.Anthropic(api_key=api_key)
+            prompt = (
+                f"أنت مستشار مبيعات B2B سعودي. اكتب 5 رسائل واتساب للتواصل مع "
+                f"'{req.prospect_name}' من شركة '{req.company_name}' في قطاع '{req.sector}'. "
+                f"السياق: {req.pain_context or 'لا سياق محدد'}. "
+                f"المرسل: {req.founder_name}.\n\n"
+                f"كل رسالة: 3 أسطر حد أقصى، واتساب-فريندلي، عربي-أول.\n"
+                f"النبرات: [direct, empathetic, urgency, social_proof, question]\n"
+                f"أرجع JSON مصفوفة من 5 كائنات: "
+                f"{{tone, body_ar, body_en}}"
             )
-            drafts.append(WarmIntroDraft(
-                draft_id=str(uuid.uuid4()),
-                account_id=ctx.account_id,
+            msg = client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=1200,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            raw = msg.content[0].text.strip()
+            if raw.startswith("```"):
+                raw = raw.split("```")[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+            data = json.loads(raw)
+            return [
+                OutreachDraft(
+                    channel="whatsapp",
+                    variant=i + 1,
+                    body_ar=d.get("body_ar", ""),
+                    body_en=d.get("body_en", ""),
+                    tone=d.get("tone", "direct"),
+                    character_count=len(d.get("body_ar", "")),
+                )
+                for i, d in enumerate(data[:5])
+            ]
+        except Exception as exc:
+            log.warning("warm_intro_llm_failed error=%s", exc)
+            return []
+
+    def _llm_email(self, req: WarmIntroRequest) -> list[OutreachDraft]:
+        api_key = os.getenv("ANTHROPIC_API_KEY", "")
+        if not api_key:
+            return []
+        try:
+            import anthropic
+            client = anthropic.Anthropic(api_key=api_key)
+            prompt = (
+                f"اكتب 3 رسائل بريد إلكتروني للتواصل مع '{req.prospect_name}' "
+                f"من '{req.company_name}'. النبرات: [professional, story, direct_ask]. "
+                f"كل رسالة: عنوان + جسم (5-6 جمل). عربي-أول مع ترجمة إنجليزية. "
+                f"أرجع JSON: [{{tone, subject_ar, subject_en, body_ar, body_en}}]"
+            )
+            msg = client.messages.create(
+                model="claude-sonnet-4-6",
+                max_tokens=1500,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            raw = msg.content[0].text.strip()
+            if raw.startswith("```"):
+                raw = raw.split("```")[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+            data = json.loads(raw)
+            return [
+                OutreachDraft(
+                    channel="email",
+                    variant=i + 1,
+                    subject_line=d.get("subject_ar", ""),
+                    body_ar=d.get("body_ar", ""),
+                    body_en=d.get("body_en", ""),
+                    tone=d.get("tone", "professional"),
+                    character_count=len(d.get("body_ar", "")),
+                )
+                for i, d in enumerate(data[:3])
+            ]
+        except Exception as exc:
+            log.warning("warm_intro_email_llm_failed error=%s", exc)
+            return []
+
+    def _template_whatsapp(self, req: WarmIntroRequest) -> list[OutreachDraft]:
+        name = req.prospect_name
+        company = req.company_name
+        founder = req.founder_name
+        templates = [
+            {
+                "tone": "direct",
+                "body_ar": f"أهلاً {name}،\nأنا {founder} من Dealix — نساعد شركات {req.sector} على أتمتة عمليات الإيراد.\nهل لديك 10 دقائق هذا الأسبوع؟",
+                "body_en": f"Hi {name},\nI'm {founder} from Dealix — we help {req.sector} companies automate revenue ops.\nDo you have 10 mins this week?",
+            },
+            {
+                "tone": "empathetic",
+                "body_ar": f"السلام عليكم {name}،\nأتفهم تحديات {req.sector} — خاصة في جانب {req.pain_context or 'الإيراد'}.\nDealix حلّت هذه المشكلة لشركات مشابهة. هل تريد تشخيصاً مجانياً؟",
+                "body_en": f"Hello {name},\nI understand {req.sector} challenges — especially around {req.pain_context or 'revenue'}.\nDealix solved this for similar companies. Want a free diagnostic?",
+            },
+            {
+                "tone": "urgency",
+                "body_ar": f"مرحباً {name} —\nموعد ZATCA Wave 24 قادم (30 يونيو 2026).\nشركات مثل {company} تحتاج التجهيز الآن.\nأرسل لك تقييماً مجانياً؟",
+                "body_en": f"Hi {name} —\nZATCA Wave 24 deadline is approaching (June 30, 2026).\nCompanies like {company} need to prepare now.\nShall I send you a free assessment?",
+            },
+            {
+                "tone": "social_proof",
+                "body_ar": f"أهلاً {name}،\nDealix بنت نظام تشغيل الإيراد الخاص بها من الصفر باستخدام أدواتنا.\nنفس النظام متاح لـ {company}.\nمهتم تشوف كيف؟",
+                "body_en": f"Hi {name},\nDealix built its own revenue OS from scratch using our tools.\nThe same system is available for {company}.\nInterested to see how?",
+            },
+            {
+                "tone": "question",
+                "body_ar": f"مرحباً {name}،\nسؤال مباشر: ما أكبر تحدي يواجهه فريق المبيعات في {company} الآن؟\nنسأل لأن معظم شركات {req.sector} تواجه نفس 3 تحديات — وعندنا حلول جاهزة.",
+                "body_en": f"Hi {name},\nDirect question: what's the biggest challenge facing {company}'s sales team right now?\nWe ask because most {req.sector} companies face the same 3 challenges — and we have ready solutions.",
+            },
+        ]
+        return [
+            OutreachDraft(
                 channel="whatsapp",
-                subject=None,
-                body=body,
-                locale=ctx.locale,
-                variant=tpl["variant"],
-                status="pending_approval",
-            ))
-    else:  # email
-        templates = _EMAIL_TEMPLATES[:min(num_variants, 3)]
-        for tpl in templates:
-            key_subj = "subject_ar" if ctx.locale == "ar" else "subject_en"
-            key_body = "template_ar" if ctx.locale == "ar" else "template_en"
-            subject = tpl[key_subj].format(company=ctx.company_name)
-            body = tpl[key_body].format(
-                name=name,
-                company=ctx.company_name,
-                sector_ar=sector_ar,
-                sector_en=sector_en,
+                variant=i + 1,
+                body_ar=t["body_ar"],
+                body_en=t["body_en"],
+                tone=t["tone"],
+                character_count=len(t["body_ar"]),
             )
-            drafts.append(WarmIntroDraft(
-                draft_id=str(uuid.uuid4()),
-                account_id=ctx.account_id,
+            for i, t in enumerate(templates)
+        ]
+
+    def _template_email(self, req: WarmIntroRequest) -> list[OutreachDraft]:
+        name = req.prospect_name
+        company = req.company_name
+        founder = req.founder_name
+        templates = [
+            {
+                "tone": "professional",
+                "subject_line": f"تشخيص مجاني لعمليات {company} | Free Diagnostic for {company}",
+                "body_ar": (
+                    f"السلام عليكم {name}،\n\n"
+                    f"اسمي {founder}، مؤسس Dealix — نظام تشغيل الإيراد للشركات السعودية B2B.\n"
+                    f"نساعد شركات {req.sector} على اكتشاف فجوات الإيراد وأتمتة عمليات المبيعات.\n\n"
+                    f"أودّ تقديم تشخيص مجاني لـ {company} (30 دقيقة) لاكتشاف أكبر 3 فرص نمو.\n\n"
+                    f"هل تناسبك هذا الأسبوع؟\n\nمع التحية،\n{founder}"
+                ),
+                "body_en": (
+                    f"Dear {name},\n\n"
+                    f"My name is {founder}, founder of Dealix — the Revenue OS for Saudi B2B companies.\n"
+                    f"We help {req.sector} companies discover revenue gaps and automate sales operations.\n\n"
+                    f"I'd like to offer {company} a free diagnostic (30 minutes) to uncover the top 3 growth opportunities.\n\n"
+                    f"Does this week work for you?\n\nBest regards,\n{founder}"
+                ),
+            },
+            {
+                "tone": "story",
+                "subject_line": f"كيف أتمتنا 80% من عمليات المبيعات في 7 أيام | How we automated 80% of sales ops in 7 days",
+                "body_ar": (
+                    f"مرحباً {name}،\n\n"
+                    f"منذ 3 أشهر، واجهنا نفس التحديات في Dealix: فريق صغير، فرص كثيرة، ووقت محدود.\n"
+                    f"قررنا بناء نظامنا الخاص — والنتيجة: 80% من المهام المتكررة أصبحت تلقائية.\n\n"
+                    f"اليوم، هذا النظام متاح لشركات مثل {company}.\n"
+                    f"هل ترغب في رؤية كيف؟\n\n{founder}"
+                ),
+                "body_en": (
+                    f"Hi {name},\n\n"
+                    f"3 months ago, Dealix faced the same challenges: small team, many opportunities, limited time.\n"
+                    f"We decided to build our own system — result: 80% of repetitive tasks became automated.\n\n"
+                    f"Today, this system is available for companies like {company}.\n"
+                    f"Would you like to see how?\n\n{founder}"
+                ),
+            },
+            {
+                "tone": "direct_ask",
+                "subject_line": f"طلب: 15 دقيقة لـ {company} | Request: 15 mins for {company}",
+                "body_ar": (
+                    f"أهلاً {name}،\n\n"
+                    f"لن أطيل — Dealix تحل مشكلة {req.pain_context or 'الإيراد'} لشركات {req.sector}.\n"
+                    f"أطلب 15 دقيقة فقط لأريك كيف.\n"
+                    f"متاح الاثنين أو الثلاثاء القادم؟\n\n{founder}"
+                ),
+                "body_en": (
+                    f"Hi {name},\n\n"
+                    f"I'll be brief — Dealix solves {req.pain_context or 'revenue'} for {req.sector} companies.\n"
+                    f"I'm asking for just 15 minutes to show you how.\n"
+                    f"Are you available next Monday or Tuesday?\n\n{founder}"
+                ),
+            },
+        ]
+        return [
+            OutreachDraft(
                 channel="email",
-                subject=subject,
-                body=body,
-                locale=ctx.locale,
-                variant=tpl["variant"],
-                status="pending_approval",
-            ))
-
-    bundle = WarmIntroDraftBundle(
-        bundle_id=str(uuid.uuid4()),
-        account_id=ctx.account_id,
-        company_name=ctx.company_name,
-        drafts=drafts,
-    )
-
-    # Persist drafts to JSONL (message.drafted events)
-    _save_drafts(bundle)
-
-    log.info(
-        "Warm intro bundle generated: bundle_id=%s company=%s channel=%s variants=%d",
-        bundle.bundle_id,
-        ctx.company_name,
-        ctx.channel,
-        len(drafts),
-    )
-    return bundle
-
-
-def _save_drafts(bundle: WarmIntroDraftBundle) -> None:
-    try:
-        outbox_dir = os.path.join(os.path.dirname(__file__), "..", "..", "data", "outbox")
-        os.makedirs(outbox_dir, exist_ok=True)
-        path = os.path.join(outbox_dir, "warm_intros.jsonl")
-        with open(path, "a", encoding="utf-8") as f:
-            f.write(json.dumps(bundle.to_dict(), ensure_ascii=False) + "\n")
-    except Exception as exc:
-        log.warning("Could not save warm intro bundle: %s", exc)
+                variant=i + 1,
+                subject_line=t["subject_line"],
+                body_ar=t["body_ar"],
+                body_en=t["body_en"],
+                tone=t["tone"],
+                character_count=len(t["body_ar"]),
+            )
+            for i, t in enumerate(templates)
+        ]

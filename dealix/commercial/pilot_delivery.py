@@ -1,311 +1,318 @@
-"""
-Pilot Delivery Kit — 7-day 499 SAR Sprint (S1) Workflow.
-طقم تسليم البرنامج التجريبي — برنامج 7 أيام بـ 499 ريال (S1).
+"""Pilot Delivery Kit — 7-day structured delivery for the 499 SAR Sprint.
 
-Manages the structured 7-day pilot delivery:
-  Day 1: Intake call + Pain map
-  Day 2: Current state audit + data request
-  Day 3-5: Draft messages (2/day, approval-gated)
-  Day 6: Proof event documentation
-  Day 7: Week-1 report + upsell conversation
-
-Constitutional: All message drafts are approval-gated (NO_LIVE_SEND).
-Payment must be confirmed before delivery starts (NO_LIVE_CHARGE).
+Generates day-by-day action templates, daily message drafts (approval-gated),
+and a Week 1 proof report ready for customer delivery.
 """
 
 from __future__ import annotations
 
 import json
-import logging
-import os
-from dataclasses import dataclass, field
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
-log = logging.getLogger(__name__)
+from pydantic import BaseModel, Field
 
 
-@dataclass
-class PilotContext:
-    pilot_id: str
-    account_id: str
-    company_name: str
-    contact_name: str
-    sector: str
-    pain_points: str
-    amount_sar: float = 499.0
-    payment_ref: str = ""  # Moyasar invoice ID or bank transfer ref
-    payment_confirmed: bool = False
-    started_at: datetime = field(default_factory=lambda: datetime.now(UTC))
-    current_day: int = 1
+class PilotStartRequest(BaseModel):
+    account_id: str = Field(..., min_length=1)
+    company_name: str = Field(..., min_length=1)
+    contact_name: str = ""
+    sector: str = "b2b_services"
+    pain_points: list[str] = Field(default_factory=list)
+    diagnostic_id: str = ""
+    founder_name: str = "سامي"
+    start_date: str = ""  # ISO date string, defaults to today
 
 
-@dataclass
-class DayTask:
+class DayPlan(BaseModel):
     day: int
+    date_str: str
     title_ar: str
     title_en: str
     tasks_ar: list[str]
     tasks_en: list[str]
-    deliverable_ar: str
-    deliverable_en: str
-    requires_approval: bool = False
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "day": self.day,
-            "title_ar": self.title_ar,
-            "title_en": self.title_en,
-            "tasks_ar": self.tasks_ar,
-            "tasks_en": self.tasks_en,
-            "deliverable_ar": self.deliverable_ar,
-            "deliverable_en": self.deliverable_en,
-            "requires_approval": self.requires_approval,
-        }
+    draft_messages_ar: list[str] = Field(default_factory=list)
+    proof_event: str = ""
+    approval_required: bool = True
 
 
-@dataclass
-class PilotPlan:
+class PilotPlan(BaseModel):
     pilot_id: str
     account_id: str
     company_name: str
-    days: list[DayTask]
-    payment_confirmed: bool
-    created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+    start_date: str
+    end_date: str
+    day_plans: list[DayPlan]
+    week1_report_template: str
+    upsell_script: str
+    approval_status: str = "approval_required"
 
     def to_dict(self) -> dict[str, Any]:
-        return {
-            "pilot_id": self.pilot_id,
-            "account_id": self.account_id,
-            "company_name": self.company_name,
-            "days": [d.to_dict() for d in self.days],
-            "payment_confirmed": self.payment_confirmed,
-            "created_at": self.created_at.isoformat(),
-        }
+        return json.loads(self.model_dump_json())
 
-    def to_markdown_ar(self) -> str:
-        lines = [
-            f"# خطة برنامج التجربة — {self.company_name}",
-            f"**رقم البرنامج:** {self.pilot_id}",
-            f"**تاريخ البدء:** {self.created_at.strftime('%Y-%m-%d')}",
-            f"**السعر:** 499 ريال سعودي",
-            "",
-            "---",
-            "",
+
+class PilotDeliveryKit:
+    """Generates structured 7-day pilot delivery plan for a 499 SAR engagement."""
+
+    def create_pilot_plan(self, req: PilotStartRequest) -> PilotPlan:
+        import hashlib
+        pilot_id = hashlib.sha256(
+            f"{req.account_id}{req.company_name}{datetime.now(UTC).date()}".encode()
+        ).hexdigest()[:16]
+
+        start = date.fromisoformat(req.start_date) if req.start_date else date.today()
+        end = start + timedelta(days=6)
+
+        day_plans = [
+            DayPlan(
+                day=1,
+                date_str=str(start),
+                title_ar="جلسة الاستلام وتحديد الألم",
+                title_en="Intake & Pain Mapping",
+                tasks_ar=[
+                    f"مكالمة استلام 45 دقيقة مع {req.contact_name or req.company_name}",
+                    "توثيق أكبر 3 تحديات بالتفصيل",
+                    f"طلب البيانات: قائمة العملاء، معدل الإغلاق، متوسط قيمة الصفقة",
+                    "إرسال ملخص كتابي للمكالمة (يتطلب موافقة الفاوندر)",
+                ],
+                tasks_en=[
+                    f"45-min intake call with {req.contact_name or req.company_name}",
+                    "Document top 3 challenges in detail",
+                    "Request data: client list, close rate, average deal value",
+                    "Send written call summary (requires founder approval)",
+                ],
+                draft_messages_ar=[
+                    f"شكراً على وقتك اليوم {req.contact_name}. ملخص ما ناقشناه في المرفق. نبدأ غداً بـ [المهمة الأولى]. أي تعديلات؟",
+                ],
+                proof_event="intake_completed",
+            ),
+            DayPlan(
+                day=2,
+                date_str=str(start + timedelta(days=1)),
+                title_ar="تدقيق الوضع الراهن",
+                title_en="Current State Audit",
+                tasks_ar=[
+                    "تحليل بيانات الـ pipeline المُرسَلة",
+                    "رسم خريطة العملية الحالية (مبيعات → تسليم → متابعة)",
+                    "تحديد 5 نقاط احتكاك رئيسية",
+                    "إعداد قائمة الفجوات مع الأولويات",
+                ],
+                tasks_en=[
+                    "Analyze submitted pipeline data",
+                    "Map current process (sales → delivery → follow-up)",
+                    "Identify 5 key friction points",
+                    "Prepare gap list with priorities",
+                ],
+                draft_messages_ar=[
+                    "حللنا البيانات اليوم. أبرز ما وجدناه: [3 نقاط]. سنركز الأسبوع على هذه النقاط. نرسل الخطة التفصيلية غداً.",
+                ],
+                proof_event="current_state_documented",
+            ),
+            DayPlan(
+                day=3,
+                date_str=str(start + timedelta(days=2)),
+                title_ar="تصميم الحل الأول",
+                title_en="Solution Design — Day 1",
+                tasks_ar=[
+                    "بناء قالب متابعة العملاء الخاص بالقطاع",
+                    "إعداد 2 مسودة تواصل للعملاء غير المُستجيبين",
+                    "تصميم سكريبت المكالمة القصيرة (3 دقائق)",
+                    "مراجعة الفاوندر للمسودات",
+                ],
+                tasks_en=[
+                    "Build sector-specific follow-up template",
+                    "Prepare 2 outreach drafts for non-responsive leads",
+                    "Design short call script (3 minutes)",
+                    "Founder review of drafts",
+                ],
+                draft_messages_ar=[
+                    f"أهلاً {req.contact_name}، جهّزنا اليوم [أداة 1] و [أداة 2]. هل تريد نراجعها معاً في مكالمة قصيرة غداً؟",
+                ],
+                proof_event="solution_designed",
+            ),
+            DayPlan(
+                day=4,
+                date_str=str(start + timedelta(days=3)),
+                title_ar="تطبيق الحل وأول قياس",
+                title_en="Solution Implementation & First Measurement",
+                tasks_ar=[
+                    "تطبيق أدوات اليوم الثالث على الحالات الفعلية",
+                    "قياس: وقت الاستجابة قبل وبعد",
+                    "جمع أول دليل قابل للقياس (screenshot أو رقم)",
+                    "توثيق الدليل في proof_event",
+                ],
+                tasks_en=[
+                    "Apply day-3 tools on real cases",
+                    "Measure: response time before and after",
+                    "Collect first measurable evidence (screenshot or number)",
+                    "Document evidence in proof_event",
+                ],
+                draft_messages_ar=[
+                    "تحديث اليوم الرابع: طبّقنا [الأداة] على [X] حالة. النتيجة الأولية: [رقم]. سنكمل القياس غداً.",
+                ],
+                proof_event="first_measurement_captured",
+            ),
+            DayPlan(
+                day=5,
+                date_str=str(start + timedelta(days=4)),
+                title_ar="توسيع التطبيق",
+                title_en="Scaling the Solution",
+                tasks_ar=[
+                    "توسيع تطبيق الأدوات على كامل pipeline",
+                    "إعداد تقرير مقارنة (قبل/بعد)",
+                    "تحديد: أيّ الأدوات جلبت أكبر تأثير؟",
+                    "تحضير مسودة التقرير الأسبوعي",
+                ],
+                tasks_en=[
+                    "Scale tool application across full pipeline",
+                    "Prepare before/after comparison report",
+                    "Identify: which tools had the most impact?",
+                    "Draft weekly report",
+                ],
+                draft_messages_ar=[
+                    f"اليوم الخامس — النتائج تتشكل. جهّزنا مقارنة قبل/بعد. التقرير الأسبوعي سيصلك نهاية الأسبوع.",
+                ],
+                proof_event="impact_measured",
+            ),
+            DayPlan(
+                day=6,
+                date_str=str(start + timedelta(days=5)),
+                title_ar="توثيق الإثبات",
+                title_en="Proof Documentation",
+                tasks_ar=[
+                    "توثيق كل الأدلة المجمّعة طوال الأسبوع",
+                    "إعداد طقم الإثبات (L1 Proof Pack)",
+                    "حساب: وفورات الوقت، تحسين معدل الاستجابة، قيمة المخرجات",
+                    "مراجعة الفاوندر للطقم قبل إرساله",
+                ],
+                tasks_en=[
+                    "Document all evidence collected throughout the week",
+                    "Prepare proof pack (L1 level)",
+                    "Calculate: time savings, response rate improvement, output value",
+                    "Founder reviews pack before delivery",
+                ],
+                draft_messages_ar=[
+                    "جهّزنا طقم الإثبات الأسبوعي. يشمل [X نتيجة]. سنراجعه معك غداً في تقرير الإغلاق.",
+                ],
+                proof_event="proof_pack_built",
+            ),
+            DayPlan(
+                day=7,
+                date_str=str(start + timedelta(days=6)),
+                title_ar="تقرير الإغلاق وعرض الاستمرار",
+                title_en="Closing Report & Continuation Offer",
+                tasks_ar=[
+                    "تقديم التقرير الأسبوعي الكامل للعميل",
+                    "مراجعة ما تم + ما بقي",
+                    "تقديم عرض Managed Ops (2,999-4,999 ر.س/شهر) إن كانت النتائج واضحة",
+                    "الحصول على شهادة موافقة كتابية إن رغب العميل",
+                ],
+                tasks_en=[
+                    "Deliver full weekly report to client",
+                    "Review completed + remaining items",
+                    "Present Managed Ops offer (2,999-4,999 SAR/mo) if results are clear",
+                    "Obtain written consent for testimonial if client agrees",
+                ],
+                draft_messages_ar=[
+                    f"أهلاً {req.contact_name}،\nختام أسبوعنا الأول. نتائج هذا الأسبوع:\n"
+                    f"✅ [نتيجة 1]\n✅ [نتيجة 2]\n✅ [نتيجة 3]\n\n"
+                    f"هل تريد الاستمرار بنظام Managed Ops الشهري لتحقيق [الهدف التالي]؟",
+                ],
+                proof_event="week1_delivered",
+            ),
         ]
-        for day in self.days:
-            lines += [
-                f"## اليوم {day.day}: {day.title_ar}",
-                "",
-                "**المهام:**",
-            ]
-            for task in day.tasks_ar:
-                lines.append(f"- {task}")
-            lines += [
-                "",
-                f"**المُخرج:** {day.deliverable_ar}",
-                "",
-            ]
-            if day.requires_approval:
-                lines.append("⚠️ **يتطلب موافقة الفاوندر قبل الإرسال**\n")
-        return "\n".join(lines)
 
+        week1_report = self._week1_report_template(req)
+        upsell_script = self._upsell_script(req)
 
-# ── 7-day canonical plan ──────────────────────────────────────────
-
-def build_pilot_plan(ctx: PilotContext) -> PilotPlan:
-    """
-    Build the canonical 7-day pilot plan for a specific company.
-    Constitutional: payment must be confirmed before this is used operationally.
-    """
-    days: list[DayTask] = [
-        DayTask(
-            day=1,
-            title_ar="مكالمة الاستقبال وخريطة الألم",
-            title_en="Intake Call & Pain Mapping",
-            tasks_ar=[
-                f"مكالمة مع {ctx.contact_name} (30-45 دقيقة)",
-                "رسم خريطة عملية استقبال العملاء المحتملين الحالية",
-                "تحديد أبطأ 3 نقاط في العملية",
-                "التحقق من القنوات المستخدمة (واتساب / إيميل / لينكد إن)",
-                "تسجيل خريطة الألم في ملف التشخيص",
-            ],
-            tasks_en=[
-                f"Call with {ctx.contact_name} (30-45 min)",
-                "Map current lead intake process",
-                "Identify the 3 slowest points in the process",
-                "Verify channels in use (WhatsApp / Email / LinkedIn)",
-                "Record pain map in diagnostic file",
-            ],
-            deliverable_ar="خريطة ألم موثّقة تُظهر الفجوات الرئيسية",
-            deliverable_en="Documented pain map showing key gaps",
-        ),
-        DayTask(
-            day=2,
-            title_ar="تدقيق الوضع الراهن وطلب البيانات",
-            title_en="Current State Audit & Data Request",
-            tasks_ar=[
-                f"مراجعة أدوات {ctx.company_name} الحالية (CRM / Excel / واتساب)",
-                "حساب متوسط وقت الرد الحالي",
-                "تحديد حجم العملاء المحتملين شهرياً",
-                "طلب آخر 20 عميل محتمل كعينة (مجهولة الهوية)",
-                "رسم مخطط العملية الحالية",
-            ],
-            tasks_en=[
-                f"Review {ctx.company_name}'s current tools (CRM / Excel / WhatsApp)",
-                "Calculate current average response time",
-                "Identify monthly lead volume",
-                "Request last 20 leads as sample (anonymized)",
-                "Draw current process flowchart",
-            ],
-            deliverable_ar="تقرير تدقيق موجز مع إحصائيات الوضع الراهن",
-            deliverable_en="Brief audit report with current state statistics",
-        ),
-        DayTask(
-            day=3,
-            title_ar="إعداد أول دفعة رسائل ذكية (موافقة مطلوبة)",
-            title_en="First Smart Message Batch (Approval Required)",
-            tasks_ar=[
-                "تحليل عينة العملاء المحتملين من اليوم 2",
-                "إعداد 2 مسودات رسائل مخصصة (واتساب/إيميل)",
-                "عرض المسودات على الفاوندر للمراجعة والموافقة",
-                "تعديل الرسائل بناءً على ملاحظات الفاوندر",
-            ],
-            tasks_en=[
-                "Analyze lead sample from Day 2",
-                "Prepare 2 personalized message drafts (WhatsApp/email)",
-                "Present drafts to founder for review and approval",
-                "Revise messages based on founder feedback",
-            ],
-            deliverable_ar="2 رسائل مخصصة جاهزة للإرسال بعد الموافقة",
-            deliverable_en="2 personalized messages ready to send after approval",
-            requires_approval=True,
-        ),
-        DayTask(
-            day=4,
-            title_ar="إعداد ثاني دفعة رسائل (موافقة مطلوبة)",
-            title_en="Second Smart Message Batch (Approval Required)",
-            tasks_ar=[
-                "متابعة نتائج الرسائل من اليوم 3 (ردود / عدم رد)",
-                "إعداد 2 مسودات رسائل متابعة مخصصة",
-                "عرض المسودات للموافقة",
-                "توثيق أي رد إيجابي كحدث إثبات",
-            ],
-            tasks_en=[
-                "Track Day 3 message results (replies / no reply)",
-                "Prepare 2 personalized follow-up drafts",
-                "Present drafts for approval",
-                "Document any positive reply as proof event",
-            ],
-            deliverable_ar="2 رسائل متابعة مخصصة + تقرير نتائج اليوم 3",
-            deliverable_en="2 follow-up messages + Day 3 results report",
-            requires_approval=True,
-        ),
-        DayTask(
-            day=5,
-            title_ar="إعداد ثالث دفعة رسائل + بناء القاعدة",
-            title_en="Third Message Batch + Foundation Building",
-            tasks_ar=[
-                "إعداد 2 مسودات رسائل إضافية للشريحة التالية",
-                "بناء قاعدة استجابات جاهزة (5 ردود نموذجية)",
-                "عرض المسودات للموافقة",
-                "إعداد قالب تقرير الأسبوع الأول",
-            ],
-            tasks_en=[
-                "Prepare 2 additional drafts for next segment",
-                "Build ready-response library (5 template responses)",
-                "Present drafts for approval",
-                "Prepare week-1 report template",
-            ],
-            deliverable_ar="2 رسائل إضافية + مكتبة ردود جاهزة (5 قوالب)",
-            deliverable_en="2 additional messages + ready-response library (5 templates)",
-            requires_approval=True,
-        ),
-        DayTask(
-            day=6,
-            title_ar="توثيق حدث الإثبات",
-            title_en="Proof Event Documentation",
-            tasks_ar=[
-                "جمع كل نتائج الأسبوع (ردود، اجتماعات محجوزة، صفقات)",
-                "توثيق أقوى نتيجة كحدث إثبات رسمي",
-                "حساب: وقت الرد قبل وبعد / نسبة الردود",
-                "إعداد ملخص الإثبات للعميل",
-                "طلب شهادة العميل (اختياري، موافقته مطلوبة)",
-            ],
-            tasks_en=[
-                "Collect all week results (replies, meetings booked, deals)",
-                "Document strongest result as formal proof event",
-                "Calculate: response time before/after / reply rate",
-                "Prepare proof summary for client",
-                "Request client testimonial (optional, requires consent)",
-            ],
-            deliverable_ar="حدث إثبات رسمي موثّق مع أرقام قابلة للقياس",
-            deliverable_en="Formal documented proof event with measurable numbers",
-        ),
-        DayTask(
-            day=7,
-            title_ar="تقرير الأسبوع الأول ومحادثة التطوير",
-            title_en="Week-1 Report & Expansion Conversation",
-            tasks_ar=[
-                "إعداد تقرير الأسبوع الأول الكامل",
-                "عرض التقرير على العميل (مكالمة 30 دقيقة)",
-                "عرض خيار الاستمرار (Managed Ops 2,999 ريال/شهر)",
-                "توثيق قرار العميل في نظام التشغيل",
-                "إرسال طقم الإثبات الكامل للعميل",
-            ],
-            tasks_en=[
-                "Prepare complete week-1 report",
-                "Present report to client (30-min call)",
-                "Offer continuation option (Managed Ops 2,999 SAR/mo)",
-                "Document client decision in operating system",
-                "Send complete proof pack to client",
-            ],
-            deliverable_ar="تقرير أسبوع كامل + حدث إثبات + عرض للاستمرار",
-            deliverable_en="Complete week report + proof event + continuation offer",
-        ),
-    ]
-
-    return PilotPlan(
-        pilot_id=ctx.pilot_id,
-        account_id=ctx.account_id,
-        company_name=ctx.company_name,
-        days=days,
-        payment_confirmed=ctx.payment_confirmed,
-    )
-
-
-def get_day_brief(plan: PilotPlan, day: int) -> dict[str, Any]:
-    """Get today's tasks and deliverables for the founder."""
-    if day < 1 or day > 7:
-        raise ValueError(f"Day must be 1-7, got {day}")
-    day_task = plan.days[day - 1]
-    deadline = plan.created_at + timedelta(days=day - 1)
-    return {
-        "pilot_id": plan.pilot_id,
-        "company": plan.company_name,
-        "day": day,
-        "deadline": deadline.strftime("%Y-%m-%d"),
-        "title_ar": day_task.title_ar,
-        "title_en": day_task.title_en,
-        "tasks_ar": day_task.tasks_ar,
-        "tasks_en": day_task.tasks_en,
-        "deliverable_ar": day_task.deliverable_ar,
-        "deliverable_en": day_task.deliverable_en,
-        "requires_approval": day_task.requires_approval,
-        "constitutional_note": "جميع الرسائل تتطلب موافقة الفاوندر قبل الإرسال" if day_task.requires_approval else None,
-    }
-
-
-def save_pilot(plan: PilotPlan) -> None:
-    """Persist pilot plan to local file ledger."""
-    try:
-        pilots_dir = os.path.join(
-            os.path.dirname(__file__), "..", "..", "data", "pilots"
+        return PilotPlan(
+            pilot_id=pilot_id,
+            account_id=req.account_id,
+            company_name=req.company_name,
+            start_date=str(start),
+            end_date=str(end),
+            day_plans=day_plans,
+            week1_report_template=week1_report,
+            upsell_script=upsell_script,
         )
-        os.makedirs(pilots_dir, exist_ok=True)
-        path = os.path.join(pilots_dir, f"{plan.pilot_id}.json")
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(plan.to_dict(), f, ensure_ascii=False, indent=2)
-        log.info("Pilot plan saved: %s", path)
-    except Exception as exc:
-        log.warning("Could not save pilot plan: %s", exc)
+
+    def _week1_report_template(self, req: PilotStartRequest) -> str:
+        return f"""# تقرير الأسبوع الأول — {req.company_name}
+**Week 1 Report — {req.company_name}**
+
+التاريخ: {{date}} | المعرف: {{pilot_id}}
+
+---
+
+## ما أنجزناه هذا الأسبوع / What We Accomplished This Week
+
+| اليوم | المهمة | الحالة |
+|-------|--------|--------|
+| 1 | جلسة الاستلام | ✅ |
+| 2 | تدقيق الوضع الراهن | ✅ |
+| 3-4 | تصميم وتطبيق الحل | ✅ |
+| 5-6 | القياس والإثبات | ✅ |
+| 7 | تقرير الإغلاق | ✅ |
+
+## النتائج القابلة للقياس / Measurable Results
+
+- **[مؤشر 1]**: من {{before_1}} إلى {{after_1}} (+{{delta_1}}%)
+- **[مؤشر 2]**: وفّرنا {{saved_hours}} ساعة/أسبوع
+- **[مؤشر 3]**: {{other_result}}
+
+## الأدلة / Evidence
+
+1. {{evidence_1}}
+2. {{evidence_2}}
+3. {{evidence_3}}
+
+## الخطوة التالية / Next Step
+
+لتحويل هذه النتائج إلى نمو مستمر، نقترح برنامج **Managed Ops** (2,999 ر.س/شهر):
+- 12 جلسة عمل شهرية
+- لوحة KPI حية
+- تقرير شهري + طقم إثبات
+- أولوية الدعم
+
+> هذا التقرير معتمد من الفاوندر — للمراجعة الداخلية قبل الإرسال.
+"""
+
+    def _upsell_script(self, req: PilotStartRequest) -> str:
+        return f"""# سكريبت عرض Managed Ops — {req.company_name}
+
+**المدة**: 10-15 دقيقة | **الهدف**: إغلاق عقد شهري (2,999-4,999 ر.س/شهر)
+
+---
+
+## الافتتاح (2 دقيقة)
+
+"أهلاً {{contact_name}}، أولاً شكراً على ثقتك هذا الأسبوع.
+نتائجنا كانت [أذكر أبرز نتيجتين].
+السؤال الطبيعي الآن: كيف نحافظ على هذا الزخم؟"
+
+## عرض القيمة (5 دقائق)
+
+"برنامج Managed Ops يعني:
+✅ أنا أشتغل معك بشكل مستمر — مش مشروع واحد ثم الوداع
+✅ 12 جلسة شهرية = شغل منتظم كل أسبوع
+✅ لوحة KPI مباشرة تحديث أسبوعي
+✅ أولوية في أي طارئ
+✅ تقرير إثبات شهري للمحاسبة
+
+السعر: 2,999 ر.س/شهر — أقل من موظف واحد بدوام جزئي."
+
+## معالجة الاعتراضات
+
+**"سعره غالي"**:
+"وقتك يساوي أكثر. في الأسبوع الأول وفّرنا [X ساعة]. بـ 12 شهر هذا [X*52 ساعة] = [قيمة وقتك]."
+
+**"أحتاج أفكر"**:
+"طبعاً. الاتفاق لشهر واحد قابل للإلغاء. جرّب شهراً واحداً بدون التزام طويل."
+
+## الإغلاق
+
+"هل نبدأ الشهر القادم؟ أرسل لك العقد الآن."
+
+---
+> موافقة الفاوندر مطلوبة قبل استخدام هذا السكريبت.
+"""
