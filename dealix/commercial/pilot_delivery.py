@@ -62,7 +62,6 @@ class PilotDeliveryKit:
 
         start = date.fromisoformat(req.start_date) if req.start_date else date.today()
         end = start + timedelta(days=6)
-        pains = req.pain_points or ["الإيراد", "الأتمتة"]
 
         day_plans = [
             DayPlan(

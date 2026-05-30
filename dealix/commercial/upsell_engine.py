@@ -10,7 +10,7 @@ import json
 from datetime import UTC, datetime
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class UpsellCheckResult(BaseModel):

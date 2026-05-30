@@ -22,7 +22,7 @@ from fastapi.responses import PlainTextResponse
 from dealix.commercial.diagnostic_engine import DiagnosticEngine, DiagnosticRequest
 from dealix.commercial.warm_intro_generator import WarmIntroGenerator, WarmIntroRequest
 from dealix.commercial.pilot_delivery import PilotDeliveryKit, PilotStartRequest
-from dealix.commercial.proof_builder import ProofBuildRequest, ProofBuilder, ProofEvent
+from dealix.commercial.proof_builder import ProofBuildRequest, ProofBuilder
 from dealix.commercial.upsell_engine import UpsellEngine
 from dealix.commercial.case_study_generator import CaseStudyGenerator, CaseStudyRequest
 from dealix.payments.payment_link import (
