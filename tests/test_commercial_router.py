@@ -185,7 +185,7 @@ async def test_upsell_gated_no_pilots(async_client):
 
 @pytest.mark.asyncio
 async def test_upsell_eligible_after_pilot(async_client):
-    """After 1 pilot + 1 proof event, at least one offer becomes eligible."""
+    """After 3+ proof events at L1, at least one offer becomes eligible."""
     r = await async_client.post(
         "/api/v1/commercial/upsell/evaluate",
         json={
@@ -193,7 +193,7 @@ async def test_upsell_eligible_after_pilot(async_client):
             "sector": "marketing_agency",
             "pain_point": "تأخر الرد",
             "pilot_count": 1,
-            "proof_event_count": 1,
+            "proof_event_count": 3,
             "evidence_level": 1,
         },
     )
