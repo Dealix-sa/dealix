@@ -102,8 +102,7 @@ numpy>=1.26.0,<3
 # Saudi market — Hijri calendar (Um Al-Qura calendar system)
 ummalqura>=1.0.4
 
-# MCP Server — exposes Dealix as an MCP tool for Claude Desktop / Claude Code
-fastmcp>=2.0.0
+# MCP Server dependency lives in mcp_server/requirements-mcp.txt (optional — not needed for API)
 
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9

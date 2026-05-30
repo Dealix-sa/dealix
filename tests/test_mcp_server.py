@@ -44,8 +44,8 @@ class TestMCPServerStructure:
     def test_mcp_server_readme_exists(self):
         assert (_REPO / "mcp_server" / "README.md").exists()
 
-    def test_fastmcp_in_requirements(self):
-        req = (_REPO / "requirements.txt").read_text()
+    def test_fastmcp_in_mcp_requirements(self):
+        req = (_REPO / "mcp_server" / "requirements-mcp.txt").read_text()
         assert "fastmcp" in req
 
     def test_mcp_server_imports_cleanly(self):
