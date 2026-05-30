@@ -33,6 +33,10 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/commercial", tags=["commercial"])
 
 _ID_RE = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
+# Absolute path to pilots data dir — resolved once at import so realpath checks are reliable
+_PILOTS_DIR = os.path.realpath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "data", "pilots")
+)
 
 
 def _safe_id(value: str) -> str:
@@ -210,8 +214,12 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
     """Get today's task brief for a running pilot."""
     if not _ID_RE.match(pilot_id):
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
+    # Canonicalise and verify the resolved path stays inside _PILOTS_DIR
+    resolved = os.path.realpath(os.path.join(_PILOTS_DIR, pilot_id + ".json"))
+    if not resolved.startswith(_PILOTS_DIR + os.sep):
+        raise HTTPException(status_code=422, detail="Invalid pilot_id")
     try:
-        with open(os.path.join("data", "pilots", os.path.basename(pilot_id) + ".json"), encoding="utf-8") as f:
+        with open(resolved, encoding="utf-8") as f:
             plan_data = json.load(f)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Pilot not found")
@@ -233,8 +241,11 @@ async def get_pilot_plan(pilot_id: str) -> dict[str, Any]:
     """Get the full 7-day plan for a pilot."""
     if not _ID_RE.match(pilot_id):
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
+    resolved = os.path.realpath(os.path.join(_PILOTS_DIR, pilot_id + ".json"))
+    if not resolved.startswith(_PILOTS_DIR + os.sep):
+        raise HTTPException(status_code=422, detail="Invalid pilot_id")
     try:
-        with open(os.path.join("data", "pilots", os.path.basename(pilot_id) + ".json"), encoding="utf-8") as f:
+        with open(resolved, encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Pilot not found")

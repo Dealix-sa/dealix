@@ -201,7 +201,12 @@ def _save_opportunities(account_id: str, company_name: str, opps: list[UpsellOpp
         )
         os.makedirs(upsell_dir, exist_ok=True)
         clean_id = re.sub(r"[^a-zA-Z0-9_-]", "_", account_id)[:128]
-        with open(os.path.join(upsell_dir, os.path.basename(clean_id) + "_opportunities.json"), "w", encoding="utf-8") as f:
+        safe_dir = os.path.realpath(upsell_dir)
+        resolved = os.path.realpath(os.path.join(safe_dir, clean_id + "_opportunities.json"))
+        if not resolved.startswith(safe_dir + os.sep):
+            log.warning("Upsell path traversal attempt blocked for account %s", clean_id[:20])
+            return
+        with open(resolved, "w", encoding="utf-8") as f:
             json.dump(
                 {
                     "account_id": account_id,
