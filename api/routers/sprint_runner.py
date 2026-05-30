@@ -148,8 +148,8 @@ def _get_redis_client():
 @router.get("/sample")
 async def sample_sprint() -> dict[str, Any]:
     """Run the sprint on the synthetic Saudi B2B demo CSV bundled in
-    data/demo/saudi_b2b_demo.csv. Used by the landing page + smoke tests.
-    Results are cached in Redis for 1 hour so the demo loads in <100ms.
+    data/demo/saudi_b2b_demo.csv. Cached in Redis for 1 hour — demo calls
+    return in <100ms after first run. Also used by the landing page and smoke tests.
     """
     # --- cache read ---
     _rc = _get_redis_client()
@@ -162,7 +162,24 @@ async def sample_sprint() -> dict[str, Any]:
             pass  # cache miss or Redis error — fall through to live run
 
     import csv
+    import json
     from pathlib import Path
+
+    _DEMO_CACHE_KEY = "dealix:demo:sprint:sample:v2"
+    _DEMO_CACHE_TTL = 3600  # 1 hour
+
+    # Try Redis cache first — short timeout so a missing Redis never delays demo
+    redis_client = None
+    try:
+        from redis.asyncio import Redis as AsyncRedis
+        from core.config.settings import get_settings
+        settings = get_settings()
+        redis_client = AsyncRedis.from_url(settings.redis_url, decode_responses=True, socket_connect_timeout=2)
+        cached_raw = await redis_client.get(_DEMO_CACHE_KEY)
+        if cached_raw:
+            return json.loads(cached_raw)
+    except Exception:  # Redis unavailable — fall through to live run
+        pass
 
     from auto_client_acquisition.delivery_factory.delivery_sprint import run_sprint
 
@@ -195,11 +212,11 @@ async def sample_sprint() -> dict[str, Any]:
     )
     result = run.to_dict()
 
-    # --- cache write ---
-    if _rc is not None:
-        try:
-            _rc.setex(_DEMO_CACHE_KEY, _DEMO_CACHE_TTL, json.dumps(result, default=str))
-        except Exception:
-            pass  # non-fatal: cache write failure doesn't affect the response
+    # Cache the result for 1 hour — best-effort, never fatal
+    try:
+        if redis_client:
+            await redis_client.setex(_DEMO_CACHE_KEY, _DEMO_CACHE_TTL, json.dumps(result, default=str))
+    except Exception:  # Redis write failure is non-fatal; next call will re-run sprint
+        pass
 
     return result

@@ -103,7 +103,7 @@ dumps/
 !landing/assets/data/service-readiness.json
 # Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
 !data/workflows/
-# Demo CSV is synthetic product data (no real customer PII), not runtime data
+# Demo data — synthetic only, no PII, committed for landing page + CI demos
 !data/demo/
 # Seed YAML contains placeholder/illustrative data only (no real PII) — committed for import scripts
 !data/seed/

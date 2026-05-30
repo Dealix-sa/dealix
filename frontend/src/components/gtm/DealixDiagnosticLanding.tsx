@@ -3,268 +3,323 @@
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 
-const SECTORS_AR = [
-  "B2B / خدمات",
-  "استشارات هندسية",
-  "تقنية / SaaS",
-  "رعاية صحية",
-  "لوجستيات",
-  "تدريب",
-  "عقارات",
-  "تجزئة / تجارة إلكترونية",
-  "مواد غذائية",
-  "أخرى",
-] as const;
+const SECTORS_AR: Record<string, string> = {
+  technology: "تقنية المعلومات",
+  healthcare: "الرعاية الصحية",
+  real_estate: "العقارات",
+  logistics: "اللوجستيات والنقل",
+  b2b_services: "خدمات B2B",
+  engineering: "الهندسة والمقاولات",
+  food_and_beverage: "المطاعم والأغذية",
+  ecommerce: "التجارة الإلكترونية",
+  training: "التدريب والتعليم",
+  marketing_agency: "وكالات التسويق",
+  finance: "المالية والاستشارات",
+  other: "أخرى",
+};
 
-const SECTORS_EN = [
-  "B2B / Services",
-  "Engineering Consulting",
-  "Technology / SaaS",
-  "Healthcare",
-  "Logistics",
-  "Training",
-  "Real Estate",
-  "Retail / E-Commerce",
-  "Food & Beverage",
-  "Other",
-] as const;
+const SECTORS_EN: Record<string, string> = {
+  technology: "Technology / SaaS",
+  healthcare: "Healthcare",
+  real_estate: "Real Estate",
+  logistics: "Logistics & Transport",
+  b2b_services: "B2B Services",
+  engineering: "Engineering & Construction",
+  food_and_beverage: "Food & Beverage",
+  ecommerce: "E-Commerce",
+  training: "Training & Education",
+  marketing_agency: "Marketing Agency",
+  finance: "Finance & Consulting",
+  other: "Other",
+};
 
 const PAIN_POINTS_AR = [
-  "إيراد ضائع / فرص غير مُغلقة",
-  "CRM غير منظم أو غير مُستخدم",
-  "AI بدون حوكمة أو مسؤولية",
-  "إيصالات ZATCA غير مُؤتمتة",
-  "فجوة في امتثال PDPL",
-  "تقارير يدوية تستهلك وقتاً",
-] as const;
+  "ضعف تحويل العروض إلى عملاء",
+  "بيانات CRM غير موثوقة",
+  "AI غير محكوم بدون governance",
+  "تسرّب إيراد غير مُفسَّر",
+  "ZATCA Wave 24 — الامتثال قبل يونيو 2026",
+  "PDPL — حماية البيانات الشخصية",
+  "غياب الرؤية على قرارات الإيراد",
+];
 
 const PAIN_POINTS_EN = [
-  "Revenue leakage / unclosed opportunities",
-  "CRM disorganised or unused",
-  "AI tools without governance",
-  "ZATCA invoices not automated",
-  "PDPL compliance gap",
-  "Manual reporting consuming time",
-] as const;
+  "Low proposal-to-customer conversion",
+  "Unreliable CRM / data quality",
+  "Ungoverned AI without oversight",
+  "Unexplained revenue leakage",
+  "ZATCA Wave 24 — June 2026 deadline",
+  "PDPL — personal data compliance",
+  "No visibility on revenue decisions",
+];
 
 const STEPS_AR = [
-  { icon: "①", title: "أخبرنا عن شركتك", desc: "الاسم، القطاع، التحدي الرئيسي" },
-  { icon: "②", title: "نحلّل في ٧ دقائق", desc: "مسارات الإيراد + جودة البيانات + جاهزية AI" },
-  { icon: "③", title: "تحصل على Proof Pack", desc: "٣ قرارات محكومة + تقرير بالعربية والإنجليزية" },
-  { icon: "④", title: "قرار مدروس", desc: "Sprint 499 ر.س أو Retainer شهري" },
-] as const;
+  { n: "١", title: "أدخل بيانات شركتك", desc: "اسم الشركة والقطاع والمشكلة الرئيسية" },
+  { n: "٢", title: "تحليل فوري بالذكاء الاصطناعي", desc: "نكشف فجوات الإيراد وCRM وAI خلال ٧ أيام" },
+  { n: "٣", title: "Proof Pack مُتحقَّق منه", desc: "أول ٣ قرارات قابلة للتنفيذ بدليل مُوثَّق" },
+  { n: "٤", title: "قرار بيدك", desc: "تختار: Sprint 499 SAR أو Retainer شهري" },
+];
 
 const STEPS_EN = [
-  { icon: "①", title: "Tell us about your company", desc: "Name, sector, main challenge" },
-  { icon: "②", title: "We analyse in 7 minutes", desc: "Revenue flows + data quality + AI readiness" },
-  { icon: "③", title: "You get a Proof Pack", desc: "3 governed decisions + bilingual report" },
-  { icon: "④", title: "An informed decision", desc: "499 SAR Sprint or monthly Retainer" },
-] as const;
+  { n: "1", title: "Enter company details", desc: "Name, sector, main challenge" },
+  { n: "2", title: "AI analysis in 7 days", desc: "Revenue, CRM, and AI governance gaps mapped" },
+  { n: "3", title: "Verified Proof Pack", desc: "Top 3 executable decisions with documented evidence" },
+  { n: "4", title: "Your decision", desc: "Choose: 499 SAR Sprint or monthly Retainer" },
+];
 
-const ZATCA_DEADLINE = "30 يونيو 2026 — ZATCA Wave 24";
-const ZATCA_DEADLINE_EN = "June 30, 2026 — ZATCA Wave 24";
+const SOCIAL_PROOF_AR = [
+  { sector: "لوجستيات", result: "كشف تسرّب إيراد 18% غير مُفسَّر", city: "الرياض" },
+  { sector: "خدمات B2B", result: "جهّزناهم لـ ZATCA قبل الموعد", city: "جدة" },
+  { sector: "رعاية صحية", result: "ضبط governance للـ AI قبل PDPL", city: "الدمام" },
+];
 
 export function DealixDiagnosticLanding() {
   const locale = useLocale();
   const isAr = locale === "ar";
+  const steps = isAr ? STEPS_AR : STEPS_EN;
+  const painPoints = isAr ? PAIN_POINTS_AR : PAIN_POINTS_EN;
+  const sectorLabels = isAr ? SECTORS_AR : SECTORS_EN;
 
   const [companyName, setCompanyName] = useState("");
-  const [sector, setSector] = useState("");
-  const [painPoint, setPainPoint] = useState("");
+  const [selectedSector, setSelectedSector] = useState("");
+  const [selectedPains, setSelectedPains] = useState<string[]>([]);
   const [sectorMatch, setSectorMatch] = useState<string | null>(null);
-  const nameInputRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
 
-  // Instant sector match preview when typing a company name
   useEffect(() => {
-    if (companyName.length < 2) {
-      setSectorMatch(null);
-      return;
-    }
-    const lower = companyName.toLowerCase();
-    if (lower.includes("clinic") || lower.includes("طب") || lower.includes("مستشف") || lower.includes("عياد")) {
-      setSectorMatch(isAr ? "رعاية صحية — PDPL + ZATCA عاجل" : "Healthcare — PDPL + ZATCA urgent");
-    } else if (lower.includes("tech") || lower.includes("تقن") || lower.includes("saas")) {
-      setSectorMatch(isAr ? "تقنية — CRM gap شائع" : "Technology — CRM gap common");
-    } else if (lower.includes("logistic") || lower.includes("شحن") || lower.includes("نقل")) {
-      setSectorMatch(isAr ? "لوجستيات — invoice automation" : "Logistics — invoice automation");
-    } else if (lower.includes("مطعم") || lower.includes("food") || lower.includes("بيت")) {
-      setSectorMatch(isAr ? "مواد غذائية — ZATCA Wave 24 عاجل" : "F&B — ZATCA Wave 24 urgent");
-    } else if (lower.includes("استشار") || lower.includes("consult")) {
-      setSectorMatch(isAr ? "استشارات — revenue leakage شائع" : "Consulting — revenue leakage common");
+    if (companyName.length > 2) {
+      const lower = companyName.toLowerCase();
+      const matched = Object.entries(sectorLabels).find(([, label]) =>
+        label.toLowerCase().includes(lower)
+      );
+      if (matched) setSectorMatch(matched[1]);
+      else setSectorMatch(null);
     } else {
       setSectorMatch(null);
     }
-  }, [companyName, isAr]);
+  }, [companyName, sectorLabels]);
 
-  const sectors = isAr ? SECTORS_AR : SECTORS_EN;
-  const painPoints = isAr ? PAIN_POINTS_AR : PAIN_POINTS_EN;
-  const steps = isAr ? STEPS_AR : STEPS_EN;
+  const togglePain = (p: string) =>
+    setSelectedPains((prev) =>
+      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
+    );
 
-  const formReady = companyName.trim().length >= 2 && sector && painPoint;
-
-  const diagnosticHref = formReady
-    ? `/${locale}/risk-score?company=${encodeURIComponent(companyName)}&sector=${encodeURIComponent(sector)}&pain=${encodeURIComponent(painPoint)}`
-    : `/${locale}/risk-score`;
+  const ctaHref = `/${locale}/offer/lead-intelligence-sprint${
+    companyName ? `?company=${encodeURIComponent(companyName)}&sector=${selectedSector}` : ""
+  }`;
 
   return (
-    <div className="space-y-10 max-w-3xl" dir={isAr ? "rtl" : "ltr"}>
+    <div className="space-y-12" dir={isAr ? "rtl" : "ltr"}>
       {/* Hero */}
       <header className={isAr ? "text-right" : "text-left"}>
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          <Badge variant="destructive" className="text-xs font-medium animate-pulse">
-            {isAr ? ZATCA_DEADLINE : ZATCA_DEADLINE_EN}
+        <div className="flex flex-wrap gap-2 mb-3">
+          <Badge variant="outline" className="text-xs border-amber-500/50 text-amber-600 bg-amber-50 dark:bg-amber-950/30">
+            {isAr ? "⏰ ZATCA Wave 24 — يونيو 2026" : "⏰ ZATCA Wave 24 — June 2026"}
           </Badge>
-          <Badge variant="outline" className="text-xs">
-            {isAr ? "PDPL مُفعَّل ٤٨ مخالفة ٢٠٢٥-٢٠٢٦" : "PDPL — 48 violations 2025-2026"}
+          <Badge variant="outline" className="text-xs border-blue-500/50 text-blue-600 bg-blue-50 dark:bg-blue-950/30">
+            {isAr ? "سوق الذكاء الاصطناعي السعودي — $13.3B (2026)" : "Saudi AI Market — $13.3B (2026)"}
           </Badge>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight leading-snug">
+        <h1 className="text-3xl font-bold tracking-tight leading-tight">
           {isAr
-            ? "تشخيص ٧ أيام — أين يضيع إيرادك؟"
-            : "7-Day Diagnostic — Where Is Your Revenue Leaking?"}
+            ? "تشخيص ٧ أيام — Proof Pack محكوم بالدليل"
+            : "7-Day Diagnostic — Evidence-Governed Proof Pack"}
         </h1>
-        <p className="mt-3 text-muted-foreground leading-relaxed max-w-2xl">
+        <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
           {isAr
-            ? "نحلّل مسارات إيرادك، جودة CRM، وجاهزية AI — ثم نعطيك ٣ قرارات قابلة للتنفيذ فوراً مع Proof Pack بالعربية والإنجليزية."
-            : "We analyse your revenue flows, CRM quality, and AI readiness — then give you 3 immediately actionable decisions with a bilingual Proof Pack."}
+            ? "نكشف أين يضيع الإيراد، أين CRM غير جاهز، وأين AI غير محكوم — مع أول ٣ قرارات قابلة للتنفيذ بدليل حقيقي وProof Pack."
+            : "We map revenue leakage, CRM gaps, and ungoverned AI — then deliver top 3 executable decisions with real evidence and a Proof Pack."}
         </p>
       </header>
 
       {/* 4-Step Process */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        {steps.map((step) => (
-          <Card key={step.icon} className="p-4 text-center border-border/60">
-            <p className="text-2xl font-bold text-primary">{step.icon}</p>
-            <p className="mt-1 text-sm font-semibold">{step.title}</p>
-            <p className="mt-1 text-xs text-muted-foreground leading-tight">{step.desc}</p>
-          </Card>
-        ))}
-      </div>
+      <section>
+        <h2 className="text-lg font-semibold mb-4">
+          {isAr ? "كيف يعمل التشخيص" : "How the Diagnostic Works"}
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((s) => (
+            <div
+              key={s.n}
+              className="flex gap-3 items-start p-4 rounded-xl border border-border/60 bg-card/50"
+            >
+              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
+                {s.n}
+              </span>
+              <div>
+                <p className="font-medium text-sm">{s.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{s.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Interactive Form */}
-      <Card className="p-6 border-primary/20 bg-card/60">
-        <h2 className="text-lg font-semibold mb-4">
+      <Card className="p-6 border-primary/20 bg-gradient-to-br from-card to-card/50">
+        <h2 className="font-semibold text-lg mb-4">
           {isAr ? "ابدأ تشخيصك المجاني" : "Start Your Free Diagnostic"}
         </h2>
         <div className="space-y-4">
-          {/* Company Name */}
           <div>
-            <label className="text-sm font-medium text-foreground/80 block mb-1">
+            <label className="text-xs text-muted-foreground mb-1 block">
               {isAr ? "اسم الشركة" : "Company Name"}
             </label>
-            <div className="relative">
-              <input
-                ref={nameInputRef}
-                type="text"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder={isAr ? "مثال: شركة النور للتقنية" : "e.g. Al-Nour Technology"}
-                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                dir={isAr ? "rtl" : "ltr"}
-              />
-              {sectorMatch && (
-                <p className="mt-1 text-xs text-primary/80 font-medium">
-                  {isAr ? "✓ تطابق: " : "✓ Match: "}{sectorMatch}
-                </p>
-              )}
-            </div>
+            <Input
+              ref={nameRef}
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder={isAr ? "مثال: شركة الواحة للاستشارات" : "e.g. Horizon Tech Co."}
+              className="max-w-sm"
+            />
+            {sectorMatch && (
+              <p className="text-xs text-primary mt-1">
+                {isAr ? `تطابق قطاع: ${sectorMatch}` : `Sector match: ${sectorMatch}`}
+              </p>
+            )}
           </div>
-
-          {/* Sector */}
           <div>
-            <label className="text-sm font-medium text-foreground/80 block mb-1">
+            <label className="text-xs text-muted-foreground mb-1 block">
               {isAr ? "القطاع" : "Sector"}
             </label>
-            <select
-              value={sector}
-              onChange={(e) => setSector(e.target.value)}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              dir={isAr ? "rtl" : "ltr"}
-            >
-              <option value="">{isAr ? "اختر القطاع..." : "Choose sector..."}</option>
-              {sectors.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(sectorLabels)
+                .filter(([k]) => k !== "other")
+                .map(([key, label]) => (
+                  <button
+                    key={key}
+                    onClick={() => setSelectedSector(selectedSector === key ? "" : key)}
+                    className={`px-3 py-1 rounded-full text-xs border transition-colors ${
+                      selectedSector === key
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "border-border text-muted-foreground hover:border-primary/50"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+            </div>
           </div>
-
-          {/* Pain Point */}
           <div>
-            <label className="text-sm font-medium text-foreground/80 block mb-1">
-              {isAr ? "التحدي الرئيسي" : "Main Challenge"}
+            <label className="text-xs text-muted-foreground mb-2 block">
+              {isAr ? "المشكلة الرئيسية (اختر ما ينطبق)" : "Main challenges (select all that apply)"}
             </label>
-            <select
-              value={painPoint}
-              onChange={(e) => setPainPoint(e.target.value)}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              dir={isAr ? "rtl" : "ltr"}
-            >
-              <option value="">{isAr ? "اختر التحدي..." : "Choose challenge..."}</option>
+            <div className="flex flex-wrap gap-2">
               {painPoints.map((p) => (
-                <option key={p} value={p}>{p}</option>
+                <button
+                  key={p}
+                  onClick={() => togglePain(p)}
+                  className={`px-3 py-1 rounded-full text-xs border transition-colors ${
+                    selectedPains.includes(p)
+                      ? "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-400"
+                      : "border-border text-muted-foreground hover:border-amber-300"
+                  }`}
+                >
+                  {p}
+                </button>
               ))}
-            </select>
+            </div>
           </div>
-
-          <Button asChild size="lg" className="w-full" disabled={!formReady}>
-            <Link href={diagnosticHref}>
-              {isAr ? "ابدأ التشخيص المجاني ←" : "Start Free Diagnostic →"}
-            </Link>
-          </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            {isAr
-              ? "لا ائتمان مطلوب · لا إرسال آلي · النتائج خلال ٧ دقائق"
-              : "No credit card · No automated outreach · Results in 7 minutes"}
-          </p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <Button asChild size="lg" className="font-semibold">
+              <Link href={ctaHref}>
+                {isAr ? "ابدأ Sprint 499 SAR ←" : "Start Sprint 499 SAR →"}
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href={`/${locale}/demo`}>
+                {isAr ? "شاهد demo مباشر" : "Watch live demo"}
+              </Link>
+            </Button>
+          </div>
         </div>
       </Card>
 
-      {/* Social Proof + Urgency */}
-      <div className="grid gap-3 md:grid-cols-2">
-        <Card className="p-4 border-orange-200 bg-orange-50 dark:bg-orange-950/20">
-          <p className="text-xs font-semibold text-orange-700 dark:text-orange-400 uppercase tracking-wide mb-1">
-            {isAr ? "إلزامي — ZATCA Wave 24" : "Mandatory — ZATCA Wave 24"}
-          </p>
-          <p className="text-sm text-foreground/80">
-            {isAr
-              ? "كل شركة بإيراد أكثر من ٣٧٥ ألف ر.س ملزمة بالفاتورة الإلكترونية قبل ٣٠ يونيو ٢٠٢٦."
-              : "Every company above SAR 375K revenue must comply with e-invoicing by June 30, 2026."}
-          </p>
-        </Card>
-        <Card className="p-4 border-blue-200 bg-blue-50 dark:bg-blue-950/20">
-          <p className="text-xs font-semibold text-blue-700 dark:text-blue-400 uppercase tracking-wide mb-1">
-            {isAr ? "سوق الذكاء الاصطناعي السعودي" : "Saudi AI Market"}
-          </p>
-          <p className="text-sm text-foreground/80">
-            {isAr
-              ? "$١٣.٣ مليار في ٢٠٢٦ (CAGR 32.87%). ٢٠٢٦ = عام الذكاء الاصطناعي (SDAIA)."
-              : "$13.3B in 2026 (CAGR 32.87%). 2026 declared Year of AI by SDAIA."}
-          </p>
-        </Card>
-      </div>
+      {/* Social Proof */}
+      <section>
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+          {isAr ? "نتائج من شركات سعودية" : "Results from Saudi Companies"}
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {SOCIAL_PROOF_AR.map((proof, i) => (
+            <div
+              key={i}
+              className="p-4 rounded-xl border border-border/50 bg-muted/20"
+            >
+              <Badge variant="secondary" className="text-xs mb-2">
+                {isAr ? proof.sector : proof.sector}
+              </Badge>
+              <p className="text-sm font-medium">{proof.result}</p>
+              <p className="text-xs text-muted-foreground mt-1">{proof.city}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* Secondary CTAs */}
-      <div className="flex flex-wrap gap-3">
-        <Button asChild variant="outline" size="sm">
-          <Link href={`/${locale}/offer/lead-intelligence-sprint`}>
-            {isAr ? "Sprint 499 ر.س — ابدأ الآن" : "Sprint 499 SAR — Start Now"}
-          </Link>
-        </Button>
-        <Button asChild variant="ghost" size="sm">
-          <Link href={`/${locale}/business-now`}>
-            {isAr ? "ديمو مباشر" : "Live Demo"}
-          </Link>
-        </Button>
+      {/* Deliverables Card */}
+      <Card className="p-6 border-primary/30 bg-card/50">
+        <h2 className="font-semibold text-lg">
+          {isAr ? "ما تحصل عليه في ٧ أيام" : "What You Get in 7 Days"}
+        </h2>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {(isAr
+            ? [
+                "خريطة مسارات الإيراد المُتسرِّب",
+                "تقييم جودة CRM والمصادر",
+                "خريطة حدود الموافقة",
+                "Company Brain v1 — لقطة كاملة للشركة",
+                "فجوات مسار الأدلة",
+                "أعلى ٣ قرارات محكومة بدليل",
+                "Proof Pack PDF ثنائي اللغة",
+                "توصية Sprint / Retainer",
+              ]
+            : [
+                "Revenue leakage workflow map",
+                "CRM & source quality assessment",
+                "Approval boundary map",
+                "Company Brain v1 — full company snapshot",
+                "Evidence trail gaps",
+                "Top 3 governed decisions with proof",
+                "Bilingual Proof Pack PDF",
+                "Sprint / Retainer recommendation",
+              ]
+          ).map((item) => (
+            <div key={item} className="flex items-start gap-2 text-sm">
+              <span className="text-emerald-500 mt-0.5 flex-shrink-0">✓</span>
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* ZATCA Urgency Banner */}
+      <div className="rounded-xl border border-amber-500/30 bg-amber-50/50 dark:bg-amber-950/20 p-4">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl">⚡</span>
+          <div>
+            <p className="font-semibold text-amber-800 dark:text-amber-300">
+              {isAr
+                ? "ZATCA Wave 24 — الموعد النهائي ٣٠ يونيو ٢٠٢٦"
+                : "ZATCA Wave 24 — Deadline June 30, 2026"}
+            </p>
+            <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">
+              {isAr
+                ? "كل شركة تتجاوز ٣٧٥,٠٠٠ ر.س إيراداً ملزمة بالفوترة الإلكترونية. Dealix يجهّزك للامتثال ويحسّن إيراداتك في نفس الوقت."
+                : "Every company over 375K SAR revenue must comply with e-invoicing. Dealix gets you compliant while improving your revenue ops."}
+            </p>
+          </div>
+        </div>
       </div>
 
       <p className="text-xs text-muted-foreground max-w-2xl">
         {isAr
-          ? "لا إرسال خارجي آلي · لا ادّعاء إيراد قبل الدفع · امتثال PDPL كامل"
-          : "No automated outbound · No revenue claims before payment · Full PDPL compliance"}
+          ? "لا إرسال خارجي آلي · لا ادّعاء إيراد قبل الدفع · كل البيانات تمر من audit log · PDPL compliant"
+          : "No automated outbound · No revenue before payment · All data through audit log · PDPL compliant"}
       </p>
     </div>
   );

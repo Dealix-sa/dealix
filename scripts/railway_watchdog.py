@@ -21,10 +21,7 @@ HEALTH_URL = f"{API_URL}{HEALTH_PATH}"
 def check_health() -> dict[str, object]:
     started = time.time()
     try:
-        req = urllib.request.Request(
-            HEALTH_URL,
-            headers={"User-Agent": "dealix-railway-watchdog/1.0"},
-        )
+        req = urllib.request.Request(HEALTH_URL, headers={"User-Agent": "dealix-railway-watchdog/1.0"})
         with urllib.request.urlopen(req, timeout=15) as response:
             body = response.read(4096).decode("utf-8", errors="replace")
             try:
@@ -38,11 +35,7 @@ def check_health() -> dict[str, object]:
                 "body": parsed,
             }
     except Exception as exc:
-        return {
-            "ok": False,
-            "error": repr(exc),
-            "latency_ms": round((time.time() - started) * 1000),
-        }
+        return {"ok": False, "error": repr(exc), "latency_ms": round((time.time() - started) * 1000)}
 
 
 def main() -> int:
