@@ -210,12 +210,11 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
     """Get today's task brief for a running pilot."""
     if not _ID_RE.match(pilot_id):
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
-    plan_path = os.path.join("data", "pilots", os.path.basename(pilot_id) + ".json")
-    if not os.path.exists(plan_path):
+    try:
+        with open(os.path.join("data", "pilots", os.path.basename(pilot_id) + ".json"), encoding="utf-8") as f:
+            plan_data = json.load(f)
+    except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Pilot not found")
-
-    with open(plan_path, encoding="utf-8") as f:
-        plan_data = json.load(f)
 
     if day < 1 or day > 7:
         raise HTTPException(status_code=422, detail="day must be 1-7")
@@ -234,12 +233,11 @@ async def get_pilot_plan(pilot_id: str) -> dict[str, Any]:
     """Get the full 7-day plan for a pilot."""
     if not _ID_RE.match(pilot_id):
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
-    plan_path = os.path.join("data", "pilots", os.path.basename(pilot_id) + ".json")
-    if not os.path.exists(plan_path):
+    try:
+        with open(os.path.join("data", "pilots", os.path.basename(pilot_id) + ".json"), encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Pilot not found")
-
-    with open(plan_path, encoding="utf-8") as f:
-        return json.load(f)
 
 
 # ── Proof Pack ────────────────────────────────────────────────────
