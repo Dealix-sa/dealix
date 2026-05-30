@@ -40,6 +40,7 @@ class CaseStudyDocument(BaseModel):
     linkedin_post_en: str = ""
     is_consent_verified: bool = False
     approval_status: str = "approval_required"
+    governance_decision: str = "pending"  # pending | approved | rejected
 
     def to_dict(self) -> dict[str, Any]:
         return json.loads(self.model_dump_json())
@@ -126,6 +127,8 @@ class CaseStudyGenerator:
 
 > قصة النجاح هذه للمراجعة الداخلية فقط.
 > موافقة العميل {"✅ تمت" if req.customer_consent else "⏳ مطلوبة قبل النشر"}.
+>
+> **القيمة التقديرية ليست قيمة مُتحقَّقة** — Estimated value is not Verified value.
 """
 
     def _linkedin_post_ar(self, req: CaseStudyRequest, name: str) -> str:
