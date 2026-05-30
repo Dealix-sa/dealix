@@ -141,8 +141,7 @@ async def sample_sprint() -> dict[str, Any]:
     _DEMO_CACHE_KEY = "dealix:demo:sprint:sample:v2"
     _DEMO_CACHE_TTL = 3600  # 1 hour
 
-    # Try Redis cache first
-    cached_result = None
+    # Try Redis cache first — short timeout so a missing Redis never delays demo
     redis_client = None
     try:
         from redis.asyncio import Redis as AsyncRedis
@@ -152,8 +151,8 @@ async def sample_sprint() -> dict[str, Any]:
         cached_raw = await redis_client.get(_DEMO_CACHE_KEY)
         if cached_raw:
             return json.loads(cached_raw)
-    except Exception:
-        pass  # Redis unavailable — fall through to live run
+    except Exception:  # Redis unavailable — fall through to live run
+        pass
 
     from auto_client_acquisition.delivery_factory.delivery_sprint import run_sprint
 
@@ -186,11 +185,11 @@ async def sample_sprint() -> dict[str, Any]:
     )
     result = run.to_dict()
 
-    # Cache the result for 1 hour
+    # Cache the result for 1 hour — best-effort, never fatal
     try:
         if redis_client:
             await redis_client.setex(_DEMO_CACHE_KEY, _DEMO_CACHE_TTL, json.dumps(result, default=str))
-    except Exception:
+    except Exception:  # Redis write failure is non-fatal; next call will re-run sprint
         pass
 
     return result
