@@ -299,6 +299,40 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     }
 
 
+def _notify_founder_payment(*, event_type: str, payment: dict) -> None:
+    """Send a WhatsApp notification to the founder when a payment is confirmed.
+
+    Non-fatal: all errors are swallowed. Only fires when both
+    WHATSAPP_ALLOW_LIVE_SEND=true and DEALIX_FOUNDER_PHONE are set.
+    """
+    try:
+        from core.config.settings import get_settings
+        settings = get_settings()
+        if not settings.whatsapp_allow_live_send:
+            return
+        phone = settings.dealix_founder_phone
+        if not phone:
+            return
+        status = str(payment.get("status") or event_type)
+        if status not in ("paid", "payment_confirmed", "captured"):
+            return
+        amount_halalas = int(payment.get("amount") or 0)
+        amount_sar = amount_halalas / 100
+        payer_email = str(payment.get("source", {}).get("company") or payment.get("source", {}).get("name") or "")
+        message = (
+            f"💰 دفعة جديدة على Dealix\n"
+            f"المبلغ: {amount_sar:.0f} SAR\n"
+            f"العميل: {payer_email or 'غير محدد'}\n"
+            f"الحالة: {status}"
+        )
+        from integrations.whatsapp import WhatsAppClient
+        client = WhatsAppClient()
+        client.send_text(to=phone, message=message)
+        log.info("founder_payment_notified amount_sar=%.0f", amount_sar)
+    except Exception as exc:  # noqa: BLE001
+        log.warning("founder_payment_notify_failed error=%s", exc)
+
+
 @router.post("/api/v1/webhooks/moyasar")
 async def moyasar_webhook(req: Request) -> dict[str, Any]:
     """
@@ -353,6 +387,11 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
             )
         except Exception as sync_exc:
             log.warning("moyasar_side_effects_failed event_fp=%s error=%s", event_fp, sync_exc)
+        # Founder notification — non-fatal, gated by whatsapp_allow_live_send
+        _notify_founder_payment(
+            event_type=event_type,
+            payment=payment,
+        )
         return {
             "status": "ok",
             "event_id": event_id,
