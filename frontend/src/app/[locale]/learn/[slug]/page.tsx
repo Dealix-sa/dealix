@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { allSlugs, getArticle } from "@/content/learn/articles";
 
@@ -27,6 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function LearnArticlePage({ params }: PageProps) {
   const { locale, slug } = await params;
+  setRequestLocale(locale);
   const article = getArticle(slug);
   if (!article) notFound();
 
