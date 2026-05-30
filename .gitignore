@@ -7,6 +7,7 @@ dealix/transformation/kpi_founder_commercial_import.yaml
 dealix/config/founder_closure_intake.yaml
 !.env.example
 !.env.staging.example
+!.env.railway.example
 *.pem
 *.key
 *.p12
