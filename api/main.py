@@ -122,6 +122,8 @@ from api.routers import founder_launch_status as founder_launch_status_router
 
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Autonomous product distribution engine
+from api.routers import autonomous_distribution as autonomous_distribution_router
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -389,6 +391,8 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Autonomous product distribution — /api/v1/autonomous-distribution/*
+    app.include_router(autonomous_distribution_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
