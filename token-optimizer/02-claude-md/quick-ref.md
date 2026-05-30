@@ -19,8 +19,11 @@ make build        # docker build
 ## Common Files
 - `core/config.py` — all settings
 - `core/models/` — SQLAlchemy models
-- `api/routes/` — FastAPI endpoints
-- `api/deps.py` — shared dependencies
+- `api/routers/` — FastAPI endpoints (120+ routers)
+- `api/routers/commercial.py` — 13 commercial chain endpoints
+- `dealix/commercial/` — business logic (diagnostic, pilot, proof, upsell)
+- `dealix/payments/` — Moyasar payment links
+- `data/templates/` — AR/EN content templates
 - `tests/conftest.py` — test fixtures
 
 ## Key Patterns
