@@ -65,6 +65,11 @@ COPY --from=builder /opt/venv /opt/venv
 WORKDIR /app
 COPY --chown=app:app . .
 
+# Create wrapper script as root (WORKDIR creates /app owned by root:root 755,
+# so the app user cannot write here — this must run before USER app).
+RUN printf '#!/bin/sh\nset -e\nexec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --workers 1\n' \
+    > /app/start.sh && chmod +x /app/start.sh
+
 USER app
 
 # Railway injects $PORT dynamically; default to 8000 for local dev
@@ -74,13 +79,6 @@ EXPOSE 8000
 # Healthcheck uses $PORT so it matches whatever the platform assigns
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=5 \
     CMD curl -fsS http://localhost:${PORT:-8000}/healthz || exit 1
-
-# Wrapper script so any start command (Dockerfile CMD, Procfile, Railway
-# startCommand override) works without shell-expansion gotchas.
-# Written with RUN to avoid the heredoc COPY syntax that requires pulling
-# docker/dockerfile:1.7 from Docker Hub (rate-limited in unauthenticated CI).
-RUN printf '#!/bin/sh\nset -e\nexec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --workers 1\n' \
-    > /app/start.sh && chmod +x /app/start.sh
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]
