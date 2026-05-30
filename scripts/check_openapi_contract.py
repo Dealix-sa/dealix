@@ -29,7 +29,7 @@ def main() -> int:
             current_path = Path(tmp) / "openapi.json"
             export_openapi(current_path)
             current = load(current_path)
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 — intentional broad catch for export resilience
         # Export can fail if optional dependencies are missing at CI time or
         # if a route's Pydantic model cannot be serialised to JSON Schema.
         # This is informational — the contract check only has value when a
