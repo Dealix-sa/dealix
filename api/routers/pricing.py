@@ -255,15 +255,37 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     plan = str(body.get("plan") or "").lower()
     email = str(body.get("email") or "").strip()
     lead_id = str(body.get("lead_id") or "")
+    referral_code = str(body.get("referral_code") or "").strip().upper()
 
     if plan not in PLANS:
         raise HTTPException(status_code=400, detail=f"unknown_plan: {plan}")
     if "@" not in email:
         raise HTTPException(status_code=400, detail="invalid_email")
 
+    # Validate referral code if provided (non-fatal — bad code = ignore, not block)
+    referral_valid = False
+    if referral_code:
+        try:
+            from auto_client_acquisition.partnership_os.referral_store import (
+                lookup_code,
+            )
+            rc = lookup_code(referral_code)
+            referral_valid = rc is not None and rc.to_dict().get("status") == "active"
+        except Exception:
+            pass  # referral validation is best-effort
+
     plan_info = PLANS[plan]
     callback_base = os.getenv("APP_URL", "https://dealix.me")
     callback_url = f"{callback_base}/checkout/return"
+    meta: dict[str, Any] = {
+        "plan": plan,
+        "email": email,
+        "lead_id": lead_id,
+        "source": "dealix.checkout",
+    }
+    if referral_code:
+        meta["referral_code"] = referral_code
+        meta["referral_valid"] = str(referral_valid).lower()
 
     client = MoyasarClient()
     try:
@@ -272,12 +294,7 @@ async def create_checkout(req: Request) -> dict[str, Any]:
             currency="SAR",
             description=f"Dealix — {plan_info['name']}",
             callback_url=callback_url,
-            metadata={
-                "plan": plan,
-                "email": email,
-                "lead_id": lead_id,
-                "source": "dealix.checkout",
-            },
+            metadata=meta,
         )
     except Exception as exc:
         log.exception(
@@ -290,13 +307,72 @@ async def create_checkout(req: Request) -> dict[str, Any]:
             detail="payment_provider_error",
         ) from exc
 
-    return {
+    result: dict[str, Any] = {
         "invoice_id": invoice.get("id"),
         "status": invoice.get("status"),
         "amount_sar": plan_info["amount_halalas"] / 100,
         "payment_url": invoice.get("url"),
         "plan": plan,
     }
+    if referral_code:
+        result["referral_code"] = referral_code
+        result["referral_applied"] = referral_valid
+    return result
+
+
+async def _auto_zatca_invoice(*, payment: dict, event_type: str) -> None:
+    """Auto-generate ZATCA simplified e-invoice on payment confirmation.
+
+    Non-fatal: all errors are swallowed. Only fires when zatca_seller_vat
+    and zatca_seller_name are configured in settings.
+    """
+    try:
+        from core.config.settings import get_settings
+        settings = get_settings()
+        if not settings.zatca_seller_vat or not settings.zatca_seller_name:
+            return
+        status = str(payment.get("status") or event_type)
+        if status not in ("paid", "payment_confirmed", "captured"):
+            return
+        amount_halalas = int(payment.get("amount") or 0)
+        if amount_halalas == 0:
+            return
+        # VAT-inclusive amount: strip 15% to get pre-VAT
+        amount_sar_incl = amount_halalas / 100
+        unit_price_sar = round(amount_sar_incl / 1.15, 2)
+        payment_id = str(payment.get("id") or "")
+        invoice_number = f"DLXINV-{payment_id[:16]}" if payment_id else f"DLXINV-{_fingerprint(str(amount_halalas))}"
+        plan = (payment.get("metadata") or {}).get("plan") or "service"
+        source_data = payment.get("source") or {}
+        buyer_name = source_data.get("company") or source_data.get("name") or "Dealix Customer"
+        from integrations.zatca import InvoiceGenerator, build_invoice_payload_from_record
+        generator = InvoiceGenerator()
+        invoice_payload = build_invoice_payload_from_record(
+            invoice_number=invoice_number,
+            seller_name=settings.zatca_seller_name,
+            seller_vat=settings.zatca_seller_vat,
+            seller_crn=getattr(settings, "zatca_seller_crn", ""),
+            seller_street=getattr(settings, "zatca_seller_street", ""),
+            seller_city=getattr(settings, "zatca_seller_city", "Riyadh"),
+            seller_postal=getattr(settings, "zatca_seller_postal", ""),
+            buyer_name=buyer_name,
+            buyer_vat=None,
+            line_items_data=[{
+                "description": f"Dealix {plan.replace('_', ' ').title()} Service",
+                "quantity": 1,
+                "unit_price_sar": unit_price_sar,
+            }],
+            invoice_type="simplified",
+            previous_hash=None,
+        )
+        generator.generate(invoice_payload)
+        log.info(
+            "zatca_auto_invoice_generated invoice=%s amount_sar=%.2f",
+            invoice_number,
+            amount_sar_incl,
+        )
+    except Exception as exc:
+        log.warning("zatca_auto_invoice_failed error=%s", exc)
 
 
 def _notify_founder_payment(*, event_type: str, payment: dict) -> None:
@@ -392,6 +468,8 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
             event_type=event_type,
             payment=payment,
         )
+        # ZATCA auto-invoice — non-fatal, gated by zatca_seller_vat setting
+        await _auto_zatca_invoice(event_type=event_type, payment=payment)
         return {
             "status": "ok",
             "event_id": event_id,
