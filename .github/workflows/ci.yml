@@ -198,13 +198,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
 
-    env:
-      # Disable BuildKit for plain `docker build` so the
-      # `# syntax=docker/dockerfile:1.7` directive is treated as a
-      # comment rather than triggering an anonymous Docker Hub pull of the
-      # parser image (rate-limited on shared CI runners).
-      DOCKER_BUILDKIT: "0"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
