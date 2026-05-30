@@ -40,3 +40,5 @@ DEALIX_INTERNAL_WAR_ROOM_CSV = (
 )
 DEALIX_DOGFOODING_WAR_ROOM_JSON = REPO_ROOT / "data/dealix_dogfooding_war_room.json"
 FOUNDER_MAX_OPS_BACKLOG_YAML = REPO_ROOT / "dealix/config/founder_max_ops_backlog.yaml"
+FOUNDER_AGENT_QUEUE_YAML = REPO_ROOT / "dealix/config/founder_agent_task_queue.yaml"
+FOUNDER_AGENT_QUEUE_TODAY_JSON = REPO_ROOT / "data/founder_agent_queue_today.json"
