@@ -204,7 +204,7 @@ def _save_opportunities(account_id: str, company_name: str, opps: list[UpsellOpp
         safe_dir = os.path.realpath(upsell_dir)
         resolved = os.path.realpath(os.path.join(safe_dir, clean_id + "_opportunities.json"))
         if not resolved.startswith(safe_dir + os.sep):
-            log.warning("Upsell path traversal attempt blocked for account %s", clean_id[:20])
+            log.warning("Upsell path traversal attempt blocked")
             return
         with open(resolved, "w", encoding="utf-8") as f:
             json.dump(
