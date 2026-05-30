@@ -7,6 +7,9 @@ This file is the primary repo-specific guide for AI coding agents working in `de
 - Do not duplicate long docs from `README.md` or `docs/`; link to them instead.
 - Preserve existing operational knowledge and avoid treating resolved issues as new bugs.
 
+### Token Optimization
+See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings), CLAUDE.md hygiene, session management, model routing (Haiku/Sonnet/Opus), MCP discipline, subagents, hooks, prompt templates, file handling, monitoring, git hygiene, and env config. Run `bash token-optimizer/12-environment-config/apply-all.sh` to apply all settings.
+
 ### Repo anatomy
 - `api/` — FastAPI app entry, dependencies, middleware, routers, and schema definitions.
 - `auto_client_acquisition/`, `autonomous_growth/`, `dealix/`, `core/`, `integrations/` — business logic, AI agents, policy, and execution workflows.
