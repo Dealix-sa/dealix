@@ -1,15 +1,49 @@
+/* Dealix Brand — Navy + Gold Design System */
 :root {
-  --dealix-deep-green: #0a4d3f;
-  --dealix-deep-green-hover: #083d32;
-  --dealix-gold: #c9a961;
-  --dealix-sand: #f4f0e8;
-  --dealix-charcoal: #1a1a1a;
-  --dealix-success: #2d7a4f;
+  --dealix-navy: #001F3F;
+  --dealix-navy-hover: #000a1e;
+  --dealix-gold: #D4AF37;
+  --dealix-gold-hover: #c29d2e;
+  --dealix-black: #0A0A0A;
+  --dealix-white: #FFFFFF;
+  --dealix-slate: #364558;
+  --dealix-ocean: #0066FF;
+  --dealix-success: #10B981;
+  --dealix-error: #EF4444;
+  --dealix-warning: #F59E0B;
+  --dealix-light: #F3F4F6;
 }
-.dealix-public { --background: var(--dealix-sand); }
+
+/* Legacy aliases — keep components working */
+:root {
+  --dealix-deep-green: var(--dealix-navy);
+  --dealix-deep-green-hover: var(--dealix-navy-hover);
+  --dealix-sand: var(--dealix-light);
+  --dealix-charcoal: var(--dealix-black);
+}
+
+.dealix-public { --background: var(--dealix-light); }
+
 .text-gradient-brand {
-  background: linear-gradient(135deg, var(--dealix-deep-green) 0%, var(--dealix-gold) 100%);
+  background: linear-gradient(135deg, var(--dealix-navy) 0%, var(--dealix-gold) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Navy+Gold geometric dot pattern */
+.bg-dot-pattern {
+  background-image: radial-gradient(circle, rgba(212, 175, 55, 0.15) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Gold shimmer animation */
+@keyframes gold-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.animate-gold-shimmer {
+  background: linear-gradient(90deg, #D4AF37 0%, #F4E89F 50%, #D4AF37 100%);
+  background-size: 200% auto;
+  animation: gold-shimmer 3s linear infinite;
 }
