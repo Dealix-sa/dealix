@@ -25,7 +25,11 @@ def export_openapi(output: Path) -> None:
         json.dumps(schema, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    print(f"Exported OpenAPI schema to {output.relative_to(ROOT)}")
+    try:
+        label = output.relative_to(ROOT)
+    except ValueError:
+        label = output
+    print(f"Exported OpenAPI schema to {label}")
 
 
 def main() -> int:
