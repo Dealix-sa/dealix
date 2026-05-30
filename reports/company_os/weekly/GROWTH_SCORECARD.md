@@ -1,6 +1,6 @@
 # Dealix Growth Scorecard
 
-Generated: 2026-05-30T12:12:10.995584+00:00
+Generated: 2026-05-30T12:12:27.662202+00:00
 
 | Metric | Target |
 |---|---:|
