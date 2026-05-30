@@ -100,7 +100,9 @@ arq>=0.25.0
 numpy>=1.26.0,<3
 
 # Saudi market — Hijri calendar (Um Al-Qura calendar system)
-ummalqura>=1.0.4
+# ummalqura>=1.0.4 removed: source-only package fails to build under modern
+# setuptools (install_layout AttributeError). Code in integrations/saudi_market.py
+# uses try/except ImportError with a fallback calculation when absent.
 
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9

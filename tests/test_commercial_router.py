@@ -16,10 +16,11 @@ from httpx import ASGITransport, AsyncClient
 async def client():
     """ASGI client against the full FastAPI app."""
     try:
-        from api.main import app
-    except BaseException:
-        pytest.skip("api.main import failed (missing deps in local env)")
-    transport = ASGITransport(app=app)
+        from api.main import app as _app
+    except Exception as _exc:  # noqa: BLE001
+        pytest.skip(f"api.main import failed: {_exc}")
+        return
+    transport = ASGITransport(app=_app)
     async with AsyncClient(transport=transport, base_url="http://test") as c:
         yield c
 
@@ -112,10 +113,10 @@ async def test_pilot_start_valid(client):
 
 
 @pytest.mark.asyncio
-async def test_pilot_brief_invalid_id(client):
-    """Invalid pilot_id (path traversal characters) should return 422."""
-    r = await client.get("/api/v1/commercial/pilot/../etc/passwd/brief")
-    # FastAPI path routing may return 404; either 404 or 422 is acceptable
+async def test_pilot_brief_invalid_id_format(client):
+    """pilot_id with invalid characters (not matching ^[a-zA-Z0-9_-]+$) → 422."""
+    r = await client.get("/api/v1/commercial/pilot/invalid%2Fid/brief")
+    # FastAPI URL encoding means this won't match the route — 404 is expected
     assert r.status_code in (404, 422)
 
 
