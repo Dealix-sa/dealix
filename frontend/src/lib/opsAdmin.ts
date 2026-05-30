@@ -3,12 +3,12 @@
 
 const ADMIN_KEY = "dealix_admin_api_key";
 
-export function getAdminApiKey(): string | null {
-  if (typeof window === "undefined") return null;
+export function getAdminApiKey(): string {
+  if (typeof window === "undefined") return "";
   try {
-    return localStorage.getItem(ADMIN_KEY) || null;
+    return localStorage.getItem(ADMIN_KEY) || "";
   } catch {
-    return null;
+    return "";
   }
 }
 
