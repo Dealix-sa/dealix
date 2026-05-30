@@ -100,7 +100,11 @@ arq>=0.25.0
 numpy>=1.26.0,<3
 
 # Saudi market — Hijri calendar (Um Al-Qura calendar system)
-ummalqura>=1.0.4
+# ummalqura fails to build from source on Python 3.12+ (setup.py uses
+# distutils install_layout API removed in newer setuptools). The import in
+# integrations/saudi_market.py is already inside a try/except ImportError
+# so the system degrades gracefully to the built-in Gregorian fallback.
+# ummalqura>=1.0.4
 
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9
