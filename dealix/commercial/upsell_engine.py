@@ -200,7 +200,7 @@ def _save_opportunities(account_id: str, company_name: str, opps: list[UpsellOpp
             os.path.dirname(__file__), "..", "..", "data", "upsell"
         )
         os.makedirs(upsell_dir, exist_ok=True)
-        clean_id = re.sub(r"[^a-zA-Z0-9_-]", "_", account_id)[:128]
+        clean_id = os.path.basename(re.sub(r"[^a-zA-Z0-9_-]", "_", account_id)[:128])
         safe_dir = os.path.realpath(upsell_dir)
         resolved = os.path.realpath(os.path.join(safe_dir, clean_id + "_opportunities.json"))
         if not resolved.startswith(safe_dir + os.sep):

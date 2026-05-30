@@ -7,36 +7,22 @@ Covers: api/routers/commercial.py — validation, happy-path (no LLM), error cas
 from __future__ import annotations
 
 import pytest
-from httpx import ASGITransport, AsyncClient
 
-# ── helpers ───────────────────────────────────────────────────────
-
-
-@pytest.fixture
-async def client():
-    """ASGI client against the full FastAPI app."""
-    try:
-        from api.main import app as _app
-    except Exception as _exc:  # noqa: BLE001
-        pytest.skip(f"api.main import failed: {_exc}")
-        return
-    transport = ASGITransport(app=_app)
-    async with AsyncClient(transport=transport, base_url="http://test") as c:
-        yield c
+# Uses the async_client fixture from tests/conftest.py (no local fixture needed).
 
 
 # ── diagnostic ────────────────────────────────────────────────────
 
 
 @pytest.mark.asyncio
-async def test_diagnostic_generate_missing_company(client):
-    r = await client.post("/api/v1/commercial/diagnostic/generate", json={})
+async def test_diagnostic_generate_missing_company(async_client):
+    r = await async_client.post("/api/v1/commercial/diagnostic/generate", json={})
     assert r.status_code == 422
 
 
 @pytest.mark.asyncio
-async def test_diagnostic_list_empty(client):
-    r = await client.get("/api/v1/commercial/diagnostic/list")
+async def test_diagnostic_list_empty(async_client):
+    r = await async_client.get("/api/v1/commercial/diagnostic/list")
     assert r.status_code == 200
     body = r.json()
     assert "diagnostics" in body
@@ -47,8 +33,8 @@ async def test_diagnostic_list_empty(client):
 
 
 @pytest.mark.asyncio
-async def test_warm_intro_missing_company(client):
-    r = await client.post("/api/v1/commercial/warm-intro/draft", json={})
+async def test_warm_intro_missing_company(async_client):
+    r = await async_client.post("/api/v1/commercial/warm-intro/draft", json={})
     assert r.status_code == 422
 
 
@@ -56,15 +42,15 @@ async def test_warm_intro_missing_company(client):
 
 
 @pytest.mark.asyncio
-async def test_pilot_start_missing_company(client):
-    r = await client.post("/api/v1/commercial/pilot/start", json={})
+async def test_pilot_start_missing_company(async_client):
+    r = await async_client.post("/api/v1/commercial/pilot/start", json={})
     assert r.status_code == 422
 
 
 @pytest.mark.asyncio
-async def test_pilot_start_no_payment(client):
+async def test_pilot_start_no_payment(async_client):
     """payment_confirmed=False must be rejected (NO_LIVE_CHARGE gate)."""
-    r = await client.post(
+    r = await async_client.post(
         "/api/v1/commercial/pilot/start",
         json={
             "company_name": "شركة اختبار",
@@ -76,9 +62,9 @@ async def test_pilot_start_no_payment(client):
 
 
 @pytest.mark.asyncio
-async def test_pilot_start_missing_payment_ref(client):
+async def test_pilot_start_missing_payment_ref(async_client):
     """payment_ref missing must be rejected."""
-    r = await client.post(
+    r = await async_client.post(
         "/api/v1/commercial/pilot/start",
         json={
             "company_name": "شركة اختبار",
@@ -90,9 +76,9 @@ async def test_pilot_start_missing_payment_ref(client):
 
 
 @pytest.mark.asyncio
-async def test_pilot_start_valid(client):
+async def test_pilot_start_valid(async_client):
     """Valid payload with payment_confirmed=True should start a pilot."""
-    r = await client.post(
+    r = await async_client.post(
         "/api/v1/commercial/pilot/start",
         json={
             "company_name": "شركة الاختبار للتسويق",
@@ -113,22 +99,22 @@ async def test_pilot_start_valid(client):
 
 
 @pytest.mark.asyncio
-async def test_pilot_brief_invalid_id_format(client):
+async def test_pilot_brief_invalid_id_format(async_client):
     """pilot_id with invalid characters (not matching ^[a-zA-Z0-9_-]+$) → 422."""
-    r = await client.get("/api/v1/commercial/pilot/invalid%2Fid/brief")
+    r = await async_client.get("/api/v1/commercial/pilot/invalid%2Fid/brief")
     # FastAPI URL encoding means this won't match the route — 404 is expected
     assert r.status_code in (404, 422)
 
 
 @pytest.mark.asyncio
-async def test_pilot_brief_not_found(client):
-    r = await client.get("/api/v1/commercial/pilot/nonexistent-pilot-id/brief")
+async def test_pilot_brief_not_found(async_client):
+    r = await async_client.get("/api/v1/commercial/pilot/nonexistent-pilot-id/brief")
     assert r.status_code == 404
 
 
 @pytest.mark.asyncio
-async def test_pilot_plan_not_found(client):
-    r = await client.get("/api/v1/commercial/pilot/nonexistent-pilot-id/plan")
+async def test_pilot_plan_not_found(async_client):
+    r = await async_client.get("/api/v1/commercial/pilot/nonexistent-pilot-id/plan")
     assert r.status_code == 404
 
 
@@ -136,16 +122,16 @@ async def test_pilot_plan_not_found(client):
 
 
 @pytest.mark.asyncio
-async def test_proof_build_missing_fields(client):
-    r = await client.post("/api/v1/commercial/proof/build", json={})
+async def test_proof_build_missing_fields(async_client):
+    r = await async_client.post("/api/v1/commercial/proof/build", json={})
     assert r.status_code == 422
 
 
 @pytest.mark.asyncio
-async def test_proof_build_valid(client):
+async def test_proof_build_valid(async_client):
     """Minimal valid proof build — no LLM needed."""
     import uuid
-    r = await client.post(
+    r = await async_client.post(
         "/api/v1/commercial/proof/build",
         json={
             "pilot_id": str(uuid.uuid4()),
@@ -171,15 +157,15 @@ async def test_proof_build_valid(client):
 
 
 @pytest.mark.asyncio
-async def test_upsell_missing_company(client):
-    r = await client.post("/api/v1/commercial/upsell/evaluate", json={})
+async def test_upsell_missing_company(async_client):
+    r = await async_client.post("/api/v1/commercial/upsell/evaluate", json={})
     assert r.status_code == 422
 
 
 @pytest.mark.asyncio
-async def test_upsell_gated_no_pilots(client):
+async def test_upsell_gated_no_pilots(async_client):
     """Zero pilots → all offers should be gated."""
-    r = await client.post(
+    r = await async_client.post(
         "/api/v1/commercial/upsell/evaluate",
         json={
             "company_name": "شركة اختبار",
@@ -198,9 +184,9 @@ async def test_upsell_gated_no_pilots(client):
 
 
 @pytest.mark.asyncio
-async def test_upsell_eligible_after_pilot(client):
+async def test_upsell_eligible_after_pilot(async_client):
     """After 1 pilot + 1 proof event, at least one offer becomes eligible."""
-    r = await client.post(
+    r = await async_client.post(
         "/api/v1/commercial/upsell/evaluate",
         json={
             "company_name": "شركة النجاح",
@@ -223,8 +209,8 @@ async def test_upsell_eligible_after_pilot(client):
 
 
 @pytest.mark.asyncio
-async def test_daily_brief(client):
-    r = await client.get("/api/v1/commercial/daily-brief")
+async def test_daily_brief(async_client):
+    r = await async_client.get("/api/v1/commercial/daily-brief")
     assert r.status_code == 200
     body = r.json()
     assert "date" in body

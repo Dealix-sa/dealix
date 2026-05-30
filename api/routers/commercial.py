@@ -214,6 +214,7 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
     """Get today's task brief for a running pilot."""
     if not _ID_RE.match(pilot_id):
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
+    pilot_id = os.path.basename(pilot_id)
     # Canonicalise and verify the resolved path stays inside _PILOTS_DIR
     resolved = os.path.realpath(os.path.join(_PILOTS_DIR, pilot_id + ".json"))
     if not resolved.startswith(_PILOTS_DIR + os.sep):
@@ -241,6 +242,7 @@ async def get_pilot_plan(pilot_id: str) -> dict[str, Any]:
     """Get the full 7-day plan for a pilot."""
     if not _ID_RE.match(pilot_id):
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
+    pilot_id = os.path.basename(pilot_id)
     resolved = os.path.realpath(os.path.join(_PILOTS_DIR, pilot_id + ".json"))
     if not resolved.startswith(_PILOTS_DIR + os.sep):
         raise HTTPException(status_code=422, detail="Invalid pilot_id")
