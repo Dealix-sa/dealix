@@ -39,11 +39,14 @@ _PILOTS_DIR = os.path.realpath(
 )
 
 
-def _safe_id(value: str) -> str:
-    """Validate and sanitize a user-provided ID for use in file paths."""
-    sanitized = re.sub(r"[^a-zA-Z0-9_-]", "_", value)[:128]
+def _safe_id(value: str) -> str | None:
+    """Validate and sanitize a user-provided ID for use in file paths.
+    Returns None if value contains characters outside [a-zA-Z0-9_-].
+    """
+    if not _ID_RE.match(value):
+        return None
     # os.path.basename is a CodeQL-recognized path-traversal sanitizer
-    return os.path.basename(sanitized)
+    return os.path.basename(value)
 
 
 _CONSTITUTIONAL_GATES = {
@@ -212,11 +215,11 @@ async def start_pilot(payload: dict[str, Any] = Body(default_factory=dict)) -> d
 @router.get("/pilot/{pilot_id}/brief")
 async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
     """Get today's task brief for a running pilot."""
-    if not _ID_RE.match(pilot_id):
+    safe = _safe_id(pilot_id)
+    if safe is None:
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
-    pilot_id = os.path.basename(pilot_id)
     # Canonicalise and verify the resolved path stays inside _PILOTS_DIR
-    resolved = os.path.realpath(os.path.join(_PILOTS_DIR, pilot_id + ".json"))
+    resolved = os.path.realpath(os.path.join(_PILOTS_DIR, safe + ".json"))
     if not resolved.startswith(_PILOTS_DIR + os.sep):
         raise HTTPException(status_code=422, detail="Invalid pilot_id")
     try:
@@ -230,7 +233,7 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
 
     day_data = plan_data["days"][day - 1]
     return {
-        "pilot_id": os.path.basename(pilot_id),
+        "pilot_id": safe,
         "company": plan_data["company_name"],
         "day": day,
         **day_data,
@@ -240,10 +243,10 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
 @router.get("/pilot/{pilot_id}/plan")
 async def get_pilot_plan(pilot_id: str) -> dict[str, Any]:
     """Get the full 7-day plan for a pilot."""
-    if not _ID_RE.match(pilot_id):
+    safe = _safe_id(pilot_id)
+    if safe is None:
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
-    pilot_id = os.path.basename(pilot_id)
-    resolved = os.path.realpath(os.path.join(_PILOTS_DIR, pilot_id + ".json"))
+    resolved = os.path.realpath(os.path.join(_PILOTS_DIR, safe + ".json"))
     if not resolved.startswith(_PILOTS_DIR + os.sep):
         raise HTTPException(status_code=422, detail="Invalid pilot_id")
     try:

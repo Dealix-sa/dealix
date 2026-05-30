@@ -158,10 +158,8 @@ def evaluate_upsell(
     opportunities.sort(key=lambda o: (o.is_gated, o.price_sar))
 
     _save_opportunities(account_id, company_name, opportunities)
-    safe_account = account_id.replace("\n", " ").replace("\r", " ")[:80]
     log.info(
-        "Upsell evaluated: account=%s pilots=%d proofs=%d eligible=%d gated=%d",
-        safe_account,
+        "Upsell evaluated: pilots=%d proofs=%d eligible=%d gated=%d",
         pilot_count,
         proof_event_count,
         sum(1 for o in opportunities if not o.is_gated),

@@ -292,13 +292,10 @@ def build_proof_pack(
     )
 
     _save_proof_pack(pack)
-    # Strip newlines from user-provided strings to prevent log injection
-    safe_company = company_name.replace("\n", " ").replace("\r", " ")[:80]
     log.info(
-        "Proof pack built: pack_id=%s level=L%d company=%s complete=%s",
+        "Proof pack built: pack_id=%s level=L%d complete=%s",
         pack.pack_id,
         level,
-        safe_company,
         is_complete,
     )
     return pack
