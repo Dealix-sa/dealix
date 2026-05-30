@@ -87,6 +87,7 @@ def verify_service_matrix() -> None:
         if not isinstance(svc, dict):
             fail("railway service entry must be an object")
         name = str(svc.get("name", ""))
+        railway_config = str(svc.get("railwayConfig", ""))
         dockerfile = str(svc.get("dockerfilePath", ""))
         root_dir = str(svc.get("rootDirectory", ""))
         healthcheck = str(svc.get("healthcheckPath", ""))
