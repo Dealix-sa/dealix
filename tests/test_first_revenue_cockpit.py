@@ -14,11 +14,6 @@ from pathlib import Path
 from typing import Any
 
 import scripts.dealix_first_revenue_cockpit as cockpit_mod
-from scripts.dealix_first_revenue_cockpit import (
-    assess_warm_list,
-    build_cockpit,
-    render_markdown,
-)
 
 _HEADER = ["name", "role", "company", "sector", "relationship", "city", "linkedin_url", "notes"]
 
@@ -81,7 +76,7 @@ def _write_csv(tmp_path: Path) -> Path:
 
 
 def test_assess_warm_list_ready_count_is_one() -> None:
-    warm = assess_warm_list(_ROWS)
+    warm = cockpit_mod.assess_warm_list(_ROWS)
     assert warm["ready_count"] == 1
     assert warm["total"] == 3
     # The two non-ready rows are skips (reject + doctrine), none diagnostic-only.
@@ -92,7 +87,7 @@ def test_assess_warm_list_ready_count_is_one() -> None:
 
 
 def test_reject_and_doctrine_rows_not_in_ready() -> None:
-    warm = assess_warm_list(_ROWS)
+    warm = cockpit_mod.assess_warm_list(_ROWS)
     ready_companies = {r["company"] for r in warm["ready"]}
     assert "Spam Co" not in ready_companies  # doctrine violation
     assert "Cold Co" not in ready_companies  # refer-out
@@ -102,7 +97,7 @@ def test_reject_and_doctrine_rows_not_in_ready() -> None:
 
 
 def test_build_cockpit_has_three_sections_and_disclaimer() -> None:
-    cockpit = build_cockpit(
+    cockpit = cockpit_mod.build_cockpit(
         _ROWS,
         csv_label="data/warm_list.csv.template",
         is_demo=True,
@@ -120,7 +115,7 @@ def test_build_cockpit_has_three_sections_and_disclaimer() -> None:
 
 
 def test_top_actions_present_and_lead_with_ready_close() -> None:
-    cockpit = build_cockpit(
+    cockpit = cockpit_mod.build_cockpit(
         _ROWS,
         csv_label="data/warm_list.csv.template",
         is_demo=True,
@@ -136,7 +131,7 @@ def test_top_actions_present_and_lead_with_ready_close() -> None:
 
 
 def test_no_fabricated_pipeline_numbers_when_ledgers_empty() -> None:
-    cockpit = build_cockpit(
+    cockpit = cockpit_mod.build_cockpit(
         _ROWS,
         csv_label="data/warm_list.csv.template",
         is_demo=True,
@@ -157,15 +152,15 @@ def test_no_fabricated_pipeline_numbers_when_ledgers_empty() -> None:
 
 
 def test_render_is_deterministic_for_same_input() -> None:
-    a = render_markdown(
-        build_cockpit(
+    a = cockpit_mod.render_markdown(
+        cockpit_mod.build_cockpit(
             _ROWS,
             csv_label="x.csv",
             pipeline_reader=_empty_pipeline,
         )
     )
-    b = render_markdown(
-        build_cockpit(
+    b = cockpit_mod.render_markdown(
+        cockpit_mod.build_cockpit(
             _ROWS,
             csv_label="x.csv",
             pipeline_reader=_empty_pipeline,

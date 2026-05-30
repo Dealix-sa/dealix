@@ -65,14 +65,10 @@ from scripts.dealix_warm_list_packets import (  # noqa: E402
 _READY_DECISIONS: frozenset[str] = frozenset({"accept", "reframe"})
 _DIAGNOSTIC_DECISIONS: frozenset[str] = frozenset({"diagnostic_only"})
 
-# Threshold used by dealix_pm_daily for an "elevated friction" signal.
-_FRICTION_ELEVATED: int = 5
 # A lead is "waiting" once it has been untouched for longer than this.
 _LEAD_WAIT_HOURS: int = 24
 # Upper bound on leads read in one pass; counts at this cap are reported as "N+".
 _LEAD_READ_LIMIT: int = 1000
-# A proposal/packet "out" longer than this is a follow-up candidate.
-_FOLLOWUP_DAYS: int = 3
 
 _DISCLAIMER_LINE = (
     "Estimated value is not Verified value / "
