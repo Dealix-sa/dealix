@@ -58,7 +58,11 @@ jobs:
           build-args: |
             GIT_SHA=${{ github.sha }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # On PRs: load into local daemon for verification but skip cache
+          # export — combining load:true with cache-to:gha on a cache miss
+          # causes docker/build-push-action to fail before the build starts.
+          # Cache is repopulated on the post-merge push event instead.
+          cache-to: ${{ github.event_name != 'pull_request' && 'type=gha,mode=max' || '' }}
           load: ${{ github.event_name == 'pull_request' }}
 
       - name: Trivy scan
