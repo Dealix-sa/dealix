@@ -366,13 +366,15 @@ async def _auto_zatca_invoice(*, payment: dict, event_type: str) -> None:
             previous_hash=None,
         )
         generator.generate(invoice_payload)
+        # Strip newlines/CRs from user-derived value before logging to prevent log injection.
+        safe_inv = invoice_number.replace("\n", "").replace("\r", "")
         log.info(
             "zatca_auto_invoice_generated invoice=%s amount_sar=%.2f",
-            invoice_number,
+            safe_inv,
             amount_sar_incl,
         )
     except Exception as exc:
-        log.warning("zatca_auto_invoice_failed error=%s", exc)
+        log.warning("zatca_auto_invoice_failed error=%s", type(exc).__name__)
 
 
 def _notify_founder_payment(*, event_type: str, payment: dict) -> None:

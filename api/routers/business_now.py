@@ -57,7 +57,7 @@ def business_now_snapshot() -> dict[str, Any]:
                 data["_cache_hit"] = True
                 return data
         except Exception:
-            pass
+            log.debug("snapshot_cache_read_failed")
 
     result = build_business_now_snapshot(run_verify=False)
 
@@ -65,7 +65,7 @@ def business_now_snapshot() -> dict[str, Any]:
         try:
             rc.setex(_SNAPSHOT_CACHE_KEY, _SNAPSHOT_CACHE_TTL, json.dumps(result, default=str))
         except Exception:
-            pass
+            log.debug("snapshot_cache_write_failed")
 
     return result
 
@@ -78,8 +78,9 @@ def invalidate_snapshot_cache() -> dict[str, Any]:
         try:
             deleted = rc.delete(_SNAPSHOT_CACHE_KEY)
             return {"status": "invalidated", "keys_deleted": deleted}
-        except Exception as exc:
-            return {"status": "error", "detail": str(exc)}
+        except Exception:
+            log.warning("cache_invalidate_failed")
+            return {"status": "error", "detail": "cache invalidation failed"}
     return {"status": "no_cache", "detail": "Redis not configured"}
 
 

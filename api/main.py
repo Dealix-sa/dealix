@@ -158,6 +158,9 @@ def _validate_production_secrets(settings: Settings) -> None:  # type: ignore[na
         )
 
 
+_prewarm_log = get_logger(__name__ + ".prewarm")
+
+
 def _prewarm_caches() -> None:
     """Synchronously populate Redis caches for demo-critical endpoints.
 
@@ -176,7 +179,7 @@ def _prewarm_caches() -> None:
         snap = build_business_now_snapshot(run_verify=False)
         rc.setex("business_now:snapshot:v1", 900, json.dumps(snap, default=str))
     except Exception:
-        pass
+        _prewarm_log.debug("business_now_prewarm_failed")
 
     try:
         from auto_client_acquisition.delivery_factory.delivery_sprint import run_sprint
@@ -194,7 +197,7 @@ def _prewarm_caches() -> None:
             ).to_dict()
             rc.setex("demo:sprint:sample:v1", 3600, json.dumps(result, default=str))
     except Exception:
-        pass
+        _prewarm_log.debug("sprint_prewarm_failed")
 
 
 @asynccontextmanager
