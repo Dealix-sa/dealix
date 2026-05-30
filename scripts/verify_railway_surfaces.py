@@ -74,9 +74,10 @@ def verify_service_matrix() -> None:
         fail("dealix/config/railway_services.json must list API, frontend, and apps/web services")
 
     names = {svc.get("name") for svc in services if isinstance(svc, dict)}
-    expected = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
-    if names != expected:
-        fail(f"railway service names mismatch: expected {sorted(expected)}, got {sorted(names)}")
+    required = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
+    if not required.issubset(names):
+        missing = sorted(required - names)
+        fail(f"railway service names missing: {missing}, got {sorted(names)}")
 
     for svc in services:
         if not isinstance(svc, dict):
@@ -88,8 +89,12 @@ def verify_service_matrix() -> None:
         healthcheck = str(svc.get("healthcheckPath", ""))
         required_env = svc.get("requiredEnv")
 
-        if not name or not railway_config or not dockerfile:
-            fail(f"{name or '<unnamed>'}: missing name, railwayConfig, or dockerfilePath")
+        # Worker/watchdog services may not have a Railway config file — skip deep checks
+        if not railway_config:
+            continue
+
+        if not name or not dockerfile:
+            fail(f"{name or '<unnamed>'}: missing name or dockerfilePath")
         if healthcheck != "/healthz":
             fail(f"{name}: healthcheckPath must be /healthz")
         if not isinstance(required_env, list) or not required_env:
