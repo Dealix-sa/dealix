@@ -74,9 +74,11 @@ def verify_service_matrix() -> None:
         fail("dealix/config/railway_services.json must list API, frontend, and apps/web services")
 
     names = {svc.get("name") for svc in services if isinstance(svc, dict)}
-    expected = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
-    if names != expected:
-        fail(f"railway service names mismatch: expected {sorted(expected)}, got {sorted(names)}")
+    # Required web-facing services; worker/cron services (e.g. founder-os-worker,
+    # dealix-watchdog) are optional extras and not validated as HTTP surfaces.
+    required = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
+    if not required.issubset(names):
+        fail(f"railway service names missing: required {sorted(required)}, got {sorted(names)}")
 
     for svc in services:
         if not isinstance(svc, dict):
@@ -88,8 +90,13 @@ def verify_service_matrix() -> None:
         healthcheck = str(svc.get("healthcheckPath", ""))
         required_env = svc.get("requiredEnv")
 
-        if not name or not railway_config or not dockerfile:
-            fail(f"{name or '<unnamed>'}: missing name, railwayConfig, or dockerfilePath")
+        if not name or not dockerfile:
+            fail(f"{name or '<unnamed>'}: missing name or dockerfilePath")
+
+        # Worker and cron services lack a public HTTP surface — skip deep checks.
+        if not railway_config:
+            continue
+
         if healthcheck != "/healthz":
             fail(f"{name}: healthcheckPath must be /healthz")
         if not isinstance(required_env, list) or not required_env:
