@@ -101,6 +101,18 @@ def main() -> int:
             else:
                 _run(["bash", str(ROOT / "scripts/founder_cadence.sh"), "--weekly"])
 
+    # Optional: mirror the command center into Notion (non-fatal, write-only).
+    # Guarded by NOTION_API_KEY so it stays a no-op until the founder opts in.
+    import os
+
+    if os.environ.get("NOTION_API_KEY"):
+        _run(
+            [
+                sys.executable,
+                str(ROOT / "scripts/sync_founder_command_center_to_notion.py"),
+            ]
+        )
+
     brief_path = write_autopilot_brief()
     snap = build_autopilot_snapshot()
 
