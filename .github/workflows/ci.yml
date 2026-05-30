@@ -205,6 +205,12 @@ jobs:
       - name: Verify API Docker build
         run: docker build -t dealix-api-ci .
 
+      - name: Verify worker Docker build
+        run: docker build -t dealix-worker-ci -f Dockerfile.worker .
+
+      - name: Verify watchdog Docker build
+        run: docker build -t dealix-watchdog-ci -f Dockerfile.watchdog .
+
       - name: Verify frontend Docker build
         run: docker build -t dealix-frontend-ci frontend
 
