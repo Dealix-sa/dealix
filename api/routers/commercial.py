@@ -36,9 +36,10 @@ _ID_RE = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
 
 
 def _safe_id(value: str) -> str:
-    """Sanitize a user-provided ID for use in file paths (path-traversal guard)."""
+    """Validate and sanitize a user-provided ID for use in file paths."""
     sanitized = re.sub(r"[^a-zA-Z0-9_-]", "_", value)[:128]
-    return sanitized
+    # os.path.basename is a CodeQL-recognized path-traversal sanitizer
+    return os.path.basename(sanitized)
 
 
 _CONSTITUTIONAL_GATES = {
@@ -95,9 +96,6 @@ async def generate_diagnostic(payload: dict[str, Any] = Body(default_factory=dic
 @router.get("/diagnostic/list")
 async def list_diagnostics() -> dict[str, Any]:
     """List generated diagnostics from local JSONL ledger."""
-    import json
-    import os
-
     ledger_path = "data/proofs/diagnostics.jsonl"
     if not os.path.exists(ledger_path):
         return {"diagnostics": [], "count": 0}
@@ -210,6 +208,8 @@ async def start_pilot(payload: dict[str, Any] = Body(default_factory=dict)) -> d
 @router.get("/pilot/{pilot_id}/brief")
 async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
     """Get today's task brief for a running pilot."""
+    if not _ID_RE.match(pilot_id):
+        raise HTTPException(status_code=422, detail="Invalid pilot_id format")
     safe_pid = _safe_id(pilot_id)
     plan_path = os.path.join("data", "pilots", f"{safe_pid}.json")
     if not os.path.exists(plan_path):
@@ -233,6 +233,8 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
 @router.get("/pilot/{pilot_id}/plan")
 async def get_pilot_plan(pilot_id: str) -> dict[str, Any]:
     """Get the full 7-day plan for a pilot."""
+    if not _ID_RE.match(pilot_id):
+        raise HTTPException(status_code=422, detail="Invalid pilot_id format")
     safe_pid = _safe_id(pilot_id)
     plan_path = os.path.join("data", "pilots", f"{safe_pid}.json")
     if not os.path.exists(plan_path):
