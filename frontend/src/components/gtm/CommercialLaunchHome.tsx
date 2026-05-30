@@ -33,8 +33,13 @@ export function CommercialLaunchHome() {
           <p className="mt-2 text-sm italic text-muted-foreground">{t("heroProofLine")}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg" className="bg-[var(--dealix-deep-green)]"><Link href={`${base}/dealix-diagnostic`}>{t("ctaPrimary")}</Link></Button>
+            <Button asChild variant="secondary" size="lg"><Link href={`${base}/demo`}>{isAr ? "شاهد Demo حي ⚡" : "Watch Live Demo ⚡"}</Link></Button>
             <Button asChild variant="outline" size="lg"><Link href={`${base}/proof-pack`}>{t("ctaSampleProof")}</Link></Button>
             <Link href={`${base}/risk-score`} className="text-sm text-[var(--dealix-deep-green)]">{t("ctaRiskScore")} →</Link>
+          </div>
+          <div className="mt-4 flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400">
+            <span>⏰</span>
+            <span>{isAr ? "ZATCA Wave 24 — الموعد النهائي ٣٠ يونيو ٢٠٢٦ · نجهّزك للامتثال ونحسّن إيراداتك" : "ZATCA Wave 24 — Deadline June 30, 2026 · We get you compliant & revenue-optimized"}</span>
           </div>
         </section>
         <section className="rounded-xl border p-8 bg-card/60">

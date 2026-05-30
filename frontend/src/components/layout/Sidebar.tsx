@@ -36,7 +36,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { key: "dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { key: "demo", href: "/demo", icon: Zap },
   { key: "dealixDiagnostic", href: "/dealix-diagnostic", icon: Sparkles },
+  { key: "zatcaReadiness", href: "/zatca-readiness", icon: Shield },
   { key: "businessNow", href: "/business-now", icon: Briefcase },
   { key: "cloud", href: "/cloud", icon: Cloud },
   { key: "opsHub", href: "/ops", icon: Layers },
