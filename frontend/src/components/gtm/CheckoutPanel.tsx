@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function CheckoutPanel({ plan, planLabel, priceHint, isAr }: { plan: string; planLabel: string; priceHint: string; isAr: boolean }) {
-  const [email, setEmail] = useState("");
+export function CheckoutPanel({ plan, planLabel, priceHint, isAr, initialEmail = "" }: { plan: string; planLabel: string; priceHint: string; isAr: boolean; initialEmail?: string }) {
+  const [email, setEmail] = useState(initialEmail);
   const [busy, setBusy] = useState(false);
   const pay = async () => {
     setBusy(true);
