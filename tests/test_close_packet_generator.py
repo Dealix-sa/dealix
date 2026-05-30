@@ -269,8 +269,7 @@ def test_main_writes_packet_file(tmp_path: Path) -> None:
             "--relationship",
             "warm",
             "--signals",
-            "pain_clear,owner_present,data_available,accepts_governance,"
-            "has_budget,wants_safe_methods,proof_path_visible,retainer_path_visible",
+            "pain_clear,owner_present,data_available,accepts_governance,has_budget,wants_safe_methods,proof_path_visible,retainer_path_visible",
             "--out",
             str(out),
         ]
