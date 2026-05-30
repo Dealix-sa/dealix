@@ -36,7 +36,7 @@ type SprintSample = {
   };
 };
 
-function tierColor(tier?: string) {
+function tierColor(tier?: string): "default" | "secondary" | "outline" {
   if (!tier) return "secondary";
   if (tier.includes("strong")) return "default";
   if (tier.includes("moderate")) return "outline";

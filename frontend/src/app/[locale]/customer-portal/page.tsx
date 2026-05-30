@@ -75,7 +75,7 @@ export default function CustomerPortalPage() {
   const payment = data?.enriched_view?.payment_state;
   const nextAction = data?.sections?.["8_next_decision"];
 
-  function proofTierColor(tier?: string) {
+  function proofTierColor(tier?: string): "default" | "secondary" | "outline" {
     if (!tier) return "secondary";
     if (tier.includes("strong")) return "default";
     if (tier.includes("moderate")) return "outline";
