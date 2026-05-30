@@ -96,15 +96,130 @@ def _try_pandoc(md: str, title: str) -> bytes | None:
         return None
 
 
+def _try_reportlab(md: str, title: str) -> bytes | None:
+    """Try reportlab — pure Python, no system deps. Returns PDF bytes or None."""
+    try:
+        import io
+        import re
+
+        from reportlab.lib import colors  # type: ignore
+        from reportlab.lib.pagesizes import A4  # type: ignore
+        from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet  # type: ignore
+        from reportlab.lib.units import cm  # type: ignore
+        from reportlab.platypus import (  # type: ignore
+            HRFlowable,
+            Paragraph,
+            SimpleDocTemplate,
+            Spacer,
+        )
+        from reportlab.pdfbase import pdfmetrics  # type: ignore
+        from reportlab.pdfbase.ttfonts import TTFont  # type: ignore
+
+        buf = io.BytesIO()
+        doc = SimpleDocTemplate(
+            buf,
+            pagesize=A4,
+            rightMargin=2 * cm,
+            leftMargin=2 * cm,
+            topMargin=2 * cm,
+            bottomMargin=2 * cm,
+            title=title,
+        )
+
+        # Register a Unicode-capable font if available, otherwise use Helvetica
+        base_font = "Helvetica"
+        bold_font = "Helvetica-Bold"
+
+        styles = getSampleStyleSheet()
+        title_style = ParagraphStyle(
+            "DTitle",
+            parent=styles["Title"],
+            fontName=bold_font,
+            fontSize=18,
+            textColor=colors.HexColor("#0a0a0a"),
+            spaceAfter=12,
+        )
+        h2_style = ParagraphStyle(
+            "DH2",
+            parent=styles["Heading2"],
+            fontName=bold_font,
+            fontSize=12,
+            textColor=colors.HexColor("#1a1a2e"),
+            spaceBefore=14,
+            spaceAfter=4,
+        )
+        body_style = ParagraphStyle(
+            "DBody",
+            parent=styles["Normal"],
+            fontName=base_font,
+            fontSize=10,
+            leading=15,
+            spaceAfter=6,
+        )
+        caption_style = ParagraphStyle(
+            "DCaption",
+            parent=styles["Normal"],
+            fontName=base_font,
+            fontSize=8,
+            textColor=colors.HexColor("#666666"),
+            spaceAfter=4,
+        )
+
+        story = [Paragraph(title, title_style), Spacer(1, 0.3 * cm)]
+
+        # Parse markdown into reportlab flowables
+        for line in md.splitlines():
+            stripped = line.strip()
+            if not stripped:
+                story.append(Spacer(1, 0.15 * cm))
+                continue
+            # Escape HTML-special chars for reportlab's XML parser
+            safe = (
+                stripped
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+            )
+            if stripped.startswith("# "):
+                story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor("#dddddd"), spaceAfter=4))
+                story.append(Paragraph(safe[2:].strip(), h2_style))
+            elif stripped.startswith("## "):
+                story.append(Paragraph(safe[3:].strip(), h2_style))
+            elif stripped.startswith("### "):
+                story.append(Paragraph(f"<b>{safe[4:].strip()}</b>", body_style))
+            elif stripped.startswith(("- ", "* ", "• ")):
+                story.append(Paragraph(f"• {safe[2:].strip()}", body_style))
+            elif re.match(r"^\d+\.\s", stripped):
+                story.append(Paragraph(safe, body_style))
+            elif stripped.startswith("**") and stripped.endswith("**"):
+                story.append(Paragraph(f"<b>{safe[2:-2]}</b>", body_style))
+            elif stripped.startswith("_") and stripped.endswith("_"):
+                story.append(Paragraph(f"<i>{safe[1:-1]}</i>", caption_style))
+            else:
+                story.append(Paragraph(safe, body_style))
+
+        doc.build(story)
+        return buf.getvalue()
+    except ImportError:
+        log.debug("pdf_renderer: reportlab not installed")
+        return None
+    except Exception:
+        log.exception("pdf_renderer_reportlab_failed")
+        return None
+
+
 def render_markdown_to_pdf(md: str, title: str = "Dealix Document") -> bytes | None:
     """Render markdown to PDF bytes. Returns None if no renderer available.
 
-    Caller is responsible for falling back to text/markdown response when
-    None is returned.
+    Tries weasyprint → reportlab → pandoc in order. Caller is responsible
+    for falling back to text/markdown when None is returned.
     """
     if not md:
         return None
     pdf = _try_weasyprint(md, title)
+    if pdf is not None:
+        return pdf
+    pdf = _try_reportlab(md, title)
     if pdf is not None:
         return pdf
     pdf = _try_pandoc(md, title)
