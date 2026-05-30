@@ -116,7 +116,6 @@ async def _persist_payment_event(
 def _build_plans() -> dict[str, dict[str, Any]]:
     try:
         from auto_client_acquisition.service_catalog.registry import OFFERINGS
-        _id_map = {o.id: o for o in OFFERINGS}
         plans: dict[str, dict[str, Any]] = {}
         for offering in OFFERINGS:
             monthly = offering.price_unit in ("monthly", "per_month")
@@ -410,16 +409,20 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
                         ),
                         customer_id=payment.get("metadata", {}).get("account_id", ""),
                     )
-                    log.info("customer_receipt_sent email=%s ref=%s", customer_email, payment_id)
+                    _safe_email = customer_email.replace("\n", "").replace("\r", "")[:200]
+                    _safe_ref = str(payment_id).replace("\n", "").replace("\r", "")[:100]
+                    log.info("customer_receipt_sent email=%s ref=%s", _safe_email, _safe_ref)
                 except Exception as _email_exc:
-                    log.warning("customer_receipt_failed email=%s error=%s", customer_email, _email_exc)
+                    _safe_email = customer_email.replace("\n", "").replace("\r", "")[:200]
+                    log.warning("customer_receipt_failed email=%s error=%s", _safe_email, type(_email_exc).__name__)
 
             # 2. ZATCA e-invoice (non-fatal — logs if ZATCA creds not configured)
             try:
                 from dealix.commercial.zatca_invoice import issue_zatca_invoice
                 await issue_zatca_invoice(payment=payment)
             except Exception as _zatca_exc:
-                log.warning("zatca_invoice_skipped ref=%s error=%s", payment_id, _zatca_exc)
+                _safe_ref = str(payment_id).replace("\n", "").replace("\r", "")[:100]
+                log.warning("zatca_invoice_skipped ref=%s error=%s", _safe_ref, type(_zatca_exc).__name__)
 
             # 3. Founder WhatsApp alert
             try:
