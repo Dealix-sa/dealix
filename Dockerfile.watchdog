@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7
 # Dealix Watchdog — Railway cron job (runs, checks health, exits)
 # Minimal image: only needs urllib (stdlib), no extra deps.
 

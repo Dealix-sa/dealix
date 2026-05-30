@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7
 # Dealix Founder-OS Worker — long-running service for Railway
 # Shares the same base image as the API but runs the worker loop.
 

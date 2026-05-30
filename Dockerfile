@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7
 # ═══════════════════════════════════════════════════════════════
 # AI Company Saudi — production Docker image
 # Multi-stage, non-root, Python 3.12-slim
