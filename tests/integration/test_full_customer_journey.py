@@ -242,7 +242,7 @@ async def test_journey_health_simple(async_client):
 @pytest.mark.asyncio
 async def test_journey_health_deep_runs(async_client):
     """/healthz?deep=1 returns the deep payload (used in deploy runbook smoke)."""
-    res = await async_client.get("/healthz?deep=1")
+    res = await async_client.get("/health/deep")
     assert res.status_code == 200
     body = res.json()
     # Must include the 4 mandatory checks
