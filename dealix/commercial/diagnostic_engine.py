@@ -314,5 +314,8 @@ class DiagnosticEngine:
             "",
             "> هذا التشخيص للمراجعة فقط — لن يُرسَل لأي عميل دون موافقة المؤسس.",
             "> This diagnostic is for review only — will not be sent without founder approval.",
+            ">",
+            "> **القيمة التقديرية ليست قيمة مُتحقَّقة** — كل الأرقام تقديرية حتى يُوثَّق الدليل الفعلي.",
+            "> **Estimated value is not Verified value** — all figures are estimates until actual evidence is documented.",
         ]
         return "\n".join(lines)

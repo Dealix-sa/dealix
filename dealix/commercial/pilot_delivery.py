@@ -275,6 +275,9 @@ class PilotDeliveryKit:
 - أولوية الدعم
 
 > هذا التقرير معتمد من الفاوندر — للمراجعة الداخلية قبل الإرسال.
+>
+> **القيمة التقديرية ليست قيمة مُتحقَّقة** — كل الأرقام تقديرية حتى يُوثَّق الدليل الفعلي.
+> **Estimated value is not Verified value** — all figures are estimates until actual evidence is documented.
 """
 
     def _upsell_script(self, req: PilotStartRequest) -> str:

@@ -126,6 +126,9 @@ class CaseStudyGenerator:
 
 > قصة النجاح هذه للمراجعة الداخلية فقط.
 > موافقة العميل {"✅ تمت" if req.customer_consent else "⏳ مطلوبة قبل النشر"}.
+>
+> **القيمة التقديرية ليست قيمة مُتحقَّقة** — كل الأرقام تقديرية حتى يُوثَّق الدليل الفعلي.
+> **Estimated value is not Verified value** — all figures are estimates until actual evidence is documented.
 """
 
     def _linkedin_post_ar(self, req: CaseStudyRequest, name: str) -> str:

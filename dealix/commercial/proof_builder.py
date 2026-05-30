@@ -216,4 +216,7 @@ class ProofBuilder:
 
 > هذا الطقم للمراجعة الداخلية فقط — لن يُسلَّم للعميل دون موافقة المؤسس.
 > This pack is for internal review only — will not be delivered without founder approval.
+>
+> **القيمة التقديرية ليست قيمة مُتحقَّقة** — كل الأرقام تقديرية حتى يُوثَّق الدليل الفعلي.
+> **Estimated value is not Verified value** — all figures are estimates until actual evidence is documented.
 """

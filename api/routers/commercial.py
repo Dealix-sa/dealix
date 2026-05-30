@@ -58,8 +58,8 @@ async def diagnostic_generate(
     """Generate a 10-section bilingual diagnostic report for a Saudi B2B company."""
     engine = DiagnosticEngine()
     report = engine.generate(req)
-    log.info("diagnostic_generated", report_id=report.report_id, company=req.company_name)
-    return report.to_dict()
+    log.info("diagnostic_generated report_id=%s company=%s", report.report_id, req.company_name)
+    return {**report.to_dict(), "governance_decision": "allow_with_review"}
 
 
 @router.post("/diagnostic/generate/markdown", response_class=PlainTextResponse)
@@ -87,13 +87,10 @@ async def warm_intro_draft(
     gen = WarmIntroGenerator()
     bundle = gen.generate(req)
     log.info(
-        "warm_intro_generated",
-        bundle_id=bundle.bundle_id,
-        prospect=req.prospect_name,
-        whatsapp=len(bundle.whatsapp_drafts),
-        email=len(bundle.email_drafts),
+        "warm_intro_generated bundle_id=%s prospect=%s whatsapp=%d email=%d",
+        bundle.bundle_id, req.prospect_name, len(bundle.whatsapp_drafts), len(bundle.email_drafts),
     )
-    return bundle.to_dict()
+    return {**bundle.to_dict(), "governance_decision": "allow_with_review"}
 
 
 # ---------------------------------------------------------------------------
@@ -110,12 +107,10 @@ async def pilot_start(
     kit = PilotDeliveryKit()
     plan = kit.create_pilot_plan(req)
     log.info(
-        "pilot_started",
-        pilot_id=plan.pilot_id,
-        account=req.account_id,
-        company=req.company_name,
+        "pilot_started pilot_id=%s account=%s company=%s",
+        plan.pilot_id, req.account_id, req.company_name,
     )
-    return plan.to_dict()
+    return {**plan.to_dict(), "governance_decision": "allow_with_review"}
 
 
 @router.get("/pilot/{pilot_id}/report", response_class=PlainTextResponse)
@@ -148,12 +143,10 @@ async def proof_build(
     builder = ProofBuilder()
     pack = builder.build(req)
     log.info(
-        "proof_pack_built",
-        pack_id=pack.pack_id,
-        level=pack.proof_level,
-        events=pack.event_count,
+        "proof_pack_built pack_id=%s level=%s events=%d",
+        pack.pack_id, pack.proof_level, pack.event_count,
     )
-    return pack.to_dict()
+    return {**pack.to_dict(), "governance_decision": "allow_with_review"}
 
 
 @router.post("/proof/build/markdown", response_class=PlainTextResponse)
@@ -187,7 +180,7 @@ async def payment_link(
         result = await create_payment_link(req)
     except PaymentLinkError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return result.to_dict()
+    return {**result.to_dict(), "governance_decision": "allow_with_review"}
 
 
 @router.get("/payment/tiers")
@@ -225,7 +218,7 @@ async def upsell_check(
         proof_level=proof_level,
         monthly_revenue_sar=monthly_revenue_sar,
     )
-    return result.to_dict()
+    return {**result.to_dict(), "governance_decision": "allow_with_review"}
 
 
 # ---------------------------------------------------------------------------
@@ -241,7 +234,7 @@ async def case_study_generate(
     """Generate a bilingual case study. customer_consent required for quotes."""
     gen = CaseStudyGenerator()
     doc = gen.generate(req)
-    return doc.to_dict()
+    return {**doc.to_dict(), "governance_decision": "allow_with_review"}
 
 
 @router.post("/case-study/generate/markdown", response_class=PlainTextResponse)

@@ -1,0 +1,49 @@
+# Platform v10 Backlog
+# Tracks platform-level engineering items aligned with the 90-day commercial plan.
+# Updated by dealix-pm sprint reviews.
+
+version: "1.0"
+last_updated: "2026-05-30"
+
+items:
+  - id: P10-001
+    title: "Frontend diagnostic form → API wiring"
+    area: frontend
+    priority: P0
+    status: done
+    notes: "DealixDiagnosticLanding calls POST /api/v1/diagnostic/generate"
+
+  - id: P10-002
+    title: "Commercial router governance_decision field"
+    area: api
+    priority: P0
+    status: done
+    notes: "All 6 chain endpoints now emit governance_decision: allow_with_review"
+
+  - id: P10-003
+    title: "Bilingual disclaimer on all markdown outputs"
+    area: api
+    priority: P0
+    status: done
+    notes: "Estimated value is not Verified value disclaimer added"
+
+  - id: P10-004
+    title: "Moyasar webhook → ZATCA → receipt email integration test"
+    area: testing
+    priority: P1
+    status: in_progress
+    notes: "Requires mock Moyasar paid webhook fixture"
+
+  - id: P10-005
+    title: "Executive dashboard — revenue + pipeline KPIs"
+    area: frontend
+    priority: P1
+    status: not_started
+    notes: "apps/web/app/value-engine page"
+
+  - id: P10-006
+    title: "Account scoring for 50 B2B seed accounts"
+    area: data
+    priority: P1
+    status: not_started
+    notes: "ICP scoring run on agency_accounts_seed.csv"
