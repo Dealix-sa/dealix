@@ -1,33 +1,28 @@
 #!/usr/bin/env python3
-"""Dealix Founder-OS worker — persistent, doctrine-safe heartbeat.
+"""Dealix Founder OS / Railway worker — persistent doctrine-safe heartbeat.
 
-Runs as a long-lived Railway *worker* service (no public domain). Each cycle
-runs **read-only** founder diagnostics and emits one structured JSON log line,
-then sleeps ``FOUNDER_OS_INTERVAL_SECONDS`` (default 900s / 15min).
+A long-running loop for a Railway **worker** service. Each cycle runs
+**read-only** diagnostics and emits one structured JSON log line, then sleeps.
 
-Hard doctrine guarantees (the 11 non-negotiables):
-  * Never sends anything externally and never charges. Every subprocess is run
-    with ``AUTO_SEND_ENABLED=false`` and ``EXTERNAL_OUTREACH_ENABLED=false``
-    forced into its environment, and ``AGENT_APPROVAL_MODE=required``.
-  * Only invokes read-only diagnostics. The optional digest is run with
-    ``--print`` so it renders to stdout and never sends email.
-  * Missing scripts are skipped (logged), never crash the loop.
+Philosophy:
+- Default cycle: run dealix_status.py (cheap, read-only, exit 0 always).
+- Opt-in extras via env flags (off by default): verify ref lib, morning digest (print-only).
+- Hard-forces doctrine env in every subprocess: AUTO_SEND_ENABLED=false,
+  EXTERNAL_OUTREACH_ENABLED=false, AGENT_APPROVAL_MODE=required.
+- Never imports/sends. Logs external_actions_allowed: false. Gracefully skips
+  missing referenced scripts rather than crashing.
+
+Exit code: 0 (process should restart on failure; Railway handles that).
 
 Usage:
-    python scripts/founder_os_worker.py            # loop forever (Railway worker)
-    python scripts/founder_os_worker.py --once     # run a single cycle and exit
-    FOUNDER_OS_INTERVAL_SECONDS=0 python scripts/founder_os_worker.py  # one cycle
+    FOUNDER_OS_INTERVAL_SECONDS=900 python scripts/founder_os_worker.py
+    FOUNDER_OS_INTERVAL_SECONDS=0 python scripts/founder_os_worker.py  # one cycle, exit
 
-Environment:
-    FOUNDER_OS_INTERVAL_SECONDS   sleep between cycles, seconds (default 900).
-                                  0 (or --once) runs exactly one cycle and exits.
-    FOUNDER_OS_RUN_VERIFY=1       also run verify_reference_library_70.py.
-    FOUNDER_OS_RUN_DIGEST=1       also run dealix_morning_digest.py --print
-                                  (print-only; never sends).
-    FOUNDER_OS_COMMAND_TIMEOUT    per-command timeout, seconds (default 240).
-    AGENT_APPROVAL_MODE           surfaced in logs (default "required").
-
-Designed to pair with scripts/watchdog_drift_check.py (Railway cron).
+Environment Variables:
+  FOUNDER_OS_INTERVAL_SECONDS  Seconds between cycles. Default 900 (15 min).
+  FOUNDER_OS_RUN_VERIFY        1 = run verify_reference_library_70.py each cycle.
+  FOUNDER_OS_RUN_DIGEST        1 = run dealix_morning_digest.py --print each cycle.
+  APP_ENV, ENVIRONMENT, DATABASE_URL, etc. — forwarded from container.
 """
 from __future__ import annotations
 
@@ -36,105 +31,85 @@ import os
 import subprocess
 import sys
 import time
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[1]
+INTERVAL_SECONDS = int(os.getenv("FOUNDER_OS_INTERVAL_SECONDS", "900"))
+RUN_VERIFY = os.getenv("FOUNDER_OS_RUN_VERIFY", "").lower() in ("1", "true")
+RUN_DIGEST = os.getenv("FOUNDER_OS_RUN_DIGEST", "").lower() in ("1", "true")
 
-# The optional digest is print-only (`--print` renders to stdout, never sends).
-DIGEST_COMMAND = [sys.executable, "scripts/dealix_morning_digest.py", "--print"]
-
-# Read-only diagnostics that are always safe to run. Order matters only for logs.
-BASE_COMMANDS: list[list[str]] = [
-    [sys.executable, "scripts/dealix_status.py", "--json"],
+# Core commands: always run (if exist)
+CORE_COMMANDS = [
+    [sys.executable, "scripts/dealix_status.py"],
 ]
-VERIFY_COMMAND = [sys.executable, "scripts/verify_reference_library_70.py"]
 
-# Tokens that, if they appeared in a command, would signal a live external
-# action. The worker must never invoke any of these — asserted by
-# tests/test_founder_os_worker_safe.py.
-FORBIDDEN_COMMAND_TOKENS = (
-    "send",
-    "outreach",
-    "whatsapp",
-    "charge",
-    "invoice_pay",
-    "blast",
-    "--live",
-)
+# Optional extras (off by default, cheaper)
+OPTIONAL_COMMANDS = []
+if RUN_VERIFY:
+    OPTIONAL_COMMANDS.append([sys.executable, "scripts/verify_reference_library_70.py"])
+if RUN_DIGEST:
+    OPTIONAL_COMMANDS.append(
+        [sys.executable, "scripts/dealix_morning_digest.py", "--print"]
+    )
+
+APPROVAL_MODE = os.getenv("AGENT_APPROVAL_MODE", "required").lower()
 
 
-def _truthy(name: str, default: str = "0") -> bool:
-    return os.getenv(name, default).strip().lower() in ("1", "true", "yes", "on")
+def run_command(cmd: list[str]) -> dict[str, object]:
+    """Run a command with doctrine-enforced env + timeout.
 
-
-def interval_seconds() -> int:
-    try:
-        return max(0, int(os.getenv("FOUNDER_OS_INTERVAL_SECONDS", "900")))
-    except ValueError:
-        return 900
-
-
-def command_timeout() -> int:
-    try:
-        return max(1, int(os.getenv("FOUNDER_OS_COMMAND_TIMEOUT", "240")))
-    except ValueError:
-        return 240
-
-
-def build_commands() -> list[list[str]]:
-    """Return the read-only commands for one cycle, honoring opt-in env flags."""
-    commands = [list(cmd) for cmd in BASE_COMMANDS]
-    if _truthy("FOUNDER_OS_RUN_VERIFY"):
-        commands.append(list(VERIFY_COMMAND))
-    if _truthy("FOUNDER_OS_RUN_DIGEST"):
-        # Always print-only — the worker never sends email.
-        commands.append(list(DIGEST_COMMAND))
-    return commands
-
-
-def subprocess_env() -> dict[str, str]:
-    """Environment forced onto every subprocess — doctrine-safe, no live actions."""
-    return {
-        **os.environ,
-        "PYTHONUTF8": "1",
-        "PYTHONIOENCODING": "utf-8",
-        # Hard gates: never flip these on from the worker.
-        "AUTO_SEND_ENABLED": "false",
-        "EXTERNAL_OUTREACH_ENABLED": "false",
-        "AGENT_APPROVAL_MODE": os.getenv("AGENT_APPROVAL_MODE", "required").lower(),
-    }
-
-
-def run_command(cmd: list[str], env: dict[str, str], timeout: int) -> dict[str, object]:
+    Returns metadata dict, never raises.
+    """
     started = time.time()
-    script_rel = cmd[1] if len(cmd) > 1 else cmd[0]
-    script_path = REPO_ROOT / script_rel
+    script_path = ROOT / cmd[1]
+
+    # Graceful skip if file doesn't exist
     if not script_path.exists():
-        return {"cmd": cmd, "skipped": "file_not_found"}
+        return {
+            "cmd": cmd,
+            "skipped": True,
+            "reason": "file_not_found",
+            "path": str(script_path),
+        }
+
     try:
-        proc = subprocess.run(  # noqa: S603 - fixed, repo-local diagnostics only
+        # Build env: inherit parent, override doctrine flags to guarantee safety
+        env = os.environ.copy()
+        env.update(
+            {
+                "AUTO_SEND_ENABLED": "false",
+                "EXTERNAL_OUTREACH_ENABLED": "false",
+                "AGENT_APPROVAL_MODE": APPROVAL_MODE,
+            }
+        )
+
+        proc = subprocess.run(
             cmd,
-            cwd=REPO_ROOT,
+            cwd=ROOT,
             text=True,
             capture_output=True,
-            timeout=timeout,
+            timeout=240,
             env=env,
         )
+
         return {
             "cmd": cmd,
             "returncode": proc.returncode,
             "latency_ms": round((time.time() - started) * 1000),
-            "stdout_tail": proc.stdout[-2000:],
-            "stderr_tail": proc.stderr[-2000:],
+            # Tail to avoid bloat
+            "stdout_lines": (proc.stdout or "").split("\n")[-20:],
+            "stderr_lines": (proc.stderr or "").split("\n")[-10:],
         }
+
     except subprocess.TimeoutExpired:
         return {
             "cmd": cmd,
-            "error": "timeout",
+            "timeout": True,
+            "timeout_seconds": 240,
             "latency_ms": round((time.time() - started) * 1000),
         }
-    except Exception as exc:  # pragma: no cover - defensive; loop must survive
+    except Exception as exc:
         return {
             "cmd": cmd,
             "error": repr(exc),
@@ -142,44 +117,57 @@ def run_command(cmd: list[str], env: dict[str, str], timeout: int) -> dict[str, 
         }
 
 
-def run_cycle() -> dict[str, object]:
-    env = subprocess_env()
-    timeout = command_timeout()
+def founder_cycle() -> dict[str, object]:
+    """Run one cycle: core + optional commands, return metadata."""
+    results = []
+    for cmd in CORE_COMMANDS + OPTIONAL_COMMANDS:
+        results.append(run_command(cmd))
+
     return {
         "service": "founder-os-worker",
-        "timestamp": datetime.now(UTC).isoformat(),
-        "approval_mode": env["AGENT_APPROVAL_MODE"],
-        "external_actions_allowed": False,
-        "auto_send_enabled": env["AUTO_SEND_ENABLED"],
-        "results": [run_command(cmd, env, timeout) for cmd in build_commands()],
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "cycle": {
+            "approval_mode": APPROVAL_MODE,
+            "external_actions_allowed": False,  # Hard guarantee
+            "auto_send_enabled": "false",
+            "doctrine_enforced": True,
+        },
+        "results": results,
     }
 
 
-def main(argv: list[str] | None = None) -> int:
-    argv = sys.argv[1:] if argv is None else argv
-    once = "--once" in argv or interval_seconds() == 0
-    interval = interval_seconds()
-
+def main() -> int:
+    """Long-running heartbeat loop."""
+    # Log startup
     print(
         json.dumps(
             {
                 "service": "founder-os-worker",
                 "status": "started",
-                "interval_seconds": interval,
-                "once": once,
-                "approval_mode": os.getenv("AGENT_APPROVAL_MODE", "required").lower(),
+                "interval_seconds": INTERVAL_SECONDS,
+                "approval_mode": APPROVAL_MODE,
+                "run_verify": RUN_VERIFY,
+                "run_digest": RUN_DIGEST,
                 "external_actions_allowed": False,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
             },
             ensure_ascii=False,
         ),
         flush=True,
     )
 
+    # Main loop
     while True:
-        print(json.dumps(run_cycle(), ensure_ascii=False, indent=2), flush=True)
-        if once:
+        cycle_result = founder_cycle()
+        print(json.dumps(cycle_result, ensure_ascii=False, indent=2), flush=True)
+
+        # Exit after one cycle if interval is 0 (smoke test mode)
+        if INTERVAL_SECONDS == 0:
             return 0
-        time.sleep(interval)
+
+        time.sleep(INTERVAL_SECONDS)
+
+    return 0
 
 
 if __name__ == "__main__":
