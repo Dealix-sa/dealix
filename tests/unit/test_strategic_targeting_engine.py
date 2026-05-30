@@ -1,7 +1,5 @@
 """Unit tests for strategic_targeting_engine."""
 
-import pytest
-
 from auto_client_acquisition.revenue_os.strategic_targeting_engine import (
     MotionType,
     TargetingDimensions,

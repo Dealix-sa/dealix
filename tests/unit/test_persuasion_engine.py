@@ -1,10 +1,6 @@
 """Unit tests for persuasion_engine."""
 
-import pytest
-
 from auto_client_acquisition.sales_os.persuasion_engine import (
-    ConvictionStep,
-    ObjectionResponse,
     ObjectionType,
     PainSignal,
     PainType,

@@ -1,11 +1,8 @@
 """Unit tests for outreach_sequencer."""
 
-import pytest
-
 from auto_client_acquisition.sales_os.outreach_sequencer import (
     MotionKey,
     OutreachChannel,
-    OutreachMessage,
     OutreachSequence,
     build_sequence,
     list_available_motions,

@@ -3,7 +3,6 @@
 import pytest
 
 from auto_client_acquisition.intelligence_os.market_signal_detector import (
-    MarketSignal,
     SaudiFiscalQuarter,
     SignalType,
     TimingScore,

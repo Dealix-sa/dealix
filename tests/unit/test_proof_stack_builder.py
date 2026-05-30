@@ -1,9 +1,6 @@
 """Unit tests for proof_stack_builder."""
 
-import pytest
-
 from auto_client_acquisition.proof_os.proof_stack_builder import (
-    ProofAsset,
     ProofStack,
     ProofType,
     build_proof_stack,
