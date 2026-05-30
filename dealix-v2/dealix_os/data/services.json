@@ -1,0 +1,70 @@
+{
+  "lead-intelligence": {
+    "name": "Lead Intelligence Sprint",
+    "capability": "Revenue",
+    "price_starts_at": 9500,
+    "timeline": "10 business days",
+    "kpi": "qualified accounts ranked",
+    "proof_type": "Revenue / Quality",
+    "upsell": "Pilot Conversion Sprint or Monthly RevOps OS",
+    "deliverables": [
+      "ICP clarification",
+      "Data quality review",
+      "Top 50 ranked accounts",
+      "Score reasons",
+      "Safe draft pack",
+      "Proof report",
+      "Expansion map"
+    ]
+  },
+  "ai-quick-win": {
+    "name": "AI Quick Win Sprint",
+    "capability": "Operations",
+    "price_starts_at": 12000,
+    "timeline": "5-10 business days",
+    "kpi": "hours saved and errors reduced",
+    "proof_type": "Time / Quality",
+    "upsell": "Monthly AI Ops",
+    "deliverables": [
+      "Workflow map",
+      "Input/output definition",
+      "AI-assisted workflow",
+      "Human review point",
+      "QA checklist",
+      "Proof report"
+    ]
+  },
+  "company-brain": {
+    "name": "Company Brain Sprint",
+    "capability": "Knowledge",
+    "price_starts_at": 25000,
+    "timeline": "15-20 business days",
+    "kpi": "answers with sources",
+    "proof_type": "Knowledge / Quality",
+    "upsell": "Monthly Company Brain",
+    "deliverables": [
+      "Document inventory",
+      "Source quality review",
+      "Citation answer workflow",
+      "No-source-no-answer rule",
+      "Test question set",
+      "Proof report"
+    ]
+  },
+  "ai-governance": {
+    "name": "AI Governance Sprint",
+    "capability": "Governance",
+    "price_starts_at": 20000,
+    "timeline": "10-15 business days",
+    "kpi": "risk controls implemented",
+    "proof_type": "Risk",
+    "upsell": "Monthly Governance Monitoring",
+    "deliverables": [
+      "AI usage policy",
+      "Action taxonomy",
+      "Approval matrix",
+      "Incident response",
+      "Runtime governance checklist"
+    ]
+  }
+}

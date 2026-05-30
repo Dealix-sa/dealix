@@ -1,216 +1,65 @@
-# ─────────────────────────────────────────────────────────────
-# 🔒 SECRETS — NEVER COMMIT
-# ─────────────────────────────────────────────────────────────
-.env
-.env.*
-dealix/transformation/kpi_founder_commercial_import.yaml
-dealix/config/founder_closure_intake.yaml
-!.env.example
-!.env.staging.example
-*.pem
-*.key
-*.p12
-*.pfx
-secrets/
-credentials/
-*_secret*
-*_credentials*
-# Wave 8 exceptions — these are scripts/tests, not credential files
-!scripts/dealix_customer_credentials_check.py
-!tests/test_wave8_customer_credentials_check.py
-!docs/WAVE8_CUSTOMER_CREDENTIAL_READINESS.md
-!docs/wave8/customer_credentials.example.env
-service-account*.json
-google-credentials*.json
+# Dealix managed ignore
 
-# ─────────────────────────────────────────────────────────────
-# 🐍 Python
-# ─────────────────────────────────────────────────────────────
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual environments
-venv/
-env/
-ENV/
-.venv/
-.env/
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Testing
-.pytest_cache/
-.coverage
-.coverage.*
-htmlcov/
-.tox/
-.nox/
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-nosetests.xml
-
-# Type checkers / linters
-.mypy_cache/
-.dmypy.json
-dmypy.json
-.pyre/
-.pytype/
-.ruff_cache/
-
-# Jupyter
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
-profile_default/
-ipython_config.py
-
-# ─────────────────────────────────────────────────────────────
-# 🗄️ Databases
-# ─────────────────────────────────────────────────────────────
-*.db
-*.sqlite
-*.sqlite3
-*.db-journal
-# data/ ignored except for canonical product data (workflows/) — see below
-data/*
-dumps/
-# Service Activation Console data (generated, but committed for static hosting)
-!landing/assets/data/
-!landing/assets/data/service-readiness.json
-# Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
-!data/workflows/
-
-# ─────────────────────────────────────────────────────────────
-# 📝 Logs
-# ─────────────────────────────────────────────────────────────
-logs/
-*.log
-!docs/transformation/evidence/weekly_ops_checklist.log
+# Node
+node_modules/
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+.next/
+.nuxt/
+.cache/
+.turbo/
+.vercel/
+.netlify/
 
-# ─────────────────────────────────────────────────────────────
-# 🐳 Docker
-# ─────────────────────────────────────────────────────────────
-.docker/
-docker-compose.override.yml
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# ─────────────────────────────────────────────────────────────
-# 💻 IDE / Editors
-# ─────────────────────────────────────────────────────────────
-.vscode/
-!.vscode/settings.json.example
-.idea/
-*.swp
-*.swo
-*~
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Aider / AI
+.aider.chat.history.md
+.aider.input.history
+.aider.tags.cache*/
+.aider.repo.map
+*.aider.log
+
+# Dealix runtime
+.dealix/cache/
+.dealix/tmp/
+.dealix/runs/
+
+# Heavy files
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.rar
+*.sqlite
+*.db
+*.parquet
+*.feather
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# OS
 .DS_Store
 Thumbs.db
-.project
-.pydevproject
-.settings/
-
-# ─────────────────────────────────────────────────────────────
-# 🏗️ Build / Dist
-# ─────────────────────────────────────────────────────────────
-node_modules/
-.next/
-out/
-.cache/
-*.tsbuildinfo
-
-# ─────────────────────────────────────────────────────────────
-# 🧪 Temporary
-# ─────────────────────────────────────────────────────────────
-tmp/
-temp/
-*.tmp
-*.bak
-*.orig
-scratch/
-playground/
-
-# ─────────────────────────────────────────────────────────────
-# 📊 Analytics / Traces
-# ─────────────────────────────────────────────────────────────
-.langfuse/
-traces/
-
-# Local Dealix index output
-.dealix/
-
-# ─────────────────────────────────────────────────────────────
-# 🤖 Claude Code agent worktrees + runtime ledger artifacts
-# ─────────────────────────────────────────────────────────────
-.claude/
-
-# Proof ledger runtime artifacts (template + schema + readme stay tracked)
-docs/proof-events/*.jsonl
-docs/proof-events/*-units.jsonl
-
-# ─────────────────────────────────────────────────────────────
-# 🎨 DesignOps OS — local-only artifact exports
-# (exporter writes here; never commit founder/customer artifacts)
-# ─────────────────────────────────────────────────────────────
-docs/designops/exports/**
-
-# ─────────────────────────────────────────────────────────────
-# V11 Phase E — live customer board / diagnostics (NEVER commit
-# real customer data; the founder's working state lives here)
-# ─────────────────────────────────────────────────────────────
-docs/phase-e/live/**
-docs/diagnostics/**
-
-# ─────────────────────────────────────────────────────────────
-# Wave 6 Revenue Activation — live prospect intake / pilot brief /
-# payment state / delivery session / proof pack / demo outcomes.
-# NEVER commit real prospect or customer data. Founder's working
-# state during demo→pilot→delivery lives here.
-# ─────────────────────────────────────────────────────────────
-docs/wave6/live/**
-data/customers/**
-
-# ─────────────────────────────────────────────────────────────
-# Wave 8 — Customer-Ready Gate — runtime artifacts (NEVER commit)
-# ─────────────────────────────────────────────────────────────
-data/customers/**
-docs/wave8/live/**
-# Customer-specific files (generated by onboarding wizard)
-customer_portal_token.txt
-env_vars_railway.txt
-feature_requests.jsonl
-# Observability runtime data
-.otel/
-.langfuse-local/
-# Wave 8 signal synthesis output
-signals_output.json
-
-# ─────────────────────────────────────────────────────────────
-# Wave 11 — First 3 Paid Pilots Closure — runtime state (NEVER commit)
-# ─────────────────────────────────────────────────────────────
-data/wave11/**
-docs/wave11/live/**
