@@ -1,12 +1,12 @@
 # Dealix Brain Response
 
-Generated: 2026-05-30T12:32:39.447321+00:00
+Generated: 2026-05-30T12:33:14.369416+00:00
 
-## Command 1a6f647e
-راجع الشركة وحدد أهم 5 أشياء ترفع المبيعات اليوم
+## Command adc54639
+راجع صفحات الموقع والعروض وحدد أهم 3 تحسينات تزيد التحويل
 
 ### Actions
-- Sell P1 first. Create 5 warm manual outreach drafts. Prepare 1 P1 proposal.
+- Run production smoke check: API health, demo, revenue-os, ZATCA.
 
 ### Guardrails
 - no auto-send

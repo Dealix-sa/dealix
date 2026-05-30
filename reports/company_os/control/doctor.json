@@ -2,7 +2,7 @@
   "score": 92.31,
   "result": "NEEDS_ATTENTION",
   "status": {
-    "generated_at": "2026-05-30T12:32:39.567979+00:00",
+    "generated_at": "2026-05-30T12:33:27.295685+00:00",
     "production": {
       "api_health": {
         "ok": true,
@@ -23,8 +23,8 @@
     },
     "repo": {
       "branch": "main",
-      "last_commit": "2df88e7d brand: add pitch conversion and visual identity system",
-      "status": "?? ^C\n?? reports/company_os/control/\n?? scripts/dealix_brain_control.py\n"
+      "last_commit": "85c973e4 company-os: add minimal brain control plane",
+      "status": " M reports/company_os/control/latest_response.md\n M reports/company_os/control/latest_tick.json\n?? ^C\n"
     },
     "assets": {
       "docs/company_os/enterprise/ENTERPRISE_OPERATING_MODEL_AR.md": true,
