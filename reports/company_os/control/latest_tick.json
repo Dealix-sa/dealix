@@ -1,6 +1,6 @@
 {
   "status": {
-    "generated_at": "2026-05-30T12:33:11.907298+00:00",
+    "generated_at": "2026-05-30T12:59:01.283191+00:00",
     "production": {
       "api_health": {
         "ok": true,
@@ -21,8 +21,8 @@
     },
     "repo": {
       "branch": "main",
-      "last_commit": "85c973e4 company-os: add minimal brain control plane",
-      "status": " M reports/company_os/control/latest_response.md\n M reports/company_os/control/latest_tick.json\n?? ^C\n"
+      "last_commit": "8f6e8ddc company-os: add mobile founder control room",
+      "status": " M reports/company_os/control/doctor.json\n"
     },
     "assets": {
       "docs/company_os/enterprise/ENTERPRISE_OPERATING_MODEL_AR.md": true,
@@ -38,18 +38,18 @@
   "processed_now": [
     {
       "command": {
-        "id": "adc54639",
-        "created_at": "2026-05-30T12:33:11.796983+00:00",
-        "priority": "normal",
-        "command": "راجع صفحات الموقع والعروض وحدد أهم 3 تحسينات تزيد التحويل",
+        "id": "bb32cbf9",
+        "created_at": "2026-05-30T12:59:01.152284+00:00",
+        "priority": "high",
+        "command": "افحص هل company-brain شغال 24 ساعة وجهز لي خطة التشغيل التالية",
         "status": "queued"
       },
       "plan": {
         "areas": [
-          "production"
+          "brain"
         ],
         "actions": [
-          "Run production smoke check: API health, demo, revenue-os, ZATCA."
+          "Run CEO brain, content factory, and growth scorecard."
         ],
         "guardrails": [
           "no auto-send",
@@ -59,7 +59,7 @@
         ]
       },
       "status": "planned",
-      "planned_at": "2026-05-30T12:33:11.907142+00:00"
+      "planned_at": "2026-05-30T12:59:01.282973+00:00"
     }
   ]
 }

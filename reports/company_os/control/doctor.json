@@ -1,8 +1,8 @@
 {
-  "score": 92.31,
-  "result": "NEEDS_ATTENTION",
+  "score": 100.0,
+  "result": "PASS",
   "status": {
-    "generated_at": "2026-05-30T12:33:27.295685+00:00",
+    "generated_at": "2026-05-30T12:58:57.809586+00:00",
     "production": {
       "api_health": {
         "ok": true,
@@ -23,8 +23,8 @@
     },
     "repo": {
       "branch": "main",
-      "last_commit": "85c973e4 company-os: add minimal brain control plane",
-      "status": " M reports/company_os/control/latest_response.md\n M reports/company_os/control/latest_tick.json\n?? ^C\n"
+      "last_commit": "8f6e8ddc company-os: add mobile founder control room",
+      "status": ""
     },
     "assets": {
       "docs/company_os/enterprise/ENTERPRISE_OPERATING_MODEL_AR.md": true,
