@@ -36,6 +36,7 @@ class SprintRun:
     capital_assets_registered: list[str] = field(default_factory=list)
     retainer_eligible: bool = False
     governance_decision: str = "allow_with_review"
+    company_brain: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -49,6 +50,7 @@ class SprintRun:
             "capital_assets_registered": list(self.capital_assets_registered),
             "retainer_eligible": self.retainer_eligible,
             "governance_decision": self.governance_decision,
+            "company_brain": self.company_brain,
         }
 
 
@@ -409,6 +411,64 @@ def step8_retainer_check(
     }
 
 
+def step9_company_brain(
+    *,
+    customer_id: str,
+    engagement_id: str,
+    proof_pack: dict | None,
+    top_accounts: list[dict],
+    retainer_eligible: bool,
+    proof_score: float,
+) -> dict:
+    """Day 7 (post-run): Build Company Brain v1 for this customer.
+
+    Synthesises the sprint results into a structured workspace so the
+    customer can query their own insights after delivery. Stored in the
+    in-memory Company Brain MVP workspace keyed by customer_id.
+    Returns the workspace_id and a brief summary — never sends externally.
+    """
+    from auto_client_acquisition.company_brain_mvp.memory import ingest_chunk, query_workspace
+
+    workspace_id = f"customer:{customer_id}"
+
+    # Synthesise a plain-language summary of the sprint for the workspace.
+    top_names = [
+        str(a.get("company_name") or a.get("name") or "")
+        for a in (top_accounts or [])[:5]
+        if a.get("company_name") or a.get("name")
+    ]
+    pack_sections = list((proof_pack or {}).get("sections", {}).keys()) if isinstance(
+        (proof_pack or {}).get("sections"), dict
+    ) else []
+
+    sprint_summary = (
+        f"Sprint engagement {engagement_id} for customer {customer_id}.\n"
+        f"Proof score: {proof_score:.1f}. Retainer eligible: {retainer_eligible}.\n"
+        f"Top accounts analysed: {', '.join(top_names) or 'none'}.\n"
+        f"Proof Pack sections: {', '.join(pack_sections) or 'none'}.\n"
+        f"Problem summary: {(proof_pack or {}).get('problem_summary', '')}."
+    )
+
+    chunk = ingest_chunk(
+        workspace_id=workspace_id,
+        text=sprint_summary,
+        source_id=f"sprint:{engagement_id}",
+        title=f"Sprint Proof Pack — {engagement_id}",
+    )
+
+    # Quick self-query to confirm the workspace is queryable.
+    probe = query_workspace(workspace_id=workspace_id, question="proof score retainer")
+    answer_mode = probe.get("answer_mode", "")
+
+    return {
+        "workspace_id": workspace_id,
+        "chunk_id": chunk["chunk_id"],
+        "top_accounts_indexed": top_names,
+        "answer_mode": answer_mode,
+        "status": "company_brain_v1_ready",
+    }
+
+
 def run_sprint(
     *,
     engagement_id: str,
@@ -510,6 +570,16 @@ def run_sprint(
     run.steps.append(s8)
     run.retainer_eligible = bool(s8.output.get("eligible", False))
 
+    # Step 9 — Company Brain v1 (customer workspace)
+    s9 = _safe("company_brain_v1", step9_company_brain,
+               customer_id=customer_id, engagement_id=engagement_id,
+               proof_pack=run.proof_pack,
+               top_accounts=top10,
+               retainer_eligible=run.retainer_eligible,
+               proof_score=run.proof_score)
+    run.steps.append(s9)
+    run.company_brain = s9.output if s9.status == "ran" else {}
+
     # Governance envelope on the whole sprint
     if any(s.status == "blocked" for s in run.steps):
         run.governance_decision = "needs_review"
@@ -528,4 +598,5 @@ __all__ = [
     "step6_proof_pack",
     "step7_capital_assets",
     "step8_retainer_check",
+    "step9_company_brain",
 ]
