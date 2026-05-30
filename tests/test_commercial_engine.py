@@ -13,9 +13,7 @@ Tests:
 
 from __future__ import annotations
 
-import json
 import os
-import tempfile
 import uuid
 
 import pytest
@@ -79,10 +77,6 @@ class TestDiagnosticEngine:
     def test_ledger_save(self, tmp_path: "Path") -> None:
         from dealix.commercial.diagnostic_engine import DiagnosticReport, DiagnosticSection, _save_to_ledger
         from datetime import UTC, datetime
-        import dealix.commercial.diagnostic_engine as eng
-
-        # Patch ledger path
-        original = os.path.join
 
         report = DiagnosticReport(
             report_id=str(uuid.uuid4()),

@@ -74,28 +74,47 @@ def verify_service_matrix() -> None:
         fail("dealix/config/railway_services.json must list API, frontend, and apps/web services")
 
     names = {svc.get("name") for svc in services if isinstance(svc, dict)}
-    expected = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
-    if names != expected:
-        fail(f"railway service names mismatch: expected {sorted(expected)}, got {sorted(names)}")
+    required = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
+    if not required.issubset(names):
+        missing = sorted(required - names)
+        fail(f"railway service names missing required entries: {missing}, got {sorted(names)}")
+
+    # Public-facing services require railwayConfig, healthcheckPath, and requiredEnv.
+    # Internal services (worker, watchdog) only require name and dockerfilePath.
+    public_services = required  # dealix-api, dealix-frontend, dealix-apps-web
 
     for svc in services:
         if not isinstance(svc, dict):
             fail("railway service entry must be an object")
         name = str(svc.get("name", ""))
-        railway_config = str(svc.get("railwayConfig", ""))
         dockerfile = str(svc.get("dockerfilePath", ""))
         root_dir = str(svc.get("rootDirectory", ""))
+
+        if not name or not dockerfile:
+            fail(f"{name or '<unnamed>'}: missing name or dockerfilePath")
+
+        # Resolve dockerfile path relative to rootDirectory
+        if root_dir and root_dir not in ("", "."):
+            dockerfile_path = f"{root_dir.rstrip('/')}/{dockerfile}"
+        else:
+            dockerfile_path = dockerfile
+        read(dockerfile_path)
+
+        if name not in public_services:
+            # Internal service — no further checks required
+            continue
+
+        railway_config = str(svc.get("railwayConfig", ""))
         healthcheck = str(svc.get("healthcheckPath", ""))
         required_env = svc.get("requiredEnv")
 
-        if not name or not railway_config or not dockerfile:
-            fail(f"{name or '<unnamed>'}: missing name, railwayConfig, or dockerfilePath")
+        if not railway_config:
+            fail(f"{name}: public service missing railwayConfig")
         if healthcheck != "/healthz":
             fail(f"{name}: healthcheckPath must be /healthz")
         if not isinstance(required_env, list) or not required_env:
             fail(f"{name}: requiredEnv must be a non-empty list")
         read(railway_config)
-        read(f"{root_dir.rstrip('/') + '/' if root_dir not in ('', '.') else ''}{dockerfile}")
 
 
 def main() -> None:

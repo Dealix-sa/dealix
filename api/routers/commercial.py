@@ -22,11 +22,24 @@ import logging
 import uuid
 from typing import Any
 
+import json
+import os
+import re
+
 from fastapi import APIRouter, Body, HTTPException
 
 log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/commercial", tags=["commercial"])
+
+_ID_RE = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
+
+
+def _safe_id(value: str) -> str:
+    """Sanitize a user-provided ID for use in file paths (path-traversal guard)."""
+    sanitized = re.sub(r"[^a-zA-Z0-9_-]", "_", value)[:128]
+    return sanitized
+
 
 _CONSTITUTIONAL_GATES = {
     "no_live_send": True,
@@ -197,12 +210,10 @@ async def start_pilot(payload: dict[str, Any] = Body(default_factory=dict)) -> d
 @router.get("/pilot/{pilot_id}/brief")
 async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
     """Get today's task brief for a running pilot."""
-    import json
-    import os
-
-    plan_path = f"data/pilots/{pilot_id}.json"
+    safe_pid = _safe_id(pilot_id)
+    plan_path = os.path.join("data", "pilots", f"{safe_pid}.json")
     if not os.path.exists(plan_path):
-        raise HTTPException(status_code=404, detail=f"Pilot {pilot_id} not found")
+        raise HTTPException(status_code=404, detail="Pilot not found")
 
     with open(plan_path, encoding="utf-8") as f:
         plan_data = json.load(f)
@@ -212,7 +223,7 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
 
     day_data = plan_data["days"][day - 1]
     return {
-        "pilot_id": pilot_id,
+        "pilot_id": safe_pid,
         "company": plan_data["company_name"],
         "day": day,
         **day_data,
@@ -222,12 +233,10 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
 @router.get("/pilot/{pilot_id}/plan")
 async def get_pilot_plan(pilot_id: str) -> dict[str, Any]:
     """Get the full 7-day plan for a pilot."""
-    import json
-    import os
-
-    plan_path = f"data/pilots/{pilot_id}.json"
+    safe_pid = _safe_id(pilot_id)
+    plan_path = os.path.join("data", "pilots", f"{safe_pid}.json")
     if not os.path.exists(plan_path):
-        raise HTTPException(status_code=404, detail=f"Pilot {pilot_id} not found")
+        raise HTTPException(status_code=404, detail="Pilot not found")
 
     with open(plan_path, encoding="utf-8") as f:
         return json.load(f)
@@ -338,8 +347,6 @@ async def daily_brief() -> dict[str, Any]:
     Founder daily brief — pipeline snapshot + top opportunities.
     Called by GitHub Actions at 6 AM Riyadh time daily.
     """
-    import json
-    import os
     from datetime import datetime
 
     brief: dict[str, Any] = {

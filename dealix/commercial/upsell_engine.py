@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import uuid
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -157,9 +158,10 @@ def evaluate_upsell(
     opportunities.sort(key=lambda o: (o.is_gated, o.price_sar))
 
     _save_opportunities(account_id, company_name, opportunities)
+    safe_account = account_id.replace("\n", " ").replace("\r", " ")[:80]
     log.info(
         "Upsell evaluated: account=%s pilots=%d proofs=%d eligible=%d gated=%d",
-        account_id,
+        safe_account,
         pilot_count,
         proof_event_count,
         sum(1 for o in opportunities if not o.is_gated),
@@ -198,7 +200,8 @@ def _save_opportunities(account_id: str, company_name: str, opps: list[UpsellOpp
             os.path.dirname(__file__), "..", "..", "data", "upsell"
         )
         os.makedirs(upsell_dir, exist_ok=True)
-        path = os.path.join(upsell_dir, f"{account_id}_opportunities.json")
+        safe_account_id = re.sub(r"[^a-zA-Z0-9_-]", "_", account_id)[:128]
+        path = os.path.join(upsell_dir, f"{safe_account_id}_opportunities.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(
                 {
