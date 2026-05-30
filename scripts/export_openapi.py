@@ -25,7 +25,14 @@ def export_openapi(output: Path) -> None:
         json.dumps(schema, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    print(f"Exported OpenAPI schema to {output.relative_to(ROOT)}")
+    # `output` may be a scratch path outside the repo (e.g. the contract check
+    # writes to a TemporaryDirectory under /tmp); fall back to the absolute path
+    # rather than crashing on relative_to.
+    try:
+        display: Path = output.relative_to(ROOT)
+    except ValueError:
+        display = output
+    print(f"Exported OpenAPI schema to {display}")
 
 
 def main() -> int:
