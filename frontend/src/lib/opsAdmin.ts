@@ -1,19 +1,20 @@
-/**
- * Ops admin key helpers — client-side utilities for founder ops panels.
- * The key is sourced from NEXT_PUBLIC_DEALIX_ADMIN_API_KEY, which is set
- * at build time via Railway environment variables (never hardcoded).
- */
+const LS_KEY = "dealix_admin_api_key";
 
 export function getAdminApiKey(): string {
-  return process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY ?? "";
+  if (typeof window === "undefined") return process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY ?? "";
+  return (
+    localStorage.getItem(LS_KEY) ||
+    process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY ||
+    ""
+  );
 }
 
 export function isOpsConfigured(): boolean {
-  return Boolean(getAdminApiKey());
+  return getAdminApiKey().trim().length > 0;
 }
 
-export function opsMissingKeyMessage(isAr: boolean): string {
+export function opsMissingKeyMessage(isAr?: boolean): string {
   return isAr
-    ? "مفتاح API غير مضبوط. أضف NEXT_PUBLIC_DEALIX_ADMIN_API_KEY إلى متغيرات البيئة."
-    : "Admin API key not configured. Set NEXT_PUBLIC_DEALIX_ADMIN_API_KEY in environment variables.";
+    ? "يرجى إدخال مفتاح API للمشرف للمتابعة."
+    : "Please set your admin API key to continue.";
 }
