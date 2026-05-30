@@ -93,16 +93,38 @@ def test_product_to_dict_roundtrip() -> None:
 # ---------------------------------------------------------------------------
 
 # We mock the BaseAgent LLM router so no network calls are made.
+# core.memory imports sqlalchemy which is unavailable in the test environment,
+# so we inject a fake module via sys.modules before any agent is instantiated.
 @pytest.fixture
 def mock_router_agent(mock_llm_response: Any) -> Any:  # noqa: ANN401
-    with (
-        patch("core.agents.base.get_router") as m1,
-        patch("core.memory.revenue_memory.RevenueMemory", autospec=True),
-    ):
+    import sys
+    from unittest.mock import MagicMock
+
+    # Stub out the heavy memory stack before agents are instantiated
+    fake_revenue_memory_module = MagicMock()
+    fake_memory_module = MagicMock()
+    fake_embedding_module = MagicMock()
+
+    injected: dict[str, Any] = {}
+    for mod_path, fake in [
+        ("core.memory", fake_memory_module),
+        ("core.memory.revenue_memory", fake_revenue_memory_module),
+        ("core.memory.embedding_service", fake_embedding_module),
+    ]:
+        if mod_path not in sys.modules:
+            sys.modules[mod_path] = fake
+            injected[mod_path] = fake
+
+    # Also patch the LLM router
+    with patch("core.agents.base.get_router") as m1:
         router_instance = AsyncMock()
         router_instance.run.return_value = mock_llm_response
         m1.return_value = router_instance
         yield router_instance
+
+    # Clean up only what we injected
+    for mod_path in injected:
+        sys.modules.pop(mod_path, None)
 
 
 @pytest.mark.asyncio
