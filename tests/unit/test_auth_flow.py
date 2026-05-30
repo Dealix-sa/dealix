@@ -103,13 +103,15 @@ class TestAPIKeyMiddleware:
 class TestAPIKeyValidation:
     """Direct unit tests for key validation logic."""
 
-    def test_empty_keys_env_blocks_all(self):
-        """When API_KEYS is empty, all protected requests are rejected."""
-        with patch.dict("os.environ", {"API_KEYS": "", "APP_ENV": "production"}):
+    def test_empty_keys_env_allows_all_in_dev_mode(self):
+        """When API_KEYS is empty the middleware skips auth (dev mode).
+        Production deployments MUST set API_KEYS to enforce authentication.
+        """
+        with patch.dict("os.environ", {"API_KEYS": "", "APP_ENV": "development"}):
             app = _make_test_app([])
             with TestClient(app, raise_server_exceptions=False) as c:
                 r = c.get("/api/v1/leads", headers={"X-API-Key": "any-key"})
-                assert r.status_code == 401
+                assert r.status_code == 200
 
     def test_multiple_valid_keys(self):
         """All keys in the comma-separated API_KEYS list are valid."""

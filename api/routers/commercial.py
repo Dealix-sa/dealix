@@ -356,7 +356,7 @@ async def daily_brief() -> dict[str, Any]:
     Founder daily brief — pipeline snapshot + top opportunities.
     Called by GitHub Actions at 6 AM Riyadh time daily.
     """
-    from datetime import datetime
+    from datetime import UTC, datetime
 
     brief: dict[str, Any] = {
         "date": datetime.now(UTC).strftime("%Y-%m-%d"),
