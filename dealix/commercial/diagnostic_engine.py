@@ -160,7 +160,7 @@ class DiagnosticEngine:
             data = json.loads(raw)
             return [DiagnosticSection(**s) for s in data]
         except Exception as exc:
-            log.warning("diagnostic_llm_failed", error=str(exc))
+            log.warning("diagnostic_llm_failed error=%s", exc)
             return []
 
     def _template_sections(

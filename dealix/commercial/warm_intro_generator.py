@@ -124,7 +124,7 @@ class WarmIntroGenerator:
                 for i, d in enumerate(data[:5])
             ]
         except Exception as exc:
-            log.warning("warm_intro_llm_failed", error=str(exc))
+            log.warning("warm_intro_llm_failed error=%s", exc)
             return []
 
     def _llm_email(self, req: WarmIntroRequest) -> list[OutreachDraft]:
@@ -164,7 +164,7 @@ class WarmIntroGenerator:
                 for i, d in enumerate(data[:3])
             ]
         except Exception as exc:
-            log.warning("warm_intro_email_llm_failed", error=str(exc))
+            log.warning("warm_intro_email_llm_failed error=%s", exc)
             return []
 
     def _template_whatsapp(self, req: WarmIntroRequest) -> list[OutreachDraft]:
