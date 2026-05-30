@@ -20,13 +20,20 @@ REQUIRED_FILES = [
     "dealix/config/railway_services.json",
     "frontend/Dockerfile",
     "frontend/railway.json",
-    "frontend/next.config.js",
     "frontend/src/app/healthz/route.ts",
     "apps/web/Dockerfile",
     "apps/web/railway.json",
-    "apps/web/next.config.js",
     "apps/web/app/healthz/route.ts",
 ]
+
+# Next.js (>=13) resolves its config from any of these filenames, in this
+# order. The frontend uses TypeScript (next.config.ts + next-intl plugin);
+# apps/web uses CommonJS (next.config.js). Accept whichever each service ships.
+NEXT_CONFIG_CANDIDATES = (
+    "next.config.ts",
+    "next.config.mjs",
+    "next.config.js",
+)
 
 FORBIDDEN_PUBLIC_SECRET_MARKERS = [
     "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY",
@@ -51,6 +58,19 @@ def load_json(path: str) -> dict[str, Any]:
         return json.loads(read(path))
     except json.JSONDecodeError as exc:
         fail(f"invalid JSON in {path}: {exc}")
+
+
+def resolve_next_config(service_dir: str) -> str:
+    """Return the repo-relative path of the Next.js config for a service.
+
+    Next.js resolves its config from next.config.{ts,mjs,js}. We accept any
+    so a service can ship TypeScript (frontend) or CommonJS (apps/web).
+    """
+    for candidate in NEXT_CONFIG_CANDIDATES:
+        rel = f"{service_dir}/{candidate}"
+        if (ROOT / rel).exists():
+            return rel
+    fail(f"missing next.config.(ts|mjs|js) in {service_dir}/")
 
 
 def verify_railway_json(path: str, *, allow_predeploy: bool) -> None:
@@ -107,7 +127,8 @@ def main() -> None:
     verify_railway_json("frontend/railway.json", allow_predeploy=False)
     verify_railway_json("apps/web/railway.json", allow_predeploy=False)
 
-    for path in ("frontend/next.config.js", "apps/web/next.config.js"):
+    for service_dir in ("frontend", "apps/web"):
+        path = resolve_next_config(service_dir)
         content = read(path)
         if "output: 'standalone'" not in content and 'output: "standalone"' not in content:
             fail(f"{path} must enable standalone output")
