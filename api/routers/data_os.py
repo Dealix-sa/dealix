@@ -18,9 +18,6 @@ from auto_client_acquisition.data_os.data_quality_score import compute_dq
 from auto_client_acquisition.data_os.import_preview import import_preview_csv
 from auto_client_acquisition.data_os.pii_detection import column_name_suggests_pii
 from auto_client_acquisition.data_os.source_passport import SourcePassport
-from auto_client_acquisition.governance_os.runtime_decision import (
-    governance_decision_from_passport_ai_gate,
-)
 from auto_client_acquisition.sovereignty_os.source_passport_standard import (
     source_passport_valid_for_ai,
 )
@@ -68,6 +65,9 @@ def _passport_block(
             {"provided": False, "valid": False, "reasons": []},
             GovernanceDecision.ALLOW_WITH_REVIEW,
         )
+    from auto_client_acquisition.governance_os.runtime_decision import (
+        governance_decision_from_passport_ai_gate,
+    )
     ok, errors = source_passport_valid_for_ai(passport)
     decision = governance_decision_from_passport_ai_gate(ok, errors)
     return (

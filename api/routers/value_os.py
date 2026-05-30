@@ -12,7 +12,6 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel, Field
 
-from auto_client_acquisition.governance_os.runtime_decision import GovernanceDecision
 from auto_client_acquisition.value_os.monthly_report import generate as generate_monthly
 from auto_client_acquisition.value_os.value_ledger import (
     ValueDisciplineError,
@@ -33,6 +32,7 @@ class ValueEventBody(BaseModel):
 
 @router.post("/event/{customer_id}")
 async def post_value_event(customer_id: str, body: ValueEventBody) -> dict[str, Any]:
+    from auto_client_acquisition.governance_os.runtime_decision import GovernanceDecision
     try:
         event = add_event(
             customer_id=customer_id,

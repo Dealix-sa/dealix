@@ -11,12 +11,16 @@ would duplicate ledger and capital-asset side effects.
 """
 from __future__ import annotations
 
+import json
 import re
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import PlainTextResponse, Response
 from pydantic import BaseModel, Field
+
+_DEMO_CACHE_KEY = "demo:sprint:sample:v1"
+_DEMO_CACHE_TTL = 3600  # 1 hour — demo data changes rarely
 
 router = APIRouter(prefix="/api/v1/sprint", tags=["sprint"])
 
@@ -128,11 +132,35 @@ async def render_proof_pack_email_body(body: _ProofPackRenderBody) -> str:
     return proof_pack_email_body(body.pack(), customer_handle=body.customer_handle)
 
 
+def _get_redis_client():
+    """Return a Redis client if REDIS_URL is configured, else None."""
+    try:
+        import redis as _redis  # type: ignore
+        from core.config.settings import get_settings
+        url = get_settings().redis_url
+        if not url or url == "redis://localhost:6379/0":
+            return None
+        return _redis.from_url(url, socket_timeout=2, decode_responses=True)
+    except Exception:
+        return None
+
+
 @router.get("/sample")
 async def sample_sprint() -> dict[str, Any]:
     """Run the sprint on the synthetic Saudi B2B demo CSV bundled in
     data/demo/saudi_b2b_demo.csv. Used by the landing page + smoke tests.
+    Results are cached in Redis for 1 hour so the demo loads in <100ms.
     """
+    # --- cache read ---
+    _rc = _get_redis_client()
+    if _rc is not None:
+        try:
+            cached = _rc.get(_DEMO_CACHE_KEY)
+            if cached:
+                return json.loads(cached)
+        except Exception:
+            pass  # cache miss or Redis error — fall through to live run
+
     import csv
     from pathlib import Path
 
@@ -165,4 +193,13 @@ async def sample_sprint() -> dict[str, Any]:
         problem_summary="Demo: rank Saudi B2B accounts by relationship + sector.",
         workflow_owner_present=True,
     )
-    return run.to_dict()
+    result = run.to_dict()
+
+    # --- cache write ---
+    if _rc is not None:
+        try:
+            _rc.setex(_DEMO_CACHE_KEY, _DEMO_CACHE_TTL, json.dumps(result, default=str))
+        except Exception:
+            pass  # non-fatal: cache write failure doesn't affect the response
+
+    return result
