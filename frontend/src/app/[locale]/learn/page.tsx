@@ -27,6 +27,9 @@ export default async function LearnIndexPage({ params }: PageProps) {
     { slug: "no-cold-whatsapp-policy", tag: "Compliance", tagColor: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-300" },
     { slug: "10-lead-audit", tag: "Sprint", tagColor: "bg-orange-100 dark:bg-orange-950/30 text-orange-700 dark:text-orange-300" },
     { slug: "audit-lead-follow-up", tag: "Process", tagColor: "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300" },
+    { slug: "zatca-penalties-guide", tag: "ZATCA", tagColor: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300" },
+    { slug: "zatca-einvoicing-phase2-setup", tag: "ZATCA", tagColor: "bg-amber-100 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300" },
+    { slug: "saudi-b2b-compliance-checklist-2026", tag: "Compliance", tagColor: "bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-300" },
   ];
 
   const tagMap = Object.fromEntries(TOPICS_AR.map((t) => [t.slug, { tag: t.tag, tagColor: t.tagColor }]));
