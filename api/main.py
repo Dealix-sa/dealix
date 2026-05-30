@@ -158,6 +158,47 @@ def _validate_production_secrets(settings: Settings) -> None:  # type: ignore[na
         )
 
 
+def _prewarm_caches() -> None:
+    """Synchronously populate Redis caches for demo-critical endpoints.
+
+    Called once at startup so the first real request is fast.
+    All errors are swallowed — a cold start is better than a crash.
+    """
+    try:
+        from dealix.business_now.snapshot_builder import build_business_now_snapshot
+        import json, redis as _redis
+        from core.config.settings import get_settings
+        url = get_settings().redis_url
+        if not url or url == "redis://localhost:6379/0":
+            return
+        rc = _redis.from_url(url, socket_timeout=5, decode_responses=True)
+        # Business NOW snapshot (15-min TTL)
+        snap = build_business_now_snapshot(run_verify=False)
+        rc.setex("business_now:snapshot:v1", 900, json.dumps(snap, default=str))
+    except Exception:
+        pass
+
+    try:
+        from auto_client_acquisition.delivery_factory.delivery_sprint import run_sprint
+        import json, redis as _redis
+        from core.config.settings import get_settings
+        url = get_settings().redis_url
+        if not url or url == "redis://localhost:6379/0":
+            return
+        rc = _redis.from_url(url, socket_timeout=5, decode_responses=True)
+        # Sprint demo cache (1-hour TTL)
+        if not rc.exists("demo:sprint:sample:v1"):
+            result = run_sprint(
+                customer_id="demo_warmup",
+                company_name="شركة التجريب",
+                sector="technology",
+                source="warmup",
+            ).to_dict()
+            rc.setex("demo:sprint:sample:v1", 3600, json.dumps(result, default=str))
+    except Exception:
+        pass
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     """App startup/shutdown hook."""
@@ -185,6 +226,17 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
             log.warning("db_init_skipped", error=str(exc))
     else:
         log.info("db_init_skipped", reason="use_alembic_migrations")
+
+    # Pre-warm Redis caches so first demo request is fast
+    if settings.redis_url and settings.redis_url != "redis://localhost:6379/0":
+        import asyncio
+        loop = asyncio.get_event_loop()
+        try:
+            await loop.run_in_executor(None, _prewarm_caches)
+            log.info("cache_prewarm_complete")
+        except Exception as exc:
+            log.warning("cache_prewarm_failed", error=str(exc))
+
     yield
     log.info("app_shutdown")
 

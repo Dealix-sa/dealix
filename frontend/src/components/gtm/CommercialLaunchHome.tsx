@@ -36,6 +36,15 @@ export function CommercialLaunchHome() {
             <Button asChild variant="outline" size="lg"><Link href={`${base}/proof-pack`}>{t("ctaSampleProof")}</Link></Button>
             <Link href={`${base}/risk-score`} className="text-sm text-[var(--dealix-deep-green)]">{t("ctaRiskScore")} →</Link>
           </div>
+          {/* ZATCA Wave 24 urgency strip */}
+          <Link href={`${base}/zatca-readiness`} className="mt-6 inline-flex items-center gap-2 rounded-lg border border-amber-500/40 bg-amber-50 dark:bg-amber-950/20 px-4 py-2 text-sm text-amber-700 dark:text-amber-400 hover:border-amber-500/70 transition-colors">
+            <span className="text-base">⚠</span>
+            <span>
+              {isAr
+                ? "ZATCA موجة ٢٤ — إلزامي قبل ٣٠ يونيو ٢٠٢٦ · اختبر جاهزيتك ←"
+                : "ZATCA Wave 24 — mandatory by June 30, 2026 · Check your readiness →"}
+            </span>
+          </Link>
         </section>
         <section className="rounded-xl border p-8 bg-card/60">
           <h2 className="text-xl font-semibold text-dealix-green">{t("visionTitle")}</h2>
