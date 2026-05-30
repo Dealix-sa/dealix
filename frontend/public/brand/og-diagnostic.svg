@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0E1A15"/>
+
+  <!-- Grid -->
+  <defs>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1F2E27" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)" opacity="0.5"/>
+
+  <!-- Gold top border -->
+  <rect x="0" y="0" width="1200" height="5" fill="#C8A86A"/>
+
+  <!-- Logo mark -->
+  <rect x="80" y="60" width="64" height="64" rx="14" fill="#0A5C36"/>
+  <path d="M92 108V76h11.2c7.6 0 12.6 4.3 12.6 11 0 4-1.8 7-5 8.6l6.4 12.4H107l-5.8-10.2H102v10.2H92zm10.8-17.3c3.2 0 5-1.8 5-4.5s-1.8-4.5-5-4.5H102v9z" fill="#C9A961"/>
+  <text x="158" y="102" font-family="'Inter', system-ui" font-size="32" font-weight="700" fill="#ECEFEC">Dealix</text>
+
+  <!-- Main heading AR -->
+  <text x="80" y="220" font-family="'IBM Plex Sans Arabic', system-ui" font-size="48" font-weight="700" fill="#ECEFEC" direction="rtl" text-anchor="start">تشخيص ٧ أيام</text>
+
+  <!-- Subheading AR -->
+  <text x="80" y="276" font-family="'IBM Plex Sans Arabic', system-ui" font-size="26" font-weight="400" fill="#9CA8A2" direction="rtl" text-anchor="start">Proof Pack محكوم بالدليل — كشف فجوات الإيراد و CRM و AI</text>
+
+  <!-- Divider -->
+  <rect x="80" y="310" width="500" height="1" fill="#2A3D33"/>
+
+  <!-- EN subheading -->
+  <text x="80" y="345" font-family="'Inter', system-ui" font-size="20" font-weight="400" fill="#5A6661">7-Day Diagnostic · Revenue · CRM · AI Governance</text>
+
+  <!-- Pills row -->
+  <rect x="80" y="390" width="160" height="36" rx="18" fill="#0A5C36" opacity="0.3" stroke="#0A5C36" stroke-width="1"/>
+  <text x="160" y="413" font-family="'Inter', system-ui" font-size="14" font-weight="500" fill="#1F8A5A" text-anchor="middle">PDPL Native</text>
+
+  <rect x="256" y="390" width="160" height="36" rx="18" fill="#C8A86A" opacity="0.15" stroke="#C8A86A" stroke-width="1"/>
+  <text x="336" y="413" font-family="'Inter', system-ui" font-size="14" font-weight="500" fill="#C8A86A" text-anchor="middle">ZATCA Ready</text>
+
+  <rect x="432" y="390" width="200" height="36" rx="18" fill="#1F2E27" stroke="#2A3D33" stroke-width="1"/>
+  <text x="532" y="413" font-family="'Inter', system-ui" font-size="14" font-weight="500" fill="#9CA8A2" text-anchor="middle">Approval-First</text>
+
+  <!-- Price card -->
+  <rect x="860" y="180" width="280" height="200" rx="16" fill="#0A5C36" opacity="0.15" stroke="#0A5C36" stroke-width="1"/>
+  <text x="1000" y="250" font-family="'IBM Plex Sans Arabic', system-ui" font-size="18" font-weight="400" fill="#9CA8A2" text-anchor="middle">يبدأ من</text>
+  <text x="1000" y="300" font-family="'Inter', system-ui" font-size="40" font-weight="700" fill="#C8A86A" text-anchor="middle">499 SAR</text>
+  <text x="1000" y="340" font-family="'Inter', system-ui" font-size="14" font-weight="400" fill="#5A6661" text-anchor="middle">7-Day Sprint</text>
+
+  <!-- Domain -->
+  <text x="80" y="590" font-family="'Inter', system-ui" font-size="18" font-weight="400" fill="#3A5040">dealix.me/ar/dealix-diagnostic</text>
+</svg>

@@ -5,7 +5,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dealix.me";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const locales = ["ar", "en"] as const;
-  const staticPaths = ["", "/risk-score", "/proof-pack", "/dealix-diagnostic", "/services", "/learn"];
+  const staticPaths = ["", "/risk-score", "/proof-pack", "/dealix-diagnostic", "/services", "/learn", "/partners"];
   const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of locales) {

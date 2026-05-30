@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1584 396" width="1584" height="396">
+  <!-- Background -->
+  <rect width="1584" height="396" fill="#0E1A15"/>
+
+  <!-- Subtle grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1F2E27" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+  <rect width="1584" height="396" fill="url(#grid)" opacity="0.6"/>
+
+  <!-- Right side accent bar -->
+  <rect x="1524" y="0" width="60" height="396" fill="#0A5C36" opacity="0.4"/>
+
+  <!-- Gold accent line -->
+  <rect x="0" y="0" width="1584" height="4" fill="#C8A86A"/>
+
+  <!-- Logo mark (D lettermark) -->
+  <rect x="80" y="148" width="100" height="100" rx="22" fill="#0A5C36"/>
+  <path d="M104 228V172h18.6c12.6 0 21 7.2 21 18.3 0 6.6-3 11.7-8.4 14.4L152 228h-16.2l-9.6-16.8H116v16.8H104zm18-28.8c5.4 0 8.4-3 8.4-7.5s-3-7.5-8.4-7.5H116v15z" fill="#C9A961"/>
+
+  <!-- Dealix wordmark -->
+  <text x="200" y="218" font-family="'Inter', 'IBM Plex Sans Arabic', system-ui" font-size="52" font-weight="700" fill="#ECEFEC" letter-spacing="-1">Dealix</text>
+
+  <!-- Divider -->
+  <rect x="80" y="272" width="420" height="1" fill="#2A3D33"/>
+
+  <!-- Arabic tagline -->
+  <text x="500" y="312" font-family="'IBM Plex Sans Arabic', system-ui" font-size="22" font-weight="400" fill="#9CA8A2" text-anchor="end" direction="rtl">نظام التشغيل الإيرادي · السعودية أولاً</text>
+
+  <!-- English tagline -->
+  <text x="80" y="312" font-family="'Inter', system-ui" font-size="18" font-weight="400" fill="#9CA8A2">B2B Revenue Operating System · Saudi-First</text>
+
+  <!-- Right side — value pillars -->
+  <text x="1504" y="100" font-family="'Inter', system-ui" font-size="14" font-weight="500" fill="#C8A86A" text-anchor="end">PDPL Native</text>
+  <text x="1504" y="124" font-family="'Inter', system-ui" font-size="14" font-weight="400" fill="#5A6661" text-anchor="end">Personal Data Protection</text>
+
+  <rect x="1300" y="140" width="204" height="1" fill="#2A3D33"/>
+
+  <text x="1504" y="164" font-family="'Inter', system-ui" font-size="14" font-weight="500" fill="#C8A86A" text-anchor="end">ZATCA Ready</text>
+  <text x="1504" y="188" font-family="'Inter', system-ui" font-size="14" font-weight="400" fill="#5A6661" text-anchor="end">E-Invoice Compliance</text>
+
+  <rect x="1300" y="204" width="204" height="1" fill="#2A3D33"/>
+
+  <text x="1504" y="244" font-family="'Inter', system-ui" font-size="14" font-weight="500" fill="#C8A86A" text-anchor="end">Approval-First</text>
+  <text x="1504" y="268" font-family="'Inter', system-ui" font-size="14" font-weight="400" fill="#5A6661" text-anchor="end">Human oversight on every action</text>
+
+  <rect x="1300" y="284" width="204" height="1" fill="#2A3D33"/>
+
+  <text x="1504" y="324" font-family="'Inter', system-ui" font-size="14" font-weight="500" fill="#C8A86A" text-anchor="end">Evidence Before Upsell</text>
+  <text x="1504" y="348" font-family="'Inter', system-ui" font-size="14" font-weight="400" fill="#5A6661" text-anchor="end">Proof Pack before every upgrade</text>
+
+  <!-- Domain -->
+  <text x="80" y="365" font-family="'Inter', system-ui" font-size="14" font-weight="400" fill="#3A5040">dealix.me</text>
+</svg>

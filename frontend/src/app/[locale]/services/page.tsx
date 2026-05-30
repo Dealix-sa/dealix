@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ServicesSprintPanelDynamic } from "@/components/services/ServicesSprintPanelDynamic";
+import { buildServicesMetadata } from "@/lib/gtmMetadata";
 
 interface ServicesHubProps {
   params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: ServicesHubProps): Promise<Metadata> {
+  const { locale } = await params;
+  return buildServicesMetadata(locale);
 }
 
 export default async function ServicesHubPage({ params }: ServicesHubProps) {
