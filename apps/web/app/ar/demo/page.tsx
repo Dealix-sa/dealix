@@ -5,16 +5,25 @@ export const metadata = {
 
 const cards = [
   {
-    title: "Revenue Intelligence Sprint",
+    title: "P1 — Revenue Intelligence Sprint",
     text: "تشخيص سريع يوضح أين تضيع الفرص، من أول 20 فرصة تستحق المتابعة، وما الرسائل المناسبة لكل شريحة.",
+    href: "/ar/p1",
+    accent: "border-cyan-400/40 text-cyan-100",
+    price: "3,500–15,000 ريال · 5–7 أيام",
   },
   {
-    title: "AI Sales Ops Assistant",
+    title: "P2 — AI Sales Ops Assistant",
     text: "طبقة تشغيل أسبوعية تنتج أولويات المتابعة، مسودات الرسائل، تحضير الاجتماعات، وملخص الاعتراضات.",
+    href: "/ar/p2",
+    accent: "border-emerald-400/40 text-emerald-100",
+    price: "8,000–30,000 ريال/شهر",
   },
   {
-    title: "Executive Command Center",
+    title: "P3 — Executive Command Center",
     text: "غرفة قيادة للمؤسس تعرض الإيراد، الفرص، المخاطر، القرارات، وProof Packs في مكان واحد.",
+    href: "/ar/p3",
+    accent: "border-violet-400/40 text-violet-100",
+    price: "20,000–60,000 ريال إعداد",
   },
 ];
 
@@ -34,10 +43,12 @@ export default function ArabicDemoPage() {
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {cards.map((card) => (
-            <article key={card.title} className="rounded-3xl border border-white/10 bg-white/[0.06] p-6 shadow-2xl">
-              <h2 className="text-xl font-bold text-cyan-100">{card.title}</h2>
+            <a key={card.title} href={card.href} className={`rounded-3xl border bg-white/[0.06] p-6 shadow-2xl transition hover:bg-white/[0.10] ${card.accent.split(" ")[0]}`}>
+              <h2 className={`text-xl font-bold ${card.accent.split(" ")[1]}`}>{card.title}</h2>
+              <p className="mt-1 text-xs text-slate-500">{card.price}</p>
               <p className="mt-4 leading-7 text-slate-300">{card.text}</p>
-            </article>
+              <p className="mt-4 text-sm font-semibold text-slate-400">اعرف المزيد ←</p>
+            </a>
           ))}
         </div>
 
@@ -53,7 +64,13 @@ export default function ArabicDemoPage() {
         </section>
 
         <div className="mt-10 flex flex-wrap gap-4">
-          <a className="rounded-2xl bg-cyan-300 px-6 py-3 font-bold text-slate-950" href="/revenue-os">
+          <a className="rounded-2xl bg-cyan-300 px-6 py-3 font-bold text-slate-950" href="/ar/pricing">
+            الأسعار الكاملة
+          </a>
+          <a className="rounded-2xl border border-white/20 px-6 py-3 font-bold text-white" href="/ar/p1">
+            ابدأ P1
+          </a>
+          <a className="rounded-2xl border border-white/20 px-6 py-3 font-bold text-white" href="/revenue-os">
             افتح Revenue OS
           </a>
           <a className="rounded-2xl border border-white/20 px-6 py-3 font-bold text-white" href="/go-to-market">
