@@ -1,12 +1,12 @@
 # Dealix Brain Response
 
-Generated: 2026-05-30T12:33:14.369416+00:00
+Generated: 2026-05-30T12:59:04.349816+00:00
 
-## Command adc54639
-راجع صفحات الموقع والعروض وحدد أهم 3 تحسينات تزيد التحويل
+## Command bb32cbf9
+افحص هل company-brain شغال 24 ساعة وجهز لي خطة التشغيل التالية
 
 ### Actions
-- Run production smoke check: API health, demo, revenue-os, ZATCA.
+- Run CEO brain, content factory, and growth scorecard.
 
 ### Guardrails
 - no auto-send
