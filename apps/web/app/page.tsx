@@ -74,6 +74,7 @@ export default function HomePage() {
           Dealix is a Saudi B2B revenue, growth, and compliance engine for teams that need AI assistance without losing policy control, auditability, or human approval on critical moves.
         </p>
         <div className="actions" aria-label="Primary actions">
+          <a href="/ar">الموقع العربي — P1 · P2 · P3</a>
           <a href="/control-plane">Open control plane</a>
           <a href="/safety">Review safety layer</a>
         </div>
