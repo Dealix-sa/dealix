@@ -1,0 +1,101 @@
+{# Proposal template — Custom Systems / Custom AI (top rung). Rendered per-customer with Jinja2. #}
+{# Required variables: customer_name, customer_handle, sector, city, proposal_date, price_sar, delivery_days, engagement_id, proof_score_target, source_passport_required, exclusions (list), retainer_offer_after (bool/text), paid_pilots_required (int), design_direction. #}
+
+# Custom Systems Engagement — Proposal for {{ customer_name }} / عرض بناء نظام داخلي مخصّص
+
+**Engagement ID:** `{{ engagement_id }}`
+**Customer:** {{ customer_name }} (`{{ customer_handle }}`)
+**Sector / القطاع:** {{ sector }}
+**City / المدينة:** {{ city }}
+**Date / التاريخ:** {{ proposal_date }}
+**Delivery mode / نمط التسليم:** Founder-assisted / بقيادة المؤسس
+
+---
+
+## Cover — الغلاف
+
+This proposal scopes a **Custom Systems engagement** for **{{ customer_name }}** — a bespoke internal system built on a client-specific design identity and a governed architecture. It is the top rung of the Dealix ladder, delivered founder-assisted at **{{ price_sar }} SAR** over **{{ delivery_days }} days**.
+
+يُقدّم هذا العرض **بناء نظام داخلي مخصّص** لشركة **{{ customer_name }}**: هوية تصميم خاصة وبنية معمارية محكومة. وهي أعلى درجة في سُلَّم Dealix، تُسلَّم بقيادة المؤسس بسعر **{{ price_sar }} ريال** خلال **{{ delivery_days }} يوماً**.
+
+---
+
+## Entry condition (HARD) — شرط الفتح (إلزامي)
+
+This engagement unlocks **only** after **{{ paid_pilots_required }} paid pilots** have been completed for {{ customer_name }}, with a documented Proof Pack and a named workflow owner. This rule is enforced in code (`auto_client_acquisition/custom_systems_os/entry_gate.py`) — there is no exception.
+
+تُفتح هذه الدرجة **فقط** بعد إتمام **{{ paid_pilots_required }} تجارب مدفوعة** مع Proof Pack موثّق ومالك معروف لسير العمل. القاعدة مُطبّقة في الكود ولا استثناء لها.
+
+---
+
+## Deliverables — المخرجات
+
+1. **Custom design profile** — per-client design tokens/theme (direction `{{ design_direction }}`) overriding Dealix defaults, inheriting the Dealix forbidden-copy guard.
+2. **Custom structure blueprint** — modules, data model, workflows, and the 11 governance gates baked in by construction.
+3. **Complete bilingual internal-system specification** (AR primary + EN) — "كامل وشامل".
+4. **14-section Proof Pack** with a computed proof score (target ≥ **{{ proof_score_target }}**).
+5. **At least one Capital Ledger asset** (custom_design_profile / structure_blueprint / system_spec).
+6. Bilingual handoff session walking through the spec and the governance gates.
+
+---
+
+## Inputs needed — المدخلات المطلوبة
+
+- A declared list of internal modules and workflows the system must run.
+{% if source_passport_required %}- **A signed Source Passport** declaring data ownership, allowed use, and retention. Non-negotiable; the build cannot begin without it.{% endif %}
+- A named workflow owner on the {{ customer_name }} side.
+
+---
+
+## Exclusions — الاستثناءات
+
+This engagement **explicitly does not** include any of the following constitutional non-negotiables:
+
+{% for item in exclusions %}- {{ item }}
+{% endfor %}
+
+The 11 non-negotiables enforced by code:
+
+1. No scraping of websites, social platforms, or third-party UIs.
+2. No cold WhatsApp messaging or WhatsApp automation without recorded opt-in.
+3. No LinkedIn automation.
+4. No source-less claims; every number or quote requires a Source Passport.
+5. No guaranteed-outcome language.
+6. No PII in application logs, friction logs, or telemetry.
+7. No source-less knowledge answers.
+8. No external action (send, charge, publish, share) without explicit logged human approval.
+9. No autonomous workflow without a registered agent identity.
+10. No project closure without a 14-section Proof Pack with a computed score.
+11. No project closure without at least one reusable Capital Ledger asset.
+
+**No full white-label.** The custom system is built for {{ customer_name }}'s internal use; it does not grant Dealix-brand resale rights.
+
+---
+
+## Price + payment terms — السعر وشروط الدفع
+
+- **Price:** {{ price_sar }} SAR, all-inclusive, ZATCA-compliant invoice.
+- **Payment split:** **50% on acceptance**, **50% on Proof Pack delivery**.
+- **Payment instrument:** Moyasar payment link under engagement ID `{{ engagement_id }}`.
+
+السعر: {{ price_sar }} ريال شامل، 50% عند القبول و50% عند تسليم حزمة الإثبات.
+
+---
+
+## Retainer path — مسار الاحتفاظ الشهري
+
+{% if retainer_offer_after %}
+After delivery, if **proof_score ≥ 80** AND **adoption_score ≥ 70** AND a workflow owner remains named, Dealix will offer a **Managed Operations retainer** to run and evolve the custom system on cadence.
+{% else %}
+The retainer path is not part of this proposal; it may be offered separately based on engagement outcomes.
+{% endif %}
+
+---
+
+## Acceptance — القبول
+
+To accept, reply with engagement ID `{{ engagement_id }}` and "accepted" / "مقبول".
+
+---
+
+**Estimated outcomes are not guaranteed outcomes / النتائج التقديرية ليست نتائج مضمونة.**
