@@ -210,7 +210,8 @@ async def pilot_day_brief(pilot_id: str, day: int = 1) -> dict[str, Any]:
     """Get today's task brief for a running pilot."""
     if not _ID_RE.match(pilot_id):
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
-    safe_pid = _safe_id(pilot_id)
+    # Apply os.path.basename directly so CodeQL can trace the path sanitizer
+    safe_pid = os.path.basename(pilot_id)
     plan_path = os.path.join("data", "pilots", f"{safe_pid}.json")
     if not os.path.exists(plan_path):
         raise HTTPException(status_code=404, detail="Pilot not found")
@@ -235,7 +236,7 @@ async def get_pilot_plan(pilot_id: str) -> dict[str, Any]:
     """Get the full 7-day plan for a pilot."""
     if not _ID_RE.match(pilot_id):
         raise HTTPException(status_code=422, detail="Invalid pilot_id format")
-    safe_pid = _safe_id(pilot_id)
+    safe_pid = os.path.basename(pilot_id)
     plan_path = os.path.join("data", "pilots", f"{safe_pid}.json")
     if not os.path.exists(plan_path):
         raise HTTPException(status_code=404, detail="Pilot not found")

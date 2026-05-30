@@ -97,8 +97,8 @@ class TestDiagnosticEngine:
 
 class TestWarmIntroGenerator:
     def test_no_live_send_gate(self) -> None:
-        import dealix.commercial.warm_intro_generator as wig
-        assert wig._NO_LIVE_SEND is True, "NO_LIVE_SEND gate must always be True"
+        from dealix.commercial.warm_intro_generator import _NO_LIVE_SEND
+        assert _NO_LIVE_SEND is True, "NO_LIVE_SEND gate must always be True"
 
     @pytest.mark.asyncio
     async def test_whatsapp_bundle_structure(self) -> None:

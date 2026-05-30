@@ -200,7 +200,7 @@ def _save_opportunities(account_id: str, company_name: str, opps: list[UpsellOpp
             os.path.dirname(__file__), "..", "..", "data", "upsell"
         )
         os.makedirs(upsell_dir, exist_ok=True)
-        safe_account_id = re.sub(r"[^a-zA-Z0-9_-]", "_", account_id)[:128]
+        safe_account_id = os.path.basename(re.sub(r"[^a-zA-Z0-9_-]", "_", account_id)[:128])
         path = os.path.join(upsell_dir, f"{safe_account_id}_opportunities.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(
