@@ -157,6 +157,12 @@ simulations/data/
 # ==================== Lighthouse ====================
 .lighthouseci/
 
+# ==================== Commercial / Generated Outputs ====================
+# Keep: dealix/commercial/*.py, dealix/payments/*.py, data/templates/
+data/exports/
+data/backups/
+data/processed/
+
 # ==================== Miscellaneous ====================
 *.tmp
 *.temp
