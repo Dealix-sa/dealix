@@ -103,6 +103,8 @@ dumps/
 !landing/assets/data/service-readiness.json
 # Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
 !data/workflows/
+# Demo data — synthetic only, no PII, committed for landing page + CI demos
+!data/demo/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

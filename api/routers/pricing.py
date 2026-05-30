@@ -353,6 +353,35 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
             )
         except Exception as sync_exc:
             log.warning("moyasar_side_effects_failed event_fp=%s error=%s", event_fp, sync_exc)
+        # Notify founder on successful payment
+        if payment.get("status") == "paid":
+            try:
+                from core.config.settings import get_settings
+                _settings = get_settings()
+                amount_halalas = payment.get("amount", 0)
+                amount_sar = amount_halalas / 100 if amount_halalas else 0
+                source_info = payment.get("source", {}) if isinstance(payment.get("source"), dict) else {}
+                customer_email = source_info.get("company", payment.get("description", "unknown"))
+                msg = (
+                    f"💰 Dealix — دفعة جديدة!\n"
+                    f"المبلغ: {amount_sar:,.0f} ر.س\n"
+                    f"العميل: {customer_email}\n"
+                    f"المرجع: {payment.get('id', '?')}\n"
+                    f"---\n"
+                    f"💰 Dealix — New Payment!\n"
+                    f"Amount: {amount_sar:,.0f} SAR\n"
+                    f"Customer: {customer_email}"
+                )
+                if getattr(_settings, "whatsapp_allow_live_send", False):
+                    from integrations.whatsapp import send_whatsapp_message
+                    await send_whatsapp_message(
+                        to=getattr(_settings, "dealix_founder_phone", ""),
+                        message=msg,
+                    )
+                else:
+                    log.info("founder_payment_alert_queued: %s", msg.replace("\n", " | "))
+            except Exception as _wa_exc:
+                log.debug("founder_whatsapp_notification_skipped: %s", _wa_exc)
         return {
             "status": "ok",
             "event_id": event_id,
