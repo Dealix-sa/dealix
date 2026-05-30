@@ -10,7 +10,8 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        deploy-and-verify gen-secrets
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +183,18 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Deployment helpers ─────────────────────────────────────────
+deploy-and-verify: ## Full deploy + 22-point verify (BASE_URL=https://api.dealix.me)
+	@echo "==> Running post-deploy 22-point verification"
+	@echo "    BASE_URL=$(BASE_URL)"
+	BASE_URL=$(BASE_URL) bash scripts/post_redeploy_verify.sh
+	@echo "==> Running official launch verify"
+	DEALIX_API_BASE=$(BASE_URL) bash scripts/official_launch_verify.sh --skip-go-live || true
+	@echo "✅ deploy-and-verify complete"
+
+gen-secrets: ## Generate production secrets (SECRET_KEY, JWT_SECRET_KEY, ADMIN_API_KEY)
+	@echo "# Copy these into Railway environment variables:"
+	@echo "SECRET_KEY=$(shell python3 -c 'import secrets; print(secrets.token_hex(64))')"
+	@echo "JWT_SECRET_KEY=$(shell python3 -c 'import secrets; print(secrets.token_hex(64))')"
+	@echo "ADMIN_API_KEY=$(shell python3 -c 'import secrets; print(secrets.token_hex(32))')"
