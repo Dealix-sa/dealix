@@ -211,11 +211,11 @@ jobs:
       - name: Verify watchdog Docker build
         run: docker build -t dealix-watchdog-ci -f Dockerfile.watchdog .
 
-      - name: Verify frontend Docker build
-        run: docker build -t dealix-frontend-ci frontend
-
-      - name: Verify apps web Docker build
-        run: docker build -t dealix-apps-web-ci apps/web
+      # Frontend and apps/web Docker builds omitted here — they duplicate what
+      # the dedicated Frontend verify and Next.js web verify CI jobs already
+      # cover (npm ci + npm run build).  Including them here would require an
+      # extra Docker Hub pull of node:22-alpine which exhausts the anonymous
+      # pull quota when python:3.12-slim-bookworm has already been pulled.
 
   live-railway-smoke:
     name: Optional live Railway smoke
