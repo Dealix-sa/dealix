@@ -189,10 +189,8 @@ def _prewarm_caches() -> None:
         # Sprint demo cache (1-hour TTL)
         if not rc.exists("demo:sprint:sample:v1"):
             result = run_sprint(
+                engagement_id="warmup-001",
                 customer_id="demo_warmup",
-                company_name="شركة التجريب",
-                sector="technology",
-                source="warmup",
             ).to_dict()
             rc.setex("demo:sprint:sample:v1", 3600, json.dumps(result, default=str))
     except Exception:
