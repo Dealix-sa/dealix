@@ -49,7 +49,7 @@ async def test_pilot_start_missing_company(async_client):
 
 @pytest.mark.asyncio
 async def test_pilot_start_no_payment(async_client):
-    """payment_confirmed=False must be rejected (NO_LIVE_CHARGE gate)."""
+    """payment_confirmed=False is valid — pilot can start before payment arrives."""
     r = await async_client.post(
         "/api/v1/commercial/pilot/start",
         json={
@@ -58,7 +58,7 @@ async def test_pilot_start_no_payment(async_client):
             "payment_ref": "",
         },
     )
-    assert r.status_code == 422
+    assert r.status_code == 200
 
 
 @pytest.mark.asyncio
