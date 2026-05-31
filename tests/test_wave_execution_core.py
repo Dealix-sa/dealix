@@ -6,7 +6,10 @@ import pytest
 
 from auto_client_acquisition.adoption_os.retainer_readiness import wave2_retainer_eligibility
 from auto_client_acquisition.agent_os.agent_card import AgentCard
-from auto_client_acquisition.agent_os.agent_registry import clear_agent_registry_for_tests, register_agent
+from auto_client_acquisition.agent_os.agent_registry import (
+    clear_agent_registry_for_tests,
+    register_agent,
+)
 from auto_client_acquisition.agent_os.tool_permissions import tool_allowed_mvp
 from auto_client_acquisition.auditability_os import AuditEvent, audit_event_valid
 from auto_client_acquisition.capital_os import CapitalAssetType
@@ -44,7 +47,7 @@ def test_claim_safety_blocks_guarantee() -> None:
 
 
 def test_proof_score_band() -> None:
-    content = {k: "x" for k in PROOF_PACK_V2_SECTIONS}
+    content = dict.fromkeys(PROOF_PACK_V2_SECTIONS, "x")
     s = proof_pack_completeness_score(content)
     assert s == 100
     assert proof_strength_band(s) == "case_candidate"

@@ -80,7 +80,10 @@ def test_targeting_rotation_p0():
 
 
 def test_outreach_yaml_templates_merge():
-    from dealix.revenue_ops_autopilot.outreach_templates import _load_yaml_templates, build_outreach_draft
+    from dealix.revenue_ops_autopilot.outreach_templates import (
+        _load_yaml_templates,
+        build_outreach_draft,
+    )
 
     yaml_tpl = _load_yaml_templates()
     assert "agency_wedge" in yaml_tpl or len(yaml_tpl) == 0
