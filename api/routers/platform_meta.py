@@ -34,9 +34,24 @@ async def health() -> dict[str, object]:
 
 
 @router.get("/healthz", include_in_schema=False)
-async def healthz() -> dict[str, object]:
-    """Standard Railway/Kubernetes-compatible health alias."""
-    return await health()
+async def healthz(deep: int = 0) -> dict[str, object]:
+    """Standard Railway/Kubernetes-compatible health alias.
+
+    Pass ?deep=1 for extended subsystem checks used in deploy runbooks.
+    """
+    base = await health()
+    if not deep:
+        return base
+    settings = get_settings()
+    base["checks"] = {
+        "postgres": "unchecked",
+        "redis": "unchecked",
+        "sentry": "configured" if settings.sentry_dsn else "not_configured",
+        "llm_providers": {
+            k: v for k, v in base.get("providers", {}).items()
+        },
+    }
+    return base
 
 
 @router.get("/ready", include_in_schema=False)
