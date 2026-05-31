@@ -16,7 +16,11 @@ from api.main import create_app
 
 @pytest.fixture(scope="module")
 def client() -> TestClient:
-    return TestClient(create_app())
+    # Send admin key so the /dashboard endpoint (Depends(require_admin_key)) returns
+    # 200 instead of 403. Any key works in dev mode (no ADMIN_API_KEYS configured);
+    # when ADMIN_API_KEYS is set by another test file during collection, the matching
+    # key is required.
+    return TestClient(create_app(), headers={"X-Admin-API-Key": "test-admin-key"})
 
 
 def test_founder_status_endpoint(client: TestClient) -> None:

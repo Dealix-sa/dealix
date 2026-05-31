@@ -40,7 +40,7 @@ def test_weekly_filled_endpoint_requires_admin(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("ADMIN_API_KEYS", "test-learning-admin")
     client = TestClient(app)
     denied = client.get("/api/v1/revenue-os/learning/weekly-filled")
-    assert denied.status_code == 401
+    assert denied.status_code in (401, 403)  # require_admin_key raises 403
     ok = client.get(
         "/api/v1/revenue-os/learning/weekly-filled",
         headers={"X-Admin-API-Key": "test-learning-admin"},

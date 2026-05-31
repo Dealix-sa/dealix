@@ -21,6 +21,10 @@ os.environ.setdefault("DEEPSEEK_API_KEY", "test-deepseek-key")
 os.environ.setdefault("GROQ_API_KEY", "test-groq-key")
 os.environ.setdefault("GLM_API_KEY", "test-glm-key")
 os.environ.setdefault("GOOGLE_API_KEY", "test-google-key")
+# Admin key default — ensures require_admin_key works in test mode even before
+# individual test files set ADMIN_API_KEYS via os.environ.setdefault or monkeypatch.
+os.environ.setdefault("ADMIN_API_KEY", "test-admin-key")
+os.environ.setdefault("ADMIN_API_KEYS", "test-admin-key")
 
 
 from core.llm.base import LLMResponse
