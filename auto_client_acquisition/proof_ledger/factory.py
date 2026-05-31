@@ -29,11 +29,11 @@ def _backend_name() -> str:
     """
     try:
         from core.config.settings import get_settings
-    except Exception:
+    except Exception:  # noqa: BLE001 — settings import never blocks ledger
         return "file"
     try:
         return getattr(get_settings(), "proof_ledger_backend", "file") or "file"
-    except Exception:
+    except Exception:  # noqa: BLE001
         return "file"
 
 
@@ -43,7 +43,7 @@ def _ledger_sync_url() -> str | None:
 
         u = getattr(get_settings(), "database_url", "") or ""
         return sync_sqlalchemy_url(u) if u else None
-    except Exception:
+    except Exception:  # noqa: BLE001
         return None
 
 
@@ -64,7 +64,7 @@ class DualProofLedger:
                     database_url=url,
                     create_tables=_pg_should_autocreate(url),
                 )
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 _LOG.warning("proof_ledger_dual_pg_unavailable:%s", type(exc).__name__)
 
     def record(self, event: Any) -> Any:
@@ -72,7 +72,7 @@ class DualProofLedger:
         if self._pg is not None:
             try:
                 self._pg.record(event)
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 _LOG.debug("proof_ledger_dual_pg_record_failed:%s", type(exc).__name__)
         return out
 
@@ -84,7 +84,7 @@ class DualProofLedger:
         if self._pg is not None:
             try:
                 self._pg.record_unit(unit)
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 _LOG.debug("proof_ledger_dual_pg_unit_failed:%s", type(exc).__name__)
         return out
 
@@ -127,7 +127,7 @@ def get_default_ledger() -> ProofLedger:
                     database_url=url,
                     create_tables=_pg_should_autocreate(url),
                 )
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 _LOG.warning("proof_ledger_postgres_unavailable:%s", type(exc).__name__)
                 if _FILE_DEFAULT is None:
                     _FILE_DEFAULT = FileProofLedger()

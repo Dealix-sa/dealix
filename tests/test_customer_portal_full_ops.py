@@ -15,6 +15,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _PORTAL = _REPO_ROOT / "landing" / "customer-portal.html"
 _DASHBOARD_JS = _REPO_ROOT / "landing" / "assets" / "js" / "customer-dashboard.js"

@@ -19,6 +19,7 @@ from auto_client_acquisition.ai_workforce.schemas import (
     RiskLevel,
 )
 
+
 # Hard-rule forbidden tool names — these tokens are NEVER live-callable
 # by any agent. SaudiCopyAgent and FinanceAgent require the relevant
 # subset to appear explicitly in their forbidden_tools list.

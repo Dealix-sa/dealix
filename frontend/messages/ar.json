@@ -12,8 +12,6 @@
     "analytics": "التحليلات والتقارير",
     "settings": "الإعدادات",
     "logout": "تسجيل الخروج",
-    "demo": "Demo حي ⚡",
-    "zatcaReadiness": "جاهزية ZATCA",
     "dealixDiagnostic": "قمع التشخيص",
     "opsHub": "تشغيل — المركز",
     "opsFounder": "تشغيل — المركز الشخصي",
@@ -23,8 +21,7 @@
     "opsPartners": "شركاء",
     "opsSales": "تشغيل — خط المبيعات",
     "opsEvidence": "تشغيل — سجل الأدلة",
-    "opsSupport": "تشغيل — خدمة العملاء",
-    "autoDistribution": "التوزيع الذاتي"
+    "opsSupport": "تشغيل — خدمة العملاء"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",

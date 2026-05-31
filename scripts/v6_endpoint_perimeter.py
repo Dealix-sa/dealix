@@ -30,6 +30,7 @@ from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from typing import Any
 
+
 DEFAULT_BASE_URL = os.getenv("DEALIX_BASE_URL", "https://api.dealix.me")
 DEFAULT_TIMEOUT = float(os.getenv("DEALIX_PERIMETER_TIMEOUT", "10"))
 
@@ -100,7 +101,7 @@ def _do_request(base_url: str, check: Check, timeout: float) -> CheckResult:
         actual = exc.code
     except (urllib.error.URLError, TimeoutError) as exc:
         detail = f"network: {type(exc).__name__}: {exc}"
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         detail = f"error: {type(exc).__name__}: {exc}"
 
     elapsed_ms = round((datetime.now(UTC) - started).total_seconds() * 1000, 1)
@@ -162,7 +163,7 @@ def render_text(report: dict[str, Any]) -> str:
             f" {marker:<14}"
             f" {r['path']:<48}"
             f" {r['expected_status']:>9}"
-            f" {actual!s:>9}"
+            f" {str(actual):>9}"
             f" {r['elapsed_ms']:>10.1f}"
         )
         if not r["ok"] and r["detail"]:

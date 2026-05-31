@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import auto_client_acquisition.vertical_os.clinics
-import auto_client_acquisition.vertical_os.logistics
-import auto_client_acquisition.vertical_os.real_estate
+import auto_client_acquisition.vertical_os.clinics  # noqa: F401  (registers)
+import auto_client_acquisition.vertical_os.logistics  # noqa: F401
+import auto_client_acquisition.vertical_os.real_estate  # noqa: F401
 from auto_client_acquisition.vertical_os.base import (
     ALL_VERTICALS,
     KPI,

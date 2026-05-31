@@ -22,6 +22,7 @@ from pathlib import Path
 
 import pytest
 
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LANDING = REPO_ROOT / "landing"
 DOCS = REPO_ROOT / "docs"
@@ -53,8 +54,6 @@ def test_landing_pages_have_no_unallowlisted_forbidden_claims():
         from tests.test_landing_forbidden_claims import (
             ALLOWLIST,
             FORBIDDEN_PATTERNS,
-        )
-        from tests.test_landing_forbidden_claims import (
             _scan as helper_scan,
         )
     except ImportError:  # pragma: no cover

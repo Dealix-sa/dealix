@@ -1,0 +1,85 @@
+{
+  "version": "2026-05-25",
+  "language": "ar+en",
+  "company": "Dealix",
+  "category": "Governed AI Execution Platform",
+  "tagline_en": "Govern AI agents. Prove revenue. Scale what works.",
+  "tagline_ar": "شغّل وكلاء الذكاء الاصطناعي بحوكمة. أثبت الدخل. وسّع ما ينجح.",
+  "one_liner_en": "Dealix turns AI agents into governed revenue execution.",
+  "one_liner_ar": "ديلكس يحوّل وكلاء الذكاء الاصطناعي إلى تنفيذ محكوم يحقق دخلًا موثقًا ونتائج قابلة للقياس.",
+  "promises": [
+    {
+      "id": "govern_agents",
+      "en": "Govern every AI agent with a registry, tool permission matrix, audit ledger, and kill switch.",
+      "ar": "نحوكم كل وكيل ذكي عبر سجلّ وكلاء، ومصفوفة صلاحيات أدوات، وسجلّ تدقيق، وزر إيقاف."
+    },
+    {
+      "id": "prove_revenue",
+      "en": "Tie every agent action to a verified revenue outcome; no vanity metrics.",
+      "ar": "نربط كل إجراء ينفّذه الوكيل بنتيجة دخل موثّقة؛ لا مؤشرات شكلية."
+    },
+    {
+      "id": "scale_what_works",
+      "en": "Reuse what is evidenced; retire what is not.",
+      "ar": "نوسّع ما يثبته الدليل ونوقف ما لا يثبته."
+    },
+    {
+      "id": "sovereign_control",
+      "en": "Founder-level approval and kill switch on every sensitive workflow.",
+      "ar": "اعتماد المؤسس وزر الإيقاف على كل سير عمل حسّاس."
+    }
+  ],
+  "platform_layers": [
+    {
+      "id": "sovereign_control_plane",
+      "en": "Sovereign Control Plane — founder approvals, kill switch, sovereignty surface.",
+      "ar": "طبقة التحكّم السيادية — اعتمادات المؤسس وزر الإيقاف وواجهة السيادة."
+    },
+    {
+      "id": "trust_and_governance",
+      "en": "Trust & Governance — agent registry, tool permission matrix, audit ledger, evidence pack.",
+      "ar": "الثقة والحوكمة — سجلّ الوكلاء، مصفوفة الصلاحيات، سجلّ التدقيق، حزمة الأدلة."
+    },
+    {
+      "id": "revenue_growth_os",
+      "en": "Revenue Growth OS — pipeline quality, attribution, retainer conversion, partner revenue.",
+      "ar": "نظام نمو الدخل — جودة الفرص، الإسناد، تحويل الاشتراكات، دخل الشركاء."
+    },
+    {
+      "id": "agent_runtime",
+      "en": "Agent Runtime — sandboxed execution, MCP gateway, policy enforcement.",
+      "ar": "بيئة تشغيل الوكلاء — تنفيذ معزول، بوّابة MCP، إنفاذ السياسات."
+    },
+    {
+      "id": "data_boundaries",
+      "en": "Data Boundaries — tenant isolation, residency, classification, retention.",
+      "ar": "حدود البيانات — عزل المستأجرين، الإقامة، التصنيف، الاحتفاظ."
+    }
+  ],
+  "trust_signals": [
+    "pdpl_aligned_by_default",
+    "founder_signoff_on_enterprise_discounts",
+    "evidence_pack_per_engagement",
+    "public_agent_registry_sample",
+    "tool_permission_matrix_sample",
+    "kill_switch_per_agent",
+    "no_vanity_metrics",
+    "tenant_isolation",
+    "mcp_gateway_with_policy_enforcement"
+  ],
+  "founder": {
+    "name": "Sami",
+    "role": "Founder",
+    "sovereignty_note": "Sami personally approves enterprise discounts, sensitive workflows, and any change to data boundaries. The founder-approval gate is structural, not ceremonial."
+  },
+  "regions": ["SA", "GCC", "MENA"],
+  "languages": ["ar", "en"],
+  "contact": {
+    "website": "dealix.sa",
+    "email": "hello@dealix.sa"
+  },
+  "disclosures": {
+    "en": "Estimated value is not Verified value.",
+    "ar": "القيمة التقديرية ليست قيمة مُتحقَّقة."
+  }
+}

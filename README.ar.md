@@ -124,7 +124,7 @@ curl -X POST http://localhost:8000/api/v1/leads \
 
 ## 🤝 المساهمة
 
-راجع [docs/contributing/CONTRIBUTING.md](docs/contributing/CONTRIBUTING.md).
+راجع [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## 📜 الرخصة
 

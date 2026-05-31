@@ -1,0 +1,116 @@
+{
+  "version": "2026-05-25",
+  "language": "ar+en",
+  "company": "Dealix",
+  "faq": [
+    {
+      "question_en": "What is Dealix?",
+      "question_ar": "ما هو ديلكس؟",
+      "answer_en": "Dealix is a Sovereign Agentic Revenue and Trust Control Plane. It governs AI agents end to end (registry, permissions, approvals, audit, kill switch) and ties every agent action to a verified revenue outcome.",
+      "answer_ar": "ديلكس طبقة تحكم سيادية لحوكمة وكلاء الذكاء الاصطناعي وضمان الإيراد. يحوكم الوكلاء من الطرف إلى الطرف ويربط كل إجراء بنتيجة دخل موثّقة.",
+      "tags": ["overview", "category"]
+    },
+    {
+      "question_en": "Is Dealix a chatbot?",
+      "question_ar": "هل ديلكس روبوت محادثة؟",
+      "answer_en": "No. A chatbot answers messages. Dealix governs agents that read, write, approve, and act inside business systems, and proves the revenue they produce.",
+      "answer_ar": "لا. روبوت المحادثة يردّ على الرسائل. ديلكس يحوكم وكلاء يقرؤون ويكتبون ويعتمدون وينفّذون داخل الأنظمة، ويُثبت الإيرادات الناتجة.",
+      "tags": ["differentiation"]
+    },
+    {
+      "question_en": "How is Dealix different from a CRM?",
+      "question_ar": "كيف يختلف ديلكس عن نظام إدارة العلاقات؟",
+      "answer_en": "A CRM records what humans do. Dealix governs what agents do, enforces policy at runtime, and verifies revenue outcomes. We integrate with CRMs; we do not replace them.",
+      "answer_ar": "نظام إدارة العلاقات يسجل ما يفعله البشر. ديلكس يحوكم ما يفعله الوكلاء، يفرض السياسة لحظة التشغيل، ويُثبت نتائج الإيراد. نتكامل مع CRM ولا نستبدله.",
+      "tags": ["differentiation", "integrations"]
+    },
+    {
+      "question_en": "Are you PDPL-aligned and does data stay in Saudi Arabia?",
+      "question_ar": "هل تتوافقون مع نظام حماية البيانات الشخصية، وهل تبقى البيانات داخل السعودية؟",
+      "answer_en": "PDPL-aligned by default. KSA residency is the default commitment in enterprise deployments; specific residency terms are confirmed in the Commercial Terms.",
+      "answer_ar": "متوافقون مع نظام حماية البيانات الشخصية افتراضيًا. الإقامة داخل المملكة هي الالتزام الافتراضي في النشر المؤسسي، وتُؤكَّد في الشروط التجارية.",
+      "tags": ["compliance", "residency", "pdpl"]
+    },
+    {
+      "question_en": "What is your pricing model?",
+      "question_ar": "ما نموذج التسعير لديكم؟",
+      "answer_en": "Setup fees plus monthly retainers plus outcome-linked expansion. Discounts on enterprise tiers require founder approval and a delivered Evidence Pack. See OFFER_CATALOG.json for ranges.",
+      "answer_ar": "رسوم تأسيس + اشتراكات شهرية + توسعة مرتبطة بالنتائج. الخصومات في فئات المؤسسات تتطلب اعتماد المؤسس وحقيبة أدلة مُسلَّمة. النطاقات في OFFER_CATALOG.json.",
+      "tags": ["pricing"]
+    },
+    {
+      "question_en": "How long is a pilot?",
+      "question_ar": "ما مدة الباكورة؟",
+      "answer_en": "Revenue Hunter Pilot is fixed scope, typically four to eight weeks, and ships an Evidence Pack v1 at close.",
+      "answer_ar": "باكورة صائد الدخل بنطاق ثابت، غالبًا أربعة إلى ثمانية أسابيع، وتُسلَّم حقيبة أدلة الإصدار الأول في الختام.",
+      "tags": ["pilot", "scope"]
+    },
+    {
+      "question_en": "Who is the founder?",
+      "question_ar": "من المؤسس؟",
+      "answer_en": "Sami is the founder. He owns the kill switch, approves enterprise discounts, and signs off sensitive workflows. Sovereignty is structural.",
+      "answer_ar": "المؤسس هو سامي. يملك مفتاح الإيقاف، ويعتمد الخصومات المؤسسية وسير العمل الحساس. السيادة بنيوية.",
+      "tags": ["founder", "sovereignty"]
+    },
+    {
+      "question_en": "What is a Control Plane in the Dealix sense?",
+      "question_ar": "ما هي طبقة التحكم بمفهوم ديلكس؟",
+      "answer_en": "It is the single surface where policies, identities, approvals, kill switches, and evidence converge. Agents act below it; executives govern from it.",
+      "answer_ar": "هي الواجهة الواحدة التي تتلاقى فيها السياسات والهويات والموافقات ومفاتيح الإيقاف والأدلة. الوكلاء يعملون تحتها، والقيادة تحوكم من خلالها.",
+      "tags": ["product", "architecture"]
+    },
+    {
+      "question_en": "How does revenue verification work?",
+      "question_ar": "كيف يعمل التحقق من الإيراد؟",
+      "answer_en": "Each agent action is linked to a downstream outcome (contract signed, retainer activated, partner deal closed) recorded in the customer's source-of-truth systems. We do not display vanity metrics.",
+      "answer_ar": "كل إجراء للوكيل يُربط بنتيجة لاحقة (عقد موقّع، اشتراك مُفعَّل، صفقة شريك مغلقة) تُسجَّل في الأنظمة المصدرية للعميل. لا نعرض مؤشرات شكلية.",
+      "tags": ["measurement", "attribution"]
+    },
+    {
+      "question_en": "What is an Evidence Pack?",
+      "question_ar": "ما هي حقيبة الأدلة؟",
+      "answer_en": "A standardized package delivered with every engagement. It contains the scope memo, agent registry snapshot, tool permission snapshot, policy version, approvals log, outcome graph excerpt, attribution table, incidents log, and founder sign-off.",
+      "answer_ar": "حزمة مُوحَّدة تُسلَّم مع كل ارتباط. تحتوي على مذكرة النطاق، لقطة سجل الوكلاء، لقطة مصفوفة الصلاحيات، نسخة السياسة، سجل الموافقات، مقطعًا من رسم النتائج، جدول الإسناد، سجل الحوادث، واعتماد المؤسس.",
+      "tags": ["evidence", "deliverable"]
+    },
+    {
+      "question_en": "Do you deploy autonomous agents that act without human approval?",
+      "question_ar": "هل تنشرون وكلاء يعملون باستقلال تام دون اعتماد بشري؟",
+      "answer_en": "No. Every sensitive action — writing to money systems, sending external communication on the customer's behalf, modifying contracts — is routed through an approval class. Founder-class approvals are owned by Sami.",
+      "answer_ar": "لا. كل إجراء حسّاس — الكتابة في أنظمة المال، الإرسال الخارجي بالنيابة عن العميل، تعديل العقود — يمر بفئة موافقة. فئة المؤسس بيد سامي.",
+      "tags": ["governance", "approvals"]
+    },
+    {
+      "question_en": "How does Dealix prevent agent washing?",
+      "question_ar": "كيف يمنع ديلكس التظاهر بالوكلاء (Agent Washing)?",
+      "answer_en": "Every agent is declared in the registry with a scope, owner, and approval class. Tool permissions are explicit. Outcomes are tied to source-of-truth systems. If it is not in the registry and the evidence pack, it does not count.",
+      "answer_ar": "كل وكيل مُسجَّل بنطاق ومالك وفئة موافقة. صلاحيات الأدوات صريحة. النتائج مرتبطة بأنظمة المصدر. ما ليس في السجل وحقيبة الأدلة لا يُحتسب.",
+      "tags": ["governance", "integrity"]
+    },
+    {
+      "question_en": "Can agencies white-label Dealix?",
+      "question_ar": "هل يمكن للوكالات بيع ديلكس بعلامة بيضاء؟",
+      "answer_en": "Yes. The Agency White-label Kit lets approved partners resell Dealix-governed workflows under their brand on Dealix rails. Founder approval is required for the partnership.",
+      "answer_ar": "نعم. حقيبة الوكالات بعلامة بيضاء تتيح للشركاء المعتمدين بيع سير عمل ديلكس المحكوم تحت علامتهم. تتطلب الشراكة اعتماد المؤسس.",
+      "tags": ["partner", "agency"]
+    },
+    {
+      "question_en": "How fast can we start?",
+      "question_ar": "ما أسرع وقت للبدء؟",
+      "answer_en": "AI Trust Diagnostic can start within two weeks. Revenue Hunter Pilot within three to four weeks. Enterprise Control Plane setup is scoped after a discovery week.",
+      "answer_ar": "تشخيص الثقة يبدأ خلال أسبوعين. باكورة صائد الدخل خلال ثلاثة إلى أربعة أسابيع. تأسيس طبقة التحكم المؤسسي يُحدَّد نطاقه بعد أسبوع اكتشاف.",
+      "tags": ["onboarding"]
+    },
+    {
+      "question_en": "Do you send messages on our behalf to our customers?",
+      "question_ar": "هل ترسلون رسائل بالنيابة عنا إلى عملائنا؟",
+      "answer_en": "Only with explicit written approval and only through approved channels. We do not perform cold WhatsApp, cold email, or scraping automation as a service.",
+      "answer_ar": "فقط بموافقة كتابية صريحة وعبر القنوات المعتمدة. لا نقدم تواصلًا باردًا عبر واتساب أو البريد الإلكتروني، ولا أتمتة كشط البيانات كخدمة.",
+      "tags": ["channels", "ethics"]
+    }
+  ],
+  "disclosures": {
+    "en": "Estimated value is not Verified value.",
+    "ar": "القيمة التقديرية ليست قيمة مُتحقَّقة."
+  }
+}

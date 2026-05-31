@@ -33,7 +33,7 @@ def main() -> int:
     services = data.get("services") or []
     bundles = data.get("bundles") or []
 
-    counts = dict.fromkeys(ALLOWED_STATUSES, 0)
+    counts = {s: 0 for s in ALLOWED_STATUSES}
     counts["total"] = 0
     for svc in services:
         s = svc.get("status")

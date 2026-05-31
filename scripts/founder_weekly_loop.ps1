@@ -37,9 +37,6 @@ Invoke-Py scripts/founder_strongest_plan_status.py
 Write-Host "== Comprehensive plan =="
 Invoke-Py scripts/founder_comprehensive_plan_status.py
 
-Write-Host "== CEO weekly retro =="
-Invoke-Py scripts/founder_weekly_ceo_retro.py
-
 Write-Host "== Dogfooding war room =="
 Invoke-Py scripts/founder_dogfooding_war_room_sync.py
 

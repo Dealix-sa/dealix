@@ -10,10 +10,7 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from auto_client_acquisition.personal_operator.launch_report import (
-    build_launch_report,
-    launch_report_markdown_ar,
-)
+from auto_client_acquisition.personal_operator.launch_report import build_launch_report, launch_report_markdown_ar
 
 
 def main() -> None:

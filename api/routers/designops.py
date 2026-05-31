@@ -33,6 +33,7 @@ from auto_client_acquisition.designops.generators import (
     generate_proposal_page,
 )
 
+
 router = APIRouter(prefix="/api/v1/designops", tags=["designops"])
 
 
@@ -182,7 +183,7 @@ async def designops_brief(payload: BriefRequest) -> dict[str, Any]:
         if hasattr(result, "model_dump"):
             return result.model_dump(mode="json")
         return dict(result) if result else {}
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 — defensive
         raise HTTPException(
             status_code=503,
             detail=f"brief_builder unavailable: {exc!s}",
@@ -199,7 +200,7 @@ async def designops_check_artifact(payload: ArtifactCheckRequest) -> dict[str, A
         if hasattr(result, "model_dump"):
             return result.model_dump(mode="json")
         return dict(result) if result else {}
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 — defensive
         raise HTTPException(
             status_code=503,
             detail=f"safety_gate unavailable: {exc!s}",

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from dealix.business_now.commercial_strategy import build_commercial_strategy_snapshot
 from dealix.business_now.integration_truth import build_integration_truth_summary
+from dealix.business_now.commercial_strategy import build_commercial_strategy_snapshot
 
 
 def test_integration_truth_summary_structure() -> None:

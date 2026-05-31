@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import csv
-import json
 import os
 from collections import Counter
 from datetime import UTC, date, datetime, timedelta
@@ -11,6 +10,7 @@ from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+import json
 
 from dealix.commercial_ops.paths import EVIDENCE_TRACKER_CSV
 

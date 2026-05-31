@@ -28,9 +28,9 @@ from datetime import UTC, datetime
 # Adjust path so we can import from repo root when run as a script.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from auto_client_acquisition.self_growth_os import daily_growth_loop
-from core.config.settings import get_settings
-from integrations.email import EmailClient, EmailResult
+from auto_client_acquisition.self_growth_os import daily_growth_loop  # noqa: E402
+from core.config.settings import get_settings  # noqa: E402
+from integrations.email import EmailClient, EmailResult  # noqa: E402
 
 
 def _today_label() -> str:
@@ -92,7 +92,7 @@ def main() -> int:
     args = parse_args()
     try:
         result = asyncio.run(_build_and_send(args))
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         print(f"FAIL: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
 
