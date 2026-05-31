@@ -19,7 +19,7 @@ def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         try:
             sys.stdout.reconfigure(encoding="utf-8")
-        except Exception:  # noqa: BLE001
+        except Exception:
             pass
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--company", help="Target company name (matches CSV)")

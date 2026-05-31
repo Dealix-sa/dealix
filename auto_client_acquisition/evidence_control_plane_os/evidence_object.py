@@ -15,7 +15,7 @@ import os
 import threading
 import uuid
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from enum import StrEnum
 from pathlib import Path
 from typing import Any
@@ -133,13 +133,12 @@ def create_evidence(
         summary=redact_text(summary) if summary else "",
         source_ids=list(source_ids or []),
         linked_artifacts=list(linked_artifacts or []),
-        created_at=datetime.now(timezone.utc).isoformat(),
+        created_at=datetime.now(UTC).isoformat(),
     )
     path = _path()
     path.parent.mkdir(parents=True, exist_ok=True)
-    with _lock:
-        with path.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(item.to_dict(), ensure_ascii=False) + "\n")
+    with _lock, path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(item.to_dict(), ensure_ascii=False) + "\n")
     return item
 
 
@@ -158,24 +157,23 @@ def list_evidence(
         return []
     type_filter = _type_value(type) if type is not None else None
     out: list[EvidenceItem] = []
-    with _lock:
-        with path.open("r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    data = json.loads(line)
-                    item = EvidenceItem(**data)
-                except Exception:  # noqa: BLE001
-                    continue
-                if item.customer_id != customer_id:
-                    continue
-                if type_filter is not None and item.type != type_filter:
-                    continue
-                if project_id is not None and item.project_id != project_id:
-                    continue
-                out.append(item)
+    with _lock, path.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                data = json.loads(line)
+                item = EvidenceItem(**data)
+            except Exception:
+                continue
+            if item.customer_id != customer_id:
+                continue
+            if type_filter is not None and item.type != type_filter:
+                continue
+            if project_id is not None and item.project_id != project_id:
+                continue
+            out.append(item)
     return out[-limit:] if limit else out
 
 

@@ -75,7 +75,7 @@ def sync_lead_to_hubspot(
     st = store or get_autopilot_store()
     try:
         out = _run_coro_sync(sync_lead_to_hubspot_async(record))
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         return {"synced": False, "reason": str(exc)}
 
     if out.get("synced") and (out.get("contact_id") or out.get("deal_id")):

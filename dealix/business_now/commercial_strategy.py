@@ -13,16 +13,16 @@ from auto_client_acquisition.business import (
     dealix_differentiators,
     estimate_cac_payback,
     estimate_gross_margin,
-    first_100_customers_plan,
     first_10_customers_plan,
+    first_100_customers_plan,
     founder_led_sales_script,
     get_pricing_tiers,
     north_star_metrics,
     partner_strategy,
     positioning_statement,
 )
-from auto_client_acquisition.business.verticals import get_vertical_playbooks
-from auto_client_acquisition.business.verticals import recommend_vertical
+from auto_client_acquisition.business.pricing_strategy import recommend_plan
+from auto_client_acquisition.business.verticals import get_vertical_playbooks, recommend_vertical
 from auto_client_acquisition.value_capture_os import (
     ClientQualityDimensions,
     ProofCommercialSignal,
@@ -33,14 +33,13 @@ from auto_client_acquisition.value_capture_os import (
     revenue_quality_score,
     upsell_from_proof_signal,
 )
-from auto_client_acquisition.business.pricing_strategy import recommend_plan
-from dealix.business_now.integration_truth import build_integration_truth_summary
 from auto_client_acquisition.value_capture_os.expansion_map import (
     TRACK_AI_QUICK_WIN,
     TRACK_COMPANY_BRAIN,
     TRACK_GOVERNANCE,
     TRACK_REVENUE_INTELLIGENCE,
 )
+from dealix.business_now.integration_truth import build_integration_truth_summary
 
 _REPO = Path(__file__).resolve().parents[2]
 _PLAYBOOK_YAML = _REPO / "dealix" / "transformation" / "commercial_offer_playbook.yaml"

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from dealix.commercial_ops.complete_autonomous_day import build_complete_autonomous_plan
 from dealix.commercial_ops.autonomous_ops import build_autonomous_ops_status
+from dealix.commercial_ops.complete_autonomous_day import build_complete_autonomous_plan
 
 
 def test_complete_autonomous_plan_dry():

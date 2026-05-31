@@ -21,9 +21,8 @@ from __future__ import annotations
 import argparse
 import csv
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -81,13 +80,13 @@ _CONTEXT_BY_RELATIONSHIP = {
 def _qualify_contact(role: str, sector: str, relationship: str, notes: str) -> dict:
     try:
         from auto_client_acquisition.sales_os.qualification import qualify
-    except Exception:  # noqa: BLE001
+    except Exception:
         return {"decision": "unknown", "score": 0, "reasons": [], "doctrine_violations": []}
 
     # Infer the 8 yes/no flags from the limited intake.
-    has_owner = bool(role) and role.upper() in (
+    has_owner = (bool(role) and role.upper() in (
         "CEO", "COO", "GM", "FOUNDER", "MD", "VP",
-    ) or role.lower() in ("ceo", "coo", "gm", "founder", "md", "vp")
+    )) or role.lower() in ("ceo", "coo", "gm", "founder", "md", "vp")
     warm_or_active = relationship in ("warm", "active")
     rel_text = (notes or "") + " " + sector
     result = qualify(
@@ -197,8 +196,8 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     drafts: list[str] = []
-    drafts.append(f"# Warm-list outreach drafts · مسوّدات التواصل\n")
-    drafts.append(f"_Generated: {datetime.now(timezone.utc).isoformat()}_\n")
+    drafts.append("# Warm-list outreach drafts · مسوّدات التواصل\n")
+    drafts.append(f"_Generated: {datetime.now(UTC).isoformat()}_\n")
     drafts.append(f"_Contacts in CSV: {len(rows)}_\n")
     drafts.append("\n")
     drafts.append(

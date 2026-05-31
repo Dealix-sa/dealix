@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "dealix"
 version = "3.0.0"
-description = "Multi-agent AI system for the Saudi Arabian market | نظام متعدد الوكلاء للسوق السعودي"
+description = "Saudi-first B2B revenue, growth, and compliance engine | محرّك إيرادات ونمو وامتثال للشركات السعودية"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "AI Company Saudi", email = "hello@ai-company.sa" }]
-keywords = ["ai", "agents", "saudi-arabia", "llm", "multi-agent", "fastapi"]
+authors = [{ name = "Dealix", email = "hello@dealix.me" }]
+keywords = ["ai", "agents", "saudi-arabia", "llm", "multi-agent", "fastapi", "revenue", "pdpl"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -23,47 +23,32 @@ classifiers = [
 ]
 
 dependencies = [
-    # Core framework
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",
     "pydantic>=2.9.0",
     "pydantic-settings>=2.6.0",
-
-    # HTTP
     "httpx>=0.27.0",
     "aiohttp>=3.10.0",
     "tenacity>=9.0.0",
-
-    # LLM SDKs
     "anthropic>=0.40.0",
     "openai>=1.54.0",
     "google-generativeai>=0.8.0",
-
-    # Data
     "sqlalchemy[asyncio]>=2.0.35",
     "asyncpg>=0.30.0",
     "alembic>=1.13.0",
     "redis>=5.1.0",
     "motor>=3.6.0",
-
-    # CLI / UX
     "typer>=0.13.0",
     "rich>=13.9.0",
     "click>=8.1.0",
-
-    # Utilities
     "python-dotenv>=1.0.1",
     "python-multipart>=0.0.17",
     "email-validator>=2.2.0",
     "phonenumbers>=8.13.0",
     "python-dateutil>=2.9.0",
     "tzdata>=2025.1",
-
-    # Observability
     "structlog>=24.4.0",
     "langfuse>=2.50.0",
-
-    # Integrations
     "hubspot-api-client>=11.0.0",
     "google-api-python-client>=2.150.0",
     "google-auth-httplib2>=0.2.0",
@@ -77,6 +62,8 @@ dev = [
     "pytest-asyncio>=0.24.0",
     "pytest-cov>=6.0.0",
     "pytest-mock>=3.14.0",
+    "pytest-xdist>=3.6",
+    "aiosqlite>=0.20.0",
     "httpx>=0.27.0",
     "ruff>=0.7.0",
     "black>=24.10.0",
@@ -86,22 +73,44 @@ dev = [
     "bandit[toml]>=1.7.0",
     "ipython>=8.29.0",
 ]
+observability = [
+    "sentry-sdk[fastapi]>=2.19.0",
+    "opentelemetry-api>=1.28.0",
+    "opentelemetry-sdk>=1.28.0",
+    "opentelemetry-instrumentation-fastapi>=0.49b0",
+    "opentelemetry-instrumentation-httpx>=0.49b0",
+    "opentelemetry-instrumentation-sqlalchemy>=0.49b0",
+    "prometheus-client>=0.21.0",
+]
+security = [
+    "pip-audit>=2.7.3",
+    "cyclonedx-bom>=5.1.1",
+    "detect-secrets>=1.5.0",
+    "bandit[toml]>=1.7.0",
+]
+evals = [
+    "jsonschema>=4.23.0",
+    "rapidfuzz>=3.10.0",
+    "scikit-learn>=1.5.0",
+    "pandas>=2.2.0",
+]
+docs = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.0",
+]
 
 [project.scripts]
+dealix = "cli:app"
 ai-company = "cli:app"
 
 [project.urls]
-Homepage = "https://ai-company.sa"
+Homepage = "https://dealix.me"
 Repository = "https://github.com/VoXc2/dealix"
 Documentation = "https://github.com/VoXc2/dealix/tree/main/docs"
 Issues = "https://github.com/VoXc2/dealix/issues"
 
-# ─────────────────────────────────────────────────────────────
-# Tool configurations
-# ─────────────────────────────────────────────────────────────
-
 [tool.setuptools.packages.find]
-include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*"]
+include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "dealix*"]
 exclude = ["tests*", "docs*", "scripts*"]
 
 [tool.ruff]
@@ -110,43 +119,19 @@ target-version = "py311"
 extend-exclude = [".venv", "venv", "build", "dist", "migrations"]
 
 [tool.ruff.lint]
-select = [
-    "E",    # pycodestyle errors
-    "W",    # pycodestyle warnings
-    "F",    # pyflakes
-    "I",    # isort
-    "B",    # flake8-bugbear
-    "C4",   # flake8-comprehensions
-    "UP",   # pyupgrade
-    "N",    # pep8-naming
-    "S",    # flake8-bandit (security)
-    "SIM",  # flake8-simplify
-    "RUF",  # ruff-specific
-]
-ignore = [
-    "E501",   # line too long (black handles)
-    "S101",   # assert used (ok in tests)
-    "B008",   # function call in default (FastAPI Depends)
-    "RUF001", # ambiguous unicode in strings (Arabic-first codebase; expected)
-    "RUF002", # ambiguous unicode in docstrings (Arabic-first codebase; expected)
-    "RUF003", # ambiguous unicode in comments  (Arabic-first codebase; expected)
-    "E702",   # multiple statements on one line (used in lead_scorer one-liners)
-    "S110",   # try-except-pass (best-effort code with docstring justification)
-    "SIM102", # collapsible if (readability preferred in some gates)
-    "SIM105", # suppressible exception
-    "RUF012", # mutable default in class (dataclasses handle this)
-    "S301",   # pickle (used with trusted internal data only)
-    "B904",   # raise from e (legacy CLI paths; low risk)
-    "F401",   # unused import (optional-import patterns with try/except)
-]
+select = ["E", "W", "F", "I", "B", "C4", "UP", "N", "S", "SIM", "RUF"]
+ignore = ["E501", "S101", "B008", "RUF001", "RUF002", "RUF003", "E702", "S110", "SIM102", "SIM105", "RUF012", "S301", "B904", "F401"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101", "S106", "S311"]
-"scripts/**/*.py" = ["S101"]
+# S101  assert  — pytest uses asserts; tests pinky-promise on inputs
+# S106  hard-coded passwords — test fixtures only
+# S311  random() — non-crypto use in test data generation
+# S603  subprocess without shell=True — internal trusted commands
+# S607  partial executable path — git/bash/pandoc are PATH-resolved trusted tools
+"tests/**/*.py" = ["S101", "S106", "S311", "S603", "S607"]
+"scripts/**/*.py" = ["S101", "S603", "S607"]
 
 [tool.bandit]
-# B104 hardcoded 0.0.0.0 bind — intentional for containerized deploy (documented in settings.py)
-# B110 try/except/pass — already ignored in ruff (best-effort paths)
 skips = ["B104", "B110"]
 exclude_dirs = ["tests", ".venv", "venv", "migrations", "build", "dist"]
 
@@ -161,7 +146,7 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
 ignore_missing_imports = true
-exclude = ["venv", "build", "dist", "migrations"]
+exclude = ["venv", "build", "dist", "db/migrations"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -173,13 +158,6 @@ addopts = [
     "-ra",
     "--strict-markers",
     "--strict-config",
-    "--cov=core",
-    "--cov=auto_client_acquisition",
-    "--cov=autonomous_growth",
-    "--cov=integrations",
-    "--cov=api",
-    "--cov-report=term-missing",
-    "--cov-report=html",
 ]
 markers = [
     "unit: unit tests",
