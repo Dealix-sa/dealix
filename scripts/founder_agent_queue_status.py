@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-import argparse, json, sys
+import argparse
+import json
+import sys
 from pathlib import Path
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from dealix.commercial_ops.founder_agent_tasks import analyze_agent_queue_status, seed_today_queue
 from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
+
 
 def main():
     ensure_stdout_utf8()

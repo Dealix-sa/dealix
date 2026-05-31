@@ -1,5 +1,8 @@
 from dealix.commercial_ops.founder_agent_tasks import analyze_agent_queue_status
-from dealix.commercial_ops.founder_master_strategic_os import run_founder_master_strategic_os, wave_d_cadence_unify
+from dealix.commercial_ops.founder_master_strategic_os import (
+    run_founder_master_strategic_os,
+    wave_d_cadence_unify,
+)
 from dealix.commercial_ops.phase_01_close_path import build_phase_01_close_path
 from dealix.commercial_ops.platform_v10_readiness import analyze_platform_v10_readiness
 

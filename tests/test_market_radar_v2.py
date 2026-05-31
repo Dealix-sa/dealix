@@ -24,7 +24,6 @@ from auto_client_acquisition.market_intelligence.signal_detectors import (
     get_signal_output,
 )
 
-
 # ─────────────────────────────────────────────────────────────────────
 # Signal taxonomy + per-signal output (5 tests)
 # ─────────────────────────────────────────────────────────────────────

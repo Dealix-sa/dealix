@@ -29,7 +29,7 @@ def _probe_json(url: str, timeout: float = 12.0) -> dict[str, object]:
             return {"ok": resp.getcode() == 200, "status": resp.getcode(), "url": url, "body": body[:200]}
     except urllib.error.HTTPError as exc:
         return {"ok": False, "status": exc.code, "url": url, "error": str(exc)}
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         return {"ok": False, "url": url, "error": str(exc)}
 
 

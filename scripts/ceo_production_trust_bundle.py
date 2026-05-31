@@ -13,7 +13,10 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.railway_production import DEFAULT_API_BASE, probe_trust_layer  # noqa: E402
+from dealix.commercial_ops.railway_production import (  # noqa: E402
+    DEFAULT_API_BASE,
+    probe_trust_layer,
+)
 
 DNS_DOC = ROOT / "docs/ops/DEALIX_ME_FRONTEND_DNS_RAILWAY_AR.md"
 

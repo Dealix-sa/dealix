@@ -1,12 +1,12 @@
 ﻿#!/usr/bin/env python3
 """Dealix Credit Guard - Checks OpenRouter balance before starting."""
 
+import json
 import os
 import sys
-import json
 from pathlib import Path
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
-from urllib.error import URLError, HTTPError
 
 # Load .env.local if exists
 env_file = Path(__file__).parent.parent / ".env.local"

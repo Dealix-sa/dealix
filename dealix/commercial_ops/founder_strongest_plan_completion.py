@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from dealix.commercial_ops.evidence_csv import count_evidence_events, load_evidence_rows
 from dealix.commercial_ops.founder_comprehensive_plan import (

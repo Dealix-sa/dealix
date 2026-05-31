@@ -12,8 +12,8 @@ from auto_client_acquisition.proof_ledger import (
     FileProofLedger,
     ProofEvent,
     ProofEventType,
-    export_redacted,
     export_for_audit,
+    export_redacted,
 )
 
 

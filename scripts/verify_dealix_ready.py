@@ -103,7 +103,7 @@ GATE7_FILES = (
 
 GATE8_FILES = ("docs/delivery/RETAINER_READINESS.md",)
 
-ROOT_READINESS = "DEALIX_READINESS.md"
+ROOT_READINESS = "docs/operations/DEALIX_READINESS.md"
 
 PRODUCT_PACKAGES = (
     "auto_client_acquisition/data_os",
