@@ -584,3 +584,340 @@ async def simulate_roi(body: PriceSimulatorInput) -> dict[str, Any]:
         "currency": "SAR",
         **result,
     }
+
+
+# ---------------------------------------------------------------------------
+# Market rate intelligence data
+# ---------------------------------------------------------------------------
+
+_SECTOR_MARKET_RATES: list[dict[str, Any]] = [
+    {
+        "sector": "retail_ecommerce",
+        "sector_ar": "التجزئة والتجارة الإلكترونية",
+        "market_avg_sar": 8_500,
+        "dealix_recommended_sar": 4_999,
+    },
+    {
+        "sector": "banking_finance",
+        "sector_ar": "البنوك والتمويل",
+        "market_avg_sar": 15_000,
+        "dealix_recommended_sar": 9_999,
+    },
+    {
+        "sector": "food_beverage",
+        "sector_ar": "الغذاء والمشروبات",
+        "market_avg_sar": 6_000,
+        "dealix_recommended_sar": 4_999,
+    },
+    {
+        "sector": "healthcare",
+        "sector_ar": "الرعاية الصحية",
+        "market_avg_sar": 12_000,
+        "dealix_recommended_sar": 7_999,
+    },
+    {
+        "sector": "technology",
+        "sector_ar": "التقنية",
+        "market_avg_sar": 10_000,
+        "dealix_recommended_sar": 5_999,
+    },
+    {
+        "sector": "logistics",
+        "sector_ar": "اللوجستيات والنقل",
+        "market_avg_sar": 7_000,
+        "dealix_recommended_sar": 4_999,
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Competitor landscape (generic names — no real brand names)
+# ---------------------------------------------------------------------------
+
+_COMPETITOR_LANDSCAPE: list[dict[str, Any]] = [
+    {
+        "name": "Gulf Data Hub",
+        "entry_price_sar": 12_000,
+        "positioning_en": "Legacy ERP analytics add-on with deep Arabic localization.",
+        "positioning_ar": "إضافة تحليلات على نظام ERP قديم مع توطين عربي عميق.",
+        "strength_en": "Long enterprise relationships and government-approved integrations.",
+        "weakness_en": "Slow deployment (3–6 months), no agile sprint model.",
+    },
+    {
+        "name": "Riyadh Analytics Suite",
+        "entry_price_sar": 9_500,
+        "positioning_en": "Cloud BI platform with Saudi compliance modules.",
+        "positioning_ar": "منصة تقارير سحابية مع وحدات امتثال سعودية.",
+        "strength_en": "Strong ZATCA pre-built connectors.",
+        "weakness_en": "High setup cost, requires a dedicated IT team.",
+    },
+    {
+        "name": "ArabTech Insights",
+        "entry_price_sar": 5_000,
+        "positioning_en": "SME-focused dashboarding with Arabic-first UI.",
+        "positioning_ar": "لوحات بيانات للمنشآت الصغيرة والمتوسطة مع واجهة عربية.",
+        "strength_en": "Low entry price and quick setup.",
+        "weakness_en": "Limited revenue intelligence features, no AI layer.",
+    },
+    {
+        "name": "NahdaTech Reporting",
+        "entry_price_sar": 18_000,
+        "positioning_en": "Enterprise data warehouse consultancy with custom delivery.",
+        "positioning_ar": "استشارات مستودع بيانات للمؤسسات مع تسليم مخصص.",
+        "strength_en": "Highly tailored solutions with senior consultant engagement.",
+        "weakness_en": "Very expensive; no self-serve; 6–12 month lead times.",
+    },
+    {
+        "name": "Tawasul Data Partners",
+        "entry_price_sar": 7_500,
+        "positioning_en": "Mid-market data ops firm serving Vision 2030 sectors.",
+        "positioning_ar": "شركة عمليات بيانات للسوق المتوسط في قطاعات رؤية 2030.",
+        "strength_en": "Good sector specialization in Vision 2030 verticals.",
+        "weakness_en": "No real-time pipeline visibility or automated alerts.",
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Tier optimization data
+# ---------------------------------------------------------------------------
+
+_TIER_OPTIMIZATION_DATA: list[dict[str, Any]] = [
+    {
+        "tier_name_en": "Sprint",
+        "tier_name_ar": "سبرينت",
+        "floor_sar": 449,
+        "ceiling_sar": 599,
+        "upsell_trigger_score": 55,
+    },
+    {
+        "tier_name_en": "Data Pack",
+        "tier_name_ar": "حزمة البيانات",
+        "floor_sar": 1_200,
+        "ceiling_sar": 1_800,
+        "upsell_trigger_score": 65,
+    },
+    {
+        "tier_name_en": "Managed Ops Starter",
+        "tier_name_ar": "العمليات المُدارة - مبتدئ",
+        "floor_sar": 2_500,
+        "ceiling_sar": 3_999,
+        "upsell_trigger_score": 72,
+    },
+    {
+        "tier_name_en": "Managed Ops Pro",
+        "tier_name_ar": "العمليات المُدارة - احترافي",
+        "floor_sar": 3_999,
+        "ceiling_sar": 5_999,
+        "upsell_trigger_score": 82,
+    },
+    {
+        "tier_name_en": "Custom Enterprise",
+        "tier_name_ar": "المؤسسات المخصصة",
+        "floor_sar": 5_000,
+        "ceiling_sar": 25_000,
+        "upsell_trigger_score": 90,
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Discount policy data
+# ---------------------------------------------------------------------------
+
+_DISCOUNT_POLICY_DATA: list[dict[str, Any]] = [
+    {
+        "scenario_en": "Annual commitment (12-month pre-pay)",
+        "scenario_ar": "الالتزام السنوي (دفع مسبق لـ12 شهرًا)",
+        "max_discount_pct": 15,
+        "requires_approval": True,
+    },
+    {
+        "scenario_en": "Referral from existing customer",
+        "scenario_ar": "إحالة من عميل حالي",
+        "max_discount_pct": 10,
+        "requires_approval": True,
+    },
+    {
+        "scenario_en": "Vision 2030 aligned non-profit or government entity",
+        "scenario_ar": "جهة حكومية أو غير ربحية مرتبطة برؤية 2030",
+        "max_discount_pct": 20,
+        "requires_approval": True,
+    },
+    {
+        "scenario_en": "Bundle purchase (two or more tiers simultaneously)",
+        "scenario_ar": "شراء حزمة (مستويان أو أكثر في وقت واحد)",
+        "max_discount_pct": 12,
+        "requires_approval": True,
+    },
+    {
+        "scenario_en": "Competitive displacement (switching from named competitor)",
+        "scenario_ar": "الإحلال التنافسي (التحول من منافس محدد)",
+        "max_discount_pct": 20,
+        "requires_approval": True,
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Win-rate simulator model and logic
+# ---------------------------------------------------------------------------
+
+_SECTOR_AVG_DEAL_SAR: dict[str, float] = {
+    "retail_ecommerce": 8_500.0,
+    "banking_finance": 15_000.0,
+    "food_beverage": 6_000.0,
+    "healthcare": 12_000.0,
+    "technology": 10_000.0,
+    "logistics": 7_000.0,
+}
+
+_DEFAULT_SECTOR_AVG_SAR = 8_000.0
+
+
+class WinRateSimulatorInput(BaseModel):
+    proposed_price_sar: float = Field(..., ge=0)
+    sector: str
+    company_size: str
+
+
+def _predict_win_rate(
+    proposed_price_sar: float,
+    sector: str,
+    company_size: str,
+) -> dict[str, Any]:
+    sector_avg = _SECTOR_AVG_DEAL_SAR.get(sector.lower(), _DEFAULT_SECTOR_AVG_SAR)
+    ratio = proposed_price_sar / sector_avg if sector_avg > 0 else 1.0
+
+    if ratio <= 0.5:
+        win_rate = 0.75
+    elif ratio <= 0.8:
+        win_rate = 0.65
+    elif ratio <= 1.0:
+        win_rate = 0.55
+    elif ratio <= 1.3:
+        win_rate = 0.40
+    else:
+        win_rate = 0.25
+
+    size_key = company_size.lower()
+    if size_key in ("sme", "small", "medium"):
+        win_rate = min(1.0, win_rate + 0.05)
+    elif size_key in ("enterprise", "large"):
+        win_rate = max(0.0, win_rate - 0.05)
+
+    confidence = 0.72 if sector.lower() in _SECTOR_AVG_DEAL_SAR else 0.45
+    floor_sar = int(sector_avg * 0.6)
+    ceiling_sar = int(sector_avg * 1.1)
+
+    return {
+        "predicted_win_rate": round(win_rate, 2),
+        "confidence": confidence,
+        "sector_avg_deal_sar": sector_avg,
+        "recommended_range_en": f"SAR {floor_sar:,} – SAR {ceiling_sar:,}",
+        "recommended_range_ar": f"{floor_sar:,} ريال – {ceiling_sar:,} ريال",
+    }
+
+
+# ---------------------------------------------------------------------------
+# New endpoints
+# ---------------------------------------------------------------------------
+
+
+@router.get("/market-rates")
+async def get_market_rates() -> dict[str, Any]:
+    """Return Saudi B2B sector market rate benchmarks vs Dealix recommended pricing."""
+    return {
+        "governance_decision": _GOV_READ,
+        "currency": "SAR",
+        "sectors": _SECTOR_MARKET_RATES,
+        "note_en": (
+            "Market averages are estimates based on publicly available Saudi B2B SaaS "
+            "pricing data and Dealix field intelligence. Not guaranteed to reflect "
+            "any specific vendor's actual pricing."
+        ),
+        "note_ar": (
+            "متوسطات السوق تقديرات مستندة إلى بيانات تسعير SaaS للأعمال السعودية "
+            "المتاحة للعموم والمعلومات الميدانية لـ Dealix. "
+            "لا تعكس بالضرورة أسعار أي مورد محدد."
+        ),
+    }
+
+
+@router.get("/competitor-landscape")
+async def get_competitor_landscape() -> dict[str, Any]:
+    """Return overview of 5 generic competitor profiles in the Saudi data ops market."""
+    return {
+        "governance_decision": _GOV_READ,
+        "competitors": _COMPETITOR_LANDSCAPE,
+        "disclaimer_en": (
+            "Competitor names are illustrative generic archetypes, not real company names. "
+            "Pricing and positioning data are estimates for internal sales preparation only."
+        ),
+    }
+
+
+@router.post("/win-rate-simulator")
+async def win_rate_simulator(body: WinRateSimulatorInput) -> dict[str, Any]:
+    """Estimate win probability for a proposed price point in a given sector."""
+    result = _predict_win_rate(body.proposed_price_sar, body.sector, body.company_size)
+    return {
+        "governance_decision": _GOV_READ,
+        "inputs": body.model_dump(),
+        "note_en": (
+            "This model provides a statistical estimate only — it is not a guarantee "
+            "of outcome. Actual win rates depend on relationship quality, champion "
+            "strength, and competitive dynamics at the time of the deal."
+        ),
+        "note_ar": (
+            "يوفر هذا النموذج تقديرًا إحصائيًا فقط — وليس ضمانًا بالنتيجة. "
+            "تعتمد معدلات الفوز الفعلية على جودة العلاقة وقوة البطل والديناميكيات "
+            "التنافسية في وقت الصفقة."
+        ),
+        **result,
+    }
+
+
+@router.get("/tier-optimization")
+async def get_tier_optimization() -> dict[str, Any]:
+    """Return recommended pricing floor/ceiling and upsell trigger scores per tier."""
+    return {
+        "governance_decision": _GOV_READ,
+        "tiers": _TIER_OPTIMIZATION_DATA,
+        "methodology_en": (
+            "Tier floors and ceilings are set based on Saudi B2B buyer budget authority "
+            "thresholds and observed deal sizes. Upsell trigger scores indicate the "
+            "minimum health score at which a tier upgrade conversation should be initiated."
+        ),
+        "methodology_ar": (
+            "تستند حدود وأسقف المستويات إلى حدود صلاحيات ميزانية المشترين في B2B السعودي "
+            "وأحجام الصفقات الملاحظة. تشير نتائج محفزات الترقية إلى الحد الأدنى من نقاط "
+            "الصحة التي يجب عندها بدء محادثة ترقية المستوى."
+        ),
+    }
+
+
+@router.get("/discount-policy")
+async def get_discount_policy() -> dict[str, Any]:
+    """Return approved discount scenarios and maximum discount percentages.
+
+    All discounts require founder approval before being offered to any prospect.
+    """
+    return {
+        "governance_decision": _GOV_WRITE,
+        "discount_policy": _DISCOUNT_POLICY_DATA,
+        "hard_gate_en": (
+            "No discount may be offered without explicit written approval from the founder. "
+            "Verbal commitments are not binding."
+        ),
+        "hard_gate_ar": (
+            "لا يجوز تقديم أي خصم دون موافقة خطية صريحة من المؤسس. "
+            "الالتزامات الشفهية غير ملزمة."
+        ),
+        "policy_en": (
+            "Maximum combined discount is 20% of the listed price. "
+            "Discounts below 10% may be approved by team leads; "
+            "discounts of 10% or above require founder sign-off."
+        ),
+        "policy_ar": (
+            "الحد الأقصى للخصم المجمّع هو 20% من السعر المدرج. "
+            "الخصومات دون 10% يمكن الموافقة عليها من قادة الفريق؛ "
+            "أما الخصومات بنسبة 10% أو أكثر فتستلزم موافقة المؤسس."
+        ),
+    }

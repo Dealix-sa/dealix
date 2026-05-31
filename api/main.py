@@ -678,6 +678,22 @@ def create_app() -> FastAPI:
     from api.routers import proof_pack as proof_pack_router
     app.include_router(proof_pack_router.router)
 
+    # Negotiation Playbook — Saudi B2B negotiation principles, concessions, scenario briefs
+    from api.routers import negotiation_playbook as negotiation_playbook_router
+    app.include_router(negotiation_playbook_router.router)
+
+    # Champion Development — archetype profiles, development stages, health assessment
+    from api.routers import champion_development as champion_development_router
+    app.include_router(champion_development_router.router)
+
+    # Win/Loss Analysis — weighted deal scoring, loss guidance, debrief templates
+    from api.routers import win_loss_analysis as win_loss_analysis_router
+    app.include_router(win_loss_analysis_router.router)
+
+    # Demo Script — demo flow, types, Saudi cultural rules, objection responses
+    from api.routers import demo_script as demo_script_router
+    app.include_router(demo_script_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
