@@ -144,49 +144,27 @@ export function CommercialLaunchHome() {
 
   return (
     <PublicGtmShell>
-      <div className={`mx-auto max-w-5xl px-6 py-12 space-y-20 ${isAr ? "text-right" : "text-left"}`}>
-
-        {/* ── Hero ── */}
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--dealix-navy)] to-[#0a2040] px-8 py-14 text-white shadow-xl">
-          <div className="absolute inset-0 bg-dot-pattern opacity-20" />
-          <div className="relative space-y-6">
-            <div className="flex flex-wrap gap-2">
-              <Badge className="bg-white/10 text-white border-white/20">
-                {isAr ? "نظام تشغيل الإيرادات B2B · السعودية · رؤية 2030" : "B2B Revenue OS · Saudi Arabia · Vision 2030"}
-              </Badge>
-              <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30">v3.0.0</Badge>
-            </div>
-            <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
-              {isAr
-                ? <>وحّد قرار الإيراد.<br /><span className="text-[var(--dealix-gold)]">أثبت كل لمسة.</span><br />وسّع فقط بعد Proof.</>
-                : <>Unify revenue decisions.<br /><span className="text-[var(--dealix-gold)]">Prove every touch.</span><br />Expand only after proof.</>}
-            </h1>
-            <p className="max-w-2xl text-lg text-white/80 leading-relaxed">
-              {isAr
-                ? "Dealix ليس CRM آخر — ذاكرة إيرادات + حوكمة + مسار تشخيص → Proof Pack. مبني لسوق يشتري بالثقة والامتثال."
-                : "Dealix is not another CRM — revenue memory + governance + diagnostic → Proof Pack. Built for a market that buys on trust and compliance."}
-            </p>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Button asChild size="lg" className="bg-[var(--dealix-gold)] text-[var(--dealix-navy)] hover:bg-[var(--dealix-gold-hover)] font-bold shadow-lg">
-                <Link href={`${base}/dealix-diagnostic`}>
-                  {isAr ? "ابدأ التشخيص المحكوم ←" : "Start Governed Diagnostic →"}
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-white/30 text-white bg-white/10 hover:bg-white/20">
-                <Link href={`${base}/risk-score`}>
-                  {isAr ? "احسب Risk Score" : "Calculate Risk Score"}
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10">
-                <Link href={`${base}/proof-pack`}>
-                  {isAr ? "عيّنة Proof Pack" : "Sample Proof Pack"}
-                </Link>
-              </Button>
-            </div>
-            <div className="pt-2">
-              <ZatcaCountdown isAr={isAr} />
-            </div>
+      <div className={`mx-auto max-w-5xl px-6 py-12 space-y-16 ${isAr ? "text-right" : "text-left"}`}>
+        <section>
+          <p className="text-sm font-medium text-dealix-green uppercase">{t("eyebrow")}</p>
+          <h1 className="mt-4 text-4xl font-bold text-gradient-brand md:text-5xl">{t("heroTitle")}</h1>
+          <p className="mt-6 text-lg text-muted-foreground">{t("heroSubtitle")}</p>
+          <p className="mt-2 text-sm italic text-muted-foreground">{t("heroProofLine")}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button asChild size="lg" className="bg-[var(--dealix-deep-green)]"><Link href={`${base}/dealix-diagnostic`}>{t("ctaPrimary")}</Link></Button>
+            <Button asChild variant="secondary" size="lg"><Link href={`${base}/demo`}>{isAr ? "شاهد Demo حي ⚡" : "Watch Live Demo ⚡"}</Link></Button>
+            <Button asChild variant="outline" size="lg"><Link href={`${base}/proof-pack`}>{t("ctaSampleProof")}</Link></Button>
+            <Link href={`${base}/risk-score`} className="text-sm text-[var(--dealix-deep-green)]">{t("ctaRiskScore")} →</Link>
           </div>
+          {/* ZATCA Wave 24 urgency strip */}
+          <Link href={`${base}/zatca-readiness`} className="mt-6 inline-flex items-center gap-2 rounded-lg border border-amber-500/40 bg-amber-50 dark:bg-amber-950/20 px-4 py-2 text-sm text-amber-700 dark:text-amber-400 hover:border-amber-500/70 transition-colors">
+            <span className="text-base">⚠</span>
+            <span>
+              {isAr
+                ? "ZATCA موجة ٢٤ — إلزامي قبل ٣٠ يونيو ٢٠٢٦ · اختبر جاهزيتك ←"
+                : "ZATCA Wave 24 — mandatory by June 30, 2026 · Check your readiness →"}
+            </span>
+          </Link>
         </section>
 
         {/* ── Trust Signals Bar ── */}

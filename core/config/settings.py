@@ -168,6 +168,7 @@ class Settings(BaseSettings):
     # silently (intake/digest pipelines treat absence as "not configured"
     # rather than failing).
     dealix_founder_email: str = "sami.assiri11@gmail.com"
+    dealix_founder_phone: str = ""  # E.164 format, e.g. +966500000000 — empty = skip WA notify
     resend_api_key: SecretStr | None = None
     sendgrid_api_key: SecretStr | None = None
     smtp_host: str | None = None

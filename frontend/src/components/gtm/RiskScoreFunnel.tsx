@@ -5,6 +5,7 @@ import { useLocale } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { CheckoutPanel } from "@/components/gtm/CheckoutPanel";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "@/lib/api";
@@ -155,9 +156,18 @@ export function RiskScoreFunnel() {
       </Button>
 
       {leadId && (
-        <p className="text-sm text-green-600">
-          {isAr ? `تم التسجيل: ${leadId}` : `Registered: ${leadId}`}
-        </p>
+        <div className="space-y-3">
+          <p className="text-sm text-green-600 font-medium">
+            {isAr ? "✓ تم التسجيل بنجاح" : "✓ Registered successfully"}
+          </p>
+          <CheckoutPanel
+            plan="lead_intelligence_sprint"
+            planLabel={isAr ? "Sprint — ذكاء الإيراد" : "Lead Intelligence Sprint"}
+            priceHint="499 SAR"
+            isAr={isAr}
+            initialEmail={form.email}
+          />
+        </div>
       )}
 
       {error && <p className="text-sm text-destructive">{error}</p>}

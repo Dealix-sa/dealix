@@ -278,15 +278,37 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     plan = str(body.get("plan") or "").lower()
     email = str(body.get("email") or "").strip()
     lead_id = str(body.get("lead_id") or "")
+    referral_code = str(body.get("referral_code") or "").strip().upper()
 
     if plan not in PLANS:
         raise HTTPException(status_code=400, detail=f"unknown_plan: {plan}")
     if "@" not in email:
         raise HTTPException(status_code=400, detail="invalid_email")
 
+    # Validate referral code if provided (non-fatal — bad code = ignore, not block)
+    referral_valid = False
+    if referral_code:
+        try:
+            from auto_client_acquisition.partnership_os.referral_store import (
+                lookup_code,
+            )
+            rc = lookup_code(referral_code)
+            referral_valid = rc is not None and rc.to_dict().get("status") == "active"
+        except Exception:
+            pass  # referral validation is best-effort
+
     plan_info = PLANS[plan]
     callback_base = os.getenv("APP_URL", "https://dealix.me")
     callback_url = f"{callback_base}/checkout/return"
+    meta: dict[str, Any] = {
+        "plan": plan,
+        "email": email,
+        "lead_id": lead_id,
+        "source": "dealix.checkout",
+    }
+    if referral_code:
+        meta["referral_code"] = referral_code
+        meta["referral_valid"] = str(referral_valid).lower()
 
     client = MoyasarClient()
     try:
@@ -295,12 +317,7 @@ async def create_checkout(req: Request) -> dict[str, Any]:
             currency="SAR",
             description=f"Dealix — {plan_info['name']}",
             callback_url=callback_url,
-            metadata={
-                "plan": plan,
-                "email": email,
-                "lead_id": lead_id,
-                "source": "dealix.checkout",
-            },
+            metadata=meta,
         )
     except Exception as exc:
         log.exception(
@@ -313,13 +330,108 @@ async def create_checkout(req: Request) -> dict[str, Any]:
             detail="payment_provider_error",
         ) from exc
 
-    return {
+    result: dict[str, Any] = {
         "invoice_id": invoice.get("id"),
         "status": invoice.get("status"),
         "amount_sar": plan_info["amount_halalas"] / 100,
         "payment_url": invoice.get("url"),
         "plan": plan,
     }
+    if referral_code:
+        result["referral_code"] = referral_code
+        result["referral_applied"] = referral_valid
+    return result
+
+
+async def _auto_zatca_invoice(*, payment: dict, event_type: str) -> None:
+    """Auto-generate ZATCA simplified e-invoice on payment confirmation.
+
+    Non-fatal: all errors are swallowed. Only fires when zatca_seller_vat
+    and zatca_seller_name are configured in settings.
+    """
+    try:
+        from core.config.settings import get_settings
+        settings = get_settings()
+        if not settings.zatca_seller_vat or not settings.zatca_seller_name:
+            return
+        status = str(payment.get("status") or event_type)
+        if status not in ("paid", "payment_confirmed", "captured"):
+            return
+        amount_halalas = int(payment.get("amount") or 0)
+        if amount_halalas == 0:
+            return
+        # VAT-inclusive amount: strip 15% to get pre-VAT
+        amount_sar_incl = amount_halalas / 100
+        unit_price_sar = round(amount_sar_incl / 1.15, 2)
+        payment_id = str(payment.get("id") or "")
+        invoice_number = f"DLXINV-{payment_id[:16]}" if payment_id else f"DLXINV-{_fingerprint(str(amount_halalas))}"
+        plan = (payment.get("metadata") or {}).get("plan") or "service"
+        source_data = payment.get("source") or {}
+        buyer_name = source_data.get("company") or source_data.get("name") or "Dealix Customer"
+        from integrations.zatca import InvoiceGenerator, build_invoice_payload_from_record
+        generator = InvoiceGenerator()
+        invoice_payload = build_invoice_payload_from_record(
+            invoice_number=invoice_number,
+            seller_name=settings.zatca_seller_name,
+            seller_vat=settings.zatca_seller_vat,
+            seller_crn=getattr(settings, "zatca_seller_crn", ""),
+            seller_street=getattr(settings, "zatca_seller_street", ""),
+            seller_city=getattr(settings, "zatca_seller_city", "Riyadh"),
+            seller_postal=getattr(settings, "zatca_seller_postal", ""),
+            buyer_name=buyer_name,
+            buyer_vat=None,
+            line_items_data=[{
+                "description": f"Dealix {plan.replace('_', ' ').title()} Service",
+                "quantity": 1,
+                "unit_price_sar": unit_price_sar,
+            }],
+            invoice_type="simplified",
+            previous_hash=None,
+        )
+        generator.generate(invoice_payload)
+        # Strip newlines/CRs from user-derived value before logging to prevent log injection.
+        safe_inv = invoice_number.replace("\n", "").replace("\r", "")
+        log.info(
+            "zatca_auto_invoice_generated invoice=%s amount_sar=%.2f",
+            safe_inv,
+            amount_sar_incl,
+        )
+    except Exception as exc:
+        log.warning("zatca_auto_invoice_failed error=%s", type(exc).__name__)
+
+
+def _notify_founder_payment(*, event_type: str, payment: dict) -> None:
+    """Send a WhatsApp notification to the founder when a payment is confirmed.
+
+    Non-fatal: all errors are swallowed. Only fires when both
+    WHATSAPP_ALLOW_LIVE_SEND=true and DEALIX_FOUNDER_PHONE are set.
+    """
+    try:
+        from core.config.settings import get_settings
+        settings = get_settings()
+        if not settings.whatsapp_allow_live_send:
+            return
+        phone = settings.dealix_founder_phone
+        if not phone:
+            return
+        status = str(payment.get("status") or event_type)
+        if status not in ("paid", "payment_confirmed", "captured"):
+            return
+        amount_halalas = int(payment.get("amount") or 0)
+        amount_sar = amount_halalas / 100
+        payer_email = str(payment.get("source", {}).get("company") or payment.get("source", {}).get("name") or "")
+        message = (
+            f"💰 دفعة جديدة على Dealix\n"
+            f"المبلغ: {amount_sar:.0f} SAR\n"
+            f"العميل: {payer_email or 'غير محدد'}\n"
+            f"الحالة: {status}"
+        )
+        from integrations.whatsapp import WhatsAppClient
+        client = WhatsAppClient()
+        client.send_text(to=phone, message=message)
+        log.info("founder_payment_notified amount_sar=%.0f", amount_sar)
+    except Exception as exc:  # noqa: BLE001
+        log.warning("founder_payment_notify_failed error=%s", exc)
 
 
 @router.post("/api/v1/webhooks/moyasar")
@@ -376,76 +488,13 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
             )
         except Exception as sync_exc:
             log.warning("moyasar_side_effects_failed event_fp=%s error=%s", event_fp, sync_exc)
-        # Post-payment actions on successful payment
-        if payment.get("status") == "paid":
-            amount_halalas = payment.get("amount", 0)
-            amount_sar = amount_halalas / 100 if amount_halalas else 0
-            source_info = payment.get("source", {}) if isinstance(payment.get("source"), dict) else {}
-            customer_email = source_info.get("email", "")
-            customer_name = source_info.get("company", payment.get("description", "العميل"))
-            payment_id = payment.get("id", "?")
-
-            # 1. Customer receipt email (PDPL-gated, non-fatal)
-            if customer_email and "@" in customer_email:
-                try:
-                    from auto_client_acquisition.email.transactional import send_transactional
-                    await send_transactional(
-                        kind="payment_confirmed",
-                        to_email=customer_email,
-                        subject=f"تأكيد الدفع — Dealix | {amount_sar:,.0f} ر.س",
-                        body_plain=(
-                            f"أهلاً {customer_name}،\n\n"
-                            f"تم استلام دفعتك بنجاح.\n"
-                            f"المبلغ: {amount_sar:,.0f} ريال سعودي\n"
-                            f"رقم المرجع: {payment_id}\n\n"
-                            f"سيتواصل معك فريق Dealix خلال 24 ساعة لبدء البرنامج.\n\n"
-                            f"---\n"
-                            f"Dear {customer_name},\n\n"
-                            f"Your payment has been received successfully.\n"
-                            f"Amount: {amount_sar:,.0f} SAR\n"
-                            f"Reference: {payment_id}\n\n"
-                            f"The Dealix team will contact you within 24 hours to begin your program.\n\n"
-                            f"Dealix | api.dealix.me"
-                        ),
-                        customer_id=payment.get("metadata", {}).get("account_id", ""),
-                    )
-                    _safe_email = customer_email.replace("\n", "").replace("\r", "")[:200]
-                    _safe_ref = str(payment_id).replace("\n", "").replace("\r", "")[:100]
-                    log.info("customer_receipt_sent email=%s ref=%s", _safe_email, _safe_ref)
-                except Exception as _email_exc:
-                    _safe_email = customer_email.replace("\n", "").replace("\r", "")[:200]
-                    log.warning("customer_receipt_failed email=%s error=%s", _safe_email, type(_email_exc).__name__)
-
-            # 2. ZATCA e-invoice (non-fatal — logs if ZATCA creds not configured)
-            try:
-                from dealix.commercial.zatca_invoice import issue_zatca_invoice
-                await issue_zatca_invoice(payment=payment)
-            except Exception as _zatca_exc:
-                _safe_ref = str(payment_id).replace("\n", "").replace("\r", "")[:100]
-                log.warning("zatca_invoice_skipped ref=%s error=%s", _safe_ref, type(_zatca_exc).__name__)
-
-            # 3. Founder WhatsApp alert
-            try:
-                from core.config.settings import get_settings
-                _settings = get_settings()
-                msg = (
-                    f"💰 Dealix — دفعة جديدة!\n"
-                    f"المبلغ: {amount_sar:,.0f} ر.س\n"
-                    f"العميل: {customer_name}\n"
-                    f"المرجع: {payment_id}\n"
-                    f"---\n"
-                    f"💰 New Payment! {amount_sar:,.0f} SAR | {customer_name}"
-                )
-                if getattr(_settings, "whatsapp_allow_live_send", False):
-                    from integrations.whatsapp import send_whatsapp_message
-                    await send_whatsapp_message(
-                        to=getattr(_settings, "dealix_founder_phone", ""),
-                        message=msg,
-                    )
-                else:
-                    log.info("founder_payment_alert_queued: %s", msg.replace("\n", " | "))
-            except Exception as _wa_exc:
-                log.debug("founder_whatsapp_notification_skipped: %s", _wa_exc)
+        # Founder notification — non-fatal, gated by whatsapp_allow_live_send
+        _notify_founder_payment(
+            event_type=event_type,
+            payment=payment,
+        )
+        # ZATCA auto-invoice — non-fatal, gated by zatca_seller_vat setting
+        await _auto_zatca_invoice(event_type=event_type, payment=payment)
         return {
             "status": "ok",
             "event_id": event_id,

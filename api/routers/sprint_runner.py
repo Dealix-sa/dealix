@@ -11,12 +11,16 @@ would duplicate ledger and capital-asset side effects.
 """
 from __future__ import annotations
 
+import json
 import re
 from typing import Any
 
 from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi.responses import PlainTextResponse, Response
 from pydantic import BaseModel, Field
+
+_DEMO_CACHE_KEY = "demo:sprint:sample:v1"
+_DEMO_CACHE_TTL = 3600  # 1 hour — demo data changes rarely
 
 router = APIRouter(prefix="/api/v1/sprint", tags=["sprint"])
 
@@ -147,149 +151,35 @@ async def render_proof_pack_email_body(body: _ProofPackRenderBody) -> str:
     return proof_pack_email_body(body.pack(), customer_handle=body.customer_handle)
 
 
-# ---------------------------------------------------------------------------
-# New delivery endpoints — all require admin auth
-# ---------------------------------------------------------------------------
-
-
-class _SourcePassportBody(BaseModel):
-    sources: list[dict[str, Any]] = Field(
-        ..., description="List of raw source dicts matching the LeadSource schema."
-    )
-
-
-class _AccountScoringBody(BaseModel):
-    accounts: list[dict[str, Any]] = Field(
-        ..., description="List of raw account dicts matching the AccountProfile schema."
-    )
-
-
-class _RetainerCheckBody(BaseModel):
-    account_id: str = Field(..., min_length=1)
-    proof_level: str = Field(..., description="Highest proof level, e.g. 'L2'.")
-    satisfaction_score: float = Field(..., ge=0.0, le=10.0)
-    measurable_result_achieved: bool = Field(default=False)
-
-
-@router.post("/{sprint_id}/source-passport")
-async def run_source_passport(
-    sprint_id: str,
-    body: _SourcePassportBody,
-    _admin: str = Depends(_require_admin),
-) -> dict[str, Any]:
-    """Run source passport analysis for a sprint engagement.
-
-    Validates and DQ-scores all supplied lead sources. Returns a SourcePassport
-    with overall_dq_score, red_flags, and bilingual recommendations.
-    """
-    from dealix.revenue_ops_autopilot.source_passport import SourcePassportBuilder
-
+def _get_redis_client():
+    """Return a Redis client if REDIS_URL is configured, else None."""
     try:
-        passport = SourcePassportBuilder().build(body.sources)
-    except Exception as e:
-        raise HTTPException(status_code=422, detail=f"source_passport_error: {e}") from e
-    result = passport.model_dump()
-    result["sprint_id"] = sprint_id
-    return result
-
-
-@router.post("/{sprint_id}/account-scoring")
-async def run_account_scoring(
-    sprint_id: str,
-    body: _AccountScoringBody,
-    _admin: str = Depends(_require_admin),
-) -> dict[str, Any]:
-    """Score and rank accounts by composite revenue potential.
-
-    Returns up to the top 10 scored accounts with priority ranks and bilingual
-    recommended actions.
-    """
-    from dealix.revenue_ops_autopilot.account_scoring_matrix import (
-        AccountProfile,
-        AccountScoringMatrix,
-    )
-
-    try:
-        profiles = [AccountProfile(**a) for a in body.accounts]
-    except Exception as e:
-        raise HTTPException(status_code=422, detail=f"account_profile_parse_error: {e}") from e
-
-    try:
-        scored = AccountScoringMatrix().score_accounts(profiles)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"account_scoring_error: {e}") from e
-
-    top10 = scored[:10]
-    return {
-        "sprint_id": sprint_id,
-        "total_accounts_scored": len(scored),
-        "top_accounts": [s.model_dump() for s in top10],
-    }
-
-
-@router.post("/{sprint_id}/retainer-check")
-async def run_retainer_check(
-    sprint_id: str,
-    body: _RetainerCheckBody,
-    _admin: str = Depends(_require_admin),
-) -> dict[str, Any]:
-    """Check whether this sprint's client qualifies for a Managed Ops retainer.
-
-    Returns eligibility status, recommended tier, and bilingual upsell pitch.
-    """
-    from dealix.revenue_ops_autopilot.retainer_eligibility import (
-        RetainerEligibilityEngine,
-    )
-
-    sprint_result = {
-        "sprint_id": sprint_id,
-        "account_id": body.account_id,
-        "proof_level": body.proof_level,
-        "satisfaction_score": body.satisfaction_score,
-        "measurable_result_achieved": body.measurable_result_achieved,
-    }
-    try:
-        check = RetainerEligibilityEngine().check(sprint_result)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"retainer_check_error: {e}") from e
-    return check.model_dump()
-
-
-@router.get("/{sprint_id}/capital-assets")
-async def list_capital_assets(
-    sprint_id: str,
-    account_id: str,
-    _admin: str = Depends(_require_admin),
-) -> dict[str, Any]:
-    """List all capital assets registered for the account associated with this sprint.
-
-    Requires an ``account_id`` query parameter to look up assets in the registry.
-    Also returns the total estimated value in SAR.
-    """
-    from dealix.revenue_ops_autopilot.capital_asset_registry import CapitalAssetRegistry
-
-    try:
-        registry = CapitalAssetRegistry()
-        assets = registry.get_by_account(account_id)
-        total_value = registry.get_total_value_by_account(account_id)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"capital_assets_error: {e}") from e
-
-    return {
-        "sprint_id": sprint_id,
-        "account_id": account_id,
-        "total_assets": len(assets),
-        "total_value_sar": total_value,
-        "assets": [a.model_dump() for a in assets],
-    }
+        import redis as _redis  # type: ignore
+        from core.config.settings import get_settings
+        url = get_settings().redis_url
+        if not url or url == "redis://localhost:6379/0":
+            return None
+        return _redis.from_url(url, socket_timeout=2, decode_responses=True)
+    except Exception:
+        return None
 
 
 @router.get("/sample")
 async def sample_sprint() -> dict[str, Any]:
     """Run the sprint on the synthetic Saudi B2B demo CSV bundled in
     data/demo/saudi_b2b_demo.csv. Cached in Redis for 1 hour — demo calls
-    return in <100ms after first run.
+    return in <100ms after first run. Also used by the landing page and smoke tests.
     """
+    # --- cache read ---
+    _rc = _get_redis_client()
+    if _rc is not None:
+        try:
+            cached = _rc.get(_DEMO_CACHE_KEY)
+            if cached:
+                return json.loads(cached)
+        except Exception:
+            pass  # cache miss or Redis error — fall through to live run
+
     import csv
     import json
     from pathlib import Path

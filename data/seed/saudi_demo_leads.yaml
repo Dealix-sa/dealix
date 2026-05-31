@@ -1,0 +1,163 @@
+# Wave 1 Warm Leads — Saudi B2B Seed for Dealix 30-Day Activation Plan
+#
+# Usage:
+#   python scripts/import_seed_leads.py --dry-run            # validate only
+#   python scripts/import_seed_leads.py                      # import to DB
+#
+# Source governance: all entries use tier1_source = warm_intro or
+# founder_observation — both are Tier 1 allowed sources (no cold outreach).
+# Each entry is a founder-qualified warm contact only.
+#
+# PDPL note: names and emails here are illustrative placeholders.
+# Replace with actual contacts before importing to production.
+# Do NOT commit real PII to this file.
+
+version: "1.0"
+default_tier1_source: "warm_intro"
+
+entries:
+  # ─── Technology / SaaS ──────────────────────────────────────────
+  - company: "شركة نيوم للتقنية"
+    sector: "technology"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "مدير CRM يشكو من فقدان leads بعد demos. حل Dealix مباشر."
+    pain_point: "crm_gap"
+    company_size: "50-200"
+    tier1_source: "warm_intro"
+
+  - company: "TechWave Arabia"
+    sector: "technology"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "يبحثون عن حل AI لتسريع qualification. بايع demo سابق."
+    pain_point: "slow_qualification"
+    company_size: "50-200"
+    tier1_source: "warm_intro"
+
+  # ─── Healthcare / Clinics ────────────────────────────────────────
+  - company: "عيادات الأمل الطبية"
+    sector: "healthcare"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "تحتاج ZATCA Wave 24 + إدارة مواعيد مفقودة. ضغط PDPL حقيقي."
+    pain_point: "zatca_pdpl_compliance"
+    company_size: "10-50"
+    tier1_source: "founder_observation"
+
+  - company: "Seha Clinics Group"
+    sector: "healthcare"
+    city: "Jeddah"
+    relationship_status: "warm"
+    notes: "مجموعة عيادات 3 فروع. يضيعون 40% من appointments بلا متابعة."
+    pain_point: "appointment_followup"
+    company_size: "50-200"
+    tier1_source: "warm_intro"
+
+  # ─── Logistics / Supply Chain ────────────────────────────────────
+  - company: "شركة الشحن السريع"
+    sector: "logistics"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "ارتفاع تكاليف B2B sales بلا metrics. يريدون proof of ROI."
+    pain_point: "roi_measurement"
+    company_size: "200+"
+    tier1_source: "warm_intro"
+
+  - company: "Madar Logistics"
+    sector: "logistics"
+    city: "Jeddah"
+    relationship_status: "warm"
+    notes: "pilot سابق ناجح. يريدون upgrade إلى Retainer."
+    pain_point: "retainer_upgrade"
+    company_size: "50-200"
+    tier1_source: "warm_intro"
+
+  # ─── F&B / Restaurants ──────────────────────────────────────────
+  - company: "مطاعم درة الخليج"
+    sector: "food_beverage"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "chain 8 فروع. يفقدون reservations بسبب متابعة يدوية."
+    pain_point: "manual_followup"
+    company_size: "50-200"
+    tier1_source: "founder_observation"
+
+  # ─── Engineering / Consulting ────────────────────────────────────
+  - company: "شركة الشرق للاستشارات الهندسية"
+    sector: "engineering"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "يريدون نظام تتبع للعقود المتكررة. ZATCA فاتورة إلكترونية."
+    pain_point: "contract_tracking"
+    company_size: "10-50"
+    tier1_source: "warm_intro"
+
+  # ─── Marketing / Digital Agencies ───────────────────────────────
+  - company: "Noor Digital Agency"
+    sector: "marketing"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "وكالة تنفّذ campaigns ولكن بلا revenue attribution."
+    pain_point: "revenue_attribution"
+    company_size: "10-50"
+    tier1_source: "warm_intro"
+
+  # ─── Real Estate ─────────────────────────────────────────────────
+  - company: "Rawabi Properties"
+    sector: "real_estate"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "فريق مبيعات 12 شخص بلا CRM يعمل. فقدان كبير في pipeline."
+    pain_point: "pipeline_visibility"
+    company_size: "50-200"
+    tier1_source: "founder_observation"
+
+  # ─── E-Commerce / Retail ─────────────────────────────────────────
+  - company: "Masarat E-Commerce"
+    sector: "retail"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "متجر إلكتروني ينمو سريعاً ويحتاج حوكمة AI لعمليات B2B."
+    pain_point: "ai_governance"
+    company_size: "10-50"
+    tier1_source: "warm_intro"
+
+  - company: "AlNakheel Digital Store"
+    sector: "retail"
+    city: "Jeddah"
+    relationship_status: "warm"
+    notes: "يفكرون في LaaS model للـ leads الواردة عبر WhatsApp."
+    pain_point: "inbound_whatsapp_ops"
+    company_size: "10-50"
+    tier1_source: "inbound_whatsapp"
+
+  # ─── Financial Services ──────────────────────────────────────────
+  - company: "شركة الثروة للاستشارات المالية"
+    sector: "financial_services"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "تحتاج PDPL compliance ونظام governance واضح للبيانات."
+    pain_point: "pdpl_compliance"
+    company_size: "10-50"
+    tier1_source: "warm_intro"
+
+  # ─── Education / Training ────────────────────────────────────────
+  - company: "Nokhba Training Academy"
+    sector: "education"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "مركز تدريب B2B يريد أتمتة enrollment + إدارة عقود الشركات."
+    pain_point: "enrollment_automation"
+    company_size: "10-50"
+    tier1_source: "founder_observation"
+
+  # ─── Construction / Contracting ──────────────────────────────────
+  - company: "AlBinaa Contracting Group"
+    sector: "construction"
+    city: "Riyadh"
+    relationship_status: "warm"
+    notes: "مقاول كبير. ZATCA Phase 2 إلزامي. يريدون حل شامل."
+    pain_point: "zatca_compliance"
+    company_size: "200+"
+    tier1_source: "warm_intro"
