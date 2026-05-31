@@ -710,6 +710,18 @@ def create_app() -> FastAPI:
     from api.routers import pipeline_velocity as pipeline_velocity_router
     app.include_router(pipeline_velocity_router.router)
 
+    # Territory Intelligence — Saudi region profiles, sector penetration, territory plan builder
+    from api.routers import territory_intelligence as territory_intelligence_router
+    app.include_router(territory_intelligence_router.router)
+
+    # Competitive Battlecard — sections, differentiators, objection counters, battlecard builder
+    from api.routers import competitive_battlecard as competitive_battlecard_router
+    app.include_router(competitive_battlecard_router.router)
+
+    # Renewal Management — timeline milestones, risk thresholds, upsell triggers, renewal assessment
+    from api.routers import renewal_management as renewal_management_router
+    app.include_router(renewal_management_router.router)
+
     # Proposal Builder — bilingual proposal outline generator per tier
     from api.routers import proposal_builder as proposal_builder_router
     app.include_router(proposal_builder_router.router)
