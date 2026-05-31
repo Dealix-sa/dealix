@@ -602,6 +602,10 @@ def create_app() -> FastAPI:
     from api.routers import market_sizing as market_sizing_router
     app.include_router(market_sizing_router.router)
 
+    # Proposal Builder — structured bilingual B2B proposal generator
+    from api.routers import proposal_builder as proposal_builder_router
+    app.include_router(proposal_builder_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
