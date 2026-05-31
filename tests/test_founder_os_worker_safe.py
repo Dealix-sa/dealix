@@ -76,10 +76,7 @@ def test_founder_os_worker_enforces_doctrine():
 
 def test_founder_os_worker_references_exist():
     """All referenced scripts exist on disk."""
-    worker_path = SCRIPTS_DIR / "founder_os_worker.py"
-    text = worker_path.read_text(encoding="utf-8")
-
-    # Extract script names from comments and code
+    # Scripts referenced by founder_os_worker.py's CORE_COMMANDS / OPTIONAL_COMMANDS
     referenced_scripts = [
         "dealix_status.py",
         "verify_reference_library_70.py",

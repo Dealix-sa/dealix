@@ -167,8 +167,6 @@ def main() -> int:
 
         time.sleep(INTERVAL_SECONDS)
 
-    return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
