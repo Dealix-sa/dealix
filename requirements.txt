@@ -100,7 +100,6 @@ arq>=0.25.0
 numpy>=1.26.0,<3
 
 # Saudi market — Hijri calendar (Um Al-Qura calendar system)
-ummalqura>=1.0.4
 
 # MCP Server dependency lives in mcp_server/requirements-mcp.txt (optional — not needed for API)
 
