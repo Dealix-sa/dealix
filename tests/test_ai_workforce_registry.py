@@ -14,6 +14,7 @@ from auto_client_acquisition.ai_workforce import (
     list_agents,
 )
 
+
 _EXPECTED_AGENTS: tuple[str, ...] = (
     "OrchestratorAgent",
     "CompanyBrainAgent",
@@ -90,9 +91,9 @@ def test_no_agent_has_live_default_action_mode():
 
 def test_get_agent_raises_keyerror_for_unknown():
     """``get_agent`` must reject unknown agent_ids loudly."""
-    import pytest
-
     from auto_client_acquisition.ai_workforce import get_agent
+
+    import pytest
 
     with pytest.raises(KeyError):
         get_agent("NonExistentAgent")

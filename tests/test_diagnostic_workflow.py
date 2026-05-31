@@ -31,6 +31,7 @@ from auto_client_acquisition.diagnostic_workflow import (
 )
 from auto_client_acquisition.proof_ledger import ProofEventType
 
+
 # Marketing-claim tokens (positive phrasing — what we MUST never say).
 # We do NOT scan for bare "scraping" / "cold X" because the upstream
 # diagnostic brief renders the NEGATIVE phrasing ("No scraping", "No

@@ -25,6 +25,7 @@ from auto_client_acquisition.email.deliverability_check import (
     check_deliverability,
 )
 
+
 # Realistic DNS record samples for testing
 _VALID_SPF = "v=spf1 include:_spf.google.com include:mailgun.org ~all"
 _VALID_DKIM = (

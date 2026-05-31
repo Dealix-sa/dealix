@@ -15,7 +15,7 @@ import json
 import os
 import threading
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from enum import StrEnum
 from pathlib import Path
 from typing import Any
@@ -124,12 +124,13 @@ def record_event(
         summary=redact_text(summary) if summary else "",
         source_refs=list(source_refs or []),
         output_refs=list(output_refs or []),
-        occurred_at=datetime.now(UTC).isoformat(),
+        occurred_at=datetime.now(timezone.utc).isoformat(),
     )
     path = _path()
     path.parent.mkdir(parents=True, exist_ok=True)
-    with _lock, path.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(event.to_dict(), ensure_ascii=False) + "\n")
+    with _lock:
+        with path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(event.to_dict(), ensure_ascii=False) + "\n")
     return event
 
 
@@ -145,19 +146,20 @@ def list_events(
     if not path.exists():
         return []
     out: list[AuditEventRecord] = []
-    with _lock, path.open("r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                data = json.loads(line)
-                ev = AuditEventRecord(**data)
-            except Exception:
-                continue
-            if ev.customer_id != customer_id:
-                continue
-            out.append(ev)
+    with _lock:
+        with path.open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    data = json.loads(line)
+                    ev = AuditEventRecord(**data)
+                except Exception:  # noqa: BLE001
+                    continue
+                if ev.customer_id != customer_id:
+                    continue
+                out.append(ev)
     return out[-limit:] if limit else out
 
 

@@ -27,18 +27,8 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 
-from auto_client_acquisition.sales_os.client_risk_score import ClientRiskSignals
-from auto_client_acquisition.sales_os.icp_score import ICPDimensions, icp_score
-from auto_client_acquisition.sales_os.qualification import (
-    QualificationVerdict,
-    qualify_opportunity,
-)
-from auto_client_acquisition.value_os.value_ledger import (
-    ValueLedgerEvent,
-    value_ledger_event_valid,
-)
 from platform_core import stores
 from platform_core.agent_runtime import (
     AgentCard,
@@ -57,6 +47,18 @@ from platform_core.workflow_engine import (
     WORKFLOW_STAGE_ORDER,
     approval_flow_complete,
 )
+
+from auto_client_acquisition.sales_os.client_risk_score import ClientRiskSignals
+from auto_client_acquisition.sales_os.icp_score import ICPDimensions, icp_score
+from auto_client_acquisition.sales_os.qualification import (
+    QualificationVerdict,
+    qualify_opportunity,
+)
+from auto_client_acquisition.value_os.value_ledger import (
+    ValueLedgerEvent,
+    value_ledger_event_valid,
+)
+
 
 # ── Run state ───────────────────────────────────────────────────────
 
@@ -144,7 +146,7 @@ def _audit(
         decision=decision,
         approval_status=approval_status,
         output_id=output_id,
-        timestamp_iso=datetime.now(UTC).isoformat(),
+        timestamp_iso=datetime.now(timezone.utc).isoformat(),
     )
 
 

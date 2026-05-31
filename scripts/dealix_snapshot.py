@@ -46,7 +46,7 @@ def _safe(fn, *, default: Any) -> Any:
     """
     try:
         return fn()
-    except BaseException as exc:
+    except BaseException as exc:  # noqa: BLE001
         return {
             "_error": True,
             "_type": type(exc).__name__,
@@ -80,7 +80,7 @@ def _live_gates() -> dict[str, str]:
         from auto_client_acquisition.finance_os import is_live_charge_allowed
         live = is_live_charge_allowed()
         out["live_charge"] = "BLOCKED" if not live.get("allowed") else "ALLOWED"
-    except BaseException as exc:
+    except BaseException as exc:  # noqa: BLE001
         out["live_charge"] = f"UNKNOWN ({type(exc).__name__})"
     return out
 

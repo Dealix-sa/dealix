@@ -36,7 +36,7 @@ def outreach_targets_md() -> str:
             if isinstance(row, dict):
                 name = row.get("company") or row.get("name") or "—"
                 lines.append(f"- {name} · score={row.get('lead_score')} · {row.get('status')}")
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         lines.append(f"(store: {exc})")
     lines.append("")
     lines.append("أو: `data/war_room_today.json` بعد war_room_sync")

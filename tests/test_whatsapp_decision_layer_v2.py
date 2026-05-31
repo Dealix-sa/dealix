@@ -17,6 +17,7 @@ from auto_client_acquisition.whatsapp_decision_bot.command_parser import (
 )
 from auto_client_acquisition.whatsapp_decision_bot.schemas import CommandResult
 
+
 # ─────────────────────────────────────────────────────────────────────
 # Wave 12 §32.3.5 — 4 new commands (4 tests)
 # ─────────────────────────────────────────────────────────────────────

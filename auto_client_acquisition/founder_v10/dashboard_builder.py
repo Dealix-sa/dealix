@@ -27,7 +27,7 @@ def _safe_section(
 ) -> Any:
     try:
         return fn()
-    except BaseException as exc:
+    except BaseException as exc:  # noqa: BLE001 — never crash the dashboard
         degraded_sections.append(name)
         return {
             "_error": True,

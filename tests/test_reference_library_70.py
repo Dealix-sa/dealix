@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 YAML_PATH = REPO_ROOT / "docs" / "v10" / "REFERENCE_LIBRARY_70.yaml"
 

@@ -174,20 +174,8 @@ OBJECT_TYPES: tuple[type[BaseModel], ...] = (
 )
 
 __all__ = [
-    "OBJECT_TYPES",
-    "Account",
-    "ApprovalRequestRef",
-    "Campaign",
-    "Contact",
-    "CustomerHealth",
-    "Deal",
-    "InvoiceIntent",
-    "Lead",
-    "ManualPaymentRecord",
-    "Opportunity",
-    "Partner",
-    "ProofEventRef",
-    "Proposal",
-    "ServiceSession",
-    "SupportTicket",
+    "Account", "Contact", "Lead", "Deal", "Opportunity", "ServiceSession",
+    "ProofEventRef", "CustomerHealth", "Partner", "SupportTicket",
+    "Campaign", "Proposal", "InvoiceIntent", "ManualPaymentRecord",
+    "ApprovalRequestRef", "OBJECT_TYPES",
 ]

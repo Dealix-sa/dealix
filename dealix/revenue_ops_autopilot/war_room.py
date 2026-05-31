@@ -47,7 +47,9 @@ def normalize_lead(lead: FunnelLeadRecord) -> FunnelLeadRecord:
     """Backfill war-room fields for JSON records written before the extension."""
     updates: dict[str, Any] = {}
     mapped = STAGE_TO_WAR_ROOM.get(lead.stage, "not_contacted")
-    if lead.war_room_status not in OUTREACH_ORDER or _outreach_idx(mapped) > _outreach_idx(lead.war_room_status):
+    if lead.war_room_status not in OUTREACH_ORDER:
+        updates["war_room_status"] = mapped
+    elif _outreach_idx(mapped) > _outreach_idx(lead.war_room_status):
         updates["war_room_status"] = mapped
     if not lead.pain_hypothesis.strip() and lead.pain.strip():
         updates["pain_hypothesis"] = lead.pain.strip()

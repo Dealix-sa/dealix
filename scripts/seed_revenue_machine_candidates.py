@@ -13,7 +13,7 @@ from __future__ import annotations
 import asyncio
 import os
 import sys
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -31,7 +31,7 @@ _PREFIX = "gtm_seed_"
 
 
 def _utcnow() -> datetime:
-    return datetime.now(UTC).replace(tzinfo=None)
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 # (id_suffix, company, domain, city, sector, dq, email_local, priority)

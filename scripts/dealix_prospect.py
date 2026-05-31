@@ -62,7 +62,7 @@ async def run_bulk(domains: list[str], concurrency: int, api_base: str | None) -
                 else:
                     res = await detect_one(d)
                 return d, res
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 return d, {"status": "error", "error": str(exc), "domain": d}
 
     pairs = await asyncio.gather(*(_one(d) for d in domains))

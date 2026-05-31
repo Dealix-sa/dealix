@@ -12,8 +12,6 @@
     "analytics": "Analytics & Reports",
     "settings": "Settings",
     "logout": "Sign Out",
-    "demo": "Live Demo ⚡",
-    "zatcaReadiness": "ZATCA Readiness",
     "dealixDiagnostic": "Dealix Diagnostic Funnel",
     "opsHub": "Ops — Hub",
     "opsFounder": "Ops — Founder",
@@ -24,8 +22,7 @@
     "opsSales": "Ops — Sales Pipe",
     "opsMarketing": "Ops — Marketing",
     "opsEvidence": "Ops — Evidence",
-    "opsSupport": "Ops — Support",
-    "autoDistribution": "Auto Distribution"
+    "opsSupport": "Ops — Support"
   },
   "dashboard": {
     "title": "Executive Dashboard",

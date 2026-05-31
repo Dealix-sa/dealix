@@ -14,7 +14,7 @@ from __future__ import annotations
 import logging
 import os
 import uuid
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from fastapi import APIRouter, Body, HTTPException
@@ -29,10 +29,8 @@ from auto_client_acquisition.email.compliance import (
 )
 from auto_client_acquisition.email.gmail_send import (
     get_oauth_setup_instructions,
-    send_email,
-)
-from auto_client_acquisition.email.gmail_send import (
     is_configured as gmail_is_configured,
+    send_email,
 )
 from auto_client_acquisition.email.reply_classifier import classify_reply
 from db.models import (
@@ -53,7 +51,7 @@ def _new_id(prefix: str = "") -> str:
 
 
 def _utcnow() -> datetime:
-    return datetime.now(UTC).replace(tzinfo=None)
+    return datetime.now(timezone.utc).replace(tzinfo=None)
 
 
 @router.post("/connect/gmail")
@@ -80,7 +78,7 @@ async def email_status() -> dict[str, Any]:
                     OutreachQueueRecord.status.in_(["queued", "approved"])
                 )
             )).scalar() or 0)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
     return {
@@ -156,7 +154,7 @@ async def _gather_compliance_inputs(
             seconds_since_last = None
             if last is not None:
                 seconds_since_last = (_utcnow() - last).total_seconds()
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             log.warning("compliance_gather_failed err=%s", exc)
             return {"db_error": str(exc)}
 
@@ -269,7 +267,7 @@ async def send_approved(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
                 qr.sent_at = _utcnow()
         try:
             await session.commit()
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             await session.rollback()
             return {"status": "commit_failed", "send_status": result.status, "error": str(exc)}
 
@@ -309,7 +307,7 @@ async def send_batch(body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
                     OutreachQueueRecord.channel.in_(["email", "email_warm", "email_followup"]),
                 ).limit(max_n)
             )).scalars().all()
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
     for r in rows:
@@ -326,7 +324,7 @@ async def send_batch(body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
                 acc = (await s2.execute(
                     select(AccountRecord).where(AccountRecord.id == r.lead_id)
                 )).scalar_one_or_none()
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 blocked.append({"queue_id": r.id, "reason": f"db: {exc}"})
                 continue
 
@@ -430,7 +428,7 @@ async def replies_sync(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
                     reason="opt_out_via_reply",
                 ))
             await session.commit()
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             await session.rollback()
             return {"status": "skipped_db_unreachable", "error": str(exc),
                     "classification": classification.to_dict()}

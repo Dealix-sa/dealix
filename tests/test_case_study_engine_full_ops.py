@@ -11,6 +11,7 @@ from __future__ import annotations
 import pytest
 from httpx import ASGITransport, AsyncClient
 
+
 _GOOD_EVENT = {
     "event_id": "pe_good_1",
     "event_type": "DELIVERY_TASK_COMPLETED",

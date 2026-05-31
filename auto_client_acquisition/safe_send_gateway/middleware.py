@@ -33,6 +33,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+
 _VALID_CHANNELS = {"whatsapp", "email", "sms"}
 _VALID_APPROVAL_STATUSES = {"draft", "pending", "approved", "rejected", "expired"}
 

@@ -5,6 +5,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+
 # Hard-rule forbidden actions — must be present on every recommendation.
 FORBIDDEN_ACTIONS: tuple[str, ...] = (
     "cold_whatsapp",

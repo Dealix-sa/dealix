@@ -10,9 +10,8 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
-
 from auto_client_acquisition.finance_os.pricing_catalog import get_pricing_tier
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class InvoiceDraft(BaseModel):
