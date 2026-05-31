@@ -12,6 +12,13 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+# ---------------------------------------------------------------------------
+# Governance constants (shared across all endpoints in this router)
+# ---------------------------------------------------------------------------
+
+_GOV_REVIEW = "ALLOW_WITH_REVIEW"
+_GOV_APPROVAL = "APPROVAL_FIRST"
+
 router = APIRouter(prefix="/api/v1/executive-briefing", tags=["Sales"])
 
 # ---------------------------------------------------------------------------
@@ -380,3 +387,289 @@ async def generate_briefing(body: BriefingRequest) -> dict[str, Any]:
         ),
         "governance_decision": "ALLOW_WITH_REVIEW",
     }
+
+
+# ===========================================================================
+# Extended executive briefing: formats, proof points, Vision 2030 linkages
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# Static data: briefing formats
+# ---------------------------------------------------------------------------
+
+_BRIEFING_FORMATS: dict[str, dict[str, Any]] = {
+    "c_level_summary": {
+        "name_en": "C-Level Summary",
+        "name_ar": "ملخص للمستوى التنفيذي",
+        "max_pages": 2,
+        "duration_minutes": 15,
+        "key_sections_en": [
+            "Business Challenge",
+            "Proposed Solution",
+            "Financial Impact",
+        ],
+        "key_sections_ar": [
+            "التحدي التجاري",
+            "الحل المقترح",
+            "الأثر المالي",
+        ],
+    },
+    "board_presentation": {
+        "name_en": "Board Presentation",
+        "name_ar": "عرض مجلس الإدارة",
+        "max_pages": 8,
+        "duration_minutes": 45,
+        "key_sections_en": [
+            "Executive Overview",
+            "Strategic Rationale",
+            "Solution Architecture",
+            "Financial Business Case",
+        ],
+        "key_sections_ar": [
+            "نظرة عامة تنفيذية",
+            "المبررات الاستراتيجية",
+            "هندسة الحل",
+            "الحالة التجارية المالية",
+        ],
+    },
+    "investor_update": {
+        "name_en": "Investor Update",
+        "name_ar": "تحديث المستثمرين",
+        "max_pages": 5,
+        "duration_minutes": 30,
+        "key_sections_en": [
+            "Company Highlights",
+            "Market Opportunity",
+            "Traction and Metrics",
+        ],
+        "key_sections_ar": [
+            "أبرز إنجازات الشركة",
+            "فرصة السوق",
+            "النمو والمقاييس",
+        ],
+    },
+}
+
+# ---------------------------------------------------------------------------
+# Static data: executive proof points
+# ---------------------------------------------------------------------------
+
+_EXECUTIVE_PROOF_POINTS: list[dict[str, Any]] = [
+    {
+        "proof_en": "Clients report measurable efficiency gains within the first 90 days of deployment.",
+        "proof_ar": "يُبلّغ العملاء عن مكاسب ملموسة في الكفاءة خلال الـ 90 يوماً الأولى من النشر.",
+        "metric_type": "efficiency",
+    },
+    {
+        "proof_en": "Revenue-generating workflows show accelerated cycle times after automation.",
+        "proof_ar": "تُظهر سير عمل توليد الإيرادات أوقات دورة أسرع بعد الأتمتة.",
+        "metric_type": "revenue",
+    },
+    {
+        "proof_en": "Deployments are structured to meet ZATCA Phase 2 and PDPL compliance requirements.",
+        "proof_ar": "تُصمَّم عمليات النشر لاستيفاء متطلبات الامتثال لهيئة الزكاة والجمارك المرحلة الثانية ونظام حماية البيانات الشخصية.",
+        "metric_type": "compliance",
+    },
+    {
+        "proof_en": "Platform adoption scales across business units without proportional cost increases.",
+        "proof_ar": "يتوسع تبني المنصة عبر وحدات الأعمال دون زيادات متناسبة في التكلفة.",
+        "metric_type": "growth",
+    },
+    {
+        "proof_en": "Structured data quality controls reduce reporting errors and audit exceptions.",
+        "proof_ar": "تقلل ضوابط جودة البيانات المنظمة من أخطاء التقارير والاستثناءات في التدقيق.",
+        "metric_type": "quality",
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Static data: Vision 2030 linkages
+# ---------------------------------------------------------------------------
+
+_VISION_2030_LINKAGES: list[dict[str, Any]] = [
+    {
+        "initiative_en": "NEOM Data Infrastructure",
+        "initiative_ar": "البنية التحتية لبيانات نيوم",
+        "dealix_contribution_en": (
+            "Provides structured data operations and quality frameworks aligned with "
+            "NEOM's smart city data governance requirements."
+        ),
+        "dealix_contribution_ar": (
+            "يوفر عمليات بيانات منظمة وأطر جودة تتوافق مع متطلبات حوكمة بيانات المدينة الذكية في نيوم."
+        ),
+    },
+    {
+        "initiative_en": "Vision 2030 SME Digital Transformation",
+        "initiative_ar": "تحول المنشآت الصغيرة والمتوسطة الرقمي في رؤية 2030",
+        "dealix_contribution_en": (
+            "Accelerates digital adoption for Saudi SMEs through automated operations "
+            "and AI-assisted business intelligence."
+        ),
+        "dealix_contribution_ar": (
+            "يُسرّع التبني الرقمي للمنشآت الصغيرة والمتوسطة السعودية من خلال العمليات الآلية وذكاء الأعمال المدعوم بالذكاء الاصطناعي."
+        ),
+    },
+    {
+        "initiative_en": "ZATCA E-Invoicing Mandate",
+        "initiative_ar": "تفويض الفوترة الإلكترونية لهيئة الزكاة والضريبة والجمارك",
+        "dealix_contribution_en": (
+            "Supports ZATCA Phase 2 compliance through invoice data quality controls "
+            "and automated validation workflows."
+        ),
+        "dealix_contribution_ar": (
+            "يدعم الامتثال للمرحلة الثانية لهيئة الزكاة والجمارك من خلال ضوابط جودة بيانات الفاتورة وسير عمل التحقق الآلي."
+        ),
+    },
+    {
+        "initiative_en": "Saudi Digital Government Authority Standards",
+        "initiative_ar": "معايير هيئة الحكومة الرقمية السعودية",
+        "dealix_contribution_en": (
+            "Aligns data management and AI deployment practices with Saudi Digital "
+            "Government Authority interoperability and security standards."
+        ),
+        "dealix_contribution_ar": (
+            "يوائم ممارسات إدارة البيانات ونشر الذكاء الاصطناعي مع معايير التشغيل البيني والأمن الخاصة بهيئة الحكومة الرقمية السعودية."
+        ),
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Valid briefing formats lookup
+# ---------------------------------------------------------------------------
+
+_VALID_BRIEFING_FORMATS: set[str] = {"c_level_summary", "board_presentation", "investor_update"}
+
+# ---------------------------------------------------------------------------
+# Pydantic models
+# ---------------------------------------------------------------------------
+
+
+class ExecutiveBriefingInput(BaseModel):
+    briefing_format: str
+    company_name: str
+    key_metric_1_label_en: str
+    key_metric_1_value: str
+    key_metric_2_label_en: str
+    key_metric_2_value: str
+    primary_outcome_en: str
+    primary_outcome_ar: str
+    audience_title_en: str
+
+
+# ---------------------------------------------------------------------------
+# Pure-function core
+# ---------------------------------------------------------------------------
+
+
+def _build_executive_briefing(inp: ExecutiveBriefingInput) -> dict[str, Any]:
+    """Assemble an executive briefing package for a given format and client.
+
+    Returns format metadata, enriched sections, proof points, Vision 2030
+    linkages, custom metrics, and governance decision.
+    """
+    if inp.briefing_format not in _VALID_BRIEFING_FORMATS:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"Invalid briefing_format '{inp.briefing_format}'. "
+                f"Valid values: {sorted(_VALID_BRIEFING_FORMATS)}"
+            ),
+        )
+
+    format_data = _BRIEFING_FORMATS[inp.briefing_format]
+
+    format_meta: dict[str, Any] = {
+        "name_en": format_data["name_en"],
+        "name_ar": format_data["name_ar"],
+        "max_pages": format_data["max_pages"],
+        "duration_minutes": format_data["duration_minutes"],
+    }
+
+    summary_hook_en = (
+        f"{inp.company_name} engaged Dealix to {inp.primary_outcome_en}."
+    )
+    summary_hook_ar = (
+        f"تعاونت {inp.company_name} مع ديليكس لـ{inp.primary_outcome_ar}."
+    )
+
+    sections: list[dict[str, Any]] = [
+        {
+            "section_en": section_en,
+            "section_ar": section_ar,
+            "summary_hook_en": summary_hook_en,
+            "summary_hook_ar": summary_hook_ar,
+        }
+        for section_en, section_ar in zip(
+            format_data["key_sections_en"], format_data["key_sections_ar"]
+        )
+    ]
+
+    custom_metrics: list[dict[str, Any]] = [
+        {"label_en": inp.key_metric_1_label_en, "value": inp.key_metric_1_value},
+        {"label_en": inp.key_metric_2_label_en, "value": inp.key_metric_2_value},
+    ]
+
+    return {
+        "company_name": inp.company_name,
+        "briefing_format": inp.briefing_format,
+        "format_meta": format_meta,
+        "sections": sections,
+        "proof_points": _EXECUTIVE_PROOF_POINTS,
+        "vision_2030_linkages": _VISION_2030_LINKAGES,
+        "custom_metrics": custom_metrics,
+        "governance_decision": _GOV_APPROVAL,
+        "disclaimer_en": (
+            "All metrics and outcomes presented in this briefing are estimates "
+            "based on available inputs and sector benchmarks. Figures should be "
+            "validated against live client data before external presentation."
+        ),
+        "disclaimer_ar": (
+            "جميع المقاييس والنتائج المقدمة في هذا الإحاطة تقديرية وتستند إلى "
+            "المدخلات المتاحة ومعايير القطاع. ينبغي التحقق من الأرقام مقابل بيانات "
+            "العميل الحية قبل أي عرض خارجي."
+        ),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Extended router endpoints
+# ---------------------------------------------------------------------------
+
+
+@router.get("/formats", summary="All 3 executive briefing formats")
+def get_briefing_formats() -> dict[str, Any]:
+    """Return all executive briefing formats with bilingual labels and metadata."""
+    return {
+        "formats": _BRIEFING_FORMATS,
+        "total_formats": len(_BRIEFING_FORMATS),
+        "governance_decision": _GOV_REVIEW,
+    }
+
+
+@router.get("/proof-points", summary="All 5 executive proof points")
+def get_proof_points() -> dict[str, Any]:
+    """Return all executive proof points with bilingual descriptions."""
+    return {
+        "proof_points": _EXECUTIVE_PROOF_POINTS,
+        "total_proof_points": len(_EXECUTIVE_PROOF_POINTS),
+        "governance_decision": _GOV_REVIEW,
+    }
+
+
+@router.get("/vision-2030-linkages", summary="All 4 Vision 2030 initiative linkages")
+def get_vision_2030_linkages() -> dict[str, Any]:
+    """Return all Vision 2030 initiative linkages with bilingual descriptions."""
+    return {
+        "vision_2030_linkages": _VISION_2030_LINKAGES,
+        "total_linkages": len(_VISION_2030_LINKAGES),
+        "governance_decision": _GOV_REVIEW,
+    }
+
+
+@router.post("/build", summary="Build a structured executive briefing package")
+def build_executive_briefing(body: ExecutiveBriefingInput) -> dict[str, Any]:
+    """Accept briefing inputs and return a structured executive briefing package.
+
+    Governance decision: APPROVAL_FIRST.
+    """
+    return _build_executive_briefing(body)

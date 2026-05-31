@@ -722,6 +722,14 @@ def create_app() -> FastAPI:
     from api.routers import renewal_management as renewal_management_router
     app.include_router(renewal_management_router.router)
 
+    # Partner Referral — tiers, onboarding steps, commission rules, earnings calculator
+    from api.routers import partner_referral as partner_referral_router
+    app.include_router(partner_referral_router.router)
+
+    # Data Quality Ops — 5 DQ dimensions, ZATCA requirements, weighted assessment
+    from api.routers import data_quality_ops as data_quality_ops_router
+    app.include_router(data_quality_ops_router.router)
+
     # Proposal Builder — bilingual proposal outline generator per tier
     from api.routers import proposal_builder as proposal_builder_router
     app.include_router(proposal_builder_router.router)
