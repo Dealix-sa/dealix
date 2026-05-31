@@ -122,6 +122,19 @@ from api.routers import founder_launch_status as founder_launch_status_router
 
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Autonomous product distribution engine
+from api.routers import autonomous_distribution as autonomous_distribution_router
+
+# Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
+from api.routers import customer_health_scoring as customer_health_scoring_router
+from api.routers import market_intelligence as market_intelligence_router
+from api.routers import onboarding as onboarding_router
+
+# 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
+from api.routers import kpi_dashboard as kpi_dashboard_router
+# Weekly business reports (admin-gated, approval-required)
+from api.routers import weekly_reports as weekly_reports_router
+
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -389,6 +402,18 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Autonomous product distribution — /api/v1/autonomous-distribution/*
+    app.include_router(autonomous_distribution_router.router)
+
+    # Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
+    app.include_router(customer_health_scoring_router.router)
+    app.include_router(market_intelligence_router.router)
+    app.include_router(onboarding_router.router)
+
+    # 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
+    app.include_router(kpi_dashboard_router.router)
+    # Weekly business reports — /api/v1/reports
+    app.include_router(weekly_reports_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:

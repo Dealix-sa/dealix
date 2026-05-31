@@ -24,7 +24,8 @@
     "opsSales": "Ops — Sales Pipe",
     "opsMarketing": "Ops — Marketing",
     "opsEvidence": "Ops — Evidence",
-    "opsSupport": "Ops — Support"
+    "opsSupport": "Ops — Support",
+    "autoDistribution": "Auto Distribution"
   },
   "dashboard": {
     "title": "Executive Dashboard",
