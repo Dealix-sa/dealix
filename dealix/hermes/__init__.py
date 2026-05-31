@@ -1,33 +1,6 @@
-"""Hermes Agents — comprehensive multi-agent intelligence layer for Dealix.
+"""Hermes — Anthropic-native multi-agent system for Saudi B2B revenue intelligence."""
 
-Architecture
-------------
-::
-
-    dealix/hermes/
-    ├── engine.py          Anthropic SDK native tool-use agentic loop
-    ├── base.py            HermesAgent abstract base class
-    ├── orchestrator.py    Supervisor pattern + predefined pipelines
-    ├── memory.py          Session-scoped shared context store
-    ├── registry.py        Singleton agent registry
-    ├── config.py          HermesConfig (Pydantic settings)
-    ├── agents/            10 production specialised agents
-    ├── tools/             25+ async tool functions across 5 domains
-    ├── loops/             4 real recurring execution loops
-    └── api/router.py      FastAPI endpoints (9 routes)
-
-Quick start
------------
-::
-
-    from dealix.hermes import HermesRegistry, HermesOrchestrator
-
-    registry = HermesRegistry.instance()
-    registry.build_all_agents()
-
-    agent = registry.get("diagnostic_agent")
-    result = await agent.run({"company_name": "Acme SA", "records": [...]})
-"""
+from __future__ import annotations
 
 from dealix.hermes.agents.company_brain import CompanyBrainAgent
 from dealix.hermes.agents.data_architect import DataArchitectAgent
@@ -39,14 +12,15 @@ from dealix.hermes.agents.market_intel import MarketIntelAgent
 from dealix.hermes.agents.revenue_intelligence import RevenueIntelligenceAgent
 from dealix.hermes.agents.sales_intelligence import SalesIntelligenceAgent
 from dealix.hermes.agents.sprint_orchestrator import SprintOrchestratorAgent
+from dealix.hermes.api.router import HermesResponse, hermes_router
 from dealix.hermes.base import HermesAgent
 from dealix.hermes.config import HermesConfig, get_hermes_config
-from dealix.hermes.engine import HermesEngine
+from dealix.hermes.engine import HermesEngine, build_tool_schema
 from dealix.hermes.loops.lead_loop import LeadLoop
 from dealix.hermes.loops.revenue_loop import RevenueLoop
 from dealix.hermes.loops.sprint_loop import SprintLoop
 from dealix.hermes.loops.watchdog_loop import WatchdogLoop
-from dealix.hermes.memory import HermesMemory
+from dealix.hermes.memory import HermesMemory, SharedContext
 from dealix.hermes.orchestrator import HermesOrchestrator
 from dealix.hermes.registry import HermesRegistry
 
@@ -54,11 +28,15 @@ __all__ = [
     # Core
     "HermesEngine",
     "HermesAgent",
-    "HermesOrchestrator",
-    "HermesRegistry",
-    "HermesMemory",
     "HermesConfig",
     "get_hermes_config",
+    "build_tool_schema",
+    # Memory + Registry
+    "HermesMemory",
+    "SharedContext",
+    "HermesRegistry",
+    # Orchestrator
+    "HermesOrchestrator",
     # Agents
     "LeadIntelligenceAgent",
     "RevenueIntelligenceAgent",
@@ -75,4 +53,7 @@ __all__ = [
     "LeadLoop",
     "SprintLoop",
     "WatchdogLoop",
+    # API
+    "hermes_router",
+    "HermesResponse",
 ]
