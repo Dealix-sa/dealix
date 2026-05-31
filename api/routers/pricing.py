@@ -110,52 +110,75 @@ async def _persist_payment_event(
 #   "subscription" — recurring monthly Moyasar invoice
 #   "one_off"      — single charge (e.g. pilot)
 #   "metered"      — billed per usage event (LaaS R3 model)
-PLANS: dict[str, dict[str, Any]] = {
-    "starter": {
-        "name": "Starter",
-        "amount_halalas": 99900,
-        "monthly": True,
-        "kind": "subscription",
-    },  # 999 SAR/mo
-    "growth": {
-        "name": "Growth",
-        "amount_halalas": 299900,
-        "monthly": True,
-        "kind": "subscription",
-    },  # 2,999 SAR/mo
-    "scale": {
-        "name": "Scale",
-        "amount_halalas": 799900,
-        "monthly": True,
-        "kind": "subscription",
-    },  # 7,999 SAR/mo
-    "pilot_managed": {
-        "name": "Managed Pilot (7 days)",
-        "amount_halalas": 49900,
-        "monthly": False,
-        "kind": "one_off",
-    },  # 499 SAR one-off — founder-led pilot per v4 §3 R1
-    "laas_per_reply": {
-        "name": "Lead-as-a-Service · Per Reply",
-        "amount_halalas": 2500,
-        "monthly": False,
-        "kind": "metered",
-        "unit": "arabic_replied_lead",
-    },  # 25 SAR per Arabic-replied lead
-    "laas_per_demo": {
-        "name": "Lead-as-a-Service · Per Demo",
-        "amount_halalas": 15000,
-        "monthly": False,
-        "kind": "metered",
-        "unit": "booked_demo",
-    },  # 150 SAR per booked demo
-    "pilot_1sar": {
-        "name": "Pilot (1 SAR)",
-        "amount_halalas": 100,
-        "monthly": False,
-        "kind": "one_off",
-    },  # E2E test transaction
-}
+# Canonical pricing ladder — mirrors auto_client_acquisition/service_catalog/registry.py.
+# Single source of truth: edit registry.py prices; this dict reads from it at import time.
+# Legacy keys (starter/growth/scale) mapped to canonical registry IDs for backwards compat.
+def _build_plans() -> dict[str, dict[str, Any]]:
+    try:
+        from auto_client_acquisition.service_catalog.registry import OFFERINGS
+        plans: dict[str, dict[str, Any]] = {}
+        for offering in OFFERINGS:
+            monthly = offering.price_unit in ("monthly", "per_month")
+            plans[offering.id] = {
+                "name": offering.name_en,
+                "name_ar": offering.name_ar,
+                "amount_halalas": int(offering.price_sar * 100),
+                "monthly": monthly,
+                "kind": "subscription" if monthly else "one_off",
+                "deliverables": list(offering.deliverables),
+                "kpi_commitment_en": offering.kpi_commitment_en,
+                "kpi_commitment_ar": offering.kpi_commitment_ar,
+            }
+        # Backwards-compat aliases so existing checkout links still work
+        aliases = {
+            "pilot_managed": "revenue_proof_sprint_499",
+            "growth": "growth_ops_monthly_2999",
+            "scale": "executive_command_center_7500",
+            "starter": "growth_ops_monthly_2999",
+        }
+        for alias, canonical_id in aliases.items():
+            if canonical_id in plans and alias not in plans:
+                plans[alias] = dict(plans[canonical_id])
+        # E2E test plan — never shown in public API
+        plans["pilot_1sar"] = {
+            "name": "Pilot (1 SAR)",
+            "name_ar": "اختبار (١ ر.س)",
+            "amount_halalas": 100,
+            "monthly": False,
+            "kind": "one_off",
+        }
+        # LaaS metered plans
+        plans["laas_per_reply"] = {
+            "name": "Lead-as-a-Service · Per Reply",
+            "name_ar": "قيادة كخدمة · لكل رد",
+            "amount_halalas": 2500,
+            "monthly": False,
+            "kind": "metered",
+            "unit": "arabic_replied_lead",
+        }
+        plans["laas_per_demo"] = {
+            "name": "Lead-as-a-Service · Per Demo",
+            "name_ar": "قيادة كخدمة · لكل عرض",
+            "amount_halalas": 15000,
+            "monthly": False,
+            "kind": "metered",
+            "unit": "booked_demo",
+        }
+        return plans
+    except Exception:
+        # Fallback to hardcoded if registry unavailable
+        return {
+            "revenue_proof_sprint_499": {"name": "499 SAR Revenue Proof Sprint", "name_ar": "سبرنت إثبات الإيرادات", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
+            "data_to_revenue_1500": {"name": "Data-to-Revenue Pack", "name_ar": "حزمة البيانات والإيرادات", "amount_halalas": 150000, "monthly": False, "kind": "one_off"},
+            "growth_ops_monthly_2999": {"name": "Growth Ops Monthly", "name_ar": "Managed Ops النمو", "amount_halalas": 299900, "monthly": True, "kind": "subscription"},
+            "pilot_managed": {"name": "Managed Pilot (7 days)", "name_ar": "برنامج الأسبوع المكثف", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
+            "pilot_1sar": {"name": "Pilot (1 SAR)", "name_ar": "اختبار", "amount_halalas": 100, "monthly": False, "kind": "one_off"},
+            "laas_per_reply": {"name": "LaaS Per Reply", "name_ar": "قيادة كخدمة", "amount_halalas": 2500, "monthly": False, "kind": "metered", "unit": "arabic_replied_lead"},
+            "laas_per_demo": {"name": "LaaS Per Demo", "name_ar": "قيادة كخدمة", "amount_halalas": 15000, "monthly": False, "kind": "metered", "unit": "booked_demo"},
+        }
+
+
+PLANS: dict[str, dict[str, Any]] = _build_plans()
 
 
 @router.get("/api/v1/pricing/plans")
@@ -353,6 +376,76 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
             )
         except Exception as sync_exc:
             log.warning("moyasar_side_effects_failed event_fp=%s error=%s", event_fp, sync_exc)
+        # Post-payment actions on successful payment
+        if payment.get("status") == "paid":
+            amount_halalas = payment.get("amount", 0)
+            amount_sar = amount_halalas / 100 if amount_halalas else 0
+            source_info = payment.get("source", {}) if isinstance(payment.get("source"), dict) else {}
+            customer_email = source_info.get("email", "")
+            customer_name = source_info.get("company", payment.get("description", "العميل"))
+            payment_id = payment.get("id", "?")
+
+            # 1. Customer receipt email (PDPL-gated, non-fatal)
+            if customer_email and "@" in customer_email:
+                try:
+                    from auto_client_acquisition.email.transactional import send_transactional
+                    await send_transactional(
+                        kind="payment_confirmed",
+                        to_email=customer_email,
+                        subject=f"تأكيد الدفع — Dealix | {amount_sar:,.0f} ر.س",
+                        body_plain=(
+                            f"أهلاً {customer_name}،\n\n"
+                            f"تم استلام دفعتك بنجاح.\n"
+                            f"المبلغ: {amount_sar:,.0f} ريال سعودي\n"
+                            f"رقم المرجع: {payment_id}\n\n"
+                            f"سيتواصل معك فريق Dealix خلال 24 ساعة لبدء البرنامج.\n\n"
+                            f"---\n"
+                            f"Dear {customer_name},\n\n"
+                            f"Your payment has been received successfully.\n"
+                            f"Amount: {amount_sar:,.0f} SAR\n"
+                            f"Reference: {payment_id}\n\n"
+                            f"The Dealix team will contact you within 24 hours to begin your program.\n\n"
+                            f"Dealix | api.dealix.me"
+                        ),
+                        customer_id=payment.get("metadata", {}).get("account_id", ""),
+                    )
+                    _safe_email = customer_email.replace("\n", "").replace("\r", "")[:200]
+                    _safe_ref = str(payment_id).replace("\n", "").replace("\r", "")[:100]
+                    log.info("customer_receipt_sent email=%s ref=%s", _safe_email, _safe_ref)
+                except Exception as _email_exc:
+                    _safe_email = customer_email.replace("\n", "").replace("\r", "")[:200]
+                    log.warning("customer_receipt_failed email=%s error=%s", _safe_email, type(_email_exc).__name__)
+
+            # 2. ZATCA e-invoice (non-fatal — logs if ZATCA creds not configured)
+            try:
+                from dealix.commercial.zatca_invoice import issue_zatca_invoice
+                await issue_zatca_invoice(payment=payment)
+            except Exception as _zatca_exc:
+                _safe_ref = str(payment_id).replace("\n", "").replace("\r", "")[:100]
+                log.warning("zatca_invoice_skipped ref=%s error=%s", _safe_ref, type(_zatca_exc).__name__)
+
+            # 3. Founder WhatsApp alert
+            try:
+                from core.config.settings import get_settings
+                _settings = get_settings()
+                msg = (
+                    f"💰 Dealix — دفعة جديدة!\n"
+                    f"المبلغ: {amount_sar:,.0f} ر.س\n"
+                    f"العميل: {customer_name}\n"
+                    f"المرجع: {payment_id}\n"
+                    f"---\n"
+                    f"💰 New Payment! {amount_sar:,.0f} SAR | {customer_name}"
+                )
+                if getattr(_settings, "whatsapp_allow_live_send", False):
+                    from integrations.whatsapp import send_whatsapp_message
+                    await send_whatsapp_message(
+                        to=getattr(_settings, "dealix_founder_phone", ""),
+                        message=msg,
+                    )
+                else:
+                    log.info("founder_payment_alert_queued: %s", msg.replace("\n", " | "))
+            except Exception as _wa_exc:
+                log.debug("founder_whatsapp_notification_skipped: %s", _wa_exc)
         return {
             "status": "ok",
             "event_id": event_id,
