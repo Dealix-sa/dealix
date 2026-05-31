@@ -1,9 +1,12 @@
 import InvoiceDashboard from "@/components/operations/InvoiceDashboard";
 
-export default function InvoicesPage({ params }: { params: { locale: string } }) {
+type PageProps = { params: Promise<{ locale: string }> };
+
+export default async function InvoicesPage({ params }: PageProps) {
+  const { locale } = await params;
   return (
     <main className="min-h-screen bg-gray-50 p-6">
-      <InvoiceDashboard locale={params.locale} />
+      <InvoiceDashboard locale={locale} />
     </main>
   );
 }
