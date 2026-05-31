@@ -427,6 +427,16 @@ def create_app() -> FastAPI:
 
     app.include_router(sector_intelligence_router.router)
 
+    # 90-day commercial plan — Customer Lifecycle Management
+    from api.routers import customer_lifecycle as customer_lifecycle_router
+
+    app.include_router(customer_lifecycle_router.router)
+
+    # Wave 17 — Retainer Operations (renewal, upgrade, at-risk, MRR breakdown)
+    from api.routers import retainer_ops as retainer_ops_router
+
+    app.include_router(retainer_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
