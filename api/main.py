@@ -662,6 +662,22 @@ def create_app() -> FastAPI:
     from api.routers import meeting_agenda as meeting_agenda_router
     app.include_router(meeting_agenda_router.router)
 
+    # Annual Business Review — structured ABR framework with renewal recommendation
+    from api.routers import annual_business_review as annual_business_review_router
+    app.include_router(annual_business_review_router.router)
+
+    # Revenue Forecast — Saudi B2B seasonality-adjusted MRR forecasting
+    from api.routers import revenue_forecast as revenue_forecast_router
+    app.include_router(revenue_forecast_router.router)
+
+    # Client Reporting — weekly brief, monthly intelligence report, QBR deck outlines
+    from api.routers import client_reporting as client_reporting_router
+    app.include_router(client_reporting_router.router)
+
+    # Proof Pack Builder — evidence packages for proposals, renewals, and expansions
+    from api.routers import proof_pack as proof_pack_router
+    app.include_router(proof_pack_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
