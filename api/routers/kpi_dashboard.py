@@ -20,8 +20,12 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from fastapi import APIRouter, Depends, Query
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.security.api_key import require_admin_key
+from core.logging import get_logger
+
+_log = get_logger(__name__)
 
 router = APIRouter(
     prefix="/api/v1/kpi",
@@ -128,6 +132,86 @@ def _mock_nps_trend(periods: int = 6) -> list[dict[str, Any]]:
     return result
 
 
+async def _get_mrr_history(
+    db_session: AsyncSession | None, months: int = 12
+) -> list[dict[str, Any]]:
+    """
+    Query PaymentRecordDB grouped by month for managed_ops and custom_ai tiers.
+
+    Falls back to mock data if the DB session is unavailable or the query fails.
+    """
+    if db_session is None:
+        return _mock_mrr_history(months)
+    try:
+        from db.repositories.wave17_repos import PaymentRepository
+
+        repo = PaymentRepository(db_session)
+        rows = await repo.get_mrr_by_month(tiers=["managed_ops", "custom_ai"])
+        if rows:
+            # Return the last N months from live data
+            return rows[-months:]
+        # No live data yet — fall back to mock so the dashboard is always populated
+        return _mock_mrr_history(months)
+    except Exception as exc:
+        _log.warning("kpi_mrr_history_db_failed", error=str(exc))
+        return _mock_mrr_history(months)
+
+
+async def _get_nps_trend(
+    db_session: AsyncSession | None, periods: int = 6
+) -> list[dict[str, Any]]:
+    """
+    Query HealthSnapshotRecord grouped by month, averaging satisfaction_score.
+
+    Falls back to mock data if the DB session is unavailable or the query fails.
+    """
+    if db_session is None:
+        return _mock_nps_trend(periods)
+    try:
+        from db.models import HealthSnapshotRecord
+        from sqlalchemy import select
+
+        since = _NOW - timedelta(days=30 * periods)
+        stmt = (
+            select(HealthSnapshotRecord)
+            .where(HealthSnapshotRecord.computed_at >= since)
+            .order_by(HealthSnapshotRecord.computed_at.asc())
+        )
+        result = await db_session.execute(stmt)
+        rows = result.scalars().all()
+
+        if not rows:
+            return _mock_nps_trend(periods)
+
+        # Group by month and average satisfaction_score (used as proxy NPS)
+        monthly: dict[str, list[float]] = {}
+        for r in rows:
+            key = r.computed_at.strftime("%Y-%m") if r.computed_at else "unknown"
+            monthly.setdefault(key, []).append(r.satisfaction_score)
+
+        trend: list[dict[str, Any]] = []
+        for month_key in sorted(monthly.keys())[-periods:]:
+            scores = monthly[month_key]
+            avg_score = sum(scores) / len(scores) if scores else 0.0
+            # Convert 0-100 satisfaction score to approximate NPS scale (-100 to 100)
+            nps_approx = round((avg_score - 50) * 2)
+            trend.append(
+                {
+                    "period": month_key,
+                    "nps": nps_approx,
+                    "promoters_pct": round(avg_score * 0.6),
+                    "passives_pct": round(avg_score * 0.25),
+                    "detractors_pct": max(0, 100 - round(avg_score * 0.85)),
+                    "responses": len(scores),
+                    "source": "db",
+                }
+            )
+        return trend if trend else _mock_nps_trend(periods)
+    except Exception as exc:
+        _log.warning("kpi_nps_trend_db_failed", error=str(exc))
+        return _mock_nps_trend(periods)
+
+
 def _compute_health_score(
     mrr_growth_pct: float,
     churn_rate: float,
@@ -178,12 +262,28 @@ async def kpi_summary() -> dict[str, Any]:
     """Overall company KPIs: MRR, ARR, leads, conversion rates.
 
     Returns bilingual labels and a governance_decision field.
-    Uses realistic mock data when the live DB is unavailable.
+    Tries live DB first; falls back to mock data when unavailable.
     """
-    history = _mock_mrr_history(12)
+    db_session: AsyncSession | None = None
+    try:
+        from db.session import async_session_factory
+        db_session = async_session_factory()()
+    except Exception:
+        db_session = None
+
+    try:
+        history = await _get_mrr_history(db_session, months=12)
+    finally:
+        if db_session is not None:
+            try:
+                await db_session.close()
+            except Exception:
+                pass
+
     current = history[-1]
-    previous = history[-2]
-    mrr_growth_pct = round((current["mrr_sar"] - previous["mrr_sar"]) / previous["mrr_sar"] * 100, 1)
+    previous = history[-2] if len(history) > 1 else current
+    prev_mrr = previous["mrr_sar"] or 1
+    mrr_growth_pct = round((current["mrr_sar"] - prev_mrr) / prev_mrr * 100, 1)
 
     return {
         "governance_decision": _GOV,
@@ -287,8 +387,23 @@ async def kpi_cohort(
 
 @router.get("/nps")
 async def kpi_nps(periods: int = Query(default=6, ge=1, le=24)) -> dict[str, Any]:
-    """NPS trend over time."""
-    trend = _mock_nps_trend(periods)
+    """NPS trend over time. Tries live DB first; falls back to mock."""
+    db_session: AsyncSession | None = None
+    try:
+        from db.session import async_session_factory
+        db_session = async_session_factory()()
+    except Exception:
+        db_session = None
+
+    try:
+        trend = await _get_nps_trend(db_session, periods=periods)
+    finally:
+        if db_session is not None:
+            try:
+                await db_session.close()
+            except Exception:
+                pass
+
     latest_nps = trend[-1]["nps"] if trend else 0
     return {
         "governance_decision": _GOV,

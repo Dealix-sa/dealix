@@ -415,6 +415,13 @@ def create_app() -> FastAPI:
     # Weekly business reports — /api/v1/reports
     app.include_router(weekly_reports_router.router)
 
+    # Wave 17 — Payment webhooks + Founder alert review
+    from api.routers import payments_webhook as payments_webhook_router
+    from api.routers import founder_alerts as founder_alerts_router
+
+    app.include_router(payments_webhook_router.router)
+    app.include_router(founder_alerts_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

@@ -1032,3 +1032,155 @@ class CustomerWebhookDelivery(Base):
                          name="uq_webhook_subscription_event"),
         Index("ix_cwd_event_type_created", "event_type", "delivered_at"),
     )
+
+
+# ── Wave 17 — Health, Sprint, Alerts, Payments ────────────────────
+
+
+class HealthSnapshotRecord(Base):
+    """
+    Customer health score history — one row per compute cycle.
+    سجل تاريخي لدرجة صحة العميل.
+    """
+
+    __tablename__ = "health_snapshots"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    account_id: Mapped[str] = mapped_column(
+        String(64), ForeignKey("accounts.id", ondelete="CASCADE"), index=True
+    )
+    overall_score: Mapped[float] = mapped_column(Float, default=0.0)
+    tier: Mapped[str] = mapped_column(String(32), default="unknown")  # healthy/moderate/at_risk/critical
+    engagement_score: Mapped[float] = mapped_column(Float, default=0.0)
+    delivery_score: Mapped[float] = mapped_column(Float, default=0.0)
+    financial_score: Mapped[float] = mapped_column(Float, default=0.0)
+    satisfaction_score: Mapped[float] = mapped_column(Float, default=0.0)
+    adoption_score: Mapped[float] = mapped_column(Float, default=0.0)
+    risk_score: Mapped[float] = mapped_column(Float, default=0.0)
+    is_churn_risk: Mapped[bool] = mapped_column(Boolean, default=False)
+    churn_probability: Mapped[float] = mapped_column(Float, default=0.0)
+    computed_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+
+    __table_args__ = (
+        Index("ix_health_snapshots_account_computed", "account_id", "computed_at"),
+    )
+
+
+class OnboardingRecordDB(Base):
+    """
+    Persisted onboarding state — tracks a customer through the onboarding funnel.
+    حالة الإعداد المحفوظة لتتبع العميل في مسار الإعداد.
+    """
+
+    __tablename__ = "onboarding_records"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    onboarding_id: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    account_id: Mapped[str] = mapped_column(
+        String(64), ForeignKey("accounts.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    current_stage: Mapped[str] = mapped_column(String(64), default="welcome")
+    service_tier: Mapped[str] = mapped_column(String(64), default="sprint_499")
+    welcome_sent_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    intake_completed_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    setup_completed_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    first_value_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    anchored_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    is_overdue: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(default=utcnow, onupdate=utcnow)
+
+    __table_args__ = (
+        Index("ix_onboarding_records_account", "account_id"),
+    )
+
+
+class SprintRecordDB(Base):
+    """
+    7-day sprint execution tracker.
+    متتبع تنفيذ السبرنت لمدة 7 أيام.
+    """
+
+    __tablename__ = "sprint_records"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    sprint_id: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    account_id: Mapped[str] = mapped_column(String(64), index=True)
+    day_completed: Mapped[int] = mapped_column(Integer, default=0)  # 0-7
+    status: Mapped[str] = mapped_column(
+        String(32), default="pending", index=True
+    )  # pending/running/completed/failed
+    data_json: Mapped[dict] = mapped_column(JSON, default=dict)
+    started_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    completed_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+
+
+class FounderAlertRecord(Base):
+    """
+    Founder alert queue — every item requires explicit review before action.
+    قائمة تنبيهات المؤسس — كل عنصر يتطلب مراجعة صريحة قبل اتخاذ أي إجراء.
+
+    Constitutional gate: APPROVAL_FIRST — no automated action on any alert.
+    """
+
+    __tablename__ = "founder_alerts"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    alert_id: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    alert_type: Mapped[str] = mapped_column(
+        String(32), index=True
+    )  # payment/health/onboarding/weekly_report
+    title_ar: Mapped[str] = mapped_column(String(500), default="")
+    title_en: Mapped[str] = mapped_column(String(500), default="")
+    body_ar: Mapped[str] = mapped_column(Text, default="")
+    body_en: Mapped[str] = mapped_column(Text, default="")
+    priority: Mapped[str] = mapped_column(
+        String(16), default="medium", index=True
+    )  # high/medium/low
+    status: Mapped[str] = mapped_column(
+        String(32), default="pending", index=True
+    )  # pending/approved/dismissed
+    payment_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    account_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    amount_sar: Mapped[float | None] = mapped_column(Float, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    reviewed_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    reviewed_by: Mapped[str | None] = mapped_column(String(64), nullable=True)
+
+    __table_args__ = (
+        Index("ix_founder_alerts_status_priority", "status", "priority"),
+        Index("ix_founder_alerts_type_created", "alert_type", "created_at"),
+    )
+
+
+class PaymentRecordDB(Base):
+    """
+    Persisted payment events from Moyasar webhook.
+    أحداث الدفع المحفوظة من Moyasar webhook.
+    """
+
+    __tablename__ = "payment_records"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    payment_id: Mapped[str] = mapped_column(String(128), unique=True, index=True)
+    invoice_id: Mapped[str] = mapped_column(String(128), default="", index=True)
+    status: Mapped[str] = mapped_column(String(32), default="unknown", index=True)
+    amount_sar: Mapped[float] = mapped_column(Float, default=0.0)
+    amount_halalas: Mapped[int] = mapped_column(Integer, default=0)
+    service_tier: Mapped[str] = mapped_column(String(64), default="")
+    account_id: Mapped[str] = mapped_column(String(64), default="", index=True)
+    customer_name: Mapped[str] = mapped_column(String(255), default="")
+    customer_email: Mapped[str] = mapped_column(String(255), default="")
+    is_live_mode: Mapped[bool] = mapped_column(Boolean, default=False)
+    zatca_status: Mapped[str] = mapped_column(String(32), default="pending")
+    onboarding_id: Mapped[str] = mapped_column(String(128), default="")
+    founder_alert_id: Mapped[str] = mapped_column(String(128), default="")
+    occurred_at: Mapped[datetime] = mapped_column(default=utcnow, index=True)
+    processed_at: Mapped[datetime] = mapped_column(default=utcnow)
+
+    __table_args__ = (
+        Index("ix_payment_records_account_status", "account_id", "status"),
+        Index("ix_payment_records_tier_occurred", "service_tier", "occurred_at"),
+    )
