@@ -3,13 +3,13 @@
 Covers:
   - Demo data integrity (8 invoices, field presence, VAT accuracy)
   - Pure helper functions (status counts, compliance rate, averages, VAT sums)
-  - GET /api/v1/zatca/invoices (list, filters, governance)
-  - GET /api/v1/zatca/invoices/pending (status filter, counts)
-  - GET /api/v1/zatca/invoices/{invoice_id} (detail, 404)
-  - POST /api/v1/zatca/invoices/{invoice_id}/submit (state machine, 409, 404)
-  - POST /api/v1/zatca/invoices/{invoice_id}/resubmit (state machine, 409, 404)
-  - GET /api/v1/zatca/compliance-dashboard (metrics, structure)
-  - GET /api/v1/zatca/vat-summary (VAT breakdown, structure)
+  - GET /api/v1/zatca-ops/invoices (list, filters, governance)
+  - GET /api/v1/zatca-ops/invoices/pending (status filter, counts)
+  - GET /api/v1/zatca-ops/invoices/{invoice_id} (detail, 404)
+  - POST /api/v1/zatca-ops/invoices/{invoice_id}/submit (state machine, 409, 404)
+  - POST /api/v1/zatca-ops/invoices/{invoice_id}/resubmit (state machine, 409, 404)
+  - GET /api/v1/zatca-ops/compliance-dashboard (metrics, structure)
+  - GET /api/v1/zatca-ops/vat-summary (VAT breakdown, structure)
   - Governance gates (ALLOW_WITH_REVIEW vs APPROVAL_FIRST)
   - PDPL: no fake claims, no guaranteed outcomes in responses
 """
@@ -469,278 +469,278 @@ class TestBuildVatTypeCounts:
 
 
 # ===========================================================================
-# 9. GET /api/v1/zatca/invoices — list all invoices
+# 9. GET /api/v1/zatca-ops/invoices — list all invoices
 # ===========================================================================
 
 
 class TestListZatcaInvoices:
     def test_returns_200(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         assert r.status_code == 200
 
     def test_governance_decision_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         assert "governance_decision" in r.json()
 
     def test_governance_decision_is_allow_with_review(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         assert r.json()["governance_decision"] == "ALLOW_WITH_REVIEW"
 
     def test_total_field_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         assert "total" in r.json()
 
     def test_total_is_8_unfiltered(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         assert r.json()["total"] == 8
 
     def test_invoices_list_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         assert "invoices" in r.json()
         assert isinstance(r.json()["invoices"], list)
 
     def test_invoices_count_matches_total(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         data = r.json()
         assert len(data["invoices"]) == data["total"]
 
     def test_generated_at_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         assert "generated_at" in r.json()
 
     def test_filters_applied_field_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         assert "filters_applied" in r.json()
 
     def test_filter_by_status_draft(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?status=draft")
+        r = client.get("/api/v1/zatca-ops/invoices?status=draft")
         assert r.status_code == 200
         data = r.json()
         for inv in data["invoices"]:
             assert inv["zatca_status"] == "draft"
 
     def test_filter_by_status_cleared(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?status=cleared")
+        r = client.get("/api/v1/zatca-ops/invoices?status=cleared")
         assert r.status_code == 200
         for inv in r.json()["invoices"]:
             assert inv["zatca_status"] == "cleared"
 
     def test_filter_by_status_reported(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?status=reported")
+        r = client.get("/api/v1/zatca-ops/invoices?status=reported")
         assert r.status_code == 200
         for inv in r.json()["invoices"]:
             assert inv["zatca_status"] == "reported"
 
     def test_filter_by_status_rejected(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?status=rejected")
+        r = client.get("/api/v1/zatca-ops/invoices?status=rejected")
         assert r.status_code == 200
         data = r.json()
         assert data["total"] == 1
 
     def test_filter_by_invalid_status_422(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?status=unknown_status")
+        r = client.get("/api/v1/zatca-ops/invoices?status=unknown_status")
         assert r.status_code == 422
 
     def test_filter_by_invoice_type_standard(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?invoice_type=standard")
+        r = client.get("/api/v1/zatca-ops/invoices?invoice_type=standard")
         assert r.status_code == 200
         for inv in r.json()["invoices"]:
             assert inv["invoice_type"] == "standard"
 
     def test_filter_by_invoice_type_simplified(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?invoice_type=simplified")
+        r = client.get("/api/v1/zatca-ops/invoices?invoice_type=simplified")
         assert r.status_code == 200
         for inv in r.json()["invoices"]:
             assert inv["invoice_type"] == "simplified"
 
     def test_filter_by_invoice_type_credit_note(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?invoice_type=credit_note")
+        r = client.get("/api/v1/zatca-ops/invoices?invoice_type=credit_note")
         assert r.status_code == 200
         data = r.json()
         assert data["total"] == 1
 
     def test_filter_by_invalid_type_422(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?invoice_type=invalid_type")
+        r = client.get("/api/v1/zatca-ops/invoices?invoice_type=invalid_type")
         assert r.status_code == 422
 
     def test_combined_filter_status_and_type(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?status=cleared&invoice_type=standard")
+        r = client.get("/api/v1/zatca-ops/invoices?status=cleared&invoice_type=standard")
         assert r.status_code == 200
         for inv in r.json()["invoices"]:
             assert inv["zatca_status"] == "cleared"
             assert inv["invoice_type"] == "standard"
 
     def test_invoices_sorted_by_date_descending(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         dates = [inv["invoice_date"] for inv in r.json()["invoices"]]
         assert dates == sorted(dates, reverse=True)
 
     def test_filters_applied_reflects_query(self) -> None:
-        r = client.get("/api/v1/zatca/invoices?status=draft")
+        r = client.get("/api/v1/zatca-ops/invoices?status=draft")
         filters = r.json()["filters_applied"]
         assert filters["status"] == "draft"
 
     def test_no_filters_applied_none_values(self) -> None:
-        r = client.get("/api/v1/zatca/invoices")
+        r = client.get("/api/v1/zatca-ops/invoices")
         filters = r.json()["filters_applied"]
         assert filters["status"] is None
         assert filters["invoice_type"] is None
 
 
 # ===========================================================================
-# 10. GET /api/v1/zatca/invoices/pending — pending invoices
+# 10. GET /api/v1/zatca-ops/invoices/pending — pending invoices
 # ===========================================================================
 
 
 class TestListPendingZatcaInvoices:
     def test_returns_200(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert r.status_code == 200
 
     def test_governance_decision_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert "governance_decision" in r.json()
 
     def test_governance_decision_is_allow_with_review(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert r.json()["governance_decision"] == "ALLOW_WITH_REVIEW"
 
     def test_total_field_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert "total" in r.json()
 
     def test_only_pending_statuses_returned(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         for inv in r.json()["invoices"]:
             assert inv["zatca_status"] in _PENDING_STATUSES
 
     def test_total_is_4(self) -> None:
         # draft: 2, signed: 1, rejected: 1 = 4 pending
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert r.json()["total"] == 4
 
     def test_by_status_field_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert "by_status" in r.json()
         assert isinstance(r.json()["by_status"], dict)
 
     def test_by_status_counts_sum_to_total(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         data = r.json()
         assert sum(data["by_status"].values()) == data["total"]
 
     def test_action_ar_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert "action_ar" in r.json()
         assert len(r.json()["action_ar"]) > 0
 
     def test_action_en_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert "action_en" in r.json()
         assert len(r.json()["action_en"]) > 0
 
     def test_invoices_list_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert "invoices" in r.json()
         assert isinstance(r.json()["invoices"], list)
 
     def test_invoices_count_matches_total(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         data = r.json()
         assert len(data["invoices"]) == data["total"]
 
     def test_generated_at_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert "generated_at" in r.json()
 
     def test_draft_count_in_by_status(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert r.json()["by_status"].get("draft", 0) == 2
 
     def test_rejected_count_in_by_status(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/pending")
+        r = client.get("/api/v1/zatca-ops/invoices/pending")
         assert r.json()["by_status"].get("rejected", 0) == 1
 
 
 # ===========================================================================
-# 11. GET /api/v1/zatca/invoices/{invoice_id} — invoice detail
+# 11. GET /api/v1/zatca-ops/invoices/{invoice_id} — invoice detail
 # ===========================================================================
 
 
 class TestGetZatcaInvoice:
     def test_returns_200_for_valid_id(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert r.status_code == 200
 
     def test_returns_404_for_unknown_id(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-999")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-999")
         assert r.status_code == 404
 
     def test_governance_decision_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert r.json()["governance_decision"] == "ALLOW_WITH_REVIEW"
 
     def test_generated_at_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert "generated_at" in r.json()
 
     def test_invoice_id_returned(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert r.json()["id"] == "ZTV-001"
 
     def test_invoice_number_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert "invoice_number" in r.json()
 
     def test_vat_amount_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert "vat_amount_sar" in r.json()
 
     def test_total_sar_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert "total_sar" in r.json()
 
     def test_zatca_status_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert "zatca_status" in r.json()
 
     def test_compliance_score_present(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-001")
         assert "compliance_score" in r.json()
 
     def test_case_insensitive_lookup(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ztv-001")
+        r = client.get("/api/v1/zatca-ops/invoices/ztv-001")
         assert r.status_code == 200
 
     def test_get_ztv002(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-002")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-002")
         assert r.status_code == 200
         assert r.json()["id"] == "ZTV-002"
 
     def test_get_ztv003_simplified(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-003")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-003")
         assert r.status_code == 200
         assert r.json()["invoice_type"] == "simplified"
 
     def test_get_ztv005_credit_note(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-005")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-005")
         assert r.status_code == 200
         assert r.json()["invoice_type"] == "credit_note"
 
     def test_get_ztv006_rejected_has_rejection_reason(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-006")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-006")
         assert r.status_code == 200
         assert "rejection_reason" in r.json()
 
     def test_404_error_contains_invoice_id(self) -> None:
-        r = client.get("/api/v1/zatca/invoices/ZTV-999")
+        r = client.get("/api/v1/zatca-ops/invoices/ZTV-999")
         assert r.status_code == 404
         detail = r.json().get("detail", {})
         assert "ZTV-999" in str(detail)
 
 
 # ===========================================================================
-# 12. POST /api/v1/zatca/invoices/{invoice_id}/submit
+# 12. POST /api/v1/zatca-ops/invoices/{invoice_id}/submit
 # ===========================================================================
 
 
@@ -754,33 +754,33 @@ class TestSubmitZatcaInvoice:
         # ZTV-004 and ZTV-008 are drafts; use ZTV-004
         original_status = ZATCA_INVOICES["ZTV-004"]["zatca_status"]
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
-        r = client.post("/api/v1/zatca/invoices/ZTV-004/submit", json=self._submit_body)
+        r = client.post("/api/v1/zatca-ops/invoices/ZTV-004/submit", json=self._submit_body)
         # Restore
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = original_status
         assert r.status_code == 200
 
     def test_submit_governance_approval_first(self) -> None:
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
-        r = client.post("/api/v1/zatca/invoices/ZTV-008/submit", json=self._submit_body)
+        r = client.post("/api/v1/zatca-ops/invoices/ZTV-008/submit", json=self._submit_body)
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
         assert r.json()["governance_decision"] == "APPROVAL_FIRST"
 
     def test_submit_transitions_to_signed(self) -> None:
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
-        r = client.post("/api/v1/zatca/invoices/ZTV-004/submit", json=self._submit_body)
+        r = client.post("/api/v1/zatca-ops/invoices/ZTV-004/submit", json=self._submit_body)
         assert r.json()["new_status"] == "signed"
         # Status is now signed; reset for isolation
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
 
     def test_submit_mutates_invoice_status(self) -> None:
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
-        client.post("/api/v1/zatca/invoices/ZTV-004/submit", json=self._submit_body)
+        client.post("/api/v1/zatca-ops/invoices/ZTV-004/submit", json=self._submit_body)
         assert ZATCA_INVOICES["ZTV-004"]["zatca_status"] == "signed"
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
 
     def test_submit_previous_status_is_draft(self) -> None:
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
-        r = client.post("/api/v1/zatca/invoices/ZTV-008/submit", json=self._submit_body)
+        r = client.post("/api/v1/zatca-ops/invoices/ZTV-008/submit", json=self._submit_body)
         assert r.json()["previous_status"] == "draft"
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
 
@@ -788,7 +788,7 @@ class TestSubmitZatcaInvoice:
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
         reason = "Approved by CFO on 2026-05-31"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-004/submit",
+            "/api/v1/zatca-ops/invoices/ZTV-004/submit",
             json={"reason": reason},
         )
         assert r.json()["reason"] == reason
@@ -796,53 +796,53 @@ class TestSubmitZatcaInvoice:
 
     def test_submit_invoice_number_returned(self) -> None:
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
-        r = client.post("/api/v1/zatca/invoices/ZTV-004/submit", json=self._submit_body)
+        r = client.post("/api/v1/zatca-ops/invoices/ZTV-004/submit", json=self._submit_body)
         assert "invoice_number" in r.json()
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
 
     def test_submit_message_ar_present(self) -> None:
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
-        r = client.post("/api/v1/zatca/invoices/ZTV-008/submit", json=self._submit_body)
+        r = client.post("/api/v1/zatca-ops/invoices/ZTV-008/submit", json=self._submit_body)
         assert "message_ar" in r.json()
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
 
     def test_submit_message_en_present(self) -> None:
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
-        r = client.post("/api/v1/zatca/invoices/ZTV-004/submit", json=self._submit_body)
+        r = client.post("/api/v1/zatca-ops/invoices/ZTV-004/submit", json=self._submit_body)
         assert "message_en" in r.json()
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
 
     def test_submit_already_cleared_returns_409(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-002/submit",
+            "/api/v1/zatca-ops/invoices/ZTV-002/submit",
             json=self._submit_body,
         )
         assert r.status_code == 409
 
     def test_submit_already_reported_returns_409(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-001/submit",
+            "/api/v1/zatca-ops/invoices/ZTV-001/submit",
             json=self._submit_body,
         )
         assert r.status_code == 409
 
     def test_submit_rejected_returns_409(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/submit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/submit",
             json=self._submit_body,
         )
         assert r.status_code == 409
 
     def test_submit_already_signed_returns_409(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-007/submit",
+            "/api/v1/zatca-ops/invoices/ZTV-007/submit",
             json=self._submit_body,
         )
         assert r.status_code == 409
 
     def test_submit_unknown_id_returns_404(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-999/submit",
+            "/api/v1/zatca-ops/invoices/ZTV-999/submit",
             json=self._submit_body,
         )
         assert r.status_code == 404
@@ -850,7 +850,7 @@ class TestSubmitZatcaInvoice:
     def test_submit_short_reason_422(self) -> None:
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-004/submit",
+            "/api/v1/zatca-ops/invoices/ZTV-004/submit",
             json={"reason": "Hi"},
         )
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
@@ -858,14 +858,14 @@ class TestSubmitZatcaInvoice:
 
     def test_submit_generated_at_present(self) -> None:
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
-        r = client.post("/api/v1/zatca/invoices/ZTV-008/submit", json=self._submit_body)
+        r = client.post("/api/v1/zatca-ops/invoices/ZTV-008/submit", json=self._submit_body)
         assert "generated_at" in r.json()
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
 
     def test_submit_updates_xml_hash(self) -> None:
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
         ZATCA_INVOICES["ZTV-004"]["xml_hash"] = None
-        client.post("/api/v1/zatca/invoices/ZTV-004/submit", json=self._submit_body)
+        client.post("/api/v1/zatca-ops/invoices/ZTV-004/submit", json=self._submit_body)
         assert ZATCA_INVOICES["ZTV-004"]["xml_hash"] is not None
         ZATCA_INVOICES["ZTV-004"]["zatca_status"] = "draft"
         ZATCA_INVOICES["ZTV-004"]["xml_hash"] = None
@@ -873,14 +873,14 @@ class TestSubmitZatcaInvoice:
     def test_submit_updates_qr_code(self) -> None:
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
         ZATCA_INVOICES["ZTV-008"]["qr_code_b64"] = None
-        client.post("/api/v1/zatca/invoices/ZTV-008/submit", json=self._submit_body)
+        client.post("/api/v1/zatca-ops/invoices/ZTV-008/submit", json=self._submit_body)
         assert ZATCA_INVOICES["ZTV-008"]["qr_code_b64"] is not None
         ZATCA_INVOICES["ZTV-008"]["zatca_status"] = "draft"
         ZATCA_INVOICES["ZTV-008"]["qr_code_b64"] = None
 
 
 # ===========================================================================
-# 13. POST /api/v1/zatca/invoices/{invoice_id}/resubmit
+# 13. POST /api/v1/zatca-ops/invoices/{invoice_id}/resubmit
 # ===========================================================================
 
 
@@ -894,7 +894,7 @@ class TestResubmitZatcaInvoice:
         original_status = ZATCA_INVOICES["ZTV-006"]["zatca_status"]
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = original_status
@@ -903,7 +903,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_governance_approval_first(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
@@ -912,7 +912,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_transitions_to_signed(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert r.json()["new_status"] == "signed"
@@ -921,7 +921,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_mutates_invoice_status(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert ZATCA_INVOICES["ZTV-006"]["zatca_status"] == "signed"
@@ -930,7 +930,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_previous_status_is_rejected(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert r.json()["previous_status"] == "rejected"
@@ -939,7 +939,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_corrections_returned(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert r.json()["corrections_applied"] == self._resubmit_body["corrections"]
@@ -948,7 +948,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_reason_returned(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert r.json()["reason"] == self._resubmit_body["reason"]
@@ -957,7 +957,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_message_ar_present(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert "message_ar" in r.json()
@@ -966,7 +966,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_message_en_present(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert "message_en" in r.json()
@@ -976,7 +976,7 @@ class TestResubmitZatcaInvoice:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         ZATCA_INVOICES["ZTV-006"]["rejection_reason"] = "Some error"
         client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert "rejection_reason" not in ZATCA_INVOICES["ZTV-006"]
@@ -985,35 +985,35 @@ class TestResubmitZatcaInvoice:
 
     def test_resubmit_draft_returns_409(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-004/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-004/resubmit",
             json=self._resubmit_body,
         )
         assert r.status_code == 409
 
     def test_resubmit_cleared_returns_409(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-002/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-002/resubmit",
             json=self._resubmit_body,
         )
         assert r.status_code == 409
 
     def test_resubmit_reported_returns_409(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-001/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-001/resubmit",
             json=self._resubmit_body,
         )
         assert r.status_code == 409
 
     def test_resubmit_signed_returns_409(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-007/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-007/resubmit",
             json=self._resubmit_body,
         )
         assert r.status_code == 409
 
     def test_resubmit_unknown_id_returns_404(self) -> None:
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-999/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-999/resubmit",
             json=self._resubmit_body,
         )
         assert r.status_code == 404
@@ -1021,7 +1021,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_short_reason_422(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json={"reason": "No"},
         )
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
@@ -1030,7 +1030,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_empty_corrections_allowed(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json={"reason": "Corrected all mandatory fields", "corrections": []},
         )
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
@@ -1039,7 +1039,7 @@ class TestResubmitZatcaInvoice:
     def test_resubmit_generated_at_present(self) -> None:
         ZATCA_INVOICES["ZTV-006"]["zatca_status"] = "rejected"
         r = client.post(
-            "/api/v1/zatca/invoices/ZTV-006/resubmit",
+            "/api/v1/zatca-ops/invoices/ZTV-006/resubmit",
             json=self._resubmit_body,
         )
         assert "generated_at" in r.json()
@@ -1047,177 +1047,177 @@ class TestResubmitZatcaInvoice:
 
 
 # ===========================================================================
-# 14. GET /api/v1/zatca/compliance-dashboard
+# 14. GET /api/v1/zatca-ops/compliance-dashboard
 # ===========================================================================
 
 
 class TestComplianceDashboard:
     def test_returns_200(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.status_code == 200
 
     def test_governance_decision_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert "governance_decision" in r.json()
 
     def test_governance_decision_is_allow_with_review(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["governance_decision"] == "ALLOW_WITH_REVIEW"
 
     def test_total_invoices_is_8(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["total_invoices"] == 8
 
     def test_by_status_field_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert "by_status" in r.json()
         assert isinstance(r.json()["by_status"], dict)
 
     def test_by_status_sums_to_total(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         data = r.json()
         assert sum(data["by_status"].values()) == data["total_invoices"]
 
     def test_by_status_has_draft_2(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["by_status"].get("draft", 0) == 2
 
     def test_by_status_has_cleared_2(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["by_status"].get("cleared", 0) == 2
 
     def test_by_status_has_reported_2(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["by_status"].get("reported", 0) == 2
 
     def test_by_status_has_signed_1(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["by_status"].get("signed", 0) == 1
 
     def test_by_status_has_rejected_1(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["by_status"].get("rejected", 0) == 1
 
     def test_compliance_rate_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert "compliance_rate" in r.json()
 
     def test_compliance_rate_in_valid_range(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         rate = r.json()["compliance_rate"]
         assert 0.0 <= rate <= 1.0
 
     def test_avg_compliance_score_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert "avg_compliance_score" in r.json()
 
     def test_avg_compliance_score_in_range(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         score = r.json()["avg_compliance_score"]
         assert 0.0 <= score <= 100.0
 
     def test_total_vat_collected_sar_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert "total_vat_collected_sar" in r.json()
 
     def test_total_vat_collected_sar_positive(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["total_vat_collected_sar"] > 0
 
     def test_total_revenue_sar_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert "total_revenue_sar" in r.json()
 
     def test_total_revenue_sar_positive(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["total_revenue_sar"] > 0
 
     def test_pending_clearance_count_is_1(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["pending_clearance_count"] == 1
 
     def test_rejected_count_is_1(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["rejected_count"] == 1
 
     def test_phase2_active_is_true(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["phase2_active"] is True
 
     def test_seller_vat_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert r.json()["seller_vat"] == "300012345600003"
 
     def test_report_month_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert "report_month" in r.json()
         assert len(r.json()["report_month"]) == 7  # "YYYY-MM"
 
     def test_generated_at_present(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         assert "generated_at" in r.json()
 
     def test_no_guaranteed_outcome_language(self) -> None:
-        r = client.get("/api/v1/zatca/compliance-dashboard")
+        r = client.get("/api/v1/zatca-ops/compliance-dashboard")
         body_str = str(r.json()).lower()
         for phrase in ("guarantee", "guaranteed", "نضمن", "ضمان"):
             assert phrase not in body_str, f"Found forbidden phrase '{phrase}' in dashboard response"
 
 
 # ===========================================================================
-# 15. GET /api/v1/zatca/vat-summary
+# 15. GET /api/v1/zatca-ops/vat-summary
 # ===========================================================================
 
 
 class TestVatSummary:
     def test_returns_200(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert r.status_code == 200
 
     def test_governance_decision_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "governance_decision" in r.json()
 
     def test_governance_decision_is_allow_with_review(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert r.json()["governance_decision"] == "ALLOW_WITH_REVIEW"
 
     def test_period_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "period" in r.json()
 
     def test_output_vat_sar_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "output_vat_sar" in r.json()
 
     def test_output_vat_sar_positive(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert r.json()["output_vat_sar"] > 0
 
     def test_input_vat_sar_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "input_vat_sar" in r.json()
 
     def test_input_vat_sar_is_zero(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert r.json()["input_vat_sar"] == 0.0
 
     def test_net_vat_payable_sar_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "net_vat_payable_sar" in r.json()
 
     def test_net_vat_equals_output_minus_input(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         data = r.json()
         expected = round(data["output_vat_sar"] - data["input_vat_sar"], 2)
         assert abs(data["net_vat_payable_sar"] - expected) < 0.01
 
     def test_standard_invoices_count_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "standard_invoices" in r.json()
 
     def test_standard_invoices_count_correct(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         expected = sum(
             1 for inv in ZATCA_INVOICES.values()
             if inv["invoice_type"] == "standard"
@@ -1225,57 +1225,57 @@ class TestVatSummary:
         assert r.json()["standard_invoices"] == expected
 
     def test_simplified_invoices_count_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "simplified_invoices" in r.json()
 
     def test_simplified_invoices_count_is_1(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert r.json()["simplified_invoices"] == 1
 
     def test_credit_notes_count_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "credit_notes" in r.json()
 
     def test_credit_notes_count_is_1(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert r.json()["credit_notes"] == 1
 
     def test_debit_notes_count_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "debit_notes" in r.json()
 
     def test_debit_notes_count_is_0(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert r.json()["debit_notes"] == 0
 
     def test_vat_rate_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "vat_rate" in r.json()
 
     def test_vat_rate_is_0_15(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert r.json()["vat_rate"] == 0.15
 
     def test_note_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "note" in r.json()
         assert r.json()["note"]
 
     def test_note_mentions_estimates(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         note = r.json()["note"].lower()
         assert "estimate" in note
 
     def test_note_mentions_zatca_portal(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "ZATCA" in r.json()["note"]
 
     def test_generated_at_present(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         assert "generated_at" in r.json()
 
     def test_no_guaranteed_outcome_language(self) -> None:
-        r = client.get("/api/v1/zatca/vat-summary")
+        r = client.get("/api/v1/zatca-ops/vat-summary")
         body_str = str(r.json()).lower()
         for phrase in ("guarantee", "guaranteed", "نضمن"):
             assert phrase not in body_str, (

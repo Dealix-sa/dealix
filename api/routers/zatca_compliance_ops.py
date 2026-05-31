@@ -1,13 +1,13 @@
 """ZATCA Compliance Operations — Phase 2 e-invoicing compliance management.
 
 Endpoints:
-  GET  /api/v1/zatca/invoices                   — list ZATCA invoices with optional filters
-  GET  /api/v1/zatca/invoices/pending           — invoices requiring action (draft/signed/rejected)
-  GET  /api/v1/zatca/invoices/{invoice_id}      — single invoice detail
-  POST /api/v1/zatca/invoices/{invoice_id}/submit     — submit draft to ZATCA (APPROVAL_FIRST)
-  POST /api/v1/zatca/invoices/{invoice_id}/resubmit   — resubmit rejected invoice (APPROVAL_FIRST)
-  GET  /api/v1/zatca/compliance-dashboard       — overall compliance metrics
-  GET  /api/v1/zatca/vat-summary                — VAT breakdown for current period
+  GET  /api/v1/zatca-ops/invoices                   — list ZATCA invoices with optional filters
+  GET  /api/v1/zatca-ops/invoices/pending           — invoices requiring action (draft/signed/rejected)
+  GET  /api/v1/zatca-ops/invoices/{invoice_id}      — single invoice detail
+  POST /api/v1/zatca-ops/invoices/{invoice_id}/submit     — submit draft to ZATCA (APPROVAL_FIRST)
+  POST /api/v1/zatca-ops/invoices/{invoice_id}/resubmit   — resubmit rejected invoice (APPROVAL_FIRST)
+  GET  /api/v1/zatca-ops/compliance-dashboard       — overall compliance metrics
+  GET  /api/v1/zatca-ops/vat-summary                — VAT breakdown for current period
 
 All endpoints:
   - Require admin auth (X-Admin-API-Key)
@@ -30,7 +30,7 @@ from core.logging import get_logger
 _log = get_logger(__name__)
 
 router = APIRouter(
-    prefix="/api/v1/zatca",
+    prefix="/api/v1/zatca-ops",
     tags=["ZATCA Compliance"],
     dependencies=[Depends(require_admin_key)],
 )
