@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from auto_client_acquisition.personal_operator.launch_report import build_launch_report, launch_report_markdown_ar
+from auto_client_acquisition.personal_operator.launch_report import (
+    build_launch_report,
+    launch_report_markdown_ar,
+)
 
 
 def test_report_has_fifteen_areas():

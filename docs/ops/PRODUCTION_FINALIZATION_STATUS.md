@@ -8,7 +8,7 @@ This file separates repository-complete work from items that require external ex
 
 | Area | Status | Evidence |
 |---|---|---|
-| CI consolidation | Done | `.github/workflows/ci.yml` has one CI workflow with Python and web jobs. |
+| CI consolidation | Done | `.github/workflows/ci.yml` has one CI workflow with Python and web verification jobs. |
 | Security automation | Done | `.github/workflows/security.yml` adds CodeQL and Dependency Review. |
 | Dependency automation | Done | `.github/dependabot.yml` covers pip, npm, GitHub Actions, and Docker. |
 | Production smoke automation | Done | `.github/workflows/production-smoke.yml` runs scheduled/manual smoke tests. |
@@ -16,8 +16,16 @@ This file separates repository-complete work from items that require external ex
 | OpenAPI export | Done | `scripts/export_openapi.py`, `make openapi-export`. |
 | OpenAPI contract check | Done | `scripts/check_openapi_contract.py`, `make api-contract-check`. |
 | Security smoke | Done | `scripts/security_smoke.py`, `make security-smoke`. |
-| Production command bundle | Done | `make prod-verify`. |
+| Production command bundle | Done | `make prod-verify`, `make production-smoke`. |
+| Frontend security headers | Done | `apps/web/next.config.mjs` sets HSTS, CSP, frame, referrer, MIME, and permissions headers. |
+| Frontend SEO metadata | Done | `apps/web/app/layout.tsx`, `robots.ts`, `sitemap.ts`, `manifest.ts`, and homepage JSON-LD. |
+| Frontend homepage upgrade | Done | `apps/web/app/page.tsx` now positions Dealix as Revenue OS, Agent Governance, Trust & Safety, and Value Engine. |
+| Frontend status page | Done | `apps/web/app/status/page.tsx` provides public operational links. |
+| Frontend verification | Done | `apps/web/package.json` has `typecheck` and `verify`; CI runs `npm run verify`. |
+| Frontend env template | Done | `apps/web/.env.example` documents public site/API variables. |
 | Live domain runbook | Done | `docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md`. |
+| Frontend production runbook | Done | `docs/ops/FRONTEND_PRODUCTION_RUNBOOK.md`. |
+| Server hardening checklist | Done | `docs/ops/SERVER_HARDENING_CHECKLIST.md`. |
 | Production secrets checklist | Done | `docs/ops/PRODUCTION_SECRETS_CHECKLIST.md`. |
 | Monitoring matrix | Done | `docs/ops/MONITORING_MATRIX.md`. |
 | Incident drill | Done | `docs/ops/LIVE_DOMAIN_INCIDENT_DRILL.md`. |
@@ -27,23 +35,19 @@ This file separates repository-complete work from items that require external ex
 | Execution backlog | Done | `docs/ops/EXECUTION_BACKLOG.md` and CSV importer. |
 | README refresh | Done | `README.md` now points to the real repo and operating commands. |
 
-## Requires external execution
+## Tracked external execution
 
-| Item | Why it cannot be completed only by editing repository files | Exact action |
+| Issue | Item | Why it needs external execution |
 |---|---|---|
-| Generate `apps/web/package-lock.json` | Requires running npm dependency resolution against the current package registry. | Run `cd apps/web && npm install --package-lock-only`, then commit `apps/web/package-lock.json`. |
-| Confirm GitHub Actions are green | Requires GitHub runner execution. | Open Actions and run CI, Security, and Production Smoke. |
-| Set production GitHub secrets | Secrets cannot be inferred or safely committed. | Set `DEALIX_PUBLIC_URL`, `DEALIX_PRODUCTION_BASE_URL`, and any smoke/API keys in repository secrets. |
-| Confirm DNS records | DNS provider state is outside the repo. | Confirm `dealix.me` and `api.dealix.me` point to the intended hosts. |
-| Confirm TLS renewal | Certificate state is outside the repo. | Check hosting provider TLS and auto-renewal for public/API domains. |
-| Confirm payment/webhook dashboards | Provider dashboards are outside the repo. | Verify Moyasar/Calendly/WhatsApp webhook URLs and secrets. |
-| Run live production smoke | Requires network access to the real deployment. | Run `make production-smoke PRODUCTION_BASE_URL=https://api.dealix.me`. |
+| #467 | Generate and commit `apps/web/package-lock.json` | Requires npm registry dependency resolution. |
+| #468 | Configure live production secrets | Secrets cannot be inferred or safely committed. |
+| #469 | Verify live DNS and TLS | DNS/certificate state lives in provider dashboards. |
+| #470 | Verify payment and webhook dashboards | Provider dashboards and real credentials are outside the repo. |
+| #471 | Run CI, Security, and Production Smoke workflows | Requires GitHub Actions runner execution and review of results. |
 
 ## Recommended final execution order
 
-1. Set GitHub repository secrets:
-   - `DEALIX_PUBLIC_URL=https://dealix.me`
-   - `DEALIX_PRODUCTION_BASE_URL=https://api.dealix.me`
+1. Set repository and hosting secrets from `docs/ops/PRODUCTION_SECRETS_CHECKLIST.md`.
 2. Generate and commit `apps/web/package-lock.json`.
 3. Run GitHub Actions: CI, Security, Production Smoke.
 4. Run local verification if you have the repo cloned:
@@ -57,8 +61,8 @@ make production-smoke PRODUCTION_BASE_URL=https://api.dealix.me
 
 5. Verify DNS/TLS in hosting/DNS provider dashboards.
 6. Verify payment and webhook provider dashboards.
-7. Update `docs/ops/EXECUTION_BACKLOG.md` with any remaining live findings.
+7. Close issues #467–#471 only after evidence is attached.
 
 ## Arabic summary
 
-تم إنجاز كل ما يمكن إنجازه داخل الريبو: CI، security، smoke، env، OpenAPI، runbooks، ownership، release، monitoring. المتبقي لا يمكن تنفيذه من داخل الملفات فقط لأنه يحتاج GitHub Secrets، تشغيل Actions، DNS/hosting dashboard، أو توليد npm lockfile من registry.
+تم إنجاز كل ما يمكن إنجازه داخل الريبو: CI، security، smoke، env، OpenAPI، runbooks، ownership، release، monitoring، hardening للواجهة، SEO، status page، وأوامر الإنتاج. المتبقي محصور في مهام خارجية موثقة كـ Issues لأنها تحتاج GitHub Secrets، تشغيل Actions، DNS/hosting dashboard، payment dashboards، أو توليد npm lockfile من registry.

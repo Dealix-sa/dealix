@@ -4,8 +4,16 @@ from __future__ import annotations
 
 import pytest
 
-from auto_client_acquisition.personal_operator import ApprovalDecision, default_sami_profile, suggest_opportunities
-from auto_client_acquisition.personal_operator.operator import apply_decision, build_daily_brief, draft_intro_message
+from auto_client_acquisition.personal_operator import (
+    ApprovalDecision,
+    default_sami_profile,
+    suggest_opportunities,
+)
+from auto_client_acquisition.personal_operator.operator import (
+    apply_decision,
+    build_daily_brief,
+    draft_intro_message,
+)
 
 
 def test_daily_brief_arabic_greeting():

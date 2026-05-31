@@ -11,7 +11,10 @@ from auto_client_acquisition.operating_finance_os import (
     margin_percent_by_offer,
     total_ai_run_cost_usd,
 )
-from auto_client_acquisition.operating_finance_os.margin_protection import MarginAction, margin_protection_action
+from auto_client_acquisition.operating_finance_os.margin_protection import (
+    MarginAction,
+    margin_protection_action,
+)
 
 
 def test_offer_gross_margin() -> None:

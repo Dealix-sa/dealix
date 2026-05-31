@@ -16,12 +16,11 @@ from pathlib import Path
 import pytest
 
 from auto_client_acquisition.agent_governance import (
-    AutonomyLevel,
     FORBIDDEN_TOOLS,
+    AutonomyLevel,
     ToolCategory,
     evaluate_action,
 )
-
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
