@@ -7,11 +7,7 @@ from typing import Any
 
 import yaml
 
-from dealix.commercial_ops.evidence_csv import (
-    count_evidence_events,
-    load_evidence_rows,
-    real_evidence_rows,
-)
+from dealix.commercial_ops.evidence_csv import count_evidence_events, real_evidence_rows, load_evidence_rows
 from dealix.commercial_ops.founder_agent_tasks import analyze_agent_queue_status
 from dealix.commercial_ops.paths import FOUNDER_NORTH_STAR_YAML, REPO_ROOT
 

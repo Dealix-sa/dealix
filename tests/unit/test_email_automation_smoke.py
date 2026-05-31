@@ -9,14 +9,14 @@ from auto_client_acquisition.email.compliance import (
     append_opt_out_line,
     check_outreach,
 )
+from auto_client_acquisition.email.reply_classifier import (
+    build_classification,
+    classify_rule_based,
+    classify_reply,
+)
 from auto_client_acquisition.email.daily_targeting import (
     angle_for,
     select_top_n_diversified,
-)
-from auto_client_acquisition.email.reply_classifier import (
-    build_classification,
-    classify_reply,
-    classify_rule_based,
 )
 
 

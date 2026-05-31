@@ -84,7 +84,7 @@ def handle_calendly_webhook(payload: dict[str, Any]) -> dict[str, Any]:
         from dealix.revenue_ops_autopilot.crm_bridge import sync_lead_to_hubspot
 
         sync_lead_to_hubspot(nl, store=store)
-    except Exception:
+    except Exception:  # noqa: BLE001
         pass
 
     return {"ok": True, "handled": True, "lead_id": nl.id, "event": event}

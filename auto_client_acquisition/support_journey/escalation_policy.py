@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from typing import Any
 
+
 # Stages that ALWAYS escalate to founder (regardless of category)
 _MANDATORY_ESCALATE_STAGES = {"billing", "privacy", "renewal"}
 

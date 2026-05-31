@@ -5,22 +5,19 @@ Never raises. Never leaks stacktrace to caller.
 """
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any, TypeVar
+from typing import Any, Callable
 
 from auto_client_acquisition.integration_upgrade.degraded import degraded_section
-
-T = TypeVar("T")
 
 
 def safe_call(
     *,
     name: str,
-    fn: Callable[[], T],
-    fallback: T | None = None,
+    fn: Callable[[], Any],
+    fallback: Any = None,
     reason_ar_template: str = "{name} غير متاح حاليًا.",
     reason_en_template: str = "{name} is currently unavailable.",
-) -> T | dict[str, Any]:
+) -> Any:
     """Run fn() and return its result; on exception return fallback or
     a degraded_section dict.
 
@@ -28,7 +25,7 @@ def safe_call(
     """
     try:
         return fn()
-    except BaseException as exc:
+    except BaseException as exc:  # noqa: BLE001 — by design, catch all
         # Defensive: never leak exception type/message to caller
         if fallback is not None:
             return fallback

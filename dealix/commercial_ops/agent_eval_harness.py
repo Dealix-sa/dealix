@@ -56,9 +56,7 @@ def run_agent_eval_harness() -> dict[str, Any]:
                 allowed_tools=case.get("allowed_tools"),
             )
             ok = verdict.permission == case["expect_permission"]
-            perm = verdict.permission
-            perm_str = perm.value if hasattr(perm, "value") else str(perm)
-            results.append({"id": cid, "ok": ok, "permission": perm_str})
+            results.append({"id": cid, "ok": ok, "permission": verdict.permission.value})
         else:
             violations = validate_pipeline_step(**case["kwargs"])
             ok = len(violations) >= int(case["expect_violations_min"])

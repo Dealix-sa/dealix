@@ -37,9 +37,9 @@ def generate_executive_weekly_pack(week_label: str = "") -> dict[str, Any]:
         proof_total = (report.proof or {}).get("total", 0)
         try:
             proof_count = int(proof_total or 0)
-        except Exception:
+        except Exception:  # noqa: BLE001
             proof_count = 0
-    except Exception:
+    except Exception:  # noqa: BLE001 — defensive
         markdown_ar = "لا بيانات بعد / no data yet"
         markdown_en = "no data yet"
 

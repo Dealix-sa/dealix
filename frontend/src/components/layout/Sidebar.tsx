@@ -24,7 +24,6 @@ import {
   Layers,
   FileText,
   Megaphone,
-  Cpu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -37,9 +36,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { key: "dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { key: "demo", href: "/demo", icon: Zap },
   { key: "dealixDiagnostic", href: "/dealix-diagnostic", icon: Sparkles },
-  { key: "zatcaReadiness", href: "/zatca-readiness", icon: Shield },
   { key: "businessNow", href: "/business-now", icon: Briefcase },
   { key: "cloud", href: "/cloud", icon: Cloud },
   { key: "opsHub", href: "/ops", icon: Layers },
@@ -57,7 +54,6 @@ const navItems: NavItem[] = [
   { key: "trustCheck", href: "/trust-check", icon: Shield },
   { key: "customerPortal", href: "/customer-portal", icon: Building2 },
   { key: "clients", href: "/clients", icon: Users },
-  { key: "autoDistribution", href: "/auto-distribution", icon: Cpu },
   { key: "analytics", href: "/analytics", icon: BarChart3 },
   { key: "settings", href: "/settings", icon: Settings },
 ];
@@ -184,8 +180,7 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
                           | "customerPortal"
                           | "clients"
                           | "analytics"
-                          | "settings"
-                          | "autoDistribution",
+                          | "settings",
                       )}
                     </motion.span>
                   )}

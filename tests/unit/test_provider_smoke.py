@@ -17,36 +17,23 @@ import os
 import pytest
 
 from auto_client_acquisition.providers.base import ProviderResult
-from auto_client_acquisition.providers.crawler import (
-    FirecrawlProvider,
-    RequestsBs4Provider,
-    get_crawler_chain,
-)
-from auto_client_acquisition.providers.email_intel import (
-    AbstractEmailProvider,
-    HunterProvider,
-    NoopEmailIntelProvider,
-    get_email_intel_chain,
+from auto_client_acquisition.providers.search import (
+    GoogleCSEProvider, StaticSearchProvider, TavilyProvider,
+    get_search_chain, search_with_chain,
 )
 from auto_client_acquisition.providers.maps import (
-    ApifyMapsProvider,
-    GooglePlacesProvider,
-    SerpApiMapsProvider,
-    StaticMapsProvider,
-    discover_with_chain,
-    get_maps_chain,
+    ApifyMapsProvider, GooglePlacesProvider, SerpApiMapsProvider,
+    StaticMapsProvider, discover_with_chain, get_maps_chain,
 )
-from auto_client_acquisition.providers.search import (
-    GoogleCSEProvider,
-    StaticSearchProvider,
-    TavilyProvider,
-    get_search_chain,
-    search_with_chain,
+from auto_client_acquisition.providers.crawler import (
+    FirecrawlProvider, RequestsBs4Provider, get_crawler_chain,
 )
 from auto_client_acquisition.providers.tech import (
-    InternalTechProvider,
-    WappalyzerProvider,
-    get_tech_chain,
+    InternalTechProvider, WappalyzerProvider, get_tech_chain,
+)
+from auto_client_acquisition.providers.email_intel import (
+    AbstractEmailProvider, HunterProvider, NoopEmailIntelProvider,
+    get_email_intel_chain,
 )
 
 

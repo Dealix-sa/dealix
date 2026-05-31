@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from auto_client_acquisition.ai_workforce_v10.schemas import PlannerOutput
 
+
 _KEYWORD_MAP: tuple[tuple[tuple[str, ...], list[str]], ...] = (
     (
         ("lead", "leads", "intake", "qualify", "qualification"),

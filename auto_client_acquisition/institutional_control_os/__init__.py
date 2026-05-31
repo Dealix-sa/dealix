@@ -40,16 +40,15 @@ from auto_client_acquisition.institutional_control_os.source_passport import (
 )
 
 __all__ = (
-    "INCIDENT_RESPONSE_STEPS",
-    "PROOF_PACK_GOVERNANCE_SECTIONS",
     "RUNTIME_CHECKLIST_KEYS",
     "AuditEvent",
     "ControlMetricsSnapshot",
-    "GovernanceRuntimeSignals",
+    "INCIDENT_RESPONSE_STEPS",
     "IncidentType",
+    "GovernanceRuntimeSignals",
     "OutputGovernanceDecision",
+    "PROOF_PACK_GOVERNANCE_SECTIONS",
     "ProofGovernanceDimensions",
-    "SourcePassport",
     "agent_control_plane_mvp_valid",
     "audit_event_complete",
     "enterprise_control_blockers",
@@ -60,6 +59,7 @@ __all__ = (
     "proof_case_band",
     "proof_governance_score",
     "proof_pack_section_coverage",
+    "SourcePassport",
     "source_passport_allows_task",
     "source_passport_valid_for_ai",
 )

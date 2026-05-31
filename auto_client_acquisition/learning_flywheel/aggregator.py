@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Literal
 
@@ -116,7 +116,7 @@ def record_learning_event(
     path = storage_path or LEARNING_EVENTS_PATH
     path.parent.mkdir(parents=True, exist_ok=True)
     event = LearningEvent(
-        timestamp=datetime.now(UTC).isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         kind=kind,
         customer_handle=customer_handle,
         sector=sector, channel=channel, offer=offer, icp_tier=icp_tier,
@@ -192,7 +192,7 @@ def aggregate_weekly_report(
         WeeklyLearningReport. Empty / None fields when no source data
         in window — Article 8 (no fabrication).
     """
-    end = period_end or datetime.now(UTC)
+    end = period_end or datetime.now(timezone.utc)
     start = end - timedelta(days=period_days)
     all_events = _read_events(storage_path=storage_path)
 

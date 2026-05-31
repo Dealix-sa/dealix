@@ -41,7 +41,7 @@ def summarize_run(decisions: list[RoutingDecision]) -> dict:
             "per_tier": per_tier,
             "actions": actions,
         }
-    except Exception:
+    except Exception:  # noqa: BLE001 - defensive default
         return {
             "decision_count": 0,
             "total_usd": 0.0,

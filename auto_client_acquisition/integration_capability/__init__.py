@@ -13,8 +13,8 @@ This is the Article 4 prevention layer.
 """
 
 from auto_client_acquisition.integration_capability.registry import (
-    INTEGRATION_IDS,
     INTEGRATIONS,
+    INTEGRATION_IDS,
     get_integration,
     list_integrations,
 )

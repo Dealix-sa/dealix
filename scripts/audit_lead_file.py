@@ -27,11 +27,11 @@ from typing import Any
 # Make local imports work without installing the package
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from auto_client_acquisition.pipelines.normalize import (
+from auto_client_acquisition.pipelines.normalize import (  # noqa: E402
     fuzzy_company_key,
     is_acceptable,
-    normalize_domain,
     normalize_email,
+    normalize_domain,
     normalize_row,
     normalize_saudi_phone,
 )
