@@ -534,6 +534,18 @@ def create_app() -> FastAPI:
     from api.routers import analytics_ops as analytics_ops_router
     app.include_router(analytics_ops_router.router)
 
+    # AI Training Operations — model training pipeline management
+    from api.routers import ai_training_ops as ai_training_ops_router
+    app.include_router(ai_training_ops_router.router)
+
+    # Client Portal Operations — self-service account and deliverable views
+    from api.routers import client_portal_ops as client_portal_ops_router
+    app.include_router(client_portal_ops_router.router)
+
+    # ZATCA Compliance Operations — Phase 2 e-invoicing
+    from api.routers import zatca_compliance_ops as zatca_compliance_ops_router
+    app.include_router(zatca_compliance_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
