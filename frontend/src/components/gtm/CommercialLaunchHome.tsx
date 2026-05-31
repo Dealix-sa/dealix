@@ -3,11 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { useTheme } from "next-themes";
+
 import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
 
 // ---------------------------------------------------------------------------
 // Static data
@@ -222,7 +221,6 @@ function StarRating({ count }: { count: number }) {
 
 export function CommercialLaunchHome() {
   const locale = useLocale();
-  const { resolvedTheme } = useTheme();
   const isAr = locale === "ar";
   const dir = isAr ? "rtl" : "ltr";
   const base = `/${locale}`;

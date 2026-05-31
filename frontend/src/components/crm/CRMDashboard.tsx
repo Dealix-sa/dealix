@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Users, TrendingUp, Phone, Mail, Calendar, Plus, Search,
-  Filter, MoreHorizontal, Star, ChevronDown, Target, Activity,
+  MoreHorizontal, Star, Target, Activity,
   MessageSquare, Clock, DollarSign, ArrowUpRight, X, Check
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

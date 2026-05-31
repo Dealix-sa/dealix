@@ -106,9 +106,6 @@ const navGroups: NavGroup[] = [
   },
 ];
 
-// Flat list for legacy usage
-const navItems: NavItem[] = navGroups.flatMap((g) => g.items);
-
 interface SidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
