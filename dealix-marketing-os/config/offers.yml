@@ -1,60 +1,190 @@
----
-# Dealix offer catalogue used by offer_router.py
-# Each offer maps to a specific operational pain cluster.
+# Dealix Offer Catalog
+# Each offer has entry_price, full_price, delivery_days, ideal_sector
 
 offers:
-  - id: maintenance_intelligence_os
-    label: Maintenance Intelligence OS
-    tagline: From reactive to predictive maintenance operations
-    target_sectors: [facilities_management, construction_contracting]
-    pain_cluster: [unplanned downtime, manual work orders, scattered asset data]
-    best_buyer_titles: [Operations Director, FM Manager, COO]
-    proof_hook: maintenance cost reduction, SLA compliance improvement
-    cta: 30-minute operations diagnostic call
+  agentic_ai_workflow_audit:
+    name_ar: "تدقيق Agentic AI Workflow"
+    name_en: "Agentic AI Workflow Audit"
+    tagline: "خريطة واضحة لـ workflow واحد خلال 7 أيام"
+    price_sar: 499
+    delivery_days: 7
+    deliverables:
+      - "خريطة الـ workflow الحالي"
+      - "تحديد نقاط الألم الرئيسية"
+      - "فرص الأتمتة بـ AI Agents"
+      - "خطة pilot مقترحة"
+      - "تقرير PDF + عرض تقديمي"
+    entry_offer: true
+    ideal_for:
+      - facilities_management
+      - contracting_construction
+      - b2b_services
+      - any_sector
+    pain_triggers:
+      - "manual reporting"
+      - "approval delays"
+      - "repeated data entry"
+      - "SLA tracking"
+    cta: "نبدأ بـ audit على workflow واحد خلال 7 أيام"
 
-  - id: logistics_control_tower
-    label: Logistics Control Tower
-    tagline: Real-time visibility across every delivery and route
-    target_sectors: [logistics_transport]
-    pain_cluster: [delivery delays, manual dispatch, customer escalations]
-    best_buyer_titles: [Logistics Manager, Head of Operations, VP Supply Chain]
-    proof_hook: on-time delivery rate improvement, dispatcher hours saved
-    cta: live demo of your fleet data mapped
+  maintenance_intelligence_os:
+    name_ar: "Maintenance Intelligence OS"
+    name_en: "Maintenance Intelligence OS"
+    tagline: "تحويل بلاغات الصيانة وSLA وتقارير الفنيين إلى ذكاء تشغيلي"
+    price_sar_min: 2999
+    price_sar_max: 4999
+    delivery_days: 30
+    deliverables:
+      - "Agentic workflow لتصنيف البلاغات"
+      - "استخراج تلقائي من تقارير الفنيين"
+      - "كشف الأعطال المتكررة"
+      - "ملخص أسبوعي للإدارة"
+      - "لوحة SLA dashboard"
+      - "رفع الحالات الحساسة للموافقة"
+    ideal_for:
+      - facilities_management
+      - oil_gas_energy
+      - manufacturing_industrial
+      - healthcare_operations
+    pain_triggers:
+      - "SLA breaches"
+      - "technician report chaos"
+      - "repeated failures"
+      - "manual escalation"
+      - "delayed management visibility"
 
-  - id: field_ops_intelligence
-    label: Field Ops Intelligence
-    tagline: Structured intelligence for dispersed field operations
-    target_sectors: [facilities_management, logistics_transport, construction_contracting]
-    pain_cluster: [field team visibility, job completion tracking, manual reporting]
-    best_buyer_titles: [Operations Manager, Field Services Director, COO]
-    proof_hook: job completion rate, reporting time reduction
-    cta: 30-minute field ops review
+  project_controls_ai_os:
+    name_ar: "Project Controls AI OS"
+    name_en: "Project Controls AI OS"
+    tagline: "ربط تحديثات المشاريع والمخاطر والموافقات في مسار قرار واحد"
+    price_sar_min: 2999
+    price_sar_max: 4999
+    delivery_days: 30
+    deliverables:
+      - "تلخيص تحديثات المشاريع تلقائياً"
+      - "تتبع المخاطر والمتأخرات"
+      - "تقرير أسبوعي للإدارة"
+      - "اقتراح next actions"
+      - "رفع القرارات الحساسة للموافقة"
+    ideal_for:
+      - contracting_construction
+      - oil_gas_energy
+      - government_semigovernment
+    pain_triggers:
+      - "approval delays"
+      - "late weekly reports"
+      - "risk blindspots"
+      - "change request chaos"
+      - "multi-party coordination"
 
-  - id: revenue_ops_starter
-    label: Revenue Ops Starter
-    tagline: Pipeline clarity and sales process intelligence
-    target_sectors: [professional_services, education_training]
-    pain_cluster: [pipeline opacity, inconsistent follow-up, manual CRM]
-    best_buyer_titles: [Sales Director, Business Development Manager, Founder]
-    proof_hook: pipeline conversion improvement, time saved on manual CRM entry
-    cta: pipeline health diagnostic call
+  sovereign_knowledge_rag:
+    name_ar: "Sovereign Knowledge / RAG System"
+    name_en: "Sovereign Knowledge & RAG System"
+    tagline: "نظام استرجاع المعرفة المؤسسية بذكاء اصطناعي خاضع للحوكمة"
+    price_sar_min: 5000
+    price_sar_max: 25000
+    delivery_days: 45
+    deliverables:
+      - "RAG pipeline على مستندات المؤسسة"
+      - "Policy Q&A agent"
+      - "Document intelligence layer"
+      - "حوكمة وصلاحيات وصول"
+      - "Audit trail كامل"
+    ideal_for:
+      - government_semigovernment
+      - oil_gas_energy
+      - healthcare_operations
+      - large_enterprise
+    pain_triggers:
+      - "knowledge retrieval inefficiency"
+      - "policy Q&A burden"
+      - "document intelligence gap"
+      - "controlled AI adoption need"
 
-  - id: clinic_ops_os
-    label: Clinic Ops OS
-    tagline: Operational intelligence for multi-location healthcare
-    target_sectors: [healthcare_clinics]
-    pain_cluster: [appointment no-shows, manual scheduling, staff utilisation]
-    best_buyer_titles: [Operations Manager, Clinic Director, Medical Director]
-    proof_hook: appointment fill rate, staff utilisation improvement
-    cta: 30-minute clinic ops review
+  executive_ai_command_center:
+    name_ar: "Executive AI Command Center"
+    name_en: "Executive AI Command Center"
+    tagline: "لوحة قيادة تشغيلية للإدارة العليا مبنية على AI Agents"
+    price_sar_min: 4999
+    price_sar_max: 15000
+    delivery_days: 30
+    deliverables:
+      - "Executive dashboard"
+      - "Daily automated briefing"
+      - "KPI monitoring agents"
+      - "Exception alerts"
+      - "Decision support layer"
+    ideal_for:
+      - holding_companies
+      - large_enterprise
+      - government_semigovernment
+    pain_triggers:
+      - "executive visibility gap"
+      - "delayed KPI reporting"
+      - "information overload"
+      - "multi-entity oversight"
 
-  - id: brand_growth_intelligence
-    label: Brand Growth Intelligence
-    tagline: Data-driven expansion planning for retail and F&B chains
-    target_sectors: [retail_operations, food_beverage]
-    pain_cluster: [location performance variance, inventory gaps, manual reporting]
-    best_buyer_titles: [Operations Director, Brand Manager, COO]
-    proof_hook: like-for-like revenue uplift, inventory waste reduction
-    cta: brand performance diagnostic call
+  revenue_ai_os:
+    name_ar: "Revenue AI OS"
+    name_en: "Revenue AI OS"
+    tagline: "تحسين lead qualification، المتابعة، وسرعة الـ proposal"
+    price_sar_min: 2999
+    price_sar_max: 4999
+    delivery_days: 30
+    deliverables:
+      - "Lead qualification agent"
+      - "Follow-up automation"
+      - "Proposal generation pipeline"
+      - "CRM hygiene agents"
+      - "Win/loss analysis"
+    ideal_for:
+      - b2b_services
+      - real_estate_property
+      - retail_enterprise
+    pain_triggers:
+      - "lead leakage"
+      - "slow proposals"
+      - "CRM discipline issues"
+      - "follow-up inconsistency"
 
-default_offer: field_ops_intelligence
+  ai_governance_adoption_pack:
+    name_ar: "AI Governance & Adoption Pack"
+    name_en: "AI Governance & Adoption Pack"
+    tagline: "إطار حوكمة وتبني آمن للذكاء الاصطناعي في المؤسسات الكبيرة"
+    price_sar_min: 5000
+    price_sar_max: 15000
+    delivery_days: 30
+    deliverables:
+      - "AI policy framework"
+      - "Use case prioritization matrix"
+      - "Risk assessment"
+      - "Pilot design"
+      - "Training program"
+    ideal_for:
+      - government_semigovernment
+      - large_enterprise
+      - oil_gas_energy
+    pain_triggers:
+      - "AI adoption uncertainty"
+      - "governance gap"
+      - "security concerns"
+      - "policy compliance"
+
+  hr_screening_agent:
+    name_ar: "HR Screening Agent"
+    name_en: "HR Screening Agent"
+    tagline: "أتمتة تصفية المتقدمين وتحضير مقابلات HR"
+    price_sar_min: 1500
+    price_sar_max: 3000
+    delivery_days: 14
+    deliverables:
+      - "CV screening pipeline"
+      - "Automated shortlisting"
+      - "Interview question generator"
+      - "Candidate brief"
+    ideal_for:
+      - any_sector_hiring_at_scale
+    pain_triggers:
+      - "high volume hiring"
+      - "manual CV screening"
+      - "HR bandwidth constraint"

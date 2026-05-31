@@ -1,74 +1,114 @@
----
-# Target market configuration for the market scanner.
-# Sectors and regions define the search space for lead generation.
+# Dealix Target Markets Configuration
+# GCC-focused B2B markets with operations-heavy workflows
 
-regions:
-  - name: Saudi Arabia
-    code: SA
-    priority: 1
-  - name: UAE
-    code: AE
-    priority: 2
-  - name: Kuwait
-    code: KW
-    priority: 3
-  - name: Bahrain
-    code: BH
-    priority: 4
-  - name: Qatar
-    code: QA
-    priority: 4
+target_regions:
+  primary:
+    - Saudi Arabia
+    - UAE
+    - Kuwait
+    - Qatar
+    - Bahrain
+    - Oman
+  secondary:
+    - Egypt
+    - Jordan
+    - Lebanon
 
-sectors:
-  - id: facilities_management
-    label: Facilities Management
-    keywords: [FM, operations, maintenance, HVAC, cleaning, security services]
-    min_employees: 50
-    priority: 1
+target_sectors:
+  tier_1:  # Highest fit for Dealix
+    facilities_management:
+      keywords: ["صيانة", "فم", "facilities", "FM", "maintenance", "HVAC", "MEP", "SLA"]
+      company_size: "50-5000 employees"
+      data_intensity: high
+      operations_complexity: high
 
-  - id: logistics_transport
-    label: Logistics and Transport
-    keywords: [freight, fleet, last-mile, warehousing, supply chain]
-    min_employees: 30
-    priority: 1
+    contracting_construction:
+      keywords: ["مقاولات", "إنشاء", "contracting", "construction", "projects", "EPC"]
+      company_size: "100-10000 employees"
+      data_intensity: high
+      operations_complexity: very_high
 
-  - id: construction_contracting
-    label: Construction and Contracting
-    keywords: [construction, EPC, subcontractor, civil works, project delivery]
-    min_employees: 50
-    priority: 2
+    oil_gas_energy:
+      keywords: ["نفط", "غاز", "طاقة", "oil", "gas", "energy", "petrochemical"]
+      company_size: "500-50000 employees"
+      data_intensity: very_high
+      operations_complexity: very_high
 
-  - id: healthcare_clinics
-    label: Healthcare and Clinics
-    keywords: [clinic, polyclinic, medical center, diagnostics, dental]
-    min_employees: 20
-    priority: 2
+  tier_2:  # Good fit
+    b2b_services:
+      keywords: ["خدمات", "استشارات", "services", "consulting", "B2B"]
+      company_size: "20-500 employees"
+      data_intensity: medium
+      operations_complexity: medium
 
-  - id: food_beverage
-    label: Food and Beverage Operations
-    keywords: [restaurant chain, catering, central kitchen, F&B]
-    min_employees: 30
-    priority: 2
+    government_semigovernment:
+      keywords: ["حكومي", "شبه حكومي", "government", "authority", "municipality"]
+      company_size: "200-50000 employees"
+      data_intensity: high
+      operations_complexity: high
 
-  - id: professional_services
-    label: Professional Services
-    keywords: [consulting, accounting, legal, advisory, audit]
-    min_employees: 15
-    priority: 3
+    healthcare_operations:
+      keywords: ["صحة", "مستشفى", "مستوصف", "healthcare", "hospital", "clinic"]
+      company_size: "100-10000 employees"
+      data_intensity: high
+      operations_complexity: high
 
-  - id: retail_operations
-    label: Retail Operations
-    keywords: [retail chain, franchise, POS, inventory management]
-    min_employees: 30
-    priority: 3
+    manufacturing_industrial:
+      keywords: ["تصنيع", "صناعة", "manufacturing", "industrial", "factory", "plant"]
+      company_size: "100-5000 employees"
+      data_intensity: high
+      operations_complexity: high
 
-  - id: education_training
-    label: Education and Training
-    keywords: [training center, institute, corporate learning, academy]
-    min_employees: 20
-    priority: 3
+  tier_3:  # Moderate fit
+    real_estate_property:
+      keywords: ["عقارات", "إدارة عقارات", "real estate", "property management", "REIT"]
+      company_size: "50-2000 employees"
+      data_intensity: medium
+      operations_complexity: medium
 
-scan_defaults:
-  count: 50
-  daily_limit_per_sector: 15
-  dedup_field: company_name
+    logistics_transport:
+      keywords: ["لوجستي", "نقل", "logistics", "transport", "fleet", "delivery"]
+      company_size: "100-5000 employees"
+      data_intensity: high
+      operations_complexity: high
+
+    retail_enterprise:
+      keywords: ["تجزئة", "متاجر", "retail", "chain", "franchise"]
+      company_size: "500-10000 employees"
+      data_intensity: medium
+      operations_complexity: medium
+
+scan_sources:
+  linkedin:
+    enabled: true
+    search_types: ["company pages", "job postings"]
+    note: "Manual scan — no automation of LinkedIn scraping"
+
+  company_directories:
+    - name: "Saudi Chamber of Commerce"
+      url_pattern: "chamber.org.sa"
+    - name: "UAE Business Directory"
+      url_pattern: "uaebusiness.ae"
+    - name: "Zawya"
+      url_pattern: "zawya.com"
+    - name: "Bloomberg Middle East"
+      url_pattern: "bloomberg.com/middle-east"
+
+  news_signals:
+    keywords:
+      - "expansion Saudi"
+      - "new project UAE"
+      - "digital transformation"
+      - "hiring operations manager"
+      - "تحول رقمي"
+      - "توسع"
+      - "مشروع جديد"
+
+  job_postings:
+    signals:
+      - "Operations Manager"
+      - "FM Director"
+      - "Project Controls"
+      - "Digital Transformation Lead"
+      - "مدير عمليات"
+      - "مدير صيانة"

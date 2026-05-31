@@ -1,0 +1,61 @@
+# Gmail Sending Ramp Schedule
+# Protects domain reputation during warmup phase
+# Reference: Google Workspace sending limits and deliverability best practices
+
+domain_warmup:
+  philosophy: "Send less than capacity. Protect reputation above volume."
+
+  weekly_ramp:
+    week_1:
+      daily_sends: 20
+      note: "Establish baseline. Monitor bounce rate < 2%."
+    week_2:
+      daily_sends: 40
+      prerequisite: "bounce_rate < 2%, spam_rate < 0.1%"
+    week_3:
+      daily_sends: 80
+      prerequisite: "bounce_rate < 2%, spam_rate < 0.1%, positive_replies > 0"
+    week_4:
+      daily_sends: 150
+      prerequisite: "domain_reputation = good, reply_rate > 3%"
+    week_5_plus:
+      daily_sends: 250
+      prerequisite: "established_reputation, reply_rate > 4%"
+
+  health_checks:
+    bounce_rate_max: 0.02          # 2% — pause if exceeded
+    spam_complaint_rate_max: 0.001  # 0.1% — pause if exceeded
+    unsubscribe_rate_max: 0.005     # 0.5% — review if exceeded
+
+  pause_conditions:
+    - "bounce_rate > 2%"
+    - "spam_complaint > 0.1%"
+    - "domain flagged by MXToolbox"
+    - "DMARC failures increasing"
+
+technical_requirements:
+  spf: true
+  dkim: true
+  dmarc:
+    policy: "quarantine"
+    rua: "mailto:dmarc@dealix.sa"
+  custom_tracking_domain: recommended
+  unsubscribe_header: required
+
+sending_windows:
+  preferred_hours_gmt3: ["08:00-10:00", "13:00-15:00"]
+  avoid: ["Friday evening", "weekends", "Saudi public holidays"]
+
+  personalization_rate: "100%"  # Never send batch-generic
+
+batch_control:
+  max_per_hour: 50
+  min_gap_between_sends_seconds: 60
+  randomize_timing: true
+
+follow_up_rules:
+  max_follow_ups: 2
+  gap_days_between_followups: 4
+  stop_on_any_reply: true
+  stop_on_opt_out: true
+  stop_on_bounce: true

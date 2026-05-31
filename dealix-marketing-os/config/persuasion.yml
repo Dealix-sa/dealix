@@ -1,77 +1,137 @@
----
-# Persuasion formula and quality gate rubric used by draft_writer.py
-# and draft_quality_gate.py.
+# Dealix Persuasion Engine Configuration
+# The intellectual core of the Draft Factory
 
-formula:
-  name: SPECIFIC-PAIN-PROOF-ASK
-  steps:
-    - id: specific_observation
-      instruction: >
-        Open with one sentence about something specific to their operations —
-        sector, scale, or a known operational challenge. Never use generic openers.
-    - id: pain_amplification
-      instruction: >
-        Name the operational cost of the problem in terms they recognise:
-        time lost, errors, customer impact, staff burden. Be concrete.
-    - id: mechanism_hint
-      instruction: >
-        Describe how Dealix addresses it at a mechanism level — not a feature list,
-        but the structural change. One to two sentences maximum.
-    - id: proof_hook
-      instruction: >
-        Cite one specific operational outcome achieved for a comparable client.
-        Never use exact percentages without evidence. Use ranges or directional
-        language unless verified data is available.
-    - id: low_commitment_ask
-      instruction: >
-        End with a single, low-friction ask: a 30-minute call, a diagnostic review,
-        or a question that invites a reply. Never ask for a buying decision.
+persuasion_principles:
+  - "Start with a company-specific observation — never a generic opener."
+  - "Never open with generic AI claims (no 'AI is transforming...', no 'leverage AI...')."
+  - "Mention one likely operational pain only — not a list of problems."
+  - "Offer one low-risk next step — not a full product pitch."
+  - "Use founder tone: direct, practical, not corporate fluff."
+  - "Avoid fake certainty. Mark assumptions softly ('غالبًا', 'في مثل هذا النوع من العمل')."
+  - "Never promise ROI without baseline data."
+  - "Never pressure the recipient."
+  - "Always include a soft opt-out line."
+  - "Never mention more than one product per email."
+  - "Length: 150-220 words for cold email. Never longer."
 
-quality_gate:
-  minimum_score: 82
-  dimensions:
-    - id: personalization
-      max_score: 25
-      description: >
-        Does the draft reference something specific to this company's sector,
-        scale, or known operations? Generic openers score 0-5. Company-specific
-        detail scores 18-25.
-    - id: relevance
-      max_score: 25
-      description: >
-        Does the offer match the company's most likely pain? Is the buyer title
-        correct for this company type?
-    - id: clarity
-      max_score: 15
-      description: >
-        Is the message easy to read in under 45 seconds? No jargon overload.
-        Clear structure.
-    - id: commercial_value
-      max_score: 15
-      description: >
-        Is there a tangible business outcome described? Does the reader understand
-        what changes for them?
-    - id: credibility
-      max_score: 10
-      description: >
-        Is there a proof element — a result, a mechanism, or a specific observation
-        that signals competence?
-    - id: compliance
-      max_score: 10
-      description: >
-        No guaranteed outcome claims. No scraping or automation language.
-        No cold WhatsApp references. No LinkedIn automation references.
+draft_formula:
+  b2b_cold_email:
+    sequence:
+      - step: company_observation
+        description: "One specific observation about this company's work/operations"
+        examples:
+          - "لاحظت أن طبيعة عمل [Company] مرتبطة بالتشغيل والصيانة..."
+          - "بناءً على طبيعة مشاريع [Company] في قطاع المقاولات..."
+        anti_patterns:
+          - "نقدم أحدث حلول الذكاء الاصطناعي"
+          - "كشركة رائدة في مجال التقنية"
+          - "نود التعريف بخدماتنا"
 
-auto_improve:
-  enabled: true
-  max_attempts: 1
-  instruction: >
-    The draft scored below the minimum threshold. Rewrite it applying the
-    SPECIFIC-PAIN-PROOF-ASK formula more strictly. Increase specificity of
-    the opening observation. Strengthen the pain amplification. Remove any
-    generic phrases. Do not add guaranteed outcome claims.
+      - step: likely_pain
+        description: "One operational pain common to companies like them"
+        examples:
+          - "غالبًا في هذا النوع من التشغيل، التحدي لا يكون في وجود البيانات، بل في ربطها..."
+          - "عادة في بيئات المشاريع المتعددة، المشكلة في تحويل التحديثات إلى قرار واضح..."
+        anti_patterns:
+          - "لديكم مشاكل كثيرة"
+          - "نعرف أنكم تعانون من"
 
-daily_limits:
-  sends_per_day: 20
-  tier_a_priority: true
-  founder_review_required: true
+      - step: dealix_specific_solution
+        description: "How Dealix specifically addresses THIS pain for THIS sector"
+        examples:
+          - "في Dealix نبني Agentic AI workflows تساعد فريق العمليات على..."
+        anti_patterns:
+          - "لدينا منصة شاملة"
+          - "نقدم جميع خدمات الذكاء الاصطناعي"
+
+      - step: solution_bullets
+        description: "3-5 specific capabilities — not marketing speak"
+        max_bullets: 5
+        examples:
+          - "تصنيف البلاغات تلقائياً"
+          - "استخراج النقاط المهمة من تقارير الفنيين"
+          - "كشف الأعطال المتكررة"
+
+      - step: low_risk_offer
+        description: "Entry offer — low commitment, clear value"
+        default: "AI Workflow Audit خلال 7 أيام على workflow واحد"
+
+      - step: simple_cta
+        description: "One clear, easy action"
+        examples:
+          - "هل يناسبكم أرسل لكم one-page مختصر للفكرة؟"
+          - "هل يناسبكم نحدد 20 دقيقة هذا الأسبوع؟"
+        anti_patterns:
+          - "انقر هنا للتسجيل"
+          - "اشترك الآن"
+
+      - step: soft_opt_out
+        description: "Respectful exit offer — always required"
+        template: "إذا ما كان هذا مناسب لكم، أقدر أوقف المتابعة."
+
+quality_weights:
+  personalization: 25
+  relevance: 25
+  clarity: 15
+  commercial_value: 15
+  credibility: 10
+  compliance: 10
+
+minimum_send_score: 82
+
+tone_guidelines:
+  founder_mode:
+    suitable_for: ["large companies", "enterprise", "government"]
+    characteristics:
+      - Direct and strategic
+      - "أنا أبني Dealix كنظام..."
+      - Shows vision and domain expertise
+      - Peer-to-peer tone with senior buyers
+
+  builder_practical:
+    suitable_for: ["medium companies", "growing SMBs"]
+    characteristics:
+      - Practical and outcome-focused
+      - "أقدر أساعدكم في بناء pilot صغير..."
+      - Shows execution capability
+      - Less formal, more collaborative
+
+  freelancer_quick_win:
+    suitable_for: ["small companies", "budget-conscious"]
+    characteristics:
+      - Fast, low commitment framing
+      - Focus on quick wins
+      - "خلال أسبوع واحد نطلع بنتيجة واضحة"
+
+persuasion_angles:
+  pain_first:
+    when: "company is operations-heavy with clear pain signals"
+    opener: "operational pain observation"
+
+  audit_first:
+    when: "company sector is clear but pain is uncertain"
+    opener: "workflow observation + audit offer"
+
+  governance_first:
+    when: "large enterprise or government entity"
+    opener: "controlled AI adoption framing"
+
+  founder_builder:
+    when: "medium company, growth-stage"
+    opener: "builder credibility + pilot framing"
+
+  executive_value:
+    when: "CEO or C-suite contact, holding company"
+    opener: "executive visibility and decision speed"
+
+ab_testing:
+  max_variants_per_sector: 3
+  tracking_fields:
+    - angle
+    - subject_type
+    - cta_type
+    - opener_type
+  success_metrics:
+    - reply_rate
+    - positive_reply_rate
+    - meeting_booked_rate

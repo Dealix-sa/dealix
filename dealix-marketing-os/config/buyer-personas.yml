@@ -1,58 +1,118 @@
----
-# Buyer persona profiles used by offer_router.py and draft_writer.py.
-# Personas define how to frame messaging for each role type.
+# Dealix Buyer Personas
+# Who to reach, what they care about, how to talk to them
 
 personas:
-  - id: operations_director
-    titles: [Operations Director, Director of Operations, VP Operations]
-    primary_pain: operational overhead and unplanned costs
-    decision_style: data-driven, risk-averse, needs proof of ROI
-    preferred_cta: diagnostic session with their own data
-    language_register: formal, outcome-focused, evidence-based
-    avoid: feature lists, technical jargon without context
+  operations_director:
+    title_ar: "مدير العمليات"
+    title_en: "Operations Director / VP Operations"
+    sectors: ["facilities_management", "contracting", "manufacturing", "logistics"]
+    core_pain: "Operations visibility and control at scale"
+    daily_challenges:
+      - "Too many reports, not enough insight"
+      - "SLA tracking is manual and reactive"
+      - "Escalations come too late"
+      - "Field team coordination overhead"
+    what_impresses_them:
+      - "You understand their specific operation"
+      - "Quick wins with low IT involvement"
+      - "Operational language, not tech speak"
+    preferred_tone: "founder_mode"
+    best_offer: "Maintenance Intelligence OS or Project Controls AI OS"
+    best_entry: "Agentic AI Workflow Audit"
+    key_phrases:
+      - "تقليل العمل اليدوي في التقارير"
+      - "ربط فريق الميدان بالإدارة"
+      - "كشف المشاكل قبل التصعيد"
 
-  - id: coo
-    titles: [COO, Chief Operating Officer, Head of Operations]
-    primary_pain: scaling without adding headcount, board reporting accuracy
-    decision_style: strategic, seeks competitive differentiation
-    preferred_cta: executive briefing or leadership workshop
-    language_register: concise, strategic, peer-level
-    avoid: tactical detail in initial outreach
+  fm_manager:
+    title_ar: "مدير الصيانة / مدير المرافق"
+    title_en: "FM Manager / Maintenance Manager"
+    sectors: ["facilities_management", "real_estate", "healthcare"]
+    core_pain: "SLA compliance and reactive-to-proactive shift"
+    daily_challenges:
+      - "SLA breaches discovered too late"
+      - "Technician report quality is inconsistent"
+      - "Repeat failures not tracked systematically"
+      - "Management reporting takes hours"
+    what_impresses_them:
+      - "Knowledge of FM workflows (PPM, corrective, reactive)"
+      - "SLA-specific language"
+      - "Integration with existing CMMS awareness"
+    preferred_tone: "builder_practical"
+    best_offer: "Maintenance Intelligence OS"
+    best_entry: "Agentic AI Workflow Audit"
 
-  - id: founder_sme
-    titles: [Founder, CEO, Managing Director, Owner]
-    primary_pain: growth bottlenecks, time spent on operational firefighting
-    decision_style: fast, intuition-led, price-sensitive in early stage
-    preferred_cta: quick win demonstration
-    language_register: direct, practical, minimal jargon
-    avoid: enterprise-heavy language, long proof sequences
+  project_controls_head:
+    title_ar: "مدير ضبط المشاريع / مدير التخطيط"
+    title_en: "Project Controls Manager / Planning Manager"
+    sectors: ["contracting_construction", "oil_gas_energy"]
+    core_pain: "Real-time project visibility and risk detection"
+    daily_challenges:
+      - "Weekly reports take 2 days to compile"
+      - "Risk items surface too late"
+      - "Multiple project formats, no single view"
+      - "Approval chains slow decision-making"
+    what_impresses_them:
+      - "P6 / MS Project awareness"
+      - "EPC project language"
+      - "Risk-first framing"
+    preferred_tone: "founder_mode"
+    best_offer: "Project Controls AI OS"
+    best_entry: "Agentic AI Workflow Audit"
 
-  - id: fm_manager
-    titles: [FM Manager, Facilities Manager, Head of Facilities]
-    primary_pain: reactive maintenance, SLA compliance, cost visibility
-    decision_style: practical, process-oriented, compliance-conscious
-    preferred_cta: side-by-side walkthrough of current vs. proposed workflow
-    language_register: process-oriented, specific to FM terminology
-    avoid: abstract ROI claims without operational grounding
+  digital_transformation_lead:
+    title_ar: "مدير التحول الرقمي"
+    title_en: "Digital Transformation Director / CIO"
+    sectors: ["government", "large_enterprise", "oil_gas_energy"]
+    core_pain: "Scaling AI adoption safely and measurably"
+    daily_challenges:
+      - "AI pilots that don't scale"
+      - "Shadow AI usage without governance"
+      - "Business units want AI but don't know where to start"
+      - "Board pressure for digital results"
+    what_impresses_them:
+      - "Governance-first framing"
+      - "Measurable pilot design"
+      - "Enterprise architecture awareness"
+    preferred_tone: "governance_first"
+    best_offer: "AI Governance & Adoption Pack or Sovereign Knowledge RAG"
+    best_entry: "AI Workflow Audit"
 
-  - id: logistics_manager
-    titles: [Logistics Manager, Supply Chain Manager, Fleet Manager]
-    primary_pain: delivery reliability, dispatcher workload, customer complaints
-    decision_style: metrics-first, wants to see dashboards
-    preferred_cta: live data visualisation demo
-    language_register: metrics-heavy, operations terminology
-    avoid: vague productivity language
+  ceo_founder:
+    title_ar: "الرئيس التنفيذي / المؤسس"
+    title_en: "CEO / Founder / Managing Director"
+    sectors: ["b2b_services", "medium_companies", "holding"]
+    core_pain: "Business clarity and operational leverage"
+    daily_challenges:
+      - "Can't trust operational data in real-time"
+      - "Delegation bottlenecks"
+      - "Sales pipeline visibility"
+      - "Revenue leakage in operations"
+    what_impresses_them:
+      - "Business outcomes, not features"
+      - "Founder-to-founder respect"
+      - "Speed to value"
+    preferred_tone: "executive_value"
+    best_offer: "Executive AI Command Center or Revenue AI OS"
+    best_entry: "Agentic AI Workflow Audit"
 
-  - id: bd_manager
-    titles: [Business Development Manager, Sales Director, Head of Sales]
-    primary_pain: pipeline stalls, manual follow-up, forecast inaccuracy
-    decision_style: competitive, revenue-focused
-    preferred_cta: pipeline comparison benchmark
-    language_register: commercial, outcome-oriented
-    avoid: technical implementation detail
-
-outreach_tone:
-  default: professional_peer
-  gcc_formality: high
-  opening_style: specific_observation_about_their_operations
-  closing_style: low_commitment_ask
+title_matching:
+  fuzzy_matches:
+    operations_director:
+      - "VP Operations"
+      - "Head of Operations"
+      - "Operations Manager"
+      - "مدير العمليات"
+      - "رئيس العمليات"
+    fm_manager:
+      - "Facilities Manager"
+      - "FM Director"
+      - "Maintenance Manager"
+      - "مدير الصيانة"
+      - "مدير المرافق"
+    project_controls_head:
+      - "Project Manager"
+      - "Planning Manager"
+      - "Project Controls Lead"
+      - "مدير المشاريع"
+      - "مدير التخطيط"
