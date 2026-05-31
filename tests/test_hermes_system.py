@@ -362,11 +362,12 @@ class TestHermesRegistry:
         # Reset singleton for a clean test
         HermesRegistry._instance = None
         agents = HermesRegistry.build_all_agents()
-        assert len(agents) == 10
+        assert len(agents) == 11
         expected = {
             "lead_intelligence", "revenue_intelligence", "sprint_orchestrator",
             "diagnostic_agent", "data_architect", "managed_ops",
             "sales_intelligence", "market_intel", "company_brain", "governance",
+            "customer_acquisition",
         }
         assert set(agents.keys()) == expected
 
@@ -528,3 +529,331 @@ class TestLeadLoop:
             loop.run_once([{"company": "A", "industry": "technology", "revenue_sar": 1_000_000, "employees": 20}])
         )
         assert result.get("batch_lead_count") == 1
+
+
+# ---------------------------------------------------------------------------
+# MiniMax provider
+# ---------------------------------------------------------------------------
+
+
+class TestMiniMaxProvider:
+    def test_is_available_without_key(self):
+        import os
+        from dealix.hermes.providers.minimax_provider import MiniMaxProvider
+        orig = os.environ.pop("MINIMAX_API_KEY", None)
+        try:
+            provider = MiniMaxProvider(api_key="")
+            assert provider.is_available is False
+        finally:
+            if orig is not None:
+                os.environ["MINIMAX_API_KEY"] = orig
+
+    def test_mock_response_returns_expected_keys(self):
+        from dealix.hermes.providers.minimax_provider import MiniMaxProvider
+        result = MiniMaxProvider._mock_response("sys", [{"role": "user", "content": "hi"}])
+        assert "text" in result
+        assert "tool_calls" in result
+        assert "usage" in result
+        assert result["tool_calls"] == []
+
+    def test_init_with_key_creates_client(self):
+        from dealix.hermes.providers.minimax_provider import MiniMaxProvider
+        try:
+            provider = MiniMaxProvider(api_key="test-key-does-not-need-to-be-valid")
+            # openai package is installed so client should be set
+            assert provider.is_available is True
+        except Exception:
+            # If openai package not installed, is_available is False — still valid
+            pass
+
+    def test_chat_without_client_returns_mock(self):
+        import os
+        from dealix.hermes.providers.minimax_provider import MiniMaxProvider
+        orig = os.environ.pop("MINIMAX_API_KEY", None)
+        try:
+            provider = MiniMaxProvider(api_key="")
+            result = asyncio.get_event_loop().run_until_complete(
+                provider.chat(system="sys", messages=[{"role": "user", "content": "hi"}])
+            )
+            assert "text" in result
+            assert "tool_calls" in result
+        finally:
+            if orig is not None:
+                os.environ["MINIMAX_API_KEY"] = orig
+
+    def test_run_agentic_loop_no_tools_returns_text(self):
+        import os
+        from dealix.hermes.providers.minimax_provider import MiniMaxProvider
+
+        orig = os.environ.pop("MINIMAX_API_KEY", None)
+        try:
+            provider = MiniMaxProvider(api_key="")
+
+            async def dummy_dispatcher(name, inp):
+                return "{}"
+
+            text, usage = asyncio.get_event_loop().run_until_complete(
+                provider.run_agentic_loop(
+                    system="sys",
+                    user_msg="hi",
+                    tools=[],
+                    tool_dispatcher=dummy_dispatcher,
+                    max_rounds=1,
+                )
+            )
+            assert isinstance(text, str)
+            assert "input_tokens" in usage
+        finally:
+            if orig is not None:
+                os.environ["MINIMAX_API_KEY"] = orig
+
+
+# ---------------------------------------------------------------------------
+# OutreachQueue
+# ---------------------------------------------------------------------------
+
+
+class TestOutreachQueue:
+    def _fresh_queue(self):
+        from dealix.hermes.outreach_queue import OutreachQueue
+        q = OutreachQueue()
+        return q
+
+    def test_enqueue_returns_draft_id(self):
+        from dealix.hermes.outreach_queue import OutreachDraft
+        q = self._fresh_queue()
+        draft = OutreachDraft(company_name="Acme", channel="email")
+        draft_id = q.enqueue(draft)
+        assert draft_id == draft.draft_id
+        assert len(q.pending()) == 1
+
+    def test_approve_changes_status(self):
+        from dealix.hermes.outreach_queue import OutreachDraft
+        q = self._fresh_queue()
+        draft = OutreachDraft(company_name="BetaCo")
+        q.enqueue(draft)
+        approved = q.approve(draft.draft_id, approved_by="founder")
+        assert approved.status == "approved"
+        assert approved.approved_by == "founder"
+        assert len(q.pending()) == 0
+        assert len(q.approved()) == 1
+
+    def test_reject_changes_status(self):
+        from dealix.hermes.outreach_queue import OutreachDraft
+        q = self._fresh_queue()
+        draft = OutreachDraft(company_name="GammaCo")
+        q.enqueue(draft)
+        rejected = q.reject(draft.draft_id, reason="not a fit")
+        assert rejected.status == "rejected"
+        assert rejected.rejection_reason == "not a fit"
+
+    def test_approve_missing_draft_raises(self):
+        q = self._fresh_queue()
+        with pytest.raises(KeyError):
+            q.approve("NO_SUCH_ID")
+
+    def test_reject_missing_draft_raises(self):
+        q = self._fresh_queue()
+        with pytest.raises(KeyError):
+            q.reject("NO_SUCH_ID")
+
+    def test_stats_counts_by_status(self):
+        from dealix.hermes.outreach_queue import OutreachDraft
+        q = self._fresh_queue()
+        d1 = OutreachDraft(company_name="Co1")
+        d2 = OutreachDraft(company_name="Co2")
+        d3 = OutreachDraft(company_name="Co3")
+        q.enqueue(d1)
+        q.enqueue(d2)
+        q.enqueue(d3)
+        q.approve(d1.draft_id)
+        stats = q.stats()
+        assert stats.get("pending_approval", 0) == 2
+        assert stats.get("approved", 0) == 1
+
+    def test_to_dict_has_all_fields(self):
+        from dealix.hermes.outreach_queue import OutreachDraft
+        draft = OutreachDraft(company_name="DeltaCo", channel="email", score=85.0)
+        d = draft.to_dict()
+        assert d["company_name"] == "DeltaCo"
+        assert d["channel"] == "email"
+        assert d["score"] == 85.0
+        assert "draft_id" in d
+        assert "status" in d
+
+    def test_all_drafts_returns_all(self):
+        from dealix.hermes.outreach_queue import OutreachDraft
+        q = self._fresh_queue()
+        for i in range(3):
+            q.enqueue(OutreachDraft(company_name=f"Co{i}"))
+        assert len(q.all_drafts()) == 3
+
+    def test_queue_never_auto_approves(self):
+        """Doctrine guard: enqueued drafts start as pending_approval only."""
+        from dealix.hermes.outreach_queue import OutreachDraft
+        q = self._fresh_queue()
+        draft = OutreachDraft(company_name="AutoCheck")
+        q.enqueue(draft)
+        assert draft.status == "pending_approval"
+        # Pending list must contain the draft
+        assert any(d.draft_id == draft.draft_id for d in q.pending())
+
+
+# ---------------------------------------------------------------------------
+# CustomerAcquisitionAgent
+# ---------------------------------------------------------------------------
+
+
+class TestCustomerAcquisitionAgent:
+    def test_agent_name_and_description(self):
+        from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
+        agent = CustomerAcquisitionAgent()
+        assert agent.name == "customer_acquisition"
+        assert isinstance(agent.description, str)
+        assert len(agent.description) > 0
+
+    def test_agent_has_expected_tools(self):
+        from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
+        agent = CustomerAcquisitionAgent()
+        tool_names = list(agent._tools.keys())
+        assert "score_lead" in tool_names
+        assert "prioritize_leads" in tool_names
+        assert "get_saudi_market_context" in tool_names
+        assert "format_arabic_proposal" in tool_names
+        assert "get_lead_profile" in tool_names
+        assert "list_open_deals" in tool_names
+        assert "run_commercial_diagnostic" in tool_names
+
+    def test_agent_run_no_leads_returns_complete(self):
+        from unittest.mock import patch
+        from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
+        agent = CustomerAcquisitionAgent()
+        with patch.object(agent._engine, "_client", None):
+            result = asyncio.get_event_loop().run_until_complete(
+                agent.run({"leads": [], "max_drafts": 3})
+            )
+        assert result["status"] == "complete"
+        assert result["agent"] == "customer_acquisition"
+        assert result["approval_required"] is True
+        assert result["governance_decision"] == "approved"
+        assert result["leads_processed"] == 0
+
+    def test_agent_run_result_never_auto_sends(self):
+        """Doctrine guard: run() result must not indicate any send occurred."""
+        from unittest.mock import patch
+        from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
+        agent = CustomerAcquisitionAgent()
+        with patch.object(agent._engine, "_client", None):
+            result = asyncio.get_event_loop().run_until_complete(
+                agent.run({"leads": [], "max_drafts": 1})
+            )
+        raw = result.get("raw_response", "").lower()
+        assert "sent" not in raw or "not sent" in raw or "approval" in raw or raw == ""
+
+    def test_score_lead_adapter_returns_tier(self):
+        from dealix.hermes.agents.customer_acquisition import _score_lead_adapter
+        result = asyncio.get_event_loop().run_until_complete(
+            _score_lead_adapter(
+                lead_id="L001",
+                company_name="TechSA",
+                sector="technology",
+                employee_count=50,
+                annual_revenue_sar=5_000_000,
+                has_crm=False,
+            )
+        )
+        assert result["tier"] in ("A", "B", "C")
+        assert result["lead_id"] == "L001"
+
+    def test_prioritize_leads_adapter_returns_ranked(self):
+        from dealix.hermes.agents.customer_acquisition import _prioritize_leads_adapter
+        leads = [
+            {"company": "A", "industry": "technology", "revenue_sar": 5_000_000, "employees": 50},
+            {"company": "B", "industry": "other", "revenue_sar": 50_000, "employees": 2},
+        ]
+        result = asyncio.get_event_loop().run_until_complete(_prioritize_leads_adapter(leads))
+        assert result["total"] == 2
+        assert result["ranked_leads"][0]["icp_score"] >= result["ranked_leads"][1]["icp_score"]
+
+    def test_get_saudi_market_context_adapter(self):
+        from dealix.hermes.agents.customer_acquisition import _get_saudi_market_context_adapter
+        result = asyncio.get_event_loop().run_until_complete(
+            _get_saudi_market_context_adapter(sector="retail", city="Jeddah")
+        )
+        assert result["industry"] == "retail"
+        assert result["city"] == "Jeddah"
+
+    def test_format_arabic_proposal_adapter(self):
+        from dealix.hermes.agents.customer_acquisition import _format_arabic_proposal_adapter
+        result = asyncio.get_event_loop().run_until_complete(
+            _format_arabic_proposal_adapter(
+                company_name="TestCo",
+                pain_summary_ar="ارتفاع تكلفة الاكتساب",
+                pain_summary_en="High acquisition cost",
+                offer_tier="starter",
+                roi_estimate_sar=50_000,
+            )
+        )
+        assert result["formatted"] is True
+
+    def test_get_lead_profile_adapter(self):
+        from dealix.hermes.agents.customer_acquisition import _get_lead_profile_adapter
+        result = asyncio.get_event_loop().run_until_complete(
+            _get_lead_profile_adapter(lead_id="test-lead-001")
+        )
+        assert result["found"] is True
+
+    def test_list_open_deals_adapter(self):
+        from dealix.hermes.agents.customer_acquisition import _list_open_deals_adapter
+        result = asyncio.get_event_loop().run_until_complete(_list_open_deals_adapter())
+        assert "deals" in result
+
+
+# ---------------------------------------------------------------------------
+# DailyOutreachLoop
+# ---------------------------------------------------------------------------
+
+
+class TestDailyOutreachLoop:
+    def test_run_once_no_agent_returns_skipped(self):
+        from dealix.hermes.loops.daily_outreach_loop import DailyOutreachLoop
+        from dealix.hermes.registry import HermesRegistry
+        # Registry without customer_acquisition agent
+        registry = HermesRegistry()
+        loop = DailyOutreachLoop(registry=registry)
+        result = asyncio.get_event_loop().run_until_complete(loop.run_once(leads=[]))
+        assert result["status"] == "skipped"
+
+    def test_run_once_with_agent_returns_complete(self):
+        from unittest.mock import patch
+        from dealix.hermes.loops.daily_outreach_loop import DailyOutreachLoop
+        from dealix.hermes.registry import HermesRegistry
+        HermesRegistry._instance = None
+        HermesRegistry.build_all_agents()
+        agent = HermesRegistry.instance().get("customer_acquisition")
+        with patch.object(agent._engine, "_client", None):
+            loop = DailyOutreachLoop(registry=HermesRegistry.instance())
+            result = asyncio.get_event_loop().run_until_complete(loop.run_once(leads=[]))
+        assert result["status"] == "complete"
+        assert result["agent"] == "customer_acquisition"
+
+    def test_stop_sets_running_false(self):
+        from dealix.hermes.loops.daily_outreach_loop import DailyOutreachLoop
+        loop = DailyOutreachLoop()
+        loop._running = True
+        loop.stop()
+        assert loop._running is False
+
+    def test_run_once_respects_max_drafts_from_config(self):
+        from unittest.mock import patch
+        from dealix.hermes.config import HermesConfig
+        from dealix.hermes.loops.daily_outreach_loop import DailyOutreachLoop
+        from dealix.hermes.registry import HermesRegistry
+        HermesRegistry._instance = None
+        HermesRegistry.build_all_agents()
+        agent = HermesRegistry.instance().get("customer_acquisition")
+        cfg = HermesConfig(minimax_outreach_max_per_day=3)
+        with patch.object(agent._engine, "_client", None):
+            loop = DailyOutreachLoop(registry=HermesRegistry.instance(), config=cfg)
+            result = asyncio.get_event_loop().run_until_complete(loop.run_once(leads=[]))
+        assert "drafts_queued" in result

@@ -30,6 +30,13 @@ from dealix.hermes.tools.saudi_tools import (
     get_saudi_market_context,
     validate_cr_number,
 )
+from dealix.hermes.tools.commercial_tools import (
+    build_commercial_proof_pack,
+    check_commercial_upsell,
+    get_commercial_market_intel,
+    run_commercial_diagnostic,
+    run_commercial_sprint,
+)
 from dealix.hermes.tools.scoring_tools import (
     calculate_deal_probability,
     prioritize_leads,
@@ -67,4 +74,10 @@ __all__ = [
     "classify_vat_treatment",
     "get_saudi_market_context",
     "format_arabic_proposal",
+    # commercial_tools
+    "run_commercial_diagnostic",
+    "run_commercial_sprint",
+    "build_commercial_proof_pack",
+    "check_commercial_upsell",
+    "get_commercial_market_intel",
 ]

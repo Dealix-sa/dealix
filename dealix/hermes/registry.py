@@ -92,7 +92,7 @@ class HermesRegistry:
 
     @classmethod
     def build_all_agents(cls, config: HermesConfig | None = None) -> dict[str, HermesAgent]:
-        """Instantiate all 10 Hermes agents and return them keyed by name.
+        """Instantiate all Hermes agents and return them keyed by name.
 
         Also registers each agent with the singleton registry.
         """
@@ -101,6 +101,7 @@ class HermesRegistry:
 
         # Import lazily to avoid circular imports at module load time
         from dealix.hermes.agents.company_brain import CompanyBrainAgent
+        from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
         from dealix.hermes.agents.data_architect import DataArchitectAgent
         from dealix.hermes.agents.diagnostic_agent import DiagnosticAgent
         from dealix.hermes.agents.governance import GovernanceAgent
@@ -122,6 +123,7 @@ class HermesRegistry:
             MarketIntelAgent,
             CompanyBrainAgent,
             GovernanceAgent,
+            CustomerAcquisitionAgent,
         ]
 
         built: dict[str, HermesAgent] = {}

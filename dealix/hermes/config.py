@@ -33,6 +33,13 @@ class HermesConfig(BaseSettings):
     hermes_loop_interval_seconds: int = Field(default=300, ge=10)
     hermes_cost_budget_usd: float = Field(default=5.0, ge=0.0)
 
+    # MiniMax (secondary provider — OpenAI-compatible, high-volume daily tasks)
+    minimax_api_key: str = Field(default="", description="MiniMax API key.")
+    minimax_model: str = Field(default="MiniMax-Text-01", description="MiniMax model for daily batch tasks.")
+    minimax_base_url: str = Field(default="https://api.minimaxi.chat/v1", description="MiniMax API base URL.")
+    minimax_daily_outreach_enabled: bool = Field(default=True, description="Enable daily outreach loop.")
+    minimax_outreach_max_per_day: int = Field(default=20, ge=1, le=100, description="Max outreach drafts per day.")
+
     model_config = {"env_prefix": "", "case_sensitive": False, "extra": "ignore"}
 
     def effective_api_key(self) -> str:
@@ -40,6 +47,12 @@ class HermesConfig(BaseSettings):
         if self.hermes_api_key:
             return self.hermes_api_key
         return os.environ.get("ANTHROPIC_API_KEY", "")
+
+    def effective_minimax_key(self) -> str:
+        """Return MINIMAX_API_KEY from config or env."""
+        if self.minimax_api_key:
+            return self.minimax_api_key
+        return os.environ.get("MINIMAX_API_KEY", "")
 
 
 @lru_cache(maxsize=1)

@@ -1,6 +1,7 @@
-"""Hermes specialised agents — 10 production agents for Saudi B2B revenue intelligence."""
+"""Hermes specialised agents for Saudi B2B revenue intelligence."""
 
 from dealix.hermes.agents.company_brain import CompanyBrainAgent
+from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
 from dealix.hermes.agents.data_architect import DataArchitectAgent
 from dealix.hermes.agents.diagnostic_agent import DiagnosticAgent
 from dealix.hermes.agents.governance import GovernanceAgent
@@ -22,4 +23,5 @@ __all__ = [
     "MarketIntelAgent",
     "CompanyBrainAgent",
     "GovernanceAgent",
+    "CustomerAcquisitionAgent",
 ]
