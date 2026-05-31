@@ -730,6 +730,18 @@ def create_app() -> FastAPI:
     from api.routers import data_quality_ops as data_quality_ops_router
     app.include_router(data_quality_ops_router.router)
 
+    # Sales Cadence — 4 cadence templates, Saudi communication rules, plan builder
+    from api.routers import sales_cadence as sales_cadence_router
+    app.include_router(sales_cadence_router.router)
+
+    # Contract Intelligence — clauses, Saudi requirements, compliance scoring
+    from api.routers import contract_intelligence as contract_intelligence_router
+    app.include_router(contract_intelligence_router.router)
+
+    # Customer Journey — 6 stages, touchpoint library, journey mapping
+    from api.routers import customer_journey as customer_journey_router
+    app.include_router(customer_journey_router.router)
+
     # Proposal Builder — bilingual proposal outline generator per tier
     from api.routers import proposal_builder as proposal_builder_router
     app.include_router(proposal_builder_router.router)
