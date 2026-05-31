@@ -14,8 +14,7 @@ Usage:
 
 import json
 import os
-import re
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
@@ -239,9 +238,6 @@ class Gate2DataQualityReady:
             k for k, v in sectors_config.get("sectors", {}).items()
             if v.get("sensitive_flag", False)
         ]
-        sensitive_companies = [
-            c for c in companies if c.get("sector") in sensitive_sectors
-        ]
         # Check that sensitive companies are flagged (simplified check)
         if sensitive_sectors:
             passes.append(
@@ -267,13 +263,16 @@ class Gate2DataQualityReady:
 
         # Suppression respected — check suppressed contacts are not in active jobs
         jobs = _load_jsonl("channel_jobs.jsonl")
-        suppressed_emails = {s.get("email_or_domain", "") for s in suppression}
-        suppression_violation = 0
-        for job in jobs:
-            if job.get("status") in ("queued", "pending_founder_approval"):
-                # Simplified check — in production would match contact email
-                pass
-        passes.append("suppression_respected: no violations detected in current queue")
+        suppressed_domains = {s.get("email_or_domain", "") for s in suppression}
+        violations = [
+            job for job in jobs
+            if job.get("status") in ("queued", "pending_founder_approval")
+            and any(d and d in job.get("contact_email", "") for d in suppressed_domains)
+        ]
+        if violations:
+            findings.append(f"FAIL: {len(violations)} suppressed contacts in active queue")
+        else:
+            passes.append("suppression_respected: no violations detected in current queue")
 
         status = "fail" if findings else ("warning" if warnings else "pass")
 
@@ -530,8 +529,10 @@ class Gate5ChannelSafetyReady:
         passes = []
 
         anti_ban = _load_yaml("anti-ban.yml")
-        execution_modes = _load_yaml("execution-modes.yml")
-        channel_router = _load_yaml("channel-router.yml")
+        if _load_yaml("execution-modes.yml"):
+            passes.append("execution_modes_config: loaded")
+        if _load_yaml("channel-router.yml"):
+            passes.append("channel_router_config: loaded")
 
         if not anti_ban:
             findings.append("FAIL: config/anti-ban.yml not found or empty")
@@ -680,7 +681,7 @@ class Gate6ExecutionHealthReady:
                     if hours_waiting > 48:
                         stuck_jobs.append(job.get("job_id"))
                 except (ValueError, TypeError):
-                    pass
+                    pass  # malformed timestamp — skip this job
 
         if stuck_jobs:
             warnings.append(

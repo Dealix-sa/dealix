@@ -10,7 +10,6 @@ Non-negotiable: unsubscribe replies trigger immediate suppression.
 """
 
 import re
-from typing import Optional
 
 
 CLASSIFICATIONS = [

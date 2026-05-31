@@ -8,8 +8,6 @@ Non-negotiables enforced here:
 - No scraping (blocked at architecture level)
 """
 
-import os
-import json
 import yaml
 from datetime import datetime, timezone
 from pathlib import Path

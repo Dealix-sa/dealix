@@ -6,12 +6,11 @@ Run: python -m pytest growth-os/acceptance_tests.py -v
   or: python growth-os/acceptance_tests.py
 """
 
-import json
 import os
 import sys
 import unittest
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 _BASE = Path(__file__).parent
 
@@ -21,7 +20,6 @@ sys.path.insert(0, str(_BASE))
 from anti_ban_guardian import AntiBanGuardian
 from reply_classifier import ReplyClassifier
 from quality_gate import DraftQualityGate
-from verification_gates import run_all_gates
 
 
 class Test1FiftyCompanySimulation(unittest.TestCase):
@@ -319,13 +317,6 @@ class Test6SensitiveSector(unittest.TestCase):
         sensitive_sectors = ["healthcare_admin", "government", "financial_services"]
 
         for sector in sensitive_sectors:
-            # Simulate a company in a sensitive sector
-            company = {
-                "sector": sector,
-                "country": "SA",
-                "company_size": "200+",
-            }
-
             # For sensitive sectors, channel check should require founder approval
             context = {
                 "sector": sector,

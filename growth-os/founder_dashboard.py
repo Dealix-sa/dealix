@@ -14,7 +14,7 @@ All data is read from memory/ JSONL files. No external API calls.
 """
 
 import json
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -290,7 +290,6 @@ class FounderDashboard:
         Screen 6: Founder Actions Today
         Returns a prioritized list of actions the founder must take.
         """
-        d = _today_str(date)
         jobs = _load_jsonl("channel_jobs.jsonl")
         warnings = _load_jsonl("warnings.jsonl")
         opps = _load_jsonl("opportunities.jsonl")
