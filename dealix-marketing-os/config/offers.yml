@@ -1,0 +1,60 @@
+---
+# Dealix offer catalogue used by offer_router.py
+# Each offer maps to a specific operational pain cluster.
+
+offers:
+  - id: maintenance_intelligence_os
+    label: Maintenance Intelligence OS
+    tagline: From reactive to predictive maintenance operations
+    target_sectors: [facilities_management, construction_contracting]
+    pain_cluster: [unplanned downtime, manual work orders, scattered asset data]
+    best_buyer_titles: [Operations Director, FM Manager, COO]
+    proof_hook: maintenance cost reduction, SLA compliance improvement
+    cta: 30-minute operations diagnostic call
+
+  - id: logistics_control_tower
+    label: Logistics Control Tower
+    tagline: Real-time visibility across every delivery and route
+    target_sectors: [logistics_transport]
+    pain_cluster: [delivery delays, manual dispatch, customer escalations]
+    best_buyer_titles: [Logistics Manager, Head of Operations, VP Supply Chain]
+    proof_hook: on-time delivery rate improvement, dispatcher hours saved
+    cta: live demo of your fleet data mapped
+
+  - id: field_ops_intelligence
+    label: Field Ops Intelligence
+    tagline: Structured intelligence for dispersed field operations
+    target_sectors: [facilities_management, logistics_transport, construction_contracting]
+    pain_cluster: [field team visibility, job completion tracking, manual reporting]
+    best_buyer_titles: [Operations Manager, Field Services Director, COO]
+    proof_hook: job completion rate, reporting time reduction
+    cta: 30-minute field ops review
+
+  - id: revenue_ops_starter
+    label: Revenue Ops Starter
+    tagline: Pipeline clarity and sales process intelligence
+    target_sectors: [professional_services, education_training]
+    pain_cluster: [pipeline opacity, inconsistent follow-up, manual CRM]
+    best_buyer_titles: [Sales Director, Business Development Manager, Founder]
+    proof_hook: pipeline conversion improvement, time saved on manual CRM entry
+    cta: pipeline health diagnostic call
+
+  - id: clinic_ops_os
+    label: Clinic Ops OS
+    tagline: Operational intelligence for multi-location healthcare
+    target_sectors: [healthcare_clinics]
+    pain_cluster: [appointment no-shows, manual scheduling, staff utilisation]
+    best_buyer_titles: [Operations Manager, Clinic Director, Medical Director]
+    proof_hook: appointment fill rate, staff utilisation improvement
+    cta: 30-minute clinic ops review
+
+  - id: brand_growth_intelligence
+    label: Brand Growth Intelligence
+    tagline: Data-driven expansion planning for retail and F&B chains
+    target_sectors: [retail_operations, food_beverage]
+    pain_cluster: [location performance variance, inventory gaps, manual reporting]
+    best_buyer_titles: [Operations Director, Brand Manager, COO]
+    proof_hook: like-for-like revenue uplift, inventory waste reduction
+    cta: brand performance diagnostic call
+
+default_offer: field_ops_intelligence

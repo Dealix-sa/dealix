@@ -1,0 +1,74 @@
+---
+# Target market configuration for the market scanner.
+# Sectors and regions define the search space for lead generation.
+
+regions:
+  - name: Saudi Arabia
+    code: SA
+    priority: 1
+  - name: UAE
+    code: AE
+    priority: 2
+  - name: Kuwait
+    code: KW
+    priority: 3
+  - name: Bahrain
+    code: BH
+    priority: 4
+  - name: Qatar
+    code: QA
+    priority: 4
+
+sectors:
+  - id: facilities_management
+    label: Facilities Management
+    keywords: [FM, operations, maintenance, HVAC, cleaning, security services]
+    min_employees: 50
+    priority: 1
+
+  - id: logistics_transport
+    label: Logistics and Transport
+    keywords: [freight, fleet, last-mile, warehousing, supply chain]
+    min_employees: 30
+    priority: 1
+
+  - id: construction_contracting
+    label: Construction and Contracting
+    keywords: [construction, EPC, subcontractor, civil works, project delivery]
+    min_employees: 50
+    priority: 2
+
+  - id: healthcare_clinics
+    label: Healthcare and Clinics
+    keywords: [clinic, polyclinic, medical center, diagnostics, dental]
+    min_employees: 20
+    priority: 2
+
+  - id: food_beverage
+    label: Food and Beverage Operations
+    keywords: [restaurant chain, catering, central kitchen, F&B]
+    min_employees: 30
+    priority: 2
+
+  - id: professional_services
+    label: Professional Services
+    keywords: [consulting, accounting, legal, advisory, audit]
+    min_employees: 15
+    priority: 3
+
+  - id: retail_operations
+    label: Retail Operations
+    keywords: [retail chain, franchise, POS, inventory management]
+    min_employees: 30
+    priority: 3
+
+  - id: education_training
+    label: Education and Training
+    keywords: [training center, institute, corporate learning, academy]
+    min_employees: 20
+    priority: 3
+
+scan_defaults:
+  count: 50
+  daily_limit_per_sector: 15
+  dedup_field: company_name

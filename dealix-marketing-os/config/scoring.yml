@@ -1,0 +1,80 @@
+---
+# Fit scoring criteria used by company_researcher.py
+# Each dimension is weighted; total weight must equal 100.
+
+dimensions:
+  - id: operational_complexity
+    label: Operational Complexity
+    weight: 25
+    rationale: >
+      Higher complexity signals more workflow pain and higher willingness
+      to invest in automation.
+    levels:
+      high: 25
+      medium: 15
+      low: 5
+
+  - id: data_intensity
+    label: Data Intensity
+    weight: 20
+    rationale: >
+      Companies that already manage moderate-to-high data volumes are
+      better prepared to adopt an intelligence layer.
+    levels:
+      high: 20
+      medium: 12
+      low: 4
+
+  - id: sector_priority
+    label: Sector Priority
+    weight: 20
+    rationale: >
+      Sectors with known GCC adoption signals rank higher.
+    levels:
+      priority_1: 20
+      priority_2: 14
+      priority_3: 8
+
+  - id: buyer_accessibility
+    label: Buyer Accessibility
+    weight: 15
+    rationale: >
+      Operations managers and COOs are easier to reach than C-suite in
+      large enterprises.
+    levels:
+      high: 15
+      medium: 9
+      low: 3
+
+  - id: pain_signal_strength
+    label: Pain Signal Strength
+    weight: 10
+    rationale: >
+      Explicit pain signals (job ads, LinkedIn posts, press coverage) give
+      confidence that the problem is active.
+    levels:
+      strong: 10
+      moderate: 6
+      weak: 2
+
+  - id: deal_size_potential
+    label: Deal Size Potential
+    weight: 10
+    rationale: >
+      Larger or more complex organisations typically justify higher retainer
+      commitments.
+    levels:
+      high: 10
+      medium: 6
+      low: 2
+
+tiers:
+  A:
+    min_score: 80
+    description: Priority outreach — generate full 8-piece draft set
+  B:
+    min_score: 60
+    description: Standard outreach — generate 4-piece draft set
+  nurture:
+    min_score: 0
+    description: Long-horizon nurture — generate 2-piece draft set

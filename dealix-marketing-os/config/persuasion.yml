@@ -1,0 +1,77 @@
+---
+# Persuasion formula and quality gate rubric used by draft_writer.py
+# and draft_quality_gate.py.
+
+formula:
+  name: SPECIFIC-PAIN-PROOF-ASK
+  steps:
+    - id: specific_observation
+      instruction: >
+        Open with one sentence about something specific to their operations —
+        sector, scale, or a known operational challenge. Never use generic openers.
+    - id: pain_amplification
+      instruction: >
+        Name the operational cost of the problem in terms they recognise:
+        time lost, errors, customer impact, staff burden. Be concrete.
+    - id: mechanism_hint
+      instruction: >
+        Describe how Dealix addresses it at a mechanism level — not a feature list,
+        but the structural change. One to two sentences maximum.
+    - id: proof_hook
+      instruction: >
+        Cite one specific operational outcome achieved for a comparable client.
+        Never use exact percentages without evidence. Use ranges or directional
+        language unless verified data is available.
+    - id: low_commitment_ask
+      instruction: >
+        End with a single, low-friction ask: a 30-minute call, a diagnostic review,
+        or a question that invites a reply. Never ask for a buying decision.
+
+quality_gate:
+  minimum_score: 82
+  dimensions:
+    - id: personalization
+      max_score: 25
+      description: >
+        Does the draft reference something specific to this company's sector,
+        scale, or known operations? Generic openers score 0-5. Company-specific
+        detail scores 18-25.
+    - id: relevance
+      max_score: 25
+      description: >
+        Does the offer match the company's most likely pain? Is the buyer title
+        correct for this company type?
+    - id: clarity
+      max_score: 15
+      description: >
+        Is the message easy to read in under 45 seconds? No jargon overload.
+        Clear structure.
+    - id: commercial_value
+      max_score: 15
+      description: >
+        Is there a tangible business outcome described? Does the reader understand
+        what changes for them?
+    - id: credibility
+      max_score: 10
+      description: >
+        Is there a proof element — a result, a mechanism, or a specific observation
+        that signals competence?
+    - id: compliance
+      max_score: 10
+      description: >
+        No guaranteed outcome claims. No scraping or automation language.
+        No cold WhatsApp references. No LinkedIn automation references.
+
+auto_improve:
+  enabled: true
+  max_attempts: 1
+  instruction: >
+    The draft scored below the minimum threshold. Rewrite it applying the
+    SPECIFIC-PAIN-PROOF-ASK formula more strictly. Increase specificity of
+    the opening observation. Strengthen the pain amplification. Remove any
+    generic phrases. Do not add guaranteed outcome claims.
+
+daily_limits:
+  sends_per_day: 20
+  tier_a_priority: true
+  founder_review_required: true
