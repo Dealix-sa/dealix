@@ -167,7 +167,7 @@ def _run_script(rel: str, *extra: str) -> dict[str, Any]:
         return {"script": rel, "ok": False, "skipped": True, "reason": "missing"}
     cmd = [sys.executable, str(path), *extra]
     try:
-        proc = subprocess.run(  # noqa: S603 — sys.executable; controlled script path
+        proc = subprocess.run(
             cmd,
             cwd=str(REPO_ROOT),
             capture_output=True,

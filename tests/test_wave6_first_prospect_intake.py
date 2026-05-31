@@ -6,6 +6,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+
 SCRIPT = Path("scripts/dealix_first_prospect_intake.py")
 
 

@@ -5,8 +5,8 @@ from __future__ import annotations
 from auto_client_acquisition.compliance_trust_os import (
     COMPLIANCE_DASHBOARD_METRICS,
     COMPLIANCE_REPORT_SECTIONS,
-    KNOWN_RUNTIME_POLICY_RULES,
     GovernanceDecision,
+    KNOWN_RUNTIME_POLICY_RULES,
     SourcePassportV2,
     ai_use_requires_passport,
     allowed_use_permits_ai,

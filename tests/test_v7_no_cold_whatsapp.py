@@ -20,10 +20,11 @@ from pathlib import Path
 import pytest
 
 from auto_client_acquisition.v3.compliance_os import (
-    Contactability,
     ContactPolicyInput,
+    Contactability,
     assess_contactability,
 )
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PKG_ROOT = REPO_ROOT / "auto_client_acquisition"

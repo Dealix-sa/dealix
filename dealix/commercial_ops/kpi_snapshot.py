@@ -36,7 +36,9 @@ def load_kpi_commercial_status() -> dict[str, Any]:
     for key, row in entries.items():
         val = row.get("value_numeric")
         ref = (row.get("source_ref") or "").strip()
-        if val is None or not ref or _FORBIDDEN_REF.search(ref):
+        if val is None or not ref:
+            pending.append(key)
+        elif _FORBIDDEN_REF.search(ref):
             pending.append(key)
         else:
             ready.append(key)

@@ -11,7 +11,7 @@ proceeding to the next step. NO external sends.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from typing import Any
 
 
@@ -61,7 +61,7 @@ def _safe(step_name: str, fn, **kwargs) -> SprintStep:
             status="ran",
             output=out if isinstance(out, dict) else {"value": out},
         )
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         try:
             from auto_client_acquisition.friction_log.store import emit
             emit(
@@ -167,24 +167,6 @@ def _score_reasons(acc: dict, score: int) -> list[str]:
     if score < 50:
         reasons.append("low_signal_overall")
     return reasons
-
-
-def step3b_company_brain(*, customer_id: str, engagement_id: str) -> dict:
-    """Day 3 (cont'd): Build Company Brain snapshot — services, agent health,
-    current priorities. Included in the Sprint deliverable as 'Company Brain v1'.
-    """
-    try:
-        from auto_client_acquisition.company_brain.brain import build_company_brain
-        brain = build_company_brain()
-        return {
-            "company_brain_v1": brain.as_dict(),
-            "health_overall": brain.health_overall,
-            "current_priorities": brain.current_priorities[:3],
-            "services_count": sum(brain.services_summary.values()),
-            "agents_count": sum(brain.agents_summary.values()),
-        }
-    except Exception as exc:
-        return {"company_brain_v1": None, "error": str(exc), "note": "company_brain_degraded"}
 
 
 def step4_draft_pack(*, customer_id: str, engagement_id: str, top_accounts: list[dict]) -> dict:
@@ -394,7 +376,7 @@ def step7_capital_assets(
                 notes=s.get("notes", ""),
             )
             registered.append(a.asset_id)
-        except Exception:
+        except Exception:  # noqa: BLE001
             continue
     return {"registered": registered, "count": len(registered)}
 
@@ -443,7 +425,7 @@ def run_sprint(
     The founder reviews intermediate outputs before proceeding in
     production. For tests, all steps run sequentially.
     """
-    started = datetime.now(UTC).isoformat()
+    started = datetime.now(timezone.utc).isoformat()
     run = SprintRun(
         engagement_id=engagement_id,
         customer_id=customer_id,
@@ -467,11 +449,6 @@ def run_sprint(
                customer_id=customer_id, engagement_id=engagement_id, accounts=accounts)
     run.steps.append(s3)
     top10 = s3.output.get("top_10", [])
-
-    # Step 3b — Company Brain v1
-    s3b = _safe("company_brain_v1", step3b_company_brain,
-                customer_id=customer_id, engagement_id=engagement_id)
-    run.steps.append(s3b)
 
     # Step 4 — outline drafts
     s4 = _safe("draft_pack_outline", step4_draft_pack,
@@ -546,7 +523,6 @@ __all__ = [
     "step1_kickoff",
     "step2_data_quality",
     "step3_account_scoring",
-    "step3b_company_brain",
     "step4_draft_pack",
     "step5_governance_review",
     "step6_proof_pack",

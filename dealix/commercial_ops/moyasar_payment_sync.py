@@ -35,8 +35,8 @@ def sync_paid_payment_to_hubspot(
     email = str(meta.get("email") or payment.get("source", {}).get("email") or "").strip()
     company = str(meta.get("company") or meta.get("company_name") or "").strip()
 
-    from dealix.revenue_ops_autopilot.crm_bridge import sync_lead_to_hubspot
     from dealix.revenue_ops_autopilot.schemas import FunnelLeadRecord
+    from dealix.revenue_ops_autopilot.crm_bridge import sync_lead_to_hubspot
     from dealix.revenue_ops_autopilot.store import get_autopilot_store
 
     store = get_autopilot_store()
@@ -63,7 +63,7 @@ def sync_paid_payment_to_hubspot(
     try:
         out = sync_lead_to_hubspot(record, store=store)
         return {"hubspot": out, "lead_id": record.id}
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.warning("moyasar_hubspot_sync_failed lead=%s error=%s", record.id, exc)
         return {"hubspot": {"synced": False, "reason": str(exc)}, "lead_id": record.id}
 
@@ -101,7 +101,7 @@ def append_payment_evidence(
             war_room_status="invoice_paid",
         )
         return {"evidence": row}
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.warning("moyasar_evidence_append_failed error=%s", exc)
         return {"skipped": True, "reason": str(exc)}
 

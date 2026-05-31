@@ -16,7 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -60,7 +60,7 @@ def _save(path: Path, data: dict[str, Any]) -> None:
 
 
 def _now() -> str:
-    return datetime.now(UTC).isoformat()
+    return datetime.now(timezone.utc).isoformat()
 
 
 def _can_transition(current: str, target: str) -> bool:

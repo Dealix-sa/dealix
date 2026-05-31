@@ -30,7 +30,7 @@ def build_weekly_scorecard(*, week_end: datetime | None = None) -> dict[str, Any
     start = end - timedelta(days=6)
     rows = load_evidence_rows()
 
-    week_counts: dict[str, int] = dict.fromkeys(KPI_TYPES, 0)
+    week_counts: dict[str, int] = {k: 0 for k in KPI_TYPES}
     pilots_proof = 0
     for row in rows:
         if is_placeholder_evidence_row(row):

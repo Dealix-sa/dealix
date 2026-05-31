@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import pytest
 
+
 # ── GET /api/v1/tenants/{handle}/theme.css ────────────────────────
 
 @pytest.mark.asyncio

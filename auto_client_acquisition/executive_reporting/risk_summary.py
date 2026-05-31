@@ -52,7 +52,7 @@ def risk_summary(
                 if line and line not in seen:
                     seen.add(line)
                     out.append(line)
-            except Exception:
+            except Exception:  # noqa: BLE001 — defensive
                 continue
 
     return out

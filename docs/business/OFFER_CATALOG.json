@@ -1,0 +1,137 @@
+{
+  "company": "Dealix",
+  "category": "Governed AI Operating System for Revenue + Trust",
+  "currency": "SAR",
+  "last_updated": "2026-05-25",
+  "disclosure": {
+    "en": "Starting prices only; floors are fence-bound and not discountable below the listed minimum. Estimated value is not Verified value.",
+    "ar": "أسعار بدئية فقط؛ الحدود الدنيا مُحصّنة بقيود ولا تقبل خصمًا تحت الحد المعلن. القيمة التقديرية ليست قيمة مُتحقَّقة."
+  },
+  "offers": [
+    {
+      "id": "revenue_hunter_pilot",
+      "name": "Revenue Hunter Pilot",
+      "buyer": "B2B SMB owner who wants evidenced lead capture in 14 days",
+      "outcome": "First 10 qualified leads with Source Passport, before/after pipeline snapshot, Evidence Pack per converted lead",
+      "starting_price_sar": 4900,
+      "fence": "non-discountable below 4,900 SAR; refund window 7 days if no Evidence Pack produced",
+      "deliverables": [
+        "ICP definition workshop (1 session)",
+        "Lead Engine wired to 1 inbound channel (website or WhatsApp inbound)",
+        "10 qualified leads with Source Passport",
+        "Evidence Pack per converted lead",
+        "End-of-pilot conversion report"
+      ],
+      "excluded": [
+        "Cold WhatsApp or LinkedIn outreach",
+        "Scraping",
+        "External sends without explicit per-message approval"
+      ]
+    },
+    {
+      "id": "ai_trust_kit",
+      "name": "AI Trust Kit",
+      "buyer": "Mid-market company (50-500 employees) preparing for AI adoption with legal exposure concerns",
+      "outcome": "Published AI Use Policy, Agent Registry baseline, Tool Permission Matrix, first Evidence Pack template, PDPL alignment notes",
+      "starting_price_sar": 18000,
+      "fence": "non-discountable below 18,000 SAR; delivered in 4 weeks",
+      "deliverables": [
+        "AI Use Policy (bilingual) tailored to customer",
+        "Agent Registry seeded with customer agents",
+        "Tool Permission Matrix baseline",
+        "Evidence Pack format aligned to customer data flows",
+        "DPIA-light note for PDPL Article 21"
+      ]
+    },
+    {
+      "id": "agency_whitelabel_kit",
+      "name": "Agency White-label Kit",
+      "buyer": "Saudi marketing or consulting agency reselling AI ops to its book of business",
+      "outcome": "White-label tenant, agency-branded reports, revenue share contract, partner enablement",
+      "starting_price_sar": 25000,
+      "fence": "1,000 SAR/month platform fee + 25% rev share on agency-originated revenue; no exclusivity granted",
+      "deliverables": [
+        "White-label tenant with agency branding (logos, palette, domain)",
+        "Partner-facing Agent Registry and Evidence Pack export",
+        "2 enablement sessions for the agency team",
+        "Quarterly business review"
+      ]
+    },
+    {
+      "id": "revenue_command",
+      "name": "Revenue Command",
+      "buyer": "Founder or commercial lead who needs a single pane for pipeline plus evidence",
+      "outcome": "Unified revenue dashboard backed by Evidence Packs; verified revenue only counted with proof",
+      "starting_price_sar": 9000,
+      "fence": "monthly retainer non-discountable below 9,000 SAR/month; 90-day minimum term",
+      "deliverables": [
+        "Pipeline view tied to Evidence Packs",
+        "Verified revenue line vs estimated revenue line (separate)",
+        "Weekly founder digest",
+        "Monthly evidence audit"
+      ]
+    },
+    {
+      "id": "market_radar",
+      "name": "Market Radar",
+      "buyer": "Strategy or BD lead wanting aggregated sector pattern reads (not scraped data)",
+      "outcome": "Sector report based on aggregated, methodology-disclosed patterns; no confidential metrics",
+      "starting_price_sar": 7500,
+      "fence": "per-report or annual subscription; methodology page published with every report",
+      "deliverables": [
+        "Sector pattern report (10-25 pages)",
+        "Methodology disclosure section",
+        "Aggregated indicators with sample-size notes",
+        "Founder briefing (1 hour)"
+      ],
+      "excluded": [
+        "Confidential competitor metrics",
+        "Scraped data",
+        "Customer-specific claims without consent"
+      ]
+    },
+    {
+      "id": "agentic_control_plane_setup",
+      "name": "Agentic Control Plane Setup",
+      "buyer": "Enterprise CIO or CISO standing up AI governance",
+      "outcome": "Live Agent Registry, Tool Permission Matrix, MCP review pipeline, Evidence Pack standard wired",
+      "starting_price_sar": 75000,
+      "fence": "non-discountable below 75,000 SAR; 6-8 week delivery",
+      "deliverables": [
+        "Agent Registry populated for the customer estate",
+        "Tool Permission Matrix and approval workflow",
+        "MCP server review checklist applied to first 5 servers",
+        "Evidence Pack format ratified by customer legal",
+        "Incident Response playbook localized"
+      ]
+    },
+    {
+      "id": "governance_os_retainer",
+      "name": "Governance OS Retainer",
+      "buyer": "Enterprise running AI agents that need ongoing oversight",
+      "outcome": "Monthly governance reviews, evidence audit, agent permission drift control, incident response readiness",
+      "starting_price_sar": 35000,
+      "fence": "monthly retainer non-discountable below 35,000 SAR/month; 12-month minimum",
+      "deliverables": [
+        "Monthly Agent Registry drift report",
+        "Monthly Evidence Pack audit sample (10% random)",
+        "Quarterly incident response tabletop",
+        "Tool Permission Matrix change review on demand"
+      ]
+    },
+    {
+      "id": "executive_pmo",
+      "name": "Executive PMO",
+      "buyer": "C-suite or board sponsoring an AI program needing founder-grade oversight",
+      "outcome": "Founder-led program management with board-ready reporting and verified-revenue accounting",
+      "starting_price_sar": 100000,
+      "fence": "monthly retainer non-discountable below 100,000 SAR/month; quarterly board review included",
+      "deliverables": [
+        "Program charter aligned to board priorities",
+        "Monthly board update with verified vs estimated revenue separated",
+        "Quarterly red-team review",
+        "Evidence-required milestone gates"
+      ]
+    }
+  ]
+}

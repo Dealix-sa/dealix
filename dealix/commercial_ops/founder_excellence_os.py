@@ -9,11 +9,7 @@ import yaml
 from dealix.commercial_ops.founder_comprehensive_plan import build_comprehensive_status
 from dealix.commercial_ops.founder_north_star import build_north_star_status
 from dealix.commercial_ops.founder_production_gates import build_founder_production_gates
-from dealix.commercial_ops.paths import (
-    FOUNDER_EXCELLENCE_OS_YAML,
-    FOUNDER_WELLBEING_YAML,
-    REPO_ROOT,
-)
+from dealix.commercial_ops.paths import FOUNDER_EXCELLENCE_OS_YAML, FOUNDER_WELLBEING_YAML, REPO_ROOT
 
 EXCELLENCE_DOC = REPO_ROOT / "docs/ops/FOUNDER_EXCELLENCE_OS_AR.md"
 

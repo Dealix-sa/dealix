@@ -5,10 +5,10 @@ from __future__ import annotations
 import pytest
 
 from auto_client_acquisition.intelligence_compounding_os import (
+    CompoundingDecision,
     INTELLIGENCE_DASHBOARD_SIGNALS,
     INTELLIGENCE_EVENT_STREAMS,
     INTELLIGENCE_QUALITY_CONTROLS,
-    CompoundingDecision,
     MarketSignalRecord,
     ProductIntelligenceVerdict,
     arabic_intelligence_coverage_score,

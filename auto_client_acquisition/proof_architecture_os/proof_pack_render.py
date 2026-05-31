@@ -8,7 +8,7 @@ reuses the shared markdown→PDF renderer. No external sends.
 
 from __future__ import annotations
 
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from typing import Any
 
 from auto_client_acquisition.proof_architecture_os.proof_pack_v2 import (
@@ -94,7 +94,7 @@ def proof_pack_to_markdown(
     """
     customer_handle = customer_handle or "(customer)"
     pack = _as_dict(pack)
-    generated_at = datetime.now(UTC).isoformat()
+    generated_at = datetime.now(timezone.utc).isoformat()
     sections = _sections(pack)
     if not _has_content(sections):
         return _not_generated_notice(customer_handle, generated_at)
