@@ -7,10 +7,13 @@ Tests cover:
 - _build_proposal: client name/sector in content, price display, sections
 - Approval_FIRST governance for generate endpoint
 - All 5 tiers generate valid proposals
+- New: _PROPOSAL_SECTIONS (6 sections), _PROPOSAL_TYPES (4 types)
+- New: _draft_proposal_outline
 """
 from __future__ import annotations
 
 import pytest
+from fastapi import HTTPException
 
 from api.routers.proposal_builder import (
     _TIERS,
@@ -18,6 +21,11 @@ from api.routers.proposal_builder import (
     _build_proposal,
     ProposalRequest,
     router,
+    _PROPOSAL_SECTIONS,
+    _PROPOSAL_TYPES,
+    _VALID_PROPOSAL_TYPES,
+    ProposalDraftInput,
+    _draft_proposal_outline,
 )
 
 
@@ -162,3 +170,170 @@ class TestRouterMetadata:
 
     def test_router_tags(self):
         assert "Sales" in router.tags
+
+
+# ===========================================================================
+# New tests: _PROPOSAL_SECTIONS, _PROPOSAL_TYPES, _draft_proposal_outline
+# ===========================================================================
+
+
+def _make_draft_input(**overrides) -> ProposalDraftInput:
+    data = dict(
+        proposal_type="sprint",
+        client_name="Almarai Group",
+        client_sector="Food & Beverage",
+        champion_name="Sara Al-Otaibi",
+        champion_title="VP Operations",
+        key_pain_en="Manual reporting takes 3 days per week",
+        key_pain_ar="التقارير اليدوية تستغرق 3 أيام في الأسبوع",
+        proposed_start_date="2026-06-15",
+        arabic_primary=False,
+    )
+    data.update(overrides)
+    return ProposalDraftInput(**data)
+
+
+class TestProposalSectionsNew:
+    def test_has_six_sections(self):
+        assert len(_PROPOSAL_SECTIONS) == 6
+
+    def test_ordered_1_to_6(self):
+        orders = [s["order"] for s in _PROPOSAL_SECTIONS]
+        assert orders == list(range(1, 7))
+
+    def test_all_have_section_name_en(self):
+        for s in _PROPOSAL_SECTIONS:
+            assert s.get("section_name_en"), f"Section {s['order']} missing section_name_en"
+
+    def test_all_have_section_name_ar(self):
+        for s in _PROPOSAL_SECTIONS:
+            assert s.get("section_name_ar"), f"Section {s['order']} missing section_name_ar"
+
+    def test_all_have_purpose_en(self):
+        for s in _PROPOSAL_SECTIONS:
+            assert s.get("purpose_en"), f"Section {s['order']} missing purpose_en"
+
+    def test_all_have_purpose_ar(self):
+        for s in _PROPOSAL_SECTIONS:
+            assert s.get("purpose_ar"), f"Section {s['order']} missing purpose_ar"
+
+    def test_all_have_word_count_guideline(self):
+        for s in _PROPOSAL_SECTIONS:
+            assert "word_count_guideline" in s
+            assert 50 <= s["word_count_guideline"] <= 300
+
+    def test_all_required_true(self):
+        for s in _PROPOSAL_SECTIONS:
+            assert s.get("required") is True, f"Section {s['order']} not required"
+
+
+class TestProposalTypesNew:
+    def test_has_four_keys(self):
+        assert len(_PROPOSAL_TYPES) == 4
+
+    def test_has_sprint(self):
+        assert "sprint" in _PROPOSAL_TYPES
+
+    def test_has_data_pack(self):
+        assert "data_pack" in _PROPOSAL_TYPES
+
+    def test_has_managed_ops(self):
+        assert "managed_ops" in _PROPOSAL_TYPES
+
+    def test_has_custom_ai(self):
+        assert "custom_ai" in _PROPOSAL_TYPES
+
+    def test_all_have_name_en(self):
+        for key, pt in _PROPOSAL_TYPES.items():
+            assert pt.get("name_en"), f"{key} missing name_en"
+
+    def test_all_have_name_ar(self):
+        for key, pt in _PROPOSAL_TYPES.items():
+            assert pt.get("name_ar"), f"{key} missing name_ar"
+
+    def test_all_have_price_sar_display(self):
+        for key, pt in _PROPOSAL_TYPES.items():
+            assert pt.get("price_sar_display"), f"{key} missing price_sar_display"
+
+    def test_all_have_page_count(self):
+        for key, pt in _PROPOSAL_TYPES.items():
+            assert "page_count" in pt and isinstance(pt["page_count"], int)
+
+    def test_sprint_price_499(self):
+        assert "499" in _PROPOSAL_TYPES["sprint"]["price_sar_display"]
+
+    def test_data_pack_price_1500(self):
+        assert "1,500" in _PROPOSAL_TYPES["data_pack"]["price_sar_display"]
+
+    def test_valid_proposal_types_set(self):
+        assert _VALID_PROPOSAL_TYPES == {"sprint", "data_pack", "managed_ops", "custom_ai"}
+
+
+class TestDraftProposalOutline:
+    def test_returns_dict(self):
+        result = _draft_proposal_outline(_make_draft_input())
+        assert isinstance(result, dict)
+
+    def test_has_client_name(self):
+        result = _draft_proposal_outline(_make_draft_input(client_name="SABIC Corp"))
+        assert result["client_name"] == "SABIC Corp"
+
+    def test_has_proposal_type(self):
+        result = _draft_proposal_outline(_make_draft_input(proposal_type="data_pack"))
+        assert result["proposal_type"] == "data_pack"
+
+    def test_has_proposal_meta(self):
+        result = _draft_proposal_outline(_make_draft_input())
+        assert "proposal_meta" in result
+        assert isinstance(result["proposal_meta"], dict)
+
+    def test_sections_count_six(self):
+        result = _draft_proposal_outline(_make_draft_input())
+        assert len(result["sections"]) == 6
+
+    def test_total_sections_six(self):
+        result = _draft_proposal_outline(_make_draft_input())
+        assert result["total_sections"] == 6
+
+    def test_sections_have_draft_hook_en(self):
+        result = _draft_proposal_outline(_make_draft_input(client_name="Gulf Tech"))
+        for s in result["sections"]:
+            assert s.get("draft_hook_en"), f"Section {s.get('order')} missing draft_hook_en"
+            assert "Gulf Tech" in s["draft_hook_en"]
+
+    def test_sections_have_draft_hook_ar(self):
+        result = _draft_proposal_outline(_make_draft_input(client_name="Gulf Tech"))
+        for s in result["sections"]:
+            assert s.get("draft_hook_ar"), f"Section {s.get('order')} missing draft_hook_ar"
+            assert "Gulf Tech" in s["draft_hook_ar"]
+
+    def test_invalid_proposal_type_raises_422(self):
+        with pytest.raises(HTTPException) as exc_info:
+            _draft_proposal_outline(_make_draft_input(proposal_type="unknown_type"))
+        assert exc_info.value.status_code == 422
+
+    @pytest.mark.parametrize("ptype", ["sprint", "data_pack", "managed_ops", "custom_ai"])
+    def test_all_valid_types_work(self, ptype):
+        result = _draft_proposal_outline(_make_draft_input(proposal_type=ptype))
+        assert result["proposal_type"] == ptype
+        assert result["total_sections"] == 6
+
+    def test_governance_decision_approval_first(self):
+        result = _draft_proposal_outline(_make_draft_input())
+        assert result["governance_decision"] == "APPROVAL_FIRST"
+
+    def test_has_disclaimer_en(self):
+        result = _draft_proposal_outline(_make_draft_input())
+        assert result.get("disclaimer_en")
+
+    def test_has_disclaimer_ar(self):
+        result = _draft_proposal_outline(_make_draft_input())
+        assert result.get("disclaimer_ar")
+
+    def test_language_primary_en_default(self):
+        result = _draft_proposal_outline(_make_draft_input(arabic_primary=False))
+        assert result["language_primary"] == "en"
+
+    def test_language_primary_ar_when_set(self):
+        result = _draft_proposal_outline(_make_draft_input(arabic_primary=True))
+        assert result["language_primary"] == "ar"

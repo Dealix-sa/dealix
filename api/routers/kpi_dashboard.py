@@ -450,3 +450,287 @@ async def kpi_health_score() -> dict[str, Any]:
             "pipeline quality, NPS, and proof strength."
         ),
     }
+
+
+# ===========================================================================
+# /api/v1/kpi-dashboard — snapshot router (pure Python, no DB, no auth)
+# ===========================================================================
+
+from pydantic import BaseModel, Field as _Field  # noqa: E402
+
+# ---------------------------------------------------------------------------
+# Static data: KPI definitions
+# ---------------------------------------------------------------------------
+
+_KPI_DEFINITIONS: dict[str, dict[str, Any]] = {
+    "mrr_growth": {
+        "kpi_id": "mrr_growth",
+        "name_en": "MRR Growth Rate",
+        "name_ar": "معدل نمو الإيراد الشهري المتكرر",
+        "description_en": "Month-over-month percentage growth in monthly recurring revenue.",
+        "unit": "%",
+        "direction": "up_is_good",
+        "target_source_en": "Company revenue target set by founder.",
+    },
+    "nrr": {
+        "kpi_id": "nrr",
+        "name_en": "Net Revenue Retention",
+        "name_ar": "صافي الاحتفاظ بالإيرادات",
+        "description_en": "Percentage of recurring revenue retained from existing customers including expansion.",
+        "unit": "%",
+        "direction": "up_is_good",
+        "target_source_en": "SaaS industry benchmark (world-class >= 120%).",
+    },
+    "churn_rate": {
+        "kpi_id": "churn_rate",
+        "name_en": "Churn Rate",
+        "name_ar": "معدل الإلغاء",
+        "description_en": "Percentage of customers or revenue lost per month.",
+        "unit": "%",
+        "direction": "down_is_good",
+        "target_source_en": "SaaS benchmark (world-class < 2% monthly).",
+    },
+    "data_quality_score": {
+        "kpi_id": "data_quality_score",
+        "name_en": "Data Quality Score",
+        "name_ar": "درجة جودة البيانات",
+        "description_en": "Composite score measuring completeness, accuracy, and freshness of client data.",
+        "unit": "score",
+        "direction": "up_is_good",
+        "target_source_en": "Dealix internal standard (target >= 80).",
+    },
+    "pipeline_velocity_days": {
+        "kpi_id": "pipeline_velocity_days",
+        "name_en": "Pipeline Velocity (Days)",
+        "name_ar": "سرعة خط الأنابيب (أيام)",
+        "description_en": "Average number of days a deal spends moving through the full pipeline.",
+        "unit": "days",
+        "direction": "down_is_good",
+        "target_source_en": "Saudi B2B benchmark (world-class <= 30 days).",
+    },
+    "customer_health_score": {
+        "kpi_id": "customer_health_score",
+        "name_en": "Customer Health Score",
+        "name_ar": "درجة صحة العميل",
+        "description_en": "Composite score measuring engagement, satisfaction, and expansion likelihood.",
+        "unit": "score",
+        "direction": "up_is_good",
+        "target_source_en": "Dealix internal standard (target >= 75).",
+    },
+    "saudization_pct": {
+        "kpi_id": "saudization_pct",
+        "name_en": "Saudization Percentage",
+        "name_ar": "نسبة السعودة",
+        "description_en": "Percentage of Saudi nationals in the workforce relative to Vision 2030 targets.",
+        "unit": "%",
+        "direction": "up_is_good",
+        "target_source_en": "Vision 2030 and Nitaqat compliance requirements.",
+    },
+    "zatca_compliance_pct": {
+        "kpi_id": "zatca_compliance_pct",
+        "name_en": "ZATCA Compliance Rate",
+        "name_ar": "معدل الامتثال للزكاة",
+        "description_en": "Percentage of transactions and invoices fully compliant with ZATCA e-invoicing rules.",
+        "unit": "%",
+        "direction": "up_is_good",
+        "target_source_en": "ZATCA Phase 2 mandate (target 100%).",
+    },
+}
+
+# ---------------------------------------------------------------------------
+# Static data: dashboard views
+# ---------------------------------------------------------------------------
+
+_DASHBOARD_VIEWS: list[dict[str, Any]] = [
+    {
+        "view_id": "executive",
+        "name_en": "Executive View",
+        "name_ar": "العرض التنفيذي",
+        "kpi_ids": ["mrr_growth", "nrr", "churn_rate", "saudization_pct"],
+        "audience_en": "C-level executives and board members.",
+        "audience_ar": "المسؤولون التنفيذيون وأعضاء مجلس الإدارة.",
+    },
+    {
+        "view_id": "operations",
+        "name_en": "Operations View",
+        "name_ar": "العرض التشغيلي",
+        "kpi_ids": ["data_quality_score", "pipeline_velocity_days", "zatca_compliance_pct"],
+        "audience_en": "Operations leads and delivery managers.",
+        "audience_ar": "مسؤولو العمليات ومديرو التسليم.",
+    },
+    {
+        "view_id": "customer_success",
+        "name_en": "Customer Success View",
+        "name_ar": "عرض نجاح العملاء",
+        "kpi_ids": ["customer_health_score", "nrr", "churn_rate", "data_quality_score"],
+        "audience_en": "Customer success managers and account owners.",
+        "audience_ar": "مديرو نجاح العملاء وأصحاب الحسابات.",
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Static data: Saudi KPI benchmarks
+# ---------------------------------------------------------------------------
+
+_SAUDI_KPI_BENCHMARKS: dict[str, dict[str, Any]] = {
+    "mrr_growth": {"world_class": 20.0, "saudi_median": 8.0, "unit": "%"},
+    "nrr": {"world_class": 120.0, "saudi_median": 100.0, "unit": "%"},
+    "churn_rate": {"world_class": 1.0, "saudi_median": 4.0, "unit": "%"},
+    "data_quality_score": {"world_class": 90.0, "saudi_median": 65.0, "unit": "score"},
+    "pipeline_velocity_days": {"world_class": 30.0, "saudi_median": 55.0, "unit": "days"},
+    "customer_health_score": {"world_class": 85.0, "saudi_median": 68.0, "unit": "score"},
+    "saudization_pct": {"world_class": 80.0, "saudi_median": 55.0, "unit": "%"},
+    "zatca_compliance_pct": {"world_class": 100.0, "saudi_median": 85.0, "unit": "%"},
+}
+
+_SNAPSHOT_DISCLAIMER_EN = (
+    "KPI snapshot values are self-reported and unaudited. "
+    "All benchmarks are estimates. Review before sharing externally."
+)
+_SNAPSHOT_DISCLAIMER_AR = (
+    "قيم لقطة KPI مُبلَّغ عنها ذاتيًا وغير مدققة. "
+    "جميع المعايير تقديرية. راجع قبل المشاركة الخارجية."
+)
+
+# ---------------------------------------------------------------------------
+# Pydantic model for snapshot
+# ---------------------------------------------------------------------------
+
+
+class KPISnapshotInput(BaseModel):
+    company_name: str
+    period_label_en: str
+    mrr_growth_pct: float
+    nrr_pct: float
+    churn_rate_pct: float
+    data_quality_score: float = _Field(..., ge=0, le=100)
+    pipeline_velocity_days: float = _Field(..., ge=0)
+    customer_health_score: float = _Field(..., ge=0, le=100)
+    saudization_pct: float = _Field(..., ge=0, le=100)
+    zatca_compliance_pct: float = _Field(..., ge=0, le=100)
+
+
+# ---------------------------------------------------------------------------
+# Pure-function core: build KPI snapshot
+# ---------------------------------------------------------------------------
+
+_KPI_INPUT_MAP: dict[str, str] = {
+    "mrr_growth": "mrr_growth_pct",
+    "nrr": "nrr_pct",
+    "churn_rate": "churn_rate_pct",
+    "data_quality_score": "data_quality_score",
+    "pipeline_velocity_days": "pipeline_velocity_days",
+    "customer_health_score": "customer_health_score",
+    "saudization_pct": "saudization_pct",
+    "zatca_compliance_pct": "zatca_compliance_pct",
+}
+
+
+def _build_kpi_snapshot(inp: KPISnapshotInput) -> dict[str, Any]:
+    """Compute a KPI snapshot with benchmark comparison for a given company period.
+
+    Returns a structured dict with kpi_scores, top_performers, needs_attention,
+    overall_grade, and disclaimers.
+    """
+    kpi_scores: list[dict[str, Any]] = []
+    above_count = 0
+
+    for kpi_id, field_name in _KPI_INPUT_MAP.items():
+        value = getattr(inp, field_name)
+        definition = _KPI_DEFINITIONS[kpi_id]
+        benchmark = _SAUDI_KPI_BENCHMARKS[kpi_id]
+        median = benchmark["saudi_median"]
+        direction = definition["direction"]
+
+        if direction == "up_is_good":
+            if value > median:
+                vs_benchmark = "above_median"
+                above_count += 1
+            elif value == median:
+                vs_benchmark = "at_median"
+            else:
+                vs_benchmark = "below_median"
+        else:  # down_is_good
+            if value < median:
+                vs_benchmark = "above_median"
+                above_count += 1
+            elif value == median:
+                vs_benchmark = "at_median"
+            else:
+                vs_benchmark = "below_median"
+
+        kpi_scores.append(
+            {
+                "kpi_id": kpi_id,
+                "value": value,
+                "vs_benchmark": vs_benchmark,
+                "unit": benchmark["unit"],
+            }
+        )
+
+    top_performers = [
+        s["kpi_id"] for s in kpi_scores if s["vs_benchmark"] == "above_median"
+    ][:3]
+    needs_attention = [
+        s["kpi_id"] for s in kpi_scores if s["vs_benchmark"] == "below_median"
+    ][:3]
+
+    if above_count >= 6:
+        overall_grade = "A"
+    elif above_count >= 4:
+        overall_grade = "B"
+    elif above_count >= 2:
+        overall_grade = "C"
+    else:
+        overall_grade = "D"
+
+    return {
+        "company_name": inp.company_name,
+        "period_label_en": inp.period_label_en,
+        "kpi_scores": kpi_scores,
+        "top_performers": top_performers,
+        "needs_attention": needs_attention,
+        "overall_grade": overall_grade,
+        "governance_decision": "ALLOW_WITH_REVIEW",
+        "disclaimer_en": _SNAPSHOT_DISCLAIMER_EN,
+        "disclaimer_ar": _SNAPSHOT_DISCLAIMER_AR,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Second router: /api/v1/kpi-dashboard (pure Python, no auth, no DB)
+# ---------------------------------------------------------------------------
+
+router_v2 = APIRouter(
+    prefix="/api/v1/kpi-dashboard",
+    tags=["Analytics"],
+)
+
+
+@router_v2.get("/definitions", summary="All 8 KPI definitions")
+def get_kpi_definitions() -> dict[str, Any]:
+    """Return all KPI definitions with bilingual labels, units, and direction."""
+    return {
+        "definitions": list(_KPI_DEFINITIONS.values()),
+        "total_kpis": len(_KPI_DEFINITIONS),
+        "governance_decision": "ALLOW_WITH_REVIEW",
+    }
+
+
+@router_v2.get("/views", summary="All 3 dashboard views")
+def get_dashboard_views() -> dict[str, Any]:
+    """Return all dashboard views with bilingual labels and KPI groupings."""
+    return {
+        "views": _DASHBOARD_VIEWS,
+        "total_views": len(_DASHBOARD_VIEWS),
+        "governance_decision": "ALLOW_WITH_REVIEW",
+    }
+
+
+@router_v2.post("/snapshot", summary="Generate a KPI snapshot with benchmark comparison")
+def create_kpi_snapshot(body: KPISnapshotInput) -> dict[str, Any]:
+    """Accept company KPI values and return a structured benchmark comparison.
+
+    Governance decision: ALLOW_WITH_REVIEW.
+    """
+    return _build_kpi_snapshot(body)

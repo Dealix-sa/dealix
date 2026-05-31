@@ -706,6 +706,18 @@ def create_app() -> FastAPI:
     from api.routers import retention_risk as retention_risk_router
     app.include_router(retention_risk_router.router)
 
+    # Pipeline Velocity — stage benchmarks, stall detection, urgency scoring
+    from api.routers import pipeline_velocity as pipeline_velocity_router
+    app.include_router(pipeline_velocity_router.router)
+
+    # Proposal Builder — bilingual proposal outline generator per tier
+    from api.routers import proposal_builder as proposal_builder_router
+    app.include_router(proposal_builder_router.router)
+
+    # KPI Dashboard v2 — 8 Saudi KPIs, benchmark comparison, overall grade
+    from api.routers import kpi_dashboard as kpi_dashboard_module
+    app.include_router(kpi_dashboard_module.router_v2)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

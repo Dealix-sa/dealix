@@ -334,6 +334,199 @@ async def get_sections() -> dict[str, Any]:
     }
 
 
+# ---------------------------------------------------------------------------
+# New static data: simplified proposal sections (ordered 1-6)
+# ---------------------------------------------------------------------------
+
+_PROPOSAL_SECTIONS: list[dict[str, Any]] = [
+    {
+        "order": 1,
+        "section_name_en": "Executive Summary",
+        "section_name_ar": "الملخص التنفيذي",
+        "purpose_en": "Capture the decision-maker's attention with a concise summary of the value proposition.",
+        "purpose_ar": "استقطاب انتباه صاحب القرار بملخص موجز لعرض القيمة.",
+        "word_count_guideline": 150,
+        "required": True,
+    },
+    {
+        "order": 2,
+        "section_name_en": "Problem Statement",
+        "section_name_ar": "بيان المشكلة",
+        "purpose_en": "Articulate the client's current pain points and the cost of inaction.",
+        "purpose_ar": "توضيح نقاط الألم الحالية لدى العميل وتكلفة عدم التحرك.",
+        "word_count_guideline": 200,
+        "required": True,
+    },
+    {
+        "order": 3,
+        "section_name_en": "Solution Overview",
+        "section_name_ar": "نظرة عامة على الحل",
+        "purpose_en": "Describe the proposed solution and how it directly addresses the stated problem.",
+        "purpose_ar": "وصف الحل المقترح وكيفية معالجته المباشرة للمشكلة المطروحة.",
+        "word_count_guideline": 200,
+        "required": True,
+    },
+    {
+        "order": 4,
+        "section_name_en": "ROI Case",
+        "section_name_ar": "حجة العائد على الاستثمار",
+        "purpose_en": "Present quantified expected returns and the financial justification for the investment.",
+        "purpose_ar": "عرض العوائد المتوقعة المقدَّرة والمبرر المالي للاستثمار.",
+        "word_count_guideline": 250,
+        "required": True,
+    },
+    {
+        "order": 5,
+        "section_name_en": "Implementation Timeline",
+        "section_name_ar": "الجدول الزمني للتنفيذ",
+        "purpose_en": "Outline the key milestones, phases, and expected time to value.",
+        "purpose_ar": "توضيح المعالم الرئيسية والمراحل والوقت المتوقع لتحقيق القيمة.",
+        "word_count_guideline": 150,
+        "required": True,
+    },
+    {
+        "order": 6,
+        "section_name_en": "Pricing and Next Steps",
+        "section_name_ar": "التسعير والخطوات التالية",
+        "purpose_en": "Present the pricing structure and a clear call to action for moving forward.",
+        "purpose_ar": "عرض هيكل التسعير ودعوة واضحة للتحرك للمضي قدمًا.",
+        "word_count_guideline": 100,
+        "required": True,
+    },
+]
+
+# ---------------------------------------------------------------------------
+# New static data: proposal types with price display and page count
+# ---------------------------------------------------------------------------
+
+_PROPOSAL_TYPES: dict[str, dict[str, Any]] = {
+    "sprint": {
+        "name_en": "Diagnostic Sprint",
+        "name_ar": "سبرينت التشخيص",
+        "price_sar_display": "SAR 499",
+        "page_count": 3,
+    },
+    "data_pack": {
+        "name_en": "Data Intelligence Pack",
+        "name_ar": "حزمة استخبارات البيانات",
+        "price_sar_display": "SAR 1,500",
+        "page_count": 4,
+    },
+    "managed_ops": {
+        "name_en": "Managed Operations",
+        "name_ar": "العمليات المُدارة",
+        "price_sar_display": "SAR 2,999–4,999/mo",
+        "page_count": 6,
+    },
+    "custom_ai": {
+        "name_en": "Custom AI Solution",
+        "name_ar": "حل الذكاء الاصطناعي المخصص",
+        "price_sar_display": "SAR 5,000–25,000",
+        "page_count": 10,
+    },
+}
+
+_VALID_PROPOSAL_TYPES: set[str] = {"sprint", "data_pack", "managed_ops", "custom_ai"}
+
+_DRAFT_DISCLAIMER_EN = "This outline requires founder review before being sent to any prospect."
+_DRAFT_DISCLAIMER_AR = "تتطلب هذه المخطوطة مراجعة المؤسس قبل إرسالها إلى أي عميل محتمل."
+
+# ---------------------------------------------------------------------------
+# New Pydantic model for draft outline
+# ---------------------------------------------------------------------------
+
+
+class ProposalDraftInput(BaseModel):
+    proposal_type: str
+    client_name: str
+    client_sector: str
+    champion_name: str
+    champion_title: str
+    key_pain_en: str
+    key_pain_ar: str
+    proposed_start_date: str
+    arabic_primary: bool = False
+
+
+# ---------------------------------------------------------------------------
+# New pure-function core: draft outline
+# ---------------------------------------------------------------------------
+
+
+def _draft_proposal_outline(inp: ProposalDraftInput) -> dict[str, Any]:
+    """Generate a structured proposal outline from validated input.
+
+    Returns a structured dict with proposal metadata, enriched sections,
+    language preference, and disclaimers.
+    """
+    if inp.proposal_type not in _VALID_PROPOSAL_TYPES:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"Invalid proposal_type '{inp.proposal_type}'. "
+                f"Must be one of: {sorted(_VALID_PROPOSAL_TYPES)}"
+            ),
+        )
+
+    proposal_meta = dict(_PROPOSAL_TYPES[inp.proposal_type])
+
+    enriched_sections = []
+    for section in _PROPOSAL_SECTIONS:
+        enriched = dict(section)
+        enriched["draft_hook_en"] = (
+            f"For {inp.client_name}: address '{inp.key_pain_en}' in this section."
+        )
+        enriched["draft_hook_ar"] = (
+            f"لـ{inp.client_name}: تناول '{inp.key_pain_ar}' في هذا القسم."
+        )
+        enriched_sections.append(enriched)
+
+    return {
+        "client_name": inp.client_name,
+        "proposal_type": inp.proposal_type,
+        "proposal_meta": proposal_meta,
+        "sections": enriched_sections,
+        "total_sections": len(enriched_sections),
+        "language_primary": "ar" if inp.arabic_primary else "en",
+        "governance_decision": "APPROVAL_FIRST",
+        "disclaimer_en": _DRAFT_DISCLAIMER_EN,
+        "disclaimer_ar": _DRAFT_DISCLAIMER_AR,
+    }
+
+
+# ---------------------------------------------------------------------------
+# New endpoints for draft outline
+# ---------------------------------------------------------------------------
+
+
+@router.get("/outline-sections", summary="All 6 simplified proposal sections")
+def get_outline_sections() -> dict[str, Any]:
+    """Return all simplified proposal sections with bilingual labels and guidelines."""
+    return {
+        "sections": _PROPOSAL_SECTIONS,
+        "total_sections": len(_PROPOSAL_SECTIONS),
+        "governance_decision": "ALLOW_WITH_REVIEW",
+    }
+
+
+@router.get("/draft-types", summary="All 4 draft proposal types")
+def get_draft_types() -> dict[str, Any]:
+    """Return all proposal types with bilingual names, pricing, and page counts."""
+    return {
+        "proposal_types": _PROPOSAL_TYPES,
+        "governance_decision": "ALLOW_WITH_REVIEW",
+    }
+
+
+@router.post("/draft", summary="Generate a proposal outline draft")
+def draft_proposal(body: ProposalDraftInput) -> dict[str, Any]:
+    """Accept proposal parameters and return a structured outline draft.
+
+    Governance decision: APPROVAL_FIRST.
+    """
+    return _draft_proposal_outline(body)
+
+
 @router.post("/generate", summary="Generate a structured proposal outline")
 async def generate_proposal(body: ProposalRequest) -> dict[str, Any]:
     if body.tier not in _TIERS:
