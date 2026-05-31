@@ -71,6 +71,39 @@ python -c "import secrets; print(secrets.token_hex(32))"
 | `NEXT_PUBLIC_API_URL` | `https://api.dealix.me` | Public/browser-safe. |
 | `NEXT_PUBLIC_SITE_URL` | `https://dealix.me` | Public/browser-safe. |
 
+## 4b) Worker & Cron Services
+
+خدمتان إضافيتان تعيدان استخدام نفس الـ Dockerfile في الجذر مع Start Command مختلف،
+ولا تُسجَّلان في `dealix/config/railway_services.json` (السجل يثبّت 3 خدمات فقط
+ويفحصه `scripts/verify_railway_surfaces.py`). تُنشآن يدوياً من واجهة Railway —
+التفاصيل الكاملة في `docs/ops/RAILWAY_FOUNDER_OS_RUNBOOK_AR.md`.
+
+| Service | النوع | Start Command | Public | Schedule |
+|---|---|---|---|---|
+| `founder-os-worker` | Worker دائم | `python scripts/founder_os_worker.py` | لا | — |
+| `dealix-watchdog` | Cron | `python scripts/watchdog_drift_check.py` | لا | `*/15 * * * *` |
+
+### Founder-OS Worker Environment
+
+| Variable | Example | Notes |
+|---|---|---|
+| `APP_ENV` | `production` | — |
+| `DATABASE_URL` | `${{Postgres.DATABASE_URL}}` | مرجع داخلي، لا public URL. |
+| `AGENT_APPROVAL_MODE` | `required` | يظهر في السجلات؛ الإرسال الخارجي ممنوع. |
+| `FOUNDER_OS_INTERVAL_SECONDS` | `900` | الفاصل بين الدورات. |
+| `FOUNDER_OS_RUN_VERIFY` | `1` | اختياري — تشغيل `verify_reference_library_70.py`. |
+| `FOUNDER_OS_RUN_DIGEST` | `1` | اختياري — `dealix_morning_digest.py --print` (طباعة فقط، لا إرسال). |
+
+> الـ worker يفرض `AUTO_SEND_ENABLED=false` و`EXTERNAL_OUTREACH_ENABLED=false`
+> على كل أمر فرعي بالكود — لا يمكن تجاوزها من البيئة.
+
+### Watchdog Environment
+
+| Variable | Example | Notes |
+|---|---|---|
+| `DEALIX_API_BASE` | `https://api.dealix.me` | هدف فحص `/health`. |
+| `APP_ENV` | `production` | — |
+
 ## 5) Verification Commands
 
 ```bash
