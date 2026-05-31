@@ -6,7 +6,7 @@ const OG_DEFAULT = [{ url: `${SITE}/brand/og-dealix.svg`, width: 1200, height: 6
 const OG_DIAGNOSTIC = [{ url: `${SITE}/brand/og-diagnostic.svg`, width: 1200, height: 630, alt: "Dealix — تشخيص ٧ أيام" }];
 const OG_SERVICES = [{ url: `${SITE}/brand/og-services.svg`, width: 1200, height: 630, alt: "Dealix — خطوط الخدمات الخمس" }];
 
-type FunnelKey = "diagnostic" | "proof-pack" | "risk-score" | "partners";
+type FunnelKey = "diagnostic" | "proof-pack" | "risk-score" | "partners" | "learn" | "privacy";
 
 const FUNNEL_META: Record<FunnelKey, { path: string; titleAr: string; titleEn: string; descAr: string; descEn: string; og: typeof OG_DEFAULT }> = {
   diagnostic: {
@@ -41,6 +41,22 @@ const FUNNEL_META: Record<FunnelKey, { path: string; titleAr: string; titleEn: s
     descEn: "Join the Dealix partner network — you bring clients, we deliver, we share revenue.",
     og: OG_DEFAULT,
   },
+  learn: {
+    path: "/learn",
+    titleAr: "Dealix — مكتبة Revenue Ops",
+    titleEn: "Dealix — Revenue Ops Library",
+    descAr: "مقالات عملية عن تشغيل الإيراد، الحوكمة، وCRM في السوق السعودي.",
+    descEn: "Practical articles on revenue operations, governance, and CRM in the Saudi market.",
+    og: OG_DEFAULT,
+  },
+  privacy: {
+    path: "/privacy",
+    titleAr: "Dealix — سياسة الخصوصية وحماية البيانات",
+    titleEn: "Dealix — Privacy & Data Protection Policy",
+    descAr: "Dealix مبني أصلاً على PDPL — لا outreach بارد، موافقة قبل أي إرسال.",
+    descEn: "Dealix is built natively on PDPL — no cold outreach, approval before any external send.",
+    og: OG_DEFAULT,
+  },
 };
 
 export function buildFunnelMetadata(locale: string, key: FunnelKey): Metadata {
@@ -68,6 +84,26 @@ export function buildServicesMetadata(locale: string): Metadata {
     title,
     description,
     openGraph: { title, description, url, images: OG_SERVICES },
+    alternates: { canonical: url },
+  };
+}
+
+export function buildArticleMetadata(
+  locale: string,
+  titleAr: string,
+  titleEn: string,
+  descriptionAr: string,
+  descriptionEn: string,
+  slug: string,
+): Metadata {
+  const isAr = locale === "ar";
+  const title = isAr ? `Dealix — ${titleAr}` : `Dealix — ${titleEn}`;
+  const description = isAr ? descriptionAr : descriptionEn;
+  const url = `${SITE}/${locale}/learn/${slug}`;
+  return {
+    title,
+    description,
+    openGraph: { title, description, url, images: OG_DEFAULT },
     alternates: { canonical: url },
   };
 }

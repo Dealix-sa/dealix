@@ -2,95 +2,19 @@
 
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 type SectionRow = { id: string; title_ar: string; title_en?: string; status?: string; value?: string };
-
-const SAMPLE_SECTIONS_AR = [
-  {
-    id: "s1",
-    title: "مصادر العملاء المحتملين",
-    level: "L3",
-    status: "مكتمل",
-    statusColor: "emerald",
-    content: "تم تحليل مصادر الـ leads: 45% من LinkedIn، 30% إحالات، 25% بحث عضوي. جودة بيانات CRM: 62% مكتملة. توصية: تنظيف 38% قبل أي outreach.",
-    actions: ["تنظيف بيانات CRM", "توثيق مصدر كل lead", "إضافة consent timestamp"],
-  },
-  {
-    id: "s2",
-    title: "ملاك القرارات",
-    level: "L2",
-    status: "يحتاج مدخلات",
-    statusColor: "amber",
-    content: "فجوة: 6 من 10 leads ليس لها مالك واضح بعد 5 أيام من الوصول. متوسط وقت الاستجابة: 72 ساعة (المستهدف: 24 ساعة). تحتاج: تعيين مالك لكل lead في CRM.",
-    actions: ["تعيين مالك لكل lead", "إعداد SLA 24 ساعة", "تفعيل تنبيه تجاوز المهلة"],
-  },
-  {
-    id: "s3",
-    title: "سجل الأدلة",
-    level: "L1",
-    status: "محدود",
-    statusColor: "red",
-    content: "أقل من 30% من المحادثات موثّقة في CRM. 4 صفقات مُغلَقة بدون سجل follow-up. مخاطر: صعوبة التدقيق والإثبات عند الاختلاف مع العميل.",
-    actions: ["توثيق كل محادثة في CRM", "إضافة نموذج evidence لكل صفقة", "ربط WhatsApp بـ CRM"],
-  },
-  {
-    id: "s4",
-    title: "قرارات الإيراد",
-    level: "L3",
-    status: "مكتمل",
-    statusColor: "emerald",
-    content: "تحديد 3 فرص توسع فورية: (1) 3 عملاء على عقد سنوي قابل للتجديد، (2) 2 عروض معلّقة منذ 30+ يوم، (3) قطاع لوجستيات = أعلى معدل تحويل.",
-    actions: ["تجديد 3 عقود سنوية", "متابعة 2 عروض معلّقة", "التوسع في قطاع اللوجستيات"],
-  },
-];
-
-const SAMPLE_SECTIONS_EN = [
-  {
-    id: "s1",
-    title: "Lead Sources",
-    level: "L3",
-    status: "Complete",
-    statusColor: "emerald",
-    content: "Lead source analysis: 45% LinkedIn, 30% referrals, 25% organic search. CRM data quality: 62% complete. Recommendation: clean 38% before any outreach.",
-    actions: ["Clean CRM data", "Document source per lead", "Add consent timestamp"],
-  },
-  {
-    id: "s2",
-    title: "Decision Owners",
-    level: "L2",
-    status: "Needs Input",
-    statusColor: "amber",
-    content: "Gap: 6 of 10 leads have no clear owner after 5 days. Average response time: 72 hours (target: 24 hours). Needed: assign owner per lead in CRM.",
-    actions: ["Assign owner per lead", "Set 24-hour SLA", "Enable deadline alert"],
-  },
-  {
-    id: "s3",
-    title: "Evidence Log",
-    level: "L1",
-    status: "Limited",
-    statusColor: "red",
-    content: "Less than 30% of conversations documented in CRM. 4 closed deals without follow-up record. Risk: difficulty auditing and proving in case of client dispute.",
-    actions: ["Document every conversation in CRM", "Add evidence form per deal", "Link WhatsApp to CRM"],
-  },
-  {
-    id: "s4",
-    title: "Revenue Decisions",
-    level: "L3",
-    status: "Complete",
-    statusColor: "emerald",
-    content: "3 immediate expansion opportunities: (1) 3 clients on renewable annual contracts, (2) 2 pending proposals 30+ days, (3) logistics sector = highest conversion rate.",
-    actions: ["Renew 3 annual contracts", "Follow up 2 pending proposals", "Expand in logistics sector"],
-  },
-];
-
-const STATUS_COLORS: Record<string, string> = {
-  emerald: "border-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300",
-  amber: "border-amber-500/30 bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-300",
-  red: "border-red-500/30 bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-300",
+type SamplePayload = {
+  title_ar?: string;
+  title_en?: string;
+  disclaimer_ar?: string;
+  disclaimer_en?: string;
+  draft?: { sections?: SectionRow[] };
+  outline?: string[];
 };
 
 const STATIC_SECTIONS_AR: SectionRow[] = [
@@ -158,7 +82,6 @@ export function ProofPackSampleView() {
             : data?.disclaimer_en ?? "This is an illustrative sample of what you receive after a 7-day diagnostic. Numbers are representative — your real Proof Pack uses your actual company data."}
         </p>
 
-        {/* Meta info */}
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: isAr ? "المستوى" : "Level", value: "L3 / 4" },
@@ -174,7 +97,6 @@ export function ProofPackSampleView() {
         </div>
       </header>
 
-      {/* Sections Grid */}
       <Card className="p-5 space-y-0 divide-y divide-border/50">
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide pb-3">
           {isAr ? "أقسام التقرير" : "Report Sections"}
@@ -193,6 +115,8 @@ export function ProofPackSampleView() {
               )}
             </div>
           </div>
+        ))}
+        <div className="pt-3 space-y-2 text-sm">
           <div className="flex justify-between">
             <span className="text-muted-foreground">{isAr ? "أقسام مكتملة" : "Complete sections"}</span>
             <span className="font-bold text-emerald-600">2 / 4</span>
@@ -213,7 +137,6 @@ export function ProofPackSampleView() {
         </div>
       </Card>
 
-      {/* Top 3 Decisions */}
       <section>
         <h2 className="text-base font-semibold mb-3">
           {isAr ? "أعلى ٣ قرارات قابلة للتنفيذ" : "Top 3 Executable Decisions"}
@@ -236,7 +159,6 @@ export function ProofPackSampleView() {
         </div>
       </section>
 
-      {/* Trust Footer */}
       <div className="rounded-lg border border-border/40 bg-muted/20 p-4">
         <p className="text-xs text-muted-foreground leading-relaxed">
           {isAr
@@ -245,7 +167,6 @@ export function ProofPackSampleView() {
         </p>
       </div>
 
-      {/* CTAs */}
       <div className="flex gap-3 flex-wrap">
         <Button asChild size="lg">
           <Link href={`/${locale}/dealix-diagnostic`}>
