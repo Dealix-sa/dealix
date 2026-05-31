@@ -1,0 +1,33 @@
+channel: partners
+enabled: true
+mode: founder_approval
+description: "Referral partner channel — formal agreements, full disclosure to referred clients"
+
+quotas:
+  referrals_per_month: 50
+  partner_intro_messages_per_week: 5
+
+requires_opt_in: false
+requires_approved_template: false
+referral_only: true
+no_incentivized_spam: true
+
+compliance_notes:
+  - "Partner must disclose referral relationship to referred clients"
+  - "No incentivized spam — referral agreements are formal, not informal commissions"
+  - "Partner introduction must identify Dealix clearly"
+  - "Partner receives formal referral agreement before sending any referrals"
+  - "Referred clients receive honest description of Dealix services"
+
+ideal_partners:
+  - "Chartered accountants (SOCPA members)"
+  - "Strategy consultants"
+  - "ERP vendors and resellers"
+  - "Digital transformation advisors"
+  - "IT service companies"
+  - "HR and training consultancies"
+
+integration_notes:
+  tracking: "Log referral source in opportunities.jsonl"
+  agreement: "Formal referral agreement signed before activation"
+  disclosure: "Partner must inform referred client of the referral relationship"

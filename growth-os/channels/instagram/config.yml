@@ -1,0 +1,39 @@
+channel: instagram
+enabled: true
+mode: inbound_only
+description: "Instagram DM — reply to inbound only, within 24-hour window"
+
+quotas:
+  inbound_replies_per_day: 50
+  comment_replies_per_day: 30
+  outbound_automated_sends: 0
+
+requires_opt_in: false
+requires_approved_template: false
+enforce_24h_window: true
+outbound_blocked: true
+
+compliance_notes:
+  - "HARD BLOCK: No outbound DM — inbound reply only"
+  - "24-hour window strictly enforced"
+  - "Human handoff required for pricing, contracts, security"
+  - "Meta Messaging Policy compliance mandatory"
+  - "No bulk messaging — conversation-by-conversation only"
+
+human_handoff_triggers:
+  - price
+  - pricing
+  - cost
+  - contract
+  - security
+  - gdpr
+  - pdpl
+  - سعر
+  - تكلفة
+  - أمان
+
+integration_notes:
+  provider: "Meta Business Suite / Instagram API"
+  webhook: "Required for inbound message notifications"
+  response_time_target: "Within 4 hours of inbound"
+  24h_window_check: "Automated — do not reply after window expires"

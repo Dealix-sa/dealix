@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.7
 # ═══════════════════════════════════════════════════════════════
 # AI Company Saudi — production Docker image
 # Multi-stage, non-root, Python 3.12-slim
@@ -78,11 +77,7 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=5 \
 
 # Wrapper script so any start command (Dockerfile CMD, Procfile, Railway
 # startCommand override) works without shell-expansion gotchas.
-COPY --chown=app:app <<'EOF' /app/start.sh
-#!/bin/sh
-set -e
-exec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --workers 1
-EOF
+COPY --chown=app:app start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
 ENTRYPOINT ["/usr/bin/tini", "--"]

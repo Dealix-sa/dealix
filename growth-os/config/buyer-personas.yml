@@ -1,0 +1,169 @@
+buyer_personas:
+  description: "Buyer persona profiles for Dealix outreach — used by asset-generator and quality-gate agents"
+  version: "1.0"
+
+  CEO:
+    title_en: "Chief Executive Officer"
+    title_ar: "الرئيس التنفيذي"
+    typical_sectors: ["consulting", "real_estate", "retail", "construction", "logistics", "facility_management", "education"]
+    decision_authority: "final"
+    primary_pain: "Revenue growth and operational efficiency — wants results, not technology"
+    information_style: "Executive summary — 3 bullet points max before CTA"
+    language_preference: "ar_formal_or_en_professional"
+    trust_signals:
+      - "Case study from same sector"
+      - "Named client reference (with permission)"
+      - "Specific ROI estimate with source"
+      - "Short engagement duration (7 days, not 6 months)"
+    avoid:
+      - "Technical jargon"
+      - "Long feature lists"
+      - "Generic AI claims"
+    best_channels: ["email", "linkedin", "calls"]
+    best_time_contact: "Morning 08:00-10:00 local or after Asr prayer 16:00-17:30"
+    typical_objections:
+      - "We already have a system"
+      - "We are too busy to implement anything new"
+      - "I need to see ROI before committing"
+    objection_responses:
+      "We already have a system": "Great — our diagnostic works with your existing system to find gaps in 48 hours."
+      "Too busy": "That is exactly why we designed a 7-day sprint — no internal project management needed."
+      "Need ROI first": "The free diagnostic gives you an estimated ROI map before you pay anything."
+
+  CFO:
+    title_en: "Chief Financial Officer"
+    title_ar: "المدير المالي"
+    typical_sectors: ["financial_services", "construction", "logistics", "international"]
+    decision_authority: "budget_holder"
+    primary_pain: "Cost visibility, reconciliation accuracy, audit readiness"
+    information_style: "Numbers and risk — show cost of current inefficiency, not feature benefits"
+    language_preference: "en_professional_or_ar_formal"
+    trust_signals:
+      - "Quantified time savings (e.g., 12 hours/week)"
+      - "Audit trail and compliance documentation"
+      - "No hidden costs — transparent pricing"
+      - "Risk reduction framing"
+    avoid:
+      - "Vague productivity claims"
+      - "Marketing language"
+      - "Unverified cost savings"
+    best_channels: ["email", "calls"]
+    best_time_contact: "Early morning 07:30-09:00 or end of day 16:00-17:00"
+    typical_objections:
+      - "What is the exact ROI?"
+      - "We need procurement approval for this spend"
+      - "Can we pilot before committing?"
+    objection_responses:
+      "Exact ROI": "Our diagnostic gives an estimated ROI range based on your data — not a guarantee, but a sourced estimate."
+      "Procurement": "We have a formal proposal template and SOW ready for procurement review."
+      "Pilot": "Our 7-day sprint IS the pilot — 499 SAR, full deliverables, no long commitment."
+
+  COO:
+    title_en: "Chief Operating Officer"
+    title_ar: "رئيس العمليات"
+    typical_sectors: ["facility_management", "logistics", "construction", "healthcare_admin"]
+    decision_authority: "operations_sponsor"
+    primary_pain: "Operational chaos — scheduling, reporting, SLA management, contractor coordination"
+    information_style: "Process improvement — before/after operational state"
+    language_preference: "ar_formal"
+    trust_signals:
+      - "Workflow diagram showing current vs. future state"
+      - "Reference from similar ops environment"
+      - "Implementation timeline and effort estimate"
+    avoid:
+      - "Strategic language (leave that for CEO)"
+      - "Overpromising automation"
+    best_channels: ["email", "calls", "whatsapp"]
+    best_time_contact: "Morning 08:30-10:30"
+
+  IT_Director:
+    title_en: "IT Director / Head of IT"
+    title_ar: "مدير تقنية المعلومات"
+    typical_sectors: ["financial_services", "government", "healthcare_admin", "international"]
+    decision_authority: "technical_gatekeeper"
+    primary_pain: "Integration complexity, security, data governance, technical debt"
+    information_style: "Technical — architecture, APIs, security model, data flows"
+    language_preference: "en_technical"
+    trust_signals:
+      - "Security and compliance documentation"
+      - "API documentation"
+      - "Data residency information (Saudi servers where possible)"
+      - "No black-box AI — explainable outputs"
+    avoid:
+      - "Oversimplifying the technical build"
+      - "Claiming full automation without caveats"
+    best_channels: ["email", "linkedin"]
+    best_time_contact: "Afternoon 14:00-16:00"
+
+  Legal_Director:
+    title_en: "Legal Director / Managing Partner"
+    title_ar: "المدير القانوني / الشريك الإداري"
+    typical_sectors: ["legal", "financial_services", "government"]
+    decision_authority: "risk_gatekeeper"
+    primary_pain: "Document workflow, client intake efficiency, billing accuracy, compliance"
+    information_style: "Risk-first — what is the risk of NOT changing, not the benefit of changing"
+    language_preference: "ar_formal_or_en_professional"
+    trust_signals:
+      - "Data governance documentation"
+      - "No AI making legal decisions — humans stay in control"
+      - "Case study from legal sector"
+      - "PDPL compliance confirmation"
+    avoid:
+      - "Claiming AI will replace lawyers"
+      - "Generic productivity claims"
+    best_channels: ["email", "linkedin"]
+    best_time_contact: "Morning 09:00-11:00"
+
+  Operations_Manager:
+    title_en: "Operations Manager"
+    title_ar: "مدير العمليات"
+    typical_sectors: ["facility_management", "logistics", "retail", "construction"]
+    decision_authority: "influencer_or_implementer"
+    primary_pain: "Daily operational chaos — scheduling, tracking, reporting to management"
+    information_style: "Practical — what does it do for me tomorrow, not next quarter"
+    language_preference: "ar"
+    trust_signals:
+      - "Quick win in first 7 days"
+      - "Simple implementation, no IT involvement"
+      - "Reporting that impresses their boss"
+    avoid:
+      - "Executive-level strategic language"
+      - "Complex implementation timelines"
+    best_channels: ["email", "whatsapp"]
+    best_time_contact: "Early morning 07:30-09:00 or Sunday evening before the week starts"
+
+  FM_Manager:
+    title_en: "Facility Management Manager"
+    title_ar: "مدير إدارة المرافق"
+    typical_sectors: ["facility_management"]
+    decision_authority: "influencer"
+    primary_pain: "Scheduling maintenance, SLA reporting, contractor management, client complaints"
+    information_style: "Show me the dashboard — visual, operational focus"
+    language_preference: "ar"
+    trust_signals:
+      - "Real SLA improvement examples (estimated)"
+      - "Works with existing CAFM tools"
+      - "Arabic interface available"
+    avoid:
+      - "Price-first messaging"
+      - "Generic AI language"
+    best_channels: ["email", "whatsapp"]
+
+  Consulting_Partner:
+    title_en: "Consulting Partner / Managing Director"
+    title_ar: "شريك استشاري / مدير إداري"
+    typical_sectors: ["consulting", "legal"]
+    decision_authority: "final_and_budget"
+    primary_pain: "BD efficiency, proposal quality, utilization tracking, knowledge management"
+    information_style: "Peer-level conversation — not a vendor pitch, a partnership discussion"
+    language_preference: "en_or_ar_depending_on_firm"
+    trust_signals:
+      - "Named reference from peer firm"
+      - "Thought leadership content (not feature sheet)"
+      - "Specific efficiency metric from similar firm"
+    avoid:
+      - "Standard vendor language"
+      - "Feature lists"
+      - "Any hint of automation replacing consultants"
+    best_channels: ["linkedin", "email", "calls"]
+    best_time_contact: "Early morning or post-lunch 13:30-14:30"

@@ -1,0 +1,29 @@
+channel: website_forms
+enabled: true
+mode: founder_approval
+description: "Website contact form submissions — 1 per domain per day, human review required"
+
+quotas:
+  max_per_domain_per_day: 1
+  min_interval_between_submissions_minutes: 60
+  total_daily_max: 20
+
+requires_opt_in: false
+requires_approved_template: false
+enforce_24h_window: false
+human_review_before_send: true
+captcha_bypass_blocked: true
+duplicate_submissions_blocked: true
+
+compliance_notes:
+  - "Human review required before every submission"
+  - "Max 1 submission per domain per day"
+  - "No CAPTCHA bypass tools"
+  - "No duplicate submissions to same form"
+  - "Sender identity must be clear (Dealix, not disguised)"
+  - "Opt-out instruction included in message"
+
+integration_notes:
+  execution: "Manual — founder or team member fills form"
+  tracking: "Log submission in execution_logs.jsonl"
+  suppression_check: "Check domain not in suppression list before submitting"

@@ -1,0 +1,168 @@
+offers:
+  free_diagnostic:
+    id: "free_diagnostic"
+    name_en: "Free AI Ops Diagnostic"
+    name_ar: "تشخيص العمليات بالذكاء الاصطناعي — مجاني"
+    price_sar: 0
+    duration: "async, 48h turnaround"
+    rung: 0
+    deliverables:
+      - "One-page diagnostic report (Arabic + English)"
+      - "Top 3 operational bottlenecks identified"
+      - "Recommended Dealix offer with rationale"
+      - "Estimated time-to-value (not guaranteed)"
+    target_sectors:
+      - legal
+      - facility_management
+      - consulting
+      - real_estate
+      - logistics
+      - retail
+      - construction
+      - education
+    target_company_size: "5-500"
+    upgrade_path: "sprint_499_sar"
+    call_to_action_en: "Get your free 48-hour AI Ops Diagnostic — no commitment"
+    call_to_action_ar: "احصل على تشخيص مجاني لعملياتك — خلال 48 ساعة — بدون التزام"
+    governance_decision: "free_diagnostic — no payment, no PII collected, founder reviews before sending"
+    disclaimer: "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
+
+  sprint_499_sar:
+    id: "sprint_499_sar"
+    name_en: "7-Day Revenue Intelligence Sprint"
+    name_ar: "سبرينت استخبارات الإيرادات — 7 أيام"
+    price_sar: 499
+    duration: "7 business days"
+    rung: 1
+    deliverables:
+      - "Full company brief (sector, buyers, pain map)"
+      - "Revenue opportunity map (top 3 gaps)"
+      - "Prioritized action list (week 1, month 1)"
+      - "Data quality score for existing systems"
+      - "Proof Pack: score ≥ 70 with at least 1 capital asset"
+    target_sectors:
+      - legal
+      - real_estate
+      - retail
+      - education
+      - facility_management
+    target_company_size: "5-100"
+    upgrade_path: "data_pack_1500_sar"
+    call_to_action_en: "Start your 7-Day Sprint — 499 SAR, results in 7 days"
+    call_to_action_ar: "ابدأ سبرينتك — 499 ريال، نتائج خلال 7 أيام"
+    payment_method: "Moyasar — founder toggles live mode"
+    governance_decision: "sprint_499_sar — paid, Proof Pack required, founder approves scope"
+    disclaimer: "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
+
+  data_pack_1500_sar:
+    id: "data_pack_1500_sar"
+    name_en: "Data-to-Revenue Pack"
+    name_ar: "حزمة البيانات إلى الإيرادات"
+    price_sar: 1500
+    duration: "14 business days"
+    rung: 2
+    deliverables:
+      - "Full data audit (sources, quality, gaps)"
+      - "Revenue attribution model (estimated)"
+      - "3 automated workflow designs"
+      - "Integration blueprint for existing tools"
+      - "60-day roadmap with milestones"
+      - "Proof Pack: score ≥ 70 with 2+ capital assets"
+    target_sectors:
+      - facility_management
+      - logistics
+      - construction
+      - financial_services
+    target_company_size: "20-500"
+    upgrade_path: "managed_ops_2999_4999_sar"
+    call_to_action_en: "Get your Data-to-Revenue Pack — 1,500 SAR"
+    call_to_action_ar: "احصل على حزمة البيانات إلى الإيرادات — 1,500 ريال"
+    payment_method: "Moyasar — founder toggles live mode"
+    governance_decision: "data_pack_1500_sar — paid, Proof Pack required, data audit scope agreed in writing"
+    disclaimer: "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
+
+  managed_ops_2999_4999_sar:
+    id: "managed_ops_2999_4999_sar"
+    name_en: "Managed Revenue Ops"
+    name_ar: "إدارة عمليات الإيرادات"
+    price_sar_min: 2999
+    price_sar_max: 4999
+    billing: "monthly_retainer"
+    duration: "ongoing — minimum 3 months"
+    rung: 3
+    deliverables:
+      - "Monthly revenue intelligence report"
+      - "Managed AI workflows (up to 5 active)"
+      - "Weekly founder briefing (30 min)"
+      - "Audit trail and governance log"
+      - "Monthly Proof Pack update"
+      - "Priority support (WhatsApp + email)"
+    target_sectors:
+      - consulting
+      - international
+      - financial_services
+    target_company_size: "10-200"
+    upgrade_path: "custom_ai_5k_25k_sar"
+    call_to_action_en: "Start Managed Revenue Ops — from 2,999 SAR/month"
+    call_to_action_ar: "ابدأ إدارة عمليات الإيرادات — من 2,999 ريال شهرياً"
+    payment_method: "Moyasar recurring — founder toggles live mode"
+    governance_decision: "managed_ops — recurring, contract signed, Proof Pack monthly, founder reviews deliverables"
+    disclaimer: "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
+
+  custom_ai_5k_25k_sar:
+    id: "custom_ai_5k_25k_sar"
+    name_en: "Custom AI Service Setup"
+    name_ar: "إعداد خدمة ذكاء اصطناعي مخصصة"
+    price_sar_min: 5000
+    price_sar_max: 25000
+    price_monthly_retainer: 1000
+    billing: "project + retainer"
+    duration: "4-12 weeks setup, then monthly"
+    rung: 4
+    deliverables:
+      - "Custom AI system design and build"
+      - "Integration with existing tools"
+      - "Staff training and documentation"
+      - "Governance and audit framework"
+      - "Monthly maintenance retainer"
+      - "Full Proof Pack with all capital assets"
+    target_sectors:
+      - healthcare_admin
+      - government
+      - financial_services
+    target_company_size: "50+"
+    upgrade_path: "enterprise_governance_review"
+    call_to_action_en: "Request a custom AI setup scoping call"
+    call_to_action_ar: "اطلب مكالمة تحديد نطاق إعداد الذكاء الاصطناعي المخصص"
+    payment_method: "Moyasar + bank transfer for large amounts"
+    governance_decision: "custom_ai — project contract required, full audit trail, founder signs off all deliverables"
+    disclaimer: "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
+
+  enterprise_governance_review:
+    id: "enterprise_governance_review"
+    name_en: "AI Governance Review (Enterprise)"
+    name_ar: "مراجعة حوكمة الذكاء الاصطناعي — المؤسسات"
+    price_sar_min: 25000
+    price_sar_max: 50000
+    billing: "project"
+    duration: "8-16 weeks"
+    rung: 5
+    track: "slow_track"
+    deliverables:
+      - "Full AI governance framework"
+      - "Risk and compliance audit"
+      - "Policy documentation (Arabic + English)"
+      - "Board-ready reporting pack"
+      - "Staff capability assessment"
+      - "12-month governance roadmap"
+    target_sectors:
+      - government
+      - financial_services
+      - healthcare_admin
+    target_company_size: "200+"
+    upgrade_path: null
+    call_to_action_en: "Request an enterprise AI Governance Review"
+    call_to_action_ar: "اطلب مراجعة حوكمة الذكاء الاصطناعي للمؤسسات"
+    payment_method: "Bank transfer — large contract"
+    governance_decision: "enterprise — full procurement process, board approval, legal review required"
+    disclaimer: "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"

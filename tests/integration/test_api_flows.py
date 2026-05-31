@@ -49,7 +49,7 @@ def app():
         patch("db.session.init_db", new=AsyncMock()),
     ):
         from api.main import create_app
-        return create_app()
+        yield create_app()
 
 
 @pytest.fixture(scope="module")
@@ -129,18 +129,18 @@ class TestRateLimitHeaders:
 
 class TestETagCaching:
     def test_get_response_has_etag(self, client, auth_headers):
-        r = client.get("/api/v1/leads", headers=auth_headers)
+        r = client.get(_AUTH_PROBE, headers=auth_headers)
         if r.status_code == 200:
             assert "ETag" in r.headers
 
     def test_conditional_get_returns_304(self, client, auth_headers):
-        r1 = client.get("/api/v1/leads", headers=auth_headers)
+        r1 = client.get(_AUTH_PROBE, headers=auth_headers)
         if r1.status_code != 200 or "ETag" not in r1.headers:
             pytest.skip("ETag not present in first response")
 
         etag = r1.headers["ETag"]
         r2 = client.get(
-            "/api/v1/leads",
+            _AUTH_PROBE,
             headers={**auth_headers, "If-None-Match": etag},
         )
         assert r2.status_code == 304
@@ -148,33 +148,33 @@ class TestETagCaching:
 
 # ── 6. Auth enforcement ────────────────────────────────────────────
 
+_AUTH_PROBE = "/api/v1/business/pricing"  # GET, non-public, requires API key
+
+
 class TestAuthEnforcement:
     def test_missing_key_returns_401(self, client):
-        r = client.get("/api/v1/leads")
+        r = client.get(_AUTH_PROBE)
         assert r.status_code == 401
 
     def test_invalid_key_returns_401(self, client):
-        r = client.get("/api/v1/leads", headers={"X-API-Key": "wrong-key"})
+        r = client.get(_AUTH_PROBE, headers={"X-API-Key": "wrong-key"})
         assert r.status_code == 401
 
     def test_valid_key_passes(self, client, auth_headers):
-        r = client.get("/api/v1/leads", headers=auth_headers)
+        r = client.get(_AUTH_PROBE, headers=auth_headers)
         assert r.status_code in (200, 422, 503)  # exclude 401/403
 
 
 # ── 7. Leads endpoint ─────────────────────────────────────────────
 
 class TestLeadsEndpoint:
-    def test_list_leads_accepts_pagination_params(self, client, auth_headers):
-        r = client.get("/api/v1/leads?limit=5", headers=auth_headers)
-        assert r.status_code in (200, 422, 503)  # not 401
+    def test_post_lead_accepts_json(self, client, auth_headers):
+        r = client.post("/api/v1/leads", json={}, headers=auth_headers)
+        assert r.status_code in (200, 201, 422, 503)  # not 401
 
-    def test_leads_response_envelope(self, client, auth_headers):
-        r = client.get("/api/v1/leads", headers=auth_headers)
+    def test_pricing_response_has_currency(self, client, auth_headers):
+        r = client.get(_AUTH_PROBE, headers=auth_headers)
         if r.status_code != 200:
-            pytest.skip("Leads endpoint not returning 200 in this test env")
+            pytest.skip("Pricing endpoint not returning 200 in this test env")
         body = r.json()
-        # Standard envelope must have data + meta + errors
-        assert "data" in body
-        assert "meta" in body
-        assert "errors" in body
+        assert "currency" in body or "tiers" in body

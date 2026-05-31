@@ -1,0 +1,127 @@
+channel_router:
+  description: "Decision tree routing companies to optimal outreach channel based on sector, country, language, and company size"
+  version: "1.0"
+
+  routing_rules:
+    government_procurement:
+      match_sector: ["government"]
+      channel_priority: ["procurement", "email", "calls"]
+      mode: "founder_approval"
+      note: "Government always goes through official procurement channels"
+
+    healthcare_sensitive:
+      match_sector: ["healthcare_admin"]
+      channel_priority: ["email", "calls", "procurement"]
+      mode: "founder_approval"
+      note: "Sensitive sector — no cold WhatsApp, no automated sends"
+
+    financial_services_en:
+      match_sector: ["financial_services"]
+      match_country: ["SA", "AE", "BH"]
+      match_language: ["en"]
+      channel_priority: ["email", "linkedin", "calls"]
+      mode: "founder_approval"
+
+    financial_services_ar:
+      match_sector: ["financial_services"]
+      match_language: ["ar"]
+      channel_priority: ["email", "calls"]
+      mode: "founder_approval"
+
+    consulting_en:
+      match_sector: ["consulting", "international"]
+      match_language: ["en"]
+      channel_priority: ["linkedin", "email", "calls"]
+      mode: "assisted_manual"
+      note: "LinkedIn is assisted_manual only — founder initiates all actions"
+
+    consulting_ar:
+      match_sector: ["consulting"]
+      match_language: ["ar"]
+      match_country: ["SA", "KW", "QA"]
+      channel_priority: ["email", "calls", "linkedin"]
+      mode: "founder_approval"
+
+    real_estate_gulf:
+      match_sector: ["real_estate"]
+      match_country: ["SA", "AE"]
+      channel_priority: ["email", "instagram", "calls"]
+      mode: "auto_send"
+      requires_quality_gate: true
+
+    facility_management_sa:
+      match_sector: ["facility_management"]
+      match_country: ["SA"]
+      channel_priority: ["email", "whatsapp", "calls"]
+      mode: "auto_send"
+      whatsapp_requires_opt_in: true
+
+    logistics_construction:
+      match_sector: ["logistics", "construction"]
+      match_country: ["SA", "AE", "QA"]
+      channel_priority: ["email", "calls", "whatsapp"]
+      mode: "auto_send"
+      whatsapp_requires_opt_in: true
+
+    retail:
+      match_sector: ["retail"]
+      channel_priority: ["email", "instagram", "whatsapp"]
+      mode: "auto_send"
+      whatsapp_requires_opt_in: true
+
+    legal:
+      match_sector: ["legal"]
+      match_country: ["SA", "AE", "JO"]
+      channel_priority: ["email", "linkedin", "calls"]
+      mode: "founder_approval"
+
+    education:
+      match_sector: ["education"]
+      channel_priority: ["email", "linkedin", "website_forms"]
+      mode: "auto_send"
+      requires_quality_gate: true
+
+  size_rules:
+    large_company:
+      size_min: 200
+      channel_override: "email_only_first"
+      note: "Large companies require formal email first — no social DM as first touch"
+    micro_company:
+      size_max: 10
+      channel_add: "whatsapp"
+      note: "Small companies respond well to WhatsApp if opt-in obtained"
+
+  language_overrides:
+    ar:
+      block_channels: []
+      preferred_tone: "formal_arabic"
+    en:
+      block_channels: []
+      preferred_tone: "professional_english"
+    fr:
+      note: "Morocco only — use French drafts, not Arabic-only"
+      preferred_tone: "professional_french"
+
+  execution_mode_defaults:
+    auto_send:
+      description: "Draft passes quality gate (>=90) — auto-queued for send"
+      requires_founder_approval: false
+      quality_gate_min: 90
+    founder_approval:
+      description: "Draft always sent to founder_review queue before execution"
+      requires_founder_approval: true
+      quality_gate_min: 82
+    assisted_manual:
+      description: "System prepares draft, founder executes action manually"
+      requires_founder_approval: true
+      quality_gate_min: 82
+      note: "Used for LinkedIn — system never touches LinkedIn directly"
+    inbound_only:
+      description: "System only responds to inbound messages, never initiates"
+      requires_founder_approval: false
+      note: "Instagram DM, Messenger — reply to inbound within 24h window"
+
+  default_fallback:
+    channel: "email"
+    mode: "founder_approval"
+    note: "When no rule matches, default to email with founder approval"

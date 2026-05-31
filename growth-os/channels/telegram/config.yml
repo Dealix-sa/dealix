@@ -1,0 +1,33 @@
+channel: telegram
+enabled: true
+mode: inbound_only
+description: "Telegram — opt-in bot only. User must initiate with /start. No cold DM."
+
+quotas:
+  bot_messages_per_day: 200
+  group_posts: "admin_invite_only"
+  unsolicited_dms: 0
+
+requires_opt_in: true
+opt_in_method: "user_sends_start_command"
+requires_approved_template: false
+enforce_24h_window: false
+random_dm_blocked: true
+
+stop_keywords:
+  - "/stop"
+  - "stop"
+  - "توقف"
+  - "إيقاف"
+
+compliance_notes:
+  - "User must initiate conversation with /start"
+  - "No random DMs to Telegram users"
+  - "Group posting only with admin invite"
+  - "Stop keywords trigger immediate suppression"
+
+integration_notes:
+  provider: "Telegram Bot API"
+  bot_setup: "Register bot via @BotFather — get API token"
+  webhook: "Set webhook for incoming messages"
+  bot_commands: "/start, /stop, /help, /diagnostic"

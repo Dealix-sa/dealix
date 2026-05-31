@@ -1,0 +1,141 @@
+compliance:
+  description: "Dealix Growth OS compliance rules — enforced at quality gate and execution gate"
+  version: "1.0"
+  last_reviewed: "2026-05-31"
+
+  frameworks:
+    PDPL:
+      full_name: "Saudi Arabia Personal Data Protection Law"
+      full_name_ar: "نظام حماية البيانات الشخصية — المملكة العربية السعودية"
+      applies_to: ["SA"]
+      key_rules:
+        - "Consent required before processing personal data for marketing"
+        - "Data subjects have right to access, correct, delete their data"
+        - "Cross-border data transfers require SDAIA approval"
+        - "No sensitive data (health, financial, religious) without explicit consent"
+        - "Breach notification required within 72 hours"
+      dealix_implementation:
+        - "opt_in required for WhatsApp, Instagram DM, Messenger"
+        - "suppression list honored at all times"
+        - "no PII stored in logs — only company name and domain"
+        - "opt-out processed within 24 hours"
+        - "no health or financial PII in demos or Proof Packs"
+
+    GDPR:
+      full_name: "General Data Protection Regulation (EU)"
+      applies_to: ["LB", "MA", "international_companies"]
+      awareness_level: "high"
+      key_rules:
+        - "Lawful basis required for processing (legitimate interest for B2B outreach is applicable)"
+        - "Right to be forgotten — honor unsubscribe within 30 days"
+        - "Privacy policy must be accessible"
+        - "Data minimization — collect only what is needed"
+      dealix_implementation:
+        - "B2B legitimate interest basis documented per contact"
+        - "opt-out honored immediately, not just within 30 days"
+        - "no personal email addresses collected — business emails only"
+
+    CAN_SPAM:
+      full_name: "CAN-SPAM Act (US)"
+      applies_to: ["international_companies_with_us_presence"]
+      awareness_level: "medium"
+      key_rules:
+        - "No deceptive subject lines"
+        - "Physical address in every commercial email"
+        - "Opt-out mechanism in every email"
+        - "Opt-out honored within 10 business days"
+      dealix_implementation:
+        - "Dealix physical address in email footer"
+        - "One-click unsubscribe in every email"
+        - "Subject lines reviewed by quality gate for deception"
+
+    WhatsApp_Business_Policy:
+      full_name: "WhatsApp Business Messaging Policy"
+      applies_to: ["whatsapp"]
+      key_rules:
+        - "Opt-in required before sending any message"
+        - "Template messages require Meta approval for first contact"
+        - "24-hour window for free-form replies after inbound"
+        - "Stop keywords must be honored immediately"
+        - "No spam, no misleading content"
+      dealix_implementation:
+        - "opt_in stored in opt_ins.jsonl with timestamp and source"
+        - "approved templates only for outbound"
+        - "stop keyword detection automated in reply_classifier"
+        - "block_rate monitored — pause if > 2%"
+
+    Meta_Messaging_Policy:
+      full_name: "Meta Platform Messaging Policy (Instagram, Messenger)"
+      applies_to: ["instagram", "messenger"]
+      key_rules:
+        - "Inbound-first: only respond to messages user sends first"
+        - "24-hour window for automated responses"
+        - "Human handoff for sensitive topics (pricing, contracts, legal)"
+        - "No unsolicited bulk outreach"
+      dealix_implementation:
+        - "inbound_only execution mode for Instagram and Messenger"
+        - "human_handoff_triggers configured in execution-modes.yml"
+
+    LinkedIn_User_Agreement:
+      full_name: "LinkedIn User Agreement and Professional Community Policies"
+      applies_to: ["linkedin"]
+      key_rules:
+        - "No automation of connection requests or messages"
+        - "No scraping of LinkedIn data"
+        - "No fake profiles or impersonation"
+        - "No unsolicited bulk messaging"
+      dealix_implementation:
+        - "assisted_manual mode ONLY — system never touches LinkedIn"
+        - "scraping is blocked at architecture level (non-negotiable)"
+        - "founder manually executes all LinkedIn actions"
+        - "daily action limits enforced (20 actions/day guidance)"
+
+  universal_rules:
+    no_scraping: true
+    no_cold_whatsapp_automation: true
+    no_linkedin_automation: true
+    no_fake_claims: true
+    no_guaranteed_outcomes: true
+    no_pii_in_logs: true
+    no_sourceless_knowledge_answers: true
+    no_external_action_without_approval: true
+    no_agent_without_identity: true
+    no_project_without_proof_pack: true
+    no_project_without_capital_asset: true
+
+  required_elements:
+    every_email:
+      - "physical_address_in_footer"
+      - "one_click_unsubscribe"
+      - "no_deceptive_subject"
+      - "bilingual_disclaimer_if_arabic"
+    every_whatsapp:
+      - "approved_template"
+      - "opt_in_verified"
+      - "stop_keyword_honored"
+    every_output_object:
+      - "governance_decision_field"
+    every_paid_engagement:
+      - "proof_pack_score_ge_70"
+      - "at_least_one_capital_asset"
+    every_customer_facing_markdown:
+      - "bilingual_disclaimer: 'Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة'"
+
+  suppression:
+    honor_immediately: true
+    recheck_before_every_send: true
+    sources:
+      - "opt_out via email unsubscribe"
+      - "stop keyword in WhatsApp"
+      - "explicit request to not contact"
+      - "bounce (hard bounce)"
+      - "spam complaint"
+    review_suppressed_after_days: 90
+
+  sensitive_sectors:
+    list: ["healthcare_admin", "financial_services", "government"]
+    additional_rules:
+      - "no PII in demos, briefs, or Proof Packs"
+      - "founder must approve every outreach personally"
+      - "no auto_send mode"
+      - "compliance_gate score must be 100% pass"

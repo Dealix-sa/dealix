@@ -1,0 +1,33 @@
+channel: messenger
+enabled: true
+mode: inbound_only
+description: "Facebook Messenger — inbound reply only, within 24-hour window"
+
+quotas:
+  inbound_replies_per_day: 50
+  outbound_automated_sends: 0
+
+requires_opt_in: false
+requires_approved_template: false
+enforce_24h_window: true
+outbound_blocked: true
+
+compliance_notes:
+  - "HARD BLOCK: No outbound DM — inbound reply only"
+  - "24-hour window strictly enforced"
+  - "Human handoff for pricing, contracts, security"
+  - "Meta Platform Messaging Policy compliance"
+
+human_handoff_triggers:
+  - price
+  - pricing
+  - cost
+  - contract
+  - security
+  - سعر
+  - تكلفة
+
+integration_notes:
+  provider: "Meta Business Suite / Messenger Platform API"
+  webhook: "Required for inbound message notifications"
+  page_inbox: "Monitor Meta Business Suite page inbox daily"

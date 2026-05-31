@@ -1,0 +1,132 @@
+anti_ban_guardian:
+  global:
+    duplicate_message_similarity_limit: 0.72
+    same_domain_daily_touch_limit: 2
+    same_company_touch_limit_days: 14
+    stop_all_if_global_warning: true
+    warning_threshold_violations: 3
+    cooldown_hours_after_warning: 48
+
+  email:
+    pause_if_bounce_rate_above: 0.05
+    reduce_if_bounce_rate_above: 0.03
+    pause_if_spam_rate_above: 0.003
+    target_spam_rate_below: 0.001
+    require_postmaster_check: true
+    daily_quota: 500
+    hourly_quota: 50
+    warm_up_days: 14
+    warm_up_schedule:
+      day_1_7: 20
+      day_8_14: 100
+      day_15_21: 250
+      day_22_plus: 500
+    mandatory_unsubscribe_link: true
+    mandatory_physical_address: true
+    can_spam_compliant: true
+
+  linkedin:
+    mode: assisted_manual
+    block_auto_dm: true
+    block_auto_connect: true
+    block_scraping: true
+    manual_actions_per_day: 20
+    connection_request_limit_per_week: 25
+    profile_views_limit_per_day: 50
+    require_founder_approval_for_every_message: true
+    note: "LinkedIn automation violates ToS — all actions must be founder-initiated"
+
+  whatsapp:
+    require_opt_in: true
+    require_approved_template: true
+    enforce_24h_window: true
+    stop_keywords:
+      - "stop"
+      - "unsubscribe"
+      - "توقف"
+      - "إيقاف"
+      - "لا"
+      - "أوقف"
+      - "إلغاء"
+      - "cancel"
+    daily_quota: 100
+    hourly_quota: 20
+    template_approval_required: true
+    business_api_only: true
+    pause_if_block_rate_above: 0.02
+
+  meta_messaging:
+    enforce_24h_window: true
+    inbound_only_for_auto: true
+    human_handoff_on_pricing: true
+    human_handoff_on_security: true
+    block_unsolicited_outbound: true
+    allowed_outbound: "opt_in_confirmed_only"
+
+  instagram:
+    mode: inbound_reply_only
+    block_unsolicited_dm: true
+    require_inbound_first: true
+    comment_reply_allowed: true
+    max_replies_per_day: 50
+
+  messenger:
+    mode: inbound_reply_only
+    enforce_24h_window: true
+    block_unsolicited_outbound: true
+    human_handoff_triggers:
+      - pricing
+      - security
+      - contract
+      - legal
+
+  x:
+    official_api_only: true
+    block_unsolicited_bulk_dm: true
+    daily_post_limit: 10
+    daily_reply_limit: 30
+    block_mass_follow: true
+    require_relevant_mention_for_dm: true
+
+  telegram:
+    opt_in_bot_only: true
+    block_random_dm: true
+    bot_must_be_initiated_by_user: true
+    group_posting_requires_admin_invite: true
+
+  website_forms:
+    max_per_domain_per_day: 1
+    min_interval_minutes: 60
+    block_duplicate_submissions: true
+    require_human_review_before_send: true
+    captcha_bypass_blocked: true
+
+  calls:
+    require_prior_relationship: true
+    block_cold_robo_calls: true
+    calling_hours_local:
+      start: "09:00"
+      end: "17:30"
+    days_allowed:
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Sunday
+    max_attempts_per_contact: 2
+    min_days_between_attempts: 7
+
+  paid_ads:
+    platform_policy_compliant: true
+    no_misleading_claims: true
+    disclaimer_required: true
+    landing_page_must_match_ad: true
+
+  partners:
+    referral_only: true
+    no_incentivized_spam: true
+    partner_must_disclose_relationship: true
+
+  procurement:
+    official_rfp_only: true
+    no_unsolicited_mass_submission: true

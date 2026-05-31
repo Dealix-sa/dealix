@@ -1,0 +1,299 @@
+sectors:
+  legal:
+    name_en: "Legal Services"
+    name_ar: "الخدمات القانونية"
+    sensitive_flag: false
+    buyer_titles:
+      - "Managing Partner"
+      - "Senior Partner"
+      - "Operations Director"
+      - "Office Manager"
+      - "شريك إداري"
+      - "مدير العمليات"
+    pain_points:
+      - "Client intake is manual and slow"
+      - "Billing hours tracking is inaccurate"
+      - "Document generation takes too long"
+      - "Client follow-up falls through the cracks"
+      - "New associate onboarding is unstructured"
+    best_offer: "sprint_499_sar"
+    best_channel: "email"
+    secondary_channel: "linkedin"
+    typical_company_size: "5-50"
+    decision_cycle_days: 14
+    price_sensitivity: "medium"
+    language_preference: "ar"
+    notes: "Strong in SA, JO. Partners control decisions. Conservative buyers — trust matters."
+
+  facility_management:
+    name_en: "Facility Management"
+    name_ar: "إدارة المرافق"
+    sensitive_flag: false
+    buyer_titles:
+      - "CEO"
+      - "Operations Director"
+      - "FM Director"
+      - "مدير العمليات"
+      - "مدير المرافق"
+    pain_points:
+      - "Scheduling maintenance crews is chaotic"
+      - "Client reporting is manual and delayed"
+      - "Contractor invoices are hard to reconcile"
+      - "SLA tracking is spreadsheet-based"
+      - "Mobilization for new contracts is slow"
+    best_offer: "data_pack_1500_sar"
+    best_channel: "email"
+    secondary_channel: "whatsapp"
+    typical_company_size: "20-500"
+    decision_cycle_days: 21
+    price_sensitivity: "medium"
+    language_preference: "ar"
+    notes: "High Volume SA market. Ops-driven buyers. ROI must be operational, not strategic."
+
+  consulting:
+    name_en: "Management Consulting"
+    name_ar: "الاستشارات الإدارية"
+    sensitive_flag: false
+    buyer_titles:
+      - "Managing Director"
+      - "Partner"
+      - "CEO"
+      - "Head of Strategy"
+      - "مدير عام"
+      - "شريك"
+    pain_points:
+      - "Proposal writing takes too long"
+      - "Knowledge management is fragmented"
+      - "Client onboarding is not standardized"
+      - "Utilization tracking is manual"
+      - "Business development is founder-dependent"
+    best_offer: "managed_ops_2999_4999_sar"
+    best_channel: "linkedin"
+    secondary_channel: "email"
+    typical_company_size: "5-100"
+    decision_cycle_days: 30
+    price_sensitivity: "low"
+    language_preference: "en"
+    notes: "Sophisticated buyers. Peer-to-peer credibility drives decisions. Case studies essential."
+
+  real_estate:
+    name_en: "Real Estate"
+    name_ar: "العقارات"
+    sensitive_flag: false
+    buyer_titles:
+      - "CEO"
+      - "Sales Director"
+      - "Marketing Director"
+      - "مدير المبيعات"
+      - "مدير التسويق"
+    pain_points:
+      - "Lead follow-up is inconsistent"
+      - "Broker management is chaotic"
+      - "Listing data is not centralized"
+      - "Client qualification is manual"
+      - "Sales team activity is not tracked"
+    best_offer: "sprint_499_sar"
+    best_channel: "email"
+    secondary_channel: "instagram"
+    typical_company_size: "5-200"
+    decision_cycle_days: 14
+    price_sensitivity: "medium"
+    language_preference: "ar"
+    notes: "High volume market in SA. Speed matters. Instagram presence is strong for B2B discovery."
+
+  healthcare_admin:
+    name_en: "Healthcare Administration"
+    name_ar: "الإدارة الصحية"
+    sensitive_flag: true
+    buyer_titles:
+      - "Hospital Director"
+      - "CEO"
+      - "Operations Manager"
+      - "مدير المستشفى"
+      - "مدير العمليات"
+    pain_points:
+      - "Patient scheduling and no-show management"
+      - "Insurance claim processing delays"
+      - "Staff scheduling complexity"
+      - "Regulatory reporting burden"
+      - "Supply chain management gaps"
+    best_offer: "custom_ai_5k_25k_sar"
+    best_channel: "email"
+    secondary_channel: "calls"
+    typical_company_size: "50-5000"
+    decision_cycle_days: 60
+    price_sensitivity: "low"
+    language_preference: "ar"
+    notes: "Sensitive sector — no PII in demos. Procurement-driven. Long sales cycles. High trust bar."
+
+  financial_services:
+    name_en: "Financial Services"
+    name_ar: "الخدمات المالية"
+    sensitive_flag: true
+    buyer_titles:
+      - "CFO"
+      - "CEO"
+      - "Head of Operations"
+      - "مدير مالي"
+      - "رئيس العمليات"
+    pain_points:
+      - "Reconciliation takes days not hours"
+      - "Audit trail documentation is manual"
+      - "Client reporting is inconsistent"
+      - "Compliance reporting overhead is high"
+      - "Onboarding new clients is slow"
+    best_offer: "managed_ops_2999_4999_sar"
+    best_channel: "email"
+    secondary_channel: "linkedin"
+    typical_company_size: "20-500"
+    decision_cycle_days: 45
+    price_sensitivity: "low"
+    language_preference: "en"
+    notes: "Sensitive — governance and auditability are selling points. Compliance language resonates."
+
+  government:
+    name_en: "Government & Public Sector"
+    name_ar: "القطاع الحكومي"
+    sensitive_flag: true
+    buyer_titles:
+      - "Director General"
+      - "Assistant Deputy Minister"
+      - "Head of IT"
+      - "مدير عام"
+      - "رئيس تقنية المعلومات"
+    pain_points:
+      - "Digital transformation mandate with limited capacity"
+      - "Manual reporting to ministries"
+      - "Citizen service response delays"
+      - "Budget utilization tracking is poor"
+    best_offer: "custom_ai_5k_25k_sar"
+    best_channel: "procurement"
+    secondary_channel: "email"
+    typical_company_size: "100+"
+    decision_cycle_days: 120
+    price_sensitivity: "low"
+    language_preference: "ar"
+    notes: "Very long cycles. Procurement-driven. Formal letters preferred. Vision 2030 alignment is key."
+
+  international:
+    name_en: "International Companies in GCC"
+    name_ar: "الشركات الدولية في الخليج"
+    sensitive_flag: false
+    buyer_titles:
+      - "Country Manager"
+      - "Regional Director"
+      - "Head of Operations"
+      - "CFO"
+    pain_points:
+      - "Localization of operations for Arabic market"
+      - "Compliance with local regulations"
+      - "Arabic language operations support"
+      - "Local team management efficiency"
+    best_offer: "managed_ops_2999_4999_sar"
+    best_channel: "email"
+    secondary_channel: "linkedin"
+    typical_company_size: "50-5000"
+    decision_cycle_days: 30
+    price_sensitivity: "low"
+    language_preference: "en"
+    notes: "English preferred. Governance angle resonates. EU-style compliance mindset."
+
+  construction:
+    name_en: "Construction & Contracting"
+    name_ar: "المقاولات والإنشاءات"
+    sensitive_flag: false
+    buyer_titles:
+      - "CEO"
+      - "Project Director"
+      - "CFO"
+      - "مدير المشاريع"
+      - "مدير عام"
+    pain_points:
+      - "Project cost overruns and budget tracking"
+      - "Subcontractor payment management"
+      - "Site productivity reporting"
+      - "Equipment utilization tracking"
+      - "RFQ and procurement response time"
+    best_offer: "data_pack_1500_sar"
+    best_channel: "email"
+    secondary_channel: "calls"
+    typical_company_size: "50-2000"
+    decision_cycle_days: 30
+    price_sensitivity: "medium"
+    language_preference: "ar"
+    notes: "High activity in SA, QA. Ops-focused buyers. Cash flow management is a major pain."
+
+  retail:
+    name_en: "Retail & Commerce"
+    name_ar: "التجزئة والتجارة"
+    sensitive_flag: false
+    buyer_titles:
+      - "CEO"
+      - "General Manager"
+      - "Head of Operations"
+      - "مدير عام"
+      - "مدير العمليات"
+    pain_points:
+      - "Inventory visibility across branches"
+      - "Supplier reconciliation is manual"
+      - "Staff scheduling and performance tracking"
+      - "Customer data is fragmented"
+      - "Promotions planning is reactive"
+    best_offer: "sprint_499_sar"
+    best_channel: "email"
+    secondary_channel: "instagram"
+    typical_company_size: "10-500"
+    decision_cycle_days: 14
+    price_sensitivity: "high"
+    language_preference: "ar"
+    notes: "Price sensitive. ROI must be immediate and clear. Franchise chains are good targets."
+
+  logistics:
+    name_en: "Logistics & Supply Chain"
+    name_ar: "اللوجستيات وسلسلة التوريد"
+    sensitive_flag: false
+    buyer_titles:
+      - "CEO"
+      - "Operations Director"
+      - "Supply Chain Manager"
+      - "مدير العمليات"
+      - "مدير سلسلة التوريد"
+    pain_points:
+      - "Last-mile delivery tracking is opaque"
+      - "Fleet maintenance scheduling is reactive"
+      - "Customer complaint response time is slow"
+      - "Route optimization is manual"
+      - "Invoice-to-payment cycle is long"
+    best_offer: "data_pack_1500_sar"
+    best_channel: "email"
+    secondary_channel: "whatsapp"
+    typical_company_size: "20-1000"
+    decision_cycle_days: 21
+    price_sensitivity: "medium"
+    language_preference: "ar"
+    notes: "Ops-heavy buyers. Speed and reliability are the core selling points."
+
+  education:
+    name_en: "Education & Training"
+    name_ar: "التعليم والتدريب"
+    sensitive_flag: false
+    buyer_titles:
+      - "CEO"
+      - "Director"
+      - "Head of Operations"
+      - "مدير"
+      - "رئيس العمليات"
+    pain_points:
+      - "Student enrollment and follow-up is manual"
+      - "Instructor scheduling is complex"
+      - "Certification and compliance reporting"
+      - "Alumni engagement is non-existent"
+      - "Corporate training pipeline is unstructured"
+    best_offer: "sprint_499_sar"
+    best_channel: "email"
+    secondary_channel: "linkedin"
+    typical_company_size: "10-200"
+    decision_cycle_days: 21
+    price_sensitivity: "medium"
+    language_preference: "ar"
+    notes: "Training companies are good entry point. Private schools growing in SA."

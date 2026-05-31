@@ -1,0 +1,3 @@
+# warnings.jsonl — Dealix Growth OS | Fields: warning_id, channel, metric, threshold, actual_value, severity, triggered_at, action_taken, resolved_at
+{"warning_id": "warn_001", "channel": "email", "metric": "bounce_rate", "threshold": 0.03, "actual_value": 0.035, "severity": "medium", "triggered_at": "2026-05-31T18:00:00Z", "action_taken": "reduced_daily_quota_to_250", "resolved_at": null}
+{"warning_id": "warn_002", "channel": "whatsapp", "metric": "block_rate", "threshold": 0.02, "actual_value": 0.025, "severity": "high", "triggered_at": "2026-05-31T20:00:00Z", "action_taken": "paused_whatsapp_channel", "resolved_at": null}

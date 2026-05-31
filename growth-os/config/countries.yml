@@ -1,0 +1,228 @@
+countries:
+  SA:
+    name_en: "Saudi Arabia"
+    name_ar: "المملكة العربية السعودية"
+    language_primary: "ar"
+    language_secondary: "en"
+    timezone: "Asia/Riyadh"
+    currency: "SAR"
+    currency_symbol: "ر.س"
+    calling_code: "+966"
+    business_hours:
+      start: "08:00"
+      end: "17:00"
+    business_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    key_sectors:
+      - legal
+      - facility_management
+      - consulting
+      - real_estate
+      - financial_services
+      - government
+      - construction
+      - healthcare_admin
+      - logistics
+      - retail
+    compliance_framework: "PDPL"
+    priority: 1
+    notes: "Primary market. Vision 2030 driving digitization. Arabic preferred for senior execs."
+
+  AE:
+    name_en: "United Arab Emirates"
+    name_ar: "الإمارات العربية المتحدة"
+    language_primary: "en"
+    language_secondary: "ar"
+    timezone: "Asia/Dubai"
+    currency: "AED"
+    currency_symbol: "د.إ"
+    calling_code: "+971"
+    business_hours:
+      start: "08:00"
+      end: "18:00"
+    business_days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    key_sectors:
+      - financial_services
+      - real_estate
+      - consulting
+      - logistics
+      - retail
+      - healthcare_admin
+    compliance_framework: "UAE_Data_Protection"
+    priority: 2
+    notes: "English dominant for B2B. Strong international presence. Dubai/Abu Dhabi focus."
+
+  KW:
+    name_en: "Kuwait"
+    name_ar: "الكويت"
+    language_primary: "ar"
+    language_secondary: "en"
+    timezone: "Asia/Kuwait"
+    currency: "KWD"
+    currency_symbol: "د.ك"
+    calling_code: "+965"
+    business_hours:
+      start: "08:00"
+      end: "16:00"
+    business_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    key_sectors:
+      - financial_services
+      - consulting
+      - real_estate
+      - government
+    compliance_framework: "Kuwait_Data"
+    priority: 3
+    notes: "Arabic preferred. Strong family businesses. Government sector large."
+
+  QA:
+    name_en: "Qatar"
+    name_ar: "قطر"
+    language_primary: "ar"
+    language_secondary: "en"
+    timezone: "Asia/Qatar"
+    currency: "QAR"
+    currency_symbol: "ر.ق"
+    calling_code: "+974"
+    business_hours:
+      start: "07:30"
+      end: "17:00"
+    business_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    key_sectors:
+      - construction
+      - logistics
+      - government
+      - consulting
+      - real_estate
+    compliance_framework: "Qatar_Data"
+    priority: 3
+    notes: "Post-World-Cup infrastructure boom. Government procurement strong."
+
+  BH:
+    name_en: "Bahrain"
+    name_ar: "البحرين"
+    language_primary: "ar"
+    language_secondary: "en"
+    timezone: "Asia/Bahrain"
+    currency: "BHD"
+    currency_symbol: "د.ب"
+    calling_code: "+973"
+    business_hours:
+      start: "08:00"
+      end: "17:00"
+    business_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    key_sectors:
+      - financial_services
+      - consulting
+      - retail
+    compliance_framework: "Bahrain_PDPL"
+    priority: 4
+    notes: "Financial hub. Smaller market but English-friendly B2B sector."
+
+  OM:
+    name_en: "Oman"
+    name_ar: "سلطنة عُمان"
+    language_primary: "ar"
+    language_secondary: "en"
+    timezone: "Asia/Muscat"
+    currency: "OMR"
+    currency_symbol: "ر.ع"
+    calling_code: "+968"
+    business_hours:
+      start: "08:00"
+      end: "15:30"
+    business_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    key_sectors:
+      - logistics
+      - construction
+      - government
+      - tourism
+    compliance_framework: "Oman_Data"
+    priority: 4
+    notes: "Growing market. Strong government ties. Logistics hub ambitions."
+
+  EG:
+    name_en: "Egypt"
+    name_ar: "مصر"
+    language_primary: "ar"
+    language_secondary: "en"
+    timezone: "Africa/Cairo"
+    currency: "EGP"
+    currency_symbol: "ج.م"
+    calling_code: "+20"
+    business_hours:
+      start: "09:00"
+      end: "17:00"
+    business_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    key_sectors:
+      - legal
+      - consulting
+      - financial_services
+      - real_estate
+      - retail
+    compliance_framework: "Egypt_Data_Protection"
+    priority: 5
+    notes: "Large market. Arabic essential. Price-sensitive — position ROI carefully."
+
+  JO:
+    name_en: "Jordan"
+    name_ar: "الأردن"
+    language_primary: "ar"
+    language_secondary: "en"
+    timezone: "Asia/Amman"
+    currency: "JOD"
+    currency_symbol: "د.أ"
+    calling_code: "+962"
+    business_hours:
+      start: "08:00"
+      end: "17:00"
+    business_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    key_sectors:
+      - consulting
+      - legal
+      - education
+      - healthcare_admin
+    compliance_framework: "Jordan_Data"
+    priority: 5
+    notes: "Services-heavy economy. Strong consulting and legal sectors."
+
+  LB:
+    name_en: "Lebanon"
+    name_ar: "لبنان"
+    language_primary: "ar"
+    language_secondary: "en"
+    timezone: "Asia/Beirut"
+    currency: "USD"
+    currency_symbol: "$"
+    calling_code: "+961"
+    business_hours:
+      start: "09:00"
+      end: "18:00"
+    business_days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    key_sectors:
+      - consulting
+      - financial_services
+      - legal
+    compliance_framework: "Lebanon_Data"
+    priority: 6
+    notes: "Economic instability — qualify carefully. Strong professional services sector."
+
+  MA:
+    name_en: "Morocco"
+    name_ar: "المغرب"
+    language_primary: "ar"
+    language_secondary: "fr"
+    timezone: "Africa/Casablanca"
+    currency: "MAD"
+    currency_symbol: "د.م"
+    calling_code: "+212"
+    business_hours:
+      start: "09:00"
+      end: "18:00"
+    business_days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    key_sectors:
+      - consulting
+      - real_estate
+      - logistics
+      - retail
+    compliance_framework: "Morocco_Law09"
+    priority: 6
+    notes: "French-Arabic bilingual. Growing outsourcing hub. EU proximity advantage."

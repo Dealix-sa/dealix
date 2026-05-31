@@ -1,0 +1,30 @@
+channel: linkedin
+enabled: true
+mode: assisted_manual
+description: "LinkedIn — ALWAYS assisted_manual. Founder executes all actions manually. Non-negotiable."
+
+quotas:
+  automated_sends: 0
+  founder_manual_connection_requests_per_week: 25
+  founder_manual_messages_per_day: 20
+  founder_manual_profile_views_per_day: 50
+
+requires_opt_in: false
+requires_approved_template: false
+enforce_24h_window: false
+automation_blocked: true
+scraping_blocked: true
+
+compliance_notes:
+  - "HARD BLOCK: No automation of any kind — LinkedIn ToS violation"
+  - "HARD BLOCK: No scraping — LinkedIn ToS violation and Dealix non-negotiable"
+  - "All actions must be founder-initiated and manually executed"
+  - "System only prepares draft packages — founder sends manually"
+  - "Connection requests limited to 25/week per LinkedIn guidance"
+  - "No fake profiles, no impersonation"
+
+integration_notes:
+  system_access: "NONE — system does not access LinkedIn directly"
+  founder_tool: "LinkedIn.com — personal account"
+  package_location: "outputs/founder_review/ — draft + context for manual send"
+  logging: "Founder logs send in memory/execution_logs.jsonl after manual execution"

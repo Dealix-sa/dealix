@@ -126,9 +126,15 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
         # Enforce key only when API_KEYS is configured
         allowed = _configured_keys()
         if not allowed:
+            if os.getenv("APP_ENV") == "production":
+                return JSONResponse(
+                    {"detail": "Service not configured — API_KEYS must be set in production"},
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                )
             return await call_next(request)
 
-        provided = request.headers.get("X-API-Key")
+        # Accept key from X-API-Key header or ?api_key= query param
+        provided = request.headers.get("X-API-Key") or request.query_params.get("api_key")
         if not verify_api_key(provided, allowed):
             logger.warning("api_key_invalid", path=path, has_key=bool(provided))
             # Return a proper JSONResponse instead of raising HTTPException —

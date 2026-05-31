@@ -1,0 +1,3 @@
+# suppression.jsonl — Dealix Growth OS | Fields: suppression_id, email_or_domain, suppression_type, reason, suppressed_at, review_after, source
+{"suppression_id": "sup_001", "email_or_domain": "example-optout@example.com", "suppression_type": "email", "reason": "unsubscribe_request", "suppressed_at": "2026-06-01T10:01:00Z", "review_after": "2026-08-31T10:01:00Z", "source": "reply_classifier"}
+{"suppression_id": "sup_002", "email_or_domain": "donotcontact-domain.com", "suppression_type": "domain", "reason": "hard_bounce", "suppressed_at": "2026-05-31T14:00:00Z", "review_after": "2026-08-29T14:00:00Z", "source": "email_provider_webhook"}
