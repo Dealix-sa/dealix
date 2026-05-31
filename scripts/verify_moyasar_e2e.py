@@ -31,7 +31,7 @@ def main() -> int:
         route = probe_get(args.api_base.rstrip("/"), "/api/v1/webhooks/moyasar", timeout_sec=8.0)
         route_ok = route.get("status") not in (404, None)
         checks.append(("webhook_route_live", route_ok, f"status={route.get('status')}"))
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         checks.append(("webhook_route_live", False, str(exc)))
 
     try:
@@ -42,7 +42,7 @@ def main() -> int:
             event_type="payment_created",
         )
         checks.append(("side_effects_import", True, str(dry.get("hubspot_sync", {}).get("skipped"))))
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         checks.append(("side_effects_import", False, str(exc)))
 
     print("== Moyasar E2E checklist ==")

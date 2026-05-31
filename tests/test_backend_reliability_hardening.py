@@ -6,7 +6,6 @@ import json
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-
 WAVE_5_STATUS_ENDPOINTS = [
     "/api/v1/leadops/reliability",
     "/api/v1/revenue-profitability/status",

@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import pytest
 
-
 VALID_REQUEST = {
     "company_name": "Saudi Mega Corp",
     "contact_name": "Mohammed Al-Saudi",

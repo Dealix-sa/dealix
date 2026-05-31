@@ -16,7 +16,6 @@ import httpx  # noqa: E402
 
 from api.main import create_app  # noqa: E402
 
-
 PATHS = [
     "/",
     "/health",

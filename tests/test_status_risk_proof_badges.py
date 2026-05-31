@@ -11,7 +11,6 @@ from auto_client_acquisition.client_os.badges import (
     StatusBadge,
 )
 
-
 STATUS_EXPECTED = {
     "draft",
     "needs_review",
@@ -94,6 +93,6 @@ def test_approval_renderer_regression() -> None:
 
     # Don't crash importing the approval_center package.
     try:
-        import auto_client_acquisition.approval_center as _ac  # noqa: F401
+        import auto_client_acquisition.approval_center as _ac
     except ImportError:
         pytest.skip("approval_center module not importable in this environment")

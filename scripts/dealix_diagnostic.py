@@ -40,12 +40,17 @@ from auto_client_acquisition.diagnostic_engine import (  # noqa: E402
 )
 from auto_client_acquisition.diagnostic_engine.engine import (  # noqa: E402
     SECTOR_BUNDLE_MAP as _SECTOR_DEFAULTS,
+)
+from auto_client_acquisition.diagnostic_engine.engine import (
     _bundle_dict as _bundle,
+)
+from auto_client_acquisition.diagnostic_engine.engine import (
     _load_matrix,
-    _recommended_bundle_for as _recommended_bundle,
     _services_in_bundle,
 )
-
+from auto_client_acquisition.diagnostic_engine.engine import (
+    _recommended_bundle_for as _recommended_bundle,
+)
 
 # ─────────────────────── markdown rendering ────────────────────────
 
@@ -117,9 +122,9 @@ def _legacy_render_markdown(
     md.append(f"> {pipeline_state}")
     md.append("")
     md.append("**التشخيص الأوّليّ — الفجوات الأكثر أهميّة:**")
-    md.append(f"1. لا يوجد مسار واضح للاستقبال + التأهيل + الردّ خلال SLA محدّد.")
-    md.append(f"2. الردّ يعتمد على المؤسس، ممّا يخلق عنق زجاجة بعد ساعات الذروة.")
-    md.append(f"3. لا توجد أدلّة مكتوبة (Proof Pack) لإقناع العميل التالي.")
+    md.append("1. لا يوجد مسار واضح للاستقبال + التأهيل + الردّ خلال SLA محدّد.")
+    md.append("2. الردّ يعتمد على المؤسس، ممّا يخلق عنق زجاجة بعد ساعات الذروة.")
+    md.append("3. لا توجد أدلّة مكتوبة (Proof Pack) لإقناع العميل التالي.")
     md.append("")
     md.append(f"**التوصية:** ابدؤوا بـ **{bundle_ar}** ({bundle_id}).")
     if summary_ar:
@@ -166,9 +171,9 @@ def _legacy_render_markdown(
     md.append(f"> {pipeline_state}")
     md.append("")
     md.append("**Initial assessment — top three gaps:**")
-    md.append(f"1. No structured inbound → qualification → reply pipeline with explicit SLAs.")
-    md.append(f"2. Reply path depends on the founder, creating a bottleneck after peak hours.")
-    md.append(f"3. No written Proof Pack to convince the next prospect.")
+    md.append("1. No structured inbound → qualification → reply pipeline with explicit SLAs.")
+    md.append("2. Reply path depends on the founder, creating a bottleneck after peak hours.")
+    md.append("3. No written Proof Pack to convince the next prospect.")
     md.append("")
     md.append(f"**Recommended starting bundle:** **{bundle_en}** (`{bundle_id}`).")
     if summary_en:

@@ -20,8 +20,7 @@ from dealix.commercial_ops.evidence_csv import (
 from dealix.commercial_ops.founder_90min import build_founder_90min_sections, render_90min_markdown
 from dealix.commercial_ops.kpi_snapshot import load_kpi_commercial_status
 from dealix.commercial_ops.market_intelligence_refs import build_market_intel_digest_block
-from dealix.commercial_ops.strategy_refs import strategy_links_flat
-from dealix.commercial_ops.value_plan import build_value_plan_snapshot
+from dealix.commercial_ops.outreach_drafts import attach_outreach_drafts
 from dealix.commercial_ops.paths import (
     EVIDENCE_TRACKER_CSV,
     FOUNDER_BRIEFS_DIR,
@@ -29,9 +28,10 @@ from dealix.commercial_ops.paths import (
     WAR_ROOM_TODAY_JSON,
 )
 from dealix.commercial_ops.social_queue import format_linkedin_draft, get_post_for_date
-from dealix.commercial_ops.outreach_drafts import attach_outreach_drafts
+from dealix.commercial_ops.strategy_refs import strategy_links_flat
 from dealix.commercial_ops.targeting_csv import build_war_room_today, load_targets
 from dealix.commercial_ops.targeting_rotation import preview_next_targets, select_daily_p0_targets
+from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 
 
 def build_commercial_digest(

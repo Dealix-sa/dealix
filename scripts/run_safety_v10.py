@@ -16,7 +16,6 @@ import json
 import sys
 from pathlib import Path
 
-
 # Ensure the repo root is on sys.path when invoked directly.
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
