@@ -518,6 +518,10 @@ def create_app() -> FastAPI:
 
     app.include_router(churn_prevention_ops_router.router)
 
+    # Revenue Intelligence Ops — MRR breakdown, leakage, forecast, NRR
+    from api.routers import revenue_intelligence_ops as revenue_intelligence_ops_router
+    app.include_router(revenue_intelligence_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

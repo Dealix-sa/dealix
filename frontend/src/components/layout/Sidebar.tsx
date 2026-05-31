@@ -25,6 +25,12 @@ import {
   FileText,
   Megaphone,
   Cpu,
+  CreditCard,
+  Receipt,
+  BadgeCheck,
+  Gauge,
+  Activity,
+  TrendingDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -51,7 +57,14 @@ const navItems: NavItem[] = [
   { key: "opsPartners", href: "/ops/partners", icon: Users },
   { key: "opsEvidence", href: "/ops/evidence", icon: FileText },
   { key: "opsSupport", href: "/ops/support", icon: Shield },
+  { key: "subscriptions", href: "/subscriptions", icon: CreditCard },
+  { key: "invoices", href: "/invoices", icon: Receipt },
+  { key: "team", href: "/team", icon: Users },
+  { key: "proofPacks", href: "/proof-packs", icon: BadgeCheck },
+  { key: "cockpit", href: "/cockpit", icon: Gauge },
+  { key: "health", href: "/health", icon: Activity },
   { key: "pipeline", href: "/pipeline", icon: GitBranch },
+  { key: "churn", href: "/churn", icon: TrendingDown },
   { key: "agents", href: "/agents", icon: Bot },
   { key: "approvals", href: "/approvals", icon: CheckSquare },
   { key: "trustCheck", href: "/trust-check", icon: Shield },
@@ -177,7 +190,14 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
                           | "opsSupport"
                           | "businessNow"
                           | "cloud"
+                          | "subscriptions"
+                          | "invoices"
+                          | "team"
+                          | "proofPacks"
+                          | "cockpit"
+                          | "health"
                           | "pipeline"
+                          | "churn"
                           | "agents"
                           | "approvals"
                           | "trustCheck"
