@@ -13,7 +13,6 @@ from pathlib import Path
 
 import pytest
 
-
 REPO_ROOT = Path(__file__).resolve().parent.parent
 NOTES = REPO_ROOT / "docs" / "V5_RELEASE_NOTES.md"
 

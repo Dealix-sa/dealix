@@ -40,7 +40,8 @@ sys.path.insert(0, str(REPO_ROOT))
 
 def test_step_01_service_catalog_has_7_offerings_with_valid_ladder() -> None:
     from auto_client_acquisition.service_catalog.registry import (
-        get_offering, list_offerings,
+        get_offering,
+        list_offerings,
     )
 
     offerings = list_offerings()
@@ -118,7 +119,10 @@ def test_step_02_decision_passport_validates_owner_and_action_mode() -> None:
 def test_step_02b_decision_passport_blocks_cold_whatsapp_channel() -> None:
     """Hard gate: best_channel must be in allowed_channels."""
     from auto_client_acquisition.decision_passport.schema import (
-        DecisionPassport, ScoreBoard, ValidationFailure, validate_passport,
+        DecisionPassport,
+        ScoreBoard,
+        ValidationFailure,
+        validate_passport,
     )
 
     bad_passport = DecisionPassport(
@@ -152,7 +156,8 @@ def test_step_02b_decision_passport_blocks_cold_whatsapp_channel() -> None:
 def test_step_03_service_session_lifecycle_state_machine_valid() -> None:
     """Wave 13 Phase 3 — service_sessions/lifecycle.py state machine."""
     from auto_client_acquisition.service_sessions.lifecycle import (
-        advance_session, is_transition_allowed,
+        advance_session,
+        is_transition_allowed,
     )
 
     # Valid: draft → waiting_for_approval

@@ -11,7 +11,7 @@ import argparse
 import json
 import sys
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -52,7 +52,7 @@ def build_session(*, company: str, service: str, payment_state: dict) -> dict[st
         "company": company,
         "service_type": service,
         "state": "waiting_inputs",
-        "started_at": datetime.now(timezone.utc).isoformat(),
+        "started_at": datetime.now(UTC).isoformat(),
         "payment_basis": payment_state.get("state"),
         "amount_sar": payment_state.get("amount_sar"),
         "is_revenue_basis": payment_state.get("is_revenue", False),
@@ -86,7 +86,7 @@ def render_markdown(session: dict, payment_state: dict) -> str:
     lines.append(f"- Action: **{session['next_step']['action']}**")
     lines.append(f"- Owner: {session['next_step']['owner']}")
     lines.append("")
-    lines.append(f"## Hard rules (Article 4)")
+    lines.append("## Hard rules (Article 4)")
     lines.append(f"- {session['safety_summary']}")
     return "\n".join(lines)
 

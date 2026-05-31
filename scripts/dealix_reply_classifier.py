@@ -11,6 +11,7 @@ Usage:
 """
 
 from __future__ import annotations
+
 import re
 import sys
 
@@ -137,14 +138,14 @@ def main():
         sys.exit(1)
 
     categories = classify(text)
-    print(f"━━━ CLASSIFICATION ━━━")
+    print("━━━ CLASSIFICATION ━━━")
     for cat in categories:
         resp, action, tracker = RESPONSES.get(cat, RESPONSES["interested"])
         print(f"\n▸ Category: {cat}")
         print(f"  Next action:    {action}")
         print(f"  Tracker update: {tracker}")
-        print(f"  Follow-up:      schedule +2 days if no reply")
-        print(f"\n  📨 SUGGESTED RESPONSE (Khaliji):")
+        print("  Follow-up:      schedule +2 days if no reply")
+        print("\n  📨 SUGGESTED RESPONSE (Khaliji):")
         print("  " + resp.replace("\n", "\n  "))
         print()
 

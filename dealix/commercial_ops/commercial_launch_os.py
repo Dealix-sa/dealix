@@ -5,7 +5,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from dealix.commercial_ops.evidence_csv import count_evidence_events, load_evidence_rows, real_evidence_rows
+from dealix.commercial_ops.evidence_csv import (
+    count_evidence_events,
+    load_evidence_rows,
+    real_evidence_rows,
+)
 
 _REPO = Path(__file__).resolve().parents[2]
 

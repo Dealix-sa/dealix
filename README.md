@@ -13,7 +13,7 @@
 
 **[العربية](README.ar.md)** · **English**
 
-### [🚀 Deploy](docs/ops/DEPLOY_RUNBOOK.md) · [✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) · [💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) · [📡 Domain](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md) · [🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)
+### [🚀 Launch](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md) · [✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) · [💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) · [📡 Domain](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md) · [🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)
 
 </div>
 
@@ -77,6 +77,8 @@ make env-check             # checks backend and frontend env templates
 make api-contract-check    # checks OpenAPI contract stability
 make security-smoke        # dependency-free repository security smoke
 make production-smoke      # smoke production API when PRODUCTION_BASE_URL is set
+make dependency-inventory  # export lightweight dependency inventory
+make release-manifest      # export production release manifest
 make test                  # test suite with project pytest defaults
 make security              # Bandit + detect-secrets baseline scan when configured
 ```
@@ -89,6 +91,7 @@ Before paid traffic, public demos, or enterprise pilots, review these in order:
 
 | Gate | Document / command |
 |---|---|
+| Launch operator runbook | [`docs/ops/LAUNCH_OPERATOR_RUNBOOK.md`](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md) |
 | Production readiness | [`docs/ops/PRODUCTION_READINESS_CHECKLIST.md`](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) |
 | Commercial go-live | [`docs/ops/COMMERCIAL_GO_LIVE_GATE.md`](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) |
 | Domain operations | [`docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md`](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md) |
@@ -128,6 +131,8 @@ Dealix now has explicit repository controls for the most important production ri
 | Web lockfile generation workflow | `.github/workflows/generate-web-lockfile.yml` |
 | Environment contract validation | `scripts/check_env_contract.py`, `make env-check` |
 | OpenAPI contract export/check | `scripts/export_openapi.py`, `scripts/check_openapi_contract.py` |
+| Dependency inventory | `scripts/export_dependency_inventory.py`, `make dependency-inventory` |
+| Release manifest | `scripts/export_release_manifest.py`, `make release-manifest` |
 | Production launch checklist | `docs/ops/PRODUCTION_READINESS_CHECKLIST.md` |
 | Repository gap register | `docs/architecture/REPO_GAP_AUDIT.md` |
 | Production verification bundle | `make prod-verify` |
@@ -194,6 +199,7 @@ make prod-verify
 
 Then review:
 
+- [`docs/ops/LAUNCH_OPERATOR_RUNBOOK.md`](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md)
 - [`docs/ops/PRODUCTION_READINESS_CHECKLIST.md`](docs/ops/PRODUCTION_READINESS_CHECKLIST.md)
 - [`docs/ops/COMMERCIAL_GO_LIVE_GATE.md`](docs/ops/COMMERCIAL_GO_LIVE_GATE.md)
 - [`docs/architecture/REPO_GAP_AUDIT.md`](docs/architecture/REPO_GAP_AUDIT.md)
@@ -209,6 +215,7 @@ Then review:
 | API map | [`docs/architecture/API_MAP.md`](docs/architecture/API_MAP.md) |
 | API contract policy | [`docs/architecture/API_CONTRACT_POLICY.md`](docs/architecture/API_CONTRACT_POLICY.md) |
 | Gap audit | [`docs/architecture/REPO_GAP_AUDIT.md`](docs/architecture/REPO_GAP_AUDIT.md) |
+| Launch operator runbook | [`docs/ops/LAUNCH_OPERATOR_RUNBOOK.md`](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md) |
 | Production readiness | [`docs/ops/PRODUCTION_READINESS_CHECKLIST.md`](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) |
 | Commercial go-live | [`docs/ops/COMMERCIAL_GO_LIVE_GATE.md`](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) |
 | Deploy runbook | [`docs/ops/DEPLOY_RUNBOOK.md`](docs/ops/DEPLOY_RUNBOOK.md) |
@@ -217,6 +224,7 @@ Then review:
 | Server hardening | [`docs/ops/SERVER_HARDENING_CHECKLIST.md`](docs/ops/SERVER_HARDENING_CHECKLIST.md) |
 | Monitoring | [`docs/ops/MONITORING_MATRIX.md`](docs/ops/MONITORING_MATRIX.md) |
 | Founder operating rhythm | [`docs/ops/FOUNDER_DAILY_OPERATING_RHYTHM.md`](docs/ops/FOUNDER_DAILY_OPERATING_RHYTHM.md) |
+| Supply chain policy | [`docs/ops/SBOM_AND_SUPPLY_CHAIN_POLICY.md`](docs/ops/SBOM_AND_SUPPLY_CHAIN_POLICY.md) |
 | No-overclaim register | [`dealix/registers/no_overclaim.yaml`](dealix/registers/no_overclaim.yaml) |
 | Saudi compliance register | [`dealix/registers/compliance_saudi.yaml`](dealix/registers/compliance_saudi.yaml) |
 
@@ -230,6 +238,6 @@ MIT — see [LICENSE](LICENSE).
 
 <div align="center">
 
-**[📖 Blueprint](docs/blueprint/master-architecture.md)** · **[✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md)** · **[💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md)** · **[🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)** · **[🇸🇦 Compliance](dealix/registers/compliance_saudi.yaml)**
+**[🚀 Launch](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md)** · **[✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md)** · **[💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md)** · **[🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)** · **[🇸🇦 Compliance](dealix/registers/compliance_saudi.yaml)**
 
 </div>

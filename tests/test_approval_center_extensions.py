@@ -5,7 +5,7 @@ adds coverage for the new features.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 from httpx import ASGITransport, AsyncClient
@@ -76,8 +76,8 @@ def test_evaluate_safety_strips_auto_execute_from_linkedin() -> None:
 
 def test_expire_overdue_flips_pending_to_expired() -> None:
     store = ApprovalStore()
-    past = datetime.now(timezone.utc) - timedelta(hours=1)
-    future = datetime.now(timezone.utc) + timedelta(hours=1)
+    past = datetime.now(UTC) - timedelta(hours=1)
+    future = datetime.now(UTC) + timedelta(hours=1)
 
     expired_req = _make("apv_old", expires_at=past)
     fresh_req = _make("apv_new", expires_at=future)

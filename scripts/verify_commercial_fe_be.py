@@ -39,11 +39,11 @@ def check_env_examples() -> None:
 
 def check_backend_smoke() -> None:
     try:
-        from dealix.execution_assurance.health import compute_full_ops_health  # noqa: PLC0415
+        from dealix.execution_assurance.health import compute_full_ops_health
 
         snap = compute_full_ops_health()
         ok(f"full_ops_health keys={len(snap)}")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         fail(f"execution_assurance.health: {exc}")
 
 
@@ -86,12 +86,12 @@ def check_ops_founder_marketing_smoke() -> None:
             ok("GET founder/autonomous-ops/status")
         else:
             fail(f"founder/autonomous-ops/status status={r_auto.status_code}")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         fail(f"ops UI API smoke: {type(exc).__name__}")
 
 
 def check_railway_matrix() -> None:
-    from dealix.commercial_ops.railway_launch import (  # noqa: PLC0415
+    from dealix.commercial_ops.railway_launch import (
         check_railway_api_env,
         check_railway_frontend_env,
     )
