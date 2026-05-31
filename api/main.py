@@ -742,6 +742,18 @@ def create_app() -> FastAPI:
     from api.routers import customer_journey as customer_journey_router
     app.include_router(customer_journey_router.router)
 
+    # Pricing Simulator — multi-year deal structures, payment incentives, TCO simulation
+    from api.routers import pricing_simulator as pricing_simulator_router
+    app.include_router(pricing_simulator_router.router)
+
+    # Health Score Explainer — 6 dimensions, score bands, improvement levers
+    from api.routers import health_score_explainer as health_score_explainer_router
+    app.include_router(health_score_explainer_router.router)
+
+    # Sales Forecasting — pipeline-to-close, stage win rates, quota attainment
+    from api.routers import sales_forecasting as sales_forecasting_router
+    app.include_router(sales_forecasting_router.router)
+
     # Proposal Builder — bilingual proposal outline generator per tier
     from api.routers import proposal_builder as proposal_builder_router
     app.include_router(proposal_builder_router.router)
