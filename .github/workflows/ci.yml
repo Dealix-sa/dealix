@@ -246,6 +246,14 @@ jobs:
       - name: Docker info
         run: docker info
 
+      - name: Pre-check tini in Python image
+        run: |
+          docker run --rm python:3.12-slim-bookworm bash -c \
+            "apt-get update -qq && apt-get install -y --no-install-recommends tini && tini --version"
+
+      - name: Test Python builder stage only
+        run: docker build --progress=plain --target builder -t dealix-api-builder-ci .
+
       - name: Verify API Docker build
         run: docker build --progress=plain -t dealix-api-ci .
 
