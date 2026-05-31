@@ -11,6 +11,7 @@ from typing import Any
 
 from auto_client_acquisition.ai_workforce_v10.schemas import ReviewerOutput
 
+
 # Hard-coded forbidden tokens. Marketing claims, scraping markers, PII
 # leak indicators. Lowercased before scan.
 _FORBIDDEN_TOKENS: tuple[str, ...] = (

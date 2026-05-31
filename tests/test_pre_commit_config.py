@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+
 CONFIG = Path(__file__).resolve().parent.parent / ".pre-commit-config.yaml"
 
 

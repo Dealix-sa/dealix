@@ -21,11 +21,12 @@ from __future__ import annotations
 
 import pytest
 
-from auto_client_acquisition.agents.intake import LeadStatus
 from auto_client_acquisition.agents.qualification import (
     QualificationQuestion,
     QualificationResult,
 )
+from auto_client_acquisition.agents.intake import LeadStatus
+
 
 # ─────────────────────── Failure paths ─────────────────────────
 

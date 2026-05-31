@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
@@ -77,7 +77,7 @@ async def submit_dsar(body: _DSARRequest) -> dict[str, Any]:
                         "rectification_new_value",
             )
 
-    submitted_at = datetime.now(UTC)
+    submitted_at = datetime.now(timezone.utc)
     request_id = _request_id(body.email, body.request_type, submitted_at)
 
     log.info(

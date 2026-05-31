@@ -24,6 +24,7 @@ from __future__ import annotations
 import re
 import unicodedata
 
+
 # ── Character maps ────────────────────────────────────────────────
 
 # All Alef variants → bare Alef

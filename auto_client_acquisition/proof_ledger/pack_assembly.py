@@ -14,9 +14,8 @@ from __future__ import annotations
 
 import os
 import uuid
-from collections.abc import Iterable
-from datetime import UTC, datetime, timezone
-from typing import Any
+from datetime import datetime, timezone
+from typing import Any, Iterable
 
 _PACKS_DIR = os.path.join("data", "proof_packs")
 
@@ -66,7 +65,7 @@ def assemble_proof_pack(
         "event_count": len(events_list),
         "publishable_count": len(publishable),
         "internal_only_count": len(pending),
-        "assembled_at": datetime.now(UTC).isoformat(),
+        "assembled_at": datetime.now(timezone.utc).isoformat(),
     }
 
     pack = {

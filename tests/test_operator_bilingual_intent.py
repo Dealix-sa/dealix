@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import pytest
 
+
 UNSAFE_EN_PHRASES = [
     "send WhatsApp to purchased numbers",
     "blast WhatsApp to everyone",

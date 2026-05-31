@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from auto_client_acquisition.llm_gateway_v10.schemas import ModelTier
 
+
 _DEGRADE_ORDER: tuple[ModelTier, ...] = (
     ModelTier.strong_for_strategy,
     ModelTier.balanced_for_drafts,
@@ -23,5 +24,5 @@ def fallback_chain(tier: ModelTier) -> list[ModelTier]:
             idx = _DEGRADE_ORDER.index(tier)
             return list(_DEGRADE_ORDER[idx:])
         return list(_DEGRADE_ORDER)
-    except Exception:
+    except Exception:  # noqa: BLE001 - defensive default
         return list(_DEGRADE_ORDER)

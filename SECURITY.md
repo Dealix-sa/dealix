@@ -1,72 +1,74 @@
 # Security Policy | سياسة الأمن
 
-## Supported versions
+## 🛡️ Supported versions
 
 | Version | Supported |
-|---|---|
-| 3.x | Yes |
-| 2.x | Security fixes only |
-| 1.x | End of life |
+| ------- | --------- |
+| 2.x     | ✅         |
+| 1.x     | ❌ (EOL)   |
 
-## Reporting a vulnerability
+## 🐛 Reporting a vulnerability
 
-Do **not** open a public issue for security vulnerabilities.
+**Please do NOT open a public issue for security vulnerabilities.**
 
-Use GitHub Security Advisories:
+Instead, report them privately via:
 
-- Repository security advisory: `https://github.com/VoXc2/dealix/security/advisories/new`
+- **Email**: security@ai-company.sa
+- **GitHub Security Advisories**: [Open a private advisory](../../security/advisories/new)
 
 Include:
-
-1. Vulnerability description.
+1. A description of the vulnerability.
 2. Steps to reproduce.
-3. Expected impact.
-4. Affected files, endpoints, or deployment surface.
-5. Suggested fix if known.
+3. Potential impact.
+4. Any suggested fixes.
 
-## Current security automation
+We aim to acknowledge within **48 hours** and provide a resolution timeline within **7 days**.
 
-| Control | Location |
-|---|---|
-| CodeQL static analysis | `.github/workflows/security.yml` |
-| Dependency review for PRs | `.github/workflows/security.yml` |
-| Dependabot updates | `.github/dependabot.yml` |
-| Environment contract check | `scripts/check_env_contract.py` |
-| Repository security smoke check | `scripts/security_smoke.py` |
-| Python security lint | `make security` / Bandit |
-| Secret baseline scan when configured | `make security` / detect-secrets |
-| Production verification bundle | `make prod-verify` |
+## 🔒 Security features in this project
 
-## Secret handling rules
+- **Config**: all secrets loaded from `.env` via `pydantic-settings` with `SecretStr`.
+- **Secret scanning**: `gitleaks` + `detect-secrets` + `trufflehog` in pre-commit AND CI.
+- **Dependency scanning**: Dependabot weekly + `bandit` Python security linter.
+- **Docker**: non-root user, multi-stage build, minimal base image.
+- **Webhooks**: HMAC-SHA256 signature verification (WhatsApp).
+- **LinkedIn integration**: disabled by default (ToS compliance).
 
-- Never commit `.env`, production credentials, customer exports, or private keys.
-- `.env.example` is the only committed env-like file expected at the repository root.
-- Browser-exposed `NEXT_PUBLIC_*` variables must not contain admin or privileged credentials.
-- Privileged frontend operations should be proxied through a server-side route when possible.
-- Rotate keys immediately if accidental exposure is suspected.
+## 🔑 Key rotation guidance
 
-## Key rotation guidance
+If you believe a key has been exposed:
 
-If a key may have been exposed:
+1. **Immediately** rotate the key in the provider's dashboard:
+   - Anthropic Console → API Keys → regenerate
+   - DeepSeek, Groq, GLM, Google, OpenAI: regenerate in respective consoles
+   - HubSpot, Resend, SendGrid: regenerate
+   - WhatsApp Business: regenerate access token
+2. Update `.env` with the new key.
+3. Redeploy.
+4. Check GitHub → Settings → Secret scanning alerts.
+5. Run `gitleaks detect --source . --report-format json` to scan history.
 
-1. Revoke or rotate the provider key.
-2. Update the deployment platform secret.
-3. Redeploy the affected service.
-4. Run repository and platform secret scanning.
-5. Review logs for suspicious use.
-6. Record the incident and follow-up tasks in the execution backlog.
+## ✅ Pre-commit checklist for maintainers
 
-## Maintainer checklist
+Before merging any PR:
+- [ ] `gitleaks` pre-commit hook passed
+- [ ] No new files in `.env*` except `.env.example`
+- [ ] No new domain-specific secrets in `core/` or `integrations/`
+- [ ] All new integrations use `settings.*_api_key.get_secret_value()` pattern
 
-Before merging security-relevant or production-facing changes:
+---
 
-- [ ] `make env-check`
-- [ ] `make security-smoke`
-- [ ] `make security` when dependencies are installed
-- [ ] `make openapi-export` for API changes
-- [ ] No production data, customer personal data, or live secrets are included
-- [ ] Public claims are updated in the no-overclaim register when needed
+## 🇸🇦 بالعربية
 
-## Arabic summary
+### الإبلاغ عن ثغرات
 
-لا تفتح issue عام للثغرات. استخدم GitHub Security Advisories. لا ترفع أسرار أو بيانات عملاء. أي تغيير إنتاجي لازم يمر على فحص البيئة، فحص الأمن السريع، ومراجعة الادعاءات العامة قبل الدمج.
+**لا تفتح issue عام للثغرات الأمنية.** أرسل إلى: **security@ai-company.sa**
+
+نهدف للرد خلال ٤٨ ساعة وتقديم جدول زمني للحل خلال ٧ أيام.
+
+### تدوير المفاتيح
+
+إذا تسرّب مفتاح:
+1. **فوراً** دوّر المفتاح من لوحة المزود.
+2. حدّث `.env`.
+3. أعد النشر.
+4. افحص تنبيهات GitHub secret scanning.

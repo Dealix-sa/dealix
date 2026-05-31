@@ -27,8 +27,8 @@ def main() -> int:
         w = float(d.get("scoring_weight") or 0.0)
         total_w += w
         print(
-            f"{d.get('name','')!s:<28} {d.get('frequency','')!s:<14} "
-            f"{d.get('owner_os','')!s:<14} {w:>8.1f}"
+            f"{str(d.get('name','')):<28} {str(d.get('frequency','')):<14} "
+            f"{str(d.get('owner_os','')):<14} {w:>8.1f}"
         )
     print("-" * 72)
     print(f"{'TOTAL weight':<56} {total_w:>8.1f}")

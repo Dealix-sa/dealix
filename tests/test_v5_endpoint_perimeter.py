@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient
 
 from api.main import create_app
 
+
 # (path, expected_status). 200 means reachable + healthy.
 # 404 listed only for endpoints we explicitly want NOT to exist.
 EXPECTED_ENDPOINTS: list[tuple[str, int]] = [

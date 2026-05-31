@@ -9,6 +9,7 @@ import pytest
 
 from dealix.observability.sentry import _scrub_event
 
+
 # Helper — minimal valid Sentry event shape
 
 def _evt(**overrides):

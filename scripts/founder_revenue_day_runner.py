@@ -108,7 +108,7 @@ def main() -> int:
     try:
         summary = war_room_summary_local()
         print_war_room(summary)
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         print(f"War Room: SKIP ({exc})", file=sys.stderr)
         degraded = True
 
