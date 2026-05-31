@@ -1,0 +1,74 @@
+# Three angles per core offer (Revenue Hunter, AI Trust Kit).
+# Each variant is draft-first; status="draft" means no external send permitted.
+messages:
+  # ─── Revenue Hunter Pilot: angle = money ───────────────────────
+  - id: msg_hunter_money
+    offer_id: off_entry_revenue_hunter
+    angle: money
+    headline_ar: كل أسبوع يمر بدون متابعة هو ٢٠٪ من إيراداتك تتسرب
+    headline_en: Every uncalled lead is 20 percent of revenue walking out
+    body_ar: نراجع قمعك خلال ٧ أيام ونحدد كم تخسر بالضبط ولماذا.
+    body_en: We audit your funnel in 7 days and quantify exactly what you lose and why.
+    cta_ar: احجز مراجعة قمع المتابعة
+    cta_en: Book the follow-up audit
+    status: draft
+
+  # ─── Revenue Hunter Pilot: angle = lost-followup ───────────────
+  - id: msg_hunter_lostfollowup
+    offer_id: off_entry_revenue_hunter
+    angle: lost_followup
+    headline_ar: العميل لم يفقد الاهتمام، فريقك فقد المتابعة
+    headline_en: They did not lose interest, your team lost the follow-up
+    body_ar: نظهر لك خط زمني واضح لكل عميل فقد ولماذا.
+    body_en: We surface a clear timeline of every dropped lead and why.
+    cta_ar: شغّل صياد الإيرادات
+    cta_en: Run Revenue Hunter
+    status: draft
+
+  # ─── Revenue Hunter Pilot: angle = agency ──────────────────────
+  - id: msg_hunter_agency
+    offer_id: off_entry_revenue_hunter
+    angle: agency
+    headline_ar: حوّل وكالتك من مزود محتوى إلى مالك إيرادات العميل
+    headline_en: Turn your agency from a content vendor into a revenue owner
+    body_ar: شارك مخرجات صياد الإيرادات مع عملائك وارفع قيمتك المعقودة.
+    body_en: Share Revenue Hunter outputs with your clients and lift contracted value.
+    cta_ar: اطلب نسخة الوكالة
+    cta_en: Request the agency brief
+    status: draft
+
+  # ─── AI Trust Kit: angle = risk ────────────────────────────────
+  - id: msg_trust_risk
+    offer_id: off_core_ai_trust_kit
+    angle: risk
+    headline_ar: لا يوجد ذكاء اصطناعي بدون حوكمة قابلة للتدقيق
+    headline_en: There is no real AI program without auditable governance
+    body_ar: نسلّم سياسات وموافقات وآلية مراجعة جاهزة للتشغيل.
+    body_en: We deliver ready-to-apply policies, approvals, and a review cadence.
+    cta_ar: شاهد عينة سياسات
+    cta_en: See sample policies
+    status: draft
+
+  # ─── AI Trust Kit: angle = executive-control ───────────────────
+  - id: msg_trust_executive
+    offer_id: off_core_ai_trust_kit
+    angle: executive_control
+    headline_ar: المؤسس يحتاج لوحة واحدة، لا عشرة تقارير
+    headline_en: A founder needs one pane, not ten reports
+    body_ar: لوحة مخاطرة موحّدة عبر كل وكلائك ومبادراتك.
+    body_en: Unified risk pane across every agent and initiative.
+    cta_ar: اطلب جلسة تنفيذية
+    cta_en: Request the executive briefing
+    status: draft
+
+  # ─── AI Trust Kit: angle = training ────────────────────────────
+  - id: msg_trust_training
+    offer_id: off_core_ai_trust_kit
+    angle: training
+    headline_ar: فريقك يحتاج تأهيل لا يحتاج محاضرة
+    headline_en: Your team needs enablement, not a lecture
+    body_ar: برنامج تأهيل عملي يبني عضلات الحوكمة داخل فريقك.
+    body_en: Practical enablement that builds governance muscle inside your team.
+    cta_ar: ابدأ برنامج التأهيل
+    cta_en: Start the enablement program
+    status: draft

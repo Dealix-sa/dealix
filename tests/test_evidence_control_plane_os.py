@@ -18,9 +18,7 @@ from auto_client_acquisition.evidence_control_plane_os.evidence_gap_detector imp
     detect_evidence_gaps,
     gap_severity,
 )
-from auto_client_acquisition.evidence_control_plane_os.evidence_graph import (
-    mini_evidence_chain_complete,
-)
+from auto_client_acquisition.evidence_control_plane_os.evidence_graph import mini_evidence_chain_complete
 from auto_client_acquisition.evidence_control_plane_os.evidence_object import (
     EvidenceObject,
     EvidenceType,

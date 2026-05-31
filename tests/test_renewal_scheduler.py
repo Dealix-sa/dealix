@@ -1,7 +1,7 @@
 """Renewal scheduler — JSONL store + due lookup + cycle confirmation."""
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -79,14 +79,14 @@ def test_list_due_excludes_future():
         customer_id="acme",
         plan="managed_revenue_ops_starter",
         amount_sar=2999,
-        last_paid_at=datetime.now(UTC).isoformat(),
+        last_paid_at=datetime.now(timezone.utc).isoformat(),
     )
     due = list_due()
     assert due == []
 
 
 def test_list_due_includes_past():
-    past = (datetime.now(UTC) - timedelta(days=40)).isoformat()
+    past = (datetime.now(timezone.utc) - timedelta(days=40)).isoformat()
     schedule_renewal(
         customer_id="acme",
         plan="managed_revenue_ops_starter",

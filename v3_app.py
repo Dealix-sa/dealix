@@ -16,55 +16,46 @@ Then visit:
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-import auto_client_acquisition.vertical_os.clinics
-import auto_client_acquisition.vertical_os.logistics
-import auto_client_acquisition.vertical_os.real_estate
-
 # v3 modules (pure-Python, no Python 3.11+ dependencies)
 from auto_client_acquisition.compliance_os.consent_ledger import (
-    LawfulBasis,
-    latest_state,
-    record_consent,
-    record_opt_out,
+    LawfulBasis, record_consent, record_opt_out, latest_state,
 )
 from auto_client_acquisition.compliance_os.contactability import check_contactability
 from auto_client_acquisition.compliance_os.risk_engine import score_campaign_risk
 from auto_client_acquisition.compliance_os.ropa import build_ropa
 from auto_client_acquisition.compliance_os.vendor_registry import vendors_summary
 from auto_client_acquisition.copilot import ask, classify_intent, list_intents
-from auto_client_acquisition.market_intelligence.sector_pulse import build_sector_pulse
 from auto_client_acquisition.market_intelligence.signal_detectors import (
-    SIGNAL_TYPES,
-    detect_funding_signal,
-    detect_hiring_signal,
+    SIGNAL_TYPES, detect_hiring_signal, detect_funding_signal,
 )
+from auto_client_acquisition.market_intelligence.sector_pulse import build_sector_pulse
 from auto_client_acquisition.orchestrator.policies import AutonomyMode, default_policy
 from auto_client_acquisition.orchestrator.queue import TaskQueue
 from auto_client_acquisition.orchestrator.runtime import (
-    DAILY_GROWTH_RUN,
-    Orchestrator,
+    DAILY_GROWTH_RUN, Orchestrator,
 )
 from auto_client_acquisition.orchestrator.tools import default_executors
 from auto_client_acquisition.revenue_memory.event_store import (
-    InMemoryEventStore,
-    get_default_store,
+    InMemoryEventStore, get_default_store,
 )
 from auto_client_acquisition.revenue_memory.events import EVENT_TYPES, make_event
 from auto_client_acquisition.revenue_memory.replay import replay_for_account
-from auto_client_acquisition.revenue_science.causal_impact import simulate_impact
 from auto_client_acquisition.revenue_science.churn_model import predict_churn
 from auto_client_acquisition.revenue_science.expansion_model import predict_expansion
 from auto_client_acquisition.revenue_science.forecast import compute_forecast
+from auto_client_acquisition.revenue_science.causal_impact import simulate_impact
 from auto_client_acquisition.vertical_os import (
-    get_vertical,
-    list_vertical_summaries,
+    list_vertical_summaries, get_vertical,
 )
+import auto_client_acquisition.vertical_os.clinics  # noqa: F401  (registers)
+import auto_client_acquisition.vertical_os.real_estate  # noqa: F401
+import auto_client_acquisition.vertical_os.logistics  # noqa: F401
 
 
 @asynccontextmanager
@@ -95,7 +86,7 @@ _QUEUE = TaskQueue()
 # ── Health & status ──────────────────────────────────────────────
 @app.get("/health")
 def health():
-    return {"status": "ok", "version": "3.0.0", "ts": datetime.now(UTC).isoformat()}
+    return {"status": "ok", "version": "3.0.0", "ts": datetime.now(timezone.utc).isoformat()}
 
 
 @app.get("/v3-status")

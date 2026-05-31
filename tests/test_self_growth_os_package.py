@@ -24,12 +24,15 @@ from auto_client_acquisition.self_growth_os import (
     ServiceActivationCheck,
     ServiceBundle,
     ToolCapability,
+)
+from auto_client_acquisition.self_growth_os import (
     evidence_collector,
     safe_publishing_gate,
-    seo_technical_auditor,
     service_activation_matrix,
+    seo_technical_auditor,
     tool_registry,
 )
+
 
 # ─── schemas ────────────────────────────────────────────────────────
 

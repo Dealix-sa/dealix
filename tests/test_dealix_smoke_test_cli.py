@@ -108,7 +108,7 @@ def test_smoke_against_local_app_passes_all_required():
     try:
         from auto_client_acquisition.founder_v10 import reset_cache
         reset_cache()
-    except Exception:
+    except Exception:  # noqa: BLE001 — best-effort, never fail setup
         pass
     from api.main import create_app
     mod = _import_module()

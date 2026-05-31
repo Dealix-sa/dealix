@@ -68,7 +68,7 @@ def test_wait_until_blocks_then_advances() -> None:
     loaded.wait_until = "2000-01-01T00:00:00+00:00"
     from auto_client_acquisition.orchestrator import durable_workflow as mod
 
-    mod._persist(loaded)
+    mod._persist(loaded)  # noqa: SLF001 — test helper
     advanced = advance_workflow(state.id)
     assert advanced.step >= 1
 

@@ -4,34 +4,21 @@ from __future__ import annotations
 import pytest
 from httpx import ASGITransport, AsyncClient
 
+from auto_client_acquisition.growth_beast import (
+    MarketSignal, compute_icp_score, draft_content, draft_warm_route,
+    evaluate_signals, match_offer, next_experiment, proof_to_content_idea,
+    rank_accounts, weekly_summary,
+)
 from auto_client_acquisition.company_growth_beast import (
-    build_company_profile,
-    build_content_pack,
-    build_growth_diagnostic,
-    build_offer_recommendation,
-    build_target_segments,
-    build_weekly_report,
+    build_company_profile, build_growth_diagnostic, build_target_segments,
+    build_offer_recommendation, build_content_pack, build_weekly_report,
     support_to_growth_insight,
 )
-from auto_client_acquisition.growth_beast import (
-    MarketSignal,
-    compute_icp_score,
-    draft_content,
-    draft_warm_route,
-    evaluate_signals,
-    match_offer,
-    next_experiment,
-    proof_to_content_idea,
-    rank_accounts,
-    weekly_summary,
-)
 from auto_client_acquisition.proof_to_market import (
-    approval_gate_check,
-    case_study_candidate,
-    proof_to_snippet,
-    sector_learning_summary,
-    select_publishable_proofs,
+    approval_gate_check, case_study_candidate, proof_to_snippet,
+    sector_learning_summary, select_publishable_proofs,
 )
+
 
 # ─────────────── B2 Growth Beast ───────────────
 

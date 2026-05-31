@@ -65,7 +65,7 @@ google-auth-oauthlib>=1.2.0
 resend>=2.4.0
 slowapi>=0.1.9
 opentelemetry-api>=1.41.0
-opentelemetry-sdk>=1.42.1
+opentelemetry-sdk>=1.41.0
 opentelemetry-exporter-otlp-proto-http>=1.41.0
 opentelemetry-instrumentation-fastapi>=0.62b0
 opentelemetry-instrumentation-httpx>=0.62b0
@@ -100,9 +100,6 @@ arq>=0.25.0
 numpy>=1.26.0,<3
 
 # Saudi market — Hijri calendar (Um Al-Qura calendar system)
-ummalqura>=1.0.4
-
-# MCP Server dependency lives in mcp_server/requirements-mcp.txt (optional — not needed for API)
 
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9

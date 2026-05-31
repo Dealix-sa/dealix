@@ -2,14 +2,8 @@
 
 from __future__ import annotations
 
-from auto_client_acquisition.capital_os.capital_ledger import (
-    CapitalLedgerEvent,
-    capital_ledger_event_valid,
-)
-from auto_client_acquisition.proof_os.proof_pack import (
-    build_empty_proof_pack_v2,
-    proof_pack_v2_sections_complete,
-)
+from auto_client_acquisition.capital_os.capital_ledger import CapitalLedgerEvent, capital_ledger_event_valid
+from auto_client_acquisition.proof_os.proof_pack import build_empty_proof_pack_v2, proof_pack_v2_sections_complete
 from auto_client_acquisition.value_os.value_ledger import ValueLedgerEvent, value_ledger_event_valid
 
 
