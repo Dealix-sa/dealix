@@ -62,6 +62,9 @@ def _days_tenure(joined_at: str | None) -> int:
         return 0
     try:
         joined = datetime.fromisoformat(joined_at.replace("Z", "+00:00"))
+        # If joined_at is naive (no tzinfo), treat it as UTC.
+        if joined.tzinfo is None:
+            joined = joined.replace(tzinfo=UTC)
         delta = datetime.now(UTC) - joined
         return max(0, delta.days)
     except Exception:
@@ -299,7 +302,7 @@ class AddMemberBody(BaseModel):
 
 
 class UpdateStatusBody(BaseModel):
-    new_status: str = Field(..., pattern="^(active|probation|inactive)$")
+    new_status: str = Field(..., pattern="^(active|probation|inactive|planned)$")
     reason: str = Field(..., min_length=5, max_length=500)
 
 

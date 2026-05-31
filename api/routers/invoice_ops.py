@@ -16,7 +16,7 @@ Mutating endpoints: governance_decision = APPROVAL_FIRST
 
 from __future__ import annotations
 
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
 from fastapi import APIRouter, Body, Depends, HTTPException
@@ -577,17 +577,8 @@ async def create_invoice(body: CreateInvoiceBody = Body(...)) -> dict[str, Any]:
     total_with_vat_sar = round(amount_sar + vat_15_sar, 2)
 
     today = _today_str()
-    try:
-        issue_dt = date.fromisoformat(today)
-        due_date = (issue_dt.replace(day=issue_dt.day) if False else issue_dt).__class__(
-            issue_dt.year,
-            issue_dt.month,
-            issue_dt.day,
-        )
-        from datetime import timedelta
-        due_date_str = (issue_dt + timedelta(days=body.due_days)).isoformat()
-    except Exception:
-        due_date_str = today
+    issue_dt = date.fromisoformat(today)
+    due_date_str = (issue_dt + timedelta(days=body.due_days)).isoformat()
 
     new_id = _next_invoice_id()
     invoice_number = f"INV-{_today_str().replace('-', '')}-{_INVOICE_COUNTER[0]:03d}"
