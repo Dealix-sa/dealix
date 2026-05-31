@@ -69,9 +69,9 @@ def test_deploy_pages_workflow_exists() -> None:
 
 def test_operational_state_doc_points_to_canonical_urls() -> None:
     """The high-traffic ops doc must reflect production URLs."""
-    doc = REPO_ROOT / "DEALIX_COMPANY_OPERATIONAL_STATE.md"
+    doc = REPO_ROOT / "docs" / "operations" / "DEALIX_COMPANY_OPERATIONAL_STATE.md"
     if not doc.exists():
-        pytest.skip("DEALIX_COMPANY_OPERATIONAL_STATE.md not in this snapshot")
+        pytest.skip("docs/operations/DEALIX_COMPANY_OPERATIONAL_STATE.md not in this snapshot")
     text = doc.read_text(encoding="utf-8")
     assert "web-dealix.up.railway.app" not in text
     assert "/healthz" not in text or "/health" in text

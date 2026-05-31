@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from auto_client_acquisition.email.research_agent import (
-    DEFAULT_BRIEF, SECTOR_BRIEFS, research_company_rules,
+    DEFAULT_BRIEF,
+    SECTOR_BRIEFS,
+    research_company_rules,
 )
 
 

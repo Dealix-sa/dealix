@@ -86,7 +86,7 @@ def _py(script: str, *args: str) -> list[str]:
 
 def _run_subprocess(cmd: list[str], *, label: str, required: bool = False) -> dict[str, Any]:
     try:
-        proc = subprocess.run(cmd, cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=900)
+        proc = subprocess.run(cmd, cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=900)  # noqa: S603 — internal verify cmd
         ok = proc.returncode == 0
         return {
             "label": label,
@@ -114,7 +114,10 @@ def run_complete_autonomous_day(
     top_n: int = 15,
 ) -> dict[str, Any]:
     """Execute full governed day; returns artifact payload."""
-    from dealix.commercial_ops.autonomous_ops import build_autonomous_ops_status, save_last_autonomous_run
+    from dealix.commercial_ops.autonomous_ops import (
+        build_autonomous_ops_status,
+        save_last_autonomous_run,
+    )
     from dealix.commercial_ops.founder_strongest_ops import (
         build_strongest_ops_snapshot,
         write_strongest_ops_brief,

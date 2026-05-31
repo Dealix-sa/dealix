@@ -19,7 +19,7 @@ import argparse
 import json
 import sys
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -75,7 +75,7 @@ def synthesize_signals(customer_handle: str | None = None) -> dict:
             "category_counts": {},
             "top_requests": [],
             "customer_count": 0,
-            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "generated_at": datetime.now(UTC).isoformat(),
         }
 
     # Collect signals from all customers or specific customer
@@ -92,7 +92,7 @@ def synthesize_signals(customer_handle: str | None = None) -> dict:
                 "category_counts": {},
                 "top_requests": [],
                 "customer_count": 0,
-                "generated_at": datetime.now(timezone.utc).isoformat(),
+                "generated_at": datetime.now(UTC).isoformat(),
             }
     else:
         dirs_to_scan = [d for d in CUSTOMERS_DIR.iterdir() if d.is_dir()]
@@ -129,7 +129,7 @@ def synthesize_signals(customer_handle: str | None = None) -> dict:
         "total_signals": len(all_signals),
         "category_counts": dict(category_counts),
         "top_requests": top_requests,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "note": "Customer PII not included. Feature request text only.",
     }
 
@@ -158,11 +158,11 @@ def main() -> int:
         print(f"\nℹ️  {report['message']}")
         return 0
 
-    print(f"\nCategory breakdown:")
+    print("\nCategory breakdown:")
     for cat, count in sorted(report.get("category_counts", {}).items(), key=lambda x: -x[1]):
         print(f"  {cat:<25} {count}")
 
-    print(f"\nTop feature requests:")
+    print("\nTop feature requests:")
     for req in report.get("top_requests", [])[:10]:
         print(f"  [{req['category']}] {req['text'][:80]}")
     print()

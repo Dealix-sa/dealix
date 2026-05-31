@@ -70,7 +70,9 @@ def _today_3_decisions_panel(customer_handle: str) -> list[dict[str, Any]]:
                 proof_link=ap.proof_impact,
             ))
         return out
-    result = safe_call(name="today_3_decisions", fn=fn, fallback=[])
+    result: list[dict[str, Any]] | dict[str, Any] = safe_call(
+        name="today_3_decisions", fn=fn, fallback=[]
+    )
     if isinstance(result, dict) and result.get("degraded"):
         return []
     return result if isinstance(result, list) else []

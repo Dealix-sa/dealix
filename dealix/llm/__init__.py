@@ -1,4 +1,4 @@
 ﻿"""Dealix LLM Engine - Three Gear System."""
-from .engine import DealixEngine, Gear, GearConfig, GearConfig, TaskType, TASK_GEAR_MAP, engine
+from .engine import TASK_GEAR_MAP, DealixEngine, Gear, GearConfig, TaskType, engine
 
-__all__ = ["DealixEngine", "Gear", "GearConfig", "TaskType", "TASK_GEAR_MAP", "engine"]
+__all__ = ["TASK_GEAR_MAP", "DealixEngine", "Gear", "GearConfig", "TaskType", "engine"]

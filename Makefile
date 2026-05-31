@@ -3,11 +3,12 @@
 # الأوامر الشائعة
 # ═══════════════════════════════════════════════════════════════
 
-.PHONY: help install install-dev setup test test-unit test-integration \
-        lint format type-check security security-smoke clean run demo \
+.PHONY: help install install-dev install-observability install-security install-evals install-docs \
+        setup first-setup test test-unit test-integration \
+        lint format type-check security security-smoke clean run demo cockpit doctor \
         docker-build docker-up docker-down docker-logs \
-        pre-commit-install pre-commit-run db-init requirements \
-        env-check openapi-export prod-verify \
+        pre-commit-install pre-commit-run db-init alembic-heads requirements \
+        env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference
 
@@ -15,6 +16,7 @@
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 OPENAPI_OUTPUT ?= docs/architecture/openapi.json
+PRODUCTION_BASE_URL ?= https://api.dealix.me
 
 help: ## Show this help
 	@echo "🏢 Dealix — Available commands:"
@@ -27,8 +29,23 @@ install: ## Install production dependencies
 install-dev: ## Install dev dependencies (tests, lint, etc.)
 	$(PIP) install -e ".[dev]"
 
+install-observability: ## Install optional observability stack
+	$(PIP) install -e ".[observability]"
+
+install-security: ## Install optional security and supply-chain tooling
+	$(PIP) install -e ".[security]"
+
+install-evals: ## Install optional evaluation and analysis tooling
+	$(PIP) install -e ".[evals]"
+
+install-docs: ## Install optional documentation site tooling
+	$(PIP) install -e ".[docs]"
+
 setup: install-dev pre-commit-install ## One-time dev setup
 	@test -f .env || (cp .env.example .env && echo "✅ Created .env from template — edit it now")
+
+first-setup: ## Interactive onboarding — generates .env, installs hooks, smoke-tests api.main
+	bash scripts/first_setup.sh
 
 requirements: ## Export requirements.txt from pyproject
 	$(PIP) install pip-tools
@@ -60,7 +77,19 @@ env-check: ## Validate .env.example contract and duplicate keys
 openapi-export: ## Export FastAPI OpenAPI schema (OPENAPI_OUTPUT=...)
 	$(PYTHON) scripts/export_openapi.py --output $(OPENAPI_OUTPUT)
 
-prod-verify: env-check security-smoke openapi-export v5-verify ## Canonical production-readiness verification bundle
+api-contract-check: ## Check OpenAPI contract for removed paths/methods
+	$(PYTHON) scripts/check_openapi_contract.py
+
+dependency-inventory: ## Export lightweight dependency inventory
+	$(PYTHON) scripts/export_dependency_inventory.py
+
+release-manifest: ## Export production release manifest
+	$(PYTHON) scripts/export_release_manifest.py
+
+production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
+	$(PYTHON) scripts/dealix_smoke_test.py --base-url $(PRODUCTION_BASE_URL)
+
+prod-verify: env-check security-smoke api-contract-check dependency-inventory release-manifest v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
 
 # ── Tests ──────────────────────────────────────────────────────
@@ -86,6 +115,15 @@ run: ## Run API server (dev mode, reload on changes)
 
 demo: ## Run interactive CLI demo
 	$(PYTHON) cli.py
+
+cockpit: ## Founder Daily Brief — single-screen status (composes Bottleneck Radar + Hard Gates + Service Catalog)
+	$(PYTHON) scripts/dealix_founder_daily_brief.py
+
+doctor: env-check alembic-heads security-smoke ## Health check — env contract + single alembic head + security smoke
+	@echo "✅ Repo doctor passed — see docs/playbooks/FOUNDER_NEXT_STEPS.md for what to do today"
+
+alembic-heads: ## Fail if alembic reports >1 migration head
+	$(PYTHON) scripts/check_alembic_single_head.py
 
 # ── Database ───────────────────────────────────────────────────
 db-init: ## Initialize database tables (dev only)

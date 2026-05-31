@@ -3,7 +3,7 @@ maturity, simulator, objections, proof pack, agent registry, playbooks."""
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 
@@ -123,18 +123,18 @@ def test_recommend_next_action_positive_reply_pushes_demo():
 
 # ── Why-Now ───────────────────────────────────────────────────────
 def test_freshness_factor_today_is_one():
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    now = datetime.now(UTC).replace(tzinfo=None)
     assert freshness_factor(now, now=now) == 1.0
 
 
 def test_freshness_factor_decays():
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    now = datetime.now(UTC).replace(tzinfo=None)
     old = now - timedelta(days=14)
     assert 0.45 <= freshness_factor(old, now=now) <= 0.55  # half-life
 
 
 def test_explain_why_now_with_strong_signal():
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    now = datetime.now(UTC).replace(tzinfo=None)
     signals = [
         WhyNowSignal("hiring_sales_rep", now - timedelta(days=2), "linkedin"),
         WhyNowSignal("new_branch_opened", now - timedelta(days=5), "google_search"),
@@ -150,7 +150,7 @@ def test_explain_why_now_no_signals_returns_none():
 
 
 def test_explain_why_now_ranks_todays_priorities():
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    now = datetime.now(UTC).replace(tzinfo=None)
     explanations = []
     for i, sig in enumerate(["hiring_sales_rep", "new_branch_opened", "tender_published"]):
         e = explain_why_now(
@@ -165,7 +165,7 @@ def test_explain_why_now_ranks_todays_priorities():
 
 # ── Leak Detector ────────────────────────────────────────────────
 def test_lead_no_followup_flags_old_untouched():
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    now = datetime.now(UTC).replace(tzinfo=None)
     leads = [
         {
             "id": "L1",
@@ -180,7 +180,7 @@ def test_lead_no_followup_flags_old_untouched():
 
 
 def test_stalled_deals_detected():
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    now = datetime.now(UTC).replace(tzinfo=None)
     deals = [
         {
             "id": "D1",
@@ -195,7 +195,7 @@ def test_stalled_deals_detected():
 
 
 def test_detect_all_leaks_sorts_by_impact():
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    now = datetime.now(UTC).replace(tzinfo=None)
     report = detect_all_leaks(
         leads=[{"id": "L1", "created_at": now - timedelta(days=8), "last_outreach_at": None}],
         deals=[{"id": "D1", "status": "open", "value_sar": 200_000, "last_activity_at": now - timedelta(days=22)}],

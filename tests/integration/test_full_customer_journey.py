@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import pytest
 
-
 # ── Step 1: Trust posture verification ───────────────────────────
 
 @pytest.mark.asyncio

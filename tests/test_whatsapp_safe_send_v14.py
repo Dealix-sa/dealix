@@ -35,7 +35,6 @@ from auto_client_acquisition.whatsapp_safe_send import (
     safe_send_text,
 )
 
-
 _KSA = ZoneInfo("Asia/Riyadh")
 
 
