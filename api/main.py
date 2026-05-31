@@ -594,6 +594,14 @@ def create_app() -> FastAPI:
     from api.routers import saudi_objection_handler as saudi_objection_handler_router
     app.include_router(saudi_objection_handler_router.router)
 
+    # Deal Scoring — MEDDPICC deal scoring adapted for Saudi B2B
+    from api.routers import deal_scoring as deal_scoring_router
+    app.include_router(deal_scoring_router.router)
+
+    # Market Sizing — Saudi B2B AI sector TAM/SAM/SOM intelligence
+    from api.routers import market_sizing as market_sizing_router
+    app.include_router(market_sizing_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
