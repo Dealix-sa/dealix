@@ -12,7 +12,28 @@ coverage.xml
 .env
 .env.*
 !.env.example
-node_modules
+# node_modules at any depth (frontend, apps/web, dashboard, etc.)
+**/node_modules
 .DS_Store
 docs/generated
 *.log
+# Tests and docs — not needed in the production API image
+tests/
+docs/*
+!docs/registry/
+!docs/registry/**
+!docs/SEO_AUDIT_REPORT.json
+!docs/proof-events/
+!docs/proof-events/.gitkeep
+!docs/proof-events/SCHEMA.example.json
+!docs/snapshots/
+!docs/snapshots/.gitkeep
+# Heavy intermediate outputs
+deliverables/
+tool_calls/
+deploy_bundle*/
+*.tar.gz
+*.zip
+# CI tooling
+.github/
+Makefile
