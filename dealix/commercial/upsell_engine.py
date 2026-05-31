@@ -24,7 +24,6 @@ class UpsellCheckResult(BaseModel):
     proposal_draft_ar: str = ""
     proposal_draft_en: str = ""
     approval_status: str = "approval_required"
-    governance_decision: str = "pending"  # pending | approved | rejected
 
     def to_dict(self) -> dict[str, Any]:
         return json.loads(self.model_dump_json())
@@ -122,7 +121,6 @@ class UpsellEngine:
 مكالمة 15 دقيقة لمراجعة شروط العقد والبداية الشهر القادم.
 
 > يتطلب موافقة المؤسس قبل الإرسال.
-> **القيمة التقديرية ليست قيمة مُتحقَّقة** — Estimated value is not Verified value.
 """
 
     def _draft_proposal_en(self, company_name: str, tier: dict, event_count: int) -> str:
@@ -144,5 +142,4 @@ Stopping now means rebuilding from scratch later.
 15-minute call to review contract terms and start next month.
 
 > Requires founder approval before sending.
-> **Estimated value is not Verified value** — القيمة التقديرية ليست قيمة مُتحقَّقة.
 """

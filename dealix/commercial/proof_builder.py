@@ -21,7 +21,6 @@ class ProofEvent(BaseModel):
     metric_after: str = ""
     delta_pct: float | None = None
     evidence_url: str = ""
-    source_ref: str = ""  # provenance link required for verified/client_confirmed tiers
     recorded_at: str = ""
 
 
@@ -43,9 +42,7 @@ class ProofPackDocument(BaseModel):
     sections: dict[str, str]
     markdown_ar_en: str
     event_count: int
-    score: int = 0  # 0-100; threshold ≥70 required before capital asset registration
     approval_status: str = "approval_required"
-    governance_decision: str = "pending"  # pending | approved | rejected
     is_fake_proof_gate_passed: bool = False
 
     def to_dict(self) -> dict[str, Any]:
@@ -83,7 +80,6 @@ class ProofBuilder:
         level = self._compute_level(req.events)
         sections = self._build_sections(req, level)
         md = self._render_markdown(req, sections, pack_id, level)
-        score = self._compute_score(req.events, level, req.approved_by_founder)
 
         return ProofPackDocument(
             pack_id=pack_id,
@@ -93,20 +89,8 @@ class ProofBuilder:
             sections=sections,
             markdown_ar_en=md,
             event_count=len(req.events),
-            score=score,
             is_fake_proof_gate_passed=req.approved_by_founder,
         )
-
-    def _compute_score(
-        self, events: list[ProofEvent], level: str, approved: bool
-    ) -> int:
-        """Score 0-100. Threshold ≥70 required before capital asset registration."""
-        base = {"L0": 0, "L1": 35, "L2": 60, "L3": 80}.get(level, 0)
-        measured = sum(1 for e in events if e.delta_pct is not None)
-        sourced = sum(1 for e in events if e.source_ref.strip())
-        bonus = min(measured * 4 + sourced * 3, 20)
-        approved_bonus = 0 if not approved else 0  # approved_by_founder is a gate, not a score boost
-        return min(base + bonus + approved_bonus, 100)
 
     def _compute_level(self, events: list[ProofEvent]) -> str:
         n = len(events)
@@ -232,6 +216,7 @@ class ProofBuilder:
 
 > هذا الطقم للمراجعة الداخلية فقط — لن يُسلَّم للعميل دون موافقة المؤسس.
 > This pack is for internal review only — will not be delivered without founder approval.
-
-> **القيمة التقديرية ليست قيمة مُتحقَّقة** — Estimated value is not Verified value.
+>
+> **القيمة التقديرية ليست قيمة مُتحقَّقة** — كل الأرقام تقديرية حتى يُوثَّق الدليل الفعلي.
+> **Estimated value is not Verified value** — all figures are estimates until actual evidence is documented.
 """

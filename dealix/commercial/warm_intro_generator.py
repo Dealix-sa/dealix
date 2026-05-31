@@ -49,7 +49,6 @@ class OutreachDraftBundle(BaseModel):
     whatsapp_drafts: list[OutreachDraft]
     email_drafts: list[OutreachDraft]
     approval_status: str = "approval_required"
-    governance_decision: str = "pending"  # pending | approved | rejected
     llm_used: bool = False
 
     def to_dict(self) -> dict[str, Any]:

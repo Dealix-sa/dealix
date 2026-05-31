@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import api from "@/lib/api";
 
 const SECTORS_AR: Record<string, string> = {
   technology: "تقنية المعلومات",
@@ -89,6 +90,14 @@ export function DealixDiagnosticLanding() {
   const [selectedSector, setSelectedSector] = useState("");
   const [selectedPains, setSelectedPains] = useState<string[]>([]);
   const [sectorMatch, setSectorMatch] = useState<string | null>(null);
+  const [diagLoading, setDiagLoading] = useState(false);
+  const [diagResult, setDiagResult] = useState<{
+    recommended_bundle?: string;
+    bundle_name_ar?: string;
+    bundle_name_en?: string;
+    services_in_bundle?: string[];
+  } | null>(null);
+  const [diagError, setDiagError] = useState("");
   const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -108,6 +117,27 @@ export function DealixDiagnosticLanding() {
     setSelectedPains((prev) =>
       prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]
     );
+
+  async function runDiagnostic() {
+    if (!companyName.trim()) {
+      nameRef.current?.focus();
+      return;
+    }
+    setDiagLoading(true);
+    setDiagError("");
+    setDiagResult(null);
+    try {
+      const res = await api.postPublicDiagnostic({
+        company: companyName.trim(),
+        sector: selectedSector || "b2b_services",
+      });
+      setDiagResult(res.data as typeof diagResult);
+    } catch {
+      setDiagError(isAr ? "تعذّر تحميل التشخيص. حاول مجدداً." : "Could not load diagnostic. Please retry.");
+    } finally {
+      setDiagLoading(false);
+    }
+  }
 
   const ctaHref = `/${locale}/offer/lead-intelligence-sprint${
     companyName ? `?company=${encodeURIComponent(companyName)}&sector=${selectedSector}` : ""
@@ -226,10 +256,15 @@ export function DealixDiagnosticLanding() {
             </div>
           </div>
           <div className="flex flex-wrap gap-3 pt-2">
-            <Button asChild size="lg" className="font-semibold">
-              <Link href={ctaHref}>
-                {isAr ? "ابدأ Sprint 499 SAR ←" : "Start Sprint 499 SAR →"}
-              </Link>
+            <Button
+              size="lg"
+              className="font-semibold"
+              onClick={runDiagnostic}
+              disabled={diagLoading || !companyName.trim()}
+            >
+              {diagLoading
+                ? (isAr ? "جارٍ التحليل…" : "Analysing…")
+                : (isAr ? "احصل على تشخيص فوري ←" : "Get Instant Diagnostic →")}
             </Button>
             <Button asChild variant="outline" size="lg">
               <Link href={`/${locale}/demo`}>
@@ -237,6 +272,53 @@ export function DealixDiagnosticLanding() {
               </Link>
             </Button>
           </div>
+
+          {diagError && (
+            <p className="text-sm text-destructive mt-2">{diagError}</p>
+          )}
+
+          {diagResult && (
+            <div className="mt-4 rounded-xl border border-emerald-500/40 bg-emerald-50/50 dark:bg-emerald-950/20 p-5 space-y-3">
+              <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">
+                {isAr ? "✅ التشخيص جاهز" : "✅ Diagnostic ready"}
+              </p>
+              <p className="font-semibold text-base">
+                {isAr
+                  ? `التوصية: ${diagResult.bundle_name_ar || diagResult.recommended_bundle}`
+                  : `Recommendation: ${diagResult.bundle_name_en || diagResult.recommended_bundle}`}
+              </p>
+              {diagResult.services_in_bundle && diagResult.services_in_bundle.length > 0 && (
+                <ul className="space-y-1">
+                  {diagResult.services_in_bundle.map((s) => (
+                    <li key={s} className="flex items-start gap-2 text-sm text-foreground/80">
+                      <span className="text-emerald-500 mt-0.5 flex-shrink-0">✓</span>
+                      <span>{s}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Button asChild size="lg" className="font-semibold w-full sm:w-auto mt-2">
+                <Link href={ctaHref}>
+                  {isAr ? "ابدأ Sprint 499 SAR ←" : "Start Sprint 499 SAR →"}
+                </Link>
+              </Button>
+              <p className="text-xs text-muted-foreground">
+                {isAr
+                  ? "القيمة التقديرية ليست قيمة مُتحقَّقة — كل الأرقام تقديرية حتى يُوثَّق الدليل الفعلي."
+                  : "Estimated value is not Verified value — all figures are estimates until actual evidence is documented."}
+              </p>
+            </div>
+          )}
+
+          {!diagResult && (
+            <div className="flex flex-wrap gap-3 pt-1">
+              <Button asChild variant="ghost" size="sm" className="text-muted-foreground">
+                <Link href={ctaHref}>
+                  {isAr ? "أو ابدأ Sprint 499 SAR مباشرةً ←" : "Or start Sprint 499 SAR directly →"}
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
       </Card>
 

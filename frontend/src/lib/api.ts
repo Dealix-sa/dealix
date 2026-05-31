@@ -591,33 +591,21 @@ export const api = {
       { headers: { "X-Admin-API-Key": adminApiKey } },
     ),
 
-  // ── Wave 15 Commercial Chain (13 endpoints, all approval-gated) ────────
+  // ── Commercial chain (public diagnostic + admin chain) ───────────────────
+  postPublicDiagnostic: (body: { company: string; sector?: string; region?: string }) =>
+    apiClient.post("/api/v1/diagnostic/generate", body),
 
-  postCommercialDiagnosticGenerate: (
+  postCommercialDiagnostic: (
     adminApiKey: string,
-    body: {
-      company_name: string;
-      sector?: string;
-      pain_points?: string[];
-      website_url?: string;
-      contact_name?: string;
-      notes?: string;
-    },
+    body: { company_name: string; sector?: string; pain_points?: string[] },
   ) =>
     apiClient.post("/api/v1/commercial/diagnostic/generate", body, {
       headers: { "X-Admin-API-Key": adminApiKey },
     }),
 
-  postCommercialWarmIntroDraft: (
+  postCommercialWarmIntro: (
     adminApiKey: string,
-    body: {
-      prospect_name: string;
-      company_name: string;
-      sector?: string;
-      pain_context?: string;
-      previous_interaction?: string;
-      founder_name?: string;
-    },
+    body: { prospect_name: string; company_name: string; sector?: string; pain_context?: string },
   ) =>
     apiClient.post("/api/v1/commercial/warm-intro/draft", body, {
       headers: { "X-Admin-API-Key": adminApiKey },
@@ -625,15 +613,7 @@ export const api = {
 
   postCommercialPilotStart: (
     adminApiKey: string,
-    body: {
-      account_id: string;
-      company_name: string;
-      contact_name?: string;
-      sector?: string;
-      pain_points?: string[];
-      diagnostic_id?: string;
-      start_date?: string;
-    },
+    body: { account_id: string; company_name: string; sector?: string; diagnostic_id?: string },
   ) =>
     apiClient.post("/api/v1/commercial/pilot/start", body, {
       headers: { "X-Admin-API-Key": adminApiKey },
@@ -641,23 +621,7 @@ export const api = {
 
   postCommercialProofBuild: (
     adminApiKey: string,
-    body: {
-      account_id: string;
-      company_name: string;
-      pilot_id?: string;
-      events?: Array<{
-        event_type: string;
-        description_ar: string;
-        description_en: string;
-        metric_before?: string;
-        metric_after?: string;
-        delta_pct?: number;
-        evidence_url?: string;
-        source_ref?: string;
-      }>;
-      approved_by_founder?: boolean;
-      customer_consent?: boolean;
-    },
+    body: { account_id: string; company_name: string; events?: unknown[] },
   ) =>
     apiClient.post("/api/v1/commercial/proof/build", body, {
       headers: { "X-Admin-API-Key": adminApiKey },
@@ -665,15 +629,7 @@ export const api = {
 
   postCommercialPaymentLink: (
     adminApiKey: string,
-    body: {
-      service_tier: string;
-      customer_name: string;
-      customer_email?: string;
-      account_id?: string;
-      pilot_id?: string;
-      callback_url?: string;
-      notes?: string;
-    },
+    body: { service_tier: string; customer_name: string; customer_email: string },
   ) =>
     apiClient.post("/api/v1/commercial/payment/link", body, {
       headers: { "X-Admin-API-Key": adminApiKey },
@@ -684,38 +640,19 @@ export const api = {
       headers: { "X-Admin-API-Key": adminApiKey },
     }),
 
-  postCommercialUpsellCheck: (
+  getCommercialUpsellCheck: (
     adminApiKey: string,
-    body: {
-      account_id: string;
-      company_name: string;
-      proof_event_count: number;
-      proof_level?: string;
-      monthly_revenue_sar?: number;
-    },
+    accountId: string,
+    params?: { proof_event_count?: number; proof_level?: string; monthly_revenue_sar?: number },
   ) =>
-    apiClient.post("/api/v1/commercial/upsell/check", body, {
+    apiClient.get(`/api/v1/commercial/upsell/check/${encodeURIComponent(accountId)}`, {
       headers: { "X-Admin-API-Key": adminApiKey },
+      params,
     }),
 
-  postCommercialCaseStudyGenerate: (
+  postCommercialCaseStudy: (
     adminApiKey: string,
-    body: {
-      account_id: string;
-      company_name: string;
-      sector?: string;
-      proof_pack_id?: string;
-      customer_consent?: boolean;
-      anonymize?: boolean;
-      challenge_ar?: string;
-      challenge_en?: string;
-      approach_ar?: string;
-      approach_en?: string;
-      result_ar?: string;
-      result_en?: string;
-      customer_quote_ar?: string;
-      customer_quote_en?: string;
-    },
+    body: { account_id: string; company_name: string; sector?: string; customer_consent?: boolean },
   ) =>
     apiClient.post("/api/v1/commercial/case-study/generate", body, {
       headers: { "X-Admin-API-Key": adminApiKey },
@@ -723,31 +660,6 @@ export const api = {
 
   getCommercialDailyBrief: (adminApiKey: string) =>
     apiClient.get("/api/v1/commercial/daily-brief", {
-      headers: { "X-Admin-API-Key": adminApiKey },
-    }),
-
-  getCommercialZatcaInvoice: (adminApiKey: string, params?: { account_id?: string; pilot_id?: string }) =>
-    apiClient.get("/api/v1/commercial/zatca/invoice", {
-      headers: { "X-Admin-API-Key": adminApiKey },
-      params,
-    }),
-
-  getCommercialGovernanceDecision: (
-    adminApiKey: string,
-    params: { action: string; account_id?: string },
-  ) =>
-    apiClient.get("/api/v1/commercial/governance/decision", {
-      headers: { "X-Admin-API-Key": adminApiKey },
-      params,
-    }),
-
-  getCommercialStatus: (adminApiKey: string) =>
-    apiClient.get("/api/v1/commercial/status", {
-      headers: { "X-Admin-API-Key": adminApiKey },
-    }),
-
-  getCommercialChainStatus: (adminApiKey: string) =>
-    apiClient.get("/api/v1/commercial/chain-status", {
       headers: { "X-Admin-API-Key": adminApiKey },
     }),
 };
