@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LEARN_ARTICLES } from "@/content/learn/articles";
 

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -86,10 +85,6 @@ export function TrustPage() {
   const locale = useLocale();
   const isAr = locale === "ar";
   const base = `/${locale}`;
-  const [activeSection, setActiveSection] = useState<string | null>(null);
-
-  const toggleSection = (id: string) => setActiveSection(activeSection === id ? null : id);
-
   return (
     <PublicGtmShell>
       <div

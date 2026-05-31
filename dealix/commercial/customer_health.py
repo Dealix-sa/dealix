@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -229,7 +229,6 @@ class CustomerHealthEngine:
         )
 
     def _score_delivery(self, inp: HealthInput) -> HealthDimension:
-        score = 50.0
         signals = []
 
         proof_score = self.PROOF_LEVEL_SCORES.get(inp.proof_level_achieved, 20)

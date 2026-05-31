@@ -72,7 +72,8 @@ async def score_customers_batch(
             report = _engine.calculate(inp)
             reports.append(report.to_dict())
         except Exception as exc:
-            errors.append({"index": i, "error": str(exc)})
+            log.warning("batch_score_error index=%d type=%s", i, type(exc).__name__)
+            errors.append({"index": i, "error": "Validation error — check field types and required fields"})
 
     # Sort by score ascending (most at-risk first)
     reports.sort(key=lambda r: r["overall_score"])

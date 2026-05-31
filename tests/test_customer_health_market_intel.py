@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import pytest
 from datetime import UTC, datetime, timedelta
 
 from dealix.commercial.customer_health import (
@@ -81,13 +80,6 @@ class TestCustomerHealthEngine:
         assert report.churn_probability > 0.3
 
     def test_expansion_readiness_detected(self):
-        inp = self._make_input(
-            sprints_completed=2,
-            proof_level_achieved="L3",
-            nps_score=70,
-            lifetime_value_sar=2000,
-            overall_score=80,  # ignored but docs intent
-        )
         # Need score >=70 for expansion — build a healthy profile
         inp_healthy = self._make_input(
             sprints_completed=2,

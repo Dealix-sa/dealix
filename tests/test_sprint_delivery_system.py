@@ -662,7 +662,7 @@ class TestCapitalAssetRegistry:
             CapitalAssetRegistry,
         )
 
-        registry = CapitalAssetRegistry(registry_path=tmp_registry_path)
+        CapitalAssetRegistry(registry_path=tmp_registry_path)  # verify instantiation
         asset = self._asset()
         assert asset.asset_id  # non-empty UUID
 

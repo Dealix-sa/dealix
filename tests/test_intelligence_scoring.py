@@ -11,8 +11,6 @@ Covers:
 
 from __future__ import annotations
 
-import os
-
 import pytest
 
 
@@ -696,8 +694,7 @@ class TestKPIDashboardPureFunctions:
         import asyncio
 
         mod = self._load_module()
-        coro = mod.kpi_summary()
-        result = asyncio.get_event_loop().run_until_complete(coro)
+        result = asyncio.run(mod.kpi_summary())
         assert "governance_decision" in result
         assert "metrics" in result
         assert "mrr" in result["metrics"]
@@ -706,7 +703,7 @@ class TestKPIDashboardPureFunctions:
         import asyncio
 
         mod = self._load_module()
-        result = asyncio.get_event_loop().run_until_complete(mod.kpi_commercial())
+        result = asyncio.run(mod.kpi_commercial())
         assert "governance_decision" in result
         assert "metrics" in result
 
@@ -714,7 +711,7 @@ class TestKPIDashboardPureFunctions:
         import asyncio
 
         mod = self._load_module()
-        result = asyncio.get_event_loop().run_until_complete(mod.kpi_nps(periods=4))
+        result = asyncio.run(mod.kpi_nps(periods=4))
         assert "trend" in result
         assert len(result["trend"]) == 4
 
@@ -722,7 +719,7 @@ class TestKPIDashboardPureFunctions:
         import asyncio
 
         mod = self._load_module()
-        result = asyncio.get_event_loop().run_until_complete(mod.kpi_health_score())
+        result = asyncio.run(mod.kpi_health_score())
         assert 0 <= result["health_score"] <= 100
         assert result["tier"] in ("healthy", "moderate", "at_risk", "critical")
 
@@ -730,7 +727,7 @@ class TestKPIDashboardPureFunctions:
         import asyncio
 
         mod = self._load_module()
-        result = asyncio.get_event_loop().run_until_complete(mod.kpi_cohort(cohort_month="2026-03"))
+        result = asyncio.run(mod.kpi_cohort(cohort_month="2026-03"))
         assert result["cohort"]["cohort_month"] == "2026-03"
 
 

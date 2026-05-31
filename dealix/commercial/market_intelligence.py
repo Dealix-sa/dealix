@@ -9,7 +9,6 @@ Data is pre-seeded from public market research and Dealix's own observations.
 
 from __future__ import annotations
 
-import json
 from datetime import UTC, datetime
 from typing import Any
 

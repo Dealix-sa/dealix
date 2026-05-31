@@ -18,7 +18,6 @@ in the operational stream without extra marshalling.
 
 from __future__ import annotations
 
-import uuid
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any

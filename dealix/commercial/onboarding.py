@@ -156,7 +156,7 @@ class OnboardingOrchestrator:
             welcome_draft_en=self._build_welcome_en(contact_name, company_name, service_tier),
         )
 
-        log.info("onboarding_created account=%s tier=%s", account_id, service_tier)
+        log.info("onboarding_created account=%s tier=%s", account_id, service_tier.replace("\n", "").replace("\r", ""))
         return record
 
     def advance_stage(self, record: OnboardingRecord, completed_stage: str) -> OnboardingRecord:
@@ -180,7 +180,7 @@ class OnboardingOrchestrator:
                         step.status = "in_progress"
                         step.started_at = now
                         break
-        except ValueError:
+        except ValueError:  # completed_stage not in ONBOARDING_STAGES — no-op
             pass
 
         return record
