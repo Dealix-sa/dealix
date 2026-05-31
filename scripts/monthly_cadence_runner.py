@@ -17,9 +17,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -55,7 +54,7 @@ def _generate_for(customer_id: str) -> dict:
         "retainer_readiness": retainer.to_dict(),
         "is_estimate": True,
         "governance_decision": "allow_with_review",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
     }
 
 

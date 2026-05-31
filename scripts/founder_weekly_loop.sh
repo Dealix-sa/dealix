@@ -38,6 +38,9 @@ $PY scripts/founder_strongest_plan_status.py
 echo "== Comprehensive plan =="
 $PY scripts/founder_comprehensive_plan_status.py
 
+echo "== CEO weekly retro =="
+$PY scripts/founder_weekly_ceo_retro.py
+
 echo "== Dogfooding war room =="
 $PY scripts/founder_dogfooding_war_room_sync.py
 

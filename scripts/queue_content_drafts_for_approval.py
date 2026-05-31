@@ -25,8 +25,8 @@ def _latest_payload() -> dict:
 
 
 def _create_via_store(draft: dict) -> dict:
-    from auto_client_acquisition.approval_center.schemas import ApprovalRequest
     from auto_client_acquisition.approval_center.approval_store import get_default_approval_store
+    from auto_client_acquisition.approval_center.schemas import ApprovalRequest
 
     body = (draft.get("body") or "")[:4000]
     req = ApprovalRequest(

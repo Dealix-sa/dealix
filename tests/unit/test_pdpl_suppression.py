@@ -21,7 +21,6 @@ from auto_client_acquisition.customer_data_plane.schemas import (
     ContactabilityVerdict,
 )
 
-
 # ── Fixtures ───────────────────────────────────────────────────────
 
 def _make_registry(channel: ChannelKind, status: ConsentStatus):

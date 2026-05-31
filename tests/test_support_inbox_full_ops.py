@@ -1,7 +1,7 @@
 """Phase 7 — Support Inbox webhook + state store + SLA monitor."""
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 from httpx import ASGITransport, AsyncClient
@@ -122,10 +122,10 @@ async def test_sla_breaches_endpoint() -> None:
 
 def test_sla_monitor_finds_overdue() -> None:
     """Backdate a ticket's sla_due_at and confirm sla_monitor catches it."""
-    from auto_client_acquisition.support_inbox.state_store import _INDEX
     from auto_client_acquisition.support_inbox.sla_monitor import (
         find_breached_tickets,
     )
+    from auto_client_acquisition.support_inbox.state_store import _INDEX
     from auto_client_acquisition.support_os.ticket import create_ticket
 
     t = create_ticket(
@@ -136,7 +136,7 @@ def test_sla_monitor_finds_overdue() -> None:
         priority="p1",
     )
     # Backdate by 2 hours
-    t.sla_due_at = datetime.now(timezone.utc) - timedelta(hours=2)
+    t.sla_due_at = datetime.now(UTC) - timedelta(hours=2)
     _INDEX[t.id] = t
     breached = find_breached_tickets(customer_id="overdue-test-customer")
     assert any(b["ticket_id"] == t.id for b in breached)

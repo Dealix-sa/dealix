@@ -17,14 +17,13 @@ from pathlib import Path
 import pytest
 
 from auto_client_acquisition.company_brain_v6.timeline import (
-    TimelineHandleInvalid,
     TimelineEvent,
+    TimelineHandleInvalid,
     event_count,
     read_timeline,
     record_event,
     summarize_what_worked_failed,
 )
-
 
 # ─────────────────────────────────────────────────────────────────────
 # Recording (5 tests)
