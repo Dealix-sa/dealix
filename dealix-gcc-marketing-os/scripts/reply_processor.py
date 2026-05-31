@@ -10,18 +10,19 @@ from pathlib import Path
 MEMORY_DIR = Path(__file__).parent.parent / "memory"
 
 
+# Ordered from highest to lowest precedence — hard negatives checked before positive signals.
 REPLY_CATEGORIES = {
-    "positive_interested": [
-        "نعم", "يناسبنا", "نحن مهتمون", "أرسل", "تفضل",
-        "yes", "interested", "send", "please share", "sounds good", "tell me more",
+    "hard_no": [
+        "لا نحتاج", "غير مناسب", "مو مهتمين",
+        "not interested", "please remove", "unsubscribe", "stop",
     ],
     "soft_no_timing": [
         "مشغولين", "مو وقت", "لاحقًا", "بعدين",
         "not now", "busy", "later", "next quarter", "maybe later",
     ],
-    "hard_no": [
-        "لا نحتاج", "غير مناسب", "مو مهتمين",
-        "not interested", "please remove", "unsubscribe", "stop",
+    "positive_interested": [
+        "نعم", "يناسبنا", "نحن مهتمون", "أرسل", "تفضل",
+        "yes", "interested", "send", "please share", "sounds good", "tell me more",
     ],
     "referral": [
         "تواصل مع", "كلم",
