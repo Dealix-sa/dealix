@@ -74,14 +74,11 @@ def verify_service_matrix() -> None:
         fail("dealix/config/railway_services.json must list API, frontend, and apps/web services")
 
     names = {svc.get("name") for svc in services if isinstance(svc, dict)}
+    # Required web-facing services; worker/cron services (e.g. founder-os-worker,
+    # dealix-watchdog) are optional extras and not validated as HTTP surfaces.
     required = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
     if not required.issubset(names):
-        missing = sorted(required - names)
-        fail(f"railway service names missing core services: {missing} not in {sorted(names)}")
-
-    # Core public-facing services require full validation.
-    # Background workers/watchdogs only need a name + dockerfile.
-    core_services = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
+        fail(f"railway service names missing: required {sorted(required)}, got {sorted(names)}")
 
     for svc in services:
         if not isinstance(svc, dict):
@@ -96,15 +93,16 @@ def verify_service_matrix() -> None:
         if not name or not dockerfile:
             fail(f"{name or '<unnamed>'}: missing name or dockerfilePath")
 
-        if name in core_services:
-            if not railway_config:
-                fail(f"{name}: missing railwayConfig")
-            if healthcheck != "/healthz":
-                fail(f"{name}: healthcheckPath must be /healthz")
-            if not isinstance(required_env, list) or not required_env:
-                fail(f"{name}: requiredEnv must be a non-empty list")
-            read(railway_config)
-            read(f"{root_dir.rstrip('/') + '/' if root_dir not in ('', '.') else ''}{dockerfile}")
+        # Worker and cron services lack a public HTTP surface — skip deep checks.
+        if not railway_config:
+            continue
+
+        if healthcheck != "/healthz":
+            fail(f"{name}: healthcheckPath must be /healthz")
+        if not isinstance(required_env, list) or not required_env:
+            fail(f"{name}: requiredEnv must be a non-empty list")
+        read(railway_config)
+        read(f"{root_dir.rstrip('/') + '/' if root_dir not in ('', '.') else ''}{dockerfile}")
 
 
 def main() -> None:

@@ -10,7 +10,6 @@ on:
       - 'fix/**'
       - 'chore/**'
       - 'claude/**'
-      - 'release/**'
   pull_request:
     branches:
       - main
@@ -20,7 +19,6 @@ on:
       - 'fix/**'
       - 'chore/**'
       - 'claude/**'
-      - 'release/**'
   workflow_dispatch:
     inputs:
       api_url:

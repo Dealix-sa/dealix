@@ -1,20 +1,42 @@
-const LS_KEY = "dealix_admin_api_key";
+// Admin API key helpers for Ops dashboard features.
+// Key is stored in localStorage — never exposed through a NEXT_PUBLIC_ env var.
+
+const ADMIN_KEY = "dealix_admin_api_key";
 
 export function getAdminApiKey(): string {
-  if (typeof window === "undefined") return process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY ?? "";
-  return (
-    localStorage.getItem(LS_KEY) ||
-    process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY ||
-    ""
-  );
+  if (typeof window === "undefined") return "";
+  try {
+    return localStorage.getItem(ADMIN_KEY) || "";
+  } catch {
+    return "";
+  }
+}
+
+export function setAdminApiKey(key: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(ADMIN_KEY, key);
+  } catch {
+    // ignore storage quota errors
+  }
+}
+
+export function clearAdminApiKey(): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(ADMIN_KEY);
+  } catch {
+    // ignore storage errors
+  }
 }
 
 export function isOpsConfigured(): boolean {
-  return getAdminApiKey().trim().length > 0;
+  const key = getAdminApiKey();
+  return Boolean(key && key.length > 0);
 }
 
-export function opsMissingKeyMessage(isAr?: boolean): string {
+export function opsMissingKeyMessage(isAr: boolean): string {
   return isAr
-    ? "يرجى إدخال مفتاح API للمشرف للمتابعة."
-    : "Please set your admin API key to continue.";
+    ? "مفتاح الـ API غير مُعيَّن. أدخل مفتاح المشرف لعرض هذه البيانات."
+    : "Admin API key not configured. Enter your admin key to access this data.";
 }
