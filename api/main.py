@@ -610,6 +610,34 @@ def create_app() -> FastAPI:
     from api.routers import customer_success_playbook as customer_success_playbook_router
     app.include_router(customer_success_playbook_router.router)
 
+    # Content Calendar — Saudi B2B annual events, Ramadan strategy, monthly themes
+    from api.routers import content_calendar as content_calendar_router
+    app.include_router(content_calendar_router.router)
+
+    # Competitive Positioning — battle cards + positioning briefs vs. competitor categories
+    from api.routers import competitive_positioning as competitive_positioning_router
+    app.include_router(competitive_positioning_router.router)
+
+    # Account Plan — strategic account planning framework for Saudi B2B enterprise deals
+    from api.routers import account_plan as account_plan_router
+    app.include_router(account_plan_router.router)
+
+    # Lead Scoring — 8-criteria lead scoring with grade bands and SLA targets
+    from api.routers import lead_scoring as lead_scoring_router
+    app.include_router(lead_scoring_router.router)
+
+    # Pipeline Analytics — Saudi B2B pipeline health, stage playbooks, conversion benchmarks
+    from api.routers import pipeline_analytics as pipeline_analytics_router
+    app.include_router(pipeline_analytics_router.router)
+
+    # Partner Ecosystem — ZATCA ISVs, cloud providers, SAMA FinTechs, accelerators, SIs
+    from api.routers import partner_ecosystem as partner_ecosystem_router
+    app.include_router(partner_ecosystem_router.router)
+
+    # Onboarding Checklist — tier-specific client onboarding with PDPL compliance tracking
+    from api.routers import onboarding_checklist as onboarding_checklist_router
+    app.include_router(onboarding_checklist_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
