@@ -7,14 +7,15 @@ and a Week 1 proof report ready for customer delivery.
 from __future__ import annotations
 
 import json
+import uuid as _uuid
 from datetime import UTC, date, datetime, timedelta
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class PilotStartRequest(BaseModel):
-    account_id: str = Field(..., min_length=1)
+    account_id: str = Field(default_factory=lambda: str(_uuid.uuid4()))
     company_name: str = Field(..., min_length=1)
     contact_name: str = ""
     sector: str = "b2b_services"
@@ -22,6 +23,21 @@ class PilotStartRequest(BaseModel):
     diagnostic_id: str = ""
     founder_name: str = "سامي"
     start_date: str = ""  # ISO date string, defaults to today
+    payment_confirmed: bool = False
+    payment_ref: str = ""
+
+    @field_validator("pain_points", mode="before")
+    @classmethod
+    def _coerce_pain_points(cls, v: object) -> list[str]:
+        if isinstance(v, str):
+            return [v] if v else []
+        return v  # type: ignore[return-value]
+
+    @model_validator(mode="after")
+    def _validate_payment(self) -> "PilotStartRequest":
+        if self.payment_confirmed and not self.payment_ref:
+            raise ValueError("payment_ref is required when payment_confirmed=True")
+        return self
 
 
 class DayPlan(BaseModel):

@@ -128,7 +128,7 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
         if not allowed:
             return await call_next(request)
 
-        provided = request.headers.get("X-API-Key")
+        provided = request.headers.get("X-API-Key") or request.query_params.get("api_key")
         if not verify_api_key(provided, allowed):
             logger.warning("api_key_invalid", path=path, has_key=bool(provided))
             # Return a proper JSONResponse instead of raising HTTPException —

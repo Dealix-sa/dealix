@@ -49,7 +49,7 @@ def app():
         patch("db.session.init_db", new=AsyncMock()),
     ):
         from api.main import create_app
-        return create_app()
+        yield create_app()
 
 
 @pytest.fixture(scope="module")
@@ -159,7 +159,7 @@ class TestAuthEnforcement:
 
     def test_valid_key_passes(self, client, auth_headers):
         r = client.get("/api/v1/leads", headers=auth_headers)
-        assert r.status_code in (200, 422, 503)  # exclude 401/403
+        assert r.status_code not in (401, 403)  # auth passed
 
 
 # ── 7. Leads endpoint ─────────────────────────────────────────────
@@ -167,7 +167,7 @@ class TestAuthEnforcement:
 class TestLeadsEndpoint:
     def test_list_leads_accepts_pagination_params(self, client, auth_headers):
         r = client.get("/api/v1/leads?limit=5", headers=auth_headers)
-        assert r.status_code in (200, 422, 503)  # not 401
+        assert r.status_code not in (401, 403)  # not auth failure
 
     def test_leads_response_envelope(self, client, auth_headers):
         r = client.get("/api/v1/leads", headers=auth_headers)

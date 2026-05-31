@@ -415,6 +415,8 @@ def create_app() -> FastAPI:
     # Weekly business reports — /api/v1/reports
     app.include_router(weekly_reports_router.router)
 
+    # Commercial Engine already registered above as commercial_chain_router
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

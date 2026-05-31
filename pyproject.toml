@@ -110,7 +110,7 @@ Documentation = "https://github.com/VoXc2/dealix/tree/main/docs"
 Issues = "https://github.com/VoXc2/dealix/issues"
 
 [tool.setuptools.packages.find]
-include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "dealix*"]
+include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "dealix*", "platform_core*"]
 exclude = ["tests*", "docs*", "scripts*"]
 
 [tool.ruff]
@@ -158,6 +158,11 @@ addopts = [
     "-ra",
     "--strict-markers",
     "--strict-config",
+    "--cov=core",
+    "--cov=integrations",
+    "--cov=api",
+    "--cov-report=term-missing",
+    "--cov-report=html",
 ]
 markers = [
     "unit: unit tests",
@@ -168,7 +173,7 @@ markers = [
 
 [tool.coverage.run]
 branch = true
-source = ["core", "auto_client_acquisition", "autonomous_growth", "integrations", "api"]
+source = ["core", "integrations", "api"]
 omit = ["*/tests/*", "*/migrations/*", "*/__init__.py"]
 
 [tool.coverage.report]

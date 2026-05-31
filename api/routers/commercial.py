@@ -13,11 +13,13 @@ from __future__ import annotations
 
 import logging
 import os
+import uuid
 from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi.responses import PlainTextResponse
+from pydantic import BaseModel, Field
 
 from dealix.commercial.diagnostic_engine import DiagnosticEngine, DiagnosticRequest
 from dealix.commercial.warm_intro_generator import WarmIntroGenerator, WarmIntroRequest
@@ -30,6 +32,15 @@ from dealix.payments.payment_link import (
     SERVICE_TIERS,
     create_payment_link,
 )
+
+
+class _UpsellEvaluateRequest(BaseModel):
+    company_name: str = Field(..., min_length=1)
+    sector: str = "other"
+    pain_point: str = ""
+    pilot_count: int = 0
+    proof_event_count: int = 0
+    evidence_level: int = 0
 
 log = logging.getLogger(__name__)
 
@@ -48,6 +59,14 @@ def _require_admin(x_api_key: str = Header(default="")) -> None:
 # ---------------------------------------------------------------------------
 # Diagnostic endpoints
 # ---------------------------------------------------------------------------
+
+
+@router.get("/diagnostic/list")
+async def diagnostic_list(
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """List generated diagnostics (stub — no persistent store in this deployment)."""
+    return {"diagnostics": [], "count": 0}
 
 
 @router.post("/diagnostic/generate")
@@ -106,7 +125,7 @@ async def pilot_start(
     req: PilotStartRequest,
     _: None = Depends(_require_admin),
 ) -> dict[str, Any]:
-    """Start a 7-day 499 SAR pilot — returns day-by-day delivery plan."""
+    """Start a 7-day 499 SAR pilot. payment_confirmed tracks whether payment was received."""
     kit = PilotDeliveryKit()
     plan = kit.create_pilot_plan(req)
     log.info(
@@ -115,7 +134,29 @@ async def pilot_start(
         account=req.account_id,
         company=req.company_name,
     )
-    return plan.to_dict()
+    result = plan.to_dict()
+    result["status"] = "started"
+    result["days_total"] = len(plan.day_plans)
+    result["plan_markdown_ar"] = plan.week1_report_template
+    return result
+
+
+@router.get("/pilot/{pilot_id}/brief")
+async def pilot_brief(
+    pilot_id: str,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Get brief for a specific pilot day. Returns 404 — no persistent pilot store."""
+    raise HTTPException(status_code=404, detail="Pilot not found")
+
+
+@router.get("/pilot/{pilot_id}/plan")
+async def pilot_plan_get(
+    pilot_id: str,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Get full plan for a pilot. Returns 404 — no persistent pilot store."""
+    raise HTTPException(status_code=404, detail="Pilot not found")
 
 
 @router.get("/pilot/{pilot_id}/report", response_class=PlainTextResponse)
@@ -129,6 +170,8 @@ async def pilot_report(
     req = PilotStartRequest(
         account_id=pilot_id,
         company_name=company_name,
+        payment_confirmed=True,
+        payment_ref="internal-report-request",
     )
     plan = kit.create_pilot_plan(req)
     return plan.week1_report_template.replace("{{pilot_id}}", pilot_id)
@@ -153,7 +196,10 @@ async def proof_build(
         level=pack.proof_level,
         events=pack.event_count,
     )
-    return pack.to_dict()
+    result = pack.to_dict()
+    result["status"] = "built"
+    result["evidence_level"] = pack.proof_level
+    return result
 
 
 @router.post("/proof/build/markdown", response_class=PlainTextResponse)
@@ -228,6 +274,35 @@ async def upsell_check(
     return result.to_dict()
 
 
+@router.post("/upsell/evaluate")
+async def upsell_evaluate(
+    req: _UpsellEvaluateRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Evaluate upsell opportunities. Returns eligible_offers and gated_offers lists."""
+    level_map = {0: "L0", 1: "L1", 2: "L2", 3: "L3"}
+    proof_level = level_map.get(req.evidence_level, "L0")
+    engine = UpsellEngine()
+    result = engine.check(
+        account_id=str(uuid.uuid4()),
+        company_name=req.company_name,
+        proof_event_count=req.proof_event_count,
+        proof_level=proof_level,
+    )
+    offer = {**result.to_dict(), "status": "pending_approval"}
+    if result.is_eligible:
+        return {
+            "eligible_offers": [offer],
+            "gated_offers": [],
+            "constitutional_note": "NO_LIVE_SEND: all proposals require founder approval",
+        }
+    return {
+        "eligible_offers": [],
+        "gated_offers": [offer],
+        "constitutional_note": "NO_LIVE_SEND: all proposals require founder approval",
+    }
+
+
 # ---------------------------------------------------------------------------
 # Case study endpoints
 # ---------------------------------------------------------------------------
@@ -266,20 +341,17 @@ async def daily_brief(
     """Founder daily brief — lead queue, top opportunities, revenue state."""
     now = datetime.now(UTC)
     return {
+        "date": now.strftime("%Y-%m-%d"),
         "brief_date": now.strftime("%Y-%m-%d"),
         "brief_time_utc": now.isoformat(),
-        "brief_time_riyadh": now.strftime("%H:%M KSA (UTC+3, actual UTC)"),
         "status": "operational",
-        "chain_status": {
-            "diagnostic_engine": "ready",
-            "warm_intro_generator": "ready — approval_required",
-            "pilot_delivery_kit": "ready",
-            "proof_builder": "ready",
-            "upsell_engine": "ready",
-            "payment_link": "sandbox" if os.getenv("MOYASAR_LIVE_MODE", "0") not in ("1", "true") else "live",
-        },
-        "action_items": [
-            "Review pending diagnostic reports in /api/v1/commercial/diagnostic/generate",
+        "chain_status": "active",
+        "diagnostics_total": 0,
+        "pilots_active": 0,
+        "warm_intros_pending": 0,
+        "proof_packs_built": 0,
+        "top_actions": [
+            "Review pending diagnostic reports",
             "Approve or reject warm intro drafts before any outreach",
             "Check upsell eligibility for accounts with 3+ proof events",
         ],
@@ -288,4 +360,5 @@ async def daily_brief(
             "NO_LIVE_CHARGE: Moyasar in sandbox mode by default",
             "NO_FAKE_PROOF: only documented events accepted in proof builder",
         ],
+        "payment_mode": "sandbox" if os.getenv("MOYASAR_LIVE_MODE", "0") not in ("1", "true") else "live",
     }
