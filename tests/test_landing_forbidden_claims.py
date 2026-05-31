@@ -113,9 +113,12 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
         "scraping": "NEGATION",
     },
-    # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
+    # Diagnostic intake — "صفر cold outreach" promise + the estimated-
+    # outcomes disclaimer ("not guaranteed / ليست مضمونة"). Pure NEGATION.
     "diagnostic.html": {
         "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
@@ -146,7 +149,10 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+        # "نضمن" was rephrased out of the page (stale entry removed).
+        # "Estimated outcomes are not guaranteed / ليست نتائج مضمونة" disclaimer
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -171,6 +177,33 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "blast": "NEGATION",
         "cold": "NEGATION",
     },
+    # ── Doctrine-required disclaimer sweep ───────────────────────────
+    # "Estimated outcomes are not guaranteed outcomes / النتائج التقديرية
+    # ليست نتائج مضمونة" is the disclaimer the doctrine *requires*; it is a
+    # pure NEGATION. A few of these pages also list the anti-cold /
+    # anti-scraping hard gates (also NEGATION).
+    "architecture.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "bespoke-ai.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "customer-portal.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "data-pack.html": {
+        # "صفر cold WhatsApp / LinkedIn" + "لا scraping" + disclaimer.
+        "cold": "NEGATION",
+        "scraping": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    "dpo.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "launch-status.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "pricing.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    # "LinkedIn scraping automation — policy-blocked in code" (anti-pattern).
+    "roadmap.html": {"scraping": "NEGATION"},
+    "sector-report-b2b-services.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "security.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "sprint-sample.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "webinar.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    # "7-day money-back guarantee" (refund/risk-reversal, not a sales-outcome
+    # claim) — REVIEW_PENDING, mirroring roi.html's refund wording.
+    "case-study-pilot-example.html": {"guaranteed": "REVIEW_PENDING"},
 }
 
 
@@ -232,9 +265,10 @@ def test_review_pending_items_have_a_reason():
     # This is informational, not a failure. We assert the *count* so
     # that whenever a founder rephrases or formally approves a phrase,
     # they remember to update this number too.
-    assert len(review_pending) == 2, (
-        "REVIEW_PENDING list changed; expected 2 "
-        "(roi.html: 'نضمن'; academy.html: 'cold'). "
+    assert len(review_pending) == 3, (
+        "REVIEW_PENDING list changed; expected 3 "
+        "(roi.html: 'نضمن'; academy.html: 'cold'; "
+        "case-study-pilot-example.html: 'guaranteed' money-back refund). "
         "Update this assertion after the founder approves or rephrases. "
         f"Current: {review_pending}"
     )

@@ -186,6 +186,18 @@ class Settings(BaseSettings):
     hubspot_access_token: SecretStr | None = None
     hubspot_portal_id: str | None = None
 
+    # ── Notion Command Center ───────────────────────────────────
+    notion_api_key: SecretStr | None = None
+    notion_version: str = "2022-06-28"
+    notion_mock_mode: bool = False
+    notion_crm_db_id: str | None = None
+    notion_kpi_db_id: str | None = None
+    notion_daily_ops_db_id: str | None = None
+    notion_plan_db_id: str | None = None
+    notion_outreach_db_id: str | None = None
+    notion_offers_db_id: str | None = None
+    notion_proof_db_id: str | None = None
+
     # ── Automation ──────────────────────────────────────────────
     n8n_webhook_url: str | None = None
     n8n_encryption_key: SecretStr | None = None

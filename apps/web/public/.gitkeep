@@ -1,0 +1,5 @@
+# Keep apps/web/public/ in the tree.
+# The production Dockerfile copies /app/public into the standalone runner
+# image (COPY --from=builder /app/public ./public). Next.js does not create
+# this directory, so without a tracked file the Railway image build fails on a
+# missing COPY source. Add real static assets here as needed.

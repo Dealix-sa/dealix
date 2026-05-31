@@ -1,0 +1,88 @@
+name: Founder Notion Sync
+
+# Mirrors the Founder Command Center into Notion (write-only).
+# 05:00 UTC = 08:00 Asia/Riyadh.
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+# Prevent two runs from racing on the Notion API.
+concurrency:
+  group: dealix-founder-notion-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write   # for failure-issue creation
+
+jobs:
+  notion-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check required secrets (skip gracefully if missing)
+        id: secrets_gate
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: |
+          # Skip-gracefully when the Notion key is not yet configured, so the
+          # founder is not spammed with daily failure issues. Gate downstream
+          # steps via steps.secrets_gate.outputs.secrets_present.
+          if [ -z "${NOTION_API_KEY}" ]; then
+            echo "secrets-not-yet-configured — skipping run"
+            echo "    Set NOTION_API_KEY via Settings -> Secrets and variables -> Actions"
+            echo "secrets_present=false" >> "${GITHUB_OUTPUT}"
+            exit 0
+          fi
+          echo "secrets present"
+          echo "secrets_present=true" >> "${GITHUB_OUTPUT}"
+
+      - name: Install package
+        if: steps.secrets_gate.outputs.secrets_present == 'true'
+        run: pip install -e .
+
+      - name: Sync Founder Command Center to Notion
+        if: steps.secrets_gate.outputs.secrets_present == 'true'
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_CRM_DB_ID: ${{ secrets.NOTION_CRM_DB_ID }}
+          NOTION_KPI_DB_ID: ${{ secrets.NOTION_KPI_DB_ID }}
+          NOTION_DAILY_OPS_DB_ID: ${{ secrets.NOTION_DAILY_OPS_DB_ID }}
+          NOTION_PLAN_DB_ID: ${{ secrets.NOTION_PLAN_DB_ID }}
+          NOTION_OUTREACH_DB_ID: ${{ secrets.NOTION_OUTREACH_DB_ID }}
+          NOTION_OFFERS_DB_ID: ${{ secrets.NOTION_OFFERS_DB_ID }}
+          NOTION_PROOF_DB_ID: ${{ secrets.NOTION_PROOF_DB_ID }}
+        run: python scripts/sync_founder_command_center_to_notion.py --json | tee notion_sync.json
+
+      - name: Upload run artifacts
+        if: always() && steps.secrets_gate.outputs.secrets_present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: founder-notion-sync-${{ github.run_id }}
+          path: notion_sync.json
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Open issue on failure
+        if: failure() && steps.secrets_gate.outputs.secrets_present == 'true'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const today = new Date().toISOString().slice(0,10);
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Founder Notion sync failed — ${today}`,
+              body: `The founder Notion sync workflow failed on ${today}.\n\n` +
+                    `**Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n` +
+                    `Check the NOTION_* secrets and the Notion integration's database shares.`,
+              labels: ['ops', 'p1'],
+            });

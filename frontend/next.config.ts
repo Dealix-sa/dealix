@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  poweredByHeader: false,
+  reactStrictMode: true,
   serverExternalPackages: [],
   images: {
     domains: ["api.dealix.ai", "localhost"],
