@@ -158,13 +158,6 @@ addopts = [
     "-ra",
     "--strict-markers",
     "--strict-config",
-    "--cov=core",
-    "--cov=auto_client_acquisition",
-    "--cov=autonomous_growth",
-    "--cov=integrations",
-    "--cov=api",
-    "--cov-report=term-missing",
-    "--cov-report=html",
 ]
 markers = [
     "unit: unit tests",
