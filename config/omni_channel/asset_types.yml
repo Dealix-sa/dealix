@@ -1,0 +1,259 @@
+---
+# All 18 asset types: channel, automation level, approval requirement, risk, word counts, variables.
+
+asset_types:
+
+  email_draft:
+    channel: email
+    automation_level: partial
+    requires_approval: true
+    risk_level: medium
+    avg_word_count_min: 60
+    avg_word_count_max: 200
+    template_variables:
+      - company_name
+      - contact_name
+      - sector
+      - pain_point
+      - offer_name
+      - cta
+      - founder_name
+    use_case: "Primary cold/warm email outreach to decision makers."
+
+  linkedin_connection_note:
+    channel: linkedin
+    automation_level: manual
+    requires_approval: true
+    risk_level: high
+    avg_word_count_min: 20
+    avg_word_count_max: 50
+    template_variables:
+      - contact_name
+      - company_name
+      - sector
+      - hook
+    use_case: "LinkedIn connection request note — 300 character limit. Manual send only."
+
+  linkedin_dm:
+    channel: linkedin
+    automation_level: manual
+    requires_approval: true
+    risk_level: high
+    avg_word_count_min: 40
+    avg_word_count_max: 150
+    template_variables:
+      - contact_name
+      - company_name
+      - pain_point
+      - offer_name
+      - cta
+    use_case: "LinkedIn direct message after connection accepted. Manual send only."
+
+  linkedin_followup_1:
+    channel: linkedin
+    automation_level: manual
+    requires_approval: true
+    risk_level: high
+    avg_word_count_min: 30
+    avg_word_count_max: 100
+    template_variables:
+      - contact_name
+      - value_add
+      - cta
+    use_case: "First follow-up DM 3–5 days after initial LinkedIn DM. Manual send."
+
+  linkedin_followup_2:
+    channel: linkedin
+    automation_level: manual
+    requires_approval: true
+    risk_level: high
+    avg_word_count_min: 30
+    avg_word_count_max: 80
+    template_variables:
+      - contact_name
+      - final_offer
+    use_case: "Second and final follow-up DM. Low-pressure close. Manual send."
+
+  linkedin_comment_idea:
+    channel: linkedin
+    automation_level: manual
+    requires_approval: true
+    risk_level: medium
+    avg_word_count_min: 15
+    avg_word_count_max: 60
+    template_variables:
+      - post_topic
+      - sector_insight
+    use_case: "Idea for a comment on a prospect's or industry post to warm up relationship."
+
+  linkedin_post_ar:
+    channel: founder_brand
+    automation_level: manual
+    requires_approval: true
+    risk_level: low
+    avg_word_count_min: 50
+    avg_word_count_max: 300
+    template_variables:
+      - topic
+      - sector_insight
+      - cta
+    use_case: "Arabic LinkedIn post for founder personal brand. Manual publish."
+
+  linkedin_post_en:
+    channel: founder_brand
+    automation_level: manual
+    requires_approval: true
+    risk_level: low
+    avg_word_count_min: 50
+    avg_word_count_max: 300
+    template_variables:
+      - topic
+      - sector_insight
+      - cta
+    use_case: "English LinkedIn post for founder personal brand. Manual publish."
+
+  website_form_message:
+    channel: website_form
+    automation_level: partial
+    requires_approval: true
+    risk_level: medium
+    avg_word_count_min: 60
+    avg_word_count_max: 180
+    template_variables:
+      - company_name
+      - sector
+      - pain_point
+      - offer_name
+      - cta
+    use_case: "Contact form submission body text. Founder reviews; tool submits form."
+
+  whatsapp_optin_reply:
+    channel: whatsapp_optin
+    automation_level: full
+    requires_approval: false
+    risk_level: low
+    avg_word_count_min: 20
+    avg_word_count_max: 80
+    template_variables:
+      - contact_name
+      - offer_name
+      - booking_link
+    use_case: "Auto-reply to an opt-in WhatsApp lead. Full automation allowed."
+
+  whatsapp_qualification:
+    channel: whatsapp_optin
+    automation_level: full
+    requires_approval: false
+    risk_level: low
+    avg_word_count_min: 25
+    avg_word_count_max: 80
+    template_variables:
+      - contact_name
+      - qualification_question_1
+      - qualification_question_2
+    use_case: "Qualification message sequence for opted-in WhatsApp leads."
+
+  call_script:
+    channel: phone_call
+    automation_level: manual
+    requires_approval: true
+    risk_level: medium
+    avg_word_count_min: 50
+    avg_word_count_max: 300
+    template_variables:
+      - contact_name
+      - company_name
+      - sector
+      - pain_point
+      - offer_name
+      - objection_handlers
+    use_case: "Call script for outbound sales call. Human dials; script is reference."
+
+  partner_intro:
+    channel: partnership
+    automation_level: partial
+    requires_approval: true
+    risk_level: low
+    avg_word_count_min: 40
+    avg_word_count_max: 150
+    template_variables:
+      - partner_name
+      - prospect_name
+      - company_name
+      - offer_fit
+    use_case: "Warm introduction message via a mutual partner or referral."
+
+  webinar_invite:
+    channel: webinar
+    automation_level: partial
+    requires_approval: true
+    risk_level: low
+    avg_word_count_min: 40
+    avg_word_count_max: 200
+    template_variables:
+      - contact_name
+      - webinar_topic
+      - date_time
+      - registration_link
+      - value_proposition
+    use_case: "Webinar invitation email or LinkedIn message."
+
+  lead_ad_followup:
+    channel: meta_lead_ads
+    automation_level: full
+    requires_approval: false
+    risk_level: low
+    avg_word_count_min: 20
+    avg_word_count_max: 100
+    template_variables:
+      - lead_name
+      - lead_source
+      - offer_name
+      - next_step
+    use_case: "Auto follow-up to inbound lead from Meta or Google Lead Ads."
+
+  content_post_ar:
+    channel: seo_content
+    automation_level: partial
+    requires_approval: true
+    risk_level: low
+    avg_word_count_min: 80
+    avg_word_count_max: 600
+    template_variables:
+      - topic
+      - sector
+      - pain_point
+      - cta
+    use_case: "Arabic blog post, LinkedIn article, or SEO content asset."
+
+  content_post_en:
+    channel: seo_content
+    automation_level: partial
+    requires_approval: true
+    risk_level: low
+    avg_word_count_min: 80
+    avg_word_count_max: 600
+    template_variables:
+      - topic
+      - sector
+      - pain_point
+      - cta
+    use_case: "English blog post, LinkedIn article, or SEO content asset."
+
+  proposal_seed:
+    channel: email
+    automation_level: manual
+    requires_approval: true
+    risk_level: medium
+    avg_word_count_min: 100
+    avg_word_count_max: 500
+    template_variables:
+      - company_name
+      - contact_name
+      - sector
+      - pain_points_list
+      - proposed_solution
+      - investment_range
+      - timeline
+      - next_steps
+    use_case: "Proposal seed / mini-proposal to be expanded into a full proposal deck."

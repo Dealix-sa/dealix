@@ -1,0 +1,81 @@
+---
+# Routing matrix: sector + country + size → segment assignment.
+# automation_level dict covers all 15 channels.
+
+routing_matrix:
+  - sector: legal
+    language: arabic
+    segment: legal_local_arabic
+  - sector: legal
+    language: english
+    segment: consulting_professional
+  - sector: legal
+    language: bilingual
+    segment: consulting_professional
+  - sector: facilities_management
+    segment: facilities_management
+  - sector: consulting
+    segment: consulting_professional
+  - sector: real_estate
+    segment: real_estate
+  - sector: healthcare
+    segment: healthcare_local
+  - sector: education_training
+    segment: consulting_professional
+  - sector: international_company
+    segment: international_gcc
+  - sector: local_sme
+    segment: local_sme
+  - sector: government_adjacent
+    segment: government_related
+  - sector: technology
+    size: [micro, sme]
+    segment: technology_startup
+  - sector: technology
+    size: [mid_market, enterprise]
+    segment: consulting_professional
+  - sector: manufacturing
+    segment: facilities_management
+  - sector: retail
+    segment: retail_ecommerce
+  - sector: financial_services
+    segment: financial_services
+  - sector: other
+    segment: default
+
+automation_levels:
+  inbound_website: full
+  lead_ad_followup: full
+  whatsapp_optin: full
+  webinar_followup: full
+  newsletter: full
+  google_lead_form: full
+  linkedin_lead_gen: full
+  meta_lead_ads: full
+  email: partial
+  website_form: partial
+  partner_intro: partial
+  content_seo: partial
+  linkedin: manual
+  cold_whatsapp: manual
+  phone_call: manual
+  proposal_submission: manual
+  procurement_portal: manual
+  community_post: manual
+
+channel_descriptions:
+  email: "Direct email outreach — draft prepared, founder reviews and sends."
+  linkedin: "LinkedIn connection note or DM — manual send only per LinkedIn TOS."
+  whatsapp_optin: "Reply to opt-in WhatsApp leads only — auto-reply allowed."
+  website_form: "Contact form submission — draft prepared, partial automation."
+  google_lead_form: "Inbound lead from Google Ads — auto follow-up sequence."
+  linkedin_lead_gen: "Inbound lead from LinkedIn Lead Gen Form — auto follow-up."
+  meta_lead_ads: "Inbound lead from Meta Lead Ads — auto follow-up sequence."
+  seo_content: "SEO blog/content asset — partial automation for publishing."
+  webinar: "Webinar invitation or follow-up — partial automation."
+  phone_call: "Outbound call — call script prepared, human dials."
+  partnership: "Warm intro via partner — draft prepared, partial automation."
+  procurement_portal: "Government procurement portal submission — manual only."
+  community: "Community/forum post or comment — manual only."
+  retargeting: "Paid retargeting ad copy — full automation for ad serving."
+  founder_brand: "Founder personal brand post — manual only."

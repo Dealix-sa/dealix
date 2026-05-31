@@ -1,0 +1,140 @@
+---
+# Platform compliance policies — LinkedIn TOS, WhatsApp rules, PDPL, forbidden actions.
+
+platform_policies:
+
+  linkedin:
+    summary: >
+      LinkedIn Terms of Service prohibit automated connection requests, automated DMs,
+      and the use of third-party automation tools. All LinkedIn outreach must be sent
+      manually by a human. Draft assets are prepared; the founder or team member sends.
+    rules:
+      - No automated connection requests or messages.
+      - No use of automation tools or browser extensions for mass outreach.
+      - No scraping of LinkedIn profiles or connections.
+      - All outreach must come from a real, verified human account.
+    automation_level: manual
+
+  whatsapp:
+    summary: >
+      WhatsApp Business API requires pre-approved message templates for proactive outreach.
+      Only contacts who have explicitly opted in may receive messages outside templates.
+      Cold WhatsApp blasts are prohibited and violate WhatsApp policy.
+    rules:
+      - Proactive outreach requires pre-approved HSM (Highly Structured Message) templates.
+      - Cold outreach to numbers without explicit opt-in is forbidden.
+      - Message blasting (bulk unsolicited messages) is a permanent ban risk.
+      - Opt-in must be documented and verifiable.
+    automation_level_optin: full
+    automation_level_cold: forbidden
+
+  email:
+    summary: >
+      Email outreach must comply with applicable anti-spam laws. Saudi PDPL applies to
+      all personal data processing. CAN-SPAM and GDPR principles apply for international
+      contacts. Opt-out requests must be honored within 10 business days.
+    rules:
+      - Physical/sender address must be included in commercial emails.
+      - Unsubscribe mechanism required.
+      - No deceptive subject lines.
+      - No purchased cold lists without verifiable permission basis.
+    automation_level: partial
+
+  pdpl:
+    summary: >
+      Saudi Personal Data Protection Law (PDPL) governs collection, storage, and use of
+      personal data for Saudi residents. Key requirements: consent or lawful basis,
+      data minimization, retention limits, right to erasure.
+    key_requirements:
+      - Consent or legitimate interest required for processing personal data.
+      - Data minimization — collect only what is necessary.
+      - Retention policy must be defined and enforced.
+      - Data subjects have right to access, correction, and deletion.
+      - Cross-border transfer requires NDMO approval or adequacy basis.
+    sensitivity_default: medium
+
+forbidden_actions:
+  - cold_whatsapp_blast
+  - linkedin_autobot_dm
+  - contact_form_blasting
+  - group_spam
+  - mass_sms_cold
+  - unsolicited_whatsapp_without_template
+  - linkedin_automation_tool
+  - browser_extension_linkedin_spam
+  - purchased_cold_list_without_consent
+  - scraping_for_leads
+  - guaranteed_roi_claims
+  - fake_testimonials
+
+forbidden_text_patterns:
+  - "cold whatsapp blast"
+  - "linkedin automation"
+  - "auto-send"
+  - "send automatically"
+  - "blast campaign"
+  - "mass message"
+  - "إرسال تلقائي بدون موافقة"
+  - "واتساب بارد"
+  - "guaranteed roi"
+  - "guaranteed results"
+  - "نضمن لك نتائج"
+
+channel_risk_levels:
+  email: medium
+  linkedin: high
+  whatsapp_optin: low
+  cold_whatsapp: high
+  website_form: medium
+  phone_call: medium
+  partnership: low
+  webinar: low
+  procurement_portal: low
+  community: medium
+  google_lead_form: low
+  meta_lead_ads: low
+  linkedin_lead_gen: low
+  retargeting: low
+  founder_brand: low
+  seo_content: low
+
+sector_sensitivity:
+  government_adjacent:
+    risk: high
+    notes: "Government-adjacent companies require formal channels only. No cold outreach."
+  healthcare:
+    risk: high
+    notes: "Healthcare data is highly sensitive. Compliance-first tone required. No hype."
+  financial_services:
+    risk: high
+    notes: "Financial services require regulatory-safe messaging. No guaranteed return claims."
+  legal:
+    risk: medium
+    notes: "Legal firms are confidentiality-sensitive. Website form and email preferred."
+  education_training:
+    risk: low
+    notes: "Standard B2B sensitivity. Normal outreach channels apply."
+  consulting:
+    risk: low
+    notes: "Professional tone expected. LinkedIn and email are primary channels."
+  real_estate:
+    risk: medium
+    notes: "WhatsApp opt-in common in GCC real estate. Meta Ads effective for leads."
+  technology:
+    risk: low
+    notes: "English-acceptable. Community and LinkedIn effective."
+  manufacturing:
+    risk: low
+    notes: "Operational tone. Email and phone effective."
+  retail:
+    risk: low
+    notes: "Meta Ads and retargeting most effective. High volume, low-touch."
+  local_sme:
+    risk: low
+    notes: "Arabic-first. Phone and website form effective. WhatsApp opt-in after initial contact."
+  international_company:
+    risk: low
+    notes: "English-first. LinkedIn and email primary."
+  facilities_management:
+    risk: low
+    notes: "ROI-focused. Email and phone effective."

@@ -1,0 +1,151 @@
+---
+# Channel strategy per segment — primary, secondary, avoid, automation levels, timing, tone.
+
+segments:
+
+  legal_local_arabic:
+    description: "Arabic-language law firms and legal service providers in GCC."
+    primary_channels:
+      - website_form
+      - email
+      - linkedin
+    secondary_channels:
+      - webinar
+      - partnership
+    avoid:
+      - cold_whatsapp_blast
+      - mass_linkedin_automation
+      - unsolicited_phone_calls
+    automation_level:
+      website_form: partial
+      email: partial
+      linkedin: manual
+      webinar: partial
+      partnership: partial
+    best_time_to_contact: "Sunday–Tuesday 09:00–11:00 KSA"
+    language: arabic
+    preferred_tone: "formal, relationship-first, no pressure"
+
+  international_gcc:
+    description: "International companies entering or operating in GCC markets."
+    primary_channels:
+      - linkedin
+      - email
+      - linkedin_lead_gen
+    secondary_channels:
+      - webinar
+      - retargeting
+    avoid:
+      - cold_whatsapp_blast
+    automation_level:
+      linkedin: manual
+      email: partial
+      linkedin_lead_gen: full
+      webinar: partial
+      retargeting: full
+    best_time_to_contact: "Monday–Wednesday 10:00–12:00 local"
+    language: english
+    preferred_tone: "direct, ROI-focused, bilingual when possible"
+
+  local_sme:
+    description: "Small and micro businesses in Saudi Arabia with Arabic-speaking owners."
+    primary_channels:
+      - website_form
+      - phone_call
+      - meta_lead_ads
+    secondary_channels:
+      - email
+      - whatsapp_optin
+    avoid: []
+    automation_level:
+      website_form: partial
+      phone_call: manual
+      meta_lead_ads: full
+      email: partial
+      whatsapp_optin: full
+    best_time_to_contact: "Sunday–Thursday 10:00–14:00 KSA"
+    language: arabic
+    preferred_tone: "friendly, simple, immediate value"
+
+  facilities_management:
+    description: "FM and maintenance operations companies across GCC."
+    primary_channels:
+      - email
+      - phone_call
+      - linkedin
+    secondary_channels:
+      - website_form
+      - partnership
+    avoid: []
+    automation_level:
+      email: partial
+      phone_call: manual
+      linkedin: manual
+      website_form: partial
+      partnership: partial
+    best_time_to_contact: "Sunday–Wednesday 08:00–10:00 KSA"
+    language: bilingual
+    preferred_tone: "operational, ROI-focused, concise"
+
+  government_related:
+    description: "Companies working with or adjacent to government entities in GCC."
+    primary_channels:
+      - partnership
+      - email
+      - procurement_portal
+    secondary_channels:
+      - linkedin
+      - webinar
+    avoid:
+      - cold_whatsapp_blast
+      - cold_call
+      - unsolicited_outreach
+    automation_level:
+      partnership: partial
+      email: partial
+      procurement_portal: manual
+      linkedin: manual
+      webinar: partial
+    best_time_to_contact: "Sunday–Monday 09:00–11:00 KSA"
+    language: arabic
+    preferred_tone: "formal, compliance-first, institutional credibility"
+
+  healthcare_local:
+    description: "Hospitals, clinics, and healthcare admin teams in GCC."
+    primary_channels:
+      - website_form
+      - email
+      - webinar
+    secondary_channels:
+      - phone_call
+      - linkedin
+    avoid: []
+    automation_level:
+      website_form: partial
+      email: partial
+      webinar: partial
+      phone_call: manual
+      linkedin: manual
+    best_time_to_contact: "Sunday–Tuesday 08:00–10:00 KSA"
+    language: arabic
+    preferred_tone: "compliance-first, empathetic, no hype"
+
+  consulting_professional:
+    description: "Management consulting, professional services, and education/training firms."
+    primary_channels:
+      - linkedin
+      - email
+      - webinar
+    secondary_channels:
+      - partnership
+      - retargeting
+    avoid: []
+    automation_level:
+      linkedin: manual
+      email: partial
+      webinar: partial
+      partnership: partial
+      retargeting: full
+    best_time_to_contact: "Monday–Wednesday 09:00–11:00 local"
+    language: bilingual
+    preferred_tone: "peer-level, thought-leadership, value-first"
