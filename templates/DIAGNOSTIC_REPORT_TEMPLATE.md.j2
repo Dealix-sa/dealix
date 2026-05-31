@@ -1,0 +1,253 @@
+{# DIAGNOSTIC_REPORT_TEMPLATE.md.j2
+   Dealix Free Diagnostic Report — Lead Generation Tool
+   Variables: company_name, risk_scores (dict), sector, date
+   PDPL Notice: included in Section 5.
+   Governance: requires_founder_review = True before client delivery.
+#}
+# تقرير التشخيص المجاني / Free Diagnostic Report
+
+**الشركة / Company:** {{ company_name }}
+**القطاع / Sector:** {{ sector }}
+**التاريخ / Date:** {{ date }}
+**مُعدّ بواسطة / Prepared by:** Dealix Revenue Intelligence
+
+---
+
+> **ملاحظة الحوكمة / Governance Note:** هذا التقرير يتطلب مراجعة المؤسس قبل التسليم للعميل.
+> This report requires founder review before client delivery.
+
+---
+
+## 1. تشخيص ملخص / Executive Summary
+
+**أبرز 3 مخاطر لـ{{ company_name }} / Top 3 Risks for {{ company_name }}:**
+
+{% set sorted_risks = risk_scores | dictsort(by='value', reverse=True) %}
+{% set top_3 = sorted_risks[:3] %}
+{% for dimension, score in top_3 %}
+{% set risk_level = "عالية / HIGH" if score <= 40 else ("متوسطة / MEDIUM" if score <= 65 else "منخفضة / LOW") %}
+- **[{{ risk_level }}]** {{ dimension }}: {{ score }}/100
+{% endfor %}
+
+**AR — الملخص التنفيذي:**
+
+بناءً على التشخيص الأولي لـ{{ company_name }} في قطاع {{ sector }}، تبرز ثلاثة محاور تستوجب الاهتمام الفوري:
+{% for dimension, score in top_3 %}
+{{ loop.index }}. **{{ dimension }}** — الدرجة الحالية {{ score }}/100، وهو ما يُشير إلى {% if score <= 40 %}مخاطرة عالية تستوجب تدخلاً عاجلاً{% elif score <= 65 %}مجال واضح للتحسين{% else %}أداء مقبول مع إمكانية تعزيز{% endif %}.
+{% endfor %}
+
+**EN — Executive Summary:**
+
+Based on the initial diagnostic of {{ company_name }} in the {{ sector }} sector, three priority areas have been identified:
+{% for dimension, score in top_3 %}
+{{ loop.index }}. **{{ dimension }}** — current score {{ score }}/100, indicating {% if score <= 40 %}high risk requiring immediate action{% elif score <= 65 %}a clear improvement opportunity{% else %}acceptable performance with room to strengthen{% endif %}.
+{% endfor %}
+
+---
+
+## 2. مصفوفة المخاطر / Risk Matrix
+
+يقيس هذا القسم أداء {{ company_name }} عبر 8 أبعاد رئيسية.
+This section measures {{ company_name }}'s performance across 8 key dimensions.
+
+| البُعد / Dimension | الدرجة / Score | مستوى المخاطرة / Risk Level | ملاحظة / Note |
+|-------------------|---------------|----------------------------|---------------|
+{% for dimension, score in risk_scores.items() %}
+{% set risk_level = "عالية / HIGH" if score <= 40 else ("متوسطة / MEDIUM" if score <= 65 else "منخفضة / LOW") %}
+{% set risk_icon = "🔴" if score <= 40 else ("🟡" if score <= 65 else "🟢") %}
+| {{ dimension }} | {{ score }}/100 | {{ risk_level }} | {% if score <= 40 %}يحتاج تدخلاً فورياً / Needs immediate action{% elif score <= 65 %}فرصة تحسين / Improvement opportunity{% else %}يُعزَّز باستمرار / Maintain and strengthen{% endif %} |
+{% endfor %}
+
+### البُعد الثامن — الامتثال الضريبي ZATCA / ZATCA Tax Compliance
+
+{% set zatca_score = risk_scores.get('ZATCA', risk_scores.get('zatca', 70)) %}
+{% if zatca_score <= 40 %}
+**[تحذير عالي / HIGH ALERT]** — درجة ZATCA: {{ zatca_score }}/100
+الامتثال لمتطلبات ZATCA (الفاتورة الإلكترونية، ضريبة القيمة المضافة) يحتاج مراجعة فورية.
+ZATCA compliance (e-invoicing, VAT) needs immediate review.
+{% elif zatca_score <= 65 %}
+**[متابعة / WATCH]** — درجة ZATCA: {{ zatca_score }}/100
+هناك فجوات في الامتثال يمكن معالجتها قبل الفحص الرسمي.
+Compliance gaps exist that can be addressed before a formal audit.
+{% else %}
+**[مقبول / ACCEPTABLE]** — درجة ZATCA: {{ zatca_score }}/100
+الوضع مقبول — يُنصح بالمراجعة الدورية الوقائية.
+Status acceptable — periodic preventive review recommended.
+{% endif %}
+
+### حماية البيانات الشخصية PDPL / Personal Data Protection Law
+
+{% set pdpl_score = risk_scores.get('PDPL', risk_scores.get('pdpl', 70)) %}
+{% if pdpl_score <= 40 %}
+**[تحذير عالي / HIGH ALERT]** — درجة PDPL: {{ pdpl_score }}/100
+مستوى الامتثال لنظام حماية البيانات الشخصية منخفض ويُشكّل خطراً قانونياً.
+Personal data protection compliance is low and poses a legal risk.
+{% elif pdpl_score <= 65 %}
+**[متابعة / WATCH]** — درجة PDPL: {{ pdpl_score }}/100
+توجد ثغرات في سياسات الخصوصية أو إجراءات معالجة البيانات.
+Gaps exist in privacy policies or data processing procedures.
+{% else %}
+**[مقبول / ACCEPTABLE]** — درجة PDPL: {{ pdpl_score }}/100
+مستوى الامتثال مقبول — يُنصح بمراجعة دورية.
+Compliance level acceptable — periodic review recommended.
+{% endif %}
+
+---
+
+## 3. أبرز الفرص الفورية / Quick Wins
+
+هذه الإجراءات يمكن تنفيذها **الآن** بدون تكلفة إضافية.
+These actions can be taken **right now** at no additional cost.
+
+{% set sorted_all = risk_scores | dictsort(by='value') %}
+{% set bottom_3 = sorted_all[:3] %}
+
+{% for dimension, score in bottom_3 %}
+### الفرصة {{ loop.index }} / Quick Win {{ loop.index }}: {{ dimension }}
+
+**AR — الإجراء الفوري:**
+{% if dimension in ['Data Quality', 'جودة البيانات'] or 'data' in dimension.lower() or 'بيانات' in dimension %}
+- راجع قائمة العملاء المحتملين وأزل التكرارات يدوياً.
+- تأكد من أن كل سجل يحتوي على: الاسم، القطاع، المدينة، وطريقة التواصل.
+- فرّق بين العملاء النشطين والخاملين (أكثر من 90 يوم بدون تفاعل).
+{% elif dimension in ['Revenue Tracking', 'تتبع الإيراد'] or 'revenue' in dimension.lower() or 'إيراد' in dimension %}
+- أنشئ جدول بسيط يتتبع: الصفقة، القيمة، المرحلة، التاريخ المتوقع.
+- سجّل أسباب خسارة الصفقات — هذه البيانات ذهب.
+- حدّد متوسط قيمة الصفقة لكل قناة من قنوات العملاء المحتملين.
+{% elif dimension in ['Operations', 'العمليات'] or 'oper' in dimension.lower() or 'عمليات' in dimension %}
+- وثّق العملية الأكثر تكراراً في يومك في 5 خطوات.
+- حدّد الخطوة التي تستغرق أطول وقت — هذه نقطة التحسين الأولى.
+- أنشئ قائمة تحقق (checklist) بسيطة لهذه العملية.
+{% elif dimension in ['Customer Health', 'صحة العملاء'] or 'customer' in dimension.lower() or 'عملاء' in dimension %}
+- تواصل مع 3 عملاء حاليين هذا الأسبوع للتحقق من مستوى رضاهم.
+- سجّل آخر تاريخ تواصل مع كل عميل — الصمت لأكثر من 30 يوماً يُنبئ بالانسحاب.
+- اسأل عميلاً راضياً عن شهادة مكتوبة.
+{% else %}
+- حدّد شخصاً مسؤولاً عن هذا البُعد في المنشأة.
+- ضع هدفاً واحداً قابلاً للقياس لهذا الشهر في هذا البُعد.
+- راجع الوضع الحالي مقارنة بمعيار القطاع المعمول به.
+{% endif %}
+
+**EN — Immediate Action:**
+{% if dimension in ['Data Quality', 'جودة البيانات'] or 'data' in dimension.lower() or 'بيانات' in dimension %}
+- Manually review your prospect list and remove duplicates.
+- Ensure each record includes: name, sector, city, and contact method.
+- Separate active from dormant leads (over 90 days without interaction).
+{% elif dimension in ['Revenue Tracking', 'تتبع الإيراد'] or 'revenue' in dimension.lower() or 'إيراد' in dimension %}
+- Create a simple spreadsheet tracking: deal, value, stage, expected close date.
+- Log reasons for lost deals — this data is gold.
+- Identify average deal value per lead channel.
+{% elif dimension in ['Operations', 'العمليات'] or 'oper' in dimension.lower() or 'عمليات' in dimension %}
+- Document your most repeated process in 5 steps.
+- Identify the step that takes the longest — that is your first improvement point.
+- Create a simple checklist for that process.
+{% elif dimension in ['Customer Health', 'صحة العملاء'] or 'customer' in dimension.lower() or 'عملاء' in dimension %}
+- Reach out to 3 current clients this week to check satisfaction.
+- Log the last contact date for each client — silence for 30+ days signals churn risk.
+- Ask a satisfied client for a written testimonial.
+{% else %}
+- Assign one person as owner of this dimension in your organisation.
+- Set one measurable goal for this month in this dimension.
+- Review current state against the applicable sector benchmark.
+{% endif %}
+
+{% endfor %}
+
+---
+
+## 4. خارطة طريق 90 يوم / 90-Day Roadmap
+
+خطة مُرحَّلة لتحسين الأبعاد التي تحتاج تطوير.
+A phased improvement plan for the dimensions that need development.
+
+### المرحلة الأولى — أول 30 يوماً: الأساس / Phase 1 — First 30 Days: Foundation
+
+**هدف المرحلة:** وضع الأساسيات وتوثيق الوضع الراهن.
+**Phase goal:** Establish foundations and document the current state.
+
+**AR — الإجراءات:**
+{% for dimension, score in sorted_all[:3] %}
+- **{{ dimension }}** ({{ score }}/100): {% if score <= 40 %}تدخل عاجل — خصص يومين لمراجعة وإصلاح هذا البُعد فوراً.{% else %}ضع خطة تحسين 30 يوماً لهذا البُعد.{% endif %}
+{% endfor %}
+
+**EN — Actions:**
+{% for dimension, score in sorted_all[:3] %}
+- **{{ dimension }}** ({{ score }}/100): {% if score <= 40 %}Urgent intervention — dedicate two days to review and fix this dimension immediately.{% else %}Create a 30-day improvement plan for this dimension.{% endif %}
+{% endfor %}
+
+### المرحلة الثانية — الأيام 31-60: البناء / Phase 2 — Days 31-60: Build
+
+**هدف المرحلة:** تطبيق الإجراءات التصحيحية وقياس التقدم.
+**Phase goal:** Implement corrective actions and measure progress.
+
+**AR — الإجراءات:**
+{% for dimension, score in sorted_all[3:6] %}
+- **{{ dimension }}** ({{ score }}/100): راجع التقدم، عدّل الخطة بناءً على البيانات الجديدة.
+{% endfor %}
+- راجع درجة جودة البيانات — الهدف الوصول إلى >= 70.
+- وثّق كل تحسين قابل للقياس في سجل القيمة.
+
+**EN — Actions:**
+{% for dimension, score in sorted_all[3:6] %}
+- **{{ dimension }}** ({{ score }}/100): Review progress, adjust plan based on new data.
+{% endfor %}
+- Reassess data quality score — target >= 70.
+- Document every measurable improvement in a value log.
+
+### المرحلة الثالثة — الأيام 61-90: التوطيد / Phase 3 — Days 61-90: Consolidate
+
+**هدف المرحلة:** ترسيخ المكتسبات وبناء أنظمة مستدامة.
+**Phase goal:** Consolidate gains and build sustainable systems.
+
+**AR — الإجراءات:**
+{% for dimension, score in sorted_all[6:] %}
+- **{{ dimension }}** ({{ score }}/100): حافظ على الأداء الجيد وطوّر عمليات مؤتمتة.
+{% endfor %}
+- أجرِ تشخيصاً نهائياً للأبعاد الثمانية لقياس التحسّن.
+- قيّم الجاهزية للخطوة التالية من النمو.
+
+**EN — Actions:**
+{% for dimension, score in sorted_all[6:] %}
+- **{{ dimension }}** ({{ score }}/100): Maintain good performance and develop automated processes.
+{% endfor %}
+- Conduct a final diagnostic across all 8 dimensions to measure improvement.
+- Assess readiness for the next growth phase.
+
+---
+
+## 5. الخطوة التالية / Next Step
+
+### Sprint ذكاء الإيراد — 499 ريال / Revenue Intelligence Sprint — 499 SAR
+
+لقد رأيت التشخيص. الآن حان وقت التحسين الموثَّق.
+You have seen the diagnosis. Now it is time for documented improvement.
+
+**ما تحصل عليه في 7 أيام / What you get in 7 days:**
+
+- تدقيق كامل لمصادر بياناتك ودرجة جودة موثَّقة
+- تصنيف أعلى 10 حسابات بمعيار ICP مع توصيات عملية
+- حزمة مسوّدات (رسائل + إيميل + مقترح) جاهزة للمراجعة
+- Proof Pack كامل يوثّق ما تم إنجازه
+- تسجيل أصل رأسمالي قابل لإعادة الاستخدام
+
+**Full Audit of your data sources with documented DQ score**
+**Top 10 account ranking with practical recommendations**
+**Draft pack (messages + email + proposal) ready for review**
+**Complete Proof Pack documenting all work done**
+**Registered capital asset for future reuse**
+
+---
+
+> **ملاحظة حماية البيانات الشخصية / Personal Data Protection Notice:**
+>
+> هذا التشخيص يعتمد على البيانات التي أدخلتها. Dealix لا تحتفظ ببياناتك الشخصية بعد إرسال التقرير إلا بموافقتك الصريحة.
+>
+> This diagnostic is based on the data you provided. Dealix does not retain your personal data after the report is sent, except with your explicit consent.
+>
+> للاستفسار عن بياناتك أو طلب الحذف / To inquire about your data or request deletion:
+> privacy@dealix.com
+
+---
+
+*تقرير صادر من Dealix | جميع الأرقام والتقييمات مبنية على البيانات المُدخَلة ولا تمثّل ضماناً لأي نتيجة.*
+*Report issued by Dealix | All scores and assessments are based on provided data and do not represent a guarantee of any outcome.*

@@ -422,6 +422,11 @@ def create_app() -> FastAPI:
     app.include_router(payments_webhook_router.router)
     app.include_router(founder_alerts_router.router)
 
+    # Wave 17 — Saudi sector intelligence catalogue + match API
+    from api.routers import sector_intelligence as sector_intelligence_router
+
+    app.include_router(sector_intelligence_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
