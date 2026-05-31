@@ -534,7 +534,7 @@ _FOLLOW_UP_CADENCE: list[dict[str, Any]] = [
         "day": 7,
         "step": "diagnostic_reminder",
         "channel": "email",
-        "approval_required": False,
+        "approval_required": True,
         "consent_required": False,
         "template_en": (
             "Subject: Free diagnostic — still open this week\n\n"
@@ -554,7 +554,7 @@ _FOLLOW_UP_CADENCE: list[dict[str, Any]] = [
     {
         "day": 14,
         "step": "whatsapp_consent_followup",
-        "channel": "whatsapp_WITH_CONSENT_ONLY",
+        "channel": "whatsapp",
         "approval_required": True,
         "consent_required": True,
         "template_en": (
@@ -599,74 +599,114 @@ _FOLLOW_UP_CADENCE: list[dict[str, Any]] = [
 
 _CLOSING_CHECKLIST: list[dict[str, Any]] = [
     {
+        "item_id": "CLOSE-001",
         "item": 1,
-        "id": "proof_pack_complete",
-        "gate_en": "Proof Pack generated and reviewed with client — all 14 sections populated.",
-        "gate_ar": "حزمة الإثبات تم إنشاؤها ومراجعتها مع العميل — جميع الـ 14 قسماً مكتملة.",
+        "id": "icp_score_confirmed",
+        "item_ar": "تأكيد أن درجة ICP لا تقل عن 55",
+        "item_en": "ICP score >= 55 confirmed",
+        "gate_en": "ICP score >= 55 confirmed before issuing proposal.",
+        "gate_ar": "تأكيد أن درجة ICP لا تقل عن 55 قبل إصدار العرض.",
+        "critical": True,
         "required": True,
     },
     {
+        "item_id": "CLOSE-002",
         "item": 2,
         "id": "decision_maker_confirmed",
+        "item_ar": "تحديد صانع القرار وتأكيد صلاحياته",
+        "item_en": "Decision maker identified and authority confirmed",
         "gate_en": "Confirmed that the contract signatory is the same person who attended the proposal.",
         "gate_ar": "تأكيد أن موقّع العقد هو نفس الشخص الذي حضر العرض.",
+        "critical": True,
         "required": True,
     },
     {
+        "item_id": "CLOSE-003",
         "item": 3,
         "id": "budget_confirmed",
+        "item_ar": "تأكيد وجود ميزانية مخصصة أو موافقة مبدئية",
+        "item_en": "Budget confirmed or preliminary approval obtained",
         "gate_en": "Budget approved and procurement channel identified (direct / purchase order).",
         "gate_ar": "الميزانية معتمدة وتم تحديد قناة الشراء (مباشر / أمر شراء).",
+        "critical": True,
         "required": True,
     },
     {
+        "item_id": "CLOSE-004",
         "item": 4,
-        "id": "tier_match_verified",
-        "gate_en": "Recommended tier matches client ICP score and urgency assessment.",
-        "gate_ar": "المستوى المقترح يتطابق مع درجة ملف العميل المثالي وتقييم الإلحاح.",
-        "required": True,
+        "id": "zatca_pdpl_context_shared",
+        "item_ar": "مشاركة سياق ZATCA أو PDPL ذي الصلة مع العميل",
+        "item_en": "Relevant ZATCA / PDPL context shared with prospect",
+        "gate_en": "ZATCA scope documented and PDPL data inventory reviewed with client.",
+        "gate_ar": "نطاق زاتكا موثق وجرد بيانات PDPL تمت مراجعته مع العميل.",
+        "critical": False,
+        "required": False,
     },
     {
+        "item_id": "CLOSE-005",
         "item": 5,
-        "id": "zatca_scope_agreed",
-        "gate_en": "ZATCA scope documented: which invoicing flows will be covered.",
-        "gate_ar": "نطاق زاتكا موثق: ما تدفقات الفوترة التي ستغطى.",
+        "id": "proof_pack_complete",
+        "item_ar": "حزمة الإثبات (Proof Pack) جاهزة ومراجعة",
+        "item_en": "Proof Pack ready and reviewed",
+        "gate_en": "Proof Pack generated and reviewed with client — all 14 sections populated.",
+        "gate_ar": "حزمة الإثبات تم إنشاؤها ومراجعتها مع العميل — جميع الـ 14 قسماً مكتملة.",
+        "critical": True,
         "required": True,
     },
     {
+        "item_id": "CLOSE-006",
         "item": 6,
-        "id": "pdpl_data_inventory",
-        "gate_en": "Data inventory for PDPL reviewed — sensitive data assets noted in contract scope.",
-        "gate_ar": "جرد البيانات لـ PDPL تمت مراجعته — الأصول الحساسة موثقة في نطاق العقد.",
+        "id": "proposal_founder_approved",
+        "item_ar": "العرض التجاري راجعه المؤسس قبل الإرسال (APPROVAL_FIRST)",
+        "item_en": "Proposal reviewed by founder before sending (APPROVAL_FIRST)",
+        "gate_en": "Proposal reviewed by founder before sending — no exceptions.",
+        "gate_ar": "العرض مراجعه المؤسس قبل الإرسال — لا استثناءات.",
+        "critical": True,
         "required": True,
     },
     {
+        "item_id": "CLOSE-007",
         "item": 7,
-        "id": "governance_layer_briefed",
-        "gate_en": "Client team briefed on approval workflow — understands that AI actions require human sign-off.",
-        "gate_ar": "فريق العميل تمت إحاطته بسير عمل الموافقة — يفهم أن إجراءات الذكاء الاصطناعي تتطلب موافقة بشرية.",
-        "required": True,
-    },
-    {
-        "item": 8,
-        "id": "onboarding_date_set",
+        "id": "timeline_agreed",
+        "item_ar": "الجدول الزمني للتنفيذ متفق عليه مع العميل",
+        "item_en": "Implementation timeline agreed with prospect",
         "gate_en": "Onboarding start date confirmed and added to contract.",
         "gate_ar": "تاريخ بدء التعريف مؤكد ومضاف إلى العقد.",
-        "required": True,
-    },
-    {
-        "item": 9,
-        "id": "no_guaranteed_claims",
-        "gate_en": "Verified that no guaranteed-outcome language appears in any proposal or contract draft.",
-        "gate_ar": "تأكيد أن لا لغة نتائج مضمونة تظهر في أي عرض أو مسودة عقد.",
-        "required": True,
-    },
-    {
-        "item": 10,
-        "id": "whatsapp_consent_verified",
-        "gate_en": "If WhatsApp was used in the sales process, opt-in consent record is on file.",
-        "gate_ar": "إذا تم استخدام واتساب في عملية المبيعات، سجل موافقة الاشتراك موجود في الملف.",
+        "critical": False,
         "required": False,
+    },
+    {
+        "item_id": "CLOSE-008",
+        "item": 8,
+        "id": "payment_method_confirmed",
+        "item_ar": "طريقة الدفع مؤكدة (تحويل بنكي أو بطاقة أو فاتورة)",
+        "item_en": "Payment method confirmed (bank transfer, card, or invoice)",
+        "gate_en": "Payment method confirmed before contract is issued.",
+        "gate_ar": "طريقة الدفع مؤكدة قبل إصدار العقد.",
+        "critical": True,
+        "required": True,
+    },
+    {
+        "item_id": "CLOSE-009",
+        "item": 9,
+        "id": "contract_draft_ready",
+        "item_ar": "مسودة العقد جاهزة للمراجعة القانونية",
+        "item_en": "Contract draft ready for legal review",
+        "gate_en": "Contract draft reviewed for guaranteed-outcome language — none present.",
+        "gate_ar": "مسودة العقد مراجعة للتأكد من غياب أي لغة نتائج مضمونة.",
+        "critical": False,
+        "required": False,
+    },
+    {
+        "item_id": "CLOSE-010",
+        "item": 10,
+        "id": "no_outstanding_objections",
+        "item_ar": "لا توجد اعتراضات مفتوحة غير معالجة",
+        "item_en": "No outstanding unaddressed objections",
+        "gate_en": "All objections logged and addressed — no open blockers.",
+        "gate_ar": "جميع الاعتراضات موثقة ومعالجة — لا عوائق مفتوحة.",
+        "critical": True,
+        "required": True,
     },
 ]
 
@@ -786,6 +826,17 @@ class TierRecommendationRequest(BaseModel):
     annual_revenue_sar: float = Field(..., ge=0.0, description="Annual revenue in SAR")
 
 
+# Spec-canonical alias — imported by tests and external callers.
+class RecommendTierBody(BaseModel):
+    """Pydantic model matching the 90-day commercial plan spec."""
+
+    icp_score: int = Field(default=50, ge=0, le=100)
+    zatca_urgency: bool = False
+    pdpl_urgency: bool = False
+    company_size: int = Field(default=50, ge=1)
+    annual_revenue_sar: float = Field(default=5_000_000, ge=0)
+
+
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
@@ -836,7 +887,7 @@ async def objections(
 
 
 @router.post("/recommend-tier")
-async def recommend_tier_endpoint(body: TierRecommendationRequest) -> dict[str, Any]:
+async def recommend_tier_endpoint(body: RecommendTierBody) -> dict[str, Any]:
     """Recommend the appropriate service tier based on ICP score and urgency signals."""
     recommendation = recommend_tier(
         icp_score=body.icp_score,
@@ -876,11 +927,13 @@ async def follow_up_cadence() -> dict[str, Any]:
 @router.get("/closing-checklist")
 async def closing_checklist() -> dict[str, Any]:
     """Pre-close checklist: 10 gates that must be verified before sending the contract."""
+    critical_count = sum(1 for item in _CLOSING_CHECKLIST if item["critical"])
     required_count = sum(1 for item in _CLOSING_CHECKLIST if item["required"])
     return {
         "governance_decision": _GOV,
         "generated_at": _NOW.isoformat(),
         "total_items": len(_CLOSING_CHECKLIST),
+        "critical_items": critical_count,
         "required_items": required_count,
         "optional_items": len(_CLOSING_CHECKLIST) - required_count,
         "instruction_en": (
