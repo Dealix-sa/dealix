@@ -26,8 +26,8 @@ def main() -> int:
     packets = data.get("packets") or {}
 
     print("== Dealix agent work packets ==")
-    print(f"  guide: docs/ops/AGENT_DAILY_WORK_PACKETS_AR.md")
-    print(f"  playbook: docs/ops/FOUNDER_AGENT_PLAYBOOK_AR.md")
+    print("  guide: docs/ops/AGENT_DAILY_WORK_PACKETS_AR.md")
+    print("  playbook: docs/ops/FOUNDER_AGENT_PLAYBOOK_AR.md")
     print("")
 
     for packet_id, spec in packets.items():

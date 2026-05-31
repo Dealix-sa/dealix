@@ -64,7 +64,7 @@ def matrix() -> dict:
 
 def test_matrix_loads(matrix):
     assert isinstance(matrix, dict)
-    assert "services" in matrix and matrix["services"]
+    assert matrix.get("services")
 
 
 def test_total_services_is_32(matrix):
@@ -78,7 +78,7 @@ def test_status_distribution(matrix):
     8 quality gates set true and a tests_required: file that exists
     on disk — verify_service_readiness_matrix.py enforces this.
     """
-    counts = {s: 0 for s in ALLOWED_STATUSES}
+    counts = dict.fromkeys(ALLOWED_STATUSES, 0)
     for svc in matrix["services"]:
         counts[svc["status"]] += 1
     assert counts["live"] == 8, "all 8 in-development services LIVE after Phase K"

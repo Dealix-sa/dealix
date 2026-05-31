@@ -24,9 +24,8 @@ import argparse
 import csv
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -75,7 +74,7 @@ def _update_case_study(
         "<ELIGIBLE>": "yes" if retainer_eligible else "no",
         "<ENGAGEMENT_ID>": engagement_id,
         "<CAPITAL_COUNT>": str(capital_assets_count),
-        "<GENERATED_AT>": datetime.now(timezone.utc).isoformat(),
+        "<GENERATED_AT>": datetime.now(UTC).isoformat(),
     }
     for placeholder, value in substitutions.items():
         text = text.replace(placeholder, value)

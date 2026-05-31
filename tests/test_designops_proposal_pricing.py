@@ -74,7 +74,7 @@ def test_proposal_and_pricing_pass_safety_gate_if_available() -> None:
     """Defensive: skip if Agent B's safety_gate isn't shipped yet."""
     try:
         from auto_client_acquisition.designops import safety_gate  # type: ignore
-    except Exception:  # noqa: BLE001
+    except Exception:
         pytest.skip("safety_gate not yet shipped — skipping integration check")
 
     proposal = generate_proposal_page(

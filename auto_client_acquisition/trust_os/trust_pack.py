@@ -8,7 +8,7 @@ does, what it refuses to do, and how every AI run is governed.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import Any
 
 ENTERPRISE_TRUST_SECTIONS: tuple[str, ...] = (
@@ -164,7 +164,7 @@ def assemble_trust_pack(*, customer_handle: str = "(prospect)") -> TrustPack:
     section_titles = {key: title for title, key, _ in _SECTION_SPEC}
     return TrustPack(
         customer_handle=customer_handle or "(prospect)",
-        generated_at=datetime.now(timezone.utc).isoformat(),
+        generated_at=datetime.now(UTC).isoformat(),
         sections=sections,
         section_titles=section_titles,
         governance_decision="allow_with_review",

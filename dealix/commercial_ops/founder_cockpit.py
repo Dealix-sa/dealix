@@ -12,13 +12,13 @@ from dealix.commercial_ops.autonomous_ops import (
 )
 from dealix.commercial_ops.founder_full_autopilot import build_autopilot_snapshot
 from dealix.commercial_ops.founder_max_ops_backlog import summarize_backlog
-from dealix.commercial_ops.paths import REPO_ROOT
 from dealix.commercial_ops.founder_strongest_ops import build_strongest_ops_snapshot
 from dealix.commercial_ops.full_ops_autopilot import (
     RESEARCH_ALIGNMENT_AR,
     build_full_autonomous_ops_snapshot,
     run_morning_core,
 )
+from dealix.commercial_ops.paths import REPO_ROOT
 
 # HITL spectrum — external GTM consensus 2026 (not legal advice).
 HITL_RESEARCH_2026_AR: list[dict[str, str]] = [

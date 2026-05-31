@@ -11,8 +11,8 @@ from __future__ import annotations
 
 import re
 import sys
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 import yaml
 
@@ -218,7 +218,7 @@ def validate(data: dict) -> list[str]:
 
 
 def counts(data: dict) -> dict[str, int]:
-    out = {s: 0 for s in ALLOWED_STATUSES}
+    out = dict.fromkeys(ALLOWED_STATUSES, 0)
     out["total"] = 0
     for svc in data.get("services", []) or []:
         s = svc.get("status")

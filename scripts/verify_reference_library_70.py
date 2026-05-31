@@ -17,7 +17,6 @@ from pathlib import Path
 
 import yaml
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 YAML_PATH = REPO_ROOT / "docs" / "v10" / "REFERENCE_LIBRARY_70.yaml"
 
@@ -148,7 +147,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         data = load_yaml()
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         msg = f"YAML load failed: {exc}"
         if args.json:
             print(json.dumps({"ok": False, "error": msg}, indent=2))

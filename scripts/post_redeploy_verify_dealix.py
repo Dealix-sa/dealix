@@ -15,7 +15,10 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.production_layers import build_production_layers, format_layers_report  # noqa: E402
+from dealix.commercial_ops.production_layers import (  # noqa: E402
+    build_production_layers,
+    format_layers_report,
+)
 from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
 
 ensure_stdout_utf8()
@@ -29,7 +32,7 @@ def probe(url: str, *, method: str = "GET", timeout: float = 12.0) -> dict[str, 
             return {"ok": resp.getcode() == 200, "status": resp.getcode(), "body": body[:500]}
     except urllib.error.HTTPError as exc:
         return {"ok": False, "status": exc.code, "body": ""}
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         return {"ok": False, "status": None, "error": str(exc)}
 
 
@@ -85,7 +88,7 @@ def main() -> int:
                 routes = founder_layers.get("trust_routes_registered") or {}
                 if not routes.get("version"):
                     failures.append("running container missing /version route")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             checks["founder_production_layers"] = {"ok": False, "error": str(exc)}
     else:
         checks["founder_production_layers"] = {"skipped": True, "reason": "no DEALIX_ADMIN_API_KEY"}
