@@ -442,12 +442,22 @@ def create_app() -> FastAPI:
 
     app.include_router(zatca_readiness_router.router)
 
+    # 90-day commercial plan — PDPL Readiness Assessment (open lead-gen tool)
+    from api.routers import pdpl_readiness as pdpl_readiness_router
+
+    app.include_router(pdpl_readiness_router.router)
+
     # 90-day commercial plan — Lead Intelligence + Growth Intelligence
     from api.routers import lead_intelligence as lead_intelligence_router
     from api.routers import growth_intelligence as growth_intelligence_router
 
     app.include_router(lead_intelligence_router.router)
     app.include_router(growth_intelligence_router.router)
+
+    # Wave 17 — Health Intelligence (portfolio, trends, alerts, benchmarks)
+    from api.routers import health_intelligence as health_intelligence_router
+
+    app.include_router(health_intelligence_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
