@@ -8,6 +8,7 @@ from httpx import ASGITransport, AsyncClient
 
 from auto_client_acquisition.self_growth_os import proof_snippet_engine
 
+
 _GOOD_EVENT_INTERNAL = {
     "event_type": "pilot_delivered",
     "service_id": "growth_starter",

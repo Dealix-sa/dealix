@@ -26,6 +26,7 @@ from auto_client_acquisition.diagnostic_workflow import (
     recommend_service,
 )
 
+
 router = APIRouter(
     prefix="/api/v1/diagnostic-workflow",
     tags=["diagnostic-workflow"],

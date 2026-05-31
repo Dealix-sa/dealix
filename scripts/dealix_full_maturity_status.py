@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 import sys
 from pathlib import Path
-
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from dealix.commercial_ops.founder_master_strategic_os import run_founder_master_strategic_os
 from dealix.commercial_ops.phase_01_close_path import build_phase_01_close_path
 from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
-
 
 def main():
     ensure_stdout_utf8()

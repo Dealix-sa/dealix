@@ -37,6 +37,7 @@ from auto_client_acquisition.self_growth_os.proof_snippet_engine import (  # noq
     render_pack,
 )
 
+
 DEFAULT_EVENTS_DIR = REPO_ROOT / "docs" / "proof-events"
 
 

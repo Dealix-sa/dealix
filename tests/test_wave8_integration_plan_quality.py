@@ -11,7 +11,6 @@ SCRIPT_PATH = REPO_ROOT / "scripts" / "dealix_integration_plan_quality_check.py"
 import importlib.util
 import sys
 
-
 def _load_module():
     spec = importlib.util.spec_from_file_location("plan_quality", SCRIPT_PATH)
     mod = importlib.util.module_from_spec(spec)

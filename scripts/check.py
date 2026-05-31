@@ -26,7 +26,7 @@ else:
 # 2. .env.local
 checks_total += 1
 env_file = Path(__file__).parent.parent / ".env.local"
-print("[2] .env.local: ", end="")
+print(f"[2] .env.local: ", end="")
 if env_file.exists():
     content = env_file.read_text(encoding="utf-8")
     has_key = "OPENROUTER_API_KEY=sk-or-v1-" in content
@@ -88,7 +88,6 @@ else:
 checks_total += 1
 print("[7] Git encoding: ", end="")
 import subprocess
-
 try:
     qp = subprocess.run(["git", "config", "--global", "core.quotepath"], capture_output=True, text=True).stdout.strip()
     enc = subprocess.run(["git", "config", "--global", "i18n.logOutputEncoding"], capture_output=True, text=True).stdout.strip()
@@ -104,8 +103,8 @@ except:
 checks_total += 1
 print("[8] OpenRouter: ", end="")
 try:
-    import json
     from urllib.request import Request, urlopen
+    import json
     api_key = os.getenv("OPENROUTER_API_KEY", "")
     if not api_key or len(api_key) < 20:
         # Try loading from .env.local

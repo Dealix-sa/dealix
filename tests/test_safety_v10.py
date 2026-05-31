@@ -18,6 +18,7 @@ from auto_client_acquisition.safety_v10 import (
 )
 from auto_client_acquisition.safety_v10.report import render_report
 
+
 # ════════════════════ EvalCase pack ════════════════════
 
 

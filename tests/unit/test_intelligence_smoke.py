@@ -7,14 +7,11 @@ import os
 import pytest
 
 from auto_client_acquisition.intelligence.next_action import (
-    compute_priority,
-    decide,
+    compute_priority, decide,
 )
 from auto_client_acquisition.intelligence.quota_guard import QuotaGuard
 from auto_client_acquisition.intelligence.signals import (
-    BuyingSignal,
-    detect_signals,
-    signals_to_intent_lift,
+    BuyingSignal, detect_signals, signals_to_intent_lift,
 )
 
 

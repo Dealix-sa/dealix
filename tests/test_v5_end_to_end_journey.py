@@ -21,8 +21,8 @@ from pathlib import Path
 import pytest
 
 from auto_client_acquisition.agent_governance import (
-    FORBIDDEN_TOOLS,
     AutonomyLevel,
+    FORBIDDEN_TOOLS,
     ToolCategory,
     ToolPermission,
     evaluate_action,
@@ -47,6 +47,7 @@ from auto_client_acquisition.role_command_os import (
     RoleName,
     build_role_brief,
 )
+
 
 CUSTOMER_HANDLE = "ACME-PILOT-TEST"
 

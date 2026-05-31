@@ -15,6 +15,7 @@ from auto_client_acquisition.company_brain_v6.service_matcher import (
     CUSTOMER_FACING_BUNDLES,
 )
 
+
 _FORBIDDEN = ("cold_whatsapp", "linkedin_automation", "scrape_web")
 
 

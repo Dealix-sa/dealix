@@ -32,7 +32,8 @@ import os
 import re
 import sys
 import uuid
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
+
 
 SLUG_RE = re.compile(r"^[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 VALID_PLANS = {"pilot", "starter", "growth", "scale"}
@@ -103,7 +104,7 @@ async def _create(args: argparse.Namespace) -> int:
             return 0
 
         tenant_id = f"tn_{uuid.uuid4().hex[:16]}"
-        now = datetime.now(UTC)
+        now = datetime.now(timezone.utc)
         tenant = TenantRecord(
             id=tenant_id,
             name=args.name,
@@ -126,11 +127,11 @@ async def _create(args: argparse.Namespace) -> int:
         session.add(tenant)
         await session.commit()
         print(f"OK: created tenant id={tenant_id} slug={args.handle} plan={args.plan}")
-        print("Next steps (per docs/ops/CUSTOMER_ONBOARDING_DAY_BY_DAY.md Day 1):")
-        print("  1. Provision WhatsApp Business number → configure webhook routing")
-        print("  2. Email SPF/DKIM DNS records to customer (15-min task)")
-        print("  3. Pre-seed 20 prospects from customer CSV import")
-        print("  4. Schedule Discovery call within 24h")
+        print(f"Next steps (per docs/ops/CUSTOMER_ONBOARDING_DAY_BY_DAY.md Day 1):")
+        print(f"  1. Provision WhatsApp Business number → configure webhook routing")
+        print(f"  2. Email SPF/DKIM DNS records to customer (15-min task)")
+        print(f"  3. Pre-seed 20 prospects from customer CSV import")
+        print(f"  4. Schedule Discovery call within 24h")
         return 0
 
 

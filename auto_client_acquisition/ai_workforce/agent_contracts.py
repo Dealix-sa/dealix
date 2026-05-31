@@ -8,8 +8,7 @@ No LLM, no external HTTP, no live send.
 """
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any
+from typing import Any, Callable
 
 from auto_client_acquisition.ai_workforce.agent_registry import get_agent
 from auto_client_acquisition.ai_workforce.schemas import (
@@ -330,7 +329,7 @@ def run_agent(
 
     try:
         output = fn(goal, prior_outputs) or {}
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         return _blocked(spec, f"{agent_id}_failed: {type(exc).__name__}")
 
     if not isinstance(output, dict):

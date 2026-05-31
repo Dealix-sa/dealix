@@ -31,9 +31,7 @@ def test_source_passport_from_v2_maps_to_institutional_shape() -> None:
 
 
 def test_governance_hint_pii_external_path() -> None:
-    from auto_client_acquisition.data_os.source_passport import (
-        governance_decision_hints_for_passport_gate,
-    )
+    from auto_client_acquisition.data_os.source_passport import governance_decision_hints_for_passport_gate
 
     ok, key = governance_decision_hints_for_passport_gate(
         False,

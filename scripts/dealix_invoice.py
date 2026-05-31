@@ -39,8 +39,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # run in a sanitized subprocess) degrades to a stub that raises only on
 # actual use — the ``--dry-run`` path never instantiates a client.
 try:
-    from dealix.payments.moyasar import MoyasarClient
-except Exception:
+    from dealix.payments.moyasar import MoyasarClient  # noqa: E402, F401
+except Exception:  # noqa: BLE001 — degrade gracefully for dry-run-only envs
     MoyasarClient = None  # type: ignore[assignment]
 
 
@@ -173,14 +173,14 @@ def main() -> int:
     if args.dry_run:
         amount_halalas = int(round(args.amount_sar * 100))
         mode = _resolve_mode(args.allow_live)
-        print("DRY_RUN=true")
+        print(f"DRY_RUN=true")
         print(f"AMOUNT_SAR={args.amount_sar:g}")
         print(f"AMOUNT_HALALAH={amount_halalas}")
         print(f"MODE={mode}")
         print(f"PAYMENT_METHOD=moyasar_{mode}|bank_transfer|other_manual")
         print(f"DESCRIPTION={args.description}")
         print(f"CUSTOMER_EMAIL={args.email}")
-        print("REFUND_NOTE_REQUIRED=true")
+        print(f"REFUND_NOTE_REQUIRED=true")
         print(f"REFUND_NOTE={_REFUND_NOTE}")
         print("MANUAL_FALLBACK_STEPS:")
         for step in _MANUAL_FALLBACK_STEPS:
@@ -197,7 +197,7 @@ def main() -> int:
         invoice = asyncio.run(_create(args))
     except SystemExit:
         raise
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         print(f"FAIL: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 1
 
@@ -222,7 +222,7 @@ def main() -> int:
     print(f"PAYMENT_METHOD=moyasar_{mode}|bank_transfer|other_manual")
     print(f"DESCRIPTION={args.description}")
     print(f"CUSTOMER_EMAIL={args.email}")
-    print("REFUND_NOTE_REQUIRED=true")
+    print(f"REFUND_NOTE_REQUIRED=true")
     print(f"REFUND_NOTE={_REFUND_NOTE}")
     print()
     print("Send the PAYMENT_URL to the customer manually (WhatsApp / email).")

@@ -16,6 +16,7 @@ from auto_client_acquisition.llm_gateway_v10.schemas import (
 )
 from auto_client_acquisition.llm_gateway_v10.token_estimator import estimate_tokens
 
+
 # Order matters — first hit wins. Keeps the mapping purpose-bound.
 _TIER_KEYWORDS: tuple[tuple[ModelTier, tuple[str, ...]], ...] = (
     (
@@ -76,7 +77,7 @@ def estimate_cost(req: RoutingPolicy) -> CostEstimate:
             stop_when_good_enough=True,
             human_review_when_budget_exceeded=True,
         )
-    except Exception:
+    except Exception:  # noqa: BLE001 - never crash routing
         return CostEstimate(
             tier=ModelTier.local_no_model,
             estimated_input_tokens=0,
@@ -117,7 +118,7 @@ def route(req: RoutingPolicy) -> RoutingDecision:
             reason_ar=_REASON_AR.get(est.tier, "تم اختيار الفئة الافتراضية."),
             reason_en=_REASON_EN.get(est.tier, "Default tier selected."),
         )
-    except Exception:
+    except Exception:  # noqa: BLE001 - degrade to local
         est = CostEstimate(
             tier=ModelTier.local_no_model,
             estimated_input_tokens=0,

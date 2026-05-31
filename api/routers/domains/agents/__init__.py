@@ -9,6 +9,7 @@ from fastapi import APIRouter
 
 from api.routers import (
     agent_governance,
+    agent_observability as agent_observability_router,
     agents,
     ai_workforce,
     automation,
@@ -19,13 +20,8 @@ from api.routers import (
     llm_gateway_v10,
     observability_v10,
     safety_v10,
-    workflow_os_v10,
-)
-from api.routers import (
-    agent_observability as agent_observability_router,
-)
-from api.routers import (
     tool_guardrail_gateway as tool_guardrail_gateway_router,
+    workflow_os_v10,
 )
 
 _ROUTERS = [

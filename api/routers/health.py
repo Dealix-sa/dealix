@@ -65,8 +65,9 @@ async def health_deep() -> dict[str, object]:
 
         dsn = os.getenv("DATABASE_URL") or os.getenv("DATABASE_DSN")
         if dsn:
-            with psycopg.connect(dsn, connect_timeout=3) as conn, conn.cursor() as cur:
-                cur.execute("SELECT 1")
+            with psycopg.connect(dsn, connect_timeout=3) as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT 1")
             checks["postgres"] = {"status": "ok", "ms": round((time.perf_counter() - t0) * 1000, 1)}
         else:
             checks["postgres"] = {"status": "skip", "reason": "no DATABASE_URL"}

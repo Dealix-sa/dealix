@@ -20,7 +20,7 @@ REQUIRED_FILES = [
     "dealix/config/railway_services.json",
     "frontend/Dockerfile",
     "frontend/railway.json",
-    "frontend/next.config.ts",
+    "frontend/next.config.js",
     "frontend/src/app/healthz/route.ts",
     "apps/web/Dockerfile",
     "apps/web/railway.json",
@@ -74,14 +74,9 @@ def verify_service_matrix() -> None:
         fail("dealix/config/railway_services.json must list API, frontend, and apps/web services")
 
     names = {svc.get("name") for svc in services if isinstance(svc, dict)}
-    required = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
-    if not required.issubset(names):
-        missing = sorted(required - names)
-        fail(f"railway service names missing core services: {missing} not in {sorted(names)}")
-
-    # Core public-facing services require full validation.
-    # Background workers/watchdogs only need a name + dockerfile.
-    core_services = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
+    expected = {"dealix-api", "dealix-frontend", "dealix-apps-web"}
+    if names != expected:
+        fail(f"railway service names mismatch: expected {sorted(expected)}, got {sorted(names)}")
 
     for svc in services:
         if not isinstance(svc, dict):
@@ -93,18 +88,14 @@ def verify_service_matrix() -> None:
         healthcheck = str(svc.get("healthcheckPath", ""))
         required_env = svc.get("requiredEnv")
 
-        if not name or not dockerfile:
-            fail(f"{name or '<unnamed>'}: missing name or dockerfilePath")
-
-        if name in core_services:
-            if not railway_config:
-                fail(f"{name}: missing railwayConfig")
-            if healthcheck != "/healthz":
-                fail(f"{name}: healthcheckPath must be /healthz")
-            if not isinstance(required_env, list) or not required_env:
-                fail(f"{name}: requiredEnv must be a non-empty list")
-            read(railway_config)
-            read(f"{root_dir.rstrip('/') + '/' if root_dir not in ('', '.') else ''}{dockerfile}")
+        if not name or not railway_config or not dockerfile:
+            fail(f"{name or '<unnamed>'}: missing name, railwayConfig, or dockerfilePath")
+        if healthcheck != "/healthz":
+            fail(f"{name}: healthcheckPath must be /healthz")
+        if not isinstance(required_env, list) or not required_env:
+            fail(f"{name}: requiredEnv must be a non-empty list")
+        read(railway_config)
+        read(f"{root_dir.rstrip('/') + '/' if root_dir not in ('', '.') else ''}{dockerfile}")
 
 
 def main() -> None:
@@ -116,7 +107,7 @@ def main() -> None:
     verify_railway_json("frontend/railway.json", allow_predeploy=False)
     verify_railway_json("apps/web/railway.json", allow_predeploy=False)
 
-    for path in ("frontend/next.config.ts", "apps/web/next.config.js"):
+    for path in ("frontend/next.config.js", "apps/web/next.config.js"):
         content = read(path)
         if "output: 'standalone'" not in content and 'output: "standalone"' not in content:
             fail(f"{path} must enable standalone output")

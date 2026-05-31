@@ -34,7 +34,7 @@ import json
 import re
 import secrets
 import sys
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -128,7 +128,7 @@ def _ask_str(prompt: str, *, interactive: bool, default: str = "", validator=Non
         if not ans and default:
             return default
         if validator and not validator(ans):
-            print("  invalid format, try again")
+            print(f"  invalid format, try again")
             continue
         return ans
 
@@ -167,7 +167,7 @@ def run_wizard(
         "customer_handle": customer_handle,
         "company": company,
         "sector": sector,
-        "wizard_run_at": datetime.now(UTC).isoformat(),
+        "wizard_run_at": datetime.now(timezone.utc).isoformat(),
         "dpa_signed": True,
         "channels": {},
     }
@@ -310,7 +310,7 @@ def write_outputs(collected: dict, output_dir: Path) -> dict[str, Path]:
         f"**Customer handle:** `{handle}`  ",
         f"**Sector:** {collected['sector']}  ",
         f"**Generated:** {collected['wizard_run_at']}  ",
-        "**DPA signed:** ✅",
+        f"**DPA signed:** ✅",
         "",
         "هذا الملف يلخّص كيف تربط بياناتك مع Dealix.",
         "كل قناة لها guide مفصّل في `docs/integrations/`.",
@@ -350,8 +350,8 @@ def write_outputs(collected: dict, output_dir: Path) -> dict[str, Path]:
         "",
         "## للتواصل",
         "",
-        "- WhatsApp المؤسس: مذكور في خطاب الترحيب",
-        "- Customer Portal: عبر الرابط في `customer_portal_token.txt`",
+        f"- WhatsApp المؤسس: مذكور في خطاب الترحيب",
+        f"- Customer Portal: عبر الرابط في `customer_portal_token.txt`",
         f"- Decision queue: `https://dealix.me/decisions.html?org={handle}&access=<token>`",
         "",
         "## Hard rules (لا تتغيّر)",

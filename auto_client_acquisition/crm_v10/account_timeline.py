@@ -1,15 +1,11 @@
 """Build a chronological, PII-free event timeline for an account."""
 from __future__ import annotations
 
-from collections.abc import Iterable
 from datetime import datetime
-from typing import Any
+from typing import Any, Iterable
 
 from auto_client_acquisition.crm_v10.schemas import (
-    Deal,
-    Lead,
-    ProofEventRef,
-    ServiceSession,
+    Deal, Lead, ProofEventRef, ServiceSession,
 )
 
 
