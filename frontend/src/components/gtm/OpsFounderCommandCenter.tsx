@@ -130,6 +130,83 @@ export function OpsFounderCommandCenter() {
       </p>
       {err && <p className="text-destructive text-sm">{err}</p>}
 
+      {/* Quick stats + alert center shortcut */}
+      <Card className="p-4 border-[var(--dealix-deep-green)]/20 bg-[var(--dealix-deep-green)]/3">
+        <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+          <h2 className="font-semibold text-[var(--dealix-deep-green)]">
+            {isAr ? "اليوم في Dealix" : "Today at Dealix"}
+          </h2>
+          <Link
+            href={`/${locale}/ops/alerts`}
+            className="text-xs font-medium px-3 py-1.5 rounded-full bg-orange-100 text-orange-800 border border-orange-300 hover:bg-orange-200 transition-colors"
+          >
+            {isAr ? "مركز التنبيهات" : "Alert Center"}
+            {(dailyPack?.kpi_commercial?.pending_count ?? 0) > 0 && (
+              <span className="ms-1.5 bg-orange-600 text-white text-xs rounded-full px-1.5">
+                {dailyPack?.kpi_commercial?.pending_count}
+              </span>
+            )}
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          <div className="rounded-lg bg-background border p-3 text-center">
+            <p className="text-xl font-bold">{Object.values(stages).reduce((s, v) => s + v, 0)}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{isAr ? "عملاء نشطون" : "Active clients"}</p>
+          </div>
+          <div className="rounded-lg bg-background border p-3 text-center">
+            <p className="text-xl font-bold text-orange-600">{dailyPack?.kpi_commercial?.pending_count ?? 0}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{isAr ? "تنبيهات معلّقة" : "Pending alerts"}</p>
+          </div>
+          <div className="rounded-lg bg-background border p-3 text-center">
+            <p className="text-xl font-bold">{stages.qualified_A ?? 0}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{isAr ? "مؤهّل A" : "Qualified A"}</p>
+          </div>
+          <div className="rounded-lg bg-background border p-3 text-center">
+            <p className="text-xl font-bold">{mktStats.calendar_total ?? 0}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">{isAr ? "منشورات هذا الأسبوع" : "Posts this week"}</p>
+          </div>
+        </div>
+        <div className="space-y-2">
+          {[
+            {
+              icon: "1",
+              ar: "راجع التنبيهات المعلّقة وأعطِ موافقتك",
+              en: "Review pending alerts and give approval",
+              href: `/${locale}/ops/alerts`,
+            },
+            {
+              icon: "2",
+              ar: "تحقق من حالة العملاء النشطين في بوابة العميل",
+              en: "Check active client status in customer portal",
+              href: `/${locale}/customer-portal`,
+            },
+            {
+              icon: "3",
+              ar: "راجع Proof Pack الجديد قبل إرساله للعميل",
+              en: "Review new Proof Pack before sending to client",
+              href: `/${locale}/proof-pack`,
+            },
+            {
+              icon: "4",
+              ar: "تأكد من امتثال الفواتير لـ ZATCA Phase 2",
+              en: "Confirm invoices comply with ZATCA Phase 2",
+              href: `/${locale}/zatca-readiness`,
+            },
+          ].map((item) => (
+            <Link
+              key={item.icon}
+              href={item.href}
+              className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/60 transition-colors text-sm"
+            >
+              <span className="w-6 h-6 rounded-full bg-[var(--dealix-deep-green)]/10 text-[var(--dealix-deep-green)] text-xs font-bold flex items-center justify-center flex-shrink-0">
+                {item.icon}
+              </span>
+              <span>{isAr ? item.ar : item.en}</span>
+            </Link>
+          ))}
+        </div>
+      </Card>
+
       <OpsFullAutonomousOpsCard data={fullOps} cockpit={cockpit} onRefresh={load} />
 
       <OpsComprehensivePlanCard

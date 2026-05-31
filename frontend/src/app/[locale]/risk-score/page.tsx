@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PublicFunnelLayout } from "@/components/gtm/PublicFunnelLayout";
-import { RiskScoreFunnel } from "@/components/gtm/RiskScoreFunnel";
+import { DiagnosticFunnel } from "@/components/gtm/DiagnosticFunnel";
 import { buildFunnelMetadata } from "@/lib/gtmMetadata";
 
 type PageProps = { params: Promise<{ locale: string }> };
@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default function RiskScorePage() {
   return (
     <PublicFunnelLayout>
-      <RiskScoreFunnel />
+      <DiagnosticFunnel />
     </PublicFunnelLayout>
   );
 }
