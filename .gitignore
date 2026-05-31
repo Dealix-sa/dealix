@@ -213,6 +213,8 @@ feature_requests.jsonl
 .langfuse-local/
 # Wave 8 signal synthesis output
 signals_output.json
+# Railway CLI local config
+.railway/
 
 # ─────────────────────────────────────────────────────────────
 # Wave 11 — First 3 Paid Pilots Closure — runtime state (NEVER commit)

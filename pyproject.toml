@@ -110,7 +110,7 @@ Documentation = "https://github.com/VoXc2/dealix/tree/main/docs"
 Issues = "https://github.com/VoXc2/dealix/issues"
 
 [tool.setuptools.packages.find]
-include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "dealix*"]
+include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "dealix*", "platform_core*"]
 exclude = ["tests*", "docs*", "scripts*"]
 
 [tool.ruff]
