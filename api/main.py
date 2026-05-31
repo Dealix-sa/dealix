@@ -513,6 +513,11 @@ def create_app() -> FastAPI:
 
     app.include_router(proof_pack_ops_router.router)
 
+    # Churn Prevention Operations — risk scoring, intervention logging
+    from api.routers import churn_prevention_ops as churn_prevention_ops_router
+
+    app.include_router(churn_prevention_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
