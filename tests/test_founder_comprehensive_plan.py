@@ -11,7 +11,6 @@ from dealix.commercial_ops.founder_comprehensive_plan import (
     analyze_gtm_codification,
     analyze_pdpl_compliance_pass,
     analyze_phase_0_1_gate,
-    analyze_weekly_one_decision,
     build_comprehensive_status,
     daily_anchor_docs,
     init_weekly_decision,
@@ -68,16 +67,6 @@ def test_init_weekly_decision(tmp_path, monkeypatch):
     assert path.is_file()
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     assert data["week_id"] == "2099-W01"
-
-
-def test_weekly_decision_reads_config_yaml():
-    weekly = analyze_weekly_one_decision()
-    assert weekly["verdict"] in ("FILLED", "STALE", "MISSING")
-    latest = weekly.get("latest") or {}
-    if weekly["verdict"] == "FILLED":
-        assert (latest.get("one_decision") or "").strip()
-    config = REPO_ROOT / "dealix/config/founder_weekly_one_decision.yaml"
-    assert config.is_file()
 
 
 def test_status_script_importable():

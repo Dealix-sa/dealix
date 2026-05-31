@@ -23,8 +23,9 @@ import argparse
 import base64
 import os
 import sys
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
+
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -41,10 +42,10 @@ def _env_snapshot() -> dict[str, str]:
 
 def _check_imports() -> bool:
     try:
-        import integrations.zatca
+        import integrations.zatca  # noqa: F401
         print("✓ integrations.zatca importable")
         return True
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"❌ integrations.zatca import failed: {e}")
         return False
 
@@ -76,7 +77,7 @@ def _generate_sample_invoice() -> dict | None:
         if isinstance(invoice, dict):
             return invoice
         return {"raw": str(invoice)[:200]}
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"⚠ sample invoice builder errored: {e} — non-fatal for preflight")
         return None
 
@@ -88,7 +89,7 @@ def _verify_qr_tlv(qr_b64: str) -> bool:
     """
     try:
         raw = base64.b64decode(qr_b64)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"❌ QR base64 decode failed: {e}")
         return False
     i = 0
@@ -161,7 +162,7 @@ def main() -> int:
         print("  1. Set ZATCA_SANDBOX=false in Railway (only when ready)")
         print("  2. Set ZATCA_CSID + ZATCA_SECRET from your Fatoorah portal")
         print("  3. Generate one production-mode test invoice → submit → verify clear")
-        print(f"\nCompleted at {datetime.now(UTC).isoformat()}")
+        print(f"\nCompleted at {datetime.now(timezone.utc).isoformat()}")
         return 0
     else:
         print("⚠ ZATCA preflight had warnings — review above before going live")

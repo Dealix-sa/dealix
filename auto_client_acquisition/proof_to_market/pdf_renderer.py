@@ -51,7 +51,7 @@ def _try_weasyprint(md: str, title: str) -> bytes | None:
     except ImportError:
         log.debug("pdf_renderer: weasyprint not installed")
         return None
-    except Exception:
+    except Exception:  # noqa: BLE001
         log.exception("pdf_renderer_weasyprint_failed")
         return None
 
@@ -66,8 +66,8 @@ def _try_pandoc(md: str, title: str) -> bytes | None:
             fp_in.write(md)
             md_path = Path(fp_in.name)
         out_path = md_path.with_suffix(".pdf")
-        proc = subprocess.run(  # noqa: S603 — pandoc args from controlled templates
-            [  # noqa: S607 — PATH-resolved trusted tool
+        proc = subprocess.run(
+            [
                 "pandoc",
                 str(md_path),
                 "-o",
@@ -88,10 +88,10 @@ def _try_pandoc(md: str, title: str) -> bytes | None:
         try:
             md_path.unlink(missing_ok=True)
             out_path.unlink(missing_ok=True)
-        except Exception:
+        except Exception:  # noqa: BLE001
             pass
         return data
-    except Exception:
+    except Exception:  # noqa: BLE001
         log.exception("pdf_renderer_pandoc_exception")
         return None
 
@@ -115,7 +115,7 @@ def is_pdf_available() -> dict[str, bool]:
     """Diagnostic helper used by /api/v1/health and tests."""
     weasy = False
     try:
-        import weasyprint
+        import weasyprint  # noqa: F401
         weasy = True
     except ImportError:
         pass

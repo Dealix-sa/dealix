@@ -54,7 +54,7 @@ def _backend() -> str:
         from core.config.settings import get_settings
 
         return str(getattr(get_settings(), "operational_stream_backend", "off") or "off").lower().strip()
-    except Exception:
+    except Exception:  # noqa: BLE001
         return "off"
 
 
@@ -75,7 +75,7 @@ def _get_engine() -> Engine | None:
                 from core.config.settings import get_settings
 
                 raw = getattr(get_settings(), "database_url", "") or ""
-            except Exception:
+            except Exception:  # noqa: BLE001
                 raw = ""
         if not raw:
             return None
@@ -83,7 +83,7 @@ def _get_engine() -> Engine | None:
         try:
             eng = create_engine(url, future=True, pool_pre_ping=True)
             eng.connect().close()
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             _LOG.warning("operational_stream_mirror_engine_failed:%s", type(exc).__name__)
             return None
         _engine = eng
@@ -99,7 +99,7 @@ def reset_operational_stream_mirror_for_test() -> None:
         if _engine is not None:
             try:
                 _StreamBase.metadata.drop_all(_engine)
-            except Exception:
+            except Exception:  # noqa: BLE001
                 pass
         _engine = None
         _session_factory = None
@@ -132,7 +132,7 @@ def mirror_append(
         with _lock, _session_factory() as session:
             session.merge(row)
             session.commit()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         _LOG.debug("operational_stream_mirror_append_failed:%s", type(exc).__name__)
 
 
@@ -165,7 +165,7 @@ def list_mirrored(
 
 
 __all__ = [
-    "list_mirrored",
     "mirror_append",
+    "list_mirrored",
     "reset_operational_stream_mirror_for_test",
 ]

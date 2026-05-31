@@ -17,6 +17,7 @@ from auto_client_acquisition.executive_reporting import (
 )
 from auto_client_acquisition.self_growth_os import service_activation_matrix
 
+
 _FORBIDDEN_TOKENS = ("نضمن", "guaranteed", "blast", "scrape")
 
 

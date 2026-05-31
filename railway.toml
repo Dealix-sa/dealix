@@ -3,10 +3,11 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"
-preDeployCommand = "if [ -x /app/scripts/railway_predeploy.sh ]; then sh /app/scripts/railway_predeploy.sh; else echo 'RAILWAY_PREDEPLOY: no predeploy script'; fi"
+# Intentionally NO startCommand — Dockerfile CMD is /app/start.sh ($PORT).
+# Clear Railway UI Start Command (do not use ./start.sh).
+preDeployCommand = "sh /app/scripts/railway_predeploy.sh"
 healthcheckPath = "/healthz"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 10
+restartPolicyMaxRetries = 3
 numReplicas = 1

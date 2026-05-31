@@ -129,27 +129,6 @@ async def checkpoint(run_id: str) -> dict:
     return {"checkpoint": save_checkpoint(run)}
 
 
-@router.get("/service-session/steps")
-async def service_session_steps() -> dict:
-    """Growth starter 7-day steps mapped to governed action catalog (draft-only)."""
-    _ensure_canonical_definitions_registered()
-    return {"workflow_id": GROWTH_STARTER_7_DAY.workflow_id, "steps": list_workflow_steps()}
-
-
-class ServiceSessionExecuteBody(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    step: str = Field(..., min_length=1)
-    customer_id: str = ""
-    lead_id: str = ""
-
-
-@router.post("/service-session/execute-step")
-async def service_session_execute_step(body: ServiceSessionExecuteBody) -> dict:
-    _ensure_canonical_definitions_registered()
-    return execute_step(body.step, customer_id=body.customer_id, lead_id=body.lead_id)
-
-
 @router.post("/{run_id}/restore")
 async def restore(run_id: str, payload: dict = Body(...)) -> dict:
     if not isinstance(payload, dict):

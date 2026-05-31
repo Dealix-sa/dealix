@@ -173,7 +173,7 @@ def strongest_plan_snapshot(*, top_n: int = 10) -> dict[str, Any]:
             for t in completion_blob.get("tasks") or []
             if isinstance(t, dict) and t.get("id")
         }
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         by_id = {}
         completion_blob = {"error": str(exc)}
 
@@ -198,7 +198,7 @@ def strongest_plan_snapshot(*, top_n: int = 10) -> dict[str, Any]:
     bridge: dict[str, Any] | None = None
     try:
         bridge = _build_full_ops_bridge(top_n=top_n)
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 — API must not 500 on optional bridge
         bridge = {"error": str(exc)}
 
     return {

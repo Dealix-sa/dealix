@@ -244,7 +244,7 @@ def run_all() -> tuple[list[dict[str, Any]], int]:
     for name, fn in CHECKS:
         try:
             ok, detail = fn()
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             ok, detail = False, f"check raised {type(exc).__name__}: {exc}"
         if not ok:
             failed += 1

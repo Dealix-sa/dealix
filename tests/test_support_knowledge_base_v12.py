@@ -37,7 +37,7 @@ def test_kb_files_are_bilingual_or_clearly_labeled() -> None:
     English content. AR-only / EN-only files explicitly don't need
     to mix.
     """
-    arabic_chars = ["ا", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "ه", "و", "ي"]
+    arabic_chars = "ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي".split()
     for name in _REQUIRED_FILES:
         content = (KB_DIR / name).read_text(encoding="utf-8")
         if name.endswith("_ar_en.md"):

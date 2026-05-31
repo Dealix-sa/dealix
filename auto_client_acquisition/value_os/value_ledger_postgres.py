@@ -8,7 +8,7 @@ in-memory SQLite engine; production passes ``database_url`` derived from
 from __future__ import annotations
 
 import threading
-from datetime import UTC, datetime
+from datetime import datetime
 from typing import Any
 
 from sqlalchemy import DateTime, Float, String, Text, create_engine, delete, select
@@ -104,15 +104,15 @@ class PostgresValueLedgerStore:
         if since_days is not None:
             from datetime import timedelta, timezone
 
-            cutoff = datetime.now(UTC) - timedelta(days=since_days)
+            cutoff = datetime.now(timezone.utc) - timedelta(days=since_days)
             filtered: list[dict[str, Any]] = []
             for ev in out:
                 try:
                     ts = datetime.fromisoformat(str(ev["occurred_at"]).replace("Z", "+00:00"))
-                except Exception:
+                except Exception:  # noqa: BLE001
                     continue
                 if ts.tzinfo is None:
-                    ts = ts.replace(tzinfo=UTC)
+                    ts = ts.replace(tzinfo=timezone.utc)
                 if ts >= cutoff:
                     filtered.append(ev)
             out = filtered
@@ -144,7 +144,7 @@ def _settings_sync_url() -> str | None:
 
         u = getattr(get_settings(), "database_url", "") or ""
         return sync_sqlalchemy_url(u) if u else None
-    except Exception:
+    except Exception:  # noqa: BLE001
         return None
 
 
@@ -173,7 +173,7 @@ def reset_postgres_value_ledger_singleton_for_test() -> None:
         if _store_singleton is not None:
             try:
                 _ValueLedgerBase.metadata.drop_all(_store_singleton._engine)
-            except Exception:
+            except Exception:  # noqa: BLE001
                 pass
         _engine_singleton = None
         _store_singleton = None

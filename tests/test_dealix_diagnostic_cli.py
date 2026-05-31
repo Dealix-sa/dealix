@@ -14,6 +14,7 @@ from pathlib import Path
 
 import pytest
 
+
 SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
 SCRIPT = SCRIPTS_DIR / "dealix_diagnostic.py"
 

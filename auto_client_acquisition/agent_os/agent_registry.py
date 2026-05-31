@@ -59,7 +59,7 @@ def _load_if_needed() -> None:
             try:
                 data = json.loads(line)
                 card = AgentCard(**data)
-            except Exception:
+            except Exception:  # noqa: BLE001
                 continue
             _REGISTRY[card.agent_id] = card
 
