@@ -30,7 +30,7 @@ COPY requirements.txt* ./
 
 # Install deps and aggressively prune caches/metadata to shrink image
 RUN pip install --upgrade pip setuptools wheel \
-    && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir --prefer-binary -r requirements.txt \
     && find /opt/venv -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true \
     && find /opt/venv -type d -name tests -exec rm -rf {} + 2>/dev/null || true \
     && find /opt/venv -type f -name "*.pyc" -delete 2>/dev/null || true
