@@ -493,6 +493,26 @@ def create_app() -> FastAPI:
 
     app.include_router(subscription_ops_router.router)
 
+    # Client Health Ops — 6-dimension scoring
+    from api.routers import client_health_ops as client_health_ops_router
+
+    app.include_router(client_health_ops_router.router)
+
+    # Invoice Operations — ZATCA-native lifecycle
+    from api.routers import invoice_ops as invoice_ops_router
+
+    app.include_router(invoice_ops_router.router)
+
+    # Team Operations — roster, hiring plan, capacity
+    from api.routers import team_ops as team_ops_router
+
+    app.include_router(team_ops_router.router)
+
+    # Proof Pack Operations — draft→review→approved→delivered
+    from api.routers import proof_pack_ops as proof_pack_ops_router
+
+    app.include_router(proof_pack_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
