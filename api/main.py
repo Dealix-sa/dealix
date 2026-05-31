@@ -522,6 +522,10 @@ def create_app() -> FastAPI:
     from api.routers import revenue_intelligence_ops as revenue_intelligence_ops_router
     app.include_router(revenue_intelligence_ops_router.router)
 
+    # Ops Metrics — unified KPI aggregator (snapshot, pulse, benchmarks, weekly-summary)
+    from api.routers import ops_metrics_ops as ops_metrics_ops_router
+    app.include_router(ops_metrics_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
