@@ -526,6 +526,14 @@ def create_app() -> FastAPI:
     from api.routers import ops_metrics_ops as ops_metrics_ops_router
     app.include_router(ops_metrics_ops_router.router)
 
+    # Notification Operations — multi-type notifications with read/create/delete
+    from api.routers import notification_ops as notification_ops_router
+    app.include_router(notification_ops_router.router)
+
+    # Analytics Operations — feature adoption, content, sprint performance, funnel
+    from api.routers import analytics_ops as analytics_ops_router
+    app.include_router(analytics_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
