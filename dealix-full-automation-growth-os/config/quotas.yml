@@ -1,0 +1,67 @@
+# Daily execution quotas per channel
+daily_quotas:
+  raw_leads_scan: 5000
+  qualified_companies: 1000
+  company_briefs: 500
+  channel_packs: 300
+  total_assets_generated: 3000
+
+  email_controlled_auto:
+    per_inbox: 150
+    max_inboxes: 7
+    total: 500
+
+  whatsapp_opt_in:
+    limit: inbound_only_no_cap
+    note: Only respond to opt-in leads, no outbound cap
+
+  linkedin_manual_assisted:
+    daily_actions: 100
+    connection_notes: 30
+    dm_drafts: 50
+    comments: 50
+
+  website_forms_assisted:
+    daily: 80
+    requires_approval: true
+
+  partner_outreach:
+    new_partners: 50
+    intro_drafts: 50
+    founder_ready: 20
+
+  calls:
+    daily: 50
+    script_ready: 100
+
+  ad_lead_followup:
+    rate: 100_percent_of_inbound
+
+  content_posts:
+    arabic_posts: 2
+    english_posts: 1
+    comments: 10
+    video_scripts: 1
+
+inboxes:
+  - address: sami@dealix.ai
+    purpose: Tier A founder-led outreach
+    daily_limit: 150
+  - address: hello@dealix.ai
+    purpose: General inbound
+    daily_limit: 100
+  - address: gcc@dealix.ai
+    purpose: International GCC outreach
+    daily_limit: 150
+  - address: legal@dealix.ai
+    purpose: Legal and professional services
+    daily_limit: 80
+  - address: ops@dealix.ai
+    purpose: Maintenance, FM, contracting
+    daily_limit: 100
+  - address: partners@dealix.ai
+    purpose: Partnership and referral network
+    daily_limit: 100
+  - address: events@dealix.ai
+    purpose: Webinars and workshops
+    daily_limit: 80

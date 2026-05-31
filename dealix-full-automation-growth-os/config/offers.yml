@@ -1,0 +1,57 @@
+# Dealix 5-rung offer ladder
+offers:
+  rung_1_free_diagnostic:
+    name_ar: تشخيص مجاني
+    name_en: Free AI Workflow Diagnostic
+    price: 0
+    currency: SAR
+    delivery: 30_minutes
+    output: workflow_opportunity_map
+    cta_ar: احصل على تشخيصك المجاني
+    cta_en: Get Free Diagnostic
+    target: all_sectors
+
+  rung_2_sprint:
+    name_ar: سبرينت الذكاء الاصطناعي — 7 أيام
+    name_en: 7-Day Revenue Intelligence Sprint
+    price: 499
+    currency: SAR
+    delivery: 7_days
+    output: [dq_score, account_scoring, proposal_pack]
+    cta_ar: ابدأ السبرينت
+    cta_en: Start Sprint
+    target: qualified_leads
+
+  rung_3_data_pack:
+    name_ar: حزمة البيانات الذكية
+    name_en: AI Data Intelligence Pack
+    price: 1500
+    currency: SAR
+    delivery: 14_days
+    output: [enriched_database, sector_report, buyer_map]
+    cta_ar: اطلب حزمة البيانات
+    cta_en: Get Data Pack
+    target: growth_companies
+
+  rung_4_managed_ops:
+    name_ar: تشغيل مُدار بالذكاء الاصطناعي
+    name_en: AI Managed Operations
+    price_range: [2999, 4999]
+    currency: SAR
+    billing: monthly_retainer
+    output: [custom_ai_workflows, ongoing_ops, monthly_report]
+    cta_ar: ابدأ التشغيل المُدار
+    cta_en: Start Managed Ops
+    target: established_companies
+
+  rung_5_custom_ai:
+    name_ar: مشروع ذكاء اصطناعي مخصص
+    name_en: Custom AI Project
+    price_range: [5000, 25000]
+    currency: SAR
+    billing: project_based
+    output: custom_ai_system
+    cta_ar: اطلب مشروعك
+    cta_en: Request Custom Project
+    target: enterprise_and_high_value
+    requires_founder_approval: true
