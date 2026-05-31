@@ -488,6 +488,11 @@ def create_app() -> FastAPI:
 
     app.include_router(referral_intelligence_router.router)
 
+    # Subscription Operations — lifecycle management (pause/cancel/reactivate)
+    from api.routers import subscription_ops as subscription_ops_router
+
+    app.include_router(subscription_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
