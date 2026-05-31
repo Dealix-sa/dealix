@@ -2,8 +2,13 @@
 
 from __future__ import annotations
 
-from auto_client_acquisition.responsible_ai_os.ai_inventory import AIInventoryRow, ai_inventory_row_complete
-from auto_client_acquisition.responsible_ai_os.compliance_to_product import product_artifact_for_need
+from auto_client_acquisition.responsible_ai_os.ai_inventory import (
+    AIInventoryRow,
+    ai_inventory_row_complete,
+)
+from auto_client_acquisition.responsible_ai_os.compliance_to_product import (
+    product_artifact_for_need,
+)
 from auto_client_acquisition.responsible_ai_os.literacy_modules import (
     LITERACY_MODULE_IDS,
     literacy_modules_complete,
@@ -13,7 +18,10 @@ from auto_client_acquisition.responsible_ai_os.responsible_ai_score import (
     responsible_ai_deployment_band,
     responsible_ai_score,
 )
-from auto_client_acquisition.responsible_ai_os.trust_pack import TRUST_PACK_SECTIONS, trust_pack_sections_complete
+from auto_client_acquisition.responsible_ai_os.trust_pack import (
+    TRUST_PACK_SECTIONS,
+    trust_pack_sections_complete,
+)
 from auto_client_acquisition.responsible_ai_os.use_case_risk_classifier import (
     RiskLevel,
     UseCaseCard,

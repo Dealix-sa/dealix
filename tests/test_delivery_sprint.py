@@ -13,7 +13,6 @@ from auto_client_acquisition.delivery_factory.delivery_sprint import (
     step5_governance_review,
 )
 
-
 _DEMO_CSV = (
     "company_name,sector,city,relationship_status,last_interaction,notes\n"
     "شركة الواحة,b2b_services,Riyadh,warm,2026-04-12,clean fit\n"

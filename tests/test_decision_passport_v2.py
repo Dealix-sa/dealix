@@ -8,7 +8,7 @@ keep passing.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 from fastapi.testclient import TestClient
@@ -146,7 +146,7 @@ def test_validate_passport_fails_on_whitespace_proof_target() -> None:
 
 def test_validate_passport_fails_on_past_deadline() -> None:
     """Hard rule: deadline in the past = stale passport."""
-    yesterday = datetime.now(timezone.utc) - timedelta(days=1)
+    yesterday = datetime.now(UTC) - timedelta(days=1)
     p = _passport(deadline=yesterday)
     with pytest.raises(ValidationFailure) as excinfo:
         validate_passport(p)

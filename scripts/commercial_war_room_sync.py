@@ -12,9 +12,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 from dealix.commercial_ops.api_client import trigger_daily_targeting  # noqa: E402
+from dealix.commercial_ops.outreach_drafts import attach_outreach_drafts  # noqa: E402
 from dealix.commercial_ops.paths import WAR_ROOM_TODAY_JSON  # noqa: E402
 from dealix.commercial_ops.targeting_csv import build_war_room_today, load_targets  # noqa: E402
-from dealix.commercial_ops.outreach_drafts import attach_outreach_drafts  # noqa: E402
 from dealix.commercial_ops.targeting_rotation import select_daily_p0_targets  # noqa: E402
 
 

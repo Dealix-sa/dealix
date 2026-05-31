@@ -26,7 +26,7 @@ from __future__ import annotations
 import asyncio
 import os
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
 
 # Make src importable when running from project root
@@ -36,19 +36,26 @@ from sqlalchemy import select
 
 # These imports will fail without proper env — that's intentional
 try:
-    from db.session import async_session_factory, init_db
     from db.models import (
-        AccountRecord, ContactRecord, SignalRecord, LeadScoreRecord,
-        GmailDraftRecord, LinkedInDraftRecord, EmailSendLog,
-        SuppressionRecord, RawLeadImport, RawLeadRow,
+        AccountRecord,
+        ContactRecord,
+        EmailSendLog,
+        GmailDraftRecord,
+        LeadScoreRecord,
+        LinkedInDraftRecord,
+        RawLeadImport,
+        RawLeadRow,
+        SignalRecord,
+        SuppressionRecord,
     )
+    from db.session import async_session_factory, init_db
 except ImportError as e:
     print(f"ERROR: cannot import models. Run from project root with DATABASE_URL set.\n  {e}")
     sys.exit(2)
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc).replace(tzinfo=None)
+    return datetime.now(UTC).replace(tzinfo=None)
 
 
 SECTORS = [
@@ -126,7 +133,7 @@ async def _purge_demo() -> int:
                 for r in rows:
                     await session.delete(r)
                     count += 1
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 print(f"  warn: skip {model.__name__}: {exc}")
         try:
             await session.commit()
@@ -143,7 +150,7 @@ async def main() -> int:
     try:
         await init_db()
         print("   ✓ DB tables ensured")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         print(f"   ✗ init_db failed: {exc}")
         return 2
 
@@ -338,7 +345,7 @@ async def main() -> int:
         try:
             await session.commit()
             print("\n✅ all demo data committed")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             await session.rollback()
             print(f"\n❌ commit failed: {exc}")
             return 3

@@ -99,7 +99,7 @@ def sync_database_url_from_env() -> str | None:
             from core.config.settings import get_settings
 
             raw = getattr(get_settings(), "database_url", "") or ""
-        except Exception:  # noqa: BLE001
+        except Exception:
             return None
     if not raw:
         return None

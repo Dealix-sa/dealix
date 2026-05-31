@@ -110,7 +110,7 @@ def probe_get(api_base: str, path: str, *, timeout_sec: float = 12.0, max_bytes:
             }
     except urllib.error.HTTPError as exc:
         return {"probed": True, "url": url, "status": exc.code, "ok": False, "error": str(exc)}
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         return {"probed": True, "url": url, "ok": False, "error": str(exc)}
 
 

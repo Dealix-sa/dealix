@@ -5,7 +5,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-from scripts.export_hubspot_kpi_scaffold import build_import_yaml, _summarize_hubspot_csv
+from scripts.export_hubspot_kpi_scaffold import _summarize_hubspot_csv, build_import_yaml
 
 
 def test_summarize_hubspot_csv(tmp_path: Path):

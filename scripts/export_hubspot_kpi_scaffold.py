@@ -4,6 +4,11 @@
 HubSpot export columns (flexible match):
   dealname, amount, closedate, dealstage, pipeline
 
+Optional KPI mapping sources (extend entries when files exist):
+  governance_integrity_rate  ← governance weekly report YAML/JSON (integrity_pct field)
+  approval_cycle_time_hours  ← approval center export CSV (median hours column)
+  time_to_proof_days         ← proof ledger CSV (days from payment to proof_pack)
+
 Does NOT invent numbers — maps exported rows to registry keys where possible.
 Founder must attest and fill remaining keys manually.
 
@@ -62,10 +67,73 @@ def _summarize_hubspot_csv(path: Path) -> dict[str, Any]:
     }
 
 
+def _summarize_governance(path: Path) -> dict[str, Any] | None:
+    if not path.is_file():
+        return None
+    text = path.read_text(encoding="utf-8")
+    if path.suffix in {".yaml", ".yml"}:
+        data = yaml.safe_load(text)
+        if isinstance(data, dict):
+            pct = data.get("integrity_pct") or data.get("governance_integrity_rate")
+            if pct is not None:
+                return {
+                    "value_numeric": float(pct),
+                    "source_ref": f"governance:weekly_report:{path.name}:integrity_pct",
+                }
+    return None
+
+
+def _summarize_approval_export(path: Path) -> dict[str, Any] | None:
+    if not path.is_file():
+        return None
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        rows = list(csv.DictReader(f))
+    hours: list[float] = []
+    for row in rows:
+        keys = {k.lower(): v for k, v in row.items()}
+        raw = keys.get("cycle_hours") or keys.get("approval_cycle_time_hours") or keys.get("hours")
+        try:
+            hours.append(float(str(raw).replace(",", "")))
+        except (TypeError, ValueError):
+            continue
+    if not hours:
+        return None
+    hours.sort()
+    median = hours[len(hours) // 2]
+    return {
+        "value_numeric": round(median, 2),
+        "source_ref": f"approval_center:export:{path.name}:median_hours",
+    }
+
+
+def _summarize_proof_ledger(path: Path) -> dict[str, Any] | None:
+    if not path.is_file():
+        return None
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        rows = list(csv.DictReader(f))
+    days: list[float] = []
+    for row in rows:
+        keys = {k.lower(): v for k, v in row.items()}
+        raw = keys.get("time_to_proof_days") or keys.get("days")
+        try:
+            days.append(float(str(raw).replace(",", "")))
+        except (TypeError, ValueError):
+            continue
+    if not days:
+        return None
+    return {
+        "value_numeric": round(sum(days) / len(days), 2),
+        "source_ref": f"proof_ledger:{path.name}:avg_days",
+    }
+
+
 def build_import_yaml(
     *,
     hubspot_summary: dict[str, Any] | None = None,
     period_iso: str | None = None,
+    governance_summary: dict[str, Any] | None = None,
+    approval_summary: dict[str, Any] | None = None,
+    proof_summary: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     period = period_iso or datetime.now(UTC).date().isoformat()
     base = yaml.safe_load(EXAMPLE.read_text(encoding="utf-8")) if EXAMPLE.is_file() else {}
@@ -87,6 +155,13 @@ def build_import_yaml(
                 "source_ref": f"{ref};metric=closed_won_ratio",
             }
 
+    if governance_summary:
+        entries["governance_integrity_rate"] = governance_summary
+    if approval_summary:
+        entries["approval_cycle_time_hours"] = approval_summary
+    if proof_summary:
+        entries["time_to_proof_days"] = proof_summary
+
     return {
         "version": 1,
         "founder_attestation": "أقر أن source_ref يشير إلى تصدير CRM/مالية فعلي",
@@ -99,6 +174,9 @@ def build_import_yaml(
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--hubspot-csv", type=Path, help="HubSpot deals CSV export path")
+    p.add_argument("--governance-report", type=Path, help="Governance weekly report YAML/JSON")
+    p.add_argument("--approval-export", type=Path, help="Approval center CSV export")
+    p.add_argument("--proof-ledger", type=Path, help="Proof ledger CSV (time_to_proof_days)")
     p.add_argument("--dry-run", action="store_true", help="Print YAML without writing")
     p.add_argument("--force", action="store_true", help="Overwrite existing import file")
     args = p.parse_args()
@@ -110,11 +188,20 @@ def main() -> int:
             return 1
         summary = _summarize_hubspot_csv(args.hubspot_csv)
 
+    gov = _summarize_governance(args.governance_report) if args.governance_report else None
+    appr = _summarize_approval_export(args.approval_export) if args.approval_export else None
+    proof = _summarize_proof_ledger(args.proof_ledger) if args.proof_ledger else None
+
     if TARGET.is_file() and not args.force and not args.dry_run:
         print(f"SKIP: {TARGET} exists (use --force to overwrite)")
         return 0
 
-    doc = build_import_yaml(hubspot_summary=summary)
+    doc = build_import_yaml(
+        hubspot_summary=summary,
+        governance_summary=gov,
+        approval_summary=appr,
+        proof_summary=proof,
+    )
     text = yaml.safe_dump(doc, allow_unicode=True, sort_keys=False)
 
     if args.dry_run:

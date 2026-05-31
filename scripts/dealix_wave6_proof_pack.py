@@ -15,7 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -41,7 +41,7 @@ def build_proof_pack(*, company: str, session: dict[str, Any],
 
     return {
         "status": "INTERNAL_DRAFT" if proof_event_ids else "EMPTY_INTERNAL_DRAFT_FORCED",
-        "pack_id": f"pack_w6_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}",
+        "pack_id": f"pack_w6_{datetime.now(UTC).strftime('%Y%m%d_%H%M%S')}",
         "company": company,
         "session_id": session.get("session_id"),
         "service_type": session.get("service_type"),
@@ -80,7 +80,7 @@ def build_proof_pack(*, company: str, session: dict[str, Any],
         "no_fake_metrics": True,
         "no_fake_testimonial": True,
         "safety_summary": "internal_only_default_consent_required_before_publish",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
     }
 
 
