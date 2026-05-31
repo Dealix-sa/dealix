@@ -362,11 +362,12 @@ class TestHermesRegistry:
         # Reset singleton for a clean test
         HermesRegistry._instance = None
         agents = HermesRegistry.build_all_agents()
-        assert len(agents) == 10
+        assert len(agents) == 11
         expected = {
             "lead_intelligence", "revenue_intelligence", "sprint_orchestrator",
             "diagnostic_agent", "data_architect", "managed_ops",
             "sales_intelligence", "market_intel", "company_brain", "governance",
+            "customer_acquisition",
         }
         assert set(agents.keys()) == expected
 
