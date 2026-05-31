@@ -6,10 +6,11 @@ Pattern matches existing repo style: pure-function compose, no I/O.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from string import Template
 from typing import Any
+
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -54,7 +55,7 @@ class ProposalContext:
             "source_passport_required": self.source_passport_required,
             "exclusions_list": ", ".join(self.exclusions),
             "retainer_offer_after": self.retainer_offer_after,
-            "proposal_date": self.proposal_date or datetime.now(UTC).strftime("%Y-%m-%d"),
+            "proposal_date": self.proposal_date or datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         }
 
 

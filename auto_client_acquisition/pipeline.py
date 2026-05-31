@@ -5,7 +5,6 @@ Phase 8 Pipeline — orchestrates the full client acquisition funnel.
 Flow:
   raw payload → Intake → ICP Matcher → Pain Extractor → Qualification
               → CRM sync → Booking → Proposal (if warm+)
-              → AutonomousDistributionEngine (product routing + proposal queue)
 """
 
 from __future__ import annotations
@@ -21,7 +20,6 @@ from auto_client_acquisition.agents.intake import IntakeAgent, Lead, LeadSource,
 from auto_client_acquisition.agents.pain_extractor import ExtractionResult, PainExtractorAgent
 from auto_client_acquisition.agents.proposal import Proposal, ProposalAgent
 from auto_client_acquisition.agents.qualification import QualificationAgent, QualificationResult
-from autonomous_growth.distribution_engine import AutonomousDistributionEngine, DistributionEngineResult
 from core.logging import get_logger
 
 logger = get_logger(__name__)
@@ -36,7 +34,6 @@ class PipelineResult:
     crm_sync: CRMSyncResult | None = None
     booking: BookingResult | None = None
     proposal: Proposal | None = None
-    distribution: DistributionEngineResult | None = None
     warnings: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -48,7 +45,6 @@ class PipelineResult:
             "crm_sync": self.crm_sync.to_dict() if self.crm_sync else None,
             "booking": self.booking.to_dict() if self.booking else None,
             "proposal": self.proposal.to_dict() if self.proposal else None,
-            "distribution": self.distribution.to_dict() if self.distribution else None,
             "warnings": self.warnings,
         }
 
@@ -64,7 +60,6 @@ class AcquisitionPipeline:
         self.crm = CRMAgent()
         self.booking = BookingAgent()
         self.proposal = ProposalAgent()
-        self.distribution_engine = AutonomousDistributionEngine()
         self.log = logger.bind(component="acquisition_pipeline")
 
     async def run(
@@ -147,34 +142,11 @@ class AcquisitionPipeline:
                 self.log.warning("proposal_failed", error=str(e))
                 result.warnings.append(f"proposal_failed: {e}")
 
-        # Step 8 — Autonomous distribution (product routing + proposal queue)
-        # Routes the qualified lead to the right Dealix product tier and
-        # generates a bilingual proposal draft that awaits founder approval.
-        try:
-            dist_payload = {
-                "lead_id": lead.id,
-                "icp_score": result.fit_score.overall_score if result.fit_score else 0.4,
-                "sector": getattr(lead, "sector", ""),
-                "company_name": lead.company_name if hasattr(lead, "company_name") else "",
-                "company_size": getattr(lead, "company_size", "medium"),
-                "budget_signal": getattr(lead, "budget_signal", None),
-                "locale": lead.locale,
-            }
-            result.distribution = await self.distribution_engine.process_lead(dist_payload)
-        except Exception as e:
-            self.log.warning("distribution_engine_skipped", error=str(e))
-            result.warnings.append(f"distribution_engine_failed: {e}")
-
         self.log.info(
             "pipeline_complete",
             lead_id=lead.id,
             tier=result.fit_score.tier if result.fit_score else "?",
             status=lead.status.value,
-            distribution_tier=(
-                result.distribution.product_route.recommended_tier.value
-                if result.distribution and result.distribution.product_route
-                else "?"
-            ),
             warnings=len(result.warnings),
         )
         return result

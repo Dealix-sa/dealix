@@ -8,7 +8,6 @@ _REQUIRED_OPS_AUTOPILOT_PATHS = (
     "/api/v1/ops-autopilot/founder/cockpit",
     "/api/v1/ops-autopilot/founder/daily-pack",
     "/api/v1/ops-autopilot/founder/strongest-plan",
-    "/api/v1/ops-autopilot/founder/ceo-master-plan",
     "/api/v1/ops-autopilot/war-room/today-pack",
     "/api/v1/ops-autopilot/founder/full-autonomous-ops",
 )

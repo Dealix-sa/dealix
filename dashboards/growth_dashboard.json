@@ -1,0 +1,11 @@
+{
+  "dashboard_id": "growth_dashboard",
+  "title": "Hermes — Growth",
+  "panels": [
+    {"metric": "verified_revenue_sar", "type": "currency"},
+    {"metric": "campaign_attributed_revenue_sar", "type": "currency", "alert": "campaign_spend_without_attribution"},
+    {"chart": "channel_quality", "type": "table"},
+    {"chart": "message_quality", "type": "table"},
+    {"chart": "offer_market_fit", "type": "table"}
+  ]
+}

@@ -146,7 +146,7 @@ def check_api_routes() -> None:
             ok("GET founder/cockpit")
         else:
             fail(f"cockpit status={r3.status_code}")
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         fail(f"API smoke: {exc}")
 
 

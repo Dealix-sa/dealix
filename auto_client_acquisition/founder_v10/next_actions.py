@@ -29,7 +29,7 @@ def _top_decision_titles() -> dict[str, str]:
                     or ""
                 ),
             }
-    except Exception:
+    except Exception:  # noqa: BLE001
         return {}
     return {}
 
@@ -38,7 +38,7 @@ def compute_next_action() -> dict[str, Any]:
     """Bilingual next action — never crashes, always returns both keys."""
     try:
         blockers = find_blockers()
-    except Exception:
+    except Exception:  # noqa: BLE001
         blockers = []
 
     if any(b.severity in {"blocked", "high"} for b in blockers):

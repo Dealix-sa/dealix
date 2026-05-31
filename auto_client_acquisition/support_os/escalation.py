@@ -17,6 +17,7 @@ from auto_client_acquisition.support_os.classifier import (
     SupportCategory,
 )
 
+
 _MANDATORY_ESCALATE: set[SupportCategory] = {
     "refund",
     "payment",

@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import os
 import re
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass, asdict
 from datetime import datetime, timedelta, timezone
 from typing import Any
 

@@ -1,0 +1,9 @@
+{
+  "dashboard_id": "tool_risk",
+  "title": "Hermes — Tool Risk",
+  "panels": [
+    {"chart": "tool_call_volume", "type": "table"},
+    {"chart": "tool_data_sensitivity", "type": "table"},
+    {"chart": "unauthorized_tool_attempts", "type": "table", "alert": "tool_used_by_unauthorized_agent"}
+  ]
+}

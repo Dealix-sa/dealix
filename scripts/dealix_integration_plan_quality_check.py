@@ -162,7 +162,7 @@ def main() -> int:
         print(json.dumps(results, indent=2, ensure_ascii=False))
         return 0 if results["verdict"] == "PASS" else 1
 
-    print("\n=== Integration Plan Quality Gate ===")
+    print(f"\n=== Integration Plan Quality Gate ===")
     print(f"File: {results['file']}")
     print(f"Verdict: {results['verdict']}")
     print()

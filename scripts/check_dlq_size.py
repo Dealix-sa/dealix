@@ -60,7 +60,7 @@ def main() -> int:
     for q in queues:
         try:
             depth = queue_depth(r, q)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             report["queues"][q] = {"depth": None, "error": str(exc)}
             continue
         report["queues"][q] = {"depth": depth}

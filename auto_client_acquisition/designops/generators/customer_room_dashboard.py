@@ -17,6 +17,7 @@ from auto_client_acquisition.designops.generators.markdown_renderer import (
     render_artifact_markdown,
 )
 
+
 _NO_DATA = "لا بيانات بعد / no data yet"
 
 

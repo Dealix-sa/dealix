@@ -1,0 +1,15 @@
+workflow_id: revenue_hunter
+steps:
+  - agent: revenue_hunter
+    output: icp_profile
+  - agent: revenue_hunter
+    output: ranked_leads
+  - agent: revenue_hunter
+    output: message_drafts
+  - agent: proposal_factory
+    output: proposal_drafts
+gates:
+  - trust_check
+  - sovereignty_check
+outcome_required: true
+asset_review_required: true

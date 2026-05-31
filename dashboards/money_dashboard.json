@@ -1,0 +1,10 @@
+{
+  "dashboard_id": "money_dashboard",
+  "title": "Hermes — Money",
+  "panels": [
+    {"metric": "verified_revenue_sar", "type": "currency"},
+    {"chart": "revenue_quality_distribution", "type": "histogram"},
+    {"chart": "margin_by_offer", "type": "table"},
+    {"chart": "pricing_recommendations", "type": "table"}
+  ]
+}

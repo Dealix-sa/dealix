@@ -9,7 +9,7 @@ callers keep working unchanged.
 """
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 
 import pytest
 from pydantic import ValidationError
@@ -20,6 +20,7 @@ from auto_client_acquisition.approval_center import (
     ApprovalStatus,
     is_canonical_action_type,
 )
+
 
 # ─────────────────────────────────────────────────────────────────────
 # Schema extensions (4 tests)
@@ -50,7 +51,7 @@ def test_v1_callers_still_work_via_defaults() -> None:
 
 def test_v2_fields_settable_with_values() -> None:
     """Wave 12 §32.3.6 — all 6 hardening fields can be set on construction."""
-    deadline = datetime.now(UTC) + timedelta(days=2)
+    deadline = datetime.now(timezone.utc) + timedelta(days=2)
     r = ApprovalRequest(
         object_type="message_draft",
         object_id="msg_v2",
@@ -89,7 +90,7 @@ def test_approval_id_separate_from_action_id() -> None:
     founder revises, customer re-approves) — the approval_id changes
     per cycle but action_id stays the same.
     """
-    deadline = datetime.now(UTC) + timedelta(hours=1)
+    deadline = datetime.now(timezone.utc) + timedelta(hours=1)
     r1 = ApprovalRequest(
         object_type="msg",
         object_id="m1",

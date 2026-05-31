@@ -1,0 +1,10 @@
+{
+  "dashboard_id": "trust_dashboard",
+  "title": "Hermes — Trust",
+  "panels": [
+    {"metric": "trust_blocks_total", "type": "counter"},
+    {"metric": "approval_pending_total", "type": "counter"},
+    {"chart": "trust_signals_by_subject", "type": "table"},
+    {"chart": "mcp_risk_review_status", "type": "table", "alert": "mcp_descriptor_changed"}
+  ]
+}

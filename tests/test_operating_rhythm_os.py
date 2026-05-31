@@ -9,9 +9,7 @@ from auto_client_acquisition.operating_rhythm_os.bad_revenue_council import (
     BadRevenueCouncilSignals,
     council_recommend_outcome,
 )
-from auto_client_acquisition.operating_rhythm_os.board_memo import (
-    monthly_board_memo_sections_complete,
-)
+from auto_client_acquisition.operating_rhythm_os.board_memo import monthly_board_memo_sections_complete
 from auto_client_acquisition.operating_rhythm_os.decision_queue import (
     DecisionQueueItem,
     DecisionType,
@@ -32,9 +30,7 @@ from auto_client_acquisition.operating_rhythm_os.proof_review import (
     weekly_proof_decision,
 )
 from auto_client_acquisition.operating_rhythm_os.quarterly_review import quarterly_outputs_complete
-from auto_client_acquisition.operating_rhythm_os.weekly_scorecard import (
-    weekly_scorecard_keys_complete,
-)
+from auto_client_acquisition.operating_rhythm_os.weekly_scorecard import weekly_scorecard_keys_complete
 
 
 def test_decision_requires_evidence() -> None:

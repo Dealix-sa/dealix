@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import json
 import re
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass, asdict
 from typing import Any
 
 from core.agents.base import BaseAgent

@@ -28,6 +28,7 @@ from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from typing import Any
 
+
 DEFAULT_BASE_URL = os.getenv("DEALIX_BASE_URL", "https://api.dealix.me")
 DEFAULT_TIMEOUT = float(os.getenv("DEALIX_SMOKE_TIMEOUT", "15"))
 
@@ -177,7 +178,7 @@ def _do_request(base_url: str, check: Check, timeout: float) -> CheckResult:
         body = ""
         try:
             body = exc.read().decode("utf-8", errors="replace")
-        except Exception:
+        except Exception:  # noqa: BLE001
             pass
         status = exc.code
     except (urllib.error.URLError, TimeoutError) as exc:

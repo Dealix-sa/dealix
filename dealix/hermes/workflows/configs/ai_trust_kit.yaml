@@ -1,0 +1,16 @@
+workflow_id: ai_trust_kit
+steps:
+  - agent: trust_checker
+    output: agent_inventory
+  - agent: proposal_factory
+    output: ai_use_policy_draft
+  - agent: trust_checker
+    output: approval_workflow
+  - agent: value_reporter
+    output: evidence_pack
+gates:
+  - trust_check
+  - sovereignty_check
+  - approval_check
+outcome_required: true
+asset_review_required: true

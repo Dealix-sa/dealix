@@ -1,0 +1,10 @@
+{
+  "dashboard_id": "agent_performance",
+  "title": "Hermes — Agent Performance",
+  "panels": [
+    {"chart": "agent_runs_per_agent", "type": "table"},
+    {"chart": "agent_outcome_success_rate", "type": "table"},
+    {"chart": "human_correction_rate_per_agent", "type": "table"},
+    {"chart": "agent_incident_count", "type": "table", "alert": "agent_incident_rate_high"}
+  ]
+}

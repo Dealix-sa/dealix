@@ -23,6 +23,7 @@ from fastapi.testclient import TestClient
 
 from api.security.api_key import APIKeyMiddleware
 
+
 # ── App factory for tests ─────────────────────────────────────────
 
 def _make_test_app(valid_keys: list[str] | None = None) -> FastAPI:

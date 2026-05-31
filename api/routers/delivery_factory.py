@@ -52,7 +52,7 @@ async def status() -> dict:
         }
     try:
         services = list_available_services()
-    except BaseException as exc:
+    except BaseException as exc:  # noqa: BLE001
         return {
             "service": "delivery_factory",
             "module": "delivery_factory",
@@ -90,7 +90,7 @@ async def services() -> dict:
         return {"services": [], "degraded": True, "blocker": "registry_missing"}
     try:
         return {"services": list_available_services()}
-    except BaseException as exc:
+    except BaseException as exc:  # noqa: BLE001
         return {
             "services": [],
             "degraded": True,
