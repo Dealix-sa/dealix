@@ -25,7 +25,8 @@ make migrate      # alembic upgrade head
 
 ## Skills (load on demand)
 - `@token-optimizer/02-claude-md/skills/database.md` — DB schema & patterns
-- `@token-optimizer/02-claude-md/skills/api.md` — API conventions
+- `@token-optimizer/02-claude-md/skills/api.md` — API conventions (120+ routers)
+- `@token-optimizer/02-claude-md/skills/commercial.md` — Commercial chain (diagnostic→pilot→proof→payment→upsell)
 - `@token-optimizer/02-claude-md/skills/frontend.md` — Frontend patterns
 - `@token-optimizer/02-claude-md/skills/testing.md` — Test conventions
 - `@token-optimizer/02-claude-md/skills/deployment.md` — Deploy procedures

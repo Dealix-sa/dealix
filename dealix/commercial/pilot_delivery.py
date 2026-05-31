@@ -62,6 +62,7 @@ class PilotPlan(BaseModel):
     week1_report_template: str
     upsell_script: str
     approval_status: str = "approval_required"
+    governance_decision: str = "pending"  # pending | approved | rejected
 
     def to_dict(self) -> dict[str, Any]:
         return json.loads(self.model_dump_json())

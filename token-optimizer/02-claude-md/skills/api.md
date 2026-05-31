@@ -5,15 +5,19 @@ FastAPI 0.110+ · Pydantic v2 · Bearer JWT auth
 
 ## Router Structure
 ```
-api/
-├── routes/
-│   ├── clients.py    # /api/v1/clients
-│   ├── deals.py      # /api/v1/deals
-│   ├── contacts.py   # /api/v1/contacts
-│   ├── auth.py       # /api/v1/auth
-│   └── analytics.py  # /api/v1/analytics
-└── deps.py           # shared dependencies (get_db, get_current_user)
+api/routers/
+├── auth.py           # /api/v1/auth
+├── commercial.py     # /api/v1/commercial/* (13 endpoints — see skills/commercial.md)
+├── clients.py        # /api/v1/clients
+├── deals.py          # /api/v1/deals
+├── contacts.py       # /api/v1/contacts
+├── analytics.py      # /api/v1/analytics
+├── payments.py       # /api/v1/payments (Moyasar)
+└── [120+ more routers in api/routers/]
+api/deps.py           # shared dependencies (get_db, get_current_user)
 ```
+
+**Note**: There are 120+ routers. For commercial chain specifics: `@skills/commercial.md`
 
 ## Conventions
 - All responses: `{"data": ..., "meta": {...}}`

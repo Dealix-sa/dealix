@@ -104,6 +104,8 @@ numpy>=1.26.0,<3
 # setuptools (install_layout AttributeError). Code in integrations/saudi_market.py
 # uses try/except ImportError with a fallback calculation when absent.
 
+# MCP Server dependency lives in mcp_server/requirements-mcp.txt (optional — not needed for API)
+
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9
 pytest-asyncio>=0.24.0,<1
