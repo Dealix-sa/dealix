@@ -21,6 +21,7 @@ from auto_client_acquisition.revenue_pipeline.pipeline import (
     get_default_pipeline,
 )
 
+
 # ────────────── stage_policy ──────────────
 
 

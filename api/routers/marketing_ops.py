@@ -14,9 +14,8 @@ from dealix.marketing_factory.schemas import CalendarSlotRecord, ContentStatus, 
 from dealix.marketing_factory.store import get_marketing_store, uid
 from dealix.marketing_factory.utm import build_utm_url
 from dealix.marketing_factory.weekly_pack import generate_weekly_pack
+from dealix.revenue_ops_autopilot.store import get_autopilot_store, uid as ev_uid
 from dealix.revenue_ops_autopilot.schemas import EvidenceEvent
-from dealix.revenue_ops_autopilot.store import get_autopilot_store
-from dealix.revenue_ops_autopilot.store import uid as ev_uid
 
 router_marketing = APIRouter(
     prefix="/api/v1/ops-autopilot/marketing",
@@ -103,7 +102,7 @@ async def marketing_list_calendar(
                     "pillar": post.get("pillar"),
                 },
             )
-    except Exception:
+    except Exception:  # noqa: BLE001
         social_items = []
     return {
         "count": len(rows),
@@ -270,8 +269,8 @@ async def marketing_weekly_pack_apply(body: WeeklyPackApplyPayload) -> dict[str,
 
         if body.queue_approvals:
             try:
-                from auto_client_acquisition.approval_center import get_default_approval_store
                 from auto_client_acquisition.approval_center.schemas import ApprovalRequest
+                from auto_client_acquisition.approval_center import get_default_approval_store
 
                 apr = ApprovalRequest(
                     object_type="marketing_content",
@@ -286,7 +285,7 @@ async def marketing_weekly_pack_apply(body: WeeklyPackApplyPayload) -> dict[str,
                 )
                 saved = get_default_approval_store().create(apr)
                 approval_ids.append(getattr(saved, "id", "") or "")
-            except Exception:
+            except Exception:  # noqa: BLE001
                 pass
 
     _log_marketing_evidence(

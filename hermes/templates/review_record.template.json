@@ -1,0 +1,15 @@
+{
+  "review_id": "hermes-YYYYMMDD-HHMMSS",
+  "agent_id": "agent_id_here",
+  "run_id": "run_id_here",
+  "created_at": "ISO-8601 timestamp",
+  "mode": "dry_run",
+  "risk_level": "low|medium|high|critical",
+  "input_scope": "what was reviewed",
+  "finding": "short finding",
+  "confidence": "low|medium|high",
+  "recommended_next_step": "manual review item or issue/PR suggestion",
+  "evidence": [],
+  "owner": "founder",
+  "status": "new"
+}

@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from auto_client_acquisition.board_decision_os import (
+    AgentDecisionGate,
     BOARD_DECISION_INPUT_SIGNALS,
     BOARD_MEMO_SECTIONS,
-    AgentDecisionGate,
     ClientScorecardDimensions,
     CompoundingDecision,
     OfferScorecardDimensions,

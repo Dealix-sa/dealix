@@ -52,7 +52,7 @@ def _build_passport(raw: dict[str, Any] | None) -> SourcePassport | None:
             ai_access_allowed=bool(raw.get("ai_access_allowed", True)),
             external_use_allowed=bool(raw.get("external_use_allowed", False)),
         )
-    except Exception:
+    except Exception:  # noqa: BLE001 — malformed inline passport is non-fatal
         return None
 
 
@@ -78,7 +78,7 @@ def _passport_block(
 
 def _missing_pct(rows: list[dict[str, Any]], columns: list[str]) -> dict[str, float]:
     if not rows:
-        return dict.fromkeys(columns, 0.0)
+        return {c: 0.0 for c in columns}
     out: dict[str, float] = {}
     for c in columns:
         missing = sum(1 for r in rows if not str(r.get(c, "")).strip())

@@ -138,7 +138,7 @@ def main() -> int:
     print(f"OK: wrote {out}")
     print(f"  is_real_data: {intake['is_real_data']}")
     print(f"  consent_status: {intake['consent_status']}")
-    print("  WARNING: this file is gitignored — never commit")
+    print(f"  WARNING: this file is gitignored — never commit")
     return 0
 
 

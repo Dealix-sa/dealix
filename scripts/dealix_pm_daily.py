@@ -22,8 +22,9 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -33,13 +34,13 @@ def _leads_waiting() -> dict:
     try:
         from auto_client_acquisition import lead_inbox
         records = lead_inbox.list_records(limit=200) if hasattr(lead_inbox, "list_records") else []
-        cutoff = datetime.now(UTC) - timedelta(hours=24)
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
         items: list[dict] = []
         for r in records:
             try:
                 created = datetime.fromisoformat(getattr(r, "created_at", "") or "")
                 if created.tzinfo is None:
-                    created = created.replace(tzinfo=UTC)
+                    created = created.replace(tzinfo=timezone.utc)
             except Exception:
                 continue
             if created < cutoff:
@@ -99,13 +100,13 @@ def _capital_this_week() -> dict:
     try:
         from auto_client_acquisition.capital_os.capital_ledger import list_assets
         assets = list_assets(limit=100)
-        cutoff = datetime.now(UTC) - timedelta(days=7)
+        cutoff = datetime.now(timezone.utc) - timedelta(days=7)
         recent = []
         for a in assets:
             try:
                 created = datetime.fromisoformat(a.created_at)
                 if created.tzinfo is None:
-                    created = created.replace(tzinfo=UTC)
+                    created = created.replace(tzinfo=timezone.utc)
             except Exception:
                 continue
             if created >= cutoff:
@@ -147,7 +148,7 @@ def main() -> int:
     args = parser.parse_args()
 
     brief = {
-        "generated_at": datetime.now(UTC).isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "leads_waiting_24h_plus": _leads_waiting(),
         "friction_last_7d": _friction_last_7d(args.customer),
         "renewals_due_next_7d": _renewals_due(),

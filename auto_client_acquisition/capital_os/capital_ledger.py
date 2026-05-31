@@ -15,7 +15,7 @@ import os
 import threading
 import uuid
 from dataclasses import asdict, dataclass
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -107,12 +107,13 @@ def add_asset(
         reusable=bool(reusable),
         asset_ref=asset_ref,
         notes=notes,
-        created_at=datetime.now(UTC).isoformat(),
+        created_at=datetime.now(timezone.utc).isoformat(),
     )
     path = _path()
     path.parent.mkdir(parents=True, exist_ok=True)
-    with _lock, path.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(asset.to_dict(), ensure_ascii=False) + "\n")
+    with _lock:
+        with path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(asset.to_dict(), ensure_ascii=False) + "\n")
     return asset
 
 
@@ -127,21 +128,22 @@ def list_assets(
     if not path.exists():
         return []
     out: list[CapitalAsset] = []
-    with _lock, path.open("r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                data = json.loads(line)
-                asset = CapitalAsset(**data)
-            except Exception:
-                continue
-            if customer_id is not None and asset.customer_id != customer_id:
-                continue
-            if engagement_id is not None and asset.engagement_id != engagement_id:
-                continue
-            out.append(asset)
+    with _lock:
+        with path.open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    data = json.loads(line)
+                    asset = CapitalAsset(**data)
+                except Exception:  # noqa: BLE001
+                    continue
+                if customer_id is not None and asset.customer_id != customer_id:
+                    continue
+                if engagement_id is not None and asset.engagement_id != engagement_id:
+                    continue
+                out.append(asset)
     return out[-limit:] if limit else out
 
 

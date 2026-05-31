@@ -119,8 +119,7 @@ def ingest_lead_record_model(lead: Any, store: AutopilotJSONStore | None = None)
     meta = getattr(lead, "meta_json", None) or getattr(lead, "metadata", None) or {}
     if not isinstance(meta, dict):
         meta = {}
-    utm_raw = meta.get("utm")
-    utm: dict[str, Any] = utm_raw if isinstance(utm_raw, dict) else {}
+    utm = meta.get("utm") if isinstance(meta.get("utm"), dict) else {}
 
     return ingest_postgres_lead_fields(
         pg_lead_id=str(getattr(lead, "id", "")),

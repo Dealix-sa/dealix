@@ -8,10 +8,10 @@ and required production variables in backend and frontend env templates.
 
 from __future__ import annotations
 
-import re
-import sys
 from collections import defaultdict
 from pathlib import Path
+import re
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 ENV_TEMPLATE = ROOT / ".env.example"

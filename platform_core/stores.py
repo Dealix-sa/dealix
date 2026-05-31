@@ -19,7 +19,7 @@ import logging
 import re
 import uuid
 from dataclasses import dataclass, field
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 
 from auto_client_acquisition.agent_os import agent_registry
 from auto_client_acquisition.auditability_os.audit_event import AuditEvent
@@ -71,7 +71,7 @@ def reset_stores_for_tests() -> None:
 
 
 def _now() -> datetime:
-    return datetime.now(UTC)
+    return datetime.now(timezone.utc)
 
 
 # ── Tenant / user / role provisioning ───────────────────────────────
@@ -149,7 +149,7 @@ async def rollback_run(
     if agent_id is not None and agent_registry.get_agent(agent_id) is not None:
         # The registry exposes no public single-delete (only a test-wide
         # clear), so the rollback drill pops this run's agent directly.
-        agent_registry._REGISTRY.pop(agent_id, None)
+        agent_registry._REGISTRY.pop(agent_id, None)  # noqa: SLF001
         rolled["agent"].append(agent_id)
 
     await _db_rollback(tenant_id, user_ids, role_ids)
@@ -162,7 +162,7 @@ async def _db_insert_tenant(tenant: TenantEntity) -> None:
     try:
         from db.models import TenantRecord
         from db.session import async_session_factory
-    except Exception:
+    except Exception:  # noqa: BLE001 — DB layer optional for the loop
         return
     try:
         async with async_session_factory()() as session:
@@ -180,7 +180,7 @@ async def _db_insert_tenant(tenant: TenantEntity) -> None:
                 ),
             )
             await session.commit()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.warning("enterprise_loop tenant DB persist skipped: %s", exc)
 
 
@@ -188,7 +188,7 @@ async def _db_insert_role(role: RoleEntity) -> None:
     try:
         from db.models import RoleRecord
         from db.session import async_session_factory
-    except Exception:
+    except Exception:  # noqa: BLE001
         return
     try:
         async with async_session_factory()() as session:
@@ -204,7 +204,7 @@ async def _db_insert_role(role: RoleEntity) -> None:
                 ),
             )
             await session.commit()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.warning("enterprise_loop role DB persist skipped: %s", exc)
 
 
@@ -212,7 +212,7 @@ async def _db_insert_user(user: UserEntity) -> None:
     try:
         from db.models import UserRecord
         from db.session import async_session_factory
-    except Exception:
+    except Exception:  # noqa: BLE001
         return
     try:
         async with async_session_factory()() as session:
@@ -231,7 +231,7 @@ async def _db_insert_user(user: UserEntity) -> None:
                 ),
             )
             await session.commit()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.warning("enterprise_loop user DB persist skipped: %s", exc)
 
 
@@ -245,7 +245,7 @@ async def _db_rollback(
 
         from db.models import RoleRecord, TenantRecord, UserRecord
         from db.session import async_session_factory
-    except Exception:
+    except Exception:  # noqa: BLE001
         return
     try:
         async with async_session_factory()() as session:
@@ -268,7 +268,7 @@ async def _db_rollback(
                 if role is not None:
                     await session.delete(role)
             await session.commit()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.warning("enterprise_loop rollback DB step skipped: %s", exc)
 
 
@@ -277,7 +277,7 @@ async def persist_audit(tenant_id: str, event: AuditEvent) -> None:
     try:
         from db.models import AuditLogRecord
         from db.session import async_session_factory
-    except Exception:
+    except Exception:  # noqa: BLE001
         return
     try:
         async with async_session_factory()() as session:
@@ -301,7 +301,7 @@ async def persist_audit(tenant_id: str, event: AuditEvent) -> None:
                 ),
             )
             await session.commit()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         log.warning("enterprise_loop audit DB persist skipped: %s", exc)
 
 

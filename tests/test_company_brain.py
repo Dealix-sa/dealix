@@ -87,7 +87,7 @@ def test_company_brain_no_external_calls_in_test_path(monkeypatch):
     We patch httpx.Client to raise loudly if anyone calls it; the
     build must complete without touching it."""
     try:
-        import httpx
+        import httpx  # noqa: F401
     except ImportError:
         pytest.skip("httpx not available — no need to assert")
 
@@ -109,7 +109,6 @@ def test_company_brain_no_external_calls_in_test_path(monkeypatch):
 def test_company_brain_router_endpoint_returns_200():
     """The /api/v1/company-brain router must serve the brain."""
     from fastapi.testclient import TestClient
-
     from api.main import create_app
 
     client = TestClient(create_app())

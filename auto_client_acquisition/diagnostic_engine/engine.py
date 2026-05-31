@@ -25,6 +25,7 @@ from auto_client_acquisition.diagnostic_engine.schemas import (
     DiagnosticResult,
 )
 
+
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
 MATRIX_PATH = _PROJECT_ROOT / "docs" / "registry" / "SERVICE_READINESS_MATRIX.yaml"
 

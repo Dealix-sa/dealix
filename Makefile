@@ -3,11 +3,11 @@
 # الأوامر الشائعة
 # ═══════════════════════════════════════════════════════════════
 
-.PHONY: help install install-dev install-observability install-security install-evals install-docs \
-        setup first-setup test test-unit test-integration \
-        lint format type-check security security-smoke clean run demo cockpit doctor \
+.PHONY: help install install-dev setup test test-unit test-integration \
+        lint format type-check security security-smoke clean run demo \
         docker-build docker-up docker-down docker-logs \
-        pre-commit-install pre-commit-run db-init alembic-heads requirements \
+        ai-gateway-up ai-gateway-down ai-gateway-logs ai-gateway-test hermes-verify \
+        pre-commit-install pre-commit-run db-init requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference
@@ -17,6 +17,7 @@ PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 OPENAPI_OUTPUT ?= docs/architecture/openapi.json
 PRODUCTION_BASE_URL ?= https://api.dealix.me
+AI_GATEWAY_BASE_URL ?= http://localhost:4000/v1
 
 help: ## Show this help
 	@echo "🏢 Dealix — Available commands:"
@@ -29,23 +30,8 @@ install: ## Install production dependencies
 install-dev: ## Install dev dependencies (tests, lint, etc.)
 	$(PIP) install -e ".[dev]"
 
-install-observability: ## Install optional observability stack
-	$(PIP) install -e ".[observability]"
-
-install-security: ## Install optional security and supply-chain tooling
-	$(PIP) install -e ".[security]"
-
-install-evals: ## Install optional evaluation and analysis tooling
-	$(PIP) install -e ".[evals]"
-
-install-docs: ## Install optional documentation site tooling
-	$(PIP) install -e ".[docs]"
-
 setup: install-dev pre-commit-install ## One-time dev setup
 	@test -f .env || (cp .env.example .env && echo "✅ Created .env from template — edit it now")
-
-first-setup: ## Interactive onboarding — generates .env, installs hooks, smoke-tests api.main
-	bash scripts/first_setup.sh
 
 requirements: ## Export requirements.txt from pyproject
 	$(PIP) install pip-tools
@@ -116,15 +102,6 @@ run: ## Run API server (dev mode, reload on changes)
 demo: ## Run interactive CLI demo
 	$(PYTHON) cli.py
 
-cockpit: ## Founder Daily Brief — single-screen status (composes Bottleneck Radar + Hard Gates + Service Catalog)
-	$(PYTHON) scripts/dealix_founder_daily_brief.py
-
-doctor: env-check alembic-heads security-smoke ## Health check — env contract + single alembic head + security smoke
-	@echo "✅ Repo doctor passed — see docs/playbooks/FOUNDER_NEXT_STEPS.md for what to do today"
-
-alembic-heads: ## Fail if alembic reports >1 migration head
-	$(PYTHON) scripts/check_alembic_single_head.py
-
 # ── Database ───────────────────────────────────────────────────
 db-init: ## Initialize database tables (dev only)
 	$(PYTHON) -c "import asyncio; from db.session import init_db; asyncio.run(init_db())"
@@ -141,6 +118,22 @@ docker-down: ## Stop and remove containers
 
 docker-logs: ## Tail application logs
 	docker compose logs -f app
+
+# ── Local AI gateway ────────────────────────────────────────────
+ai-gateway-up: ## Start local LiteLLM AI gateway
+	docker compose -f docker-compose.ai.yml up -d
+
+ai-gateway-down: ## Stop local LiteLLM AI gateway
+	docker compose -f docker-compose.ai.yml down
+
+ai-gateway-logs: ## Tail local LiteLLM AI gateway logs
+	docker compose -f docker-compose.ai.yml logs -f litellm
+
+ai-gateway-test: ## Verify local LiteLLM AI gateway aliases
+	$(PYTHON) scripts/verify_ai_gateway.py --base-url $(AI_GATEWAY_BASE_URL) --skip-chat
+
+hermes-verify: ## Verify Hermes agents operating layer manifest
+	$(PYTHON) scripts/verify_hermes_layer.py
 
 # ── Cleanup ────────────────────────────────────────────────────
 clean: ## Remove build artifacts, caches

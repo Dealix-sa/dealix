@@ -21,6 +21,7 @@ import hmac
 import json
 from typing import Any
 
+
 UNSIGNED = "UNSIGNED"
 
 
@@ -55,4 +56,4 @@ def sign_pack_metadata(payload: dict[str, Any], secret: str | None = None) -> st
     return hmac.new(key, msg, hashlib.sha256).hexdigest()
 
 
-__all__ = ["UNSIGNED", "sign_pack_metadata"]
+__all__ = ["sign_pack_metadata", "UNSIGNED"]

@@ -1,0 +1,109 @@
+{
+  "version": "1.0",
+  "name": "Hermes Agents Operating Layer",
+  "timezone": "Asia/Riyadh",
+  "default_mode": "dry_run",
+  "mission": "Protect and grow Dealix through governed 24/7 monitoring, planning, proof generation, and approval-ready recommendations.",
+  "runtime_principles": [
+    "No live outbound communication without explicit approval.",
+    "No production mutation without an approval record.",
+    "Every agent output must produce a traceable artifact.",
+    "Prefer reversible actions, dry runs, and human review.",
+    "Escalate uncertainty instead of guessing."
+  ],
+  "supervisor": {
+    "id": "hermes_supervisor",
+    "role": "Chief orchestration and governance agent",
+    "model_alias": "dealix-smart",
+    "cadence": "always_on_supervision",
+    "responsibilities": [
+      "Prioritize work across all Hermes agents.",
+      "Route tasks to specialist agents.",
+      "Enforce approval gates and escalation rules.",
+      "Write daily founder digest inputs."
+    ]
+  },
+  "agents": [
+    {
+      "id": "revenue_scout",
+      "role": "Lead and opportunity scout",
+      "model_alias": "dealix-code",
+      "cadence": "hourly",
+      "outputs": ["lead_watchlist", "opportunity_brief", "next_best_action"],
+      "approval_required_for": ["email_send", "whatsapp_send", "crm_write"]
+    },
+    {
+      "id": "proposal_architect",
+      "role": "Proposal and offer builder",
+      "model_alias": "dealix-smart",
+      "cadence": "on_demand_or_daily",
+      "outputs": ["proposal_draft", "pricing_rationale", "risk_notes"],
+      "approval_required_for": ["client_delivery", "contract_change"]
+    },
+    {
+      "id": "ops_guardian",
+      "role": "Reliability and production readiness guardian",
+      "model_alias": "dealix-code",
+      "cadence": "every_6_hours",
+      "outputs": ["health_summary", "incident_risk", "recommended_fix_branch"],
+      "approval_required_for": ["production_change", "database_change"]
+    },
+    {
+      "id": "security_compliance_sentinel",
+      "role": "Security, privacy, and PDPL-aware review agent",
+      "model_alias": "dealix-smart",
+      "cadence": "daily_and_pre_release",
+      "outputs": ["security_findings", "privacy_notes", "release_blockers"],
+      "approval_required_for": ["policy_exception", "secret_rotation", "data_export"]
+    },
+    {
+      "id": "market_intel_analyst",
+      "role": "Saudi/GCC market and competitor intelligence analyst",
+      "model_alias": "dealix-fast",
+      "cadence": "daily",
+      "outputs": ["market_digest", "competitor_delta", "vertical_opportunity"],
+      "approval_required_for": ["public_claim", "client_recommendation"]
+    },
+    {
+      "id": "content_growth_operator",
+      "role": "Content and growth planning agent",
+      "model_alias": "dealix-fast",
+      "cadence": "daily",
+      "outputs": ["content_calendar", "linkedin_draft", "case_study_outline"],
+      "approval_required_for": ["publish", "send_campaign"]
+    },
+    {
+      "id": "finance_unit_economics_agent",
+      "role": "Pricing, margin, and token-cost analyst",
+      "model_alias": "dealix-smart",
+      "cadence": "daily",
+      "outputs": ["cost_snapshot", "margin_warning", "pricing_suggestion"],
+      "approval_required_for": ["price_change", "budget_increase"]
+    },
+    {
+      "id": "product_qa_agent",
+      "role": "Product quality and regression agent",
+      "model_alias": "dealix-code",
+      "cadence": "on_pr_and_daily",
+      "outputs": ["test_plan", "regression_summary", "bug_reproduction_steps"],
+      "approval_required_for": ["test_data_mutation", "release_override"]
+    }
+  ],
+  "approval_matrix": {
+    "low_risk": "agent_can_recommend_and_log",
+    "medium_risk": "founder_review_required",
+    "high_risk": "founder_approval_required_before_execution",
+    "critical_risk": "manual_execution_only"
+  },
+  "critical_actions": [
+    "send_email",
+    "send_whatsapp",
+    "charge_payment",
+    "change_price",
+    "write_crm",
+    "deploy_production",
+    "modify_database",
+    "export_customer_data",
+    "publish_public_content"
+  ]
+}

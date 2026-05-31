@@ -135,7 +135,7 @@ def main() -> int:
     json_path = briefs / f"value_plan_{day}.json"
     md_path.write_text(vp_mod.render_value_plan_markdown(snapshot), encoding="utf-8")
     json_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
-    print("\n== value plan snapshot ==")
+    print(f"\n== value plan snapshot ==")
     print(f"  WROTE {md_path.relative_to(ROOT)}")
     print(f"  WROTE {json_path.relative_to(ROOT)}")
     print(f"  targeting_pool={snapshot['targeting']['agency_pool_rows']}")

@@ -6,8 +6,8 @@ from httpx import ASGITransport, AsyncClient
 
 from auto_client_acquisition.agent_governance import (
     AGENT_REGISTRY,
-    FORBIDDEN_TOOLS,
     AutonomyLevel,
+    FORBIDDEN_TOOLS,
     ToolCategory,
     ToolPermission,
     evaluate_action,
@@ -24,6 +24,7 @@ from auto_client_acquisition.vertical_playbooks import (
     list_playbooks,
     recommend_for,
 )
+
 
 # ════════════════════ agent_governance ════════════════════
 

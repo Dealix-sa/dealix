@@ -13,8 +13,8 @@ import json
 import os
 import sys
 import time
-from collections.abc import Iterable
 from dataclasses import dataclass
+from typing import Iterable
 from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen

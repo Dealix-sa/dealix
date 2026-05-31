@@ -109,54 +109,6 @@ services:
           cpus: "0.25"
           memory: 256M
 
-  founder-os-worker:
-    build:
-      context: .
-      dockerfile: Dockerfile.worker
-    image: dealix-worker:${IMAGE_TAG:-latest}
-    container_name: dealix-founder-os-worker
-    env_file:
-      - .env.prod
-    environment:
-      APP_ENV: production
-      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-dealix}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@pgbouncer:6432/${POSTGRES_DB:-dealix}
-      FOUNDER_OS_INTERVAL_SECONDS: ${FOUNDER_OS_INTERVAL_SECONDS:-900}
-      AGENT_APPROVAL_MODE: required
-      AUTO_SEND_ENABLED: "false"
-      EXTERNAL_OUTREACH_ENABLED: "false"
-    depends_on:
-      api:
-        condition: service_healthy
-    restart: unless-stopped
-    networks:
-      - dealix-private
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"
-          memory: 512M
-        reservations:
-          cpus: "0.1"
-          memory: 128M
-
-  dealix-watchdog:
-    build:
-      context: .
-      dockerfile: Dockerfile.watchdog
-    image: dealix-watchdog:${IMAGE_TAG:-latest}
-    container_name: dealix-watchdog
-    environment:
-      APP_URL: https://api.dealix.me
-      DEALIX_HEALTH_PATH: /healthz
-    restart: "no"
-    networks:
-      - dealix-public
-    deploy:
-      resources:
-        limits:
-          cpus: "0.25"
-          memory: 128M
-
   postgres:
     image: postgres:16-alpine
     container_name: dealix-postgres
