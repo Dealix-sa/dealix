@@ -95,6 +95,7 @@ def test_weekly_pack_has_slots():
 def test_marketing_calendar_api(monkeypatch):
     monkeypatch.setenv("ADMIN_API_KEYS", "dev")
     from fastapi.testclient import TestClient
+
     from api.main import app
 
     cli = TestClient(app)

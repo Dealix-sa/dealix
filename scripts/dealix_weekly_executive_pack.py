@@ -19,7 +19,7 @@ import argparse
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 # Repo root for direct imports without api/* cascade
@@ -34,7 +34,7 @@ def _output_dir() -> Path:
 
 
 def _week_label(now: datetime | None = None) -> str:
-    now = now or datetime.now(timezone.utc)
+    now = now or datetime.now(UTC)
     week_num = now.isocalendar().week
     return f"{now.year}-W{week_num:02d}"
 

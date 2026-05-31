@@ -16,7 +16,6 @@ from httpx import ASGITransport, AsyncClient
 from auto_client_acquisition.self_growth_os import partner_distribution_radar
 from auto_client_acquisition.self_growth_os.partner_distribution_radar import CATALOG
 
-
 REQUIRED_CATEGORIES = {
     "b2b_marketing_agency",
     "performance_marketing_agency",

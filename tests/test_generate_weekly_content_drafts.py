@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import re
 from pathlib import Path
 
 import pytest
-
-import importlib.util
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 _MOD_PATH = REPO_ROOT / "scripts" / "generate_weekly_content_drafts.py"
