@@ -12,17 +12,24 @@
     "analytics": "Analytics & Reports",
     "settings": "Settings",
     "logout": "Sign Out",
+    "demo": "Live Demo ⚡",
+    "zatcaReadiness": "ZATCA Readiness",
     "dealixDiagnostic": "Dealix Diagnostic Funnel",
     "opsHub": "Ops — Hub",
     "opsFounder": "Ops — Founder",
     "opsWarRoom": "Revenue War Room",
     "opsTargeting": "Targeting — P0 pool",
-    "opsMarketing": "Marketing — Social",
+    "opsMarketing": "Ops — Marketing",
     "opsPartners": "Partners",
     "opsSales": "Ops — Sales Pipe",
-    "opsMarketing": "Ops — Marketing",
     "opsEvidence": "Ops — Evidence",
-    "opsSupport": "Ops — Support"
+    "opsSupport": "Ops — Support",
+    "autoDistribution": "Auto Distribution",
+    "crm": "CRM",
+    "aiEngine": "AI Revenue Engine",
+    "adminConsole": "Admin Console",
+    "trustCenter": "Trust Center",
+    "pricing": "Pricing Plans"
   },
   "dashboard": {
     "title": "Executive Dashboard",
@@ -516,16 +523,38 @@
     "softPayCta": "Request invoice / book review",
     "softPayHint": "Soft launch — Moyasar when live.",
     "visionTitle": "Why now",
-    "visionItems": { "0": "One system.", "1": "PDPL first.", "2": "Prove weekly." },
+    "visionItems": {
+      "0": "One system.",
+      "1": "PDPL first.",
+      "2": "Prove weekly."
+    },
     "pillarsTitle": "Six pillars",
     "pillarsIntro": "Memory, governance, delivery, compliance, market, anti-waste.",
     "pillars": {
-      "0": { "title": "Revenue memory", "body": "L0–L5." },
-      "1": { "title": "Governed AI", "body": "Drafts + approval." },
-      "2": { "title": "Proof Pack", "body": "7 days." },
-      "3": { "title": "PDPL", "body": "No scraping." },
-      "4": { "title": "Vision 2030", "body": "Digital ops." },
-      "5": { "title": "Anti-waste", "body": "No L4-" }
+      "0": {
+        "title": "Revenue memory",
+        "body": "L0–L5."
+      },
+      "1": {
+        "title": "Governed AI",
+        "body": "Drafts + approval."
+      },
+      "2": {
+        "title": "Proof Pack",
+        "body": "7 days."
+      },
+      "3": {
+        "title": "PDPL",
+        "body": "No scraping."
+      },
+      "4": {
+        "title": "Vision 2030",
+        "body": "Digital ops."
+      },
+      "5": {
+        "title": "Anti-waste",
+        "body": "No L4-"
+      }
     },
     "ceoQuote": "\"Auditable decisions.\"",
     "problemTitle": "The problem — SOAEN gaps",
@@ -539,11 +568,26 @@
     },
     "howTitle": "How Dealix works",
     "howSteps": {
-      "0": { "title": "Diagnose", "body": "Risk Score or Diagnostic sets readiness" },
-      "1": { "title": "Govern", "body": "Drafts and approval before any external send" },
-      "2": { "title": "Deliver", "body": "Proof Pack with clear sections and status" },
-      "3": { "title": "Evidence", "body": "Evidence events link touch to close" },
-      "4": { "title": "Expand", "body": "Upsell only after value is proven" }
+      "0": {
+        "title": "Diagnose",
+        "body": "Risk Score or Diagnostic sets readiness"
+      },
+      "1": {
+        "title": "Govern",
+        "body": "Drafts and approval before any external send"
+      },
+      "2": {
+        "title": "Deliver",
+        "body": "Proof Pack with clear sections and status"
+      },
+      "3": {
+        "title": "Evidence",
+        "body": "Evidence events link touch to close"
+      },
+      "4": {
+        "title": "Expand",
+        "body": "Upsell only after value is proven"
+      }
     },
     "offersTitle": "Three surface offers",
     "offers": {
@@ -575,7 +619,14 @@
     "footerTrustPdpl": "No cold WhatsApp · PDPL",
     "footerPositioning": "Governance and proof — expand after value."
   },
-  "public": { "home": "Home", "services": "Services", "sprint": "Sprint", "founder": "Founder", "login": "Sign in", "footer": "Dealix" },
+  "public": {
+    "home": "Home",
+    "services": "Services",
+    "sprint": "Sprint",
+    "founder": "Founder",
+    "login": "Sign in",
+    "footer": "Dealix"
+  },
   "learn": {
     "backHome": "Home",
     "backLearn": "All articles",
