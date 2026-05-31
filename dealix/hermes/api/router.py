@@ -359,4 +359,85 @@ async def get_usage() -> dict[str, Any]:
     }
 
 
+# ---------------------------------------------------------------------------
+# Outreach queue models
+# ---------------------------------------------------------------------------
+
+
+class ApproveOutreachRequest(BaseModel):
+    approved_by: str = "founder"
+
+
+class RejectOutreachRequest(BaseModel):
+    reason: str = ""
+
+
+class DailyOutreachRequest(BaseModel):
+    leads: list[dict[str, Any]] = Field(default_factory=list)
+    customer_id: str = ""
+
+
+# ---------------------------------------------------------------------------
+# Outreach queue endpoints
+# ---------------------------------------------------------------------------
+
+
+@hermes_router.get("/outreach/queue")
+async def get_outreach_queue() -> dict[str, Any]:
+    """List all pending outreach drafts awaiting founder approval."""
+    from dealix.hermes.outreach_queue import OutreachQueue
+
+    q = OutreachQueue.instance()
+    return {
+        "pending": [d.to_dict() for d in q.pending()],
+        "stats": q.stats(),
+        "governance_decision": "approved",
+    }
+
+
+@hermes_router.post("/outreach/{draft_id}/approve")
+async def approve_outreach(draft_id: str, body: ApproveOutreachRequest) -> dict[str, Any]:
+    """Approve an outreach draft (founder action). Does not send automatically."""
+    from dealix.hermes.outreach_queue import OutreachQueue
+
+    try:
+        draft = OutreachQueue.instance().approve(draft_id, approved_by=body.approved_by)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"Draft {draft_id!r} not found")
+    return {"approved": True, "draft": draft.to_dict(), "governance_decision": "approved"}
+
+
+@hermes_router.post("/outreach/{draft_id}/reject")
+async def reject_outreach(draft_id: str, body: RejectOutreachRequest) -> dict[str, Any]:
+    """Reject an outreach draft."""
+    from dealix.hermes.outreach_queue import OutreachQueue
+
+    try:
+        draft = OutreachQueue.instance().reject(draft_id, reason=body.reason)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"Draft {draft_id!r} not found")
+    return {"rejected": True, "draft": draft.to_dict(), "governance_decision": "approved"}
+
+
+@hermes_router.post("/outreach/run-daily", response_model=HermesResponse)
+async def run_daily_outreach(
+    body: DailyOutreachRequest,
+    background_tasks: BackgroundTasks,
+) -> HermesResponse:
+    """Trigger the daily customer acquisition cycle (queues drafts for approval)."""
+    from dealix.hermes.loops.daily_outreach_loop import DailyOutreachLoop
+
+    t0 = time.perf_counter()
+    loop = DailyOutreachLoop(registry=_get_registry(), config=get_hermes_config())
+    result = await loop.run_once(leads=body.leads)
+    duration_ms = (time.perf_counter() - t0) * 1000
+    return HermesResponse(
+        success=True,
+        data=result,
+        agent="customer_acquisition",
+        duration_ms=round(duration_ms, 1),
+        tokens_used=result.get("usage", {}).get("total_tokens", 0),
+    )
+
+
 __all__ = ["hermes_router", "HermesResponse"]

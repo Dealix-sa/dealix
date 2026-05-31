@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dealix.hermes.agents.company_brain import CompanyBrainAgent
+from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
 from dealix.hermes.agents.data_architect import DataArchitectAgent
 from dealix.hermes.agents.diagnostic_agent import DiagnosticAgent
 from dealix.hermes.agents.governance import GovernanceAgent
@@ -16,12 +17,14 @@ from dealix.hermes.api.router import HermesResponse, hermes_router
 from dealix.hermes.base import HermesAgent
 from dealix.hermes.config import HermesConfig, get_hermes_config
 from dealix.hermes.engine import HermesEngine, build_tool_schema
+from dealix.hermes.loops.daily_outreach_loop import DailyOutreachLoop
 from dealix.hermes.loops.lead_loop import LeadLoop
 from dealix.hermes.loops.revenue_loop import RevenueLoop
 from dealix.hermes.loops.sprint_loop import SprintLoop
 from dealix.hermes.loops.watchdog_loop import WatchdogLoop
 from dealix.hermes.memory import HermesMemory, SharedContext
 from dealix.hermes.orchestrator import HermesOrchestrator
+from dealix.hermes.outreach_queue import OutreachDraft, OutreachQueue
 from dealix.hermes.registry import HermesRegistry
 
 __all__ = [
@@ -48,11 +51,16 @@ __all__ = [
     "MarketIntelAgent",
     "CompanyBrainAgent",
     "GovernanceAgent",
+    "CustomerAcquisitionAgent",
     # Loops
     "RevenueLoop",
     "LeadLoop",
     "SprintLoop",
     "WatchdogLoop",
+    "DailyOutreachLoop",
+    # Outreach queue
+    "OutreachQueue",
+    "OutreachDraft",
     # API
     "hermes_router",
     "HermesResponse",
