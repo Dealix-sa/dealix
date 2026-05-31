@@ -82,7 +82,7 @@ def main() -> int:
     print("\nNext: import to Dealix:")
     print(f"    python scripts/import_leads.py {out_path} \\")
     print(f"        --source-name 'maps_{args.industry}_{args.city}' \\")
-    print(f"        --source-type google_maps --auto-pipeline")
+    print("        --source-type google_maps --auto-pipeline")
     return 0
 
 

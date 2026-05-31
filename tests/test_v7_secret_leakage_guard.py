@@ -112,9 +112,9 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
     "scripts/beast_level_verify.sh":
         "v12.5 beast master verifier shell script greps repo for these prefixes",
     # ── deployment / placeholder docs ──
-    "DEPLOYMENT.md":
+    "docs/contributing/DEPLOYMENT.md":
         "deployment doc placeholder values use the prefix names",
-    "DEALIX_COMPANY_OPERATIONAL_STATE.md":
+    "docs/operations/DEALIX_COMPANY_OPERATIONAL_STATE.md":
         "operational-state doc references the prefix in policy copy",
     # ── docs/* (operational + sales-kit + master-evidence narratives) ──
     "docs/MASTER_CLOSURE_EVIDENCE_TABLE.md":

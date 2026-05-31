@@ -5,7 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from auto_client_acquisition.data_os.data_quality_score import DataQualityScore, compute_dq_from_preview
+from auto_client_acquisition.data_os.data_quality_score import (
+    DataQualityScore,
+    compute_dq_from_preview,
+)
 
 
 @dataclass(frozen=True, slots=True)

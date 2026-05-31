@@ -49,7 +49,7 @@ class MarketingJSONStore:
             return self._empty_blob()
         try:
             return json.loads(self._path.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
+        except Exception:
             return self._empty_blob()
 
     @staticmethod

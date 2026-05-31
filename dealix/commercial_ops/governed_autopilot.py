@@ -10,10 +10,10 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from dealix.commercial_ops.daily_pack import pack_status
 from dealix.commercial_ops.doctrine import doctrine_status
 from dealix.commercial_ops.expansion_status import build_expansion_status
 from dealix.commercial_ops.first_paid_tracker import analyze_first_paid_diagnostic
-from dealix.commercial_ops.daily_pack import pack_status
 from dealix.commercial_ops.paths import FOUNDER_BRIEFS_DIR, REPO_ROOT
 from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 

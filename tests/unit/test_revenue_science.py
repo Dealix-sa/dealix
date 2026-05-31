@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 
@@ -22,7 +22,7 @@ from auto_client_acquisition.revenue_science.forecast import (
 
 
 def _now():
-    return datetime.now(timezone.utc).replace(tzinfo=None)
+    return datetime.now(UTC).replace(tzinfo=None)
 
 
 # ── Forecast ─────────────────────────────────────────────────────

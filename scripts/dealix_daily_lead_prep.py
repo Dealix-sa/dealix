@@ -40,7 +40,7 @@ import csv
 import json
 import sys
 from dataclasses import asdict, dataclass, field
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
@@ -61,7 +61,6 @@ from auto_client_acquisition.pipelines.saudi_dimensions import (  # noqa: E402
     SaudiScoreBoard,
     compute_saudi_score_board,
 )
-
 
 # ─────────────────────────────────────────────────────────────────────
 # Types
@@ -352,7 +351,7 @@ def run_daily_prep(
     Returns:
         DailyLeadBoard — ready to JSON-serialize and write.
     """
-    today = on_date or datetime.now(timezone.utc).date()
+    today = on_date or datetime.now(UTC).date()
     season_ctx = detect_saudi_season(on_date=today)
 
     season_dict = {
@@ -447,7 +446,7 @@ def run_daily_prep(
         next_action = "لا candidates مُدخلة — أضف ليدز عبر CSV أو من pipeline."
 
     return DailyLeadBoard(
-        generated_at=datetime.now(timezone.utc).isoformat(),
+        generated_at=datetime.now(UTC).isoformat(),
         on_date=today.isoformat(),
         season_context=season_dict,
         candidates_count=len(candidates),
@@ -536,12 +535,12 @@ def _board_to_markdown(board: DailyLeadBoard) -> str:
     lines.append(f"**Season:** {board.season_context['season']} "
                  f"(confidence={board.season_context['confidence']})")
     lines.append("")
-    lines.append(f"## ملخص اليوم / Today's summary")
+    lines.append("## ملخص اليوم / Today's summary")
     lines.append("")
     lines.append(f"- **AR:** {board.bilingual_summary['ar']}")
     lines.append(f"- **EN:** {board.bilingual_summary['en']}")
     lines.append("")
-    lines.append(f"### الموسم / Season context")
+    lines.append("### الموسم / Season context")
     lines.append(f"- AR: {board.season_context['implication_ar']}")
     lines.append(f"- EN: {board.season_context['implication_en']}")
     lines.append(f"- Recommended offer pivot: `{board.season_context['recommended_offer_pivot']}`")

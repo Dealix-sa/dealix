@@ -26,7 +26,6 @@ from auto_client_acquisition.proof_engine.auto_summary import (
     known_event_types,
 )
 
-
 # ─────────────────────────────────────────────────────────────────────
 # Auto-summary (6 tests)
 # ─────────────────────────────────────────────────────────────────────

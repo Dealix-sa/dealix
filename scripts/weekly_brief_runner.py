@@ -24,9 +24,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -48,7 +47,7 @@ def _active_customers() -> list[str]:
     if not p.exists():
         return []
     customers: set[str] = set()
-    cutoff = datetime.now(timezone.utc) - timedelta(days=60)
+    cutoff = datetime.now(UTC) - timedelta(days=60)
     for line in p.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line:
@@ -92,7 +91,7 @@ def _generate_brief_for(customer_id: str) -> dict:
 
     return {
         "customer_id": customer_id,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "value_summary": value,
         "friction_summary": friction.to_dict(),
         "recent_proof_events": recent_events,
@@ -151,7 +150,7 @@ def main() -> int:
 
     out_dir = REPO_ROOT / args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
-    week = datetime.now(timezone.utc).strftime("%Y-W%V")
+    week = datetime.now(UTC).strftime("%Y-W%V")
     summary = []
     for cid in customers:
         brief = _generate_brief_for(cid)

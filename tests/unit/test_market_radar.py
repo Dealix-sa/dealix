@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 
 from auto_client_acquisition.market_intelligence.city_heatmap import (
     SAUDI_CITIES,
@@ -29,7 +29,7 @@ from auto_client_acquisition.market_intelligence.signal_detectors import (
 
 
 def _now():
-    return datetime.now(timezone.utc).replace(tzinfo=None)
+    return datetime.now(UTC).replace(tzinfo=None)
 
 
 # ── Signal detectors ─────────────────────────────────────────────
@@ -222,7 +222,7 @@ def test_opportunity_feed_uses_explainer():
     }
 
     # Inject the real Why-Now explainer
-    from auto_client_acquisition.revenue_graph.why_now import explain_why_now, WhyNowSignal
+    from auto_client_acquisition.revenue_graph.why_now import WhyNowSignal, explain_why_now
 
     def explainer(*, company_id, signals, sector, sector_pulse_trend):
         wn_signals = [
