@@ -9,6 +9,7 @@ import structlog
 
 from dealix.hermes.base import HermesAgent
 from dealix.hermes.tools.analysis_tools import analyze_revenue_trend, identify_growth_levers
+from dealix.hermes.tools.commercial_tools import run_commercial_diagnostic
 from dealix.hermes.tools.data_tools import score_data_quality
 from dealix.hermes.tools.scoring_tools import score_account_health
 
@@ -22,6 +23,7 @@ Your diagnostic process:
 2. Check account health — flag at-risk accounts.
 3. Analyse revenue trend — identify decline signals.
 4. Identify growth levers — surface quick wins.
+5. Use run_commercial_diagnostic for a full structured revenue gap report when company and sector context are available.
 
 Output format (JSON-compatible):
 - gaps: list of top 3 revenue gaps with impact estimate
@@ -80,6 +82,18 @@ class DiagnosticAgent(HermesAgent):
             },
             required=["company_data"],
             fn=identify_growth_levers,
+        )
+        self.register_hermes_tool(
+            name="run_commercial_diagnostic",
+            description="Run the full commercial DiagnosticEngine to generate a structured revenue gap report.",
+            properties={
+                "company_name": {"type": "string", "description": "Company to diagnose"},
+                "sector": {"type": "string", "description": "Business sector, e.g. b2b_services, healthcare, retail"},
+                "pain_points": {"type": "array", "items": {"type": "string"}, "description": "Known pain points"},
+                "notes": {"type": "string", "description": "Additional context"},
+            },
+            required=["company_name"],
+            fn=run_commercial_diagnostic,
         )
 
     async def run(self, input_data: dict[str, Any]) -> dict[str, Any]:

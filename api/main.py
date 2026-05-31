@@ -200,6 +200,15 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
             log.warning("db_init_skipped", error=str(exc))
     else:
         log.info("db_init_skipped", reason="use_alembic_migrations")
+    # ── Hermes startup: register agents ─────────────────────────────────
+    try:
+        from dealix.hermes.config import get_hermes_config as _get_hermes_config
+        from dealix.hermes.registry import HermesRegistry as _HermesRegistry
+        _HermesRegistry.instance().build_all_agents(config=_get_hermes_config())
+        log.info("hermes_agents_registered")
+    except Exception as _hermes_exc:
+        log.warning("hermes_startup_skipped", error=str(_hermes_exc))
+
     yield
     log.info("app_shutdown")
 
@@ -418,9 +427,6 @@ def create_app() -> FastAPI:
     # Hermes Agents — /hermes/*
     try:
         from dealix.hermes.api.router import hermes_router
-        from dealix.hermes.registry import HermesRegistry
-        from dealix.hermes.config import get_hermes_config
-        HermesRegistry.instance().build_all_agents(config=get_hermes_config())
         app.include_router(hermes_router)
     except Exception as _hermes_exc:  # pragma: no cover
         import logging as _logging

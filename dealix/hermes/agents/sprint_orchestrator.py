@@ -9,6 +9,7 @@ import structlog
 
 from dealix.hermes.base import HermesAgent
 from dealix.hermes.tools.analysis_tools import analyze_revenue_trend, generate_executive_summary
+from dealix.hermes.tools.commercial_tools import build_commercial_proof_pack, run_commercial_sprint
 from dealix.hermes.tools.data_tools import generate_data_passport, score_data_quality
 from dealix.hermes.tools.saudi_tools import get_saudi_market_context
 from dealix.hermes.tools.scoring_tools import score_lead
@@ -98,6 +99,33 @@ class SprintOrchestratorAgent(HermesAgent):
             },
             required=["metrics", "period"],
             fn=generate_executive_summary,
+        )
+        self.register_hermes_tool(
+            name="run_commercial_sprint",
+            description="Execute all 7 days of the Revenue Intelligence Sprint via the commercial SprintOrchestrator.",
+            properties={
+                "engagement_id": {"type": "string", "description": "Unique sprint engagement ID"},
+                "customer_id": {"type": "string", "description": "Customer identifier"},
+                "customer_name": {"type": "string", "description": "Customer company name"},
+                "sector": {"type": "string", "description": "Business sector"},
+                "pain_summary": {"type": "string", "description": "Summary of customer pain points"},
+                "founder_approved": {"type": "boolean", "description": "Whether founder has approved this sprint"},
+            },
+            required=["engagement_id", "customer_id"],
+            fn=run_commercial_sprint,
+        )
+        self.register_hermes_tool(
+            name="build_commercial_proof_pack",
+            description="Build a proof pack with evidence of ROI for Day 6 of the sprint.",
+            properties={
+                "account_id": {"type": "string"},
+                "company_name": {"type": "string"},
+                "events": {"type": "array", "items": {"type": "object"}, "description": "Proof events/evidence"},
+                "approved_by_founder": {"type": "boolean"},
+                "customer_consent": {"type": "boolean"},
+            },
+            required=["account_id", "company_name"],
+            fn=build_commercial_proof_pack,
         )
 
     async def run(self, input_data: dict[str, Any]) -> dict[str, Any]:

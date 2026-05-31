@@ -54,6 +54,24 @@ def _get_orchestrator() -> HermesOrchestrator:
 
 
 # ---------------------------------------------------------------------------
+# In-memory usage tracker — keyed by agent name
+# ---------------------------------------------------------------------------
+import collections
+
+_usage_store: dict[str, dict] = collections.defaultdict(lambda: {
+    "total_calls": 0,
+    "total_tokens": 0,
+    "total_duration_ms": 0.0,
+})
+
+
+def _record_usage(agent: str, tokens: int, duration_ms: float) -> None:
+    _usage_store[agent]["total_calls"] += 1
+    _usage_store[agent]["total_tokens"] += tokens
+    _usage_store[agent]["total_duration_ms"] += duration_ms
+
+
+# ---------------------------------------------------------------------------
 # Response model
 # ---------------------------------------------------------------------------
 
@@ -138,6 +156,8 @@ async def run_agent(agent_name: str, body: AgentRunRequest) -> HermesResponse:
 
     duration_ms = (time.perf_counter() - t0) * 1000
     tokens = result.get("usage", {}).get("total_tokens", 0)
+
+    _record_usage(agent_name, tokens, duration_ms)
 
     logger.info("hermes_agent_run_complete", agent=agent_name, duration_ms=round(duration_ms, 1))
     return HermesResponse(
@@ -325,6 +345,18 @@ async def hermes_health() -> dict[str, Any]:
         raise HTTPException(status_code=503, detail=health)
 
     return {**health, "governance_decision": "approved"}
+
+
+@hermes_router.get("/usage")
+async def get_usage() -> dict[str, Any]:
+    """Return token and call usage aggregated by agent."""
+    config = get_hermes_config()
+    return {
+        "usage_by_agent": dict(_usage_store),
+        "cost_per_million_tokens_usd": 15.0,  # Opus 4 approximate rate
+        "budget_usd": config.hermes_cost_budget_usd,
+        "governance_decision": "approved",
+    }
 
 
 __all__ = ["hermes_router", "HermesResponse"]
