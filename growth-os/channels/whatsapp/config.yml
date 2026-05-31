@@ -1,0 +1,51 @@
+channel: whatsapp
+enabled: true
+mode: founder_approval
+description: "WhatsApp Business API — opt-in contacts only, approved templates"
+
+quotas:
+  daily_max: 100
+  hourly_max: 20
+  warm_up_required: true
+  warm_up_days: 30
+
+requires_opt_in: true
+opt_in_verification: "memory/opt_ins.jsonl — opt_in_status must be true"
+requires_approved_template: true
+enforce_24h_window: true
+free_form_within_24h: true
+
+stop_keywords:
+  - "stop"
+  - "unsubscribe"
+  - "توقف"
+  - "إيقاف"
+  - "لا"
+  - "أوقف"
+  - "إلغاء"
+  - "cancel"
+
+compliance_notes:
+  - "HARD BLOCK: No send without confirmed opt-in"
+  - "HARD BLOCK: Outbound requires Meta-approved template"
+  - "24h window enforced — free-form only after inbound"
+  - "Stop keywords must be processed within 15 minutes"
+  - "Block rate monitored — pause if > 2%"
+  - "WhatsApp Business Policy compliance mandatory"
+
+integration_notes:
+  provider: "WhatsApp Business API (Meta) — requires business verification"
+  phone_number: "Business number — not personal"
+  template_approval: "Submit templates to Meta for approval before use"
+  webhook: "Required for incoming messages, delivery receipts, read receipts"
+  quality_rating: "Monitor in Meta Business Suite — pause if Yellow or Red"
+
+pause_conditions:
+  block_rate_above: 0.02
+  quality_rating_red: true
+  quality_rating_yellow_for_days: 3
+
+required_elements:
+  - opt_in_confirmed
+  - approved_template_for_outbound
+  - stop_keyword_handler

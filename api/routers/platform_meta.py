@@ -25,6 +25,11 @@ async def health() -> dict[str, object]:
         "version": settings.app_version,
         "env": settings.app_env,
         "git_sha": settings.git_sha,
+        "providers": {
+            "anthropic": bool(settings.anthropic_api_key),
+            "deepseek": bool(settings.deepseek_api_key),
+            "groq": bool(settings.groq_api_key),
+        },
     }
 
 

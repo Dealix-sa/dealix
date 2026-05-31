@@ -1,0 +1,146 @@
+persuasion:
+  description: "Persuasion frameworks for Dealix outreach — PAIN → SOLUTION → PROOF → CTA per sector"
+  version: "1.0"
+
+  global_framework: "PAIN → SOLUTION → PROOF → CTA"
+  word_limits:
+    email: 150
+    whatsapp: 80
+    linkedin: 200
+    call_opener: 30
+
+  sector_frameworks:
+    legal:
+      pain: "Law firms in {country} are losing {X} hours per week on manual client intake and document preparation — time that could be billed."
+      pain_ar: "مكاتب المحاماة في {country} تخسر ساعات في المتابعة اليدوية للعملاء وإعداد المستندات — وقت كان يمكن تحويله لساعات قابلة للفوترة."
+      solution: "Dealix maps your intake and billing workflow in 7 days and shows exactly where hours are leaking."
+      solution_ar: "ديليكس يرسم عملية الاستقبال والفوترة لديك خلال 7 أيام ويحدد بالضبط أين تتسرب الساعات."
+      proof: "Law firms using structured intake workflows report up to 30% reduction in admin time (industry estimate, not guaranteed)."
+      proof_ar: "مكاتب المحاماة التي تعتمد سير عمل منظم تُفيد بتخفيض 30% في وقت الإدارة (تقدير صناعي، غير مضمون)."
+      cta: "Can I send you a 2-page diagnostic overview? 15 minutes of your time."
+      cta_ar: "هل يمكنني إرسال ملخص تشخيص من صفحتين؟ لا يحتاج أكثر من 15 دقيقة."
+      forbidden_phrases:
+        - "guaranteed ROI"
+        - "AI will replace"
+        - "fully automated"
+
+    facility_management:
+      pain: "FM companies spend {X}% of their management time on manual SLA reporting and chasing contractor updates — time that should go to winning new contracts."
+      pain_ar: "شركات إدارة المرافق تصرف {X}% من وقت الإدارة على تقارير مستوى الخدمة اليدوية ومتابعة المقاولين — وقت يجب أن يذهب لكسب عقود جديدة."
+      solution: "A 7-day sprint maps your SLA reporting and contractor tracking gaps — delivered as a ready-to-act operations report."
+      solution_ar: "سبرينت 7 أيام يحدد فجوات تقارير مستوى الخدمة ومتابعة المقاولين — ويُسلم كتقرير عمليات جاهز للتنفيذ."
+      proof: "FM operations with structured tracking typically reduce client complaint response time by 40-60% (estimated, not guaranteed)."
+      proof_ar: "عمليات إدارة المرافق ذات التتبع المنظم تُقلل وقت الاستجابة لشكاوى العملاء بنسبة 40-60% (تقدير، غير مضمون)."
+      cta: "Would a free 48-hour diagnostic be useful before committing to anything?"
+      cta_ar: "هل تجد قيمة في تشخيص مجاني خلال 48 ساعة قبل أي التزام؟"
+      forbidden_phrases:
+        - "replaces your team"
+        - "zero human effort"
+
+    consulting:
+      pain: "Consulting firms lose significant BD hours on proposal writing that could be systematized — and knowledge that should compound rarely does."
+      pain_ar: "شركات الاستشارات تخسر ساعات في كتابة العروض التي يمكن أتمتتها — والمعرفة التي يجب أن تتراكم نادراً ما تفعل ذلك."
+      solution: "Dealix maps your BD and knowledge management workflow in a 7-day sprint and shows exactly where hours are leaking."
+      solution_ar: "ديليكس يرسم سير عمل التطوير التجاري وإدارة المعرفة في سبرينت 7 أيام ويحدد أين تتسرب الساعات."
+      proof: "Consulting firms with structured BD workflows report 25-40% faster proposal turnaround (industry benchmark, not guaranteed)."
+      proof_ar: "شركات الاستشارات ذات سير العمل التجاري المنظم تُفيد بتسريع 25-40% في وقت إعداد العروض (معيار صناعي، غير مضمون)."
+      cta: "Worth a 15-minute conversation to see if it applies to your practice?"
+      cta_ar: "يستحق محادثة 15 دقيقة لنرى إن كان ينطبق على مكتبكم؟"
+      forbidden_phrases:
+        - "AI consultants"
+        - "replace your team"
+        - "guaranteed business"
+
+    real_estate:
+      pain: "Real estate companies in {country} lose deals to slow lead follow-up — buyers decide in 48 hours, but most teams take 3-5 days to respond properly."
+      pain_ar: "شركات العقارات في {country} تخسر صفقات بسبب بطء المتابعة — المشترون يقررون خلال 48 ساعة، لكن معظم الفرق تستغرق 3-5 أيام للرد بشكل صحيح."
+      solution: "A 7-day Revenue Intelligence Sprint maps your lead response workflow and identifies the top 3 gaps costing you deals."
+      solution_ar: "سبرينت استخبارات الإيرادات لـ 7 أيام يرسم سير متابعة العملاء ويحدد أبرز 3 فجوات تُكلفك صفقات."
+      proof: "Real estate teams with structured lead workflows typically see 20-35% improvement in lead-to-meeting conversion (industry estimate, not guaranteed)."
+      proof_ar: "فرق العقارات ذات سير عمل العملاء المنظم تُحقق عادةً تحسيناً بنسبة 20-35% في تحويل العملاء لاجتماعات (تقدير صناعي، غير مضمون)."
+      cta: "Free 48-hour diagnostic — we map your lead flow, you decide if it is worth fixing."
+      cta_ar: "تشخيص مجاني خلال 48 ساعة — نرسم مسار عملائك، وأنت تقرر إن كان يستحق الإصلاح."
+      forbidden_phrases:
+        - "guaranteed sales"
+        - "double your revenue"
+        - "AI closes deals"
+
+    financial_services:
+      pain: "Financial operations teams in {country} often face audit trails that live in email and spreadsheets — a liability in SAMA/PDPL audit scenarios."
+      pain_ar: "فرق العمليات المالية في {country} كثيراً ما تواجه سجلات مراجعة تعيش في البريد الإلكتروني والجداول — وهو مسؤولية في سيناريوهات تدقيق ساما/نظام حماية البيانات."
+      solution: "Dealix builds a governed operations layer with full audit trail — in 14 days."
+      solution_ar: "ديليكس يبني طبقة عمليات محوكمة مع سجل تدقيق كامل — في 14 يوماً."
+      proof: "Operations teams with structured audit trails typically reduce compliance reporting effort by 50-70% (industry estimate, not guaranteed)."
+      proof_ar: "فرق العمليات ذات سجلات التدقيق المنظمة تُقلل جهد التقارير الامتثالية بنسبة 50-70% (تقدير صناعي، غير مضمون)."
+      cta: "Can we schedule 20 minutes to walk through a governance gap analysis for your team?"
+      cta_ar: "هل يمكننا جدولة 20 دقيقة لاستعراض تحليل فجوات الحوكمة لفريقكم؟"
+      forbidden_phrases:
+        - "guaranteed compliance"
+        - "no more audits"
+        - "fully automated finance"
+
+    construction:
+      pain: "Construction companies in {country} lose 10-15% of project value to poor cost tracking and subcontractor payment delays."
+      pain_ar: "شركات المقاولات في {country} تخسر 10-15% من قيمة المشاريع بسبب ضعف تتبع التكاليف وتأخر مدفوعات المقاولين الفرعيين."
+      solution: "A Data-to-Revenue Pack maps your project cost and payment tracking in 14 days."
+      solution_ar: "حزمة البيانات إلى الإيرادات ترسم تكاليف مشاريعك ومتابعة المدفوعات في 14 يوماً."
+      proof: "Construction companies with structured cost tracking typically recover 8-12% of tracked project costs (industry estimate, not guaranteed)."
+      proof_ar: "شركات المقاولات ذات تتبع التكاليف المنظم تسترد عادةً 8-12% من تكاليف المشاريع المتتبعة (تقدير صناعي، غير مضمون)."
+      cta: "Would a free 48-hour diagnostic be a useful starting point?"
+      cta_ar: "هل تجد في التشخيص المجاني خلال 48 ساعة نقطة انطلاق مفيدة؟"
+      forbidden_phrases:
+        - "guaranteed savings"
+        - "eliminate cost overruns"
+
+    logistics:
+      pain: "Logistics companies in {country} often cannot tell in real time which routes are profitable and which are eating margin."
+      pain_ar: "شركات اللوجستيات في {country} كثيراً ما لا تستطيع معرفة أي المسارات مربحة وأيها يأكل الهامش في الوقت الفعلي."
+      solution: "A Data-to-Revenue Pack delivers a route profitability map and operational bottleneck report in 14 days."
+      solution_ar: "حزمة البيانات إلى الإيرادات تُقدم خريطة ربحية المسارات وتقرير اختناقات العمليات في 14 يوماً."
+      proof: "Logistics teams with route profitability tracking typically improve margin visibility by 20-30% (industry estimate, not guaranteed)."
+      proof_ar: "فرق اللوجستيات ذات تتبع ربحية المسارات تُحسن عادةً وضوح الهامش بنسبة 20-30% (تقدير صناعي، غير مضمون)."
+      cta: "Start with a free diagnostic — 48 hours, no commitment."
+      cta_ar: "ابدأ بتشخيص مجاني — 48 ساعة، بدون التزام."
+      forbidden_phrases:
+        - "optimize automatically"
+        - "AI drives your trucks"
+
+    retail:
+      pain: "Retail businesses in {country} often run promotions and inventory from gut feel — leaving money on the table in high-season decisions."
+      pain_ar: "شركات التجزئة في {country} كثيراً ما تدير العروض والمخزون بالحدس — وتخسر فرصاً في قرارات موسم الذروة."
+      solution: "A 7-Day Sprint maps your inventory and sales data gaps and delivers a week-one action list."
+      solution_ar: "سبرينت 7 أيام يرسم فجوات بيانات المخزون والمبيعات ويُسلم قائمة إجراءات الأسبوع الأول."
+      proof: "Retail teams with structured promotion tracking typically see 10-20% improvement in high-season margin (industry estimate, not guaranteed)."
+      proof_ar: "فرق التجزئة ذات تتبع العروض المنظم تُحسن عادةً هامش موسم الذروة بنسبة 10-20% (تقدير صناعي، غير مضمون)."
+      cta: "Free 48-hour diagnostic — before your next promotion."
+      cta_ar: "تشخيص مجاني خلال 48 ساعة — قبل عرضك القادم."
+      forbidden_phrases:
+        - "doubles your sales"
+        - "AI-run store"
+
+    education:
+      pain: "Training and education companies in {country} often lose enrolled students to poor follow-up — and never know why."
+      pain_ar: "شركات التدريب والتعليم في {country} كثيراً ما تفقد الطلاب المسجلين بسبب ضعف المتابعة — ولا تعرف السبب أبداً."
+      solution: "A 7-Day Sprint maps your enrollment and retention workflow and shows exactly where students are dropping off."
+      solution_ar: "سبرينت 7 أيام يرسم سير التسجيل والاحتفاظ ويُظهر بالضبط أين ينسحب الطلاب."
+      proof: "Training companies with structured enrollment tracking typically see 15-25% improvement in completion rates (industry estimate, not guaranteed)."
+      proof_ar: "شركات التدريب ذات تتبع التسجيل المنظم تُحسن عادةً معدلات الإتمام بنسبة 15-25% (تقدير صناعي، غير مضمون)."
+      cta: "Free 48-hour diagnostic — we map your enrollment flow, no commitment."
+      cta_ar: "تشخيص مجاني خلال 48 ساعة — نرسم مسار تسجيلك، بدون التزام."
+      forbidden_phrases:
+        - "guarantee enrollment"
+        - "AI teaches students"
+
+  universal_forbidden:
+    - "guaranteed ROI"
+    - "guaranteed results"
+    - "100% automated"
+    - "AI replaces"
+    - "no human needed"
+    - "proven to double"
+    - "we guarantee"
+    - "risk-free investment"
+    - "unlimited leads"
+    - "100% accurate"
+
+  disclaimer_required: "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"

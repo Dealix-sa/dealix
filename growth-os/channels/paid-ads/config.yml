@@ -1,0 +1,29 @@
+channel: paid_ads
+enabled: false
+mode: founder_approval
+description: "Paid advertising — founder manages directly. Not active until organic channel proves traction."
+
+daily_budget_limit_sar: 500
+requires_founder_approval_to_activate: true
+
+platforms:
+  - meta_ads
+  - google_ads
+  - linkedin_ads
+
+compliance_notes:
+  - "Platform policy compliance required (Meta, Google, LinkedIn)"
+  - "No misleading claims"
+  - "Disclaimer required on landing page"
+  - "Landing page must match ad copy exactly"
+  - "Estimated values must be labeled as estimates"
+
+activation_criteria:
+  - "Organic email outreach proves positive reply > 2%"
+  - "At least 1 paid client — proof of offer-market fit"
+  - "Founder approves budget allocation"
+  - "Landing page built and tested"
+
+integration_notes:
+  status: "INACTIVE — activate only after organic traction proven"
+  budget_approval: "Founder must manually activate spending"

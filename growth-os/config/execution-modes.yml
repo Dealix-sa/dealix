@@ -1,0 +1,116 @@
+execution_modes:
+  description: "Defines when and how Dealix Growth OS executes outreach — from fully automated to fully manual"
+  version: "1.0"
+
+  auto_send:
+    id: "auto_send"
+    name_en: "Automatic Send"
+    name_ar: "إرسال تلقائي"
+    description: "Draft passes all gates (quality ≥ 90, compliance pass) and is sent without founder review"
+    conditions:
+      - quality_gate_score: {min: 90}
+      - compliance_gate: "pass"
+      - anti_ban_check: "pass"
+      - suppression_check: "pass"
+      - channel_mode: ["email"]
+      - sector_sensitive: false
+      - company_size: {max: 500}
+    founder_action_required: false
+    log_level: "full"
+    audit_trail: true
+    rollback_trigger: "bounce_rate > 0.05 OR spam_rate > 0.003"
+    notes: "Only email is eligible for auto_send. All other channels require at minimum founder_approval."
+
+  founder_approval:
+    id: "founder_approval"
+    name_en: "Founder Approval Required"
+    name_ar: "يتطلب موافقة المؤسس"
+    description: "Draft is prepared and queued in founder_review — founder approves or edits before send"
+    conditions:
+      - quality_gate_score: {min: 82}
+      - any_of:
+          - sector_sensitive: true
+          - company_size: {min: 200}
+          - channel: ["linkedin", "whatsapp", "calls", "procurement", "website_forms"]
+          - quality_gate_score: {min: 82, max: 89}
+    founder_action_required: true
+    founder_review_location: "outputs/founder_review/"
+    sla_hours: 24
+    escalation_if_no_action: "notify_founder_again"
+    log_level: "full"
+    audit_trail: true
+    notes: "Sensitive sectors, large companies, and non-email channels always route here."
+
+  assisted_manual:
+    id: "assisted_manual"
+    name_en: "Assisted Manual"
+    name_ar: "مساعدة يدوية"
+    description: "System prepares the draft and context — founder executes the action manually on the platform"
+    conditions:
+      - channel: ["linkedin"]
+      - any_channel_where_automation_violates_tos: true
+    system_action: "prepare_draft_and_context_package"
+    founder_action: "execute_manually_on_platform"
+    package_includes:
+      - draft_text
+      - company_brief_summary
+      - buyer_persona_notes
+      - suggested_subject_or_opener
+      - compliance_checklist
+    output_location: "outputs/founder_review/"
+    log_level: "full"
+    audit_trail: true
+    notes: "LinkedIn is ALWAYS assisted_manual. System never touches LinkedIn directly. Non-negotiable."
+
+  inbound_only:
+    id: "inbound_only"
+    name_en: "Inbound Response Only"
+    name_ar: "استجابة للوارد فقط"
+    description: "System only responds to inbound messages within the 24-hour window — never initiates"
+    channels: ["instagram", "messenger", "telegram"]
+    conditions:
+      - message_is_inbound: true
+      - within_24h_window: true
+    auto_reply_allowed: true
+    human_handoff_triggers:
+      - keyword: ["price", "سعر", "تكلفة", "كم", "pricing"]
+        action: "notify_founder_for_handoff"
+      - keyword: ["contract", "عقد", "اتفاقية"]
+        action: "notify_founder_for_handoff"
+      - keyword: ["security", "أمان", "أمن", "gdpr", "pdpl"]
+        action: "notify_founder_for_handoff"
+    escalation: "after_2_auto_replies_without_booking_handoff_to_founder"
+    log_level: "full"
+    audit_trail: true
+    notes: "24h window is strictly enforced. After window closes, only founder can re-engage."
+
+  paused:
+    id: "paused"
+    name_en: "Paused"
+    name_ar: "متوقف"
+    description: "Execution paused for this channel or company due to health signals"
+    trigger_conditions:
+      - bounce_rate: {above: 0.05}
+      - spam_rate: {above: 0.003}
+      - block_rate_whatsapp: {above: 0.02}
+      - founder_manual_pause: true
+      - anti_ban_guardian_signal: "pause"
+    cooldown_hours: 48
+    resume_conditions:
+      - founder_manual_resume: true
+      - metrics_below_threshold: true
+    output_location: "outputs/paused/"
+
+  dry_run:
+    id: "dry_run"
+    name_en: "Dry Run (No Send)"
+    name_ar: "تشغيل جاف (بدون إرسال)"
+    description: "All steps execute including drafting and quality gates — but nothing is sent"
+    use_cases:
+      - "Testing new segment or offer"
+      - "Acceptance testing"
+      - "Canary launch validation"
+    log_level: "full"
+    audit_trail: true
+    output_location: "outputs/execution_queue/"
+    notes: "DRY_RUN=true env variable activates this mode globally. Default in staging."

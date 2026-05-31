@@ -1,0 +1,136 @@
+quotas:
+  description: "Daily, weekly, and monthly send quotas per channel with warm-up schedules"
+  version: "1.0"
+
+  email:
+    domain_warm_up:
+      enabled: true
+      description: "New sending domain must warm up over 14 days before hitting full quota"
+      schedule:
+        days_1_3:
+          daily_max: 20
+          hourly_max: 5
+        days_4_7:
+          daily_max: 50
+          hourly_max: 10
+        days_8_10:
+          daily_max: 100
+          hourly_max: 20
+        days_11_14:
+          daily_max: 250
+          hourly_max: 40
+        days_15_plus:
+          daily_max: 500
+          hourly_max: 50
+    operational:
+      daily_max: 500
+      hourly_max: 50
+      weekly_max: 2000
+      monthly_max: 8000
+      same_domain_per_day: 2
+      same_company_touchpoints_14_days: 2
+    pause_conditions:
+      bounce_rate_above: 0.05
+      spam_rate_above: 0.003
+      consecutive_hard_bounces: 10
+
+  whatsapp:
+    requires_opt_in: true
+    warm_up:
+      enabled: true
+      description: "New WhatsApp Business number warm-up"
+      schedule:
+        days_1_7:
+          daily_max: 10
+        days_8_14:
+          daily_max: 30
+        days_15_30:
+          daily_max: 100
+        days_31_plus:
+          daily_max: 100
+    operational:
+      daily_max: 100
+      hourly_max: 20
+      weekly_max: 500
+      monthly_max: 2000
+      opt_in_required: true
+    pause_conditions:
+      block_rate_above: 0.02
+      quality_rating: "red"
+
+  linkedin:
+    mode: "assisted_manual"
+    automated_sends: 0
+    founder_manual_limits:
+      connection_requests_per_week: 25
+      messages_per_day: 20
+      profile_views_per_day: 50
+      note: "These are guidance limits — LinkedIn enforces its own limits"
+    pause_conditions:
+      account_restriction: true
+      any_automation_detected: true
+
+  instagram:
+    mode: "inbound_reply_only"
+    outbound_automated_sends: 0
+    inbound_replies_per_day: 50
+    comment_replies_per_day: 30
+    pause_conditions:
+      account_flagged: true
+
+  messenger:
+    mode: "inbound_reply_only"
+    automated_outbound: 0
+    inbound_replies_per_day: 50
+    within_24h_window_only: true
+    pause_conditions:
+      account_flagged: true
+
+  x:
+    posts_per_day: 10
+    replies_per_day: 30
+    dms_per_day: 0
+    dm_note: "No bulk DM — only direct replies to relevant mentions"
+    pause_conditions:
+      account_suspended: true
+
+  telegram:
+    mode: "opt_in_bot_only"
+    bot_messages_per_day: 200
+    group_posts: "admin_invite_only"
+    unsolicited_dms: 0
+
+  website_forms:
+    submissions_per_domain_per_day: 1
+    min_interval_between_submissions_minutes: 60
+    total_daily_max: 20
+
+  calls:
+    calls_per_day: 15
+    calls_per_contact_total: 2
+    min_days_between_attempts: 7
+    calling_hours:
+      start: "09:00"
+      end: "17:30"
+    calling_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    pause_conditions:
+      no_answer_rate_above: 0.8
+
+  paid_ads:
+    note: "Managed by founder directly — no automated spend"
+    daily_budget_limit_sar: 500
+    requires_founder_approval_to_activate: true
+
+  partners:
+    referrals_per_month: 50
+    note: "Referral channel — no quota limit but quality gate applies"
+
+  procurement:
+    submissions_per_month: 10
+    note: "Official RFP responses only — no mass submission"
+
+  global:
+    same_company_touches_14_days: 2
+    same_contact_touches_14_days: 2
+    cooldown_after_opt_out_days: 90
+    review_suppression_after_days: 90

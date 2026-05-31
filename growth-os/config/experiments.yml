@@ -1,0 +1,162 @@
+experiments:
+  description: "A/B experiment templates for Dealix Growth OS — used by learning-agent to test and iterate"
+  version: "1.0"
+
+  active_experiments: []
+
+  experiment_template:
+    id: "exp_{YYYYMMDD}_{slug}"
+    name: "Descriptive experiment name"
+    hypothesis: "If we change X, we expect Y because Z"
+    type: "subject_line | angle | cta | channel | offer | language"
+    segment:
+      sector: []
+      country: []
+      language: []
+      company_size: []
+    variants:
+      control:
+        label: "A"
+        description: "Current baseline"
+        content: {}
+      test:
+        label: "B"
+        description: "What we are testing"
+        content: {}
+    sample_size_min: 20
+    duration_days: 7
+    primary_metric: "reply_rate"
+    secondary_metrics: ["positive_reply_rate", "call_booking_rate"]
+    significance_threshold: 0.05
+    status: "draft | running | completed | cancelled"
+    started_date: null
+    completed_date: null
+    results:
+      control_replies: null
+      test_replies: null
+      winner: null
+      confidence: null
+      action: null
+    learning: null
+
+  experiment_ideas:
+    subject_lines:
+      - id: "exp_subject_arabic_vs_english"
+        hypothesis: "Arabic subject lines get higher open rate for SA legal sector"
+        type: "subject_line"
+        segment:
+          sector: ["legal"]
+          country: ["SA"]
+        variants:
+          control:
+            content: {subject: "Quick question about your client intake process"}
+          test:
+            content: {subject: "سؤال سريع حول عملية استقبال موكليكم"}
+
+      - id: "exp_subject_pain_vs_benefit"
+        hypothesis: "Pain-focused subjects outperform benefit-focused for FM sector"
+        type: "subject_line"
+        segment:
+          sector: ["facility_management"]
+        variants:
+          control:
+            content: {subject: "Improve your SLA reporting in 7 days"}
+          test:
+            content: {subject: "How much time is your team losing to manual SLA reports?"}
+
+      - id: "exp_subject_number_vs_no_number"
+        hypothesis: "Subjects with specific numbers (7 days, 48 hours) get higher open rate"
+        type: "subject_line"
+        variants:
+          control:
+            content: {subject: "A quick diagnostic for your operations"}
+          test:
+            content: {subject: "48-hour diagnostic — no commitment"}
+
+    angles:
+      - id: "exp_angle_risk_vs_gain"
+        hypothesis: "Risk framing (cost of inaction) outperforms gain framing for financial services"
+        type: "angle"
+        segment:
+          sector: ["financial_services"]
+        variants:
+          control:
+            content: {angle: "gain", opener: "Improve your reconciliation process in 14 days"}
+          test:
+            content: {angle: "risk", opener: "Every week without structured audit trails is a compliance liability"}
+
+      - id: "exp_angle_speed_vs_quality"
+        hypothesis: "Speed angle (7 days, fast results) outperforms quality angle for real estate"
+        type: "angle"
+        segment:
+          sector: ["real_estate"]
+        variants:
+          control:
+            content: {angle: "quality", opener: "A comprehensive revenue operations analysis for your team"}
+          test:
+            content: {angle: "speed", opener: "Map your lead flow gaps in 7 days — before the next deal cycle"}
+
+    ctas:
+      - id: "exp_cta_question_vs_statement"
+        hypothesis: "Question CTAs (Would a 15-min call be useful?) get higher reply rate than statement CTAs"
+        type: "cta"
+        variants:
+          control:
+            content: {cta: "Book a 15-minute call with us"}
+          test:
+            content: {cta: "Would a 15-minute call be useful to explore this?"}
+
+      - id: "exp_cta_free_vs_paid"
+        hypothesis: "Offering free diagnostic as CTA converts better than jumping to 499 SAR sprint"
+        type: "cta"
+        variants:
+          control:
+            content: {cta: "Start your 7-day sprint for 499 SAR"}
+          test:
+            content: {cta: "Start with a free 48-hour diagnostic — no commitment"}
+
+      - id: "exp_cta_arabic_vs_english"
+        hypothesis: "Arabic CTA gets higher response for SA Arabic-speaking buyers"
+        type: "cta"
+        segment:
+          country: ["SA"]
+          language: ["ar"]
+        variants:
+          control:
+            content: {cta: "Can we schedule a quick call?"}
+          test:
+            content: {cta: "هل يمكننا جدولة مكالمة سريعة؟"}
+
+    channels:
+      - id: "exp_email_vs_email_plus_linkedin"
+        hypothesis: "Following up a cold email with a LinkedIn view increases reply rate for consulting sector"
+        type: "channel"
+        segment:
+          sector: ["consulting"]
+        variants:
+          control:
+            content: {sequence: ["email_day1", "email_day4"]}
+          test:
+            content: {sequence: ["email_day1", "linkedin_view_day2", "email_day5"]}
+        note: "LinkedIn view is assisted_manual — founder executes manually"
+
+    offers:
+      - id: "exp_free_diagnostic_vs_paid_sprint_entry"
+        hypothesis: "Leading with free diagnostic improves conversion to 499 SAR sprint"
+        type: "offer"
+        variants:
+          control:
+            content: {first_offer: "sprint_499_sar", cta: "499 SAR for 7-day sprint"}
+          test:
+            content: {first_offer: "free_diagnostic", cta: "Free 48-hour diagnostic, then optional sprint"}
+
+  learning_triggers:
+    run_new_experiment_when:
+      - "reply_rate below 0.02 for 14 days on a segment"
+      - "positive_reply_rate below 0.005 for 14 days"
+      - "no new experiment in 14 days"
+    pause_experiment_when:
+      - "sample_size < 5 after 7 days (insufficient data)"
+      - "bounce_rate > 0.05 on test variant"
+    declare_winner_when:
+      - "sample_size >= 20 AND confidence >= 0.80"

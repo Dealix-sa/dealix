@@ -1,0 +1,44 @@
+channel: email
+enabled: true
+mode: auto_send
+description: "Primary outreach channel — highest volume, most compliance flexibility"
+
+quotas:
+  daily_max: 500
+  hourly_max: 50
+  same_domain_per_day: 2
+  same_company_touches_14_days: 2
+  warm_up_required: true
+  warm_up_days: 14
+
+requires_opt_in: false
+requires_approved_template: false
+enforce_24h_window: false
+
+compliance_notes:
+  - "Must include physical address in footer"
+  - "Must include one-click unsubscribe"
+  - "No deceptive subject lines (CAN-SPAM)"
+  - "PDPL: legitimate business interest basis for SA contacts"
+  - "Saudi PDPL compliance required for SA recipients"
+  - "Opt-out honored within 24 hours (not 10 business days)"
+
+integration_notes:
+  provider: "TBD — Gmail API, SendGrid, or Postmark recommended"
+  bounce_webhook: "Required — triggers suppression on hard bounce"
+  spam_complaint_webhook: "Required — triggers suppression"
+  postmaster_tools: "Google Postmaster — check daily"
+  spf: "Required — v=spf1 include:provider ~all"
+  dkim: "Required — 2048-bit key minimum"
+  dmarc: "Required — p=quarantine minimum"
+
+pause_conditions:
+  bounce_rate_above: 0.05
+  spam_rate_above: 0.003
+  consecutive_hard_bounces: 10
+
+required_elements:
+  - unsubscribe_link_or_instruction
+  - sender_name_dealix
+  - physical_address
+  - bilingual_disclaimer_if_arabic_content

@@ -1,0 +1,27 @@
+channel: x
+enabled: true
+mode: auto_send
+description: "X (Twitter) — thought leadership posts and replies to relevant mentions. Official API only."
+
+quotas:
+  posts_per_day: 10
+  replies_per_day: 30
+  dms_per_day: 0
+  bulk_dm: false
+
+requires_opt_in: false
+requires_approved_template: false
+enforce_24h_window: false
+bulk_dm_blocked: true
+
+compliance_notes:
+  - "Official X API only — no third-party automation tools"
+  - "No unsolicited bulk DM"
+  - "DM only in response to direct relevant mentions"
+  - "Content must be truthful and not misleading"
+  - "No coordinated inauthentic behavior"
+
+integration_notes:
+  provider: "X API v2 — requires approved developer account"
+  content_type: "Thought leadership, sector insights, product updates"
+  dm_policy: "Only DM users who explicitly ask for more info in public post"

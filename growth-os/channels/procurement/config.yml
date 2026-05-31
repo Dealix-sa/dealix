@@ -1,0 +1,37 @@
+channel: procurement
+enabled: true
+mode: founder_approval
+description: "Official procurement responses — government and large enterprise RFPs only"
+
+quotas:
+  submissions_per_month: 10
+
+requires_opt_in: false
+official_rfp_only: true
+no_unsolicited_mass_submission: true
+
+compliance_notes:
+  - "Official RFP responses only — no unsolicited mass submissions"
+  - "Procurement submissions require founder sign-off"
+  - "All submissions must be truthful and complete"
+  - "No inflated capability claims"
+  - "Pricing must be accurate and not artificially low to win"
+
+target_sectors:
+  - government
+  - healthcare_admin
+  - financial_services
+
+target_company_size: "200+"
+
+decision_cycle:
+  typical_days: 60-180
+  patience_required: true
+
+integration_notes:
+  platforms:
+    - "Etimad (Saudi government procurement — منصة اعتماد)"
+    - "UNGM (UN procurement for international organizations)"
+    - "Direct submission to procurement departments"
+  tracking: "Log submission date, RFP reference, and follow-up dates"
+  sla: "Respond to all shortlist notifications within 48 hours"

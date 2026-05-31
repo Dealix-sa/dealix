@@ -1,0 +1,37 @@
+channel: calls
+enabled: true
+mode: founder_approval
+description: "Phone calls — founder executes manually. Prior relationship or warm referral required."
+
+quotas:
+  calls_per_day: 15
+  calls_per_contact_total: 2
+  min_days_between_attempts: 7
+
+requires_opt_in: false
+requires_prior_relationship: true
+cold_robo_calls_blocked: true
+
+calling_hours:
+  start: "09:00"
+  end: "17:30"
+
+calling_days:
+  - Sunday
+  - Monday
+  - Tuesday
+  - Wednesday
+  - Thursday
+
+compliance_notes:
+  - "No cold robo-calls — human caller only"
+  - "Prior relationship or warm referral required"
+  - "Calling hours: 09:00-17:30 local time"
+  - "Max 2 attempts per contact"
+  - "7 days minimum between attempts"
+  - "Call notes logged in execution_logs.jsonl"
+
+integration_notes:
+  execution: "Founder makes calls manually from personal or business number"
+  tracking: "Log call in memory/execution_logs.jsonl after call"
+  call_script: "Use outputs/founder_review/{company_id}_call_script.md"
