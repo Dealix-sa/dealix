@@ -19,7 +19,7 @@ def _maybe_export_otel_span_event(event: dict[str, Any]) -> None:
 
         if not bool(getattr(get_settings(), "otel_contract_trace_export", False)):
             return
-    except Exception:  # noqa: BLE001
+    except Exception:
         return
     try:
         from opentelemetry import trace
@@ -33,7 +33,7 @@ def _maybe_export_otel_span_event(event: dict[str, Any]) -> None:
             if v is not None:
                 attrs[k] = str(v)[:256]
         span.add_event("dealix.contract_trace", attributes=attrs)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         _LOG.debug("otel_contract_trace_export_skipped:%s", type(exc).__name__)
 
 

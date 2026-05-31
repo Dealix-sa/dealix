@@ -16,8 +16,8 @@ from auto_client_acquisition.compliance_os.consent_ledger import (
 from auto_client_acquisition.compliance_os.contactability import check_contactability
 from auto_client_acquisition.compliance_os.data_subject_requests import (
     DSR_TYPES,
-    DSRStatus,
     SLA_DAYS,
+    DSRStatus,
     dsr_dashboard,
     is_overdue,
     open_dsr,

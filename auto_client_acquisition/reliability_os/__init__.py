@@ -18,9 +18,9 @@ from auto_client_acquisition.reliability_os.mission_critical_program import (
 )
 
 __all__ = [
+    "DrillResult",
     "HealthDimension",
     "HealthStatus",
-    "DrillResult",
     "MissionCriticalScore",
     "SubsystemHealth",
     "build_health_matrix",

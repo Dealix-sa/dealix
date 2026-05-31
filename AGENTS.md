@@ -7,10 +7,17 @@ This file is the primary repo-specific guide for AI coding agents working in `de
 - Do not duplicate long docs from `README.md` or `docs/`; link to them instead.
 - Preserve existing operational knowledge and avoid treating resolved issues as new bugs.
 
+### Token Optimization
+See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings), CLAUDE.md hygiene, session management, model routing (Haiku/Sonnet/Opus), MCP discipline, subagents, hooks, prompt templates, file handling, monitoring, git hygiene, and env config. Run `bash token-optimizer/12-environment-config/apply-all.sh` to apply all settings.
+
 ### Repo anatomy
-- `api/` — FastAPI app entry, dependencies, middleware, routers, and schema definitions.
+- `api/` — FastAPI app entry, dependencies, middleware, 120+ routers, and schema definitions.
+- `api/routers/commercial.py` — 13 commercial chain endpoints (diagnostic→pilot→proof→payment→upsell). Skill: `@token-optimizer/02-claude-md/skills/commercial.md`
+- `dealix/commercial/` — commercial business logic (diagnostic_engine, warm_intro_generator, pilot_delivery, proof_builder, upsell_engine, case_study_generator, zatca_invoice).
+- `dealix/payments/` — Moyasar payment links. Sandbox by default; `MOYASAR_LIVE_MODE=1` for live.
+- `data/templates/` — AR/EN content templates (warm intros, proposals, proof packs, daily checklist).
 - `auto_client_acquisition/`, `autonomous_growth/`, `dealix/`, `core/`, `integrations/` — business logic, AI agents, policy, and execution workflows.
-- `frontend/` — Next.js dashboard and public landing experience.
+- `frontend/` — Next.js dashboard and public landing experience. Skill: `@token-optimizer/02-claude-md/skills/frontend.md`
 - `tests/` — pytest-based test suites, including integration and regression bundles.
 - `scripts/` — operational and verification helpers used by CI and launch workflows.
 - `docs/` — architecture, launch runbooks, compliance, and product docs.
@@ -103,7 +110,7 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
 | Concern | Doc / command |
 | --- | --- |
-| Universal deploy | [DEPLOYMENT.md](DEPLOYMENT.md) |
+| Universal deploy | [docs/contributing/DEPLOYMENT.md](docs/contributing/DEPLOYMENT.md) |
 | API-keys-only quick path | [docs/QUICK_DEPLOY_API_KEYS_ONLY.md](docs/QUICK_DEPLOY_API_KEYS_ONLY.md) |
 | Railway (AR) | [docs/RAILWAY_DEPLOY_GUIDE_AR.md](docs/RAILWAY_DEPLOY_GUIDE_AR.md) |
 | Railway production policy | [docs/ops/RAILWAY_PRODUCTION_POLICY_AR.md](docs/ops/RAILWAY_PRODUCTION_POLICY_AR.md) · [RAILWAY_PRODUCTION_SETTINGS_AR.md](docs/ops/RAILWAY_PRODUCTION_SETTINGS_AR.md) · `python scripts/verify_railway_production_config.py` · **`bash scripts/founder_production_smoke.sh`** (Windows: `.ps1`) · `python scripts/run_founder_production_gates.py` |
@@ -112,7 +119,7 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 | Dealix Cloud UI map | [docs/product/DEALIX_CLOUD_UI_MAP.md](docs/product/DEALIX_CLOUD_UI_MAP.md) — frontend hub at `/[locale]/cloud` |
 | Frontend API base | `NEXT_PUBLIC_API_URL` (default `http://localhost:8000`) |
 
-Production env minimums match `DEPLOYMENT.md` (`APP_SECRET_KEY`, `DATABASE_URL`, Moyasar when billing). Keep `ENVIRONMENT=development` locally; never enable auto external sends in any environment.
+Production env minimums match `docs/contributing/DEPLOYMENT.md` (`APP_SECRET_KEY`, `DATABASE_URL`, Moyasar when billing). Keep `ENVIRONMENT=development` locally; never enable auto external sends in any environment.
 
 ### Environment — frontend API URL
 

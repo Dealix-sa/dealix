@@ -21,6 +21,9 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from auto_client_acquisition.pipelines.saudi_dimensions import (
+    compute_saudi_score_board,
+)
 from scripts.dealix_daily_lead_prep import (
     DailyLeadBoard,
     LeadCandidate,
@@ -30,10 +33,6 @@ from scripts.dealix_daily_lead_prep import (
     run_daily_prep,
     write_board,
 )
-from auto_client_acquisition.pipelines.saudi_dimensions import (
-    compute_saudi_score_board,
-)
-
 
 # ─────────────────────────────────────────────────────────────────────
 # Empty / minimal cases (3 tests)
