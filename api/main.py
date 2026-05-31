@@ -415,6 +415,10 @@ def create_app() -> FastAPI:
     # Weekly business reports — /api/v1/reports
     app.include_router(weekly_reports_router.router)
 
+    # Saudi Revenue Advisor — Saudi-market-specific B2B revenue guidance
+    from api.routers import saudi_revenue_advisor as saudi_revenue_advisor_router
+    app.include_router(saudi_revenue_advisor_router.router)
+
     # Wave 17 — Payment webhooks + Founder alert review
     from api.routers import payments_webhook as payments_webhook_router
     from api.routers import founder_alerts as founder_alerts_router
