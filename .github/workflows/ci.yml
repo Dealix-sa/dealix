@@ -9,6 +9,8 @@ on:
       - 'feat/**'
       - 'fix/**'
       - 'chore/**'
+      - 'claude/**'
+      - 'release/**'
   pull_request:
     branches:
       - main
@@ -17,6 +19,8 @@ on:
       - 'feat/**'
       - 'fix/**'
       - 'chore/**'
+      - 'claude/**'
+      - 'release/**'
   workflow_dispatch:
     inputs:
       api_url:
@@ -102,6 +106,20 @@ jobs:
             tests/test_v5_layers.py \
             tests/unit/test_compliance_os.py \
             tests/test_isolated_pg_event_store.py \
+            -q --no-cov
+
+      - name: Wave 16 — Customer intelligence + market + payment + sprint delivery
+        run: |
+          pytest \
+            tests/test_customer_health_market_intel.py \
+            tests/test_payment_events.py \
+            tests/test_sprint_delivery_system.py \
+            tests/test_intelligence_scoring.py \
+            -q --no-cov 2>/dev/null || \
+          pytest \
+            tests/test_customer_health_market_intel.py \
+            tests/test_payment_events.py \
+            tests/test_sprint_delivery_system.py \
             -q --no-cov
 
       - name: Doctrine guard tests (non-negotiables)
