@@ -709,19 +709,16 @@ class TestTokenCacheWithLRUOnly:
 
 class TestGetTokenCache:
     def test_returns_token_cache(self):
-        from core.token_optimizer.cache import TokenCache, get_token_cache
-        # Reset singleton
         import core.token_optimizer.cache as cache_mod
         cache_mod._cache_instance = None
-        c = get_token_cache()
-        assert isinstance(c, TokenCache)
+        c = cache_mod.get_token_cache()
+        assert isinstance(c, cache_mod.TokenCache)
 
     def test_singleton(self):
-        from core.token_optimizer.cache import get_token_cache
         import core.token_optimizer.cache as cache_mod
         cache_mod._cache_instance = None
-        c1 = get_token_cache()
-        c2 = get_token_cache()
+        c1 = cache_mod.get_token_cache()
+        c2 = cache_mod.get_token_cache()
         assert c1 is c2
 
 
@@ -737,7 +734,6 @@ class TestLangfuseTracker:
     def test_track_generation_noop_when_disabled(self):
         from core.token_optimizer.tracker import LangfuseTracker
         tracker = LangfuseTracker()
-        # Should not raise even when disabled
         tracker.track_generation(
             name="test",
             model="claude-sonnet-4-6",
@@ -759,13 +755,10 @@ class TestLangfuseTracker:
     def test_flush_noop_when_disabled(self):
         from core.token_optimizer.tracker import LangfuseTracker
         tracker = LangfuseTracker()
-        tracker.flush()  # Should not raise
+        tracker.flush()
 
     def test_get_tracker_singleton(self):
-        # Calling get_tracker twice should return the same instance
-        # (module-level singleton)
-        from core.token_optimizer import tracker as tracker_mod
-        # Reset singleton for test isolation
+        import core.token_optimizer.tracker as tracker_mod
         tracker_mod._tracker = None
         t1 = tracker_mod.get_tracker()
         t2 = tracker_mod.get_tracker()
@@ -812,12 +805,21 @@ class TestTokenUsageMiddleware:
 
 class TestPackageExports:
     def test_all_exports_importable(self):
-        import core.token_optimizer as to
-        assert hasattr(to, "COST_TABLE")
-        assert hasattr(to, "count_tokens")
-        assert hasattr(to, "estimate_cost")
-        assert hasattr(to, "BudgetGuard")
-        assert hasattr(to, "BudgetConfig")
-        assert hasattr(to, "BudgetExceededError")
-        assert hasattr(to, "LangfuseTracker")
-        assert hasattr(to, "get_tracker")
+        from core.token_optimizer import (
+            COST_TABLE,
+            BudgetConfig,
+            BudgetExceededError,
+            BudgetGuard,
+            LangfuseTracker,
+            count_tokens,
+            estimate_cost,
+            get_tracker,
+        )
+        assert COST_TABLE
+        assert BudgetConfig
+        assert BudgetExceededError
+        assert BudgetGuard
+        assert LangfuseTracker
+        assert count_tokens
+        assert estimate_cost
+        assert get_tracker
