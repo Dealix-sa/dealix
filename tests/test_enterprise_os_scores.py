@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from auto_client_acquisition.enterprise_os import (
+    CapabilityScores,
     CapitalAssetBand,
     CapitalAssetScoreInputs,
-    CapabilityScores,
     VentureGateInputs,
     capital_asset_band,
     compute_capital_asset_score,

@@ -97,7 +97,7 @@ def test_revenue_intelligence_pipeline_to_founder_summary() -> None:
 def test_diagnostic_intent_axes() -> None:
     client = TestClient(app)
     body = {
-        "axes_0_5": {k: 3 for k in ("revenue", "data", "workflow", "knowledge", "governance", "reporting")},
+        "axes_0_5": dict.fromkeys(("revenue", "data", "workflow", "knowledge", "governance", "reporting"), 3),
     }
     r = client.post("/api/v1/diagnostic/intent", json=body)
     assert r.status_code == 200

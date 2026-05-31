@@ -31,7 +31,7 @@ import os
 import re
 import sys
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from io import BytesIO
 from typing import Any
 
@@ -114,7 +114,7 @@ def build_manifest(email: str | None, phone: str | None,
                    data: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
     return {
         "dsar_export_version": 1,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "subject": {"email": email, "phone": phone},
         "tables": {t: len(rows) for t, rows in data.items()},
         "total_rows": sum(len(rows) for rows in data.values()),

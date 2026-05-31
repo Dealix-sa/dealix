@@ -12,7 +12,6 @@ from auto_client_acquisition.designops.generators.customer_room_dashboard import
     _SECTIONS,
 )
 
-
 _NO_DATA = "no data yet"
 _NO_DATA_AR = "لا بيانات بعد"
 

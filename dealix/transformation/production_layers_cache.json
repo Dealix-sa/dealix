@@ -1,6 +1,6 @@
 {
   "verdict": "WARN",
-  "overall_pct": 73,
+  "overall_pct": 65,
   "api_base": "https://api.dealix.me",
   "frontend_base": "https://dealix.me",
   "trust_layer": {
@@ -63,11 +63,13 @@
     {
       "id": 1,
       "name": "Railway P0 secrets",
-      "pct": 100,
+      "pct": 50,
       "repo_ok": true,
-      "api_env_ready": true,
-      "missing_required": [],
-      "blocker_ar": ""
+      "api_env_ready": false,
+      "missing_required": [
+        "ENVIRONMENT"
+      ],
+      "blocker_ar": "أكمل متغيرات API: ENVIRONMENT"
     },
     {
       "id": 2,
@@ -124,10 +126,12 @@
     }
   ],
   "blockers_ar": [
+    "أكمل متغيرات API: ENVIRONMENT",
     "dealix.me يشير إلى GitHub Pages — انقل DNS إلى Railway Frontend (docs/ops/DEALIX_ME_FRONTEND_DNS_RAILWAY_AR.md)",
     "Phase 0–1: أول دفعة + Proof Pack (بعد Layer 0–4)"
   ],
   "founder_next_ar": [
+    "أكمل متغيرات API: ENVIRONMENT",
     "dealix.me يشير إلى GitHub Pages — انقل DNS إلى Railway Frontend (docs/ops/DEALIX_ME_FRONTEND_DNS_RAILWAY_AR.md)",
     "Phase 0–1: أول دفعة + Proof Pack (بعد Layer 0–4)"
   ]

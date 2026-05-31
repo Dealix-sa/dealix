@@ -40,7 +40,6 @@ from auto_client_acquisition.email.deliverability_check import (
     check_deliverability,
 )
 
-
 # ─────────────────────────────────────────────────────────────────────
 # SSRF Guard (8 tests)
 # ─────────────────────────────────────────────────────────────────────

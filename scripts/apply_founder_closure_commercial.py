@@ -205,7 +205,7 @@ def _apply_phase_deal(deal: dict[str, Any]) -> list[str]:
         "discovery_seven_complete": True,
         "scope_signed": True,
     }
-    close_path = {k: True for k in FUNNEL_TYPES}
+    close_path = dict.fromkeys(FUNNEL_TYPES, True)
     doc["close_path"] = close_path
     doc["payment"] = {
         "amount_sar": deal.get("amount_sar"),

@@ -11,8 +11,8 @@ from dealix.commercial_ops.social_queue import get_post_for_date, load_social_qu
 __all__ = [
     "COMMERCIAL_EVIDENCE_TYPES",
     "count_evidence_events",
-    "load_evidence_rows",
-    "sync_rows_to_api",
     "get_post_for_date",
+    "load_evidence_rows",
     "load_social_queue",
+    "sync_rows_to_api",
 ]

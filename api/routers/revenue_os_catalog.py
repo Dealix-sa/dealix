@@ -13,7 +13,6 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 
 from api.security.api_key import require_admin_key
-
 from auto_client_acquisition.customer_readiness.scores import compute_pricing_power_score
 from auto_client_acquisition.growth_beast.market_radar import MarketSignal
 from auto_client_acquisition.revenue_os import (
