@@ -709,16 +709,14 @@ class TestTokenCacheWithLRUOnly:
 
 class TestGetTokenCache:
     def test_returns_token_cache(self):
-        import core.token_optimizer.cache as cache_mod
-        cache_mod._cache_instance = None
-        c = cache_mod.get_token_cache()
-        assert isinstance(c, cache_mod.TokenCache)
+        from core.token_optimizer.cache import TokenCache, get_token_cache
+        c = get_token_cache()
+        assert isinstance(c, TokenCache)
 
     def test_singleton(self):
-        import core.token_optimizer.cache as cache_mod
-        cache_mod._cache_instance = None
-        c1 = cache_mod.get_token_cache()
-        c2 = cache_mod.get_token_cache()
+        from core.token_optimizer.cache import get_token_cache
+        c1 = get_token_cache()
+        c2 = get_token_cache()
         assert c1 is c2
 
 
@@ -758,11 +756,11 @@ class TestLangfuseTracker:
         tracker.flush()
 
     def test_get_tracker_singleton(self):
-        import core.token_optimizer.tracker as tracker_mod
-        tracker_mod._tracker = None
-        t1 = tracker_mod.get_tracker()
-        t2 = tracker_mod.get_tracker()
+        from core.token_optimizer.tracker import LangfuseTracker, get_tracker
+        t1 = get_tracker()
+        t2 = get_tracker()
         assert t1 is t2
+        assert isinstance(t1, LangfuseTracker)
 
 
 class TestTokenUsageMiddleware:
