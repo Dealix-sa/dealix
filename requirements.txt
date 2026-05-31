@@ -38,7 +38,6 @@ psycopg[binary]>=3.2,<4
 aiosqlite>=0.20.0
 alembic>=1.13.0
 redis[hiredis]>=5.1.0
-redisvl>=0.3.0
 motor>=3.6.0
 
 # CLI / UX
