@@ -29,6 +29,7 @@
 [3] Managed Revenue Ops             2,999–4,999 SAR/شهر ← بعد pilot
 [4] Executive Command Center        7,500–15,000 SAR/شهر ← بعد 3 pilots
 [5] Agency Partner OS               مخصص + rev-share ← بعد 3 proof packs
+[6] Custom Systems / Custom AI      مخصص ← نظام داخلي مخصّص (بعد 3 تجارب مدفوعة)
 ```
 
 ---
@@ -146,6 +147,23 @@
 
 ---
 
+## الخدمة 6: Custom Systems / Custom AI
+**بناء نظام داخلي مخصّص بالكامل**
+
+| العنصر | التفاصيل |
+|--------|----------|
+| **السعر** | **مخصص** (نطاق مخصّص؛ 50/50) — `recommended_draft` حتى تُحدِّده التجارب |
+| **العميل المستهدف** | عميل أكمل ≥ 3 تجارب مدفوعة ويحتاج نظاماً داخلياً مخصّصاً |
+| **المشكلة التي يحلها** | "نحتاج نظاماً داخلياً بهوية تصميم وبنية خاصة بنا، محكوماً بالكامل" |
+| **المخرجات** | (1) ملف تصميم مخصّص per-client، (2) مخطط بنية/معمارية النظام، (3) مواصفات نظام داخلي **كاملة وشاملة** ثنائية اللغة، (4) Proof Pack من 14 قسماً، (5) أصل Capital واحد على الأقل |
+| **متطلبات الفتح (إلزامي)** | ≥ 3 تجارب مدفوعة مكتملة + Proof Pack موثّق + مالك سير عمل معروف. **لا تخصيص قبل 3 تجارب مدفوعة** — مُطبَّقة في الكود (`custom_systems_os/entry_gate.py`) |
+| **الأدوات** | `auto_client_acquisition/custom_systems_os/` · `POST /api/v1/custom-systems/run` · `scripts/dealix_custom_system.py --demo` |
+| **الاستثناءات** | لا white-label كامل، لا ضمان نتائج، لا إرسال خارجي مؤتمت، Source Passport إلزامي |
+| **نمط التسليم اليوم** | بقيادة المؤسس / شبه-مؤتمت — القدرة جاهزة لكن التسليم يتطلّب تشغيلاً وموافقةً يدويةً |
+| **وضع الإجراء** | `approval_required` |
+
+---
+
 ## ملخص الأسعار السريع
 
 | الخدمة | السعر | الوضع | نمط التسليم |
@@ -156,8 +174,10 @@
 | Managed Revenue Ops | 2,999–4,999 SAR/شهر | بعد pilot | بقيادة المؤسس / شبه-مؤتمت |
 | Executive Command Center | 7,500–15,000 SAR/شهر | بعد 3 pilots | بقيادة المؤسس / شبه-مؤتمت |
 | Agency Partner OS | مخصص + rev-share | بعد 3 proof packs | بقيادة المؤسس / شبه-مؤتمت |
+| Custom Systems / Custom AI | مخصص | بعد 3 تجارب مدفوعة | بقيادة المؤسس / شبه-مؤتمت |
 
 ---
 
-*Version 1.1 | No guaranteed claims | Missing data = insufficient_data |
-Delivery-mode disclosure added 2026-05-16 — rungs 3–5 are founder-assisted.*
+*Version 1.2 | No guaranteed claims | Missing data = insufficient_data |
+Delivery-mode disclosure added 2026-05-16 — rungs 3–6 are founder-assisted. |
+Custom Systems rung added 2026-05-30 — gate enforced in `custom_systems_os/entry_gate.py`.*

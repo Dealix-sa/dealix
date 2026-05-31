@@ -22,6 +22,8 @@ See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings),
 - `scripts/` — operational and verification helpers used by CI and launch workflows.
 - `docs/` — architecture, launch runbooks, compliance, and product docs.
 
+**Custom Systems OS (governed bespoke design + structure + internal-system builder):** `auto_client_acquisition/custom_systems_os/` · API `POST /api/v1/custom-systems/run` · CLI `python scripts/dealix_custom_system.py --demo` · entry gate (≥3 paid pilots) enforced in `custom_systems_os/entry_gate.py` · see [docs/product/CUSTOM_SYSTEMS_OS.md](docs/product/CUSTOM_SYSTEMS_OS.md). Reproducible web-session bootstrap: `bash scripts/dealix_web_session_bootstrap.sh --force`.
+
 ### Primary goals for agents
 - Make small, safe changes only when asked.
 - Prefer fixing or clarifying existing code over adding new features.
