@@ -5,8 +5,9 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
-from auto_client_acquisition.approval_center import get_default_approval_store
 from auto_client_acquisition.approval_center.schemas import ApprovalRequest
+from auto_client_acquisition.approval_center import get_default_approval_store
+
 from dealix.revenue_ops_autopilot.outreach_templates import build_outreach_draft
 from dealix.revenue_ops_autopilot.schemas import EvidenceEvent, FunnelLeadRecord
 from dealix.revenue_ops_autopilot.scoring import compute_lead_score, suggested_stage_from_score
@@ -123,7 +124,7 @@ class RevenueAutopilotOrchestrator:
                     lead_id=lead.id,
                 )
                 get_default_approval_store().create(apr)
-        except Exception:
+        except Exception:  # noqa: BLE001
             pass
 
         try:
@@ -142,14 +143,14 @@ class RevenueAutopilotOrchestrator:
                     "dealix_lead_id": lead.id,
                 },
             )
-        except Exception:
+        except Exception:  # noqa: BLE001
             pass
 
         try:
             from dealix.revenue_ops_autopilot.crm_bridge import sync_lead_to_hubspot
 
             sync_lead_to_hubspot(lead, store=self.store)
-        except Exception:
+        except Exception:  # noqa: BLE001
             pass
 
         return lead

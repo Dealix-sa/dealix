@@ -33,10 +33,8 @@ from auto_client_acquisition.intelligence.dealix_task_registry import (
 from auto_client_acquisition.intelligence.local_model_client import (
     LocalModelResponse,
     LocalModelUnavailable,
-    is_local_configured,
-)
-from auto_client_acquisition.intelligence.local_model_client import (
     generate as local_generate,
+    is_local_configured,
 )
 
 RouterStatus = Literal[
@@ -278,7 +276,6 @@ def status_summary() -> dict[str, object]:
     - cloud creds present?
     """
     import os
-
     from auto_client_acquisition.intelligence.dealix_task_registry import all_tasks
     from auto_client_acquisition.intelligence.local_model_client import (
         _detect_provider,

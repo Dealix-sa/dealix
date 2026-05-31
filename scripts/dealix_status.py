@@ -33,12 +33,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 def _safe(fn, default):
     try:
         return fn()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         return {"_error": f"{type(exc).__name__}: {exc}", "_default": default}
 
 
 def _service_counts() -> dict[str, Any]:
-    from auto_client_acquisition.self_growth_os import (
+    from auto_client_acquisition.self_growth_os import (  # noqa: WPS433
         service_activation_matrix,
     )
     return service_activation_matrix.counts()
@@ -108,7 +108,7 @@ def _live_gate_status() -> dict[str, str]:
         from auto_client_acquisition.finance_os import is_live_charge_allowed
         live = is_live_charge_allowed()
         out["live_charge"] = "BLOCKED" if not live.get("allowed") else "ALLOWED"
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         out["live_charge"] = f"UNKNOWN ({type(exc).__name__})"
 
     # 2. WhatsApp live send — settings flag
@@ -117,7 +117,7 @@ def _live_gate_status() -> dict[str, str]:
         settings = get_settings()
         flag = getattr(settings, "whatsapp_allow_live_send", False)
         out["whatsapp_live_send"] = "BLOCKED" if not flag else "ALLOWED"
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         out["whatsapp_live_send"] = f"UNKNOWN ({type(exc).__name__})"
 
     # 3. Email live send — no flag exists, so always BLOCKED
@@ -136,7 +136,7 @@ def _live_gate_status() -> dict[str, str]:
         out["linkedin_and_scraping"] = (
             "BLOCKED" if forbidden_ok else "MISCONFIGURED"
         )
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         out["linkedin_and_scraping"] = f"UNKNOWN ({type(exc).__name__})"
 
     return out

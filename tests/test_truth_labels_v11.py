@@ -85,5 +85,5 @@ def test_doc_has_bilingual_summary() -> None:
     # Arabic content present
     assert any(
         ch in text
-        for ch in ["ا", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "ه", "و", "ي"]
+        for ch in "ا ب ت ث ج ح خ د ذ ر ز س ش ص ض ط ظ ع غ ف ق ك ل م ن ه و ي".split()
     )

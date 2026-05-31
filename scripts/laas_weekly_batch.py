@@ -36,7 +36,7 @@ import json
 import os
 import sys
 import time
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -85,7 +85,7 @@ async def _run_one_customer(
     result: dict = {
         "handle": handle,
         "target_count": target_count,
-        "started_at": datetime.now(UTC).isoformat(),
+        "started_at": datetime.now(timezone.utc).isoformat(),
         "dry_run": dry_run,
     }
 
@@ -126,7 +126,7 @@ def _write_run_report(reports: list[dict]) -> str:
     out_path.write_text(
         json.dumps(
             {
-                "ran_at": datetime.now(UTC).isoformat(),
+                "ran_at": datetime.now(timezone.utc).isoformat(),
                 "customers_run": len(reports),
                 "reports": reports,
             },

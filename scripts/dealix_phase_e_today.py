@@ -81,7 +81,7 @@ def _load_first_3_board() -> dict[str, Any]:
         }
     try:
         data = json.loads(json_path.read_text(encoding="utf-8"))
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         return {
             "present": False,
             "reason": f"failed to load: {type(exc).__name__}",
@@ -139,7 +139,7 @@ def build_today_snapshot() -> dict[str, Any]:
         "ksa_time": now_ksa.strftime("%H:%M"),
         "title_ar": f"يوم {now_ksa.date().isoformat()} — Phase E",
         "title_en": f"Day {now_ksa.date().isoformat()} — Phase E",
-        "hard_gates": dict.fromkeys(_HARD_GATES, "BLOCKED"),
+        "hard_gates": {gate: "BLOCKED" for gate in _HARD_GATES},
         "checklist": list(_DAILY_CHECKLIST),
         "first_3_board": board,
         "next_best_action": _next_best_action(board),

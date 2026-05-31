@@ -9,7 +9,7 @@ import json
 import os
 import threading
 import uuid
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from typing import Any
 
 from auto_client_acquisition.persistence.operational_stream_mirror import mirror_append
@@ -43,7 +43,7 @@ def record_event(
         "is_known_type": is_known_event_type(event_type),
         "customer_handle": customer_handle,
         "payload": safe_payload,
-        "recorded_at": datetime.now(UTC).isoformat(),
+        "recorded_at": datetime.now(timezone.utc).isoformat(),
         "safety_summary": "pii_redacted_on_insert",
     }
     _ensure_dir()

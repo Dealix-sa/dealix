@@ -17,9 +17,7 @@ from auto_client_acquisition.client_maturity_os.offer_matrix import (
     level1_first_track,
     retainer_eligibility_met,
 )
-from auto_client_acquisition.client_maturity_os.progression_playbooks import (
-    progression_deliverables,
-)
+from auto_client_acquisition.client_maturity_os.progression_playbooks import progression_deliverables
 
 
 def _dims(**kwargs: int) -> ClientMaturityDimensions:
@@ -68,9 +66,7 @@ def test_level3_blocks_external_automation() -> None:
 
 
 def test_derive_readiness_blockers_includes_shadow() -> None:
-    from auto_client_acquisition.client_maturity_os.maturity_dashboard import (
-        derive_readiness_blockers,
-    )
+    from auto_client_acquisition.client_maturity_os.maturity_dashboard import derive_readiness_blockers
 
     inp = ClientMaturityInputs(
         dimensions=_dims(),

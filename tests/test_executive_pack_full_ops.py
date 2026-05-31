@@ -1,8 +1,6 @@
 """Phase 8 — Per-customer Executive Pack tests."""
 from __future__ import annotations
 
-from datetime import UTC
-
 import pytest
 from httpx import ASGITransport, AsyncClient
 
@@ -72,7 +70,6 @@ async def test_pack_reflects_leadops_records() -> None:
 async def test_pack_reflects_support_breaches() -> None:
     """Backdate a ticket and confirm SLA breach surfaces in support kpis."""
     from datetime import datetime, timedelta, timezone
-
     from auto_client_acquisition.support_inbox.state_store import _INDEX
     from auto_client_acquisition.support_os.ticket import create_ticket
 
@@ -83,7 +80,7 @@ async def test_pack_reflects_support_breaches() -> None:
         category="payment",
         priority="p0",
     )
-    t.sla_due_at = datetime.now(UTC) - timedelta(hours=3)
+    t.sla_due_at = datetime.now(timezone.utc) - timedelta(hours=3)
     _INDEX[t.id] = t
 
     from api.main import app

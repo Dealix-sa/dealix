@@ -1,18 +1,11 @@
 ﻿"""Smoke tests for master-plan wave modules."""
 from auto_client_acquisition.approval_center.postgres_store import PostgresApprovalStore
 from auto_client_acquisition.approval_center.schemas import ApprovalRequest
-from auto_client_acquisition.revenue_science.pricing_outcome import (
-    PricingOutcomeInput,
-    simulate_pricing_outcome,
-)
-from auto_client_acquisition.workflow_os_v10.service_session_executor import (
-    execute_step,
-    list_workflow_steps,
-)
+from auto_client_acquisition.revenue_science.pricing_outcome import PricingOutcomeInput, simulate_pricing_outcome
+from auto_client_acquisition.workflow_os_v10.service_session_executor import execute_step, list_workflow_steps
 from dealix.commercial_ops.aeo_meta import build_aeo_snapshot
 from dealix.commercial_ops.agent_eval_harness import run_agent_eval_harness
 from dealix.commercial_ops.gtm_blitz_tracker import build_gtm_blitz_snapshot
-
 
 def test_service_session_executor_lists_seven_steps():
     assert len(list_workflow_steps()) == 7

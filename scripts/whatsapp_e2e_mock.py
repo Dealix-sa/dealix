@@ -144,7 +144,7 @@ def main() -> int:
     else:
         print(f"  HTTP {result['http_status']} · {result['elapsed_ms']}ms")
         print(f"  Verdict: {result['verdict']}")
-        if result.get("lead_ids"):
+        if "lead_ids" in result and result["lead_ids"]:
             print(f"  Lead IDs: {result['lead_ids']}")
 
     return result["exit_code"]

@@ -2,11 +2,6 @@
 trackable event. Aggregated into a learning_debt signal that drives the
 weekly capital review.
 """
-from auto_client_acquisition.friction_log.aggregator import (
-    FrictionAggregate,
-    aggregate,
-)
-from auto_client_acquisition.friction_log.sanitizer import sanitize_notes
 from auto_client_acquisition.friction_log.schemas import (
     FrictionEvent,
     FrictionKind,
@@ -17,6 +12,11 @@ from auto_client_acquisition.friction_log.store import (
     emit,
     list_events,
 )
+from auto_client_acquisition.friction_log.aggregator import (
+    FrictionAggregate,
+    aggregate,
+)
+from auto_client_acquisition.friction_log.sanitizer import sanitize_notes
 
 __all__ = [
     "FrictionAggregate",

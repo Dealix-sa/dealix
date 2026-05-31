@@ -35,11 +35,10 @@ from __future__ import annotations
 import json
 import os
 import threading
-from collections.abc import Iterable
 from dataclasses import dataclass
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any, Iterable, Literal
 
 # ─── Channels + purposes (deliberate enumerations) ───
 ALLOWED_CHANNELS = frozenset({
@@ -108,7 +107,7 @@ def grant(
         channel=channel,
         purpose=purpose,
         kind="grant",
-        occurred_at=occurred_at or datetime.now(UTC).isoformat(),
+        occurred_at=occurred_at or datetime.now(timezone.utc).isoformat(),
         source=source,
         proof_url=proof_url,
     )
@@ -132,7 +131,7 @@ def revoke(
         channel=channel,
         purpose=purpose,
         kind="revoke",
-        occurred_at=occurred_at or datetime.now(UTC).isoformat(),
+        occurred_at=occurred_at or datetime.now(timezone.utc).isoformat(),
         source=source,
     )
     _append(rec)
@@ -144,10 +143,11 @@ def _append(rec: ConsentRecord) -> bool:
     try:
         path = _path()
         _ensure_dir(path)
-        with _lock, path.open("a", encoding="utf-8") as f:
-            f.write(json.dumps(rec.__dict__, ensure_ascii=False) + "\n")
+        with _lock:
+            with path.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(rec.__dict__, ensure_ascii=False) + "\n")
         return True
-    except Exception:
+    except Exception:  # noqa: BLE001
         return False
 
 
@@ -167,9 +167,9 @@ def _all_records() -> list[ConsentRecord]:
                 try:
                     d = json.loads(line)
                     out.append(ConsentRecord(**d))
-                except Exception:
+                except Exception:  # noqa: BLE001
                     continue
-    except Exception:
+    except Exception:  # noqa: BLE001
         return []
     return out
 

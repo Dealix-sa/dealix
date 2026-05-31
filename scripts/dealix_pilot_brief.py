@@ -124,9 +124,9 @@ def render_markdown(b: dict) -> str:
     lines.append("")
     lines.append("## 💳 الدفع (يدوي — لا خصم آلي)")
     lines.append(f"- المبلغ: **{b['amount_sar']} ريال** ({b['amount_halalah']} هللة)")
-    lines.append("- الطريقة: تحويل بنكي يدوي")
-    lines.append("- المؤسس يؤكّد الاستلام يدوياً")
-    lines.append("- لا live charge")
+    lines.append(f"- الطريقة: تحويل بنكي يدوي")
+    lines.append(f"- المؤسس يؤكّد الاستلام يدوياً")
+    lines.append(f"- لا live charge")
     lines.append("")
     lines.append("## 📈 التزام الـ KPI (التزام، لا ضمان)")
     lines.append(f"- {b['kpi_commitment']['rule_ar']}")
@@ -158,7 +158,7 @@ def main() -> int:
     args = p.parse_args()
 
     if args.amount_sar > 499.0:
-        print("REFUSING: amount_sar > 499 (Sprint tier cap)", file=sys.stderr)
+        print(f"REFUSING: amount_sar > 499 (Sprint tier cap)", file=sys.stderr)
         return 2
 
     diagnostic_summary = None

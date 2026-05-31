@@ -13,9 +13,10 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from core.config.models import Provider, Task
 from core.llm.base import LLMResponse, Message
 from core.llm.router import ModelRouter, UsageRecord
+from core.config.models import Provider, Task
+
 
 # ── Fixtures ───────────────────────────────────────────────────────
 
@@ -155,7 +156,7 @@ async def test_router_concurrent_safety(mock_settings):
 
     call_count = 0
 
-    async def _increment_and_respond(**kwargs):
+    async def _increment_and_respond(**kwargs):  # noqa: ANN202
         nonlocal call_count
         call_count += 1
         await asyncio.sleep(0)  # yield — simulates I/O

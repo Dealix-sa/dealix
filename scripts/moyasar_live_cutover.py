@@ -24,8 +24,9 @@ import argparse
 import getpass
 import os
 import sys
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
+
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -88,7 +89,7 @@ def _test_sandbox_charge() -> bool:
             "Plumbing OK."
         )
         return True
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"❌ payment_ops import failed: {e}")
         return False
 
@@ -125,7 +126,7 @@ def main() -> int:
     print("  - A 1 SAR test charge succeeds + auto-refunds (see Moyasar dashboard)")
     print()
     print(
-        f"_Cutover prepared at {datetime.now(UTC).isoformat()}._\n"
+        f"_Cutover prepared at {datetime.now(timezone.utc).isoformat()}._\n"
         f"_Estimated outcomes are not guaranteed outcomes / النتائج التقديرية ليست نتائج مضمونة._"
     )
     return 0

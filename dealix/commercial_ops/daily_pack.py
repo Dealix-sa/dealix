@@ -9,12 +9,12 @@ from typing import Any
 
 from dealix.commercial_ops.doctrine import format_doctrine_markdown
 from dealix.commercial_ops.first_paid_tracker import analyze_first_paid_diagnostic
+from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 from dealix.commercial_ops.paths import (
     FOUNDER_BRIEFS_DIR,
     REPO_ROOT,
     WAR_ROOM_TODAY_JSON,
 )
-from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 
 
 def write_daily_pack_index(

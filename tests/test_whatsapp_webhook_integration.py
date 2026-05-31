@@ -18,6 +18,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+
 # ── GET verification handshake ──────────────────────────────────
 
 @pytest.mark.asyncio

@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 from httpx import ASGITransport, AsyncClient
 
+
 HTML = Path("landing/customer-portal.html").read_text(encoding="utf-8")
 JS = Path("landing/assets/js/customer-dashboard.js").read_text(encoding="utf-8")
 
@@ -70,7 +71,6 @@ async def test_demo_state_does_not_trigger_banner() -> None:
 def test_hard_gates_unchanged() -> None:
     """Phase 3 must not have changed any _HARD_GATES values."""
     import importlib
-
     import api.routers.customer_company_portal as ccp
     importlib.reload(ccp)
     # The old test_constitution_closure.test_portal_no_internal_leakage

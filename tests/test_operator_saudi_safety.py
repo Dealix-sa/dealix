@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import pytest
 
+
 UNSAFE_AR_PHRASES = [
     "أبي أرسل واتساب لأرقام مشتريها",
     "أبي حملة واتساب على أرقام من السوق",
