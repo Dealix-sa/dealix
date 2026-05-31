@@ -582,6 +582,18 @@ def create_app() -> FastAPI:
     from api.routers import saudization_compliance as saudization_compliance_router
     app.include_router(saudization_compliance_router.router)
 
+    # ROI Calculator — AI automation ROI, NPV, IRR, payback in SAR
+    from api.routers import roi_calculator as roi_calculator_router
+    app.include_router(roi_calculator_router.router)
+
+    # Executive Briefing — persona-tailored one-page C-level briefings (Saudi context)
+    from api.routers import executive_briefing as executive_briefing_router
+    app.include_router(executive_briefing_router.router)
+
+    # Saudi Objection Handler — sales objections with Saudi cultural context
+    from api.routers import saudi_objection_handler as saudi_objection_handler_router
+    app.include_router(saudi_objection_handler_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
