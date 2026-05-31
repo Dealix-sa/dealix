@@ -4,6 +4,10 @@ from __future__ import annotations
 
 import pytest
 
+from auto_client_acquisition.agent_identity_access_os import (
+    AgentSessionScope,
+    session_allows_context,
+)
 from auto_client_acquisition.agent_os import (
     AgentCard,
     AgentLifecycleState,
@@ -12,7 +16,6 @@ from auto_client_acquisition.agent_os import (
     register_agent,
     tool_allowed_mvp,
 )
-from auto_client_acquisition.agent_identity_access_os import AgentSessionScope, session_allows_context
 from auto_client_acquisition.secure_agent_runtime_os import (
     AgentRuntimeState,
     activate_kill_switch,

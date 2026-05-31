@@ -6,7 +6,6 @@ from pathlib import Path
 
 import pytest
 
-
 HTML_PATH = Path("landing/executive-command-center.html")
 JS_PATH = Path("landing/assets/js/executive-command-center.js")
 

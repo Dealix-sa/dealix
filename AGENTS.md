@@ -1,5 +1,33 @@
 # AGENTS.md
 
+## AI Coding Agent Guidance
+
+This file is the primary repo-specific guide for AI coding agents working in `dealix`.
+- Use this file first for local dev commands, repo conventions, and where to find detailed docs.
+- Do not duplicate long docs from `README.md` or `docs/`; link to them instead.
+- Preserve existing operational knowledge and avoid treating resolved issues as new bugs.
+
+### Token Optimization
+See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings), CLAUDE.md hygiene, session management, model routing (Haiku/Sonnet/Opus), MCP discipline, subagents, hooks, prompt templates, file handling, monitoring, git hygiene, and env config. Run `bash token-optimizer/12-environment-config/apply-all.sh` to apply all settings.
+
+### Repo anatomy
+- `api/` — FastAPI app entry, dependencies, middleware, 120+ routers, and schema definitions.
+- `api/routers/commercial.py` — 13 commercial chain endpoints (diagnostic→pilot→proof→payment→upsell). Skill: `@token-optimizer/02-claude-md/skills/commercial.md`
+- `dealix/commercial/` — commercial business logic (diagnostic_engine, warm_intro_generator, pilot_delivery, proof_builder, upsell_engine, case_study_generator, zatca_invoice).
+- `dealix/payments/` — Moyasar payment links. Sandbox by default; `MOYASAR_LIVE_MODE=1` for live.
+- `data/templates/` — AR/EN content templates (warm intros, proposals, proof packs, daily checklist).
+- `auto_client_acquisition/`, `autonomous_growth/`, `dealix/`, `core/`, `integrations/` — business logic, AI agents, policy, and execution workflows.
+- `frontend/` — Next.js dashboard and public landing experience. Skill: `@token-optimizer/02-claude-md/skills/frontend.md`
+- `tests/` — pytest-based test suites, including integration and regression bundles.
+- `scripts/` — operational and verification helpers used by CI and launch workflows.
+- `docs/` — architecture, launch runbooks, compliance, and product docs.
+
+### Primary goals for agents
+- Make small, safe changes only when asked.
+- Prefer fixing or clarifying existing code over adding new features.
+- Run/tests commands only when explicitly requested by the user.
+- Avoid changing deployment, secret, or production config unless the user explicitly asks.
+
 ## Cursor Cloud specific instructions
 
 ### Services Overview
@@ -51,7 +79,7 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **Commercial strategy doc:** [docs/business/DEALIX_COMMERCIAL_STRATEGY_AR.md](docs/business/DEALIX_COMMERCIAL_STRATEGY_AR.md) — `python3 scripts/generate_commercial_strategy_doc.py`
 - **Ops client pack (AR):** [docs/commercial/ops_client_pack/](docs/commercial/ops_client_pack/) — runbook + executive deck pptx
 - **Founder go-live (sell + verify + agents):** `bash scripts/founder_go_live_verify.sh` (Windows: `scripts/founder_go_live_verify.ps1`) — [FOUNDER_GO_LIVE_DAY0_AR.md](docs/ops/FOUNDER_GO_LIVE_DAY0_AR.md) · [FOUNDER_INTEGRATION_TRUTH_MATRIX_AR.md](docs/ops/FOUNDER_INTEGRATION_TRUTH_MATRIX_AR.md) · [FOUNDER_AGENT_PLAYBOOK_AR.md](docs/ops/FOUNDER_AGENT_PLAYBOOK_AR.md)
-- **Founder Operating System:** [FOUNDER_OPERATING_SYSTEM_AR.md](docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md) · **Comprehensive plan execution:** [FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md](docs/ops/FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md) · daily anchor [FOUNDER_DAILY_ANCHOR_AR.md](docs/ops/FOUNDER_DAILY_ANCHOR_AR.md) · **`python scripts/founder_comprehensive_plan_status.py`** · **أقوى خطة (138 مهمة):** · **`bash scripts/founder_one_command.sh`** (أمر واحد — أقصى أتمتة) · **`python scripts/verify_full_autonomous_ops_stack.py`** · **`python scripts/run_dealix_complete_autonomous_day.py`** · **`POST /api/v1/ops-autopilot/founder/complete-autonomous-day/run`** [FOUNDER_STRONGEST_PLAN_AR.md](docs/commercial/FOUNDER_STRONGEST_PLAN_AR.md) · **`python scripts/founder_strongest_plan_status.py`** · **`bash scripts/founder_weekly_loop.sh`** (Sunday gates; Windows: `.ps1`) · **`bash scripts/founder_cadence.sh`** (morning/evening/weekly) · **`bash scripts/run_founder_commercial_day.sh`** (canonical morning; Windows: `.ps1`; `--full` syncs evidence both ways) · **`bash scripts/verify_founder_ops_launch.sh`** (launch gate) · **`bash scripts/run_founder_revenue_day.sh`** (wrapper: commercial + `--with-business-now`)
+- **Founder Operating System:** [FOUNDER_OPERATING_SYSTEM_AR.md](docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md) · **Comprehensive plan execution:** [FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md](docs/ops/FOUNDER_COMPREHENSIVE_PLAN_EXECUTION_AR.md) · daily anchor [FOUNDER_DAILY_ANCHOR_AR.md](docs/ops/FOUNDER_DAILY_ANCHOR_AR.md) · **`python scripts/founder_comprehensive_plan_status.py`** · **CEO Master Plan:** [CEO_90_DAY_OKR_AR.md](docs/commercial/operations/CEO_90_DAY_OKR_AR.md) · **`python scripts/run_ceo_master_plan_status.py`** · **`python scripts/founder_daily_five_metrics.py`** · **`GET /api/v1/ops-autopilot/founder/ceo-master-plan`** · close tools: `phase_0_1_close_helper.py` · `gtm_conversation_log.py` · `render_diagnostic_proposal.py` · weekly retro: `founder_weekly_ceo_retro.py` · **أقوى خطة (138 مهمة):** · **`bash scripts/founder_one_command.sh`** (أمر واحد — أقصى أتمتة) · **`python scripts/verify_full_autonomous_ops_stack.py`** · **`python scripts/run_dealix_complete_autonomous_day.py`** · **`POST /api/v1/ops-autopilot/founder/complete-autonomous-day/run`** [FOUNDER_STRONGEST_PLAN_AR.md](docs/commercial/FOUNDER_STRONGEST_PLAN_AR.md) · **`python scripts/founder_strongest_plan_status.py`** · **`bash scripts/founder_weekly_loop.sh`** (Sunday gates; Windows: `.ps1`) · **`bash scripts/founder_cadence.sh`** (morning/evening/weekly) · **`bash scripts/run_founder_commercial_day.sh`** (canonical morning; Windows: `.ps1`; `--full` syncs evidence both ways) · **`bash scripts/verify_founder_ops_launch.sh`** (launch gate) · **`bash scripts/run_founder_revenue_day.sh`** (wrapper: commercial + `--with-business-now`)
 - **Founder ops UI:** `/[locale]/ops/founder` (90-min cockpit) · war-room · marketing (today + factory) · sales · partners · evidence · support — prod: `NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1` + server `DEALIX_ADMIN_API_KEY` (see `frontend/src/app/api/dealix-proxy/`)
 - **Integrations:** HubSpot sync on lead capture/war-room patch (`HUBSPOT_ACCESS_TOKEN`) · Calendly webhooks → `POST /api/v1/webhooks/calendly` · `CALENDLY_URL` in booking + outreach
 - **Company ready (founder — start here):** [DEALIX_COMPANY_READY_MASTER_AR.md](docs/company/DEALIX_COMPANY_READY_MASTER_AR.md) · `bash scripts/company_ready_verify.sh`
@@ -82,7 +110,7 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
 | Concern | Doc / command |
 | --- | --- |
-| Universal deploy | [DEPLOYMENT.md](DEPLOYMENT.md) |
+| Universal deploy | [docs/contributing/DEPLOYMENT.md](docs/contributing/DEPLOYMENT.md) |
 | API-keys-only quick path | [docs/QUICK_DEPLOY_API_KEYS_ONLY.md](docs/QUICK_DEPLOY_API_KEYS_ONLY.md) |
 | Railway (AR) | [docs/RAILWAY_DEPLOY_GUIDE_AR.md](docs/RAILWAY_DEPLOY_GUIDE_AR.md) |
 | Railway production policy | [docs/ops/RAILWAY_PRODUCTION_POLICY_AR.md](docs/ops/RAILWAY_PRODUCTION_POLICY_AR.md) · [RAILWAY_PRODUCTION_SETTINGS_AR.md](docs/ops/RAILWAY_PRODUCTION_SETTINGS_AR.md) · `python scripts/verify_railway_production_config.py` · **`bash scripts/founder_production_smoke.sh`** (Windows: `.ps1`) · `python scripts/run_founder_production_gates.py` |
@@ -91,7 +119,7 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 | Dealix Cloud UI map | [docs/product/DEALIX_CLOUD_UI_MAP.md](docs/product/DEALIX_CLOUD_UI_MAP.md) — frontend hub at `/[locale]/cloud` |
 | Frontend API base | `NEXT_PUBLIC_API_URL` (default `http://localhost:8000`) |
 
-Production env minimums match `DEPLOYMENT.md` (`APP_SECRET_KEY`, `DATABASE_URL`, Moyasar when billing). Keep `ENVIRONMENT=development` locally; never enable auto external sends in any environment.
+Production env minimums match `docs/contributing/DEPLOYMENT.md` (`APP_SECRET_KEY`, `DATABASE_URL`, Moyasar when billing). Keep `ENVIRONMENT=development` locally; never enable auto external sends in any environment.
 
 ### Environment — frontend API URL
 
@@ -106,7 +134,7 @@ APP_ENV=test pytest -v
 The full test suite has 500+ test files; full runs take ~15–20 minutes. Quick regression bundle:
 
 ```bash
-pytest tests/test_pg_event_store.py tests/test_model_router.py tests/test_integrations.py tests/test_v5_layers.py tests/unit/test_compliance_os.py tests/test_isolated_pg_event_store.py tests/test_saudi_targeting_profile.py tests/test_leads_batch_router.py tests/test_strategy_os_scoring.py tests/test_strategy_os_ai_readiness.py tests/test_data_os_quality.py tests/test_governance_os_draft_gate.py tests/test_delivery_os_framework.py tests/test_commercial_engagements_lead_intelligence.py tests/test_commercial_engagements_support_desk.py tests/test_commercial_engagements_quick_win_ops.py tests/test_commercial_roadmap_mvp.py tests/test_service_readiness_score.py tests/test_readiness_gates.py tests/test_db_sync_url.py tests/test_sync_weekly_ops_from_checklist_log.py tests/test_workflow_control_registry.py tests/test_populate_kpi_baselines_platform_signals.py -q --no-cov
+pytest tests/test_pg_event_store.py tests/test_model_router.py tests/test_integrations.py tests/test_v5_layers.py tests/unit/test_compliance_os.py tests/test_isolated_pg_event_store.py tests/test_saudi_targeting_profile.py tests/test_leads_batch_router.py tests/test_strategy_os_scoring.py tests/test_strategy_os_ai_readiness.py tests/test_data_os_quality.py tests/test_governance_os_draft_gate.py tests/test_delivery_os_framework.py tests/test_commercial_engagements_lead_intelligence.py tests/test_commercial_engagements_support_desk.py tests/test_commercial_engagements_quick_win_ops.py tests/test_commercial_roadmap_mvp.py tests/test_service_readiness_score.py tests/test_readiness_gates.py tests/test_db_sync_url.py tests/test_sync_weekly_ops_from_checklist_log.py tests/test_workflow_control_registry.py tests/test_populate_kpi_baselines_platform_signals.py tests/test_ceo_master_plan_status.py tests/test_founder_comprehensive_plan.py -q --no-cov
 ```
 
 `tests/test_revenue_os_catalog.py` (included in `scripts/revenue_os_master_verify.sh`) imports the FastAPI app stack and **requires optional deps from `requirements.txt`** (notably **`pyotp`**). Run `pip install -r requirements.txt` before that script or the catalog test locally.

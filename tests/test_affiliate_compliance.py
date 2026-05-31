@@ -23,6 +23,7 @@ def test_disclosure_detection():
 
 def test_partner_apply_api_blocks_bad_message():
     from fastapi.testclient import TestClient
+
     from api.main import app
 
     cli = TestClient(app)
@@ -44,6 +45,7 @@ def test_partner_apply_api_blocks_bad_message():
 def test_targeting_today_endpoint(monkeypatch):
     monkeypatch.setenv("ADMIN_API_KEYS", "dev")
     from fastapi.testclient import TestClient
+
     from api.main import app
 
     cli = TestClient(app)
@@ -59,6 +61,7 @@ def test_targeting_today_endpoint(monkeypatch):
 def test_marketing_calendar_patch(monkeypatch):
     monkeypatch.setenv("ADMIN_API_KEYS", "dev")
     from fastapi.testclient import TestClient
+
     from api.main import app
 
     cli = TestClient(app)

@@ -18,7 +18,7 @@ Hard rules verified:
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 import pytest
@@ -30,7 +30,6 @@ from auto_client_acquisition.customer_inbox_v10.schemas import (
     Conversation,
 )
 from auto_client_acquisition.outreach_window import check_outreach_window
-
 
 _KSA = ZoneInfo("Asia/Riyadh")
 
@@ -86,7 +85,7 @@ def test_routing_during_quiet_hours_blocks_via_window_check() -> None:
     assert routed["action_mode"] == "draft_only"
 
     # Now check the second gate — outreach window — at 23:00 KSA
-    now_utc = datetime(2026, 5, 6, 20, 0, tzinfo=timezone.utc)  # 23:00 KSA
+    now_utc = datetime(2026, 5, 6, 20, 0, tzinfo=UTC)  # 23:00 KSA
     last_inbound = now_utc - timedelta(hours=1)
     window = check_outreach_window(last_inbound_at=last_inbound, now=now_utc)
     assert window.allowed is False
@@ -99,7 +98,7 @@ def test_routing_during_active_hours_passes_both_gates() -> None:
     routed = route_to_channel(conv, Channel.INBOUND_WHATSAPP)
     assert routed["action_mode"] == "draft_only"
 
-    now_utc = datetime(2026, 5, 6, 9, 0, tzinfo=timezone.utc)  # 12:00 KSA
+    now_utc = datetime(2026, 5, 6, 9, 0, tzinfo=UTC)  # 12:00 KSA
     last_inbound = now_utc - timedelta(hours=1)
     window = check_outreach_window(last_inbound_at=last_inbound, now=now_utc)
     assert window.allowed is True
@@ -111,7 +110,7 @@ def test_routing_at_midnight_ksa_blocks_send_via_window() -> None:
     routed = route_to_channel(conv, Channel.INBOUND_WHATSAPP)
     assert routed["action_mode"] == "draft_only"
 
-    now_utc = datetime(2026, 5, 6, 21, 0, tzinfo=timezone.utc)  # 00:00 KSA next day
+    now_utc = datetime(2026, 5, 6, 21, 0, tzinfo=UTC)  # 00:00 KSA next day
     last_inbound = now_utc - timedelta(hours=1)
     window = check_outreach_window(last_inbound_at=last_inbound, now=now_utc)
     assert window.allowed is False
@@ -124,7 +123,7 @@ def test_routing_at_8am_ksa_active_again() -> None:
     routed = route_to_channel(conv, Channel.INBOUND_WHATSAPP)
     assert routed["action_mode"] == "draft_only"
 
-    now_utc = datetime(2026, 5, 6, 5, 0, tzinfo=timezone.utc)  # 08:00 KSA
+    now_utc = datetime(2026, 5, 6, 5, 0, tzinfo=UTC)  # 08:00 KSA
     last_inbound = now_utc - timedelta(hours=2)
     window = check_outreach_window(last_inbound_at=last_inbound, now=now_utc)
     assert window.allowed is True
@@ -148,7 +147,7 @@ def test_consent_granted_outside_72h_window_blocks_via_re_engagement() -> None:
     routed = route_to_channel(conv, Channel.INBOUND_WHATSAPP)
     assert routed["action_mode"] == "draft_only"
 
-    now_utc = datetime(2026, 5, 6, 12, 0, tzinfo=timezone.utc)  # 15:00 KSA
+    now_utc = datetime(2026, 5, 6, 12, 0, tzinfo=UTC)  # 15:00 KSA
     last_inbound = now_utc - timedelta(days=4)
     window = check_outreach_window(last_inbound_at=last_inbound, now=now_utc)
     assert window.allowed is False

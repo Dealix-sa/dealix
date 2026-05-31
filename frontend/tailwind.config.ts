@@ -11,18 +11,32 @@ const config: Config = {
     extend: {
       fontFamily: {
         arabic: ["'Noto Sans Arabic'", "'IBM Plex Arabic'", "sans-serif"],
-        display: ["'Syne'", "'Noto Sans Arabic'", "sans-serif"],
-        mono: ["'JetBrains Mono'", "monospace"],
+        display: ["'Poppins'", "'Cairo'", "sans-serif"],
+        body: ["'Inter'", "'Tajawal'", "sans-serif"],
+        mono: ["'IBM Plex Mono'", "monospace"],
       },
       colors: {
-        // Saudi-inspired palette
+        // Brand palette
+        navy: {
+          50: "#e6edf5",
+          100: "#ccdaeb",
+          200: "#99b5d7",
+          300: "#6690c3",
+          400: "#336baf",
+          500: "#001F3F",
+          600: "#001832",
+          700: "#001226",
+          800: "#000c19",
+          900: "#00060d",
+          950: "#000306",
+        },
         gold: {
           50: "#fdfbf0",
           100: "#faf4d0",
           200: "#f4e89f",
           300: "#edd463",
           400: "#e4bf2e",
-          500: "#C9A96E",
+          500: "#D4AF37",
           600: "#b8861a",
           700: "#956414",
           800: "#7a4f14",

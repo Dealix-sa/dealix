@@ -30,7 +30,6 @@ from auto_client_acquisition.security_privacy import (
     scan_text_for_secrets,
 )
 
-
 # ════════════════════ proof_ledger ════════════════════
 
 
@@ -311,8 +310,8 @@ def test_data_minimization_unknown_raises():
 @pytest.mark.asyncio
 async def test_proof_ledger_record_event_endpoint(tmp_path: Path):
     """Substitute the default ledger with a test-scoped one for safety."""
-    from auto_client_acquisition.proof_ledger import file_backend as fb
     from api.main import app
+    from auto_client_acquisition.proof_ledger import file_backend as fb
 
     test_ledger = FileProofLedger(base_dir=tmp_path)
     transport = ASGITransport(app=app)

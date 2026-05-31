@@ -11,7 +11,6 @@ from auto_client_acquisition.partnership_os import (
     reset_referrals,
 )
 
-
 # ─────────────── Pure-function tests ────────────
 
 

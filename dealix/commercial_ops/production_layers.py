@@ -68,7 +68,7 @@ def _probe_head(url: str, *, timeout_sec: float = 12.0) -> dict[str, Any]:
             "server": headers.get("server", ""),
             "location": headers.get("location", ""),
         }
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         return {"probed": True, "url": url, "ok": False, "error": str(exc)}
 
 
@@ -251,7 +251,7 @@ def layer_5_revenue() -> dict[str, Any]:
             "pipeline_open": not closed,
             "blocker_ar": "" if closed else "Phase 0–1: أول دفعة + Proof Pack (بعد Layer 0–4)",
         }
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         return {
             "id": 5,
             "name": "First revenue",

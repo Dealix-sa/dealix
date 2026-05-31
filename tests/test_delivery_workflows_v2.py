@@ -27,7 +27,6 @@ from auto_client_acquisition.delivery_factory.workflow_loader import (
     load_workflow,
 )
 
-
 # ─────────────────────────────────────────────────────────────────────
 # Workflow YAML load + schema validation (6 tests)
 # ─────────────────────────────────────────────────────────────────────
