@@ -24,6 +24,7 @@ import {
   Layers,
   FileText,
   Megaphone,
+  Cpu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -56,6 +57,7 @@ const navItems: NavItem[] = [
   { key: "trustCheck", href: "/trust-check", icon: Shield },
   { key: "customerPortal", href: "/customer-portal", icon: Building2 },
   { key: "clients", href: "/clients", icon: Users },
+  { key: "autoDistribution", href: "/auto-distribution", icon: Cpu },
   { key: "analytics", href: "/analytics", icon: BarChart3 },
   { key: "settings", href: "/settings", icon: Settings },
 ];
@@ -182,7 +184,8 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
                           | "customerPortal"
                           | "clients"
                           | "analytics"
-                          | "settings",
+                          | "settings"
+                          | "autoDistribution",
                       )}
                     </motion.span>
                   )}

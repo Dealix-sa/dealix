@@ -104,6 +104,8 @@ numpy>=1.26.0,<3
 # integrations/saudi_market.py already wraps the import in try/except and falls
 # back to a pure-Python Gregorian→Hijri estimate, so removing this hard dep is safe.
 
+# MCP Server dependency lives in mcp_server/requirements-mcp.txt (optional — not needed for API)
+
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9
 pytest-asyncio>=0.24.0,<1
