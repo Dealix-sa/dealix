@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0E1A15"/>
+  <defs>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1F2E27" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)" opacity="0.5"/>
+  <rect x="0" y="0" width="1200" height="5" fill="#C8A86A"/>
+
+  <!-- Logo -->
+  <rect x="80" y="60" width="64" height="64" rx="14" fill="#0A5C36"/>
+  <path d="M92 108V76h11.2c7.6 0 12.6 4.3 12.6 11 0 4-1.8 7-5 8.6l6.4 12.4H107l-5.8-10.2H102v10.2H92zm10.8-17.3c3.2 0 5-1.8 5-4.5s-1.8-4.5-5-4.5H102v9z" fill="#C9A961"/>
+  <text x="158" y="102" font-family="'Inter', system-ui" font-size="32" font-weight="700" fill="#ECEFEC">Dealix</text>
+
+  <!-- Heading -->
+  <text x="80" y="220" font-family="'IBM Plex Sans Arabic', system-ui" font-size="46" font-weight="700" fill="#ECEFEC">خطوط الخدمات الخمس</text>
+  <text x="80" y="268" font-family="'Inter', system-ui" font-size="22" font-weight="400" fill="#9CA8A2">Five productized service lines · Saudi B2B</text>
+
+  <!-- Service ladder cards -->
+  <!-- Rung 0 -->
+  <rect x="80" y="310" width="200" height="110" rx="12" fill="#1F2E27" stroke="#2A3D33" stroke-width="1"/>
+  <text x="180" y="350" font-family="'IBM Plex Sans Arabic', system-ui" font-size="13" fill="#9CA8A2" text-anchor="middle">تشخيص مجاني</text>
+  <text x="180" y="378" font-family="'Inter', system-ui" font-size="22" font-weight="700" fill="#ECEFEC" text-anchor="middle">مجاني</text>
+  <text x="180" y="400" font-family="'Inter', system-ui" font-size="11" fill="#5A6661" text-anchor="middle">Free Diagnostic</text>
+
+  <!-- Rung 1 -->
+  <rect x="298" y="310" width="200" height="110" rx="12" fill="#0A5C36" opacity="0.25" stroke="#0A5C36" stroke-width="1"/>
+  <text x="398" y="350" font-family="'IBM Plex Sans Arabic', system-ui" font-size="13" fill="#9CA8A2" text-anchor="middle">Sprint 7 أيام</text>
+  <text x="398" y="378" font-family="'Inter', system-ui" font-size="22" font-weight="700" fill="#1F8A5A" text-anchor="middle">499 SAR</text>
+  <text x="398" y="400" font-family="'Inter', system-ui" font-size="11" fill="#5A6661" text-anchor="middle">Revenue Proof Sprint</text>
+
+  <!-- Rung 2 -->
+  <rect x="516" y="310" width="200" height="110" rx="12" fill="#1F2E27" stroke="#2A3D33" stroke-width="1"/>
+  <text x="616" y="350" font-family="'IBM Plex Sans Arabic', system-ui" font-size="13" fill="#9CA8A2" text-anchor="middle">حزمة البيانات</text>
+  <text x="616" y="378" font-family="'Inter', system-ui" font-size="22" font-weight="700" fill="#ECEFEC" text-anchor="middle">1,500 SAR</text>
+  <text x="616" y="400" font-family="'Inter', system-ui" font-size="11" fill="#5A6661" text-anchor="middle">Data-to-Revenue Pack</text>
+
+  <!-- Rung 3 -->
+  <rect x="734" y="310" width="200" height="110" rx="12" fill="#C8A86A" opacity="0.12" stroke="#C8A86A" stroke-width="1"/>
+  <text x="834" y="350" font-family="'IBM Plex Sans Arabic', system-ui" font-size="13" fill="#9CA8A2" text-anchor="middle">تشغيل مُدار</text>
+  <text x="834" y="372" font-family="'Inter', system-ui" font-size="18" font-weight="700" fill="#C8A86A" text-anchor="middle">2,999–4,999</text>
+  <text x="834" y="390" font-family="'Inter', system-ui" font-size="13" fill="#C8A86A" text-anchor="middle">SAR/mo</text>
+  <text x="834" y="408" font-family="'Inter', system-ui" font-size="11" fill="#5A6661" text-anchor="middle">Managed Revenue Ops</text>
+
+  <!-- Rung 4 -->
+  <rect x="952" y="310" width="188" height="110" rx="12" fill="#1F2E27" stroke="#2A3D33" stroke-width="1"/>
+  <text x="1046" y="350" font-family="'IBM Plex Sans Arabic', system-ui" font-size="13" fill="#9CA8A2" text-anchor="middle">مشروع AI مخصص</text>
+  <text x="1046" y="372" font-family="'Inter', system-ui" font-size="18" font-weight="700" fill="#ECEFEC" text-anchor="middle">5K–25K</text>
+  <text x="1046" y="390" font-family="'Inter', system-ui" font-size="13" fill="#ECEFEC" text-anchor="middle">SAR</text>
+  <text x="1046" y="408" font-family="'Inter', system-ui" font-size="11" fill="#5A6661" text-anchor="middle">Custom AI Project</text>
+
+  <text x="80" y="590" font-family="'Inter', system-ui" font-size="18" font-weight="400" fill="#3A5040">dealix.me/ar/services</text>
+</svg>
