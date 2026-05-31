@@ -419,6 +419,10 @@ def create_app() -> FastAPI:
     from api.routers import saudi_revenue_advisor as saudi_revenue_advisor_router
     app.include_router(saudi_revenue_advisor_router.router)
 
+    # Vision 2030 Alignment — Saudi market strategic narrative builder
+    from api.routers import vision2030_alignment as vision2030_alignment_router
+    app.include_router(vision2030_alignment_router.router)
+
     # Wave 17 — Payment webhooks + Founder alert review
     from api.routers import payments_webhook as payments_webhook_router
     from api.routers import founder_alerts as founder_alerts_router
@@ -549,6 +553,34 @@ def create_app() -> FastAPI:
     # ZATCA Compliance Operations — Phase 2 e-invoicing
     from api.routers import zatca_compliance_ops as zatca_compliance_ops_router
     app.include_router(zatca_compliance_ops_router.router)
+
+    # Saudi Revenue Advisor — Saudi-market-specific B2B revenue guidance
+    from api.routers import saudi_revenue_advisor as saudi_revenue_advisor_router
+    app.include_router(saudi_revenue_advisor_router.router)
+
+    # Vision 2030 Alignment — Saudi market strategic narrative builder
+    from api.routers import vision2030_alignment as vision2030_alignment_router
+    app.include_router(vision2030_alignment_router.router)
+
+    # Hijri Calendar — Gregorian↔Hijri conversion + Saudi national holidays
+    from api.routers import hijri_calendar as hijri_calendar_router
+    app.include_router(hijri_calendar_router.router)
+
+    # Prayer Schedule — prayer-time-aware business scheduling for Saudi cities
+    from api.routers import prayer_schedule as prayer_schedule_router
+    app.include_router(prayer_schedule_router.router)
+
+    # SME Accelerator — Saudi SME programs + Vision 2030 funding readiness
+    from api.routers import sme_accelerator as sme_accelerator_router
+    app.include_router(sme_accelerator_router.router)
+
+    # Islamic Finance — Murabaha/Ijara structures + payment calculators
+    from api.routers import islamic_finance as islamic_finance_router
+    app.include_router(islamic_finance_router.router)
+
+    # Saudization Compliance — Nitaqat band checker + upgrade path
+    from api.routers import saudization_compliance as saudization_compliance_router
+    app.include_router(saudization_compliance_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
