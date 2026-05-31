@@ -15,7 +15,7 @@ import json
 import re
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi.responses import PlainTextResponse, Response
 from pydantic import BaseModel, Field
 
@@ -23,6 +23,25 @@ _DEMO_CACHE_KEY = "demo:sprint:sample:v1"
 _DEMO_CACHE_TTL = 3600  # 1 hour — demo data changes rarely
 
 router = APIRouter(prefix="/api/v1/sprint", tags=["sprint"])
+
+# ---------------------------------------------------------------------------
+# Admin auth dependency
+# ---------------------------------------------------------------------------
+
+_ADMIN_KEY_HEADER = "X-Admin-API-Key"
+
+
+def _require_admin(x_admin_api_key: str | None = Header(default=None, alias=_ADMIN_KEY_HEADER)) -> str:
+    """FastAPI dependency — validates the X-Admin-API-Key header."""
+    if not x_admin_api_key:
+        raise HTTPException(status_code=401, detail="X-Admin-API-Key header is required.")
+    from core.config.settings import get_settings
+    settings = get_settings()
+    allowed_keys = settings.admin_api_key_list
+    # When no keys are configured (dev / test), any non-empty key is accepted.
+    if allowed_keys and x_admin_api_key not in allowed_keys:
+        raise HTTPException(status_code=403, detail="Invalid admin API key.")
+    return x_admin_api_key
 
 
 class _SprintRunBody(BaseModel):

@@ -110,52 +110,75 @@ async def _persist_payment_event(
 #   "subscription" — recurring monthly Moyasar invoice
 #   "one_off"      — single charge (e.g. pilot)
 #   "metered"      — billed per usage event (LaaS R3 model)
-PLANS: dict[str, dict[str, Any]] = {
-    "starter": {
-        "name": "Starter",
-        "amount_halalas": 99900,
-        "monthly": True,
-        "kind": "subscription",
-    },  # 999 SAR/mo
-    "growth": {
-        "name": "Growth",
-        "amount_halalas": 299900,
-        "monthly": True,
-        "kind": "subscription",
-    },  # 2,999 SAR/mo
-    "scale": {
-        "name": "Scale",
-        "amount_halalas": 799900,
-        "monthly": True,
-        "kind": "subscription",
-    },  # 7,999 SAR/mo
-    "pilot_managed": {
-        "name": "Managed Pilot (7 days)",
-        "amount_halalas": 49900,
-        "monthly": False,
-        "kind": "one_off",
-    },  # 499 SAR one-off — founder-led pilot per v4 §3 R1
-    "laas_per_reply": {
-        "name": "Lead-as-a-Service · Per Reply",
-        "amount_halalas": 2500,
-        "monthly": False,
-        "kind": "metered",
-        "unit": "arabic_replied_lead",
-    },  # 25 SAR per Arabic-replied lead
-    "laas_per_demo": {
-        "name": "Lead-as-a-Service · Per Demo",
-        "amount_halalas": 15000,
-        "monthly": False,
-        "kind": "metered",
-        "unit": "booked_demo",
-    },  # 150 SAR per booked demo
-    "pilot_1sar": {
-        "name": "Pilot (1 SAR)",
-        "amount_halalas": 100,
-        "monthly": False,
-        "kind": "one_off",
-    },  # E2E test transaction
-}
+# Canonical pricing ladder — mirrors auto_client_acquisition/service_catalog/registry.py.
+# Single source of truth: edit registry.py prices; this dict reads from it at import time.
+# Legacy keys (starter/growth/scale) mapped to canonical registry IDs for backwards compat.
+def _build_plans() -> dict[str, dict[str, Any]]:
+    try:
+        from auto_client_acquisition.service_catalog.registry import OFFERINGS
+        plans: dict[str, dict[str, Any]] = {}
+        for offering in OFFERINGS:
+            monthly = offering.price_unit in ("monthly", "per_month")
+            plans[offering.id] = {
+                "name": offering.name_en,
+                "name_ar": offering.name_ar,
+                "amount_halalas": int(offering.price_sar * 100),
+                "monthly": monthly,
+                "kind": "subscription" if monthly else "one_off",
+                "deliverables": list(offering.deliverables),
+                "kpi_commitment_en": offering.kpi_commitment_en,
+                "kpi_commitment_ar": offering.kpi_commitment_ar,
+            }
+        # Backwards-compat aliases so existing checkout links still work
+        aliases = {
+            "pilot_managed": "revenue_proof_sprint_499",
+            "growth": "growth_ops_monthly_2999",
+            "scale": "executive_command_center_7500",
+            "starter": "growth_ops_monthly_2999",
+        }
+        for alias, canonical_id in aliases.items():
+            if canonical_id in plans and alias not in plans:
+                plans[alias] = dict(plans[canonical_id])
+        # E2E test plan — never shown in public API
+        plans["pilot_1sar"] = {
+            "name": "Pilot (1 SAR)",
+            "name_ar": "اختبار (١ ر.س)",
+            "amount_halalas": 100,
+            "monthly": False,
+            "kind": "one_off",
+        }
+        # LaaS metered plans
+        plans["laas_per_reply"] = {
+            "name": "Lead-as-a-Service · Per Reply",
+            "name_ar": "قيادة كخدمة · لكل رد",
+            "amount_halalas": 2500,
+            "monthly": False,
+            "kind": "metered",
+            "unit": "arabic_replied_lead",
+        }
+        plans["laas_per_demo"] = {
+            "name": "Lead-as-a-Service · Per Demo",
+            "name_ar": "قيادة كخدمة · لكل عرض",
+            "amount_halalas": 15000,
+            "monthly": False,
+            "kind": "metered",
+            "unit": "booked_demo",
+        }
+        return plans
+    except Exception:
+        # Fallback to hardcoded if registry unavailable
+        return {
+            "revenue_proof_sprint_499": {"name": "499 SAR Revenue Proof Sprint", "name_ar": "سبرنت إثبات الإيرادات", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
+            "data_to_revenue_1500": {"name": "Data-to-Revenue Pack", "name_ar": "حزمة البيانات والإيرادات", "amount_halalas": 150000, "monthly": False, "kind": "one_off"},
+            "growth_ops_monthly_2999": {"name": "Growth Ops Monthly", "name_ar": "Managed Ops النمو", "amount_halalas": 299900, "monthly": True, "kind": "subscription"},
+            "pilot_managed": {"name": "Managed Pilot (7 days)", "name_ar": "برنامج الأسبوع المكثف", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
+            "pilot_1sar": {"name": "Pilot (1 SAR)", "name_ar": "اختبار", "amount_halalas": 100, "monthly": False, "kind": "one_off"},
+            "laas_per_reply": {"name": "LaaS Per Reply", "name_ar": "قيادة كخدمة", "amount_halalas": 2500, "monthly": False, "kind": "metered", "unit": "arabic_replied_lead"},
+            "laas_per_demo": {"name": "LaaS Per Demo", "name_ar": "قيادة كخدمة", "amount_halalas": 15000, "monthly": False, "kind": "metered", "unit": "booked_demo"},
+        }
+
+
+PLANS: dict[str, dict[str, Any]] = _build_plans()
 
 
 @router.get("/api/v1/pricing/plans")

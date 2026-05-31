@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PublicGtmShell } from "@/components/gtm/PublicGtmShell";
 import { PartnerApplyForm } from "@/components/gtm/PartnerApplyForm";
-import { buildFunnelMetadata } from "@/lib/gtmMetadata";
 
 type PageProps = { params: Promise<{ locale: string }> };
 

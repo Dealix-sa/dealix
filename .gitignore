@@ -321,3 +321,6 @@ dist/
 build/
 logs/
 *.log
+
+# Railway CLI local link
+.railway/

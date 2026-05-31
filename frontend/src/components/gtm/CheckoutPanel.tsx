@@ -25,7 +25,9 @@ export function CheckoutPanel({
   const [referralApplied, setReferralApplied] = useState<boolean | null>(null);
 
   const pay = async () => {
+    if (!name.trim() || !email.trim()) return;
     setBusy(true);
+    setError("");
     try {
       const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const body: Record<string, string> = { plan, email };
