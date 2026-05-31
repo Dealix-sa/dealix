@@ -694,6 +694,18 @@ def create_app() -> FastAPI:
     from api.routers import demo_script as demo_script_router
     app.include_router(demo_script_router.router)
 
+    # Account Expansion — signals, playbooks, expansion score assessment
+    from api.routers import account_expansion as account_expansion_router
+    app.include_router(account_expansion_router.router)
+
+    # Onboarding Playbook — phases, risks, plan builder
+    from api.routers import onboarding_playbook as onboarding_playbook_router
+    app.include_router(onboarding_playbook_router.router)
+
+    # Retention Risk — churn factors, early-warning indicators, risk assessment
+    from api.routers import retention_risk as retention_risk_router
+    app.include_router(retention_risk_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
