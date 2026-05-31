@@ -12,8 +12,10 @@ coverage.xml
 .env
 .env.*
 !.env.example
-# node_modules at any depth (frontend, apps/web, dashboard, etc.)
+# node_modules and Next.js build artifacts at any depth
 **/node_modules
+**/.next
+**/out
 .DS_Store
 docs/generated
 *.log
