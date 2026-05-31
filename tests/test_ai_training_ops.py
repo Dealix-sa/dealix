@@ -28,13 +28,20 @@ os.environ.setdefault("ADMIN_API_KEY", "test-admin-key")
 os.environ.setdefault("ADMIN_API_KEYS", "test-admin-key")
 
 # ---------------------------------------------------------------------------
-# Stub the security module before any router import to avoid jose/crypto issues
+# Stub the security module only if the real one can't be imported.
+# Using setdefault unconditionally contaminates the whole pytest session
+# in CI (where jose/cryptography work) and breaks auth tests in other files.
 # ---------------------------------------------------------------------------
-_mock_security = types.ModuleType("api.security.api_key")
-_mock_security.require_admin_key = lambda: None
-sys.modules.setdefault("api.security.api_key", _mock_security)
-if "api.security" not in sys.modules:
-    sys.modules["api.security"] = types.ModuleType("api.security")
+if "api.security.api_key" not in sys.modules:
+    try:
+        import importlib
+        importlib.import_module("api.security.api_key")
+    except BaseException:
+        _mock_security = types.ModuleType("api.security.api_key")
+        _mock_security.require_admin_key = lambda: None
+        sys.modules["api.security.api_key"] = _mock_security
+        if "api.security" not in sys.modules:
+            sys.modules["api.security"] = types.ModuleType("api.security")
 
 from api.routers.ai_training_ops import (  # noqa: E402
     DEPLOYED_MODELS,
