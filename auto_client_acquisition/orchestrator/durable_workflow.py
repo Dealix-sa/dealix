@@ -5,11 +5,12 @@ from __future__ import annotations
 import json
 import os
 import threading
+from collections.abc import Callable
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime, timedelta
 from enum import StrEnum
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 from uuid import uuid4
 
 _DEFAULT_PATH = "var/durable_workflows.json"
@@ -146,7 +147,7 @@ def _run_step_node(state: WorkflowRunState, step_def: dict[str, Any]) -> Workflo
                 "skipped": True,
                 "step_key": step_key,
             }
-    except Exception as exc:  # noqa: BLE001 — workflow boundary
+    except Exception as exc:
         state.retries += 1
         state.context["last_error"] = str(exc)
         if state.retries >= state.max_iterations:
@@ -281,9 +282,9 @@ def get_workflow(run_id: str) -> WorkflowRunState:
 
 
 __all__ = [
+    "WORKFLOW_TEMPLATES",
     "WorkflowRunState",
     "WorkflowStatus",
-    "WORKFLOW_TEMPLATES",
     "advance_workflow",
     "approve_human_step",
     "get_workflow",

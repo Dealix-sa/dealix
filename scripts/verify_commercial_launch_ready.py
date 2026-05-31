@@ -333,7 +333,7 @@ def check_phase2_api_smoke() -> None:
             ok("partner-apply blocks misleading affiliate copy")
         else:
             fail(f"partner-apply expected 422 got {r_partner.status_code}")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         warn(f"phase2 API smoke skipped: {exc}")
 
 
@@ -451,7 +451,7 @@ def smoke_public_funnel() -> None:
             ok("POST /api/v1/public/leads")
         else:
             fail(f"public leads status={lead.status_code}")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         warn(f"public funnel smoke skipped: {exc}")
 
 
@@ -487,7 +487,7 @@ def smoke_live_api(base: str, admin_key: str) -> None:
             warn(f"live API auth failed ({exc.code}) — check DEALIX_ADMIN_API_KEY")
         else:
             fail(f"live full-ops-health HTTP {exc.code}")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         warn(f"live API skipped: {exc}")
         return
 
@@ -505,7 +505,7 @@ def smoke_live_api(base: str, admin_key: str) -> None:
             warn(f"live replay auth failed ({exc.code}) — check DEALIX_ADMIN_API_KEY")
         else:
             fail(f"live replay-postgres HTTP {exc.code}")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         warn(f"live replay skipped: {exc}")
 
 

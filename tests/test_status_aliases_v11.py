@@ -9,7 +9,6 @@ from __future__ import annotations
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-
 _ALIASES = (
     "/api/v1/role-command/status",
     "/api/v1/role-command/_status",

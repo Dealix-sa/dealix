@@ -5,9 +5,13 @@ from __future__ import annotations
 import pytest
 
 from auto_client_acquisition.business.gtm_plan import first_10_customers_plan
-from auto_client_acquisition.business.market_positioning import compare_competitors
-from auto_client_acquisition.business.pricing_strategy import estimate_roi, get_pricing_tiers, recommend_plan
 from auto_client_acquisition.business.launch_metrics import north_star_metrics
+from auto_client_acquisition.business.market_positioning import compare_competitors
+from auto_client_acquisition.business.pricing_strategy import (
+    estimate_roi,
+    get_pricing_tiers,
+    recommend_plan,
+)
 
 
 def test_pricing_tiers_exist():

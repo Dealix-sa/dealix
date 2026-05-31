@@ -338,6 +338,20 @@ def test_founder_dashboard_sovereign_gtm_keys(monkeypatch):
     assert cp["master_execution_phase"].get("active_phase") is not None
 
 
+def test_founder_ceo_master_plan_endpoint(monkeypatch):
+    from api.main import app
+
+    monkeypatch.setenv("DEALIX_ADMIN_API_KEY", "test-ceo-master-plan")
+    cli = TestClient(app)
+    headers = {"X-Admin-API-Key": "test-ceo-master-plan"}
+    r = cli.get("/api/v1/ops-autopilot/founder/ceo-master-plan", headers=headers)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body.get("overall_verdict") in ("PASS", "IN_PROGRESS")
+    assert "p0_revenue_close" in body
+    assert body.get("daily_five_metrics", {}).get("metrics")
+
+
 def test_founder_comprehensive_plan_endpoint(monkeypatch):
     from api.main import app
 
