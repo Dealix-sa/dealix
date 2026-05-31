@@ -1,0 +1,74 @@
+name: Hermes Health
+
+on:
+  schedule:
+    - cron: "0 4 * * *"  # daily at 04:00 UTC
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+    paths:
+      - 'dealix/hermes/**'
+      - 'dealix/llm/**'
+      - 'tests/hermes/**'
+      - 'scripts/hermes_smoke.py'
+      - '.github/workflows/hermes_health.yml'
+  pull_request:
+    paths:
+      - 'dealix/hermes/**'
+      - 'dealix/llm/**'
+      - 'tests/hermes/**'
+      - 'scripts/hermes_smoke.py'
+
+concurrency:
+  group: hermes-health-${{ github.ref }}
+  cancel-in-progress: true
+
+# Least-privilege per the Hermes Charter §6. Hermes' health check never
+# writes to the repo, never opens PRs, never touches packages — read-only
+# is enough. If the global default rises to read-and-write later this
+# block keeps Hermes itself locked down.
+permissions:
+  contents: read
+
+jobs:
+  doctrine-and-routing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install minimal deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pydantic pytest
+
+      - name: Hermes doctrine + routing tests
+        # --noconftest skips the heavy global tests/conftest.py (httpx, structlog,
+        # tenacity, …) so this workflow stays dependency-light. -o addopts=""
+        # overrides the --cov addopts from pyproject.toml since pytest-cov is
+        # not installed here. -p no:cacheprovider keeps the workspace clean.
+        # Use `python -m pytest` to guarantee the pytest we run is the one we
+        # pip-installed above (same interpreter).
+        run: |
+          python -m pytest tests/hermes/ -v --noconftest -o addopts="" -p no:cacheprovider
+
+      - name: Provider-key doctrine guard
+        run: |
+          python -m pytest tests/test_no_provider_key_in_repo.py -v --noconftest -o addopts="" -p no:cacheprovider
+
+      - name: Hermes offline smoke (default provider)
+        run: |
+          python scripts/hermes_smoke.py
+
+      - name: Hermes offline smoke (direct_deepseek)
+        run: |
+          python scripts/hermes_smoke.py --provider direct_deepseek

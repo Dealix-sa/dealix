@@ -6,6 +6,12 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from .engine import (
+    DIRECT_DEEPSEEK_MODEL_MAP,
+    ProviderName,
+    active_provider,
+)
+
 
 class ModelTier(str, Enum):
     PRIMARY = "primary"
@@ -26,7 +32,7 @@ class TaskType(str, Enum):
 
 
 class ModelConfig(BaseModel):
-    provider: Literal["openrouter"] = "openrouter"
+    provider: ProviderName = "openrouter"
     model_id: str
     timeout: int = Field(default=120, ge=30, le=300)
     max_retries: int = Field(default=2, ge=0, le=5)
@@ -59,19 +65,28 @@ class LLMStrategyRouter:
         ModelTier.FALLBACK: int(os.getenv("GEAR1_TIMEOUT", "90")),
     }
 
-    def resolve(self, task: TaskType, prefer_cheap: bool = False):
+    def resolve(self, task: TaskType, prefer_cheap: bool = False, provider: ProviderName | None = None):
         tiers = self._TASK_MAP.get(task, [ModelTier.PRIMARY, ModelTier.FALLBACK])
         if prefer_cheap:
             order = {ModelTier.LIGHT: 0, ModelTier.FALLBACK: 1, ModelTier.PRIMARY: 2, ModelTier.ARCHITECT: 3}
             tiers = sorted(tiers, key=lambda t: order[t])
-        return [
-            ModelConfig(
-                model_id=self._MODEL_IDS[tier],
-                timeout=self._TIMEOUTS[tier],
-                reasoning_preserved=(tier != ModelTier.FALLBACK),
+        target = provider or active_provider()
+        configs: list[ModelConfig] = []
+        for tier in tiers:
+            model_id = self._MODEL_IDS[tier]
+            resolved_provider: ProviderName = "openrouter"
+            if target == "direct_deepseek" and model_id in DIRECT_DEEPSEEK_MODEL_MAP:
+                model_id = DIRECT_DEEPSEEK_MODEL_MAP[model_id]
+                resolved_provider = "direct_deepseek"
+            configs.append(
+                ModelConfig(
+                    provider=resolved_provider,
+                    model_id=model_id,
+                    timeout=self._TIMEOUTS[tier],
+                    reasoning_preserved=(tier != ModelTier.FALLBACK),
+                )
             )
-            for tier in tiers
-        ]
+        return configs
 
 
 router = LLMStrategyRouter()

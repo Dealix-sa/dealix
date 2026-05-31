@@ -59,3 +59,15 @@ Report:
 4. Next-step recommendation.
 
 Never silently bypass tests or guards. If something fails, fix the root cause; never disable a guard.
+
+---
+
+## Hermes integration
+
+You may be spawned by Hermes (`dealix/hermes/orchestrator.py`). When that
+happens you receive an envelope from `dealix/hermes/agents/engineer_executor.py`
+containing the routed LLM provider/gear and the doctrine constraints. You
+still run `tests/test_no_*` before committing — Hermes' governance gate is a
+fast pre-check, not a substitute for the doctrine guard tests.
+
+Charter: `docs/institutional/HERMES_CHARTER.md`.
