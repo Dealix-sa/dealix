@@ -1,12 +1,13 @@
-# Business NOW snapshot — 2026-05-16
+# Business NOW snapshot — 2026-05-28
 
 ## Platform
 - transformation_verdict: PASS
+- enterprise_control_plane_verdict: FAIL
 - governed_domains: 16
 
 ## Commercial KPIs
-- pending: 6
-- ready: 0
+- pending: 0
+- ready: 6
 
 ## Pilot sprints
 - sprint_001: template_ready
@@ -14,7 +15,7 @@
 - sprint_003: template_ready
 
 ## Today actions
-- P1: عبّئ KPIs التجارية من CRM في kpi_founder_commercial_import.yaml ثم apply
+- P1: أصلح ENTERPRISE CONTROL PLANE — bash scripts/verify_enterprise_control_plane.sh
 - P2: ابدأ بايلوت sprint_001 — نفّذ PILOT_EXECUTION_RUNBOOK
 - P3: راجع موافقات اليوم — لا إرسال خارجي بدون جواز
 - P4: شغّل anti-waste قبل أي حملة أو رسالة خارجية

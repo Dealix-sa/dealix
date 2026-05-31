@@ -1,4 +1,4 @@
-updated_at: '2026-05-18T12:49:13.454448+00:00'
+updated_at: '2026-05-28T16:33:44.831870+00:00'
 goal: 3-5 discovery meetings before paid launch announcement
 sop: docs/commercial/operations/CLIENT_PACK_SOP_AR.md
 ui:
@@ -12,7 +12,7 @@ meetings:
   motion: B
   offer_id: governed_diagnostic
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-90
+  client_pack_dir: data/client_packs/هدف-استراتيجي-90
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -23,7 +23,7 @@ meetings:
   motion: A
   offer_id: executive_diagnostic
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-55-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-55-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -34,7 +34,7 @@ meetings:
   motion: B
   offer_id: governed_diagnostic
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-52-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-52-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -45,7 +45,7 @@ meetings:
   motion: D
   offer_id: partner_sprint
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-49-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-49-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -56,7 +56,7 @@ meetings:
   motion: A
   offer_id: ten_lead_audit
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-46-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-46-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -67,7 +67,7 @@ meetings:
   motion: C
   offer_id: diagnostic_layer
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-43-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-43-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -78,7 +78,7 @@ meetings:
   motion: A
   offer_id: executive_diagnostic
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-40-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-40-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -89,7 +89,7 @@ meetings:
   motion: B
   offer_id: governed_diagnostic
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-37-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-37-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -100,7 +100,7 @@ meetings:
   motion: D
   offer_id: partner_sprint
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-34-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-34-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'
@@ -111,7 +111,7 @@ meetings:
   motion: A
   offer_id: ten_lead_audit
   status: scheduled
-  client_pack_dir: data\client_packs\هدف-استراتيجي-31-وكالة-خدمات
+  client_pack_dir: data/client_packs/هدف-استراتيجي-31-وكالة-خدمات
   checklist:
   - 'قبل: generate_client_pack + deck_notes'
   - 'أثناء: /ar/business-now#strategy + Calendly'

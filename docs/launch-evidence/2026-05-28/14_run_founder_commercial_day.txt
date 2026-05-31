@@ -1,0 +1,1398 @@
+== Dealix Founder Commercial Day (canonical) ==
+  repo: /home/user/dealix
+  date: 2026-05-28
+  dry_run: 0
+
+== 0a/7 Agent work packets (today) ==
+MISSING: /home/user/dealix/data/agent_work_packets/daily_packets.yaml
+
+== 0b/7 GTM public surfaces (repo) ==
+== verify_gtm_public_surfaces ==
+  ok: 7 public frontend routes
+DEALIX_GTM_PUBLIC_SURFACES_VERDICT=PASS
+
+== 0c/7 Production gates (Railway + live API) ==
+== Founder production gates ==
+  api: https://api.dealix.me
+  railway: PASS
+  gtm_surfaces_repo: ok
+  weekly_metrics: BLOCKED
+  live healthz: https://api.dealix.me/healthz -> 200
+  live version: https://api.dealix.me/version -> 200
+  live api_v1_meta: https://api.dealix.me/api/v1/meta -> 200
+  live health: https://api.dealix.me/health -> 200
+  ACTION: Truth Matrix red: moyasar_live, whatsapp_business, gmail_external
+FOUNDER_PRODUCTION_GATES_VERDICT=WARN
+
+== Expand stack (targeting + social + content) ==
+== expand_commercial_operating_stack ==
+  >> /usr/local/bin/python3 /home/user/dealix/scripts/expand_commercial_ops_all.py --meetings 10 --touch-drafts 15 --cycle-weeks 20 --wave2 --enrich-warm
+== expand_commercial_ops_all ==
+  target_rows=150 meetings=10 touch_drafts=15
+  targeting: 250 -> 250 rows
+
+== social queue (20w) ==
+EXPAND_SOCIAL_QUEUE: added=0 total=140 cycle_weeks=20
+
+== ABM warm enrich ==
+ENRICH_TARGETING_WARM: {'rows': 250, 'warm_tags_added': 0, 'dry_run': False}
+
+== war room sync ==
+WROTE · /home/user/dealix/data/war_room_today.json · targets=15
+
+== war room import ==
+WAR_ROOM_IMPORT: rows_in_csv=250
+{
+  "imported": 0,
+  "skipped_duplicates": 250,
+  "lead_ids": [],
+  "fields_expected": [
+    "company",
+    "contact",
+    "segment",
+    "pain_hypothesis",
+    "channel",
+    "motion",
+    "offer_id",
+    "status",
+    "next_action",
+    "next_action_date",
+    "priority",
+    "notes"
+  ]
+}
+WAR_ROOM_IMPORT: OK imported=0 skipped=250
+
+== touch drafts ==
+{
+  "drafted": 15,
+  "skipped": 0,
+  "companies": [
+    "هدف استراتيجي 240",
+    "هدف استراتيجي 225",
+    "هدف استراتيجي 210",
+    "هدف استراتيجي 195",
+    "هدف استراتيجي 90",
+    "هدف استراتيجي 55 — وكالة/خدمات",
+    "هدف استراتيجي 52 — وكالة/خدمات",
+    "هدف استراتيجي 49 — وكالة/خدمات",
+    "هدف استراتيجي 46 — وكالة/خدمات",
+    "هدف استراتيجي 43 — وكالة/خدمات",
+    "هدف استراتيجي 40 — وكالة/خدمات",
+    "هدف استراتيجي 37 — وكالة/خدمات",
+    "هدف استراتيجي 34 — وكالة/خدمات",
+    "هدف استراتيجي 31 — وكالة/خدمات",
+    "هدف استراتيجي 28 — وكالة/خدمات"
+  ]
+}
+WAR_ROOM_TOUCH_DRAFTS: OK drafted=15 dry_run=False
+
+== soft launch meetings ==
+SOFT_LAUNCH_MEETINGS: OK slots=10 packs=10
+  tracker: docs/commercial/operations/soft_launch_meetings_tracker.yaml
+  [1] هدف استراتيجي 90 -> data/client_packs/هدف-استراتيجي-90
+  [2] هدف استراتيجي 55 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-55-وكالة-خدمات
+  [3] هدف استراتيجي 52 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-52-وكالة-خدمات
+  [4] هدف استراتيجي 49 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-49-وكالة-خدمات
+  [5] هدف استراتيجي 46 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-46-وكالة-خدمات
+  [6] هدف استراتيجي 43 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-43-وكالة-خدمات
+  [7] هدف استراتيجي 40 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-40-وكالة-خدمات
+  [8] هدف استراتيجي 37 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-37-وكالة-خدمات
+  [9] هدف استراتيجي 34 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-34-وكالة-خدمات
+  [10] هدف استراتيجي 31 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-31-وكالة-خدمات
+
+== weekly content drafts ==
+CONTENT_DRAFTS: wrote 5 drafts -> /home/user/dealix/var/content_drafts/2026-W22.json
+  - [1] ما هو Post-Lead Revenue Ops؟...
+  - [2] ما هو Proof Pack؟...
+  - [3] كيف تراجع متابعة الـ leads؟...
+  - [4] سياسة موافقة AI للمبيعات...
+  - [5] قائمة متابعة leads للوكالات السعودية...
+
+== Motion A ==
+# Motion A — خط أنابيب اليوم
+
+**توليد:** 2026-05-28T15:54:51.536519+00:00
+
+## تركيز
+- Motion A: وكالة (Agency wedge)
+- الأولوية — حتى أول Proof Pack مدفوع
+- بوابة الدفع: PIPELINE_OPEN
+- الأولوية: 3 لمسات P0 + 1 Discovery + سطر evidence اليوم
+
+## أعلى P0
+
+1. **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+2. **هدف استراتيجي 46 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+3. **هدف استراتيجي 40 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+4. **هدف استراتيجي 31 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+5. **هدف استراتيجي 240** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+6. **هدف استراتيجي 213** · `replied` · مرحلة `discovery_to_scope` — احجز Discovery 10 دقائق — سجّل demo_booked
+7. **هدف استراتيجي 198** · `replied` · مرحلة `discovery_to_scope` — احجز Discovery 10 دقائق — سجّل demo_booked
+8. **هدف استراتيجي 150** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+9. **هدف استراتيجي 135** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+10. **هدف warm 17** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+11. **هدف warm 13** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+12. **هدف warm 12** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+13. **REPLACE:وكالة من شبكتك 2** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+14. **REPLACE:وكالة من شبكتك 1** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+15. **REPLACE:شريك وكالة محتمل** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+
+## بوابة أول Diagnostic
+- verdict: `PIPELINE_OPEN`
+- payment_received (real): 0
+- proof_pack_delivered (real): 0
+
+
+MOTION_A_PIPELINE: OK → data/founder_briefs/motion_a_2026-05-28.md
+MOTION_A_PIPELINE_VERDICT=PIPELINE_OPEN
+
+== Motions A-D ==
+# Motions A–D · 2026-05-28
+
+## Motion A — نشط
+- pool: 92 · targets: 5
+- file: `data/founder_briefs/motion_a_2026-05-28.md`
+
+## Motion B — مؤجّل
+- pool: 89 · targets: 5
+- file: `data/founder_briefs/motion_b_2026-05-28.md`
+
+## Motion C — مؤجّل
+- pool: 31 · targets: 5
+- file: `data/founder_briefs/motion_c_2026-05-28.md`
+
+## Motion D — مؤجّل
+- pool: 38 · targets: 5
+- file: `data/founder_briefs/motion_d_2026-05-28.md`
+
+
+MOTIONS_ALL_PIPELINE: OK → data/founder_briefs/motions_all_2026-05-28.json
+
+== weekly scorecard ==
+# Commercial Weekly Scorecard (auto)
+
+**أسبوع ينتهي:** 2026-05-28 · **من:** 2026-05-22
+ · **توليد:** 2026-05-28T15:54:51.734623+00:00
+
+## North Star
+- Proof Packs مسلّمة هذا الأسبوع: **0**
+- Pilots نشطة: _املأ يدوياً من التسليم الجاري_
+
+## Evidence funnel (7 أيام)
+
+| KPI | الفعلي |
+|-----|--------|
+| `message_sent_manual` | 0 |
+| `reply_received` | 0 |
+| `demo_booked` | 0 |
+| `scope_requested` | 0 |
+| `invoice_sent` | 0 |
+| `payment_received` | 0 |
+| `proof_pack_delivered` | 0 |
+| `partner_intro_created` | 0 |
+
+**معدل تحويل demo → invoice:** n/a
+
+## Motion A
+- وكالات في pool: 35
+
+## First paid Diagnostic
+- verdict: `PIPELINE_OPEN`
+
+> أكمل الأعمدة اليدوية في COMMERCIAL_WEEKLY_SCORECARD_AR.md عند الحاجة.
+
+
+WEEKLY_SCORECARD: OK → data/founder_briefs/weekly_scorecard_2026-05-28.md
+WEEKLY_SCORECARD_VERDICT=OK
+
+== P0 rotation preview ==
+ROTATION · selected=10 / pool=250
+  1. هدف استراتيجي 90 · not_contacted · pr=high · مسودة — موافقة قبل الإرسال
+  2. هدف استراتيجي 55 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  3. هدف استراتيجي 52 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  4. هدف استراتيجي 49 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  5. هدف استراتيجي 46 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  6. هدف استراتيجي 43 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  7. هدف استراتيجي 40 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  8. هدف استراتيجي 37 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  9. هدف استراتيجي 34 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+  10. هدف استراتيجي 31 — وكالة/خدمات · not_contacted · pr=high · مسودة لمسة — موافقة قبل الإرسال
+
+== value plan snapshot ==
+  WROTE data/founder_briefs/value_plan_2026-05-28.md
+  WROTE data/founder_briefs/value_plan_2026-05-28.json
+  targeting_pool=250
+
+== value plan stack verify ==
+
+== commercial_launch_ready ==
+== verify_commercial_launch_ready (soft launch) ==
+  ok: frontend/src/components/gtm/CommercialLaunchHome.tsx
+  ok: frontend/src/app/[locale]/page.tsx
+  ok: frontend/src/app/[locale]/learn/[slug]/page.tsx
+  ok: frontend/src/content/learn/articles.ts
+  ok: frontend/src/app/[locale]/ops/page.tsx
+  ok: frontend/src/components/gtm/OpsFounderCommandCenter.tsx
+  ok: dealix/config/social_content_queue.yaml
+  ok: dealix/config/icp_agency_wedge.yaml
+  ok: dealix/commercial_ops/outreach_drafts.py
+  ok: dealix/revenue_ops_autopilot/affiliate_compliance.py
+  ok: dealix/revenue_ops_autopilot/external_ingest.py
+  ok: dealix/marketing_factory/store.py
+  ok: dealix/execution_assurance/health.py
+  ok: docs/commercial/operations/targeting/agency_accounts_seed.csv
+  ok: docs/commercial/operations/CLIENT_PACK_SOP_AR.md
+  ok: dealix/commercial_ops/client_pack.py
+  ok: dealix/commercial_ops/doctrine.py
+  ok: scripts/founder_soaen_daily.py
+  ok: scripts/verify_commercial_fe_be.py
+  ok: scripts/verify_paid_launch_readiness.py
+  ok: scripts/verify_first_paid_diagnostic_tracker.py
+  ok: scripts/generate_client_pack.py
+  ok: scripts/expand_agency_targets_seed.py
+  ok: scripts/import_war_room_targets.py
+  ok: scripts/generate_war_room_touch_drafts.py
+  ok: scripts/expand_social_queue_12w.py
+  ok: scripts/enrich_targeting_warm.py
+  ok: scripts/founder_all_motions_pipeline.py
+  ok: dealix/commercial_ops/expansion_status.py
+  ok: dealix/commercial_ops/motion_pipelines.py
+  ok: scripts/expand_commercial_operating_stack.py
+  ok: scripts/run_governed_full_ops_autopilot.py
+  ok: scripts/run_governed_full_ops_autopilot.ps1
+  ok: dealix/commercial_ops/governed_autopilot.py
+  ok: scripts/expand_commercial_stack.py
+  ok: scripts/founder_motion_a_pipeline.py
+  ok: scripts/export_value_plan_snapshot.py
+  ok: frontend/src/app/[locale]/learn/page.tsx
+  ok: dealix/config/icp_segments.yaml
+  ok: dealix/config/founder_weekly_strategy_refs.yaml
+  ok: dealix/commercial_ops/strategy_refs.py
+  ok: scripts/founder_morning.ps1
+  ok: scripts/bootstrap_founder_kpi_import.py
+  ok: scripts/log_founder_commercial_day_evidence.py
+  ok: scripts/founder_soft_to_paid_verify.sh
+  ok: scripts/founder_soft_to_paid_verify.ps1
+  ok: scripts/expand_commercial_ops_all.py
+  ok: scripts/run_commercial_expansion.py
+  ok: scripts/run_commercial_expansion.ps1
+  ok: scripts/run_dealix_full_autonomous_ops.py
+  ok: scripts/run_dealix_full_autonomous_ops.ps1
+  ok: scripts/run_dealix_complete_autonomous_day.py
+  ok: scripts/run_full_commercial_ops_autopilot.py
+  ok: scripts/verify_full_autonomous_ops_stack.py
+  ok: scripts/founder_one_command.sh
+  ok: scripts/founder_one_command.ps1
+  ok: dealix/commercial_ops/full_ops_autopilot.py
+  ok: dealix/commercial_ops/complete_autonomous_day.py
+  ok: dealix/commercial_ops/founder_cockpit.py
+  ok: dealix/commercial_ops/autonomous_ops.py
+  ok: docs/commercial/FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md
+  ok: frontend/src/components/gtm/OpsFullAutonomousOpsCard.tsx
+  ok: scripts/founder_commercial_expand.ps1
+  ok: scripts/founder_commercial_expand.sh
+  ok: scripts/founder_expansion_status.py
+  ok: scripts/enrich_targeting_warm.py
+  ok: scripts/founder_all_motions_pipeline.py
+  ok: dealix/commercial_ops/expansion_status.py
+  ok: dealix/commercial_ops/motion_pipelines.py
+  ok: scripts/run_value_plan_day.ps1
+  ok: scripts/run_value_plan_day.sh
+  ok: scripts/founder_evening.ps1
+  ok: scripts/founder_evening_evidence.py
+  ok: scripts/founder_motion_a_pipeline.py
+  ok: scripts/founder_weekly_scorecard.py
+  ok: scripts/founder_paid_launch_gate.py
+  ok: scripts/run_value_plan_day.ps1
+  ok: scripts/run_value_plan_day.sh
+  ok: scripts/export_value_plan_snapshot.py
+  ok: scripts/verify_value_plan_stack.py
+  ok: dealix/commercial_ops/value_plan.py
+  ok: dealix/commercial_ops/value_map_status.py
+  ok: dealix/commercial_ops/gtm_stack.py
+  ok: scripts/commercial_value_map_status.py
+  ok: frontend/src/components/gtm/ValuePlanPanel.tsx
+  ok: .github/workflows/founder_evening_evidence.yml
+  ok: .github/workflows/founder_weekly_scorecard.yml
+  ok: scripts/run_dealix_daily_ops.py
+  ok: scripts/run_founder_commercial_day.sh
+  ok: scripts/verify_dealix_commercial_go_live.sh
+  ok: scripts/verify_dealix_commercial_go_live.ps1
+  ok: docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md
+  ok: docs/commercial/COMMERCIAL_VALUE_MAP_AR.md
+  ok: docs/commercial/COMMERCIAL_OPS_QUICK_REFERENCE_AR.md
+  ok: scripts/commercial_value_map_status.py
+  ok: dealix/commercial_ops/value_map_status.py
+  ok: dealix/commercial_ops/value_map_catalog.py
+  ok: docs/ops/FOUNDER_OPERATING_SYSTEM_AR.md
+  ok: commercial_doctrine rules=5 checklist=5
+  ok: founder_strategy_refs daily=3 weekly=5
+  ok: agency_accounts_seed rows=250
+  ok: social_content_queue posts=140 (20w)
+  ok: build_war_room_today + outreach_drafts
+  ok: import_war_room_targets --dry-run
+  ok: run_dealix_daily_ops --dry-run --skip-api
+  ok: verify_full_autonomous_ops_stack
+  FAIL: pytest bundle: ups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_founder_commercial_digest.py::test_scope_requested_within_days
+1 failed, 47 passed, 2 warnings in 10.39s
+
+2026-05-28 15:55:08 [info     ] request_completed              duration_ms=16.27 method=GET path=/api/v1/ops-autopilot/targeting/today request_id=9b9dbcc55a0c status_code=200
+  ok: GET targeting/today
+2026-05-28 15:55:08 [info     ] request_completed              duration_ms=76.0 method=GET path=/api/v1/ops-autopilot/marketing/calendar request_id=f9ab0e8363d8 status_code=200
+  ok: GET marketing/calendar
+2026-05-28 15:55:08 [info     ] request_completed              duration_ms=22.74 method=GET path=/api/v1/ops-autopilot/full-ops-health request_id=741924da1d0d status_code=200
+  ok: GET full-ops-health
+2026-05-28 15:55:08 [info     ] request_completed              duration_ms=152.68 method=GET path=/api/v1/ops-autopilot/founder/full-autonomous-ops request_id=1cee183608e5 status_code=200
+  ok: GET founder/full-autonomous-ops
+2026-05-28 15:55:09 [info     ] request_completed              duration_ms=737.27 method=GET path=/api/v1/ops-autopilot/founder/cockpit request_id=10cd2aa18357 status_code=200
+  ok: GET founder/cockpit
+2026-05-28 15:55:09 [info     ] request_completed              duration_ms=6.07 method=POST path=/api/v1/public/partner-apply request_id=39c676369455 status_code=422
+  ok: partner-apply blocks misleading affiliate copy
+2026-05-28 15:55:09 [info     ] request_completed              duration_ms=7.73 method=GET path=/api/v1/public/knowledge/answer request_id=839845251fa4 status_code=200
+  ok: GET /api/v1/public/knowledge/answer
+2026-05-28 15:55:09 [info     ] request_completed              duration_ms=41.84 method=POST path=/api/v1/public/leads request_id=e54fa3088966 status_code=200
+  ok: POST /api/v1/public/leads
+  ok: verify_commercial_fe_be
+
+COMMERCIAL_LAUNCH_READY: FAIL
+  - pytest bundle: ups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_founder_commercial_digest.py::test_scope_requested_within_days
+1 failed, 47 passed, 2 warnings in 10.39s
+
+See docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md
+
+== first_paid_tracker ==
+== first_paid_diagnostic_tracker ==
+  evidence: docs/commercial/operations/evidence_events_tracker.csv (12 rows)
+  real-company events: 0
+  invoice_sent (real): 0
+  payment_received (real): 0
+  proof_pack_delivered (real): 0
+  kpi_import: ok
+  crm_kpi_pending: True
+  DoD: docs/commercial/operations/FIRST_PAID_DIAGNOSTIC_DOD_AR.md
+FIRST_PAID_DIAGNOSTIC_VERDICT=PIPELINE_OPEN
+FOUNDER_ACTION: fill CRM KPI yaml + close one real Diagnostic per DoD
+
+== paid_launch_readiness ==
+== verify_paid_launch_readiness ==
+
+== Docs ==
+  ok: docs/commercial/operations/FIRST_PAID_DIAGNOSTIC_DOD_AR.md
+  ok: docs/ops/MANUAL_PAYMENT_SOP.md
+  ok: docs/commercial/PAID_LAUNCH_TRACKER_AR.md
+  ok: docs/LAUNCH_GATES.md
+
+== Integrations (FOUNDER_ACTION until set) ==
+  FOUNDER_ACTION: Moyasar live/test — MOYASAR_SECRET_KEY
+  FOUNDER_ACTION: Moyasar webhook — MOYASAR_WEBHOOK_SECRET
+  FOUNDER_ACTION: HubSpot sync — HUBSPOT_ACCESS_TOKEN
+  FOUNDER_ACTION: Calendly webhooks — CALENDLY_WEBHOOK_SIGNING_KEY
+  FOUNDER_ACTION: Calendly booking link — CALENDLY_URL
+  FOUNDER_ACTION: PostHog analytics — POSTHOG_API_KEY
+  optional: Gmail OAuth (drafts) — GMAIL_CLIENT_ID (drafts; not blocking infra strict)
+
+== Railway / deploy env ==
+
+== First paid Diagnostic pipeline ==
+  pipeline: 0 paid · 0 proof (real companies)
+  verdict: PIPELINE_OPEN
+  FOUNDER_ACTION: sync kpi_founder_commercial_import.yaml from CRM export
+  (pending) Moyasar live/test: set MOYASAR_SECRET_KEY
+  (pending) Moyasar webhook: set MOYASAR_WEBHOOK_SECRET
+  (pending) HubSpot sync: set HUBSPOT_ACCESS_TOKEN
+  (pending) Calendly webhooks: set CALENDLY_WEBHOOK_SIGNING_KEY
+  (pending) Calendly booking link: set CALENDLY_URL
+  (pending) PostHog analytics: set POSTHOG_API_KEY
+  (pending) API env missing: ['DATABASE_URL', 'APP_SECRET_KEY', 'ENVIRONMENT', 'CORS_ORIGINS', 'ADMIN_API_KEYS']
+  (pending) Frontend env missing: ['NEXT_PUBLIC_API_URL', 'NEXT_PUBLIC_USE_DEALIX_OPS_PROXY', 'DEALIX_ADMIN_API_KEY', 'NEXT_PUBLIC_DEALIX_ADMIN_API_KEY']
+  (pending) Payments: ['MOYASAR_SECRET_KEY', 'MOYASAR_WEBHOOK_SECRET']
+
+PAID_LAUNCH_READINESS=ROADMAP_OK (soft — complete FOUNDER_ACTION for paid)
+Next: docs/commercial/PAID_LAUNCH_TRACKER_AR.md · bash scripts/official_launch_verify.sh
+
+== value_plan_pytest ==
+........................                                                 [100%]
+=============================== warnings summary ===============================
+../../../usr/local/lib/python3.11/dist-packages/passlib/utils/__init__.py:854
+  /usr/local/lib/python3.11/dist-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../../../usr/local/lib/python3.11/dist-packages/opentelemetry/util/_importlib_metadata.py:32
+  /usr/local/lib/python3.11/dist-packages/opentelemetry/util/_importlib_metadata.py:32: DeprecationWarning: SelectableGroups dict interface is deprecated. Use select.
+    return EntryPoints(ep for group_eps in eps.values() for ep in group_eps)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+24 passed, 2 warnings in 9.78s
+
+== commercial_value_map_status ==
+== commercial_value_map_status ==
+  generated: 2026-05-28T15:55:27.737446+00:00
+  brief_latest: 2026-05-28
+  agency_seed_rows: 250 (strict>=80: True)
+  pipeline: PIPELINE_OPEN
+  payment_received (real): 0
+  proof_pack_delivered (real): 0
+  evidence_rows: 12
+  crm_kpi_pending: True
+  ladder: Diagnostic (Ops) 4,999–15,000 SAR → Sprint/Data Pack بعد الدفع → Growth 2,999 بعد Proof
+  doc: docs/commercial/COMMERCIAL_VALUE_MAP_AR.md
+  FOUNDER_ACTION: Close one real Diagnostic per FIRST_PAID_DIAGNOSTIC_DOD
+  FOUNDER_ACTION: Sync kpi_founder_commercial_import.yaml from CRM when ready
+  FOUNDER_ACTION: Complete FOUNDER_ACTION in verify_paid_launch_readiness before Moyasar live
+COMMERCIAL_VALUE_MAP_STATUS=OK
+
+== value_plan_snapshot ==
+VALUE_PLAN_SNAPSHOT: OK json=data/founder_briefs/value_plan_2026-05-28.json md=data/founder_briefs/value_plan_2026-05-28.md
+FIRST_PAID_VERDICT=PIPELINE_OPEN
+
+VALUE_PLAN_STACK: FAIL
+  - commercial_launch_ready
+  WARN: value plan stack verify exit=1
+
+COMMERCIAL_OPS_EXPAND=FAIL
+
+COMMERCIAL_STACK_EXPAND=FAIL
+
+== 0/7 Dealix daily ops (bridge + health) ==
+API steps skipped (set DEALIX_API_BASE + DEALIX_ADMIN_API_KEY)
+
+== 4/6 KPI commercial status ==
+commercial_registry_pending=0 ready=6
+kpi_import: present (fill CRM values; pending refs OK until export)
+  ready: measured_customer_value_sar
+  ready: governance_integrity_rate
+  ready: expansion_quality_ratio
+  ready: time_to_proof_days
+  ready: approval_cycle_time_hours
+  ready: conversion_discovery_to_pilot
+
+== 5/6 War Room sync ==
+WROTE · /home/user/dealix/data/war_room_today.json · targets=15
+
+== 6/6 Commercial digest ==
+WROTE · /home/user/dealix/data/founder_briefs/commercial_2026-05-28.md
+WROTE · /home/user/dealix/data/founder_briefs/DAILY_PACK_2026-05-28.md
+WROTE · /home/user/dealix/data/founder_briefs/index.json
+# Dealix — Commercial Digest · 2026-05-28
+
+## حوكمة اليوم · SOAEN · 2026-05-28
+
+### غير قابل للتجاوز
+
+- **no_cold_whatsapp** — لا إرسال واتساب بارد — مسودة + موافقة فقط
+- **no_linkedin_automation** — لا أتمتة LinkedIn — انشر يدوياً بعد SOAEN
+- **no_external_gmail_without_approval** — لا Gmail خارجي بدون موافقة صريحة
+- **no_invented_crm_kpi** — لا أرقام CRM أو KPI مخترعة — من kpi_founder_commercial_import.yaml فقط
+- **no_revenue_before_paid** — لا upsell قبل Proof · لا إيراد قبل invoice_paid
+
+### SOAEN (قبل أي لمسة أو منشور)
+
+- [ ] مصدر الفكرة موثّق (call / Proof / اعتراض)
+- [ ] مالك النشر والرد على التعليقات محدد
+- [ ] مراجعة المسودة قبل النشر (Approval)
+- [ ] لا أرقام إيراد بدون دفع مثبت (Evidence)
+- [ ] CTA واحد: Risk Score أو Sample Proof أو ديمو 10 دقائق (Next Action)
+
+- مركز الموافقات: `/ar/ops/approvals`
+- وضع التشغيل: **draft_only**
+
+
+## خطة 90 دقيقة (المؤسس)
+
+1. 0–10 د: افتح brief + digest — لا بناء ميزات قبل scope_requested
+2. 10–25 د: War Room — 10 لمسات (موافقة ثم إرسال يدوي)
+3. 25–40 د: مركز الموافقات — كل المسودات المعلّقة
+4. 40–55 د: LinkedIn — انسخ المسودة، SOAEN، نشر يدوي، سجّل published
+5. 55–70 د: مكالمات/ديمو — meeting brief + Calendly
+6. 70–85 د: متابعات + شريك واحد + حدث أدلة في CSV
+7. 85–90 د: تحديث war-room status + KPI من CRM إن وُجد
+
+- **Calendly:** https://calendly.com/sami-assiri11/dealix-demo
+- **موافقات معلّقة:** -1
+- **أحداث أدلة اليوم:** 1
+- **اجتماعات هذا الأسبوع:** 0 (تقدير)
+
+### Top 10 أهداف
+
+- **هدف استراتيجي 99** · `meeting_booked`
+- **هدف استراتيجي 96** · `message_drafted`
+- **هدف استراتيجي 93** · `replied`
+- **هدف استراتيجي 90** · `not_contacted`
+- **هدف استراتيجي 87** · `sent_manual`
+- **هدف استراتيجي 85 — وكالة/خدمات** · `message_drafted`
+- **هدف استراتيجي 82 — وكالة/خدمات** · `message_drafted`
+- **هدف استراتيجي 79 — وكالة/خدمات** · `message_drafted`
+- **هدف استراتيجي 76 — وكالة/خدمات** · `message_drafted`
+- **هدف استراتيجي 73 — وكالة/خدمات** · `message_drafted`
+
+### LinkedIn · `approved`
+
+```
+أين يضيع الإيراد بعد الإعلانات؟
+
+ليس دائماً في الإعلان — غالباً في: لا owner · رد متأخر · لا proof للعميل.
+التشخيص أولاً ثم Sprint إن ثبتت القيمة.
+
+
+➡️ Governed Diagnostic — نطاق محدود
+
+— Dealix · Post-Lead Revenue Ops (مسودة — راجع SOAEN قبل النشر)
+```
+
+## تركيز اليوم
+
+- Control Tower: أفضل شريحة (وكالة P0) · رسالة · Proof · اعتراض · توقف funnel
+- War Room: أعلى 10 أهداف + 5 متابعات
+- 10 لمسات موافَق عليها · 1 شريك · 1 حدث أدلة
+- منشور LinkedIn: مسودة جاهزة — راجع SOAEN ثم انشر يدوياً
+- مركز الموافقات قبل أي إرسال خارجي
+- استخبارات السوق — وثيقة الأسبوع: سحابة وإقامة (`docs/commercial/MARKET_INTELLIGENCE_CLOUD_CROSS_BORDER_AR.md`)
+
+## أحداث الأدلة
+
+- اليوم: **0** · الأسبوع: **0**
+
+### اليوم حسب النوع
+
+- _(لا أحداث مسجّلة اليوم)_
+
+## War Room — أعلى الأهداف
+
+- **هدف استراتيجي 90** · `not_contacted` · motion=B · segment=ecommerce · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 90 —
+
+سلة متروكة بلا قرار إيراد
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، متا…
+- **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` · motion=A · segment=executive_governance · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 55 — وكالة/خدمات —
+
+AI بلا حوكمة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، مت…
+- **هدف استراتيجي 52 — وكالة/خدمات** · `not_contacted` · motion=B · segment=direct_b2b · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 52 — وكالة/خدمات —
+
+CRM مليان بلا owner
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: م…
+- **هدف استراتيجي 49 — وكالة/خدمات** · `not_contacted` · motion=D · segment=agency_partner · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 49 — وكالة/خدمات —
+
+co-sell pilot واحد
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: ما…
+- **هدف استراتيجي 46 — وكالة/خدمات** · `not_contacted` · motion=A · segment=agency_wedge · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 46 — وكالة/خدمات —
+
+العميل يسأل ماذا حدث بعد الحملة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد…
+- **هدف استراتيجي 43 — وكالة/خدمات** · `not_contacted` · motion=C · segment=crm_partner · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 43 — وكالة/خدمات —
+
+follow-up غير موثق
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: ما…
+- **هدف استراتيجي 40 — وكالة/خدمات** · `not_contacted` · motion=A · segment=executive_governance · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 40 — وكالة/خدمات —
+
+AI بلا حوكمة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، مت…
+- **هدف استراتيجي 37 — وكالة/خدمات** · `not_contacted` · motion=B · segment=direct_b2b · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 37 — وكالة/خدمات —
+
+CRM مليان بلا owner
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: م…
+- **هدف استراتيجي 34 — وكالة/خدمات** · `not_contacted` · motion=D · segment=agency_partner · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 34 — وكالة/خدمات —
+
+co-sell pilot واحد
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: ما…
+- **هدف استراتيجي 31 — وكالة/خدمات** · `not_contacted` · motion=A · segment=agency_wedge · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 31 — وكالة/خدمات —
+
+العميل يسأل ماذا حدث بعد الحملة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد…
+- **هدف استراتيجي 28 — وكالة/خدمات** · `not_contacted` · motion=C · segment=crm_partner · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 28 — وكالة/خدمات —
+
+follow-up غير موثق
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: ما…
+- **هدف استراتيجي 240** · `not_contacted` · motion=A · segment=marketing_agency · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 240 —
+
+ضغط inbound
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، متابعة، موافقة، …
+- **هدف استراتيجي 225** · `not_contacted` · motion=B · segment=ecommerce · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 225 —
+
+سلة متروكة بلا قرار إيراد
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، مت…
+- **هدف استراتيجي 210** · `not_contacted` · motion=B · segment=direct_b2b · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 210 —
+
+متابعة أولى بطيئة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، متابعة، مو…
+- **هدف استراتيجي 195** · `not_contacted` · motion=D · segment=executive_governance · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 195 —
+
+مخاطر توسع AI
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، متابعة، موافقة…
+
+## غداً (معاينة تدوير P0)
+
+- **هدف استراتيجي 90** · `not_contacted` · ecommerce
+- **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` · executive_governance
+- **هدف استراتيجي 52 — وكالة/خدمات** · `not_contacted` · direct_b2b
+
+## منشور LinkedIn (مسودة)
+
+**أين يضيع الإيراد بعد الإعلانات؟** · pillar=proof · status=approved
+
+```
+أين يضيع الإيراد بعد الإعلانات؟
+
+ليس دائماً في الإعلان — غالباً في: لا owner · رد متأخر · لا proof للعميل.
+التشخيص أولاً ثم Sprint إن ثبتت القيمة.
+
+
+➡️ Governed Diagnostic — نطاق محدود
+
+— Dealix · Post-Lead Revenue Ops (مسودة — راجع SOAEN قبل النشر)
+```
+
+### SOAEN قبل النشر
+
+- [ ] مصدر الفكرة موثّق (call / Proof / اعتراض)
+- [ ] مالك النشر والرد على التعليقات محدد
+- [ ] مراجعة المسودة قبل النشر (Approval)
+- [ ] لا أرقام إيراد بدون دفع مثبت (Evidence)
+- [ ] CTA واحد: Risk Score أو Sample Proof أو ديمو 10 دقائق (Next Action)
+
+## Value Plan (بوابة القيمة)
+
+- First paid: `PIPELINE_OPEN` · payment (real): 0 · proof: 0
+- Motion A أهداف: 5
+  - **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+  - **هدف استراتيجي 46 — وكالة/خدمات** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+  - **هدف استراتيجي 40 — وكالة/خدمات** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+  - **هدف استراتيجي 31 — وكالة/خدمات** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+  - **هدف استراتيجي 240** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+> ⚠️ بوابة القيمة مفتوحة: أغلق Diagnostic واحد (دفع + Proof) لشركة حقيقية.
+> ⚠️ سجّل حدث أدلة واحد اليوم (مساءً: founder_evening.ps1).
+> ⚠️ سوشال: 140 منشور / 20 أسبوع — هدف 28: expand_social_queue_12w.py --cycle-weeks 28
+> ⚠️ مسار A: 36 هدف high بلا تاريخ متابعة.
+
+## KPI تجاري (من السجل — لا أرقام مخترعة)
+
+- جاهز: **6** · معلّق: **0**
+- ملف الاستيراد: موجود
+- أحداث الأدلة: `docs/commercial/operations/evidence_events_tracker.csv`
+
+> ⚠️ سجّل حدث أدلة واحد على الأقل اليوم في evidence_events_tracker.csv
+
+## استخبارات السوق (توجيه اليوم)
+
+- **وثيقة الأسبوع:** سحابة وإقامة — `docs/commercial/MARKET_INTELLIGENCE_CLOUD_CROSS_BORDER_AR.md`
+- **الفهرس:** `docs/commercial/MARKET_INTELLIGENCE_MASTER_INDEX_AR.md`
+
+---
+_Governed autopilot: مسودات + موافقة — لا إرسال بارد._
+_Generated: 2026-05-28T15:55:29.235238+00:00_
+
+DEALIX_DAILY_OPS_VERDICT=DEGRADED
+
+== 1/7 Founder daily brief ==
+WROTE · data/founder_briefs/brief_2026-05-28.md · 1168 chars
+# 🌅 Dealix Founder Daily Brief · 2026-05-28
+
+## 1. Bottleneck Radar — `CLEAR`
+
+**لا اختناقات حاليًا في البورتفوليو.**
+_No current bottlenecks in the portfolio._
+
+- Blocking approvals: **0**
+- Pending payments: **0**
+- Proof packs due: **0**
+- Overdue follow-ups: **0**
+- SLA at-risk tickets: **0**
+
+## 2. Service Catalog
+
+- Total offerings: 7
+- Paid offerings: 6
+- Lowest paid price: 499 SAR
+
+## 3. Article 13 Status
+
+- Paid customers: **0 / 3**
+- Remaining to trigger: **3**
+
+## 4. Hard Gates (8/8 IMMUTABLE)
+
+| Gate | State |
+|---|---|
+| `no_live_send` | immutable |
+| `no_live_charge` | immutable |
+| `no_cold_whatsapp` | immutable |
+| `no_linkedin_auto` | immutable |
+| `no_scraping` | immutable |
+| `no_fake_proof` | immutable |
+| `no_fake_revenue` | immutable |
+| `no_blast` | immutable |
+
+## 5. Today's Single Action
+
+### 🎯 أرسل warm-intro لاثنين من شركة Saudi B2B في قائمتك.
+_Send warm-intros to 2 Saudi B2B prospects from your list._
+
+**Why?** لم تصل لـ 3 عملاء مدفوعين بعد — Article 13 still open. · Article 13 (3 paid pilots) not yet triggered.
+
+---
+_Article 8: every count is an estimate. Article 4: never auto-send._
+_Generated: 2026-05-28T15:55:29+00:00_
+
+== 2/7 KPI commercial status ==
+KPI_IMPORT_BOOTSTRAP=SKIP path=/home/user/dealix/dealix/transformation/kpi_founder_commercial_import.yaml reason=exists
+commercial_registry_pending=0 ready=6
+kpi_import: present (fill CRM values; pending refs OK until export)
+  ready: measured_customer_value_sar
+  ready: governance_integrity_rate
+  ready: expansion_quality_ratio
+  ready: time_to_proof_days
+  ready: approval_cycle_time_hours
+  ready: conversion_discovery_to_pilot
+
+== 3/8 War Room sync (P0 rotation) ==
+WROTE · /home/user/dealix/data/war_room_today.json · targets=15
+
+== 4/8 War Room CSV import (skips duplicates) ==
+WAR_ROOM_IMPORT: rows_in_csv=250
+{
+  "imported": 0,
+  "skipped_duplicates": 250,
+  "lead_ids": [],
+  "fields_expected": [
+    "company",
+    "contact",
+    "segment",
+    "pain_hypothesis",
+    "channel",
+    "motion",
+    "offer_id",
+    "status",
+    "next_action",
+    "next_action_date",
+    "priority",
+    "notes"
+  ]
+}
+WAR_ROOM_IMPORT: OK imported=0 skipped=250
+
+== 5/8 Commercial digest ==
+WROTE · data/founder_briefs/commercial_2026-05-28.md
+WROTE · /home/user/dealix/data/founder_briefs/DAILY_PACK_2026-05-28.md
+WROTE · /home/user/dealix/data/founder_briefs/index.json
+# Dealix — Commercial Digest · 2026-05-28
+
+## حوكمة اليوم · SOAEN · 2026-05-28
+
+### غير قابل للتجاوز
+
+- **no_cold_whatsapp** — لا إرسال واتساب بارد — مسودة + موافقة فقط
+- **no_linkedin_automation** — لا أتمتة LinkedIn — انشر يدوياً بعد SOAEN
+- **no_external_gmail_without_approval** — لا Gmail خارجي بدون موافقة صريحة
+- **no_invented_crm_kpi** — لا أرقام CRM أو KPI مخترعة — من kpi_founder_commercial_import.yaml فقط
+- **no_revenue_before_paid** — لا upsell قبل Proof · لا إيراد قبل invoice_paid
+
+### SOAEN (قبل أي لمسة أو منشور)
+
+- [ ] مصدر الفكرة موثّق (call / Proof / اعتراض)
+- [ ] مالك النشر والرد على التعليقات محدد
+- [ ] مراجعة المسودة قبل النشر (Approval)
+- [ ] لا أرقام إيراد بدون دفع مثبت (Evidence)
+- [ ] CTA واحد: Risk Score أو Sample Proof أو ديمو 10 دقائق (Next Action)
+
+- مركز الموافقات: `/ar/ops/approvals`
+- وضع التشغيل: **draft_only**
+
+
+## خطة 90 دقيقة (المؤسس)
+
+1. 0–10 د: افتح brief + digest — لا بناء ميزات قبل scope_requested
+2. 10–25 د: War Room — 10 لمسات (موافقة ثم إرسال يدوي)
+3. 25–40 د: مركز الموافقات — كل المسودات المعلّقة
+4. 40–55 د: LinkedIn — انسخ المسودة، SOAEN، نشر يدوي، سجّل published
+5. 55–70 د: مكالمات/ديمو — meeting brief + Calendly
+6. 70–85 د: متابعات + شريك واحد + حدث أدلة في CSV
+7. 85–90 د: تحديث war-room status + KPI من CRM إن وُجد
+
+- **Calendly:** https://calendly.com/sami-assiri11/dealix-demo
+- **موافقات معلّقة:** -1
+- **أحداث أدلة اليوم:** 1
+- **اجتماعات هذا الأسبوع:** 0 (تقدير)
+
+### Top 10 أهداف
+
+- **هدف استراتيجي 99** · `meeting_booked`
+- **هدف استراتيجي 96** · `message_drafted`
+- **هدف استراتيجي 93** · `replied`
+- **هدف استراتيجي 90** · `not_contacted`
+- **هدف استراتيجي 87** · `sent_manual`
+- **هدف استراتيجي 85 — وكالة/خدمات** · `message_drafted`
+- **هدف استراتيجي 82 — وكالة/خدمات** · `message_drafted`
+- **هدف استراتيجي 79 — وكالة/خدمات** · `message_drafted`
+- **هدف استراتيجي 76 — وكالة/خدمات** · `message_drafted`
+- **هدف استراتيجي 73 — وكالة/خدمات** · `message_drafted`
+
+### LinkedIn · `approved`
+
+```
+أين يضيع الإيراد بعد الإعلانات؟
+
+ليس دائماً في الإعلان — غالباً في: لا owner · رد متأخر · لا proof للعميل.
+التشخيص أولاً ثم Sprint إن ثبتت القيمة.
+
+
+➡️ Governed Diagnostic — نطاق محدود
+
+— Dealix · Post-Lead Revenue Ops (مسودة — راجع SOAEN قبل النشر)
+```
+
+## تركيز اليوم
+
+- Control Tower: أفضل شريحة (وكالة P0) · رسالة · Proof · اعتراض · توقف funnel
+- War Room: أعلى 10 أهداف + 5 متابعات
+- 10 لمسات موافَق عليها · 1 شريك · 1 حدث أدلة
+- منشور LinkedIn: مسودة جاهزة — راجع SOAEN ثم انشر يدوياً
+- مركز الموافقات قبل أي إرسال خارجي
+- استخبارات السوق — وثيقة الأسبوع: سحابة وإقامة (`docs/commercial/MARKET_INTELLIGENCE_CLOUD_CROSS_BORDER_AR.md`)
+
+## أحداث الأدلة
+
+- اليوم: **0** · الأسبوع: **0**
+
+### اليوم حسب النوع
+
+- _(لا أحداث مسجّلة اليوم)_
+
+## War Room — أعلى الأهداف
+
+- **هدف استراتيجي 90** · `not_contacted` · motion=B · segment=ecommerce · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 90 —
+
+سلة متروكة بلا قرار إيراد
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، متا…
+- **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` · motion=A · segment=executive_governance · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 55 — وكالة/خدمات —
+
+AI بلا حوكمة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، مت…
+- **هدف استراتيجي 52 — وكالة/خدمات** · `not_contacted` · motion=B · segment=direct_b2b · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 52 — وكالة/خدمات —
+
+CRM مليان بلا owner
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: م…
+- **هدف استراتيجي 49 — وكالة/خدمات** · `not_contacted` · motion=D · segment=agency_partner · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 49 — وكالة/خدمات —
+
+co-sell pilot واحد
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: ما…
+- **هدف استراتيجي 46 — وكالة/خدمات** · `not_contacted` · motion=A · segment=agency_wedge · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 46 — وكالة/خدمات —
+
+العميل يسأل ماذا حدث بعد الحملة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد…
+- **هدف استراتيجي 43 — وكالة/خدمات** · `not_contacted` · motion=C · segment=crm_partner · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 43 — وكالة/خدمات —
+
+follow-up غير موثق
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: ما…
+- **هدف استراتيجي 40 — وكالة/خدمات** · `not_contacted` · motion=A · segment=executive_governance · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 40 — وكالة/خدمات —
+
+AI بلا حوكمة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، مت…
+- **هدف استراتيجي 37 — وكالة/خدمات** · `not_contacted` · motion=B · segment=direct_b2b · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 37 — وكالة/خدمات —
+
+CRM مليان بلا owner
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: م…
+- **هدف استراتيجي 34 — وكالة/خدمات** · `not_contacted` · motion=D · segment=agency_partner · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 34 — وكالة/خدمات —
+
+co-sell pilot واحد
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: ما…
+- **هدف استراتيجي 31 — وكالة/خدمات** · `not_contacted` · motion=A · segment=agency_wedge · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 31 — وكالة/خدمات —
+
+العميل يسأل ماذا حدث بعد الحملة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد…
+- **هدف استراتيجي 28 — وكالة/خدمات** · `not_contacted` · motion=C · segment=crm_partner · التالي: مسودة لمسة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 28 — وكالة/خدمات —
+
+follow-up غير موثق
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: ما…
+- **هدف استراتيجي 240** · `not_contacted` · motion=A · segment=marketing_agency · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 240 —
+
+ضغط inbound
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، متابعة، موافقة، …
+- **هدف استراتيجي 225** · `not_contacted` · motion=B · segment=ecommerce · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 225 —
+
+سلة متروكة بلا قرار إيراد
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، مت…
+- **هدف استراتيجي 210** · `not_contacted` · motion=B · segment=direct_b2b · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 210 —
+
+متابعة أولى بطيئة
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، متابعة، مو…
+- **هدف استراتيجي 195** · `not_contacted` · motion=D · segment=executive_governance · التالي: مسودة — موافقة قبل الإرسال
+  - مسودة لمسة: مرحباً هدف استراتيجي 195 —
+
+مخاطر توسع AI
+
+أنتم تجيبون الاهتمام. Dealix يثبت ماذا حدث بعد الاهتمام: مالك، متابعة، موافقة…
+
+## غداً (معاينة تدوير P0)
+
+- **هدف استراتيجي 90** · `not_contacted` · ecommerce
+- **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` · executive_governance
+- **هدف استراتيجي 52 — وكالة/خدمات** · `not_contacted` · direct_b2b
+
+## منشور LinkedIn (مسودة)
+
+**أين يضيع الإيراد بعد الإعلانات؟** · pillar=proof · status=approved
+
+```
+أين يضيع الإيراد بعد الإعلانات؟
+
+ليس دائماً في الإعلان — غالباً في: لا owner · رد متأخر · لا proof للعميل.
+التشخيص أولاً ثم Sprint إن ثبتت القيمة.
+
+
+➡️ Governed Diagnostic — نطاق محدود
+
+— Dealix · Post-Lead Revenue Ops (مسودة — راجع SOAEN قبل النشر)
+```
+
+### SOAEN قبل النشر
+
+- [ ] مصدر الفكرة موثّق (call / Proof / اعتراض)
+- [ ] مالك النشر والرد على التعليقات محدد
+- [ ] مراجعة المسودة قبل النشر (Approval)
+- [ ] لا أرقام إيراد بدون دفع مثبت (Evidence)
+- [ ] CTA واحد: Risk Score أو Sample Proof أو ديمو 10 دقائق (Next Action)
+
+## Value Plan (بوابة القيمة)
+
+- First paid: `PIPELINE_OPEN` · payment (real): 0 · proof: 0
+- Motion A أهداف: 5
+  - **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+  - **هدف استراتيجي 46 — وكالة/خدمات** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+  - **هدف استراتيجي 40 — وكالة/خدمات** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+  - **هدف استراتيجي 31 — وكالة/خدمات** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+  - **هدف استراتيجي 240** · `not_contacted` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+> ⚠️ بوابة القيمة مفتوحة: أغلق Diagnostic واحد (دفع + Proof) لشركة حقيقية.
+> ⚠️ سجّل حدث أدلة واحد اليوم (مساءً: founder_evening.ps1).
+> ⚠️ سوشال: 140 منشور / 20 أسبوع — هدف 28: expand_social_queue_12w.py --cycle-weeks 28
+> ⚠️ مسار A: 36 هدف high بلا تاريخ متابعة.
+
+## KPI تجاري (من السجل — لا أرقام مخترعة)
+
+- جاهز: **6** · معلّق: **0**
+- ملف الاستيراد: موجود
+- أحداث الأدلة: `docs/commercial/operations/evidence_events_tracker.csv`
+
+> ⚠️ سجّل حدث أدلة واحد على الأقل اليوم في evidence_events_tracker.csv
+
+## استخبارات السوق (توجيه اليوم)
+
+- **وثيقة الأسبوع:** سحابة وإقامة — `docs/commercial/MARKET_INTELLIGENCE_CLOUD_CROSS_BORDER_AR.md`
+- **الفهرس:** `docs/commercial/MARKET_INTELLIGENCE_MASTER_INDEX_AR.md`
+
+---
+_Governed autopilot: مسودات + موافقة — لا إرسال بارد._
+_Generated: 2026-05-28T15:55:31.034204+00:00_
+
+== 5b/8 War Room touch drafts (governed, no send) ==
+{
+  "drafted": 15,
+  "skipped": 0,
+  "companies": [
+    "هدف استراتيجي 240",
+    "هدف استراتيجي 225",
+    "هدف استراتيجي 210",
+    "هدف استراتيجي 195",
+    "هدف استراتيجي 90",
+    "هدف استراتيجي 55 — وكالة/خدمات",
+    "هدف استراتيجي 52 — وكالة/خدمات",
+    "هدف استراتيجي 49 — وكالة/خدمات",
+    "هدف استراتيجي 46 — وكالة/خدمات",
+    "هدف استراتيجي 43 — وكالة/خدمات",
+    "هدف استراتيجي 40 — وكالة/خدمات",
+    "هدف استراتيجي 37 — وكالة/خدمات",
+    "هدف استراتيجي 34 — وكالة/خدمات",
+    "هدف استراتيجي 31 — وكالة/خدمات",
+    "هدف استراتيجي 28 — وكالة/خدمات"
+  ]
+}
+WAR_ROOM_TOUCH_DRAFTS: OK drafted=15 dry_run=False
+
+== 6/9 Social queue today ==
+# منشور اليوم · 2026-05-28
+
+**أين يضيع الإيراد بعد الإعلانات؟** · `proof` · status=approved
+
+أين يضيع الإيراد بعد الإعلانات؟
+
+ليس دائماً في الإعلان — غالباً في: لا owner · رد متأخر · لا proof للعميل.
+التشخيص أولاً ثم Sprint إن ثبتت القيمة.
+
+
+➡️ Governed Diagnostic — نطاق محدود
+
+— Dealix · Post-Lead Revenue Ops (مسودة — راجع SOAEN قبل النشر)
+
+## SOAEN
+
+- [ ] مصدر الفكرة موثّق (call / Proof / اعتراض)
+- [ ] مالك النشر والرد على التعليقات محدد
+- [ ] مراجعة المسودة قبل النشر (Approval)
+- [ ] لا أرقام إيراد بدون دفع مثبت (Evidence)
+- [ ] CTA واحد: Risk Score أو Sample Proof أو ديمو 10 دقائق (Next Action)
+
+CTA: Governed Diagnostic — نطاق محدود
+
+== 7/10 SOAEN + doctrine block ==
+WROTE · data/founder_briefs/soaen_2026-05-28.md
+## حوكمة اليوم · SOAEN · 2026-05-28
+
+### غير قابل للتجاوز
+
+- **no_cold_whatsapp** — لا إرسال واتساب بارد — مسودة + موافقة فقط
+- **no_linkedin_automation** — لا أتمتة LinkedIn — انشر يدوياً بعد SOAEN
+- **no_external_gmail_without_approval** — لا Gmail خارجي بدون موافقة صريحة
+- **no_invented_crm_kpi** — لا أرقام CRM أو KPI مخترعة — من kpi_founder_commercial_import.yaml فقط
+- **no_revenue_before_paid** — لا upsell قبل Proof · لا إيراد قبل invoice_paid
+
+### SOAEN (قبل أي لمسة أو منشور)
+
+- [ ] مصدر الفكرة موثّق (call / Proof / اعتراض)
+- [ ] مالك النشر والرد على التعليقات محدد
+- [ ] مراجعة المسودة قبل النشر (Approval)
+- [ ] لا أرقام إيراد بدون دفع مثبت (Evidence)
+- [ ] CTA واحد: Risk Score أو Sample Proof أو ديمو 10 دقائق (Next Action)
+
+- مركز الموافقات: `/ar/ops/approvals`
+- وضع التشغيل: **draft_only**
+
+FOUNDER_SOAEN_DAILY=OK
+
+== 8/10 AEO + War Room summary + verdict ==
+## حوكمة اليوم · SOAEN · 2026-05-28
+
+### غير قابل للتجاوز
+
+- **no_cold_whatsapp** — لا إرسال واتساب بارد — مسودة + موافقة فقط
+- **no_linkedin_automation** — لا أتمتة LinkedIn — انشر يدوياً بعد SOAEN
+- **no_external_gmail_without_approval** — لا Gmail خارجي بدون موافقة صريحة
+- **no_invented_crm_kpi** — لا أرقام CRM أو KPI مخترعة — من kpi_founder_commercial_import.yaml فقط
+- **no_revenue_before_paid** — لا upsell قبل Proof · لا إيراد قبل invoice_paid
+
+### SOAEN (قبل أي لمسة أو منشور)
+
+- [ ] مصدر الفكرة موثّق (call / Proof / اعتراض)
+- [ ] مالك النشر والرد على التعليقات محدد
+- [ ] مراجعة المسودة قبل النشر (Approval)
+- [ ] لا أرقام إيراد بدون دفع مثبت (Evidence)
+- [ ] CTA واحد: Risk Score أو Sample Proof أو ديمو 10 دقائق (Next Action)
+
+- مركز الموافقات: `/ar/ops/approvals`
+- وضع التشغيل: **draft_only**
+
+
+
+## AEO · أسبوع 10
+- عنوان: لماذا نبدأ بـ 10 leads؟
+- slug: `10-lead-audit`
+- سؤال: Why start with 10 leads only
+## War Room (summary)
+- top_targets: 10
+- follow_ups_due: 4
+- meetings: 34 · paid: 0
+  · — · score=6 · status=message_drafted
+  · — · score=6 · status=message_drafted
+  · — · score=6 · status=message_drafted
+  · — · score=6 · status=not_contacted
+  · — · score=6 · status=meeting_booked
+
+## Evidence
+سجّل حدثاً واحداً اليوم: docs/commercial/operations/evidence_events_tracker.csv
+أحداث: message_sent_manual · reply_received · demo_booked · payment_received · proof_pack_delivered
+
+FOUNDER_REVENUE_DAY_VERDICT=READY
+
+== 9/12 Expand social queue (idempotent weeks 9–12) ==
+EXPAND_SOCIAL_QUEUE: added=0 total=140 cycle_weeks=28
+
+== 10/12 Soft Launch meeting packs ==
+SOFT_LAUNCH_MEETINGS: OK slots=10 packs=10
+  tracker: docs/commercial/operations/soft_launch_meetings_tracker.yaml
+  [1] هدف استراتيجي 90 -> data/client_packs/هدف-استراتيجي-90
+  [2] هدف استراتيجي 55 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-55-وكالة-خدمات
+  [3] هدف استراتيجي 52 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-52-وكالة-خدمات
+  [4] هدف استراتيجي 49 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-49-وكالة-خدمات
+  [5] هدف استراتيجي 46 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-46-وكالة-خدمات
+  [6] هدف استراتيجي 43 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-43-وكالة-خدمات
+  [7] هدف استراتيجي 40 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-40-وكالة-خدمات
+  [8] هدف استراتيجي 37 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-37-وكالة-خدمات
+  [9] هدف استراتيجي 34 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-34-وكالة-خدمات
+  [10] هدف استراتيجي 31 — وكالة/خدمات -> data/client_packs/هدف-استراتيجي-31-وكالة-خدمات
+
+== 11/14 Motion A pipeline (P0 close path) ==
+# Motion A — خط أنابيب اليوم
+
+**توليد:** 2026-05-28T15:55:32.953354+00:00
+
+## تركيز
+- Motion A: وكالة (Agency wedge)
+- الأولوية — حتى أول Proof Pack مدفوع
+- بوابة الدفع: PIPELINE_OPEN
+- الأولوية: 3 لمسات P0 + 1 Discovery + سطر evidence اليوم
+
+## أعلى P0
+
+1. **هدف استراتيجي 55 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+2. **هدف استراتيجي 46 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+3. **هدف استراتيجي 40 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+4. **هدف استراتيجي 31 — وكالة/خدمات** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+5. **هدف استراتيجي 240** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+6. **هدف استراتيجي 213** · `replied` · مرحلة `discovery_to_scope` — احجز Discovery 10 دقائق — سجّل demo_booked
+7. **هدف استراتيجي 198** · `replied` · مرحلة `discovery_to_scope` — احجز Discovery 10 دقائق — سجّل demo_booked
+8. **هدف استراتيجي 150** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+9. **هدف استراتيجي 135** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+10. **هدف warm 17** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+11. **هدف warm 13** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+12. **هدف warm 12** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+13. **REPLACE:وكالة من شبكتك 2** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+14. **REPLACE:وكالة من شبكتك 1** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+15. **REPLACE:شريك وكالة محتمل** · `not_contacted` · مرحلة `outreach_p0` — مسودة لمسة أولى — وافق ثم أرسل يدوياً (لا بارد)
+
+## بوابة أول Diagnostic
+- verdict: `PIPELINE_OPEN`
+- payment_received (real): 0
+- proof_pack_delivered (real): 0
+
+
+MOTION_A_PIPELINE: OK → data/founder_briefs/motion_a_2026-05-28.md
+MOTION_A_PIPELINE_VERDICT=PIPELINE_OPEN
+# Motions A–D · 2026-05-28
+
+## Motion A — نشط
+- pool: 92 · targets: 5
+- file: `data/founder_briefs/motion_a_2026-05-28.md`
+
+## Motion B — مؤجّل
+- pool: 89 · targets: 5
+- file: `data/founder_briefs/motion_b_2026-05-28.md`
+
+## Motion C — مؤجّل
+- pool: 31 · targets: 5
+- file: `data/founder_briefs/motion_c_2026-05-28.md`
+
+## Motion D — مؤجّل
+- pool: 38 · targets: 5
+- file: `data/founder_briefs/motion_d_2026-05-28.md`
+
+
+MOTIONS_ALL_PIPELINE: OK → data/founder_briefs/motions_all_2026-05-28.json
+
+== 12/14 First paid Diagnostic tracker ==
+== first_paid_diagnostic_tracker ==
+  evidence: docs/commercial/operations/evidence_events_tracker.csv (12 rows)
+  real-company events: 0
+  invoice_sent (real): 0
+  payment_received (real): 0
+  proof_pack_delivered (real): 0
+  kpi_import: ok
+  crm_kpi_pending: True
+  DoD: docs/commercial/operations/FIRST_PAID_DIAGNOSTIC_DOD_AR.md
+FIRST_PAID_DIAGNOSTIC_VERDICT=PIPELINE_OPEN
+FOUNDER_ACTION: fill CRM KPI yaml + close one real Diagnostic per DoD
+
+== 13/14 Content approval queue (dry-run) ==
+{
+  "queued": 5,
+  "items": [
+    {
+      "dry_run": true,
+      "id": "linkedin_post-lead-revenue-ops_1",
+      "title_ar": "ما هو Post-Lead Revenue Ops؟",
+      "channel": "linkedin"
+    },
+    {
+      "dry_run": true,
+      "id": "linkedin_what-is-proof-pack_2",
+      "title_ar": "ما هو Proof Pack؟",
+      "channel": "linkedin"
+    },
+    {
+      "dry_run": true,
+      "id": "linkedin_audit-lead-follow-up_3",
+      "title_ar": "كيف تراجع متابعة الـ leads؟",
+      "channel": "linkedin"
+    },
+    {
+      "dry_run": true,
+      "id": "linkedin_ai-approval-sales_4",
+      "title_ar": "سياسة موافقة AI للمبيعات",
+      "channel": "linkedin"
+    },
+    {
+      "dry_run": true,
+      "id": "linkedin_saudi-agency-follow-up-checklist_5",
+      "title_ar": "قائمة متابعة leads للوكالات السعودية",
+      "channel": "linkedin"
+    }
+  ]
+}
+DRY-RUN — no approvals created
+
+== 14/14 Weekly scorecard (skip - Friday or founder_weekly_scorecard.py) ==
+
+== Evening (founder) ==
+  bash: python3 scripts/founder_evening_evidence.py
+  Or: --append --event-type message_sent_manual --company 'Agency'
+
+== 15/17 Value Plan snapshot ==
+VALUE_PLAN_SNAPSHOT: OK json=data/founder_briefs/value_plan_2026-05-28.json md=data/founder_briefs/value_plan_2026-05-28.md
+FIRST_PAID_VERDICT=PIPELINE_OPEN
+
+== 16/18 Strongest ops (مهام اليوم + قرار أسبوعي) ==
+FOUNDER_STRONGEST_OPS_VERDICT=FOCUS_PHASE_01
+FOUNDER_STRONGEST_OPS_MODE=morning
+BRIEF_MD=data/founder_briefs/strongest_ops_2026-05-28.md
+BRIEF_JSON=data/founder_briefs/strongest_ops_2026-05-28.json
+TASKS_TODAY=50
+
+== 17/18 Full autonomous ops (snapshot + morning core) ==
+DEALIX_FULL_AUTONOMOUS_OPS=NEEDS_FOUNDER
+track=A
+blocker: أهداف high بلا تاريخ — War Room
+blocker: سجّل حدث أدلة اليوم (مساءً)
+blocker: بوابة 0–1: أغلق أول Diagnostic مدفوع + Proof Pack
+founder: مسار A (ترويج): 36 هدف high بلا تاريخ متابعة — War Room قبل بناء المنتج.
+founder: لمسة معتمدة: هدف warm 12
+founder: لمسة معتمدة: هدف warm 13
+founder: لمسة معتمدة: هدف warm 17
+founder: مساءً: founder_evening_evidence.py --append
+founder: سجّل حدث أدلة اليوم (مساءً أو الآن)
+founder: سجّل payment_received حقيقي في evidence_events_tracker.csv
+founder: سجّل proof_pack_delivered بعد التسليم
+morning_run=PARTIAL
+
+== 18/19 GTM + comprehensive gates ==
+DEALIX_GTM_STACK_VERDICT=PASS
+track=A
+abm_active=238
+# Founder Comprehensive Plan Status
+
+- تاريخ: `2026-05-28`
+- أدلة اليوم: `0` (MISSING)
+- بوابة 0–1: `BLOCKED`
+  - سجّل payment_received حقيقي في evidence_events_tracker.csv
+  - سجّل proof_pack_delivered بعد التسليم
+  - املأ kpi_founder_commercial_import.yaml من CRM (لا أرقام مخترعة)
+- ترميز GTM: `OPEN` (0/10 debriefs)
+- PDPL pass: `IN_PROGRESS` (1/6)
+- قرار أسبوعي: `FILLED` (أسبوع `2026-05-24`)
+- Full autopilot: `RED` — توقف البناء — أغلق الأدلة والبوابة أولاً
+- شريحة عملاء: `1_10`
+
+FOUNDER_COMPREHENSIVE_PLAN_VERDICT=OK
+
+== 19/19 Full autonomous ops stack ==
+== verify_full_autonomous_ops_stack ==
+  ok: dealix/commercial_ops/full_ops_autopilot.py
+  ok: dealix/commercial_ops/complete_autonomous_day.py
+  ok: dealix/commercial_ops/founder_cockpit.py
+  ok: dealix/commercial_ops/unified_founder_day.py
+  ok: scripts/run_dealix_complete_autonomous_day.py
+  ok: scripts/run_full_commercial_ops_autopilot.py
+  ok: scripts/run_dealix_full_autonomous_ops.py
+  ok: scripts/founder_one_command.sh
+  ok: scripts/founder_one_command.ps1
+  ok: frontend/src/components/gtm/OpsFullAutonomousOpsCard.tsx
+  ok: frontend/src/components/gtm/OpsFounderCommandCenter.tsx
+  ok: docs/commercial/FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md
+  ok: .github/workflows/governed-full-ops-daily.yml
+  ok: .github/workflows/founder_evening_evidence.yml
+  ok: research_alignment consensus
+  ok: full_autonomous_ops snapshot 1.1
+  ok: automation_readiness=NEEDS_FOUNDER
+  ok: cockpit_verdict=NEEDS_FOUNDER
+  ok: hitl_spectrum_2026
+  ok: complete_autonomous_plan phases=6
+
+DEALIX_FULL_AUTONOMOUS_OPS_STACK=PASS
+Run: bash scripts/founder_one_command.sh
+Doc: docs/commercial/FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md
+
+== Daily pack index ==
+  See data/founder_briefs/index.json and data/war_room_today.json
+  Ops UI: /ar/ops/founder · /ar/ops/war-room · /ar/ops/approvals
+
+== Automated drafts (production) ==
+  GitHub: .github/workflows/daily-revenue-machine.yml (04:00 UTC, draft_only)
+  GitHub: .github/workflows/founder_commercial_daily.yml (05:00 UTC Sun-Thu)
+  Weekly content: python scripts/generate_weekly_content_drafts.py
+  Queue approvals: python scripts/queue_content_drafts_for_approval.py --dry-run
+  Set DEALIX_ADMIN_API_KEY for live War Room API fetch.
+
+== Operating evidence (if none today) ==
+EVIDENCE: evidence_already_logged_today
+
+FOUNDER_COMMERCIAL_DAY: OK
+Soft launch verify: python3 scripts/verify_commercial_launch_ready.py
+Extended morning (+ Business NOW): bash scripts/run_founder_revenue_day.sh
+Company ready: docs/company/DEALIX_COMPANY_READY_MASTER_AR.md
+5 min ops: docs/commercial/MASTER_COMMERCIAL_OPERATING_PLAN_AR.md
+Launch checklist: docs/commercial/COMMERCIAL_LAUNCH_CHECKLIST_AR.md
+EXIT_CODE=0

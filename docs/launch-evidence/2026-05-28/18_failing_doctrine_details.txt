@@ -1,0 +1,20 @@
+=================================== FAILURES ===================================
+    assert not hits, (
+E   assert not [('docs/enterprise_architecture/TESTS_REQUIRED.md', 23, '- `tests/test_no_linkedin_scraper_string_anywhere.py` — قفل repo على `linkedin_scraper`.')]
+__________ test_landing_pages_have_no_unallowlisted_forbidden_claims ___________
+tests/test_v7_no_guaranteed_claims.py:76: in test_landing_pages_have_no_unallowlisted_forbidden_claims
+    assert not violations, (
+E   assert not ["architecture.html: token 'guaranteed' not allowlisted", "architecture.html: token 'مضمون' not allowlisted", "bespoke...lot-example.html: token 'guaranteed' not allowlisted", "customer-portal.html: token 'guaranteed' not allowlisted", ...]
+api/routers/revenue_pipeline.py                                                     66     66     10      0  0.00%   2-127
+auto_client_acquisition/client_os/proof_timeline.py                                  7      7      2      0  0.00%   3-19
+auto_client_acquisition/company_brain_v6/timeline.py                                73     73     16      0  0.00%   22-244
+auto_client_acquisition/crm_v10/account_timeline.py                                 35     35     18      0  0.00%   2-85
+auto_client_acquisition/governance_os/forbidden_actions.py                           7      7      0      0  0.00%   3-19
+auto_client_acquisition/pipeline.py                                                105    105     12      0  0.00%   10-220
+auto_client_acquisition/pipelines/dedupe.py                                         44     44     36      0  0.00%   15-86
+auto_client_acquisition/pipelines/enrichment.py                                     73     73     42      0  0.00%   17-160
+auto_client_acquisition/pipelines/normalize.py                                      95     95     42      0  0.00%   8-163
+auto_client_acquisition/pipelines/saudi_dimensions.py                              135    135     42      0  0.00%   17-316
+auto_client_acquisition/pipelines/scoring.py                                       120    120     76      0  0.00%   8-205
+auto_client_acquisition/proof_architecture_os/roi_discipline.py                     14     14      2      0  0.00%   3-31
+auto_client_acquisition/revenue_memory/timeline.py                                  23     23      8      0  0.00%   9-44

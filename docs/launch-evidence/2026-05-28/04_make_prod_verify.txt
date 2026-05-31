@@ -1,0 +1,25 @@
+python3 scripts/check_env_contract.py
+Environment contract OK: backend and frontend templates checked
+python3 scripts/security_smoke.py
+Repository security smoke check failed:
+
+- Do not commit local env file: .env.prod.example
+- Do not commit local env file: .env.staging.example
+- Potential live secret in scripts/generate_production_env.sh:60: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_wave8_observability_adapter_readiness.py:97: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_integration_upgrade_adapters.py:128: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_wave8_customer_credentials_check.py:72: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_wave8_customer_credentials_check.py:73: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_agent_observability_integration.py:43: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_agent_observability_integration.py:44: matches ghp_[A-Za-z0-9]{20,}
+- Potential live secret in tests/test_agent_observability_integration.py:50: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_agent_observability_integration.py:51: matches ghp_[A-Za-z0-9]{20,}
+- Potential live secret in tests/test_agent_observability_integration.py:133: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_billing_moyasar_safety.py:25: matches github_pat_[A-Za-z0-9_]{20,}
+- Potential live secret in tests/test_v5_layers_pt4.py:243: matches AKIA[0-9A-Z]{16}
+- Potential live secret in tests/test_finance_os_no_live_charge_invariant.py:37: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_finance_os_no_live_charge_invariant.py:52: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in tests/test_dealix_invoice_cli.py:73: matches sk_live_[A-Za-z0-9_\-]{12,}
+- Potential live secret in docs/launch/DEALIX_LAUNCH_NOW_BUNDLE.md:142: matches sk_live_[A-Za-z0-9_\-]{12,}
+make: *** [Makefile:72: security-smoke] Error 1
+EXIT_CODE=2

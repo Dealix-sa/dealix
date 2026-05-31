@@ -1,20 +1,22 @@
-const LS_KEY = "dealix_admin_api_key";
+// Ops admin helpers — used by founder cockpit and ops UI components.
+// When NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1, browser calls go through the
+// Next.js proxy in /api/dealix-proxy and the server-side DEALIX_ADMIN_API_KEY
+// is injected — so the client doesn't need to know the key.
+// Otherwise the operator can set NEXT_PUBLIC_DEALIX_ADMIN_API_KEY locally.
 
 export function getAdminApiKey(): string {
-  if (typeof window === "undefined") return process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY ?? "";
-  return (
-    localStorage.getItem(LS_KEY) ||
-    process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY ||
-    ""
-  );
+  return process.env.NEXT_PUBLIC_DEALIX_ADMIN_API_KEY || "";
 }
 
 export function isOpsConfigured(): boolean {
-  return getAdminApiKey().trim().length > 0;
+  if (process.env.NEXT_PUBLIC_USE_DEALIX_OPS_PROXY === "1") {
+    return true;
+  }
+  return Boolean(getAdminApiKey());
 }
 
-export function opsMissingKeyMessage(isAr?: boolean): string {
+export function opsMissingKeyMessage(isAr: boolean): string {
   return isAr
-    ? "يرجى إدخال مفتاح API للمشرف للمتابعة."
-    : "Please set your admin API key to continue.";
+    ? "مفتاح المشغّل غير مضبوط — حدّد NEXT_PUBLIC_DEALIX_ADMIN_API_KEY محليًا أو فعّل NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1."
+    : "Ops admin key is not configured — set NEXT_PUBLIC_DEALIX_ADMIN_API_KEY locally or enable NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1.";
 }

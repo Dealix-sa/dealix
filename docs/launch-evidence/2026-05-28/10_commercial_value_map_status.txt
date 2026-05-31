@@ -1,0 +1,16 @@
+== commercial_value_map_status ==
+  generated: 2026-05-28T15:54:23.966955+00:00
+  brief_latest: 2026-05-28
+  agency_seed_rows: 250 (strict>=80: True)
+  pipeline: PIPELINE_OPEN
+  payment_received (real): 0
+  proof_pack_delivered (real): 0
+  evidence_rows: 12
+  crm_kpi_pending: True
+  ladder: Diagnostic (Ops) 4,999–15,000 SAR → Sprint/Data Pack بعد الدفع → Growth 2,999 بعد Proof
+  doc: docs/commercial/COMMERCIAL_VALUE_MAP_AR.md
+  FOUNDER_ACTION: Close one real Diagnostic per FIRST_PAID_DIAGNOSTIC_DOD
+  FOUNDER_ACTION: Sync kpi_founder_commercial_import.yaml from CRM when ready
+  FOUNDER_ACTION: Complete FOUNDER_ACTION in verify_paid_launch_readiness before Moyasar live
+COMMERCIAL_VALUE_MAP_STATUS=OK
+EXIT_CODE=0

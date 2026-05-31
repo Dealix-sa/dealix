@@ -1,0 +1,11 @@
+-----------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                            46295  26935  10396    139  34.65%
+Coverage HTML written to dir htmlcov
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_moyasar_webhook_persistence.py:19: DATABASE_URL not set; persistence tests require a real DB
+SKIPPED [1] tests/test_v7_no_cold_whatsapp.py:133: ai_workforce module exists but SaudiCopyAgent not located via expected import paths
+XFAIL tests/test_v7_no_guaranteed_claims.py::test_v_docs_have_no_forbidden_claims - TODO: V5/V6/V7 markdown docs reference these tokens in policy/negation contexts (e.g. 'no guaranteed claims', 'regex bans blast'). The runtime gap is a context-aware doc scanner that can distinguish negation/quote from positive claim. Until that ships, V*.md docs are in a tracked-debt state.
+FAILED tests/test_no_linkedin_scraper_string_anywhere.py::test_no_linkedin_scraper_string_anywhere
+FAILED tests/test_v7_no_guaranteed_claims.py::test_landing_pages_have_no_unallowlisted_forbidden_claims
+2 failed, 73 passed, 2 skipped, 4317 deselected, 1 xfailed, 3 warnings in 62.11s (0:01:02)
+EXIT_CODE=0

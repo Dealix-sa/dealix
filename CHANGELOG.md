@@ -2,7 +2,17 @@
 
 ## Unreleased
 
-### Added
+### Added — Commercial Launch Prep (2026-05-28, branch `claude/commercial-launch-prep-a2kJT`)
+
+- Added `docs/LAUNCH_EXECUTION_LOG.md` — append-only launch execution log.
+- Added `docs/launch-evidence/2026-05-28/` — 19 raw verdict files + README index from canonical launch gates run at commit `646129d`.
+- Added `frontend/.env.local.example` — frontend env contract (was missing per `verify_commercial_fe_be.py`).
+- Refreshed `docs/PUBLIC_LAUNCH_CHECKLIST.md` with evidence-backed status per item (✅ proven · 🟡 partial · ⛔ blocker · ⏸ founder action).
+- Captured canonical verdict: `DEALIX_OFFICIAL_LAUNCH_VERDICT=FAIL` traced to 3 surgical fixes (frontend `opsAdmin.ts` missing, `paths.py` missing 2 constants, stale-date test) — full root cause in `docs/LAUNCH_EXECUTION_LOG.md` and evidence README.
+- 11 non-negotiables doctrine status: 73 passed, 2 failed (doctrine debt), 2 skipped, 1 xfailed.
+- Single Alembic head confirmed at `013`.
+
+### Added (prior unreleased)
 
 - Added a repository gap audit: `docs/architecture/REPO_GAP_AUDIT.md`.
 - Added a production readiness checklist: `docs/ops/PRODUCTION_READINESS_CHECKLIST.md`.
