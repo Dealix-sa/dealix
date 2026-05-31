@@ -754,6 +754,18 @@ def create_app() -> FastAPI:
     from api.routers import sales_forecasting as sales_forecasting_router
     app.include_router(sales_forecasting_router.router)
 
+    # Value Realization — milestones, metrics, value case builder
+    from api.routers import value_realization as value_realization_router
+    app.include_router(value_realization_router.router)
+
+    # Meeting Intelligence — meeting types, Saudi etiquette rules, brief builder
+    from api.routers import meeting_intelligence as meeting_intelligence_router
+    app.include_router(meeting_intelligence_router.router)
+
+    # Stakeholder Mapping — archetypes, Saudi decision patterns, coverage assessment
+    from api.routers import stakeholder_mapping as stakeholder_mapping_router
+    app.include_router(stakeholder_mapping_router.router)
+
     # Proposal Builder — bilingual proposal outline generator per tier
     from api.routers import proposal_builder as proposal_builder_router
     app.include_router(proposal_builder_router.router)
