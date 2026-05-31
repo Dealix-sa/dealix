@@ -134,6 +134,8 @@ from api.routers import onboarding as onboarding_router
 from api.routers import kpi_dashboard as kpi_dashboard_router
 # Weekly business reports (admin-gated, approval-required)
 from api.routers import weekly_reports as weekly_reports_router
+# Omni-Channel Growth OS — batch pipeline, founder queue, inbound, learning
+from api.routers import omni_channel as omni_channel_router
 
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
@@ -423,6 +425,8 @@ def create_app() -> FastAPI:
     app.include_router(kpi_dashboard_router.router)
     # Weekly business reports — /api/v1/reports
     app.include_router(weekly_reports_router.router)
+    # Omni-Channel Growth OS — /api/v1/omni-channel/*
+    app.include_router(omni_channel_router.router)
 
     # Hermes Agents — /hermes/*
     try:
