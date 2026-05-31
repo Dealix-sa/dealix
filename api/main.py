@@ -483,6 +483,11 @@ def create_app() -> FastAPI:
 
     app.include_router(onboarding_ops_router.router)
 
+    # Referral Intelligence — referral tracking and program management
+    from api.routers import referral_intelligence as referral_intelligence_router
+
+    app.include_router(referral_intelligence_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
