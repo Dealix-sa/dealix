@@ -65,6 +65,11 @@ COPY --from=builder /opt/venv /opt/venv
 WORKDIR /app
 COPY --chown=app:app . .
 
+# Wrapper script created as root so we can write to /app, then chown'd to app
+RUN printf '#!/bin/sh\nset -e\nexec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --workers 1\n' > /app/start.sh \
+    && chown app:app /app/start.sh \
+    && chmod +x /app/start.sh
+
 USER app
 
 # Railway injects $PORT dynamically; default to 8000 for local dev
@@ -74,11 +79,6 @@ EXPOSE 8000
 # Healthcheck uses $PORT so it matches whatever the platform assigns
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=5 \
     CMD curl -fsS http://localhost:${PORT:-8000}/healthz || exit 1
-
-# Wrapper script so any start command (Dockerfile CMD, Procfile, Railway
-# startCommand override) works without shell-expansion gotchas.
-RUN printf '#!/bin/sh\nset -e\nexec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --workers 1\n' > /app/start.sh \
-    && chmod +x /app/start.sh
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]
