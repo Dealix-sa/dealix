@@ -34,7 +34,7 @@
 - **الملف:** `api/routers/customer_success.py:126`
 - **السلوك:** `drafts_approved_last_30d=0` (hardcoded).
 - **التأثير:** customer success score يفقد بعد signal.
-- **خطة:** اربط بـ `approval_center.approval_store`. ETA: عند أول managed-ops customer.
+- **حل جزئي مُطبَّق (Phase H3):** `/at-risk` الآن يستهلك `GmailDraftRecord` بشكل global ويوزع البيانات على live customers (weighted estimate). الحقل `is_estimate=True` مُضاف للـ response. الحل الكامل (per-customer GROUP BY) يحتاج إضافة customer_id FK على GmailDraftRecord — ETA: عند أول managed-ops customer.
 
 ---
 

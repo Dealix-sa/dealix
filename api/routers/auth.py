@@ -497,16 +497,38 @@ async def send_invite(
     )
     db.add(invite_record)
 
-    # TODO(production): deliver invite_token via transactional email (e.g. SendGrid/SES)
-    # instead of returning it in the API response.
+    # Phase H2 — wire transactional email via core.email.send_invite_email.
+    # Doctrine #1 gate: settings.email_allow_live_send (default False) → no
+    # live send; caller receives invite_token to share manually.
+    from core.email import send_invite_email
+
+    import os as _os
+    _app_url = _os.getenv("APP_URL", "http://localhost:8000").rstrip("/")
+    accept_url = f"{_app_url}/invite?token={invite_token}"
+    email_result = await send_invite_email(
+        to_email=body.email,
+        invite_token=invite_token,
+        invited_by_name=user.email or "Dealix admin",
+        accept_url=accept_url,
+    )
+
     response: dict[str, Any] = {
         "email": body.email,
         "role": body.role.value,
         "expires_hours": settings.jwt_invite_token_expire_hours,
+        "email_delivered": email_result.delivered,
+        "email_blocked_by_policy": email_result.blocked_by_policy,
     }
-    if settings.app_env in ("development", "test"):
+    if email_result.blocked_by_policy:
+        # Founder must hand-deliver the token until EMAIL_ALLOW_LIVE_SEND=1
         response["invite_token"] = invite_token
-        response["note"] = "Share this token via email — POST /api/v1/auth/invite/accept to redeem"
+        response["accept_url"] = accept_url
+        response["note"] = (
+            "EMAIL_ALLOW_LIVE_SEND=False — share the accept_url with the invitee."
+        )
+    elif settings.app_env in ("development", "test"):
+        response["invite_token"] = invite_token
+        response["accept_url"] = accept_url
     else:
         response["message"] = "Invite sent. The recipient will receive an email with instructions."
     return response
