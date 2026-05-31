@@ -7,6 +7,7 @@ dealix/transformation/kpi_founder_commercial_import.yaml
 dealix/config/founder_closure_intake.yaml
 !.env.example
 !.env.staging.example
+!.env.railway.example
 *.pem
 *.key
 *.p12
@@ -109,6 +110,10 @@ dumps/
 !landing/assets/data/service-readiness.json
 # Wave 12.5 §33.2.3 — canonical workflow YAMLs (product data, not customer data)
 !data/workflows/
+# Demo data — synthetic only, no PII, committed for landing page + CI demos
+!data/demo/
+# Commercial templates — bilingual AR+EN, no customer PII
+!data/templates/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -323,3 +328,6 @@ dist/
 build/
 logs/
 *.log
+
+# Railway CLI local link
+.railway/

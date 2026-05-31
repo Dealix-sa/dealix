@@ -33,7 +33,6 @@ COMMANDS = [
 def run_command(cmd: list[str]) -> dict[str, object]:
     started = time.time()
     script_path = ROOT / cmd[1]
-
     if not script_path.exists():
         return {"cmd": cmd, "skipped": "file_not_found"}
 
@@ -61,11 +60,7 @@ def run_command(cmd: list[str]) -> dict[str, object]:
             "stderr_tail": proc.stderr[-4000:],
         }
     except Exception as exc:
-        return {
-            "cmd": cmd,
-            "error": repr(exc),
-            "latency_ms": round((time.time() - started) * 1000),
-        }
+        return {"cmd": cmd, "error": repr(exc), "latency_ms": round((time.time() - started) * 1000)}
 
 
 def founder_cycle() -> dict[str, object]:
@@ -80,19 +75,13 @@ def founder_cycle() -> dict[str, object]:
 
 
 def main() -> int:
-    print(
-        json.dumps(
-            {
-                "service": "founder-os-worker",
-                "status": "started",
-                "interval_seconds": INTERVAL_SECONDS,
-                "approval_mode": APPROVAL_MODE,
-                "external_actions_allowed": False,
-            },
-            ensure_ascii=False,
-        ),
-        flush=True,
-    )
+    print(json.dumps({
+        "service": "founder-os-worker",
+        "status": "started",
+        "interval_seconds": INTERVAL_SECONDS,
+        "approval_mode": APPROVAL_MODE,
+        "external_actions_allowed": False,
+    }, ensure_ascii=False), flush=True)
 
     while True:
         print(json.dumps(founder_cycle(), ensure_ascii=False, indent=2), flush=True)

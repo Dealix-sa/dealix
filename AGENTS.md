@@ -7,10 +7,17 @@ This file is the primary repo-specific guide for AI coding agents working in `de
 - Do not duplicate long docs from `README.md` or `docs/`; link to them instead.
 - Preserve existing operational knowledge and avoid treating resolved issues as new bugs.
 
+### Token Optimization
+See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings), CLAUDE.md hygiene, session management, model routing (Haiku/Sonnet/Opus), MCP discipline, subagents, hooks, prompt templates, file handling, monitoring, git hygiene, and env config. Run `bash token-optimizer/12-environment-config/apply-all.sh` to apply all settings.
+
 ### Repo anatomy
-- `api/` — FastAPI app entry, dependencies, middleware, routers, and schema definitions.
+- `api/` — FastAPI app entry, dependencies, middleware, 120+ routers, and schema definitions.
+- `api/routers/commercial.py` — 13 commercial chain endpoints (diagnostic→pilot→proof→payment→upsell). Skill: `@token-optimizer/02-claude-md/skills/commercial.md`
+- `dealix/commercial/` — commercial business logic (diagnostic_engine, warm_intro_generator, pilot_delivery, proof_builder, upsell_engine, case_study_generator, zatca_invoice).
+- `dealix/payments/` — Moyasar payment links. Sandbox by default; `MOYASAR_LIVE_MODE=1` for live.
+- `data/templates/` — AR/EN content templates (warm intros, proposals, proof packs, daily checklist).
 - `auto_client_acquisition/`, `autonomous_growth/`, `dealix/`, `core/`, `integrations/` — business logic, AI agents, policy, and execution workflows.
-- `frontend/` — Next.js dashboard and public landing experience.
+- `frontend/` — Next.js dashboard and public landing experience. Skill: `@token-optimizer/02-claude-md/skills/frontend.md`
 - `tests/` — pytest-based test suites, including integration and regression bundles.
 - `scripts/` — operational and verification helpers used by CI and launch workflows.
 - `docs/` — architecture, launch runbooks, compliance, and product docs.
