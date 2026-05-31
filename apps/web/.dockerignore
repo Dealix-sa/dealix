@@ -12,3 +12,4 @@ yarn-error.log*
 .git
 .github
 README*.md
+tsconfig.tsbuildinfo
