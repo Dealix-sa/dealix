@@ -415,6 +415,17 @@ def create_app() -> FastAPI:
     # Weekly business reports — /api/v1/reports
     app.include_router(weekly_reports_router.router)
 
+    # Hermes Agents — /hermes/*
+    try:
+        from dealix.hermes.api.router import hermes_router
+        from dealix.hermes.registry import HermesRegistry
+        from dealix.hermes.config import get_hermes_config
+        HermesRegistry.instance().build_all_agents(config=get_hermes_config())
+        app.include_router(hermes_router)
+    except Exception as _hermes_exc:  # pragma: no cover
+        import logging as _logging
+        _logging.getLogger(__name__).warning("hermes_router_skipped: %s", _hermes_exc)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

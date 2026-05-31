@@ -24,7 +24,12 @@
     "opsSales": "تشغيل — خط المبيعات",
     "opsEvidence": "تشغيل — سجل الأدلة",
     "opsSupport": "تشغيل — خدمة العملاء",
-    "autoDistribution": "التوزيع الذاتي"
+    "autoDistribution": "التوزيع الذاتي",
+    "crm": "نظام CRM",
+    "aiEngine": "محرك الإيرادات الذكي",
+    "adminConsole": "لوحة الإدارة",
+    "trustCenter": "مركز الثقة",
+    "pricing": "خطط الاشتراك"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",
@@ -518,16 +523,38 @@
     "softPayCta": "اطلب فاتورة / احجز مراجعة",
     "softPayHint": "إطلاق ناعم — الدفع الإلكتروني لاحقاً.",
     "visionTitle": "لماذا الآن",
-    "visionItems": { "0": "نظام تجاري واحد.", "1": "PDPL قبل الأتمتة.", "2": "إثبات أسبوعياً." },
+    "visionItems": {
+      "0": "نظام تجاري واحد.",
+      "1": "PDPL قبل الأتمتة.",
+      "2": "إثبات أسبوعياً."
+    },
     "pillarsTitle": "ست محاور",
     "pillarsIntro": "ذاكرة، حوكمة، تسليم، امتثال، سوق، مضاد للهدر.",
     "pillars": {
-      "0": { "title": "ذاكرة إيرادات", "body": "L0–L5." },
-      "1": { "title": "ذكاء محكوم", "body": "مسودات + موافقة." },
-      "2": { "title": "Proof Pack", "body": "7 أيام." },
-      "3": { "title": "PDPL", "body": "لا scraping." },
-      "4": { "title": "رؤية 2030", "body": "تشغيل رقمي." },
-      "5": { "title": "مضاد للهدر", "body": "لا L4-" }
+      "0": {
+        "title": "ذاكرة إيرادات",
+        "body": "L0–L5."
+      },
+      "1": {
+        "title": "ذكاء محكوم",
+        "body": "مسودات + موافقة."
+      },
+      "2": {
+        "title": "Proof Pack",
+        "body": "7 أيام."
+      },
+      "3": {
+        "title": "PDPL",
+        "body": "لا scraping."
+      },
+      "4": {
+        "title": "رؤية 2030",
+        "body": "تشغيل رقمي."
+      },
+      "5": {
+        "title": "مضاد للهدر",
+        "body": "لا L4-"
+      }
     },
     "ceoQuote": "«قرارات قابلة للتدقيق.»",
     "problemTitle": "المشكلة — فجوات SOAEN",
@@ -541,11 +568,26 @@
     },
     "howTitle": "كيف يعمل Dealix",
     "howSteps": {
-      "0": { "title": "تشخيص", "body": "Risk Score أو Diagnostic يحدد الجاهزية" },
-      "1": { "title": "حوكمة", "body": "مسودات وموافقة قبل أي إرسال خارجي" },
-      "2": { "title": "تسليم", "body": "Proof Pack بأقسام واضحة وحالة كل قسم" },
-      "3": { "title": "أدلة", "body": "أحداث Evidence تربط اللمسة بالإغلاق" },
-      "4": { "title": "توسّع", "body": "Upsell فقط بعد إثبات القيمة" }
+      "0": {
+        "title": "تشخيص",
+        "body": "Risk Score أو Diagnostic يحدد الجاهزية"
+      },
+      "1": {
+        "title": "حوكمة",
+        "body": "مسودات وموافقة قبل أي إرسال خارجي"
+      },
+      "2": {
+        "title": "تسليم",
+        "body": "Proof Pack بأقسام واضحة وحالة كل قسم"
+      },
+      "3": {
+        "title": "أدلة",
+        "body": "أحداث Evidence تربط اللمسة بالإغلاق"
+      },
+      "4": {
+        "title": "توسّع",
+        "body": "Upsell فقط بعد إثبات القيمة"
+      }
     },
     "offersTitle": "ثلاثة عروض على السطح",
     "offers": {
@@ -577,7 +619,14 @@
     "footerTrustPdpl": "لا واتساب بارد · PDPL",
     "footerPositioning": "حوكمة وأدلة — توسّع بعد الإثبات."
   },
-  "public": { "home": "الرئيسية", "services": "الخدمات", "sprint": "Sprint", "founder": "المؤسس", "login": "دخول", "footer": "Dealix" },
+  "public": {
+    "home": "الرئيسية",
+    "services": "الخدمات",
+    "sprint": "Sprint",
+    "founder": "المؤسس",
+    "login": "دخول",
+    "footer": "Dealix"
+  },
   "learn": {
     "backHome": "الرئيسية",
     "backLearn": "كل المقالات",

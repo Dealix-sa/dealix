@@ -1,22 +1,43 @@
 import type { Metadata } from "next";
-import { PricingPage } from "@/components/gtm/PricingPage";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { PricingPlans } from "@/components/subscriptions/PricingPlans";
 
-type Props = { params: Promise<{ locale: string }> };
+interface PricingPageProps {
+  params: Promise<{ locale: string }>;
+}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PricingPageProps): Promise<Metadata> {
   const { locale } = await params;
   const isAr = locale === "ar";
   return {
     title: isAr
-      ? "تسعير Dealix — خمسة مستويات · ابدأ مجاناً"
-      : "Dealix Pricing — Five Tiers · Start Free",
+      ? "الأسعار والاشتراكات — Dealix"
+      : "Pricing & Subscriptions — Dealix",
     description: isAr
-      ? "من التشخيص المجاني إلى مشاريع AI المخصصة. لا upsell قبل Proof Pack مُسلَّم. جميع الأسعار بالريال السعودي."
-      : "From free diagnostic to custom AI projects. No upsell before delivered Proof Pack. All prices in SAR.",
-    alternates: { canonical: `https://dealix.me/${locale}/pricing` },
+      ? "ثلاث خطط واضحة — Sprint لمرة واحدة، Managed Ops شهرياً، وEnterprise AI مخصص. كل خطة تبني على الإثبات."
+      : "Three clear plans — one-time Sprint, monthly Managed Ops, and custom Enterprise AI. Every plan builds on proof.",
+    alternates: {
+      canonical: `https://dealix.me/${locale}/pricing`,
+    },
   };
 }
 
-export default function PricingPageRoute() {
-  return <PricingPage />;
+export default async function PricingPage({ params }: PricingPageProps) {
+  const { locale } = await params;
+  const isAr = locale === "ar";
+
+  return (
+    <AppLayout
+      title={isAr ? "الأسعار والاشتراكات" : "Pricing & Subscriptions"}
+      subtitle={
+        isAr
+          ? "ابدأ من حيث أنت — وسِّع بعد الإثبات"
+          : "Start where you are — expand after proof"
+      }
+    >
+      <PricingPlans />
+    </AppLayout>
+  );
 }
