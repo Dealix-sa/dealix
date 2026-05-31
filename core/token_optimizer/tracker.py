@@ -6,9 +6,8 @@ from __future__ import annotations
 
 import logging
 import time
-from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
-from typing import Any, AsyncGenerator
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +50,7 @@ class LangfuseTracker:
         self._enabled: bool | None = None
 
     @classmethod
-    def from_settings(cls) -> "LangfuseTracker":
+    def from_settings(cls) -> LangfuseTracker:
         from core.config.settings import get_settings
         s = get_settings()
         return cls(
@@ -159,8 +158,8 @@ class LangfuseTracker:
         if client is not None:
             try:
                 client.flush()
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug("Langfuse flush failed: %s", e)
 
     @property
     def is_enabled(self) -> bool:

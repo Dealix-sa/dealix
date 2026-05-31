@@ -103,7 +103,7 @@ class CachedResponse:
         return json.dumps(self.__dict__)
 
     @classmethod
-    def from_json(cls, data: str) -> "CachedResponse":
+    def from_json(cls, data: str) -> CachedResponse:
         return cls(**json.loads(data))
 
 
@@ -164,8 +164,8 @@ class RedisExactCache:
             keys = await client.keys(self.NAMESPACE + pattern)
             if keys:
                 return await client.delete(*keys)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug("Redis invalidate_pattern failed: %s", e)
         return 0
 
     def stats(self) -> dict[str, Any]:

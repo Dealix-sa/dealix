@@ -8,14 +8,11 @@ Strategies (applied in order):
   3. Sentence importance scoring (TF-IDF-lite)
   4. LLMLingua (if installed) for deep compression
   5. Max-token truncation (safety net)
-
-Does NOT require ML or GPU for the first 3 strategies.
 """
 from __future__ import annotations
 
 import logging
 import re
-import textwrap
 from dataclasses import dataclass
 from typing import Any
 
@@ -36,7 +33,7 @@ class CompressionResult:
     @classmethod
     def from_texts(
         cls, original: str, compressed: str, strategy: str, model: str = "cl100k_base"
-    ) -> "CompressionResult":
+    ) -> CompressionResult:
         orig_t = count_tokens(original, model)
         comp_t = count_tokens(compressed, model)
         ratio = 1.0 - (comp_t / orig_t) if orig_t > 0 else 0.0
@@ -265,7 +262,6 @@ class ContextCompressor:
         """
         original = text
         current = text
-        strategy = "none"
 
         if count_tokens(current, self.model) <= self.target_tokens:
             return CompressionResult.from_texts(original, current, "no_compression_needed", self.model)
