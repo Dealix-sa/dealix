@@ -459,6 +459,23 @@ def create_app() -> FastAPI:
 
     app.include_router(health_intelligence_router.router)
 
+    # 90-day commercial plan — Pricing Intelligence + Pipeline Ops (admin-gated)
+    from api.routers import pricing_intelligence as pricing_intelligence_router
+    from api.routers import pipeline_ops as pipeline_ops_router
+
+    app.include_router(pricing_intelligence_router.router)
+    app.include_router(pipeline_ops_router.router)
+
+    # Master Cockpit — founder intelligence aggregator (pulse, kpis, alerts, approvals)
+    from api.routers import master_cockpit as master_cockpit_router
+
+    app.include_router(master_cockpit_router.router)
+
+    # Competitor Intelligence + Sales Playbook (admin-gated)
+    from api.routers import competitor_intel as competitor_intel_router
+
+    app.include_router(competitor_intel_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
