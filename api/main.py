@@ -478,6 +478,11 @@ def create_app() -> FastAPI:
     app.include_router(competitor_intel_router.router)
     app.include_router(sales_playbook_router.router)
 
+    # Onboarding Operations — 12-step client onboarding workflow
+    from api.routers import onboarding_ops as onboarding_ops_router
+
+    app.include_router(onboarding_ops_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

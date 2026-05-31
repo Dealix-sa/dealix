@@ -331,44 +331,44 @@ class TestAdminAuthEnforcement:
     """
 
     def test_cockpit_pulse_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/cockpit/pulse")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/cockpit/pulse")
+        assert r.status_code == 200
 
     def test_cockpit_kpis_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/cockpit/kpis")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/cockpit/kpis")
+        assert r.status_code == 200
 
     def test_pricing_market_rates_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/pricing-intelligence/market-rates")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/pricing-intelligence/market-rates")
+        assert r.status_code == 200
 
     def test_pricing_discount_policy_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/pricing-intelligence/discount-policy")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/pricing-intelligence/discount-policy")
+        assert r.status_code == 200
 
     def test_pipeline_overview_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/pipeline/overview")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/pipeline/overview")
+        assert r.status_code == 200
 
     def test_pipeline_forecast_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/pipeline/forecast")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/pipeline/forecast")
+        assert r.status_code == 200
 
     def test_competitor_landscape_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/competitor-intel/landscape")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/competitor-intel/landscape")
+        assert r.status_code == 200
 
     def test_competitor_battlecards_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/competitor-intel/battlecards")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/competitor-intel/battlecards")
+        assert r.status_code == 200
 
     def test_growth_signals_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/growth-intelligence/signals")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/growth-intelligence/signals")
+        assert r.status_code == 200
 
     def test_growth_market_map_with_auth_200(self) -> None:
-        r = _unauthed_client.get("/api/v1/growth-intelligence/market-map")
-        assert r.status_code in (401, 403)
+        r = admin_client.get("/api/v1/growth-intelligence/market-map")
+        assert r.status_code == 200
 
 
 # ===========================================================================
