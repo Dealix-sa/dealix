@@ -1,0 +1,59 @@
+name: GCC Draft Factory — Daily Pipeline
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # 03:00 UTC = 06:00 Riyadh / 07:00 UAE
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no writes to memory files)'
+        required: false
+        default: 'false'
+
+jobs:
+  daily-pipeline:
+    name: Run GCC Draft Factory Pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Ensure output directories exist
+        run: |
+          mkdir -p dealix-gcc-marketing-os/memory
+          mkdir -p dealix-gcc-marketing-os/outputs/daily
+          mkdir -p dealix-gcc-marketing-os/outputs/review_queue
+          mkdir -p dealix-gcc-marketing-os/outputs/approved
+          mkdir -p dealix-gcc-marketing-os/outputs/rejected
+          mkdir -p dealix-gcc-marketing-os/outputs/reports
+
+      - name: Run daily pipeline
+        working-directory: dealix-gcc-marketing-os/scripts
+        env:
+          DEALIX_DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python gcc_daily_pipeline.py
+
+      - name: Upload founder report
+        uses: actions/upload-artifact@v4
+        with:
+          name: founder-report-${{ github.run_id }}
+          path: dealix-gcc-marketing-os/outputs/reports/
+          retention-days: 30
+
+      - name: Upload review queue
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-queue-${{ github.run_id }}
+          path: dealix-gcc-marketing-os/outputs/review_queue/
+          retention-days: 14
