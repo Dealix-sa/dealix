@@ -2,10 +2,6 @@
 
 from __future__ import annotations
 
-import structlog
-
-logger = structlog.get_logger(__name__)
-
 
 async def run_commercial_diagnostic(
     company_name: str,
