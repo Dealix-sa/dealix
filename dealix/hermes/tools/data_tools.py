@@ -68,7 +68,7 @@ async def score_data_quality(
         unique_keys.add(key)
     uniqueness = len(unique_keys) / total_records
 
-    overall = round((completeness * 40 + consistency * 30 + uniqueness * 30) * 100, 1)
+    overall = round(completeness * 40 + consistency * 30 + uniqueness * 30, 1)
 
     if overall >= 80:
         tier = "high"
