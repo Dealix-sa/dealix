@@ -6,9 +6,7 @@ from auto_client_acquisition.agentic_operations_os.agent_auditability_card impor
     AgentAuditabilityCard,
     agent_auditability_card_valid,
 )
-from auto_client_acquisition.agentic_operations_os.agent_governance import (
-    governance_decision_for_proposed_action,
-)
+from auto_client_acquisition.agentic_operations_os.agent_governance import governance_decision_for_proposed_action
 from auto_client_acquisition.agentic_operations_os.agent_identity import (
     AgentIdentityCard,
     agent_identity_valid,
@@ -26,9 +24,7 @@ from auto_client_acquisition.agentic_operations_os.agent_risk_score import (
     agent_risk_band,
     agent_risk_score,
 )
-from auto_client_acquisition.agentic_operations_os.agentic_operations_board import (
-    board_decision_for_tool_request,
-)
+from auto_client_acquisition.agentic_operations_os.agentic_operations_board import board_decision_for_tool_request
 from auto_client_acquisition.agentic_operations_os.handoff import (
     HandoffObject,
     handoff_valid,

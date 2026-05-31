@@ -46,7 +46,7 @@ class CompanyBrain(BaseModel):
 def _safe(fn, default):
     try:
         return fn()
-    except BaseException:
+    except BaseException:  # noqa: BLE001 — defensive composition
         return default
 
 

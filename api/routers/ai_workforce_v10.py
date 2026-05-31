@@ -14,6 +14,7 @@ from auto_client_acquisition.ai_workforce_v10 import (
     run_workforce_v10,
 )
 
+
 router = APIRouter(
     prefix="/api/v1/ai-workforce-v10",
     tags=["ai-workforce-v10"],

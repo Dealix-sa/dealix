@@ -47,6 +47,7 @@ from auto_client_acquisition.intelligence.local_model_client import (
 )
 from auto_client_acquisition.llm_gateway_v10.schemas import ModelTier
 
+
 # ─────────────────────────────────────────────────────────────────────
 # Task registry (5 tests)
 # ─────────────────────────────────────────────────────────────────────

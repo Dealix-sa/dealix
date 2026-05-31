@@ -37,7 +37,7 @@ def _run_subprocess(
     t0 = time.monotonic()
     env = {**os.environ, "PYTHONIOENCODING": "utf-8", "APP_ENV": os.environ.get("APP_ENV", "test")}
     try:
-        proc = subprocess.run(  # noqa: S603 — cmd built from internal script list
+        proc = subprocess.run(
             cmd,
             cwd=str(REPO_ROOT),
             env=env,
@@ -104,7 +104,7 @@ def _phase_in_process(label: str, fn: Any, **kwargs: Any) -> dict[str, Any]:
             "elapsed_s": round(time.monotonic() - t0, 1),
             "detail": result,
         }
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         return {
             "label": label,
             "verdict": "FAIL",

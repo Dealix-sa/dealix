@@ -73,8 +73,8 @@ ENV PORT=8000
 EXPOSE 8000
 
 # Healthcheck uses $PORT so it matches whatever the platform assigns
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=5 \
-    CMD curl -fsS http://localhost:${PORT:-8000}/healthz || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD curl -fsS http://localhost:${PORT:-8000}/health || exit 1
 
 # Wrapper script so any start command (Dockerfile CMD, Procfile, Railway
 # startCommand override) works without shell-expansion gotchas.

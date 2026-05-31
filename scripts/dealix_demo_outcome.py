@@ -16,7 +16,7 @@ import argparse
 import json
 import re
 import sys
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 LIVE_DIR = Path("docs/wave6/live")
@@ -67,7 +67,7 @@ def main() -> int:
             return 1
 
     record = {
-        "at": datetime.now(UTC).isoformat(),
+        "at": datetime.now(timezone.utc).isoformat(),
         "prospect_handle": args.prospect_handle,
         "sector": args.sector,
         "outcome": args.outcome,
@@ -87,7 +87,7 @@ def main() -> int:
     print(f"  outcome: {record['outcome']}")
     print(f"  is_revenue: {record['is_revenue']}")
     if args.outcome == "pilot_requested":
-        print("  NOTE: pilot_requested is NOT revenue — wait for payment_confirmed")
+        print(f"  NOTE: pilot_requested is NOT revenue — wait for payment_confirmed")
     return 0
 
 

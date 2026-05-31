@@ -24,6 +24,7 @@ from auto_client_acquisition.designops.generators import (
     markdown_renderer,
 )
 
+
 _FORBIDDEN_TOKENS = ("نضمن", "guaranteed", "blast", "scrape")
 
 

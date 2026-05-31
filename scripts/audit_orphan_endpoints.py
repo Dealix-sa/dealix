@@ -24,8 +24,8 @@ import argparse
 import json
 import re
 import sys
-from collections.abc import Iterable
 from pathlib import Path
+from typing import Iterable
 
 REPO = Path(__file__).resolve().parents[1]
 ROUTERS_DIR = REPO / "api" / "routers"
@@ -198,8 +198,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.json:
         print(json.dumps(report, indent=2, ensure_ascii=False))
     elif not args.quiet:
-        print("FRONTEND ↔ BACKEND WIRING AUDIT")
-        print("================================")
+        print(f"FRONTEND ↔ BACKEND WIRING AUDIT")
+        print(f"================================")
         print(f"Total endpoints declared : {report['summary']['total_endpoints']}")
         print(f"Total frontend refs      : {report['summary']['total_refs']}")
         print(f"Healthy pairs            : {report['summary']['healthy_pairs']}")

@@ -4,6 +4,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+
 CUSTOMER_FACING = [
     "landing/customer-portal.html",
     "landing/executive-command-center.html",

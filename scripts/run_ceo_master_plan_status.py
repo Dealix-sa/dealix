@@ -12,10 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.ceo_master_plan import (  # noqa: E402
-    analyze_ceo_master_plan,
-    build_ceo_master_plan_snapshot,
-)
+from dealix.commercial_ops.ceo_master_plan import build_ceo_master_plan_snapshot  # noqa: E402
 
 
 def main() -> int:

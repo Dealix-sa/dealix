@@ -10,8 +10,8 @@ from typing import Any
 import yaml
 
 from dealix.commercial_ops.paths import (
-    FOUNDER_AGENT_QUEUE_TODAY_JSON,
     FOUNDER_AGENT_QUEUE_YAML,
+    FOUNDER_AGENT_QUEUE_TODAY_JSON,
     REPO_ROOT,
 )
 

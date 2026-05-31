@@ -18,7 +18,7 @@ import os
 import secrets
 import threading
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from enum import StrEnum
 from pathlib import Path
 from typing import Any
@@ -89,7 +89,7 @@ class ReferralCode:
     valid_until: str = ""
     is_revoked: bool = False
     created_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
 
     def to_dict(self) -> dict[str, Any]:
@@ -108,7 +108,7 @@ class Referral:
     referred_first_amount_sar: int = 0
     declined_reason: str = ""
     created_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
     redeemed_at: str = ""
     paid_at: str = ""
@@ -125,7 +125,7 @@ class ReferralPayout:
     credit_sar: int = 0
     applied_to_invoice_id: str = ""
     applied_at: str = field(
-        default_factory=lambda: datetime.now(UTC).isoformat()
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
     notes: str = ""
 
@@ -138,8 +138,9 @@ class ReferralPayout:
 
 def _append(path: Path, payload: dict[str, Any], *, stream_id: str) -> None:
     _ensure_dir(path)
-    with _lock, path.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+    with _lock:
+        with path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(payload, ensure_ascii=False) + "\n")
     from auto_client_acquisition.persistence.operational_stream_mirror import mirror_append
 
     eid = str(
@@ -156,15 +157,16 @@ def _read_all(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
     out: list[dict[str, Any]] = []
-    with _lock, path.open("r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                out.append(json.loads(line))
-            except Exception:
-                continue
+    with _lock:
+        with path.open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    out.append(json.loads(line))
+                except Exception:  # noqa: BLE001
+                    continue
     return out
 
 
@@ -261,7 +263,7 @@ def redeem_referral(
         referred_id=referred_id,
         referred_email_hash=_hash_email(referred_email),
         status=ReferralStatus.REDEEMED.value,
-        redeemed_at=datetime.now(UTC).isoformat(),
+        redeemed_at=datetime.now(timezone.utc).isoformat(),
     )
     _append(_referrals_path(), referral.to_dict(), stream_id="referral_store_referrals")
     return referral
@@ -305,7 +307,7 @@ def mark_invoice_paid(
             row["status"] = ReferralStatus.INVOICE_PAID.value
             row["referred_invoice_id"] = invoice_id
             row["referred_first_amount_sar"] = int(amount_sar)
-            row["paid_at"] = datetime.now(UTC).isoformat()
+            row["paid_at"] = datetime.now(timezone.utc).isoformat()
             updated = Referral(**row)
             break
     if updated:

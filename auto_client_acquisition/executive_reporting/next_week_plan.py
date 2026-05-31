@@ -65,7 +65,7 @@ def next_week_plan(
                     f"P1: review promotion candidate '{sid}' "
                     f"(currently {status}); close 8-gate blockers"
                 )
-        except Exception:
+        except Exception:  # noqa: BLE001
             pass
         if len(plan) >= limit:
             return plan

@@ -8,7 +8,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api.main import create_app
-from auto_client_acquisition.ai_workforce import WorkforceGoal
 from auto_client_acquisition.ai_workforce_v10 import (
     PlannerOutput,
     ReviewerVerdict,
@@ -21,6 +20,7 @@ from auto_client_acquisition.ai_workforce_v10 import (
     run_reviewer,
     run_workforce_v10,
 )
+from auto_client_acquisition.ai_workforce import WorkforceGoal
 
 
 @pytest.fixture(scope="module")
