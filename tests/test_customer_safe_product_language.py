@@ -14,7 +14,6 @@ from pathlib import Path
 
 import pytest
 
-
 # Customer-facing pages — checked for internal terms.
 # `workflow.html`, `dealix-beast-power.html`, `ai-team.html` intentionally
 # display endpoint paths as a feature demonstrating engineering depth
@@ -85,6 +84,7 @@ def test_customer_portal_api_no_internal_leakage() -> None:
     don't match the strict-leak terms.
     """
     import asyncio
+
     from httpx import ASGITransport, AsyncClient
 
     async def go():
@@ -108,6 +108,7 @@ def test_customer_portal_api_no_internal_leakage() -> None:
 
 def test_executive_command_center_api_no_internal_leakage() -> None:
     import asyncio
+
     from httpx import ASGITransport, AsyncClient
 
     async def go():

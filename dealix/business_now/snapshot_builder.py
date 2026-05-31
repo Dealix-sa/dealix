@@ -96,7 +96,7 @@ def _offers_summary() -> list[dict[str, Any]]:
 def _run_verify_transformation() -> str:
     script = _REPO / "scripts" / "verify_global_ai_transformation.py"
     try:
-        proc = subprocess.run(
+        proc = subprocess.run(  # noqa: S603 — internal script path; sys.executable is trusted
             [sys.executable, str(script)],
             cwd=str(_REPO),
             capture_output=True,
@@ -117,8 +117,8 @@ def _run_verify_enterprise_control_plane() -> str:
     if not script.exists():
         return "UNKNOWN"
     try:
-        proc = subprocess.run(
-            ["bash", str(script)],
+        proc = subprocess.run(  # noqa: S603 — internal verify script; controlled args
+            ["bash", str(script)],  # noqa: S607 — PATH-resolved trusted tool
             cwd=str(_REPO),
             capture_output=True,
             text=True,

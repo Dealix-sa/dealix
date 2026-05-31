@@ -24,9 +24,9 @@ Asserts:
 from __future__ import annotations
 
 import re
+
 import pytest
 from httpx import ASGITransport, AsyncClient
-
 
 HEX12 = re.compile(r"^[0-9a-f]{12}$")
 
