@@ -1,0 +1,101 @@
+scoring:
+  company_understanding_thresholds:
+    minimum: 80
+    offer_fit: 75
+    buyer_confidence: 60
+    pain_clarity: 75
+    language_confidence: 90
+    overall_confidence_to_proceed: 80
+
+  draft_quality_weights:
+    company_personalization: 20
+    clear_pain: 20
+    single_offer: 15
+    simple_cta: 10
+    channel_language: 10
+    no_exaggeration: 10
+    compliance_optout: 10
+    brevity_clarity: 5
+    total: 100
+
+  draft_decision:
+    ready: 90
+    founder_review: 82
+    rewrite: 70
+    reject: 0
+
+  draft_quality_criteria:
+    company_personalization:
+      weight: 20
+      description: "Message references company-specific detail (not generic)"
+      full_marks: "Mentions company name, sector, or specific pain"
+      zero_marks: "Completely generic, no company reference"
+    clear_pain:
+      weight: 20
+      description: "Clearly articulates a pain the company likely feels"
+      full_marks: "Pain is specific, sector-relevant, and well-framed"
+      zero_marks: "No pain mentioned or pain is irrelevant"
+    single_offer:
+      weight: 15
+      description: "Only one clear offer or CTA — not multiple asks"
+      full_marks: "Single focused ask"
+      zero_marks: "Multiple offers or confusing CTA"
+    simple_cta:
+      weight: 10
+      description: "CTA is simple, low-friction, specific"
+      full_marks: "One clear next step (15-min call, reply yes, etc.)"
+      zero_marks: "No CTA or vague CTA"
+    channel_language:
+      weight: 10
+      description: "Language matches channel norms and recipient preference"
+      full_marks: "Correct language (AR/EN), correct formality"
+      zero_marks: "Wrong language or wrong formality for channel"
+    no_exaggeration:
+      weight: 10
+      description: "No guaranteed outcomes, no inflated claims"
+      full_marks: "All claims are verifiable estimates or stated as examples"
+      zero_marks: "Guarantees ROI, promises specific revenue"
+    compliance_optout:
+      weight: 10
+      description: "Includes opt-out / unsubscribe option per channel policy"
+      full_marks: "Clear opt-out present"
+      zero_marks: "No opt-out, violates channel policy"
+    brevity_clarity:
+      weight: 5
+      description: "Message is concise — under 150 words for email, 80 for WhatsApp"
+      full_marks: "Within word limits, no fluff"
+      zero_marks: "Excessively long, rambling"
+
+  lead_tiers:
+    A:
+      score_min: 85
+      label: "Hot lead — founder priority"
+      action: "Founder personal outreach within 24h"
+    B:
+      score_min: 65
+      label: "Warm lead — standard sequence"
+      action: "Auto-draft with founder review"
+    C:
+      score_min: 40
+      label: "Cool lead — nurture only"
+      action: "Content only, no direct outreach yet"
+    D:
+      score_min: 0
+      label: "Not ready — suppress"
+      action: "Add to suppression list, review in 90 days"
+
+  funnel_benchmarks:
+    reply_rate_min: 0.02
+    positive_reply_min: 0.005
+    call_booking_from_positive: 0.20
+    proposal_from_discovery: 0.30
+    close_from_proposal: 0.10
+    audit_to_pilot: 0.20
+    healthy_reply_rate: 0.05
+    excellent_reply_rate: 0.10
+
+  segment_performance:
+    review_window_days: 14
+    underperforming_threshold: 0.01
+    pause_threshold: 0.005
+    promote_to_A_threshold: 0.08
