@@ -25,6 +25,18 @@ os.environ.setdefault("GOOGLE_API_KEY", "test-google-key")
 
 from core.llm.base import LLMResponse
 
+# Pre-load api.security.api_key in CI (where jose/cryptography work) so that
+# the many test files that do sys.modules.setdefault("api.security.api_key", mock)
+# for local pyo3 compatibility get their setdefault treated as a no-op — the real
+# module wins. Locally (pyo3 broken), the import fails and the test files mock as
+# needed.
+try:
+    import importlib as _importlib
+    _importlib.import_module("api.security.api_key")
+    del _importlib
+except BaseException:
+    pass
+
 
 @pytest.fixture
 def mock_llm_response() -> LLMResponse:
