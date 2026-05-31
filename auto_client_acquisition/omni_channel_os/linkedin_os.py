@@ -155,12 +155,12 @@ class LinkedInOS:
         """
         lang = company.language
         return {
-            "connection_note": self.connection_note(company, persona, offer, lang),
-            "dm_after_connect": self.dm_after_connect(company, persona, offer, lang),
-            "followup_1": self.followup_1(company, persona, offer, lang),
-            "followup_2": self.followup_2(company, persona, offer, lang),
-            "comment_idea": self.comment_idea(company, persona, lang),
-            "founder_intro": self.founder_intro(company, persona, offer, lang),
+            "linkedin_connection_note": self.connection_note(company, persona, offer, lang),
+            "linkedin_dm": self.dm_after_connect(company, persona, offer, lang),
+            "linkedin_followup_1": self.followup_1(company, persona, offer, lang),
+            "linkedin_followup_2": self.followup_2(company, persona, offer, lang),
+            "linkedin_comment_idea": self.comment_idea(company, persona, lang),
+            "linkedin_founder_intro": self.founder_intro(company, persona, offer, lang),
         }
 
     def connection_note(
