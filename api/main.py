@@ -118,12 +118,27 @@ custom_systems_router = _import_optional_router(
 )
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
 from api.routers import commercial_map as commercial_map_router
+# Wave 15B — Commercial chain (diagnostic → warm-intro → pilot → proof → payment → upsell)
+from api.routers import commercial as commercial_chain_router
 
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
 
 # Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
 from api.routers import platform_foundation as platform_foundation_router
+# Autonomous product distribution engine
+from api.routers import autonomous_distribution as autonomous_distribution_router
+
+# Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
+from api.routers import customer_health_scoring as customer_health_scoring_router
+from api.routers import market_intelligence as market_intelligence_router
+from api.routers import onboarding as onboarding_router
+
+# 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
+from api.routers import kpi_dashboard as kpi_dashboard_router
+# Weekly business reports (admin-gated, approval-required)
+from api.routers import weekly_reports as weekly_reports_router
+
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError
@@ -377,6 +392,8 @@ def create_app() -> FastAPI:
             )
     # Wave 14J — Commercial wiring map (public)
     app.include_router(commercial_map_router.router)
+    # Wave 15B — Commercial chain: diagnostic → warm-intro → pilot → proof → payment → upsell
+    app.include_router(commercial_chain_router.router)
     # Wave 15 — Founder launch-status (admin /launch-status + public /launch-status/public)
     app.include_router(founder_launch_status_router.router)
     # Systems 26–35 — Enterprise Control Plane hardening
@@ -392,6 +409,18 @@ def create_app() -> FastAPI:
     app.include_router(self_evolving_os.router)
     # Enterprise Foundation Core — /api/v1/platform/* loop proof endpoints
     app.include_router(platform_foundation_router.router)
+    # Autonomous product distribution — /api/v1/autonomous-distribution/*
+    app.include_router(autonomous_distribution_router.router)
+
+    # Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
+    app.include_router(customer_health_scoring_router.router)
+    app.include_router(market_intelligence_router.router)
+    app.include_router(onboarding_router.router)
+
+    # 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
+    app.include_router(kpi_dashboard_router.router)
+    # Weekly business reports — /api/v1/reports
+    app.include_router(weekly_reports_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
