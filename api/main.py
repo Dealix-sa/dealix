@@ -606,6 +606,10 @@ def create_app() -> FastAPI:
     from api.routers import proposal_builder as proposal_builder_router
     app.include_router(proposal_builder_router.router)
 
+    # Customer Success Playbook — lifecycle playbooks + account health scoring
+    from api.routers import customer_success_playbook as customer_success_playbook_router
+    app.include_router(customer_success_playbook_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
