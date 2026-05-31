@@ -1,0 +1,225 @@
+# Capital Asset Register — Dealix
+#
+# Tracks intangible + tangible assets the founder builds. Auditable.
+# Updated by the founder weekly during the operating ritual (see
+# docs/playbooks/FOUNDER_DAILY_RUNBOOK.md).
+#
+# Doctrine: every asset entry must trace to either a code commit, a
+# proof_ledger event, or a public publication URL. No invented assets.
+#
+# Effective: 2026-06-01
+
+meta:
+  effective_date: "2026-06-01"
+  last_reviewed: "2026-06-01"
+  next_review: "2026-07-01"
+
+# ── 1. Intellectual property ──────────────────────────────────────
+intellectual_property:
+  - id: doctrine_v1
+    name_en: "The 11 non-negotiables doctrine"
+    name_ar: "doctrine الـ ١١ خط أحمر"
+    type: framework
+    status: production
+    location: docs/architecture/DOCTRINE_MANIFESTO.md
+    enforced_in: tests/test_doctrine_guardrails.py
+    public: true
+    is_estimate: false
+
+  - id: proof_ledger_v1
+    name_en: "Proof ledger architecture"
+    name_ar: "بنية proof ledger"
+    type: technical_system
+    status: production
+    location: auto_client_acquisition/proof_ledger/
+    public: true
+    is_estimate: false
+
+  - id: source_passport_v1
+    name_en: "Source Passport schema for PDPL compliance"
+    name_ar: "Source Passport — PDPL"
+    type: technical_system
+    status: production
+    location: auto_client_acquisition/leadops_spine/
+    public: true
+    is_estimate: false
+
+  - id: agent_fleet_v1
+    name_en: "10-agent draft→approve→deliver fleet"
+    name_ar: "أسطول الـ ١٠ agents"
+    type: technical_system
+    status: production
+    location: auto_client_acquisition/agents/
+    public: true
+    is_estimate: false
+
+  - id: founder_cockpit_v1
+    name_en: "Unified founder cockpit (7-panel dashboard)"
+    name_ar: "غرفة قيادة الفاوندر"
+    type: technical_system
+    status: production
+    location: api/routers/founder_dashboard.py
+    public: true
+    is_estimate: false
+
+# ── 2. Public content assets ──────────────────────────────────────
+public_content:
+  - id: linkedin_library_v1
+    name_en: "10 LinkedIn long-form posts (bilingual)"
+    name_ar: "مكتبة LinkedIn ١٠ مقالات"
+    type: content_library
+    status: production
+    location: docs/sales-kit/linkedin_posts/
+    word_count_ar: 13000
+    word_count_en: 8500
+    is_estimate: false
+
+  - id: faq_v1
+    name_en: "Public FAQ (8 sections, bilingual)"
+    name_ar: "FAQ ٨ أقسام"
+    type: knowledge_base
+    status: production
+    location: docs/playbooks/FAQ.md
+    public: true
+    is_estimate: false
+
+  - id: doctrine_manifesto_v1
+    name_en: "Public doctrine manifesto"
+    name_ar: "manifesto doctrine علني"
+    type: positioning_document
+    status: production
+    location: docs/architecture/DOCTRINE_MANIFESTO.md
+    public: true
+    is_estimate: false
+
+  - id: pdpl_statement_v1
+    name_en: "Public PDPL compliance statement"
+    name_ar: "بيان امتثال PDPL"
+    type: compliance_document
+    status: production
+    location: docs/operations/PDPL_PUBLIC_STATEMENT.md
+    public: true
+    is_estimate: false
+
+# ── 3. Sales + operational assets ─────────────────────────────────
+sales_assets:
+  - id: sales_playbook_v1
+    name_en: "Complete sales playbook (objections + follow-up + proposal + demo)"
+    name_ar: "playbook المبيعات الكامل"
+    type: operational_runbook
+    status: production
+    location: docs/sales/
+    files:
+      - docs/sales/OBJECTION_HANDLING.md
+      - docs/sales/FOLLOW_UP_SEQUENCE.md
+      - docs/sales/PROPOSAL_TEMPLATE.md
+      - docs/sales/DEMO_SCRIPT.md
+      - docs/sales/CASE_STUDY_TEMPLATE.md
+      - docs/sales/AGENCY_PARTNER_OUTREACH.md
+    is_estimate: false
+
+  - id: onboarding_emails_v1
+    name_en: "5-email bilingual onboarding sequence"
+    name_ar: "تسلسل onboarding بريدي"
+    type: operational_runbook
+    status: production
+    location: docs/delivery/client_onboarding/email_sequence/
+    is_estimate: false
+
+  - id: founder_daily_runbook_v1
+    name_en: "Founder daily operating runbook"
+    name_ar: "دليل الفاوندر اليومي"
+    type: operational_runbook
+    status: production
+    location: docs/playbooks/FOUNDER_DAILY_RUNBOOK.md
+    is_estimate: false
+
+  - id: inbound_qa_bank_v1
+    name_en: "21-Q bilingual inbound Q&A bank"
+    name_ar: "بنك ٢١ ردًا للـ inbound"
+    type: operational_runbook
+    status: production
+    location: docs/playbooks/INBOUND_QA_BANK.md
+    is_estimate: false
+
+# ── 4. Public surfaces ────────────────────────────────────────────
+public_surfaces:
+  - id: dealix_sa_homepage
+    name_en: "dealix.sa public homepage"
+    name_ar: "صفحة dealix.sa الرئيسية"
+    type: web_property
+    url: https://dealix.sa
+    status: production
+    is_estimate: false
+
+  - id: checkout_page
+    name_en: "/[locale]/checkout — 5-plan public ladder"
+    name_ar: "/[locale]/checkout — السلم الخماسي"
+    type: web_property
+    location: frontend/src/app/[locale]/checkout/
+    status: production
+    is_estimate: false
+
+  - id: status_page
+    name_en: "/[locale]/status — public service status"
+    name_ar: "/[locale]/status — حالة الخدمة العامة"
+    type: web_property
+    location: frontend/src/app/[locale]/status/
+    status: production
+    is_estimate: false
+
+  - id: ops_cockpit_page
+    name_en: "/[locale]/ops/cockpit — founder view"
+    name_ar: "/[locale]/ops/cockpit — لوحة الفاوندر"
+    type: web_property
+    location: frontend/src/app/[locale]/ops/cockpit/
+    status: production
+    is_estimate: false
+
+# ── 5. Capital — financial (placeholders for founder) ─────────────
+financial_capital:
+  - id: cash_runway
+    name_en: "Operating cash runway"
+    name_ar: "النقد التشغيلي"
+    value: "TBD — founder fills in monthly"
+    unit: months
+    is_estimate: true
+    note: "Set by founder during monthly review"
+
+  - id: monthly_burn
+    name_en: "Monthly burn rate (infra + LLM + domains)"
+    name_ar: "البيرن الشهري"
+    value: "~3000"
+    unit: SAR/month
+    is_estimate: true
+    note: "Pre-customer launch. Adjust after L1 activates."
+
+  - id: pricing_floor
+    name_en: "Minimum acceptable Sprint price"
+    name_ar: "أدنى سعر مقبول للـ Sprint"
+    value: 499
+    unit: SAR
+    is_estimate: false
+
+# ── 6. Capital — network (founder relationships) ──────────────────
+network_capital:
+  - id: warm_intro_list
+    name_en: "Warm intro list (qualified)"
+    name_ar: "قائمة warm intros"
+    value: "TBD — founder maintains in pipeline_tracker.csv"
+    location: docs/ops/pipeline_tracker.csv
+    is_estimate: true
+
+  - id: agency_partner_targets
+    name_en: "Top 5 agency partner targets"
+    name_ar: "أعلى ٥ وكالات مستهدفة"
+    value: "TBD — founder identifies during partnership exploration"
+    is_estimate: true
+
+# ── Asset addition rules ──────────────────────────────────────────
+addition_rules:
+  - every_asset_traces_to: "code commit, proof_ledger event, OR public URL"
+  - no_invented_assets: true
+  - is_estimate_flag_required: "for any value not backed by confirmed source"
+  - review_frequency: "weekly during Sunday ritual"
+  - founder_only_can_add: true

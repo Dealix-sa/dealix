@@ -144,6 +144,199 @@ def _subscription_summary() -> dict[str, Any]:
         return {"due_count": 0, "due_mrr_sar": 0, "note": "renewal_scheduler_unavailable"}
 
 
+def _revenue_today() -> dict[str, Any]:
+    """Today's confirmed payments (UTC day window)."""
+    try:
+        from auto_client_acquisition.payment_ops import orchestrator
+        now = datetime.now(UTC)
+        cutoff = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        records = getattr(orchestrator, "_INDEX", {}).values()
+        today_paid = [
+            r for r in records
+            if r.status in ("payment_confirmed", "delivery_kickoff")
+            and datetime.fromisoformat(getattr(r, "confirmed_at", "") or now.isoformat()) >= cutoff
+        ]
+        return {
+            "count": len(today_paid),
+            "sar": sum(getattr(r, "amount_sar", 0) for r in today_paid),
+            "is_estimate": True,
+        }
+    except Exception:
+        return {"count": 0, "sar": 0, "note": "payment_ops_unavailable"}
+
+
+def _mrr_current() -> dict[str, Any]:
+    """Current MRR — sum of active subscriptions, best-effort."""
+    try:
+        from auto_client_acquisition.payment_ops.renewal_scheduler import list_due
+        from collections.abc import Iterable
+        due_iter: Iterable = list_due()  # type: ignore[assignment]
+        active = [
+            s for s in due_iter
+            if str(getattr(s, "status", "")).lower() not in ("canceled", "ended", "refunded")
+        ]
+        # Group by customer_id — assume one active schedule per customer.
+        unique = {getattr(s, "customer_id", ""): s for s in active}
+        return {
+            "active_subscriptions": len(unique),
+            "mrr_sar": sum(getattr(s, "amount_sar", 0) for s in unique.values()),
+            "is_estimate": True,
+        }
+    except Exception:
+        return {"active_subscriptions": 0, "mrr_sar": 0, "note": "mrr_unavailable"}
+
+
+def _agent_runs_24h() -> dict[str, Any]:
+    """Count of agent invocations in the last 24h — proof of fleet activity."""
+    try:
+        from auto_client_acquisition.friction_log.aggregator import aggregate
+        agg = aggregate(customer_id="dealix_internal", window_days=1)
+        # friction log records agent-side events; total ~= runs touched by guardrails
+        return {
+            "events_24h": int(getattr(agg, "total", 0)),
+            "is_estimate": True,
+        }
+    except Exception:
+        return {"events_24h": 0, "note": "friction_log_unavailable"}
+
+
+def _next_action() -> dict[str, Any]:
+    """Suggested next action — read from business_now snapshot."""
+    try:
+        from dealix.business_now.snapshot_builder import build_business_now_snapshot
+        snap = build_business_now_snapshot(run_verify=False)
+        nxt = snap.get("next_action") if isinstance(snap, dict) else None
+        return {
+            "action_ar": (nxt or {}).get("ar", "افحص قائمة approvals"),
+            "action_en": (nxt or {}).get("en", "Review pending approvals"),
+            "source": "business_now.snapshot",
+        }
+    except Exception:
+        return {
+            "action_ar": "افحص قائمة approvals",
+            "action_en": "Review pending approvals",
+            "source": "fallback",
+        }
+
+
+@router.get("/dashboard/cockpit", dependencies=[Depends(require_admin_key)])
+async def founder_cockpit() -> dict[str, Any]:
+    """Unified founder cockpit — single 7-panel view for the daily ritual.
+
+    Panels:
+      revenue_today          — paid count + SAR today
+      mrr_current            — active subs MRR snapshot
+      pending_approvals      — count + top 5 awaiting founder
+      friction_top_7d        — top trust/safety signals
+      agent_runs_24h         — fleet activity proof
+      subscription_summary   — renewals due this week
+      next_action_today      — single suggested action AR + EN
+
+    All numeric fields carry `is_estimate=True` unless they trace to a
+    confirmed Moyasar transaction. Doctrine #8 (NO_FAKE_PROOF).
+    Admin-key gated.
+    """
+    friction = _friction_last_7d()
+    try:
+        from auto_client_acquisition.friction_log.redline_alerts import (
+            compute_redline_alerts,
+        )
+        alerts = [a.to_dict() for a in compute_redline_alerts()]
+    except Exception:
+        alerts = []
+    return {
+        "generated_at": datetime.now(UTC).isoformat(),
+        "revenue_today": _revenue_today(),
+        "mrr_current": _mrr_current(),
+        "pending_approvals": _pending_approvals(),
+        "friction_top_7d": friction.get("top_signals", [])[:5] if isinstance(friction, dict) else [],
+        "agent_runs_24h": _agent_runs_24h(),
+        "subscription_summary": _subscription_summary(),
+        "next_action_today": _next_action(),
+        "hot_deals": _hot_deals(),
+        "stalled_deals": _stalled_deals(),
+        "red_lines": alerts,
+        "is_estimate": True,
+        "doctrine_note": "Drafts only. No autonomous sends. Founder approves all outbound.",
+    }
+
+
+def _hot_deals() -> dict[str, Any]:
+    """Prospects with buying_intent_score >= 70.
+
+    Best-effort: reads from data/prospect_briefs/ + any cached
+    buying-signal scores. Returns count + top-5 brief IDs.
+    Doctrine #6: is_estimate=True on score values.
+    """
+    try:
+        from pathlib import Path
+        import json as _json
+        briefs_dir = Path(__file__).resolve().parents[2] / "data" / "prospect_briefs"
+        if not briefs_dir.is_dir():
+            return {"count": 0, "items": []}
+        hot = []
+        for path in briefs_dir.glob("*.json"):
+            if path.name.endswith("_sequence.json"):
+                continue
+            try:
+                brief = _json.loads(path.read_text(encoding="utf-8"))
+                bs = brief.get("buying_signals", {})
+                score = int(bs.get("score", 0))
+                if score >= 70:
+                    hot.append({
+                        "brief_id": brief.get("brief_id"),
+                        "name_en": brief.get("identity", {}).get("name_en"),
+                        "company": brief.get("identity", {}).get("company_name"),
+                        "score": score,
+                    })
+            except Exception:
+                continue
+        hot.sort(key=lambda x: x["score"], reverse=True)
+        return {"count": len(hot), "items": hot[:5], "is_estimate": True}
+    except Exception:
+        return {"count": 0, "items": [], "note": "buying_signals_unavailable"}
+
+
+def _stalled_deals() -> dict[str, Any]:
+    """Prospects in same state > 14 days with no buying signal.
+
+    Conservative heuristic: counts brief_ids older than 14 days
+    whose buying_signals.score < 30.
+    """
+    try:
+        from pathlib import Path
+        import json as _json
+        briefs_dir = Path(__file__).resolve().parents[2] / "data" / "prospect_briefs"
+        if not briefs_dir.is_dir():
+            return {"count": 0, "items": []}
+        now = datetime.now(UTC)
+        stalled = []
+        for path in briefs_dir.glob("*.json"):
+            if path.name.endswith("_sequence.json"):
+                continue
+            try:
+                brief = _json.loads(path.read_text(encoding="utf-8"))
+                created_at_str = brief.get("source_passport", {}).get("created_at", "")
+                if not created_at_str:
+                    continue
+                created_at = datetime.fromisoformat(created_at_str)
+                days_old = (now - created_at).days
+                score = int(brief.get("buying_signals", {}).get("score", 0))
+                if days_old >= 14 and score < 30:
+                    stalled.append({
+                        "brief_id": brief.get("brief_id"),
+                        "name_en": brief.get("identity", {}).get("name_en"),
+                        "company": brief.get("identity", {}).get("company_name"),
+                        "days_silent": days_old,
+                    })
+            except Exception:
+                continue
+        stalled.sort(key=lambda x: x["days_silent"], reverse=True)
+        return {"count": len(stalled), "items": stalled[:5], "is_estimate": True}
+    except Exception:
+        return {"count": 0, "items": [], "note": "stalled_calc_unavailable"}
+
+
 @router.get("/dashboard", dependencies=[Depends(require_admin_key)])
 async def founder_dashboard() -> dict[str, Any]:
     """Single consolidated founder view. Admin-key gated."""

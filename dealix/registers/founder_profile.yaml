@@ -1,0 +1,124 @@
+# Founder Profile · Sami Assiri
+#
+# Source of truth for voice anchoring, signature blocks, and channel
+# preferences. Loaded by personalization agents to inject the founder's
+# identity into every draft. Updated by the founder during quarterly
+# voice review (per BRAND_VOICE_GUIDE.md).
+#
+# Effective: 2026-06-01
+# Next review: 2026-09-01
+
+identity:
+  name_ar: "سامي العسيري"
+  name_en: "Sami Assiri"
+  title_ar: "مؤسس Dealix"
+  title_en: "Founder, Dealix"
+  email_primary: "sami.assiri11@gmail.com"
+  email_aliases:
+    - "hello@dealix.me"
+    - "sami@dealix.me"
+
+linkedin:
+  url: "https://www.linkedin.com/in/sami-assiri-a300622b2"
+  username: "sami-assiri-a300622b2"
+  primary_channel: true
+
+twitter:
+  handle: "TBD"
+  note: "Founder to confirm handle or register @dealix_sa"
+
+whatsapp:
+  business_number: "TBD"
+  note: "Founder to provide. Doctrine #2 — only warm contacts."
+
+calendly:
+  url: "TBD"
+  note: "Founder to provide. Default booking slot: 15-30 min."
+
+# ── Voice calibration ───────────────────────────────────────────
+voice:
+  # Used as a system-prompt constraint on every generated draft
+  anchor: |
+    Write as a Saudi founder speaking founder-to-founder. Direct,
+    no fluff, no corporate-speak. Arabic primary, English fallback.
+    Reference Saudi B2B reality (PDPL, ZATCA, sector context) but
+    never perform "Saudi-ness." Every number cites a real source
+    or carries is_estimate=true. No emojis. Short sentences. No
+    fake guarantees. Doctrine #1-11 visible in commitments.
+
+  # Hard rejection list — if a generated draft contains any of these,
+  # auto-reject before queueing in approval_center
+  anti_patterns_block_list:
+    - "revolutionary"
+    - "game-changing"
+    - "synergy"
+    - "synergize"
+    - "leverage"
+    - "best-in-class"
+    - "cutting-edge"
+    - "next-generation"
+    - "ثوري"
+    - "غير مسبوق"
+    - "الأفضل في فئته"
+
+  # Required closing lines — every draft must end with one of these
+  signature_blocks:
+    ar: |
+      شكرًا،
+      سامي
+      Dealix · dealix.sa
+    en: |
+      Thanks,
+      Sami
+      Dealix · dealix.sa
+    ar_short: "سامي"
+    en_short: "Sami"
+
+# ── Channel preference per prospect type ────────────────────────
+channel_strategy:
+  cold_first_contact:
+    primary: linkedin_dm
+    fallback: email
+    forbidden: [whatsapp]  # Doctrine #2 — never cold WhatsApp
+  warm_follow_up:
+    primary: email
+    secondary: whatsapp  # only if warm_consent_yes_no=true
+  inbound_response:
+    primary: same_channel_as_inquiry
+    sla_minutes: 30  # business hours Sun-Thu 09:00-17:00 KSA
+
+# ── Saudi-specific cultural markers ─────────────────────────────
+cultural:
+  greeting_ar_formal: "السلام عليكم"
+  greeting_ar_casual: "أهلًا"
+  greeting_en: "Hello"
+  closing_ar: "شكرًا"
+  closing_en: "Thanks"
+  preferred_meeting_time_ksa: "09:00-12:00 OR 14:00-17:00 Sun-Thu"
+  prayer_time_aware: true
+  ramadan_aware: true
+  friday_off: true  # avoid scheduling Fridays
+
+# ── Public surfaces (where Sami's profile appears) ──────────────
+public_surfaces:
+  - url: https://dealix.sa
+    section: "Founder section"
+  - url: https://github.com/VoXc2/dealix
+    section: "Repo author"
+  - url: https://www.linkedin.com/in/sami-assiri-a300622b2
+    section: "LinkedIn"
+
+# ── Sample posts (for voice fine-tuning, when founder provides) ─
+# Founder can paste 3-5 of their own LinkedIn posts here as seed
+# data. Empty by default — agents fall back to BRAND_VOICE_GUIDE.md.
+sample_posts:
+  ar: []
+  en: []
+
+# ── Doctrine attestation ────────────────────────────────────────
+doctrine_attestation:
+  - "I commit to the 11 non-negotiables in docs/architecture/DOCTRINE_MANIFESTO.md"
+  - "Every external send passes my explicit approval"
+  - "No autonomous outbound — ever"
+  - "I review and update this profile quarterly"
+  - "Source of truth for any agent generating drafts in my voice"

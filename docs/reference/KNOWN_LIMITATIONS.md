@@ -34,7 +34,7 @@
 - **الملف:** `api/routers/customer_success.py:126`
 - **السلوك:** `drafts_approved_last_30d=0` (hardcoded).
 - **التأثير:** customer success score يفقد بعد signal.
-- **خطة:** اربط بـ `approval_center.approval_store`. ETA: عند أول managed-ops customer.
+- **حل جزئي مُطبَّق (Phase H3):** `/at-risk` الآن يستهلك `GmailDraftRecord` بشكل global ويوزع البيانات على live customers (weighted estimate). الحقل `is_estimate=True` مُضاف للـ response. الحل الكامل (per-customer GROUP BY) يحتاج إضافة customer_id FK على GmailDraftRecord — ETA: عند أول managed-ops customer.
 
 ---
 
@@ -48,6 +48,11 @@
 | `DEALIX_STRICT_OPTIONAL_ROUTERS` | `False` | `=1` في dev | يفشل startup لو optional router failed |
 
 **قاعدة:** لا تفعّل live-send flag بدون approval workflow كامل + audit chain.
+
+**جديد بـ phase 3 (claude/real-launch-fleet-cockpit):**
+- `email_allow_live_send` (default False) — يحرس invite + reset emails.
+- `DEALIX_STRICT_OPTIONAL_ROUTERS` (default False، dev=True) — يكسر boot لو optional router فشل بصمت.
+- Daily KPI snapshot workflow + weekly scorecard workflow كلاهما read-only، يكتبان لـ artifacts لا للـ repo.
 
 ---
 
