@@ -23,7 +23,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi.responses import PlainTextResponse, Response
 from pydantic import BaseModel, Field
 
@@ -44,6 +44,25 @@ SPRINT_STEPS: tuple[str, ...] = (
 )
 
 router = APIRouter(prefix="/api/v1/sprint", tags=["sprint"])
+
+# ---------------------------------------------------------------------------
+# Admin auth dependency
+# ---------------------------------------------------------------------------
+
+_ADMIN_KEY_HEADER = "X-Admin-API-Key"
+
+
+def _require_admin(x_admin_api_key: str | None = Header(default=None, alias=_ADMIN_KEY_HEADER)) -> str:
+    """FastAPI dependency — validates the X-Admin-API-Key header."""
+    if not x_admin_api_key:
+        raise HTTPException(status_code=401, detail="X-Admin-API-Key header is required.")
+    from core.config.settings import get_settings
+    settings = get_settings()
+    allowed_keys = settings.admin_api_key_list
+    # When no keys are configured (dev / test), any non-empty key is accepted.
+    if allowed_keys and x_admin_api_key not in allowed_keys:
+        raise HTTPException(status_code=403, detail="Invalid admin API key.")
+    return x_admin_api_key
 
 
 class _SprintRunBody(BaseModel):
@@ -267,10 +286,28 @@ async def sprint_mark_step(
 @router.get("/sample")
 async def sample_sprint() -> dict[str, Any]:
     """Run the sprint on the synthetic Saudi B2B demo CSV bundled in
-    data/demo/saudi_b2b_demo.csv. Used by the landing page + smoke tests.
+    data/demo/saudi_b2b_demo.csv. Cached in Redis for 1 hour — demo calls
+    return in <100ms after first run.
     """
     import csv
+    import json
     from pathlib import Path
+
+    _DEMO_CACHE_KEY = "dealix:demo:sprint:sample:v2"
+    _DEMO_CACHE_TTL = 3600  # 1 hour
+
+    # Try Redis cache first — short timeout so a missing Redis never delays demo
+    redis_client = None
+    try:
+        from redis.asyncio import Redis as AsyncRedis
+        from core.config.settings import get_settings
+        settings = get_settings()
+        redis_client = AsyncRedis.from_url(settings.redis_url, decode_responses=True, socket_connect_timeout=2)
+        cached_raw = await redis_client.get(_DEMO_CACHE_KEY)
+        if cached_raw:
+            return json.loads(cached_raw)
+    except Exception:  # Redis unavailable — fall through to live run
+        pass
 
     from auto_client_acquisition.delivery_factory.delivery_sprint import run_sprint
 
@@ -301,4 +338,13 @@ async def sample_sprint() -> dict[str, Any]:
         problem_summary="Demo: rank Saudi B2B accounts by relationship + sector.",
         workflow_owner_present=True,
     )
-    return run.to_dict()
+    result = run.to_dict()
+
+    # Cache the result for 1 hour — best-effort, never fatal
+    try:
+        if redis_client:
+            await redis_client.setex(_DEMO_CACHE_KEY, _DEMO_CACHE_TTL, json.dumps(result, default=str))
+    except Exception:  # Redis write failure is non-fatal; next call will re-run sprint
+        pass
+
+    return result
