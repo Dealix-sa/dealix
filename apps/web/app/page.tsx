@@ -1,3 +1,5 @@
+"use client";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealix.me";
 
 const productAreas = [
