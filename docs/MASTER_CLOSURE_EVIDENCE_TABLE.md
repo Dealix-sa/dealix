@@ -10,7 +10,7 @@ and **does not** invent a pass.
 Snapshot
 - Branch: `claude/service-activation-console-IA2JK`
 - LOCAL_HEAD: `efe7283` (was `5a09d42` at first table author; now 4 commits later)
-- **PR #136 OPEN**: <https://github.com/VoXc2/dealix/pull/136>
+- **PR #136 OPEN**: <https://github.com/Dealix-sa/dealix/pull/136>
 - **CI status: 4/4 checks GREEN** (CodeQL, Analyze Python, build, test) — verified via `mcp__github__pull_request_read` at 17:39 UTC.
 - Production probe: `https://api.dealix.me/health` → 200, `version=3.0.0`, `git_sha="unknown"`, `providers=["groq"]`, `env=production`
 - Production endpoints from this branch: **not deployed yet** (PR not merged) — `/api/v1/self-growth/*` returns 404; `dealix.me/status.html` is the OLD hardcoded version.

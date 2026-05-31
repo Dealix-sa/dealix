@@ -38,7 +38,7 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: |
           chmod +x scripts/run_founder_commercial_day.sh scripts/run_dealix_daily_ops.py
-          py -3 scripts/run_dealix_unified_founder_day.py --quick
+          python3 scripts/run_dealix_unified_founder_day.py --quick
           python3 scripts/run_founder_full_autopilot.py --mode brief-only
           python3 scripts/run_full_commercial_ops_autopilot.py --execute --no-scripts
 

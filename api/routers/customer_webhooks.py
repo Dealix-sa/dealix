@@ -38,6 +38,7 @@ Security:
 from __future__ import annotations
 
 import hashlib
+import hmac
 import logging
 import re
 import secrets
@@ -45,10 +46,11 @@ import time
 from datetime import UTC, datetime, timezone
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi import APIRouter, Depends, Header, HTTPException, Path, Request
 from pydantic import BaseModel, ConfigDict, Field
 
 from api.security.api_key import require_admin_key
+from core.config.settings import get_settings
 
 log = logging.getLogger(__name__)
 
@@ -57,6 +59,16 @@ router = APIRouter(
     tags=["customer-webhooks"],
     dependencies=[Depends(require_admin_key)],
 )
+
+# Inbound deliveries authenticate via HMAC signature (X-Dealix-Signature),
+# not the admin key, so they live on a separate router without the
+# admin-key dependency.
+inbound_router = APIRouter(
+    prefix="/api/v1/customer-webhooks",
+    tags=["customer-webhooks"],
+)
+
+SIGNATURE_HEADER = "X-Dealix-Signature"
 
 
 SUPPORTED_EVENT_TYPES = {
@@ -104,6 +116,39 @@ def _generate_secret() -> str:
     return secrets.token_hex(32)
 
 
+def _expected_signature(secret: str, body: bytes) -> str:
+    """HMAC-SHA256(secret, raw_body) as lowercase hex."""
+    return hmac.new(secret.encode(), body, hashlib.sha256).hexdigest()
+
+
+def verify_inbound_signature(*, secret: str, body: bytes, signature: str | None) -> bool:
+    """Constant-time HMAC-SHA256 check of an inbound webhook signature.
+
+    The header may carry an optional ``sha256=`` prefix. Returns False for a
+    missing secret or signature so the caller can decide how to respond.
+    """
+    if not secret or not signature:
+        return False
+    provided = signature.strip().removeprefix("sha256=")
+    expected = _expected_signature(secret, body)
+    return hmac.compare_digest(expected, provided)
+
+
+# Literal route declared before the parameterized GET /{handle} so it is not
+# shadowed by the handle matcher during routing.
+@router.get("/_supported-events")
+async def list_supported_events() -> dict[str, Any]:
+    """Return the set of event types a customer may subscribe to."""
+    return {
+        "event_types": sorted(SUPPORTED_EVENT_TYPES),
+        "signature_header": SIGNATURE_HEADER,
+        "signature_algorithm": "HMAC-SHA256(secret, raw_body)",
+        "delivery_semantics": "at-least-once",
+        "retry_policy": "exponential backoff 5 attempts over 24 hours "
+                        "(deferred to follow-up commit)",
+    }
+
+
 @router.post("/{handle}/subscribe", status_code=201)
 async def subscribe_webhook(
     body: _SubscribeRequest,
@@ -111,8 +156,9 @@ async def subscribe_webhook(
 ) -> dict[str, Any]:
     """Register a webhook subscription for a tenant. Returns subscription_id + secret.
 
-    The secret is shown ONCE in this response — caller must store it.
-    Dealix only stores a hash for verification (production hardening: TODO).
+    The secret is shown ONCE in this response — caller must store it. It is used
+    to compute the HMAC-SHA256 X-Dealix-Signature on deliveries, and to verify
+    the signature on inbound callbacks (see POST .../inbound).
     """
     if not _validate_https_url(body.url):
         raise HTTPException(
@@ -336,14 +382,49 @@ async def ping_subscription(
     }
 
 
-@router.get("/_supported-events")
-async def list_supported_events() -> dict[str, Any]:
-    """Return the set of event types a customer may subscribe to."""
+@inbound_router.post("/inbound")
+async def receive_inbound(
+    request: Request,
+    x_dealix_signature: str | None = Header(default=None, alias=SIGNATURE_HEADER),
+) -> dict[str, Any]:
+    """Receive an inbound webhook callback, authenticated by HMAC signature.
+
+    The X-Dealix-Signature header must be HMAC-SHA256(secret, raw_body), hex
+    encoded, optionally prefixed with ``sha256=``. Verification is constant-time.
+
+    Secret resolution and unconfigured behaviour mirror the rest of the codebase:
+      - secret configured + staging/production: missing/invalid signature -> 401
+      - secret configured + dev/test: only a present-but-invalid signature -> 401
+        (a missing signature is allowed so local tooling stays usable)
+      - no secret configured: permissive, logs a warning (does not hard-fail)
+    """
+    body = await request.body()
+    settings = get_settings()
+    secret_obj = settings.customer_webhook_secret
+    secret = secret_obj.get_secret_value() if secret_obj else ""
+    has_secret = bool(secret)
+    strict_env = settings.app_env in ("staging", "production")
+
+    if not has_secret:
+        log.warning("customer_webhook_inbound_no_secret_configured env=%s", settings.app_env)
+    elif strict_env:
+        if not verify_inbound_signature(
+            secret=secret, body=body, signature=x_dealix_signature
+        ):
+            log.warning("customer_webhook_inbound_invalid_signature_strict_env")
+            raise HTTPException(status_code=401, detail="missing_or_invalid_signature")
+    elif x_dealix_signature is not None:
+        if not verify_inbound_signature(
+            secret=secret, body=body, signature=x_dealix_signature
+        ):
+            log.warning("customer_webhook_inbound_invalid_signature")
+            raise HTTPException(status_code=401, detail="invalid_signature")
+
     return {
-        "event_types": sorted(SUPPORTED_EVENT_TYPES),
-        "signature_header": "X-Dealix-Signature",
-        "signature_algorithm": "HMAC-SHA256(secret, raw_body)",
-        "delivery_semantics": "at-least-once",
-        "retry_policy": "exponential backoff 5 attempts over 24 hours "
-                        "(deferred to follow-up commit)",
+        "status": "accepted",
+        "signature_verified": has_secret
+        and verify_inbound_signature(
+            secret=secret, body=body, signature=x_dealix_signature
+        ),
+        "bytes_received": len(body),
     }

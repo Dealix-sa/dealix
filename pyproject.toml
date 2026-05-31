@@ -105,9 +105,9 @@ ai-company = "cli:app"
 
 [project.urls]
 Homepage = "https://dealix.me"
-Repository = "https://github.com/VoXc2/dealix"
-Documentation = "https://github.com/VoXc2/dealix/tree/main/docs"
-Issues = "https://github.com/VoXc2/dealix/issues"
+Repository = "https://github.com/Dealix-sa/dealix"
+Documentation = "https://github.com/Dealix-sa/dealix/tree/main/docs"
+Issues = "https://github.com/Dealix-sa/dealix/issues"
 
 [tool.setuptools.packages.find]
 include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "dealix*"]
@@ -124,11 +124,11 @@ ignore = ["E501", "S101", "B008", "RUF001", "RUF002", "RUF003", "E702", "S110", 
 
 [tool.ruff.lint.per-file-ignores]
 # S101  assert  — pytest uses asserts; tests pinky-promise on inputs
-# S106  hard-coded passwords — test fixtures only
+# S105/S106  hard-coded passwords/secrets — test fixtures only
 # S311  random() — non-crypto use in test data generation
 # S603  subprocess without shell=True — internal trusted commands
 # S607  partial executable path — git/bash/pandoc are PATH-resolved trusted tools
-"tests/**/*.py" = ["S101", "S106", "S311", "S603", "S607"]
+"tests/**/*.py" = ["S101", "S105", "S106", "S311", "S603", "S607"]
 "scripts/**/*.py" = ["S101", "S603", "S607"]
 
 [tool.bandit]

@@ -347,6 +347,8 @@ def create_app() -> FastAPI:
     app.include_router(cost_tracking.router)
     # Wave 12 W12.1 — Customer-side webhook subscriptions (Dealix→customer)
     app.include_router(customer_webhooks.router)
+    # Inbound customer webhooks — HMAC-signed callbacks (no admin-key dep)
+    app.include_router(customer_webhooks.inbound_router)
     # Wave 13 W13.7 — Revenue metrics dashboard (MRR/ARR/NRR/churn/cohort)
     app.include_router(revenue_metrics.router)
     # Wave 13 W13.13 — Customer referral program (5K SAR per closed deal)

@@ -124,7 +124,7 @@ Missing: automated multi-channel outreach + automated payment + monitoring accou
 |------|--------|
 | **Purpose** | Enable auto-deploy workflow `.github/workflows/railway_deploy.yml` |
 | **Current status** | Workflow exists but inactive (needs RAILWAY_TOKEN as secret) |
-| **How** | https://github.com/VoXc2/dealix/settings/secrets/actions → Add `RAILWAY_TOKEN` |
+| **How** | https://github.com/Dealix-sa/dealix/settings/secrets/actions → Add `RAILWAY_TOKEN` |
 | **Value** | The Railway API token you already provided |
 | **Time** | 1 minute |
 | **Benefit** | Every main push auto-deploys to Railway with smoke test |
@@ -200,7 +200,7 @@ Design proper Dealix logo, case study graphics, pitch deck visuals.
 4. I verify via env-var query (masked) and test integration
 
 ### For GitHub secrets:
-1. Open https://github.com/VoXc2/dealix/settings/secrets/actions
+1. Open https://github.com/Dealix-sa/dealix/settings/secrets/actions
 2. Add secret → paste value → Save
 3. I trigger workflow to verify
 

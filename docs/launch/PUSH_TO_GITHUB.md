@@ -14,7 +14,7 @@
 cd ~/Desktop
 
 # 2. انسخ Dealix
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 
 # 3. نزّل الـ patch من workspace
@@ -36,10 +36,10 @@ gh pr merge --squash --delete-branch
 
 ## الطريقة 2 — GitHub Web UI (بدون terminal)
 
-1. روح على: **https://github.com/VoXc2/dealix**
+1. روح على: **https://github.com/Dealix-sa/dealix**
 2. اضغط على **branch** dropdown (أعلى يسار) → **View all branches**
 3. اضغط **New branch** → اكتب اسم: `sales-kit-2026-04-23`
-4. بعد إنشاء الـ branch، روح على: `https://github.com/VoXc2/dealix/tree/sales-kit-2026-04-23`
+4. بعد إنشاء الـ branch، روح على: `https://github.com/Dealix-sa/dealix/tree/sales-kit-2026-04-23`
 5. اضغط **Add file** → **Upload files**
 6. أنشئ مجلد `docs/sales-kit/` واسحب الـ 12 ملف من workspace هذا:
    - `README.md` (في الـ sales-kit workspace — موجود هنا في tar)
@@ -64,7 +64,7 @@ gh pr merge --squash --delete-branch
 
 ```bash
 cd ~/Desktop
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 
 # انسخ dealix_sales_kit.bundle من workspace لـ ~/Desktop/dealix/
@@ -98,7 +98,7 @@ bash push_sales_kit_to_github.sh
 
 ## ✅ النتيجة بعد الرفع
 
-على `https://github.com/VoXc2/dealix/tree/main/docs/sales-kit/` راح تجد:
+على `https://github.com/Dealix-sa/dealix/tree/main/docs/sales-kit/` راح تجد:
 - 12 ملف sales kit
 - README.md يشرح كل شي
 - يشتغلون من أي منصة (web, mobile, Claude Code, Cursor, VS Code)
