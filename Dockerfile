@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.7
 # ═══════════════════════════════════════════════════════════════
 # AI Company Saudi — production Docker image
 # Multi-stage, non-root, Python 3.12-slim
@@ -17,6 +16,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         curl \
+        libssl-dev \
+        libffi-dev \
+        pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
@@ -76,13 +78,7 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=5 \
     CMD curl -fsS http://localhost:${PORT:-8000}/healthz || exit 1
 
-# Wrapper script so any start command (Dockerfile CMD, Procfile, Railway
-# startCommand override) works without shell-expansion gotchas.
-COPY --chown=app:app <<'EOF' /app/start.sh
-#!/bin/sh
-set -e
-exec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --workers 1
-EOF
+# Make the wrapper script executable (start.sh is already in COPY . . above)
 RUN chmod +x /app/start.sh
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
