@@ -1,0 +1,123 @@
+# LiteLLM Proxy — Dealix AI Gateway
+# Routes all LLM traffic through a single endpoint with:
+#   - Budget enforcement
+#   - Semantic caching (Redis)
+#   - Provider fallbacks
+#   - Cost tracking
+#
+# Start with: litellm --config litellm_config.yaml --port 4000
+# Or via docker-compose: docker-compose -f docker-compose.token-stack.yml up litellm
+
+model_list:
+  # Primary: Claude Sonnet (best quality/cost ratio)
+  - model_name: claude-sonnet
+    litellm_params:
+      model: anthropic/claude-sonnet-4-6
+      api_key: os.environ/ANTHROPIC_API_KEY
+      max_tokens: 4096
+
+  # Fast tasks: Claude Haiku
+  - model_name: claude-haiku
+    litellm_params:
+      model: anthropic/claude-haiku-4-5-20251001
+      api_key: os.environ/ANTHROPIC_API_KEY
+      max_tokens: 2048
+
+  # Budget option: DeepSeek (10x cheaper)
+  - model_name: deepseek-chat
+    litellm_params:
+      model: deepseek/deepseek-chat
+      api_key: os.environ/DEEPSEEK_API_KEY
+      base_url: https://api.deepseek.com/v1
+      max_tokens: 4096
+
+  # Ultra-cheap: Groq (near-free, fast)
+  - model_name: groq-llama
+    litellm_params:
+      model: groq/llama-3.3-70b-versatile
+      api_key: os.environ/GROQ_API_KEY
+      max_tokens: 2048
+
+  # Router: smart (routes to best available model by task)
+  - model_name: smart-router
+    litellm_params:
+      model: claude-sonnet
+    model_info:
+      description: "Routes to best model based on complexity"
+
+router_settings:
+  # Retry failed requests with next provider
+  num_retries: 2
+  retry_after: 5
+  # Fallback chain: Sonnet -> DeepSeek -> Groq
+  fallbacks:
+    - claude-sonnet:
+        - deepseek-chat
+        - groq-llama
+  # Route by latency when multiple providers available
+  routing_strategy: latency-based-routing
+  redis_host: ${REDIS_HOST:-localhost}
+  redis_port: ${REDIS_PORT:-6379}
+  redis_password: ${REDIS_PASSWORD:-}
+
+litellm_settings:
+  # Semantic caching via Redis
+  cache: true
+  cache_params:
+    type: redis-semantic
+    host: ${REDIS_HOST:-localhost}
+    port: ${REDIS_PORT:-6379}
+    password: ${REDIS_PASSWORD:-}
+    similarity_threshold: 0.90
+    ttl: 3600
+
+  # Drop unused params (avoids errors on mismatched providers)
+  drop_params: true
+
+  # Request/response logging to Langfuse
+  success_callback:
+    - langfuse
+  failure_callback:
+    - langfuse
+
+  # Environment variables for callbacks
+  langfuse_public_key: os.environ/LANGFUSE_PUBLIC_KEY
+  langfuse_secret_key: os.environ/LANGFUSE_SECRET_KEY
+  langfuse_host: ${LANGFUSE_HOST:-https://cloud.langfuse.com}
+
+  # Max parallel requests
+  max_parallel_requests: 50
+
+  # Request timeout
+  request_timeout: 60
+
+general_settings:
+  # Master key for proxy admin API
+  master_key: os.environ/LITELLM_MASTER_KEY
+
+  # Database for spend tracking (optional, uses SQLite if not set)
+  database_url: ${LITELLM_DATABASE_URL:-}
+
+  # CORS
+  allow_origins:
+    - "*"
+
+# Budget limits per virtual key
+budget_config:
+  default:
+    max_budget: 10.0        # $10 default budget
+    budget_duration: 30d    # per 30 days
+    tpm_limit: 100000       # 100k tokens/min
+    rpm_limit: 100          # 100 requests/min
+
+  development:
+    max_budget: 1.0
+    budget_duration: 1d
+    tpm_limit: 20000
+    rpm_limit: 20
+
+  production:
+    max_budget: 100.0
+    budget_duration: 30d
+    tpm_limit: 500000
+    rpm_limit: 1000
