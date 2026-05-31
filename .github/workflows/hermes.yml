@@ -1,0 +1,39 @@
+name: Hermes Agents
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 3 * * *'
+
+permissions:
+  contents: read
+
+env:
+  HERMES_AGENTS_ENABLED: "true"
+
+jobs:
+  reports:
+    name: Generate Hermes reports
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check Hermes config
+        run: python scripts/check_hermes_config.py
+
+      - name: Generate Hermes reports
+        run: python scripts/hermes_report.py
+
+      - name: Upload Hermes reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: hermes-agent-reports
+          path: docs/generated/hermes/
