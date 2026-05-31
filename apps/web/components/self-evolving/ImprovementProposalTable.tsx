@@ -1,3 +1,5 @@
+import React from "react";
+
 type ProposalRow = {
   proposalId: string;
   state: string;

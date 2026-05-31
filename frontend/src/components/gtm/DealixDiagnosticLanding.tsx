@@ -110,7 +110,7 @@ export function DealixDiagnosticLanding() {
     );
 
   const ctaHref = `/${locale}/offer/lead-intelligence-sprint${
-    companyName ? `?company=${encodeURIComponent(companyName)}&sector=${selectedSector}` : ""
+    companyName ? `?company=${encodeURIComponent(companyName)}&sector=${encodeURIComponent(selectedSector)}` : ""
   }`;
 
   return (

@@ -192,32 +192,7 @@ export default function HomePage() {
               <li key={href} style={{ margin: 0 }}>
                 <a
                   href={href}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "var(--sp-2)",
-                    padding: "var(--sp-3) var(--sp-4)",
-                    borderRadius: "var(--radius-md)",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.07)",
-                    color: "rgba(255,255,255,0.70)",
-                    fontSize: "0.88rem",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    transition: "all 0.2s"
-                  }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(212,175,55,0.35)";
-                    el.style.color = "var(--dealix-gold)";
-                    el.style.background = "rgba(212,175,55,0.06)";
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLAnchorElement;
-                    el.style.borderColor = "rgba(255,255,255,0.07)";
-                    el.style.color = "rgba(255,255,255,0.70)";
-                    el.style.background = "rgba(255,255,255,0.04)";
-                  }}
+                  className="ops-link"
                 >
                   {label}
                 </a>
