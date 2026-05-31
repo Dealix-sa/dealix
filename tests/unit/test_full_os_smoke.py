@@ -10,11 +10,13 @@ import pytest
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _FULL_OS_ROUTER = _REPO_ROOT / "api" / "routers" / "full_os.py"
 
-from core.config.settings import get_settings
-
 from auto_client_acquisition.email.whatsapp_multi_provider import (
-    PROVIDER_CHAIN, _normalize_phone, configured_providers, send_whatsapp_smart,
+    PROVIDER_CHAIN,
+    _normalize_phone,
+    configured_providers,
+    send_whatsapp_smart,
 )
+from core.config.settings import get_settings
 
 
 # ── Phone normalization ───────────────────────────────────────────

@@ -21,7 +21,6 @@ from auto_client_acquisition.approval_center import (
     render_approval_card,
 )
 
-
 # ─── Fixtures ────────────────────────────────────────────────────
 
 
@@ -148,7 +147,7 @@ def test_renderer_returns_bilingual_card_with_buttons() -> None:
         "why_now_ar",
         "why_now_en",
     ):
-        assert key in card and card[key], f"missing or empty: {key}"
+        assert card.get(key), f"missing or empty: {key}"
 
     assert isinstance(card["buttons"], list)
     button_ids = {b["id"] for b in card["buttons"]}

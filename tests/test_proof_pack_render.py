@@ -73,7 +73,7 @@ def test_render_coerces_non_string_section_values():
     """A non-string section value (arbitrary client JSON) must not crash
     rendering with an AttributeError."""
     pack = {
-        "sections": {k: 0 for k in PROOF_PACK_V2_SECTIONS},
+        "sections": dict.fromkeys(PROOF_PACK_V2_SECTIONS, 0),
         "score": 10,
         "tier": "weak_proof",
     }

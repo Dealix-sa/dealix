@@ -48,7 +48,6 @@ from auto_client_acquisition.bottleneck_radar.computer import compute_founder_vi
 from auto_client_acquisition.service_catalog.registry import list_offerings  # noqa: E402
 from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
 
-
 # Article 4: the 8 hard gates that must always be present.
 _HARD_GATES = (
     "no_live_send", "no_live_charge", "no_cold_whatsapp",

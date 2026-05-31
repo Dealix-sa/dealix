@@ -10,16 +10,16 @@ ARQ injects `ctx` with the Redis connection and any worker-startup state.
 
 from __future__ import annotations
 
-import logging
 from datetime import UTC, datetime
 from typing import Any
 
 from arq import ArqRedis
 
 from core.config.settings import get_settings
+from core.logging import get_logger
 from core.utils import generate_id, utcnow
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 # ── Cost hints (USD per 1k tokens) — used for budget enforcement ──
 COST_PER_1K_INPUT: float = 0.003   # conservative Anthropic estimate
@@ -174,7 +174,8 @@ async def _run_commercial_sprint_report(
     loop = asyncio.get_running_loop()
 
     def _inner() -> dict[str, Any]:
-        return run_lead_intelligence_sprint(payload).model_dump()
+        result: dict[str, Any] = run_lead_intelligence_sprint(payload).model_dump()
+        return result
 
     result = await loop.run_in_executor(None, _inner)
     if tenant_id:
