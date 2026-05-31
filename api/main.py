@@ -473,8 +473,10 @@ def create_app() -> FastAPI:
 
     # Competitor Intelligence + Sales Playbook (admin-gated)
     from api.routers import competitor_intel as competitor_intel_router
+    from api.routers import sales_playbook as sales_playbook_router
 
     app.include_router(competitor_intel_router.router)
+    app.include_router(sales_playbook_router.router)
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
