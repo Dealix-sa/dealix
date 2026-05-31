@@ -638,6 +638,30 @@ def create_app() -> FastAPI:
     from api.routers import onboarding_checklist as onboarding_checklist_router
     app.include_router(onboarding_checklist_router.router)
 
+    # KPI Tracker — Saudi B2B KPI library with benchmarks and snapshot calculator
+    from api.routers import kpi_tracker as kpi_tracker_router
+    app.include_router(kpi_tracker_router.router)
+
+    # Prospect Intelligence — ICP profiles, trigger events, prospect qualification
+    from api.routers import prospect_intelligence as prospect_intelligence_router
+    app.include_router(prospect_intelligence_router.router)
+
+    # Saudi Sector Intelligence — 8 sector profiles, procurement thresholds, compliance map
+    from api.routers import saudi_sector_intelligence as saudi_sector_intelligence_router
+    app.include_router(saudi_sector_intelligence_router.router)
+
+    # Pricing Psychology — pricing principles, anchor scripts, ROI simulator
+    from api.routers import pricing_psychology as pricing_psychology_router
+    app.include_router(pricing_psychology_router.router)
+
+    # Email Templates — Saudi B2B outreach templates for human review and manual send
+    from api.routers import email_templates as email_templates_router
+    app.include_router(email_templates_router.router)
+
+    # Meeting Agenda — Saudi B2B meeting agenda builder with cultural protocol
+    from api.routers import meeting_agenda as meeting_agenda_router
+    app.include_router(meeting_agenda_router.router)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

@@ -1,378 +1,538 @@
-"""Pricing Intelligence API — Saudi B2B market rates, competitor landscape,
-win-rate simulation, tier optimisation, and discount policy.
+"""Pricing Intelligence API — Saudi B2B SaaS pricing psychology and positioning.
+
+Helps the Dealix sales team navigate price objections, anchor correctly,
+and simulate ROI for prospects.
 
 Endpoints:
-  GET  /api/v1/pricing-intelligence/market-rates         — avg deal sizes by sector
-  GET  /api/v1/pricing-intelligence/competitor-landscape — competitor pricing overview
-  POST /api/v1/pricing-intelligence/win-rate-simulator   — win-rate prediction
-  GET  /api/v1/pricing-intelligence/tier-optimization    — per-tier floor/ceiling/upsell
-  GET  /api/v1/pricing-intelligence/discount-policy      — max discount rules per tier
+  GET  /api/v1/pricing-intelligence/principles     — 6 pricing principles
+  GET  /api/v1/pricing-intelligence/anchor-scripts — 5 pricing conversation scripts
+  GET  /api/v1/pricing-intelligence/tier-psychology — psychological positioning per tier
+  POST /api/v1/pricing-intelligence/simulate-roi   — ROI simulation from prospect inputs
 
-All endpoints:
-  - Require admin auth (X-Admin-API-Key)
-  - governance_decision: ALLOW_WITH_REVIEW (except discount-policy: APPROVAL_FIRST)
-  - Bilingual ar/en labels
-  - Prices in SAR
+GET endpoints return governance_decision: ALLOW_WITH_REVIEW.
+POST /simulate-roi returns governance_decision: APPROVAL_FIRST.
 """
-
 from __future__ import annotations
 
-from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from api.security.api_key import require_admin_key
-from core.logging import get_logger
+router = APIRouter(prefix="/api/v1/pricing-intelligence", tags=["Sales"])
 
-_log = get_logger(__name__)
-
-router = APIRouter(
-    prefix="/api/v1/pricing-intelligence",
-    tags=["pricing-intelligence"],
-    dependencies=[Depends(require_admin_key)],
-)
-
-_GOV = "ALLOW_WITH_REVIEW"
-_GOV_APPROVAL = "APPROVAL_FIRST"
-_NOW = datetime.now(UTC)
+_GOV_READ = "ALLOW_WITH_REVIEW"
+_GOV_WRITE = "APPROVAL_FIRST"
 
 # ---------------------------------------------------------------------------
-# Saudi B2B deal size benchmarks by sector (SAR)
+# Pricing psychology principles
 # ---------------------------------------------------------------------------
 
-_SECTOR_DEAL_SIZES: dict[str, int] = {
-    "technology": 4_500,
-    "logistics": 3_200,
-    "healthcare": 5_500,
-    "financial_services": 6_000,
-    "retail": 2_800,
-    "real_estate": 4_200,
-    "manufacturing": 3_800,
-    "education": 2_500,
+_PRICING_PSYCHOLOGY: dict[str, dict[str, Any]] = {
+    "anchor_high_first": {
+        "principle_id": "anchor_high_first",
+        "title_en": "Anchor High First",
+        "title_ar": "ابدأ بالعرض الأعلى قيمةً أولًا",
+        "description_en": (
+            "Always present the most premium option first in any pricing conversation. "
+            "The first number mentioned becomes the cognitive anchor. "
+            "Starting with the custom enterprise tier (SAR 5K–25K) makes the "
+            "managed ops tier (SAR 2,999–4,999/mo) feel accessible by comparison."
+        ),
+        "description_ar": (
+            "قدّم دائمًا الخيار الأعلى قيمةً أولًا في أي محادثة تسعير. "
+            "الرقم الأول المذكور يُصبح المرساة الإدراكية. "
+            "البدء بمستوى المؤسسات المخصص (5,000–25,000 ريال) يجعل "
+            "مستوى العمليات المُدارة (2,999–4,999 ريال/شهر) يبدو في متناول اليد بالمقارنة."
+        ),
+        "application_en": "Open every pricing conversation with the Custom AI tier before descending.",
+        "application_ar": "افتح كل محادثة تسعير بمستوى الذكاء الاصطناعي المخصص قبل النزول إلى الأدنى.",
+    },
+    "zatca_roi_anchor": {
+        "principle_id": "zatca_roi_anchor",
+        "title_en": "ZATCA ROI Anchor",
+        "title_ar": "مرساة عائد الاستثمار في الامتثال الضريبي",
+        "description_en": (
+            "ZATCA non-compliance fines start at SAR 10,000 per violation and can reach "
+            "SAR 50,000 for repeat offences. "
+            "A single ZATCA fine covers more than 20 months of the SAR 499 sprint. "
+            "Always quantify the compliance cost before presenting the product price."
+        ),
+        "description_ar": (
+            "غرامات عدم الامتثال لزكاة تبدأ من 10,000 ريال للمخالفة الواحدة وقد تصل "
+            "إلى 50,000 ريال للمخالفات المتكررة. "
+            "غرامة زكاة واحدة تُغطي أكثر من 20 شهرًا من سبرينت 499 ريال. "
+            "قيّم دائمًا تكلفة الامتثال قبل تقديم سعر المنتج."
+        ),
+        "application_en": (
+            "Ask: 'Have you received any ZATCA notices in the past 12 months?' "
+            "Then present fine risk before product price."
+        ),
+        "application_ar": (
+            "اسأل: 'هل تلقيتم أي إشعارات من هيئة الزكاة خلال الـ12 شهرًا الماضية؟' "
+            "ثم قدّم مخاطر الغرامات قبل سعر المنتج."
+        ),
+    },
+    "ramadan_sensitivity": {
+        "principle_id": "ramadan_sensitivity",
+        "title_en": "Ramadan Timing Sensitivity",
+        "title_ar": "حساسية التوقيت في رمضان",
+        "description_en": (
+            "Never push for a price commitment during Ramadan weeks 1–2. "
+            "Decision-making is culturally deprioritised during this period. "
+            "Use Ramadan to build relationship, send educational content, and "
+            "prepare a post-Eid proposal. "
+            "The strongest closing window is the 2 weeks immediately after Eid al-Fitr."
+        ),
+        "description_ar": (
+            "لا تضغط أبداً على التزام بالسعر خلال الأسبوعين الأولين من رمضان. "
+            "اتخاذ القرارات مُؤجَّل ثقافيًا خلال هذه الفترة. "
+            "استخدم رمضان لبناء العلاقة وإرسال محتوى تثقيفي "
+            "وإعداد مقترح ما بعد العيد. "
+            "نافذة الإغلاق الأقوى هي الأسبوعان اللذان يليان عيد الفطر مباشرةً."
+        ),
+        "application_en": "Set all post-Ramadan proposals to send on day 3 post-Eid.",
+        "application_ar": "اضبط جميع مقترحات ما بعد رمضان لترسل في اليوم الثالث بعد العيد.",
+    },
+    "relationship_before_price": {
+        "principle_id": "relationship_before_price",
+        "title_en": "Relationship Before Price",
+        "title_ar": "العلاقة قبل السعر",
+        "description_en": (
+            "Saudi B2B buyers need to trust the person before they trust the price. "
+            "Rushing to a price conversation before establishing rapport leads to "
+            "price objections that are really trust objections in disguise. "
+            "Use the free diagnostic as a trust-building mechanism, "
+            "not just a sales qualifier."
+        ),
+        "description_ar": (
+            "يحتاج المشترون في B2B السعودي إلى الوثوق بالشخص قبل الوثوق بالسعر. "
+            "التسرع في محادثة السعر قبل بناء العلاقة يؤدي إلى اعتراضات سعرية "
+            "هي في الحقيقة اعتراضات ثقة مُقنَّعة. "
+            "استخدم التشخيص المجاني كآلية لبناء الثقة وليس فقط كمؤهل مبيعات."
+        ),
+        "application_en": (
+            "Complete at least one in-person or video meeting before sending any pricing. "
+            "Reference shared context (sector, city, Vision 2030 goals) in the proposal."
+        ),
+        "application_ar": (
+            "أكمل اجتماعًا شخصيًا أو عبر الفيديو على الأقل قبل إرسال أي تسعير. "
+            "أشر إلى السياق المشترك (القطاع، المدينة، أهداف رؤية 2030) في المقترح."
+        ),
+    },
+    "arabic_price_framing": {
+        "principle_id": "arabic_price_framing",
+        "title_en": "Arabic Price Framing",
+        "title_ar": "صياغة السعر بالعربية",
+        "description_en": (
+            "When presenting prices to Arabic-speaking prospects, use Arabic numerals "
+            "and frame the spend as an investment (استثمار) rather than a cost (تكلفة). "
+            "Break monthly prices into daily equivalents — "
+            "SAR 499 = SAR 16/day, less than a business lunch."
+        ),
+        "description_ar": (
+            "عند تقديم الأسعار للعملاء المحتملين الناطقين بالعربية، استخدم الأرقام العربية "
+            "وصغ الإنفاق باعتباره استثمارًا وليس تكلفة. "
+            "قسّم الأسعار الشهرية إلى معادلات يومية — "
+            "499 ريال = 16 ريالًا/يوم، أقل من تكلفة غداء عمل."
+        ),
+        "application_en": (
+            "In Arabic proposals, always show: monthly price, daily equivalent, "
+            "and annual ROI in that order."
+        ),
+        "application_ar": (
+            "في المقترحات العربية، اعرض دائمًا: السعر الشهري، المعادل اليومي، "
+            "والعائد السنوي على الاستثمار بهذا الترتيب."
+        ),
+    },
+    "competitor_price_anchoring": {
+        "principle_id": "competitor_price_anchoring",
+        "title_en": "Competitor Price Anchoring",
+        "title_ar": "مرساة أسعار المنافسين",
+        "description_en": (
+            "Big 4 consulting firms (McKinsey, BCG, Deloitte) charge SAR 200,000+ "
+            "for a revenue intelligence engagement. "
+            "Dealix delivers comparable insight at 50x less cost. "
+            "Always anchor against a credible high-price alternative before presenting "
+            "Dealix pricing — it reframes the entire value conversation."
+        ),
+        "description_ar": (
+            "تتقاضى شركات الاستشارات الكبرى (ماكنزي، BCG، ديلويت) أكثر من 200,000 ريال "
+            "لمشاركة استخبارات الإيرادات. "
+            "تُقدّم Dealix رؤى مقارنة بتكلفة أقل بـ50 مرة. "
+            "قارن دائمًا بالبديل عالي السعر الموثوق قبل تقديم تسعير Dealix — "
+            "إذ يُعيد ذلك صياغة محادثة القيمة بأكملها."
+        ),
+        "application_en": (
+            "Say: 'A Big 4 firm would charge SAR 200K for this analysis. "
+            "We deliver the same result for SAR 499 in 7 days.'"
+        ),
+        "application_ar": (
+            "قل: 'شركة استشارات كبرى ستتقاضى 200,000 ريال لهذا التحليل. "
+            "نحن نُقدّم نفس النتيجة بـ499 ريال في 7 أيام.'"
+        ),
+    },
 }
 
-_SECTOR_LABELS_AR: dict[str, str] = {
-    "technology": "التقنية",
-    "logistics": "اللوجستيات",
-    "healthcare": "الرعاية الصحية",
-    "financial_services": "الخدمات المالية",
-    "retail": "التجزئة",
-    "real_estate": "العقارات",
-    "manufacturing": "التصنيع",
-    "education": "التعليم",
+# ---------------------------------------------------------------------------
+# Pricing anchor scripts
+# ---------------------------------------------------------------------------
+
+_PRICE_ANCHOR_SCRIPTS: list[dict[str, Any]] = [
+    {
+        "scenario_en": "Prospect says price is too high",
+        "scenario_ar": "العميل المحتمل يقول إن السعر مرتفع جدًا",
+        "script_en": (
+            "Completely understand. Let's put it in perspective: "
+            "SAR 499 is SAR 16 per day — less than a business lunch. "
+            "Over the 7-day sprint, we'll identify at least one revenue leak "
+            "worth 10x that amount. "
+            "If we find nothing worth fixing, I'll give you a full refund."
+        ),
+        "script_ar": (
+            "أفهم ذلك تمامًا. لنضع الأمر في سياقه: "
+            "499 ريال تعني 16 ريالًا في اليوم — أقل من تكلفة غداء عمل. "
+            "خلال سبرينت الـ7 أيام، سنحدد تسربًا واحدًا على الأقل في الإيرادات "
+            "يساوي 10 أضعاف هذا المبلغ. "
+            "إذا لم نجد شيئًا يستحق المعالجة، سأعيد إليك المبلغ كاملًا."
+        ),
+        "avoid_en": "Never justify the price with feature lists alone — always anchor to ROI first.",
+        "avoid_ar": "لا تُبرّر السعر بقوائم الميزات وحدها — ابدأ دائمًا بمرساة العائد على الاستثمار.",
+    },
+    {
+        "scenario_en": "Prospect asks for a discount",
+        "scenario_ar": "العميل المحتمل يطلب خصمًا",
+        "script_en": (
+            "Rather than discounting, let me offer you something more valuable: "
+            "a free 30-minute diagnostic before you commit to anything. "
+            "We'll identify exactly where your revenue is leaking "
+            "and then you can decide if the sprint is worth it. "
+            "A discount saves you SAR 50 — the diagnostic could save you SAR 50,000."
+        ),
+        "script_ar": (
+            "بدلًا من الخصم، دعني أقدّم لك شيئًا أكثر قيمةً: "
+            "تشخيص مجاني لمدة 30 دقيقة قبل أن تلتزم بأي شيء. "
+            "سنحدد بالضبط أين يتسرب إيرادك "
+            "وبعدها يمكنك أن تقرر إذا كان السبرينت يستحق ذلك. "
+            "الخصم يوفر 50 ريالًا — أما التشخيص فقد يوفر 50,000 ريال."
+        ),
+        "avoid_en": (
+            "Never offer a discount as a first response to a discount request. "
+            "Always offer a free diagnostic or extended sprint scope instead."
+        ),
+        "avoid_ar": (
+            "لا تقدّم خصمًا كردة فعل أولى على طلب الخصم. "
+            "قدّم دائمًا تشخيصًا مجانيًا أو نطاق سبرينت موسّعًا بدلًا من ذلك."
+        ),
+    },
+    {
+        "scenario_en": "Prospect compares to a cheaper tool",
+        "scenario_ar": "العميل المحتمل يقارن بأداة أرخص",
+        "script_en": (
+            "That tool was built for a global market. "
+            "We were built for Saudi Arabia: "
+            "ZATCA Phase 2 integration is native, not a plugin. "
+            "Arabic NLP is core, not an add-on. "
+            "Prayer-time scheduling is built in. "
+            "How many months will it take them to configure Arabic language support? "
+            "We're live in 7 days."
+        ),
+        "script_ar": (
+            "تلك الأداة مُصمَّمة للسوق العالمي. "
+            "نحن مُصمَّمون للمملكة العربية السعودية: "
+            "تكامل زكاة المرحلة الثانية أصيل وليس إضافةً خارجية. "
+            "معالجة اللغة الطبيعية بالعربية أساسية وليست ميزةً إضافية. "
+            "جدولة أوقات الصلاة مدمجة. "
+            "كم شهرًا سيستغرقهم ضبط دعم اللغة العربية؟ "
+            "نحن نعمل خلال 7 أيام."
+        ),
+        "avoid_en": "Never attack the competitor directly — differentiate on Saudi-specific value only.",
+        "avoid_ar": "لا تهاجم المنافس مباشرةً — فرّق نفسك بالقيمة السعودية المحددة فقط.",
+    },
+    {
+        "scenario_en": "CFO asks for ROI justification",
+        "scenario_ar": "المدير المالي يطلب مسوّغ العائد على الاستثمار",
+        "script_en": (
+            "Happy to walk through the numbers with you. "
+            "Three buckets: "
+            "One — ZATCA fine avoidance: at SAR 10K per violation, one avoided fine "
+            "pays for 20 months of our service. "
+            "Two — reporting time savings: if your team spends 10 hours/week on manual reports, "
+            "we automate 70% of that — that is SAR 30,000+ in analyst time annually. "
+            "Three — pipeline acceleration: faster data means faster decisions. "
+            "Would you like me to build a model with your actual numbers?"
+        ),
+        "script_ar": (
+            "يسعدني استعراض الأرقام معك. "
+            "ثلاثة محاور: "
+            "أولًا — تجنب غرامات زكاة: بـ10,000 ريال للمخالفة الواحدة، غرامة واحدة مُتجنَّبة "
+            "تُغطي 20 شهرًا من خدمتنا. "
+            "ثانيًا — توفير وقت إعداد التقارير: إذا أمضى فريقك 10 ساعات أسبوعيًا في تقارير يدوية، "
+            "نحن نؤتمت 70% منها — ما يعني أكثر من 30,000 ريال في تكلفة المحللين سنويًا. "
+            "ثالثًا — تسريع خط الأنابيب: البيانات الأسرع تعني قرارات أسرع. "
+            "هل تريد مني بناء نموذج بأرقامك الفعلية؟"
+        ),
+        "avoid_en": (
+            "Never present ROI as a guarantee. Always use 'estimated' and "
+            "'based on your inputs' language."
+        ),
+        "avoid_ar": (
+            "لا تقدّم عائد الاستثمار باعتباره ضمانًا. استخدم دائمًا لغة 'مُقدَّر' "
+            "و'بناءً على مدخلاتك'."
+        ),
+    },
+    {
+        "scenario_en": "Prospect wants to start small",
+        "scenario_ar": "العميل المحتمل يريد البدء بشكل صغير",
+        "script_en": (
+            "Starting small is exactly right — that is what we designed for. "
+            "The path is: "
+            "Free diagnostic today — zero commitment, 30 minutes. "
+            "If we find a real problem, SAR 499 sprint over 7 days to fix it and prove the value. "
+            "If that sprint delivers, Data Pack at SAR 1,500 to lock in the improvements. "
+            "From there, managed ops at SAR 2,999/month when you are ready to scale. "
+            "You are in control of every step."
+        ),
+        "script_ar": (
+            "البدء بشكل صغير هو الصواب تمامًا — هذا ما صمّمنا المنتج من أجله. "
+            "المسار هو: "
+            "تشخيص مجاني اليوم — بدون أي التزام، 30 دقيقة. "
+            "إذا وجدنا مشكلة حقيقية، سبرينت 499 ريال على مدى 7 أيام لإصلاحها وإثبات القيمة. "
+            "إذا حقق السبرينت نتائج، حزمة البيانات بـ1,500 ريال لترسيخ التحسينات. "
+            "ومن هناك، عمليات مُدارة بـ2,999 ريال/شهر عندما تكون مستعدًا للتوسع. "
+            "أنت تتحكم في كل خطوة."
+        ),
+        "avoid_en": (
+            "Never let 'start small' become 'stay small'. "
+            "Always present the full upsell path in the first conversation."
+        ),
+        "avoid_ar": (
+            "لا تدع 'البدء بشكل صغير' يتحول إلى 'البقاء صغيرًا'. "
+            "قدّم دائمًا مسار الترقية الكامل في المحادثة الأولى."
+        ),
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Tier psychological positioning
+# ---------------------------------------------------------------------------
+
+_TIER_PSYCHOLOGY: dict[str, dict[str, Any]] = {
+    "free_diagnostic": {
+        "tier_id": "free_diagnostic",
+        "price_sar": 0,
+        "positioning_en": (
+            "Zero risk entry — Saudi buyers need to feel before committing. "
+            "The diagnostic removes the psychological barrier of spending money "
+            "on an unknown vendor. It is the trust handshake, not a product demo."
+        ),
+        "positioning_ar": (
+            "نقطة دخول بدون مخاطر — يحتاج المشتري السعودي إلى الإحساس بالقيمة قبل الالتزام. "
+            "التشخيص يزيل الحاجز النفسي للإنفاق على مورد غير معروف. "
+            "إنه مصافحة الثقة وليس عرضًا تجريبيًا للمنتج."
+        ),
+        "frame_en": "Cost of inaction vs cost of 30 minutes",
+        "frame_ar": "تكلفة عدم التصرف مقابل تكلفة 30 دقيقة",
+    },
+    "sprint_499": {
+        "tier_id": "sprint_499",
+        "price_sar": 499,
+        "positioning_en": (
+            "SAR 499 is a rounding error in any Saudi B2B budget. "
+            "Frame it as the cost of one business lunch, not a procurement decision. "
+            "The champion can approve this without a committee. "
+            "Speed is the sale: '7 days, one deliverable, no contract required.'"
+        ),
+        "positioning_ar": (
+            "499 ريال خطأ تقريب في أي ميزانية B2B سعودية. "
+            "صغها باعتبارها تكلفة غداء عمل واحد، وليس قرارًا للمشتريات. "
+            "يمكن للبطل الموافقة عليها دون لجنة. "
+            "السرعة هي البيعة: '7 أيام، تسليم واحد، لا يلزم عقد.'"
+        ),
+        "frame_en": "Less than one business lunch; approved in 5 minutes",
+        "frame_ar": "أقل من غداء عمل واحد؛ موافقة في 5 دقائق",
+    },
+    "data_pack_1500": {
+        "tier_id": "data_pack_1500",
+        "price_sar": 1_500,
+        "positioning_en": (
+            "SAR 1,500 is less than one employee's monthly cost for any knowledge role. "
+            "Frame it against the manual reporting burden: "
+            "if your analyst spends 10 hours/week on reports, "
+            "this pack pays back in the first week."
+        ),
+        "positioning_ar": (
+            "1,500 ريال أقل من تكلفة موظف واحد شهريًا في أي دور معرفي. "
+            "صغها في مقابل عبء إعداد التقارير اليدوية: "
+            "إذا أمضى المحلل 10 ساعات أسبوعيًا في التقارير، "
+            "فإن هذه الحزمة تُؤدي ثمنها في الأسبوع الأول."
+        ),
+        "frame_en": "Less than one week of a junior analyst's time",
+        "frame_ar": "أقل من أسبوع عمل محلل مبتدئ",
+    },
+    "managed_ops_2999_4999": {
+        "tier_id": "managed_ops_2999_4999",
+        "price_sar_min": 2_999,
+        "price_sar_max": 4_999,
+        "positioning_en": (
+            "CFO logic: SAR 4,999/month versus hiring a data analyst at SAR 12,000/month. "
+            "You get a full ops team, not one person. "
+            "Frame as headcount replacement, not software cost. "
+            "Annual commitment (SAR 60K) is still below open-tender threshold."
+        ),
+        "positioning_ar": (
+            "منطق المدير المالي: 4,999 ريال/شهر مقابل توظيف محلل بيانات بـ12,000 ريال/شهر. "
+            "تحصل على فريق عمليات كامل وليس شخصًا واحدًا. "
+            "صغها باعتبارها بديلًا للاستئجار، وليست تكلفة برمجيات. "
+            "الالتزام السنوي (60,000 ريال) لا يزال أقل من حد المناقصة المفتوحة."
+        ),
+        "frame_en": "Headcount replacement: full team vs one hire",
+        "frame_ar": "بديل توظيف: فريق كامل مقابل موظف واحد",
+    },
+    "custom_ai_5k_25k": {
+        "tier_id": "custom_ai_5k_25k",
+        "price_sar_min": 5_000,
+        "price_sar_max": 25_000,
+        "positioning_en": (
+            "Enterprise anchor: present alongside Vision 2030 ROI, not just operational savings. "
+            "The CFO conversation is about programme-level impact — "
+            "how many Vision 2030 KPIs does this accelerate? "
+            "Reference comparable Big 4 engagement costs (SAR 200K–500K) "
+            "to make SAR 25K feel like a fraction."
+        ),
+        "positioning_ar": (
+            "مرساة المؤسسات: قدّمها إلى جانب عائد استثمار رؤية 2030، وليس الوفورات التشغيلية فقط. "
+            "محادثة المدير المالي تدور حول التأثير على مستوى البرنامج — "
+            "كم من مؤشرات الأداء في رؤية 2030 تُسرّع هذه الخدمة؟ "
+            "أشر إلى تكاليف المشاركة المقارنة لشركات الاستشارات الكبرى (200,000–500,000 ريال) "
+            "ليبدو 25,000 ريال كجزء صغير من ذلك."
+        ),
+        "frame_en": "Vision 2030 programme ROI; a fraction of Big 4 consulting cost",
+        "frame_ar": "عائد استثمار برنامج رؤية 2030؛ جزء صغير من تكلفة استشارات الكبار",
+    },
 }
-
-# ---------------------------------------------------------------------------
-# Dealix product tiers
-# ---------------------------------------------------------------------------
-
-_TIERS: list[dict[str, Any]] = [
-    {
-        "tier_id": "sprint_499",
-        "name_en": "Revenue Proof Sprint",
-        "name_ar": "سبرنت إثبات الإيرادات",
-        "current_price_sar": 499,
-        "floor_sar": 399,
-        "ceiling_sar": 699,
-        "upsell_trigger_score": 72,
-        "upsell_target_en": "Data-to-Revenue Pack",
-        "upsell_target_ar": "حزمة البيانات والإيرادات",
-        "kind": "one_off",
-    },
-    {
-        "tier_id": "data_pack_1500",
-        "name_en": "Data-to-Revenue Pack",
-        "name_ar": "حزمة البيانات والإيرادات",
-        "current_price_sar": 1_500,
-        "floor_sar": 1_200,
-        "ceiling_sar": 2_000,
-        "upsell_trigger_score": 68,
-        "upsell_target_en": "Growth Ops Monthly",
-        "upsell_target_ar": "عمليات النمو الشهرية",
-        "kind": "one_off",
-    },
-    {
-        "tier_id": "growth_ops_2999",
-        "name_en": "Growth Ops Monthly",
-        "name_ar": "عمليات النمو الشهرية",
-        "current_price_sar": 2_999,
-        "floor_sar": 2_499,
-        "ceiling_sar": 3_499,
-        "upsell_trigger_score": 75,
-        "upsell_target_en": "Support OS Add-on",
-        "upsell_target_ar": "إضافة دعم العمليات",
-        "kind": "subscription",
-    },
-    {
-        "tier_id": "support_addon_1500",
-        "name_en": "Support OS Add-on",
-        "name_ar": "إضافة دعم العمليات",
-        "current_price_sar": 1_500,
-        "floor_sar": 1_200,
-        "ceiling_sar": 1_800,
-        "upsell_trigger_score": 80,
-        "upsell_target_en": "Executive Command Center",
-        "upsell_target_ar": "مركز القيادة التنفيذية",
-        "kind": "subscription",
-    },
-    {
-        "tier_id": "executive_7500",
-        "name_en": "Executive Command Center",
-        "name_ar": "مركز القيادة التنفيذية",
-        "current_price_sar": 7_500,
-        "floor_sar": 6_500,
-        "ceiling_sar": 9_500,
-        "upsell_trigger_score": 85,
-        "upsell_target_en": "Custom Enterprise Agreement",
-        "upsell_target_ar": "اتفاقية مؤسسية مخصصة",
-        "kind": "subscription",
-    },
-]
-
-# ---------------------------------------------------------------------------
-# Win-rate data by deal-size bucket (historical approximation)
-# ---------------------------------------------------------------------------
-
-_WIN_RATE_BUCKETS: list[dict[str, Any]] = [
-    {
-        "bucket_label_en": "Entry (0–1,999 SAR)",
-        "bucket_label_ar": "مدخل (0–1,999 ريال)",
-        "min_sar": 0,
-        "max_sar": 1_999,
-        "win_rate": 0.52,
-        "sample_size": 47,
-    },
-    {
-        "bucket_label_en": "Core (2,000–3,999 SAR)",
-        "bucket_label_ar": "أساسي (2,000–3,999 ريال)",
-        "min_sar": 2_000,
-        "max_sar": 3_999,
-        "win_rate": 0.45,
-        "sample_size": 83,
-    },
-    {
-        "bucket_label_en": "Mid-market (4,000–6,999 SAR)",
-        "bucket_label_ar": "متوسط (4,000–6,999 ريال)",
-        "min_sar": 4_000,
-        "max_sar": 6_999,
-        "win_rate": 0.38,
-        "sample_size": 54,
-    },
-    {
-        "bucket_label_en": "Enterprise (7,000+ SAR)",
-        "bucket_label_ar": "مؤسسي (7,000+ ريال)",
-        "min_sar": 7_000,
-        "max_sar": 999_999,
-        "win_rate": 0.28,
-        "sample_size": 19,
-    },
-]
-
-# ---------------------------------------------------------------------------
-# Competitor pricing landscape (fictional Saudi tech companies)
-# ---------------------------------------------------------------------------
-
-_COMPETITORS: list[dict[str, Any]] = [
-    {
-        "name": "AlphaRevenue",
-        "positioning_en": "Revenue analytics for Saudi mid-market",
-        "positioning_ar": "تحليلات الإيرادات للسوق السعودي المتوسط",
-        "entry_price_sar": 1_800,
-        "mid_price_sar": 3_500,
-        "enterprise_price_sar": 8_000,
-        "pricing_model": "tiered_subscription",
-        "pricing_model_ar": "اشتراك متدرج",
-        "strength_en": "Established brand in Riyadh fintech",
-        "strength_ar": "علامة تجارية راسخة في تقنية مالية الرياض",
-        "weakness_en": "No proof-pack delivery; report-only",
-        "weakness_ar": "لا حزمة أدلة؛ تقارير فقط",
-    },
-    {
-        "name": "NexusOps",
-        "positioning_en": "Operations automation for logistics and manufacturing",
-        "positioning_ar": "أتمتة العمليات للخدمات اللوجستية والتصنيع",
-        "entry_price_sar": 2_200,
-        "mid_price_sar": 4_800,
-        "enterprise_price_sar": 10_000,
-        "pricing_model": "annual_contract",
-        "pricing_model_ar": "عقد سنوي",
-        "strength_en": "Deep logistics integrations",
-        "strength_ar": "تكاملات لوجستية عميقة",
-        "weakness_en": "Long onboarding (8–12 weeks)",
-        "weakness_ar": "إعداد طويل (8–12 أسبوع)",
-    },
-    {
-        "name": "DataFlow KSA",
-        "positioning_en": "Data pipeline and BI for Saudi SMEs",
-        "positioning_ar": "خطوط بيانات وذكاء أعمال للشركات الصغيرة",
-        "entry_price_sar": 1_200,
-        "mid_price_sar": 2_800,
-        "enterprise_price_sar": 6_500,
-        "pricing_model": "seat_based",
-        "pricing_model_ar": "حسب عدد المستخدمين",
-        "strength_en": "Low entry price attracts early-stage companies",
-        "strength_ar": "سعر منخفض يجذب الشركات الناشئة",
-        "weakness_en": "No AI layer; manual configuration",
-        "weakness_ar": "بدون طبقة ذكاء اصطناعي؛ إعداد يدوي",
-    },
-    {
-        "name": "RiyadhTech",
-        "positioning_en": "Full-suite ERP add-ons for Saudi corporates",
-        "positioning_ar": "إضافات ERP متكاملة للشركات السعودية",
-        "entry_price_sar": 3_000,
-        "mid_price_sar": 6_000,
-        "enterprise_price_sar": 15_000,
-        "pricing_model": "module_based",
-        "pricing_model_ar": "حسب الوحدات",
-        "strength_en": "Deep SAP and Oracle integration",
-        "strength_ar": "تكامل عميق مع SAP وOracle",
-        "weakness_en": "High minimum contract (12 months); limited flexibility",
-        "weakness_ar": "عقد أدنى 12 شهر؛ مرونة محدودة",
-    },
-    {
-        "name": "Jadara Analytics",
-        "positioning_en": "Marketing and sales analytics for retail and e-commerce",
-        "positioning_ar": "تحليلات التسويق والمبيعات للتجزئة والتجارة الإلكترونية",
-        "entry_price_sar": 900,
-        "mid_price_sar": 2_200,
-        "enterprise_price_sar": 5_000,
-        "pricing_model": "usage_based",
-        "pricing_model_ar": "حسب الاستخدام",
-        "strength_en": "Affordable analytics dashboard",
-        "strength_ar": "لوحة تحليلات بأسعار معقولة",
-        "weakness_en": "B2B features limited; no governance layer",
-        "weakness_ar": "ميزات B2B محدودة؛ بدون طبقة حوكمة",
-    },
-]
-
-# ---------------------------------------------------------------------------
-# Discount policy per tier
-# ---------------------------------------------------------------------------
-
-_DISCOUNT_POLICY: list[dict[str, Any]] = [
-    {
-        "tier_id": "sprint_499",
-        "name_en": "Revenue Proof Sprint",
-        "name_ar": "سبرنت إثبات الإيرادات",
-        "max_discount_pct": 10,
-        "requires_approval": True,
-        "approval_level_en": "Founder sign-off required",
-        "approval_level_ar": "يتطلب موافقة المؤسس",
-        "conditions_en": "Only for warm-referral or multi-deal bundling",
-        "conditions_ar": "فقط للإحالات الدافئة أو تجميع الصفقات",
-    },
-    {
-        "tier_id": "data_pack_1500",
-        "name_en": "Data-to-Revenue Pack",
-        "name_ar": "حزمة البيانات والإيرادات",
-        "max_discount_pct": 15,
-        "requires_approval": True,
-        "approval_level_en": "Founder sign-off required",
-        "approval_level_ar": "يتطلب موافقة المؤسس",
-        "conditions_en": "Only when bundled with sprint or retainer",
-        "conditions_ar": "فقط عند الدمج مع السبرنت أو الاستبقاء",
-    },
-    {
-        "tier_id": "growth_ops_2999",
-        "name_en": "Growth Ops Monthly",
-        "name_ar": "عمليات النمو الشهرية",
-        "max_discount_pct": 10,
-        "requires_approval": True,
-        "approval_level_en": "Founder sign-off required",
-        "approval_level_ar": "يتطلب موافقة المؤسس",
-        "conditions_en": "Quarterly prepayment only; no rolling-month discount",
-        "conditions_ar": "دفع ربع سنوي مسبق فقط؛ لا خصم شهري متكرر",
-    },
-    {
-        "tier_id": "support_addon_1500",
-        "name_en": "Support OS Add-on",
-        "name_ar": "إضافة دعم العمليات",
-        "max_discount_pct": 10,
-        "requires_approval": True,
-        "approval_level_en": "Founder sign-off required",
-        "approval_level_ar": "يتطلب موافقة المؤسس",
-        "conditions_en": "Only when bundled with Growth Ops tier",
-        "conditions_ar": "فقط عند دمجه مع مستوى عمليات النمو",
-    },
-    {
-        "tier_id": "executive_7500",
-        "name_en": "Executive Command Center",
-        "name_ar": "مركز القيادة التنفيذية",
-        "max_discount_pct": 5,
-        "requires_approval": True,
-        "approval_level_en": "Founder sign-off required — no exceptions",
-        "approval_level_ar": "موافقة المؤسس إلزامية — بدون استثناءات",
-        "conditions_en": "Annual contract only; no monthly discount",
-        "conditions_ar": "عقد سنوي فقط؛ لا خصم شهري",
-    },
-]
-
-# ---------------------------------------------------------------------------
-# Pure helper functions
-# ---------------------------------------------------------------------------
-
-
-def _predict_win_rate(
-    proposed_price_sar: float,
-    sector: str,
-    company_size: str,
-) -> dict[str, Any]:
-    """Return predicted win rate and confidence based on deal size bucket.
-
-    Sector and company_size modulate the base bucket win rate slightly.
-    All outputs are estimates, not guarantees.
-    """
-    base_rate: float = 0.35
-    confidence: float = 0.60
-
-    for bucket in _WIN_RATE_BUCKETS:
-        if bucket["min_sar"] <= proposed_price_sar <= bucket["max_sar"]:
-            base_rate = bucket["win_rate"]
-            confidence = min(0.90, bucket["sample_size"] / 100.0 + 0.40)
-            break
-
-    sector_key = sector.lower().replace(" ", "_")
-    sector_avg = _SECTOR_DEAL_SIZES.get(sector_key, 3_500)
-
-    if proposed_price_sar <= sector_avg * 0.8:
-        base_rate = min(0.65, base_rate + 0.05)
-    elif proposed_price_sar >= sector_avg * 1.3:
-        base_rate = max(0.25, base_rate - 0.07)
-
-    size_lower = company_size.lower()
-    if size_lower in ("small", "sme", "startup"):
-        base_rate = min(0.65, base_rate + 0.03)
-    elif size_lower in ("enterprise", "large", "corporate"):
-        base_rate = max(0.25, base_rate - 0.04)
-
-    recommended_min = max(0, sector_avg * 0.75)
-    recommended_max = sector_avg * 1.25
-
-    return {
-        "predicted_win_rate": round(base_rate, 3),
-        "confidence": round(confidence, 2),
-        "recommended_range_ar": f"النطاق المقترح: {recommended_min:,.0f}–{recommended_max:,.0f} ريال",
-        "recommended_range_en": f"Recommended range: {recommended_min:,.0f}–{recommended_max:,.0f} SAR",
-        "sector_avg_deal_sar": sector_avg,
-        "note_ar": "التوقع تقديري بناءً على بيانات تاريخية — ليس ضماناً",
-        "note_en": "Prediction is an estimate from historical data — not a guarantee",
-    }
-
 
 # ---------------------------------------------------------------------------
 # Pydantic models
 # ---------------------------------------------------------------------------
 
 
-class WinRateSimulatorInput(BaseModel):
-    proposed_price_sar: float = Field(..., ge=0, description="Proposed deal price in SAR")
-    sector: str = Field(..., min_length=1, description="Target sector key")
-    company_size: str = Field(
-        default="sme",
-        description="Target company size: startup/sme/enterprise",
+class PriceSimulatorInput(BaseModel):
+    annual_manual_reporting_hours: float = Field(
+        ge=0,
+        description="Hours per year spent on manual reporting that could be automated.",
     )
+    hourly_fully_loaded_cost_sar: float = Field(
+        ge=0,
+        default=75.0,
+        description="Fully loaded cost per hour for the staff doing manual reporting (SAR).",
+    )
+    zatca_non_compliance_risk_sar: float = Field(
+        ge=0,
+        default=0.0,
+        description="Estimated annual ZATCA non-compliance fine exposure (SAR).",
+    )
+    missed_deals_per_year: int = Field(
+        ge=0,
+        default=0,
+        description="Number of deals estimated to be lost annually due to slow pipeline.",
+    )
+    avg_deal_size_sar: float = Field(
+        ge=0,
+        default=3500.0,
+        description="Average deal size in SAR.",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pure computation
+# ---------------------------------------------------------------------------
+
+_SPRINT_PRICE_SAR: float = 499.0
+_MANAGED_OPS_ANNUAL_SAR: float = 48_000.0  # SAR 4,000/mo * 12
+
+
+def _simulate_price_roi(inp: PriceSimulatorInput) -> dict[str, Any]:
+    """Compute estimated ROI from a prospect's cost inputs.
+
+    All percentage assumptions (0.7, 0.8, 0.3) are conservative estimates
+    used for illustration. They are not guarantees of outcome.
+    """
+    annual_reporting_savings: float = (
+        inp.annual_manual_reporting_hours
+        * inp.hourly_fully_loaded_cost_sar
+        * 0.7
+    )
+    compliance_savings: float = inp.zatca_non_compliance_risk_sar * 0.8
+    pipeline_uplift: float = (
+        inp.missed_deals_per_year * inp.avg_deal_size_sar * 0.3
+    )
+    total_annual_value: float = (
+        annual_reporting_savings + compliance_savings + pipeline_uplift
+    )
+
+    roi_at_sprint: float = (
+        (total_annual_value - _SPRINT_PRICE_SAR) / _SPRINT_PRICE_SAR * 100
+        if _SPRINT_PRICE_SAR > 0
+        else 0.0
+    )
+    roi_at_managed_ops: float = (
+        (total_annual_value - _MANAGED_OPS_ANNUAL_SAR) / _MANAGED_OPS_ANNUAL_SAR * 100
+        if _MANAGED_OPS_ANNUAL_SAR > 0
+        else 0.0
+    )
+
+    payback_months_sprint: float = (
+        _SPRINT_PRICE_SAR / (total_annual_value / 12)
+        if total_annual_value > 0
+        else 999.0
+    )
+    payback_months_managed_ops: float = (
+        _MANAGED_OPS_ANNUAL_SAR / total_annual_value * 12
+        if total_annual_value > 0
+        else 999.0
+    )
+
+    if total_annual_value >= _MANAGED_OPS_ANNUAL_SAR * 1.5:
+        recommended_tier = "managed_ops_2999_4999"
+    elif total_annual_value >= _SPRINT_PRICE_SAR * 20:
+        recommended_tier = "data_pack_1500"
+    elif total_annual_value > 0:
+        recommended_tier = "sprint_499"
+    else:
+        recommended_tier = "free_diagnostic"
+
+    return {
+        "annual_reporting_savings_sar": round(annual_reporting_savings, 2),
+        "compliance_savings_sar": round(compliance_savings, 2),
+        "pipeline_uplift_sar": round(pipeline_uplift, 2),
+        "total_annual_value_sar": round(total_annual_value, 2),
+        "roi_at_sprint_pct": round(roi_at_sprint, 1),
+        "roi_at_managed_ops_pct": round(roi_at_managed_ops, 1),
+        "payback_months_sprint": round(payback_months_sprint, 1),
+        "payback_months_managed_ops": round(payback_months_managed_ops, 1),
+        "recommended_tier": recommended_tier,
+        "assumptions_en": {
+            "reporting_automation_rate": "70% of manual reporting hours automated",
+            "compliance_risk_reduction": "80% reduction in ZATCA fine exposure",
+            "deal_recovery_rate": "30% of missed deals recovered via faster pipeline",
+        },
+        "assumptions_ar": {
+            "reporting_automation_rate": "70% من ساعات التقارير اليدوية مُؤتمتة",
+            "compliance_risk_reduction": "80% تخفيض في مخاطر غرامات زكاة",
+            "deal_recovery_rate": "30% من الصفقات الضائعة مُستردة عبر خط أنابيب أسرع",
+        },
+        "disclaimer_en": (
+            "All figures are estimates based on the inputs provided. "
+            "Actual results depend on implementation quality and client engagement. "
+            "These are not guarantees of outcome."
+        ),
+        "disclaimer_ar": (
+            "جميع الأرقام تقديرات مبنية على المدخلات المقدمة. "
+            "تعتمد النتائج الفعلية على جودة التنفيذ ومستوى مشاركة العميل. "
+            "هذه ليست ضمانات بالنتائج."
+        ),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -380,133 +540,47 @@ class WinRateSimulatorInput(BaseModel):
 # ---------------------------------------------------------------------------
 
 
-@router.get("/market-rates")
-async def get_market_rates() -> dict[str, Any]:
-    """Return average B2B deal sizes by sector with a Dealix recommended price.
-
-    Recommendation is set at 90% of the market average to maintain
-    a value-positioned entry point.
-    """
-    sectors = []
-    for sector_key, avg_sar in sorted(
-        _SECTOR_DEAL_SIZES.items(), key=lambda x: x[1], reverse=True
-    ):
-        recommended_sar = round(avg_sar * 0.9, -1)
-        sectors.append(
-            {
-                "sector": sector_key,
-                "sector_ar": _SECTOR_LABELS_AR.get(sector_key, sector_key),
-                "market_avg_sar": avg_sar,
-                "dealix_recommended_sar": int(recommended_sar),
-                "delta_to_market_pct": round(
-                    (recommended_sar - avg_sar) / avg_sar * 100, 1
-                ),
-            }
-        )
-
+@router.get("/principles")
+async def get_pricing_principles() -> dict[str, Any]:
+    """Return all 6 pricing psychology principles for Saudi B2B selling."""
     return {
-        "governance_decision": _GOV,
-        "generated_at": _NOW.isoformat(),
-        "note_ar": "الأسعار تقديرية بناءً على بيانات السوق السعودي — ليست ضماناً",
-        "note_en": "Prices are estimates from Saudi market data — not a guarantee",
-        "sectors": sectors,
-        "currency": "SAR",
+        "governance_decision": _GOV_READ,
+        "total_principles": len(_PRICING_PSYCHOLOGY),
+        "principles": list(_PRICING_PSYCHOLOGY.values()),
     }
 
 
-@router.get("/competitor-landscape")
-async def get_competitor_landscape() -> dict[str, Any]:
-    """Return fictional competitor pricing overview.
-
-    No real company names are used. All pricing is approximated from
-    public market research, not scraping or proprietary data.
-    """
+@router.get("/anchor-scripts")
+async def get_anchor_scripts() -> dict[str, Any]:
+    """Return all 5 pricing conversation scripts with bilingual guidance."""
     return {
-        "governance_decision": _GOV,
-        "generated_at": _NOW.isoformat(),
-        "competitors": _COMPETITORS,
-        "source_note_en": "Based on public market research — no proprietary data used",
-        "source_note_ar": "مستند إلى أبحاث السوق العامة — لا تُستخدم بيانات خاصة",
-        "disclaimer_en": "Competitor names are fictional; used for scenario planning only",
-        "disclaimer_ar": "أسماء المنافسين خيالية؛ للتخطيط الاستراتيجي فقط",
-        "currency": "SAR",
+        "governance_decision": _GOV_READ,
+        "total_scripts": len(_PRICE_ANCHOR_SCRIPTS),
+        "scripts": _PRICE_ANCHOR_SCRIPTS,
     }
 
 
-@router.post("/win-rate-simulator")
-async def win_rate_simulator(body: WinRateSimulatorInput) -> dict[str, Any]:
-    """Predict win rate for a proposed deal price given sector and company size.
-
-    Uses a bucket-based elasticity model derived from historical deal data.
-    Output is a probability estimate, not a guaranteed outcome.
-    """
-    prediction = _predict_win_rate(
-        proposed_price_sar=body.proposed_price_sar,
-        sector=body.sector,
-        company_size=body.company_size,
-    )
-
+@router.get("/tier-psychology")
+async def get_tier_psychology() -> dict[str, Any]:
+    """Return psychological positioning rationale for each Dealix pricing tier."""
     return {
-        "governance_decision": _GOV,
-        "generated_at": _NOW.isoformat(),
-        "inputs": {
-            "proposed_price_sar": body.proposed_price_sar,
-            "sector": body.sector,
-            "company_size": body.company_size,
-        },
-        **prediction,
-        "currency": "SAR",
+        "governance_decision": _GOV_READ,
+        "total_tiers": len(_TIER_PSYCHOLOGY),
+        "tiers": list(_TIER_PSYCHOLOGY.values()),
     }
 
 
-@router.get("/tier-optimization")
-async def get_tier_optimization() -> dict[str, Any]:
-    """Return floor, ceiling, and upsell trigger score for each Dealix product tier.
+@router.post("/simulate-roi")
+async def simulate_roi(body: PriceSimulatorInput) -> dict[str, Any]:
+    """Compute estimated annual value and payback period from prospect cost inputs.
 
-    Floors and ceilings are based on market elasticity analysis.
-    Upsell trigger score is the adoption score threshold above which
-    a tier upgrade conversation should be initiated.
+    All computed figures are estimates, not guaranteed outcomes.
+    Results should be reviewed with the prospect before being used in a proposal.
     """
+    result = _simulate_price_roi(body)
     return {
-        "governance_decision": _GOV,
-        "generated_at": _NOW.isoformat(),
-        "tiers": _TIERS,
-        "methodology_en": (
-            "Floor = minimum price that maintains perceived value. "
-            "Ceiling = maximum price the market segment absorbs without friction. "
-            "Upsell trigger = adoption score (0-100) above which upsell is appropriate."
-        ),
-        "methodology_ar": (
-            "الحد الأدنى = أقل سعر يحافظ على القيمة المدركة. "
-            "الحد الأقصى = أعلى سعر يستوعبه القطاع بلا احتكاك. "
-            "مستوى البيع التصاعدي = درجة التبني (0-100) التي يُناسب فوقها التصعيد."
-        ),
+        "governance_decision": _GOV_WRITE,
+        "inputs": body.model_dump(),
         "currency": "SAR",
-    }
-
-
-@router.get("/discount-policy")
-async def get_discount_policy() -> dict[str, Any]:
-    """Return maximum discount rules per tier.
-
-    All discounts require founder sign-off before application.
-    governance_decision is APPROVAL_FIRST because discount authorisation
-    must be recorded before any quote is issued to a customer.
-    """
-    return {
-        "governance_decision": _GOV_APPROVAL,
-        "generated_at": _NOW.isoformat(),
-        "policy_en": (
-            "No discount may be applied without an explicit founder approval "
-            "recorded in the approval center. Discounts beyond the stated ceiling "
-            "are prohibited."
-        ),
-        "policy_ar": (
-            "لا يجوز تطبيق أي خصم دون موافقة صريحة من المؤسس "
-            "مسجلة في مركز الاعتماد. الخصومات التي تتجاوز السقف المحدد محظورة."
-        ),
-        "discount_policy": _DISCOUNT_POLICY,
-        "currency": "SAR",
-        "hard_gate_ar": "جميع الخصومات تتطلب اعتماد المؤسس — لا استثناءات",
-        "hard_gate_en": "All discounts require founder approval — no exceptions",
+        **result,
     }
