@@ -1,0 +1,47 @@
+# Buyer persona templates per sector
+buyer_personas:
+
+  managing_partner_legal:
+    title_ar: شريك إداري
+    title_en: Managing Partner
+    sectors: [legal, consulting]
+    pain: "يضيع وقت كبير في مراجعة المستندات وإعداد التقارير"
+    value_driver: كفاءة الفريق وتقليل وقت المراجعة
+    best_channel: email_then_call
+    language_preference: ar_first
+
+  operations_manager:
+    title_ar: مدير العمليات
+    title_en: Operations Manager
+    sectors: [maintenance_fm, construction_contracting, healthcare_admin]
+    pain: "تقارير SLA يدوية وتنسيق مكلف مع الفرق"
+    value_driver: أتمتة التقارير وتوفير الوقت
+    best_channel: email_then_whatsapp
+    language_preference: ar_first
+
+  ceo_founder_smb:
+    title_ar: المدير التنفيذي / المؤسس
+    title_en: CEO / Founder
+    sectors: [smb_general, real_estate, training]
+    pain: "يعمل في العمليات بدل التخطيط الاستراتيجي"
+    value_driver: تحرير الوقت والنمو بدون زيادة موظفين
+    best_channel: linkedin_then_email
+    language_preference: ar_or_en
+
+  training_director:
+    title_ar: مدير التدريب
+    title_en: Training Director
+    sectors: [training]
+    pain: "إدارة التسجيل والشهادات يدوياً"
+    value_driver: أتمتة العمليات الإدارية للتدريب
+    best_channel: email_then_call
+    language_preference: ar_first
+
+  project_controls_manager:
+    title_ar: مدير التحكم بالمشاريع
+    title_en: Project Controls Manager
+    sectors: [construction_contracting]
+    pain: "تقارير التقدم والمقاولين الفرعيين يدوية ومتأخرة"
+    value_driver: تقارير فورية وأتمتة التحكم
+    best_channel: email_then_call
+    language_preference: ar_first

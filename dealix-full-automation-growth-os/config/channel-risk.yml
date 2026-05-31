@@ -1,0 +1,60 @@
+# Risk classification per channel
+channel_risk:
+  email:
+    risk_level: medium
+    ban_risk: low_if_deliverability_maintained
+    key_risks: [bounce_rate, spam_complaints, domain_reputation]
+    guardrails: [spf, dkim, dmarc, suppression, opt_out_link, personalization]
+  whatsapp_business:
+    risk_level: medium
+    ban_risk: high_if_no_opt_in
+    key_risks: [quality_rating_drop, template_rejection, account_ban]
+    guardrails: [opt_in_required, approved_templates, stop_keyword_handler, 24h_window]
+  instagram_dm:
+    risk_level: low_for_inbound
+    ban_risk: high_for_cold_outbound
+    guardrails: [official_api_only, 24h_window, no_cold_scraping]
+  messenger:
+    risk_level: low_for_inbound
+    ban_risk: high_for_cold_outbound
+    guardrails: [official_api_only, 24h_window]
+  tiktok_leads:
+    risk_level: low
+    ban_risk: low_via_official_channels
+    guardrails: [use_official_lead_forms, no_scraping]
+  linkedin_outbound:
+    risk_level: high
+    ban_risk: very_high_for_automation
+    guardrails: [draft_only, manual_execution, no_auto_connect, no_auto_dm]
+  x_twitter:
+    risk_level: medium
+    ban_risk: medium_if_rules_violated
+    guardrails: [official_api_only, no_duplicate_posts, no_unsolicited_dms]
+  website_forms:
+    risk_level: medium
+    ban_risk: medium_brand_burn_risk
+    guardrails: [no_mass_submit, no_captcha_bypass, requires_approval]
+  calls:
+    risk_level: low
+    ban_risk: none
+    guardrails: [no_robocall_spam, human_on_call]
+  sms:
+    risk_level: high
+    ban_risk: high_without_opt_in
+    guardrails: [opt_in_required, regulatory_compliance]
+  communities:
+    risk_level: medium
+    ban_risk: medium_for_spam
+    guardrails: [no_mass_posting, no_duplicate_messages, human_post]
+
+blocked_actions:
+  - linkedin_auto_dm_bot
+  - linkedin_auto_connect_bot
+  - linkedin_profile_scraping
+  - cold_whatsapp_blast
+  - captcha_bypass
+  - fake_accounts
+  - mass_identical_group_posts
+  - limit_circumvention
+  - deceptive_identity
+  - robocall_spam

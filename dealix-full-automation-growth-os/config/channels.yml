@@ -1,0 +1,72 @@
+# Dealix Channel Registry
+channels:
+  email:
+    name: Email (Business/Role-based)
+    automation_level: controlled_auto
+    max_daily: 500
+    requires_opt_out: true
+    personalization_required: true
+  whatsapp_business:
+    name: WhatsApp Business API
+    automation_level: full_auto_after_opt_in
+    requires_opt_in: true
+    use_approved_templates: true
+    freeform_window_hours: 24
+  instagram_dm:
+    name: Instagram DM (Inbound)
+    automation_level: full_auto_for_inbound
+    triggers: [user_message, ad_click_to_message, story_reply]
+    window_hours: 24
+  messenger:
+    name: Facebook Messenger (Inbound)
+    automation_level: full_auto_for_inbound
+    triggers: [user_message, ad_to_message]
+    window_hours: 24
+  tiktok_leads:
+    name: TikTok Lead Gen / Messaging Ads
+    automation_level: full_auto_for_leads
+    use: [instant_form, messaging_ads, message_assistant]
+  google_leads:
+    name: Google Lead Forms
+    automation_level: full_auto
+  meta_leads:
+    name: Meta Lead Ads / Instant Forms
+    automation_level: full_auto
+  linkedin_lead_gen:
+    name: LinkedIn Lead Gen Forms
+    automation_level: full_auto
+  linkedin_outbound:
+    name: LinkedIn Outbound DM / Connect
+    automation_level: draft_only
+    note: platform_prohibits_bots
+  x_twitter:
+    name: X / Twitter
+    automation_level: official_api_only
+    allowed: [scheduled_posts, reply_to_mentions, dm_after_permission]
+  telegram:
+    name: Telegram Bot / Channel
+    automation_level: opt_in_bot
+  website_forms:
+    name: Website Contact Forms
+    automation_level: assisted_manual
+    requires_approval: true
+  calls:
+    name: Phone / Voice
+    automation_level: script_and_queue
+    human_required: true
+  sms:
+    name: SMS
+    automation_level: opt_in_only
+  communities:
+    name: Online Communities / Groups
+    automation_level: content_draft_only
+  procurement_portals:
+    name: Procurement / Tender Portals
+    automation_level: monitor_and_draft
+    human_required: true
+  referrals:
+    name: Partner Referral Network
+    automation_level: high_prep_controlled_send
+  retargeting:
+    name: Paid Retargeting Ads
+    automation_level: full_auto

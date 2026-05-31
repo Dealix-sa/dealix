@@ -1,0 +1,99 @@
+# Target sectors with pain points and offer mapping
+sectors:
+  legal:
+    name_ar: قانوني ومهني
+    name_en: Legal & Professional Services
+    personas: [managing_partner, office_manager, legal_secretary]
+    pain_points:
+      - manual_document_review
+      - case_file_management
+      - client_billing_tracking
+      - compliance_reporting
+    offers: [document_ai, workflow_audit, managed_ops]
+    risk_level: high
+    requires_founder_approval: true
+
+  maintenance_fm:
+    name_ar: صيانة وإدارة مرافق
+    name_en: Maintenance & Facility Management
+    personas: [operations_manager, maintenance_supervisor, coo]
+    pain_points:
+      - sla_reporting
+      - work_order_management
+      - vendor_coordination
+      - preventive_maintenance_scheduling
+    offers: [workflow_audit, maintenance_os, managed_ops]
+    risk_level: medium
+
+  real_estate:
+    name_ar: عقارات
+    name_en: Real Estate
+    personas: [ceo, sales_manager, property_manager]
+    pain_points:
+      - lead_follow_up
+      - property_documentation
+      - client_communication
+      - rental_management
+    offers: [workflow_audit, crm_ai, managed_ops]
+    risk_level: medium
+
+  training:
+    name_ar: تدريب وتعليم
+    name_en: Training & Education
+    personas: [training_director, operations_manager, admin_manager]
+    pain_points:
+      - enrollment_management
+      - certificate_issuance
+      - instructor_scheduling
+      - compliance_reporting
+    offers: [workflow_audit, document_ai, managed_ops]
+    risk_level: low
+
+  consulting:
+    name_ar: استشارات
+    name_en: Consulting & Advisory
+    personas: [managing_partner, principal, project_manager]
+    pain_points:
+      - proposal_generation
+      - report_writing
+      - knowledge_management
+      - client_reporting
+    offers: [workflow_audit, document_ai, custom_ai]
+    risk_level: medium
+
+  construction_contracting:
+    name_ar: مقاولات وإنشاءات
+    name_en: Construction & Contracting
+    personas: [project_controls_manager, coo, site_manager]
+    pain_points:
+      - project_reporting
+      - subcontractor_management
+      - document_control
+      - progress_tracking
+    offers: [workflow_audit, project_controls_os, managed_ops]
+    risk_level: medium
+
+  healthcare_admin:
+    name_ar: إدارة صحية
+    name_en: Healthcare Administration
+    personas: [hospital_admin, clinic_manager, operations_director]
+    pain_points:
+      - patient_documentation
+      - billing_coding
+      - compliance_reporting
+      - staff_scheduling
+    offers: [workflow_audit, document_ai]
+    risk_level: high
+    requires_founder_approval: true
+
+  smb_general:
+    name_ar: شركات صغيرة ومتوسطة
+    name_en: General SMB
+    personas: [founder, ceo, operations_manager]
+    pain_points:
+      - manual_reporting
+      - document_management
+      - customer_follow_up
+      - hr_admin
+    offers: [free_diagnostic, workflow_audit, managed_ops]
+    risk_level: low

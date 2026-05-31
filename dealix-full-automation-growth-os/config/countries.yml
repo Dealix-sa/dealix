@@ -1,0 +1,50 @@
+# Target countries with priority and context
+countries:
+  primary:
+    - code: SA
+      name: Saudi Arabia
+      language_primary: ar
+      currency: SAR
+      timezone: Asia/Riyadh
+      vat: "15%"
+      priority: 1
+      notes: Vision 2030, large SMB market, Arabic preferred
+    - code: AE
+      name: United Arab Emirates
+      language_primary: en_ar
+      currency: AED
+      timezone: Asia/Dubai
+      vat: "5%"
+      priority: 2
+      notes: International business hub, bilingual market
+    - code: KW
+      name: Kuwait
+      language_primary: ar
+      currency: KWD
+      priority: 3
+    - code: QA
+      name: Qatar
+      language_primary: ar
+      currency: QAR
+      priority: 3
+    - code: BH
+      name: Bahrain
+      language_primary: ar
+      currency: BHD
+      priority: 4
+    - code: OM
+      name: Oman
+      language_primary: ar
+      currency: OMR
+      priority: 4
+  secondary:
+    - code: EG
+      name: Egypt
+      language_primary: ar
+      currency: EGP
+      priority: 5
+    - code: JO
+      name: Jordan
+      language_primary: ar
+      currency: JOD
+      priority: 5

@@ -1,0 +1,46 @@
+# Compliance rules per channel and region
+compliance:
+  general_rules:
+    - always_identify_sender
+    - always_include_opt_out_option
+    - never_deceive_about_identity
+    - never_mislead_about_offer
+    - respect_all_platform_terms_of_service
+    - never_scrape_without_permission
+    - never_bypass_security_measures
+    - store_opt_ins_with_timestamp
+
+  email:
+    rules:
+      - include_unsubscribe_link
+      - include_physical_address
+      - honor_unsubscribes_within_10_days
+      - no_misleading_subject_line
+      - no_deceptive_from_address
+    standards: [CAN-SPAM, GDPR_if_EU, Saudi_PDPL]
+
+  whatsapp:
+    rules:
+      - opt_in_before_first_message
+      - use_only_approved_templates_for_initiation
+      - honor_STOP_immediately
+      - no_spamming_beyond_business_purpose
+    standard: WhatsApp_Business_Policy
+
+  sms:
+    rules:
+      - explicit_opt_in_required
+      - include_opt_out_instruction
+      - sender_id_must_be_registered
+    standard: Saudi_CITC_if_KSA
+
+  platforms_with_automation_restrictions:
+    linkedin:
+      restriction: no_bots_or_unauthorized_automation
+      allowed: [lead_gen_forms, official_ads_api, manual_posting]
+    instagram:
+      restriction: no_scraping_no_cold_dm_automation
+      allowed: [official_messaging_api_for_inbound, ads_api]
+    x_twitter:
+      restriction: official_api_only_respect_rate_limits
+      allowed: [scheduled_posts, mention_replies, dm_after_permission]
