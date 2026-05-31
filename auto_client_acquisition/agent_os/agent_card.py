@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from enum import StrEnum
 from typing import Any
 
@@ -24,7 +24,7 @@ class AgentStatus(StrEnum):
 
 
 def _now() -> str:
-    return datetime.now(UTC).isoformat()
+    return datetime.now(timezone.utc).isoformat()
 
 
 @dataclass(frozen=True, slots=True)

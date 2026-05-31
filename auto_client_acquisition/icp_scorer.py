@@ -26,6 +26,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+
 # Signal weights — sum to 100
 WEIGHTS = {
     "sector_fit":         20,

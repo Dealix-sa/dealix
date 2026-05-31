@@ -70,7 +70,7 @@ class AutopilotJSONStore:
             }
         try:
             return json.loads(self._path.read_text(encoding="utf-8"))
-        except Exception:
+        except Exception:  # noqa: BLE001
             return {
                 "version": 1,
                 "generated_at": _utcnow_iso(),
@@ -258,7 +258,7 @@ def _build_autopilot_store() -> AutopilotJSONStore | Any:
         if url:
             try:
                 return AutopilotPostgresStore(database_url=url, create_tables=True)
-            except Exception:
+            except Exception:  # noqa: BLE001
                 pass
     return AutopilotJSONStore()
 

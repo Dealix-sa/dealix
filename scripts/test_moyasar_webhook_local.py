@@ -47,6 +47,7 @@ import urllib.error
 import urllib.request
 import uuid
 
+
 EVENT_TYPES = ("payment_authorized", "payment_paid", "payment_failed", "payment_refunded")
 
 

@@ -116,6 +116,6 @@ def test_redaction_scrubs_dict_sensitive_keys():
 
 
 def test_get_adapter_factory_returns_noop_on_error():
-    from auto_client_acquisition.observability_adapters.base import NoopAdapter, get_adapter
+    from auto_client_acquisition.observability_adapters.base import get_adapter, NoopAdapter
     adapter = get_adapter("unknown_adapter_type")
     assert isinstance(adapter, NoopAdapter)

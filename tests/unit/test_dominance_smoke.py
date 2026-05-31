@@ -3,12 +3,8 @@
 from __future__ import annotations
 
 from auto_client_acquisition.intelligence.offers import (
-    DEFAULT_OFFER,
-    OFFER_ROUTES,
-    build_tomorrow_recommendation,
-    route_offer,
+    DEFAULT_OFFER, OFFER_ROUTES, build_tomorrow_recommendation, route_offer,
 )
-
 _build_tomorrow_recommendation = build_tomorrow_recommendation
 
 

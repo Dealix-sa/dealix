@@ -28,14 +28,14 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from auto_client_acquisition.approval_center.founder_rules import (  # noqa: E402
-    _BLOCKED_AUTO_CHANNELS,
     DEFAULT_RULE_TTL_DAYS,
     FounderRuleEngine,
+    _BLOCKED_AUTO_CHANNELS,
 )
 
 # Founder HMAC env var name — used to look up the *value*, never logged.
 # Note: this constant is the variable NAME, not its secret content.
-FOUNDER_RULES_HMAC_ENV = "DEALIX_FOUNDER_RULES_SECRET"
+FOUNDER_RULES_HMAC_ENV = "DEALIX_FOUNDER_RULES_SECRET"  # noqa: S105 (name, not credential)
 
 
 def _require_secret_or_exit() -> None:
@@ -162,7 +162,7 @@ def cmd_list(args: argparse.Namespace) -> int:
         sig_ok = "OK" if engine.verify_signature(r) else "BAD"
         print(
             f"{r.rule_id:<32} {r.name[:24]:<24} {r.channel:<10} "
-            f"{r.enabled!s:<8} {r.expires_at:<32} {sig_ok:<4}"
+            f"{str(r.enabled):<8} {r.expires_at:<32} {sig_ok:<4}"
         )
     return 0
 

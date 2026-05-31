@@ -7,7 +7,6 @@ from pathlib import Path
 
 import pytest
 
-from dealix.commercial_ops.digest import build_commercial_digest, render_digest_markdown
 from dealix.commercial_ops.evidence_csv import (
     COMMERCIAL_EVIDENCE_TYPES,
     count_evidence_events,
@@ -15,6 +14,7 @@ from dealix.commercial_ops.evidence_csv import (
 )
 from dealix.commercial_ops.social_queue import get_post_for_date, load_social_queue
 from dealix.commercial_ops.targeting_csv import build_war_room_today, load_targets
+from dealix.commercial_ops.digest import build_commercial_digest, render_digest_markdown
 
 
 def test_commercial_evidence_types_complete():

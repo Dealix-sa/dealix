@@ -12,6 +12,7 @@ def build_operator_signals() -> dict[str, Any]:
         _leads_waiting,
         _pending_approvals,
     )
+
     from dealix.commercial_ops.value_plan import build_value_plan_snapshot
 
     vp = build_value_plan_snapshot(motion_top_n=3)

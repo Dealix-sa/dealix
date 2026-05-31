@@ -2,11 +2,7 @@
 
 from __future__ import annotations
 
-from auto_client_acquisition.business.verticals import (
-    get_vertical_playbooks,
-    recommend_vertical,
-    vertical_roi_metric,
-)
+from auto_client_acquisition.business.verticals import get_vertical_playbooks, recommend_vertical, vertical_roi_metric
 
 
 def test_verticals_include_key_sectors():

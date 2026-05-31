@@ -134,7 +134,7 @@ def main() -> int:
         if pipe["crm_kpi_pending"]:
             print("  FOUNDER_ACTION: sync kpi_founder_commercial_import.yaml from CRM export")
             # CRM import is founder ops — not infra deploy gate
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         WARNINGS.append(f"first_paid tracker: {exc}")
 
     if FAILURES:

@@ -91,9 +91,9 @@ def test_dpa_signature_integrity_or_warn_if_unsigned():
         # Soft pass — founder hasn't signed yet. Print to stderr for visibility.
         import sys
         print(
-            "\n⚠️  WAVE11 LEGAL GUARD: data/wave11/founder_legal_signature.txt absent — "
-            "founder has not yet signed the DPA. This is acceptable until customer #1 "
-            "closes; signature file format documented in test_legal_self_execution_guard.py.",
+            f"\n⚠️  WAVE11 LEGAL GUARD: data/wave11/founder_legal_signature.txt absent — "
+            f"founder has not yet signed the DPA. This is acceptable until customer #1 "
+            f"closes; signature file format documented in test_legal_self_execution_guard.py.",
             file=sys.stderr,
         )
         return

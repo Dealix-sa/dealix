@@ -9,11 +9,9 @@ from auto_client_acquisition.value_os.monthly_report import (
 from auto_client_acquisition.value_os.value_ledger import (
     ValueDisciplineError,
     add_event,
+    clear_for_test as clear_value_for_test,
     list_events,
     summarize,
-)
-from auto_client_acquisition.value_os.value_ledger import (
-    clear_for_test as clear_value_for_test,
 )
 
 

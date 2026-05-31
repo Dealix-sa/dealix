@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime, timezone
+from datetime import datetime, timezone
 from typing import Any
 
 # Keys for a minimal auditable story (see docs/evidence_control_plane/EVIDENCE_GRAPH.md)
@@ -142,7 +142,7 @@ def build_control_graph(
                     label=ev.summary or ev.kind,
                 )
             )
-    except Exception:
+    except Exception:  # noqa: BLE001
         pass
 
     # Evidence-control-plane items.
@@ -167,7 +167,7 @@ def build_control_graph(
                         src=src, dst=item.evidence_id, relation="source_of"
                     )
                 )
-    except Exception:
+    except Exception:  # noqa: BLE001
         pass
 
     # Compliance index.
@@ -179,7 +179,7 @@ def build_control_graph(
 
         idx = build_compliance_index(customer_id=customer_id)
         compliance = idx.to_dict()
-    except Exception:
+    except Exception:  # noqa: BLE001
         pass
     compliance.setdefault("by_framework", {})
 
@@ -191,7 +191,7 @@ def build_control_graph(
         )
 
         gaps = [g.to_dict() for g in find_gaps(customer_id=customer_id, project_id=project_id)]
-    except Exception:
+    except Exception:  # noqa: BLE001
         pass
 
     has_high_gap = any(g.get("severity") == "high" for g in gaps)
@@ -200,7 +200,7 @@ def build_control_graph(
     return EvidenceControlGraph(
         customer_id=customer_id,
         project_id=project_id,
-        generated_at=datetime.now(UTC).isoformat(),
+        generated_at=datetime.now(timezone.utc).isoformat(),
         nodes=nodes,
         edges=edges,
         gaps=gaps,

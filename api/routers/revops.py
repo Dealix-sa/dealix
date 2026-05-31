@@ -6,9 +6,6 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
 
-from auto_client_acquisition.revenue_pipeline.pipeline import (
-    get_default_pipeline,
-)
 from auto_client_acquisition.revops import (
     PaymentMethod,
     build_finance_brief,
@@ -23,6 +20,9 @@ from auto_client_acquisition.revops.invoice_state import (
 )
 from auto_client_acquisition.revops.payment_confirmation import (
     list_confirmations,
+)
+from auto_client_acquisition.revenue_pipeline.pipeline import (
+    get_default_pipeline,
 )
 
 router = APIRouter(prefix="/api/v1/revops", tags=["revops"])

@@ -21,6 +21,7 @@ from api.security.webhook_signatures import (
     verify_hubspot_signature,
 )
 
+
 # ── Helpers ────────────────────────────────────────────────────────
 
 def _hubspot_signature(

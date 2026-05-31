@@ -16,6 +16,7 @@ from auto_client_acquisition.designops.generators.markdown_renderer import (
     render_artifact_markdown,
 )
 
+
 _FALLBACK_LADDER: list[dict[str, Any]] = [
     {
         "rung": 1,
@@ -90,7 +91,7 @@ def _load_ladder() -> list[dict[str, Any]]:
         rungs = value_ladder() or []
         if rungs and len(rungs) >= 6:
             return list(rungs)
-    except Exception:
+    except Exception:  # noqa: BLE001 — defensive
         pass
     return list(_FALLBACK_LADDER)
 

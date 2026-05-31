@@ -12,7 +12,7 @@ truth, framed for their concerns.
 """
 from __future__ import annotations
 
-from collections.abc import Callable
+from typing import Callable
 
 from auto_client_acquisition.role_command_os.schemas import (
     RoleBrief,
@@ -24,6 +24,7 @@ from auto_client_acquisition.self_growth_os import (
     partner_distribution_radar,
     service_activation_matrix,
 )
+
 
 _GUARDRAILS_TRUE = {
     "no_live_send": True,
@@ -38,7 +39,7 @@ def _candidate_decisions(limit: int = 2) -> list[RoleDecision]:
     out: list[RoleDecision] = []
     try:
         candidates = service_activation_matrix.candidates_for_promotion()
-    except Exception:
+    except Exception:  # noqa: BLE001
         return out
     for c in candidates[:limit]:
         gates = ", ".join((c.blocking_reasons or [])[:3])
@@ -145,7 +146,7 @@ def _growth_brief() -> RoleBrief:
     try:
         geo = geo_aio_radar.audit_all()
         top = geo_aio_radar.top_priority_pages(limit=3)
-    except Exception:
+    except Exception:  # noqa: BLE001
         geo, top = {"summary": {}}, []
 
     decisions: list[RoleDecision] = []
@@ -197,7 +198,7 @@ def _growth_brief() -> RoleBrief:
 def _partnership_brief() -> RoleBrief:
     try:
         radar = partner_distribution_radar.summary()
-    except Exception:
+    except Exception:  # noqa: BLE001
         radar = {"categories": []}
 
     decisions: list[RoleDecision] = []
