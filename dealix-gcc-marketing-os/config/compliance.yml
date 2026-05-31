@@ -1,0 +1,86 @@
+compliance:
+  universal_rules:
+    no_deceptive_subject: true
+    no_fake_identity: true
+    no_mass_bcc: true
+    opt_out_required: true
+    suppression_list_required: true
+    founder_approval_required: true
+    no_guaranteed_outcomes: true
+    no_misleading_ai_claims: true
+
+  email_address_risk:
+    personal_email:
+      risk_level: high
+      require_extra_review: true
+      notes: "Personal emails of employees — highest consent requirements under GCC laws"
+    role_based_business_email:
+      risk_level: medium
+      examples: ["info@", "business@", "sales@", "partnerships@", "enquiries@", "contact@", "legal@"]
+      notes: "Role-based business addresses — lower risk but still requires opt-out"
+    published_business_contact:
+      risk_level: low
+      examples: ["Listed on company website or professional directories"]
+      notes: "Lowest risk — still requires opt-out"
+
+  channel_rules:
+    email:
+      requires_opt_out: true
+      requires_suppression_check: true
+      requires_authentication: "SPF_DKIM_DMARC"
+      notes: "Google Workspace requires SPF/DKIM. Large senders also need DMARC and easy unsubscribe."
+    linkedin:
+      requires_prior_connection_or_open_profile: false
+      preferred_approach: "connection_request_with_note"
+      notes: "Less regulated than email but not mass-automated"
+    website_form:
+      risk_level: low
+      preferred_for: ["local_arabic_businesses", "law_firms", "small_professional_services"]
+    whatsapp_business:
+      requires_prior_relationship_or_public_business_contact: true
+      notes: "Only for published business WhatsApp numbers or existing relationships"
+    phone_intro:
+      preferred_for: ["local_sme", "arabic_operations"]
+      notes: "Manual — coordinate with founder"
+
+  sensitive_sectors:
+    - legal
+    - healthcare_admin
+    - financial_services
+    - government_related
+
+  sensitive_sector_rules:
+    use_privacy_first_language: true
+    avoid_claiming_data_access: true
+    start_with_sample_data_only: true
+    no_production_data_in_first_contact: true
+    explicit_confidentiality_acknowledgment: true
+
+  opt_out_templates:
+    arabic: "إذا الموضوع غير مناسب لكم، أقدر أوقف المتابعة."
+    english: "If this is not relevant, I'm happy to stop following up."
+
+  country_specific:
+    saudi_arabia:
+      law: "PDPL (SDAIA)"
+      key_rule: "Marketing data must be collected directly from data subject with their consent"
+    qatar:
+      law: "Qatar PDPP"
+      key_rule: "Electronic communications for direct marketing require prior consent"
+    oman:
+      law: "Royal Decree PDPL"
+      key_rule: "Written consent required before sending commercial advertising or marketing materials"
+    uae:
+      law: "UAE Federal Data Protection"
+      key_rule: "Data subjects have right to correction and to stop/restrict processing"
+    bahrain:
+      law: "Law No. 30 of 2018"
+      key_rule: "Protects rights and freedoms of individuals regarding personal data"
+    kuwait:
+      law: "General data principles"
+      key_rule: "Follow universal consent principles"
+
+  disclaimer: |
+    This compliance configuration is a practical operational guide to protect Dealix's
+    outreach program. It is not legal advice. For legal questions about data protection
+    in specific GCC jurisdictions, consult a qualified legal professional.

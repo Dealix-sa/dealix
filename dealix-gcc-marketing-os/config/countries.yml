@@ -1,0 +1,107 @@
+countries:
+  saudi_arabia:
+    code: "SA"
+    languages: ["ar", "en"]
+    timezone: "Asia/Riyadh"
+    priority_sectors:
+      - facilities_management
+      - contracting
+      - legal
+      - real_estate
+      - consulting
+      - healthcare_admin
+      - education_training
+      - b2b_services
+    tone:
+      arabic: "practical_founder_respectful"
+      english: "executive_practical"
+    data_law: "PDPL_SDAIA"
+    marketing_consent_required: true
+    notes: "SDAIA PDPL — personal data processing for marketing requires direct collection with consent"
+
+  uae:
+    code: "AE"
+    languages: ["en", "ar"]
+    timezone: "Asia/Dubai"
+    priority_sectors:
+      - international_companies
+      - consulting
+      - legal
+      - real_estate
+      - logistics
+      - b2b_services
+      - technology
+    tone:
+      english: "international_executive"
+      arabic: "formal_practical"
+    data_law: "UAE_Federal_Data_Protection"
+    marketing_consent_required: true
+    notes: "Data subjects have right to correction and to stop/restrict processing"
+
+  qatar:
+    code: "QA"
+    languages: ["ar", "en"]
+    timezone: "Asia/Qatar"
+    priority_sectors:
+      - legal
+      - consulting
+      - government_related
+      - construction
+      - facilities_management
+      - education
+    tone:
+      arabic: "formal_trust_first"
+      english: "controlled_adoption"
+    data_law: "Qatar_PDPP_Law"
+    marketing_consent_required: true
+    notes: "Electronic communications for direct marketing require prior consent"
+
+  kuwait:
+    code: "KW"
+    languages: ["ar", "en"]
+    timezone: "Asia/Kuwait"
+    priority_sectors:
+      - family_business
+      - legal
+      - real_estate
+      - contracting
+      - professional_services
+    tone:
+      arabic: "relationship_first"
+      english: "practical_business"
+    data_law: "Kuwait_general"
+    marketing_consent_required: true
+
+  bahrain:
+    code: "BH"
+    languages: ["en", "ar"]
+    timezone: "Asia/Bahrain"
+    priority_sectors:
+      - financial_services
+      - legal
+      - consulting
+      - b2b_services
+      - professional_services
+    tone:
+      english: "compliance_business"
+      arabic: "formal_practical"
+    data_law: "Bahrain_PDPL_Law30_2018"
+    marketing_consent_required: true
+    notes: "Law No. 30 of 2018 protects personal data rights"
+
+  oman:
+    code: "OM"
+    languages: ["ar", "en"]
+    timezone: "Asia/Muscat"
+    priority_sectors:
+      - industrial
+      - logistics
+      - contracting
+      - professional_services
+      - education
+    tone:
+      arabic: "formal_low_pressure"
+      english: "controlled_practical"
+    data_law: "Oman_PDPL_Royal_Decree"
+    marketing_consent_required: true
+    notes: "Controller must obtain written consent before sending commercial advertising/marketing materials"

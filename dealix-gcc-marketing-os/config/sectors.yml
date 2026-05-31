@@ -1,0 +1,207 @@
+sectors:
+  legal:
+    buyer_titles:
+      - Managing Partner
+      - Senior Partner
+      - Head of Legal Operations
+      - Office Manager
+      - Knowledge Manager
+      - General Counsel
+    pains:
+      - contract_review_time
+      - document_retrieval
+      - matter_knowledge_reuse
+      - deadline_tracking
+      - client_update_preparation
+      - internal_knowledge_base
+      - confidentiality_management
+    primary_offer: legal_knowledge_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: trust_confidentiality_precision
+    language_preference: "formal_arabic_or_english_by_firm_type"
+    sensitivity: high
+    privacy_first: true
+    notes: "Never mention replacing the lawyer. Always: decision stays with the lawyer."
+
+  international_company:
+    buyer_titles:
+      - Regional Operations Director
+      - Digital Transformation Manager
+      - Country Manager
+      - Head of Shared Services
+      - IT Manager
+      - VP Operations
+      - COO
+    pains:
+      - regional_reporting_fragmentation
+      - arabic_english_document_handling
+      - workflow_localization
+      - compliance_uncertainty
+      - team_coordination
+    primary_offer: gcc_ai_operations_pilot
+    entry_offer: ai_workflow_audit
+    preferred_tone: executive_controlled
+    language_preference: "english_first"
+    sensitivity: medium
+
+  facilities_management:
+    buyer_titles:
+      - Operations Director
+      - Facilities Director
+      - Maintenance Manager
+      - Quality Manager
+      - Technical Manager
+      - FM Director
+    pains:
+      - sla_reporting
+      - technician_report_quality
+      - repeated_failures
+      - manual_followup
+      - reactive_maintenance
+    primary_offer: maintenance_intelligence_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: operations_practical
+    language_preference: "arabic_or_english_by_company"
+    sensitivity: low
+
+  consulting:
+    buyer_titles:
+      - Managing Partner
+      - Delivery Director
+      - Operations Manager
+      - Practice Lead
+      - Managing Director
+    pains:
+      - proposal_repetition
+      - knowledge_reuse
+      - client_reporting
+      - project_delivery_tracking
+      - resource_allocation
+    primary_offer: consulting_delivery_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: expert_to_expert
+    language_preference: "english_first_bilingual"
+    sensitivity: medium
+
+  real_estate:
+    buyer_titles:
+      - Property Manager
+      - Asset Manager
+      - Operations Director
+      - General Manager
+      - Owner
+    pains:
+      - tenant_requests_management
+      - maintenance_coordination
+      - lease_management
+      - owner_reporting
+      - collection_followup
+    primary_offer: property_ops_ai_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: operations_practical
+    language_preference: "arabic_or_bilingual"
+    sensitivity: low
+
+  healthcare_admin:
+    buyer_titles:
+      - Clinic Director
+      - Operations Manager
+      - Medical Director
+      - Admin Manager
+    pains:
+      - patient_flow
+      - admin_workflows
+      - appointment_management
+      - reporting
+    primary_offer: patient_ops_ai_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: trust_precision
+    language_preference: "arabic_or_english_by_clinic_type"
+    sensitivity: high
+    privacy_first: true
+
+  education_training:
+    buyer_titles:
+      - Training Director
+      - Operations Manager
+      - Academic Director
+      - CEO
+    pains:
+      - content_management
+      - student_tracking
+      - reporting
+      - knowledge_delivery
+    primary_offer: training_knowledge_ai_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: practical_trusted
+    language_preference: "arabic_first"
+    sensitivity: low
+
+  contracting:
+    buyer_titles:
+      - Project Manager
+      - Operations Director
+      - GM
+      - Technical Director
+    pains:
+      - project_controls
+      - subcontractor_management
+      - document_tracking
+      - progress_reporting
+    primary_offer: project_controls_ai_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: operations_practical
+    language_preference: "arabic_or_bilingual"
+    sensitivity: low
+
+  logistics:
+    buyer_titles:
+      - Operations Manager
+      - Logistics Director
+      - Supply Chain Manager
+      - Country Manager
+    pains:
+      - tracking_fragmentation
+      - reporting_delays
+      - exception_handling
+      - coordination
+    primary_offer: operations_tracking_ai_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: operations_practical
+    language_preference: "english_or_bilingual"
+    sensitivity: low
+
+  b2b_services:
+    buyer_titles:
+      - CEO
+      - Sales Director
+      - Operations Manager
+      - GM
+    pains:
+      - lead_followup
+      - proposal_preparation
+      - client_reporting
+      - revenue_visibility
+    primary_offer: revenue_ai_os
+    entry_offer: ai_workflow_audit
+    preferred_tone: practical_business
+    language_preference: "by_company_type"
+    sensitivity: low
+
+  financial_services:
+    buyer_titles:
+      - Head of Operations
+      - Compliance Manager
+      - COO
+      - IT Director
+    pains:
+      - compliance_reporting
+      - document_management
+      - audit_trails
+      - workflow_automation
+    primary_offer: audit_compliance_workflow_ai
+    entry_offer: ai_workflow_audit
+    preferred_tone: compliance_trust
+    language_preference: "english_first"
+    sensitivity: high
+    privacy_first: true
