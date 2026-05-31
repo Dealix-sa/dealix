@@ -20,7 +20,7 @@ REQUIRED_FILES = [
     "dealix/config/railway_services.json",
     "frontend/Dockerfile",
     "frontend/railway.json",
-    "frontend/next.config.js",
+    "frontend/next.config.ts",
     "frontend/src/app/healthz/route.ts",
     "apps/web/Dockerfile",
     "apps/web/railway.json",
@@ -114,7 +114,7 @@ def main() -> None:
     verify_railway_json("frontend/railway.json", allow_predeploy=False)
     verify_railway_json("apps/web/railway.json", allow_predeploy=False)
 
-    for path in ("frontend/next.config.js", "apps/web/next.config.js"):
+    for path in ("frontend/next.config.ts", "apps/web/next.config.js"):
         content = read(path)
         if "output: 'standalone'" not in content and 'output: "standalone"' not in content:
             fail(f"{path} must enable standalone output")

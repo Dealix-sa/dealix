@@ -106,6 +106,8 @@ numpy>=1.26.0,<3
 # so the system degrades gracefully to the built-in Gregorian fallback.
 # ummalqura>=1.0.4
 
+# MCP Server dependency lives in mcp_server/requirements-mcp.txt (optional — not needed for API)
+
 # Path-filtered GitHub workflows (Business NOW snapshot, etc.)
 pytest>=8.3.0,<9
 pytest-asyncio>=0.24.0,<1

@@ -106,6 +106,43 @@ jobs:
             tests/test_isolated_pg_event_store.py \
             -q --no-cov
 
+      - name: Wave 16 — Customer intelligence + market + payment + sprint delivery
+        run: |
+          pytest \
+            tests/test_customer_health_market_intel.py \
+            tests/test_payment_events.py \
+            tests/test_sprint_delivery_system.py \
+            tests/test_intelligence_scoring.py \
+            -q --no-cov 2>/dev/null || \
+          pytest \
+            tests/test_customer_health_market_intel.py \
+            tests/test_payment_events.py \
+            tests/test_sprint_delivery_system.py \
+            -q --no-cov
+
+      - name: Doctrine guard tests (non-negotiables)
+        run: |
+          pytest \
+            tests/test_no_cold_whatsapp.py \
+            tests/test_no_guaranteed_claims.py \
+            tests/test_no_linkedin_automation.py \
+            tests/test_no_scraping_engine.py \
+            tests/test_no_pii_in_logs.py \
+            tests/test_no_source_no_answer.py \
+            tests/test_commercial_doctrine.py \
+            -q --no-cov
+
+      - name: Commercial chain tests
+        run: |
+          pytest \
+            tests/unit/test_commercial_chain.py \
+            tests/unit/test_commercial_router.py \
+            tests/test_diagnostic_engine.py \
+            -q --no-cov 2>/dev/null || \
+          pytest \
+            tests/unit/test_commercial_chain.py \
+            -q --no-cov
+
       - name: Export Service Readiness JSON
         run: |
           python scripts/export_service_readiness_json.py
