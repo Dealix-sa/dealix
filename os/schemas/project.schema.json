@@ -62,7 +62,7 @@
       "format": "date"
     },
     "proof_pack_score": {
-      "type": "number",
+      "type": ["number", "null"],
       "minimum": 0,
       "maximum": 100,
       "description": "Proof pack score — must be >= 70 for project to count as delivered"
@@ -81,15 +81,15 @@
       "description": "Reference to the scope document"
     },
     "qa_checklist_ref": {
-      "type": "string",
+      "type": ["string", "null"],
       "description": "Reference to the QA checklist"
     },
     "handover_doc_ref": {
-      "type": "string",
+      "type": ["string", "null"],
       "description": "Reference to the handover document"
     },
     "uat_signoff_ref": {
-      "type": "string",
+      "type": ["string", "null"],
       "description": "Reference to the UAT sign-off"
     },
     "notes": {

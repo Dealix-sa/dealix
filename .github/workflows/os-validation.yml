@@ -43,7 +43,7 @@ jobs:
         run: python -m dealix.os_runtime validate
 
       - name: Run OS test suite
-        run: pytest tests/os -q --tb=short
+        run: pytest tests/os -q --tb=short --noconftest
 
       - name: Score example company (FM KSA)
         run: |
