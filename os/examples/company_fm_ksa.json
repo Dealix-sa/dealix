@@ -1,0 +1,24 @@
+{
+  "company": "Al Seha Facilities Management",
+  "country": "ksa",
+  "sector": "facilities_management",
+  "website": "https://example-alseha-fm.com",
+  "estimated_employees": 450,
+  "operations_heavy": true,
+  "maintenance_or_field_work": true,
+  "repeated_reporting": true,
+  "multi_branch_or_multi_site": true,
+  "clear_buyer_title": true,
+  "public_growth_signal": true,
+  "likely_data_or_api": true,
+  "founder_domain_fit": false,
+  "source_ref": "https://linkedin.com/company/example-alseha-fm",
+  "notes": "Large FM company with 3 regional offices. Operations Director visible on LinkedIn. Recently won a major government contract (source: public announcement).",
+  "extras": {
+    "linkedin_operations_director": "visible",
+    "recent_contract_signal": "government FM contract awarded Q1 2026",
+    "known_systems": ["CAFM", "Excel-based SLA tracking"],
+    "target_buyer_title": "Operations Director"
+  },
+  "created_at": "2026-06-01T00:00:00Z"
+}

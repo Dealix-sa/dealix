@@ -1,0 +1,52 @@
+{
+  "company": "Al Rasheed & Partners Law Firm",
+  "country": "ksa",
+  "language": "arabic",
+  "sector": "legal",
+  "buyer": "Managing Partner",
+  "likely_pain": "Junior associates spend 3-4 hours daily searching through past case documents and writing matter summaries from scratch. Knowledge is locked in individual lawyers, not the firm.",
+  "best_offer": "legal_knowledge_document_os",
+  "best_channel": "referral",
+  "persuasion_score": 86,
+  "score_breakdown": {
+    "company_understanding": 13,
+    "pain_clarity": 14,
+    "offer_fit": 14,
+    "buyer_fit": 9,
+    "channel_fit": 10,
+    "first_line_quality": 8,
+    "risk_reversal": 8,
+    "cta_clarity": 4,
+    "no_exaggeration": 5,
+    "language_fit": 5
+  },
+  "message_pack": {
+    "subject": "كيف يسترجع مكتبكم المعرفة القانونية في ثوانٍ — بدون مخاطر",
+    "body": "أهلاً بكم،\n\nأعلم أن فريقكم القانوني يقضي وقتاً كبيراً في البحث عن ملفات القضايا السابقة وكتابة ملخصات القضايا يدوياً — وهذا وقت يمكن توجيهه للعمل الحقيقي.\n\nطوّرنا نظاماً يعمل على وثائقكم فقط، داخل بيئتكم، مع audit log لكل استفسار. لا بيانات تغادر المكتب، لا تدريب خارجي، لا مخاطر سرية.\n\nنبدأ بـ Workflow Audit خلال 7 أيام نوثّق فيه أين تُهدر ساعات المحامين ونقترح الحل الأمثل.\n\nهل مناسب 20 دقيقة هذا الأسبوع؟",
+    "cta": "20 دقيقة هذا الأسبوع للتعرف على النظام",
+    "language": "arabic"
+  },
+  "company_signals": {
+    "practice_areas": ["commercial", "M&A", "arbitration"],
+    "team_size": "85 employees",
+    "location": "Riyadh, KSA"
+  },
+  "source_ref": "https://linkedin.com/company/example-alrasheed-law",
+  "fit_score": 55,
+  "tier": "C",
+  "ready_to_execute": false,
+  "founder_approved": false,
+  "governance_decision": {
+    "module": "persuasion_dossier",
+    "version": "1.0",
+    "persuasion_score": 86,
+    "min_score_required": 82,
+    "ready_to_execute": false,
+    "founder_approved": false,
+    "blocked_reason": "Founder approval not obtained",
+    "auto_disqualified": false,
+    "doctrine_enforced": true,
+    "disclaimer": "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
+  },
+  "created_at": "2026-06-01T00:00:00Z"
+}

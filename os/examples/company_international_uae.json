@@ -1,0 +1,27 @@
+{
+  "company": "GlobalOps MENA",
+  "country": "uae",
+  "sector": "international_company",
+  "website": "https://example-globalops-mena.com",
+  "estimated_employees": 1200,
+  "operations_heavy": true,
+  "maintenance_or_field_work": false,
+  "repeated_reporting": true,
+  "multi_branch_or_multi_site": true,
+  "clear_buyer_title": true,
+  "public_growth_signal": true,
+  "likely_data_or_api": true,
+  "founder_domain_fit": false,
+  "inbound": false,
+  "source_ref": "https://linkedin.com/company/example-globalops-mena",
+  "notes": "International company with MENA HQ in Dubai. Regional Operations Director visible on LinkedIn. HQ in Europe requires English reporting; GCC teams work in Arabic. Looking for controlled AI adoption with governance.",
+  "extras": {
+    "hq_country": "germany",
+    "hq_language": "english",
+    "gcc_team_language": "arabic",
+    "known_pain": "Arabic-English reporting gap, HQ governance requirement for AI",
+    "preferred_channel": "linkedin_assisted",
+    "target_buyer_title": "Regional Operations Director"
+  },
+  "created_at": "2026-06-01T00:00:00Z"
+}

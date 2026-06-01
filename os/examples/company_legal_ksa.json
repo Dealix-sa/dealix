@@ -1,0 +1,25 @@
+{
+  "company": "Al Rasheed & Partners Law Firm",
+  "country": "ksa",
+  "sector": "legal",
+  "website": "https://example-alrasheed-law.com",
+  "estimated_employees": 85,
+  "operations_heavy": false,
+  "maintenance_or_field_work": false,
+  "repeated_reporting": true,
+  "multi_branch_or_multi_site": false,
+  "clear_buyer_title": true,
+  "public_growth_signal": false,
+  "likely_data_or_api": true,
+  "founder_domain_fit": false,
+  "inbound": false,
+  "source_ref": "https://linkedin.com/company/example-alrasheed-law",
+  "notes": "Mid-size law firm in Riyadh. Managing Partner visible. Known pain: junior associates spend hours on document search. Referred by a mutual contact.",
+  "extras": {
+    "practice_areas": ["commercial", "M&A", "arbitration"],
+    "known_pain": "Document retrieval and matter summaries manual",
+    "preferred_channel": "referral",
+    "target_buyer_title": "Managing Partner"
+  },
+  "created_at": "2026-06-01T00:00:00Z"
+}

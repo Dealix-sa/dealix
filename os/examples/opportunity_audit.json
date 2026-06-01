@@ -1,0 +1,24 @@
+{
+  "opportunity_id": "OPP-2026-001",
+  "company": "Al Seha Facilities Management",
+  "contact_name": "Mohammed Al-Operations",
+  "offer_id": "ai_workflow_audit",
+  "stage": "proposal_sent",
+  "estimated_value_sar": 15000,
+  "probability": 40,
+  "country": "ksa",
+  "sector": "facilities_management",
+  "fit_score": 95,
+  "tier": "A",
+  "primary_channel": "email",
+  "last_activity_at": "2026-06-01T10:00:00Z",
+  "next_action": "Follow up on proposal sent 3 days ago",
+  "next_action_due": "2026-06-04",
+  "notes": "Sent audit proposal. Operations Director interested but needs CFO sign-off.",
+  "governance_decision": {
+    "module": "opportunity_tracker",
+    "stage": "proposal_sent"
+  },
+  "created_at": "2026-05-20T00:00:00Z",
+  "updated_at": "2026-06-01T10:00:00Z"
+}
