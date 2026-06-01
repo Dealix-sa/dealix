@@ -1,8 +1,6 @@
 """Verify approval gate logic: protected actions require approval, free ones do not."""
 from __future__ import annotations
 
-import pytest
-
 from os_runtime.approval_gate import GateCheckResult, check_action
 
 

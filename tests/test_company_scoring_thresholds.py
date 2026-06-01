@@ -1,8 +1,6 @@
 """Verify company scoring produces correct scores and buckets."""
 from __future__ import annotations
 
-import pytest
-
 from os_runtime.scorer import score_company
 
 

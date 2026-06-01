@@ -1,8 +1,6 @@
 """Verify daily brief generation produces correct markdown output."""
 from __future__ import annotations
 
-import pytest
-
 from os_runtime.daily_brief import generate_brief
 
 

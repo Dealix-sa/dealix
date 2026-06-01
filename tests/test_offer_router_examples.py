@@ -1,8 +1,6 @@
 """Verify offer routing logic produces correct recommendations."""
 from __future__ import annotations
 
-import pytest
-
 from os_runtime.offer_router import route
 
 REQUIRED_OFFER_KEYS = {"id", "name", "price_range_sar", "rationale"}

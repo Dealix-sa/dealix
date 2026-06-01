@@ -11,7 +11,7 @@ from pathlib import Path
 # Ensure repo root is importable from any working directory
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from os_runtime.validators import validate_configs, validate_all
+from os_runtime.validators import validate_configs
 
 
 def main() -> int:
