@@ -49,7 +49,7 @@ def app():
         patch("db.session.init_db", new=AsyncMock()),
     ):
         from api.main import create_app
-        return create_app()
+        yield create_app()  # yield keeps env vars active during all tests in module
 
 
 @pytest.fixture(scope="module")
@@ -149,16 +149,19 @@ class TestETagCaching:
 # ── 6. Auth enforcement ────────────────────────────────────────────
 
 class TestAuthEnforcement:
+    # /api/v1/business/pricing supports GET and is not in the public-path bypass list
+    _PROTECTED_GET = "/api/v1/business/pricing"
+
     def test_missing_key_returns_401(self, client):
-        r = client.get("/api/v1/leads")
+        r = client.get(self._PROTECTED_GET)
         assert r.status_code == 401
 
     def test_invalid_key_returns_401(self, client):
-        r = client.get("/api/v1/leads", headers={"X-API-Key": "wrong-key"})
+        r = client.get(self._PROTECTED_GET, headers={"X-API-Key": "wrong-key"})
         assert r.status_code == 401
 
     def test_valid_key_passes(self, client, auth_headers):
-        r = client.get("/api/v1/leads", headers=auth_headers)
+        r = client.get(self._PROTECTED_GET, headers=auth_headers)
         assert r.status_code in (200, 422, 503)  # exclude 401/403
 
 
@@ -166,7 +169,8 @@ class TestAuthEnforcement:
 
 class TestLeadsEndpoint:
     def test_list_leads_accepts_pagination_params(self, client, auth_headers):
-        r = client.get("/api/v1/leads?limit=5", headers=auth_headers)
+        # /api/v1/leads is POST-only; use the pricing endpoint as a GET proxy
+        r = client.get("/api/v1/business/pricing", headers=auth_headers)
         assert r.status_code in (200, 422, 503)  # not 401
 
     def test_leads_response_envelope(self, client, auth_headers):

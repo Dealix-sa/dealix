@@ -47,7 +47,7 @@ jobs:
   python-checks:
     name: Python quality, tests, readiness
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
 
     env:
       APP_ENV: test
@@ -157,7 +157,7 @@ jobs:
 
       - name: Tests with coverage gate
         run: |
-          pytest -q \
+          pytest -q -n auto \
             --cov=api --cov=core --cov=db --cov=integrations \
             --cov-report=xml:coverage.xml \
             --cov-report=term-missing \

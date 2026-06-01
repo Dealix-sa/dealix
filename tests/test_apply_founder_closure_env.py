@@ -19,4 +19,5 @@ def test_apply_founder_closure_env_dry_run() -> None:
         check=False,
     )
     assert proc.returncode in (0, 1)
-    assert "apply_founder_closure_env" in proc.stdout
+    # Script prints either the merge header or a SKIP/INCOMPLETE status line
+    assert "apply_founder_closure_env" in proc.stdout or "FOUNDER_CLOSURE_ENV=" in proc.stdout

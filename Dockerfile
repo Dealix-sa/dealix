@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1.7
 # ═══════════════════════════════════════════════════════════════
 # AI Company Saudi — production Docker image
 # Multi-stage, non-root, Python 3.12-slim
@@ -31,7 +30,7 @@ COPY requirements.txt* ./
 
 # Install deps and aggressively prune caches/metadata to shrink image
 RUN pip install --upgrade pip setuptools wheel \
-    && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir --prefer-binary -r requirements.txt \
     && find /opt/venv -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true \
     && find /opt/venv -type d -name tests -exec rm -rf {} + 2>/dev/null || true \
     && find /opt/venv -type f -name "*.pyc" -delete 2>/dev/null || true
@@ -66,6 +65,12 @@ COPY --from=builder /opt/venv /opt/venv
 WORKDIR /app
 COPY --chown=app:app . .
 
+# Create startup script as root before switching to non-root user
+RUN printf '#!/bin/sh\nset -e\nexec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --workers 1\n' \
+        > /app/start.sh \
+    && chmod +x /app/start.sh \
+    && chown app:app /app/start.sh
+
 USER app
 
 # Railway injects $PORT dynamically; default to 8000 for local dev
@@ -75,15 +80,6 @@ EXPOSE 8000
 # Healthcheck uses $PORT so it matches whatever the platform assigns
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=5 \
     CMD curl -fsS http://localhost:${PORT:-8000}/healthz || exit 1
-
-# Wrapper script so any start command (Dockerfile CMD, Procfile, Railway
-# startCommand override) works without shell-expansion gotchas.
-COPY --chown=app:app <<'EOF' /app/start.sh
-#!/bin/sh
-set -e
-exec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --workers 1
-EOF
-RUN chmod +x /app/start.sh
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["/app/start.sh"]

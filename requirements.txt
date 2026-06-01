@@ -9,7 +9,7 @@ pydantic[email]>=2.9.0,<3
 pydantic-settings>=2.6.0,<3
 
 # HTTP
-httpx>=0.27.0,<0.28
+httpx>=0.27.0,<1
 
 # Wave 15 — Jinja2 for proposal renderer + PDF templates
 jinja2>=3.1.0,<4
@@ -26,7 +26,7 @@ idna>=3.7
 
 # LLM SDKs (optional — router falls back gracefully if missing)
 anthropic>=0.40.0
-openai>=1.54.0
+openai>=1.54.0,<2
 google-generativeai>=0.8.0
 
 # Data
@@ -55,7 +55,7 @@ python-dateutil>=2.9.0
 
 # Observability
 structlog>=24.4.0
-langfuse>=2.50.0
+langfuse>=2.50.0,<3
 
 # Integrations
 hubspot-api-client>=11.0.0
@@ -107,3 +107,5 @@ numpy>=1.26.0,<3
 pytest>=8.3.0,<9
 pytest-asyncio>=0.24.0,<1
 pytest-cov>=6.0.0,<7
+# pytest-xdist: parallel test execution to keep the 4726-test coverage gate within CI timeout
+pytest-xdist>=3.6,<4
