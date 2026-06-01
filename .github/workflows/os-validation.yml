@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install pyyaml
+      - run: pip install pyyaml pytest pytest-asyncio httpx
       - name: Validate all OS configs
         run: python scripts/os_validate_configs.py
       - name: Score demo company
@@ -35,4 +35,4 @@ jobs:
       - name: Generate demo daily brief
         run: python scripts/os_daily_brief.py --demo
       - name: Run OS unit tests
-        run: pip install pytest && pytest tests/test_os_yaml_parse.py tests/test_os_schema_examples.py tests/test_approval_gates_enforced.py tests/test_offer_router_examples.py tests/test_company_scoring_thresholds.py tests/test_daily_brief_generation.py -v --no-cov
+        run: pytest tests/test_os_yaml_parse.py tests/test_os_schema_examples.py tests/test_approval_gates_enforced.py tests/test_offer_router_examples.py tests/test_company_scoring_thresholds.py tests/test_daily_brief_generation.py -v --no-cov
