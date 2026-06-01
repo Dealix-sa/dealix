@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install pyyaml pytest pytest-asyncio httpx
+      - run: pip install pyyaml pytest pytest-asyncio pytest-cov httpx
       - name: Validate all OS configs
         run: python scripts/os_validate_configs.py
       - name: Score demo company
@@ -37,4 +37,4 @@ jobs:
       - name: Run OS unit tests
         # --noconftest: skip tests/conftest.py which imports core.llm.base and
         # all app transitive deps (pydantic, structlog, etc.) — not installed here
-        run: pytest tests/test_os_yaml_parse.py tests/test_os_schema_examples.py tests/test_approval_gates_enforced.py tests/test_offer_router_examples.py tests/test_company_scoring_thresholds.py tests/test_daily_brief_generation.py -v --no-cov --noconftest
+        run: pytest tests/test_os_yaml_parse.py tests/test_os_schema_examples.py tests/test_approval_gates_enforced.py tests/test_offer_router_examples.py tests/test_company_scoring_thresholds.py tests/test_daily_brief_generation.py -v --noconftest
