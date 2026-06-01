@@ -44,4 +44,4 @@ jobs:
       - name: Run OS YAML parse tests
         run: |
           pip install pytest
-          pytest tests/test_os_yaml_parse.py tests/test_os_schema_examples.py -v
+          pytest --noconftest tests/test_os_yaml_parse.py tests/test_os_schema_examples.py -v
