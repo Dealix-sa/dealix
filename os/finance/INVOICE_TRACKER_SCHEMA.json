@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Invoice Tracker",
+  "description": "Schema for tracking Dealix invoices across all projects and clients. | مخطط تتبع فواتير ديليكس عبر جميع المشاريع والعملاء.",
+  "type": "object",
+  "required": [
+    "invoice_id",
+    "project_id",
+    "client_label",
+    "amount_sar",
+    "vat_amount",
+    "total_amount",
+    "issue_date",
+    "due_date",
+    "status"
+  ],
+  "properties": {
+    "invoice_id": {
+      "type": "string",
+      "pattern": "^INV-[0-9]{4}-[0-9]{3}$",
+      "description": "Unique invoice identifier. Format: INV-YYYY-NNN (e.g., INV-2026-001). | معرّف الفاتورة الفريد."
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^SOW-[0-9]{4}-[0-9]{3}$",
+      "description": "Reference to the Statement of Work this invoice relates to. Format: SOW-YYYY-NNN. | مرجع بيان نطاق العمل المرتبط بهذه الفاتورة."
+    },
+    "client_label": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Client identifier — company name or anonymized label. No individual PII. | معرّف العميل — اسم الشركة أو تسمية مجهولة الهوية. بدون بيانات شخصية."
+    },
+    "offer_type": {
+      "type": "string",
+      "enum": [
+        "audit",
+        "pilot",
+        "full_system",
+        "retainer",
+        "expansion_module",
+        "other"
+      ],
+      "description": "The type of Dealix offer this invoice is for. | نوع عرض ديليكس الذي تغطيه هذه الفاتورة."
+    },
+    "installment": {
+      "type": "string",
+      "enum": ["1_of_1", "1_of_2", "2_of_2", "1_of_3", "2_of_3", "3_of_3", "monthly_retainer", "other"],
+      "description": "Which installment this invoice represents, per the payment schedule in the SOW. | رقم الدفعة بموجب جدول السداد في SOW."
+    },
+    "currency": {
+      "type": "string",
+      "enum": ["SAR", "USD"],
+      "default": "SAR",
+      "description": "Invoice currency. SAR for GCC domestic clients; USD for international. | عملة الفاتورة."
+    },
+    "amount_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Invoice amount before VAT in SAR. For USD invoices, record the SAR equivalent using 1 USD = 3.75 SAR. | المبلغ قبل ضريبة القيمة المضافة بالريال السعودي."
+    },
+    "vat_rate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "default": 0.15,
+      "description": "VAT rate applied. 0.15 = 15% KSA standard rate. 0 if VAT exemption applies (international client — confirm with founder). | معدل ضريبة القيمة المضافة المطبَّق."
+    },
+    "vat_amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "VAT amount in SAR (amount_sar × vat_rate). | مبلغ ضريبة القيمة المضافة بالريال."
+    },
+    "total_amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total invoice amount including VAT in SAR (amount_sar + vat_amount). | إجمالي الفاتورة شامل ضريبة القيمة المضافة بالريال."
+    },
+    "issue_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date the invoice was issued. ISO 8601 (YYYY-MM-DD). | تاريخ إصدار الفاتورة."
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Payment due date per SOW payment terms. ISO 8601 (YYYY-MM-DD). | تاريخ استحقاق الدفع وفق شروط SOW."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "sent", "paid", "overdue", "disputed", "cancelled"],
+      "default": "draft",
+      "description": "Current invoice status. draft: prepared, not sent. sent: delivered to client. paid: payment confirmed received. overdue: due date passed without payment. disputed: client has raised a formal objection. cancelled: invoice voided. | حالة الفاتورة الحالية."
+    },
+    "payment_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date payment was confirmed received in Dealix bank account. Null until paid. | تاريخ تأكيد استلام الدفع. فارغ حتى الدفع."
+    },
+    "days_outstanding": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Calculated field: number of days from due_date to today (if not paid). 0 if paid. | عدد أيام التأخر — محسوب من تاريخ الاستحقاق حتى اليوم."
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": ["bank_transfer", "credit_card", "check", "other"],
+      "description": "Method by which payment was received. | طريقة الدفع."
+    },
+    "payment_reference": {
+      "type": "string",
+      "description": "Bank transfer reference number or payment confirmation ID. | رقم مرجع التحويل أو تأكيد الدفع."
+    },
+    "late_payment_flag": {
+      "type": "boolean",
+      "default": false,
+      "description": "Set to true if payment was received after the due_date. Used for pattern analysis. | يُضبط على true إذا وُرد الدفع بعد تاريخ الاستحقاق."
+    },
+    "days_to_payment": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Calculated field: number of days from issue_date to payment_date. Used for cash collection analysis. | عدد أيام التحصيل."
+    },
+    "dispute_description": {
+      "type": "string",
+      "description": "Required when status = disputed. Describes the nature of the client's objection. | وصف النزاع — إلزامي عند الاعتراض."
+    },
+    "follow_up_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Next scheduled follow-up date for unpaid invoices. | تاريخ المتابعة التالية للفواتير غير المسددة."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-text notes on this invoice. No PII. | ملاحظات إضافية على هذه الفاتورة. بدون بيانات شخصية."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when this invoice record was created. ISO 8601. | وقت إنشاء سجل الفاتورة."
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of last update to this record. | وقت آخر تحديث لهذا السجل."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "invoice_id": "INV-2026-001",
+      "project_id": "SOW-2026-001",
+      "client_label": "FM Company — Riyadh",
+      "offer_type": "pilot",
+      "installment": "1_of_2",
+      "currency": "SAR",
+      "amount_sar": 40000,
+      "vat_rate": 0.15,
+      "vat_amount": 6000,
+      "total_amount": 46000,
+      "issue_date": "2026-06-01",
+      "due_date": "2026-06-06",
+      "status": "sent",
+      "payment_date": null,
+      "late_payment_flag": false,
+      "follow_up_date": "2026-06-07",
+      "notes": "First installment — 50% upfront per SOW-2026-001 payment schedule.",
+      "created_at": "2026-06-01T09:00:00Z",
+      "last_updated": "2026-06-01T09:00:00Z"
+    }
+  ]
+}

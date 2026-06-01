@@ -2,7 +2,7 @@
 
 **Version:** 1.0 | **Owner:** Founder | **Last Updated:** 2026-06-01
 
-Cross-links: [MVP_SCOPE_TEMPLATE.md](MVP_SCOPE_TEMPLATE.md) | [RISK_REGISTER_TEMPLATE.md](RISK_REGISTER_TEMPLATE.md) | [../governance/SOW_TEMPLATE.md](../governance/SOW_TEMPLATE.md) | [../finance/PRICING_GUARDRAILS.md](../sales/PRICING_GUARDRAILS.md)
+Cross-links: [MVP_SCOPE_TEMPLATE.md](MVP_SCOPE_TEMPLATE.md) | [RISK_REGISTER_TEMPLATE.md](RISK_REGISTER_TEMPLATE.md) | [../governance/SOW_TEMPLATE.md](../governance/SOW_TEMPLATE.md) | [../sales/PRICING_GUARDRAILS.md](../sales/PRICING_GUARDRAILS.md)
 
 ---
 
