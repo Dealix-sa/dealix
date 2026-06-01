@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Draft Queue",
+  "description": "Schema for outreach drafts waiting for founder approval. No draft moves to 'sent' status without founder explicit approval. | مخطط قائمة مسودات التواصل — لا تغادر أي مسودة دون موافقة المؤسس.",
+  "type": "object",
+  "required": [
+    "draft_id",
+    "dossier_id",
+    "channel",
+    "recipient_label",
+    "subject",
+    "body_ar",
+    "body_en",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "draft_id": {
+      "type": "string",
+      "pattern": "^DQ-[A-Z0-9]{6}$",
+      "description": "Unique draft identifier. Format: DQ- followed by 6 uppercase alphanumeric characters. | معرّف المسودة الفريد."
+    },
+    "dossier_id": {
+      "type": "string",
+      "pattern": "^PD-[A-Z0-9]{6}$",
+      "description": "Reference to the Persuasion Dossier that generated this draft. Links to PERSUASION_DOSSIER_SCHEMA.json. | مرجع ملف الإقناع المرتبط."
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "warm_email",
+        "linkedin_manual",
+        "referral_intro_request",
+        "webinar_invite",
+        "event_follow_up",
+        "formal_email",
+        "whatsapp_approved_template"
+      ],
+      "description": "Channel this draft is intended for. Must match the channel approved in the Persuasion Dossier. | القناة المستهدفة لهذه المسودة."
+    },
+    "recipient_label": {
+      "type": "string",
+      "description": "Anonymized or role-based label for the recipient — no PII (no full name, no personal email, no phone). Example: 'Operations Director — FM Company, Riyadh'. | تسمية المستلم بدون بيانات شخصية.",
+      "minLength": 5
+    },
+    "recipient_email": {
+      "type": "string",
+      "format": "email",
+      "description": "Professional/corporate email address of the recipient. Only company email — no personal gmail/hotmail. Must be redacted in any exported report. | البريد الإلكتروني المهني — يُخفى في التقارير."
+    },
+    "recipient_linkedin_url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://www\\.linkedin\\.com/",
+      "description": "LinkedIn profile URL. Only populated for linkedin_manual channel. | رابط LinkedIn للقناة اليدوية فقط."
+    },
+    "subject": {
+      "type": "object",
+      "description": "Subject line in both languages. | سطر الموضوع بكلتا اللغتين.",
+      "required": ["ar", "en"],
+      "properties": {
+        "ar": {
+          "type": "string",
+          "description": "Subject line in Arabic. | الموضوع بالعربية."
+        },
+        "en": {
+          "type": "string",
+          "description": "Subject line in English. | الموضوع بالإنجليزية."
+        }
+      },
+      "additionalProperties": false
+    },
+    "body_ar": {
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 1000,
+      "description": "Full message body in Arabic. Maximum 150 words per outreach writing rules. | نص الرسالة بالعربية — 150 كلمة كحد أقصى."
+    },
+    "body_en": {
+      "type": "string",
+      "minLength": 50,
+      "maxLength": 1000,
+      "description": "Full message body in English. Maximum 150 words per outreach writing rules. | نص الرسالة بالإنجليزية."
+    },
+    "language_sent": {
+      "type": "string",
+      "enum": ["arabic", "english", "bilingual"],
+      "description": "The language version actually sent. Determined by buyer_persona.language_preference. | اللغة التي أُرسلت بها الرسالة فعلياً."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "approved", "sent", "rejected", "parked"],
+      "description": "draft: generated, awaiting review. approved: founder approved. sent: delivered to recipient. rejected: founder rejected with reason. parked: delayed for 30+ days. | حالة المسودة.",
+      "default": "draft"
+    },
+    "rejection_reason": {
+      "type": "string",
+      "description": "Required when status = rejected. Records why the founder rejected this draft. | سبب الرفض — إلزامي عند الرفض."
+    },
+    "follow_up_sequence": {
+      "type": "string",
+      "enum": [
+        "post_discovery",
+        "post_proposal",
+        "post_pilot",
+        "dormant_reactivation",
+        "first_outreach"
+      ],
+      "description": "Which follow-up sequence this draft belongs to. Reference FOLLOW_UP_SEQUENCES.md. | سلسلة المتابعة التي تنتمي إليها هذه المسودة."
+    },
+    "sequence_day": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Day in the follow-up sequence (0 = first touch, 1 = day 1 follow-up, etc.). | اليوم في سلسلة المتابعة."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when this draft was generated. ISO 8601 format. | وقت إنشاء المسودة."
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when founder approved this draft. Null until approved. | وقت موافقة المؤسس."
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when message was actually sent. Null until sent. | وقت الإرسال الفعلي."
+    },
+    "reply_received": {
+      "type": "boolean",
+      "default": false,
+      "description": "Flag set to true when a reply is received from the recipient. | تم الرد على هذه الرسالة."
+    },
+    "reply_classification": {
+      "type": "string",
+      "enum": ["positive", "neutral", "negative", "unsubscribe", "bounce", "no_reply"],
+      "description": "Classification of the reply or outcome. Set after tracking window closes. | تصنيف الرد."
+    },
+    "next_action": {
+      "type": "string",
+      "description": "Recommended next action based on reply classification. Populated by agent, reviewed by founder. | الإجراء التالي الموصى به."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-text notes from founder or agent. No PII. | ملاحظات إضافية."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Persuasion Dossier",
+  "description": "Per-prospect persuasion intelligence compiled before outreach. Founder must approve founder_approved=true before any message is sent. | ملف الإقناع لكل عميل محتمل — يجب أن يوافق المؤسس قبل أي إرسال.",
+  "type": "object",
+  "required": [
+    "dossier_id",
+    "company",
+    "sector",
+    "buyer_persona",
+    "pain_angle",
+    "trust_angle",
+    "best_channel",
+    "message_pack",
+    "created_at",
+    "founder_approved"
+  ],
+  "properties": {
+    "dossier_id": {
+      "type": "string",
+      "pattern": "^PD-[A-Z0-9]{6}$",
+      "description": "Unique dossier identifier. Format: PD- followed by 6 uppercase alphanumeric characters. | معرّف الملف الفريد."
+    },
+    "company": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Company name (no PII — company name only, not individual contact). | اسم الشركة فقط، بدون بيانات شخصية."
+    },
+    "sector": {
+      "type": "string",
+      "enum": [
+        "facilities_management",
+        "contracting_pmo",
+        "industrial_manufacturing",
+        "b2b_services",
+        "legal_firms",
+        "real_estate_property",
+        "international_gcc",
+        "other"
+      ],
+      "description": "GCC sector classification. Drives channel routing and message tone. | تصنيف القطاع في الخليج."
+    },
+    "buyer_persona": {
+      "type": "object",
+      "description": "Target buyer profile at this company. | ملف المشتري المستهدف.",
+      "required": ["title", "language_preference", "decision_authority"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Job title of the target contact (e.g., Operations Director, CFO). | المسمى الوظيفي."
+        },
+        "language_preference": {
+          "type": "string",
+          "enum": ["arabic", "english", "bilingual"],
+          "description": "Preferred communication language. Drives message_pack language selection. | اللغة المفضلة للتواصل."
+        },
+        "decision_authority": {
+          "type": "string",
+          "enum": ["decision_maker", "influencer", "champion"],
+          "description": "decision_maker = can sign the contract. influencer = shapes opinion. champion = internal advocate. | صلاحية القرار."
+        },
+        "estimated_company_size": {
+          "type": "string",
+          "enum": ["1-50", "51-200", "201-500", "500+"],
+          "description": "Estimated employee count range. | حجم الشركة التقريبي."
+        }
+      },
+      "additionalProperties": false
+    },
+    "pain_angle": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Primary operational pain Dealix addresses for this prospect. Specific to their sector and workflow — not generic. | نقطة الألم التشغيلي الرئيسية التي تعالجها ديليكس لهذا العميل."
+    },
+    "trust_angle": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Why this specific prospect should trust Dealix. Reference sector experience, referral source, or relevant proof point. | سبب ثقة هذا العميل بديليكس."
+    },
+    "risk_angle": {
+      "type": "string",
+      "description": "Perceived risk from the prospect's perspective and the neutralizing response. | المخاطر المتصوَّرة من منظور العميل وكيفية تحييدها.",
+      "minLength": 10
+    },
+    "proof_asset": {
+      "type": "string",
+      "description": "Most relevant anonymized case study, pilot result, or sector reference. Must not contain PII. | الدليل الأكثر صلة — دراسة حالة مجهولة الهوية أو نتيجة تجريبية."
+    },
+    "best_channel": {
+      "type": "string",
+      "enum": [
+        "referral",
+        "warm_email",
+        "linkedin_manual",
+        "webinar",
+        "events",
+        "website_form",
+        "formal_email",
+        "executive_referral"
+      ],
+      "description": "Recommended primary outreach channel based on sector and persona. Must match CHANNEL_ROUTER.yml rules. | القناة الأولى الموصى بها."
+    },
+    "message_pack": {
+      "type": "object",
+      "description": "Bilingual draft message components. All fields are drafts — founder approves before send. | مكونات الرسالة ثنائية اللغة — كلها مسودات تتطلب موافقة المؤسس.",
+      "required": ["subject_ar", "subject_en", "opening_ar", "opening_en", "value_prop_ar", "value_prop_en", "cta"],
+      "properties": {
+        "subject_ar": {
+          "type": "string",
+          "description": "Email or message subject line in Arabic. | سطر الموضوع بالعربية."
+        },
+        "subject_en": {
+          "type": "string",
+          "description": "Email or message subject line in English. | سطر الموضوع بالإنجليزية."
+        },
+        "opening_ar": {
+          "type": "string",
+          "description": "Opening sentence in Arabic — references the company or a specific operational context. | الجملة الافتتاحية بالعربية."
+        },
+        "opening_en": {
+          "type": "string",
+          "description": "Opening sentence in English. | الجملة الافتتاحية بالإنجليزية."
+        },
+        "value_prop_ar": {
+          "type": "string",
+          "description": "Core value proposition in Arabic — one specific outcome, no guarantees. | القيمة المقدَّمة بالعربية — نتيجة واحدة محددة، بدون ضمانات."
+        },
+        "value_prop_en": {
+          "type": "string",
+          "description": "Core value proposition in English. | القيمة المقدَّمة بالإنجليزية."
+        },
+        "cta": {
+          "type": "string",
+          "description": "Call to action — one simple question or invitation. Same for both languages. | دعوة للتصرف — سؤال واحد بسيط."
+        }
+      },
+      "additionalProperties": false
+    },
+    "referral_source": {
+      "type": "string",
+      "description": "If outreach is via referral, record the referrer (company name or role — no individual PII). | مصدر الإحالة إن وجد."
+    },
+    "qualification_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 18,
+      "description": "BANT+ score from DEAL_QUALIFICATION_SCORECARD.md. 0-9: park, 10-14: nurture, 15-18: priority. | درجة التأهيل."
+    },
+    "draft_queue_id": {
+      "type": "string",
+      "pattern": "^DQ-[A-Z0-9]{6}$",
+      "description": "Linked draft queue entry once message is queued. Reference to DRAFT_QUEUE_SCHEMA.json. | معرّف قائمة المسودات المرتبطة."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date",
+      "description": "Date dossier was created. ISO 8601 format (YYYY-MM-DD). | تاريخ إنشاء الملف."
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date",
+      "description": "Date dossier was last updated. | تاريخ آخر تحديث."
+    },
+    "founder_approved": {
+      "type": "boolean",
+      "default": false,
+      "description": "Founder must explicitly set to true before any outreach is sent. Default is false — no message leaves without approval. | يجب أن يضبطها المؤسس على true قبل أي إرسال."
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of founder approval. Null until approved. | وقت موافقة المؤسس."
+    }
+  },
+  "additionalProperties": false
+}

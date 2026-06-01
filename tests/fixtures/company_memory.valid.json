@@ -1,0 +1,72 @@
+{
+  "company_id": "CO-000001",
+  "company_name": "Al-Nakheel Facilities Management",
+  "company_name_ar": "شركة النخيل لإدارة المرافق",
+  "website": "https://www.alnakheel-fm.com.sa",
+  "linkedin_url": "https://www.linkedin.com/company/alnakheel-fm",
+  "country": "Saudi Arabia",
+  "city": "Riyadh",
+  "sector": "facilities_management",
+  "sub_sector": "integrated facilities management",
+  "employee_count_estimate": "200-500",
+  "what_they_do": "Provides integrated facilities management services including maintenance, cleaning, and building operations for commercial and government clients across Saudi Arabia.",
+  "operations_complexity": "high",
+  "likely_departments": ["Operations", "Maintenance", "Customer Service", "Quality"],
+  "likely_pain_points": [
+    "Manual work order management via WhatsApp and spreadsheets",
+    "SLA tracking is done manually and often missed",
+    "Technician reports require manual consolidation",
+    "No real-time visibility into field operations"
+  ],
+  "public_signals": [
+    {
+      "signal": "Hiring Operations Director and 3 Field Supervisors",
+      "source": "LinkedIn",
+      "date": "2026-04-15",
+      "relevance": "high"
+    },
+    {
+      "signal": "Announced new contract with a government ministry",
+      "source": "Company website news",
+      "date": "2026-03-01",
+      "relevance": "high"
+    }
+  ],
+  "best_buyer_title": "Operations Director",
+  "known_contacts": [
+    {
+      "name": "Fahad Al-Rashidi",
+      "title": "Operations Director",
+      "linkedin": "https://www.linkedin.com/in/fahad-alrashidi",
+      "email": "f.alrashidi@alnakheel-fm.com.sa",
+      "phone": null,
+      "is_decision_maker": true,
+      "notes": "Active on LinkedIn, posts about operational efficiency"
+    }
+  ],
+  "recommended_offer": "ai_workflow_audit",
+  "alternative_offer": "maintenance_intelligence_os",
+  "why_this_offer_fits": "Al-Nakheel manages hundreds of maintenance work orders daily across multiple sites. Their manual SLA tracking and spreadsheet-based reporting are exactly the workflows where an AI Workflow Audit will surface the highest-value automation opportunities. The natural next step after the audit is a Maintenance Intelligence OS pilot.",
+  "custom_email_angle": "Your field operations team is managing SLAs manually — one AI-augmented workflow can recover hours per technician per week.",
+  "fit_score": 87,
+  "score_breakdown": {
+    "operations_complexity": 20,
+    "reporting_burden": 15,
+    "maintenance_or_field_ops": 20,
+    "multi_branch_or_scale": 10,
+    "operations_data_roles": 10,
+    "growth_expansion_signals": 6,
+    "reachable_decision_maker": 6,
+    "founder_background_fit": 0
+  },
+  "tier": "high",
+  "status": "researched",
+  "outreach_history": [],
+  "next_action": "Draft first outreach email and present to founder for approval",
+  "next_action_date": "2026-06-03",
+  "notes": "Strong fit. Prioritise for this week's outreach batch.",
+  "data_sources": ["LinkedIn", "Company website", "Hiring listings"],
+  "created_at": "2026-06-01T09:00:00Z",
+  "updated_at": "2026-06-01T09:00:00Z",
+  "researched_by": "company-research-agent"
+}

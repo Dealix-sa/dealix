@@ -1,0 +1,7 @@
+{
+  "company_name": "Missing Required Fields Co.",
+  "website": "https://www.example.com",
+  "city": "Jeddah",
+  "what_they_do": "This record is intentionally missing company_id, sector, status, and created_at — which are all required fields per 07_COMPANY_MEMORY_SCHEMA.json. It is used to verify schema validation rejects incomplete records.",
+  "notes": "Invalid fixture: missing company_id, sector, status, created_at"
+}

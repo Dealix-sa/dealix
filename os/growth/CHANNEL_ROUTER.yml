@@ -1,0 +1,155 @@
+# CHANNEL_ROUTER.yml
+# Dealix GCC Channel Router — موجِّه القنوات للخليج
+# Version: 1.0 | Owner: Founder | Last Updated: 2026-06-01
+# Purpose: Maps each sector to channel priorities and enforces anti-ban safety limits.
+# Cross-links: OMNI_CHANNEL_GROWTH_OS.md | ANTI_BAN_GUARDIAN.yml | PERSUASION_DOSSIER_SCHEMA.json
+
+version: "1.0"
+
+# ─────────────────────────────────────────────
+# SECTOR → CHANNEL MAP
+# primary: channels to use first, highest conversion probability
+# secondary: use after primary list is exhausted or for specific personas
+# avoid: blocked channels — violation triggers escalation to founder
+# ─────────────────────────────────────────────
+
+channel_rules:
+
+  facilities_management_arabic:
+    # FM directors operate in tight referral circles. Trust is earned sector-to-sector.
+    primary:
+      - referral
+      - warm_email
+      - website_form
+    secondary:
+      - linkedin_manual
+      - webinar
+    avoid:
+      - cold_whatsapp_blast
+      - cold_linkedin_dm
+      - mass_email
+
+  contracting_pmo:
+    # PMO directors respond to formal introductions and industry-peer referrals.
+    primary:
+      - referral
+      - warm_email
+    secondary:
+      - linkedin_manual
+      - events          # CIOB, Saudi contractors associations
+    avoid:
+      - cold_whatsapp_blast
+      - mass_email
+
+  legal_firms:
+    # Legal sector requires formal, trust-gated outreach. No unsolicited digital contact.
+    primary:
+      - referral
+      - formal_email    # via bar association contacts or known intermediary
+      - association_events
+    secondary:
+      - linkedin_manual
+      - webinar
+    avoid:
+      - cold_whatsapp_blast
+      - cold_linkedin_dm
+      - mass_email
+
+  real_estate_property:
+    # Property managers respond to warm intros and sector-specific events.
+    primary:
+      - referral
+      - warm_email
+      - website_form
+    secondary:
+      - linkedin_manual
+      - property_events
+    avoid:
+      - cold_whatsapp_blast
+
+  international_gcc_companies:
+    # International-origin GCC offices: LinkedIn is primary professional channel.
+    # Executive referral carries outsized weight.
+    primary:
+      - linkedin_manual
+      - warm_email
+      - executive_referral
+    secondary:
+      - webinar
+      - events
+    avoid:
+      - cold_whatsapp_blast
+
+  b2b_services:
+    # Professional services networks are tight. Referral converts highest.
+    primary:
+      - referral
+      - warm_email
+    secondary:
+      - linkedin_manual
+      - webinar
+    avoid:
+      - cold_whatsapp_blast
+
+  industrial_manufacturing:
+    # Industrial sector: face-to-face and industry events outperform digital cold outreach.
+    primary:
+      - referral
+      - warm_email
+      - industry_events  # ADIPEC, Saudi Manufacturing Expo
+    secondary:
+      - linkedin_manual
+    avoid:
+      - cold_whatsapp_blast
+
+# ─────────────────────────────────────────────
+# ANTI-BAN RULES
+# Enforced by ANTI_BAN_GUARDIAN.yml. Thresholds below are the routing-level triggers.
+# If any metric exceeds threshold, this router pauses that channel and alerts founder.
+# ─────────────────────────────────────────────
+
+anti_ban_rules:
+
+  email:
+    max_daily_sends: 200
+    # Warm-up period: new sending domain must ramp over 14 days before hitting max.
+    warm_up_days: 14
+    # Pause sending immediately if bounce rate exceeds this threshold.
+    pause_if_bounce_rate_above: 0.05   # 5% — conservative; industry limit is often 10%
+    # Pause sending immediately if spam complaint rate exceeds this threshold.
+    pause_if_spam_rate_above: 0.001    # 0.1% — Google/Yahoo policy threshold
+
+  linkedin:
+    mode: assisted_manual              # Human-operated only. No automation tools.
+    block_auto_dm: true
+    block_scraping: true
+    # Manual connections per day — exceeding this risks account restriction.
+    max_manual_connections_per_day: 20
+
+  whatsapp:
+    # All WhatsApp contact requires prior opt-in from the recipient.
+    require_opt_in: true
+    # Every WhatsApp message must use a founder-approved template.
+    require_approved_template: true
+    # Broadcast lists (one-to-many) are fully blocked.
+    block_broadcast_lists: true
+
+# ─────────────────────────────────────────────
+# CHANNEL DEFINITIONS (reference)
+# ─────────────────────────────────────────────
+
+channel_definitions:
+  referral:            "Introduction from existing Dealix client, partner, or network contact"
+  warm_email:          "Email to contact who has engaged with Dealix content or shared via warm intro"
+  website_form:        "Inbound inquiry submitted via dealix.ai contact form"
+  linkedin_manual:     "Human-operated LinkedIn connection and message — no automation tools"
+  webinar:             "Dealix-hosted or co-hosted online session with registration opt-in"
+  events:              "In-person or virtual industry event where Dealix is speaker or sponsor"
+  formal_email:        "Email via professional association channel or known intermediary"
+  association_events:  "Events hosted by professional bodies (bar associations, engineering chambers)"
+  property_events:     "Real estate and FM sector trade events in GCC"
+  industry_events:     "Manufacturing and industrial sector conferences"
+  executive_referral:  "C-suite or board-level personal introduction"
+  cold_whatsapp_blast: "BLOCKED — unsolicited broadcast to unknown recipients via WhatsApp"
+  cold_linkedin_dm:    "BLOCKED — automated or unsolicited LinkedIn direct message"
+  mass_email:          "BLOCKED — bulk email to purchased or unverified list"
