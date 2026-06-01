@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.ai/schemas/channel-job.schema.json",
+  "title": "ChannelJob",
+  "description": "A single outreach job queued for execution via a specific channel",
+  "type": "object",
+  "required": ["job_id", "company", "channel", "action", "status"],
+  "properties": {
+    "job_id": {"type": "string"},
+    "company": {"type": "string"},
+    "contact_name": {"type": "string"},
+    "channel": {
+      "type": "string",
+      "enum": [
+        "email",
+        "website_form",
+        "phone_intro",
+        "referral",
+        "linkedin_assisted",
+        "executive_email",
+        "partner_referral"
+      ]
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "send_first_email",
+        "send_followup_email",
+        "send_proposal",
+        "linkedin_connect",
+        "linkedin_message",
+        "submit_website_form",
+        "schedule_call",
+        "ask_for_referral"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "pending_approval",
+        "approved",
+        "executing",
+        "completed",
+        "failed",
+        "cancelled",
+        "bounced"
+      ]
+    },
+    "draft_ref": {
+      "type": "string",
+      "description": "Reference to draft_id in the draft queue"
+    },
+    "persuasion_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "founder_approved": {"type": "boolean"},
+    "approved_at": {"type": "string", "format": "date-time"},
+    "executed_at": {"type": "string", "format": "date-time"},
+    "result": {"type": "string"},
+    "governance_decision": {
+      "type": "object",
+      "required": ["module", "action", "channel"],
+      "properties": {
+        "module": {"type": "string"},
+        "action": {"type": "string"},
+        "channel": {"type": "string"},
+        "requires_approval": {"type": "boolean"},
+        "approved": {"type": "boolean"},
+        "doctrine_checked": {"type": "boolean"}
+      }
+    },
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"}
+  }
+}

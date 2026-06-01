@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.ai/schemas/opportunity.schema.json",
+  "title": "Opportunity",
+  "description": "A sales opportunity in the Dealix pipeline",
+  "type": "object",
+  "required": ["company", "offer_id", "stage", "estimated_value_sar"],
+  "properties": {
+    "opportunity_id": {
+      "type": "string",
+      "description": "Unique opportunity identifier"
+    },
+    "company": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "contact_name": {
+      "type": "string",
+      "description": "Primary contact name"
+    },
+    "offer_id": {
+      "type": "string",
+      "description": "Offer ID from 03_OFFERS.yml"
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "lead",
+        "researched",
+        "offer_routed",
+        "channel_pack_ready",
+        "contacted",
+        "replied",
+        "call_booked",
+        "discovery_done",
+        "proposal_sent",
+        "won",
+        "onboarding",
+        "delivery",
+        "retainer",
+        "expansion",
+        "lost",
+        "nurture",
+        "archived"
+      ],
+      "description": "Current pipeline stage"
+    },
+    "estimated_value_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated deal value in SAR. This is estimated, not verified."
+    },
+    "probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Estimated probability of closing (0-100)"
+    },
+    "country": {
+      "type": "string",
+      "description": "Country"
+    },
+    "sector": {
+      "type": "string",
+      "description": "Industry sector"
+    },
+    "fit_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Company fit score from company_scorer"
+    },
+    "tier": {
+      "type": "string",
+      "enum": ["A", "B", "C", "D"],
+      "description": "Company tier from scoring"
+    },
+    "primary_channel": {
+      "type": "string",
+      "description": "Primary outreach channel used"
+    },
+    "last_activity_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "next_action": {
+      "type": "string",
+      "description": "Next action to take on this opportunity"
+    },
+    "next_action_due": {
+      "type": "string",
+      "format": "date"
+    },
+    "lost_reason": {
+      "type": "string",
+      "description": "If stage=lost, why"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "governance_decision": {
+      "type": "object",
+      "description": "Governance metadata — required on all opportunity objects",
+      "required": ["module", "stage"],
+      "properties": {
+        "module": {"type": "string"},
+        "stage": {"type": "string"}
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": true
+}

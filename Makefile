@@ -182,3 +182,33 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Company OS (os_runtime) ─────────────────────────────────────────────────
+
+os-validate: ## OS: validate all YAML/JSON configs and schemas
+	python scripts/validate_os_configs.py
+	python scripts/validate_os_schemas.py
+	python -m dealix.os_runtime validate
+
+os-test: ## OS: run tests/os test suite
+	pytest tests/os -q --noconftest
+
+os-score-example: ## OS: score the FM KSA example company
+	python -m dealix.os_runtime score-company os/examples/company_fm_ksa.json
+
+os-route-example: ## OS: route the legal KSA example company to an offer
+	python -m dealix.os_runtime route-offer os/examples/company_legal_ksa.json
+
+os-approval-example: ## OS: check approval gate for key actions
+	python -m dealix.os_runtime approval-check score_company
+	python -m dealix.os_runtime approval-check build_company_brief
+
+growth-dry-run: ## OS: run growth pipeline dry-run (no sends)
+	python -m dealix.os_runtime growth-dry-run --limit 50 --dry-run
+
+founder-brief: ## OS: generate today's founder daily brief
+	python -m dealix.os_runtime daily-brief
+
+company-os-check: os-validate os-test os-score-example os-route-example os-approval-example ## OS: full Company OS check
+
+full-verify: company-os-check ## OS: full verification (OS check + existing test suite)

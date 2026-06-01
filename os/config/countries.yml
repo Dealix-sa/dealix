@@ -1,0 +1,159 @@
+# Dealix — Country Configuration
+# بلدان العمليات والأولويات
+
+version: "1.0"
+
+countries:
+
+  ksa:
+    name: "Saudi Arabia"
+    name_ar: "المملكة العربية السعودية"
+    code: "SA"
+    currency: "SAR"
+    priority: 1
+    languages:
+      primary: "ar"
+      secondary: "en"
+    channels:
+      allowed:
+        - email
+        - website_form
+        - phone_intro
+        - referral
+        - linkedin_assisted
+        - partner_referral
+      blocked:
+        - cold_whatsapp
+        - linkedin_automation
+        - scraping
+    timezone: "Asia/Riyadh"
+    working_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    best_contact_hours: "09:00-12:00 and 15:00-17:00"
+    notes: >
+      Primary market. Arabic-first communication. Formal tone required.
+      Vision 2030 context resonates strongly. PDPL compliance mandatory.
+    active: true
+
+  uae:
+    name: "United Arab Emirates"
+    name_ar: "الإمارات العربية المتحدة"
+    code: "AE"
+    currency: "AED"
+    priority: 1
+    languages:
+      primary: "en"
+      secondary: "ar"
+    channels:
+      allowed:
+        - linkedin_assisted
+        - executive_email
+        - partner_referral
+        - email
+        - referral
+      blocked:
+        - cold_whatsapp
+        - linkedin_automation
+        - scraping
+    timezone: "Asia/Dubai"
+    working_days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    best_contact_hours: "09:00-12:00 and 14:00-17:00"
+    notes: >
+      High-value secondary market. English-primary communication.
+      International companies and regional HQs. LinkedIn effective for senior contacts.
+    active: true
+
+  qatar:
+    name: "Qatar"
+    name_ar: "قطر"
+    code: "QA"
+    currency: "QAR"
+    priority: 2
+    languages:
+      primary: "ar"
+      secondary: "en"
+    channels:
+      allowed:
+        - email
+        - referral
+        - linkedin_assisted
+        - website_form
+      blocked:
+        - cold_whatsapp
+        - linkedin_automation
+        - scraping
+    timezone: "Asia/Qatar"
+    working_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    notes: "Large-project-heavy market. FM and contracting strong."
+    active: true
+
+  kuwait:
+    name: "Kuwait"
+    name_ar: "الكويت"
+    code: "KW"
+    currency: "KWD"
+    priority: 2
+    languages:
+      primary: "ar"
+      secondary: "en"
+    channels:
+      allowed:
+        - email
+        - referral
+        - phone_intro
+        - website_form
+      blocked:
+        - cold_whatsapp
+        - linkedin_automation
+        - scraping
+    timezone: "Asia/Kuwait"
+    working_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    notes: "Referral-heavy market. Warm introductions preferred."
+    active: true
+
+  bahrain:
+    name: "Bahrain"
+    name_ar: "البحرين"
+    code: "BH"
+    currency: "BHD"
+    priority: 2
+    languages:
+      primary: "ar"
+      secondary: "en"
+    channels:
+      allowed:
+        - email
+        - linkedin_assisted
+        - referral
+        - website_form
+      blocked:
+        - cold_whatsapp
+        - linkedin_automation
+        - scraping
+    timezone: "Asia/Bahrain"
+    working_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    notes: "FinTech and financial services concentration."
+    active: true
+
+  oman:
+    name: "Oman"
+    name_ar: "عُمان"
+    code: "OM"
+    currency: "OMR"
+    priority: 2
+    languages:
+      primary: "ar"
+      secondary: "en"
+    channels:
+      allowed:
+        - email
+        - website_form
+        - referral
+        - phone_intro
+      blocked:
+        - cold_whatsapp
+        - linkedin_automation
+        - scraping
+    timezone: "Asia/Muscat"
+    working_days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    notes: "Oil, gas, and logistics heavy. Slower sales cycle — relationship first."
+    active: true

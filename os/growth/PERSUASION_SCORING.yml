@@ -1,0 +1,36 @@
+# Dealix — Persuasion Scoring Rubric
+# معايير التقييم الإقناعي للرسائل
+
+version: "1.0"
+min_score_to_execute: 82
+
+description: >
+  Duplicate of os/config/persuasion.yml for growth team reference.
+  Every outreach message must score 82/100+ before execution.
+  Canonical source: os/config/persuasion.yml
+
+rubric:
+  company_understanding: 15
+  pain_clarity: 15
+  offer_fit: 15
+  buyer_fit: 10
+  channel_fit: 10
+  first_line_quality: 10
+  risk_reversal: 10
+  cta_clarity: 5
+  no_exaggeration: 5
+  language_fit: 5
+
+auto_disqualify:
+  - "guaranteed ROI"
+  - "100% success"
+  - "نضمن لك"
+  - "مضمون 100%"
+  - "استرداد الاستثمار مضمون"
+
+execution_checklist:
+  - "Score >= 82"
+  - "No auto_disqualify triggered"
+  - "Founder approval obtained"
+  - "Company not contacted in 14+ days"
+  - "Message similarity < 72%"

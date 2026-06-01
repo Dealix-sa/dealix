@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.ai/schemas/company.schema.json",
+  "title": "Company",
+  "description": "A prospect or client company record in Dealix OS",
+  "type": "object",
+  "required": ["company", "country", "sector"],
+  "properties": {
+    "company": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Legal or trading name of the company"
+    },
+    "name": {
+      "type": "string",
+      "description": "Alias for company name (alternative key)"
+    },
+    "country": {
+      "type": "string",
+      "enum": ["ksa", "uae", "qatar", "kuwait", "bahrain", "oman", "other"],
+      "description": "Country code (lowercase)"
+    },
+    "sector": {
+      "type": "string",
+      "description": "Industry sector slug"
+    },
+    "website": {
+      "type": "string",
+      "format": "uri",
+      "description": "Company website URL"
+    },
+    "linkedin_url": {
+      "type": "string",
+      "description": "Company LinkedIn page URL"
+    },
+    "estimated_employees": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Estimated employee count"
+    },
+    "operations_heavy": {
+      "type": "boolean",
+      "description": "Company has heavy daily operational workflows"
+    },
+    "maintenance_or_field_work": {
+      "type": "boolean",
+      "description": "Has field technicians or maintenance operations"
+    },
+    "repeated_reporting": {
+      "type": "boolean",
+      "description": "Produces repetitive manual reports"
+    },
+    "multi_branch_or_multi_site": {
+      "type": "boolean",
+      "description": "Has 2+ branches or operational sites"
+    },
+    "clear_buyer_title": {
+      "type": "boolean",
+      "description": "Known decision-maker with appropriate title identified"
+    },
+    "public_growth_signal": {
+      "type": "boolean",
+      "description": "Public evidence of expansion or growth"
+    },
+    "likely_data_or_api": {
+      "type": "boolean",
+      "description": "Evidence of systems with connectable data"
+    },
+    "founder_domain_fit": {
+      "type": "boolean",
+      "description": "Founder has domain expertise or network in this sector"
+    },
+    "inbound": {
+      "type": "boolean",
+      "description": "Company contacted Dealix first (opt-in)"
+    },
+    "source_ref": {
+      "type": "string",
+      "description": "Source of company information (URL, referral name, etc.)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form notes for context"
+    },
+    "extras": {
+      "type": "object",
+      "description": "Additional unstructured signals"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": true
+}

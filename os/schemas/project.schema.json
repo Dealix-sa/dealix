@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.ai/schemas/project.schema.json",
+  "title": "Project",
+  "description": "A paid delivery project in Dealix",
+  "type": "object",
+  "required": ["project_id", "company", "offer_id", "status", "contracted_value_sar"],
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "Unique project identifier"
+    },
+    "company": {
+      "type": "string",
+      "description": "Client company name"
+    },
+    "offer_id": {
+      "type": "string",
+      "description": "Offer ID delivered"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "onboarding",
+        "discovery",
+        "build",
+        "qa",
+        "uat",
+        "delivered",
+        "retainer",
+        "expansion",
+        "closed",
+        "paused",
+        "cancelled"
+      ]
+    },
+    "contracted_value_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Contracted (agreed) value in SAR"
+    },
+    "invoiced_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total invoiced to date"
+    },
+    "collected_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total collected (paid) to date"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "target_end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "actual_end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "proof_pack_score": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Proof pack score — must be >= 70 for project to count as delivered"
+    },
+    "capital_asset_registered": {
+      "type": "boolean",
+      "description": "Has a capital asset been registered for this project?"
+    },
+    "delivery_gates_passed": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of delivery gate IDs that have been passed"
+    },
+    "scope_document_ref": {
+      "type": "string",
+      "description": "Reference to the scope document"
+    },
+    "qa_checklist_ref": {
+      "type": ["string", "null"],
+      "description": "Reference to the QA checklist"
+    },
+    "handover_doc_ref": {
+      "type": ["string", "null"],
+      "description": "Reference to the handover document"
+    },
+    "uat_signoff_ref": {
+      "type": ["string", "null"],
+      "description": "Reference to the UAT sign-off"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "governance_decision": {
+      "type": "object",
+      "required": ["module"],
+      "properties": {
+        "module": {"type": "string"},
+        "status": {"type": "string"}
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": true
+}

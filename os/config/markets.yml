@@ -1,0 +1,71 @@
+# Dealix — Markets Configuration
+# تكوين الأسواق للـ os_runtime
+
+version: "1.0"
+
+description: >
+  Market prioritization and targeting configuration.
+  References canonical market data in os/04_MARKETS.yml.
+
+primary_markets:
+  - id: "ksa"
+    name: "Saudi Arabia"
+    name_ar: "المملكة العربية السعودية"
+    priority: 1
+    status: "active"
+    target_deal_size_sar_min: 5000
+    target_deal_size_sar_max: 500000
+    top_sectors:
+      - "facilities_management"
+      - "contracting"
+      - "real_estate"
+      - "legal"
+      - "b2b_services"
+    context: "Vision 2030 driving rapid operational modernization"
+
+  - id: "uae"
+    name: "United Arab Emirates"
+    name_ar: "الإمارات العربية المتحدة"
+    priority: 1
+    status: "active"
+    target_deal_size_sar_min: 30000
+    target_deal_size_sar_max: 1000000
+    top_sectors:
+      - "international_company"
+      - "consulting"
+      - "real_estate"
+      - "b2b_services"
+    context: "Regional HQs and international companies — English-primary market"
+
+secondary_markets:
+  - id: "qatar"
+    name: "Qatar"
+    priority: 2
+    status: "target_by_day_60"
+    top_sectors:
+      - "contracting"
+      - "facilities_management"
+
+  - id: "kuwait"
+    name: "Kuwait"
+    priority: 2
+    status: "target_by_day_60"
+    top_sectors:
+      - "b2b_services"
+      - "real_estate"
+
+  - id: "bahrain"
+    name: "Bahrain"
+    priority: 2
+    status: "target_by_day_90"
+    top_sectors:
+      - "accounting"
+      - "b2b_services"
+
+  - id: "oman"
+    name: "Oman"
+    priority: 2
+    status: "target_by_day_90"
+    top_sectors:
+      - "facilities_management"
+      - "contracting"

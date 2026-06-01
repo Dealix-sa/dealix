@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.ai/schemas/draft-queue.schema.json",
+  "title": "DraftQueue",
+  "description": "A queue of outreach drafts awaiting founder review and approval",
+  "type": "object",
+  "required": ["queue_id", "drafts"],
+  "properties": {
+    "queue_id": {
+      "type": "string",
+      "description": "Unique queue identifier (e.g., date-based)"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "total_drafts": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "approved_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "sent_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "drafts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["draft_id", "company", "channel", "status", "persuasion_score"],
+        "properties": {
+          "draft_id": {"type": "string"},
+          "company": {"type": "string"},
+          "sector": {"type": "string"},
+          "country": {"type": "string"},
+          "channel": {"type": "string"},
+          "offer_id": {"type": "string"},
+          "subject": {"type": "string"},
+          "body": {"type": "string"},
+          "persuasion_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending_review", "approved", "rejected", "sent", "bounced", "replied"]
+          },
+          "founder_notes": {"type": "string"},
+          "approved_at": {"type": "string", "format": "date-time"},
+          "sent_at": {"type": "string", "format": "date-time"},
+          "governance_decision": {
+            "type": "object",
+            "required": ["module"],
+            "properties": {
+              "module": {"type": "string"},
+              "persuasion_score": {"type": "number"},
+              "approved": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

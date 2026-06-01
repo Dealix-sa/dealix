@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.ai/schemas/finance.schema.json",
+  "title": "Finance",
+  "description": "Financial record for a project — unit economics and margin tracking",
+  "type": "object",
+  "required": ["project_id", "company", "offer_id", "contracted_value_sar"],
+  "properties": {
+    "project_id": {"type": "string"},
+    "company": {"type": "string"},
+    "offer_id": {"type": "string"},
+    "contracted_value_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total contracted project value in SAR"
+    },
+    "invoiced_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total invoiced to date"
+    },
+    "collected_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total collected (paid) in SAR"
+    },
+    "direct_costs_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total direct costs (API, contractor, infrastructure) in SAR"
+    },
+    "gross_profit_sar": {
+      "type": "number",
+      "description": "Revenue minus direct costs"
+    },
+    "gross_margin_percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Gross margin percentage — target 60-80%"
+    },
+    "margin_healthy": {
+      "type": "boolean",
+      "description": "True if gross_margin_percent >= 50"
+    },
+    "retainer_monthly_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Monthly retainer amount if project converted to retainer"
+    },
+    "payment_terms": {
+      "type": "string",
+      "description": "Payment terms (e.g., 50% upfront, 50% on delivery)"
+    },
+    "invoice_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of invoice reference numbers"
+    },
+    "currency": {
+      "type": "string",
+      "default": "SAR",
+      "description": "Currency — default SAR"
+    },
+    "governance_decision": {
+      "type": "object",
+      "required": ["module"],
+      "properties": {
+        "module": {"type": "string"},
+        "margin_healthy": {"type": "boolean"},
+        "gross_margin_percent": {"type": "number"}
+      }
+    },
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"}
+  }
+}

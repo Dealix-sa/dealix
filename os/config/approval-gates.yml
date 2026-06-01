@@ -1,0 +1,51 @@
+# Dealix — Approval Gates Configuration (config layer)
+# بوابات الموافقة — طبقة التكوين
+
+version: "1.0"
+
+description: >
+  This file is the config-layer bridge to the canonical approval gates
+  defined in os/06_APPROVAL_GATES.yml. The os_runtime reads this file
+  to determine approval requirements at runtime.
+  For the full approval gate specification, see os/06_APPROVAL_GATES.yml.
+
+canonical_source: "os/06_APPROVAL_GATES.yml"
+
+# Actions that REQUIRE founder approval before execution
+requires_approval:
+  - send_first_email
+  - send_followup_email
+  - share_pricing
+  - send_proposal
+  - request_client_credentials
+  - use_production_api
+  - access_client_systems
+  - deploy_to_client_environment
+  - run_automated_actions_externally
+  - delete_client_data
+  - share_client_data
+
+# Actions that are NEVER allowed regardless of approval
+never_allowed:
+  - use_client_data_for_training
+  - cold_whatsapp_outreach
+  - linkedin_automation
+  - scraping
+  - guaranteed_outcome_claim
+  - pii_in_logs
+
+# Actions that are FREE (no approval needed)
+free_actions:
+  - research_company_public
+  - build_company_brief
+  - create_email_draft
+  - generate_proposal_draft
+  - analyze_sample_data
+  - create_architecture_doc
+  - run_internal_qa
+  - score_company
+  - classify_reply
+  - prepare_discovery_brief
+
+override_authority: "founder only"
+escalation_to: "founder_daily_brief"

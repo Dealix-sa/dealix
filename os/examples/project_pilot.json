@@ -1,0 +1,30 @@
+{
+  "project_id": "PROJ-2026-001",
+  "company": "Al Seha Facilities Management",
+  "offer_id": "agentic_workflow_pilot",
+  "status": "build",
+  "contracted_value_sar": 75000,
+  "invoiced_sar": 37500,
+  "collected_sar": 37500,
+  "direct_costs_sar": 15000,
+  "start_date": "2026-06-01",
+  "target_end_date": "2026-07-05",
+  "proof_pack_score": null,
+  "capital_asset_registered": false,
+  "delivery_gates_passed": [
+    "scope_document_signed",
+    "acceptance_criteria_defined",
+    "sample_data_approved"
+  ],
+  "scope_document_ref": "docs/projects/PROJ-2026-001/scope.pdf",
+  "qa_checklist_ref": null,
+  "handover_doc_ref": null,
+  "uat_signoff_ref": null,
+  "notes": "Building SLA tracking agent. Sandbox confirmed. No production API access yet.",
+  "governance_decision": {
+    "module": "delivery_gate",
+    "status": "build"
+  },
+  "created_at": "2026-06-01T00:00:00Z",
+  "updated_at": "2026-06-01T00:00:00Z"
+}

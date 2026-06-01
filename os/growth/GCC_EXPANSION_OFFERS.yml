@@ -1,0 +1,101 @@
+# Dealix — GCC Expansion Offers
+# عروض التوسع الخليجية
+
+version: "1.0"
+
+offers:
+
+  legal_knowledge_document_os:
+    id: "LKDOS"
+    name: "Legal Knowledge & Document OS"
+    name_ar: "نظام ذكاء المعرفة القانونية"
+    tagline: "استرجاع المعرفة القانونية في ثوانٍ — داخل بيئتكم، خاص ومؤمن"
+    category: "vertical_system"
+    target_sectors: ["legal"]
+    floor_price_sar: 50000
+    typical_price_sar: 100000
+    retainer_sar_monthly: 8000
+    key_pain: "Document retrieval hours wasted, matter summaries from scratch, knowledge locked in individuals"
+    key_outcome: "Find any case document in seconds, matter summaries automated, knowledge accessible to whole team"
+    trust_angle: "Data never leaves your environment. Full audit log. No external training."
+    entry_via: "ai_workflow_audit"
+    natural_upsell: "ai_ops_retainer"
+
+  consulting_delivery_intelligence_os:
+    id: "CDIOS"
+    name: "Consulting Delivery Intelligence OS"
+    name_ar: "نظام ذكاء التسليم الاستشاري"
+    tagline: "المعرفة الاستشارية لشركتكم تتراكم وتُستخدم — لا تُعاد من الصفر"
+    category: "vertical_system"
+    target_sectors: ["consulting"]
+    floor_price_sar: 40000
+    typical_price_sar: 80000
+    retainer_sar_monthly: 8000
+    key_pain: "Proposals written from scratch, knowledge trapped in consultants, delivery reporting manual"
+    key_outcome: "Proposal generation in hours, past engagements reusable, delivery dashboards automated"
+    entry_via: "ai_workflow_audit"
+    natural_upsell: "ai_ops_retainer"
+
+  property_operations_ai_os:
+    id: "POAOS"
+    name: "Property Operations AI OS"
+    name_ar: "نظام الذكاء الاصطناعي لعمليات العقارات"
+    tagline: "طلبات المستأجرين، متابعة الصيانة، تقارير الملاك — كل شيء تلقائي"
+    category: "vertical_system"
+    target_sectors: ["real_estate"]
+    floor_price_sar: 35000
+    typical_price_sar: 75000
+    retainer_sar_monthly: 8000
+    key_pain: "Tenant requests in WhatsApp, maintenance follow-up lost, owner reports manual"
+    key_outcome: "Tenant request tracking automated, maintenance SLA visible, owner reports auto-generated"
+    entry_via: "ai_workflow_audit"
+    natural_upsell: "ai_ops_retainer"
+
+  gcc_international_ai_pilot:
+    id: "GIAP"
+    name: "GCC International AI Pilot"
+    name_ar: "تجربة الذكاء الاصطناعي للشركات الدولية في الخليج"
+    tagline: "Bilingual AI workflow for GCC operations — HQ-compliant and auditable"
+    category: "pilot"
+    target_sectors: ["international_company"]
+    floor_price_sar: 60000
+    typical_price_sar: 120000
+    retainer_sar_monthly: 10000
+    key_pain: "Arabic-English gap, HQ requires English reports, local teams work in Arabic, HQ governance requirement"
+    key_outcome: "Bilingual AI workflows, HQ-compliant audit trail, structured pilot evidence for HQ approval"
+    trust_angle: "Governance-first approach. Controlled pilot. Full audit log. HQ reporting ready."
+    entry_via: "ai_workflow_audit"
+    natural_upsell: "full_regional_deployment"
+
+  accounting_audit_workflow_ai:
+    id: "AAWAI"
+    name: "Accounting & Audit Workflow AI"
+    name_ar: "نظام الذكاء الاصطناعي لعمليات المحاسبة والتدقيق"
+    tagline: "متابعة مستندات العملاء، مواعيد الامتثال، ومهام التدقيق — تلقائياً وآمناً"
+    category: "vertical_system"
+    target_sectors: ["accounting"]
+    floor_price_sar: 25000
+    typical_price_sar: 60000
+    retainer_sar_monthly: 8000
+    key_pain: "Client document checklists in Excel, compliance deadlines in email, client follow-up inconsistent"
+    key_outcome: "Document completeness tracked automatically, deadline alerts automated, client follow-up systematic"
+    trust_angle: "Data stays in your environment. PDPL and SOCPA-aware design."
+    entry_via: "ai_workflow_audit"
+    natural_upsell: "ai_ops_retainer"
+
+  healthcare_admin_workflow_ai:
+    id: "HAWAI"
+    name: "Healthcare Admin Workflow AI"
+    name_ar: "نظام الذكاء الاصطناعي للإدارة الصحية"
+    tagline: "الإدارة الصحية غير السريرية تلقائية — بدون مخاطر بيانات المرضى"
+    category: "vertical_system"
+    target_sectors: ["healthcare_admin"]
+    floor_price_sar: 30000
+    typical_price_sar: 75000
+    retainer_sar_monthly: 8000
+    key_pain: "Appointment follow-up manual, insurance pre-approval tracking in Excel, admin routing slow"
+    key_outcome: "Appointment follow-up automated, pre-approval tracking systematic, admin routing faster"
+    trust_angle: "Non-clinical workflows only. No patient clinical data. Full data sovereignty."
+    important_note: "Always clarify scope upfront: admin workflows only, zero clinical data contact."
+    entry_via: "ai_workflow_audit"
+    natural_upsell: "ai_ops_retainer"

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.ai/schemas/execution-log.schema.json",
+  "title": "ExecutionLog",
+  "description": "Audit log entry for any action taken by the OS runtime",
+  "type": "object",
+  "required": ["log_id", "timestamp", "action", "module", "status"],
+  "properties": {
+    "log_id": {"type": "string"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "action": {"type": "string", "description": "Action that was performed or attempted"},
+    "module": {"type": "string", "description": "OS module that generated this log entry"},
+    "status": {
+      "type": "string",
+      "enum": ["success", "failed", "blocked", "pending_approval", "approved", "rejected"]
+    },
+    "company": {"type": "string"},
+    "channel": {"type": "string"},
+    "actor": {
+      "type": "string",
+      "enum": ["agent", "founder", "system"],
+      "description": "Who performed the action"
+    },
+    "requires_approval": {"type": "boolean"},
+    "approval_obtained": {"type": "boolean"},
+    "block_reason": {
+      "type": "string",
+      "description": "If status=blocked, why the action was blocked"
+    },
+    "governance_decision": {
+      "type": "object",
+      "required": ["module"],
+      "properties": {
+        "module": {"type": "string"},
+        "action": {"type": "string"},
+        "status": {"type": "string"},
+        "doctrine_rule": {"type": "string"}
+      }
+    },
+    "pii_present": {
+      "type": "boolean",
+      "default": false,
+      "description": "MUST always be false — PII never goes in logs"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional context — no PII allowed"
+    }
+  },
+  "if": {"properties": {"pii_present": {"const": true}}},
+  "then": {"not": {}}
+}

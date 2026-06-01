@@ -1,0 +1,243 @@
+# Dealix — Buyer Personas
+# شخصيات المشترين المستهدفين
+
+version: "1.0"
+
+personas:
+
+  operations_director_fm:
+    id: "P01"
+    name: "Operations Director — FM / Maintenance"
+    name_ar: "مدير العمليات — الصيانة وإدارة المرافق"
+    sectors: ["facilities_management", "maintenance"]
+    typical_titles:
+      - "Operations Director"
+      - "Facilities Director"
+      - "Head of Operations"
+      - "VP Operations"
+    seniority: "C-1 / VP"
+    daily_pain: >
+      Drowning in technician reports, SLA chases, and WhatsApp groups.
+      Management asks for weekly dashboards that take 3 hours to build in Excel.
+      Cannot see which vendors are underperforming until it's too late.
+    what_they_care_about:
+      - "SLA compliance"
+      - "Management reporting without manual effort"
+      - "Field team visibility"
+      - "Avoiding surprises from repeated failures"
+    what_they_fear:
+      - "Data leaving the company"
+      - "IT dependency for every change"
+      - "Another system nobody uses"
+      - "Promising timeline that slips"
+    buying_trigger: "Quarterly reporting pressure or a major SLA breach"
+    budget_authority: "Yes — typically signs off on operational spend"
+    best_channel: "email or phone_intro"
+    tone: "operational_arabic_formal"
+    language: "Arabic primary, English acceptable"
+    message_frame: "نقلل عبء التقارير اليدوية ونعطيك رؤية فورية لكل عملية"
+
+  pmo_director:
+    id: "P02"
+    name: "PMO Director / Project Director"
+    name_ar: "مدير مكتب المشاريع / مدير المشاريع"
+    sectors: ["contracting"]
+    typical_titles:
+      - "PMO Director"
+      - "Project Director"
+      - "Head of Projects"
+      - "Engineering Manager"
+    seniority: "Senior Director"
+    daily_pain: >
+      Weekly progress reports built manually from 5 different project managers.
+      Change requests tracked in email chains. Risk register not updated.
+      Management wants a consolidated view that takes 4 hours to build.
+    what_they_care_about:
+      - "Progress visibility without chasing PMs"
+      - "Change request control"
+      - "Risk early warning"
+      - "Management-ready reports automatically"
+    buying_trigger: "Lost a dispute due to poor documentation or a major project overrun"
+    budget_authority: "Yes with CEO alignment"
+    best_channel: "email or linkedin_assisted"
+    tone: "professional_arabic_formal"
+    language: "Arabic primary"
+    message_frame: "تقارير المشاريع تُولَّد تلقائياً — PMO يركز على الحل لا على التجميع"
+
+  managing_partner_legal:
+    id: "P03"
+    name: "Managing Partner — Law Firm"
+    name_ar: "الشريك المدير — مكتب محاماة"
+    sectors: ["legal"]
+    typical_titles:
+      - "Managing Partner"
+      - "Senior Partner"
+      - "Chief Legal Officer"
+    seniority: "C-Suite equivalent"
+    daily_pain: >
+      Junior associates spend hours searching past case documents.
+      Matter summaries written from scratch each time.
+      Confidentiality risk from sharing files on generic cloud tools.
+      Billable hours wasted on non-billable admin.
+    what_they_care_about:
+      - "Absolute confidentiality — data never leaves firm"
+      - "Finding past case docs in seconds"
+      - "Reducing junior time on document work"
+      - "No IT dependency"
+    what_they_fear:
+      - "Client data breach"
+      - "Regulatory non-compliance"
+      - "Any AI that 'learns from' their data externally"
+    buying_trigger: "A confidentiality incident or a billable-hour pressure review"
+    budget_authority: "Full — as Managing Partner"
+    best_channel: "referral then email"
+    tone: "formal_arabic_conservative"
+    language: "Arabic preferred, formal"
+    trust_blockers:
+      - "Any mention of cloud storage"
+      - "Vague data handling"
+      - "Marketing-heavy language"
+    message_frame: "المعرفة القانونية لمكتبكم — محمية، خاصة، وفي متناول يدكم في ثوانٍ"
+
+  regional_director_international:
+    id: "P04"
+    name: "Regional Director — International Company"
+    name_ar: "المدير الإقليمي — شركة دولية"
+    sectors: ["international_company"]
+    typical_titles:
+      - "Regional Operations Director"
+      - "Country Manager"
+      - "VP Middle East"
+      - "Head of GCC"
+    seniority: "VP / Regional Director"
+    daily_pain: >
+      HQ requires English reports; local team works in Arabic.
+      Translation inconsistencies cause misunderstandings.
+      HQ policy requires controlled AI adoption with audit trail.
+      Proving ROI to HQ requires structured evidence.
+    what_they_care_about:
+      - "Bilingual Arabic-English workflows"
+      - "HQ-compliant governance"
+      - "Auditable AI decisions"
+      - "Pilot-first approach to show HQ"
+    buying_trigger: "HQ mandates digital transformation initiative or local efficiency review"
+    budget_authority: "Regional budget — may need HQ sign-off for large amounts"
+    best_channel: "linkedin_assisted or executive_email"
+    tone: "professional_english_primary"
+    language: "English primary, Arabic secondary"
+    message_frame: "Bilingual AI workflow for GCC operations — HQ-compliant and auditable"
+
+  managing_partner_consulting:
+    id: "P05"
+    name: "Managing Partner — Consulting Firm"
+    name_ar: "الشريك المدير — شركة استشارات"
+    sectors: ["consulting"]
+    typical_titles:
+      - "Managing Partner"
+      - "Delivery Director"
+      - "Principal"
+      - "Partner"
+    seniority: "Senior Partner"
+    daily_pain: >
+      Every proposal written from scratch despite similar past work.
+      Knowledge trapped in individuals who leave.
+      Delivery reporting manually consolidated from consultants.
+      Research repeated across projects with no reuse.
+    what_they_care_about:
+      - "Proposal speed and consistency"
+      - "Knowledge capture from past engagements"
+      - "Delivery visibility"
+      - "Scaling without hiring"
+    buying_trigger: "Key person departure or rapid scaling need"
+    budget_authority: "Full as Managing Partner"
+    best_channel: "linkedin_assisted or referral"
+    tone: "professional_bilingual"
+    language: "English or bilingual"
+    message_frame: "Turn your firm's knowledge into a competitive system — not locked in individuals"
+
+  commercial_director_b2b:
+    id: "P06"
+    name: "Commercial Director — B2B Services"
+    name_ar: "المدير التجاري — خدمات B2B"
+    sectors: ["b2b_services"]
+    typical_titles:
+      - "Commercial Director"
+      - "Sales Director"
+      - "Head of Business Development"
+      - "CEO (SME)"
+    seniority: "Director / C-Suite"
+    daily_pain: >
+      Leads go cold because follow-up is manual and inconsistent.
+      Sales team wastes time on research instead of selling.
+      Proposals take days to prepare and look inconsistent.
+      No visibility on which leads are worth pursuing.
+    what_they_care_about:
+      - "More meetings from the same list"
+      - "Faster proposals"
+      - "Consistent follow-up"
+      - "Sales team focused on closing, not admin"
+    buying_trigger: "Missed revenue target or new sales manager asking why conversion is low"
+    budget_authority: "Yes — owns commercial budget"
+    best_channel: "email or linkedin_assisted"
+    tone: "commercial_bilingual"
+    language: "Arabic or bilingual"
+    message_frame: "فريقك يبيع — النظام يتابع ويبحث ويجهّز"
+
+  managing_partner_accounting:
+    id: "P07"
+    name: "Managing Partner — Accounting Firm"
+    name_ar: "الشريك المدير — مكتب محاسبة"
+    sectors: ["accounting"]
+    typical_titles:
+      - "Managing Partner"
+      - "Finance Director"
+      - "Head of Audit"
+    seniority: "Senior Partner"
+    daily_pain: >
+      Client document checklists tracked in Excel.
+      Audit workflow steps managed via email chains.
+      Compliance deadlines missed due to manual tracking.
+      Client follow-up inconsistent across staff.
+    what_they_care_about:
+      - "Client document completeness"
+      - "Compliance deadline tracking"
+      - "Data confidentiality (SOCPA, PDPL)"
+      - "Reducing staff admin time"
+    buying_trigger: "Missed compliance deadline or client complaint about document follow-up"
+    budget_authority: "Full as Managing Partner"
+    best_channel: "referral then email"
+    tone: "formal_arabic_conservative"
+    language: "Arabic formal"
+    message_frame: "متابعة المستندات والمواعيد تلقائياً — فريقكم يركز على المراجعة"
+
+  admin_manager_healthcare:
+    id: "P08"
+    name: "Admin Manager — Healthcare"
+    name_ar: "مدير الإدارة — قطاع الصحة"
+    sectors: ["healthcare_admin"]
+    typical_titles:
+      - "Admin Manager"
+      - "Operations Director"
+      - "Hospital Administrator"
+      - "Clinic Manager"
+    seniority: "Director / Manager"
+    daily_pain: >
+      Appointment follow-up done manually by admin staff.
+      Insurance pre-approval tracking in Excel.
+      Non-clinical routing decisions slow down patient flow.
+      Admin errors due to manual data entry.
+    what_they_care_about:
+      - "Non-clinical admin efficiency"
+      - "No patient clinical data touched"
+      - "Reducing admin staff errors"
+      - "MOH compliance"
+    what_they_fear:
+      - "Any system touching clinical data"
+      - "Data breach risk"
+      - "System complexity"
+    buying_trigger: "Patient satisfaction score drop or JCIA audit preparation"
+    budget_authority: "Partial — needs Hospital Director approval above 50k SAR"
+    best_channel: "email or website_form"
+    tone: "professional_arabic_formal"
+    language: "Arabic primary"
+    message_frame: "إدارة المواعيد والوثائق الإدارية تلقائياً — لا بيانات سريرية، لا مخاطر"

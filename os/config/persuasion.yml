@@ -1,0 +1,152 @@
+# Dealix — Persuasion Scoring Configuration
+# معايير تقييم جودة الرسائل قبل التنفيذ
+
+version: "1.0"
+
+description: >
+  Every outreach message and proposal must score at least 82/100
+  before it can be executed. This ensures quality, relevance, and
+  compliance with Dealix doctrine. Lower-scoring messages are returned
+  for improvement, never sent.
+
+min_score_to_execute: 82
+
+scoring_rubric:
+
+  company_understanding:
+    weight: 15
+    name: "Company Understanding"
+    name_ar: "فهم الشركة"
+    description: "Does the message demonstrate specific knowledge of the company?"
+    scoring_guide:
+      15: "References specific company facts, recent signals, or known pain points"
+      10: "Shows good sector understanding but limited company specifics"
+      5: "Generic sector mention only"
+      0: "No evidence of research"
+
+  pain_clarity:
+    weight: 15
+    name: "Pain Clarity"
+    name_ar: "وضوح نقطة الألم"
+    description: "Is the specific operational pain identified clearly?"
+    scoring_guide:
+      15: "Names the exact pain with operational context"
+      10: "Good pain description but somewhat general"
+      5: "Vague pain reference"
+      0: "No pain identified"
+
+  offer_fit:
+    weight: 15
+    name: "Offer Fit"
+    name_ar: "ملاءمة العرض"
+    description: "Is the offer the right one for this company?"
+    scoring_guide:
+      15: "Perfect offer match — clear why this offer for this company"
+      10: "Good fit, minor mismatch"
+      5: "Reasonable but not clearly tailored"
+      0: "Wrong offer or no offer connection"
+
+  buyer_fit:
+    weight: 10
+    name: "Buyer Fit"
+    name_ar: "ملاءمة صاحب القرار"
+    description: "Is the message addressed to the right decision-maker?"
+    scoring_guide:
+      10: "Addressed to the correct buyer title with role-specific language"
+      6: "Right level but generic"
+      3: "Uncertain buyer targeting"
+      0: "Wrong person or unknown"
+
+  channel_fit:
+    weight: 10
+    name: "Channel Fit"
+    name_ar: "ملاءمة القناة"
+    description: "Is this the right channel for this company and sector?"
+    scoring_guide:
+      10: "Optimal channel for sector, country, and company profile"
+      6: "Acceptable channel"
+      3: "Suboptimal but allowed"
+      0: "Blocked channel attempted"
+
+  first_line_quality:
+    weight: 10
+    name: "First Line Quality"
+    name_ar: "جودة السطر الأول"
+    description: "Does the first line immediately demonstrate value and relevance?"
+    scoring_guide:
+      10: "Opens with a specific, relevant, non-generic hook"
+      6: "Decent opening but slightly generic"
+      3: "Weak or cliché opening"
+      0: "Spam-like or irrelevant opener"
+
+  risk_reversal:
+    weight: 10
+    name: "Risk Reversal"
+    name_ar: "إزالة المخاطرة"
+    description: "Does the message reduce perceived risk for the buyer?"
+    scoring_guide:
+      10: "Clear low-commitment entry point, proof of safety, or guarantee of no harm"
+      6: "Some risk reduction language"
+      3: "Minimal risk addressing"
+      0: "No risk considerations"
+
+  cta_clarity:
+    weight: 5
+    name: "CTA Clarity"
+    name_ar: "وضوح الدعوة للعمل"
+    description: "Is the call-to-action specific and easy to respond to?"
+    scoring_guide:
+      5: "Single, clear, low-friction CTA"
+      3: "CTA present but slightly unclear"
+      1: "Multiple competing CTAs"
+      0: "No CTA or impossible to respond to"
+
+  no_exaggeration:
+    weight: 5
+    name: "No Exaggeration"
+    name_ar: "لا مبالغة في الوعود"
+    description: "Is the message free of guaranteed outcomes or fake metrics?"
+    scoring_guide:
+      5: "Zero unverified claims, no guaranteed outcomes, no fake metrics"
+      3: "Minor puffery but no hard claims"
+      0: "Contains guaranteed outcomes, fake stats, or misleading claims"
+    auto_fail_triggers:
+      - "guaranteed ROI"
+      - "100% success"
+      - "proven to increase revenue by X%"
+      - "clients save millions"
+      - "استرداد الاستثمار مضمون"
+
+  language_fit:
+    weight: 5
+    name: "Language Fit"
+    name_ar: "ملاءمة اللغة"
+    description: "Is the language (Arabic/English/bilingual) appropriate for the recipient?"
+    scoring_guide:
+      5: "Perfect language match for country, sector, and buyer seniority"
+      3: "Acceptable language but not optimal"
+      0: "Wrong language or poor translation"
+
+# Automatic disqualification triggers (score forced to 0 regardless of rubric)
+auto_disqualify:
+  - trigger: "cold_whatsapp_attempt"
+    reason: "DOCTRINE: No cold WhatsApp. Message cannot be executed."
+  - trigger: "linkedin_automation_attempt"
+    reason: "DOCTRINE: No LinkedIn automation. Message cannot be executed."
+  - trigger: "guaranteed_outcome_claim"
+    reason: "Guaranteed outcomes are prohibited. Remove and rewrite."
+  - trigger: "pii_in_message"
+    reason: "PII detected in message body. Must be removed before execution."
+  - trigger: "no_governance_decision"
+    reason: "All executed messages must carry a governance_decision field."
+  - trigger: "unsourced_metric"
+    reason: "Metric claimed without source reference. Remove or source it."
+
+# Quality gates before execution
+pre_execution_checklist:
+  - "Score is 82 or above"
+  - "No auto_disqualify triggers fired"
+  - "Founder has approved the send"
+  - "Company not contacted in last 14 days"
+  - "Message similarity to previous sends is below 72%"
+  - "Bilingual disclaimer included where required"
