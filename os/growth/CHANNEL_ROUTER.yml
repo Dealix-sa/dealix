@@ -1,0 +1,195 @@
+# Dealix Growth OS — Channel Router
+# نظام توجيه القنوات — محرك نمو GCC
+
+version: "1.0"
+doctrine: >
+  كل تواصل خارجي يمر عبر approval_center أولاً.
+  لا إرسال تلقائي بدون موافقة المؤسس.
+  Anti-ban rules مفعّلة دائماً.
+
+channels:
+
+  Email:
+    priority: 1
+    type: outbound_async
+    approval_required: true
+    conditions:
+      - "company email known or discoverable via public sources"
+      - "no previous contact in last 30 days"
+      - "company score >= 60"
+    template_type: "persuasion_dossier"
+    expected_response_rate: 0.05
+    anti_ban_rules:
+      - "max 50 emails per day across all companies"
+      - "no bulk sends — each email individually reviewed"
+      - "no purchase of email lists"
+      - "opt-out honored within 24 hours"
+    notes: "Primary channel for Saudi B2B outreach"
+
+  WhatsApp_opt_in:
+    priority: 2
+    type: outbound_async
+    approval_required: true
+    conditions:
+      - "contact explicitly opted in to WhatsApp communication"
+      - "warm lead only — not cold contact"
+      - "existing relationship or referral context"
+    template_type: "short_value_message"
+    expected_response_rate: 0.25
+    anti_ban_rules:
+      - "opted-in contacts only — strictly no cold WhatsApp"
+      - "max 20 WhatsApp messages per day"
+      - "min 4 hours between messages to same contact"
+      - "no bulk automation via WhatsApp Business API without explicit consent"
+    notes: >
+      High-conversion channel but STRICT opt-in requirement.
+      Cold WhatsApp automation is a non-negotiable violation.
+
+  LinkedIn_manual:
+    priority: 3
+    type: outbound_manual
+    approval_required: true
+    conditions:
+      - "founder sends manually from personal LinkedIn"
+      - "no automation tools"
+      - "personalized message only"
+      - "connection request or InMail only"
+    template_type: "linkedin_manual_note"
+    expected_response_rate: 0.08
+    anti_ban_rules:
+      - "absolutely no LinkedIn automation tools"
+      - "max 20 connection requests per day (LinkedIn limits)"
+      - "no mass InMail campaigns"
+      - "founder personal account only"
+    notes: >
+      LinkedIn automation is a non-negotiable violation.
+      Founder sends manually only.
+
+  Meta_inbound:
+    priority: 4
+    type: inbound_paid
+    approval_required: false
+    conditions:
+      - "lead comes from Meta (Facebook/Instagram) paid ad"
+      - "form fill or DM initiated by prospect"
+    template_type: "inbound_response"
+    expected_response_rate: 0.15
+    anti_ban_rules:
+      - "respond within 4 hours of inbound lead"
+      - "no outbound cold DMs via Meta"
+    notes: "Paid inbound — prospect initiated contact"
+
+  TikTok_lead_forms:
+    priority: 5
+    type: inbound_paid
+    approval_required: false
+    conditions:
+      - "lead form submitted via TikTok ad"
+      - "B2B audience targeting active"
+    template_type: "inbound_response"
+    expected_response_rate: 0.08
+    anti_ban_rules:
+      - "respond within 8 hours"
+      - "no outbound cold DMs via TikTok"
+    notes: "Growing channel for younger operations managers in SA"
+
+  Google_lead_ads:
+    priority: 6
+    type: inbound_paid
+    approval_required: false
+    conditions:
+      - "lead form submitted via Google search or display ad"
+      - "intent-based keywords"
+    template_type: "inbound_response"
+    expected_response_rate: 0.20
+    anti_ban_rules:
+      - "respond within 2 hours for search leads"
+    notes: "High-intent channel — respond fast"
+
+  Website_form:
+    priority: 7
+    type: inbound_organic
+    approval_required: false
+    conditions:
+      - "form submitted on dealix.me"
+      - "any page — contact, pricing, demo request"
+    template_type: "inbound_response"
+    expected_response_rate: 0.35
+    anti_ban_rules: []
+    notes: "Highest-intent inbound — respond within 1 hour"
+
+  Phone_calls:
+    priority: 8
+    type: outbound_sync
+    approval_required: true
+    conditions:
+      - "warm lead only"
+      - "prior email or inbound contact exists"
+      - "phone number voluntarily shared"
+    template_type: "discovery_call_script"
+    expected_response_rate: 0.40
+    anti_ban_rules:
+      - "no cold calling from purchased lists"
+      - "max 10 outbound calls per day"
+      - "call only between 9am-5pm local time"
+    notes: "Used for warm follow-up after email engagement"
+
+  Partners:
+    priority: 9
+    type: outbound_referral
+    approval_required: false
+    conditions:
+      - "active partner relationship exists"
+      - "lead referred by verified partner"
+    template_type: "partner_brief"
+    expected_response_rate: 0.45
+    anti_ban_rules: []
+    notes: "Highest conversion channel — prioritize building partner network"
+
+  Referrals:
+    priority: 10
+    type: outbound_referral
+    approval_required: false
+    conditions:
+      - "existing happy client refers a contact"
+      - "explicit permission to use their name"
+    template_type: "referral_outreach"
+    expected_response_rate: 0.50
+    anti_ban_rules: []
+    notes: "Warmest channel possible — always highest priority"
+
+  Webinars:
+    priority: 11
+    type: inbound_event
+    approval_required: false
+    conditions:
+      - "attendee registered for Dealix webinar or event"
+      - "post-event follow-up"
+    template_type: "post_event_followup"
+    expected_response_rate: 0.12
+    anti_ban_rules:
+      - "follow up within 48 hours post-event"
+    notes: "Thought leadership channel — builds trust over time"
+
+  Procurement_portals:
+    priority: 12
+    type: inbound_rfp
+    approval_required: true
+    conditions:
+      - "company posted RFP or tender on procurement portal"
+      - "services match Dealix capabilities"
+      - "deadline allows proper preparation"
+    template_type: "rfp_response"
+    expected_response_rate: 0.10
+    anti_ban_rules: []
+    notes: "Enterprise track — slow but large deal sizes"
+
+channel_routing_rules:
+  default_for_cold_outreach: "Email"
+  default_for_warm_followup: "WhatsApp_opt_in"
+  default_for_enterprise: "Procurement_portals"
+  default_for_inbound: "Website_form"
+  never_automate:
+    - "WhatsApp_opt_in"
+    - "LinkedIn_manual"
+    - "Phone_calls"

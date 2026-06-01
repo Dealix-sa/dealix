@@ -1,0 +1,164 @@
+# Dealix Growth OS — Anti-Ban Guardian
+# حارس مكافحة الحظر — قواعد صارمة لكل قناة
+
+version: "1.0"
+doctrine: >
+  حماية سمعة Dealix وقنوات التواصل هي أولوية قصوى.
+  أي مخالفة لهذه القواعد تهدد قدرتنا على الوصول للعملاء مستقبلاً.
+  النظام يتوقف تلقائياً عند الاقتراب من الحدود.
+
+rules:
+
+  Email:
+    daily_limit: 50
+    hourly_limit: 10
+    min_interval_seconds: 300
+    required_opt_in: false
+    forbidden_patterns:
+      - "guaranteed results"
+      - "نتائج مضمونة"
+      - "100% success"
+      - "نجاح بنسبة 100%"
+      - "act now or lose out"
+      - "limited time offer — expires in"
+      - "click here to unsubscribe" # must use proper unsubscribe link
+      - "no-reply@" # must have reply-to
+      - "bulk email"
+    warning_thresholds:
+      daily_80_percent: 40
+      hourly_80_percent: 8
+    circuit_breaker_conditions:
+      - "bounce_rate > 0.05"
+      - "spam_complaint_rate > 0.001"
+      - "unsubscribe_rate > 0.02"
+    compliance_notes:
+      - "Saudi Anti-Spam Law compliance required"
+      - "CAN-SPAM / GDPR where applicable"
+      - "Unsubscribe honored within 24 hours"
+
+  WhatsApp_opt_in:
+    daily_limit: 20
+    hourly_limit: 5
+    min_interval_seconds: 14400
+    required_opt_in: true
+    forbidden_patterns:
+      - "cold contact"
+      - "تواصل بارد"
+      - "mass broadcast"
+      - "bulk WhatsApp"
+      - "WhatsApp API automation for cold"
+    warning_thresholds:
+      daily_80_percent: 16
+      hourly_80_percent: 4
+    circuit_breaker_conditions:
+      - "block_rate > 0.03"
+      - "complaint_received = true"
+      - "WhatsApp account warning received = true"
+    compliance_notes:
+      - "Opt-in required — no exceptions"
+      - "WhatsApp Terms of Service must be followed"
+      - "No automation tools for cold outreach"
+      - "Cold WhatsApp automation is a non-negotiable violation"
+
+  LinkedIn_manual:
+    daily_limit: 20
+    hourly_limit: 5
+    min_interval_seconds: 1800
+    required_opt_in: false
+    forbidden_patterns:
+      - "automation tool"
+      - "LinkedIn scraper"
+      - "connection mass request"
+      - "Dux-Soup"
+      - "Phantombuster"
+      - "Meet Alfred"
+      - "Expandi"
+      - "SalesFlow"
+    warning_thresholds:
+      daily_80_percent: 16
+      hourly_80_percent: 4
+    circuit_breaker_conditions:
+      - "LinkedIn account restriction warning received = true"
+      - "connection acceptance rate < 0.10"
+    compliance_notes:
+      - "LinkedIn automation is a non-negotiable violation"
+      - "Founder personal account only"
+      - "Manual sends only"
+
+  Meta_inbound:
+    daily_limit: 200
+    hourly_limit: 50
+    min_interval_seconds: 0
+    required_opt_in: true
+    forbidden_patterns:
+      - "outbound cold DM via Meta"
+      - "scraped contact"
+    warning_thresholds:
+      daily_80_percent: 160
+      hourly_80_percent: 40
+    circuit_breaker_conditions:
+      - "ad account flagged = true"
+      - "policy violation warning received = true"
+    compliance_notes:
+      - "Respond to inbound only"
+      - "No cold DMs via Meta"
+
+  TikTok_lead_forms:
+    daily_limit: 100
+    hourly_limit: 25
+    min_interval_seconds: 0
+    required_opt_in: true
+    forbidden_patterns:
+      - "cold outbound DM via TikTok"
+      - "scraped TikTok contact"
+    warning_thresholds:
+      daily_80_percent: 80
+      hourly_80_percent: 20
+    circuit_breaker_conditions:
+      - "ad account flagged = true"
+    compliance_notes:
+      - "Inbound from lead forms only"
+
+  Google_lead_ads:
+    daily_limit: 500
+    hourly_limit: 100
+    min_interval_seconds: 0
+    required_opt_in: true
+    forbidden_patterns:
+      - "purchased lead list"
+    warning_thresholds:
+      daily_80_percent: 400
+      hourly_80_percent: 80
+    circuit_breaker_conditions:
+      - "Google Ads account suspended = true"
+    compliance_notes:
+      - "Inbound intent-based leads only"
+
+  Phone_calls:
+    daily_limit: 10
+    hourly_limit: 3
+    min_interval_seconds: 1200
+    required_opt_in: false
+    forbidden_patterns:
+      - "cold calling from purchased list"
+      - "autodialer"
+      - "robocall"
+    warning_thresholds:
+      daily_80_percent: 8
+      hourly_80_percent: 2
+    circuit_breaker_conditions:
+      - "complaint received = true"
+      - "call outside business hours = true"
+    compliance_notes:
+      - "Warm leads only"
+      - "9am-5pm local time only"
+      - "No cold calling from purchased lists"
+
+global_circuit_breaker:
+  trigger_conditions:
+    - "any channel complaint received from Saudi regulator"
+    - "any domain blacklisted"
+    - "any account suspended"
+  action: "halt_all_outbound_immediately"
+  notify: "founder"
+  resume_requires: "founder_explicit_approval"
