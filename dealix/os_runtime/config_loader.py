@@ -155,7 +155,15 @@ class OSConfigLoader:
                 continue
             level = signals.get(dim_id, "low")
             levels = dim_config.get("levels", {})
-            level_config = levels.get(level, {})
+            # YAML booleans (yes/no/true/false) may be parsed as Python True/False
+            # Normalise: try string lookup first, then bool-coerced lookup
+            level_config = levels.get(level)
+            if level_config is None:
+                # try bool coercion (e.g. "yes" -> True, "no" -> False)
+                bool_map = {"yes": True, "no": False, "true": True, "false": False}
+                level_config = levels.get(bool_map.get(str(level).lower(), level), {})
+            if level_config is None:
+                level_config = {}
             score = level_config.get("score", 0)
             total_score += score
             dimension_scores.append(
