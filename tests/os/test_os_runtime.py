@@ -5,7 +5,6 @@ Tests approval gate, company scorer, offer router, channel router,
 anti-ban guardian, persuasion dossier, finance module.
 """
 
-import pytest
 import sys
 from pathlib import Path
 

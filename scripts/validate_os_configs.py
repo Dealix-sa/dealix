@@ -164,7 +164,6 @@ def main() -> int:
     print("\n[Additional File Scan]")
     all_yaml = list(OS_DIR.rglob("*.yml"))
     all_json = list(OS_DIR.rglob("*.json"))
-    extra_errors = []
 
     for f in all_yaml:
         rel = str(f.relative_to(OS_DIR))

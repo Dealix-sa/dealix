@@ -15,7 +15,6 @@ if str(REPO_ROOT) not in sys.path:
 from dealix.os_runtime.channel_router import (
     route_channels,
     check_channel_allowed,
-    CHANNEL_RULES,
     SECTOR_CHANNEL_MAP,
 )
 

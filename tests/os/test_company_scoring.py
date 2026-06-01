@@ -4,7 +4,6 @@ Company Scoring Tests
 Detailed tests for the company scoring system.
 """
 
-import pytest
 import sys
 from pathlib import Path
 
@@ -17,7 +16,6 @@ from dealix.os_runtime.company_scorer import (
     score_from_dict,
     CompanySignal,
     WEIGHTS,
-    TIER_THRESHOLDS,
 )
 
 
