@@ -160,10 +160,7 @@ class TestPersuasionDossierSchema:
 
     def test_example_dossier_matches_schema(self) -> None:
         """Validate a minimal well-formed dossier against the required fields."""
-        try:
-            import jsonschema
-        except ImportError:
-            pytest.skip("jsonschema not installed")
+        jsonschema = pytest.importorskip("jsonschema")
 
         data = _load_json(self.path)
         example = {

@@ -37,8 +37,6 @@ import sys
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from os import path  # noqa
-
 # Hard gates
 NO_LIVE_SEND: bool = True
 NO_LIVE_CHARGE: bool = True
