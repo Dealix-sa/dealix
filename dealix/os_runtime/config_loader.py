@@ -138,7 +138,7 @@ def load_all_configs() -> dict:
         try:
             path = OS_DIR / f
             with path.open("r", encoding="utf-8") as fh:
-                data = yaml.safe_load(fh)
+                yaml.safe_load(fh)
             results[str(f.relative_to(ROOT))] = {"status": "ok", "type": "yaml"}
         except Exception as e:
             results[str(f)] = {"status": "error", "error": str(e)}
@@ -147,7 +147,7 @@ def load_all_configs() -> dict:
         try:
             path = OS_DIR / f
             with path.open("r", encoding="utf-8") as fh:
-                data = json.load(fh)
+                json.load(fh)
             results[str(f.relative_to(ROOT))] = {"status": "ok", "type": "json"}
         except Exception as e:
             results[str(f)] = {"status": "error", "error": str(e)}

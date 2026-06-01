@@ -4,8 +4,6 @@ Offer Router
 Routes a company to the most appropriate Dealix offer based on sector.
 """
 
-from typing import Optional
-
 # Sector → Offer routing table
 ROUTES: dict[str, dict] = {
     "facilities_management": {

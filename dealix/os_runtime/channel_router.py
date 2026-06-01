@@ -5,7 +5,6 @@ Selects the best outreach channel(s) for a given company profile.
 Enforces anti-ban and doctrine rules: no cold WhatsApp, no LinkedIn automation.
 """
 
-from typing import Optional
 
 
 # Channel definitions with allowed/blocked rules
@@ -136,7 +135,6 @@ def route_channels(company: dict) -> dict:
 
     # Verify all channels are allowed
     allowed = [c for c in channels if CHANNEL_RULES.get(c, {}).get("allowed", False)]
-    blocked_attempted = [c for c in channels if not CHANNEL_RULES.get(c, {}).get("allowed", True)]
 
     # Always block cold channels
     always_blocked = ["cold_whatsapp", "linkedin_automation", "scraping"]
