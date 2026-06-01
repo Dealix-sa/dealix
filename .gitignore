@@ -324,3 +324,6 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Generated growth reports (dry-run output)
+reports/

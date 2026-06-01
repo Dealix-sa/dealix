@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PersuasionDossier",
+  "description": "Complete persuasion profile for a single B2B target company",
+  "type": "object",
+  "required": [
+    "company",
+    "country",
+    "sector",
+    "buyer_persona",
+    "likely_pain",
+    "trust_angle",
+    "best_offer",
+    "best_channel",
+    "message_pack"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "company": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "country": {
+      "type": "string",
+      "enum": ["SA", "AE", "KW", "QA", "BH", "OM", "EG", "JO"],
+      "description": "ISO country code"
+    },
+    "language": {
+      "type": "string",
+      "enum": ["ar", "en", "bilingual"],
+      "default": "bilingual"
+    },
+    "sector": {
+      "type": "string",
+      "description": "Industry sector"
+    },
+    "company_size": {
+      "type": "string",
+      "enum": ["<20", "20-50", "50-200", "200-500", "500+"],
+      "description": "Approximate headcount band"
+    },
+    "annual_revenue_sar": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated annual revenue in SAR"
+    },
+    "buyer_persona": {
+      "type": "string",
+      "description": "Primary decision-maker persona (e.g. Operations Director)"
+    },
+    "decision_maker_title": {
+      "type": "string",
+      "description": "Likely title of the decision maker"
+    },
+    "likely_pain": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "List of inferred pain points"
+    },
+    "trust_angle": {
+      "type": "string",
+      "description": "Primary trust-building angle for this company"
+    },
+    "risk_angle": {
+      "type": "string",
+      "description": "What risk concerns this buyer most"
+    },
+    "proof_asset": {
+      "type": "string",
+      "description": "Best proof asset to reference (case study, metric, audit)"
+    },
+    "best_offer": {
+      "type": "string",
+      "description": "Recommended Dealix offer ID (from 03_OFFERS.yml)"
+    },
+    "best_channel": {
+      "type": "string",
+      "enum": [
+        "Email",
+        "WhatsApp_opt_in",
+        "LinkedIn_manual",
+        "Meta_inbound",
+        "TikTok_lead_forms",
+        "Google_lead_ads",
+        "Website_form",
+        "Phone_calls",
+        "Partners",
+        "Referrals",
+        "Webinars",
+        "Procurement_portals"
+      ],
+      "description": "Best channel for initial contact"
+    },
+    "message_pack": {
+      "type": "object",
+      "required": ["subject_line"],
+      "properties": {
+        "subject_line": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "opening_ar": {
+          "type": "string"
+        },
+        "opening_en": {
+          "type": "string"
+        },
+        "value_prop_ar": {
+          "type": "string"
+        },
+        "value_prop_en": {
+          "type": "string"
+        },
+        "cta_ar": {
+          "type": "string"
+        },
+        "cta_en": {
+          "type": "string"
+        }
+      }
+    },
+    "objections_expected": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Anticipated objections from this buyer"
+    },
+    "objection_responses": {
+      "type": "object",
+      "description": "Mapped responses to anticipated objections",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "persuasion_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Composite persuasion readiness score"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scored_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "governance_decision": {
+      "type": "object",
+      "description": "Mandatory governance decision field — doctrine requirement",
+      "properties": {
+        "approved": {
+          "type": "boolean"
+        },
+        "reviewed_by": {
+          "type": "string"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

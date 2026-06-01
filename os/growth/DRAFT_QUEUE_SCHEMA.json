@@ -1,0 +1,140 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DraftQueueItem",
+  "description": "A single outreach draft waiting for founder approval before send",
+  "type": "object",
+  "required": [
+    "draft_id",
+    "company_id",
+    "channel",
+    "offer_tier",
+    "language",
+    "status",
+    "requires_approval",
+    "created_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "draft_id": {
+      "type": "string",
+      "description": "Unique draft identifier (UUID)"
+    },
+    "company_id": {
+      "type": "string",
+      "description": "Target company identifier"
+    },
+    "company_name": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "Email",
+        "WhatsApp_opt_in",
+        "LinkedIn_manual",
+        "Meta_inbound",
+        "TikTok_lead_forms",
+        "Google_lead_ads",
+        "Website_form",
+        "Phone_calls",
+        "Partners",
+        "Referrals",
+        "Webinars",
+        "Procurement_portals"
+      ]
+    },
+    "offer_tier": {
+      "type": "string",
+      "description": "Offer ID from 03_OFFERS.yml"
+    },
+    "language": {
+      "type": "string",
+      "enum": ["ar", "en", "bilingual"]
+    },
+    "subject_line": {
+      "type": "string",
+      "maxLength": 100
+    },
+    "body_ar": {
+      "type": "string"
+    },
+    "body_en": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending_approval",
+        "approved",
+        "rejected",
+        "sent",
+        "failed",
+        "archived"
+      ]
+    },
+    "persuasion_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "requires_approval": {
+      "type": "boolean",
+      "description": "Always true for outbound channels per doctrine"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "submitted_for_approval_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approved_by": {
+      "type": "string"
+    },
+    "rejected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "rejection_reason": {
+      "type": "string"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_dossier_id": {
+      "type": "string",
+      "description": "Reference to the PersuasionDossier that generated this draft"
+    },
+    "anti_ban_checked": {
+      "type": "boolean",
+      "description": "Whether anti-ban rules were checked before queuing"
+    },
+    "governance_decision": {
+      "type": "object",
+      "description": "Mandatory governance field — doctrine requirement",
+      "properties": {
+        "gate_id": {
+          "type": "string"
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

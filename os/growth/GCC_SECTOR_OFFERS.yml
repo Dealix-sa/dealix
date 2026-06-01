@@ -1,0 +1,312 @@
+# Dealix Growth OS — GCC Sector-Specific Offers
+# عروض Dealix المخصصة لقطاعات GCC
+
+version: "1.0"
+markets:
+  - SA
+  - AE
+  - KW
+  - QA
+  - BH
+  - OM
+
+sectors:
+
+  legal_firms:
+    id: "LEGAL"
+    name: "Legal Firms"
+    name_ar: "مكاتب المحاماة والاستشارات القانونية"
+    target_markets:
+      - SA
+      - AE
+      - KW
+    pain_points:
+      - "Document review and contract drafting is manual and time-consuming"
+      - "Case management across multiple files is chaotic"
+      - "Client follow-up and billing tracking done via Excel or email"
+      - "Knowledge management — precedents and templates scattered"
+      - "Compliance documentation takes excessive time"
+    proof_points:
+      - "Law firms using AI review tools cut document processing time by 60-80%"
+      - "Saudi Vision 2030 digital transformation requirements create urgency"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 5000
+      sar_max: 15000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 8000
+      sar_monthly_max: 25000
+    preferred_channel: "Email"
+    best_offer: "sovereign_knowledge_rag"
+    best_buyer_title: "Managing Partner"
+    objections:
+      - "Client confidentiality concerns"
+      - "Bar association regulations"
+    objection_responses:
+      "Client confidentiality concerns": >
+        نظامنا يعمل على بنيتكم التحتية — البيانات لا تغادر خوادمكم.
+        لا تدريب على بياناتكم. audit log كامل.
+      "Bar association regulations": >
+        نراجع معكم متطلبات هيئة المحامين السعودية قبل البدء.
+        نظام AI يساعد المحامي ولا يستبدله.
+
+  consulting_firms:
+    id: "CONS"
+    name: "Consulting Firms"
+    name_ar: "شركات الاستشارات والإدارة"
+    target_markets:
+      - SA
+      - AE
+      - KW
+      - QA
+    pain_points:
+      - "Proposal writing takes too long for each client"
+      - "Research and benchmarking is manual"
+      - "Report generation from multiple data sources is slow"
+      - "Knowledge capture from past projects is weak"
+      - "Utilization tracking across consultants is manual"
+    proof_points:
+      - "Consulting firms using AI cut proposal time from days to hours"
+      - "Automated research and synthesis frees consultants for high-value work"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 8000
+      sar_max: 20000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 12000
+      sar_monthly_max: 40000
+    preferred_channel: "Email"
+    best_offer: "revenue_ai_os"
+    best_buyer_title: "Managing Director"
+    objections:
+      - "We already use AI tools"
+      - "Our work is too bespoke for automation"
+    objection_responses:
+      "We already use AI tools": >
+        أدوات AI مختلفة عن نظام AI Agentic متكامل.
+        نبني workflow يجمع أدواتكم في سير عمل واحد محكوم.
+      "Our work is too bespoke for automation": >
+        بالضبط — نحن لا نؤتمت التفكير الاستراتيجي، بل نؤتمت البحث والتجميع والتقارير
+        حتى يركز فريقكم على القيمة الحقيقية.
+
+  real_estate_developers:
+    id: "REDE"
+    name: "Real Estate Developers"
+    name_ar: "شركات التطوير العقاري"
+    target_markets:
+      - SA
+      - AE
+      - KW
+      - QA
+    pain_points:
+      - "Project status reporting across multiple projects is manual"
+      - "Contractor and vendor follow-up is chaotic"
+      - "Sales pipeline tracking and lead management is disorganized"
+      - "Regulatory approval tracking is manual"
+      - "Document management across projects is scattered"
+    proof_points:
+      - "Vision 2030 projects creating massive demand for operational efficiency"
+      - "Real estate developers with project controls AI reduce reporting time by 70%"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 10000
+      sar_max: 25000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 15000
+      sar_monthly_max: 50000
+    preferred_channel: "Email"
+    best_offer: "project_controls_ai_os"
+    best_buyer_title: "Development Director"
+    objections:
+      - "We have a project management system already"
+      - "Our projects are unique"
+
+  healthcare:
+    id: "HLTH"
+    name: "Healthcare Clinics and Hospitals"
+    name_ar: "عيادات ومستشفيات"
+    target_markets:
+      - SA
+      - AE
+      - KW
+    pain_points:
+      - "Patient scheduling and follow-up is manual"
+      - "Staff scheduling across departments is complex"
+      - "Medical report generation is time-consuming"
+      - "Billing and insurance claims tracking is slow"
+      - "Compliance documentation (Ministry of Health) is burdensome"
+    proof_points:
+      - "Healthcare AI reduces administrative burden by 40-60%"
+      - "Saudi Vision 2030 health sector digitization creates urgency"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 8000
+      sar_max: 20000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 12000
+      sar_monthly_max: 35000
+    preferred_channel: "Email"
+    best_offer: "maintenance_intelligence_os"
+    best_buyer_title: "Operations Manager"
+    compliance_notes:
+      - "PDPL compliance required for patient data"
+      - "MOH regulations must be considered"
+      - "Patient PII never in AI logs"
+
+  manufacturing_industrial:
+    id: "MANF"
+    name: "Manufacturing and Industrial"
+    name_ar: "الصناعة والتصنيع"
+    target_markets:
+      - SA
+      - AE
+      - KW
+    pain_points:
+      - "Production reporting is manual and delayed"
+      - "Equipment maintenance tracking is reactive not preventive"
+      - "Supply chain follow-up is chaotic"
+      - "Quality documentation is slow"
+      - "Shift handover reports are inconsistent"
+    proof_points:
+      - "Predictive maintenance AI reduces unplanned downtime by 25-40%"
+      - "Saudi industrial sector is expanding rapidly under Vision 2030"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 10000
+      sar_max: 25000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 15000
+      sar_monthly_max: 60000
+    preferred_channel: "Email"
+    best_offer: "maintenance_intelligence_os"
+    best_buyer_title: "Plant Manager"
+
+  retail_ecommerce:
+    id: "RETL"
+    name: "Retail and E-commerce"
+    name_ar: "تجزئة وتجارة إلكترونية"
+    target_markets:
+      - SA
+      - AE
+      - KW
+      - QA
+    pain_points:
+      - "Customer service volume is unmanageable"
+      - "Inventory management and reordering is manual"
+      - "Marketing campaign analysis is slow"
+      - "Supplier follow-up is chaotic"
+      - "Returns and refund processing is slow"
+    proof_points:
+      - "AI customer service handles 60-80% of routine queries automatically"
+      - "Saudi e-commerce market growing at 30%+ annually"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 5000
+      sar_max: 15000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 8000
+      sar_monthly_max: 25000
+    preferred_channel: "Email"
+    best_offer: "revenue_ai_os"
+    best_buyer_title: "CEO"
+
+  technology_companies:
+    id: "TECH"
+    name: "Technology Companies"
+    name_ar: "شركات التقنية والبرمجيات"
+    target_markets:
+      - SA
+      - AE
+    pain_points:
+      - "Customer support tickets volume is overwhelming"
+      - "Documentation generation is slow"
+      - "Sales pipeline management is manual"
+      - "Onboarding new clients is repetitive"
+      - "QA and testing reporting is inconsistent"
+    proof_points:
+      - "Tech companies that use AI ops report 50% reduction in support overhead"
+      - "Saudi tech ecosystem growing rapidly under Vision 2030"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 8000
+      sar_max: 20000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 10000
+      sar_monthly_max: 30000
+    preferred_channel: "Email"
+    best_offer: "sovereign_knowledge_rag"
+    best_buyer_title: "CTO"
+    notes: "Tech companies may want to build themselves — pitch speed-to-value"
+
+  construction_contracting:
+    id: "CONS_C"
+    name: "Construction and Contracting"
+    name_ar: "الإنشاء والمقاولات"
+    target_markets:
+      - SA
+      - AE
+      - KW
+      - QA
+    pain_points:
+      - "Daily progress reports across multiple sites is manual"
+      - "Subcontractor follow-up and payments tracking is chaotic"
+      - "Safety incident reporting is inconsistent"
+      - "Material procurement and tracking is manual"
+      - "Change order management loses revenue"
+    proof_points:
+      - "Construction firms using AI project controls cut reporting time by 60%"
+      - "Vision 2030 mega-projects create massive demand"
+      - "NEOM and Red Sea projects create talent and ops pressure"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 15000
+      sar_max: 35000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 20000
+      sar_monthly_max: 80000
+    preferred_channel: "Email"
+    best_offer: "project_controls_ai_os"
+    best_buyer_title: "Operations Director"
+
+  finance_investment:
+    id: "FIN"
+    name: "Finance and Investment"
+    name_ar: "المالية والاستثمار"
+    target_markets:
+      - SA
+      - AE
+      - KW
+      - QA
+      - BH
+    pain_points:
+      - "Investment portfolio reporting is manual and delayed"
+      - "Regulatory compliance documentation (CMA, SAMA) is burdensome"
+      - "Client reporting and communications take too long"
+      - "Due diligence document review is slow"
+      - "Risk monitoring is reactive"
+    proof_points:
+      - "Financial firms using AI compliance tools reduce regulatory risk exposure"
+      - "Saudi capital market growth creates reporting and compliance demand"
+    pricing_entry:
+      offer: "ai_workflow_audit"
+      sar_min: 15000
+      sar_max: 35000
+    pricing_retainer:
+      offer: "ai_ops_retainer"
+      sar_monthly_min: 20000
+      sar_monthly_max: 80000
+    preferred_channel: "Email"
+    best_offer: "sovereign_knowledge_rag"
+    best_buyer_title: "Chief Operations Officer"
+    compliance_notes:
+      - "CMA and SAMA regulations apply"
+      - "Financial data security is paramount"
+      - "Governance and audit trail required"
