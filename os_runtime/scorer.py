@@ -39,6 +39,12 @@ def score_company(data: dict) -> dict:
     for dim_key, dim_spec in dimensions_cfg.items():
         levels: dict = dim_spec.get("levels", {})
         provided_level = data.get(dim_key)
+        # Normalize string "yes"/"no" → bool to match YAML's coercion of
+        # bare yes/no keys (e.g. maintenance_or_field_ops in 05_SCORING.yml)
+        if provided_level == "yes":
+            provided_level = True
+        elif provided_level == "no":
+            provided_level = False
         dim_score = 0
         if provided_level is not None and provided_level in levels:
             dim_score = levels[provided_level].get("score", 0)
