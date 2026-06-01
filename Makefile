@@ -10,7 +10,8 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        os-validate os-daily-brief growth-dry-run
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +183,14 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── OS Runtime ─────────────────────────────────────────────────
+os-validate: ## Validate all OS configs (os/*.yml + os/growth/*.yml)
+	$(PYTHON) -m dealix.os_runtime validate
+	$(PYTHON) scripts/validate_os_configs.py
+
+os-daily-brief: ## Generate founder growth daily report (no live sends)
+	$(PYTHON) scripts/founder_growth_daily_report.py
+
+growth-dry-run: ## Dry-run growth draft factory — 50 companies, output to reports/
+	$(PYTHON) scripts/growth_dry_run.py --companies 50 --output reports/
