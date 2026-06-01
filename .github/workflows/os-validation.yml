@@ -1,0 +1,38 @@
+name: OS Config Validation
+
+on:
+  push:
+    paths:
+      - 'os/**'
+      - 'os_runtime/**'
+      - 'scripts/os_*.py'
+  pull_request:
+    paths:
+      - 'os/**'
+      - 'os_runtime/**'
+      - 'scripts/os_*.py'
+
+jobs:
+  validate-os:
+    name: Validate Dealix OS configs + runtime
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install pyyaml
+      - name: Validate all OS configs
+        run: python scripts/os_validate_configs.py
+      - name: Score demo company
+        run: python scripts/os_score_company.py --demo
+      - name: Route demo company offers
+        run: python scripts/os_route_offer.py --demo
+      - name: Check approval gate (protected action)
+        run: python scripts/os_check_approval_gates.py --action "send_first_email" || true
+      - name: Generate demo daily brief
+        run: python scripts/os_daily_brief.py --demo
+      - name: Run OS unit tests
+        run: pip install pytest && pytest tests/test_os_yaml_parse.py tests/test_os_schema_examples.py tests/test_approval_gates_enforced.py tests/test_offer_router_examples.py tests/test_company_scoring_thresholds.py tests/test_daily_brief_generation.py -v --no-cov

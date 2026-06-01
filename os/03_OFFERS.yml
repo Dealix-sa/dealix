@@ -305,3 +305,159 @@ offers:
       - "قسم ثاني يطلب نفس النظام"
       - "إدارة جديدة تنضم"
       - "API integration إضافي"
+
+  legal_knowledge_document_os:
+    id: "LKD"
+    name: "Legal Knowledge & Document Intelligence OS"
+    name_ar: "نظام ذكاء المستندات والمعرفة القانونية"
+    best_for:
+      - "law firms"
+      - "legal departments in corporations"
+      - "compliance and regulatory teams"
+      - "legal advisory offices"
+    outcomes:
+      - "instant document retrieval from matter archives"
+      - "matter summaries and obligation extraction"
+      - "deadline and obligation tracking"
+      - "knowledge reuse across matters"
+      - "confidential: sample-data-first workflow"
+    entry_offer: "ai_workflow_audit"
+    price_range_sar: "30000-150000"
+    delivery_weeks: "6-12"
+    data_sensitivity: "high — NDA required before discovery"
+    languages: ["arabic", "english"]
+
+  consulting_delivery_intelligence_os:
+    id: "CDI"
+    name: "Consulting Delivery Intelligence OS"
+    name_ar: "نظام ذكاء التسليم الاستشاري"
+    best_for:
+      - "management consulting firms"
+      - "strategy advisory firms"
+      - "training and development companies"
+    outcomes:
+      - "AI-assisted insight generation from interviews and data"
+      - "automated report drafting (Arabic + English)"
+      - "knowledge base of past engagements"
+      - "faster proposal writing from past work"
+    entry_offer: "ai_workflow_audit"
+    price_range_sar: "25000-120000"
+    delivery_weeks: "4-10"
+    data_sensitivity: "medium — client data handling policy required"
+    languages: ["arabic", "english"]
+
+  property_operations_ai_os:
+    id: "POA"
+    name: "Property Operations AI OS"
+    name_ar: "نظام العمليات العقارية بالذكاء الاصطناعي"
+    best_for:
+      - "real estate asset management companies"
+      - "property management firms"
+      - "real estate development companies with operational assets"
+    outcomes:
+      - "automated tenant communication and issue triage"
+      - "maintenance request routing and tracking"
+      - "lease renewal and expiry intelligence"
+      - "property performance reporting"
+    entry_offer: "ai_workflow_audit"
+    price_range_sar: "20000-100000"
+    delivery_weeks: "4-8"
+    data_sensitivity: "medium — tenant data requires PDPL compliance"
+    languages: ["arabic", "english"]
+
+  gcc_international_ai_pilot:
+    id: "GIP"
+    name: "GCC International AI Pilot"
+    name_ar: "مشروع الذكاء الاصطناعي التجريبي للخليج الدولي"
+    best_for:
+      - "multinational companies with GCC operations"
+      - "international companies expanding into Saudi Arabia or UAE"
+      - "regional headquarters of global firms"
+    outcomes:
+      - "bilingual AI workflows (Arabic + English)"
+      - "GCC compliance-aware automation"
+      - "fast 6-week pilot to prove ROI before full rollout"
+    entry_offer: "ai_workflow_audit"
+    price_range_sar: "50000-200000"
+    delivery_weeks: "6"
+    data_sensitivity: "medium-high — data residency requirements for Saudi operations"
+    languages: ["arabic", "english"]
+    pricing_currency: "USD or SAR — international clients may prefer USD"
+
+  accounting_audit_workflow_ai:
+    id: "AAW"
+    name: "Accounting & Audit Workflow AI"
+    name_ar: "ذكاء الأعمال لسير عمل المحاسبة والمراجعة"
+    best_for:
+      - "accounting firms"
+      - "audit firms (Big 4 and mid-tier)"
+      - "finance departments in large corporations"
+    outcomes:
+      - "automated workpaper preparation assistance"
+      - "document extraction from financial statements"
+      - "exception flagging and anomaly surfacing"
+      - "regulatory checklist automation"
+    entry_offer: "ai_workflow_audit"
+    price_range_sar: "25000-120000"
+    delivery_weeks: "4-10"
+    data_sensitivity: "high — financial data under strict confidentiality"
+    languages: ["arabic", "english"]
+
+  healthcare_admin_workflow_ai:
+    id: "HAW"
+    name: "Healthcare Admin Workflow AI"
+    name_ar: "ذكاء الأعمال للإدارة الصحية"
+    best_for:
+      - "hospital administrative departments"
+      - "medical group operations teams"
+      - "insurance and claims processing teams"
+    outcomes:
+      - "patient document routing and triage"
+      - "appointment and scheduling intelligence"
+      - "claims pre-screening and checklist automation"
+      - "regulatory compliance tracking"
+    entry_offer: "ai_workflow_audit"
+    price_range_sar: "30000-150000"
+    delivery_weeks: "6-12"
+    data_sensitivity: "very high — PHI/HIPAA analog — no PII in LLM prompts; sample-data-first mandatory"
+    languages: ["arabic", "english"]
+    note: "Never process actual patient records in prompts — workflow handles routing only"
+
+  training_education_knowledge_os:
+    id: "TEK"
+    name: "Training & Education Knowledge OS"
+    name_ar: "نظام المعرفة للتدريب والتعليم"
+    best_for:
+      - "training centers and academies"
+      - "corporate L&D departments"
+      - "professional certification bodies"
+    outcomes:
+      - "AI-assisted content generation and localization (Arabic/English)"
+      - "participant Q&A knowledge base"
+      - "trainer preparation and material reuse"
+      - "assessment generation and grading assistance"
+    entry_offer: "ai_workflow_audit"
+    price_range_sar: "15000-80000"
+    delivery_weeks: "3-8"
+    data_sensitivity: "low-medium"
+    languages: ["arabic", "english"]
+
+  omni_channel_growth_os:
+    id: "OCG"
+    name: "Omni-Channel Growth OS"
+    name_ar: "نظام النمو متعدد القنوات"
+    best_for:
+      - "B2B service companies wanting to scale outreach"
+      - "companies with large addressable market but manual sales process"
+      - "sales teams generating < 50 qualified leads/month"
+    outcomes:
+      - "300+ qualified draft outreach/day across GCC sectors"
+      - "bilingual drafts (Arabic + English) with founder approval workflow"
+      - "channel routing intelligence per sector"
+      - "reply tracking and pipeline acceleration"
+    entry_offer: "ai_workflow_audit"
+    price_range_sar: "20000-80000"
+    delivery_weeks: "3-6"
+    data_sensitivity: "low — outbound prospecting data"
+    languages: ["arabic", "english"]
+    compliance: "all outreach requires explicit founder approval before send; no cold WhatsApp; no LinkedIn automation"
