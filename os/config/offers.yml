@@ -1,0 +1,177 @@
+# Dealix — Offers Configuration (config layer)
+# تكوين العروض للـ os_runtime
+
+version: "1.0"
+
+description: >
+  Authoritative offer pricing and routing configuration for the OS runtime.
+  Canonical offer catalog lives in os/03_OFFERS.yml.
+  This config adds floor prices, routing rules, and approval requirements.
+
+floor_prices_sar:
+  ai_workflow_audit: 5000
+  legal_workflow_audit: 15000
+  agentic_pilot_no_api: 30000
+  agentic_pilot_with_api: 60000
+  multi_system_integration: 100000
+  production_deployment: 150000
+  executive_command_center: 250000
+  ai_ops_retainer_monthly: 8000
+
+offers:
+
+  ai_workflow_audit:
+    id: "WFA"
+    floor_price_sar: 5000
+    category: "entry"
+    duration_days_min: 3
+    duration_days_max: 7
+    requires_founder_approval_to_quote: true
+    target_sectors:
+      - "all"
+    best_entry_for_tiers: ["A", "B"]
+    upsell_to: "agentic_workflow_pilot"
+    approval_gate_before_send: "send_proposal"
+
+  agentic_workflow_pilot:
+    id: "AWP"
+    floor_price_sar: 30000
+    floor_price_with_api_sar: 60000
+    category: "pilot"
+    duration_days_min: 20
+    duration_days_max: 35
+    prerequisite: "ai_workflow_audit"
+    requires_founder_approval_to_quote: true
+    upsell_to: "vertical_os_or_custom"
+    approval_gate_before_send: "send_proposal"
+
+  maintenance_intelligence_os:
+    id: "MIOS"
+    floor_price_sar: 40000
+    category: "vertical_system"
+    duration_days_min: 30
+    duration_days_max: 90
+    target_sectors:
+      - "facilities_management"
+      - "maintenance"
+    requires_founder_approval_to_quote: true
+    upsell_to: "ai_ops_retainer"
+    approval_gate_before_send: "send_proposal"
+
+  project_controls_ai_os:
+    id: "PCOS"
+    floor_price_sar: 50000
+    category: "vertical_system"
+    duration_days_min: 45
+    duration_days_max: 90
+    target_sectors:
+      - "contracting"
+    requires_founder_approval_to_quote: true
+    upsell_to: "ai_ops_retainer"
+    approval_gate_before_send: "send_proposal"
+
+  legal_knowledge_document_os:
+    id: "LKDOS"
+    floor_price_sar: 50000
+    category: "vertical_system"
+    duration_days_min: 30
+    duration_days_max: 90
+    target_sectors:
+      - "legal"
+    sensitive: true
+    requires_founder_approval_to_quote: true
+    upsell_to: "ai_ops_retainer"
+    approval_gate_before_send: "send_proposal"
+
+  consulting_delivery_intelligence_os:
+    id: "CDIOS"
+    floor_price_sar: 40000
+    category: "vertical_system"
+    duration_days_min: 30
+    duration_days_max: 60
+    target_sectors:
+      - "consulting"
+    requires_founder_approval_to_quote: true
+    upsell_to: "ai_ops_retainer"
+
+  property_operations_ai_os:
+    id: "POAOS"
+    floor_price_sar: 35000
+    category: "vertical_system"
+    duration_days_min: 30
+    duration_days_max: 60
+    target_sectors:
+      - "real_estate"
+    requires_founder_approval_to_quote: true
+    upsell_to: "ai_ops_retainer"
+
+  gcc_international_ai_pilot:
+    id: "GIAP"
+    floor_price_sar: 60000
+    category: "pilot"
+    duration_days_min: 30
+    duration_days_max: 60
+    target_sectors:
+      - "international_company"
+    requires_founder_approval_to_quote: true
+    upsell_to: "full_regional_deployment"
+
+  accounting_audit_workflow_ai:
+    id: "AAWAI"
+    floor_price_sar: 25000
+    category: "vertical_system"
+    duration_days_min: 21
+    duration_days_max: 45
+    target_sectors:
+      - "accounting"
+    sensitive: true
+    requires_founder_approval_to_quote: true
+    upsell_to: "ai_ops_retainer"
+
+  healthcare_admin_workflow_ai:
+    id: "HAWAI"
+    floor_price_sar: 30000
+    category: "vertical_system"
+    duration_days_min: 30
+    duration_days_max: 60
+    target_sectors:
+      - "healthcare_admin"
+    sensitive: true
+    requires_founder_approval_to_quote: true
+    notes: "Non-clinical admin workflows only. Never touch clinical data."
+    upsell_to: "ai_ops_retainer"
+
+  revenue_ai_os:
+    id: "RAOS"
+    floor_price_sar: 30000
+    category: "vertical_system"
+    duration_days_min: 30
+    duration_days_max: 60
+    target_sectors:
+      - "b2b_services"
+    requires_founder_approval_to_quote: true
+    upsell_to: "ai_ops_retainer"
+
+  ai_ops_retainer:
+    id: "RET"
+    floor_price_sar_monthly: 8000
+    category: "retainer"
+    billing: "monthly"
+    requires_founder_approval_to_quote: true
+    prerequisite: "any_delivered_project"
+
+  sovereign_knowledge_rag:
+    id: "SKRAG"
+    floor_price_sar: 50000
+    category: "vertical_system"
+    duration_days_min: 45
+    duration_days_max: 120
+    requires_founder_approval_to_quote: true
+
+  executive_command_center:
+    id: "ECC"
+    floor_price_sar: 100000
+    category: "vertical_system"
+    duration_days_min: 60
+    duration_days_max: 180
+    requires_founder_approval_to_quote: true

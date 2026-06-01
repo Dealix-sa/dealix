@@ -1,0 +1,142 @@
+# Dealix — Anti-Ban Guardian Configuration
+# قواعد حماية القنوات من الحظر والسمعة السيئة
+
+version: "1.0"
+
+doctrine:
+  description: >
+    These rules protect Dealix's sender reputation, domain health,
+    and founder's professional standing. Violations can cause
+    permanent channel damage. Treat all limits as hard caps.
+  override_authority: "founder only — in writing"
+
+# ─────────────────────────────────────────────
+# GLOBAL LIMITS
+# ─────────────────────────────────────────────
+global:
+  message_similarity_threshold: 0.72
+  description: >
+    If two messages to different companies are more than 72% similar,
+    flag for review. Mass identical messages destroy sender reputation.
+  same_company_cooldown_days: 14
+  description_cooldown: >
+    Never contact the same company more than once within 14 days
+    unless they have responded and the conversation is active.
+  max_new_companies_per_day: 20
+  max_messages_per_day_all_channels: 30
+  require_personalization: true
+  personalization_minimum_fields: ["company_name", "sector_pain", "specific_signal"]
+
+# ─────────────────────────────────────────────
+# EMAIL
+# ─────────────────────────────────────────────
+email:
+  daily_send_limit: 20
+  weekly_send_limit: 80
+  bounce_rate_pause_threshold: 0.05
+  description_bounce: >
+    If bounce rate exceeds 5%, pause all email sends immediately.
+    Investigate list quality before resuming.
+  spam_rate_pause_threshold: 0.003
+  description_spam: >
+    If spam complaint rate exceeds 0.3%, pause all email sends.
+    This is Google Postmaster threshold for domain reputation damage.
+  warmup_required: true
+  warmup_description: >
+    New sending domain must be warmed up: start with 5/day, double weekly,
+    max 50/day before full send. Never skip warmup.
+  spf_dkim_dmarc_required: true
+  unsubscribe_required: true
+  cooldown_after_no_reply_days: 30
+  max_followups_per_thread: 2
+  subject_line_rules:
+    no_spam_words: ["FREE", "GUARANTEED", "ACT NOW", "LIMITED TIME", "URGENT"]
+    max_length_chars: 60
+    personalization_required: true
+  content_rules:
+    no_fake_metrics: true
+    no_guaranteed_outcomes: true
+    must_include_disclaimer: false
+    bilingual_recommended: true
+
+# ─────────────────────────────────────────────
+# LINKEDIN
+# ─────────────────────────────────────────────
+linkedin:
+  mode: "assisted_manual_only"
+  auto_dm_allowed: false
+  auto_connect_allowed: false
+  scraping_allowed: false
+  description: >
+    LinkedIn is a MANUAL-ONLY channel. The founder sends messages personally.
+    No automation tools, no scrapers, no auto-DM tools.
+    Violating LinkedIn TOS risks permanent account suspension.
+  daily_connection_limit: 20
+  daily_message_limit: 15
+  warmup_period_days: 30
+  profile_view_before_connect: true
+  personalization_required: true
+  max_pending_connections: 300
+  note: >
+    LinkedIn algorithm detects automation patterns. Even manual sends that
+    look automated (same message, rapid pace) can trigger restrictions.
+
+# ─────────────────────────────────────────────
+# WHATSAPP
+# ─────────────────────────────────────────────
+whatsapp:
+  cold_outreach_allowed: false
+  description: >
+    DOCTRINE: No cold WhatsApp outreach. Non-negotiable.
+    WhatsApp is permitted ONLY for ongoing conversations where the
+    contact initiated or explicitly opted in.
+  opt_in_required: true
+  opt_in_documentation: "must be recorded with timestamp and source"
+  business_api_session_window_hours: 24
+  session_window_description: >
+    WhatsApp Business API allows messaging within 24h of customer-initiated
+    contact. Outside this window, only approved template messages allowed.
+  approved_templates_only_outside_window: true
+  daily_limit_opt_in_contacts: 50
+  block_keywords: ["cold", "blast", "broadcast", "mass", "bulk"]
+
+# ─────────────────────────────────────────────
+# WEBSITE FORMS
+# ─────────────────────────────────────────────
+website_forms:
+  captcha_bypass_allowed: false
+  auto_submit_allowed: false
+  description: >
+    Website form submissions must be completed by a human (the founder)
+    reviewing the content first. No automated form submission tools.
+  daily_form_limit: 10
+  personalization_required: true
+
+# ─────────────────────────────────────────────
+# PHONE / CALLS
+# ─────────────────────────────────────────────
+phone:
+  auto_dialing_allowed: false
+  robo_calls_allowed: false
+  founder_only: true
+  brief_required_before_call: true
+  description: >
+    The founder makes all calls. Agents prepare the call brief.
+    No auto-dialing, no scripts read by bots.
+  daily_call_limit: 10
+  best_hours: "09:00-12:00 and 15:00-17:00 local time"
+
+# ─────────────────────────────────────────────
+# MONITORING & ALERTS
+# ─────────────────────────────────────────────
+monitoring:
+  track_bounce_rates: true
+  track_open_rates: true
+  track_reply_rates: true
+  track_spam_complaints: true
+  alert_on_threshold_breach: true
+  daily_brief_include_channel_health: true
+  pause_on_anomaly: true
+  anomaly_definition: >
+    Any channel metric that deviates more than 2x from the 7-day average.
+    Example: bounce rate doubles, open rate halves.

@@ -98,6 +98,15 @@ def score_company(signal: CompanySignal) -> dict:
     }
 
 
+def _coerce_bool(val: object) -> bool:
+    """Accept only strict booleans and integers 1/0; reject arbitrary strings."""
+    if isinstance(val, bool):
+        return val
+    if isinstance(val, int):
+        return val == 1
+    return False
+
+
 def score_from_dict(data: dict) -> dict:
     """
     Convenience: build a CompanySignal from a plain dict and score it.
@@ -107,14 +116,14 @@ def score_from_dict(data: dict) -> dict:
         company=data.get("company") or data.get("name") or "",
         country=data.get("country", ""),
         sector=data.get("sector", ""),
-        operations_heavy=bool(data.get("operations_heavy", False)),
-        maintenance_or_field_work=bool(data.get("maintenance_or_field_work", False)),
-        repeated_reporting=bool(data.get("repeated_reporting", False)),
-        multi_branch_or_multi_site=bool(data.get("multi_branch_or_multi_site", False)),
-        clear_buyer_title=bool(data.get("clear_buyer_title", False)),
-        public_growth_signal=bool(data.get("public_growth_signal", False)),
-        likely_data_or_api=bool(data.get("likely_data_or_api", False)),
-        founder_domain_fit=bool(data.get("founder_domain_fit", False)),
+        operations_heavy=_coerce_bool(data.get("operations_heavy", False)),
+        maintenance_or_field_work=_coerce_bool(data.get("maintenance_or_field_work", False)),
+        repeated_reporting=_coerce_bool(data.get("repeated_reporting", False)),
+        multi_branch_or_multi_site=_coerce_bool(data.get("multi_branch_or_multi_site", False)),
+        clear_buyer_title=_coerce_bool(data.get("clear_buyer_title", False)),
+        public_growth_signal=_coerce_bool(data.get("public_growth_signal", False)),
+        likely_data_or_api=_coerce_bool(data.get("likely_data_or_api", False)),
+        founder_domain_fit=_coerce_bool(data.get("founder_domain_fit", False)),
         extras=data.get("extras", {}),
         notes=data.get("notes", ""),
         source_ref=data.get("source_ref"),

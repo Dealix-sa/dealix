@@ -1,0 +1,83 @@
+# Dealix — Channel Quotas
+# الحصص اليومية والأسبوعية لكل قناة
+
+version: "1.0"
+
+description: >
+  Hard limits on outreach volume per channel per time period.
+  These quotas protect sender reputation and enforce quality over quantity.
+  All limits assume the message has passed persuasion score (min 82/100).
+
+daily_limits:
+
+  email:
+    max_new_outreach: 20
+    max_followups: 10
+    max_total: 30
+    notes: "Includes all cold and warm email. Transactional emails excluded."
+
+  linkedin_assisted:
+    max_connection_requests: 10
+    max_messages: 8
+    max_profile_views_before_connect: 30
+    notes: "Manual sends by founder only. Spread throughout the day."
+
+  website_form:
+    max_submissions: 5
+    notes: "Founder reviews and submits each form manually."
+
+  phone_intro:
+    max_calls: 8
+    notes: "Founder makes calls. Agent prepares brief. Best hours: 9-12 and 15-17."
+
+  referral:
+    max_ask_per_day: 3
+    notes: "Limit referral requests to 3/day to preserve relationship goodwill."
+
+  partner_referral:
+    max_per_day: 5
+    notes: "Via established partners — pre-approved channel."
+
+  executive_email:
+    max_per_day: 5
+    notes: "High-personalization emails only. Quality over quantity."
+
+weekly_limits:
+
+  email:
+    max_new_outreach: 80
+    max_total: 150
+
+  linkedin_assisted:
+    max_connection_requests: 50
+    max_messages: 40
+
+  new_companies_researched:
+    target: 100
+    max: 150
+
+  briefs_prepared:
+    target: 50
+    max: 80
+
+monthly_limits:
+
+  new_companies_contacted:
+    target: 200
+    max: 300
+
+  proposals_sent:
+    max: 20
+    notes: "Quality threshold — each proposal requires significant personalization"
+
+blocked_channels:
+  - cold_whatsapp
+  - linkedin_automation
+  - scraping
+  - robo_calls
+
+quality_gates_before_counting_toward_quota:
+  - "Persuasion score >= 82"
+  - "Founder approval obtained"
+  - "Company not contacted in last 14 days"
+  - "Message similarity < 72%"

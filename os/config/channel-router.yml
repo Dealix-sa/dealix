@@ -1,0 +1,243 @@
+# Dealix — Channel Router Configuration
+# توجيه القنوات حسب القطاع والسياق
+
+version: "1.0"
+
+doctrine:
+  no_cold_whatsapp: true
+  no_linkedin_automation: true
+  no_scraping: true
+  all_external_sends_require_approval: true
+
+# Default channel priority when no specific rule matches
+default_channels:
+  - email
+  - website_form
+  - phone_intro
+
+# Sector-based routing rules
+sector_routes:
+
+  legal_local_arabic:
+    description: "Local Arabic law firms — highly relationship-driven"
+    channels:
+      - website_form
+      - email
+      - referral
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+      - phone_intro_cold
+    tone: "formal_arabic_conservative"
+    notes: "Referral is by far the highest-conversion channel for local legal firms."
+
+  legal_international:
+    description: "International law firms with GCC presence"
+    channels:
+      - linkedin_assisted
+      - executive_email
+      - referral
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "professional_english_primary"
+
+  facilities_management:
+    description: "FM companies — operations-heavy"
+    channels:
+      - email
+      - phone_intro
+      - linkedin_assisted
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "operational_arabic_formal"
+
+  maintenance:
+    description: "Maintenance service companies"
+    channels:
+      - email
+      - phone_intro
+      - linkedin_assisted
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "operational_arabic_formal"
+
+  international_gcc:
+    description: "International companies operating in GCC"
+    channels:
+      - linkedin_assisted
+      - executive_email
+      - partner_referral
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "professional_english_primary"
+
+  contracting:
+    description: "Contracting and engineering firms"
+    channels:
+      - email
+      - linkedin_assisted
+      - phone_intro
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "professional_arabic_formal"
+
+  consulting:
+    description: "Management consulting firms"
+    channels:
+      - linkedin_assisted
+      - executive_email
+      - referral
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "professional_bilingual"
+
+  real_estate:
+    description: "Real estate and property management"
+    channels:
+      - email
+      - phone_intro
+      - linkedin_assisted
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "professional_arabic_formal"
+
+  accounting:
+    description: "Accounting and audit firms — conservative"
+    channels:
+      - referral
+      - email
+      - website_form
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+      - phone_intro_cold
+    tone: "formal_arabic_conservative"
+
+  healthcare_admin:
+    description: "Healthcare admin — non-clinical workflows only"
+    channels:
+      - email
+      - website_form
+      - phone_intro
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "professional_arabic_formal"
+
+  b2b_services:
+    description: "B2B service companies with sales focus"
+    channels:
+      - email
+      - linkedin_assisted
+      - phone_intro
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "commercial_bilingual"
+
+  inbound_lead:
+    description: "Lead who contacted us first (opt-in)"
+    channels:
+      - email
+      - phone_intro
+      - linkedin_assisted
+      - referral
+    avoid:
+      - cold_whatsapp
+      - linkedin_automation
+    tone: "responsive_and_warm"
+    notes: "Inbound leads can be contacted more directly — they opted in."
+
+# Country channel preferences (fallback when sector not matched)
+country_preferences:
+  ksa:
+    preferred: [email, website_form, phone_intro, referral, linkedin_assisted]
+    blocked: [cold_whatsapp, linkedin_automation, scraping]
+  uae:
+    preferred: [linkedin_assisted, executive_email, partner_referral, email]
+    blocked: [cold_whatsapp, linkedin_automation, scraping]
+  qatar:
+    preferred: [email, referral, linkedin_assisted]
+    blocked: [cold_whatsapp, linkedin_automation, scraping]
+  kuwait:
+    preferred: [email, referral, phone_intro]
+    blocked: [cold_whatsapp, linkedin_automation, scraping]
+  bahrain:
+    preferred: [email, linkedin_assisted, referral]
+    blocked: [cold_whatsapp, linkedin_automation, scraping]
+  oman:
+    preferred: [email, website_form, referral]
+    blocked: [cold_whatsapp, linkedin_automation, scraping]
+
+# Channel definitions (approval and automation rules)
+channel_definitions:
+  email:
+    type: "outbound"
+    allowed: true
+    requires_founder_approval: true
+    auto_send: false
+    description: "Formal email — draft ready, founder approves before send"
+
+  website_form:
+    type: "outbound"
+    allowed: true
+    requires_founder_approval: true
+    auto_send: false
+    description: "Website contact form — founder reviews before submit"
+
+  phone_intro:
+    type: "outbound"
+    allowed: true
+    requires_founder_approval: true
+    auto_send: false
+    description: "Phone introduction — agent prepares brief, founder makes the call"
+
+  referral:
+    type: "warm"
+    allowed: true
+    requires_founder_approval: false
+    auto_send: false
+    description: "Introduction via existing contact — lowest risk channel"
+
+  linkedin_assisted:
+    type: "outbound_manual"
+    allowed: true
+    requires_founder_approval: true
+    auto_send: false
+    description: "LinkedIn message — MANUAL send by founder only; no automation permitted"
+
+  executive_email:
+    type: "outbound"
+    allowed: true
+    requires_founder_approval: true
+    auto_send: false
+    description: "Executive-level personalized email — high effort, high quality"
+
+  partner_referral:
+    type: "warm"
+    allowed: true
+    requires_founder_approval: false
+    auto_send: false
+    description: "Via established partner relationship"
+
+  cold_whatsapp:
+    type: "BLOCKED"
+    allowed: false
+    reason: "DOCTRINE: No cold WhatsApp automation. Non-negotiable."
+
+  linkedin_automation:
+    type: "BLOCKED"
+    allowed: false
+    reason: "DOCTRINE: No LinkedIn automation. Non-negotiable."
+
+  scraping:
+    type: "BLOCKED"
+    allowed: false
+    reason: "DOCTRINE: No scraping systems. Non-negotiable."

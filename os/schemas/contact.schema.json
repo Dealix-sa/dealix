@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.ai/schemas/contact.schema.json",
+  "title": "Contact",
+  "description": "A decision-maker contact record associated with a company",
+  "type": "object",
+  "required": ["full_name", "company", "title"],
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Contact's full name"
+    },
+    "company": {
+      "type": "string",
+      "description": "Company name this contact belongs to"
+    },
+    "title": {
+      "type": "string",
+      "description": "Job title"
+    },
+    "seniority_level": {
+      "type": "string",
+      "enum": ["c_suite", "vp_director", "manager", "individual_contributor", "unknown"],
+      "description": "Seniority classification"
+    },
+    "decision_authority": {
+      "type": "string",
+      "enum": ["full", "partial", "none", "unknown"],
+      "description": "Budget and decision-making authority"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Business email — never stored in logs"
+    },
+    "linkedin_url": {
+      "type": "string",
+      "description": "LinkedIn profile URL"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Business phone number — never stored in logs"
+    },
+    "language_preference": {
+      "type": "string",
+      "enum": ["arabic", "english", "bilingual"],
+      "description": "Preferred communication language"
+    },
+    "country": {
+      "type": "string",
+      "description": "Country of operation"
+    },
+    "sector": {
+      "type": "string",
+      "description": "Industry sector"
+    },
+    "persona_id": {
+      "type": "string",
+      "description": "Matching buyer persona ID from buyer-personas.yml"
+    },
+    "source_ref": {
+      "type": "string",
+      "description": "How this contact was found (public source only)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Context notes — no PII beyond what is in structured fields"
+    },
+    "last_contacted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": true
+}

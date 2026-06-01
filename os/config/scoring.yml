@@ -1,0 +1,114 @@
+# Dealix — Company Scoring Configuration
+# إعدادات نظام تقييم الشركات
+
+version: "1.0"
+
+description: >
+  Scoring configuration for company fit assessment.
+  Mirrors the runtime weights in dealix/os_runtime/company_scorer.py.
+  This YAML is the authoritative configuration source.
+
+max_score: 100
+
+tier_thresholds:
+  A:
+    min_score: 85
+    label: "Top Priority"
+    label_ar: "أولوية عالية جداً"
+    action: "deep_research_custom_pack"
+    action_ar: "ابحث بعمق وجهّز pack مخصص"
+    color: "green"
+    description: "High-fit company — invest significant time in research and personalization"
+
+  B:
+    min_score: 70
+    max_score: 84
+    label: "Strong Fit"
+    label_ar: "ملاءمة قوية"
+    action: "sector_personalized_pack"
+    action_ar: "جهّز pack بتخصيص قطاعي"
+    color: "blue"
+    description: "Good fit — use sector template with company-specific personalization"
+
+  C:
+    min_score: 55
+    max_score: 69
+    label: "Nurture"
+    label_ar: "تربية وانتظار"
+    action: "nurture_or_light_touch"
+    action_ar: "أضفها لقائمة المتابعة الخفيفة"
+    color: "yellow"
+    description: "Marginal fit — add to nurture list, revisit after 60 days"
+
+  D:
+    min_score: 0
+    max_score: 54
+    label: "Archive"
+    label_ar: "أرشفة"
+    action: "archive_or_research_later"
+    action_ar: "أرشف أو ابحث لاحقاً"
+    color: "red"
+    description: "Poor fit currently — archive and revisit if context changes"
+
+factor_weights:
+  operations_heavy:
+    weight: 20
+    name: "Operations Heavy"
+    name_ar: "عمليات مكثفة"
+    description: "Company has heavy daily operations that can be automated"
+
+  maintenance_or_field_work:
+    weight: 20
+    name: "Maintenance / Field Work"
+    name_ar: "صيانة أو عمل ميداني"
+    description: "Has field technicians, maintenance teams, or FM operations"
+
+  repeated_reporting:
+    weight: 15
+    name: "Repeated Reporting"
+    name_ar: "تقارير متكررة"
+    description: "Produces repetitive reports manually (weekly, monthly)"
+
+  multi_branch_or_multi_site:
+    weight: 10
+    name: "Multi-Branch / Multi-Site"
+    name_ar: "فروع أو مواقع متعددة"
+    description: "Has 2+ branches, offices, or operational sites"
+
+  clear_buyer_title:
+    weight: 10
+    name: "Clear Buyer Title"
+    name_ar: "صاحب قرار محدد"
+    description: "Known decision-maker with appropriate title is identifiable"
+
+  public_growth_signal:
+    weight: 10
+    name: "Public Growth Signal"
+    name_ar: "إشارة نمو عامة"
+    description: "Public evidence of expansion, new contracts, or hiring"
+
+  likely_data_or_api:
+    weight: 10
+    name: "Likely Data / API"
+    name_ar: "احتمال وجود بيانات أو API"
+    description: "Evidence of systems with data that can be connected to AI"
+
+  founder_domain_fit:
+    weight: 5
+    name: "Founder Domain Fit"
+    name_ar: "تطابق مع خلفية المؤسس"
+    description: "Founder has domain expertise or personal network in this sector"
+
+total_weights_sum: 100
+
+# Scoring output template
+output_fields:
+  - company
+  - country
+  - sector
+  - fit_score
+  - tier
+  - recommended_action
+  - reasons
+  - source_ref
+  - governance_decision

@@ -1,0 +1,73 @@
+name: OS Validation
+
+on:
+  pull_request:
+    paths:
+      - "os/**"
+      - "dealix/os_runtime/**"
+      - "scripts/validate_os_configs.py"
+      - "scripts/validate_os_schemas.py"
+      - "tests/os/**"
+  push:
+    branches:
+      - main
+      - "claude/**"
+  workflow_dispatch:
+
+jobs:
+  os-validation:
+    name: Validate OS Configs, Schemas, and Runtime
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pyyaml jsonschema pytest
+
+      - name: Validate OS configs (YAML/JSON)
+        run: python scripts/validate_os_configs.py
+
+      - name: Validate OS schemas (jsonschema meta-validation)
+        run: python scripts/validate_os_schemas.py
+
+      - name: Run OS runtime validation command
+        run: python -m dealix.os_runtime validate
+
+      - name: Run OS test suite
+        run: pytest tests/os -q --tb=short
+
+      - name: Score example company (FM KSA)
+        run: |
+          if [ -f os/examples/company_fm_ksa.json ]; then
+            python -m dealix.os_runtime score-company os/examples/company_fm_ksa.json
+          else
+            echo "company_fm_ksa.json not yet present — skipping"
+          fi
+
+      - name: Route offer for example company (legal KSA)
+        run: |
+          if [ -f os/examples/company_legal_ksa.json ]; then
+            python -m dealix.os_runtime route-offer os/examples/company_legal_ksa.json
+          else
+            echo "company_legal_ksa.json not yet present — skipping"
+          fi
+
+      - name: Check approval for key actions
+        run: |
+          python -m dealix.os_runtime approval-check score_company
+          python -m dealix.os_runtime approval-check build_company_brief
+          # These should exit with code 1 (requires approval) or 2 (blocked)
+          python -m dealix.os_runtime approval-check cold_whatsapp && exit 1 || echo "cold_whatsapp correctly blocked"
+          python -m dealix.os_runtime approval-check send_first_email && echo "OK — requires approval (exit 1)" || true
+
+      - name: Growth dry-run check
+        run: python -m dealix.os_runtime growth-dry-run --limit 5 --dry-run

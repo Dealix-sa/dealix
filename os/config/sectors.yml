@@ -1,0 +1,323 @@
+# Dealix — Sector Configuration
+# قطاعات العمل والتوجيه
+
+version: "1.0"
+
+sectors:
+
+  legal:
+    name: "Legal Services"
+    name_ar: "الخدمات القانونية"
+    slug: "legal"
+    sensitive: true
+    buyer_titles:
+      - "Managing Partner"
+      - "Senior Partner"
+      - "Head of Legal Operations"
+      - "Chief Legal Officer"
+      - "Legal Operations Manager"
+    pains:
+      - "Document retrieval takes hours"
+      - "Matter summaries written manually"
+      - "Confidentiality risks with shared files"
+      - "Junior staff can't find precedents"
+      - "Billing time lost to admin tasks"
+    primary_offer: "legal_knowledge_document_os"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - referral
+        - email
+        - website_form
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+        - phone_intro_cold
+    tone: "formal_arabic_conservative"
+    trust_signals:
+      - "Data never leaves your environment"
+      - "Full audit log of every access"
+      - "PDPL compliant"
+      - "Human approval before any external action"
+    approx_deal_size_sar: "50,000–250,000"
+    notes: >
+      Highly sensitive sector. Confidentiality is the #1 concern.
+      Approach through referral or formal email only. Never cold WhatsApp.
+      Emphasize sovereignty and data control in all communications.
+
+  facilities_management:
+    name: "Facilities Management"
+    name_ar: "إدارة المرافق"
+    slug: "facilities_management"
+    sensitive: false
+    buyer_titles:
+      - "Operations Director"
+      - "Facilities Director"
+      - "Facilities Manager"
+      - "Head of Operations"
+      - "VP Operations"
+    pains:
+      - "SLA tracking done in Excel"
+      - "Technician reports written manually"
+      - "Repeated failures not detected early"
+      - "Vendor follow-up falls through cracks"
+      - "Management dashboards built manually each week"
+    primary_offer: "maintenance_intelligence_os"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - email
+        - phone_intro
+        - linkedin_assisted
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+    tone: "operational_arabic_formal"
+    trust_signals:
+      - "Works on your data, not shared servers"
+      - "SLA visibility from day one"
+      - "Operations team runs it, no IT dependency"
+    approx_deal_size_sar: "40,000–300,000"
+    notes: "High-volume target sector in KSA. Many FM companies growing fast under Vision 2030."
+
+  maintenance:
+    name: "Maintenance Services"
+    name_ar: "خدمات الصيانة"
+    slug: "maintenance"
+    sensitive: false
+    buyer_titles:
+      - "Maintenance Manager"
+      - "Technical Director"
+      - "Operations Manager"
+      - "Head of Technical Services"
+    pains:
+      - "Ticket management in WhatsApp groups"
+      - "SLA breaches not tracked"
+      - "Field reports written manually"
+      - "No visibility on technician workload"
+    primary_offer: "maintenance_intelligence_os"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - email
+        - phone_intro
+        - linkedin_assisted
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+    tone: "operational_arabic_formal"
+    approx_deal_size_sar: "30,000–150,000"
+
+  international_company:
+    name: "International Company (GCC Operations)"
+    name_ar: "شركة دولية بعمليات في الخليج"
+    slug: "international_company"
+    sensitive: false
+    buyer_titles:
+      - "Regional Operations Director"
+      - "Country Manager"
+      - "Head of GCC Operations"
+      - "Regional Director"
+      - "VP Middle East"
+    pains:
+      - "Arabic-English workflow gaps"
+      - "Regional reporting inconsistency"
+      - "HQ requires English reports, local team works in Arabic"
+      - "Controlled AI adoption — head office policy required"
+    primary_offer: "gcc_international_ai_pilot"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - linkedin_assisted
+        - executive_email
+        - partner_referral
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+    tone: "professional_english_primary"
+    trust_signals:
+      - "Bilingual AI workflow (Arabic + English)"
+      - "Aligned with HQ governance requirements"
+      - "Pilot-first — no big commitment"
+    approx_deal_size_sar: "60,000–500,000"
+
+  contracting:
+    name: "Contracting & Engineering"
+    name_ar: "المقاولات والهندسة"
+    slug: "contracting"
+    sensitive: false
+    buyer_titles:
+      - "Project Director"
+      - "PMO Director"
+      - "Head of Projects"
+      - "CEO"
+      - "Engineering Manager"
+    pains:
+      - "Progress reports built manually each week"
+      - "Change requests tracked in email threads"
+      - "Risk register not updated"
+      - "Approval follow-up lost"
+      - "Document search in large project folders"
+    primary_offer: "project_controls_ai_os"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - email
+        - linkedin_assisted
+        - phone_intro
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+    tone: "professional_arabic_formal"
+    approx_deal_size_sar: "50,000–400,000"
+
+  consulting:
+    name: "Management Consulting"
+    name_ar: "الاستشارات الإدارية"
+    slug: "consulting"
+    sensitive: false
+    buyer_titles:
+      - "Managing Partner"
+      - "Delivery Director"
+      - "Partner"
+      - "Principal"
+    pains:
+      - "Proposal writing starts from scratch each time"
+      - "Delivery reporting manually consolidated"
+      - "Knowledge trapped in individual consultants"
+      - "Research done repeatedly across projects"
+    primary_offer: "consulting_delivery_intelligence_os"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - linkedin_assisted
+        - executive_email
+        - referral
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+    tone: "professional_bilingual"
+    approx_deal_size_sar: "40,000–200,000"
+
+  real_estate:
+    name: "Real Estate & Property Management"
+    name_ar: "العقارات وإدارة الأصول"
+    slug: "real_estate"
+    sensitive: false
+    buyer_titles:
+      - "Operations Manager"
+      - "Property Manager"
+      - "Facilities Manager"
+      - "CEO"
+      - "Head of Asset Management"
+    pains:
+      - "Tenant requests managed in WhatsApp"
+      - "Maintenance follow-up not tracked"
+      - "Owner reports built manually"
+      - "Vacancy and lease tracking in Excel"
+    primary_offer: "property_operations_ai_os"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - email
+        - phone_intro
+        - linkedin_assisted
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+    tone: "professional_arabic_formal"
+    approx_deal_size_sar: "35,000–200,000"
+
+  accounting:
+    name: "Accounting & Audit Firms"
+    name_ar: "المحاسبة ومراجعة الحسابات"
+    slug: "accounting"
+    sensitive: true
+    buyer_titles:
+      - "Managing Partner"
+      - "Finance Director"
+      - "Head of Audit"
+      - "Partner"
+    pains:
+      - "Client document checklists tracked manually"
+      - "Audit workflow steps not automated"
+      - "Compliance deadlines managed in email"
+      - "Client follow-up falls through"
+    primary_offer: "accounting_audit_workflow_ai"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - referral
+        - email
+        - website_form
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+        - phone_intro_cold
+    tone: "formal_arabic_conservative"
+    trust_signals:
+      - "Data stays in your environment"
+      - "Full audit trail"
+      - "PDPL and SOCPA-aware design"
+    approx_deal_size_sar: "25,000–150,000"
+
+  healthcare_admin:
+    name: "Healthcare Administration"
+    name_ar: "الإدارة الصحية"
+    slug: "healthcare_admin"
+    sensitive: true
+    buyer_titles:
+      - "Admin Manager"
+      - "Operations Director"
+      - "Hospital Administrator"
+      - "Clinic Manager"
+    pains:
+      - "Appointment follow-up manual"
+      - "Admin routing slow"
+      - "Non-clinical documents not managed"
+      - "Insurance pre-approval tracking in Excel"
+    primary_offer: "healthcare_admin_workflow_ai"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - email
+        - website_form
+        - phone_intro
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+    tone: "professional_arabic_formal"
+    trust_signals:
+      - "Non-clinical workflows only"
+      - "No patient clinical data"
+      - "Full data sovereignty"
+    approx_deal_size_sar: "30,000–200,000"
+    notes: "Non-clinical admin only. Never touch clinical data. Clarify scope upfront."
+
+  b2b_services:
+    name: "B2B Services"
+    name_ar: "الخدمات بين الشركات"
+    slug: "b2b_services"
+    sensitive: false
+    buyer_titles:
+      - "Commercial Director"
+      - "Sales Director"
+      - "CEO"
+      - "Head of Business Development"
+    pains:
+      - "Lead qualification done manually"
+      - "Follow-up leakage — leads go cold"
+      - "Proposal writing slow"
+      - "Sales team time wasted on research"
+    primary_offer: "revenue_ai_os"
+    entry_offer: "ai_workflow_audit"
+    channels:
+      preferred:
+        - email
+        - linkedin_assisted
+        - phone_intro
+      avoid:
+        - cold_whatsapp
+        - linkedin_automation
+    tone: "commercial_bilingual"
+    approx_deal_size_sar: "30,000–150,000"

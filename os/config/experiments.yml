@@ -1,0 +1,79 @@
+# Dealix — A/B Experiments Framework
+# إطار تجارب A/B للتحسين المستمر
+
+version: "1.0"
+
+description: >
+  Framework for running controlled experiments on outreach, pricing,
+  and content. All experiments require founder approval before launch.
+  Results must be evidence-based — no claimed outcomes without data.
+
+principles:
+  - "One variable changed at a time"
+  - "Minimum 20 samples per variant before drawing conclusions"
+  - "All results documented with raw data"
+  - "No guaranteed outcome claims based on experiment results"
+  - "Founder reviews all experiment results before acting"
+
+experiment_types:
+
+  subject_line:
+    description: "Test different email subject lines"
+    metrics: ["open_rate", "reply_rate"]
+    minimum_sample_size: 20
+    confidence_threshold: 0.80
+    duration_days_min: 7
+
+  message_frame:
+    description: "Test Arabic-only vs bilingual vs English-only"
+    metrics: ["reply_rate", "meeting_booked_rate"]
+    minimum_sample_size: 20
+    confidence_threshold: 0.80
+    duration_days_min: 14
+
+  entry_offer:
+    description: "Test audit (5k SAR) vs diagnosis (0 SAR) as entry point"
+    metrics: ["meeting_booked_rate", "conversion_to_paid"]
+    minimum_sample_size: 10
+    confidence_threshold: 0.75
+    duration_days_min: 21
+
+  channel_mix:
+    description: "Test email-first vs LinkedIn-first vs referral-first"
+    metrics: ["first_response_rate", "meeting_booked_rate"]
+    minimum_sample_size: 15
+    confidence_threshold: 0.80
+    duration_days_min: 21
+
+  pain_angle:
+    description: "Test different pain framings per sector"
+    metrics: ["reply_rate", "engagement_quality"]
+    minimum_sample_size: 20
+    confidence_threshold: 0.75
+    duration_days_min: 14
+
+active_experiments: []
+
+completed_experiments: []
+
+experiment_template:
+  id: "EXP-YYYY-MM-DD-001"
+  type: "subject_line"
+  hypothesis: "Subject line mentioning SLA will outperform generic 'AI for Operations'"
+  variant_a:
+    description: "Control"
+    content: ""
+  variant_b:
+    description: "Test"
+    content: ""
+  started_at: null
+  ended_at: null
+  sample_a: 0
+  sample_b: 0
+  results:
+    variant_a_metric: null
+    variant_b_metric: null
+    winner: null
+    confidence: null
+  founder_approved: false
+  action_taken: null

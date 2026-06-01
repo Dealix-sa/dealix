@@ -11,7 +11,7 @@ Doctrine enforcement:
 - All limits from config are hard caps
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
 
 # Hard-coded doctrine rules (cannot be overridden by config)
