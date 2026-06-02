@@ -14,8 +14,6 @@ import pytest
 from auto_client_acquisition.governance_os import policy_check_draft
 from dealix.revenue_ops_autopilot.recurring_revenue_radar import (
     RETAINER_TIER_MRR_SAR,
-    AccountSnapshot,
-    RecurringRevenueRadar,
     RecurringRevenueRadarLedger,
     render_radar_markdown,
     run_radar,
@@ -209,7 +207,7 @@ def test_ledger_append_and_read(tmp_path) -> None:
     assert rec["opportunities_count"] == 1
     assert rec["pipeline_incremental_mrr_sar"] == 3999
     assert len(rec["top"]) == 1
-    again = ledger.append_run(summary)  # noqa: F841 — exercise append path twice
+    ledger.append_run(summary)  # exercise append path twice
     assert len(ledger.history(limit=10)) == 2
     assert ledger.latest()["pipeline_incremental_mrr_sar"] == 3999
 
