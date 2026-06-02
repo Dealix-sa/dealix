@@ -10,7 +10,9 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        distribution-drafts draft-queue draft-quality followup-queue \
+        proposal-drafts distribution-metrics distribution-day
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +184,28 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Distribution OS (approval-first) ───────────────────────────
+# Turns prospects into governed DRAFTS only. Never sends anything externally.
+# Founder daily loop: make doctor && make distribution-day && make draft-quality
+
+distribution-drafts: ## Distribution: generate the approval-first draft queue
+	$(PYTHON) scripts/generate_distribution_drafts.py
+
+draft-queue: ## Distribution: render the draft queue review report
+	$(PYTHON) scripts/review_draft_queue.py
+
+draft-quality: ## Distribution: run the draft quality gate (fails on violations)
+	$(PYTHON) scripts/check_draft_quality.py
+
+followup-queue: ## Distribution: generate the due follow-up queue
+	$(PYTHON) scripts/generate_followup_queue.py
+
+proposal-drafts: ## Distribution: generate governed proposal drafts
+	$(PYTHON) scripts/generate_proposal_draft.py
+
+distribution-metrics: ## Distribution: compute distribution metrics
+	$(PYTHON) scripts/distribution_metrics.py
+
+distribution-day: ## Distribution: run the full approval-first cycle + verdict
+	$(PYTHON) scripts/distribution_day.py
