@@ -107,6 +107,21 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Distribution OS — synthetic prospect seed (no PII) + queue dir placeholders.
+# Runtime queues (drafts/followups .jsonl, generated proposals, live prospects.json)
+# stay ignored; only the seed + .gitkeep placeholders are tracked.
+!data/distribution/
+data/distribution/*
+!data/distribution/prospects.example.json
+!data/drafts/
+data/drafts/*
+!data/drafts/.gitkeep
+!data/followups/
+data/followups/*
+!data/followups/.gitkeep
+!data/proposals/
+data/proposals/*
+!data/proposals/.gitkeep
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/draft.schema.json",
+  "title": "Dealix Distribution Draft",
+  "description": "A governed outreach/sales draft. Always approval-first. There is intentionally no status that means an automated external send.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "prospect_id",
+    "company",
+    "sector",
+    "channel",
+    "draft_type",
+    "language",
+    "body",
+    "evidence_level",
+    "risk_level",
+    "approval_required",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "prospect_id": { "type": "string", "minLength": 1 },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "channel": {
+      "type": "string",
+      "enum": ["email", "whatsapp_manual", "linkedin_manual", "phone_script", "proposal_pdf", "internal_note"]
+    },
+    "draft_type": {
+      "type": "string",
+      "enum": [
+        "outreach_first",
+        "outreach_followup_1",
+        "outreach_followup_2",
+        "breakup",
+        "discovery_invite",
+        "diagnostic_summary",
+        "proposal",
+        "proof_pack_intro",
+        "payment_followup",
+        "onboarding_message",
+        "renewal_upsell"
+      ]
+    },
+    "language": { "type": "string", "enum": ["ar", "en"] },
+    "subject": { "type": "string" },
+    "body": { "type": "string", "minLength": 1 },
+    "offer_angle": { "type": "string" },
+    "evidence_level": { "type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"] },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"] },
+    "approval_required": { "const": true },
+    "status": {
+      "type": "string",
+      "enum": [
+        "generated",
+        "pending_approval",
+        "approved",
+        "needs_edit",
+        "rejected",
+        "copied_manually",
+        "replied",
+        "archived"
+      ]
+    },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": ["string", "null"] },
+    "next_action": { "type": "string" }
+  }
+}

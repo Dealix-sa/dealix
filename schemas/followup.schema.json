@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/followup.schema.json",
+  "title": "Dealix Distribution Followup",
+  "description": "A cadence-driven follow-up reminder. Manual channels only; the system never sends.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "prospect_id", "company", "due_date", "followup_type", "status"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "prospect_id": { "type": "string", "minLength": 1 },
+    "company": { "type": "string" },
+    "due_date": { "type": "string" },
+    "followup_type": {
+      "type": "string",
+      "enum": ["day_2", "day_4", "day_7", "proposal_followup", "payment_followup", "renewal"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["due", "scheduled", "done", "skipped", "blocked"]
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["email", "whatsapp_manual", "linkedin_manual", "phone_script", "proposal_pdf", "internal_note"]
+    },
+    "draft_id": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/prospect.schema.json",
+  "title": "Dealix Distribution Prospect",
+  "description": "A target company in the approval-first distribution flow. Synthetic seed only; no real PII is committed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "company", "sector", "status", "source"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "company": { "type": "string", "minLength": 1 },
+    "sector": { "type": "string", "minLength": 1 },
+    "region": { "type": "string" },
+    "source": {
+      "type": "string",
+      "description": "Lead source. Blocked sources (scraping, cold_whatsapp, purchased_list, linkedin_automation) are rejected by anti-waste."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "qualified",
+        "drafted",
+        "contacted",
+        "replied",
+        "discovery_booked",
+        "proposal_sent",
+        "won",
+        "lost",
+        "nurture"
+      ]
+    },
+    "decision_maker": { "type": "string" },
+    "pain_hypothesis": { "type": "string" },
+    "offer_angle": { "type": "string" },
+    "estimated_value_sar": { "type": "number", "minimum": 0 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "preferred_channel": {
+      "type": "string",
+      "enum": ["email", "whatsapp_manual", "linkedin_manual", "phone_script", "proposal_pdf", "internal_note"]
+    },
+    "created_at": { "type": "string" },
+    "last_contact_at": { "type": ["string", "null"] },
+    "next_action": { "type": "string" },
+    "next_action_date": { "type": ["string", "null"] }
+  }
+}

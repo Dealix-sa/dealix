@@ -1,0 +1,54 @@
+name: Distribution Draft Day
+
+# Approval-first product-distribution cycle. Generates governed DRAFTS, the
+# follow-up queue, proposal drafts, and metrics — then uploads the review
+# reports as artifacts. It NEVER sends anything externally and needs no
+# secrets and no write permissions (least-privilege, per the repo convention).
+#
+# Review the output by downloading the "distribution-day" artifact, or run
+# `make distribution-day` locally.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 0-4"  # ~09:00 KSA, Sun–Thu
+
+concurrency:
+  group: distribution-draft-day
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  draft-day:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -e .
+
+      - name: Run distribution day (draft-only, no external sends)
+        run: python3 scripts/distribution_day.py
+
+      - name: Draft quality gate
+        run: python3 scripts/check_draft_quality.py
+
+      - name: Upload distribution review reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: distribution-day-${{ github.run_id }}
+          path: reports/distribution/
+          retention-days: 14
+          if-no-files-found: warn
