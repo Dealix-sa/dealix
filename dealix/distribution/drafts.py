@@ -14,7 +14,7 @@ human transitions.
 
 from __future__ import annotations
 
-from functools import cache, lru_cache
+from functools import cache
 from pathlib import Path
 from typing import Any
 

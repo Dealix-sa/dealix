@@ -10,8 +10,7 @@ installed it is used for a stricter pass; otherwise the built-in checker runs.
 from __future__ import annotations
 
 import json
-from functools import cache, lru_cache
-from pathlib import Path
+from functools import cache
 from typing import Any
 
 from dealix.distribution.paths import SCHEMAS_DIR
