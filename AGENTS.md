@@ -92,6 +92,18 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
 - **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
 
+### WhatsApp Client OS (client-facing, governed)
+
+A menu-driven **business workflow assistant** for clients over WhatsApp — NOT a general-purpose chatbot, and distinct from the internal founder-only `auto_client_acquisition/whatsapp_decision_bot`.
+
+- **Module:** [`auto_client_acquisition/whatsapp_client_os/`](auto_client_acquisition/whatsapp_client_os/) — `engine` (orchestrator) · `intent_router` (deterministic) · `conversation_state` (FSM) · `assessment` (10-axis readiness scan → catalog-tied recommendation) · `permission_levels`/`permission_guard` (L0–L5) · `whatsapp_policy_guard` (secrets-in-chat + unsafe-request block, wraps `channel_policy_gateway` + `safe_send_gateway.doctrine`) · `action_card_builder` · `handoff_router` · `client_profile_store` (JSONL ledgers) · `metrics` · `templates`.
+- **API (`/api/v1/whatsapp-client-os`):** `POST /message` · `POST /assessment/start` · `POST /assessment/answer` · `GET /assessment/{id}/report` · `GET /assessments` · `GET /sessions` · `GET /action-cards` · `POST /handoff/human` · `GET /metrics` · `GET /permissions/levels` · `GET /templates`.
+- **Data:** `data/whatsapp/templates.yaml` (14 keys) · `data/whatsapp/assessment_questions.yaml` (10 axes). Runtime ledgers `data/whatsapp/*.jsonl` are gitignored (client data).
+- **Schemas:** `dealix/contracts/schemas/whatsapp_*.schema.json` + `client_*.schema.json` — regenerate with `python3 scripts/export_whatsapp_client_os_schemas.py`.
+- **UI:** `/[locale]/ops/whatsapp` (+ `/sessions` · `/action-cards` · `/assessments`).
+- **Verify:** `python3 scripts/whatsapp_client_os_verify.py` → prints `DEALIX_WHATSAPP_CLIENT_OS_VERDICT=PASS|FAIL`. Reports: `python3 scripts/whatsapp_client_os_report.py` → `reports/whatsapp/`.
+- **Hard rules (tested):** no secrets in chat (secure portal links) · no cold WhatsApp/blasts/scraping/LinkedIn-automation · human approval for external sends · human handoff for ambiguity/sensitive-data/pricing/contracts/complaints · every recommendation tied to `service_catalog` + evidence level. Docs: [docs/whatsapp/](docs/whatsapp/).
+
 ### Global AI transformation (CEO / operating spine)
 
 - Weekly executive checklist: `bash scripts/run_executive_weekly_checklist.sh` (proof pack + `verify_global_ai_transformation.py` + audit log; syncs `weekly_ops.last_checklist_run_iso` when PASS).

@@ -112,6 +112,10 @@ value_os_router = _import_optional_router("value_os", "api.routers.value_os")
 data_os_router = _import_optional_router("data_os", "api.routers.data_os")
 # Wave 14F — Agent OS
 agent_os_router = _import_optional_router("agent_os", "api.routers.agent_os")
+# WhatsApp Client OS — client-facing governed WhatsApp surface
+whatsapp_client_os_router = _import_optional_router(
+    "whatsapp_client_os", "api.routers.whatsapp_client_os"
+)
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
 from api.routers import commercial_map as commercial_map_router
 # Wave 15B — Commercial chain (diagnostic → warm-intro → pilot → proof → payment → upsell)
@@ -377,6 +381,9 @@ def create_app() -> FastAPI:
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)
+    # WhatsApp Client OS — client-facing governed WhatsApp surface
+    if whatsapp_client_os_router is not None:
+        app.include_router(whatsapp_client_os_router.router)
     _strict_optional = _os.getenv("DEALIX_STRICT_OPTIONAL_ROUTERS", "").lower() in (
         "1", "true", "yes",
     )
