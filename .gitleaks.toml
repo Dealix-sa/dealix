@@ -51,7 +51,10 @@ paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    # Test files carry intentional fake fixtures (sk_live_abcdef…, AKIA0123…,
+    # test-valid-key-abc123, etc.), not real secrets. Scope the exemption to
+    # tests/ rather than weakening the detection rules globally.
+    '''tests/.*''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
@@ -61,4 +64,10 @@ regexes = [
     '''your-.*-key''',
     '''change-me''',
     '''example-.*''',
+    # Shell / env-var references like ${MOYASAR_SECRET_KEY} in *_test.sh curl
+    # helpers — a variable reference is never a literal secret.
+    '''\$\{[A-Za-z_][A-Za-z0-9_]*\}''',
+    # False positive: `ttl_seconds=30` in api/routers/pricing.py (idempotency
+    # TTL window, not an API key).
+    '''ttl_seconds=\d+''',
 ]
