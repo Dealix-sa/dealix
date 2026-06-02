@@ -196,3 +196,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Agent governance ───────────────────────────────────────────
+# Consolidate + audit the agent fleet. See docs/agents/ for the registry,
+# permission matrix, output contract, daily runbook, and policies.
+
+agents-audit: ## Audit the agent team (surfaces + Claude/Codex parity + governance docs + doctrine guards)
+	$(PYTHON) scripts/audit_agent_team.py
+
+pr-triage: ## Triage open PRs into actionable buckets (report-only; never merges)
+	$(PYTHON) scripts/triage_open_prs.py
