@@ -107,6 +107,17 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Distribution OS — synthetic example prospects only (no PII); real prospects.json stays ignored
+!data/distribution/
+data/distribution/*
+!data/distribution/prospects.example.json
+# Distribution OS — keep the drafts dir; the generated JSONL ledger stays ignored (runtime)
+!data/drafts/
+data/drafts/*
+!data/drafts/.gitkeep
+# Distribution OS — generated review reports stay out of git; keep the dir via .gitkeep
+reports/distribution/*
+!reports/distribution/.gitkeep
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

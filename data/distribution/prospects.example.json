@@ -1,0 +1,32 @@
+[
+  {
+    "id": "prospect_001",
+    "company": "أكاديمية تدريب نموذجية",
+    "sector": "التدريب والتطوير المهني",
+    "pain_hypothesis": "بطء المتابعة مع المستفسرين وتسرّب التسجيلات",
+    "decision_maker_role": "مدير التسويق",
+    "offer_angle": "AI Revenue Operations diagnostic",
+    "preferred_channel": "email",
+    "status": "qualified"
+  },
+  {
+    "id": "prospect_002",
+    "company": "عيادة أسنان نموذجية",
+    "sector": "العيادات والرعاية الصحية",
+    "pain_hypothesis": "عدم وجود إيقاع متابعة أسبوعي للحجوزات المؤجلة",
+    "decision_maker_role": "المدير التنفيذي",
+    "offer_angle": "process leakage map + weekly scorecard",
+    "preferred_channel": "whatsapp_manual",
+    "status": "new"
+  },
+  {
+    "id": "prospect_003",
+    "company": "مكتب عقاري نموذجي",
+    "sector": "العقار",
+    "pain_hypothesis": "غموض الأولويات بين عشرات الفرص اليومية",
+    "decision_maker_role": "الشريك المؤسس",
+    "offer_angle": "opportunity prioritization workflow",
+    "preferred_channel": "linkedin_manual",
+    "status": "qualified"
+  }
+]
