@@ -35,7 +35,6 @@ from auto_client_acquisition.revenue_execution_os.daily_report import (
     render_metrics_report,
 )
 from auto_client_acquisition.revenue_execution_os.models import (
-    Channel,
     Draft,
     DraftStatus,
     DraftType,

@@ -27,10 +27,12 @@ from auto_client_acquisition.revenue_execution_os.models import (
 
 
 class _Model(Protocol):
-    def to_dict(self) -> dict[str, Any]: ...
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize the model to a plain dict."""
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> Any: ...
+    def from_dict(cls, data: dict[str, Any]) -> Any:
+        """Build a model instance from a plain dict."""
 
 
 T = TypeVar("T", bound=_Model)

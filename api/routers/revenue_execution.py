@@ -29,7 +29,7 @@ from auto_client_acquisition.revenue_execution_os import (
     sectors,
     stores,
 )
-from auto_client_acquisition.revenue_execution_os.draft_quality import review_drafts, score_draft
+from auto_client_acquisition.revenue_execution_os.draft_quality import review_drafts
 from auto_client_acquisition.revenue_execution_os.followup_engine import build_followup_queue
 from auto_client_acquisition.revenue_execution_os.models import (
     OPEN_DRAFT_STATUSES,
