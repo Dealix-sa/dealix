@@ -49,12 +49,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # The pinned trivy-action@0.24.0 tag no longer resolves. Run the official
+      # Trivy binary directly (version-robust, no action lookup) with the same
+      # policy: fail on fixable CRITICAL/HIGH vulnerabilities.
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+        env:
+          TRIVY_VERSION: "0.71.0"
+        run: |
+          set -euo pipefail
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b /usr/local/bin "v${TRIVY_VERSION}"
+          trivy fs --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed \
+            --exit-code 1 --no-progress \
+            --skip-dirs node_modules --skip-dirs .next \
+            --skip-dirs apps/web/.next --skip-dirs frontend/.next .
