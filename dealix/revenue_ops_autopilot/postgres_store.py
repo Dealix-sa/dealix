@@ -52,7 +52,12 @@ class AutopilotPostgresStore(AutopilotJSONStore):
         database_url: str | None = None,
         create_tables: bool = True,
     ) -> None:
-        self._lock = threading.Lock()
+        # Reentrant: the inherited ``_mutate`` acquires this lock and then calls
+        # the overridden ``_read_raw`` / ``_write_atomic`` (which also acquire it).
+        # A plain ``threading.Lock`` self-deadlocks that re-entrant path and hangs
+        # the whole test suite / CI job; ``RLock`` makes same-thread re-acquisition
+        # safe while still serialising cross-thread access.
+        self._lock = threading.RLock()
         if engine is None:
             url = database_url or "sqlite:///:memory:"
             engine = create_engine(url, future=True, pool_pre_ping=True)
