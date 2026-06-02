@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/prospect.schema.json",
+  "title": "Prospect",
+  "description": "A targeted account in the Revenue Execution OS. Business attributes only — no personal data beyond a contact name.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "prospect_id": { "type": "string" },
+    "company": { "type": "string" },
+    "contact_name": { "type": "string" },
+    "sector": { "type": "string" },
+    "region": { "type": "string", "default": "Saudi Arabia" },
+    "lead_source": { "type": "string" },
+    "stage": { "type": "string", "default": "new" },
+    "notes": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["prospect_id"]
+}

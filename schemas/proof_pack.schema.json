@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/proof_pack.schema.json",
+  "title": "ProofPackRef",
+  "description": "A reference to a canonical 14-section Proof Pack v2 with a completeness score. The commercial bar is score >= 70.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "proof_pack_id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "customer_id": { "type": "string" },
+    "sections": { "type": "object", "additionalProperties": { "type": "string" } },
+    "sections_complete": { "type": "boolean" },
+    "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "status": { "type": "string", "enum": ["draft", "ready"] },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["proof_pack_id", "score", "evidence_level"]
+}

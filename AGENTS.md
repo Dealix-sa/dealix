@@ -90,6 +90,7 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **GTM public funnel:** `/[locale]` (launch home) · `/dealix-diagnostic` · `/risk-score` · `/proof-pack` · `/learn/[slug]` · `/partners`
 - **GTM ops (admin key):** `/[locale]/ops` (hub) · `/ops/founder` · `/ops/war-room` · `/ops/marketing` · `/ops/sales` · `/ops/partners` · `/ops/evidence` · `/ops/approvals` — APIs: `GET /api/v1/ops-autopilot/war-room/today-pack` · `POST .../marketing/queue-approval` · `GET .../marketing/social-today` (no live LinkedIn/WhatsApp send)
 - **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
+- **Revenue Execution OS (distribution):** approval-first product-distribution layer — `make distribution-day` · `make draft-quality` · `make revx-verify` · API `/api/v1/revenue-execution/*` (admin, no external send, every response carries `governance_decision`) · module `auto_client_acquisition/revenue_execution_os/` · docs [docs/distribution/README.md](docs/distribution/README.md)
 - **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
 
 ### Global AI transformation (CEO / operating spine)

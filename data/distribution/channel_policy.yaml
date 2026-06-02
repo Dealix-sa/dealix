@@ -1,0 +1,25 @@
+# Channel policy for the Revenue Execution OS.
+# The system PREPARES drafts/handoffs only. It never sends anything externally.
+# Any send is a manual founder action after approval. See:
+#   docs/distribution/CHANNEL_POLICY_AR.md
+version: 1
+no_external_send: true
+channels:
+  email:
+    allowed: [draft, approval, manual_copy]
+    forbidden: [mass_send_without_approval, auto_send]
+  whatsapp:
+    allowed: [draft, manual_copy]
+    forbidden: [cold_automation, blast]
+  linkedin:
+    allowed: [draft, manual_copy]
+    forbidden: [automation, scraping]
+  phone:
+    allowed: [call_scripts]
+    forbidden: [robocalls]
+  proposal:
+    allowed: [draft, approval]
+    forbidden: [legal_commitment_without_review]
+  payment:
+    allowed: [handoff_draft]
+    forbidden: [send_link_without_approval, live_charge_without_founder]

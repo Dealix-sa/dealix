@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/proposal.schema.json",
+  "title": "Proposal",
+  "description": "A governance-gated proposal draft on the 5-rung offer ladder. Born pending_approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "proposal_id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "sector": { "type": "string" },
+    "offer_key": {
+      "type": "string",
+      "enum": ["free_diagnostic", "revenue_sprint", "data_revenue_pack", "managed_revenue_ops", "custom_ai_setup", "ai_governance_review"]
+    },
+    "problem": { "type": "string" },
+    "solution": { "type": "string" },
+    "scope": { "type": "array", "items": { "type": "string" } },
+    "out_of_scope": { "type": "array", "items": { "type": "string" } },
+    "timeline": { "type": "string" },
+    "price_label": { "type": "string" },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "next_step": { "type": "string" },
+    "status": { "type": "string", "enum": ["draft", "pending_approval", "approved", "rejected", "sent"] },
+    "governance_decision": {
+      "type": "string",
+      "enum": ["ALLOW", "ALLOW_WITH_REVIEW", "DRAFT_ONLY", "REQUIRE_APPROVAL", "REDACT", "BLOCK", "ESCALATE"]
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["proposal_id", "offer_key", "status", "governance_decision"]
+}

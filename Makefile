@@ -10,7 +10,8 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        distribution-day draft-quality revx-metrics revx-verify
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +183,20 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Revenue Execution OS (distribution) ────────────────────────
+# Approval-first product distribution. All targets are read-only and never
+# send anything externally. Docs: docs/distribution/README.md
+
+distribution-day: ## RevX: write the daily distribution reports (no external send)
+	$(PYTHON) scripts/revenue_execution_day.py
+
+draft-quality: ## RevX: score stored drafts -> reports/distribution/DRAFT_QUEUE_REVIEW.md
+	$(PYTHON) scripts/revenue_execution_draft_quality.py
+
+revx-metrics: ## RevX: print + write distribution metrics
+	$(PYTHON) scripts/revenue_execution_metrics.py
+
+revx-verify: ## RevX: run distribution layer tests + relevant doctrine guards
+	APP_ENV=test $(PYTHON) -m pytest tests/test_revenue_execution_os.py \
+		tests/test_no_guaranteed_claims.py tests/test_output_requires_governance_status.py -q
