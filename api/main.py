@@ -116,6 +116,8 @@ agent_os_router = _import_optional_router("agent_os", "api.routers.agent_os")
 from api.routers import commercial_map as commercial_map_router
 # Wave 15B — Commercial chain (diagnostic → warm-intro → pilot → proof → payment → upsell)
 from api.routers import commercial as commercial_chain_router
+# Recurring Revenue Radar — portfolio expansion scanner (one-off → retainer)
+from api.routers import recurring_revenue as recurring_revenue_router
 
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
@@ -334,6 +336,8 @@ def create_app() -> FastAPI:
 
     for _autopilot_router in AUTOPILOT_ROUTERS:
         app.include_router(_autopilot_router)
+    # Recurring Revenue Radar — daily portfolio expansion scanner (one-off → retainer)
+    app.include_router(recurring_revenue_router.router)
     # Wave 7 W7.5 — Tenant theming: GET tenant theme.css + POST admin theme update
     app.include_router(tenant_theming.router)
     # Wave 7 W7.2 — Sector Intelligence (R4 productization)

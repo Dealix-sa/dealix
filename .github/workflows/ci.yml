@@ -97,6 +97,9 @@ jobs:
       - name: Verify Service Readiness Matrix
         run: python scripts/verify_service_readiness_matrix.py
 
+      - name: Verify Recurring Revenue Radar (expansion doctrine)
+        run: python scripts/verify_recurring_revenue_radar.py
+
       - name: Quick regression bundle
         run: |
           pytest \

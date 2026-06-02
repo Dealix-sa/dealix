@@ -19,12 +19,25 @@ import time
 from collections.abc import Callable
 from typing import Any
 
-_CACHE: dict[int, dict[str, Any]] = {}
+# Keyed by (minute-bucket, builder-identity). Keying by the builder — not just
+# the time bucket — keeps each distinct dashboard endpoint (founder dashboard,
+# Beast Command Center, …) in its own cache slot. Without this, whichever
+# endpoint was called first within a bucket would poison the others with its
+# payload (wrong shape / missing fields). See test_constitution_closure.
+_CACHE: dict[tuple[int, str], dict[str, Any]] = {}
 _DEFAULT_TTL_SECONDS = 60
 
 
 def _bucket(ttl_seconds: int) -> int:
     return int(time.time() // ttl_seconds)
+
+
+def _builder_key(builder: Callable[[], dict[str, Any]], cache_key: str | None) -> str:
+    if cache_key:
+        return cache_key
+    module = getattr(builder, "__module__", "") or ""
+    qualname = getattr(builder, "__qualname__", None) or repr(builder)
+    return f"{module}.{qualname}"
 
 
 def _has_degraded(payload: dict[str, Any]) -> bool:
@@ -35,15 +48,19 @@ def cached_dashboard_payload(
     builder: Callable[[], dict[str, Any]],
     *,
     ttl_seconds: int = _DEFAULT_TTL_SECONDS,
+    cache_key: str | None = None,
 ) -> dict[str, Any]:
     """Return a cached dashboard payload, rebuilding once per minute bucket.
 
-    The ``builder`` is the no-arg composer that produces a fresh payload.
-    On a cache miss we call it once, time it, and stash the result.
-    Degraded payloads are NEVER cached so we don't pin a transient failure.
+    The ``builder`` is the no-arg composer that produces a fresh payload. Each
+    distinct ``builder`` (or explicit ``cache_key``) gets its own cache slot so
+    different dashboards never collide. On a cache miss we call the builder
+    once, time it, and stash the result. Degraded payloads are NEVER cached so
+    we don't pin a transient failure.
     """
     bucket = _bucket(ttl_seconds)
-    cached = _CACHE.get(bucket)
+    key = (bucket, _builder_key(builder, cache_key))
+    cached = _CACHE.get(key)
     if cached is not None:
         out = dict(cached)
         out["cache_hit"] = True
@@ -58,8 +75,11 @@ def cached_dashboard_payload(
     payload["cache_hit"] = False
 
     if not _has_degraded(payload):
-        _CACHE.clear()
-        _CACHE[bucket] = payload
+        # Evict stale buckets but keep other builders cached in the current
+        # bucket (bounds memory to the live bucket's distinct dashboards).
+        for existing in [k for k in _CACHE if k[0] != bucket]:
+            del _CACHE[existing]
+        _CACHE[key] = payload
     return payload
 
 
