@@ -18,6 +18,7 @@ Pass `--write-report` to stamp the verdict into reports/gtm/DAILY_GTM_REPORT.md.
 This verifier deliberately re-derives enum/required constraints from the schema
 files themselves, so it does not drift when a schema changes.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -51,9 +52,16 @@ EXAMPLES = {
 }
 
 CANONICAL_SECTORS = {
-    "marketing_agencies", "training_companies", "clinics", "real_estate_teams",
-    "recruitment_agencies", "professional_services", "restaurant_groups",
-    "education_providers", "logistics_companies", "local_saas",
+    "marketing_agencies",
+    "training_companies",
+    "clinics",
+    "real_estate_teams",
+    "recruitment_agencies",
+    "professional_services",
+    "restaurant_groups",
+    "education_providers",
+    "logistics_companies",
+    "local_saas",
 }
 
 KEYSTONE_DOCS = [
@@ -165,10 +173,15 @@ def run_checks() -> tuple[bool, list[str], list[str]]:
                 # doctrine invariants for drafts
                 if schema_name == "outreach_draft.schema.json":
                     if rec.get("unsubscribe_included") is not True:
-                        errors.append(f"{fname}:{line_no} draft must have unsubscribe_included=true")
+                        errors.append(
+                            f"{fname}:{line_no} draft must have unsubscribe_included=true"
+                        )
                     if "approval_status" not in rec:
                         errors.append(f"{fname}:{line_no} draft missing approval_status")
-                    if rec.get("send_status") == "sent" and rec.get("approval_status") != "approved":
+                    if (
+                        rec.get("send_status") == "sent"
+                        and rec.get("approval_status") != "approved"
+                    ):
                         errors.append(f"{fname}:{line_no} sent draft without approval")
         except json.JSONDecodeError as exc:
             errors.append(f"invalid JSONL in {fname}: {exc}")
@@ -199,6 +212,7 @@ def _stamp_report(verdict: str) -> None:
         return
     text = report.read_text(encoding="utf-8")
     import re
+
     new = re.sub(
         r"DEALIX_MARKET_PRODUCTION_OS_VERDICT=\w+",
         f"DEALIX_MARKET_PRODUCTION_OS_VERDICT={verdict}",
@@ -210,7 +224,9 @@ def _stamp_report(verdict: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Verify Dealix Market Production OS layer.")
-    parser.add_argument("--write-report", action="store_true", help="stamp verdict into the daily GTM report")
+    parser.add_argument(
+        "--write-report", action="store_true", help="stamp verdict into the daily GTM report"
+    )
     args = parser.parse_args()
 
     ok, errors, info = run_checks()

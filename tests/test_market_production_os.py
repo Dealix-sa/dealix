@@ -4,6 +4,7 @@ Mirrors `scripts/verify_market_production_os.py`. Keeps the docs, schemas, and
 synthetic example data in lock-step, and asserts the load-bearing doctrine
 invariants (no send without unsubscribe; 250 drafts != 250 sends).
 """
+
 from __future__ import annotations
 
 import importlib.util
@@ -63,7 +64,12 @@ def test_outreach_draft_examples_have_unsubscribe() -> None:
     for rec in rows:
         assert rec.get("unsubscribe_included") is True
         assert rec.get("approval_status") in {
-            "pending", "approved", "rejected", "rewrite", "nurture", "do_not_contact"
+            "pending",
+            "approved",
+            "rejected",
+            "rewrite",
+            "nurture",
+            "do_not_contact",
         }
 
 
