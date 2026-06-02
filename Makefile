@@ -10,7 +10,8 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        distribution-drafts draft-queue distribution-day
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +183,16 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Product Distribution OS ────────────────────────────────────
+# Approval-first draft factory. Generates internal (L1) outreach drafts and a
+# founder review queue. Never sends anything — manual copy only after approval.
+
+distribution-drafts: ## Distribution: generate approval-first outreach drafts from prospects
+	$(PYTHON) scripts/generate_distribution_drafts.py
+
+draft-queue: ## Distribution: render the founder draft-queue review report
+	$(PYTHON) scripts/review_draft_queue.py
+
+distribution-day: distribution-drafts draft-queue ## Distribution: full daily run (drafts + queue review)
+	@echo "✅ Dealix distribution day complete — review reports/distribution/ before any manual send"

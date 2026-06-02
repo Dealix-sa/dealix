@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/distribution_draft.schema.json",
+  "title": "DistributionDraft",
+  "description": "An approval-first distribution draft produced by the Product Distribution OS. A draft is never an external send: it is internal content (L1 evidence) that a human must review before any manual copy/send. Channels are manual-only by design; no automation, no cold outreach, no scraping.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "prospect_id",
+    "company",
+    "sector",
+    "channel",
+    "draft_type",
+    "language",
+    "body",
+    "evidence_level",
+    "risk_level",
+    "approval_required",
+    "status",
+    "created_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable draft identifier (e.g. draft_<hex>)."
+    },
+    "prospect_id": {
+      "type": "string",
+      "description": "Reference to the prospect in data/distribution/prospects.json."
+    },
+    "company": {
+      "type": "string",
+      "description": "Prospect company name (not PII)."
+    },
+    "sector": {
+      "type": "string",
+      "description": "Target sector used to shape the offer angle."
+    },
+    "channel": {
+      "type": "string",
+      "description": "Manual-only channel. There is no automation behind any value here.",
+      "enum": [
+        "email",
+        "whatsapp_manual",
+        "linkedin_manual",
+        "phone_script",
+        "proposal_pdf",
+        "internal_note"
+      ]
+    },
+    "draft_type": {
+      "type": "string",
+      "enum": [
+        "outreach_first",
+        "outreach_followup_1",
+        "outreach_followup_2",
+        "breakup",
+        "discovery_invite",
+        "diagnostic_summary",
+        "proposal",
+        "proof_pack_intro",
+        "payment_followup",
+        "onboarding_message",
+        "renewal_upsell"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "enum": ["ar", "en"]
+    },
+    "subject": {
+      "type": "string",
+      "description": "Optional subject line (used for email/proposal channels)."
+    },
+    "body": {
+      "type": "string",
+      "description": "Draft body. Must pass auto_client_acquisition.governance_os.policy_check_draft and carry no PII."
+    },
+    "offer_angle": {
+      "type": "string",
+      "description": "The value angle the draft leads with."
+    },
+    "evidence_level": {
+      "type": "string",
+      "description": "Maps to auto_client_acquisition.proof_engine.evidence.EvidenceLevel. A generated draft is L1 (internal draft, not customer-ready) until a human reviews it.",
+      "enum": ["L0", "L1", "L2", "L3", "L4", "L5"]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "approval_required": {
+      "type": "boolean",
+      "description": "Always true. No draft leaves the queue without founder approval.",
+      "const": true
+    },
+    "status": {
+      "type": "string",
+      "description": "Lifecycle state. Generators only ever emit 'pending_approval' or 'needs_edit'. Human/approval flow sets the rest. 'sent_via_integration' is only valid AFTER approval and is never written by any script in this layer.",
+      "enum": [
+        "generated",
+        "pending_approval",
+        "approved",
+        "rejected",
+        "needs_edit",
+        "copied_manually",
+        "sent_via_integration",
+        "replied",
+        "archived"
+      ]
+    },
+    "policy_issues": {
+      "type": "array",
+      "description": "Issues raised by policy_check_draft / PII scan. Non-empty implies status must be needs_edit.",
+      "items": { "type": "string" }
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO-8601 UTC timestamp."
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "ISO-8601 UTC timestamp."
+    },
+    "next_action": {
+      "type": "string",
+      "description": "Human-readable next step for the founder."
+    }
+  }
+}
