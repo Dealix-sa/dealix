@@ -196,6 +196,17 @@ bash scripts/dealix_local_stack_verify.sh --skip-docker --skip-frontend   # ال
 
 استراتيجية التشغيل الكاملة: `docs/strategic/DEALIX_MASTER_OPERATING_MODEL_AR.md`
 
+### Revenue Execution OS (distribution — approval-first)
+
+طبقة تنفيذ الإيراد تحوّل المؤهَّل إلى سلسلة متتبَّعة: qualify → draft (quality-gated) → follow-up → proposal → proof → payment handoff → delivery handoff → renewal → win/loss → metrics. **لا توجد قدرة إرسال خارجي ولا شحن في v1.**
+
+- الوحدة: [`auto_client_acquisition/distribution_os/`](auto_client_acquisition/distribution_os/) — تعيد استخدام `governance_os`/`proof_os`/`sales_os`/`payment_ops` والكتالوج القائم (`autonomous_growth/product_catalog.py`) — **بدون اختراع أسعار**.
+- API: `/api/v1/distribution/*` ([`api/routers/distribution.py`](api/routers/distribution.py)) — كل استجابة فيها `governance_decision`؛ لا مسار send/charge.
+- يومي: `make distribution-day` · `make draft-quality` · `make distribution-metrics` → `reports/distribution/*.md`.
+- مخططات: [`schemas/`](schemas/) · بوابة أمن الوكلاء: `python scripts/agent_security_gate.py`.
+- فهرس البناء + الخارطة + فريق الوكلاء: [`docs/distribution/REVENUE_EXECUTION_OS_BUILD_AR.md`](docs/distribution/REVENUE_EXECUTION_OS_BUILD_AR.md) · واجهة المؤسس (Spec): [`docs/distribution/FOUNDER_REVENUE_CONTROL_ROOM_AR.md`](docs/distribution/FOUNDER_REVENUE_CONTROL_ROOM_AR.md).
+- عقيدة الطبقة مفروضة باختبارات: `tests/test_distribution_os_doctrine.py` + `tests/test_distribution_os_*.py`.
+
 ### Hello world test
 
 Submit a lead to the governed pipeline:
