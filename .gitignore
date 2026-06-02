@@ -107,6 +107,10 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# WhatsApp Client OS — canonical config (templates + assessment questions).
+# The runtime JSONL ledgers below stay ignored (they may hold client data).
+!data/whatsapp/
+data/whatsapp/*.jsonl
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
