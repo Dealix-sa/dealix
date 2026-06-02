@@ -28,6 +28,15 @@ See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings),
 - Run/tests commands only when explicitly requested by the user.
 - Avoid changing deployment, secret, or production config unless the user explicitly asks.
 
+### Automation OS — agent governance
+
+The **least-privilege operating contract** for every automated actor (Claude Code, GitHub Actions, the automation router, n8n) lives in [`docs/automation/`](docs/automation/):
+- [`AUTOMATION_PERMISSION_MODEL.md`](docs/automation/AUTOMATION_PERMISSION_MODEL.md) — the **L0–L6 ladder**, the 3 rings (allowed / approval / forbidden), and the 11 non-negotiables (enforced by the CI doctrine-guard tests + `auto_client_acquisition/governance_os/`).
+- [`CLOUD_CODE_COMMAND_CENTER.md`](docs/automation/CLOUD_CODE_COMMAND_CENTER.md) — how the founder commands agents (Issue template, `workflow_dispatch`).
+- [`EXTERNAL_AUTOMATION_BLUEPRINT.md`](docs/automation/EXTERNAL_AUTOMATION_BLUEPRINT.md) — n8n / CRM / webhooks, **queue-only, never auto-send**.
+
+Default autonomy is **`pr_only`**. Merge, production deploy, secrets, deletes, and any external customer send stay with the founder. The single agent workflow ([`.github/workflows/dealix-agent.yml`](.github/workflows/dealix-agent.yml)) is **manual-dispatch only** and dormant until `ANTHROPIC_API_KEY` is set.
+
 ## Cursor Cloud specific instructions
 
 ### Services Overview

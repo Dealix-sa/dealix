@@ -1,0 +1,70 @@
+name: Dealix Agent Command
+description: Command the Dealix automation agent with a scoped, reviewable mission
+title: "agent: "
+labels:
+  - agent-task
+  - founder-os
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Governs how an automated actor runs. See `docs/automation/CLOUD_CODE_COMMAND_CENTER.md`.
+        The agent runs **manually** via Actions → "Dealix Agent (manual)". Output is always a **reviewable PR** — never a merge, deploy, or external send.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Revenue
+        - Product
+        - Security
+        - Deployment
+        - Client Delivery
+        - Research
+        - Founder Report
+    validations:
+      required: true
+  - type: textarea
+    id: mission
+    attributes:
+      label: Mission
+      description: What should the agent accomplish? Be specific and scoped.
+      placeholder: "Create a revenue-focused PR that improves the diagnostic-to-pilot conversion copy in data/templates/."
+    validations:
+      required: true
+  - type: dropdown
+    id: autonomy
+    attributes:
+      label: Autonomy level
+      description: Maps to the L0–L6 ladder in docs/automation/AUTOMATION_PERMISSION_MODEL.md. Default is pr_only.
+      options:
+        - pr_only
+        - report_only
+        - staging_allowed
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How do we know this is done?
+      placeholder: |
+        - Tests pass (make test)
+        - Doctrine guards pass
+        - Docs updated
+        - Draft PR created with impact/risk/rollback
+        - No secrets exposed, no external send
+    validations:
+      required: true
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Guardrail acknowledgment
+      description: These are enforced by CI doctrine-guard tests and the governance_os runtime regardless — confirm the mission respects them.
+      options:
+        - label: PR only — no merge, no production deploy, no secret changes
+          required: true
+        - label: No external customer send — draft and queue only
+          required: true
+        - label: No scraping, cold WhatsApp, LinkedIn automation, or guaranteed claims
+          required: true
