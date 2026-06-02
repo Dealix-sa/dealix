@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/prospect.schema.json",
+  "title": "Prospect",
+  "description": "A researched and scored Saudi B2B company in the Dealix outreach pipeline. The `source` enum intentionally excludes scraping: a scraped prospect cannot be represented (NO_SCRAPING non-negotiable).",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "Sector": {
+      "type": "string",
+      "enum": [
+        "marketing_agencies",
+        "training_companies",
+        "clinics",
+        "real_estate_teams",
+        "recruitment_agencies",
+        "professional_services",
+        "restaurant_groups",
+        "education_providers",
+        "logistics_companies",
+        "local_saas",
+        "other"
+      ]
+    },
+    "Source": {
+      "description": "Allowed, non-scraping prospect sources only.",
+      "type": "string",
+      "enum": [
+        "founder_input",
+        "referral",
+        "inbound",
+        "event",
+        "partner",
+        "public_directory",
+        "job_signal"
+      ]
+    },
+    "PersonalizationLevel": {
+      "description": "P0 sector only · P1 company+sector · P2 pain from their site · P3 trigger · P4 proof angle.",
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3", "P4"]
+    },
+    "Score": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Weighted prospect score; total = sum of components, max 100.",
+      "properties": {
+        "sector_fit": { "type": "integer", "minimum": 0, "maximum": 20 },
+        "expected_leads": { "type": "integer", "minimum": 0, "maximum": 20 },
+        "decision_maker_clear": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "pain_clear": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "payment_capacity": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "personalization": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "low_risk": { "type": "integer", "minimum": 0, "maximum": 5 },
+        "total": { "type": "integer", "minimum": 0, "maximum": 100 }
+      },
+      "required": ["total"]
+    }
+  },
+  "properties": {
+    "schema_version": { "const": "1.0", "default": "1.0", "type": "string" },
+    "prospect_id": { "type": "string", "description": "Stable opaque id, e.g. 'pr_<hex>'." },
+    "company": { "type": "string", "description": "Company display name (not PII)." },
+    "sector": { "$ref": "#/$defs/Sector" },
+    "region": { "type": "string", "default": "Saudi Arabia" },
+    "decision_maker_role": { "type": "string", "description": "Role title only, never a person's name (NO_PII)." },
+    "decision_maker_clear": { "type": "boolean", "default": false },
+    "source": { "$ref": "#/$defs/Source" },
+    "pain_hypothesis": { "type": "string", "maxLength": 2000 },
+    "pain_clear": { "type": "boolean", "default": false },
+    "has_expected_leads": { "type": "boolean", "default": false },
+    "payment_capacity": { "type": "string", "enum": ["unknown", "low", "medium", "high"], "default": "unknown" },
+    "personalization_available": { "type": "boolean", "default": false },
+    "personalization_level": { "$ref": "#/$defs/PersonalizationLevel", "default": "P0" },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"], "default": "medium" },
+    "score": { "$ref": "#/$defs/Score" },
+    "status": {
+      "type": "string",
+      "enum": [
+        "researched",
+        "qualified",
+        "draft_ready",
+        "drafted",
+        "approved",
+        "sent",
+        "replied",
+        "meeting_booked",
+        "proposal_needed",
+        "proposal_sent",
+        "won",
+        "lost",
+        "nurture",
+        "do_not_contact"
+      ],
+      "default": "researched"
+    },
+    "language": { "type": "string", "enum": ["ar", "en"], "default": "ar" },
+    "notes": { "type": "string", "description": "Operational notes; MUST NOT contain personal data (NO_PII).", "maxLength": 4000 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["prospect_id", "company", "sector", "source", "status"]
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/email_account.schema.json",
+  "title": "EmailAccount",
+  "description": "A sending inbox and the health of its domain. Cold outreach must use a dedicated domain (not the primary brand domain) with SPF, DKIM, and DMARC. Bulk senders to Gmail require SPF+DKIM+DMARC, one-click unsubscribe, and spam rate < 0.3% (Google sender guidelines).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0", "default": "1.0", "type": "string" },
+    "account_id": { "type": "string" },
+    "domain": { "type": "string" },
+    "address": { "type": "string" },
+    "display_name": { "type": "string" },
+    "warmup_status": { "type": "string", "enum": ["cold", "warming", "warm"], "default": "cold" },
+    "spf": { "type": "boolean", "default": false },
+    "dkim": { "type": "boolean", "default": false },
+    "dmarc": { "type": "boolean", "default": false },
+    "dmarc_policy": { "type": "string", "enum": ["none", "quarantine", "reject", "absent"], "default": "absent" },
+    "custom_tracking_domain": { "type": "boolean", "default": false },
+    "dedicated_domain": { "type": "boolean", "default": false, "description": "True when this is a dedicated outreach domain, not the primary brand domain." },
+    "postmaster_connected": { "type": "boolean", "default": false, "description": "Google Postmaster Tools (or equivalent) connected." },
+    "bounce_handling": { "type": "boolean", "default": false },
+    "unsubscribe_endpoint": { "type": "boolean", "default": false },
+    "daily_cap": { "type": "integer", "minimum": 0, "default": 0 },
+    "sent_today": { "type": "integer", "minimum": 0, "default": 0 },
+    "reputation": { "type": "string", "enum": ["unknown", "poor", "fair", "good", "excellent"], "default": "unknown" },
+    "health_score": { "type": "integer", "minimum": 0, "maximum": 100, "default": 0 },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["account_id", "domain", "address"]
+}

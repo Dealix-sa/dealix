@@ -92,6 +92,13 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
 - **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
 
+### Market Production OS (go-to-market production layer)
+
+- **Index:** [docs/market_production_os/README.md](docs/market_production_os/README.md) — brand → product catalog → sector intelligence → prospect research → cold-email draft factory → compliance/deliverability → founder approval → sending ramp → reply handling → job signals → content → press → partnerships → WhatsApp post-reply → founder GTM control room.
+- **Code (stdlib-only):** `dealix/market_production_os/` — `draft_factory`, `compliance_gate` (six gates; mirrors `governance_os/draft_gate` patterns), `deliverability`, `sending_ramp`, `reply_classifier`, `prospect_scoring`, `personalization`, `control_room`. JSON schemas in `schemas/*.schema.json`; synthetic no-PII seeds in `dealix/market_production_os/seeds/`.
+- **Daily report:** `python -m dealix.market_production_os.control_room --produce --print` → `reports/outreach/FOUNDER_GTM_CONTROL_ROOM.md`. Tests: `tests/test_market_production_os.py`, `tests/test_no_cold_email_without_optout.py` (run with `--noconftest -o addopts=""` if optional test deps are absent).
+- **Doctrine:** 250 drafts/day allowed; **250 sends/day is not** — sends gated by domain health (SPF/DKIM/DMARC) + working opt-out + suppression (keyed on `email_sha256`, NO_PII) + staged ramp + founder approval. Cold email primary; WhatsApp post-reply/opt-in only; LinkedIn manual only; no scraping.
+
 ### Global AI transformation (CEO / operating spine)
 
 - Weekly executive checklist: `bash scripts/run_executive_weekly_checklist.sh` (proof pack + `verify_global_ai_transformation.py` + audit log; syncs `weekly_ops.last_checklist_run_iso` when PASS).

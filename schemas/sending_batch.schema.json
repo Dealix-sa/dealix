@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/sending_batch.schema.json",
+  "title": "SendingBatch",
+  "description": "An approved batch of drafts staged for sending within the staged ramp. A batch may move to 'sending' only after founder approval and only if planned_count <= the ramp cap for its phase and the account's remaining daily cap.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0", "default": "1.0", "type": "string" },
+    "batch_id": { "type": "string" },
+    "date": { "type": "string", "format": "date" },
+    "ramp_phase": { "type": "integer", "minimum": 0, "maximum": 3, "description": "0 = test (0–20/day), 1 = 50/day, 2 = 100–150/day, 3 = 200–250/day." },
+    "account_id": { "type": "string" },
+    "draft_ids": { "type": "array", "items": { "type": "string" } },
+    "planned_count": { "type": "integer", "minimum": 0 },
+    "cap": { "type": "integer", "minimum": 0, "description": "The effective ceiling applied to this batch." },
+    "approved_by": { "type": "string", "description": "Founder identifier; required before status 'approved'." },
+    "approved_at": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["planned", "approved", "sending", "sent", "aborted"], "default": "planned" },
+    "notes": { "type": "string", "maxLength": 2000 },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["batch_id", "date", "account_id", "status"]
+}
