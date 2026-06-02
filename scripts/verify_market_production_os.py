@@ -26,9 +26,7 @@ def main() -> int:
 
     # 1. Draft production target sums correctly.
     if mpo.draft_mix_total() != mpo.DRAFTS_PER_DAY:
-        failures.append(
-            f"draft mix sums to {mpo.draft_mix_total()}, expected {mpo.DRAFTS_PER_DAY}"
-        )
+        failures.append(f"draft mix sums to {mpo.draft_mix_total()}, expected {mpo.DRAFTS_PER_DAY}")
 
     # 2. Sending ramp never lets week 0 exceed the warm-up cap.
     if mpo.sending_ramp_cap(0) > 20:
@@ -38,9 +36,8 @@ def main() -> int:
 
     # 3. All seed datasets validate against their schemas.
     results = mpo.validate_all()
-    for dataset, errors in results.items():
-        for err in errors:
-            failures.append(err)
+    for errors in results.values():
+        failures.extend(errors)
 
     summary = mpo.summary()
     print(json.dumps(summary, ensure_ascii=False, indent=2))

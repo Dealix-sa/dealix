@@ -20,8 +20,9 @@ Claim/cold-channel safety reuses `auto_client_acquisition.governance_os`.
 from __future__ import annotations
 
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 # Repo root: this file is <repo>/dealix/marketing_factory/market_production_os.py
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -109,11 +110,9 @@ def health_ok(health: dict[str, Any] | None) -> bool:
         return True
     if health.get("provider_warning"):
         return False
-    if float(health.get("bounce_rate", 0.0) or 0.0) >= MAX_BOUNCE_RATE:
-        return False
-    if float(health.get("spam_complaint_rate", 0.0) or 0.0) >= MAX_SPAM_COMPLAINT_RATE:
-        return False
-    return True
+    bounce = float(health.get("bounce_rate", 0.0) or 0.0)
+    spam = float(health.get("spam_complaint_rate", 0.0) or 0.0)
+    return bounce < MAX_BOUNCE_RATE and spam < MAX_SPAM_COMPLAINT_RATE
 
 
 def sending_ramp_cap(week: int, health: dict[str, Any] | None = None) -> int:

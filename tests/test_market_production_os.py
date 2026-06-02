@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from dealix.marketing_factory import market_production_os as mpo
 
-
 # --- production targets -----------------------------------------------------
 
 
