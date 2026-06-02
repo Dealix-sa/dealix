@@ -1,0 +1,303 @@
+# Dealix Machine Registry (canonical YAML)
+#
+# Every scheduled worker, GitHub Actions cron, daemon, or webhook handler
+# that runs on Dealix infrastructure MUST appear here with an owner and
+# autonomy class. The registry is the answer to "what is running where, on
+# what schedule, with what blast radius?"
+#
+# Verifier: scripts/verify_machine_registry.py cross-checks .github/workflows/
+# entries against this file.
+
+version: 1
+
+# --------------------------------------------------------------------------
+# GitHub Actions (scheduled / triggered workflows)
+# --------------------------------------------------------------------------
+github_workflows:
+  - name: business_now_snapshot
+    file: .github/workflows/business_now_snapshot.yml
+    schedule: on_push_to_transformation
+    class: A1
+    owner: founder
+    purpose: Snapshot business-now metrics on transformation push.
+
+  - name: ci
+    file: .github/workflows/ci.yml
+    schedule: on_push_pr
+    class: A1
+    owner: founder
+    purpose: Main pytest + lint gate.
+
+  - name: codeql
+    file: .github/workflows/codeql.yml
+    schedule: weekly
+    class: A1
+    owner: founder
+    purpose: Security scanning (GitHub CodeQL).
+
+  - name: commercial-expand-weekly
+    file: .github/workflows/commercial-expand-weekly.yml
+    schedule: weekly_sunday
+    class: A1
+    owner: founder
+    purpose: Internal commercial expansion report.
+
+  - name: cto_weekly_anchor
+    file: .github/workflows/cto_weekly_anchor.yml
+    schedule: weekly_monday
+    class: A1
+    owner: founder
+    purpose: CTO weekly engineering anchor report.
+
+  - name: daily-revenue-machine
+    file: .github/workflows/daily-revenue-machine.yml
+    schedule: daily_0400_utc
+    class: A1
+    owner: founder
+    purpose: Daily revenue automation snapshot (internal).
+
+  - name: daily_digest
+    file: .github/workflows/daily_digest.yml
+    schedule: daily_0400_utc
+    class: A1
+    owner: founder
+    purpose: Founder daily digest markdown.
+
+  - name: daily_snapshot
+    file: .github/workflows/daily_snapshot.yml
+    schedule: daily_0500_utc
+    class: A1
+    owner: founder
+    purpose: Daily audit-trail snapshot.
+
+  - name: deploy
+    file: .github/workflows/deploy.yml
+    schedule: on_tag
+    class: A2
+    owner: founder
+    purpose: VPS deployment on release tag (requires approval).
+
+  - name: deploy-pages
+    file: .github/workflows/deploy-pages.yml
+    schedule: on_landing_push
+    class: A2
+    owner: founder
+    purpose: GitHub Pages deployment for landing site.
+
+  - name: dlq_check
+    file: .github/workflows/dlq_check.yml
+    schedule: every_30_min
+    class: A1
+    owner: founder
+    purpose: Dead-letter queue health check.
+
+  - name: docker-build
+    file: .github/workflows/docker-build.yml
+    schedule: on_push_main
+    class: A1
+    owner: founder
+    purpose: Multi-platform Docker build + Trivy scan.
+
+  - name: enterprise-control-plane
+    file: .github/workflows/enterprise-control-plane.yml
+    schedule: workflow_dispatch
+    class: A1
+    owner: founder
+    purpose: Manual enterprise control-plane verification.
+
+  - name: founder_autonomous_ops_weekly
+    file: .github/workflows/founder_autonomous_ops_weekly.yml
+    schedule: weekly
+    class: A1
+    owner: founder
+    purpose: Weekly autonomous-ops audit (no external send).
+
+  - name: founder_commercial_daily
+    file: .github/workflows/founder_commercial_daily.yml
+    schedule: daily_0500_utc_sun_thu
+    class: A1
+    owner: founder
+    purpose: Daily commercial founder report.
+
+  - name: founder_complete_autonomous_weekly
+    file: .github/workflows/founder_complete_autonomous_weekly.yml
+    schedule: weekly_sunday
+    class: A1
+    owner: founder
+    purpose: Weekly complete-autonomous-ops scorecard.
+
+  - name: founder_content_weekly
+    file: .github/workflows/founder_content_weekly.yml
+    schedule: weekly_friday
+    class: A1
+    owner: founder
+    purpose: Weekly content readiness review.
+
+  - name: founder_evening_evidence
+    file: .github/workflows/founder_evening_evidence.yml
+    schedule: daily_evening
+    class: A1
+    owner: founder
+    purpose: Evening evidence audit.
+
+  - name: founder_strongest_ops_daily
+    file: .github/workflows/founder_strongest_ops_daily.yml
+    schedule: daily_0530_utc
+    class: A1
+    owner: founder
+    purpose: Strongest-ops daily run.
+
+  - name: founder_weekly_scorecard
+    file: .github/workflows/founder_weekly_scorecard.yml
+    schedule: weekly_friday
+    class: A1
+    owner: founder
+    purpose: Weekly founder scorecard.
+
+  - name: founder_weekly_verify
+    file: .github/workflows/founder_weekly_verify.yml
+    schedule: weekly_sunday
+    class: A1
+    owner: founder
+    purpose: Weekly founder verification.
+
+  - name: global-ai-transformation
+    file: .github/workflows/global-ai-transformation.yml
+    schedule: workflow_dispatch
+    class: A1
+    owner: founder
+    purpose: Global AI transformation artifact check.
+
+  - name: governed-full-ops-daily
+    file: .github/workflows/governed-full-ops-daily.yml
+    schedule: daily
+    class: A1
+    owner: founder
+    purpose: Governed full-ops daily (no external send).
+
+  - name: lighthouse_ci
+    file: .github/workflows/lighthouse_ci.yml
+    schedule: on_push_pr
+    class: A1
+    owner: founder
+    purpose: Lighthouse + a11y gate.
+
+  - name: local_stack_verify
+    file: .github/workflows/local_stack_verify.yml
+    schedule: workflow_dispatch
+    class: A1
+    owner: founder
+    purpose: Manual full-stack Docker verification.
+
+  - name: official-launch-verify
+    file: .github/workflows/official-launch-verify.yml
+    schedule: workflow_dispatch
+    class: A2
+    owner: founder
+    purpose: Manual launch readiness gate.
+
+  - name: playwright_smoke
+    file: .github/workflows/playwright_smoke.yml
+    schedule: on_push_pr
+    class: A1
+    owner: founder
+    purpose: Tier-1 page e2e smoke.
+
+  - name: production_api_trust_smoke
+    file: .github/workflows/production_api_trust_smoke.yml
+    schedule: daily_0430_utc
+    class: A1
+    owner: founder
+    purpose: Production API trust endpoint smoke.
+
+  - name: railway_deploy
+    file: .github/workflows/railway_deploy.yml
+    schedule: on_push_main
+    class: A2
+    owner: founder
+    purpose: Railway backend deploy on main push.
+
+  - name: railway_deploy_frontend
+    file: .github/workflows/railway_deploy_frontend.yml
+    schedule: on_push_main
+    class: A2
+    owner: founder
+    purpose: Railway frontend deploy on main push.
+
+  - name: release
+    file: .github/workflows/release.yml
+    schedule: on_tag
+    class: A2
+    owner: founder
+    purpose: Release publication.
+
+  - name: release-please
+    file: .github/workflows/release-please.yml
+    schedule: on_push_main
+    class: A2
+    owner: founder
+    purpose: release-please automation.
+
+  - name: reliability_drills_scorecard
+    file: .github/workflows/reliability_drills_scorecard.yml
+    schedule: weekly_monday
+    class: A1
+    owner: founder
+    purpose: Reliability drills scorecard.
+
+  - name: scheduled_healthcheck
+    file: .github/workflows/scheduled_healthcheck.yml
+    schedule: every_15_min
+    class: A1
+    owner: founder
+    purpose: Production health probe.
+
+  - name: staging-smoke
+    file: .github/workflows/staging-smoke.yml
+    schedule: workflow_dispatch
+    class: A1
+    owner: founder
+    purpose: Manual staging smoke run.
+
+  - name: verify-full-autonomous-ops
+    file: .github/workflows/verify-full-autonomous-ops.yml
+    schedule: workflow_dispatch
+    class: A1
+    owner: founder
+    purpose: Manual full-autonomous-ops verification.
+
+  - name: watchdog_drift
+    file: .github/workflows/watchdog_drift.yml
+    schedule: hourly_05
+    class: A1
+    owner: founder
+    purpose: Drift watchdog.
+
+  - name: weekly-founder-content
+    file: .github/workflows/weekly-founder-content.yml
+    schedule: weekly
+    class: A1
+    owner: founder
+    purpose: Weekly founder content queue.
+
+  - name: weekly_self_improvement
+    file: .github/workflows/weekly_self_improvement.yml
+    schedule: weekly_sunday
+    class: A1
+    owner: founder
+    purpose: Weekly self-improvement scorecard.
+
+  - name: dealix-everything
+    file: .github/workflows/dealix-everything.yml
+    schedule: on_push_main_and_weekly
+    class: A1
+    owner: founder
+    purpose: Master Company OS verifier — runs scripts/verify_everything.py.
+
+# --------------------------------------------------------------------------
+# Workers / daemons (non-GitHub)
+# --------------------------------------------------------------------------
+# Populate as private-ops workers are registered. Each entry must include
+# name, executable, schedule, class, owner, escalation, last_known_status.
+
+workers: []

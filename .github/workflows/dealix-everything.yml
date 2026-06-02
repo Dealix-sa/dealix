@@ -1,0 +1,51 @@
+name: Dealix Everything (Company OS Master Gate)
+
+# Master Company OS verifier. Runs every layer verifier and reports a single
+# PASS/FAIL. Read-only: no external sends, no production writes.
+
+on:
+  push:
+    branches:
+      - main
+      - "claude/**"
+  schedule:
+    - cron: "0 6 * * 0"   # Sunday 06:00 UTC (09:00 KSA)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  everything:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Run master Company OS verifier
+        id: everything
+        continue-on-error: true
+        run: |
+          set +e
+          python scripts/verify_everything.py | tee dealix-everything-report.txt
+          echo "exitcode=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-everything-report-${{ github.run_id }}
+          path: |
+            dealix-everything-report.txt
+            docs/ops/DEALIX_IMPLEMENTATION_AUDIT.md
+            docs/ops/DEALIX_MISSING_SYSTEMS.md
+            docs/ops/DEALIX_FINAL_READINESS_REPORT.md
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Fail the job if verifier failed
+        if: steps.everything.outputs.exitcode != '0'
+        run: |
+          echo "verify_everything.py exited with ${{ steps.everything.outputs.exitcode }}"
+          exit ${{ steps.everything.outputs.exitcode }}

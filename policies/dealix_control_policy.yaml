@@ -1,0 +1,180 @@
+# Dealix Master Control Policy (canonical)
+#
+# This file is the single source of truth for what Dealix agents,
+# workers, and AI surfaces are allowed to do. It references existing
+# policy artifacts but does not duplicate them; verifiers cross-check
+# the referenced files for consistency.
+#
+# Referenced existing policies (do not edit there for changes — edit here):
+#   - dealix/config/approval_policy.yaml   (per-action approval gates)
+#   - dealix/config/claim_policy.yaml      (numeric / ROI / security claims)
+#   - dealix/config/agent_permissions.yaml (per-agent automation ceilings)
+#   - dealix/registers/no_overclaim.yaml   (public-facing claim register)
+#
+# Owner: founder (bassam.m.assiri@gmail.com)
+# Audit: every change must update docs/ops/DEALIX_IMPLEMENTATION_AUDIT.md
+
+version: 1
+last_updated: 2026-05-24
+owner: founder
+
+# --------------------------------------------------------------------------
+# Autonomy classes
+# --------------------------------------------------------------------------
+# A1 = draft-only: agent prepares content, never executes anything outside repo.
+# A2 = approval-required: agent queues an action; only the founder (or named
+#      delegate) may approve and execute. Every approval emits an audit record.
+# A3 = founder-only: action is never automated, even with approval. The agent
+#      may suggest, but execution is performed manually by the founder.
+#
+# Default class for any new agent: A1.
+# A3 is the only class that is NEVER triggered by a worker, cron, or webhook.
+
+autonomy_classes:
+  A1:
+    description: Draft-only. Internal artifacts only. No external surface.
+    allowed_effects: [read, write_internal, draft]
+    requires_approval: false
+    audit_required: true
+  A2:
+    description: Approval-required. May propose external actions; founder approves.
+    allowed_effects: [read, write_internal, draft, queue_external]
+    requires_approval: true
+    audit_required: true
+    approval_record_required: true
+  A3:
+    description: Founder-only. Never auto-executed; suggestion + manual action.
+    allowed_effects: [read, write_internal, draft, propose]
+    requires_approval: true
+    auto_execution: forbidden
+    audit_required: true
+    approval_record_required: true
+
+# --------------------------------------------------------------------------
+# External send rules
+# --------------------------------------------------------------------------
+# No worker, cron job, or API endpoint may emit a message to a customer,
+# prospect, partner, vendor, or social channel without an approval_id.
+# Channel gateway must reject any payload missing this field.
+
+external_send:
+  default: blocked
+  required_fields:
+    - approval_id
+    - approved_by
+    - approved_at
+    - content_hash
+  rejected_channels_by_default:
+    - cold_whatsapp
+    - linkedin_automation
+    - scraped_email
+    - purchased_lists
+  audit_log: /opt/dealix-ops-private/trust/approval_decisions.csv
+
+# --------------------------------------------------------------------------
+# Banned claims (draft-time enforcement)
+# --------------------------------------------------------------------------
+# Any draft (Arabic or English) containing one of these phrases must be
+# blocked before reaching an external surface. This list is enforced by
+# auto_client_acquisition/governance_os/draft_gate.py and verified by
+# scripts/verify_prompt_output_quality.py.
+
+banned_claims:
+  english:
+    - "guaranteed sales"
+    - "guaranteed results"
+    - "guaranteed roi"
+    - "guarantee roi"
+    - "guaranteed meetings"
+    - "guaranteed revenue"
+    - "guaranteed leads"
+    - "fake proof"
+    - "fake testimonial"
+  arabic:
+    - "نضمن لك"
+    - "نضمن لكم"
+    - "نضمن النتائج"
+    - "نضمن لك مبيعات"
+    - "ضمان مبيعات"
+    - "ضمان عملاء"
+    - "ضمان اجتماعات"
+    - "ضمان إيراد"
+    - "ضمان نتائج"
+
+# --------------------------------------------------------------------------
+# Forbidden actions (any class)
+# --------------------------------------------------------------------------
+forbidden_actions:
+  - cold_whatsapp_automation
+  - linkedin_dm_automation
+  - directory_scraping
+  - purchased_email_lists
+  - auto_charge_without_approval
+  - auto_send_without_approval
+
+# --------------------------------------------------------------------------
+# Kill switch
+# --------------------------------------------------------------------------
+# Setting kill_switch.enabled=true halts all A2/A3 queue processing and all
+# external_send actions. Read paths and draft generation remain available.
+
+kill_switch:
+  enabled: false  # global default; overridable at runtime
+  scope: [external_send, a2_actions, a3_actions, payment_capture]
+  owner: founder
+
+# --------------------------------------------------------------------------
+# Approval policies (references)
+# --------------------------------------------------------------------------
+# Per-action risk levels live in dealix/config/approval_policy.yaml.
+# This block lists the actions that must always be present there.
+
+required_approval_actions:
+  - external_message
+  - scope_send
+  - invoice_send
+  - diagnostic_final
+  - proof_pack_final
+  - case_study_publish
+  - security_claim
+  - discount_request
+  - refund_request
+  - affiliate_payout
+  - agent_tool_action
+
+# --------------------------------------------------------------------------
+# Audit log requirements
+# --------------------------------------------------------------------------
+audit:
+  every_a2_action_logged: true
+  every_a3_proposal_logged: true
+  every_external_send_logged: true
+  retention_days: 365
+  storage:
+    - /opt/dealix-ops-private/trust/approval_decisions.csv
+    - /opt/dealix-ops-private/trust/incidents.csv
+    - /opt/dealix-ops-private/trust/trust_flags.csv
+
+# --------------------------------------------------------------------------
+# Prompt-injection guards
+# --------------------------------------------------------------------------
+# Every LLM call that incorporates untrusted text (lead replies, scraped
+# pages, vendor docs) must pass through the draft_gate output check. The
+# verifier scripts/verify_prompt_output_quality.py scans corpora for
+# violation patterns.
+
+prompt_safety:
+  output_gate: auto_client_acquisition/governance_os/draft_gate.py
+  input_sanitization: required_for_untrusted
+  delimiter_enforcement: true
+
+# --------------------------------------------------------------------------
+# Schema markers (used by verify_policy_as_code.py)
+# --------------------------------------------------------------------------
+schema_markers:
+  has_autonomy_classes: [A1, A2, A3]
+  has_external_send_block: true
+  has_banned_claims_english: true
+  has_banned_claims_arabic: true
+  has_kill_switch: true
+  has_audit_block: true
