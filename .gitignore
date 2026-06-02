@@ -107,6 +107,26 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Revenue Execution OS (distribution layer) — config/example data is tracked
+# (no PII; synthetic example prospects only); runtime JSONL ledgers stay ignored.
+!data/distribution/
+!data/drafts/
+!data/followups/
+!data/proposals/
+!data/proof_packs/
+!data/payments/
+!data/renewals/
+!data/win_loss/
+data/drafts/*.jsonl
+data/followups/*.jsonl
+data/proposals/*.jsonl
+data/proof_packs/*.jsonl
+data/payments/*.jsonl
+data/renewals/*.jsonl
+data/win_loss/*.jsonl
+# Generated distribution reports may reference real prospects — keep only .gitkeep.
+reports/distribution/*.md
+reports/distribution/*.json
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

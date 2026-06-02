@@ -10,7 +10,10 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        distribution-drafts draft-quality draft-queue followup-queue \
+        proposal-drafts proof-packs payment-handoffs renewal-queue \
+        distribution-metrics win-loss distribution-day distribution-weekly
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +185,43 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Revenue Execution OS (distribution) ────────────────────────
+# Governed product-distribution machine. Every target is draft-only —
+# no external sends, no scraping, approval-first. See docs/distribution/.
+
+distribution-drafts: ## Dist: generate per-sector outreach drafts (draft-only)
+	$(PYTHON) scripts/generate_distribution_drafts.py
+
+draft-quality: ## Dist: run the draft quality gate (fails if any draft is unsafe)
+	$(PYTHON) scripts/check_draft_quality.py
+
+draft-queue: ## Dist: show the pending-draft approval queue
+	$(PYTHON) scripts/review_draft_queue.py
+
+followup-queue: ## Dist: compute due follow-ups (reminders only)
+	$(PYTHON) scripts/generate_followup_queue.py
+
+proposal-drafts: ## Dist: generate proposal drafts from the canonical offers catalog
+	$(PYTHON) scripts/generate_proposal_draft.py
+
+proof-packs: ## Dist: generate proof-pack drafts (L1 internal by default)
+	$(PYTHON) scripts/generate_proof_pack.py
+
+payment-handoffs: ## Dist: generate payment-handoff drafts (never a live link)
+	$(PYTHON) scripts/generate_payment_handoff.py
+
+renewal-queue: ## Dist: generate the renewal/upsell queue (no upsell before proof)
+	$(PYTHON) scripts/generate_renewal_queue.py
+
+distribution-metrics: ## Dist: print the funnel metrics cockpit
+	$(PYTHON) scripts/distribution_metrics.py
+
+win-loss: ## Dist: win/loss learning summary + next changes
+	$(PYTHON) scripts/win_loss_learning.py
+
+distribution-day: ## Dist: run the full daily pipeline (prints DEALIX_DISTRIBUTION_DAY)
+	$(PYTHON) scripts/distribution_day.py
+
+distribution-weekly: ## Dist: weekly distribution review (Sunday board view)
+	$(PYTHON) scripts/distribution_weekly_review.py

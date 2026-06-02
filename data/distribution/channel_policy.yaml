@@ -1,0 +1,23 @@
+# Dealix — Channel Policy (machine-readable mirror of docs/distribution/CHANNEL_POLICY_AR.md)
+# كل قناة لها مستوى أتمتة مسموح. الصياغة المرجعية في الوثيقة العربية.
+# This is consumed by dealix.distribution.doctrine.CHANNEL_AUTOMATION_POLICY parity tests.
+
+schema_version: "1.0"
+operating_mode: "draft_only_no_auto_send"
+
+channels:
+  email:
+    allow: [generate_draft, save_draft, manual_send_after_approval]
+    deny: [auto_send_without_approval, bulk_blast, guaranteed_claims]
+  whatsapp:
+    allow: [generate_draft, manual_copy_send, founder_reminder]
+    deny: [cold_whatsapp_automation, bulk_send, agent_auto_send]
+  linkedin:
+    allow: [generate_draft, manual_copy_send]
+    deny: [linkedin_automation, scraping, mass_connect]
+  phone:
+    allow: [call_script, discovery_notes, objection_tracker]
+    deny: [auto_dialer_without_consent]
+  proposal:
+    allow: [proposal_draft, proof_pack, payment_handoff_draft]
+    deny: [contract_commitment_without_approval, auto_send_payment_link]
