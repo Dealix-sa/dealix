@@ -10,7 +10,6 @@ from __future__ import annotations
 from typing import Any
 
 from auto_client_acquisition.distribution_os.models import (
-    EVIDENCE_LEVELS,
     Channel,
     Prospect,
     ProspectStatus,
