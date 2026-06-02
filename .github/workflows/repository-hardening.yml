@@ -29,8 +29,45 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      # The gitleaks GitHub Action requires a paid GITLEAKS_LICENSE for
+      # organization repos (v2.x). The gitleaks CLI itself is MIT-licensed and
+      # free — we pin a version and run it directly. See docs: gitleaks.io.
+      - name: Install gitleaks CLI
+        env:
+          GITLEAKS_VERSION: 8.30.1
+        run: |
+          set -euo pipefail
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o /tmp/gitleaks.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+          sudo install /tmp/gitleaks /usr/local/bin/gitleaks
+          gitleaks version
+
+      # Scope the scan to the commits introduced by this PR/push (the same
+      # behaviour the action had on PRs) so the scanner flags newly added
+      # secrets without re-reporting pre-existing test fixtures.
+      - name: Run gitleaks (diff-scoped)
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            git fetch --quiet --no-tags origin "$BASE_REF"
+            LOG_OPTS="origin/${BASE_REF}..HEAD"
+          elif [ "$EVENT_NAME" = "push" ] && [ "$PUSH_BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            LOG_OPTS="${PUSH_BEFORE}..${PUSH_AFTER}"
+          else
+            # schedule / workflow_dispatch / new-branch push: scan the latest commit
+            LOG_OPTS="-1"
+          fi
+          echo "Scanning commit range: ${LOG_OPTS}"
+          gitleaks git . \
+            --config .gitleaks.toml \
+            --redact \
+            --exit-code 1 \
+            --log-opts="${LOG_OPTS}"
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -41,8 +78,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Pinned tag 0.24.0 no longer resolves; track the same ref used by
+      # docker-build.yml (aquasecurity/trivy-action@master).
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           scan-ref: .
