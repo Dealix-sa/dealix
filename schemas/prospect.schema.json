@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/prospect.schema.json",
+  "title": "Dealix Prospect (Revenue Execution OS)",
+  "description": "A governed prospect record. No scraping — prospects are founder-sourced (referral / inbound / network / event).",
+  "type": "object",
+  "required": ["id", "company", "sector", "status"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string", "description": "Key from data/distribution/sectors.yaml" },
+    "contact_name": { "type": "string" },
+    "channel": { "type": "string", "enum": ["email", "whatsapp", "linkedin", "phone"] },
+    "source": {
+      "type": "string",
+      "description": "How the prospect entered — founder-sourced only (no scraping)."
+    },
+    "pain_hypothesis": { "type": "string" },
+    "last_contact": {
+      "type": ["string", "null"],
+      "description": "ISO date of last touch (null if never contacted)."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["new", "contacted", "qualified", "proposal", "won", "lost", "nurture"]
+    },
+    "evidence_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Canonical L0-L5 (see auto_client_acquisition/proof_engine/evidence.py)."
+    },
+    "notes": { "type": "string" }
+  }
+}

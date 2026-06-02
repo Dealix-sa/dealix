@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/win_loss.schema.json",
+  "title": "Dealix Win/Loss (Revenue Execution OS)",
+  "description": "Outcome record that teaches the system. Every loss must capture a reason and a lesson.",
+  "type": "object",
+  "required": ["id", "company", "outcome", "reason", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "outcome": { "type": "string", "enum": ["won", "lost", "no_response", "nurture"] },
+    "reason": { "type": "string" },
+    "objection": { "type": "string" },
+    "offer": { "type": "string" },
+    "channel": { "type": "string", "enum": ["email", "whatsapp", "linkedin", "phone"] },
+    "lesson": { "type": "string" },
+    "created_at": { "type": "string" }
+  }
+}

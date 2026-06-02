@@ -1,0 +1,200 @@
+# Dealix — Sector Prioritization (Revenue Execution OS)
+# تحديد أولوية القطاعات — لا تستهدف كل الناس.
+#
+# Each sector is scored 0–100 from weighted components. `dealix.distribution.sectors`
+# computes `priority` from `scores` × `weights` (so the number is verifiable, never invented).
+# `offer_ref` points to a canonical offer id in os/03_OFFERS.yml — pricing stays in one place.
+#
+# Components (max points):
+#   pain_intensity 20 · lead_volume 15 · decision_maker_access 15 · budget_ability 15
+#   proof_speed 15 · delivery_simplicity 10 · saudi_localization_advantage 10  → 100
+
+schema_version: "1.0"
+
+weights:
+  pain_intensity: 20
+  lead_volume: 15
+  decision_maker_access: 15
+  budget_ability: 15
+  proof_speed: 15
+  delivery_simplicity: 10
+  saudi_localization_advantage: 10
+
+# Gate: do not enter a new sector unless ALL of these are true.
+entry_gate:
+  - "pain واضح وموثّق (call / Proof / اعتراض)"
+  - "offer واضح من الكتالوج (offer_ref)"
+  - "draft sequence جاهز (قالب القطاع)"
+  - "proof angle محدد (أين التسرب)"
+  - "delivery checklist بسيط (أول workflow)"
+
+sectors:
+  marketing_agencies:
+    name_ar: "وكالات التسويق"
+    name_en: "Marketing agencies"
+    pain: "متابعة يدوية، leads متفرقة، تقارير ضعيفة"
+    offer: "AI Revenue Ops audit + نظام متابعة"
+    offer_ref: "revenue_ai_os"
+    first_workflow: "Revenue Leakage Diagnostic"
+    proof_speed_days: 7
+    scores:
+      pain_intensity: 19
+      lead_volume: 14
+      decision_maker_access: 14
+      budget_ability: 12
+      proof_speed: 15
+      delivery_simplicity: 9
+      saudi_localization_advantage: 9
+
+  training_companies:
+    name_ar: "شركات التدريب"
+    name_en: "Training companies"
+    pain: "استفسارات الدورات تضيع بين واتساب والنماذج والإيميل"
+    offer: "نظام متابعة التسجيل (intake + follow-up + booking)"
+    offer_ref: "revenue_ai_os"
+    first_workflow: "Enrollment Follow-up Engine"
+    proof_speed_days: 7
+    scores:
+      pain_intensity: 18
+      lead_volume: 14
+      decision_maker_access: 13
+      budget_ability: 11
+      proof_speed: 15
+      delivery_simplicity: 9
+      saudi_localization_advantage: 9
+
+  clinics:
+    name_ar: "العيادات"
+    name_en: "Clinics"
+    pain: "مواعيد، عدم حضور، متابعة ضعيفة"
+    offer: "متابعة استفسارات المرضى والحجوزات"
+    offer_ref: "revenue_ai_os"
+    first_workflow: "Appointment Recovery Workflow"
+    proof_speed_days: 14
+    scores:
+      pain_intensity: 18
+      lead_volume: 13
+      decision_maker_access: 12
+      budget_ability: 13
+      proof_speed: 11
+      delivery_simplicity: 7
+      saudi_localization_advantage: 9
+
+  real_estate_teams:
+    name_ar: "فرق العقار"
+    name_en: "Real estate teams"
+    pain: "استفسارات كثيرة، متابعة بطيئة، تسرب فرص"
+    offer: "تأهيل ومتابعة leads العقار"
+    offer_ref: "revenue_ai_os"
+    first_workflow: "Lead Qualification + Follow-up"
+    proof_speed_days: 10
+    scores:
+      pain_intensity: 17
+      lead_volume: 14
+      decision_maker_access: 12
+      budget_ability: 13
+      proof_speed: 13
+      delivery_simplicity: 8
+      saudi_localization_advantage: 9
+
+  recruitment_agencies:
+    name_ar: "وكالات التوظيف"
+    name_en: "Recruitment agencies"
+    pain: "مرشحون وعملاء كُثُر، متابعة يدوية"
+    offer: "متابعة المرشحين والعملاء"
+    offer_ref: "revenue_ai_os"
+    first_workflow: "Candidate + Client Follow-up"
+    proof_speed_days: 10
+    scores:
+      pain_intensity: 16
+      lead_volume: 13
+      decision_maker_access: 12
+      budget_ability: 11
+      proof_speed: 12
+      delivery_simplicity: 8
+      saudi_localization_advantage: 8
+
+  professional_services:
+    name_ar: "الخدمات المهنية"
+    name_en: "Professional services"
+    pain: "عروض ومتابعة متفرقة، لا تقارير موحدة"
+    offer: "AI Revenue Ops + عروض ومتابعة"
+    offer_ref: "ai_workflow_audit"
+    first_workflow: "Proposal + Follow-up Ops"
+    proof_speed_days: 14
+    scores:
+      pain_intensity: 16
+      lead_volume: 11
+      decision_maker_access: 13
+      budget_ability: 13
+      proof_speed: 11
+      delivery_simplicity: 8
+      saudi_localization_advantage: 8
+
+  education_providers:
+    name_ar: "مزودو التعليم"
+    name_en: "Education providers"
+    pain: "تسجيلات واستفسارات تضيع، متابعة ضعيفة"
+    offer: "intake + متابعة + تقارير"
+    offer_ref: "revenue_ai_os"
+    first_workflow: "Admissions Follow-up"
+    proof_speed_days: 14
+    scores:
+      pain_intensity: 15
+      lead_volume: 12
+      decision_maker_access: 11
+      budget_ability: 11
+      proof_speed: 11
+      delivery_simplicity: 8
+      saudi_localization_advantage: 8
+
+  restaurants_groups:
+    name_ar: "مجموعات المطاعم"
+    name_en: "Restaurant groups"
+    pain: "استفسارات وحجوزات وشكاوى متفرقة"
+    offer: "intake + متابعة + تقرير يومي"
+    offer_ref: "revenue_ai_os"
+    first_workflow: "Inquiry + Reservation Follow-up"
+    proof_speed_days: 14
+    scores:
+      pain_intensity: 14
+      lead_volume: 12
+      decision_maker_access: 10
+      budget_ability: 10
+      proof_speed: 11
+      delivery_simplicity: 7
+      saudi_localization_advantage: 8
+
+  logistics_companies:
+    name_ar: "شركات اللوجستيك"
+    name_en: "Logistics companies"
+    pain: "طلبات ومتابعة وتقارير يدوية"
+    offer: "متابعة الطلبات والموردين + تقارير"
+    offer_ref: "ai_workflow_audit"
+    first_workflow: "Order + Vendor Follow-up"
+    proof_speed_days: 21
+    scores:
+      pain_intensity: 15
+      lead_volume: 10
+      decision_maker_access: 10
+      budget_ability: 12
+      proof_speed: 8
+      delivery_simplicity: 6
+      saudi_localization_advantage: 8
+
+  local_service_companies:
+    name_ar: "شركات الخدمات/البرمجيات المحلية"
+    name_en: "Local SaaS / service companies"
+    pain: "تجارب وتسجيلات ومتابعة مبيعات ضعيفة"
+    offer: "نظام مبيعات ومتابعة"
+    offer_ref: "revenue_ai_os"
+    first_workflow: "Trial + Sales Follow-up"
+    proof_speed_days: 14
+    scores:
+      pain_intensity: 15
+      lead_volume: 11
+      decision_maker_access: 11
+      budget_ability: 11
+      proof_speed: 11
+      delivery_simplicity: 8
+      saudi_localization_advantage: 7

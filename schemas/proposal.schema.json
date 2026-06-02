@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/proposal.schema.json",
+  "title": "Dealix Proposal (Revenue Execution OS)",
+  "description": "A proposal draft. Pricing/scope come from the canonical offers catalog (os/03_OFFERS.yml). Approval-first; no contract commitment without approval.",
+  "type": "object",
+  "required": ["id", "prospect_id", "company", "sector", "status", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "offer_ref": { "type": "string", "description": "Offer id in os/03_OFFERS.yml." },
+    "problem": { "type": "string" },
+    "scope": { "type": "array", "items": { "type": "string" } },
+    "timeline_days": { "type": ["number", "null"] },
+    "price_range_sar": { "type": "string", "description": "Sourced from offer catalog — never invented." },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "status": {
+      "type": "string",
+      "enum": ["draft_pending_approval", "approved", "sent", "accepted", "rejected"]
+    },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": "string" }
+  }
+}

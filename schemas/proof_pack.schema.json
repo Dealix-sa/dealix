@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/proof_pack.schema.json",
+  "title": "Dealix Proof Pack (Revenue Execution OS)",
+  "description": "Evidence pack for a prospect/customer. evidence_level gates usage: public marketing requires L4+ (assert_public_proof_allowed). No fake proof.",
+  "type": "object",
+  "required": ["id", "prospect_id", "company", "evidence_level", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "current_workflow": { "type": "string" },
+    "leakage_points": { "type": "array", "items": { "type": "string" } },
+    "quick_win": { "type": "string" },
+    "measurement_plan": { "type": "string" },
+    "before_after": { "type": "string" },
+    "evidence_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "L0 planned · L1 internal · L2 customer-reviewed · L3 customer-approved · L4 public · L5 revenue/expansion."
+    },
+    "consent_public": { "type": "boolean", "description": "Required true for L4+ public use." },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "status": { "type": "string", "enum": ["draft_pending_approval", "approved", "shared"] },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": "string" }
+  }
+}
