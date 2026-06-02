@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/whatsapp_flow_state.schema.json",
+  "title": "WhatsApp Flow State",
+  "description": "Per-session state within a controlled flow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["session_id", "flow"],
+  "properties": {
+    "session_id": {"type": "string"},
+    "flow": {
+      "type": "string",
+      "enum": [
+        "new_client_welcome", "readiness_scan", "service_recommendation",
+        "permission_collection", "draft_review", "proposal_review",
+        "proof_pack_delivery", "payment_handoff", "onboarding",
+        "weekly_report", "support_handoff", "renewal_upsell"
+      ]
+    },
+    "step": {"type": "string"},
+    "answers": {"type": "object", "additionalProperties": {"type": "string"}},
+    "completed": {"type": "boolean"},
+    "next_action": {"type": "string"},
+    "updated_at": {"type": "string", "format": "date-time"}
+  }
+}

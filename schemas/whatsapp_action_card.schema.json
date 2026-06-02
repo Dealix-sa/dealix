@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/whatsapp_action_card.schema.json",
+  "title": "WhatsApp Action Card",
+  "description": "A structured, option-driven card. Carries a governance_decision; never performs a live send or charge.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["card_id", "kind", "governance_decision"],
+  "properties": {
+    "card_id": {"type": "string", "pattern": "^card_"},
+    "session_id": {"type": "string"},
+    "kind": {
+      "type": "string",
+      "enum": [
+        "recommendation", "approval", "permission", "proposal", "proof_pack",
+        "payment_handoff", "onboarding", "support_escalation", "renewal"
+      ]
+    },
+    "title_ar": {"type": "string"},
+    "title_en": {"type": "string"},
+    "body_ar": {"type": "string"},
+    "body_en": {"type": "string"},
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id"],
+        "properties": {
+          "id": {"type": "string"},
+          "label_ar": {"type": "string"},
+          "label_en": {"type": "string"}
+        }
+      }
+    },
+    "evidence_level": {"type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"]},
+    "risk": {"type": "string", "enum": ["low", "medium", "high"]},
+    "governance_decision": {
+      "type": "string",
+      "enum": ["ALLOW", "ALLOW_WITH_REVIEW", "DRAFT_ONLY", "REQUIRE_APPROVAL", "REDACT", "BLOCK", "ESCALATE"]
+    },
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}

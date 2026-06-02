@@ -1,0 +1,99 @@
+# WhatsApp Client OS — message template library.
+# Bilingual canned replies for controlled flows. Loaded by templates.py.
+# No marketing fluff, no guaranteed outcomes, short and option-driven.
+
+welcome:
+  ar: |
+    أهلًا، أنا مساعد Dealix لتشغيل المبيعات والمتابعة للشركات.
+    أقدر أساعدك في:
+    1) فحص جاهزية شركتك
+    2) تجهيز متابعة leads
+    3) فهم أفضل خدمة مناسبة لك
+    4) مراجعة عرض أو تقرير
+    5) طلب دعم
+    6) ما أعرف — اقترح علي
+    اختر رقم أو اكتب طلبك باختصار.
+  en: |
+    Hi, I'm the Dealix assistant for sales operations and follow-up.
+    I can help with:
+    1) Company readiness scan
+    2) Lead follow-up setup
+    3) Best-fit service
+    4) Review a proposal or report
+    5) Support
+    6) Not sure — recommend for me
+    Pick a number or describe your need briefly.
+
+scan_intro:
+  ar: |
+    فحص جاهزية الإيرادات والمتابعة — أسئلة قصيرة، إجابتها اختيار.
+    نبدأ:
+  en: |
+    Revenue & Follow-up Readiness Scan — short questions, pick an option.
+    Let's start:
+
+recommend_intro:
+  ar: |
+    تمام، أسألك ٤ أسئلة فقط ثم أعطيك أنسب بداية.
+    السؤال الأول:
+  en: |
+    Sure — 4 quick questions, then I'll give you the best starting point.
+    First question:
+
+view_services_intro:
+  ar: |
+    الخدمات الأساسية:
+    1) فحص جاهزية الإيرادات (مجاني)
+    2) سبرنت إثبات الإيرادات (٤٩٩ ر.س)
+    3) حزمة من البيانات إلى الإيراد (١٥٠٠ ر.س)
+    4) عمليات النمو الشهرية (٢٩٩٩ ر.س/شهر)
+    أي وحدة تناسبك أكثر؟
+  en: |
+    Core services:
+    1) Free Revenue Readiness
+    2) Revenue Proof Sprint (499 SAR)
+    3) Data-to-Revenue Pack (1500 SAR)
+    4) Growth Ops Monthly (2999 SAR/mo)
+    Which fits you best?
+
+followup_sources:
+  ar: |
+    على أي leads نجهّز المتابعة؟
+    [ملف CSV] [HubSpot] [Google Sheet] [أدخل يدوي]
+    ملاحظة: الربط يتم عبر البوابة الآمنة، وبدون إرسال آلي.
+  en: |
+    Which leads should we build follow-up on?
+    [CSV] [HubSpot] [Google Sheet] [Manual]
+    Note: integrations go through the secure portal; no auto-send.
+
+draft_review_prompt:
+  ar: |
+    نراجع المسودة سويًا. سأعرضها كبطاقة فيها: اعتماد/تعديل/رفض.
+    لا يتم أي إرسال إلا باعتمادك اليدوي.
+  en: |
+    Let's review the draft. I'll show it as a card: approve/edit/reject.
+    Nothing is sent without your manual approval.
+
+unknown_fallback:
+  ar: |
+    ما وصلتني الفكرة تمامًا. تقدر تختار:
+    1) فحص جاهزية  2) متابعة leads  3) الخدمات  5) دعم  6) ما أعرف — اقترح علي
+  en: |
+    I didn't fully get that. You can pick:
+    1) Readiness  2) Follow-up  3) Services  5) Support  6) Recommend for me
+
+blocked_unsafe:
+  ar: |
+    لا نقدّم رسائل جماعية باردة ولا قوائم مشتراة ولا سحب أرقام — هذا خارج سياستنا.
+    البديل الآمن: نبني متابعة لعملائك الحاليين مع موافقتك على كل إرسال.
+  en: |
+    We don't do cold blasts, purchased lists, or number harvesting — that's outside our policy.
+    Safe alternative: follow-up on your existing contacts, with your approval on every send.
+
+human_handoff:
+  ar: |
+    أحتاج أُدخل أحد من الفريق عشان نرد عليك بدقة.
+    جهّزت لهم ملخص المحادثة والنقطة المطلوبة.
+  en: |
+    I'll bring a teammate in to answer precisely.
+    I've prepared a summary of the conversation and the point you need.

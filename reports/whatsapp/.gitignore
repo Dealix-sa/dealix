@@ -1,0 +1,3 @@
+# Generated WhatsApp reports are runtime artifacts; keep only the README.
+*.md
+!README.md
