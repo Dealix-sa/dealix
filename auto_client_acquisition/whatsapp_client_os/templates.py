@@ -72,6 +72,7 @@ def _load() -> dict[str, dict[str, Any]]:
         if isinstance(tpls, dict) and tpls:
             return tpls
     except Exception:
+        # Malformed/unreadable YAML → fall through to the embedded fallback.
         pass
     return {k: {"body_ar": v} for k, v in _FALLBACK.items()}
 

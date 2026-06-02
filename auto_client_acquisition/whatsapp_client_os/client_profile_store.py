@@ -20,7 +20,9 @@ import json
 import os
 import threading
 from pathlib import Path
-from typing import Any
+from typing import Any, TypeVar
+
+from pydantic import BaseModel
 
 from auto_client_acquisition.whatsapp_client_os.schemas import (
     ClientAssessment,
@@ -29,6 +31,8 @@ from auto_client_acquisition.whatsapp_client_os.schemas import (
     PermissionGrant,
     WhatsAppSession,
 )
+
+_M = TypeVar("_M", bound=BaseModel)
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _DEFAULT_DIR = "data/whatsapp"
@@ -78,6 +82,17 @@ def _read_all(ledger: str) -> list[dict[str, Any]]:
     return out
 
 
+def _parse(model: type[_M], row: dict[str, Any]) -> _M | None:
+    """Build a model from a ledger row, returning None on malformed/legacy rows.
+
+    Reads are best-effort: a single bad row must not fail the whole listing.
+    """
+    try:
+        return model(**row)
+    except Exception:
+        return None
+
+
 # ── Sessions (snapshot ledger — latest row per session_id wins) ──────────
 def save_session(session: WhatsAppSession) -> WhatsAppSession:
     _append("sessions", session.model_dump(mode="json"))
@@ -91,10 +106,7 @@ def get_session(session_id: str) -> WhatsAppSession | None:
             latest = row
     if latest is None:
         return None
-    try:
-        return WhatsAppSession(**latest)
-    except Exception:
-        return None
+    return _parse(WhatsAppSession, latest)
 
 
 def list_sessions(*, limit: int = 200) -> list[WhatsAppSession]:
@@ -105,10 +117,9 @@ def list_sessions(*, limit: int = 200) -> list[WhatsAppSession]:
             by_id[sid] = row
     sessions: list[WhatsAppSession] = []
     for row in by_id.values():
-        try:
-            sessions.append(WhatsAppSession(**row))
-        except Exception:
-            pass
+        obj = _parse(WhatsAppSession, row)
+        if obj is not None:
+            sessions.append(obj)
     sessions.sort(key=lambda s: s.updated_at, reverse=True)
     return sessions[:limit]
 
@@ -126,19 +137,15 @@ def get_assessment(assessment_id: str) -> ClientAssessment | None:
             latest = row
     if latest is None:
         return None
-    try:
-        return ClientAssessment(**latest)
-    except Exception:
-        return None
+    return _parse(ClientAssessment, latest)
 
 
 def list_assessments(*, limit: int = 200) -> list[ClientAssessment]:
     out: list[ClientAssessment] = []
     for row in _read_all("assessments"):
-        try:
-            out.append(ClientAssessment(**row))
-        except Exception:
-            pass
+        obj = _parse(ClientAssessment, row)
+        if obj is not None:
+            out.append(obj)
     return out[-limit:]
 
 
@@ -151,10 +158,9 @@ def queue_action_card(card: ClientCard) -> ClientCard:
 def list_action_cards(*, limit: int = 200) -> list[ClientCard]:
     out: list[ClientCard] = []
     for row in _read_all("action_cards"):
-        try:
-            out.append(ClientCard(**row))
-        except Exception:
-            pass
+        obj = _parse(ClientCard, row)
+        if obj is not None:
+            out.append(obj)
     return out[-limit:]
 
 
@@ -166,10 +172,9 @@ def record_permission(grant: PermissionGrant) -> PermissionGrant:
 def list_permissions(*, limit: int = 200) -> list[PermissionGrant]:
     out: list[PermissionGrant] = []
     for row in _read_all("permissions"):
-        try:
-            out.append(PermissionGrant(**row))
-        except Exception:
-            pass
+        obj = _parse(PermissionGrant, row)
+        if obj is not None:
+            out.append(obj)
     return out[-limit:]
 
 
@@ -181,10 +186,9 @@ def record_handoff(handoff: HandoffRequest) -> HandoffRequest:
 def list_handoffs(*, limit: int = 200) -> list[HandoffRequest]:
     out: list[HandoffRequest] = []
     for row in _read_all("handoffs"):
-        try:
-            out.append(HandoffRequest(**row))
-        except Exception:
-            pass
+        obj = _parse(HandoffRequest, row)
+        if obj is not None:
+            out.append(obj)
     return out[-limit:]
 
 
