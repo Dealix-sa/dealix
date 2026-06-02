@@ -106,9 +106,13 @@ def count_evidence_events(
     }
 
 
-def scope_requested_within_days(days: int, rows: list[dict[str, str]] | None = None) -> bool:
+def scope_requested_within_days(
+    days: int,
+    rows: list[dict[str, str]] | None = None,
+    on_date: date | None = None,
+) -> bool:
     data = rows if rows is not None else load_evidence_rows()
-    cutoff = datetime.now(UTC).date() - timedelta(days=days)
+    cutoff = (on_date or datetime.now(UTC).date()) - timedelta(days=days)
     for row in data:
         if (row.get("event_type") or "").strip() != "scope_requested":
             continue

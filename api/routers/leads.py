@@ -40,6 +40,7 @@ from auto_client_acquisition.providers.maps import (
 )
 from auto_client_acquisition.providers.search import (
     get_search_chain as _get_search_chain,
+    search_with_chain as _search_with_chain,
 )
 from auto_client_acquisition.revenue_os.dedupe import suggest_dedupe_fingerprint
 from auto_client_acquisition.revenue_os.saudi_targeting_profile import (

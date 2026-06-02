@@ -40,8 +40,8 @@ REQUIRED = [
     "frontend/src/components/gtm/OpsFullAutonomousOpsCard.tsx",
     "frontend/src/components/gtm/OpsFounderCommandCenter.tsx",
     "docs/commercial/FULL_AUTONOMOUS_COMMERCIAL_OPS_AR.md",
-    ".github/workflows/governed-full-ops-daily.yml",
-    ".github/workflows/founder_evening_evidence.yml",
+    ".github/workflows/founder-daily.yml",
+    ".github/workflows/founder-weekly.yml",
 ]
 
 

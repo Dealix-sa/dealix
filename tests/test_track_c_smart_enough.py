@@ -344,7 +344,9 @@ def test_track_c_files_exist():
         REPO / "core" / "queue" / "cs_handoff_task.py",
         REPO / "core" / "queue" / "weekly_self_improvement.py",
         REPO / ".github" / "workflows" / "watchdog_drift.yml",
-        REPO / ".github" / "workflows" / "weekly_self_improvement.yml",
+        # weekly_self_improvement.yml was consolidated into founder-weekly.yml
+        # (the C6 module itself still exists and is exercised above).
+        REPO / ".github" / "workflows" / "founder-weekly.yml",
         REPO / "landing" / "founder-command-bus.html",
     ]
     missing = [p for p in expected if not p.exists()]
@@ -374,8 +376,8 @@ def test_workflows_have_correct_cron():
     # Watchdog: every hour
     wd = (REPO / ".github" / "workflows" / "watchdog_drift.yml").read_text(encoding="utf-8")
     assert re.search(r'cron:\s*"\d+\s+\*\s+\*\s+\*\s+\*"', wd)
-    # Weekly: Sunday 19:00 UTC
+    # Weekly founder ops (consolidated): Sunday 06:00 UTC
     ws = (
-        REPO / ".github" / "workflows" / "weekly_self_improvement.yml"
+        REPO / ".github" / "workflows" / "founder-weekly.yml"
     ).read_text(encoding="utf-8")
-    assert "0 19 * * 0" in ws
+    assert "0 6 * * 0" in ws

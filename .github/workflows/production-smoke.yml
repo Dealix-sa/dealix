@@ -37,6 +37,12 @@ jobs:
           echo "DEALIX_SMOKE_BASE_URL=$BASE_URL" >> "$GITHUB_ENV"
 
       - name: Run smoke test
+        env:
+          # When set, the smoke authenticates and verifies protected
+          # endpoints strictly (200 + guardrail body). When absent, a 401
+          # from a protected endpoint counts as "alive + correctly guarded".
+          DEALIX_SMOKE_API_KEY: ${{ secrets.DEALIX_SMOKE_API_KEY }}
+          DEALIX_ADMIN_API_KEY: ${{ secrets.DEALIX_ADMIN_API_KEY }}
         run: python scripts/dealix_smoke_test.py --base-url "$DEALIX_SMOKE_BASE_URL" --json > production-smoke-report.json
 
       - name: Print report
