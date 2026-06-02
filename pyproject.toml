@@ -22,18 +22,24 @@ classifiers = [
     "Natural Language :: English",
 ]
 
+# Upper bounds on the breakage-prone packages mirror requirements.txt (the
+# CI-proven source of truth). Keeping them here makes a standalone
+# `pip install -e .` (fresh dev, Docker layer, tooling) resolve to the same
+# major/minor lines CI installs, instead of silently pulling an incompatible
+# new major (e.g. fastapi 0.136 breaking pydantic v2 _compat). Packages with
+# no upper bound in requirements.txt are intentionally left open here too.
 dependencies = [
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.32.0",
-    "pydantic>=2.9.0",
-    "pydantic-settings>=2.6.0",
-    "httpx>=0.27.0",
-    "aiohttp>=3.10.0",
-    "tenacity>=9.0.0",
+    "fastapi>=0.115.0,<0.116",
+    "uvicorn[standard]>=0.32.0,<0.33",
+    "pydantic>=2.9.0,<3",
+    "pydantic-settings>=2.6.0,<3",
+    "httpx>=0.27.0,<1",
+    "aiohttp>=3.10.0,<4",
+    "tenacity>=9.0.0,<10",
     "anthropic>=0.40.0",
-    "openai>=1.54.0",
+    "openai>=1.54.0,<2",
     "google-generativeai>=0.8.0",
-    "sqlalchemy[asyncio]>=2.0.35",
+    "sqlalchemy[asyncio]>=2.0.35,<3",
     "asyncpg>=0.30.0",
     "alembic>=1.13.0",
     "redis>=5.1.0",
@@ -48,7 +54,7 @@ dependencies = [
     "python-dateutil>=2.9.0",
     "tzdata>=2025.1",
     "structlog>=24.4.0",
-    "langfuse>=2.50.0",
+    "langfuse>=2.50.0,<3",
     "hubspot-api-client>=11.0.0",
     "google-api-python-client>=2.150.0",
     "google-auth-httplib2>=0.2.0",

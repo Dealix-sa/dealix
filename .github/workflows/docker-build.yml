@@ -63,7 +63,11 @@ jobs:
 
       - name: Trivy scan
         if: github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@master
+        # SHA-pinned (v0.36.0) instead of @master: the trivy-action tags were
+        # force-pushed in the March 2026 supply-chain compromise, so a moving
+        # ref (@master) is unsafe. A commit SHA cannot be moved. SHA verified
+        # via `git ls-remote https://github.com/aquasecurity/trivy-action v0.36.0`.
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
         with:
           image-ref: ${{ env.REGISTRY }}/${{ steps.img.outputs.name }}:sha-${{ github.sha }}
           format: sarif
