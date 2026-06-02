@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.sa/schemas/sending_batch.schema.json",
+  "title": "SendingBatch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "batch_id",
+    "week",
+    "planned_sends",
+    "domain_health_ok"
+  ],
+  "properties": {
+    "batch_id": {
+      "type": "string"
+    },
+    "week": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "approved_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "ramp_cap": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 250
+    },
+    "planned_sends": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 250
+    },
+    "domain_health_ok": {
+      "type": "boolean"
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO-8601"
+    }
+  }
+}
