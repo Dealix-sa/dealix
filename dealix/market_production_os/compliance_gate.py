@@ -13,8 +13,9 @@ cold-email-specific checks (CAN-SPAM / Google sender guidelines).
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import Any, Iterable
+from typing import Any
 
 from dealix.market_production_os.models import OFFERS
 from dealix.market_production_os.personalization import personalization_floor_ok
@@ -145,7 +146,9 @@ def check_draft(
         failures.append(f"spammy_subject:{hit}")
         comp_ok = False
     sender = draft.get("sender_identity") or {}
-    if not (sender.get("from_name") and sender.get("from_email") and sender.get("physical_address")):
+    if not (
+        sender.get("from_name") and sender.get("from_email") and sender.get("physical_address")
+    ):
         failures.append("incomplete_sender_identity")
         comp_ok = False
     if recipient_email_sha256 and recipient_email_sha256 in set(suppressed_hashes):

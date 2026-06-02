@@ -7,7 +7,7 @@ gate; nothing is ever sent here — drafts are queued for the founder.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from dealix.market_production_os.models import OFFERS, SenderIdentity, new_id
@@ -51,9 +51,9 @@ def _offer_phrase(offer: str, language: str) -> tuple[str, str]:
         return name, price
     unit = ("/شهر" if language == "ar" else "/mo") if recurring else ""
     if lo == hi:
-        price = (f"{lo:,} ريال{unit}" if language == "ar" else f"SAR {lo:,}{unit}")
+        price = f"{lo:,} ريال{unit}" if language == "ar" else f"SAR {lo:,}{unit}"
     else:
-        price = (f"{lo:,}–{hi:,} ريال{unit}" if language == "ar" else f"SAR {lo:,}–{hi:,}{unit}")
+        price = f"{lo:,}–{hi:,} ريال{unit}" if language == "ar" else f"SAR {lo:,}–{hi:,}{unit}"
     return name, price
 
 
@@ -65,7 +65,9 @@ def _sender_block(sender: dict[str, Any], language: str) -> str:
     return "\n".join(x for x in lines if x)
 
 
-def _render(prospect: dict[str, Any], touch_type: str, offer: str, language: str) -> tuple[str, str, str]:
+def _render(
+    prospect: dict[str, Any], touch_type: str, offer: str, language: str
+) -> tuple[str, str, str]:
     company = prospect.get("company", "")
     note = prospect.get("personalization_note", "")
     pain = prospect.get("pain_hypothesis", "") or _DEFAULT_PAIN[language]
@@ -158,7 +160,7 @@ def build_draft(
         "compliance_failures": [],
         "approval_status": "pending",
         "send_status": "not_sent",
-        "created_at": datetime.now(timezone.utc).isoformat(),
+        "created_at": datetime.now(UTC).isoformat(),
     }
 
 

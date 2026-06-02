@@ -8,8 +8,9 @@ send count to zero.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Any
 
 from dealix.market_production_os.deliverability import ready_to_send
 
@@ -79,13 +80,7 @@ def can_advance_phase(
     bounce_rate: float = 0.0,
     spam_rate: float = 0.0,
 ) -> bool:
-    if current_phase >= 3:
-        return False
-    if bounce_rate >= MAX_BOUNCE_RATE:
-        return False
-    if spam_rate >= MAX_SPAM_RATE:
-        return False
-    return True
+    return current_phase < 3 and bounce_rate < MAX_BOUNCE_RATE and spam_rate < MAX_SPAM_RATE
 
 
 def filter_suppressed(recipient_hashes: Iterable[str], suppressed: Iterable[str]) -> list[str]:

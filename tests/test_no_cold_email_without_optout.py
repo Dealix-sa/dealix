@@ -15,7 +15,11 @@ from dealix.market_production_os.draft_factory import build_draft
 from dealix.market_production_os.models import email_sha256
 from dealix.market_production_os.sending_ramp import allowed_sends
 
-_SENDER = {"from_name": "Dealix", "from_email": "team@go.dealix-mail.sa", "physical_address": "Riyadh, KSA"}
+_SENDER = {
+    "from_name": "Dealix",
+    "from_email": "team@go.dealix-mail.sa",
+    "physical_address": "Riyadh, KSA",
+}
 
 
 def _draft(**overrides):
@@ -56,5 +60,12 @@ def test_suppressed_recipient_is_never_recontacted() -> None:
 
 
 def test_full_volume_blocked_from_unhealthy_domain() -> None:
-    unhealthy = {"account_id": "x", "spf": True, "dkim": False, "dmarc": False, "warmup_status": "cold", "daily_cap": 250}
+    unhealthy = {
+        "account_id": "x",
+        "spf": True,
+        "dkim": False,
+        "dmarc": False,
+        "warmup_status": "cold",
+        "daily_cap": 250,
+    }
     assert allowed_sends(3, unhealthy) == 0

@@ -18,8 +18,8 @@ from dealix.market_production_os import (
     qualify,
     ready_to_send,
     score_prospect,
+    store,
 )
-from dealix.market_production_os import store
 from dealix.market_production_os.compliance_gate import check_draft as check
 from dealix.market_production_os.control_room import assemble_report, produce_and_store
 from dealix.market_production_os.draft_factory import DEFAULT_MIX, build_draft
@@ -33,7 +33,11 @@ from dealix.market_production_os.sending_ramp import (
 )
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
-_SENDER = {"from_name": "Dealix", "from_email": "team@go.dealix-mail.sa", "physical_address": "Riyadh, KSA"}
+_SENDER = {
+    "from_name": "Dealix",
+    "from_email": "team@go.dealix-mail.sa",
+    "physical_address": "Riyadh, KSA",
+}
 
 
 def _clean_prospect(**overrides):
@@ -60,12 +64,18 @@ def _clean_prospect(**overrides):
 
 
 def _clean_draft(**overrides):
-    draft = build_draft(_clean_prospect(), touch_type="first_touch", offer="revenue_diagnostic", sender_identity=_SENDER)
+    draft = build_draft(
+        _clean_prospect(),
+        touch_type="first_touch",
+        offer="revenue_diagnostic",
+        sender_identity=_SENDER,
+    )
     draft.update(overrides)
     return draft
 
 
 # --- catalog + helpers -------------------------------------------------------
+
 
 def test_catalog_has_seven_offers_with_canonical_prices():
     assert set(OFFERS) == {
@@ -95,6 +105,7 @@ def test_sectors_include_ten_plus_other():
 
 # --- prospect scoring --------------------------------------------------------
 
+
 def test_maxed_prospect_scores_100():
     p = _clean_prospect(personalization_level="P4")
     assert score_prospect(p).total == 100
@@ -119,6 +130,7 @@ def test_do_not_contact_never_qualifies():
 
 # --- personalization floor ---------------------------------------------------
 
+
 @pytest.mark.parametrize("level,ok", [("P0", False), ("P1", True), ("P2", True), ("P4", True)])
 def test_personalization_floor(level, ok):
     assert personalization_floor_ok(level, "first_touch") is ok
@@ -129,6 +141,7 @@ def test_warm_context_exempt_from_floor():
 
 
 # --- compliance gate ---------------------------------------------------------
+
 
 def test_clean_draft_passes_all_gates():
     assert check_draft(_clean_draft()).allowed is True
@@ -186,6 +199,7 @@ def test_p0_first_touch_blocked_by_personalization_gate():
 
 # --- deliverability ----------------------------------------------------------
 
+
 def test_seed_accounts_ready_and_not_ready():
     accounts = {a["account_id"]: a for a in store.load("email_accounts")}
     assert ready_to_send(accounts["ea_sample_ready"]) is True
@@ -201,6 +215,7 @@ def test_missing_dkim_makes_account_not_ready():
 
 
 # --- sending ramp ------------------------------------------------------------
+
 
 def test_phase_caps():
     assert phase_cap(0) == 20
@@ -236,13 +251,20 @@ def test_filter_suppressed():
 
 def test_plan_batch_caps_to_allowed():
     ready = {a["account_id"]: a for a in store.load("email_accounts")}["ea_sample_ready"]
-    batch = plan_batch(batch_id="b1", date="2026-06-02", account=ready, phase=0, draft_ids=[f"d{i}" for i in range(50)])
+    batch = plan_batch(
+        batch_id="b1",
+        date="2026-06-02",
+        account=ready,
+        phase=0,
+        draft_ids=[f"d{i}" for i in range(50)],
+    )
     assert batch["planned_count"] == 20
     assert len(batch["draft_ids"]) == 20
     assert batch["status"] == "planned"
 
 
 # --- reply classifier --------------------------------------------------------
+
 
 @pytest.mark.parametrize(
     "text,expected",
@@ -277,6 +299,7 @@ def test_ambiguous_routes_to_founder():
 
 # --- draft factory -----------------------------------------------------------
 
+
 def test_build_draft_carries_optout_and_sender():
     d = build_draft(_clean_prospect(), sender_identity=_SENDER)
     assert d["unsubscribe_included"] is True
@@ -302,6 +325,7 @@ def test_produce_daily_empty_prospects():
 
 # --- store -------------------------------------------------------------------
 
+
 def test_store_env_override_roundtrip(tmp_path, monkeypatch):
     target = tmp_path / "drafts.jsonl"
     monkeypatch.setenv("DEALIX_OUTREACH_DRAFTS_PATH", str(target))
@@ -318,6 +342,7 @@ def test_load_falls_back_to_seed(monkeypatch, tmp_path):
 
 # --- schemas -----------------------------------------------------------------
 
+
 def test_all_schemas_are_valid_json_with_id():
     files = sorted((_REPO_ROOT / "schemas").glob("*.schema.json"))
     assert len(files) == 8
@@ -330,13 +355,16 @@ def test_all_schemas_are_valid_json_with_id():
 
 
 def test_prospect_source_enum_excludes_scraping():
-    schema = json.loads((_REPO_ROOT / "schemas" / "prospect.schema.json").read_text(encoding="utf-8"))
+    schema = json.loads(
+        (_REPO_ROOT / "schemas" / "prospect.schema.json").read_text(encoding="utf-8")
+    )
     sources = schema["$defs"]["Source"]["enum"]
     assert "scraping" not in sources
     assert "founder_input" in sources
 
 
 # --- control room ------------------------------------------------------------
+
 
 def test_assemble_report_has_footer_and_sections():
     report = assemble_report(as_of="2026-06-02")

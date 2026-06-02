@@ -39,7 +39,11 @@ class DeliverabilityResult:
     reasons: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
-        return {"ready": self.ready, "health_score": self.health_score, "reasons": list(self.reasons)}
+        return {
+            "ready": self.ready,
+            "health_score": self.health_score,
+            "reasons": list(self.reasons),
+        }
 
 
 def evaluate_account(account: dict[str, Any]) -> DeliverabilityResult:

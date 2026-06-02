@@ -10,8 +10,9 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _SEEDS_DIR = Path(__file__).resolve().parent / "seeds"

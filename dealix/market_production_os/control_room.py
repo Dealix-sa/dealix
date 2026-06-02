@@ -45,7 +45,9 @@ def _lines(counter: Counter) -> str:
     return "\n".join(f"- {key}: {val}" for key, val in counter.most_common())
 
 
-def produce_and_store(*, target: int = 250, sender: dict[str, str] | None = None) -> list[dict[str, Any]]:
+def produce_and_store(
+    *, target: int = 250, sender: dict[str, str] | None = None
+) -> list[dict[str, Any]]:
     sender = sender or DEFAULT_SENDER
     prospects = [p for p in store.load("prospects") if qualify(p)]
     drafts = produce_daily(prospects, sender_identity=sender, target=target)
@@ -69,7 +71,11 @@ def assemble_report(*, as_of: str | None = None) -> str:
     suppressed = _suppressed()
 
     qualified = sum(1 for p in prospects if qualify(p))
-    avg_score = round(sum(score_prospect(p).total for p in prospects) / len(prospects), 1) if prospects else 0
+    avg_score = (
+        round(sum(score_prospect(p).total for p in prospects) / len(prospects), 1)
+        if prospects
+        else 0
+    )
     by_prospect_status = Counter(p.get("status", "researched") for p in prospects)
     by_sector = Counter(p.get("sector", "other") for p in prospects)
 
@@ -218,10 +224,14 @@ See [`REPLY_QUEUE.md`](REPLY_QUEUE.md).
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Dealix GTM Control Room")
     parser.add_argument("--date", default="today", help="'today' or an ISO date")
-    parser.add_argument("--produce", action="store_true", help="produce + store today's drafts first")
+    parser.add_argument(
+        "--produce", action="store_true", help="produce + store today's drafts first"
+    )
     parser.add_argument("--target", type=int, default=250, help="max drafts to produce")
     parser.add_argument("--out", default=str(_DEFAULT_OUT), help="report output path")
-    parser.add_argument("--print", dest="do_print", action="store_true", help="print report to stdout")
+    parser.add_argument(
+        "--print", dest="do_print", action="store_true", help="print report to stdout"
+    )
     args = parser.parse_args(argv)
 
     as_of = date.today().isoformat() if args.date == "today" else args.date
