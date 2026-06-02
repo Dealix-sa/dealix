@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/outreach_draft.schema.json",
+  "title": "OutreachDraft",
+  "description": "A single email draft produced by the Cold Email Draft Factory. Drafts are NEVER sent automatically; they pass the quality gate, then the founder approval queue, then the sending ramp. Every marketing draft must include an unsubscribe mechanism.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_id", "company", "sector", "recipient_role", "offer", "subject", "body",
+    "language", "evidence_level", "risk_level", "compliance_status",
+    "approval_status", "send_status", "unsubscribe_included"
+  ],
+  "properties": {
+    "draft_id": { "type": "string" },
+    "prospect_ref": { "type": "string", "description": "prospect_id this draft targets." },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "recipient_role": { "type": "string", "description": "Role/title only, no personal name." },
+    "source": { "type": "string", "enum": ["founder_list", "inbound", "referral", "public_research", "event", "partner"] },
+    "sequence_step": {
+      "type": "string",
+      "enum": ["first_touch", "follow_up_1", "follow_up_2", "proposal_intro", "close_loop"]
+    },
+    "pain_hypothesis": { "type": "string" },
+    "personalization_note": { "type": "string", "description": "The specific, real signal used. Generic filler is not personalization." },
+    "personalization_level": { "type": "string", "enum": ["P0", "P1", "P2", "P3"], "description": "Minimum P1 to be sendable." },
+    "offer": { "type": "string", "description": "Must map to docs/commercial/PRODUCT_CATALOG_AR.md; agents must not invent offers." },
+    "subject": { "type": "string", "description": "No misleading subjects; no fake Re:/Fwd:." },
+    "body": { "type": "string" },
+    "cta": { "type": "string", "description": "Single, clear next step." },
+    "language": { "type": "string", "enum": ["ar", "en"] },
+    "evidence_level": { "type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"], "description": "Any claim must be supported at its evidence level." },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"], "description": "high is never sendable." },
+    "compliance_status": { "type": "string", "enum": ["pass", "needs_fix", "blocked"] },
+    "approval_status": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "rewrite", "shorten", "make_formal", "change_offer", "move_nurture", "do_not_contact"]
+    },
+    "send_status": {
+      "type": "string",
+      "enum": ["not_sent", "queued", "sent", "bounced", "replied", "suppressed"]
+    },
+    "unsubscribe_included": { "type": "boolean", "description": "Must be true for any marketing send." },
+    "created_at": { "type": "string" }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/reply.schema.json",
+  "title": "Reply",
+  "description": "An inbound reply triaged by the Reply Handling OS. Positive replies route to a consent-based WhatsApp/booking flow only after the recipient engages. Unsubscribe/angry/bounce route to immediate suppression.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["reply_id", "category"],
+  "properties": {
+    "reply_id": { "type": "string" },
+    "prospect_ref": { "type": "string" },
+    "draft_ref": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": ["positive", "interested_later", "price_question", "send_more_info", "wrong_person", "not_interested", "unsubscribe", "angry", "auto_reply", "bounce"]
+    },
+    "sentiment": { "type": "string", "enum": ["positive", "neutral", "negative"] },
+    "next_action": { "type": "string", "description": "Mapped action, e.g. discovery_invite, offer_card, proof_pack, referral_ask, suppress." },
+    "requires_founder": { "type": "boolean" },
+    "received_at": { "type": "string" },
+    "is_sample": { "type": "boolean" },
+    "notes": { "type": "string" }
+  }
+}

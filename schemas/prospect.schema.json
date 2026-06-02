@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/prospect.schema.json",
+  "title": "Prospect",
+  "description": "A researched company in the Market Production OS pipeline. No scraping: prospects come from founder-supplied lists, inbound, referrals, public manual research, events, or partners. No PII beyond business name + role; sample records set is_sample=true.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["prospect_id", "company", "sector", "status"],
+  "properties": {
+    "prospect_id": { "type": "string", "description": "Stable internal id." },
+    "company": { "type": "string", "description": "Business name (no individual PII)." },
+    "sector": { "type": "string", "description": "Sector key from data/sectors/sectors.yaml." },
+    "recipient_role": { "type": "string", "description": "Decision-maker role/title only, never a personal name." },
+    "region": { "type": "string", "description": "Saudi region/city." },
+    "source": {
+      "type": "string",
+      "description": "How the prospect entered the system. Scraping is forbidden.",
+      "enum": ["founder_list", "inbound", "referral", "public_research", "event", "partner"]
+    },
+    "status": {
+      "type": "string",
+      "description": "Prospect lifecycle state.",
+      "enum": [
+        "researched", "qualified", "draft_ready", "drafted", "approved", "sent",
+        "replied", "meeting_booked", "proposal_needed", "proposal_sent",
+        "won", "lost", "nurture", "do_not_contact"
+      ]
+    },
+    "score": {
+      "type": "object",
+      "description": "Weighted prospect score (0-100). total = sum of weighted criteria.",
+      "additionalProperties": false,
+      "properties": {
+        "sector_fit": { "type": "number", "description": "0-20" },
+        "likely_lead_flow": { "type": "number", "description": "0-20" },
+        "decision_maker_clarity": { "type": "number", "description": "0-15" },
+        "pain_signal": { "type": "number", "description": "0-15" },
+        "payment_ability": { "type": "number", "description": "0-15" },
+        "personalization_signal": { "type": "number", "description": "0-10" },
+        "low_risk": { "type": "number", "description": "0-5" },
+        "total": { "type": "number", "description": "0-100" }
+      }
+    },
+    "pain_hypothesis": { "type": "string" },
+    "payment_ability": { "type": "string", "enum": ["unknown", "low", "medium", "high"] },
+    "personalization_level": { "type": "string", "enum": ["P0", "P1", "P2", "P3"] },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"] },
+    "is_sample": { "type": "boolean", "description": "True for seed/fixture records." },
+    "notes": { "type": "string" },
+    "created_at": { "type": "string", "description": "ISO-8601 date or datetime." }
+  }
+}

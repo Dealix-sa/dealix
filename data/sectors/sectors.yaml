@@ -1,0 +1,135 @@
+# Sector Intelligence OS — priority index
+# Each entry validates against schemas/sector.schema.json and links to its full
+# playbook under docs/sectors/. Priority 1 = highest-priority target.
+# No scraping, no purchased lists. Outreach is draft-only under founder approval.
+sectors:
+  - key: marketing_agencies
+    name_ar: وكالات التسويق
+    name_en: Marketing Agencies
+    priority: 1
+    first_offer: Revenue Leakage Diagnostic
+    price_band: 1,500-5,000 SAR
+    decision_maker: المؤسس / مدير العمليات
+    buying_trigger: تعدد العملاء وضياع متابعات الحملات والتقارير اليدوية
+    do_not_target:
+      - وكالة بلا عملاء نشطين
+      - طلب صريح لإرسال بارد جماعي أو scraping
+    job_signal_roles: [Marketing Coordinator, Account Manager, Growth Manager]
+    playbook: docs/sectors/MARKETING_AGENCIES_AR.md
+  - key: training_companies
+    name_ar: شركات التدريب
+    name_en: Training Companies
+    priority: 2
+    first_offer: Follow-up Recovery Workflow
+    price_band: 8,000-18,000 SAR
+    decision_maker: مدير المبيعات / مالك الأكاديمية
+    buying_trigger: مهتمون بالدورات لا تتم متابعتهم حتى التسجيل
+    do_not_target:
+      - برامج بلا سجل مهني واضح
+      - طلب ضمانات تسجيل مضمونة
+    job_signal_roles: [Sales Operations, Customer Support, CRM Manager]
+    playbook: docs/sectors/TRAINING_COMPANIES_AR.md
+  - key: clinics
+    name_ar: العيادات والمراكز الطبية
+    name_en: Clinics and Medical Centers
+    priority: 3
+    first_offer: Follow-up Recovery Workflow
+    price_band: 8,000-18,000 SAR
+    decision_maker: مدير المركز / المدير التشغيلي
+    buying_trigger: استفسارات مرضى لا تُغلق ومواعيد تتأخر متابعتها
+    do_not_target:
+      - أي طلب يمس بيانات صحية حساسة بدون أساس نظامي
+      - عيادة بلا مالك قرار واضح
+    job_signal_roles: [Patient Coordinator, Customer Support, Operations Manager]
+    playbook: docs/sectors/CLINICS_AR.md
+  - key: real_estate_teams
+    name_ar: فرق العقار
+    name_en: Real Estate Teams
+    priority: 4
+    first_offer: Revenue Leakage Diagnostic
+    price_band: 1,500-5,000 SAR
+    decision_maker: مدير المبيعات / مالك المكتب
+    buying_trigger: عملاء محتملون كثر بلا ترتيب متابعة ولا تقارير إغلاق
+    do_not_target:
+      - وسطاء أفراد بلا عمليات
+      - طلب رسائل واتساب باردة جماعية
+    job_signal_roles: [Sales Operations, CRM Manager, Sales Coordinator]
+    playbook: docs/sectors/REAL_ESTATE_TEAMS_AR.md
+  - key: recruitment_agencies
+    name_ar: وكالات التوظيف
+    name_en: Recruitment Agencies
+    priority: 5
+    first_offer: Follow-up Recovery Workflow
+    price_band: 8,000-18,000 SAR
+    decision_maker: مدير التوظيف / المؤسس
+    buying_trigger: مرشحون وعملاء يضيعون بين القنوات بلا نظام متابعة
+    do_not_target:
+      - جمع سير ذاتية بطرق مخالفة
+      - طلب scraping لقواعد مرشحين
+    job_signal_roles: [Operations Manager, CRM Manager, Sales Operations]
+    playbook: docs/sectors/RECRUITMENT_AGENCIES_AR.md
+  - key: professional_services
+    name_ar: الخدمات المهنية
+    name_en: Professional Services
+    priority: 6
+    first_offer: AI Revenue Ops Starter
+    price_band: 18,000-35,000 SAR
+    decision_maker: الشريك / مدير التطوير
+    buying_trigger: عروض ومقترحات تتأخر ومتابعات ما بعد الاجتماع تضيع
+    do_not_target:
+      - مكاتب بلا التزام بحوكمة البيانات
+      - طلب وعود نتائج مضمونة
+    job_signal_roles: [Business Development, Sales Operations, Operations Manager]
+    playbook: docs/sectors/PROFESSIONAL_SERVICES_AR.md
+  - key: education_providers
+    name_ar: مزوّدو التعليم
+    name_en: Education Providers
+    priority: 7
+    first_offer: Follow-up Recovery Workflow
+    price_band: 8,000-18,000 SAR
+    decision_maker: مدير القبول والتسجيل
+    buying_trigger: طلبات قبول وتسجيل لا تُتابع حتى الإغلاق
+    do_not_target:
+      - جهات تتعامل مع بيانات قُصّر بدون أساس نظامي
+      - طلب إرسال بارد جماعي
+    job_signal_roles: [Admissions Officer, Customer Support, CRM Manager]
+    playbook: docs/sectors/EDUCATION_PROVIDERS_AR.md
+  - key: restaurant_groups
+    name_ar: مجموعات المطاعم
+    name_en: Restaurant Groups
+    priority: 8
+    first_offer: Revenue Leakage Diagnostic
+    price_band: 1,500-5,000 SAR
+    decision_maker: مدير العمليات / المالك
+    buying_trigger: طلبات الفعاليات والامتياز والشراكات بلا متابعة منظمة
+    do_not_target:
+      - فرع مفرد بلا عمليات B2B
+      - طلب رسائل عملاء أفراد جماعية
+    job_signal_roles: [Operations Manager, Catering Sales, Marketing Coordinator]
+    playbook: docs/sectors/RESTAURANT_GROUPS_AR.md
+  - key: logistics_companies
+    name_ar: شركات اللوجستيك
+    name_en: Logistics Companies
+    priority: 9
+    first_offer: AI Revenue Ops Starter
+    price_band: 18,000-35,000 SAR
+    decision_maker: مدير التطوير التجاري
+    buying_trigger: عروض أسعار شحن وعقود B2B تتأخر متابعتها
+    do_not_target:
+      - شركة بلا فريق مبيعات B2B
+      - طلب أتمتة تواصل بارد
+    job_signal_roles: [Business Development, Sales Operations, Account Manager]
+    playbook: docs/sectors/LOGISTICS_COMPANIES_AR.md
+  - key: local_saas
+    name_ar: شركات SaaS والخدمات المحلية
+    name_en: Local SaaS and Service Firms
+    priority: 10
+    first_offer: AI Revenue Ops Starter
+    price_band: 18,000-35,000 SAR
+    decision_maker: المؤسس / مدير النمو
+    buying_trigger: تجارب مجانية وعملاء محتملون بلا قمع متابعة منظم
+    do_not_target:
+      - منتج بلا عملاء يدفعون
+      - طلب scraping أو أتمتة LinkedIn
+    job_signal_roles: [Growth Manager, Sales Operations, Customer Support]
+    playbook: docs/sectors/LOCAL_SAAS_AR.md

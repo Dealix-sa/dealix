@@ -1,0 +1,4 @@
+{"action_id": "APR-0001", "target_type": "draft", "target_ref": "DRF-0002", "decision": "approve", "reviewer": "founder", "decided_at": "2026-06-02", "notes": "مخصصة وواضحة وتحوي رابط إلغاء اشتراك"}
+{"action_id": "APR-0002", "target_type": "draft", "target_ref": "DRF-0004", "decision": "approve", "reviewer": "founder", "decided_at": "2026-06-02", "notes": "مقترح أولي مطابق لكتالوج المنتجات"}
+{"action_id": "APR-0003", "target_type": "draft", "target_ref": "DRF-0003", "decision": "shorten", "reviewer": "founder", "decided_at": "2026-06-02", "notes": "اختصار الجسم إلى ثلاثة أسطر"}
+{"action_id": "APR-0004", "target_type": "batch", "target_ref": "BATCH-0002", "decision": "approve", "reviewer": "founder", "decided_at": "2026-06-02", "notes": "دفعة الأسبوع 1 ضمن سقف 50 وبصحة نطاق سليمة"}
