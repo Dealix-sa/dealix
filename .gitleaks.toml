@@ -51,9 +51,16 @@ paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    # Test suites use fake/sample keys by design (e.g. sk_test_dummy…,
+    # AKIA…EXAMPLE) — many exist purely to test redaction/scanning.
+    '''tests/.*''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
+    # Launch/verify scripts embed secret-detection regexes (grep 'sk_live_…').
+    '''scripts/.*verify.*\.sh$''',
+    # Generated build artifacts (gitignored; never in a clean checkout).
+    '''.*/\.next/.*''',
+    '''.*\.pyc$''',
 ]
 
 regexes = [

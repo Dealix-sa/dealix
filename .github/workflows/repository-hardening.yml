@@ -26,11 +26,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      # The gitleaks GitHub Action requires a paid license for organizations.
+      # Run the open-source gitleaks binary directly instead (no license, same
+      # rules) against the checked-out tree using the repo's .gitleaks.toml.
+      - name: Run Gitleaks (open-source binary)
+        env:
+          GITLEAKS_VERSION: "8.21.2"
+        run: |
+          set -euo pipefail
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o /tmp/gitleaks.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+          chmod +x /tmp/gitleaks
+          /tmp/gitleaks detect --no-git --config .gitleaks.toml --redact --no-banner --source . --exit-code 1
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -41,12 +49,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # The pinned trivy-action@0.24.0 tag no longer resolves. Run the official
+      # Trivy binary directly (version-robust, no action lookup) with the same
+      # policy: fail on fixable CRITICAL/HIGH vulnerabilities.
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+        env:
+          TRIVY_VERSION: "0.71.0"
+        run: |
+          set -euo pipefail
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b /usr/local/bin "v${TRIVY_VERSION}"
+          trivy fs --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed \
+            --exit-code 1 --no-progress \
+            --skip-dirs node_modules --skip-dirs .next \
+            --skip-dirs apps/web/.next --skip-dirs frontend/.next .

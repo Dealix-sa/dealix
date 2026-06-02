@@ -1,0 +1,60 @@
+{
+  "_comment": "Synthetic demo portfolio for the Recurring Revenue Radar. No PII. Copy to data/recurring_revenue/accounts_seed.json and replace with your real book of business (that path is gitignored). Each entry is one account's latest post-sprint state.",
+  "accounts": [
+    {
+      "account_id": "acc_demo_001",
+      "company_name": "Najd Clinics Group",
+      "proof_level": "L3",
+      "satisfaction_score": 9.0,
+      "measurable_result_achieved": true,
+      "current_mrr_sar": 0.0,
+      "latest_invoice_paid": false,
+      "months_active": 1,
+      "notes": "Completed 499 Sprint; strong measured no-show reduction."
+    },
+    {
+      "account_id": "acc_demo_002",
+      "company_name": "Rawabi Logistics",
+      "proof_level": "L2",
+      "satisfaction_score": 8.0,
+      "measurable_result_achieved": true,
+      "current_mrr_sar": 0.0,
+      "latest_invoice_paid": false,
+      "months_active": 1,
+      "notes": "Data-to-Revenue pack delivered; ready for managed ops."
+    },
+    {
+      "account_id": "acc_demo_003",
+      "company_name": "Tamkeen Realty",
+      "proof_level": "L1",
+      "satisfaction_score": 7.0,
+      "measurable_result_achieved": true,
+      "current_mrr_sar": 0.0,
+      "latest_invoice_paid": false,
+      "months_active": 0,
+      "notes": "Eligible at starter tier."
+    },
+    {
+      "account_id": "acc_demo_004",
+      "company_name": "Andalus Retail",
+      "proof_level": "L2",
+      "satisfaction_score": 8.5,
+      "measurable_result_achieved": true,
+      "current_mrr_sar": 2999.0,
+      "latest_invoice_paid": true,
+      "months_active": 4,
+      "notes": "On Starter retainer (paid); eligible to expand to Growth."
+    },
+    {
+      "account_id": "acc_demo_005",
+      "company_name": "Wadi Foodtech",
+      "proof_level": "L0",
+      "satisfaction_score": 6.0,
+      "measurable_result_achieved": false,
+      "current_mrr_sar": 0.0,
+      "latest_invoice_paid": false,
+      "months_active": 0,
+      "notes": "Not yet eligible — needs more proof before any upsell."
+    }
+  ]
+}
