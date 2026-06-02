@@ -71,6 +71,7 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 
 ### Business NOW (all pillars — today)
 
+- **خريطة التشغيل الشاملة (12 ماكينة ↔ النظام المحكوم):** [docs/BUSINESS_AUTOPILOT_OS.md](docs/BUSINESS_AUTOPILOT_OS.md) — رؤية «الشركة تشتغل بنفسها» مربوطة بالوحدات القائمة (لا إعادة اختراع). أمان الوكلاء: [docs/AGENT_SECURITY_POLICY.md](docs/AGENT_SECURITY_POLICY.md) · مؤشرات الأعمال: [docs/BUSINESS_METRICS.md](docs/BUSINESS_METRICS.md).
 - **Doc:** [docs/business/DEALIX_BUSINESS_NOW_AR.md](docs/business/DEALIX_BUSINESS_NOW_AR.md)
 - **One command:** `bash scripts/run_business_now.sh` (Windows: `powershell -File scripts/run_business_now.ps1`)
 - **Verdict cache:** [dealix/transformation/business_now_cache.yaml](dealix/transformation/business_now_cache.yaml) (updated by generator; API reads cache when not running live verify)
