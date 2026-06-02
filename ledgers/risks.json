@@ -1,0 +1,31 @@
+{
+  "ledger": "risks",
+  "version": 1,
+  "updated": "2026-06-02",
+  "records": [
+    {
+      "id": "RISK-0001",
+      "title": "Plan-vs-repo drift: external strategy docs may target a stale/empty repo snapshot and trigger destructive literal execution.",
+      "category": "operational",
+      "severity": "high",
+      "likelihood": "medium",
+      "mitigation": "The Founder-OS layer is additive-only. AGENTS.md, README, and existing CI are never overwritten. New ledgers are guarded by tests/test_ledgers_schema.py so they cannot silently rot.",
+      "owner": "founder",
+      "status": "mitigating",
+      "created": "2026-06-02",
+      "review_date": "2026-07-01"
+    },
+    {
+      "id": "RISK-0002",
+      "title": "Agent over-privilege in CI: a Claude agent workflow with contents:write plus API secrets is high-blast-radius on a public repo.",
+      "category": "security",
+      "severity": "medium",
+      "likelihood": "low",
+      "mitigation": "The agent workflow is documented as opt-in only in docs/CLOUD_CODE_COMMAND_CENTER.md with least-privilege scopes; it is NOT enabled by default and never merges to main.",
+      "owner": "founder",
+      "status": "open",
+      "created": "2026-06-02",
+      "review_date": "2026-07-01"
+    }
+  ]
+}
