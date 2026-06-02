@@ -738,17 +738,17 @@ tasks:
     n: 118
     section: autonomous_ops
     title_ar: "CI يومي تجاري"
-    artifacts: [.github/workflows/founder_commercial_daily.yml]
+    artifacts: [.github/workflows/founder-daily.yml]
   - id: t119
     n: 119
     section: autonomous_ops
     title_ar: "CI مساء أدلة"
-    artifacts: [.github/workflows/founder_evening_evidence.yml]
+    artifacts: [.github/workflows/founder-weekly.yml]
   - id: t120
     n: 120
     section: autonomous_ops
     title_ar: "CI أسبوعي scorecard"
-    artifacts: [.github/workflows/founder_weekly_scorecard.yml]
+    artifacts: [.github/workflows/founder-weekly.yml]
   - id: t121
     n: 121
     section: autonomous_ops

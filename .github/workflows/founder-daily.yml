@@ -1,0 +1,53 @@
+name: Founder Daily
+
+# Consolidated founder daily autonomous ops (governed, no external send).
+# Generates the offline daily briefs under data/founder_briefs/ via the
+# unified complete-autonomous-day runner. Live War Room / evidence sync is
+# optional: when DEALIX_API_BASE / DEALIX_ADMIN_API_KEY are absent the runner
+# skips the live step and still produces the offline brief.
+# ~08:00 KSA (05:00 UTC, Sun-Thu).
+
+on:
+  schedule:
+    - cron: "0 5 * * 0-4"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: founder-daily
+  cancel-in-progress: false
+
+jobs:
+  founder-daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install minimal deps
+        run: pip install pyyaml
+
+      - name: Run unified founder day (governed, offline brief)
+        env:
+          DEALIX_API_BASE: ${{ secrets.DEALIX_API_BASE || '' }}
+          DEALIX_ADMIN_API_KEY: ${{ secrets.DEALIX_ADMIN_API_KEY || '' }}
+          DEALIX_SYNC_EVIDENCE: ${{ secrets.DEALIX_SYNC_EVIDENCE || '0' }}
+          PYTHONIOENCODING: utf-8
+        run: python3 scripts/run_dealix_complete_autonomous_day.py --skip-commercial-day
+
+      - name: Upload daily brief artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: founder-daily-${{ github.run_id }}
+          path: |
+            data/founder_briefs/
+            data/daily_brief/
+          retention-days: 14
+          if-no-files-found: ignore

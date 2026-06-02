@@ -1,0 +1,53 @@
+name: Founder Weekly
+
+# Consolidated founder weekly autonomous ops (governed, no external send).
+# Runs the unified complete-autonomous-day runner in weekly mode: morning core
+# plus evening evidence, weekly strongest-ops sections, and the weekly loop.
+# Live War Room / evidence sync is optional: when DEALIX_API_BASE /
+# DEALIX_ADMIN_API_KEY are absent the runner skips the live step and still
+# produces the offline brief. ~09:00 KSA (06:00 UTC, Sunday).
+
+on:
+  schedule:
+    - cron: "0 6 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: founder-weekly
+  cancel-in-progress: false
+
+jobs:
+  founder-weekly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install minimal deps
+        run: pip install pyyaml
+
+      - name: Run unified founder week (governed, offline brief)
+        env:
+          DEALIX_API_BASE: ${{ secrets.DEALIX_API_BASE || '' }}
+          DEALIX_ADMIN_API_KEY: ${{ secrets.DEALIX_ADMIN_API_KEY || '' }}
+          DEALIX_SYNC_EVIDENCE: ${{ secrets.DEALIX_SYNC_EVIDENCE || '0' }}
+          PYTHONIOENCODING: utf-8
+        run: python3 scripts/run_dealix_complete_autonomous_day.py --weekly --skip-commercial-day --json
+
+      - name: Upload weekly brief artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: founder-weekly-${{ github.run_id }}
+          path: |
+            data/founder_briefs/
+            data/daily_brief/
+          retention-days: 14
+          if-no-files-found: ignore

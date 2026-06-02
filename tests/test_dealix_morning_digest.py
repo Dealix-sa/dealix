@@ -126,14 +126,16 @@ def test_no_recipient_returns_failure(monkeypatch):
 
 
 def test_workflow_file_exists_and_has_correct_cron():
-    workflow = REPO / ".github" / "workflows" / "daily_digest.yml"
+    # Consolidated into the single founder-daily workflow (offline brief,
+    # no external send). The standalone daily_digest.yml was removed when the
+    # ~19 founder ops workflows were folded into founder-daily / founder-weekly.
+    workflow = REPO / ".github" / "workflows" / "founder-daily.yml"
     assert workflow.exists()
     text = workflow.read_text(encoding="utf-8")
-    # 4AM UTC = 7AM KSA
-    assert 'cron: "0 4 * * *"' in text
-    # Calls the right script
-    assert "scripts/dealix_morning_digest.py" in text
-    # Sources Resend secret
-    assert "RESEND_API_KEY" in text
+    # 05:00 UTC Sun-Thu = ~08:00 KSA
+    assert 'cron: "0 5 * * 0-4"' in text
+    # Calls the unified runner with python3 (never the Windows py -3 launcher)
+    assert "python3 scripts/run_dealix_complete_autonomous_day.py" in text
+    assert "py -3" not in text
     # Has manual trigger too
     assert "workflow_dispatch" in text

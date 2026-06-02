@@ -160,17 +160,17 @@ tasks:
     title_ar: "verify_founder_operating_system أسبوعياً"
     ref: scripts/verify_founder_operating_system.ps1
     status: in_progress
-    automation: .github/workflows/founder_weekly_verify.yml
+    automation: .github/workflows/founder-weekly.yml
   - id: D6
     section: D
     title_ar: "verify_commercial_launch_ready"
     ref: scripts/verify_commercial_launch_ready.py
     status: in_progress
-    automation: .github/workflows/founder_weekly_verify.yml
+    automation: .github/workflows/founder-weekly.yml
   - id: D7
     section: D
     title_ar: "مراجعة GitHub Actions cron"
-    ref: .github/workflows/founder_commercial_daily.yml
+    ref: .github/workflows/founder-daily.yml
     status: open
   - id: D8
     section: D
