@@ -1,0 +1,115 @@
+# Dealix Agent (manual) — a single, manually-triggered Claude Code agent.
+#
+# Deliberate safety choices for a PUBLIC repo:
+#   • workflow_dispatch ONLY — no issues/issue_comment triggers, so no paid agent
+#     run can be started by an external @mention.
+#   • Secret-guarded — dormant (green, no-op) until ANTHROPIC_API_KEY is added in
+#     Settings → Secrets. Zero cost, zero attack surface until you opt in.
+#   • Least-privilege token. PR-only output; never merges, deploys, or sends.
+#
+# Governance: docs/automation/CLOUD_CODE_COMMAND_CENTER.md
+#             docs/automation/AUTOMATION_PERMISSION_MODEL.md
+name: Dealix Agent (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      mission:
+        description: "What should the agent accomplish? (scoped, specific)"
+        required: true
+        type: string
+      autonomy:
+        description: "Autonomy level (maps to the L0–L6 ladder)"
+        required: true
+        default: pr_only
+        type: choice
+        options:
+          - report_only
+          - pr_only
+          - staging_allowed
+      issue:
+        description: "Optional issue number for context (agent-command template)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: read
+
+concurrency:
+  group: dealix-agent-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  agent:
+    name: Run Dealix agent
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      HAS_ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+
+    steps:
+      - name: Preflight — require ANTHROPIC_API_KEY
+        run: |
+          if [ "${HAS_ANTHROPIC_KEY}" != "true" ]; then
+            echo "::warning::ANTHROPIC_API_KEY is not set. This workflow is dormant."
+            echo "Add it in Settings → Secrets and variables → Actions to enable the agent."
+            echo "Exiting cleanly (no-op)."
+          else
+            echo "ANTHROPIC_API_KEY present — proceeding."
+          fi
+
+      - name: Checkout
+        if: env.HAS_ANTHROPIC_KEY == 'true'
+        uses: actions/checkout@v4
+
+      - name: Run Claude Code agent
+        if: env.HAS_ANTHROPIC_KEY == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are the Dealix automation agent operating in CI on a public repo.
+            Autonomy for this run: ${{ inputs.autonomy }}
+            Context issue (optional): ${{ inputs.issue }}
+
+            Read first: AGENTS.md and docs/automation/ (permission model, command
+            center, external blueprint). This is a Python/FastAPI repo — the task
+            runner is `make`, NOT npm.
+
+            Mission:
+            ${{ inputs.mission }}
+
+            Operating rules (non-negotiable):
+            1. Make small, safe, reviewable changes. Prefer a PR over editing main.
+            2. PR only — never merge, never deploy to production, never change or
+               print secrets, never commit .env, never force-push.
+            3. Never delete important files. Never weaken auth, env validation, CI,
+               tests, or a doctrine guard. Fix root causes; do not skip tests.
+            4. Never auto-send to a customer — draft and queue only.
+            5. Honor the 11 non-negotiables (no scraping, no cold WhatsApp, no
+               LinkedIn automation, no guaranteed claims, no PII in logs, etc.) —
+               see docs/automation/AUTOMATION_PERMISSION_MODEL.md §3.
+            6. Respect the autonomy level above:
+               - report_only      → write docs/reports only, no branches/PRs.
+               - pr_only          → branch + PR + run tests; no deploy.
+               - staging_allowed  → may prepare a staging deploy after green CI.
+
+            Verify with Python tooling before opening the PR:
+              make lint
+              make type-check
+              make test
+              make security-smoke
+
+            The final PR description MUST include:
+              - Business impact
+              - Technical changes
+              - Files changed
+              - Tests run (with result)
+              - Risks
+              - Rollback
+              - Next founder action
+          claude_args: |
+            --max-turns 40
