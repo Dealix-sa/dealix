@@ -107,6 +107,9 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Revenue Execution OS — committed examples only (live data goes to var/, ignored)
+!data/distribution/
+!data/drafts/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
