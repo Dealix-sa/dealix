@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/followup.schema.json",
+  "title": "Followup",
+  "description": "A due follow-up suggestion. Generated for founder approval; never auto-sent.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "followup_id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "reason": { "type": "string" },
+    "channel": {
+      "type": "string",
+      "enum": ["email", "whatsapp", "linkedin", "phone", "proposal", "payment"]
+    },
+    "suggested_draft_type": {
+      "type": "string",
+      "enum": [
+        "outreach_first", "outreach_followup_1", "outreach_followup_2", "breakup",
+        "discovery_invite", "diagnostic_summary", "proposal", "proof_pack_intro",
+        "payment_followup", "onboarding_message", "renewal_upsell"
+      ]
+    },
+    "due_date": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["due", "completed", "skipped"] },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["followup_id", "prospect_id", "reason", "suggested_draft_type"]
+}

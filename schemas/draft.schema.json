@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/draft.schema.json",
+  "title": "Draft",
+  "description": "An approval-first outreach/message draft. Born pending_approval; never auto-sent.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "draft_id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "draft_type": {
+      "type": "string",
+      "enum": [
+        "outreach_first", "outreach_followup_1", "outreach_followup_2", "breakup",
+        "discovery_invite", "diagnostic_summary", "proposal", "proof_pack_intro",
+        "payment_followup", "onboarding_message", "renewal_upsell"
+      ]
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["email", "whatsapp", "linkedin", "phone", "proposal", "payment"]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "generated", "pending_approval", "approved", "rejected", "needs_edit",
+        "copied_manually", "sent_via_integration", "replied", "archived"
+      ]
+    },
+    "approval_required": { "type": "boolean", "const": true },
+    "subject": { "type": "string" },
+    "body_ar": { "type": "string" },
+    "body_en": { "type": "string" },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "governance_decision": {
+      "type": "string",
+      "enum": ["ALLOW", "ALLOW_WITH_REVIEW", "DRAFT_ONLY", "REQUIRE_APPROVAL", "REDACT", "BLOCK", "ESCALATE"]
+    },
+    "issues": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["draft_id", "draft_type", "status", "approval_required", "governance_decision"]
+}

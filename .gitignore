@@ -107,6 +107,9 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Revenue Execution OS seeds (sectors, channel policy, example prospects — no PII).
+# Runtime stores live in data/revenue_execution/ and remain ignored.
+!data/distribution/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

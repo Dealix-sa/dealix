@@ -1,0 +1,32 @@
+[
+  {
+    "prospect_id": "example_001",
+    "company": "Riyadh Growth Agency",
+    "contact_name": "Operations Lead",
+    "sector": "marketing_agencies",
+    "region": "Saudi Arabia",
+    "lead_source": "inbound",
+    "stage": "new",
+    "notes": "Example seed only — replace with real, consented prospects. No scraped or purchased data."
+  },
+  {
+    "prospect_id": "example_002",
+    "company": "Jeddah Training Institute",
+    "contact_name": "Enrollment Manager",
+    "sector": "training_companies",
+    "region": "Saudi Arabia",
+    "lead_source": "referral",
+    "stage": "new",
+    "notes": "Example seed only — replace with real, consented prospects."
+  },
+  {
+    "prospect_id": "example_003",
+    "company": "Dammam Dental Clinic",
+    "contact_name": "Clinic Director",
+    "sector": "clinics",
+    "region": "Saudi Arabia",
+    "lead_source": "warm_intro",
+    "stage": "new",
+    "notes": "Example seed only — replace with real, consented prospects."
+  }
+]

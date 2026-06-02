@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/payment_handoff.schema.json",
+  "title": "PaymentHandoff",
+  "description": "A prepared (never sent) payment-link handoff. Ready only when every precondition is met; Moyasar live mode is founder-flipped only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "handoff_id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "proposal_id": { "type": "string" },
+    "offer_key": { "type": "string" },
+    "amount_label": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "pending_approval", "approved", "sent", "paid", "expired", "cancelled"]
+    },
+    "preconditions": {
+      "type": "object",
+      "additionalProperties": { "type": "boolean" },
+      "description": "proposal_approved, price_confirmed, scope_confirmed, terms_confirmed, founder_approved"
+    },
+    "blocking_reasons": { "type": "array", "items": { "type": "string" } },
+    "governance_decision": {
+      "type": "string",
+      "enum": ["ALLOW", "ALLOW_WITH_REVIEW", "DRAFT_ONLY", "REQUIRE_APPROVAL", "REDACT", "BLOCK", "ESCALATE"]
+    },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["handoff_id", "status", "governance_decision"]
+}

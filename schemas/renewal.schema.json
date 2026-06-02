@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/renewal.schema.json",
+  "title": "Renewal",
+  "description": "A renewal/upsell opportunity pointing at the next rung of the offer ladder. Never auto-renews or charges.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "renewal_id": { "type": "string" },
+    "customer_id": { "type": "string" },
+    "current_offer_key": { "type": "string" },
+    "next_offer_key": { "type": "string" },
+    "trigger": {
+      "type": "string",
+      "enum": ["after_first_delivery", "after_value_report", "before_month_end", "after_quick_win", "after_proof_pack", ""]
+    },
+    "due_date": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["open", "won", "lost", "closed"] },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["renewal_id", "customer_id", "current_offer_key"]
+}

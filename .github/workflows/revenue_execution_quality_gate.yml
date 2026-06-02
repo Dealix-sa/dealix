@@ -1,0 +1,70 @@
+name: Revenue Execution Quality Gate
+
+# Runs on PRs that touch the distribution layer. Enforces the tests, the
+# doctrine guards, JSON-schema validity, and a hard "no external send" check.
+
+on:
+  pull_request:
+    paths:
+      - "auto_client_acquisition/revenue_execution_os/**"
+      - "api/routers/revenue_execution.py"
+      - "scripts/revenue_execution_*.py"
+      - "schemas/**"
+      - "tests/test_revenue_execution_*.py"
+      - "docs/distribution/**"
+      - ".github/workflows/revenue_execution_*.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: No external send / charge in the distribution layer
+        run: |
+          if grep -rInE "create_payment_link|send_transactional|send_email|requests\.(post|put|patch)|httpx\.(post|put|patch)|\.send_message\(" \
+            auto_client_acquisition/revenue_execution_os api/routers/revenue_execution.py scripts/revenue_execution_*.py ; then
+            echo "FAIL: external send/charge call found in the distribution layer" >&2
+            exit 1
+          fi
+          echo "OK: no external send/charge calls"
+
+      - name: Validate JSON schemas
+        run: |
+          python3 - <<'PY'
+          import glob, json, sys
+          bad = []
+          for f in glob.glob("schemas/*.schema.json"):
+              try:
+                  json.load(open(f, encoding="utf-8"))
+              except Exception as e:  # noqa: BLE001
+                  bad.append(f"{f}: {e}")
+          if bad:
+              print("\n".join(bad)); sys.exit(1)
+          print("OK: all schemas parse")
+          PY
+
+      - name: Distribution tests + doctrine guards
+        env:
+          APP_ENV: test
+        run: |
+          python3 -m pytest -q \
+            tests/test_revenue_execution_os.py \
+            tests/test_revenue_execution_api.py \
+            tests/test_no_guaranteed_claims.py \
+            tests/test_output_requires_governance_status.py \
+            tests/test_no_cold_whatsapp.py \
+            tests/test_no_linkedin_automation.py \
+            tests/test_no_scraping_engine.py

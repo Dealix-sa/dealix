@@ -1,0 +1,49 @@
+name: Revenue Execution Day
+
+# Approval-first distribution reports (no external send, no charge).
+# Generates Markdown reports as build artifacts only. Weekly + on demand.
+
+on:
+  schedule:
+    - cron: "0 6 * * 0"
+  workflow_dispatch:
+
+concurrency:
+  group: revenue-execution-day
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  reports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate distribution reports (read-only, no send)
+        env:
+          APP_ENV: test
+          PYTHONIOENCODING: utf-8
+        run: |
+          python3 scripts/revenue_execution_day.py
+          python3 scripts/revenue_execution_draft_quality.py
+          python3 scripts/revenue_execution_metrics.py
+
+      - name: Upload report artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revenue-execution-reports-${{ github.run_id }}
+          path: reports/distribution/
+          retention-days: 14
+          if-no-files-found: warn

@@ -125,6 +125,9 @@ from api.routers import platform_foundation as platform_foundation_router
 # Autonomous product distribution engine
 from api.routers import autonomous_distribution as autonomous_distribution_router
 
+# Revenue Execution OS — approval-first product distribution layer
+from api.routers import revenue_execution as revenue_execution_router
+
 # Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
 from api.routers import customer_health_scoring as customer_health_scoring_router
 from api.routers import market_intelligence as market_intelligence_router
@@ -413,6 +416,8 @@ def create_app() -> FastAPI:
     app.include_router(platform_foundation_router.router)
     # Autonomous product distribution — /api/v1/autonomous-distribution/*
     app.include_router(autonomous_distribution_router.router)
+    # Revenue Execution OS — /api/v1/revenue-execution/* (approval-first, no send)
+    app.include_router(revenue_execution_router.router)
 
     # Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
     app.include_router(customer_health_scoring_router.router)

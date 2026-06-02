@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/win_loss.schema.json",
+  "title": "WinLoss",
+  "description": "A recorded outcome used for weekly learning. Business attributes only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "record_id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "channel": {
+      "type": "string",
+      "enum": ["email", "whatsapp", "linkedin", "phone", "proposal", "payment"]
+    },
+    "offer_key": { "type": "string" },
+    "outcome": { "type": "string", "enum": ["open", "won", "lost"] },
+    "reason": { "type": "string" },
+    "objection": { "type": "string" },
+    "lesson": { "type": "string" },
+    "next_change": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["record_id", "outcome"]
+}
