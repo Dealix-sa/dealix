@@ -39,7 +39,10 @@ jobs:
           TOOL_DIR="$(mktemp -d)"
           curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o "$TOOL_DIR/gitleaks.tar.gz"
           tar -xzf "$TOOL_DIR/gitleaks.tar.gz" -C "$TOOL_DIR" gitleaks
-          "$TOOL_DIR/gitleaks" detect --source . --config .gitleaks.toml --redact --no-banner --exit-code 1 -v
+          # Scan the working tree (--no-git), not 2500+ commits of history.
+          # Deterministic, matches the current codebase, and avoids flagging
+          # secrets in long-since-removed historical files.
+          "$TOOL_DIR/gitleaks" detect --no-git --source . --config .gitleaks.toml --redact --no-banner --exit-code 1 -v
 
   filesystem-scan:
     name: Trivy filesystem scan
