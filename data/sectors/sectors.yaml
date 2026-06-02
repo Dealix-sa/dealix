@@ -1,0 +1,139 @@
+# Dealix Market Production OS — Canonical Sector Taxonomy
+# Product data (no customer PII). Sector keys here are the single source of truth
+# for the `sector` enum in schemas/prospect.schema.json and the docs/sectors/ playbooks.
+# offer keys map to the canonical commercial ladder (see docs/commercial/OFFER_LADDER_AR.md).
+# Prices are never encoded here — pricing is founder-approved (docs/commercial/PRICING_GUARDRAILS_AR.md).
+
+version: 1
+updated: 2026-06-02
+
+# Canonical offer keys (ladder rungs) — referenced by first_offer below.
+offers:
+  - free_diagnostic
+  - revenue_intelligence_sprint
+  - data_to_revenue_pack
+  - managed_revenue_ops
+  - custom_ai_setup
+  - enterprise_governance_review
+
+sectors:
+  - key: marketing_agencies
+    name_ar: وكالات التسويق
+    name_en: Marketing agencies
+    priority: 1
+    decision_maker: founder / account director
+    buying_trigger: leads تأتي ولا تُغلق؛ متابعة متأخرة
+    pain: تسرّب leads بسبب بطء المتابعة وغياب ترتيب الأولويات
+    first_offer: revenue_intelligence_sprint
+    first_workflow: follow_up_recovery
+    do_not_target:
+      - وكالة بلا leads واردة أصلًا
+      - فريق مبيعات صفري وميزانية صفرية
+
+  - key: training_companies
+    name_ar: شركات التدريب
+    name_en: Training companies
+    priority: 2
+    decision_maker: founder / sales lead
+    buying_trigger: استفسارات لا تتحوّل إلى حجوزات
+    pain: استفسارات كثيرة تضيع قبل التسجيل
+    first_offer: revenue_intelligence_sprint
+    first_workflow: enrollment_follow_up
+    do_not_target:
+      - برامج حكومية بحتة بلا دورة شراء تجارية
+
+  - key: clinics
+    name_ar: العيادات
+    name_en: Clinics
+    priority: 3
+    decision_maker: owner / operations manager
+    buying_trigger: حجوزات ومتابعات متفرّقة على واتساب
+    pain: مواعيد ومتابعات ومدفوعات غير منظّمة
+    first_offer: data_to_revenue_pack
+    first_workflow: appointment_follow_up
+    do_not_target:
+      - منشآت تتعامل ببيانات صحية حسّاسة دون أساس امتثال واضح
+
+  - key: real_estate_teams
+    name_ar: فرق العقار
+    name_en: Real estate teams
+    priority: 4
+    decision_maker: team lead / broker owner
+    buying_trigger: pipeline كبير وغير مرتّب
+    pain: فرص بمبالغ عالية تضيع في المتابعة
+    first_offer: revenue_intelligence_sprint
+    first_workflow: lead_prioritization
+    do_not_target:
+      - وسيط فردي بلا فريق وبلا حجم صفقات
+
+  - key: recruitment_agencies
+    name_ar: وكالات التوظيف
+    name_en: Recruitment agencies
+    priority: 5
+    decision_maker: agency owner / delivery lead
+    buying_trigger: مرشّحون وعملاء يضيعون بين القنوات
+    pain: تشتّت قنوات التواصل وضعف ترتيب الأولويات
+    first_offer: data_to_revenue_pack
+    first_workflow: candidate_client_follow_up
+    do_not_target:
+      - منصّات توظيف ذاتية بلا فريق عمليات
+
+  - key: professional_services
+    name_ar: الخدمات المهنية
+    name_en: Professional services
+    priority: 6
+    decision_maker: partner / managing director
+    buying_trigger: pipeline استشاري غير منظّم
+    pain: عروض ومتابعات تعتمد على ذاكرة الأفراد
+    first_offer: managed_revenue_ops
+    first_workflow: proposal_follow_up
+    do_not_target:
+      - مكتب فردي بلا تدفّق فرص متكرّر
+
+  - key: restaurant_groups
+    name_ar: مجموعات المطاعم
+    name_en: Restaurant groups
+    priority: 7
+    decision_maker: owner / operations director
+    buying_trigger: فروع متعدّدة وبيانات متفرّقة
+    pain: غياب رؤية موحّدة للإيراد عبر الفروع
+    first_offer: data_to_revenue_pack
+    first_workflow: branch_revenue_view
+    do_not_target:
+      - مطعم فرع واحد بلا عمليات B2B
+
+  - key: education_providers
+    name_ar: مزوّدو التعليم
+    name_en: Education providers
+    priority: 8
+    decision_maker: founder / admissions lead
+    buying_trigger: تسجيلات موسمية ومتابعات ضائعة
+    pain: قمع تسجيل غير منظّم
+    first_offer: revenue_intelligence_sprint
+    first_workflow: admissions_follow_up
+    do_not_target:
+      - جهات تعليمية حكومية بحتة
+
+  - key: logistics_companies
+    name_ar: شركات اللوجستيات
+    name_en: Logistics companies
+    priority: 9
+    decision_maker: commercial manager / owner
+    buying_trigger: عروض أسعار B2B بطيئة
+    pain: دورة عرض سعر ومتابعة طويلة
+    first_offer: managed_revenue_ops
+    first_workflow: quote_follow_up
+    do_not_target:
+      - ناقل فردي بلا مبيعات B2B
+
+  - key: local_saas
+    name_ar: شركات SaaS وخدمات محلية
+    name_en: Local SaaS / service firms
+    priority: 10
+    decision_maker: founder / head of growth
+    buying_trigger: تجارب لا تتحوّل إلى اشتراكات
+    pain: trial-to-paid ضعيف وغياب متابعة منظّمة
+    first_offer: managed_revenue_ops
+    first_workflow: trial_conversion
+    do_not_target:
+      - منتج بلا أي تدفّق تجارب أو عملاء

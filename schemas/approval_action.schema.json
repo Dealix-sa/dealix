@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/approval_action.schema.json",
+  "title": "ApprovalAction",
+  "description": "A founder decision on a draft in the Founder Approval Queue. No outreach is sent without an explicit approve action recorded here.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "action_id": { "type": "string" },
+    "draft_id": { "type": "string", "description": "Links to schemas/outreach_draft.schema.json." },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "approve", "reject", "rewrite", "shorten",
+        "make_more_formal", "change_offer", "move_to_nurture", "do_not_contact"
+      ]
+    },
+    "new_offer": {
+      "type": "string",
+      "description": "Required only when decision = change_offer; from the canonical ladder.",
+      "enum": [
+        "free_diagnostic", "revenue_intelligence_sprint", "data_to_revenue_pack",
+        "managed_revenue_ops", "custom_ai_setup", "enterprise_governance_review"
+      ]
+    },
+    "reason": { "type": "string", "maxLength": 1000 },
+    "decided_by": { "type": "string", "description": "Founder identity (every approval is attributable)." },
+    "decided_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["action_id", "draft_id", "decision", "decided_at"]
+}

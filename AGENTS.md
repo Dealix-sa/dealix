@@ -92,6 +92,16 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
 - **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
 
+### Market Production OS (GTM machine — docs + schemas + verifier)
+
+End-to-end go-to-market layer: Brand → Catalog → Sectors → Prospects → Job Signals → Cold Email Draft Factory → Compliance/Deliverability Gate → Founder Approval → Sending Ramp → Reply Handling → WhatsApp-after-reply → Content → Press → Partnerships → GTM Control Room → Metrics. **Core rule:** produce 250 drafts/day, but do **not** ramp sending to 250/day until domain health (SPF/DKIM/DMARC), opt-out, suppression, and the ramp pass.
+
+- **Index:** [docs/market_os/MARKET_PRODUCTION_OS_AR.md](docs/market_os/MARKET_PRODUCTION_OS_AR.md) — maps each sub-system to its doc, schema, and existing engine.
+- **Schemas:** [schemas/](schemas/) (8 JSON Schemas + README) — prospect, outreach_draft, email_account, sending_batch, suppression, approval_action, reply, job_signal.
+- **Canonical data:** [data/sectors/sectors.yaml](data/sectors/sectors.yaml) (10-sector taxonomy); synthetic examples in `data/templates/market_os_*_example.jsonl`; real prospect/signal/partner data is runtime + gitignored (no committed PII).
+- **Compliance core:** [docs/outreach/EMAIL_DELIVERABILITY_POLICY_AR.md](docs/outreach/EMAIL_DELIVERABILITY_POLICY_AR.md) · `COLD_EMAIL_COMPLIANCE_AR` · `UNSUBSCRIBE_POLICY_AR` · `SENDING_RAMP_PLAN_AR`.
+- **Verify:** `python3 scripts/verify_market_production_os.py` → `DEALIX_MARKET_PRODUCTION_OS_VERDICT=PASS|FAIL` (also `tests/test_market_production_os.py`). Honors the 11 non-negotiables; sends/pricing/payment require founder approval.
+
 ### Global AI transformation (CEO / operating spine)
 
 - Weekly executive checklist: `bash scripts/run_executive_weekly_checklist.sh` (proof pack + `verify_global_ai_transformation.py` + audit log; syncs `weekly_ops.last_checklist_run_iso` when PASS).

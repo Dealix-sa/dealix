@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/prospect.schema.json",
+  "title": "Prospect",
+  "description": "A researched B2B prospect in the Dealix Market Production OS. Sources are founder-supplied or manually reviewed public data only — never scraping. Real prospect records are runtime data (data/prospects/, gitignored). Committed examples must use synthetic, non-PII values.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "prospect_id": { "type": "string", "description": "Stable internal id (not derived from PII)." },
+    "company": { "type": "string", "description": "Company name." },
+    "sector": {
+      "type": "string",
+      "description": "One of the canonical sector keys in data/sectors/sectors.yaml.",
+      "enum": [
+        "marketing_agencies",
+        "training_companies",
+        "clinics",
+        "real_estate_teams",
+        "recruitment_agencies",
+        "professional_services",
+        "restaurant_groups",
+        "education_providers",
+        "logistics_companies",
+        "local_saas"
+      ]
+    },
+    "region": { "type": "string", "description": "City / region (e.g. Riyadh, Jeddah)." },
+    "recipient_role": { "type": "string", "description": "Decision-maker role (founder, sales_manager, ops_manager, marketing_lead)." },
+    "source": {
+      "type": "string",
+      "description": "How the prospect entered the system. Scraping is NOT an allowed source (blocked by revenue_os anti-waste).",
+      "enum": ["founder_referral", "inbound", "event", "partner", "public_directory", "manual_research"]
+    },
+    "pain_signal": { "type": "string", "description": "Observed/hypothesized pain tied to a Dealix offer." },
+    "payment_ability": {
+      "type": "string",
+      "enum": ["unknown", "low", "medium", "high"],
+      "description": "Estimated ability to pay; estimate only, never verified value."
+    },
+    "personalization_signal": { "type": "string", "description": "The single concrete, real signal used to personalize outreach." },
+    "score": { "$ref": "#/$defs/ProspectScore" },
+    "state": {
+      "type": "string",
+      "description": "Lifecycle state.",
+      "enum": [
+        "researched", "qualified", "draft_ready", "drafted", "approved", "sent",
+        "replied", "meeting_booked", "proposal_needed", "proposal_sent",
+        "won", "lost", "nurture", "do_not_contact"
+      ]
+    },
+    "do_not_contact": { "type": "boolean", "default": false, "description": "If true, suppress from all outreach immediately." },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to the public/founder-supplied evidence behind the pain/personalization signal."
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "notes": { "type": "string", "maxLength": 2000 }
+  },
+  "required": ["prospect_id", "company", "sector", "source", "state"],
+  "$defs": {
+    "ProspectScore": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Weighted prospect score. Components are capped at the plan weights; total is 0-100.",
+      "properties": {
+        "sector_fit": { "type": "integer", "minimum": 0, "maximum": 20 },
+        "likely_lead_flow": { "type": "integer", "minimum": 0, "maximum": 20 },
+        "decision_maker_clarity": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "pain_signal": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "payment_ability": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "personalization_signal": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "low_risk": { "type": "integer", "minimum": 0, "maximum": 5 },
+        "total": { "type": "integer", "minimum": 0, "maximum": 100 }
+      },
+      "required": ["total"]
+    }
+  }
+}

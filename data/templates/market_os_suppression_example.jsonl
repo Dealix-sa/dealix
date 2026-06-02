@@ -1,0 +1,2 @@
+{"entry_id":"sp_0001","email":"optout@example.sa","reason":"unsubscribe","source":"reply_handling","suppressed_at":"2026-06-01T10:00:00Z","notes":"Synthetic example. Real opt-outs live in the gitignored runtime list."}
+{"entry_id":"sp_0002","domain":"bounced.example.sa","reason":"bounce","source":"bounce_webhook","suppressed_at":"2026-06-01T11:00:00Z","notes":"Synthetic example — domain-level suppression after hard bounce."}
