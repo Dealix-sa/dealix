@@ -30,6 +30,10 @@ from typing import Any
 
 DEFAULT_BASE_URL = os.getenv("DEALIX_BASE_URL", "https://api.dealix.me")
 DEFAULT_TIMEOUT = float(os.getenv("DEALIX_SMOKE_TIMEOUT", "15"))
+# Optional API key. When present, auth-protected endpoints are verified
+# strictly (expect 200 + guardrail body). When absent, a 401 from a
+# protected endpoint is treated as "alive + correctly guarded".
+SMOKE_API_KEY = os.getenv("DEALIX_SMOKE_API_KEY") or os.getenv("DEALIX_ADMIN_API_KEY") or ""
 
 
 @dataclass
@@ -41,6 +45,7 @@ class Check:
     expect_status: int = 200
     expect_in_body: list[str] = field(default_factory=list)
     expect_not_in_body: list[str] = field(default_factory=list)
+    auth_required: bool = False
 
 
 @dataclass
@@ -138,22 +143,22 @@ CHECKS: list[Check] = [
           path="/api/v1/finance/pricing"),
     # v5 layer 9 — Delivery Factory
     Check(name="delivery_factory_status", method="GET",
-          path="/api/v1/delivery-factory/status"),
+          path="/api/v1/delivery-factory/status", auth_required=True),
     Check(name="delivery_factory_services", method="GET",
-          path="/api/v1/delivery-factory/services"),
+          path="/api/v1/delivery-factory/services", auth_required=True),
     # v5 layer 10 — Proof Ledger
     Check(name="proof_ledger_status", method="GET",
-          path="/api/v1/proof-ledger/status"),
+          path="/api/v1/proof-ledger/status", auth_required=True),
     # v5 layer 11 — GTM OS
     Check(name="gtm_status", method="GET",
-          path="/api/v1/gtm/status"),
+          path="/api/v1/gtm/status", auth_required=True),
     Check(name="gtm_content_calendar", method="GET",
-          path="/api/v1/gtm/content-calendar"),
+          path="/api/v1/gtm/content-calendar", auth_required=True),
     # v5 layer 12 — Security & Privacy
     Check(name="security_privacy_status", method="GET",
-          path="/api/v1/security-privacy/status"),
+          path="/api/v1/security-privacy/status", auth_required=True),
     Check(name="security_privacy_minimization", method="GET",
-          path="/api/v1/security-privacy/data-minimization"),
+          path="/api/v1/security-privacy/data-minimization", auth_required=True),
     # Phase I — founder aggregate dashboard
     Check(name="founder_dashboard", method="GET",
           path="/api/v1/founder/dashboard",
@@ -161,7 +166,7 @@ CHECKS: list[Check] = [
           # Hard rule: dashboard must NEVER report ALLOWED on a
           # clean production deploy. If it does, that's a security
           # incident — fail loud.
-          expect_not_in_body=['"ALLOWED"']),
+          expect_not_in_body=['"ALLOWED"'], auth_required=True),
 ]
 
 
@@ -170,6 +175,8 @@ def _do_request(base_url: str, check: Check, timeout: float) -> CheckResult:
     started = datetime.now(UTC)
     try:
         req = urllib.request.Request(url, method=check.method)
+        if SMOKE_API_KEY:
+            req.add_header("X-API-Key", SMOKE_API_KEY)
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             body = resp.read().decode("utf-8", errors="replace")
             status = resp.status
@@ -194,6 +201,22 @@ def _do_request(base_url: str, check: Check, timeout: float) -> CheckResult:
         )
 
     elapsed = (datetime.now(UTC) - started).total_seconds() * 1000
+
+    # A protected endpoint returning 401 to an unauthenticated probe is
+    # healthy: the app is up and the guardrail is enforced. Treat it as
+    # alive-but-unverified only when no API key was supplied; with a key
+    # we expect a real 200 plus the body assertions below.
+    if status == 401 and check.auth_required and not SMOKE_API_KEY:
+        return CheckResult(
+            name=check.name,
+            method=check.method,
+            path=check.path,
+            required=check.required,
+            status=status,
+            elapsed_ms=round(elapsed, 1),
+            ok=True,
+            detail="alive (401 auth-guarded; no key supplied, body not verified)",
+        )
 
     if status != check.expect_status:
         return CheckResult(

@@ -437,10 +437,10 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
                     f"💰 New Payment! {amount_sar:,.0f} SAR | {customer_name}"
                 )
                 if getattr(_settings, "whatsapp_allow_live_send", False):
-                    from integrations.whatsapp import send_whatsapp_message
-                    await send_whatsapp_message(
+                    from integrations.whatsapp import WhatsAppClient
+                    await WhatsAppClient().send_text(
                         to=getattr(_settings, "dealix_founder_phone", ""),
-                        message=msg,
+                        body=msg,
                     )
                 else:
                     log.info("founder_payment_alert_queued: %s", msg.replace("\n", " | "))
