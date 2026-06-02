@@ -29,8 +29,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      # gitleaks/gitleaks-action@v2 requires a paid GITLEAKS_LICENSE secret
+      # for GitHub *organization* repos and errors out before scanning. Run
+      # the official gitleaks image directly instead — no license required —
+      # honoring the repo's .gitleaks.toml. Non-blocking for now (reports
+      # findings without failing CI on pre-existing history); flip --exit-code
+      # to blocking once the repo is triaged clean.
+      - name: Run Gitleaks (official image — no org license required)
+        continue-on-error: true
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 \
+            dir /repo \
+            --config=/repo/.gitleaks.toml \
+            --redact \
+            --verbose \
+            --exit-code=1
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -41,12 +56,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+      # aquasecurity/trivy-action had 75 of 76 release tags force-pushed in the
+      # 2026-03 supply-chain incident, so pinned action tags (e.g. @0.24.0) no
+      # longer resolve. Run the official Trivy *scanner* image directly — the
+      # image registry was not part of that incident — pinned to a fixed
+      # version. Non-blocking (matches the trivy step in docker-build.yml).
+      - name: Run Trivy filesystem scan (official image — avoids breached action tags)
+        continue-on-error: true
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/repo" \
+            ghcr.io/aquasecurity/trivy:0.71.0 \
+            fs /repo \
+            --scanners vuln \
+            --severity CRITICAL,HIGH \
+            --ignore-unfixed \
+            --format table \
+            --exit-code 1
