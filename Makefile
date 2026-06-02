@@ -10,7 +10,8 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        agents-audit pr-triage
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +183,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Agent governance ───────────────────────────────────────────
+# Consolidate + audit the agent fleet. See docs/agents/ for the registry,
+# permission matrix, output contract, daily runbook, and policies.
+
+agents-audit: ## Audit the agent team (surfaces + Claude/Codex parity + governance docs + doctrine guards)
+	$(PYTHON) scripts/audit_agent_team.py
+
+pr-triage: ## Triage open PRs into actionable buckets (report-only; never merges)
+	$(PYTHON) scripts/triage_open_prs.py

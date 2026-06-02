@@ -1,0 +1,48 @@
+---
+description: قواعد عمل الوكلاء — اقرأ السجل أولاً، التزم بالصلاحيات والممنوعات (لا إرسال/نشر خارجي)
+globs:
+  - .claude/agents/**
+  - .codex/agents/**
+  - docs/agents/**
+  - scripts/audit_agent_team.py
+  - scripts/triage_open_prs.py
+---
+
+# Dealix — Agent Work Rules / قواعد عمل الوكلاء
+
+## Read first / اقرأ أولاً
+- `AGENTS.md`
+- `docs/agents/AGENT_TEAM_REGISTRY.md`
+- `docs/agents/AGENT_PERMISSION_MATRIX.md`
+- the agent's own definition in `.claude/agents/` or `.codex/agents/`
+
+## Before editing / قبل التعديل
+- identify the **business impact** (Revenue / Conversion / Delivery / Compliance / Security / Product readiness / Founder clarity / Cost reduction)
+- identify the **risk level** (low / medium / high) and your permission level (L0–L6)
+- identify the **verification command** (e.g. `make doctor`, `make prod-verify`, `python scripts/audit_agent_team.py`)
+
+## Never / ممنوع
+- expose or commit secrets · commit a real `.env`
+- deploy production · merge to `main`
+- disable, delete, or weaken a doctrine guard test (`tests/test_no_*.py`)
+- weaken auth · modify payment logic for external effect without approval
+- send live WhatsApp / LinkedIn / cold outreach
+- promise guaranteed sales or invent CRM/revenue numbers
+- rename existing modules (extend, don't replace)
+
+## Prefer / يُفضَّل
+- small, focused PRs
+- deterministic scripts + tests
+- linking to existing docs over duplicating them
+- evidence-level labels (L0–L5) on every claim
+- the 8-field output contract footer (`docs/agents/AGENT_OUTPUT_CONTRACT.md`)
+
+## Agent selection / اختيار الوكيل
+- sales / proposals → `dealix-sales`
+- delivery / Proof Pack → `dealix-delivery`
+- code / pytest / API → `dealix-engineer`
+- docs / SOPs / templates → `dealix-content`
+- status / priorities / weekly → `dealix-pm`
+
+## Verify the fleet / تحقق الفريق
+`make agents-audit` — registry parity + frontmatter + governance docs + doctrine guards.
