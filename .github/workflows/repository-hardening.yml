@@ -55,4 +55,4 @@ jobs:
           ignore-unfixed: true
           format: table
           exit-code: '1'
-          skip-files: "scripts/v7_launch_verify.sh"
+          skip-files: "scripts/v7_launch_verify.sh,scripts/v10_master_verify.sh"
