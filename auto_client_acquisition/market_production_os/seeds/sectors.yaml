@@ -1,0 +1,96 @@
+# Sector Intelligence seed — Saudi B2B sectors for Market Production OS.
+# Machine-readable companion to docs/market_production_os/03_SECTOR_INTELLIGENCE_OS_AR.md
+# first_offer values reference the canonical 5-rung ladder (see master doc §5).
+# Sources here are public/founder-supplied only. No scraping.
+version: 1
+sectors:
+  - key: marketing_agencies
+    name_ar: وكالات التسويق
+    pain: تضيع متابعة العملاء المحتملين بين الحملات والتقارير
+    decision_maker: المؤسس / مدير العمليات
+    buying_trigger: توظيف Account Manager أو إطلاق خدمة جديدة
+    first_offer: Free AI Ops Diagnostic
+    first_workflow: Follow-up Recovery
+    cold_email_angle: ترتيب متابعة الـ leads دون استبدال الفريق
+    do_not_target: [no_owner_reachable, requests_spam, requests_scraping]
+  - key: training_companies
+    name_ar: شركات التدريب
+    pain: تسجيلات وردود بطيئة على استفسارات الدورات
+    decision_maker: مدير المبيعات / المالك
+    buying_trigger: موسم تسجيل أو إطلاق برنامج
+    first_offer: 7-Day Revenue Intelligence Sprint
+    first_workflow: Lead response + follow-up
+    cold_email_angle: تسريع الرد على المهتمين بالدورات
+    do_not_target: [no_data_available, requests_guarantees]
+  - key: clinics
+    name_ar: العيادات والمراكز الطبية
+    pain: حجوزات ضائعة وعدم متابعة المرضى المحتملين
+    decision_maker: مدير المركز / المالك
+    buying_trigger: فرع جديد أو حملة موسمية
+    first_offer: Free AI Ops Diagnostic
+    first_workflow: Booking follow-up
+    cold_email_angle: تقليل الحجوزات الضائعة بمتابعة منظمة
+    do_not_target: [phi_sensitive_without_basis, requests_cold_whatsapp]
+  - key: real_estate_teams
+    name_ar: فرق العقار
+    pain: leads كثيرة بلا ترتيب أولويات أو متابعة
+    decision_maker: مدير المبيعات / المالك
+    buying_trigger: مشروع/إطلاق وحدات جديد
+    first_offer: Data-to-Revenue Pack
+    first_workflow: Lead scoring + follow-up
+    cold_email_angle: ترتيب الـ leads حسب الجدية والمتابعة
+    do_not_target: [no_crm_export, requests_purchased_list]
+  - key: recruitment_agencies
+    name_ar: وكالات التوظيف
+    pain: فوضى في تتبع العملاء والمرشحين
+    decision_maker: المالك / مدير الحساب
+    buying_trigger: عقد توظيف كبير أو توسع
+    first_offer: 7-Day Revenue Intelligence Sprint
+    first_workflow: Pipeline + reporting cleanup
+    cold_email_angle: تنظيم pipeline العملاء دون استبدال الفريق
+    do_not_target: [no_owner_reachable]
+  - key: professional_services
+    name_ar: الخدمات المهنية (محاسبة/استشارات/قانون)
+    pain: متابعة عروض الأسعار والعملاء الجدد ضعيفة
+    decision_maker: الشريك / المالك
+    buying_trigger: نمو الطلب أو شريك جديد
+    first_offer: Free AI Ops Diagnostic
+    first_workflow: Proposal follow-up
+    cold_email_angle: متابعة منظمة لعروض الأسعار
+    do_not_target: [confidential_data_without_basis]
+  - key: education_providers
+    name_ar: مزودو التعليم
+    pain: استفسارات قبول بطيئة المتابعة
+    decision_maker: مدير القبول / المالك
+    buying_trigger: موسم القبول
+    first_offer: 7-Day Revenue Intelligence Sprint
+    first_workflow: Admissions follow-up
+    cold_email_angle: تسريع متابعة طلبات الالتحاق
+    do_not_target: [minors_data_without_basis]
+  - key: restaurant_groups
+    name_ar: مجموعات المطاعم
+    pain: طلبات شراكة/فعاليات بلا متابعة
+    decision_maker: مدير التطوير / المالك
+    buying_trigger: فرع جديد أو خدمة catering
+    first_offer: Free AI Ops Diagnostic
+    first_workflow: B2B inquiry follow-up
+    cold_email_angle: متابعة طلبات الشراكات والفعاليات
+    do_not_target: [b2c_only_no_b2b]
+  - key: logistics_companies
+    name_ar: شركات اللوجستيات
+    pain: عروض أسعار وعملاء جدد بلا متابعة منظمة
+    decision_maker: مدير المبيعات / العمليات
+    buying_trigger: توسع تغطية أو خدمة جديدة
+    first_offer: Data-to-Revenue Pack
+    first_workflow: Quote follow-up + reporting
+    cold_email_angle: ترتيب متابعة عروض الأسعار
+    do_not_target: [no_data_available]
+  - key: local_saas
+    name_ar: شركات SaaS/خدمات محلية
+    pain: تجارب مجانية لا تتحول، ومتابعة ضعيفة
+    decision_maker: المؤسس / مدير النمو
+    buying_trigger: إطلاق ميزة أو جولة نمو
+    first_offer: Managed Revenue Ops
+    first_workflow: Trial-to-paid follow-up
+    cold_email_angle: رفع تحويل التجارب المجانية بمتابعة محكومة
+    do_not_target: [no_owner_reachable, requests_automation_spam]

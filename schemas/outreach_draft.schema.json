@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.sa/schemas/outreach_draft.schema.json",
+  "title": "OutreachDraft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "draft_id",
+    "prospect_id",
+    "company",
+    "offer",
+    "subject",
+    "body",
+    "send_status",
+    "governance_decision"
+  ],
+  "properties": {
+    "draft_id": {
+      "type": "string"
+    },
+    "prospect_id": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "sector": {
+      "type": "string"
+    },
+    "recipient_role": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "description": "Draft kind",
+      "enum": [
+        "first_touch",
+        "follow_up_1",
+        "follow_up_2",
+        "proposal_intro",
+        "close_loop"
+      ]
+    },
+    "pain_hypothesis": {
+      "type": "string"
+    },
+    "personalization_note": {
+      "type": "string"
+    },
+    "personalization_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4,
+      "description": "P0..P4; below P1 is rejected"
+    },
+    "offer": {
+      "type": "string",
+      "description": "Must map to exactly one catalog offer"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "cta": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "ar",
+        "en"
+      ]
+    },
+    "evidence_level": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "L0..L5"
+    },
+    "unsubscribe_included": {
+      "type": "boolean"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "compliance_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "passed",
+        "failed"
+      ]
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "rewrite",
+        "nurture",
+        "do_not_contact"
+      ]
+    },
+    "send_status": {
+      "type": "string",
+      "description": "Factory always sets 'draft'",
+      "enum": [
+        "draft",
+        "queued",
+        "sent",
+        "suppressed",
+        "bounced"
+      ]
+    },
+    "governance_decision": {
+      "type": "string",
+      "description": "Set by the quality gate; never empty/PENDING after gating"
+    },
+    "gate_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO-8601"
+    }
+  }
+}

@@ -184,6 +184,16 @@ bash scripts/dealix_local_stack_verify.sh --skip-docker --skip-frontend   # ال
 
 استراتيجية التشغيل الكاملة: `docs/strategic/DEALIX_MASTER_OPERATING_MODEL_AR.md`
 
+### Market Production OS (governed outbound — 250 drafts/day, 0 auto-sends)
+
+- **المرجع الرئيسي:** [docs/market_production_os/00_MARKET_PRODUCTION_OS_MASTER_AR.md](docs/market_production_os/00_MARKET_PRODUCTION_OS_MASTER_AR.md) · فهرس: [docs/market_production_os/README.md](docs/market_production_os/README.md)
+- **القاعدة الصارمة:** `DAILY_DRAFT_TARGET=250` و `MAX_AUTO_SENDS=0`. المصنع يُنتج مسودات فقط (`send_status="draft"`)؛ الإرسال بموافقة المؤسس + تدرّج الإرسال فقط. لا scraping · لا WhatsApp بارد · لا أتمتة LinkedIn.
+- **الوحدة:** `auto_client_acquisition/market_production_os/` — تُركّب الأنوية الموجودة (`governance_os.policy_check_draft` + `governance_os.audit_claim_safety` + `revenue_os.anti_waste.validate_pipeline_step`). لا تكرار.
+- **المخططات:** `schemas/*.schema.json` (يولّدها `python3 scripts/generate_market_production_schemas.py`).
+- **التشغيل:** `python3 scripts/run_gtm_draft_day.py --dry-run` · بوابة CI: `python3 scripts/gtm_quality_gate.py` (تطبع `GTM_QUALITY_GATE=PASS|FAIL`) · تسجيل الوكلاء بهوية: `python3 scripts/register_market_production_agents.py`.
+- **CI:** `.github/workflows/gtm-quality-gate.yml` · `gtm-draft-day.yml` · `weekly-gtm-review.yml`.
+- **حارس العقيدة الجديد:** `tests/test_no_auto_send_market_production.py` (المصنع لا يُرسل تلقائيًا أبدًا).
+
 ### Hello world test
 
 Submit a lead to the governed pipeline:
