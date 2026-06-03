@@ -105,6 +105,8 @@ dumps/
 !data/workflows/
 # Demo data — synthetic only, no PII, committed for landing page + CI demos
 !data/demo/
+# Delivery acceptance data — synthetic examples only, no customer PII
+!data/delivery/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
 

@@ -1,0 +1,81 @@
+name: Delivery Acceptance Check
+
+on:
+  push:
+    paths:
+      - "data/delivery/**"
+      - "reports/delivery/**"
+  workflow_dispatch:
+    inputs:
+      client_name:
+        description: "Client name to check (leave blank to check all clients in JSONL)"
+        required: false
+        default: ""
+
+jobs:
+  delivery-check:
+    name: Run delivery acceptance checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run check for specific client (workflow_dispatch with client_name)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.client_name != '' }}
+        run: |
+          python scripts/checks/check_client_delivery_acceptance.py \
+            --client "${{ inputs.client_name }}"
+
+      - name: Run check for all clients in JSONL (push or workflow_dispatch without client_name)
+        if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.client_name == '') }}
+        run: |
+          python - <<'EOF'
+          import json
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          acceptance_file = Path("data/delivery/client_acceptance.jsonl")
+          if not acceptance_file.exists():
+              print("data/delivery/client_acceptance.jsonl not found — nothing to check.")
+              sys.exit(0)
+
+          clients = []
+          seen = set()
+          with acceptance_file.open(encoding="utf-8") as fh:
+              for line in fh:
+                  stripped = line.strip()
+                  if not stripped:
+                      continue
+                  try:
+                      rec = json.loads(stripped)
+                      name = rec.get("client_name", "")
+                      if name and name not in seen:
+                          clients.append(name)
+                          seen.add(name)
+                  except json.JSONDecodeError:
+                      pass
+
+          if not clients:
+              print("No clients found in client_acceptance.jsonl.")
+              sys.exit(0)
+
+          print(f"Checking {len(clients)} client(s): {', '.join(clients)}")
+
+          overall_exit = 0
+          for client in clients:
+              result = subprocess.run(
+                  ["python", "scripts/checks/check_client_delivery_acceptance.py", "--client", client],
+                  check=False,
+              )
+              if result.returncode != 0:
+                  overall_exit = 1
+
+          sys.exit(overall_exit)
+          EOF

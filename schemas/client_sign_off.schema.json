@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "client_sign_off",
+  "title": "Client Sign-Off",
+  "type": "object",
+  "required": [
+    "client_id",
+    "client_name",
+    "system",
+    "sprint",
+    "version",
+    "delivery_date",
+    "delivered_outputs",
+    "acceptance_criteria_met",
+    "decision",
+    "approval_method",
+    "approval_source",
+    "approval_summary",
+    "approval_date",
+    "signed_by",
+    "sign_off_date",
+    "created_at"
+  ],
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "client_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "system": {
+      "type": "string",
+      "enum": [
+        "revenue_operating_system",
+        "executive_command_os",
+        "followup_recovery_os",
+        "whatsapp_client_os",
+        "proposal_proof_os"
+      ]
+    },
+    "sprint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "delivery_date": {
+      "type": "string"
+    },
+    "delivered_outputs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "acceptance_criteria_met": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["criterion", "met"],
+        "properties": {
+          "criterion": { "type": "string" },
+          "met": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["accepted", "accepted_with_minor_comments", "needs_revision"]
+    },
+    "revision_scope": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "approval_method": {
+      "type": "string",
+      "enum": ["email", "whatsapp", "meeting_note", "form"]
+    },
+    "approval_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_summary": {
+      "type": "string"
+    },
+    "approval_date": {
+      "type": "string"
+    },
+    "signed_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sign_off_date": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "if": {
+    "properties": { "decision": { "const": "needs_revision" } },
+    "required": ["decision"]
+  },
+  "then": {
+    "required": ["revision_scope"]
+  },
+  "additionalProperties": false
+}
