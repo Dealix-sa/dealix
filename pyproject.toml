@@ -169,6 +169,11 @@ addopts = [
     "-ra",
     "--strict-markers",
     "--strict-config",
+    # Hard per-test ceiling: turns an environment-specific hang (e.g. a blocked
+    # outbound call in CI) into a fast, deterministic failure instead of stalling
+    # the whole suite until the job times out and the run is cancelled.
+    "--timeout=120",
+    "--timeout-method=signal",
 ]
 markers = [
     "unit: unit tests",
