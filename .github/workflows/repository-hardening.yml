@@ -30,9 +30,21 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.27.2/gitleaks_8.27.2_linux_x64.tar.gz | tar -xz
-          ./gitleaks detect --exit-code 1
+          # On pull requests, scan only the commits the PR introduces (the
+          # gate enforces "this change adds no secret"). Push/schedule runs
+          # scan full history. Pre-existing findings in history are triaged
+          # separately, not re-litigated on every PR.
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            ./gitleaks detect --exit-code 1 --log-opts="${BASE_SHA}..${HEAD_SHA}"
+          else
+            ./gitleaks detect --exit-code 1
+          fi
 
   filesystem-scan:
     name: Trivy filesystem scan
