@@ -1,0 +1,1 @@
+{"client_id": "etc-001", "client_name": "Example Training Co", "system": "followup_recovery_os", "scores": {"required_inputs": 15, "deliverables": 25, "acceptance_criteria": 25, "client_uat": 15, "sign_off": 10, "weekly_value_report": 10}, "total_score": 100, "status": "delivered_clean", "computed_at": "2026-06-01T17:00:00Z"}

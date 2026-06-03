@@ -334,6 +334,247 @@ def menu() -> None:
             demo()
 
 
+# ── Client Delivery Acceptance commands ───────────────────────────────────────
+
+def _load_delivery_jsonl(filename: str) -> list[dict]:
+    """Load records from data/delivery/<filename> relative to repo root."""
+    import json
+
+    base = Path(__file__).resolve().parent
+    path = base / "data" / "delivery" / filename
+    if not path.exists():
+        return []
+    records: list[dict] = []
+    with path.open(encoding="utf-8") as fh:
+        for line in fh:
+            stripped = line.strip()
+            if stripped:
+                try:
+                    records.append(json.loads(stripped))
+                except json.JSONDecodeError:
+                    pass
+    return records
+
+
+def _find_delivery_record(records: list[dict], client: str) -> dict | None:
+    needle = client.strip().lower()
+    for rec in records:
+        if rec.get("client_name", "").strip().lower() == needle:
+            return rec
+    return None
+
+
+@app.command("delivery-acceptance")
+def delivery_acceptance(
+    client: Annotated[str, typer.Argument(help="Client name")],
+) -> None:
+    """Show delivery acceptance status for a client."""
+    _banner()
+    records = _load_delivery_jsonl("client_acceptance.jsonl")
+    rec = _find_delivery_record(records, client)
+    if rec is None:
+        console.print(f"[red]No delivery acceptance record found for client '{client}'.[/red]")
+        raise typer.Exit(code=1)
+
+    table = Table(title=f"Delivery Acceptance — {rec['client_name']}", show_lines=True)
+    table.add_column("Field", style="cyan")
+    table.add_column("Value")
+
+    table.add_row("Client ID", rec.get("client_id", "—"))
+    table.add_row("System", rec.get("system", "—"))
+    table.add_row("Sprint", rec.get("sprint", "—"))
+    table.add_row("Delivery Owner", rec.get("delivery_owner", "—"))
+    table.add_row("Client Reviewer", rec.get("client_reviewer", "—"))
+    table.add_row("Approval Method", rec.get("approval_method", "—"))
+    table.add_row("Created At", rec.get("created_at", "—"))
+
+    scope_items = rec.get("scope", [])
+    table.add_row("Scope", "\n".join(f"- {s}" for s in scope_items) if scope_items else "—")
+
+    deliverables = rec.get("deliverables", [])
+    deliv_text = "\n".join(
+        f"- {d.get('name','?')} ({d.get('version','?')}) [{d.get('status','?')}]"
+        for d in deliverables
+    )
+    table.add_row("Deliverables", deliv_text or "—")
+
+    criteria = rec.get("acceptance_criteria", [])
+    crit_text = "\n".join(
+        f"[{'green' if c.get('met') else 'red'}]{'OK' if c.get('met') else 'NOT MET'}[/] {c.get('criterion','?')}"
+        for c in criteria
+    )
+    table.add_row("Acceptance Criteria", crit_text or "—")
+
+    inputs = rec.get("required_inputs", [])
+    inputs_text = "\n".join(
+        f"[{'green' if i.get('received') else 'yellow'}]{'received' if i.get('received') else 'pending'}[/] {i.get('name','?')}"
+        for i in inputs
+    )
+    table.add_row("Required Inputs", inputs_text or "—")
+
+    console.print(table)
+
+
+@app.command("delivery-health")
+def delivery_health(
+    client: Annotated[str, typer.Argument(help="Client name")],
+) -> None:
+    """Show delivery health score for a client."""
+    _banner()
+    records = _load_delivery_jsonl("delivery_health_scores.jsonl")
+    rec = _find_delivery_record(records, client)
+    if rec is None:
+        console.print(f"[red]No delivery health score found for client '{client}'.[/red]")
+        raise typer.Exit(code=1)
+
+    table = Table(title=f"Delivery Health Score — {rec['client_name']}", show_lines=True)
+    table.add_column("Component", style="cyan")
+    table.add_column("Score", justify="right")
+
+    scores: dict = rec.get("scores", {})
+    maxima = {
+        "required_inputs": 15,
+        "deliverables": 25,
+        "acceptance_criteria": 25,
+        "client_uat": 15,
+        "sign_off": 10,
+        "weekly_value_report": 10,
+    }
+    for key, maximum in maxima.items():
+        val = scores.get(key, 0)
+        color = "green" if val >= maximum else ("yellow" if val > 0 else "red")
+        table.add_row(key.replace("_", " ").title(), f"[{color}]{val}/{maximum}[/{color}]")
+
+    total = rec.get("total_score", 0)
+    status = rec.get("status", "—")
+    total_color = "green" if total >= 90 else ("yellow" if total >= 70 else "red")
+    table.add_row("[bold]Total[/bold]", f"[bold {total_color}]{total}/100[/bold {total_color}]")
+    table.add_row("Status", status)
+    table.add_row("Computed At", rec.get("computed_at", "—"))
+
+    console.print(table)
+
+
+@app.command("uat-report")
+def uat_report(
+    client: Annotated[str, typer.Argument(help="Client name")],
+) -> None:
+    """Show UAT results for a client."""
+    _banner()
+    records = _load_delivery_jsonl("client_uat_results.jsonl")
+    rec = _find_delivery_record(records, client)
+    if rec is None:
+        console.print(f"[red]No UAT result found for client '{client}'.[/red]")
+        raise typer.Exit(code=1)
+
+    overall = rec.get("overall_result", "—")
+    overall_color = (
+        "green" if overall == "passed"
+        else ("yellow" if overall == "passed_with_notes" else "red")
+    )
+
+    console.print(
+        Panel.fit(
+            f"[bold]UAT Report — {rec['client_name']}[/bold]\n"
+            f"System: {rec.get('system', '—')}  |  Date: {rec.get('uat_date', '—')}\n"
+            f"Reviewer: {rec.get('reviewer_name', '—')}\n"
+            f"Overall result: [{overall_color}]{overall}[/{overall_color}]",
+            border_style=overall_color,
+        )
+    )
+
+    scenarios: list[dict] = rec.get("scenarios", [])
+    if scenarios:
+        table = Table(title="UAT Scenarios", show_lines=True)
+        table.add_column("ID", style="cyan", width=10)
+        table.add_column("Given", width=28)
+        table.add_column("When", width=28)
+        table.add_column("Then Expected", width=28)
+        table.add_column("Passed", justify="center", width=8)
+        table.add_column("Notes", width=24)
+
+        for s in scenarios:
+            passed_val = s.get("passed", False)
+            passed_cell = "[green]Yes[/green]" if passed_val else "[red]No[/red]"
+            table.add_row(
+                s.get("scenario_id", "—"),
+                s.get("given", "—"),
+                s.get("when_action", "—"),
+                s.get("then_expected", "—"),
+                passed_cell,
+                s.get("notes", ""),
+            )
+        console.print(table)
+
+    revision_items: list[str] = rec.get("revision_items", [])
+    if revision_items:
+        console.print("[yellow]Revision items:[/yellow]")
+        for item in revision_items:
+            console.print(f"  - {item}")
+
+
+@app.command("signoff-report")
+def signoff_report(
+    client: Annotated[str, typer.Argument(help="Client name")],
+) -> None:
+    """Show sign-off status for a client."""
+    _banner()
+    records = _load_delivery_jsonl("client_sign_offs.jsonl")
+    rec = _find_delivery_record(records, client)
+    if rec is None:
+        console.print(f"[red]No sign-off record found for client '{client}'.[/red]")
+        raise typer.Exit(code=1)
+
+    decision = rec.get("decision", "—")
+    decision_color = (
+        "green" if decision == "accepted"
+        else ("yellow" if decision == "accepted_with_minor_comments" else "red")
+    )
+
+    table = Table(title=f"Sign-Off Report — {rec['client_name']}", show_lines=True)
+    table.add_column("Field", style="cyan")
+    table.add_column("Value")
+
+    table.add_row("Client ID", rec.get("client_id", "—"))
+    table.add_row("System", rec.get("system", "—"))
+    table.add_row("Sprint", rec.get("sprint", "—"))
+    table.add_row("Version", rec.get("version", "—"))
+    table.add_row("Delivery Date", rec.get("delivery_date", "—"))
+    table.add_row(
+        "Decision",
+        f"[{decision_color}]{decision}[/{decision_color}]",
+    )
+    table.add_row("Approval Method", rec.get("approval_method", "—"))
+    table.add_row("Approval Source", rec.get("approval_source", "—"))
+    table.add_row("Approval Summary", rec.get("approval_summary", "—"))
+    table.add_row("Approval Date", rec.get("approval_date", "—"))
+    table.add_row("Signed By", rec.get("signed_by", "—"))
+    table.add_row("Sign-Off Date", rec.get("sign_off_date", "—"))
+    table.add_row("Created At", rec.get("created_at", "—"))
+
+    delivered = rec.get("delivered_outputs", [])
+    table.add_row(
+        "Delivered Outputs",
+        "\n".join(f"- {o}" for o in delivered) if delivered else "—",
+    )
+
+    criteria = rec.get("acceptance_criteria_met", [])
+    crit_text = "\n".join(
+        f"[{'green' if c.get('met') else 'red'}]{'OK' if c.get('met') else 'NOT MET'}[/] {c.get('criterion','?')}"
+        for c in criteria
+    )
+    table.add_row("Acceptance Criteria Met", crit_text or "—")
+
+    revision_scope: list[str] = rec.get("revision_scope", [])
+    if revision_scope:
+        table.add_row(
+            "Revision Scope",
+            "\n".join(f"- {r}" for r in revision_scope),
+        )
+
+    console.print(table)
+
+
 if __name__ == "__main__":
     # Default to menu if no args
     import sys
