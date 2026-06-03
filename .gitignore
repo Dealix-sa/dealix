@@ -114,6 +114,9 @@ data/whatsapp/*.jsonl
 # Revenue Execution OS — committed examples only (live data goes to var/, ignored)
 !data/distribution/
 !data/drafts/
+# Market Production OS — synthetic sample/seed data only, no PII, committed for CI gate
+!data/gtm/
+!data/gtm/**
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
