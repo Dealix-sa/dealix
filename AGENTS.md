@@ -10,6 +10,12 @@ This file is the primary repo-specific guide for AI coding agents working in `de
 ### Token Optimization
 See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings), CLAUDE.md hygiene, session management, model routing (Haiku/Sonnet/Opus), MCP discipline, subagents, hooks, prompt templates, file handling, monitoring, git hygiene, and env config. Run `bash token-optimizer/12-environment-config/apply-all.sh` to apply all settings.
 
+### Agent governance
+The canonical control room for the agent fleet is [`docs/agents/`](docs/agents/). Start with [`docs/agents/README.md`](docs/agents/README.md):
+- [`AGENT_TEAM_REGISTRY.md`](docs/agents/AGENT_TEAM_REGISTRY.md) — the 5 real sub-agents (`dealix-pm/sales/delivery/engineer/content`), the 6 agent surfaces, and the 11 non-negotiables (with their guard tests).
+- [`AGENT_PERMISSION_MATRIX.md`](docs/agents/AGENT_PERMISSION_MATRIX.md) (L0–L6) · [`AGENT_OUTPUT_CONTRACT.md`](docs/agents/AGENT_OUTPUT_CONTRACT.md) · [`AGENT_DAILY_RUNBOOK.md`](docs/agents/AGENT_DAILY_RUNBOOK.md) · [`AGENT_SECURITY_POLICY.md`](docs/agents/AGENT_SECURITY_POLICY.md) · [`TOKEN_BUDGET_POLICY.md`](docs/agents/TOKEN_BUDGET_POLICY.md) · [`PR_TRIAGE_POLICY.md`](docs/agents/PR_TRIAGE_POLICY.md).
+- Verify the fleet is governed: `make agents-audit` (CI runs `.github/workflows/agent-team-audit.yml` on every PR). Triage open PRs: `make pr-triage`.
+
 ### Repo anatomy
 - `api/` — FastAPI app entry, dependencies, middleware, 120+ routers, and schema definitions.
 - `api/routers/commercial.py` — 13 commercial chain endpoints (diagnostic→pilot→proof→payment→upsell). Skill: `@token-optimizer/02-claude-md/skills/commercial.md`
@@ -91,6 +97,18 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - **GTM ops (admin key):** `/[locale]/ops` (hub) · `/ops/founder` · `/ops/war-room` · `/ops/marketing` · `/ops/sales` · `/ops/partners` · `/ops/evidence` · `/ops/approvals` — APIs: `GET /api/v1/ops-autopilot/war-room/today-pack` · `POST .../marketing/queue-approval` · `GET .../marketing/social-today` (no live LinkedIn/WhatsApp send)
 - **UI:** `/[locale]/business-now` (8 pillars + commercial strategy — complements `/cloud` for founder decisions)
 - **Optional UI env:** `NEXT_PUBLIC_DEALIX_ADMIN_API_KEY` for operator-signals block locally
+
+### WhatsApp Client OS (client-facing, governed)
+
+A menu-driven **business workflow assistant** for clients over WhatsApp — NOT a general-purpose chatbot, and distinct from the internal founder-only `auto_client_acquisition/whatsapp_decision_bot`.
+
+- **Module:** [`auto_client_acquisition/whatsapp_client_os/`](auto_client_acquisition/whatsapp_client_os/) — `engine` (orchestrator) · `intent_router` (deterministic) · `conversation_state` (FSM) · `assessment` (10-axis readiness scan → catalog-tied recommendation) · `permission_levels`/`permission_guard` (L0–L5) · `whatsapp_policy_guard` (secrets-in-chat + unsafe-request block, wraps `channel_policy_gateway` + `safe_send_gateway.doctrine`) · `action_card_builder` · `handoff_router` · `client_profile_store` (JSONL ledgers) · `metrics` · `templates`.
+- **API (`/api/v1/whatsapp-client-os`):** `POST /message` · `POST /assessment/start` · `POST /assessment/answer` · `GET /assessment/{id}/report` · `GET /assessments` · `GET /sessions` · `GET /action-cards` · `POST /handoff/human` · `GET /metrics` · `GET /permissions/levels` · `GET /templates`.
+- **Data:** `data/whatsapp/templates.yaml` (14 keys) · `data/whatsapp/assessment_questions.yaml` (10 axes). Runtime ledgers `data/whatsapp/*.jsonl` are gitignored (client data).
+- **Schemas:** `dealix/contracts/schemas/whatsapp_*.schema.json` + `client_*.schema.json` — regenerate with `python3 scripts/export_whatsapp_client_os_schemas.py`.
+- **UI:** `/[locale]/ops/whatsapp` (+ `/sessions` · `/action-cards` · `/assessments`).
+- **Verify:** `python3 scripts/whatsapp_client_os_verify.py` → prints `DEALIX_WHATSAPP_CLIENT_OS_VERDICT=PASS|FAIL`. Reports: `python3 scripts/whatsapp_client_os_report.py` → `reports/whatsapp/`.
+- **Hard rules (tested):** no secrets in chat (secure portal links) · no cold WhatsApp/blasts/scraping/LinkedIn-automation · human approval for external sends · human handoff for ambiguity/sensitive-data/pricing/contracts/complaints · every recommendation tied to `service_catalog` + evidence level. Docs: [docs/whatsapp/](docs/whatsapp/).
 
 ### Global AI transformation (CEO / operating spine)
 
@@ -183,6 +201,17 @@ bash scripts/dealix_local_stack_verify.sh --skip-docker --skip-frontend   # ال
 - مكينة ليدز سعودية: `docs/ops/SAUDI_LEAD_MACHINE_AR.md`؛ بذرة YAML + `python3 scripts/import_seed_leads.py --dry-run`؛ دفعة API: `POST /api/v1/leads/batch`.
 
 استراتيجية التشغيل الكاملة: `docs/strategic/DEALIX_MASTER_OPERATING_MODEL_AR.md`
+
+### Revenue Execution OS (distribution — approval-first)
+
+طبقة تنفيذ الإيراد تحوّل المؤهَّل إلى سلسلة متتبَّعة: qualify → draft (quality-gated) → follow-up → proposal → proof → payment handoff → delivery handoff → renewal → win/loss → metrics. **لا توجد قدرة إرسال خارجي ولا شحن في v1.**
+
+- الوحدة: [`auto_client_acquisition/distribution_os/`](auto_client_acquisition/distribution_os/) — تعيد استخدام `governance_os`/`proof_os`/`sales_os`/`payment_ops` والكتالوج القائم (`autonomous_growth/product_catalog.py`) — **بدون اختراع أسعار**.
+- API: `/api/v1/distribution/*` ([`api/routers/distribution.py`](api/routers/distribution.py)) — كل استجابة فيها `governance_decision`؛ لا مسار send/charge.
+- يومي: `make distribution-day` · `make draft-quality` · `make distribution-metrics` → `reports/distribution/*.md`.
+- مخططات: [`schemas/`](schemas/) · بوابة أمن الوكلاء: `python scripts/agent_security_gate.py`.
+- فهرس البناء + الخارطة + فريق الوكلاء: [`docs/distribution/REVENUE_EXECUTION_OS_BUILD_AR.md`](docs/distribution/REVENUE_EXECUTION_OS_BUILD_AR.md) · واجهة المؤسس (Spec): [`docs/distribution/FOUNDER_REVENUE_CONTROL_ROOM_AR.md`](docs/distribution/FOUNDER_REVENUE_CONTROL_ROOM_AR.md).
+- عقيدة الطبقة مفروضة باختبارات: `tests/test_distribution_os_doctrine.py` + `tests/test_distribution_os_*.py`.
 
 ### Hello world test
 

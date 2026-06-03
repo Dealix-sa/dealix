@@ -1,0 +1,61 @@
+{
+  "name": "Dealix — Distribution Lead Intake (draft-only)",
+  "active": false,
+  "_comment": "Reference blueprint. active=false on purpose. n8n is allowed ONLY for intake, reminders, booking-prep, CRM sync, and paid-event ingestion — never for the AI to send outreach, never cold WhatsApp/LinkedIn, never scraping. Import into n8n, set your own credentials, keep it inactive until reviewed.",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "dealix-lead-intake",
+        "responseMode": "lastNode"
+      },
+      "name": "Lead Intake Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.DEALIX_API_BASE }}/api/v1/distribution/prospects",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-Admin-API-Key", "value": "={{ $env.DEALIX_ADMIN_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ company: $json.company, sector: $json.sector, source: 'n8n_intake', pain_hypothesis: $json.pain_hypothesis, offer_angle: $json.offer_angle, preferred_channel: $json.preferred_channel || 'email', risk: 'medium' }) }}"
+      },
+      "name": "Create Prospect (draft-only)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "note", "value": "Prospect created. Draft + outreach stay pending founder approval in Dealix. No message is sent by n8n." }
+          ]
+        }
+      },
+      "name": "Mark For Founder Review",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [800, 300]
+    }
+  ],
+  "connections": {
+    "Lead Intake Webhook": {
+      "main": [[{ "node": "Create Prospect (draft-only)", "type": "main", "index": 0 }]]
+    },
+    "Create Prospect (draft-only)": {
+      "main": [[{ "node": "Mark For Founder Review", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {},
+  "tags": ["dealix", "distribution", "draft-only"]
+}

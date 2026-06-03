@@ -107,6 +107,16 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# WhatsApp Client OS — canonical config (templates + assessment questions).
+# The runtime JSONL ledgers below stay ignored (they may hold client data).
+!data/whatsapp/
+data/whatsapp/*.jsonl
+# Revenue Execution OS — committed examples only (live data goes to var/, ignored)
+!data/distribution/
+!data/drafts/
+# Market Production OS — synthetic sample/seed data only, no PII, committed for CI gate
+!data/gtm/
+!data/gtm/**
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -324,3 +334,9 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Generated agent-governance reports (keep the directories, ignore the artifacts)
+reports/agents/*
+!reports/agents/.gitkeep
+reports/pr_triage/*
+!reports/pr_triage/.gitkeep

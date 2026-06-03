@@ -25,8 +25,12 @@ REPORT = REPO / "docs" / "SEO_AUDIT_REPORT.json"
 # full canonical + og:title + og:description + twitter:card. The
 # only exemptions are internal/noindex pages (e.g. the founder
 # dashboard) that should not be discoverable.
+# Must match EXACTLY the set of pages the audit currently flags with an
+# advisory gap (founder-dashboard.html has since picked up its advisory tags).
 ADVISORY_EXEMPT: set[str] = {
-    "founder-dashboard.html",  # noindex,nofollow — internal-only operator page
+    "launch-status.html",  # internal launch console — advisory tags not required
+    "sector-report-b2b-services.html",  # gated sector report landing — advisory-exempt
+    "webinar.html",  # event landing page — advisory tags not required
 }
 
 

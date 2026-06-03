@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/draft.schema.json",
+  "title": "Draft",
+  "description": "An approval-first outreach draft. No external send capability exists in v1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "draft_type", "channel", "status", "governance_status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^draft_[a-f0-9]+$" },
+    "prospect_id": { "type": "string" },
+    "draft_type": {
+      "type": "string",
+      "enum": ["outreach_first", "outreach_followup_1", "outreach_followup_2", "breakup", "discovery_invite", "diagnostic_summary", "proposal_intro", "proof_pack_intro", "payment_followup", "onboarding_message", "renewal_upsell"]
+    },
+    "channel": { "type": "string", "enum": ["email", "whatsapp", "linkedin", "phone", "proposal"] },
+    "locale": { "type": "string", "enum": ["ar", "en"] },
+    "subject": { "type": "string" },
+    "body": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["generated", "pending_approval", "approved", "rejected", "needs_edit", "copied_manually", "sent_via_integration", "replied", "archived"]
+    },
+    "governance_status": {
+      "type": "string",
+      "enum": ["pending_approval", "needs_edit", "blocked"],
+      "description": "Set by the quality gate; a blocked or needs_edit draft can never be approved."
+    },
+    "quality_issues": { "type": "array", "items": { "type": "string" } },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "product_id": { "type": "string" },
+    "created_at": { "type": "string" }
+  }
+}

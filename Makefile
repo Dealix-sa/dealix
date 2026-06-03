@@ -10,7 +10,8 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        distribution-day draft-quality distribution-metrics agents-audit pr-triage
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -148,6 +149,19 @@ clean: ## Remove build artifacts, caches
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
 
+# ── Distribution / Revenue Execution OS ────────────────────────
+# Approval-first revenue execution. All read-only or draft-only — none of
+# these send anything externally or charge a customer.
+
+distribution-day: ## Founder morning command report (pending drafts, due follow-ups, queues)
+	$(PYTHON) scripts/distribution_day.py
+
+draft-quality: ## Draft Quality Gate — fail on guaranteed-outcome / forbidden-channel drafts
+	$(PYTHON) scripts/check_draft_quality.py
+
+distribution-metrics: ## Write the daily + weekly distribution KPI snapshot
+	$(PYTHON) scripts/distribution_metrics.py
+
 # ── v5 founder CLIs ────────────────────────────────────────────
 # These wrap the read-only Dealix v5 founder tooling. Each is safe
 # to run any time — none of them write to production or send anything.
@@ -182,3 +196,13 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Agent governance ───────────────────────────────────────────
+# Consolidate + audit the agent fleet. See docs/agents/ for the registry,
+# permission matrix, output contract, daily runbook, and policies.
+
+agents-audit: ## Audit the agent team (surfaces + Claude/Codex parity + governance docs + doctrine guards)
+	$(PYTHON) scripts/audit_agent_team.py
+
+pr-triage: ## Triage open PRs into actionable buckets (report-only; never merges)
+	$(PYTHON) scripts/triage_open_prs.py
