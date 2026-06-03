@@ -41,5 +41,5 @@ jobs:
 
       - name: Gate scanner self-test
         run: |
-          pip install pytest
+          pip install pytest pytest-asyncio httpx
           pytest tests/test_agent_security_gate.py -q --no-cov
