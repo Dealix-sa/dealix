@@ -51,8 +51,11 @@ paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    # Test files use synthetic/fake tokens to verify redaction and scanner logic.
+    '''tests/.*''',
     '''docs/.*\.md$''',
+    # Verify scripts contain grep *patterns* for secrets, not actual secrets.
+    '''scripts/v\d+.*\.sh$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
 
