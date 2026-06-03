@@ -1,0 +1,178 @@
+{
+  "additionalProperties": false,
+  "description": "A single draft-only outreach artifact awaiting founder approval.",
+  "properties": {
+    "draft_id": {
+      "title": "Draft Id",
+      "type": "string"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "prospect_ref": {
+      "default": "",
+      "title": "Prospect Ref",
+      "type": "string"
+    },
+    "company_label": {
+      "default": "",
+      "title": "Company Label",
+      "type": "string"
+    },
+    "sector": {
+      "default": "",
+      "title": "Sector",
+      "type": "string"
+    },
+    "region": {
+      "default": "Saudi Arabia",
+      "title": "Region",
+      "type": "string"
+    },
+    "recipient_role": {
+      "default": "",
+      "title": "Recipient Role",
+      "type": "string"
+    },
+    "recipient_ref": {
+      "default": "",
+      "title": "Recipient Ref",
+      "type": "string"
+    },
+    "signal_ref": {
+      "default": "",
+      "title": "Signal Ref",
+      "type": "string"
+    },
+    "pain_hypothesis": {
+      "default": "",
+      "title": "Pain Hypothesis",
+      "type": "string"
+    },
+    "personalization_note": {
+      "default": "",
+      "title": "Personalization Note",
+      "type": "string"
+    },
+    "personalization_tier": {
+      "default": "P0",
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "title": "Personalization Tier",
+      "type": "string"
+    },
+    "offer": {
+      "default": "",
+      "title": "Offer",
+      "type": "string"
+    },
+    "offer_matched": {
+      "default": false,
+      "title": "Offer Matched",
+      "type": "boolean"
+    },
+    "subject": {
+      "default": "",
+      "title": "Subject",
+      "type": "string"
+    },
+    "body_ar": {
+      "default": "",
+      "title": "Body Ar",
+      "type": "string"
+    },
+    "body_en": {
+      "default": "",
+      "title": "Body En",
+      "type": "string"
+    },
+    "cta": {
+      "default": "",
+      "title": "Cta",
+      "type": "string"
+    },
+    "language": {
+      "default": "ar",
+      "enum": [
+        "ar",
+        "en",
+        "ar_en"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
+    "evidence_level": {
+      "default": "",
+      "title": "Evidence Level",
+      "type": "string"
+    },
+    "risk_level": {
+      "default": "low",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Risk Level",
+      "type": "string"
+    },
+    "unsubscribe_included": {
+      "default": false,
+      "title": "Unsubscribe Included",
+      "type": "boolean"
+    },
+    "sequence_step": {
+      "default": "first_touch",
+      "enum": [
+        "first_touch",
+        "follow_up_1",
+        "follow_up_2",
+        "proposal_intro",
+        "close_loop"
+      ],
+      "title": "Sequence Step",
+      "type": "string"
+    },
+    "approval_status": {
+      "default": "approval_required",
+      "title": "Approval Status",
+      "type": "string"
+    },
+    "send_status": {
+      "default": "draft",
+      "enum": [
+        "draft",
+        "approved",
+        "queued",
+        "sent",
+        "rejected"
+      ],
+      "title": "Send Status",
+      "type": "string"
+    },
+    "governance_decision": {
+      "default": "approval_required",
+      "title": "Governance Decision",
+      "type": "string"
+    },
+    "forbidden_actions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Forbidden Actions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "draft_id"
+  ],
+  "title": "OutreachDraft",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/outreach_draft.schema.json"
+}
