@@ -60,6 +60,10 @@ paths = [
     # Versioned launch/verify scripts embed the secret-detection regex itself
     # (e.g. sk_live_[A-Za-z0-9]{20,}) plus dummy examples like sk_live_xxxx.
     '''scripts/v\d+_.*verify\.sh$''',
+    # Doctrine *_verify.py scripts feed fabricated sample secrets to the secret
+    # scanner on purpose (e.g. whatsapp_client_os_verify.py calls
+    # scan_for_secrets("api_key = sk-...") to assert detection works).
+    '''scripts/.*_verify\.py$''',
 ]
 
 regexes = [
