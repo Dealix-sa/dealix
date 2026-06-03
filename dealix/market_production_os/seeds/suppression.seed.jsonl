@@ -1,0 +1,2 @@
+{"schema_version": "1.0", "email_sha256": "897024e112306a079362b229abdf562c86b9c65f012f83086b9d663c95e34cd4", "domain": "example.test", "reason": "unsubscribe", "source": "reply_handler", "created_at": "2026-06-02T09:50:00+00:00"}
+{"schema_version": "1.0", "email_sha256": "9da0a1209b7b21d60f0004c2481b24b868cbd3b8e06cb7e4c04cb88b5259434e", "domain": "example.test", "reason": "bounce_hard", "source": "bounce_handler", "created_at": "2026-06-02T09:55:00+00:00"}

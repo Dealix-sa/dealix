@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/outreach_draft.schema.json",
+  "title": "OutreachDraft",
+  "description": "A single cold-email draft produced by the Draft Factory. A draft is NEVER sent without passing the six gates and explicit founder approval (NO_EXTERNAL_ACTION_WITHOUT_APPROVAL). Every draft must carry an opt-out (CAN-SPAM / Google sender guidelines).",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "Offer": {
+      "type": "string",
+      "enum": [
+        "free_diagnostic",
+        "revenue_diagnostic",
+        "lead_intelligence_sprint",
+        "pilot_conversion_sprint",
+        "monthly_revops_starter",
+        "monthly_revops_growth",
+        "enterprise_revenue_os"
+      ]
+    },
+    "SenderIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Accurate sender identity is mandatory (CAN-SPAM). Header fields must not deceive.",
+      "properties": {
+        "from_name": { "type": "string" },
+        "from_email": { "type": "string" },
+        "reply_to": { "type": "string" },
+        "physical_address": { "type": "string", "description": "A valid postal address for the sender." }
+      },
+      "required": ["from_name", "from_email"]
+    }
+  },
+  "properties": {
+    "schema_version": { "const": "1.0", "default": "1.0", "type": "string" },
+    "draft_id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "recipient_role": { "type": "string", "description": "Role title only (NO_PII)." },
+    "source": { "type": "string" },
+    "pain_hypothesis": { "type": "string", "maxLength": 2000 },
+    "personalization_note": { "type": "string", "maxLength": 2000 },
+    "personalization_level": { "type": "string", "enum": ["P0", "P1", "P2", "P3", "P4"], "default": "P0" },
+    "offer": { "$ref": "#/$defs/Offer" },
+    "touch_type": {
+      "type": "string",
+      "enum": ["first_touch", "follow_up_1", "follow_up_2", "proposal_intro", "breakup"]
+    },
+    "subject": { "type": "string", "maxLength": 200, "description": "Must not be misleading; no fake 'Re:' / 'Fwd:'." },
+    "body": { "type": "string", "maxLength": 6000 },
+    "cta": { "type": "string", "maxLength": 400 },
+    "language": { "type": "string", "enum": ["ar", "en"], "default": "ar" },
+    "evidence_level": { "type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"], "default": "L1" },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"], "default": "low" },
+    "sender_identity": { "$ref": "#/$defs/SenderIdentity" },
+    "unsubscribe_included": { "type": "boolean", "default": false },
+    "unsubscribe_method": { "type": "string", "enum": ["reply_keyword", "one_click", "link", "none"], "default": "none" },
+    "compliance_status": { "type": "string", "enum": ["pending", "pass", "fail"], "default": "pending" },
+    "compliance_failures": { "type": "array", "items": { "type": "string" } },
+    "approval_status": { "type": "string", "enum": ["pending", "approved", "rejected", "needs_edit"], "default": "pending" },
+    "send_status": { "type": "string", "enum": ["not_sent", "queued", "sent", "delivered", "bounced", "deferred"], "default": "not_sent" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "approved_at": { "type": "string", "format": "date-time" },
+    "sent_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["draft_id", "prospect_id", "touch_type", "subject", "body", "language", "unsubscribe_included"]
+}

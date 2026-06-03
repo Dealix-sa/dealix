@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/suppression.schema.json",
+  "title": "SuppressionEntry",
+  "description": "A suppressed recipient. The canonical match key is `email_sha256` (sha256 of the lowercased, trimmed address) so suppression can be enforced and exported WITHOUT storing raw PII in logs (NO_PII). A raw `email` may exist only in the live operational store and must never be written to logs or committed.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0", "default": "1.0", "type": "string" },
+    "email_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$", "description": "sha256(lower(trim(email)))." },
+    "email": { "type": "string", "description": "Operational-only raw address; never log or commit (NO_PII)." },
+    "domain": { "type": "string" },
+    "reason": {
+      "type": "string",
+      "enum": ["unsubscribe", "bounce_hard", "complaint", "manual", "do_not_contact", "wrong_person"]
+    },
+    "source": { "type": "string", "description": "Where the suppression came from (e.g. 'reply_handler', 'founder')." },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["email_sha256", "reason"]
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/job_signal.schema.json",
+  "title": "JobSignal",
+  "description": "A hiring signal that implies an operational need Dealix can serve (e.g. a company hiring a CRM Manager likely has follow-up / reporting pain). The `source` enum excludes scraping; signals come from founder input, public job boards browsed manually, or referrals (NO_SCRAPING).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0", "default": "1.0", "type": "string" },
+    "signal_id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "role_posted": {
+      "type": "string",
+      "enum": [
+        "sales_operations",
+        "crm_manager",
+        "marketing_coordinator",
+        "customer_support",
+        "growth_manager",
+        "automation_specialist",
+        "other"
+      ]
+    },
+    "role_title_raw": { "type": "string", "description": "The role title as posted." },
+    "source": { "type": "string", "enum": ["founder_input", "public_job_board", "referral"] },
+    "source_url": { "type": "string" },
+    "posted_at": { "type": "string", "format": "date" },
+    "inferred_pain": { "type": "string", "maxLength": 1000 },
+    "mapped_offer": {
+      "type": "string",
+      "enum": [
+        "free_diagnostic",
+        "revenue_diagnostic",
+        "lead_intelligence_sprint",
+        "pilot_conversion_sprint",
+        "monthly_revops_starter",
+        "monthly_revops_growth",
+        "enterprise_revenue_os"
+      ]
+    },
+    "status": { "type": "string", "enum": ["new", "reviewed", "prospect_created", "dismissed"], "default": "new" },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["signal_id", "company", "role_posted"]
+}

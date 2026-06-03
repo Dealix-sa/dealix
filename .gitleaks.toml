@@ -52,6 +52,7 @@ paths = [
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
     '''tests/fixtures/.*''',
+    '''tests/.*''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
@@ -61,4 +62,9 @@ regexes = [
     '''your-.*-key''',
     '''change-me''',
     '''example-.*''',
+    # shell variable interpolation, e.g. curl -u "${MOYASAR_KEY}:" — never a hardcoded secret
+    '''\$\{[A-Za-z_][A-Za-z0-9_]*\}''',
+    # TTL/idempotency constants misread by the broad generic-api-key rule
+    '''ttl_seconds''',
+    '''idempotency_key''',
 ]

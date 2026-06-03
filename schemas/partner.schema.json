@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/partner.schema.json",
+  "title": "Partner",
+  "description": "A channel or referral partner who brings customers while Dealix runs the governed Revenue OS. Partner contact must be consented/warm; no list-buying or scraping (NO_SCRAPING). Revenue-share and margins are ranges, founder-approved, never guaranteed.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0", "default": "1.0", "type": "string" },
+    "partner_id": { "type": "string" },
+    "name": { "type": "string" },
+    "type": {
+      "type": "string",
+      "enum": [
+        "marketing_agency",
+        "business_consultant",
+        "accounting_firm",
+        "training_provider",
+        "software_reseller",
+        "crm_implementer",
+        "web_agency",
+        "other"
+      ]
+    },
+    "model": { "type": "string", "enum": ["referral", "reseller", "co_sell", "unknown"], "default": "unknown" },
+    "fit_score": { "type": "integer", "minimum": 0, "maximum": 100, "default": 0 },
+    "stage": {
+      "type": "string",
+      "enum": ["identify", "qualify", "enable", "co_sell", "deliver", "renew"],
+      "default": "identify"
+    },
+    "expected_offer": { "type": "string" },
+    "contact_consented": { "type": "boolean", "default": false, "description": "True only when the partner consented to contact (warm)." },
+    "notes": { "type": "string", "description": "MUST NOT contain personal data (NO_PII).", "maxLength": 2000 },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["partner_id", "name", "type"]
+}
