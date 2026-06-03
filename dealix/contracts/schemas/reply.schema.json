@@ -1,0 +1,61 @@
+{
+  "additionalProperties": false,
+  "description": "A classified inbound reply to an approved outreach send.",
+  "properties": {
+    "reply_id": {
+      "title": "Reply Id",
+      "type": "string"
+    },
+    "received_at": {
+      "title": "Received At",
+      "type": "string"
+    },
+    "draft_ref": {
+      "default": "",
+      "title": "Draft Ref",
+      "type": "string"
+    },
+    "prospect_ref": {
+      "default": "",
+      "title": "Prospect Ref",
+      "type": "string"
+    },
+    "classification": {
+      "default": "",
+      "title": "Classification",
+      "type": "string"
+    },
+    "suggested_action": {
+      "default": "",
+      "title": "Suggested Action",
+      "type": "string"
+    },
+    "requires_suppression": {
+      "default": false,
+      "title": "Requires Suppression",
+      "type": "boolean"
+    },
+    "next_step_ar": {
+      "default": "",
+      "title": "Next Step Ar",
+      "type": "string"
+    },
+    "next_step_en": {
+      "default": "",
+      "title": "Next Step En",
+      "type": "string"
+    },
+    "governance_decision": {
+      "default": "approval_required",
+      "title": "Governance Decision",
+      "type": "string"
+    }
+  },
+  "required": [
+    "reply_id"
+  ],
+  "title": "Reply",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/reply.schema.json"
+}
