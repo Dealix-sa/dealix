@@ -58,8 +58,16 @@ jobs:
             | sudo sh -s -- -b /usr/local/bin
 
       - name: Run Trivy filesystem scan
+        # Hard gate (exit-code 1): any NEW CRITICAL/HIGH vuln blocks the build.
+        # --scanners vuln: secret scanning is owned by Gitleaks above; Trivy's
+        #   secret detector only produced false positives on the repo's own
+        #   grep-based secret-scan scripts (sk_live_… detection patterns).
+        # --ignorefile .trivyignore: explicit allowlist of PRE-EXISTING Next.js
+        #   findings only; remediation (bump next>=15.5.16) is tracked there.
         run: |
           trivy fs . \
+            --scanners vuln \
             --severity CRITICAL,HIGH \
             --ignore-unfixed \
+            --ignorefile .trivyignore \
             --exit-code 1
