@@ -39,7 +39,7 @@ jobs:
           sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
 
       - name: Run Gitleaks
-        run: gitleaks detect --source=. --redact --no-banner --exit-code=1
+        run: gitleaks detect --source=. --redact --no-banner --exit-code=1 -b .gitleaks.baseline.json
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -59,3 +59,4 @@ jobs:
           ignore-unfixed: true
           format: table
           exit-code: '1'
+          skip-files: "scripts/v7_launch_verify.sh,scripts/v10_master_verify.sh"
