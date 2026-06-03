@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/job_signal.schema.json",
+  "title": "JobSignal",
+  "description": "A buying-intent signal derived from a publicly posted job advertisement, reviewed manually and approved by the founder per outreach. No scraping and no automation: source_url points to a public posting a human reviewed.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "signal_id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "posted_role": {
+      "type": "string",
+      "enum": ["sales_operations", "crm_manager", "marketing_coordinator", "customer_support", "growth_manager", "other"]
+    },
+    "source_url": { "type": "string", "description": "Public job-ad URL reviewed by a human." },
+    "likely_pain": { "type": "string", "description": "pipeline/reporting, CRM chaos, campaign follow-up, support queue, experiments." },
+    "matched_offer": {
+      "type": "string",
+      "enum": [
+        "free_diagnostic", "revenue_intelligence_sprint", "data_to_revenue_pack",
+        "managed_revenue_ops", "custom_ai_setup", "enterprise_governance_review"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["detected", "reviewed", "qualified", "draft_ready", "approved", "contacted", "replied", "dismissed"]
+    },
+    "founder_decision": { "type": "string", "enum": ["pending", "approved", "dismissed"] },
+    "detected_at": { "type": "string", "format": "date-time" },
+    "notes": { "type": "string", "maxLength": 2000 }
+  },
+  "required": ["signal_id", "company", "posted_role", "status"]
+}

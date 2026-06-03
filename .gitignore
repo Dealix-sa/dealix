@@ -107,6 +107,24 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Market Production OS — canonical sector taxonomy (product data, not customer data)
+!data/sectors/
+!data/sectors/sectors.yaml
+# Market Production OS — runtime working dirs keep a tracked .gitkeep only.
+# Two-step idiom: re-include the dir, re-ignore its contents, keep .gitkeep.
+# Real prospect/signal/partner data stays gitignored — doctrine: no committed PII.
+!data/prospects/
+data/prospects/*
+!data/prospects/.gitkeep
+!data/signals/
+data/signals/*
+!data/signals/.gitkeep
+!data/content/
+data/content/*
+!data/content/.gitkeep
+!data/partners/
+data/partners/*
+!data/partners/.gitkeep
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

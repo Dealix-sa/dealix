@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/email_account.schema.json",
+  "title": "EmailAccount",
+  "description": "A sending identity used by the Sending Ramp OS. No account may send until SPF + DKIM + DMARC are configured, a one-click unsubscribe and compliant sender identity exist, and the warmup stage permits the volume.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "account_id": { "type": "string" },
+    "provider": { "type": "string", "description": "Mailbox provider (e.g. google_workspace, m365)." },
+    "sending_domain": { "type": "string", "description": "Domain used in the From address." },
+    "from_address": { "type": "string" },
+    "reply_to": { "type": "string" },
+    "spf_configured": { "type": "boolean" },
+    "dkim_configured": { "type": "boolean" },
+    "dmarc_configured": { "type": "boolean" },
+    "custom_tracking_domain": { "type": "boolean", "default": false },
+    "one_click_unsubscribe": { "type": "boolean", "description": "RFC 8058 one-click unsubscribe header present." },
+    "physical_address_present": { "type": "boolean", "description": "Compliant sender identity / postal address present (CAN-SPAM)." },
+    "warmup_stage": {
+      "type": "string",
+      "enum": ["week_0", "week_1", "week_2", "week_3", "week_4_plus"],
+      "description": "Ramp stage. week_0 = drafts only, ~0-20 sends/day."
+    },
+    "daily_send_cap": { "type": "integer", "minimum": 0, "description": "Current max sends/day allowed by the ramp." },
+    "bounce_rate": { "type": "number", "minimum": 0, "maximum": 1, "description": "Rolling bounce rate; threshold < 0.03." },
+    "spam_complaint_rate": { "type": "number", "minimum": 0, "maximum": 1, "description": "Rolling complaint rate; threshold < 0.003 (keep well under 0.3%)." },
+    "unsubscribe_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+    "health_status": {
+      "type": "string",
+      "enum": ["healthy", "watch", "paused"],
+      "description": "paused = no sending until remediated."
+    },
+    "provider_warning": { "type": "boolean", "default": false },
+    "notes": { "type": "string", "maxLength": 2000 }
+  },
+  "required": ["account_id", "sending_domain", "from_address", "spf_configured", "dkim_configured", "dmarc_configured", "warmup_stage", "health_status"]
+}

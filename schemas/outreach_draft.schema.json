@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/outreach_draft.schema.json",
+  "title": "OutreachDraft",
+  "description": "A single personalized cold-email draft produced by the Draft Factory. Production target is 250 drafts/day. A draft is NEVER a send: it must pass compliance + founder approval first. Every draft carries a one-click unsubscribe.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "draft_id": { "type": "string" },
+    "prospect_id": { "type": "string", "description": "Links to schemas/prospect.schema.json." },
+    "company": { "type": "string" },
+    "sector": { "type": "string", "description": "Canonical sector key (data/sectors/sectors.yaml)." },
+    "recipient_role": { "type": "string" },
+    "source": { "type": "string", "description": "Prospect source; scraping is not allowed." },
+    "pain_hypothesis": { "type": "string" },
+    "personalization_note": { "type": "string", "description": "The real, specific signal used. Fabricated personalization is forbidden." },
+    "offer": {
+      "type": "string",
+      "description": "Offer referenced, drawn from the canonical ladder. Prices are never auto-quoted.",
+      "enum": [
+        "free_diagnostic", "revenue_intelligence_sprint", "data_to_revenue_pack",
+        "managed_revenue_ops", "custom_ai_setup", "enterprise_governance_review"
+      ]
+    },
+    "subject": { "type": "string", "description": "Must be truthful and non-misleading. No fake Re:/Fwd:." },
+    "body": { "type": "string" },
+    "cta": { "type": "string", "description": "Single clear next step." },
+    "language": { "type": "string", "enum": ["ar", "en"] },
+    "evidence_level": {
+      "type": "string",
+      "enum": ["L0", "L1", "L2", "L3", "L4", "L5"],
+      "description": "Evidence level backing any claim in the body."
+    },
+    "personalization_score": {
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3"],
+      "description": "Personalization tier. Below P1 the draft must not be sent."
+    },
+    "sequence_step": {
+      "type": "string",
+      "enum": ["first_touch", "follow_up_1", "follow_up_2", "proposal_intro", "breakup"]
+    },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"] },
+    "compliance_status": {
+      "type": "string",
+      "enum": ["pending", "passed", "failed"],
+      "description": "Set by the Compliance + Deliverability gate."
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "rewrite", "nurture", "do_not_contact"]
+    },
+    "send_status": {
+      "type": "string",
+      "enum": ["not_sent", "queued", "sent", "bounced", "replied"]
+    },
+    "unsubscribe_included": { "type": "boolean", "description": "Must be true before send." },
+    "governance_decision": { "type": "string", "description": "Governance verdict carried with every Dealix output object." },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": [
+    "draft_id", "company", "subject", "body", "cta", "language",
+    "sequence_step", "unsubscribe_included", "compliance_status", "approval_status", "send_status"
+  ]
+}

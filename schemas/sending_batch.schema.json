@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/sending_batch.schema.json",
+  "title": "SendingBatch",
+  "description": "A staged, founder-approved batch of approved drafts. Sending is gradual (ramp), never 250/day at once. A batch must not send if any draft lacks unsubscribe/approval/personalization, a recipient is suppressed, the domain is unhealthy, or there is a bounce spike.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "batch_id": { "type": "string" },
+    "account_id": { "type": "string", "description": "Links to schemas/email_account.schema.json." },
+    "sending_domain": { "type": "string" },
+    "sector": { "type": "string" },
+    "sequence_step": {
+      "type": "string",
+      "enum": ["first_touch", "follow_up_1", "follow_up_2", "proposal_intro", "breakup"]
+    },
+    "batch_size": { "type": "integer", "minimum": 0, "description": "Number of sends in this batch; bounded by the account ramp cap." },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"] },
+    "draft_ids": { "type": "array", "items": { "type": "string" } },
+    "approved_at": { "type": "string", "format": "date-time" },
+    "approved_by": { "type": "string", "description": "Founder identity who approved the batch." },
+    "send_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "start": { "type": "string", "format": "date-time" },
+        "end": { "type": "string", "format": "date-time" }
+      },
+      "required": ["start", "end"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "approved", "sending", "sent", "held"],
+      "description": "held = a gate failed (suppression / domain / bounce / missing approval)."
+    },
+    "hold_reason": { "type": "string", "description": "Why the batch was held, if status=held." },
+    "created_at": { "type": "string", "format": "date-time" }
+  },
+  "required": ["batch_id", "account_id", "batch_size", "status"]
+}
