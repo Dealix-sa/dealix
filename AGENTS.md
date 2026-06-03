@@ -10,6 +10,12 @@ This file is the primary repo-specific guide for AI coding agents working in `de
 ### Token Optimization
 See `token-optimizer/` for 12 guides covering: `.claudeignore` (40-90% savings), CLAUDE.md hygiene, session management, model routing (Haiku/Sonnet/Opus), MCP discipline, subagents, hooks, prompt templates, file handling, monitoring, git hygiene, and env config. Run `bash token-optimizer/12-environment-config/apply-all.sh` to apply all settings.
 
+### Agent governance
+The canonical control room for the agent fleet is [`docs/agents/`](docs/agents/). Start with [`docs/agents/README.md`](docs/agents/README.md):
+- [`AGENT_TEAM_REGISTRY.md`](docs/agents/AGENT_TEAM_REGISTRY.md) — the 5 real sub-agents (`dealix-pm/sales/delivery/engineer/content`), the 6 agent surfaces, and the 11 non-negotiables (with their guard tests).
+- [`AGENT_PERMISSION_MATRIX.md`](docs/agents/AGENT_PERMISSION_MATRIX.md) (L0–L6) · [`AGENT_OUTPUT_CONTRACT.md`](docs/agents/AGENT_OUTPUT_CONTRACT.md) · [`AGENT_DAILY_RUNBOOK.md`](docs/agents/AGENT_DAILY_RUNBOOK.md) · [`AGENT_SECURITY_POLICY.md`](docs/agents/AGENT_SECURITY_POLICY.md) · [`TOKEN_BUDGET_POLICY.md`](docs/agents/TOKEN_BUDGET_POLICY.md) · [`PR_TRIAGE_POLICY.md`](docs/agents/PR_TRIAGE_POLICY.md).
+- Verify the fleet is governed: `make agents-audit` (CI runs `.github/workflows/agent-team-audit.yml` on every PR). Triage open PRs: `make pr-triage`.
+
 ### Repo anatomy
 - `api/` — FastAPI app entry, dependencies, middleware, 120+ routers, and schema definitions.
 - `api/routers/commercial.py` — 13 commercial chain endpoints (diagnostic→pilot→proof→payment→upsell). Skill: `@token-optimizer/02-claude-md/skills/commercial.md`

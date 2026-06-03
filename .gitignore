@@ -334,3 +334,9 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Generated agent-governance reports (keep the directories, ignore the artifacts)
+reports/agents/*
+!reports/agents/.gitkeep
+reports/pr_triage/*
+!reports/pr_triage/.gitkeep
