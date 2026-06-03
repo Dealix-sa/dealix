@@ -1,0 +1,14 @@
+# Trivy ignore file — scoped, documented suppressions only.
+# Format: https://trivy.dev/docs/configuration/filtering/#by-finding-ids
+#
+# Secrets: the two entries below are FALSE POSITIVES. Both files are guard
+# scripts whose job is to grep the codebase for accidentally-committed live
+# keys. Their detection regex contains a literal `sk_live_REALDANGEROUSKEYSECRET`
+# placeholder, which Trivy's stripe-secret-token rule flags as a real key.
+# There is no actual secret here — only the pattern used to catch real ones.
+secrets:
+  - id: stripe-secret-token
+    paths:
+      - "scripts/v7_launch_verify.sh"
+      - "scripts/v10_master_verify.sh"
+    statement: "False positive: literal regex pattern inside a secret-scanning guard script, not a real key."
