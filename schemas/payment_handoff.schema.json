@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/payment_handoff.schema.json",
+  "title": "Dealix Payment Handoff (Revenue Execution OS)",
+  "description": "A draft instruction for the founder to create/send a payment link manually. The OS NEVER sends a payment link or charges a card.",
+  "type": "object",
+  "required": ["id", "proposal_id", "company", "amount_sar", "status"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "proposal_id": { "type": "string" },
+    "company": { "type": "string" },
+    "amount_sar": { "type": "number", "minimum": 0 },
+    "currency": { "type": "string", "const": "SAR" },
+    "payment_provider": { "type": "string", "enum": ["moyasar", "manual_invoice"] },
+    "approval_required": { "type": "boolean", "const": true },
+    "status": {
+      "type": "string",
+      "enum": ["draft_pending_approval", "approved", "sent", "paid", "expired"]
+    },
+    "notes": { "type": "string" },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": "string" }
+  }
+}

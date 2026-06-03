@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/draft.schema.json",
+  "title": "Dealix Outreach Draft (Revenue Execution OS)",
+  "description": "A draft-only outreach message. NEVER sent automatically — the founder approves then sends manually.",
+  "type": "object",
+  "required": ["id", "prospect_id", "company", "sector", "channel", "language", "status", "body", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "channel": { "type": "string", "enum": ["email", "whatsapp", "linkedin", "phone"] },
+    "language": { "type": "string", "enum": ["ar", "en"] },
+    "body": { "type": "string" },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "policy": { "type": "string", "const": "draft_only_no_auto_send" },
+    "status": {
+      "type": "string",
+      "enum": ["draft_pending_approval", "approved", "rejected", "copied_manual_send"]
+    },
+    "quality": {
+      "type": "object",
+      "description": "Result of the draft quality gate (set by check_draft_quality)."
+    },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": "string" }
+  }
+}

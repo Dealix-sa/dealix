@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/renewal.schema.json",
+  "title": "Dealix Renewal / Upsell (Revenue Execution OS)",
+  "description": "A renewal or upsell opportunity for a delivered client. Upsell requires delivered proof first (no upsell before proof).",
+  "type": "object",
+  "required": ["id", "client", "due_date", "status"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "client": { "type": "string" },
+    "current_offer": { "type": "string", "description": "Offer id in os/03_OFFERS.yml." },
+    "delivered_value": { "type": "string" },
+    "next_offer": { "type": "string", "description": "Next rung on the upsell ladder." },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "due_date": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["upcoming", "drafted", "approved", "sent", "renewed", "lost"]
+    },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": "string" }
+  }
+}

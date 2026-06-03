@@ -1,0 +1,84 @@
+{
+  "_comment": "Synthetic example prospects — NO real PII. Copy to a gitignored file for real work. Emails use the reserved example.sa domain.",
+  "schema_version": "1.0",
+  "prospects": [
+    {
+      "id": "prospect_ex_001",
+      "company": "وكالة المدى للتسويق",
+      "sector": "marketing_agencies",
+      "contact_name": "Example Contact",
+      "channel": "linkedin",
+      "source": "founder_referral",
+      "pain_hypothesis": "leads من الحملات تضيع بسبب المتابعة اليدوية وتشتت المسؤوليات",
+      "last_contact": null,
+      "status": "new",
+      "evidence_level": 0,
+      "notes": "حملة أداء نشطة — فرصة Revenue Leakage Diagnostic"
+    },
+    {
+      "id": "prospect_ex_002",
+      "company": "أكاديمية تطوير للتدريب",
+      "sector": "training_companies",
+      "contact_name": "Example Contact",
+      "channel": "email",
+      "source": "inbound_form",
+      "pain_hypothesis": "استفسارات الدورات متفرقة بين واتساب ونماذج وإيميل",
+      "last_contact": "2026-05-24",
+      "status": "contacted",
+      "evidence_level": 0,
+      "notes": "ردّوا باهتمام — يحتاجون متابعة"
+    },
+    {
+      "id": "prospect_ex_003",
+      "company": "عيادات الواحة",
+      "sector": "clinics",
+      "contact_name": "Example Contact",
+      "channel": "phone",
+      "source": "founder_network",
+      "pain_hypothesis": "مواعيد وعدم حضور ومتابعة ضعيفة للمرضى",
+      "last_contact": "2026-05-19",
+      "status": "contacted",
+      "evidence_level": 0,
+      "notes": "discovery call أولي تم — تحضير proof angle"
+    },
+    {
+      "id": "prospect_ex_004",
+      "company": "عقارات الركن",
+      "sector": "real_estate_teams",
+      "contact_name": "Example Contact",
+      "channel": "whatsapp",
+      "source": "founder_referral",
+      "pain_hypothesis": "استفسارات كثيرة ومتابعة بطيئة وتسرب فرص",
+      "last_contact": "2026-04-28",
+      "status": "contacted",
+      "evidence_level": 0,
+      "notes": "متابعة متأخرة — أولوية re-engage"
+    },
+    {
+      "id": "prospect_ex_005",
+      "company": "مكتب إتقان للاستشارات",
+      "sector": "professional_services",
+      "contact_name": "Example Contact",
+      "channel": "email",
+      "source": "event",
+      "pain_hypothesis": "عروض ومتابعة متفرقة بلا تقارير موحدة",
+      "last_contact": null,
+      "status": "new",
+      "evidence_level": 0,
+      "notes": "التقينا في فعالية — أول لمسة"
+    },
+    {
+      "id": "prospect_ex_006",
+      "company": "حلول لوجستيك السريعة",
+      "sector": "logistics_companies",
+      "contact_name": "Example Contact",
+      "channel": "email",
+      "source": "founder_network",
+      "pain_hypothesis": "طلبات ومتابعة موردين وتقارير يدوية",
+      "last_contact": "2026-05-30",
+      "status": "qualified",
+      "evidence_level": 1,
+      "notes": "مؤهّل — جاهز لمقترح أولي"
+    }
+  ]
+}

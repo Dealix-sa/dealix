@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/followup.schema.json",
+  "title": "Dealix Follow-up (Revenue Execution OS)",
+  "description": "A due follow-up reminder for the founder. Draft-only — surfaces who to re-contact; never sends.",
+  "type": "object",
+  "required": ["id", "prospect_id", "company", "due_date", "status", "created_at"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "prospect_id": { "type": "string" },
+    "company": { "type": "string" },
+    "sector": { "type": "string" },
+    "channel": { "type": "string", "enum": ["email", "whatsapp", "linkedin", "phone"] },
+    "last_contact": { "type": ["string", "null"] },
+    "due_date": { "type": "string", "description": "ISO date the follow-up is due." },
+    "days_since_contact": { "type": ["integer", "null"] },
+    "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+    "reason": { "type": "string" },
+    "draft_ref": { "type": ["string", "null"], "description": "Optional draft id to reuse." },
+    "status": { "type": "string", "enum": ["due", "completed", "skipped"] },
+    "created_at": { "type": "string" },
+    "updated_at": { "type": "string" }
+  }
+}
