@@ -14,7 +14,7 @@ Doctrine reminders encoded here:
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from enum import IntEnum, StrEnum
 
 
