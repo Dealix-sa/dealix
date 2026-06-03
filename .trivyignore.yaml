@@ -3,9 +3,11 @@
 #
 # Secrets: the two entries below are FALSE POSITIVES. Both files are guard
 # scripts whose job is to grep the codebase for accidentally-committed live
-# keys. Their detection regex contains a literal `sk_live_REALDANGEROUSKEYSECRET`
-# placeholder, which Trivy's stripe-secret-token rule flags as a real key.
-# There is no actual secret here — only the pattern used to catch real ones.
+# keys. Their detection regex includes a deliberately fake Stripe-style
+# placeholder, which Trivy's stripe-secret-token rule mistakes for a real key.
+# No real secret exists — only the literal pattern those guards use to catch
+# real ones. (This comment is intentionally written without any key-shaped
+# literal so the ignore file does not flag itself.)
 secrets:
   - id: stripe-secret-token
     paths:
