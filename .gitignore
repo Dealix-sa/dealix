@@ -111,6 +111,9 @@ dumps/
 # The runtime JSONL ledgers below stay ignored (they may hold client data).
 !data/whatsapp/
 data/whatsapp/*.jsonl
+# Revenue Execution OS — committed examples only (live data goes to var/, ignored)
+!data/distribution/
+!data/drafts/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

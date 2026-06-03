@@ -138,6 +138,8 @@ from api.routers import onboarding as onboarding_router
 from api.routers import kpi_dashboard as kpi_dashboard_router
 # Weekly business reports (admin-gated, approval-required)
 from api.routers import weekly_reports as weekly_reports_router
+# Revenue Execution OS — approval-first distribution (no external send / no charge)
+from api.routers import distribution as distribution_router
 
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
@@ -430,6 +432,8 @@ def create_app() -> FastAPI:
     app.include_router(kpi_dashboard_router.router)
     # Weekly business reports — /api/v1/reports
     app.include_router(weekly_reports_router.router)
+    # Revenue Execution OS — /api/v1/distribution (approval-first; no external send)
+    app.include_router(distribution_router.router)
 
     # Hermes Agents — /hermes/*
     try:
