@@ -40,6 +40,10 @@ jobs:
         run: python scripts/agent_security_gate.py
 
       - name: Gate scanner self-test
+        # Hermetic: the gate test is pure logic (stdlib + the scanner module),
+        # so bypass the repo-wide pytest config (-c /dev/null) and skip conftest
+        # loading (--noconftest). That keeps this step independent of the app's
+        # dependency tree (pydantic, core.*) which the root conftest pulls in.
         run: |
-          pip install pytest pytest-asyncio httpx
-          pytest tests/test_agent_security_gate.py -q --no-cov
+          pip install pytest
+          pytest tests/test_agent_security_gate.py -q -c /dev/null -p no:cacheprovider --noconftest
