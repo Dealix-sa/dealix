@@ -6,7 +6,6 @@ If a model changes without regenerating, this fails with the fix command.
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 import pytest
 
