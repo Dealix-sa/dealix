@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/sending_batch.schema.json",
+  "title": "SendingBatch",
+  "description": "A gradual, approved batch of sends planned by the Sending Ramp OS. Batches are never bulk blasts. A batch must not send if any draft lacks unsubscribe/approval/personalization, a recipient is suppressed, the domain is unhealthy, or there is a bounce spike.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["batch_id", "account", "status", "batch_size"],
+  "properties": {
+    "batch_id": { "type": "string" },
+    "account": { "type": "string", "description": "email_account.account_id." },
+    "domain": { "type": "string" },
+    "sector": { "type": "string" },
+    "sequence_step": {
+      "type": "string",
+      "enum": ["first_touch", "follow_up_1", "follow_up_2", "proposal_intro", "close_loop"]
+    },
+    "batch_size": { "type": "integer", "description": "Must respect the warm-up ramp cap for the account's week and health." },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high"] },
+    "approved_at": { "type": ["string", "null"], "description": "Null until founder approval." },
+    "send_window": { "type": "string", "description": "Local send window, e.g. 09:00-11:00 Asia/Riyadh." },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "approved", "sending", "sent", "paused", "blocked"]
+    },
+    "draft_ids": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": "string" }
+  }
+}

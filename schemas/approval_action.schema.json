@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/approval_action.schema.json",
+  "title": "ApprovalAction",
+  "description": "A founder decision recorded in the Founder Approval Queue. Every external send, price, commitment, and payment handoff requires a recorded approval action. Nothing leaves the system without one.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["action_id", "target_type", "decision"],
+  "properties": {
+    "action_id": { "type": "string" },
+    "target_type": {
+      "type": "string",
+      "enum": ["draft", "batch", "proposal", "payment_handoff", "content", "partner_outreach", "press_outreach", "whatsapp_card"]
+    },
+    "target_ref": { "type": "string", "description": "Id of the targeted object." },
+    "decision": {
+      "type": "string",
+      "enum": ["approve", "reject", "rewrite", "shorten", "make_formal", "change_offer", "move_nurture", "do_not_contact"]
+    },
+    "reviewer": { "type": "string", "description": "Founder/approver identity (no PII beyond role/handle)." },
+    "decided_at": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}

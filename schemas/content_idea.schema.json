@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/content_idea.schema.json",
+  "title": "ContentIdea",
+  "description": "A content idea in the Content Production OS. Every piece ties to a sector, pain, workflow, proof, offer, and CTA. Content is drafted, approved, then published manually — never auto-posted. Claims follow evidence levels.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["idea_id", "pillar", "cta"],
+  "properties": {
+    "idea_id": { "type": "string" },
+    "pillar": {
+      "type": "string",
+      "enum": ["founder_insight", "sector_pain", "proof_learning", "case_style", "long_post", "carousel", "case_study", "product_explainer", "founder_lesson"]
+    },
+    "sector": { "type": "string" },
+    "pain": { "type": "string" },
+    "workflow": { "type": "string" },
+    "proof_ref": { "type": "string", "description": "Reference to a proof artifact; required for any verified claim." },
+    "offer": { "type": "string" },
+    "cta": { "type": "string" },
+    "channel": { "type": "string", "enum": ["linkedin", "blog", "email", "x"] },
+    "status": {
+      "type": "string",
+      "enum": ["idea", "draft", "approval_pending", "approved", "published_manual"]
+    },
+    "created_at": { "type": "string" }
+  }
+}

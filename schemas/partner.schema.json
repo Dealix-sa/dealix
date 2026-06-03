@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/partner.schema.json",
+  "title": "Partner",
+  "description": "A channel partner in the Partnerships OS. The partner owns the customer relationship; Dealix runs the Revenue OS. Splits are guardrail ranges; all payouts are founder-approved. No PII beyond business name placeholders in seeds.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["partner_id", "name", "type"],
+  "properties": {
+    "partner_id": { "type": "string" },
+    "name": { "type": "string", "description": "Business name (placeholder for samples)." },
+    "type": {
+      "type": "string",
+      "enum": ["marketing_agency", "business_consultant", "crm_implementer", "accounting_firm", "training_provider", "web_agency", "software_reseller"]
+    },
+    "fit_score": { "type": "number", "description": "0-100 partner fit." },
+    "relationship_owner": { "type": "string", "description": "Internal owner role." },
+    "deal_split_model": {
+      "type": "string",
+      "enum": ["referral_fee", "revenue_share", "implementation_margin"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["prospect", "qualified", "agreed", "enabled", "active", "paused", "churned"]
+    },
+    "region": { "type": "string" },
+    "is_sample": { "type": "boolean" },
+    "notes": { "type": "string" }
+  }
+}

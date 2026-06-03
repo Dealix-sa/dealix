@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/email_account.schema.json",
+  "title": "EmailAccount",
+  "description": "A sending identity used by the Sending Ramp OS. No account may send marketing volume until SPF + DKIM + DMARC are configured, a tracking domain and reply-to are valid, a physical address is present, and the warm-up ramp stage allows it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["account_id", "domain", "spf", "dkim", "dmarc", "health_status"],
+  "properties": {
+    "account_id": { "type": "string" },
+    "domain": { "type": "string" },
+    "from_address": { "type": "string" },
+    "reply_to": { "type": "string" },
+    "spf": { "type": "boolean" },
+    "dkim": { "type": "boolean" },
+    "dmarc": { "type": "boolean" },
+    "tracking_domain": { "type": "string" },
+    "physical_address_present": { "type": "boolean", "description": "CAN-SPAM requires a valid postal address." },
+    "one_click_unsubscribe": { "type": "boolean", "description": "List-Unsubscribe one-click for bulk senders." },
+    "warmup_stage": {
+      "type": "string",
+      "enum": ["week0", "week1", "week2", "week3", "week4", "steady"]
+    },
+    "daily_cap": { "type": "integer", "description": "Max sends/day allowed for this account at its current stage and health." },
+    "health_status": {
+      "type": "string",
+      "enum": ["healthy", "warming", "degraded", "paused"]
+    },
+    "bounce_rate": { "type": "number", "description": "Fraction 0-1. Pause above 0.03." },
+    "spam_complaint_rate": { "type": "number", "description": "Fraction 0-1. Keep under 0.003 (0.3%)." },
+    "provider_warning": { "type": "boolean" },
+    "notes": { "type": "string" }
+  }
+}

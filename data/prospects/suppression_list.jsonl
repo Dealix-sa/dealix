@@ -1,0 +1,4 @@
+{"value": "optout@example.sa", "type": "email", "reason": "unsubscribe", "added_at": "2026-05-20", "source": "reply", "notes": "طلب إلغاء اشتراك — يُحترم فورًا ودائمًا"}
+{"value": "no-contact-co.example", "type": "domain", "reason": "do_not_contact", "added_at": "2026-05-22", "source": "founder", "notes": "قرار المؤسس بعدم التواصل"}
+{"value": "bounced@example.sa", "type": "email", "reason": "bounce", "added_at": "2026-05-25", "source": "bounce_webhook", "notes": "ارتداد دائم"}
+{"value": "شركة لا للتسويق (عينة)", "type": "company", "reason": "complaint", "added_at": "2026-05-28", "source": "reply", "notes": "شكوى — كبت دائم"}

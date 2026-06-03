@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/sector.schema.json",
+  "title": "Sector",
+  "description": "A Saudi B2B sector entry in the Sector Intelligence OS index (data/sectors/sectors.yaml). Each entry links to its full playbook under docs/sectors/.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["key", "name_ar", "name_en", "priority"],
+  "properties": {
+    "key": { "type": "string", "description": "Stable sector key used by prospects/drafts." },
+    "name_ar": { "type": "string" },
+    "name_en": { "type": "string" },
+    "priority": { "type": "integer", "description": "1 = highest priority target." },
+    "first_offer": { "type": "string", "description": "Default first offer from the product catalog." },
+    "price_band": { "type": "string", "description": "Guardrail price band in SAR." },
+    "decision_maker": { "type": "string", "description": "Role/title, no names." },
+    "buying_trigger": { "type": "string" },
+    "do_not_target": { "type": "array", "items": { "type": "string" } },
+    "job_signal_roles": { "type": "array", "items": { "type": "string" } },
+    "playbook": { "type": "string", "description": "Relative path to the docs/sectors/ playbook." }
+  }
+}

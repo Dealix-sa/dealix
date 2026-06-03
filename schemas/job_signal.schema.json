@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/job_signal.schema.json",
+  "title": "JobSignal",
+  "description": "A public job posting interpreted as a buying signal. Sources are public postings read manually or via feeds the company exposes — never scraping behind authentication or against terms. Any outreach from a signal is still a draft under founder approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["signal_id", "company", "role_posted", "mapped_offer"],
+  "properties": {
+    "signal_id": { "type": "string" },
+    "company": { "type": "string" },
+    "role_posted": { "type": "string", "description": "e.g. Sales Operations, CRM Manager, Growth Manager." },
+    "sector": { "type": "string" },
+    "pain_hypothesis": { "type": "string" },
+    "mapped_offer": { "type": "string", "description": "Offer from the product catalog this signal maps to." },
+    "source": { "type": "string", "description": "Public source label (no scraped or login-gated data)." },
+    "source_url": { "type": "string" },
+    "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+    "status": {
+      "type": "string",
+      "enum": ["new", "qualified", "draft_ready", "drafted", "approved", "contacted", "replied", "archived"]
+    },
+    "is_sample": { "type": "boolean" },
+    "created_at": { "type": "string" }
+  }
+}

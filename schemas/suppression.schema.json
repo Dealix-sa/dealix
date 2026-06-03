@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/suppression.schema.json",
+  "title": "SuppressionEntry",
+  "description": "An entry on the suppression list. Suppression is checked FIRST, before any draft is produced or any send is planned. Unsubscribe, complaint, and do_not_contact requests are honored immediately and permanently.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["value", "type", "reason"],
+  "properties": {
+    "value": { "type": "string", "description": "The suppressed email, domain, or company name." },
+    "type": { "type": "string", "enum": ["email", "domain", "company"] },
+    "reason": {
+      "type": "string",
+      "enum": ["unsubscribe", "bounce", "complaint", "do_not_contact", "manual"]
+    },
+    "added_at": { "type": "string" },
+    "source": { "type": "string", "description": "Where the suppression originated (reply, bounce webhook, founder, partner)." },
+    "notes": { "type": "string" }
+  }
+}
