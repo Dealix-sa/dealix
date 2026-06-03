@@ -195,3 +195,12 @@ curl -X POST http://localhost:8000/api/v1/leads \
 ```
 
 This exercises intake, ICP matching, pain extraction, BANT qualification, CRM sync (skipped without HubSpot), and booking.
+
+### WhatsApp Client OS (client-facing controlled flows)
+
+Client-facing WhatsApp operating experience (distinct from the founder-facing `whatsapp_decision_bot`). Controlled flows, not an open chatbot — no live send/charge, no secrets in chat text.
+
+- **Module:** `auto_client_acquisition/whatsapp_client_os/` — entry point `brain.handle_message(wa_id=..., text=...)`; readiness `readiness_scan.score_assessment` / `quick_triage`; `recommendation.recommend_offer` (maps to `service_catalog`); `action_cards`; `metrics.compute_metrics`.
+- **API:** `/api/v1/whatsapp-client/*` — `POST /message`, `POST /scan`, `POST /triage`, `GET /scan/questions`, `GET /flows`, `GET /metrics`, `GET|POST /webhook` (verify + inbound; no send).
+- **Docs:** [docs/whatsapp/](docs/whatsapp/) · **Schemas:** [schemas/](schemas/) · **Reports:** `python3 scripts/generate_whatsapp_reports.py`.
+- **Doctrine gate:** `.github/workflows/whatsapp-policy-gate.yml`; guard test `tests/test_no_secrets_in_whatsapp.py` (no API keys/secrets in WhatsApp text — route to Secure Portal). Tests: `tests/test_whatsapp_client_os.py`, `tests/test_whatsapp_client_router.py`.

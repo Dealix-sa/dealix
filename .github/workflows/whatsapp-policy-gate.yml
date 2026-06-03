@@ -1,0 +1,95 @@
+name: WhatsApp Policy Gate
+
+# Runs the WhatsApp Client OS doctrine guards + tests + lint on any change to
+# the WhatsApp surface. Enforces: no secrets in WhatsApp text, no cold
+# outreach / scraping / guaranteed claims, every output carries a
+# governance_decision, no raw PII persisted.
+
+on:
+  push:
+    branches: [main, 'claude/**', 'feat/**', 'fix/**', 'chore/**']
+    paths:
+      - 'auto_client_acquisition/whatsapp_client_os/**'
+      - 'api/routers/whatsapp_client.py'
+      - 'schemas/whatsapp_*.json'
+      - 'schemas/client_*.json'
+      - 'docs/whatsapp/**'
+      - 'tests/test_whatsapp_client_os.py'
+      - 'tests/test_whatsapp_client_router.py'
+      - 'tests/test_no_secrets_in_whatsapp.py'
+      - '.github/workflows/whatsapp-policy-gate.yml'
+  pull_request:
+    paths:
+      - 'auto_client_acquisition/whatsapp_client_os/**'
+      - 'api/routers/whatsapp_client.py'
+      - 'schemas/whatsapp_*.json'
+      - 'schemas/client_*.json'
+      - 'docs/whatsapp/**'
+      - 'tests/test_whatsapp_client_os.py'
+      - 'tests/test_whatsapp_client_router.py'
+      - 'tests/test_no_secrets_in_whatsapp.py'
+      - '.github/workflows/whatsapp-policy-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: whatsapp-policy-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  whatsapp-policy:
+    name: WhatsApp Client OS — doctrine, tests, lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      APP_ENV: test
+      APP_DEBUG: "false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest pytest-asyncio pytest-cov httpx ruff
+
+      - name: Lint WhatsApp surface
+        run: |
+          ruff check \
+            auto_client_acquisition/whatsapp_client_os/ \
+            api/routers/whatsapp_client.py \
+            tests/test_whatsapp_client_os.py \
+            tests/test_whatsapp_client_router.py \
+            tests/test_no_secrets_in_whatsapp.py
+
+      - name: Validate JSON schemas parse
+        run: |
+          python -c "import json,glob;[json.load(open(f)) for f in glob.glob('schemas/whatsapp_*.json')+glob.glob('schemas/client_*.json')];print('schemas ok')"
+
+      - name: Doctrine guards (must pass)
+        run: |
+          pytest \
+            tests/test_no_secrets_in_whatsapp.py \
+            tests/test_no_cold_whatsapp.py \
+            tests/test_no_scraping_engine.py \
+            tests/test_no_guaranteed_claims.py \
+            tests/test_no_linkedin_automation.py \
+            tests/test_output_requires_governance_status.py \
+            -q --no-cov
+
+      - name: WhatsApp Client OS tests
+        run: |
+          pytest \
+            tests/test_whatsapp_client_os.py \
+            tests/test_whatsapp_client_router.py \
+            -q --no-cov

@@ -432,6 +432,14 @@ def create_app() -> FastAPI:
         import logging as _logging
         _logging.getLogger(__name__).warning("hermes_router_skipped: %s", _hermes_exc)
 
+    # WhatsApp Client OS — /api/v1/whatsapp-client/* (controlled flows; no live send)
+    try:
+        from api.routers import whatsapp_client as whatsapp_client_router
+        app.include_router(whatsapp_client_router.router)
+    except Exception as _wsx_exc:  # pragma: no cover
+        import logging as _logging
+        _logging.getLogger(__name__).warning("whatsapp_client_router_skipped: %s", _wsx_exc)
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

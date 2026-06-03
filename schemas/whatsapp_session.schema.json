@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/whatsapp_session.schema.json",
+  "title": "WhatsApp Client Session",
+  "description": "A client-facing WhatsApp session. Stores only a hashed handle for the WhatsApp id; never the raw phone number.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["session_id", "wa_id_hash"],
+  "properties": {
+    "session_id": {"type": "string", "pattern": "^wsx_"},
+    "wa_id_hash": {"type": "string", "pattern": "^wa_", "description": "SHA-256 truncated handle for the WhatsApp id (no raw PII)."},
+    "company": {"type": "string"},
+    "current_flow": {"type": "string"},
+    "permission_level": {"type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"]},
+    "last_intent": {"type": "string"},
+    "turn_count": {"type": "integer", "minimum": 0},
+    "handoff_open": {"type": "boolean"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "updated_at": {"type": "string", "format": "date-time"}
+  }
+}

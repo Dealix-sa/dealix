@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/client_permission.schema.json",
+  "title": "Client Permission Grant",
+  "description": "A recorded permission grant. L2+ and any secret are granted only via the Secure Client Portal, never WhatsApp text.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["permission_id", "level"],
+  "properties": {
+    "permission_id": {"type": "string", "pattern": "^perm_"},
+    "session_id": {"type": "string"},
+    "level": {"type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"]},
+    "scopes": {"type": "array", "items": {"type": "string"}},
+    "granted_via": {"type": "string", "enum": ["whatsapp", "secure_portal"]},
+    "integration": {"type": "string"},
+    "audit_ref": {"type": "string"},
+    "governance_decision": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}

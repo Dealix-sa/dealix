@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/client_assessment.schema.json",
+  "title": "Client Readiness Assessment",
+  "description": "Output of the Company Readiness Scan. All scores are estimates (0-100). Recommendation is tied to a catalog offer id.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["assessment_id", "revenue_readiness", "recommended_offer_id"],
+  "properties": {
+    "assessment_id": {"type": "string", "pattern": "^asmt_"},
+    "session_id": {"type": "string"},
+    "company": {"type": "string"},
+    "axis_scores": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0, "maximum": 100}},
+    "revenue_readiness": {"type": "integer", "minimum": 0, "maximum": 100},
+    "follow_up_maturity": {"type": "integer", "minimum": 0, "maximum": 100},
+    "automation_readiness": {"type": "integer", "minimum": 0, "maximum": 100},
+    "risk": {"type": "string", "enum": ["low", "medium", "high"]},
+    "recommended_offer_id": {"type": "string"},
+    "recommendation_reason_ar": {"type": "string"},
+    "recommendation_reason_en": {"type": "string"},
+    "plan_steps_ar": {"type": "array", "items": {"type": "string"}},
+    "evidence_level": {"type": "string", "enum": ["L0", "L1", "L2", "L3", "L4", "L5"]},
+    "governance_decision": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"}
+  }
+}

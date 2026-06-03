@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/whatsapp_message_event.schema.json",
+  "title": "WhatsApp Message Event",
+  "description": "An inbound or outbound message event. Text is PII-redacted before persistence; secret material is never stored.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "session_id", "direction"],
+  "properties": {
+    "event_id": {"type": "string", "pattern": "^wmsg_"},
+    "session_id": {"type": "string"},
+    "direction": {"type": "string", "enum": ["inbound", "outbound"]},
+    "intent": {"type": "string"},
+    "text_redacted": {"type": "string", "description": "PII/secret-redacted text only."},
+    "card_id": {"type": "string"},
+    "occurred_at": {"type": "string", "format": "date-time"}
+  }
+}

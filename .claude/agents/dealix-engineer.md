@@ -32,6 +32,7 @@ Write code for the Dealix repo at `/home/user/dealix` that ships the 90-day comm
 - `tests/test_no_guaranteed_claims.py`
 - `tests/test_output_requires_governance_status.py`
 - `tests/test_proof_pack_required.py`
+- `tests/test_no_secrets_in_whatsapp.py`
 
 Run them before committing.
 
