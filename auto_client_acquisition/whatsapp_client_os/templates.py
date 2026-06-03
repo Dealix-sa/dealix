@@ -34,7 +34,7 @@ def _load() -> dict[str, Any]:
         data = yaml.safe_load(_TEMPLATES_PATH.read_text(encoding="utf-8"))
         if isinstance(data, dict):
             return data
-    except Exception:
+    except Exception:  # yaml is optional; ImportError and parse errors both handled by fallback
         pass
     return dict(_FALLBACK)
 
