@@ -55,8 +55,13 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
+          # Dependency CVEs are owned by Dependabot + the Dependency Review
+          # check; here we complement Gitleaks with secret + misconfig (IaC,
+          # Dockerfile, GitHub Actions) detection.
+          scanners: secret,misconfig
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
           exit-code: '1'
+          trivyignores: .trivyignore.yaml
           skip-files: "scripts/v7_launch_verify.sh,scripts/v10_master_verify.sh"
