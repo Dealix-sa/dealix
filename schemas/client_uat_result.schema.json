@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "client_uat_result",
+  "title": "Client UAT Result",
+  "type": "object",
+  "required": [
+    "client_id",
+    "client_name",
+    "system",
+    "uat_date",
+    "reviewer_name",
+    "scenarios",
+    "overall_result",
+    "revision_items",
+    "created_at"
+  ],
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "client_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "system": {
+      "type": "string",
+      "enum": [
+        "revenue_operating_system",
+        "executive_command_os",
+        "followup_recovery_os",
+        "whatsapp_client_os",
+        "proposal_proof_os"
+      ]
+    },
+    "uat_date": {
+      "type": "string"
+    },
+    "reviewer_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scenario_id", "given", "when_action", "then_expected", "passed"],
+        "properties": {
+          "scenario_id": { "type": "string" },
+          "given": { "type": "string" },
+          "when_action": { "type": "string" },
+          "then_expected": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "overall_result": {
+      "type": "string",
+      "enum": ["passed", "passed_with_notes", "failed"]
+    },
+    "revision_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}

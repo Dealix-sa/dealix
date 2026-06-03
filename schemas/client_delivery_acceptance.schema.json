@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "client_delivery_acceptance",
+  "title": "Client Delivery Acceptance",
+  "type": "object",
+  "required": [
+    "client_id",
+    "client_name",
+    "system",
+    "sprint",
+    "delivery_owner",
+    "client_reviewer",
+    "scope",
+    "out_of_scope",
+    "required_inputs",
+    "deliverables",
+    "acceptance_criteria",
+    "approval_method",
+    "created_at"
+  ],
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "client_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "system": {
+      "type": "string",
+      "enum": [
+        "revenue_operating_system",
+        "executive_command_os",
+        "followup_recovery_os",
+        "whatsapp_client_os",
+        "proposal_proof_os"
+      ]
+    },
+    "sprint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "delivery_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "client_reviewer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "out_of_scope": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "received"],
+        "properties": {
+          "name": { "type": "string" },
+          "received": { "type": "boolean" },
+          "date_received": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "deliverables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "version", "status"],
+        "properties": {
+          "name": { "type": "string" },
+          "version": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["draft", "internal_qa", "client_review", "accepted"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["criterion", "met"],
+        "properties": {
+          "criterion": { "type": "string" },
+          "met": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "approval_method": {
+      "type": "string",
+      "enum": ["email", "whatsapp", "meeting_note", "form"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false
+}
