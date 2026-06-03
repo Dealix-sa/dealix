@@ -1,0 +1,52 @@
+{
+  "additionalProperties": false,
+  "description": "A normalized inbound WhatsApp message (the API/webhook intake envelope).\n\nExactly one of ``text`` or ``button_id`` is meaningful per turn. Secrets\nmust never be sent here — the policy guard blocks and refuses to store them.",
+  "properties": {
+    "client_handle": {
+      "minLength": 1,
+      "title": "Client Handle",
+      "type": "string"
+    },
+    "text": {
+      "default": "",
+      "title": "Text",
+      "type": "string"
+    },
+    "button_id": {
+      "default": "",
+      "title": "Button Id",
+      "type": "string"
+    },
+    "company_name": {
+      "default": "",
+      "title": "Company Name",
+      "type": "string"
+    },
+    "session_id": {
+      "default": "",
+      "title": "Session Id",
+      "type": "string"
+    },
+    "locale": {
+      "default": "ar",
+      "enum": [
+        "ar",
+        "en"
+      ],
+      "title": "Locale",
+      "type": "string"
+    },
+    "is_complaint": {
+      "default": false,
+      "title": "Is Complaint",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "client_handle"
+  ],
+  "title": "InboundMessage",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/InboundMessage.schema.json"
+}
