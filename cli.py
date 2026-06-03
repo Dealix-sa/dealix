@@ -12,6 +12,8 @@ Usage:
 from __future__ import annotations
 
 import asyncio
+import re
+from pathlib import Path
 from typing import Annotated
 
 import typer
@@ -332,6 +334,217 @@ def menu() -> None:
             lead()
         elif choice == "5":
             demo()
+
+
+# ── Success architecture commands ──────────────────────────────
+
+_REPO_ROOT = Path(__file__).parent
+
+_SCORE_PATTERN = re.compile(
+    r"(?:score[:\s]+|total[:\s]+)?(\d{1,3})\s*(?:/\s*100|%|\.0)?",
+    re.IGNORECASE,
+)
+
+_LAUNCH_TIERS: list[tuple[int, str, str]] = [
+    (90, "Launch Ready", "proceed to full launch"),
+    (85, "Controlled Launch", "launch with controlled rollout"),
+    (75, "Soft Launch", "soft launch to limited accounts"),
+    (60, "Dry Run", "dry run only; address blockers first"),
+    (0, "Not Ready", "not ready — resolve all critical gaps"),
+]
+
+_WAR_ROOM_REPORTS: list[tuple[str, str]] = [
+    ("reports/founder/DAILY_SUPER_COMMAND.md", "Founder"),
+    ("reports/revenue/REVENUE_WAR_ROOM.md", "Revenue"),
+    ("reports/delivery/DELIVERY_PIPELINE_STATUS.md", "Delivery"),
+    ("reports/agents/AGENT_DAILY_ACTIVITY_REVIEW.md", "Agents"),
+    ("reports/scale/ULTIMATE_SCALE_SCORECARD.md", "Scale"),
+]
+
+
+def _extract_score(content: str) -> int | None:
+    """Return the first plausible 0-100 integer found in content, or None."""
+    for match in _SCORE_PATTERN.finditer(content):
+        value = int(match.group(1))
+        if 0 <= value <= 100:
+            return value
+    return None
+
+
+def _read_file_safe(path: Path) -> str | None:
+    """Read a file and return its content, or None if it does not exist."""
+    if not path.exists():
+        return None
+    return path.read_text(encoding="utf-8", errors="replace")
+
+
+@app.command("launch-score")
+def launch_score() -> None:
+    """Read LAUNCH_SCORECARD.md, extract score, and print tier and recommendation."""
+    scorecard_path = _REPO_ROOT / "reports/launch/LAUNCH_SCORECARD.md"
+    content = _read_file_safe(scorecard_path)
+    if content is None:
+        console.print(
+            f"[red]File not found:[/red] {scorecard_path.relative_to(_REPO_ROOT)}"
+        )
+        raise typer.Exit(code=1)
+
+    score = _extract_score(content)
+    if score is None:
+        console.print("[red]No numeric score (0-100) found in LAUNCH_SCORECARD.md[/red]")
+        raise typer.Exit(code=1)
+
+    tier_label = "Not Ready"
+    recommendation = "not ready — resolve all critical gaps"
+    for min_score, label, rec in _LAUNCH_TIERS:
+        if score >= min_score:
+            tier_label = label
+            recommendation = rec
+            break
+
+    table = Table(title="Launch Scorecard", show_lines=True)
+    table.add_column("Field", style="cyan")
+    table.add_column("Value")
+    table.add_row("Score", str(score))
+    table.add_row("Tier", tier_label)
+    table.add_row("Recommendation", recommendation)
+    console.print(table)
+
+
+@app.command("scale-score")
+def scale_score() -> None:
+    """Read ULTIMATE_SCALE_SCORECARD.md, extract score, and print tier."""
+    scorecard_path = _REPO_ROOT / "reports/scale/ULTIMATE_SCALE_SCORECARD.md"
+    content = _read_file_safe(scorecard_path)
+    if content is None:
+        console.print(
+            f"[red]File not found:[/red] {scorecard_path.relative_to(_REPO_ROOT)}"
+        )
+        raise typer.Exit(code=1)
+
+    score = _extract_score(content)
+    if score is None:
+        console.print(
+            "[red]No numeric score (0-100) found in ULTIMATE_SCALE_SCORECARD.md[/red]"
+        )
+        raise typer.Exit(code=1)
+
+    # Reuse launch tier thresholds for scale readiness
+    tier_label = "Not Ready"
+    for min_score, label, _ in _LAUNCH_TIERS:
+        if score >= min_score:
+            tier_label = label
+            break
+
+    table = Table(title="Scale Scorecard", show_lines=True)
+    table.add_column("Field", style="cyan")
+    table.add_column("Value")
+    table.add_row("Score", str(score))
+    table.add_row("Tier", tier_label)
+    console.print(table)
+
+
+_FOUNDER_COMMAND_TEMPLATE = """\
+# DAILY SUPER COMMAND — TEMPLATE
+
+## Priority 1 — Revenue
+- [ ] Review pipeline and identify top 3 accounts to advance today
+
+## Priority 2 — Delivery
+- [ ] Check delivery blockers and assign resolution owners
+
+## Priority 3 — Governance
+- [ ] Review agent activity log for any anomalies
+
+## Priority 4 — Metrics
+- [ ] Update KPIs and note any deviations from targets
+
+## Today's Decision
+- Decision: [state the key decision for today]
+- Owner: [name]
+- Deadline: [date]
+"""
+
+
+@app.command("founder-command")
+def founder_command(
+    dry_run: Annotated[
+        bool, typer.Option("--dry-run", help="Print template instead of actual file")
+    ] = False,
+) -> None:
+    """Read DAILY_SUPER_COMMAND.md and print it. With --dry-run prints a template."""
+    if dry_run:
+        console.print(
+            Panel(
+                _FOUNDER_COMMAND_TEMPLATE.strip(),
+                title="Founder Command (template)",
+                border_style="yellow",
+            )
+        )
+        return
+
+    command_path = _REPO_ROOT / "reports/founder/DAILY_SUPER_COMMAND.md"
+    content = _read_file_safe(command_path)
+    if content is None:
+        console.print(
+            f"[red]File not found:[/red] {command_path.relative_to(_REPO_ROOT)}"
+        )
+        raise typer.Exit(code=1)
+
+    console.print(
+        Panel(content.strip(), title="Founder Daily Command", border_style="cyan")
+    )
+
+
+_WAR_ROOM_STRUCTURE = """\
+War Room — 5 Reports
+
+1. Founder   reports/founder/DAILY_SUPER_COMMAND.md
+2. Revenue   reports/revenue/REVENUE_WAR_ROOM.md
+3. Delivery  reports/delivery/DELIVERY_PIPELINE_STATUS.md
+4. Agents    reports/agents/AGENT_DAILY_ACTIVITY_REVIEW.md
+5. Scale     reports/scale/ULTIMATE_SCALE_SCORECARD.md
+"""
+
+
+@app.command("war-room")
+def war_room(
+    dry_run: Annotated[
+        bool, typer.Option("--dry-run", help="Print structure overview instead of summaries")
+    ] = False,
+) -> None:
+    """Print summary from all 5 war room reports. With --dry-run prints structure overview."""
+    if dry_run:
+        console.print(
+            Panel(
+                _WAR_ROOM_STRUCTURE.strip(),
+                title="War Room (structure overview)",
+                border_style="yellow",
+            )
+        )
+        return
+
+    table = Table(title="War Room Summary", show_lines=True)
+    table.add_column("Report", style="cyan")
+    table.add_column("Status")
+    table.add_column("First Line")
+
+    for rel, label in _WAR_ROOM_REPORTS:
+        path = _REPO_ROOT / rel
+        content = _read_file_safe(path)
+        if content is None:
+            table.add_row(label, "[red]NOT FOUND[/red]", f"[dim]{rel}[/dim]")
+        else:
+            # Use the first non-empty, non-header line as a summary
+            first_line = ""
+            for line in content.splitlines():
+                stripped = line.strip().lstrip("#").strip()
+                if stripped:
+                    first_line = stripped[:80]
+                    break
+            table.add_row(label, "[green]found[/green]", first_line or "[dim](empty)[/dim]")
+
+    console.print(table)
 
 
 if __name__ == "__main__":
