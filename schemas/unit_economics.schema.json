@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/unit_economics.schema.json",
+  "title": "Unit economics row",
+  "type": "object",
+  "required": ["client", "offer", "revenue_sar", "direct_cost_sar", "gross_margin_sar"],
+  "properties": {
+    "client": {"type": "string"},
+    "offer": {"type": "string"},
+    "revenue_sar": {"type": "number", "minimum": 0},
+    "direct_cost_sar": {"type": "number", "minimum": 0},
+    "gross_margin_sar": {"type": "number"},
+    "hours_invested": {"type": "number", "minimum": 0},
+    "effective_hourly_sar": {"type": "number"},
+    "notes": {"type": "string"}
+  }
+}

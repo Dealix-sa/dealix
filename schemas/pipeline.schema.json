@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/pipeline.schema.json",
+  "title": "Pipeline opportunity",
+  "type": "object",
+  "required": ["company", "sector", "stage", "priority", "next_action"],
+  "properties": {
+    "company": {"type": "string", "minLength": 1},
+    "sector": {"type": "string"},
+    "contact": {"type": "string"},
+    "stage": {"type": "string", "enum": ["New", "Qualified", "Sample sent", "Proposal sent", "Verbal yes", "Closed-won", "Closed-lost"]},
+    "priority": {"type": "string", "enum": ["A", "B", "C"]},
+    "next_action": {"type": "string"},
+    "last_touch": {"type": "string"},
+    "notes": {"type": "string"}
+  }
+}

@@ -1,0 +1,41 @@
+name: Dealix Implementation Sprint Pack Checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  implementation-sprint-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify implementation sprint pack
+        run: python scripts/verify_implementation_sprint_pack.py
+      - name: Verify master operating blueprint
+        run: python scripts/verify_master_operating_blueprint.py
+      - name: Verify security/reliability OS
+        run: python scripts/verify_security_reliability_os.py
+      - name: Verify public safety
+        run: python scripts/verify_public_safety_v2.py
+      - name: Verify data boundary
+        run: python scripts/verify_data_boundary.py
+      - name: Verify company data architecture
+        run: python scripts/verify_company_data_architecture.py
+      - name: Verify revenue operations playbook
+        run: python scripts/verify_revenue_operations_playbook.py
+      - name: Verify delivery client success OS
+        run: python scripts/verify_delivery_client_success_os.py
+      - name: Verify finance pricing OS
+        run: python scripts/verify_finance_pricing_os.py
+      - name: Verify trust AI risk OS
+        run: python scripts/verify_trust_ai_risk_os.py
+      - name: Verify brand proof content OS
+        run: python scripts/verify_brand_proof_content_os.py
+      - name: Verify productization engineering OS
+        run: python scripts/verify_productization_engineering_os.py
+      - name: Verify people partner OS
+        run: python scripts/verify_people_partner_os.py

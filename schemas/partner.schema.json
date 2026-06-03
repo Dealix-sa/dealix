@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/partner.schema.json",
+  "title": "Partner record",
+  "type": "object",
+  "required": ["partner", "type", "stage", "owner"],
+  "properties": {
+    "partner": {"type": "string"},
+    "type": {"type": "string", "enum": ["Referral", "Reseller", "White-label", "Implementation"]},
+    "stage": {"type": "string", "enum": ["Identified", "Conversation", "Agreement", "Active", "Paused", "Ended"]},
+    "owner": {"type": "string"},
+    "referral_terms": {"type": "string"},
+    "leads_referred": {"type": "integer", "minimum": 0},
+    "leads_won": {"type": "integer", "minimum": 0},
+    "notes": {"type": "string"}
+  }
+}

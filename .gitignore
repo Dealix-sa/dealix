@@ -1,4 +1,11 @@
 # ─────────────────────────────────────────────────────────────
+# 🔒 PRIVATE OPS — NEVER COMMIT
+# ─────────────────────────────────────────────────────────────
+# The dealix-ops-private/ working tree is sibling-only by convention.
+# If it ever lives inside the public repo by mistake, ignore it.
+dealix-ops-private/
+
+# ─────────────────────────────────────────────────────────────
 # 🔒 SECRETS — NEVER COMMIT
 # ─────────────────────────────────────────────────────────────
 .env

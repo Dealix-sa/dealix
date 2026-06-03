@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/content.schema.json",
+  "title": "Content calendar entry",
+  "type": "object",
+  "required": ["date", "channel", "title", "status"],
+  "properties": {
+    "date": {"type": "string", "format": "date"},
+    "channel": {"type": "string", "enum": ["LinkedIn", "X", "Newsletter", "Case study", "Sector report", "Blog"]},
+    "title": {"type": "string"},
+    "status": {"type": "string", "enum": ["Idea", "Draft", "Approved", "Published", "Archived"]},
+    "proof_level": {"type": "string", "enum": ["Opinion", "Method", "Anonymized case", "Named case"]},
+    "approval_required": {"type": "boolean"},
+    "notes": {"type": "string"}
+  }
+}
