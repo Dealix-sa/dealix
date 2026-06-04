@@ -21,6 +21,9 @@ credentials/
 !tests/test_wave8_customer_credentials_check.py
 !docs/WAVE8_CUSTOMER_CREDENTIAL_READINESS.md
 !docs/wave8/customer_credentials.example.env
+# Launch control — secret/risk *scanner* (it finds secrets; it is not one)
+!scripts/final_secret_and_risk_scan.py
+!tests/test_final_secret_and_risk_scan.py
 service-account*.json
 google-credentials*.json
 
@@ -107,6 +110,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Launch control — synthetic example leads only, no PII, committed for CI + docs
+!data/commercial_seed_leads.example.jsonl
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -324,3 +329,6 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Launch control — keep only outputs/commercial_launch/latest, ignore timestamped runs
+outputs/commercial_launch/20*/

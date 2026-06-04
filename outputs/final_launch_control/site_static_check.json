@@ -1,0 +1,100 @@
+{
+  "total": 15,
+  "passed": 15,
+  "failed": 0,
+  "critical_failed": 0,
+  "warnings": 0,
+  "pass": true,
+  "checks": [
+    {
+      "name": "apps_web_present",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "homepage_present",
+      "passed": true,
+      "critical": true,
+      "detail": "apps/web/app/page.tsx"
+    },
+    {
+      "name": "page_ar",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "page_status",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "page_safety",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "page_go-to-market",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "page_revenue-os",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "page_value-engine",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "metadata_present",
+      "passed": true,
+      "critical": true,
+      "detail": "apps/web/app/layout.tsx"
+    },
+    {
+      "name": "openGraph_present",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "sitemap_present",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "robots_present",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "manifest_present",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "no_forbidden_claims",
+      "passed": true,
+      "critical": true,
+      "detail": "scanned=26 files"
+    },
+    {
+      "name": "arabic_route_present",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    }
+  ]
+}

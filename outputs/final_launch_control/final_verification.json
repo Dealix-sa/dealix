@@ -1,0 +1,226 @@
+{
+  "total": 36,
+  "passed": 36,
+  "failed": 0,
+  "critical_failed": 0,
+  "warnings": 0,
+  "pass": true,
+  "checks": [
+    {
+      "name": "report::docs/commercial-launch/99_FINAL_COMMERCIAL_LAUNCH_READINESS_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": "docs/commercial-launch/99_FINAL_COMMERCIAL_LAUNCH_READINESS_REPORT.md"
+    },
+    {
+      "name": "report::docs/media-social-os/99_MEDIA_SOCIAL_READY_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": "docs/media-social-os/99_MEDIA_SOCIAL_READY_REPORT.md"
+    },
+    {
+      "name": "report::docs/site-launch/99_SITE_LAUNCH_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": "docs/site-launch/99_SITE_LAUNCH_REPORT.md"
+    },
+    {
+      "name": "report::docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": "docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md"
+    },
+    {
+      "name": "report::README.md",
+      "passed": true,
+      "critical": true,
+      "detail": "README.md"
+    },
+    {
+      "name": "workflow::commercial-draft-factory.yml",
+      "passed": true,
+      "critical": true,
+      "detail": ".github/workflows/commercial-draft-factory.yml"
+    },
+    {
+      "name": "workflow::media-social-calendar.yml",
+      "passed": true,
+      "critical": true,
+      "detail": ".github/workflows/media-social-calendar.yml"
+    },
+    {
+      "name": "workflow::site-commercial-verify.yml",
+      "passed": true,
+      "critical": true,
+      "detail": ".github/workflows/site-commercial-verify.yml"
+    },
+    {
+      "name": "workflow::final-launch-control.yml",
+      "passed": true,
+      "critical": true,
+      "detail": ".github/workflows/final-launch-control.yml"
+    },
+    {
+      "name": "script::commercial_generate_400_drafts.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/commercial_generate_400_drafts.py"
+    },
+    {
+      "name": "script::commercial_safety_audit.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/commercial_safety_audit.py"
+    },
+    {
+      "name": "script::commercial_launch_readiness.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/commercial_launch_readiness.py"
+    },
+    {
+      "name": "script::media_social_calendar_generate.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/media_social_calendar_generate.py"
+    },
+    {
+      "name": "script::final_launch_control_verify.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/final_launch_control_verify.py"
+    },
+    {
+      "name": "script::site_launch_static_check.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/site_launch_static_check.py"
+    },
+    {
+      "name": "script::media_social_verify.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/media_social_verify.py"
+    },
+    {
+      "name": "script::commercial_crm_schema_verify.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/commercial_crm_schema_verify.py"
+    },
+    {
+      "name": "script::api_commercial_static_check.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/api_commercial_static_check.py"
+    },
+    {
+      "name": "script::final_secret_and_risk_scan.py",
+      "passed": true,
+      "critical": false,
+      "detail": "scripts/final_secret_and_risk_scan.py"
+    },
+    {
+      "name": "output::draft_queue.jsonl",
+      "passed": true,
+      "critical": true,
+      "detail": "outputs/commercial_launch/latest/draft_queue.jsonl"
+    },
+    {
+      "name": "output::founder_review.md",
+      "passed": true,
+      "critical": true,
+      "detail": "outputs/commercial_launch/latest/founder_review.md"
+    },
+    {
+      "name": "output::top_50_priority.md",
+      "passed": true,
+      "critical": true,
+      "detail": "outputs/commercial_launch/latest/top_50_priority.md"
+    },
+    {
+      "name": "output::safety_audit.json",
+      "passed": true,
+      "critical": true,
+      "detail": "outputs/commercial_launch/latest/safety_audit.json"
+    },
+    {
+      "name": "output::daily_metrics.json",
+      "passed": true,
+      "critical": true,
+      "detail": "outputs/commercial_launch/latest/daily_metrics.json"
+    },
+    {
+      "name": "draft_count_ge_400",
+      "passed": true,
+      "critical": true,
+      "detail": "count=420"
+    },
+    {
+      "name": "send_allowed_true_count_zero",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "external_send_blocked_false_count_zero",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "no_auto_send_false_count_zero",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "safety_audit_pass",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "readme_has_commercial_launch_os",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "readme_clone_url_dealix_sa",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflows_no_write_all",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "final_workflow_contents_read",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflows_no_send_secrets",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "no_external_send_in_commercial_code",
+      "passed": true,
+      "critical": true,
+      "detail": "offenders=[]"
+    },
+    {
+      "name": "site_homepage_present",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    }
+  ]
+}

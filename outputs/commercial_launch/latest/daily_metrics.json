@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-06-04T19:32:52Z",
+  "total_drafts": 420,
+  "drafts_for_review": 420,
+  "drafts_sent": 0,
+  "top_50_avg_priority": 94.3,
+  "by_vertical": {
+    "logistics": 84,
+    "contracting": 84,
+    "healthcare": 84,
+    "prof_services": 84,
+    "manufacturing": 84
+  },
+  "by_offer": {
+    "data_pack_1500": 83,
+    "managed_ops": 57,
+    "free_diagnostic": 177,
+    "sprint_499": 103
+  }
+}

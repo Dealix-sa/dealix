@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "description": "Config for the 30-day media & social calendar generator. Planning + manual posting only. No platform API, no auto-post.",
+  "days": 30,
+  "auto_post_enabled": false,
+  "publish_method": "manual_only",
+  "requires_founder_approval": true,
+  "channels": ["linkedin", "x", "blog", "newsletter"],
+  "pillars": ["category", "proof", "founder_pov", "how_to", "offer"],
+  "compliance": {
+    "no_platform_automation": true,
+    "no_linkedin_automation": true,
+    "no_bulk_dm": true,
+    "no_secrets": true
+  }
+}
