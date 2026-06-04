@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.0",
+  "currency": "SAR",
+  "market": ["SA", "AE", "QA", "KW", "BH", "OM"],
+  "note": "First 5 commercial verticals for the Dealix Commercial Launch OS. Machine-readable backbone for the daily draft factory. Human playbooks live in docs/commercial-launch/01_FIRST_5_VERTICALS.md.",
+  "verticals": [
+    {
+      "id": "facilities_management",
+      "name_en": "Facilities Management & Maintenance",
+      "name_ar": "إدارة المرافق والصيانة",
+      "icp_en": "FM and maintenance operators (200+ assets / multi-site) running reactive work orders across WhatsApp, Excel and ageing CAFM, with SLA penalties and revenue leaking through unbilled or mis-scoped jobs.",
+      "icp_ar": "شركات إدارة المرافق والصيانة (200+ أصل أو مواقع متعددة) تدير أوامر العمل بشكل تفاعلي عبر واتساب وإكسل وأنظمة CAFM قديمة، مع غرامات SLA وتسرب إيراد بسبب أعمال غير مفوترة أو سوء تحديد النطاق.",
+      "buyer_personas": ["Operations Director", "FM Contract Manager", "Maintenance Manager", "Finance Controller"],
+      "buyer_titles": ["Operations Director", "Head of Facilities", "FM Account Manager", "Maintenance Manager", "CAFM/Systems Lead", "Finance Manager"],
+      "pains": [
+        "SLA breaches and penalties from missed or untracked work orders",
+        "Unbilled or under-scoped jobs leaking margin every month",
+        "Reactive scheduling with no single source of truth across sites",
+        "Manual handoffs between WhatsApp, Excel and CAFM",
+        "No evidence trail when a client disputes completion"
+      ],
+      "offer_angle_en": "Govern the work-order-to-invoice workflow so SLA risk and unbilled jobs surface before they cost you.",
+      "offer_angle_ar": "حوكمة مسار أمر العمل حتى الفاتورة بحيث تظهر مخاطر SLA والأعمال غير المفوترة قبل أن تكلفك.",
+      "entry_offer": "ai_workflow_audit",
+      "pilot_offer": "paid_pilot",
+      "retainer_offer": "monthly_retainer",
+      "proof_asset": "Work-order leakage map: a sample audit of 30 anonymized work orders showing SLA risk and unbilled value, with the top 3 governed fixes.",
+      "messaging_angles_en": [
+        "Where SLA penalties are quietly accruing across sites",
+        "How many work orders close without a billable record",
+        "The 3 handoffs where completion evidence disappears"
+      ],
+      "messaging_angles_ar": [
+        "أين تتراكم غرامات SLA بهدوء عبر المواقع",
+        "كم أمر عمل يُغلق دون سجل قابل للفوترة",
+        "أين تختفي أدلة الإنجاز في 3 نقاط تسليم"
+      ],
+      "objections": [
+        "We already have a CAFM system",
+        "Our team is too busy to change anything now",
+        "Data is sensitive and lives with the client"
+      ],
+      "qualification_rules": ["200+ managed assets or 3+ sites", "Uses work orders / SLAs", "Has a named operations owner", "Some digital trail (CAFM/Excel) exists"],
+      "disqualification_rules": ["Single technician / hobby operator", "No SLAs and no recurring contracts", "Pure hardware reseller with no service ops"],
+      "compliance_notes": "Never claim access to their CAFM or client data. Frame the audit as founder-reviewed and evidence-first on data they choose to share.",
+      "delivery_promise": "A founder-reviewed leakage map within 7 business days of receiving a redacted work-order sample. No system access required.",
+      "success_metrics": ["SLA breach rate", "Unbilled work-order value recovered", "Work-order cycle time", "First-time-fix rate"]
+    },
+    {
+      "id": "contracting_project_controls",
+      "name_en": "Contracting & Project Controls",
+      "name_ar": "المقاولات وضبط المشاريع",
+      "icp_en": "Mid-size contractors and project-controls teams managing multiple concurrent projects where variation orders, progress claims and subcontractor payments slip through manual approvals.",
+      "icp_ar": "شركات مقاولات متوسطة وفِرق ضبط مشاريع تدير عدة مشاريع متزامنة حيث تتسرب أوامر التغيير والمستخلصات ومدفوعات مقاولي الباطن عبر اعتمادات يدوية.",
+      "buyer_personas": ["Projects Director", "Project Controls Manager", "Commercial/QS Manager", "CFO"],
+      "buyer_titles": ["Projects Director", "Head of Project Controls", "Commercial Manager", "Quantity Surveyor", "Planning Manager", "CFO"],
+      "pains": [
+        "Variation orders approved late or lost, eroding claimable value",
+        "Progress claims delayed by manual evidence gathering",
+        "No governed approval trail when disputes go to arbitration",
+        "Subcontractor payment certificates reconciled by hand",
+        "Cash flow surprises from slow claim cycles"
+      ],
+      "offer_angle_en": "Make the variation-to-claim approval chain evidenced and governed so claimable value is not lost to slow paperwork.",
+      "offer_angle_ar": "اجعل سلسلة اعتماد أمر التغيير حتى المستخلص موثّقة ومحوكمة حتى لا تُفقد القيمة القابلة للمطالبة بسبب بطء الأوراق.",
+      "entry_offer": "ai_workflow_audit",
+      "pilot_offer": "paid_pilot",
+      "retainer_offer": "monthly_retainer",
+      "proof_asset": "Variation-order governance map: a redacted review of one project's variations showing approval gaps and at-risk claimable value.",
+      "messaging_angles_en": [
+        "Variation value at risk because approvals lag the work",
+        "How long a progress claim waits on manual evidence",
+        "The approval steps with no audit trail for arbitration"
+      ],
+      "messaging_angles_ar": [
+        "قيمة أوامر التغيير المعرّضة للخطر لأن الاعتماد متأخر عن التنفيذ",
+        "كم ينتظر المستخلص أدلة يدوية",
+        "خطوات الاعتماد بلا سجل تدقيق للتحكيم"
+      ],
+      "objections": [
+        "We use Primavera/MS Project already",
+        "Our QS team handles this manually fine",
+        "Every project is different"
+      ],
+      "qualification_rules": ["3+ concurrent projects", "Uses variation orders and progress claims", "Named project-controls or commercial owner", "Recurring subcontractor payments"],
+      "disqualification_rules": ["Single small fit-out job", "No formal claims process", "Pure labor-supply with no project controls"],
+      "compliance_notes": "Do not claim to access project ERP or contracts. Position as a governance map on a redacted sample the contractor chooses to share.",
+      "delivery_promise": "A founder-reviewed variation-governance map within 7 business days of a redacted project sample. Read-only, no ERP access.",
+      "success_metrics": ["Claimable value recovered", "Claim cycle time", "Approval lead time", "Dispute exposure reduced"]
+    },
+    {
+      "id": "real_estate_property_ops",
+      "name_en": "Real Estate & Property Operations",
+      "name_ar": "العقار وإدارة الأملاك",
+      "icp_en": "Property and owners-association managers running leasing, collections and unit operations across portfolios where renewals, arrears and maintenance requests are tracked in spreadsheets.",
+      "icp_ar": "مدراء العقارات واتحادات الملاك الذين يديرون التأجير والتحصيل وتشغيل الوحدات عبر محافظ حيث تُتابع التجديدات والمتأخرات وطلبات الصيانة في جداول بيانات.",
+      "buyer_personas": ["Property Operations Director", "Leasing Manager", "Owners Association Manager", "Collections/Finance Lead"],
+      "buyer_titles": ["Head of Property Management", "Leasing Manager", "OA Manager", "Collections Manager", "Asset Manager", "Finance Controller"],
+      "pains": [
+        "Renewals missed because no one owns the timeline",
+        "Arrears ageing with no governed follow-up cadence",
+        "Maintenance requests lost between tenant, manager and vendor",
+        "No single view of occupancy, collections and SLA",
+        "Owner reporting assembled manually each month"
+      ],
+      "offer_angle_en": "Govern the renewal, collection and maintenance cadence so occupancy and cash collection stop depending on memory.",
+      "offer_angle_ar": "حوكمة دورة التجديد والتحصيل والصيانة حتى لا يعتمد الإشغال والتحصيل على الذاكرة.",
+      "entry_offer": "ai_workflow_audit",
+      "pilot_offer": "paid_pilot",
+      "retainer_offer": "monthly_retainer",
+      "proof_asset": "Collections & renewal cadence map: a redacted review of one portfolio showing at-risk renewals and arrears with a governed follow-up plan.",
+      "messaging_angles_en": [
+        "Renewals at risk because no one owns the date",
+        "Arrears ageing past the point of easy recovery",
+        "Maintenance requests with no closed-loop evidence"
+      ],
+      "messaging_angles_ar": [
+        "تجديدات معرّضة للخطر لأن لا أحد يملك التاريخ",
+        "متأخرات تتقادم بعد نقطة التحصيل السهل",
+        "طلبات صيانة بلا دليل إغلاق"
+      ],
+      "objections": [
+        "We have a property management system",
+        "Collections is the owner's responsibility",
+        "Tenants prefer WhatsApp anyway"
+      ],
+      "qualification_rules": ["Manages a portfolio of units (not a single property)", "Has renewals and collections processes", "Named operations or finance owner", "Recurring maintenance volume"],
+      "disqualification_rules": ["Single owner-occupier", "No recurring tenancy management", "Pure brokerage with no operations"],
+      "compliance_notes": "Never reference specific tenants or personal data. Use redacted, aggregate samples only. Respect tenant privacy in all messaging.",
+      "delivery_promise": "A founder-reviewed cadence map within 7 business days of a redacted portfolio sample. No PMS access required.",
+      "success_metrics": ["Renewal rate", "Arrears recovered", "Collection cycle time", "Maintenance closure rate"]
+    },
+    {
+      "id": "legal_professional_services",
+      "name_en": "Legal & Professional Services",
+      "name_ar": "المكاتب القانونية والخدمات المهنية",
+      "icp_en": "Law firms and professional-services practices where matter intake, conflict checks, billing and document turnaround depend on senior time and manual tracking.",
+      "icp_ar": "مكاتب المحاماة وشركات الخدمات المهنية حيث يعتمد استقبال القضايا وفحوص تعارض المصالح والفوترة وإنجاز المستندات على وقت الكبار والمتابعة اليدوية.",
+      "buyer_personas": ["Managing Partner", "Practice Manager", "Head of Operations", "Finance/Billing Lead"],
+      "buyer_titles": ["Managing Partner", "Practice Manager", "Director of Operations", "Knowledge Manager", "Billing Manager"],
+      "pains": [
+        "Matter intake and conflict checks bottlenecked on partners",
+        "Billable time lost to manual tracking and write-offs",
+        "Document turnaround slowed by repetitive drafting",
+        "No governed audit trail for client confidentiality",
+        "Inconsistent engagement and onboarding quality"
+      ],
+      "offer_angle_en": "Govern intake, conflicts and billing workflows with a privacy-first, audit-ready approach so partner time goes to clients, not admin.",
+      "offer_angle_ar": "حوكمة استقبال القضايا وتعارض المصالح والفوترة بنهج يحترم الخصوصية وجاهز للتدقيق حتى يذهب وقت الشريك للعملاء لا للإدارة.",
+      "entry_offer": "entry_diagnostic",
+      "pilot_offer": "paid_pilot",
+      "retainer_offer": "monthly_retainer",
+      "proof_asset": "Intake-to-billing governance map: a privacy-first review of a redacted intake/billing sample showing bottlenecks and an audit-ready fix plan.",
+      "messaging_angles_en": [
+        "Partner hours lost to intake and conflict admin",
+        "Billable time written off through manual tracking",
+        "Confidentiality with no governed audit trail"
+      ],
+      "messaging_angles_ar": [
+        "ساعات الشركاء المهدورة في استقبال القضايا وتعارض المصالح",
+        "وقت قابل للفوترة يُشطب بسبب المتابعة اليدوية",
+        "السرية بلا سجل تدقيق محوكم"
+      ],
+      "objections": [
+        "Client confidentiality makes this impossible",
+        "We don't trust AI with legal data",
+        "Our partners won't change how they work"
+      ],
+      "qualification_rules": ["5+ fee earners or professionals", "Recurring matter/engagement intake", "Named managing partner or practice manager", "Bills time or fixed-fee engagements"],
+      "disqualification_rules": ["Solo practitioner with no ops need", "Refuses any process change", "No recurring intake volume"],
+      "compliance_notes": "Lead with privacy-first language. Never request or imply access to privileged client data. Emphasize founder review, redaction and no data retention beyond the engagement.",
+      "delivery_promise": "A founder-reviewed, privacy-first governance map within 7 business days of a redacted, non-privileged sample. No access to client matters.",
+      "success_metrics": ["Intake cycle time", "Billable hours recovered", "Write-off rate", "Engagement turnaround"]
+    },
+    {
+      "id": "consulting_training_b2b",
+      "name_en": "Consulting, Training & B2B Services",
+      "name_ar": "الاستشارات والتدريب وخدمات B2B",
+      "icp_en": "Consulting, training and B2B service firms where proposals, project delivery and recurring client reporting are assembled manually, capping how many engagements the team can run.",
+      "icp_ar": "شركات الاستشارات والتدريب وخدمات B2B حيث تُجمّع العروض وتسليم المشاريع وتقارير العملاء المتكررة يدويًا، مما يحدّ من عدد الارتباطات التي يستطيع الفريق إدارتها.",
+      "buyer_personas": ["Managing Director", "Head of Delivery", "Business Development Lead", "Operations Manager"],
+      "buyer_titles": ["Managing Director", "Partner", "Head of Delivery", "BD Director", "Operations Manager", "Programme Manager"],
+      "pains": [
+        "Proposals take days of senior time to assemble",
+        "Delivery quality depends on a few key people",
+        "Client reporting rebuilt from scratch every cycle",
+        "No governed view of pipeline, delivery and renewals",
+        "Growth capped by manual operations"
+      ],
+      "offer_angle_en": "Govern proposals, delivery and client reporting so the firm can take on more engagements without losing quality or evidence.",
+      "offer_angle_ar": "حوكمة العروض والتسليم وتقارير العملاء حتى تتمكن الشركة من قبول ارتباطات أكثر دون فقدان الجودة أو الدليل.",
+      "entry_offer": "entry_diagnostic",
+      "pilot_offer": "paid_pilot",
+      "retainer_offer": "monthly_retainer",
+      "proof_asset": "Delivery operations map: a redacted review of one engagement's proposal-to-report flow showing the manual steps capping capacity.",
+      "messaging_angles_en": [
+        "Senior hours lost to assembling proposals by hand",
+        "Delivery that breaks when a key person is unavailable",
+        "Client reports rebuilt from zero every cycle"
+      ],
+      "messaging_angles_ar": [
+        "ساعات الكبار المهدورة في تجهيز العروض يدويًا",
+        "تسليم ينهار عند غياب شخص أساسي",
+        "تقارير عملاء تُعاد من الصفر كل دورة"
+      ],
+      "objections": [
+        "Our work is too bespoke to systematize",
+        "Clients pay for our people, not tools",
+        "We tried automation and it didn't fit"
+      ],
+      "qualification_rules": ["5+ consultants/trainers", "Recurring proposals and delivery", "Named MD or head of delivery", "Repeatable client reporting"],
+      "disqualification_rules": ["Solo freelancer", "One-off project with no recurrence", "No repeatable delivery motion"],
+      "compliance_notes": "Avoid over-claiming outcomes. Frame as governance and capacity, not guaranteed revenue. Use redacted samples only.",
+      "delivery_promise": "A founder-reviewed delivery operations map within 7 business days of a redacted engagement sample. No system access required.",
+      "success_metrics": ["Proposal turnaround time", "Engagements per consultant", "Delivery consistency", "Repeat/renewal rate"]
+    }
+  ]
+}

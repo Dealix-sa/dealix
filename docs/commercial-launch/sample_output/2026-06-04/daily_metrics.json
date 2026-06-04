@@ -1,0 +1,38 @@
+{
+  "run_date": "2026-06-04",
+  "total_accepted": 478,
+  "total_rejected": 0,
+  "by_vertical": {
+    "facilities_management": 98,
+    "contracting_project_controls": 96,
+    "real_estate_property_ops": 95,
+    "legal_professional_services": 95,
+    "consulting_training_b2b": 94
+  },
+  "by_channel": {
+    "cold_email": 206,
+    "follow_up": 119,
+    "linkedin_manual": 91,
+    "website_form": 62
+  },
+  "by_language": {
+    "ar": 240,
+    "en": 238
+  },
+  "by_risk": {
+    "low": 4,
+    "medium": 474
+  },
+  "avg_quality_score": 100.0,
+  "avg_compliance_score": 100.0,
+  "used_real_leads": true,
+  "research_required_count": 473,
+  "targets": {
+    "cold_email": 175,
+    "follow_up": 100,
+    "linkedin_manual": 75,
+    "website_form": 50
+  },
+  "target_total_minimum": 400,
+  "target_met": true
+}
