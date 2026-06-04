@@ -18,7 +18,7 @@ def test_scanner_detects_a_real_key(tmp_path, monkeypatch):
     mod = load_script("final_secret_and_risk_scan")
     # A fabricated AWS-style key must be detected by the pattern set.
     sample = "AKIAIOSFODNN7EXAMPLE"  # canonical 20-char AWS example key
-    assert re.search(mod.SECRET_PATTERNS["aws_access_key"], sample)
+    assert re.search(mod.DETECTORS["aws_access_id"], sample)
 
 
 def test_placeholders_are_ignored():

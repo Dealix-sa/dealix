@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04T19:41:45Z",
+  "generated_at": "2026-06-04T19:50:59Z",
   "target": 400,
   "score": 100,
   "ready": true,
@@ -10,7 +10,7 @@
     "all_verticals_present": true
   },
   "metrics": {
-    "generated_at": "2026-06-04T19:41:45Z",
+    "generated_at": "2026-06-04T19:50:59Z",
     "total_drafts": 420,
     "drafts_for_review": 420,
     "drafts_sent": 0,
