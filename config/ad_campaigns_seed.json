@@ -1,0 +1,15 @@
+{
+  "version": "v5",
+  "currency": "SAR",
+  "status": "PLANNING_ONLY",
+  "live_launch": false,
+  "readiness_gate": ["tracking_in_place", "legal_reviewed", "budget_approved"],
+  "note": "Plans only. No API keys, no live launch, no automated spend. Do not enable without founder sign-off on all readiness gates.",
+  "campaigns": [
+    {"id": "gs_fm", "channel": "google_search", "vertical": "facilities_management", "intent_keywords": ["CAFM software KSA", "facilities management reporting"], "landing": "/verticals/facilities-management", "budget_scenario": "low"},
+    {"id": "li_contracting", "channel": "linkedin_ads", "vertical": "contracting_project_controls", "target_titles": ["Project Controls Manager", "Projects Director"], "landing": "/verticals/contracting-project-controls", "budget_scenario": "low"},
+    {"id": "gs_realestate", "channel": "google_search", "vertical": "real_estate_property_ops", "intent_keywords": ["property management software Saudi"], "landing": "/verticals/real-estate-property-ops", "budget_scenario": "low"},
+    {"id": "li_legal", "channel": "linkedin_ads", "vertical": "legal_professional_services", "target_titles": ["Managing Partner"], "landing": "/verticals/legal-professional-services", "budget_scenario": "low"},
+    {"id": "meta_consulting", "channel": "meta_ads", "vertical": "consulting_training_b2b", "objective": "awareness", "landing": "/verticals/consulting-training-b2b", "budget_scenario": "low"}
+  ]
+}

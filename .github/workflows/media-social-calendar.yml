@@ -1,0 +1,34 @@
+name: V5 — Media & Social Calendar
+
+# Generates a 30-day MANUAL-posting content calendar. No auto-post, no platform
+# APIs, no secrets, no live paid ads. Artifact-only. Read-only permissions.
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 7 1 * *"   # monthly, 1st at 07:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  media-social-calendar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate + verify calendar
+        run: |
+          python scripts/media_social_calendar_generate.py
+          python scripts/media_social_metrics_template.py
+          python scripts/media_social_verify.py
+      - name: Upload calendar
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-social-calendar
+          path: |
+            config/media_social_calendar.json
+            config/media_social_metrics_template.json

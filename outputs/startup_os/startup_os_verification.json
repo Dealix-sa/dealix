@@ -1,0 +1,573 @@
+{
+  "verifier": "startup_os_verify",
+  "status": "PASS",
+  "passed": 94,
+  "total": 94,
+  "critical_failures": [],
+  "checks": [
+    {
+      "name": "docs/company-os",
+      "ok": true,
+      "critical": true,
+      "detail": "28 docs"
+    },
+    {
+      "name": "report:company-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_COMPANY_OS_REPORT.md"
+    },
+    {
+      "name": "docs/product-os",
+      "ok": true,
+      "critical": true,
+      "detail": "13 docs"
+    },
+    {
+      "name": "report:product-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_PRODUCT_OS_REPORT.md"
+    },
+    {
+      "name": "docs/engineering-os",
+      "ok": true,
+      "critical": true,
+      "detail": "12 docs"
+    },
+    {
+      "name": "report:engineering-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_ENGINEERING_OS_REPORT.md"
+    },
+    {
+      "name": "docs/site-launch",
+      "ok": true,
+      "critical": true,
+      "detail": "9 docs"
+    },
+    {
+      "name": "report:site-launch",
+      "ok": true,
+      "critical": true,
+      "detail": "99_SITE_LAUNCH_REPORT.md"
+    },
+    {
+      "name": "docs/commercial-launch",
+      "ok": true,
+      "critical": true,
+      "detail": "25 docs"
+    },
+    {
+      "name": "report:commercial-launch",
+      "ok": true,
+      "critical": true,
+      "detail": "99_FINAL_COMMERCIAL_LAUNCH_REPORT.md"
+    },
+    {
+      "name": "docs/sales-os",
+      "ok": true,
+      "critical": true,
+      "detail": "14 docs"
+    },
+    {
+      "name": "report:sales-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_SALES_OS_REPORT.md"
+    },
+    {
+      "name": "docs/marketing-os",
+      "ok": true,
+      "critical": true,
+      "detail": "14 docs"
+    },
+    {
+      "name": "report:marketing-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_MARKETING_OS_REPORT.md"
+    },
+    {
+      "name": "docs/media-social-os",
+      "ok": true,
+      "critical": true,
+      "detail": "19 docs"
+    },
+    {
+      "name": "report:media-social-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_MEDIA_SOCIAL_READY_REPORT.md"
+    },
+    {
+      "name": "docs/ads-os",
+      "ok": true,
+      "critical": true,
+      "detail": "11 docs"
+    },
+    {
+      "name": "report:ads-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_ADS_OS_REPORT.md"
+    },
+    {
+      "name": "docs/revops-os",
+      "ok": true,
+      "critical": true,
+      "detail": "10 docs"
+    },
+    {
+      "name": "report:revops-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_REVOPS_OS_REPORT.md"
+    },
+    {
+      "name": "docs/delivery-os",
+      "ok": true,
+      "critical": true,
+      "detail": "12 docs"
+    },
+    {
+      "name": "report:delivery-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_DELIVERY_READINESS_REPORT.md"
+    },
+    {
+      "name": "docs/support-os",
+      "ok": true,
+      "critical": true,
+      "detail": "9 docs"
+    },
+    {
+      "name": "report:support-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_SUPPORT_OS_REPORT.md"
+    },
+    {
+      "name": "docs/finance-os",
+      "ok": true,
+      "critical": true,
+      "detail": "11 docs"
+    },
+    {
+      "name": "report:finance-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_FINANCE_OS_REPORT.md"
+    },
+    {
+      "name": "docs/legal-os",
+      "ok": true,
+      "critical": true,
+      "detail": "12 docs"
+    },
+    {
+      "name": "report:legal-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_LEGAL_OS_REPORT.md"
+    },
+    {
+      "name": "docs/security-os",
+      "ok": true,
+      "critical": true,
+      "detail": "12 docs"
+    },
+    {
+      "name": "report:security-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_SECURITY_TRUST_REPORT.md"
+    },
+    {
+      "name": "docs/analytics-os",
+      "ok": true,
+      "critical": true,
+      "detail": "8 docs"
+    },
+    {
+      "name": "report:analytics-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_ANALYTICS_READY_REPORT.md"
+    },
+    {
+      "name": "docs/ai-evals-os",
+      "ok": true,
+      "critical": true,
+      "detail": "8 docs"
+    },
+    {
+      "name": "report:ai-evals-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_AI_EVALS_REPORT.md"
+    },
+    {
+      "name": "docs/people-os",
+      "ok": true,
+      "critical": true,
+      "detail": "9 docs"
+    },
+    {
+      "name": "report:people-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_PEOPLE_OS_REPORT.md"
+    },
+    {
+      "name": "docs/partnerships-os",
+      "ok": true,
+      "critical": true,
+      "detail": "8 docs"
+    },
+    {
+      "name": "report:partnerships-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_PARTNERSHIPS_OS_REPORT.md"
+    },
+    {
+      "name": "docs/investor-os",
+      "ok": true,
+      "critical": true,
+      "detail": "8 docs"
+    },
+    {
+      "name": "report:investor-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_INVESTOR_OS_REPORT.md"
+    },
+    {
+      "name": "docs/operations-os",
+      "ok": true,
+      "critical": true,
+      "detail": "11 docs"
+    },
+    {
+      "name": "report:operations-os",
+      "ok": true,
+      "critical": true,
+      "detail": "99_OPERATIONS_OS_REPORT.md"
+    },
+    {
+      "name": "docs/go-live",
+      "ok": true,
+      "critical": true,
+      "detail": "11 docs"
+    },
+    {
+      "name": "report:go-live",
+      "ok": true,
+      "critical": true,
+      "detail": "99_GO_LIVE_REPORT.md"
+    },
+    {
+      "name": "docs/launch-control",
+      "ok": true,
+      "critical": true,
+      "detail": "12 docs"
+    },
+    {
+      "name": "report:launch-control",
+      "ok": true,
+      "critical": true,
+      "detail": "99_FINAL_CONTROL_TOWER_REPORT.md"
+    },
+    {
+      "name": "verticals (5)",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_generate_400_drafts.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_safety_audit.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_launch_readiness.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_founder_review_report.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_score_drafts.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_quality_gate.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_compliance_gate.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_seed_leads_validate.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_lead_intake_validate.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_metrics_summary.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:commercial_crm_schema_verify.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:media_social_calendar_generate.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:media_social_verify.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:media_social_metrics_template.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:site_launch_static_check.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:api_commercial_static_check.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:final_secret_and_risk_scan.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:final_launch_control_verify.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:ai_eval_sample_drafts.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "config:crm_pipeline_schema.json",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "config:analytics_events.json",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "config:ad_campaigns_seed.json",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "config:ai_eval_rubrics.json",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_generate_400_drafts.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_safety_audit.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_launch_readiness.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_no_external_send.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_quality_gate.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_compliance_gate.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_outputs_schema.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_founder_review_report.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_commercial_seed_leads_validate.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_media_social_os.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_site_launch_static_check.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_crm_schema_verify.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_api_commercial_static_check.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_final_secret_and_risk_scan.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_final_launch_control_verify.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_startup_os_verify.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "test:test_ai_eval_rubrics.py",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:commercial-draft-factory.yml",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:media-social-calendar.yml",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:site-commercial-verify.yml",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:final-launch-control.yml",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:startup-os-verify.yml",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "README mentions Startup OS",
+      "ok": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "latest safety audit clean",
+      "ok": true,
+      "critical": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "date": "2026-06-04",
+  "total_drafts": 400,
+  "flag_violations": [],
+  "phrase_violations": [],
+  "flag_violation_count": 0,
+  "phrase_violation_count": 0,
+  "invariant": "the system never sends externally"
+}

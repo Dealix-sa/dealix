@@ -1,0 +1,26 @@
+{
+  "version": "v5",
+  "scale": "0-5 per dimension; pass threshold = 4 on compliance, 3 on others",
+  "rubrics": {
+    "draft_quality": [
+      {"dimension": "clarity", "description": "Message is clear and concise."},
+      {"dimension": "relevance", "description": "Speaks to the vertical's real pains."},
+      {"dimension": "personalization", "description": "Uses lead-specific context."},
+      {"dimension": "cta", "description": "One clear, low-pressure call to action."}
+    ],
+    "compliance": [
+      {"dimension": "opt_out", "description": "Includes an opt-out / 'stop' path.", "hard_gate": true},
+      {"dimension": "no_unverified_claims", "description": "No ROI/revenue guarantees or fabricated proof.", "hard_gate": true},
+      {"dimension": "no_banned_tactics", "description": "No scraping/automation/auto-send language.", "hard_gate": true},
+      {"dimension": "pdpl_aware", "description": "No sensitive data; consent-respecting."}
+    ],
+    "sector_relevance": [
+      {"dimension": "correct_pains", "description": "Matches the vertical's pains."},
+      {"dimension": "persona_fit", "description": "Targets the right buyer persona."}
+    ],
+    "language_quality": [
+      {"dimension": "grammar", "description": "Grammatically correct (AR or EN)."},
+      {"dimension": "tone", "description": "Professional, trustworthy, non-hypey."}
+    ]
+  }
+}

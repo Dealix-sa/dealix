@@ -1,0 +1,401 @@
+draft_id,company_name,vertical,channel,language,offer_name,priority_score,quality_score,compliance_score,requires_founder_approval,send_allowed,external_send_blocked,status
+BATCH-2026-06-04-00002,Prospect 00002 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00005,Prospect 00005 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00008,Prospect 00008 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00011,Prospect 00011 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00014,"Prospect 00014 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00017,Prospect 00017 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00020,Prospect 00020 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00023,Prospect 00023 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00026,Prospect 00026 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00029,"Prospect 00029 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00032,Prospect 00032 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00035,Prospect 00035 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00038,Prospect 00038 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00041,Prospect 00041 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00044,"Prospect 00044 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00047,Prospect 00047 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00050,Prospect 00050 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00053,Prospect 00053 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00056,Prospect 00056 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00059,"Prospect 00059 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00062,Prospect 00062 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00065,Prospect 00065 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00068,Prospect 00068 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00071,Prospect 00071 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00074,"Prospect 00074 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00077,Prospect 00077 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00080,Prospect 00080 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00083,Prospect 00083 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00086,Prospect 00086 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00089,"Prospect 00089 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00092,Prospect 00092 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00095,Prospect 00095 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00098,Prospect 00098 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00101,Prospect 00101 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00104,"Prospect 00104 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00107,Prospect 00107 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00110,Prospect 00110 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00113,Prospect 00113 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00116,Prospect 00116 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00119,"Prospect 00119 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00122,Prospect 00122 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00125,Prospect 00125 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00128,Prospect 00128 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00131,Prospect 00131 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00134,"Prospect 00134 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00137,Prospect 00137 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00140,Prospect 00140 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00143,Prospect 00143 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00146,Prospect 00146 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00149,"Prospect 00149 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00152,Prospect 00152 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00155,Prospect 00155 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00158,Prospect 00158 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00161,Prospect 00161 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00164,"Prospect 00164 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00167,Prospect 00167 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00170,Prospect 00170 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00173,Prospect 00173 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00176,Prospect 00176 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00179,"Prospect 00179 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00182,Prospect 00182 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00185,Prospect 00185 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00188,Prospect 00188 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00191,Prospect 00191 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00194,"Prospect 00194 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00197,Prospect 00197 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00200,Prospect 00200 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00203,Prospect 00203 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00206,Prospect 00206 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00209,"Prospect 00209 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00212,Prospect 00212 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00215,Prospect 00215 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00218,Prospect 00218 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00221,Prospect 00221 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00224,"Prospect 00224 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00227,Prospect 00227 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00230,Prospect 00230 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00233,Prospect 00233 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00236,Prospect 00236 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00239,"Prospect 00239 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00242,Prospect 00242 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00245,Prospect 00245 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00248,Prospect 00248 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00251,Prospect 00251 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00254,"Prospect 00254 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00257,Prospect 00257 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00260,Prospect 00260 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00263,Prospect 00263 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00266,Prospect 00266 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00269,"Prospect 00269 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00272,Prospect 00272 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00275,Prospect 00275 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00278,Prospect 00278 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00281,Prospect 00281 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00284,"Prospect 00284 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00287,Prospect 00287 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00290,Prospect 00290 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00293,Prospect 00293 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00296,Prospect 00296 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00299,"Prospect 00299 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00302,Prospect 00302 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00305,Prospect 00305 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00308,Prospect 00308 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00311,Prospect 00311 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00314,"Prospect 00314 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00317,Prospect 00317 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00320,Prospect 00320 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00323,Prospect 00323 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00326,Prospect 00326 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00329,"Prospect 00329 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00332,Prospect 00332 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00335,Prospect 00335 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00338,Prospect 00338 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00341,Prospect 00341 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00344,"Prospect 00344 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00347,Prospect 00347 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00350,Prospect 00350 (Facilities Management & Maintenance),facilities_management,website_form,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00353,Prospect 00353 (Legal & Professional Services),legal_professional_services,website_form,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00356,Prospect 00356 (Contracting & Project Controls),contracting_project_controls,website_form,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00359,"Prospect 00359 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00362,Prospect 00362 (Real Estate & Property Operations),real_estate_property_ops,website_form,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00365,Prospect 00365 (Facilities Management & Maintenance),facilities_management,website_form,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00368,Prospect 00368 (Legal & Professional Services),legal_professional_services,website_form,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00371,Prospect 00371 (Contracting & Project Controls),contracting_project_controls,website_form,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00374,"Prospect 00374 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00377,Prospect 00377 (Real Estate & Property Operations),real_estate_property_ops,website_form,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00380,Prospect 00380 (Facilities Management & Maintenance),facilities_management,website_form,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00383,Prospect 00383 (Legal & Professional Services),legal_professional_services,website_form,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00386,Prospect 00386 (Contracting & Project Controls),contracting_project_controls,website_form,en,Paid Pilot,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00389,"Prospect 00389 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,en,Enterprise Custom OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00392,Prospect 00392 (Real Estate & Property Operations),real_estate_property_ops,website_form,en,Department OS,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00395,Prospect 00395 (Facilities Management & Maintenance),facilities_management,website_form,en,AI Workflow Audit,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00398,Prospect 00398 (Legal & Professional Services),legal_professional_services,website_form,en,Monthly Retainer,5.0,5,5,True,False,True,needs_review
+BATCH-2026-06-04-00001,Prospect 00001 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00004,"Prospect 00004 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00007,Prospect 00007 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00010,Prospect 00010 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00013,Prospect 00013 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00016,Prospect 00016 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00019,"Prospect 00019 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00022,Prospect 00022 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00025,Prospect 00025 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00028,Prospect 00028 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00031,Prospect 00031 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00034,"Prospect 00034 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00037,Prospect 00037 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00040,Prospect 00040 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00043,Prospect 00043 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00046,Prospect 00046 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00049,"Prospect 00049 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00052,Prospect 00052 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00055,Prospect 00055 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00058,Prospect 00058 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00061,Prospect 00061 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00064,"Prospect 00064 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00067,Prospect 00067 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00070,Prospect 00070 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00073,Prospect 00073 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00076,Prospect 00076 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00079,"Prospect 00079 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00082,Prospect 00082 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00085,Prospect 00085 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00088,Prospect 00088 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00091,Prospect 00091 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00094,"Prospect 00094 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00097,Prospect 00097 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00100,Prospect 00100 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00103,Prospect 00103 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00106,Prospect 00106 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00109,"Prospect 00109 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00112,Prospect 00112 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00115,Prospect 00115 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00118,Prospect 00118 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00121,Prospect 00121 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00124,"Prospect 00124 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00127,Prospect 00127 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00130,Prospect 00130 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00133,Prospect 00133 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00136,Prospect 00136 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00139,"Prospect 00139 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00142,Prospect 00142 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00145,Prospect 00145 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00148,Prospect 00148 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00151,Prospect 00151 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00154,"Prospect 00154 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00157,Prospect 00157 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00160,Prospect 00160 (Facilities Management & Maintenance),facilities_management,cold_email,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00163,Prospect 00163 (Legal & Professional Services),legal_professional_services,cold_email,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00166,Prospect 00166 (Contracting & Project Controls),contracting_project_controls,cold_email,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00169,"Prospect 00169 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00172,Prospect 00172 (Real Estate & Property Operations),real_estate_property_ops,cold_email,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00175,Prospect 00175 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00178,Prospect 00178 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00181,Prospect 00181 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00184,"Prospect 00184 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00187,Prospect 00187 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00190,Prospect 00190 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00193,Prospect 00193 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00196,Prospect 00196 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00199,"Prospect 00199 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00202,Prospect 00202 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00205,Prospect 00205 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00208,Prospect 00208 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00211,Prospect 00211 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00214,"Prospect 00214 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00217,Prospect 00217 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00220,Prospect 00220 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00223,Prospect 00223 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00226,Prospect 00226 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00229,"Prospect 00229 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00232,Prospect 00232 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00235,Prospect 00235 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00238,Prospect 00238 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00241,Prospect 00241 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00244,"Prospect 00244 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00247,Prospect 00247 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00250,Prospect 00250 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00253,Prospect 00253 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00256,Prospect 00256 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00259,"Prospect 00259 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00262,Prospect 00262 (Real Estate & Property Operations),real_estate_property_ops,follow_up,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00265,Prospect 00265 (Facilities Management & Maintenance),facilities_management,follow_up,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00268,Prospect 00268 (Legal & Professional Services),legal_professional_services,follow_up,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00271,Prospect 00271 (Contracting & Project Controls),contracting_project_controls,follow_up,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00274,"Prospect 00274 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00277,Prospect 00277 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00280,Prospect 00280 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00283,Prospect 00283 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00286,Prospect 00286 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00289,"Prospect 00289 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00292,Prospect 00292 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00295,Prospect 00295 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00298,Prospect 00298 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00301,Prospect 00301 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00304,"Prospect 00304 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00307,Prospect 00307 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00310,Prospect 00310 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00313,Prospect 00313 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00316,Prospect 00316 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00319,"Prospect 00319 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00322,Prospect 00322 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00325,Prospect 00325 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00328,Prospect 00328 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00331,Prospect 00331 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00334,"Prospect 00334 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00337,Prospect 00337 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00340,Prospect 00340 (Facilities Management & Maintenance),facilities_management,linkedin_manual,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00343,Prospect 00343 (Legal & Professional Services),legal_professional_services,linkedin_manual,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00346,Prospect 00346 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00349,"Prospect 00349 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00352,Prospect 00352 (Real Estate & Property Operations),real_estate_property_ops,website_form,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00355,Prospect 00355 (Facilities Management & Maintenance),facilities_management,website_form,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00358,Prospect 00358 (Legal & Professional Services),legal_professional_services,website_form,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00361,Prospect 00361 (Contracting & Project Controls),contracting_project_controls,website_form,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00364,"Prospect 00364 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00367,Prospect 00367 (Real Estate & Property Operations),real_estate_property_ops,website_form,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00370,Prospect 00370 (Facilities Management & Maintenance),facilities_management,website_form,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00373,Prospect 00373 (Legal & Professional Services),legal_professional_services,website_form,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00376,Prospect 00376 (Contracting & Project Controls),contracting_project_controls,website_form,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00379,"Prospect 00379 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00382,Prospect 00382 (Real Estate & Property Operations),real_estate_property_ops,website_form,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00385,Prospect 00385 (Facilities Management & Maintenance),facilities_management,website_form,en,AI Workflow Audit,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00388,Prospect 00388 (Legal & Professional Services),legal_professional_services,website_form,en,Monthly Retainer,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00391,Prospect 00391 (Contracting & Project Controls),contracting_project_controls,website_form,en,Paid Pilot,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00394,"Prospect 00394 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,en,Enterprise Custom OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00397,Prospect 00397 (Real Estate & Property Operations),real_estate_property_ops,website_form,en,Department OS,4.33,4,5,True,False,True,needs_review
+BATCH-2026-06-04-00000,Prospect 00000 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00003,Prospect 00003 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00006,Prospect 00006 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00009,"Prospect 00009 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00012,Prospect 00012 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00015,Prospect 00015 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00018,Prospect 00018 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00021,Prospect 00021 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00024,"Prospect 00024 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00027,Prospect 00027 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00030,Prospect 00030 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00033,Prospect 00033 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00036,Prospect 00036 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00039,"Prospect 00039 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00042,Prospect 00042 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00045,Prospect 00045 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00048,Prospect 00048 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00051,Prospect 00051 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00054,"Prospect 00054 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00057,Prospect 00057 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00060,Prospect 00060 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00063,Prospect 00063 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00066,Prospect 00066 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00069,"Prospect 00069 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00072,Prospect 00072 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00075,Prospect 00075 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00078,Prospect 00078 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00081,Prospect 00081 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00084,"Prospect 00084 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00087,Prospect 00087 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00090,Prospect 00090 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00093,Prospect 00093 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00096,Prospect 00096 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00099,"Prospect 00099 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00102,Prospect 00102 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00105,Prospect 00105 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00108,Prospect 00108 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00111,Prospect 00111 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00114,"Prospect 00114 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00117,Prospect 00117 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00120,Prospect 00120 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00123,Prospect 00123 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00126,Prospect 00126 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00129,"Prospect 00129 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00132,Prospect 00132 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00135,Prospect 00135 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00138,Prospect 00138 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00141,Prospect 00141 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00144,"Prospect 00144 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00147,Prospect 00147 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00150,Prospect 00150 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00153,Prospect 00153 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00156,Prospect 00156 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00159,"Prospect 00159 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00162,Prospect 00162 (Real Estate & Property Operations),real_estate_property_ops,cold_email,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00165,Prospect 00165 (Facilities Management & Maintenance),facilities_management,cold_email,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00168,Prospect 00168 (Legal & Professional Services),legal_professional_services,cold_email,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00171,Prospect 00171 (Contracting & Project Controls),contracting_project_controls,cold_email,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00174,"Prospect 00174 (Consulting, Training & B2B Services)",consulting_training_b2b,cold_email,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00177,Prospect 00177 (Real Estate & Property Operations),real_estate_property_ops,follow_up,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00180,Prospect 00180 (Facilities Management & Maintenance),facilities_management,follow_up,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00183,Prospect 00183 (Legal & Professional Services),legal_professional_services,follow_up,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00186,Prospect 00186 (Contracting & Project Controls),contracting_project_controls,follow_up,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00189,"Prospect 00189 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00192,Prospect 00192 (Real Estate & Property Operations),real_estate_property_ops,follow_up,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00195,Prospect 00195 (Facilities Management & Maintenance),facilities_management,follow_up,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00198,Prospect 00198 (Legal & Professional Services),legal_professional_services,follow_up,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00201,Prospect 00201 (Contracting & Project Controls),contracting_project_controls,follow_up,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00204,"Prospect 00204 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00207,Prospect 00207 (Real Estate & Property Operations),real_estate_property_ops,follow_up,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00210,Prospect 00210 (Facilities Management & Maintenance),facilities_management,follow_up,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00213,Prospect 00213 (Legal & Professional Services),legal_professional_services,follow_up,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00216,Prospect 00216 (Contracting & Project Controls),contracting_project_controls,follow_up,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00219,"Prospect 00219 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00222,Prospect 00222 (Real Estate & Property Operations),real_estate_property_ops,follow_up,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00225,Prospect 00225 (Facilities Management & Maintenance),facilities_management,follow_up,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00228,Prospect 00228 (Legal & Professional Services),legal_professional_services,follow_up,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00231,Prospect 00231 (Contracting & Project Controls),contracting_project_controls,follow_up,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00234,"Prospect 00234 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00237,Prospect 00237 (Real Estate & Property Operations),real_estate_property_ops,follow_up,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00240,Prospect 00240 (Facilities Management & Maintenance),facilities_management,follow_up,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00243,Prospect 00243 (Legal & Professional Services),legal_professional_services,follow_up,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00246,Prospect 00246 (Contracting & Project Controls),contracting_project_controls,follow_up,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00249,"Prospect 00249 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00252,Prospect 00252 (Real Estate & Property Operations),real_estate_property_ops,follow_up,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00255,Prospect 00255 (Facilities Management & Maintenance),facilities_management,follow_up,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00258,Prospect 00258 (Legal & Professional Services),legal_professional_services,follow_up,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00261,Prospect 00261 (Contracting & Project Controls),contracting_project_controls,follow_up,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00264,"Prospect 00264 (Consulting, Training & B2B Services)",consulting_training_b2b,follow_up,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00267,Prospect 00267 (Real Estate & Property Operations),real_estate_property_ops,follow_up,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00270,Prospect 00270 (Facilities Management & Maintenance),facilities_management,follow_up,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00273,Prospect 00273 (Legal & Professional Services),legal_professional_services,follow_up,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00276,Prospect 00276 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00279,"Prospect 00279 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00282,Prospect 00282 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00285,Prospect 00285 (Facilities Management & Maintenance),facilities_management,linkedin_manual,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00288,Prospect 00288 (Legal & Professional Services),legal_professional_services,linkedin_manual,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00291,Prospect 00291 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00294,"Prospect 00294 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00297,Prospect 00297 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00300,Prospect 00300 (Facilities Management & Maintenance),facilities_management,linkedin_manual,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00303,Prospect 00303 (Legal & Professional Services),legal_professional_services,linkedin_manual,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00306,Prospect 00306 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00309,"Prospect 00309 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00312,Prospect 00312 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00315,Prospect 00315 (Facilities Management & Maintenance),facilities_management,linkedin_manual,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00318,Prospect 00318 (Legal & Professional Services),legal_professional_services,linkedin_manual,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00321,Prospect 00321 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00324,"Prospect 00324 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00327,Prospect 00327 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00330,Prospect 00330 (Facilities Management & Maintenance),facilities_management,linkedin_manual,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00333,Prospect 00333 (Legal & Professional Services),legal_professional_services,linkedin_manual,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00336,Prospect 00336 (Contracting & Project Controls),contracting_project_controls,linkedin_manual,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00339,"Prospect 00339 (Consulting, Training & B2B Services)",consulting_training_b2b,linkedin_manual,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00342,Prospect 00342 (Real Estate & Property Operations),real_estate_property_ops,linkedin_manual,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00345,Prospect 00345 (Facilities Management & Maintenance),facilities_management,linkedin_manual,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00348,Prospect 00348 (Legal & Professional Services),legal_professional_services,linkedin_manual,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00351,Prospect 00351 (Contracting & Project Controls),contracting_project_controls,website_form,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00354,"Prospect 00354 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00357,Prospect 00357 (Real Estate & Property Operations),real_estate_property_ops,website_form,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00360,Prospect 00360 (Facilities Management & Maintenance),facilities_management,website_form,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00363,Prospect 00363 (Legal & Professional Services),legal_professional_services,website_form,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00366,Prospect 00366 (Contracting & Project Controls),contracting_project_controls,website_form,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00369,"Prospect 00369 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00372,Prospect 00372 (Real Estate & Property Operations),real_estate_property_ops,website_form,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00375,Prospect 00375 (Facilities Management & Maintenance),facilities_management,website_form,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00378,Prospect 00378 (Legal & Professional Services),legal_professional_services,website_form,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00381,Prospect 00381 (Contracting & Project Controls),contracting_project_controls,website_form,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00384,"Prospect 00384 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00387,Prospect 00387 (Real Estate & Property Operations),real_estate_property_ops,website_form,ar,Department OS,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00390,Prospect 00390 (Facilities Management & Maintenance),facilities_management,website_form,ar,AI Workflow Audit,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00393,Prospect 00393 (Legal & Professional Services),legal_professional_services,website_form,ar,Monthly Retainer,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00396,Prospect 00396 (Contracting & Project Controls),contracting_project_controls,website_form,ar,Paid Pilot,3.67,3,5,True,False,True,needs_review
+BATCH-2026-06-04-00399,"Prospect 00399 (Consulting, Training & B2B Services)",consulting_training_b2b,website_form,ar,Enterprise Custom OS,3.67,3,5,True,False,True,needs_review

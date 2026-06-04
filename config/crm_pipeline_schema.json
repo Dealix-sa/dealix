@@ -1,0 +1,43 @@
+{
+  "version": "v5",
+  "currency": "SAR",
+  "external_send": "forbidden",
+  "stages": [
+    "raw lead",
+    "researched",
+    "draft generated",
+    "founder review",
+    "manually contacted",
+    "replied positive",
+    "discovery booked",
+    "diagnostic proposed",
+    "diagnostic sold",
+    "pilot proposed",
+    "pilot sold",
+    "retainer",
+    "expansion",
+    "disqualified",
+    "suppressed"
+  ],
+  "lead_fields": {
+    "lead_id": "string (required, unique)",
+    "company_name": "string (required)",
+    "vertical": "enum: facilities_management|contracting_project_controls|real_estate_property_ops|legal_professional_services|consulting_training_b2b",
+    "country": "string (required)",
+    "city": "string",
+    "buyer_persona": "string",
+    "buyer_title": "string",
+    "source": "enum: opt_in_form|warm_intro|referral|inbound (no scraping, no purchased lists)",
+    "consent": "bool (required true to contact)",
+    "suppressed": "bool (default false)",
+    "stage": "enum: one of stages",
+    "owner": "string (founder)",
+    "created_at": "iso8601",
+    "notes": "string"
+  },
+  "invariants": {
+    "no_crm_push_send": true,
+    "consent_required_to_contact": true,
+    "suppressed_never_contacted": true
+  }
+}

@@ -1,0 +1,33 @@
+name: V5 — Site & Commercial Verify
+
+# Static verification of the V5 launch site routes and commercial safety surface.
+# No build secrets, no external sending. Read-only permissions.
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+      - "apps/web/app/**"
+      - "scripts/site_launch_static_check.py"
+      - "scripts/api_commercial_static_check.py"
+      - "docs/site-launch/**"
+      - "docs/commercial-launch/**"
+
+permissions:
+  contents: read
+
+jobs:
+  site-commercial-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Static checks
+        run: |
+          python scripts/site_launch_static_check.py
+          python scripts/api_commercial_static_check.py
+          python scripts/commercial_crm_schema_verify.py
+          python scripts/v5/scaffold_web_pages.py --check
+          python scripts/v5/scaffold_docs.py --check

@@ -1,0 +1,12 @@
+{
+  "version": "v5",
+  "note": "Manual inputs only. Leave null until real, measured values exist.",
+  "metrics": {
+    "reach": null,
+    "engagement": null,
+    "profile_visits": null,
+    "inbound_dms": null,
+    "follower_growth": null,
+    "posts_published": null
+  }
+}
