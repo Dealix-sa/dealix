@@ -7,7 +7,6 @@ Exit 0 only if all critical gates pass. Writes a console GO/NO-GO summary and
 relies on outputs/startup_os + outputs/commercial_launch artifacts.
 """
 from __future__ import annotations
-import json
 import subprocess
 import sys
 from pathlib import Path

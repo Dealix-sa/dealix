@@ -6,7 +6,7 @@ Scans V5-added files (scripts/commercial_*, scripts/v5/*, config/*) for forbidde
 send primitives. Read-only/draft-only by construction. Fails (exit 1) on any hit.
 """
 from __future__ import annotations
-import re, sys
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]

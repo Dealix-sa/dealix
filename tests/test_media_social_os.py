@@ -1,7 +1,6 @@
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
 import json
-from pathlib import Path
 from _v5util import run, ROOT
 
 
