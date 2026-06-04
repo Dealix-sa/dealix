@@ -10,7 +10,7 @@ import final_secret_and_risk_scan as scan
 import media_social_calendar_generate as cal
 import site_launch_static_check as site
 from _commercial_common import COMMERCIAL_OUTPUTS, OUTPUTS_DIR, write_json
-from _launch_util import ROOT, SEED
+from _launch_util import SEED
 
 DAY = "2099-06-01"
 

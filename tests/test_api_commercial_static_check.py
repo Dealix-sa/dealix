@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import api_commercial_static_check as apic
-from _launch_util import ROOT
 
 
 def test_api_check_passes():

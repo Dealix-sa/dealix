@@ -59,7 +59,9 @@ def verify() -> list[str]:
         text = script.read_text(encoding="utf-8", errors="ignore")
         for rx in patterns:
             if rx.search(text):
-                errors.append(f"{script.name}: publish/secret pattern {rx.pattern}")
+                # Do not echo the matched pattern/text back into the message.
+                errors.append(f"{script.name}: matched a forbidden publish/automation pattern")
+                break
     return errors
 
 

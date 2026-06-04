@@ -5,7 +5,6 @@ from __future__ import annotations
 import media_social_calendar_generate as cal
 import media_social_verify as verify
 from _commercial_common import load_config
-from _launch_util import ROOT
 
 
 def test_calendar_generates_30_days():

@@ -25,7 +25,7 @@ import argparse
 import hashlib
 import random
 import sys
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -198,6 +198,8 @@ def _make_draft(
 
     opt_in = lead.get("opt_in_status", "unknown")
     research_required = opt_in == "unknown"
+    triggers = vert.get("triggers", ["general outreach"])
+    trigger_event = random.choice(triggers)  # noqa: S311
 
     draft: dict[str, Any] = {
         "draft_id": draft_id,
@@ -215,9 +217,7 @@ def _make_draft(
         "offer_stage": offer["stage"],
         "offer_name": offer["name_en"],
         "pain_angle": pain["en"],
-        "trigger_event": random.choice(
-            vert.get("triggers", ["general outreach"])
-        ),  # noqa: S311 - non-crypto sample selection
+        "trigger_event": trigger_event,
         "subject": subject,
         "body": body,
         "cta": cta,
@@ -337,7 +337,7 @@ def write_outputs(result: dict[str, Any], out_dir: Path) -> dict[str, Any]:
         f"- Needs research: **{len(needs_research)}**",
         "",
         "All drafts are review-only. `send_allowed=false`, `no_auto_send=true`. "
-        "The founder approves and sends manually; the system never sends.",
+        + "The founder approves and sends manually; the system never sends.",
         "",
         "| # | Priority | Company | Vertical | Channel | Lang | Offer | Subject |",
         "|---|----------|---------|----------|---------|------|-------|---------|",
@@ -450,7 +450,7 @@ def write_outputs(result: dict[str, Any], out_dir: Path) -> dict[str, Any]:
         "5. Move CRM stages manually (no push-send).",
         "",
         "The system did not and will not send any of these. No SMTP, no WhatsApp, "
-        "no LinkedIn automation, no form auto-submit.",
+        + "no LinkedIn automation, no form auto-submit.",
     ]
     write_text(out_dir / "next_actions.md", "\n".join(next_actions) + "\n")
 

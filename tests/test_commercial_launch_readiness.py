@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import commercial_launch_readiness as readiness
-from _launch_util import ROOT
 
 
 def test_configs_and_docs_present():

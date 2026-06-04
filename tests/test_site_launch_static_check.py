@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import site_launch_static_check as site
-from _launch_util import ROOT
 
 
 def test_site_check_passes():

@@ -230,7 +230,7 @@ def _write_markdown(report: dict[str, Any], path: Path) -> None:
         *[f"- {x}" for x in report["no_go_scope"]],
         "",
         "> AI drafts, ranks, and recommends. Founder reviews, approves, and sends manually. "
-        "The system never sends externally.",
+        + "The system never sends externally.",
     ]
     write_text(path, "\n".join(lines) + "\n")
 

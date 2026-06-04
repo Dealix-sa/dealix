@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from _commercial_common import load_config
-from _launch_util import ROOT
 from commercial_crm_schema_verify import EXPECTED_STAGES, verify
 
 

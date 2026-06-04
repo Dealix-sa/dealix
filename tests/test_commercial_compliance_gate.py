@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from _commercial_common import load_config
-from _launch_util import SEED, TEST_DAY
 from commercial_compliance_gate import evaluate_compliance
 
 GATES = load_config("commercial_compliance_gates.json")

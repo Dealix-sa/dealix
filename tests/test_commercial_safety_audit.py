@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import commercial_safety_audit as audit
 from _commercial_common import COMMERCIAL_OUTPUTS, write_jsonl
-from _launch_util import ROOT
 
 
 def test_code_surface_has_no_send_constructs():
