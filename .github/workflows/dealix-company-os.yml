@@ -1,0 +1,33 @@
+name: Dealix Company OS Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  company-os:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify master tree
+        run: python scripts/verify_master_tree.py
+
+      - name: Verify document quality
+        run: python scripts/verify_document_quality.py
+
+      - name: Verify company OS deep
+        run: python scripts/verify_company_os_deep.py
+
+      - name: Verify full ops
+        run: python scripts/verify_full_ops.py
+
+      - name: Compile company OS
+        run: python -m compileall -q dealix scripts
