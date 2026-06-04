@@ -56,6 +56,10 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
+          # Secret scanning is owned by the dedicated Gitleaks job above;
+          # restrict Trivy to dependency vulnerability scanning to avoid
+          # duplicate (and false-positive) secret findings.
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
