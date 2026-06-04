@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "note": "Campaign PLANS and assets only. No paid ads are launched from this repo. Launch requires founder approval, tracking, and legal/privacy review.",
+  "platforms": {
+    "google_search": {
+      "campaign_structure": ["Brand", "AI Revenue Ops", "Facilities Management AI", "Contracting Project Controls AI"],
+      "keywords": ["ai revenue operations saudi", "ai workflow audit ksa", "facilities management software saudi", "project controls ai gcc"],
+      "negative_keywords": ["free", "jobs", "salary", "course", "torrent", "crack"],
+      "utm": {"source": "google", "medium": "cpc"}
+    },
+    "linkedin": {
+      "campaign_structure": ["Decision Makers - Operations", "Founders & MDs", "PMO & Project Controls"],
+      "audiences": ["Operations Director", "Managing Partner", "Project Director", "GM"],
+      "utm": {"source": "linkedin", "medium": "paid_social"}
+    },
+    "meta": {
+      "campaign_structure": ["Awareness", "Lead - Diagnostic"],
+      "audiences": ["B2B owners KSA/GCC", "Lookalike of site visitors"],
+      "utm": {"source": "meta", "medium": "paid_social"}
+    }
+  },
+  "budget_scenarios_sar": {"test": 3000, "scale": 15000, "aggressive": 40000},
+  "landing_page_mapping": {
+    "ai_revenue_ops": "/commercial",
+    "facilities": "/verticals/facilities-management",
+    "diagnostic": "/contact"
+  },
+  "utm_taxonomy": "utm_source / utm_medium / utm_campaign / utm_content / utm_term",
+  "compliance_notes": "Disclose advertiser. No guaranteed-ROI claims. Respect platform B2B policies and PDPL."
+}

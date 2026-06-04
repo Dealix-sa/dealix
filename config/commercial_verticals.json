@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "verticals": [
+    {
+      "id": "facilities_management",
+      "name_en": "Facilities Management & Maintenance",
+      "name_ar": "إدارة المرافق والصيانة",
+      "buyer_titles": ["Operations Director", "FM Director", "Maintenance Manager", "General Manager"],
+      "pains_en": [
+        "Maintenance requests scattered across WhatsApp, calls and email",
+        "No single view of SLA breaches and overdue work orders",
+        "Quotes and approvals stuck waiting for managers",
+        "Reactive instead of preventive maintenance",
+        "Client reporting is manual and inconsistent"
+      ],
+      "pains_ar": [
+        "طلبات الصيانة موزعة بين واتساب والمكالمات والبريد",
+        "لا توجد رؤية موحدة لتجاوزات اتفاقية مستوى الخدمة وأوامر العمل المتأخرة",
+        "العروض والموافقات معلقة بانتظار المدراء",
+        "صيانة تفاعلية بدل الصيانة الوقائية",
+        "تقارير العملاء يدوية وغير موحدة"
+      ],
+      "triggers": ["new contract win", "SLA penalty incident", "ISO/quality audit", "portfolio expansion"],
+      "entry_offer": "AI Workflow Audit"
+    },
+    {
+      "id": "contracting_project_controls",
+      "name_en": "Contracting & Project Controls",
+      "name_ar": "المقاولات وضبط المشاريع",
+      "buyer_titles": ["Project Director", "PMO Lead", "Commercial Manager", "Operations Director"],
+      "pains_en": [
+        "Project status spread across spreadsheets and chats",
+        "Variation orders and claims tracked manually",
+        "Subcontractor follow-up is reactive and slow",
+        "Cost overruns discovered too late",
+        "Executive reporting takes days to assemble"
+      ],
+      "pains_ar": [
+        "حالة المشروع موزعة بين الجداول والمحادثات",
+        "أوامر التغيير والمطالبات تتابع يدويًا",
+        "متابعة مقاولي الباطن بطيئة وتفاعلية",
+        "تجاوزات التكلفة تُكتشف متأخرة",
+        "تقارير الإدارة تستغرق أيامًا لتجميعها"
+      ],
+      "triggers": ["new project award", "claim dispute", "PMO setup", "audit finding"],
+      "entry_offer": "AI Workflow Audit"
+    },
+    {
+      "id": "real_estate_property_ops",
+      "name_en": "Real Estate & Property Operations",
+      "name_ar": "العقار وإدارة الأملاك",
+      "buyer_titles": ["Property Operations Manager", "Leasing Director", "Asset Manager", "General Manager"],
+      "pains_en": [
+        "Leads from listings lost without structured follow-up",
+        "Tenant requests and renewals tracked manually",
+        "Collections and arrears visibility is weak",
+        "No standardized proposal or quote process",
+        "Owner reporting is slow and inconsistent"
+      ],
+      "pains_ar": [
+        "عملاء الإعلانات يضيعون بلا متابعة منظمة",
+        "طلبات المستأجرين والتجديدات تتابع يدويًا",
+        "ضعف الرؤية على التحصيل والمتأخرات",
+        "لا توجد عملية موحدة للعروض والتسعير",
+        "تقارير الملاك بطيئة وغير متسقة"
+      ],
+      "triggers": ["new tower handover", "leasing campaign", "portfolio acquisition", "occupancy drop"],
+      "entry_offer": "AI Workflow Audit"
+    },
+    {
+      "id": "legal_professional_services",
+      "name_en": "Legal & Professional Services",
+      "name_ar": "المكاتب القانونية والخدمات المهنية",
+      "buyer_titles": ["Managing Partner", "Practice Manager", "Operations Lead", "Partner"],
+      "pains_en": [
+        "Matter intake and conflict checks are manual",
+        "Engagement letters and proposals are inconsistent",
+        "Time and billing follow-up is leaky",
+        "Document workflows scattered across drives",
+        "Client status updates are ad hoc"
+      ],
+      "pains_ar": [
+        "استقبال القضايا وفحص التعارض يدوي",
+        "خطابات التكليف والعروض غير موحدة",
+        "متابعة الوقت والفوترة بها تسريب",
+        "سير عمل المستندات موزع بين الأقراص",
+        "تحديثات حالة العميل عشوائية"
+      ],
+      "triggers": ["new partner", "practice expansion", "compliance review", "billing leakage finding"],
+      "entry_offer": "AI Workflow Audit",
+      "privacy_first": true
+    },
+    {
+      "id": "consulting_training_b2b",
+      "name_en": "Consulting, Training & B2B Services",
+      "name_ar": "الاستشارات والتدريب وخدمات B2B",
+      "buyer_titles": ["Managing Director", "Business Development Lead", "Operations Manager", "Founder"],
+      "pains_en": [
+        "Proposals built from scratch every time",
+        "Pipeline lives in one person's head",
+        "Follow-up after meetings is inconsistent",
+        "Delivery handover loses context",
+        "Renewals and upsells are missed"
+      ],
+      "pains_ar": [
+        "العروض تُبنى من الصفر كل مرة",
+        "خط الأنابيب موجود في ذهن شخص واحد",
+        "المتابعة بعد الاجتماعات غير منتظمة",
+        "تسليم التنفيذ يفقد السياق",
+        "التجديدات والترقيات تُفوّت"
+      ],
+      "triggers": ["new service line", "team growth", "lost-deal review", "renewal season"],
+      "entry_offer": "AI Workflow Audit"
+    }
+  ]
+}

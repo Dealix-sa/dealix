@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.1",
+  "_note": "Detection patterns for the safety audit. This file and the audit script are excluded from scanning, so the patterns here are definitions, not violations. Code-send patterns are matched against .py files only (as real import/call syntax). Forbidden flag states are matched against all scanned files; the GOOD states (false) never match the forbidden (true) patterns.",
+  "import_send_patterns": [
+    "import smtplib",
+    "from smtplib",
+    "import sendgrid",
+    "from sendgrid",
+    "import mailgun",
+    "import postmark",
+    "from twilio",
+    "import twilio",
+    "import selenium",
+    "from selenium",
+    "import playwright",
+    "from playwright",
+    "pyppeteer"
+  ],
+  "call_send_patterns": [
+    "smtplib.smtp",
+    ".send_message(",
+    "send_mail(",
+    "send_email(",
+    "ses.send_email(",
+    "ses.send_raw_email(",
+    ".messages.create(",
+    "mailgun.messages",
+    "sg.send(",
+    "auto_submit(",
+    "bulk_send(",
+    "mass_outreach(",
+    "crm_push_send(",
+    "auto_connect(",
+    "auto_message("
+  ],
+  "forbidden_flag_states": [
+    "\"send_allowed\": true",
+    "\"external_send_blocked\": false",
+    "\"no_auto_send\": false",
+    "\"requires_founder_approval\": false",
+    "send_allowed=true",
+    "external_send_blocked=false",
+    "no_auto_send=false"
+  ],
+  "scan_globs": [
+    "scripts/commercial_*.py",
+    "scripts/media_social_*.py",
+    "config/commercial_*.json",
+    "config/media_social_*.json",
+    "config/ad_campaigns_seed.json",
+    "config/crm_pipeline_schema.json",
+    ".github/workflows/commercial-draft-factory.yml",
+    ".github/workflows/media-social-calendar.yml"
+  ],
+  "scan_exclude": [
+    "config/commercial_risk_terms.json",
+    "scripts/commercial_safety_audit.py"
+  ]
+}

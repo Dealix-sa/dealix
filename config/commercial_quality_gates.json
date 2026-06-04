@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "min_quality_score": 0.6,
+  "reject_if": {
+    "missing_cta": true,
+    "missing_opt_out_when_required": true,
+    "more_than_one_offer": true,
+    "no_pain_reference": true,
+    "no_vertical_reference": true,
+    "misleading_subject": true
+  },
+  "generic_ai_phrases": [
+    "i hope this email finds you well",
+    "i wanted to reach out",
+    "circle back",
+    "synergy",
+    "unlock the power",
+    "in today's fast-paced world",
+    "game-changer",
+    "revolutionary solution"
+  ],
+  "misleading_subject_markers": ["re:", "fwd:", "your invoice", "payment due", "account suspended"]
+}

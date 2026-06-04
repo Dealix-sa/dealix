@@ -48,7 +48,7 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 ## Quick start
 
 ```bash
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env
@@ -81,6 +81,49 @@ make dependency-inventory  # export lightweight dependency inventory
 make release-manifest      # export production release manifest
 make test                  # test suite with project pytest defaults
 make security              # Bandit + detect-secrets baseline scan when configured
+```
+
+---
+
+## Commercial Launch OS
+
+A self-contained, deterministic, founder-review draft engine. **AI drafts and
+ranks; the founder reviews and approves; the system never sends externally.**
+See [`docs/commercial-launch/`](docs/commercial-launch/00_README.md).
+
+- **First 5 verticals** — facilities management, contracting & project controls,
+  real estate ops, legal & professional services, consulting/training/B2B.
+- **400+ daily draft factory** — 175 cold email, 100 follow-up, 75 LinkedIn
+  manual, 50 website/form drafts; every draft is approval-gated.
+- **Founder Review Queue** — ranked top-50, quality + compliance gates,
+  rejection reasons, all written to `outputs/commercial_launch/<date>/`.
+- **Safety audit** — proves **no external sending**: no SMTP, WhatsApp outbound,
+  LinkedIn automation, or website auto-submit anywhere in the system.
+- **Media & Social OS** — [`docs/media-social-os/`](docs/media-social-os/00_MEDIA_SOCIAL_OS.md):
+  30-day content calendar (plan only, no auto-publish), press kit, ads *planning*.
+
+Every generated draft carries `send_allowed=false`, `external_send_blocked=true`,
+`requires_founder_approval=true`, `no_auto_send=true`.
+
+### Commands
+
+```bash
+python scripts/commercial_generate_400_drafts.py --target 400
+python scripts/commercial_safety_audit.py
+python scripts/commercial_launch_readiness.py
+python scripts/media_social_calendar_generate.py
+python scripts/commercial_metrics_summary.py
+
+pytest -q tests/test_commercial_generate_400_drafts.py \
+  tests/test_commercial_safety_audit.py \
+  tests/test_commercial_launch_readiness.py \
+  tests/test_commercial_no_external_send.py \
+  tests/test_commercial_quality_gate.py \
+  tests/test_commercial_compliance_gate.py \
+  tests/test_commercial_outputs_schema.py \
+  tests/test_commercial_founder_review_report.py \
+  tests/test_commercial_seed_leads_validate.py \
+  tests/test_media_social_os.py
 ```
 
 ---

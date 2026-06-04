@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "note": "Revenue and reply metrics are MANUAL inputs or samples. The system never assumes real revenue.",
+  "metrics": [
+    "drafts_generated",
+    "founder_review_count",
+    "rejected_quality",
+    "rejected_compliance",
+    "needs_research",
+    "approved_manual",
+    "manual_sent",
+    "replies_positive",
+    "replies_negative",
+    "reply_rate",
+    "qualified_calls",
+    "diagnostics_sold",
+    "pilots_sold",
+    "retainers_started",
+    "revenue_pipeline_sar",
+    "realized_revenue_sar",
+    "top_vertical",
+    "top_channel",
+    "top_objection",
+    "safety_violations",
+    "compliance_rejections"
+  ],
+  "manual_input_metrics": [
+    "replies_positive",
+    "replies_negative",
+    "qualified_calls",
+    "diagnostics_sold",
+    "pilots_sold",
+    "retainers_started",
+    "revenue_pipeline_sar",
+    "realized_revenue_sar"
+  ]
+}

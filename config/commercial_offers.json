@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "currency": "SAR",
+  "disclaimer": "Prices are indicative ranges. No ROI is guaranteed. Figures used in messaging are estimated targets or non-guaranteed examples only.",
+  "offers": [
+    {
+      "id": "ai_workflow_audit",
+      "stage": "audit",
+      "name_en": "AI Workflow Audit",
+      "name_ar": "تدقيق سير العمل بالذكاء الاصطناعي",
+      "price_min": 499,
+      "price_max": 2500,
+      "duration": "3-7 days",
+      "outputs": ["workflow map", "bottleneck diagnosis", "risk map", "pilot recommendation"],
+      "priority_weight": 1.0
+    },
+    {
+      "id": "paid_pilot",
+      "stage": "pilot",
+      "name_en": "Paid Pilot",
+      "name_ar": "تجربة مدفوعة",
+      "price_min": 5000,
+      "price_max": 25000,
+      "duration": "14-30 days",
+      "outputs": ["working pilot", "limited dataset", "approval gates", "measurable workflow output"],
+      "priority_weight": 1.6
+    },
+    {
+      "id": "department_os",
+      "stage": "department_os",
+      "name_en": "Department OS",
+      "name_ar": "نظام تشغيل الإدارة",
+      "price_min": 25000,
+      "price_max": 150000,
+      "duration": "30-90 days",
+      "outputs": ["production-ready internal workflow OS"],
+      "priority_weight": 2.2
+    },
+    {
+      "id": "monthly_retainer",
+      "stage": "retainer",
+      "name_en": "Monthly Retainer",
+      "name_ar": "اشتراك شهري",
+      "price_min": 3000,
+      "price_max": 25000,
+      "duration": "monthly",
+      "outputs": ["monitoring", "improvements", "reporting", "support"],
+      "priority_weight": 2.0
+    },
+    {
+      "id": "enterprise_custom_os",
+      "stage": "enterprise",
+      "name_en": "Enterprise Custom OS",
+      "name_ar": "نظام تشغيل مؤسسي مخصص",
+      "price_min": 150000,
+      "price_max": null,
+      "duration": "custom",
+      "outputs": ["multiple workflows", "governance", "custom integrations"],
+      "priority_weight": 2.6
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "note": "Plan and asset config only. Nothing here is published automatically to any platform.",
+  "days": 30,
+  "seed": 20260604,
+  "platforms": ["linkedin", "x", "instagram", "tiktok", "youtube_shorts"],
+  "content_pillars": [
+    "AI Revenue Operations",
+    "Saudi/GCC business workflows",
+    "Founder operating system",
+    "AI with human approval",
+    "Sector-specific workflow pain",
+    "Case-method / before-after",
+    "Trust/compliance/no blind automation",
+    "Delivery lessons",
+    "Sales follow-up systems",
+    "Executive decision packs"
+  ],
+  "verticals": [
+    "facilities_management",
+    "contracting_project_controls",
+    "real_estate_property_ops",
+    "legal_professional_services",
+    "consulting_training_b2b"
+  ],
+  "metrics_to_track": ["impressions", "engagement_rate", "profile_visits", "saves", "qualified_dms"]
+}

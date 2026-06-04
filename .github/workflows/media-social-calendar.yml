@@ -1,0 +1,33 @@
+# Generates the 30-day social content CALENDAR as artifacts.
+# Plan only. No platform publishing. No secrets.
+name: Media social calendar
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"  # Monday 09:00 KSA
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate 30-day content calendar (no auto-publish)
+        run: python scripts/media_social_calendar_generate.py
+
+      - name: Emit social metrics template
+        run: python scripts/media_social_metrics_template.py
+
+      - name: Upload media/social artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-social-calendar
+          path: outputs/commercial_launch/**/media_social/**
+          if-no-files-found: error

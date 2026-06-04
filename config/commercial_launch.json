@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "name": "Dealix Commercial Launch OS",
+  "identity": {
+    "en": "Dealix is a Saudi/GCC B2B AI Revenue & Operations OS.",
+    "ar": "ديالكس نظام تشغيل إيرادات وعمليات مدعوم بالذكاء الاصطناعي للشركات السعودية والخليجية."
+  },
+  "golden_rule": "AI drafts and ranks. Founder reviews and approves. System never sends externally.",
+  "engines": [
+    "Lead Engine",
+    "Service Engine",
+    "Trust Engine",
+    "Commercial Launch OS",
+    "Founder Review OS",
+    "Delivery OS",
+    "Media & Social OS",
+    "Client Expansion OS"
+  ],
+  "daily_target_drafts": 400,
+  "output_root": "outputs/commercial_launch",
+  "currency": "SAR",
+  "safety": {
+    "send_allowed": false,
+    "external_send_blocked": true,
+    "requires_founder_approval": true,
+    "no_auto_send": true
+  },
+  "seed": 20260604,
+  "languages": ["ar", "en"]
+}
