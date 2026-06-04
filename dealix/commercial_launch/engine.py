@@ -166,9 +166,6 @@ class DraftContext:
 
 
 def _build_subject(ctx: DraftContext) -> str:
-    vname = ctx.vertical["name_en"] if ctx.language == "en" else ctx.vertical["name_ar"]
-    if ctx.language == "en":
-        return f"{ctx.company}: {ctx.angle}".strip()
     return f"{ctx.company}: {ctx.angle}".strip()
 
 

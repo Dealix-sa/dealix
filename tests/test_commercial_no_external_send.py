@@ -6,9 +6,6 @@ longer review-only and must NOT be shipped.
 
 from __future__ import annotations
 
-import json
-from pathlib import Path
-
 from dealix.commercial_launch.engine import (
     ROOT,
     generate_drafts,
