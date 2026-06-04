@@ -1,0 +1,42 @@
+name: Commercial Draft Factory
+
+# Review-only draft generation. AI drafts, ranks, recommends.
+# Founder reviews, approves, and sends manually. This workflow never sends.
+# Artifact-only: it does NOT commit daily outputs and uses NO secrets.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 05:00 UTC every weekday (08:00 KSA).
+    - cron: "0 5 * * 1-5"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: commercial-draft-factory
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate 400+ review-only drafts
+        run: python scripts/commercial_generate_400_drafts.py --target 400
+      - name: Safety audit (no-send guarantee)
+        run: python scripts/commercial_safety_audit.py
+      - name: Founder review report
+        run: python scripts/commercial_founder_review_report.py
+      - name: Metrics summary
+        run: python scripts/commercial_metrics_summary.py
+      - name: Upload draft artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: commercial-launch-outputs
+          path: outputs/commercial_launch/
+          retention-days: 14

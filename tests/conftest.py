@@ -5,7 +5,16 @@ Pytest fixtures & LLM mocking.
 from __future__ import annotations
 
 import os
+import sys
+from pathlib import Path
 from collections.abc import AsyncGenerator, Iterator
+
+# Make the launch OS scripts and the tests dir importable for the self-contained
+# launch test modules (tests/ is a package, so siblings need an explicit path).
+_ROOT = Path(__file__).resolve().parents[1]
+for _p in (str(_ROOT), str(_ROOT / "scripts"), str(_ROOT / "tests")):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 from typing import Any
 from unittest.mock import AsyncMock, patch
 
@@ -23,11 +32,19 @@ os.environ.setdefault("GLM_API_KEY", "test-glm-key")
 os.environ.setdefault("GOOGLE_API_KEY", "test-google-key")
 
 
-from core.llm.base import LLMResponse
+try:  # heavy app stack is optional for lightweight, self-contained test modules
+    from core.llm.base import LLMResponse
+
+    _HEAVY_STACK = True
+except Exception:  # pragma: no cover - exercised only when app deps are absent
+    LLMResponse = Any  # type: ignore[assignment,misc]
+    _HEAVY_STACK = False
 
 
 @pytest.fixture
-def mock_llm_response() -> LLMResponse:
+def mock_llm_response() -> "LLMResponse":  # type: ignore[valid-type]
+    if not _HEAVY_STACK:
+        pytest.skip("core LLM stack not installed")
     return LLMResponse(
         content='{"ok": true, "message": "mock response"}',
         provider="mock",

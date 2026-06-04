@@ -1,0 +1,19 @@
+{
+  "required_fields": [
+    "draft_id", "batch_id", "created_at", "company_name", "source_lead_id",
+    "vertical", "country", "city", "channel", "language", "buyer_persona",
+    "buyer_title", "offer_stage", "offer_name", "pain_angle", "trigger_event",
+    "subject", "body", "cta", "opt_out", "quality_score", "compliance_score",
+    "fit_score", "priority_score", "risk_level", "research_required",
+    "founder_notes", "rejection_reason", "status", "send_allowed",
+    "external_send_blocked", "requires_founder_approval", "no_auto_send"
+  ],
+  "min_subject_length": 8,
+  "max_subject_length": 90,
+  "min_body_length": 120,
+  "max_body_length": 1400,
+  "min_quality_score": 60,
+  "require_opt_out_for_channels": ["cold_email", "follow_up"],
+  "require_cta": true,
+  "personalization_tokens": ["company_name", "city", "vertical"]
+}

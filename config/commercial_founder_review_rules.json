@@ -1,0 +1,15 @@
+{
+  "priority_weights": {
+    "fit_score": 0.45,
+    "quality_score": 0.35,
+    "compliance_score": 0.20
+  },
+  "top_priority_count": 50,
+  "review_columns": [
+    "priority_score", "draft_id", "company_name", "vertical", "city",
+    "channel", "language", "offer_name", "subject", "fit_score",
+    "quality_score", "compliance_score", "risk_level", "status"
+  ],
+  "founder_decisions": ["approve_manual_send", "edit", "reject", "needs_research"],
+  "reminder": "AI drafts, ranks, and recommends. Founder reviews, approves, and sends manually. The system never sends externally."
+}

@@ -1,0 +1,10 @@
+{
+  "daily_target": 400,
+  "distribution": {
+    "cold_email": 175,
+    "follow_up": 100,
+    "linkedin_manual": 75,
+    "website_contact_form": 50
+  },
+  "notes": "Counts sum to the daily target. The generator must produce at least the target number of review-only drafts."
+}

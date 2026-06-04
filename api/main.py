@@ -329,6 +329,15 @@ def create_app() -> FastAPI:
     app.include_router(integration_capability_router.router)
     # Self-prefix /api/v1/metrics. Read-only; tenant-isolated for {handle}.
     app.include_router(business_metrics_board_router.router)
+    # Commercial Launch OS — read-only config endpoints (additive, guarded).
+    # No send routes; never breaks startup if the module is unavailable.
+    try:
+        from api.routers import commercial_launch_readonly as _cl_readonly
+
+        app.include_router(_cl_readonly.router)
+        app.include_router(_cl_readonly.media_router)
+    except Exception:  # pragma: no cover - defensive, additive only
+        pass
     # Wave 13B — Founder ops-autopilot (War Room, cockpit, strongest-plan, evidence)
     from api.routers.revenue_ops_autopilot import AUTOPILOT_ROUTERS
 

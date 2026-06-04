@@ -1,0 +1,41 @@
+name: Site & Commercial Verify
+
+# Static verification of the website launch + commercial API surface.
+# No secrets, read-only, artifact-only.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - "api/routers/commercial_launch_readonly.py"
+      - "config/**"
+      - "scripts/site_launch_static_check.py"
+      - "scripts/api_commercial_static_check.py"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Site launch static check
+        run: python scripts/site_launch_static_check.py
+      - name: API commercial static check
+        run: python scripts/api_commercial_static_check.py
+      - name: CRM schema verify
+        run: python scripts/commercial_crm_schema_verify.py
+      - name: Upload verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-api-verification
+          path: |
+            outputs/site_launch/
+            outputs/api/
+          retention-days: 14

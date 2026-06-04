@@ -1,0 +1,41 @@
+{
+  "forbidden_phrases": [
+    "guaranteed roi",
+    "guaranteed return",
+    "100%",
+    "replace your team",
+    "replace lawyers",
+    "replace your lawyers",
+    "automate everything",
+    "no human needed",
+    "from our database",
+    "as discussed",
+    "as we discussed",
+    "per our conversation",
+    "act now or lose",
+    "limited time only",
+    "last chance",
+    "risk-free guarantee"
+  ],
+  "fake_urgency_phrases": [
+    "act now",
+    "urgent action required",
+    "expires today",
+    "final notice",
+    "don't miss out"
+  ],
+  "fake_familiarity_phrases": [
+    "as discussed",
+    "as we discussed",
+    "per our conversation",
+    "following up on our call",
+    "great speaking with you"
+  ],
+  "required_elements": {
+    "opt_out_required_channels": ["cold_email", "follow_up"],
+    "privacy_first_required_verticals": ["legal_professional_services"]
+  },
+  "privacy_first_markers_en": ["privacy", "opt out", "consent"],
+  "privacy_first_markers_ar": ["الخصوصية", "إلغاء الاشتراك", "موافقتك"],
+  "min_compliance_score": 80
+}

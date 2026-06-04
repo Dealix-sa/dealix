@@ -1,0 +1,20 @@
+{
+  "events": [
+    {"name": "page_view", "props": ["path", "lang", "referrer"]},
+    {"name": "cta_click", "props": ["cta_id", "path", "lang"]},
+    {"name": "audit_request_submitted", "props": ["vertical", "lang"]},
+    {"name": "diagnostic_booking_clicked", "props": ["source", "lang"]},
+    {"name": "contact_form_submitted", "props": ["vertical", "lang"]},
+    {"name": "lead_created", "props": ["vertical", "source", "stage"]},
+    {"name": "draft_generated", "props": ["channel", "vertical", "batch_id"]},
+    {"name": "founder_review_logged", "props": ["decision", "channel"]},
+    {"name": "manual_send_logged", "props": ["channel", "vertical"]},
+    {"name": "reply_logged", "props": ["sentiment", "channel"]}
+  ],
+  "utm_taxonomy": {
+    "utm_source": ["linkedin", "x", "instagram", "google", "direct", "newsletter"],
+    "utm_medium": ["organic_social", "cpc", "email", "referral"],
+    "utm_campaign_format": "{vertical}_{offer}_{yyyymm}"
+  },
+  "note": "Event schema only. No tracking is enabled from this repo; numbers are never assumed."
+}

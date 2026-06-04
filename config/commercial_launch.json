@@ -1,0 +1,29 @@
+{
+  "name": "Dealix Commercial Launch OS",
+  "version": "1.0.0",
+  "company": {
+    "name": "Dealix",
+    "tagline_en": "AI Revenue & Operations OS for Saudi and GCC B2B companies",
+    "tagline_ar": "نظام تشغيل الإيرادات والعمليات بالذكاء الاصطناعي للشركات السعودية والخليجية",
+    "primary_market": "Saudi Arabia",
+    "secondary_markets": ["United Arab Emirates", "Qatar", "Kuwait", "Bahrain", "Oman"]
+  },
+  "governing_rule": "AI drafts, ranks, and recommends. Founder reviews, approves, and sends manually. The system never sends externally.",
+  "daily_draft_target": 400,
+  "mandatory_safety_flags": {
+    "send_allowed": false,
+    "external_send_blocked": true,
+    "requires_founder_approval": true,
+    "no_auto_send": true
+  },
+  "languages": ["ar", "en"],
+  "first_5_verticals": [
+    "facilities_management",
+    "contracting_project_controls",
+    "real_estate_property_ops",
+    "legal_professional_services",
+    "consulting_training_b2b"
+  ],
+  "human_in_the_loop": true,
+  "external_send_enabled": false
+}

@@ -1,0 +1,46 @@
+{
+  "status": "PLAN_ONLY_NOT_LAUNCHED",
+  "live_launch_allowed": false,
+  "platforms": [
+    {
+      "platform": "google_search",
+      "objective": "lead",
+      "target_verticals": ["facilities_management", "contracting_project_controls", "real_estate_property_ops"],
+      "keywords": ["facilities management software ksa", "project controls consultant riyadh", "property operations automation"],
+      "negative_keywords": ["jobs", "salary", "free", "course", "internship"],
+      "landing_pages": ["/commercial", "/verticals", "/pricing"],
+      "conversion_events": ["audit_request_submitted", "diagnostic_booking_clicked"]
+    },
+    {
+      "platform": "linkedin_ads",
+      "objective": "lead",
+      "audience": {"titles": ["Operations Director", "Projects Director", "Managing Partner"], "geos": ["Saudi Arabia", "UAE"]},
+      "landing_pages": ["/commercial", "/services"],
+      "conversion_events": ["audit_request_submitted"]
+    },
+    {
+      "platform": "meta_ads",
+      "objective": "awareness",
+      "audience": {"interests": ["B2B SaaS", "business operations"], "geos": ["Saudi Arabia"]},
+      "landing_pages": ["/", "/launch"],
+      "conversion_events": ["cta_click"]
+    }
+  ],
+  "budget_scenarios": [
+    {"name": "test", "monthly_sar": 3000},
+    {"name": "ramp", "monthly_sar": 10000},
+    {"name": "scale", "monthly_sar": 30000}
+  ],
+  "utm_taxonomy": {"utm_campaign_format": "{platform}_{vertical}_{yyyymm}"},
+  "tracking_requirements": ["conversion events installed", "UTM on every link", "landing page QA passed"],
+  "compliance_owner": "Founder",
+  "claim_review_required": true,
+  "launch_no_go_conditions": [
+    "tracking not installed",
+    "conversion events undefined",
+    "claims not reviewed",
+    "no compliance owner sign-off",
+    "no budget cap set",
+    "landing page QA failing"
+  ]
+}

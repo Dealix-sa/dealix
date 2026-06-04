@@ -1,0 +1,35 @@
+name: Media & Social Calendar
+
+# Generates a 30-day content calendar for MANUAL posting only.
+# No auto-post, no platform APIs, no secrets. Artifact-only.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Weekly on Sunday 06:00 UTC.
+    - cron: "0 6 * * 0"
+
+permissions:
+  contents: read
+
+jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate content calendar
+        run: python scripts/media_social_calendar_generate.py
+      - name: Social metrics template
+        run: python scripts/media_social_metrics_template.py
+      - name: Verify media/social OS (no auto-post, no secrets)
+        run: python scripts/media_social_verify.py
+      - name: Upload media artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: media-social-outputs
+          path: outputs/media_social/
+          retention-days: 14
