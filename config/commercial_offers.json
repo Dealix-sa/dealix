@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "currency": "SAR",
+  "offer_ladder": [
+    {
+      "stage": "entry_diagnostic",
+      "name_en": "AI Workflow Audit",
+      "name_ar": "تشخيص سير العمل بالذكاء الاصطناعي",
+      "price_min": 499,
+      "price_max": 2500,
+      "duration": "3–7 days",
+      "deliverables": [
+        "workflow map", "bottleneck diagnosis", "automation risk map",
+        "AI opportunity score", "pilot recommendation", "sample implementation plan"
+      ],
+      "goal": "low-risk paid entry"
+    },
+    {
+      "stage": "paid_pilot",
+      "name_en": "Paid Pilot",
+      "name_ar": "تجربة مدفوعة",
+      "price_min": 5000,
+      "price_max": 25000,
+      "duration": "14–30 days",
+      "deliverables": [
+        "limited working pilot", "approval gates", "sample dataset only",
+        "workflow dashboard", "user feedback loop", "pilot report"
+      ]
+    },
+    {
+      "stage": "department_os",
+      "name_en": "Department OS",
+      "name_ar": "نظام تشغيل القسم",
+      "price_min": 25000,
+      "price_max": 150000,
+      "duration": "30–90 days",
+      "deliverables": [
+        "production-ready internal workflow OS", "documentation", "training",
+        "admin controls", "reporting", "handover"
+      ]
+    },
+    {
+      "stage": "monthly_retainer",
+      "name_en": "Monthly Retainer",
+      "name_ar": "اشتراك شهري",
+      "price_min": 3000,
+      "price_max": 25000,
+      "billing": "per_month",
+      "deliverables": [
+        "monitoring", "improvement backlog", "monthly executive report",
+        "workflow tuning", "support", "expansion planning"
+      ]
+    },
+    {
+      "stage": "enterprise_custom_os",
+      "name_en": "Enterprise Custom OS",
+      "name_ar": "نظام تشغيل مخصص للمؤسسات",
+      "price_min": 150000,
+      "price_max": null,
+      "scope": [
+        "multiple workflows", "custom integrations", "governance",
+        "advanced security", "enterprise delivery plan"
+      ]
+    }
+  ]
+}

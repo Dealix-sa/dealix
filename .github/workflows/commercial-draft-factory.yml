@@ -1,0 +1,70 @@
+name: Commercial Draft Factory (review-only)
+
+# AI generates and ranks drafts only. Founder reviews and approves.
+# This workflow NEVER sends anything. It produces review artifacts only.
+# No secrets. No SMTP. No WhatsApp. No LinkedIn automation. No external sending.
+
+on:
+  schedule:
+    # Daily at 05:00 UTC (08:00 Riyadh)
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Minimum drafts to generate"
+        required: false
+        default: "400"
+
+# Least-privilege: read-only, no write access to the repo.
+permissions:
+  contents: read
+
+concurrency:
+  group: commercial-draft-factory-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  generate-review-queue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate seed leads
+        run: python scripts/commercial_seed_leads_validate.py
+
+      - name: Generate 400+ founder-review drafts
+        run: python scripts/commercial_generate_400_drafts.py --target ${{ github.event.inputs.target || '400' }}
+
+      - name: No-external-send safety audit (must pass)
+        run: python scripts/commercial_safety_audit.py
+
+      - name: Commercial launch readiness (must pass)
+        run: python scripts/commercial_launch_readiness.py --target 400
+
+      - name: Run commercial tests
+        run: |
+          pip install pytest
+          pytest -q \
+            tests/test_commercial_generate_400_drafts.py \
+            tests/test_commercial_safety_audit.py \
+            tests/test_commercial_launch_readiness.py \
+            tests/test_commercial_no_external_send.py \
+            tests/test_commercial_quality_gate.py \
+            tests/test_commercial_compliance_gate.py \
+            tests/test_commercial_outputs_schema.py \
+            tests/test_commercial_founder_review_report.py \
+            tests/test_commercial_seed_leads_validate.py
+
+      - name: Upload founder review queue (artifact only — never committed, never sent)
+        uses: actions/upload-artifact@v4
+        with:
+          name: commercial-launch-review-queue-${{ github.run_id }}
+          path: outputs/commercial_launch/
+          retention-days: 7

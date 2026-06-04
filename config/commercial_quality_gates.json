@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "pass_threshold": 70,
+  "founder_priority_threshold": 80,
+  "word_limits": {
+    "cold_email": 180,
+    "follow_up": 180,
+    "linkedin_manual": 100,
+    "website_form_manual": 120,
+    "whatsapp_optin_reply": 80
+  },
+  "penalties": {
+    "no_pain": 25,
+    "no_single_cta": 20,
+    "multiple_cta": 20,
+    "no_opt_out": 20,
+    "no_sector_context": 20,
+    "multiple_offers": 15,
+    "generic_agency_language": 15,
+    "exaggerated_claims": 25,
+    "misleading_subject": 20,
+    "over_word_limit": 15,
+    "no_human_control_in_sensitive_sector": 20
+  },
+  "generic_agency_phrases": [
+    "we are an ai agency",
+    "cutting-edge ai solutions",
+    "leverage synergies",
+    "best-in-class platform",
+    "revolutionize your business",
+    "نقدم حلول ذكاء اصطناعي رائدة",
+    "نحدث ثورة في عملك"
+  ]
+}

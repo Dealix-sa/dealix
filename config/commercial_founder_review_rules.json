@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "review_first": ["risk_level:high", "offer_stage:enterprise_custom_os", "offer_stage:department_os"],
+  "priority_score": {
+    "weights": {"quality_score": 0.4, "compliance_score": 0.3, "fit_score": 0.3},
+    "founder_priority_threshold": 80
+  },
+  "top_lists": {
+    "top_priority": 50,
+    "top_value": 10,
+    "top_risk": 10
+  },
+  "manual_actions_only": true,
+  "auto_send_allowed": false,
+  "notes": "Founder approval is required before any external action. AI never sends."
+}

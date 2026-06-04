@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "description": "Banned / high-risk phrases for the compliance gate. Case-insensitive substring match.",
+  "banned_phrases_en": [
+    "guaranteed roi",
+    "guaranteed results",
+    "100% success",
+    "replace your team",
+    "replace your lawyers",
+    "replace lawyers",
+    "no human needed",
+    "automate everything",
+    "we found your data",
+    "from our database",
+    "as discussed",
+    "act now or lose",
+    "last chance",
+    "limited time only",
+    "you must reply",
+    "urgent action required"
+  ],
+  "banned_phrases_ar": [
+    "عائد مضمون",
+    "نتائج مضمونة",
+    "نجاح 100%",
+    "نستبدل فريقك",
+    "نستبدل المحامين",
+    "بدون تدخل بشري",
+    "نؤتمت كل شيء",
+    "وجدنا بياناتك",
+    "من قاعدة بياناتنا",
+    "كما اتفقنا",
+    "فرصة أخيرة",
+    "عرض لفترة محدودة فقط"
+  ],
+  "sensitive_sectors": ["legal", "healthcare", "finance"],
+  "privacy_first_required_terms_en": ["privacy", "your control", "approval", "consent"],
+  "privacy_first_required_terms_ar": ["الخصوصية", "موافقتك", "تحت سيطرتك", "اعتمادك"]
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "auto_metrics": [
+    "drafts_generated",
+    "founder_review_count",
+    "rejected_quality",
+    "rejected_compliance",
+    "needs_research",
+    "approved_manual",
+    "safety_violations",
+    "compliance_rejections",
+    "top_vertical",
+    "top_channel"
+  ],
+  "manual_input_metrics": [
+    "manual_sent",
+    "replies_positive",
+    "replies_negative",
+    "reply_rate",
+    "qualified_calls",
+    "diagnostics_sold",
+    "pilots_sold",
+    "retainers_started",
+    "revenue_pipeline_sar",
+    "realized_revenue_sar",
+    "top_objection"
+  ],
+  "notes": "Revenue is never assumed. revenue_pipeline_sar and realized_revenue_sar are manual inputs only (sample/zero by default)."
+}
