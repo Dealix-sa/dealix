@@ -35,6 +35,9 @@ _ALLOWLIST_PATHS = frozenset({
     # The Master Matrix audit doc records the historic finding
     "docs/DEALIX_MASTER_EXECUTION_MATRIX.md",
     "docs/DEALIX_MASTER_EXECUTION_EVIDENCE_TABLE.md",
+    # Enterprise architecture required-tests index — names the lockdown
+    # test by file path so engineers know the Article 4 guard exists.
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # Wave 10.6 + 10.7 sprint reports record the fix and its review
     "docs/WAVE10_6_COHERENCE_SPRINT_REPORT.md",
     "docs/WAVE10_7_PR187_CLEANUP_REPORT.md",
