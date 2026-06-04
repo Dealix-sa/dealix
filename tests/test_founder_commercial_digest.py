@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime, timedelta, UTC
 from pathlib import Path
 
 import pytest
@@ -50,7 +50,10 @@ def test_count_evidence_events_today():
 
 
 def test_scope_requested_within_days():
-    rows = [{"event_date": "2026-05-10", "event_type": "scope_requested"}]
+    # Time-independent: anchor the event relative to "now" so the test
+    # does not rot as the calendar advances past a hardcoded date.
+    seven_days_ago = (datetime.now(UTC).date() - timedelta(days=7)).isoformat()
+    rows = [{"event_date": seven_days_ago, "event_type": "scope_requested"}]
     assert scope_requested_within_days(14, rows) is True
     assert scope_requested_within_days(3, rows) is False
 

@@ -29,8 +29,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      # The gitleaks-action wrapper requires a paid license for GitHub
+      # organizations. The gitleaks binary itself is open-source and free,
+      # so we run it directly to keep secret scanning license-free.
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        run: |
+          set -euo pipefail
+          GITLEAKS_VERSION=8.30.1
+          curl -sSfL \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            -o gitleaks.tar.gz
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks dir . --config .gitleaks.toml --redact --exit-code 1 --no-banner
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -42,10 +52,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: fs
           scan-ref: .
+          # Secret scanning is owned by the dedicated Gitleaks job above;
+          # restrict Trivy to dependency vulnerability scanning to avoid
+          # duplicate (and false-positive) secret findings.
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
