@@ -1,0 +1,25 @@
+{
+  "days": 30,
+  "content_pillars": [
+    {"id": "education", "name_en": "AI for B2B operations", "name_ar": "الذكاء الاصطناعي لعمليات الأعمال"},
+    {"id": "proof", "name_en": "Case method & before/after", "name_ar": "منهجية الحالات قبل/بعد"},
+    {"id": "trust", "name_en": "Trust & human-in-the-loop", "name_ar": "الثقة والإنسان في الحلقة"},
+    {"id": "vertical", "name_en": "Vertical deep dives", "name_ar": "تعمّق في القطاعات"},
+    {"id": "founder", "name_en": "Founder build-in-public", "name_ar": "البناء العلني للمؤسس"}
+  ],
+  "platforms": ["linkedin", "x", "instagram", "tiktok", "youtube_shorts"],
+  "verticals": [
+    "facilities_management",
+    "contracting_project_controls",
+    "real_estate_property_ops",
+    "legal_professional_services",
+    "consulting_training_b2b"
+  ],
+  "ctas": [
+    {"id": "request_audit", "en": "Request an AI Workflow Audit", "ar": "اطلب تدقيق سير العمل بالذكاء الاصطناعي"},
+    {"id": "book_diagnostic", "en": "Book a Diagnostic", "ar": "احجز جلسة تشخيص"},
+    {"id": "follow", "en": "Follow for B2B AI playbooks", "ar": "تابِع لأدلة الذكاء الاصطناعي للأعمال"}
+  ],
+  "auto_post": false,
+  "note": "Manual posting only. No platform publishing APIs, no scheduling automation, no secrets."
+}

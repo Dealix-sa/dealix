@@ -1,0 +1,15 @@
+{
+  "high_risk_terms": [
+    "guarantee", "guaranteed", "100%", "replace your team", "no human needed",
+    "automate everything", "from our database"
+  ],
+  "medium_risk_terms": [
+    "urgent", "act now", "limited time", "as discussed", "final notice"
+  ],
+  "sensitive_data_terms": [
+    "national id", "iqama", "passport number", "medical record", "salary data",
+    "bank statement", "credit card"
+  ],
+  "risk_levels": ["low", "medium", "high"],
+  "default_risk_level": "low"
+}

@@ -1,0 +1,23 @@
+{
+  "metrics": [
+    {"key": "website_visitors", "label": "Website visitors", "source": "manual"},
+    {"key": "cta_clicks", "label": "CTA clicks", "source": "manual"},
+    {"key": "audit_requests", "label": "AI Workflow Audit requests", "source": "manual"},
+    {"key": "leads_created", "label": "Leads created", "source": "crm"},
+    {"key": "drafts_generated", "label": "Drafts generated", "source": "draft_factory"},
+    {"key": "founder_review_count", "label": "Drafts reviewed by founder", "source": "manual"},
+    {"key": "manual_sends", "label": "Manual sends by founder", "source": "manual"},
+    {"key": "replies", "label": "Replies received", "source": "manual"},
+    {"key": "positive_replies", "label": "Positive replies", "source": "manual"},
+    {"key": "booked_diagnostics", "label": "Booked diagnostics", "source": "manual"},
+    {"key": "paid_diagnostics", "label": "Paid diagnostics", "source": "manual"},
+    {"key": "pilots_proposed", "label": "Pilots proposed", "source": "manual"},
+    {"key": "pilots_sold", "label": "Pilots sold", "source": "manual"},
+    {"key": "retainer_starts", "label": "Retainer starts", "source": "manual"},
+    {"key": "pipeline_sar", "label": "Pipeline (SAR)", "source": "manual"},
+    {"key": "realized_revenue_sar", "label": "Realized revenue (SAR)", "source": "manual"},
+    {"key": "safety_violations", "label": "Safety violations", "source": "safety_audit"},
+    {"key": "compliance_rejections", "label": "Compliance rejections", "source": "compliance_gate"}
+  ],
+  "note": "All revenue and engagement numbers are manual-input. The repo never assumes real figures."
+}

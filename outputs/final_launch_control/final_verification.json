@@ -1,0 +1,220 @@
+{
+  "date": "2026-06-04",
+  "passed": true,
+  "decision": "GO",
+  "total_checks": 31,
+  "passed_checks": 31,
+  "failed_critical": 0,
+  "checks": [
+    {
+      "check": "drafts_generated>=400",
+      "passed": true,
+      "critical": true,
+      "detail": "400"
+    },
+    {
+      "check": "draft_target_met",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "safety_audit_pass",
+      "passed": true,
+      "critical": true,
+      "detail": "code_violations=0, flag_violations=0"
+    },
+    {
+      "check": "draft_safety_flags",
+      "passed": true,
+      "critical": true,
+      "detail": "400 drafts"
+    },
+    {
+      "check": "crm_schema_valid",
+      "passed": true,
+      "critical": true,
+      "detail": "0 errors"
+    },
+    {
+      "check": "media_calendar_generated",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "check": "media_os_docs",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "site_launch_pass",
+      "passed": true,
+      "critical": true,
+      "detail": "errors=0"
+    },
+    {
+      "check": "api_commercial_pass",
+      "passed": true,
+      "critical": true,
+      "detail": "errors=0"
+    },
+    {
+      "check": "secret_risk_scan_pass",
+      "passed": true,
+      "critical": true,
+      "detail": "secrets=0, claims=0"
+    },
+    {
+      "check": "delivery_os_docs",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "workflow:commercial-draft-factory.yml",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "workflow:media-social-calendar.yml",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "workflow:site-commercial-verify.yml",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "workflow:final-launch-control.yml",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "doc:00_DEALIX_COMPANY_OS.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "doc:00_COMMERCIAL_LAUNCH_OS.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "doc:00_MEDIA_SOCIAL_OS.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "doc:00_DELIVERY_OS.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "doc:00_ANALYTICS_OS.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "doc:00_EXTERNAL_GO_LIVE_REQUIREMENTS.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "doc:00_FINAL_LAUNCH_CONTROL_TOWER.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "report:99_COMPANY_OS_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "report:99_SITE_LAUNCH_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "report:99_FINAL_COMMERCIAL_LAUNCH_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "report:99_MEDIA_SOCIAL_READY_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "report:99_DELIVERY_READINESS_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "report:99_ANALYTICS_READY_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "report:99_GO_LIVE_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "report:99_FINAL_CONTROL_TOWER_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "check": "readme_updated",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    }
+  ],
+  "go_scope": [
+    "public website launch",
+    "commercial positioning",
+    "400 review-only drafts",
+    "founder manual review",
+    "media/social planning",
+    "manual social posting",
+    "paid diagnostics",
+    "discovery calls",
+    "proposals",
+    "pilot planning",
+    "analytics schema",
+    "delivery preparation"
+  ],
+  "no_go_scope": [
+    "automated email sending",
+    "WhatsApp cold outreach",
+    "LinkedIn automation",
+    "website form auto-submit",
+    "bulk sending",
+    "paid ads live launch without tracking/compliance",
+    "processing sensitive data before agreement",
+    "external sending from GitHub Actions"
+  ]
+}

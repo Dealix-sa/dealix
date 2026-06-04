@@ -207,6 +207,56 @@ Then review:
 
 ---
 
+## Full Launch Company OS
+
+Dealix ships a complete, **review-only** Launch Company OS. The governing rule is
+absolute:
+
+> **AI drafts, ranks, and recommends. The founder reviews, approves, and sends manually. The system never sends externally.**
+
+Clone:
+
+```bash
+git clone https://github.com/Dealix-sa/dealix.git
+```
+
+What is included:
+
+- **Company OS** — `docs/company-os/` — strategy, product/revenue/trust operating models, cadence, metrics, risk, decisions.
+- **Website Launch OS** — `apps/web/app/` (18 routes) + `docs/site-launch/` — bilingual, SEO + JSON-LD, approval-first CTAs.
+- **Commercial Launch OS** — `docs/commercial-launch/` — offer ladder (SAR), positioning, channel policy, sales/delivery playbooks.
+- **First 5 verticals** — Facilities Management · Contracting & Project Controls · Real Estate & Property Ops · Legal & Professional Services · Consulting/Training & B2B.
+- **400+ Daily Draft Factory** — `scripts/commercial_generate_400_drafts.py` — 175 cold email / 100 follow-up / 75 LinkedIn / 50 contact-form drafts, every one `send_allowed=false`.
+- **Founder Review Queue** — `outputs/commercial_launch/<date>/founder_review.md` + `top_50_priority.md`.
+- **Media & Social OS** + **Ads OS (plan-only)** — `docs/media-social-os/`, `config/ad_campaigns_seed.json`.
+- **CRM / Lead Ops OS** — `config/crm_pipeline_schema.json` (14 record-only stages, no push-send).
+- **Delivery OS** — `docs/delivery-os/`.
+- **Analytics OS** — `docs/analytics-os/`, `config/analytics_events.json` (manual-input schema only).
+- **External Go-Live OS** — `docs/go-live/` (DNS/SPF/DKIM/DMARC, suppression, privacy/legal).
+- **Safety & Compliance gates** — `scripts/commercial_safety_audit.py`, `commercial_compliance_gate.py`, `commercial_quality_gate.py`.
+- **Final Launch Control Tower** — `scripts/final_launch_control_verify.py` → `outputs/final_launch_control/final_verification.{json,md}` (GO/NO-GO).
+- **GitHub Actions** — `commercial-draft-factory`, `media-social-calendar`, `site-commercial-verify`, `final-launch-control` (dispatch + schedule, `permissions: contents: read`, no secrets, artifact-only).
+
+This OS never sends externally: no SMTP, no WhatsApp outbound, no LinkedIn automation,
+no website form auto-submit, no bulk sending, no scraping, no live paid ads.
+
+### Commands
+
+```bash
+python scripts/commercial_generate_400_drafts.py --target 400
+python scripts/commercial_safety_audit.py
+python scripts/commercial_launch_readiness.py
+python scripts/media_social_calendar_generate.py
+python scripts/media_social_verify.py
+python scripts/site_launch_static_check.py
+python scripts/commercial_crm_schema_verify.py
+python scripts/api_commercial_static_check.py
+python scripts/final_secret_and_risk_scan.py
+python scripts/final_launch_control_verify.py
+```
+
+---
+
 ## Key docs
 
 | Purpose | Document |

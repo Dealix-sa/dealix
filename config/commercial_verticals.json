@@ -1,0 +1,129 @@
+{
+  "verticals": [
+    {
+      "id": "facilities_management",
+      "name_en": "Facilities Management & Maintenance",
+      "name_ar": "إدارة المرافق والصيانة",
+      "icp_en": "FM and maintenance operators managing multi-site contracts in KSA/GCC.",
+      "icp_ar": "مشغلو إدارة المرافق والصيانة الذين يديرون عقودًا متعددة المواقع في السعودية والخليج.",
+      "excluded_icp": "Single-technician home-service businesses; consumer break-fix.",
+      "buyer_titles": ["Operations Director", "FM Director", "General Manager", "Head of Maintenance"],
+      "buyer_personas": ["operations_leader", "commercial_lead"],
+      "top_pains": [
+        "Work-order backlog and slow dispatch",
+        "Manual quote and proposal turnaround",
+        "Fragmented reporting across sites"
+      ],
+      "triggers": ["New multi-site contract", "Backlog spike", "Annual budgeting cycle"],
+      "pain_angles": [
+        {"en": "work-order triage and faster dispatch", "ar": "فرز أوامر العمل وتسريع الإرسال"},
+        {"en": "quote turnaround time", "ar": "زمن إنجاز عروض الأسعار"},
+        {"en": "cross-site operations reporting", "ar": "تقارير العمليات عبر المواقع"}
+      ],
+      "recommended_offer": "ai_workflow_audit"
+    },
+    {
+      "id": "contracting_project_controls",
+      "name_en": "Contracting & Project Controls",
+      "name_ar": "المقاولات وضبط المشاريع",
+      "icp_en": "Mid-to-large contractors and project-controls teams on KSA infrastructure and building projects.",
+      "icp_ar": "شركات المقاولات المتوسطة والكبيرة وفرق ضبط المشاريع في مشاريع البنية التحتية والمباني بالسعودية.",
+      "excluded_icp": "Owner-operator handymen; sub-SAR-1M annual revenue firms.",
+      "buyer_titles": ["Projects Director", "Commercial Manager", "PMO Lead", "Cost Control Manager"],
+      "buyer_personas": ["pmo_lead", "commercial_lead"],
+      "top_pains": [
+        "Slow tender and bid preparation",
+        "Manual progress and cost reporting",
+        "Document and submittal bottlenecks"
+      ],
+      "triggers": ["New tender pipeline", "Project mobilization", "Cost overrun review"],
+      "pain_angles": [
+        {"en": "tender and bid preparation speed", "ar": "سرعة إعداد العطاءات والمناقصات"},
+        {"en": "progress and cost reporting", "ar": "تقارير التقدم والتكلفة"},
+        {"en": "submittal and document review", "ar": "مراجعة المستندات والمخططات"}
+      ],
+      "recommended_offer": "ai_workflow_audit"
+    },
+    {
+      "id": "real_estate_property_ops",
+      "name_en": "Real Estate & Property Operations",
+      "name_ar": "العقار وعمليات إدارة الأملاك",
+      "icp_en": "Property managers and real-estate operators running leasing and tenant operations.",
+      "icp_ar": "مديرو الأملاك ومشغلو العقار الذين يديرون التأجير وعمليات المستأجرين.",
+      "excluded_icp": "Individual brokers; single-unit landlords.",
+      "buyer_titles": ["Property Operations Director", "Leasing Manager", "Asset Manager", "COO"],
+      "buyer_personas": ["operations_leader", "commercial_lead"],
+      "top_pains": [
+        "Slow lead response on listings",
+        "Manual tenant request handling",
+        "Renewal and collections follow-up"
+      ],
+      "triggers": ["New portfolio onboarding", "High vacancy quarter", "Renewal season"],
+      "pain_angles": [
+        {"en": "listing lead response time", "ar": "زمن الرد على عملاء العروض"},
+        {"en": "tenant request handling", "ar": "معالجة طلبات المستأجرين"},
+        {"en": "renewal and collections follow-up", "ar": "متابعة التجديد والتحصيل"}
+      ],
+      "recommended_offer": "ai_workflow_audit"
+    },
+    {
+      "id": "legal_professional_services",
+      "name_en": "Legal & Professional Services",
+      "name_ar": "الخدمات القانونية والمهنية",
+      "icp_en": "Law firms and professional-services practices with structured intake and document work.",
+      "icp_ar": "مكاتب المحاماة والخدمات المهنية ذات الاستقبال المنظم والعمل المستندي.",
+      "excluded_icp": "Solo practitioners without support staff; pro-bono-only clinics.",
+      "buyer_titles": ["Managing Partner", "Practice Manager", "Head of Operations", "Partner"],
+      "buyer_personas": ["practice_lead", "operations_leader"],
+      "top_pains": [
+        "Slow client intake and triage",
+        "Manual document drafting first passes",
+        "Matter status reporting"
+      ],
+      "triggers": ["New practice area", "Hiring freeze with rising caseload", "Compliance review"],
+      "pain_angles": [
+        {"en": "client intake and triage", "ar": "استقبال العملاء وفرزهم"},
+        {"en": "first-draft document preparation", "ar": "إعداد المسودات الأولى للمستندات"},
+        {"en": "matter status reporting", "ar": "تقارير حالة القضايا"}
+      ],
+      "recommended_offer": "ai_workflow_audit",
+      "privacy_sensitive": true
+    },
+    {
+      "id": "consulting_training_b2b",
+      "name_en": "Consulting, Training & B2B Services",
+      "name_ar": "الاستشارات والتدريب وخدمات الأعمال",
+      "icp_en": "Consulting, training, and B2B service firms with proposal-heavy sales motions.",
+      "icp_ar": "شركات الاستشارات والتدريب وخدمات الأعمال ذات دورة مبيعات كثيفة العروض.",
+      "excluded_icp": "Individual coaches without a delivery team; B2C course sellers.",
+      "buyer_titles": ["Managing Director", "Head of Growth", "Partner", "Business Development Director"],
+      "buyer_personas": ["growth_lead", "commercial_lead"],
+      "top_pains": [
+        "Slow proposal and SOW turnaround",
+        "Inconsistent follow-up on warm leads",
+        "Manual reporting to clients"
+      ],
+      "triggers": ["New service line", "Pipeline review", "Quarterly target push"],
+      "pain_angles": [
+        {"en": "proposal and SOW turnaround", "ar": "إنجاز العروض ونطاقات العمل"},
+        {"en": "warm-lead follow-up consistency", "ar": "انتظام متابعة العملاء المهتمين"},
+        {"en": "client reporting", "ar": "تقارير العملاء"}
+      ],
+      "recommended_offer": "ai_workflow_audit"
+    }
+  ],
+  "cities": [
+    {"city": "Riyadh", "country": "Saudi Arabia"},
+    {"city": "Jeddah", "country": "Saudi Arabia"},
+    {"city": "Dammam", "country": "Saudi Arabia"},
+    {"city": "Al Khobar", "country": "Saudi Arabia"},
+    {"city": "Mecca", "country": "Saudi Arabia"},
+    {"city": "Medina", "country": "Saudi Arabia"},
+    {"city": "Dubai", "country": "United Arab Emirates"},
+    {"city": "Abu Dhabi", "country": "United Arab Emirates"},
+    {"city": "Doha", "country": "Qatar"},
+    {"city": "Kuwait City", "country": "Kuwait"},
+    {"city": "Manama", "country": "Bahrain"},
+    {"city": "Muscat", "country": "Oman"}
+  ]
+}

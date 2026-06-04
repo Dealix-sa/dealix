@@ -1,0 +1,41 @@
+{
+  "stages": [
+    "new",
+    "researched",
+    "draft_generated",
+    "founder_review",
+    "manually_contacted",
+    "replied_positive",
+    "replied_negative",
+    "diagnostic_booked",
+    "diagnostic_sold",
+    "pilot_proposed",
+    "pilot_sold",
+    "retainer",
+    "disqualified",
+    "suppressed"
+  ],
+  "allowed_transitions": {
+    "new": ["researched", "disqualified", "suppressed"],
+    "researched": ["draft_generated", "disqualified", "suppressed"],
+    "draft_generated": ["founder_review", "disqualified", "suppressed"],
+    "founder_review": ["manually_contacted", "disqualified", "suppressed"],
+    "manually_contacted": ["replied_positive", "replied_negative", "suppressed"],
+    "replied_positive": ["diagnostic_booked", "disqualified", "suppressed"],
+    "replied_negative": ["disqualified", "suppressed"],
+    "diagnostic_booked": ["diagnostic_sold", "disqualified"],
+    "diagnostic_sold": ["pilot_proposed", "retainer"],
+    "pilot_proposed": ["pilot_sold", "disqualified"],
+    "pilot_sold": ["retainer"],
+    "retainer": ["retainer", "disqualified"],
+    "disqualified": ["suppressed"],
+    "suppressed": []
+  },
+  "required_lead_fields": [
+    "lead_id", "company_name", "vertical", "country", "city",
+    "buyer_title", "stage", "source", "opt_in_status"
+  ],
+  "no_external_send": true,
+  "no_crm_push_send": true,
+  "note": "CRM is record-only. No push-send, no outbound sending of any kind."
+}

@@ -1,0 +1,48 @@
+{
+  "channels": [
+    {
+      "id": "cold_email",
+      "name_en": "Cold Email (manual send)",
+      "name_ar": "بريد بارد (إرسال يدوي)",
+      "auto_send": false,
+      "requires_opt_out": true,
+      "requires_founder_approval": true,
+      "policy": "Draft only. Founder sends manually from an approved inbox. No SMTP, no bulk sending."
+    },
+    {
+      "id": "follow_up",
+      "name_en": "Follow-up (manual send)",
+      "name_ar": "متابعة (إرسال يدوي)",
+      "auto_send": false,
+      "requires_opt_out": true,
+      "requires_founder_approval": true,
+      "policy": "Draft only. Sent manually after a prior approved touch. No automation."
+    },
+    {
+      "id": "linkedin_manual",
+      "name_en": "LinkedIn (manual message)",
+      "name_ar": "لينكدإن (رسالة يدوية)",
+      "auto_send": false,
+      "requires_opt_out": false,
+      "requires_founder_approval": true,
+      "policy": "Draft only. Founder copies and sends manually. No LinkedIn automation, no bots, no auto-connect."
+    },
+    {
+      "id": "website_contact_form",
+      "name_en": "Website / Contact Form (manual)",
+      "name_ar": "نموذج الموقع / التواصل (يدوي)",
+      "auto_send": false,
+      "requires_opt_out": false,
+      "requires_founder_approval": true,
+      "policy": "Draft talking points only. No website form auto-submit, no browser automation."
+    }
+  ],
+  "forbidden_channels": [
+    "automated_email_sending",
+    "whatsapp_cold_outreach",
+    "linkedin_automation",
+    "website_form_auto_submit",
+    "bulk_sending",
+    "scraping"
+  ]
+}

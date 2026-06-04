@@ -1,0 +1,60 @@
+{
+  "currency": "SAR",
+  "offers": [
+    {
+      "id": "ai_workflow_audit",
+      "stage": "audit",
+      "name_en": "AI Workflow Audit",
+      "name_ar": "تدقيق سير العمل بالذكاء الاصطناعي",
+      "price_min": 499,
+      "price_max": 2500,
+      "billing": "one_time",
+      "summary_en": "A structured audit of your revenue and operations workflows with prioritized AI opportunities.",
+      "summary_ar": "تدقيق منظم لسير عمل الإيرادات والعمليات مع فرص الذكاء الاصطناعي مرتبة حسب الأولوية."
+    },
+    {
+      "id": "paid_pilot",
+      "stage": "pilot",
+      "name_en": "Paid Pilot",
+      "name_ar": "تجربة مدفوعة",
+      "price_min": 5000,
+      "price_max": 25000,
+      "billing": "fixed_scope",
+      "summary_en": "A scoped pilot that ships one measurable AI workflow with human approval gates.",
+      "summary_ar": "تجربة محددة النطاق تُسلّم سير عمل واحد قابل للقياس مع بوابات اعتماد بشرية."
+    },
+    {
+      "id": "department_os",
+      "stage": "department_os",
+      "name_en": "Department OS",
+      "name_ar": "نظام تشغيل القسم",
+      "price_min": 25000,
+      "price_max": 150000,
+      "billing": "project",
+      "summary_en": "An operating system for one department with dashboards, drafts, and approval workflows.",
+      "summary_ar": "نظام تشغيل لقسم واحد مع لوحات قياس ومسودات وسير عمل اعتماد."
+    },
+    {
+      "id": "monthly_retainer",
+      "stage": "retainer",
+      "name_en": "Monthly Retainer",
+      "name_ar": "اشتراك شهري",
+      "price_min": 3000,
+      "price_max": 25000,
+      "billing": "monthly",
+      "summary_en": "Ongoing operation, tuning, and reporting for live Dealix workflows.",
+      "summary_ar": "تشغيل وضبط وتقارير مستمرة لسير عمل ديليكس الفعّال."
+    },
+    {
+      "id": "enterprise_custom_os",
+      "stage": "enterprise",
+      "name_en": "Enterprise Custom OS",
+      "name_ar": "نظام تشغيل مؤسسي مخصص",
+      "price_min": 150000,
+      "price_max": null,
+      "billing": "custom",
+      "summary_en": "A custom, multi-department operating system for enterprise rollouts.",
+      "summary_ar": "نظام تشغيل مخصص متعدد الأقسام لعمليات النشر المؤسسية."
+    }
+  ]
+}
