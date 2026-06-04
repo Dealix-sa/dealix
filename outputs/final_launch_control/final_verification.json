@@ -1,0 +1,272 @@
+{
+  "verified_at": "2026-06-04T19:52:32.618699+00:00",
+  "overall_pass": true,
+  "draft_count": 400,
+  "critical_failures": [],
+  "checks": [
+    {
+      "name": "file:docs/commercial-launch/99_FINAL_COMMERCIAL_LAUNCH_READINESS_REPORT.md",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "file:docs/media-social-os/99_MEDIA_SOCIAL_READY_REPORT.md",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "file:docs/site-launch/99_SITE_LAUNCH_REPORT.md",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "file:docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "file:README.md",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "file:.github/workflows/commercial-draft-factory.yml",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "file:.github/workflows/media-social-calendar.yml",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "file:.github/workflows/site-commercial-verify.yml",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "file:.github/workflows/final-launch-control.yml",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:scripts/commercial_generate_400_drafts.py",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:scripts/commercial_safety_audit.py",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:scripts/commercial_launch_readiness.py",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:scripts/media_social_calendar_generate.py",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "script:scripts/final_launch_control_verify.py",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "output:outputs/commercial_launch/latest/draft_queue.jsonl",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "output:outputs/commercial_launch/latest/founder_review.md",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "output:outputs/commercial_launch/latest/top_50_priority.md",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "output:outputs/commercial_launch/latest/safety_audit.json",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "output:outputs/commercial_launch/latest/daily_metrics.json",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "draft_count>=400",
+      "pass": true,
+      "critical": true,
+      "detail": "count=400"
+    },
+    {
+      "name": "send_allowed_true_count==0",
+      "pass": true,
+      "critical": true,
+      "detail": "count=0"
+    },
+    {
+      "name": "external_send_blocked_false_count==0",
+      "pass": true,
+      "critical": true,
+      "detail": "count=0"
+    },
+    {
+      "name": "no_auto_send_false_count==0",
+      "pass": true,
+      "critical": true,
+      "detail": "count=0"
+    },
+    {
+      "name": "safety_audit.pass==true",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "README contains 'Commercial Launch OS'",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "README clone URL -> Dealix-sa/dealix.git",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/commercial-draft-factory.yml no write-all",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/commercial-draft-factory.yml contents:read",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/commercial-draft-factory.yml no secrets (artifact-only)",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/media-social-calendar.yml no write-all",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/media-social-calendar.yml contents:read",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/media-social-calendar.yml no secrets (artifact-only)",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/site-commercial-verify.yml no write-all",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/site-commercial-verify.yml contents:read",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/site-commercial-verify.yml no secrets (artifact-only)",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/final-launch-control.yml no write-all",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/final-launch-control.yml contents:read",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "workflow:.github/workflows/final-launch-control.yml no secrets (artifact-only)",
+      "pass": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "no forbidden terms in scripts/commercial_generate_400_drafts.py",
+      "pass": true,
+      "critical": true,
+      "detail": "[]"
+    },
+    {
+      "name": "no forbidden terms in scripts/commercial_safety_audit.py",
+      "pass": true,
+      "critical": true,
+      "detail": "[]"
+    },
+    {
+      "name": "no forbidden terms in scripts/commercial_launch_readiness.py",
+      "pass": true,
+      "critical": true,
+      "detail": "[]"
+    },
+    {
+      "name": "no forbidden terms in scripts/media_social_calendar_generate.py",
+      "pass": true,
+      "critical": true,
+      "detail": "[]"
+    },
+    {
+      "name": "site:homepage page.tsx",
+      "pass": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "site:layout.tsx",
+      "pass": true,
+      "critical": false,
+      "detail": ""
+    }
+  ]
+}

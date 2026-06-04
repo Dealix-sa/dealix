@@ -1,0 +1,62 @@
+name: Final Launch Control
+
+# Artifact-only evidence run. No deploy, nothing sent externally, no credentials used.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"  # daily 05:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  control-tower:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+
+      - name: Generate 400+ review-only drafts
+        run: python scripts/commercial_generate_400_drafts.py --target 400
+
+      - name: Safety audit
+        run: python scripts/commercial_safety_audit.py
+
+      - name: Commercial launch readiness
+        run: python scripts/commercial_launch_readiness.py
+
+      - name: Media/social calendar
+        run: python scripts/media_social_calendar_generate.py
+
+      - name: Master verification (gate)
+        run: python scripts/final_launch_control_verify.py
+
+      - name: Commercial + media tests
+        run: |
+          pytest -q \
+            tests/test_commercial_generate_400_drafts.py \
+            tests/test_commercial_safety_audit.py \
+            tests/test_commercial_launch_readiness.py \
+            tests/test_commercial_no_external_send.py \
+            tests/test_commercial_quality_gate.py \
+            tests/test_commercial_compliance_gate.py \
+            tests/test_commercial_outputs_schema.py \
+            tests/test_media_social_os.py
+
+      - name: Upload evidence artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-launch-control-evidence
+          path: |
+            outputs/commercial_launch/
+            outputs/final_launch_control/
+            docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md
+          retention-days: 14
