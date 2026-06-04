@@ -428,7 +428,6 @@ def build_primary_drafts(target: int, leads: list[dict], configs: dict, date_str
     seq = 0
 
     for channel, n in counts.items():
-        ch_cfg = configs["channels"]["channels"][channel]
         for _ in range(n):
             vertical = verticals[seq % len(verticals)]
             vid = vertical["id"]

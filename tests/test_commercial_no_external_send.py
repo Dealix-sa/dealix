@@ -13,8 +13,13 @@ import sys as _sys
 from pathlib import Path as _Path
 _sys.path.insert(0, str(_Path(__file__).resolve().parents[1] / "scripts"))
 
-import commercial_launch_core as core
 import commercial_safety_audit as audit
+
+# Isolate all runtime writes to a unique temp dir so parallel (-n auto) test
+# workers never race on or pollute the repo's outputs/ tree.
+import tempfile as _tempfile
+import commercial_launch_core as _clc_isolate
+_clc_isolate.OUTPUT_ROOT = _Path(_tempfile.mkdtemp(prefix='cl_test_out_'))
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 

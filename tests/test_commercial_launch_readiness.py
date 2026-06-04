@@ -10,6 +10,12 @@ _sys.path.insert(0, str(_Path(__file__).resolve().parents[1] / "scripts"))
 import commercial_launch_core as core
 import commercial_launch_readiness as readiness
 
+# Isolate all runtime writes to a unique temp dir so parallel (-n auto) test
+# workers never race on or pollute the repo's outputs/ tree.
+import tempfile as _tempfile
+import commercial_launch_core as _clc_isolate
+_clc_isolate.OUTPUT_ROOT = _Path(_tempfile.mkdtemp(prefix='cl_test_out_'))
+
 
 def test_readiness_passes_draft_only():
     report = readiness.run_readiness(date_str="2026-01-06")
