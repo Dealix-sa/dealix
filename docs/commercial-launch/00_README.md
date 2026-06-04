@@ -31,9 +31,15 @@ safety audit (`scripts/commercial_safety_audit.py`).
 4. [Legal & Professional Services](verticals/04_legal_professional_services.md)
 5. [Consulting, Training & B2B Services](verticals/05_consulting_training_b2b.md)
 
+## Master plan
+
+- **[Master Launch Plan (A → Z)](01_MASTER_LAUNCH_PLAN_A_TO_Z.md)** — the full
+  end-to-end plan across every business function, with a 30/60/90 day rollout.
+
 ## Daily commands
 
 ```bash
+python scripts/commercial_launch_all.py --target 400   # launch everything (no external send)
 python scripts/commercial_generate_400_drafts.py --target 400
 python scripts/commercial_safety_audit.py
 python scripts/commercial_launch_readiness.py

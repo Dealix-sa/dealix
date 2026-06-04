@@ -108,6 +108,7 @@ Every generated draft carries `send_allowed=false`, `external_send_blocked=true`
 ### Commands
 
 ```bash
+python scripts/commercial_launch_all.py --target 400   # launch everything (no external send)
 python scripts/commercial_generate_400_drafts.py --target 400
 python scripts/commercial_safety_audit.py
 python scripts/commercial_launch_readiness.py
