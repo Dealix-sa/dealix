@@ -1,0 +1,37 @@
+{
+  "min_compliance_score": 70,
+  "banned_phrases": [
+    "guaranteed",
+    "100%",
+    "replace your team",
+    "replace your employees",
+    "replace your lawyer",
+    "automate everything",
+    "no human needed",
+    "as discussed",
+    "we found your data",
+    "from our database",
+    "we accessed your data",
+    "we extracted your data"
+  ],
+  "rejection_reasons": {
+    "no_opt_out": "Missing opt-out where required.",
+    "fake_familiarity": "Fake familiarity / 'as discussed' without a real conversation.",
+    "guaranteed_roi": "Guaranteed ROI / unprovable promise.",
+    "fake_urgency": "Fake urgency / artificial deadline / pressure.",
+    "unproven_claim": "Unproven claim without case study.",
+    "personal_data": "References personal data without necessity.",
+    "data_access_implication": "Implies Dealix accessed private data.",
+    "sensitive_data_request": "Requests sensitive data in first message.",
+    "sensitive_no_privacy_language": "Sensitive sector without privacy-first language.",
+    "whatsapp_no_optin": "WhatsApp without opt-in.",
+    "linkedin_automated": "LinkedIn automated outreach implied.",
+    "website_auto_submit": "Website form auto-submit implied.",
+    "multiple_cta": "More than one CTA.",
+    "multiple_offer": "More than one offer.",
+    "too_generic": "Language too generic."
+  },
+  "sensitive_verticals": ["legal_professional_services"],
+  "privacy_first_markers_en": ["with your approval", "your data stays with you", "human-in-the-loop", "you stay in control"],
+  "privacy_first_markers_ar": ["بموافقتكم", "بياناتكم تبقى لديكم", "تحت إشرافكم", "أنتم من يقرر"]
+}

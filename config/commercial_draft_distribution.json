@@ -1,0 +1,12 @@
+{
+  "daily_target": 400,
+  "distribution": {
+    "cold_email": 175,
+    "follow_up": 100,
+    "linkedin": 75,
+    "website_form": 50
+  },
+  "language_mix": { "ar": 0.55, "en": 0.45 },
+  "needs_research_ratio_no_leads": 1.0,
+  "notes": "400 drafts MINIMUM. 400 drafts != 400 sends. These are review-only drafts. No external sending occurs in this repository."
+}

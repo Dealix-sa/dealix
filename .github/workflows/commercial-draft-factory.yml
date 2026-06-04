@@ -1,0 +1,96 @@
+name: Commercial Draft Factory (review-only)
+
+# Generates >=400 review-only drafts for founder review and uploads them as a
+# build artifact. It NEVER sends anything externally, uses NO secrets, and does
+# NOT commit outputs back to the repository.
+
+on:
+  schedule:
+    # 05:00 UTC daily (~08:00 Riyadh)
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Minimum number of primary drafts to generate"
+        required: false
+        default: "400"
+
+# Least-privilege: read-only token, no secrets consumed anywhere below.
+permissions:
+  contents: read
+
+concurrency:
+  group: commercial-draft-factory-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  draft-factory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test runner (stdlib-only engine)
+        run: python -m pip install --upgrade pip pytest
+
+      - name: Validate seed leads
+        run: python scripts/commercial_seed_leads_validate.py
+
+      - name: Generate >=400 review-only drafts
+        run: python scripts/commercial_generate_400_drafts.py --target ${{ github.event.inputs.target || '400' }}
+
+      - name: Safety audit (no external send)
+        run: python scripts/commercial_safety_audit.py
+
+      - name: Commercial launch readiness
+        run: python scripts/commercial_launch_readiness.py
+
+      - name: Commercial metrics summary
+        run: python scripts/commercial_metrics_summary.py
+
+      - name: Run commercial tests
+        run: >-
+          python -m pytest -q --noconftest -o addopts=""
+          tests/test_commercial_generate_400_drafts.py
+          tests/test_commercial_safety_audit.py
+          tests/test_commercial_launch_readiness.py
+          tests/test_commercial_no_external_send.py
+          tests/test_commercial_quality_gate.py
+          tests/test_commercial_compliance_gate.py
+          tests/test_commercial_outputs_schema.py
+
+      - name: Enforce >=400 drafts and safe flags
+        run: |
+          python - <<'PY'
+          import json, glob, sys, os
+          dirs = sorted(glob.glob("outputs/commercial_launch/*"))
+          assert dirs, "no output folder produced"
+          latest = dirs[-1]
+          drafts = []
+          with open(os.path.join(latest, "draft_queue.jsonl"), encoding="utf-8") as fh:
+              for line in fh:
+                  line = line.strip()
+                  if line:
+                      drafts.append(json.loads(line))
+          assert len(drafts) >= 400, f"only {len(drafts)} drafts (<400)"
+          for d in drafts:
+              assert d["send_allowed"] is False, "a draft has send_allowed True"
+              assert d["external_send_blocked"] is True, "external_send_blocked not True"
+              assert d["requires_founder_approval"] is True
+          audit = json.load(open(os.path.join(latest, "safety_audit.json"), encoding="utf-8"))
+          assert audit["pass"] is True, "safety audit failed"
+          print(f"OK: {len(drafts)} drafts, safety audit pass, all send-blocked.")
+          PY
+
+      - name: Upload founder review queue (artifact only)
+        uses: actions/upload-artifact@v4
+        with:
+          name: commercial-launch-review-queue-${{ github.run_id }}
+          path: outputs/commercial_launch/
+          retention-days: 14

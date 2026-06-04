@@ -1,0 +1,65 @@
+{
+  "currency": "SAR",
+  "ladder": [
+    {
+      "stage": "entry_diagnostic",
+      "name_en": "Entry Diagnostic — AI Workflow Audit",
+      "name_ar": "تشخيص أولي — تدقيق سير العمل بالذكاء الاصطناعي",
+      "price_min": 499,
+      "price_max": 2500,
+      "duration": "3-7 days",
+      "deliverable_en": "workflow map + pain diagnosis + pilot recommendation + risk notes",
+      "deliverable_ar": "خريطة سير العمل + تشخيص الألم + توصية التجربة + ملاحظات المخاطر"
+    },
+    {
+      "stage": "paid_pilot",
+      "name_en": "Paid Pilot",
+      "name_ar": "تجربة مدفوعة",
+      "price_min": 5000,
+      "price_max": 25000,
+      "duration": "14-30 days",
+      "deliverable_en": "working pilot + approval gates + limited dataset + measurable workflow result",
+      "deliverable_ar": "تجربة عاملة + بوابات اعتماد + مجموعة بيانات محدودة + نتيجة قابلة للقياس"
+    },
+    {
+      "stage": "department_os",
+      "name_en": "Department OS",
+      "name_ar": "نظام تشغيل القسم",
+      "price_min": 25000,
+      "price_max": 150000,
+      "duration": "30-90 days",
+      "deliverable_en": "internal operating system for one department",
+      "deliverable_ar": "نظام تشغيل داخلي لقسم واحد"
+    },
+    {
+      "stage": "monthly_retainer",
+      "name_en": "Monthly Retainer",
+      "name_ar": "اشتراك شهري",
+      "price_min": 3000,
+      "price_max": 25000,
+      "duration": "monthly",
+      "deliverable_en": "monitoring, improvements, reporting, workflow tuning, monthly leadership report",
+      "deliverable_ar": "مراقبة وتحسينات وتقارير وضبط سير العمل وتقرير شهري للإدارة"
+    },
+    {
+      "stage": "enterprise_custom_os",
+      "name_en": "Enterprise Custom OS",
+      "name_ar": "نظام تشغيل مؤسسي مخصص",
+      "price_min": 150000,
+      "price_max": null,
+      "duration": "custom",
+      "deliverable_en": "custom AI operating system across multiple workflows/departments",
+      "deliverable_ar": "نظام تشغيل ذكاء اصطناعي مخصص عبر عدة أقسام وسير عمل"
+    }
+  ],
+  "forbidden_claims": [
+    "guaranteed ROI",
+    "reduce costs 70%",
+    "full automation in sensitive sectors",
+    "replace your employees",
+    "replace your lawyer",
+    "we extracted your data",
+    "we accessed your data",
+    "as discussed (without a real conversation)"
+  ]
+}
