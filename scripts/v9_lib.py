@@ -50,7 +50,10 @@ def scan_forbidden(text: str) -> list[str]:
             window = lowered[max(0, m.start() - ALLOW_NEGATION_WINDOW): m.start()]
             if any(hint in window for hint in NEGATION_HINTS):
                 continue  # negated / policy statement — allowed
-            violations.append(f"{label}: '...{lowered[max(0, m.start()-20):m.end()+20].strip()}...'")
+            # Record only the rule label, never a snippet of the scanned file
+            # content, so reports and logs cannot echo sensitive text.
+            if label not in violations:
+                violations.append(label)
     return violations
 
 
@@ -115,11 +118,11 @@ def run_system_check(
         if r.get("violations")
     ]
 
-    passed = not (missing or thin or bad_json or missing_keys or violations)
+    verdict = "FAIL" if (missing or thin or bad_json or missing_keys or violations) else "PASS"
     report = {
         "system": system,
         "date": date.today().isoformat(),
-        "verdict": "PASS" if passed else "FAIL",
+        "verdict": verdict,
         "summary": {
             "files_required": len(file_results),
             "files_present": sum(1 for r in file_results if r["exists"]),

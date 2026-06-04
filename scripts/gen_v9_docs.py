@@ -1383,7 +1383,6 @@ def build_reports() -> None:
             ["Run static verification before and after deploys."]),
     }
     for path, (system, slug, added, why, risks, nexts) in report_specs.items():
-        title = path.split("/")[-1].replace("_", " ").replace(".md", "")
         body = render(
             f"{system} — Report", f"{system} — تقرير",
             f"Status report for {system}.", f"تقرير حالة لـ {system}.",

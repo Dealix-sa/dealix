@@ -53,6 +53,11 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
+          # Vulnerability + misconfiguration scanning only. Secret detection is
+          # handled by the license-gated Gitleaks job and `make security-smoke`;
+          # Trivy's secret scanner produces false positives on the intentional
+          # placeholder patterns in this repo's own security-check scripts.
+          scanners: vuln,misconfig
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
