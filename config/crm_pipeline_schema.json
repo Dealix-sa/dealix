@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "note": "Schema and manual tracking only. No CRM send/push integration is included.",
+  "lead_fields": [
+    "lead_id",
+    "company_name",
+    "website",
+    "country",
+    "city",
+    "vertical_hint",
+    "language_hint",
+    "buyer_title_hint",
+    "source",
+    "source_url",
+    "public_contact_type",
+    "consent_status",
+    "notes",
+    "research_status",
+    "risk_notes"
+  ],
+  "stages": [
+    "new",
+    "researched",
+    "draft_generated",
+    "founder_review",
+    "manually_contacted",
+    "replied_positive",
+    "replied_negative",
+    "diagnostic_booked",
+    "diagnostic_sold",
+    "pilot_proposed",
+    "pilot_sold",
+    "retainer",
+    "disqualified",
+    "suppressed"
+  ]
+}

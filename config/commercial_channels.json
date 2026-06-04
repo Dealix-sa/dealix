@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "channels": [
+    {
+      "id": "cold_email",
+      "name": "Cold Email Draft",
+      "go_live_status": "no-go-until-founder-and-dns",
+      "policy": "Draft only. Requires SPF/DKIM/DMARC, opt-out, manual founder send. Never auto-sent.",
+      "requires_opt_out": true
+    },
+    {
+      "id": "follow_up",
+      "name": "Follow-up Draft",
+      "go_live_status": "no-go-until-founder",
+      "policy": "Draft only. Sent manually by founder after a prior legitimate touch.",
+      "requires_opt_out": true
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn Manual Draft",
+      "go_live_status": "manual-only",
+      "policy": "Manual copy/paste by founder only. No automation, no auto-connect, no bots.",
+      "requires_opt_out": false
+    },
+    {
+      "id": "website_form",
+      "name": "Website / Contact Form Draft",
+      "go_live_status": "no-auto-submit",
+      "policy": "Reply/intake copy only. No auto-submit, no form-filling bots.",
+      "requires_opt_out": false
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "min_compliance_score": 0.7,
+  "banned_phrases": [
+    "guaranteed roi",
+    "guaranteed results",
+    "from our database",
+    "as discussed",
+    "as we agreed",
+    "per our conversation",
+    "replace your team",
+    "no human needed",
+    "fully automated outreach",
+    "we already work with",
+    "act now or lose",
+    "last chance",
+    "limited time only",
+    "100% guaranteed"
+  ],
+  "privacy_first_verticals": ["legal_professional_services"],
+  "privacy_first_required_markers_en": ["privacy", "consent", "your control", "data minimization", "you approve"],
+  "privacy_first_required_markers_ar": ["الخصوصية", "موافقتك", "تحت سيطرتك", "تقليل البيانات", "أنت تعتمد"],
+  "whatsapp_requires_opt_in": true,
+  "linkedin_automation_banned": true,
+  "website_auto_submit_banned": true
+}

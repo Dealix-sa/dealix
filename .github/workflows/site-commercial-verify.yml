@@ -1,0 +1,54 @@
+# Verifies the Commercial Launch OS readiness and the web app's SEO surface.
+# No deploy. No secrets. The web build is best-effort (informational) so a
+# pre-existing front-end issue never masks the commercial readiness gate.
+name: Site commercial verify
+
+on:
+  pull_request:
+    paths:
+      - "config/commercial_*.json"
+      - "scripts/commercial_*.py"
+      - "docs/commercial-launch/**"
+      - "apps/web/**"
+      - ".github/workflows/site-commercial-verify.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  commercial-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Commercial launch readiness (hard gate)
+        run: python scripts/commercial_launch_readiness.py
+      - name: Safety audit (hard gate)
+        run: |
+          python scripts/commercial_generate_400_drafts.py --target 400
+          python scripts/commercial_safety_audit.py
+      - name: SEO surface presence (hard gate)
+        run: |
+          test -f apps/web/app/robots.ts
+          test -f apps/web/app/sitemap.ts
+          test -f apps/web/app/manifest.ts
+          echo "SEO surface files present."
+
+  web-build:
+    runs-on: ubuntu-latest
+    continue-on-error: true  # informational; not a commercial gate
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install
+        run: npm install
+      - name: Verify (typecheck + build)
+        run: npm run verify

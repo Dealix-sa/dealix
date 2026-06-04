@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "top_priority_count": 50,
+  "top_opportunities_count": 10,
+  "top_risk_count": 10,
+  "research_required_if_fit_below": 0.45,
+  "auto_approve": false,
+  "review_owner": "founder",
+  "rules": [
+    "Every draft enters the queue as requires_founder_approval=true.",
+    "No draft may be marked send_allowed without explicit founder action outside this system.",
+    "Founder approves top 20-50 manually each morning.",
+    "Rejected drafts carry a rejection_reason and never re-enter the send path automatically."
+  ]
+}
