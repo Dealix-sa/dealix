@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "description": "Schemas for the Operating Memory OS. Memory records are maintained manually and validated by scripts/operating_memory_validate.py.",
+    "safety": "AI prepares. Founder approves. Manual action only. No external sending.",
+    "version": "1.0.0"
+  },
+  "schemas": {
+    "decision_memory": {
+      "required": ["memory_id", "created_at", "decision", "rationale", "owner"],
+      "optional": ["reversible", "review_date", "outcome"]
+    },
+    "client_memory": {
+      "required": ["memory_id", "created_at", "company", "vertical", "stage", "notes"],
+      "optional": ["last_contact", "next_step"]
+    },
+    "market_memory": {
+      "required": ["memory_id", "created_at", "vertical", "signal", "source_type"],
+      "optional": ["confidence", "action"]
+    },
+    "revenue_memory": {
+      "required": ["memory_id", "created_at", "company", "amount_sar", "stage", "event_type"],
+      "optional": ["notes"]
+    }
+  },
+  "examples": {
+    "decision_memory": [
+      {"memory_id": "DM-001", "created_at": "2026-06-04", "decision": "Focus on logistics + retail first", "rationale": "Highest validated pain density", "owner": "BA", "reversible": true, "review_date": "2026-07-04"}
+    ],
+    "client_memory": [
+      {"memory_id": "CM-001", "created_at": "2026-06-04", "company": "Prospect 0007 (logistics)", "vertical": "logistics", "stage": "discovery_booked", "notes": "Positive reply via WhatsApp", "next_step": "Run discovery Thursday"}
+    ],
+    "market_memory": [
+      {"memory_id": "MM-001", "created_at": "2026-06-04", "vertical": "logistics", "signal": "manual order-status updates", "source_type": "manual_interview", "confidence": "medium"}
+    ],
+    "revenue_memory": [
+      {"memory_id": "RM-001", "created_at": "2026-06-04", "company": "Prospect 0012 (retail)", "amount_sar": 4500, "stage": "diagnostic_sold", "event_type": "diagnostic_sold", "notes": "Manual invoice to follow"}
+    ]
+  }
+}

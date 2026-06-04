@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "description": "Manual/research-input market signals for the Market Intelligence OS. NOT scraped. Founder/analyst maintains this file by hand.",
+    "safety": "AI prepares. Founder approves. Manual action only. No external sending. No scraping.",
+    "updated": "2026-06-04"
+  },
+  "verticals": [
+    {
+      "vertical": "logistics",
+      "signals": [
+        {"signal": "manual order-status updates", "source_type": "manual_interview", "priority": "high"},
+        {"signal": "fragmented carrier comms", "source_type": "manual_research", "priority": "medium"}
+      ],
+      "common_pains": ["status update overhead", "exception handling", "POD reconciliation"]
+    },
+    {
+      "vertical": "retail",
+      "signals": [
+        {"signal": "restock approval delays", "source_type": "manual_interview", "priority": "high"},
+        {"signal": "cross-branch reporting", "source_type": "manual_research", "priority": "medium"}
+      ],
+      "common_pains": ["restock approvals", "stockout alerts", "supplier follow-up"]
+    },
+    {
+      "vertical": "healthcare",
+      "signals": [
+        {"signal": "appointment no-show follow-up", "source_type": "manual_interview", "priority": "high"}
+      ],
+      "common_pains": ["no-show follow-up", "intake paperwork", "insurance pre-auth"]
+    },
+    {
+      "vertical": "professional_services",
+      "signals": [
+        {"signal": "proposal turnaround time", "source_type": "manual_interview", "priority": "medium"}
+      ],
+      "common_pains": ["proposal drafting", "timesheet chasing", "client onboarding"]
+    }
+  ],
+  "competitor_watch": [
+    {"name": "generic-automation-vendor", "note": "manual observation only", "watch_reason": "overlapping offer"}
+  ],
+  "research_backlog": [
+    "Validate logistics POD pain with 5 manual interviews",
+    "Confirm retail restock pain across 3 branches",
+    "Document healthcare no-show baseline (manual)"
+  ]
+}

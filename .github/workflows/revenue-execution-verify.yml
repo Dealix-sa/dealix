@@ -1,0 +1,64 @@
+name: Revenue Execution Verify (V7)
+
+# Review-only revenue execution machine. Generates drafts, founder action
+# queue, dashboard, and CEO brief, then verifies the Revenue Execution OS.
+# Artifact-only. No secrets. No external sending. No commits.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_drafts:
+        description: "Number of review-only drafts to generate"
+        default: "400"
+  schedule:
+    # 05:00 UTC = 08:00 Asia/Riyadh, weekdays.
+    - cron: "0 5 * * 1-5"
+
+concurrency:
+  group: dealix-revenue-execution-verify
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  revenue-execution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate review-only drafts
+        run: python scripts/commercial_generate_400_drafts.py --target "${{ github.event.inputs.target_drafts || '400' }}"
+
+      - name: Build founder action queue
+        run: python scripts/founder_action_queue_generate.py
+
+      - name: Build revenue dashboard
+        run: python scripts/founder_revenue_dashboard.py
+
+      - name: Generate daily CEO brief
+        run: python scripts/daily_ceo_brief_generate.py
+
+      - name: Verify revenue execution OS
+        run: python scripts/revenue_execution_verify.py
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revenue-execution-${{ github.run_id }}
+          path: |
+            outputs/commercial_launch/
+            outputs/founder_action_queue/
+            outputs/revenue_dashboard/
+            outputs/ceo_briefs/
+            outputs/revenue_execution/
+          if-no-files-found: warn
+          retention-days: 14
