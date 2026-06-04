@@ -17,14 +17,13 @@ Exit 0 only if all critical checks pass. Read-only / file-only.
 
 from __future__ import annotations
 
-import json
 import subprocess
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import ROOT, now_iso, today_str, write_json  # noqa: E402
+from startup_os_common import ROOT, now_iso, today_str, write_json
 
 PY = sys.executable
 S = str(ROOT / "scripts")
@@ -52,13 +51,15 @@ def run() -> dict:
     results = []
     for name, cmd, critical in STEPS:
         proc = subprocess.run(cmd, capture_output=True, text=True)
-        results.append({
-            "step": name,
-            "rc": proc.returncode,
-            "ok": proc.returncode == 0,
-            "critical": critical,
-            "tail": (proc.stdout.strip().splitlines()[-1:] or [""])[0],
-        })
+        results.append(
+            {
+                "step": name,
+                "rc": proc.returncode,
+                "ok": proc.returncode == 0,
+                "critical": critical,
+                "tail": (proc.stdout.strip().splitlines()[-1:] or [""])[0],
+            }
+        )
 
     critical_fail = [r for r in results if r["critical"] and not r["ok"]]
     passed = not critical_fail
@@ -75,9 +76,19 @@ def run() -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     write_json(out_dir / "final_launch_control.json", report)
 
-    md = ["# Final Launch Control", "", f"- Generated: {report['generated_at']}", f"- Decision: **{report['decision']}**", "", "| Step | Critical | OK | rc |", "|---|---|---|---|"]
+    md = [
+        "# Final Launch Control",
+        "",
+        f"- Generated: {report['generated_at']}",
+        f"- Decision: **{report['decision']}**",
+        "",
+        "| Step | Critical | OK | rc |",
+        "|---|---|---|---|",
+    ]
     for r in results:
-        md.append(f"| {r['step']} | {'yes' if r['critical'] else 'no'} | {'✅' if r['ok'] else '❌'} | {r['rc']} |")
+        md.append(
+            f"| {r['step']} | {'yes' if r['critical'] else 'no'} | {'✅' if r['ok'] else '❌'} | {r['rc']} |"
+        )
     (out_dir / "final_launch_control.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     return report
 

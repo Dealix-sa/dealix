@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import CONFIG_DIR, load_json  # noqa: E402
+from startup_os_common import CONFIG_DIR, load_json
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -21,7 +21,10 @@ ROOT = Path(__file__).resolve().parents[1]
 def verify() -> list[str]:
     cal_path = CONFIG_DIR / "media_social_calendar.json"
     if not cal_path.exists():
-        subprocess.run([sys.executable, str(ROOT / "scripts" / "media_social_calendar_generate.py")], check=True)
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "media_social_calendar_generate.py")],
+            check=True,
+        )
     cal = load_json(cal_path)
     errors: list[str] = []
     items = cal.get("calendar", [])

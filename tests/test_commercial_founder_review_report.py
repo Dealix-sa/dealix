@@ -20,8 +20,13 @@ def test_review_artifacts_built():
     d = output_day_dir(TEST_DAY)
     write_jsonl(d / "draft_queue.jsonl", gen.generate(400, TEST_DAY))
     frr.run(TEST_DAY)
-    for f in ("founder_review.csv", "founder_review.md", "top_50_priority.md",
-              "approved_manual_sends.example.csv", "next_actions.md"):
+    for f in (
+        "founder_review.csv",
+        "founder_review.md",
+        "top_50_priority.md",
+        "approved_manual_sends.example.csv",
+        "next_actions.md",
+    ):
         assert (d / f).exists(), f"missing {f}"
 
 

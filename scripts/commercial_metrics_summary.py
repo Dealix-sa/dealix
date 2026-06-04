@@ -14,17 +14,26 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import now_iso, output_day_dir, read_jsonl, today_str, write_json  # noqa: E402
+from startup_os_common import (
+    now_iso,
+    output_day_dir,
+    read_jsonl,
+    today_str,
+    write_json,
+)
 
 
 def run(day: str) -> dict:
     d = output_day_dir(day)
     drafts = read_jsonl(d / "draft_queue.jsonl") if (d / "draft_queue.jsonl").exists() else []
-    rejected = read_jsonl(d / "rejected_drafts.jsonl") if (d / "rejected_drafts.jsonl").exists() else []
-    needs_research = read_jsonl(d / "needs_research.jsonl") if (d / "needs_research.jsonl").exists() else []
+    rejected = (
+        read_jsonl(d / "rejected_drafts.jsonl") if (d / "rejected_drafts.jsonl").exists() else []
+    )
+    needs_research = (
+        read_jsonl(d / "needs_research.jsonl") if (d / "needs_research.jsonl").exists() else []
+    )
 
     quality = _load(d / "quality_report.json")
-    compliance = _load(d / "compliance_report.json")
     safety = _load(d / "safety_audit.json")
 
     metrics = {
@@ -67,7 +76,9 @@ def main() -> int:
     ap.add_argument("--day", default=today_str())
     args = ap.parse_args()
     m = run(args.day)
-    print(f"Daily metrics: {m['drafts_generated']} drafts, {m['compliance_rejections']} rejected, {m['needs_research']} need research")
+    print(
+        f"Daily metrics: {m['drafts_generated']} drafts, {m['compliance_rejections']} rejected, {m['needs_research']} need research"
+    )
     return 0
 
 

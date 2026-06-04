@@ -15,8 +15,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import ROOT, now_iso, write_json  # noqa: E402
-from startup_os_manifest import (  # noqa: E402
+from startup_os_common import ROOT, now_iso, write_json
+from startup_os_manifest import (
     OS_AREAS,
     REQUIRED_CONFIGS,
     REQUIRED_SCRIPTS,
@@ -34,12 +34,14 @@ def verify() -> dict:
     checks: list[dict] = []
 
     def add(name: str, missing: list[str], critical: bool = True) -> None:
-        checks.append({
-            "check": name,
-            "ok": not missing,
-            "missing": missing,
-            "critical": critical,
-        })
+        checks.append(
+            {
+                "check": name,
+                "ok": not missing,
+                "missing": missing,
+                "critical": critical,
+            }
+        )
 
     # OS doc trees
     for area_key, area in OS_AREAS.items():
@@ -47,7 +49,14 @@ def verify() -> dict:
         add(f"os:{area_key}", missing)
 
     # Vertical playbooks
-    add("verticals", [f"docs/commercial-launch/verticals/{v}" for v in VERTICAL_DOCS if not _exists(f"docs/commercial-launch/verticals/{v}")])
+    add(
+        "verticals",
+        [
+            f"docs/commercial-launch/verticals/{v}"
+            for v in VERTICAL_DOCS
+            if not _exists(f"docs/commercial-launch/verticals/{v}")
+        ],
+    )
 
     # Scripts / tests / workflows / configs
     add("scripts", [s for s in REQUIRED_SCRIPTS if not _exists(s)])
@@ -56,7 +65,14 @@ def verify() -> dict:
     add("configs", [c for c in REQUIRED_CONFIGS if not _exists(c)])
 
     # API QA doc
-    add("api_qa_doc", [] if _exists("docs/ops/API_COMMERCIAL_LAUNCH_QA.md") else ["docs/ops/API_COMMERCIAL_LAUNCH_QA.md"])
+    add(
+        "api_qa_doc",
+        (
+            []
+            if _exists("docs/ops/API_COMMERCIAL_LAUNCH_QA.md")
+            else ["docs/ops/API_COMMERCIAL_LAUNCH_QA.md"]
+        ),
+    )
 
     # 99 reports present across areas
     missing_reports = []
@@ -108,7 +124,9 @@ def verify() -> dict:
 
 def main() -> int:
     r = verify()
-    print(f"Startup OS verification: {r['decision']} ({r['os_areas']} areas, {r['total_docs_expected']} docs expected)")
+    print(
+        f"Startup OS verification: {r['decision']} ({r['os_areas']} areas, {r['total_docs_expected']} docs expected)"
+    )
     if not r["passed"]:
         for c in r["checks"]:
             if not c["ok"]:

@@ -23,10 +23,20 @@ def test_example_seed_leads_valid():
 
 def test_invalid_vertical_caught(tmp_path):
     p = tmp_path / "bad.jsonl"
-    p.write_text(json.dumps({
-        "lead_id": "X", "company_name": "Y", "vertical": "not_real",
-        "country": "SA", "stage": "raw_lead", "created_at": "2026-01-01T00:00:00Z",
-    }) + "\n", encoding="utf-8")
+    p.write_text(
+        json.dumps(
+            {
+                "lead_id": "X",
+                "company_name": "Y",
+                "vertical": "not_real",
+                "country": "SA",
+                "stage": "raw_lead",
+                "created_at": "2026-01-01T00:00:00Z",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     r = slv.validate(p)
     assert r["passed"] is False
     assert any("unknown vertical" in e for e in r["errors"])

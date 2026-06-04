@@ -12,7 +12,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import now_iso, output_day_dir, read_jsonl, today_str, write_json  # noqa: E402
+from startup_os_common import (
+    now_iso,
+    output_day_dir,
+    read_jsonl,
+    today_str,
+    write_json,
+)
 
 MIN_QUALITY = 60
 MIN_BODY_LEN = 80

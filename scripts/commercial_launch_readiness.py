@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import now_iso, output_day_dir, today_str, write_json  # noqa: E402
+from startup_os_common import now_iso, output_day_dir, today_str, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -64,7 +64,11 @@ def run(day: str, regenerate: bool) -> dict:
         log = run_pipeline(day)
 
     missing = [f for f in REQUIRED_OUTPUTS if not (d / f).exists()]
-    safety = json.loads((d / "safety_audit.json").read_text(encoding="utf-8")) if (d / "safety_audit.json").exists() else {}
+    safety = (
+        json.loads((d / "safety_audit.json").read_text(encoding="utf-8"))
+        if (d / "safety_audit.json").exists()
+        else {}
+    )
     safety_passed = bool(safety.get("passed"))
 
     go = (not missing) and safety_passed
@@ -78,12 +82,20 @@ def run(day: str, regenerate: bool) -> dict:
         "decision": "GO" if go else "NO-GO",
         "pipeline_log": log,
         "go_scope": [
-            "review-only drafts", "founder manual review", "manual outreach",
-            "paid diagnostics", "discovery calls", "proposals",
+            "review-only drafts",
+            "founder manual review",
+            "manual outreach",
+            "paid diagnostics",
+            "discovery calls",
+            "proposals",
         ],
         "no_go_scope": [
-            "automated email sending", "whatsapp cold outreach", "linkedin automation",
-            "website form auto-submit", "bulk sending", "external sending from CI",
+            "automated email sending",
+            "whatsapp cold outreach",
+            "linkedin automation",
+            "website form auto-submit",
+            "bulk sending",
+            "external sending from CI",
         ],
     }
     write_json(d / "commercial_launch_readiness.json", report)

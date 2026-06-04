@@ -14,7 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import CONFIG_DIR, load_offers, now_iso, write_json  # noqa: E402
+from startup_os_common import CONFIG_DIR, load_offers, now_iso, write_json
 
 PILLARS = [
     {"id": "education", "name_en": "AI education", "name_ar": "تثقيف عن الذكاء الاصطناعي"},
@@ -36,27 +36,29 @@ def generate(start: date, days: int) -> dict:
         pillar = PILLARS[i % len(PILLARS)]
         vertical = verticals[i % len(verticals)]
         platform = PLATFORMS[i % len(PLATFORMS)]
-        items.append({
-            "date": d.isoformat(),
-            "pillar": pillar["id"],
-            "platform": platform,
-            "vertical": vertical["id"],
-            "hook_en": f"{vertical['name']}: one workflow you can make AI-assisted this week",
-            "hook_ar": f"{vertical['name_ar']}: سير عمل واحد تقدر تخليه مدعوم بالذكاء الاصطناعي هذا الأسبوع",
-            "body_en": (
-                f"A practical {pillar['name_en']} post about {vertical['pain_angles'][0]} — "
-                f"human-in-the-loop, no blind automation."
-            ),
-            "body_ar": (
-                f"منشور عملي ({pillar['name_ar']}) عن {vertical['pain_angles'][0]} — "
-                f"بوجود الإنسان في الحلقة وبدون أتمتة عمياء."
-            ),
-            "cta_en": "Comment 'AUDIT' to learn about our AI Workflow Audit.",
-            "cta_ar": "اكتب (تدقيق) لمعرفة المزيد عن تدقيق سير العمل بالذكاء الاصطناعي.",
-            "status": "planned",
-            "auto_post": False,
-            "requires_founder_approval": True,
-        })
+        items.append(
+            {
+                "date": d.isoformat(),
+                "pillar": pillar["id"],
+                "platform": platform,
+                "vertical": vertical["id"],
+                "hook_en": f"{vertical['name']}: one workflow you can make AI-assisted this week",
+                "hook_ar": f"{vertical['name_ar']}: سير عمل واحد تقدر تخليه مدعوم بالذكاء الاصطناعي هذا الأسبوع",
+                "body_en": (
+                    f"A practical {pillar['name_en']} post about {vertical['pain_angles'][0]} — "
+                    f"human-in-the-loop, no blind automation."
+                ),
+                "body_ar": (
+                    f"منشور عملي ({pillar['name_ar']}) عن {vertical['pain_angles'][0]} — "
+                    f"بوجود الإنسان في الحلقة وبدون أتمتة عمياء."
+                ),
+                "cta_en": "Comment 'AUDIT' to learn about our AI Workflow Audit.",
+                "cta_ar": "اكتب (تدقيق) لمعرفة المزيد عن تدقيق سير العمل بالذكاء الاصطناعي.",
+                "status": "planned",
+                "auto_post": False,
+                "requires_founder_approval": True,
+            }
+        )
     return {
         "_meta": {
             "title": "Dealix 30-Day Social Content Calendar",

@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import (  # noqa: E402
+from startup_os_common import (
     NON_NEGOTIABLE_RULE,
     ROOT,
     now_iso,
@@ -78,7 +78,13 @@ def audit(day: str) -> dict:
                 violations.append(f"{dr.get('draft_id')}: requires_founder_approval != True")
             if dr.get("no_auto_send") is not True:
                 violations.append(f"{dr.get('draft_id')}: no_auto_send != True")
-        checks.append({"check": "draft_flag_invariants", "drafts": draft_count, "ok": draft_count > 0 and not violations})
+        checks.append(
+            {
+                "check": "draft_flag_invariants",
+                "drafts": draft_count,
+                "ok": draft_count > 0 and not violations,
+            }
+        )
     else:
         violations.append("draft_queue.jsonl missing — run the draft factory first")
         checks.append({"check": "draft_queue_present", "ok": False})
@@ -97,7 +103,9 @@ def audit(day: str) -> dict:
                 transport_hits.append(f"{name}:{line_no}: matches /{pat}/")
     if transport_hits:
         violations.extend(transport_hits)
-    checks.append({"check": "no_live_send_transport", "ok": not transport_hits, "hits": transport_hits})
+    checks.append(
+        {"check": "no_live_send_transport", "ok": not transport_hits, "hits": transport_hits}
+    )
 
     report = {
         "generated_at": now_iso(),

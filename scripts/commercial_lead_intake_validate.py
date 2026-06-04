@@ -13,11 +13,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import DATA_DIR  # noqa: E402
+from startup_os_common import DATA_DIR
 
 # Reuse the seed-leads validator's logic.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from commercial_seed_leads_validate import validate  # noqa: E402
+from commercial_seed_leads_validate import validate
 
 
 def main() -> int:

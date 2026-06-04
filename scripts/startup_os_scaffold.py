@@ -20,8 +20,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import ROOT, load_offers  # noqa: E402
-from startup_os_manifest import OS_AREAS, VERTICAL_DOCS  # noqa: E402
+from startup_os_common import ROOT, load_offers
+from startup_os_manifest import OS_AREAS, VERTICAL_DOCS
 
 RULE_EN = (
     "AI drafts, scores, ranks, analyzes, and recommends. "
@@ -33,14 +33,18 @@ RULE_AR = (
 )
 
 IDENTITY_EN = "Dealix is a Saudi/GCC B2B AI Revenue & Operations OS."
-IDENTITY_AR = "Dealix هو نظام تشغيل إيرادات وعمليات مدعوم بالذكاء الاصطناعي للشركات السعودية والخليجية."
+IDENTITY_AR = (
+    "Dealix هو نظام تشغيل إيرادات وعمليات مدعوم بالذكاء الاصطناعي للشركات السعودية والخليجية."
+)
 
 
 def offer_ladder_table() -> str:
     offers = load_offers()
     rows = ["| Stage | Offer | Price (SAR) | Billing |", "|---|---|---|---|"]
     for o in offers["offer_ladder"]:
-        rows.append(f"| {o['stage']} | {o['name']} / {o['name_ar']} | {o['price_min']:,}–{o['price_max']:,} | {o['billing']} |")
+        rows.append(
+            f"| {o['stage']} | {o['name']} / {o['name_ar']} | {o['price_min']:,}–{o['price_max']:,} | {o['billing']} |"
+        )
     return "\n".join(rows)
 
 
@@ -75,12 +79,28 @@ AREA_INTRO: dict[str, tuple[str, str, list[str]]] = {
     "company": (
         "The company-level operating system: strategy, market thesis, operating models, cadence, risks and roadmap.",
         "نظام التشغيل على مستوى الشركة: الاستراتيجية وأطروحة السوق ونماذج التشغيل والإيقاع والمخاطر وخارطة الطريق.",
-        ["Executive strategy", "Market thesis", "Revenue & trust models", "Founder weekly cadence", "Board-style metrics", "Risk register", "90-day roadmap"],
+        [
+            "Executive strategy",
+            "Market thesis",
+            "Revenue & trust models",
+            "Founder weekly cadence",
+            "Board-style metrics",
+            "Risk register",
+            "90-day roadmap",
+        ],
     ),
     "product": (
         "What Dealix the product is, its modules, personas, jobs-to-be-done, MVP scope and release criteria.",
         "ما هو منتج Dealix ووحداته وشخصيات المستخدمين والمهام المطلوبة ونطاق الحد الأدنى ومعايير الإصدار.",
-        ["Lead Engine", "Service Engine", "Trust Engine", "Draft Factory", "Founder Review Queue", "Commercial Dashboard", "Delivery OS"],
+        [
+            "Lead Engine",
+            "Service Engine",
+            "Trust Engine",
+            "Draft Factory",
+            "Founder Review Queue",
+            "Commercial Dashboard",
+            "Delivery OS",
+        ],
     ),
     "site_launch": (
         "The public launch website: page map, SEO, bilingual copy deck, QA and conversion paths.",
@@ -90,57 +110,125 @@ AREA_INTRO: dict[str, tuple[str, str, list[str]]] = {
     "commercial_launch": (
         "The commercial launch engine: first five verticals, offer ladder, positioning, channel policy and delivery.",
         "محرك الإطلاق التجاري: أول خمسة قطاعات وسلّم العروض والتموضع وسياسة القنوات والتسليم.",
-        ["First 5 verticals", "Offer ladder", "Positioning AR/EN", "Channel policy", "Founder daily review", "Delivery system"],
+        [
+            "First 5 verticals",
+            "Offer ladder",
+            "Positioning AR/EN",
+            "Channel policy",
+            "Founder daily review",
+            "Delivery system",
+        ],
     ),
     "sales": (
         "The founder-led sales motion: process, pipeline, discovery, qualification, proposals and closing.",
         "حركة المبيعات بقيادة المؤسس: العملية وخط الأنابيب والاكتشاف والتأهيل والعروض والإغلاق.",
-        ["Sales process", "Pipeline stages", "Discovery scripts", "Qualification scorecard", "Objection library"],
+        [
+            "Sales process",
+            "Pipeline stages",
+            "Discovery scripts",
+            "Qualification scorecard",
+            "Objection library",
+        ],
     ),
     "marketing": (
         "Go-to-market and demand: positioning, ICP, messaging, channels, content engine and referral loops.",
         "الذهاب إلى السوق وتوليد الطلب: التموضع والعميل المثالي والرسائل والقنوات ومحرك المحتوى وحلقات الإحالة.",
-        ["GTM strategy", "ICP & segmentation", "Messaging hierarchy", "Demand-gen plan", "Content engine"],
+        [
+            "GTM strategy",
+            "ICP & segmentation",
+            "Messaging hierarchy",
+            "Demand-gen plan",
+            "Content engine",
+        ],
     ),
     "media_social": (
         "Media and social operating system: brand voice, content pillars, 30-day calendar and per-platform playbooks.",
         "نظام تشغيل الإعلام والسوشيال: صوت العلامة وركائز المحتوى وتقويم ٣٠ يوماً وأدلة كل منصة.",
-        ["Brand voice", "Content pillars", "30-day calendar", "Per-platform OS", "Press kit", "Founder personal brand"],
+        [
+            "Brand voice",
+            "Content pillars",
+            "30-day calendar",
+            "Per-platform OS",
+            "Press kit",
+            "Founder personal brand",
+        ],
     ),
     "ads": (
         "Paid acquisition PLANNING only — readiness gate, channel plans, UTM taxonomy and creative tests. Nothing is live.",
         "تخطيط الاستحواذ المدفوع فقط — بوابة الجاهزية وخطط القنوات وتصنيف UTM واختبارات الإبداع. لا شيء قيد التشغيل.",
-        ["Readiness gate", "Google/LinkedIn/Meta plans", "UTM taxonomy", "Creative test plan", "Compliance checklist"],
+        [
+            "Readiness gate",
+            "Google/LinkedIn/Meta plans",
+            "UTM taxonomy",
+            "Creative test plan",
+            "Compliance checklist",
+        ],
     ),
     "revops": (
         "CRM / RevOps: pipeline schema, lead intake, suppression, reply classification and forecasting.",
         "إدارة العلاقات والإيرادات: مخطط خط الأنابيب واستقبال العملاء وقوائم الاستبعاد وتصنيف الردود والتنبؤ.",
-        ["CRM pipeline schema", "Lead intake", "Suppression process", "Reply classification", "Forecasting"],
+        [
+            "CRM pipeline schema",
+            "Lead intake",
+            "Suppression process",
+            "Reply classification",
+            "Forecasting",
+        ],
     ),
     "delivery": (
         "Delivery and client success across every offer: inputs, outputs, acceptance, handover and expansion.",
         "التسليم ونجاح العملاء لكل عرض: المدخلات والمخرجات والقبول والتسليم والتوسّع.",
-        ["Diagnostic delivery", "Pilot delivery", "Department OS delivery", "Retainer ops", "SLA & escalation"],
+        [
+            "Diagnostic delivery",
+            "Pilot delivery",
+            "Department OS delivery",
+            "Retainer ops",
+            "SLA & escalation",
+        ],
     ),
     "support": (
         "Customer support operating system: channels, triage, incident response and feedback loops.",
         "نظام دعم العملاء: القنوات والفرز والاستجابة للحوادث وحلقات التغذية الراجعة.",
-        ["Support channels", "Ticket triage", "Incident response", "Knowledge base", "Feedback loop"],
+        [
+            "Support channels",
+            "Ticket triage",
+            "Incident response",
+            "Knowledge base",
+            "Feedback loop",
+        ],
     ),
     "finance": (
         "Finance operating system: pricing model, unit economics, cashflow and monthly review (templates, no assumed revenue).",
         "النظام المالي: نموذج التسعير ووحدة الاقتصاد والتدفق النقدي والمراجعة الشهرية (قوالب بدون افتراض إيراد).",
-        ["Pricing model", "Unit economics", "Cashflow model", "Expense policy", "Invoicing & collections"],
+        [
+            "Pricing model",
+            "Unit economics",
+            "Cashflow model",
+            "Expense policy",
+            "Invoicing & collections",
+        ],
     ),
     "legal": (
         "Legal and compliance TEMPLATES (not legal advice): terms, privacy, DPA, MSA, SOW and PDPL notes.",
         "قوالب قانونية وامتثال (ليست استشارة قانونية): الشروط والخصوصية واتفاقية معالجة البيانات والاتفاقية الرئيسية ونطاق العمل وملاحظات نظام حماية البيانات.",
-        ["Terms template", "Privacy policy", "DPA / MSA / SOW", "Data retention", "PDPL operating notes"],
+        [
+            "Terms template",
+            "Privacy policy",
+            "DPA / MSA / SOW",
+            "Data retention",
+            "PDPL operating notes",
+        ],
     ),
     "security": (
         "Security and trust baseline mapped to NIST CSF, OWASP Top 10 and ASVS, with secret management and access control.",
         "خط أساس الأمان والثقة مرتبط بـ NIST CSF وOWASP Top 10 وASVS مع إدارة الأسرار والتحكم بالوصول.",
-        ["Security baseline", "NIST CSF mapping", "OWASP Top 10", "ASVS checklist", "Secret management"],
+        [
+            "Security baseline",
+            "NIST CSF mapping",
+            "OWASP Top 10",
+            "ASVS checklist",
+            "Secret management",
+        ],
     ),
     "analytics": (
         "Analytics operating system: event taxonomy, dashboard spec and reporting templates (schema only).",
@@ -150,7 +238,13 @@ AREA_INTRO: dict[str, tuple[str, str, list[str]]] = {
     "people": (
         "Hiring and people operating system: first hires, role scorecards, interview and onboarding.",
         "نظام التوظيف والأفراد: أول التعيينات وبطاقات تقييم الأدوار والمقابلات والإعداد.",
-        ["First hires plan", "Role scorecards", "Contractor playbook", "Interview process", "Onboarding"],
+        [
+            "First hires plan",
+            "Role scorecards",
+            "Contractor playbook",
+            "Interview process",
+            "Onboarding",
+        ],
     ),
     "partnerships": (
         "Partnerships operating system: partner types, agency/tech playbooks, referral program and enablement.",
@@ -160,22 +254,47 @@ AREA_INTRO: dict[str, tuple[str, str, list[str]]] = {
     "investor": (
         "Investor readiness (not traction claims): narrative, metrics, data room index and pitch outline.",
         "جاهزية المستثمرين (وليست ادعاءات جذب): السردية والمقاييس وفهرس غرفة البيانات وهيكل العرض.",
-        ["Investor narrative", "Metrics for investors", "Data room index", "Pitch deck outline", "Investor Q&A"],
+        [
+            "Investor narrative",
+            "Metrics for investors",
+            "Data room index",
+            "Pitch deck outline",
+            "Investor Q&A",
+        ],
     ),
     "operations": (
         "Operations and admin: weekly rhythm, daily command center, registers, backup and continuity.",
         "العمليات والإدارة: الإيقاع الأسبوعي ومركز القيادة اليومي والسجلات والنسخ الاحتياطي والاستمرارية.",
-        ["Weekly rhythm", "Daily command center", "Vendor/tool/access registers", "Backup & recovery", "Business continuity"],
+        [
+            "Weekly rhythm",
+            "Daily command center",
+            "Vendor/tool/access registers",
+            "Backup & recovery",
+            "Business continuity",
+        ],
     ),
     "go_live": (
         "External go-live requirements: domain/email (SPF/DKIM/DMARC), suppression, legal, payments and deployment.",
         "متطلبات الانطلاق الخارجي: النطاق/البريد (SPF/DKIM/DMARC) والاستبعاد والقانون والمدفوعات والنشر.",
-        ["Domain/email readiness", "Manual outreach ramp", "Suppression", "Privacy/legal", "Payment/booking", "Deployment checklist"],
+        [
+            "Domain/email readiness",
+            "Manual outreach ramp",
+            "Suppression",
+            "Privacy/legal",
+            "Payment/booking",
+            "Deployment checklist",
+        ],
     ),
     "launch_control": (
         "The final control tower: scorecard, go/no-go matrix, evidence pack, war room and execution checklist.",
         "برج التحكم النهائي: بطاقة الأداء ومصفوفة القرار وحزمة الأدلة وغرفة الحرب وقائمة التنفيذ.",
-        ["Launch scorecard", "Go/No-Go matrix", "Evidence pack", "30-day war room", "Founder execution checklist"],
+        [
+            "Launch scorecard",
+            "Go/No-Go matrix",
+            "Evidence pack",
+            "30-day war room",
+            "Founder execution checklist",
+        ],
     ),
 }
 
@@ -266,14 +385,20 @@ VERTICAL_SECTIONS = [
     ("Excluded ICP", "العميل المستبعد"),
     ("Buyer personas", "شخصيات المشتري"),
     ("Buyer titles", "المسميات الوظيفية للمشتري"),
-    ("Decision maker / influencer / user / budget owner", "متخذ القرار / المؤثر / المستخدم / صاحب الميزانية"),
+    (
+        "Decision maker / influencer / user / budget owner",
+        "متخذ القرار / المؤثر / المستخدم / صاحب الميزانية",
+    ),
     ("Top workflows", "أهم سير العمل"),
     ("Top pains", "أهم نقاط الألم"),
     ("Trigger events", "أحداث التحفيز"),
     ("Buying signals", "إشارات الشراء"),
     ("Disqualification signals", "إشارات الاستبعاد"),
     ("Discovery questions", "أسئلة الاكتشاف"),
-    ("Entry offer / Pilot / Department OS / Retainer / Enterprise", "العرض المبدئي / التجربة / نظام القسم / الاشتراك / المؤسسي"),
+    (
+        "Entry offer / Pilot / Department OS / Retainer / Enterprise",
+        "العرض المبدئي / التجربة / نظام القسم / الاشتراك / المؤسسي",
+    ),
     ("Arabic drafts", "مسودات عربية"),
     ("English drafts", "مسودات إنجليزية"),
     ("LinkedIn manual drafts", "مسودات لينكدإن اليدوية"),
@@ -315,15 +440,25 @@ def render_vertical(filename: str) -> str:
         elif "drafts" in en.lower():
             angle = v["pain_angles"][0]
             if "Arabic" in en:
-                parts.append(f"- مسودة (تُراجع وتُرسل يدوياً): عرض تدقيق سير العمل لمعالجة **{angle}** في قطاع {v['name_ar']}.")
+                parts.append(
+                    f"- مسودة (تُراجع وتُرسل يدوياً): عرض تدقيق سير العمل لمعالجة **{angle}** في قطاع {v['name_ar']}."
+                )
             elif "English" in en:
-                parts.append(f"- Draft (founder-reviewed, sent manually): a Workflow Audit offer addressing **{angle}** in {v['name']}.")
+                parts.append(
+                    f"- Draft (founder-reviewed, sent manually): a Workflow Audit offer addressing **{angle}** in {v['name']}."
+                )
             elif "LinkedIn" in en:
-                parts.append(f"- Manual LinkedIn note draft (no automation) referencing **{angle}**.")
+                parts.append(
+                    f"- Manual LinkedIn note draft (no automation) referencing **{angle}**."
+                )
             else:
-                parts.append(f"- Website inbound response draft for an inbound asking about **{angle}**.")
+                parts.append(
+                    f"- Website inbound response draft for an inbound asking about **{angle}**."
+                )
         else:
-            parts.append(f"- Tailored for **{v['name']}** ({v['name_ar']}). Founder reviews and customizes per account.")
+            parts.append(
+                f"- Tailored for **{v['name']}** ({v['name_ar']}). Founder reviews and customizes per account."
+            )
         parts.append("")
     parts.append(safety_footer())
     return "\n".join(parts)
@@ -371,7 +506,9 @@ The following are **forbidden** and must never be implemented:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--force", action="store_true", help="overwrite all docs, including richer existing ones")
+    ap.add_argument(
+        "--force", action="store_true", help="overwrite all docs, including richer existing ones"
+    )
     args = ap.parse_args()
 
     written = 0

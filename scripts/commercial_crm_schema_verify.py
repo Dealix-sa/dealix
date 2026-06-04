@@ -12,13 +12,24 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import CONFIG_DIR, load_json  # noqa: E402
+from startup_os_common import CONFIG_DIR, load_json
 
 REQUIRED_STAGES = {
-    "raw_lead", "researched", "draft_generated", "founder_review",
-    "manually_contacted", "replied_positive", "discovery_booked",
-    "diagnostic_proposed", "diagnostic_sold", "pilot_proposed", "pilot_sold",
-    "retainer", "expansion", "disqualified", "suppressed",
+    "raw_lead",
+    "researched",
+    "draft_generated",
+    "founder_review",
+    "manually_contacted",
+    "replied_positive",
+    "discovery_booked",
+    "diagnostic_proposed",
+    "diagnostic_sold",
+    "pilot_proposed",
+    "pilot_sold",
+    "retainer",
+    "expansion",
+    "disqualified",
+    "suppressed",
 }
 
 
@@ -31,7 +42,12 @@ def verify() -> list[str]:
         errors.append(f"missing pipeline stages: {sorted(missing)}")
     if schema.get("_meta", {}).get("send_capability") != "none":
         errors.append("send_capability must be 'none'")
-    for f in ("lead_record", "reply_classification", "suppression_triggers", "forbidden_capabilities"):
+    for f in (
+        "lead_record",
+        "reply_classification",
+        "suppression_triggers",
+        "forbidden_capabilities",
+    ):
         if f not in schema:
             errors.append(f"missing top-level key: {f}")
     for cap in ("automated_external_send", "crm_push_send"):

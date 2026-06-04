@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import output_day_dir, read_jsonl, today_str, write_jsonl  # noqa: E402
+from startup_os_common import output_day_dir, read_jsonl, today_str, write_jsonl
 
 
 def run(day: str) -> dict:

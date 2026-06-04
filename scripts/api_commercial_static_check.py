@@ -9,7 +9,6 @@ send/whatsapp/linkedin/smtp endpoint is declared. Read-only.
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +23,14 @@ ALLOWED_READONLY = [
     "GET /api/v1/media-social/calendar-schema",
 ]
 
-FORBIDDEN = ["/send", "whatsapp", "smtp", "linkedin/post", "auto-submit", "POST /api/v1/commercial/send"]
+FORBIDDEN = [
+    "/send",
+    "whatsapp",
+    "smtp",
+    "linkedin/post",
+    "auto-submit",
+    "POST /api/v1/commercial/send",
+]
 
 
 def run() -> list[str]:
@@ -49,13 +55,13 @@ def run() -> list[str]:
 
 def _context(text: str, needle: str) -> str:
     i = text.find(needle)
-    return text[max(0, i - 60): i + 60]
+    return text[max(0, i - 60) : i + 60]
 
 
 def _line_context(text: str, idx: int) -> str:
     start = text.rfind("\n", 0, idx)
     end = text.find("\n", idx)
-    return text[start + 1: end if end != -1 else len(text)]
+    return text[start + 1 : end if end != -1 else len(text)]
 
 
 def main() -> int:

@@ -25,7 +25,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import (  # noqa: E402
+from startup_os_common import (
     NON_NEGOTIABLE_RULE,
     SAFETY_FLAGS,
     load_offers,
@@ -53,7 +53,7 @@ def _scale_mix(target: int) -> dict[str, int]:
         return dict(CHANNEL_MIX)
     # Scale proportionally, then pad the largest channel to hit target exactly.
     factor = target / base
-    scaled = {k: int(round(v * factor)) for k, v in CHANNEL_MIX.items()}
+    scaled = {k: round(v * factor) for k, v in CHANNEL_MIX.items()}
     diff = target - sum(scaled.values())
     scaled["cold_email"] += diff
     return scaled
@@ -79,7 +79,16 @@ def _subject(channel: str, lang: str, vertical: dict, offer: dict, angle: str) -
     return templates[channel]
 
 
-def _body(channel: str, lang: str, vertical: dict, offer: dict, angle: str, pain: str, trigger: str, company: str) -> str:
+def _body(
+    channel: str,
+    lang: str,
+    vertical: dict,
+    offer: dict,
+    angle: str,
+    pain: str,
+    trigger: str,
+    company: str,
+) -> str:
     offer_name = offer["name_ar"] if lang == "ar" else offer["name"]
     if lang == "ar":
         opener = f"مرحباً فريق {company}،"
@@ -124,7 +133,7 @@ def generate(target: int, day: str, seed: int = 1337) -> list[dict]:
     verticals = offers["verticals"]
     ladder = {o["stage"]: o for o in offers["offer_ladder"]}
     leads = load_seed_leads()
-    rnd = random.Random(seed)
+    rnd = random.Random(seed)  # noqa: S311 — deterministic test data, not cryptographic
     mix = _scale_mix(target)
 
     batch_id = f"BATCH-{day}"
@@ -135,7 +144,11 @@ def generate(target: int, day: str, seed: int = 1337) -> list[dict]:
             counter += 1
             vertical = rnd.choice(verticals)
             # Map channel to a sensible offer stage emphasis.
-            stage = rnd.choice(["audit", "audit", "pilot"]) if channel != "follow_up" else rnd.choice(["audit", "pilot"])
+            stage = (
+                rnd.choice(["audit", "audit", "pilot"])
+                if channel != "follow_up"
+                else rnd.choice(["audit", "pilot"])
+            )
             offer = ladder[stage]
             lang = rnd.choice(offers["languages"])
             angle = rnd.choice(vertical["pain_angles"])
@@ -212,7 +225,7 @@ def main() -> int:
         "total_drafts": len(drafts),
         "channel_counts": {c: sum(1 for d in drafts if d["channel"] == c) for c in CHANNEL_MIX},
         "language_counts": {
-            l: sum(1 for d in drafts if d["language"] == l) for l in ("ar", "en")
+            lang: sum(1 for d in drafts if d["language"] == lang) for lang in ("ar", "en")
         },
         "non_negotiable_rule": NON_NEGOTIABLE_RULE,
         "safety_flags": SAFETY_FLAGS,

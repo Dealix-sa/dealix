@@ -8,8 +8,6 @@ Read-only.
 
 from __future__ import annotations
 
-import re
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -17,8 +15,14 @@ WEB = ROOT / "apps" / "web"
 SITE_DOCS = ROOT / "docs" / "site-launch"
 
 BANNED_CLAIMS = [
-    "guaranteed roi", "guaranteed revenue", "double your revenue",
-    "ضمان عائد", "نضمن لك", "أرباح مضمونة", "100% guaranteed", "risk free",
+    "guaranteed roi",
+    "guaranteed revenue",
+    "double your revenue",
+    "ضمان عائد",
+    "نضمن لك",
+    "أرباح مضمونة",
+    "100% guaranteed",
+    "risk free",
 ]
 
 SEO_FILES = [
@@ -70,7 +74,9 @@ def run() -> list[str]:
 def main() -> int:
     errors = run()
     if not errors:
-        print("Site launch static check PASS — SEO files present, copy deck bilingual & claim-safe.")
+        print(
+            "Site launch static check PASS — SEO files present, copy deck bilingual & claim-safe."
+        )
         return 0
     print("Site launch static check FAIL:")
     for e in errors:

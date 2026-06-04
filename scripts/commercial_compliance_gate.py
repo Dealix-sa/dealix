@@ -14,7 +14,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import now_iso, output_day_dir, read_jsonl, today_str, write_json, write_jsonl  # noqa: E402
+from startup_os_common import (
+    now_iso,
+    output_day_dir,
+    read_jsonl,
+    today_str,
+    write_json,
+    write_jsonl,
+)
 
 MIN_COMPLIANCE = 70
 
@@ -92,7 +99,9 @@ def main() -> int:
     ap.add_argument("--day", default=today_str())
     args = ap.parse_args()
     r = run(args.day)
-    print(f"Compliance gate: {r['approved_for_review']}/{r['total']} approved for review, {r['rejected']} rejected")
+    print(
+        f"Compliance gate: {r['approved_for_review']}/{r['total']} approved for review, {r['rejected']} rejected"
+    )
     return 0
 
 

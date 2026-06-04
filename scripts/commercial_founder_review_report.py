@@ -18,7 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "lib"))
 
-from startup_os_common import (  # noqa: E402
+from startup_os_common import (
     NON_NEGOTIABLE_RULE,
     output_day_dir,
     read_jsonl,
@@ -26,10 +26,25 @@ from startup_os_common import (  # noqa: E402
 )
 
 CSV_FIELDS = [
-    "draft_id", "channel", "language", "vertical", "company_name", "buyer_title",
-    "offer_stage", "offer_name", "pain_angle", "priority_score", "quality_score",
-    "compliance_score", "fit_score", "risk_level", "research_required",
-    "requires_founder_approval", "send_allowed", "status", "subject",
+    "draft_id",
+    "channel",
+    "language",
+    "vertical",
+    "company_name",
+    "buyer_title",
+    "offer_stage",
+    "offer_name",
+    "pain_angle",
+    "priority_score",
+    "quality_score",
+    "compliance_score",
+    "fit_score",
+    "risk_level",
+    "research_required",
+    "requires_founder_approval",
+    "send_allowed",
+    "status",
+    "subject",
 ]
 
 
@@ -52,7 +67,8 @@ def run(day: str) -> dict:
         f"> {NON_NEGOTIABLE_RULE}",
         "",
         f"- Total drafts: **{len(drafts)}**",
-        f"- Channels: " + ", ".join(
+        "- Channels: "
+        + ", ".join(
             f"{c}={sum(1 for x in drafts if x['channel']==c)}"
             for c in ("cold_email", "follow_up", "linkedin_manual", "website_form")
         ),
@@ -92,9 +108,29 @@ def run(day: str) -> dict:
     # approved_manual_sends.example.csv (template only)
     with (d / "approved_manual_sends.example.csv").open("w", encoding="utf-8", newline="") as fh:
         w = csv.writer(fh)
-        w.writerow(["draft_id", "approved_by_founder", "edited", "sent_manually", "sent_channel", "sent_at", "notes"])
+        w.writerow(
+            [
+                "draft_id",
+                "approved_by_founder",
+                "edited",
+                "sent_manually",
+                "sent_channel",
+                "sent_at",
+                "notes",
+            ]
+        )
         for dr in top[:5]:
-            w.writerow([dr["draft_id"], "NO", "NO", "NO", "", "", "example row — founder fills after manual approval"])
+            w.writerow(
+                [
+                    dr["draft_id"],
+                    "NO",
+                    "NO",
+                    "NO",
+                    "",
+                    "",
+                    "example row — founder fills after manual approval",
+                ]
+            )
 
     # next_actions.md
     nlines = [
