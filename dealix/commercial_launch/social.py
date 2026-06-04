@@ -321,8 +321,8 @@ def _write_social_review(result: SocialResult, out: Path) -> Path:
     ranked = sorted(result.accepted, key=lambda p: (p["compliance_score"], p["quality_score"]), reverse=True)
 
     L = [f"# Social & Media Review — {result.run_date}", "",
-         "> **REVIEW-ONLY.** Nothing here is posted, scheduled, or boosted. No ad spend. "
-         "The founder reviews, approves, and publishes manually.", "",
+         ("> **REVIEW-ONLY.** Nothing here is posted, scheduled, or boosted. No ad spend. "
+          + "The founder reviews, approves, and publishes manually."), "",
          "## Summary",
          f"- Posts ready for review: {result.total_accepted}",
          f"- Rejected by gates: {len(result.rejected)}", ""]
