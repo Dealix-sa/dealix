@@ -5,7 +5,7 @@
 ### AI revenue, growth, and compliance engine for Saudi B2B — PDPL-native, ZATCA-aware, approval-first.
 ### محرّك إيرادات ونمو وامتثال بـ AI للشركات السعودية — PDPL أصلاً، ZATCA-aware، والموافقة أولاً.
 
-[![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
+[![CI](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)](https://fastapi.tiangolo.com/)
@@ -48,7 +48,7 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 ## Quick start
 
 ```bash
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env
@@ -241,3 +241,36 @@ MIT — see [LICENSE](LICENSE).
 **[🚀 Launch](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md)** · **[✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md)** · **[💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md)** · **[🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)** · **[🇸🇦 Compliance](dealix/registers/compliance_saudi.yaml)**
 
 </div>
+
+---
+
+## Startup Operating System (V5)
+
+The **Dealix Full Startup Company OS V5** turns the repo into a complete, verifiable operating company. It is **additive and non-destructive** — a named company-OS layer over the existing engines. Its single non-negotiable rule:
+
+> **AI drafts, analyzes, scores, ranks, recommends, and prepares. The founder reviews, approves, sells, sends manually, and signs off. The system never sends externally.**
+
+### OS areas (`docs/`)
+Company OS · Product OS · Engineering OS · Website Launch OS · Commercial Launch OS · Sales OS · Marketing OS · Media/Social OS · Ads OS · RevOps/CRM OS · Delivery OS · Support OS · Finance OS · Legal/Compliance OS · Security/Trust OS · Data/Analytics OS · AI Evals OS · People OS · Partnerships OS · Investor OS · Operations OS · Go-Live OS · Launch Control.
+
+Start here: [`docs/launch-control/00_FINAL_LAUNCH_CONTROL_TOWER.md`](docs/launch-control/00_FINAL_LAUNCH_CONTROL_TOWER.md) and [`docs/launch-control/00_REPOSITORY_DISCOVERY_REPORT.md`](docs/launch-control/00_REPOSITORY_DISCOVERY_REPORT.md).
+
+### Commands
+```bash
+python scripts/commercial_generate_400_drafts.py --target 400   # >=400 review-only drafts
+python scripts/commercial_safety_audit.py                       # forced safety-flag audit
+python scripts/commercial_launch_readiness.py                   # commercial readiness
+python scripts/media_social_calendar_generate.py                # 30-day manual calendar
+python scripts/media_social_verify.py                           # manual-only verification
+python scripts/site_launch_static_check.py                      # launch-site routes
+python scripts/commercial_crm_schema_verify.py                  # CRM schema invariants
+python scripts/api_commercial_static_check.py                   # no external-send code
+python scripts/final_secret_and_risk_scan.py                    # secret & risk scan
+python scripts/final_launch_control_verify.py                   # GO / NO-GO
+python scripts/startup_os_verify.py                             # whole-company gate
+```
+
+### Safety note
+No external sending. No SMTP / WhatsApp / LinkedIn automation. No scraping. No form auto-submit.
+No live paid ads. No secrets. All GitHub Actions are read-only and artifact-only. Every draft requires
+founder approval before any manual, founder-initiated send.

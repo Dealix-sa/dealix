@@ -1,0 +1,6 @@
+{
+  "sampled": 50,
+  "compliance_pass_rate": 1.0,
+  "quality_pass_rate": 1.0,
+  "compliance_gate": true
+}

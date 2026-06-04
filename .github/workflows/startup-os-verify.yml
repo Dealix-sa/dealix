@@ -1,0 +1,46 @@
+name: V5 — Startup OS Verify
+
+# Whole-company verification for the Dealix Full Startup Company OS V5.
+# Artifact-only. No secrets. No external sending. Read-only permissions.
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 6 * * 1"   # weekly, Monday 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  startup-os-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Generate + verify the V5 company OS
+        run: |
+          python scripts/commercial_generate_400_drafts.py --target 400
+          python scripts/commercial_score_drafts.py
+          python scripts/commercial_safety_audit.py
+          python scripts/commercial_founder_review_report.py
+          python scripts/commercial_launch_readiness.py
+          python scripts/media_social_calendar_generate.py
+          python scripts/media_social_verify.py
+          python scripts/site_launch_static_check.py
+          python scripts/commercial_crm_schema_verify.py
+          python scripts/api_commercial_static_check.py
+          python scripts/final_secret_and_risk_scan.py
+          python scripts/final_launch_control_verify.py
+          python scripts/startup_os_verify.py
+      - name: Upload verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: startup-os-verification
+          path: |
+            outputs/startup_os/
+            outputs/commercial_launch/

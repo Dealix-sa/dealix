@@ -1,0 +1,25 @@
+{
+  "version": "v5",
+  "currency": "SAR",
+  "note": "Schema only. No fabricated values. Populate from real, consented data.",
+  "events": [
+    {"name": "website_visit", "type": "count", "pii": false},
+    {"name": "cta_click", "type": "count", "pii": false},
+    {"name": "audit_request", "type": "count", "pii": "consented_contact"},
+    {"name": "lead_created", "type": "count", "pii": "consented_contact"},
+    {"name": "draft_generated", "type": "count", "pii": false},
+    {"name": "founder_review", "type": "count", "pii": false},
+    {"name": "manual_send", "type": "count", "pii": false, "note": "founder-initiated, never automated"},
+    {"name": "reply", "type": "count", "pii": false},
+    {"name": "positive_reply", "type": "count", "pii": false},
+    {"name": "diagnostic_booked", "type": "count", "pii": false},
+    {"name": "diagnostic_paid", "type": "count", "pii": false},
+    {"name": "pilot_proposed", "type": "count", "pii": false},
+    {"name": "pilot_sold", "type": "count", "pii": false},
+    {"name": "retainer_start", "type": "count", "pii": false},
+    {"name": "pipeline_sar", "type": "currency", "pii": false},
+    {"name": "realized_revenue_sar", "type": "currency", "pii": false},
+    {"name": "safety_violation", "type": "count", "pii": false},
+    {"name": "compliance_rejection", "type": "count", "pii": false}
+  ]
+}

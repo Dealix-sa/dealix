@@ -1,0 +1,13 @@
+{
+  "date": "2026-06-04",
+  "drafts_generated": 400,
+  "by_channel": {
+    "cold_email": 175,
+    "follow_up": 100,
+    "linkedin_manual": 75,
+    "website_form": 50
+  },
+  "manual_sends": 0,
+  "founder_reviewed": 0,
+  "note": "manual_sends/founder_reviewed are filled by the founder; no fabricated numbers"
+}

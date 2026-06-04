@@ -1,0 +1,313 @@
+{
+  "version": "v5",
+  "generated": "2026-06-04",
+  "pillars": [
+    "AI trust & safety",
+    "Sector ops insight",
+    "Proof / case method",
+    "Founder POV"
+  ],
+  "rule": "Manual posting only. No auto-post, no platform API, no secrets, no paid ads.",
+  "days": [
+    {
+      "date": "2026-06-04",
+      "pillar": "AI trust & safety",
+      "platform": "LinkedIn",
+      "vertical": "facilities_management",
+      "language": "en",
+      "draft_hook": "[AI trust & safety] Insight for facilities management teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-05",
+      "pillar": "Sector ops insight",
+      "platform": "X",
+      "vertical": "contracting_project_controls",
+      "language": "ar",
+      "draft_hook": "[Sector ops insight] Insight for contracting project controls teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-06",
+      "pillar": "Proof / case method",
+      "platform": "Instagram",
+      "vertical": "real_estate_property_ops",
+      "language": "en",
+      "draft_hook": "[Proof / case method] Insight for real estate property ops teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-07",
+      "pillar": "Founder POV",
+      "platform": "TikTok",
+      "vertical": "legal_professional_services",
+      "language": "ar",
+      "draft_hook": "[Founder POV] Insight for legal professional services teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-08",
+      "pillar": "AI trust & safety",
+      "platform": "YouTube Shorts",
+      "vertical": "consulting_training_b2b",
+      "language": "en",
+      "draft_hook": "[AI trust & safety] Insight for consulting training b2b teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-09",
+      "pillar": "Sector ops insight",
+      "platform": "LinkedIn",
+      "vertical": "facilities_management",
+      "language": "ar",
+      "draft_hook": "[Sector ops insight] Insight for facilities management teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-10",
+      "pillar": "Proof / case method",
+      "platform": "X",
+      "vertical": "contracting_project_controls",
+      "language": "en",
+      "draft_hook": "[Proof / case method] Insight for contracting project controls teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-11",
+      "pillar": "Founder POV",
+      "platform": "Instagram",
+      "vertical": "real_estate_property_ops",
+      "language": "ar",
+      "draft_hook": "[Founder POV] Insight for real estate property ops teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-12",
+      "pillar": "AI trust & safety",
+      "platform": "TikTok",
+      "vertical": "legal_professional_services",
+      "language": "en",
+      "draft_hook": "[AI trust & safety] Insight for legal professional services teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-13",
+      "pillar": "Sector ops insight",
+      "platform": "YouTube Shorts",
+      "vertical": "consulting_training_b2b",
+      "language": "ar",
+      "draft_hook": "[Sector ops insight] Insight for consulting training b2b teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-14",
+      "pillar": "Proof / case method",
+      "platform": "LinkedIn",
+      "vertical": "facilities_management",
+      "language": "en",
+      "draft_hook": "[Proof / case method] Insight for facilities management teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-15",
+      "pillar": "Founder POV",
+      "platform": "X",
+      "vertical": "contracting_project_controls",
+      "language": "ar",
+      "draft_hook": "[Founder POV] Insight for contracting project controls teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-16",
+      "pillar": "AI trust & safety",
+      "platform": "Instagram",
+      "vertical": "real_estate_property_ops",
+      "language": "en",
+      "draft_hook": "[AI trust & safety] Insight for real estate property ops teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-17",
+      "pillar": "Sector ops insight",
+      "platform": "TikTok",
+      "vertical": "legal_professional_services",
+      "language": "ar",
+      "draft_hook": "[Sector ops insight] Insight for legal professional services teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-18",
+      "pillar": "Proof / case method",
+      "platform": "YouTube Shorts",
+      "vertical": "consulting_training_b2b",
+      "language": "en",
+      "draft_hook": "[Proof / case method] Insight for consulting training b2b teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-19",
+      "pillar": "Founder POV",
+      "platform": "LinkedIn",
+      "vertical": "facilities_management",
+      "language": "ar",
+      "draft_hook": "[Founder POV] Insight for facilities management teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-20",
+      "pillar": "AI trust & safety",
+      "platform": "X",
+      "vertical": "contracting_project_controls",
+      "language": "en",
+      "draft_hook": "[AI trust & safety] Insight for contracting project controls teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-21",
+      "pillar": "Sector ops insight",
+      "platform": "Instagram",
+      "vertical": "real_estate_property_ops",
+      "language": "ar",
+      "draft_hook": "[Sector ops insight] Insight for real estate property ops teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-22",
+      "pillar": "Proof / case method",
+      "platform": "TikTok",
+      "vertical": "legal_professional_services",
+      "language": "en",
+      "draft_hook": "[Proof / case method] Insight for legal professional services teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-23",
+      "pillar": "Founder POV",
+      "platform": "YouTube Shorts",
+      "vertical": "consulting_training_b2b",
+      "language": "ar",
+      "draft_hook": "[Founder POV] Insight for consulting training b2b teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-24",
+      "pillar": "AI trust & safety",
+      "platform": "LinkedIn",
+      "vertical": "facilities_management",
+      "language": "en",
+      "draft_hook": "[AI trust & safety] Insight for facilities management teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-25",
+      "pillar": "Sector ops insight",
+      "platform": "X",
+      "vertical": "contracting_project_controls",
+      "language": "ar",
+      "draft_hook": "[Sector ops insight] Insight for contracting project controls teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-26",
+      "pillar": "Proof / case method",
+      "platform": "Instagram",
+      "vertical": "real_estate_property_ops",
+      "language": "en",
+      "draft_hook": "[Proof / case method] Insight for real estate property ops teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-27",
+      "pillar": "Founder POV",
+      "platform": "TikTok",
+      "vertical": "legal_professional_services",
+      "language": "ar",
+      "draft_hook": "[Founder POV] Insight for legal professional services teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-28",
+      "pillar": "AI trust & safety",
+      "platform": "YouTube Shorts",
+      "vertical": "consulting_training_b2b",
+      "language": "en",
+      "draft_hook": "[AI trust & safety] Insight for consulting training b2b teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-29",
+      "pillar": "Sector ops insight",
+      "platform": "LinkedIn",
+      "vertical": "facilities_management",
+      "language": "ar",
+      "draft_hook": "[Sector ops insight] Insight for facilities management teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-06-30",
+      "pillar": "Proof / case method",
+      "platform": "X",
+      "vertical": "contracting_project_controls",
+      "language": "en",
+      "draft_hook": "[Proof / case method] Insight for contracting project controls teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-07-01",
+      "pillar": "Founder POV",
+      "platform": "Instagram",
+      "vertical": "real_estate_property_ops",
+      "language": "ar",
+      "draft_hook": "[Founder POV] Insight for real estate property ops teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-07-02",
+      "pillar": "AI trust & safety",
+      "platform": "TikTok",
+      "vertical": "legal_professional_services",
+      "language": "en",
+      "draft_hook": "[AI trust & safety] Insight for legal professional services teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    },
+    {
+      "date": "2026-07-03",
+      "pillar": "Sector ops insight",
+      "platform": "YouTube Shorts",
+      "vertical": "consulting_training_b2b",
+      "language": "ar",
+      "draft_hook": "[Sector ops insight] Insight for consulting training b2b teams (review/edit before posting).",
+      "posting": "MANUAL — founder edits and posts personally",
+      "auto_post": false
+    }
+  ]
+}

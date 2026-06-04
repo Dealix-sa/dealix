@@ -1,0 +1,54 @@
+name: V5 — Final Launch Control
+
+# Runs the full safety-critical V5 chain and the V5 pytest suite, then asserts
+# the GO/NO-GO decision. Artifact-only. No secrets. No external sending.
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "30 6 * * 1"   # weekly, Monday 06:30 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  final-launch-control:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pytest
+        run: pip install pytest
+      - name: Final launch control verify
+        run: python scripts/final_launch_control_verify.py
+      - name: Secret & risk scan
+        run: python scripts/final_secret_and_risk_scan.py
+      - name: V5 test suite
+        run: |
+          python -m pytest -p no:cacheprovider -q \
+            tests/test_commercial_generate_400_drafts.py \
+            tests/test_commercial_safety_audit.py \
+            tests/test_commercial_launch_readiness.py \
+            tests/test_commercial_no_external_send.py \
+            tests/test_commercial_quality_gate.py \
+            tests/test_commercial_compliance_gate.py \
+            tests/test_commercial_outputs_schema.py \
+            tests/test_commercial_founder_review_report.py \
+            tests/test_commercial_seed_leads_validate.py \
+            tests/test_media_social_os.py \
+            tests/test_site_launch_static_check.py \
+            tests/test_crm_schema_verify.py \
+            tests/test_api_commercial_static_check.py \
+            tests/test_final_secret_and_risk_scan.py \
+            tests/test_startup_os_verify.py \
+            tests/test_ai_eval_rubrics.py
+      - name: Upload evidence pack
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v5-evidence-pack
+          path: |
+            outputs/startup_os/
+            outputs/commercial_launch/

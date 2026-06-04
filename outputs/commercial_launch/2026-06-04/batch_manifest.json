@@ -1,0 +1,24 @@
+{
+  "batch_id": "BATCH-2026-06-04",
+  "date": "2026-06-04",
+  "total_drafts": 400,
+  "by_channel": {
+    "cold_email": 175,
+    "follow_up": 100,
+    "linkedin_manual": 75,
+    "website_form": 50
+  },
+  "by_vertical": {
+    "facilities_management": 80,
+    "contracting_project_controls": 80,
+    "real_estate_property_ops": 80,
+    "legal_professional_services": 80,
+    "consulting_training_b2b": 80
+  },
+  "safety_flags": {
+    "send_allowed": false,
+    "external_send_blocked": true,
+    "requires_founder_approval": true,
+    "no_auto_send": true
+  }
+}
