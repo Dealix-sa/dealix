@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-06-04T19:50:02.458394+00:00",
+  "draft_count": 400,
+  "send_allowed_true_count": 0,
+  "external_send_blocked_false_count": 0,
+  "no_auto_send_false_count": 0,
+  "by_vertical": {
+    "healthcare_clinics": 80,
+    "logistics_supply_chain": 80,
+    "retail_fnb_chains": 80,
+    "professional_services": 80,
+    "construction_contracting": 80
+  },
+  "top_score": 99,
+  "readiness_computed_at": "2026-06-04T19:50:02.531560+00:00",
+  "safety_pass": true,
+  "commercially_ready": true,
+  "go_decision": "GO (review-only drafts + manual approved outreach)"
+}

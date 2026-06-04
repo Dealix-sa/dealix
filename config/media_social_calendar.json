@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "doctrine": "planning + manual posting only; no platform API auto-posting; no automation of native engagement",
+  "auto_post": false,
+  "platforms_planning_only": ["x", "blog", "founder_newsletter", "professional_network_manual"],
+  "cadence_per_week": {
+    "founder_posts": 5,
+    "company_posts": 3,
+    "long_form": 1
+  },
+  "pillars": [
+    "category_education_revenue_intelligence",
+    "saudi_b2b_proof_and_data",
+    "approval_first_ai_doctrine",
+    "founder_pov_lessons",
+    "customer_outcomes_anonymized"
+  ],
+  "verticals": [
+    "construction_contracting",
+    "healthcare_clinics",
+    "logistics_supply_chain",
+    "retail_fnb_chains",
+    "professional_services"
+  ],
+  "languages": ["ar", "en"],
+  "claim_guardrails": {
+    "forbidden_claims": [
+      "guaranteed ROI",
+      "100%",
+      "replace your team",
+      "automate everything",
+      "no human needed"
+    ]
+  },
+  "ads": {
+    "status": "planning_and_copy_only",
+    "live_launch_allowed": false
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-06-04T19:50:02.782904+00:00",
+  "api_present": true,
+  "commercial_files_scanned": [
+    "api/main.py",
+    "api/routers/jobs.py",
+    "api/routers/commercial.py",
+    "api/routers/commercial_map.py",
+    "api/routers/onboarding.py",
+    "api/routers/founder_launch_status.py",
+    "api/routers/revenue_ops_autopilot.py",
+    "api/routers/marketing_ops.py",
+    "api/routers/commercial_engagements.py",
+    "api/routers/founder.py",
+    "api/routers/domains/sales/__init__.py"
+  ],
+  "send_pattern_violations": [],
+  "pass": true,
+  "note": "Commercial files scanned for send patterns."
+}
