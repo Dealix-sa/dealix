@@ -40,7 +40,7 @@ def test_privacy_first_requires_consent_language():
         "vertical": "legal_professional_services",
         "channel": "cold_email",
     }
-    score, risk, reasons = lib.compliance_score(draft, cfg)
+    _score, _risk, reasons = lib.compliance_score(draft, cfg)
     assert "privacy_first_language_missing" in reasons
 
 
@@ -53,7 +53,7 @@ def test_privacy_first_passes_with_consent_language():
         "vertical": "legal_professional_services",
         "channel": "cold_email",
     }
-    score, risk, reasons = lib.compliance_score(draft, cfg)
+    _score, _risk, reasons = lib.compliance_score(draft, cfg)
     assert "privacy_first_language_missing" not in reasons
 
 

@@ -89,7 +89,7 @@ def build_lead_universe(verticals: list[dict[str, Any]], count: int, seed: int) 
     real contacts and carry no contact details — drafts are addressed to a
     public buyer persona, never to a scraped individual.
     """
-    rng = random.Random(seed)
+    rng = random.Random(seed)  # noqa: S311 — deterministic synthetic data, not security-sensitive
     leads: list[dict[str, Any]] = []
     for i in range(count):
         v = verticals[i % len(verticals)]
@@ -338,7 +338,7 @@ def generate_drafts(target: int | None = None, config: dict[str, Any] | None = N
             draft: dict[str, Any] = {
                 "draft_id": f"{batch_id}-{global_i:05d}",
                 "batch_id": batch_id,
-                "created_at": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+                "created_at": _dt.datetime.now(_dt.UTC).isoformat(),
                 "company_name": f"Example {v['name_en'].split('&')[0].strip()} {(global_i // len(verticals)) + 1:03d}",
                 "source_lead_id": f"EX-{v['id'][:3].upper()}-{(global_i // len(verticals)) + 1:04d}",
                 "vertical": v["id"],
@@ -591,7 +591,7 @@ def _render_founder_md(summary, top, ranked, config) -> str:
     lines = [
         "# Dealix — Founder Review Queue",
         "",
-        f"_Generated: {_dt.datetime.now(_dt.timezone.utc).isoformat()}_",
+        f"_Generated: {_dt.datetime.now(_dt.UTC).isoformat()}_",
         "",
         f"> **Golden rule:** {config['launch']['golden_rule']}",
         "",

@@ -50,7 +50,7 @@ def check() -> dict:
         if ok:
             try:
                 json.loads(p.read_text(encoding="utf-8"))
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 ok = False
                 add(f"config:{cfg}", False, f"invalid json: {exc}")
                 continue

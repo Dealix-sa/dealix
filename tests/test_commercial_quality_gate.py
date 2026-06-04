@@ -27,7 +27,7 @@ def test_missing_cta_penalized():
 def test_missing_opt_out_penalized_when_required():
     cfg = _quality_cfg()
     draft = {"subject": "Hi", "body": "let's talk", "cta": "book a call", "opt_out": "", "vertical": "x"}
-    score, reasons = lib.quality_score(draft, cfg, requires_opt_out=True)
+    _score, reasons = lib.quality_score(draft, cfg, requires_opt_out=True)
     assert "missing_opt_out" in reasons
 
 
@@ -40,14 +40,14 @@ def test_generic_phrase_penalized():
         "opt_out": "stop",
         "vertical": "x",
     }
-    score, reasons = lib.quality_score(draft, cfg, requires_opt_out=True)
+    _score, reasons = lib.quality_score(draft, cfg, requires_opt_out=True)
     assert any(r.startswith("generic_phrase") for r in reasons)
 
 
 def test_misleading_subject_penalized():
     cfg = _quality_cfg()
     draft = {"subject": "Re: your invoice", "body": "hello", "cta": "call", "opt_out": "stop", "vertical": "x"}
-    score, reasons = lib.quality_score(draft, cfg, requires_opt_out=True)
+    _score, reasons = lib.quality_score(draft, cfg, requires_opt_out=True)
     assert "misleading_subject" in reasons
 
 
