@@ -42,6 +42,11 @@ FORBIDDEN_PATTERNS = [
 # Reason codes:
 #   NEGATION         — phrase appears as "لا/no/never <term>"; used to
 #                      describe what we don't do.
+#   DISCLAIMER       — phrase appears inside the mandated bilingual
+#                      proof-pack disclaimer ("Estimated outcomes are not
+#                      guaranteed outcomes / النتائج التقديرية ليست نتائج
+#                      مضمونة"). The forbidden token only occurs as the
+#                      thing being explicitly disclaimed, never as a claim.
 #   REVIEW_PENDING   — phrase appears in a positive context (e.g. a
 #                      money-back wording on roi.html) and needs founder
 #                      approval to either keep, qualify, or rephrase.
@@ -116,6 +121,9 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
     "diagnostic.html": {
         "cold": "NEGATION",
+        # results panel carries the mandated bilingual disclaimer
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
     },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
@@ -142,11 +150,16 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
     },
     # Trust Center (Tier-1 redesign) — frames the 8 hard gates as features.
-    # Copy explicitly states what Dealix DOES NOT do: "لا scraping",
-    # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
+    # Copy explicitly states what Dealix DOES NOT do: "لا scraping" (og
+    # description) and carries the standard bilingual proof-pack disclaimer
+    # "Estimated outcomes are not guaranteed outcomes / النتائج التقديرية
+    # ليست نتائج مضمونة". Pure NEGATION/DISCLAIMER throughout. The earlier
+    # "نضمن" wording was rephrased out, so that entry is dropped to keep the
+    # allowlist tight (test_allowlist_entries_actually_present).
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -170,6 +183,66 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     "compare-salesloft.html": {
         "blast": "NEGATION",
         "cold": "NEGATION",
+    },
+    # --- Offer + proof pages carrying the mandated bilingual proof-pack
+    # disclaimer ("Estimated outcomes are not guaranteed outcomes /
+    # النتائج التقديرية ليست نتائج مضمونة"). Verified per-occurrence: the
+    # forbidden tokens appear ONLY inside that disclaimer or in explicit
+    # "صفر/لا <term>" negations, never as a positive guarantee claim.
+    "architecture.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "bespoke-ai.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "case-study-pilot-example.html": {
+        "guaranteed": "DISCLAIMER",
+    },
+    "customer-portal.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    # data-pack: bilingual disclaimer + "صفر cold WhatsApp/LinkedIn" and
+    # "لا scraping" safety negations.
+    "data-pack.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+        "cold": "NEGATION",
+        "scraping": "NEGATION",
+    },
+    "dpo.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "launch-status.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "pricing.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    # roadmap: "LinkedIn scraping automation — policy-blocked in code".
+    "roadmap.html": {
+        "scraping": "NEGATION",
+    },
+    "sector-report-b2b-services.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "security.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "sprint-sample.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "webinar.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
     },
 }
 

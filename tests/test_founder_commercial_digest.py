@@ -51,8 +51,9 @@ def test_count_evidence_events_today():
 
 def test_scope_requested_within_days():
     rows = [{"event_date": "2026-05-10", "event_type": "scope_requested"}]
-    assert scope_requested_within_days(14, rows) is True
-    assert scope_requested_within_days(3, rows) is False
+    anchor = date(2026, 5, 17)
+    assert scope_requested_within_days(14, rows, on_date=anchor) is True
+    assert scope_requested_within_days(3, rows, on_date=anchor) is False
 
 
 def test_social_queue_has_posts():

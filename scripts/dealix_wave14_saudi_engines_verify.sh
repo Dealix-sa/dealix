@@ -71,8 +71,12 @@ run_check "SSRF_GUARD"                    "python3 -m pytest tests/test_ssrf_gua
 
 # ── Phase E — Customer-facing surface ────────────────────────────────
 run_check "SERVICES_HTML_EXISTS"          "test -f landing/services.html"
-run_check "SERVICES_HTML_HAS_7_CARDS" \
-  "test \$(grep -c 'data-service-id=' landing/services.html) -eq 7"
+# Service catalog grew to 8 cards: the five-rung ladder (diagnostic, 499
+# sprint, 1500 data pack, 2999 growth ops, bespoke AI custom) plus the
+# support_os add-on, executive command center, and agency partner OS.
+# All 8 ids are backed by real modules + the commercial offer playbook.
+run_check "SERVICES_HTML_HAS_8_CARDS" \
+  "test \$(grep -c 'data-service-id=' landing/services.html) -eq 8"
 run_check "SERVICES_HTML_BILINGUAL" \
   "grep -q 'sub-en' landing/services.html && grep -q 'kpi-ar' landing/services.html && grep -q 'kpi-en' landing/services.html"
 run_check "FORBIDDEN_CLAIMS_LINT"         "python3 -m pytest tests/test_landing_forbidden_claims.py -q --no-cov"
