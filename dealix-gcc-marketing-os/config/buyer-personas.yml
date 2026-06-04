@@ -1,0 +1,60 @@
+personas:
+  managing_partner_legal_ar:
+    title: "Managing Partner"
+    sector: legal
+    language: ar
+    primary_concern: "confidentiality_and_lawyer_control"
+    secondary_concern: "time_savings_on_document_work"
+    values: ["trust", "precision", "confidentiality", "control"]
+    fears: ["data_leak", "replacing_lawyer_judgment", "client_trust_damage"]
+    buying_trigger: "internal_knowledge_overload_or_associate_time_waste"
+    preferred_cta: "send_one_pager"
+    tone: "respectful_formal_arabic"
+
+  regional_operations_director_intl:
+    title: "Regional Operations Director"
+    sector: international_company
+    language: en
+    primary_concern: "regional_ops_efficiency"
+    secondary_concern: "compliance_and_control"
+    values: ["ROI", "control", "integration", "reporting"]
+    fears: ["uncontrolled_AI", "compliance_risk", "failed_rollout"]
+    buying_trigger: "reporting_fragmentation_or_localization_pain"
+    preferred_cta: "20_min_workflow_fit_call"
+    tone: "executive_practical_english"
+
+  operations_director_fm:
+    title: "Operations Director / FM Director"
+    sector: facilities_management
+    language: ar
+    primary_concern: "sla_and_reporting_visibility"
+    secondary_concern: "field_team_accountability"
+    values: ["efficiency", "visibility", "accountability", "SLA"]
+    fears: ["system_complexity", "staff_resistance", "client_escalation"]
+    buying_trigger: "sla_misses_or_manual_report_pile"
+    preferred_cta: "send_one_pager_or_audit"
+    tone: "practical_operational_arabic"
+
+  ceo_local_sme_ar:
+    title: "CEO / GM"
+    sector: b2b_services
+    language: ar
+    primary_concern: "time_and_manual_work_reduction"
+    secondary_concern: "visibility_for_management"
+    values: ["speed", "simplicity", "control", "cost"]
+    fears: ["complexity", "cost_overrun", "it_dependency"]
+    buying_trigger: "manual_followup_overload_or_reporting_pain"
+    preferred_cta: "send_brief_or_audit"
+    tone: "practical_founder_arabic"
+
+  consulting_managing_partner:
+    title: "Managing Partner / Delivery Director"
+    sector: consulting
+    language: en
+    primary_concern: "delivery_efficiency_and_knowledge_reuse"
+    secondary_concern: "client_reporting_quality"
+    values: ["expertise", "efficiency", "client_satisfaction", "knowledge"]
+    fears: ["quality_drop", "data_security", "over_automation"]
+    buying_trigger: "repeated_proposal_work_or_knowledge_loss"
+    preferred_cta: "one_pager_or_discovery_call"
+    tone: "expert_to_expert_english"

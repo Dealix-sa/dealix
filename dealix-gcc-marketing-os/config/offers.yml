@@ -1,0 +1,129 @@
+offers:
+  ai_workflow_audit:
+    name_ar: "تدقيق AI Workflow"
+    name_en: "AI Workflow Audit"
+    duration: "7 days"
+    price_sar: 499
+    price_usd_equiv: 133
+    deliverable: "workflow_audit_report_with_pilot_recommendation"
+    description_ar: "تحليل workflow واحد خلال 7 أيام مع خطة pilot واضحة"
+    description_en: "7-day single workflow analysis with clear pilot plan and human approval gates"
+    cta_ar: "هل يناسبكم أرسل صفحة مختصرة للفكرة؟"
+    cta_en: "Would it be useful if I sent a one-page summary?"
+    tier: entry
+
+  legal_knowledge_os:
+    name_ar: "نظام المعرفة والمستندات القانونية"
+    name_en: "Legal Knowledge & Document Intelligence OS"
+    duration: "30-60 days"
+    price_range_sar: "2999-4999/mo"
+    deliverable: "internal_document_search_summary_deadline_extraction_workflow"
+    description_ar: "نظام داخلي آمن لمكاتب المحاماة — البحث في المستندات، التلخيص، استخراج الالتزامات والمواعيد، والمعرفة الداخلية"
+    description_en: "Secure internal system for law firms — document search, matter summarization, obligation extraction, internal knowledge base"
+    key_trust_signals:
+      - "final legal judgment stays with the lawyer"
+      - "starts with sample or non-sensitive data"
+      - "no production data in first contact"
+      - "confidential by design"
+    tier: managed_ops
+
+  gcc_ai_operations_pilot:
+    name_ar: "تجربة AI للعمليات الخليجية"
+    name_en: "GCC AI Operations Pilot"
+    duration: "30 days"
+    price_range_sar: "2999-4999"
+    deliverable: "controlled_workflow_pilot_arabic_english_integration"
+    description_ar: "تجربة محكومة لـ 30 يومًا لأتمتة workflow خليجي واحد"
+    description_en: "Controlled 30-day GCC AI workflow pilot starting with one process, sample data, and human approval gates"
+    key_trust_signals:
+      - "sample-data-first"
+      - "human approval gates"
+      - "Arabic/English handling"
+      - "clear integration checklist"
+    tier: managed_ops
+
+  maintenance_intelligence_os:
+    name_ar: "نظام ذكاء الصيانة"
+    name_en: "Maintenance Intelligence OS"
+    duration: "30-60 days"
+    price_range_sar: "1500-2999/mo"
+    deliverable: "sla_reporting_technician_workflow_failure_tracking"
+    description_ar: "نظام agentic لتقارير الفنيين، SLA، الأعطال المتكررة، والمتابعة"
+    description_en: "Agentic workflow for SLA reporting, technician field reports, repeated failures, and escalation"
+    tier: managed_ops
+
+  consulting_delivery_os:
+    name_ar: "نظام توصيل الاستشارات"
+    name_en: "Consulting Delivery Intelligence OS"
+    duration: "30-60 days"
+    price_range_sar: "2999-4999/mo"
+    deliverable: "proposal_reuse_project_delivery_client_reporting"
+    description_ar: "محرك المعرفة لفريق الاستشارات — proposals، تقارير، delivery"
+    description_en: "Knowledge engine that converts past projects and deliverables into faster proposals, reports, and delivery"
+    tier: managed_ops
+
+  property_ops_ai_os:
+    name_ar: "نظام عمليات العقار بالذكاء الاصطناعي"
+    name_en: "Property Operations AI OS"
+    duration: "30-60 days"
+    price_range_sar: "1500-2999/mo"
+    deliverable: "tenant_requests_maintenance_contracts_owner_reports_workflow"
+    description_ar: "workflow يربط طلبات المستأجرين، الصيانة، العقود، والتقارير"
+    description_en: "Agentic workflow connecting tenant requests, maintenance, contracts, and owner reporting"
+    tier: managed_ops
+
+  patient_ops_ai_os:
+    name_ar: "نظام عمليات المرضى والإدارة"
+    name_en: "Patient Ops & Admin Workflow AI"
+    duration: "30-60 days"
+    price_range_sar: "1500-2999/mo"
+    deliverable: "patient_flow_admin_workflow_reporting"
+    tier: managed_ops
+
+  training_knowledge_ai_os:
+    name_ar: "نظام التدريب والمعرفة"
+    name_en: "Training & Knowledge AI OS"
+    duration: "30-60 days"
+    price_range_sar: "1500-2999/mo"
+    deliverable: "content_delivery_student_tracking_reporting"
+    tier: managed_ops
+
+  project_controls_ai_os:
+    name_ar: "نظام ضبط المشاريع"
+    name_en: "Project Controls AI OS"
+    duration: "30-60 days"
+    price_range_sar: "2999-4999/mo"
+    deliverable: "project_tracking_subcontractor_document_progress_reporting"
+    tier: managed_ops
+
+  operations_tracking_ai_os:
+    name_ar: "نظام تتبع العمليات"
+    name_en: "Operations Tracking AI OS"
+    duration: "30-60 days"
+    price_range_sar: "1500-2999/mo"
+    deliverable: "shipment_tracking_exception_handling_reporting"
+    tier: managed_ops
+
+  revenue_ai_os:
+    name_ar: "نظام الإيرادات بالذكاء الاصطناعي"
+    name_en: "Revenue AI OS"
+    duration: "30-60 days"
+    price_range_sar: "2999-4999/mo"
+    deliverable: "lead_followup_proposal_client_reporting_pipeline"
+    tier: managed_ops
+
+  audit_compliance_workflow_ai:
+    name_ar: "نظام التدقيق والامتثال"
+    name_en: "Audit & Compliance Workflow AI"
+    duration: "30-60 days"
+    price_range_sar: "2999-4999/mo"
+    deliverable: "compliance_reporting_document_management_audit_trails"
+    tier: managed_ops
+
+  custom_ai_os:
+    name_ar: "نظام AI مخصص"
+    name_en: "Custom AI OS"
+    duration: "60-90 days"
+    price_range_sar: "5000-25000"
+    deliverable: "fully_custom_agentic_workflow_system"
+    tier: custom

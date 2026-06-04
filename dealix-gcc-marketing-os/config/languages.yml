@@ -1,0 +1,36 @@
+language_detection_rules:
+  if_website_language_arabic: "arabic"
+  if_company_is_international: "english"
+  if_company_has_ar_en_site: "bilingual"
+  if_sector_is_legal_and_local: "formal_arabic"
+  if_sector_is_consulting_or_tech: "english_first"
+  if_buyer_title_is_ceo_local: "arabic_executive"
+  if_buyer_title_is_regional_director: "english_executive"
+
+arabic_styles:
+  formal_arabic:
+    greeting: "السلام عليكم"
+    closing: "تحياتي"
+    register: "formal"
+  practical_arabic:
+    greeting: "السلام عليكم"
+    closing: "تحياتي"
+    register: "practical_direct"
+  executive_arabic:
+    greeting: "السلام عليكم"
+    closing: "مع التحية والاحترام"
+    register: "executive"
+
+english_styles:
+  international_executive:
+    greeting: "Hi [Name]"
+    closing: "Best"
+    register: "executive_concise"
+  professional_services:
+    greeting: "Hi [Name]"
+    closing: "Best"
+    register: "expert_to_expert"
+  compliance_business:
+    greeting: "Dear [Name]"
+    closing: "Kind regards"
+    register: "formal_business"

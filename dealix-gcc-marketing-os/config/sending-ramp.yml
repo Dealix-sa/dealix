@@ -1,0 +1,96 @@
+sending_policy:
+  draft_target_per_day: 300
+  founder_ready_target_per_day: 150
+  philosophy: "High draft volume, controlled send volume, smart multi-channel distribution"
+
+  send_ramp:
+    week_1:
+      email_sends_per_day: 50
+      linkedin_per_day: 20
+      website_forms_per_day: 20
+      notes: "Only top-scored drafts. Establish domain reputation baseline."
+    week_2:
+      email_sends_per_day: 100
+      linkedin_per_day: 40
+      website_forms_per_day: 30
+      notes: "Increase only if bounce rate < 3% and no spam complaints"
+    week_3:
+      email_sends_per_day: 200
+      linkedin_per_day: 60
+      website_forms_per_day: 50
+      notes: "Segment by country and sector. Monitor per-inbox metrics."
+    week_4:
+      email_sends_per_day: 300
+      linkedin_per_day: 80
+      website_forms_per_day: 70
+      notes: "Only if domain reputation is healthy across all inboxes"
+    month_2:
+      email_sends_per_day: 500
+      linkedin_per_day: 100
+      website_forms_per_day: 100
+      notes: "Only if all deliverability metrics remain healthy"
+
+  multi_channel_daily_quota:
+    email_drafts: 120
+    linkedin_drafts: 80
+    website_form_drafts: 50
+    whatsapp_business_drafts: 30
+    referral_intro_drafts: 20
+    total_target: 300
+
+  inbox_strategy:
+    sami_at_dealix:
+      purpose: "High-value founder-led outreach"
+      max_per_day: 50
+      warming_required: true
+    hello_at_dealix:
+      purpose: "General replies and initial responses"
+      max_per_day: 100
+    gcc_at_dealix:
+      purpose: "International and GCC company outreach"
+      max_per_day: 100
+    arabic_at_dealix:
+      purpose: "Local Arabic business outreach"
+      max_per_day: 100
+    legal_at_dealix:
+      purpose: "Law firms and professional services"
+      max_per_day: 50
+    ops_at_dealix:
+      purpose: "Maintenance, FM, contracting"
+      max_per_day: 100
+
+  inbox_requirements:
+    - warming_period_days: 21
+    - spf_dkim_dmarc: required
+    - email_signature: required
+    - suppression_list: required
+    - opt_out_footer: required
+    - daily_limit_per_inbox: 200
+
+  hold_conditions:
+    - bounce_rate_above: "3%"
+    - spam_complaint_rate_above: "0.1%"
+    - reply_rate_below: "0.5%"
+    - no_suppression_check: true
+
+  channels:
+    email:
+      requires_founder_approval: true
+      requires_suppression_check: true
+      requires_opt_out: true
+    linkedin:
+      requires_founder_approval: true
+      approach: "manual_or_semi_automated_draft_queue"
+      max_connection_messages_per_day: "manual_controlled"
+    website_form:
+      requires_founder_approval: true
+      preferred_for:
+        - local_arabic_businesses
+        - law_firms
+        - small_professional_services
+    whatsapp_business:
+      requires_prior_relationship_or_public_business_contact: true
+      requires_founder_approval: true
+    referral:
+      preferred_for: ["legal", "consulting", "financial_services"]
+      requires_founder_approval: true
