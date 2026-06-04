@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "rules": [
+    {"id": "must_have_opt_out", "severity": "block", "desc": "Every draft must include an opt-out line."},
+    {"id": "no_fake_familiarity", "severity": "block", "desc": "No 'as discussed' / fake prior relationship."},
+    {"id": "no_guaranteed_roi", "severity": "block", "desc": "No guaranteed ROI / guaranteed results."},
+    {"id": "no_fake_urgency", "severity": "block", "desc": "No fake urgency / pressure / threats."},
+    {"id": "no_unproven_claims", "severity": "block", "desc": "No unproven claims (100% success, replace your team)."},
+    {"id": "no_private_data_hint", "severity": "block", "desc": "No hint that Dealix accessed private data."},
+    {"id": "no_sensitive_data_request_first_touch", "severity": "block", "desc": "Do not request sensitive data in first message."},
+    {"id": "privacy_first_for_sensitive_sectors", "severity": "block", "desc": "Legal/healthcare/finance require privacy-first language."},
+    {"id": "whatsapp_requires_opt_in", "severity": "block", "desc": "WhatsApp drafts require prior opt-in."},
+    {"id": "no_linkedin_automation", "severity": "block", "desc": "LinkedIn must be manual only."},
+    {"id": "no_website_auto_submit", "severity": "block", "desc": "Website forms must be manual copy only."},
+    {"id": "single_cta", "severity": "block", "desc": "Exactly one call to action."},
+    {"id": "single_offer", "severity": "block", "desc": "Promote only one offer per draft."}
+  ],
+  "pass_threshold": 80
+}

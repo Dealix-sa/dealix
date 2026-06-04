@@ -107,6 +107,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Commercial Launch OS — example seed leads (non-PII sample, safe to commit)
+!data/commercial_seed_leads.example.jsonl
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -324,3 +326,6 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Commercial Launch OS — daily review artifacts (artifact-only, never committed)
+/outputs/commercial_launch/

@@ -48,7 +48,7 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 ## Quick start
 
 ```bash
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env
@@ -204,6 +204,49 @@ Then review:
 - [`docs/ops/COMMERCIAL_GO_LIVE_GATE.md`](docs/ops/COMMERCIAL_GO_LIVE_GATE.md)
 - [`docs/architecture/REPO_GAP_AUDIT.md`](docs/architecture/REPO_GAP_AUDIT.md)
 - [`dealix/registers/no_overclaim.yaml`](dealix/registers/no_overclaim.yaml)
+
+---
+
+## Commercial Launch OS
+
+The **Dealix Official Commercial Launch OS** is a review-only commercial
+operating system for the first five GCC B2B verticals. **It generates and ranks
+drafts only — it never sends anything.** Founder reviews and approves; all
+external actions are manual.
+
+> ⚠️ This system generates review-only drafts. It does not send external messages.
+> No SMTP, no WhatsApp cold outreach, no LinkedIn automation, no auto-submit, no secrets.
+
+**First 5 verticals:** Facilities Management & Maintenance · Contracting &
+Project Controls · Real Estate & Property Operations · Legal & Professional
+Services · Consulting, Training & B2B Services.
+
+**Offer ladder (SAR):** AI Workflow Audit (499–2,500) → Paid Pilot (5K–25K) →
+Department OS (25K–150K) → Monthly Retainer (3K–25K/mo) → Enterprise Custom OS (150K+).
+
+Docs: [`docs/commercial-launch/`](docs/commercial-launch/README.md).
+
+```bash
+# Generate 400+ founder-review drafts (artifact-only, nothing is sent)
+python scripts/commercial_generate_400_drafts.py --target 400
+
+# Open the founder review queue
+#   outputs/commercial_launch/<DATE>/founder_review.md
+#   outputs/commercial_launch/<DATE>/top_50_priority.md
+
+# No-external-send safety audit (must pass)
+python scripts/commercial_safety_audit.py
+
+# Commercial launch readiness (GO / NO-GO)
+python scripts/commercial_launch_readiness.py
+
+# Tests
+pytest -q tests/test_commercial_generate_400_drafts.py \
+  tests/test_commercial_safety_audit.py tests/test_commercial_launch_readiness.py \
+  tests/test_commercial_no_external_send.py tests/test_commercial_quality_gate.py \
+  tests/test_commercial_compliance_gate.py tests/test_commercial_outputs_schema.py \
+  tests/test_commercial_founder_review_report.py tests/test_commercial_seed_leads_validate.py
+```
 
 ---
 

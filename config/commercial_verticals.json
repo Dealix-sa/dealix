@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "verticals": [
+    {
+      "key": "facilities_management",
+      "name_en": "Facilities Management & Maintenance",
+      "name_ar": "إدارة المرافق والصيانة",
+      "country_focus": ["SA", "AE"],
+      "sensitive": false,
+      "buyer_titles": ["Operations Director", "Facilities Manager", "Maintenance Manager", "COO", "General Manager"],
+      "pains": [
+        {"en": "work orders tracked across WhatsApp and spreadsheets, nothing reconciles", "ar": "أوامر العمل موزعة بين واتساب وملفات إكسل بدون تطابق"},
+        {"en": "PPM schedules slip and SLA breaches are found too late", "ar": "جداول الصيانة الوقائية تتأخر وتُكتشف مخالفات اتفاقية الخدمة متأخرًا"},
+        {"en": "monthly client reports take days to assemble by hand", "ar": "تقارير العملاء الشهرية تستغرق أيامًا لتجميعها يدويًا"}
+      ],
+      "triggers": ["new multi-site contract win", "SLA penalty event", "CAFM/ERP rollout", "audit season"],
+      "angles_en": ["turn scattered work orders into one reviewed daily operations picture", "cut SLA-breach surprises with an early-warning workflow"],
+      "angles_ar": ["تحويل أوامر العمل المبعثرة إلى صورة عمليات يومية واحدة مُراجَعة", "تقليل مفاجآت مخالفات اتفاقية الخدمة عبر سير عمل إنذار مبكر"],
+      "default_offer_stage": "entry_diagnostic"
+    },
+    {
+      "key": "contracting_project_controls",
+      "name_en": "Contracting & Project Controls",
+      "name_ar": "المقاولات وضبط المشاريع",
+      "country_focus": ["SA"],
+      "sensitive": false,
+      "buyer_titles": ["Project Director", "PMO Lead", "Project Controls Manager", "Commercial Manager", "CEO"],
+      "pains": [
+        {"en": "progress reporting is manual and always one week stale", "ar": "تقارير الإنجاز يدوية ومتأخرة أسبوعًا دائمًا"},
+        {"en": "variation orders and claims are buried in email threads", "ar": "أوامر التغيير والمطالبات مدفونة في سلاسل البريد"},
+        {"en": "cash-flow and cost-to-complete are guesswork between updates", "ar": "التدفق النقدي وتكلفة الإكمال مجرد تقديرات بين التحديثات"}
+      ],
+      "triggers": ["new project mobilization", "delayed milestone", "claim dispute", "lender reporting requirement"],
+      "angles_en": ["give PMO a reviewed weekly controls pack without manual collation", "surface variation-order exposure before it becomes a claim"],
+      "angles_ar": ["تزويد مكتب إدارة المشاريع بحزمة ضبط أسبوعية مُراجَعة بدون تجميع يدوي", "إبراز مخاطر أوامر التغيير قبل أن تتحول إلى مطالبة"],
+      "default_offer_stage": "paid_pilot"
+    },
+    {
+      "key": "real_estate_property_ops",
+      "name_en": "Real Estate & Property Operations",
+      "name_ar": "العقار وإدارة الأملاك",
+      "country_focus": ["SA", "AE"],
+      "sensitive": false,
+      "buyer_titles": ["Property Operations Director", "Leasing Manager", "Asset Manager", "COO", "Owner"],
+      "pains": [
+        {"en": "tenant requests and renewals are tracked in disconnected sheets", "ar": "طلبات المستأجرين والتجديدات تُتابَع في ملفات منفصلة"},
+        {"en": "collections and arrears reporting lag the actual position", "ar": "تقارير التحصيل والمتأخرات متأخرة عن الوضع الفعلي"},
+        {"en": "owner reporting is inconsistent across the portfolio", "ar": "تقارير الملاك غير متسقة عبر المحفظة"}
+      ],
+      "triggers": ["new portfolio under management", "high vacancy quarter", "owner reporting demand", "system migration"],
+      "angles_en": ["one reviewed daily view of renewals, arrears and tenant requests", "consistent owner reporting without manual rework"],
+      "angles_ar": ["عرض يومي مُراجَع واحد للتجديدات والمتأخرات وطلبات المستأجرين", "تقارير ملاك متسقة بدون إعادة عمل يدوية"],
+      "default_offer_stage": "entry_diagnostic"
+    },
+    {
+      "key": "legal_professional_services",
+      "name_en": "Legal & Professional Services",
+      "name_ar": "المكاتب القانونية والخدمات المهنية",
+      "country_focus": ["SA"],
+      "sensitive": true,
+      "buyer_titles": ["Managing Partner", "Operations Partner", "Practice Manager", "Head of Knowledge", "Partner"],
+      "pains": [
+        {"en": "matter intake and conflict checks are slow and manual", "ar": "استقبال القضايا وفحص تعارض المصالح بطيء ويدوي"},
+        {"en": "document drafting time eats billable capacity", "ar": "وقت صياغة المستندات يستهلك الطاقة القابلة للفوترة"},
+        {"en": "engagement and billing status is hard to see in one place", "ar": "حالة التكليف والفوترة يصعب رؤيتها في مكان واحد"}
+      ],
+      "triggers": ["headcount growth", "new practice area", "knowledge-management initiative", "billing-leak concern"],
+      "angles_en": ["a privacy-first, approval-gated drafting assistant your team controls", "see matter and billing status in one reviewed view, under your approval"],
+      "angles_ar": ["مساعد صياغة يحترم الخصوصية ويعمل باعتمادك ويبقى تحت سيطرة فريقك", "رؤية حالة القضايا والفوترة في عرض واحد مُراجَع وباعتمادك"],
+      "default_offer_stage": "entry_diagnostic"
+    },
+    {
+      "key": "consulting_training_b2b",
+      "name_en": "Consulting, Training & B2B Services",
+      "name_ar": "الاستشارات والتدريب وخدمات B2B",
+      "country_focus": ["SA", "AE", "KW"],
+      "sensitive": false,
+      "buyer_titles": ["Managing Director", "Head of Delivery", "Operations Lead", "Founder", "Partner"],
+      "pains": [
+        {"en": "proposals and reports are rebuilt from scratch every time", "ar": "العروض والتقارير تُبنى من الصفر في كل مرة"},
+        {"en": "delivery knowledge lives in people's heads, not the firm", "ar": "معرفة التنفيذ في رؤوس الأفراد وليست في الشركة"},
+        {"en": "utilization and pipeline are visible only after the fact", "ar": "الاستغلال وخط الفرص يظهران بعد فوات الأوان"}
+      ],
+      "triggers": ["scaling delivery team", "proposal volume spike", "knowledge-retention concern", "new service line"],
+      "angles_en": ["turn past projects into reviewed proposal and report drafts in hours", "capture delivery know-how into a reusable, approval-gated workflow"],
+      "angles_ar": ["تحويل المشاريع السابقة إلى مسودات عروض وتقارير مُراجَعة خلال ساعات", "حفظ خبرة التنفيذ في سير عمل قابل لإعادة الاستخدام وباعتمادك"],
+      "default_offer_stage": "entry_diagnostic"
+    }
+  ]
+}

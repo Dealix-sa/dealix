@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "daily_target": 400,
+  "distribution": {
+    "cold_email": 175,
+    "follow_up": 100,
+    "linkedin_manual": 75,
+    "website_form_manual": 50
+  },
+  "minimum_total": 400,
+  "notes": "AI generates and ranks drafts only. Distribution is a floor, not a sending quota. Nothing is sent."
+}

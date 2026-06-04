@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "channels": {
+    "cold_email": {
+      "label_en": "Cold Email (draft only)",
+      "label_ar": "بريد بارد (مسودة فقط)",
+      "word_limit": 180,
+      "send_mode": "manual_only",
+      "automation_allowed": false,
+      "requires_opt_out": true,
+      "external_readiness_required": [
+        "SPF", "DKIM", "DMARC", "Google Postmaster", "bounce_tracking",
+        "suppression_list", "unsubscribe_handling", "warm_up_ramp", "founder_approval"
+      ]
+    },
+    "follow_up": {
+      "label_en": "Follow-up (draft only)",
+      "label_ar": "متابعة (مسودة فقط)",
+      "word_limit": 180,
+      "send_mode": "manual_only",
+      "automation_allowed": false,
+      "requires_opt_out": true
+    },
+    "linkedin_manual": {
+      "label_en": "LinkedIn manual note (draft only)",
+      "label_ar": "رسالة لينكدإن يدوية (مسودة فقط)",
+      "word_limit": 100,
+      "send_mode": "manual_only",
+      "automation_allowed": false,
+      "requires_opt_out": true,
+      "policy": "No bots, no auto-connect, no auto-message, no scraping. Founder copies manually."
+    },
+    "website_form_manual": {
+      "label_en": "Website contact form (draft only)",
+      "label_ar": "نموذج تواصل الموقع (مسودة فقط)",
+      "word_limit": 120,
+      "send_mode": "manual_only",
+      "automation_allowed": false,
+      "requires_opt_out": true,
+      "policy": "No auto-submit, no browser automation. Founder/person copies manually."
+    },
+    "whatsapp_optin_reply": {
+      "label_en": "WhatsApp opt-in reply (manual review only)",
+      "label_ar": "رد واتساب بموافقة مسبقة (مراجعة يدوية فقط)",
+      "word_limit": 80,
+      "send_mode": "manual_review_only",
+      "automation_allowed": false,
+      "cold_outreach_allowed": false,
+      "requires_opt_in": true,
+      "policy": "Inbound / opt-in only. No cold outreach. No outbound automation. A number without opt-in is no-go."
+    }
+  }
+}
