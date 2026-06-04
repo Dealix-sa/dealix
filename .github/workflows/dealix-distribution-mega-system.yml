@@ -1,0 +1,23 @@
+name: Dealix Distribution Mega System Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  distribution-mega-system:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify distribution mega system
+        run: python scripts/verify_distribution_mega_system.py
+
+      - name: Compile scripts
+        run: python -m compileall scripts

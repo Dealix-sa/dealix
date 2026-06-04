@@ -182,3 +182,21 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Distribution Mega-System ───────────────────────────────────
+# Multi-channel distribution: intelligence → outreach → reply routing →
+# sample → proposal → payment. Requires PRIVATE_OPS=/path/to/dealix-ops-private.
+
+distribution: ## Distribution: generate today's command center
+	$(PYTHON) scripts/generate_distribution_command_center.py --private-ops $(PRIVATE_OPS)
+
+growth-factory: ## Distribution: hourly + 4h growth jobs + command center
+	$(PYTHON) scripts/run_growth_hourly.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/run_growth_4h.py --private-ops $(PRIVATE_OPS)
+	$(PYTHON) scripts/generate_distribution_command_center.py --private-ops $(PRIVATE_OPS)
+
+growth-daily: ## Distribution: full daily distribution chain
+	$(PYTHON) scripts/run_distribution_daily.py --private-ops $(PRIVATE_OPS)
+
+distribution-verify: ## Distribution: verify mega-system files present
+	$(PYTHON) scripts/verify_distribution_mega_system.py
