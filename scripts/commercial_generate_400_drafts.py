@@ -23,7 +23,6 @@ from _v7_revenue_common import (
     SAFETY_BANNER,
     SEED_CHANNELS,
     SEED_VERTICALS,
-    slugify,
     today,
     write_json,
     write_jsonl,
@@ -102,9 +101,11 @@ def generate(target: int, date: str | None = None) -> dict:
         "",
         "## Founder note",
         "",
-        "These are preparation drafts. Pick the strongest, copy the text "
-        "**manually**, and send it yourself through your own account. "
-        "Nothing here is auto-sent.",
+        (
+            "These are preparation drafts. Pick the strongest, copy the text "
+            "**manually**, and send it yourself through your own account. "
+            "Nothing here is auto-sent."
+        ),
         "",
     ]
     write_text(out_dir / "top_50_priority.md", "\n".join(lines))

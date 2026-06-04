@@ -145,9 +145,11 @@ def build(date: str | None = None) -> dict:
     if not manual_data:
         md += [
             "",
-            "> No manual ledger data found. Revenue/reply metrics show 0 — "
-            "**manual input required**. Record events in "
-            "`data/revenue_manual_events.example.jsonl`.",
+            (
+                "> No manual ledger data found. Revenue/reply metrics show 0 — "
+                "**manual input required**. Record events in "
+                "`data/revenue_manual_events.example.jsonl`."
+            ),
         ]
     md.append("")
     write_text(OUTPUTS / "revenue_dashboard" / "latest_dashboard.md", "\n".join(md))
