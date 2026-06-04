@@ -7,7 +7,6 @@ Thin CLI over commercial_launch_lib scoring functions. Prints a JSON summary.
 from __future__ import annotations
 
 import json
-import sys
 
 import commercial_launch_lib as lib
 

@@ -8,8 +8,6 @@ consistent, and that the safety contract holds. Exit 0 = ready, 1 = not ready.
 from __future__ import annotations
 
 import json
-import sys
-from pathlib import Path
 
 import commercial_launch_lib as lib
 
