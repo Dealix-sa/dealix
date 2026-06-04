@@ -166,9 +166,11 @@ def _render_founder_review(drafts: list[dict]) -> str:
     lines = [
         "# Founder Review Queue — Review-Only Drafts",
         "",
-        "> ⛔ **None of these are sent.** Every draft is `send_allowed=false`, "
-        "`no_auto_send=true`, `external_send_blocked=true`. The founder approves "
-        "each one manually before any human-led outreach.",
+        (
+            "> ⛔ **None of these are sent.** Every draft is `send_allowed=false`, "
+            + "`no_auto_send=true`, `external_send_blocked=true`. The founder approves "
+            + "each one manually before any human-led outreach."
+        ),
         "",
         f"- Total drafts: **{len(drafts)}**",
         "- By vertical:",

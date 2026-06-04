@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from tests._lc_util import REPO_ROOT, load_script
+from tests._lc_util import load_script
 
 
 def test_launch_surface_is_clean():

@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
-from tests._lc_util import REPO_ROOT  # noqa: F401
 
 from launch_os.drafts import generate_drafts, write_run
 from launch_os.readiness import readiness_report, daily_metrics

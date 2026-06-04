@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from tests._lc_util import REPO_ROOT
 
 from launch_os.compliance import find_external_send

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from tests._lc_util import REPO_ROOT  # noqa: F401  (ensures repo root on sys.path)
 
 from launch_os.drafts import generate_drafts, write_run, OFFERS
 from launch_os import paths
@@ -42,7 +41,6 @@ def test_write_run_creates_artifacts(tmp_path):
 
 
 def test_cli_main_passes(tmp_path, monkeypatch):
-    script = __import__("importlib").import_module  # noqa
     from tests._lc_util import load_script
     mod = load_script("commercial_generate_400_drafts")
     assert mod.main(["--target", "400"]) == 0

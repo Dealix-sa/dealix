@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from tests._lc_util import REPO_ROOT, load_script, ensure_run
+from tests._lc_util import load_script, ensure_run
 
 
 def test_master_verification_passes():

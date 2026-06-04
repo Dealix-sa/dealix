@@ -13,6 +13,7 @@ Usage:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
@@ -99,12 +100,15 @@ def scan() -> dict:
                 if allow or PLACEHOLDER_RE.search(snippet):
                     continue
                 line_no = text[: m.start()].count("\n") + 1
+                # A secret scanner must never store or log the matched secret in
+                # clear text. We record only the file, line, type, and a
+                # non-reversible SHA-256 fingerprint (for dedup/triage).
                 findings.append(
                     {
                         "file": paths.rel(path),
                         "line": line_no,
                         "type": label,
-                        "match_preview": snippet[:12] + "…",
+                        "match_sha256": hashlib.sha256(snippet.encode()).hexdigest()[:16],
                     }
                 )
     clean = len(findings) == 0

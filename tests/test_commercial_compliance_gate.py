@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from tests._lc_util import REPO_ROOT  # noqa: F401
 
 from launch_os.drafts import generate_drafts
 from launch_os.compliance import find_forbidden_claims, FORBIDDEN_CLAIMS
