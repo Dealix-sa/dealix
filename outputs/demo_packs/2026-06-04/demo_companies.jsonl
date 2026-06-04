@@ -1,0 +1,5 @@
+{"id": "demo-001", "name": "Sample Retail Co (EXAMPLE)", "sector": "retail", "city": "Riyadh", "size": "SME", "note": "synthetic sample — not a real company"}
+{"id": "demo-002", "name": "Sample Logistics LLC (EXAMPLE)", "sector": "logistics", "city": "Jeddah", "size": "Mid", "note": "synthetic sample — not a real company"}
+{"id": "demo-003", "name": "Sample Clinic Group (EXAMPLE)", "sector": "healthcare", "city": "Dammam", "size": "SME", "note": "synthetic sample — not a real company"}
+{"id": "demo-004", "name": "Sample Realty (EXAMPLE)", "sector": "real_estate", "city": "Riyadh", "size": "SME", "note": "synthetic sample — not a real company"}
+{"id": "demo-005", "name": "Sample B2B Services (EXAMPLE)", "sector": "b2b_services", "city": "Khobar", "size": "Mid", "note": "synthetic sample — not a real company"}

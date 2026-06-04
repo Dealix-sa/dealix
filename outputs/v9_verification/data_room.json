@@ -1,0 +1,81 @@
+{
+  "system": "data_room",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 9,
+    "files_present": 9,
+    "configs_required": 0,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/data-room-os/00_DATA_ROOM_OS.md",
+      "exists": true,
+      "bytes": 1509,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/data-room-os/01_DATA_ROOM_INDEX.md",
+      "exists": true,
+      "bytes": 1389,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/data-room-os/02_COMPANY_FOLDER_STRUCTURE.md",
+      "exists": true,
+      "bytes": 1350,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/data-room-os/03_INVESTOR_PACKET.md",
+      "exists": true,
+      "bytes": 1392,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/data-room-os/04_ENTERPRISE_CLIENT_PACKET.md",
+      "exists": true,
+      "bytes": 1425,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/data-room-os/05_PARTNER_PACKET.md",
+      "exists": true,
+      "bytes": 1382,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/data-room-os/06_DUE_DILIGENCE_QA.md",
+      "exists": true,
+      "bytes": 1420,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/data-room-os/07_EVIDENCE_POLICY.md",
+      "exists": true,
+      "bytes": 1377,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/data-room-os/99_DATA_ROOM_REPORT.md",
+      "exists": true,
+      "bytes": 2241,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": []
+}

@@ -1,0 +1,28 @@
+{
+  "version": "v9",
+  "description": "Quality management checklists per function. All external artifacts are founder-approved.",
+  "checklists": {
+    "delivery": [
+      "Proof pack meets the QMS standard",
+      "Acceptance criteria verified before handoff",
+      "No customer-sensitive data without a signed agreement",
+      "Learnings captured for continuous improvement"
+    ],
+    "sales": [
+      "Proposal is accurate and free of unverified claims",
+      "Pricing follows the guardrails",
+      "No guaranteed ROI language",
+      "Founder-approved before sending"
+    ],
+    "message": [
+      "Clarity, tone, and accuracy checked",
+      "No promises that cannot be kept",
+      "Queued for founder approval — never auto-sent"
+    ],
+    "security": [
+      "No secrets in artifacts",
+      "Boundaries respected — no external sending",
+      "Honest certification status — no false claims"
+    ]
+  }
+}

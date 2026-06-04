@@ -1,0 +1,26 @@
+{
+  "version": "v9",
+  "description": "Cheap-model-first routing policy. No API keys; cost assumptions only.",
+  "note": "Model names are illustrative tiers, not credentials. No secrets stored here.",
+  "default_tier": "light",
+  "tiers": {
+    "light": {
+      "use_for": ["drafting", "summarization", "classification", "formatting"],
+      "escalation_requires": "measured quality shortfall"
+    },
+    "standard": {
+      "use_for": ["analysis", "ranking", "proposal assembly", "market signals"],
+      "escalation_requires": "complex reasoning need"
+    },
+    "high": {
+      "use_for": ["strategic reasoning", "high-stakes proposals", "investor materials"],
+      "escalation_requires": "founder approval when exceeding hard token ceilings"
+    }
+  },
+  "rules": {
+    "cheap_model_first": true,
+    "document_escalation_reason": true,
+    "founder_approval_for_highest_tier_over_budget": true,
+    "no_api_keys": true
+  }
+}

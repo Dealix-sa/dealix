@@ -1,0 +1,68 @@
+{
+  "version": "v9",
+  "description": "Registry of governed AI agents. All agents prepare and recommend only; none send externally or act autonomously.",
+  "global_boundaries": {
+    "no_external_sending": true,
+    "no_secrets": true,
+    "no_customer_sensitive_data_without_agreement": true,
+    "no_unverified_claims": true,
+    "no_autonomous_decisions": true,
+    "founder_approval_required": true
+  },
+  "agents": [
+    {
+      "id": "founder_brief_agent",
+      "role": "Synthesize daily briefs for the founder.",
+      "model_tier": "light",
+      "boundaries": ["no_external_sending", "no_secrets"]
+    },
+    {
+      "id": "commercial_draft_agent",
+      "role": "Draft commercial copy for founder approval.",
+      "model_tier": "standard",
+      "boundaries": ["no_external_sending", "no_unverified_claims", "founder_approval_required"]
+    },
+    {
+      "id": "safety_audit_agent",
+      "role": "Scan outputs for boundary violations.",
+      "model_tier": "light",
+      "boundaries": ["no_external_sending"]
+    },
+    {
+      "id": "message_quality_agent",
+      "role": "Check message clarity, tone, and accuracy.",
+      "model_tier": "light",
+      "boundaries": ["no_external_sending", "founder_approval_required"]
+    },
+    {
+      "id": "market_intelligence_agent",
+      "role": "Compile market signals from allowed sources.",
+      "model_tier": "standard",
+      "boundaries": ["no_scraping", "no_unverified_claims"]
+    },
+    {
+      "id": "proposal_agent",
+      "role": "Assemble proposals for founder review.",
+      "model_tier": "standard",
+      "boundaries": ["no_external_sending", "founder_approval_required", "no_unverified_claims"]
+    },
+    {
+      "id": "delivery_agent",
+      "role": "Prepare delivery artifacts under QMS.",
+      "model_tier": "standard",
+      "boundaries": ["no_external_sending", "no_customer_sensitive_data_without_agreement"]
+    },
+    {
+      "id": "media_social_agent",
+      "role": "Draft social content for approval.",
+      "model_tier": "light",
+      "boundaries": ["no_external_sending", "founder_approval_required"]
+    },
+    {
+      "id": "investor_readiness_agent",
+      "role": "Prepare investor materials, evidence-first.",
+      "model_tier": "standard",
+      "boundaries": ["no_unverified_claims", "founder_approval_required"]
+    }
+  ]
+}

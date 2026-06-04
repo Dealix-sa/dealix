@@ -1,0 +1,53 @@
+{
+  "version": "v9",
+  "description": "Customer lifecycle stages with outputs, measures, next actions, risks, and triggers.",
+  "stages": [
+    {
+      "id": "first_touch_to_diagnostic",
+      "order": 1,
+      "name_en": "First touch to diagnostic",
+      "name_ar": "من أول تواصل إلى التشخيص",
+      "outputs": ["qualified opportunity", "agreed diagnostic scope"],
+      "measure": "time_to_diagnostic",
+      "next_action": "schedule paid diagnostic (founder-confirmed)",
+      "risk_signals": ["no budget owner", "vague pain", "no timeline"],
+      "triggers": []
+    },
+    {
+      "id": "diagnostic_to_pilot",
+      "order": 2,
+      "name_en": "Diagnostic to pilot",
+      "name_ar": "من التشخيص إلى التجربة",
+      "outputs": ["diagnostic findings", "proposed pilot scope"],
+      "measure": "diagnostic_to_pilot_conversion",
+      "next_action": "propose structured pilot",
+      "risk_signals": ["findings not tied to outcome"],
+      "triggers": ["clear measurable outcome identified"]
+    },
+    {
+      "id": "pilot_to_retainer",
+      "order": 3,
+      "name_en": "Pilot to retainer",
+      "name_ar": "من التجربة إلى التعاقد",
+      "outputs": ["proof pack", "retainer proposal"],
+      "measure": "pilot_to_retainer_conversion",
+      "next_action": "present retainer proposal",
+      "risk_signals": ["value not documented", "champion left"],
+      "triggers": ["pilot success metrics met"]
+    },
+    {
+      "id": "retainer_to_expansion",
+      "order": 4,
+      "name_en": "Retainer to expansion",
+      "name_ar": "من التعاقد إلى التوسع",
+      "outputs": ["expansion proposal"],
+      "measure": "net_revenue_retention",
+      "next_action": "propose expansion grounded in delivered value",
+      "risk_signals": ["flat usage"],
+      "triggers": ["new use case", "new department", "new sector"]
+    }
+  ],
+  "renewal_triggers": ["term end approaching", "value confirmed"],
+  "expansion_triggers": ["new use case", "new department", "success milestone"],
+  "churn_signals": ["declining usage", "unaddressed issues", "champion departure"]
+}

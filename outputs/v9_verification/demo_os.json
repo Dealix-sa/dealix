@@ -1,0 +1,96 @@
+{
+  "system": "demo_os",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 10,
+    "files_present": 10,
+    "configs_required": 1,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/demo-os/00_DEMO_OS.md",
+      "exists": true,
+      "bytes": 1504,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/demo-os/01_DEMO_NARRATIVE.md",
+      "exists": true,
+      "bytes": 1403,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/demo-os/02_VERTICAL_DEMO_SCENARIOS.md",
+      "exists": true,
+      "bytes": 1480,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/demo-os/03_SAFE_SAMPLE_DATA_POLICY.md",
+      "exists": true,
+      "bytes": 1448,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/demo-os/04_DEMO_SCRIPT_AR_EN.md",
+      "exists": true,
+      "bytes": 1497,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/demo-os/05_DEMO_TO_DIAGNOSTIC_CONVERSION.md",
+      "exists": true,
+      "bytes": 1428,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/demo-os/06_DEMO_QA_CHECKLIST.md",
+      "exists": true,
+      "bytes": 1411,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/demo-os/99_DEMO_OS_REPORT.md",
+      "exists": true,
+      "bytes": 2286,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "scripts/demo_pack_generate.py",
+      "exists": true,
+      "bytes": 4245,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "data/demo_companies.example.jsonl",
+      "exists": true,
+      "bytes": 830,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": [
+    {
+      "path": "config/demo_scenarios.json",
+      "exists": true,
+      "valid_json": true,
+      "missing_keys": [],
+      "violations": []
+    }
+  ]
+}

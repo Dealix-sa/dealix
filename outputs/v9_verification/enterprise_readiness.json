@@ -1,0 +1,88 @@
+{
+  "system": "enterprise_readiness",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 10,
+    "files_present": 10,
+    "configs_required": 0,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/enterprise-readiness-os/00_ENTERPRISE_READINESS_OS.md",
+      "exists": true,
+      "bytes": 1491,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/01_ENTERPRISE_BUYER_MAP.md",
+      "exists": true,
+      "bytes": 1629,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/02_PROCUREMENT_READINESS.md",
+      "exists": true,
+      "bytes": 1508,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/03_VENDOR_ONBOARDING_ANSWERS.md",
+      "exists": true,
+      "bytes": 1503,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/04_SECURITY_QUESTIONNAIRE_ANSWERS.md",
+      "exists": true,
+      "bytes": 1613,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/05_DATA_PROCESSING_ANSWERS.md",
+      "exists": true,
+      "bytes": 1516,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/06_IMPLEMENTATION_GOVERNANCE.md",
+      "exists": true,
+      "bytes": 1477,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/07_ENTERPRISE_PILOT_STRUCTURE.md",
+      "exists": true,
+      "bytes": 1523,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/08_ENTERPRISE_PRICING_GUARDRAILS.md",
+      "exists": true,
+      "bytes": 1485,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/enterprise-readiness-os/99_ENTERPRISE_READINESS_REPORT.md",
+      "exists": true,
+      "bytes": 2355,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": []
+}

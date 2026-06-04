@@ -1,0 +1,82 @@
+{
+  "system": "docs_governance",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 9,
+    "files_present": 9,
+    "configs_required": 0,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/docs-governance-os/00_DOCS_GOVERNANCE_OS.md",
+      "exists": true,
+      "bytes": 1443,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/docs-governance-os/01_SOURCE_OF_TRUTH_RULES.md",
+      "exists": true,
+      "bytes": 1358,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/docs-governance-os/02_DOC_OWNERSHIP.md",
+      "exists": true,
+      "bytes": 1322,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/docs-governance-os/03_VERSIONING_POLICY.md",
+      "exists": true,
+      "bytes": 1325,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/docs-governance-os/04_DEPRECATION_POLICY.md",
+      "exists": true,
+      "bytes": 1332,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/docs-governance-os/05_LINK_CHECK_POLICY.md",
+      "exists": true,
+      "bytes": 1402,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/docs-governance-os/99_DOCS_GOVERNANCE_REPORT.md",
+      "exists": true,
+      "bytes": 2301,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/00_MASTER_INDEX.md",
+      "exists": true,
+      "bytes": 3312,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/01_ALL_SYSTEMS_MAP.md",
+      "exists": true,
+      "bytes": 1997,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": [],
+  "governance_checks": []
+}

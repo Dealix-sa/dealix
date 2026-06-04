@@ -1,0 +1,45 @@
+name: V9 Enterprise Readiness
+
+# Static checks for the enterprise-facing V9 systems: enterprise readiness,
+# trust center, procurement, and data room. Artifact-only, no external sending.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Monthly, 1st at 07:00 UTC
+    - cron: "0 7 1 * *"
+
+permissions:
+  contents: read
+
+jobs:
+  enterprise-readiness:
+    runs-on: ubuntu-latest
+    env:
+      AUTO_SEND_ENABLED: "false"
+      EXTERNAL_OUTREACH_ENABLED: "false"
+      AGENT_APPROVAL_MODE: "required"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run enterprise-facing verifiers
+        run: |
+          python scripts/enterprise_readiness_verify.py
+          python scripts/trust_center_verify.py
+          python scripts/procurement_verify.py
+          python scripts/data_room_verify.py
+          python scripts/startup_os_verify.py
+
+      - name: Upload enterprise readiness artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v9-enterprise-readiness
+          path: outputs/v9_verification/
+          if-no-files-found: warn

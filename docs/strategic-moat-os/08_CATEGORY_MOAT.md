@@ -1,0 +1,33 @@
+# Category Moat / ميزة الفئة
+
+> **Purpose (EN):** How owning the first five sectors deeply creates category leadership.
+>
+> **الغرض (AR):** كيف يخلق التعمق في أول خمسة قطاعات ريادة في الفئة.
+
+_Layer: V9 — Strategic Moat & Enterprise Readiness OS · Generated: 2026-06-04_
+
+## Category Strategy / استراتيجية الفئة
+
+- Go deep in five sectors before going wide.
+- Sector depth produces language, benchmarks, and references competitors lack.
+- Define the category vocabulary so buyers evaluate on our terms.
+
+---
+
+## Operating Boundaries / حدود التشغيل
+
+**AI prepares, analyzes, drafts, ranks, and recommends. The founder reviews,
+approves, sends manually, sells, signs, and decides. The system never sends
+externally.**
+
+الذكاء الاصطناعي يجهّز ويحلّل ويصيغ ويرتّب ويوصي. المؤسس يراجع ويعتمد ويرسل يدويًا
+ويبيع ويوقّع ويقرّر. النظام لا يرسل خارجيًا أبدًا.
+
+Non-negotiables enforced across this OS:
+
+- No secrets, API keys, SMTP, or credentials committed.
+- No email / WhatsApp / LinkedIn outbound, no platform automation.
+- No scraping, no auto-submit, no live paid-ads launch.
+- No fake traction, no guaranteed ROI, no unverified claims or certifications.
+- No external sending from GitHub Actions; verification is artifact-only.
+- Founder approval remains required before anything leaves the building.

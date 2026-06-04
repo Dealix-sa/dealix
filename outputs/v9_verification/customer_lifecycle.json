@@ -1,0 +1,96 @@
+{
+  "system": "customer_lifecycle",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 10,
+    "files_present": 10,
+    "configs_required": 1,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/customer-lifecycle-os/00_CUSTOMER_LIFECYCLE_OS.md",
+      "exists": true,
+      "bytes": 1531,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/01_FIRST_TOUCH_TO_DIAGNOSTIC.md",
+      "exists": true,
+      "bytes": 1459,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/02_DIAGNOSTIC_TO_PILOT.md",
+      "exists": true,
+      "bytes": 1403,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/03_PILOT_TO_RETAINER.md",
+      "exists": true,
+      "bytes": 1439,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/04_RETAINER_TO_EXPANSION.md",
+      "exists": true,
+      "bytes": 1427,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/05_CUSTOMER_HEALTH_REVIEW.md",
+      "exists": true,
+      "bytes": 1402,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/06_RENEWAL_PLAYBOOK.md",
+      "exists": true,
+      "bytes": 1396,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/07_CHURN_PREVENTION.md",
+      "exists": true,
+      "bytes": 1391,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/08_EXPANSION_PLAYBOOK.md",
+      "exists": true,
+      "bytes": 1387,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/customer-lifecycle-os/99_CUSTOMER_LIFECYCLE_REPORT.md",
+      "exists": true,
+      "bytes": 2338,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": [
+    {
+      "path": "config/customer_lifecycle_stages.json",
+      "exists": true,
+      "valid_json": true,
+      "missing_keys": [],
+      "violations": []
+    }
+  ]
+}

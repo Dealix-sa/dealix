@@ -1,0 +1,89 @@
+{
+  "system": "cost_control",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 8,
+    "files_present": 8,
+    "configs_required": 2,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/cost-control-os/00_COST_CONTROL_OS.md",
+      "exists": true,
+      "bytes": 1519,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/cost-control-os/01_MODEL_ROUTING_POLICY.md",
+      "exists": true,
+      "bytes": 1435,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/cost-control-os/02_TOKEN_BUDGETS.md",
+      "exists": true,
+      "bytes": 1384,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/cost-control-os/03_TASK_TIERING.md",
+      "exists": true,
+      "bytes": 1390,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/cost-control-os/04_COST_ALERTS_MANUAL_PROCESS.md",
+      "exists": true,
+      "bytes": 1446,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/cost-control-os/05_CHEAP_MODEL_FIRST_POLICY.md",
+      "exists": true,
+      "bytes": 1430,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/cost-control-os/06_EXPENSIVE_MODEL_APPROVAL_RULES.md",
+      "exists": true,
+      "bytes": 1468,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/cost-control-os/99_COST_CONTROL_REPORT.md",
+      "exists": true,
+      "bytes": 2273,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": [
+    {
+      "path": "config/model_routing_policy.json",
+      "exists": true,
+      "valid_json": true,
+      "missing_keys": [],
+      "violations": []
+    },
+    {
+      "path": "config/token_budgets.json",
+      "exists": true,
+      "valid_json": true,
+      "missing_keys": [],
+      "violations": []
+    }
+  ]
+}

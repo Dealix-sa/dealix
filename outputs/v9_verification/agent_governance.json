@@ -1,0 +1,152 @@
+{
+  "system": "agent_governance",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 17,
+    "files_present": 17,
+    "configs_required": 2,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/agent-governance-os/00_AGENT_GOVERNANCE_OS.md",
+      "exists": true,
+      "bytes": 1521,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/agent-governance-os/01_AGENT_ROLES.md",
+      "exists": true,
+      "bytes": 1786,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/agent-governance-os/02_AGENT_BOUNDARIES.md",
+      "exists": true,
+      "bytes": 1465,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/agent-governance-os/03_AGENT_PROMPT_LIBRARY.md",
+      "exists": true,
+      "bytes": 1477,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/agent-governance-os/04_AGENT_OUTPUT_QA.md",
+      "exists": true,
+      "bytes": 1400,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/agent-governance-os/05_AGENT_COST_CONTROL.md",
+      "exists": true,
+      "bytes": 1456,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/agent-governance-os/06_AGENT_FAILURE_MODES.md",
+      "exists": true,
+      "bytes": 1427,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/agent-governance-os/07_AGENT_AUDIT_LOG_POLICY.md",
+      "exists": true,
+      "bytes": 1436,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/agent-governance-os/99_AGENT_GOVERNANCE_REPORT.md",
+      "exists": true,
+      "bytes": 2316,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/delegation-os/00_DELEGATION_OS.md",
+      "exists": true,
+      "bytes": 1455,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/delegation-os/01_WHAT_ONLY_FOUNDER_DOES.md",
+      "exists": true,
+      "bytes": 1407,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/delegation-os/02_WHAT_CAN_BE_DELEGATED.md",
+      "exists": true,
+      "bytes": 1425,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/delegation-os/03_FIRST_OPERATOR_PLAYBOOK.md",
+      "exists": true,
+      "bytes": 1407,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/delegation-os/04_GROWTH_OPERATOR_PLAYBOOK.md",
+      "exists": true,
+      "bytes": 1428,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/delegation-os/05_DELIVERY_OPERATOR_PLAYBOOK.md",
+      "exists": true,
+      "bytes": 1411,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/delegation-os/06_WEEKLY_DELEGATION_REVIEW.md",
+      "exists": true,
+      "bytes": 1418,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/delegation-os/99_DELEGATION_OS_REPORT.md",
+      "exists": true,
+      "bytes": 2258,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": [
+    {
+      "path": "config/agent_registry.json",
+      "exists": true,
+      "valid_json": true,
+      "missing_keys": [],
+      "violations": []
+    },
+    {
+      "path": "config/agent_prompt_library.json",
+      "exists": true,
+      "valid_json": true,
+      "missing_keys": [],
+      "violations": []
+    }
+  ]
+}

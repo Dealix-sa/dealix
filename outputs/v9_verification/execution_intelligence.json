@@ -1,0 +1,10 @@
+{
+  "aggregate": "execution_intelligence",
+  "verdict": "PASS",
+  "checked": {
+    "demo_os": "PASS",
+    "customer_lifecycle": "PASS",
+    "strategic_moat": "PASS",
+    "deployment_static": "PASS"
+  }
+}

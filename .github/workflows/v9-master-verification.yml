@@ -1,0 +1,58 @@
+name: V9 Master Verification
+
+# Static, artifact-only verification of the V9 Strategic Moat & Enterprise
+# Readiness OS. No secrets, no external sending, no commits.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Weekly, Sunday 06:00 UTC
+    - cron: "0 6 * * 0"
+
+permissions:
+  contents: read
+
+jobs:
+  v9-verify:
+    runs-on: ubuntu-latest
+    env:
+      AUTO_SEND_ENABLED: "false"
+      EXTERNAL_OUTREACH_ENABLED: "false"
+      AGENT_APPROVAL_MODE: "required"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run V9 verifiers
+        run: |
+          python scripts/strategic_moat_verify.py
+          python scripts/enterprise_readiness_verify.py
+          python scripts/trust_center_verify.py
+          python scripts/demo_os_verify.py
+          python scripts/customer_lifecycle_verify.py
+          python scripts/agent_governance_verify.py
+          python scripts/cost_control_verify.py
+          python scripts/data_room_verify.py
+          python scripts/procurement_verify.py
+          python scripts/qms_verify.py
+          python scripts/docs_governance_verify.py
+          python scripts/deployment_static_verify.py
+          python scripts/company_utilization_verify.py
+          python scripts/startup_os_verify.py
+          python scripts/final_launch_control_verify.py
+
+      - name: Master verification roll-up
+        run: python scripts/v9_master_verification.py
+
+      - name: Upload V9 verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v9-verification
+          path: outputs/v9_verification/
+          if-no-files-found: warn
