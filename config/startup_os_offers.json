@@ -1,0 +1,206 @@
+{
+  "_meta": {
+    "title": "Dealix Startup OS — Offers & Verticals Canonical Config",
+    "title_ar": "نظام تشغيل Dealix — التهيئة المرجعية للعروض والقطاعات",
+    "currency": "SAR",
+    "version": "1.0.0",
+    "non_negotiable_rule": "AI drafts, scores, ranks, analyzes, and recommends. Founder reviews, approves, and acts manually. System never sends externally.",
+    "note": "Pricing is indicative and requires founder confirmation per deal. No ROI guarantees. No unproven claims."
+  },
+  "offer_ladder": [
+    {
+      "stage": "audit",
+      "name": "AI Workflow Audit",
+      "name_ar": "تدقيق سير العمل بالذكاء الاصطناعي",
+      "price_min": 499,
+      "price_max": 2500,
+      "billing": "one_time",
+      "purpose": "Low-risk paid entry. Map one workflow, surface AI opportunities, recommend a pilot."
+    },
+    {
+      "stage": "pilot",
+      "name": "Paid Pilot",
+      "name_ar": "تجربة مدفوعة",
+      "price_min": 5000,
+      "price_max": 25000,
+      "billing": "one_time",
+      "purpose": "Deliver one scoped AI workflow improvement with measured before/after."
+    },
+    {
+      "stage": "department_os",
+      "name": "Department OS",
+      "name_ar": "نظام تشغيل القسم",
+      "price_min": 25000,
+      "price_max": 150000,
+      "billing": "project",
+      "purpose": "Operationalize AI across a full department with governance and human approval gates."
+    },
+    {
+      "stage": "retainer",
+      "name": "Monthly Retainer",
+      "name_ar": "اشتراك شهري",
+      "price_min": 3000,
+      "price_max": 25000,
+      "billing": "monthly",
+      "purpose": "Ongoing managed revenue/operations intelligence with founder-in-the-loop."
+    },
+    {
+      "stage": "enterprise",
+      "name": "Enterprise Custom OS",
+      "name_ar": "نظام تشغيل مخصص للمؤسسات",
+      "price_min": 150000,
+      "price_max": 1000000,
+      "billing": "project",
+      "purpose": "Custom multi-department AI operating system with compliance and security baseline."
+    }
+  ],
+  "channels": ["cold_email", "follow_up", "linkedin_manual", "website_form"],
+  "languages": ["ar", "en"],
+  "verticals": [
+    {
+      "id": "facilities_management",
+      "name": "Facilities Management & Maintenance",
+      "name_ar": "إدارة المرافق والصيانة",
+      "country": "SA",
+      "cities": ["Riyadh", "Jeddah", "Dammam", "Khobar"],
+      "buyer_titles": ["Operations Director", "FM Director", "Maintenance Manager", "COO"],
+      "buyer_titles_ar": ["مدير العمليات", "مدير المرافق", "مدير الصيانة", "الرئيس التنفيذي للعمليات"],
+      "pains": [
+        "Reactive maintenance and slow work-order triage",
+        "Manual scheduling and SLA reporting",
+        "No single view of asset health and vendor performance"
+      ],
+      "pains_ar": [
+        "صيانة تفاعلية وبطء في فرز أوامر العمل",
+        "جدولة يدوية وتقارير SLA يدوية",
+        "غياب رؤية موحدة لصحة الأصول وأداء المورّدين"
+      ],
+      "triggers": [
+        "New multi-site contract awarded",
+        "SLA penalties rising",
+        "Expanding into a new region"
+      ],
+      "pain_angles": [
+        "work-order triage automation",
+        "SLA breach early-warning",
+        "vendor performance scoring"
+      ]
+    },
+    {
+      "id": "contracting_project_controls",
+      "name": "Contracting & Project Controls",
+      "name_ar": "المقاولات وضبط المشاريع",
+      "country": "SA",
+      "cities": ["Riyadh", "Jeddah", "NEOM", "Dammam"],
+      "buyer_titles": ["Project Controls Manager", "PMO Director", "Commercial Manager", "Operations Director"],
+      "buyer_titles_ar": ["مدير ضبط المشاريع", "مدير مكتب إدارة المشاريع", "المدير التجاري", "مدير العمليات"],
+      "pains": [
+        "Delayed progress reporting across sites",
+        "Manual variation and claims tracking",
+        "Disconnected cost, schedule and document control"
+      ],
+      "pains_ar": [
+        "تأخر تقارير الإنجاز عبر المواقع",
+        "تتبع يدوي للتغييرات والمطالبات",
+        "انفصال ضبط التكلفة والجدول والمستندات"
+      ],
+      "triggers": [
+        "New mega-project mobilization",
+        "Cash flow pressure from delayed claims",
+        "Audit or owner reporting requirement"
+      ],
+      "pain_angles": [
+        "automated progress reporting",
+        "claims and variation drafting",
+        "schedule risk early-warning"
+      ]
+    },
+    {
+      "id": "real_estate_property_ops",
+      "name": "Real Estate & Property Operations",
+      "name_ar": "العقار وعمليات إدارة الأملاك",
+      "country": "SA",
+      "cities": ["Riyadh", "Jeddah", "Makkah", "Madinah"],
+      "buyer_titles": ["Property Operations Director", "Leasing Manager", "Asset Manager", "COO"],
+      "buyer_titles_ar": ["مدير عمليات الأملاك", "مدير التأجير", "مدير الأصول", "الرئيس التنفيذي للعمليات"],
+      "pains": [
+        "Slow tenant request handling",
+        "Manual lease and renewal tracking",
+        "Fragmented reporting to owners"
+      ],
+      "pains_ar": [
+        "بطء في معالجة طلبات المستأجرين",
+        "تتبع يدوي للعقود والتجديدات",
+        "تقارير مجزأة للملاك"
+      ],
+      "triggers": [
+        "Portfolio expansion",
+        "High vacancy or churn",
+        "Owner pressure for transparency"
+      ],
+      "pain_angles": [
+        "tenant request triage",
+        "renewal and collections reminders drafting",
+        "owner reporting automation"
+      ]
+    },
+    {
+      "id": "legal_professional_services",
+      "name": "Legal & Professional Services",
+      "name_ar": "الخدمات القانونية والمهنية",
+      "country": "SA",
+      "cities": ["Riyadh", "Jeddah", "Khobar"],
+      "buyer_titles": ["Managing Partner", "Head of Legal Operations", "Practice Director", "General Counsel"],
+      "buyer_titles_ar": ["الشريك الإداري", "رئيس العمليات القانونية", "مدير الممارسة", "المستشار العام"],
+      "pains": [
+        "High-volume document review and drafting",
+        "Manual intake and conflict checks",
+        "Time leakage in routine correspondence"
+      ],
+      "pains_ar": [
+        "مراجعة وصياغة مستندات بكميات كبيرة",
+        "استقبال يدوي وفحص تعارض المصالح يدوياً",
+        "هدر الوقت في المراسلات الروتينية"
+      ],
+      "triggers": [
+        "Growing matter volume",
+        "New compliance/regulatory load",
+        "Hiring freeze with rising demand"
+      ],
+      "pain_angles": [
+        "first-draft document generation (human-reviewed)",
+        "intake triage and summarization",
+        "correspondence drafting assistant"
+      ]
+    },
+    {
+      "id": "consulting_training_b2b",
+      "name": "Consulting, Training & B2B Services",
+      "name_ar": "الاستشارات والتدريب وخدمات الأعمال",
+      "country": "SA",
+      "cities": ["Riyadh", "Jeddah", "Dammam"],
+      "buyer_titles": ["Founder", "Managing Director", "Head of Delivery", "Business Development Director"],
+      "buyer_titles_ar": ["المؤسس", "العضو المنتدب", "رئيس التسليم", "مدير تطوير الأعمال"],
+      "pains": [
+        "Proposal and report drafting bottlenecks",
+        "Inconsistent delivery quality at scale",
+        "Manual lead research and follow-up"
+      ],
+      "pains_ar": [
+        "اختناقات في صياغة العروض والتقارير",
+        "تفاوت جودة التسليم عند التوسع",
+        "بحث ومتابعة يدوية للعملاء المحتملين"
+      ],
+      "triggers": [
+        "Scaling delivery team",
+        "Winning larger framework contracts",
+        "Margin pressure from manual work"
+      ],
+      "pain_angles": [
+        "proposal first-draft generation",
+        "delivery report automation",
+        "lead research and follow-up drafting"
+      ]
+    }
+  ]
+}

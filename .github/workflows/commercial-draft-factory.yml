@@ -1,0 +1,41 @@
+name: Commercial Draft Factory
+
+# Generates the daily founder-review-only draft queue (400+) and gates.
+# Artifact-only. Never commits outputs. Never sends anything externally.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Number of drafts to generate"
+        default: "400"
+  schedule:
+    - cron: "0 5 * * 1-5" # weekday mornings 05:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  drafts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate drafts + gates + safety audit
+        run: |
+          python scripts/commercial_generate_400_drafts.py --target "${{ github.event.inputs.target || '400' }}"
+          python scripts/commercial_score_drafts.py
+          python scripts/commercial_quality_gate.py
+          python scripts/commercial_compliance_gate.py
+          python scripts/commercial_founder_review_report.py
+          python scripts/commercial_metrics_summary.py
+          python scripts/commercial_safety_audit.py
+      - name: Upload founder review pack
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: founder-review-pack
+          path: outputs/commercial_launch/
+          retention-days: 14

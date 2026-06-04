@@ -1,0 +1,35 @@
+# Marketing OS — Demand Gen Plan
+## نظام التسويق
+
+> Dealix is a Saudi/GCC B2B AI Revenue & Operations OS.
+> Dealix هو نظام تشغيل إيرادات وعمليات مدعوم بالذكاء الاصطناعي للشركات السعودية والخليجية.
+
+### Purpose / الغرض
+- **EN:** Go-to-market and demand: positioning, ICP, messaging, channels, content engine and referral loops.
+- **AR:** الذهاب إلى السوق وتوليد الطلب: التموضع والعميل المثالي والرسائل والقنوات ومحرك المحتوى وحلقات الإحالة.
+
+### Scope / النطاق
+This document is part of **Marketing OS** (نظام التسويق). It operationalizes: Demand Gen Plan.
+
+### Key contents / المحتوى الأساسي
+- GTM strategy
+- ICP & segmentation
+- Messaging hierarchy
+- Demand-gen plan
+- Content engine
+
+### Operating notes / ملاحظات تشغيلية
+- Bilingual by default (AR primary for GCC buyers, EN for international).
+- Every externally-facing action is founder-approved and sent manually.
+- No claims are made without evidence; pricing in SAR is indicative and confirmed per deal.
+
+
+---
+
+### Safety / السلامة
+
+> **EN:** AI drafts, scores, ranks, analyzes, and recommends. The founder reviews, approves, and acts manually. The system never sends externally.
+>
+> **AR:** الذكاء الاصطناعي يصيغ ويقيّم ويرتّب ويحلّل ويوصي. المؤسس يراجع ويعتمد وينفّذ يدوياً. النظام لا يرسل خارجياً إطلاقاً.
+
+No SMTP. No WhatsApp outbound. No LinkedIn automation. No form auto-submit. No scraping. No secrets. No ROI guarantees. No unproven claims.

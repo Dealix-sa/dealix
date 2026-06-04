@@ -1,0 +1,115 @@
+{
+  "generated_at": "2026-06-04T21:02:31+00:00",
+  "day": "2026-06-04",
+  "passed": true,
+  "decision": "PASS",
+  "results": [
+    {
+      "step": "draft_factory",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "  website_form: 50"
+    },
+    {
+      "step": "score",
+      "rc": 0,
+      "ok": true,
+      "critical": false,
+      "tail": "Scored 400 drafts; 107 need research"
+    },
+    {
+      "step": "quality_gate",
+      "rc": 0,
+      "ok": true,
+      "critical": false,
+      "tail": "Quality gate: 361/400 passed (90.2%)"
+    },
+    {
+      "step": "compliance_gate",
+      "rc": 0,
+      "ok": true,
+      "critical": false,
+      "tail": "Compliance gate: 400/400 approved for review, 0 rejected"
+    },
+    {
+      "step": "founder_review",
+      "rc": 0,
+      "ok": true,
+      "critical": false,
+      "tail": "Founder review report built for 400 drafts (top 50)."
+    },
+    {
+      "step": "metrics",
+      "rc": 0,
+      "ok": true,
+      "critical": false,
+      "tail": "Daily metrics: 400 drafts, 0 rejected, 107 need research"
+    },
+    {
+      "step": "safety_audit",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "SAFETY AUDIT PASS — 400 drafts, no external send."
+    },
+    {
+      "step": "seed_leads",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "Seed leads valid: 10 records."
+    },
+    {
+      "step": "crm_schema",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "CRM schema verify PASS — send-free, all stages present."
+    },
+    {
+      "step": "media_social",
+      "rc": 0,
+      "ok": true,
+      "critical": false,
+      "tail": "Generated 30-day calendar -> /home/user/dealix/config/media_social_calendar.json"
+    },
+    {
+      "step": "media_social_verify",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "Media/social verify PASS — 30+ bilingual items, no auto-post."
+    },
+    {
+      "step": "site_static",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "Site launch static check PASS — SEO files present, copy deck bilingual & claim-safe."
+    },
+    {
+      "step": "api_static",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "API commercial static check PASS — read-only surface, no send endpoints."
+    },
+    {
+      "step": "secret_scan",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "Secret & risk scan PASS — scanned 308 files, no secrets found."
+    },
+    {
+      "step": "startup_os_verify",
+      "rc": 0,
+      "ok": true,
+      "critical": true,
+      "tail": "Startup OS verification: PASS (21 areas, 224 docs expected)"
+    }
+  ],
+  "critical_failures": [],
+  "non_negotiable_rule": "System never sends externally. Founder reviews and acts manually."
+}

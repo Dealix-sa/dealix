@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "title": "Dealix Analytics Event & Metric Taxonomy",
+    "version": "1.0.0",
+    "note": "Schema only. No real numbers are assumed or fabricated. Values are populated from manual founder input and instrumented events."
+  },
+  "events": [
+    {"name": "website_visit", "props": ["path", "lang", "referrer", "utm_source", "utm_medium", "utm_campaign"]},
+    {"name": "cta_click", "props": ["cta_id", "path", "lang"]},
+    {"name": "audit_request", "props": ["vertical", "source", "lang"]},
+    {"name": "diagnostic_booked", "props": ["vertical", "source"]},
+    {"name": "draft_generated", "props": ["batch_id", "channel", "vertical", "language"]},
+    {"name": "founder_review_action", "props": ["draft_id", "action"]},
+    {"name": "manual_send_logged", "props": ["draft_id", "channel"]},
+    {"name": "reply_logged", "props": ["lead_id", "classification"]},
+    {"name": "safety_violation", "props": ["source", "rule"]},
+    {"name": "compliance_rejection", "props": ["draft_id", "reason"]}
+  ],
+  "metrics": [
+    "website_visitors",
+    "cta_clicks",
+    "audit_requests",
+    "leads_created",
+    "drafts_generated",
+    "founder_review_count",
+    "manual_sends",
+    "replies",
+    "positive_replies",
+    "booked_diagnostics",
+    "paid_diagnostics",
+    "pilots_proposed",
+    "pilots_sold",
+    "retainer_starts",
+    "pipeline_sar",
+    "realized_revenue_sar",
+    "safety_violations",
+    "compliance_rejections"
+  ]
+}

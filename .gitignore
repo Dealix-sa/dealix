@@ -324,3 +324,6 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Dealix Startup OS — regenerable daily draft outputs (artifact-only, not committed)
+outputs/commercial_launch/

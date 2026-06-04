@@ -230,6 +230,72 @@ Then review:
 
 ---
 
+## Startup Operating System
+
+Dealix ships with a complete **Startup Operating System** — every system a real
+startup needs to launch, sell, deliver, monitor, and scale safely — generated
+and verified inside this repository.
+
+**Clone:** `git clone https://github.com/Dealix-sa/dealix.git`
+
+> **Non-negotiable rule:** AI drafts, scores, ranks, analyzes, and recommends.
+> The founder reviews, approves, and acts manually. **The system never sends externally.**
+
+| OS | Location |
+|---|---|
+| Company OS | [`docs/company-os/`](docs/company-os/) |
+| Product OS | [`docs/product-os/`](docs/product-os/) |
+| Website Launch OS | [`docs/site-launch/`](docs/site-launch/) |
+| Commercial Launch OS | [`docs/commercial-launch/`](docs/commercial-launch/) |
+| Sales OS | [`docs/sales-os/`](docs/sales-os/) |
+| Marketing OS | [`docs/marketing-os/`](docs/marketing-os/) |
+| Media / Social OS | [`docs/media-social-os/`](docs/media-social-os/) |
+| Ads OS (plan only) | [`docs/ads-os/`](docs/ads-os/) |
+| CRM / RevOps OS | [`docs/revops-os/`](docs/revops-os/) |
+| Delivery OS | [`docs/delivery-os/`](docs/delivery-os/) |
+| Support OS | [`docs/support-os/`](docs/support-os/) |
+| Finance OS | [`docs/finance-os/`](docs/finance-os/) |
+| Legal / Compliance OS | [`docs/legal-os/`](docs/legal-os/) |
+| Security / Trust OS | [`docs/security-os/`](docs/security-os/) |
+| Analytics OS | [`docs/analytics-os/`](docs/analytics-os/) |
+| People OS | [`docs/people-os/`](docs/people-os/) |
+| Partnerships OS | [`docs/partnerships-os/`](docs/partnerships-os/) |
+| Investor OS | [`docs/investor-os/`](docs/investor-os/) |
+| Operations OS | [`docs/operations-os/`](docs/operations-os/) |
+| Go-Live OS | [`docs/go-live/`](docs/go-live/) |
+| Launch Control Tower | [`docs/launch-control/`](docs/launch-control/) |
+
+### Daily founder draft factory
+
+A 400+/day **review-only** draft factory (cold email, follow-up, LinkedIn manual,
+website form) feeds a Founder Review Queue. Every draft is stamped
+`send_allowed=false`, `external_send_blocked=true`, `requires_founder_approval=true`,
+`no_auto_send=true`. Outputs land in `outputs/commercial_launch/<date>/`.
+
+### Commands
+
+```bash
+python scripts/commercial_generate_400_drafts.py --target 400
+python scripts/commercial_safety_audit.py
+python scripts/commercial_launch_readiness.py
+python scripts/media_social_calendar_generate.py
+python scripts/media_social_verify.py
+python scripts/site_launch_static_check.py
+python scripts/commercial_crm_schema_verify.py
+python scripts/api_commercial_static_check.py
+python scripts/final_secret_and_risk_scan.py
+python scripts/final_launch_control_verify.py
+python scripts/startup_os_verify.py
+```
+
+### Safety note
+
+No external sending. No SMTP. No WhatsApp outbound. No LinkedIn automation. No
+website form auto-submit. No scraping. No paid ads launched. No secrets. GitHub
+Actions are artifact-only with least-privilege `permissions: contents: read`.
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

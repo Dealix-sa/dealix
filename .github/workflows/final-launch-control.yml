@@ -1,0 +1,33 @@
+name: Final Launch Control
+
+# Runs the full safety-critical spine and the master verifier, aggregating a
+# PASS/FAIL launch-control decision. Read-only / artifact-only. No secrets.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * 1" # Mondays 08:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  control:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Final launch control verify
+        run: |
+          python scripts/final_secret_and_risk_scan.py --strict
+          python scripts/final_launch_control_verify.py
+          python scripts/startup_os_verify.py
+      - name: Upload control-tower artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: launch-control
+          path: outputs/startup_os/
+          retention-days: 30
