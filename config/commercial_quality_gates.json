@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "quality_gate": {
+    "min_score": 70,
+    "max_score": 100,
+    "reject_if": [
+      "score_below_min",
+      "no_clear_pain",
+      "no_single_cta",
+      "no_opt_out",
+      "too_generic",
+      "exaggeration",
+      "more_than_one_offer",
+      "literal_or_poor_arabic",
+      "generic_ai_agency_english",
+      "not_tied_to_vertical"
+    ],
+    "weights": {
+      "clear_pain": 18,
+      "single_cta": 14,
+      "opt_out_present": 14,
+      "tied_to_vertical": 16,
+      "specificity": 14,
+      "single_offer": 10,
+      "no_exaggeration": 8,
+      "language_quality": 6
+    },
+    "exaggeration_terms": [
+      "guaranteed", "guarantee", "10x", "skyrocket", "instantly", "revolutionary",
+      "best in the world", "#1", "unbeatable", "مضمون", "يضاعف", "ثوري", "الأفضل في العالم", "فوري النتائج"
+    ]
+  },
+  "compliance_gate": {
+    "min_score": 70,
+    "max_score": 100,
+    "reject_if": [
+      "no_opt_out",
+      "fake_familiarity",
+      "guaranteed_roi",
+      "claims_data_access",
+      "unjustified_personal_data",
+      "regulated_vertical_without_privacy_language",
+      "whatsapp_without_opt_in",
+      "linkedin_automated_action",
+      "any_external_send"
+    ],
+    "fake_familiarity_terms": ["as discussed", "as we agreed", "per our conversation", "as promised", "كما اتفقنا", "كما تحدثنا", "بناءً على حديثنا"],
+    "guaranteed_roi_terms": ["guaranteed roi", "guaranteed return", "guaranteed results", "نضمن العائد", "عائد مضمون", "نتائج مضمونة"],
+    "data_access_claim_terms": ["we accessed your data", "we pulled your data", "we have your data", "we scraped", "اطلعنا على بياناتكم", "سحبنا بياناتكم"],
+    "regulated_verticals": ["legal_professional_services"],
+    "privacy_language_terms": ["privacy", "confidential", "redacted", "no access", "founder-reviewed", "خصوصية", "سري", "محجوب", "دون وصول", "بمراجعة المؤسس"]
+  },
+  "risk_levels": {
+    "high_triggers": ["whatsapp", "regulated_vertical_low_compliance"],
+    "medium_triggers": ["regulated_vertical", "research_required"],
+    "default": "low"
+  }
+}

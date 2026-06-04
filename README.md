@@ -5,7 +5,7 @@
 ### AI revenue, growth, and compliance engine for Saudi B2B — PDPL-native, ZATCA-aware, approval-first.
 ### محرّك إيرادات ونمو وامتثال بـ AI للشركات السعودية — PDPL أصلاً، ZATCA-aware، والموافقة أولاً.
 
-[![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
+[![CI](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)](https://fastapi.tiangolo.com/)
@@ -48,7 +48,7 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 ## Quick start
 
 ```bash
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env
@@ -82,6 +82,65 @@ make release-manifest      # export production release manifest
 make test                  # test suite with project pytest defaults
 make security              # Bandit + detect-secrets baseline scan when configured
 ```
+
+---
+
+## Commercial Launch (review-only draft factory)
+
+The **Commercial Launch Operating System** turns Dealix into a daily commercial
+engine for the Saudi/GCC market. It generates daily B2B opportunities,
+classifies them, writes high-quality bilingual drafts, runs them through quality
++ compliance + safety gates, and places them in a **Founder Review Queue**.
+
+> ⚠️ **The system does not send anything externally.** No email, no LinkedIn, no
+> WhatsApp, no automation, no scraping, no secrets. The founder reviews,
+> approves, and sends every message **manually**.
+
+**First 5 verticals:**
+
+1. Facilities Management & Maintenance — إدارة المرافق والصيانة
+2. Contracting & Project Controls — المقاولات وضبط المشاريع
+3. Real Estate & Property Operations — العقار وإدارة الأملاك
+4. Legal & Professional Services — المكاتب القانونية والخدمات المهنية
+5. Consulting, Training & B2B Services — الاستشارات والتدريب وخدمات B2B
+
+It also ships a **Social & Media OS**: a daily, review-only marketing factory
+(LinkedIn, X, Instagram, newsletters, blog outlines, ad copy with **no spend**,
+PR pitches) — bilingual, scored, and never posted automatically.
+
+```bash
+# Generate >= 400 founder-review-only outreach drafts for today
+python scripts/commercial_generate_400_drafts.py --target 400
+
+# Generate the daily social & media review queue (no posting, no ad spend)
+python scripts/commercial_social_factory.py
+
+# Run the safety audit (fails on ANY external-send/post code or unblocked item)
+python scripts/commercial_safety_audit.py
+
+# Launch readiness gate (Go/No-Go)
+python scripts/commercial_launch_readiness.py
+
+# Validate your real lead file (optional; placeholder mode works without it)
+python scripts/commercial_seed_leads_validate.py --leads data/commercial_seed_leads.jsonl
+
+# Run the commercial acceptance tests (dependency-light)
+python -m pytest -q --noconftest -p no:cacheprovider \
+  tests/test_commercial_generate_400_drafts.py \
+  tests/test_commercial_safety_audit.py \
+  tests/test_commercial_launch_readiness.py \
+  tests/test_commercial_no_external_send.py
+```
+
+Daily outputs land under `outputs/commercial_launch/YYYY-MM-DD/`
+(`draft_queue.jsonl`, `founder_review.csv` / `.md`, `top_50_priority.md`,
+`rejected_drafts.jsonl`, `compliance_report.json`, `safety_audit.json`,
+`daily_metrics.json`, `next_actions.md`). The
+[`.github/workflows/commercial-draft-factory.yml`](.github/workflows/commercial-draft-factory.yml)
+workflow runs this daily and uploads the bundle as **artifacts** (no secrets, no
+commits, read-only permissions).
+
+Full docs: [`docs/commercial-launch/`](docs/commercial-launch/00_OFFICIAL_COMMERCIAL_LAUNCH_OS.md).
 
 ---
 

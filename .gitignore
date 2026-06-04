@@ -324,3 +324,6 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Commercial Launch OS — generated daily runs (use CI artifacts, do not commit)
+outputs/commercial_launch/

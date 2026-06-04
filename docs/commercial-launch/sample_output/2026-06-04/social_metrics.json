@@ -1,0 +1,37 @@
+{
+  "run_date": "2026-06-04",
+  "total_accepted": 136,
+  "total_rejected": 0,
+  "by_platform": {
+    "linkedin_post": 28,
+    "x_post": 28,
+    "instagram_caption": 18,
+    "newsletter": 8,
+    "blog_outline": 11,
+    "ad_copy_google": 16,
+    "ad_copy_meta": 16,
+    "pr_pitch": 11
+  },
+  "by_vertical": {
+    "facilities_management": 32,
+    "contracting_project_controls": 28,
+    "real_estate_property_ops": 28,
+    "legal_professional_services": 24,
+    "consulting_training_b2b": 24
+  },
+  "by_language": {
+    "ar": 69,
+    "en": 67
+  },
+  "targets": {
+    "linkedin_post": 20,
+    "x_post": 20,
+    "instagram_caption": 12,
+    "newsletter": 4,
+    "blog_outline": 6,
+    "ad_copy_google": 10,
+    "ad_copy_meta": 10,
+    "pr_pitch": 6
+  },
+  "target_met": true
+}

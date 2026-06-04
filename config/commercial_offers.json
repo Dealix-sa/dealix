@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "currency": "SAR",
+  "claims_policy": {
+    "no_guaranteed_roi": true,
+    "no_exaggerated_claims": true,
+    "conservative_and_provable_only": true,
+    "note": "Every commercial claim must be conservative, evidence-first, and provable. No ROI guarantees. No data-access claims."
+  },
+  "ladder": [
+    {
+      "id": "entry_diagnostic",
+      "name_en": "Entry Diagnostic / AI Workflow Audit",
+      "name_ar": "تشخيص مبدئي / تدقيق سير عمل AI",
+      "price_min": 499,
+      "price_max": 2500,
+      "unit": "fixed",
+      "promise_en": "A founder-reviewed map of where revenue or operations leak in one core workflow, with the top 3 governed fixes.",
+      "promise_ar": "خريطة محوكمة من المؤسس لأماكن تسرب الإيراد أو التشغيل في سير عمل أساسي واحد، مع أفضل 3 إصلاحات محوكمة.",
+      "deliverable": "Workflow leakage map + top 3 governed fixes + proof-pack",
+      "good_for": "First touch, low-risk entry, qualifies for pilot"
+    },
+    {
+      "id": "ai_workflow_audit",
+      "name_en": "AI Workflow Audit (Operations)",
+      "name_ar": "تدقيق سير عمل AI (التشغيل)",
+      "price_min": 1500,
+      "price_max": 2500,
+      "unit": "fixed",
+      "promise_en": "A deeper operations audit of one revenue-critical workflow with a governed fix plan and evidence trail.",
+      "promise_ar": "تدقيق تشغيلي أعمق لسير عمل حرج للإيراد مع خطة إصلاح محوكمة وسجل أدلة.",
+      "deliverable": "Operations audit + governed fix plan + evidence trail",
+      "good_for": "Operations-heavy verticals (FM, contracting, property)"
+    },
+    {
+      "id": "paid_pilot",
+      "name_en": "Paid Pilot",
+      "name_ar": "تجربة مدفوعة",
+      "price_min": 5000,
+      "price_max": 25000,
+      "unit": "fixed",
+      "promise_en": "A scoped, time-boxed pilot that implements one governed workflow improvement with measured before/after on data the client shares.",
+      "promise_ar": "تجربة محددة النطاق والمدة تنفّذ تحسين سير عمل محوكم واحد مع قياس قبل/بعد على بيانات يشاركها العميل.",
+      "deliverable": "One governed workflow live + measured outcome + handover",
+      "good_for": "Proven value from diagnostic, ready to implement"
+    },
+    {
+      "id": "department_os",
+      "name_en": "Department OS",
+      "name_ar": "نظام تشغيل القسم",
+      "price_min": 25000,
+      "price_max": 150000,
+      "unit": "fixed",
+      "promise_en": "A governed operating system for a whole department (e.g. work orders, claims, collections) with approvals, evidence and reporting.",
+      "promise_ar": "نظام تشغيل محوكم لقسم كامل (مثل أوامر العمل أو المستخلصات أو التحصيل) مع اعتمادات وأدلة وتقارير.",
+      "deliverable": "Department workflow OS + governance + reporting",
+      "good_for": "Pilot succeeded, scaling one department"
+    },
+    {
+      "id": "monthly_retainer",
+      "name_en": "Monthly Retainer (Governed Ops)",
+      "name_ar": "اشتراك شهري (تشغيل محوكم)",
+      "price_min": 3000,
+      "price_max": 25000,
+      "unit": "per_month",
+      "promise_en": "Ongoing governed operations: continuous workflow improvement, evidence upkeep and founder-reviewed reporting.",
+      "promise_ar": "تشغيل محوكم مستمر: تحسين سير عمل مستمر وصيانة أدلة وتقارير بمراجعة المؤسس.",
+      "deliverable": "Monthly governed ops + reporting + improvement backlog",
+      "good_for": "Recurring workflows that repeat monthly"
+    },
+    {
+      "id": "enterprise_custom_os",
+      "name_en": "Enterprise Custom OS",
+      "name_ar": "نظام تشغيل مؤسسي مخصص",
+      "price_min": 150000,
+      "price_max": null,
+      "unit": "fixed",
+      "promise_en": "A custom, multi-department revenue & operations OS built and governed for an enterprise, scoped per engagement.",
+      "promise_ar": "نظام تشغيل إيراد وعمليات مخصص متعدد الأقسام يُبنى ويُحوكم لمؤسسة، محدد النطاق لكل ارتباط.",
+      "deliverable": "Custom multi-department OS + governance + integration",
+      "good_for": "Enterprise with proven pilots and budget"
+    }
+  ]
+}

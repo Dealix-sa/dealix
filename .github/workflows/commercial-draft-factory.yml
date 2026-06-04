@@ -1,0 +1,75 @@
+name: Commercial Draft Factory
+
+# Daily review-only draft factory for the Dealix Commercial Launch OS.
+#
+# HARD GUARANTEES:
+#   * No secrets are used or required.
+#   * Nothing is ever sent externally (no SMTP, no API send, no automation).
+#   * The job only generates drafts, runs the safety audit + tests, and uploads
+#     the founder-review bundle as artifacts. It does NOT commit daily outputs.
+#   * Permissions are read-only.
+
+on:
+  schedule:
+    # ~07:00 KSA (04:00 UTC), Sunday–Thursday.
+    - cron: "0 4 * * 0-4"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Minimum number of drafts to generate"
+        required: false
+        default: "400"
+
+concurrency:
+  group: commercial-draft-factory
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  draft-factory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test runner only (no app deps, no secrets)
+        run: pip install pytest
+
+      - name: Validate seed leads (placeholder mode allowed)
+        run: python3 scripts/commercial_seed_leads_validate.py || true
+
+      - name: Generate >= 400 review-only drafts
+        run: python3 scripts/commercial_generate_400_drafts.py --target "${{ github.event.inputs.target || '400' }}"
+
+      - name: Generate daily social & media review queue (no posting, no spend)
+        run: python3 scripts/commercial_social_factory.py
+
+      - name: Safety audit (fails on any external-send/post code or unblocked item)
+        run: python3 scripts/commercial_safety_audit.py
+
+      - name: Launch readiness gate (Go/No-Go)
+        run: python3 scripts/commercial_launch_readiness.py
+
+      - name: Run commercial acceptance tests
+        run: >-
+          python3 -m pytest -q --noconftest -p no:cacheprovider
+          tests/test_commercial_generate_400_drafts.py
+          tests/test_commercial_safety_audit.py
+          tests/test_commercial_launch_readiness.py
+          tests/test_commercial_no_external_send.py
+          tests/test_commercial_social_factory.py
+
+      - name: Upload founder-review bundle (artifacts only — no commit)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: commercial-draft-queue-${{ github.run_id }}
+          path: outputs/commercial_launch/
+          retention-days: 14
+          if-no-files-found: warn

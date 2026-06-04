@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "product": "Dealix Social & Media Operating System",
+  "global_policy": {
+    "external_post": "BLOCKED",
+    "auto_post": "BLOCKED",
+    "ad_spend": "BLOCKED",
+    "founder_manual_approval_required": true,
+    "note": "Review-only marketing factory. No auto-posting, no scheduling APIs, no ad spend, no secrets. The founder reviews, approves, and publishes manually."
+  },
+  "daily_targets_by_platform": {
+    "linkedin_post": 20,
+    "x_post": 20,
+    "instagram_caption": 12,
+    "newsletter": 4,
+    "blog_outline": 6,
+    "ad_copy_google": 10,
+    "ad_copy_meta": 10,
+    "pr_pitch": 6
+  },
+  "total_minimum": 80,
+  "platforms": [
+    {"id": "linkedin_post", "name": "LinkedIn Post", "max_chars": 3000, "draft_only": true, "manual_publish": true},
+    {"id": "x_post", "name": "X / Twitter Post", "max_chars": 280, "draft_only": true, "manual_publish": true},
+    {"id": "instagram_caption", "name": "Instagram Caption", "max_chars": 2200, "draft_only": true, "manual_publish": true},
+    {"id": "newsletter", "name": "Email Newsletter Section", "max_chars": 2000, "draft_only": true, "manual_publish": true},
+    {"id": "blog_outline", "name": "Blog / Article Outline", "max_chars": 2500, "draft_only": true, "manual_publish": true},
+    {"id": "ad_copy_google", "name": "Google Ad Copy (no spend)", "max_chars": 180, "draft_only": true, "manual_publish": true, "no_spend": true},
+    {"id": "ad_copy_meta", "name": "Meta Ad Copy (no spend)", "max_chars": 600, "draft_only": true, "manual_publish": true, "no_spend": true},
+    {"id": "pr_pitch", "name": "PR / Media Pitch", "max_chars": 1500, "draft_only": true, "manual_publish": true}
+  ],
+  "content_pillars": [
+    {"id": "educational", "en": "Educational — teach one governed-ops lesson", "ar": "تعليمي — درس واحد في التشغيل المحوكم"},
+    {"id": "proof", "en": "Proof — share an anonymized result or proof asset", "ar": "دليل — نتيجة مجهّلة أو أصل إثبات"},
+    {"id": "founder_pov", "en": "Founder POV — a strong, honest point of view", "ar": "رأي المؤسس — وجهة نظر صادقة"},
+    {"id": "offer", "en": "Offer — the diagnostic, framed as value not hype", "ar": "عرض — التشخيص كقيمة لا كدعاية"},
+    {"id": "question", "en": "Question — provoke a useful reply", "ar": "سؤال — يثير ردًا مفيدًا"},
+    {"id": "case_angle", "en": "Case angle — a vertical-specific story", "ar": "زاوية حالة — قصة خاصة بالقطاع"}
+  ],
+  "hashtags_bank": {
+    "global": ["#Dealix", "#RevenueOps", "#AIOperations", "#SaudiBusiness", "#GCC", "#B2B"],
+    "ar": ["#ديالكس", "#تشغيل_الإيراد", "#الأعمال_السعودية", "#تحول_رقمي", "#حوكمة"],
+    "facilities_management": ["#FacilitiesManagement", "#Maintenance", "#إدارة_المرافق"],
+    "contracting_project_controls": ["#Contracting", "#ProjectControls", "#المقاولات"],
+    "real_estate_property_ops": ["#RealEstate", "#PropertyManagement", "#العقار"],
+    "legal_professional_services": ["#LegalTech", "#ProfessionalServices", "#خدمات_قانونية"],
+    "consulting_training_b2b": ["#Consulting", "#B2BServices", "#استشارات"]
+  },
+  "cta_bank": {
+    "en": ["Book a founder-led diagnostic — link in bio.", "DM me 'AUDIT' for a workflow diagnostic.", "Comment 'MAP' and I'll share the proof asset.", "Request a workflow audit — no data access required."],
+    "ar": ["احجز تشخيصًا بقيادة المؤسس — الرابط في الملف.", "راسلني بكلمة (تدقيق) لتشخيص سير العمل.", "علّق بكلمة (خريطة) وأشارك أصل الإثبات.", "اطلب تدقيق سير عمل — دون أي وصول لبياناتكم."]
+  },
+  "banned_terms": ["guaranteed roi", "guaranteed results", "10x", "skyrocket", "overnight", "مضمون", "نضمن", "يضاعف", "ثوري", "بين ليلة وضحاها"]
+}

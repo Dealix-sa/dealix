@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "global_policy": {
+    "external_send": "BLOCKED",
+    "auto_send": "BLOCKED",
+    "founder_manual_approval_required": true,
+    "note": "The system only generates drafts. No SMTP, no API send, no browser automation, no scraping. The founder reviews and sends manually."
+  },
+  "daily_targets": {
+    "cold_email": 175,
+    "follow_up": 100,
+    "linkedin_manual": 75,
+    "website_form": 50,
+    "total_minimum": 400
+  },
+  "channels": [
+    {
+      "id": "cold_email",
+      "name": "Cold Email",
+      "draft_only": true,
+      "allowed": ["draft_generation", "opt_out_line_required", "domain_readiness_checklist"],
+      "forbidden": ["smtp", "api_send", "bulk_sending", "scraping_personal_emails"],
+      "language": "bilingual",
+      "status_on_draft": "founder_review",
+      "domain_readiness_checklist": ["SPF", "DKIM", "DMARC", "Google_Postmaster", "bounce_tracking", "unsubscribe", "warmup_ramp_plan"],
+      "pre_send_requirements": ["manual_founder_approval", "separate_ramp_plan", "suppression_list_owner"]
+    },
+    {
+      "id": "follow_up",
+      "name": "Follow-up Email",
+      "draft_only": true,
+      "allowed": ["draft_generation", "opt_out_line_required"],
+      "forbidden": ["smtp", "api_send", "bulk_sending", "fake_familiarity"],
+      "language": "bilingual",
+      "status_on_draft": "founder_review",
+      "rules": ["No fake 'as discussed' familiarity unless a prior real touch exists", "Must reference a genuine reason to follow up"]
+    },
+    {
+      "id": "linkedin_manual",
+      "name": "LinkedIn (Manual Draft Only)",
+      "draft_only": true,
+      "allowed": ["manual_draft"],
+      "forbidden": ["browser_automation", "scraping", "auto_connect", "auto_message", "bots"],
+      "language": "bilingual",
+      "status_on_draft": "founder_review",
+      "rules": ["Founder copies and sends manually", "No automation of any kind"]
+    },
+    {
+      "id": "website_form",
+      "name": "Website / Contact Form",
+      "draft_only": true,
+      "allowed": ["draft_generation"],
+      "forbidden": ["auto_submit"],
+      "language": "bilingual",
+      "status_on_draft": "founder_review",
+      "rules": ["Founder copies and submits manually"]
+    },
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp (Inbound / Opt-in Only)",
+      "draft_only": true,
+      "cold_outreach": "FORBIDDEN",
+      "allowed": ["inbound_reply_templates", "opt_in_contacts_only"],
+      "forbidden": ["cold_outreach", "sending", "broadcast"],
+      "language": "bilingual",
+      "status_on_draft": "manual_review_only",
+      "rules": ["No cold outreach", "Only reply templates for inbound or clearly opted-in contacts", "Every WhatsApp draft is manual_review_only"]
+    }
+  ]
+}

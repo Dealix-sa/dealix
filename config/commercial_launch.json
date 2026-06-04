@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "product": "Dealix Commercial Launch Operating System",
+  "tagline_en": "Saudi/GCC B2B AI Revenue & Operations OS — review-only draft factory, no external sending.",
+  "tagline_ar": "نظام تشغيل الإيراد والعمليات B2B للسعودية والخليج — مصنع مسودات للمراجعة فقط، بدون أي إرسال خارجي.",
+  "market": ["SA", "AE", "QA", "KW", "BH", "OM"],
+  "primary_country": "SA",
+  "default_cities": ["Riyadh", "Jeddah", "Dammam", "Khobar", "Mecca", "Medina"],
+  "languages": ["ar", "en"],
+  "daily_target_total": 400,
+  "daily_targets_by_channel": {
+    "cold_email": 175,
+    "follow_up": 100,
+    "linkedin_manual": 75,
+    "website_form": 50
+  },
+  "safety": {
+    "external_send_blocked": true,
+    "auto_send_blocked": true,
+    "requires_founder_approval": true,
+    "no_secrets": true,
+    "no_scraping": true
+  },
+  "outputs_dir": "outputs/commercial_launch",
+  "config_files": [
+    "config/commercial_verticals.json",
+    "config/commercial_offers.json",
+    "config/commercial_channels.json",
+    "config/commercial_quality_gates.json"
+  ],
+  "go_no_go": {
+    "go_for_draft_generation": true,
+    "go_for_founder_manual_review": true,
+    "no_go_for_automated_sending": true,
+    "no_go_for_whatsapp_cold_outreach": true,
+    "no_go_for_linkedin_automation": true
+  }
+}
