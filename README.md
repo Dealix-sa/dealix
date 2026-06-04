@@ -104,11 +104,18 @@ classifies them, writes high-quality bilingual drafts, runs them through quality
 4. Legal & Professional Services — المكاتب القانونية والخدمات المهنية
 5. Consulting, Training & B2B Services — الاستشارات والتدريب وخدمات B2B
 
+It also ships a **Social & Media OS**: a daily, review-only marketing factory
+(LinkedIn, X, Instagram, newsletters, blog outlines, ad copy with **no spend**,
+PR pitches) — bilingual, scored, and never posted automatically.
+
 ```bash
-# Generate >= 400 founder-review-only drafts for today
+# Generate >= 400 founder-review-only outreach drafts for today
 python scripts/commercial_generate_400_drafts.py --target 400
 
-# Run the safety audit (fails on ANY external-send code or unblocked draft)
+# Generate the daily social & media review queue (no posting, no ad spend)
+python scripts/commercial_social_factory.py
+
+# Run the safety audit (fails on ANY external-send/post code or unblocked item)
 python scripts/commercial_safety_audit.py
 
 # Launch readiness gate (Go/No-Go)

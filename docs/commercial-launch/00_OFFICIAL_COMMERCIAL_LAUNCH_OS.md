@@ -89,3 +89,4 @@ Under `outputs/commercial_launch/YYYY-MM-DD/`:
 | [08_OBJECTION_HANDLING](08_OBJECTION_HANDLING.md) | Objections + responses |
 | [09_GO_TO_MARKET_30_DAY_PLAN](09_GO_TO_MARKET_30_DAY_PLAN.md) | 30-day GTM plan |
 | [10_COMMERCIAL_LAUNCH_READINESS_REPORT](10_COMMERCIAL_LAUNCH_READINESS_REPORT.md) | Readiness + Go/No-Go |
+| [11_SOCIAL_AND_MEDIA_OS](11_SOCIAL_AND_MEDIA_OS.md) | Review-only social + media + ad-copy factory |

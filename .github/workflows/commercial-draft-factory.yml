@@ -47,7 +47,10 @@ jobs:
       - name: Generate >= 400 review-only drafts
         run: python3 scripts/commercial_generate_400_drafts.py --target "${{ github.event.inputs.target || '400' }}"
 
-      - name: Safety audit (fails on any external-send code or unblocked draft)
+      - name: Generate daily social & media review queue (no posting, no spend)
+        run: python3 scripts/commercial_social_factory.py
+
+      - name: Safety audit (fails on any external-send/post code or unblocked item)
         run: python3 scripts/commercial_safety_audit.py
 
       - name: Launch readiness gate (Go/No-Go)
@@ -60,6 +63,7 @@ jobs:
           tests/test_commercial_safety_audit.py
           tests/test_commercial_launch_readiness.py
           tests/test_commercial_no_external_send.py
+          tests/test_commercial_social_factory.py
 
       - name: Upload founder-review bundle (artifacts only — no commit)
         if: always()

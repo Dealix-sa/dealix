@@ -38,11 +38,14 @@ ACTIVE_SEND_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("mail" + "gun", re.compile(r"\bmail" + r"gun\b", re.I)),  # safety-audit-allow
     ("twilio_send", re.compile(r"twilio[^\n]*\.(create|" + r"send)\s*\(", re.I)),  # safety-audit-allow
     ("whatsapp_send", re.compile(r"whats" + r"app[^\n]*\.(send|create)\s*\(", re.I)),  # safety-audit-allow
-    ("linked" + "in_automation", re.compile(r"linked" + r"in[^\n]*(automat|auto_connect|auto_message)", re.I)),  # safety-audit-allow
+    ("linked" + "in_automation", re.compile(r"linked" + r"in[ _-]?(automat|auto_connect|auto_message)", re.I)),  # safety-audit-allow
     ("selenium_outreach", re.compile(r"\bsele" + r"nium\b", re.I)),  # safety-audit-allow
     ("playwright_outreach", re.compile(r"\bplay" + r"wright\b", re.I)),  # safety-audit-allow
     ("send_allowed_true", re.compile(r"send_allowed" + r"[\"']?\s*[:=]\s*[Tt]rue")),  # safety-audit-allow
     ("external_send_blocked_false", re.compile(r"external_send_blocked" + r"[\"']?\s*[:=]\s*[Ff]alse")),  # safety-audit-allow
+    ("post_allowed_true", re.compile(r"post_allowed" + r"[\"']?\s*[:=]\s*[Tt]rue")),  # safety-audit-allow
+    ("external_post_blocked_false", re.compile(r"external_post_blocked" + r"[\"']?\s*[:=]\s*[Ff]alse")),  # safety-audit-allow
+    ("scheduler_api", re.compile(r"\b(buff" + r"er|hoot" + r"suite|spro" + r"ut|late" + r"r_com)\b\.?\w*\s*\(", re.I)),  # safety-audit-allow
 ]
 
 # requests.post to an *external send* endpoint (not generic requests usage).
@@ -129,10 +132,22 @@ def audit_outputs_dir(run_date: str, base_dir: Path | None = None, root: Path | 
         problems = validate_draft_invariants(draft)
         if problems:
             report.draft_violations.append({"draft_id": draft.get("draft_id"), "problems": problems})
+
+    # Social & media queue (review-only marketing posts).
+    sq = out / "social_queue.jsonl"
+    if sq.exists():
+        from dealix.commercial_launch.social import validate_post_invariants
+
+        for post in iter_jsonl(sq):
+            report.drafts_checked += 1
+            problems = validate_post_invariants(post)
+            if problems:
+                report.draft_violations.append({"post_id": post.get("post_id"), "problems": problems})
+
     if report.draft_violations:
         report.passed = False
     if report.passed:
-        report.notes.append("No active external-send code found. All drafts are review-only.")
+        report.notes.append("No active external-send/post code found. All drafts and posts are review-only.")
     return report
 
 

@@ -1,10 +1,10 @@
 {
   "passed": true,
-  "scanned_files": 15,
+  "scanned_files": 19,
   "findings": [],
   "draft_violations": [],
-  "drafts_checked": 478,
+  "drafts_checked": 614,
   "notes": [
-    "No active external-send code found. All drafts are review-only."
+    "No active external-send/post code found. All drafts and posts are review-only."
   ]
 }

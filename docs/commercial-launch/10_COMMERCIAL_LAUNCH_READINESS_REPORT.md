@@ -160,5 +160,32 @@ commercial-launch deliverables.
 - ✅ **GO** for draft generation.
 - ✅ **GO** for founder manual review.
 - ⛔ **NO-GO** for automated sending.
+- ⛔ **NO-GO** for automated social posting.
+- ⛔ **NO-GO** for ad spend.
 - ⛔ **NO-GO** for WhatsApp cold outreach.
 - ⛔ **NO-GO** for LinkedIn automation.
+
+---
+
+## 14. Addendum — Social & Media OS (added in expansion)
+
+A second review-only factory was added on top of the outreach factory:
+
+- **`config/commercial_social.json`**, **`dealix/commercial_launch/social.py`**,
+  **`scripts/commercial_social_factory.py`**, **`tests/test_commercial_social_factory.py`**.
+- 8 platforms (LinkedIn, X, Instagram, newsletter, blog outline, Google/Meta ad
+  copy with **no spend**, PR pitch), 6 content pillars, bilingual AR + EN.
+- Minimum 80/day; a typical run produces **136** posts.
+- Every post: `post_allowed=false`, `external_post_blocked=true`,
+  `requires_founder_approval=true`, `no_ad_spend=true`, `status=founder_review`.
+- The shared safety audit scans `social_queue.jsonl` and fails on any posting
+  automation, scheduling API, `post_allowed=true`, or `external_post_blocked=false`.
+- The launch readiness gate adds `social_os_blocks_posting` and
+  `social_factory_meets_minimum` checks (both PASS).
+- A best-in-class bilingual `apps/web/app/commercial-launch/page.tsx` landing page
+  (hero, stats, verticals, SAR offer ladder, daily-loop steps, Social/Media OS,
+  trust-first section, FAQ, CTA) — `npm run verify` ✅.
+
+Updated results: **9/9 readiness checks PASS**, **41 commercial tests pass**,
+outreach 478 drafts + social 136 posts, combined safety audit clean.
+See `docs/commercial-launch/11_SOCIAL_AND_MEDIA_OS.md`.

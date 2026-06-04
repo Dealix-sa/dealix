@@ -13,6 +13,7 @@ from typing import Any
 
 from dealix.commercial_launch.engine import ROOT, generate_drafts, load_config
 from dealix.commercial_launch.safety import scan_files
+from dealix.commercial_launch.social import generate_social, load_social_config
 
 
 @dataclass
@@ -105,6 +106,22 @@ def evaluate_readiness(root: Path | None = None, target: int = 400, run_generati
         "safety_scan_clean", safety.passed,
         f"scanned {safety.scanned_files} files, {len(safety.findings)} findings"))
 
+    # 6b. Social/media OS config present and blocks posting + ad spend
+    social_cfg_path = r / "config" / "commercial_social.json"
+    if social_cfg_path.exists():
+        social_cfg = load_social_config(r / "config")
+        sgp = social_cfg["global_policy"]
+        social_block_ok = (
+            sgp.get("external_post") == "BLOCKED"
+            and sgp.get("auto_post") == "BLOCKED"
+            and sgp.get("ad_spend") == "BLOCKED"
+        )
+        report.checks.append(ReadinessCheck(
+            "social_os_blocks_posting", social_block_ok,
+            f"external_post={sgp.get('external_post')}, auto_post={sgp.get('auto_post')}, ad_spend={sgp.get('ad_spend')}"))
+    else:
+        report.checks.append(ReadinessCheck("social_os_blocks_posting", False, "config/commercial_social.json missing"))
+
     # 7. Draft factory meets target
     if run_generation:
         result = generate_drafts(target=target, config=cfg)
@@ -117,10 +134,24 @@ def evaluate_readiness(root: Path | None = None, target: int = 400, run_generati
             "draft_factory_meets_target", meets and invariants_ok,
             f"generated {result.total_accepted} (target {target}), invariants_ok={invariants_ok}"))
 
+        # 7b. Social factory meets its minimum, all review-only
+        social = generate_social()
+        social_min = load_social_config(r / "config")["total_minimum"]
+        social_ok = social.total_accepted >= social_min and all(
+            p["post_allowed"] is False and p["external_post_blocked"] is True
+            for p in social.accepted
+        )
+        report.checks.append(ReadinessCheck(
+            "social_factory_meets_minimum", social_ok,
+            f"generated {social.total_accepted} (min {social_min})"))
+
     report.go_no_go = {
         "go_for_draft_generation": True,
+        "go_for_social_media_generation": True,
         "go_for_founder_manual_review": True,
         "no_go_for_automated_sending": True,
+        "no_go_for_automated_posting": True,
+        "no_go_for_ad_spend": True,
         "no_go_for_whatsapp_cold_outreach": True,
         "no_go_for_linkedin_automation": True,  # safety-audit-allow
         "overall_ready": report.passed,

@@ -78,3 +78,22 @@ def test_workflow_has_no_secrets() -> None:
     if wf.exists():
         text = wf.read_text(encoding="utf-8")
         assert "secrets." not in text, "workflow must not reference any secrets"
+
+
+def test_social_posts_never_post_externally() -> None:
+    from dealix.commercial_launch.social import generate_social
+
+    result = generate_social(seed=31, run_date="2026-01-01")
+    for p in result.accepted:
+        assert p["post_allowed"] is False
+        assert p["external_post_blocked"] is True
+        assert p["requires_founder_approval"] is True
+
+
+def test_social_config_blocks_post_and_spend() -> None:
+    from dealix.commercial_launch.social import load_social_config
+
+    gp = load_social_config()["global_policy"]
+    assert gp["external_post"] == "BLOCKED"
+    assert gp["auto_post"] == "BLOCKED"
+    assert gp["ad_spend"] == "BLOCKED"
