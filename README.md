@@ -48,7 +48,7 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 ## Quick start
 
 ```bash
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env
@@ -207,10 +207,69 @@ Then review:
 
 ---
 
+## Commercial Launch OS
+
+The **Commercial Launch OS** is a review-only commercial activation layer. It
+produces 400+ daily founder-review outreach drafts, a 30-day media/social
+calendar, and a full safety/compliance evidence pack — **without sending
+anything externally**. Every draft carries `send_allowed=false`,
+`external_send_blocked=true`, `no_auto_send=true`, and
+`requires_founder_approval=true`. The founder reviews and does any outreach
+manually, after approval.
+
+Core library lives in [`launch_os/`](launch_os/); docs in
+[`docs/launch-control/`](docs/launch-control/),
+[`docs/commercial-launch/`](docs/commercial-launch/),
+[`docs/media-social-os/`](docs/media-social-os/), and
+[`docs/site-launch/`](docs/site-launch/).
+
+## Final Launch Control
+
+Run the full launch-control evidence pack locally:
+
+```bash
+python scripts/commercial_generate_400_drafts.py --target 400
+python scripts/commercial_safety_audit.py
+python scripts/commercial_launch_readiness.py
+python scripts/media_social_calendar_generate.py
+python scripts/site_launch_static_check.py
+python scripts/media_social_verify.py
+python scripts/commercial_crm_schema_verify.py
+python scripts/api_commercial_static_check.py
+python scripts/final_secret_and_risk_scan.py
+python scripts/final_launch_control_verify.py    # master PASS/FAIL gate
+```
+
+**How to confirm everything is sound:** `final_launch_control_verify.py` prints
+`[verify] PASS` and exits 0 only when every critical check passes.
+
+- **Outputs** → `outputs/commercial_launch/latest/` (drafts, founder review,
+  top-50, safety audit, daily metrics), `outputs/media_social/`,
+  `outputs/final_launch_control/` (verification + secret scan).
+- **Reports** → [`docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md`](docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md)
+  is the single Go/No-Go file.
+- **GO**: public website launch, commercial positioning, 400 review-only
+  drafts, founder manual review, media/social planning, manual social posting,
+  paid diagnostics, discovery calls, proposal creation, pilot planning.
+- **NO-GO**: automated email sending, WhatsApp cold outreach, LinkedIn
+  automation, website form auto-submit, bulk sending, paid ads without
+  tracking/compliance, external sending from GitHub Actions, processing
+  sensitive data before agreement.
+
+CI: [`final-launch-control.yml`](.github/workflows/final-launch-control.yml),
+[`commercial-draft-factory.yml`](.github/workflows/commercial-draft-factory.yml),
+[`media-social-calendar.yml`](.github/workflows/media-social-calendar.yml),
+[`site-commercial-verify.yml`](.github/workflows/site-commercial-verify.yml) —
+all `permissions: contents: read`, no secrets, artifact-only.
+
+---
+
 ## Key docs
 
 | Purpose | Document |
 |---|---|
+| Final launch control tower | [`docs/launch-control/00_FINAL_LAUNCH_CONTROL_TOWER.md`](docs/launch-control/00_FINAL_LAUNCH_CONTROL_TOWER.md) |
+| Launch Go/No-Go report | [`docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md`](docs/launch-control/99_FINAL_CONTROL_TOWER_REPORT.md) |
 | Master architecture | [`docs/blueprint/master-architecture.md`](docs/blueprint/master-architecture.md) |
 | API map | [`docs/architecture/API_MAP.md`](docs/architecture/API_MAP.md) |
 | API contract policy | [`docs/architecture/API_CONTRACT_POLICY.md`](docs/architecture/API_CONTRACT_POLICY.md) |

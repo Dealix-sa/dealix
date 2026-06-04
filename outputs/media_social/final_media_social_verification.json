@@ -1,0 +1,76 @@
+{
+  "total": 11,
+  "passed": 11,
+  "failed": 0,
+  "critical_failed": 0,
+  "warnings": 0,
+  "pass": true,
+  "checks": [
+    {
+      "name": "doc_00_MEDIA_SOCIAL_OS.md",
+      "passed": true,
+      "critical": true,
+      "detail": "docs/media-social-os/00_MEDIA_SOCIAL_OS.md"
+    },
+    {
+      "name": "doc_15_ADS_READINESS_GATE.md",
+      "passed": true,
+      "critical": true,
+      "detail": "docs/media-social-os/15_ADS_READINESS_GATE.md"
+    },
+    {
+      "name": "doc_99_MEDIA_SOCIAL_READY_REPORT.md",
+      "passed": true,
+      "critical": true,
+      "detail": "docs/media-social-os/99_MEDIA_SOCIAL_READY_REPORT.md"
+    },
+    {
+      "name": "calendar_config_present",
+      "passed": true,
+      "critical": true,
+      "detail": "config/media_social_calendar.json"
+    },
+    {
+      "name": "config_auto_post_disabled",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "config_manual_only",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "calendar_output_present",
+      "passed": true,
+      "critical": true,
+      "detail": "outputs/media_social/calendar_30_day.json"
+    },
+    {
+      "name": "calendar_auto_post_disabled",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "calendar_has_items",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "calendar_items_manual_only",
+      "passed": true,
+      "critical": true,
+      "detail": ""
+    },
+    {
+      "name": "no_auto_post_code",
+      "passed": true,
+      "critical": true,
+      "detail": "offenders=[]"
+    }
+  ]
+}

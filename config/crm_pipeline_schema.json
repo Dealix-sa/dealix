@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0",
+  "description": "Dealix commercial CRM / lead pipeline schema. Review-only, approval-first, PDPL-aware. No send fields are permitted.",
+  "lead_required_fields": [
+    "lead_id",
+    "company",
+    "vertical",
+    "city",
+    "source",
+    "stage",
+    "consent_status"
+  ],
+  "lead_optional_fields": [
+    "company_ar",
+    "vertical_name_en",
+    "vertical_name_ar",
+    "city_ar",
+    "employees_band",
+    "icp_score",
+    "notes",
+    "tags"
+  ],
+  "forbidden_fields": [
+    "email",
+    "phone",
+    "mobile",
+    "whatsapp",
+    "to_address",
+    "recipient_email",
+    "send_allowed",
+    "auto_send",
+    "smtp",
+    "api_key"
+  ],
+  "stages": [
+    "new",
+    "qualified",
+    "diagnostic_booked",
+    "diagnostic_delivered",
+    "pilot_proposed",
+    "pilot_active",
+    "retainer",
+    "disqualified",
+    "suppressed"
+  ],
+  "stage_descriptions": {
+    "new": "Synthetic / inbound placeholder, not yet reviewed.",
+    "qualified": "Founder-reviewed and matched to ICP.",
+    "diagnostic_booked": "Discovery / paid diagnostic scheduled.",
+    "diagnostic_delivered": "Diagnostic delivered, proof shared.",
+    "pilot_proposed": "Pilot proposal sent after manual approval.",
+    "pilot_active": "Pilot in delivery.",
+    "retainer": "Converted to managed ops retainer.",
+    "disqualified": "Not a fit; removed from active pipeline.",
+    "suppressed": "Do-not-contact; suppression list."
+  },
+  "consent_status_values": [
+    "not_collected",
+    "requested",
+    "granted",
+    "withdrawn"
+  ],
+  "reply_classification": [
+    "interested",
+    "not_now",
+    "not_interested",
+    "wrong_contact",
+    "unsubscribe",
+    "no_reply"
+  ],
+  "rules": {
+    "manual_approval_required_before_outreach": true,
+    "no_external_send_from_crm": true,
+    "no_sensitive_personal_data": true,
+    "suppression_honored_before_any_outreach": true
+  }
+}

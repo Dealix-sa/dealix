@@ -1,0 +1,46 @@
+name: Site & Commercial Verify
+
+# Static site QA + commercial CRM/API/secret checks. No browser, no live
+# server, no secrets, no external sending. Artifact-only.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - "config/**"
+      - "launch_os/**"
+      - "scripts/commercial_*.py"
+      - "scripts/site_launch_*.py"
+      - "scripts/api_commercial_*.py"
+      - "scripts/final_*.py"
+  schedule:
+    - cron: "0 6 * * 1"  # Mondays 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Site static check
+        run: python scripts/site_launch_static_check.py
+      - name: CRM schema verify
+        run: python scripts/commercial_crm_schema_verify.py
+      - name: API static check
+        run: python scripts/api_commercial_static_check.py
+      - name: Secret & risk scan
+        run: python scripts/final_secret_and_risk_scan.py
+      - name: Upload verify evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-commercial-verify
+          path: outputs/final_launch_control/
+          retention-days: 14

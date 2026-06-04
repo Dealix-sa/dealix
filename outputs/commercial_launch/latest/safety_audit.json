@@ -1,0 +1,25 @@
+{
+  "pass": true,
+  "total_drafts": 420,
+  "counts": {
+    "send_allowed_true": 0,
+    "external_send_blocked_false": 0,
+    "no_auto_send_false": 0,
+    "requires_founder_approval_false": 0,
+    "overclaim_drafts": 0,
+    "contact_field_drafts": 0
+  },
+  "checks": {
+    "draft_count_ge_1": true,
+    "send_allowed_true_count_is_zero": true,
+    "external_send_blocked_false_count_is_zero": true,
+    "no_auto_send_false_count_is_zero": true,
+    "requires_founder_approval_all_true": true,
+    "no_overclaim_language": true,
+    "no_routable_contact_fields": true
+  },
+  "offending": {
+    "overclaim_drafts": [],
+    "contact_field_drafts": []
+  }
+}

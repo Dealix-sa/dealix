@@ -1,0 +1,35 @@
+name: Commercial Draft Factory
+
+# Review-only daily draft factory. Generates 400+ founder-review drafts and
+# audits them. NEVER sends. No secrets. Artifact-only.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * 1-5"  # weekdays 05:00 UTC (08:00 Riyadh)
+
+permissions:
+  contents: read
+
+jobs:
+  drafts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate drafts
+        run: python scripts/commercial_generate_400_drafts.py --target 400
+      - name: Safety audit
+        run: python scripts/commercial_safety_audit.py
+      - name: Launch readiness
+        run: python scripts/commercial_launch_readiness.py --target 400
+      - name: Upload draft evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: commercial-draft-factory
+          path: outputs/commercial_launch/
+          retention-days: 14

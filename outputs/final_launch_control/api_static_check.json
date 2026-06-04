@@ -1,0 +1,28 @@
+{
+  "total": 3,
+  "passed": 3,
+  "failed": 0,
+  "critical_failed": 0,
+  "warnings": 0,
+  "pass": true,
+  "checks": [
+    {
+      "name": "api_dir_present",
+      "passed": true,
+      "critical": false,
+      "detail": ""
+    },
+    {
+      "name": "launch_control_routers_no_send",
+      "passed": true,
+      "critical": true,
+      "detail": "scanned=0"
+    },
+    {
+      "name": "api_send_patterns_inventory",
+      "passed": true,
+      "critical": false,
+      "detail": "files_with_send_like_patterns=12"
+    }
+  ]
+}
