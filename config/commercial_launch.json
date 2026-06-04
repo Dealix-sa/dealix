@@ -1,0 +1,35 @@
+{
+  "product": "Dealix",
+  "positioning": "Saudi/GCC B2B AI Revenue & Operations OS",
+  "doctrine": "AI recommends and drafts. Deterministic workflows verify. Founder approves. Nothing is sent automatically.",
+  "golden_rule": "Draft Generation + Founder Review + Safety Gates + Commercial Readiness only. No external sending.",
+  "repository": "Dealix-sa/dealix",
+  "version": "1.0.0",
+  "daily_target_drafts": 400,
+  "global_safety_flags": {
+    "send_allowed": false,
+    "external_send_blocked": true,
+    "requires_founder_approval": true,
+    "no_auto_send": true
+  },
+  "allowed_statuses": [
+    "founder_review",
+    "needs_research",
+    "rejected_quality",
+    "rejected_compliance",
+    "ready_for_manual_copy",
+    "archived"
+  ],
+  "forbidden_statuses": [
+    "sent",
+    "auto_sent",
+    "queued_for_send",
+    "smtp_ready",
+    "whatsapp_ready",
+    "linkedin_auto_ready"
+  ],
+  "languages": ["ar", "en"],
+  "default_geography": ["SA", "AE", "QA", "KW", "BH", "OM"],
+  "output_root": "outputs/commercial_launch",
+  "seed_leads_path": "data/commercial_seed_leads.example.jsonl"
+}

@@ -324,3 +324,7 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Commercial Launch OS — runtime daily outputs (review-only, never committed by CI)
+outputs/commercial_launch/20*/
+!outputs/commercial_launch/_example/

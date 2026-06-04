@@ -5,7 +5,7 @@
 ### AI revenue, growth, and compliance engine for Saudi B2B — PDPL-native, ZATCA-aware, approval-first.
 ### محرّك إيرادات ونمو وامتثال بـ AI للشركات السعودية — PDPL أصلاً، ZATCA-aware، والموافقة أولاً.
 
-[![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
+[![CI](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)](https://fastapi.tiangolo.com/)
@@ -45,10 +45,56 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 
 ---
 
+## Commercial Launch OS (review-only)
+
+> **This system generates review-only drafts. It does not send external messages.**
+> AI recommends and drafts. Founder approves. Nothing is sent automatically.
+
+The Commercial Launch OS is a pure-stdlib, zero-network **Daily Draft Factory** that
+produces **>=400 review-only drafts/day** for founder review across the first 5
+official verticals, then passes every draft through deterministic Quality,
+Compliance, and Safety gates. No SMTP, no WhatsApp sending, no LinkedIn automation,
+no website auto-submit, no secrets.
+
+**First 5 verticals:** Facilities Management & Maintenance · Contracting & Project
+Controls · Real Estate & Property Operations · Legal & Professional Services ·
+Consulting, Training & B2B Services.
+
+```bash
+# Generate >=400 review-only drafts for today (writes outputs/commercial_launch/YYYY-MM-DD/)
+python scripts/commercial_generate_400_drafts.py --target 400
+
+# Verify no external-send code/flags exist
+python scripts/commercial_safety_audit.py
+
+# Verify the OS is internally consistent and safe to run (draft-only)
+python scripts/commercial_launch_readiness.py
+
+# Run the commercial test suite (stdlib-only; bypasses the heavy app conftest)
+pytest -q --noconftest -o addopts="" \
+  tests/test_commercial_generate_400_drafts.py \
+  tests/test_commercial_safety_audit.py \
+  tests/test_commercial_launch_readiness.py \
+  tests/test_commercial_no_external_send.py \
+  tests/test_commercial_quality_gate.py \
+  tests/test_commercial_compliance_gate.py \
+  tests/test_commercial_outputs_schema.py
+```
+
+Review the day's queue in `outputs/commercial_launch/YYYY-MM-DD/`:
+`founder_review.md`, `top_50_priority.md`, `next_actions.md`, plus
+`draft_queue.jsonl` and the `safety_audit.json` / `quality_report.json` /
+`compliance_report.json` reports. Full docs:
+[`docs/commercial-launch/`](docs/commercial-launch/00_OFFICIAL_COMMERCIAL_LAUNCH_OS.md).
+The GitHub Action `commercial-draft-factory.yml` runs this daily and uploads the
+queue as an **artifact only** — it never sends, never uses secrets, never commits.
+
+---
+
 ## Quick start
 
 ```bash
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env

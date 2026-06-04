@@ -1,0 +1,31 @@
+{
+  "min_quality_score": 70,
+  "rules": {
+    "must_mention_vertical_or_pain": true,
+    "must_have_single_cta": true,
+    "must_have_opt_out_where_required": true,
+    "must_mention_human_approval_in_sensitive": true,
+    "single_offer_only": true,
+    "no_generic_agency_language": true,
+    "no_literal_arabic_translation": true,
+    "no_overlong_english": true,
+    "must_fit_company_or_vertical": true,
+    "must_give_clear_value": true,
+    "no_overpromise": true,
+    "no_misleading_subject": true
+  },
+  "max_words_by_channel": {
+    "cold_email": 180,
+    "follow_up": 180,
+    "linkedin": 100,
+    "website_form": 120,
+    "whatsapp": 80
+  },
+  "generic_agency_phrases": [
+    "we are a leading agency",
+    "best-in-class solutions",
+    "synergy",
+    "cutting-edge solutions",
+    "we do everything"
+  ]
+}

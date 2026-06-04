@@ -1,0 +1,124 @@
+{
+  "verticals": [
+    {
+      "id": "facilities_management",
+      "name_en": "Facilities Management & Maintenance",
+      "name_ar": "إدارة المرافق والصيانة",
+      "sensitive": false,
+      "buyer_titles_en": ["Facilities Director", "Operations Manager", "Maintenance Manager", "FM Contract Manager"],
+      "buyer_titles_ar": ["مدير المرافق", "مدير العمليات", "مدير الصيانة", "مدير عقود التشغيل"],
+      "pain_angles_en": [
+        "reactive maintenance and missed SLAs",
+        "manual work-order tracking across sites",
+        "no single view of preventive maintenance",
+        "slow vendor and contract reconciliation"
+      ],
+      "pain_angles_ar": [
+        "صيانة رد فعلية وتجاوز اتفاقيات مستوى الخدمة",
+        "تتبع أوامر العمل يدويًا عبر المواقع",
+        "غياب رؤية موحدة للصيانة الوقائية",
+        "بطء تسوية عقود ومستحقات الموردين"
+      ],
+      "trigger_events_en": ["new multi-site contract", "SLA penalty quarter", "ERP/CAFM migration", "portfolio expansion"],
+      "trigger_events_ar": ["عقد جديد متعدد المواقع", "ربع فيه غرامات SLA", "ترحيل نظام CAFM", "توسع المحفظة"],
+      "company_size_fit": "50-5000 employees, 5+ managed sites",
+      "default_offer_stage": "entry_diagnostic"
+    },
+    {
+      "id": "contracting_project_controls",
+      "name_en": "Contracting & Project Controls",
+      "name_ar": "المقاولات وضبط المشاريع",
+      "sensitive": false,
+      "buyer_titles_en": ["Project Controls Manager", "PMO Lead", "Commercial Manager", "Operations Director"],
+      "buyer_titles_ar": ["مدير ضبط المشاريع", "قائد مكتب إدارة المشاريع", "المدير التجاري", "مدير العمليات"],
+      "pain_angles_en": [
+        "cost and schedule overruns with late warning",
+        "manual progress reporting across contractors",
+        "fragmented document and submittal control",
+        "slow variation and claim handling"
+      ],
+      "pain_angles_ar": [
+        "تجاوزات التكلفة والجدول مع إنذار متأخر",
+        "تقارير تقدم يدوية عبر المقاولين",
+        "تشتت ضبط المستندات والاعتمادات",
+        "بطء معالجة أوامر التغيير والمطالبات"
+      ],
+      "trigger_events_en": ["new mega-project award", "schedule slippage", "PMO standup", "claims dispute"],
+      "trigger_events_ar": ["ترسية مشروع كبير", "تأخر الجدول", "تأسيس مكتب إدارة مشاريع", "نزاع مطالبات"],
+      "company_size_fit": "100-10000 employees, active project portfolio",
+      "default_offer_stage": "entry_diagnostic"
+    },
+    {
+      "id": "real_estate_property_ops",
+      "name_en": "Real Estate & Property Operations",
+      "name_ar": "العقار وإدارة الأملاك",
+      "sensitive": false,
+      "buyer_titles_en": ["Property Operations Director", "Asset Manager", "Leasing Manager", "Owners Association Manager"],
+      "buyer_titles_ar": ["مدير عمليات الأملاك", "مدير الأصول", "مدير التأجير", "مدير اتحاد الملاك"],
+      "pain_angles_en": [
+        "manual tenant and lease lifecycle tracking",
+        "slow collections and renewal follow-up",
+        "fragmented maintenance request handling",
+        "no consolidated portfolio reporting"
+      ],
+      "pain_angles_ar": [
+        "تتبع يدوي لدورة حياة المستأجر والعقد",
+        "بطء التحصيل ومتابعة التجديد",
+        "تشتت معالجة طلبات الصيانة",
+        "غياب تقرير موحد للمحفظة"
+      ],
+      "trigger_events_en": ["portfolio acquisition", "new community handover", "occupancy drop", "system migration"],
+      "trigger_events_ar": ["استحواذ على محفظة", "تسليم مجمع جديد", "انخفاض الإشغال", "ترحيل نظام"],
+      "company_size_fit": "20-2000 employees, multi-asset portfolio",
+      "default_offer_stage": "entry_diagnostic"
+    },
+    {
+      "id": "legal_professional_services",
+      "name_en": "Legal & Professional Services",
+      "name_ar": "المكاتب القانونية والخدمات المهنية",
+      "sensitive": true,
+      "buyer_titles_en": ["Managing Partner", "Operations Partner", "Head of Knowledge", "Practice Manager"],
+      "buyer_titles_ar": ["الشريك الإداري", "شريك العمليات", "رئيس إدارة المعرفة", "مدير الممارسة"],
+      "pain_angles_en": [
+        "manual intake and matter triage workload",
+        "slow document drafting turnaround",
+        "knowledge trapped in individual inboxes",
+        "billing and time-capture leakage"
+      ],
+      "pain_angles_ar": [
+        "عبء فرز القضايا واستقبال العملاء يدويًا",
+        "بطء إنجاز صياغة المستندات",
+        "معرفة محتجزة في بريد الأفراد",
+        "تسرب في الفوترة وتسجيل الوقت"
+      ],
+      "trigger_events_en": ["practice expansion", "new partner hire", "client volume spike", "knowledge initiative"],
+      "trigger_events_ar": ["توسع الممارسة", "انضمام شريك جديد", "ارتفاع حجم العملاء", "مبادرة إدارة معرفة"],
+      "company_size_fit": "10-500 professionals",
+      "default_offer_stage": "entry_diagnostic"
+    },
+    {
+      "id": "consulting_training_b2b",
+      "name_en": "Consulting, Training & B2B Services",
+      "name_ar": "الاستشارات والتدريب وخدمات B2B",
+      "sensitive": false,
+      "buyer_titles_en": ["Managing Director", "Delivery Director", "Head of Operations", "Business Development Lead"],
+      "buyer_titles_ar": ["العضو المنتدب", "مدير التسليم", "رئيس العمليات", "قائد تطوير الأعمال"],
+      "pain_angles_en": [
+        "proposal and SOW drafting bottleneck",
+        "manual engagement and resource tracking",
+        "slow reporting to clients and leadership",
+        "knowledge reuse across engagements is weak"
+      ],
+      "pain_angles_ar": [
+        "اختناق في صياغة العروض ونطاقات العمل",
+        "تتبع يدوي للمشاريع والموارد",
+        "بطء التقارير للعملاء والإدارة",
+        "ضعف إعادة استخدام المعرفة بين المشاريع"
+      ],
+      "trigger_events_en": ["pipeline surge", "new service line", "team scaling", "leadership reporting push"],
+      "trigger_events_ar": ["تدفق فرص جديد", "خط خدمة جديد", "توسع الفريق", "ضغط تقارير الإدارة"],
+      "company_size_fit": "5-1000 employees",
+      "default_offer_stage": "entry_diagnostic"
+    }
+  ]
+}

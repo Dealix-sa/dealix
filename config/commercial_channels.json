@@ -1,0 +1,54 @@
+{
+  "channels": {
+    "cold_email": {
+      "name_en": "Cold Email",
+      "draft_only": true,
+      "max_words": 180,
+      "requires_opt_out": true,
+      "auto_send_allowed": false,
+      "allowed_status": "ready_for_manual_copy",
+      "notes": "Draft only. No SMTP, no API send, no bulk, no sequence automation. Manual founder send after gates pass."
+    },
+    "follow_up": {
+      "name_en": "Follow-up Email",
+      "draft_only": true,
+      "max_words": 180,
+      "requires_opt_out": true,
+      "auto_send_allowed": false,
+      "allowed_status": "ready_for_manual_copy",
+      "notes": "Draft only. Same constraints as cold email. References prior manual touch, never fake familiarity."
+    },
+    "linkedin": {
+      "name_en": "LinkedIn Manual Draft",
+      "draft_only": true,
+      "max_words": 100,
+      "requires_opt_out": false,
+      "auto_send_allowed": false,
+      "allowed_status": "ready_for_manual_copy",
+      "notes": "Manual draft only. No scraping, no bots, no auto-connect, no auto-message, no browser automation. Founder copies manually."
+    },
+    "website_form": {
+      "name_en": "Website / Contact Form Draft",
+      "draft_only": true,
+      "max_words": 120,
+      "requires_opt_out": false,
+      "auto_send_allowed": false,
+      "allowed_status": "ready_for_manual_copy",
+      "notes": "Draft only. No auto-submit, no browser automation. A human copies and submits manually."
+    },
+    "whatsapp": {
+      "name_en": "WhatsApp Manual Opt-in Reply",
+      "draft_only": true,
+      "max_words": 80,
+      "requires_opt_out": true,
+      "auto_send_allowed": false,
+      "allowed_status": "needs_research",
+      "notes": "Inbound / opt-in manual replies only. No cold outreach, no outbound automation. Any number without opt-in = no-go."
+    }
+  },
+  "phone": {
+    "name_en": "Phone",
+    "manual_only": true,
+    "notes": "Manual only. No dialer, no auto-call."
+  }
+}
