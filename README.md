@@ -230,6 +230,55 @@ Then review:
 
 ---
 
+## Revenue Execution & Scale Control OS (V7)
+
+V7 turns the company OS into a **daily operating machine**. Everything is
+**review-only**: AI prepares, the founder approves, and every external action is
+executed **manually**. No SMTP, no WhatsApp/LinkedIn outbound, no scraping, no
+auto-submit, no live paid-ads launch, no secrets — enforced by verifiers + tests.
+
+| System | Docs |
+|---|---|
+| Revenue Execution OS | [`docs/revenue-execution-os/`](docs/revenue-execution-os/) |
+| Founder Action Queue | `scripts/founder_action_queue_generate.py` |
+| Founder Revenue Dashboard | `scripts/founder_revenue_dashboard.py` |
+| Diagnostic Pack Generator | `scripts/diagnostic_pack_generate.py` |
+| Proposal Seed Generator | `scripts/proposal_seed_generate.py` |
+| Proof Asset OS | [`docs/proof-os/`](docs/proof-os/) |
+| Daily CEO Brief | `scripts/daily_ceo_brief_generate.py` |
+| Weekly Board Report | `scripts/weekly_board_report_generate.py` |
+| Delivery Conversion OS | [`docs/delivery-conversion-os/`](docs/delivery-conversion-os/) |
+| Market Intelligence OS | [`docs/market-intelligence-os/`](docs/market-intelligence-os/) |
+| Knowledge Base OS | [`docs/knowledge-base-os/`](docs/knowledge-base-os/) |
+| Operating Memory OS | [`docs/operating-memory-os/`](docs/operating-memory-os/) |
+| Automation Boundaries OS | [`docs/automation-boundaries-os/`](docs/automation-boundaries-os/) |
+| Scale Readiness OS | [`docs/scale-readiness-os/`](docs/scale-readiness-os/) |
+| Crisis / Kill-Switch OS | [`docs/crisis-os/`](docs/crisis-os/) |
+| Master Command Center | [`docs/master-command-center/`](docs/master-command-center/) |
+
+### V7 commands (review-only, no sending)
+
+```bash
+python scripts/commercial_generate_400_drafts.py --target 400
+python scripts/founder_action_queue_generate.py
+python scripts/founder_revenue_dashboard.py
+python scripts/diagnostic_pack_generate.py --example
+python scripts/proposal_seed_generate.py --example
+python scripts/proof_asset_template_generate.py
+python scripts/daily_ceo_brief_generate.py
+python scripts/weekly_board_report_generate.py
+python scripts/market_intelligence_brief_generate.py
+
+# Verification gates (all must PASS)
+python scripts/revenue_execution_verify.py
+python scripts/master_startup_command_verify.py
+python scripts/startup_os_verify.py
+python scripts/final_launch_control_verify.py
+python scripts/company_utilization_verify.py
+```
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
