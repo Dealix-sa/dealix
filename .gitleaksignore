@@ -1,0 +1,15 @@
+# Gitleaks — reviewed false positives
+# Fingerprint format for filesystem (--no-git) scans is: path:rule:line
+# Each entry below was manually reviewed and confirmed NOT to be a real secret.
+
+# Idempotency TTL `ttl_seconds=30 * 86400` (a 30-day window in seconds),
+# flagged by the high-entropy generic-api-key rule. Not a credential.
+api/routers/pricing.py:generic-api-key:250
+
+# `curl -u "${MOYASAR_SECRET_KEY}:"` — shell env-var reference resolved at
+# runtime from the operator environment, not a hardcoded secret.
+docs/ops/moyasar_live_test.sh:curl-auth-user:40
+
+# `curl -u "${MOYASAR_KEY}:"` — value read from /opt/dealix/.env at runtime,
+# not a hardcoded secret.
+scripts/ops/moyasar_pilot_test.sh:curl-auth-user:103

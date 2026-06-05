@@ -1,9 +1,9 @@
 <div align="center">
 
-# 🏢 Dealix — Saudi B2B Revenue Engine
+# 🏢 Dealix — Saudi AI Business Operating System
 
-### AI revenue, growth, and compliance engine for Saudi B2B — PDPL-native, ZATCA-aware, approval-first.
-### محرّك إيرادات ونمو وامتثال بـ AI للشركات السعودية — PDPL أصلاً، ZATCA-aware، والموافقة أولاً.
+### An AI-native business operating system for Saudi & GCC B2B — starts from Revenue, Decision, and Proof, then expands across the company. PDPL-aware, ZATCA-aware, NCA-aligned, approval-first.
+### نظام تشغيل أعمال بالذكاء الاصطناعي للشركات السعودية والخليجية — يبدأ من الإيرادات والقرار والإثبات ثم يتوسّع. PDPL-aware، ZATCA-aware، NCA-aligned، والموافقة أولاً.
 
 [![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -21,15 +21,42 @@
 
 ## What Dealix is
 
-Dealix is a Saudi-first B2B revenue operating system with three core engines:
+**Dealix is a Saudi AI Business Operating System.** It turns a company's scattered
+WhatsApp threads, Excel files, documents, meetings, proposals, and uncounted
+follow-ups into **one operating system** that knows: what is happening, what should
+happen next, who approves it, what the evidence is, and what the next decision is.
 
-1. **Lead Engine** — Saudi B2B lead discovery, enrichment, ICP scoring, duplicate suppression, and PDPL-aware usage controls.
-2. **Service Engine** — productized AI services for diagnostics, sales assistance, decision packs, customer health, proof curation, growth signals, and executive command.
-3. **Trust Engine** — approval-first execution, audit trails, evidence packs, policy checks, and compliance registers for Saudi operating requirements.
+Revenue is **not** the identity — it is the first commercial wedge we use to enter
+a company. The full platform is fourteen operating systems:
 
-It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operating rule is:
+```
+Dealix Business OS
+├─ Command OS   ├─ Revenue OS   ├─ Client OS    ├─ Delivery OS
+├─ Support OS   ├─ Finance OS   ├─ Data OS      ├─ Governance OS
+├─ Proof OS     ├─ Knowledge OS ├─ Agent OS     ├─ Partner OS
+├─ Academy OS   └─ Venture OS
+```
+
+We enter the market through the **Dealix Command Sprint** (7 days, 499–1,500 SAR):
+Revenue + Proof + Command + Governance Lite. Then we expand from inside the
+customer into Client, Delivery, Support, Finance, Data, and Governance.
+
+It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operating
+rule is:
 
 > AI explores, analyzes, and recommends. Deterministic workflows execute. Humans approve critical external commitments.
+
+### Platform source of truth
+
+| Doc | Purpose |
+|---|---|
+| [`docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md`](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md) | What Dealix is (canonical) |
+| [`docs/00_platform_truth/DEALIX_BUSINESS_OS_ARCHITECTURE.md`](docs/00_platform_truth/DEALIX_BUSINESS_OS_ARCHITECTURE.md) | How the systems fit together |
+| [`docs/00_platform_truth/PRODUCT_FAMILY_MAP.md`](docs/00_platform_truth/PRODUCT_FAMILY_MAP.md) | The offer ladder |
+| [`docs/00_platform_truth/MODULE_STATUS_MAP.md`](docs/00_platform_truth/MODULE_STATUS_MAP.md) | Honest per-module status |
+| [`docs/00_platform_truth/PUBLIC_POSITIONING.md`](docs/00_platform_truth/PUBLIC_POSITIONING.md) | What we say (and never say) |
+| [`docs/01_go_to_market/COMMAND_SPRINT_OFFER.md`](docs/01_go_to_market/COMMAND_SPRINT_OFFER.md) | The first paid product |
+| [`docs/03_governance/HUMAN_APPROVAL_POLICY.md`](docs/03_governance/HUMAN_APPROVAL_POLICY.md) | Approval-first doctrine |
 
 ---
 
