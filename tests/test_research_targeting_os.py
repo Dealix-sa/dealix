@@ -68,10 +68,9 @@ def test_dedupe_merges_by_domain_and_unions_evidence() -> None:
     merged = dedupe_companies(rows)
     assert len(merged) == 1
     assert merged[0]["evidence_count"] == 1
-    # Exact list membership (not substring) to avoid URL-substring ambiguity.
-    evidence = merged[0]["evidence_urls"].split(";")
-    assert "https://bright.sa" in evidence
-    assert "https://bright.sa/ar" in evidence
+    # Compare the full evidence set by equality (no URL substring / `in` check).
+    evidence = set(merged[0]["evidence_urls"].split(";"))
+    assert evidence == {"https://bright.sa", "https://bright.sa/ar"}
 
 
 def test_dedupe_falls_back_to_name_when_no_domain() -> None:
