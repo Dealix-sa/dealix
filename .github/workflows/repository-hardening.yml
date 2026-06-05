@@ -52,6 +52,8 @@ jobs:
         uses: actions/checkout@v4
 
       # Pinned tag 0.24.0 was removed upstream; track @master like docker-build.yml.
+      # Informational only: surfaces pre-existing repo-wide findings (e.g. frontend
+      # Next.js advisories) without blocking PRs. Remediate deps in a dedicated PR.
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
