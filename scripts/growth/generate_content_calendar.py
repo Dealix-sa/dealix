@@ -5,17 +5,18 @@ Offline, deterministic. Every scheduled item carries exactly ONE CTA.
 Items marked status=needs-approval are flagged — they are NOT auto-published;
 case-safe / proof content requires founder approval (non-negotiable #8).
 """
+
 from __future__ import annotations
 
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "growth" / "content_ideas.jsonl"
 OUT = ROOT / "reports" / "growth"
 
-START = datetime.now(timezone.utc).date()
+START = datetime.now(UTC).date()
 DAYS = 30
 
 
@@ -37,7 +38,7 @@ def main() -> int:
     lines = [
         "# 30-Day Content Calendar — Dealix Self-Growth OS",
         "",
-        f"Generated: {datetime.now(timezone.utc).isoformat()}",
+        f"Generated: {datetime.now(UTC).isoformat()}",
         f"Source: `data/growth/content_ideas.jsonl` ({len(rows)} ideas)",
         "",
         "> Each item has ONE CTA. Items flagged ⚠ need founder approval before publishing",

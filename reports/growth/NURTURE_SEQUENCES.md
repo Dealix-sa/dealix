@@ -1,6 +1,6 @@
 # Nurture Sequence Drafts — Dealix Self-Growth OS
 
-Generated: 2026-06-05T17:54:06.872764+00:00
+Generated: 2026-06-05T17:56:13.424192+00:00
 Source: `data/growth/nurture_sequences.json` (2 sequences)
 
 > DRAFTS ONLY. No message is sent automatically. Founder approves before any send.

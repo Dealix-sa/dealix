@@ -6,9 +6,10 @@ Each brief is a STRUCTURE (headline, outcome, sample output, trust, ONE CTA, FAQ
 plus a technical-SEO checklist (canonical, hreflang ar/en, structured data,
 sitemap, robots) — not finished marketing copy. Founder writes/approves final copy.
 """
+
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -60,7 +61,7 @@ Generated: {ts}
 
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
-    ts = datetime.now(timezone.utc).isoformat()
+    ts = datetime.now(UTC).isoformat()
     index = [
         "# Sector Pages Index — Dealix Self-Growth OS",
         "",
@@ -70,9 +71,7 @@ def main() -> int:
         "|---|---|---|---|",
     ]
     for slug, (ar_name, pain) in SECTORS.items():
-        brief = SECTION_TEMPLATE.format(
-            ar_name=ar_name, slug=slug, pain=pain, ts=ts
-        )
+        brief = SECTION_TEMPLATE.format(ar_name=ar_name, slug=slug, pain=pain, ts=ts)
         (OUT / f"{slug}.md").write_text(brief, encoding="utf-8")
         index.append(f"| `{slug}` | {ar_name} | {pain} | `/ar/industries/{slug}` |")
     index += ["", f"Total sector briefs: {len(SECTORS)}", ""]

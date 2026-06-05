@@ -5,10 +5,11 @@ Offline, deterministic. Sequences are DRAFTS only — no message is sent.
 No cold WhatsApp, no LinkedIn automation (non-negotiables #2, #3).
 Every message has exactly one CTA.
 """
+
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -27,7 +28,7 @@ def main() -> int:
     lines = [
         "# Nurture Sequence Drafts — Dealix Self-Growth OS",
         "",
-        f"Generated: {datetime.now(timezone.utc).isoformat()}",
+        f"Generated: {datetime.now(UTC).isoformat()}",
         f"Source: `data/growth/nurture_sequences.json` ({len(sequences)} sequences)",
         "",
         "> DRAFTS ONLY. No message is sent automatically. Founder approves before any send.",

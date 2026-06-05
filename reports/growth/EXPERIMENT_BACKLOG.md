@@ -1,6 +1,6 @@
 # Growth Experiment Backlog — Dealix Self-Growth OS
 
-Generated: 2026-06-05T17:54:06.773971+00:00
+Generated: 2026-06-05T17:56:13.332620+00:00
 Source: `data/growth/experiments.jsonl` (10 experiments)
 
 > Rule: لا رأي بدون تجربة. لا تجربة بدون metric. لا metric بدون قرار.

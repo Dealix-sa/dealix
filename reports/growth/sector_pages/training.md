@@ -1,6 +1,6 @@
 # Sector Page Brief — التدريب (`/ar/industries/training`)
 
-Generated: 2026-06-05T17:54:06.928858+00:00
+Generated: 2026-06-05T17:56:13.480801+00:00
 
 > STRUCTURE for founder copy. One CTA only. No guaranteed-revenue claims.
 > Value references are estimates, not Verified value.

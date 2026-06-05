@@ -9,9 +9,10 @@ publishing (non-negotiables #4 fake proof, #8 external send approval).
 Output: anonymized content scaffolds with [PLACEHOLDER] slots and an
 anonymization checklist, one CTA each.
 """
+
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -64,7 +65,7 @@ def main() -> int:
     lines = [
         "# Case-Safe Content Templates — Dealix Self-Growth OS",
         "",
-        f"Generated: {datetime.now(timezone.utc).isoformat()}",
+        f"Generated: {datetime.now(UTC).isoformat()}",
         "",
         "> Templates only. No customer data is read or invented here.",
         "> Real proof stories require a recorded ProofEvent + customer consent + founder approval.",

@@ -6,10 +6,11 @@ Offline, deterministic, no external calls. Honors the growth rule:
 No metric without a decision." Output is a prioritized markdown backlog
 for founder review.
 """
+
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -38,7 +39,7 @@ def main() -> int:
     lines = [
         "# Growth Experiment Backlog — Dealix Self-Growth OS",
         "",
-        f"Generated: {datetime.now(timezone.utc).isoformat()}",
+        f"Generated: {datetime.now(UTC).isoformat()}",
         f"Source: `data/growth/experiments.jsonl` ({len(rows)} experiments)",
         "",
         "> Rule: لا رأي بدون تجربة. لا تجربة بدون metric. لا metric بدون قرار.",

@@ -1,6 +1,6 @@
 # Partner Distribution Plan — Dealix Self-Growth OS
 
-Generated: 2026-06-05T17:54:06.901577+00:00
+Generated: 2026-06-05T17:56:13.452730+00:00
 Source: `data/growth/partner_targets.csv` (9 categories)
 
 > Categories, not scraped contacts. No scraping, no purchased lists.

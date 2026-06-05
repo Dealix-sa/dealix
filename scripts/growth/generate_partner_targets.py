@@ -5,10 +5,11 @@ Offline, deterministic. Partner targets are CATEGORIES (not scraped contacts).
 No scraping, no purchased lists (non-negotiable #1). Outreach is warm and
 founder-approved.
 """
+
 from __future__ import annotations
 
 import csv
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -26,7 +27,7 @@ def main() -> int:
     lines = [
         "# Partner Distribution Plan — Dealix Self-Growth OS",
         "",
-        f"Generated: {datetime.now(timezone.utc).isoformat()}",
+        f"Generated: {datetime.now(UTC).isoformat()}",
         f"Source: `data/growth/partner_targets.csv` ({len(rows)} categories)",
         "",
         "> Categories, not scraped contacts. No scraping, no purchased lists.",

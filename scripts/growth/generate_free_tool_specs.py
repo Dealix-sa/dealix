@@ -4,10 +4,11 @@
 Offline, deterministic. Each tool is a self-diagnostic with ONE CTA and a
 claims guard (no fabricated benchmarks, no guaranteed revenue).
 """
+
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -26,7 +27,7 @@ def main() -> int:
     lines = [
         "# Free Tool Specs — Dealix Self-Growth OS",
         "",
-        f"Generated: {datetime.now(timezone.utc).isoformat()}",
+        f"Generated: {datetime.now(UTC).isoformat()}",
         f"Source: `data/growth/free_tools.json` ({len(tools)} tools)",
         "",
         "> Each tool: self-scoring diagnostic → result → ONE recommended next step.",

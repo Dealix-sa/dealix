@@ -1,6 +1,6 @@
 # Free Tool Specs — Dealix Self-Growth OS
 
-Generated: 2026-06-05T17:54:06.804237+00:00
+Generated: 2026-06-05T17:56:13.362289+00:00
 Source: `data/growth/free_tools.json` (6 tools)
 
 > Each tool: self-scoring diagnostic → result → ONE recommended next step.

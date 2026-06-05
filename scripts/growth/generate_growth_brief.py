@@ -5,11 +5,12 @@ Offline, deterministic. Reads the data/growth/* assets and prints a single
 founder-facing brief: what assets exist, what needs approval, and the next
 founder actions. No external calls, no sends.
 """
+
 from __future__ import annotations
 
 import csv
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -32,13 +33,19 @@ def main() -> int:
     ideas = _jsonl(DG / "content_ideas.jsonl")
     free_tools = []
     if (DG / "free_tools.json").exists():
-        free_tools = json.loads((DG / "free_tools.json").read_text(encoding="utf-8")).get("tools", [])
+        free_tools = json.loads((DG / "free_tools.json").read_text(encoding="utf-8")).get(
+            "tools", []
+        )
     sequences = []
     if (DG / "nurture_sequences.json").exists():
-        sequences = json.loads((DG / "nurture_sequences.json").read_text(encoding="utf-8")).get("sequences", [])
+        sequences = json.loads((DG / "nurture_sequences.json").read_text(encoding="utf-8")).get(
+            "sequences", []
+        )
     partners = []
     if (DG / "partner_targets.csv").exists():
-        partners = list(csv.DictReader((DG / "partner_targets.csv").read_text(encoding="utf-8").splitlines()))
+        partners = list(
+            csv.DictReader((DG / "partner_targets.csv").read_text(encoding="utf-8").splitlines())
+        )
 
     pending_content = [i for i in ideas if i.get("status") == "needs-approval"]
 
@@ -46,7 +53,7 @@ def main() -> int:
     lines = [
         "# Daily Growth Brief — Dealix Self-Growth OS",
         "",
-        f"Generated: {datetime.now(timezone.utc).isoformat()}",
+        f"Generated: {datetime.now(UTC).isoformat()}",
         "",
         "## Asset inventory",
         "",
