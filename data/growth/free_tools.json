@@ -1,0 +1,246 @@
+[
+  {
+    "core_question": "Is every external AI touch approved, sourced, and PDPL-aware?",
+    "cta": "Command Sprint",
+    "id": "ai_governance_checklist",
+    "inputs": [
+      "source_passport_required",
+      "approval_first_external",
+      "pii_handling_documented",
+      "no_unsafe_claims_policy"
+    ],
+    "name_ar": "قائمة حوكمة الذكاء الاصطناعي",
+    "name_en": "AI Governance Checklist",
+    "recommended_os_by_result": {
+      "high": [
+        "governance_os",
+        "data_os"
+      ],
+      "low": [
+        "governance_os",
+        "data_os"
+      ],
+      "medium": [
+        "governance_os",
+        "proof_os"
+      ]
+    },
+    "sample_output": {
+      "open_items": [
+        "pii_handling_documented"
+      ],
+      "pass_ratio": 75
+    },
+    "scoring_model": "checklist_pass_ratio_0_100"
+  },
+  {
+    "core_question": "How operationally ready is your business to run on an AI operating system?",
+    "cta": "Command Sprint",
+    "id": "business_os_score",
+    "inputs": [
+      "team_size",
+      "has_documented_processes",
+      "crm_in_use",
+      "decision_logging",
+      "proof_register_exists"
+    ],
+    "name_ar": "مؤشر نظام تشغيل الأعمال",
+    "name_en": "Business OS Score",
+    "recommended_os_by_result": {
+      "high": [
+        "governance_os",
+        "value_os"
+      ],
+      "low": [
+        "data_os",
+        "governance_os"
+      ],
+      "medium": [
+        "proof_os",
+        "adoption_os"
+      ]
+    },
+    "sample_output": {
+      "band": "Developing",
+      "score": 58,
+      "top_gaps": [
+        "decision_logging",
+        "proof_register_exists"
+      ]
+    },
+    "scoring_model": "weighted_sum_0_100"
+  },
+  {
+    "core_question": "How much context survives between client interactions?",
+    "cta": "Business OS Score",
+    "id": "client_memory_score",
+    "inputs": [
+      "context_captured",
+      "shared_record",
+      "retrieval_speed",
+      "handoff_safe"
+    ],
+    "name_ar": "مؤشر ذاكرة العميل",
+    "name_en": "Client Memory Score",
+    "recommended_os_by_result": {
+      "high": [
+        "capital_os",
+        "value_os"
+      ],
+      "low": [
+        "data_os",
+        "capital_os"
+      ],
+      "medium": [
+        "data_os",
+        "adoption_os"
+      ]
+    },
+    "sample_output": {
+      "band": "Fragmented",
+      "score": 51,
+      "top_gaps": [
+        "shared_record",
+        "handoff_safe"
+      ]
+    },
+    "scoring_model": "weighted_sum_0_100"
+  },
+  {
+    "core_question": "Can a client see where their engagement stands at any moment?",
+    "cta": "Free Diagnostic",
+    "id": "delivery_visibility_score",
+    "inputs": [
+      "status_badges_in_use",
+      "next_action_visible",
+      "owner_per_action",
+      "weekly_cadence"
+    ],
+    "name_ar": "مؤشر وضوح التسليم",
+    "name_en": "Delivery Visibility Score",
+    "recommended_os_by_result": {
+      "high": [
+        "adoption_os",
+        "value_os"
+      ],
+      "low": [
+        "data_os",
+        "adoption_os"
+      ],
+      "medium": [
+        "adoption_os",
+        "proof_os"
+      ]
+    },
+    "sample_output": {
+      "band": "Partial",
+      "score": 62,
+      "top_gaps": [
+        "next_action_visible"
+      ]
+    },
+    "scoring_model": "weighted_sum_0_100"
+  },
+  {
+    "core_question": "Can you prove the value you delivered to each client?",
+    "cta": "Command Sprint",
+    "id": "proof_gap_audit",
+    "inputs": [
+      "delivers_reports",
+      "evidence_per_engagement",
+      "client_confirmed_outcomes",
+      "proof_pack_exists"
+    ],
+    "name_ar": "تدقيق فجوة الإثبات",
+    "name_en": "Proof Gap Audit",
+    "recommended_os_by_result": {
+      "high": [
+        "proof_os",
+        "value_os"
+      ],
+      "low": [
+        "proof_os",
+        "data_os"
+      ],
+      "medium": [
+        "proof_os",
+        "adoption_os"
+      ]
+    },
+    "sample_output": {
+      "band": "Thin",
+      "coverage": 40,
+      "missing_sections": [
+        "client_confirmed_outcomes"
+      ]
+    },
+    "scoring_model": "coverage_ratio_0_100"
+  },
+  {
+    "core_question": "Where is revenue leaking between lead and confirmed payment?",
+    "cta": "Free Diagnostic",
+    "id": "revenue_leakage_calculator",
+    "inputs": [
+      "monthly_leads",
+      "reply_rate",
+      "qualified_rate",
+      "proposal_rate",
+      "close_rate"
+    ],
+    "name_ar": "حاسبة تسرب الإيراد",
+    "name_en": "Revenue Leakage Calculator",
+    "recommended_os_by_result": {
+      "high": [
+        "value_os",
+        "sales_os"
+      ],
+      "low": [
+        "data_os",
+        "sales_os"
+      ],
+      "medium": [
+        "proof_os",
+        "value_os"
+      ]
+    },
+    "sample_output": {
+      "biggest_dropoff_stage": "qualified_to_proposal",
+      "estimated_monthly_leak_band": "operational_estimate"
+    },
+    "scoring_model": "funnel_dropoff_estimate"
+  },
+  {
+    "core_question": "Is your WhatsApp follow-up compliant, owned, and evidenced?",
+    "cta": "Free Diagnostic",
+    "id": "whatsapp_follow_up_risk_score",
+    "inputs": [
+      "uses_optin_lists",
+      "owner_assigned",
+      "approval_before_send",
+      "logs_evidence"
+    ],
+    "name_ar": "مؤشر مخاطر متابعة واتساب",
+    "name_en": "WhatsApp Follow-up Risk Score",
+    "recommended_os_by_result": {
+      "high": [
+        "governance_os",
+        "value_os"
+      ],
+      "low": [
+        "governance_os",
+        "data_os"
+      ],
+      "medium": [
+        "governance_os",
+        "proof_os"
+      ]
+    },
+    "sample_output": {
+      "flags": [
+        "approval_before_send"
+      ],
+      "risk_band": "Elevated"
+    },
+    "scoring_model": "compliance_checklist_0_100"
+  }
+]

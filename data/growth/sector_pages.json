@@ -1,0 +1,402 @@
+[
+  {
+    "cta": "Command Sprint",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "المحاسبة والاستشارات المالية",
+    "name_en": "Accounting and Advisory",
+    "pain_ar": "صعوبة ربط العمل المنجز بقيمة موثقة للعميل.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "proof_os",
+      "value_os",
+      "governance_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "accounting-advisory",
+    "slug": "/ar/industries/accounting-advisory",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات المحاسبة والاستشارات المالية التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Command Sprint",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "خدمات الأعمال",
+    "name_en": "Business Services",
+    "pain_ar": "اعتماد كبير على الذاكرة الفردية بدل سجل تشغيلي موحد.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "capital_os",
+      "data_os",
+      "adoption_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "business-services",
+    "slug": "/ar/industries/business-services",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات خدمات الأعمال التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Command Sprint",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "الاستشارات",
+    "name_en": "Consulting",
+    "pain_ar": "صعوبة إثبات قيمة كل ارتباط استشاري أمام العميل.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "proof_os",
+      "value_os",
+      "governance_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "consulting",
+    "slug": "/ar/industries/consulting",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات الاستشارات التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Free Diagnostic",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "إدارة المرافق",
+    "name_en": "Facility Management",
+    "pain_ar": "تشتت طلبات الخدمة وغياب سجل قابل للإثبات.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "adoption_os",
+      "data_os",
+      "proof_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "facility-management",
+    "slug": "/ar/industries/facility-management",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات إدارة المرافق التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Free Diagnostic",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "خدمات تقنية المعلومات",
+    "name_en": "IT Services",
+    "pain_ar": "غياب وضوح حالة التسليم لكل عميل في الوقت الحقيقي.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "adoption_os",
+      "data_os",
+      "value_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "it-services",
+    "slug": "/ar/industries/it-services",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات خدمات تقنية المعلومات التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Business OS Score",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "الخدمات اللوجستية",
+    "name_en": "Logistics",
+    "pain_ar": "ضعف وضوح حالة الشحنات أمام العميل لحظة بلحظة.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "adoption_os",
+      "data_os",
+      "value_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "logistics",
+    "slug": "/ar/industries/logistics",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات الخدمات اللوجستية التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Business OS Score",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "وكالات التسويق",
+    "name_en": "Marketing Agencies",
+    "pain_ar": "تسرب العملاء بين الحملة والنتيجة دون سجل واضح.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "value_os",
+      "sales_os",
+      "proof_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "marketing-agencies",
+    "slug": "/ar/industries/marketing-agencies",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات وكالات التسويق التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Free Diagnostic",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "خدمات العقار",
+    "name_en": "Real Estate Services",
+    "pain_ar": "تسرب العملاء المحتملين بسبب بطء وعدم انتظام المتابعة.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "sales_os",
+      "value_os",
+      "proof_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "real-estate-services",
+    "slug": "/ar/industries/real-estate-services",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات خدمات العقار التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Command Sprint",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "التوظيف",
+    "name_en": "Recruitment",
+    "pain_ar": "فقدان سياق المرشحين والعملاء بين التفاعلات.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "capital_os",
+      "data_os",
+      "value_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "recruitment",
+    "slug": "/ar/industries/recruitment",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات التوظيف التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  },
+  {
+    "cta": "Free Diagnostic",
+    "how_dealix_helps": [
+      "تشغيل مسار الإيراد من العميل المحتمل حتى الدفعة المؤكدة بسجل واضح.",
+      "بناء سجل إثبات لكل ارتباط دون أي ادعاء مضمون.",
+      "موجز قيادي تنفيذي أسبوعي بقرار واحد وإجراء تالٍ واحد."
+    ],
+    "name_ar": "التدريب",
+    "name_en": "Training",
+    "pain_ar": "ضعف متابعة أثر التدريب بعد انتهاء البرنامج.",
+    "proof_trust_line_ar": "نعرض أنماطاً تشغيلية مجهّلة المصدر فقط، بلا أسماء عملاء ولا شعارات ولا أرقام مضمونة.",
+    "recommended_os": [
+      "adoption_os",
+      "value_os",
+      "proof_os"
+    ],
+    "sample_command_pack": {
+      "executive_command_brief": "weekly_one_decision",
+      "next_action_board": "single_next_action_per_client",
+      "proof_register": "one_evidence_per_engagement",
+      "revenue_map": "stage_table_with_owners"
+    },
+    "sector_id": "training",
+    "slug": "/ar/industries/training",
+    "sprint_offer": {
+      "deliverables": [
+        "revenue_map",
+        "proof_register",
+        "executive_command_brief",
+        "next_action_board"
+      ],
+      "duration_days": 7,
+      "name": "Command Sprint",
+      "price_sar_range": [
+        499,
+        1500
+      ]
+    },
+    "why_tools_fail_ar": "أدوات التدريب التقليدية تركز على المهام لا على إثبات القيمة، فتترك فجوة بين العمل المنجز والقيمة الموثقة للعميل."
+  }
+]
