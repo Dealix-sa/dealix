@@ -1,0 +1,71 @@
+# Dealix Targeting Scorecard — scoring weights and decision bands.
+# Consumed by scripts/targeting_scorecard.py.
+# Every weight is auditable: the score a company receives is the sum of the
+# axis points (capped per axis) minus penalties, clamped to [0, 100].
+#
+# Hard rule: a company that triggers a compliance reject is never scored here —
+# it is filtered out by scripts/targeting_compliance_gate.py first.
+
+version: 1
+
+# ─────────────────────────── Positive axes (max 100) ───────────────────────────
+axes:
+  icp_fit:            # how well the company matches the Ideal Customer Profile
+    max: 25
+  pain_signal:        # observable evidence of a problem Dealix can solve
+    max: 20
+  timing_intent:      # signals the company is buying / moving now
+    max: 15
+  access:             # can we reach a decision maker through an allowed channel?
+    max: 10
+  dealix_os_fit:      # how cleanly the pain maps onto a Dealix OS angle
+    max: 10
+  evidence_confidence: # how many independent sources back the profile
+    max: 10
+  strategic_value:    # logo value, sector beachhead, partner/referral potential
+    max: 10
+
+# ─────────────────────────── Penalties (subtractive) ───────────────────────────
+# Penalties express risk and thin evidence. They are applied after the axes are
+# summed. `reject` means the company is removed from the scored pool entirely.
+penalties:
+  single_source_only:        -10   # profile rests on one URL
+  no_official_website:       -10   # no first-party site to verify against
+  no_pain_signal:            -15   # nothing to anchor an offer on
+  sensitive_sector:          -15   # gov / health / finance without review
+  weak_contact_channel:      -10   # no clean official channel
+  compliance_risk:           reject  # any robots/ToS/PDPL violation → drop
+  generic_message_risk:      -10   # not enough specifics for a tailored draft
+
+# ─────────────────────────── Decision bands ───────────────────────────
+# Lower bound is inclusive. Bands are evaluated top-down.
+bands:
+  - min: 90
+    grade: "A+"
+    decision: "review_today"
+    label_en: "Review today"
+    label_ar: "راجع اليوم"
+  - min: 80
+    grade: "A"
+    decision: "strong_target"
+    label_en: "Strong target"
+    label_ar: "هدف قوي"
+  - min: 70
+    grade: "B"
+    decision: "needs_research"
+    label_en: "Needs more research"
+    label_ar: "يحتاج بحث إضافي"
+  - min: 60
+    grade: "C"
+    decision: "nurture"
+    label_en: "Nurture later"
+    label_ar: "رعاية لاحقًا"
+  - min: 0
+    grade: "D"
+    decision: "do_not_target"
+    label_en: "Do not target now"
+    label_ar: "لا يُستهدف الآن"
+
+# Shortlist threshold the founder reviews each morning.
+founder_shortlist_min_grade: "A"
+founder_shortlist_size: 20

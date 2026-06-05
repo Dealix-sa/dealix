@@ -107,6 +107,11 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Targeting OS config + seed + sample data (no PII, synthetic) — but NOT the
+# generated out/ artifacts (daily briefs, ranked targets, drafts).
+!data/targeting/
+data/targeting/out/*
+!data/targeting/out/.gitkeep
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -198,6 +203,10 @@ docs/diagnostics/**
 # ─────────────────────────────────────────────────────────────
 docs/wave6/live/**
 data/customers/**
+# Targeting OS delivery handoff folders — generated per paid customer, may hold
+# client working state. NEVER commit real customer data; keep only the .gitkeep.
+customers/*
+!customers/.gitkeep
 
 # ─────────────────────────────────────────────────────────────
 # Wave 8 — Customer-Ready Gate — runtime artifacts (NEVER commit)

@@ -1,0 +1,31 @@
+# Saudi cities — light strategic weighting for the strategic_value axis.
+# Consumed by scripts/targeting_scorecard.py.
+# market_weight ∈ [0.0, 1.0] — density of ICP companies + ease of in-person follow-up.
+
+version: 1
+
+cities:
+  riyadh:
+    name_en: "Riyadh"
+    name_ar: "الرياض"
+    market_weight: 1.0
+  jeddah:
+    name_en: "Jeddah"
+    name_ar: "جدة"
+    market_weight: 0.95
+  dammam:
+    name_en: "Dammam / Khobar"
+    name_ar: "الدمام / الخبر"
+    market_weight: 0.85
+  makkah:
+    name_en: "Makkah"
+    name_ar: "مكة"
+    market_weight: 0.6
+  madinah:
+    name_en: "Madinah"
+    name_ar: "المدينة"
+    market_weight: 0.6
+  other:
+    name_en: "Other / unknown"
+    name_ar: "أخرى / غير معروف"
+    market_weight: 0.5

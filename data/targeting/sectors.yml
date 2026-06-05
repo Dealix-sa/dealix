@@ -1,0 +1,101 @@
+# Dealix target sectors — ICP fit weights and default Dealix OS angle.
+# Consumed by scripts/targeting_scorecard.py (icp_fit axis) and
+# scripts/targeting_offer_router.py (default angle fallback).
+#
+# icp_weight ∈ [0.0, 1.0] multiplies the icp_fit axis max (25).
+# A b2b services agency (icp_weight 1.0) gets the full 25 ICP points;
+# a sensitive sector (icp_weight 0.4) is dampened on top of its penalty.
+
+version: 1
+
+sectors:
+  marketing_agency:
+    name_en: "Marketing / creative agency"
+    name_ar: "وكالة تسويق / إبداعية"
+    icp_weight: 1.0
+    b2b: true
+    default_angle: "revenue_os"
+    notes: "Core ICP — proof gap + revenue leakage is almost universal."
+
+  training_academy:
+    name_en: "Training / academy"
+    name_ar: "تدريب / أكاديمية"
+    icp_weight: 0.9
+    b2b: true
+    default_angle: "proof_os"
+    notes: "Proof gap on outcomes; Academy OS upsell later."
+
+  tech_software:
+    name_en: "Technology / software house"
+    name_ar: "شركة تقنية / تطوير"
+    icp_weight: 0.9
+    b2b: true
+    default_angle: "delivery_os"
+    notes: "Delivery visibility + client memory."
+
+  consulting:
+    name_en: "Consulting / advisory"
+    name_ar: "استشارات"
+    icp_weight: 0.95
+    b2b: true
+    default_angle: "command_os"
+    notes: "Command fog + proof gap. Executive Command Sprint."
+
+  operations_services:
+    name_en: "Operations / field services"
+    name_ar: "تشغيل / خدمات ميدانية"
+    icp_weight: 0.85
+    b2b: true
+    default_angle: "delivery_os"
+    notes: "Delivery visibility is the wedge."
+
+  professional_services:
+    name_en: "Professional services (legal, accounting, HR)"
+    name_ar: "خدمات مهنية (قانون، محاسبة، موارد بشرية)"
+    icp_weight: 0.85
+    b2b: true
+    default_angle: "client_os"
+    notes: "Client memory gap; recurring deliverables."
+
+  ecommerce_retail:
+    name_en: "E-commerce / retail brand"
+    name_ar: "تجارة إلكترونية / تجزئة"
+    icp_weight: 0.7
+    b2b: false
+    default_angle: "revenue_os"
+    notes: "B2C — qualify carefully; support recurrence angle."
+
+  manufacturing_industrial:
+    name_en: "Manufacturing / industrial"
+    name_ar: "تصنيع / صناعي"
+    icp_weight: 0.6
+    b2b: true
+    default_angle: "data_os"
+    notes: "Data fragmentation; longer cycle."
+
+  healthcare:
+    name_en: "Healthcare provider"
+    name_ar: "رعاية صحية"
+    icp_weight: 0.4
+    b2b: false
+    default_angle: "governance_os"
+    sensitive: true
+    notes: "Sensitive sector — requires governance review before outreach."
+
+  finance:
+    name_en: "Financial services"
+    name_ar: "خدمات مالية"
+    icp_weight: 0.4
+    b2b: true
+    default_angle: "governance_os"
+    sensitive: true
+    notes: "Sensitive sector — requires governance review before outreach."
+
+  government:
+    name_en: "Government / public sector"
+    name_ar: "حكومي / قطاع عام"
+    icp_weight: 0.3
+    b2b: true
+    default_angle: "governance_os"
+    sensitive: true
+    notes: "Sensitive sector — procurement path, governance review mandatory."

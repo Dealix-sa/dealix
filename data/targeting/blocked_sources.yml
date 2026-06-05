@@ -1,0 +1,58 @@
+# Compliance: blocked sources and hard reject rules.
+# Consumed by scripts/targeting_compliance_gate.py.
+#
+# These rules encode the Dealix non-negotiables for research and outreach:
+#   - No scraping behind login.
+#   - Respect robots.txt and source terms.
+#   - No personal phone numbers, no leaked data, no CAPTCHA bypass.
+#   - Sensitive sectors require explicit governance review before targeting.
+#   - Every target needs an official channel and enough evidence.
+#
+# See docs/03_governance/RESEARCH_SOURCE_POLICY.md for the human-readable policy.
+
+version: 1
+
+# Domains / source patterns we never ingest from. Matched as case-insensitive
+# substrings against a candidate's source URLs.
+blocked_domains:
+  - "linkedin.com/sales"        # Sales Navigator — behind login / ToS-restricted
+  - "facebook.com/login"
+  - "instagram.com/accounts/login"
+  - "leaked"                    # any "leaked data" dump
+  - "pastebin.com"
+  - "/login"                    # generic login-gated path
+  - "/signin"
+
+# Source TYPES that are categorically disallowed regardless of domain.
+blocked_source_types:
+  - behind_login
+  - scraped_no_robots
+  - captcha_bypass
+  - leaked_dataset
+  - purchased_personal_list
+
+# Field-level red flags. If a candidate carries any of these, it is rejected.
+red_flag_fields:
+  personal_phone: "Personal mobile number used as the contact channel"
+  personal_email_only: "Only a personal (gmail/hotmail) email, no official channel"
+  no_robots_respect: "Source obtained while ignoring robots.txt"
+
+# Sensitive sectors — not auto-rejected, but flagged review_required until a
+# governance reviewer signs off (see OUTREACH_APPROVAL_POLICY.md).
+sensitive_sectors:
+  - healthcare
+  - finance
+  - government
+
+# Minimum evidence to be allowed into the scored pool.
+minimum_evidence_count: 2
+
+# Allowed official contact channels (anything else → weak_contact_channel penalty
+# or, if nothing official exists, reject).
+allowed_channels:
+  - official_website_form
+  - official_business_email
+  - official_phone_switchboard
+  - official_linkedin_company_page   # manual visit only, no automation
+  - in_person_event
+  - warm_introduction
