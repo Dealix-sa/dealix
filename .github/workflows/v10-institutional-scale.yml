@@ -1,0 +1,49 @@
+name: V10 Institutional Scale
+
+# Safe by design: read-only, artifact-only, no secrets, no external sending,
+# no commits. Builds V10 docs (idempotent) and runs scale/profitability/moat checks.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Monthly, 1st at 07:00 UTC
+    - cron: "0 7 1 * *"
+
+permissions:
+  contents: read
+
+jobs:
+  institutional-scale:
+    runs-on: ubuntu-latest
+    env:
+      AUTO_SEND_ENABLED: "false"
+      EXTERNAL_OUTREACH_ENABLED: "false"
+      AGENT_APPROVAL_MODE: "required"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Materialize V10 docs (idempotent)
+        run: python scripts/v10_build_docs.py
+      - name: Profitability + moat summaries (example inputs only)
+        run: |
+          python scripts/profitability_summary.py
+          python scripts/moat_metrics_summary.py
+      - name: Verify scale-related OS layers
+        run: |
+          python scripts/institutional_scale_verify.py
+          python scripts/profitability_verify.py
+          python scripts/productization_verify.py
+          python scripts/operating_leverage_verify.py
+          python scripts/moat_metrics_verify.py
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v10-institutional-scale
+          path: |
+            outputs/profitability/
+            outputs/moat_metrics/
+            outputs/v10_verification/
+          if-no-files-found: warn

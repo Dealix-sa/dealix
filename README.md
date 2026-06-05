@@ -230,6 +230,60 @@ Then review:
 
 ---
 
+## V10 — Institutional Scale & Market Domination OS
+
+V10 extends the repo into a complete operating company system for scale,
+governance, and category leadership. Every output is a draft/report for founder
+review — **the system never sends anything externally** (no Email/WhatsApp/LinkedIn,
+no SMTP, no scraping, no auto-submit, no live paid ads, no secrets). AI prepares,
+analyzes, scores, ranks, and recommends; the founder reviews, approves, signs,
+sells, and sends manually.
+
+| OS layer | Docs |
+|---|---|
+| Institutional Scale OS | [`docs/institutional-scale-os/`](docs/institutional-scale-os/) |
+| Board Governance OS | [`docs/board-governance-os/`](docs/board-governance-os/) |
+| Market Domination OS | [`docs/market-domination-os/`](docs/market-domination-os/) |
+| Enterprise Sales Room OS | [`docs/enterprise-sales-room-os/`](docs/enterprise-sales-room-os/) |
+| Customer Advisory OS | [`docs/customer-advisory-os/`](docs/customer-advisory-os/) |
+| Commercial Legal Readiness OS | [`docs/commercial-legal-readiness-os/`](docs/commercial-legal-readiness-os/) |
+| Profitability OS | [`docs/profitability-os/`](docs/profitability-os/) |
+| Scope Control OS | [`docs/scope-control-os/`](docs/scope-control-os/) |
+| Case Study Governance OS | [`docs/case-study-governance-os/`](docs/case-study-governance-os/) |
+| Competitive Win Room OS | [`docs/competitive-win-room-os/`](docs/competitive-win-room-os/) |
+| Saudi/GCC Localization OS | [`docs/localization-os/`](docs/localization-os/) |
+| Talent Bench OS | [`docs/talent-bench-os/`](docs/talent-bench-os/) |
+| Productization OS | [`docs/productization-os/`](docs/productization-os/) |
+| Operating Leverage OS | [`docs/operating-leverage-os/`](docs/operating-leverage-os/) |
+| Safe Lifecycle Automation OS | [`docs/safe-lifecycle-automation-os/`](docs/safe-lifecycle-automation-os/) |
+| Moat Metrics OS | [`docs/moat-metrics-os/`](docs/moat-metrics-os/) |
+| Executive Demo Day OS | [`docs/executive-demo-day-os/`](docs/executive-demo-day-os/) |
+| CEO Cockpit OS | [`docs/ceo-cockpit-os/`](docs/ceo-cockpit-os/) |
+
+### V10 commands (read / score / report only)
+
+```bash
+# Generators (write drafts/reports under outputs/, never send)
+python scripts/ceo_cockpit_generate.py
+python scripts/board_packet_generate.py
+python scripts/enterprise_sales_room_generate.py --company "Acme Co"
+python scripts/profitability_summary.py
+python scripts/moat_metrics_summary.py
+python scripts/executive_demo_day_pack_generate.py
+
+# Verification (writes outputs/v10_verification/, exits non-zero on FAIL)
+python scripts/institutional_scale_verify.py
+python scripts/ceo_cockpit_verify.py
+python scripts/v10_master_verification.py   # aggregate PASS/FAIL across all V10 OS
+```
+
+CI workflows (all `workflow_dispatch` + `schedule`, `permissions: contents: read`,
+artifact-only, no secrets, no external sending, no commits):
+`.github/workflows/v10-master-verification.yml`, `v10-institutional-scale.yml`,
+`v10-ceo-cockpit.yml`.
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

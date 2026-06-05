@@ -1,0 +1,9 @@
+{
+  "name": "SAUDI_GCC_LOCALIZATION_OS",
+  "verdict": "PASS",
+  "required_file_count": 8,
+  "present_file_count": 8,
+  "missing_files": [],
+  "missing_markers": [],
+  "forbidden_hits": []
+}

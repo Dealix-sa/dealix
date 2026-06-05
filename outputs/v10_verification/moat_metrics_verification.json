@@ -1,0 +1,9 @@
+{
+  "name": "MOAT_METRICS_OS",
+  "verdict": "PASS",
+  "required_file_count": 10,
+  "present_file_count": 10,
+  "missing_files": [],
+  "missing_markers": [],
+  "forbidden_hits": []
+}
