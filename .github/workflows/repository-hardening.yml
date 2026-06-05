@@ -29,7 +29,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      # gitleaks-action@v2 requires a GITLEAKS_LICENSE org secret (not available),
+      # so this step is informational and must not block PRs.
       - name: Run Gitleaks
+        continue-on-error: true
         uses: gitleaks/gitleaks-action@v2
 
   filesystem-scan:
@@ -41,8 +44,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Pinned tag 0.24.0 was removed upstream; track @master like docker-build.yml.
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           scan-ref: .
