@@ -7,4 +7,7 @@ ENV EXTERNAL_OUTREACH_ENABLED=false
 ENV AGENT_APPROVAL_MODE=required
 COPY . .
 RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -e . || true
+# Run as a non-root user (Trivy DS-0002)
+RUN useradd --create-home --uid 10001 appuser && chown -R appuser:appuser /app
+USER appuser
 CMD ["sh", "-c", "while true; do python scripts/dealix_company_brain_daily.py; python scripts/dealix_content_factory_daily.py; python scripts/dealix_growth_scorecard.py; sleep ${COMPANY_BRAIN_INTERVAL_SECONDS:-900}; done"]
