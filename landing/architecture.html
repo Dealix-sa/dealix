@@ -221,8 +221,8 @@
                    └── Compute confidence score
 
 4. Approval Engine
-                   ├── If confidence > threshold AND policy allows: queue auto-send
-                   ├── Otherwise: queue for human approval (Decision Passport entry)
+                   ├── Draft reply candidate → always queue for human approval (Decision Passport entry)
+                   ├── Confidence + policy only rank/prioritize the queue — never bypass approval
                    └── Customer sees in /api/v1/approval-center
 
 5. Decision Passport
