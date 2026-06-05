@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from scripts.targeting_common import COMPANY_MASTER, load_companies, load_sectors, load_signals
+from scripts.targeting_common import COMPANY_MASTER, load_companies
 from scripts.targeting_weakness_mapper import map_weaknesses
 
 # Offer catalog — the 5-rung ladder, entry points only. Each offer names the

@@ -25,7 +25,7 @@ import argparse
 from pathlib import Path
 from typing import Any
 
-from scripts.targeting_common import COMPANY_MASTER, OUT_DIR, ensure_out_dir, load_companies
+from scripts.targeting_common import COMPANY_MASTER, OUT_DIR, load_companies
 from scripts.targeting_offer_router import route_offer
 from scripts.targeting_weakness_mapper import WEAKNESS_LABEL_AR
 

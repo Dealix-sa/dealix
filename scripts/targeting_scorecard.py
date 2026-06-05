@@ -30,7 +30,6 @@ from typing import Any
 from scripts.targeting_common import (
     COMPANY_MASTER,
     OUT_DIR,
-    ensure_out_dir,
     load_cities,
     load_companies,
     load_sectors,

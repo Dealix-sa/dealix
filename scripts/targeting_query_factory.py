@@ -82,7 +82,7 @@ def main(argv: list[str] | None = None) -> int:
     lines = [
         "# Research Queries — RUN MANUALLY (no automation, no scraping)\n",
         "> Respect robots.txt and source terms. Public pages only. "
-        "Manual LinkedIn visits allowed; no LinkedIn automation.\n",
+        + "Manual LinkedIn visits allowed; no LinkedIn automation.\n",
     ]
     for i, q in enumerate(queries, 1):
         lines.append(
