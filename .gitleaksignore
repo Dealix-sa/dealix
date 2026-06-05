@@ -1,0 +1,11 @@
+# Gitleaks false-positive fingerprints (scanned via `gitleaks dir .`, no-git mode).
+# Each entry was manually reviewed and confirmed to contain NO real secret.
+# Format: <file>:<ruleID>:<line>
+
+# TTL arithmetic ("ttl_seconds=30 * 86400" → 30-day window), not a credential.
+api/routers/pricing.py:generic-api-key:250
+
+# Operational scripts that authenticate to Moyasar using the MOYASAR_SECRET_KEY
+# *environment variable* (curl -u "${MOYASAR_SECRET_KEY}:"), never a hard-coded key.
+docs/ops/moyasar_live_test.sh:curl-auth-user:40
+scripts/ops/moyasar_pilot_test.sh:curl-auth-user:103

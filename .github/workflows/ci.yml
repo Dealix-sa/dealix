@@ -47,7 +47,10 @@ jobs:
   python-checks:
     name: Python quality, tests, readiness
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    # The full 4.7k-test suite + coverage runs ~33-35 min on 2-core CI runners,
+    # right at the old 35-min edge (one run completed, a slower one was cancelled).
+    # 50 min gives reliable headroom so the job always completes and reports.
+    timeout-minutes: 50
 
     env:
       APP_ENV: test
@@ -73,7 +76,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest pytest-asyncio pytest-cov httpx aiosqlite
+          pip install pytest pytest-asyncio pytest-cov pytest-timeout httpx aiosqlite
           if [ -f pyproject.toml ]; then pip install -e .; fi
 
       - name: Environment contract check
@@ -158,6 +161,7 @@ jobs:
       - name: Tests with coverage gate
         run: |
           pytest -q -n auto \
+            --timeout=120 --timeout-method=thread \
             --cov=api --cov=core --cov=db --cov=integrations \
             --cov-report=xml:coverage.xml \
             --cov-report=term-missing \
