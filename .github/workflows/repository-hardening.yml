@@ -58,3 +58,9 @@ jobs:
           ignore-unfixed: true
           format: table
           exit-code: '1'
+          # Launch-verify scripts embed secret-detection regexes (sk_live_…),
+          # which Trivy's secret scanner flags as Stripe keys — false positives.
+          skip-files: 'scripts/v10_master_verify.sh,scripts/v7_launch_verify.sh'
+          # Temporary, tracked suppressions for the Next.js advisories pending
+          # the Dependabot upgrade PRs (see .trivyignore for owner + review-by).
+          trivyignores: .trivyignore
