@@ -12,7 +12,7 @@ Run: python scripts/ceo_cockpit_generate.py
 from __future__ import annotations
 
 import argparse
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
