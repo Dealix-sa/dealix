@@ -1,0 +1,58 @@
+name: Daily Targeting OS
+
+# Dealix Market Intelligence & Targeting OS — daily research loop.
+# READ-ONLY by design: discovers/scopes from the founder seed file, scores,
+# and produces founder-review artifacts. It never sends outreach and never
+# writes back to the repo (least-privilege GITHUB_TOKEN, contents: read).
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"   # 05:00 UTC daily
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-targeting-os
+  cancel-in-progress: true
+
+jobs:
+  targeting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install minimal deps
+        run: python3 -m pip install --quiet pyyaml
+
+      - name: Validate targeting unit tests
+        run: |
+          python3 -m pip install --quiet pytest
+          python3 -m pytest \
+            tests/test_targeting_scorecard.py \
+            tests/test_targeting_compliance_gate.py \
+            tests/test_targeting_draft_lab.py \
+            tests/test_targeting_query_factory.py \
+            -q --no-cov -p no:cacheprovider
+
+      - name: Run targeting OS (offline, seed file)
+        run: |
+          python3 scripts/research_targeting_os.py \
+            --seed data/targeting/company_seed_template.csv \
+            --out data/targeting/out \
+            --top 80
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-targeting-os
+          path: data/targeting/out
+          if-no-files-found: warn

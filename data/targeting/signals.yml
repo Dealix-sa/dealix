@@ -1,0 +1,103 @@
+# Dealix Market Intelligence & Targeting OS — مكتبة إشارات الألم
+# Each signal maps an observable, evidence-backed weakness to a Dealix OS angle
+# and a recommended offer. The Signal Extractor tags companies with these ids;
+# the Scorecard reads `pain_signals` to compute the Business-Pain axis, and the
+# Draft Lab uses `angle` to keep the message specific (never generic).
+#
+# id            : stable key referenced by company records (pain_signals[])
+# category      : revenue | proof | command | delivery | client | governance
+# angle         : targeting angle surfaced in drafts
+# recommended_offer : Dealix offer this signal points to
+# weight        : 0..1 relative strength inside the Business-Pain axis
+# evidence_hint : where this signal is typically observed (official, public only)
+
+signals:
+  # 8.1 Revenue weakness
+  - id: no_clear_cta
+    category: revenue
+    angle: "Revenue leakage"
+    recommended_offer: "Command Sprint"
+    weight: 0.9
+    evidence_hint: "homepage / services page has no single next step"
+  - id: generic_services_page
+    category: revenue
+    angle: "Revenue leakage"
+    recommended_offer: "Command Sprint"
+    weight: 0.7
+    evidence_hint: "services page lists everything, qualifies no one"
+  - id: contact_only_phone
+    category: revenue
+    angle: "Revenue leakage"
+    recommended_offer: "Revenue OS"
+    weight: 0.6
+    evidence_hint: "contact page is a phone number, no structured funnel"
+
+  # 8.2 Proof weakness
+  - id: no_case_studies
+    category: proof
+    angle: "Proof gap"
+    recommended_offer: "Proof OS"
+    weight: 1.0
+    evidence_hint: "no case-studies / results / before-after page"
+  - id: no_visible_clients
+    category: proof
+    angle: "Proof gap"
+    recommended_offer: "Proof OS"
+    weight: 0.8
+    evidence_hint: "no client logos or named references"
+
+  # 8.3 Command weakness
+  - id: many_services_no_narrative
+    category: command
+    angle: "Command fog"
+    recommended_offer: "Command Sprint"
+    weight: 0.8
+    evidence_hint: "wide service menu with no clear positioning"
+  - id: multi_branch_expansion
+    category: command
+    angle: "Command fog"
+    recommended_offer: "Command OS"
+    weight: 0.6
+    evidence_hint: "branches / teams growing without a single narrative"
+
+  # 8.4 Delivery weakness
+  - id: implementation_heavy
+    category: delivery
+    angle: "Delivery visibility"
+    recommended_offer: "Delivery OS"
+    weight: 0.7
+    evidence_hint: "projects / onboarding / SLA language on services page"
+
+  # 8.5 Client weakness
+  - id: long_b2b_accounts
+    category: client
+    angle: "Client memory"
+    recommended_offer: "Client OS"
+    weight: 0.7
+    evidence_hint: "recurring B2B accounts, renewals/retention emphasis"
+
+  # 8.6 Governance weakness
+  - id: ai_claims_no_governance
+    category: governance
+    angle: "AI governance"
+    recommended_offer: "Governance OS"
+    weight: 0.9
+    evidence_hint: "AI claims + customer data, no stated governance"
+  - id: regulated_data_handling
+    category: governance
+    angle: "AI governance"
+    recommended_offer: "Governance OS"
+    weight: 0.8
+    evidence_hint: "financial / health / gov adjacent data handling"
+
+# Growth / intent / timing signals (feed the Timing axis, not the Pain axis)
+intent_signals:
+  - id: active_hiring
+    weight: 0.8
+    evidence_hint: "active careers page / open roles"
+  - id: recent_news
+    weight: 0.7
+    evidence_hint: "recent blog/news post (expansion, launch, partnership)"
+  - id: new_service_launch
+    weight: 0.6
+    evidence_hint: "newly announced service or office"
