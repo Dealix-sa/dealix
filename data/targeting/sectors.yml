@@ -1,0 +1,93 @@
+# Dealix Market Intelligence & Targeting OS — قطاعات الاستهداف
+# Phase 1 sectors are the founder-approved beachhead. `priority` drives query
+# generation order and contributes to ICP-fit scoring. Keep this list small and
+# governed — do not add sensitive sectors here (see blocked_sources.yml + the
+# Governance OS RESEARCH_SOURCE_POLICY).
+#
+# id            : stable key used by scripts (lowercase, underscores)
+# name_ar/en    : display labels for the daily brief
+# phase         : 1 | 2 | 3  — rollout wave (see DAILY_RESEARCH_LOOP.md)
+# priority      : 1 (highest) .. 5 — tie-breaker for ICP fit
+# default_offer : Dealix OS angle this sector usually maps to
+# keywords_ar   : Arabic discovery terms fed to the Query Factory
+
+sectors:
+  - id: b2b_consulting
+    name_ar: "استشارات أعمال B2B"
+    name_en: "B2B consulting"
+    phase: 1
+    priority: 1
+    default_offer: "Command Sprint"
+    keywords_ar: ["استشارات أعمال", "استشارات إدارية", "تطوير أعمال"]
+
+  - id: training_companies
+    name_ar: "شركات التدريب المؤسسي"
+    name_en: "Training companies"
+    phase: 1
+    priority: 1
+    default_offer: "Proof OS"
+    keywords_ar: ["تدريب مؤسسي", "تدريب الشركات", "تطوير الموظفين"]
+
+  - id: marketing_agencies
+    name_ar: "وكالات تسويق"
+    name_en: "Marketing agencies"
+    phase: 1
+    priority: 2
+    default_offer: "Command Sprint"
+    keywords_ar: ["وكالة تسويق", "تسويق رقمي", "إدارة حملات"]
+
+  - id: software_companies
+    name_ar: "شركات برمجيات"
+    name_en: "Software companies"
+    phase: 1
+    priority: 2
+    default_offer: "Command OS"
+    keywords_ar: ["شركة برمجيات", "تطوير برمجيات", "حلول برمجية"]
+
+  - id: it_service_providers
+    name_ar: "مزودو خدمات تقنية"
+    name_en: "IT service providers"
+    phase: 1
+    priority: 2
+    default_offer: "Command OS"
+    keywords_ar: ["حلول تقنية", "خدمات تقنية المعلومات", "تكامل أنظمة"]
+
+  - id: recruitment_agencies
+    name_ar: "شركات التوظيف"
+    name_en: "Recruitment agencies"
+    phase: 2
+    priority: 3
+    default_offer: "Client OS"
+    keywords_ar: ["شركة توظيف", "استقطاب كفاءات", "حلول موارد بشرية"]
+
+  - id: logistics_service_providers
+    name_ar: "مزودو خدمات لوجستية"
+    name_en: "Logistics service providers"
+    phase: 2
+    priority: 3
+    default_offer: "Delivery OS"
+    keywords_ar: ["خدمات لوجستية", "نقل وتخزين", "سلاسل إمداد"]
+
+  - id: facility_management
+    name_ar: "إدارة المرافق"
+    name_en: "Facility management"
+    phase: 2
+    priority: 3
+    default_offer: "Delivery OS"
+    keywords_ar: ["إدارة مرافق", "تشغيل وصيانة", "خدمات تشغيلية"]
+
+  - id: accounting_firms
+    name_ar: "مكاتب محاسبة"
+    name_en: "Accounting firms"
+    phase: 2
+    priority: 3
+    default_offer: "Governance OS"
+    keywords_ar: ["مكتب محاسبة", "خدمات محاسبية", "مراجعة وزكاة"]
+
+  - id: legal_business_advisory
+    name_ar: "استشارات قانونية وأعمال"
+    name_en: "Legal/business advisory"
+    phase: 2
+    priority: 4
+    default_offer: "Governance OS"
+    keywords_ar: ["استشارات قانونية", "محاماة أعمال", "حوكمة وامتثال"]

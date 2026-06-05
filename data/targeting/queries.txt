@@ -1,0 +1,13 @@
+# Dealix Targeting OS — seed discovery queries (one per line, '#' = comment).
+# These are *research* queries against allowed public sources only. They never
+# trigger outreach. The Query Factory also auto-generates sector×city queries
+# from sectors.yml + cities.yml; this file holds hand-curated high-intent ones.
+# Respect robots.txt and site terms when fetching any result (see governance).
+
+"شركة استشارات أعمال الرياض"
+"وكالة تسويق B2B الرياض"
+"شركة تدريب مؤسسي الرياض"
+"شركة حلول تقنية للشركات السعودية"
+site:.sa "خدماتنا" "تواصل معنا" "الرياض"
+site:.sa "دراسات حالة" "خدمات" "الشركات"
+site:.sa "عملاؤنا" "حلول" "تواصل"

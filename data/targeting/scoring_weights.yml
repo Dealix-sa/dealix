@@ -1,0 +1,39 @@
+# Dealix Market Intelligence & Targeting OS — أوزان السكور
+# Single source of truth for the 100-point targeting scorecard.
+# Consumed by scripts/targeting_scorecard.py. See TARGETING_SCORECARD.md for the
+# full rubric. Axes must sum to 100.
+
+axes:
+  icp_fit: 25            # sector/city/size match against Phase plan
+  business_pain: 20      # strength of evidence-backed weakness signals
+  timing_intent: 15      # hiring / news / expansion signals
+  access_contactability: 10  # official contact channel exists & is usable
+  dealix_fit: 10         # clean map to one Dealix OS layer
+  evidence_confidence: 10    # number + independence of evidence sources
+  strategic_value: 10        # account size / channel / expansion potential
+
+# Penalties are applied after the weighted axis sum. A penalty of "reject"
+# forces grade D / status reject regardless of score.
+penalties:
+  single_source_only: -10
+  incomplete_data: -10
+  sensitive_sector: -15
+  no_official_channel: -10
+  guess_without_evidence: -15
+  disallowed_source: reject
+  duplicate: reject
+
+# Grade bands (inclusive lower bound).
+grades:
+  - { min: 90, grade: "A+", decision: "review_today" }
+  - { min: 80, grade: "A", decision: "strong_target" }
+  - { min: 70, grade: "B", decision: "needs_more_evidence" }
+  - { min: 60, grade: "C", decision: "nurture" }
+  - { min: 0,  grade: "D", decision: "do_not_target_now" }
+
+# Founder shortlist + draft thresholds (see FOUNDER_SHORTLIST_RULES.md).
+thresholds:
+  shortlist_min_score: 80
+  shortlist_min_evidence: 2
+  draft_min_score: 80
+  draft_min_evidence: 2

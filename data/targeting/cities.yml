@@ -1,0 +1,44 @@
+# Dealix Market Intelligence & Targeting OS — مدن الاستهداف
+# Phase 1 concentrates on Riyadh to keep the founder-led motion focused.
+#
+# id        : stable key
+# name_ar/en: display + query labels (both fed to the Query Factory)
+# phase     : 1 | 2 | 3
+# priority  : 1 (highest) .. 5
+
+cities:
+  - id: riyadh
+    name_ar: "الرياض"
+    name_en: "Riyadh"
+    phase: 1
+    priority: 1
+
+  - id: jeddah
+    name_ar: "جدة"
+    name_en: "Jeddah"
+    phase: 1
+    priority: 2
+
+  - id: dammam
+    name_ar: "الدمام"
+    name_en: "Dammam"
+    phase: 2
+    priority: 3
+
+  - id: khobar
+    name_ar: "الخبر"
+    name_en: "Khobar"
+    phase: 2
+    priority: 3
+
+  - id: makkah
+    name_ar: "مكة المكرمة"
+    name_en: "Makkah"
+    phase: 3
+    priority: 4
+
+  - id: madinah
+    name_ar: "المدينة المنورة"
+    name_en: "Madinah"
+    phase: 3
+    priority: 4

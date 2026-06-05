@@ -1,0 +1,51 @@
+# Dealix Market Intelligence & Targeting OS — مصادر ممنوعة / محظورة
+# Enforced by scripts/targeting_compliance_gate.py. Any company whose evidence
+# comes only from a blocked source is REJECTED (never queued for outreach).
+# This file encodes the non-negotiables: no scraping behind login, no leaked
+# data, no LinkedIn automation, respect robots.txt and site terms.
+#
+# See docs/03_governance/RESEARCH_SOURCE_POLICY.md and ROBOTS_AND_TERMS_POLICY.md.
+
+# Domains we never use as an evidence source (login-gated, automation-prone, or
+# personal-data brokers). Matched by host suffix (case-insensitive).
+blocked_domains:
+  - linkedin.com          # no automation / scraping; manual human check only
+  - facebook.com
+  - instagram.com
+  - x.com
+  - twitter.com
+  - whatsapp.com
+  - wa.me
+
+# URL substrings that indicate login-gated or non-public content.
+blocked_url_patterns:
+  - "/login"
+  - "/signin"
+  - "/sign-in"
+  - "/auth"
+  - "/account"
+  - "?login="
+  - "/dashboard"
+
+# Source *types* that are forbidden regardless of domain. The pipeline tags each
+# evidence item with a `source_type`; these types are rejected.
+blocked_source_types:
+  - leaked_database
+  - scraped_behind_login
+  - captcha_bypass
+  - purchased_pii_list
+  - personal_mobile_number
+  - linkedin_automation
+  - mass_whatsapp
+  - mass_email_list
+
+# Sensitive sectors trigger a -15 penalty AND a mandatory governance review
+# before any draft. They are not auto-blocked, but require extra evidence and a
+# Governance OS angle. (Reason: regulated data / CST / NCA exposure.)
+sensitive_sectors:
+  - banking
+  - insurance
+  - healthcare
+  - government
+  - defense
+  - children_services

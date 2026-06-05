@@ -1,0 +1,8 @@
+company_name,website,city,country,sector,subsector,company_size_signal,contact_channel,recommended_offer,pain_signals,intent_signals,partnership_signal,source_url_1,source_url_2,notes
+# Founder seed file. Fill rows from manual research of ALLOWED public sources
+# (official sites, services/case-study/careers pages, public directories).
+# Each row needs >=2 evidence URLs to be eligible for a draft. List columns
+# (pain_signals, intent_signals) are pipe-separated and use ids from
+# data/targeting/signals.yml. Never paste login-gated, scraped, or purchased
+# data here. Lines starting with '#' are ignored.
+Example Co,https://example.com,Riyadh,Saudi Arabia,b2b_consulting,Consulting,SMB/Mid-market,contact_page,Command Sprint,no_case_studies|generic_services_page,active_hiring|recent_news,true,https://example.com/services,https://example.com/case-studies,sample row — replace with real research

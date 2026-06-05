@@ -107,6 +107,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Targeting OS config — sectors/cities/signals/weights/policies (no customer PII)
+!data/targeting/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -324,3 +326,6 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Dealix Targeting OS — daily generated artifacts (do not commit)
+data/targeting/out/
