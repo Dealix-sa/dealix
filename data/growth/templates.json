@@ -1,0 +1,149 @@
+[
+  {
+    "contents": [
+      "source_passport",
+      "approval_gate",
+      "pii_rule"
+    ],
+    "feeds": "ai_governance_checklist",
+    "name": "AI Governance Checklist Sheet",
+    "purpose": "Approval-first, sourced, PDPL-aware AI usage.",
+    "tier": "free"
+  },
+  {
+    "contents": [
+      "context_note",
+      "shared_record_link",
+      "handoff_note"
+    ],
+    "feeds": "client_memory_score",
+    "name": "Client Memory Capture Sheet",
+    "purpose": "Hold context between client interactions.",
+    "tier": "free"
+  },
+  {
+    "contents": [
+      "signal",
+      "decision",
+      "next_action",
+      "owner"
+    ],
+    "feeds": "business_os_score",
+    "name": "Executive Command Brief Template",
+    "purpose": "One-page weekly decision brief for owners.",
+    "tier": "free"
+  },
+  {
+    "contents": [
+      "client",
+      "next_action",
+      "owner",
+      "due"
+    ],
+    "feeds": "delivery_visibility_score",
+    "name": "Next Action Board",
+    "purpose": "Visible single next action per client.",
+    "tier": "free"
+  },
+  {
+    "contents": [
+      "engagement_row",
+      "evidence_link",
+      "client_confirmation"
+    ],
+    "feeds": "proof_gap_audit",
+    "name": "Proof Register Starter",
+    "purpose": "Record one piece of evidence per engagement.",
+    "tier": "free"
+  },
+  {
+    "contents": [
+      "stage_table",
+      "owner_column",
+      "evidence_column"
+    ],
+    "feeds": "revenue_leakage_calculator",
+    "name": "Revenue Map Worksheet",
+    "purpose": "Map lead-to-payment stages and spot drop-offs.",
+    "tier": "free"
+  },
+  {
+    "contents": [
+      "pain_list",
+      "self_rating",
+      "suggested_tool"
+    ],
+    "feeds": "consulting",
+    "name": "Sector Pain Self-Diagnosis",
+    "purpose": "Spot the top operational pain by sector.",
+    "tier": "free"
+  },
+  {
+    "contents": [
+      "optin_check",
+      "owner",
+      "approval_step",
+      "evidence_log"
+    ],
+    "feeds": "whatsapp_follow_up_risk_score",
+    "name": "WhatsApp Follow-up Checklist",
+    "purpose": "Compliant, opt-in, owned follow-up steps.",
+    "tier": "free"
+  },
+  {
+    "contents": [
+      "revenue_map",
+      "proof_register",
+      "executive_command_brief",
+      "next_action_board"
+    ],
+    "feeds": "business_os_score",
+    "name": "Command Sprint Delivery Kit",
+    "purpose": "Run the 7-day Command Sprint end to end.",
+    "tier": "paid"
+  },
+  {
+    "contents": [
+      "approval_workflow",
+      "optin_policy",
+      "evidence_log"
+    ],
+    "feeds": "whatsapp_follow_up_risk_score",
+    "name": "Governed Outreach Kit",
+    "purpose": "Approval-first, opt-in outreach playbook.",
+    "tier": "paid"
+  },
+  {
+    "contents": [
+      "adoption_scorecard",
+      "retainer_readiness",
+      "monthly_value_report"
+    ],
+    "feeds": "delivery_visibility_score",
+    "name": "Managed Operations Kit",
+    "purpose": "Recurring managed cadence with retainer readiness.",
+    "tier": "paid"
+  },
+  {
+    "contents": [
+      "section_templates",
+      "scoring_guide",
+      "tier_rubric"
+    ],
+    "feeds": "proof_gap_audit",
+    "name": "Proof Pack Builder Kit",
+    "purpose": "Assemble a 14-section ProofPack with score and tier.",
+    "tier": "paid"
+  },
+  {
+    "contents": [
+      "sector_command_pack",
+      "recommended_os",
+      "sprint_offer"
+    ],
+    "feeds": "consulting",
+    "name": "Sector Command Pack Kit",
+    "purpose": "Sector-specific operating pack and offers.",
+    "tier": "paid"
+  }
+]
