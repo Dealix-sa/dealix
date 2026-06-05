@@ -69,16 +69,8 @@ if str(_ROOT) not in sys.path:
 # wrapped so the engine still runs as a plain script if the package layout
 # changes; the offline guards below replicate the same non-negotiables.
 try:  # pragma: no cover - exercised indirectly
-    from auto_client_acquisition.safe_send_gateway import (
-        doctrine_violations_for_revenue_intelligence,
-        enforce_doctrine_non_negotiables,
-    )
+    from auto_client_acquisition.safe_send_gateway import enforce_doctrine_non_negotiables
 except Exception:  # pragma: no cover - fallback only
-
-    def doctrine_violations_for_revenue_intelligence(  # type: ignore[misc]
-        **kwargs: bool,
-    ) -> tuple[tuple[str, ...], dict[str, dict[str, str]]]:
-        return (), {}
 
     def enforce_doctrine_non_negotiables(**kwargs: bool) -> None:  # type: ignore[misc]
         return None
