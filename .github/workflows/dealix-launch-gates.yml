@@ -1,0 +1,53 @@
+name: Dealix Launch Gates
+
+# Company OS launch-safety gate. Complements (does not duplicate) ci.yml:
+# ci.yml already builds/typechecks the frontend; this job enforces the
+# positioning / claims doctrine on customer-facing surfaces.
+
+on:
+  pull_request:
+    paths:
+      - "landing/**"
+      - "frontend/src/**"
+      - "apps/web/**"
+      - "README.md"
+      - "README.ar.md"
+      - "scripts/verify_website_positioning.py"
+      - ".github/workflows/dealix-launch-gates.yml"
+  push:
+    branches: [main]
+    paths:
+      - "landing/**"
+      - "frontend/src/**"
+      - "apps/web/**"
+      - "README.md"
+      - "README.ar.md"
+      - "scripts/verify_website_positioning.py"
+  workflow_dispatch:
+
+# Least privilege: this job only reads the repo.
+permissions:
+  contents: read
+
+jobs:
+  launch-gates:
+    name: Positioning & claims gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      # Positioning / claims guard on customer-facing surfaces (deterministic,
+      # dependency-free). Scans landing/, frontend/src, apps/web, README.
+      - name: Verify website positioning
+        run: python3 scripts/verify_website_positioning.py --all
+
+      # Validate the .env contract (backend + frontend templates).
+      - name: Verify env contract
+        run: python3 scripts/check_env_contract.py
