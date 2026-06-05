@@ -1,0 +1,104 @@
+# Observable signals → axis contributions and weakness hints.
+# Consumed by scripts/targeting_scorecard.py (pain_signal, timing_intent axes)
+# and scripts/targeting_weakness_mapper.py (weakness inference).
+#
+# Each signal is a field that may be present on a company profile
+# (data/targeting/company_master.jsonl). Values are interpreted as truthy /
+# string / list depending on `kind`.
+
+version: 1
+
+# Signals that indicate a PAIN Dealix can solve. Each contributes points to the
+# pain_signal axis (capped by the axis max) and maps to a weakness type.
+pain_signals:
+  weak_cta:
+    kind: bool
+    points: 6
+    weakness: revenue_leakage
+    desc_en: "Weak / missing call-to-action on the site"
+    desc_ar: "نداء فعل ضعيf أو غائب على الموقع"
+  many_services_no_focus:
+    kind: bool
+    points: 5
+    weakness: command_fog
+    desc_en: "Many services listed with no clear focus"
+    desc_ar: "خدمات كثيرة بلا تركيز واضح"
+  no_case_studies:
+    kind: bool
+    points: 7
+    weakness: proof_gap
+    desc_en: "No case studies / results visible"
+    desc_ar: "لا توجد دراسات حالة أو نتائج ظاهرة"
+  unclear_followup:
+    kind: bool
+    points: 5
+    weakness: revenue_leakage
+    desc_en: "Follow-up path after enquiry is unclear"
+    desc_ar: "مسار المتابعة بعد الاستفسار غير واضح"
+  fragmented_tools:
+    kind: bool
+    points: 6
+    weakness: data_fragmentation
+    desc_en: "Excel / Forms / WhatsApp scattered across the workflow"
+    desc_ar: "إكسل / نماذج / واتساب متفرقة في سير العمل"
+  recurring_support:
+    kind: bool
+    points: 5
+    weakness: support_recurrence
+    desc_en: "Repeated support issues / heavy support surface"
+    desc_ar: "مشاكل دعم متكررة أو سطح دعم كبير"
+  delivery_no_visibility:
+    kind: bool
+    points: 6
+    weakness: delivery_blindness
+    desc_en: "Projects / delivery with no visible tracking"
+    desc_ar: "مشاريع وتسليم بلا تتبّع ظاهر"
+  many_clients_no_memory:
+    kind: bool
+    points: 5
+    weakness: client_memory_gap
+    desc_en: "Many clients and promises, no client memory system"
+    desc_ar: "عملاء ووعود كثيرة بلا نظام ذاكرة عميل"
+  ai_claims_no_governance:
+    kind: bool
+    points: 5
+    weakness: governance_risk
+    desc_en: "AI / data claims with no visible governance"
+    desc_ar: "ادعاءات AI / بيانات بلا حوكمة ظاهرة"
+
+# Signals that indicate TIMING / INTENT (buying readiness, momentum).
+timing_signals:
+  hiring_signal:
+    kind: bool
+    points: 5
+    desc_en: "Actively hiring (jobs page / posts)"
+    desc_ar: "توظيف نشط (صفحة وظائف / منشورات)"
+  growth_signal:
+    kind: bool
+    points: 5
+    desc_en: "Expansion / new branch / new market"
+    desc_ar: "توسّع / فرع جديد / سوق جديد"
+  partnership_signal:
+    kind: bool
+    points: 3
+    desc_en: "Recent partnership / alliance announced"
+    desc_ar: "شراكة / تحالف حديث معلن"
+  technology_signal:
+    kind: bool
+    points: 4
+    desc_en: "Recent tech / tooling adoption signals"
+    desc_ar: "إشارات تبنّي تقنية حديثة"
+  recent_news:
+    kind: bool
+    points: 3
+    desc_en: "Recent company news / event presence"
+    desc_ar: "أخبار حديثة / حضور فعاليات"
+
+# Partner-potential signal (feeds strategic_value + offer router).
+partner_signal:
+  serves_many_clients:
+    kind: bool
+    points: 4
+    weakness: partner_potential
+    desc_en: "Agency / consultancy serving many SME clients"
+    desc_ar: "وكالة / استشارة تخدم عملاء كثر"
