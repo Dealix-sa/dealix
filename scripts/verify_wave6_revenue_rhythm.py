@@ -156,6 +156,7 @@ def _scripts_run() -> list[str]:
 
 
 def main() -> int:
+    ok = False  # definite binding before any use (satisfies static analysis)
     bootstrap_runtime_ledgers()
     missing_files = _missing(REQUIRED_FILES)
     bad_jsonl = _bad_jsonl()
