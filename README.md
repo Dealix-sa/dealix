@@ -45,6 +45,25 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 
 ---
 
+## Dealix Launch Operating System
+
+Dealix is positioned as a **Saudi-first AI Business Operating System** — not a single targeting engine. The market-intelligence and targeting work is one engine inside a larger system that connects product, delivery, proof, governance, sales, finance, and partnerships. The launch is wedge-first: ship the **Command Sprint**, sell it manually, deliver hard, produce a **Proof Pack**, then convert to a Managed Business OS.
+
+The launch doctrine lives in a dedicated docs layer:
+
+| Layer | Entry point |
+|---|---|
+| Platform truth | [`docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md`](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md) · [Launch Control Tower](docs/00_platform_truth/LAUNCH_CONTROL_TOWER.md) · [Module Status Map](docs/00_platform_truth/MODULE_STATUS_MAP.md) |
+| Go-to-market | [Command Sprint Offer](docs/01_go_to_market/COMMAND_SPRINT_OFFER.md) · [Price Authority](docs/01_go_to_market/PRICE_AUTHORITY.md) · [Sales Playbook](docs/01_go_to_market/SALES_PLAYBOOK.md) |
+| Operating systems | [12-system map](docs/02_operating_systems/) |
+| Governance | [Human Approval Policy](docs/03_governance/HUMAN_APPROVAL_POLICY.md) · [Claims Register](docs/03_governance/CLAIMS_REGISTER.md) · [No-Spam Policy](docs/03_governance/NO_SPAM_POLICY.md) |
+| Delivery | [Command Sprint Delivery OS](docs/04_delivery/COMMAND_SPRINT_DELIVERY_OS.md) · [Proof Pack Template](docs/04_delivery/PROOF_PACK_TEMPLATE.md) |
+| Founder | [Daily Command](docs/05_founder/FOUNDER_DAILY_COMMAND.md) · [Launch Go / No-Go](docs/05_founder/LAUNCH_GO_NO_GO.md) |
+
+Hard rules carried through the whole system: no auto-send, no cold WhatsApp/LinkedIn automation, no scraping behind login, no fake proof, no guaranteed-revenue claims, no external customer-facing action without founder approval, every target needs evidence, every paid customer gets a delivery folder and a Proof Pack.
+
+---
+
 ## Quick start
 
 ```bash

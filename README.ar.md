@@ -33,6 +33,25 @@
 - 📊 **قابل للمراقبة** — سجلات مهيكلة بـ structlog، تتبع LLM اختياري عبر Langfuse، تتبع الاستخدام لكل مزود.
 - 🇸🇦 **سعودي أصيل** — ١٢ قطاعاً ببيانات منسّقة (عقار، صحة، تعليم، لوجستيات، فينتك…)، مرجع للمنظّمين السعوديين، أسعار بـ SAR/USD، أعياد سعودية.
 
+## 🧭 نظام إطلاق Dealix (Launch Operating System)
+
+Dealix يتموضع كـ **نظام تشغيل أعمال بالذكاء الاصطناعي سعودي أولاً** — وليس مجرد محرك استهداف. محرك استخبارات السوق والاستهداف هو محرك واحد داخل نظام أكبر يربط المنتج، التسليم، الإثبات، الحوكمة، المبيعات، المالية، والشراكات. الإطلاق wedge-first: أطلق **سبرنت القيادة (Command Sprint)**، بِع يدوياً، سلّم بقوة، أنتج **Proof Pack**، ثم حوّل إلى نظام أعمال مُدار.
+
+طبقة التوثيق المخصّصة للإطلاق:
+
+| الطبقة | نقطة الدخول |
+|---|---|
+| حقيقة المنصّة | [`docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md`](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md) · [برج التحكم](docs/00_platform_truth/LAUNCH_CONTROL_TOWER.md) · [خريطة حالة الأنظمة](docs/00_platform_truth/MODULE_STATUS_MAP.md) |
+| الذهاب للسوق | [عرض السبرنت](docs/01_go_to_market/COMMAND_SPRINT_OFFER.md) · [مرجع التسعير](docs/01_go_to_market/PRICE_AUTHORITY.md) · [دليل المبيعات](docs/01_go_to_market/SALES_PLAYBOOK.md) |
+| أنظمة التشغيل | [خريطة الأنظمة الـ12](docs/02_operating_systems/) |
+| الحوكمة | [سياسة الموافقة البشرية](docs/03_governance/HUMAN_APPROVAL_POLICY.md) · [سجل الادعاءات](docs/03_governance/CLAIMS_REGISTER.md) · [سياسة منع السبام](docs/03_governance/NO_SPAM_POLICY.md) |
+| التسليم | [نظام تسليم السبرنت](docs/04_delivery/COMMAND_SPRINT_DELIVERY_OS.md) · [قالب Proof Pack](docs/04_delivery/PROOF_PACK_TEMPLATE.md) |
+| المؤسس | [القيادة اليومية](docs/05_founder/FOUNDER_DAILY_COMMAND.md) · [بوابة الإطلاق](docs/05_founder/LAUNCH_GO_NO_GO.md) |
+
+قواعد صارمة تسري عبر النظام كله: لا إرسال تلقائي، لا أتمتة واتساب/لينكدإن باردة، لا scraping خلف تسجيل دخول، لا إثبات مزيّف، لا ادعاء بضمان إيراد، لا فعل خارجي موجّه للعميل بدون موافقة المؤسس، كل هدف يحتاج دليلاً، وكل عميل يدفع يحصل على مجلد تسليم وProof Pack.
+
+---
+
 ## 🚀 البدء السريع
 
 ### المتطلبات
