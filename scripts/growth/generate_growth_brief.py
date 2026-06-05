@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import csv
 import json
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]

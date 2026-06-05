@@ -9,7 +9,7 @@ case-safe / proof content requires founder approval (non-negotiable #8).
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]

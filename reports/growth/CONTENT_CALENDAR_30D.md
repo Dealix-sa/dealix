@@ -1,6 +1,6 @@
 # 30-Day Content Calendar — Dealix Self-Growth OS
 
-Generated: 2026-06-05T17:56:13.301613+00:00
+Generated: 2026-06-05T17:59:25.894362+00:00
 Source: `data/growth/content_ideas.jsonl` (20 ideas)
 
 > Each item has ONE CTA. Items flagged ⚠ need founder approval before publishing

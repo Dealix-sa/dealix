@@ -9,7 +9,7 @@ sitemap, robots) — not finished marketing copy. Founder writes/approves final 
 
 from __future__ import annotations
 
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
