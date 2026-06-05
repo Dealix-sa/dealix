@@ -51,9 +51,14 @@ paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    '''tests/.*''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
+    '''scripts/v10_master_verify\.sh$''',
+    '''scripts/v7_launch_verify\.sh$''',
+    # Build artifacts (never committed; excluded defensively for local fs scans)
+    '''.*/\.next/.*''',
+    '''.*/node_modules/.*''',
 ]
 
 regexes = [

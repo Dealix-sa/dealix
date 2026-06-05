@@ -3,7 +3,21 @@ import type { Metadata } from "next";
 const SITE = "https://dealix.me";
 const OG_IMAGE = [{ url: `${SITE}/brand/og-dealix.svg`, width: 1200, height: 630, alt: "Dealix — Saudi B2B Revenue OS" }];
 
-type FunnelKey = "diagnostic" | "proof-pack" | "risk-score" | "partners" | "services" | "learn" | "privacy";
+type FunnelKey =
+  | "diagnostic"
+  | "proof-pack"
+  | "risk-score"
+  | "partners"
+  | "services"
+  | "learn"
+  | "privacy"
+  | "command-sprint"
+  | "business-os"
+  | "platform"
+  | "industries"
+  | "security"
+  | "start"
+  | "business-os-score";
 
 const FUNNEL_META: Record<FunnelKey, { path: string; ar: { title: string; desc: string }; en: { title: string; desc: string } }> = {
   diagnostic: {
@@ -40,6 +54,41 @@ const FUNNEL_META: Record<FunnelKey, { path: string; ar: { title: string; desc: 
     path: "/privacy",
     ar: { title: "Dealix — سياسة الخصوصية وPDPL", desc: "Dealix مبني أصلاً لـ PDPL — لا outreach بارد، لا scraping، موافقة قبل أي إرسال خارجي." },
     en: { title: "Dealix — Privacy & PDPL Policy", desc: "Dealix is built natively for PDPL — no cold outreach, no scraping, approval before any external send." },
+  },
+  "command-sprint": {
+    path: "/command-sprint",
+    ar: { title: "Dealix Command Sprint — أول إسفين تشغيلي", desc: "ابدأ نظام تشغيل الأعمال عبر Command Sprint: ذكاء سوق، خريطة إيراد، سجل إثبات، موجز قيادي، سجل موافقات، لوحة الإجراء التالي — كله بدليل وبموافقة." },
+    en: { title: "Dealix Command Sprint — the first operating wedge", desc: "Start the Business OS with a Command Sprint: market intelligence, revenue map, proof register, executive brief, approval register, next-action board — evidence-led, approval-first." },
+  },
+  "business-os": {
+    path: "/business-os",
+    ar: { title: "Dealix — نظام تشغيل الأعمال السعودي بالذكاء الاصطناعي", desc: "إيقاع تشغيل واحد لشركتك: ماذا يحدث؟ ماذا يجب أن يحدث؟ من يوافق؟ ما الدليل؟ ما الإجراء التالي؟ Revenue OS هو أول إسفين." },
+    en: { title: "Dealix — the Saudi AI Business Operating System", desc: "One operating rhythm for your company: what's happening, what's next, who approves, what's the evidence, what's the next action. Revenue OS is the first wedge." },
+  },
+  platform: {
+    path: "/platform",
+    ar: { title: "Dealix — المنصة: طبقات نظام التشغيل", desc: "Revenue OS · Proof OS · Governance OS · Data OS · Delivery · Command — طبقات واحدة محكومة بالدليل والموافقة." },
+    en: { title: "Dealix — Platform: the OS layers", desc: "Revenue OS · Proof OS · Governance OS · Data OS · Delivery · Command — one evidence-governed, approval-first platform." },
+  },
+  industries: {
+    path: "/industries",
+    ar: { title: "Dealix — قطاعات الأعمال السعودية", desc: "نظام تشغيل أعمال مهيّأ لقطاعات B2B السعودية: المقاولات، الخدمات المهنية، التقنية، التجارة، الرعاية. PDPL وZATCA." },
+    en: { title: "Dealix — Saudi industries", desc: "A Business OS tuned for Saudi B2B sectors: construction, professional services, tech, trade, healthcare. PDPL & ZATCA aware." },
+  },
+  security: {
+    path: "/security",
+    ar: { title: "Dealix — الأمان والثقة والحوكمة", desc: "موافقة أولاً، audit log كامل، PDPL أصيل، لا إرسال خارجي تلقائي، لا scraping. الإنسان يوافق على كل التزام خارجي." },
+    en: { title: "Dealix — Security, Trust & Governance", desc: "Approval-first, full audit log, PDPL-native, no automated external send, no scraping. Humans approve every external commitment." },
+  },
+  start: {
+    path: "/start",
+    ar: { title: "Dealix — ابدأ هنا", desc: "ثلاثة مداخل: احسب Business OS Score، أو ابدأ التشخيص، أو ابدأ Command Sprint. اختر نقطة البداية المناسبة لشركتك." },
+    en: { title: "Dealix — Start here", desc: "Three entry points: get your Business OS Score, run the diagnostic, or start a Command Sprint. Pick the right starting point." },
+  },
+  "business-os-score": {
+    path: "/business-os-score",
+    ar: { title: "Dealix — Business OS Score مجاناً", desc: "تقييم ذاتي توضيحي في دقيقتين: ما مدى جاهزية شركتك للتشغيل بإيقاع واحد؟ النتيجة فورية وتقديرية، ثم الخطوة التالية." },
+    en: { title: "Dealix — free Business OS Score", desc: "A two-minute illustrative self-assessment: how ready is your company to run on one operating rhythm? Instant, estimated score, then a next step." },
   },
 };
 
