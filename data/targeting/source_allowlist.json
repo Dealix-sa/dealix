@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "description": "Sources Dealix Research & Targeting OS is allowed to use. Blocked sources are never processed. Mirrors the Tier-1 Source Registry (auto_client_acquisition.revenue_os.source_registry).",
+  "allowed_sources": [
+    "company_website",
+    "company_services_page",
+    "company_contact_page",
+    "company_careers_page",
+    "company_customers_page",
+    "company_case_study",
+    "public_directory_allowed",
+    "open_data_portal",
+    "search_api",
+    "founder_list",
+    "warm_intro",
+    "partner_referral",
+    "public_business_info_allowed",
+    "manual_linkedin_research"
+  ],
+  "blocked_sources": [
+    "scraping",
+    "purchased_list",
+    "cold_whatsapp",
+    "linkedin_automation",
+    "behind_login",
+    "captcha_bypass"
+  ],
+  "notes": [
+    "open_data_portal covers public, processable government open data (CSV/JSON/XML) used as a supporting indicator only — never a substitute for per-company manual verification.",
+    "manual_linkedin_research is public-profile reading by a human only; LinkedIn automation is blocked.",
+    "search_api reads public result metadata (title/link/snippet); it does not fetch or scrape page bodies."
+  ]
+}
