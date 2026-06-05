@@ -139,7 +139,7 @@ curl -i https://<url>/api/v1/pricing/plans
 
 3. **Railway → Variables → RAW Editor:**
    - بدّل `MOYASAR_SECRET_KEY=sk_live_REPLACE_IN_PHASE_2`
-   - بالـ secret الحقيقي `sk_live_xxxxxxxxxxxxx`
+   - بالـ secret الحقيقي `sk_live_REPLACE_ME`
    - احفظ → سيُعيد deploy تلقائياً
 
 4. **Moyasar Dashboard → Developers → Webhooks → Add Webhook:**

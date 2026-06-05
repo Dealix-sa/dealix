@@ -40,15 +40,15 @@ def test_redact_trace_strips_phone() -> None:
 def test_redact_trace_strips_secrets() -> None:
     """Whole secrets must not survive the redactor (any form of mask is OK)."""
     safe = redact_trace({
-        "key1": "sk_live_abcdef1234567890",
-        "key2": "ghp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "key1": "sk_live_abcdef1234567890",  # pragma: allowlist secret
+        "key2": "ghp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",  # pragma: allowlist secret
         "key3": "AIzaSyA1234567890123456789012345678901",
         "key4": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
     })
     blob = str(safe)
     # The original secrets (full strings) must no longer be reconstructable
-    assert "sk_live_abcdef1234567890" not in blob
-    assert "ghp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" not in blob
+    assert "sk_live_abcdef1234567890" not in blob  # pragma: allowlist secret
+    assert "ghp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" not in blob  # pragma: allowlist secret
     assert "AIzaSyA1234567890123456789012345678901" not in blob
     assert "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" not in blob
 
@@ -130,7 +130,7 @@ async def test_trace_endpoint_redacts_secret() -> None:
         r = await c.post("/api/v1/agent-observability/trace", json={
             "agent_name": "secret_agent",
             "action_mode": "draft_only",
-            "payload": {"key": "sk_live_zzzz9999aaaa1111"},
+            "payload": {"key": "sk_live_zzzz9999aaaa1111"},  # pragma: allowlist secret
         })
     blob = str(r.json()["trace"]["redacted_payload"])
     assert "sk_live_zzzz" not in blob

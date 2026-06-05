@@ -70,7 +70,7 @@ def test_unset_secret_key_raises_system_exit(monkeypatch):
 
 
 def test_live_key_without_flag_raises(monkeypatch):
-    monkeypatch.setenv("MOYASAR_SECRET_KEY", "sk_live_realdangerous")
+    monkeypatch.setenv("MOYASAR_SECRET_KEY", "sk_live_realdangerous")  # pragma: allowlist secret
 
     class _Args:
         email = "x@y.sa"
