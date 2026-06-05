@@ -10,7 +10,8 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        wave6-verify wave6-daily wave6-workspace
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +183,15 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Wave 6 — Revenue Operating Rhythm ──────────────────────────
+# Daily revenue-to-proof loop. Read-only / draft-only — never live sends.
+
+wave6-verify: ## wave6: bootstrap runtime ledgers + verify the revenue rhythm scaffolding
+	$(PYTHON) scripts/verify_wave6_revenue_rhythm.py
+
+wave6-daily: ## wave6: generate the founder daily command brief
+	$(PYTHON) scripts/founder_daily_command.py
+
+wave6-workspace: ## wave6: scaffold a paid customer workspace (NAME=company-slug)
+	$(PYTHON) scripts/create_customer_workspace.py --name "$(NAME)"
