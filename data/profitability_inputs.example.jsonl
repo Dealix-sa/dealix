@@ -1,0 +1,5 @@
+{"offer": "free_diagnostic", "currency": "SAR", "price": 0, "delivery_cost": 200, "units": 1, "is_assumption": true, "note": "EXAMPLE ONLY — loss-leader diagnostic, no real revenue."}
+{"offer": "sprint_499", "currency": "SAR", "price": 499, "delivery_cost": 180, "units": 1, "is_assumption": true, "note": "EXAMPLE ONLY — assumption."}
+{"offer": "data_pack_1500", "currency": "SAR", "price": 1500, "delivery_cost": 450, "units": 1, "is_assumption": true, "note": "EXAMPLE ONLY — assumption."}
+{"offer": "managed_ops", "currency": "SAR", "price": 3999, "delivery_cost": 1600, "units": 1, "is_assumption": true, "note": "EXAMPLE ONLY — mid-band managed ops retainer assumption."}
+{"offer": "custom_ai", "currency": "SAR", "price": 15000, "delivery_cost": 7000, "units": 1, "is_assumption": true, "note": "EXAMPLE ONLY — mid-band custom AI assumption."}

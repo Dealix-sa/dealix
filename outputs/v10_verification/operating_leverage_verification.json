@@ -1,0 +1,9 @@
+{
+  "name": "OPERATING_LEVERAGE_OS",
+  "verdict": "PASS",
+  "required_file_count": 7,
+  "present_file_count": 7,
+  "missing_files": [],
+  "missing_markers": [],
+  "forbidden_hits": []
+}

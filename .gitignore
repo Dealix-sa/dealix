@@ -107,6 +107,9 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V10 example inputs — synthetic assumptions only, no real revenue/PII, used by CI verify
+!data/profitability_inputs.example.jsonl
+!data/moat_metrics_inputs.example.jsonl
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

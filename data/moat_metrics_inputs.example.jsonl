@@ -1,0 +1,6 @@
+{"metric": "learning_asset_count", "value": 18, "is_assumption": true, "note": "EXAMPLE — learning assets accumulated from deliveries."}
+{"metric": "reusable_template_count", "value": 12, "is_assumption": true, "note": "EXAMPLE — reusable templates in library."}
+{"metric": "sector_depth_score", "value": 3, "max": 5, "is_assumption": true, "note": "EXAMPLE — depth in beachhead sector (0-5)."}
+{"metric": "delivery_reuse_rate", "value": 0.55, "is_assumption": true, "note": "EXAMPLE — share of delivery using existing modules/templates."}
+{"metric": "trust_asset_score", "value": 2, "max": 5, "is_assumption": true, "note": "EXAMPLE — approved proof + local trust signals (0-5)."}
+{"metric": "category_authority_score", "value": 2, "max": 5, "is_assumption": true, "note": "EXAMPLE — recognition in AI Revenue & Operations OS category (0-5)."}

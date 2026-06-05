@@ -1,0 +1,48 @@
+name: V10 CEO Cockpit
+
+# Safe by design: read-only, artifact-only, no secrets, no external sending,
+# no commits. Composes the CEO Cockpit + board packet drafts for founder review.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every weekday 05:30 UTC
+    - cron: "30 5 * * 1-5"
+
+permissions:
+  contents: read
+
+jobs:
+  ceo-cockpit:
+    runs-on: ubuntu-latest
+    env:
+      AUTO_SEND_ENABLED: "false"
+      EXTERNAL_OUTREACH_ENABLED: "false"
+      AGENT_APPROVAL_MODE: "required"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Compose supporting summaries (example inputs only)
+        run: |
+          python scripts/profitability_summary.py
+          python scripts/moat_metrics_summary.py
+      - name: Generate CEO cockpit + board packet (drafts)
+        run: |
+          python scripts/ceo_cockpit_generate.py
+          python scripts/board_packet_generate.py
+      - name: Verify cockpit + board governance
+        run: |
+          python scripts/ceo_cockpit_verify.py
+          python scripts/board_governance_verify.py
+      - name: Upload cockpit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v10-ceo-cockpit
+          path: |
+            outputs/ceo_cockpit/
+            outputs/board_packets/
+            outputs/v10_verification/
+          if-no-files-found: warn
