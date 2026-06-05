@@ -1,4 +1,5 @@
 """Delivery handoff: paid → full customer folder with proof pack + governance."""
+
 from __future__ import annotations
 
 import pytest
@@ -37,9 +38,17 @@ def test_handoff_produces_a_proof_pack(tmp_path) -> None:
 def test_every_file_carries_governance_front_matter(tmp_path) -> None:
     result = create_handoff(_paid_company(), base_dir=tmp_path)
     folder = tmp_path / result["slug"]
-    required = ["source:", "evidence:", "assumption:", "confidence:",
-                "recommendation:", "approval_required:", "next_action:",
-                "owner:", "due_date:"]
+    required = [
+        "source:",
+        "evidence:",
+        "assumption:",
+        "confidence:",
+        "recommendation:",
+        "approval_required:",
+        "next_action:",
+        "owner:",
+        "due_date:",
+    ]
     for filename, _ in CUSTOMER_FILES:
         text = (folder / filename).read_text(encoding="utf-8")
         for key in required:
@@ -59,7 +68,8 @@ def test_handoff_requires_a_company_name(tmp_path) -> None:
 
 
 def test_slug_is_filesystem_safe(tmp_path) -> None:
-    result = create_handoff({**_paid_company(), "company_name": "ACME / Saudi Co. (٢)"},
-                            base_dir=tmp_path)
+    result = create_handoff(
+        {**_paid_company(), "company_name": "ACME / Saudi Co. (٢)"}, base_dir=tmp_path
+    )
     assert "/" not in result["slug"]
     assert (tmp_path / result["slug"]).is_dir()

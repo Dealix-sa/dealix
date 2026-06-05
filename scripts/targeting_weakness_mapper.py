@@ -19,6 +19,7 @@ Weakness types → OS angle:
 Usage:
     python scripts/targeting_weakness_mapper.py --in data/targeting/company_master.jsonl
 """
+
 from __future__ import annotations
 
 import argparse
@@ -73,8 +74,13 @@ def map_weaknesses(
     def add(weakness: str, points: float, evidence: str) -> None:
         slot = tally.setdefault(
             weakness,
-            {"type": weakness, "os_angle": WEAKNESS_TO_OS.get(weakness, "command_os"),
-             "weight": 0.0, "evidence": [], "label_ar": WEAKNESS_LABEL_AR.get(weakness, weakness)},
+            {
+                "type": weakness,
+                "os_angle": WEAKNESS_TO_OS.get(weakness, "command_os"),
+                "weight": 0.0,
+                "evidence": [],
+                "label_ar": WEAKNESS_LABEL_AR.get(weakness, weakness),
+            },
         )
         slot["weight"] += points
         slot["evidence"].append(evidence)
@@ -94,11 +100,16 @@ def map_weaknesses(
         sector = sectors.get(company.get("sector") or "", {})
         angle = sector.get("default_angle", "command_os")
         weakness = next((w for w, os in WEAKNESS_TO_OS.items() if os == angle), "command_fog")
-        ranked = [{
-            "type": weakness, "os_angle": angle, "weight": 0.0,
-            "evidence": [], "label_ar": WEAKNESS_LABEL_AR.get(weakness, weakness),
-            "hypothesis": True,
-        }]
+        ranked = [
+            {
+                "type": weakness,
+                "os_angle": angle,
+                "weight": 0.0,
+                "evidence": [],
+                "label_ar": WEAKNESS_LABEL_AR.get(weakness, weakness),
+                "hypothesis": True,
+            }
+        ]
 
     return {
         "company_name": company.get("company_name"),

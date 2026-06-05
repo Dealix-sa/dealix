@@ -16,6 +16,7 @@ Usage:
     python scripts/targeting_daily_brief.py \\
         --in data/targeting/company_master.jsonl --out data/targeting/out
 """
+
 from __future__ import annotations
 
 import argparse
@@ -38,9 +39,9 @@ def _shortlist(scored: list[dict[str, Any]], weights: dict[str, Any]) -> list[di
     grade_order = ["A+", "A", "B", "C", "D"]
     cutoff = grade_order.index(min_grade) if min_grade in grade_order else 1
     keep = [
-        s for s in scored
-        if not s["reject"] and s["grade"] in grade_order
-        and grade_order.index(s["grade"]) <= cutoff
+        s
+        for s in scored
+        if not s["reject"] and s["grade"] in grade_order and grade_order.index(s["grade"]) <= cutoff
     ]
     return keep[:size]
 
@@ -68,8 +69,11 @@ def build_brief(companies: list[dict[str, Any]]) -> dict[str, Any]:
     # 4) Aggregates for the brief.
     sectors = Counter(s["sector"] for s in scored if not s["reject"])
     best_sector = sectors.most_common(1)[0][0] if sectors else "—"
-    angles = Counter(route_offer(by_name[s["company_name"]])["primary_os_angle"]
-                     for s in shortlist if s["company_name"] in by_name)
+    angles = Counter(
+        route_offer(by_name[s["company_name"]])["primary_os_angle"]
+        for s in shortlist
+        if s["company_name"] in by_name
+    )
     best_angle = angles.most_common(1)[0][0] if angles else "—"
     top_risk = rejected[0]["reasons"][0] if rejected else "no compliance rejects today"
 
@@ -79,8 +83,10 @@ def build_brief(companies: list[dict[str, Any]]) -> dict[str, Any]:
     shortlist_md += "| # | Company | Sector | Score | Grade | Decision |\n"
     shortlist_md += "|---|---------|--------|-------|-------|----------|\n"
     for i, s in enumerate(shortlist, 1):
-        shortlist_md += (f"| {i} | {s['company_name']} | {s['sector']} | "
-                         f"{s['score']} | {s['grade']} | {s['decision']} |\n")
+        shortlist_md += (
+            f"| {i} | {s['company_name']} | {s['sector']} | "
+            f"{s['score']} | {s['grade']} | {s['decision']} |\n"
+        )
 
     brief_md = f"""# Daily Targeting Brief — {today}
 
@@ -98,7 +104,9 @@ def build_brief(companies: list[dict[str, Any]]) -> dict[str, Any]:
 ## أعلى 5 أهداف / Top 5 targets
 """
     for i, s in enumerate(scored[:5], 1):
-        brief_md += f"{i}. **{s['company_name']}** — {s['score']} ({s['grade']}) · {s['decision']}\n"
+        brief_md += (
+            f"{i}. **{s['company_name']}** — {s['score']} ({s['grade']}) · {s['decision']}\n"
+        )
     brief_md += (
         "\n> القاعدة: 400 بحث وليس 400 إرسال. كل رسالة يدوية، بموافقة المؤسس.\n"
         "> Rule: 400 researched, not 400 sent. Every message manual, founder-approved.\n"
@@ -156,9 +164,11 @@ def main(argv: list[str] | None = None) -> int:
     blocks = [d["markdown"] for d in result["drafts"]]
     (out_dir / "drafts_for_review.md").write_text(header + "\n---\n".join(blocks), encoding="utf-8")
 
-    print(f"brief written → {out_dir}  "
-          f"(shortlist={len(result['shortlist'])}, drafts={len(result['drafts'])}, "
-          f"best_sector={result['best_sector']}, best_angle={result['best_angle']})")
+    print(
+        f"brief written → {out_dir}  "
+        f"(shortlist={len(result['shortlist'])}, drafts={len(result['drafts'])}, "
+        f"best_sector={result['best_sector']}, best_angle={result['best_angle']})"
+    )
     return 0
 
 

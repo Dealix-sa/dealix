@@ -1,4 +1,5 @@
 """Scorecard: bounded scores, auditable reasons, correct bands, reject handling."""
+
 from __future__ import annotations
 
 from scripts.targeting_scorecard import rank, score_company
@@ -18,7 +19,11 @@ def _strong_company() -> dict:
         "hiring_signal": True,
         "growth_signal": True,
         "serves_many_clients": True,
-        "source_urls": ["https://strong.example.sa", "https://news.example/strong", "https://strong.example.sa/about"],
+        "source_urls": [
+            "https://strong.example.sa",
+            "https://news.example/strong",
+            "https://strong.example.sa/about",
+        ],
         "evidence_count": 3,
     }
 
@@ -70,9 +75,18 @@ def test_compliance_risk_field_forces_reject() -> None:
 
 
 def test_rank_sorts_high_to_low_and_rejects_last() -> None:
-    companies = [_strong_company(), {"company_name": "R", "sector": "consulting",
-                 "personal_phone": True, "source_urls": ["a", "b"], "evidence_count": 2,
-                 "contact_channel": "warm_introduction", "website": "x"}]
+    companies = [
+        _strong_company(),
+        {
+            "company_name": "R",
+            "sector": "consulting",
+            "personal_phone": True,
+            "source_urls": ["a", "b"],
+            "evidence_count": 2,
+            "contact_channel": "warm_introduction",
+            "website": "x",
+        },
+    ]
     ranked = rank(companies)
     assert ranked[0]["reject"] is False
     assert ranked[-1]["reject"] is True
@@ -81,9 +95,16 @@ def test_rank_sorts_high_to_low_and_rejects_last() -> None:
 def test_axis_points_never_exceed_axis_max() -> None:
     # Pile on every pain signal; pain_signal axis must still cap at its max (20).
     c = _strong_company()
-    for sig in ("weak_cta", "unclear_followup", "no_case_studies",
-                "many_services_no_focus", "fragmented_tools", "recurring_support",
-                "delivery_no_visibility", "many_clients_no_memory"):
+    for sig in (
+        "weak_cta",
+        "unclear_followup",
+        "no_case_studies",
+        "many_services_no_focus",
+        "fragmented_tools",
+        "recurring_support",
+        "delivery_no_visibility",
+        "many_clients_no_memory",
+    ):
         c[sig] = True
     s = score_company(c)
     assert s["axes"]["pain_signal"]["points"] <= 20

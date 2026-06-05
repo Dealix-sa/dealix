@@ -15,6 +15,7 @@ Usage:
         --company "Manar Performance Agency" \\
         --offer command_sprint
 """
+
 from __future__ import annotations
 
 import argparse
@@ -46,8 +47,9 @@ CUSTOMER_FILES = [
 ]
 
 
-def _front_matter(title: str, company: str, *, owner: str, due: str,
-                  next_action: str, confidence: str = "medium") -> str:
+def _front_matter(
+    title: str, company: str, *, owner: str, due: str, next_action: str, confidence: str = "medium"
+) -> str:
     """The standard governance block every customer artifact must carry."""
     return (
         f"# {title} — {company}\n\n"
@@ -123,7 +125,9 @@ def create_handoff(
                 "> First target: L2/L3. Then pursue L4/L5.\n"
             )
         path.write_text(body, encoding="utf-8")
-        created.append(str(path.relative_to(base_dir.parent) if base_dir.parent in path.parents else path))
+        created.append(
+            str(path.relative_to(base_dir.parent) if base_dir.parent in path.parents else path)
+        )
 
     return {
         "company_name": name,

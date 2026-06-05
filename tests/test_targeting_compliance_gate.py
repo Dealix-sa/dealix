@@ -1,4 +1,5 @@
 """Compliance gate: rejects violations, holds sensitive sectors, approves clean."""
+
 from __future__ import annotations
 
 from scripts.targeting_compliance_gate import APPROVED, REJECTED, REVIEW, evaluate, run

@@ -14,6 +14,7 @@ deltas. Pure aggregation — no sending, no scraping.
 Usage:
     python scripts/targeting_learning_loop.py --out data/targeting/out
 """
+
 from __future__ import annotations
 
 import argparse
@@ -82,11 +83,15 @@ def analyze(outcomes: list[dict[str, Any]]) -> dict[str, Any]:
 
 def render(report: dict[str, Any]) -> str:
     today = date.today().isoformat()
-    avg = "\n".join(f"  - {s}: {v}" for s, v in sorted(
-        report["avg_scores"].items(), key=lambda kv: kv[1], reverse=True))
+    avg = "\n".join(
+        f"  - {s}: {v}"
+        for s, v in sorted(report["avg_scores"].items(), key=lambda kv: kv[1], reverse=True)
+    )
     bad = "\n".join(f"  - {s}: {n} rejects" for s, n in report["bad_sources"].items()) or "  - none"
     double_down = report["most_replied_sector"]
-    stop = max(report["bad_sources"], key=report["bad_sources"].get) if report["bad_sources"] else "—"
+    stop = (
+        max(report["bad_sources"], key=report["bad_sources"].get) if report["bad_sources"] else "—"
+    )
     return f"""# Weekly Targeting Retrospective — {today}
 
 ## ماذا نجح / What worked
@@ -127,8 +132,10 @@ def main(argv: list[str] | None = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / "weekly_targeting_retrospective.md"
     path.write_text(render(report), encoding="utf-8")
-    print(f"retrospective → {path}  "
-          f"(best_sector={report['best_sector']}, best_offer={report['best_offer']})")
+    print(
+        f"retrospective → {path}  "
+        f"(best_sector={report['best_sector']}, best_offer={report['best_offer']})"
+    )
     return 0
 
 

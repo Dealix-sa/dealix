@@ -20,6 +20,7 @@ Usage:
         --in data/targeting/company_master.jsonl \\
         --out data/targeting/out
 """
+
 from __future__ import annotations
 
 import argparse
@@ -91,8 +92,11 @@ def evaluate(company: dict[str, Any], blocked: dict[str, Any] | None = None) -> 
     # Decide status.
     # Hard-reject reasons (anything that violates the non-negotiables).
     hard = [
-        r for r in reasons
-        if r.startswith(("blocked_source_type", "blocked_domain", "red_flag", "insufficient_evidence"))
+        r
+        for r in reasons
+        if r.startswith(
+            ("blocked_source_type", "blocked_domain", "red_flag", "insufficient_evidence")
+        )
         or r == "no_contact_channel"
     ]
     if hard:
@@ -124,8 +128,15 @@ def _write_outputs(buckets: dict[str, list[dict[str, Any]]], out_dir: Path) -> N
         w.writerow(["company_name", "sector", "city", "status", "reasons"])
         for v in approved:
             c = v["company"]
-            w.writerow([c.get("company_name"), c.get("sector"), c.get("city"),
-                        v["status"], "; ".join(v["reasons"])])
+            w.writerow(
+                [
+                    c.get("company_name"),
+                    c.get("sector"),
+                    c.get("city"),
+                    v["status"],
+                    "; ".join(v["reasons"]),
+                ]
+            )
     # rejected_targets.csv — every reject with its reason.
     with (out_dir / "rejected_targets.csv").open("w", encoding="utf-8", newline="") as fh:
         w = csv.writer(fh)
@@ -146,12 +157,18 @@ def main(argv: list[str] | None = None) -> int:
     out_dir = Path(args.outdir)
     _write_outputs(buckets, out_dir)
 
-    print(json.dumps({
-        "approved": len(buckets[APPROVED]),
-        "review_required": len(buckets[REVIEW]),
-        "rejected": len(buckets[REJECTED]),
-        "out": str(out_dir),
-    }, ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            {
+                "approved": len(buckets[APPROVED]),
+                "review_required": len(buckets[REVIEW]),
+                "rejected": len(buckets[REJECTED]),
+                "out": str(out_dir),
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
     return 0
 
 

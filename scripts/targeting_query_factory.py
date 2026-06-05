@@ -12,6 +12,7 @@ targeting config.
 Usage:
     python scripts/targeting_query_factory.py --per-sector 6 --out data/targeting/out
 """
+
 from __future__ import annotations
 
 import argparse
@@ -53,13 +54,15 @@ def generate_queries(per_sector: int = 6) -> list[dict[str, str]]:
                 if q in seen:
                     continue
                 seen.add(q)
-                queries.append({
-                    "sector": skey,
-                    "city": ckey,
-                    "query_en": q,
-                    "query_ar": f'{sval.get("name_ar", skey)} {cval.get("name_ar", ckey)} {mod_ar}',
-                    "source_note": "public web only — respect robots.txt, no login, no scraping",
-                })
+                queries.append(
+                    {
+                        "sector": skey,
+                        "city": ckey,
+                        "query_en": q,
+                        "query_ar": f'{sval.get("name_ar", skey)} {cval.get("name_ar", ckey)} {mod_ar}',
+                        "source_note": "public web only — respect robots.txt, no login, no scraping",
+                    }
+                )
                 count += 1
             if count >= per_sector:
                 break
@@ -82,7 +85,9 @@ def main(argv: list[str] | None = None) -> int:
         "Manual LinkedIn visits allowed; no LinkedIn automation.\n",
     ]
     for i, q in enumerate(queries, 1):
-        lines.append(f"{i}. `{q['query_en']}`  \n   - AR: {q['query_ar']}  \n   - {q['source_note']}")
+        lines.append(
+            f"{i}. `{q['query_en']}`  \n   - AR: {q['query_ar']}  \n   - {q['source_note']}"
+        )
     path.write_text("\n".join(lines), encoding="utf-8")
     print(f"queries={len(queries)} → {path}")
     return 0

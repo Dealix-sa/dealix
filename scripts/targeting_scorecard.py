@@ -18,6 +18,7 @@ Usage:
         --in data/targeting/company_master.jsonl \\
         --out data/targeting/out --top 80
 """
+
 from __future__ import annotations
 
 import argparse
@@ -171,7 +172,9 @@ def score_company(
     apply("no_pain_signal", not has_weakness)
     apply("sensitive_sector", bool(sector.get("sensitive")))
     apply("weak_contact_channel", channel not in ALLOWED_CHANNELS or not channel)
-    apply("compliance_risk", bool(company.get("personal_phone") or company.get("no_robots_respect")))
+    apply(
+        "compliance_risk", bool(company.get("personal_phone") or company.get("no_robots_respect"))
+    )
     # Generic-message risk: thin pain + thin evidence → message would be generic.
     apply("generic_message_risk", (not has_weakness) and evidence <= 1)
 
@@ -215,7 +218,10 @@ def score_company(
 def rank(companies: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Score and sort companies high→low, dropping compliance rejects to the end."""
     weights, sectors, cities, signals = (
-        load_weights(), load_sectors(), load_cities(), load_signals()
+        load_weights(),
+        load_sectors(),
+        load_cities(),
+        load_signals(),
     )
     scored = [
         score_company(c, weights=weights, sectors=sectors, cities=cities, signals=signals)
@@ -231,15 +237,35 @@ def _write_ranked_csv(scored: list[dict[str, Any]], out_dir: Path, top: int | No
     rows = scored[:top] if top else scored
     with path.open("w", encoding="utf-8", newline="") as fh:
         w = csv.writer(fh)
-        w.writerow([
-            "rank", "company_name", "sector", "city", "score", "grade",
-            "decision", "evidence_count", "top_reasons",
-        ])
+        w.writerow(
+            [
+                "rank",
+                "company_name",
+                "sector",
+                "city",
+                "score",
+                "grade",
+                "decision",
+                "evidence_count",
+                "top_reasons",
+            ]
+        )
         for i, s in enumerate(rows, 1):
             top_axes = sorted(s["axes"].items(), key=lambda kv: kv[1]["points"], reverse=True)[:3]
             reason = "; ".join(f"{k}={v['points']}" for k, v in top_axes)
-            w.writerow([i, s["company_name"], s["sector"], s["city"], s["score"],
-                        s["grade"], s["decision"], s["evidence_count"], reason])
+            w.writerow(
+                [
+                    i,
+                    s["company_name"],
+                    s["sector"],
+                    s["city"],
+                    s["score"],
+                    s["grade"],
+                    s["decision"],
+                    s["evidence_count"],
+                    reason,
+                ]
+            )
     return path
 
 
@@ -258,8 +284,13 @@ def main(argv: list[str] | None = None) -> int:
     grades: dict[str, int] = {}
     for s in scored:
         grades[s["grade"]] = grades.get(s["grade"], 0) + 1
-    print(json.dumps({"scored": len(scored), "grades": grades, "out": str(path)},
-                     ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            {"scored": len(scored), "grades": grades, "out": str(path)},
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
     return 0
 
 

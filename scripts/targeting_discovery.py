@@ -15,6 +15,7 @@ Usage:
         --seeds data/targeting/company_seed_template.csv \\
         --out data/targeting/out/raw_candidates.jsonl
 """
+
 from __future__ import annotations
 
 import argparse
@@ -55,8 +56,11 @@ def main(argv: list[str] | None = None) -> int:
 
     pct = round(100 * len(candidates) / DAILY_TARGET) if DAILY_TARGET else 0
     print(f"raw_candidates={len(candidates)} ({pct}% of daily target {DAILY_TARGET}) → {out_path}")
-    print("Next: python scripts/targeting_normalizer.py --in", out_path,
-          "--out data/targeting/company_master.jsonl")
+    print(
+        "Next: python scripts/targeting_normalizer.py --in",
+        out_path,
+        "--out data/targeting/company_master.jsonl",
+    )
     return 0
 
 

@@ -10,6 +10,7 @@ Usage:
         --in data/targeting/company_seed_template.csv \\
         --out data/targeting/company_master.jsonl
 """
+
 from __future__ import annotations
 
 import argparse

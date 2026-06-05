@@ -9,6 +9,7 @@ and auditable.
 Pure stdlib + PyYAML. No network, no LLM, no scraping. The whole targeting OS is
 deterministic and offline so its output can be reviewed and reproduced.
 """
+
 from __future__ import annotations
 
 import csv
@@ -76,12 +77,25 @@ def _coerce_bool(value: Any) -> Any:
 
 # Fields that carry boolean signals (so CSV strings get coerced correctly).
 _BOOL_FIELDS = {
-    "b2b", "case_study_presence", "weak_cta", "many_services_no_focus",
-    "no_case_studies", "unclear_followup", "fragmented_tools",
-    "recurring_support", "delivery_no_visibility", "many_clients_no_memory",
-    "ai_claims_no_governance", "hiring_signal", "growth_signal",
-    "partnership_signal", "technology_signal", "recent_news",
-    "serves_many_clients", "personal_phone", "personal_email_only",
+    "b2b",
+    "case_study_presence",
+    "weak_cta",
+    "many_services_no_focus",
+    "no_case_studies",
+    "unclear_followup",
+    "fragmented_tools",
+    "recurring_support",
+    "delivery_no_visibility",
+    "many_clients_no_memory",
+    "ai_claims_no_governance",
+    "hiring_signal",
+    "growth_signal",
+    "partnership_signal",
+    "technology_signal",
+    "recent_news",
+    "serves_many_clients",
+    "personal_phone",
+    "personal_email_only",
     "no_robots_respect",
 }
 

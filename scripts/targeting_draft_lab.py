@@ -18,6 +18,7 @@ Usage:
         --in data/targeting/company_master.jsonl \\
         --out data/targeting/out --limit 10
 """
+
 from __future__ import annotations
 
 import argparse
@@ -30,8 +31,16 @@ from scripts.targeting_weakness_mapper import WEAKNESS_LABEL_AR
 
 # Banned phrases — exaggerated promises we never put in a draft.
 BANNED_PHRASES = [
-    "مضمون", "نضمن", "guarantee", "guaranteed", "100%", "زيادة مؤكدة",
-    "أرباح مضمونة", "نضاعف", "double your", "10x",
+    "مضمون",
+    "نضمن",
+    "guarantee",
+    "guaranteed",
+    "100%",
+    "زيادة مؤكدة",
+    "أرباح مضمونة",
+    "نضاعف",
+    "double your",
+    "10x",
 ]
 
 # Positive-signal phrasing in Arabic for the "reason for targeting" line.
@@ -74,7 +83,9 @@ def build_draft(company: dict[str, Any], routed: dict[str, Any] | None = None) -
     positive = _positive_signal(company)
     weakness = routed["primary_weakness"]
     weakness_ar = WEAKNESS_LABEL_AR.get(weakness, weakness)
-    opportunity = WEAKNESS_OPPORTUNITY_AR.get(weakness, "تنظيم أول حلقة تشغيل حول الفرص والدليل والقرار")
+    opportunity = WEAKNESS_OPPORTUNITY_AR.get(
+        weakness, "تنظيم أول حلقة تشغيل حول الفرص والدليل والقرار"
+    )
     offer = routed["offer"]
     includes = "\n".join(f"  - {x}" for x in offer["includes"])
     evidence = "، ".join(company.get("source_urls", []) or ["—"])

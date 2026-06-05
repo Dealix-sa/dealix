@@ -1,4 +1,5 @@
 """End-to-end pipeline: weakness → offer → draft (no auto-send) → brief → learning."""
+
 from __future__ import annotations
 
 from scripts.targeting_daily_brief import build_brief
@@ -62,9 +63,11 @@ def test_draft_requires_evidence() -> None:
 
 
 def test_daily_brief_runs_full_pipeline() -> None:
-    companies = [_agency(),
-                 {**_agency(), "company_name": "Sensitive Clinic", "sector": "healthcare"},
-                 {**_agency(), "company_name": "Bad Lead", "personal_phone": True}]
+    companies = [
+        _agency(),
+        {**_agency(), "company_name": "Sensitive Clinic", "sector": "healthcare"},
+        {**_agency(), "company_name": "Bad Lead", "personal_phone": True},
+    ]
     result = build_brief(companies)
     names = {s["company_name"] for s in result["scored"]}
     assert "Manar Performance Agency" in names
@@ -76,12 +79,28 @@ def test_daily_brief_runs_full_pipeline() -> None:
 
 def test_learning_loop_aggregates_outcomes() -> None:
     outcomes = [
-        {"sector": "marketing_agency", "score": 86, "stage": "paid",
-         "message_angle": "proof_gap", "offer": "command_sprint", "source_type": "official_site"},
-        {"sector": "tech_software", "score": 79, "stage": "no_reply",
-         "message_angle": "delivery_blindness", "source_type": "directory"},
-        {"sector": "consulting", "score": 88, "stage": "diagnostic",
-         "message_angle": "command_fog", "source_type": "official_site"},
+        {
+            "sector": "marketing_agency",
+            "score": 86,
+            "stage": "paid",
+            "message_angle": "proof_gap",
+            "offer": "command_sprint",
+            "source_type": "official_site",
+        },
+        {
+            "sector": "tech_software",
+            "score": 79,
+            "stage": "no_reply",
+            "message_angle": "delivery_blindness",
+            "source_type": "directory",
+        },
+        {
+            "sector": "consulting",
+            "score": 88,
+            "stage": "diagnostic",
+            "message_angle": "command_fog",
+            "source_type": "official_site",
+        },
     ]
     report = analyze(outcomes)
     assert report["best_offer"] == "command_sprint"

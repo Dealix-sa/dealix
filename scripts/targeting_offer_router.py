@@ -10,6 +10,7 @@ instead of a sell.
 Usage:
     python scripts/targeting_offer_router.py --in data/targeting/company_master.jsonl
 """
+
 from __future__ import annotations
 
 import argparse
@@ -27,7 +28,12 @@ OFFERS = {
         "name_en": "Dealix Command Sprint (7 days)",
         "name_ar": "Dealix Command Sprint — 7 أيام",
         "price_sar": 499,
-        "includes": ["Revenue Map", "Proof Register", "Executive Command Brief", "Next Action Board"],
+        "includes": [
+            "Revenue Map",
+            "Proof Register",
+            "Executive Command Brief",
+            "Next Action Board",
+        ],
         "draft": "command_sprint_offer",
     },
     "business_os_setup": {
