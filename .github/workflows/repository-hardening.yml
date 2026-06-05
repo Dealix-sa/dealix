@@ -51,6 +51,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Pinned tag 0.24.0 was removed upstream; track @master like docker-build.yml.
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
