@@ -31,15 +31,24 @@ jobs:
 
       # Use the open-source Gitleaks binary instead of gitleaks/gitleaks-action@v2,
       # which requires a paid GITLEAKS_LICENSE secret for organizations. Honors the
-      # repo's .gitleaks.toml allowlist; scans the working tree (--no-git).
-      - name: Run Gitleaks (OSS)
+      # repo's .gitleaks.toml allowlist. Scans only commits introduced relative to
+      # origin/main (the same scope as the action on a PR) so the gate blocks NEW
+      # secrets without failing on pre-existing test fixtures elsewhere in the tree.
+      - name: Run Gitleaks (OSS, new commits only)
         run: |
           set -euo pipefail
           GITLEAKS_VERSION=8.18.4
           curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o gitleaks.tar.gz
           tar -xzf gitleaks.tar.gz gitleaks
           ./gitleaks version
-          ./gitleaks detect --source . --no-git --redact --no-banner --exit-code 1
+          git fetch --quiet --no-tags origin main || true
+          if git rev-parse --verify --quiet origin/main >/dev/null \
+             && [ "$(git rev-list --count origin/main..HEAD)" -gt 0 ]; then
+            echo "Scanning new commits in origin/main..HEAD"
+            ./gitleaks detect --source . --log-opts="origin/main..HEAD" --redact --no-banner --exit-code 1
+          else
+            echo "No new commits vs origin/main; nothing to scan."
+          fi
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -55,6 +64,10 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
+          # Vulnerability scanning only; secret scanning is owned by the dedicated
+          # Gitleaks job above. (Trivy's secret scanner flags the repo's own
+          # secret-detector scripts, e.g. literal "sk_live_xxxxx" allowlist patterns.)
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
