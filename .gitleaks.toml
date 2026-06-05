@@ -52,6 +52,7 @@ paths = [
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
     '''tests/fixtures/.*''',
+    '''tests/.*''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
