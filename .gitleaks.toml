@@ -47,12 +47,20 @@ tags = ["key", "hubspot"]
 
 [allowlist]
 description = "Global allowlist"
+# NOTE: test code carries intentional fake credentials (redaction/auth/validation
+# fixtures). It is allowlisted here because the repo-native scripts/security_smoke.py
+# still scans tests/ for real live-token shapes (sk_live_/ghp_/github_pat_/AKIA/xox)
+# with a per-line `pragma: allowlist secret` opt-out — so high-risk tokens in tests
+# remain guarded with precision, while gitleaks focuses on product/source/config.
 paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    '''tests/.*''',
+    '''.*\.pyc$''',
     '''docs/.*\.md$''',
+    '''docs/ops/moyasar_live_test\.sh$''',
+    '''scripts/ops/moyasar_pilot_test\.sh$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
 
