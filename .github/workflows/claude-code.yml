@@ -20,6 +20,7 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  id-token: write # required by claude-code-action to fetch an OIDC token
 
 # Avoid stacking redundant runs on the same PR/issue thread.
 concurrency:
