@@ -18,7 +18,10 @@ import logging
 import re
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from core.agents.tools import Tool
 
 from core.config.models import Task
 from core.errors import AgentError

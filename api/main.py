@@ -136,12 +136,12 @@ from api.routers import kpi_dashboard as kpi_dashboard_router
 from api.routers import weekly_reports as weekly_reports_router
 
 from api.security import APIKeyMiddleware, setup_rate_limit
-from core.config.settings import get_settings
+from core.config.settings import Settings, get_settings
 from core.errors import AICompanyError
 from core.logging import configure_logging, get_logger
 
 
-def _validate_production_secrets(settings: Settings) -> None:  # type: ignore[name-defined]
+def _validate_production_secrets(settings: Settings) -> None:
     """
     Fail fast if production is started with insecure defaults.
     يرفض تشغيل الإنتاج بإعدادات غير آمنة.
