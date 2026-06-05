@@ -33,7 +33,7 @@ REQUIRED_FILES = {
     ],
     "governance": [
         ".github/CODEOWNERS",
-        ".github/pull_request_template.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
         ".github/ISSUE_TEMPLATE/production_incident.yml",
         "docs/ops/FOUNDER_A_TO_Z_LAUNCH_RUNBOOK_AR.md",
         "docs/ops/RAILWAY_SERVICE_ENV_MATRIX_AR.md",

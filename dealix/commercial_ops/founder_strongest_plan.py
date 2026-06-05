@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import subprocess
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -21,6 +22,32 @@ def load_strongest_plan_checklist() -> dict[str, Any]:
         return {"version": "0", "tasks": [], "phases": []}
     data = yaml.safe_load(CHECKLIST_PATH.read_text(encoding="utf-8"))
     return data if isinstance(data, dict) else {}
+
+
+@lru_cache(maxsize=512)
+def _is_runtime_generated(rel: str) -> bool:
+    """True when ``rel`` is a git-ignored output produced at run time.
+
+    A referenced path that is git-ignored (e.g. ``data/war_room_today.json``)
+    is generated at run time and must not block the static wiring check — the
+    contract is "linked *repo* paths resolve", and ignored artifacts are not
+    committed repo paths. ``git check-ignore`` evaluates the ignore rules even
+    when the file does not yet exist on disk. Returns ``False`` if git is
+    unavailable so the check fails closed (stays strict).
+    """
+    rel = rel.rstrip("/")
+    if not rel:
+        return False
+    try:
+        proc = subprocess.run(  # noqa: S603 — fixed git args, trusted repo
+            ["git", "-C", str(REPO_ROOT), "check-ignore", "-q", rel],  # noqa: S607
+            capture_output=True,
+            timeout=15,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return False
+    # check-ignore: exit 0 → ignored, 1 → not ignored, 128 → error
+    return proc.returncode == 0
 
 
 def _collect_paths(task: dict[str, Any]) -> list[str]:
@@ -59,6 +86,9 @@ def strongest_plan_status() -> dict[str, Any]:
             if not rel or rel.startswith("POST ") or rel.startswith("GET "):
                 continue
             if rel.startswith("/ar/"):
+                continue
+            if _is_runtime_generated(rel):
+                # Git-ignored output produced at run time, not committed wiring.
                 continue
             if rel.endswith("/"):
                 p = REPO_ROOT / rel.rstrip("/")

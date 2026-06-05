@@ -51,9 +51,17 @@ paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    # Test files carry intentionally-fake fixtures (redactor inputs, dummy
+    # API keys, tenant-isolation tokens) — never real credentials.
+    '''tests/.*''',
+    # Compiled bytecode is a build artifact, not source.
+    '''.*/__pycache__/.*''',
+    '''.*\.pyc$''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
+    # Launch-verify scripts embed secret-detection regexes (sk_live_…, ghp_…,
+    # AIza…) as grep patterns, not real secrets.
+    '''scripts/v\d+_[a-z_]+verify\.sh$''',
 ]
 
 regexes = [

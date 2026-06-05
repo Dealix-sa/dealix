@@ -18,6 +18,10 @@ from auto_client_acquisition.workflow_os_v10 import (
     save_checkpoint,
     start_workflow,
 )
+from auto_client_acquisition.workflow_os_v10.service_session_executor import (
+    execute_step,
+    list_workflow_steps,
+)
 
 
 def _ensure_canonical_definitions_registered() -> None:
