@@ -36,10 +36,10 @@ const FEATURES = [
   },
   {
     icon: "🤝",
-    ar: "إدارة العملاء (CRM)",
-    en: "CRM Management",
-    descAr: "CRM محكوم بالبيانات مع audit log كامل.",
-    descEn: "Data-governed CRM with full audit trail.",
+    ar: "ذاكرة العميل والعلاقات",
+    en: "Client Memory & Relationships",
+    descAr: "ذاكرة عميل محكومة بالبيانات مع audit log كامل — جزء من نظام التشغيل، لا مجرد CRM.",
+    descEn: "Data-governed client memory with a full audit trail — part of the OS, not just a CRM.",
   },
   {
     icon: "📋",
@@ -109,8 +109,8 @@ const PRICING = [
     priceEn: "Custom",
     periodAr: "",
     periodEn: "",
-    featuresAr: ["كل ميزات النمو", "تكامل API مخصص", "مدير حساب مخصص", "SLA مضمون", "تدريب الفريق", "audit log كامل"],
-    featuresEn: ["Everything in Growth", "Custom API integration", "Dedicated account manager", "Guaranteed SLA", "Team training", "Full audit log"],
+    featuresAr: ["كل ميزات النمو", "تكامل API مخصص", "مدير حساب مخصص", "SLA واضح ومكتوب", "تدريب الفريق", "audit log كامل"],
+    featuresEn: ["Everything in Growth", "Custom API integration", "Dedicated account manager", "Defined written SLA", "Team training", "Full audit log"],
     popular: false,
     ctaAr: "تحدث مع فريقنا",
     ctaEn: "Talk to our team",
@@ -324,7 +324,7 @@ export function CommercialLaunchHome() {
             >
               {isAr ? (
                 <>
-                  محرّك الإيرادات{" "}
+                  نظام تشغيل الأعمال{" "}
                   <span className="bg-gradient-to-r from-gold-400 to-gold-300 bg-clip-text text-transparent">
                     بالذكاء الاصطناعي
                   </span>{" "}
@@ -332,11 +332,11 @@ export function CommercialLaunchHome() {
                 </>
               ) : (
                 <>
-                  The{" "}
+                  The Saudi{" "}
                   <span className="bg-gradient-to-r from-gold-400 to-gold-300 bg-clip-text text-transparent">
-                    AI Revenue Engine
+                    AI Business Operating System
                   </span>{" "}
-                  for Saudi Enterprises
+                  for companies
                 </>
               )}
             </motion.h1>
@@ -347,8 +347,8 @@ export function CommercialLaunchHome() {
               className="mt-5 text-base md:text-lg text-white/70 max-w-xl mx-auto leading-relaxed"
             >
               {isAr
-                ? "كشف تسرّب الإيراد · حوكمة الذكاء الاصطناعي · امتثال ZATCA & PDPL — كل شيء في منصة واحدة محكومة بالدليل."
-                : "Revenue leakage detection · AI governance · ZATCA & PDPL compliance — all in one evidence-governed platform."}
+                ? "نحوّل واتساب وإكسل والاجتماعات والقرارات المبعثرة إلى إيقاع تشغيل واحد: ماذا يحدث؟ ماذا يجب أن يحدث؟ من يوافق؟ ما الدليل؟ ما الإجراء التالي؟ نبدأ من Revenue OS عبر Command Sprint."
+                : "We turn scattered WhatsApp, Excel, meetings, and decisions into one operating rhythm: what is happening, what should happen next, who approves, what is the evidence, what is the next action. We start with Revenue OS via the Command Sprint."}
             </motion.p>
 
             <motion.div
@@ -371,8 +371,8 @@ export function CommercialLaunchHome() {
                 variant="outline"
                 className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 backdrop-blur-sm text-base h-13 px-8"
               >
-                <Link href={`${base}/demo`}>
-                  {isAr ? "شاهد كيف يعمل" : "See How It Works"}
+                <Link href={`${base}/command-sprint`}>
+                  {isAr ? "ابدأ Command Sprint" : "Start Command Sprint"}
                 </Link>
               </Button>
             </motion.div>
@@ -636,6 +636,11 @@ export function CommercialLaunchHome() {
             <h2 className="text-3xl md:text-4xl font-bold">
               {isAr ? "ما يقوله عملاؤنا" : "What our clients say"}
             </h2>
+            <p className="mt-3 text-xs text-white/40 max-w-xl mx-auto">
+              {isAr
+                ? "أمثلة توضيحية. لا تُنشر قصة عميل حقيقية باسمه قبل موافقته الخطية."
+                : "Illustrative examples. No real customer story is published with a name before their written approval."}
+            </p>
           </motion.div>
 
           <motion.div

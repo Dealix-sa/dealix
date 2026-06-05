@@ -19,13 +19,16 @@ export function PublicLaunchShell({ children, compactNav = false }: { children: 
           <Link href={base}><BrandLogo variant="full" priority className="h-8" /></Link>
           {!compactNav ? (
             <nav className="flex flex-wrap items-center gap-3 text-sm">
-              <Link href={`${base}/services`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "الخدمات" : "Services"}</Link>
+              <Link href={`${base}/business-os`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "نظام التشغيل" : "Business OS"}</Link>
+              <Link href={`${base}/command-sprint`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "Command Sprint" : "Command Sprint"}</Link>
+              <Link href={`${base}/industries`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "القطاعات" : "Industries"}</Link>
               <Link href={`${base}/pricing`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "التسعير" : "Pricing"}</Link>
+              <Link href={`${base}/security`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "الأمان" : "Security"}</Link>
               <Link href={`${base}/learn`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{t("navLearn")}</Link>
               <Link href={`${base}/about`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "عن Dealix" : "About"}</Link>
               <Link href={`${base}/trust`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "الثقة" : "Trust"}</Link>
-              <Link href={`${base}/risk-score`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{t("ctaRiskScore")}</Link>
               <Link href={`${base}/login`} className="font-medium text-[var(--dealix-deep-green)]">{t("navLogin")}</Link>
+              <Link href={`${base}/start`} className="rounded-lg bg-[var(--dealix-gold)] px-3 py-1.5 font-semibold text-[var(--dealix-navy)] hover:bg-[var(--dealix-gold-hover)]">{isAr ? "ابدأ" : "Start"}</Link>
               {adminKey ? <Link href={`${base}/ops/founder`} className="text-[var(--dealix-gold)]">{isAr ? "تشغيل المؤسس" : "Founder ops"}</Link> : null}
               <LocaleToggle />
             </nav>
