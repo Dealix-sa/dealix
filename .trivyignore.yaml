@@ -1,0 +1,15 @@
+# Trivy ignore file — reviewed false positives only.
+#
+# NOTE: Real CRITICAL/HIGH CVEs in next@15.1.3 are intentionally NOT ignored
+# here. They are tracked and fixed via dedicated dependabot PRs (next 15.5.x /
+# 16.x). Do not add real dependency CVEs to this file to "go green".
+
+secrets:
+  # Both lines are grep/detection patterns that search FOR secrets
+  # (e.g. 'sk_live_xxxxx', 'sk_live_test'), not real credentials. The
+  # stripe-secret-token rule matches the literal pattern text inside the
+  # verification scripts. Reviewed and confirmed false positives.
+  - id: stripe-secret-token
+    paths:
+      - "scripts/v10_master_verify.sh"
+      - "scripts/v7_launch_verify.sh"
