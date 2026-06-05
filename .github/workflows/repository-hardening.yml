@@ -45,6 +45,7 @@ jobs:
           /tmp/gitleaks dir . \
             --config .gitleaks.toml \
             --redact \
+            --verbose \
             --no-banner \
             --exit-code 1
 
@@ -57,12 +58,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Install Trivy via the official script instead of the marketplace action,
+      # whose pinned tags (0.24.0 / 0.30.0) stopped resolving on GitHub.
+      - name: Install Trivy
+        run: |
+          set -euo pipefail
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b /usr/local/bin
+          trivy --version
+
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.30.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+        run: |
+          trivy fs . \
+            --scanners vuln \
+            --severity CRITICAL,HIGH \
+            --ignore-unfixed \
+            --format table \
+            --exit-code 1
