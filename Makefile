@@ -8,7 +8,7 @@
         lint format type-check security security-smoke clean run demo cockpit doctor \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
-        env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
+        env-check launch-verify openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference
 
@@ -73,6 +73,13 @@ security-smoke: ## Run dependency-free repository security smoke checks
 
 env-check: ## Validate .env.example contract and duplicate keys
 	$(PYTHON) scripts/check_env_contract.py
+
+launch-verify: ## Wave 3: run all Dealix launch gates (positioning, cta, module-status, growth, readiness)
+	$(PYTHON) scripts/verify_dealix_positioning.py
+	$(PYTHON) scripts/verify_dealix_cta_map.py
+	$(PYTHON) scripts/verify_dealix_module_status.py
+	$(PYTHON) scripts/verify_dealix_growth_assets.py
+	$(PYTHON) scripts/verify_dealix_launch_readiness.py
 
 openapi-export: ## Export FastAPI OpenAPI schema (OPENAPI_OUTPUT=...)
 	$(PYTHON) scripts/export_openapi.py --output $(OPENAPI_OUTPUT)
