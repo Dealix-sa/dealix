@@ -57,7 +57,7 @@ RL_STORAGE_URI=\${REDIS_URL}
 
 # ── Moyasar ──
 MOYASAR_MODE=production
-MOYASAR_SECRET_KEY=<fill-with-sk_live_xxxxx-from-Moyasar-dashboard>
+MOYASAR_SECRET_KEY=<fill-with-sk_live_REPLACE_ME-from-Moyasar-dashboard>
 MOYASAR_WEBHOOK_SECRET=${MOYASAR_WEBHOOK}
 # ☝️ Copy the same value into Moyasar dashboard → Webhooks → Secret.
 

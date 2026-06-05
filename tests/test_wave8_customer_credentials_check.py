@@ -69,8 +69,8 @@ def test_missing_optional_returns_demo_fallback():
 
 def test_mask_never_returns_full_value():
     mod = _load_module()
-    result = mod._mask("sk_live_super_secret_key_12345")
-    assert "sk_live_super_secret" not in result
+    result = mod._mask("sk_live_super_secret_key_12345")  # pragma: allowlist secret
+    assert "sk_live_super_secret" not in result  # pragma: allowlist secret
     assert result.startswith("***")
 
 

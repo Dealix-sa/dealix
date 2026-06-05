@@ -58,6 +58,11 @@ ALLOWED_PLACEHOLDER_MARKERS = (
     "example",
     "test-",
     "placeholder",
+    # Standard detect-secrets inline opt-out. Per-line and explicit, so an
+    # accidentally committed real secret is NOT masked unless deliberately
+    # annotated. Used on intentional fixtures (redaction tests, the
+    # no-live-charge invariant) that must keep a realistic token shape.
+    "pragma: allowlist secret",
 )
 
 
@@ -86,7 +91,7 @@ def main() -> int:
     forbidden_env_files = [
         path
         for path in ROOT.glob(".env*")
-        if path.name not in {".env.example"} and path.is_file()
+        if not path.name.endswith(".example") and path.is_file()
     ]
     for path in forbidden_env_files:
         errors.append(f"Do not commit local env file: {path.relative_to(ROOT)}")

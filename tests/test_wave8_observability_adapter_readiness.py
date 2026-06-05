@@ -94,7 +94,7 @@ def test_redaction_scrubs_email():
 
 def test_redaction_scrubs_api_key():
     from auto_client_acquisition.observability_adapters.redaction import RedactionFilter
-    result = RedactionFilter.scrub_string("Key: sk_live_abcdefghijk12345")
+    result = RedactionFilter.scrub_string("Key: sk_live_abcdefghijk12345")  # pragma: allowlist secret
     assert "sk_live_" not in result
     assert "REDACTED_KEY" in result
 

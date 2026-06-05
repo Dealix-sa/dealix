@@ -22,7 +22,7 @@ async def test_list_plans_endpoint(async_client):
     assert "plans" in data
 
 
-def test_no_literal_github_pat_in_pricing_module_source():
+def test_no_literal_github_pat_in_pricing_module_source():  # pragma: allowlist secret
     import inspect
 
     src = inspect.getsource(pricing)
