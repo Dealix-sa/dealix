@@ -1,0 +1,10 @@
+{
+  "aggregate": "master_startup_command",
+  "verdict": "PASS",
+  "checked": {
+    "agent_governance": "PASS",
+    "agent_registry": "PASS",
+    "cost_control": "PASS",
+    "docs_governance": "PASS"
+  }
+}

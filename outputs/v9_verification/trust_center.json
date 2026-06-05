@@ -1,0 +1,88 @@
+{
+  "system": "trust_center",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 10,
+    "files_present": 10,
+    "configs_required": 0,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/trust-center-os/00_TRUST_CENTER_OS.md",
+      "exists": true,
+      "bytes": 1430,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/01_PUBLIC_TRUST_PAGE_SPEC.md",
+      "exists": true,
+      "bytes": 1512,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/02_SECURITY_OVERVIEW.md",
+      "exists": true,
+      "bytes": 1425,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/03_PRIVACY_OVERVIEW.md",
+      "exists": true,
+      "bytes": 1452,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/04_HUMAN_APPROVAL_POLICY.md",
+      "exists": true,
+      "bytes": 1468,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/05_NO_BLIND_AUTOMATION_POLICY.md",
+      "exists": true,
+      "bytes": 1477,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/06_DATA_MINIMIZATION_POLICY.md",
+      "exists": true,
+      "bytes": 1425,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/07_INCIDENT_DISCLOSURE_PROCESS.md",
+      "exists": true,
+      "bytes": 1432,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/08_CUSTOMER_SECURITY_FAQ.md",
+      "exists": true,
+      "bytes": 1519,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/trust-center-os/99_TRUST_CENTER_REPORT.md",
+      "exists": true,
+      "bytes": 2257,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": []
+}

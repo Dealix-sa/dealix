@@ -1,0 +1,62 @@
+{
+  "version": "v9",
+  "description": "Sandbox-only demo scenarios. Sample data only — never connected to real customer data.",
+  "safety": {
+    "sample_data_only": true,
+    "no_real_customer_data": true,
+    "no_secrets": true,
+    "no_external_sending": true
+  },
+  "scenarios": [
+    {
+      "id": "retail_lead_triage",
+      "sector": "retail",
+      "title_en": "Retail lead triage",
+      "title_ar": "فرز عملاء التجزئة المحتملين",
+      "pain_en": "Too many inbound leads, no consistent qualification.",
+      "pain_ar": "عملاء محتملون كثر بدون تأهيل متسق.",
+      "workflow": "ingest sample leads -> score -> rank -> founder reviews top list",
+      "next_step": "paid_diagnostic"
+    },
+    {
+      "id": "logistics_account_scoring",
+      "sector": "logistics",
+      "title_en": "Logistics account scoring",
+      "title_ar": "تقييم حسابات الخدمات اللوجستية",
+      "pain_en": "Hard to know which accounts are worth pursuing.",
+      "pain_ar": "صعوبة معرفة الحسابات التي تستحق المتابعة.",
+      "workflow": "ingest sample accounts -> enrich -> score -> recommend focus",
+      "next_step": "paid_diagnostic"
+    },
+    {
+      "id": "healthcare_intake_quality",
+      "sector": "healthcare",
+      "title_en": "Healthcare intake quality",
+      "title_ar": "جودة استقبال القطاع الصحي",
+      "pain_en": "Inconsistent intake data quality.",
+      "pain_ar": "جودة بيانات الاستقبال غير متسقة.",
+      "workflow": "ingest sample intake -> DQ score -> recommendations",
+      "next_step": "paid_diagnostic"
+    },
+    {
+      "id": "realestate_pipeline_hygiene",
+      "sector": "real_estate",
+      "title_en": "Real estate pipeline hygiene",
+      "title_ar": "نظافة خط أنابيب العقارات",
+      "pain_en": "Stale, duplicated pipeline records.",
+      "pain_ar": "سجلات خط أنابيب قديمة ومكررة.",
+      "workflow": "ingest sample pipeline -> dedupe -> freshness score",
+      "next_step": "paid_diagnostic"
+    },
+    {
+      "id": "b2b_services_proposal_prep",
+      "sector": "b2b_services",
+      "title_en": "B2B services proposal prep",
+      "title_ar": "تجهيز عروض خدمات الأعمال",
+      "pain_en": "Slow, inconsistent proposal preparation.",
+      "pain_ar": "تجهيز عروض بطيء وغير متسق.",
+      "workflow": "ingest sample brief -> draft proposal -> founder reviews",
+      "next_step": "paid_diagnostic"
+    }
+  ]
+}

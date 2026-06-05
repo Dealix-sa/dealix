@@ -1,0 +1,80 @@
+{
+  "system": "deployment_static",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 8,
+    "files_present": 8,
+    "configs_required": 0,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/deployment-verification-os/00_DEPLOYMENT_VERIFICATION_OS.md",
+      "exists": true,
+      "bytes": 1434,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/deployment-verification-os/01_MAIN_SERVER_CHECKLIST.md",
+      "exists": true,
+      "bytes": 1389,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/deployment-verification-os/02_HEALTHCHECK_POLICY.md",
+      "exists": true,
+      "bytes": 1303,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/deployment-verification-os/03_FRONTEND_DEPLOY_CHECK.md",
+      "exists": true,
+      "bytes": 1354,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/deployment-verification-os/04_BACKEND_DEPLOY_CHECK.md",
+      "exists": true,
+      "bytes": 1343,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/deployment-verification-os/05_ROLLBACK_CHECKLIST.md",
+      "exists": true,
+      "bytes": 1291,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/deployment-verification-os/06_POST_DEPLOY_SMOKE_TEST.md",
+      "exists": true,
+      "bytes": 1353,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/deployment-verification-os/99_DEPLOYMENT_VERIFICATION_REPORT.md",
+      "exists": true,
+      "bytes": 2343,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": [],
+  "deploy_artifacts_present": {
+    "Dockerfile": true,
+    "docker-compose.yml": true,
+    "railway.json": true,
+    "Procfile": true
+  }
+}

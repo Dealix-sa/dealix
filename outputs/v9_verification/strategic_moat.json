@@ -1,0 +1,88 @@
+{
+  "system": "strategic_moat",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 10,
+    "files_present": 10,
+    "configs_required": 0,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/strategic-moat-os/00_STRATEGIC_MOAT_OS.md",
+      "exists": true,
+      "bytes": 1700,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/01_MOAT_THESIS.md",
+      "exists": true,
+      "bytes": 1661,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/02_COMPOUNDING_ADVANTAGES.md",
+      "exists": true,
+      "bytes": 1540,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/03_DATA_ASSET_STRATEGY.md",
+      "exists": true,
+      "bytes": 1693,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/04_WORKFLOW_IP_STRATEGY.md",
+      "exists": true,
+      "bytes": 1655,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/05_TRUST_MOAT.md",
+      "exists": true,
+      "bytes": 1612,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/06_DISTRIBUTION_MOAT.md",
+      "exists": true,
+      "bytes": 1518,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/07_DELIVERY_MOAT.md",
+      "exists": true,
+      "bytes": 1463,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/08_CATEGORY_MOAT.md",
+      "exists": true,
+      "bytes": 1493,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/strategic-moat-os/99_STRATEGIC_MOAT_REPORT.md",
+      "exists": true,
+      "bytes": 2341,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": []
+}

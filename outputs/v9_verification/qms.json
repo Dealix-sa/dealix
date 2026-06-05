@@ -1,0 +1,89 @@
+{
+  "system": "qms",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 9,
+    "files_present": 9,
+    "configs_required": 1,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/qms-os/00_QUALITY_MANAGEMENT_SYSTEM.md",
+      "exists": true,
+      "bytes": 1483,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/qms-os/01_QUALITY_POLICY.md",
+      "exists": true,
+      "bytes": 1347,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/qms-os/02_DOCUMENT_CONTROL.md",
+      "exists": true,
+      "bytes": 1362,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/qms-os/03_DELIVERY_QA.md",
+      "exists": true,
+      "bytes": 1360,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/qms-os/04_SALES_QA.md",
+      "exists": true,
+      "bytes": 1362,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/qms-os/05_MESSAGE_QA.md",
+      "exists": true,
+      "bytes": 1372,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/qms-os/06_SECURITY_QA.md",
+      "exists": true,
+      "bytes": 1345,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/qms-os/07_CONTINUOUS_IMPROVEMENT.md",
+      "exists": true,
+      "bytes": 1357,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/qms-os/99_QMS_REPORT.md",
+      "exists": true,
+      "bytes": 2303,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": [
+    {
+      "path": "config/qms_checklists.json",
+      "exists": true,
+      "valid_json": true,
+      "missing_keys": [],
+      "violations": []
+    }
+  ]
+}

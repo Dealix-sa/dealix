@@ -1,0 +1,74 @@
+{
+  "system": "procurement",
+  "date": "2026-06-04",
+  "verdict": "PASS",
+  "summary": {
+    "files_required": 8,
+    "files_present": 8,
+    "configs_required": 0,
+    "missing": [],
+    "thin": [],
+    "bad_json": [],
+    "missing_keys": [],
+    "violations": []
+  },
+  "files": [
+    {
+      "path": "docs/procurement-os/00_PROCUREMENT_OS.md",
+      "exists": true,
+      "bytes": 1529,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/procurement-os/01_VENDOR_REGISTRATION_PACKET.md",
+      "exists": true,
+      "bytes": 1434,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/procurement-os/02_PURCHASE_ORDER_PROCESS.md",
+      "exists": true,
+      "bytes": 1360,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/procurement-os/03_CONTRACT_NEGOTIATION_RULES.md",
+      "exists": true,
+      "bytes": 1359,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/procurement-os/04_PAYMENT_TERMS_POLICY.md",
+      "exists": true,
+      "bytes": 1334,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/procurement-os/05_SOW_ACCEPTANCE_CRITERIA.md",
+      "exists": true,
+      "bytes": 1318,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/procurement-os/06_CHANGE_REQUEST_PROCESS.md",
+      "exists": true,
+      "bytes": 1392,
+      "substantive": true,
+      "violations": []
+    },
+    {
+      "path": "docs/procurement-os/99_PROCUREMENT_OS_REPORT.md",
+      "exists": true,
+      "bytes": 2239,
+      "substantive": true,
+      "violations": []
+    }
+  ],
+  "configs": []
+}

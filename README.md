@@ -230,6 +230,51 @@ Then review:
 
 ---
 
+## V9 — Strategic Moat & Enterprise Readiness OS
+
+Layer V9 turns the repository into an enterprise-ready company operating system.
+Start at the [Master Index](docs/00_MASTER_INDEX.md).
+
+| System | Folder | Verifier |
+|---|---|---|
+| Strategic Moat OS | [`docs/strategic-moat-os/`](docs/strategic-moat-os/) | `scripts/strategic_moat_verify.py` |
+| Enterprise Readiness OS | [`docs/enterprise-readiness-os/`](docs/enterprise-readiness-os/) | `scripts/enterprise_readiness_verify.py` |
+| Trust Center OS | [`docs/trust-center-os/`](docs/trust-center-os/) | `scripts/trust_center_verify.py` |
+| Demo & Sandbox OS | [`docs/demo-os/`](docs/demo-os/) | `scripts/demo_os_verify.py` |
+| Customer Lifecycle OS | [`docs/customer-lifecycle-os/`](docs/customer-lifecycle-os/) | `scripts/customer_lifecycle_verify.py` |
+| Founder Delegation OS | [`docs/delegation-os/`](docs/delegation-os/) | `scripts/agent_governance_verify.py` |
+| Agent Governance OS | [`docs/agent-governance-os/`](docs/agent-governance-os/) | `scripts/agent_governance_verify.py` |
+| Cost Control OS | [`docs/cost-control-os/`](docs/cost-control-os/) | `scripts/cost_control_verify.py` |
+| Data Room OS | [`docs/data-room-os/`](docs/data-room-os/) | `scripts/data_room_verify.py` |
+| Procurement OS | [`docs/procurement-os/`](docs/procurement-os/) | `scripts/procurement_verify.py` |
+| Quality Management System | [`docs/qms-os/`](docs/qms-os/) | `scripts/qms_verify.py` |
+| Documentation Governance OS | [`docs/docs-governance-os/`](docs/docs-governance-os/) | `scripts/docs_governance_verify.py` |
+| Master Index | [`docs/00_MASTER_INDEX.md`](docs/00_MASTER_INDEX.md) | — |
+| Deployment Verification OS | [`docs/deployment-verification-os/`](docs/deployment-verification-os/) | `scripts/deployment_static_verify.py` |
+
+Run the full V9 verification (static, artifact-only, no external sending):
+
+```bash
+python scripts/strategic_moat_verify.py
+python scripts/enterprise_readiness_verify.py
+python scripts/trust_center_verify.py
+python scripts/demo_os_verify.py
+python scripts/customer_lifecycle_verify.py
+python scripts/agent_governance_verify.py
+python scripts/cost_control_verify.py
+python scripts/data_room_verify.py
+python scripts/procurement_verify.py
+python scripts/qms_verify.py
+python scripts/docs_governance_verify.py
+python scripts/deployment_static_verify.py
+python scripts/v9_master_verification.py
+```
+
+**Safety:** V9 is approval-first. No external sending, no secrets, no automation,
+no scraping, no unverified claims. The founder reviews, approves, and sends.
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

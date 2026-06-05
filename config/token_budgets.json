@@ -1,0 +1,15 @@
+{
+  "version": "v9",
+  "description": "Token budget ceilings per task tier. Assumptions for planning — not live billing.",
+  "currency": "tokens",
+  "budgets": {
+    "light": {"soft_ceiling": 4000, "hard_ceiling": 8000, "on_soft": "manual review", "on_hard": "stop and review"},
+    "standard": {"soft_ceiling": 16000, "hard_ceiling": 32000, "on_soft": "manual review", "on_hard": "founder approval"},
+    "high": {"soft_ceiling": 60000, "hard_ceiling": 120000, "on_soft": "founder review", "on_hard": "founder approval"}
+  },
+  "rules": {
+    "exceed_soft_triggers_manual_review": true,
+    "exceed_hard_requires_founder_approval": true,
+    "no_automated_billing_access": true
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "aggregate": "company_utilization",
+  "verdict": "PASS",
+  "checked": {
+    "strategic_moat": "PASS",
+    "customer_lifecycle": "PASS",
+    "qms": "PASS",
+    "cost_control": "PASS"
+  }
+}

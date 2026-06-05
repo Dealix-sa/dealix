@@ -1,0 +1,10 @@
+{
+  "aggregate": "startup_os",
+  "verdict": "PASS",
+  "checked": {
+    "enterprise_readiness": "PASS",
+    "trust_center": "PASS",
+    "procurement": "PASS",
+    "data_room": "PASS"
+  }
+}
