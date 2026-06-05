@@ -1,12 +1,12 @@
 <div align="center" dir="rtl">
 
-# 🏢 شركة AI السعودية
+# 🏢 Dealix — نظام تشغيل الأعمال بالذكاء الاصطناعي
 
-### منصة ذكاء اصطناعي متعددة الوكلاء، جاهزة للإنتاج، للسوق السعودي والخليجي
+### نظام تشغيل أعمال AI-native للشركات السعودية والخليجية — يبدأ من الإيرادات والقرار والإثبات، ثم يتوسّع عبر الشركة.
 
 [![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
 [![الرخصة: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 
 **العربية** · **[English](README.md)**
 
@@ -14,130 +14,126 @@
 
 ---
 
-## 🌟 نظرة عامة
+<div dir="rtl">
 
-**شركة AI السعودية** منصة ذكاء اصطناعي متعددة الوكلاء جاهزة للإنتاج، تُؤتمت:
+## 🌟 ما هو Dealix؟
 
-- **المرحلة 8 — اكتساب العملاء تلقائياً:** استقبال العملاء، مطابقة ICP، استخلاص المشاكل، التأهيل BANT، الحجز، مزامنة HubSpot، توليد العروض، الوصول، ومتابعات متدرّجة.
-- **المرحلة 9 — النمو المستقل:** ذكاء القطاعات السعودية، توليد محتوى ثنائي اللغة، نشر متعدد القنوات، إثراء العملاء، مراقبة المنافسين، وبحث السوق.
+**Dealix نظام تشغيل أعمال بالذكاء الاصطناعي للشركات السعودية والخليجية.**
 
-مصمّمة للسوق **السعودي والخليجي** مع دعم **عربي من الدرجة الأولى**، أسعار بـ **الريال السعودي**، معرفة بـ **توقيت آسيا/الرياض**، ومتناغمة مع برامج **رؤية 2030**.
+يحوّل الشركة من واتساب، Excel، ملفات، اجتماعات، عروض، وقرارات مشتتة إلى **نظام
+تشغيل واحد** يعرف:
 
-## ✨ المزايا الرئيسية
+- ماذا يحدث؟
+- ماذا يجب أن يحدث؟
+- من يوافق؟
+- ما الدليل؟
+- وما القرار القادم؟
 
-- 🧠 **توجيه ذكي لنماذج LLM** — يوزّع المهام بين **Anthropic Claude** (منطق)، **Gemini** (بحث)، **Groq** (تصنيف سريع)، **DeepSeek** (كود)، **GLM** (عربي). سلسلة احتياط تلقائية عند الفشل.
-- 🤖 **أكثر من 15 وكيلاً إنتاجياً** — كل وكيل بمدخلات/مخرجات مُعرَّفة، سجلات مهيكلة، تقهقر لطيف، واختبارات.
-- 🌍 **ثنائي اللغة AR/EN** — محتوى، سكربتات مبيعات، prompts، واجهات تدعم العربية أولاً.
-- 🔒 **الأمن أولاً** — الإعدادات من `.env` فقط، استخدام `SecretStr` لكل سر، فحوصات gitleaks + detect-secrets + bandit قبل كل commit، تكامل LinkedIn آمن من حيث الشروط.
-- 🐳 **جاهز للسحابة** — Dockerfile متعدد المراحل، حاوية بمستخدم غير جذري، stack كامل بـ Docker Compose (التطبيق + Postgres + Redis + MongoDB)، CI/CD عبر GitHub Actions.
-- 📊 **قابل للمراقبة** — سجلات مهيكلة بـ structlog، تتبع LLM اختياري عبر Langfuse، تتبع الاستخدام لكل مزود.
-- 🇸🇦 **سعودي أصيل** — ١٢ قطاعاً ببيانات منسّقة (عقار، صحة، تعليم، لوجستيات، فينتك…)، مرجع للمنظّمين السعوديين، أسعار بـ SAR/USD، أعياد سعودية.
+الإيرادات **ليست** الهوية — هي أول **wedge تجاري** ندخل به الشركة. المنصة الكاملة
+أربعة عشر نظام تشغيل:
+
+```
+Dealix Business OS
+├─ Command OS    ├─ Revenue OS   ├─ Client OS    ├─ Delivery OS
+├─ Support OS    ├─ Finance OS   ├─ Data OS      ├─ Governance OS
+├─ Proof OS      ├─ Knowledge OS ├─ Agent OS     ├─ Partner OS
+├─ Academy OS    └─ Venture OS
+```
+
+## 🚪 الدخول للسوق — Dealix Command Sprint
+
+| العنصر | القيمة |
+| --- | --- |
+| الاسم | **Dealix Command Sprint** |
+| المدة | 7 أيام |
+| السعر التأسيسي | 499 – 1,500 ريال |
+| الهدف | إثبات أول operating loop داخل شركة العميل |
+| التسليم | خدمة بقيادة المؤسس (وليست SaaS ذاتية) |
+
+**المخرج — Dealix Command Pack:** Revenue Map · Next Action Board · Follow-up
+Drafts · Offer Upgrade · Objection Intelligence · Proof Register · Approval
+Register · Executive Command Brief.
+
+ثم نتوسّع من داخل العميل إلى: Client + Delivery + Support + Finance + Data +
+Governance.
+
+## 🧭 القاعدة التشغيلية
+
+> الذكاء الاصطناعي يستكشف ويحلّل ويوصي. الـ workflows الحتمية تنفّذ. والبشر يوافقون
+> على الالتزامات الخارجية الحرجة.
+
+لا إرسال تلقائي · لا scraping · لا overclaim · موافقة بشرية لأي إجراء خارجي يواجه
+العميل.
+
+## 🛡️ التموضع والثقة
+
+- **PDPL-aware** — أقل بيانات، شفافية الاحتفاظ والحذف والنسخ وآلية الشكاوى.
+- **ZATCA-aware** — وعي بالفوترة الإلكترونية (استشاري، ولسنا مزوّد فوترة مؤهّل).
+- **NCA-aligned controls** — ضوابط متوائمة، ولا ندّعي "certified" إلا باعتماد فعلي.
+
+لا نقول: "نحن CRM" أو "chatbot" أو "وكالة" أو "أتمتة واتساب". نقول: **نظام تشغيل
+أعمال AI-native**.
+
+## 📚 مصدر الحقيقة للمنصة
+
+| الوثيقة | الغرض |
+| --- | --- |
+| [`docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md`](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md) | ما هو Dealix (مرجعي) |
+| [`docs/00_platform_truth/DEALIX_BUSINESS_OS_ARCHITECTURE.md`](docs/00_platform_truth/DEALIX_BUSINESS_OS_ARCHITECTURE.md) | كيف تتكامل الأنظمة |
+| [`docs/00_platform_truth/PRODUCT_FAMILY_MAP.md`](docs/00_platform_truth/PRODUCT_FAMILY_MAP.md) | سلم العروض |
+| [`docs/00_platform_truth/MODULE_STATUS_MAP.md`](docs/00_platform_truth/MODULE_STATUS_MAP.md) | الحالة الصادقة لكل module |
+| [`docs/00_platform_truth/PUBLIC_POSITIONING.md`](docs/00_platform_truth/PUBLIC_POSITIONING.md) | ماذا نقول وماذا لا نقول |
+| [`docs/01_go_to_market/COMMAND_SPRINT_OFFER.md`](docs/01_go_to_market/COMMAND_SPRINT_OFFER.md) | أول منتج مدفوع |
+| [`docs/03_governance/HUMAN_APPROVAL_POLICY.md`](docs/03_governance/HUMAN_APPROVAL_POLICY.md) | عقيدة الموافقة أولاً |
+| [`docs/05_founder/FOUNDER_DAILY_COMMAND.md`](docs/05_founder/FOUNDER_DAILY_COMMAND.md) | الإيقاع اليومي للمؤسس |
 
 ## 🚀 البدء السريع
 
-### المتطلبات
-
-- Python 3.11 أو 3.12
-- Docker + Docker Compose (اختياري)
-- على الأقل مفتاح API واحد لـ LLM (يُنصح بـ Anthropic)
-
-### 1. استنساخ المشروع وإعداد البيئة
-
 ```bash
-git clone https://github.com/YOUR-ORG/ai-company-saudi.git
-cd ai-company-saudi
-
-# إعداد لمرة واحدة
+git clone https://github.com/VoXc2/dealix.git
+cd dealix
 make setup
-```
-
-### 2. إعداد الأسرار
-
-عدّل `.env` وأضف مفاتيح الـ API. **الحد الأدنى:** `ANTHROPIC_API_KEY`.
-
-> ⚠️ **لا ترفع `.env` أبداً.** المشروع يحميك بـ `.gitignore` و pre-commit hook عبر gitleaks.
-
-### 3. التشغيل
-
-```bash
-# محلياً
+cp .env.example .env
+# عدّل .env ثم:
 make run
-# → http://localhost:8000/docs
-
-# أو الـ stack الكامل
-make docker-up
-make docker-logs
+# توثيق الـ API: http://localhost:8000/docs
 ```
 
-### 4. جرّب
+التحقق من جاهزية الإنتاج:
 
 ```bash
-# إرسال عميل محتمل عبر قمع اكتساب العملاء الكامل
-curl -X POST http://localhost:8000/api/v1/leads \
-  -H "Content-Type: application/json" \
-  -d '{
-    "company": "شركة التقنية المتقدمة",
-    "name": "أحمد محمد",
-    "email": "ahmed@example.sa",
-    "phone": "+966501234567",
-    "sector": "technology",
-    "region": "Saudi Arabia",
-    "budget": 50000,
-    "message": "نحتاج نظام AI لإدارة المبيعات"
-  }'
+make env-check
+python scripts/security_smoke.py
+python -c "import api.main; print('api import OK')"
+make prod-verify
 ```
 
-## 📊 وكلاء المرحلة 8 — الاكتساب
+> ⚠️ **لا ترفع `.env` أبداً.** المشروع يحميك بـ `.gitignore` و pre-commit عبر
+> gitleaks + detect-secrets.
 
-| الوكيل | الوظيفة |
+## 🗺️ خطة 12 شهر (ملخص)
+
+| المرحلة | الهدف |
 | --- | --- |
-| Intake | التقاط العملاء من مصادر متعددة، توحيد، تكرار |
-| ICP Matcher | تقييم بـ ٥ أبعاد + تصنيف (A/B/C/D) |
-| Pain Extractor | استخلاص المشاكل ودرجة الاستعجال (عربي + إنجليزي) |
-| Qualification | أسئلة BANT وتحديث المرحلة |
-| Booking | Calendly → Google Calendar → يدوي |
-| CRM | مزامنة HubSpot (contact + deal) |
-| Proposal | عروض مُعدّة بـ Claude، أسعار حسب المنطقة |
-| Outreach | افتتاحيات وصول باردة ثنائية اللغة |
-| Follow-up | رسائل متابعة متدرّجة |
+| أول 7 أيام | إعادة التموضع + البوابات الصارمة |
+| 30 يوم | أول 3 Command Sprints |
+| 60 يوم | أول MRR + أول case study |
+| 90 يوم | إطلاق محدود (بشروط صارمة) |
+| 180 يوم | توسّع Business OS |
+| 365 يوم | شركة منصّة |
 
-## 📈 وكلاء المرحلة 9 — النمو
-
-| الوكيل | الوظيفة |
-| --- | --- |
-| Sector Intel | ١٢ قطاعاً سعودياً ببيانات منسّقة |
-| Content Creator | مقالات + LinkedIn + دراسات حالة ثنائية اللغة |
-| Distribution | جدولة متعددة القنوات (توقيت الرياض) |
-| Enrichment | إثراء العميل من النطاق + LLM |
-| Competitor Monitor | تحليل المنافسين واقتراح ردود |
-| Market Research | بحث سوقي عبر Gemini بمصادر |
-
-## 📚 التوثيق
-
-| الوثيقة | الوصف |
-| --- | --- |
-| [`docs/architecture.md`](docs/architecture.md) | هيكل النظام |
-| [`docs/agents.md`](docs/agents.md) | كل وكيل مُوثّق |
-| [`docs/api.md`](docs/api.md) | مرجع REST API |
-| [`docs/deployment.md`](docs/deployment.md) | النشر الإنتاجي |
-| [`docs/pricing.md`](docs/pricing.md) | الأسعار |
-
-## 🤝 المساهمة
-
-راجع [docs/contributing/CONTRIBUTING.md](docs/contributing/CONTRIBUTING.md).
+التفاصيل: [`docs/05_founder/BUSINESS_METRICS.md`](docs/05_founder/BUSINESS_METRICS.md).
 
 ## 📜 الرخصة
 
 MIT — راجع [LICENSE](LICENSE).
 
-## خطة الإكمال الشاملة
-
-من الدمج إلى `main` حتى أول عميل وProof: **[COMPREHENSIVE_COMPLETION_PLAN_AR.md](docs/COMPREHENSIVE_COMPLETION_PLAN_AR.md)**
+</div>
 
 ---
 
 <div align="center" dir="rtl">
 
-**[📖 التوثيق](docs/)** · **[🐛 المشاكل](../../issues)** · **[💬 النقاشات](../../discussions)**
+**[📖 التوثيق](docs/)** · **[🇸🇦 مصدر الحقيقة](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md)** · **[🚪 Command Sprint](docs/01_go_to_market/COMMAND_SPRINT_OFFER.md)**
 
 </div>
