@@ -4,6 +4,12 @@
 
 ### Added
 
+- Comprehensive launch pass — closed remaining productization and verification gaps.
+- Completed the bilingual (AR+EN) service catalog pages: `sales/service_pages/operations_os.md` and `client_portal_os.md`, mapped to the real pricing tiers in `auto_client_acquisition/finance_os/pricing_catalog.py`.
+- Added the consolidated 90-day commercial activation plan: `docs/commercial/DEALIX_90_DAY_ACTIVATION_PLAN_AR.md` (3 phases: soft pass → paid Sprints → recurring Executive Growth OS).
+- Added an OpenAPI contract baseline `docs/architecture/openapi.json` so `scripts/check_openapi_contract.py` performs a real breaking-change diff in CI (previously short-circuited with no baseline).
+- Added executable PDPL erasure/anonymization tests: `tests/unit/test_pdpl_erasure.py` plus erasure endpoint coverage in `tests/test_pdpl_dsar.py`.
+- Added a service-page content guard: `tests/test_service_pages_complete.py` (size, bilingual headers, `/services` CTA, no guaranteed-claim triggers).
 - Added a repository gap audit: `docs/architecture/REPO_GAP_AUDIT.md`.
 - Added a production readiness checklist: `docs/ops/PRODUCTION_READINESS_CHECKLIST.md`.
 - Added an environment contract checker: `scripts/check_env_contract.py`.
@@ -12,6 +18,8 @@
 
 ### Changed
 
+- `api/routers/customer_success.py` now derives `drafts_approved_last_30d` from a real count of approved Gmail/LinkedIn draft records (last 30 days) instead of a hardcoded `0`, with the existing DB-unreachable guard preserved.
+- Clarified the invite-delivery `TODO` in `api/routers/auth.py` and tracked the transactional-email provider integration as a post-launch task in `docs/ops/PRODUCTION_READINESS_CHECKLIST.md`.
 - Refreshed `README.md` to match the actual `VoXc2/dealix` repository and current operating workflow.
 - Consolidated CI into a single workflow with backend and web jobs.
 - CI now checks the environment template and verifies OpenAPI schema export.
@@ -21,6 +29,10 @@
 
 - Fixed stale README quick-start commands.
 - Fixed duplicate CI workflow definitions.
+
+### Known gaps (tracked, not implemented)
+
+- Webhook secret hardening (`api/routers/customer_webhooks.py`) is intentionally deferred: the stored value is an HMAC signing key, not a password, so one-way hashing would break signature verification. Needs an encrypt-at-rest (KMS) design plus an Alembic migration.
 
 ---
 
