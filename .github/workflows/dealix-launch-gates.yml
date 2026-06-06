@@ -1,0 +1,68 @@
+name: Dealix Launch Gates
+
+# Wave 7/8 — runs the Dealix verification harness and E2E dry run on every PR
+# touching the operating layer. Least-privilege token (read-only): the workflow
+# only reads the repo and runs Python; it never writes back or sends anything.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/verify_dealix_*.py"
+      - "scripts/run_dealix_*.py"
+      - "scripts/run_dealix_full_verification.sh"
+      - "scripts/create_customer_workspace.py"
+      - "scripts/founder_daily_command.py"
+      - "docs/governance/**"
+      - "docs/founder/**"
+      - "docs/delivery/**"
+      - "sales/**"
+      - "data/revenue/**"
+      - "data/growth/**"
+  pull_request:
+    paths:
+      - "scripts/verify_dealix_*.py"
+      - "scripts/run_dealix_*.py"
+      - "scripts/run_dealix_full_verification.sh"
+      - "scripts/create_customer_workspace.py"
+      - "scripts/founder_daily_command.py"
+      - "docs/governance/**"
+      - "docs/founder/**"
+      - "docs/delivery/**"
+      - "sales/**"
+      - "data/revenue/**"
+      - "data/growth/**"
+  workflow_dispatch: {}
+
+# GITHUB_TOKEN least privilege — read-only, per GitHub's hardening guidance.
+permissions:
+  contents: read
+
+jobs:
+  launch-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run full verification harness
+        run: bash scripts/run_dealix_full_verification.sh
+
+      - name: Run E2E dry run
+        run: python scripts/run_dealix_e2e_dry_run.py
+
+      - name: Founder daily command (smoke)
+        run: python scripts/founder_daily_command.py
+
+      - name: Upload verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-verification-reports
+          path: reports/verification/
+          if-no-files-found: warn

@@ -107,6 +107,12 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Wave 7/8 — canonical revenue + growth seed data (no customer PII, committed for the operating rhythm)
+!data/growth/
+!data/revenue/
+# Wave 7/8 — timestamped verification runs are regenerated; track only *_latest.md
+reports/verification/dealix_full_verification_[0-9]*.md
+reports/verification/e2e_dry_run_[0-9]*.md
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
