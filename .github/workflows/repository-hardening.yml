@@ -61,7 +61,3 @@ jobs:
           # trips Trivy's Stripe rule as a false positive. They hold no real
           # secrets, so exclude only these files (Stripe detection stays on elsewhere).
           skip-files: 'scripts/v7_launch_verify.sh,scripts/v10_master_verify.sh'
-          # Known, time-boxed exceptions for pre-existing next@15.1.3 CVEs,
-          # tracked for a dedicated Next.js upgrade PR. See .trivyignore.yaml
-          # (entries expire 2026-09-06, after which CI fails again).
-          trivyignores: '.trivyignore.yaml'
