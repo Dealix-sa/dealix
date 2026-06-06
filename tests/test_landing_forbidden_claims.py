@@ -113,9 +113,13 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
         "scraping": "NEGATION",
     },
-    # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
+    # Diagnostic intake — "صفر cold outreach" promise (NEGATION) + the
+    # mandatory bilingual value disclaimer ("Estimated outcomes are not
+    # guaranteed outcomes / النتائج التقديرية ليست نتائج مضمونة" → DISCLAIMER).
     "diagnostic.html": {
         "cold": "NEGATION",
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
     },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
@@ -146,7 +150,9 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+        # Footer carries the mandatory bilingual value disclaimer.
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -170,6 +176,70 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     "compare-salesloft.html": {
         "blast": "NEGATION",
         "cold": "NEGATION",
+    },
+    # ------------------------------------------------------------------
+    # DISCLAIMER reason code — these pages carry the mandatory bilingual
+    # value disclaimer required on every customer-facing surface:
+    #   "Estimated outcomes are not guaranteed outcomes /
+    #    النتائج التقديرية ليست نتائج مضمونة"
+    # The tokens 'guaranteed' / 'مضمون' appear ONLY inside that disclaimer
+    # (verified line-by-line), which is itself an anti-claim. Where a page
+    # also states the cold/scraping policy boundary, that token is NEGATION.
+    # ------------------------------------------------------------------
+    "architecture.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "bespoke-ai.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "case-study-pilot-example.html": {
+        "guaranteed": "DISCLAIMER",
+    },
+    "customer-portal.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    # Data-to-Revenue Pack — "صفر cold WhatsApp" + "لا scraping" policy
+    # boundary (NEGATION) plus the mandatory value disclaimer (DISCLAIMER).
+    "data-pack.html": {
+        "cold": "NEGATION",
+        "scraping": "NEGATION",
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "dpo.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "launch-status.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "pricing.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    # Roadmap — "LinkedIn scraping automation — policy-blocked". NEGATION.
+    "roadmap.html": {
+        "scraping": "NEGATION",
+    },
+    "sector-report-b2b-services.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "security.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "sprint-sample.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
+    },
+    "webinar.html": {
+        "guaranteed": "DISCLAIMER",
+        "مضمون": "DISCLAIMER",
     },
 }
 
