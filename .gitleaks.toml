@@ -52,8 +52,15 @@ paths = [
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
     '''tests/fixtures/.*''',
+    # Test suites carry synthetic credentials by design (fake sk_live_/AKIA/AIza
+    # sentinels used to exercise payment, auth, and observability paths).
+    '''tests/.*\.py$''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
+    # Launch-verify scripts embed a deliberate "sk_live_REALDANGEROUSKEYSECRET"
+    # sentinel to prove the secret guard would fire — not a real key.
+    '''scripts/v7_launch_verify\.sh$''',
+    '''scripts/v10_master_verify\.sh$''',
 ]
 
 regexes = [
