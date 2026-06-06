@@ -107,6 +107,19 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Wave 8 — synthetic outreach seeds (no PII): targets + approval queue.
+# Re-include the dir, re-ignore its contents, then allow only these seed files
+# so future real outreach data (other filenames) stays ignored.
+!data/outreach/
+data/outreach/*
+!data/outreach/.gitkeep
+!data/outreach/first_30_targets.csv
+!data/outreach/approval_queue.csv
+# Wave 8 — generated customer workspaces hold customer data; never commit them.
+# Keep only the canonical template (and a .gitkeep) tracked.
+customers/*
+!customers/_template/
+!customers/.gitkeep
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
