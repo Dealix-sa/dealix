@@ -50,11 +50,11 @@ class Step:
         self.ok = False
         self.detail = ""
 
-    def passed(self, detail: str = "") -> "Step":
+    def passed(self, detail: str = "") -> Step:
         self.ok, self.detail = True, detail
         return self
 
-    def failed(self, detail: str) -> "Step":
+    def failed(self, detail: str) -> Step:
         self.ok, self.detail = False, detail
         return self
 
@@ -117,14 +117,17 @@ def step_customer_workspace() -> Step:
         cwd=str(REPO),
     )
     if proc.returncode != 0:
-        return s.failed(f"create_customer_workspace failed: {proc.stderr.strip() or proc.stdout.strip()}")
+        return s.failed(
+            f"create_customer_workspace failed: {proc.stderr.strip() or proc.stdout.strip()}"
+        )
     ws = REPO / "customers" / DRY_SLUG
     missing = [f for f in WORKSPACE_FILES if not (ws / f).is_file()]
     if missing:
         return s.failed(f"missing workspace files: {missing}")
     # disclaimer present in each customer-facing file
     no_disc = [
-        f for f in WORKSPACE_FILES
+        f
+        for f in WORKSPACE_FILES
         if DISCLAIMER_FRAGMENT not in (ws / f).read_text(encoding="utf-8")
     ]
     if no_disc:

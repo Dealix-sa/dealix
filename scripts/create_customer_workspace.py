@@ -21,10 +21,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 CUSTOMERS_DIR = REPO / "customers"
 
-DISCLAIMER = (
-    "> Estimated value is not Verified value / "
-    "القيمة التقديرية ليست قيمة مُتحقَّقة"
-)
+DISCLAIMER = "> Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
 
 # Ordered (filename, title) — the canonical 12-file spine.
 FILES: tuple[tuple[str, str], ...] = (
@@ -164,9 +161,7 @@ def render(filename: str, title: str, display_name: str, today: str) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Create a Dealix customer workspace.")
     parser.add_argument("--name", required=True, help="Customer display name.")
-    parser.add_argument(
-        "--force", action="store_true", help="Overwrite existing workspace files."
-    )
+    parser.add_argument("--force", action="store_true", help="Overwrite existing workspace files.")
     args = parser.parse_args(argv)
 
     display_name = args.name.strip()

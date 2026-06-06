@@ -24,10 +24,7 @@ CUSTOMERS = REPO / "customers"
 OUT_DIR = REPO / "reports/founder"
 OUT = OUT_DIR / "daily_command.md"
 
-DISCLAIMER = (
-    "> Estimated value is not Verified value / "
-    "القيمة التقديرية ليست قيمة مُتحقَّقة"
-)
+DISCLAIMER = "> Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -57,9 +54,7 @@ def main() -> int:
         if e.get("stage") in {"offer_sent", "outreach_drafted"}
         and not str(e.get("status", "")).startswith("won")
     )
-    pending_approval = [
-        e for e in pipeline if e.get("status") == "pending_founder_approval"
-    ]
+    pending_approval = [e for e in pipeline if e.get("status") == "pending_founder_approval"]
     capital_assets = [a for a in proof if a.get("capital_asset")]
 
     active_customers: list[str] = []
