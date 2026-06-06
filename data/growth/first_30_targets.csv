@@ -1,0 +1,31 @@
+company,sector,city,contact_role,relationship,permission_to_contact,offer_fit,notes
+Example Trading Co,b2b_services,Riyadh,COO,warm,yes,command_sprint,met at industry event placeholder
+Sample Logistics LLC,logistics,Jeddah,Operations Lead,warm,yes,managed_ops,prior referral placeholder
+Placeholder Retail Group,retail,Riyadh,Owner,warm,pending,diagnostic,intro pending placeholder
+Demo Contracting Est,construction,Dammam,GM,warm,yes,data_pack,data messy placeholder
+Test Clinic Network,healthcare_admin,Riyadh,Admin Director,warm,pending,diagnostic,permission requested placeholder
+Acme Wholesale Co,wholesale,Jeddah,Sales Head,warm,yes,command_sprint,follow-up overdue placeholder
+Sample Real Estate Office,real_estate,Riyadh,Partner,warm,yes,managed_ops,pipeline unclear placeholder
+Example Manufacturing Ltd,manufacturing,Dammam,Plant Manager,warm,pending,data_pack,scoping placeholder
+Placeholder Consulting Firm,b2b_services,Riyadh,Principal,warm,yes,command_sprint,strong fit placeholder
+Demo Travel Agency,travel,Jeddah,Director,warm,pending,diagnostic,early stage placeholder
+Test Food Distribution,food_distribution,Riyadh,Procurement Lead,warm,yes,data_pack,data owned placeholder
+Sample Tech Reseller,it_services,Khobar,Founder,warm,yes,custom_ai,repeatable workflow placeholder
+Example Marketing Studio,marketing_services,Riyadh,Owner,warm,pending,diagnostic,intro pending placeholder
+Placeholder Auto Trading,automotive,Jeddah,Sales Manager,warm,yes,command_sprint,leak in follow-up placeholder
+Demo Facilities Co,facilities,Riyadh,Operations Lead,warm,yes,managed_ops,needs cadence placeholder
+Test Education Center,education_admin,Madinah,Director,warm,pending,diagnostic,too early placeholder
+Acme Print Services,print_services,Dammam,GM,warm,yes,command_sprint,single leak placeholder
+Sample Legal Office,professional_services,Riyadh,Partner,warm,yes,data_pack,data messy placeholder
+Example Event Company,events,Jeddah,Founder,warm,pending,diagnostic,permission pending placeholder
+Placeholder Furniture Co,retail,Riyadh,Owner,warm,yes,command_sprint,functional otherwise placeholder
+Demo Pharma Supply,pharma_distribution,Riyadh,Operations Director,warm,yes,managed_ops,multi-workflow placeholder
+Test Energy Services,energy_services,Khobar,GM,warm,pending,diagnostic,scoping placeholder
+Acme HR Solutions,hr_services,Riyadh,Principal,warm,yes,custom_ai,repeatable need placeholder
+Sample Packaging Co,manufacturing,Dammam,Plant Manager,warm,yes,data_pack,data owned placeholder
+Example Cleaning Services,facilities,Jeddah,Owner,warm,pending,diagnostic,early stage placeholder
+Placeholder Security Co,security_services,Riyadh,Operations Lead,warm,yes,command_sprint,follow-up gap placeholder
+Demo Interior Design,design_services,Riyadh,Partner,warm,yes,managed_ops,needs operating cadence placeholder
+Test Agri Trading,agriculture,Qassim,GM,warm,pending,diagnostic,too early placeholder
+Acme Spare Parts Co,wholesale,Jeddah,Sales Head,warm,yes,command_sprint,clear leak placeholder
+Sample Fintech Services,fintech_ops,Riyadh,Founder,warm,yes,custom_ai,high-value workflow placeholder

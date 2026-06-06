@@ -1,0 +1,2 @@
+{"event": "proof_pack_delivered", "customer": "dry-run-client", "amount_sar": 0, "date": "2026-06-06", "mode": "dry_run", "simulated": true}
+{"event": "paid_sprint_started", "customer": "dry-run-client", "amount_sar": 499, "date": "2026-06-06", "mode": "dry_run", "simulated": true}
