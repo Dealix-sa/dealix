@@ -23,7 +23,6 @@ export default function CheckoutReturnClient() {
   const hintedStatus = params.get("status") ?? "";
 
   const [status, setStatus] = useState<Status | null>(null);
-  const [polls, setPolls] = useState(0);
   const [done, setDone] = useState(false);
 
   useEffect(() => {
@@ -53,7 +52,6 @@ export default function CheckoutReturnClient() {
           return;
         }
       }
-      setPolls(attempt + 1);
       setTimeout(() => check(attempt + 1), POLL_MS);
     }
 

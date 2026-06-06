@@ -571,8 +571,9 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
                         },
                     )
                 )
+                _safe_pref = str(payment_id).replace("\n", "").replace("\r", "")[:64]
                 log.info("revenue_proof_event_recorded ref=%s amount_sar=%.2f",
-                         str(payment_id)[:64], amount_sar)
+                         _safe_pref, amount_sar)
             except Exception as _proof_exc:
                 log.warning("revenue_proof_event_skipped error=%s", type(_proof_exc).__name__)
 

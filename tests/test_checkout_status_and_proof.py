@@ -9,13 +9,10 @@ behaviour so a paying customer's journey can be trusted.
 
 from __future__ import annotations
 
-import json
-
 import pytest
 from fastapi.testclient import TestClient
 
 from api.main import create_app
-
 
 # ─── B1: checkout status endpoint ────────────────────────────────────
 
