@@ -25,6 +25,14 @@ def test_status_requires_a_reference() -> None:
     assert resp.status_code == 400
 
 
+def test_status_rejects_malformed_reference() -> None:
+    # Path-traversal / SSRF-shaped ids must never reach the provider URL.
+    client = TestClient(create_app())
+    for bad in ["../../admin", "pay id", "x", "a" * 65]:
+        resp = client.get("/api/v1/checkout/status", params={"payment_id": bad})
+        assert resp.status_code == 400, bad
+
+
 def test_status_degrades_to_pending_without_provider_or_db(monkeypatch) -> None:
     # No MOYASAR_SECRET_KEY and no DB row → safe "pending" so the page polls.
     monkeypatch.delenv("MOYASAR_SECRET_KEY", raising=False)

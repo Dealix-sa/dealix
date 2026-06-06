@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import os
+import re
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request
@@ -325,6 +326,15 @@ async def create_checkout(req: Request) -> dict[str, Any]:
 _PAID_STATUSES = frozenset({"paid", "captured"})
 _FAILED_STATUSES = frozenset({"failed", "voided", "refunded", "expired"})
 
+# Provider payment/invoice ids are opaque tokens (hex/uuid-ish). This endpoint
+# is public and feeds the value into an outbound provider URL, so the reference
+# is strictly validated first — no path traversal / SSRF via crafted ids.
+_REF_RE = re.compile(r"\A[A-Za-z0-9_-]{6,64}\Z")
+
+
+def _valid_ref(value: str) -> bool:
+    return bool(_REF_RE.match(value or ""))
+
 
 def _normalize_status(raw: str) -> tuple[str, bool]:
     """Map a provider status to a public {state, paid} pair.
@@ -387,6 +397,11 @@ async def checkout_status(payment_id: str = "", invoice_id: str = "") -> dict[st
     invoice_id = (invoice_id or "").strip()
     if not payment_id and not invoice_id:
         raise HTTPException(status_code=400, detail="payment_id_or_invoice_id_required")
+    # Reject malformed references before they ever reach the provider URL or DB.
+    if (payment_id and not _valid_ref(payment_id)) or (
+        invoice_id and not _valid_ref(invoice_id)
+    ):
+        raise HTTPException(status_code=400, detail="invalid_reference")
 
     reference = payment_id or invoice_id
     raw_status = ""
