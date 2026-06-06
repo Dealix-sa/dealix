@@ -1,0 +1,31 @@
+target_id,company_placeholder,sector,size_band,region,warm_path,priority,suggested_offer,notes
+T001,Riyadh Logistics Co (placeholder),logistics,50-200,Riyadh,founder_referral,P0,free_diagnostic,Synthetic placeholder — replace with real warm intro before any outreach
+T002,Jeddah Trading House (placeholder),wholesale_distribution,20-50,Jeddah,founder_referral,P0,free_diagnostic,Synthetic placeholder — no contact data stored
+T003,Dammam Industrial Supply (placeholder),manufacturing,200-500,Eastern Province,partner_intro,P0,sprint_499,Synthetic placeholder
+T004,Khobar Medical Group (placeholder),healthcare_services,50-200,Eastern Province,partner_intro,P1,free_diagnostic,Synthetic placeholder
+T005,Riyadh Contracting LLC (placeholder),construction,200-500,Riyadh,founder_referral,P0,sprint_499,Synthetic placeholder
+T006,Makkah Retail Network (placeholder),retail,50-200,Makkah,event_lead,P1,free_diagnostic,Synthetic placeholder
+T007,Madinah Food Distribution (placeholder),food_beverage,20-50,Madinah,founder_referral,P1,free_diagnostic,Synthetic placeholder
+T008,Riyadh SaaS Startup (placeholder),technology,10-20,Riyadh,inbound,P0,sprint_499,Synthetic placeholder
+T009,Jeddah Real Estate Dev (placeholder),real_estate,50-200,Jeddah,partner_intro,P1,data_pack_1500,Synthetic placeholder
+T010,Eastern Petrochemical Svc (placeholder),energy_services,500+,Eastern Province,partner_intro,P0,managed_ops,Synthetic placeholder
+T011,Riyadh Auto Dealership (placeholder),automotive,50-200,Riyadh,founder_referral,P1,free_diagnostic,Synthetic placeholder
+T012,Qassim Agri Co (placeholder),agriculture,50-200,Qassim,event_lead,P2,free_diagnostic,Synthetic placeholder
+T013,Jeddah Logistics Hub (placeholder),logistics,200-500,Jeddah,founder_referral,P0,sprint_499,Synthetic placeholder
+T014,Riyadh Law Firm (placeholder),professional_services,20-50,Riyadh,founder_referral,P1,free_diagnostic,Synthetic placeholder
+T015,Dammam Marine Services (placeholder),marine_logistics,50-200,Eastern Province,partner_intro,P2,free_diagnostic,Synthetic placeholder
+T016,Riyadh HR Consultancy (placeholder),professional_services,20-50,Riyadh,inbound,P1,sprint_499,Synthetic placeholder
+T017,Jeddah Hospitality Group (placeholder),hospitality,200-500,Jeddah,partner_intro,P1,free_diagnostic,Synthetic placeholder
+T018,Riyadh Fintech (placeholder),financial_services,50-200,Riyadh,inbound,P0,managed_ops,Synthetic placeholder
+T019,Tabuk Tourism Co (placeholder),tourism,20-50,Tabuk,event_lead,P2,free_diagnostic,Synthetic placeholder
+T020,Abha Retail Chain (placeholder),retail,50-200,Asir,founder_referral,P2,free_diagnostic,Synthetic placeholder
+T021,Riyadh Cloud Kitchen (placeholder),food_beverage,20-50,Riyadh,inbound,P1,sprint_499,Synthetic placeholder
+T022,Jubail Industrial Co (placeholder),manufacturing,500+,Eastern Province,partner_intro,P0,custom_ai,Synthetic placeholder
+T023,Riyadh Education Group (placeholder),education,200-500,Riyadh,founder_referral,P1,data_pack_1500,Synthetic placeholder
+T024,Jeddah E-commerce (placeholder),ecommerce,50-200,Jeddah,inbound,P0,sprint_499,Synthetic placeholder
+T025,Riyadh Insurance Broker (placeholder),financial_services,50-200,Riyadh,founder_referral,P1,free_diagnostic,Synthetic placeholder
+T026,Dammam Facility Mgmt (placeholder),facilities,200-500,Eastern Province,partner_intro,P1,managed_ops,Synthetic placeholder
+T027,Riyadh Media Agency (placeholder),media,20-50,Riyadh,inbound,P2,free_diagnostic,Synthetic placeholder
+T028,Jeddah Pharma Distrib (placeholder),pharma,200-500,Jeddah,partner_intro,P0,data_pack_1500,Synthetic placeholder
+T029,Riyadh PropTech (placeholder),technology,10-20,Riyadh,inbound,P1,sprint_499,Synthetic placeholder
+T030,Eastern Steel Trading (placeholder),wholesale_distribution,50-200,Eastern Province,founder_referral,P1,free_diagnostic,Synthetic placeholder

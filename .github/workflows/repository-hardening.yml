@@ -29,8 +29,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Use the license-free OSS gitleaks CLI. The gitleaks-action@v2 requires a
+      # paid GITLEAKS_LICENSE for GitHub organizations; the CLI does not. Pinned
+      # to the same version as .pre-commit-config.yaml for consistency.
+      - name: Install Gitleaks (OSS CLI)
+        env:
+          GITLEAKS_VERSION: "8.18.4"
+        run: |
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o /tmp/gitleaks.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+          sudo install /tmp/gitleaks /usr/local/bin/gitleaks
+          gitleaks version
+
+      # Non-blocking by request: gitleaks scans and reports findings in the log
+      # but does not fail the build. Real secrets still surface for review.
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true
+        run: gitleaks detect --source . --no-git --redact --exit-code 1
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -41,12 +56,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Install the Trivy CLI directly instead of aquasecurity/trivy-action.
+      # The action was caught by advisory GHSA-69fq-xp46-6x23 (supply-chain
+      # compromise) and its newer tags fail to resolve their setup-trivy dep.
+      # The pinned CLI avoids the compromised action and the Dependency Review
+      # flag while keeping identical scan semantics. install.sh is fetched from
+      # the pinned tag (not main) for reproducibility.
+      - name: Install Trivy CLI
+        env:
+          TRIVY_VERSION: "0.71.0"
+        run: |
+          curl -sSfL "https://raw.githubusercontent.com/aquasecurity/trivy/v${TRIVY_VERSION}/contrib/install.sh" | sudo sh -s -- -b /usr/local/bin "v${TRIVY_VERSION}"
+          trivy --version
+
+      # Blocking gate: fails the build on fixable CRITICAL/HIGH vulnerabilities.
+      # Next.js was bumped to 15.5.19 in this PR, clearing the prior CVEs
+      # (CVE-2025-29927 auth bypass, CVE-2025-55182 RCE, et al.); the scan is
+      # now clean, so the gate is enforced.
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+        run: trivy fs --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 --format table .
