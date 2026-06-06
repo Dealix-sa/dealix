@@ -276,6 +276,7 @@ def main() -> int:
     try:
         sys.stdout.reconfigure(encoding="utf-8")
     except (AttributeError, OSError):
+        # UTF-8 reconfigure is best-effort; the default stream is fine if unavailable.
         pass
 
     # Build the dry-run workspace (idempotent via --force semantics).

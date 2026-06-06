@@ -51,6 +51,7 @@ def main() -> int:
     try:
         sys.stdout.reconfigure(encoding="utf-8")
     except (AttributeError, OSError):
+        # UTF-8 reconfigure is best-effort; the default stream is fine if unavailable.
         pass
 
     missing = [f for f in POSITIONING_FILES if not (REPO / f).is_file()]
