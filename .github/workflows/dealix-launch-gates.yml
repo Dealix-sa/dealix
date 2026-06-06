@@ -1,0 +1,54 @@
+name: Dealix Launch Gates
+
+# Read-only by design: launch gates must not need write access.
+# GitHub recommends scoping GITHUB_TOKEN to the minimum required, and secrets
+# may not always be masked if transformed/printed unexpectedly — so we keep
+# these checks contents:read only.
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/00_platform_truth/**"
+      - "docs/03_governance/**"
+      - "docs/04_delivery/**"
+      - "docs/06_growth/**"
+      - "sales/**"
+      - "scripts/verify_dealix_*.py"
+      - ".github/workflows/dealix-launch-gates.yml"
+  pull_request:
+    paths:
+      - "docs/00_platform_truth/**"
+      - "docs/03_governance/**"
+      - "docs/04_delivery/**"
+      - "docs/06_growth/**"
+      - "sales/**"
+      - "scripts/verify_dealix_*.py"
+      - ".github/workflows/dealix-launch-gates.yml"
+  workflow_dispatch: {}
+
+jobs:
+  launch-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Positioning gate
+        run: python scripts/verify_dealix_positioning.py
+
+      - name: Module status gate
+        run: python scripts/verify_dealix_module_status.py
+
+      - name: Growth assets gate
+        run: python scripts/verify_dealix_growth_assets.py
+
+      - name: Launch readiness (strict — Private Launch)
+        run: python scripts/verify_dealix_launch_readiness.py --strict

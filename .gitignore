@@ -324,3 +324,8 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# --- Dealix launch artifacts (must be tracked despite data/* and *.log above) ---
+!data/growth/
+!data/growth/first_30_targets.csv
+!reports/launch/npm_build.log

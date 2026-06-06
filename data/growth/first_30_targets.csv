@@ -1,0 +1,31 @@
+rank,company,sector,source,consent_basis,contact_owner,relationship,shortlist,notes
+1,[Warm account A],SaaS,existing_relationship,prior_engagement,founder,warm,yes,decision-maker known
+2,[Warm account B],E-commerce,referral,referred_by_partner,founder,warm,yes,intro available
+3,[Warm account C],Logistics,inbound,opted_in_form,founder,warm,yes,filled diagnostic form
+4,[Warm account D],Real estate,referral,referred_by_customer,founder,warm,yes,past pilot adjacent
+5,[Warm account E],Healthcare,existing_relationship,prior_engagement,founder,warm,yes,knows the product
+6,[Warm account F],Fintech,inbound,opted_in_event,founder,warm,yes,met at event, opted in
+7,[Warm account G],Education,referral,referred_by_partner,founder,warm,yes,partner-sourced
+8,[Warm account H],Retail,existing_relationship,prior_engagement,founder,warm,yes,renewal candidate
+9,[Warm account I],Manufacturing,inbound,opted_in_form,founder,warm,yes,requested call
+10,[Warm account J],Professional services,referral,referred_by_customer,founder,warm,yes,strong referral
+11,[Warm account K],SaaS,inbound,opted_in_form,founder,warm,no,early stage
+12,[Warm account L],E-commerce,referral,referred_by_partner,founder,warm,no,timing unclear
+13,[Warm account M],Logistics,existing_relationship,prior_engagement,founder,warm,no,budget pending
+14,[Warm account N],Real estate,inbound,opted_in_event,founder,warm,no,needs nurture
+15,[Warm account O],Healthcare,referral,referred_by_customer,founder,warm,no,gatekeeper stage
+16,[Warm account P],Fintech,existing_relationship,prior_engagement,founder,warm,no,re-engage Q3
+17,[Warm account Q],Education,inbound,opted_in_form,founder,warm,no,info request only
+18,[Warm account R],Retail,referral,referred_by_partner,founder,warm,no,small ticket
+19,[Warm account S],Manufacturing,existing_relationship,prior_engagement,founder,warm,no,long cycle
+20,[Warm account T],Professional services,inbound,opted_in_event,founder,warm,no,met once
+21,[Warm account U],SaaS,referral,referred_by_customer,founder,warm,no,needs case study
+22,[Warm account V],E-commerce,existing_relationship,prior_engagement,founder,warm,no,seasonal
+23,[Warm account W],Logistics,inbound,opted_in_form,founder,warm,no,early conversation
+24,[Warm account X],Real estate,referral,referred_by_partner,founder,warm,no,partner to intro
+25,[Warm account Y],Healthcare,existing_relationship,prior_engagement,founder,warm,no,compliance review
+26,[Warm account Z],Fintech,inbound,opted_in_event,founder,warm,no,follow up later
+27,[Warm account AA],Education,referral,referred_by_customer,founder,warm,no,referral pending
+28,[Warm account AB],Retail,existing_relationship,prior_engagement,founder,warm,no,low priority
+29,[Warm account AC],Manufacturing,inbound,opted_in_form,founder,warm,no,research phase
+30,[Warm account AD],Professional services,referral,referred_by_partner,founder,warm,no,intro queued
