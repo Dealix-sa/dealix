@@ -57,7 +57,7 @@ jobs:
           format: table
           exit-code: '1'
           # These two files are the repo's own secret-detection scripts. Their
-          # grep allowlist contains the dummy literal sk_live_REALDANGEROUSKEYSECRET,
-          # which trips Trivy's Stripe rule as a false positive. They hold no real
+          # grep allowlist contains a dummy placeholder Stripe-key literal that
+          # trips Trivy's Stripe rule as a false positive. They hold no real
           # secrets, so exclude only these files (Stripe detection stays on elsewhere).
           skip-files: 'scripts/v7_launch_verify.sh,scripts/v10_master_verify.sh'
