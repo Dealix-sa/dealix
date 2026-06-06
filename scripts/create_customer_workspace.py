@@ -12,10 +12,8 @@ from __future__ import annotations
 
 import argparse
 import re
-import sys
 from datetime import date
 from pathlib import Path
-from typing import Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 

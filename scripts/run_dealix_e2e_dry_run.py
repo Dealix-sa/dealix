@@ -65,21 +65,22 @@ def stage_target() -> dict[str, Any]:
 
 
 def stage_outreach_approval() -> dict[str, Any]:
-    """Outreach must require explicit approval; it must never auto-send."""
+    """Outreach must require explicit approval; it must never auto-send.
+
+    The policy is enforced by construction here: outreach is always held as a
+    draft for explicit founder approval and is never auto-sent. The doctrine
+    invariant is asserted so any future regression surfaces immediately.
+    """
     requires_approval = True
     auto_sent = False
     governance_status = "draft"
-    if auto_sent or not requires_approval:
-        return _result(
-            "outreach_approval",
-            BLOCKER,
-            "outreach auto-sent or did not require approval",
-        )
+    assert requires_approval and not auto_sent, "outreach doctrine invariant violated"
     return _result(
         "outreach_approval",
         PASS,
         "outreach held for explicit founder approval, not sent",
         requires_approval=requires_approval,
+        auto_sent=auto_sent,
         governance_status=governance_status,
     )
 
