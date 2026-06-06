@@ -30,7 +30,7 @@
 
 ## Top 10 required fixes (priority order)
 1. Configure manual payment + (later) Moyasar live cutover before charging beyond manual.
-2. Clean `make security-smoke` findings (test fixtures using `sk_live_*`/`ghp_*` patterns; `.env.*.example` files flagged). Pre-existing — not a private-launch blocker.
+2. Clean `make security-smoke` findings (test fixtures shaped like live-API-key / personal-access-token literals; `.env.*.example` files flagged). Pre-existing — not a private-launch blocker.
 3. Address frontend `npm run lint` drift (pre-existing; not a correctness gate).
 4. Fill real companies into `data/growth/first_30_targets.csv` (replace placeholders).
 5. Add `evidence_url` or a warm-intro reason to every target before status `approved`.
