@@ -1,0 +1,1 @@
+{"event": "payment_received", "customer": "dry-run-client", "amount_sar": 499, "date": "2026-06-06", "status": "simulated", "mode": "dry_run", "simulated": true}
