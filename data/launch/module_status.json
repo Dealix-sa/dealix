@@ -1,0 +1,48 @@
+{
+  "_comment": "Source of truth for what Dealix can deliver TODAY vs what is planned. The module-status verifier (scripts/verify_dealix_module_status.py) fails any 'planned' module presented on the public surface without a roadmap/soon marker. Update this when a module ships.",
+  "updated": "2026-06-06",
+  "modules": [
+    {
+      "name": "Command Sprint",
+      "status": "live",
+      "delivery": "Founder-led, manual, 7-day engagement. Outputs: Revenue Map, Proof Register, Executive Command Brief, Next Action Board, Approval Register.",
+      "public_labels": ["Command Sprint"]
+    },
+    {
+      "name": "Diagnostic",
+      "status": "live",
+      "delivery": "Founder reviews intake form + customer-provided data; returns a short diagnostic summary. No auto-send.",
+      "public_labels": ["Diagnostic", "تشخيص"]
+    },
+    {
+      "name": "Proof Pack",
+      "status": "live",
+      "delivery": "Assembled manually from the customer's own data at the end of a Sprint. Template: data/templates/proof_pack_ar.md.",
+      "public_labels": ["Proof Pack", "Proof Register"]
+    },
+    {
+      "name": "Managed Revenue Ops",
+      "status": "planned",
+      "delivery": "Monthly managed retainer — offered only after 3 paid Sprints + 3 Proof Packs.",
+      "public_labels": ["Managed Ops", "Managed Revenue Ops", "Managed OS"]
+    },
+    {
+      "name": "Custom AI Build",
+      "status": "planned",
+      "delivery": "Bespoke build engagement — gated until the productized ladder is proven.",
+      "public_labels": ["Custom AI Build"]
+    },
+    {
+      "name": "Self-serve Dashboard",
+      "status": "planned",
+      "delivery": "Customer self-serve console — not built; do not present as available.",
+      "public_labels": ["self-serve dashboard"]
+    },
+    {
+      "name": "Autonomous Outreach",
+      "status": "internal",
+      "delivery": "Internal drafting only. Never auto-sends. All external messages require founder approval.",
+      "public_labels": []
+    }
+  ]
+}

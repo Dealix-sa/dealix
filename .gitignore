@@ -107,6 +107,16 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Wave 7 — launch config (product config, no customer PII)
+!data/launch/
+# Wave 7 — growth seed (placeholder targets only; real prospect data stays ignored)
+!data/growth/
+data/growth/*
+!data/growth/first_30_targets.csv
+# Wave 7 — outreach approval queue seed (drafts only; real prospect data stays ignored)
+!data/revenue/
+data/revenue/*
+!data/revenue/outreach_queue.jsonl
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
