@@ -16,6 +16,7 @@ marker.
 
 Exit 0 = PASS, 1 = FAIL. Pure stdlib.
 """
+
 from __future__ import annotations
 
 import json
@@ -27,7 +28,17 @@ ROOT = Path(__file__).resolve().parents[1]
 LANDING = ROOT / "landing"
 REGISTRY = ROOT / "data" / "launch" / "module_status.json"
 
-ROADMAP_MARKERS = ["roadmap", "coming soon", "soon", "planned", "قريبًا", "قريبا", "خارطة", "لاحقًا", "لاحقا"]
+ROADMAP_MARKERS = [
+    "roadmap",
+    "coming soon",
+    "soon",
+    "planned",
+    "قريبًا",
+    "قريبا",
+    "خارطة",
+    "لاحقًا",
+    "لاحقا",
+]
 
 FAILURES: list[str] = []
 WARNINGS: list[str] = []

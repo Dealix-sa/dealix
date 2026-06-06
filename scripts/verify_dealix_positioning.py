@@ -22,6 +22,7 @@ refund guarantee ("money-back guarantee", "ضمان استرجاع").
 
 Exit code 0 = PASS, 1 = FAIL. Pure stdlib.
 """
+
 from __future__ import annotations
 
 import re
@@ -37,18 +38,47 @@ FORBIDDEN = [
     ("نضمن", re.compile(r"نضمن")),
     ("blast", re.compile(r"\bblast\b", re.IGNORECASE)),
     ("scraping", re.compile(r"\bscrap(e|ing)\b", re.IGNORECASE)),
-    ("cold outreach", re.compile(r"\bcold\s+(whatsapp|outreach|email|messaging|sequences?)\b", re.IGNORECASE)),
+    (
+        "cold outreach",
+        re.compile(r"\bcold\s+(whatsapp|outreach|email|messaging|sequences?)\b", re.IGNORECASE),
+    ),
 ]
 
 # A forbidden token is SAFE if one of these appears in the lookback window.
 NEGATORS = [
-    "لا", "بدون", "صفر", "ليست", "ليس", "دون", "نرفض", "يرفض", "رفض",
-    "no", "not", "never", "without", "zero", "reject", "rejects",
-    "anti", "doesn't", "don't", "won't", "no_", "no-",
+    "لا",
+    "بدون",
+    "صفر",
+    "ليست",
+    "ليس",
+    "دون",
+    "نرفض",
+    "يرفض",
+    "رفض",
+    "no",
+    "not",
+    "never",
+    "without",
+    "zero",
+    "reject",
+    "rejects",
+    "anti",
+    "doesn't",
+    "don't",
+    "won't",
+    "no_",
+    "no-",
 ]
 # Qualifiers that legitimize the word "guarantee" (refund guarantee, approved
 # in docs/governance/CLAIMS_REGISTER.md #7).
-GUARANTEE_QUALIFIERS = ["money-back", "money back", "refund", "استرجاع", "استرداد", "back guarantee"]
+GUARANTEE_QUALIFIERS = [
+    "money-back",
+    "money back",
+    "refund",
+    "استرجاع",
+    "استرداد",
+    "back guarantee",
+]
 
 WINDOW = 55
 
@@ -61,11 +91,11 @@ def _normalize(html: str) -> str:
     return re.sub(r"\s+", " ", text)
 
 
-def _safe(text: str, token: str, start: int) -> bool:
+def _safe(text: str, claim: str, start: int) -> bool:
     window = text[max(0, start - WINDOW) : start].lower()
     if any(neg in window for neg in NEGATORS):
         return True
-    if token == "guaranteed":
+    if claim == "guaranteed":
         if any(q in window for q in GUARANTEE_QUALIFIERS):
             return True
         # also accept a money-back qualifier *after* the word (e.g. "guarantee — refund")
@@ -115,9 +145,7 @@ def scan_claim_safety() -> None:
             for m in pattern.finditer(text):
                 if not _safe(text, token, m.start()):
                     snippet = text[max(0, m.start() - 30) : m.start() + 30].strip()
-                    FAILURES.append(
-                        f"{path.name}: positive unsafe claim {token!r} -> …{snippet}…"
-                    )
+                    FAILURES.append(f"{path.name}: positive unsafe claim {token!r} -> …{snippet}…")
                     break  # one report per token per file
 
 

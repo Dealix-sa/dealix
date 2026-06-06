@@ -14,6 +14,7 @@ Safety rules enforced:
 
 Exit 0 = PASS, 1 = FAIL. Pure stdlib.
 """
+
 from __future__ import annotations
 
 import csv
@@ -28,17 +29,41 @@ OUTREACH_JSONL = ROOT / "data" / "revenue" / "outreach_queue.jsonl"
 OUTREACH_MD = ROOT / "reports" / "revenue" / "outreach_approval_queue.md"
 
 REQUIRED_COLUMNS = [
-    "company_name", "website", "city", "sector", "why_target",
-    "pain_hypothesis", "evidence_url", "recommended_angle",
-    "recommended_offer", "score", "status", "next_action", "owner", "notes",
+    "company_name",
+    "website",
+    "city",
+    "sector",
+    "why_target",
+    "pain_hypothesis",
+    "evidence_url",
+    "recommended_angle",
+    "recommended_offer",
+    "score",
+    "status",
+    "next_action",
+    "owner",
+    "notes",
 ]
 ALLOWED_STATUSES = {
-    "research", "approved", "draft_ready", "sent_manually", "replied",
-    "diagnostic_booked", "offer_sent", "paid", "nurture", "rejected",
+    "research",
+    "approved",
+    "draft_ready",
+    "sent_manually",
+    "replied",
+    "diagnostic_booked",
+    "offer_sent",
+    "paid",
+    "nurture",
+    "rejected",
 }
 EVIDENCE_REQUIRED_STATUSES = {
-    "approved", "draft_ready", "sent_manually", "replied",
-    "diagnostic_booked", "offer_sent", "paid",
+    "approved",
+    "draft_ready",
+    "sent_manually",
+    "replied",
+    "diagnostic_booked",
+    "offer_sent",
+    "paid",
 }
 
 # A loose Saudi/intl personal mobile pattern: +9665######## or 05########

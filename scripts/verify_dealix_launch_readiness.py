@@ -14,6 +14,7 @@ This does NOT run the build or external integrations — those are graded by
 the master runner. This grades the *assets*. Exit code is 0 when the score
 clears the private-launch threshold (>=70), else 1. Pure stdlib.
 """
+
 from __future__ import annotations
 
 import sys
@@ -54,9 +55,7 @@ def _exists(rel: str) -> bool:
     if p.is_file():
         return True
     glob = ALT_GLOBS.get(rel)
-    if glob and list(ROOT.glob(glob)):
-        return True
-    return False
+    return bool(glob and list(ROOT.glob(glob)))
 
 
 def main() -> int:
@@ -69,7 +68,11 @@ def main() -> int:
         ok = _exists(rel)
         if ok and needle is not None:
             # confirm the substring is present for content-bearing assets
-            content = (ROOT / rel).read_text(encoding="utf-8", errors="replace") if (ROOT / rel).is_file() else ""
+            content = (
+                (ROOT / rel).read_text(encoding="utf-8", errors="replace")
+                if (ROOT / rel).is_file()
+                else ""
+            )
             ok = needle.lower() in content.lower()
         if ok:
             earned += weight

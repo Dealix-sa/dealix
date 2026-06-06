@@ -8,6 +8,7 @@ it grades that the path is wired.
 
 Exit 0 = PASS, 1 = FAIL. Pure stdlib.
 """
+
 from __future__ import annotations
 
 import re
@@ -34,7 +35,9 @@ MUST_LINK_TO_CONVERSION = [
     "pricing.html",
 ]
 
-CONVERSION_TARGETS = re.compile(r'href="[^"]*(start\.html|diagnostic\.html|command-sprint\.html)"', re.IGNORECASE)
+CONVERSION_TARGETS = re.compile(
+    r'href="[^"]*(start\.html|diagnostic\.html|command-sprint\.html)"', re.IGNORECASE
+)
 
 FAILURES: list[str] = []
 WARNINGS: list[str] = []
@@ -70,12 +73,16 @@ def check_command_sprint_offer() -> None:
         FAILURES.append("command-sprint.html: does not name the 'Command Sprint' offer")
     if not (re.search(r"7[\s-]*(day|days|أيام|يوم)", html, re.IGNORECASE)):
         WARNINGS.append("command-sprint.html: 7-day window not clearly stated")
-    deliverables = ["revenue map", "proof register", "command brief", "action board", "approval register"]
+    deliverables = [
+        "revenue map",
+        "proof register",
+        "command brief",
+        "action board",
+        "approval register",
+    ]
     missing = [d for d in deliverables if d not in low]
     if missing:
-        WARNINGS.append(
-            "command-sprint.html: deliverables not all named -> " + ", ".join(missing)
-        )
+        WARNINGS.append("command-sprint.html: deliverables not all named -> " + ", ".join(missing))
 
 
 def main() -> int:
