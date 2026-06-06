@@ -1,0 +1,41 @@
+schema_version: '1.0'
+source: dealix/config/founder_agent_task_queue.yaml
+note: Generated mirror of the canonical founder agent task queue. Regenerate via scripts/print_agent_work_packets.py
+  source (founder_agent_tasks.templates_as_packets).
+packets:
+  pm_morning:
+    agent: dealix-pm
+    cadence: daily
+    inputs: []
+    outputs: []
+    verify_commands: []
+  sales_touches:
+    agent: dealix-sales
+    cadence: daily
+    inputs: []
+    outputs: []
+    verify_commands: []
+  engineer_gates:
+    agent: dealix-engineer
+    cadence: daily
+    inputs: []
+    outputs: []
+    verify_commands: []
+  delivery_proof:
+    agent: dealix-delivery
+    cadence: daily
+    inputs: []
+    outputs: []
+    verify_commands: []
+  content_draft:
+    agent: dealix-content
+    cadence: daily
+    inputs: []
+    outputs: []
+    verify_commands: []
+  compliance_pdpl:
+    agent: dealix-compliance
+    cadence: daily
+    inputs: []
+    outputs: []
+    verify_commands: []
