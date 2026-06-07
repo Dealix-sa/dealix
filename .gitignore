@@ -107,6 +107,10 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Day-0 prospect seed — clearly-labelled SAMPLE rows, no real PII.
+# The founder's real list (data/prospects.csv) and generated packs
+# (data/day0/**) stay ignored to keep customer PII out of git.
+!data/prospects.seed.csv
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

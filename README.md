@@ -85,6 +85,24 @@ make security              # Bandit + detect-secrets baseline scan when configur
 
 ---
 
+## Day-0 activation (stand the company up)
+
+One command produces today's founder **Operator Pack** — an ICP-scored prospect
+shortlist, a prioritized call list with bilingual talking points, pre-screened
+outreach drafts, and a daily scorecard:
+
+```bash
+make day0                 # → data/day0/<date>/OPERATOR_PACK.md
+make site-build           # build the bilingual customer website (frontend/)
+```
+
+The system scores, ranks, and drafts — **it sends nothing**. You approve and
+contact (doctrine rung #8). Ships with a clearly-labelled SAMPLE seed; drop your
+real list into `data/prospects.csv` and re-run. Full guide:
+[`docs/launch/DAY0_REAL_ACTIVATION.md`](docs/launch/DAY0_REAL_ACTIVATION.md).
+
+---
+
 ## Live production gates
 
 Before paid traffic, public demos, or enterprise pilots, review these in order:

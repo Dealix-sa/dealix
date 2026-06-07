@@ -52,8 +52,13 @@ paths = [
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
     '''tests/fixtures/.*''',
+    # Test files carry intentional fake/sample keys (VALID_KEY/INVALID_KEY fixtures).
+    '''tests/.*\.py$''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
+    # Secret-scanning verify scripts: their own grep patterns (sk_live_…) trip rules.
+    '''scripts/v10_master_verify\.sh$''',
+    '''scripts/v7_launch_verify\.sh$''',
 ]
 
 regexes = [

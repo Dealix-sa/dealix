@@ -1,0 +1,17 @@
+name,sector,city,country,domain,contact_name,contact_title,source,locale,annual_turnover_sar,notes
+Najd Facility Management,b2b_services,Riyadh,SA,najd-fm.example.sa,Operations Lead,COO,warm_intro,ar-SA,2400000,SAMPLE row — replace with your real prospect. Met at a sector event; struggles with lead follow-up.
+Rawafed Logistics,logistics,Dammam,SA,rawafed-logistics.example.sa,General Manager,GM,partner_referral,ar-SA,5200000,SAMPLE row. Referred by a partner; wants cleaner pipeline visibility.
+Mirqab Consulting Group,consulting,Riyadh,SA,mirqab.example.sa,Managing Partner,Managing Partner,inbound_form,ar-SA,1800000,SAMPLE row. Submitted the free diagnostic form; asked about ZATCA readiness.
+Tharwah HR Solutions,b2b_services,Jeddah,SA,tharwah.example.sa,Founder,Founder,warm_intro,ar-SA,900000,SAMPLE row. Wants help qualifying inbound leads faster.
+Salla-Plus Retail Group,retail,Riyadh,SA,sallaplus.example.sa,Head of Growth,Director,inbound_whatsapp,ar-SA,3600000,SAMPLE row. Inbound WhatsApp asking about Sprint pricing.
+Manarah Marketing Agency,agency,Jeddah,SA,manarah.example.sa,Account Director,Director,partner_referral,ar-SA,750000,SAMPLE row. Agency that may white-label the diagnostic.
+Wafrah AgriTech,agritech,Qassim,SA,wafrah.example.sa,CEO,CEO,manual_research,ar-SA,1300000,SAMPLE row. No warm route yet; cold research only.
+Bunyan Real Estate Dev,real_estate,Riyadh,SA,bunyan-dev.example.sa,VP Sales,VP,inbound_form,ar-SA,8000000,SAMPLE row. Large dev; submitted diagnostic; long sales cycles.
+Saqr Clinics Network,healthcare,Riyadh,SA,saqr-clinics.example.sa,Operations Director,Director,warm_intro,ar-SA,4100000,SAMPLE row. Cares about PDPL; patient-data sensitive.
+Tamkeen Training Co,education,Dammam,SA,tamkeen-edu.example.sa,Managing Director,MD,partner_referral,ar-SA,650000,SAMPLE row. B2B corporate training; tight budget.
+Qimam Industrial Supplies,manufacturing,Jubail,SA,qimam-ind.example.sa,Commercial Manager,Manager,manual_research,ar-SA,11000000,SAMPLE row. Industrial; slow decision velocity; cold.
+Aamal SaaS Labs,saas,Riyadh,SA,aamal-labs.example.sa,Co-Founder,Founder,inbound_form,ar-SA,1100000,SAMPLE row. SaaS startup; data-mature; fast mover.
+Dafa Insurance Brokers,financial_services,Jeddah,SA,dafa-insure.example.sa,Head of Sales,Director,warm_intro,ar-SA,2900000,SAMPLE row. Governance-conscious; needs audit trail.
+Sahab Cloud Integrators,it_services,Riyadh,SA,sahab-cloud.example.sa,CTO,VP,partner_referral,ar-SA,3300000,SAMPLE row. Could become a delivery partner too.
+Nakhla Food Distribution,distribution,Jeddah,SA,nakhla-food.example.sa,Owner,Founder,inbound_whatsapp,ar-SA,4700000,SAMPLE row. Inbound; wants ranked opportunities from existing data.
+Athar Events & Exhibitions,events,Riyadh,SA,athar-events.example.sa,Business Dev Lead,Manager,manual_research,ar-SA,800000,SAMPLE row. Cold; seasonal revenue; unsure of fit.
