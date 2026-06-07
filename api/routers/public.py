@@ -226,9 +226,9 @@ async def custom_request(req: Request) -> dict[str, Any]:
 
     log.info(
         "custom_request_accepted email=%s company=%s budget=%s lead_id=%s",
-        email,
-        company,
-        budget_range or "—",
+        email.replace("\r", "").replace("\n", ""),
+        company.replace("\r", "").replace("\n", ""),
+        (budget_range or "—").replace("\r", "").replace("\n", ""),
         lead_id,
     )
 
@@ -271,9 +271,9 @@ async def partner_application(req: Request) -> dict[str, Any]:
 
     log.info(
         "partner_application_received company=%s type=%s clients=%s",
-        company,
-        ptype,
-        active_clients,
+        company.replace("\r", "").replace("\n", ""),
+        ptype.replace("\r", "").replace("\n", ""),
+        active_clients.replace("\r", "").replace("\n", ""),
     )
 
     try:
