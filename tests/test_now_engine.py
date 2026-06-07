@@ -472,3 +472,120 @@ def test_now_routes_registered(monkeypatch) -> None:
     assert "/api/v1/now/pack" in paths
     assert "/api/v1/now/drafts/{draft_id}/approve" in paths
     assert "/api/v1/now/daily-brief" in paths
+
+
+# ──────────────── API endpoint tests (TestClient, synchronous) ────────────────
+
+
+def _tc():
+    """Fresh TestClient against a new app instance (no lifespan → no DB I/O)."""
+    from fastapi.testclient import TestClient
+
+    from api.main import create_app
+
+    return TestClient(create_app())
+
+
+def test_api_pack_200_and_has_schema_keys() -> None:
+    resp = _tc().get("/api/v1/now/pack")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert set(body) >= {"leads", "drafts", "metrics", "priorities", "date", "doctrine"}
+
+
+def test_api_leads_200_and_returns_24_leads() -> None:
+    resp = _tc().get("/api/v1/now/leads")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert "leads" in body and "metrics" in body
+    assert len(body["leads"]) == 24
+
+
+def test_api_drafts_200_and_returns_nonempty_list() -> None:
+    resp = _tc().get("/api/v1/now/drafts")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert "drafts" in body
+    assert isinstance(body["drafts"], list) and len(body["drafts"]) >= 1
+
+
+def test_api_daily_brief_default_is_text_plain() -> None:
+    resp = _tc().get("/api/v1/now/daily-brief")
+    assert resp.status_code == 200
+    assert "text/plain" in resp.headers["content-type"]
+    assert "Revenue Pipeline" in resp.text
+
+
+def test_api_daily_brief_json_format_has_markdown_and_pack() -> None:
+    resp = _tc().get("/api/v1/now/daily-brief?format=json")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert "markdown" in body and "pack" in body
+    assert isinstance(body["markdown"], str) and len(body["markdown"]) > 100
+
+
+def test_api_metrics_returns_12_founder_metric_keys() -> None:
+    resp = _tc().get("/api/v1/now/metrics")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert "metrics" in body and "founder_metrics" in body
+    assert set(body["founder_metrics"]) == {
+        "leads_researched",
+        "fit_score_average",
+        "drafts_created",
+        "emails_approved",
+        "reply_rate",
+        "positive_reply_rate",
+        "calls_booked",
+        "proposal_rate",
+        "close_rate",
+        "delivery_cycle_time",
+        "retainer_conversion",
+        "expansion_revenue",
+    }
+    assert body["founder_metrics"]["leads_researched"] == 24
+    assert body["founder_metrics"]["drafts_created"] >= 1
+
+
+def test_api_approve_valid_draft_returns_send_links(monkeypatch, tmp_path) -> None:
+    monkeypatch.setenv("DEALIX_NOW_LEDGER_PATH", str(tmp_path / "ledger.jsonl"))
+    from fastapi.testclient import TestClient
+
+    from api.main import create_app
+
+    client = TestClient(create_app())
+    draft_id = client.get("/api/v1/now/drafts").json()["drafts"][0]["id"]
+    resp = client.post(f"/api/v1/now/drafts/{draft_id}/approve")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["ok"] is True
+    assert "never auto-sends" in body["status"]
+    assert body["mailto"].startswith("mailto:")
+    assert body["whatsapp"].startswith("https://wa.me/")
+
+
+def test_api_approve_unknown_draft_returns_404() -> None:
+    resp = _tc().post("/api/v1/now/drafts/ghost_id_xyz/approve")
+    assert resp.status_code == 404
+    assert resp.json()["detail"] == "draft_not_found"
+
+
+def test_api_reject_valid_draft_returns_ok(monkeypatch, tmp_path) -> None:
+    monkeypatch.setenv("DEALIX_NOW_LEDGER_PATH", str(tmp_path / "ledger.jsonl"))
+    from fastapi.testclient import TestClient
+
+    from api.main import create_app
+
+    client = TestClient(create_app())
+    draft_id = client.get("/api/v1/now/drafts").json()["drafts"][0]["id"]
+    resp = client.post(f"/api/v1/now/drafts/{draft_id}/reject")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["ok"] is True
+    assert body["draft_id"] == draft_id
+
+
+def test_api_reject_unknown_draft_returns_404() -> None:
+    resp = _tc().post("/api/v1/now/drafts/ghost_id_abc/reject")
+    assert resp.status_code == 404
+    assert resp.json()["detail"] == "draft_not_found"
