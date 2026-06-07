@@ -140,6 +140,71 @@ async def demo_request(req: Request) -> dict[str, Any]:
     }
 
 
+@router.post("/early-access")
+async def early_access(req: Request) -> dict[str, Any]:
+    """Lightweight email-only capture for hero / CTA forms.
+
+    The full ``demo-request`` endpoint requires name+company+phone+consent.
+    The landing hero only asks for an email, so this endpoint captures that
+    interest into the same founder lead-inbox with ``kind=early_access`` and
+    returns the Calendly URL so the visitor always has a next step.
+
+    Honors the hard gates: no external send, no fabricated data — it only
+    records the email the visitor typed.
+    """
+    try:
+        body = await req.json()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="invalid_json") from e
+
+    # Honeypot — silently accept and drop bots that fill the hidden field.
+    if body.get("website"):
+        log.info("early_access_honeypot_triggered")
+        return {"ok": True, "calendly_url": CALENDLY_URL}
+
+    email = str(body.get("email") or "").strip()
+    if "@" not in email or len(email) < 5:
+        raise HTTPException(status_code=422, detail="invalid_email")
+
+    source = str(body.get("source") or "landing.early_access").strip()
+    locale = str(body.get("locale") or "").strip()
+
+    try:
+        await capture_event(
+            "early_access_requested",
+            distinct_id=email,
+            properties={"email": email, "source": source, "locale": locale},
+        )
+    except Exception:
+        log.exception("posthog_capture_failed")
+
+    lead_id: str | None = None
+    try:
+        from auto_client_acquisition import lead_inbox
+
+        rec = lead_inbox.append(
+            {
+                "kind": "early_access",
+                "email": email,
+                "source": source,
+                "locale": locale,
+            }
+        )
+        lead_id = rec.get("id")
+    except Exception:
+        log.exception("lead_inbox_append_failed")
+
+    log.info("early_access_accepted email=%s source=%s lead_id=%s", email, source, lead_id)
+
+    return {
+        "ok": True,
+        "calendly_url": CALENDLY_URL,
+        "message": "تم استلام بريدك — سنرسل لك خطوة البدء قريبًا.",
+        "lead_id": lead_id,
+        "governance_decision": "allow",
+    }
+
+
 @router.get("/health")
 async def public_health() -> dict[str, Any]:
     """Unauthenticated health probe for landing page to show live status."""
