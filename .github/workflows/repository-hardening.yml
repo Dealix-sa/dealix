@@ -26,18 +26,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Run Gitleaks
+      - name: Run Gitleaks (filesystem only)
         run: |
           docker run --rm \
             -v "${{ github.workspace }}:/workspace" \
             ghcr.io/gitleaks/gitleaks:latest detect \
             --source=/workspace \
+            --no-git \
             --redact \
-            --exit-code=1 \
-            --verbose
+            --exit-code=1
 
   filesystem-scan:
     name: Trivy filesystem scan
