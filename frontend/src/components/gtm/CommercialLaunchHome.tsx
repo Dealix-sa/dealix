@@ -4,12 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
-import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, useInView, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 // ---------------------------------------------------------------------------
-// Static data
+// Static data — HONEST by design.
+// Dealix is pre-revenue / founding-cohort. We never display invented client
+// logos, fabricated metrics, or un-sourced testimonials (doctrine #4/#5).
+// Everything below is a true capability, a stated promise, or a sector focus.
 // ---------------------------------------------------------------------------
 
 const FEATURES = [
@@ -17,8 +20,8 @@ const FEATURES = [
     icon: "⚡",
     ar: "محرك الإيرادات الذكي",
     en: "AI Revenue Engine",
-    descAr: "تحليل مسارات الإيراد وكشف التسرّب بالوقت الفعلي.",
-    descEn: "Real-time revenue pathway analysis and leakage detection.",
+    descAr: "تحليل مسارات الإيراد وكشف التسرّب — كل إشارة لها مصدر موثّق.",
+    descEn: "Revenue pathway analysis and leakage detection — every signal sourced.",
   },
   {
     icon: "📊",
@@ -31,8 +34,8 @@ const FEATURES = [
     icon: "🛡️",
     ar: "امتثال PDPL و ZATCA",
     en: "PDPL & ZATCA Compliance",
-    descAr: "جاهزية تلقائية لمتطلبات الفوترة الإلكترونية وحماية البيانات.",
-    descEn: "Automated readiness for e-invoicing and data protection.",
+    descAr: "جاهزية مدمجة لمتطلبات الفوترة الإلكترونية وحماية البيانات.",
+    descEn: "Built-in readiness for e-invoicing and data protection.",
   },
   {
     icon: "🤝",
@@ -43,34 +46,55 @@ const FEATURES = [
   },
   {
     icon: "📋",
-    ar: "تقارير مخصصة",
-    en: "Custom Reports",
-    descAr: "تقارير ثنائية اللغة قابلة للتصدير بضغطة واحدة.",
-    descEn: "One-click bilingual exportable reports.",
+    ar: "Proof Pack بالأدلة",
+    en: "Evidence Proof Pack",
+    descAr: "تقارير ثنائية اللغة بمستويات أدلة L0–L5 قابلة للتصدير.",
+    descEn: "Bilingual reports with L0–L5 evidence levels, exportable.",
   },
   {
-    icon: "🕐",
-    ar: "دعم على مدار الساعة",
-    en: "24/7 Support",
-    descAr: "فريق متخصص متاح على مدار الساعة طوال أيام الأسبوع.",
-    descEn: "Dedicated team available around the clock.",
+    icon: "✅",
+    ar: "موافقة بشرية أولاً",
+    en: "Human Approval First",
+    descAr: "لا إجراء خارجي بدون موافقة — لا أتمتة عمياء.",
+    descEn: "No external action without approval — no blind automation.",
   },
 ];
 
-const LOGOS = [
-  { initials: "NA", name: "نماء للاستثمار" },
-  { initials: "RS", name: "رؤية للخدمات" },
-  { initials: "WA", name: "واحة التقنية" },
-  { initials: "SA", name: "سامي للتجارة" },
-  { initials: "MB", name: "مسار البناء" },
-  { initials: "DF", name: "دار الفهد" },
+// Sector focus (ICP) — these are the markets we build for, NOT a client list.
+const SECTORS = [
+  { code: "AG", ar: "وكالات تسويق وإعلان", en: "Marketing & ad agencies" },
+  { code: "CN", ar: "المقاولات والإنشاءات", en: "Contracting & construction" },
+  { code: "PS", ar: "الخدمات المهنية", en: "Professional services" },
+  { code: "TR", ar: "التجارة والتوزيع", en: "Trade & distribution" },
+  { code: "TC", ar: "التقنية و SaaS", en: "Tech & SaaS" },
+  { code: "LG", ar: "اللوجستيات", en: "Logistics" },
 ];
 
+// Honest capability stats — promises and true capabilities, not customer metrics.
 const STATS = [
-  { valueAr: "٣٫٢×", valueEn: "3.2x", labelAr: "نمو الإيرادات", labelEn: "Revenue Growth", target: 3.2 },
-  { valueAr: "+٥٠٠", valueEn: "+500", labelAr: "عميل راضٍ", labelEn: "Happy Clients", target: 500 },
-  { valueAr: "٩٩٫٩٪", valueEn: "99.9%", labelAr: "وقت التشغيل", labelEn: "Uptime", target: 99.9 },
-  { valueAr: "٤٨س", valueEn: "48h", labelAr: "وقت الإعداد", labelEn: "Setup Time", target: 48 },
+  { numeric: 5, suffix: "", labelAr: "مستويات خدمة واضحة", labelEn: "Clear service tiers" },
+  { numeric: 48, suffix: "h", labelAr: "تسليم أول تشخيص", labelEn: "First diagnostic turnaround" },
+  { text: "AR+EN", labelAr: "ثنائي اللغة بالكامل", labelEn: "Fully bilingual" },
+  { numeric: 100, suffix: "%", labelAr: "إجراءات بموافقة بشرية", labelEn: "Human-approved actions" },
+];
+
+// How it works — the real methodology (replaces fabricated testimonials).
+const STEPS = [
+  {
+    n: "1",
+    ar: { t: "شخّص", d: "Risk Score مجاني في 5 دقائق، ثم تشخيص محكوم خلال 48 ساعة يكشف أين تتسرّب الفرص." },
+    en: { t: "Diagnose", d: "Free 5-minute Risk Score, then a governed 48-hour diagnostic that shows where opportunities leak." },
+  },
+  {
+    n: "2",
+    ar: { t: "أثبت", d: "Proof Pack ثنائي اللغة بمستويات أدلة L0–L5 — كل رقم له مصدر، لا ادعاءات بلا دليل." },
+    en: { t: "Prove", d: "Bilingual Proof Pack with L0–L5 evidence levels — every number sourced, no un-evidenced claims." },
+  },
+  {
+    n: "3",
+    ar: { t: "شغّل", d: "تشغيل مُدار شهري يبدأ فقط بعد إثبات القيمة — وموافقة بشرية على كل خطوة." },
+    en: { t: "Operate", d: "Monthly managed ops that starts only after value is proven — human approval at every step." },
+  },
 ];
 
 const PRICING = [
@@ -81,74 +105,45 @@ const PRICING = [
     priceEn: "499 SAR",
     periodAr: "دفعة واحدة",
     periodEn: "one-time",
-    featuresAr: ["تشخيص ٧ أيام", "Proof Pack PDF", "خريطة الإيراد", "تقرير ثنائي اللغة"],
-    featuresEn: ["7-day diagnostic", "Proof Pack PDF", "Revenue map", "Bilingual report"],
+    featuresAr: ["تشخيص Revenue Intelligence", "مراجعة 10 leads حقيقية", "مسودة Proof Pack", "تقرير ثنائي اللغة"],
+    featuresEn: ["Revenue Intelligence diagnostic", "10 real leads reviewed", "Proof Pack draft", "Bilingual report"],
     popular: false,
-    ctaAr: "ابدأ الآن",
-    ctaEn: "Get started",
+    ctaAr: "ابدأ Sprint",
+    ctaEn: "Start Sprint",
     href: "/offer/lead-intelligence-sprint",
   },
   {
-    tierAr: "النمو",
-    tierEn: "Growth",
-    priceAr: "٢,٩٩٩ ر.س",
-    priceEn: "2,999 SAR",
+    tierAr: "التشغيل المُدار",
+    tierEn: "Managed Ops",
+    priceAr: "من ٢,٩٩٩ ر.س",
+    priceEn: "from 2,999 SAR",
     periodAr: "شهرياً",
     periodEn: "per month",
-    featuresAr: ["كل ميزات المبدئي", "CRM محكوم", "تقارير أسبوعية", "دعم أولوية", "لوحة تحليلية", "امتثال ZATCA"],
-    featuresEn: ["Everything in Starter", "Governed CRM", "Weekly reports", "Priority support", "Analytics dashboard", "ZATCA compliance"],
+    featuresAr: ["كل ما في المبدئي", "OKR أسبوعي محكوم", "Proof Pack شهري", "دعم أولوية SLA 48س", "Approval Center", "امتثال ZATCA و PDPL"],
+    featuresEn: ["Everything in Starter", "Governed weekly OKR", "Monthly Proof Pack", "Priority 48h SLA support", "Approval Center", "ZATCA & PDPL compliance"],
     popular: true,
-    ctaAr: "ابدأ النمو",
-    ctaEn: "Start growing",
-    href: "/offer/retainer",
+    ctaAr: "شاهد المستويات",
+    ctaEn: "See the tiers",
+    href: "/services",
   },
   {
-    tierAr: "المؤسسي",
-    tierEn: "Enterprise",
-    priceAr: "مخصص",
-    priceEn: "Custom",
-    periodAr: "",
-    periodEn: "",
-    featuresAr: ["كل ميزات النمو", "تكامل API مخصص", "مدير حساب مخصص", "SLA مضمون", "تدريب الفريق", "audit log كامل"],
-    featuresEn: ["Everything in Growth", "Custom API integration", "Dedicated account manager", "Guaranteed SLA", "Team training", "Full audit log"],
+    tierAr: "AI مخصص",
+    tierEn: "Custom AI",
+    priceAr: "٥٬٠٠٠ – ٢٥٬٠٠٠ ر.س",
+    priceEn: "5,000 – 25,000 SAR",
+    periodAr: "حسب النطاق",
+    periodEn: "by scope",
+    featuresAr: ["Scope مُحدَّد ومُوقَّع", "تطوير AI مخصص مع audit trail", "Approval Center لكل خطوة", "Proof Pack ختامي", "SLA واضح", "تدريب الفريق"],
+    featuresEn: ["Defined, signed scope", "Custom AI build with audit trail", "Approval Center at each step", "Final Proof Pack", "Defined SLA", "Team training"],
     popular: false,
-    ctaAr: "تحدث مع فريقنا",
-    ctaEn: "Talk to our team",
-    href: "/contact",
-  },
-];
-
-const TESTIMONIALS = [
-  {
-    nameAr: "أحمد الغامدي",
-    nameEn: "Ahmad Al-Ghamdi",
-    companyAr: "واحة التقنية، الرياض",
-    companyEn: "Oasis Tech, Riyadh",
-    quoteAr: "كشف Dealix تسرّب إيراد بنسبة 18% لم نكن نعلم بوجوده. أول Proof Pack كان يستحق أضعاف تكلفته.",
-    quoteEn: "Dealix uncovered 18% revenue leakage we didn't know existed. The first Proof Pack was worth many times its cost.",
-    stars: 5,
-  },
-  {
-    nameAr: "سارة المطيري",
-    nameEn: "Sara Al-Mutairi",
-    companyAr: "مسار البناء، جدة",
-    companyEn: "Masar Construction, Jeddah",
-    quoteAr: "جهّزنا لـ ZATCA Wave 24 في أقل من أسبوعين. الفريق احترافي والنتائج قابلة للقياس.",
-    quoteEn: "They had us ZATCA Wave 24 ready in under two weeks. Professional team, measurable results.",
-    stars: 5,
-  },
-  {
-    nameAr: "محمد القحطاني",
-    nameEn: "Mohammed Al-Qahtani",
-    companyAr: "دار الفهد للخدمات، الدمام",
-    companyEn: "Dar Al-Fahd Services, Dammam",
-    quoteAr: "لوحة التحكم التحليلية غيّرت طريقة اتخاذ قراراتنا. بيانات واضحة، governance محكم.",
-    quoteEn: "The analytics dashboard transformed how we make decisions. Clear data, tight governance.",
-    stars: 5,
+    ctaAr: "ناقش مشروعك",
+    ctaEn: "Discuss your project",
+    href: "/custom-ai",
   },
 ];
 
 const TRUST_BADGES = [
+  { icon: "✅", ar: "نتائج موثّقة فقط", en: "Verified results only" },
   { icon: "🔒", ar: "ملتزمون بـ PDPL", en: "PDPL Compliant" },
   { icon: "🧾", ar: "جاهز لـ ZATCA", en: "ZATCA Ready" },
   { icon: "🇸🇦", ar: "صنع في السعودية", en: "Saudi-First" },
@@ -205,16 +200,6 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
   );
 }
 
-function StarRating({ count }: { count: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <span key={i} className="text-gold-400 text-sm">★</span>
-      ))}
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
@@ -225,9 +210,6 @@ export function CommercialLaunchHome() {
   const dir = isAr ? "rtl" : "ltr";
   const base = `/${locale}`;
 
-  const [email, setEmail] = useState("");
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
-
   const heroControls = useAnimation();
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true });
@@ -236,13 +218,31 @@ export function CommercialLaunchHome() {
     if (heroInView) heroControls.start("visible");
   }, [heroInView, heroControls]);
 
-  function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (email.trim()) setEmailSubmitted(true);
-  }
-
   return (
     <div dir={dir} className="min-h-screen bg-navy-500 text-white overflow-x-hidden">
+      {/* ------------------------------------------------------------------ */}
+      {/* TOP NAV                                                             */}
+      {/* ------------------------------------------------------------------ */}
+      <header className="absolute top-0 inset-x-0 z-30">
+        <div className="mx-auto max-w-6xl px-5 py-4 flex items-center justify-between">
+          <Link href={base} className="text-lg font-bold bg-gradient-to-r from-gold-400 to-gold-300 bg-clip-text text-transparent">
+            Dealix
+          </Link>
+          <nav className="hidden md:flex items-center gap-6 text-sm text-white/70">
+            <Link href={`${base}/services`} className="hover:text-gold-300 transition-colors">{isAr ? "الخدمات" : "Services"}</Link>
+            <Link href={`${base}/pricing`} className="hover:text-gold-300 transition-colors">{isAr ? "الأسعار" : "Pricing"}</Link>
+            <Link href={`${base}/trust-center`} className="hover:text-gold-300 transition-colors">{isAr ? "الثقة" : "Trust"}</Link>
+            <Link href={`${base}/about`} className="hover:text-gold-300 transition-colors">{isAr ? "من نحن" : "About"}</Link>
+          </nav>
+          <Link
+            href={`${base}/risk-score`}
+            className="rounded-full bg-white/10 border border-white/15 px-4 py-1.5 text-sm font-medium hover:bg-white/15 transition-colors"
+          >
+            {isAr ? "تشخيص مجاني" : "Free diagnostic"}
+          </Link>
+        </div>
+      </header>
+
       {/* ------------------------------------------------------------------ */}
       {/* HERO                                                                */}
       {/* ------------------------------------------------------------------ */}
@@ -252,10 +252,7 @@ export function CommercialLaunchHome() {
         style={{ background: "linear-gradient(135deg, #001F3F 0%, #001830 40%, #000d1a 70%, #001020 100%)" }}
       >
         {/* Animated gradient orbs */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 overflow-hidden"
-        >
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <motion.div
             animate={{ scale: [1, 1.15, 1], opacity: [0.18, 0.28, 0.18] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -268,13 +265,6 @@ export function CommercialLaunchHome() {
             className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full"
             style={{ background: "radial-gradient(circle, rgba(16,185,129,0.18) 0%, transparent 70%)" }}
           />
-          <motion.div
-            animate={{ x: [0, 30, 0], y: [0, -20, 0], opacity: [0.08, 0.14, 0.08] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full"
-            style={{ background: "radial-gradient(ellipse, rgba(0,31,63,0.6) 0%, transparent 70%)" }}
-          />
-          {/* Floating particles */}
           {[...Array(6)].map((_, i) => (
             <motion.div
               key={i}
@@ -347,7 +337,7 @@ export function CommercialLaunchHome() {
               className="mt-5 text-base md:text-lg text-white/70 max-w-xl mx-auto leading-relaxed"
             >
               {isAr
-                ? "كشف تسرّب الإيراد · حوكمة الذكاء الاصطناعي · امتثال ZATCA & PDPL — كل شيء في منصة واحدة محكومة بالدليل."
+                ? "كشف تسرّب الإيراد · حوكمة الذكاء الاصطناعي · امتثال ZATCA و PDPL — كل شيء في منصة واحدة محكومة بالدليل."
                 : "Revenue leakage detection · AI governance · ZATCA & PDPL compliance — all in one evidence-governed platform."}
             </motion.p>
 
@@ -361,7 +351,7 @@ export function CommercialLaunchHome() {
                 size="lg"
                 className="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 shadow-lg shadow-gold-500/25 text-base h-13 px-8"
               >
-                <Link href={`${base}/offer/lead-intelligence-sprint`}>
+                <Link href={`${base}/risk-score`}>
                   {isAr ? "ابدأ تشخيصك المجاني" : "Start Free Diagnostic"}
                 </Link>
               </Button>
@@ -377,11 +367,7 @@ export function CommercialLaunchHome() {
               </Button>
             </motion.div>
 
-            <motion.p
-              variants={fadeUp}
-              custom={4}
-              className="mt-5 text-xs text-white/40"
-            >
+            <motion.p variants={fadeUp} custom={4} className="mt-5 text-xs text-white/40">
               {isAr
                 ? "لا إرسال آلي · لا ادّعاء إيراد قبل الدفع · PDPL compliant"
                 : "No automated outbound · No revenue claims before payment · PDPL compliant"}
@@ -402,28 +388,27 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* LOGOS / SOCIAL PROOF STRIP                                          */}
+      {/* SECTOR FOCUS STRIP (built for — NOT a client list)                  */}
       {/* ------------------------------------------------------------------ */}
       <section className="bg-navy-600 border-y border-white/5 py-10 overflow-hidden">
         <p className="text-center text-xs font-semibold text-white/40 uppercase tracking-widest mb-6">
-          {isAr ? "يثق بنا" : "Trusted by"}
+          {isAr ? "مبني لقطاعات B2B السعودية" : "Built for Saudi B2B sectors"}
         </p>
         <div className="relative">
           <motion.div
             className="flex gap-10 items-center"
             animate={{ x: isAr ? [0, "50%"] : [0, "-50%"] }}
-            transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
           >
-            {[...LOGOS, ...LOGOS].map((logo, i) => (
+            {[...SECTORS, ...SECTORS].map((s, i) => (
               <div
                 key={i}
                 className="flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-xl border border-white/8 bg-white/4 backdrop-blur-sm"
               >
                 <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500/30 to-gold-400/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-bold text-sm">
-                  {logo.initials}
+                  {s.code}
                 </div>
-                <span className="text-white/60 text-sm whitespace-nowrap font-medium">{logo.name}</span>
-                <span className="text-emerald-400 text-xs">✓</span>
+                <span className="text-white/60 text-sm whitespace-nowrap font-medium">{isAr ? s.ar : s.en}</span>
               </div>
             ))}
           </motion.div>
@@ -449,8 +434,8 @@ export function CommercialLaunchHome() {
           </motion.h2>
           <motion.p variants={fadeUp} custom={2} className="mt-3 text-white/60 max-w-xl mx-auto">
             {isAr
-              ? "ست أدوات متكاملة تعمل معاً لتحقيق نتائج قابلة للقياس."
-              : "Six integrated tools working together for measurable results."}
+              ? "ست قدرات متكاملة تعمل معاً لتحقيق نتائج قابلة للقياس والتدقيق."
+              : "Six integrated capabilities working together for measurable, auditable results."}
           </motion.p>
         </motion.div>
 
@@ -480,7 +465,7 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* ANIMATED STATS                                                      */}
+      {/* CAPABILITY STATS (honest — promises & capabilities, not metrics)    */}
       {/* ------------------------------------------------------------------ */}
       <section
         className="py-20 px-4"
@@ -494,8 +479,13 @@ export function CommercialLaunchHome() {
           className="max-w-4xl mx-auto text-center mb-12"
         >
           <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold">
-            {isAr ? "أرقام تتحدث بنفسها" : "Numbers that speak for themselves"}
+            {isAr ? "بُني على الحوكمة لا على الوعود" : "Built on governance, not promises"}
           </motion.h2>
+          <motion.p variants={fadeUp} custom={1} className="mt-3 text-white/60 max-w-xl mx-auto">
+            {isAr
+              ? "لا نعرض أرقام عملاء مُختلقة. هذه قدراتنا والتزاماتنا الحقيقية."
+              : "We don't show invented customer metrics. These are our real capabilities and commitments."}
+          </motion.p>
         </motion.div>
 
         <motion.div
@@ -513,14 +503,10 @@ export function CommercialLaunchHome() {
               className="text-center rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm py-8 px-4"
             >
               <div className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-gold-300 to-gold-500 bg-clip-text text-transparent leading-none mb-3">
-                {s.target <= 100 && s.labelEn.includes("Uptime") ? (
-                  <span><AnimatedNumber target={99.9} suffix="%" /></span>
-                ) : s.target <= 100 && s.labelEn.includes("Growth") ? (
-                  <span><AnimatedNumber target={3.2} suffix="x" /></span>
-                ) : s.target === 48 ? (
-                  <span><AnimatedNumber target={48} suffix="h" /></span>
+                {typeof s.numeric === "number" ? (
+                  <AnimatedNumber target={s.numeric} suffix={s.suffix} />
                 ) : (
-                  <span>+<AnimatedNumber target={500} /></span>
+                  <span>{s.text}</span>
                 )}
               </div>
               <p className="text-white/70 text-sm font-medium">{isAr ? s.labelAr : s.labelEn}</p>
@@ -530,9 +516,94 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* PRICING                                                             */}
+      {/* HOW IT WORKS (replaces fabricated testimonials)                     */}
       {/* ------------------------------------------------------------------ */}
       <section className="py-20 px-4 max-w-6xl mx-auto">
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="text-center mb-12"
+        >
+          <motion.p variants={fadeUp} className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
+            {isAr ? "كيف يعمل" : "How it works"}
+          </motion.p>
+          <motion.h2 variants={fadeUp} custom={1} className="text-3xl md:text-4xl font-bold">
+            {isAr ? "شخّص · أثبت · شغّل" : "Diagnose · Prove · Operate"}
+          </motion.h2>
+          <motion.p variants={fadeUp} custom={2} className="mt-3 text-white/60 max-w-xl mx-auto">
+            {isAr
+              ? "كل درجة تفتح فقط بعد دليل حقيقي من الدرجة السابقة. لا توسّع قبل الإثبات."
+              : "Each rung unlocks only after real evidence from the one below. No expansion before proof."}
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          className="grid gap-6 md:grid-cols-3"
+        >
+          {STEPS.map((step, i) => (
+            <motion.div
+              key={step.n}
+              variants={fadeUp}
+              custom={i}
+              className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-7"
+              style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
+            >
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-gold-500/30 to-gold-400/10 border border-gold-500/20 flex items-center justify-center text-gold-300 font-bold text-lg mb-4">
+                {step.n}
+              </div>
+              <h3 className="font-bold text-lg mb-2">{isAr ? step.ar.t : step.en.t}</h3>
+              <p className="text-sm text-white/65 leading-relaxed">{isAr ? step.ar.d : step.en.d}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* FOUNDING COHORT (honest scarcity — replaces fake social proof)      */}
+      {/* ------------------------------------------------------------------ */}
+      <section
+        className="py-16 px-4"
+        style={{ background: "linear-gradient(180deg, #000d1a 0%, #001528 100%)" }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto rounded-2xl border border-gold-500/20 bg-gradient-to-b from-gold-500/8 to-transparent p-8 text-center"
+        >
+          <Badge className="border-gold-500/40 bg-gold-500/10 text-gold-300 text-xs px-4 py-1.5 rounded-full mb-4">
+            {isAr ? "الدفعة التأسيسية 2026" : "Founding cohort 2026"}
+          </Badge>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            {isAr ? "كن من أوائل عملائنا في السعودية" : "Be among our first clients in Saudi Arabia"}
+          </h2>
+          <p className="text-white/65 leading-relaxed max-w-2xl mx-auto">
+            {isAr
+              ? "Dealix شركة سعودية حديثة. نحن صريحون: لا نعرض شعارات عملاء وهمية ولا أرقاماً مُختلقة. عملاء الدفعة التأسيسية يحصلون على تسليم بإشراف المؤسس مباشرة، ويساعدون في تشكيل المنتج — وننشر نتائجهم فقط بعد توثيقها وبموافقتهم."
+              : "Dealix is a new Saudi venture. We're transparent: no invented client logos, no fabricated numbers. Founding-cohort clients get founder-led delivery, help shape the product — and we publish their results only once documented and with their consent."}
+          </p>
+          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            <Button asChild size="lg" className="bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 shadow-lg shadow-gold-500/25">
+              <Link href={`${base}/risk-score`}>{isAr ? "ابدأ بتشخيص مجاني" : "Start with a free diagnostic"}</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+              <Link href={`${base}/contact`}>{isAr ? "تحدّث مع المؤسس" : "Talk to the founder"}</Link>
+            </Button>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* PRICING                                                             */}
+      {/* ------------------------------------------------------------------ */}
+      <section id="pricing" className="py-20 px-4 max-w-6xl mx-auto">
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -547,7 +618,7 @@ export function CommercialLaunchHome() {
             {isAr ? "خطة مناسبة لكل مرحلة" : "A plan for every stage"}
           </motion.h2>
           <motion.p variants={fadeUp} custom={2} className="mt-3 text-white/60 max-w-lg mx-auto">
-            {isAr ? "ابدأ بتشخيص واحد، ثم قرر." : "Start with one diagnostic, then decide."}
+            {isAr ? "ابدأ بتشخيص واحد، ثم قرر — لا upsell بدون Proof Pack مُسلَّم." : "Start with one diagnostic, then decide — no upsell without a delivered Proof Pack."}
           </motion.p>
         </motion.div>
 
@@ -573,7 +644,7 @@ export function CommercialLaunchHome() {
               {plan.popular && (
                 <div className={`absolute -top-3.5 ${isAr ? "left-6" : "right-6"}`}>
                   <Badge className="bg-gold-500 text-navy-500 border-0 font-bold px-3 py-1 text-xs">
-                    {isAr ? "الأكثر شيوعاً" : "Most Popular"}
+                    {isAr ? "الأكثر طلباً" : "Most Popular"}
                   </Badge>
                 </div>
               )}
@@ -581,7 +652,7 @@ export function CommercialLaunchHome() {
               <div>
                 <p className="text-white/50 text-sm font-medium mb-1">{isAr ? plan.tierAr : plan.tierEn}</p>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold">{isAr ? plan.priceAr : plan.priceEn}</span>
+                  <span className="text-3xl font-bold">{isAr ? plan.priceAr : plan.priceEn}</span>
                   {plan.periodAr && (
                     <span className="text-white/50 text-sm">{isAr ? plan.periodAr : plan.periodEn}</span>
                   )}
@@ -613,60 +684,12 @@ export function CommercialLaunchHome() {
             </motion.div>
           ))}
         </motion.div>
-      </section>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* TESTIMONIALS                                                        */}
-      {/* ------------------------------------------------------------------ */}
-      <section
-        className="py-20 px-4"
-        style={{ background: "linear-gradient(180deg, #000d1a 0%, #001528 100%)" }}
-      >
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          className="max-w-6xl mx-auto"
-        >
-          <motion.div variants={fadeUp} className="text-center mb-12">
-            <p className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
-              {isAr ? "آراء عملائنا" : "Client Stories"}
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold">
-              {isAr ? "ما يقوله عملاؤنا" : "What our clients say"}
-            </h2>
-          </motion.div>
-
-          <motion.div
-            variants={stagger}
-            className="grid gap-6 md:grid-cols-3"
-          >
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={t.nameEn}
-                variants={fadeUp}
-                custom={i}
-                className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-7 flex flex-col gap-4"
-                style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
-              >
-                <StarRating count={t.stars} />
-                <p className="text-white/80 text-sm leading-relaxed flex-1">
-                  &ldquo;{isAr ? t.quoteAr : t.quoteEn}&rdquo;
-                </p>
-                <div className="flex items-center gap-3 pt-2 border-t border-white/8">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gold-500/40 to-emerald-600/30 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                    {(isAr ? t.nameAr : t.nameEn)[0]}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold leading-tight">{isAr ? t.nameAr : t.nameEn}</p>
-                    <p className="text-xs text-white/50 mt-0.5">{isAr ? t.companyAr : t.companyEn}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
+        <p className="mt-8 text-center text-sm text-white/50">
+          <Link href={`${base}/services`} className="text-gold-400 hover:underline font-medium">
+            {isAr ? "شاهد كل المستويات الخمسة ←" : "See all five service tiers →"}
+          </Link>
+        </p>
       </section>
 
       {/* ------------------------------------------------------------------ */}
@@ -731,58 +754,32 @@ export function CommercialLaunchHome() {
 
           <motion.p variants={fadeUp} custom={1} className="text-white/60 mb-8 text-lg">
             {isAr
-              ? "أدخل بريدك الإلكتروني واحصل على تقرير تشخيصي مجاني خلال 48 ساعة."
-              : "Enter your email and get a free diagnostic report within 48 hours."}
+              ? "ابدأ بـ Risk Score مجاني خلال 5 دقائق — أو تحدّث معنا مباشرة."
+              : "Start with a free 5-minute Risk Score — or talk to us directly."}
           </motion.p>
 
-          <motion.form
-            variants={fadeUp}
-            custom={2}
-            onSubmit={handleEmailSubmit}
-            className={`flex flex-col sm:flex-row gap-3 max-w-md mx-auto ${isAr ? "sm:flex-row-reverse" : ""}`}
-          >
-            <AnimatePresence mode="wait">
-              {!emailSubmitted ? (
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex flex-col sm:flex-row gap-3 w-full"
-                >
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    placeholder={isAr ? "البريد الإلكتروني للشركة" : "Work email address"}
-                    className="flex-1 h-12 rounded-xl bg-white/8 border border-white/15 px-4 text-white placeholder-white/40 text-sm focus:outline-none focus:border-gold-500/60 focus:bg-white/12 transition-colors"
-                  />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="h-12 px-7 bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 whitespace-nowrap shadow-lg shadow-gold-500/25"
-                  >
-                    {isAr ? "ابدأ مجاناً" : "Start Free"}
-                  </Button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="thanks"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="w-full text-center py-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-medium text-sm"
-                >
-                  {isAr ? "تم الاستلام — سنتواصل معك خلال 48 ساعة." : "Received — we'll be in touch within 48 hours."}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.form>
+          <motion.div variants={fadeUp} custom={2} className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="h-12 px-7 bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 shadow-lg shadow-gold-500/25"
+            >
+              <Link href={`${base}/risk-score`}>{isAr ? "احسب Risk Score مجاناً" : "Get my free Risk Score"}</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-12 px-7 border-white/20 text-white hover:bg-white/10"
+            >
+              <Link href={`${base}/contact`}>{isAr ? "تواصل معنا" : "Contact us"}</Link>
+            </Button>
+          </motion.div>
 
           <motion.p variants={fadeUp} custom={3} className="mt-4 text-xs text-white/35">
             {isAr
-              ? "لا بريد عشوائي. بياناتك محمية وفق PDPL. يمكنك إلغاء الاشتراك في أي وقت."
-              : "No spam. Your data is protected under PDPL. Unsubscribe anytime."}
+              ? "لا بطاقة ائتمان. بياناتك محمية وفق PDPL."
+              : "No credit card. Your data is protected under PDPL."}
           </motion.p>
         </motion.div>
       </section>
@@ -790,10 +787,7 @@ export function CommercialLaunchHome() {
       {/* ------------------------------------------------------------------ */}
       {/* FOOTER                                                              */}
       {/* ------------------------------------------------------------------ */}
-      <footer
-        className="py-12 px-4 border-t border-white/6"
-        style={{ background: "#000d1a" }}
-      >
+      <footer className="py-12 px-4 border-t border-white/6" style={{ background: "#000d1a" }}>
         <div className="max-w-6xl mx-auto">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 mb-10">
             {/* Brand */}
@@ -808,16 +802,18 @@ export function CommercialLaunchHome() {
               </p>
             </div>
 
-            {/* Links */}
+            {/* Product links */}
             <div>
               <p className="text-white/30 text-xs uppercase tracking-widest font-semibold mb-3">
                 {isAr ? "المنتج" : "Product"}
               </p>
               <ul className="space-y-2 text-sm text-white/55">
                 {[
+                  { ar: "الخدمات", en: "Services", href: "/services" },
                   { ar: "التشخيص", en: "Diagnostic", href: "/dealix-diagnostic" },
                   { ar: "Proof Pack", en: "Proof Pack", href: "/proof-pack" },
-                  { ar: "الأسعار", en: "Pricing", href: "#pricing" },
+                  { ar: "AI مخصص", en: "Custom AI", href: "/custom-ai" },
+                  { ar: "الأسعار", en: "Pricing", href: "/pricing" },
                   { ar: "الشركاء", en: "Partners", href: "/partners" },
                 ].map((link) => (
                   <li key={link.href}>
@@ -829,6 +825,7 @@ export function CommercialLaunchHome() {
               </ul>
             </div>
 
+            {/* Company links */}
             <div>
               <p className="text-white/30 text-xs uppercase tracking-widest font-semibold mb-3">
                 {isAr ? "الشركة" : "Company"}
@@ -836,6 +833,7 @@ export function CommercialLaunchHome() {
               <ul className="space-y-2 text-sm text-white/55">
                 {[
                   { ar: "من نحن", en: "About", href: "/about" },
+                  { ar: "مركز الثقة", en: "Trust Center", href: "/trust-center" },
                   { ar: "تواصل معنا", en: "Contact", href: "/contact" },
                   { ar: "سياسة الخصوصية", en: "Privacy", href: "/privacy" },
                   { ar: "الشروط والأحكام", en: "Terms", href: "/terms" },
