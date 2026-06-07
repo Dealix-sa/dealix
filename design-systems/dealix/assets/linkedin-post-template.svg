@@ -1,0 +1,41 @@
+<svg width="1200" height="628" viewBox="0 0 1200 628" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="628" fill="#001F3F"/>
+
+  <!-- Gold accent bar top -->
+  <rect width="1200" height="6" fill="#D4AF37"/>
+
+  <!-- Background diamond -->
+  <path d="M600 80 L900 314 L600 548 L300 314 Z" fill="#D4AF37" opacity="0.04"/>
+  <path d="M600 80 L900 314 L600 548 L300 314 Z" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.15"/>
+
+  <!-- Logo mark small -->
+  <rect x="60" y="60" width="60" height="60" rx="8" fill="#001F3F" stroke="#D4AF37" stroke-width="1.5"/>
+  <text x="90" y="103" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700" font-size="32" fill="#D4AF37">D</text>
+
+  <!-- DEALIX wordmark -->
+  <text x="140" y="100" font-family="Poppins, sans-serif" font-weight="700" font-size="22" fill="#FFFFFF" letter-spacing="4">DEALIX</text>
+
+  <!-- Placeholder: post headline Arabic (to be replaced per post) -->
+  <!-- HEADLINE AR: 2 lines max, 34px, centered -->
+  <text x="600" y="280" text-anchor="middle" font-family="'Noto Sans Arabic', Cairo, sans-serif" font-weight="700" font-size="42" fill="#FFFFFF" direction="rtl">
+    عنوان المنشور هنا — سطر أول
+  </text>
+  <text x="600" y="338" text-anchor="middle" font-family="'Noto Sans Arabic', Cairo, sans-serif" font-weight="600" font-size="34" fill="#D4AF37" direction="rtl">
+    التفصيل أو النقطة الرئيسية — سطر ثانٍ
+  </text>
+
+  <!-- EN sub-line -->
+  <text x="600" y="400" text-anchor="middle" font-family="Poppins, Inter, sans-serif" font-weight="500" font-size="20" fill="#FFFFFF" opacity="0.6" letter-spacing="1">
+    Post subtitle in English — dealix.me
+  </text>
+
+  <!-- Bottom badge row -->
+  <rect x="300" y="500" width="600" height="48" rx="8" fill="#D4AF37" opacity="0.12"/>
+  <text x="390" y="530" text-anchor="middle" font-family="'Noto Sans Arabic', sans-serif" font-size="16" fill="#D4AF37">PDPL أصيل</text>
+  <text x="600" y="530" text-anchor="middle" font-family="'Noto Sans Arabic', sans-serif" font-size="16" fill="#D4AF37">ZATCA جاهز</text>
+  <text x="810" y="530" text-anchor="middle" font-family="'Noto Sans Arabic', sans-serif" font-size="16" fill="#D4AF37">موافقة أولاً</text>
+
+  <!-- Gold accent bar bottom -->
+  <rect y="622" width="1200" height="6" fill="#D4AF37"/>
+</svg>
