@@ -36,7 +36,16 @@ jobs:
           sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
 
       - name: Run Gitleaks
-        run: gitleaks detect --source . --redact --config .gitleaks.toml
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -n "$BASE_SHA" ] && [ "$BASE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            gitleaks detect --source . --redact --config .gitleaks.toml \
+              --log-opts="${BASE_SHA}..HEAD"
+          else
+            gitleaks detect --source . --redact --config .gitleaks.toml \
+              --log-opts="HEAD~1..HEAD"
+          fi
 
   filesystem-scan:
     name: Trivy filesystem scan
