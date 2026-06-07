@@ -181,6 +181,7 @@ bash scripts/dealix_local_stack_verify.sh --skip-docker --skip-frontend   # ال
 **اصطلاح Python:** خطوات السكربتات في GitHub Actions تستخدم `python3` (تكافؤ مع صور Linux الأدنى).
 
 - مكينة ليدز سعودية: `docs/ops/SAUDI_LEAD_MACHINE_AR.md`؛ بذرة YAML + `python3 scripts/import_seed_leads.py --dry-run`؛ دفعة API: `POST /api/v1/leads/batch`.
+- **مكينة ليدز — الطبقة الحقيقية (real, sourced):** `docs/ops/SAUDI_LEAD_MACHINE_REAL_AR.md` · عالم حسابات مُصدَّر `docs/commercial/operations/targeting/saudi_b2b_target_universe.csv` · `python3 scripts/dealix_target_universe.py --top 10` · مسودات يومية بموافقة `python3 scripts/dealix_daily_draft_pack.py --top 10` · فحص تشغيل `python3 scripts/dealix_company_live_check.py` · API: `GET /api/v1/ops-autopilot/targeting/universe-today` · إطلاق: `docs/ops/DEALIX_LAUNCH_NOW_AR.md`
 
 استراتيجية التشغيل الكاملة: `docs/strategic/DEALIX_MASTER_OPERATING_MODEL_AR.md`
 
