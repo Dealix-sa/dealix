@@ -29,8 +29,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      # Use the open-source Gitleaks image directly. The marketplace action
+      # (gitleaks/gitleaks-action@v2) requires a paid GITLEAKS_LICENSE for
+      # organization repos and fails before scanning; the OSS scanner needs
+      # no license. Allowlist of test fixtures / placeholders lives in
+      # .gitleaks.toml. Exit 1 on any real finding.
+      - name: Run Gitleaks (OSS, no license)
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/repo" \
+            ghcr.io/gitleaks/gitleaks:latest \
+            dir /repo --config /repo/.gitleaks.toml --redact --no-banner --exit-code 1
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -41,12 +49,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Run Trivy via its official image. The pinned marketplace action tag
+      # (aquasecurity/trivy-action@0.24.0) no longer resolves; the image is
+      # stable and self-contained. Fails on fixable CRITICAL/HIGH vulns.
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+        run: |
+          docker run --rm -v "${{ github.workspace }}:/repo" \
+            aquasec/trivy:latest \
+            fs --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 \
+            --scanners vuln --no-progress /repo
