@@ -53,6 +53,10 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
+          # Vulnerabilities only — secret scanning is handled by the Gitleaks
+          # job above (Trivy's secret scanner false-positived on grep patterns
+          # inside verify scripts that search for sk_live_* strings).
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
