@@ -381,3 +381,56 @@ async def update_lead_status(
         from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="lead_inbox_empty")
     return {"ok": True, "change": rec}
+
+
+@router.get("/daily-board")
+async def daily_board() -> dict[str, Any]:
+    """Today's lead board produced by ``scripts/dealix_daily_lead_prep.py``.
+
+    Reads the newest ``{YYYY-MM-DD}.json`` under
+    ``data/wave12/daily_lead_prep/`` (gitignored — built daily by the
+    scheduled workflow). Read-only. All entries are DRAFT-ONLY /
+    approval_required by construction (Article 4). Returns a clean
+    empty-state when no board has been generated yet.
+    """
+    import json
+    import os
+
+    repo_root = Path(__file__).resolve().parents[2]
+    board_dir = Path(
+        os.environ.get(
+            "DEALIX_DAILY_BOARD_DIR",
+            str(repo_root / "data" / "wave12" / "daily_lead_prep"),
+        )
+    )
+    empty = {
+        "ok": True,
+        "generated": False,
+        "board": None,
+        "hint_ar": "شغّل scripts/dealix_build_warmlist.py ثم scripts/dealix_daily_lead_prep.py لإنشاء لوحة اليوم.",
+        "hint_en": "Run scripts/dealix_build_warmlist.py then scripts/dealix_daily_lead_prep.py to generate today's board.",
+    }
+    if not board_dir.exists():
+        return empty
+    boards = sorted(board_dir.glob("*.json"))  # filenames are dates → chronological
+    if not boards:
+        return empty
+    latest = boards[-1]
+    try:
+        data = json.loads(latest.read_text(encoding="utf-8"))
+    except Exception as exc:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=500, detail="board_parse_error") from exc
+    return {
+        "ok": True,
+        "generated": True,
+        "board_date": latest.stem,
+        "board": data,
+        "hard_gates": {
+            "all_outputs_draft_only": True,
+            "no_live_send": True,
+            "manual_follow_up_only": True,
+        },
+        "next_action_ar": "راجع أعلى الفرص، اعتمد المسودّة، ثم أرسل يدوياً.",
+        "next_action_en": "Review top leads, approve the draft, then send manually.",
+    }

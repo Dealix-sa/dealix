@@ -1,0 +1,56 @@
+name: Dealix Daily Lead Board
+
+# Prepares the founder's daily lead board (DRAFT-ONLY, no external send).
+# ~08:00 KSA (05:00 UTC) Sun-Thu. The board is uploaded as a build artifact —
+# never committed (it may contain inbound PII; data/* is gitignored).
+
+on:
+  schedule:
+    - cron: "0 5 * * 0-4"
+  workflow_dispatch:
+    inputs:
+      top_n:
+        description: "How many top leads to surface"
+        required: false
+        default: "10"
+
+concurrency:
+  group: dealix-daily-lead-board
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  lead-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The daily-prep dependency chain is pure stdlib + internal modules
+      # (the script inserts the repo root onto sys.path itself) — no install.
+      - name: Build PII-safe warm-list seed
+        run: python3 scripts/dealix_build_warmlist.py
+
+      - name: Prepare today's lead board (DRAFT-ONLY)
+        env:
+          PYTHONIOENCODING: utf-8
+        run: |
+          python3 scripts/dealix_daily_lead_prep.py \
+            --top-n "${{ github.event.inputs.top_n || '10' }}"
+
+      - name: Upload board artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-daily-lead-board-${{ github.run_id }}
+          path: |
+            data/wave12/daily_lead_prep/
+            data/wave12/warmlist/
+          retention-days: 14
+          if-no-files-found: ignore

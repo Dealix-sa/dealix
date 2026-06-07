@@ -46,6 +46,8 @@ from typing import Any, Literal
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT_DIR = REPO_ROOT / "data" / "wave12" / "daily_lead_prep"
+# Default PII-safe warm-list seed (built by scripts/dealix_build_warmlist.py).
+DEFAULT_WARMLIST = REPO_ROOT / "data" / "wave12" / "warmlist" / "candidates.csv"
 
 # Make the auto_client_acquisition package importable when running standalone.
 sys.path.insert(0, str(REPO_ROOT))
@@ -310,6 +312,40 @@ def load_candidates_from_lead_inbox(*, limit: int = 100) -> list[LeadCandidate]:
             notes=str(rec.get("message") or rec.get("notes", ""))[:200],
         ))
     return candidates
+
+
+def load_candidates_from_warmlist(path: Path | None = None) -> list[LeadCandidate]:
+    """Load the PII-safe warm-list seed (a CSV in the candidate shape).
+
+    Built by ``scripts/dealix_build_warmlist.py`` from the public Saudi lead
+    graph. Returns [] when the seed has not been generated yet (fresh install).
+    Contact columns in this seed are blank by construction (Article 4).
+    """
+    p = path or DEFAULT_WARMLIST
+    if not p.exists():
+        return []
+    try:
+        return load_candidates_from_csv(p)
+    except Exception:
+        return []
+
+
+def _dedupe_candidates(*groups: list[LeadCandidate]) -> list[LeadCandidate]:
+    """Merge candidate groups, deduping by case-insensitive name.
+
+    Earlier groups win on conflict — callers pass the freshest/most-trusted
+    source first (e.g. inbound lead_inbox before the static warm-list).
+    """
+    out: list[LeadCandidate] = []
+    seen: set[str] = set()
+    for group in groups:
+        for c in group:
+            key = c.name.strip().lower()
+            if not key or key in seen:
+                continue
+            seen.add(key)
+            out.append(c)
+    return out
 
 
 def _candidate_to_account_dict(c: LeadCandidate) -> dict[str, Any]:
@@ -611,6 +647,10 @@ def main() -> int:
         "--out-dir", type=Path, default=DEFAULT_OUT_DIR,
         help=f"Output directory (default: {DEFAULT_OUT_DIR})",
     )
+    parser.add_argument(
+        "--warmlist", type=Path, default=DEFAULT_WARMLIST,
+        help=f"PII-safe warm-list seed CSV (default: {DEFAULT_WARMLIST})",
+    )
     # Wave 12.9 — auto-source from lead_inbox when no CSV
     parser.add_argument(
         "--no-auto-source", action="store_true",
@@ -644,14 +684,18 @@ def main() -> int:
         candidates = load_candidates_from_csv(args.candidates)
         print(f"Loaded {len(candidates)} candidates from {args.candidates}")
     elif not args.no_auto_source:
-        # Wave 12.9 — auto-source from existing lead_inbox
-        candidates = load_candidates_from_lead_inbox(limit=args.auto_source_limit)
-        if candidates:
-            print(f"Auto-sourced {len(candidates)} candidates from lead_inbox.jsonl "
-                  f"(inbound landing leads with status='new')")
-        else:
-            print("No --candidates and no inbound leads in lead_inbox; "
-                  "producing empty board with season context only")
+        # Default sources: inbound lead_inbox (freshest — wins on dedupe) ∪ the
+        # PII-safe warm-list seed (data/wave12/warmlist/candidates.csv). This
+        # makes the board non-empty out-of-the-box on a server with the seed.
+        inbound = load_candidates_from_lead_inbox(limit=args.auto_source_limit)
+        warm = load_candidates_from_warmlist(args.warmlist)
+        candidates = _dedupe_candidates(inbound, warm)
+        print(f"Auto-sourced {len(candidates)} candidates "
+              f"(inbound={len(inbound)} ∪ warmlist={len(warm)}, deduped)")
+        if not candidates:
+            print("No inbound leads and no warm-list seed; producing empty board "
+                  "with season context only. Tip: run "
+                  "scripts/dealix_build_warmlist.py first.")
     else:
         print("--no-auto-source set; producing empty board with season context only")
 
