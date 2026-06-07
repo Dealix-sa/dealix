@@ -1,0 +1,30 @@
+name: Dealix V13 Master Consolidation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'consolidation/**'
+      - 'Makefile'
+      - '.github/workflows/dealix-v13-master-consolidation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  consolidation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Master readiness
+        run: python scripts/dealix_v13_master_readiness.py
+      - name: Launch decision
+        run: python scripts/dealix_launch_decision_report.py
+      - name: Workflow inventory
+        run: python scripts/dealix_workflow_inventory.py
+      - name: Migration order
+        run: python scripts/dealix_migration_order_check.py

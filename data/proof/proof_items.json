@@ -1,0 +1,11 @@
+[
+  {
+    "id": "proof_demo_001",
+    "type": "demo",
+    "date": "2026-06-07",
+    "title": "Dealix revenue machine demo",
+    "sensitive": false,
+    "marketing_allowed": true,
+    "path": "demos/DEMO_ROOM_BLUEPRINT_AR.md"
+  }
+]
