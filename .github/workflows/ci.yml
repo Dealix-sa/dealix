@@ -150,6 +150,11 @@ jobs:
           python scripts/export_service_readiness_json.py
           git diff --exit-code -- landing/assets/data/service-readiness.json
 
+      - name: Service Catalog single-source drift gate
+        run: |
+          python scripts/dealix_export_service_catalog_json.py
+          git diff --exit-code -- landing/assets/data/services-catalog.json
+
       - name: SEO audit
         run: |
           python scripts/seo_audit.py

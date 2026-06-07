@@ -148,6 +148,13 @@ export const api = {
   getLeads: () =>
     apiClient.get("/api/v1/founder/leads"),
 
+  // Latest daily lead board (DRAFT-ONLY) produced by dealix_daily_lead_prep.py
+  getFounderDailyBoard: () =>
+    apiClient.get("/api/v1/founder/daily-board"),
+
+  updateFounderLeadStatus: (leadId: string, status: string) =>
+    apiClient.post(`/api/v1/founder/leads/${encodeURIComponent(leadId)}/status`, { status }),
+
   submitLead: (data: Record<string, unknown>) =>
     apiClient.post("/api/v1/leads", data),
 
