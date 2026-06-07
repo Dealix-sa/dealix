@@ -1,0 +1,31 @@
+name: Dealix V14 Controlled Preview
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'controlled-preview/**'
+      - 'merge-control/**'
+      - 'quality-gates/**'
+      - 'scripts/dealix_v14_*.py'
+      - 'scripts/dealix_controlled_preview_plan.py'
+      - 'scripts/dealix_launch_week_command_center.py'
+      - 'scripts/dealix_preview_quality_gate.py'
+      - '.github/workflows/dealix-v14-controlled-preview.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  controlled-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/dealix_v14_readiness_check.py
+      - run: python scripts/dealix_controlled_preview_plan.py
+      - run: python scripts/dealix_launch_week_command_center.py
+      - run: python scripts/dealix_preview_quality_gate.py
+      - run: python scripts/dealix_post_launch_review.py

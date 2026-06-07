@@ -1,0 +1,6 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Trivy ignore file
+# ──────────────────────────────────────────────────────────────────────────────
+
+# NOTE: scripts/v10_master_verify.sh and scripts/v7_launch_verify.sh are
+# excluded via --skip-files in the workflow (grep patterns, not real secrets).
