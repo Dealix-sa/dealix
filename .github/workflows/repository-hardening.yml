@@ -57,6 +57,11 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
+          # Vulnerability scanning only. The secret-scan job (Gitleaks) is the
+          # dedicated secret scanner and honours .gitleaks.toml; Trivy's secret
+          # scanner ignores that allowlist and false-positives on the literal
+          # `sk_live_…` regex *patterns* inside scripts/*_verify.sh.
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
