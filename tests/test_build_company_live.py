@@ -25,8 +25,18 @@ _spec.loader.exec_module(bcl)  # type: ignore[union-attr]
 
 
 _FIELDS = [
-    "company", "contact", "segment", "pain_hypothesis", "channel", "motion",
-    "offer_id", "status", "next_action", "next_action_date", "priority", "notes",
+    "company",
+    "contact",
+    "segment",
+    "pain_hypothesis",
+    "channel",
+    "motion",
+    "offer_id",
+    "status",
+    "next_action",
+    "next_action_date",
+    "priority",
+    "notes",
 ]
 
 
@@ -35,26 +45,48 @@ def mixed_csv(tmp_path: Path) -> Path:
     rows = [
         # A real lead (no placeholder markers) — high-priority warm.
         {
-            "company": "شركة الأفق للخدمات", "contact": "أبو محمد", "segment": "direct_b2b",
-            "pain_hypothesis": "متابعة غير موثقة للعروض", "channel": "email_warm",
-            "motion": "B", "offer_id": "ai_workflow_audit", "status": "not_contacted",
-            "next_action": "Discovery 30 دقيقة", "next_action_date": "", "priority": "high",
+            "company": "شركة الأفق للخدمات",
+            "contact": "أبو محمد",
+            "segment": "direct_b2b",
+            "pain_hypothesis": "متابعة غير موثقة للعروض",
+            "channel": "email_warm",
+            "motion": "B",
+            "offer_id": "ai_workflow_audit",
+            "status": "not_contacted",
+            "next_action": "Discovery 30 دقيقة",
+            "next_action_date": "",
+            "priority": "high",
             "notes": "warm من شبكة المؤسس",
         },
         # A seed placeholder — must never be counted as real.
         {
-            "company": "REPLACE:وكالة من شبكتك 1", "contact": "REPLACE:اسم المدير",
-            "segment": "agency_wedge", "pain_hypothesis": "لا proof أسبوعي",
-            "channel": "linkedin_manual", "motion": "A", "offer_id": "revenue_ai_os",
-            "status": "not_contacted", "next_action": "مسودة", "next_action_date": "",
-            "priority": "high", "notes": "warm",
+            "company": "REPLACE:وكالة من شبكتك 1",
+            "contact": "REPLACE:اسم المدير",
+            "segment": "agency_wedge",
+            "pain_hypothesis": "لا proof أسبوعي",
+            "channel": "linkedin_manual",
+            "motion": "A",
+            "offer_id": "revenue_ai_os",
+            "status": "not_contacted",
+            "next_action": "مسودة",
+            "next_action_date": "",
+            "priority": "high",
+            "notes": "warm",
         },
         # Do-not-contact — closed_lost + "لا ترسل" — must be excluded everywhere external.
         {
-            "company": "وكالة مثال — لا ترسل", "contact": "مدير", "segment": "agency_wedge",
-            "pain_hypothesis": "تدريب داخلي", "channel": "linkedin_manual", "motion": "A",
-            "offer_id": "revenue_ai_os", "status": "closed_lost", "next_action": "مثال",
-            "next_action_date": "", "priority": "low", "notes": "مثال تدريبي — لا ترسل",
+            "company": "وكالة مثال — لا ترسل",
+            "contact": "مدير",
+            "segment": "agency_wedge",
+            "pain_hypothesis": "تدريب داخلي",
+            "channel": "linkedin_manual",
+            "motion": "A",
+            "offer_id": "revenue_ai_os",
+            "status": "closed_lost",
+            "next_action": "مثال",
+            "next_action_date": "",
+            "priority": "low",
+            "notes": "مثال تدريبي — لا ترسل",
         },
     ]
     p = tmp_path / "leads.csv"

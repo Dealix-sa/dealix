@@ -91,7 +91,7 @@ def _is_placeholder(company: str, notes: str) -> bool:
 
 def _is_do_not_contact(row: dict[str, str]) -> bool:
     status = (row.get("status") or "").strip().lower()
-    notes = (row.get("notes") or "")
+    notes = row.get("notes") or ""
     return status in {"closed_lost", "closed_won", "do_not_contact"} or "لا ترسل" in notes
 
 
@@ -166,9 +166,15 @@ def score_lead(row: dict[str, str]) -> dict[str, Any]:
     breakdown: dict[str, int] = {}
     # Operations-heavy / ICP fit by segment.
     ops_heavy = {
-        "agency_wedge": 20, "marketing_agency": 20, "agency_partner": 18,
-        "direct_b2b": 18, "real_estate_developer": 20, "saas": 15,
-        "crm_partner": 15, "consulting_firm": 14, "hospitality": 14,
+        "agency_wedge": 20,
+        "marketing_agency": 20,
+        "agency_partner": 18,
+        "direct_b2b": 18,
+        "real_estate_developer": 20,
+        "saas": 15,
+        "crm_partner": 15,
+        "consulting_firm": 14,
+        "hospitality": 14,
         "executive_governance": 16,
     }
     breakdown["icp_fit"] = ops_heavy.get(segment, 10)
@@ -183,8 +189,11 @@ def score_lead(row: dict[str, str]) -> dict[str, Any]:
     # Channel realism (warm/manual channels score higher under no-cold doctrine).
     channel = (row.get("channel") or "").strip()
     breakdown["channel_fit"] = {
-        "email_warm": 10, "partner_intro": 10, "inbound": 10,
-        "phone_task": 8, "linkedin_manual": 7,
+        "email_warm": 10,
+        "partner_intro": 10,
+        "inbound": 10,
+        "phone_task": 8,
+        "linkedin_manual": 7,
     }.get(channel, 5)
 
     score = min(100, sum(breakdown.values()))
@@ -213,7 +222,9 @@ def build_pipeline(leads: list[dict[str, str]]) -> list[dict[str, Any]]:
                 "company": company,
                 "contact": (row.get("contact") or "").strip(),
                 "segment": (row.get("segment") or "").strip(),
-                "sector": _SEGMENT_TO_SECTOR.get((row.get("segment") or "").strip(), "b2b_services"),
+                "sector": _SEGMENT_TO_SECTOR.get(
+                    (row.get("segment") or "").strip(), "b2b_services"
+                ),
                 "motion": (row.get("motion") or "").strip().upper(),
                 "offer_id": _SEGMENT_TO_OFFER.get(
                     (row.get("segment") or "").strip(), "ai_workflow_audit"
@@ -266,7 +277,7 @@ def build_drafts(pipeline: list[dict[str, Any]], max_drafts: int) -> list[dict[s
             )
         )
         # Keep the two strongest variants per channel to keep the snapshot lean.
-        for d in (bundle.whatsapp_drafts[:2] + bundle.email_drafts[:1]):
+        for d in bundle.whatsapp_drafts[:2] + bundle.email_drafts[:1]:
             assert d.approval_status == "approval_required", "draft must be approval_required"
             out.append(
                 {
@@ -438,9 +449,7 @@ def main() -> int:
 
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(
-        json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    out_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     # Founder brief (markdown).
     BRIEF_DIR.mkdir(parents=True, exist_ok=True)
@@ -470,10 +479,7 @@ def main() -> int:
 
     print(f"company_live snapshot -> {out_path}")
     print(f"founder brief         -> {brief}")
-    print(
-        "counts: "
-        + json.dumps(snapshot["meta"]["counts"], ensure_ascii=False)
-    )
+    print("counts: " + json.dumps(snapshot["meta"]["counts"], ensure_ascii=False))
     print("DEALIX_COMPANY_LIVE_BUILD=OK")
     return 0
 
