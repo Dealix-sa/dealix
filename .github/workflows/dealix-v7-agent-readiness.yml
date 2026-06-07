@@ -1,0 +1,28 @@
+name: Dealix V7 Agent Readiness
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'agents/**'
+      - 'prompts/**'
+      - 'scripts/dealix_agent_*.py'
+      - 'scripts/dealix_v7_readiness_check.py'
+      - 'data/agents/**'
+permissions:
+  contents: read
+jobs:
+  agent-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: V7 readiness
+        run: python scripts/dealix_v7_readiness_check.py
+      - name: Prompt contracts
+        run: python scripts/dealix_prompt_contract_check.py
+      - name: Agent evaluator
+        run: python scripts/dealix_agent_evaluator.py
+      - name: Agent control tower
+        run: python scripts/dealix_agent_control_tower.py

@@ -1,0 +1,39 @@
+[
+  {
+    "id": "eval_001",
+    "role": "outreach_draft_agent",
+    "input": "Training company with missed WhatsApp follow-up",
+    "expected_contains": [
+      "draft_only",
+      "needs_human_review"
+    ],
+    "forbidden": [
+      "guaranteed",
+      "مضمون"
+    ]
+  },
+  {
+    "id": "eval_002",
+    "role": "lead_qualification_agent",
+    "input": "Clinic with high booking volume and no follow-up",
+    "expected_contains": [
+      "fit_score",
+      "next_action"
+    ],
+    "forbidden": [
+      "send automatically"
+    ]
+  },
+  {
+    "id": "eval_003",
+    "role": "proposal_agent",
+    "input": "Agency needs proposal follow-up system",
+    "expected_contains": [
+      "Assumptions",
+      "Exclusions"
+    ],
+    "forbidden": [
+      "guarantee"
+    ]
+  }
+]

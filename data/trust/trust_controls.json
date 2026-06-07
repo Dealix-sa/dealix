@@ -1,0 +1,7 @@
+{
+  "human_approval_required": true,
+  "automated_outbound": false,
+  "least_privilege_workflows": true,
+  "proof_claim_policy": true,
+  "data_minimization": true
+}

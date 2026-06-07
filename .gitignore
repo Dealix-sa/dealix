@@ -107,6 +107,19 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V8 — seed/demo data for proof, trust, traction, board, agents, market
+!data/agents/
+!data/analytics/
+!data/board/
+!data/campaigns/
+!data/case_studies/
+!data/crm/
+!data/market/
+!data/proof/
+!data/prospects/
+!data/referrals/
+!data/traction/
+!data/trust/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

@@ -1,0 +1,3 @@
+company_name,vertical,city,website_or_profile,source_url,suspected_pain,contact_channel,owner,status,fit_score,next_action
+شركة تدريب الرياض النموذجية,training,Riyadh,https://example.com/training-riyadh,manual_seed,تسجيلات تضيع بعد أول تواصل واتساب,website,sami,new,100,draft_outreach
+مركز تطوير مهني جدة,training,Jeddah,https://example.com/jeddah-training,manual_seed,عروض تدريب بدون متابعة موحدة,website,sami,new,100,draft_outreach
