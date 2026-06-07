@@ -85,15 +85,15 @@ export function AboutPage() {
       >
 
         {/* ── Mission Hero ── */}
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A1628] to-[#0a2040] px-8 py-14 text-white shadow-xl">
+        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#001F3F] to-[#0a2040] px-8 py-14 text-white shadow-xl">
           <div className="relative space-y-5">
             <Badge className="bg-white/10 text-white border-white/20 text-xs">
               {isAr ? "من نحن" : "About Us"}
             </Badge>
             <h1 className="text-4xl font-bold leading-tight md:text-5xl">
               {isAr
-                ? <>عمليات AI محكومة<br /><span className="text-[#C9974B]">للسوق السعودي</span></>
-                : <>Governed AI Operations<br /><span className="text-[#C9974B]">for the Saudi Market</span></>}
+                ? <>عمليات AI محكومة<br /><span className="text-[#D4AF37]">للسوق السعودي</span></>
+                : <>Governed AI Operations<br /><span className="text-[#D4AF37]">for the Saudi Market</span></>}
             </h1>
             <p className="max-w-2xl text-lg text-white/80 leading-relaxed">
               {isAr
@@ -106,7 +106,7 @@ export function AboutPage() {
         {/* ── Mission Statement ── */}
         <section className="grid gap-8 lg:grid-cols-2 items-center">
           <div>
-            <p className="text-sm font-semibold text-[#C9974B] uppercase tracking-wide mb-3">
+            <p className="text-sm font-semibold text-[#D4AF37] uppercase tracking-wide mb-3">
               {isAr ? "رسالتنا" : "Our Mission"}
             </p>
             <h2 className="text-3xl font-bold leading-snug">
@@ -125,8 +125,8 @@ export function AboutPage() {
                 : "Dealix enables Saudi B2B companies to build this systematic trust — via the SOAEN Framework that links every market signal to a documented decision."}
             </p>
           </div>
-          <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-[#C9974B]/20">
-            <p className="text-sm font-semibold text-[#C9974B] uppercase tracking-wide mb-4">
+          <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-[#D4AF37]/20">
+            <p className="text-sm font-semibold text-[#D4AF37] uppercase tracking-wide mb-4">
               {isAr ? "SOAEN Framework" : "SOAEN Framework"}
             </p>
             <div className="space-y-3">
@@ -138,7 +138,7 @@ export function AboutPage() {
                 { l: "N", ar: "Narrative — قصة إيراد موحّدة للمؤسس", en: "Narrative — unified revenue story for founder" },
               ].map((s) => (
                 <div key={s.l} className="flex items-start gap-3">
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[#0A1628] text-[#C9974B] flex items-center justify-center text-xs font-bold">
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[#001F3F] text-[#D4AF37] flex items-center justify-center text-xs font-bold">
                     {s.l}
                   </span>
                   <span className="text-sm">{isAr ? s.ar : s.en}</span>
@@ -149,8 +149,8 @@ export function AboutPage() {
         </section>
 
         {/* ── Governed AI Difference ── */}
-        <section className="rounded-2xl border border-[#C9974B]/20 bg-gradient-to-br from-[#C9974B]/5 to-card p-8">
-          <p className="text-sm font-semibold text-[#C9974B] uppercase tracking-wide mb-3">
+        <section className="rounded-2xl border border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/5 to-card p-8">
+          <p className="text-sm font-semibold text-[#D4AF37] uppercase tracking-wide mb-3">
             {isAr ? "الفرق" : "The Difference"}
           </p>
           <h2 className="text-2xl font-bold mb-4">
@@ -208,7 +208,7 @@ export function AboutPage() {
 
         {/* ── Values ── */}
         <section>
-          <p className="text-sm font-semibold text-[#C9974B] uppercase tracking-wide mb-3">
+          <p className="text-sm font-semibold text-[#D4AF37] uppercase tracking-wide mb-3">
             {isAr ? "قيمنا" : "Our Values"}
           </p>
           <h2 className="text-2xl font-bold mb-6">
@@ -220,7 +220,7 @@ export function AboutPage() {
               return (
                 <Card key={v.icon} className="p-5 border-border/60 bg-card/50">
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#0A1628] text-[#C9974B] flex items-center justify-center font-bold text-sm flex-shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-[#001F3F] text-[#D4AF37] flex items-center justify-center font-bold text-sm flex-shrink-0">
                       {v.icon}
                     </div>
                     <div>
@@ -236,7 +236,7 @@ export function AboutPage() {
 
         {/* ── Saudi Market Expertise ── */}
         <section>
-          <p className="text-sm font-semibold text-[#C9974B] uppercase tracking-wide mb-3">
+          <p className="text-sm font-semibold text-[#D4AF37] uppercase tracking-wide mb-3">
             {isAr ? "خبرة السوق" : "Market Expertise"}
           </p>
           <h2 className="text-2xl font-bold mb-6">
@@ -252,7 +252,7 @@ export function AboutPage() {
               const content = isAr ? f.ar : f.en;
               return (
                 <div key={i} className="rounded-xl border border-border/60 bg-card/50 p-4 text-center">
-                  <p className="text-2xl font-bold text-[#C9974B]">{content.stat}</p>
+                  <p className="text-2xl font-bold text-[#D4AF37]">{content.stat}</p>
                   <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{content.label}</p>
                 </div>
               );
@@ -262,7 +262,7 @@ export function AboutPage() {
 
         {/* ── Compliance Commitment ── */}
         <section>
-          <p className="text-sm font-semibold text-[#C9974B] uppercase tracking-wide mb-3">
+          <p className="text-sm font-semibold text-[#D4AF37] uppercase tracking-wide mb-3">
             {isAr ? "الامتثال" : "Compliance"}
           </p>
           <h2 className="text-2xl font-bold mb-2">
@@ -287,7 +287,7 @@ export function AboutPage() {
         </section>
 
         {/* ── Contact ── */}
-        <section className="rounded-2xl bg-gradient-to-br from-[#0A1628] to-[#0a2040] text-white px-8 py-12">
+        <section className="rounded-2xl bg-gradient-to-br from-[#001F3F] to-[#0a2040] text-white px-8 py-12">
           <h2 className="text-2xl font-bold mb-3">
             {isAr ? "تواصل معنا" : "Contact Us"}
           </h2>
@@ -297,7 +297,7 @@ export function AboutPage() {
               : "Have a question about how Dealix can help your company? Start with a free diagnostic or contact us directly."}
           </p>
           <div className="flex flex-wrap gap-3">
-            <Button asChild size="lg" className="bg-[#C9974B] text-[#0A1628] hover:bg-[#b8863a] font-bold">
+            <Button asChild size="lg" className="bg-[#D4AF37] text-[#001F3F] hover:bg-[#b8863a] font-bold">
               <Link href={`${base}/dealix-diagnostic`}>
                 {isAr ? "ابدأ التشخيص" : "Start Diagnostic"}
               </Link>

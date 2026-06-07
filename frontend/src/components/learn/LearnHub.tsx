@@ -245,7 +245,7 @@ export function LearnHub({ className = "" }: LearnHubProps) {
       </Card>
 
       {/* ── Newsletter Signup ── */}
-      <div className="rounded-xl bg-gradient-to-br from-[#0A1628] to-[#0a2040] text-white p-6">
+      <div className="rounded-xl bg-gradient-to-br from-[#001F3F] to-[#0a2040] text-white p-6">
         <p className="font-semibold text-lg mb-1">
           {isAr ? "ملخص أسبوعي لـ Revenue Ops" : "Weekly Revenue Ops Digest"}
         </p>
@@ -265,12 +265,12 @@ export function LearnHub({ className = "" }: LearnHubProps) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={isAr ? "بريدك الإلكتروني" : "Your email address"}
-              className="flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-[#C9974B]"
+              className="flex-1 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
               required
             />
             <button
               type="submit"
-              className="rounded-lg bg-[#C9974B] text-[#0A1628] px-5 py-2 text-sm font-semibold hover:bg-[#b8863a] transition-colors whitespace-nowrap"
+              className="rounded-lg bg-[#D4AF37] text-[#001F3F] px-5 py-2 text-sm font-semibold hover:bg-[#b8863a] transition-colors whitespace-nowrap"
             >
               {isAr ? "اشترك" : "Subscribe"}
             </button>
@@ -292,7 +292,7 @@ export function LearnHub({ className = "" }: LearnHubProps) {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button asChild size="sm" className="bg-[#C9974B] text-[#0A1628] hover:bg-[#b8863a] font-semibold">
+          <Button asChild size="sm" className="bg-[#D4AF37] text-[#001F3F] hover:bg-[#b8863a] font-semibold">
             <Link href={`${base}/risk-score`}>
               {isAr ? "Risk Score مجاني" : "Free Risk Score"}
             </Link>

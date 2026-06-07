@@ -89,8 +89,8 @@ export function FooterSection({ className = "" }: FooterSectionProps) {
           {/* Brand column */}
           <div className={`lg:col-span-1 ${isAr ? "text-right" : "text-left"}`}>
             <Link href={base} className="inline-flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-[#0A1628] flex items-center justify-center">
-                <span className="text-[#C9974B] font-bold text-sm">D</span>
+              <div className="w-8 h-8 rounded-lg bg-[#001F3F] flex items-center justify-center">
+                <span className="text-[#D4AF37] font-bold text-sm">D</span>
               </div>
               <span className="font-bold text-lg text-foreground">Dealix</span>
             </Link>

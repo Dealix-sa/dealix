@@ -32,6 +32,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 _ALLOWLIST_PATHS = frozenset({
     # The test itself (allowlisted by basename match — see _is_allowlisted)
     "tests/test_no_linkedin_scraper_string_anywhere.py",
+    # Enterprise-architecture tests doc references this lockdown test by name
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # The Master Matrix audit doc records the historic finding
     "docs/DEALIX_MASTER_EXECUTION_MATRIX.md",
     "docs/DEALIX_MASTER_EXECUTION_EVIDENCE_TABLE.md",
