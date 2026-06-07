@@ -1,0 +1,88 @@
+# Dealix Monthly Packages — v2.0
+# الاشتراكات الشهرية = مصدر الدخل شبه السلبي (MRR).
+# كل الأسعار قبل ضريبة القيمة المضافة (ex-VAT).
+#
+# قاعدة: الباقة الشهرية تعطي حدّ استخدام (allowance). أي استخدام زائد يُحاسَب
+#        وفق os/config/usage_meters.yml (overage). لا اشتراك مفتوح بلا سقف.
+#
+# النموذج الأفضل: ابدأ بـ Managed OS (15,000) كمتوسط هدف. لا تجعل 8,000 هي
+#        الباقة الافتراضية — خلّها Retention أو للعميل الصغير.
+
+meta:
+  version: "2.0"
+  currency: "SAR"
+  prices_exclude_vat: true
+  default_target_package: "managed_os"
+
+packages:
+  monitor:
+    name_ar: "Monitor"
+    name_en: "Monitor"
+    price_monthly_sar: 8000
+    best_for_ar: "عميل صغير بعد Pilot"
+    includes_ar:
+      - "تقارير شهرية"
+      - "مراقبة workflow"
+      - "تحسينات خفيفة"
+    included_usage:
+      meter: "operations"
+      quota_per_month: 1000
+    is_retention_only: true
+
+  managed_os:
+    name_ar: "Managed OS"
+    name_en: "Managed OS"
+    price_monthly_sar: 15000
+    best_for_ar: "شركة عندها نظام واحد شغّال"
+    includes_ar:
+      - "دعم"
+      - "تحسينات"
+      - "dashboard"
+      - "مراجعة شهرية"
+      - "اجتماع شهري"
+    included_usage:
+      meter: "operations"
+      quota_per_month: 3000          # المثال: +1,000 عملية = 2,500 ر.س
+    is_primary_target: true
+
+  growth_ops_os:
+    name_ar: "Growth + Ops OS"
+    name_en: "Growth + Ops OS"
+    price_monthly_sar: 25000
+    best_for_ar: "شركة تعتمد على Dealix تشغيليًا"
+    includes_ar:
+      - "مبيعات + عمليات"
+      - "تقارير"
+      - "تحسين مستمر"
+    included_usage:
+      meter: "operations"
+      quota_per_month: 6000
+
+  command_center:
+    name_ar: "Command Center"
+    name_en: "Command Center"
+    price_monthly_sar: 45000
+    best_for_ar: "إدارة تنفيذية أو عدة أقسام"
+    includes_ar:
+      - "أكثر من نظام"
+      - "تقارير CEO"
+      - "أولوية دعم"
+    included_usage:
+      meter: "operations"
+      quota_per_month: 12000
+
+  enterprise_sovereign_os:
+    name_ar: "Enterprise Sovereign OS"
+    name_en: "Enterprise Sovereign OS"
+    price_monthly_sar: 60000
+    price_is_floor: true               # 60,000+ — يبدأ من ولا يقف عند
+    best_for_ar: "شركات كبيرة/حساسة"
+    includes_ar:
+      - "عزل بيانات"
+      - "حوكمة"
+      - "SLA"
+      - "أمن"
+      - "تخصيص عميق"
+    included_usage:
+      meter: "operations"
+      quota_per_month: 20000

@@ -1,0 +1,87 @@
+# Dealix Usage Meters — v2.0
+# تسعير الاستخدام: الدخل يزيد بدون شغل كبير. كل الأسعار قبل ضريبة القيمة المضافة.
+#
+# المبدأ (Stripe usage-based best practice): المقياس واضح، قابل للقياس، ويزيد
+#   مع قيمة استخدام العميل. الباقة تعطي حدًّا (allowance)؛ الزائد يُحاسَب per block.
+#
+# مثال: Managed OS = 15,000/شهر ويشمل 3,000 عملية. كل 1,000 عملية إضافية = 2,500.
+
+meta:
+  version: "2.0"
+  currency: "SAR"
+  prices_exclude_vat: true
+  rule_ar: "الباقة تعطي حد استخدام. أي استخدام زائد يُحاسَب عليه. لا خصم على التجاوز."
+
+meters:
+  operations:
+    name_ar: "العمليات الشهرية (عام)"
+    name_en: "Monthly operations (generic)"
+    unit: "operation"
+    block_size: 1000
+    overage_per_block_sar_min: 1500
+    overage_per_block_sar_max: 3000
+    overage_per_block_sar_typical: 2500
+
+  maintenance_tickets:
+    name_ar: "تذاكر الصيانة"
+    name_en: "Maintenance tickets"
+    product: "maintenance_intelligence_os"
+    unit: "ticket"
+    block_size: 1000
+    overage_per_block_sar_min: 1500
+    overage_per_block_sar_max: 3000
+    overage_per_block_sar_typical: 2500
+
+  legal_documents:
+    name_ar: "مستندات/صفحات قانونية معالجة"
+    name_en: "Legal documents/pages processed"
+    product: "legal_knowledge_os"
+    unit: "document"
+    block_size: 1000
+    overage_per_block_sar_min: 2500
+    overage_per_block_sar_max: 6000
+
+  sales_leads:
+    name_ar: "Leads / dossiers"
+    name_en: "Leads / dossiers"
+    product: "gcc_international_ai_os"
+    unit: "lead"
+    block_size: 1000
+    overage_per_block_sar_min: 1500
+    overage_per_block_sar_max: 4000
+
+  whatsapp_qualified:
+    name_ar: "رسائل WhatsApp مؤهلة"
+    name_en: "Qualified WhatsApp messages"
+    unit: "message"
+    block_size: 1000
+    overage_per_block_sar_min: 800
+    overage_per_block_sar_max: 2500
+
+  proposals:
+    name_ar: "عروض / Proposals"
+    name_en: "Proposals generated"
+    product: "consulting_delivery_os"
+    unit: "proposal"
+    block_size: 100
+    overage_per_block_sar_min: 2000
+    overage_per_block_sar_max: 5000
+
+  command_center_department:
+    name_ar: "قسم إضافي (Command Center)"
+    name_en: "Additional department (Command Center)"
+    product: "dealix_command_center"
+    unit: "department"
+    block_size: 1
+    billing: "monthly"
+    overage_per_block_sar_min: 8000
+    overage_per_block_sar_max: 20000
+
+  executive_reports:
+    name_ar: "تقرير تنفيذي أسبوعي مخصص"
+    name_en: "Custom weekly executive report"
+    unit: "weekly_report"
+    block_size: 1
+    billing: "monthly"
+    overage_per_block_sar_min: 2000
+    overage_per_block_sar_max: 7000
