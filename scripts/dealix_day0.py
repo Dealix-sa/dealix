@@ -35,6 +35,7 @@ Exit codes:
     0  operator pack generated
     1  no prospect rows found (seed missing or empty)
 """
+
 from __future__ import annotations
 
 import argparse
@@ -48,8 +49,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.sales_os.icp_score import ICPDimensions, icp_score
-from auto_client_acquisition.sales_os.qualification import qualify
+from auto_client_acquisition.sales_os.icp_score import ICPDimensions, icp_score  # noqa: E402
+from auto_client_acquisition.sales_os.qualification import qualify  # noqa: E402
 
 DISCLAIMER = (
     "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة. "
@@ -58,23 +59,50 @@ DISCLAIMER = (
 
 # The 5-rung commercial ladder (priced, wired). Keep in sync with docs/pricing.
 OFFER_LADDER = {
-    "revenue_intelligence_sprint": ("7-Day Revenue Intelligence Sprint", "Sprint إيرادات 7 أيام", "499 SAR"),
-    "data_to_revenue_diagnostic": ("Data-to-Revenue Pack", "حزمة البيانات إلى الإيراد", "1,500 SAR"),
+    "revenue_intelligence_sprint": (
+        "7-Day Revenue Intelligence Sprint",
+        "Sprint إيرادات 7 أيام",
+        "499 SAR",
+    ),
+    "data_to_revenue_diagnostic": (
+        "Data-to-Revenue Pack",
+        "حزمة البيانات إلى الإيراد",
+        "1,500 SAR",
+    ),
     "data_to_revenue_pack": ("Data-to-Revenue Pack", "حزمة البيانات إلى الإيراد", "1,500 SAR"),
     "capability_diagnostic": ("Free AI Ops Diagnostic", "تشخيص العمليات المجاني", "0 SAR"),
     "managed_revenue_ops": ("Managed Revenue Ops", "تشغيل الإيرادات المُدار", "2,999–4,999 SAR/mo"),
-    "refer_out_governance_not_accepted": ("Refer out — governance not accepted", "إحالة — لم تُقبل الحوكمة", "—"),
+    "refer_out_governance_not_accepted": (
+        "Refer out — governance not accepted",
+        "إحالة — لم تُقبل الحوكمة",
+        "—",
+    ),
     "refer_out_not_enough_fit": ("Refer out — insufficient fit", "إحالة — ملاءمة غير كافية", "—"),
-    "not_a_fit_decline_politely": ("Decline politely — doctrine risk", "اعتذار مهذّب — مخالفة دكترين", "—"),
+    "not_a_fit_decline_politely": (
+        "Decline politely — doctrine risk",
+        "اعتذار مهذّب — مخالفة دكترين",
+        "—",
+    ),
 }
 
 OWNER_TITLES = {"CEO", "COO", "GM", "FOUNDER", "MD", "VP", "MANAGING PARTNER", "OWNER", "DIRECTOR"}
 
 # Sector → b2b-service fit (0–100). Deterministic, conservative.
 SECTOR_FIT = {
-    "b2b_services": 92, "consulting": 90, "agency": 88, "saas": 88, "it_services": 86,
-    "financial_services": 80, "logistics": 76, "distribution": 74, "manufacturing": 70,
-    "real_estate": 68, "healthcare": 66, "retail": 64, "education": 62, "events": 58,
+    "b2b_services": 92,
+    "consulting": 90,
+    "agency": 88,
+    "saas": 88,
+    "it_services": 86,
+    "financial_services": 80,
+    "logistics": 76,
+    "distribution": 74,
+    "manufacturing": 70,
+    "real_estate": 68,
+    "healthcare": 66,
+    "retail": 64,
+    "education": 62,
+    "events": 58,
     "agritech": 60,
 }
 
@@ -97,7 +125,7 @@ class Prospect:
     notes: str = ""
 
     @classmethod
-    def from_row(cls, row: dict[str, str]) -> "Prospect":
+    def from_row(cls, row: dict[str, str]) -> Prospect:
         def s(key: str, default: str = "") -> str:
             return (row.get(key) or default).strip()
 
@@ -139,6 +167,7 @@ class ScoredProspect:
 
 # ── Deterministic scoring ───────────────────────────────────────────────────
 
+
 def _budget_signal(turnover: int) -> int:
     if turnover <= 0:
         return 35
@@ -168,7 +197,18 @@ def _decision_velocity(source: str, is_owner: bool) -> int:
 def _governance_posture(country: str, notes: str) -> int:
     base = 62 if country.upper() == "SA" else 50
     hay = notes.lower()
-    if any(k in hay for k in ("pdpl", "zatca", "compliance", "governance", "audit", "data-sensitive", "data sensitive")):
+    if any(
+        k in hay
+        for k in (
+            "pdpl",
+            "zatca",
+            "compliance",
+            "governance",
+            "audit",
+            "data-sensitive",
+            "data sensitive",
+        )
+    ):
         base += 18
     return min(100, base)
 
@@ -181,7 +221,10 @@ def _data_maturity(p: Prospect) -> int:
         base += 18
     if p.sector in {"saas", "it_services", "financial_services"}:
         base += 12
-    if any(k in p.notes.lower() for k in ("existing data", "crm", "pipeline", "data-mature", "data mature")):
+    if any(
+        k in p.notes.lower()
+        for k in ("existing data", "crm", "pipeline", "data-mature", "data mature")
+    ):
         base += 10
     return min(100, base)
 
@@ -201,10 +244,11 @@ def score_prospect(p: Prospect) -> ScoredProspect:
     dims = derive_dimensions(p)
     icp = icp_score(dims)
     is_owner = p.contact_title.upper() in OWNER_TITLES
-    inbound_or_warm = p.source in INBOUND_SOURCES or p.source in WARM_SOURCES
 
     verdict = qualify(
-        pain_clear=p.source in INBOUND_SOURCES or "struggl" in p.notes.lower() or "wants" in p.notes.lower(),
+        pain_clear=p.source in INBOUND_SOURCES
+        or "struggl" in p.notes.lower()
+        or "wants" in p.notes.lower(),
         owner_present=is_owner,
         data_available=dims.data_maturity >= 60,
         accepts_governance=True,  # pre-screen assumption; confirmed on the call
@@ -246,7 +290,9 @@ def _offer_label(key: str) -> str:
 
 def talking_points(sp: ScoredProspect) -> tuple[list[str], list[str]]:
     p = sp.prospect
-    offer_en, offer_ar, price = OFFER_LADDER.get(sp.recommended_offer, (sp.recommended_offer, sp.recommended_offer, "—"))
+    offer_en, offer_ar, price = OFFER_LADDER.get(
+        sp.recommended_offer, (sp.recommended_offer, sp.recommended_offer, "—")
+    )
     ar = [
         f"الافتتاح: «لاحظت أن {p.name} في قطاع {p.sector} — نساعد شركات مثلكم على ترتيب الفرص وتنظيف البيانات تحت حوكمة AI واضحة.»",
         f"الربط بالألم: استند إلى ملاحظتك ({p.notes or 'تحديات متابعة العملاء'}).",
@@ -268,6 +314,7 @@ def talking_points(sp: ScoredProspect) -> tuple[list[str], list[str]]:
 
 
 # ── Renderers ───────────────────────────────────────────────────────────────
+
 
 def _gov_block(decision_summary: str) -> str:
     return (
@@ -313,20 +360,48 @@ def render_prospects_md(scored: list[ScoredProspect], generated: str) -> str:
 def render_prospects_csv(scored: list[ScoredProspect], out_path: Path) -> None:
     with out_path.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f)
-        w.writerow([
-            "rank", "name", "sector", "city", "contact_name", "contact_title",
-            "icp_score", "qualification_score", "decision", "recommended_offer",
-            "b2b_service_fit", "data_maturity", "governance_posture",
-            "budget_signal", "decision_velocity", "source",
-        ])
+        w.writerow(
+            [
+                "rank",
+                "name",
+                "sector",
+                "city",
+                "contact_name",
+                "contact_title",
+                "icp_score",
+                "qualification_score",
+                "decision",
+                "recommended_offer",
+                "b2b_service_fit",
+                "data_maturity",
+                "governance_posture",
+                "budget_signal",
+                "decision_velocity",
+                "source",
+            ]
+        )
         for i, sp in enumerate(scored, 1):
             p, d = sp.prospect, sp.dimensions
-            w.writerow([
-                i, p.name, p.sector, p.city, p.contact_name, p.contact_title,
-                sp.icp, sp.qual_score, sp.decision, sp.recommended_offer,
-                d["b2b_service_fit"], d["data_maturity"], d["governance_posture"],
-                d["budget_signal"], d["decision_velocity"], p.source,
-            ])
+            w.writerow(
+                [
+                    i,
+                    p.name,
+                    p.sector,
+                    p.city,
+                    p.contact_name,
+                    p.contact_title,
+                    sp.icp,
+                    sp.qual_score,
+                    sp.decision,
+                    sp.recommended_offer,
+                    d["b2b_service_fit"],
+                    d["data_maturity"],
+                    d["governance_posture"],
+                    d["budget_signal"],
+                    d["decision_velocity"],
+                    p.source,
+                ]
+            )
 
 
 def render_call_list_md(scored: list[ScoredProspect], top: int, generated: str) -> str:
@@ -337,7 +412,9 @@ def render_call_list_md(scored: list[ScoredProspect], top: int, generated: str) 
         "\n> **You make every contact.** This is a prioritized list with talking "
         "points. The system never dials, emails, or messages anyone. "
         "هذه قائمة أولويات بنقاط حوار — أنت من يتواصل.\n",
-        _gov_block("contact prioritization is an estimate; the founder approves and executes every touch"),
+        _gov_block(
+            "contact prioritization is an estimate; the founder approves and executes every touch"
+        ),
         f"\nTop {len(actionable)} of {len(scored)} prospects, ranked by ICP fit.\n",
     ]
     for i, sp in enumerate(actionable, 1):
@@ -402,9 +479,7 @@ def render_operator_pack_md(date_str: str, generated: str, counts: dict, files: 
         "2. **`call_list.md`** — your contact list for today with bilingual talking points.\n"
         "3. **`draft_pack.md`** — edit the pre-screened outreach drafts, then send them *yourself*.\n"
         "4. **`scorecard.md`** — fill at 18:00 KSA; paste into your daily log.\n\n"
-        "## Files\n"
-        + "".join(f"- `{f}`\n" for f in files)
-        + "\n## Doctrine reminders\n"
+        "## Files\n" + "".join(f"- `{f}`\n" for f in files) + "\n## Doctrine reminders\n"
         "- No external action without **your** approval (rung 8).\n"
         "- No guaranteed outcomes, no invented metrics (rungs 4, 5).\n"
         "- No scraping, no cold WhatsApp/LinkedIn automation (rungs 1–3).\n"
@@ -417,7 +492,10 @@ def render_operator_pack_md(date_str: str, generated: str, counts: dict, files: 
 
 # ── Draft pack (reuse warm_list_outreach renderer) ──────────────────────────
 
-def render_draft_pack(scored: list[ScoredProspect], warm_list_path: Path | None, generated: str) -> str:
+
+def render_draft_pack(
+    scored: list[ScoredProspect], warm_list_path: Path | None, generated: str
+) -> str:
     """Generate the outreach draft pack.
 
     Prefers a founder-maintained warm list; otherwise derives drafts from the
@@ -433,7 +511,9 @@ def render_draft_pack(scored: list[ScoredProspect], warm_list_path: Path | None,
         f"_Generated: {generated}_\n",
         "\n> Each draft is **queued for your approval** — copy/edit, then send "
         "yourself. The system sends nothing. كل مسوّدة بانتظار موافقتك.\n",
-        _gov_block("drafts are pre-screened estimates; the founder approves and sends every message"),
+        _gov_block(
+            "drafts are pre-screened estimates; the founder approves and sends every message"
+        ),
         "\n---\n\n",
     ]
 
@@ -448,8 +528,10 @@ def render_draft_pack(scored: list[ScoredProspect], warm_list_path: Path | None,
         body = []
         for r in rows:
             q = _qualify_contact(
-                role=r.get("role", ""), sector=r.get("sector", ""),
-                relationship=r.get("relationship", "cold"), notes=r.get("notes", ""),
+                role=r.get("role", ""),
+                sector=r.get("sector", ""),
+                relationship=r.get("relationship", "cold"),
+                notes=r.get("notes", ""),
             )
             body.append(_render_contact(r, q))
         return "".join(header) + "".join(body) + f"\n_{DISCLAIMER}_\n"
@@ -459,7 +541,9 @@ def render_draft_pack(scored: list[ScoredProspect], warm_list_path: Path | None,
     body = []
     for sp in actionable:
         p = sp.prospect
-        offer_en, offer_ar, price = OFFER_LADDER.get(sp.recommended_offer, (sp.recommended_offer, "", "—"))
+        offer_en, offer_ar, price = OFFER_LADDER.get(
+            sp.recommended_offer, (sp.recommended_offer, "", "—")
+        )
         ar = (
             f"السلام عليكم {p.contact_name or 'فريق ' + p.name}،\n\n"
             f"نساعد شركات B2B سعودية في قطاع {p.sector} على ترتيب الفرص وتنظيف "
@@ -486,14 +570,16 @@ def render_draft_pack(scored: list[ScoredProspect], warm_list_path: Path | None,
             "- Channel: < choose >  · Sent: [ ]  · Replied: [ ]\n\n---\n\n"
         )
     note = (
-        "" if rows else
-        "\n> _Tip: fill `data/warm_list.csv` (from the template) for richer, "
+        ""
+        if rows
+        else "\n> _Tip: fill `data/warm_list.csv` (from the template) for richer, "
         "relationship-aware drafts._\n"
     )
     return "".join(header) + "".join(body) + note + f"\n_{DISCLAIMER}_\n"
 
 
 # ── Orchestration ───────────────────────────────────────────────────────────
+
 
 def load_prospects(path: Path) -> list[Prospect]:
     out: list[Prospect] = []
@@ -530,9 +616,15 @@ def run_day0(
 
     (out_dir / "prospects.md").write_text(render_prospects_md(scored, generated), encoding="utf-8")
     render_prospects_csv(scored, out_dir / "prospects.csv")
-    (out_dir / "call_list.md").write_text(render_call_list_md(scored, top, generated), encoding="utf-8")
-    (out_dir / "draft_pack.md").write_text(render_draft_pack(scored, warm_list_path, generated), encoding="utf-8")
-    (out_dir / "scorecard.md").write_text(render_scorecard_md(generated, date_str, counts["actionable"]), encoding="utf-8")
+    (out_dir / "call_list.md").write_text(
+        render_call_list_md(scored, top, generated), encoding="utf-8"
+    )
+    (out_dir / "draft_pack.md").write_text(
+        render_draft_pack(scored, warm_list_path, generated), encoding="utf-8"
+    )
+    (out_dir / "scorecard.md").write_text(
+        render_scorecard_md(generated, date_str, counts["actionable"]), encoding="utf-8"
+    )
 
     files = ["prospects.md", "prospects.csv", "call_list.md", "draft_pack.md", "scorecard.md"]
     (out_dir / "OPERATOR_PACK.md").write_text(
@@ -544,8 +636,12 @@ def run_day0(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Dealix Day-0 Company Activation")
-    parser.add_argument("--prospects", default="", help="Prospect CSV (default: data/prospects.csv or seed)")
-    parser.add_argument("--warm-list", default="data/warm_list.csv", help="Optional warm-list CSV for drafts")
+    parser.add_argument(
+        "--prospects", default="", help="Prospect CSV (default: data/prospects.csv or seed)"
+    )
+    parser.add_argument(
+        "--warm-list", default="data/warm_list.csv", help="Optional warm-list CSV for drafts"
+    )
     parser.add_argument("--out-dir", default="", help="Output dir (default: data/day0/<date>)")
     parser.add_argument("--top", type=int, default=8, help="How many to put on the call list")
     parser.add_argument("--date", default="", help="Date stamp YYYY-MM-DD (default: today UTC)")
@@ -581,10 +677,15 @@ def main() -> int:
     c = result["counts"]
     using_seed = prospects_path.name == "prospects.seed.csv"
     print("✓ Dealix Day-0 operator pack generated")
-    print(f"  source     : {prospects_path.relative_to(REPO_ROOT)}" + ("  (SAMPLE seed — replace with your real list)" if using_seed else ""))
+    print(
+        f"  source     : {prospects_path.relative_to(REPO_ROOT)}"
+        + ("  (SAMPLE seed — replace with your real list)" if using_seed else "")
+    )
     print(f"  out dir    : {Path(result['out_dir']).relative_to(REPO_ROOT)}")
     print(f"  prospects  : {c['total']} scored")
-    print(f"  actionable : {c['actionable']} (accept={c['accept']}, diagnostic={c['diagnostic']}, reframe={c['reframe']})")
+    print(
+        f"  actionable : {c['actionable']} (accept={c['accept']}, diagnostic={c['diagnostic']}, reframe={c['reframe']})"
+    )
     print(f"  declined   : {c['declined']} (refer-out / decline)")
     print(f"  → open     : {Path(result['out_dir']).relative_to(REPO_ROOT)}/OPERATOR_PACK.md")
     print(f"  {DISCLAIMER}")

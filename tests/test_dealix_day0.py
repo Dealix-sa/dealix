@@ -23,7 +23,7 @@ sys.modules[_spec.name] = day0
 _spec.loader.exec_module(day0)
 
 
-def _sample() -> "day0.Prospect":
+def _sample() -> day0.Prospect:
     return day0.Prospect(
         name="Sample Co",
         sector="b2b_services",
@@ -72,7 +72,13 @@ def test_operator_pack_carries_doctrine(tmp_path: Path) -> None:
     )
     assert result["ok"] is True
 
-    for name in ("OPERATOR_PACK.md", "prospects.md", "call_list.md", "draft_pack.md", "scorecard.md"):
+    for name in (
+        "OPERATOR_PACK.md",
+        "prospects.md",
+        "call_list.md",
+        "draft_pack.md",
+        "scorecard.md",
+    ):
         text = (out / name).read_text(encoding="utf-8")
         # Bilingual disclaimer present on every customer-/founder-facing artifact.
         assert "القيمة التقديرية ليست قيمة مُتحقَّقة" in text
@@ -95,7 +101,9 @@ def test_no_external_send_language_in_artifacts(tmp_path: Path) -> None:
     call_list = (out / "call_list.md").read_text(encoding="utf-8")
     draft_pack = (out / "draft_pack.md").read_text(encoding="utf-8")
     # The system must position the founder as the sender, never auto-send.
-    assert "system never dials" in call_list.lower() or "you make every contact" in call_list.lower()
+    assert (
+        "system never dials" in call_list.lower() or "you make every contact" in call_list.lower()
+    )
     assert "queued for your approval" in draft_pack.lower()
 
 
