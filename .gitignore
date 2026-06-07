@@ -18,6 +18,8 @@ credentials/
 *_credentials*
 # Wave 8 exceptions — these are scripts/tests, not credential files
 !scripts/dealix_customer_credentials_check.py
+# V8 secret smoke check — scans FOR secrets, does not contain any
+!scripts/dealix_secret_smoke_check.py
 !tests/test_wave8_customer_credentials_check.py
 !docs/WAVE8_CUSTOMER_CREDENTIAL_READINESS.md
 !docs/wave8/customer_credentials.example.env
@@ -107,6 +109,19 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V8 — seed/demo data for proof, trust, traction, board, agents, market
+!data/agents/
+!data/analytics/
+!data/board/
+!data/campaigns/
+!data/case_studies/
+!data/crm/
+!data/market/
+!data/proof/
+!data/prospects/
+!data/referrals/
+!data/traction/
+!data/trust/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

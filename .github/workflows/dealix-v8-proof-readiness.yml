@@ -1,0 +1,25 @@
+name: Dealix V8 Proof Readiness
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'investor/**'
+      - 'proof/**'
+      - 'trust-center/**'
+      - 'scripts/dealix_v8_*'
+      - 'scripts/dealix_*proof*'
+      - 'scripts/dealix_*trust*'
+permissions:
+  contents: read
+jobs:
+  v8-proof-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/dealix_v8_readiness_check.py
+      - run: python scripts/dealix_proof_vault_indexer.py
+      - run: python scripts/dealix_board_metrics.py
+      - run: python scripts/dealix_trust_center_manifest.py

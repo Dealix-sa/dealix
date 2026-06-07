@@ -1,0 +1,19 @@
+name: Dealix V5 Acquisition Readiness
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1-5'
+permissions:
+  contents: read
+jobs:
+  acquisition-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run V5 readiness
+        run: python scripts/dealix_v5_readiness_check.py
+      - name: Run acquisition daily dry-run
+        run: python scripts/dealix_v5_daily_run.py

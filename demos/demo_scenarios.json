@@ -1,0 +1,27 @@
+{
+  "training": {
+    "pain": "فرص التسجيل تضيع بعد أول تواصل",
+    "demo_leads": 3,
+    "primary_kpi": "qualified conversations"
+  },
+  "agencies": {
+    "pain": "استفسارات كثيرة لا تتحول إلى عروض",
+    "demo_leads": 3,
+    "primary_kpi": "proposals sent"
+  },
+  "real_estate": {
+    "pain": "عملاء عالي القيمة بدون follow-up منظم",
+    "demo_leads": 3,
+    "primary_kpi": "viewings booked"
+  },
+  "clinics": {
+    "pain": "حجوزات وتذكير ومتابعة غير موحدة",
+    "demo_leads": 3,
+    "primary_kpi": "appointments confirmed"
+  },
+  "professional_services": {
+    "pain": "دورة بيع استشارية طويلة بدون pipeline",
+    "demo_leads": 3,
+    "primary_kpi": "discovery calls"
+  }
+}

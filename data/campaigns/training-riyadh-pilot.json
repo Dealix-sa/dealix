@@ -1,0 +1,11 @@
+{
+  "name": "training-riyadh-pilot",
+  "vertical": "training",
+  "created_at": "2026-06-07T15:14:45.485796Z",
+  "status": "draft",
+  "rules": [
+    "manual review required",
+    "no automated bulk send",
+    "document source_url"
+  ]
+}

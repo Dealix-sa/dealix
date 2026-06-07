@@ -1,0 +1,70 @@
+{
+  "crm_research_agent": {
+    "risk": "medium",
+    "approval_required": true,
+    "owner": "founder",
+    "allowed_outputs": [
+      "research_summary",
+      "next_action"
+    ]
+  },
+  "lead_qualification_agent": {
+    "risk": "medium",
+    "approval_required": true,
+    "owner": "growth",
+    "allowed_outputs": [
+      "score",
+      "stage_recommendation"
+    ]
+  },
+  "outreach_draft_agent": {
+    "risk": "high",
+    "approval_required": true,
+    "owner": "founder",
+    "allowed_outputs": [
+      "draft_only"
+    ]
+  },
+  "proposal_agent": {
+    "risk": "high",
+    "approval_required": true,
+    "owner": "founder",
+    "allowed_outputs": [
+      "proposal_draft"
+    ]
+  },
+  "delivery_pm_agent": {
+    "risk": "medium",
+    "approval_required": true,
+    "owner": "delivery",
+    "allowed_outputs": [
+      "tasks",
+      "milestones"
+    ]
+  },
+  "customer_success_agent": {
+    "risk": "medium",
+    "approval_required": true,
+    "owner": "cs",
+    "allowed_outputs": [
+      "health_score",
+      "next_action"
+    ]
+  },
+  "compliance_qa_agent": {
+    "risk": "high",
+    "approval_required": true,
+    "owner": "compliance",
+    "allowed_outputs": [
+      "qa_result"
+    ]
+  },
+  "ceo_briefing_agent": {
+    "risk": "low",
+    "approval_required": false,
+    "owner": "founder",
+    "allowed_outputs": [
+      "briefing"
+    ]
+  }
+}
