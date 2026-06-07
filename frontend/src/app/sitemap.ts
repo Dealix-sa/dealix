@@ -10,11 +10,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "", freq: "weekly", priority: 1.0 },
     { path: "/dealix-diagnostic", freq: "weekly", priority: 0.95 },
     { path: "/services", freq: "monthly", priority: 0.9 },
+    { path: "/pricing", freq: "monthly", priority: 0.9 },
+    { path: "/custom", freq: "monthly", priority: 0.88 },
     { path: "/risk-score", freq: "weekly", priority: 0.9 },
     { path: "/proof-pack", freq: "monthly", priority: 0.85 },
     { path: "/partners", freq: "monthly", priority: 0.8 },
     { path: "/learn", freq: "weekly", priority: 0.8 },
+    { path: "/about", freq: "monthly", priority: 0.7 },
+    { path: "/contact", freq: "monthly", priority: 0.7 },
+    { path: "/trust-center", freq: "monthly", priority: 0.6 },
+    { path: "/zatca-readiness", freq: "monthly", priority: 0.55 },
     { path: "/privacy", freq: "yearly", priority: 0.4 },
+    { path: "/terms", freq: "yearly", priority: 0.4 },
   ];
 
   const entries: MetadataRoute.Sitemap = [];

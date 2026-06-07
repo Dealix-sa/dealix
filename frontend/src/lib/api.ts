@@ -244,6 +244,24 @@ export const api = {
   postPublicBooking: (body: Record<string, unknown>) =>
     apiClient.post("/api/v1/public/booking-request", body),
 
+  // Public self-serve Moyasar checkout (no admin key). `plan` is a canonical
+  // service id from registry.py — see frontend/src/content/pricing.ts.
+  createCheckout: (body: { plan: string; email: string; lead_id?: string }) =>
+    apiClient.post<{
+      invoice_id?: string;
+      status?: string;
+      amount_sar?: number;
+      payment_url?: string;
+      plan?: string;
+      detail?: string;
+    }>("/api/v1/checkout", body),
+
+  postPublicDemoRequest: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/demo-request", body),
+
+  postPublicCustomBrief: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/custom-brief", body),
+
   getOpsFounderDashboard: (adminApiKey: string) =>
     apiClient.get("/api/v1/ops-autopilot/founder-dashboard", {
       headers: { "X-Admin-API-Key": adminApiKey },

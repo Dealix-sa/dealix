@@ -181,6 +181,25 @@ class PartnerApplyPayload(BaseModel):
     consent: bool = False
 
 
+class CustomBriefPayload(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(..., min_length=1)
+    email: str = Field(..., min_length=3)
+    company: str = ""
+    phone: str = ""
+    sector: str = ""
+    project_type: str = Field(
+        default="custom",
+        description="ai_agent | automation | integration | data | other | custom",
+    )
+    scope: str = Field(..., min_length=1, max_length=4000)
+    budget_range: str = ""
+    timeline: str = ""
+    consent: bool = False
+    website: str = ""  # honeypot — must stay empty
+
+
 class EvidenceCreatePayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -354,6 +373,67 @@ async def public_partner_apply(body: PartnerApplyPayload) -> dict[str, Any]:
         "lead_id": lead.id,
         "stage": lead.stage,
         "policy_ar": "لا إرسال تلقائي — مراجعة يدوية خلال 2–3 أيام عمل.",
+    }
+
+
+@router_public_addons.post("/custom-brief")
+async def public_custom_brief(body: CustomBriefPayload) -> dict[str, Any]:
+    """Public "build me a custom AI solution" intake (top of the offer ladder).
+
+    Captures a scoped brief and queues it for founder review. Doctrine-safe:
+    draft-first, no auto external send, no invented pricing — the founder
+    returns a scoped plan and estimate manually after review.
+    """
+    # Honeypot: silently accept bots without persisting a lead.
+    if body.website.strip():
+        return {
+            "status": "queued_for_founder_review",
+            "policy_ar": "لا إرسال خارجي تلقائي — مراجعة بشرية ومسودّة قبل أي تواصل.",
+        }
+    if not body.consent:
+        raise HTTPException(status_code=422, detail="consent_required")
+
+    orch = get_default_orchestrator()
+    scope_clean = body.scope.strip()
+    lead = orch.capture_lead(
+        {
+            "name": body.name,
+            "email": body.email,
+            "company": body.company,
+            "phone": body.phone,
+            "industry": body.sector,
+            "pain": f"custom_ai_brief[{body.project_type}]: {scope_clean[:600]}",
+            "budget_range": body.budget_range,
+            "urgency": body.timeline,
+            "source": "custom_ai_brief",
+            "consent_marketing": body.consent,
+        },
+    )
+    append_evidence_event(
+        event_type="custom_brief_received",
+        summary=(
+            f"type={body.project_type} budget={body.budget_range or 'n/a'} "
+            f"timeline={body.timeline or 'n/a'} lead={lead.id}"
+        ),
+        entity_type="funnel_lead",
+        entity_id=lead.id,
+    )
+    return {
+        "status": "queued_for_founder_review",
+        "lead_id": lead.id,
+        "stage": lead.stage,
+        "message_ar": (
+            "وصلنا طلبك المخصص — نراجع النطاق ونعود إليك خلال يوم عمل "
+            "بخطة وتقدير مبدئي."
+        ),
+        "message_en": (
+            "We received your custom brief — we'll review the scope and return "
+            "within one business day with an initial plan and estimate."
+        ),
+        "policy_ar": "لا إرسال خارجي تلقائي — مراجعة بشرية ومسودّة قبل أي تواصل.",
+        "policy_en": (
+            "No automated external send — human review and draft before any outreach."
+        ),
     }
 
 
