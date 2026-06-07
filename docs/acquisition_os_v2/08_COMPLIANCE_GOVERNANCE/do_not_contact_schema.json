@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DoNotContactEntry",
+  "description": "Suppression-list entry for Dealix Acquisition OS v2. PII is stored only as a salted hash; raw phone/email are never persisted in this list. PDPL-first.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "entry_id",
+    "identifier_hash",
+    "channel",
+    "reason",
+    "opted_out_at"
+  ],
+  "properties": {
+    "entry_id": {
+      "type": "string",
+      "description": "Internal UUID for the suppression entry."
+    },
+    "identifier_hash": {
+      "type": "string",
+      "description": "Salted hash of the business contact identifier (phone or email). Raw value is NOT stored."
+    },
+    "channel": {
+      "type": "string",
+      "enum": ["whatsapp", "email", "call", "linkedin", "all"],
+      "description": "Channel the opt-out applies to. 'all' suppresses every channel."
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "opt_out_requested",
+        "complaint",
+        "bounce_or_block",
+        "manual_governance",
+        "no_legal_basis"
+      ],
+      "description": "Why this contact was suppressed."
+    },
+    "opted_out_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp the suppression took effect."
+    },
+    "source_type": {
+      "type": "string",
+      "enum": ["public", "owned", "consent"],
+      "description": "Provenance class of the original contact (never 'scraped' — disallowed)."
+    },
+    "permanent": {
+      "type": "boolean",
+      "default": true,
+      "description": "If true, never re-contact. If false, eligible after cool-off (>=90 days)."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Governance note. Must NOT contain raw PII."
+    }
+  }
+}
