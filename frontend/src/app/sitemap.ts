@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/learn", freq: "weekly", priority: 0.8 },
     { path: "/about", freq: "monthly", priority: 0.7 },
     { path: "/contact", freq: "monthly", priority: 0.7 },
-    { path: "/trust-center", freq: "monthly", priority: 0.6 },
+    { path: "/trust", freq: "monthly", priority: 0.6 },
     { path: "/zatca-readiness", freq: "monthly", priority: 0.55 },
     { path: "/privacy", freq: "yearly", priority: 0.4 },
     { path: "/terms", freq: "yearly", priority: 0.4 },

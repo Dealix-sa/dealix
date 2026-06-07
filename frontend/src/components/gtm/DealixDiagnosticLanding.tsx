@@ -72,10 +72,12 @@ const STEPS_EN = [
   { n: "4", title: "Your decision", desc: "Choose: 499 SAR Sprint or monthly Retainer" },
 ];
 
-const SOCIAL_PROOF_AR = [
-  { sector: "لوجستيات", result: "كشف تسرّب إيراد 18% غير مُفسَّر", city: "الرياض" },
-  { sector: "خدمات B2B", result: "جهّزناهم لـ ZATCA قبل الموعد", city: "جدة" },
-  { sector: "رعاية صحية", result: "ضبط governance للـ AI قبل PDPL", city: "الدمام" },
+// Honest pre-launch framing: what we look for by sector (focus areas), not
+// fabricated client results. No invented numbers, no fake customers.
+const SECTOR_FOCUS = [
+  { sectorAr: "لوجستيات", sectorEn: "Logistics", focusAr: "تسرّب الإيراد غير المُفسَّر في الأنبوب", focusEn: "Unexplained revenue leakage in the pipeline" },
+  { sectorAr: "خدمات B2B", sectorEn: "B2B services", focusAr: "جاهزية ZATCA وبطء متابعة العملاء", focusEn: "ZATCA readiness and slow lead follow-up" },
+  { sectorAr: "رعاية صحية", sectorEn: "Healthcare", focusAr: "حوكمة الذكاء الاصطناعي بما يوافق PDPL", focusEn: "AI governance aligned with PDPL" },
 ];
 
 export function DealixDiagnosticLanding() {
@@ -240,25 +242,29 @@ export function DealixDiagnosticLanding() {
         </div>
       </Card>
 
-      {/* Social Proof */}
+      {/* Sector focus (honest pre-launch framing — not client results) */}
       <section>
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-          {isAr ? "نتائج من شركات سعودية" : "Results from Saudi Companies"}
+          {isAr ? "ما نكشفه عادةً حسب القطاع" : "What we typically diagnose by sector"}
         </h2>
         <div className="grid gap-3 sm:grid-cols-3">
-          {SOCIAL_PROOF_AR.map((proof, i) => (
+          {SECTOR_FOCUS.map((item, i) => (
             <div
               key={i}
               className="p-4 rounded-xl border border-border/50 bg-muted/20"
             >
               <Badge variant="secondary" className="text-xs mb-2">
-                {isAr ? proof.sector : proof.sector}
+                {isAr ? item.sectorAr : item.sectorEn}
               </Badge>
-              <p className="text-sm font-medium">{proof.result}</p>
-              <p className="text-xs text-muted-foreground mt-1">{proof.city}</p>
+              <p className="text-sm font-medium">{isAr ? item.focusAr : item.focusEn}</p>
             </div>
           ))}
         </div>
+        <p className="text-xs text-muted-foreground mt-2">
+          {isAr
+            ? "أمثلة على مجالات التركيز في التشخيص — وليست نتائج عملاء."
+            : "Example diagnostic focus areas — not client results."}
+        </p>
       </section>
 
       {/* Deliverables Card */}

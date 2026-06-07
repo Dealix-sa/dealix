@@ -48,7 +48,7 @@ const NAV_COLUMNS: NavColumn[] = [
     titleAr: "القانوني",
     titleEn: "Legal",
     links: [
-      { ar: "الثقة والامتثال", en: "Trust & Compliance", href: "/trust-center" },
+      { ar: "الثقة والامتثال", en: "Trust & Compliance", href: "/trust" },
       { ar: "سياسة الخصوصية", en: "Privacy Policy", href: "/privacy" },
       { ar: "شروط الخدمة", en: "Terms of Service", href: "/terms" },
       { ar: "تواصل معنا", en: "Contact Us", href: "/contact" },
@@ -185,7 +185,7 @@ export function FooterSection({ className = "" }: FooterSectionProps) {
               {isAr ? "شروط الخدمة" : "Terms"}
             </Link>
             <span className="text-muted-foreground/40">·</span>
-            <Link href={`${base}/trust-center`} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <Link href={`${base}/trust`} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
               {isAr ? "الثقة والامتثال" : "Trust & Compliance"}
             </Link>
             <span className="text-muted-foreground/40">·</span>

@@ -24,7 +24,7 @@ export function PublicLaunchShell({ children, compactNav = false }: { children: 
               <Link href={`${base}/custom`} className="font-medium text-[var(--dealix-gold)] hover:opacity-80">{isAr ? "بناء مخصّص" : "Custom build"}</Link>
               <Link href={`${base}/learn`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{t("navLearn")}</Link>
               <Link href={`${base}/about`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "عن Dealix" : "About"}</Link>
-              <Link href={`${base}/trust-center`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "الثقة" : "Trust"}</Link>
+              <Link href={`${base}/trust`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "الثقة" : "Trust"}</Link>
               <Link href={`${base}/risk-score`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{t("ctaRiskScore")}</Link>
               <Link href={`${base}/login`} className="font-medium text-[var(--dealix-deep-green)]">{t("navLogin")}</Link>
               {adminKey ? <Link href={`${base}/ops/founder`} className="text-[var(--dealix-gold)]">{isAr ? "تشغيل المؤسس" : "Founder ops"}</Link> : null}

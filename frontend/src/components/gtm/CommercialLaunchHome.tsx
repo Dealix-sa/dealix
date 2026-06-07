@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
-import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, useInView, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -50,101 +50,99 @@ const FEATURES = [
   },
   {
     icon: "🕐",
-    ar: "دعم على مدار الساعة",
-    en: "24/7 Support",
-    descAr: "فريق متخصص متاح على مدار الساعة طوال أيام الأسبوع.",
-    descEn: "Dedicated team available around the clock.",
+    ar: "تسليم بإشراف المؤسس",
+    en: "Founder-led delivery",
+    descAr: "مسؤولية مباشرة من المؤسس في كل مشروع — لا صندوق أسود.",
+    descEn: "Direct founder accountability on every engagement — no black box.",
   },
 ];
 
-const LOGOS = [
-  { initials: "NA", name: "نماء للاستثمار" },
-  { initials: "RS", name: "رؤية للخدمات" },
-  { initials: "WA", name: "واحة التقنية" },
-  { initials: "SA", name: "سامي للتجارة" },
-  { initials: "MB", name: "مسار البناء" },
-  { initials: "DF", name: "دار الفهد" },
+// Honest pre-launch positioning: target sectors, not fabricated customer logos.
+const SECTORS = [
+  { icon: "🏢", ar: "العقار", en: "Real estate" },
+  { icon: "🚚", ar: "اللوجستيك", en: "Logistics" },
+  { icon: "🏥", ar: "العيادات", en: "Clinics" },
+  { icon: "💻", ar: "SaaS وتقنية", en: "SaaS & tech" },
+  { icon: "🎓", ar: "التعليم والتدريب", en: "Education & training" },
+  { icon: "🛠️", ar: "خدمات الأعمال", en: "B2B services" },
 ];
 
+// Factual product facts (not performance claims). Every number is verifiable
+// from the offer catalog / doctrine — no invented results.
 const STATS = [
-  { valueAr: "٣٫٢×", valueEn: "3.2x", labelAr: "نمو الإيرادات", labelEn: "Revenue Growth", target: 3.2 },
-  { valueAr: "+٥٠٠", valueEn: "+500", labelAr: "عميل راضٍ", labelEn: "Happy Clients", target: 500 },
-  { valueAr: "٩٩٫٩٪", valueEn: "99.9%", labelAr: "وقت التشغيل", labelEn: "Uptime", target: 99.9 },
-  { valueAr: "٤٨س", valueEn: "48h", labelAr: "وقت الإعداد", labelEn: "Setup Time", target: 48 },
+  { target: 7, suffix: "", labelAr: "أيام حتى أول Proof Pack", labelEn: "Days to first Proof Pack" },
+  { target: 5, suffix: "", labelAr: "مستويات خدمة + بناء مخصّص", labelEn: "Service tiers + custom build" },
+  { target: 24, suffix: "h", labelAr: "ساعة لتسليم التشخيص المجاني", labelEn: "Hours: free diagnostic" },
+  { target: 100, suffix: "%", labelAr: "موافقة بشرية قبل أي إرسال", labelEn: "Human-approved before send" },
 ];
 
 const PRICING = [
   {
-    tierAr: "المبدئي",
-    tierEn: "Starter",
+    tierAr: "سبرنت إثبات الإيرادات",
+    tierEn: "Revenue Proof Sprint",
     priceAr: "٤٩٩ ر.س",
     priceEn: "499 SAR",
     periodAr: "دفعة واحدة",
     periodEn: "one-time",
-    featuresAr: ["تشخيص ٧ أيام", "Proof Pack PDF", "خريطة الإيراد", "تقرير ثنائي اللغة"],
-    featuresEn: ["7-day diagnostic", "Proof Pack PDF", "Revenue map", "Bilingual report"],
+    featuresAr: ["تشخيص ٧ أيام", "أفضل ١٠ فرص مرتّبة", "٥ مسودّات عربية", "Proof Pack موقّع"],
+    featuresEn: ["7-day diagnostic", "Top 10 ranked opportunities", "5 Arabic drafts", "Signed Proof Pack"],
     popular: false,
-    ctaAr: "ابدأ الآن",
-    ctaEn: "Get started",
-    href: "/offer/lead-intelligence-sprint",
+    ctaAr: "ابدأ السبرنت",
+    ctaEn: "Start the sprint",
+    href: "/pricing",
   },
   {
-    tierAr: "النمو",
-    tierEn: "Growth",
-    priceAr: "٢,٩٩٩ ر.س",
+    tierAr: "عمليات النمو الشهرية",
+    tierEn: "Growth Ops Monthly",
+    priceAr: "٢٬٩٩٩ ر.س",
     priceEn: "2,999 SAR",
     periodAr: "شهرياً",
     periodEn: "per month",
-    featuresAr: ["كل ميزات المبدئي", "CRM محكوم", "تقارير أسبوعية", "دعم أولوية", "لوحة تحليلية", "امتثال ZATCA"],
-    featuresEn: ["Everything in Starter", "Governed CRM", "Weekly reports", "Priority support", "Analytics dashboard", "ZATCA compliance"],
+    featuresAr: ["تدقيق أسبوعي للأنبوب", "طابور موافقات يومي", "≥٢٠ مسودة شهرياً", "Proof Pack + ملخّص تنفيذي شهري"],
+    featuresEn: ["Weekly pipeline audit", "Daily approval queue", "≥20 drafts/month", "Monthly Proof Pack + exec summary"],
     popular: true,
     ctaAr: "ابدأ النمو",
     ctaEn: "Start growing",
-    href: "/offer/retainer",
+    href: "/pricing",
   },
   {
-    tierAr: "المؤسسي",
-    tierEn: "Enterprise",
-    priceAr: "مخصص",
+    tierAr: "بناء AI مخصّص",
+    tierEn: "Custom AI Build",
+    priceAr: "حسب النطاق",
     priceEn: "Custom",
     periodAr: "",
     periodEn: "",
-    featuresAr: ["كل ميزات النمو", "تكامل API مخصص", "مدير حساب مخصص", "SLA مضمون", "تدريب الفريق", "audit log كامل"],
-    featuresEn: ["Everything in Growth", "Custom API integration", "Dedicated account manager", "Guaranteed SLA", "Team training", "Full audit log"],
+    featuresAr: ["وكيل/أتمتة مخصّصة", "تكامل مع أنظمتك", "حوكمة وموافقات حسب نطاقك", "خطة وتقدير خلال يوم عمل"],
+    featuresEn: ["Bespoke agent/automation", "Integration with your systems", "Governance scoped to you", "Plan & estimate in 1 business day"],
     popular: false,
-    ctaAr: "تحدث مع فريقنا",
-    ctaEn: "Talk to our team",
-    href: "/contact",
+    ctaAr: "اطلب بناءً مخصّصاً",
+    ctaEn: "Request a custom build",
+    href: "/custom",
   },
 ];
 
-const TESTIMONIALS = [
+// Honest commitments (the doctrine, framed positively) — NOT fabricated quotes.
+const COMMITMENTS = [
   {
-    nameAr: "أحمد الغامدي",
-    nameEn: "Ahmad Al-Ghamdi",
-    companyAr: "واحة التقنية، الرياض",
-    companyEn: "Oasis Tech, Riyadh",
-    quoteAr: "كشف Dealix تسرّب إيراد بنسبة 18% لم نكن نعلم بوجوده. أول Proof Pack كان يستحق أضعاف تكلفته.",
-    quoteEn: "Dealix uncovered 18% revenue leakage we didn't know existed. The first Proof Pack was worth many times its cost.",
-    stars: 5,
+    icon: "🛡️",
+    titleAr: "موافقة قبل أي إرسال خارجي",
+    titleEn: "Approval before any external send",
+    descAr: "كل رسالة أو إجراء حسّاس يمرّ بموافقتك — لا أتمتة بلا مراجعة بشرية.",
+    descEn: "Every message or sensitive action passes your approval — no automation without human review.",
   },
   {
-    nameAr: "سارة المطيري",
-    nameEn: "Sara Al-Mutairi",
-    companyAr: "مسار البناء، جدة",
-    companyEn: "Masar Construction, Jeddah",
-    quoteAr: "جهّزنا لـ ZATCA Wave 24 في أقل من أسبوعين. الفريق احترافي والنتائج قابلة للقياس.",
-    quoteEn: "They had us ZATCA Wave 24 ready in under two weeks. Professional team, measurable results.",
-    stars: 5,
+    icon: "📦",
+    titleAr: "لا توسّع قبل الإثبات",
+    titleEn: "No expansion before proof",
+    descAr: "كل ارتباط ينتهي بـ Proof Pack موقّع — لا upsell قبل قيمة مُثبَتة.",
+    descEn: "Every engagement ends with a signed Proof Pack — no upsell before proven value.",
   },
   {
-    nameAr: "محمد القحطاني",
-    nameEn: "Mohammed Al-Qahtani",
-    companyAr: "دار الفهد للخدمات، الدمام",
-    companyEn: "Dar Al-Fahd Services, Dammam",
-    quoteAr: "لوحة التحكم التحليلية غيّرت طريقة اتخاذ قراراتنا. بيانات واضحة، governance محكم.",
-    quoteEn: "The analytics dashboard transformed how we make decisions. Clear data, tight governance.",
-    stars: 5,
+    icon: "🚫",
+    titleAr: "لا scraping ولا رسائل باردة",
+    titleEn: "No scraping, no cold outreach",
+    descAr: "نعمل ببيانات مشروعة وموافقات فقط — PDPL أصيل وZATCA جاهز.",
+    descEn: "We work with lawful data and consent only — PDPL native and ZATCA ready.",
   },
 ];
 
@@ -205,16 +203,6 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
   );
 }
 
-function StarRating({ count }: { count: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <span key={i} className="text-gold-400 text-sm">★</span>
-      ))}
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // Main component
 // ---------------------------------------------------------------------------
@@ -225,9 +213,6 @@ export function CommercialLaunchHome() {
   const dir = isAr ? "rtl" : "ltr";
   const base = `/${locale}`;
 
-  const [email, setEmail] = useState("");
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
-
   const heroControls = useAnimation();
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true });
@@ -235,11 +220,6 @@ export function CommercialLaunchHome() {
   useEffect(() => {
     if (heroInView) heroControls.start("visible");
   }, [heroInView, heroControls]);
-
-  function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (email.trim()) setEmailSubmitted(true);
-  }
 
   return (
     <div dir={dir} className="min-h-screen bg-navy-500 text-white overflow-x-hidden">
@@ -361,7 +341,7 @@ export function CommercialLaunchHome() {
                 size="lg"
                 className="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 shadow-lg shadow-gold-500/25 text-base h-13 px-8"
               >
-                <Link href={`${base}/offer/lead-intelligence-sprint`}>
+                <Link href={`${base}/dealix-diagnostic`}>
                   {isAr ? "ابدأ تشخيصك المجاني" : "Start Free Diagnostic"}
                 </Link>
               </Button>
@@ -406,7 +386,7 @@ export function CommercialLaunchHome() {
       {/* ------------------------------------------------------------------ */}
       <section className="bg-navy-600 border-y border-white/5 py-10 overflow-hidden">
         <p className="text-center text-xs font-semibold text-white/40 uppercase tracking-widest mb-6">
-          {isAr ? "يثق بنا" : "Trusted by"}
+          {isAr ? "مصمَّم لقطاعات B2B السعودية" : "Built for Saudi B2B sectors"}
         </p>
         <div className="relative">
           <motion.div
@@ -414,16 +394,17 @@ export function CommercialLaunchHome() {
             animate={{ x: isAr ? [0, "50%"] : [0, "-50%"] }}
             transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
           >
-            {[...LOGOS, ...LOGOS].map((logo, i) => (
+            {[...SECTORS, ...SECTORS].map((sector, i) => (
               <div
                 key={i}
                 className="flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-xl border border-white/8 bg-white/4 backdrop-blur-sm"
               >
-                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500/30 to-gold-400/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-bold text-sm">
-                  {logo.initials}
+                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500/30 to-gold-400/10 border border-gold-500/20 flex items-center justify-center text-lg">
+                  {sector.icon}
                 </div>
-                <span className="text-white/60 text-sm whitespace-nowrap font-medium">{logo.name}</span>
-                <span className="text-emerald-400 text-xs">✓</span>
+                <span className="text-white/60 text-sm whitespace-nowrap font-medium">
+                  {isAr ? sector.ar : sector.en}
+                </span>
               </div>
             ))}
           </motion.div>
@@ -494,8 +475,11 @@ export function CommercialLaunchHome() {
           className="max-w-4xl mx-auto text-center mb-12"
         >
           <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold">
-            {isAr ? "أرقام تتحدث بنفسها" : "Numbers that speak for themselves"}
+            {isAr ? "حقائق عن طريقة عملنا" : "Facts about how we work"}
           </motion.h2>
+          <motion.p variants={fadeUp} custom={1} className="mt-3 text-white/60 max-w-lg mx-auto">
+            {isAr ? "لا أرقام مخترَعة — كل حقيقة من كتالوج الخدمات والعقيدة." : "No invented numbers — every fact comes from our catalog and doctrine."}
+          </motion.p>
         </motion.div>
 
         <motion.div
@@ -513,15 +497,7 @@ export function CommercialLaunchHome() {
               className="text-center rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm py-8 px-4"
             >
               <div className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-gold-300 to-gold-500 bg-clip-text text-transparent leading-none mb-3">
-                {s.target <= 100 && s.labelEn.includes("Uptime") ? (
-                  <span><AnimatedNumber target={99.9} suffix="%" /></span>
-                ) : s.target <= 100 && s.labelEn.includes("Growth") ? (
-                  <span><AnimatedNumber target={3.2} suffix="x" /></span>
-                ) : s.target === 48 ? (
-                  <span><AnimatedNumber target={48} suffix="h" /></span>
-                ) : (
-                  <span>+<AnimatedNumber target={500} /></span>
-                )}
+                <AnimatedNumber target={s.target} suffix={s.suffix} />
               </div>
               <p className="text-white/70 text-sm font-medium">{isAr ? s.labelAr : s.labelEn}</p>
             </motion.div>
@@ -631,38 +607,35 @@ export function CommercialLaunchHome() {
         >
           <motion.div variants={fadeUp} className="text-center mb-12">
             <p className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
-              {isAr ? "آراء عملائنا" : "Client Stories"}
+              {isAr ? "التزاماتنا" : "Our Commitments"}
             </p>
             <h2 className="text-3xl md:text-4xl font-bold">
-              {isAr ? "ما يقوله عملاؤنا" : "What our clients say"}
+              {isAr ? "لماذا تثق الشركات بـ Dealix" : "Why teams trust Dealix"}
             </h2>
+            <p className="mt-3 text-white/60 max-w-lg mx-auto">
+              {isAr
+                ? "نُطلق الآن للسوق السعودي — بدل شهادات مُختلَقة، هذه المبادئ التي نعمل بها."
+                : "Launching now for the Saudi market — instead of fabricated testimonials, these are the principles we operate by."}
+            </p>
           </motion.div>
 
           <motion.div
             variants={stagger}
             className="grid gap-6 md:grid-cols-3"
           >
-            {TESTIMONIALS.map((t, i) => (
+            {COMMITMENTS.map((c, i) => (
               <motion.div
-                key={t.nameEn}
+                key={c.titleEn}
                 variants={fadeUp}
                 custom={i}
                 className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-7 flex flex-col gap-4"
                 style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
               >
-                <StarRating count={t.stars} />
-                <p className="text-white/80 text-sm leading-relaxed flex-1">
-                  &ldquo;{isAr ? t.quoteAr : t.quoteEn}&rdquo;
+                <div className="text-3xl">{c.icon}</div>
+                <p className="text-lg font-bold leading-tight">{isAr ? c.titleAr : c.titleEn}</p>
+                <p className="text-white/70 text-sm leading-relaxed flex-1">
+                  {isAr ? c.descAr : c.descEn}
                 </p>
-                <div className="flex items-center gap-3 pt-2 border-t border-white/8">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gold-500/40 to-emerald-600/30 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                    {(isAr ? t.nameAr : t.nameEn)[0]}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold leading-tight">{isAr ? t.nameAr : t.nameEn}</p>
-                    <p className="text-xs text-white/50 mt-0.5">{isAr ? t.companyAr : t.companyEn}</p>
-                  </div>
-                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -731,58 +704,36 @@ export function CommercialLaunchHome() {
 
           <motion.p variants={fadeUp} custom={1} className="text-white/60 mb-8 text-lg">
             {isAr
-              ? "أدخل بريدك الإلكتروني واحصل على تقرير تشخيصي مجاني خلال 48 ساعة."
-              : "Enter your email and get a free diagnostic report within 48 hours."}
+              ? "ابدأ بتشخيص مجاني، أو احجز مكالمة، أو اطلب بناءً مخصّصاً."
+              : "Start with a free diagnostic, book a call, or request a custom build."}
           </motion.p>
 
-          <motion.form
+          <motion.div
             variants={fadeUp}
             custom={2}
-            onSubmit={handleEmailSubmit}
-            className={`flex flex-col sm:flex-row gap-3 max-w-md mx-auto ${isAr ? "sm:flex-row-reverse" : ""}`}
+            className="flex flex-col sm:flex-row gap-3 justify-center"
           >
-            <AnimatePresence mode="wait">
-              {!emailSubmitted ? (
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex flex-col sm:flex-row gap-3 w-full"
-                >
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    placeholder={isAr ? "البريد الإلكتروني للشركة" : "Work email address"}
-                    className="flex-1 h-12 rounded-xl bg-white/8 border border-white/15 px-4 text-white placeholder-white/40 text-sm focus:outline-none focus:border-gold-500/60 focus:bg-white/12 transition-colors"
-                  />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="h-12 px-7 bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 whitespace-nowrap shadow-lg shadow-gold-500/25"
-                  >
-                    {isAr ? "ابدأ مجاناً" : "Start Free"}
-                  </Button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="thanks"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="w-full text-center py-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-medium text-sm"
-                >
-                  {isAr ? "تم الاستلام — سنتواصل معك خلال 48 ساعة." : "Received — we'll be in touch within 48 hours."}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.form>
+            <Button
+              asChild
+              size="lg"
+              className="h-12 px-7 bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 whitespace-nowrap shadow-lg shadow-gold-500/25"
+            >
+              <Link href={`${base}/dealix-diagnostic`}>{isAr ? "ابدأ تشخيصك المجاني" : "Start free diagnostic"}</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="h-12 px-7 border-white/20 text-white hover:bg-white/10 whitespace-nowrap"
+            >
+              <Link href={`${base}/contact`}>{isAr ? "احجز مكالمة" : "Book a call"}</Link>
+            </Button>
+          </motion.div>
 
           <motion.p variants={fadeUp} custom={3} className="mt-4 text-xs text-white/35">
             {isAr
-              ? "لا بريد عشوائي. بياناتك محمية وفق PDPL. يمكنك إلغاء الاشتراك في أي وقت."
-              : "No spam. Your data is protected under PDPL. Unsubscribe anytime."}
+              ? "لا بريد عشوائي. بياناتك محمية وفق PDPL. ردّ بشري — لا أتمتة."
+              : "No spam. Your data is protected under PDPL. Human reply — no automation."}
           </motion.p>
         </motion.div>
       </section>
@@ -817,7 +768,7 @@ export function CommercialLaunchHome() {
                 {[
                   { ar: "التشخيص", en: "Diagnostic", href: "/dealix-diagnostic" },
                   { ar: "Proof Pack", en: "Proof Pack", href: "/proof-pack" },
-                  { ar: "الأسعار", en: "Pricing", href: "#pricing" },
+                  { ar: "الأسعار", en: "Pricing", href: "/pricing" },
                   { ar: "الشركاء", en: "Partners", href: "/partners" },
                 ].map((link) => (
                   <li key={link.href}>
