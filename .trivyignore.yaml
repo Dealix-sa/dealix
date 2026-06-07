@@ -1,0 +1,13 @@
+# Trivy structured ignore file.
+# Docs: https://trivy.dev/latest/docs/configuration/filtering/
+#
+# Secret scanning stays ON for the rest of the repository. The two entries below
+# are FALSE POSITIVES: both scripts contain grep patterns that match PLACEHOLDER
+# Stripe keys (e.g. sk_live_xxxxx, sk_live_test) used to *detect* accidental secret
+# commits — they are not real secrets. Suppression is scoped to just these paths,
+# so a genuine Stripe key committed anywhere else is still flagged.
+secrets:
+  - id: stripe-secret-token
+    paths:
+      - "scripts/v10_master_verify.sh"
+      - "scripts/v7_launch_verify.sh"
