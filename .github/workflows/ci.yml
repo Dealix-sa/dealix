@@ -151,9 +151,9 @@ jobs:
           git diff --exit-code -- landing/assets/data/service-readiness.json
 
       - name: Service Catalog single-source drift gate
-        run: |
-          python scripts/dealix_export_service_catalog_json.py
-          git diff --exit-code -- landing/assets/data/services-catalog.json
+        # --check compares structural fields only (ignores the generated_at
+        # timestamp), so it never flags spurious drift from the regen time.
+        run: python scripts/dealix_export_service_catalog_json.py --check
 
       - name: SEO audit
         run: |
