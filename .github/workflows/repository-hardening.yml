@@ -29,8 +29,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run secret smoke check
+        run: python scripts/dealix_secret_smoke_check.py
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -42,7 +46,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           scan-ref: .
