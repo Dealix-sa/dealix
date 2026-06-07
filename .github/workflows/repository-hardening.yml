@@ -29,8 +29,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      # Use the open-source Gitleaks CLI directly. The gitleaks-action@v2
+      # wrapper requires a paid GITLEAKS_LICENSE secret for GitHub orgs;
+      # the CLI itself is free and honours the repo .gitleaks.toml allowlist.
+      - name: Run Gitleaks (open-source CLI)
+        run: |
+          set -euo pipefail
+          GITLEAKS_VERSION=8.18.4
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o /tmp/gitleaks.tar.gz
+          tar -xzf /tmp/gitleaks.tar.gz -C /tmp gitleaks
+          chmod +x /tmp/gitleaks
+          /tmp/gitleaks detect --no-git --source . --config .gitleaks.toml --redact --no-banner --exit-code 1
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -41,8 +50,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # @0.24.0 was yanked upstream and no longer resolves; track the
+      # maintained ref like the docker-build workflow does.
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           scan-ref: .

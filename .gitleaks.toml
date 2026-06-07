@@ -52,8 +52,21 @@ paths = [
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
     '''tests/fixtures/.*''',
+    # Test suites use synthetic credentials (e.g. sk_live_abcd… asserted to be
+    # redacted, fake auth keys). Production code never hardcodes secrets.
+    '''tests/.*\.py$''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
+    # Security-verification scripts embed secret-detection grep patterns
+    # (literal sk_live_/ghp_/AIza regexes) that are not themselves secrets.
+    '''scripts/.*verify\.sh$''',
+    # Generated / vendored trees (absent from CI checkout; keeps local runs
+    # consistent with CI and avoids scanning third-party packages).
+    '''\.venv/.*''',
+    '''node_modules/.*''',
+    '''\.next/.*''',
+    '''__pycache__/.*''',
+    '''\.pyc$''',
 ]
 
 regexes = [
