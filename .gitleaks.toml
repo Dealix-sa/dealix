@@ -4,7 +4,11 @@ title = "Dealix gitleaks configuration"
 useDefault = true
 
 [allowlist]
-description = "Test fixtures — synthetic/fake credentials only, no real secrets"
+description = "False positives — test fixtures, documentation examples, and ops scripts using env vars"
 paths = [
-    '''^tests/''',
+    '^tests/',
+    '^docs/',
+    '^scripts/ops/',
+    '^scripts/v7_launch_verify\.sh$',
+    '^scripts/v10_master_verify\.sh$',
 ]

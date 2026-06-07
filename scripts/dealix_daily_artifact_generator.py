@@ -7,7 +7,8 @@ if Path('data/preview/preview_clients.json').exists():
         data=json.loads(Path('data/preview/preview_clients.json').read_text(encoding='utf-8'))
         if isinstance(data, list): clients=[c.get('name') or c.get('client') for c in data if isinstance(c,dict)] or clients
         elif isinstance(data, dict): clients=[c.get('name') or c.get('client') for c in data.get('clients',[]) if isinstance(c,dict)] or clients
-    except Exception:  # malformed JSON or missing keys — skip file
+    except Exception:
+        pass  # malformed JSON or missing keys — skip file
 for client in clients[:3]:
     safe=client.replace(' ','_')
     (out/f'{safe}_followup_draft.md').write_text(f"""# Follow-up Draft — {client}
