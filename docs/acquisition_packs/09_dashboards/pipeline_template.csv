@@ -1,0 +1,2 @@
+company_name,contact_role,offer,stage,stage_entered_date,last_touch_date,next_action,next_action_date,value_estimate_sar,probability,approval_status,proof_pack_ref,consent_basis,notes
+Example Trading Co,Operations Manager,Lead-to-Meeting Engine,contacted,2026-06-09,2026-06-09,"follow up if no reply in 3 business days",2026-06-12,9500,0.2,draft_approved,,legitimate_interest_b2b,"approved draft sent manually by founder"
