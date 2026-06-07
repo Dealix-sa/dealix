@@ -128,7 +128,16 @@ export function OpsFounderCommandCenter() {
           ? "مركز قيادة موحّد — مبيعات · تسويق · استهداف · صحة التشغيل · غرفة الإيراد."
           : "Unified command center — sales · marketing · targeting · ops health · war room."}
       </p>
-      {err && <p className="text-destructive text-sm">{err}</p>}
+      {err && (
+        <Card className="p-4 border-destructive/40 bg-destructive/5">
+          <p className="text-sm font-medium text-destructive">{err}</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            {isAr
+              ? "اضبط المتغيّر NEXT_PUBLIC_DEALIX_ADMIN_API_KEY في Railway (Frontend) بأحد قيم ADMIN_API_KEYS من خدمة الـ API، أو احفظه في localStorage بالمفتاح dealix_admin_api_key."
+              : "Set NEXT_PUBLIC_DEALIX_ADMIN_API_KEY in Railway (Frontend) to one of your API service ADMIN_API_KEYS values, or save it in localStorage under the key dealix_admin_api_key."}
+          </p>
+        </Card>
+      )}
 
       <OpsFullAutonomousOpsCard data={fullOps} cockpit={cockpit} onRefresh={load} />
 
@@ -261,6 +270,47 @@ export function OpsFounderCommandCenter() {
             </span>
           ))}
         </div>
+      </Card>
+
+      {/* Warm-list call kit card */}
+      <Card className="p-4 border-emerald-500/30 bg-emerald-50/30 dark:bg-emerald-950/10">
+        <h2 className="font-semibold mb-2 text-emerald-800 dark:text-emerald-300">
+          {isAr ? "عدّة الاتصال والمسودّات اليومية" : "Daily call kit & drafts"}
+        </h2>
+        <p className="text-xs text-muted-foreground mb-3">
+          {isAr
+            ? "مسودّات جاهزة للموافقة قبل الإرسال — لا إرسال تلقائي."
+            : "Drafts ready for your approval before send — zero auto-send."}
+        </p>
+        <div className="flex flex-wrap gap-3 text-xs">
+          <a
+            href="/docs/ops/CALL_KIT_AR.md"
+            className="text-emerald-700 dark:text-emerald-300 underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {isAr ? "عدّة الاتصال (Top 10 أهداف + سكربتات)" : "Call Kit (Top 10 + scripts)"}
+          </a>
+          <a
+            href="/data/outreach/warm_list_drafts.md"
+            className="text-emerald-700 dark:text-emerald-300 underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {isAr ? "مسودّات الشبكة الدافئة" : "Warm-list drafts"}
+          </a>
+          <Link href={`/${locale}/ops/war-room`} className="text-emerald-700 dark:text-emerald-300 underline">
+            {isAr ? "استورد CSV أهداف → غرفة الإيراد" : "Import targets CSV → War Room"}
+          </Link>
+          <Link href={`/${locale}/approvals`} className="text-emerald-700 dark:text-emerald-300 underline">
+            {isAr ? "الموافقات" : "Approvals queue"}
+          </Link>
+        </div>
+        <p className="text-xs text-muted-foreground mt-3">
+          {isAr
+            ? "لتوليد مسودّات جديدة: python scripts/warm_list_outreach.py"
+            : "To regenerate drafts: python scripts/warm_list_outreach.py"}
+        </p>
       </Card>
 
       <OpsStrongestPlanPanel />

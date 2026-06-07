@@ -1,65 +1,63 @@
 # Press Release — Dealix Launch (English)
 
-> **Status:** Template, fill before GA day.
-> **Embargo:** Until 09:00 AST on T-0.
-> **Media contact:** `press@dealix.sa` — _spokesperson name + phone to fill before GA._
+> **Status:** Ready for founder review — send only after founder approval.
+> **Embargo:** Until 09:00 AST on launch day.
+> **Media contact:** `hello@dealix.me` | Sami Assiri, Founder
 
 ---
 
 ## Headline
 
-**Dealix Launches Saudi Arabia's First Sovereign AI Operating System for Enterprise Revenue, Approvals, and Growth**
+**Dealix Launches Saudi Arabia's First Governance-First AI Revenue OS for B2B Companies**
 
 ## Subhead
 
-PDPL-compliant, governance-first platform operates on the rule: *AI explores, deterministic workflows execute, humans approve critical moves.*
+PDPL-compliant platform for Saudi B2B companies — clean data, ranked opportunities, Arabic drafts, and Proof Packs, all under explicit human approval before any external action.
 
 ---
 
-## RIYADH, _<DD MONTH YYYY>_
+## RIYADH, June 2026
 
-**Dealix** today announced the general availability of its sovereign AI Operating System for Saudi enterprises, combining agentic intelligence, deterministic execution, and human approval controls across five mandatory planes: Revenue, Partnerships, Expansion, PMI, and Executive Governance.
+**Dealix** today announced general availability of its AI Revenue Operating System for Saudi B2B companies. The platform combines AI-powered opportunity detection, bilingual Arabic/English output, and an approval-first architecture that ensures a human approves every external-facing action before it is sent.
 
-Saudi enterprises are racing to adopt AI while meeting strict digital-sovereignty requirements. Dealix is engineered for that exact reality:
-- **Full decision audit trail** with classification (approval class, reversibility, sensitivity)
-- **Mandatory human approvals** for any externally-binding commitment
-- **Executive observability** with live operating metrics
-- **Saudi compliance**: PDPL, ZATCA, in-country Moyasar payments, KSA-region backups
+Saudi B2B companies face two compounding challenges: converting inbound leads fast enough to compete, and doing so without violating PDPL or creating audit liability. Dealix addresses both:
+- **Revenue Proof Sprint** — a 7-day engagement with a guaranteed Proof Pack deliverable
+- **Approval-first AI** — every AI-generated output is a draft; no auto-send
+- **Saudi compliance** — PDPL-native, ZATCA-aligned, Moyasar in-country payments
+- **Honest governance** — no fabricated KPIs, no cold outreach, no guaranteed-results claims
 
-> "We built Dealix because Saudi enterprises don't need another chatbot. They need an execution layer that unites intelligence, approvals, and evidence in one place."
+> "We built Dealix for Saudi B2B founders who need their AI to do real work — not make promises. Every output is a draft you approve. Every sprint ends with a Proof Pack you own."
 > — **Sami Assiri**, Founder, Dealix
 
 ---
 
-## What makes Dealix different
+## Services available today
 
-1. **Sovereign by design** — data stays in-country; backups in `me-south-1`; audit logs in-tenant.
-2. **Governance before runtime** — every decision carries an approval-class, reversibility-class, and sensitivity-class tag.
-3. **No army required** — starts at a 10-person company; scales to thousand-person enterprise.
-4. **Immediately useful** — 287 pre-loaded Saudi B2B accounts; 1-SAR pilot to onboard in < 60 minutes.
+| Service | Price | Timeline |
+|---|---|---|
+| Free Diagnostic | Free | 24 hours |
+| Revenue Proof Sprint | 499 SAR | 7 days |
+| Data-to-Revenue Pack | 1,500 SAR | One-time |
+| Growth Ops Managed | From 2,999 SAR/mo | Ongoing |
+| Custom AI Build | 5,000–25,000 SAR | Scoped |
 
-## Availability
-
-- Available today at https://dealix.sa
-- Plans: Pilot (1 SAR), Starter (999 SAR/mo), Growth (2,999), Scale (7,999)
-- **Agency Partner Program** with multi-tier commissions
+Available at **https://dealix.me** — free diagnostic starts in minutes.
 
 ## About Dealix
 
-Founded in 2026 in Riyadh by Sami Assiri, Dealix is a Saudi sovereign AI Operating System for enterprise revenue and execution. The platform is engineered for full compliance with the Saudi Personal Data Protection Law (PDPL) and aligns with Vision 2030 governance standards.
+Founded in 2026 in Riyadh by Sami Assiri, Dealix is a Saudi-first B2B Revenue OS built on approval-first AI governance. The platform is engineered for full compliance with Saudi PDPL and ZATCA requirements.
 
 ---
 
 **Media inquiries:**
-- Email: `press@dealix.sa`
-- Phone: _to fill_
-- Spokesperson: _to fill_
+- Email: `hello@dealix.me`
+- Demo booking: https://calendly.com/sami-assiri11/dealix-demo
+- Spokesperson: Sami Assiri, Founder
 
 **Links:**
-- Site: https://dealix.sa
-- Product: https://app.dealix.me
-- Trust Center: https://dealix.sa/sub-processors.html
+- Website: https://dealix.me
+- Free diagnostic: https://dealix.me/ar/dealix-diagnostic
+- Trust & compliance: https://dealix.me/ar/trust
 - LinkedIn: https://www.linkedin.com/company/dealix
-- X: @dealix_sa
 
 ###
