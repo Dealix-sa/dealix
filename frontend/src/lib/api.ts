@@ -148,6 +148,13 @@ export const api = {
   getLeads: () =>
     apiClient.get("/api/v1/founder/leads"),
 
+  // Latest daily lead board (DRAFT-ONLY) produced by dealix_daily_lead_prep.py
+  getFounderDailyBoard: () =>
+    apiClient.get("/api/v1/founder/daily-board"),
+
+  updateFounderLeadStatus: (leadId: string, status: string) =>
+    apiClient.post(`/api/v1/founder/leads/${encodeURIComponent(leadId)}/status`, { status }),
+
   submitLead: (data: Record<string, unknown>) =>
     apiClient.post("/api/v1/leads", data),
 
@@ -237,6 +244,14 @@ export const api = {
 
   postPublicLead: (body: Record<string, unknown>) =>
     apiClient.post("/api/v1/public/leads", body),
+
+  // Public lead capture (store A — read by the daily lead-prep engine).
+  postPublicDemoRequest: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/demo-request", body),
+
+  // Bespoke "custom solution" intake — what the prospect wants Dealix to build.
+  postPublicCustomRequest: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/custom-request", body),
 
   getPublicKnowledgeAnswer: (q: string) =>
     apiClient.get("/api/v1/public/knowledge/answer", { params: { q } }),

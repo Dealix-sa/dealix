@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const SITE = "https://dealix.me";
 const OG_IMAGE = [{ url: `${SITE}/brand/og-dealix.svg`, width: 1200, height: 630, alt: "Dealix — Saudi B2B Revenue OS" }];
 
-type FunnelKey = "diagnostic" | "proof-pack" | "risk-score" | "partners" | "services" | "learn" | "privacy";
+type FunnelKey = "diagnostic" | "proof-pack" | "risk-score" | "partners" | "services" | "learn" | "privacy" | "custom";
 
 const FUNNEL_META: Record<FunnelKey, { path: string; ar: { title: string; desc: string }; en: { title: string; desc: string } }> = {
   diagnostic: {
@@ -40,6 +40,11 @@ const FUNNEL_META: Record<FunnelKey, { path: string; ar: { title: string; desc: 
     path: "/privacy",
     ar: { title: "Dealix — سياسة الخصوصية وPDPL", desc: "Dealix مبني أصلاً لـ PDPL — لا outreach بارد، لا scraping، موافقة قبل أي إرسال خارجي." },
     en: { title: "Dealix — Privacy & PDPL Policy", desc: "Dealix is built natively for PDPL — no cold outreach, no scraping, approval before any external send." },
+  },
+  custom: {
+    path: "/custom",
+    ar: { title: "Dealix — اطلب حلاً مخصّصاً", desc: "صف ما تريد أن يبنيه Dealix لعملك — حلول AI مخصّصة فوق نظام إيراداتك. نراجع المتطلبات ونتواصل خلال 4 ساعات عمل." },
+    en: { title: "Dealix — Request a Custom Solution", desc: "Tell us what you want Dealix to build for your business — bespoke AI on top of your revenue system. We review and reply within 4 business hours." },
   },
 };
 

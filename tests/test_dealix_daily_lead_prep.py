@@ -28,8 +28,10 @@ from scripts.dealix_daily_lead_prep import (
     DailyLeadBoard,
     LeadCandidate,
     _composite_score,
+    _dedupe_candidates,
     load_candidates_from_csv,
     load_candidates_from_lead_inbox,
+    load_candidates_from_warmlist,
     run_daily_prep,
     write_board,
 )
@@ -339,6 +341,62 @@ def test_auto_source_marks_source_inbound_form() -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Total: 20 tests (3 empty + 5 ranking + 3 action_mode + 3 output +
-#                  2 csv + 4 auto-source)
+# Warm-list seed loader + union dedupe (5 tests)
+# ─────────────────────────────────────────────────────────────────────
+
+
+def _write_warmlist_csv(tmp_path: Path) -> Path:
+    """A PII-safe warm-list fixture in the candidate shape."""
+    p = tmp_path / "candidates.csv"
+    p.write_text(
+        "name,sector,city,country,domain,contact_name,contact_title,source,locale,annual_turnover_sar,notes\n"
+        "Foodics,saas,,SA,foodics.com,,,public_business_info_allowed,ar,,\n"
+        "Lucidya,saas,,SA,lucidya.com,,,public_business_info_allowed,ar,,\n",
+        encoding="utf-8",
+    )
+    return p
+
+
+def test_load_candidates_from_warmlist_reads_csv(tmp_path: Path) -> None:
+    """The warm-list loader reads the candidate-shaped CSV."""
+    p = _write_warmlist_csv(tmp_path)
+    cands = load_candidates_from_warmlist(p)
+    assert {c.name for c in cands} == {"Foodics", "Lucidya"}
+    assert all(c.source == "public_business_info_allowed" for c in cands)
+
+
+def test_warmlist_loader_keeps_contact_fields_blank(tmp_path: Path) -> None:
+    """PII guarantee: warm-list candidates carry no contact name/title."""
+    p = _write_warmlist_csv(tmp_path)
+    cands = load_candidates_from_warmlist(p)
+    assert all(c.contact_name == "" and c.contact_title == "" for c in cands)
+
+
+def test_load_candidates_from_warmlist_missing_file_returns_empty(tmp_path: Path) -> None:
+    """A fresh server with no seed yet → [] (not an error)."""
+    assert load_candidates_from_warmlist(tmp_path / "nope.csv") == []
+
+
+def test_dedupe_candidates_first_group_wins() -> None:
+    """Inbound (passed first) wins over warm-list on a name collision."""
+    inbound = [LeadCandidate(name="Foodics", source="inbound_form")]
+    warm = [
+        LeadCandidate(name="foodics", source="public_business_info_allowed"),
+        LeadCandidate(name="Lucidya", source="public_business_info_allowed"),
+    ]
+    merged = _dedupe_candidates(inbound, warm)
+    assert [c.name for c in merged] == ["Foodics", "Lucidya"]
+    foodics = next(c for c in merged if c.name.lower() == "foodics")
+    assert foodics.source == "inbound_form"  # inbound won
+
+
+def test_dedupe_candidates_skips_blank_names() -> None:
+    """Blank-named rows are dropped, not deduped into one."""
+    merged = _dedupe_candidates([LeadCandidate(name=""), LeadCandidate(name="  ")])
+    assert merged == []
+
+
+# ─────────────────────────────────────────────────────────────────────
+# Total: 25 tests (3 empty + 5 ranking + 3 action_mode + 3 output +
+#                  2 csv + 4 auto-source + 5 warm-list)
 # ─────────────────────────────────────────────────────────────────────

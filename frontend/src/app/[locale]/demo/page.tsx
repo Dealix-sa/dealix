@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { LeadIntakeForm } from "@/components/forms/LeadIntakeForm";
 
 interface SprintStep {
   name: string;
@@ -269,6 +270,26 @@ export default function DemoPage() {
                 <Button asChild variant="outline" size="lg">
                   <Link href={`/${locale}/dealix-diagnostic`}>
                     {isAr ? "تشخيص مجاني أولاً" : "Free Diagnostic First"}
+                  </Link>
+                </Button>
+              </div>
+            </Card>
+
+            {/* Lead capture — feeds the founder's daily board (DRAFT-ONLY) */}
+            <Card className="p-6 sm:p-8">
+              <h2 className="text-xl font-bold mb-1">
+                {isAr ? "ابدأ على بيانات شركتك" : "Start on your company's data"}
+              </h2>
+              <p className="text-sm text-muted-foreground mb-5">
+                {isAr
+                  ? "اترك تفاصيلك وسنعود إليك خلال 4 ساعات عمل — أو اطلب حلاً مخصّصاً."
+                  : "Leave your details and we'll get back within 4 business hours — or request a custom solution."}
+              </p>
+              <LeadIntakeForm source="web.demo_page" />
+              <div className="mt-4 text-center">
+                <Button asChild variant="ghost" size="sm">
+                  <Link href={`/${locale}/custom`}>
+                    {isAr ? "أو اطلب حلاً مخصّصاً ←" : "Or request a custom solution →"}
                   </Link>
                 </Button>
               </div>

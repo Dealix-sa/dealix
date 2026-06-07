@@ -21,6 +21,7 @@ export function PublicLaunchShell({ children, compactNav = false }: { children: 
             <nav className="flex flex-wrap items-center gap-3 text-sm">
               <Link href={`${base}/services`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "الخدمات" : "Services"}</Link>
               <Link href={`${base}/pricing`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "التسعير" : "Pricing"}</Link>
+              <Link href={`${base}/custom`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "حل مخصّص" : "Custom"}</Link>
               <Link href={`${base}/learn`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{t("navLearn")}</Link>
               <Link href={`${base}/about`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "عن Dealix" : "About"}</Link>
               <Link href={`${base}/trust`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "الثقة" : "Trust"}</Link>
