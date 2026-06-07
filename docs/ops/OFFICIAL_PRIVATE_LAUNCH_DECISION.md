@@ -40,7 +40,7 @@ draft Wave 7/8 / Company OS / launch branches. Consolidate or close."*).
 
 | PR | Title (short) | Role | Recommendation |
 |---|---|---|---|
-| **#638** | Claude Code GitHub Action + `CLAUDE.md` | Enables `@claude` in PRs/issues; adds repo guardrails doc | **Merge first** (small, additive: workflow + `CLAUDE.md` + lockfiles) |
+| **#638** | Claude Code GitHub Action + `CLAUDE.md` | Enables `@claude` in PRs/issues; adds `CLAUDE.md`; **also fixes the two pre-existing `repository-hardening.yml` CI failures** (Trivy pin `@0.24.0`→`@master`; gitleaks org-license made non-blocking) | **Merge first** (small, additive: workflow + `CLAUDE.md` + lockfiles) |
 | **#650** | Green doctrine/governance CI gates + canonical `/health` | Allowlists *compliant* references (no guard weakened); migrates `/healthz`→`/health` + `/health/deep`; adds readiness evidence doc | **Merge second** (the clean release candidate) |
 | #641–#649 | Wave 7/8 / launch / E2E / revenue variants | Overlapping earlier attempts at the same goal | **Triage** — extract any *unique* launch-critical change into #650, then **close the rest** |
 | #647 | — | Not open (closed/merged) | n/a |
@@ -113,6 +113,12 @@ Run on the session branch tip (`claude/busy-lamport-az7ZF`, based on `#559`).
 | `make api-contract-check` | ⛔ inconclusive here | Needs `fastapi` (not installed in this ephemeral sandbox) → run in CI. |
 | `make alembic-heads` | ⛔ inconclusive here | Needs `alembic` runnable → #650 reports a single head (`013`) in CI. |
 | `make prod-verify` | ⛔ run in CI | Bundle needs app deps; CI / a full env is authoritative. |
+
+> **CI note (PR #651):** the `Trivy filesystem scan` and `Gitleaks secret scan`
+> checks fail **repo-wide** (Trivy pins a non-existent `aquasecurity/trivy-action@0.24.0`;
+> gitleaks-action@v2 needs a `GITLEAKS_LICENSE` org secret). Both are **already fixed
+> by PR #638** (Trivy → `@master` + `skip-files`; gitleaks → `continue-on-error` +
+> license env). They are not introduced by this PR and need no change here.
 
 Convenience: `scripts/dealix_close_now.sh` runs the canonical gates and prints this
 founder checklist (read-only; never deploys/charges/sends).
