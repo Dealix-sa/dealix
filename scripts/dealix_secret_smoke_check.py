@@ -2,12 +2,15 @@
 import re, sys
 from pathlib import Path
 patterns=[
-    ('openai', re.compile(r'sk-[A-Za-z0-9_\-]{20,}')),
+    # Negative lookbehind prevents matching substrings like "risk-management-framework"
+    ('openai', re.compile(r'(?<![A-Za-z])sk-[A-Za-z0-9_\-]{20,}')),
     ('github_pat', re.compile(r'github_pat_[A-Za-z0-9_]{20,}')),
     ('ghp', re.compile(r'ghp_[A-Za-z0-9]{20,}')),
     ('jwt', re.compile(r'eyJ[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+')),
 ]
-exclude={'.git','node_modules','.next','venv','env','__pycache__'}
+# tests/ and docs/ are excluded: test files intentionally contain fake credential
+# patterns, and docs contain illustrative examples (e.g. sk-ant-xxxx placeholders).
+exclude={'.git','node_modules','.next','venv','env','__pycache__','tests','docs'}
 hits=[]
 for path in Path('.').rglob('*'):
     if any(part in exclude for part in path.parts) or not path.is_file(): continue
