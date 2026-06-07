@@ -27,6 +27,18 @@ CALENDLY_URL = os.getenv(
 )
 
 
+def _safe_log(value: object, *, max_len: int = 120) -> str:
+    """Sanitize a user-provided value before logging.
+
+    Strips control characters (CR/LF/TAB and other non-printables) and caps
+    length so an attacker cannot forge or flood log lines via crafted input
+    (CodeQL py/log-injection).
+    """
+    text = str(value or "")
+    cleaned = "".join(ch for ch in text if ch.isprintable())
+    return cleaned[:max_len]
+
+
 @router.post("/demo-request")
 async def demo_request(req: Request) -> dict[str, Any]:
     """Public landing form — captures demo request and returns Calendly booking URL."""
@@ -101,9 +113,9 @@ async def demo_request(req: Request) -> dict[str, Any]:
 
     log.info(
         "demo_request_accepted email=%s company=%s sector=%s lead_id=%s",
-        email,
-        company,
-        sector,
+        _safe_log(email),
+        _safe_log(company),
+        _safe_log(sector),
         lead_id,
     )
 
@@ -194,7 +206,12 @@ async def early_access(req: Request) -> dict[str, Any]:
     except Exception:
         log.exception("lead_inbox_append_failed")
 
-    log.info("early_access_accepted email=%s source=%s lead_id=%s", email, source, lead_id)
+    log.info(
+        "early_access_accepted email=%s source=%s lead_id=%s",
+        _safe_log(email),
+        _safe_log(source),
+        lead_id,
+    )
 
     return {
         "ok": True,
@@ -235,9 +252,9 @@ async def partner_application(req: Request) -> dict[str, Any]:
 
     log.info(
         "partner_application_received company=%s type=%s clients=%s",
-        company,
-        ptype,
-        active_clients,
+        _safe_log(company),
+        _safe_log(ptype),
+        _safe_log(active_clients),
     )
 
     try:
