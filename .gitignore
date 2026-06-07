@@ -21,6 +21,8 @@ credentials/
 !tests/test_wave8_customer_credentials_check.py
 !docs/WAVE8_CUSTOMER_CREDENTIAL_READINESS.md
 !docs/wave8/customer_credentials.example.env
+# V4 exception — security scanner script (not a credentials file)
+!scripts/dealix_secret_smoke_check.py
 service-account*.json
 google-credentials*.json
 
@@ -41,6 +43,8 @@ eggs/
 lib/
 lib64/
 parts/
+# V4 frontend utility library (application code, not vendor lib)
+!frontend/src/lib/
 sdist/
 var/
 wheels/
