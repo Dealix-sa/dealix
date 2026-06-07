@@ -1,0 +1,91 @@
+# Dealix Usage-Based Pricing — التسعير حسب الاستخدام
+#
+# الهدف: نمو الدخل بدون بيع جديد (near-passive growth).
+# الاستخدام يكبر، والفاتورة تكبر، بدون بيع مشروع جديد.
+#
+# القاعدة الذهبية (Stripe value-metric principle):
+#   اختر مقياس قيمة واضح يستطيع العميل فهمه وتوقعه والتحكم فيه.
+#   Pick a value metric the client can understand, predict, and control.
+
+version: "1.0"
+currency: "SAR"
+price_basis: "exclusive_of_vat"
+billing: "added_to_monthly_invoice"
+no_subscription_without_usage_cap: true
+
+# المقاييس لكل نظام: الحد المشمول داخل الباقة + سعر الزيادة
+meters:
+
+  maintenance_os:
+    name_en: "Maintenance OS — tickets"
+    metric: "tickets_per_month"
+    included_in_plan: 3000
+    overage_unit: 1000
+    overage_price: 2500
+
+  legal_os:
+    name_en: "Legal OS — documents/pages"
+    metric: "documents_or_pages_per_month"
+    included_in_plan: 1000
+    overage_unit: 1000
+    overage_price: 4000
+
+  growth_os:
+    name_en: "Growth OS — leads/actions"
+    metric: "lead_actions_per_month"
+    included_in_plan: 2000
+    overage_unit: 1000
+    overage_price: 2500
+
+  whatsapp_followup_os:
+    name_en: "WhatsApp Follow-up OS — qualified messages"
+    metric: "qualified_messages_per_month"
+    included_in_plan: 3000
+    overage_unit: 1000
+    overage_price: 1500
+    note: "Controlled outbound فقط — حدود إرسال وموافقات مفعّلة (anti-ban + approval gates)."
+
+  proposal_os:
+    name_en: "Proposal OS — proposals"
+    metric: "proposals_per_month"
+    included_in_plan: 100
+    overage_unit: 100
+    overage_price: 3000
+
+  reporting_os:
+    name_en: "Reporting OS — executive reports"
+    metric: "executive_reports_per_month"
+    included_in_plan: 4
+    overage_unit: 1
+    overage_price: 2000
+
+  command_center:
+    name_en: "Command Center — departments"
+    metric: "departments"
+    included_in_plan: 2
+    overage_unit: 1
+    overage_price_min: 10000
+    overage_price_max: 20000
+
+# جدول مختصر للزيادات الشائعة (متوافق مع pricing.yml -> usage_overages المنطقي)
+overages_quick_reference:
+  extra_1000_actions: 2500
+  extra_1000_tickets: 2500
+  extra_1000_documents: 4000
+  extra_1000_messages: 1500
+  extra_100_proposals: 3000
+  extra_report: 2000
+  extra_department_monthly_min: 10000
+  extra_department_monthly_max: 20000
+
+# مثال محسوب (يُستخدم في الاختبارات والوثائق)
+# Worked example used in docs/tests.
+worked_example:
+  description: "عميل Managed OS استهلك 6,000 تذكرة بدل 3,000"
+  base_monthly: 15000
+  meter: "maintenance_os"
+  actual_usage: 6000
+  included: 3000
+  overage_units: 3          # (6000 - 3000) / 1000
+  overage_amount: 7500      # 3 * 2500
+  total_monthly: 22500      # 15000 + 7500

@@ -1,0 +1,372 @@
+# Dealix Pricing — Single Source of Truth
+# كتاب الأسعار المعتمد — المصدر الوحيد للحقيقة
+#
+# القاعدة: لا يوجد سعر يُشارك مع عميل إلا من هذا الملف، وليس من الذاكرة.
+# Rule: No price is shared with a client except from this file — never from memory.
+#
+# نموذج التسعير: Audit -> Pilot -> Production -> Monthly OS -> Usage/Add-ons -> Command Center
+# Pricing model: every offer carries up to 4 layers:
+#   setup_fee     -> أصل نقدي سريع   (fast cash)
+#   monthly_os    -> اشتراك متكرر    (MRR)
+#   usage_fee     -> استخدام زائد     (auto-growth with the client)
+#   expansion_fee -> توسعة            (continuous upsell)
+#
+# جميع الأسعار قبل ضريبة القيمة المضافة. راجع كتلة vat أدناه.
+# All prices exclusive of VAT — see the vat block below.
+
+version: "1.0"
+status: "approved"
+effective_date: "2026-06-07"
+owner: "founder"
+currency: "SAR"
+price_basis: "exclusive_of_vat"
+
+vat:
+  enabled: true
+  rate: 0.15
+  authority: "ZATCA"
+  note: "Prices are exclusive of 15% VAT unless stated otherwise. الأسعار غير شاملة لضريبة القيمة المضافة 15% ما لم يُذكر خلاف ذلك."
+
+# مشاركة أي سعر مع عميل تتطلب موافقة المؤسس (راجع os/06_APPROVAL_GATES.yml — G03)
+# Sharing any price with a client requires founder approval (see G03).
+approval_gate: "G03_share_pricing"
+
+# =====================================================================
+# 0) DIAGNOSTIC — تقرير أولي مجاني (بوابة فقط، ليس مصدر ربح)
+# =====================================================================
+diagnostic:
+  free_one_pager:
+    name_en: "Free Diagnostic One-Pager"
+    name_ar: "تقرير تشخيصي أولي من صفحة واحدة"
+    price: 0
+    duration_days: 1
+    purpose: "lead_qualification_only"
+    note: "بوابة دخول فقط. التدقيق الحقيقي مدفوع. Gateway only — the real audit is paid."
+
+# =====================================================================
+# A) ENTRY OFFERS — عروض الدخول (بوابة إلى Pilot ثم اشتراك شهري)
+# =====================================================================
+entry_offers:
+  ai_workflow_audit:
+    name_en: "AI Workflow Audit"
+    name_ar: "تدقيق الـ Workflow بالذكاء الاصطناعي"
+    price: 9500
+    duration_days: 5
+    goal: "كشف الفوضى والفرص"
+    deliverables:
+      - workflow_map
+      - pain_points_map
+      - ai_opportunity_map
+      - pilot_scope
+      - next_step_proposal
+    upgrade_credit:
+      enabled: true
+      credit_percent: 50
+      valid_days: 14
+      note: "خصم 50% من قيمة الـ Audit عند الترقية إلى Pilot خلال 14 يوم."
+    natural_next_offer: "pilot_pro_api"
+
+  revenue_leak_audit:
+    name_en: "Revenue Leak Audit"
+    name_ar: "تدقيق تسرّب الإيراد"
+    price: 12000
+    duration_days: 5
+    goal: "كشف ضياع العملاء والمتابعة"
+    upgrade_credit: { enabled: true, credit_percent: 50, valid_days: 14 }
+    natural_next_offer: "growth_pilot"
+
+  regulated_audit:
+    name_en: "Legal / Regulated Audit"
+    name_ar: "تدقيق القطاعات الحساسة"
+    price: 15000
+    duration_days: 7
+    goal: "للقطاعات الحساسة (قانوني/صحي/مالي/بيانات حساسة)"
+    natural_next_offer: "regulated_pilot"
+
+  executive_ai_readiness:
+    name_en: "Executive AI Readiness Pack"
+    name_ar: "حزمة جاهزية الذكاء الاصطناعي التنفيذية"
+    price: 18000
+    duration_days: 10
+    goal: "تقرير CEO + Roadmap"
+    natural_next_offer: "executive_pilot"
+
+  full_department_audit:
+    name_en: "Full Department Audit"
+    name_ar: "تدقيق قسم كامل"
+    price: 25000
+    duration_days_min: 10
+    duration_days_max: 14
+    goal: "لقسم كامل: مبيعات/عمليات/صيانة/قانوني"
+    natural_next_offer: "multi_system_pilot"
+
+# اختبار A/B لعرض الدخل (يحل محل تجربة entry_offer_pricing القديمة)
+# Entry offer experiment — replaces legacy free/5000 variants.
+entry_offer_experiment:
+  variant_a:
+    label: "تقرير أولي مجاني من صفحة واحدة"
+    ref: "diagnostic.free_one_pager"
+  variant_b:
+    label: "Audit مدفوع 9,500 ريال"
+    ref: "entry_offers.ai_workflow_audit"
+  variant_c:
+    label: "Audit مدفوع مع خصم 50% عند الترقية إلى Pilot"
+    ref: "entry_offers.ai_workflow_audit"
+    note: "نفس Audit B مع تفعيل upgrade_credit."
+
+# =====================================================================
+# B) PILOT OFFERS — المرحلة الذهبية للإغلاق
+# =====================================================================
+pilots:
+  pilot_lite_no_api:
+    name_en: "Pilot Lite — No API"
+    name_ar: "تجربة خفيفة بدون API"
+    price: 30000
+    duration_days_min: 21
+    duration_days_max: 30
+    best_for: "ملفات Excel/CSV/Google Sheets"
+    includes:
+      - one_workflow
+      - csv_or_excel_input
+      - basic_dashboard
+      - weekly_report
+      - production_proposal
+
+  pilot_pro_api:
+    name_en: "Pilot Pro — With API"
+    name_ar: "تجربة احترافية مع API"
+    price: 60000
+    duration_days: 30
+    best_for: "نظام موجود أو CRM أو API"
+    includes:
+      - one_workflow
+      - one_api_or_system
+      - dashboard
+      - before_after_report
+      - approval_checkpoint
+      - production_proposal
+      - monthly_retainer_contract
+
+  multi_system_pilot:
+    name_en: "Multi-System Pilot"
+    name_ar: "تجربة متعددة الأنظمة"
+    price: 100000
+    duration_days: 45
+    best_for: "أكثر من نظام أو قسم"
+    includes:
+      - up_to_three_workflows
+      - up_to_two_systems
+      - executive_report
+      - production_proposal
+
+  regulated_pilot:
+    name_en: "Regulated Pilot"
+    name_ar: "تجربة القطاعات الحساسة"
+    price_min: 75000
+    price_max: 120000
+    duration_days: 45
+    best_for: "قانوني/صحي/مالي/بيانات حساسة"
+    requires:
+      - human_approval
+      - audit_log
+      - access_control
+      - data_handling_policy
+
+  executive_pilot:
+    name_en: "Executive Pilot"
+    name_ar: "التجربة التنفيذية"
+    price: 150000
+    duration_days: 60
+    best_for: "CEO dashboard + أكثر من workflow"
+
+  growth_pilot:
+    name_en: "Growth Pilot"
+    name_ar: "تجربة النمو / Outbound"
+    price_min: 45000
+    price_max: 60000
+    duration_days: 30
+    best_for: "B2B sales teams (controlled outbound only)"
+    note: "Controlled outbound مع موافقات وحدود إرسال — ليس spam engine."
+
+# قاعدة صارمة: أي Pilot لا ينتهي بعرض Production + Retainer يعتبر ناقص.
+# Hard rule: any pilot that does not end with a Production + Retainer proposal is incomplete.
+pilot_exit_required_outputs:
+  - working_workflow
+  - dashboard
+  - before_after_report
+  - risk_compliance_notes
+  - production_proposal
+  - monthly_retainer_contract
+
+# =====================================================================
+# C) PRODUCTION OFFERS — عقود التنفيذ (Setup + Monthly)
+# =====================================================================
+production:
+  minimum_project_price: 150000
+  command_center_minimum: 300000
+  api_integration_premium_percent: 50
+
+  systems:
+    maintenance_intelligence_os:
+      name_en: "Maintenance Intelligence OS"
+      name_ar: "نظام الذكاء الاصطناعي للصيانة"
+      setup_min: 150000
+      setup_max: 250000
+      delivery_days: 60
+      monthly_min: 12000
+      monthly_max: 35000
+      priority: 1
+
+    legal_knowledge_os:
+      name_en: "Legal Knowledge OS"
+      name_ar: "نظام المعرفة والمستندات القانونية"
+      setup_min: 180000
+      setup_max: 300000
+      delivery_days_min: 75
+      delivery_days_max: 90
+      monthly_min: 18000
+      monthly_max: 45000
+      priority: 7
+
+    gcc_international_ai_os:
+      name_en: "GCC International AI OS"
+      name_ar: "نظام الذكاء الاصطناعي للشركات الدولية في الخليج"
+      setup_min: 100000
+      setup_max: 220000
+      delivery_days_min: 30
+      delivery_days_max: 60
+      monthly_min: 15000
+      monthly_max: 40000
+      priority: 6
+
+    consulting_delivery_os:
+      name_en: "Consulting Delivery OS"
+      name_ar: "نظام تسليم الاستشارات"
+      setup_min: 120000
+      setup_max: 200000
+      delivery_days_min: 60
+      delivery_days_max: 75
+      monthly_min: 10000
+      monthly_max: 35000
+      priority: 3
+
+    project_controls_ai_os:
+      name_en: "Project Controls AI OS"
+      name_ar: "نظام التحكم بالمشاريع"
+      setup_min: 180000
+      setup_max: 300000
+      delivery_days_min: 75
+      delivery_days_max: 90
+      monthly_min: 20000
+      monthly_max: 60000
+      priority: 4
+
+    property_operations_os:
+      name_en: "Property Operations OS"
+      name_ar: "نظام تشغيل الأملاك والعقار"
+      setup_min: 120000
+      setup_max: 220000
+      delivery_days_min: 60
+      delivery_days_max: 75
+      monthly_min: 10000
+      monthly_max: 40000
+      priority: 5
+
+    healthcare_admin_os:
+      name_en: "Healthcare Admin OS"
+      name_ar: "نظام الإدارة الصحية"
+      setup_min: 250000
+      setup_max: 400000
+      delivery_days_min: 90
+      delivery_days_max: 120
+      monthly_min: 30000
+      monthly_max: 75000
+      priority: 8
+      note: "Premium later — لا تبدأ به إلا مع عميل جاهز."
+
+    dealix_command_center:
+      name_en: "Dealix Command Center"
+      name_ar: "مركز قيادة Dealix"
+      setup_min: 300000
+      setup_max: 500000
+      delivery_days_min: 90
+      delivery_days_max: 120
+      monthly_min: 45000
+      monthly_max: 100000
+      priority: 9
+      note: "منتج الترقية الأعلى — يُباع بعد نجاح نظام أو أكثر."
+      add_ons:
+        extra_department_monthly_min: 10000
+        extra_department_monthly_max: 20000
+        extra_api_setup_min: 15000
+        extra_api_setup_max: 40000
+        custom_dashboard_setup_min: 10000
+        custom_dashboard_setup_max: 30000
+        executive_report_pack_monthly_min: 5000
+        executive_report_pack_monthly_max: 15000
+
+# Production بدون Retainer يُسعَّر أعلى بنسبة 30–50% (راجع payment_terms.yml)
+# Production without a retainer is priced 30–50% higher.
+production_without_retainer_premium:
+  min_percent: 30
+  max_percent: 50
+
+# =====================================================================
+# PRICE LADDER — النسخة المختصرة المعتمدة
+# =====================================================================
+price_ladder:
+  - { step: "Diagnostic Report", price: 0 }
+  - { step: "AI Workflow Audit", price: 9500 }
+  - { step: "Regulated Audit", price: 15000 }
+  - { step: "Pilot Lite", price: 30000 }
+  - { step: "Pilot Pro", price: 60000 }
+  - { step: "Multi-System Pilot", price: 100000 }
+  - { step: "Production OS", price_min: 150000, price_max: 300000 }
+  - { step: "Command Center", price_min: 300000, price_max: 500000 }
+  - { step: "Managed OS Monthly", price: 15000 }
+  - { step: "Growth/Ops Monthly", price: 25000 }
+  - { step: "Enterprise Monthly", price_min: 45000, price_max: 100000 }
+
+# =====================================================================
+# CUSTOMER-SIZE TIERS — تسعير حسب حجم العميل
+# =====================================================================
+customer_tiers:
+  small_b2b:
+    name_ar: "شركة صغيرة"
+    setup_min: 30000
+    setup_max: 60000
+    monthly_min: 8000
+    monthly_max: 15000
+    note: "بدون API عميق"
+  mid_market:
+    name_ar: "متوسطة (أفضل شريحة)"
+    setup_min: 75000
+    setup_max: 200000
+    monthly_min: 15000
+    monthly_max: 35000
+    best_segment: true
+  enterprise:
+    name_ar: "كبيرة"
+    setup_min: 250000
+    setup_max: 500000
+    monthly_min: 45000
+    monthly_max: 100000
+    note: "يحتاج حوكمة وSLA"
+  regulated:
+    name_ar: "قطاع منظَّم"
+    setup_min: 300000
+    monthly_min: 60000
+    note: "قانوني/صحي/مالي"
+
+# المنتج الذي يُباع دائمًا
+default_anchor_offer:
+  monthly: "managed_os"     # 15,000 SAR/mo — راجع packages.yml
+  pilot: "pilot_pro_api"    # 60,000 SAR
+  entry: "ai_workflow_audit" # 9,500 SAR
+
+# خطة رفع الأسعار في الشهر الثالث
+planned_price_increase_month_3:
+  ai_workflow_audit: { from: 9500, to: 12000 }
+  pilot_pro_api: { from: 60000, to: 75000 }
+  managed_os_monthly: { from: 15000, to: 18000 }
+  command_center_setup: { from: 300000, to: 400000 }

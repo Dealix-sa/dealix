@@ -1,0 +1,118 @@
+# Dealix MRR Targets — أهداف الدخل الشهري المتكرر
+#
+# الفكرة: لا تحتاج آلاف العملاء. تحتاج 20–25 عميل B2B متوسط/كبير.
+# You don't need thousands of clients — you need 20–25 mid/large B2B accounts.
+#
+# تُستخدم بواسطة scripts/generate_mrr_forecast.py
+# Consumed by scripts/generate_mrr_forecast.py
+
+version: "1.0"
+currency: "SAR"
+price_basis: "exclusive_of_vat"
+
+# أسعار مرجعية (مطابقة لـ os/config/packages.yml)
+package_prices:
+  managed_os: 15000
+  growth_ops_os: 25000
+  department_os: 35000
+  command_center: 50000     # نقطة وسطية ضمن 45k–75k
+
+milestones:
+
+  - id: "mrr_30k"
+    name: "أول MRR"
+    target_mrr: 30000
+    mix:
+      - { package: "managed_os", count: 2, mrr: 30000 }
+    requirements:
+      target_companies_per_day: 25
+      calls_per_week: 10
+      proposals_per_week: 5
+      pilots_per_month: 2
+      retainer_conversions: 1
+
+  - id: "mrr_100k"
+    name: "أول 100k MRR"
+    target_mrr: 100000
+    mix:
+      - { package: "managed_os", count: 4, mrr: 60000 }
+      - { package: "growth_ops_os", count: 1, mrr: 25000 }
+      - { package: "usage_addons", count: 1, mrr: 15000 }
+    expected_cash_alongside_mrr:
+      pilots: { count: 4, unit: 60000, total: 240000 }
+      production: { min: 150000, max: 250000 }
+      audits: { min: 30000, max: 60000 }
+      total_min: 420000
+      total_max: 550000
+    hires_unlocked:
+      - { role: "SDR/BDR", when: "50k MRR or after first 2 pilots" }
+
+  - id: "mrr_250k"
+    name: "250k MRR"
+    target_mrr: 250000
+    mix:
+      - { package: "managed_os", count: 8, mrr: 120000 }
+      - { package: "growth_ops_os", count: 3, mrr: 75000 }
+      - { package: "command_center", count: 1, mrr: 45000 }
+      - { package: "usage_addons", count: 1, mrr: 10000 }
+    hires_unlocked:
+      - { role: "Delivery Engineer", when: "100k MRR" }
+      - { role: "Customer Success", when: "150k MRR" }
+      - { role: "Ops/Finance Admin", when: "200k MRR" }
+
+  - id: "mrr_500k"
+    name: "500k MRR"
+    target_mrr: 500000
+    mix:
+      - { package: "managed_os", count: 15, mrr: 225000 }
+      - { package: "growth_ops_os", count: 6, mrr: 150000 }
+      - { package: "command_center", count: 2, mrr: 100000 }
+      - { package: "usage_addons", count: 1, mrr: 25000 }
+    note: "نموذج شركة حقيقي بـ 20–25 عميل."
+
+  - id: "mrr_1m"
+    name: "1,000,000 MRR"
+    target_mrr: 1000000
+    mix:
+      - { package: "managed_os", count: 25, mrr: 375000 }
+      - { package: "growth_department_os", count: 10, mrr: 300000 }   # ~30k each
+      - { package: "command_center", count: 4, mrr: 240000 }          # ~60k each
+      - { package: "usage_addons", count: 1, mrr: 85000 }
+    requires:
+      - sector_focus
+      - sales_team
+      - delivery_playbooks
+      - support_system
+      - metering
+      - renewals
+      - case_studies
+      - partner_channel
+
+# Funnel math شهري للوصول إلى ~500k (cash + MRR في نفس الوقت)
+monthly_funnel_to_500k:
+  companies_researched: 6000
+  controlled_outreach: 1000
+  replies: 50
+  calls: 20
+  proposals: 10
+  audits: 4
+  pilots: 2
+  production: 1
+  new_retainers: 3
+  revenue:
+    audits: { count: 4, unit: 9500, total: 38000 }
+    pilots: { count: 2, unit: 60000, total: 120000 }
+    production: { count: 1, unit: 180000, total: 180000 }
+    new_retainers_mrr: { count: 3, unit: 15000, total: 45000 }
+    existing_retainers_mrr: { count: 10, unit: 15000, total: 150000 }
+
+# أهداف KPI رئيسية
+kpi_targets:
+  gross_margin_min: 0.60
+  proposal_win_rate_min: 0.40
+  discovery_conversion_min: 0.30
+  reply_rate_min: 0.05
+  monthly_churn_max: 0.02
+  expansion_revenue_min: 0.20
+  cac_payback_months_max: 6
+  ltv_cac_ratio_min: 3.0

@@ -1,0 +1,54 @@
+# Dealix Payment Terms — شروط الدفع
+#
+# جميع الأسعار قبل ضريبة القيمة المضافة 15% (ZATCA).
+# All amounts exclusive of 15% VAT (ZATCA).
+
+version: "1.0"
+currency: "SAR"
+price_basis: "exclusive_of_vat"
+
+# دفعات المشاريع (Setup / Production)
+projects:
+  milestones:
+    - { name: "عند التوقيع", name_en: "On signature", percent: 50 }
+    - { name: "بعد MVP أو Pilot delivery", name_en: "After MVP / Pilot delivery", percent: 30 }
+    - { name: "عند الإطلاق", name_en: "On launch", percent: 20 }
+  invoice_currency: "SAR"
+  vat_added_on_invoice: true
+
+# الاشتراكات الشهرية
+subscriptions:
+  billing: "monthly_in_advance"
+  min_term_months: 6
+  preferred_term_months: 12
+  setup_billed_separately: true
+  early_cancellation_penalty_months: 2
+  out_of_scope_support_rate_min: 500    # SAR/hour
+  out_of_scope_support_rate_max: 800    # SAR/hour
+  usage_overage: "added_to_monthly_invoice"
+
+# عقد متدرّج — كل Production مرتبط بخطة تشغيل شهرية
+contract_phasing:
+  - phase: 1
+    name: "Audit"
+  - phase: 2
+    name: "Pilot"
+  - phase: 3
+    name: "Production Deployment"
+  - phase: 4
+    name: "Managed OS Subscription"
+
+# Production بدون Retainer — يُسعَّر أعلى بنسبة 30–50%
+production_without_retainer:
+  allowed: true
+  premium_min_percent: 30
+  premium_max_percent: 50
+  example:
+    with_retainer: 180000
+    without_retainer_min: 250000
+    without_retainer_max: 270000
+  note: "لا توقّع Production بدون Retainer إلا بهذا السعر الأعلى."
+
+# لا تُحصَّل مدفوعات حية داخل النظام — الفوترة عبر ZATCA + موافقة المؤسس
+# No live charges inside the system — invoicing via ZATCA + founder approval.
+no_live_charge: true

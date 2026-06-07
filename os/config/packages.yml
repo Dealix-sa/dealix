@@ -1,0 +1,140 @@
+# Dealix Monthly Subscription Packages — باقات الاشتراك الشهرية
+#
+# هذه أهم من أسعار المشاريع؛ لأنها هي التي تبني الشركة (MRR).
+# These matter more than project prices — they build the company (MRR).
+#
+# الباقة التي تُباع دائمًا: managed_os (15,000 ريال/شهر).
+# Always-sell anchor package: managed_os (15,000 SAR/mo).
+# لا تجعل monitor (8,000) هي الافتراضية.
+
+version: "1.0"
+currency: "SAR"
+price_basis: "exclusive_of_vat"
+billing: "monthly_in_advance"
+
+# الحد الأدنى لمدة الاشتراك (راجع payment_terms.yml للتفاصيل)
+min_term_months: 6
+preferred_term_months: 12
+setup_billed_separately: true
+
+packages:
+
+  monitor:
+    name_en: "Monitor"
+    name_ar: "مراقبة"
+    price: 8000
+    included_actions: 1000
+    support_level: low
+    for_whom: "عميل صغير أو خطة retention — بدون API عميق، بدون دعم عالي"
+    includes:
+      - monitoring
+      - monthly_report
+      - limited_support
+    is_default: false
+    use_only_when:
+      - "العميل صغير"
+      - "بعد Pilot بسيط"
+      - "كخطة retention"
+
+  managed_os:
+    name_en: "Managed OS"
+    name_ar: "النظام المُدار"
+    price: 15000
+    included_actions: 3000
+    support_level: standard
+    for_whom: "الباقة الأساسية — المنتج الأساسي"
+    is_default: true
+    is_anchor: true
+    includes:
+      - system_operation
+      - dashboard
+      - monthly_improvements
+      - monthly_report
+      - support
+      - dashboard_updates
+      - usage_allowance
+
+  growth_ops_os:
+    name_en: "Growth / Ops OS"
+    name_ar: "نظام النمو والعمليات"
+    price: 25000
+    included_actions: 6000
+    support_level: priority
+    for_whom: "شركة تعتمد على Dealix — مبيعات + عمليات + تقارير"
+    setup_fee: 75000
+    includes:
+      - lead_extraction
+      - company_dossiers
+      - personalized_messages
+      - follow_up_sequences
+      - proposal_drafts
+      - pipeline_report
+      - weekly_growth_review
+
+  department_os:
+    name_en: "Department OS"
+    name_ar: "نظام القسم الكامل"
+    price: 35000
+    included_actions: 9000
+    support_level: priority
+    for_whom: "قسم كامل — SLA، approvals، workflows متعددة"
+    includes:
+      - multiple_workflows
+      - sla
+      - approval_gates
+      - department_dashboard
+      - monthly_report
+
+  command_center:
+    name_en: "Command Center"
+    name_ar: "مركز القيادة"
+    price_min: 45000
+    price_max: 75000
+    included_departments: 2
+    support_level: executive
+    for_whom: "إدارة عليا — أكثر من قسم + CEO reporting"
+    includes:
+      - multi_department
+      - executive_dashboard
+      - approval_gates
+      - usage_metering
+      - monthly_executive_reports
+      - priority_support
+
+  enterprise_sovereign_os:
+    name_en: "Enterprise Sovereign OS"
+    name_ar: "النظام السيادي للمؤسسات"
+    price_min: 100000
+    support_level: dedicated
+    for_whom: "جهات كبيرة — عزل، حوكمة، أمن، SLA، دعم مخصص"
+    includes:
+      - isolation
+      - governance
+      - security
+      - sla
+      - dedicated_support
+
+# الباقات الجاهزة للبيع مباشرة (تشير إلى التعريفات أعلاه)
+ready_to_sell:
+  - id: "dealix_audit"
+    name_en: "Dealix Audit"
+    ref: "pricing.entry_offers.ai_workflow_audit"
+  - id: "dealix_pilot_pro"
+    name_en: "Dealix Pilot Pro"
+    ref: "pricing.pilots.pilot_pro_api"
+  - id: "dealix_managed_os"
+    name_en: "Dealix Managed OS"
+    ref: "packages.managed_os"
+  - id: "dealix_growth_os"
+    name_en: "Dealix Growth OS"
+    ref: "packages.growth_ops_os"
+  - id: "dealix_command_center"
+    name_en: "Dealix Command Center"
+    ref: "pricing.production.systems.dealix_command_center"
+
+# قواعد الباقات
+rules:
+  min_monthly_retainer: 8000
+  target_monthly_retainer: 15000
+  no_subscription_without_usage_cap: true   # اشتراك بلا حد استخدام ممنوع
+  no_open_ended_support: true               # دعم مفتوح ممنوع

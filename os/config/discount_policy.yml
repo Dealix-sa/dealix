@@ -1,0 +1,63 @@
+# Dealix Discount Policy — سياسة الخصومات
+#
+# المبدأ: لا تجعل الخصم عادة. الخصم استثناء له سبب تجاري واضح.
+# Principle: discounts are the exception, never the default.
+#
+# أي خصم يتجاوز السقف يتطلب موافقة المؤسس صراحةً.
+# Any discount above the cap requires explicit founder approval.
+
+version: "1.0"
+currency: "SAR"
+
+caps:
+  general_discount_cap_percent: 15
+  pilot_discount_cap_percent: 20
+  override_authority: "founder_only"
+
+allowed:
+  annual_prepay:
+    label: "دفع سنوي مقدم"
+    discount_percent: 10
+  first_case_study_clients:
+    label: "أول 3 عملاء Case Study"
+    discount_percent: 15
+    max_clients: 3
+  audit_to_pilot_upgrade:
+    label: "انتقال من Audit إلى Pilot خلال 14 يوم"
+    type: "credit"
+    credit_percent: 50
+    applies_to: "audit_value_only"
+    valid_days: 14
+  enterprise:
+    label: "عميل Enterprise"
+    discount_percent: 0
+    instead: "زِد نطاق العمل بدل الخصم (scope, not price)"
+  strategic_partnership:
+    label: "شراكة استراتيجية"
+    type: "conditional"
+    requires: "التزام 12 شهر"
+
+# ممنوعات قاطعة — تقتل القيمة أو الهامش
+forbidden:
+  - id: "free_pilot"
+    rule: "Pilot مجاني ممنوع"
+    reason: "يقلل قيمة Dealix"
+  - id: "retainer_below_floor"
+    rule: "Retainer أقل من 8,000 ريال ممنوع"
+    reason: "يستهلكك"
+  - id: "subscription_without_usage_cap"
+    rule: "اشتراك بلا حد استخدام ممنوع"
+    reason: "يقتل الهامش"
+  - id: "free_api_integration"
+    rule: "API Integration مجاني ممنوع"
+    reason: "مكلف وخطر"
+  - id: "open_ended_support"
+    rule: "دعم مفتوح ممنوع"
+    reason: "يحوّل الاشتراك إلى نزيف"
+
+# عند تجاوز الهامش الأدنى لا يُوقَّع العرض إلا إذا تحقق أحد هذه (راجع margin_guardrails.yml)
+low_margin_exceptions:
+  - "case study قوي جدًا"
+  - "عميل استراتيجي"
+  - "مدخل لقطاع كبير"
+  - "اشتراك شهري مؤكد"

@@ -1,0 +1,49 @@
+# Dealix Margin Guardrails — حدود الهامش (أهم شيء لا يُكسَر)
+#
+# المعادلة قبل أي عرض:
+#   Gross Margin = (Revenue - Direct Cost) / Revenue
+#
+# أي عرض لا يحقق الحد الأدنى للهامش لا يُوقَّع إلا باستثناء موثّق
+# (راجع discount_policy.yml -> low_margin_exceptions).
+#
+# هذه الحدود ترفع الأرقام التجارية مقارنةً بـ FinancePage القديمة:
+#   Minimum Project Margin: 25% -> 55%
+#   Retainer Min Margin:    40% -> 60%
+#   Subscription gross margin: new floor 65%
+
+version: "1.0"
+currency: "SAR"
+enforced_by: "all sales + finance agents"
+override_authority: "founder_only"
+
+margins:
+  project_gross_margin_min: 0.55
+  subscription_gross_margin_min: 0.65
+  retainer_gross_margin_min: 0.60
+  net_margin_target: 0.25
+
+rates:
+  consulting_rate_floor_min: 500          # SAR/hour
+  consulting_rate_floor_target: 800       # SAR/hour
+  api_integration_premium_percent: 50     # +50% on API integration scope
+
+floors:
+  discount_cap_percent: 15
+  pilot_discount_cap_percent: 20
+  min_monthly_retainer: 8000
+  target_monthly_retainer: 15000
+  min_production_project: 150000
+  min_respectable_pilot: 30000
+  anchor_pilot: 60000
+
+# benchmark مرجعي: median gross margin للاشتراكات ~81% مقابل ~30% للخدمات (Benchmarkit 2025)
+benchmark_note: >
+  median subscription gross margin ~81% vs ~30% for professional services (Benchmarkit 2025).
+  هذا يدعم بناء Dealix على الاشتراك لا على التنفيذ اليدوي فقط.
+
+# قاعدة القرار: ماذا يحدث عند كسر الحد
+on_breach:
+  action: "block_quote"
+  unless_exception_documented: true
+  exception_source: "discount_policy.yml#low_margin_exceptions"
+  escalation: "founder_daily_brief"
