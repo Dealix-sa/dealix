@@ -88,6 +88,12 @@ export default function ArabicHomePage() {
             ابدأ تشخيص P1 — أسبوع واحد
           </a>
           <a
+            href="/ar/services"
+            className="rounded-2xl border border-white/20 px-8 py-4 text-lg font-semibold text-white hover:bg-white/10"
+          >
+            كل الخدمات
+          </a>
+          <a
             href="/ar/pricing"
             className="rounded-2xl border border-white/20 px-8 py-4 text-lg font-semibold text-white hover:bg-white/10"
           >
@@ -192,6 +198,8 @@ export default function ArabicHomePage() {
         <div className="mx-auto max-w-6xl px-6 flex flex-wrap justify-between gap-6 text-sm text-slate-500">
           <span className="font-black text-white">Dealix</span>
           <nav className="flex flex-wrap gap-6">
+            <a href="/ar/services" className="hover:text-white">الخدمات</a>
+            <a href="/ar/custom" className="hover:text-cyan-300">طلب خاص</a>
             <a href="/ar/p1" className="hover:text-cyan-300">P1 تشخيص</a>
             <a href="/ar/p2" className="hover:text-emerald-300">P2 تشغيل شهري</a>
             <a href="/ar/p3" className="hover:text-violet-300">P3 قيادة تنفيذية</a>
