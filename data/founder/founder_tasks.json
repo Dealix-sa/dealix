@@ -1,0 +1,62 @@
+[
+  {
+    "id": "task_001",
+    "title": "Review and send proof report to شركة تدريب الرياض",
+    "source": "preview",
+    "revenue_impact": 30,
+    "risk_reduction": 10,
+    "client_protection": 25,
+    "proof_value": 20,
+    "growth_value": 5,
+    "ease": 8,
+    "status": "open"
+  },
+  {
+    "id": "task_002",
+    "title": "Follow up open 499 SAR invoice",
+    "source": "billing",
+    "revenue_impact": 30,
+    "risk_reduction": 5,
+    "client_protection": 10,
+    "proof_value": 5,
+    "growth_value": 5,
+    "ease": 9,
+    "status": "open"
+  },
+  {
+    "id": "task_003",
+    "title": "Review top outreach drafts for training vertical",
+    "source": "acquisition",
+    "revenue_impact": 18,
+    "risk_reduction": 5,
+    "client_protection": 0,
+    "proof_value": 0,
+    "growth_value": 10,
+    "ease": 7,
+    "status": "open"
+  },
+  {
+    "id": "task_004",
+    "title": "Fix workflow permissions warning from consolidation audit",
+    "source": "security",
+    "revenue_impact": 5,
+    "risk_reduction": 20,
+    "client_protection": 10,
+    "proof_value": 5,
+    "growth_value": 0,
+    "ease": 6,
+    "status": "open"
+  },
+  {
+    "id": "task_005",
+    "title": "Prepare retainer conversion plan for active pilot",
+    "source": "revenue-sprint",
+    "revenue_impact": 28,
+    "risk_reduction": 5,
+    "client_protection": 20,
+    "proof_value": 10,
+    "growth_value": 3,
+    "ease": 6,
+    "status": "open"
+  }
+]

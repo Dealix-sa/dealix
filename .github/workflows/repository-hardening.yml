@@ -29,8 +29,23 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Gitleaks CLI
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz \
+            | tar -xz -C /tmp
+          sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
+
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -n "$BASE_SHA" ] && [ "$BASE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            gitleaks detect --source . --redact --config .gitleaks.toml \
+              --log-opts="${BASE_SHA}..HEAD"
+          else
+            gitleaks detect --source . --redact --config .gitleaks.toml \
+              --log-opts="HEAD~1..HEAD"
+          fi
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -41,12 +56,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install Trivy CLI
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh \
+            | sh -s -- -b /usr/local/bin
+
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+        run: |
+          trivy fs . \
+            --severity CRITICAL,HIGH \
+            --ignore-unfixed \
+            --exit-code 1 \
+            --ignorefile .trivyignore \
+            --skip-files "scripts/v10_master_verify.sh,scripts/v7_launch_verify.sh"

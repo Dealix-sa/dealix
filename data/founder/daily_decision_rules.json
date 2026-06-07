@@ -1,0 +1,20 @@
+{
+  "priority_weights": {
+    "revenue_impact": 30,
+    "risk_reduction": 20,
+    "client_protection": 20,
+    "proof_value": 15,
+    "growth_value": 10,
+    "ease": 5
+  },
+  "daily_task_limit": 10,
+  "must_review_before_external_use": [
+    "outreach",
+    "proposal",
+    "invoice",
+    "proof_report",
+    "contract",
+    "pricing_exception"
+  ],
+  "default_mode": "controlled_preview_founder_led"
+}
