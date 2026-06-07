@@ -1,0 +1,20 @@
+[
+  {
+    "client": "شركة تدريب الرياض",
+    "vertical": "training",
+    "stage": "pilot_room",
+    "owner": "founder",
+    "status": "active",
+    "risk": "medium",
+    "next_action": "send proof report"
+  },
+  {
+    "client": "مكتب عقار جدة",
+    "vertical": "real_estate",
+    "stage": "discovery",
+    "owner": "founder",
+    "status": "open",
+    "risk": "low",
+    "next_action": "book diagnostic"
+  }
+]

@@ -182,3 +182,19 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+
+# ── V14 Controlled Preview Execution ────────────────────────────
+.PHONY: dealix-v14-readiness dealix-controlled-preview dealix-workflow-permissions
+
+dealix-v14-readiness: ## V14: controlled preview readiness check
+	python scripts/dealix_v14_readiness_check.py
+
+dealix-controlled-preview: ## V14: full controlled preview plan + quality gate + post-launch review
+	python scripts/dealix_controlled_preview_plan.py
+	python scripts/dealix_launch_week_command_center.py
+	python scripts/dealix_preview_quality_gate.py
+	python scripts/dealix_post_launch_review.py
+
+dealix-workflow-permissions: ## V14: audit GitHub Actions workflow permissions
+	python scripts/dealix_workflow_permission_audit.py
