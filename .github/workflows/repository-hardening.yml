@@ -29,8 +29,41 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      # License-free secret scan. The gitleaks GitHub Action (gitleaks-action@v2)
+      # requires a paid GITLEAKS_LICENSE for org-owned repos, which is why this
+      # job started failing ("missing gitleaks license"). We install and run the
+      # open-source gitleaks binary directly instead: same engine, no license,
+      # honours the repo .gitleaks.toml.
+      # (Alternative: add a GITLEAKS_LICENSE secret and restore the action.)
+      - name: Install gitleaks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ver="$(curl -sSfL -H "Authorization: Bearer ${GH_TOKEN}" \
+            https://api.github.com/repos/gitleaks/gitleaks/releases/latest \
+            | grep -oP '"tag_name":\s*"v\K[^"]+')"
+          echo "Installing gitleaks v${ver}"
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${ver}/gitleaks_${ver}_linux_x64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin gitleaks
+          gitleaks version
+
+      # On a pull request, scan only the commits the PR introduces (this mirrors
+      # the old action's default, so pre-existing test fixtures are not
+      # re-flagged). On schedule/edge cases, scan the working tree.
+      - name: Run gitleaks
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha }}"
+          if [ -n "${base}" ]; then
+            echo "Scanning PR commit range ${base}..HEAD"
+            gitleaks detect --source=. --config=.gitleaks.toml \
+              --redact --no-banner --exit-code=1 --log-opts="${base}..HEAD"
+          else
+            echo "Scanning working tree (no PR range available)"
+            gitleaks detect --source=. --config=.gitleaks.toml --no-git \
+              --redact --no-banner --exit-code=1
+          fi
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -42,7 +75,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           scan-ref: .
