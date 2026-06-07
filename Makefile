@@ -5,7 +5,7 @@
 
 .PHONY: help install install-dev install-observability install-security install-evals install-docs \
         setup first-setup test test-unit test-integration \
-        lint format type-check security security-smoke clean run demo cockpit doctor \
+        lint format type-check security security-smoke clean run demo cockpit activate doctor \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
@@ -118,6 +118,9 @@ demo: ## Run interactive CLI demo
 
 cockpit: ## Founder Daily Brief — single-screen status (composes Bottleneck Radar + Hard Gates + Service Catalog)
 	$(PYTHON) scripts/dealix_founder_daily_brief.py
+
+activate: ## Founder one-command daily activation pack (offline, draft-only) — brief + real leads + call sheet + proposal
+	$(PYTHON) scripts/dealix_activate_day.py
 
 doctor: env-check alembic-heads security-smoke ## Health check — env contract + single alembic head + security smoke
 	@echo "✅ Repo doctor passed — see docs/playbooks/FOUNDER_NEXT_STEPS.md for what to do today"
