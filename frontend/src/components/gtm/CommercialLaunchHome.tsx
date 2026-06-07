@@ -181,33 +181,6 @@ const stagger = {
 // Sub-components
 // ---------------------------------------------------------------------------
 
-function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  useEffect(() => {
-    if (!inView) return;
-    const duration = 1600;
-    const steps = 48;
-    const increment = target / steps;
-    let current = 0;
-    const timer = setInterval(() => {
-      current = Math.min(current + increment, target);
-      setCount(Math.round(current * 10) / 10);
-      if (current >= target) clearInterval(timer);
-    }, duration / steps);
-    return () => clearInterval(timer);
-  }, [inView, target]);
-
-  return (
-    <span ref={ref}>
-      {count % 1 === 0 ? count.toFixed(0) : count.toFixed(1)}
-      {suffix}
-    </span>
-  );
-}
-
 function StarRating({ count }: { count: number }) {
   return (
     <div className="flex gap-0.5">
