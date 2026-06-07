@@ -1,0 +1,21 @@
+id,company_name,sector,city,decision_maker_role,warm_intro_source,offer_rung,status,next_action,owner,notes
+1,,Consulting,Riyadh,CEO,,0_free_diagnostic,research,find warm intro,Founder,manual research only — no scraping; named warm leads live in docs/ops/pipeline_tracker.csv
+2,,Corporate Training,Riyadh,Founder,,0_free_diagnostic,research,find warm intro,Founder,
+3,,Marketing Agency,Riyadh,Managing Director,,0_free_diagnostic,research,find warm intro,Founder,partner-exchange candidate
+4,,Real Estate Services,Riyadh,Sales Director,,0_free_diagnostic,research,find warm intro,Founder,lead-team heavy
+5,,Technology Services,Riyadh,Founder,,0_free_diagnostic,research,find warm intro,Founder,
+6,,Recruitment / Staffing,Riyadh,Founder,,0_free_diagnostic,research,find warm intro,Founder,
+7,,Insurance Brokerage,Riyadh,Director,,0_free_diagnostic,research,find warm intro,Founder,quote flow
+8,,B2B Distribution,Riyadh,Owner,,0_free_diagnostic,research,find warm intro,Founder,wholesale orders
+9,,Consulting,Jeddah,CEO,,0_free_diagnostic,research,find warm intro,Founder,
+10,,Corporate Training,Jeddah,Founder,,0_free_diagnostic,research,find warm intro,Founder,
+11,,Marketing Agency,Jeddah,Managing Director,,0_free_diagnostic,research,find warm intro,Founder,partner-exchange candidate
+12,,Real Estate Services,Jeddah,Sales Director,,0_free_diagnostic,research,find warm intro,Founder,
+13,,Technology Services,Jeddah,Founder,,0_free_diagnostic,research,find warm intro,Founder,
+14,,Logistics,Jeddah,Founder,,0_free_diagnostic,research,find warm intro,Founder,
+15,,EdTech,Jeddah,Founder,,0_free_diagnostic,research,find warm intro,Founder,course/coaching funnel
+16,,Healthcare Clinic Group,Dammam,Owner,,0_free_diagnostic,research,find warm intro,Founder,WhatsApp leads
+17,,Event Management,Dammam,Founder,,0_free_diagnostic,research,find warm intro,Founder,proposal cycle
+18,,Legal / Advisory Services,Dammam,Managing Partner,,0_free_diagnostic,research,find warm intro,Founder,
+19,,Fintech Services,Dammam,CEO,,0_free_diagnostic,research,find warm intro,Founder,
+20,,Automotive Dealership Group,Dammam,General Manager,,0_free_diagnostic,research,find warm intro,Founder,high-ticket leads
