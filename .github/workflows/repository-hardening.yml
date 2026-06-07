@@ -29,8 +29,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      # The gitleaks GitHub Action requires a paid license for organizations.
+      # Use the free open-source gitleaks CLI instead — same scanner, no license.
+      # On PRs, scan only the PR commit range (fast, no false-positives from
+      # pre-existing history); on push/schedule, scan full history as a net.
+      - name: Run Gitleaks (OSS CLI — no org license required)
+        env:
+          GITLEAKS_VERSION: "8.21.2"
+        run: |
+          set -euo pipefail
+          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar -xz -C /tmp gitleaks
+          sudo install /tmp/gitleaks /usr/local/bin/gitleaks
+          gitleaks version
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags --quiet origin "${{ github.base_ref }}"
+            echo "Scanning PR range origin/${{ github.base_ref }}..HEAD"
+            gitleaks detect --source . --config .gitleaks.toml --redact --no-banner \
+              --log-opts="origin/${{ github.base_ref }}..HEAD" --exit-code 1
+          else
+            echo "Scanning full history"
+            gitleaks detect --source . --config .gitleaks.toml --redact --no-banner --exit-code 1
+          fi
 
   filesystem-scan:
     name: Trivy filesystem scan
