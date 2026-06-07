@@ -327,9 +327,11 @@ def render_prospects_md(scored: list[ScoredProspect], generated: str) -> str:
     lines = [
         "# Prospect shortlist — قائمة العملاء المحتملين (مُقيّمة ومرتّبة)\n",
         f"_Generated: {generated}_\n",
-        "\n> **Source:** the prospect CSV you control. The shipped seed is a "
-        "clearly-labelled **SAMPLE** — replace it with your real list "
-        "(`data/prospects.csv`). No data was scraped.\n",
+        (
+            "\n> **Source:** the prospect CSV you control. The shipped seed is a "
+            "clearly-labelled **SAMPLE** — replace it with your real list "
+            "(`data/prospects.csv`). No data was scraped.\n"
+        ),
         _gov_block("ranking is a deterministic estimate from the fields you provided"),
         "\n| # | Company | Sector | City | ICP | Verdict | Recommended offer |\n",
         "|---|---|---|---|---|---|---|\n",
@@ -409,9 +411,11 @@ def render_call_list_md(scored: list[ScoredProspect], top: int, generated: str) 
     lines = [
         "# Today's call list — قائمة الاتصال اليوم\n",
         f"_Generated: {generated}_\n",
-        "\n> **You make every contact.** This is a prioritized list with talking "
-        "points. The system never dials, emails, or messages anyone. "
-        "هذه قائمة أولويات بنقاط حوار — أنت من يتواصل.\n",
+        (
+            "\n> **You make every contact.** This is a prioritized list with talking "
+            "points. The system never dials, emails, or messages anyone. "
+            "هذه قائمة أولويات بنقاط حوار — أنت من يتواصل.\n"
+        ),
         _gov_block(
             "contact prioritization is an estimate; the founder approves and executes every touch"
         ),
@@ -493,6 +497,24 @@ def render_operator_pack_md(date_str: str, generated: str, counts: dict, files: 
 # ── Draft pack (reuse warm_list_outreach renderer) ──────────────────────────
 
 
+def _warm_list_drafts(rows: list[dict[str, str]]) -> str | None:
+    """Render warm-list drafts via the dedicated generator; None if unavailable."""
+    try:
+        from scripts.warm_list_outreach import _qualify_contact, _render_contact
+    except Exception:
+        return None
+    parts = []
+    for r in rows:
+        q = _qualify_contact(
+            role=r.get("role", ""),
+            sector=r.get("sector", ""),
+            relationship=r.get("relationship", "cold"),
+            notes=r.get("notes", ""),
+        )
+        parts.append(_render_contact(r, q))
+    return "".join(parts)
+
+
 def render_draft_pack(
     scored: list[ScoredProspect], warm_list_path: Path | None, generated: str
 ) -> str:
@@ -501,16 +523,13 @@ def render_draft_pack(
     Prefers a founder-maintained warm list; otherwise derives drafts from the
     actionable prospects so the pack is never empty on a fresh clone.
     """
-    try:
-        from scripts.warm_list_outreach import _qualify_contact, _render_contact
-    except Exception:
-        _qualify_contact = _render_contact = None  # type: ignore
-
     header = [
         "# Outreach draft pack — حزمة المسوّدات\n",
         f"_Generated: {generated}_\n",
-        "\n> Each draft is **queued for your approval** — copy/edit, then send "
-        "yourself. The system sends nothing. كل مسوّدة بانتظار موافقتك.\n",
+        (
+            "\n> Each draft is **queued for your approval** — copy/edit, then send "
+            "yourself. The system sends nothing. كل مسوّدة بانتظار موافقتك.\n"
+        ),
         _gov_block(
             "drafts are pre-screened estimates; the founder approves and sends every message"
         ),
@@ -520,21 +539,12 @@ def render_draft_pack(
     rows: list[dict[str, str]] = []
     if warm_list_path and warm_list_path.exists():
         with warm_list_path.open("r", encoding="utf-8") as f:
-            for r in csv.DictReader(f):
-                if (r.get("name") or "").strip():
-                    rows.append(r)
+            rows = [r for r in csv.DictReader(f) if (r.get("name") or "").strip()]
 
-    if rows and _render_contact and _qualify_contact:
-        body = []
-        for r in rows:
-            q = _qualify_contact(
-                role=r.get("role", ""),
-                sector=r.get("sector", ""),
-                relationship=r.get("relationship", "cold"),
-                notes=r.get("notes", ""),
-            )
-            body.append(_render_contact(r, q))
-        return "".join(header) + "".join(body) + f"\n_{DISCLAIMER}_\n"
+    if rows:
+        warm = _warm_list_drafts(rows)
+        if warm is not None:
+            return "".join(header) + warm + f"\n_{DISCLAIMER}_\n"
 
     # Fall back to prospect-derived drafts (actionable only).
     actionable = [s for s in scored if s.decision in ("accept", "diagnostic_only", "reframe")]
