@@ -3,7 +3,16 @@ import type { Metadata } from "next";
 const SITE = "https://dealix.me";
 const OG_IMAGE = [{ url: `${SITE}/brand/og-dealix.svg`, width: 1200, height: 630, alt: "Dealix — Saudi B2B Revenue OS" }];
 
-type FunnelKey = "diagnostic" | "proof-pack" | "risk-score" | "partners" | "services" | "learn" | "privacy";
+type FunnelKey =
+  | "diagnostic"
+  | "proof-pack"
+  | "risk-score"
+  | "partners"
+  | "pricing"
+  | "services"
+  | "trust-center"
+  | "learn"
+  | "privacy";
 
 const FUNNEL_META: Record<FunnelKey, { path: string; ar: { title: string; desc: string }; en: { title: string; desc: string } }> = {
   diagnostic: {
@@ -25,6 +34,28 @@ const FUNNEL_META: Record<FunnelKey, { path: string; ar: { title: string; desc: 
     path: "/partners",
     ar: { title: "Dealix — برنامج الشركاء 15-30%", desc: "انضم لشبكة شركاء Dealix — Referral أو Implementation أو Co-sell. عمولة على كل تشخيص وRetainer." },
     en: { title: "Dealix — Partner Program 15-30%", desc: "Join Dealix partner network — Referral, Implementation, or Co-sell. Commission on every diagnostic and retainer." },
+  },
+  pricing: {
+    path: "/pricing",
+    ar: {
+      title: "Dealix — الأسعار والاشتراكات · سلم العروض",
+      desc: "ثلاث خطط واضحة — Sprint لمرة واحدة (499 ريال)، Managed Ops شهرياً (2,999+)، وEnterprise AI مخصص. كل خطة تبني على الإثبات.",
+    },
+    en: {
+      title: "Dealix — Pricing & Plans · Offer Ladder",
+      desc: "Three clear plans — one-time Sprint (499 SAR), monthly Managed Ops (2,999+ SAR), and custom Enterprise AI. Every plan builds on proof.",
+    },
+  },
+  "trust-center": {
+    path: "/trust-center",
+    ar: {
+      title: "Dealix — مركز الثقة · PDPL · ZATCA · حوكمة AI",
+      desc: "شهادات الامتثال، سياسات الأمان، وبوابات الحوكمة الـ ١١ — Dealix مبني أصلاً لـ PDPL وZATCA. لا scraping، لا cold outreach، موافقة قبل أي إرسال.",
+    },
+    en: {
+      title: "Dealix — Trust Center · PDPL · ZATCA · AI Governance",
+      desc: "Compliance certificates, security policies, and 11 governance gates — natively built for PDPL and ZATCA. No scraping, no cold outreach, approval before any send.",
+    },
   },
   services: {
     path: "/services",

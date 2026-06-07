@@ -254,11 +254,63 @@ class ApprovalStore:
 
 
 # Module-level singleton (process-scoped).
-_DEFAULT: ApprovalStore | None = None
+_DEFAULT: Any = None
 
 
-def get_default_approval_store() -> ApprovalStore:
+def _to_sync_url(url: str) -> str:
+    """Normalize an async/driverless Postgres URL to a sync psycopg URL."""
+    if url.startswith("postgresql+asyncpg://"):
+        return "postgresql+psycopg://" + url[len("postgresql+asyncpg://"):]
+    if url.startswith("postgres://"):
+        return "postgresql+psycopg://" + url[len("postgres://"):]
+    if url.startswith("postgresql://"):
+        return "postgresql+psycopg://" + url[len("postgresql://"):]
+    return url
+
+
+def _build_default_store() -> Any:
+    """Pick the approval-store backend from the environment.
+
+    ``DEALIX_APPROVAL_STORE_BACKEND=postgres`` + a ``DATABASE_URL`` →
+    durable :class:`PostgresApprovalStore` (survives redeploys/restarts —
+    the single most important hardening for the outreach approval loop).
+    Otherwise the in-memory :class:`ApprovalStore` (dev/test default).
+
+    Falls back to in-memory if the postgres backend cannot be constructed,
+    so the approval queue never hard-fails on a misconfigured URL.
+    """
+    import os
+
+    backend = os.getenv("DEALIX_APPROVAL_STORE_BACKEND", "").strip().lower()
+    if backend in ("postgres", "postgresql"):
+        db_url = (
+            os.getenv("APPROVAL_STORE_DATABASE_URL")
+            or os.getenv("DATABASE_URL")
+            or ""
+        ).strip()
+        if db_url:
+            try:
+                from auto_client_acquisition.approval_center.postgres_store import (
+                    PostgresApprovalStore,
+                )
+
+                return PostgresApprovalStore(database_url=_to_sync_url(db_url))
+            except Exception:  # pragma: no cover — never break the queue
+                pass
+    return ApprovalStore()
+
+
+def get_default_approval_store() -> Any:
     global _DEFAULT
     if _DEFAULT is None:
-        _DEFAULT = ApprovalStore()
+        _DEFAULT = _build_default_store()
     return _DEFAULT
+
+
+def reset_default_approval_store() -> None:
+    """Drop the cached singleton so the next call re-reads the environment.
+
+    Useful for tests that toggle ``DEALIX_APPROVAL_STORE_BACKEND``.
+    """
+    global _DEFAULT
+    _DEFAULT = None

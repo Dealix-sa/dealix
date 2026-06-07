@@ -107,6 +107,9 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Prospect-intake CSV template (the real data/prospects.csv stays ignored — PII)
+!data/prospects.csv.template
+!data/warm_list.csv.template
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

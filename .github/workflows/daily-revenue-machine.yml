@@ -72,7 +72,7 @@ jobs:
           until [ $n -ge 3 ]; do
             curl -fsS -X POST "$API_BASE/api/v1/automation/revenue-machine/run" \
               -H "Content-Type: application/json" \
-              -H "Authorization: Bearer $API_KEY" \
+              -H "X-API-Key: $API_KEY" \
               -d '{
                 "daily_candidates": 120,
                 "gmail_drafts": ${{ github.event.inputs.gmail_drafts || 15 }},
@@ -95,7 +95,7 @@ jobs:
         run: |
           curl -fsS -X POST "$API_BASE/api/v1/automation/followups/run" \
             -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $API_KEY" -d '{}' | tee followups.json
+            -H "X-API-Key: $API_KEY" -d '{}' | tee followups.json
           jq . followups.json
 
       - name: 3. Generate daily report
@@ -105,7 +105,7 @@ jobs:
           API_KEY: ${{ secrets.DEALIX_API_KEY }}
         run: |
           curl -fsS -X POST "$API_BASE/api/v1/automation/daily-report/generate" \
-            -H "Authorization: Bearer $API_KEY" | tee daily_report.json
+            -H "X-API-Key: $API_KEY" | tee daily_report.json
           jq '.report_path, .metrics' daily_report.json
 
       - name: 4. Export drafts to CSV
@@ -115,7 +115,7 @@ jobs:
           API_KEY: ${{ secrets.DEALIX_API_KEY }}
         run: |
           curl -fsS "$API_BASE/api/v1/automation/revenue-machine/export?format=csv" \
-            -H "Authorization: Bearer $API_KEY" | tee export.json
+            -H "X-API-Key: $API_KEY" | tee export.json
           jq . export.json
 
       - name: 5. Upload run artifacts

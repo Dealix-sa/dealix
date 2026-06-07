@@ -6,14 +6,26 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dealix.me";
 export default function sitemap(): MetadataRoute.Sitemap {
   const locales = ["ar", "en"] as const;
 
-  const staticRoutes: { path: string; freq: MetadataRoute.Sitemap[number]["changeFrequency"]; priority: number }[] = [
+  const staticRoutes: {
+    path: string;
+    freq: MetadataRoute.Sitemap[number]["changeFrequency"];
+    priority: number;
+  }[] = [
+    // Highest-value public pages
     { path: "", freq: "weekly", priority: 1.0 },
     { path: "/dealix-diagnostic", freq: "weekly", priority: 0.95 },
+    { path: "/risk-score", freq: "weekly", priority: 0.92 },
+    { path: "/pricing", freq: "monthly", priority: 0.92 },
     { path: "/services", freq: "monthly", priority: 0.9 },
-    { path: "/risk-score", freq: "weekly", priority: 0.9 },
+    // Product & trust
+    { path: "/trust-center", freq: "monthly", priority: 0.88 },
     { path: "/proof-pack", freq: "monthly", priority: 0.85 },
+    { path: "/trust", freq: "monthly", priority: 0.82 },
+    // Community & content
     { path: "/partners", freq: "monthly", priority: 0.8 },
     { path: "/learn", freq: "weekly", priority: 0.8 },
+    { path: "/about", freq: "yearly", priority: 0.6 },
+    // Legal
     { path: "/privacy", freq: "yearly", priority: 0.4 },
   ];
 
@@ -32,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: `${BASE}/${locale}/learn/${article.slug}`,
         changeFrequency: "monthly",
-        priority: locale === "ar" ? 0.75 : 0.70,
+        priority: locale === "ar" ? 0.75 : 0.7,
         lastModified: new Date(),
       });
     }

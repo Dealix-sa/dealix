@@ -113,9 +113,12 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "NEGATION",
         "scraping": "NEGATION",
     },
-    # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
+    # Diagnostic intake — "صفر cold outreach" promise + the standard
+    # "not guaranteed outcomes / ليست مضمونة" disclaimer. Pure NEGATION.
     "diagnostic.html": {
         "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
@@ -146,7 +149,9 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
     "trust-center.html": {
         "scraping": "NEGATION",
-        "نضمن": "NEGATION",
+        # standard "not guaranteed outcomes / ليست مضمونة" disclaimer.
+        "guaranteed": "NEGATION",
+        "مضمون": "NEGATION",
     },
     # Agency Partner page (Tier-1 redesign) — agency-facing positioning
     # repeats the safety promise: "بدون cold WhatsApp" so partners can
@@ -171,6 +176,30 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "blast": "NEGATION",
         "cold": "NEGATION",
     },
+    # ── Pages that adopted the standard estimated-outcomes disclaimer
+    # ("Estimated outcomes are not guaranteed outcomes / النتائج
+    # التقديرية ليست نتائج مضمونة") and anti-claim safety lists. Each
+    # verified as NEGATION/disclaimer context (not a positive claim). ──
+    "architecture.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "bespoke-ai.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "customer-portal.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "dpo.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "launch-status.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "pricing.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "sector-report-b2b-services.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "security.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "sprint-sample.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    "webinar.html": {"guaranteed": "NEGATION", "مضمون": "NEGATION"},
+    # data-pack — disclaimer + "صفر cold WhatsApp/LinkedIn" + "لا scraping".
+    "data-pack.html": {
+        "cold": "NEGATION",
+        "guaranteed": "NEGATION",
+        "scraping": "NEGATION",
+        "مضمون": "NEGATION",
+    },
+    # roadmap — "الأشياء التي رفضنا بناؤها": "LinkedIn scraping automation
+    # — policy-blocked". Pure NEGATION (explicitly listed as rejected).
+    "roadmap.html": {"scraping": "NEGATION"},
 }
 
 
