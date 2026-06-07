@@ -107,6 +107,10 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V15 Founder autopilot config — synthetic seed data, no real customer PII
+!data/founder/
+# Execution log is runtime state — keep local only
+data/founder/execution_log.jsonl
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

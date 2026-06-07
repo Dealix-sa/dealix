@@ -182,3 +182,19 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── v15 founder daily execution autopilot ───────────────────────
+# v15 = Founder Daily Command Brief + Top 10 Tasks + Execution Log.
+# All targets are local read/write — no external sends.
+
+dealix-v15-readiness: ## v15: check all critical v15 files are present
+	$(PYTHON) scripts/dealix_v15_readiness_check.py
+
+dealix-v15-daily: ## v15: run full daily autopilot (brief + ranker + artifacts + dashboard)
+	$(PYTHON) scripts/dealix_v15_daily_run.py
+
+dealix-founder-brief: ## v15: generate today's founder command brief
+	$(PYTHON) scripts/dealix_founder_command_brief.py
+
+dealix-founder-dashboard: ## v15: show founder autopilot dashboard
+	$(PYTHON) scripts/dealix_founder_autopilot_dashboard.py
