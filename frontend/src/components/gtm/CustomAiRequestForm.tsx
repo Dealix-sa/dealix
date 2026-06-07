@@ -384,7 +384,7 @@ export function CustomAiRequestForm() {
               {busy ? (isAr ? "جاري الإرسال..." : "Submitting...") : isAr ? "أرسل طلب المشروع المخصّص" : "Submit Custom Project Request"}
             </Button>
 
-            {status && !submitted ? <p className="text-sm text-destructive">{status}</p> : null}
+            {status ? <p className="text-sm text-destructive">{status}</p> : null}
 
             <p className="text-xs text-muted-foreground">
               {isAr

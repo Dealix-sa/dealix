@@ -21,6 +21,17 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/public", tags=["public"])
 
 
+def _safe_log(value: object, limit: int = 120) -> str:
+    """Sanitize a value for logging.
+
+    Strips non-printable characters (including CR/LF and other control
+    chars) and truncates, so user-supplied form fields can't forge or
+    inject extra log lines (CodeQL: py/log-injection). Printable Unicode
+    (e.g. Arabic) is preserved.
+    """
+    return "".join(ch for ch in str(value) if ch.isprintable())[:limit]
+
+
 CALENDLY_URL = os.getenv(
     "CALENDLY_URL",
     "https://calendly.com/sami-assiri11/dealix-demo",
@@ -101,9 +112,9 @@ async def demo_request(req: Request) -> dict[str, Any]:
 
     log.info(
         "demo_request_accepted email=%s company=%s sector=%s lead_id=%s",
-        email,
-        company,
-        sector,
+        _safe_log(email),
+        _safe_log(company),
+        _safe_log(sector),
         lead_id,
     )
 
@@ -228,17 +239,17 @@ async def custom_ai_request(req: Request) -> dict[str, Any]:
 
     log.info(
         "custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s",
-        email,
-        company,
-        sector,
-        budget_band,
+        _safe_log(email),
+        _safe_log(company),
+        _safe_log(sector),
+        _safe_log(budget_band),
         lead_id,
     )
 
     # Wave: transactional confirmation — best-effort, never blocks the 200.
     # Reuses the whitelisted diagnostic-intake confirmation kind. No-ops if
-    # Gmail OAuth isn't configured.
-    transactional_status = "skipped_not_configured"
+    # Gmail OAuth isn't configured. transactional_status is set on every
+    # path below (success or except), so no pre-initialization is needed.
     try:
         from auto_client_acquisition.email.transactional import (
             render_diagnostic_intake_confirmation,
