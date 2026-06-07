@@ -29,7 +29,12 @@ function validateLead(body: LeadPayload): string[] {
   const errors: string[] = [];
   if (!body.company || body.company.trim().length < 2) errors.push("company is required");
   if (!body.email && !body.phone) errors.push("email or phone is required");
-  if (body.email && !/^\S+@\S+\.\S+$/.test(body.email)) errors.push("email is invalid");
+  if (body.email) {
+    const at = body.email.lastIndexOf('@');
+    const dot = at > 0 ? body.email.lastIndexOf('.') : -1;
+    if (at < 1 || dot <= at + 1 || dot >= body.email.length - 1 || body.email.includes(' '))
+      errors.push("email is invalid");
+  }
   if (!body.pain || body.pain.trim().length < 10) errors.push("business pain is required");
   return errors;
 }
