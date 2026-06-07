@@ -1,0 +1,16 @@
+company_name,domain,website,city,sector,contact_name,role,email,phone,linkedin_url,source,place_id,consent_status,notes
+# ---------------------------------------------------------------------------
+# Dealix prospect intake template.
+# Fill ONE row per company from a LAWFUL source only.
+#
+# RULES (enforced by promote_prospects_to_accounts.py):
+#   • source MUST be one of: public_directory, business_directory,
+#     google_places, inbound_form, warm_intro, referral, event, manual
+#   • NEVER paste an email/phone you guessed — leave the cell EMPTY if you
+#     don't have a real one. The script will not invent contact details.
+#   • Forbidden sources (scrape/purchased/data_broker) are rejected on sight.
+#
+# Delete these comment lines and the example row below before running.
+# Then:  python scripts/promote_prospects_to_accounts.py --csv data/prospects.csv --dry-run
+# ---------------------------------------------------------------------------
+شركة مثال للتجارة,example-co.sa,https://example-co.sa,Riyadh,marketing_agency,,,,,,public_directory,,legitimate_interest_business_directory,replace this example row with real prospects

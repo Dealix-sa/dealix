@@ -180,6 +180,26 @@ def step_founder_brief(*, health: dict[str, Any] | None = None) -> int:
     return subprocess.call(args, cwd=REPO_ROOT)
 
 
+def step_promote_prospects() -> int:
+    """Promote a founder-supplied data/prospects.csv into AccountRecord.
+
+    Silent no-op unless BOTH the CSV exists AND DATABASE_URL is set — so an
+    offline run never errors, but a real run auto-ingests any lawful list the
+    founder dropped in. Forbidden sources are rejected inside the script.
+    """
+    csv_path = REPO_ROOT / "data" / "prospects.csv"
+    script = REPO_ROOT / "scripts" / "promote_prospects_to_accounts.py"
+    if not csv_path.is_file() or not script.is_file():
+        return 0
+    if not os.environ.get("DATABASE_URL"):
+        print("  prospects.csv present but DATABASE_URL unset — skipping promotion.")
+        return 0
+    rc = subprocess.call(
+        [sys.executable, str(script), "--csv", str(csv_path)], cwd=REPO_ROOT
+    )
+    return 0 if rc in (0, 1) else rc
+
+
 def step_daily_lead_prep() -> int:
     """Wave 12.8 scored lead board → data/wave12/daily_lead_prep/<date>.{json,md}.
 
@@ -271,6 +291,7 @@ def main() -> int:
     step_founder_brief(health=health)
 
     print("\n== 8/8 Daily lead prep (scored board) ==")
+    step_promote_prospects()
     step_daily_lead_prep()
 
     verdict = "DEGRADED" if degraded else "READY"
