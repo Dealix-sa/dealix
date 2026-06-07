@@ -30,7 +30,14 @@ jobs:
           fetch-depth: 0
 
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/workspace" \
+            ghcr.io/gitleaks/gitleaks:latest detect \
+            --source=/workspace \
+            --redact \
+            --exit-code=1 \
+            --verbose
 
   filesystem-scan:
     name: Trivy filesystem scan
