@@ -29,7 +29,7 @@ function validateLead(body: LeadPayload): string[] {
   const errors: string[] = [];
   if (!body.company || body.company.trim().length < 2) errors.push("company is required");
   if (!body.email && !body.phone) errors.push("email or phone is required");
-  if (body.email && !/^\S+@\S+\.\S+$/.test(body.email)) errors.push("email is invalid");
+  if (body.email && !/^[^\s@]+@[^\s@.]+\.[^\s.@]+$/.test(body.email)) errors.push("email is invalid");
   if (!body.pain || body.pain.trim().length < 10) errors.push("business pain is required");
   return errors;
 }
