@@ -42,7 +42,7 @@ if (-not $SkipPush) {
 }
 
 $hasRailwayToken = $false
-$secrets = gh secret list --repo VoXc2/dealix 2>$null
+$secrets = gh secret list --repo Dealix-sa/dealix 2>$null
 if ($secrets -match "RAILWAY_TOKEN") {
     $hasRailwayToken = $true
     Write-Host ""
@@ -60,7 +60,7 @@ if ($secrets -match "RAILWAY_TOKEN") {
     Write-Host ""
     Write-Host "RAILWAY_TOKEN missing on GitHub - add once:" -ForegroundColor Yellow
     Write-Host "  https://railway.app/account/tokens"
-    Write-Host "  gh secret set RAILWAY_TOKEN --repo VoXc2/dealix"
+    Write-Host "  gh secret set RAILWAY_TOKEN --repo Dealix-sa/dealix"
     Write-Host "  Or connect Railway GitHub repo deploy on service linked to api.dealix.me"
     $Fail = 1
 }

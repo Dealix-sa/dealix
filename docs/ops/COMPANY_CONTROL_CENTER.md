@@ -42,7 +42,7 @@ Last updated: 2026-04-24 · Keep this file fresh — update it before/after ever
 | Backend API (fallback) | https://web-dealix.up.railway.app |
 | Backend docs | https://web-dealix.up.railway.app/docs |
 | Book demo | https://calendly.com/sami-assiri11/dealix-demo |
-| Repo | https://github.com/VoXc2/dealix |
+| Repo | https://github.com/Dealix-sa/dealix |
 
 ---
 

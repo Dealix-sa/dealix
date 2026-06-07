@@ -30,7 +30,7 @@ if ($LASTEXITCODE -eq 0) {
 }
 
 # Attempt 2: embed token in remote URL (no credential helper)
-$remoteUrl = "https://x-access-token:${token}@github.com/VoXc2/dealix.git"
+$remoteUrl = "https://x-access-token:${token}@github.com/Dealix-sa/dealix.git"
 git -c credential.helper= push $remoteUrl HEAD:main 2>&1
 if ($LASTEXITCODE -eq 0) {
     Write-Host "PUSH_MAIN=OK (token remote)"
