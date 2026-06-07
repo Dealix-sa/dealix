@@ -215,6 +215,11 @@ function RecommendationCard({ payload, isAr }: RecommendationCardProps) {
           {payload.impact_estimate}
         </span>
       </div>
+      <p className="text-[11px] text-muted-foreground/70 leading-relaxed">
+        {isAr
+          ? "عرض توضيحي على بيانات افتراضية — تقدير إرشادي وليس ضمان نتيجة."
+          : "Illustrative demo on sample data — an indicative estimate, not a guaranteed outcome."}
+      </p>
     </div>
   );
 }

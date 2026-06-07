@@ -73,9 +73,9 @@ const STEPS_EN = [
 ];
 
 const SOCIAL_PROOF_AR = [
-  { sector: "لوجستيات", result: "كشف تسرّب إيراد 18% غير مُفسَّر", city: "الرياض" },
-  { sector: "خدمات B2B", result: "جهّزناهم لـ ZATCA قبل الموعد", city: "جدة" },
-  { sector: "رعاية صحية", result: "ضبط governance للـ AI قبل PDPL", city: "الدمام" },
+  { sector: "كشف التسرّب", result: "أين تضيع الفرص بين الحملة والإغلاق", city: "تشخيص محكوم خلال 48 ساعة" },
+  { sector: "جاهزية ZATCA", result: "فجوات الفوترة الإلكترونية قبل الموعد النهائي", city: "ضمن كل Proof Pack" },
+  { sector: "حوكمة الـ AI", result: "ضبط الموافقات والأدلة قبل PDPL", city: "موافقة بشرية على كل خطوة" },
 ];
 
 export function DealixDiagnosticLanding() {
@@ -243,7 +243,7 @@ export function DealixDiagnosticLanding() {
       {/* Social Proof */}
       <section>
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
-          {isAr ? "نتائج من شركات سعودية" : "Results from Saudi Companies"}
+          {isAr ? "ما الذي يكشفه التشخيص" : "What the diagnostic surfaces"}
         </h2>
         <div className="grid gap-3 sm:grid-cols-3">
           {SOCIAL_PROOF_AR.map((proof, i) => (
