@@ -2,7 +2,7 @@
 
 > دليل الهوية البصرية الكامل لـ Dealix. كل assets لازم تتبع هذا الدليل.
 
-**آخر تحديث**: أبريل 2026 | **الإصدار**: 1.0
+**آخر تحديث**: يونيو 2026 | **الإصدار**: 1.1 (لوحة موحّدة: كحلي + ذهبي)
 
 ---
 
@@ -39,8 +39,8 @@
 
 ### Primary Colors
 ```
-Dealix Deep Green   #0A4D3F   rgb(10, 77, 63)    — الأساسي (خلفيات header)
-Dealix Gold         #C9A961   rgb(201, 169, 97)  — التأكيد (CTAs, accents)
+Dealix Navy         #001F3F   rgb(0, 31, 63)     — الأساسي (خلفيات header)
+Dealix Gold         #D4AF37   rgb(212, 175, 55)  — التأكيد (CTAs, accents)
 Dealix Sand         #F4F0E8   rgb(244, 240, 232) — خلفيات فاتحة
 ```
 
@@ -60,8 +60,8 @@ Info Blue           #3B6B8C   — معلومات
 ```
 
 ### قواعد الاستخدام
-- **60-30-10 rule**: 60% neutral (sand/white) + 30% primary (green) + 10% accent (gold)
-- ❌ **لا تستخدم**: Green + Gold بنفس الـ weight — Gold دائماً accent
+- **60-30-10 rule**: 60% neutral (sand/white) + 30% primary (navy) + 10% accent (gold)
+- ❌ **لا تستخدم**: Navy + Gold بنفس الـ weight — Gold دائماً accent
 - ❌ **لا تستخدم**: أي لون غير هذي الـ palette في marketing materials
 
 ---
@@ -137,7 +137,7 @@ Fallback: system-ui
 ### Iconography
 - **Style**: Line icons (2px stroke)، rounded corners (2px radius)
 - **Library**: Lucide (primary) + custom ZATCA/Saudi-specific icons
-- **Color**: Match surrounding text OR Gold #C9A961 للـ CTAs
+- **Color**: Match surrounding text OR Gold #D4AF37 للـ CTAs
 - **Size**: 16px، 20px، 24px (avoid odd sizes)
 
 ### Imagery
@@ -164,25 +164,25 @@ Fallback: system-ui
 ```css
 /* Primary CTA */
 .btn-primary {
-  background: #0A4D3F;
+  background: #001F3F;
   color: #FFFFFF;
   padding: 12px 24px;
   border-radius: 8px;
   font-weight: 600;
   font-size: 16px;
 }
-.btn-primary:hover { background: #083D32; }
+.btn-primary:hover { background: #001533; }
 
 /* Secondary CTA */
 .btn-secondary {
   background: transparent;
-  color: #0A4D3F;
-  border: 2px solid #0A4D3F;
+  color: #001F3F;
+  border: 2px solid #001F3F;
 }
 
 /* Gold Accent (للـ high-conversion CTAs فقط) */
 .btn-accent {
-  background: #C9A961;
+  background: #D4AF37;
   color: #1A1A1A;
   font-weight: 700;
 }
@@ -198,7 +198,7 @@ Fallback: system-ui
 ### Forms
 - Label: 14px Medium 500، لون #6B6B6B
 - Input: 16px Regular، border #E5E5E5، border-radius 6px
-- Focus: border 2px #0A4D3F + shadow
+- Focus: border 2px #001F3F + shadow
 - Error: border #C73E3E + message تحت
 
 ---
