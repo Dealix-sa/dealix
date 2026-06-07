@@ -18,6 +18,8 @@ credentials/
 *_credentials*
 # Wave 8 exceptions — these are scripts/tests, not credential files
 !scripts/dealix_customer_credentials_check.py
+# V8 secret smoke check — scans FOR secrets, does not contain any
+!scripts/dealix_secret_smoke_check.py
 !tests/test_wave8_customer_credentials_check.py
 !docs/WAVE8_CUSTOMER_CREDENTIAL_READINESS.md
 !docs/wave8/customer_credentials.example.env
