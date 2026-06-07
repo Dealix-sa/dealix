@@ -16,8 +16,6 @@ from scripts.generate_mrr_forecast import summarize as mrr_summarize
 from scripts.generate_quote import build_quote, find_offer
 
 _REPO = Path(__file__).resolve().parents[1]
-_CONFIG = _REPO / "os" / "config"
-_FINANCE = _REPO / "finance"
 
 
 def _load(rel: str) -> dict:
