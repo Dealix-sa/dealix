@@ -1,5 +1,10 @@
 # Dealix Lead Machine — Deploy Now
 
+> ⚠️ **مهجور / SUPERSEDED (2026-06-07).** This doc describes a one-time
+> historical patch bundle (`git am` from old commits) — it is **not** the
+> current deployment path. For going live on Railway + `dealix.me`, use the
+> single verified runbook: **[`GO_LIVE_NOW_AR.md`](./GO_LIVE_NOW_AR.md)**.
+
 This bundle contains the full **Provider Adapters + Data Lake + Lead Graph + Outreach Prep** build, ready to land on `main` in **two** commits (`73b5bb7` + `7aa2302`). Both are inside the single patch file.
 
 **Patch dry-applied to a fresh clone of `VoXc2/dealix` and 32 unit tests passed** — so `git am` will work on your local repo if your `main` is at `2a9df98` or earlier.
