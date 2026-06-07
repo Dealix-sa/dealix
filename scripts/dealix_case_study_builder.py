@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse, json, re
+import argparse, re
 from pathlib import Path
 from datetime import date
 ap=argparse.ArgumentParser()
