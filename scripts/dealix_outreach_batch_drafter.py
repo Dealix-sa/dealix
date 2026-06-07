@@ -6,7 +6,7 @@ with open(a.input,encoding='utf-8') as f:
  for row in csv.DictReader(f):
   if written>=a.limit: break
   try: sc=int(row.get('fit_score') or 0)
-  except: sc=0
+  except (ValueError, TypeError): sc=0
   if sc<70: continue
   company=row.get('company_name','prospect'); msg=tpl.replace('{{company}}',company).replace('{{vertical}}',a.vertical).replace('{{vertical_label}}',a.vertical)
   safe=''.join(c for c in company if c.isalnum() or c in (' ','_','-')).strip().replace(' ','_') or f'prospect_{written+1}'

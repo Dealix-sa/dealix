@@ -1,5 +1,5 @@
 from pathlib import Path
-import json, datetime, hashlib, argparse, re
+import json, datetime, argparse, re
 ROOT = Path(__file__).resolve().parents[1]
 def read_json(path, default):
     p=ROOT/path

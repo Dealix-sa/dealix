@@ -14,7 +14,7 @@ for p in ['data/preview/preview_clients.json','data/revenue/first_5_clients.json
             obj=json.loads(Path(p).read_text(encoding='utf-8'))
             if isinstance(obj, list): clients.extend(obj)
             elif isinstance(obj, dict): clients.extend(obj.get('clients',[]))
-        except Exception: pass
+        except Exception:  # malformed JSON or missing keys — skip file
 open_invoice='Review open invoices and collect before expanding scope'
 if Path('data/revenue/invoices.jsonl').exists():
     rows=[r for r in Path('data/revenue/invoices.jsonl').read_text(encoding='utf-8').splitlines() if r.strip()]

@@ -1,4 +1,4 @@
-import subprocess, sys
+import subprocess
 for cmd in [
  ['python','scripts/dealix_v12_readiness_check.py'],
  ['python','scripts/dealix_weekly_operating_rhythm.py'],
