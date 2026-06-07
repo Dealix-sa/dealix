@@ -74,6 +74,9 @@ _ALLOWLIST_PATHS = frozenset({
     "docs/WAVE17_FOUNDER_DAY1_LAUNCH_KIT.md",
     "docs/WAVE17_BRANCH_CLEANUP_LOG.md",
     "docs/WAVE17_VULNERABILITY_TRIAGE.md",
+    # Enterprise-architecture required-tests register — names this lockdown
+    # test in its list of repo guards (documentation reference only).
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # The plan file lives outside the repo (in /root/.claude/plans/) so
     # never appears in git ls-files; no allowlist needed.
 })
