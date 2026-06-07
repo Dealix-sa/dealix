@@ -1,0 +1,65 @@
+name: Dealix Daily Drafts
+
+# The "company starts now" heartbeat: generate company-level bilingual
+# first-touch DRAFTS from the curated Saudi B2B target frame, queue them for
+# founder approval, and publish a founder brief artifact.
+# NO external send. ~07:00 KSA (04:00 UTC, Sun–Thu). Degraded-but-real: needs
+# zero secrets.
+
+on:
+  schedule:
+    - cron: "0 4 * * 0-4"
+  workflow_dispatch:
+
+concurrency:
+  group: dealix-daily-drafts
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  daily-drafts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # The orchestrator is pure-stdlib; no pip install required.
+      - name: Generate daily drafts (no live send)
+        env:
+          PYTHONIOENCODING: utf-8
+          # Persist the approval queue inside the workspace so it uploads too.
+          DEALIX_DRAFT_QUEUE_PATH: var/draft-queue.jsonl
+        run: |
+          python3 scripts/dealix_daily_draft_loop.py --print
+
+      # Optional: email the brief if a provider key is configured. Never fails
+      # the run — drafts are always available as the artifact below.
+      - name: Email founder digest (optional)
+        continue-on-error: true
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          DEALIX_FOUNDER_EMAIL: ${{ secrets.DEALIX_FOUNDER_EMAIL }}
+        run: |
+          if [ -z "${RESEND_API_KEY}" ]; then
+            echo "no RESEND_API_KEY configured — skipping email (drafts uploaded as artifact)"
+            exit 0
+          fi
+          pip install -q pyyaml requests || true
+          python3 scripts/dealix_morning_digest.py || true
+
+      - name: Upload founder brief + draft queue
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-daily-drafts-${{ github.run_id }}
+          path: |
+            data/founder_briefs/
+            var/draft-queue.jsonl
+          retention-days: 14
+          if-no-files-found: ignore

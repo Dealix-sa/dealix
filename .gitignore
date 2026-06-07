@@ -107,6 +107,9 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Curated Saudi B2B target frame — public-source, company-level, no PII (see data/leads/SOURCES.md)
+!data/leads/
+!data/leads/**
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
