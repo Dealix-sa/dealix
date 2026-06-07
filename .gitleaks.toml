@@ -50,9 +50,15 @@ description = "Global allowlist"
 paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
+    '''\.gitleaksignore$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    # All test files contain intentional fake secrets (observability redaction
+    # tests, secret-scanner self-tests, CLI fixture keys, auth-flow stubs).
+    '''(^|/)tests/''',
     '''docs/.*\.md$''',
+    # Shell scripts that pass API keys via env-vars to curl (not hardcoded).
+    '''docs/ops/.*\.sh$''',
+    '''scripts/ops/.*\.sh$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
 
@@ -61,4 +67,13 @@ regexes = [
     '''your-.*-key''',
     '''change-me''',
     '''example-.*''',
+    # curl -u "${ENV_VAR}:" — env-var auth, not a hardcoded credential.
+    '''curl\s.*-[uU]\s+["']?\$\{[A-Z_]+\}[:]?''',
+]
+
+stopwords = [
+    # idem.claim(record_key, ttl_seconds=30 * 86400) — not a secret.
+    "ttl_seconds",
+    # Other keyword-argument patterns near variable names containing "key".
+    "idempotency_key",
 ]

@@ -29,7 +29,13 @@
     "aiEngine": "محرك الإيرادات الذكي",
     "adminConsole": "لوحة الإدارة",
     "trustCenter": "مركز الثقة",
-    "pricing": "خطط الاشتراك"
+    "pricing": "خطط الاشتراك",
+    "services": "الخدمات",
+    "about": "عن Dealix",
+    "contact": "تواصل",
+    "custom": "بناء مخصّص",
+    "terms": "شروط الخدمة",
+    "proofPack": "عيّنة Proof Pack"
   },
   "dashboard": {
     "title": "لوحة التحكم التنفيذية",

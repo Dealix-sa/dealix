@@ -1,0 +1,15 @@
+# Gitleaks fingerprints for confirmed false positives in historical commits.
+# Each line is: commit:file:rule:line
+# Verified false positive — do NOT add real secrets here.
+
+# frontend/src/lib/utm.ts line 16: localStorage key name, not a credential
+ca6bb4f050220562a6733d6c2badecad67f8a5e6:frontend/src/lib/utm.ts:generic-api-key:16
+
+# .trivyignore.yaml line 6: placeholder string in a Trivy ignore file
+874dcc4913a2626bc274fd7ceb59c8017be367ef:.trivyignore.yaml:stripe-access-token:6
+
+# scripts/whatsapp_client_os_verify.py line 47: fake alphabetical placeholder key
+aad860d894ef404c480867ea2a6d2577309b1f3e:scripts/whatsapp_client_os_verify.py:generic-api-key:47
+
+# auto_client_acquisition/proof_os/signer.py line 128: variable name, not a value
+4d52191568b52fe5f20aee37b28727968962fb16:auto_client_acquisition/proof_os/signer.py:generic-api-key:128

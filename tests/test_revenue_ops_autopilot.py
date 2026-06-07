@@ -171,6 +171,67 @@ def test_public_partner_apply_ok():
     assert r.json()["lead_id"].startswith("lea_")
 
 
+def test_public_custom_brief_requires_consent():
+    from api.main import app
+
+    cli = TestClient(app)
+    r = cli.post(
+        "/api/v1/public/custom-brief",
+        json={
+            "name": "Founder X",
+            "email": "x@example.com",
+            "company": "Saudi SaaS",
+            "scope": "Build an AI agent that replies to WhatsApp leads in Arabic.",
+            "consent": False,
+        },
+    )
+    assert r.status_code == 422
+
+
+def test_public_custom_brief_ok_queues_for_review():
+    from api.main import app
+
+    cli = TestClient(app)
+    r = cli.post(
+        "/api/v1/public/custom-brief",
+        json={
+            "name": "Founder X",
+            "email": "founder@example.com",
+            "company": "Saudi SaaS",
+            "sector": "saas",
+            "project_type": "ai_agent",
+            "scope": "Build an AI agent that replies to WhatsApp leads in Arabic.",
+            "budget_range": "15000 SAR",
+            "timeline": "30 days",
+            "consent": True,
+        },
+    )
+    assert r.status_code == 200, r.text
+    data = r.json()
+    assert data["status"] == "queued_for_founder_review"
+    assert data["lead_id"].startswith("lea_")
+    # Doctrine: no auto external send — always queued behind human review.
+    assert "policy_ar" in data
+
+
+def test_public_custom_brief_honeypot_drops_silently():
+    from api.main import app
+
+    cli = TestClient(app)
+    r = cli.post(
+        "/api/v1/public/custom-brief",
+        json={
+            "name": "Bot",
+            "email": "bot@example.com",
+            "scope": "spam",
+            "consent": True,
+            "website": "http://spam.example",  # honeypot filled → silently accepted
+        },
+    )
+    assert r.status_code == 200, r.text
+    assert "lead_id" not in r.json()
+
+
 def test_outreach_guard_sent_manual_requires_approval():
     ok, reason = outreach_transition_allowed("message_drafted", "sent_manual")
     assert not ok

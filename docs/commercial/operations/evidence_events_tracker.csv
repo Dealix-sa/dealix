@@ -10,3 +10,4 @@ event_id,event_date,event_type,company,contact,motion,offer_id,owner,source_chan
 ,2026-05-17,referral_requested,,,,,founder,,template_funnel_seed — عمود KPI فقط، ليس صفقة,,,
 ,2026-05-17,scope_requested,founder_launch_day,,,ten_lead_audit,,,launch_day — first revenue day orchestrator,,,
 ,2026-05-18,scope_requested,Dealix Founder Commercial Day,,,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder,2026-05-18,
+eeaf165e,2026-06-07,scope_requested,Dealix Founder Commercial Day,,A,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder and approve touches,2026-06-07,

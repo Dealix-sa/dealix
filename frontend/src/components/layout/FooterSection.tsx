@@ -16,11 +16,11 @@ const NAV_COLUMNS: NavColumn[] = [
     titleAr: "الخدمات",
     titleEn: "Services",
     links: [
-      { ar: "تشخيص مجاني", en: "Free Diagnostic", href: "/risk-score" },
-      { ar: "Revenue Intelligence Sprint", en: "Revenue Intelligence Sprint", href: "/dealix-diagnostic" },
-      { ar: "Agency Proof Pack", en: "Agency Proof Pack", href: "/dealix-diagnostic" },
-      { ar: "Managed Ops Retainer", en: "Managed Ops Retainer", href: "/dealix-diagnostic" },
-      { ar: "Custom AI Project", en: "Custom AI Project", href: "/dealix-diagnostic" },
+      { ar: "تشخيص مجاني", en: "Free Diagnostic", href: "/dealix-diagnostic" },
+      { ar: "الخدمات والأسعار", en: "Services & Pricing", href: "/services" },
+      { ar: "بناء AI مخصّص", en: "Custom AI Build", href: "/custom" },
+      { ar: "عيّنة Proof Pack", en: "Proof Pack Sample", href: "/proof-pack" },
+      { ar: "الشركاء", en: "Partners", href: "/partners" },
     ],
   },
   {
@@ -50,8 +50,8 @@ const NAV_COLUMNS: NavColumn[] = [
     links: [
       { ar: "الثقة والامتثال", en: "Trust & Compliance", href: "/trust" },
       { ar: "سياسة الخصوصية", en: "Privacy Policy", href: "/privacy" },
-      { ar: "شروط الخدمة", en: "Terms of Service", href: "/privacy" },
-      { ar: "PDPL — حقوقك", en: "PDPL — Your Rights", href: "/trust" },
+      { ar: "شروط الخدمة", en: "Terms of Service", href: "/terms" },
+      { ar: "تواصل معنا", en: "Contact Us", href: "/contact" },
     ],
   },
 ];
@@ -89,8 +89,8 @@ export function FooterSection({ className = "" }: FooterSectionProps) {
           {/* Brand column */}
           <div className={`lg:col-span-1 ${isAr ? "text-right" : "text-left"}`}>
             <Link href={base} className="inline-flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-[#0A1628] flex items-center justify-center">
-                <span className="text-[#C9974B] font-bold text-sm">D</span>
+              <div className="w-8 h-8 rounded-lg bg-[#001F3F] flex items-center justify-center">
+                <span className="text-[#D4AF37] font-bold text-sm">D</span>
               </div>
               <span className="font-bold text-lg text-foreground">Dealix</span>
             </Link>
@@ -179,6 +179,10 @@ export function FooterSection({ className = "" }: FooterSectionProps) {
           <div className="flex items-center gap-3 sm:ms-auto">
             <Link href={`${base}/privacy`} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
               {isAr ? "سياسة الخصوصية" : "Privacy Policy"}
+            </Link>
+            <span className="text-muted-foreground/40">·</span>
+            <Link href={`${base}/terms`} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+              {isAr ? "شروط الخدمة" : "Terms"}
             </Link>
             <span className="text-muted-foreground/40">·</span>
             <Link href={`${base}/trust`} className="text-xs text-muted-foreground hover:text-foreground transition-colors">

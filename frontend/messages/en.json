@@ -29,7 +29,13 @@
     "aiEngine": "AI Revenue Engine",
     "adminConsole": "Admin Console",
     "trustCenter": "Trust Center",
-    "pricing": "Pricing Plans"
+    "pricing": "Pricing Plans",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "custom": "Custom Build",
+    "terms": "Terms",
+    "proofPack": "Proof Pack Sample"
   },
   "dashboard": {
     "title": "Executive Dashboard",
