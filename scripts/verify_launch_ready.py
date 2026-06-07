@@ -81,6 +81,32 @@ def _c_founder_routes():
     return not missing, ("all approval routes mounted" if not missing else f"missing {missing}")
 
 
+def _c_sprint_executor():
+    tmp = Path(tempfile.gettempdir()) / "dealix_verify_sprint.jsonl"
+    if tmp.exists():
+        tmp.unlink()
+    os.environ["DEALIX_SPRINT_STORE_PATH"] = str(tmp)
+    import importlib
+    from auto_client_acquisition.delivery_factory import sprint_executor, sprint_store
+    importlib.reload(sprint_store)
+    importlib.reload(sprint_executor)
+    from dealix.commercial.sprint_orchestrator import SprintContext
+    ctx = SprintContext(
+        engagement_id="verify_eng", customer_id="verify", sector="logistics",
+        sources=[{"source_type": "crm", "row_count": 50, "consent": "granted",
+                  "has_source_passport": True}],
+        rows=[{"company": "A", "email": "a@x.com", "amount": 1}],
+        pain_summary="x", founder_approved=False,
+    )
+    sprint_executor.start_sprint(ctx)
+    paused = sprint_executor.run_to_completion("verify_eng", auto_approve=False)
+    if not paused or paused.get("status") != "awaiting_approval":
+        return False, "Day-5 gate did not pause"
+    done = sprint_executor.run_to_completion("verify_eng", auto_approve=True)
+    ok = bool(done) and done.get("status") == "complete" and done.get("current_day") == 7
+    return ok, "7-day sprint pauses at Day-5 gate, completes after approval"
+
+
 def _c_service_tiers():
     from dealix.payments.payment_link import SERVICE_TIERS
     return len(SERVICE_TIERS) >= 5, f"{len(SERVICE_TIERS)} tiers: {list(SERVICE_TIERS)}"
@@ -100,6 +126,7 @@ def main() -> int:
     _check("commercial orchestrator", _c_orchestrator)
     _check("draft queue round-trip", _c_queue_roundtrip)
     _check("founder approval routes", _c_founder_routes)
+    _check("7-day sprint executor", _c_sprint_executor)
     _check("service tiers resolve", _c_service_tiers)
     _check("doctrine disclaimer", _c_doctrine_disclaimer)
 

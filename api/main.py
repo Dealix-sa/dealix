@@ -81,6 +81,7 @@ from api.routers import service_catalog as service_catalog_router
 
 # 90-day commercial activation — Wave 14B
 from api.routers import sprint_runner as sprint_runner_router
+from api.routers import delivery as delivery_router
 from api.routers import (
     transformation_os as transformation_os_router,
 )
@@ -372,6 +373,7 @@ def create_app() -> FastAPI:
     if data_os_router is not None:
         app.include_router(data_os_router.router)
     app.include_router(sprint_runner_router.router)
+    app.include_router(delivery_router.router)
     app.include_router(founder_dashboard_router.router)
     app.include_router(audit_export_router.router)
     # Wave 14F — Agent OS (admin-gated)
