@@ -36,7 +36,7 @@ _BASE_MESSAGE_AR = (
     "بالنظر إلى دورك في {company} كـ{role} وقطاع {sector}، {context_line}\n\n"
     "أبحث عن 2-3 شركات تجرّب:\n"
     "  • تشخيص مجاني 24 ساعة (https://dealix.me/diagnostic.html)\n"
-    "  • Sprint مدفوع 499 ريال (7 أيام، Proof Pack مضمون، استرداد 14 يوم)\n\n"
+    "  • Sprint مدفوع 499 ريال (7 أيام، Proof Pack يوم 7، استرداد 14 يوم)\n\n"
     "هل أنت أو أحد من شبكتك يستفيد من هذا؟\n\n"
     "شكرًا — سامي."
 )
@@ -51,7 +51,7 @@ _BASE_MESSAGE_EN = (
     "Given your role at {company} as {role} in {sector}, {context_line}\n\n"
     "Looking for 2-3 companies to try:\n"
     "  • Free 24h diagnostic (https://dealix.me/diagnostic.html)\n"
-    "  • 499 SAR paid Sprint (7 days, guaranteed Proof Pack, 14-day refund)\n\n"
+    "  • 499 SAR paid Sprint (7 days, Proof Pack on day 7, 14-day refund)\n\n"
     "Anyone in your network this might fit?\n\n"
     "Thanks — Sami."
 )
