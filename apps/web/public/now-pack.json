@@ -1,0 +1,383 @@
+{
+  "$schema_version": "now-pack/1.0",
+  "generated_at": "2026-06-07T08:00:00+03:00",
+  "date": "2026-06-07",
+  "tz": "Asia/Riyadh",
+  "is_sample": true,
+  "note_ar": "هذه عيّنة ثابتة مولّدة من نظام Dealix Now على بيانات المستودع الحقيقية. تُستبدل تلقائيًا عند توفر الـ API الحي على /api/v1/now/pack.",
+  "doctrine": {
+    "no_auto_send": true,
+    "no_scraping": true,
+    "public_data_only": true,
+    "approval_first": true,
+    "tagline_ar": "AI يكتب، أنت ترسل"
+  },
+  "metrics": {
+    "leads_total": 6,
+    "priority_high": 1,
+    "priority_medium": 3,
+    "nurture": 2,
+    "disqualified": 0,
+    "drafts_ready": 3,
+    "avg_fit_score": 64.3,
+    "founder_daily_targets": {
+      "company_briefs": 20,
+      "drafts": 20,
+      "follow_ups": 5,
+      "proposals": 1
+    },
+    "pipeline_value_sar": { "low": 95000, "typical": 365000, "high": 1300000 }
+  },
+  "pipeline": {
+    "new_leads_24h": 6,
+    "drafts_awaiting": 3,
+    "replies_to_handle": 0,
+    "calls_today": 0,
+    "proposals_pending": 0,
+    "deals_at_risk": 1
+  },
+  "leads": [
+    {
+      "id": "lead_madar_logistics",
+      "company_name": "Madar Logistics",
+      "sector": "logistics",
+      "sector_ar": "الخدمات اللوجستية",
+      "city": "Jeddah",
+      "website": "",
+      "source": "client_upload",
+      "relationship_status": "warm",
+      "fit_score": 80,
+      "tier": "high",
+      "tier_color": "green",
+      "tier_action_ar": "أولوية عالية — جهّز brief كامل وابدأ draft",
+      "dimension_scores": [
+        { "id": "operations_complexity", "score": 20, "level": "high" },
+        { "id": "reporting_burden", "score": 15, "level": "high" },
+        { "id": "maintenance_or_field_ops", "score": 10, "level": "partial" },
+        { "id": "multi_branch_or_scale", "score": 6, "level": "some" },
+        { "id": "operations_data_roles", "score": 10, "level": "strong" },
+        { "id": "growth_expansion_signals", "score": 6, "level": "moderate" },
+        { "id": "reachable_decision_maker", "score": 10, "level": "clear" },
+        { "id": "founder_background_fit", "score": 3, "level": "moderate" }
+      ],
+      "top_strengths": ["عمليات لوجستية متكررة وكثيفة", "علاقة دافئة + تشخيص سابق مُسلَّم", "صاحب قرار واضح وقابل للوصول"],
+      "top_weaknesses": ["قرار الـ retainer معلّق منذ الربع الأول"],
+      "best_buyer_title": "Operations Director",
+      "pain_points": ["متابعة تقارير العمليات يدويًا أسبوعيًا", "تتبّع SLA للشحنات", "قرار التشغيل المستمر متوقف"],
+      "recommended_offer": {
+        "id": "RET",
+        "name": "AI Ops Retainer",
+        "name_ar": "خدمة الدعم والتطوير المستمر",
+        "why_fit_ar": "التشخيص أُنجز ونتائجه واضحة؛ الخطوة الطبيعية تحويلها لتشغيل شهري يحدّث التقارير ويتابع الـ SLA تلقائيًا.",
+        "entry_price_sar": { "min": 8000, "max": 80000, "typical": 20000 }
+      },
+      "next_action": "draft",
+      "brief": {
+        "what_they_do_ar": "شركة خدمات لوجستية ونقل في جدة بعمليات يومية كثيفة.",
+        "operations_complexity": "high",
+        "public_signals": ["تشخيص سابق مُسلَّم في الربع الأول", "بانتظار قرار retainer"],
+        "confidence": 0.7
+      }
+    },
+    {
+      "id": "lead_national_engineering_group",
+      "company_name": "المجموعة الهندسية الوطنية",
+      "sector": "engineering",
+      "sector_ar": "الهندسة والاستشارات",
+      "city": "الخبر",
+      "website": "",
+      "source": "client_upload",
+      "relationship_status": "cold",
+      "fit_score": 76,
+      "tier": "medium",
+      "tier_color": "yellow",
+      "tier_action_ar": "مرشحة — أرسل بعد تخصيص جيد",
+      "dimension_scores": [
+        { "id": "operations_complexity", "score": 20, "level": "high" },
+        { "id": "reporting_burden", "score": 15, "level": "high" },
+        { "id": "maintenance_or_field_ops", "score": 10, "level": "partial" },
+        { "id": "multi_branch_or_scale", "score": 6, "level": "some" },
+        { "id": "operations_data_roles", "score": 10, "level": "strong" },
+        { "id": "growth_expansion_signals", "score": 6, "level": "moderate" },
+        { "id": "reachable_decision_maker", "score": 6, "level": "partial" },
+        { "id": "founder_background_fit", "score": 3, "level": "moderate" }
+      ],
+      "top_strengths": ["تقارير تقدّم وأوامر تغيير كثيفة", "60 مهندسًا — فريق مشاريع حقيقي", "ألم إيرادي محدّد (تسرّب فوترة)"],
+      "top_weaknesses": ["علاقة باردة — تحتاج تخصيص قوي", "جودة بيانات الـ CRM غير مؤكدة"],
+      "best_buyer_title": "PMO Director",
+      "pain_points": ["تسرّب الإيراد في فوترة أوامر التغيير", "تقارير التقدم الأسبوعية يدوية", "متابعة الموافقات المعلقة"],
+      "recommended_offer": {
+        "id": "PCOS",
+        "name": "Project Controls AI OS",
+        "name_ar": "نظام الذكاء الاصطناعي للتحكم بالمشاريع",
+        "why_fit_ar": "شركة هندسية تغرق في تقارير المشاريع وأوامر التغيير؛ النظام يتتبع كل change order من الطلب حتى الفوترة وينبّه قبل ضياع الإيراد.",
+        "entry_price_sar": { "min": 50000, "max": 500000, "typical": 175000 }
+      },
+      "next_action": "draft",
+      "brief": {
+        "what_they_do_ar": "مكتب هندسة واستشارات في الخبر (~60 مهندسًا) يدير مشاريع متعددة.",
+        "operations_complexity": "high",
+        "public_signals": ["تسرّب محتمل في فوترة أوامر التغيير", "تصدير CRM قديم"],
+        "confidence": 0.55
+      }
+    },
+    {
+      "id": "lead_alshifa_specialized_clinics",
+      "company_name": "عيادات الشفاء المتخصصة",
+      "sector": "healthcare",
+      "sector_ar": "الرعاية الصحية",
+      "city": "الدمام",
+      "website": "",
+      "source": "client_upload",
+      "relationship_status": "warm",
+      "fit_score": 66,
+      "tier": "medium",
+      "tier_color": "yellow",
+      "tier_action_ar": "مرشحة — أرسل بعد تخصيص جيد",
+      "dimension_scores": [
+        { "id": "operations_complexity", "score": 20, "level": "high" },
+        { "id": "reporting_burden", "score": 15, "level": "high" },
+        { "id": "maintenance_or_field_ops", "score": 0, "level": "no" },
+        { "id": "multi_branch_or_scale", "score": 6, "level": "some" },
+        { "id": "operations_data_roles", "score": 6, "level": "moderate" },
+        { "id": "growth_expansion_signals", "score": 6, "level": "moderate" },
+        { "id": "reachable_decision_maker", "score": 10, "level": "clear" },
+        { "id": "founder_background_fit", "score": 3, "level": "moderate" }
+      ],
+      "top_strengths": ["إلحاح تنظيمي حقيقي (ZATCA Wave 24 + PDPL)", "علاقة دافئة", "بيانات مرضى تتطلب حوكمة واضحة"],
+      "top_weaknesses": ["بيانات PII حساسة — مراجعة يدوية فقط", "لا صيانة/فنيين ميدانيين"],
+      "best_buyer_title": "General Manager",
+      "pain_points": ["جاهزية ZATCA Wave 24 قبل موعد يونيو 2026", "التزامات PDPL على بيانات المرضى", "أتمتة بلا إطار حوكمة = خطر"],
+      "recommended_offer": {
+        "id": "AGP",
+        "name": "AI Governance Pack",
+        "name_ar": "حزمة حوكمة الذكاء الاصطناعي",
+        "why_fit_ar": "قطاع صحي منظَّم مع إلحاح ZATCA/PDPL؛ الحزمة تسلّم سياسة استخدام، مصفوفة صلاحيات، وبوابات موافقة بشرية خلال أسبوعين.",
+        "entry_price_sar": { "min": 15000, "max": 100000, "typical": 35000 }
+      },
+      "next_action": "draft",
+      "brief": {
+        "what_they_do_ar": "مجمع عيادات متعدد التخصصات في الدمام ببيانات مرضى حساسة.",
+        "operations_complexity": "high",
+        "public_signals": ["موعد ZATCA Wave 24 (يونيو 2026)", "إلحاح PDPL مُعلَّم"],
+        "confidence": 0.6
+      }
+    },
+    {
+      "id": "lead_northstar_clinics",
+      "company_name": "NorthStar Clinics Group",
+      "sector": "healthcare",
+      "sector_ar": "الرعاية الصحية",
+      "city": "Riyadh",
+      "website": "",
+      "source": "client_upload",
+      "relationship_status": "warm",
+      "fit_score": 64,
+      "tier": "medium",
+      "tier_color": "yellow",
+      "tier_action_ar": "مرشحة — أرسل بعد تخصيص جيد",
+      "dimension_scores": [
+        { "id": "operations_complexity", "score": 20, "level": "high" },
+        { "id": "reporting_burden", "score": 15, "level": "high" },
+        { "id": "maintenance_or_field_ops", "score": 0, "level": "no" },
+        { "id": "multi_branch_or_scale", "score": 10, "level": "many" },
+        { "id": "operations_data_roles", "score": 6, "level": "moderate" },
+        { "id": "growth_expansion_signals", "score": 6, "level": "moderate" },
+        { "id": "reachable_decision_maker", "score": 6, "level": "partial" },
+        { "id": "founder_background_fit", "score": 1, "level": "weak" }
+      ],
+      "top_strengths": ["مجموعة عيادات متعددة الفروع", "تقارير وعمليات كثيفة", "علاقة دافئة"],
+      "top_weaknesses": ["بيانات PII حساسة", "صاحب قرار غير محدد بعد"],
+      "best_buyer_title": "Operations Director",
+      "pain_points": ["تجميع تقارير الفروع يدويًا", "بيانات مرضى تتطلب ضبط وصول", "لا رؤية موحّدة عبر الفروع"],
+      "recommended_offer": {
+        "id": "WFA",
+        "name": "Agentic AI Workflow Audit",
+        "name_ar": "تدقيق الـ Workflow بالذكاء الاصطناعي",
+        "why_fit_ar": "نقطة دخول آمنة منخفضة المخاطر لمجموعة عيادات: نحلل workflow واحدًا (تقارير الفروع) ونطلع خريطة فرص AI خلال 7 أيام.",
+        "entry_price_sar": { "min": 5000, "max": 25000, "typical": 15000 }
+      },
+      "next_action": "draft",
+      "brief": {
+        "what_they_do_ar": "مجموعة عيادات متعددة الفروع في الرياض.",
+        "operations_complexity": "high",
+        "public_signals": ["عمليات متعددة الفروع", "بيانات PII كثيفة"],
+        "confidence": 0.55
+      }
+    },
+    {
+      "id": "lead_asalah_restaurants",
+      "company_name": "سلسلة مطاعم الأصالة",
+      "sector": "food_and_beverage",
+      "sector_ar": "الأغذية والمشروبات",
+      "city": "جدة",
+      "website": "",
+      "source": "client_upload",
+      "relationship_status": "warm",
+      "fit_score": 58,
+      "tier": "nurture",
+      "tier_color": "orange",
+      "tier_action_ar": "ضعها في nurture list — تابع بعد 60 يوم",
+      "dimension_scores": [
+        { "id": "operations_complexity", "score": 20, "level": "high" },
+        { "id": "reporting_burden", "score": 9, "level": "medium" },
+        { "id": "maintenance_or_field_ops", "score": 0, "level": "no" },
+        { "id": "multi_branch_or_scale", "score": 10, "level": "many" },
+        { "id": "operations_data_roles", "score": 6, "level": "moderate" },
+        { "id": "growth_expansion_signals", "score": 6, "level": "moderate" },
+        { "id": "reachable_decision_maker", "score": 6, "level": "partial" },
+        { "id": "founder_background_fit", "score": 1, "level": "weak" }
+      ],
+      "top_strengths": ["12 فرعًا — عمليات حجوزات كثيفة", "ألم محدّد (no-show 40%)"],
+      "top_weaknesses": ["قطاع بعيد عن خلفية الفاوندر", "ميزانية أتمتة غير مؤكدة"],
+      "best_buyer_title": "Operations Manager",
+      "pain_points": ["نسبة عدم حضور الحجوزات 40%", "إدارة الحجوزات عبر 12 فرعًا", "لا تذكير آلي بالمواعيد"],
+      "recommended_offer": {
+        "id": "WFA",
+        "name": "Agentic AI Workflow Audit",
+        "name_ar": "تدقيق الـ Workflow بالذكاء الاصطناعي",
+        "why_fit_ar": "سلسلة متعددة الفروع بعمليات حجوزات؛ نبدأ بتدقيق workflow الحجوزات لتقليل نسبة عدم الحضور قبل أي التزام أكبر.",
+        "entry_price_sar": { "min": 5000, "max": 25000, "typical": 15000 }
+      },
+      "next_action": "nurture",
+      "brief": {
+        "what_they_do_ar": "سلسلة مطاعم (12 فرعًا) في جدة تعتمد على الحجوزات.",
+        "operations_complexity": "high",
+        "public_signals": ["نسبة عدم حضور 40%"],
+        "confidence": 0.5
+      }
+    },
+    {
+      "id": "lead_ibdaa_marketing",
+      "company_name": "وكالة إبداع للتسويق",
+      "sector": "marketing_agency",
+      "sector_ar": "وكالة تسويق",
+      "city": "الرياض",
+      "website": "",
+      "source": "client_upload",
+      "relationship_status": "warm",
+      "fit_score": 48,
+      "tier": "nurture",
+      "tier_color": "orange",
+      "tier_action_ar": "ضعها في nurture list — تابع بعد 60 يوم",
+      "dimension_scores": [
+        { "id": "operations_complexity", "score": 12, "level": "medium" },
+        { "id": "reporting_burden", "score": 9, "level": "medium" },
+        { "id": "maintenance_or_field_ops", "score": 0, "level": "no" },
+        { "id": "multi_branch_or_scale", "score": 2, "level": "one" },
+        { "id": "operations_data_roles", "score": 6, "level": "moderate" },
+        { "id": "growth_expansion_signals", "score": 6, "level": "moderate" },
+        { "id": "reachable_decision_maker", "score": 10, "level": "clear" },
+        { "id": "founder_background_fit", "score": 3, "level": "moderate" }
+      ],
+      "top_strengths": ["صاحب قرار قابل للوصول", "ألم متابعة محدّد"],
+      "top_weaknesses": ["موقع واحد، فريق صغير", "عمليات أقل تعقيدًا"],
+      "best_buyer_title": "Managing Partner",
+      "pain_points": ["فقدان 50% من العروض بعد الديمو", "متابعة يدوية ضعيفة", "لا تسلسل متابعة منظّم"],
+      "recommended_offer": {
+        "id": "RAOS",
+        "name": "Revenue AI OS",
+        "name_ar": "نظام AI للإيرادات",
+        "why_fit_ar": "وكالة تخسر نصف عروضها بعد الديمو بسبب ضعف المتابعة؛ النظام يجهّز تسلسل متابعة ومسودات تواصل — أنتم تراجعون وترسلون.",
+        "entry_price_sar": { "min": 40000, "max": 300000, "typical": 100000 }
+      },
+      "next_action": "nurture",
+      "brief": {
+        "what_they_do_ar": "وكالة تسويق رقمي في الرياض.",
+        "operations_complexity": "medium",
+        "public_signals": ["ضعف نظام المتابعة"],
+        "confidence": 0.5
+      }
+    }
+  ],
+  "drafts": [
+    {
+      "id": "draft_madar_logistics",
+      "lead_id": "lead_madar_logistics",
+      "company_name": "Madar Logistics",
+      "channel": "email",
+      "lang": "ar",
+      "offer_id": "RET",
+      "subject": "متابعة قرار التشغيل المستمر — Madar Logistics",
+      "body": "أهلاً [اسم جهة الاتصال]،\n\nبعد تشخيص الربع الأول مع Madar Logistics، لاحظنا أن متابعة تقارير العمليات يدويًا لا تزال تأخذ وقتًا من فريقكم كل أسبوع.\n\nنقترح تحويل ذلك إلى تشغيل شهري يحدّث التقارير ويتابع الـ SLA للشحنات تلقائيًا — أنتم تراجعون، والنظام يجهّز. لا إرسال آلي لأي شيء.\n\nهل يناسبكم 20 دقيقة هذا الأسبوع لمراجعة خطة التشغيل المستمر؟",
+      "word_count": 58,
+      "status": "draft — awaiting founder approval",
+      "safety": {
+        "safety_score": 94,
+        "personalization_score": 90,
+        "issues": [],
+        "approved_for_review": true,
+        "checks": { "mentions_company": true, "single_pain": true, "single_cta": true, "no_pricing": true, "within_length": true, "no_overclaim": true }
+      },
+      "contact": { "to": "", "note_ar": "أضف بريد جهة الاتصال المعتمد قبل الإرسال — Dealix لا يرسل تلقائيًا." }
+    },
+    {
+      "id": "draft_national_engineering_group",
+      "lead_id": "lead_national_engineering_group",
+      "company_name": "المجموعة الهندسية الوطنية",
+      "channel": "email",
+      "lang": "ar",
+      "offer_id": "PCOS",
+      "subject": "تسرّب فوترة أوامر التغيير — المجموعة الهندسية الوطنية",
+      "body": "السلام عليكم [اسم جهة الاتصال]،\n\nفي مكاتب هندسية بحجم المجموعة الهندسية الوطنية، يتسرّب جزء من الإيراد عند عدم ربط أوامر التغيير بالفوترة في وقتها.\n\nنبني نظامًا يتتبع كل change order من الطلب حتى الفوترة، وينبّه قبل أن يضيع. تبقى الموافقة النهائية على كل خطوة لفريقكم.\n\nهل نأخذ workflow واحدًا كمثال في مكالمة 20 دقيقة ونريكم أين يظهر التسرّب؟",
+      "word_count": 62,
+      "status": "draft — awaiting founder approval",
+      "safety": {
+        "safety_score": 92,
+        "personalization_score": 88,
+        "issues": [],
+        "approved_for_review": true,
+        "checks": { "mentions_company": true, "single_pain": true, "single_cta": true, "no_pricing": true, "within_length": true, "no_overclaim": true }
+      },
+      "contact": { "to": "", "note_ar": "أضف بريد جهة الاتصال المعتمد قبل الإرسال — Dealix لا يرسل تلقائيًا." }
+    },
+    {
+      "id": "draft_alshifa_specialized_clinics",
+      "lead_id": "lead_alshifa_specialized_clinics",
+      "company_name": "عيادات الشفاء المتخصصة",
+      "channel": "email",
+      "lang": "ar",
+      "offer_id": "AGP",
+      "subject": "جاهزية ZATCA Wave 24 قبل موعد يونيو — عيادات الشفاء المتخصصة",
+      "body": "السلام عليكم [اسم جهة الاتصال]،\n\nمع اقتراب موعد ZATCA Wave 24 والتزامات PDPL على البيانات الصحية، تحتاج عيادات الشفاء المتخصصة إطار حوكمة واضحًا لأي أتمتة تمسّ بيانات المرضى.\n\nنجهّز سياسة استخدام، مصفوفة صلاحيات، وبوابات موافقة بشرية خلال أسبوعين — بحيث تتحركون بأمان قبل الموعد.\n\nهل نحجز 20 دقيقة لمراجعة وضعكم الحالي؟",
+      "word_count": 55,
+      "status": "draft — awaiting founder approval",
+      "safety": {
+        "safety_score": 93,
+        "personalization_score": 91,
+        "issues": [],
+        "approved_for_review": true,
+        "checks": { "mentions_company": true, "single_pain": true, "single_cta": true, "no_pricing": true, "within_length": true, "no_overclaim": true }
+      },
+      "contact": { "to": "", "note_ar": "أضف بريد جهة الاتصال المعتمد قبل الإرسال — Dealix لا يرسل تلقائيًا." }
+    }
+  ],
+  "priorities": [
+    {
+      "rank": 1,
+      "what_ar": "أغلق قرار الـ Retainer مع Madar Logistics",
+      "why_now_ar": "أعلى lead (80/100)، علاقة دافئة، تشخيص مُسلَّم، والقرار معلّق — أقرب إيراد متكرر.",
+      "est_minutes": 30,
+      "linked_lead_id": "lead_madar_logistics"
+    },
+    {
+      "rank": 2,
+      "what_ar": "خصّص وأرسل draft عيادات الشفاء قبل فوات موعد ZATCA",
+      "why_now_ar": "موعد ZATCA Wave 24 في يونيو 2026 — الإلحاح التنظيمي يفتح الباب الآن تحديدًا.",
+      "est_minutes": 20,
+      "linked_lead_id": "lead_alshifa_specialized_clinics"
+    },
+    {
+      "rank": 3,
+      "what_ar": "راجع draft المجموعة الهندسية الوطنية وحدّد جهة الاتصال",
+      "why_now_ar": "ألم إيرادي محدّد (تسرّب فوترة أوامر التغيير) وعرض PCOS عالي القيمة.",
+      "est_minutes": 20,
+      "linked_lead_id": "lead_national_engineering_group"
+    }
+  ],
+  "intelligence_alerts": [
+    "موعد ZATCA Wave 24 (يونيو 2026) قريب جدًا — استخدمه كزاوية تواصل للقطاعات المنظَّمة (الصحة، الخدمات المالية).",
+    "PDPL مفعّل بغرامات تصل 5 مليون ريال — حزمة الحوكمة (AGP) مدخل قوي للشركات المترددة.",
+    "صفقة في خطر: قرار retainer لـ Madar Logistics معلّق منذ الربع الأول — تابع اليوم."
+  ]
+}

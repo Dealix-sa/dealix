@@ -88,6 +88,12 @@ export default function ArabicHomePage() {
             ابدأ تشخيص P1 — أسبوع واحد
           </a>
           <a
+            href="/ar/now"
+            className="rounded-2xl border border-white/20 px-8 py-4 text-lg font-semibold text-white hover:bg-white/10"
+          >
+            غرفة القيادة — الآن
+          </a>
+          <a
             href="/ar/pricing"
             className="rounded-2xl border border-white/20 px-8 py-4 text-lg font-semibold text-white hover:bg-white/10"
           >
@@ -195,6 +201,8 @@ export default function ArabicHomePage() {
             <a href="/ar/p1" className="hover:text-cyan-300">P1 تشخيص</a>
             <a href="/ar/p2" className="hover:text-emerald-300">P2 تشغيل شهري</a>
             <a href="/ar/p3" className="hover:text-violet-300">P3 قيادة تنفيذية</a>
+            <a href="/ar/services" className="hover:text-cyan-300">الخدمات</a>
+            <a href="/ar/now" className="hover:text-cyan-300">غرفة القيادة</a>
             <a href="/ar/pricing" className="hover:text-white">الأسعار</a>
             <a href="/ar/demo" className="hover:text-white">الديمو</a>
             <a href="/ar/zatca-readiness" className="hover:text-amber-300">ZATCA</a>
