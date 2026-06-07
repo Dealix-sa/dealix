@@ -50,6 +50,7 @@ description = "Global allowlist"
 paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
+    '''\.gitleaksignore$''',
     '''\.secrets\.baseline$''',
     # All test files contain intentional fake secrets (observability redaction
     # tests, secret-scanner self-tests, CLI fixture keys, auth-flow stubs).
