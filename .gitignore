@@ -113,6 +113,11 @@ dumps/
 !data/templates/
 # V4 ICP seed prospects — synthetic sample data for CI and lead scoring
 !data/prospects/
+# V4 CRM schema and sample data — required by V3 readiness check
+!data/crm/
+# V4 analytics and case study sample data
+!data/analytics/
+!data/case_studies/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
