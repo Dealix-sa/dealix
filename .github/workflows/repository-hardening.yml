@@ -53,5 +53,6 @@ jobs:
           scan-ref: .
           severity: CRITICAL,HIGH
           ignore-unfixed: true
+          trivyignores: .trivyignore
           format: table
           exit-code: '1'
