@@ -60,6 +60,9 @@ from api.routers import (
 )
 from api.routers import audit_export as audit_export_router
 
+# Dealix Now — daily founder operating pack (deterministic, public read, draft-only)
+from api.routers import now as now_router
+
 # Wave 13 — Full Ops Productization routers
 from api.routers import bottleneck_radar as bottleneck_radar_router
 from api.routers import business_metrics_board as business_metrics_board_router
@@ -374,6 +377,8 @@ def create_app() -> FastAPI:
     app.include_router(sprint_runner_router.router)
     app.include_router(founder_dashboard_router.router)
     app.include_router(audit_export_router.router)
+    # Dealix Now — daily founder operating pack (deterministic, public read, draft-only)
+    app.include_router(now_router.router)
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)
