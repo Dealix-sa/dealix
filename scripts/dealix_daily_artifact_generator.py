@@ -1,5 +1,5 @@
 from pathlib import Path
-import datetime, json
+import json
 out=Path('out/founder/daily_artifacts'); out.mkdir(parents=True, exist_ok=True)
 clients=['شركة تدريب الرياض','مكتب عقار جدة']
 if Path('data/preview/preview_clients.json').exists():
@@ -7,7 +7,8 @@ if Path('data/preview/preview_clients.json').exists():
         data=json.loads(Path('data/preview/preview_clients.json').read_text(encoding='utf-8'))
         if isinstance(data, list): clients=[c.get('name') or c.get('client') for c in data if isinstance(c,dict)] or clients
         elif isinstance(data, dict): clients=[c.get('name') or c.get('client') for c in data.get('clients',[]) if isinstance(c,dict)] or clients
-    except Exception: pass
+    except Exception:  # optional preview file — keep placeholder defaults
+        pass
 for client in clients[:3]:
     safe=client.replace(' ','_')
     (out/f'{safe}_followup_draft.md').write_text(f"""# Follow-up Draft — {client}
