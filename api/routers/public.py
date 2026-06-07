@@ -21,17 +21,6 @@ log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/public", tags=["public"])
 
 
-def _safe_log(value: object, limit: int = 120) -> str:
-    """Sanitize a value for logging.
-
-    Strips non-printable characters (including CR/LF and other control
-    chars) and truncates, so user-supplied form fields can't forge or
-    inject extra log lines (CodeQL: py/log-injection). Printable Unicode
-    (e.g. Arabic) is preserved.
-    """
-    return "".join(ch for ch in str(value) if ch.isprintable())[:limit]
-
-
 CALENDLY_URL = os.getenv(
     "CALENDLY_URL",
     "https://calendly.com/sami-assiri11/dealix-demo",
@@ -110,12 +99,14 @@ async def demo_request(req: Request) -> dict[str, Any]:
     except Exception:
         log.exception("lead_inbox_append_failed")
 
+    # No PII / no user-controlled strings in logs (non-negotiable #6 +
+    # CodeQL py/log-injection): record only lengths + a persisted flag.
     log.info(
-        "demo_request_accepted email=%s company=%s sector=%s lead_id=%s",
-        _safe_log(email),
-        _safe_log(company),
-        _safe_log(sector),
-        lead_id,
+        "demo_request_accepted email_len=%d company_len=%d sector_len=%d persisted=%s",
+        len(email),
+        len(company),
+        len(sector),
+        bool(lead_id),
     )
 
     # Wave 14B activation: fire transactional confirmation email — best-effort,
@@ -237,13 +228,15 @@ async def custom_ai_request(req: Request) -> dict[str, Any]:
     except Exception:
         log.exception("lead_inbox_append_failed")
 
+    # No PII / no user-controlled strings in logs (non-negotiable #6 +
+    # CodeQL py/log-injection): record only lengths + a persisted flag.
     log.info(
-        "custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s",
-        _safe_log(email),
-        _safe_log(company),
-        _safe_log(sector),
-        _safe_log(budget_band),
-        lead_id,
+        "custom_ai_request_accepted email_len=%d company_len=%d sector_len=%d budget_len=%d persisted=%s",
+        len(email),
+        len(company),
+        len(sector),
+        len(budget_band),
+        bool(lead_id),
     )
 
     # Wave: transactional confirmation — best-effort, never blocks the 200.

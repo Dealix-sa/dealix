@@ -51,6 +51,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Run Trivy via its official image. The pinned marketplace action tag
+      # (aquasecurity/trivy-action@0.24.0) no longer resolves; the image is
+      # stable and self-contained. Fails on fixable CRITICAL/HIGH vulns.
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
