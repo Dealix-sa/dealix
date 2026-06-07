@@ -1,0 +1,27 @@
+name: Dealix V10 Production Bridge
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-bridge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: V10 readiness
+        run: python scripts/dealix_v10_readiness_check.py
+      - name: Env contract
+        run: python scripts/dealix_env_contract_check.py --env-file .env.example
+      - name: Migration plan
+        run: python scripts/dealix_migration_plan.py
+      - name: E2E smoke manifest
+        run: python scripts/dealix_e2e_smoke_manifest.py
+      - name: Production go no-go
+        run: python scripts/dealix_production_go_no_go.py
