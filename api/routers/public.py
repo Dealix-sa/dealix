@@ -27,18 +27,6 @@ CALENDLY_URL = os.getenv(
 )
 
 
-def _safe_log(value: object, *, max_len: int = 120) -> str:
-    """Sanitize a user-provided value before logging.
-
-    Strips control characters (CR/LF/TAB and other non-printables) and caps
-    length so an attacker cannot forge or flood log lines via crafted input
-    (CodeQL py/log-injection).
-    """
-    text = str(value or "")
-    cleaned = "".join(ch for ch in text if ch.isprintable())
-    return cleaned[:max_len]
-
-
 @router.post("/demo-request")
 async def demo_request(req: Request) -> dict[str, Any]:
     """Public landing form — captures demo request and returns Calendly booking URL."""
@@ -111,13 +99,10 @@ async def demo_request(req: Request) -> dict[str, Any]:
     except Exception:
         log.exception("lead_inbox_append_failed")
 
-    log.info(
-        "demo_request_accepted email=%s company=%s sector=%s lead_id=%s",
-        _safe_log(email),
-        _safe_log(company),
-        _safe_log(sector),
-        lead_id,
-    )
+    # Do not log user-provided strings (log-injection + PDPL/PII hygiene).
+    # The full record — incl. email/company/sector — is in the lead-inbox and
+    # retrievable by lead_id via GET /api/v1/public/leads.
+    log.info("demo_request_accepted lead_id=%s has_sector=%s", lead_id, bool(sector))
 
     # Wave 14B activation: fire transactional confirmation email — best-effort,
     # never blocks the 200 response. Whitelisted kind only; Gmail OAuth
@@ -206,12 +191,8 @@ async def early_access(req: Request) -> dict[str, Any]:
     except Exception:
         log.exception("lead_inbox_append_failed")
 
-    log.info(
-        "early_access_accepted email=%s source=%s lead_id=%s",
-        _safe_log(email),
-        _safe_log(source),
-        lead_id,
-    )
+    # Server-generated lead_id only — no user-provided strings in logs.
+    log.info("early_access_accepted lead_id=%s", lead_id)
 
     return {
         "ok": True,
@@ -250,11 +231,12 @@ async def partner_application(req: Request) -> dict[str, Any]:
     if not name or not company or "@" not in email:
         raise HTTPException(status_code=422, detail="missing_required_fields")
 
+    # Booleans/derived flags only — never user-provided strings (log-injection).
     log.info(
-        "partner_application_received company=%s type=%s clients=%s",
-        _safe_log(company),
-        _safe_log(ptype),
-        _safe_log(active_clients),
+        "partner_application_received has_phone=%s has_services=%s has_why=%s",
+        bool(phone),
+        bool(services),
+        bool(why),
     )
 
     try:
