@@ -18,6 +18,8 @@ credentials/
 *_credentials*
 # Wave 8 exceptions — these are scripts/tests, not credential files
 !scripts/dealix_customer_credentials_check.py
+# V5 security audit script — scans for secrets, is not itself a secret
+!scripts/dealix_secret_smoke_check.py
 !tests/test_wave8_customer_credentials_check.py
 !docs/WAVE8_CUSTOMER_CREDENTIAL_READINESS.md
 !docs/wave8/customer_credentials.example.env
@@ -40,6 +42,8 @@ eggs/
 .eggs/
 lib/
 lib64/
+# Next.js src/lib is source code, not a Python lib dir
+!frontend/src/lib/
 parts/
 sdist/
 var/
@@ -107,6 +111,14 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V5 Acquisition machine — seed lists, campaigns, prospects (synthetic templates, no PII)
+!data/market/
+!data/prospects/
+!data/campaigns/
+!data/crm/
+!data/analytics/
+!data/case_studies/
+!data/referrals/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -145,6 +157,9 @@ Thumbs.db
 node_modules/
 .next/
 out/
+# V5 outreach drafts — committed as review artifacts, not automated sends
+!out/outreach_drafts/
+!out/offers/
 .cache/
 *.tsbuildinfo
 
