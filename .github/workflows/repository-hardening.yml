@@ -35,7 +35,7 @@ jobs:
             | tar -xz -C /usr/local/bin gitleaks
 
       - name: Run Gitleaks
-        run: gitleaks detect --source . --redact --exit-code 1 --report-format table
+        run: gitleaks detect --source . --config .gitleaks.toml --redact --exit-code 1 --report-format table
 
   filesystem-scan:
     name: Trivy filesystem scan
