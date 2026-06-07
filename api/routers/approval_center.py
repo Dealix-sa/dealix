@@ -29,9 +29,15 @@ log = get_logger(__name__)
 
 @router.get("/status")
 async def status() -> dict[str, Any]:
+    store = get_default_approval_store()
+    backend = type(store).__name__
     return {
         "module": "approval_center",
-        "backend": "in_memory",
+        # Reflect the actual configured backend (durable Postgres survives
+        # redeploys; in-memory ApprovalStore does not). Toggle via
+        # DEALIX_APPROVAL_STORE_BACKEND=postgres + DATABASE_URL.
+        "backend": backend,
+        "durable": backend != "ApprovalStore",
         "swappable_to_redis": True,
         "guardrails": {
             "no_live_send": True,

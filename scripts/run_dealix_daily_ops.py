@@ -33,6 +33,14 @@ def _admin_key() -> str:
     return os.environ.get("DEALIX_ADMIN_API_KEY") or os.environ.get("DEALIX_API_KEY") or ""
 
 
+def _api_key() -> str:
+    """General API key for the APIKeyMiddleware (X-API-Key) gate.
+
+    Falls back to the admin key so a single configured secret still works.
+    """
+    return os.environ.get("DEALIX_API_KEY") or os.environ.get("DEALIX_ADMIN_API_KEY") or ""
+
+
 def _http_json(
     method: str,
     path: str,
@@ -41,8 +49,9 @@ def _http_json(
     query: str = "",
 ) -> dict[str, Any] | None:
     base = _api_base()
-    key = _admin_key()
-    if not base or not key:
+    admin_key = _admin_key()
+    api_key = _api_key()
+    if not base or not admin_key:
         return None
     url = f"{base}{path}"
     if query:
@@ -52,8 +61,11 @@ def _http_json(
         url,
         data=data,
         headers={
-            "X-Admin-API-Key": key,
             "Content-Type": "application/json",
+            # APIKeyMiddleware guards every non-public /api/* path via X-API-Key.
+            "X-API-Key": api_key,
+            # Admin routers (e.g. /api/v1/ops-autopilot/*) add require_admin_key.
+            "X-Admin-API-Key": admin_key,
         },
         method=method,
     )
@@ -119,6 +131,69 @@ def step_war_room_sync() -> int:
     return subprocess.call([py, str(script)], cwd=REPO_ROOT)
 
 
+def _extract_brief_counts(health: dict[str, Any] | None) -> dict[str, str]:
+    """Best-effort map of full-ops-health → founder-brief CLI flags.
+
+    Defensive by design: only emits flags it can confidently resolve, so an
+    unrecognized health shape yields ``{}`` and the brief still renders with
+    honest zeros (never fabricated numbers — Article 8).
+    """
+    out: dict[str, str] = {}
+    if not isinstance(health, dict):
+        return out
+    candidates = [health]
+    for k in ("signals", "operator_signals", "bottleneck", "summary", "data"):
+        v = health.get(k)
+        if isinstance(v, dict):
+            candidates.append(v)
+    mapping = {
+        "--blocking-approvals": ("blocking_approvals", "blocking_approvals_count", "pending_approvals"),
+        "--pending-payments": ("pending_payments", "pending_payment_confirmations"),
+        "--pending-proof-packs": ("pending_proof_packs", "pending_proof_packs_to_send"),
+        "--overdue-followups": ("overdue_followups",),
+        "--sla-at-risk": ("sla_at_risk", "sla_at_risk_tickets"),
+    }
+    for flag, keys in mapping.items():
+        for src in candidates:
+            val = next((src[k] for k in keys if isinstance(src.get(k), int) and src[k] > 0), None)
+            if val is not None:
+                out[flag] = str(val)
+                break
+    return out
+
+
+def step_founder_brief(*, health: dict[str, Any] | None = None) -> int:
+    """Wave 15 founder daily brief → data/founder_briefs/today_<date>.md.
+
+    Pure-local composition (Bottleneck Radar + service catalog + today's single
+    action). Works offline; reflects real counts when ops-health is available.
+    """
+    py = sys.executable
+    script = REPO_ROOT / "scripts" / "dealix_founder_daily_brief.py"
+    if not script.is_file():
+        return 0
+    date = datetime.now(UTC).strftime("%Y-%m-%d")
+    out = BRIEFS_DIR / f"today_{date}.md"
+    args = [py, str(script), "--out", str(out)]
+    for flag, val in _extract_brief_counts(health).items():
+        args += [flag, val]
+    return subprocess.call(args, cwd=REPO_ROOT)
+
+
+def step_daily_lead_prep() -> int:
+    """Wave 12.8 scored lead board → data/wave12/daily_lead_prep/<date>.{json,md}.
+
+    Auto-sources from lead_inbox.jsonl when no CSV is supplied. Exit code 1 means
+    "no candidates yet" (informational), which is not an ops failure.
+    """
+    py = sys.executable
+    script = REPO_ROOT / "scripts" / "dealix_daily_lead_prep.py"
+    if not script.is_file():
+        return 0
+    rc = subprocess.call([py, str(script)], cwd=REPO_ROOT)
+    return 0 if rc in (0, 1) else rc
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--dry-run", action="store_true")
@@ -139,20 +214,23 @@ def main() -> int:
         print("4. apply_kpi_founder_commercial.py --status")
         print("5. commercial_war_room_sync.py")
         print("6. founder_commercial_digest.py")
+        print("7. dealix_founder_daily_brief.py -> data/founder_briefs/today_DATE.md")
+        print("8. dealix_daily_lead_prep.py -> data/wave12/daily_lead_prep/DATE.{json,md}")
         print("DEALIX_DAILY_OPS_VERDICT=READY")
         return 0
 
     degraded = False
+    health: dict[str, Any] | None = None
 
     if not args.skip_api and _api_base() and _admin_key():
-        print("== 1/6 Postgres -> Autopilot replay ==")
+        print("== 1/8 Postgres -> Autopilot replay ==")
         replay = step_replay_postgres(limit=args.replay_limit)
         if replay:
             print(json.dumps(replay, ensure_ascii=False, indent=2))
         else:
             degraded = True
 
-        print("\n== 2/6 Full Ops Health ==")
+        print("\n== 2/8 Full Ops Health ==")
         health = step_full_ops_health()
         if health:
             hp = BRIEFS_DIR / f"ops_health_{date}.json"
@@ -161,7 +239,7 @@ def main() -> int:
         else:
             degraded = True
 
-        print("\n== 3/6 Weekly marketing pack (Monday only) ==")
+        print("\n== 3/8 Weekly marketing pack (Monday only) ==")
         wp = step_weekly_pack_if_monday()
         if wp:
             print(json.dumps(wp, ensure_ascii=False, indent=2))
@@ -180,14 +258,20 @@ def main() -> int:
         print(f"\nDEALIX_DAILY_OPS_VERDICT={verdict}")
         return 0
 
-    print("\n== 4/6 KPI commercial status ==")
+    print("\n== 4/8 KPI commercial status ==")
     step_kpi_status()
 
-    print("\n== 5/6 War Room sync ==")
+    print("\n== 5/8 War Room sync ==")
     step_war_room_sync()
 
-    print("\n== 6/6 Commercial digest ==")
+    print("\n== 6/8 Commercial digest ==")
     step_commercial_digest()
+
+    print("\n== 7/8 Founder daily brief ==")
+    step_founder_brief(health=health)
+
+    print("\n== 8/8 Daily lead prep (scored board) ==")
+    step_daily_lead_prep()
 
     verdict = "DEGRADED" if degraded else "READY"
     print(f"\nDEALIX_DAILY_OPS_VERDICT={verdict}")

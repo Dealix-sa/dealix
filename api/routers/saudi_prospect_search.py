@@ -1,7 +1,9 @@
 """Saudi B2B prospect search endpoint (W9.8).
 
-Surfaces the 287 Saudi B2B accounts already in the data lake as a
-searchable read-only API. Used by:
+Surfaces the Saudi B2B accounts present in the lead graph (the `accounts`
+table / ``AccountRecord``) as a searchable read-only API. The result set
+reflects whatever the legitimate inflows (warm-list intake, Google Places
+discovery, inbound forms) have populated — never fabricated rows. Used by:
 
   - Sales team prep: search prospects before outreach
   - Customer LaaS dashboard: customer can preview ICP filter results
@@ -39,16 +41,25 @@ SIZE_BANDS = {"1_50", "50_250", "250_1000", "1000_5000", "5000_plus"}
 
 
 def _safe_account_view(account: Any) -> dict[str, Any]:
-    """Return only PDPL-safe public fields. No emails, no personal names."""
+    """Return only PDPL-safe public fields. No emails, no personal names.
+
+    Reads ``AccountRecord`` columns (``company_name``, ``sector``, ``city`` …)
+    plus best-effort enrichment metadata from the ``extra`` JSON blob. Falls
+    back to legacy attribute names so the projection stays stable.
+    """
+    extra = getattr(account, "extra", None) or {}
+    if not isinstance(extra, dict):
+        extra = {}
     return {
         "id": getattr(account, "id", None),
-        "name": getattr(account, "name", None),
+        "name": getattr(account, "company_name", None) or getattr(account, "name", None),
         "domain": getattr(account, "domain", None),
-        "sector": getattr(account, "industry", None) or getattr(account, "sector", None),
-        "size_band": getattr(account, "size_band", None),
-        "region": getattr(account, "region", None),
+        "sector": getattr(account, "sector", None) or getattr(account, "industry", None),
+        "size_band": extra.get("size_band") or getattr(account, "size_band", None),
+        "region": getattr(account, "city", None) or getattr(account, "region", None),
         "city": getattr(account, "city", None),
-        "founded_year": getattr(account, "founded_year", None),
+        "country": getattr(account, "country", None),
+        "founded_year": extra.get("founded_year") or getattr(account, "founded_year", None),
         # Decline to expose: contact_name, email, phone, internal_score
     }
 
@@ -86,7 +97,7 @@ async def search_prospects(
     try:
         from sqlalchemy import func, or_, select
 
-        from db.models import CompanyRecord  # type: ignore
+        from db.models import AccountRecord  # type: ignore
         from db.session import async_session_factory
     except Exception:
         # Graceful degrade — surface empty results with hint
@@ -99,30 +110,36 @@ async def search_prospects(
         }
 
     async with async_session_factory()() as session:
-        stmt = select(CompanyRecord)
-        count_stmt = select(func.count()).select_from(CompanyRecord)
+        stmt = select(AccountRecord).where(AccountRecord.deleted_at.is_(None))
+        count_stmt = (
+            select(func.count())
+            .select_from(AccountRecord)
+            .where(AccountRecord.deleted_at.is_(None))
+        )
 
         if sector is not None:
-            stmt = stmt.where(CompanyRecord.industry == sector)
-            count_stmt = count_stmt.where(CompanyRecord.industry == sector)
+            stmt = stmt.where(AccountRecord.sector == sector)
+            count_stmt = count_stmt.where(AccountRecord.sector == sector)
         if region is not None:
-            stmt = stmt.where(CompanyRecord.region == region)
-            count_stmt = count_stmt.where(CompanyRecord.region == region)
-        if size_band is not None:
-            stmt = stmt.where(CompanyRecord.size_band == size_band)
-            count_stmt = count_stmt.where(CompanyRecord.size_band == size_band)
+            # Saudi "regions" exposed here are city-level; match case-insensitively
+            # against AccountRecord.city (the column the discovery pipeline fills).
+            stmt = stmt.where(func.lower(AccountRecord.city) == region.lower())
+            count_stmt = count_stmt.where(func.lower(AccountRecord.city) == region.lower())
+        # size_band is not a first-class AccountRecord column (it lives in the
+        # `extra` enrichment blob when available); it is validated + echoed but
+        # not DB-filtered to avoid silently dropping un-enriched rows.
         if q:
             pattern = f"%{q}%"
             stmt = stmt.where(
-                or_(CompanyRecord.name.ilike(pattern),
-                    CompanyRecord.domain.ilike(pattern))
+                or_(AccountRecord.company_name.ilike(pattern),
+                    AccountRecord.domain.ilike(pattern))
             )
             count_stmt = count_stmt.where(
-                or_(CompanyRecord.name.ilike(pattern),
-                    CompanyRecord.domain.ilike(pattern))
+                or_(AccountRecord.company_name.ilike(pattern),
+                    AccountRecord.domain.ilike(pattern))
             )
 
-        stmt = stmt.order_by(CompanyRecord.name).limit(limit).offset(offset)
+        stmt = stmt.order_by(AccountRecord.company_name).limit(limit).offset(offset)
         try:
             rows = (await session.execute(stmt)).scalars().all()
             total = (await session.execute(count_stmt)).scalar() or 0

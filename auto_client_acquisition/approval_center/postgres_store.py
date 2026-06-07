@@ -171,6 +171,79 @@ class PostgresApprovalStore:
             self._write_items(items)
         return req
 
+    def expire_overdue(self) -> int:
+        """Sweep pending requests whose expires_at has passed (pending → expired).
+
+        Contract parity with :class:`ApprovalStore.expire_overdue`. Returns the
+        count of expired items; persists only when something changed.
+        """
+        now = datetime.now(UTC)
+        expired_count = 0
+        with self._lock:
+            items = self._read_items()
+            for req in items.values():
+                if (
+                    ApprovalStatus(req.status) == ApprovalStatus.PENDING
+                    and req.expires_at is not None
+                    and req.expires_at < now
+                ):
+                    req.status = ApprovalStatus.EXPIRED
+                    req.updated_at = now
+                    req.edit_history.append(self._audit_entry("system", "expire", {}))
+                    expired_count += 1
+            if expired_count:
+                self._write_items(items)
+        return expired_count
+
+    def bulk_approve(
+        self,
+        *,
+        who: str,
+        proof_impact_prefix: str | None = None,
+        approval_ids: list[str] | None = None,
+    ) -> dict[str, Any]:
+        """Bulk-approve pending requests by ids or proof_impact prefix.
+
+        Contract parity with :class:`ApprovalStore.bulk_approve`.
+        """
+        approved: list[str] = []
+        failed: list[dict[str, Any]] = []
+        with self._lock:
+            items = self._read_items()
+            if approval_ids:
+                candidates = [r for r in items.values() if r.approval_id in approval_ids]
+            elif proof_impact_prefix:
+                candidates = [
+                    r
+                    for r in items.values()
+                    if (r.proof_impact or "").startswith(proof_impact_prefix)
+                    and ApprovalStatus(r.status) == ApprovalStatus.PENDING
+                ]
+            else:
+                return {
+                    "approved": [],
+                    "failed": [],
+                    "total": 0,
+                    "reason": "either approval_ids or proof_impact_prefix required",
+                }
+            for req in candidates:
+                try:
+                    assert_can_approve(req)
+                    req.status = ApprovalStatus.APPROVED
+                    req.edit_history.append(self._audit_entry(who, "bulk_approve", {}))
+                    req.updated_at = datetime.now(UTC)
+                    approved.append(req.approval_id)
+                except Exception as e:  # noqa: BLE001 — surface per-item reason
+                    failed.append({"id": req.approval_id, "reason": str(e)})
+            if approved:
+                self._write_items(items)
+        return {"approved": approved, "failed": failed, "total": len(approved) + len(failed)}
+
+    def clear(self) -> None:
+        """Test helper — wipe all stored approvals (contract parity)."""
+        with self._lock:
+            self._write_items({})
+
     @staticmethod
     def _require(items: dict[str, ApprovalRequest], approval_id: str) -> ApprovalRequest:
         req = items.get(approval_id)
