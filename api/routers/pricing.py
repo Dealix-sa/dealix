@@ -247,7 +247,7 @@ async def record_usage(req: Request) -> dict[str, Any]:
     # `claim` returns True on first-write only — second attempt returns False.
     idem = IdempotencyStore(prefix="laas:")
     record_key = f"{plan}:{customer_handle}:{event_id}"
-    if not idem.claim(record_key, ttl_seconds=30 * 86400):  # 30-day window
+    if not idem.claim(record_key, ttl_seconds=30 * 86400):  # 30-day window — gitleaks:allow (TTL math, not a secret)
         return {
             "status": "duplicate",
             "event_id": event_id,

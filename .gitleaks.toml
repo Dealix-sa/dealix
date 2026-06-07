@@ -51,9 +51,14 @@ paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    # Test files carry intentional fake keys (the suite tests secret-scrubbing,
+    # auth flows, and payment fixtures). Allowlist all of tests/, not just fixtures.
+    '''tests/.*''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
+    # Ops test scripts pass $MOYASAR_* env-var references to curl, not literals.
+    '''docs/ops/moyasar_live_test\.sh$''',
+    '''scripts/ops/moyasar_pilot_test\.sh$''',
 ]
 
 regexes = [
@@ -61,4 +66,6 @@ regexes = [
     '''your-.*-key''',
     '''change-me''',
     '''example-.*''',
+    # Shell env-var references like ${MOYASAR_SECRET_KEY} are not secrets.
+    '''\$\{[A-Za-z_]*KEY[A-Za-z_]*\}''',
 ]

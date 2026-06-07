@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 
-import { motion, useInView, useAnimation, AnimatePresence } from "framer-motion";
+import { motion, useInView, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { LocaleToggle } from "@/components/layout/LocaleToggle";
 
 // ---------------------------------------------------------------------------
-// Static data
+// Static data — honest, no fabricated clients / metrics / testimonials.
+// Every claim here is true about the platform itself, not invented results.
 // ---------------------------------------------------------------------------
 
 const FEATURES = [
@@ -17,8 +19,8 @@ const FEATURES = [
     icon: "⚡",
     ar: "محرك الإيرادات الذكي",
     en: "AI Revenue Engine",
-    descAr: "تحليل مسارات الإيراد وكشف التسرّب بالوقت الفعلي.",
-    descEn: "Real-time revenue pathway analysis and leakage detection.",
+    descAr: "تحليل مسارات الإيراد وكشف نقاط التسرّب المحتملة بالأدلة.",
+    descEn: "Evidence-based revenue pathway analysis and leakage detection.",
   },
   {
     icon: "📊",
@@ -31,46 +33,62 @@ const FEATURES = [
     icon: "🛡️",
     ar: "امتثال PDPL و ZATCA",
     en: "PDPL & ZATCA Compliance",
-    descAr: "جاهزية تلقائية لمتطلبات الفوترة الإلكترونية وحماية البيانات.",
-    descEn: "Automated readiness for e-invoicing and data protection.",
+    descAr: "جاهزية مدمجة لمتطلبات الفوترة الإلكترونية وحماية البيانات.",
+    descEn: "Built-in readiness for e-invoicing and data protection.",
   },
   {
     icon: "🤝",
     ar: "إدارة العملاء (CRM)",
     en: "CRM Management",
-    descAr: "CRM محكوم بالبيانات مع audit log كامل.",
+    descAr: "CRM محكوم بالبيانات مع سجل تدقيق كامل.",
     descEn: "Data-governed CRM with full audit trail.",
   },
   {
     icon: "📋",
-    ar: "تقارير مخصصة",
-    en: "Custom Reports",
-    descAr: "تقارير ثنائية اللغة قابلة للتصدير بضغطة واحدة.",
-    descEn: "One-click bilingual exportable reports.",
+    ar: "تقارير ثنائية اللغة",
+    en: "Bilingual Reports",
+    descAr: "تقارير عربية وإنجليزية قابلة للتصدير بضغطة واحدة.",
+    descEn: "One-click exportable Arabic & English reports.",
   },
   {
-    icon: "🕐",
-    ar: "دعم على مدار الساعة",
-    en: "24/7 Support",
-    descAr: "فريق متخصص متاح على مدار الساعة طوال أيام الأسبوع.",
-    descEn: "Dedicated team available around the clock.",
+    icon: "🔒",
+    ar: "حوكمة بالموافقة أولاً",
+    en: "Approval-First Governance",
+    descAr: "لا إجراء خارجي بدون موافقة بشرية — كل خطوة موثّقة.",
+    descEn: "No external action without human approval — every step logged.",
   },
 ];
 
-const LOGOS = [
-  { initials: "NA", name: "نماء للاستثمار" },
-  { initials: "RS", name: "رؤية للخدمات" },
-  { initials: "WA", name: "واحة التقنية" },
-  { initials: "SA", name: "سامي للتجارة" },
-  { initials: "MB", name: "مسار البناء" },
-  { initials: "DF", name: "دار الفهد" },
+// Replaces the previous fabricated "Trusted by" client logos.
+// These are the Saudi B2B sectors Dealix is built for — a design fact,
+// not a claim of existing customers.
+const SECTORS = [
+  { ar: "العقار والتطوير", en: "Real Estate & Development", icon: "🏗️" },
+  { ar: "المقاولات وإدارة المشاريع", en: "Contracting & Project Mgmt", icon: "📐" },
+  { ar: "إدارة المرافق والصيانة", en: "Facilities & Maintenance", icon: "🔧" },
+  { ar: "الخدمات الاحترافية B2B", en: "Professional B2B Services", icon: "💼" },
+  { ar: "التقنية و SaaS", en: "Technology & SaaS", icon: "💻" },
+  { ar: "الضيافة والفعاليات", en: "Hospitality & Events", icon: "🏨" },
 ];
 
+// Replaces the previous fabricated metrics (500 clients / 3.2x / 99.9%).
+// Every figure below is a verifiable property of the product, not a result.
 const STATS = [
-  { valueAr: "٣٫٢×", valueEn: "3.2x", labelAr: "نمو الإيرادات", labelEn: "Revenue Growth", target: 3.2 },
-  { valueAr: "+٥٠٠", valueEn: "+500", labelAr: "عميل راضٍ", labelEn: "Happy Clients", target: 500 },
-  { valueAr: "٩٩٫٩٪", valueEn: "99.9%", labelAr: "وقت التشغيل", labelEn: "Uptime", target: 99.9 },
-  { valueAr: "٤٨س", valueEn: "48h", labelAr: "وقت الإعداد", labelEn: "Setup Time", target: 48 },
+  { kind: "num", value: 7, suffix: "", labelAr: "أيام للتشخيص", labelEn: "Days to diagnostic" },
+  { kind: "num", value: 8, suffix: "", labelAr: "بوابات حوكمة صارمة", labelEn: "Immutable governance gates" },
+  { kind: "text", textAr: "ع+إ", textEn: "AR+EN", labelAr: "تقارير ثنائية اللغة", labelEn: "Bilingual deliverables" },
+  { kind: "text", textAr: "PDPL", textEn: "PDPL", labelAr: "أصلاً في التصميم", labelEn: "Native by design" },
+];
+
+// The custom / high-ticket systems (mirrors os/03_OFFERS.yml). This is the
+// "عندي كوستم وش يبي نسوي" surface — a real catalog, not a teaser.
+const CUSTOM_SYSTEMS = [
+  { icon: "🔧", ar: "نظام ذكاء الصيانة", en: "Maintenance Intelligence OS", descAr: "بلاغات، SLA، فنيون، وتقارير تُولَّد تلقائياً.", descEn: "Tickets, SLA, technicians and auto-generated reports." },
+  { icon: "📐", ar: "نظام التحكم بالمشاريع", en: "Project Controls AI OS", descAr: "متابعة المخاطر، التقدّم، الموافقات، وطلبات التغيير.", descEn: "Risk, progress, approvals and change-request tracking." },
+  { icon: "📚", ar: "المعرفة السيادية (RAG)", en: "Sovereign Knowledge / RAG", descAr: "مساعد داخلي على وثائقكم — آمن ومتحكَّم به.", descEn: "Internal assistant over your docs — secure & controlled." },
+  { icon: "🧭", ar: "مركز القيادة التنفيذي", en: "Executive Command Center", descAr: "لوحة واحدة للمخاطر والأداء والقرارات.", descEn: "One board for risk, performance and decisions." },
+  { icon: "🚀", ar: "نظام AI للإيرادات", en: "Revenue AI OS", descAr: "بحث، تواصل مُسوّد، ومتابعة بموافقتكم.", descEn: "Research, drafted outreach and follow-up — you approve." },
+  { icon: "⚖️", ar: "حزمة حوكمة الذكاء الاصطناعي", en: "AI Governance Pack", descAr: "سياسات، صلاحيات، وبوابات موافقة قابلة للتدقيق.", descEn: "Policies, permissions and auditable approval gates." },
 ];
 
 const PRICING = [
@@ -98,53 +116,47 @@ const PRICING = [
     featuresAr: ["كل ميزات المبدئي", "CRM محكوم", "تقارير أسبوعية", "دعم أولوية", "لوحة تحليلية", "امتثال ZATCA"],
     featuresEn: ["Everything in Starter", "Governed CRM", "Weekly reports", "Priority support", "Analytics dashboard", "ZATCA compliance"],
     popular: true,
-    ctaAr: "ابدأ النمو",
-    ctaEn: "Start growing",
-    href: "/offer/retainer",
+    ctaAr: "تحدث معنا",
+    ctaEn: "Talk to us",
+    href: "/contact?plan=growth",
   },
   {
-    tierAr: "المؤسسي",
-    tierEn: "Enterprise",
+    tierAr: "المؤسسي / المخصص",
+    tierEn: "Enterprise / Custom",
     priceAr: "مخصص",
     priceEn: "Custom",
     periodAr: "",
     periodEn: "",
-    featuresAr: ["كل ميزات النمو", "تكامل API مخصص", "مدير حساب مخصص", "SLA مضمون", "تدريب الفريق", "audit log كامل"],
-    featuresEn: ["Everything in Growth", "Custom API integration", "Dedicated account manager", "Guaranteed SLA", "Team training", "Full audit log"],
+    featuresAr: ["أنظمة AI مخصّصة بالكامل", "تكامل API مخصص", "مدير حساب مخصص", "SLA مضمون", "تدريب الفريق", "سجل تدقيق كامل"],
+    featuresEn: ["Fully bespoke AI systems", "Custom API integration", "Dedicated account manager", "Guaranteed SLA", "Team training", "Full audit log"],
     popular: false,
-    ctaAr: "تحدث مع فريقنا",
-    ctaEn: "Talk to our team",
-    href: "/contact",
+    ctaAr: "صمّم نظامك",
+    ctaEn: "Design your system",
+    href: "/custom",
   },
 ];
 
-const TESTIMONIALS = [
+const HOW_IT_WORKS = [
   {
-    nameAr: "أحمد الغامدي",
-    nameEn: "Ahmad Al-Ghamdi",
-    companyAr: "واحة التقنية، الرياض",
-    companyEn: "Oasis Tech, Riyadh",
-    quoteAr: "كشف Dealix تسرّب إيراد بنسبة 18% لم نكن نعلم بوجوده. أول Proof Pack كان يستحق أضعاف تكلفته.",
-    quoteEn: "Dealix uncovered 18% revenue leakage we didn't know existed. The first Proof Pack was worth many times its cost.",
-    stars: 5,
+    n: "1",
+    ar: "تشخيص محكوم بالأدلة",
+    en: "Evidence-governed diagnostic",
+    descAr: "خلال ٧ أيام نكشف أين يتسرّب الإيراد ونحدّد فرص الـ AI العملية في سير عملكم.",
+    descEn: "In 7 days we map where revenue leaks and pinpoint practical AI opportunities in your workflow.",
   },
   {
-    nameAr: "سارة المطيري",
-    nameEn: "Sara Al-Mutairi",
-    companyAr: "مسار البناء، جدة",
-    companyEn: "Masar Construction, Jeddah",
-    quoteAr: "جهّزنا لـ ZATCA Wave 24 في أقل من أسبوعين. الفريق احترافي والنتائج قابلة للقياس.",
-    quoteEn: "They had us ZATCA Wave 24 ready in under two weeks. Professional team, measurable results.",
-    stars: 5,
+    n: "2",
+    ar: "Proof Pack وخطة Pilot",
+    en: "Proof Pack & pilot plan",
+    descAr: "تسليم ثنائي اللغة مع عائد مُقدّر (تقدير صريح) وخطة تجربة واقعية محدّدة.",
+    descEn: "A bilingual deliverable with clearly-flagged estimated ROI and a concrete, realistic pilot plan.",
   },
   {
-    nameAr: "محمد القحطاني",
-    nameEn: "Mohammed Al-Qahtani",
-    companyAr: "دار الفهد للخدمات، الدمام",
-    companyEn: "Dar Al-Fahd Services, Dammam",
-    quoteAr: "لوحة التحكم التحليلية غيّرت طريقة اتخاذ قراراتنا. بيانات واضحة، governance محكم.",
-    quoteEn: "The analytics dashboard transformed how we make decisions. Clear data, tight governance.",
-    stars: 5,
+    n: "3",
+    ar: "تنفيذ بموافقتك",
+    en: "Execute with your approval",
+    descAr: "نبني ونشغّل النظام — وكل إجراء خارجي يمرّ بموافقة بشرية منكم. لا مفاجآت.",
+    descEn: "We build and run the system — every external action passes your human approval. No surprises.",
   },
 ];
 
@@ -153,7 +165,7 @@ const TRUST_BADGES = [
   { icon: "🧾", ar: "جاهز لـ ZATCA", en: "ZATCA Ready" },
   { icon: "🇸🇦", ar: "صنع في السعودية", en: "Saudi-First" },
   { icon: "🚫", ar: "لا تسويق بارد آلي", en: "No Cold Outreach" },
-  { icon: "📋", ar: "audit log كامل", en: "Full Audit Log" },
+  { icon: "📋", ar: "سجل تدقيق كامل", en: "Full Audit Log" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -185,8 +197,8 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
 
   useEffect(() => {
     if (!inView) return;
-    const duration = 1600;
-    const steps = 48;
+    const duration = 1400;
+    const steps = 40;
     const increment = target / steps;
     let current = 0;
     const timer = setInterval(() => {
@@ -205,13 +217,92 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
   );
 }
 
-function StarRating({ count }: { count: number }) {
+/** Real email capture — posts to the same-origin lead route, which forwards
+ *  to the backend founder lead-inbox. Degrades to a Calendly fallback. */
+function EmailCapture({ source, isAr, locale }: { source: string; isAr: boolean; locale: string }) {
+  const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+  const [calendly, setCalendly] = useState("");
+  const [error, setError] = useState("");
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setBusy(true);
+    setError("");
+    try {
+      const res = await fetch("/api/early-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source, locale, website }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.ok === false) {
+        throw new Error(data.detail || "failed");
+      }
+      setCalendly(data.calendly_url || "");
+      setDone(true);
+    } catch {
+      setError(isAr ? "تعذّر الإرسال — حاول مجدداً." : "Couldn't submit — please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (done) {
+    return (
+      <div className="w-full text-center py-4 px-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-sm">
+        <p className="font-medium">
+          {isAr ? "تم الاستلام — سنتواصل معك قريبًا." : "Received — we'll be in touch shortly."}
+        </p>
+        {calendly && (
+          <a
+            href={calendly}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block mt-2 text-gold-300 underline underline-offset-4 hover:text-gold-200"
+          >
+            {isAr ? "أو احجز مكالمة الآن ←" : "Or book a call now →"}
+          </a>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <span key={i} className="text-gold-400 text-sm">★</span>
-      ))}
-    </div>
+    <form onSubmit={submit} className="flex flex-col sm:flex-row gap-3 w-full">
+      {/* honeypot — visually hidden */}
+      <input
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+        value={website}
+        onChange={(e) => setWebsite(e.target.value)}
+        className="hidden"
+        aria-hidden
+      />
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        placeholder={isAr ? "البريد الإلكتروني للعمل" : "Work email address"}
+        className="flex-1 h-12 rounded-xl bg-white/8 border border-white/15 px-4 text-white placeholder-white/40 text-sm focus:outline-none focus:border-gold-500/60 focus:bg-white/12 transition-colors"
+      />
+      <Button
+        type="submit"
+        size="lg"
+        disabled={busy}
+        className="h-12 px-7 bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 whitespace-nowrap shadow-lg shadow-gold-500/25"
+      >
+        {busy ? (isAr ? "جارٍ..." : "...") : isAr ? "ابدأ مجاناً" : "Start Free"}
+      </Button>
+      {error && (
+        <p className="w-full text-xs text-red-300 mt-1 sm:absolute sm:mt-14">{error}</p>
+      )}
+    </form>
   );
 }
 
@@ -225,9 +316,6 @@ export function CommercialLaunchHome() {
   const dir = isAr ? "rtl" : "ltr";
   const base = `/${locale}`;
 
-  const [email, setEmail] = useState("");
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
-
   const heroControls = useAnimation();
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true });
@@ -236,26 +324,65 @@ export function CommercialLaunchHome() {
     if (heroInView) heroControls.start("visible");
   }, [heroInView, heroControls]);
 
-  function handleEmailSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (email.trim()) setEmailSubmitted(true);
-  }
+  const navLinks = [
+    { ar: "الخدمات", en: "Services", href: `${base}/services` },
+    { ar: "الحلول المخصصة", en: "Custom AI", href: `${base}/custom` },
+    { ar: "الأسعار", en: "Pricing", href: "#pricing" },
+    { ar: "التشخيص", en: "Diagnostic", href: `${base}/dealix-diagnostic` },
+    { ar: "تواصل", en: "Contact", href: `${base}/contact` },
+  ];
 
   return (
     <div dir={dir} className="min-h-screen bg-navy-500 text-white overflow-x-hidden">
+      {/* ------------------------------------------------------------------ */}
+      {/* NAV                                                                 */}
+      {/* ------------------------------------------------------------------ */}
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-navy-500/80 backdrop-blur-md">
+        <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between gap-4">
+          <Link
+            href={base}
+            className="text-xl font-bold bg-gradient-to-r from-gold-400 to-gold-300 bg-clip-text text-transparent"
+          >
+            Dealix
+          </Link>
+          <nav className="hidden md:flex items-center gap-6 text-sm">
+            {navLinks.map((l) => (
+              <Link
+                key={l.en}
+                href={l.href}
+                className="text-white/70 hover:text-gold-300 transition-colors"
+              >
+                {isAr ? l.ar : l.en}
+              </Link>
+            ))}
+          </nav>
+          <div className="flex items-center gap-3">
+            <div className="text-white/80">
+              <LocaleToggle />
+            </div>
+            <Button
+              asChild
+              size="sm"
+              className="bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300"
+            >
+              <Link href={`${base}/offer/lead-intelligence-sprint`}>
+                {isAr ? "ابدأ" : "Start"}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </header>
+
       {/* ------------------------------------------------------------------ */}
       {/* HERO                                                                */}
       {/* ------------------------------------------------------------------ */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden"
+        className="relative flex flex-col items-center justify-center px-4 py-24 md:py-32 overflow-hidden"
         style={{ background: "linear-gradient(135deg, #001F3F 0%, #001830 40%, #000d1a 70%, #001020 100%)" }}
       >
         {/* Animated gradient orbs */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 overflow-hidden"
-        >
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <motion.div
             animate={{ scale: [1, 1.15, 1], opacity: [0.18, 0.28, 0.18] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -268,30 +395,9 @@ export function CommercialLaunchHome() {
             className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full"
             style={{ background: "radial-gradient(circle, rgba(16,185,129,0.18) 0%, transparent 70%)" }}
           />
-          <motion.div
-            animate={{ x: [0, 30, 0], y: [0, -20, 0], opacity: [0.08, 0.14, 0.08] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full"
-            style={{ background: "radial-gradient(ellipse, rgba(0,31,63,0.6) 0%, transparent 70%)" }}
-          />
-          {/* Floating particles */}
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gold-400/20"
-              style={{
-                width: 4 + (i % 3) * 4,
-                height: 4 + (i % 3) * 4,
-                top: `${15 + i * 13}%`,
-                left: `${10 + i * 14}%`,
-              }}
-              animate={{ y: [0, -18, 0], opacity: [0.2, 0.5, 0.2] }}
-              transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.7 }}
-            />
-          ))}
         </div>
 
-        {/* ZATCA countdown badge */}
+        {/* Launch badge — honest positioning */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -300,7 +406,7 @@ export function CommercialLaunchHome() {
         >
           <Badge className="border-gold-500/40 bg-gold-500/10 text-gold-300 text-xs px-4 py-1.5 rounded-full backdrop-blur-sm">
             <span className="inline-block w-2 h-2 rounded-full bg-gold-400 me-2 animate-pulse" />
-            {isAr ? "ZATCA Wave 24 — الموعد النهائي يونيو 2026" : "ZATCA Wave 24 — Deadline June 2026"}
+            {isAr ? "مرحلة الإطلاق — انضم لأوائل العملاء" : "Now launching — join the founding cohort"}
           </Badge>
         </motion.div>
 
@@ -313,13 +419,13 @@ export function CommercialLaunchHome() {
         >
           <motion.div
             variants={fadeUp}
-            className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-lg px-8 py-12 md:px-16 md:py-16 shadow-2xl"
+            className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-lg px-8 py-12 md:px-16 md:py-14 shadow-2xl"
             style={{ boxShadow: "0 8px 64px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07)" }}
           >
             <motion.h1
               variants={fadeUp}
               custom={1}
-              className="font-arabic text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight"
               style={{ fontFamily: "'Noto Sans Arabic', 'IBM Plex Arabic', sans-serif" }}
             >
               {isAr ? (
@@ -347,8 +453,8 @@ export function CommercialLaunchHome() {
               className="mt-5 text-base md:text-lg text-white/70 max-w-xl mx-auto leading-relaxed"
             >
               {isAr
-                ? "كشف تسرّب الإيراد · حوكمة الذكاء الاصطناعي · امتثال ZATCA & PDPL — كل شيء في منصة واحدة محكومة بالدليل."
-                : "Revenue leakage detection · AI governance · ZATCA & PDPL compliance — all in one evidence-governed platform."}
+                ? "كشف تسرّب الإيراد · حوكمة الذكاء الاصطناعي · امتثال ZATCA و PDPL — في منصة واحدة محكومة بالدليل."
+                : "Revenue leakage detection · AI governance · ZATCA & PDPL compliance — in one evidence-governed platform."}
             </motion.p>
 
             <motion.div
@@ -362,7 +468,7 @@ export function CommercialLaunchHome() {
                 className="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 shadow-lg shadow-gold-500/25 text-base h-13 px-8"
               >
                 <Link href={`${base}/offer/lead-intelligence-sprint`}>
-                  {isAr ? "ابدأ تشخيصك المجاني" : "Start Free Diagnostic"}
+                  {isAr ? "ابدأ تشخيصك" : "Start Your Diagnostic"}
                 </Link>
               </Button>
               <Button
@@ -371,59 +477,43 @@ export function CommercialLaunchHome() {
                 variant="outline"
                 className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 backdrop-blur-sm text-base h-13 px-8"
               >
-                <Link href={`${base}/demo`}>
-                  {isAr ? "شاهد كيف يعمل" : "See How It Works"}
+                <Link href={`${base}/custom`}>
+                  {isAr ? "عندك حالة مخصّصة؟" : "Have a custom case?"}
                 </Link>
               </Button>
             </motion.div>
 
-            <motion.p
-              variants={fadeUp}
-              custom={4}
-              className="mt-5 text-xs text-white/40"
-            >
+            <motion.p variants={fadeUp} custom={4} className="mt-5 text-xs text-white/40">
               {isAr
-                ? "لا إرسال آلي · لا ادّعاء إيراد قبل الدفع · PDPL compliant"
-                : "No automated outbound · No revenue claims before payment · PDPL compliant"}
+                ? "لا إرسال آلي · لا ادّعاء إيراد قبل الإثبات · ملتزم بـ PDPL"
+                : "No automated outbound · No revenue claims before proof · PDPL compliant"}
             </motion.p>
           </motion.div>
-        </motion.div>
-
-        {/* Scroll cue */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center pt-1.5">
-            <div className="w-1 h-2 rounded-full bg-white/40" />
-          </div>
         </motion.div>
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* LOGOS / SOCIAL PROOF STRIP                                          */}
+      {/* SECTORS STRIP (honest — built for these sectors)                    */}
       {/* ------------------------------------------------------------------ */}
       <section className="bg-navy-600 border-y border-white/5 py-10 overflow-hidden">
         <p className="text-center text-xs font-semibold text-white/40 uppercase tracking-widest mb-6">
-          {isAr ? "يثق بنا" : "Trusted by"}
+          {isAr ? "مصمّم لقطاعات B2B السعودية" : "Built for Saudi B2B sectors"}
         </p>
         <div className="relative">
           <motion.div
-            className="flex gap-10 items-center"
+            className="flex gap-6 items-center"
             animate={{ x: isAr ? [0, "50%"] : [0, "-50%"] }}
-            transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
           >
-            {[...LOGOS, ...LOGOS].map((logo, i) => (
+            {[...SECTORS, ...SECTORS].map((s, i) => (
               <div
                 key={i}
                 className="flex-shrink-0 flex items-center gap-3 px-6 py-3 rounded-xl border border-white/8 bg-white/4 backdrop-blur-sm"
               >
-                <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-500/30 to-gold-400/10 border border-gold-500/20 flex items-center justify-center text-gold-400 font-bold text-sm">
-                  {logo.initials}
-                </div>
-                <span className="text-white/60 text-sm whitespace-nowrap font-medium">{logo.name}</span>
-                <span className="text-emerald-400 text-xs">✓</span>
+                <span className="text-xl">{s.icon}</span>
+                <span className="text-white/65 text-sm whitespace-nowrap font-medium">
+                  {isAr ? s.ar : s.en}
+                </span>
               </div>
             ))}
           </motion.div>
@@ -449,8 +539,8 @@ export function CommercialLaunchHome() {
           </motion.h2>
           <motion.p variants={fadeUp} custom={2} className="mt-3 text-white/60 max-w-xl mx-auto">
             {isAr
-              ? "ست أدوات متكاملة تعمل معاً لتحقيق نتائج قابلة للقياس."
-              : "Six integrated tools working together for measurable results."}
+              ? "ست قدرات متكاملة تعمل معاً لنتائج قابلة للقياس — بحوكمة في كل خطوة."
+              : "Six integrated capabilities working together for measurable results — governed at every step."}
           </motion.p>
         </motion.div>
 
@@ -480,7 +570,7 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* ANIMATED STATS                                                      */}
+      {/* STATS — honest product facts                                        */}
       {/* ------------------------------------------------------------------ */}
       <section
         className="py-20 px-4"
@@ -494,8 +584,11 @@ export function CommercialLaunchHome() {
           className="max-w-4xl mx-auto text-center mb-12"
         >
           <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold">
-            {isAr ? "أرقام تتحدث بنفسها" : "Numbers that speak for themselves"}
+            {isAr ? "مبني على مبادئ واضحة" : "Built on clear principles"}
           </motion.h2>
+          <motion.p variants={fadeUp} custom={1} className="mt-3 text-white/55 max-w-lg mx-auto text-sm">
+            {isAr ? "حقائق عن المنتج — لا أرقام عملاء مُختلقة." : "Product facts — not invented customer numbers."}
+          </motion.p>
         </motion.div>
 
         <motion.div
@@ -513,14 +606,10 @@ export function CommercialLaunchHome() {
               className="text-center rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm py-8 px-4"
             >
               <div className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-gold-300 to-gold-500 bg-clip-text text-transparent leading-none mb-3">
-                {s.target <= 100 && s.labelEn.includes("Uptime") ? (
-                  <span><AnimatedNumber target={99.9} suffix="%" /></span>
-                ) : s.target <= 100 && s.labelEn.includes("Growth") ? (
-                  <span><AnimatedNumber target={3.2} suffix="x" /></span>
-                ) : s.target === 48 ? (
-                  <span><AnimatedNumber target={48} suffix="h" /></span>
+                {s.kind === "num" ? (
+                  <AnimatedNumber target={s.value as number} suffix={s.suffix} />
                 ) : (
-                  <span>+<AnimatedNumber target={500} /></span>
+                  <span>{isAr ? s.textAr : s.textEn}</span>
                 )}
               </div>
               <p className="text-white/70 text-sm font-medium">{isAr ? s.labelAr : s.labelEn}</p>
@@ -530,9 +619,116 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* PRICING                                                             */}
+      {/* HOW IT WORKS (replaces fabricated testimonials)                     */}
       {/* ------------------------------------------------------------------ */}
       <section className="py-20 px-4 max-w-6xl mx-auto">
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          className="text-center mb-12"
+        >
+          <motion.p variants={fadeUp} className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
+            {isAr ? "كيف نعمل" : "How it works"}
+          </motion.p>
+          <motion.h2 variants={fadeUp} custom={1} className="text-3xl md:text-4xl font-bold">
+            {isAr ? "من التشخيص إلى التنفيذ — ثلاث خطوات" : "From diagnostic to execution — three steps"}
+          </motion.h2>
+        </motion.div>
+
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          className="grid gap-6 md:grid-cols-3"
+        >
+          {HOW_IT_WORKS.map((step, i) => (
+            <motion.div
+              key={step.n}
+              variants={fadeUp}
+              custom={i}
+              className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-7"
+              style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
+            >
+              <div className="w-11 h-11 rounded-full bg-gradient-to-br from-gold-500 to-gold-400 text-navy-500 font-bold text-lg flex items-center justify-center mb-4">
+                {step.n}
+              </div>
+              <h3 className="font-bold text-lg mb-2">{isAr ? step.ar : step.en}</h3>
+              <p className="text-sm text-white/65 leading-relaxed">{isAr ? step.descAr : step.descEn}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* CUSTOM AI SYSTEMS                                                    */}
+      {/* ------------------------------------------------------------------ */}
+      <section
+        className="py-20 px-4"
+        style={{ background: "linear-gradient(180deg, #000d1a 0%, #001528 100%)" }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            className="text-center mb-12"
+          >
+            <motion.p variants={fadeUp} className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
+              {isAr ? "الحلول المخصصة" : "Custom AI"}
+            </motion.p>
+            <motion.h2 variants={fadeUp} custom={1} className="text-3xl md:text-4xl font-bold">
+              {isAr ? "عندك حالة مخصّصة؟ نبنيها لك" : "Have a custom case? We build it"}
+            </motion.h2>
+            <motion.p variants={fadeUp} custom={2} className="mt-3 text-white/60 max-w-2xl mx-auto">
+              {isAr
+                ? "أنظمة AI agentic كاملة لقطاعك — من الصيانة والمشاريع إلى المعرفة السيادية ومراكز القيادة."
+                : "Full agentic AI systems for your sector — from maintenance and projects to sovereign knowledge and command centers."}
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {CUSTOM_SYSTEMS.map((c, i) => (
+              <motion.div
+                key={c.en}
+                variants={fadeUp}
+                custom={i}
+                className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-6 hover:border-gold-500/30 transition-colors"
+              >
+                <div className="text-3xl mb-3">{c.icon}</div>
+                <h3 className="font-bold text-base mb-1">{isAr ? c.ar : c.en}</h3>
+                <p className="text-sm text-white/60 leading-relaxed">{isAr ? c.descAr : c.descEn}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <div className="text-center mt-10">
+            <Button
+              asChild
+              size="lg"
+              className="bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 shadow-lg shadow-gold-500/25 px-8"
+            >
+              <Link href={`${base}/custom`}>
+                {isAr ? "صمّم نظامك المخصّص ←" : "Design your custom system →"}
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* PRICING                                                             */}
+      {/* ------------------------------------------------------------------ */}
+      <section id="pricing" className="py-20 px-4 max-w-6xl mx-auto scroll-mt-20">
         <motion.div
           variants={stagger}
           initial="hidden"
@@ -547,7 +743,7 @@ export function CommercialLaunchHome() {
             {isAr ? "خطة مناسبة لكل مرحلة" : "A plan for every stage"}
           </motion.h2>
           <motion.p variants={fadeUp} custom={2} className="mt-3 text-white/60 max-w-lg mx-auto">
-            {isAr ? "ابدأ بتشخيص واحد، ثم قرر." : "Start with one diagnostic, then decide."}
+            {isAr ? "ابدأ بتشخيص واحد، ثم قرّر." : "Start with one diagnostic, then decide."}
           </motion.p>
         </motion.div>
 
@@ -606,9 +802,7 @@ export function CommercialLaunchHome() {
                     : "bg-white/8 border border-white/15 text-white hover:bg-white/14"
                 }`}
               >
-                <Link href={`${base}${plan.href}`}>
-                  {isAr ? plan.ctaAr : plan.ctaEn}
-                </Link>
+                <Link href={`${base}${plan.href}`}>{isAr ? plan.ctaAr : plan.ctaEn}</Link>
               </Button>
             </motion.div>
           ))}
@@ -616,61 +810,7 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* TESTIMONIALS                                                        */}
-      {/* ------------------------------------------------------------------ */}
-      <section
-        className="py-20 px-4"
-        style={{ background: "linear-gradient(180deg, #000d1a 0%, #001528 100%)" }}
-      >
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          className="max-w-6xl mx-auto"
-        >
-          <motion.div variants={fadeUp} className="text-center mb-12">
-            <p className="text-gold-400 text-sm font-semibold uppercase tracking-widest mb-3">
-              {isAr ? "آراء عملائنا" : "Client Stories"}
-            </p>
-            <h2 className="text-3xl md:text-4xl font-bold">
-              {isAr ? "ما يقوله عملاؤنا" : "What our clients say"}
-            </h2>
-          </motion.div>
-
-          <motion.div
-            variants={stagger}
-            className="grid gap-6 md:grid-cols-3"
-          >
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={t.nameEn}
-                variants={fadeUp}
-                custom={i}
-                className="rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-7 flex flex-col gap-4"
-                style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}
-              >
-                <StarRating count={t.stars} />
-                <p className="text-white/80 text-sm leading-relaxed flex-1">
-                  &ldquo;{isAr ? t.quoteAr : t.quoteEn}&rdquo;
-                </p>
-                <div className="flex items-center gap-3 pt-2 border-t border-white/8">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gold-500/40 to-emerald-600/30 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                    {(isAr ? t.nameAr : t.nameEn)[0]}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold leading-tight">{isAr ? t.nameAr : t.nameEn}</p>
-                    <p className="text-xs text-white/50 mt-0.5">{isAr ? t.companyAr : t.companyEn}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* ------------------------------------------------------------------ */}
-      {/* TRUST CENTER STRIP                                                  */}
+      {/* TRUST STRIP                                                         */}
       {/* ------------------------------------------------------------------ */}
       <section className="py-10 px-4 border-y border-white/5 bg-navy-600 overflow-x-auto">
         <div className="flex gap-4 justify-start md:justify-center min-w-max mx-auto px-2">
@@ -689,7 +829,7 @@ export function CommercialLaunchHome() {
       </section>
 
       {/* ------------------------------------------------------------------ */}
-      {/* CTA SECTION                                                         */}
+      {/* CTA SECTION — real email capture                                    */}
       {/* ------------------------------------------------------------------ */}
       <section
         className="py-24 px-4 relative overflow-hidden"
@@ -731,53 +871,13 @@ export function CommercialLaunchHome() {
 
           <motion.p variants={fadeUp} custom={1} className="text-white/60 mb-8 text-lg">
             {isAr
-              ? "أدخل بريدك الإلكتروني واحصل على تقرير تشخيصي مجاني خلال 48 ساعة."
-              : "Enter your email and get a free diagnostic report within 48 hours."}
+              ? "اترك بريدك ونرسل لك خطوة البدء — أو احجز مكالمة مباشرة."
+              : "Leave your email and we'll send your first step — or book a call directly."}
           </motion.p>
 
-          <motion.form
-            variants={fadeUp}
-            custom={2}
-            onSubmit={handleEmailSubmit}
-            className={`flex flex-col sm:flex-row gap-3 max-w-md mx-auto ${isAr ? "sm:flex-row-reverse" : ""}`}
-          >
-            <AnimatePresence mode="wait">
-              {!emailSubmitted ? (
-                <motion.div
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex flex-col sm:flex-row gap-3 w-full"
-                >
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    placeholder={isAr ? "البريد الإلكتروني للشركة" : "Work email address"}
-                    className="flex-1 h-12 rounded-xl bg-white/8 border border-white/15 px-4 text-white placeholder-white/40 text-sm focus:outline-none focus:border-gold-500/60 focus:bg-white/12 transition-colors"
-                  />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="h-12 px-7 bg-gradient-to-r from-gold-500 to-gold-400 text-navy-500 font-bold hover:from-gold-400 hover:to-gold-300 whitespace-nowrap shadow-lg shadow-gold-500/25"
-                  >
-                    {isAr ? "ابدأ مجاناً" : "Start Free"}
-                  </Button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="thanks"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="w-full text-center py-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-medium text-sm"
-                >
-                  {isAr ? "تم الاستلام — سنتواصل معك خلال 48 ساعة." : "Received — we'll be in touch within 48 hours."}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.form>
+          <motion.div variants={fadeUp} custom={2} className="max-w-md mx-auto">
+            <EmailCapture source="landing.cta_footer" isAr={isAr} locale={locale} />
+          </motion.div>
 
           <motion.p variants={fadeUp} custom={3} className="mt-4 text-xs text-white/35">
             {isAr
@@ -790,13 +890,9 @@ export function CommercialLaunchHome() {
       {/* ------------------------------------------------------------------ */}
       {/* FOOTER                                                              */}
       {/* ------------------------------------------------------------------ */}
-      <footer
-        className="py-12 px-4 border-t border-white/6"
-        style={{ background: "#000d1a" }}
-      >
+      <footer className="py-12 px-4 border-t border-white/6" style={{ background: "#000d1a" }}>
         <div className="max-w-6xl mx-auto">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 mb-10">
-            {/* Brand */}
             <div className="lg:col-span-2">
               <div className="text-xl font-bold bg-gradient-to-r from-gold-400 to-gold-300 bg-clip-text text-transparent mb-3">
                 Dealix
@@ -808,16 +904,15 @@ export function CommercialLaunchHome() {
               </p>
             </div>
 
-            {/* Links */}
             <div>
               <p className="text-white/30 text-xs uppercase tracking-widest font-semibold mb-3">
                 {isAr ? "المنتج" : "Product"}
               </p>
               <ul className="space-y-2 text-sm text-white/55">
                 {[
+                  { ar: "الخدمات", en: "Services", href: "/services" },
+                  { ar: "الحلول المخصصة", en: "Custom AI", href: "/custom" },
                   { ar: "التشخيص", en: "Diagnostic", href: "/dealix-diagnostic" },
-                  { ar: "Proof Pack", en: "Proof Pack", href: "/proof-pack" },
-                  { ar: "الأسعار", en: "Pricing", href: "#pricing" },
                   { ar: "الشركاء", en: "Partners", href: "/partners" },
                 ].map((link) => (
                   <li key={link.href}>
@@ -838,7 +933,7 @@ export function CommercialLaunchHome() {
                   { ar: "من نحن", en: "About", href: "/about" },
                   { ar: "تواصل معنا", en: "Contact", href: "/contact" },
                   { ar: "سياسة الخصوصية", en: "Privacy", href: "/privacy" },
-                  { ar: "الشروط والأحكام", en: "Terms", href: "/terms" },
+                  { ar: "الثقة والامتثال", en: "Trust", href: "/trust" },
                 ].map((link) => (
                   <li key={link.href}>
                     <Link href={`${base}${link.href}`} className="hover:text-gold-400 transition-colors">
