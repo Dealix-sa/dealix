@@ -16,7 +16,6 @@ keys, no LLM, no implicit clock reads beyond the optional ``today`` default.
 
 from __future__ import annotations
 
-import logging
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
@@ -26,8 +25,6 @@ from dealix.now.offer_router import route_offer
 from dealix.now.safety import check_draft_safety
 from dealix.now.scoring import score_company
 from dealix.now.seed import load_targets
-
-log = logging.getLogger(__name__)
 
 SCHEMA_VERSION = "now-pack/1.0"
 _TZ_NAME = "Asia/Riyadh"

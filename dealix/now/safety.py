@@ -12,10 +12,7 @@ never sends.
 
 from __future__ import annotations
 
-import logging
 import re
-
-log = logging.getLogger(__name__)
 
 _MAX_WORDS = 150
 

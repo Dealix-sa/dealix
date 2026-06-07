@@ -21,16 +21,6 @@ log = logging.getLogger(__name__)
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _DEFAULT_CSV = _REPO_ROOT / "data" / "demo" / "saudi_b2b_demo.csv"
 
-_EXPECTED_COLUMNS = (
-    "company_name",
-    "sector",
-    "city",
-    "relationship_status",
-    "source",
-    "last_interaction",
-    "notes",
-)
-
 # Arabic tatweel + diacritics get stripped so dedupe matches the same
 # company written with cosmetic differences.
 _ARABIC_DIACRITICS = (

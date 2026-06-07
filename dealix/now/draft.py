@@ -19,10 +19,6 @@ Pure and deterministic: no network, no API keys, no LLM. Dealix never sends.
 
 from __future__ import annotations
 
-import logging
-
-log = logging.getLogger(__name__)
-
 DRAFT_STATUS = "draft — awaiting founder approval"
 
 _CONTACT_NOTE_AR = "أضف بريد جهة الاتصال المعتمد قبل الإرسال — Dealix لا يرسل تلقائيًا."

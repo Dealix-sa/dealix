@@ -10,14 +10,11 @@ Pure and deterministic: no network, no API keys, no LLM.
 
 from __future__ import annotations
 
-import logging
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 import yaml
-
-log = logging.getLogger(__name__)
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _OFFERS_YML = _REPO_ROOT / "os" / "03_OFFERS.yml"

@@ -44,6 +44,11 @@ def _now_iso() -> str:
     return datetime.now(UTC).isoformat()
 
 
+def _safe_log(value: object) -> str:
+    """Strip CR/LF so a crafted draft_id/actor can't forge extra log lines."""
+    return str(value).replace("\r", " ").replace("\n", " ")
+
+
 def _find_latest(draft_id: str) -> dict | None:
     """Return the most recent ledger record for ``draft_id``, or ``None``."""
     latest: dict | None = None
@@ -78,7 +83,12 @@ def record_decision(
     with path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(record, ensure_ascii=False))
         handle.write("\n")
-    log.info("now_decision_recorded draft_id=%s decision=%s actor=%s", draft_id, normalized, actor)
+    log.info(
+        "now_decision_recorded draft_id=%s decision=%s actor=%s",
+        _safe_log(draft_id),
+        normalized,
+        _safe_log(actor),
+    )
     return record
 
 

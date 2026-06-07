@@ -12,10 +12,6 @@ report — never sent.
 
 from __future__ import annotations
 
-import logging
-
-log = logging.getLogger(__name__)
-
 _FOOTER = (
     "*مُولَّد تلقائياً بواسطة Dealix Chief of Staff Agent — للقراءة اليومية فقط، "
     "لا يُرسل لأي طرف خارجي*"

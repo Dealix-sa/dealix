@@ -16,10 +16,6 @@ Pure and deterministic: no network, no API keys, no LLM, no clock reads.
 
 from __future__ import annotations
 
-import logging
-
-log = logging.getLogger(__name__)
-
 # ── Dimension weights / per-level score tables (mirror os/05_SCORING.yml) ──
 # Each dimension maps an ordered level name to its score. The first level is
 # the strongest. ``max_score`` equals the dimension weight.

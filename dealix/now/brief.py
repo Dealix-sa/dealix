@@ -14,10 +14,6 @@ Pure and deterministic: no network, no API keys, no LLM.
 
 from __future__ import annotations
 
-import logging
-
-log = logging.getLogger(__name__)
-
 # Arabic "what they do" templates keyed by sector. ``{city}`` is filled from
 # the row. These describe the sector generically; row-specific facts come from
 # public_signals only.

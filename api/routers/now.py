@@ -11,7 +11,6 @@ network, no API keys.
 
 from __future__ import annotations
 
-import logging
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
@@ -23,7 +22,6 @@ from dealix.now import (
     render_daily_brief_markdown,
 )
 
-log = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/now", tags=["now"])
 
 # The 12 founder metrics (os/FOUNDER_OPERATING_MANUAL.md "أهم 12 رقم"). Values
