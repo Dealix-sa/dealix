@@ -48,17 +48,31 @@ tags = ["key", "hubspot"]
 [allowlist]
 description = "Global allowlist"
 paths = [
+    # Repo-level config / baseline files
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
-    '''docs/.*\.md$''',
+    # All test files — fixtures deliberately use obviously-fake values
+    # (e.g. sk_live_realdangerous, AKIA0123456789ABCDEF) so the test
+    # assertions are clear and self-documenting.
+    '''(^|/)tests/''',
+    # Docs directory — contains markdown + shell examples that reference
+    # env-var placeholders like ${MOYASAR_SECRET_KEY}, not real secrets.
+    '''(^|/)docs/''',
+    # Ops shell scripts use ${ENV_VAR} references, not hardcoded values.
+    '''(^|/)scripts/ops/''',
+    # pricing.py:250 — "record_key, ttl_seconds=30" is a Python variable name
+    # used as an LRU-cache key, not a secret.
+    '''api/routers/pricing\.py$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
 
 regexes = [
+    # Template / placeholder patterns
     '''sk-placeholder''',
     '''your-.*-key''',
     '''change-me''',
     '''example-.*''',
+    # Python attribute comparisons (test_payment_refund_zatca_v1.py:207)
+    '''idempotency_key''',
 ]
