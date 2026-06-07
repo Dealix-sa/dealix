@@ -1,0 +1,24 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Dealix SaaS API",
+    "version": "0.9.0"
+  },
+  "paths": {
+    "/api/tenants": {
+      "post": {
+        "summary": "Create tenant"
+      }
+    },
+    "/api/usage": {
+      "post": {
+        "summary": "Log usage event"
+      }
+    },
+    "/api/audit": {
+      "post": {
+        "summary": "Log audit event"
+      }
+    }
+  }
+}

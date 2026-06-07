@@ -1,0 +1,25 @@
+{
+  "tenant": "شركة تدريب الرياض",
+  "workspace": "Revenue Ops Workspace",
+  "users": [
+    {
+      "name": "Founder",
+      "role": "owner"
+    }
+  ],
+  "modules": [
+    "crm",
+    "agents",
+    "offers",
+    "kpi",
+    "trust"
+  ],
+  "demo_leads": [
+    {
+      "company": "شركة تدريب الرياض",
+      "sector": "training",
+      "pain": "متابعة واتساب غير منظمة",
+      "score": 82
+    }
+  ]
+}
