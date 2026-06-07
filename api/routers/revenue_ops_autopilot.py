@@ -1624,6 +1624,25 @@ async def ops_targeting_p0_today(
     }
 
 
+@router_ops.get("/targeting/universe-today")
+async def ops_targeting_universe_today(
+    top_n: Annotated[int, Query(ge=1, le=30)] = 10,
+    rotate: Annotated[bool, Query()] = False,
+) -> dict[str, Any]:
+    """Real, sourced Saudi B2B target universe — today's batch.
+
+    Company-level **public** info only (no PII); every account carries a public
+    ``source_url`` and is warm-intro-first. Drafts are produced separately by the
+    approval-gated daily draft pack. See ``docs/ops/SAUDI_LEAD_MACHINE_REAL_AR.md``.
+    """
+    from scripts.dealix_target_universe import UniverseError, build_today_plan
+
+    try:
+        return build_today_plan(top_n=top_n, rotate=rotate)
+    except UniverseError as exc:
+        raise HTTPException(status_code=500, detail=f"universe_error:{exc}") from exc
+
+
 @router_ops.get("/targeting/today")
 async def ops_targeting_today(
     top_n: Annotated[int, Query(ge=1, le=30)] = 5,

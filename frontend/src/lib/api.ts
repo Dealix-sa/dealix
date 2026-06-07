@@ -556,6 +556,12 @@ export const api = {
       params: { top_n: topN },
     }),
 
+  getTargetingUniverseToday: (adminApiKey: string, topN = 10, rotate = false) =>
+    apiClient.get("/api/v1/ops-autopilot/targeting/universe-today", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+      params: { top_n: topN, rotate },
+    }),
+
   postWarRoomGenerateOutreach: (adminApiKey: string, leadId: string) =>
     apiClient.post(
       `/api/v1/ops-autopilot/war-room/${encodeURIComponent(leadId)}/generate-outreach`,
