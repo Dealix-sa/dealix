@@ -1,0 +1,5 @@
+# scripts/v7_launch_verify.sh contains a grep regex pattern that looks for
+# Stripe key patterns (sk_live_[A-Za-z0-9]{20,}) as part of a secret
+# detection sweep. Trivy flags the pattern itself as a credential.
+# This is a false positive — no real secret is present.
+scripts/v7_launch_verify.sh:stripe-secret-token
