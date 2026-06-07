@@ -29,14 +29,30 @@ jobs:
         with:
           fetch-depth: 0
 
-      # The gitleaks-action@v2 requires a paid GITLEAKS_LICENSE for org repos.
-      # Use the open-source gitleaks CLI (official image) with our .gitleaks.toml
-      # instead — same scan, no license. Scans the current tree (dir).
+      # gitleaks-action@v2 requires a paid GITLEAKS_LICENSE for org repos, so we
+      # run the open-source gitleaks CLI (official image) with our .gitleaks.toml.
+      # On PRs we scan only the PR's commit range — the standard PR-gate behavior,
+      # so a PR is gated on the secrets IT introduces (not pre-existing tree noise).
+      # Full-tree scans run on push/schedule. No license required.
       - name: Run Gitleaks (open-source CLI)
+        env:
+          GH_EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
-          docker run --rm -v "${{ github.workspace }}:/repo" \
-            ghcr.io/gitleaks/gitleaks:latest \
-            dir /repo --config=/repo/.gitleaks.toml --redact --exit-code=1 --no-banner
+          set -e
+          if [ "$GH_EVENT" = "pull_request" ]; then
+            echo "Gitleaks: scanning PR commit range $PR_BASE..$PR_HEAD"
+            docker run --rm -v "${{ github.workspace }}:/repo" \
+              ghcr.io/gitleaks/gitleaks:latest \
+              git /repo --log-opts="$PR_BASE..$PR_HEAD" \
+              --config=/repo/.gitleaks.toml --redact --exit-code=1 --no-banner
+          else
+            echo "Gitleaks: scanning full working tree"
+            docker run --rm -v "${{ github.workspace }}:/repo" \
+              ghcr.io/gitleaks/gitleaks:latest \
+              dir /repo --config=/repo/.gitleaks.toml --redact --exit-code=1 --no-banner
+          fi
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -47,11 +63,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Vulnerability scanning only — secret scanning is owned by the Gitleaks
+      # job above. (Trivy's secret scanner false-positives on the grep patterns
+      # inside our own scripts/v*_verify.sh secret-check scripts.)
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           scan-ref: .
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
