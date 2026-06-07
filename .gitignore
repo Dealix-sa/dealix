@@ -111,6 +111,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V4 ICP seed prospects — synthetic sample data for CI and lead scoring
+!data/prospects/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
