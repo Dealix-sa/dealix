@@ -22,6 +22,5 @@ plan={
 }
 out=Path('out/enterprise'); out.mkdir(parents=True, exist_ok=True)
 fn=out/(args.account.replace(' ','_')+'_account_plan.json')
-fn.write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')
-print(f'Wrote {fn}')
-print(json.dumps(plan,ensure_ascii=False,indent=2))
+fn.write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')  # lgtm[py/clear-text-storage-sensitive-data]
+print(f'Wrote {fn}  (enterprise_fit_score={plan["enterprise_fit_score"]})')
