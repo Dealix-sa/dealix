@@ -51,8 +51,11 @@ def test_count_evidence_events_today():
 
 def test_scope_requested_within_days():
     rows = [{"event_date": "2026-05-10", "event_type": "scope_requested"}]
-    assert scope_requested_within_days(14, rows) is True
-    assert scope_requested_within_days(3, rows) is False
+    # Pin the reference date so this stays deterministic over time
+    # (mirrors test_count_evidence_events_today's on_date approach).
+    ref = date(2026, 5, 17)
+    assert scope_requested_within_days(14, rows, today=ref) is True
+    assert scope_requested_within_days(3, rows, today=ref) is False
 
 
 def test_social_queue_has_posts():
