@@ -67,6 +67,7 @@ print('all 9 Beast endpoints OK')
 else mark BEAST_SMOKE fail; OK=0; fi
 
 echo "[beast] 7/7 secret prefix scan…"
+# trivy:ignore:stripe-secret-token
 HITS=$(grep -REn 'sk_live_[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|AIza[0-9A-Za-z_-]{35}' \
   --include='*.py' --include='*.md' --include='*.sh' . \
   --exclude-dir=.git --exclude-dir=.claude --exclude-dir=__pycache__ 2>/dev/null \

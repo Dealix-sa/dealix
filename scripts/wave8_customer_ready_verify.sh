@@ -117,6 +117,7 @@ echo "── NO_SECRETS ──────────────────�
 # Excludes: test_*.py, regex pattern strings (re.compile), redaction modules, comment lines.
 SECRET_HITS=$(git ls-files "*.py" 2>/dev/null | \
     grep -v "^tests/" | grep -v "_test\.py$" | grep -v "/redaction\.py$" | \
+# trivy:ignore:stripe-secret-token
     xargs grep -lE "(sk_live_[A-Za-z0-9]{10,}|sk-ant-api03[A-Za-z0-9\-]{10,})" 2>/dev/null | \
     while read -r f; do \
       grep -nE "(sk_live_[A-Za-z0-9]{10,}|sk-ant-api03[A-Za-z0-9\-]{10,})" "$f" 2>/dev/null | \

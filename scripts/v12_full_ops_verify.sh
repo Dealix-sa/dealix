@@ -93,6 +93,7 @@ fi
 # 7 — Secret prefix scan
 echo "[v12] 7/11 Secret prefix scan…"
 SECRET_HITS=$(
+# trivy:ignore:stripe-secret-token
   grep -REn 'sk_live_[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|AIza[0-9A-Za-z_-]{35}' \
     --include='*.py' --include='*.md' . \
     --exclude-dir=.git --exclude-dir=.claude --exclude-dir=__pycache__ 2>/dev/null \

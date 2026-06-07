@@ -71,6 +71,7 @@ results+=("NO_FAKE_PROOF=PASS")
 results+=("NO_BREAKING_CHANGES=PASS")
 
 echo "── Secret scan ────────────────────────────────────────"
+# trivy:ignore:stripe-secret-token
 SECRET_RE='(sk_live_[A-Za-z0-9]{8,}|ghp_[A-Za-z0-9]{30,}|AIza[0-9A-Za-z_-]{30,})'
 if grep -RE "$SECRET_RE" --include='*.py' --include='*.html' --include='*.js' --include='*.md' \
     --exclude-dir=.git --exclude-dir=__pycache__ --exclude-dir=node_modules . 2>/dev/null \

@@ -89,6 +89,7 @@ fi
 
 # ── Phase E — Strict secret scan ──────────────────────────────────────
 echo "── Phase E: Secret scan ───────────────────────────────"
+# trivy:ignore:stripe-secret-token
 SECRET_RE='(sk_live_[A-Za-z0-9]{8,}|ghp_[A-Za-z0-9]{30,}|AIza[0-9A-Za-z_-]{30,}|MOYASAR_SECRET_KEY=[A-Za-z0-9]{8,})'
 if grep -RE "$SECRET_RE" \
     --include='*.py' --include='*.md' --include='*.html' --include='*.sh' \
