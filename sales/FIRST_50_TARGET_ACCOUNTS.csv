@@ -1,0 +1,6 @@
+company_name,sector,city,decision_maker,source,lawful_basis,status,next_action,notes
+Example Consulting 1,Consulting,Riyadh,CEO,manual_public_website,public_business_listing,research,find verified contact,replace with real account
+Example Training 1,Training,Riyadh,Founder,manual_linkedin,public_profile_manual_review,research,find verified contact,replace with real account
+Example Marketing 1,Marketing,Jeddah,Managing Director,referral,explicit_referral_consent,research,confirm warm intro,replace with real account
+Example Real Estate Services 1,Real Estate,Riyadh,Sales Director,manual_public_website,public_business_listing,research,find verified contact,replace with real account
+Example Tech Services 1,Technology,Dammam,Founder,event_meetup,met_in_person_consent,research,follow up post-event,replace with real account
