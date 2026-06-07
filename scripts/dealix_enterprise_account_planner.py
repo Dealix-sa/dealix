@@ -12,7 +12,7 @@ if args.monthly_leads>=100: score+=35
 if args.vertical in ['training','agencies','real_estate','clinics','professional_services']: score+=20
 score+=20
 plan={
- 'account':args.account,'vertical':args.vertical,'employees':args.employees,'monthly_leads':args.monthly_leads,
+ 'vertical':args.vertical,'employees':args.employees,'monthly_leads':args.monthly_leads,
  'enterprise_fit_score':min(score,100),
  'stakeholders':['CEO/Founder','Sales Manager','Operations Manager','IT/Data reviewer'],
  'hypothesis':'فرص تدخل من قنوات متعددة وتضيع بسبب المتابعة غير الموحدة',
@@ -22,5 +22,5 @@ plan={
 }
 out=Path('out/enterprise'); out.mkdir(parents=True, exist_ok=True)
 fn=out/(args.account.replace(' ','_')+'_account_plan.json')
-fn.write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')  # codeql[py/clear-text-storage-sensitive-data]
-print(f'Plan written. enterprise_fit_score={plan["enterprise_fit_score"]}')
+fn.write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')
+print('Plan written.')
