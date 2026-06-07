@@ -1,0 +1,45 @@
+# Dealix Unit Economics — اقتصاديات الوحدة
+#
+# تُستخدم بواسطة scripts/calculate_margin.py و generate_mrr_forecast.py.
+# Consumed by scripts/calculate_margin.py and generate_mrr_forecast.py.
+#
+# جميع الأرقام قبل ضريبة القيمة المضافة.
+
+version: "1.0"
+currency: "SAR"
+price_basis: "exclusive_of_vat"
+
+# تكاليف مباشرة افتراضية لكل نوع عرض (نسبة من الإيراد) — تُستخدم لتقدير الهامش
+# Assumed direct-cost ratios per offer type (share of revenue) for margin estimation.
+assumed_direct_cost_ratio:
+  audit: 0.25
+  pilot: 0.35
+  production: 0.40
+  subscription: 0.20
+  usage_overage: 0.15
+
+# تكلفة الاستحواذ والقيمة الدائمة (افتراضات تشغيلية مبدئية)
+acquisition:
+  target_cac_max: 30000             # SAR per closed retainer client
+  cac_payback_months_max: 6
+  avg_sales_cycle_days: 45
+
+lifetime_value:
+  avg_retainer_monthly: 15000
+  assumed_gross_margin: 0.65
+  avg_lifetime_months: 24
+  # LTV = monthly * margin * lifetime
+  computed_ltv: 234000             # 15000 * 0.65 * 24
+  ltv_cac_ratio_min: 3.0
+
+# افتراضات الاسترجاع/التوسعة
+retention:
+  monthly_churn_target_max: 0.02
+  net_revenue_retention_target_min: 1.15
+  expansion_revenue_share_target_min: 0.20
+
+# نقطة التعادل التشغيلية المبدئية (توجيهية)
+operating:
+  fixed_monthly_cost_estimate: 40000
+  breakeven_mrr_estimate: 62000     # fixed / blended gross margin (~0.65)
+  note: "أرقام توجيهية للتخطيط — تُحدَّث ببيانات فعلية عند توفرها."
