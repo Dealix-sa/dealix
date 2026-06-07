@@ -28,7 +28,12 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from scripts.dealix_target_universe import Account, build_today_plan, load_accounts, daily_selection  # noqa: E402
+from scripts.dealix_target_universe import (  # noqa: E402
+    Account,
+    build_today_plan,
+    daily_selection,
+    load_accounts,
+)
 
 DRAFTS_ROOT = REPO_ROOT / "data" / "outreach" / "drafts"
 CONTACT_PLACEHOLDER = "[اسم جهة الاتصال — يُعبّأ عند المقدمة الدافئة / contact name — fill at warm intro]"

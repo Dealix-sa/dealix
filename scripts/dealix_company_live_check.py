@@ -19,7 +19,11 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from scripts.dealix_target_universe import UniverseError, build_today_plan, load_accounts  # noqa: E402
+from scripts.dealix_target_universe import (  # noqa: E402
+    UniverseError,
+    build_today_plan,
+    load_accounts,
+)
 
 GREEN = "✅"
 PENDING = "⏳"

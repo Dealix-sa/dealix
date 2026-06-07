@@ -148,9 +148,7 @@ def _looks_like_pii(value: str) -> bool:
     if "@" in v:  # email
         return True
     digits = sum(c.isdigit() for c in v)
-    if digits >= 7:  # phone-like
-        return True
-    return False
+    return digits >= 7  # phone-like (treat 7+ digits as a phone number)
 
 
 def load_accounts(path: Path | None = None) -> list[Account]:

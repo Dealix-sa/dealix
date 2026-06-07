@@ -84,7 +84,8 @@ def test_rotation_covers_whole_universe(accounts):
 
 
 def test_loader_rejects_unsourced(tmp_path):
-    from scripts.dealix_target_universe import UniverseError, load_accounts as load
+    from scripts.dealix_target_universe import UniverseError
+    from scripts.dealix_target_universe import load_accounts as load
 
     bad = tmp_path / "bad.csv"
     bad.write_text(
@@ -97,7 +98,8 @@ def test_loader_rejects_unsourced(tmp_path):
 
 
 def test_loader_rejects_pii(tmp_path):
-    from scripts.dealix_target_universe import UniverseError, load_accounts as load
+    from scripts.dealix_target_universe import UniverseError
+    from scripts.dealix_target_universe import load_accounts as load
 
     bad = tmp_path / "pii.csv"
     bad.write_text(
@@ -110,7 +112,8 @@ def test_loader_rejects_pii(tmp_path):
 
 
 def test_loader_rejects_cold_channel(tmp_path):
-    from scripts.dealix_target_universe import UniverseError, load_accounts as load
+    from scripts.dealix_target_universe import UniverseError
+    from scripts.dealix_target_universe import load_accounts as load
 
     bad = tmp_path / "cold.csv"
     bad.write_text(
