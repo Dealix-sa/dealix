@@ -322,6 +322,10 @@ dealix-1/
 node_modules/
 dist/
 build/
+# …but the frontend has a SOURCE route literally named "build" (the custom-AI
+# intake page) — keep it tracked (brackets escaped: they are glob-special).
+!frontend/src/app/\[locale\]/build/
+!frontend/src/app/\[locale\]/build/**
 logs/
 *.log
 
