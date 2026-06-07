@@ -60,12 +60,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@0.24.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          severity: CRITICAL,HIGH
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+      # The pinned aquasecurity/trivy-action@0.24.0 tag no longer resolves
+      # ("unable to find version 0.24.0"). Use the trivy CLI directly
+      # (version-pinned) — same scanner, no dependency on action release tags.
+      - name: Run Trivy filesystem scan (CLI)
+        env:
+          TRIVY_VERSION: "0.71.0"
+        run: |
+          set -euo pipefail
+          curl -sSfL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" | tar -xz -C /tmp trivy
+          sudo install /tmp/trivy /usr/local/bin/trivy
+          trivy --version
+          trivy fs --scanners vuln --severity CRITICAL,HIGH --ignore-unfixed \
+            --exit-code 1 --no-progress --format table .
