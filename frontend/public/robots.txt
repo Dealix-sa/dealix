@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dealix.sa/sitemap.xml

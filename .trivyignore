@@ -1,0 +1,9 @@
+# All *.sh verify scripts in scripts/ contain grep regex patterns of the form
+# sk_live_[A-Za-z0-9]{20,} as part of internal secret detection sweeps.
+# Trivy flags the detection pattern itself as a Stripe credential.
+# This is a false positive — no real secret is present in any of these files.
+# Affected: v7_launch_verify.sh, v10_master_verify.sh, beast_level_verify.sh,
+#   dealix_master_full_execution_verify.sh, integration_upgrade_verify.sh,
+#   ultimate_upgrade_verify.sh, v11_customer_closure_verify.sh,
+#   v12_full_ops_verify.sh, wave*.sh
+stripe-secret-token

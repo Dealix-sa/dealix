@@ -100,6 +100,7 @@ fi
 
 # ─── Phase G: Secret scan ──────────────────────────────────────
 echo "[Phase G] Secret scan"
+# trivy:ignore:stripe-secret-token
 SECRET_RE='sk_live_[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|AIza[A-Za-z0-9]{35}'
 PLACEHOLDER_RE='sk_live_x{4,}|sk_live_test|sk_live_REAL|sk_live_should_|sk_live_unsigned|placeholder|REDACTED|EXAMPLE|sk_live_DEMO'
 secret_hits=$(grep -rE "${SECRET_RE}" --include='*.py' --include='*.md' --include='*.html' --include='*.sh' \
