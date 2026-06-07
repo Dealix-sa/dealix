@@ -54,7 +54,7 @@ secret leaks and **not** doctrine failures):
 
 | Check | Real root cause | Fix in this branch |
 |---|---|---|
-| **Trivy filesystem scan** | `repository-hardening.yml` pinned `aquasecurity/trivy-action@0.24.0` — that tag is unresolvable (`unable to find version 0.24.0`). Fails on every run. | Pin → `@master`, matching the already-working sibling in `docker-build.yml`. Scan stays fully active. |
+| **Trivy filesystem scan** | `repository-hardening.yml` pinned `aquasecurity/trivy-action@0.24.0` — that tag is unresolvable (`unable to find version 0.24.0`). Fails on every run, so the scan never actually ran. | Pin → `@master` (matches the working sibling in `docker-build.yml`). The now-live scan surfaced **real, previously-hidden debt** — see §3a. |
 | **Gitleaks secret scan** | `gitleaks/gitleaks-action@v2` requires a paid `GITLEAKS_LICENSE` for org repos → `missing gitleaks license`. Not a leak. | Replace the licensed action with the open-source gitleaks **binary** (latest, resolved dynamically), honouring `.gitleaks.toml`. PR runs scan only the PR's commit range (mirrors old behaviour, so pre-existing fixtures aren't re-flagged). No license needed; scan stays blocking on real leaks. |
 
 Supporting change: `.gitleaks.toml` allowlist extended to the conventional
@@ -65,6 +65,24 @@ weakened.
 
 > Note: the licensed-action alternative is still valid — add a `GITLEAKS_LICENSE`
 > secret and restore `uses: gitleaks/gitleaks-action@v2`. Founder's call.
+
+### 3a. Real debt the now-live Trivy scan surfaced (fixed here)
+
+Once Trivy actually ran, it found genuine issues that the broken pin had hidden:
+
+- **Next.js CRITICAL CVE.** `next@15.1.3` (in `frontend/` **and** `apps/web/`)
+  carries `CVE-2025-29927` (middleware **authorization bypass**) and
+  `CVE-2025-55182` (RSC **pre-auth RCE**), plus several HIGH DoS/SSRF. **Fix:**
+  upgrade `next` (and `eslint-config-next`) → **`15.5.19`** — the latest 15.x,
+  which clears every CVE Trivy flagged on the 15.x line. Both `package-lock.json`
+  files regenerated so `npm ci` stays in sync. (Stayed on 15.x; did **not** jump
+  to the 16.x major, to minimise frontend-build risk — validated by CI's
+  `Next.js web verify` / `Frontend verify`.)
+- **False-positive secrets.** Trivy's secret scanner flagged our own
+  `scripts/*_verify.sh` files, which embed secret-detection regexes
+  (`sk_live_…`) as scan *patterns*. **Fix:** scope Trivy to `scanners: vuln`.
+  Secret coverage is unaffected — it is already enforced three ways (gitleaks +
+  `security_smoke.py` + `detect-secrets`).
 
 ---
 

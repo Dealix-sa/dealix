@@ -79,6 +79,11 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
+          # Vulnerability scanning only. Secret scanning is already covered three
+          # ways (gitleaks above + scripts/security_smoke.py + detect-secrets);
+          # Trivy's secret scanner only produced false positives here, matching
+          # the secret-detection regexes embedded in our own verify scripts.
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
