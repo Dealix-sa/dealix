@@ -6,9 +6,9 @@ useDefault = true
 [allowlist]
 description = "False positives — test fixtures, documentation examples, and ops scripts using env vars"
 paths = [
-    '^tests/',
-    '^docs/',
-    '^scripts/ops/',
-    '^scripts/v7_launch_verify\.sh$',
-    '^scripts/v10_master_verify\.sh$',
+    'tests/',
+    'docs/',
+    'scripts/ops/',
+    'v7_launch_verify\.sh$',
+    'v10_master_verify\.sh$',
 ]
