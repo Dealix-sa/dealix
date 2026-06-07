@@ -23,8 +23,12 @@ REQUIRED_KEYS = {
     "ENVIRONMENT",
     "LOG_LEVEL",
     "APP_SECRET_KEY",
+    # JWT_SECRET_KEY + API_KEYS are required by api/main.py:_validate_production_secrets
+    # (production fail-fast). Enforce them in the contract so the gate matches reality.
+    "JWT_SECRET_KEY",
     "DATABASE_URL",
     "APP_URL",
+    "API_KEYS",
     "ADMIN_API_KEYS",
     "CORS_ORIGINS",
 }
