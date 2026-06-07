@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "summary": {
-    "total_pages": 76,
+    "total_pages": 77,
     "pages_with_required_gap": 0,
-    "pages_with_advisory_gap": 3
+    "pages_with_advisory_gap": 4
   },
   "required_checks": [
     "title",
@@ -448,6 +448,27 @@
       },
       "missing_required": [],
       "missing_advisory": []
+    },
+    {
+      "path": "dealix_full_website_ar.html",
+      "present": {
+        "title": true,
+        "meta_description": true,
+        "meta_viewport": true,
+        "html_lang": true,
+        "html_dir": true,
+        "canonical": false,
+        "og_title": false,
+        "og_description": false,
+        "twitter_card": false
+      },
+      "missing_required": [],
+      "missing_advisory": [
+        "canonical",
+        "og_title",
+        "og_description",
+        "twitter_card"
+      ]
     },
     {
       "path": "decisions.html",
