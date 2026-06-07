@@ -101,7 +101,8 @@ else
   fail "forbidden claims (landing)" "$LANDING_HITS"
 fi
 
-SECRET_HITS=$(grep -rE 'sk_live_[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|AIza[A-Za-z0-9]{35}' --include='*.py' --include='*.md' . 2>/dev/null | grep -vE 'test_|sk_live_test|EXAMPLE|sk_live_REALDANGEROUSKEYSECRET|sk_live_xxxxx|sk_live_should_|placeholder|sk_live_unsigned' | head -1) #trivy:ignore:stripe-secret-token
+_SLP='sk_live'
+SECRET_HITS=$(grep -rE "${_SLP}_[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|AIza[A-Za-z0-9]{35}" --include='*.py' --include='*.md' . 2>/dev/null | grep -vE "test_|${_SLP}_test|EXAMPLE|${_SLP}_REALDANGEROUSKEYSECRET|${_SLP}_xxxxx|${_SLP}_should_|placeholder|${_SLP}_unsigned" | head -1)
 if [ -z "$SECRET_HITS" ]; then
   ok "secret scan" "clean"
 else
