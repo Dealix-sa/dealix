@@ -1,0 +1,30 @@
+{
+  "date": "2026-06-07",
+  "batches": [
+    {
+      "batch_id": "batch_training_001",
+      "vertical": "training",
+      "status": "drafted",
+      "prospects": [
+        {
+          "prospect_id": "p_training_riyadh_001",
+          "company": "شركة تدريب الرياض",
+          "sector": "training",
+          "pain": "فرص تسجيل تضيع بعد أول تواصل",
+          "contact_source": "manual",
+          "fit_score": 86,
+          "channel": "whatsapp"
+        },
+        {
+          "prospect_id": "p_training_jeddah_001",
+          "company": "مركز تطوير جدة",
+          "sector": "training",
+          "pain": "متابعة واتساب غير موحدة",
+          "contact_source": "manual",
+          "fit_score": 78,
+          "channel": "email"
+        }
+      ]
+    }
+  ]
+}

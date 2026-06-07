@@ -182,3 +182,15 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── V16 Real Outreach & Human-Reviewed Sales Execution ──────────────────────
+.PHONY: dealix-v16-readiness dealix-v16-daily dealix-outreach-dashboard
+
+dealix-v16-readiness: ## v16: check critical files for outreach execution system
+	python scripts/dealix_v16_readiness_check.py
+
+dealix-v16-daily: ## v16: run daily outreach execution cycle
+	python scripts/dealix_v16_daily_run.py
+
+dealix-outreach-dashboard: ## v16: show outreach execution dashboard
+	python scripts/dealix_outreach_execution_dashboard.py

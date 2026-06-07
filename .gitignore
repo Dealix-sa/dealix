@@ -107,6 +107,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V16 outreach seed data — synthetic prospects/templates, no customer PII
+!data/outreach/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
