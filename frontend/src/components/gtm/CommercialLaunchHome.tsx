@@ -57,6 +57,8 @@ const FEATURES = [
   },
 ];
 
+// Placeholder logos shown as illustrative examples — NOT real clients.
+// Replace with real customer logos once the first signed clients confirm permission.
 const LOGOS = [
   { initials: "NA", name: "نماء للاستثمار" },
   { initials: "RS", name: "رؤية للخدمات" },
@@ -66,11 +68,12 @@ const LOGOS = [
   { initials: "DF", name: "دار الفهد" },
 ];
 
+// All stats are verifiable commitments and product specs — not aspirational claims.
 const STATS = [
-  { valueAr: "٣٫٢×", valueEn: "3.2x", labelAr: "نمو الإيرادات", labelEn: "Revenue Growth", target: 3.2 },
-  { valueAr: "+٥٠٠", valueEn: "+500", labelAr: "عميل راضٍ", labelEn: "Happy Clients", target: 500 },
-  { valueAr: "٩٩٫٩٪", valueEn: "99.9%", labelAr: "وقت التشغيل", labelEn: "Uptime", target: 99.9 },
-  { valueAr: "٤٨س", valueEn: "48h", labelAr: "وقت الإعداد", labelEn: "Setup Time", target: 48 },
+  { valueAr: "٤٩٩ ر.س", valueEn: "499 SAR", labelAr: "سعر Sprint — دفعة واحدة", labelEn: "Sprint — one-time price", target: 499 },
+  { valueAr: "٧ أيام", valueEn: "7 Days", labelAr: "Proof Pack — التسليم", labelEn: "Proof Pack delivery", target: 7 },
+  { valueAr: "١٤ يوم", valueEn: "14 Days", labelAr: "نافذة الاسترجاع", labelEn: "Full refund window", target: 14 },
+  { valueAr: "١١ بوابة", valueEn: "11 Gates", labelAr: "حوكمة AI — مفروضة بالاختبارات", labelEn: "AI governance gates", target: 11 },
 ];
 
 const PRICING = [
@@ -406,7 +409,7 @@ export function CommercialLaunchHome() {
       {/* ------------------------------------------------------------------ */}
       <section className="bg-navy-600 border-y border-white/5 py-10 overflow-hidden">
         <p className="text-center text-xs font-semibold text-white/40 uppercase tracking-widest mb-6">
-          {isAr ? "يثق بنا" : "Trusted by"}
+          {isAr ? "قطاعات نخدمها · نماذج توضيحية" : "Sectors we serve · Illustrative examples"}
         </p>
         <div className="relative">
           <motion.div
@@ -494,8 +497,13 @@ export function CommercialLaunchHome() {
           className="max-w-4xl mx-auto text-center mb-12"
         >
           <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold">
-            {isAr ? "أرقام تتحدث بنفسها" : "Numbers that speak for themselves"}
+            {isAr ? "التزامات حقيقية وقابلة للتحقق" : "Real, verifiable commitments"}
           </motion.h2>
+          <motion.p variants={fadeUp} custom={1} className="mt-3 text-white/50 text-sm max-w-md mx-auto">
+            {isAr
+              ? "أسعار ومواعيد وسياسات موثّقة — لا أرقام مخترعة."
+              : "Documented prices, timelines, and policies — no fabricated numbers."}
+          </motion.p>
         </motion.div>
 
         <motion.div
@@ -513,20 +521,19 @@ export function CommercialLaunchHome() {
               className="text-center rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm py-8 px-4"
             >
               <div className="text-4xl md:text-5xl font-bold bg-gradient-to-br from-gold-300 to-gold-500 bg-clip-text text-transparent leading-none mb-3">
-                {s.target <= 100 && s.labelEn.includes("Uptime") ? (
-                  <span><AnimatedNumber target={99.9} suffix="%" /></span>
-                ) : s.target <= 100 && s.labelEn.includes("Growth") ? (
-                  <span><AnimatedNumber target={3.2} suffix="x" /></span>
-                ) : s.target === 48 ? (
-                  <span><AnimatedNumber target={48} suffix="h" /></span>
-                ) : (
-                  <span>+<AnimatedNumber target={500} /></span>
-                )}
+                {isAr ? s.valueAr : s.valueEn}
               </div>
               <p className="text-white/70 text-sm font-medium">{isAr ? s.labelAr : s.labelEn}</p>
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Standard estimate disclaimer — required by governance gate */}
+        <p className="text-center text-xs text-white/30 mt-8 max-w-xl mx-auto">
+          {isAr
+            ? "النتائج التقديرية ليست نتائج مضمونة. الأرقام أعلاه هي مواصفات المنتج والتزامات الخدمة."
+            : "Estimated outcomes are not guaranteed outcomes. Numbers above are product specifications and service commitments."}
+        </p>
       </section>
 
       {/* ------------------------------------------------------------------ */}
