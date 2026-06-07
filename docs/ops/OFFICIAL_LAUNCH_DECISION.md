@@ -66,6 +66,7 @@ CI authority is **GitHub Actions on the PR**, not any local run. Current honest 
 |---|---|---|
 | Doctrine/governance guard gates green | **Open** → closed by **PR #650** (allowlists compliant disclaimer/negation copy; no guard disabled) | PR review |
 | `make doctor` / `prod-verify` red via `security-smoke` (pre-existing fixture-secret false-positives + `.env.*.example`) | **Open** → addressed by #650 (`test_v7_secret_leakage_guard` allowlist) + #649 note | PR review |
+| CI `Trivy filesystem scan` red — stale `aquasecurity/trivy-action@0.24.0` no longer resolves upstream (pre-existing on `main`, **not** from this PR) | **Open** → closed by **PR #638** (bumps to `@master` + `skip-files` false-positives; also softens the Gitleaks license gate) | PR review |
 | OpenAPI contract has no committed baseline (`api-contract-check` short-circuits) | **Open** → closed by **PR #649** (commits `docs/architecture/openapi.json`, enables real breaking-change diff) | PR review |
 | Official verdict script returns PASS after code-blocker fixes | **Open** → closed by **PR #648** (`DEALIX_OFFICIAL_LAUNCH_VERDICT=PASS`) | PR review |
 | Claude Code review workflow + `CLAUDE.md` present | **Open** → closed by **PR #638** (needs `ANTHROPIC_API_KEY` secret) | Founder + PR review |
@@ -89,7 +90,7 @@ and CI is `pending/unstable` (none green yet). The only conflict surface is **#6
 1. **#650 first** — most complete gate-greening; establishes the allowlist superset for the two shared test files.
 2. **#648 second** — rebase on #650; resolve the two shared files by taking #650's allowlist as the base + #648's unique additions; keep #648's unique artifacts.
 3. **#649** — disjoint; can merge in parallel. Adds the OpenAPI baseline that makes `api-contract-check` meaningful + PDPL tests.
-4. **#638** — anytime after review + adding the `ANTHROPIC_API_KEY` secret + confirming least-privilege `permissions:` and that the lockfile changes are intentional.
+4. **#638** — anytime after review + adding the `ANTHROPIC_API_KEY` secret + confirming least-privilege `permissions:` and that the lockfile changes are intentional. Also repairs `repository-hardening.yml` (stale `trivy-action@0.24.0` → `@master`; Gitleaks license gate), which currently reds the **Trivy** + **Gitleaks** scans on every PR.
 
 ---
 
