@@ -51,11 +51,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Vulnerability scanning only — secret scanning is owned by the Gitleaks
+      # job above. (Trivy's secret scanner false-positives on the grep patterns
+      # inside our own scripts/v*_verify.sh secret-check scripts.)
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: .
+          scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           format: table
