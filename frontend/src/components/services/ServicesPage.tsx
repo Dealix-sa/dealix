@@ -172,7 +172,7 @@ const TIERS: Tier[] = [
     suitable: { ar: "شركات على Managed Ops تريد توسعاً تقنياً", en: "Companies on Managed Ops wanting technical expansion" },
     timeline: { ar: "4–12 أسبوع", en: "4–12 weeks" },
     cta: { ar: "ناقش مشروعك", en: "Discuss Your Project" },
-    href: "/dealix-diagnostic",
+    href: "/custom-ai",
   },
 ];
 

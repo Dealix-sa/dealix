@@ -92,6 +92,9 @@ production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
 prod-verify: env-check security-smoke api-contract-check dependency-inventory release-manifest v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
 
+launch-engine: ## Run the full local launch machine + readiness audit (writes data/daily_ops/<date>/)
+	$(PYTHON) scripts/dealix_launch_engine.py
+
 # ── Tests ──────────────────────────────────────────────────────
 test: ## Run full test suite with coverage
 	pytest -v

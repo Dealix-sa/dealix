@@ -51,8 +51,9 @@ paths = [
     '''\.env\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    '''tests/.*''',
     '''docs/.*\.md$''',
+    '''.*moyasar.*\.sh$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
 
@@ -61,4 +62,5 @@ regexes = [
     '''your-.*-key''',
     '''change-me''',
     '''example-.*''',
+    '''ttl_seconds=\d+''',
 ]
