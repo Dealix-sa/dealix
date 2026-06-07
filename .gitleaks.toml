@@ -49,9 +49,14 @@ tags = ["key", "hubspot"]
 description = "Global allowlist"
 paths = [
     '''\.env\.example$''',
+    # .env.prod.example / .env.staging.example / .env.railway.example — templates
+    '''\.env\..+\.example$''',
     '''\.gitleaks\.toml$''',
     '''\.secrets\.baseline$''',
-    '''tests/fixtures/.*''',
+    # Test fixtures intentionally embed fake/placeholder secrets to exercise the
+    # redaction + secret-scan logic. The dependency-free security_smoke.py guard
+    # still scans tests/ with exact per-line allowlisting (defence in depth).
+    '''tests/.*''',
     '''docs/.*\.md$''',
     '''scripts/infra/setup_uptimerobot\.sh$''',
 ]
