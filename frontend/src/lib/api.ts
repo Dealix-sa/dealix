@@ -238,6 +238,14 @@ export const api = {
   postPublicLead: (body: Record<string, unknown>) =>
     apiClient.post("/api/v1/public/leads", body),
 
+  // Public lead capture (store A — read by the daily lead-prep engine).
+  postPublicDemoRequest: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/demo-request", body),
+
+  // Bespoke "custom solution" intake — what the prospect wants Dealix to build.
+  postPublicCustomRequest: (body: Record<string, unknown>) =>
+    apiClient.post("/api/v1/public/custom-request", body),
+
   getPublicKnowledgeAnswer: (q: string) =>
     apiClient.get("/api/v1/public/knowledge/answer", { params: { q } }),
 

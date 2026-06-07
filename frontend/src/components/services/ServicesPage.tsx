@@ -277,7 +277,7 @@ export function ServicesPage() {
             <p className="mt-3 text-muted-foreground max-w-2xl leading-relaxed">
               {isAr
                 ? "كل مستوى يتطلب إثبات قيمة من المستوى السابق. هذا ليس قيداً — هو ضمان أن توسّعك مبني على أساس حقيقي."
-                : "Every tier requires proof of value from the previous tier. This is not a restriction — it is a guarantee that your expansion is built on a real foundation."}
+                : "Every tier requires proof of value from the previous tier. This is not a restriction — it ensures your expansion is built on a real foundation."}
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
