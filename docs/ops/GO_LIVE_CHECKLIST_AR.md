@@ -10,7 +10,7 @@
 
 ```bash
 # ── الدفع (Moyasar) ─────────────────────────────────
-MOYASAR_SECRET_KEY=sk_live_xxxxxxxxxxxxxxxxxx   # من dashboard.moyasar.com
+MOYASAR_SECRET_KEY=<MOYASAR_LIVE_SECRET_PLACEHOLDER>   # من dashboard.moyasar.com
 MOYASAR_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxx   # من Moyasar → Webhooks
 MOYASAR_LIVE_MODE=1                             # تفعيل الدفع الحقيقي
 

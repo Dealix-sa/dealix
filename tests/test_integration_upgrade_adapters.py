@@ -125,7 +125,7 @@ def test_contract_status_shape() -> None:
 
 def test_no_secrets_in_safe_call_output() -> None:
     """Any leaked secret patterns from raised exceptions are scrubbed."""
-    secret = "sk_live_AbCdEf1234567890"
+    secret = "<MOYASAR_LIVE_SECRET_PLACEHOLDER>"
     def leaky():
         raise ValueError(f"failure with {secret}")
     result = safe_call(name="leaky", fn=leaky)

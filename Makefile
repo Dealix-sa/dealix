@@ -69,7 +69,7 @@ security: security-smoke ## Run security scans
 	detect-secrets scan --baseline .secrets.baseline || true
 
 security-smoke: ## Run dependency-free repository security smoke checks
-	$(PYTHON) scripts/security_smoke.py
+	$(PYTHON) scripts/security_smoke_v2.py
 
 env-check: ## Validate .env.example contract and duplicate keys
 	$(PYTHON) scripts/check_env_contract.py

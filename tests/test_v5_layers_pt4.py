@@ -240,7 +240,7 @@ def test_secret_scan_finds_anthropic_key():
 
 
 def test_secret_scan_finds_aws_access_key():
-    findings = scan_text_for_secrets("AWS_ACCESS_KEY=AKIA0123456789ABCDEF")
+    findings = scan_text_for_secrets("AWS_ACCESS_KEY=<AWS_ACCESS_KEY_ID_PLACEHOLDER>")
     pattern_ids = {f.pattern_id for f in findings}
     assert "aws_access_key" in pattern_ids
 
