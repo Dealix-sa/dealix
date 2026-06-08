@@ -1,1 +1,20 @@
-date,company,sector,contact,phone,email,source,offer,status,next_action,next_followup_date,deal_value_sar,probability,notes
+﻿date,company,sector,contact,phone,email,source,offer,status,next_action,next_followup_date,deal_value_sar,probability,notes
+2026-06-08,Research Target clinics,clinics,,,,autonomous_exec_os,WhatsApp Revenue OS + Review Intelligence OS,needs_review,approve_or_research_contact,,,10,استفسارات وحجوزات وتقييمات تحتاج متابعة منظمة
+2026-06-08,Research Target clinics,clinics,,,,autonomous_exec_os,WhatsApp Revenue OS + Review Intelligence OS,needs_review,approve_or_research_contact,,,10,استفسارات وحجوزات وتقييمات تحتاج متابعة منظمة
+2026-06-08,Research Target training_centers,training_centers,,,,autonomous_exec_os,Growth Engine OS,needs_review,approve_or_research_contact,,,10,leads الدورات تحتاج تسجيل ومتابعة وتقرير
+2026-06-08,Research Target agencies,agencies,,,,autonomous_exec_os,Client Command Center OS,needs_review,approve_or_research_contact,,,10,تقارير العملاء والمهام تحتاج Command Center
+2026-06-08,Research Target agencies,agencies,,,,autonomous_exec_os,Client Command Center OS,needs_review,approve_or_research_contact,,,10,تقارير العملاء والمهام تحتاج Command Center
+2026-06-08,Research Target restaurants,restaurants,,,,autonomous_exec_os,Review Intelligence OS,needs_review,approve_or_research_contact,,,10,التقييمات والشكاوى تحتاج Review Intelligence
+2026-06-08,Research Target restaurants,restaurants,,,,autonomous_exec_os,Review Intelligence OS,needs_review,approve_or_research_contact,,,10,التقييمات والشكاوى تحتاج Review Intelligence
+2026-06-08,Research Target real_estate,real_estate,,,,autonomous_exec_os,Sales Pipeline OS,needs_review,approve_or_research_contact,,,10,leads والعروض العقارية تحتاج pipeline ومتابعة
+2026-06-08,Research Target real_estate,real_estate,,,,autonomous_exec_os,Sales Pipeline OS,needs_review,approve_or_research_contact,,,10,leads والعروض العقارية تحتاج pipeline ومتابعة
+2026-06-08,Research Target عيادات ومراكز طبية #1,clinics,,,,autonomous_exec_os,WhatsApp Revenue OS + Review Intelligence OS,needs_review,approve_or_research_contact,,,10,الاستفسارات والحجوزات تضيع بين واتساب والمتابعة والتقييمات
+2026-06-08,Research Target عيادات ومراكز طبية #2,clinics,,,,autonomous_exec_os,WhatsApp Revenue OS + Review Intelligence OS,needs_review,approve_or_research_contact,,,10,الاستفسارات والحجوزات تضيع بين واتساب والمتابعة والتقييمات
+2026-06-08,Research Target مراكز تدريب ومعاهد #1,training_centers,,,,autonomous_exec_os,Growth Engine OS,needs_review,approve_or_research_contact,,,10,leads الدورات لا تتحول إلى تسجيلات بسبب ضعف المتابعة
+2026-06-08,Research Target مراكز تدريب ومعاهد #2,training_centers,,,,autonomous_exec_os,Growth Engine OS,needs_review,approve_or_research_contact,,,10,leads الدورات لا تتحول إلى تسجيلات بسبب ضعف المتابعة
+2026-06-08,Research Target وكالات تسويق #1,agencies,,,,autonomous_exec_os,Client Command Center OS,needs_review,approve_or_research_contact,,,10,تقارير العملاء والمهام والتسليم متفرقة
+2026-06-08,Research Target وكالات تسويق #2,agencies,,,,autonomous_exec_os,Client Command Center OS,needs_review,approve_or_research_contact,,,10,تقارير العملاء والمهام والتسليم متفرقة
+2026-06-08,Research Target مطاعم وكافيهات #1,restaurants,,,,autonomous_exec_os,Review Intelligence OS,needs_review,approve_or_research_contact,,,10,التقييمات والشكاوى لا تتحول إلى قرارات تشغيلية
+2026-06-08,Research Target مطاعم وكافيهات #2,restaurants,,,,autonomous_exec_os,Review Intelligence OS,needs_review,approve_or_research_contact,,,10,التقييمات والشكاوى لا تتحول إلى قرارات تشغيلية
+2026-06-08,Research Target عقار وخدمات B2B #1,real_estate,,,,autonomous_exec_os,Sales Pipeline OS,needs_review,approve_or_research_contact,,,10,العملاء والعروض تحتاج متابعة طويلة وتضيع بدون نظام
+2026-06-08,Research Target عقار وخدمات B2B #2,real_estate,,,,autonomous_exec_os,Sales Pipeline OS,needs_review,approve_or_research_contact,,,10,العملاء والعروض تحتاج متابعة طويلة وتضيع بدون نظام

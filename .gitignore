@@ -324,3 +324,8 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Dealix generated daily operating outputs
+company/runtime/
+company/outbox/*_master_stable_approval_queue.csv
+company/reports/*_MASTER_STABLE_CEO_REPORT.md
