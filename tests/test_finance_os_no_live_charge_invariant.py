@@ -34,7 +34,7 @@ def test_default_state_is_blocked():
     assert result["allowed"] is False
 
 
-def test_<MOYASAR_LIVE_SECRET_PLACEHOLDER>(restore_env):
+def test_MOYASAR_LIVE_SECRET_PLACEHOLDER(restore_env):
     os.environ["MOYASAR_SECRET_KEY"] = "sk_" + "live" + "_test_should_be_refused"
     os.environ.pop("DEALIX_ALLOW_LIVE_CHARGE", None)
     result = is_live_charge_allowed()
@@ -49,7 +49,7 @@ def test_explicit_allow_flag_alone_does_not_unlock(restore_env):
     assert result["allowed"] is False
 
 
-def test_<MOYASAR_LIVE_SECRET_PLACEHOLDER>(restore_env):
+def test_MOYASAR_LIVE_SECRET_PLACEHOLDER(restore_env):
     """The hard invariant: even both signals together do NOT unlock
     a live charge. Founder must edit the CLI deliberately."""
     os.environ["MOYASAR_SECRET_KEY"] = "sk_" + "live" + "_test_should_be_refused"
