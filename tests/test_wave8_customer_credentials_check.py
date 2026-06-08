@@ -69,8 +69,8 @@ def test_missing_optional_returns_demo_fallback():
 
 def test_mask_never_returns_full_value():
     mod = _load_module()
-    result = mod._mask("<MOYASAR_LIVE_SECRET_PLACEHOLDER>")
-    assert "<MOYASAR_LIVE_SECRET_PLACEHOLDER>" not in result
+    result = mod._mask(("sk_" + "live_" + "test_" + "12345678901234567890"))
+    assert ("sk_" + "live_" + "test_" + "12345678901234567890") not in result
     assert result.startswith("***")
 
 

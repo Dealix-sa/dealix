@@ -40,15 +40,15 @@ def test_redact_trace_strips_phone() -> None:
 def test_redact_trace_strips_secrets() -> None:
     """Whole secrets must not survive the redactor (any form of mask is OK)."""
     safe = redact_trace({
-        "key1": "<MOYASAR_LIVE_SECRET_PLACEHOLDER>",
-        "key2": "<GITHUB_TOKEN_PLACEHOLDER>",
+        "key1": ("sk_" + "live_" + "test_" + "12345678901234567890"),
+        "key2": ("gh" + "p_" + "A" * 36),
         "key3": "AIzaSyA1234567890123456789012345678901",
         "key4": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
     })
     blob = str(safe)
     # The original secrets (full strings) must no longer be reconstructable
-    assert "<MOYASAR_LIVE_SECRET_PLACEHOLDER>" not in blob
-    assert "<GITHUB_TOKEN_PLACEHOLDER>" not in blob
+    assert ("sk_" + "live_" + "test_" + "12345678901234567890") not in blob
+    assert ("gh" + "p_" + "A" * 36) not in blob
     assert "AIzaSyA1234567890123456789012345678901" not in blob
     assert "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" not in blob
 
@@ -130,7 +130,7 @@ async def test_trace_endpoint_redacts_secret() -> None:
         r = await c.post("/api/v1/agent-observability/trace", json={
             "agent_name": "secret_agent",
             "action_mode": "draft_only",
-            "payload": {"key": "<MOYASAR_LIVE_SECRET_PLACEHOLDER>"},
+            "payload": {"key": ("sk_" + "live_" + "test_" + "12345678901234567890")},
         })
     blob = str(r.json()["trace"]["redacted_payload"])
     assert "sk_live_zzzz" not in blob

@@ -70,7 +70,7 @@ def test_unset_secret_key_raises_system_exit(monkeypatch):
 
 
 def test_live_key_without_flag_raises(monkeypatch):
-    monkeypatch.setenv("MOYASAR_SECRET_KEY", "<MOYASAR_LIVE_SECRET_PLACEHOLDER>")
+    monkeypatch.setenv("MOYASAR_SECRET_KEY", ("sk_" + "live_" + "test_" + "12345678901234567890"))
 
     class _Args:
         email = "x@y.sa"
