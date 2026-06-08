@@ -27,14 +27,10 @@ ENV NODE_ENV=production \
 
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 
-COPY package.json package-lock.json* ./
-COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/next.config.js ./next.config.js
-
-RUN npm prune --omit=dev || true
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 EXPOSE 3000
-CMD ["./node_modules/.bin/next", "start", "-p", "3000", "-H", "0.0.0.0"]
+CMD ["node", "server.js"]
