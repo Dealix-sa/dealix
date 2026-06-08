@@ -20,7 +20,9 @@ offers = {
 
 today = dt.date.today()
 name, pain, targets = offers[today.weekday()]
-content = f"""# Dealix Daily Offer
+path = OUT / f"{today.isoformat()}_daily_offer.md"
+
+path.write_text(f"""# Dealix Daily Offer
 
 Date: {today.isoformat()}
 
@@ -46,7 +48,6 @@ Date: {today.isoformat()}
 - Send 20 reviewed messages.
 - Book 2 discovery calls.
 - Push paid diagnostic if prospect is qualified.
-"""
-path = OUT / f"{today.isoformat()}_daily_offer.md"
-path.write_text(content, encoding="utf-8")
+""", encoding="utf-8")
+
 print(path)

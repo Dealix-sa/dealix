@@ -11,30 +11,19 @@ echo "1) Production health"
 if [ -x ./scripts/dealix_prod_check.sh ]; then
   ./scripts/dealix_prod_check.sh || true
 else
-  echo "Missing dealix_prod_check.sh"
+  echo "Missing production check."
 fi
 
 echo ""
-echo "2) Daily offer"
-python company/scripts/daily_offer_generator.py
+echo "2) Secret-aware company day"
+./scripts/dealix_secret_aware_company_day.sh
 
 echo ""
-echo "3) Founder business autopilot"
-if [ -x ./scripts/dealix_founder_business_day.sh ]; then
-  ./scripts/dealix_founder_business_day.sh || true
-else
-  echo "Founder Business OS is not merged yet or script is missing."
-fi
-
-echo ""
-echo "4) Morning ops"
-if [ -x ./scripts/dealix_morning_ops.sh ]; then
-  ./scripts/dealix_morning_ops.sh || true
-fi
-
-echo ""
-echo "5) CRM file"
-test -f company/crm/pipeline.csv && echo "CRM pipeline exists"
+echo "3) CRM"
+test -f company/crm/pipeline.csv || cat > company/crm/pipeline.csv <<'CSV'
+date,company,sector,contact,phone,email,source,offer,status,next_action,next_followup_date,deal_value_sar,probability,notes
+CSV
+echo "CRM ready: company/crm/pipeline.csv"
 
 echo ""
 echo "DONE"
