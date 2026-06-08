@@ -1,0 +1,179 @@
+version: 1.0
+company: Dealix
+positioning: >
+  Dealix builds AI-native business operating systems for companies that need
+  measurable transformation across sales, operations, customer experience,
+  brand, automation, reporting, and governance.
+
+service_lines:
+  - id: ai_business_command_center
+    name: AI Business Command Center
+    category: Executive Operations
+    problem: "Management cannot see daily operational truth across sales, follow-up, reviews, proposals, and team execution."
+    transformation: "Creates a real-time command layer for decisions, accountability, and growth execution."
+    deliverables:
+      - Executive dashboard
+      - Daily action board
+      - Sales/follow-up/reviews/proposals visibility
+      - Weekly executive report
+      - KPI definitions
+      - Team operating cadence
+    setup_price_sar: "35,000 - 120,000"
+    monthly_price_sar: "8,000 - 35,000"
+    timeline_days: "21 - 45"
+    best_for:
+      - Clinics groups
+      - Training centers
+      - Agencies
+      - Multi-branch restaurants
+      - B2B service companies
+
+  - id: whatsapp_revenue_os
+    name: WhatsApp Revenue OS
+    category: Revenue Operations
+    problem: "WhatsApp leads are scattered, not followed up, not measured, and not connected to revenue."
+    transformation: "Turns WhatsApp into a measurable pipeline with lead capture, qualification, follow-up, booking, and reporting."
+    deliverables:
+      - Lead intake model
+      - Pipeline stages
+      - Follow-up tasks
+      - Message templates
+      - Booking/reporting flow
+      - Lost reason analysis
+    setup_price_sar: "12,000 - 45,000"
+    monthly_price_sar: "3,000 - 15,000"
+    timeline_days: "10 - 21"
+
+  - id: brand_intelligence_os
+    name: Brand Intelligence OS
+    category: Brand + Creative Systems
+    problem: "Brand messaging, content, offers, and visual identity are inconsistent across channels."
+    transformation: "Creates a reusable brand operating system: identity, voice, offer language, templates, and content workflows."
+    deliverables:
+      - Brand strategy map
+      - Visual identity direction
+      - Tone of voice system
+      - Offer messaging bank
+      - Content pillars
+      - Social/ad/landing templates
+      - AI prompt library for brand-safe content
+    setup_price_sar: "15,000 - 60,000"
+    monthly_price_sar: "4,000 - 18,000"
+    timeline_days: "14 - 30"
+
+  - id: ai_agent_workforce_os
+    name: AI Agent Workforce OS
+    category: AI Agents + Automation
+    problem: "Teams repeat work manually and AI is used randomly without ownership, logs, controls, or measurable ROI."
+    transformation: "Deploys role-based AI agents for sales, support, operations, reporting, and admin with human approval gates."
+    deliverables:
+      - Agent role map
+      - Agent task boundaries
+      - Human approval gates
+      - Agent prompts and tools
+      - Audit log structure
+      - Weekly agent performance review
+      - Cost monitoring model
+    setup_price_sar: "40,000 - 180,000"
+    monthly_price_sar: "12,000 - 60,000"
+    timeline_days: "30 - 60"
+
+  - id: customer_experience_os
+    name: Client Experience OS
+    category: Customer Success
+    problem: "Customer journey is fragmented from first contact to onboarding, service delivery, support, and retention."
+    transformation: "Builds a unified customer journey with touchpoints, automations, feedback loops, and retention reporting."
+    deliverables:
+      - Customer journey map
+      - Onboarding workflow
+      - Support workflow
+      - Feedback/review capture
+      - Retention dashboard
+      - Escalation system
+    setup_price_sar: "20,000 - 80,000"
+    monthly_price_sar: "6,000 - 25,000"
+    timeline_days: "21 - 45"
+
+  - id: operations_automation_os
+    name: Operations Automation OS
+    category: Internal Operations
+    problem: "Tasks, approvals, reminders, reports, and handoffs depend on people remembering manually."
+    transformation: "Automates repeatable operations and creates accountable workflows with alerts and dashboards."
+    deliverables:
+      - Workflow map
+      - Automation blueprint
+      - Approval matrix
+      - Alerts/reminders
+      - Operations dashboard
+      - SOP library
+    setup_price_sar: "25,000 - 120,000"
+    monthly_price_sar: "7,000 - 35,000"
+    timeline_days: "21 - 60"
+
+  - id: executive_reporting_os
+    name: Executive Reporting OS
+    category: Reporting + Intelligence
+    problem: "Reports are manual, late, inconsistent, or disconnected from decisions."
+    transformation: "Creates automated weekly/monthly reporting that converts operational data into executive decisions."
+    deliverables:
+      - KPI model
+      - Data source map
+      - Weekly report template
+      - Monthly executive pack
+      - Insights and recommendations
+      - Decision tracker
+    setup_price_sar: "18,000 - 75,000"
+    monthly_price_sar: "5,000 - 20,000"
+    timeline_days: "14 - 30"
+
+  - id: trust_governance_os
+    name: Trust & AI Governance OS
+    category: Governance + Security
+    problem: "Companies want AI but lack policies, risk controls, approval gates, monitoring, and data governance."
+    transformation: "Builds practical AI/data governance aligned with risk management and operational enforcement."
+    deliverables:
+      - AI policy
+      - Data handling map
+      - Agent risk register
+      - Approval matrix
+      - Monitoring checklist
+      - Incident response runbook
+      - Vendor/tool register
+    setup_price_sar: "30,000 - 150,000"
+    monthly_price_sar: "10,000 - 50,000"
+    timeline_days: "30 - 75"
+
+  - id: growth_engine_os
+    name: Growth Engine OS
+    category: Sales + Growth
+    problem: "Company has no predictable outbound, offer testing, follow-up cadence, or pipeline discipline."
+    transformation: "Builds a repeatable revenue machine across prospecting, messaging, demo, proposal, follow-up, and reporting."
+    deliverables:
+      - ICP map
+      - Prospecting workflow
+      - Outreach sequences
+      - Offer ladder
+      - Demo script
+      - Proposal templates
+      - Pipeline report
+    setup_price_sar: "25,000 - 100,000"
+    monthly_price_sar: "8,000 - 30,000"
+    timeline_days: "21 - 45"
+
+  - id: custom_enterprise_system
+    name: Custom Enterprise System
+    category: Bespoke Systems
+    problem: "Company needs a dedicated system built around its workflows, roles, data, integrations, and decision loops."
+    transformation: "Designs and implements a custom business system with governance, dashboards, automations, and integrations."
+    deliverables:
+      - Discovery sprint
+      - Solution architecture
+      - UX/workflow prototype
+      - Backend/API blueprint
+      - Dashboard
+      - Automations
+      - Integrations
+      - Training and SLA
+    setup_price_sar: "100,000 - 500,000+"
+    monthly_price_sar: "25,000 - 100,000+"
+    timeline_days: "45 - 120"
