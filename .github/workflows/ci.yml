@@ -86,7 +86,7 @@ jobs:
         run: python scripts/verify_founder_operating_system.py
 
       - name: Compile check
-        run: python -m compileall api auto_client_acquisition autonomous_growth core db integrations dealix scripts
+        run: python -m compileall api auto_client_acquisition autonomous_growth core db integrations dealix platform_core scripts
 
       - name: OpenAPI contract check
         run: python scripts/check_openapi_contract.py
