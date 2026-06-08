@@ -52,10 +52,12 @@ list_offerings = _REGISTRY_NS["list_offerings"]
 
 
 # ── Test 1 ────────────────────────────────────────────────────────────
-def test_registry_has_exactly_7_offerings():
-    """Article 11: catalog is the canonical 7 offerings."""
-    assert len(OFFERINGS) == 7, f"expected 7, got {len(OFFERINGS)}"
-    assert len(SERVICE_IDS) == 7, "duplicate service_id in registry"
+def test_registry_has_exactly_17_offerings():
+    """Article 11: catalog is 7 core-funnel + 10 Enterprise Transformation OS."""
+    assert len(OFFERINGS) == 17, f"expected 17, got {len(OFFERINGS)}"
+    assert len(SERVICE_IDS) == 17, "duplicate service_id in registry"
+    tx = [o for o in OFFERINGS if o.customer_journey_stage == "transformation"]
+    assert len(tx) == 10, f"expected 10 transformation offerings, got {len(tx)}"
 
 
 # ── Test 2 ────────────────────────────────────────────────────────────
@@ -105,13 +107,25 @@ def test_no_guaranteed_language_anywhere():
 
 
 # ── Test 5 ────────────────────────────────────────────────────────────
-def test_price_ladder_ascending_for_paid_one_time_services():
-    """Free → 499 (Sprint) → 1500 (Data-to-Revenue) one-time pricing ladder."""
+def test_price_ladder_ascending_for_core_funnel():
+    """Core funnel ladder: Free → 499 (Sprint) → 1500 (Data-to-Revenue).
+
+    The ascending invariant applies to the linear core funnel only.
+    Enterprise Transformation OS systems are a menu (not a funnel) priced as
+    setup *ranges*, so a global ascending ordering is the wrong invariant for them.
+    """
+    core_funnel_ids = (
+        "free_mini_diagnostic",
+        "revenue_proof_sprint_499",
+        "data_to_revenue_pack_1500",
+    )
     one_time_paid = [
-        o for o in OFFERINGS if o.price_unit == "one_time" and o.price_sar > 0
+        get_offering(cid)
+        for cid in core_funnel_ids
+        if get_offering(cid).price_unit == "one_time" and get_offering(cid).price_sar > 0
     ]
     prices = [o.price_sar for o in one_time_paid]
-    assert prices == sorted(prices), f"one-time prices not ascending: {prices}"
+    assert prices == sorted(prices), f"core funnel one-time prices not ascending: {prices}"
     # Specifically: Sprint must be cheaper than Data-to-Revenue
     sprint = get_offering("revenue_proof_sprint_499")
     d2r = get_offering("data_to_revenue_pack_1500")

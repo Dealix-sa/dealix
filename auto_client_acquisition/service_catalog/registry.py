@@ -1,4 +1,4 @@
-"""The 7 canonical Dealix offerings — Wave 13 Phase 2.
+"""The 17 canonical Dealix offerings — Wave 13 Phase 2 + Transformation OS.
 
 Truth registry. Backend + portal + WhatsApp + landing pages all read from here.
 
@@ -8,10 +8,20 @@ Constitution:
   not guarantee ("نضمن"). All `is_estimate=True`.
 - Article 11: pricing changes are 1-line edits to this file (no engine code).
 
-Pricing ladder (must be ascending for paid services):
+Core funnel ladder (ascending for paid one-time services):
   Free Diagnostic (0) → Sprint (499) → Data-to-Revenue (1500)
   → Growth Ops (2999/mo) → Support Add-on (1500/mo) → ECC (7500/mo)
   → Agency Partner OS (custom)
+
+Enterprise Transformation OS (customer_journey_stage="transformation"): 10
+higher-value systems sold to enterprises that need measurable transformation
+across sales, operations, brand, customer experience, automation, reporting,
+governance, and bespoke builds. These are NOT a linear funnel — they are a
+menu. Their pricing is a *range* (price_sar = setup floor / billable anchor,
+price_sar_max = setup ceiling) plus a recurring monthly range
+(price_monthly_sar_min/max). Every figure is an estimate. "Growth Engine OS"
+is modeled draft-only/approval-gated — never cold outreach or automation.
+Positioning: docs/transformation/DEALIX_TRANSFORMATION_OS_MASTER_AR.md
 
 Strategic mapping (roles → offerings): docs/strategic/DEALIX_ROLE_SERVICE_LADDER_AR.md
 """
@@ -329,7 +339,429 @@ _AGENCY_PARTNER_OS = ServiceOffering(
 )
 
 
-# Canonical 7-offering registry (order = catalog display order)
+# ═══════════════════════════════════════════════════════════════════════
+# Enterprise Transformation OS — 10 systems (customer_journey_stage =
+# "transformation"). Setup is a range (price_sar = floor, price_sar_max =
+# ceiling); monthly is a range (price_monthly_sar_min/max). All estimates.
+# ═══════════════════════════════════════════════════════════════════════
+
+# Shared gate baseline — also satisfies the commercial-map contract
+# (every offer must enforce no_cold_whatsapp + no_scraping + no_fake_proof)
+# and the catalog contract (no_live_send + no_live_charge + no_fake_proof).
+_TX_GATES_BASE: tuple[str, ...] = (
+    "no_live_send",
+    "no_live_charge",
+    "no_cold_whatsapp",
+    "no_scraping",
+    "no_fake_proof",
+    "no_fake_revenue",
+)
+
+
+_AI_COMMAND_CENTER_OS = ServiceOffering(
+    id="ai_command_center_os",
+    name_ar="مركز القيادة الذكي للأعمال",
+    name_en="AI Business Command Center",
+    price_sar=35000.0,
+    price_sar_max=120000.0,
+    price_monthly_sar_min=8000.0,
+    price_monthly_sar_max=35000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=60,
+    deliverables=(
+        "Executive command dashboard (Arabic-first)",
+        "Daily action board across sales / follow-up / reviews / proposals",
+        "Weekly executive report",
+        "KPI definitions + semantic metric layer",
+        "Team operating cadence",
+        "Approval queue wired to governance",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم بإطلاق رؤية يومية موحّدة للإدارة خلال مدة الإعداد. "
+        "الأسعار نطاقات تقديرية تُحدَّد بعد جلسة تشخيص مدفوعة."
+    ),
+    kpi_commitment_en=(
+        "We commit to a unified daily executive view live within the setup window. "
+        "Prices are estimate ranges, finalized after a paid diagnostic."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+        "approved_manual",
+    ),
+    hard_gates=(*_TX_GATES_BASE, "no_blast"),
+    customer_journey_stage="transformation",
+)
+
+
+_WHATSAPP_REVENUE_OS = ServiceOffering(
+    id="whatsapp_revenue_os",
+    name_ar="نظام إيرادات واتساب",
+    name_en="WhatsApp Revenue OS",
+    price_sar=12000.0,
+    price_sar_max=45000.0,
+    price_monthly_sar_min=3000.0,
+    price_monthly_sar_max=15000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=30,
+    deliverables=(
+        "Lead intake model + pipeline stages",
+        "Follow-up task system (approval-gated drafts)",
+        "Approved message templates (draft_only)",
+        "Booking + reporting flow",
+        "Lost-reason analysis",
+        "Weekly pipeline report",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم بتحويل واتساب إلى pipeline قابل للقياس خلال مدة الإعداد. "
+        "كل رسالة خارجية مسودة تتطلب موافقة — لا إرسال بارد ولا أتمتة."
+    ),
+    kpi_commitment_en=(
+        "We commit to turning WhatsApp into a measurable pipeline within the setup "
+        "window. Every external message is an approval-gated draft — no cold send, no automation."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+    ),
+    hard_gates=(*_TX_GATES_BASE, "no_linkedin_auto", "no_blast"),
+    customer_journey_stage="transformation",
+)
+
+
+_BRAND_INTELLIGENCE_OS = ServiceOffering(
+    id="brand_intelligence_os",
+    name_ar="نظام ذكاء العلامة التجارية",
+    name_en="Brand Intelligence OS",
+    price_sar=15000.0,
+    price_sar_max=60000.0,
+    price_monthly_sar_min=4000.0,
+    price_monthly_sar_max=18000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=45,
+    deliverables=(
+        "Brand strategy + positioning map",
+        "Visual identity direction",
+        "Tone-of-voice system (AR + EN)",
+        "Offer messaging bank",
+        "Content pillars + social / landing templates",
+        "Brand-safe AI prompt library",
+        "Content approval workflow",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم بتسليم نظام هوية موحّد قابل لإعادة الاستخدام خلال مدة الإعداد. "
+        "الأسعار نطاقات تقديرية."
+    ),
+    kpi_commitment_en=(
+        "We commit to a reusable, unified brand operating system within the setup "
+        "window. Prices are estimate ranges."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+    ),
+    hard_gates=_TX_GATES_BASE,
+    customer_journey_stage="transformation",
+)
+
+
+_AI_AGENT_WORKFORCE_OS = ServiceOffering(
+    id="ai_agent_workforce_os",
+    name_ar="نظام قوى العمل من وكلاء الذكاء الاصطناعي",
+    name_en="AI Agent Workforce OS",
+    price_sar=40000.0,
+    price_sar_max=180000.0,
+    price_monthly_sar_min=12000.0,
+    price_monthly_sar_max=60000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=90,
+    deliverables=(
+        "Agent role map + task boundaries",
+        "Human approval gates for high-risk actions",
+        "Agent prompts + allowed tools registry",
+        "Audit log structure",
+        "Weekly agent performance review",
+        "Cost + usage monitoring model",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم بنشر وكلاء بأدوار وحدود وصلاحيات واضحة ومراجعة بشرية للإجراءات "
+        "الحساسة. لا تنفيذ خارجي تلقائي. الأسعار نطاقات تقديرية."
+    ),
+    kpi_commitment_en=(
+        "We commit to role-scoped agents with clear boundaries, permissions, and "
+        "human approval on sensitive actions. No autonomous external execution. "
+        "Prices are estimate ranges."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+        "approved_manual",
+    ),
+    hard_gates=(*_TX_GATES_BASE, "no_blast"),
+    customer_journey_stage="transformation",
+)
+
+
+_CLIENT_EXPERIENCE_OS = ServiceOffering(
+    id="client_experience_os",
+    name_ar="نظام تجربة العميل",
+    name_en="Client Experience OS",
+    price_sar=20000.0,
+    price_sar_max=80000.0,
+    price_monthly_sar_min=6000.0,
+    price_monthly_sar_max=25000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=60,
+    deliverables=(
+        "Customer journey map (first contact → repeat purchase)",
+        "Onboarding workflow",
+        "Support workflow",
+        "Feedback / review capture loop",
+        "Retention dashboard",
+        "Escalation system",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم بتوحيد رحلة العميل من أول تواصل إلى إعادة الشراء خلال مدة الإعداد. "
+        "الأسعار نطاقات تقديرية."
+    ),
+    kpi_commitment_en=(
+        "We commit to a unified customer journey from first contact to repeat "
+        "purchase within the setup window. Prices are estimate ranges."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+        "approved_manual",
+    ),
+    hard_gates=_TX_GATES_BASE,
+    customer_journey_stage="transformation",
+)
+
+
+_OPERATIONS_AUTOMATION_OS = ServiceOffering(
+    id="operations_automation_os",
+    name_ar="نظام أتمتة العمليات",
+    name_en="Operations Automation OS",
+    price_sar=25000.0,
+    price_sar_max=120000.0,
+    price_monthly_sar_min=7000.0,
+    price_monthly_sar_max=35000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=75,
+    deliverables=(
+        "Workflow map + automation blueprint",
+        "Approval matrix",
+        "Alerts + reminders",
+        "Operations dashboard",
+        "SOP library",
+        "Handoff + escalation flows",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم بأتمتة العمليات المتكررة بحوكمة وتنبيهات ولوحات خلال مدة الإعداد. "
+        "نُخرِّط أولاً ثم نؤتمت — لا نؤتمت الفوضى. الأسعار نطاقات تقديرية."
+    ),
+    kpi_commitment_en=(
+        "We commit to automating repeatable operations with governance, alerts, and "
+        "dashboards within the setup window. Map first, then automate — never automate "
+        "chaos. Prices are estimate ranges."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+        "approved_manual",
+    ),
+    hard_gates=_TX_GATES_BASE,
+    customer_journey_stage="transformation",
+)
+
+
+_EXECUTIVE_REPORTING_OS = ServiceOffering(
+    id="executive_reporting_os",
+    name_ar="نظام التقارير التنفيذية",
+    name_en="Executive Reporting OS",
+    price_sar=18000.0,
+    price_sar_max=75000.0,
+    price_monthly_sar_min=5000.0,
+    price_monthly_sar_max=20000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=45,
+    deliverables=(
+        "KPI model + data source map",
+        "Weekly report template",
+        "Monthly executive pack",
+        "Insights + recommendations layer",
+        "Decision tracker",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم بتحويل بيانات التشغيل إلى تقارير تنفيذية أسبوعية وشهرية تربط بالقرار "
+        "خلال مدة الإعداد. الأسعار نطاقات تقديرية."
+    ),
+    kpi_commitment_en=(
+        "We commit to converting operational data into weekly + monthly executive "
+        "reports tied to decisions within the setup window. Prices are estimate ranges."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+    ),
+    hard_gates=_TX_GATES_BASE,
+    customer_journey_stage="transformation",
+)
+
+
+_TRUST_GOVERNANCE_OS = ServiceOffering(
+    id="trust_governance_os",
+    name_ar="نظام الثقة وحوكمة الذكاء الاصطناعي",
+    name_en="Trust & AI Governance OS",
+    price_sar=30000.0,
+    price_sar_max=150000.0,
+    price_monthly_sar_min=10000.0,
+    price_monthly_sar_max=50000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=60,
+    deliverables=(
+        "AI usage policy",
+        "Data handling map",
+        "Agent risk register",
+        "Approval matrix",
+        "Monitoring checklist",
+        "Incident response runbook",
+        "Vendor / tool register",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم ببناء حوكمة عملية للذكاء الاصطناعي والبيانات متوائمة مع PDPL "
+        "وإدارة المخاطر، قابلة للتطبيق التشغيلي. الأسعار نطاقات تقديرية."
+    ),
+    kpi_commitment_en=(
+        "We commit to practical AI + data governance aligned with PDPL and risk "
+        "management, enforceable operationally. Prices are estimate ranges."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+    ),
+    hard_gates=(*_TX_GATES_BASE, "no_blast"),
+    customer_journey_stage="transformation",
+)
+
+
+_GROWTH_ENGINE_OS = ServiceOffering(
+    id="growth_engine_os",
+    name_ar="نظام محرك النمو",
+    name_en="Growth Engine OS",
+    price_sar=25000.0,
+    price_sar_max=100000.0,
+    price_monthly_sar_min=8000.0,
+    price_monthly_sar_max=30000.0,
+    price_unit="one_time",
+    setup_is_range=True,
+    duration_days=60,
+    deliverables=(
+        "ICP map + prospecting workflow",
+        "Approved-draft outreach packs (draft_only, approval-gated)",
+        "Offer ladder + demo script",
+        "Proposal templates",
+        "Warm-intro drafts (approval-gated)",
+        "Pipeline report",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم ببناء آلة نمو قابلة للتكرار عبر مسودات معتمدة فقط. "
+        "لا واتساب بارد ولا أتمتة LinkedIn ولا إرسال جماعي ولا scraping. "
+        "الأسعار نطاقات تقديرية."
+    ),
+    kpi_commitment_en=(
+        "We commit to a repeatable growth machine built on approved drafts only. "
+        "No cold WhatsApp, no LinkedIn automation, no blast, no scraping. "
+        "Prices are estimate ranges."
+    ),
+    refund_policy_ar="استرداد تناسبي للمراحل غير المسلَّمة وفق بنود العقد.",
+    refund_policy_en="Pro-rata refund for undelivered milestones per the contract.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+    ),
+    hard_gates=(*_TX_GATES_BASE, "no_linkedin_auto", "no_blast"),
+    customer_journey_stage="transformation",
+)
+
+
+_CUSTOM_ENTERPRISE_SYSTEM = ServiceOffering(
+    id="custom_enterprise_system",
+    name_ar="نظام مؤسسي مخصص",
+    name_en="Custom Enterprise System",
+    price_sar=0.0,  # custom — setup range 100,000–500,000+ SAR set per scope
+    price_sar_max=None,
+    price_monthly_sar_min=25000.0,
+    price_monthly_sar_max=None,
+    price_unit="custom",
+    setup_is_range=False,
+    duration_days=0,  # scoped per engagement
+    deliverables=(
+        "Paid discovery sprint",
+        "Solution architecture",
+        "UX / workflow prototype",
+        "Backend / API blueprint",
+        "Dashboards + automations",
+        "Integrations",
+        "Training + SLA",
+    ),
+    kpi_commitment_ar=(
+        "نلتزم ببناء نظام تشغيل مخصص حول عمليات الشركة وبياناتها وفريقها، "
+        "يبدأ بجلسة تشخيص مدفوعة. النطاق ٠٠٠ر١٠٠–٠٠٠ر٥٠٠+ تقديري يُحدَّد بالعقد."
+    ),
+    kpi_commitment_en=(
+        "We commit to a bespoke operating system built around the company's "
+        "workflows, data, and team — starting with a paid discovery sprint. "
+        "Scope 100,000–500,000+ SAR is an estimate, set in the contract."
+    ),
+    refund_policy_ar="عقد رسمي بشروط دفع على مراحل ومراجعة قانونية.",
+    refund_policy_en="Formal milestone-based contract, lawyer-reviewed.",
+    action_modes_used=(
+        "suggest_only",
+        "draft_only",
+        "approval_required",
+        "approved_manual",
+    ),
+    hard_gates=(*_TX_GATES_BASE, "no_blast"),
+    customer_journey_stage="transformation",
+)
+
+
+# Canonical 17-offering registry (order = catalog display order).
+# Core funnel (7) first, then Enterprise Transformation OS (10).
 OFFERINGS: tuple[ServiceOffering, ...] = (
     _FREE_DIAGNOSTIC,
     _REVENUE_PROOF_SPRINT,
@@ -338,13 +770,24 @@ OFFERINGS: tuple[ServiceOffering, ...] = (
     _SUPPORT_OS_ADDON,
     _EXECUTIVE_COMMAND_CENTER,
     _AGENCY_PARTNER_OS,
+    # ── Enterprise Transformation OS ──
+    _AI_COMMAND_CENTER_OS,
+    _WHATSAPP_REVENUE_OS,
+    _BRAND_INTELLIGENCE_OS,
+    _AI_AGENT_WORKFORCE_OS,
+    _CLIENT_EXPERIENCE_OS,
+    _OPERATIONS_AUTOMATION_OS,
+    _EXECUTIVE_REPORTING_OS,
+    _TRUST_GOVERNANCE_OS,
+    _GROWTH_ENGINE_OS,
+    _CUSTOM_ENTERPRISE_SYSTEM,
 )
 
 SERVICE_IDS: frozenset[str] = frozenset(o.id for o in OFFERINGS)
 
 
 def list_offerings() -> tuple[ServiceOffering, ...]:
-    """All 7 offerings in catalog display order."""
+    """All 17 offerings in catalog display order (7 core funnel + 10 transformation)."""
     return OFFERINGS
 
 
