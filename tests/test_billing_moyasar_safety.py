@@ -22,7 +22,7 @@ async def test_list_plans_endpoint(async_client):
     assert "plans" in data
 
 
-def test_no_literal_<GITHUB_PAT_PLACEHOLDER>():
+def test_no_literal_github_pat_placeholder():
     import inspect
 
     src = inspect.getsource(pricing)
