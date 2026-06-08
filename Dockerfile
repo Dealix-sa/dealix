@@ -16,6 +16,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         curl \
+        libffi-dev \
+        pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /build
@@ -52,6 +54,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Runtime-only system deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
+        libffi8 \
         tini \
     && rm -rf /var/lib/apt/lists/*
 
