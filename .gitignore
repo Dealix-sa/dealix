@@ -325,3 +325,5 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+testsprite_tests/tmp/
