@@ -1,0 +1,126 @@
+{
+  "version": "2",
+  "type": "backend",
+  "project_name": "Dealix",
+  "description": "Saudi-first B2B revenue operating system. FastAPI + PostgreSQL + Redis multi-tenant platform with AI agents, PDPL/ZATCA compliance, lead acquisition pipeline, customer success, and LLM gateway.",
+  "tech_stack": {
+    "language": "Python 3.11+",
+    "framework": "FastAPI 0.115",
+    "database": "PostgreSQL (SQLAlchemy 2.0 async) + Redis + pgvector",
+    "auth": "JWT HS256 + TOTP MFA + RBAC",
+    "compliance": "PDPL Article 18 + ZATCA e-invoice"
+  },
+  "base_url": "http://localhost:8000",
+  "features": [
+    {
+      "name": "Health Checks",
+      "description": "Liveness and deep health checks",
+      "endpoints": [
+        {"method": "GET", "path": "/api/v1/health", "auth_required": false},
+        {"method": "GET", "path": "/api/v1/health/deep", "auth_required": false}
+      ]
+    },
+    {
+      "name": "Authentication",
+      "description": "Tenant registration, JWT login, MFA, token refresh, invites, password reset",
+      "endpoints": [
+        {"method": "POST", "path": "/api/v1/auth/register", "auth_required": false},
+        {"method": "POST", "path": "/api/v1/auth/login", "auth_required": false},
+        {"method": "POST", "path": "/api/v1/auth/refresh", "auth_required": false},
+        {"method": "POST", "path": "/api/v1/auth/logout", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/auth/me", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/auth/mfa/setup", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/auth/mfa/verify", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/auth/invite", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/auth/password/reset-request", "auth_required": false},
+        {"method": "POST", "path": "/api/v1/auth/password/reset", "auth_required": false}
+      ]
+    },
+    {
+      "name": "Lead Acquisition Pipeline",
+      "description": "Full pipeline: intake → scoring → qualification → booking → proposal with Decision Passport",
+      "endpoints": [
+        {"method": "POST", "path": "/api/v1/leads", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/leads/batch", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/leads/score", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/decision-passport/golden-chain", "auth_required": false},
+        {"method": "GET", "path": "/api/v1/decision-passport/evidence-levels", "auth_required": false},
+        {"method": "POST", "path": "/api/v1/decision-passport/create", "auth_required": true}
+      ]
+    },
+    {
+      "name": "Customer Success",
+      "description": "Health scoring, at-risk detection, QBR, benchmarking, Saudi B2B Pulse",
+      "endpoints": [
+        {"method": "POST", "path": "/api/v1/customer-success/health/{customer_id}", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/customer-success/at-risk", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/customer-success/qbr/{customer_id}", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/customer-success/benchmarks/{sector}", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/customer-success/saudi-b2b-pulse", "auth_required": false}
+      ]
+    },
+    {
+      "name": "AI Agent Execution",
+      "description": "Intake agent, pain extractor, ICP matcher, market research",
+      "endpoints": [
+        {"method": "POST", "path": "/api/v1/agents/intake", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/agents/pain-extractor", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/agents/icp-match", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/agents/research", "auth_required": true}
+      ]
+    },
+    {
+      "name": "Admin Operations",
+      "description": "LLM cost dashboard, cache stats, DLQ management",
+      "endpoints": [
+        {"method": "GET", "path": "/api/v1/admin/costs", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/admin/cache/stats", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/admin/dlq/{queue}/peek", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/admin/dlq/{queue}/drain", "auth_required": true}
+      ]
+    },
+    {
+      "name": "PDPL Compliance & Audit",
+      "description": "Audit export, DSAR, erasure, compliance status",
+      "endpoints": [
+        {"method": "GET", "path": "/api/v1/audit/export", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/pdpl/data/{user_id}", "auth_required": true},
+        {"method": "DELETE", "path": "/api/v1/pdpl/erase/{user_id}", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/compliance/status", "auth_required": false}
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "description": "Inbound webhooks (WhatsApp/HubSpot/n8n) with DLQ, outbound subscriptions",
+      "endpoints": [
+        {"method": "POST", "path": "/api/v1/webhooks", "auth_required": false},
+        {"method": "POST", "path": "/api/v1/webhooks/subscribe", "auth_required": true},
+        {"method": "DELETE", "path": "/api/v1/webhooks/{subscription_id}", "auth_required": true}
+      ]
+    },
+    {
+      "name": "Revenue OS Catalog",
+      "description": "Registry, signals normalization, anti-waste checks",
+      "endpoints": [
+        {"method": "GET", "path": "/api/v1/revenue-os/catalog", "auth_required": false},
+        {"method": "POST", "path": "/api/v1/revenue-os/signals/normalize", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/revenue-os/anti-waste/check", "auth_required": true}
+      ]
+    },
+    {
+      "name": "Founder Dashboard",
+      "description": "Founder-only dashboard, daily brief, launch status",
+      "endpoints": [
+        {"method": "GET", "path": "/api/v1/founder/dashboard", "auth_required": true},
+        {"method": "POST", "path": "/api/v1/personal-operator/daily-brief", "auth_required": true},
+        {"method": "GET", "path": "/api/v1/launch-status/public", "auth_required": false}
+      ]
+    }
+  ],
+  "known_limitations": [
+    "LLM provider fallback not fully tested under concurrent load",
+    "Deprecated endpoints (v3/v6/v10/v11) missing Sunset headers",
+    "DLQ drain lacks idempotency key",
+    "Benchmark cohort guard race condition possible"
+  ]
+}
