@@ -1,6 +1,7 @@
 # ─────────────────────────────────────────────────────────────
 # 🔒 SECRETS — NEVER COMMIT
 # ─────────────────────────────────────────────────────────────
+.mcp.json
 .env
 .env.*
 dealix/transformation/kpi_founder_commercial_import.yaml
