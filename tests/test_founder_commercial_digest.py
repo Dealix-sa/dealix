@@ -50,15 +50,17 @@ def test_count_evidence_events_today():
 
 
 def test_scope_requested_within_days():
-    
-from datetime import date, timedelta
-recent = (date.today() - timedelta(days=7)).isoformat()
-old = (date.today() - timedelta(days=30)).isoformat()
-rows = [{"event_date": recent, "event_type": "scope_requested"}]
+    from datetime import date, timedelta
 
+    recent = (date.today() - timedelta(days=7)).isoformat()
+    old = (date.today() - timedelta(days=30)).isoformat()
+
+    rows = [{"event_date": recent, "event_type": "scope_requested"}]
     assert scope_requested_within_days(14, rows) is True
     assert scope_requested_within_days(3, rows) is False
 
+    old_rows = [{"event_date": old, "event_type": "scope_requested"}]
+    assert scope_requested_within_days(14, old_rows) is False
 
 def test_social_queue_has_posts():
     q = load_social_queue()
