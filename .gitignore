@@ -329,7 +329,9 @@ logs/
 # Dealix generated daily operating outputs
 company/runtime/
 company/outbox/*_master_stable_approval_queue.csv
+company/outbox/*_micro_master_approval_queue.csv
 company/reports/*_MASTER_STABLE_CEO_REPORT.md
+company/reports/*_MICRO_MASTER_CEO_REPORT.md
 
 # Dealix intake generated outputs
 company/runtime/intake/
