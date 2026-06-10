@@ -93,3 +93,34 @@ export function buildArticleMetadata(locale: string, titleAr: string, titleEn: s
     alternates: { canonical: url, languages: { ar: `${SITE}/ar/learn/${slug}`, en: `${SITE}/en/learn/${slug}` } },
   };
 }
+
+/** Generic metadata for a Wave 3 marketing page (path includes leading slash, no locale). */
+export function buildWave3Metadata(
+  locale: string,
+  path: string,
+  titleAr: string,
+  titleEn: string,
+  descAr: string,
+  descEn: string,
+): Metadata {
+  const isAr = locale === "ar";
+  const title = isAr ? titleAr : titleEn;
+  const description = isAr ? descAr : descEn;
+  const url = `${SITE}/${locale}${path}`;
+  return {
+    title: `${title} — Dealix`,
+    description,
+    openGraph: { title, description, url, images: OG_IMAGE, type: "website" },
+    twitter: { card: "summary_large_image", title, description },
+    alternates: { canonical: url, languages: { ar: `${SITE}/ar${path}`, en: `${SITE}/en${path}` } },
+    icons: { icon: "/brand/logo-mark.svg" },
+  };
+}
+
+export function buildSectorMetadata(locale: string, slug: string, titleAr: string, titleEn: string, descAr: string, descEn: string): Metadata {
+  return buildWave3Metadata(locale, `/industries/${slug}`, titleAr, titleEn, descAr, descEn);
+}
+
+export function buildAnswerMetadata(locale: string, slug: string, titleAr: string, titleEn: string, descAr: string, descEn: string): Metadata {
+  return buildWave3Metadata(locale, `/answers/${slug}`, titleAr, titleEn, descAr, descEn);
+}

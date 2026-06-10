@@ -41,6 +41,11 @@ eggs/
 .eggs/
 lib/
 lib64/
+# Frontend Wave 3 sources live under a dir named 'lib' which the generic Python
+# `lib/` rule above would otherwise exclude. Keep them tracked.
+!frontend/src/lib/
+!frontend/src/lib/wave3/
+!frontend/src/lib/wave3/**
 parts/
 sdist/
 var/

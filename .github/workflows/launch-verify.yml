@@ -1,0 +1,52 @@
+name: Dealix Launch Gates
+
+# Least privilege: these checks only read the repo.
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/verify_dealix_*.py"
+      - "docs/00_platform_truth/**"
+      - "sales/**"
+      - "customers/_template/**"
+      - "frontend/src/content/wave3/**"
+      - "frontend/src/components/wave3/**"
+      - "frontend/scripts/verify_wave3_content.mjs"
+  pull_request:
+    paths:
+      - "scripts/verify_dealix_*.py"
+      - "docs/00_platform_truth/**"
+      - "sales/**"
+      - "customers/_template/**"
+      - "frontend/src/content/wave3/**"
+      - "frontend/src/components/wave3/**"
+      - "frontend/scripts/verify_wave3_content.mjs"
+  workflow_dispatch:
+
+jobs:
+  launch-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Run Dealix launch gates
+        run: make launch-verify
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Wave 3 frontend content guard
+        run: node frontend/scripts/verify_wave3_content.mjs
