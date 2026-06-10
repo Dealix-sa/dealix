@@ -1,0 +1,55 @@
+# Go-Live OS — External Go Live Requirements
+## نظام الانطلاق الخارجي
+
+> Dealix is a Saudi/GCC B2B AI Revenue & Operations OS.
+> Dealix هو نظام تشغيل إيرادات وعمليات مدعوم بالذكاء الاصطناعي للشركات السعودية والخليجية.
+
+### Purpose / الغرض
+- **EN:** External go-live requirements: domain/email (SPF/DKIM/DMARC), suppression, legal, payments and deployment.
+- **AR:** متطلبات الانطلاق الخارجي: النطاق/البريد (SPF/DKIM/DMARC) والاستبعاد والقانون والمدفوعات والنشر.
+
+### What this OS covers / ما يغطيه هذا النظام
+- Domain/email readiness
+- Manual outreach ramp
+- Suppression
+- Privacy/legal
+- Payment/booking
+- Deployment checklist
+
+### First 5 verticals / أول ٥ قطاعات
+1. **Facilities Management & Maintenance** — إدارة المرافق والصيانة
+2. **Contracting & Project Controls** — المقاولات وضبط المشاريع
+3. **Real Estate & Property Operations** — العقار وعمليات إدارة الأملاك
+4. **Legal & Professional Services** — الخدمات القانونية والمهنية
+5. **Consulting, Training & B2B Services** — الاستشارات والتدريب وخدمات الأعمال
+
+### Offer ladder (SAR) / سلّم العروض
+| Stage | Offer | Price (SAR) | Billing |
+|---|---|---|---|
+| audit | AI Workflow Audit / تدقيق سير العمل بالذكاء الاصطناعي | 499–2,500 | one_time |
+| pilot | Paid Pilot / تجربة مدفوعة | 5,000–25,000 | one_time |
+| department_os | Department OS / نظام تشغيل القسم | 25,000–150,000 | project |
+| retainer | Monthly Retainer / اشتراك شهري | 3,000–25,000 | monthly |
+| enterprise | Enterprise Custom OS / نظام تشغيل مخصص للمؤسسات | 150,000–1,000,000 | project |
+
+### Documents in this OS / مستندات هذا النظام
+- `00_EXTERNAL_GO_LIVE_REQUIREMENTS.md`
+- `01_DOMAIN_EMAIL_READINESS.md`
+- `02_MANUAL_OUTREACH_RAMP.md`
+- `03_SUPPRESSION_PROCESS.md`
+- `04_PRIVACY_LEGAL_READINESS.md`
+- `05_PAYMENT_BOOKING_READINESS.md`
+- `06_INCIDENT_AND_COMPLAINT_PROCESS.md`
+- `07_PRODUCTION_DEPLOYMENT_CHECKLIST.md`
+- `99_GO_LIVE_REPORT.md`
+
+
+---
+
+### Safety / السلامة
+
+> **EN:** AI drafts, scores, ranks, analyzes, and recommends. The founder reviews, approves, and acts manually. The system never sends externally.
+>
+> **AR:** الذكاء الاصطناعي يصيغ ويقيّم ويرتّب ويحلّل ويوصي. المؤسس يراجع ويعتمد وينفّذ يدوياً. النظام لا يرسل خارجياً إطلاقاً.
+
+No SMTP. No WhatsApp outbound. No LinkedIn automation. No form auto-submit. No scraping. No secrets. No ROI guarantees. No unproven claims.

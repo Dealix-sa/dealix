@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "title": "Dealix CRM / RevOps Pipeline Schema",
+    "version": "1.0.0",
+    "non_negotiable_rule": "System never sends externally. No CRM push-send. Founder acts manually.",
+    "send_capability": "none"
+  },
+  "pipeline_stages": [
+    "raw_lead",
+    "researched",
+    "draft_generated",
+    "founder_review",
+    "manually_contacted",
+    "replied_positive",
+    "discovery_booked",
+    "diagnostic_proposed",
+    "diagnostic_sold",
+    "pilot_proposed",
+    "pilot_sold",
+    "retainer",
+    "expansion",
+    "disqualified",
+    "suppressed"
+  ],
+  "lead_record": {
+    "required_fields": [
+      "lead_id",
+      "company_name",
+      "vertical",
+      "country",
+      "stage",
+      "created_at"
+    ],
+    "optional_fields": [
+      "city",
+      "website",
+      "buyer_title",
+      "buyer_persona",
+      "source",
+      "notes",
+      "opt_in",
+      "suppressed",
+      "suppression_reason"
+    ],
+    "field_types": {
+      "lead_id": "string",
+      "company_name": "string",
+      "vertical": "string",
+      "country": "string",
+      "city": "string",
+      "website": "string",
+      "buyer_title": "string",
+      "buyer_persona": "string",
+      "source": "string",
+      "stage": "string",
+      "created_at": "iso8601",
+      "notes": "string",
+      "opt_in": "boolean",
+      "suppressed": "boolean",
+      "suppression_reason": "string"
+    }
+  },
+  "reply_classification": [
+    "positive",
+    "neutral",
+    "objection",
+    "not_now",
+    "not_interested",
+    "unsubscribe",
+    "wrong_person",
+    "spam_complaint"
+  ],
+  "suppression_triggers": [
+    "unsubscribe",
+    "spam_complaint",
+    "not_interested",
+    "do_not_contact",
+    "bounce_hard",
+    "competitor",
+    "manual_block"
+  ],
+  "forbidden_capabilities": [
+    "automated_external_send",
+    "crm_push_send",
+    "bulk_email",
+    "whatsapp_outbound",
+    "linkedin_automation",
+    "form_auto_submit",
+    "scraping"
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "generated_at": "2026-06-04T21:08:13+00:00",
+  "passed": true,
+  "os_areas": 21,
+  "total_docs_expected": 224,
+  "checks": [
+    {
+      "check": "os:company",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:product",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:site_launch",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:commercial_launch",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:sales",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:marketing",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:media_social",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:ads",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:revops",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:delivery",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:support",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:finance",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:legal",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:security",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:analytics",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:people",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:partnerships",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:investor",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:operations",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:go_live",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "os:launch_control",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "verticals",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "scripts",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "tests",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "workflows",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "configs",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "api_qa_doc",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "reports",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    },
+    {
+      "check": "readme",
+      "ok": true,
+      "missing": [],
+      "critical": true
+    }
+  ],
+  "critical_failures": [],
+  "decision": "PASS"
+}

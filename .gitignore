@@ -22,6 +22,9 @@ credentials/
 !tests/test_wave8_customer_credentials_check.py
 !docs/WAVE8_CUSTOMER_CREDENTIAL_READINESS.md
 !docs/wave8/customer_credentials.example.env
+# Startup OS — these are scanner scripts/tests, not credential files
+!scripts/final_secret_and_risk_scan.py
+!tests/test_final_secret_and_risk_scan.py
 service-account*.json
 google-credentials*.json
 
@@ -41,6 +44,9 @@ eggs/
 .eggs/
 lib/
 lib64/
+# Startup OS shared modules live under scripts/lib/ — not a build artifact dir.
+!scripts/lib/
+!scripts/lib/**
 parts/
 sdist/
 var/
@@ -108,6 +114,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Startup OS example seed leads — synthetic placeholders only, no real PII
+!data/commercial_seed_leads.example.jsonl
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -325,3 +333,6 @@ logs/
 
 # Railway CLI local link
 .railway/
+
+# Dealix Startup OS — regenerable daily draft outputs (artifact-only, not committed)
+outputs/commercial_launch/

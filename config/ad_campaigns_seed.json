@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "title": "Dealix Ads OS — Campaign Seed (PLAN ONLY)",
+    "version": "1.0.0",
+    "status": "NOT_LIVE",
+    "warning": "Plans and creative copy only. No ad account, no API, no spend. Launch only after tracking, legal and budget approval gates pass.",
+    "readiness_gate": "docs/ads-os/01_ADS_READINESS_GATE.md"
+  },
+  "utm_taxonomy": {
+    "utm_source": ["google", "linkedin", "meta", "newsletter", "founder"],
+    "utm_medium": ["cpc", "paid_social", "email", "organic_social"],
+    "utm_campaign_pattern": "{vertical}_{offer_stage}_{quarter}",
+    "utm_content_pattern": "{creative_id}_{lang}"
+  },
+  "campaigns": [
+    {
+      "id": "fm_audit_q3",
+      "vertical": "facilities_management",
+      "offer_stage": "audit",
+      "channel": "google_search",
+      "status": "draft",
+      "daily_budget_sar": 0,
+      "headlines_ar": ["تدقيق سير العمل بالذكاء الاصطناعي لإدارة المرافق"],
+      "headlines_en": ["AI Workflow Audit for Facilities Management"]
+    },
+    {
+      "id": "contracting_pilot_q3",
+      "vertical": "contracting_project_controls",
+      "offer_stage": "pilot",
+      "channel": "linkedin",
+      "status": "draft",
+      "daily_budget_sar": 0,
+      "headlines_ar": ["أتمتة تقارير الإنجاز لمشاريع المقاولات"],
+      "headlines_en": ["Automated Progress Reporting for Contractors"]
+    }
+  ]
+}
