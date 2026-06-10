@@ -4,7 +4,6 @@ Billing API — subscriptions, invoices, plans, upgrades.
 
 from __future__ import annotations
 
-from datetime import datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -14,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from db.session import get_db as get_db_session
 from api.security.auth_deps import get_current_user
 from dealix.billing.service import BillingService
-from dealix.payments.payment_link import create_payment_link as create_moyasar_payment_link
+from dealix.payments.payment_link import PaymentLinkRequest, create_payment_link as create_moyasar_payment_link
 
 router = APIRouter(prefix="/api/v1/billing", tags=["Billing"])
 
@@ -226,7 +225,6 @@ async def pay_invoice(
     if not tenant_id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No tenant")
 
-    svc = BillingService(session)
     # Get invoice
     from db.models_subscription import InvoiceRecord
     invoice = await session.get(InvoiceRecord, invoice_id)
@@ -234,18 +232,24 @@ async def pay_invoice(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invoice not found")
 
     # Create Moyasar payment link
-    link = create_moyasar_payment_link(
-        amount_halalas=int(invoice.total_sar * 100),
-        description=f"Dealix Invoice {invoice.invoice_number}",
-        callback_url=f"/api/v1/webhooks/moyasar",
+    link = await create_moyasar_payment_link(
+        PaymentLinkRequest.model_validate(
+            {
+                "amount_halalas": int(invoice.total_sar * 100),
+                "customer_name": getattr(current_user, "name", "Dealix Customer") or "Dealix Customer",
+                "customer_email": getattr(current_user, "email", "") or "",
+                "callback_url": "/api/v1/webhooks/moyasar",
+                "description": f"Dealix Invoice {invoice.invoice_number}",
+            }
+        )  # type: ignore[arg-type]
     )
 
-    invoice.payment_link_id = link.get("id")
-    invoice.payment_link_url = link.get("url")
+    invoice.payment_link_id = link.invoice_id
+    invoice.payment_link_url = link.payment_url
     await session.commit()
 
     return {
-        "payment_url": link.get("url"),
+        "payment_url": link.payment_url,
         "invoice_id": invoice_id,
     }
 
