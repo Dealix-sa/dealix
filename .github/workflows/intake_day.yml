@@ -1,0 +1,33 @@
+name: Intake Day
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '55 6 * * *'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  intake-day:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Intake Day
+        run: ./scripts/dealix_intake_day.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: intake-day
+          path: |
+            company/runtime/intake/
+            company/intake/
+            company/presentation/
