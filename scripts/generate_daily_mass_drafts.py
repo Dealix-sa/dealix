@@ -221,7 +221,7 @@ def _load_yaml_templates(path: Path) -> dict[str, Any] | None:
     try:
         with path.open(encoding="utf-8") as fh:
             return _yaml.safe_load(fh)
-    except Exception:
+    except Exception:  # YAML unavailable or malformed — caller falls back to ANGLES_* dicts
         return None
 
 
