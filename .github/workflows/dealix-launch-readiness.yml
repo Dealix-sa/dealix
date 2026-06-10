@@ -1,0 +1,17 @@
+name: Dealix Launch Readiness
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+jobs:
+  launch-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/dealix_launch_readiness_check.py
+      - run: python scripts/dealix_daily_prospect_drafts.py
+      - run: python scripts/dealix_lead_scoring.py --input data/prospects/icp_seed_accounts_saudi.csv --output data/prospects/scored_prospects.csv
+      - run: python scripts/dealix_daily_command_center.py

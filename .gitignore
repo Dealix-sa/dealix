@@ -41,6 +41,8 @@ eggs/
 .eggs/
 lib/
 lib64/
+# V3 frontend lib utilities (TypeScript, not Python)
+!frontend/src/lib/
 parts/
 sdist/
 var/
@@ -108,6 +110,11 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V3 Revenue Machine — CRM ledger, analytics, case studies, prospects (synthetic/seeds)
+!data/crm/
+!data/analytics/
+!data/case_studies/
+!data/prospects/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
