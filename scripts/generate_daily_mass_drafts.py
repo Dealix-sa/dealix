@@ -21,11 +21,9 @@ from __future__ import annotations
 
 import argparse
 import csv
-import io
 import json
 import os
 import sys
-import uuid
 from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -263,7 +261,7 @@ def _angle_ar(sector: str, yaml_data: dict[str, Any] | None) -> str:
             if tmpl and "{angle}" not in tmpl:
                 # yaml provides a full body — extract angle-like content
                 pass
-        except Exception:
+        except Exception:  # angle extraction is best-effort; fall back to ANGLES_AR dict
             pass
     return ANGLES_AR.get(sector, ANGLES_AR["b2b_services"])
 
@@ -553,7 +551,6 @@ def push_gmail_drafts(queue: list[dict[str, Any]], limit: int) -> int:
         print("  [gmail-push] google-api-python-client not installed — skipping.")
         return 0
 
-    creds_path = Path(os.getenv("GMAIL_CREDENTIALS_PATH", str(REPO_ROOT / "credentials.json")))
     token_path = Path(os.getenv("GMAIL_TOKEN_PATH", str(REPO_ROOT / "token.json")))
     if not token_path.exists():
         print("  [gmail-push] No Gmail token found — skipping.")
