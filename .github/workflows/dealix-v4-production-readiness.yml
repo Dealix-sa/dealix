@@ -1,0 +1,28 @@
+name: Dealix V4 Production Readiness
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: V4 readiness
+        run: python scripts/dealix_v4_readiness_check.py
+      - name: Security smoke
+        run: python scripts/dealix_secret_smoke_check.py
+      - name: Public exposure smoke
+        run: python scripts/dealix_public_exposure_check.py
+      - name: Deployment manifest
+        run: python scripts/dealix_deployment_manifest_check.py
+      - name: Finance forecast smoke
+        run: python scripts/dealix_finance_forecast.py --pilots 5 --pilot-price 499 --retainers 2 --retainer-price 4500

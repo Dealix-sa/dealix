@@ -1,0 +1,10 @@
+{
+  "campaigns": [
+    {
+      "name": "training-riyadh-pilot",
+      "vertical": "training",
+      "offer": "diagnostic_then_pilot",
+      "status": "draft"
+    }
+  ]
+}
