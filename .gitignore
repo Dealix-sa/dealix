@@ -108,6 +108,11 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Sector targets — synthetic/public company names, no customer PII
+!data/targets/
+# Daily draft output — DRAFT_ONLY, no customer PII, founder review
+!data/daily_drafts/
+!data/leads/.gitkeep
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

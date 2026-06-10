@@ -1,0 +1,659 @@
+version: 2.0
+description: "Bilingual (AR+EN) outreach templates — 12 Saudi sectors — DRAFT ONLY"
+pdf_link: "https://dealix.me/assets/dealix_proposal_v2.pdf"
+calendly: "https://calendly.com/sami-assiri11/dealix-demo"
+signature_ar: "سامي العسيري | Dealix\n📅 https://calendly.com/sami-assiri11/dealix-demo\n\n[مسودة — تحتاج موافقة قبل الإرسال]"
+signature_en: "Sami Al-Assiri | Dealix\n📅 https://calendly.com/sami-assiri11/dealix-demo\n\n[DRAFT — requires approval before sending]"
+
+sectors:
+
+  real_estate:
+    label_ar: "العقار والتطوير"
+    label_en: "Real Estate & Development"
+    angle_ar: >
+      leads العقارية الواردة عبر واتساب تضيع بدون نظام متابعة.
+      Dealix يبني لكم Revenue OS يحوّل كل استفسار إلى pipeline مرئي يومياً.
+    angle_en: >
+      Real estate leads coming through WhatsApp are lost without a structured follow-up system.
+      Dealix builds you a Revenue OS that turns every inquiry into a visible daily pipeline.
+    email:
+      ar:
+        subject: "Dealix — نظام إيراد عقاري لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          شركات العقار في {city} تواجه نفس التحدي: leads تأتي عبر واتساب وإنستغرام وإعلانات — ثم تضيع.
+
+          {angle_ar}
+
+          نقترح تشخيصًا استراتيجيًا مجانيًا (30 دقيقة) نحدد فيه:
+          - كم lead يضيع شهريًا بدون متابعة منظمة
+          - أين يكسب منافسوكم عليكم في السوق
+          - أول نظام تشغيلي يرفع التحويل خلال 14 يومًا
+
+          📎 يرفق هذا الإيميل عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — AI Revenue OS for {company}"
+        body: |
+          Hi {contact},
+
+          Real estate companies in {city} face the same challenge: leads come in through WhatsApp,
+          Instagram, and ads — then disappear without a structured follow-up system.
+
+          {angle_en}
+
+          We offer a free 30-min strategic diagnostic for {company} to identify:
+          - How many leads are lost monthly without organized follow-up
+          - Where competitors are winning deals you're losing
+          - The first operational system that raises conversion within 14 days
+
+          📎 Attached: Dealix Company Proposal — {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        لاحظت أن كثير من شركات العقار في {city} تخسر leads يومياً بسبب عدم المتابعة المنظمة.
+
+        نبني Revenue OS مخصص لقطاع {label_ar} — يجمع كل استفسار ويعطيك أولويات اليوم.
+
+        أقدر أرسل لك مثال مختصر كيف يعمل النظام؟
+
+  clinics:
+    label_ar: "العيادات والرعاية الصحية"
+    label_en: "Clinics & Healthcare"
+    angle_ar: >
+      حجوزات العيادة تأتي من واتساب وتليفون وإنستغرام — بدون نظام يربطها.
+      Dealix يبني نظام استقبال موحّد يُنظّم الحجوزات ويُدير التقييمات ويُتابع المرضى.
+    angle_en: >
+      Clinic bookings arrive through WhatsApp, phone, and Instagram with no system connecting them.
+      Dealix builds a unified intake system that organizes bookings, manages reviews, and follows up with patients.
+    email:
+      ar:
+        subject: "Dealix — نظام استقبال وتقييمات لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          عيادات ومراكز طبية في {city} تعاني من نفس المشكلة: الحجوزات تأتي عبر قنوات متعددة
+          وتقييمات جوجل تتراكم بدون ردود منظمة.
+
+          {angle_ar}
+
+          نقترح تشخيصًا مجانيًا (30 دقيقة) نحدد فيه:
+          - كم حجز يفوت شهريًا بسبب التأخر في الرد
+          - كيف تؤثر التقييمات السلبية على الحجوزات الجديدة
+          - نظام Review + Follow-up يُحسّن التقييمات خلال 30 يومًا
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Review & Booking OS for {company}"
+        body: |
+          Hi {contact},
+
+          Medical clinics in {city} face the same operational gap: bookings arrive through multiple
+          channels and Google reviews pile up without organized responses.
+
+          {angle_en}
+
+          We offer a free 30-min diagnostic for {company} to identify:
+          - How many bookings are lost monthly due to slow response
+          - How negative reviews impact new patient acquisition
+          - A Review + Follow-up OS that improves ratings within 30 days
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نساعد العيادات في {city} على تنظيم الحجوزات والتقييمات في نظام واحد.
+
+        عندكم في {company} هل فيه نظام لمتابعة تقييمات جوجل والرد عليها بشكل منظم؟
+
+        أقدر أرسل لك كيف نحل هذا في أسبوع.
+
+  training_centers:
+    label_ar: "مراكز التدريب والتعليم"
+    label_en: "Training & Education Centers"
+    angle_ar: >
+      التسجيل في الدورات يتم يدوياً، والـ leads تضيع قبل أن يصل الاتصال.
+      Dealix يبني Growth Engine يتابع كل مسجل محتمل من أول استفسار حتى إتمام التسجيل.
+    angle_en: >
+      Course registrations are manual and leads are lost before anyone follows up.
+      Dealix builds a Growth Engine that tracks every prospect from first inquiry to enrollment.
+    email:
+      ar:
+        subject: "Dealix — نظام تسجيل وnurturing لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          مراكز التدريب في {city} تواجه فجوة واضحة: المهتمون بالدورات يتواصلون
+          ثم ينقطع التواصل قبل أن يُكملوا التسجيل.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني (30 دقيقة) نكشف:
+          - كم مهتم يفقد شهريًا بسبب غياب المتابعة
+          - أين يكسر المنافسون lead journey أفضل منكم
+          - Growth Engine يضاعف معدل التحويل خلال 21 يومًا
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Enrollment Growth Engine for {company}"
+        body: |
+          Hi {contact},
+
+          Training centers in {city} face a clear gap: prospects inquire about courses,
+          then go cold before completing enrollment.
+
+          {angle_en}
+
+          In our free 30-min diagnostic we identify:
+          - How many prospects are lost monthly due to absent follow-up
+          - Where competitors convert leads better than you
+          - A Growth Engine that doubles enrollment conversion within 21 days
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نساعد مراكز التدريب في {city} على تحويل المهتمين إلى مسجلين بشكل منتظم.
+
+        في {company}، وش أكثر شيء يعيق التسجيل؟ المتابعة البطيئة أم الإجراءات المعقدة؟
+
+  agencies:
+    label_ar: "وكالات التسويق والإعلام"
+    label_en: "Marketing & Media Agencies"
+    angle_ar: >
+      تقارير العملاء تُكتب يدوياً كل أسبوع وتستغرق ساعات.
+      Dealix يبني Client Command Center للوكالة — كل عميل، كل مهمة، كل نتيجة في مكان واحد.
+    angle_en: >
+      Client reports are written manually each week and take hours to prepare.
+      Dealix builds a Client Command Center for your agency — every client, task, and result in one place.
+    email:
+      ar:
+        subject: "Dealix — Command Center لوكالة {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          وكالات التسويق في {city} تقضي ساعات طويلة في إعداد تقارير العملاء يدوياً
+          بينما تتراكم المهام والمشاريع بدون نظام مرئي.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم ساعة أسبوعيًا تُهدَر في تقارير يدوية
+          - كيف يرى عملاؤكم تقدم المشاريع (وهل يرضيهم؟)
+          - Command Center يوفّر 60% من وقت التقارير خلال أسبوعين
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Agency Command Center for {company}"
+        body: |
+          Hi {contact},
+
+          Marketing agencies in {city} spend hours preparing client reports manually
+          while projects pile up without a clear visibility system.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many hours weekly are wasted on manual reporting
+          - How your clients perceive project progress
+          - A Command Center that saves 60% of reporting time within two weeks
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نبني Command Center لوكالات التسويق — كل عميل وكل مشروع في لوحة واحدة.
+
+        في {company}، كيف تعدّون تقارير العملاء الأسبوعية حالياً؟
+
+  restaurants:
+    label_ar: "المطاعم والكافيهات"
+    label_en: "Restaurants & Food Service"
+    angle_ar: >
+      تقييمات جوجل السلبية تتراكم بدون ردود منظمة وتؤثر على الحجوزات الجديدة.
+      Dealix يبني Review Intelligence OS يحوّل كل تقييم إلى فرصة تحسين مع ردود جاهزة للمراجعة.
+    angle_en: >
+      Negative Google reviews pile up without organized responses and impact new bookings.
+      Dealix builds a Review Intelligence OS that turns every review into an improvement opportunity.
+    email:
+      ar:
+        subject: "Dealix — نظام تقييمات وسمعة لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          المطاعم والكافيهات في {city} تواجه تحديًا واضحًا: تقييمات جوجل وسناب
+          تتراكم بدون ردود رسمية، وتؤثر مباشرة على القرار.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم تقييم سلبي بدون رد حالياً يضر سمعتكم
+          - كيف يقارن الجمهور مطعمكم بالمنافسين
+          - Review OS يُحسّن تقييماتكم خلال 30 يومًا
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Review Intelligence OS for {company}"
+        body: |
+          Hi {contact},
+
+          Restaurants and cafes in {city} face a clear challenge: Google and social media
+          reviews accumulate without organized responses and directly affect customer decisions.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many unanswered negative reviews are currently hurting your reputation
+          - How customers compare your venue to competitors
+          - A Review OS that improves your ratings within 30 days
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نساعد المطاعم في {city} على إدارة تقييمات جوجل بشكل احترافي.
+
+        في {company}، هل عندكم نظام للرد على التقييمات السلبية بشكل منتظم؟
+
+  logistics:
+    label_ar: "اللوجستيات والشحن"
+    label_en: "Logistics & Shipping"
+    angle_ar: >
+      طلبات الشحن والتسعير تتضيع في واتساب والرد يتأخر.
+      Dealix يبني Sales Pipeline يجمع كل RFQ ويفرز الجاد منها للمتابعة الفورية.
+    angle_en: >
+      Shipping RFQs get lost in WhatsApp and responses are delayed.
+      Dealix builds a Sales Pipeline that captures every RFQ and surfaces serious ones for immediate follow-up.
+    email:
+      ar:
+        subject: "Dealix — نظام pipeline لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          شركات الشحن واللوجستيات في {city} تخسر عملاء كل يوم: طلب التسعير يأتي،
+          يتأخر الرد، والعميل يذهب لمنافس يرد في دقائق.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم RFQ يُفقَد شهريًا بسبب التأخر في الرد
+          - أين المنافسون أسرع منكم في دورة البيع
+          - Sales Pipeline يقلل وقت الرد إلى أقل من 10 دقائق
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — RFQ Sales Pipeline for {company}"
+        body: |
+          Hi {contact},
+
+          Logistics companies in {city} lose clients daily: an RFQ comes in, the response
+          is delayed, and the client goes to a competitor who responds within minutes.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many RFQs are lost monthly due to slow response
+          - Where competitors have a faster sales cycle than you
+          - A Sales Pipeline that reduces response time to under 10 minutes
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نبني Sales Pipeline لشركات الشحن في {city} — كل RFQ يدخل ويُتابَع تلقائياً.
+
+        في {company}، كم طلب تسعير تستلمون يومياً عبر واتساب؟
+
+  b2b_services:
+    label_ar: "الخدمات المهنية B2B"
+    label_en: "Professional B2B Services"
+    angle_ar: >
+      عروض الأسعار تُكتب يدوياً وتستغرق أياماً، والعميل المحتمل يذهب لمنافس أسرع.
+      Dealix يبني Proposal Builder يُصدر عروضًا احترافية بالعربي والإنجليزي خلال دقائق.
+    angle_en: >
+      Proposals are written manually and take days to prepare — prospects go to faster competitors.
+      Dealix builds a Proposal Builder that generates professional bilingual proposals in minutes.
+    email:
+      ar:
+        subject: "Dealix — نظام عروض أسعار لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          شركات الخدمات المهنية في {city} تخسر صفقات بسبب بطء إعداد العروض:
+          العميل يطلب عرضًا، يأخذ يوم أو أكثر، ويذهب لمنافس أسرع.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم صفقة فقدتموها العام الماضي بسبب بطء العروض
+          - كيف تبدو عروضكم مقارنة بأفضل منافس
+          - Proposal Builder يُصدر عرضًا كاملاً خلال 15 دقيقة
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Proposal Builder for {company}"
+        body: |
+          Hi {contact},
+
+          Professional services firms in {city} lose deals because of slow proposal preparation:
+          a client asks for a proposal, it takes a day or more, and they go to a faster competitor.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many deals you lost last year due to slow proposals
+          - How your proposals compare to your best competitor
+          - A Proposal Builder that generates a complete proposal in 15 minutes
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نبني Proposal Builder لشركات الخدمات في {city} — عرض احترافي بالعربي والإنجليزي في 15 دقيقة.
+
+        في {company}، كم يستغرق إعداد عرض سعر عادةً؟
+
+  construction:
+    label_ar: "المقاولات والإنشاء"
+    label_en: "Construction & Contracting"
+    angle_ar: >
+      طلبات تسعير المشاريع تتضيع بين واتساب والرسائل وبدون تصنيف.
+      Dealix يبني نظام RFQ Intake يجمع المواصفات والميزانية ويفرز الجاد للفريق.
+    angle_en: >
+      Project pricing requests get lost in WhatsApp without classification.
+      Dealix builds an RFQ Intake system that collects specs and budgets, sorted by priority for your team.
+    email:
+      ar:
+        subject: "Dealix — نظام استقبال مشاريع لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          شركات المقاولات في {city} تواجه هذا التحدي يوميًا: طلبات التسعير تأتي من
+          واتساب والبريد والاتصالات — وتتضيع بدون نظام يجمعها ويُصنّفها.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم طلب مشروع يُفقَد شهريًا بسبب الفوضى
+          - كيف تُقيّم فرص المشاريع بشكل موضوعي
+          - RFQ System يحوّل الفوضى إلى pipeline مُرتَّب خلال أسبوع
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Project RFQ Management for {company}"
+        body: |
+          Hi {contact},
+
+          Construction companies in {city} face this daily challenge: project requests come in
+          through WhatsApp, email, and calls — and get lost without a system to capture and classify them.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many project requests are lost monthly due to disorganization
+          - How to objectively evaluate project opportunities
+          - An RFQ System that turns chaos into an organized pipeline within a week
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نبني نظام استقبال مشاريع لشركات المقاولات في {city} — كل طلب تسعير يُسجَّل ويُتابَع.
+
+        في {company}، كيف تتابعون طلبات التسعير حالياً؟
+
+  hospitality:
+    label_ar: "الفنادق والضيافة"
+    label_en: "Hotels & Hospitality"
+    angle_ar: >
+      حجوزات الفعاليات والقاعات تحتاج ردًا فوريًا وإلا يذهب العميل لمنافس.
+      Dealix يبني Event Booking OS يُنظّم طلبات الحجز ويُحسّن تجربة الضيف من الاستفسار حتى المغادرة.
+    angle_en: >
+      Event and venue bookings need an immediate response or clients go to competitors.
+      Dealix builds an Event Booking OS that organizes booking requests and improves the guest journey from inquiry to checkout.
+    email:
+      ar:
+        subject: "Dealix — نظام حجوزات وسمعة لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          الفنادق ومرافق الضيافة في {city} تخسر حجوزات MICE وفعاليات يومياً
+          لأن الرد يتأخر أو طلبات الحجز تتضيع.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم حجز فُقد العام الماضي بسبب التأخر في الرد
+          - كيف تبدو سمعتكم على Booking.com وجوجل مقارنة بالمنافسين
+          - نظام يُقلّل وقت الرد على الحجوزات إلى أقل من ساعة
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Booking & Reputation OS for {company}"
+        body: |
+          Hi {contact},
+
+          Hotels and hospitality venues in {city} lose MICE bookings and events daily
+          because responses are delayed or booking requests get lost.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many bookings were lost last year due to slow response
+          - How your reputation on Booking.com and Google compares to competitors
+          - A system that reduces booking response time to under one hour
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نساعد الفنادق في {city} على تنظيم طلبات الحجز والفعاليات وتحسين التقييمات.
+
+        في {company}، كيف تُدارون طلبات حجز القاعات والفعاليات حالياً؟
+
+  saas:
+    label_ar: "تقنية المعلومات والبرمجيات"
+    label_en: "Technology & SaaS"
+    angle_ar: >
+      inbound leads من السوق السعودي تحتاج ردًا بالعربي الخليجي وnurturing منظمًا.
+      Dealix يبني لكم Revenue OS يُؤهّل العملاء ويُسرّع دورة المبيعات.
+    angle_en: >
+      Saudi inbound leads need a response in Gulf Arabic and organized nurturing.
+      Dealix builds you a Revenue OS that qualifies prospects and accelerates the sales cycle.
+    email:
+      ar:
+        subject: "Dealix — نظام مبيعات عربي لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          شركات التقنية التي تستهدف السوق السعودي تواجه تحديًا فريدًا:
+          العملاء يتواصلون بالعربي الخليجي ويتوقعون ردًا سريعًا ومفهومًا.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم lead سعودية تُفقَد بسبب بطء الاستجابة أو عدم التخصيص
+          - كيف تُقيّم العملاء السعوديون تجربة المبيعات مع شركتكم
+          - Revenue OS بالعربي يُقلّل وقت الإغلاق بنسبة 40%
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Arabic Revenue OS for {company}"
+        body: |
+          Hi {contact},
+
+          Tech companies targeting the Saudi market face a unique challenge:
+          customers communicate in Gulf Arabic and expect fast, culturally-relevant responses.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many Saudi leads are lost due to slow response or generic messaging
+          - How Saudi customers rate their sales experience with your company
+          - A bilingual Revenue OS that reduces close time by 40%
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نساعد شركات التقنية على التواصل مع عملائهم السعوديين بشكل أسرع وأكثر فاعلية.
+
+        في {company}، كيف تتعاملون مع inbound leads من السوق السعودي؟
+
+  retail:
+    label_ar: "التجزئة والتجارة"
+    label_en: "Retail & Commerce"
+    angle_ar: >
+      شكاوى العملاء وتقييمات المنتجات تتراكم بدون نظام معالجة منتظم.
+      Dealix يبني Customer Success OS يُحوّل الشكاوى إلى فرص احتفاظ وتحسين.
+    angle_en: >
+      Customer complaints and product reviews accumulate without a systematic response process.
+      Dealix builds a Customer Success OS that turns complaints into retention and improvement opportunities.
+    email:
+      ar:
+        subject: "Dealix — نظام خدمة عملاء لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          متاجر التجزئة في {city} تواجه هذا التحدي: تقييمات سلبية على جوجل وسناب
+          وشكاوى تتراكم بدون نظام معالجة — مما يؤثر على قرار العميل الجديد.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم شكوى بدون رد تضر بسمعتكم حالياً
+          - كيف يقارن عملاؤكم تجربتهم معكم مع المنافسين
+          - Customer Success OS يُقلّل شكاوى بدون رد بنسبة 80% خلال شهر
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Customer Success OS for {company}"
+        body: |
+          Hi {contact},
+
+          Retail stores in {city} face this challenge: negative reviews on Google and Snapchat
+          pile up without a response system — directly affecting new customer decisions.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many unanswered complaints are currently hurting your reputation
+          - How customers compare their experience with you vs competitors
+          - A Customer Success OS that reduces unanswered complaints by 80% within a month
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نساعد متاجر التجزئة في {city} على إدارة شكاوى العملاء والتقييمات بشكل احترافي.
+
+        في {company}، كم تقييم سلبي لم يُرَد عليه هذا الشهر تقريباً؟
+
+  law_accounting:
+    label_ar: "القانون والمحاسبة"
+    label_en: "Legal & Accounting"
+    angle_ar: >
+      استفسارات العملاء الجدد تضيع وعروض الأسعار تستغرق وقتًا أطول مما ينبغي.
+      Dealix يبني Inquiry Management System يُنظّم الاستفسارات ويُصدر عروضًا فورية احترافية.
+    angle_en: >
+      New client inquiries get lost and proposals take longer than they should.
+      Dealix builds an Inquiry Management System that organizes inquiries and issues instant professional proposals.
+    email:
+      ar:
+        subject: "Dealix — نظام استفسارات وعروض لـ {company}"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          مكاتب المحاماة والمحاسبة في {city} تواجه هذه المشكلة المتكررة:
+          استفسار عميل جديد يأتي، يتأخر الرد، والعميل يذهب لمنافس أسرع.
+
+          {angle_ar}
+
+          في تشخيصنا المجاني نكشف:
+          - كم عميل محتمل فُقد العام الماضي بسبب التأخر
+          - كيف تبدو عملية الاستقبال والتسعير لدى منافسيكم
+          - نظام يُقلّل وقت الرد على الاستفسارات إلى أقل من ساعة
+
+          📎 عرض Dealix التفصيلي: {pdf_link}
+
+          {signature_ar}
+      en:
+        subject: "Dealix — Client Inquiry & Proposal System for {company}"
+        body: |
+          Hi {contact},
+
+          Law firms and accounting offices in {city} face this recurring problem:
+          a new client inquiry comes in, the response is delayed, and the client goes to a faster competitor.
+
+          {angle_en}
+
+          In our free diagnostic we identify:
+          - How many potential clients were lost last year due to delayed responses
+          - How your intake and pricing process compares to competitors
+          - A system that reduces inquiry response time to under one hour
+
+          📎 Dealix Company Proposal: {pdf_link}
+
+          {signature_en}
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — أنا سامي من Dealix.
+
+        نساعد مكاتب المحاماة والمحاسبة في {city} على تسريع الرد على استفسارات العملاء الجدد.
+
+        في {company}، كم يستغرق الرد على استفسار عميل جديد عادةً؟
