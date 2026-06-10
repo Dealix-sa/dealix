@@ -26,6 +26,14 @@ service-account*.json
 google-credentials*.json
 
 # ─────────────────────────────────────────────────────────────
+# 🔒 Private founder ops (CEO Control Tower) — NEVER COMMIT
+# ─────────────────────────────────────────────────────────────
+dealix-private-ops/
+private-ops/
+**/dealix-private-ops/
+**/private-ops/
+
+# ─────────────────────────────────────────────────────────────
 # 🐍 Python
 # ─────────────────────────────────────────────────────────────
 __pycache__/

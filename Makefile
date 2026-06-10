@@ -10,7 +10,8 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        control-tower verify-ceo-intelligence-v4
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +183,16 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── CEO Operating Intelligence v4 ──────────────────────────────
+# Executive control tower that fuses score + signals into a single
+# top CEO action. Reads from PRIVATE_OPS (a private, untracked
+# directory containing pipeline / revenue / delivery / finance evidence).
+
+PRIVATE_OPS ?= $(HOME)/dealix-private-ops
+
+control-tower: ## CEO: generate executive control tower brief (PRIVATE_OPS=...)
+	$(PYTHON) -m dealix_cli control-tower --private-ops $(PRIVATE_OPS)
+
+verify-ceo-intelligence-v4: ## CEO: verify v4 layer files are present and non-trivial
+	$(PYTHON) scripts/verify_ceo_operating_intelligence_v4.py

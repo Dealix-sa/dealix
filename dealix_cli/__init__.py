@@ -1,0 +1,1 @@
+"""Dealix founder CLI package."""
