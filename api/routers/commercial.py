@@ -19,15 +19,21 @@ from typing import Any
 from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi.responses import PlainTextResponse
 
-from dealix.commercial.diagnostic_engine import DiagnosticEngine, DiagnosticRequest
-from dealix.commercial.warm_intro_generator import WarmIntroGenerator, WarmIntroRequest
-from dealix.commercial.pilot_delivery import PilotDeliveryKit, PilotStartRequest
-from dealix.commercial.proof_builder import ProofBuildRequest, ProofBuilder
-from dealix.commercial.upsell_engine import UpsellEngine
 from dealix.commercial.case_study_generator import CaseStudyGenerator, CaseStudyRequest
+from dealix.commercial.diagnostic_engine import DiagnosticEngine, DiagnosticRequest
+from dealix.commercial.pilot_delivery import PilotDeliveryKit, PilotStartRequest
+from dealix.commercial.proof_builder import ProofBuilder, ProofBuildRequest
+from dealix.commercial.roi_calculator import ROIInput, estimate_roi
+from dealix.commercial.transformation_proposal import (
+    TransformationProposalError,
+    TransformationProposalGenerator,
+    TransformationProposalRequest,
+)
+from dealix.commercial.upsell_engine import UpsellEngine
+from dealix.commercial.warm_intro_generator import WarmIntroGenerator, WarmIntroRequest
 from dealix.payments.payment_link import (
-    PaymentLinkRequest,
     SERVICE_TIERS,
+    PaymentLinkRequest,
     create_payment_link,
 )
 
@@ -181,7 +187,7 @@ async def payment_link(
 
     Sandbox mode by default — set MOYASAR_LIVE_MODE=1 in Railway for live charges.
     """
-    from dealix.payments.payment_link import PaymentLinkError  # noqa: PLC0415
+    from dealix.payments.payment_link import PaymentLinkError
 
     try:
         result = await create_payment_link(req)
@@ -252,6 +258,56 @@ async def case_study_markdown(
     gen = CaseStudyGenerator()
     doc = gen.generate(req)
     return doc.markdown_ar_en
+
+
+# ---------------------------------------------------------------------------
+# Transformation OS endpoints (enterprise) — governed, approval-gated
+# ---------------------------------------------------------------------------
+
+
+@router.post("/transformation-proposal/generate")
+async def transformation_proposal_generate(
+    req: TransformationProposalRequest,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Generate an enterprise transformation proposal from the catalog.
+
+    Prices are read from the canonical registry (Article 11) and stamped as
+    estimates. Output is approval_required — never auto-sent. Guaranteed-outcome
+    language in the request is rejected (doctrine).
+    """
+    gen = TransformationProposalGenerator()
+    try:
+        proposal = gen.generate(req)
+    except TransformationProposalError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return proposal.to_dict()
+
+
+@router.post("/transformation-proposal/generate/markdown", response_class=PlainTextResponse)
+async def transformation_proposal_markdown(
+    req: TransformationProposalRequest,
+    _: None = Depends(_require_admin),
+) -> str:
+    """Generate a transformation proposal and return bilingual Markdown."""
+    gen = TransformationProposalGenerator()
+    try:
+        proposal = gen.generate(req)
+    except TransformationProposalError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return proposal.markdown_ar_en
+
+
+@router.post("/roi/estimate")
+async def roi_estimate(
+    req: ROIInput,
+    _: None = Depends(_require_admin),
+) -> dict[str, Any]:
+    """Conservative ROI estimate (range) for a transformation engagement.
+
+    Estimate-only — never a guarantee. All figures carry is_estimate=True.
+    """
+    return estimate_roi(req).to_dict()
 
 
 # ---------------------------------------------------------------------------

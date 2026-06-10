@@ -10,7 +10,8 @@ Single source of truth that maps every Dealix offer to:
   - non-negotiables (hard_gates) honored by code
 
 Reads from `auto_client_acquisition.service_catalog.registry.OFFERINGS`
-so the map can never drift from the canonical 7-offer registry.
+so the map can never drift from the canonical 17-offer registry
+(7 core funnel + 10 Enterprise Transformation OS systems).
 
 Endpoints:
   GET /api/v1/commercial-map           → JSON
@@ -120,6 +121,121 @@ _WIRING: dict[str, dict[str, Any]] = {
         "founder_surface": "/founder-leads.html",
         "next_offer": None,
     },
+    # ── Enterprise Transformation OS (customer_journey_stage="transformation") ──
+    # Setup is founder-issued (enterprise = founder-closed, approval-first).
+    "ai_command_center_os": {
+        "landing_url": "/transformation/ai-command-center.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "auto_client_acquisition.executive_command_center",
+        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": None,
+    },
+    "whatsapp_revenue_os": {
+        "landing_url": "/transformation/whatsapp-revenue.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "auto_client_acquisition.sales_os + auto_client_acquisition.delivery_factory",
+        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": "ai_command_center_os",
+    },
+    "brand_intelligence_os": {
+        "landing_url": "/transformation/brand-intelligence.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "autonomous_growth.agents.content",
+        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": None,
+    },
+    "ai_agent_workforce_os": {
+        "landing_url": "/transformation/ai-agent-workforce.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "auto_client_acquisition.agent_os + secure_agent_runtime_os",
+        "proof_endpoint": "auto_client_acquisition.auditability_os",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": None,
+    },
+    "client_experience_os": {
+        "landing_url": "/transformation/client-experience.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "auto_client_acquisition.client_os + support_os",
+        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": None,
+    },
+    "operations_automation_os": {
+        "landing_url": "/transformation/operations-automation.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "auto_client_acquisition.execution_os",
+        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": None,
+    },
+    "executive_reporting_os": {
+        "landing_url": "/transformation/executive-reporting.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "auto_client_acquisition.command_os",
+        "proof_endpoint": "GET /api/v1/audit/{handle}/control-graph/markdown",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": "ai_command_center_os",
+    },
+    "trust_governance_os": {
+        "landing_url": "/transformation/trust-governance.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "auto_client_acquisition.trust_os + compliance_os",
+        "proof_endpoint": "GET /api/v1/value/trust-pack/{handle}/pdf",
+        "trust_pack_endpoint": "GET /api/v1/value/trust-pack/{handle}/pdf",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": None,
+    },
+    "growth_engine_os": {
+        "landing_url": "/transformation/growth-engine.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": "founder-issued",
+        "checkout_endpoint": "POST /api/v1/payment-ops/invoice-intent",
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "auto_client_acquisition.sales_os (draft_only outreach, approval-gated)",
+        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": None,
+    },
+    "custom_enterprise_system": {
+        "landing_url": "/transformation/custom-enterprise.html",
+        "intake_endpoint": "POST /api/v1/commercial/transformation-proposal/generate",
+        "checkout_url": None,  # custom — scoped + founder-issued per contract
+        "checkout_endpoint": None,
+        "roi_endpoint": "POST /api/v1/commercial/roi/estimate",
+        "delivery_module": "bespoke — paid discovery sprint → architecture → build",
+        "proof_endpoint": "auto_client_acquisition.proof_os.proof_pack.assemble",
+        "msa_doc": "docs/transformation/enterprise_package/MSA_TEMPLATE_AR_EN.md",
+        "dpa_doc": "docs/transformation/enterprise_package/DPA_TEMPLATE_AR_EN.md",
+        "founder_surface": "/founder-dashboard.html",
+        "next_offer": None,
+    },
 }
 
 
@@ -151,6 +267,48 @@ _OFFER_NOTES = {
     "agency_partner_os": (
         "Channel offer. 5K SAR / closed deal + 30% commission first year. "
         "Partner Covenant enforced: no unsafe automation, no guaranteed claims."
+    ),
+    # ── Enterprise Transformation OS ──
+    "ai_command_center_os": (
+        "Enterprise. Real-time executive command layer. Setup 35K–120K + "
+        "8K–35K/mo (estimates). Founder-issued invoice. Starts with paid diagnostic."
+    ),
+    "whatsapp_revenue_os": (
+        "Enterprise. WhatsApp → measurable pipeline. Setup 12K–45K + 3K–15K/mo "
+        "(estimates). All external messages are approval-gated drafts — no automation."
+    ),
+    "brand_intelligence_os": (
+        "Enterprise. Brand as a reusable operating system. Setup 15K–60K + "
+        "4K–18K/mo (estimates)."
+    ),
+    "ai_agent_workforce_os": (
+        "Enterprise. Role-scoped AI agents with approval gates + audit. Setup "
+        "40K–180K + 12K–60K/mo (estimates). No autonomous external execution."
+    ),
+    "client_experience_os": (
+        "Enterprise. Unified customer journey first-contact → retention. Setup "
+        "20K–80K + 6K–25K/mo (estimates)."
+    ),
+    "operations_automation_os": (
+        "Enterprise. Map-first operations automation with governance. Setup "
+        "25K–120K + 7K–35K/mo (estimates)."
+    ),
+    "executive_reporting_os": (
+        "Enterprise. Automated weekly/monthly executive reporting tied to decisions. "
+        "Setup 18K–75K + 5K–20K/mo (estimates)."
+    ),
+    "trust_governance_os": (
+        "Enterprise. Practical AI + data governance, PDPL-aligned. Setup 30K–150K + "
+        "10K–50K/mo (estimates)."
+    ),
+    "growth_engine_os": (
+        "Enterprise. Repeatable growth machine on approved drafts ONLY. Setup "
+        "25K–100K + 8K–30K/mo (estimates). No cold WhatsApp, no LinkedIn automation, "
+        "no blast, no scraping."
+    ),
+    "custom_enterprise_system": (
+        "Enterprise bespoke. Paid discovery → architecture → build → SLA. Scope "
+        "100K–500K+ (estimate) set per contract. MSA + DPA required."
     ),
 }
 
@@ -202,7 +360,7 @@ def _build_payload() -> dict[str, Any]:
 
 @router.get("")
 async def commercial_map_json() -> dict[str, Any]:
-    """JSON — 7 offers + wiring + non-negotiables + cross-links."""
+    """JSON — 17 offers + wiring + non-negotiables + cross-links."""
     return _build_payload()
 
 

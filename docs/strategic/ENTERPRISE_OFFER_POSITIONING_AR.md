@@ -47,6 +47,7 @@ Dealix = ذكاء الإيرادات + تنفيذ تشغيلي + محرك إثب
 
 ## مراجع
 
+- [DEALIX_TRANSFORMATION_OS_MASTER_AR.md](../transformation/DEALIX_TRANSFORMATION_OS_MASTER_AR.md) — الأنظمة العشرة ↔ `service_id` + الحوكمة
 - [DEALIX_MASTER_OPERATING_MODEL_AR.md](DEALIX_MASTER_OPERATING_MODEL_AR.md)
 - [DEALIX_ROLE_SERVICE_LADDER_AR.md](DEALIX_ROLE_SERVICE_LADDER_AR.md) — أدوار المشتري ↔ `service_id`
 - [DEALIX_MARKET_DIFFERENTIATION_AR.md](DEALIX_MARKET_DIFFERENTIATION_AR.md) — تمييز مقابل أنماط السوق
