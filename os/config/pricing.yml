@@ -1,0 +1,255 @@
+# Dealix Pricing OS — v2.0
+# مصدر الحقيقة الوحيد لأسعار المسار عالي اللمسة (high-touch services).
+#
+# هذا الملف يُكمّل ولا يستبدل:
+#   - os/03_OFFERS.yml  ............ كتالوج العروض الوصفي (high-touch)
+#   - auto_client_acquisition/service_catalog/registry.py  ... سلم المنتجات
+#     منخفض التذكرة (499/1500/2999/7500) الذي يغذّي checkout عبر Moyasar.
+#
+# قاعدة تجارية: لا تُباع Dealix كمشروع تطوير مرة واحدة. النموذج الصحيح =
+#   رسوم تأسيس (Setup) + اشتراك شهري (Monthly) + استخدام/توسعة (Usage) + أداء عند الإمكان.
+#
+# كل الأسعار أدناه قبل ضريبة القيمة المضافة (ex-VAT). تُضاف الضريبة حسب أنظمة ZATCA.
+
+meta:
+  version: "2.0"
+  currency: "SAR"
+  source_of_truth: true
+  last_review: "2026-06-07"
+  notes:
+    - "كل الأسعار قبل ضريبة القيمة المضافة (ex-VAT)."
+    - "فواتير المسار عالي اللمسة تُصدر يدويًا عبر عقد + فاتورة ZATCA، وليست auto-charge عبر Moyasar."
+
+# ---------------------------------------------------------------------------
+# الحوكمة والضوابط — تُفحص بواسطة tests/test_dealix_pricing_os.py
+# ---------------------------------------------------------------------------
+governance:
+  prices_exclude_vat: true
+  vat_rate: 0.15
+  is_estimate: true                       # الأسعار تقديرية حتى توقيع العرض
+  share_price_requires_founder_approval: true   # بوابة os/01_CLAUDE.md (مشاركة أي سعر)
+  invoicing: "manual_contract_zatca"      # ليست auto-charge؛ لا تتعارض مع سقف Moyasar
+  # نفس hard_gates الدستورية المستخدمة في service_catalog/registry.py
+  hard_gates:
+    - no_live_send
+    - no_live_charge
+    - no_cold_whatsapp
+    - no_linkedin_auto
+    - no_scraping
+    - no_fake_proof
+    - no_fake_revenue
+    - no_blast
+
+# ---------------------------------------------------------------------------
+# A) عروض الدخول — Entry Offers
+#    الهدف: إغلاق أول عقد بسرعة، لا تعظيم الربح.
+#    قرار: لا تبيع Audit بأقل من 5,000؛ ابدأ من 9,500 كسعر قياسي.
+# ---------------------------------------------------------------------------
+entry_offers:
+  ai_workflow_audit:
+    name_ar: "تدقيق الـ Workflow بالذكاء الاصطناعي"
+    name_en: "AI Workflow Audit"
+    price_sar: 9500
+    duration_days: 5
+    goal_ar: "كشف الفوضى، بناء خريطة فرص، تجهيز Pilot"
+    is_standard_entry: true
+  regulated_legal_audit:
+    name_ar: "تدقيق القطاعات الحساسة / القانونية"
+    name_en: "Regulated / Legal Audit"
+    price_sar: 15000
+    duration_days: 7
+    goal_ar: "للقطاعات الحساسة: قانوني، صحي، مالي، جهات كبيرة"
+  ai_revenue_leak_audit:
+    name_ar: "تدقيق تسرّب الإيرادات"
+    name_en: "AI Revenue Leak Audit"
+    price_sar: 12000
+    duration_days: 5
+    goal_ar: "كشف الفرص الضائعة في المبيعات والمتابعة وWhatsApp/CRM"
+  executive_ai_readiness_pack:
+    name_ar: "حزمة جاهزية الذكاء الاصطناعي التنفيذية"
+    name_en: "Executive AI Readiness Pack"
+    price_sar: 18000
+    duration_days: 10
+    goal_ar: "تقرير CEO + Roadmap + Prioritized AI Use Cases"
+
+# ---------------------------------------------------------------------------
+# B) عروض التجربة المدفوعة — Pilot Offers
+#    قاعدة: الـ Pilot ليس تجربة مجانية، بل مرحلة إثبات ROI.
+# ---------------------------------------------------------------------------
+pilot_offers:
+  pilot_lite_no_api:
+    name_ar: "Pilot Lite — بدون API"
+    name_en: "Pilot Lite — No API"
+    price_sar: 30000
+    duration_days_min: 21
+    duration_days_max: 30
+    sell_when_ar: "العميل متردد أو بياناته غير جاهزة"
+  pilot_pro_with_api:
+    name_ar: "Pilot Pro — مع API"
+    name_en: "Pilot Pro — With API"
+    price_sar: 60000
+    duration_days_min: 30
+    duration_days_max: 30
+    sell_when_ar: "عنده نظام/CRM/Excel/API واضح"
+    is_recommended: true
+  multi_system_pilot:
+    name_ar: "Pilot متعدد الأنظمة"
+    name_en: "Multi-System Pilot"
+    price_sar: 100000
+    duration_days_min: 45
+    duration_days_max: 45
+    sell_when_ar: "أكثر من قسم أو أكثر من workflow"
+  regulated_pilot:
+    name_ar: "Pilot للقطاعات الحساسة"
+    name_en: "Regulated Pilot"
+    price_sar_min: 75000
+    price_sar_max: 120000
+    duration_days_min: 45
+    duration_days_max: 45
+    sell_when_ar: "قانوني/صحي/حساس مع موافقات بشرية"
+  # كل Pilot يجب أن يُخرج: dashboard/workflow شغّال + تقرير قبل/بعد + عرض ترقية.
+  required_outcomes:
+    - "Dashboard أو workflow شغال"
+    - "تقرير قبل/بعد"
+    - "عرض ترقية إلى Production + اشتراك شهري"
+
+# ---------------------------------------------------------------------------
+# C) عقود التنفيذ — Production Offers (Setup + Monthly)
+#    قرار: أي Production أقل من 150,000 يضر تموضع Dealix.
+# ---------------------------------------------------------------------------
+production_offers:
+  maintenance_intelligence_os:
+    name_ar: "نظام الذكاء الاصطناعي للصيانة"
+    name_en: "Maintenance Intelligence OS"
+    setup_sar_min: 150000
+    setup_sar_max: 250000
+    duration_days: 60
+    monthly_sar_min: 12000
+    monthly_sar_max: 25000
+    priority: 1
+  legal_knowledge_os:
+    name_ar: "نظام المعرفة والمستندات القانونية"
+    name_en: "Legal Knowledge OS"
+    setup_sar_min: 180000
+    setup_sar_max: 300000
+    duration_days_min: 75
+    duration_days_max: 90
+    monthly_sar_min: 15000
+    monthly_sar_max: 35000
+    priority: 5
+    requires: ["human_approval", "data_handling_policy"]
+  gcc_international_ai_os:
+    name_ar: "نظام/Pilot الذكاء الاصطناعي الدولي للخليج"
+    name_en: "GCC International AI Pilot/System"
+    setup_sar_min: 100000
+    setup_sar_max: 220000
+    duration_days_min: 30
+    duration_days_max: 60
+    monthly_sar_min: 12000
+    monthly_sar_max: 30000
+    priority: 4
+  consulting_delivery_os:
+    name_ar: "نظام تسليم الاستشارات"
+    name_en: "Consulting Delivery OS"
+    setup_sar_min: 120000
+    setup_sar_max: 200000
+    duration_days_min: 60
+    duration_days_max: 75
+    monthly_sar_min: 10000
+    monthly_sar_max: 25000
+    priority: 2
+  project_controls_ai_os:
+    name_ar: "نظام التحكم بالمشاريع بالذكاء الاصطناعي"
+    name_en: "Project Controls AI OS"
+    setup_sar_min: 180000
+    setup_sar_max: 300000
+    duration_days_min: 75
+    duration_days_max: 90
+    monthly_sar_min: 15000
+    monthly_sar_max: 35000
+    priority: 3
+  property_operations_os:
+    name_ar: "نظام عمليات العقار"
+    name_en: "Property Operations OS"
+    setup_sar_min: 120000
+    setup_sar_max: 220000
+    duration_days_min: 60
+    duration_days_max: 75
+    monthly_sar_min: 10000
+    monthly_sar_max: 25000
+    priority: 6
+  healthcare_admin_os:
+    name_ar: "نظام إدارة العمليات الصحية"
+    name_en: "Healthcare Admin OS"
+    setup_sar_min: 200000
+    setup_sar_max: 350000
+    duration_days: 90
+    monthly_sar_min: 20000
+    monthly_sar_max: 45000
+    priority: 7
+    note_ar: "لا تجعله أول منتج — حساس وطويل؛ Premium لاحقًا."
+  dealix_command_center:
+    name_ar: "مركز قيادة Dealix"
+    name_en: "Dealix Command Center"
+    setup_sar_min: 300000
+    setup_sar_max: 500000
+    duration_days_min: 90
+    duration_days_max: 120
+    monthly_sar_min: 25000
+    monthly_sar_max: 60000
+    priority: 8
+    note_ar: "Upsell بعد إثبات نظام أو نظامين."
+    add_department_monthly_sar_min: 10000
+    add_department_monthly_sar_max: 20000
+    add_system_setup_sar_min: 15000
+    add_system_setup_sar_max: 40000
+    add_system_monthly_sar_min: 5000
+    add_system_monthly_sar_max: 15000
+
+# ---------------------------------------------------------------------------
+# الخصومات المسموحة — Discounts (لا تعطِ خصومات كبيرة)
+# ---------------------------------------------------------------------------
+discounts:
+  annual_prepay: 0.10            # 10% للدفع السنوي فقط
+  first_3_case_study: 0.15       # 15% لأول 3 عملاء مقابل Case Study
+  pilot_to_production_credit: 0.50  # خصم 50% من قيمة الـ Audit عند الانتقال خلال 14 يوم
+  usage_overage: 0.0             # لا خصم على الاستخدام الزائد إطلاقًا
+
+# ---------------------------------------------------------------------------
+# شروط الدفع — Payment Terms
+# ---------------------------------------------------------------------------
+payment_terms:
+  project_milestones:
+    - { name_ar: "عند التوقيع", name_en: "On signing", pct: 0.50 }
+    - { name_ar: "بعد تسليم MVP/Pilot", name_en: "After MVP/Pilot", pct: 0.30 }
+    - { name_ar: "عند الإطلاق", name_en: "On launch", pct: 0.20 }
+  subscription:
+    min_term_months: 6
+    preferred_term_months: 12
+    billing: "monthly_in_advance"
+    annual_prepay_discount: 0.10
+    early_cancel_penalty_months: 2
+    out_of_scope_support_hourly_sar_min: 500
+    out_of_scope_support_hourly_sar_max: 800
+
+# ---------------------------------------------------------------------------
+# حماية الهامش — Margin Floors (تُفحص في scripts/calculate_margin.py)
+# ---------------------------------------------------------------------------
+margins:
+  gross_margin_project_min: 0.55
+  gross_margin_subscription_min: 0.65
+  net_margin_target_min: 0.25
+  pilot_discount_max: 0.20
+  retainer_floor_sar: 8000
+  production_floor_sar: 150000
+  consulting_hour_floor_sar: 500
+
+# ---------------------------------------------------------------------------
+# القرار النهائي — السلم المعتمد (section 13)
+# ---------------------------------------------------------------------------
+recommended_ladder:
+  entry: { offer: ai_workflow_audit, price_sar: 9500 }
+  pilot: { offer: pilot_pro_with_api, price_sar: 60000 }
+  production: { floor_sar: 150000 }
+  monthly: { package: managed_os, price_sar: 15000 }
+  premium: { offer: dealix_command_center, setup_sar: 300000, monthly_sar: 45000 }

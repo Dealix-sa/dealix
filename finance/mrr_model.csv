@@ -1,0 +1,5 @@
+phase,target_mrr_sar,managed_os_clients,growth_ops_clients,command_center_clients,command_center_mrr_each_sar,usage_addons_mrr_sar,computed_mrr_sar,b2b_clients_total,expected_setup_cash_sar,notes
+1,30000,2,0,0,0,0,30000,2,180000,"First MRR — sell Maintenance OS + Consulting Delivery OS; 2x Managed OS @15k"
+2,100000,4,0,1,40000,0,100000,5,660000,"4x Managed (60k) + 1x Command Center (40k); ~360k project cash + 300k CC setup"
+3,250000,8,3,1,55000,0,250000,12,900000,"8x Managed (120k) + 3x Growth/Ops (75k) + 1x Command Center (55k); Dealix becomes a real company"
+4,500000,15,6,2,50000,25000,500000,23,1200000,"15x Managed (225k) + 6x Growth/Ops (150k) + 2x Command Center (100k) + usage (25k); 20-25 strong B2B clients"
