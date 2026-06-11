@@ -247,18 +247,39 @@ V13_REQUIRED = [
     "scripts/generate_case_study_draft.py",
 ]
 
-REQUIRED = REQUIRED + V10_REQUIRED + V11_REQUIRED + V12_REQUIRED + V13_REQUIRED
+# V14 AI router + knowledge
+V14_REQUIRED = [
+    "scripts/lib/ai_router.py",
+    "scripts/lib/ai_providers.py",
+    "scripts/lib/prompt_registry.py",
+    "scripts/lib/ai_safety.py",
+    "scripts/lib/ai_memory.py",
+    "scripts/lib/ai_eval.py",
+    "scripts/run_ai_evals.py",
+    "scripts/index_knowledge_sources.py",
+    "scripts/search_knowledge_base.py",
+    "scripts/generate_knowledge_pack.py",
+    "docs/ai/V14_AGENT_OPERATIONS.md",
+    "business/knowledge/KNOWLEDGE_BASE_SYSTEM.md",
+    "business/_data/knowledge_sources.json",
+    "business/ai/PROMPT_REGISTRY.md",
+    "business/ai/BANNED_CLAIMS_POLICY.md",
+    "business/ai/prompts/lead_scoring_explanation.md",
+    "business/ai/prompts/outreach_draft_ar.md",
+    "business/ai/prompts/outreach_draft_en.md",
+    "business/ai/evals/outreach_eval_cases.json",
+    "business/ai/evals/safety_eval_cases.json",
+]
+
+REQUIRED = REQUIRED + V10_REQUIRED + V11_REQUIRED + V12_REQUIRED + V13_REQUIRED + V14_REQUIRED
 
 
 def _label_for(path: str) -> str:
-    if path in V10_REQUIRED:
-        return "V10"
-    if path in V11_REQUIRED:
-        return "V11"
-    if path in V12_REQUIRED:
-        return "V12"
-    if path in V13_REQUIRED:
-        return "V13"
+    if path in V10_REQUIRED: return "V10"
+    if path in V11_REQUIRED: return "V11"
+    if path in V12_REQUIRED: return "V12"
+    if path in V13_REQUIRED: return "V13"
+    if path in V14_REQUIRED: return "V14"
     return "core"
 
 
@@ -269,7 +290,7 @@ def main() -> int:
         for m in missing:
             print(f"  - [{_label_for(m)}] {m}")
         return 1
-    print("Dealix Ultimate Commercial OS V13 verification passed.")
+    print("Dealix Ultimate Commercial OS V14 verification passed.")
     return 0
 
 

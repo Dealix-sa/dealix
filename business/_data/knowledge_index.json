@@ -1,0 +1,511 @@
+{
+  "version": 1,
+  "builtAt": "2026-06-11T03:37:27+00:00",
+  "demo": true,
+  "entries": [
+    {
+      "path": "business/enterprise/HUMAN_REVIEW_STATEMENT.md",
+      "title": "Dealix Human Review Statement",
+      "preview": "# Dealix Human Review Statement\n\nEvery outbound action involving the customer's brand, prospects, or money requires explicit human approval before it leaves the workspace.\n\n## Approval matrix\n\n| Action | Reviewer | Tool |\n| --- | --- | --- |\n| Outreach draft → outbound | Founder | `scripts/approve_outreach_draft.py` |\n| Outreach draft → rejected | Founder | `scripts/reject_outreach_draft.py` |\n| Quote → sent to customer | Founder + customer's commercial owner | `scripts/approve_quote.py` |\n| Dea",
+      "chars": 1311
+    },
+    {
+      "path": "business/enterprise/ENTERPRISE_BUYER_FAQ_AR.md",
+      "title": "أسئلة المشترين المؤسسيين — Dealix",
+      "preview": "# أسئلة المشترين المؤسسيين — Dealix\n\n## ما هو Dealix؟\n\nDealix شركة سعودية تبني أنظمة تشغيل تجارية (Operating Systems) فوق أدواتك الحالية: CRM، واتساب، السمعة، البلاغات، الفواتير. ما نستبدل أنظمتك — نوصلها ونحوكمها وننتج إثباتات.\n\n## ما الفرق بين Dealix ووكالة تسويق؟\n\nالوكالة تنفذ حملات. Dealix يبني نظام تشغيل يستمر بعد انتهاء العقد. نسلّم تدفقات، ولوحات، وموافقات، وتقارير إثبات — مش حملة فردية.\n\n## هل تستعملون الذكاء الاصطناعي على بياناتنا؟\n\nلا بشكل افتراضي. الوضع الافتراضي حتمي (deterministic).",
+      "chars": 1680
+    },
+    {
+      "path": "business/enterprise/ENTERPRISE_BUYER_FAQ_EN.md",
+      "title": "Enterprise Buyer FAQ — Dealix",
+      "preview": "# Enterprise Buyer FAQ — Dealix\n\n## What is Dealix?\n\nA Saudi-first company that builds business operating systems on top of the tools you already use: CRM, WhatsApp, reviews, reports, billing. We don't replace your stack — we connect, govern, and produce proof.\n\n## How is Dealix different from a marketing agency?\n\nAgencies run campaigns. Dealix builds an operating system that outlives the contract: flows, dashboards, approvals, proof reports. Not a one-off campaign.\n\n## Do you use AI on our data",
+      "chars": 2130
+    },
+    {
+      "path": "business/enterprise/SERVICE_LEVEL_BOUNDARIES.md",
+      "title": "Dealix Service Level Boundaries",
+      "preview": "# Dealix Service Level Boundaries\n\nThis is what we commit to. Anything outside this list is a discussion, not a default.\n\n## Response windows (business hours, Riyadh)\n\n| Tier | First response | Resolution window |\n| --- | --- | --- |\n| P0 (production down) | 1 business hour | same business day |\n| P1 (workflow blocked) | 2 business hours | next business day |\n| P2 (cosmetic / non-blocking) | 1 business day | 5 business days |\n| P3 (enhancement / feature request) | acknowledged in 2 business days",
+      "chars": 1377
+    },
+    {
+      "path": "business/enterprise/AI_GOVERNANCE_STATEMENT.md",
+      "title": "Dealix AI Governance Statement",
+      "preview": "# Dealix AI Governance Statement\n\n## Default mode is deterministic\n\nDealix's operator scripts and review tooling do not require an LLM to run. The default produces deterministic, reproducible output. LLM-assist is opt-in and per task.\n\n## What we never do\n\n- We do not auto-send AI-generated messages.\n- We do not let AI write contractual or pricing language without founder review.\n- We do not use customer data to train shared models.\n- We do not claim AI-generated proof items.\n\n## Where AI is all",
+      "chars": 1532
+    },
+    {
+      "path": "business/enterprise/ENTERPRISE_TRANSFORMATION_OFFER.md",
+      "title": "Dealix Enterprise Transformation Offer",
+      "preview": "# Dealix Enterprise Transformation Offer\n\n## Offer\nWe design and implement a custom AI-native operating system for your company.\n\n## What we transform\n- Sales operations\n- WhatsApp/customer communication\n- Reviews and customer voice\n- Brand and content execution\n- Internal workflows\n- Executive reporting\n- AI agent workflows\n- Governance and risk controls\n\n## Phase 1: Paid Diagnostic\nWe map workflows, leaks, data sources, teams, decision points, and ROI opportunities.\n\n## Phase 2: System Prototy",
+      "chars": 779
+    },
+    {
+      "path": "business/enterprise/DATA_BOUNDARY_STATEMENT.md",
+      "title": "Dealix Data Boundary Statement",
+      "preview": "# Dealix Data Boundary Statement\n\n## What Dealix touches\n\n- Customer-provided lead lists, CRM exports, WhatsApp transcripts (only if customer shares them), reviews, public website content, and customer-supplied reports.\n\n## What Dealix never touches\n\n- Personal data outside the scope written in the SOW.\n- Customer financial data (Dealix does not process card data; payments go through customer's PCI-compliant processor).\n- Customer internal employee performance reviews.\n- Anything the customer ma",
+      "chars": 1258
+    },
+    {
+      "path": "business/enterprise/SECURITY_QUESTIONNAIRE_TEMPLATE.md",
+      "title": "Enterprise Security Questionnaire — Dealix Standard Response Template",
+      "preview": "# Enterprise Security Questionnaire — Dealix Standard Response Template\n\nUse this when a buyer sends their security/IT questionnaire. Founder edits before sending.\n\n## 1. Company\n\n- Legal entity: Dealix SA\n- HQ: Riyadh, Saudi Arabia\n- Primary contact: founder\n- Data center region: customer-chosen (default KSA)\n\n## 2. Application architecture\n\n- Frontend: Next.js 15 (Node 22), deployed on managed PaaS.\n- Backend: FastAPI + Python 3.12, deployed on Railway or customer-chosen IaaS.\n- Data store: Po",
+      "chars": 2437
+    },
+    {
+      "path": "business/enterprise/ENTERPRISE_READINESS_PACK.md",
+      "title": "Dealix Enterprise Readiness Pack",
+      "preview": "# Dealix Enterprise Readiness Pack\n\nThis pack is shared with enterprise prospects after the first qualifying call. It is not a sales brochure — every section maps to an in-repo artifact a buyer's procurement or security team can inspect.\n\n## What Dealix is\n\nDealix builds business operating systems on top of the customer's existing tools (CRM, WhatsApp, reviews, reports, billing). It does not replace systems; it routes data, automates approvals, and produces proof.\n\n## Production posture\n\n| Area ",
+      "chars": 1881
+    },
+    {
+      "path": "business/enterprise/IMPLEMENTATION_ASSURANCE_PLAN.md",
+      "title": "Implementation Assurance Plan",
+      "preview": "# Implementation Assurance Plan\n\n## Phase 1 — Diagnostic Sprint (7 days)\n\n1. Day 1: Kickoff workshop. Map customer's existing CRM, WhatsApp, review, billing, and reporting flows. Output: in-scope/out-of-scope matrix.\n2. Day 2-3: Workflow review. Founder + customer commercial owner walk live process. Output: friction log.\n3. Day 4-5: Draft the chosen OS module (Revenue OS / Review OS / Command Center / etc.).\n4. Day 6: Customer review session. Adjust scope, pricing, deliverables.\n5. Day 7: Signed",
+      "chars": 1526
+    },
+    {
+      "path": "business/deal-desk/LEGAL_REVIEW_TRIGGERS.md",
+      "title": "Legal Review Triggers",
+      "preview": "# Legal Review Triggers\n\nWhen Dealix engages outside legal counsel before signing.\n\n## Always\n- First engagement with a new enterprise (revenue > 100M SAR/year).\n- Multi-tenant deals.\n- Government / semi-government entities.\n- Any deal with non-standard MSA terms.\n\n## Often\n- Indemnity clauses outside the standard MSA outline.\n- Liability caps below 12-month fees.\n- Data residency requirements outside KSA.\n- Sub-processor restrictions.\n\n## Sometimes\n- IP assignment changes from default (customer",
+      "chars": 1088
+    },
+    {
+      "path": "business/deal-desk/CONTRACT_HANDOFF_CHECKLIST.md",
+      "title": "Contract Handoff Checklist",
+      "preview": "# Contract Handoff Checklist\n\nBefore a quote becomes a signed SOW:\n\n## Customer-side\n- [ ] Decision-maker named and email confirmed.\n- [ ] Billing contact named.\n- [ ] Customer's legal review status known (waived / pending / required).\n- [ ] Customer's procurement process disclosed (any portal required?).\n- [ ] PO number (if applicable) noted.\n\n## Dealix-side\n- [ ] Quote `approved` in `quotes.index.json`.\n- [ ] Offer-specific SOW filled from `business/contracts/STATEMENT_OF_WORK_TEMPLATE_*.md`.\n",
+      "chars": 1233
+    },
+    {
+      "path": "business/deal-desk/QUOTE_APPROVAL_POLICY.md",
+      "title": "Quote Approval Policy",
+      "preview": "# Quote Approval Policy\n\n## Quote lifecycle\n1. **draft** — Generated by `scripts/generate_quote.py`. Not yet reviewed.\n2. **pending_review** — Default state after generation.\n3. **approved** — `scripts/approve_quote.py` with a reviewer name.\n4. **sent** — `scripts/mark_quote_sent.py` records the manual send via customer channel.\n5. **accepted** — Customer signed. Moves to `deals.ledger.json`.\n6. **rejected** | **expired** — Closed; reason captured.\n\n## SLAs\n- Quote must reach `approved` within 2",
+      "chars": 1425
+    },
+    {
+      "path": "business/deal-desk/RED_FLAGS_AND_DISQUALIFICATION.md",
+      "title": "Red Flags & Disqualification",
+      "preview": "# Red Flags & Disqualification\n\n## Hard disqualifiers (walk away)\n- Customer demands outcome-contingent pricing (\"pay only if X happens\").\n- Customer wants Dealix to send cold WhatsApp / mass email at scale.\n- Customer wants Dealix to bypass platform terms of service (scraping, fake reviews, fake clicks).\n- Customer wants Dealix to manage their financial / legal decisions autonomously.\n- Customer cannot name a single decision-maker.\n- Customer has hostile internal politics that block weekly revi",
+      "chars": 1329
+    },
+    {
+      "path": "business/deal-desk/DEAL_DESK_RULES.md",
+      "title": "Dealix Deal Desk Rules",
+      "preview": "# Dealix Deal Desk Rules\n\n## Purpose\nThe deal desk is the founder-operated gate between a qualified opportunity and a signed SOW.\n\n## When the deal desk runs\n- Any opportunity above 5,000 SAR setup or 2,000 SAR/mo MRR.\n- Any custom scope outside the published 17 offerings.\n- Any discount request below the floor in `PRICING_DISCOUNT_POLICY.md`.\n- Any acceptance-criteria deviation.\n\n## Inputs\n- `business/_data/scored_leads.json` — qualified account.\n- `business/_data/quotes.index.json` — pending q",
+      "chars": 1356
+    },
+    {
+      "path": "business/deal-desk/CHANGE_REQUEST_POLICY.md",
+      "title": "Change Request Policy",
+      "preview": "# Change Request Policy\n\n## Definition\nAny customer-initiated request that changes scope, timeline, or price after a SOW is signed.\n\n## Process\n1. Customer raises request in writing (email or `/client-portal/[id]`).\n2. Founder estimates effort within 2 business days.\n3. Founder issues a Change Order (CO) — a mini-quote attached to the original SOW.\n4. Customer approves CO before work begins.\n5. CO is logged in `business/_data/deals.ledger.json` with `parentDealId`.\n\n## What counts as scope creep",
+      "chars": 1333
+    },
+    {
+      "path": "business/deal-desk/PRICING_DISCOUNT_POLICY.md",
+      "title": "Pricing Discount Policy",
+      "preview": "# Pricing Discount Policy\n\n## List prices (SAR)\n\n| Offer | Setup | Monthly |\n| --- | --- | --- |\n| Diagnostic Sprint | 499 | — |\n| Data Pack | 1,500 | — |\n| Managed Ops (basic) | 5,000 | 2,999 |\n| Managed Ops (pro) | 10,000 | 4,999 |\n| Custom Enterprise | per scope | 5,000–25,000 |\n\n## Discount tiers\n\n| Discount | Approver | Trigger |\n| --- | --- | --- |\n| 0–10% | Founder unilateral | Volume / multi-quarter prepay |\n| 10–20% | Founder + commercial owner | Strategic logo, with case-study consent ",
+      "chars": 1338
+    },
+    {
+      "path": "business/contracts/MASTER_SERVICE_AGREEMENT_OUTLINE.md",
+      "title": "Master Service Agreement (MSA) — Outline",
+      "preview": "# Master Service Agreement (MSA) — Outline\n\n**Operational scaffold. Not legal advice.** Retain qualified counsel before signing.\n\n## 1. Parties\nDealix SA (\"Provider\") and `[Customer legal name]` (\"Customer\").\n\n## 2. Services\nProvider will deliver business operating system services as detailed in one or more Statements of Work (\"SOW\") executed under this MSA.\n\n## 3. Term\nEffective from the Effective Date until terminated by either party with 30 days written notice. Active SOWs survive termination",
+      "chars": 2522
+    },
+    {
+      "path": "business/contracts/STATEMENT_OF_WORK_TEMPLATE_EN.md",
+      "title": "Statement of Work (SOW) — English Template",
+      "preview": "# Statement of Work (SOW) — English Template\n\n**Operational scaffold. Not legal advice.** Retain counsel for non-standard cases.\n\n## SOW number\nSOW-`[#]` under the MSA dated `[date]`.\n\n## Parties\n- Provider: Dealix SA\n- Customer: `[Legal name]`\n\n## Scope\n\n| Item | Description |\n| --- | --- |\n| Package | `[Diagnostic Sprint / Data Pack / Managed Ops / Custom]` |\n| Start date | `[YYYY-MM-DD]` |\n| End date | `[YYYY-MM-DD]` |\n| Deliverables | `[list]` |\n| Acceptance criteria | `[per ACCEPTANCE_CRITE",
+      "chars": 1416
+    },
+    {
+      "path": "business/contracts/STATEMENT_OF_WORK_TEMPLATE_AR.md",
+      "title": "بيان عمل (SOW) — قالب عربي",
+      "preview": "# بيان عمل (SOW) — قالب عربي\n\n**سقالة تشغيلية وليست استشارة قانونية.** للحالات غير القياسية، يُرجى الرجوع إلى مستشار قانوني مختص.\n\n## رقم البيان\nSOW-`[رقم]` تحت اتفاقية MSA المؤرخة `[التاريخ]`.\n\n## الأطراف\n- المزود: Dealix SA\n- العميل: `[الاسم القانوني]`\n\n## النطاق\nينفّذ المزود الخدمات التالية وفقاً لقواعد Dealix التشغيلية:\n\n| البند | الوصف |\n| --- | --- |\n| الباقة | `[Diagnostic Sprint / Data Pack / Managed Ops / Custom]` |\n| تاريخ البداية | `[YYYY-MM-DD]` |\n| تاريخ النهاية | `[YYYY-MM-DD]` |\n|",
+      "chars": 1475
+    },
+    {
+      "path": "business/contracts/ACCEPTANCE_CRITERIA_TEMPLATE.md",
+      "title": "Acceptance Criteria Template",
+      "preview": "# Acceptance Criteria Template\n\nAttached to each SOW. Defines when a deliverable is considered complete.\n\n## Per deliverable\n\n| # | Deliverable | Acceptance criteria | Reviewer |\n| --- | --- | --- | --- |\n| 1 | Workflow map | Customer signs off on visualized lead → close flow | Commercial owner |\n| 2 | Friction log | Top 5 frictions identified with revenue impact estimate | Commercial owner |\n| 3 | Command Center setup | Dashboard loads on first attempt with live data | Operator |\n| 4 | Approved",
+      "chars": 1387
+    },
+    {
+      "path": "business/contracts/CLIENT_RESPONSIBILITIES.md",
+      "title": "Client responsibilities",
+      "preview": "# Client responsibilities\n\nA successful Dealix engagement requires the customer to bring four things.\n\n## 1. A named commercial owner\n- One person who can approve drafts, accept deliverables, and decide priorities.\n- Time commitment: ~90 min/week for the weekly review + ad-hoc Slack/WhatsApp for draft approvals.\n- This is not delegable to an assistant.\n\n## 2. Access to the customer's existing tools\n- CRM (read access at minimum, write for the Managed Ops tier).\n- WhatsApp Business or shared inbo",
+      "chars": 1409
+    },
+    {
+      "path": "business/contracts/DATA_PROCESSING_ADDENDUM_OUTLINE.md",
+      "title": "Data Processing Addendum (DPA) — Outline",
+      "preview": "# Data Processing Addendum (DPA) — Outline\n\n**Operational scaffold. Not legal advice.** Retain qualified counsel.\n\n## 1. Roles\n- Customer: data controller.\n- Provider (Dealix): data processor.\n\n## 2. Subject\nPersonal data processed by Provider in the course of delivering services under any SOW.\n\n## 3. Categories of data\n- Business contact data (names, emails, phone numbers of decision-makers).\n- Operational metadata (lead status, response time, deal stage).\n- (Optional) WhatsApp transcripts and ",
+      "chars": 2024
+    },
+    {
+      "path": "business/proof/PROOF_REPORT_AR.md",
+      "title": "تقرير الإثبات (نموذج عربي)",
+      "preview": "# تقرير الإثبات (نموذج عربي)\n\n## ملخص الأسبوع\n- التسليمات المنجزة: [...]\n- نقاط الاحتكاك المعالجة: [...]\n- الموافقات المعتمدة: [...]\n- مؤشرات النجاح: [...]\n\n## التفاصيل\nلكل عنصر إثبات:\n- العنوان:\n- الدليل (مصدر يمكن التحقق منه):\n- التاريخ:\n- التأثير المتوقع/الفعلي:\n\n## الأسبوع القادم\n- التسليمات:\n- الموافقات المطلوبة:\n- المخاطر المفتوحة:\n\n> ملاحظة: لا توجد ادعاءات نتائج مضمونة. كل رقم له مصدر.\n",
+      "chars": 397
+    },
+    {
+      "path": "business/proof/PROOF_ITEM_SCHEMA.md",
+      "title": "Proof item schema",
+      "preview": "# Proof item schema\n\n```json\n{\n  \"id\": \"p-...\",\n  \"title\": \"Plain-language statement (e.g., 'Lead response time dropped from 8h to 90min')\",\n  \"evidence\": \"Where this is observable (e.g., 'CRM response_time field, weekly average week-23 2026')\",\n  \"date\": \"YYYY-MM-DD\",\n  \"customerConsent\": true,\n  \"publicShareable\": false,\n  \"demo\": false\n}\n```\n\nRules:\n- `evidence` must be specific enough that a third party could verify.\n- `customerConsent=true` required before any external use.\n- `publicShareab",
+      "chars": 575
+    },
+    {
+      "path": "business/proof/PROOF_VAULT_SYSTEM.md",
+      "title": "Proof Vault (Dealix)",
+      "preview": "# Proof Vault (Dealix)\n\n## الهدف\nكل ما يثبت أن Dealix شغّال لازم يكون موثّق:\n- ملاحظة أسبوعية\n- تقرير شهري\n- دراسة حالة (بعد 90 يوم)\n- توسيع ناجح\n\n## أين\n- `business/_data/proof_vault.json`\n\n## قواعد\n- لا fake case study\n- لا fake testimonial\n- demo data لازم يكون موسوم demo\n- توثيق فقط بعد موافقة العميل\n\n## الربط بالـ pipeline\n- كل proof item → account\n- كل expansion offer → proof item\n- كل case study → account + period\n",
+      "chars": 425
+    },
+    {
+      "path": "business/proof/RETAINER_EXPANSION_PLAYBOOK.md",
+      "title": "Retainer Expansion Playbook",
+      "preview": "# Retainer Expansion Playbook\n\n## When to start the conversation\nMonth 2 weekly review, after two healthy proof items are in the vault.\n\n## Expansion paths\n1. **Adjacent OS module**: customer on Revenue OS → add Review OS or Delivery OS.\n2. **Tier up**: Managed Ops basic → Managed Ops pro.\n3. **Headcount**: same module, expanded to another business unit.\n4. **Custom**: ad-hoc engagement that becomes a new SOW.\n\n## Anti-patterns\n- Don't pitch expansion before the first proof item.\n- Don't bundle ",
+      "chars": 960
+    },
+    {
+      "path": "business/proof/CLIENT_SUCCESS_SIGNALS.md",
+      "title": "Client Success Signals",
+      "preview": "# Client Success Signals\n\nQuantitative and qualitative indicators that a customer is healthy or at risk.\n\n## Healthy\n- Weekly review attended without escalation.\n- Approval SLA met (<= 2 business days response).\n- Customer-driven new feature requests.\n- Renewal conversation initiated by the customer.\n- Referrals offered.\n\n## At risk\n- 2+ skipped weekly reviews.\n- Approval SLA missed.\n- Customer says \"we'll think about it\" on basic deliverables.\n- Customer asks for discount without scope change.\n",
+      "chars": 909
+    },
+    {
+      "path": "business/proof/PROOF_REPORT_EN.md",
+      "title": "Proof Report (English template)",
+      "preview": "# Proof Report (English template)\n\n## Week summary\n- Deliverables shipped: [...]\n- Friction points resolved: [...]\n- Approvals decided: [...]\n- Success indicators: [...]\n\n## Detail\nPer proof item:\n- Title:\n- Evidence (verifiable source):\n- Date:\n- Projected/observed impact:\n\n## Next week\n- Deliverables:\n- Approvals needed:\n- Open risks:\n\n> No guaranteed-outcome claims. Every number traces to a source.\n",
+      "chars": 405
+    },
+    {
+      "path": "business/proof/exports/proof-report-demo-001-2026-06-11.md",
+      "title": "Proof Report — demo-001 (2026-06-11)",
+      "preview": "# Proof Report — demo-001 (2026-06-11)\n\n## Outcomes (5 metrics, owner per metric)\n- [Metric 1] target / current / trend — TBD\n- [Metric 2] — TBD\n- [Metric 3] — TBD\n- [Metric 4] — TBD\n- [Metric 5] — TBD\n\n## Workflow health\n- Automations running: TBD\n- Automations in fallback: TBD\n- Audit log entries: TBD\n\n## Risks raised this period\n- TBD\n\n## Decisions made\n- TBD\n\n## Next 30 days\n- TBD\n\n## Client sign-off\n- [ ] Approved as delivered\n- [ ] Comments attached\n\n---\n*Draft only. Founder + client sign-",
+      "chars": 515
+    },
+    {
+      "path": "business/ai/AI_OUTPUT_QUALITY_BAR.md",
+      "title": "AI Output Quality Bar",
+      "preview": "# AI Output Quality Bar\n\nBefore any output is forwarded to the founder for review, it must clear:\n\n## Content checks\n- [ ] No banned claims (`scripts/lib/ai_eval.check_no_banned_claims`).\n- [ ] No autosend language (`check_no_autosend`).\n- [ ] review_status = pending_human_review.\n\n## Tone checks\n- AR: Saudi business register, no colloquial slang in customer-facing artifacts.\n- EN: executive register, ≤ 100 words for first-touch outreach.\n\n## Truthfulness checks\n- Every number traces to a source",
+      "chars": 783
+    },
+    {
+      "path": "business/ai/BANNED_CLAIMS_POLICY.md",
+      "title": "Banned Claims Policy",
+      "preview": "# Banned Claims Policy\n\n## Hard ban (refuse and log)\n- \"Guaranteed X\" or \"X guaranteed\"\n- \"نضمن\" + variants\n- \"100% money-back\" + variants\n- \"We promise results\"\n- \"ROI guaranteed\"\n- \"Risk-free outcome\"\n- \"Pay only if you win\"\n- Any fake testimonial / case study\n\n## Soft ban (flag for founder edit)\n- Numbers without source attribution.\n- Aspirational language (\"revolutionary\", \"best-in-class\").\n- \"Industry-leading\" without comparison data.\n- \"Most companies\" without citation.\n\n## Enforcement\n- `",
+      "chars": 797
+    },
+    {
+      "path": "business/ai/PROMPT_VERSIONING_POLICY.md",
+      "title": "Prompt Versioning Policy",
+      "preview": "# Prompt Versioning Policy\n\n## Versioning\n- Prompts are versioned: v1, v2, ... in the file name or as a header.\n- A prompt change that changes the output meaningfully bumps the version.\n- The old version is kept for audit reproducibility.\n\n## Promoting a prompt\n1. Author proposes a new version in a PR.\n2. Author runs `scripts/run_ai_evals.py --mode demo` showing the new version passes all evals.\n3. Author updates `PROMPT_REGISTRY.md`.\n4. Reviewer signs off.\n\n## Deprecating\n- A prompt is deprecat",
+      "chars": 754
+    },
+    {
+      "path": "business/ai/PROMPT_REGISTRY.md",
+      "title": "Prompt Registry",
+      "preview": "# Prompt Registry\n\nVersioned prompts live in `business/ai/prompts/`. Each is referenced by name + version.\n\n| Task | File | Version |\n| --- | --- | --- |\n| lead_scoring_explanation | `prompts/lead_scoring_explanation.md` | v1 |\n| weakness_hypothesis | `prompts/weakness_hypothesis.md` | v1 |\n| outreach_draft (AR) | `prompts/outreach_draft_ar.md` | v1 |\n| outreach_draft (EN) | `prompts/outreach_draft_en.md` | v1 |\n| proposal_section (AR) | `prompts/proposal_section_ar.md` | v1 |\n| proposal_section",
+      "chars": 1004
+    },
+    {
+      "path": "business/ai/AI_TASK_ROUTING.md",
+      "title": "AI Task Routing (Dealix)",
+      "preview": "# AI Task Routing (Dealix)\n\n## نموذج التوجيه\n| Task | Route | Reason |\n|------|-------|--------|\n| Lead scoring | Deterministic script | Audit + reproducibility |\n| Outreach draft | LLM (draft only) | Tone + language |\n| Proposal generation | LLM + template | Quality + speed |\n| Proof report | LLM + template | Quality + speed |\n| Pricing quote | Deterministic script | Audit + math |\n| Risk flag | Deterministic script | Logic + audit |\n| Final send | Human only | Safety |\n\n## قواعد التوجيه\n- لا r",
+      "chars": 643
+    },
+    {
+      "path": "business/ai/prompts/outreach_draft_en.md",
+      "title": "Prompt: Outreach Draft (English, v1)",
+      "preview": "# Prompt: Outreach Draft (English, v1)\n\nRole: Dealix founder.\nTask: Write a first-touch WhatsApp or email message to a commercial owner at a Saudi B2B company, anchored on a visible friction signal.\n\nRules:\n- No guarantees, no \"outcome\" claims.\n- No unsourced metrics.\n- Respectful, no flattery.\n- Close with a 7-day workflow review offer.\n- ≤ 100 words.\n- review_status = pending_human_review.\n",
+      "chars": 395
+    },
+    {
+      "path": "business/ai/prompts/translation_ar_en.md",
+      "title": "Prompt: Translation AR ↔ EN (v1)",
+      "preview": "# Prompt: Translation AR ↔ EN (v1)\n\nTranslate the given text from one language to the other.\n\nRules:\n- Preserve technical terms (CRM, OS, MRR, etc.).\n- Preserve any Dealix offering names verbatim.\n- Preserve currency notation (SAR).\n- Do NOT translate Dealix brand voice into machine-translation style; keep founder voice.\n- Output: target-language translation only. No explanations.\n",
+      "chars": 384
+    },
+    {
+      "path": "business/ai/prompts/sales_call_summary.md",
+      "title": "Prompt: Sales Call Summary (v1)",
+      "preview": "# Prompt: Sales Call Summary (v1)\n\nRead raw call notes (founder-provided). Produce:\n1. 5-bullet summary of what was discussed.\n2. Buyer's stated pain (verbatim quotes).\n3. Identified next step (with owner + date).\n4. Open questions / blockers.\n5. Recommended Dealix offer match.\n\nRules:\n- Quote buyer verbatim where possible.\n- No invented intent.\n- AR + EN.\n",
+      "chars": 359
+    },
+    {
+      "path": "business/ai/prompts/proposal_section_en.md",
+      "title": "Prompt: Proposal Section (English, v1)",
+      "preview": "# Prompt: Proposal Section (English, v1)\n\nWrite a section of a Dealix proposal. Section name is in the input: executive summary, scope, deliverables, pricing, risks, close.\n\nRules:\n- No fabricated numbers.\n- Pricing from the published catalog; no discount without approval.\n- Include acceptance criteria per deliverable.\n- Concise, executive English.\n",
+      "chars": 351
+    },
+    {
+      "path": "business/ai/prompts/compliance_review.md",
+      "title": "Prompt: Compliance Review (v1)",
+      "preview": "# Prompt: Compliance Review (v1)\n\nRead a draft outbound message or proposal. Flag:\n- Banned claims (guarantees, fake metrics).\n- Missing scope clarifications.\n- Implied auto-send language.\n- Pricing inconsistencies vs. catalog.\n\nOutput: a checklist of issues with file:line references. Do NOT rewrite the content; only flag.\n",
+      "chars": 325
+    },
+    {
+      "path": "business/ai/prompts/weakness_hypothesis.md",
+      "title": "Prompt: Weakness Hypothesis (v1)",
+      "preview": "# Prompt: Weakness Hypothesis (v1)\n\nRole: Dealix workflow analyst.\nTask: Given an account's visibleSignal and segment, propose 1-3 weakness hypotheses tied to a Dealix OS module.\n\nOutput rules:\n- Anchor in observable signals only.\n- No insinuations about the customer's internal team.\n- Map each hypothesis to one of: Revenue OS, Review OS, Delivery OS, Command Center, Client Acquisition OS.\n- End with the single best 7-day diagnostic experiment to test the top hypothesis.\n",
+      "chars": 476
+    },
+    {
+      "path": "business/ai/prompts/outreach_draft_ar.md",
+      "title": "Prompt: Outreach Draft (Arabic, v1)",
+      "preview": "# Prompt: Outreach Draft (Arabic, v1)\n\nRole: مؤسس Dealix.\nTask: اكتب رسالة واتساب أو إيميل مبدأية لمسؤول تجاري في شركة سعودية، بناءً على إشارة احتكاك ملاحظة.\n\nقواعد:\n- لا ضمانات ولا \"نضمن\".\n- لا ادعاءات أرقام بدون مصدر.\n- نبرة محترمة بلا تملق.\n- تنتهي بدعوة لمراجعة workflow بـ 7 أيام.\n- ≤ 100 كلمة.\n- review_status = pending_human_review.\n",
+      "chars": 340
+    },
+    {
+      "path": "business/ai/prompts/proof_report_summary.md",
+      "title": "Prompt: Proof Report Summary (v1)",
+      "preview": "# Prompt: Proof Report Summary (v1)\n\nSummarize a customer's weekly proof items into a 4-sentence narrative.\n\nRules:\n- Cite each proof item's evidence source.\n- No claims beyond what's in the proof items.\n- AR + EN paragraph each.\n- review_status = pending_human_review.\n",
+      "chars": 270
+    },
+    {
+      "path": "business/ai/prompts/lead_scoring_explanation.md",
+      "title": "Prompt: Lead Scoring Explanation (v1)",
+      "preview": "# Prompt: Lead Scoring Explanation (v1)\n\nRole: You are Dealix's analyst.\nTask: Given a scored lead JSON, produce a 2-paragraph rationale explaining the score in plain Saudi-friendly Arabic AND in concise English.\n\nInput variables:\n- account: {name, segment, city, sourceType, sourceNote, visibleSignal, weaknessHypothesis, score}\n\nOutput rules:\n- No banned claims (no guarantees, no \"نضمن\").\n- Cite the visibleSignal and sourceNote explicitly.\n- Do NOT invent metrics.\n- End with one suggested next a",
+      "chars": 507
+    },
+    {
+      "path": "business/ai/prompts/proposal_section_ar.md",
+      "title": "Prompt: Proposal Section (Arabic, v1)",
+      "preview": "# Prompt: Proposal Section (Arabic, v1)\n\nاكتب قسماً من مقترح Dealix. حدد القسم في الإدخال: تنفيذ تنفيذي، النطاق، التسليمات، التسعير، المخاطر، الإقفال.\n\nقواعد:\n- لا أرقام مفتعلة.\n- التسعير من فهرس الأسعار، لا تخفيض دون موافقة.\n- ادرج معايير القبول لكل تسليم.\n- استخدم لغة عربية فصحى مهنية.\n",
+      "chars": 289
+    },
+    {
+      "path": "business/ai/prompts/objection_response_ar.md",
+      "title": "Prompt: Objection Response (Arabic, v1)",
+      "preview": "# Prompt: Objection Response (Arabic, v1)\n\nادرس الاعتراض وأنتج رداً قصيراً يحترم نية العميل دون مبالغة.\n\nنمط الرد:\n1. تأكيد الاعتراض (\"أتفهم\").\n2. إعادة تأطير بالحقائق.\n3. اقتراح خطوة منخفضة المخاطر (Diagnostic Sprint 499 ريال).\n4. سؤال إغلاق مفتوح.\n",
+      "chars": 250
+    },
+    {
+      "path": "business/ai/prompts/objection_response_en.md",
+      "title": "Prompt: Objection Response (English, v1)",
+      "preview": "# Prompt: Objection Response (English, v1)\n\nRead the objection. Produce a short response that respects the buyer.\n\nPattern:\n1. Acknowledge.\n2. Reframe with facts.\n3. Offer low-risk next step (Diagnostic Sprint at 499 SAR).\n4. Open close question.\n",
+      "chars": 247
+    },
+    {
+      "path": "business/ai/prompts/client_status_summary.md",
+      "title": "Prompt: Client Status Summary (v1)",
+      "preview": "# Prompt: Client Status Summary (v1)\n\nGiven a workspace JSON, produce a 3-paragraph status summary covering: what was shipped, what was found, what's next.\n\nRules:\n- No projections beyond next deliverable's due date.\n- Cite each deliverable by id.\n- AR + EN versions.\n- review_status = pending_human_review.\n",
+      "chars": 308
+    },
+    {
+      "path": "business/knowledge/KNOWLEDGE_RETENTION_POLICY.md",
+      "title": "Knowledge Retention Policy",
+      "preview": "# Knowledge Retention Policy\n\n- Dealix general knowledge: retained indefinitely; reviewed quarterly.\n- Customer knowledge: retained for the SOW lifetime + 30 days.\n- AI audit log: 12 months.\n- Deletion on customer request honored within 14 business days.\n",
+      "chars": 255
+    },
+    {
+      "path": "business/knowledge/CLIENT_KNOWLEDGE_BOUNDARIES.md",
+      "title": "Client Knowledge Boundaries",
+      "preview": "# Client Knowledge Boundaries\n\n- Dealix's general knowledge base is shared across customers.\n- Customer-specific knowledge (their CRM data, transcripts, configs) is per-tenant only.\n- Per-tenant knowledge never crosses into shared indexes.\n- Per-tenant knowledge is deleted within 30 days of SOW termination.\n",
+      "chars": 309
+    },
+    {
+      "path": "business/knowledge/RAG_ARCHITECTURE_PLAN.md",
+      "title": "RAG Architecture Plan",
+      "preview": "# RAG Architecture Plan\n\n## V14 (today)\n- Deterministic local index. No embeddings.\n- Substring + keyword match on titles + first 500 chars.\n- Good enough for ~1,000 source files.\n\n## V15+ (future)\n- Embedding-backed vector store (provider TBD).\n- Per-tenant collections.\n- Reranking with a small reranker.\n- Hybrid retrieval (BM25 + dense).\n\n## Quality gates before flipping to vector RAG\n- Embedding provider contracted with data-residency clause.\n- Per-tenant isolation tested.\n- Eval set: at leas",
+      "chars": 725
+    },
+    {
+      "path": "business/knowledge/DEALIX_KNOWLEDGE_INDEX.md",
+      "title": "Dealix Knowledge Index (operator reference)",
+      "preview": "# Dealix Knowledge Index (operator reference)\n\nBuild the index:\n```\npython3 scripts/index_knowledge_sources.py --demo\n```\n\nSearch:\n```\npython3 scripts/search_knowledge_base.py --query \"Revenue OS\"\n```\n\nGenerate a pack for a topic:\n```\npython3 scripts/generate_knowledge_pack.py\n```\n\nFiles indexed: see `business/_data/knowledge_index.json` after building.\n",
+      "chars": 356
+    },
+    {
+      "path": "business/knowledge/KNOWLEDGE_BASE_SYSTEM.md",
+      "title": "Dealix Knowledge Base System",
+      "preview": "# Dealix Knowledge Base System\n\n## Purpose\nMake Dealix's own playbooks, FAQ, and policies searchable for the founder and (later) for the customer-facing assistant.\n\n## Sources\n- `business/enterprise/*.md`\n- `business/deal-desk/*.md`\n- `business/contracts/*.md`\n- `business/proof/*.md`\n- `business/ai/*.md`\n- `docs/**/*.md`\n\n## Index format (v1)\nDeterministic local index in `business/_data/knowledge_index.json`. Maps each markdown file to its title and first 500 chars. Search is substring + lowerca",
+      "chars": 741
+    },
+    {
+      "path": "business/knowledge/SOURCE_CITATION_POLICY.md",
+      "title": "Source Citation Policy",
+      "preview": "# Source Citation Policy\n\n- Every AI-generated artifact that quotes a source must cite the file path.\n- Citations look like: `_(source: business/proof/CLIENT_SUCCESS_SIGNALS.md)_`.\n- If no source can be cited, the artifact carries the phrase \"general guidance — verify before customer use\".\n",
+      "chars": 291
+    },
+    {
+      "path": "business/delivery-workspace/CLIENT_KICKOFF_SOP.md",
+      "title": "Client Kickoff SOP",
+      "preview": "# Client Kickoff SOP\n\n## Day -2\n- Send kickoff confirmation + agenda + customer responsibilities checklist.\n- Confirm attendees (commercial owner + operator).\n\n## Day 0 (kickoff)\n1. **Intro (10 min):** scope, goals, definitions.\n2. **In-scope / out-of-scope matrix (20 min):** write it down live.\n3. **Access grant (15 min):** customer adds Dealix to CRM (read), Google Business (admin if Review OS), WhatsApp Business (operator role).\n4. **Friction interview (30 min):** what's costing them money to",
+      "chars": 989
+    },
+    {
+      "path": "business/delivery-workspace/DELIVERY_RISK_REGISTER.md",
+      "title": "Delivery Risk Register",
+      "preview": "# Delivery Risk Register\n\nCategories of risks and how to handle each.\n\n## Access risk\nSymptom: Customer hasn't granted access to the agreed system.\nAction: Pause dependent deliverables. Escalate at week 2.\n\n## Scope ambiguity\nSymptom: Customer asks for things \"while we're at it\".\nAction: Convert to a CO (`CHANGE_REQUEST_POLICY.md`).\n\n## Capacity risk\nSymptom: Multiple customers want the same slot.\nAction: Stagger weekly reviews. Don't double-book Sundays.\n\n## Reputation risk\nSymptom: Customer wa",
+      "chars": 950
+    },
+    {
+      "path": "business/delivery-workspace/WEEKLY_CLIENT_REVIEW_RHYTHM.md",
+      "title": "Weekly Client Review Rhythm",
+      "preview": "# Weekly Client Review Rhythm\n\n## When\nSame slot every week, agreed at kickoff. 45 min default.\n\n## Agenda\n1. **What we shipped** (10 min) — completed deliverables.\n2. **What we found** (10 min) — friction log updates.\n3. **What we'll ship next** (10 min) — next 1-2 deliverables.\n4. **What we need from you** (10 min) — open approvals, access, data.\n5. **Open risks** (5 min) — review the risk register.\n\n## Output\n- Notes saved to `business/proof/exports/<client-id>/weekly-<date>.md`.\n- Proof item",
+      "chars": 949
+    },
+    {
+      "path": "business/delivery-workspace/DELIVERABLE_ACCEPTANCE_FLOW.md",
+      "title": "Deliverable Acceptance Flow",
+      "preview": "# Deliverable Acceptance Flow\n\n1. **Draft** — Founder produces, demo-marks if applicable.\n2. **Internal review** — Founder walks through against `ACCEPTANCE_CRITERIA_TEMPLATE.md`.\n3. **Delivery** — Sent to commercial owner with a clear \"by Friday EOD, please confirm\" ask.\n4. **Customer review** — Customer accepts, rejects with notes, or asks for changes.\n5. **Iterate** — Up to two iteration rounds in scope; further iterations become a CO.\n6. **Accept** — Recorded via `record_client_approval.py`.",
+      "chars": 680
+    },
+    {
+      "path": "business/delivery-workspace/APPROVAL_GATE_POLICY.md",
+      "title": "Approval Gate Policy",
+      "preview": "# Approval Gate Policy\n\nCustomer-facing items requiring written approval before going live.\n\n| Item | Approver | Tool |\n| --- | --- | --- |\n| Persuasion angle batch | Commercial owner | `request_client_approval.py` |\n| WhatsApp draft batch | Commercial owner | `approve_outreach_draft.py` |\n| Workflow change in production | Operator + Commercial owner | `request_client_approval.py` |\n| First proof report | Commercial owner | `record_client_approval.py` |\n| Public case study draft | Commercial own",
+      "chars": 772
+    },
+    {
+      "path": "business/delivery-workspace/DELIVERY_WORKSPACE_SYSTEM.md",
+      "title": "Delivery Workspace System",
+      "preview": "# Delivery Workspace System\n\n## Purpose\nMake delivery visible to the customer, structured for the founder, and auditable.\n\n## Components\n- `client_workspaces.json` — registry of all live engagements.\n- `client_portal.demo.json` — demo seed.\n- `/client-portal/[id]` — customer-facing surface.\n- Scripts in `scripts/`:\n  - `create_client_workspace.py`\n  - `add_deliverable.py`\n  - `mark_deliverable_done.py`\n  - `request_client_approval.py`\n  - `record_client_approval.py`\n  - `generate_client_status_r",
+      "chars": 1111
+    },
+    {
+      "path": "business/demo/DEALIX_DEMO_SCRIPT_AR.md",
+      "title": "سيناريو العرض التوضيحي — Dealix (عربي)",
+      "preview": "# سيناريو العرض التوضيحي — Dealix (عربي)\n\nمدة: 20 دقيقة. مستمع: مسؤول تجاري / مالك شركة B2B سعودية.\n\n## (1) دقيقتان — الافتتاحية\n\n\"Dealix يبني نظام تشغيل تجاري حقيقي فوق أدواتك الموجودة. مش CRM جديد، مش وكالة. نظام يومي يقلب تشتيت المبيعات والواتساب والسمعة إلى قرارات قابلة للقياس.\"\n\n## (2) 3 دقائق — لوحة Command Center\n\nافتح `/command-center`:\n- Top accounts بتقديرات.\n- Drafts الواتساب الجاهزة للمراجعة.\n- المتابعات المستحقة اليوم.\n- إثباتات الأسبوع.\n\nركّز: \"كل شيء معد بشري قبل ما يطلع منك.\"\n\n##",
+      "chars": 1381
+    },
+    {
+      "path": "business/demo/DEMO_CLOSE.md",
+      "title": "Demo Close",
+      "preview": "# Demo Close\n\nClosing sequence after the 20-min walkthrough.\n\n## Step 1 — Confirm\n\"Before we wrap, did you see at least one part of your workflow you'd want to fix in the next 30 days?\"\n\nIf yes → Step 2. If no → respectful close, send the FAQ, ask permission to follow up in 60 days.\n\n## Step 2 — Offer\n\"I'd like to propose the Diagnostic Sprint. It's 7 days, 499 SAR. By day 7 you have a written friction log, a tailored data pack proposal, and the first proof report. If you don't see 5x value in t",
+      "chars": 1283
+    },
+    {
+      "path": "business/demo/LIVE_WORKFLOW_REVIEW_SCRIPT.md",
+      "title": "Live Workflow Review Script",
+      "preview": "# Live Workflow Review Script\n\nUsed during the 7-day diagnostic sprint, day 2-3 workshop.\n\n## Setup\n- 90-min slot.\n- Founder + customer's commercial owner + 1 operator who actually does the work.\n- Screen share their CRM, WhatsApp, and review console live.\n\n## Sequence\n\n### Block 1 (15 min) — Lead arrival\n- Where do leads land?\n- Who sees them first?\n- How long until first response?\n- Tag every friction visible on screen.\n\n### Block 2 (15 min) — Qualification\n- Who qualifies? What rule?\n- Show 5",
+      "chars": 1210
+    },
+    {
+      "path": "business/demo/DEMO_QA_OBJECTIONS.md",
+      "title": "Demo Q&A — Common Objections + Responses",
+      "preview": "# Demo Q&A — Common Objections + Responses\n\n## \"We already have a CRM.\"\nGood. Dealix sits on top. We don't replace it. We connect, govern, and produce proof on top of HubSpot / Salesforce / Zoho / Bitrix / Pipedrive.\n\n## \"We tried an agency, didn't work.\"\nAgencies run campaigns; Dealix builds a system that outlives the contract. Start with a 499 SAR diagnostic sprint — no commitment.\n\n## \"ChatGPT can do this.\"\nChatGPT generates text. Dealix runs a daily operator pack, queues drafts for human rev",
+      "chars": 1623
+    },
+    {
+      "path": "business/demo/DEALIX_DEMO_SCRIPT_EN.md",
+      "title": "Dealix Demo Script (English)",
+      "preview": "# Dealix Demo Script (English)\n\nLength: 20 minutes. Audience: B2B commercial owner / founder.\n\n## (1) 2 min — Opening\n\n\"Dealix builds a real business operating system on top of the tools you already use. Not a new CRM, not an agency. A daily system that converts scattered sales, WhatsApp, and reputation into measurable decisions.\"\n\n## (2) 3 min — Command Center dashboard\n\nOpen `/command-center`:\n- Top scored accounts.\n- WhatsApp drafts pending review.\n- Follow-ups due today.\n- This week's proof ",
+      "chars": 1517
+    },
+    {
+      "path": "business/demo/FOUNDER_DEMO_FLOW.md",
+      "title": "Founder Demo Flow — Internal Reference",
+      "preview": "# Founder Demo Flow — Internal Reference\n\nStep-by-step the founder follows during a live demo.\n\n## Before the call\n1. Open `/command-center` in tab 1.\n2. Open `/revenue-machine` in tab 2.\n3. Open `/daily-draft` in tab 3.\n4. Open `/proof-vault` in tab 4.\n5. Open `/enterprise-readiness` in tab 5.\n6. Have `LIVE_WORKFLOW_REVIEW_SCRIPT.md` open on second screen.\n\n## During the call\n- Speak the Arabic script if the buyer is Arabic-first, English otherwise.\n- After every section, ask: \"هل هذا قريب من ت",
+      "chars": 1206
+    },
+    {
+      "path": "business/demo/exports/dealix-demo-pack-2026-06-11.md",
+      "title": "Dealix Demo Pack — 2026-06-11 (AR+EN)",
+      "preview": "# Dealix Demo Pack — 2026-06-11 (AR+EN)\n\n_Demo material. No customer data. Founder-reviewed before any external share._\n\n## سيناريو العرض (عربي)\n\n# سيناريو العرض التوضيحي — Dealix (عربي)\n\nمدة: 20 دقيقة. مستمع: مسؤول تجاري / مالك شركة B2B سعودية.\n\n## (1) دقيقتان — الافتتاحية\n\n\"Dealix يبني نظام تشغيل تجاري حقيقي فوق أدواتك الموجودة. مش CRM جديد، مش وكالة. نظام يومي يقلب تشتيت المبيعات والواتساب والسمعة إلى قرارات قابلة للقياس.\"\n\n## (2) 3 دقائق — لوحة Command Center\n\nافتح `/command-center`:\n- Top a",
+      "chars": 8491
+    },
+    {
+      "path": "business/demo/exports/dealix-demo-pack-2026-06-11-ar.md",
+      "title": "Dealix Demo Pack — 2026-06-11 (AR)",
+      "preview": "# Dealix Demo Pack — 2026-06-11 (AR)\n\n_Demo material. No customer data. Founder-reviewed before any external share._\n\n## سيناريو العرض\n\n# سيناريو العرض التوضيحي — Dealix (عربي)\n\nمدة: 20 دقيقة. مستمع: مسؤول تجاري / مالك شركة B2B سعودية.\n\n## (1) دقيقتان — الافتتاحية\n\n\"Dealix يبني نظام تشغيل تجاري حقيقي فوق أدواتك الموجودة. مش CRM جديد، مش وكالة. نظام يومي يقلب تشتيت المبيعات والواتساب والسمعة إلى قرارات قابلة للقياس.\"\n\n## (2) 3 دقائق — لوحة Command Center\n\nافتح `/command-center`:\n- Top accounts بت",
+      "chars": 6924
+    },
+    {
+      "path": "business/demo/exports/dealix-demo-pack-2026-06-11-en.md",
+      "title": "Dealix Demo Pack — 2026-06-11 (EN)",
+      "preview": "# Dealix Demo Pack — 2026-06-11 (EN)\n\n_Demo material. No customer data. Founder-reviewed before any external share._\n\n## Demo Script\n\n# Dealix Demo Script (English)\n\nLength: 20 minutes. Audience: B2B commercial owner / founder.\n\n## (1) 2 min — Opening\n\n\"Dealix builds a real business operating system on top of the tools you already use. Not a new CRM, not an agency. A daily system that converts scattered sales, WhatsApp, and reputation into measurable decisions.\"\n\n## (2) 3 min — Command Center da",
+      "chars": 7057
+    },
+    {
+      "path": "docs/ai/V14_AGENT_OPERATIONS.md",
+      "title": "V14 Agent Operations",
+      "preview": "# V14 Agent Operations\n\n## Design principles\n1. **Deterministic by default.** No external call required to produce output.\n2. **LLM-assist is opt-in.** `--use-ai` flag + provider env var.\n3. **Fail-safe.** Provider failure → deterministic fallback with metadata tagging.\n4. **Auditable.** Every call records provider, model, prompt version, review_status.\n5. **Banned-claim filtered.** Pre-call safety check refuses unsafe prompts.\n\n## Modules\n- `scripts/lib/ai_router.py` — the routing entry point.\n",
+      "chars": 1339
+    },
+    {
+      "path": "docs/ai/AI_MODEL_ROUTER_PLAN.md",
+      "title": "AI Model Router Plan (Dealix)",
+      "preview": "# AI Model Router Plan (Dealix)\n\n## Goals\n- Single router for all LLM calls in Dealix\n- Cost + latency + quality + safety observable\n- Easy to swap providers\n- Demo mode works without API keys\n\n## Components\n- `dealix/ai/router.py` — central router\n- `dealix/ai/providers/base.py` — provider interface\n- `dealix/ai/providers/openai.py` — OpenAI provider\n- `dealix/ai/providers/anthropic.py` — Anthropic provider\n- `dealix/ai/providers/local.py` — local stub for demo\n\n## Routing table\n| Task class | ",
+      "chars": 911
+    },
+    {
+      "path": "docs/ai/AI_AUDIT_LOGGING.md",
+      "title": "AI Audit Logging",
+      "preview": "# AI Audit Logging\n\n## Log file\n`business/_data/ai_audit_log.json` (append-only).\n\n## Per entry\n- timestamp\n- task\n- provider\n- model\n- prompt_version\n- review_status\n- deterministic (bool)\n- safety_passed (bool)\n- note\n- reviewer (if approved)\n\n## What we never log\n- Raw customer data inside the prompt body (in production mode).\n- API keys.\n- Personally identifying info beyond what the customer's SOW authorizes.\n\n## Retention\n- 12 months by default.\n- Customer-specific entries deleted within 30",
+      "chars": 602
+    },
+    {
+      "path": "docs/ai/DETERMINISTIC_FALLBACK_POLICY.md",
+      "title": "Deterministic Fallback Policy",
+      "preview": "# Deterministic Fallback Policy\n\n## Why\n- Service must work in a permission-denied / offline / quota-exhausted environment.\n- Customer who hasn't opted into LLM-assist still gets a usable artifact.\n- Auditable output that doesn't depend on a third party.\n\n## What \"deterministic\" means\n- Same input → same output every run.\n- Output is a structured placeholder for the operator to edit.\n- Output never claims a result.\n- Output carries `deterministic: true` in metadata.\n\n## When fallback triggers\n- ",
+      "chars": 884
+    },
+    {
+      "path": "docs/ai/AI_TASK_ROUTING.md",
+      "title": "AI Task Routing",
+      "preview": "# AI Task Routing\n\nDefault: deterministic. Opt-in routing per task is below.\n\n| Task | Preferred provider | Fallback chain |\n| --- | --- | --- |\n| outreach_draft (AR) | MiniMax | Kimi → deterministic |\n| outreach_draft (EN) | OpenAI | Kimi → deterministic |\n| proposal_section | OpenAI | Kimi → deterministic |\n| objection_response | Kimi | OpenAI → deterministic |\n| translation_ar_en | MiniMax | Kimi → deterministic |\n| proof_report_summary | DeepSeek | OpenAI → deterministic |\n| client_status_su",
+      "chars": 909
+    },
+    {
+      "path": "docs/ai/AI_REVIEW_GATES.md",
+      "title": "AI Review Gates",
+      "preview": "# AI Review Gates\n\nEvery AI-touched artifact passes these gates before any external use.\n\n## Gate 1 — Safety check (pre-call)\n- Refuse banned phrases (guarantee, scrape, fake review, etc.).\n- Refuse oversized prompts.\n- Refuse if customer hasn't opted into LLM-assist.\n\n## Gate 2 — Eval check (post-call)\n- No banned claims in output.\n- No autosend language.\n- review_status set to `pending_human_review`.\n\n## Gate 3 — Human review\n- Founder reads, edits, approves.\n- Approval recorded in `business/_",
+      "chars": 882
+    },
+    {
+      "path": "docs/ai/MODEL_PROVIDER_MATRIX.md",
+      "title": "Model Provider Matrix",
+      "preview": "# Model Provider Matrix\n\n| Provider | Env var | Strengths | Cautions |\n| --- | --- | --- | --- |\n| MiniMax | `MINIMAX_API_KEY` | Long context, good Arabic | Throttling |\n| Kimi | `KIMI_API_KEY` | Strong reasoning | Cost |\n| DeepSeek | `DEEPSEEK_API_KEY` | Code + reasoning | Newer ecosystem |\n| OpenRouter | `OPENROUTER_API_KEY` | Multi-model fallback | Per-route reliability |\n| OpenAI | `OPENAI_API_KEY` | General quality | Cost, regional latency |\n\nRouting rules (when activated):\n- AR-heavy outre",
+      "chars": 699
+    },
+    {
+      "path": "docs/auth/PRODUCTION_AUTH_REQUIREMENTS.md",
+      "title": "Production Auth Requirements",
+      "preview": "# Production Auth Requirements\n\n## Hard requirements before going to production\n\n1. **IdP wired**: OIDC or SAML, with customer-supplied IdP for customer-facing tenants.\n2. **MFA enforced** on every admin login.\n3. **Session timeout** ≤ 12 hours of inactivity.\n4. **Privileged actions** logged: who, what, when, what changed.\n5. **`NEXT_PUBLIC_DEMO_MODE`** is unset in production.\n6. **`DEALIX_ADMIN_PASSWORD`** is unset; password-only access is not allowed.\n7. **Secrets** loaded from secret manager,",
+      "chars": 1615
+    },
+    {
+      "path": "docs/auth/V11_ADMIN_ACCESS_BOUNDARY.md",
+      "title": "V11 Admin Access Boundary",
+      "preview": "# V11 Admin Access Boundary\n\n## Internal routes\n\nThese pages contain operational data and should not be served to the public web in production:\n\n- `/crm`, `/crm/*`\n- `/operator`\n- `/review-queue`\n- `/outreach-lab`\n- `/followups`\n- `/command-center`, `/war-room`, `/pipeline`, `/kpi-finance`\n- `/proof-vault`, `/deals`, `/quotes`, `/revenue`\n- `/launch`\n- `/client-portal/*` (except `/client-portal/demo`)\n\n## Demo mode\n\nWhen `NEXT_PUBLIC_DEMO_MODE=true`, internal routes render with **DEMO** badges a",
+      "chars": 1562
+    },
+    {
+      "path": "docs/auth/FOUNDER_ONLY_ROUTES.md",
+      "title": "Founder-only routes",
+      "preview": "# Founder-only routes\n\n| Route | Purpose | Production gating |\n| --- | --- | --- |\n| `/crm` | Pipeline view | IdP + RBAC role=founder |\n| `/operator` | Daily ops console | IdP + RBAC role=founder |\n| `/review-queue` | Draft approvals | IdP + RBAC role=founder |\n| `/outreach-lab` | Draft creation | IdP + RBAC role=founder |\n| `/followups` | Follow-up queue | IdP + RBAC role=founder |\n| `/command-center` | Operating dashboard | IdP + RBAC role=founder |\n| `/war-room` | Live ops | IdP + RBAC role=f",
+      "chars": 984
+    },
+    {
+      "path": "docs/payments/ZATCA_AWARE_INVOICING_NOTES.md",
+      "title": "ZATCA-aware invoicing notes",
+      "preview": "# ZATCA-aware invoicing notes\n\n## Position\nDealix is NOT a tax invoice provider. ZATCA-compliant invoices are issued by the customer's accounting system. Dealix's invoice stubs are operational placeholders only.\n\n## What customers actually need\n- A KSA-licensed accounting system (Zoho Books, Wafeq, ERPNext + KSA add-ons, SAP Business One with KSA localization, etc.).\n- ZATCA Fatoora portal credentials.\n- Phase-1 / Phase-2 e-invoicing integration as required for their entity.\n- A finance owner wh",
+      "chars": 1120
+    },
+    {
+      "path": "docs/payments/PAYMENT_SECURITY_BOUNDARIES.md",
+      "title": "Payment security boundaries",
+      "preview": "# Payment security boundaries\n\n## Hard rules\n- Dealix code never stores PAN (primary account number).\n- Dealix code never logs PAN.\n- Dealix code never receives webhook payloads with PAN.\n- Dealix code never proxies payment forms.\n\n## Stubs\n`integrations/payments/*_stub.py` exist to:\n- Define the function signatures.\n- Document the env vars required for live activation.\n- Make the integration plan reviewable in PRs.\n\nThey do NOT call any provider.\n\n## Activation gates\nBefore flipping a stub to a",
+      "chars": 1369
+    },
+    {
+      "path": "docs/payments/STRIPE_INTEGRATION_PLAN.md",
+      "title": "Stripe integration plan (future)",
+      "preview": "# Stripe integration plan (future)\n\n## When to use Stripe instead of Moyasar\n- Customer pays in non-SAR currency.\n- Customer's existing finance stack already uses Stripe.\n- Cross-border subscription with international customer.\n\n## Scope (when activated)\n- Issue Stripe Payment Link or Checkout Session for approved quote.\n- Webhook on `payment_intent.succeeded` → mark deal won.\n- Webhook on `customer.subscription.deleted` → mark customer churned in CRM.\n\n## Out of scope\n- Storing card details.\n- ",
+      "chars": 1317
+    },
+    {
+      "path": "docs/payments/PAYMENT_ARCHITECTURE.md",
+      "title": "Payment architecture",
+      "preview": "# Payment architecture\n\nDealix does NOT process payments. The customer's accounting system does. This document explains the boundary.\n\n## Status today (V12)\n\n- No PCI scope.\n- No card data handled.\n- No payment links generated automatically.\n- Stubs in `integrations/payments/` show the intended contract; they do not call any provider.\n\n## When a customer pays\n\n1. Founder issues an invoice from the customer's accounting system (Zoho, QuickBooks, Wafeq, etc.).\n2. Customer pays via their normal cha",
+      "chars": 1308
+    },
+    {
+      "path": "docs/payments/MOYASAR_INTEGRATION_PLAN.md",
+      "title": "Moyasar integration plan (future)",
+      "preview": "# Moyasar integration plan (future)\n\n## Why Moyasar\n- Saudi-licensed payment processor.\n- ZATCA / Mada / Apple Pay support.\n- Strong API + webhook docs.\n\n## Scope (when activated)\n- Generate a payment link for an approved quote.\n- Receive a webhook on payment.\n- Mark the deal `won` in `deals.ledger.json`.\n\n## Out of scope\n- Storing card details.\n- Refund automation.\n- Subscription billing (use Moyasar subscriptions only after dedicated security review).\n\n## Prerequisites before going live\n- Sign",
+      "chars": 1235
+    }
+  ]
+}

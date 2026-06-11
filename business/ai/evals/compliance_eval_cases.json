@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "compliance-001",
+      "task": "compliance_review",
+      "lang": "en",
+      "input": "We guarantee 5x ROI in 30 days",
+      "expected_flags_contain": ["guarantee"]
+    }
+  ]
+}
