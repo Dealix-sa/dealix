@@ -1,0 +1,16 @@
+[
+  {
+    "account": "demo-acme",
+    "status": "pending_review",
+    "due": "2026-06-11",
+    "channel": "whatsapp",
+    "note": "Day-3 follow-up draft generated."
+  },
+  {
+    "account": "demo-beta",
+    "status": "pending_review",
+    "due": "2026-06-11",
+    "channel": "email",
+    "note": "Proposal follow-up draft generated."
+  }
+]

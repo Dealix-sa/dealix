@@ -1,0 +1,24 @@
+{
+  "ctas": {
+    "book_diagnostic": {
+      "ar": "احجز مراجعة تشغيلية مجانية — ٢٠ دقيقة فقط.",
+      "en": "Book a free operational review — 20 minutes only."
+    },
+    "get_leak_report": {
+      "ar": "احصل على تقرير تسريبات قطاعك المجاني.",
+      "en": "Get your free sector leak report."
+    },
+    "see_proof": {
+      "ar": "شاهد دليل القيمة من عملاء مشابهين.",
+      "en": "See proof of value from similar clients."
+    },
+    "join_pilot": {
+      "ar": "انضم إلى برنامج البايلوت المحدود — ٣ مقاعد هذا الشهر.",
+      "en": "Join the limited pilot program — 3 seats this month."
+    },
+    "reply_with_pain": {
+      "ar": "رد بأكبر مشكلة تشغيلية تواجهك وسنرسل خارطة حل.",
+      "en": "Reply with your biggest operational pain and we'll send a solution map."
+    }
+  }
+}
