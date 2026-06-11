@@ -12,3 +12,8 @@ V11 checkpoint: CRM admin UI + operator + review queue + API routes
 4991752 checkpoint: Dealix V10 enterprise release baseline + demo pack + master runner
 fc2e626 chore(v10-v20): Phase 0 audit + execution plan
 c74c703 fix(gitignore): scope Python lib/ pattern so apps/web/lib/ lands
+Thu Jun 11 03:24:21 UTC 2026
+V12 checkpoint: quote-to-cash + deal desk + contracts + payment stubs
+42ddfc4 checkpoint: Dealix V11 CRM admin UI + operator + review queue + API
+4991752 checkpoint: Dealix V10 enterprise release baseline + demo pack + master runner
+fc2e626 chore(v10-v20): Phase 0 audit + execution plan

@@ -186,7 +186,42 @@ V11_REQUIRED = [
     "docs/auth/PRODUCTION_AUTH_REQUIREMENTS.md",
 ]
 
-REQUIRED = REQUIRED + V10_REQUIRED + V11_REQUIRED
+# V12 quote-to-cash
+V12_REQUIRED = [
+    "business/_data/deals.ledger.json",
+    "business/_data/quotes.index.json",
+    "business/_data/invoices.index.json",
+    "business/_schemas/deal.schema.json",
+    "business/_schemas/quote.schema.json",
+    "business/_schemas/invoice.schema.json",
+    "scripts/lib/quote_engine.py",
+    "scripts/generate_invoice_stub.py",
+    "scripts/generate_revenue_report.py",
+    "scripts/approve_quote.py",
+    "scripts/review_quote.py",
+    "scripts/mark_quote_sent.py",
+    "business/deal-desk/DEAL_DESK_RULES.md",
+    "business/contracts/MASTER_SERVICE_AGREEMENT_OUTLINE.md",
+    "business/contracts/STATEMENT_OF_WORK_TEMPLATE_AR.md",
+    "business/contracts/STATEMENT_OF_WORK_TEMPLATE_EN.md",
+    "business/contracts/DATA_PROCESSING_ADDENDUM_OUTLINE.md",
+    "business/contracts/ACCEPTANCE_CRITERIA_TEMPLATE.md",
+    "business/contracts/CLIENT_RESPONSIBILITIES.md",
+    "apps/web/lib/finance/deals.ts",
+    "apps/web/app/deals/page.tsx",
+    "apps/web/app/quotes/page.tsx",
+    "apps/web/app/revenue/page.tsx",
+    "docs/payments/PAYMENT_ARCHITECTURE.md",
+    "docs/payments/MOYASAR_INTEGRATION_PLAN.md",
+    "docs/payments/STRIPE_INTEGRATION_PLAN.md",
+    "docs/payments/ZATCA_AWARE_INVOICING_NOTES.md",
+    "docs/payments/PAYMENT_SECURITY_BOUNDARIES.md",
+    "integrations/payments/base.py",
+    "integrations/payments/moyasar_stub.py",
+    "integrations/payments/stripe_stub.py",
+]
+
+REQUIRED = REQUIRED + V10_REQUIRED + V11_REQUIRED + V12_REQUIRED
 
 
 def _label_for(path: str) -> str:
@@ -194,6 +229,8 @@ def _label_for(path: str) -> str:
         return "V10"
     if path in V11_REQUIRED:
         return "V11"
+    if path in V12_REQUIRED:
+        return "V12"
     return "core"
 
 
@@ -204,7 +241,7 @@ def main() -> int:
         for m in missing:
             print(f"  - [{_label_for(m)}] {m}")
         return 1
-    print("Dealix Ultimate Commercial OS V11 verification passed.")
+    print("Dealix Ultimate Commercial OS V12 verification passed.")
     return 0
 
 
