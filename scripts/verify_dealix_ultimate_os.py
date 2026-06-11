@@ -126,15 +126,49 @@ REQUIRED = [
     "scripts/verify_client_acquisition_delivery_os.py",
 ]
 
+# V10 enterprise release baseline
+V10_REQUIRED = [
+    "business/enterprise/ENTERPRISE_READINESS_PACK.md",
+    "business/enterprise/SECURITY_QUESTIONNAIRE_TEMPLATE.md",
+    "business/enterprise/DATA_BOUNDARY_STATEMENT.md",
+    "business/enterprise/AI_GOVERNANCE_STATEMENT.md",
+    "business/enterprise/HUMAN_REVIEW_STATEMENT.md",
+    "business/enterprise/SERVICE_LEVEL_BOUNDARIES.md",
+    "business/enterprise/IMPLEMENTATION_ASSURANCE_PLAN.md",
+    "business/enterprise/ENTERPRISE_BUYER_FAQ_AR.md",
+    "business/enterprise/ENTERPRISE_BUYER_FAQ_EN.md",
+    "apps/web/app/enterprise-readiness/page.tsx",
+    "business/demo/DEALIX_DEMO_SCRIPT_AR.md",
+    "business/demo/DEALIX_DEMO_SCRIPT_EN.md",
+    "business/demo/FOUNDER_DEMO_FLOW.md",
+    "business/demo/LIVE_WORKFLOW_REVIEW_SCRIPT.md",
+    "business/demo/DEMO_QA_OBJECTIONS.md",
+    "business/demo/DEMO_CLOSE.md",
+    "scripts/generate_demo_pack.py",
+    "scripts/generate_release_notes.py",
+    "scripts/generate_health_snapshot.py",
+    "scripts/check_required_env.py",
+    "scripts/generate_env_report.py",
+    "scripts/dealix_v10_run_all.sh",
+]
+
+REQUIRED = REQUIRED + V10_REQUIRED
+
+
+def _label_for(path: str) -> str:
+    if path in V10_REQUIRED:
+        return "V10"
+    return "core"
+
 
 def main() -> int:
     missing = [r for r in REQUIRED if not (REPO_ROOT / r).exists()]
     if missing:
         print("MISSING:")
         for m in missing:
-            print(f"  - {m}")
+            print(f"  - [{_label_for(m)}] {m}")
         return 1
-    print("Dealix Ultimate Commercial OS verification passed.")
+    print("Dealix Ultimate Commercial OS V10 verification passed.")
     return 0
 
 
