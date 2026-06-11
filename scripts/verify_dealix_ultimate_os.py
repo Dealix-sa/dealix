@@ -221,7 +221,33 @@ V12_REQUIRED = [
     "integrations/payments/stripe_stub.py",
 ]
 
-REQUIRED = REQUIRED + V10_REQUIRED + V11_REQUIRED + V12_REQUIRED
+# V13 client portal + delivery + proof
+V13_REQUIRED = [
+    "business/_data/client_portal.demo.json",
+    "business/_data/client_workspaces.json",
+    "business/_schemas/client_workspace.schema.json",
+    "apps/web/lib/client/portal.ts",
+    "apps/web/app/client-portal/page.tsx",
+    "apps/web/app/client-portal/demo/page.tsx",
+    "apps/web/app/client-portal/[clientId]/page.tsx",
+    "apps/web/app/delivery-workspace/page.tsx",
+    "apps/web/app/proof-vault/page.tsx",
+    "apps/web/app/client-success/page.tsx",
+    "apps/web/app/retention/page.tsx",
+    "business/delivery-workspace/DELIVERY_WORKSPACE_SYSTEM.md",
+    "business/proof/PROOF_ITEM_SCHEMA.md",
+    "scripts/lib/workspace_store.py",
+    "scripts/create_client_workspace.py",
+    "scripts/add_deliverable.py",
+    "scripts/mark_deliverable_done.py",
+    "scripts/request_client_approval.py",
+    "scripts/record_client_approval.py",
+    "scripts/generate_client_status_report.py",
+    "scripts/generate_retainer_expansion_plan.py",
+    "scripts/generate_case_study_draft.py",
+]
+
+REQUIRED = REQUIRED + V10_REQUIRED + V11_REQUIRED + V12_REQUIRED + V13_REQUIRED
 
 
 def _label_for(path: str) -> str:
@@ -231,6 +257,8 @@ def _label_for(path: str) -> str:
         return "V11"
     if path in V12_REQUIRED:
         return "V12"
+    if path in V13_REQUIRED:
+        return "V13"
     return "core"
 
 
@@ -241,7 +269,7 @@ def main() -> int:
         for m in missing:
             print(f"  - [{_label_for(m)}] {m}")
         return 1
-    print("Dealix Ultimate Commercial OS V12 verification passed.")
+    print("Dealix Ultimate Commercial OS V13 verification passed.")
     return 0
 
 

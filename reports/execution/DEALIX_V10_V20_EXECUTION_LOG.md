@@ -17,3 +17,8 @@ V12 checkpoint: quote-to-cash + deal desk + contracts + payment stubs
 42ddfc4 checkpoint: Dealix V11 CRM admin UI + operator + review queue + API
 4991752 checkpoint: Dealix V10 enterprise release baseline + demo pack + master runner
 fc2e626 chore(v10-v20): Phase 0 audit + execution plan
+Thu Jun 11 03:31:06 UTC 2026
+V13 checkpoint: client portal + delivery workspace + proof rhythm
+72dfbb9 checkpoint: Dealix V12 quote-to-cash + deal desk + contracts + payment stubs
+42ddfc4 checkpoint: Dealix V11 CRM admin UI + operator + review queue + API
+4991752 checkpoint: Dealix V10 enterprise release baseline + demo pack + master runner
