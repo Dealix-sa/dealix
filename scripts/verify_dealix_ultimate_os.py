@@ -152,12 +152,48 @@ V10_REQUIRED = [
     "scripts/dealix_v10_run_all.sh",
 ]
 
-REQUIRED = REQUIRED + V10_REQUIRED
+# V11 CRM admin UI + API
+V11_REQUIRED = [
+    "apps/web/lib/crm/crm.ts",
+    "apps/web/app/crm/page.tsx",
+    "apps/web/app/crm/accounts/page.tsx",
+    "apps/web/app/crm/accounts/[id]/page.tsx",
+    "apps/web/app/crm/import/page.tsx",
+    "apps/web/app/crm/review/page.tsx",
+    "apps/web/app/crm/followups/page.tsx",
+    "apps/web/app/crm/reports/page.tsx",
+    "apps/web/app/operator/page.tsx",
+    "apps/web/app/review-queue/page.tsx",
+    "apps/web/app/outreach-lab/page.tsx",
+    "apps/web/app/followups/page.tsx",
+    "apps/web/components/crm/AccountTable.tsx",
+    "apps/web/components/crm/PipelineSummary.tsx",
+    "apps/web/components/crm/StageBadge.tsx",
+    "apps/web/components/crm/ReviewStatusBadge.tsx",
+    "apps/web/components/crm/DraftPreview.tsx",
+    "apps/web/app/api/crm/accounts/route.ts",
+    "apps/web/app/api/crm/accounts/[id]/route.ts",
+    "apps/web/app/api/crm/accounts/[id]/stage/route.ts",
+    "apps/web/app/api/crm/accounts/[id]/note/route.ts",
+    "apps/web/app/api/crm/accounts/[id]/followup/route.ts",
+    "apps/web/app/api/crm/drafts/route.ts",
+    "apps/web/app/api/crm/drafts/[id]/approve/route.ts",
+    "apps/web/app/api/crm/drafts/[id]/reject/route.ts",
+    "apps/web/app/api/crm/reports/route.ts",
+    "apps/web/app/api/crm/import/route.ts",
+    "docs/auth/V11_ADMIN_ACCESS_BOUNDARY.md",
+    "docs/auth/FOUNDER_ONLY_ROUTES.md",
+    "docs/auth/PRODUCTION_AUTH_REQUIREMENTS.md",
+]
+
+REQUIRED = REQUIRED + V10_REQUIRED + V11_REQUIRED
 
 
 def _label_for(path: str) -> str:
     if path in V10_REQUIRED:
         return "V10"
+    if path in V11_REQUIRED:
+        return "V11"
     return "core"
 
 
@@ -168,7 +204,7 @@ def main() -> int:
         for m in missing:
             print(f"  - [{_label_for(m)}] {m}")
         return 1
-    print("Dealix Ultimate Commercial OS V10 verification passed.")
+    print("Dealix Ultimate Commercial OS V11 verification passed.")
     return 0
 
 
