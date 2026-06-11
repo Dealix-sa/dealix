@@ -10,7 +10,7 @@ import os
 import re
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parent.parent
+REPO = Path(__file__).resolve().parent.parent.parent
 
 # Patterns that indicate possible auto-send in executable code
 FORBIDDEN_CALLS = {"send_whatsapp", "send_email", "send_sms"}
