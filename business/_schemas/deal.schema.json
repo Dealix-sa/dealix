@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Deal",
+  "type": "object",
+  "required": ["id", "accountId", "stage", "createdAt", "demo"],
+  "properties": {
+    "id": { "type": "string" },
+    "accountId": { "type": "string" },
+    "stage": { "type": "string", "enum": ["open", "won", "lost"] },
+    "offer": { "type": "string" },
+    "setupValue": { "type": "number", "minimum": 0 },
+    "monthlyValue": { "type": "number", "minimum": 0 },
+    "currency": { "type": "string", "default": "SAR" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "decidedAt": { "type": "string", "format": "date-time" },
+    "decidedBy": { "type": "string" },
+    "lossReason": { "type": "string" },
+    "demo": { "type": "boolean" }
+  }
+}

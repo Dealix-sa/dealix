@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "scoring-001",
+      "task": "lead_scoring_explanation",
+      "lang": "ar",
+      "input": {"account": "demo-acc-001"},
+      "must_not_contain": ["نضمن", "guaranteed"]
+    }
+  ]
+}
