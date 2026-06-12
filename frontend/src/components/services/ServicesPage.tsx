@@ -214,15 +214,15 @@ export function ServicesPage() {
         dir={isAr ? "rtl" : "ltr"}
       >
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A1628] to-[#0a2040] px-8 py-14 text-white shadow-xl">
+        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#001F3F] to-[#0a2040] px-8 py-14 text-white shadow-xl">
           <div className="relative space-y-5">
             <Badge className="bg-white/10 text-white border-white/20 text-xs">
               {isAr ? "سلم العروض الخمسة" : "Five-Tier Offer Ladder"}
             </Badge>
             <h1 className="text-4xl font-bold leading-tight md:text-5xl">
               {isAr
-                ? <>خدمات مبنية على<br /><span className="text-[#C9974B]">الإثبات قبل التوسع</span></>
-                : <>Services built on<br /><span className="text-[#C9974B]">Proof Before Expansion</span></>}
+                ? <>خدمات مبنية على<br /><span className="text-[#D4AF37]">الإثبات قبل التوسع</span></>
+                : <>Services built on<br /><span className="text-[#D4AF37]">Proof Before Expansion</span></>}
             </h1>
             <p className="max-w-2xl text-lg text-white/80 leading-relaxed">
               {isAr
@@ -230,7 +230,7 @@ export function ServicesPage() {
                 : "Every tier builds on proof from the previous tier. No upsell without delivered Proof Pack. No commitment before seeing results."}
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
-              <Button asChild size="lg" className="bg-[#C9974B] text-[#0A1628] hover:bg-[#b8863a] font-bold shadow-lg">
+              <Button asChild size="lg" className="bg-[#D4AF37] text-[#001F3F] hover:bg-[#c29d2e] font-bold shadow-lg">
                 <Link href={`${base}/risk-score`}>
                   {isAr ? "ابدأ مجاناً ←" : "Start Free →"}
                 </Link>
@@ -254,7 +254,7 @@ export function ServicesPage() {
               const content = isAr ? p.ar : p.en;
               return (
                 <div key={p.icon} className="rounded-xl border border-border/60 bg-card/50 p-4 text-center">
-                  <div className="w-9 h-9 rounded-full bg-[#0A1628] text-[#C9974B] flex items-center justify-center font-bold text-sm mx-auto mb-3">
+                  <div className="w-9 h-9 rounded-full bg-[#001F3F] text-[#D4AF37] flex items-center justify-center font-bold text-sm mx-auto mb-3">
                     {p.icon}
                   </div>
                   <p className="font-semibold text-sm">{content.title}</p>
@@ -268,7 +268,7 @@ export function ServicesPage() {
         {/* ── Tier Cards ── */}
         <section>
           <div className="mb-8">
-            <p className="text-sm font-semibold text-[#C9974B] uppercase tracking-wide mb-1">
+            <p className="text-sm font-semibold text-[#D4AF37] uppercase tracking-wide mb-1">
               {isAr ? "سلم العروض" : "Offer Ladder"}
             </p>
             <h2 className="text-3xl font-bold">
@@ -294,18 +294,18 @@ export function ServicesPage() {
                   key={tier.id}
                   className={`relative flex flex-col rounded-2xl border p-5 transition-shadow hover:shadow-md ${
                     tier.highlight
-                      ? "border-[#C9974B]/50 bg-gradient-to-b from-[#C9974B]/5 to-card shadow-sm"
+                      ? "border-[#D4AF37]/50 bg-gradient-to-b from-[#D4AF37]/5 to-card shadow-sm"
                       : "border-border/60 bg-card/50"
                   }`}
                 >
                   {tier.badge && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#C9974B] text-[#0A1628] text-xs font-bold px-3 py-0.5 whitespace-nowrap">
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#D4AF37] text-[#001F3F] text-xs font-bold px-3 py-0.5 whitespace-nowrap">
                       {isAr ? tier.badge.ar : tier.badge.en}
                     </span>
                   )}
 
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-7 h-7 rounded-full bg-[#0A1628] text-[#C9974B] flex items-center justify-center font-bold text-xs flex-shrink-0">
+                    <div className="w-7 h-7 rounded-full bg-[#001F3F] text-[#D4AF37] flex items-center justify-center font-bold text-xs flex-shrink-0">
                       {tier.icon}
                     </div>
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide leading-tight">{label}</p>
@@ -316,7 +316,7 @@ export function ServicesPage() {
                     {period && <span className="text-sm text-muted-foreground ms-1">{period}</span>}
                   </div>
 
-                  <p className="text-xs text-[#C9974B] font-medium mb-3">{tagline}</p>
+                  <p className="text-xs text-[#D4AF37] font-medium mb-3">{tagline}</p>
                   <p className="text-xs text-muted-foreground flex-1 leading-relaxed mb-4">{desc}</p>
 
                   <div className="space-y-1 mb-4">
@@ -332,7 +332,7 @@ export function ServicesPage() {
                     {tier.deliverables.length > 3 && (
                       <button
                         onClick={() => setExpanded(isExpanded ? null : tier.id)}
-                        className="text-xs text-[#C9974B] hover:underline mt-1"
+                        className="text-xs text-[#D4AF37] hover:underline mt-1"
                       >
                         {isExpanded
                           ? (isAr ? "عرض أقل" : "Show less")
@@ -357,7 +357,7 @@ export function ServicesPage() {
                     size="sm"
                     className={`mt-4 w-full text-xs ${
                       tier.highlight
-                        ? "bg-[#C9974B] text-[#0A1628] hover:bg-[#b8863a]"
+                        ? "bg-[#D4AF37] text-[#001F3F] hover:bg-[#c29d2e]"
                         : ""
                     }`}
                   >
@@ -390,7 +390,7 @@ export function ServicesPage() {
                     <th
                       key={t.id}
                       className={`py-3 px-3 text-center font-semibold ${
-                        t.highlight ? "text-[#C9974B]" : "text-muted-foreground"
+                        t.highlight ? "text-[#D4AF37]" : "text-muted-foreground"
                       }`}
                     >
                       <div className="flex flex-col items-center gap-1">
@@ -438,7 +438,7 @@ export function ServicesPage() {
         </section>
 
         {/* ── Selector ── */}
-        <section className="rounded-2xl bg-gradient-to-br from-[#0A1628] to-[#0a2040] text-white p-8">
+        <section className="rounded-2xl bg-gradient-to-br from-[#001F3F] to-[#0a2040] text-white p-8">
           <h2 className="text-2xl font-bold mb-6">
             {isAr ? "أي مستوى يناسبني؟" : "Which tier is right for me?"}
           </h2>
@@ -461,7 +461,7 @@ export function ServicesPage() {
               >
                 <p className="text-white/60 text-xs mb-1">{isAr ? "إذا كنت:" : "If you:"}</p>
                 <p className="text-white font-medium text-sm">{item.cond}</p>
-                <p className="mt-2 text-[#C9974B] text-xs font-semibold">→ {item.ans}</p>
+                <p className="mt-2 text-[#D4AF37] text-xs font-semibold">→ {item.ans}</p>
               </Link>
             ))}
           </div>
@@ -483,7 +483,7 @@ export function ServicesPage() {
               : "No credit card. No registration. Instant result showing your operational position and priorities."}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <Button asChild size="lg" className="bg-[#C9974B] text-[#0A1628] hover:bg-[#b8863a] font-bold">
+            <Button asChild size="lg" className="bg-[#D4AF37] text-[#001F3F] hover:bg-[#c29d2e] font-bold">
               <Link href={`${base}/risk-score`}>
                 {isAr ? "احسب Risk Score" : "Calculate Risk Score"}
               </Link>

@@ -34,8 +34,8 @@ font-display      font-body           font-mono
 
 | File | Purpose |
 |------|---------|
-| `apps/company-os-vite/src/index.css` | CSS variables + Tailwind base |
-| `apps/company-os-vite/tailwind.config.js` | `dealix.*` color palette |
+| `frontend/tailwind.config.ts` | Canonical Tailwind `navy.*` / `gold.*` / `emerald.*` palette |
+| `frontend/src/styles/dealix-brand.css` | CSS variables + brand helpers used by the canonical site |
 | `design-systems/dealix/tokens/*.json` | Design tokens (JSON) |
 | `design-systems/dealix/brand/BRAND_GUIDELINES.md` | Visual identity rules |
 | `design-systems/dealix/styles/dealix-styles.css` | Standalone CSS (no Tailwind) |

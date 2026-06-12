@@ -66,6 +66,53 @@ const structuredData = {
 export default function HomePage() {
   return (
     <>
+      {/* ── Canonical-site banner (Arabic primary) ──────────────────────
+          apps/web is the platform / control-plane showcase. The marketing
+          site and customer funnel live on the canonical Arabic-first site. */}
+      <a
+        href="/ar"
+        dir="rtl"
+        aria-label="انتقل إلى موقع Dealix العربي الرسمي"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "12px",
+          padding: "12px 20px",
+          background: "linear-gradient(90deg, #001F3F 0%, #00264d 100%)",
+          borderBottom: "2px solid #D4AF37",
+          color: "#FFFFFF",
+          textDecoration: "none",
+          fontFamily: "var(--font-body, 'Inter', sans-serif)",
+          fontSize: "0.92rem",
+          lineHeight: 1.5,
+          textAlign: "center",
+        }}
+      >
+        <span style={{ fontWeight: 700, color: "#D4AF37" }}>
+          الموقع الرسمي لـ Dealix بالعربية
+        </span>
+        <span style={{ color: "rgba(255,255,255,0.85)" }}>
+          ابدأ التشخيص المجاني واستعرض العروض الخمسة والأسعار
+        </span>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "4px 14px",
+            borderRadius: "999px",
+            background: "#D4AF37",
+            color: "#001F3F",
+            fontWeight: 700,
+            fontSize: "0.82rem",
+          }}
+        >
+          ادخل الموقع العربي ←
+        </span>
+      </a>
+
       {/* Navbar */}
       <nav className="navbar" aria-label="Primary navigation">
         <a href="/" className="navbar-brand" aria-label="Dealix Home">
@@ -108,7 +155,7 @@ export default function HomePage() {
             pointerEvents: "none"
           }} />
 
-          <p className="eyebrow">Saudi-first · Approval-first · Revenue-focused</p>
+          <p className="eyebrow">Platform showcase · Control plane · Internal surfaces</p>
 
           <h1 id="hero-title" style={{ maxWidth: "860px" }}>
             Dealix{" "}
@@ -117,9 +164,17 @@ export default function HomePage() {
           </h1>
 
           <p style={{ maxWidth: "680px", fontSize: "1.15rem", lineHeight: 1.7 }}>
-            A Saudi-first B2B revenue, growth, and compliance engine for teams that need
-            AI assistance without losing policy control, auditability, or human approval
-            on critical moves.
+            This is the Dealix platform and control-plane showcase — a technical view of
+            agents, approvals, safety, and value tracking. For the customer-facing
+            marketing site, the five offers, and pricing, visit the canonical Arabic-first
+            site.
+          </p>
+
+          <p style={{ maxWidth: "680px", fontSize: "0.9rem", color: "rgba(255,255,255,0.55)" }}>
+            الموقع التسويقي الرسمي والعروض والأسعار على الموقع العربي.{" "}
+            <a href="/ar" style={{ color: "var(--dealix-gold)", fontWeight: 600 }}>
+              ادخل الموقع العربي ←
+            </a>
           </p>
 
           <div className="actions" aria-label="Primary actions">

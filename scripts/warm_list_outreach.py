@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import os
 import sys
 from datetime import UTC, datetime, timezone
 from pathlib import Path
@@ -38,7 +39,7 @@ _BASE_MESSAGE_AR = (
     "  • تشخيص مجاني 24 ساعة (https://dealix.me/diagnostic.html)\n"
     "  • Sprint مدفوع 499 ريال (7 أيام، Proof Pack مضمون، استرداد 14 يوم)\n\n"
     "هل أنت أو أحد من شبكتك يستفيد من هذا؟\n\n"
-    "شكرًا — سامي."
+    "شكرًا — {founder_ar}."
 )
 
 
@@ -53,7 +54,7 @@ _BASE_MESSAGE_EN = (
     "  • Free 24h diagnostic (https://dealix.me/diagnostic.html)\n"
     "  • 499 SAR paid Sprint (7 days, guaranteed Proof Pack, 14-day refund)\n\n"
     "Anyone in your network this might fit?\n\n"
-    "Thanks — Sami."
+    "Thanks — {founder_en}."
 )
 
 
@@ -114,14 +115,24 @@ def _render_contact(row: dict[str, str], qualification: dict) -> str:
     linkedin = (row.get("linkedin_url") or "").strip()
     notes = (row.get("notes") or "").strip()
 
+    # Founder signature is configurable so outreach carries the real founder's
+    # name instead of a hard-coded persona. Set DEALIX_FOUNDER_NAME (Arabic) and
+    # DEALIX_FOUNDER_NAME_EN (Latin) in the environment before running.
+    founder_ar = (os.environ.get("DEALIX_FOUNDER_NAME") or "سامي").strip()
+    founder_en = (
+        os.environ.get("DEALIX_FOUNDER_NAME_EN")
+        or os.environ.get("DEALIX_FOUNDER_NAME")
+        or "Sami"
+    ).strip()
+
     context = _CONTEXT_BY_RELATIONSHIP.get(relationship) or _CONTEXT_BY_RELATIONSHIP[""]
     ar_msg = _BASE_MESSAGE_AR.format(
         name=name, company=company, role=role, sector=sector,
-        context_line=context["ar"],
+        context_line=context["ar"], founder_ar=founder_ar,
     )
     en_msg = _BASE_MESSAGE_EN.format(
         name=name, company=company, role=role, sector=sector,
-        context_line=context["en"],
+        context_line=context["en"], founder_en=founder_en,
     )
 
     decision = qualification.get("decision", "unknown")

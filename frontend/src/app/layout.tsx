@@ -18,7 +18,8 @@ export const metadata: Metadata = {
   description: "AI-powered RevOps platform for Saudi enterprise clients",
   keywords: ["RevOps", "AI", "Saudi Arabia", "CRM", "Revenue", "Dealix"],
   icons: {
-    icon: "/favicon.ico",
+    icon: "/brand/logo-mark.svg",
+    apple: "/brand/logo-mark.svg",
   },
 };
 

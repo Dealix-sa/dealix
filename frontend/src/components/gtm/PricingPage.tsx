@@ -186,8 +186,8 @@ function ROICalculator({ isAr }: { isAr: boolean }) {
   const roi = leakage > 0 ? Math.round(leakage / sprintCost) : 0;
 
   return (
-    <div className="rounded-xl border border-[#C9974B]/20 bg-gradient-to-br from-[#C9974B]/5 to-card p-6">
-      <p className="font-semibold text-sm uppercase tracking-wide text-[#C9974B] mb-1">
+    <div className="rounded-xl border border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/5 to-card p-6">
+      <p className="font-semibold text-sm uppercase tracking-wide text-[#D4AF37] mb-1">
         {isAr ? "حاسبة العائد على الاستثمار" : "ROI Calculator"}
       </p>
       <h3 className="text-xl font-bold mb-4">
@@ -206,7 +206,7 @@ function ROICalculator({ isAr }: { isAr: boolean }) {
             step={100000}
             value={revenue}
             onChange={(e) => setRevenue(Number(e.target.value))}
-            className="w-full accent-[#C9974B]"
+            className="w-full accent-[#D4AF37]"
           />
           <div className="flex justify-between text-xs text-muted-foreground mt-1">
             <span>{isAr ? "100k ر.س" : "100k SAR"}</span>
@@ -228,7 +228,7 @@ function ROICalculator({ isAr }: { isAr: boolean }) {
             <p className="text-xs text-muted-foreground mb-1">
               {isAr ? "تكلفة Sprint" : "Sprint cost"}
             </p>
-            <p className="text-xl font-bold text-[#C9974B]">
+            <p className="text-xl font-bold text-[#D4AF37]">
               {sprintCost.toLocaleString()}
             </p>
             <p className="text-xs text-muted-foreground">{isAr ? "ر.س (مرة واحدة)" : "SAR (one-time)"}</p>
@@ -277,7 +277,7 @@ export function PricingPage() {
 
         {/* ── Hero ── */}
         <header>
-          <p className="text-sm font-semibold text-[#C9974B] uppercase tracking-wide mb-2">
+          <p className="text-sm font-semibold text-[#D4AF37] uppercase tracking-wide mb-2">
             {isAr ? "سلم التسعير" : "Pricing Ladder"}
           </p>
           <h1 className="text-4xl font-bold">
@@ -306,7 +306,7 @@ export function PricingPage() {
               onClick={() => setBillingType(opt.val)}
               className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-all ${
                 billingType === opt.val
-                  ? "bg-[#0A1628] text-white shadow-sm"
+                  ? "bg-[#001F3F] text-white shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -328,12 +328,12 @@ export function PricingPage() {
                 key={tier.id}
                 className={`relative flex flex-col rounded-2xl border p-6 ${
                   tier.highlight
-                    ? "border-[#C9974B]/50 bg-gradient-to-b from-[#C9974B]/5 to-card shadow-md"
+                    ? "border-[#D4AF37]/50 bg-gradient-to-b from-[#D4AF37]/5 to-card shadow-md"
                     : "border-border/60 bg-card/50"
                 }`}
               >
                 {tier.badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#C9974B] text-[#0A1628] text-xs font-bold px-3 py-0.5 whitespace-nowrap">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#D4AF37] text-[#001F3F] text-xs font-bold px-3 py-0.5 whitespace-nowrap">
                     {isAr ? tier.badge.ar : tier.badge.en}
                   </span>
                 )}
@@ -361,7 +361,7 @@ export function PricingPage() {
                   asChild
                   size="sm"
                   className={`w-full ${
-                    tier.highlight ? "bg-[#C9974B] text-[#0A1628] hover:bg-[#b8863a]" : ""
+                    tier.highlight ? "bg-[#D4AF37] text-[#001F3F] hover:bg-[#c29d2e]" : ""
                   }`}
                 >
                   <Link href={`${base}${tier.href}`}>{cta}</Link>
@@ -385,7 +385,7 @@ export function PricingPage() {
                 <tr className="border-b border-border/60 bg-muted/30">
                   <th className="py-3 px-4 text-start font-semibold">{isAr ? "المعيار" : "Criteria"}</th>
                   <th className="py-3 px-4 text-center font-semibold">{isAr ? "مدير عمليات штатный" : "In-house Ops Manager"}</th>
-                  <th className="py-3 px-4 text-center font-semibold text-[#C9974B]">{isAr ? "Dealix Managed Ops" : "Dealix Managed Ops"}</th>
+                  <th className="py-3 px-4 text-center font-semibold text-[#D4AF37]">{isAr ? "Dealix Managed Ops" : "Dealix Managed Ops"}</th>
                 </tr>
               </thead>
               <tbody>
@@ -407,7 +407,7 @@ export function PricingPage() {
                   <tr key={i} className="border-b border-border/30">
                     <td className="py-3 px-4 font-medium text-sm">{row.criteria}</td>
                     <td className="py-3 px-4 text-center text-sm text-muted-foreground">{row.inhouse}</td>
-                    <td className="py-3 px-4 text-center text-sm text-[#C9974B] font-medium">{row.dealix}</td>
+                    <td className="py-3 px-4 text-center text-sm text-[#D4AF37] font-medium">{row.dealix}</td>
                   </tr>
                 ))}
               </tbody>
@@ -475,7 +475,7 @@ export function PricingPage() {
         </section>
 
         {/* ── Final CTA ── */}
-        <section className="rounded-2xl bg-gradient-to-br from-[#0A1628] to-[#0a2040] text-white px-8 py-12 text-center">
+        <section className="rounded-2xl bg-gradient-to-br from-[#001F3F] to-[#0a2040] text-white px-8 py-12 text-center">
           <h2 className="text-3xl font-bold">
             {isAr ? "ابدأ بـ Risk Score مجاني" : "Start with a free Risk Score"}
           </h2>
@@ -485,7 +485,7 @@ export function PricingPage() {
               : "No credit card. No registration. Instant result in 5 minutes showing where you are and what your priorities are."}
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button asChild size="lg" className="bg-[#C9974B] text-[#0A1628] hover:bg-[#b8863a] font-bold">
+            <Button asChild size="lg" className="bg-[#D4AF37] text-[#001F3F] hover:bg-[#c29d2e] font-bold">
               <Link href={`${base}/risk-score`}>
                 {isAr ? "احسب Risk Score مجاناً" : "Calculate Risk Score Free"}
               </Link>

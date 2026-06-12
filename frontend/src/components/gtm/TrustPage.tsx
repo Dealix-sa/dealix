@@ -228,7 +228,7 @@ export function TrustPage() {
               { step: "3", title: "Manual send", desc: "You decide to send — AI never sends alone" },
             ]).map((s) => (
               <div key={s.step} className="rounded-xl border border-border/60 bg-card/50 p-4 text-center">
-                <div className="w-8 h-8 rounded-full bg-[#0A1628] text-[#C9974B] flex items-center justify-center font-bold text-sm mx-auto mb-3">
+                <div className="w-8 h-8 rounded-full bg-[#001F3F] text-[#D4AF37] flex items-center justify-center font-bold text-sm mx-auto mb-3">
                   {s.step}
                 </div>
                 <p className="font-semibold text-sm">{s.title}</p>
@@ -266,7 +266,7 @@ export function TrustPage() {
             {GUARANTEE_ITEMS.map((g) => {
               const content = isAr ? g.ar : g.en;
               return (
-                <Card key={content.title} className="p-5 border-[#C9974B]/20 bg-gradient-to-br from-[#C9974B]/5 to-card">
+                <Card key={content.title} className="p-5 border-[#D4AF37]/20 bg-gradient-to-br from-[#D4AF37]/5 to-card">
                   <p className="font-semibold mb-2">{content.title}</p>
                   <p className="text-sm text-muted-foreground leading-relaxed">{content.desc}</p>
                 </Card>
