@@ -77,6 +77,7 @@ from api.routers import founder_dashboard as founder_dashboard_router
 from api.routers import friction_log as friction_log_router
 from api.routers import integration_capability as integration_capability_router
 from api.routers import intelligence_layer as intelligence_layer_router
+from api.routers import pricing as pricing_router
 from api.routers import service_catalog as service_catalog_router
 
 # 90-day commercial activation — Wave 14B
@@ -319,6 +320,8 @@ def create_app() -> FastAPI:
     # ── Wave 13 — Full Ops Productization ─────────────────────────
     # Self-prefix /api/v1/services. Registry-only; no live actions.
     app.include_router(service_catalog_router.router)
+    # Pricing and checkout API for Saudi enterprise offers.
+    app.include_router(pricing_router.router)
     # Self-prefix /api/v1/deliverables. State-machine-gated.
     app.include_router(deliverables_router.router)
     # Self-prefix /api/v1/customer-success. 5-score read-only.
@@ -418,6 +421,32 @@ def create_app() -> FastAPI:
     app.include_router(customer_health_scoring_router.router)
     app.include_router(market_intelligence_router.router)
     app.include_router(onboarding_router.router)
+
+    # SaaS Phase 1 — Billing + Customer Dashboard + Feature Gating
+    from api.routers import billing as billing_router
+    from api.routers.customer import dashboard as customer_dashboard_router
+    from api.routers import onboarding as saas_onboarding_router
+    app.include_router(billing_router.router)
+    app.include_router(customer_dashboard_router.router)
+    app.include_router(saas_onboarding_router.router)
+
+    # SaaS Phase 2+3 — ERP Suite (Projects, Support, Documents, HR, Inventory, Finance)
+    from api.routers.erp import projects as erp_projects_router
+    from api.routers.erp import support as erp_support_router
+    from api.routers.erp import documents as erp_documents_router
+    from api.routers.erp import hr as erp_hr_router
+    from api.routers.erp import inventory as erp_inventory_router
+    from api.routers.erp import finance as erp_finance_router
+    app.include_router(erp_projects_router.router)
+    app.include_router(erp_support_router.router)
+    app.include_router(erp_documents_router.router)
+    app.include_router(erp_hr_router.router)
+    app.include_router(erp_inventory_router.router)
+    app.include_router(erp_finance_router.router)
+
+    # SaaS Phase 4 — AI Co-Pilot
+    from api.routers import ai_copilot as ai_copilot_router
+    app.include_router(ai_copilot_router.router)
 
     # 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
     app.include_router(kpi_dashboard_router.router)

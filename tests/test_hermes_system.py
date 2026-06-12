@@ -566,6 +566,24 @@ class TestMiniMaxProvider:
             # If openai package not installed, is_available is False — still valid
             pass
 
+    def test_openrouter_env_falls_back_to_minimax_provider(self):
+        import os
+        from dealix.hermes.providers.minimax_provider import MiniMaxProvider
+
+        orig_minimax = os.environ.pop("MINIMAX_API_KEY", None)
+        orig_openrouter = os.environ.get("OPENROUTER_API_KEY")
+        try:
+            os.environ["OPENROUTER_API_KEY"] = "openrouter-test-key"
+            provider = MiniMaxProvider(api_key="")
+            assert provider._api_key == "openrouter-test-key"
+        finally:
+            if orig_minimax is not None:
+                os.environ["MINIMAX_API_KEY"] = orig_minimax
+            if orig_openrouter is not None:
+                os.environ["OPENROUTER_API_KEY"] = orig_openrouter
+            else:
+                os.environ.pop("OPENROUTER_API_KEY", None)
+
     def test_chat_without_client_returns_mock(self):
         import os
         from dealix.hermes.providers.minimax_provider import MiniMaxProvider

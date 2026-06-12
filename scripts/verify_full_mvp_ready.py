@@ -20,7 +20,7 @@ from auto_client_acquisition.delivery_os.service_readiness import (  # noqa: E40
 
 
 def _run(script: str) -> bool:
-    code = subprocess.call(  # noqa: S603
+    code = subprocess.call(
         [sys.executable, str(REPO / "scripts" / script)],
         cwd=REPO,
     )

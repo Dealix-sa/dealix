@@ -335,3 +335,6 @@ company/reports/*_MASTER_STABLE_CEO_REPORT.md
 
 # Dealix intake generated outputs
 company/runtime/intake/
+
+# Dealix real leads generated outputs
+company/runtime/places/
