@@ -1,0 +1,149 @@
+version: "1.0"
+description: >-
+  Seed demo leads for the Saudi market. Sources are Tier-1 compliant:
+  public business info, manual LinkedIn research, warm intros, and inbound.
+  Contacts marked REPLACE must be filled from the user's real network/CRM
+  before outreach.
+default_tier1_source: public_business_info_allowed
+entries:
+  # ── Warm intros / network — highest priority ─────────────────────
+  - company: REPLACE:وكالة من شبكتك 1
+    name: REPLACE:اسم المدير
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: technology
+    region: Saudi Arabia
+    budget: 50000
+    message: العميل يسأل ماهي نتائج الحملة بعد التنفيذ ولا يوجد تقرير أسبوعي مركزي.
+    tier1_source: warm_intro
+
+  - company: REPLACE:مؤسس SaaS معروف
+    name: REPLACE:CEO
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: technology
+    region: Saudi Arabia
+    budget: 120000
+    message: نريد توسيع استخدام الذكاء الاصطناعي داخل الشركة لكن لدينا مخاوف من الحوكمة والامتثال.
+    tier1_source: warm_intro
+
+  - company: REPLACE:شريك وكالة محتمل
+    name: REPLACE:مدير شراكات
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: professional_services
+    region: Saudi Arabia
+    budget: 80000
+    message: لدينا عميل مشترك يحتاج نظام تشغيل لمبيعاته وخدمة العملاء.
+    tier1_source: partner_referral
+
+  # ── Public business info — known Saudi companies (contacts to verify) ─
+  - company: سواعد للتسويق الإلكتروني
+    name: REPLACE:مدير حسابات
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: advertising
+    region: Saudi Arabia
+    budget: 60000
+    message: إدارة حملات متعددة بلا نظام مركزي لإثبات النتائج للعملاء.
+
+  - company: نجوم الإعلام
+    name: REPLACE:مدير عمليات
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: media
+    region: Saudi Arabia
+    budget: 45000
+    message: مشاريع إعلامية متعددة تحتاج Project OS واضح للتسليم.
+
+  - company: مدى الإبداع
+    name: REPLACE:شريك مؤسس
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: advertising
+    region: Saudi Arabia
+    budget: 55000
+    message: توسع الفريق بدون SOPs موثقة يؤدي إلى تباين جودة التسليم.
+
+  - company: بناء الرؤى العقارية
+    name: REPLACE:مدير مبيعات
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: real_estate
+    region: Saudi Arabia
+    budget: 100000
+    message: leads قادمة من حملات Google بلا owner واضح للمتابعة.
+
+  - company: روشن
+    name: REPLACE:مدير علاقات عملاء
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: real_estate
+    region: Saudi Arabia
+    budget: 200000
+    message: كميات كبيرة من الاستفسارات تحتاج توزيع ذكي ومتابعة نظامية.
+
+  - company: الضيافة الراقية
+    name: REPLACE:مدير مبيعات
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: hospitality
+    region: Saudi Arabia
+    budget: 70000
+    message: حجوزات الشركات والفعاليات بلا متابعة نظامية بعد الطلب الأول.
+
+  - company: شركة التقنية المتقدمة
+    name: REPLACE:CTO
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: technology
+    region: Saudi Arabia
+    budget: 90000
+    message: فريق المبيعات يستخدم Excel بدل CRM ولا يوجد pipeline واضح.
+
+  - company: منصة التعلم الذكي
+    name: REPLACE:مدير نمو
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: education
+    region: Saudi Arabia
+    budget: 85000
+    message: تسعير Enterprise مع مدارس وشركات يحتاج حوكمة قبل التوسع.
+
+  - company: الاستشارات الرقمية
+    name: REPLACE:شريك
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: consulting
+    region: Saudi Arabia
+    budget: 50000
+    message: عملاء يطلبون أتمتة Sales Ops لكن لا نملك نظام موحد للتسليم.
+
+  - company: المورد الذكي
+    name: REPLACE:مدير مبيعات
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: wholesale
+    region: Saudi Arabia
+    budget: 75000
+    message: طلبات الشراء متناثرة عبر WhatsApp ولا يوجد CRM للحسابات.
+
+  - company: التمويل الرقمي
+    name: REPLACE:مدير نمو
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: fintech
+    region: Saudi Arabia
+    budget: 150000
+    message: إدارة فرص Enterprise بلا نظام موحد يؤخر إغلاق العقود.
+
+  # ── Inbound / website inquiry placeholders ───────────────────────
+  - company: REPLACE:شركة inbound من الموقع
+    name: REPLACE:مدير مبيعات
+    email: REPLACE@example.com
+    phone: "+9665XXXXXXXX"
+    sector: technology
+    region: Saudi Arabia
+    budget: 40000
+    message: تواصلنا عبر الموقع للاستفسار عن Diagnostic Sprint ونريد عرضاً.
+    tier1_source: inbound_form

@@ -22,10 +22,34 @@ Storage:
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+
+# Patch Starlette's Config reader so .env files are read as UTF-8 on Windows.
+# This prevents slowapi from crashing when .env contains Arabic comments.
+try:
+    from starlette import config as _starlette_config
+
+    _original_read_file = _starlette_config.Config._read_file
+
+    def _read_file_utf8(self, file_name: str | Path) -> dict[str, str]:
+        file_values: dict[str, str] = {}
+        with open(file_name, encoding="utf-8") as input_file:
+            for line in input_file.readlines():
+                line = line.strip()
+                if "=" in line and not line.startswith("#"):
+                    key, value = line.split("=", 1)
+                    key = key.strip()
+                    value = value.strip().strip("\"'")
+                    file_values[key] = value
+        return file_values
+
+    _starlette_config.Config._read_file = _read_file_utf8
+except Exception:  # pragma: no cover
+    pass
 
 try:
     from slowapi import Limiter, _rate_limit_exceeded_handler

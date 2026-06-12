@@ -24,6 +24,7 @@
     "opsSales": "Ops — Sales Pipe",
     "opsEvidence": "Ops — Evidence",
     "opsSupport": "Ops — Support",
+    "opsCommandRoom": "Command Room",
     "autoDistribution": "Auto Distribution",
     "crm": "CRM",
     "aiEngine": "AI Revenue Engine",
@@ -643,5 +644,23 @@
     "evidenceSubtitle": "Evidence ledger entries persisted to the autopilot JSON store.",
     "supportSubtitle": "Public tickets classified + drafted internally — approvals before reply.",
     "approvalsSubtitle": "Same Approval Center powering billing + outbound guardrails."
+  },
+  "commandRoom": {
+    "title": "Command Room",
+    "subtitle": "One cockpit to run Dealix: today's decision, War Room, Gmail drafts, approvals, and evidence.",
+    "loading": "Loading...",
+    "error": "Failed to load command room.",
+    "missingKey": "Add NEXT_PUBLIC_DEALIX_ADMIN_API_KEY to enable the command room locally.",
+    "todayDecision": "Today's decision",
+    "systemHealth": "System health",
+    "warRoom": "War Room — today's targets",
+    "pipeline": "Pipeline",
+    "approvals": "Pending approvals",
+    "evidence": "Evidence ledger",
+    "gmailDrafts": "Gmail drafts today",
+    "marketing": "Marketing today",
+    "support": "Support tickets",
+    "runMorning": "Run morning command",
+    "runMorningStarted": "Morning command started — refresh in a minute."
   }
 }
