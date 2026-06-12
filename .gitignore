@@ -110,6 +110,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Agent work packets — canonical daily/weekly packet definitions (no PII)
+!data/agent_work_packets/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -278,6 +280,8 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+!*.env.local.example
+!frontend/.env.local.example
 
 # Editors / OS
 .vscode/*
