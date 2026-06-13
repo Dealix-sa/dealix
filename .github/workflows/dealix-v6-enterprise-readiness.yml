@@ -1,0 +1,27 @@
+name: Dealix V6 Enterprise Readiness
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'enterprise/**'
+      - 'customer-success/**'
+      - 'legal/**'
+      - 'integrations/**'
+      - 'scripts/dealix_v6_*'
+      - 'scripts/dealix_*account*'
+      - '.github/workflows/dealix-v6-enterprise-readiness.yml'
+permissions:
+  contents: read
+jobs:
+  v6-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/dealix_v6_readiness_check.py
+      - run: python scripts/dealix_integration_manifest_check.py
+      - run: python scripts/dealix_enterprise_account_planner.py --account "Demo Account" --vertical training --employees 80 --monthly_leads 250
+      - run: python scripts/dealix_business_case_builder.py --account "Demo Account" --monthly_leads 250 --avg_deal_value 3500 --uplift 0.08
+      - run: python scripts/dealix_customer_success_health.py

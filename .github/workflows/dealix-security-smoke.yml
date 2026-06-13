@@ -1,0 +1,25 @@
+name: Dealix Security Smoke
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  security-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check obvious secret exposure
+        run: python scripts/dealix_secret_smoke_check.py
+      - name: Check public exposure
+        run: python scripts/dealix_public_exposure_check.py
+      - name: V3 readiness
+        run: python scripts/dealix_v3_readiness_check.py

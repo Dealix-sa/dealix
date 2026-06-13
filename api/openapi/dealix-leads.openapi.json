@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Dealix Leads API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/leads": {
+      "post": {
+        "summary": "Create a new lead",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "company",
+                  "pain"
+                ],
+                "properties": {
+                  "company": {
+                    "type": "string"
+                  },
+                  "contactName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "sector": {
+                    "type": "string"
+                  },
+                  "pain": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "utmSource": {
+                    "type": "string"
+                  },
+                  "utmCampaign": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead accepted"
+          },
+          "400": {
+            "description": "Invalid lead"
+          }
+        }
+      }
+    }
+  }
+}

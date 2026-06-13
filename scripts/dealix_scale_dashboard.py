@@ -1,0 +1,15 @@
+import json
+from pathlib import Path
+m=json.loads(Path('data/scale/weekly_operating_metrics.json').read_text(encoding='utf-8'))
+clients=json.loads(Path('data/portfolio/client_health.json').read_text(encoding='utf-8'))
+auto=json.loads(Path('data/automation/automation_backlog.json').read_text(encoding='utf-8'))
+print('# Dealix Scale Dashboard')
+print(f"Qualified prospects: {m.get('qualified_prospects',0)}")
+print(f"Discovery calls: {m.get('discovery_calls',0)}")
+print(f"Pilots won: {m.get('pilots_won',0)}")
+print(f"Revenue collected SAR: {m.get('revenue_collected_sar',0)}")
+print(f"Active clients tracked: {len(clients)}")
+print(f"Automation backlog items: {len(auto)}")
+red=sum(1 for c in clients if c.get('health')=='red')
+print(f"Red clients: {red}")
+print('Next action:', 'fix red clients before scaling' if red else 'scale one proven channel this week')
