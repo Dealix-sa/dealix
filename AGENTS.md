@@ -195,3 +195,7 @@ curl -X POST http://localhost:8000/api/v1/leads \
 ```
 
 This exercises intake, ICP matching, pain extraction, BANT qualification, CRM sync (skipped without HubSpot), and booking.
+
+## Future File System
+For canonical folder structure, naming conventions, and where to put new files, see:
+[docs/architecture/DEALIX_FUTURE_FILE_SYSTEM_AR.md](docs/architecture/DEALIX_FUTURE_FILE_SYSTEM_AR.md)
