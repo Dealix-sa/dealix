@@ -72,8 +72,9 @@ export default function HomePage() {
           Dealix
         </a>
         <ul className="navbar-links" role="list">
+          <li><a href="/services">Services</a></li>
+          <li><a href="/custom">Custom AI</a></li>
           <li><a href="/control-plane">Revenue OS</a></li>
-          <li><a href="/agents">Agents</a></li>
           <li><a href="/safety">Safety</a></li>
           <li><a href="/ar">العربية</a></li>
         </ul>
@@ -123,9 +124,10 @@ export default function HomePage() {
           </p>
 
           <div className="actions" aria-label="Primary actions">
-            <a href="/ar">الموقع العربي — P1 · P2 · P3</a>
+            <a href="/services">Explore services</a>
+            <a href="/custom">Custom AI request</a>
+            <a href="/ar">الموقع العربي</a>
             <a href="/control-plane">Open control plane</a>
-            <a href="/safety">Review safety layer</a>
           </div>
         </section>
 
