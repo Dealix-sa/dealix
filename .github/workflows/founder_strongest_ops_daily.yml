@@ -7,6 +7,9 @@ on:
     - cron: "30 5 * * 0-4"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   strongest-ops:
     runs-on: ubuntu-latest

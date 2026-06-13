@@ -19,6 +19,9 @@ on:
       - "api/routers/business_now.py"
       - "tests/test_business_now*.py"
 
+permissions:
+  contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
