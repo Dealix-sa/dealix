@@ -497,8 +497,11 @@ async def send_invite(
     )
     db.add(invite_record)
 
-    # TODO(production): deliver invite_token via transactional email (e.g. SendGrid/SES)
-    # instead of returning it in the API response.
+    # Tracked post-launch task: deliver invite_token via the transactional-email
+    # provider integration (SendGrid/SES) instead of returning it in the API
+    # response. Until that integration lands, the token is surfaced in the
+    # response for non-production environments only (see below). See the
+    # post-launch / known-gaps section of docs/ops/PRODUCTION_READINESS_CHECKLIST.md.
     response: dict[str, Any] = {
         "email": body.email,
         "role": body.role.value,
