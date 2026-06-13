@@ -123,13 +123,13 @@ const PLANS: PricingPlan[] = [
     href: "/dealix-diagnostic",
     features: [
       { textAr: "كل مزايا Growth", textEn: "Everything in Growth" },
-      { textAr: "تطوير AI مخصص لعملياتك", textEn: "Custom AI development" },
-      { textAr: "مستخدمون غير محدودين", textEn: "Unlimited users" },
-      { textAr: "خيار White-label", textEn: "White-label option" },
-      { textAr: "تكاملات مخصصة", textEn: "Custom integrations" },
-      { textAr: "ضمان مستوى الخدمة SLA", textEn: "SLA guarantee" },
-      { textAr: "فريق مخصص", textEn: "Dedicated team" },
-      { textAr: "تدريب ميداني", textEn: "Onsite training" },
+      { textAr: "أنظمة AI Agentic كاملة مبنية على عملياتك", textEn: "Full custom agentic AI systems" },
+      { textAr: "نظام ذكاء الصيانة (Maintenance Intelligence OS)", textEn: "Maintenance Intelligence OS" },
+      { textAr: "نظام التحكم بالمشاريع (Project Controls AI OS)", textEn: "Project Controls AI OS" },
+      { textAr: "نظام المعرفة السيادية / RAG آمن", textEn: "Sovereign Knowledge / secure RAG" },
+      { textAr: "مركز القيادة التنفيذي (Executive Command Center)", textEn: "Executive AI Command Center" },
+      { textAr: "خيار White-label + تكاملات مخصصة", textEn: "White-label option + custom integrations" },
+      { textAr: "ضمان SLA + فريق مخصص + تدريب ميداني", textEn: "SLA guarantee + dedicated team + onsite training" },
     ],
   },
 ];
@@ -384,8 +384,8 @@ export function PricingPlans() {
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-muted-foreground leading-relaxed">
           {isAr
-            ? "كل خطة تبني على الإثبات من الخطة السابقة. لا توسع بدون Proof Pack مُسلَّم."
-            : "Every plan builds on proof from the previous. No expansion without a delivered Proof Pack."}
+            ? "Dealix نظام تشغيل أعمال بالذكاء الاصطناعي للشركات السعودية — من تشخيص مجاني، إلى Sprint إثبات بـ499 ر.س، إلى أنظمة AI Agentic كاملة. كل خطة تبني على الإثبات من السابقة؛ لا توسّع بدون Proof Pack مُسلَّم."
+            : "Dealix is an agentic AI operating company for Saudi business — from a free diagnostic, to a 499 SAR proof Sprint, to full agentic AI systems. Every plan builds on proof from the previous; no expansion without a delivered Proof Pack."}
         </p>
       </motion.header>
 

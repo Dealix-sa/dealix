@@ -226,8 +226,8 @@ export function ServicesPage() {
             </h1>
             <p className="max-w-2xl text-lg text-white/80 leading-relaxed">
               {isAr
-                ? "كل مستوى يبني على الإثبات من المستوى السابق. لا upsell بدون Proof Pack مُسلَّم. لا التزام قبل رؤية النتائج."
-                : "Every tier builds on proof from the previous tier. No upsell without delivered Proof Pack. No commitment before seeing results."}
+                ? "Dealix نظام تشغيل أعمال بالذكاء الاصطناعي — من تشخيص مجاني إلى أنظمة AI Agentic كاملة. كل مستوى يبني على الإثبات من السابق؛ لا upsell بدون Proof Pack مُسلَّم. لا التزام قبل رؤية النتائج."
+                : "Dealix is an agentic AI operating company — from a free diagnostic to full agentic AI systems. Every tier builds on proof from the previous; no upsell without a delivered Proof Pack. No commitment before seeing results."}
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <Button asChild size="lg" className="bg-[#C9974B] text-[#0A1628] hover:bg-[#b8863a] font-bold shadow-lg">
