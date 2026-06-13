@@ -110,6 +110,13 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V13 consolidation manifest — metadata only, no customer PII
+!data/consolidation/
+# V13 sample/seed data — synthetic only (placeholder names, example.com emails)
+!data/crm/
+!data/revenue/
+!data/agents/
+!data/proof/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

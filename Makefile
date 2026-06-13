@@ -182,3 +182,41 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── V13 Consolidation & Master Merge ────────────────────────────
+# V13 = Consolidation & Master Merge Kit — unified command surface.
+
+.PHONY: dealix-master-readiness dealix-launch-decision dealix-inventory \
+        dealix-workflows dealix-migrations dealix-agent-control \
+        dealix-proof-index dealix-board-metrics dealix-scale-dashboard \
+        dealix-revenue-dashboard
+
+dealix-master-readiness: ## v13: verify all critical V1–V13 files are present
+	$(PYTHON) scripts/dealix_v13_master_readiness.py
+
+dealix-launch-decision: ## v13: GO / NO-GO / Controlled Preview launch report
+	$(PYTHON) scripts/dealix_launch_decision_report.py
+
+dealix-inventory: ## v13: full file inventory for all V1–V13 modules
+	$(PYTHON) scripts/dealix_master_inventory.py
+
+dealix-workflows: ## v13: audit GitHub Actions workflows and permissions
+	$(PYTHON) scripts/dealix_workflow_inventory.py
+
+dealix-migrations: ## v13: verify DB migration order is contiguous
+	$(PYTHON) scripts/dealix_migration_order_check.py
+
+dealix-revenue-dashboard: ## v13: revenue dashboard snapshot
+	$(PYTHON) scripts/dealix_revenue_dashboard.py
+
+dealix-scale-dashboard: ## v13: scale & operating cadence dashboard
+	$(PYTHON) scripts/dealix_scale_dashboard.py
+
+dealix-agent-control: ## v13: agent registry & control tower status
+	$(PYTHON) scripts/dealix_agent_control_status.py
+
+dealix-proof-index: ## v13: proof vault index
+	$(PYTHON) scripts/dealix_proof_index.py
+
+dealix-board-metrics: ## v13: board metrics snapshot
+	$(PYTHON) scripts/dealix_board_metrics.py

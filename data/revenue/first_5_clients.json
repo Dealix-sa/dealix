@@ -1,0 +1,16 @@
+[
+  {
+    "client": "شركة تدريب الرياض",
+    "sector": "training",
+    "stage": "pilot_room",
+    "amount_sar": 499,
+    "status": "active"
+  },
+  {
+    "client": "مكتب عقار جدة",
+    "sector": "real_estate",
+    "stage": "discovery",
+    "amount_sar": 0,
+    "status": "open"
+  }
+]

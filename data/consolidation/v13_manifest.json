@@ -1,0 +1,18 @@
+{
+  "version": "v13",
+  "name": "Consolidation & Master Merge Kit",
+  "focus": [
+    "master commands",
+    "readiness",
+    "launch decision",
+    "inventory",
+    "workflow review",
+    "migration order"
+  ],
+  "recommended_launch_mode": "controlled_preview_managed_service",
+  "do_not_do": [
+    "self_serve_saas_before_first_customers",
+    "automated_outbound",
+    "commit_real_secrets"
+  ]
+}
