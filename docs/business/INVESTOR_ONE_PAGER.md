@@ -73,7 +73,7 @@ We close pre-seed when we have **10 paying customers** because:
 
 ## What We've Built (verifiable)
 
-- **Repo:** `github.com/VoXc2/dealix` (admin access granted to serious diligence parties)
+- **Repo:** `github.com/Dealix-sa/dealix` (admin access granted to serious diligence parties)
 - **Live compliance posture:** `GET /api/v1/compliance/status` (returns real-time state, not screenshots)
 - **Landing:** `dealix.me` with 60+ pages including:
   - `/services.html` — 7 productized AI services
@@ -112,7 +112,7 @@ Dealix targets early Foodics-trajectory: 18M ARR by Year 3, 1B+ SAR valuation by
 
 ## Next Step for Interested Investors
 
-1. **Read the repo** — `github.com/VoXc2/dealix` (request access via dpo@dealix.me)
+1. **Read the repo** — `github.com/Dealix-sa/dealix` (request access via dpo@dealix.me)
 2. **Read v3-v7** of the strategic playbook at `/root/.claude/plans/go-lovely-gem.md`
 3. **Schedule 60-min diligence call** — Sami discusses customer #1-#N current state
 4. **Term sheet** sent only after first customer is paying AND mutual fit confirmed

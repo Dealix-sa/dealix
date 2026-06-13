@@ -6,7 +6,7 @@ name: Deploy to Railway
 #   1. Go to https://railway.app/account/tokens
 #   2. Create a new token named "github-deploy"
 #   3. Copy the token
-#   4. Go to https://github.com/VoXc2/dealix/settings/secrets/actions
+#   4. Go to https://github.com/Dealix-sa/dealix/settings/secrets/actions
 #   5. Add New repository secret: RAILWAY_TOKEN = <paste token>
 #   6. Optional: Add RAILWAY_SERVICE_NAME = dealix (if service name differs)
 #

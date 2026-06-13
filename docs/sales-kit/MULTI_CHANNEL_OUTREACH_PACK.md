@@ -144,7 +144,7 @@ voxc2.github.io/dealix/demo
 بنيت Dealix على FastAPI + Anthropic Claude + Moyasar.
 أول AI sales rep عربي خليجي حقيقي — مش ترجمة.
 
-للـ founders التقنيين: الـ backend مفتوح على GitHub (VoXc2/dealix).
+للـ founders التقنيين: الـ backend مفتوح على GitHub (Dealix-sa/dealix).
 Pilot أسبوع بـ 1 ريال.
 
 تبغى تشوف الـ architecture + demo؟
@@ -237,7 +237,7 @@ Replace 2-3 BDRs. Respond in 45s. Book demos directly.
 - Scale: 7,999 ريال/شهر (Enterprise)
 
 8/10: الموقف الحقيقي الآن:
-- ✅ Code: 100% complete, open source (GitHub VoXc2/dealix)
+- ✅ Code: 100% complete, open source (GitHub Dealix-sa/dealix)
 - ✅ Landing: voxc2.github.io/dealix
 - ⏳ First customer: today I hope
 - ⏳ Revenue: zero
