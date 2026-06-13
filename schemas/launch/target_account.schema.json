@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/launch/target_account.schema.json",
+  "title": "TargetAccount",
+  "description": "A prospect account in the Dealix launch OS target list.",
+  "type": "object",
+  "required": ["id", "name_ar", "sector", "city", "decision_maker"],
+  "properties": {
+    "id": { "type": "string" },
+    "name_ar": { "type": "string", "minLength": 2 },
+    "name_en": { "type": "string" },
+    "sector": { "type": "string" },
+    "city": { "type": "string" },
+    "employees": { "type": "integer", "minimum": 1 },
+    "revenue_sar_estimate": { "type": "number", "minimum": 0 },
+    "decision_maker": {
+      "type": "object",
+      "required": ["name_ar", "title_ar"],
+      "properties": {
+        "name_ar": { "type": "string" },
+        "title_ar": { "type": "string" },
+        "linkedin_available": { "type": "boolean" },
+        "whatsapp_consent": { "type": "boolean" }
+      }
+    },
+    "pain_signals": { "type": "array", "items": { "type": "string" } },
+    "source": { "type": "string" },
+    "researched_date": { "type": "string", "format": "date" },
+    "status": { "type": "string" }
+  }
+}

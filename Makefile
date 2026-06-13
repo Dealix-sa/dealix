@@ -10,7 +10,10 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
+        launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
+        launch-content launch-pipeline launch-all-dry-runs test-launch
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +185,42 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Launch OS (GTM Revenue Intelligence) ───────────────────────
+# All targets are read-only dry-runs — no external sends, no production mutations.
+
+launch-validate: ## Launch OS: validate schemas + file inventory
+	$(PYTHON) scripts/launch/launch_bundle_validate.py
+
+launch-vertical-score: ## Launch OS: print ranked Saudi verticals + top wedge
+	$(PYTHON) scripts/launch/vertical_score_dry_run.py
+
+launch-icp-score: ## Launch OS: score sample accounts, print tier table
+	$(PYTHON) scripts/launch/icp_score_dry_run.py
+
+launch-trust-preflight: ## Launch OS: run trust preflight on sample drafts
+	$(PYTHON) scripts/launch/trust_preflight_dry_run.py
+
+launch-outreach-drafts: ## Launch OS: generate sample outreach drafts (email/linkedin/phone)
+	$(PYTHON) scripts/launch/outreach_draft_factory_dry_run.py
+
+launch-proposal: ## Launch OS: render sample proposal pack to markdown
+	$(PYTHON) scripts/launch/proposal_pack_dry_run.py
+
+launch-founder-command: ## Launch OS: generate today's founder daily brief
+	$(PYTHON) scripts/launch/founder_daily_command_dry_run.py
+
+launch-weekly-review: ## Launch OS: print weekly GTM review from sample pipeline
+	$(PYTHON) scripts/launch/weekly_gtm_review_dry_run.py
+
+launch-content: ## Launch OS: generate sample content assets (LinkedIn / video / email)
+	$(PYTHON) scripts/launch/content_factory_dry_run.py
+
+launch-pipeline: ## Launch OS: print pipeline summary from sample data
+	$(PYTHON) -c "from dealix.launch_os.pipeline_tracker import PipelineTracker; t = PipelineTracker(); t.seed_sample(); print(t.pipeline_summary())"
+
+launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score launch-trust-preflight launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review launch-content ## Launch OS: run all dry-run scripts in sequence
+	@echo "✅ All Launch OS dry-runs completed"
+
+test-launch: ## Launch OS: run launch-specific test suite
+	pytest tests/launch/ -v --tb=short

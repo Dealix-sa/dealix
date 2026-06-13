@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/icp_score.schema.json",
+  "title": "Dealix ICP Score (launch bundle)",
+  "type": "object",
+  "required": ["account_id", "scores", "total", "action"],
+  "additionalProperties": false,
+  "properties": {
+    "account_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "scores": {
+      "type": "object",
+      "required": ["urgency", "lost_revenue_visibility", "process_chaos", "decision_maker_access", "ability_to_start_small", "proof_speed", "budget_likelihood", "repeatability", "referral_potential", "compliance_delivery_risk"],
+      "additionalProperties": false,
+      "properties": {
+        "urgency": { "type": "integer", "minimum": 0, "maximum": 20 },
+        "lost_revenue_visibility": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "process_chaos": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "decision_maker_access": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "ability_to_start_small": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "proof_speed": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "budget_likelihood": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "repeatability": { "type": "integer", "minimum": 0, "maximum": 5 },
+        "referral_potential": { "type": "integer", "minimum": 0, "maximum": 5 },
+        "compliance_delivery_risk": { "type": "integer", "minimum": -20, "maximum": 0 }
+      }
+    },
+    "total": { "type": "integer", "minimum": -20, "maximum": 100 },
+    "action": { "enum": ["pursue_today", "warm_sequence", "nurture", "ignore", "manual_review"] },
+    "overrides": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "string" }
+  }
+}

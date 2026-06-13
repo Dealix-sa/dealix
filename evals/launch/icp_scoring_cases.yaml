@@ -1,0 +1,26 @@
+cases:
+  - id: icp_001
+    input: { urgency: 18, lost_revenue_visibility: 12, process_chaos: 14, decision_maker_access: 9, ability_to_start_small: 9, proof_speed: 8, budget_likelihood: 8, repeatability: 4, referral_potential: 4, compliance_delivery_risk: 0 }
+    expected_total: 86
+    expected_action: "pursue_today"
+    notes: "Strong account; ICP 80+."
+  - id: icp_002
+    input: { urgency: 8, lost_revenue_visibility: 5, process_chaos: 4, decision_maker_access: 5, ability_to_start_small: 5, proof_speed: 5, budget_likelihood: 5, repeatability: 2, referral_potential: 2, compliance_delivery_risk: -5 }
+    expected_total: 36
+    expected_action: "ignore"
+    notes: "Weak account + compliance risk; below 50."
+  - id: icp_003
+    input: { urgency: 12, lost_revenue_visibility: 10, process_chaos: 10, decision_maker_access: 8, ability_to_start_small: 7, proof_speed: 7, budget_likelihood: 7, repeatability: 3, referral_potential: 3, compliance_delivery_risk: 0 }
+    expected_total: 67
+    expected_action: "warm_sequence"
+    notes: "Borderline; 65-79 → warm sequence."
+  - id: icp_004
+    input: { urgency: 15, lost_revenue_visibility: 12, process_chaos: 12, decision_maker_access: 7, ability_to_start_small: 7, proof_speed: 7, budget_likelihood: 6, repeatability: 3, referral_potential: 3, compliance_delivery_risk: -8 }
+    expected_total: 64
+    expected_action: "nurture"
+    notes: "Compliance risk weighs in; nudge to 50-64 → nurture."
+  - id: icp_005
+    input: { urgency: 20, lost_revenue_visibility: 15, process_chaos: 15, decision_maker_access: 10, ability_to_start_small: 10, proof_speed: 10, budget_likelihood: 10, repeatability: 5, referral_potential: 5, compliance_delivery_risk: -20 }
+    expected_total: 80
+    expected_action: "manual_review"
+    notes: "Strong ICP but heavy compliance risk triggers manual review."

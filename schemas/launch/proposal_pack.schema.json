@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/proposal_pack.schema.json",
+  "title": "Dealix Proposal Pack (launch bundle)",
+  "type": "object",
+  "required": ["proposal_id", "deal_id", "client_context", "problem", "current_leakage", "proposed_system", "scope", "out_of_scope", "success_metrics", "pricing_status", "next_step", "evidence_level", "approval_required_for_pricing"],
+  "additionalProperties": false,
+  "properties": {
+    "proposal_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "deal_id": { "type": "string" },
+    "client_context": { "type": "object" },
+    "problem": { "type": "string" },
+    "current_leakage": { "type": "array", "items": { "type": "object" } },
+    "proposed_system": { "type": "object" },
+    "scope": { "type": "object" },
+    "out_of_scope": { "type": "array", "items": { "type": "string" } },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "responsibilities": { "type": "object" },
+    "success_metrics": { "type": "array", "items": { "type": "object" } },
+    "risks": { "type": "array", "items": { "type": "object" } },
+    "pricing_status": { "enum": ["draft_only", "approved_range_required", "founder_approval_required", "final_approved"] },
+    "approval_required_for_pricing": { "type": "boolean" },
+    "next_step": { "type": "object" },
+    "evidence_level": { "enum": ["L0", "L1", "L2", "L3", "L4", "L5"] }
+  }
+}
