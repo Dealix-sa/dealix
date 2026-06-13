@@ -381,3 +381,77 @@ async def update_lead_status(
         from fastapi import HTTPException
         raise HTTPException(status_code=404, detail="lead_inbox_empty")
     return {"ok": True, "change": rec}
+
+
+@router.get("/approvals")
+async def approvals(
+    limit: int = 100,
+    status: str | None = None,
+) -> dict[str, Any]:
+    """Founder approval queue — the daily-draft loop writes here, the founder
+    reviews here. This is the SINGLE queue for company-level outreach/proposal
+    drafts awaiting sign-off.
+
+    Read-only. Backed by the durable draft queue
+    (`auto_client_acquisition.commercial_orchestrator.draft_queue`, a JSON-Lines
+    file at $DEALIX_DRAFT_QUEUE_PATH, default `var/draft-queue.jsonl`,
+    gitignored). Nothing here has been sent — every item is
+    `approval_required=True` until the founder approves it.
+    """
+    from auto_client_acquisition.commercial_orchestrator import draft_queue
+
+    drafts = draft_queue.list_drafts(limit=limit, status=status)
+    stats = draft_queue.stats()
+    return {
+        "schema_version": 1,
+        "generated_at": datetime.now(UTC).isoformat(),
+        "pending": stats.get("pending", 0),
+        "drafts": drafts,
+        "stats": stats,
+        "generic_approvals": _safe(_pending_approvals, default={"count": 0}),
+        "hard_gates": {
+            "no_live_send": True,
+            "approval_required_for_external_actions": True,
+            "company_level_only": True,
+        },
+        "next_action_ar": "راجع كل مسوّدة، ثم اعتمد أو ارفض. لا يُرسل شيء قبل اعتمادك وتأكيد جهة التواصل.",
+        "next_action_en": "Review each draft, then approve or reject. Nothing is sent until you approve and confirm the recipient.",
+    }
+
+
+@router.post("/approvals/{draft_id}/approve")
+async def approve_draft(
+    draft_id: str,
+    body: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Approve a queued draft. Append-only: the original draft stays intact, the
+    decision is appended to the audit trail. Approval authorises a human-confirmed
+    send later — it never triggers an automatic send (send paths stay gated)."""
+    from auto_client_acquisition.commercial_orchestrator import draft_queue
+
+    body = body or {}
+    who = str(body.get("who") or "founder").strip() or "founder"
+    note = str(body.get("note") or "").strip()
+    rec = draft_queue.set_status(draft_id, "approved", who=who, note=note)
+    if rec is None:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="draft_not_found")
+    return {"ok": True, "change": rec, "no_live_send": True}
+
+
+@router.post("/approvals/{draft_id}/reject")
+async def reject_draft(
+    draft_id: str,
+    body: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Reject a queued draft (append-only audit trail)."""
+    from auto_client_acquisition.commercial_orchestrator import draft_queue
+
+    body = body or {}
+    who = str(body.get("who") or "founder").strip() or "founder"
+    reason = str(body.get("reason") or body.get("note") or "").strip()
+    rec = draft_queue.set_status(draft_id, "rejected", who=who, note=reason)
+    if rec is None:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="draft_not_found")
+    return {"ok": True, "change": rec}

@@ -110,6 +110,9 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Curated Saudi B2B target frame — public-source, company-level, no PII (see data/leads/SOURCES.md)
+!data/leads/
+!data/leads/**
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
@@ -322,6 +325,10 @@ dealix-1/
 node_modules/
 dist/
 build/
+# …but the frontend has a SOURCE route literally named "build" (the custom-AI
+# intake page) — keep it tracked (brackets escaped: they are glob-special).
+!frontend/src/app/\[locale\]/build/
+!frontend/src/app/\[locale\]/build/**
 logs/
 *.log
 

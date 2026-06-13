@@ -20,7 +20,7 @@ const NAV_COLUMNS: NavColumn[] = [
       { ar: "Revenue Intelligence Sprint", en: "Revenue Intelligence Sprint", href: "/dealix-diagnostic" },
       { ar: "Agency Proof Pack", en: "Agency Proof Pack", href: "/dealix-diagnostic" },
       { ar: "Managed Ops Retainer", en: "Managed Ops Retainer", href: "/dealix-diagnostic" },
-      { ar: "Custom AI Project", en: "Custom AI Project", href: "/dealix-diagnostic" },
+      { ar: "نظام ذكاء اصطناعي مخصص", en: "Custom AI Project", href: "/build" },
     ],
   },
   {
