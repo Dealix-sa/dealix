@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/discovery_call.schema.json",
+  "title": "Dealix Discovery Call Notes (launch bundle)",
+  "type": "object",
+  "required": ["call_id", "account_id", "called_at_iso", "duration_min", "attendees", "pains_identified", "next_step", "evidence_level"],
+  "additionalProperties": false,
+  "properties": {
+    "call_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "account_id": { "type": "string" },
+    "called_at_iso": { "type": "string", "format": "date-time" },
+    "duration_min": { "type": "integer", "minimum": 0, "maximum": 240 },
+    "attendees": { "type": "array", "items": { "type": "string" } },
+    "pains_identified": { "type": "array", "items": { "type": "string" } },
+    "decision_process": { "type": "string" },
+    "budget_sensitivity": { "type": "string" },
+    "next_step": { "type": "string" },
+    "next_step_date_iso": { "type": "string", "format": "date" },
+    "evidence_level": { "enum": ["L0", "L1", "L2", "L3", "L4", "L5"] },
+    "disqualification_risk": { "enum": ["none", "low", "medium", "high"] },
+    "notes": { "type": "string" }
+  }
+}

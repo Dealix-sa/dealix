@@ -1,0 +1,68 @@
+# This patch scaffolds a read-only Launch Command page under
+# apps/web/src/app/[locale]/ops/launch/page.tsx (or the equivalent under frontend/).
+#
+# It is OPTIONAL. The founder does not need this page to use the bundle.
+# The page consumes the same data the bundle's dry-run scripts print.
+#
+# Apply manually:
+#   1. Find the existing ops pages in apps/web/src/app/[locale]/ops/.
+#   2. Create a new folder: ops/launch/.
+#   3. Add a page.tsx that renders a "Launch Command" view.
+#   4. Add a launch command API route under apps/web/src/app/api/launch/.
+#
+# No live data is wired. The page is a placeholder for the founder to populate
+# from the daily command JSON.
+#
+# If you want a real wiring, the page should:
+#   - GET /api/launch/founder-command (dry-run, returns example)
+#   - GET /api/launch/icp-score (dry-run)
+#   - GET /api/launch/outreach-draft (dry-run)
+#   - GET /api/launch/trust-preflight (dry-run)
+#
+# All four endpoints are part of the API patch (patches/API_OPTIONAL_LAUNCH_ENDPOINTS.patch).
+
+--- a/frontend/src/app/[locale]/ops/launch/page.tsx (NEW FILE)
++++ b/frontend/src/app/[locale]/ops/launch/page.tsx (NEW FILE)
+@@ -0,0 +1,40 @@
++// Launch Command — read-only page that surfaces the daily command +
++// the 7-day plan + the 30/60/90 plan. Placeholder for founder use.
++//
++// Wired to the launch bundle's dry-run scripts. No live data. The
++// founder runs `make launch-founder-command` and pastes the output here.
++
++import { readFile } from "node:fs/promises";
++import path from "node:path";
++
++export default async function LaunchCommandPage() {
++  const bundleRoot = path.join(
++    process.cwd(),
++    "_incoming/minimax3/dealix_market_launch_complete_bundle"
++  );
++  const daily = await readFile(
++    path.join(bundleRoot, "templates/launch/founder_daily_command.example.json"),
++    "utf8"
++  ).catch(() => "{}");
++  const data = JSON.parse(daily);
++
++  return (
++    <main className="launch-command">
++      <h1>Launch Command — {data.command_date}</h1>
++      <section>
++        <h2>Top decision</h2>
++        <p>{data.top_decision}</p>
++      </section>
++      <section>
++        <h2>Cash action today</h2>
++        <p>{data.cash_action_today}</p>
++      </section>
++      <section>
++        <h2>One thing to stop</h2>
++        <p>{data.one_thing_to_stop}</p>
++      </section>
++      <section>
++        <h2>One thing to double down</h2>
++        <p>{data.one_thing_to_double_down}</p>
++      </section>
++    </main>
++  );
++}

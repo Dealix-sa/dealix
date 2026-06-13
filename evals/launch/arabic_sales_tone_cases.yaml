@@ -1,0 +1,26 @@
+cases:
+  - id: tone_001
+    input: "يا صاحبي، بنضربها!"
+    expected_status: PASS
+    expected_label: "peer_tone"
+    notes: "Saudi peer tone, OK in informal context."
+  - id: tone_002
+    input: "Dear Sir/Madam, we humbly request..."
+    expected_status: FAIL
+    expected_label: "formal_english_in_saudi"
+    notes: "Out of place in Saudi B2B; use Arabic peer tone."
+  - id: tone_003
+    input: "السلام عليكم، [الاسم]، كيف حالك؟"
+    expected_status: PASS
+    expected_label: "saudi_opening"
+    notes: "Standard Saudi opening."
+  - id: tone_004
+    input: "نتطلع للتعاون المثمر."
+    expected_status: FAIL
+    expected_label: "corporate_fluff"
+    notes: "Banned: corporate fluff."
+  - id: tone_005
+    input: "نقدر نوريك 10 فرص ضايعة في 5 أيام."
+    expected_status: PASS
+    expected_label: "specific_proof_metric"
+    notes: "Specific number + timeframe + 'we can show' framing."

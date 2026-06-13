@@ -1,0 +1,44 @@
+--- a/Makefile
++++ b/Makefile
+@@ -93,6 +93,36 @@ production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
+ prod-verify: env-check security-smoke api-contract-check dependency-inventory release-manifest v5-verify ## Canonical production-readiness verification bundle
+ 	@echo "✅ Dealix production verification bundle completed"
+ 
++# --- Launch bundle (additive; no breaking change) -----------------------------
++# These targets call the dry-run scripts in _incoming/minimax3/.../scripts/.
++# They do NOT mutate production and do NOT send anything external.
++# They print status only.
++
++launch-validate: ## Launch bundle: validate manifest + file counts
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/launch_bundle_validate.py
++
++launch-conflict-scan: ## Launch bundle: scan repo for potential conflicts
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/launch_conflict_scan.py --repo-root . --bundle-root _incoming/minimax3/dealix_market_launch_complete_bundle
++
++launch-vertical-score: ## Launch bundle: print the top vertical
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/vertical_score_dry_run.py
++
++launch-icp-score: ## Launch bundle: print the example ICP score
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/icp_score_dry_run.py
++
++launch-founder-command: ## Launch bundle: print the example founder daily command
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/founder_daily_command_dry_run.py
++
++launch-outreach-drafts: ## Launch bundle: print the example outreach draft + sequence
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/outreach_draft_factory_dry_run.py
++
++launch-trust-preflight: ## Launch bundle: run the trust preflight on the example
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/trust_preflight_dry_run.py
++
++launch-proposal-dry-run: ## Launch bundle: render the example proposal
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/proposal_pack_dry_run.py
++
++launch-content-dry-run: ## Launch bundle: print the example content asset
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/content_factory_dry_run.py
++
++launch-weekly-review: ## Launch bundle: render the example weekly review
++	$(PYTHON) _incoming/minimax3/dealix_market_launch_complete_bundle/scripts/weekly_gtm_review_dry_run.py
++
+ # ── Tests ──────────────────────────────────────────────────────
+ test: ## Run full test suite with coverage
+ 	pytest -v
