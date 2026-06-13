@@ -110,6 +110,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# V11 Revenue Sprint — seed/example data, no real customer PII
+!data/revenue/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs
