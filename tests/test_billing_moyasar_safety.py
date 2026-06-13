@@ -7,10 +7,16 @@ import pytest
 from api.routers import pricing
 
 
-def test_plans_exist_and_halalas_positive():
+def test_plans_exist_and_halalas_non_negative():
+    """No garbage/negative amounts. Free offerings (rung-0 diagnostic) are
+    legitimately 0 halalas; every other plan must be a positive charge."""
     assert pricing.PLANS
     for key, info in pricing.PLANS.items():
-        assert int(info["amount_halalas"]) > 0, key
+        amount = int(info["amount_halalas"])
+        assert amount >= 0, key
+        is_free = amount == 0 or "free" in key.lower()
+        if not is_free:
+            assert amount > 0, key
 
 
 @pytest.mark.asyncio

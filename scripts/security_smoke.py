@@ -60,6 +60,15 @@ ALLOWED_PLACEHOLDER_MARKERS = (
     "placeholder",
 )
 
+# A matched token is treated as an obvious placeholder when it contains a run of
+# 4+ identical characters (e.g. sk_live_xxxxxxxx, AKIA0000...). Real secrets are
+# high-entropy and never look like this; this clears doc/template illustrations.
+_PLACEHOLDER_RUN = re.compile(r"(.)\1{3,}")
+
+
+def _looks_like_placeholder(token: str) -> bool:
+    return bool(_PLACEHOLDER_RUN.search(token))
+
 
 def iter_text_files() -> list[Path]:
     files: list[Path] = []
@@ -83,15 +92,25 @@ def read_text(path: Path) -> str:
 def main() -> int:
     errors: list[str] = []
 
+    # `.env.example`, `.env.prod.example`, `.env.railway.example`, … are
+    # committed templates by design — only a real env file (no `.example`
+    # suffix) is forbidden.
     forbidden_env_files = [
         path
         for path in ROOT.glob(".env*")
-        if path.name not in {".env.example"} and path.is_file()
+        if not path.name.endswith(".example") and path.is_file()
     ]
     for path in forbidden_env_files:
         errors.append(f"Do not commit local env file: {path.relative_to(ROOT)}")
 
     for path in iter_text_files():
+        rel = path.relative_to(ROOT)
+        # Test fixtures intentionally embed credential-shaped strings (and even
+        # function names like `test_sk_live_...`) to exercise the safety
+        # machinery itself. The dedicated scanner (gitleaks, pre-commit/CI)
+        # remains responsible for tests/.
+        if rel.parts and rel.parts[0] == "tests":
+            continue
         text = read_text(path)
         if not text:
             continue
@@ -99,9 +118,10 @@ def main() -> int:
             if any(marker in line for marker in ALLOWED_PLACEHOLDER_MARKERS):
                 continue
             for pattern in LIVE_TOKEN_PATTERNS:
-                if pattern.search(line):
+                match = pattern.search(line)
+                if match and not _looks_like_placeholder(match.group(0)):
                     errors.append(
-                        f"Potential live secret in {path.relative_to(ROOT)}:{line_no}: "
+                        f"Potential live secret in {rel}:{line_no}: "
                         f"matches {pattern.pattern}"
                     )
 

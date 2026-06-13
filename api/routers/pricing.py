@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import os
+import re
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request
@@ -322,6 +323,125 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     }
 
 
+_PAID_STATUSES = frozenset({"paid", "captured"})
+_FAILED_STATUSES = frozenset({"failed", "voided", "refunded", "expired"})
+
+# Provider payment/invoice ids are opaque tokens (hex/uuid-ish). This endpoint
+# is public and feeds the value into an outbound provider URL, so the reference
+# is strictly validated first — no path traversal / SSRF via crafted ids.
+_REF_RE = re.compile(r"\A[A-Za-z0-9_-]{6,64}\Z")
+
+
+def _valid_ref(value: str) -> bool:
+    return bool(_REF_RE.match(value or ""))
+
+
+def _normalize_status(raw: str) -> tuple[str, bool]:
+    """Map a provider status to a public {state, paid} pair.
+
+    state ∈ {"paid","pending","failed"}. We never surface raw provider
+    internals to the browser — only these three buckets.
+    """
+    s = (raw or "").strip().lower()
+    if s in _PAID_STATUSES:
+        return "paid", True
+    if s in _FAILED_STATUSES:
+        return "failed", False
+    return "pending", False
+
+
+async def _lookup_payment_from_db(provider_payment_id: str) -> dict[str, Any] | None:
+    """Best-effort PaymentRecord read. Returns None on any failure (no DB / no row)."""
+    try:
+        from sqlalchemy import select
+
+        from db.models import PaymentRecord
+        from db.session import async_session_factory
+    except Exception:
+        return None
+    try:
+        async with async_session_factory()() as session:
+            stmt = select(PaymentRecord).where(
+                PaymentRecord.provider == "moyasar",
+                PaymentRecord.provider_payment_id == provider_payment_id,
+            )
+            row = (await session.execute(stmt)).scalar_one_or_none()
+            if row is None:
+                return None
+            return {
+                "status": row.status,
+                "amount_halalas": row.amount_halalas,
+                "plan": row.plan,
+            }
+    except Exception as exc:
+        log.debug("checkout_status_db_lookup_failed error=%s", type(exc).__name__)
+        return None
+
+
+@router.get("/api/v1/checkout/status")
+async def checkout_status(payment_id: str = "", invoice_id: str = "") -> dict[str, Any]:
+    """Public, non-PII payment status for the post-payment return page.
+
+    Moyasar redirects the payer to ``{APP_URL}/checkout/return?id=<payment_id>&status=...``
+    after a hosted-invoice payment. The return page calls this endpoint to confirm
+    the authoritative status before showing success/pending/failed.
+
+    Resolution order (each step non-fatal):
+      1. Moyasar API (authoritative) when ``MOYASAR_SECRET_KEY`` is configured.
+      2. Local ``PaymentRecord`` written by the webhook (reconciliation source).
+      3. ``pending`` fallback so the page can keep polling.
+
+    Returns only ``{state, paid, amount_sar, plan, reference}`` — never email/PII.
+    """
+    payment_id = (payment_id or "").strip()
+    invoice_id = (invoice_id or "").strip()
+    if not payment_id and not invoice_id:
+        raise HTTPException(status_code=400, detail="payment_id_or_invoice_id_required")
+    # Reject malformed references before they ever reach the provider URL or DB.
+    if (payment_id and not _valid_ref(payment_id)) or (
+        invoice_id and not _valid_ref(invoice_id)
+    ):
+        raise HTTPException(status_code=400, detail="invalid_reference")
+
+    reference = payment_id or invoice_id
+    raw_status = ""
+    amount_halalas = 0
+    plan: str | None = None
+
+    # 1) Moyasar API (authoritative) — only when a key is configured.
+    if os.getenv("MOYASAR_SECRET_KEY", "").strip():
+        client = MoyasarClient()
+        try:
+            obj = (
+                await client.fetch_payment(payment_id)
+                if payment_id
+                else await client.fetch_invoice(invoice_id)
+            )
+            raw_status = str(obj.get("status") or "")
+            amount_halalas = int(obj.get("amount") or 0)
+            plan = (obj.get("metadata") or {}).get("plan")
+        except Exception as exc:
+            log.info("checkout_status_provider_lookup_failed ref_fp=%s error=%s",
+                     _fingerprint(reference), type(exc).__name__)
+
+    # 2) Local PaymentRecord fallback (webhook may have arrived already).
+    if not raw_status and payment_id:
+        row = await _lookup_payment_from_db(payment_id)
+        if row:
+            raw_status = str(row.get("status") or "")
+            amount_halalas = int(row.get("amount_halalas") or 0)
+            plan = row.get("plan")
+
+    state, paid = _normalize_status(raw_status)
+    return {
+        "state": state,
+        "paid": paid,
+        "amount_sar": (amount_halalas / 100) if amount_halalas else None,
+        "plan": plan,
+        "reference": reference,
+    }
+
+
 @router.post("/api/v1/webhooks/moyasar")
 async def moyasar_webhook(req: Request) -> dict[str, Any]:
     """
@@ -416,7 +536,48 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
                     _safe_email = customer_email.replace("\n", "").replace("\r", "")[:200]
                     log.warning("customer_receipt_failed email=%s error=%s", _safe_email, type(_email_exc).__name__)
 
-            # 2. ZATCA e-invoice (non-fatal — logs if ZATCA creds not configured)
+            # 2. Revenue proof event (L5) — proof-first doctrine: every real
+            #    payment leaves a sourced, audit-grade evidence record. Non-PII
+            #    on-disk (customer_handle is company-or-generic; no email in
+            #    payload). Never auto-publishes (consent_for_publication=False).
+            try:
+                from auto_client_acquisition.proof_ledger import (
+                    ProofEvent,
+                    ProofEventType,
+                    get_default_ledger,
+                )
+
+                _company = (
+                    source_info.get("company")
+                    or payment.get("metadata", {}).get("company")
+                    or "Saudi B2B customer"
+                )
+                get_default_ledger().record(
+                    ProofEvent(
+                        event_type=ProofEventType.PAYMENT_CONFIRMED,
+                        customer_handle=str(_company)[:120],
+                        service_id=str(payment.get("metadata", {}).get("plan") or ""),
+                        summary_en=f"Payment confirmed: {amount_sar:,.0f} SAR (Moyasar)",
+                        summary_ar=f"تأكيد دفعة: {amount_sar:,.0f} ر.س (ميسر)",
+                        evidence_source=f"moyasar://payment/{payment_id}",
+                        consent_for_publication=False,
+                        payload={
+                            "evidence_level": "L5",
+                            "amount_sar": amount_sar,
+                            "amount_halalas": amount_halalas,
+                            "currency": payment.get("currency", "SAR"),
+                            "payment_ref": payment_id,
+                            "source": "moyasar_webhook",
+                        },
+                    )
+                )
+                _safe_pref = str(payment_id).replace("\n", "").replace("\r", "")[:64]
+                log.info("revenue_proof_event_recorded ref=%s amount_sar=%.2f",
+                         _safe_pref, amount_sar)
+            except Exception as _proof_exc:
+                log.warning("revenue_proof_event_skipped error=%s", type(_proof_exc).__name__)
+
+            # 3. ZATCA e-invoice (non-fatal — logs if ZATCA creds not configured)
             try:
                 from dealix.commercial.zatca_invoice import issue_zatca_invoice
                 await issue_zatca_invoice(payment=payment)
@@ -424,7 +585,7 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
                 _safe_ref = str(payment_id).replace("\n", "").replace("\r", "")[:100]
                 log.warning("zatca_invoice_skipped ref=%s error=%s", _safe_ref, type(_zatca_exc).__name__)
 
-            # 3. Founder WhatsApp alert
+            # 4. Founder WhatsApp alert
             try:
                 from core.config.settings import get_settings
                 _settings = get_settings()

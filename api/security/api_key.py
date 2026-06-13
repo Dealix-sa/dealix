@@ -43,6 +43,8 @@ PUBLIC_PATHS: set[str] = {
     # Public pricing list — prospects need to see plans without an API key.
     # Checkout + plan-specific tampering protection stays on /api/v1/checkout.
     "/api/v1/pricing/plans",
+    # Post-payment return page reads non-PII status here (Moyasar redirect target).
+    "/api/v1/checkout/status",
 }
 PUBLIC_PREFIXES: tuple[str, ...] = (
     "/docs",
