@@ -1,0 +1,259 @@
+pageType: content
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 300, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>THE SOLUTION  //  الحل</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      fontSize: 36
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>Dealix — منصة العقارات الذكية</p>
+      wrap: false
+  - elementId: solution-desc
+    elementType: text
+    bounds: [60, 160, 600, 80]
+    content:
+      fontSize: 18
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.6
+      text: |
+        <p>منصة متكاملة تغطي كل احتياجات الشركة العقارية: من إدارة العملاء إلى تحليل السmarket وإدارة المشاريع</p>
+  - elementId: f1-bg
+    elementType: shape
+    bounds: [60, 260, 370, 190]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: f1-icon
+    elementType: icon
+    bounds: [85, 285, 32, 32]
+    iconName: users
+    color: "$accent"
+  - elementId: f1-title
+    elementType: text
+    bounds: [85, 330, 320, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>CRM عقاري متكامل</p>
+  - elementId: f1-desc
+    elementType: text
+    bounds: [85, 370, 320, 60]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>إدارة العملاء المحتملين والوحدات والمتابعة آلياً</p>
+  - elementId: f2-bg
+    elementType: shape
+    bounds: [455, 260, 370, 190]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: f2-icon
+    elementType: icon
+    bounds: [480, 285, 32, 32]
+    iconName: bar-chart-3
+    color: "$accent"
+  - elementId: f2-title
+    elementType: text
+    bounds: [480, 330, 320, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>تحليل السmarket العقاري</p>
+  - elementId: f2-desc
+    elementType: text
+    bounds: [480, 370, 320, 60]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>رؤى ذكية لاتجاهات الأسعار والطلب في كل منطقة</p>
+  - elementId: f3-bg
+    elementType: shape
+    bounds: [850, 260, 370, 190]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: f3-icon
+    elementType: icon
+    bounds: [875, 285, 32, 32]
+    iconName: workflow
+    color: "$accent"
+  - elementId: f3-title
+    elementType: text
+    bounds: [875, 330, 320, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>إدارة المشاريع</p>
+  - elementId: f3-desc
+    elementType: text
+    bounds: [875, 370, 320, 60]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>تتبع مراحل البناء والتسليم والمستندات</p>
+  - elementId: f4-bg
+    elementType: shape
+    bounds: [60, 475, 370, 190]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: f4-icon
+    elementType: icon
+    bounds: [85, 500, 32, 32]
+    iconName: message-square
+    color: "$accent"
+  - elementId: f4-title
+    elementType: text
+    bounds: [85, 545, 320, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>تواصل ذكي</p>
+  - elementId: f4-desc
+    elementType: text
+    bounds: [85, 585, 320, 60]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>WhatsApp + Email + SMS آلياً مع العملاء</p>
+  - elementId: f5-bg
+    elementType: shape
+    bounds: [455, 475, 370, 190]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: f5-icon
+    elementType: icon
+    bounds: [480, 500, 32, 32]
+    iconName: shield-check
+    color: "$accent"
+  - elementId: f5-title
+    elementType: text
+    bounds: [480, 545, 320, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>متوافق مع PDPL</p>
+  - elementId: f5-desc
+    elementType: text
+    bounds: [480, 585, 320, 60]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>حماية كاملة لبيانات العملاء والامتثال التنظيمي</p>
+  - elementId: f6-bg
+    elementType: shape
+    bounds: [850, 475, 370, 190]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: f6-icon
+    elementType: icon
+    bounds: [875, 500, 32, 32]
+    iconName: brain
+    color: "$accent"
+  - elementId: f6-title
+    elementType: text
+    bounds: [875, 545, 320, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>توقعات الذكاء الاصطناعي</p>
+  - elementId: f6-desc
+    elementType: text
+    bounds: [875, 585, 320, 60]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>توقع أفضل الوحدات للبيع وتحسين التسعير</p>

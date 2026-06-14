@@ -1,0 +1,70 @@
+pageType: cover
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: bg-img
+    elementType: image
+    bounds: [0, 0, 1280, 720]
+    src: "/mnt/agents/output/dealix-marketing/brand/riyadh-skyline.jpg"
+    opacity: 0.35
+  - elementId: overlay
+    elementType: shape
+    bounds: [0, 0, 1280, 720]
+    shapeName: rectangle
+    fill:
+      type: gradient
+      colors: ["#1A1A1AEE", "#1A1A1ACC"]
+      angle: 180
+  - elementId: logo
+    elementType: image
+    bounds: [60, 50, 80, 80]
+    src: "/mnt/agents/output/dealix-marketing/brand/dealix-logo-primary.png"
+  - elementId: sector-badge
+    elementType: text
+    bounds: [60, 300, 400, 28]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 4
+      wrap: false
+      text: |
+        <p>REAL ESTATE SECTOR</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 340, 700, 60]
+    content:
+      fontSize: 44
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>حل Dealix للقطاع العقاري</p>
+      wrap: false
+  - elementId: subtitle
+    elementType: text
+    bounds: [60, 410, 600, 40]
+    content:
+      fontSize: 20
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      text: |
+        <p>إدارة المشاريع، مبيعات الوحدات، وتحليل السوق العقاري بالذكاء الاصطناعي</p>
+  - elementId: gold-line
+    elementType: shape
+    bounds: [60, 470, 120, 3]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: bottom-text
+    elementType: text
+    bounds: [60, 620, 300, 24]
+    content:
+      fontSize: 12
+      color: "#FFFFFF55"
+      fontFamily: "Liter"
+      letterSpacing: 2
+      wrap: false
+      text: |
+        <p>CONFIDENTIAL — Dealix 2025</p>

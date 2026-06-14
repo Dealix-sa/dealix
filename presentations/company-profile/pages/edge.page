@@ -1,0 +1,289 @@
+pageType: content
+background:
+  type: solid
+  color: "$background"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>COMPETITIVE EDGE  //  المزايا التنافسية</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      style: "$title"
+      text: |
+        <p>لماذا Dealix؟</p>
+      wrap: false
+  - elementId: card1-bg
+    elementType: shape
+    bounds: [60, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: card1-accent
+    elementType: shape
+    bounds: [60, 170, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: card1-icon
+    elementType: icon
+    bounds: [90, 195, 36, 36]
+    iconName: shield-check
+    color: "$primary"
+  - elementId: card1-title
+    elementType: text
+    bounds: [90, 245, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>متوافق مع PDPL وZATCA</p>
+  - elementId: card1-desc
+    elementType: text
+    bounds: [90, 285, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>أول منصة سعودية تلبي متطلبات حماية البيانات والفوترة الإلكترونية</p>
+  - elementId: card2-bg
+    elementType: shape
+    bounds: [455, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: card2-accent
+    elementType: shape
+    bounds: [455, 170, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: card2-icon
+    elementType: icon
+    bounds: [485, 195, 36, 36]
+    iconName: plug
+    color: "$primary"
+  - elementId: card2-title
+    elementType: text
+    bounds: [485, 245, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>172 نقطة API</p>
+  - elementId: card2-desc
+    elementType: text
+    bounds: [485, 285, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>تكامل كامل مع الأنظمة الموجودة: CRM, ERP, HR, Accounting</p>
+  - elementId: card3-bg
+    elementType: shape
+    bounds: [850, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: card3-accent
+    elementType: shape
+    bounds: [850, 170, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: card3-icon
+    elementType: icon
+    bounds: [880, 195, 36, 36]
+    iconName: brain
+    color: "$primary"
+  - elementId: card3-title
+    elementType: text
+    bounds: [880, 245, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>مدعوم بالذكاء الاصطناعي</p>
+  - elementId: card3-desc
+    elementType: text
+    bounds: [880, 285, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>تحليلات متقدمة في الوقت الفعلي مع نماذج تعلم آلي مخصصة</p>
+  - elementId: card4-bg
+    elementType: shape
+    bounds: [60, 435, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: card4-accent
+    elementType: shape
+    bounds: [60, 435, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: card4-icon
+    elementType: icon
+    bounds: [90, 460, 36, 36]
+    iconName: test-tube
+    color: "$primary"
+  - elementId: card4-title
+    elementType: text
+    bounds: [90, 510, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>563 اختبار تلقائي</p>
+  - elementId: card4-desc
+    elementType: text
+    bounds: [90, 550, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>تغطية شاملة للجودة: unit, integration, e2e, performance</p>
+  - elementId: card5-bg
+    elementType: shape
+    bounds: [455, 435, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: card5-accent
+    elementType: shape
+    bounds: [455, 435, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: card5-icon
+    elementType: icon
+    bounds: [485, 460, 36, 36]
+    iconName: users
+    color: "$primary"
+  - elementId: card5-title
+    elementType: text
+    bounds: [485, 510, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>فريق محلي متخصص</p>
+  - elementId: card5-desc
+    elementType: text
+    bounds: [485, 550, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>فهم عميق للسوق السعودي والثقافة والأنظمة المحلية</p>
+  - elementId: card6-bg
+    elementType: shape
+    bounds: [850, 435, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: card6-accent
+    elementType: shape
+    bounds: [850, 435, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: card6-icon
+    elementType: icon
+    bounds: [880, 460, 36, 36]
+    iconName: rocket
+    color: "$primary"
+  - elementId: card6-title
+    elementType: text
+    bounds: [880, 510, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>جاهز للبيع</p>
+  - elementId: card6-desc
+    elementType: text
+    bounds: [880, 550, 320, 100]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>المنصة مبنية وجاهزة — ابدأ بالتشخيص المجاني اليوم</p>
