@@ -209,7 +209,110 @@ phase_2:
       note: "Single spike — do not expand until validated"
 
 # ═══════════════════════════════════════════════════════════════════
-# Definition of Done for the 90 days
+# Phase 3 — Days 91-180: COMPOUND (Revenue overlay on Control Plane)
+# المرحلة الثالثة — تراكم الإيرادات
+# Per MASTER_PLAN.md — commercial track now leads, control-plane work is supporting.
+# ═══════════════════════════════════════════════════════════════════
+phase_3:
+  name: "Compound — Revenue overlay on Control Plane"
+  theme: "First Managed Ops customers compound. Partner channel #1 signed."
+  target_mrr_eom: "40,000-50,000 SAR"
+  outcomes:
+    - "≥ 10 Managed Ops customers active (≥ 40K MRR)"
+    - "≥ 1 agency partner signed with rev-share agreement"
+    - "Weekly executive report automated (was manual through Phase 2)"
+    - "First case study published with customer written consent"
+    - "Sprint delivery time ≤ 5 hours/customer (else halt new Sprint sales)"
+
+  tasks:
+    - id: P3-01
+      task: "Automate weekly executive report (cron + Markdown render) — triggered AFTER customer #3 Managed Ops"
+      status: PLANNED
+      owner: "Engineer"
+      trigger: "customer_count_managed >= 3"
+    - id: P3-02
+      task: "Agency partner onboarding kit + rev-share contract template"
+      status: PLANNED
+      owner: "Content + Sales"
+    - id: P3-03
+      task: "Customer concentration alert (no single customer > 25% MRR)"
+      status: PLANNED
+      owner: "Engineer"
+    - id: P3-04
+      task: "Sector report v1 (Real Estate) — only if 3+ inbound leads request"
+      status: CONDITIONAL
+      owner: "Content"
+
+# ═══════════════════════════════════════════════════════════════════
+# Phase 4 — Days 181-365: SCALE (to 1M SAR ARR)
+# المرحلة الرابعة — التوسع إلى 1M SAR ARR
+# ═══════════════════════════════════════════════════════════════════
+phase_4:
+  name: "Scale — Path to 1M SAR ARR"
+  theme: "2-3 partners + first Executive Command Center customers + first hire."
+  target_mrr_eom: "80,000-90,000 SAR (1M SAR ARR run-rate)"
+  outcomes:
+    - "≥ 18-22 active paid customers"
+    - "≥ 2 Executive Command Center signed (7.5-15K/mo each)"
+    - "≥ 2-3 active agency partners (rev-share)"
+    - "First part-time VA hired (only if MRR ≥ 60K)"
+    - "Churn ≤ 5%/month"
+    - "≥ 2 case studies published"
+
+  tasks:
+    - id: P4-01
+      task: "Executive Command Center daily report automation (triggered after Managed #5)"
+      status: PLANNED
+      owner: "Engineer"
+    - id: P4-02
+      task: "Partner dashboard MVP (white-label limited) — triggered after partner #2 signed"
+      status: CONDITIONAL
+      owner: "Engineer"
+    - id: P4-03
+      task: "ZATCA Phase 2 e-invoice integration — triggered at customer #10"
+      status: CONDITIONAL
+      owner: "Engineer"
+    - id: P4-04
+      task: "First VA hire decision @ Gate G6 (day 270)"
+      status: PLANNED
+      owner: "Founder"
+      condition: "MRR >= 60K SAR"
+
+# ═══════════════════════════════════════════════════════════════════
+# Decision Gates G1-G7 (matches MASTER_PLAN.md)
+# ═══════════════════════════════════════════════════════════════════
+decision_gates:
+  G1:
+    day: 30
+    condition: ">= 1 × 499 SAR payment in Moyasar + >= 1 Proof Pack score >= 4/5"
+    if_no: "Repeat W3-W4 of Phase A"
+  G2:
+    day: 60
+    condition: ">= 5 Sprints paid + 1 Managed Ops signed"
+    if_no: "Stop Sprint sales, re-evaluate ICP"
+  G3:
+    day: 90
+    condition: ">= 3 Managed Ops active + churn=0 + >= 1 case study"
+    if_no: "Return to Phase B intensity"
+  G4:
+    day: 150
+    condition: ">= 30K MRR + >= 1 agency partner signed"
+    if_no: "Stop partner work, focus Managed only"
+  G5:
+    day: 180
+    condition: ">= 40K MRR"
+    if_no: "Repeat Q1 with simpler criteria"
+  G6:
+    day: 270
+    condition: ">= 60K MRR + hire-decision triggered"
+    if_no: "Stay solo; do not hire"
+  G7:
+    day: 365
+    condition: ">= 80K MRR ARR"
+    if_no: "Full transparency review, redesign Year 2"
+
+# ═══════════════════════════════════════════════════════════════════
+# Definition of Done for the 90 days (kept for control-plane track)
 # ═══════════════════════════════════════════════════════════════════
 done_criteria:
   - "Every claim in README + deck traced to the no-overclaim register"
