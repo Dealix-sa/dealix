@@ -1,0 +1,100 @@
+# Founder Console — Trust Policy v1
+#
+# These rules are the deterministic half of the Dealix Trust Plane.
+# They are evaluated for every approval-class request that reaches
+# /approvals, every outreach / proposal / payment draft a worker would
+# execute, and every external-impact action requested by an AI agent.
+#
+# Stricter result wins. See docs/trust/POLICY_AS_CODE_SYSTEM.md.
+#
+# Result vocabulary (stricter → weaker):
+#   DENY                 — never allow this action
+#   ESCALATE             — founder must review, no auto path
+#   REQUIRE_EVIDENCE     — evidence must be attached before approval
+#   ALLOW_AFTER_APPROVAL — eligible once founder has approved (A2 path)
+#   ALLOW                — proceed without further gates (read-only / A1)
+
+version: 1
+name: founder_console_policy
+
+rules:
+  - id: no_a3_auto
+    description: A3 actions cannot be automated.
+    if:
+      approval_class: A3
+    then:
+      result: ESCALATE
+      external_action_allowed: false
+
+  - id: high_risk_requires_evidence
+    description: High or Critical risk requires evidence on file.
+    if:
+      risk_level:
+        - High
+        - Critical
+      evidence_required: true
+    then:
+      result: REQUIRE_EVIDENCE
+      external_action_allowed: false
+
+  - id: missing_evidence_when_required
+    description: Block actions whose evidence is required but absent.
+    if:
+      evidence_required: true
+      evidence_exists: false
+    then:
+      result: REQUIRE_EVIDENCE
+      external_action_allowed: false
+
+  - id: suppression_blocks_outreach
+    description: Suppressed contacts cannot receive outreach.
+    if:
+      suppressed: true
+    then:
+      result: DENY
+      external_action_allowed: false
+
+  - id: rejected_actions_never_execute
+    description: Rejected approvals can never become external actions.
+    if:
+      decision: Rejected
+    then:
+      result: DENY
+      external_action_allowed: false
+
+  - id: escalated_requires_review
+    description: Escalated decisions must be reviewed before any execution.
+    if:
+      decision: Escalated
+    then:
+      result: ESCALATE
+      external_action_allowed: false
+
+  - id: pending_a2_needs_decision
+    description: A2 actions cannot execute while still pending.
+    if:
+      approval_class: A2
+      decision: Pending
+    then:
+      result: ALLOW_AFTER_APPROVAL
+      external_action_allowed: false
+
+  - id: approved_a2_can_request_execution
+    description: A2 approved actions may request execution if all checks pass.
+    if:
+      approval_class: A2
+      decision: Approved
+      suppressed: false
+      evidence_exists: true
+    then:
+      result: ALLOW_AFTER_APPROVAL
+      external_action_allowed: true
+
+  - id: a1_read_only_default
+    description: A1 read-only/internal actions proceed without gating.
+    if:
+      approval_class: A1
+      suppressed: false
+    then:
+      result: ALLOW
+      external_action_allowed: false

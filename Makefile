@@ -10,7 +10,7 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference next-stage
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -182,3 +182,10 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Operating Layer v1 (next stage) ────────────────────────────
+# Verifies that Dealix Operating Layer v1 documentation and policies
+# are present. See docs/ops/DEALIX_OPERATING_LAYER_V1.md.
+
+next-stage: ## Operating Layer v1: verify docs + policies are in place
+	$(PYTHON) scripts/verify_next_stage_operating_layer.py
