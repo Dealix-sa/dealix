@@ -1,0 +1,198 @@
+pageType: content
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: bg-pattern
+    elementType: image
+    bounds: [0, 0, 1280, 720]
+    src: "/mnt/agents/output/dealix-marketing/brand/pattern-dark.jpg"
+    opacity: 0.15
+  - elementId: overlay
+    elementType: shape
+    bounds: [0, 0, 1280, 720]
+    shapeName: rectangle
+    fill:
+      type: gradient
+      colors: ["#1A1A1AEE", "#1A1A1ACC"]
+      angle: 180
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>CONTACT  //  اتصل بنا</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      fontSize: 36
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>نحن هنا لمساعدتك</p>
+      wrap: false
+  - elementId: card1
+    elementType: shape
+    bounds: [60, 180, 360, 200]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: card1-icon
+    elementType: icon
+    bounds: [90, 210, 36, 36]
+    iconName: mail
+    color: "$accent"
+  - elementId: card1-title
+    elementType: text
+    bounds: [90, 260, 300, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>البريد الإلكتروني</p>
+  - elementId: card1-value
+    elementType: text
+    bounds: [90, 300, 300, 30]
+    content:
+      fontSize: 18
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>hello@dealix.me</p>
+  - elementId: card2
+    elementType: shape
+    bounds: [460, 180, 360, 200]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: card2-icon
+    elementType: icon
+    bounds: [490, 210, 36, 36]
+    iconName: map-pin
+    color: "$accent"
+  - elementId: card2-title
+    elementType: text
+    bounds: [490, 260, 300, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>الموقع</p>
+  - elementId: card2-value
+    elementType: text
+    bounds: [490, 300, 300, 30]
+    content:
+      fontSize: 18
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>Riyadh, Saudi Arabia</p>
+  - elementId: card3
+    elementType: shape
+    bounds: [860, 180, 360, 200]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: card3-icon
+    elementType: icon
+    bounds: [890, 210, 36, 36]
+    iconName: globe
+    color: "$accent"
+  - elementId: card3-title
+    elementType: text
+    bounds: [890, 260, 300, 30]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>الموقع الإلكتروني</p>
+  - elementId: card3-value
+    elementType: text
+    bounds: [890, 300, 300, 30]
+    content:
+      fontSize: 18
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>dealix.me</p>
+  - elementId: cta-box
+    elementType: shape
+    bounds: [60, 430, 1160, 200]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: cta-text
+    elementType: text
+    bounds: [100, 465, 600, 50]
+    content:
+      fontSize: 28
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>احصل على تشخيص مجاني</p>
+      wrap: false
+  - elementId: cta-sub
+    elementType: text
+    bounds: [100, 525, 600, 30]
+    content:
+      fontSize: 16
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      text: |
+        <p>تقييم 30 نقطة لأعمالك — مجاناً وبدون التزام</p>
+  - elementId: cta-btn
+    elementType: shape
+    bounds: [800, 490, 380, 80]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: cta-btn-text
+    elementType: text
+    bounds: [820, 505, 340, 50]
+    content:
+      fontSize: 22
+      color: "$dark"
+      fontFamily: "Liter, alimamashuheiti"
+      align: center
+      wrap: false
+      text: |
+        <p>ابدأ الآن →</p>

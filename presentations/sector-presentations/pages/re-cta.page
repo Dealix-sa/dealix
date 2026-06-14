@@ -1,0 +1,102 @@
+pageType: final
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: bg-img
+    elementType: image
+    bounds: [0, 0, 1280, 720]
+    src: "/mnt/agents/output/dealix-marketing/brand/hero-bg-dark.jpg"
+    opacity: 0.3
+  - elementId: overlay
+    elementType: shape
+    bounds: [0, 0, 1280, 720]
+    shapeName: rectangle
+    fill:
+      type: gradient
+      colors: ["#1A1A1AF0", "#1A1A1AD0"]
+      angle: 180
+  - elementId: logo
+    elementType: image
+    bounds: [60, 50, 80, 80]
+    src: "/mnt/agents/output/dealix-marketing/brand/dealix-logo-primary.png"
+  - elementId: sector-label
+    elementType: text
+    bounds: [60, 250, 400, 28]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 4
+      wrap: false
+      text: |
+        <p>REAL ESTATE SECTOR</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 290, 700, 60]
+    content:
+      fontSize: 40
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>ابدأ بتشخيص مجاني لأعمالك</p>
+      wrap: false
+  - elementId: subtitle
+    elementType: text
+    bounds: [60, 360, 600, 60]
+    content:
+      fontSize: 20
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>تقييم 30 نقطة — مجاني وبدون التزام</p>
+  - elementId: gold-line
+    elementType: shape
+    bounds: [60, 440, 120, 3]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: contact-info
+    elementType: text
+    bounds: [60, 470, 500, 120]
+    content:
+      fontSize: 18
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.8
+      text: |
+        <p>hello@dealix.me</p>
+        <p>dealix.me</p>
+        <p>Riyadh, Saudi Arabia</p>
+  - elementId: cta-box
+    elementType: shape
+    bounds: [60, 580, 400, 60]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: cta-text
+    elementType: text
+    bounds: [80, 590, 360, 40]
+    content:
+      fontSize: 22
+      color: "$dark"
+      fontFamily: "Liter, alimamashuheiti"
+      align: center
+      wrap: false
+      text: |
+        <p>احجز استشارتك المجانية ←</p>
+  - elementId: confidential
+    elementType: text
+    bounds: [900, 650, 320, 24]
+    content:
+      fontSize: 11
+      color: "#FFFFFF44"
+      fontFamily: "Liter"
+      letterSpacing: 2
+      align: right
+      wrap: false
+      text: |
+        <p>CONFIDENTIAL — Dealix 2025</p>

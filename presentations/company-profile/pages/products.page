@@ -1,0 +1,299 @@
+pageType: content
+background:
+  type: solid
+  color: "$background"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>PRODUCTS & SERVICES  //  المنتجات والخدمات</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      style: "$title"
+      text: |
+        <p>سلم عروض Dealix</p>
+      wrap: false
+  - elementId: card1-bg
+    elementType: shape
+    bounds: [60, 170, 270, 490]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: card1-accent
+    elementType: shape
+    bounds: [60, 170, 270, 5]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: card1-num
+    elementType: text
+    bounds: [80, 200, 80, 40]
+    content:
+      fontSize: 32
+      color: "$primary"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>01</p>
+  - elementId: card1-title
+    elementType: text
+    bounds: [80, 250, 230, 70]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      lineHeight: 1.3
+      text: |
+        <p>التشخيص المجاني</p>
+  - elementId: card1-price
+    elementType: text
+    bounds: [80, 330, 230, 36]
+    content:
+      fontSize: 28
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>0 ريال</p>
+  - elementId: card1-desc
+    elementType: text
+    bounds: [80, 380, 230, 100]
+    content:
+      style: "$body"
+      fontSize: 16
+      lineHeight: 1.5
+      text: |
+        <p>تقييم 30 نقطة لأعمالك + تقرير AI مفصل</p>
+  - elementId: card1-features
+    elementType: text
+    bounds: [80, 490, 230, 150]
+    content:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.6
+      text: |
+        <p>• تشخيص شامل</p>
+        <p>• تقرير ذكاء اصطناعي</p>
+        <p>• 30 دقيقة استشارة</p>
+        <p>• تحديد فرص النمو</p>
+  - elementId: card2-bg
+    elementType: shape
+    bounds: [360, 170, 270, 490]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: card2-accent
+    elementType: shape
+    bounds: [360, 170, 270, 5]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: card2-num
+    elementType: text
+    bounds: [380, 200, 80, 40]
+    content:
+      fontSize: 32
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>02</p>
+  - elementId: card2-title
+    elementType: text
+    bounds: [380, 250, 230, 70]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      lineHeight: 1.3
+      text: |
+        <p>البايلوت المدفوع</p>
+  - elementId: card2-price
+    elementType: text
+    bounds: [380, 330, 230, 36]
+    content:
+      fontSize: 28
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>2,500 ريال</p>
+  - elementId: card2-desc
+    elementType: text
+    bounds: [380, 380, 230, 60]
+    content:
+      style: "$body"
+      fontSize: 16
+      lineHeight: 1.5
+      text: |
+        <p>7 أيام تنفيذ + تقرير أسبوعي</p>
+  - elementId: card2-features
+    elementType: text
+    bounds: [380, 450, 230, 200]
+    content:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.6
+      text: |
+        <p>• كل ما في التشخيص</p>
+        <p>• بايلوت 7 أيام</p>
+        <p>• دعم مخصص</p>
+        <p>• ضمان 14 يوم</p>
+  - elementId: card3-bg
+    elementType: shape
+    bounds: [660, 170, 270, 490]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+    border:
+      style: solid
+      width: 1
+      color: "$primary"
+  - elementId: card3-num
+    elementType: text
+    bounds: [680, 200, 80, 40]
+    content:
+      fontSize: 32
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>03</p>
+  - elementId: card3-title
+    elementType: text
+    bounds: [680, 250, 230, 70]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      lineHeight: 1.3
+      text: |
+        <p>غرفة القيادة</p>
+  - elementId: card3-price
+    elementType: text
+    bounds: [680, 330, 230, 36]
+    content:
+      fontSize: 28
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>4,900/شهر</p>
+  - elementId: card3-desc
+    elementType: text
+    bounds: [680, 380, 230, 60]
+    content:
+      fontSize: 16
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>منصة Dealix كاملة + دعم مستمر</p>
+  - elementId: card3-features
+    elementType: text
+    bounds: [680, 450, 230, 200]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.6
+      text: |
+        <p>• كل ما في البايلوت</p>
+        <p>• منصة كاملة</p>
+        <p>• API كامل</p>
+        <p>• تقارير متقدمة</p>
+  - elementId: card4-bg
+    elementType: shape
+    bounds: [960, 170, 270, 490]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$dark"
+    border:
+      style: solid
+      width: 1
+      color: "$dark"
+  - elementId: card4-num
+    elementType: text
+    bounds: [980, 200, 80, 40]
+    content:
+      fontSize: 32
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>04</p>
+  - elementId: card4-title
+    elementType: text
+    bounds: [980, 250, 230, 70]
+    content:
+      fontSize: 20
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      lineHeight: 1.3
+      text: |
+        <p>المؤسسي</p>
+  - elementId: card4-price
+    elementType: text
+    bounds: [980, 330, 230, 36]
+    content:
+      fontSize: 28
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>مخصص</p>
+  - elementId: card4-desc
+    elementType: text
+    bounds: [980, 380, 230, 60]
+    content:
+      fontSize: 16
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>أنظمة مخصصة للمؤسسات الكبرى</p>
+  - elementId: card4-features
+    elementType: text
+    bounds: [980, 450, 230, 200]
+    content:
+      fontSize: 14
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.6
+      text: |
+        <p>• تطوير مخصص</p>
+        <p>• تكامل كامل</p>
+        <p>• دعم 24/7</p>
+        <p>• SLA مضمون</p>

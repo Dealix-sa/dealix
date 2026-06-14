@@ -1,0 +1,210 @@
+pageType: content
+background:
+  type: solid
+  color: "$background"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 300, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>THE PROBLEM  //  التحديات</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 600, 50]
+    content:
+      style: "$title"
+      text: |
+        <p>تحديات القطاع العقاري</p>
+      wrap: false
+  - elementId: p1-bg
+    elementType: shape
+    bounds: [60, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: p1-accent
+    elementType: shape
+    bounds: [60, 170, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#DC2626"
+  - elementId: p1-title
+    elementType: text
+    bounds: [85, 195, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>تشتت بيانات العملاء</p>
+  - elementId: p1-desc
+    elementType: text
+    bounds: [85, 240, 320, 140]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>بيانات العملاء متفرقة على Excel وWhatsApp وورق — لا يوجد نظام موحد لإدارة العملاء المحتملين</p>
+  - elementId: p2-bg
+    elementType: shape
+    bounds: [455, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: p2-accent
+    elementType: shape
+    bounds: [455, 170, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#DC2626"
+  - elementId: p2-title
+    elementType: text
+    bounds: [480, 195, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>ضياع فرص المبيعات</p>
+  - elementId: p2-desc
+    elementType: text
+    bounds: [480, 240, 320, 140]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>80% من الفرص تضيع بسبب بطء المتابعة وعدم وجود نظام آلي لتتبع رحلة العميل</p>
+  - elementId: p3-bg
+    elementType: shape
+    bounds: [850, 170, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: p3-accent
+    elementType: shape
+    bounds: [850, 170, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#DC2626"
+  - elementId: p3-title
+    elementType: text
+    bounds: [875, 195, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>صعوبة تحليل السوق</p>
+  - elementId: p3-desc
+    elementType: text
+    bounds: [875, 240, 320, 140]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>لا توجد أدوات تحليلية لفهم اتجاهات السوق وتسعير الوحدات بشكل تنافسي</p>
+  - elementId: p4-bg
+    elementType: shape
+    bounds: [60, 435, 370, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: p4-accent
+    elementType: shape
+    bounds: [60, 435, 5, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#DC2626"
+  - elementId: p4-title
+    elementType: text
+    bounds: [85, 460, 320, 30]
+    content:
+      fontSize: 20
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>الامتثال التنظيمي</p>
+  - elementId: p4-desc
+    elementType: text
+    bounds: [85, 505, 320, 140]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>متطلبات PDPL وZATCA تضع ضغطاً إضافياً على الشركات العقارية لحماية بيانات العملاء</p>
+  - elementId: stat-box
+    elementType: shape
+    bounds: [455, 435, 765, 240]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: stat-num
+    elementType: text
+    bounds: [490, 465, 300, 60]
+    content:
+      fontSize: 48
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>80%</p>
+  - elementId: stat-desc
+    elementType: text
+    bounds: [490, 530, 500, 60]
+    content:
+      fontSize: 18
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>من فرص المبيعات تضيع بسبب عدم وجود نظام CRM متكامل</p>

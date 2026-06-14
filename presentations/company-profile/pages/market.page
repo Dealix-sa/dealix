@@ -1,0 +1,217 @@
+pageType: content
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 300, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>MARKET OPPORTUNITY  //  السوق والفرصة</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      fontSize: 36
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      text: |
+        <p>السوق السعودي يتوسع بسرعة</p>
+      wrap: false
+  - elementId: stat1-num
+    elementType: text
+    bounds: [60, 180, 250, 70]
+    content:
+      style: "$bigNumber"
+      text: |
+        <p>15B</p>
+      wrap: false
+  - elementId: stat1-label
+    elementType: text
+    bounds: [60, 250, 250, 50]
+    content:
+      fontSize: 16
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.4
+      text: |
+        <p>ريال سنوياً</p>
+        <p>حجم سوق البرمجيات</p>
+  - elementId: stat2-num
+    elementType: text
+    bounds: [350, 180, 250, 70]
+    content:
+      style: "$bigNumber"
+      text: |
+        <p>67%</p>
+      wrap: false
+  - elementId: stat2-label
+    elementType: text
+    bounds: [350, 250, 250, 50]
+    content:
+      fontSize: 16
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.4
+      text: |
+        <p>نسبة التحول الرقمي</p>
+        <p>في الشركات السعودية</p>
+  - elementId: stat3-num
+    elementType: text
+    bounds: [640, 180, 250, 70]
+    content:
+      style: "$bigNumber"
+      text: |
+        <p>35%</p>
+      wrap: false
+  - elementId: stat3-label
+    elementType: text
+    bounds: [640, 250, 250, 50]
+    content:
+      fontSize: 16
+      color: "#FFFFFF99"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.4
+      text: |
+        <p>مساهمة القطاع الخاص</p>
+        <p>هدف رؤية 2030</p>
+  - elementId: divider
+    elementType: shape
+    bounds: [60, 340, 1160, 1]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF22"
+  - elementId: insight-title
+    elementType: text
+    bounds: [60, 370, 600, 30]
+    content:
+      fontSize: 18
+      color: "$accent"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>لماذا الآن؟</p>
+  - elementId: insight-body
+    elementType: text
+    bounds: [60, 410, 560, 100]
+    content:
+      fontSize: 18
+      color: "#FFFFFFCC"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.6
+      text: |
+        <p>نظام حماية البيانات الشخصية (PDPL) أصبح إلزامياً من 2024. الشركات السعودية تحتاج لمنصات متوافقة وآمنة لإدارة بيانات عملائها.</p>
+  - elementId: chart-placeholder
+    elementType: shape
+    bounds: [680, 370, 540, 280]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "#FFFFFF08"
+    border:
+      style: solid
+      width: 1
+      color: "#FFFFFF15"
+  - elementId: chart-title
+    elementType: text
+    bounds: [700, 385, 300, 24]
+    content:
+      fontSize: 14
+      color: "#FFFFFF66"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>DIGITAL TRANSFORMATION INDEX</p>
+  - elementId: bar1
+    elementType: shape
+    bounds: [720, 440, 40, 120]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: bar1-label
+    elementType: text
+    bounds: [720, 570, 60, 20]
+    content:
+      fontSize: 11
+      color: "#FFFFFF66"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>2022</p>
+  - elementId: bar2
+    elementType: shape
+    bounds: [790, 410, 40, 150]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$primary"
+  - elementId: bar2-label
+    elementType: text
+    bounds: [790, 570, 60, 20]
+    content:
+      fontSize: 11
+      color: "#FFFFFF66"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>2023</p>
+  - elementId: bar3
+    elementType: shape
+    bounds: [860, 380, 40, 180]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: bar3-label
+    elementType: text
+    bounds: [860, 570, 60, 20]
+    content:
+      fontSize: 11
+      color: "#FFFFFF66"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>2024</p>
+  - elementId: bar4
+    elementType: shape
+    bounds: [930, 350, 40, 210]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: bar4-label
+    elementType: text
+    bounds: [930, 570, 60, 20]
+    content:
+      fontSize: 11
+      color: "#FFFFFF66"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>2025E</p>
+  - elementId: growth-label
+    elementType: text
+    bounds: [1000, 420, 200, 60]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      lineHeight: 1.4
+      text: |
+        <p>+40% YoY</p>
+        <p>Growth</p>

@@ -1,0 +1,176 @@
+pageType: content
+background:
+  type: solid
+  color: "$background"
+elements:
+  - elementId: header-bar
+    elementType: shape
+    bounds: [60, 50, 4, 30]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: header-label
+    elementType: text
+    bounds: [76, 48, 400, 30]
+    content:
+      fontSize: 12
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 3
+      wrap: false
+      text: |
+        <p>LEADERSHIP  //  فريق العمل</p>
+  - elementId: title
+    elementType: text
+    bounds: [60, 90, 700, 50]
+    content:
+      style: "$title"
+      text: |
+        <p>نخبة من الخبراء السعوديين</p>
+      wrap: false
+  - elementId: team-desc
+    elementType: text
+    bounds: [60, 150, 600, 60]
+    content:
+      style: "$body"
+      text: |
+        <p>فريق يجمع بين الخبرة في الذكاء الاصطناعي وتطوير البرمجيات والأعمال في السوق السعودي</p>
+  - elementId: t1-bg
+    elementType: shape
+    bounds: [60, 240, 370, 350]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: t1-icon
+    elementType: icon
+    bounds: [80, 265, 48, 48]
+    iconName: user-circle
+    color: "$primary"
+  - elementId: t1-name
+    elementType: text
+    bounds: [80, 330, 330, 30]
+    content:
+      fontSize: 22
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>المؤسس والرئيس التنفيذي</p>
+  - elementId: t1-role
+    elementType: text
+    bounds: [80, 365, 330, 24]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>FOUNDER & CEO</p>
+  - elementId: t1-desc
+    elementType: text
+    bounds: [80, 400, 330, 80]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>رؤية استراتيجية وقيادة تنفيذية لبناء المنصة السعودية الأولى</p>
+  - elementId: t2-bg
+    elementType: shape
+    bounds: [455, 240, 370, 350]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: t2-icon
+    elementType: icon
+    bounds: [475, 265, 48, 48]
+    iconName: code-2
+    color: "$primary"
+  - elementId: t2-name
+    elementType: text
+    bounds: [475, 330, 330, 30]
+    content:
+      fontSize: 22
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>رئيس التقنية</p>
+  - elementId: t2-role
+    elementType: text
+    bounds: [475, 365, 330, 24]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>CTO</p>
+  - elementId: t2-desc
+    elementType: text
+    bounds: [475, 400, 330, 80]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>خبرة عميقة في بناء الأنظمة القابلة للتوسع والذكاء الاصطناعي</p>
+  - elementId: t3-bg
+    elementType: shape
+    bounds: [850, 240, 370, 350]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$light"
+    border:
+      style: solid
+      width: 1
+      color: "#E5E5E5"
+  - elementId: t3-icon
+    elementType: icon
+    bounds: [870, 265, 48, 48]
+    iconName: briefcase
+    color: "$primary"
+  - elementId: t3-name
+    elementType: text
+    bounds: [870, 330, 330, 30]
+    content:
+      fontSize: 22
+      color: "$text"
+      fontFamily: "Liter, alimamashuheiti"
+      wrap: false
+      text: |
+        <p>رئيس العمليات التجارية</p>
+  - elementId: t3-role
+    elementType: text
+    bounds: [870, 365, 330, 24]
+    content:
+      fontSize: 14
+      color: "$accent"
+      fontFamily: "Liter"
+      wrap: false
+      text: |
+        <p>CBO</p>
+  - elementId: t3-desc
+    elementType: text
+    bounds: [870, 400, 330, 80]
+    content:
+      fontSize: 16
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.5
+      text: |
+        <p>خبير في التوسع التجاري والمبيعات B2B في السعودية</p>
