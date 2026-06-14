@@ -182,3 +182,39 @@ v10-verify: ## v10: full master verification (reference + modules + safety + tes
 
 v10-reference: ## v10: show 70-tool reference library summary
 	$(PYTHON) scripts/verify_reference_library_70.py
+
+# ── Priority Execution Sprint ──────────────────────────────────
+# Founder-facing daily / weekly / sprint commands. Each command expects a
+# checked-out private operations repo at PRIVATE_OPS (default
+# ../dealix-ops-private). Override with `make sprint PRIVATE_OPS=/path/to/repo`.
+
+PRIVATE_OPS ?= ../dealix-ops-private
+
+.PHONY: sprint daily close-day weekly-close dashboard \
+        verify-priority-sprint verify-priority-layer verify-full-ops
+
+sprint: ## Show + verify the current priority execution sprint
+	$(PYTHON) -m dealix_cli sprint --private-ops $(PRIVATE_OPS)
+
+daily: ## Run the daily founder loop
+	$(PYTHON) -m dealix_cli daily --private-ops $(PRIVATE_OPS)
+
+close-day: ## Run the end-of-day execution gate
+	$(PYTHON) -m dealix_cli close-day --private-ops $(PRIVATE_OPS)
+
+weekly-close: ## Run the weekly learning review + verifiers
+	$(PYTHON) -m dealix_cli weekly --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m dealix_cli verify --private-ops $(PRIVATE_OPS)
+
+dashboard: ## Print dashboard pointers + serve local snapshot on :8080
+	$(PYTHON) -m dealix_cli dashboard --private-ops $(PRIVATE_OPS)
+	$(PYTHON) -m http.server 8080
+
+verify-priority-sprint: ## Verify the priority execution sprint doc
+	$(PYTHON) scripts/verify_priority_execution_sprint.py
+
+verify-priority-layer: ## Verify the priority operating layer
+	$(PYTHON) scripts/verify_priority_operating_layer.py
+
+verify-full-ops: ## Run the umbrella full-ops verifier
+	$(PYTHON) scripts/verify_full_ops.py

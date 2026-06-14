@@ -1,0 +1,8 @@
+day,focus,target,actual,status,evidence,next_action
+1,Pipeline,25 leads,,,pipeline/pipeline_tracker.csv,
+2,Outbound,25 DMs,,,pipeline/outreach_queue.md,
+3,Samples,3 samples,,,delivery/research/,
+4,Proposal,1 proposal,,,sales/proposal_notes/,
+5,Payment,1 payment attempt,,,revenue/pipeline_value.csv,
+6,Delivery,1 delivery test,,,delivery/reports/,
+7,Learning,1 learning decision,,,learning/weekly_intelligence_review.md,

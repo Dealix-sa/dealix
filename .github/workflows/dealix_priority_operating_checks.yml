@@ -1,0 +1,30 @@
+name: Dealix Priority Operating Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  priority-operating:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify priority operating layer
+        run: python scripts/verify_priority_operating_layer.py
+
+      - name: Verify priority execution sprint
+        run: python scripts/verify_priority_execution_sprint.py
+
+      - name: Verify full ops
+        run: python scripts/verify_full_ops.py
+
+      - name: Compile
+        run: python -m compileall dealix_cli scripts
