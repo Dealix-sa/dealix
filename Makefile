@@ -10,7 +10,20 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
-        v5-proof-pack v10-verify v10-reference
+        v5-proof-pack v10-verify v10-reference \
+        ceo monthly verify-executive-control
+
+# ── Executive Control Plane ────────────────────────────────────
+PRIVATE_OPS ?= ../dealix-ops-private
+
+ceo: ## CEO command — business score + action queue
+	$(PYTHON) -m dealix_cli ceo --private-ops $(PRIVATE_OPS)
+
+monthly: ## Monthly strategy + finance review
+	$(PYTHON) -m dealix_cli monthly --private-ops $(PRIVATE_OPS)
+
+verify-executive-control: ## Verify Executive Control Plane files
+	$(PYTHON) scripts/verify_executive_control_plane.py
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
