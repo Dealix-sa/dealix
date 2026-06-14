@@ -1,0 +1,63 @@
+# Dealix Compliance Gate
+# Mandatory — cannot be skipped
+# References: CAN-SPAM Act, GDPR principles, Saudi PDPL framework
+
+email_rules:
+  no_deceptive_subject: true
+  no_fake_from_name: true
+  no_misleading_headers: true
+  no_mass_bcc: true
+  require_soft_opt_out: true
+  check_suppression_list: true
+  founder_approval_required: true
+  no_guaranteed_roi_claims: true
+  no_fake_urgency: true
+  no_fake_scarcity: true
+
+identity_requirements:
+  from_name_must_be_real: true
+  company_name_required: true
+  reply_to_monitored: true
+  physical_address_on_request: true
+
+opt_out_handling:
+  honor_opt_out_within_business_days: 2
+  add_to_suppression_immediately: true
+  never_re_add_suppressed_contact: true
+  soft_opt_out_text_required: "إذا ما كان هذا مناسب لكم، أقدر أوقف المتابعة."
+
+domain_health:
+  require_spf: true
+  require_dkim: true
+  require_dmarc: true
+  monitor_blacklists: true
+  check_tools:
+    - "MXToolbox"
+    - "Mail-tester.com"
+    - "Google Postmaster Tools"
+
+content_compliance:
+  no_misleading_claims: true
+  mark_assumptions_clearly: true
+  no_private_data_claims: true
+  no_fake_social_proof: true
+  personalization_must_be_real: true
+
+data_handling:
+  store_only_public_data: true
+  no_personal_sensitive_data: true
+  suppression_list_permanent: true
+  lead_data_retention_policy: "delete after 12 months if no engagement"
+
+pre_send_checklist:
+  - SPF record verified
+  - DKIM signing active
+  - DMARC policy set to quarantine or reject
+  - Subject line is not deceptive
+  - From name is real
+  - Soft opt-out line present
+  - Suppression list checked
+  - Contact not previously bounced
+  - Draft score >= 82
+  - Founder has approved
+  - Daily ramp limit not exceeded

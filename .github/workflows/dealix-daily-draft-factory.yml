@@ -1,0 +1,89 @@
+name: Dealix Daily Draft Factory
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # 6:00 AM Riyadh time (UTC+3)
+  workflow_dispatch:
+    inputs:
+      company_limit:
+        description: 'Max companies to process'
+        required: false
+        default: '20'
+      steps:
+        description: 'Steps to run (comma-separated: scan,research,route,draft,gate,report)'
+        required: false
+        default: 'scan,research,route,draft,gate,report'
+      dry_run:
+        description: 'Dry run (no API calls)'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  daily-draft-factory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install anthropic python-dotenv pyyaml click rich
+
+      - name: Run Market Scanner
+        if: contains(github.event.inputs.steps || 'scan,research,route,draft,gate,report', 'scan')
+        run: python dealix-marketing-os/scripts/market_scanner.py --count ${{ github.event.inputs.company_limit || '20' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Enrich Companies
+        if: contains(github.event.inputs.steps || 'scan,research,route,draft,gate,report', 'research')
+        run: python dealix-marketing-os/scripts/company_researcher.py --limit ${{ github.event.inputs.company_limit || '20' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Route Offers
+        if: contains(github.event.inputs.steps || 'scan,research,route,draft,gate,report', 'route')
+        run: python dealix-marketing-os/scripts/offer_router.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Generate Drafts
+        if: contains(github.event.inputs.steps || 'scan,research,route,draft,gate,report', 'draft')
+        run: python dealix-marketing-os/scripts/draft_writer.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Run Quality Gate
+        if: contains(github.event.inputs.steps || 'scan,research,route,draft,gate,report', 'gate')
+        run: python dealix-marketing-os/scripts/draft_quality_gate.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Generate Founder Report
+        if: contains(github.event.inputs.steps || 'scan,research,route,draft,gate,report', 'report')
+        run: python dealix-marketing-os/scripts/founder_marketing_report.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Commit outputs
+        run: |
+          git config user.name "Dealix Draft Factory"
+          git config user.email "bot@dealix.sa"
+          git add dealix-marketing-os/memory/ dealix-marketing-os/outputs/ || true
+          git diff --staged --quiet || git commit -m "chore: daily draft factory run $(date +%Y-%m-%d)"
+          git push origin HEAD || true
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: founder-report-${{ github.run_id }}
+          path: dealix-marketing-os/outputs/reports/
+          retention-days: 30

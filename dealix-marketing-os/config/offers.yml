@@ -1,0 +1,190 @@
+# Dealix Offer Catalog
+# Each offer has entry_price, full_price, delivery_days, ideal_sector
+
+offers:
+  agentic_ai_workflow_audit:
+    name_ar: "تدقيق Agentic AI Workflow"
+    name_en: "Agentic AI Workflow Audit"
+    tagline: "خريطة واضحة لـ workflow واحد خلال 7 أيام"
+    price_sar: 499
+    delivery_days: 7
+    deliverables:
+      - "خريطة الـ workflow الحالي"
+      - "تحديد نقاط الألم الرئيسية"
+      - "فرص الأتمتة بـ AI Agents"
+      - "خطة pilot مقترحة"
+      - "تقرير PDF + عرض تقديمي"
+    entry_offer: true
+    ideal_for:
+      - facilities_management
+      - contracting_construction
+      - b2b_services
+      - any_sector
+    pain_triggers:
+      - "manual reporting"
+      - "approval delays"
+      - "repeated data entry"
+      - "SLA tracking"
+    cta: "نبدأ بـ audit على workflow واحد خلال 7 أيام"
+
+  maintenance_intelligence_os:
+    name_ar: "Maintenance Intelligence OS"
+    name_en: "Maintenance Intelligence OS"
+    tagline: "تحويل بلاغات الصيانة وSLA وتقارير الفنيين إلى ذكاء تشغيلي"
+    price_sar_min: 2999
+    price_sar_max: 4999
+    delivery_days: 30
+    deliverables:
+      - "Agentic workflow لتصنيف البلاغات"
+      - "استخراج تلقائي من تقارير الفنيين"
+      - "كشف الأعطال المتكررة"
+      - "ملخص أسبوعي للإدارة"
+      - "لوحة SLA dashboard"
+      - "رفع الحالات الحساسة للموافقة"
+    ideal_for:
+      - facilities_management
+      - oil_gas_energy
+      - manufacturing_industrial
+      - healthcare_operations
+    pain_triggers:
+      - "SLA breaches"
+      - "technician report chaos"
+      - "repeated failures"
+      - "manual escalation"
+      - "delayed management visibility"
+
+  project_controls_ai_os:
+    name_ar: "Project Controls AI OS"
+    name_en: "Project Controls AI OS"
+    tagline: "ربط تحديثات المشاريع والمخاطر والموافقات في مسار قرار واحد"
+    price_sar_min: 2999
+    price_sar_max: 4999
+    delivery_days: 30
+    deliverables:
+      - "تلخيص تحديثات المشاريع تلقائياً"
+      - "تتبع المخاطر والمتأخرات"
+      - "تقرير أسبوعي للإدارة"
+      - "اقتراح next actions"
+      - "رفع القرارات الحساسة للموافقة"
+    ideal_for:
+      - contracting_construction
+      - oil_gas_energy
+      - government_semigovernment
+    pain_triggers:
+      - "approval delays"
+      - "late weekly reports"
+      - "risk blindspots"
+      - "change request chaos"
+      - "multi-party coordination"
+
+  sovereign_knowledge_rag:
+    name_ar: "Sovereign Knowledge / RAG System"
+    name_en: "Sovereign Knowledge & RAG System"
+    tagline: "نظام استرجاع المعرفة المؤسسية بذكاء اصطناعي خاضع للحوكمة"
+    price_sar_min: 5000
+    price_sar_max: 25000
+    delivery_days: 45
+    deliverables:
+      - "RAG pipeline على مستندات المؤسسة"
+      - "Policy Q&A agent"
+      - "Document intelligence layer"
+      - "حوكمة وصلاحيات وصول"
+      - "Audit trail كامل"
+    ideal_for:
+      - government_semigovernment
+      - oil_gas_energy
+      - healthcare_operations
+      - large_enterprise
+    pain_triggers:
+      - "knowledge retrieval inefficiency"
+      - "policy Q&A burden"
+      - "document intelligence gap"
+      - "controlled AI adoption need"
+
+  executive_ai_command_center:
+    name_ar: "Executive AI Command Center"
+    name_en: "Executive AI Command Center"
+    tagline: "لوحة قيادة تشغيلية للإدارة العليا مبنية على AI Agents"
+    price_sar_min: 4999
+    price_sar_max: 15000
+    delivery_days: 30
+    deliverables:
+      - "Executive dashboard"
+      - "Daily automated briefing"
+      - "KPI monitoring agents"
+      - "Exception alerts"
+      - "Decision support layer"
+    ideal_for:
+      - holding_companies
+      - large_enterprise
+      - government_semigovernment
+    pain_triggers:
+      - "executive visibility gap"
+      - "delayed KPI reporting"
+      - "information overload"
+      - "multi-entity oversight"
+
+  revenue_ai_os:
+    name_ar: "Revenue AI OS"
+    name_en: "Revenue AI OS"
+    tagline: "تحسين lead qualification، المتابعة، وسرعة الـ proposal"
+    price_sar_min: 2999
+    price_sar_max: 4999
+    delivery_days: 30
+    deliverables:
+      - "Lead qualification agent"
+      - "Follow-up automation"
+      - "Proposal generation pipeline"
+      - "CRM hygiene agents"
+      - "Win/loss analysis"
+    ideal_for:
+      - b2b_services
+      - real_estate_property
+      - retail_enterprise
+    pain_triggers:
+      - "lead leakage"
+      - "slow proposals"
+      - "CRM discipline issues"
+      - "follow-up inconsistency"
+
+  ai_governance_adoption_pack:
+    name_ar: "AI Governance & Adoption Pack"
+    name_en: "AI Governance & Adoption Pack"
+    tagline: "إطار حوكمة وتبني آمن للذكاء الاصطناعي في المؤسسات الكبيرة"
+    price_sar_min: 5000
+    price_sar_max: 15000
+    delivery_days: 30
+    deliverables:
+      - "AI policy framework"
+      - "Use case prioritization matrix"
+      - "Risk assessment"
+      - "Pilot design"
+      - "Training program"
+    ideal_for:
+      - government_semigovernment
+      - large_enterprise
+      - oil_gas_energy
+    pain_triggers:
+      - "AI adoption uncertainty"
+      - "governance gap"
+      - "security concerns"
+      - "policy compliance"
+
+  hr_screening_agent:
+    name_ar: "HR Screening Agent"
+    name_en: "HR Screening Agent"
+    tagline: "أتمتة تصفية المتقدمين وتحضير مقابلات HR"
+    price_sar_min: 1500
+    price_sar_max: 3000
+    delivery_days: 14
+    deliverables:
+      - "CV screening pipeline"
+      - "Automated shortlisting"
+      - "Interview question generator"
+      - "Candidate brief"
+    ideal_for:
+      - any_sector_hiring_at_scale
+    pain_triggers:
+      - "high volume hiring"
+      - "manual CV screening"
+      - "HR bandwidth constraint"

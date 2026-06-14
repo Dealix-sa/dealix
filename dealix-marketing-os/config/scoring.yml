@@ -1,0 +1,110 @@
+# Dealix Company Fit Scoring System
+# Max score: 100
+
+fit_scoring:
+  criteria:
+    operations_heavy:
+      weight: 20
+      description: "Company has complex, recurring operational workflows"
+      signals:
+        - field_teams or technicians
+        - multi-site or multi-branch
+        - shift-based work
+        - SLA-driven delivery
+
+    maintenance_or_field_work:
+      weight: 20
+      description: "Active maintenance, field service, or on-site operations"
+      signals:
+        - maintenance contracts
+        - field engineers
+        - preventive maintenance programs
+        - work order management
+
+    repeated_reporting:
+      weight: 15
+      description: "Regular operational reporting burden exists"
+      signals:
+        - weekly/daily reports
+        - executive dashboards needed
+        - multi-stakeholder reporting
+        - manual report compilation
+
+    multi_branch_or_multi_site:
+      weight: 10
+      description: "Operations span multiple locations"
+      signals:
+        - branches in multiple cities
+        - project sites
+        - distributed teams
+        - regional offices
+
+    clear_buyer_title:
+      weight: 10
+      description: "We can identify the right buyer title with confidence"
+      signals:
+        - Operations Director visible
+        - FM Manager on LinkedIn
+        - Project Controls Head found
+        - Digital Transformation Lead identified
+
+    public_growth_signal:
+      weight: 10
+      description: "Company shows growth or expansion signals"
+      signals:
+        - new contract announced
+        - hiring operations roles
+        - expansion news
+        - recent project win
+
+    likely_data_or_api:
+      weight: 10
+      description: "Company likely has data systems we can integrate with"
+      signals:
+        - uses ERP (SAP, Oracle, etc)
+        - CMMS system likely
+        - project management tools
+        - existing digital infrastructure
+
+    founder_domain_fit:
+      weight: 5
+      description: "Founder has domain credibility with this company/sector"
+      signals:
+        - similar client in portfolio
+        - sector expertise
+        - case study available
+        - referral possible
+
+tier_thresholds:
+  tier_a:
+    min_score: 85
+    action: "Write deep personalized draft — 8 content pieces"
+    priority: 1
+
+  tier_b:
+    min_score: 70
+    action: "Write quality personalized draft — 4 content pieces"
+    priority: 2
+
+  nurture:
+    min_score: 55
+    action: "Light touch message — 2 content pieces"
+    priority: 3
+
+  archive:
+    min_score: 0
+    max_score: 54
+    action: "Archive — do not draft"
+    priority: null
+
+minimum_research_gates:
+  required_before_draft:
+    - company_understood
+    - sector_identified
+    - workflow_hypothesized
+    - pain_hypothesized
+    - buyer_title_identified
+    - offer_selected
+    - cta_defined
+
+  if_incomplete: "status = needs_more_research — no draft generated"
