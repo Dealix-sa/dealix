@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/proof_pack.schema.json",
+  "title": "Dealix Proof Pack (launch bundle)",
+  "type": "object",
+  "required": ["proof_id", "claim", "evidence_level", "evidence_type", "source", "limitation", "approved_for_sales_use", "owner", "review_date_iso", "anonymized"],
+  "additionalProperties": false,
+  "properties": {
+    "proof_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "claim": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "evidence_level": { "enum": ["L0", "L1", "L2", "L3", "L4", "L5"] },
+    "evidence_type": { "enum": ["case_study", "benchmark", "audit_finding", "expert_opinion"] },
+    "source": { "type": "string" },
+    "limitation": { "type": "string" },
+    "approved_for_sales_use": { "type": "boolean" },
+    "owner": { "type": "string" },
+    "review_date_iso": { "type": "string", "format": "date" },
+    "expiry_date_iso": { "type": "string", "format": "date" },
+    "client_logo_used": { "type": "boolean" },
+    "client_name_used": { "type": "boolean" },
+    "anonymized": { "type": "boolean" },
+    "excerpt": { "type": "string" },
+    "supporting_files": { "type": "array", "items": { "type": "string" } }
+  }
+}

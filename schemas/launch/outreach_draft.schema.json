@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/outreach_draft.schema.json",
+  "title": "Dealix Outreach Draft (launch bundle)",
+  "type": "object",
+  "required": ["draft_id", "channel", "target_account_id", "subject", "body", "evidence_level", "risk_level", "approval_required", "pricing_status"],
+  "additionalProperties": false,
+  "properties": {
+    "draft_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "channel": { "enum": ["email", "linkedin_manual", "phone", "whatsapp_after_consent"] },
+    "target_account_id": { "type": "string" },
+    "persona": { "enum": ["owner_operator", "head_of_sales", "general_manager", "spouse_partner", "skeptic"] },
+    "sequence_id": { "enum": ["A", "B", "C", "D"] },
+    "step": { "enum": ["first_touch", "follow_up_1", "follow_up_2", "breakup"] },
+    "subject": { "type": "string", "maxLength": 200 },
+    "body": { "type": "string", "maxLength": 4000 },
+    "evidence_level": { "enum": ["L0", "L1", "L2", "L3", "L4", "L5"] },
+    "risk_level": { "enum": ["low", "medium", "high"] },
+    "approval_required": { "type": "boolean" },
+    "pricing_status": { "enum": ["draft_only", "approved_range_required", "founder_approval_required", "final_approved"] },
+    "consent_record_ref": { "type": "string" },
+    "proof_pack_ref": { "type": "string" },
+    "drafted_at_iso": { "type": "string", "format": "date-time" },
+    "drafted_by": { "type": "string" }
+  }
+}

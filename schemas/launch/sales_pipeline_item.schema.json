@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/sales_pipeline_item.schema.json",
+  "title": "Dealix Sales Pipeline Item (launch bundle)",
+  "type": "object",
+  "required": ["deal_id", "account_id", "offer", "stage", "entered_stage_at_iso", "owner", "next_action"],
+  "additionalProperties": false,
+  "properties": {
+    "deal_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+    "account_id": { "type": "string" },
+    "offer": { "enum": ["REVENUE_LEAK_AUDIT", "WHATSAPP_FOLLOWUP_OS", "SALES_COMMAND_CENTER", "PROPOSAL_PROOF_PACK_OS", "AI_OPERATING_SYSTEM_FOR_SMB", "CUSTOM_ENTERPRISE_OS"] },
+    "stage": { "enum": ["target_selected", "research", "draft_generated", "founder_approved", "outreach_sent", "replied", "discovery_booked", "discovery_completed", "demo_prepared", "proposal_sent", "negotiation", "payment_handoff_approved", "delivery_kickoff", "value_report", "renewal_upsell", "closed_won", "closed_lost", "disqualified"] },
+    "entered_stage_at_iso": { "type": "string", "format": "date-time" },
+    "last_movement_at_iso": { "type": "string", "format": "date-time" },
+    "owner": { "type": "string" },
+    "next_action": { "type": "string" },
+    "notes": { "type": "string", "maxLength": 1000 },
+    "pricing_status": { "enum": ["draft_only", "approved_range_required", "founder_approval_required", "final_approved"] }
+  }
+}

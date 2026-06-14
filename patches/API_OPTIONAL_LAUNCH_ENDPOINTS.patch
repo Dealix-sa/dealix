@@ -1,0 +1,89 @@
+# This patch adds 4 dry-run endpoints under api/routers/launch.py.
+#
+# It is OPTIONAL. The founder does not need these endpoints to use the bundle.
+# The endpoints are READ-ONLY. They return the example JSONs from the bundle.
+#
+# Apply manually:
+#   1. Add api/routers/launch.py with the routes below.
+#   2. Wire the router in api/main.py.
+#   3. Run pytest to ensure no regression.
+#
+# The endpoints do not write to the DB. They do not send anything external.
+# They are scaffolding for a future "founder command" UI.
+
+--- a/api/routers/launch.py (NEW FILE)
++++ b/api/routers/launch.py (NEW FILE)
+@@ -0,0 +1,80 @@
++"""Launch bundle — read-only endpoints that surface the bundle's example data.
++
++These endpoints do NOT mutate production. They return the example JSONs that
++live in _incoming/minimax3/dealix_market_launch_complete_bundle/templates/launch/.
++
++If the bundle is not present on disk, the endpoints return 503.
++"""
++from __future__ import annotations
++
++import json
++from pathlib import Path
++
++from fastapi import APIRouter, HTTPException
++
++router = APIRouter(prefix="/api/v1/launch", tags=["launch-bundle"])
++
++BUNDLE_ROOT = Path(
++    "_incoming/minimax3/dealix_market_launch_complete_bundle"
++)
++
++
++def _read_example(name: str) -> dict:
++    path = BUNDLE_ROOT / "templates" / "launch" / name
++    if not path.exists():
++        raise HTTPException(status_code=503, detail=f"Bundle example missing: {name}")
++    return json.loads(path.read_text(encoding="utf-8"))
++
++
++@router.get("/founder-command")
++def get_founder_command() -> dict:
++    """Read the example daily command. Dry-run only."""
++    return _read_example("founder_daily_command.example.json")
++
++
++@router.get("/icp-score")
++def get_icp_score() -> dict:
++    """Read the example ICP score. Dry-run only."""
++    return _read_example("icp_score.example.json")
++
++
++@router.get("/outreach-draft")
++def get_outreach_draft() -> dict:
++    """Read the example outreach draft. Dry-run only."""
++    return _read_example("outreach_draft.example.json")
++
++
++@router.get("/trust-preflight")
++def get_trust_preflight() -> dict:
++    """Read the example trust preflight result. Dry-run only."""
++    return _read_example("trust_preflight.example.json")
++
++
++@router.get("/vertical-score")
++def get_vertical_score() -> dict:
++    """Read the example vertical score. Dry-run only."""
++    return _read_example("vertical_score.example.json")
++
++
++@router.get("/proposal-pack")
++def get_proposal_pack() -> dict:
++    """Read the example proposal pack. Dry-run only."""
++    return _read_example("proposal_pack.example.json")
++
++
++@router.get("/proof-pack")
++def get_proof_pack() -> dict:
++    """Read the example proof pack. Dry-run only."""
++    return _read_example("proof_pack.example.json")
++
++
++# Note: when wiring this router in api/main.py, ensure that admin-key
++# middleware is NOT applied to these endpoints. They are read-only and
++# are meant to be safe to call from the founder's local browser.

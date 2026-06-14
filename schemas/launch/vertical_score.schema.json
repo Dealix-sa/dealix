@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/launch/vertical_score.schema.json",
+  "title": "VerticalScore",
+  "description": "Scoring record for a Saudi market vertical sector. Used by vertical_scorer.py and the /launch/verticals API.",
+  "type": "object",
+  "required": ["sector", "total_score", "revenue_potential", "pain_clarity", "regulatory_ease", "ai_readiness", "competition_gap"],
+  "properties": {
+    "sector": {
+      "type": "string",
+      "description": "Sector identifier (snake_case)",
+      "enum": [
+        "real_estate",
+        "automotive",
+        "contracting",
+        "food_beverage",
+        "healthcare_clinic",
+        "education",
+        "retail_chains",
+        "logistics",
+        "financial_services",
+        "legal",
+        "professional_services",
+        "hospitality",
+        "manufacturing",
+        "government",
+        "telecom"
+      ]
+    },
+    "sector_ar": {
+      "type": "string",
+      "description": "Arabic sector name"
+    },
+    "sector_en": {
+      "type": "string",
+      "description": "English sector name"
+    },
+    "total_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Aggregate score (0-100)"
+    },
+    "revenue_potential": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 20,
+      "description": "Revenue potential score (0-20)"
+    },
+    "pain_clarity": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 20,
+      "description": "How clearly defined and acute the pain is (0-20)"
+    },
+    "regulatory_ease": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 20,
+      "description": "Ease of operating in this sector without regulatory friction (0-20)"
+    },
+    "ai_readiness": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 20,
+      "description": "Sector readiness for AI adoption (0-20)"
+    },
+    "competition_gap": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 20,
+      "description": "Gap in current AI-ops competition (0-20)"
+    },
+    "notes_ar": {
+      "type": "string",
+      "description": "Arabic notes about this vertical's characteristics"
+    },
+    "notes_en": {
+      "type": "string",
+      "description": "English notes about this vertical"
+    },
+    "recommended_offer_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Offer IDs best suited for this vertical"
+    },
+    "sample_icp_ar": {
+      "type": "string",
+      "description": "One-line Arabic description of the ideal client profile in this vertical"
+    }
+  },
+  "additionalProperties": false
+}
