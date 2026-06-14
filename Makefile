@@ -13,7 +13,8 @@
         v5-proof-pack v10-verify v10-reference \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
-        launch-content launch-pipeline launch-all-dry-runs test-launch
+        launch-content launch-pipeline launch-all-dry-runs test-launch \
+        launch-daily launch-daily-send launch-war-room
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -224,3 +225,13 @@ launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score laun
 
 test-launch: ## Launch OS: run launch-specific test suite
 	pytest tests/launch/ -v --tb=short
+
+# ── Daily Launch Engine ─────────────────────────────────────────
+launch-daily: ## Run morning targeting + generate Gmail drafts (dry-run)
+	$(PYTHON) scripts/run_daily_launch.py
+
+launch-daily-send: ## Run morning targeting + CREATE real Gmail drafts
+	$(PYTHON) scripts/run_daily_launch.py --send
+
+launch-war-room: ## Print today's war room briefing
+	$(PYTHON) -c "from dealix.daily_targeting.daily_engine import DailyTargetingEngine; e = DailyTargetingEngine(); e.print_war_room()"

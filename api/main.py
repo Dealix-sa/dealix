@@ -134,6 +134,8 @@ from api.routers import onboarding as onboarding_router
 from api.routers import kpi_dashboard as kpi_dashboard_router
 # Weekly business reports (admin-gated, approval-required)
 from api.routers import weekly_reports as weekly_reports_router
+# Daily launch engine — morning targeting + email composer + Gmail draft queue
+from api.routers import daily_ops as daily_ops_router
 
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
@@ -423,6 +425,8 @@ def create_app() -> FastAPI:
     app.include_router(kpi_dashboard_router.router)
     # Weekly business reports — /api/v1/reports
     app.include_router(weekly_reports_router.router)
+    # Daily launch engine — /api/v1/daily-ops
+    app.include_router(daily_ops_router.router)
 
     # Hermes Agents — /hermes/*
     try:

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Radio, Activity, Users, Globe, TrendingUp, AlertCircle,
-  CheckCircle2, Zap, Shield, Server
+  CheckCircle2, Zap, Shield, Server, Play, RefreshCw, Mail
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -14,13 +14,6 @@ const liveData = [
   { time: '13:00', users: 48, requests: 780 },
 ];
 
-const alerts = [
-  { id: 1, level: 'warning', message: 'استخدام CPU مرتفع على خادم API', time: 'منذ 5 دقائق' },
-  { id: 2, level: 'success', message: 'تم نسخ قاعدة البيانات احتياطياً', time: 'منذ 15 دقيقة' },
-  { id: 3, level: 'info', message: 'عميل جديد سجل في المنصة', time: 'منذ 30 دقيقة' },
-  { id: 4, level: 'warning', message: '3 طلبات API فشلت', time: 'منذ ساعة' },
-];
-
 const modules = [
   { name: 'API Gateway', status: 'online', uptime: '99.9%', latency: '45ms', icon: Server },
   { name: 'Auth Service', status: 'online', uptime: '99.8%', latency: '23ms', icon: Shield },
@@ -30,8 +23,130 @@ const modules = [
   { name: 'Notifications', status: 'online', uptime: '99.9%', latency: '12ms', icon: Radio },
 ];
 
+const API_BASE = '/api/v1';
+
+interface DashboardData {
+  generated_at?: string;
+  leads_waiting_24h_plus?: { count: number; items: unknown[] };
+  friction_last_7d?: { total: number };
+  renewals_due_next_7d?: { count: number };
+  pending_approvals?: { count: number };
+}
+
+interface OutreachQueueData {
+  count: number;
+  items: { id: string; channel: string; status: string; message: string }[];
+}
+
+interface DailyTarget {
+  account_id: string;
+  company_name: string;
+  sector: string;
+  region: string;
+  icp_score: number;
+  tier: string;
+  email: {
+    subject: string;
+    offer_matched: string;
+    pain_points_used: string[];
+  };
+  draft_id: string;
+}
+
+interface DailyOpsStatus {
+  ran: boolean;
+  run_at?: string;
+  dry_run?: boolean;
+  top_targets_count?: number;
+  drafts_created?: number;
+  tier_counts?: { A: number; B: number; C: number };
+}
+
+interface DailyTargetsData {
+  targets: DailyTarget[];
+  tier_counts?: { A: number; B: number; C: number };
+  run_at?: string;
+}
+
+const TIER_COLORS: Record<string, string> = {
+  A: 'bg-green-100 text-green-800',
+  B: 'bg-blue-100 text-blue-800',
+  C: 'bg-amber-100 text-amber-800',
+  DQ: 'bg-gray-100 text-gray-600',
+};
+
+async function apiFetch<T>(path: string, opts: RequestInit = {}): Promise<T | null> {
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      headers: { 'Content-Type': 'application/json' },
+      ...opts,
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as T;
+  } catch {
+    return null;
+  }
+}
+
 export default function CommandRoomPage() {
   const [selectedTimeRange, setSelectedTimeRange] = useState('24h');
+  const [dashboard, setDashboard] = useState<DashboardData | null>(null);
+  const [outreachQueue, setOutreachQueue] = useState<OutreachQueueData | null>(null);
+  const [dailyStatus, setDailyStatus] = useState<DailyOpsStatus | null>(null);
+  const [dailyTargets, setDailyTargets] = useState<DailyTargetsData | null>(null);
+  const [loadingDashboard, setLoadingDashboard] = useState(false);
+  const [loadingTargets, setLoadingTargets] = useState(false);
+  const [runningEngine, setRunningEngine] = useState(false);
+  const [engineMessage, setEngineMessage] = useState('');
+
+  const fetchDashboard = useCallback(async () => {
+    setLoadingDashboard(true);
+    const data = await apiFetch<DashboardData>('/founder/dashboard');
+    setDashboard(data);
+    setLoadingDashboard(false);
+  }, []);
+
+  const fetchOutreach = useCallback(async () => {
+    const data = await apiFetch<OutreachQueueData>('/outreach/queue?limit=20');
+    setOutreachQueue(data);
+  }, []);
+
+  const fetchDailyOps = useCallback(async () => {
+    setLoadingTargets(true);
+    const status = await apiFetch<DailyOpsStatus>('/daily-ops/status');
+    const targets = await apiFetch<DailyTargetsData>('/daily-ops/targets');
+    setDailyStatus(status);
+    setDailyTargets(targets);
+    setLoadingTargets(false);
+  }, []);
+
+  useEffect(() => {
+    fetchDashboard();
+    fetchOutreach();
+    fetchDailyOps();
+  }, [fetchDashboard, fetchOutreach, fetchDailyOps]);
+
+  const runDailyEngine = async () => {
+    setRunningEngine(true);
+    setEngineMessage('جاري تشغيل محرك الاستهداف اليومي...');
+    const result = await apiFetch<Record<string, unknown>>('/daily-ops/run', { method: 'POST' });
+    if (result) {
+      setEngineMessage('تم بنجاح. تحديث النتائج...');
+      await fetchDailyOps();
+      setEngineMessage('');
+    } else {
+      setEngineMessage('فشل التشغيل — تحقق من السجلات');
+    }
+    setRunningEngine(false);
+  };
+
+  const leadsWaiting = dashboard?.leads_waiting_24h_plus?.count ?? 0;
+  const pendingApprovals = dashboard?.pending_approvals?.count ?? 0;
+  const renewalsDue = dashboard?.renewals_due_next_7d?.count ?? 0;
+  const outreachCount = outreachQueue?.count ?? 0;
+
+  const targets = dailyTargets?.targets ?? [];
+  const tierCounts = dailyTargets?.tier_counts ?? { A: 0, B: 0, C: 0 };
 
   return (
     <div className="space-y-6" style={{ direction: 'rtl' }}>
@@ -40,7 +155,7 @@ export default function CommandRoomPage() {
           <h1 className="text-2xl font-bold text-gray-900">غرفة القيادة</h1>
           <p className="text-sm text-gray-500 mt-1">مراقبة النظام والعمليات اللحظية</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {['1h', '24h', '7d', '30d'].map((range) => (
             <button
               key={range}
@@ -54,6 +169,14 @@ export default function CommandRoomPage() {
               {range}
             </button>
           ))}
+          <button
+            onClick={fetchDashboard}
+            disabled={loadingDashboard}
+            className="px-3 py-1.5 text-xs font-bold rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 flex items-center gap-1"
+          >
+            <RefreshCw className={`w-3 h-3 ${loadingDashboard ? 'animate-spin' : ''}`} />
+            تحديث
+          </button>
         </div>
       </div>
 
@@ -76,8 +199,8 @@ export default function CommandRoomPage() {
               <Users className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">48</p>
-              <p className="text-xs text-gray-500">مستخدم نشط الآن</p>
+              <p className="text-2xl font-bold text-gray-900">{leadsWaiting}</p>
+              <p className="text-xs text-gray-500">عملاء محتملون بانتظار 24h+</p>
             </div>
           </div>
         </div>
@@ -87,8 +210,8 @@ export default function CommandRoomPage() {
               <TrendingUp className="w-5 h-5 text-dealix-gold" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">920</p>
-              <p className="text-xs text-gray-500">طلب API/ساعة</p>
+              <p className="text-2xl font-bold text-gray-900">{renewalsDue}</p>
+              <p className="text-xs text-gray-500">تجديدات مستحقة هذا الأسبوع</p>
             </div>
           </div>
         </div>
@@ -98,12 +221,137 @@ export default function CommandRoomPage() {
               <Globe className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">99.7%</p>
-              <p className="text-xs text-gray-500">معدل uptime</p>
+              <p className="text-2xl font-bold text-gray-900">{pendingApprovals}</p>
+              <p className="text-xs text-gray-500">موافقات معلقة</p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Daily Targeting Engine Panel */}
+      <div className="bg-white rounded-xl p-6 shadow-card border border-gray-100">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="font-bold text-gray-900 flex items-center gap-2">
+              <Mail className="w-5 h-5 text-dealix-emerald" />
+              محرك الاستهداف اليومي
+            </h3>
+            {dailyStatus?.ran && (
+              <p className="text-xs text-gray-500 mt-1">
+                آخر تشغيل: {dailyStatus.run_at ? new Date(dailyStatus.run_at).toLocaleString('ar-SA') : '—'}
+                {dailyStatus.dry_run ? ' (وضع تجريبي)' : ' (مسودات Gmail)'}
+              </p>
+            )}
+            {!dailyStatus?.ran && (
+              <p className="text-xs text-amber-600 mt-1">لم يتم التشغيل اليوم بعد</p>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            {dailyStatus?.ran && (
+              <div className="flex gap-2 text-sm">
+                <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">
+                  A: {tierCounts?.A ?? 0}
+                </span>
+                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold">
+                  B: {tierCounts?.B ?? 0}
+                </span>
+              </div>
+            )}
+            <button
+              onClick={runDailyEngine}
+              disabled={runningEngine}
+              className="flex items-center gap-2 px-4 py-2 bg-dealix-emerald text-white text-sm font-bold rounded-lg hover:bg-dealix-emerald/90 transition-all disabled:opacity-50"
+            >
+              <Play className={`w-4 h-4 ${runningEngine ? 'animate-pulse' : ''}`} />
+              {runningEngine ? 'جاري التشغيل...' : 'تشغيل استهداف اليوم'}
+            </button>
+          </div>
+        </div>
+
+        {engineMessage && (
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg text-sm text-blue-800">
+            {engineMessage}
+          </div>
+        )}
+
+        {loadingTargets ? (
+          <div className="py-8 text-center text-gray-400 text-sm">جاري التحميل...</div>
+        ) : targets.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-right pb-2 font-semibold text-gray-600 text-xs">#</th>
+                  <th className="text-right pb-2 font-semibold text-gray-600 text-xs">الشركة</th>
+                  <th className="text-right pb-2 font-semibold text-gray-600 text-xs">القطاع</th>
+                  <th className="text-right pb-2 font-semibold text-gray-600 text-xs">المنطقة</th>
+                  <th className="text-right pb-2 font-semibold text-gray-600 text-xs">النقاط</th>
+                  <th className="text-right pb-2 font-semibold text-gray-600 text-xs">الفئة</th>
+                  <th className="text-right pb-2 font-semibold text-gray-600 text-xs">العرض المناسب</th>
+                  <th className="text-right pb-2 font-semibold text-gray-600 text-xs">المسودة</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {targets.map((t, i) => (
+                  <tr key={t.account_id} className="hover:bg-gray-50 transition-colors">
+                    <td className="py-3 text-gray-400 text-xs">{i + 1}</td>
+                    <td className="py-3 font-medium text-gray-900">{t.company_name}</td>
+                    <td className="py-3 text-gray-600">{t.sector}</td>
+                    <td className="py-3 text-gray-600">{t.region}</td>
+                    <td className="py-3 font-bold text-gray-900">{t.icp_score}/100</td>
+                    <td className="py-3">
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${TIER_COLORS[t.tier] ?? 'bg-gray-100 text-gray-600'}`}>
+                        {t.tier}
+                      </span>
+                    </td>
+                    <td className="py-3 text-xs text-gray-600 max-w-[200px] truncate">
+                      {t.email?.offer_matched ?? '—'}
+                    </td>
+                    <td className="py-3 text-xs">
+                      {t.draft_id && t.draft_id !== 'DRY_RUN' && !t.draft_id.startsWith('ERROR') ? (
+                        <span className="text-green-600 font-medium">جاهزة</span>
+                      ) : (
+                        <span className="text-gray-400">تجريبي</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="py-6 text-center text-gray-400 text-sm">
+            لا توجد نتائج — اضغط "تشغيل استهداف اليوم" لتحميل التارجتس
+          </div>
+        )}
+      </div>
+
+      {/* Outreach Queue Summary */}
+      {outreachQueue && outreachCount > 0 && (
+        <div className="bg-white rounded-xl p-5 shadow-card border border-gray-100">
+          <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <Radio className="w-4 h-4 text-dealix-gold" />
+            طابور التواصل ({outreachCount} رسالة)
+          </h3>
+          <div className="space-y-2">
+            {outreachQueue.items.slice(0, 5).map((item) => (
+              <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg text-sm">
+                <span className="text-gray-700 truncate max-w-[60%]">{item.message?.slice(0, 60)}...</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-500">{item.channel}</span>
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${
+                    item.status === 'approved' ? 'bg-green-100 text-green-700' :
+                    item.status === 'queued' ? 'bg-amber-100 text-amber-700' :
+                    'bg-gray-100 text-gray-600'
+                  }`}>
+                    {item.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Live Traffic Chart */}
@@ -128,23 +376,46 @@ export default function CommandRoomPage() {
             التنبيهات
           </h3>
           <div className="space-y-3">
-            {alerts.map((alert) => (
-              <div key={alert.id} className={`flex items-start gap-3 p-3 rounded-lg ${
-                alert.level === 'warning' ? 'bg-amber-50 border border-amber-100' :
-                alert.level === 'success' ? 'bg-green-50 border border-green-100' :
-                'bg-blue-50 border border-blue-100'
-              }`}>
-                <div className={`w-2 h-2 rounded-full mt-1.5 ${
-                  alert.level === 'warning' ? 'bg-amber-500' :
-                  alert.level === 'success' ? 'bg-green-500' :
-                  'bg-blue-500'
-                }`} />
-                <div className="flex-1">
-                  <p className="text-sm text-gray-800">{alert.message}</p>
-                  <p className="text-xs text-gray-400 mt-1">{alert.time}</p>
-                </div>
-              </div>
-            ))}
+            {dashboard ? (
+              <>
+                {leadsWaiting > 0 && (
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-50 border border-amber-100">
+                    <div className="w-2 h-2 rounded-full mt-1.5 bg-amber-500" />
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-800">{leadsWaiting} عميل محتمل بانتظار أكثر من 24 ساعة</p>
+                    </div>
+                  </div>
+                )}
+                {pendingApprovals > 0 && (
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 border border-blue-100">
+                    <div className="w-2 h-2 rounded-full mt-1.5 bg-blue-500" />
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-800">{pendingApprovals} موافقة تحتاج مراجعة</p>
+                    </div>
+                  </div>
+                )}
+                {renewalsDue > 0 && (
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-100">
+                    <div className="w-2 h-2 rounded-full mt-1.5 bg-green-500" />
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-800">{renewalsDue} تجديد مستحق الأسبوع القادم</p>
+                    </div>
+                  </div>
+                )}
+                {leadsWaiting === 0 && pendingApprovals === 0 && renewalsDue === 0 && (
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-green-50 border border-green-100">
+                    <div className="w-2 h-2 rounded-full mt-1.5 bg-green-500" />
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-800">لا توجد تنبيهات عاجلة الآن</p>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className="text-sm text-gray-400">
+                {loadingDashboard ? 'جاري التحميل...' : 'البيانات غير متاحة حالياً'}
+              </p>
+            )}
           </div>
         </div>
       </div>
