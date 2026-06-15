@@ -19,7 +19,8 @@
         weekly-review weekly-review-print meeting \
         diagnostic reply-classify onboard contract contract-dry contract-tiers \
         outreach-tracker outreach-tracker-summary outreach-tracker-list \
-        pilot-report customer-monthly-report
+        pilot-report customer-monthly-report \
+        renewal-check renewal-summary
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
