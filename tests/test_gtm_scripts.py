@@ -146,3 +146,30 @@ def test_renewal_tracker_normalize() -> None:
     import scripts.dealix_renewal_tracker as rt  # type: ignore[import]
 
     assert rt._normalize("  Hello World  ") == "helloworld"
+
+
+# ---------------------------------------------------------------------------
+# 8. dealix_daily_ops helpers
+# ---------------------------------------------------------------------------
+
+def test_daily_ops_runs_without_error(capsys: object) -> None:
+    """run() executes without raising even when log files are absent."""
+    import scripts.dealix_daily_ops as ops  # type: ignore[import]
+
+    ops.run()
+    captured = capsys.readouterr()
+    assert "Daily Ops" in captured.out
+    assert "Today's Action List" in captured.out or "قائمة أعمال اليوم" in captured.out
+
+
+def test_daily_ops_count_proposals_empty_dir(tmp_path: object) -> None:
+    """_count_proposals_last_days returns 0 when proposals dir is empty."""
+    import scripts.dealix_daily_ops as ops  # type: ignore[import]
+
+    original = ops.PROPOSALS_DIR
+    ops.PROPOSALS_DIR = tmp_path  # type: ignore[assignment]
+    try:
+        count = ops._count_proposals_last_days(7)
+        assert count == 0
+    finally:
+        ops.PROPOSALS_DIR = original
