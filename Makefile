@@ -231,5 +231,19 @@ outreach: ## Outreach Kit: generate ready bilingual emails from your real target
 outreach-dry: ## Outreach Kit: preview targets without writing files
 	$(PYTHON) scripts/dealix_outreach_kit.py --dry-run
 
+outreach-f3: ## Outreach Kit: generate day-3 follow-up nudges
+	$(PYTHON) scripts/dealix_outreach_kit.py --stage f3
+
+outreach-f7: ## Outreach Kit: generate day-7 final follow-up nudges
+	$(PYTHON) scripts/dealix_outreach_kit.py --stage f7
+
 command-room: ## Command Room: render offline outreach dashboard to reports/command_room/index.html
 	$(PYTHON) scripts/dealix_command_room.py
+
+daily: ## Founder morning routine — outreach emails + command room dashboard in one run
+	@$(PYTHON) scripts/dealix_outreach_kit.py || true
+	@$(PYTHON) scripts/dealix_command_room.py || true
+	@echo ""
+	@echo "✅ صباح الخير. الإيميلات في reports/outreach/<اليوم>/ — راجع وأرسل بنفسك."
+	@echo "📊 غرفة القيادة: reports/command_room/index.html"
+	@echo "📒 عند أي رد: business/playbooks/REPLY_PLAYBOOK.md"

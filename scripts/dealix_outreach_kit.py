@@ -56,70 +56,82 @@ def read_targets(intake: Path) -> list[dict]:
     return rows
 
 
-def render_email(target: dict, pitches: dict) -> tuple[str, str]:
+def render_email(target: dict, pitches: dict, stage: str = "intro") -> tuple[str, str]:
     company = target["company"]
     sector = target["sector"]
     lang = (target.get("language") or "both").lower()
     sec = pitches["sectors"].get(sector)
     co = pitches["company"]
+    fu = pitches.get("followups", {})
     if not sec:
         raise ValueError(f"unknown sector '{sector}' for {company} (valid: {', '.join(pitches['sectors'])})")
 
     greeting_name = target.get("contact_name") or ""
     blocks: list[str] = []
 
-    def ar_block() -> str:
-        hello = f"السلام عليكم {greeting_name}،".strip() if greeting_name else "السلام عليكم،"
-        return "\n".join([
-            hello,
-            "",
-            sec["pain_ar"],
-            "",
-            sec["fix_ar"],
-            "",
-            sec["cta_ar"],
+    def sig_ar() -> list[str]:
+        return [
             "",
             f"Dealix — {co['oneLiner_ar']}",
             f"تشخيص مجاني: {co['diagnostic']}  |  {co['site']}",
             "",
             "تحياتي،",
             "سامي — Dealix",
-        ])
+        ]
 
-    def en_block() -> str:
-        hello = f"Hi {greeting_name}," if greeting_name else "Hello,"
-        return "\n".join([
-            hello,
-            "",
-            sec["pain_en"],
-            "",
-            sec["fix_en"],
-            "",
-            sec["cta_en"],
+    def sig_en() -> list[str]:
+        return [
             "",
             f"Dealix — {co['oneLiner_en']}",
             f"Free diagnostic: {co['diagnostic']}  |  {co['site']}",
             "",
             "Best,",
             "Sami — Dealix",
-        ])
+        ]
+
+    def ar_block() -> str:
+        hello = f"السلام عليكم {greeting_name}،".strip() if greeting_name else "السلام عليكم،"
+        if stage == "f3":
+            body_lines = [hello, "", fu.get("f3_ar", "")]
+        elif stage == "f7":
+            body_lines = [hello, "", fu.get("f7_ar", "")]
+        else:
+            body_lines = [hello, "", sec["pain_ar"], "", sec["fix_ar"], "", sec["cta_ar"]]
+        return "\n".join(body_lines + sig_ar())
+
+    def en_block() -> str:
+        hello = f"Hi {greeting_name}," if greeting_name else "Hello,"
+        if stage == "f3":
+            body_lines = [hello, "", fu.get("f3_en", "")]
+        elif stage == "f7":
+            body_lines = [hello, "", fu.get("f7_en", "")]
+        else:
+            body_lines = [hello, "", sec["pain_en"], "", sec["fix_en"], "", sec["cta_en"]]
+        return "\n".join(body_lines + sig_en())
 
     if lang in ("ar", "both"):
         blocks.append(ar_block())
     if lang in ("en", "both"):
         blocks.append(en_block())
 
-    subject = sec["subject_ar"].format(company=company) if lang != "en" else sec["subject_en"].format(company=company)
+    prefix = {"f3": "متابعة (يوم 3): ", "f7": "متابعة أخيرة (يوم 7): "}.get(stage, "")
+    base_subject = sec["subject_ar"].format(company=company) if lang != "en" else sec["subject_en"].format(company=company)
+    subject = prefix + base_subject
     body = ("\n\n— — —\n\n").join(blocks)
     return subject, body
 
 
-def write_target_file(out_dir: Path, target: dict, subject: str, body: str) -> Path:
+def write_target_file(out_dir: Path, target: dict, subject: str, body: str, pitches: dict, stage: str = "intro") -> Path:
     prio = target.get("priority") or "3"
-    fname = f"{prio}-{_slug(target['company'])}.md"
+    suffix = {"f3": "-followup3", "f7": "-followup7"}.get(stage, "")
+    fname = f"{prio}-{_slug(target['company'])}{suffix}.md"
     path = out_dir / fname
     to = target.get("contact_email") or "[ضع إيميل العميل الحقيقي هنا]"
     signal = target.get("signal_note") or "—"
+    offer = pitches.get("recommended_offer", {}).get(target.get("sector"), {})
+    offer_line = "—"
+    if offer:
+        offer_line = f"{offer.get('tier')} · setup {offer.get('setup'):,} SAR · monthly {offer.get('monthly'):,} SAR (لا تعرضه إلا بعد التشخيص)"
     content = "\n".join([
         f"# {target['company']} — {target.get('sector')}",
         "",
@@ -127,6 +139,7 @@ def write_target_file(out_dir: Path, target: dict, subject: str, body: str) -> P
         f"**SUBJECT:** {subject}",
         f"**CITY:** {target.get('city') or '—'}  ·  **PRIORITY:** {prio}  ·  **LANG:** {target.get('language') or 'both'}",
         f"**SIGNAL (سبب الاستهداف):** {signal}",
+        f"**العرض الموصى به عند الاهتمام:** {offer_line}",
         "**STATUS:** draft_pending_human_review — راجع وأرسل يدويًا.",
         "",
         "---",
@@ -171,6 +184,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Dealix outreach kit — ready emails from a real target list")
     ap.add_argument("--intake", type=Path, default=DEFAULT_INTAKE)
     ap.add_argument("--top", type=int, default=0, help="Limit number of targets (0 = all)")
+    ap.add_argument("--stage", choices=["intro", "f3", "f7"], default="intro",
+                    help="intro = first email; f3 = day-3 follow-up; f7 = day-7 final nudge")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -202,8 +217,8 @@ def main() -> int:
     errors: list[str] = []
     for t in targets:
         try:
-            subject, body = render_email(t, pitches)
-            written.append(write_target_file(out_dir, t, subject, body))
+            subject, body = render_email(t, pitches, stage=args.stage)
+            written.append(write_target_file(out_dir, t, subject, body, pitches, stage=args.stage))
         except Exception as exc:  # noqa: BLE001
             errors.append(f"{t.get('company')}: {exc}")
 
