@@ -20,6 +20,20 @@
       "أنظمة مؤسسية — تطوير مخصص للشركات الكبرى"
     ]
   },
+  "recommended_offer": {
+    "real_estate": {"tier": "Tier 4 — Review & Reputation OS", "setup": 12000, "monthly": 3500},
+    "clinic": {"tier": "Tier 4 — Review & Reputation OS", "setup": 12000, "monthly": 3500},
+    "logistics": {"tier": "Tier 2 — Command Center OS", "setup": 35000, "monthly": 9000},
+    "training": {"tier": "Tier 3 — Delivery OS", "setup": 25000, "monthly": 6000},
+    "marketing_agency": {"tier": "Tier 1 — Revenue OS", "setup": 18000, "monthly": 5000},
+    "b2b_services": {"tier": "Tier 1 — Revenue OS", "setup": 18000, "monthly": 5000}
+  },
+  "followups": {
+    "f3_ar": "تحية طيبة، أتابع رسالتي السابقة. أعرف إن الجدول مزدحم — لو حاب أرسل لك التشخيص المجاني (30 نقطة) على شكل ملف تطّلع عليه وقت ما يناسبك، أجهّزه لك الحين.",
+    "f3_en": "Following up on my note. I know schedules are full — if it's easier, I can send the free 30-point diagnostic as a doc you can skim whenever suits you. Want me to?",
+    "f7_ar": "آخر متابعة مني حتى لا أزعجك. لو التوقيت غير مناسب الحين، أقدر أرجع لك بعد فترة — وإذا تبي نبدأ بخطوة صغيرة بدون التزام، التشخيص المجاني جاهز. شاكر لك وقتك.",
+    "f7_en": "Last note so I don't crowd your inbox. If the timing isn't right, I'm happy to circle back later — and if you'd like a small no-commitment first step, the free diagnostic is ready. Thanks for your time."
+  },
   "sectors": {
     "real_estate": {
       "label_ar": "العقار",
