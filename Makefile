@@ -15,7 +15,8 @@
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
         launch-content launch-pipeline launch-all-dry-runs test-launch \
         outreach outreach-dry targets-merge outreach-f3 outreach-f7 \
-        command-room content daily proposal proposal-dry proposal-sectors
+        command-room content daily proposal proposal-dry proposal-sectors \
+        weekly-review weekly-review-print
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
