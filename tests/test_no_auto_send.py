@@ -62,6 +62,7 @@ SCAN_PATHS = [
     "scripts/dealix_pilot_report.py",
     "scripts/dealix_customer_monthly_report.py",
     "scripts/dealix_renewal_tracker.py",
+    "scripts/dealix_daily_ops.py",
 ]
 
 

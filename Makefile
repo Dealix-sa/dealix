@@ -20,7 +20,8 @@
         diagnostic reply-classify onboard contract contract-dry contract-tiers \
         outreach-tracker outreach-tracker-summary outreach-tracker-list \
         pilot-report customer-monthly-report \
-        renewal-check renewal-summary
+        renewal-check renewal-summary \
+        daily-ops
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
