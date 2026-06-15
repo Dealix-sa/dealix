@@ -18,7 +18,8 @@
         command-room content daily proposal proposal-dry proposal-sectors \
         weekly-review weekly-review-print meeting \
         diagnostic reply-classify onboard contract contract-dry contract-tiers \
-        outreach-tracker outreach-tracker-summary outreach-tracker-list
+        outreach-tracker outreach-tracker-summary outreach-tracker-list \
+        pilot-report customer-monthly-report
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
