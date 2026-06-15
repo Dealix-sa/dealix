@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import date, timedelta
+from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -207,12 +207,6 @@ def generate_agenda(
 
     sector_data = sectors[sector]
     questions = DISCOVERY_QUESTIONS.get(sector, [])
-
-    q_ar = "\n".join(
-        f"- **{i+1}. (AR)** {q}" for i, (_, q) in enumerate(questions) if _[0] != "q"
-        if _.endswith("_ar")
-        for _, q in [(_, q)]
-    )
 
     questions_ar_lines = [
         f"**{i+1}.** {q}"
