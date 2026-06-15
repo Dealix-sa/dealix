@@ -16,7 +16,9 @@
         launch-content launch-pipeline launch-all-dry-runs test-launch \
         outreach outreach-dry targets-merge outreach-f3 outreach-f7 \
         command-room content daily proposal proposal-dry proposal-sectors \
-        weekly-review weekly-review-print meeting
+        weekly-review weekly-review-print meeting \
+        diagnostic reply-classify onboard contract contract-dry contract-tiers \
+        outreach-tracker outreach-tracker-summary outreach-tracker-list
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -289,3 +291,51 @@ meeting: ## Generate bilingual discovery call agenda (COMPANY=, SECTOR=, CONTACT
 	  --sector "$(SECTOR)" \
 	  $(if $(DURATION),--duration $(DURATION)) \
 	  $(if $(DRY_RUN),--dry-run)
+
+diagnostic: ## Free 30-point Diagnostic (COMPANY=, SECTOR=, REGION=, PIPELINE=)
+	$(PYTHON) scripts/dealix_diagnostic.py \
+	  --company "$(COMPANY)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(REGION),--region $(REGION)) \
+	  $(if $(PIPELINE),--pipeline-state "$(PIPELINE)")
+
+reply-classify: ## Classify a prospect reply and print the matching response (REPLY=)
+	$(PYTHON) scripts/dealix_reply_classifier.py "$(REPLY)"
+
+onboard: ## Run customer onboarding wizard (COMPANY=, SECTOR=, CONTACT=)
+	$(PYTHON) scripts/dealix_customer_onboarding_wizard.py \
+	  --company "$(COMPANY)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(CONTACT),--contact "$(CONTACT)")
+
+contract: ## Generate bilingual service contract (COMPANY=, CONTACT=, SECTOR=, TIER=, START=)
+	$(PYTHON) scripts/dealix_contract_generator.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  --tier "$(TIER)" \
+	  $(if $(START),--start-date $(START))
+
+contract-dry: ## Preview contract without writing file (COMPANY=, SECTOR=, TIER=)
+	$(PYTHON) scripts/dealix_contract_generator.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  --tier "$(TIER)" \
+	  --dry-run
+
+contract-tiers: ## List available contract tiers and pricing
+	$(PYTHON) scripts/dealix_contract_generator.py --list-tiers
+
+outreach-tracker: ## Log a new outreach event (COMPANY=, SECTOR=, STATUS=, NOTE=)
+	$(PYTHON) scripts/dealix_outreach_tracker.py log \
+	  --company "$(COMPANY)" \
+	  $(if $(SECTOR),--sector $(SECTOR)) \
+	  --status $(or $(STATUS),sent) \
+	  $(if $(NOTE),--note "$(NOTE)")
+
+outreach-tracker-summary: ## Show outreach pipeline summary
+	$(PYTHON) scripts/dealix_outreach_tracker.py summary
+
+outreach-tracker-list: ## List companies by status (STATUS= optional)
+	$(PYTHON) scripts/dealix_outreach_tracker.py list $(if $(STATUS),--status $(STATUS))

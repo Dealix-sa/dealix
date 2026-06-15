@@ -55,6 +55,10 @@ SCAN_PATHS = [
     "scripts/dealix_command_room.py",
     "scripts/dealix_content_engine.py",
     "scripts/merge_research_targets.py",
+    "scripts/dealix_contract_generator.py",
+    "scripts/dealix_meeting_agenda.py",
+    "scripts/dealix_outreach_tracker.py",
+    "scripts/dealix_weekly_gtm_review.py",
 ]
 
 
