@@ -341,4 +341,7 @@ company/runtime/intake/
 
 # Dealix outreach — real target list stays local (never committed)
 data/outreach/saudi_target_intake.csv
+# Real outreach log stays local; the .template.csv is tracked (allowlisted above).
+data/outreach/outreach_log.csv
 reports/outreach/
+reports/command_room/

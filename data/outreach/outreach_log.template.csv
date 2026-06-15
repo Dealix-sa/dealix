@@ -1,0 +1,11 @@
+date,company,sector,status,replied,note
+# سجل المتابعة اليومي — انسخ هذا الملف إلى outreach_log.csv وحدّثه بعد كل إرسال.
+#   cp data/outreach/outreach_log.template.csv data/outreach/outreach_log.csv
+# status لازم يكون أحد: drafted | sent | reply | meeting | won | lost
+# sector لازم يكون أحد: real_estate | clinic | logistics | training | marketing_agency | b2b_services
+# replied: yes | no    (هل رد عليك العميل؟)
+# date بصيغة YYYY-MM-DD    |    note: ملاحظة قصيرة لك (اختياري)
+# مثال (احذف الصفين بعد ما تفهم الصيغة):
+2026-06-15,شركة عقار المثال,real_estate,sent,no,أرسلت الإيميل صباحًا — أتابع بعد يومين
+2026-06-15,Example Clinic,clinic,reply,yes,ردت الدكتورة وطلبت التشخيص المجاني
+# ← احذف الصفين أعلاه قبل الاستخدام الفعلي

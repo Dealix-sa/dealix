@@ -230,3 +230,6 @@ outreach: ## Outreach Kit: generate ready bilingual emails from your real target
 
 outreach-dry: ## Outreach Kit: preview targets without writing files
 	$(PYTHON) scripts/dealix_outreach_kit.py --dry-run
+
+command-room: ## Command Room: render offline outreach dashboard to reports/command_room/index.html
+	$(PYTHON) scripts/dealix_command_room.py
