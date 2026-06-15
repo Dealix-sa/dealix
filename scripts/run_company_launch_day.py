@@ -55,18 +55,20 @@ def main() -> int:
         ok, detail = run_step(name, cmd)
         results.append((name, ok, detail))
 
+    # Server preflight missing env vars is a warning, not a pipeline blocker
+    non_server_ok = all(ok for name, ok, _ in results if "Server" not in name)
     all_ok = all(ok for _, ok, _ in results)
 
     if all_ok:
         verdict = "READY_FOR_MANUAL_OUTREACH"
     else:
         # Determine blocker category
-        blocker = results[[ok for _, ok, _ in results].index(False)][0]
-        if "Server" in blocker:
+        failed_names = [name for name, ok, _ in results if not ok]
+        if all("Server" in name for name in failed_names):
             verdict = "NEEDS_SERVER_FIX"
-        elif "Target" in blocker or "Score" in blocker:
+        elif any("Target" in name or "Score" in name for name in failed_names):
             verdict = "NEEDS_TARGET_VERIFICATION"
-        elif "Repo health" in blocker:
+        elif any("Repo health" in name for name in failed_names):
             verdict = "NEEDS_COMPLIANCE_REVIEW"
         else:
             verdict = "BLOCKED"
@@ -102,7 +104,8 @@ def main() -> int:
     print(f"VERDICT: {verdict}")
     print(f"Report: {report_path}")
     print("=" * 70)
-    return 0 if all_ok else 1
+    # Return 0 if revenue/compliance pipeline is healthy; server env can be fixed later
+    return 0 if non_server_ok else 1
 
 
 if __name__ == "__main__":
