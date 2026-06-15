@@ -18,7 +18,8 @@
         command-room content daily proposal proposal-dry proposal-sectors \
         weekly-review weekly-review-print meeting \
         diagnostic reply-classify onboard contract contract-dry contract-tiers \
-        outreach-tracker outreach-tracker-summary outreach-tracker-list
+        outreach-tracker outreach-tracker-summary outreach-tracker-list \
+        pilot-report customer-monthly-report
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -339,3 +340,26 @@ outreach-tracker-summary: ## Show outreach pipeline summary
 
 outreach-tracker-list: ## List companies by status (STATUS= optional)
 	$(PYTHON) scripts/dealix_outreach_tracker.py list $(if $(STATUS),--status $(STATUS))
+
+pilot-report: ## Generate 7-day pilot results report (COMPANY=, SECTOR=, LEADS_AFTER=, REPLIED=, MEETINGS=)
+	$(PYTHON) scripts/dealix_pilot_report.py \
+	  --company "$(COMPANY)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(LEADS_BEFORE),--leads-before $(LEADS_BEFORE)) \
+	  $(if $(LEADS_AFTER),--leads-after $(LEADS_AFTER)) \
+	  $(if $(REPLIED_AFTER),--replied-after $(REPLIED_AFTER)) \
+	  $(if $(MEETINGS_AFTER),--meetings-after $(MEETINGS_AFTER)) \
+	  $(if $(DRY_RUN),--dry-run)
+
+customer-monthly-report: ## Generate monthly customer success report (COMPANY=, SECTOR=, MONTH=, LEADS=, RESPONSE=, REPLY_PCT=, MEETINGS=)
+	$(PYTHON) scripts/dealix_customer_monthly_report.py \
+	  --company "$(COMPANY)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(MONTH),--month $(MONTH)) \
+	  $(if $(LEADS),--leads-handled $(LEADS)) \
+	  $(if $(RESPONSE),--avg-response-min $(RESPONSE)) \
+	  $(if $(REPLY_PCT),--replied-pct $(REPLY_PCT)) \
+	  $(if $(MEETINGS),--meetings-booked $(MEETINGS)) \
+	  $(if $(DEALS),--deals-won $(DEALS)) \
+	  $(if $(REVENUE),--revenue-influenced $(REVENUE)) \
+	  $(if $(DRY_RUN),--dry-run)
