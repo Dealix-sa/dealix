@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Command, ArrowRight, ArrowLeft } from "lucide-react";
+import { Search, Command as CommandIcon, ArrowRight, ArrowLeft } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import type { Route } from "next";
@@ -140,7 +140,7 @@ export function CommandPalette({ open: controlledOpen, onOpenChange }: CommandPa
                 dir={isRTL ? "rtl" : "ltr"}
               />
               <kbd className="hidden sm:inline-flex items-center gap-1 rounded-md border border-border bg-muted/50 px-2 py-0.5 text-xs text-muted-foreground">
-                <Command className="w-3 h-3" />
+                <CommandIcon className="w-3 h-3" />
                 <span>K</span>
               </kbd>
             </div>

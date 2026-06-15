@@ -35,6 +35,11 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dealix-app",
+    "founder-dashboard",
+    "vitest.config.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ]
 }
