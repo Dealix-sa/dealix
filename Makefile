@@ -15,7 +15,8 @@
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
         launch-content launch-pipeline launch-all-dry-runs test-launch \
         outreach outreach-dry targets-merge outreach-f3 outreach-f7 \
-        command-room content daily proposal proposal-dry proposal-sectors
+        command-room content daily proposal proposal-dry proposal-sectors \
+        weekly-review weekly-review-print
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -274,3 +275,9 @@ proposal-dry: ## Preview a proposal without writing files (COMPANY=, SECTOR=)
 
 proposal-sectors: ## List available sectors + recommended tiers
 	$(PYTHON) scripts/dealix_proposal_generator.py --list-sectors
+
+weekly-review: ## Weekly GTM review — bilingual pipeline snapshot for founder
+	$(PYTHON) scripts/dealix_weekly_gtm_review.py
+
+weekly-review-print: ## Print weekly GTM review to stdout
+	$(PYTHON) scripts/dealix_weekly_gtm_review.py --print
