@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import sys
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
