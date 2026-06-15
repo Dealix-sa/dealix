@@ -96,6 +96,17 @@ ANGLE_MAP: dict[str, str] = {
     "restaurant": (
         "Dealix يرد على استفسارات التموين + الحجوزات + الفرنشايز بالعربي خلال 45 ثانية، ويفرز الجاد منها للإدارة."
     ),
+    "restaurant_chain": (
+        "Dealix يرد على استفسارات التموين + الحجوزات + الفرنشايز بالعربي خلال 45 ثانية، ويفرز الجاد منها للإدارة."
+    ),
+    "healthcare_clinic": (
+        "Dealix يرد على استفسارات المرضى بالعربي خلال 45 ثانية، يحجز المواعيد، ويرسل التذكيرات"
+        " — بدون ما تضيع appointment واحدة."
+    ),
+    "car_dealership": (
+        "كل استفسار تشتري سيارة متأخر = عميل راح لمعرض ثاني. Dealix يرد خلال 45 ثانية بالعربي،"
+        " يأخذ الميزانية + الموديل + موعد التجربة."
+    ),
     "saas": (
         "Dealix هو AI sales rep بالعربي الخليجي يتكامل مع HubSpot/Salesforce/Zoho. "
         "إذا تبيعون SaaS داخل السعودية، نضمن الرد على inbound leads خلال 45 ثانية."
@@ -221,3 +232,58 @@ def compute_followup_schedule(send_date: datetime) -> dict[str, str]:
         "day_10": (send_date + timedelta(days=10)).isoformat(),
         "day_30_nurture": (send_date + timedelta(days=30)).isoformat(),
     }
+
+
+# ── Subject hook map per sector ────────────────────────────────────
+_SUBJECT_HOOK: dict[str, str] = {
+    "real_estate_developer": "رد فوري على leads العقار",
+    "construction": "تنظيم RFQ المشاريع",
+    "hospitality": "حجوزات MICE بالعربي",
+    "events": "leads قاعات الأفراح",
+    "logistics": "RFQ الشحن في دقيقة",
+    "restaurant": "تموين وحجوزات فورية",
+    "restaurant_chain": "تموين وحجوزات فورية",
+    "healthcare_clinic": "حجز مواعيد لا تضيع",
+    "car_dealership": "leads السيارات — رد فوري",
+}
+
+
+def _subject_hook_for(sector: str | None) -> str:
+    if not sector:
+        return "رد فوري على inbound leads"
+    return _SUBJECT_HOOK.get(sector.lower(), "رد فوري على inbound leads")
+
+
+def render_outreach_email(target: dict[str, Any]) -> dict[str, str]:
+    """Render the full outreach email for a Saudi ICP target.
+
+    Produces the complete Arabic template with sector angle, command-room
+    bullet points, CTA, and a sector-specific subject line.
+
+    Args:
+        target: A dict from saudi_icp_targets.json — must contain at least
+                ``company_ar`` and ``sector``.
+
+    Returns:
+        Dict with keys ``subject_ar`` and ``body_ar``.
+    """
+    company = (target.get("company_ar") or target.get("company_name") or "فريقكم").strip()
+    sector = target.get("sector") or ""
+    angle = angle_for(sector)
+    hook = _subject_hook_for(sector)
+
+    body = (
+        f"السلام عليكم {company}،\n\n"
+        f"{angle}\n\n"
+        "وبجانب الرد الفوري، Dealix يبني لكم:\n"
+        "- غرفة قيادة: شاشة واحدة تشوفون فيها كل lead، كل إيراد، كل مؤشر — لحظة بلحظة\n"
+        "- نظام متابعة: follow-up تلقائي على كل استفسار مفتوح (اليوم 2، اليوم 5، اليوم 10)\n"
+        "- تقرير أسبوعي: \"الإيرادات المفقودة هذا الأسبوع\" — وكيف نستردها\n\n"
+        "Pilot 7 أيام بـ 499 ريال — نشتغل على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون.\n"
+        "تناسبكم 20 دقيقة هذا الأسبوع؟\n\n"
+        "سامي\n"
+        "Dealix — https://dealix.me\n"
+        "احجز هنا: https://calendly.com/sami-assiri11/dealix-demo"
+    )
+    subject = f"Dealix — {hook} | {company}"
+    return {"subject_ar": subject, "body_ar": body}

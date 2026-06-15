@@ -10,6 +10,7 @@
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
+        daily-outreach daily-outreach-drafts \
         v5-proof-pack v10-verify v10-reference \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
@@ -172,6 +173,12 @@ v5-verify: ## v5: 22-point production verifier (set BASE_URL=...)
 
 v5-digest: ## v5: print the daily founder digest markdown (no email)
 	$(PYTHON) scripts/dealix_morning_digest.py --print
+
+daily-outreach: ## Daily: generate Arabic outreach emails for today's 10 Saudi targets
+	$(PYTHON) scripts/gmail_daily_outreach.py
+
+daily-outreach-drafts: ## Daily: generate emails AND create Gmail drafts (requires GMAIL_* env vars)
+	$(PYTHON) scripts/gmail_daily_outreach.py --mode drafts
 
 v5-proof-pack: ## v5: assemble bilingual Proof Pack from JSONL events (HANDLE=...)
 	$(PYTHON) scripts/dealix_proof_pack.py --customer-handle $(HANDLE)
