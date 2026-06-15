@@ -345,3 +345,7 @@ data/outreach/saudi_target_intake.csv
 data/outreach/outreach_log.csv
 reports/outreach/
 reports/command_room/
+
+# Researched raw target lists stay local (not a committed scraped list)
+data/outreach/research/
+reports/content/

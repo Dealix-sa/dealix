@@ -231,6 +231,9 @@ outreach: ## Outreach Kit: generate ready bilingual emails from your real target
 outreach-dry: ## Outreach Kit: preview targets without writing files
 	$(PYTHON) scripts/dealix_outreach_kit.py --dry-run
 
+targets-merge: ## Outreach Kit: merge researched sector CSVs (data/outreach/research/*.csv) into the intake list
+	$(PYTHON) scripts/merge_research_targets.py
+
 outreach-f3: ## Outreach Kit: generate day-3 follow-up nudges
 	$(PYTHON) scripts/dealix_outreach_kit.py --stage f3
 
@@ -239,6 +242,9 @@ outreach-f7: ## Outreach Kit: generate day-7 final follow-up nudges
 
 command-room: ## Command Room: render offline outreach dashboard to reports/command_room/index.html
 	$(PYTHON) scripts/dealix_command_room.py
+
+content: ## Content Engine: generate bilingual LinkedIn post drafts (one per sector) for inbound demand
+	$(PYTHON) scripts/dealix_content_engine.py
 
 daily: ## Founder morning routine — outreach emails + command room dashboard in one run
 	@$(PYTHON) scripts/dealix_outreach_kit.py || true
