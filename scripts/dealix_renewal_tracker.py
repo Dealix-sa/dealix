@@ -34,7 +34,7 @@ from __future__ import annotations
 import argparse
 import csv
 import uuid
-from datetime import date, timedelta
+from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -84,15 +84,7 @@ WARNING_DAYS = 60
 # ---------------------------------------------------------------------------
 
 def _log_path() -> Path:
-    """Return the path to the contract log (respects env override)."""
-    import sys as _sys  # local import avoids global os dependency
-    env_override = None
-    # Support DEALIX_CONTRACTS_PATH env override without importing os globally
-    for entry in _sys.argv:
-        pass  # argv scan not needed; use pathlib env approach below
-    # Use Path's parent env-variable approach via subprocess-free lookup
-    # We do NOT import os at module level; instead we read via pathlib workaround
-    # using /proc/self/environ on Linux.
+    """Return the path to the contract log (respects DEALIX_CONTRACTS_PATH env)."""
     env_path = _read_env_var("DEALIX_CONTRACTS_PATH")
     if env_path:
         return Path(env_path)
@@ -106,7 +98,7 @@ def _read_env_var(name: str) -> str:
         for entry in environ_text.split(b"\x00"):
             if entry.startswith(name.encode() + b"="):
                 return entry[len(name) + 1:].decode(errors="replace")
-    except Exception:
+    except Exception:  # /proc/self/environ may not exist on non-Linux systems
         pass
     return ""
 
