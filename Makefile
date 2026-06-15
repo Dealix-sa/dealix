@@ -20,7 +20,8 @@
         diagnostic reply-classify onboard contract contract-dry contract-tiers \
         outreach-tracker outreach-tracker-summary outreach-tracker-list \
         pilot-report customer-monthly-report \
-        renewal-check renewal-summary
+        renewal-check renewal-summary \
+        daily-ops
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -370,3 +371,6 @@ renewal-check: ## Check contracts due for renewal in next 30-60 days
 
 renewal-summary: ## Show MRR and active customer summary
 	$(PYTHON) scripts/dealix_renewal_tracker.py summary
+
+daily-ops: ## Morning ops command — prioritized action list from all tracking data
+	$(PYTHON) scripts/dealix_daily_ops.py
