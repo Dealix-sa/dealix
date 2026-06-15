@@ -1,0 +1,97 @@
+{
+  "version": "1.0",
+  "updatedAt": "2026-06-15",
+  "doctrine": {
+    "safetyFlags": ["no_roi_claim", "no_fake_testimonial", "no_pressure"],
+    "humanReview": "Every draft is pending founder review. Nothing sends automatically.",
+    "note": "Pains are stated as hypotheses/questions, never as fabricated facts about a named company."
+  },
+  "company": {
+    "name": "Dealix",
+    "oneLiner_ar": "نظام تشغيل الإيرادات بالذكاء الاصطناعي — مبني للسوق السعودي ومتوافق مع PDPL و ZATCA.",
+    "oneLiner_en": "AI Revenue Operating System — built for Saudi Arabia, aligned with PDPL & ZATCA.",
+    "site": "https://dealix.me",
+    "diagnostic": "https://dealix.me/diagnostic.html",
+    "founderEmail": "hello@dealix.me",
+    "ladder_ar": [
+      "تشخيص مجاني (30 نقطة) — بدون أي التزام",
+      "بايلوت 7 أيام — نثبت القيمة على أرض الواقع",
+      "غرفة القيادة — المنصة + متابعة شهرية",
+      "أنظمة مؤسسية — تطوير مخصص للشركات الكبرى"
+    ]
+  },
+  "sectors": {
+    "real_estate": {
+      "label_ar": "العقار",
+      "label_en": "Real Estate",
+      "subject_ar": "متابعة الليدز في {company} — قبل لا يبردون",
+      "subject_en": "{company}: catching every lead before it goes cold",
+      "pain_ar": "مكاتب العقار تصرف على الإعلانات، لكن غالب الليدز يضيع لأن الرد يتأخر والمتابعة مو منتظمة بين المسوّقين.",
+      "pain_en": "Real-estate offices spend on ads, but most leads slip because response is slow and follow-up isn't consistent across agents.",
+      "fix_ar": "Dealix يركّب نظام يلتقط كل ليد، يرتّب المتابعة بين الفريق، ويعطيك غرفة قيادة بخمسة مؤشرات فقط — مع مسودات ردود تُراجع قبل الإرسال.",
+      "fix_en": "Dealix installs a system that captures every lead, sequences follow-up across the team, and gives you a command room with five KPIs — with reply drafts you approve before sending.",
+      "cta_ar": "أقدر أسوي لك تشخيص مجاني (30 نقطة) لقمع الليدز عندك، وأوريك وين يتسرّب — بدون أي التزام.",
+      "cta_en": "I can run a free 30-point diagnostic of your lead funnel and show you exactly where it leaks — no commitment."
+    },
+    "clinic": {
+      "label_ar": "العيادات والرعاية الصحية",
+      "label_en": "Clinics & Healthcare",
+      "subject_ar": "حجوزات ومتابعة المرضى في {company}",
+      "subject_en": "{company}: bookings & patient follow-up, handled",
+      "pain_ar": "العيادات تجيها استفسارات كثيرة على القنوات، لكن الردود تتأخر بعد الدوام، والتقييمات على Google ما عليها متابعة منظمة.",
+      "pain_en": "Clinics get heavy inbound across channels, but replies lag after hours and Google reviews aren't followed up systematically.",
+      "fix_ar": "Dealix يبني نظام ردود بموافقة بشرية على الاستفسارات، تذكير بالمواعيد، ومتابعة تقييمات — مع تقرير شهري واضح. متوافق مع PDPL.",
+      "fix_en": "Dealix builds human-approved reply handling, appointment reminders, and review follow-up — with a clear monthly report. PDPL-aligned.",
+      "cta_ar": "أقترح نبدأ بتشخيص مجاني لرحلة المريض من أول استفسار لين بعد الزيارة. تبي أرسله؟",
+      "cta_en": "I'd start with a free diagnostic of the patient journey from first inquiry to post-visit. Want me to send it?"
+    },
+    "logistics": {
+      "label_ar": "النقل واللوجستيات",
+      "label_en": "Logistics",
+      "subject_ar": "رؤية الشحنات و SLA في {company}",
+      "subject_en": "{company}: shipment visibility & SLA in one room",
+      "pain_ar": "تحديثات الشحنات غالباً يدوية، والعميل يتصل يسأل وين شحنته، وما فيه لوحة موحّدة تبيّن أداء التسليم مقابل الوعد.",
+      "pain_en": "Shipment updates are often manual, customers call asking where their order is, and there's no single board showing delivery vs. promise.",
+      "fix_ar": "Dealix يبني غرفة قيادة بخمسة مؤشرات (تسليم في الوقت، تأخيرات، استفسارات مفتوحة...) + تحديثات للعميل تُراجع قبل الإرسال.",
+      "fix_en": "Dealix builds a command room with five KPIs (on-time delivery, delays, open inquiries…) plus customer updates you approve before they go out.",
+      "cta_ar": "أقدر أرسل لك تشخيص مجاني يوضّح وين تضيع رؤية التسليم عندك. مهتم؟",
+      "cta_en": "I can send a free diagnostic showing where delivery visibility breaks down for you. Interested?"
+    },
+    "training": {
+      "label_ar": "التدريب والتعليم",
+      "label_en": "Training & Education",
+      "subject_ar": "متابعة المتدربين بعد الدورة في {company}",
+      "subject_en": "{company}: post-cohort follow-up that retains",
+      "pain_ar": "المحتوى التدريبي قوي، لكن المتابعة بعد انتهاء الدورة ضعيفة، فيضيع تجديد الاشتراك والترشيحات والإحالات.",
+      "pain_en": "The training content is strong, but post-course follow-up is light — so renewals, upsells, and referrals leak.",
+      "fix_ar": "Dealix يركّب نظام متابعة قابل للقياس بعد كل دفعة، مع مسودات رسائل تُراجع قبل الإرسال وتقرير احتفاظ شهري.",
+      "fix_en": "Dealix installs a measurable post-cohort follow-up flow, with message drafts you approve and a monthly retention report.",
+      "cta_ar": "أبدأ بتشخيص مجاني لرحلة المتدرب بعد التخرج. تبي أجهزه لك؟",
+      "cta_en": "I'd start with a free diagnostic of the post-graduation journey. Want me to prepare it?"
+    },
+    "marketing_agency": {
+      "label_ar": "وكالات التسويق",
+      "label_en": "Marketing Agencies",
+      "subject_ar": "سرعة الرد على ليدز العملاء في {company}",
+      "subject_en": "{company}: closing the inbound-response window",
+      "pain_ar": "الوكالة تطلّع حملات قوية وتجيب ليدز لعملائها، لكن نافذة الرد على الليدز الواردة تتأخر، فيضيع جزء من نتيجة الحملة.",
+      "pain_en": "The agency ships strong campaigns and generates leads for clients, but the inbound-response window is slow — so part of the campaign result leaks.",
+      "fix_ar": "Dealix يقفل نافذة الرد: التقاط الليد فوراً، مسودات رد تُراجع، وتقرير يثبت سرعة الاستجابة لعملائك — تبيعه كقيمة مضافة.",
+      "fix_en": "Dealix closes the response window: instant lead capture, reply drafts for review, and a report proving response speed to your clients — sellable as added value.",
+      "cta_ar": "أقدر أسوي تشخيص مجاني على قمع واحد من عملائك كنموذج. تبي؟",
+      "cta_en": "I can run a free diagnostic on one client's funnel as a sample. Want it?"
+    },
+    "b2b_services": {
+      "label_ar": "خدمات الأعمال (B2B)",
+      "label_en": "B2B Services",
+      "subject_ar": "إيقاع المبيعات والمتابعة في {company}",
+      "subject_en": "{company}: a weekly cadence your pipeline can trust",
+      "pain_ar": "الفريق يستقبل ليدز وفرص، لكن المتابعة تأخذ وقت وما فيه إيقاع أسبوعي ثابت، فالـ pipeline يعتمد على الذاكرة بدل النظام.",
+      "pain_en": "The team receives leads and opportunities, but follow-up takes time and there's no steady weekly cadence — the pipeline runs on memory, not a system.",
+      "fix_ar": "Dealix يركّب الإيقاع الأسبوعي، يرتّب المتابعة، ويصدر تقرير إثبات أسبوعي — مع مسودات تواصل تُراجع قبل الإرسال.",
+      "fix_en": "Dealix installs the weekly cadence, sequences follow-up, and ships a weekly proof report — with outreach drafts you approve before sending.",
+      "cta_ar": "أبدأ بتشخيص مجاني لخط المبيعات عندك وأوريك أكبر تسريب. تبي أرسله؟",
+      "cta_en": "I'd start with a free diagnostic of your sales pipeline and show you the biggest leak. Want me to send it?"
+    }
+  }
+}
