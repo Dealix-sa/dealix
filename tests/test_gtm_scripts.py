@@ -24,8 +24,7 @@ def test_list_sectors_runs_and_has_real_estate(capsys: object) -> None:
     assert "real_estate" in sectors, "Expected 'real_estate' in sector pitches"
 
     # Call list_sectors with the loaded pitches dict — it prints and returns None.
-    result = pg.list_sectors(pitches)
-    assert result is None
+    pg.list_sectors(pitches)
 
 
 # ---------------------------------------------------------------------------
@@ -36,9 +35,7 @@ def test_list_tiers_runs_without_error(capsys: object) -> None:
     """list_tiers prints tier table without raising."""
     import scripts.dealix_contract_generator as cg  # type: ignore[import]
 
-    result = cg.list_tiers()
-    # list_tiers prints and returns None implicitly.
-    assert result is None
+    cg.list_tiers()
 
 
 def test_generate_contract_dry_run_returns_none(capsys: object) -> None:
