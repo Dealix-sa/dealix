@@ -224,3 +224,9 @@ launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score laun
 
 test-launch: ## Launch OS: run launch-specific test suite
 	pytest tests/launch/ -v --tb=short
+
+outreach: ## Outreach Kit: generate ready bilingual emails from your real target list (data/outreach/saudi_target_intake.csv)
+	$(PYTHON) scripts/dealix_outreach_kit.py
+
+outreach-dry: ## Outreach Kit: preview targets without writing files
+	$(PYTHON) scripts/dealix_outreach_kit.py --dry-run
