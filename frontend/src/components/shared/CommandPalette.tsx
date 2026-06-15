@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Command as CommandIcon, ArrowRight, ArrowLeft } from "lucide-react";
+import { Search, Command as CommandIcon, ArrowRight } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import type { Route } from "next";
