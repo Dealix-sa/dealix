@@ -351,3 +351,16 @@ reports/command_room/
 # Researched raw target lists stay local (not a committed scraped list)
 data/outreach/research/
 reports/content/
+
+# GTM generated docs — founder reviews before sharing; never committed
+reports/contracts/*
+reports/pilot_reports/*
+reports/customer_reports/*
+reports/meetings/*
+!reports/contracts/.gitkeep
+!reports/pilot_reports/.gitkeep
+!reports/customer_reports/.gitkeep
+!reports/meetings/.gitkeep
+
+# Contract log is tracked business data (like proposals/)
+# data/contracts/contract_log.csv is NOT ignored

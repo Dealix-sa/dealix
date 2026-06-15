@@ -19,7 +19,8 @@
         weekly-review weekly-review-print meeting \
         diagnostic reply-classify onboard contract contract-dry contract-tiers \
         outreach-tracker outreach-tracker-summary outreach-tracker-list \
-        pilot-report customer-monthly-report
+        pilot-report customer-monthly-report \
+        renewal-check renewal-summary
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -363,3 +364,9 @@ customer-monthly-report: ## Generate monthly customer success report (COMPANY=, 
 	  $(if $(DEALS),--deals-won $(DEALS)) \
 	  $(if $(REVENUE),--revenue-influenced $(REVENUE)) \
 	  $(if $(DRY_RUN),--dry-run)
+
+renewal-check: ## Check contracts due for renewal in next 30-60 days
+	$(PYTHON) scripts/dealix_renewal_tracker.py check
+
+renewal-summary: ## Show MRR and active customer summary
+	$(PYTHON) scripts/dealix_renewal_tracker.py summary
