@@ -13,7 +13,9 @@
         v5-proof-pack v10-verify v10-reference \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
-        launch-content launch-pipeline launch-all-dry-runs test-launch
+        launch-content launch-pipeline launch-all-dry-runs test-launch \
+        outreach outreach-dry targets-merge outreach-f3 outreach-f7 \
+        command-room content daily proposal proposal-dry proposal-sectors
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -253,3 +255,22 @@ daily: ## Founder morning routine — outreach emails + command room dashboard i
 	@echo "✅ صباح الخير. الإيميلات في reports/outreach/<اليوم>/ — راجع وأرسل بنفسك."
 	@echo "📊 غرفة القيادة: reports/command_room/index.html"
 	@echo "📒 عند أي رد: business/playbooks/REPLY_PLAYBOOK.md"
+
+proposal: ## Generate a bilingual proposal (COMPANY=, CONTACT=, SECTOR=, TIER= optional)
+	$(PYTHON) scripts/dealix_proposal_generator.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(TIER),--tier $(TIER)) \
+	  $(if $(DRY_RUN),--dry-run)
+
+proposal-dry: ## Preview a proposal without writing files (COMPANY=, SECTOR=)
+	$(PYTHON) scripts/dealix_proposal_generator.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(TIER),--tier $(TIER)) \
+	  --dry-run
+
+proposal-sectors: ## List available sectors + recommended tiers
+	$(PYTHON) scripts/dealix_proposal_generator.py --list-sectors
