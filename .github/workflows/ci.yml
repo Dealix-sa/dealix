@@ -158,8 +158,8 @@ jobs:
       - name: Tests with coverage gate
         run: |
           pip install pytest-timeout
-          pytest -q \
-            --timeout=30 \
+          pytest -q -n auto \
+            --timeout=30 --timeout-method=thread \
             --cov=api --cov=core --cov=db --cov=integrations \
             --cov-report=xml:coverage.xml \
             --cov-report=term-missing \
