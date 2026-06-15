@@ -61,7 +61,7 @@ TIER_MAP = {
         "label_en": "Delivery OS",
         "setup": 25_000,
         "monthly": 6_000,
-        "template": "proposal_revenue_os_ar.md",  # reuse revenue_os structure
+        "template": "proposal_delivery_os_ar.md",
         "currency": "SAR",
     },
     "review_os": {
@@ -69,7 +69,7 @@ TIER_MAP = {
         "label_en": "Review & Reputation OS",
         "setup": 12_000,
         "monthly": 3_500,
-        "template": "proposal_revenue_os_ar.md",  # reuse revenue_os structure
+        "template": "proposal_review_os_ar.md",
         "currency": "SAR",
     },
 }
