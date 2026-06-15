@@ -1,0 +1,2 @@
+company,sector,city,website,email,source_url,pain_hypothesis,confidence,verification_status,status,last_contacted_at,followup_count
+Example Logistics,logistics,Riyadh,https://example.com,info@example.com,https://example.com/contact,ضعف المتابعة وغرفة القيادة,0.70,needs_manual_review,new,,0
