@@ -1,0 +1,315 @@
+---
+# Buyer personas for all 13 GCC sectors — titles, pain points, channels, decision style.
+
+personas:
+
+  legal:
+    sector: legal
+    typical_titles:
+      - "Managing Partner"
+      - "Senior Partner"
+      - "رئيس الشركة"
+      - "شريك إداري"
+      - "مدير العمليات"
+    pain_points:
+      - "manual document review"
+      - "case file chaos"
+      - "client follow-up tracking"
+      - "time billing accuracy"
+      - "مراجعة المستندات يدوياً"
+      - "تتبع ملفات القضايا"
+    preferred_channels:
+      - website_form
+      - email
+      - linkedin
+      - webinar
+    offer_fit: "Legal Knowledge OS — confidential document intelligence"
+    language_preference: arabic
+    decision_style: relationship_first
+
+  facilities_management:
+    sector: facilities_management
+    typical_titles:
+      - "Operations Manager"
+      - "FM Director"
+      - "مدير العمليات"
+      - "مدير الصيانة"
+      - "VP Operations"
+    pain_points:
+      - "manual SLA reports"
+      - "technician dispatch"
+      - "maintenance ticket overload"
+      - "KPI reporting"
+      - "تقارير SLA اليدوية"
+      - "جدولة الفنيين"
+    preferred_channels:
+      - email
+      - phone_call
+      - linkedin
+      - website_form
+    offer_fit: "Maintenance SLA AI — automated technician workflow and KPI reporting"
+    language_preference: bilingual
+    decision_style: roi_first
+
+  consulting:
+    sector: consulting
+    typical_titles:
+      - "Managing Director"
+      - "Practice Lead"
+      - "مدير عام"
+      - "رئيس القسم"
+      - "Partner"
+    pain_points:
+      - "proposal writing time"
+      - "client onboarding bottlenecks"
+      - "knowledge management"
+      - "utilization tracking"
+      - "كتابة المقترحات يدوياً"
+      - "متابعة العملاء"
+    preferred_channels:
+      - linkedin
+      - email
+      - webinar
+      - partnership
+    offer_fit: "Consulting Ops AI — proposal automation and client intelligence"
+    language_preference: bilingual
+    decision_style: roi_first
+
+  real_estate:
+    sector: real_estate
+    typical_titles:
+      - "Sales Director"
+      - "مدير المبيعات"
+      - "مدير التسويق"
+      - "CEO"
+      - "مدير تطوير الأعمال"
+    pain_points:
+      - "lead follow-up delays"
+      - "manual CRM updates"
+      - "broker coordination"
+      - "listing management"
+      - "متابعة العملاء المحتملين"
+      - "تحديث CRM يدوياً"
+    preferred_channels:
+      - meta_lead_ads
+      - website_form
+      - phone_call
+      - whatsapp_optin
+    offer_fit: "Real Estate Lead OS — automated lead nurture and broker coordination"
+    language_preference: arabic
+    decision_style: roi_first
+
+  healthcare:
+    sector: healthcare
+    typical_titles:
+      - "Hospital Administrator"
+      - "مدير المستشفى"
+      - "Director of Operations"
+      - "مدير الخدمات الطبية"
+      - "Chief Medical Officer"
+    pain_points:
+      - "patient scheduling backlog"
+      - "billing errors"
+      - "staff shift coordination"
+      - "compliance documentation"
+      - "جدولة المرضى"
+      - "أخطاء الفواتير الطبية"
+    preferred_channels:
+      - website_form
+      - email
+      - webinar
+      - phone_call
+    offer_fit: "Healthcare Admin AI — scheduling, billing, and compliance automation"
+    language_preference: arabic
+    decision_style: compliance_first
+
+  education_training:
+    sector: education_training
+    typical_titles:
+      - "Training Manager"
+      - "مدير التدريب"
+      - "Head of L&D"
+      - "مدير الموارد البشرية"
+      - "Academic Director"
+    pain_points:
+      - "course enrollment tracking"
+      - "trainer coordination"
+      - "certificate issuance"
+      - "learner engagement"
+      - "تتبع التسجيل في الدورات"
+      - "إصدار الشهادات يدوياً"
+    preferred_channels:
+      - email
+      - linkedin
+      - webinar
+      - website_form
+    offer_fit: "Training Ops AI — enrollment automation and learner engagement"
+    language_preference: bilingual
+    decision_style: roi_first
+
+  international_company:
+    sector: international_company
+    typical_titles:
+      - "Country Manager"
+      - "Regional Director"
+      - "Business Development Manager"
+      - "VP Growth"
+      - "Head of Sales MENA"
+    pain_points:
+      - "GCC market entry complexity"
+      - "localization gaps"
+      - "local partner vetting"
+      - "regulatory compliance"
+      - "Arabic content production"
+    preferred_channels:
+      - linkedin
+      - email
+      - linkedin_lead_gen
+      - webinar
+    offer_fit: "GCC Market Entry AI — localization, partner matching, and compliance"
+    language_preference: english
+    decision_style: roi_first
+
+  local_sme:
+    sector: local_sme
+    typical_titles:
+      - "صاحب العمل"
+      - "المدير العام"
+      - "Owner"
+      - "مدير"
+      - "الرئيس التنفيذي"
+    pain_points:
+      - "limited staff bandwidth"
+      - "manual invoicing"
+      - "customer follow-up"
+      - "social media management"
+      - "نقص الموارد"
+      - "المتابعة اليدوية مع العملاء"
+    preferred_channels:
+      - website_form
+      - phone_call
+      - meta_lead_ads
+      - whatsapp_optin
+    offer_fit: "SME Growth OS — automate admin, follow-up, and social in one sprint"
+    language_preference: arabic
+    decision_style: roi_first
+
+  government_adjacent:
+    sector: government_adjacent
+    typical_titles:
+      - "مدير المشاريع"
+      - "مسؤول المشتريات"
+      - "Project Director"
+      - "Procurement Manager"
+      - "مدير التطوير"
+    pain_points:
+      - "ETIMAD/Bids procurement process"
+      - "manual tender documentation"
+      - "vendor qualification"
+      - "compliance reporting"
+      - "توثيق المناقصات يدوياً"
+      - "متطلبات الامتثال الحكومي"
+    preferred_channels:
+      - partnership
+      - email
+      - procurement_portal
+      - webinar
+    offer_fit: "Gov Procurement AI — tender documentation and vendor compliance automation"
+    language_preference: arabic
+    decision_style: compliance_first
+
+  technology:
+    sector: technology
+    typical_titles:
+      - "CTO"
+      - "VP Engineering"
+      - "Head of Product"
+      - "مدير التقنية"
+      - "Product Manager"
+    pain_points:
+      - "customer onboarding friction"
+      - "support ticket volume"
+      - "churn detection"
+      - "sales-engineering handoff"
+      - "احتكاك في onboarding العملاء"
+      - "حجم تذاكر الدعم"
+    preferred_channels:
+      - linkedin
+      - email
+      - community
+      - webinar
+    offer_fit: "Tech Revenue OS — customer success and sales automation for SaaS/tech"
+    language_preference: bilingual
+    decision_style: roi_first
+
+  manufacturing:
+    sector: manufacturing
+    typical_titles:
+      - "Plant Manager"
+      - "مدير المصنع"
+      - "Operations Director"
+      - "مدير الإنتاج"
+      - "Supply Chain Manager"
+    pain_points:
+      - "production scheduling"
+      - "procurement delays"
+      - "quality control reporting"
+      - "supplier coordination"
+      - "جدولة الإنتاج اليدوية"
+      - "تقارير الجودة"
+    preferred_channels:
+      - email
+      - phone_call
+      - partnership
+      - website_form
+    offer_fit: "Manufacturing Ops AI — production scheduling and supplier coordination"
+    language_preference: bilingual
+    decision_style: roi_first
+
+  retail:
+    sector: retail
+    typical_titles:
+      - "Retail Director"
+      - "مدير التجزئة"
+      - "Head of E-commerce"
+      - "مدير التسويق"
+      - "Operations Manager"
+    pain_points:
+      - "inventory management"
+      - "customer retention"
+      - "seasonal demand forecasting"
+      - "loyalty program complexity"
+      - "إدارة المخزون"
+      - "الاحتفاظ بالعملاء"
+    preferred_channels:
+      - meta_lead_ads
+      - retargeting
+      - email
+      - website_form
+    offer_fit: "Retail Intelligence OS — demand forecasting and loyalty automation"
+    language_preference: arabic
+    decision_style: roi_first
+
+  financial_services:
+    sector: financial_services
+    typical_titles:
+      - "Head of Operations"
+      - "مدير العمليات"
+      - "CFO"
+      - "Risk Manager"
+      - "مدير المخاطر"
+    pain_points:
+      - "KYC/AML manual processing"
+      - "regulatory reporting"
+      - "client onboarding delays"
+      - "audit trail gaps"
+      - "معالجة KYC يدوياً"
+      - "التقارير التنظيمية"
+    preferred_channels:
+      - email
+      - linkedin
+      - webinar
+      - partnership
+    offer_fit: "FinOps AI — compliance automation and client onboarding acceleration"
+    language_preference: bilingual
+    decision_style: compliance_first
