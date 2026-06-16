@@ -175,6 +175,90 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "sales-kit hosted-checkout doc names the prefix in policy copy",
     "docs/sales-kit/dealix_1_riyal_test.sh":
         "sales-kit 1-riyal test shell script names the prefix in env",
+    # ── core safety / observability code (regex patterns = the policy) ──
+    "api/routers/founder_launch_status.py":
+        "launch-status reporter detects Moyasar mode via startswith('sk_live_')",
+    "auto_client_acquisition/agent_observability/redaction.py":
+        "log-redaction regex patterns for sk_live_/ghp_/AIza secret shapes",
+    "auto_client_acquisition/observability_adapters/redaction.py":
+        "observability adapter redaction regex names the secret prefixes",
+    # ── scripts: secret scanners + env generators + verifiers ──
+    "scripts/apply_founder_closure_env.py":
+        "env-apply guard regex rejects 'sk_live_CHANGE' placeholder tokens",
+    "scripts/dealix_integration_plan_quality_check.py":
+        "integration quality check regex matches live API key shape",
+    "scripts/dealix_master_full_execution_verify.sh":
+        "master verifier shell script greps repo for these prefixes",
+    "scripts/first_setup.sh":
+        "first-setup script names the prefix in env-template guidance",
+    "scripts/generate_production_env.sh":
+        "prod env generator writes 'sk_live_xxxxx' placeholder template",
+    "scripts/integration_upgrade_verify.sh":
+        "integration upgrade verifier greps repo for these prefixes",
+    "scripts/moyasar_live_cutover.py":
+        "live cutover CLI prompts/validates the sk_live_ key prefix",
+    "scripts/preflight_check.py":
+        "preflight check names sk_live_ in env-template placeholder text",
+    "scripts/reconcile_moyasar.py":
+        "reconcile CLI docstring names the sk_live_ key env placeholder",
+    "scripts/security_smoke.py":
+        "security smoke test regex matches sk_live_/ghp_ secret shapes",
+    "scripts/ultimate_upgrade_verify.sh":
+        "ultimate upgrade verifier greps repo for these prefixes",
+    "scripts/validate_railway_generated_env.py":
+        "env validator regex rejects 'sk_live_CHANGE' placeholder tokens",
+    "scripts/verify_founder_operating_system.py":
+        "verifier uses 'sk_live_REAL' as a fixture to assert rejection",
+    "scripts/verify_moyasar_e2e.py":
+        "moyasar e2e verifier names sk_test_*/sk_live_* in its check label",
+    "scripts/wave6_revenue_activation_verify.sh":
+        "wave6 verifier shell script greps repo for these prefixes",
+    "scripts/wave7_5_service_truth_verify.sh":
+        "wave7.5 verifier shell script greps repo for these prefixes",
+    "scripts/wave8_customer_data_boundary_check.sh":
+        "wave8 boundary checker greps repo for these prefixes",
+    "scripts/wave8_customer_ready_verify.sh":
+        "wave8 customer-ready verifier greps repo for these prefixes",
+    "scripts/wave11_first3_paid_pilots_verify.sh":
+        "wave11 verifier shell script greps repo for these prefixes",
+    "scripts/wave12_saudi_revenue_command_center_verify.sh":
+        "wave12 verifier shell script greps repo for these prefixes",
+    # ── deployment / env-template / policy docs ──
+    "docs/LLM_PROVIDERS_SETUP.md":
+        "LLM providers setup doc names AIza/sk-ant key prefixes in env table",
+    "docs/MOYASAR_LIVE_CUTOVER.md":
+        "live cutover doc names sk_live_ in the key-swap procedure",
+    "docs/RAILWAY_DEPLOY_CHECKLIST.md":
+        "deploy checklist names sk_live_ in the production env step",
+    "docs/WAVE11_FIRST3_PAID_PILOTS_EVIDENCE_TABLE.md":
+        "evidence table cell names the prefix as a forbidden token",
+    "docs/infra/CONFIGURATION_DRIFT_POLICY_AR.md":
+        "Arabic config-drift policy names the prefix in env-contract copy",
+    "docs/integrations/PAYMENT_MOYASAR_LIVE.md":
+        "Moyasar live payment integration doc names sk_live_ in policy copy",
+    "docs/ops/ENVIRONMENT_CONTRACT.md":
+        "environment contract doc names sk_live_ in the env-var table",
+    "docs/ops/GO_LIVE_CHECKLIST_AR.md":
+        "Arabic go-live checklist names sk_live_ in the production step",
+    "docs/ops/GO_LIVE_INDEX.md":
+        "go-live index references sk_live_ in the cutover checklist",
+    "docs/ops/MOYASAR_KYC_CHECKLIST.md":
+        "Moyasar KYC checklist names sk_live_ in the key-issuance step",
+    "docs/ops/PRODUCTION_ENV_TEMPLATE.md":
+        "production env template names sk_live_ placeholder for MOYASAR key",
+    "docs/ops/RAILWAY_COMMERCIAL_SOFT_LAUNCH_AR.md":
+        "Arabic soft-launch runbook names sk_live_ in env-cutover copy",
+    "docs/sales-kit/CUSTOMER_1_GO_LIVE_RUNBOOK.md":
+        "customer-1 go-live runbook names sk_live_ in the env-config step",
+    # ── security policy / key-rotation docs ──
+    "docs/security/KEY_ROTATION.md":
+        "key-rotation policy names sk_live_ in the rotation matrix table",
+    "docs/security/SECRETS_HANDLING_POLICY.md":
+        "secrets-handling policy names the prefixes as protected tokens",
+    "docs/security/TOOL_USE_SECURITY_POLICY.md":
+        "tool-use security policy names the secret prefixes in scan copy",
+    "docs/security/UNTRUSTED_INPUT_POLICY.md":
+        "untrusted-input policy names the secret prefixes in redaction copy",
 }
 
 
