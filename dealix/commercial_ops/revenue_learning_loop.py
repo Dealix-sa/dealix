@@ -21,6 +21,23 @@ from dealix.commercial_ops.evidence_csv import (
 )
 from dealix.commercial_ops.paths import REPO_ROOT
 
+_DEFAULT_EVIDENCE_PATH = REPO_ROOT / "docs/commercial/operations/evidence_events_tracker.csv"
+
+
+def _display_evidence_path(evidence_path: Path | None) -> str:
+    """Render the evidence CSV path for the report.
+
+    Uses a repo-relative path when the file lives under REPO_ROOT; otherwise
+    (e.g. a test tmp_path) falls back to the absolute path. Avoids the
+    ValueError that ``Path.relative_to`` raises for out-of-tree paths.
+    """
+    path = Path(evidence_path) if evidence_path is not None else _DEFAULT_EVIDENCE_PATH
+    try:
+        return str(path.relative_to(REPO_ROOT)).replace("\\", "/")
+    except ValueError:
+        return str(path).replace("\\", "/")
+
+
 KPI_REGISTRY_PATH = REPO_ROOT / "dealix/transformation/kpi_registry.yaml"
 KPI_IMPORT_PATH = REPO_ROOT / "dealix/transformation/kpi_founder_commercial_import.yaml"
 KPI_IMPORT_EXAMPLE = REPO_ROOT / "dealix/transformation/kpi_founder_commercial_import.example.yaml"
@@ -55,7 +72,19 @@ def _source_ref_is_real(source_ref: str) -> bool:
     ref = (source_ref or "").strip().lower()
     if not ref:
         return False
-    blocked = ("not_synced_yet", "pending_founder_export", "replace:", "placeholder")
+    # A source_ref is only "real" when it points at actual synced data. In
+    # addition to the explicit not-synced markers, we reject refs that signal
+    # the underlying source has no data yet (e.g. "none_active" — no active
+    # pilot), so a placeholder value is never surfaced as a proven KPI.
+    blocked = (
+        "not_synced_yet",
+        "pending_founder_export",
+        "replace:",
+        "placeholder",
+        "none_active",
+        "not_active",
+        "no_data",
+    )
     return not any(token in ref for token in blocked)
 
 
@@ -208,7 +237,7 @@ def build_weekly_learning_report(
         "workflow_simplifications_ar": [],
         "funnel_metrics": _funnel_metrics_from_evidence(counts),
         "evidence_summary": {
-            "path": str((evidence_path or REPO_ROOT / "docs/commercial/operations/evidence_events_tracker.csv").relative_to(REPO_ROOT)).replace("\\", "/"),
+            "path": _display_evidence_path(evidence_path),
             "week_total": counts.get("week_total", 0),
             "week_by_type": counts.get("week_by_type") or {},
             "real_company_events": len(real),
