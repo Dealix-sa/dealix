@@ -51,12 +51,21 @@ for page in landing/customer-portal.html landing/executive-command-center.html; 
 done
 
 # 3. No forbidden claims
+# Note: an explicit compliance disclaimer that *negates* a claim
+# ("outcomes are NOT guaranteed" / "النتائج ... ليست ... مضمونة") is
+# doctrine-required, not a forbidden claim. We strip those disclaimer
+# lines before scanning so a real overclaim (e.g. "guaranteed results")
+# still fails, while the genuine no-guarantee note passes.
 FORBIDDEN_RE='(\bguaranteed?\b|\bblast\b|\bscraping\b|نضمن|مضمون|cold[[:space:]]+(whatsapp|outreach|email))'
+DISCLAIMER_RE='(not[[:space:]]+guaranteed|ليست[[:space:]]+نتائج[[:space:]]+مضمونة|not[[:space:]]+a[[:space:]]+guarantee)'
 for page in landing/customer-portal.html landing/executive-command-center.html; do
-  if [ -f "$page" ] && grep -qiE "$FORBIDDEN_RE" "$page"; then
-    fail "$page contains forbidden claims"
-  else
-    ok_msg "$page free of forbidden claims"
+  if [ -f "$page" ]; then
+    # Remove lines that are explicit no-guarantee disclaimers, then scan.
+    if grep -ivE "$DISCLAIMER_RE" "$page" | grep -qiE "$FORBIDDEN_RE"; then
+      fail "$page contains forbidden claims"
+    else
+      ok_msg "$page free of forbidden claims"
+    fi
   fi
 done
 
