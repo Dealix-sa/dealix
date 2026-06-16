@@ -21,7 +21,8 @@
         outreach-tracker outreach-tracker-summary outreach-tracker-list \
         pilot-report customer-monthly-report \
         renewal-check renewal-summary \
-        daily-ops
+        daily-ops \
+        company-day outbound-env outbound-dry outbound-live company-live-day go-live-check
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -248,8 +249,9 @@ outreach-f3: ## Outreach Kit: generate day-3 follow-up nudges
 outreach-f7: ## Outreach Kit: generate day-7 final follow-up nudges
 	$(PYTHON) scripts/dealix_outreach_kit.py --stage f7
 
-command-room: ## Command Room: render offline outreach dashboard to reports/command_room/index.html
+command-room: ## Command Room: render offline outreach dashboard + sync outbound events
 	$(PYTHON) scripts/dealix_command_room.py
+	$(PYTHON) scripts/outbound/sync_outbound_events.py
 
 content: ## Content Engine: generate bilingual LinkedIn post drafts (one per sector) for inbound demand
 	$(PYTHON) scripts/dealix_content_engine.py
@@ -374,3 +376,40 @@ renewal-summary: ## Show MRR and active customer summary
 
 daily-ops: ## Morning ops command — prioritized action list from all tracking data
 	$(PYTHON) scripts/dealix_daily_ops.py
+
+
+# ── Controlled Live Outbound (Dealix Company Operating System) ───
+# These targets connect PR #727 revenue loop to real, governed external sends.
+# Default mode is dry/controlled; live sends require explicit env + approval.
+
+company-day: ## Dealix Company Day — research, drafts, command room, CEO report
+	@$(PYTHON) scripts/launch/founder_daily_command_dry_run.py || true
+	@$(PYTHON) scripts/dealix_command_room.py || true
+	@echo ""
+	@echo "✅ Company Day complete."
+	@echo "📊 Command Room: reports/command_room/index.html"
+	@echo "📧 Outreach:     make outbound-dry  (preview) / make outbound-live (send)"
+
+daily: company-day ## Alias: daily = company-day
+
+daily-live: company-day outbound-live command-room ## Full live day: company + outbound + command room
+
+outbound-env: ## Validate controlled-live-outbound environment variables
+	$(PYTHON) scripts/outbound/check_live_outbound_env.py
+
+outbound-dry: ## Run controlled outbound in dry-run mode (no external sends)
+	DRY_RUN=true $(PYTHON) scripts/outbound/run_controlled_live_outbound.py
+
+outbound-live: ## Run controlled outbound with real sends (requires APPROVED_BY=)
+	$(PYTHON) scripts/outbound/check_live_outbound_env.py
+	$(PYTHON) scripts/outbound/run_controlled_live_outbound.py
+
+company-live-day: ## Full company operating day including controlled live outbound
+	$(MAKE) company-day
+	$(MAKE) outbound-env
+	$(MAKE) outbound-live
+	$(MAKE) command-room
+
+go-live-check: ## Run commercial launch readiness verification + tests
+	$(PYTHON) scripts/go_live/verify_commercial_launch_ready.py
+	pytest tests/outbound/ -q

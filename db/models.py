@@ -16,6 +16,7 @@ Changes (enterprise upgrade):
 
 from __future__ import annotations
 
+import uuid
 from datetime import datetime
 
 from sqlalchemy import (
@@ -28,7 +29,9 @@ from sqlalchemy import (
     String,
     Text,
     UniqueConstraint,
+    Uuid,
 )
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from core.utils import utcnow
@@ -1038,3 +1041,109 @@ class CustomerWebhookDelivery(Base):
                          name="uq_webhook_subscription_event"),
         Index("ix_cwd_event_type_created", "event_type", "delivered_at"),
     )
+
+
+# ═══════════════════════════════════════════════════════════════════
+# Controlled Live Outbound tables (migration 014)
+# ═══════════════════════════════════════════════════════════════════
+
+class OutboundContactRecord(Base):
+    """Target contacts for controlled live outbound campaigns."""
+
+    __tablename__ = "outbound_contacts"
+
+    id: Mapped[str] = mapped_column(Uuid(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4()))
+    company_name: Mapped[str] = mapped_column(Text, nullable=False)
+    contact_name: Mapped[str | None] = mapped_column(Text, nullable=True)
+    email: Mapped[str | None] = mapped_column(Text, nullable=True, index=True)
+    phone: Mapped[str | None] = mapped_column(Text, nullable=True)
+    whatsapp: Mapped[str | None] = mapped_column(Text, nullable=True)
+    sector: Mapped[str | None] = mapped_column(Text, nullable=True)
+    city: Mapped[str | None] = mapped_column(Text, nullable=True)
+    website: Mapped[str | None] = mapped_column(Text, nullable=True)
+    source_url: Mapped[str] = mapped_column(Text, nullable=False)
+    verification_status: Mapped[str] = mapped_column(Text, nullable=False, default="unverified")
+    confidence: Mapped[str | None] = mapped_column(Text, nullable=True, default="low")
+    pain_hypothesis: Mapped[str | None] = mapped_column(Text, nullable=True)
+    dealix_angle: Mapped[str | None] = mapped_column(Text, nullable=True)
+    email_opt_out: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    whatsapp_opt_in: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    whatsapp_opt_out: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    consent_source: Mapped[str | None] = mapped_column(Text, nullable=True)
+    consent_timestamp: Mapped[datetime | None] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+
+    messages: Mapped[list[OutboundMessageRecord]] = relationship(back_populates="contact")
+    deals: Mapped[list[DealPipelineRecord]] = relationship(back_populates="contact")
+
+
+class OutboundMessageRecord(Base):
+    """Individual outbound messages (drafts, sends, failures, replies)."""
+
+    __tablename__ = "outbound_messages"
+
+    id: Mapped[str] = mapped_column(Uuid(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4()))
+    contact_id: Mapped[str | None] = mapped_column(ForeignKey("outbound_contacts.id"), nullable=True)
+    channel: Mapped[str] = mapped_column(Text, nullable=False, index=True)
+    status: Mapped[str] = mapped_column(Text, nullable=False, default="draft", index=True)
+    subject: Mapped[str | None] = mapped_column(Text, nullable=True)
+    body: Mapped[str] = mapped_column(Text, nullable=False)
+    template_name: Mapped[str | None] = mapped_column(Text, nullable=True)
+    provider_message_id: Mapped[str | None] = mapped_column(Text, nullable=True)
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    approved_by: Mapped[str | None] = mapped_column(Text, nullable=True)
+    approved_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    queued_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    sent_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    replied_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+
+    contact: Mapped[OutboundContactRecord] = relationship(back_populates="messages")
+    events: Mapped[list[OutboundEventRecord]] = relationship(back_populates="message")
+
+
+class OutboundEventRecord(Base):
+    """Provider/webhook events linked to outbound messages."""
+
+    __tablename__ = "outbound_events"
+
+    id: Mapped[str] = mapped_column(Uuid(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4()))
+    message_id: Mapped[str | None] = mapped_column(ForeignKey("outbound_messages.id"), nullable=True)
+    event_type: Mapped[str] = mapped_column(Text, nullable=False, index=True)
+    payload: Mapped[dict] = mapped_column(JSONB, default=dict)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+
+    message: Mapped[OutboundMessageRecord] = relationship(back_populates="events")
+
+
+class SuppressionListRecord(Base):
+    """Global suppression list per channel + value."""
+
+    __tablename__ = "suppression_list"
+
+    id: Mapped[str] = mapped_column(Uuid(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4()))
+    channel: Mapped[str] = mapped_column(Text, nullable=False)
+    value: Mapped[str] = mapped_column(Text, nullable=False)
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+
+    __table_args__ = (
+        UniqueConstraint("channel", "value", name="uq_suppression_channel_value"),
+    )
+
+
+class DealPipelineRecord(Base):
+    """Sales pipeline stage linked to an outbound contact."""
+
+    __tablename__ = "deals_pipeline"
+
+    id: Mapped[str] = mapped_column(Uuid(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4()))
+    contact_id: Mapped[str | None] = mapped_column(ForeignKey("outbound_contacts.id"), nullable=True)
+    stage: Mapped[str] = mapped_column(Text, nullable=False, default="new")
+    value_sar: Mapped[float] = mapped_column(Float, default=0.0)
+    next_action: Mapped[str | None] = mapped_column(Text, nullable=True)
+    next_action_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    owner: Mapped[str] = mapped_column(Text, nullable=False, default="sami")
+    created_at: Mapped[datetime] = mapped_column(default=utcnow)
+
+    contact: Mapped[OutboundContactRecord] = relationship(back_populates="deals")

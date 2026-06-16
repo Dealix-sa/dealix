@@ -9,6 +9,10 @@ from typing import Any
 from fastapi import APIRouter, Header, HTTPException, Query, Request
 
 from api.dependencies import get_acquisition_pipeline
+from app.outbound.config import OutboundSettings
+from app.outbound.models import Channel, OutboundEvent
+from app.outbound.runner import ControlledOutboundRunner
+from app.outbound.storage import CSVOutboundStorage
 from auto_client_acquisition.agents.intake import LeadSource
 from core.config.settings import get_settings
 from core.logging import get_logger
@@ -165,3 +169,112 @@ async def hubspot_webhook(
         "hubspot_webhook_received", n_events=len(payload) if isinstance(payload, list) else 1
     )
     return handle_hubspot_webhook(payload)
+
+
+# ── Controlled Live Outbound webhooks ───────────────────────────
+# These endpoints support the Dealix controlled-live-outbound system:
+# reply tracking, bounce handling, and unsubscribe requests.
+
+
+def _get_outbound_storage():
+    # CSV is the quick-start store; Postgres path is enabled when the migration
+    # is applied and OUTBOUND_USE_POSTGRES=1 is set.
+    return CSVOutboundStorage()
+
+
+@router.post("/email/reply")
+async def email_reply_webhook(request: Request) -> dict[str, Any]:
+    """Record an email reply and update contact/message state."""
+    try:
+        payload = await request.json()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON: {e}") from e
+
+    message_id = payload.get("message_id") or payload.get("original_message_id")
+    reply_text = payload.get("reply_text") or payload.get("text") or ""
+    if not message_id:
+        raise HTTPException(status_code=400, detail="message_id required")
+
+    storage = _get_outbound_storage()
+    runner = ControlledOutboundRunner(settings=OutboundSettings(), storage=storage)
+    updated = runner.handle_reply(message_id, reply_text)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Message not found")
+    return {"message_id": message_id, "status": updated.status, "replied_at": updated.replied_at}
+
+
+@router.post("/email/bounce")
+async def email_bounce_webhook(request: Request) -> dict[str, Any]:
+    """Record an email bounce event."""
+    try:
+        payload = await request.json()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON: {e}") from e
+
+    message_id = payload.get("message_id")
+    if not message_id:
+        raise HTTPException(status_code=400, detail="message_id required")
+
+    storage = _get_outbound_storage()
+    message = storage.get_message(message_id)
+    if not message:
+        raise HTTPException(status_code=404, detail="Message not found")
+
+    message.status = "failed"
+    message.error_message = f"bounce: {payload.get('reason', 'unknown')}"
+    storage.save_message(message)
+    storage.save_event(
+        OutboundEvent(
+            message_id=message.id,
+            event_type="bounce",
+            payload=payload,
+        )
+    )
+    return {"message_id": message_id, "status": "failed", "reason": message.error_message}
+
+
+@router.post("/unsubscribe")
+async def unsubscribe(request: Request) -> dict[str, Any]:
+    """Public unsubscribe endpoint for email recipients."""
+    try:
+        payload = await request.json()
+    except Exception:
+        payload = {}
+
+    email = payload.get("email")
+    message_id = payload.get("message_id")
+    if not email:
+        raise HTTPException(status_code=400, detail="email required")
+
+    storage = _get_outbound_storage()
+    # Mark any matching contact as opted out
+    updated = False
+    for contact in [storage.get_contact(cid) for cid in _contact_ids_by_email(storage, email)]:
+        if contact:
+            contact.email_opt_out = True
+            storage.save_contact(contact)
+            updated = True
+
+    if message_id:
+        msg = storage.get_message(message_id)
+        if msg:
+            msg.status = "opted_out"
+            storage.save_message(msg)
+
+    return {"email": email, "opted_out": updated}
+
+
+def _contact_ids_by_email(storage, email: str):
+    # CSV store helper: scan contacts.csv for matching email addresses.
+    import csv
+    from pathlib import Path
+
+    path = Path("data/outbound/contacts.csv")
+    if not path.exists():
+        return []
+    ids = []
+    with path.open("r", encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            if row.get("email", "").lower() == email.lower():
+                ids.append(row["id"])
+    return ids

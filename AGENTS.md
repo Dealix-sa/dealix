@@ -199,3 +199,14 @@ This exercises intake, ICP matching, pain extraction, BANT qualification, CRM sy
 ## Future File System
 For canonical folder structure, naming conventions, and where to put new files, see:
 [docs/architecture/DEALIX_FUTURE_FILE_SYSTEM_AR.md](docs/architecture/DEALIX_FUTURE_FILE_SYSTEM_AR.md)
+
+### Controlled Live Outbound (Company OS)
+- New modules: `app/outbound/` — policy gates, rate limiter, email/WhatsApp senders, provider router, runner.
+- Scripts: `scripts/outbound/check_live_outbound_env.py`, `run_controlled_live_outbound.py`, `sync_outbound_events.py`.
+- Migration: `db/migrations/versions/20260616_014_controlled_live_outbound.py` + raw SQL at `migrations/20260616_controlled_live_outbound.sql`.
+- Models: `OutboundContactRecord`, `OutboundMessageRecord`, `OutboundEventRecord`, `SuppressionListRecord`, `DealPipelineRecord` in `db/models.py`.
+- Webhooks: `/api/v1/webhooks/email/reply`, `/api/v1/webhooks/email/bounce`, `/api/v1/webhooks/unsubscribe`.
+- Runbooks: `docs/ops/CONTROLLED_LIVE_OUTBOUND.md`, `RAILWAY_PRODUCTION_RUNBOOK.md`, `EMAIL_DELIVERABILITY_RUNBOOK.md`, `WHATSAPP_BUSINESS_RUNBOOK.md`.
+- Tests: `tests/outbound/`.
+- Makefile targets: `company-day`, `daily`, `command-room`, `outbound-env`, `outbound-dry`, `outbound-live`, `company-live-day`, `go-live-check`.
+- Philosophy: no uncontrolled external send. Live sends require verified target, source URL, approval, unsubscribe/opt-in, rate limits, and no fake/guaranteed-ROI claims.
