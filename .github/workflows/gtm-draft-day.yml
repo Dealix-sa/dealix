@@ -1,0 +1,57 @@
+name: GTM Draft Day
+
+# Daily governed draft production (drafts only — no external send).
+# ~07:30 KSA (04:30 UTC). Produces up to 250 drafts + the approval queue
+# + the daily GTM report as artifacts for founder review.
+
+on:
+  schedule:
+    - cron: "30 4 * * *"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Daily draft target"
+        required: false
+        default: "250"
+
+concurrency:
+  group: gtm-draft-day
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  draft-day:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Produce drafts + approval queue + report
+        run: |
+          python scripts/run_gtm_draft_day.py \
+            --target "${{ github.event.inputs.target || '250' }}" \
+            --out reports/gtm
+
+      - name: Enforce zero auto-send invariant
+        run: python scripts/gtm_quality_gate.py
+
+      - name: Upload draft-day artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gtm-draft-day-${{ github.run_id }}
+          path: |
+            reports/gtm/
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dealix.sa/schemas/email_account.schema.json",
+  "title": "EmailAccount",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "account_id",
+    "from_address",
+    "domain",
+    "spf_ok",
+    "dkim_ok",
+    "dmarc_ok"
+  ],
+  "properties": {
+    "account_id": {
+      "type": "string"
+    },
+    "from_address": {
+      "type": "string"
+    },
+    "reply_to": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "spf_ok": {
+      "type": "boolean"
+    },
+    "dkim_ok": {
+      "type": "boolean"
+    },
+    "dmarc_ok": {
+      "type": "boolean"
+    },
+    "tracking_domain": {
+      "type": "string"
+    },
+    "unsubscribe_endpoint": {
+      "type": "string"
+    },
+    "postmaster_monitored": {
+      "type": "boolean"
+    },
+    "warmup_week": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "daily_send_cap": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 250
+    }
+  }
+}
