@@ -1,15 +1,11 @@
 # Company Launch Day Report — 2026-06-15
 
-**Verdict:** `NEEDS_SERVER_FIX`
+**Verdict:** `NEEDS_COMPLIANCE_REVIEW`
 
 ## Steps
 
-### ✅ Repo health checks
-✅ All present
-------------------------------------------------------------
-VERDICT: PASS
-DEALIX_COMPANY_LAUNCH_READY=1
-Report: /workspaces/dealix/reports/company_launch/COMPANY_LAUNCH_READY_verify_company_launch_ready.md
+### ❌ Repo health checks
+python3: can't open file '/workspaces/dealix/scripts/verify_company_launch_ready.py': [Errno 2] No such file or directory
 
 ### ✅ Target validation
 6. حدد verification_status: placeholder / partial / verified_public
@@ -35,7 +31,7 @@ Generated 3 proposal briefs in /workspaces/dealix/reports/revenue/2026-06-15/pro
 
 ### ❌ Server preflight
 No-auto-send gate:
-  ✅ ✅ No ungated auto external send patterns found.
+  ❌ check failed
 
 ============================================================
 PREFLIGHT: FAIL
