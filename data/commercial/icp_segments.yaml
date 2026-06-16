@@ -1,0 +1,27 @@
+# Ideal Customer Profile segments. Product configuration data (no customer PII).
+# Each segment id must have a pain priority entry in pain_to_offer.yaml.
+segments:
+  - id: real_estate
+    label_ar: العقارات
+    label_en: Real Estate
+    primary_offer: review_os
+  - id: clinic
+    label_ar: العيادات
+    label_en: Clinics
+    primary_offer: review_os
+  - id: logistics
+    label_ar: اللوجستيات
+    label_en: Logistics
+    primary_offer: command_center
+  - id: training
+    label_ar: التدريب
+    label_en: Training
+    primary_offer: delivery_os
+  - id: marketing_agency
+    label_ar: وكالات التسويق
+    label_en: Marketing Agency
+    primary_offer: revenue_os
+  - id: b2b_services
+    label_ar: خدمات الأعمال
+    label_en: B2B Services
+    primary_offer: revenue_os

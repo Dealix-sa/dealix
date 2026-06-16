@@ -1,0 +1,67 @@
+# Pricing rules — base ranges, margin floors, discount and approval policy.
+# Product configuration data (no customer PII). Final prices ALWAYS require
+# founder approval; nothing here lets an agent set or send a final price.
+
+currency: SAR
+
+base_ranges:
+  revenue_sprint:
+    min: 499
+    max: 499
+  revenue_os:
+    setup_min: 15000
+    setup_max: 22000
+    monthly_min: 4000
+    monthly_max: 6000
+  command_center:
+    setup_min: 30000
+    setup_max: 40000
+    monthly_min: 8000
+    monthly_max: 11000
+  delivery_os:
+    setup_min: 20000
+    setup_max: 30000
+    monthly_min: 5000
+    monthly_max: 7500
+  review_os:
+    setup_min: 10000
+    setup_max: 15000
+    monthly_min: 3000
+    monthly_max: 4500
+
+# Minimum acceptable gross margin per offer type.
+margin_floors:
+  productized: 0.55
+  managed: 0.50
+  retainer: 0.60
+  custom: 0.45
+
+discount_rules:
+  max_discount_percent: 20
+  approval_required_percent: 10
+  never_below_margin_floor: true
+
+# Approval ladder — higher tiers require higher authority. Final price = founder.
+approval_levels:
+  - approval_level: L1
+    scope: Standard list price within base range.
+    approver: ops
+  - approval_level: L2
+    scope: Discount up to 10%.
+    approver: senior_ops
+  - approval_level: L3
+    scope: Discount 10–20% or custom bundle.
+    approver: founder
+  - approval_level: L4
+    scope: Custom Company OS / bespoke SOW pricing.
+    approver: founder
+  - approval_level: L5
+    scope: Anything outside policy — explicit founder sign-off required.
+    approver: founder
+
+# Actions that are never permitted under any approval level.
+disallowed:
+  - discount_below_margin_floor
+  - discount_for_guaranteed_results
+  - autonomous_final_price_by_agent
+  - price_change_without_approval

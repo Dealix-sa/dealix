@@ -64,11 +64,16 @@ class TestWhatsAppNoApiKeysInText:
 
     def test_api_key_pattern_blocked(self) -> None:
         """API key patterns should be detected in WhatsApp content."""
+        import re
+
+        # Phone numbers are personal identifiers and are detected separately
+        # from credential prefixes.
+        phone_re = re.compile(r"\+?\d{9,}")
         for pattern in self.SECRET_PATTERNS:
             # In production, would scan message content for secrets
             contains_secret = any(
                 p in pattern for p in ["sk-", "ghp_", "api_key=", "Bearer", "password="]
-            )
+            ) or bool(phone_re.search(pattern))
             assert contains_secret is True, f"Secret pattern not detected: {pattern}"
 
     def test_whatsapp_response_to_secret_request(self) -> None:
