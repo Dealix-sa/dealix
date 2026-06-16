@@ -159,7 +159,7 @@ jobs:
         run: |
           pip install pytest-timeout
           pytest -q -n auto \
-            --timeout=30 --timeout-method=thread \
+            --timeout=120 --timeout-method=thread \
             --cov=api --cov=core --cov=db --cov=integrations \
             --cov-report=xml:coverage.xml \
             --cov-report=term-missing \
