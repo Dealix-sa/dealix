@@ -107,9 +107,17 @@ async def require_admin_key(
             path=request.url.path,
             has_key=bool(admin_key),
         )
+        # 401 when no credential was supplied (authentication required); 403
+        # when a key was supplied but is not a valid admin key (authenticated
+        # actor, forbidden). This matches standard HTTP semantics.
+        if not admin_key:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Missing X-Admin-API-Key",
+            )
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Invalid or missing X-Admin-API-Key",
+            detail="Invalid X-Admin-API-Key",
         )
 
 
@@ -123,12 +131,21 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
         if path in PUBLIC_PATHS or path.startswith(PUBLIC_PREFIXES):
             return await call_next(request)
 
-        # Enforce key only when API_KEYS is configured
         allowed = _configured_keys()
         if not allowed:
+            # No keys configured. In production this is a hard fail — an
+            # unconfigured production deployment must NOT silently accept
+            # every request. In dev/test, allow through for convenience.
+            if os.getenv("APP_ENV", "").lower() == "production":
+                logger.warning("api_keys_unconfigured_production", path=path)
+                return JSONResponse(
+                    {"detail": "API authentication is not configured"},
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                )
             return await call_next(request)
 
-        provided = request.headers.get("X-API-Key")
+        # Accept the key from the X-API-Key header or the ?api_key= query param.
+        provided = request.headers.get("X-API-Key") or request.query_params.get("api_key")
         if not verify_api_key(provided, allowed):
             logger.warning("api_key_invalid", path=path, has_key=bool(provided))
             # Return a proper JSONResponse instead of raising HTTPException —
