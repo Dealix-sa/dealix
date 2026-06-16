@@ -178,3 +178,39 @@ Use Dealix's lead machine for Tier 3 (cold) AFTER Tier 1-2 have proven 1 paid cu
 **Open WhatsApp → pick 5 friends who run or work in a business → send Tier 1 message (customized per person).** This is the highest-expected-value action of Day 1, above LinkedIn cold outreach.
 
 LinkedIn Message 1 to Abdullah Al-Assiri is still correct — send it too. But Tier 1 comes first.
+
+---
+
+## Document Standard Compliance
+
+## Purpose
+Defines this operating document's role inside Dealix Company OS.
+
+## Owner
+Sami (Founder). Reassign to the responsible operator when one is named.
+
+## Review Cadence
+Weekly until stable, then monthly.
+
+## Inputs
+- Relevant company data and signals.
+- Founder decisions and customer evidence.
+
+## Outputs
+- Operating guidance, decisions, or templates produced by this document.
+- Evidence captured for verification.
+
+## Rules
+- Must support revenue, delivery, trust, learning, or founder leverage.
+- Must not introduce unsupported claims.
+- Must preserve public/private boundaries.
+
+## Metrics
+- Completion status of the actions this document drives.
+- Impact on revenue, delivery, trust, or founder leverage.
+
+## Evidence
+- Linked workflow, file, test output, customer interaction, or decision log.
+
+## Last Reviewed
+2026-05-23
