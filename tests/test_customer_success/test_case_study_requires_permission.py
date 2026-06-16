@@ -25,8 +25,8 @@ def validate_case_study(case_study: Dict[str, Any]) -> Dict[str, Any]:
         if not case_study.get("accuracy_verified", False):
             errors.append("Anonymized case study requires accuracy_verified=True")
     
-    # All case studies require evidence_level
-    if "evidence_level" not in case_study:
+    # All case studies require evidence_level (None counts as missing)
+    if case_study.get("evidence_level") is None:
         errors.append("All case studies require evidence_level")
     elif case_study["evidence_level"] < 1 or case_study["evidence_level"] > 5:
         errors.append("evidence_level must be 1-5")

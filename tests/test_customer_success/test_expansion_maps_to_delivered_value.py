@@ -19,7 +19,7 @@ def validate_expansion_maps_to_delivered_value(expansion: Dict[str, Any]) -> Dic
     if "evidence_level" not in expansion:
         errors.append("Expansion requires evidence_level")
     elif expansion["evidence_level"] not in ["L3", "L4", "L5"]:
-        errors.append("evidence_level must be L3, L4, or L5 for expansion")
+        errors.append("evidence_level must be L3, L4, or L5")
     
     # Must have expected outcomes
     if "expected_outcomes" not in expansion:
