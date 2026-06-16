@@ -1,0 +1,35 @@
+# Dealix Document Standard - Allowlist
+#
+# verify_document_quality.py enforces the 8-section standard
+# (Purpose / Owner / Review Cadence / Inputs / Outputs / Rules /
+#  Metrics / Evidence) on every file listed here.
+#
+# Master Content Pack v1 enforces strictly on the files it owns.
+# As legacy docs are migrated to the standard, add them here.
+#
+# Paths are relative to repo root, forward slashes, no leading "./".
+
+docs/ops/DOCUMENT_STANDARD.md
+docs/ops/OPERATING_LOOPS.md
+docs/founder/DAILY_COMMAND_BRIEF.md
+docs/revenue/OFFER_LADDER.md
+docs/revenue/PIPELINE_STAGES.md
+docs/trust/APPROVAL_MATRIX.md
+docs/trust/AUTONOMY_POLICY.md
+docs/delivery/revenue_sprint/DELIVERY_PLAYBOOK.md
+docs/delivery/revenue_sprint/QA_CHECKLIST.md
+docs/learning/WEEKLY_INTELLIGENCE_REVIEW.md
+docs/learning/README.md
+docs/control_plane/COMPANY_STATE_SCHEMA.md
+docs/control_plane/README.md
+docs/acquisition/README.md
+docs/offers/README.md
+docs/finance/README.md
+docs/client_success/README.md
+docs/people/README.md
+docs/agents/README.md
+docs/ai_management/README.md
+docs/investor/README.md
+docs/brand/README.md
+docs/api/README.md
+docs/deployment/README.md
