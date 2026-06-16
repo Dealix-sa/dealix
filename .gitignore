@@ -112,6 +112,10 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Commercial product data — pain→offer map, catalog, ICP, pricing rules
+# (canonical product config, no customer PII)
+!data/commercial/
+!data/commercial/*
 # Outreach kit — sector pitches + intake template (NOT the real filled list)
 !data/outreach/
 !data/outreach/*

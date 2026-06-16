@@ -6,6 +6,9 @@ from auto_client_acquisition.governance_os.draft_gate import audit_draft_text
 
 FORBIDDEN_CHANNEL_MARKERS = (
     "cold whatsapp",
+    "bulk whatsapp",
+    "mass whatsapp",
+    "whatsapp blast",
     "linkedin automation",
     "blast",
 )
