@@ -42,10 +42,19 @@ async def whatsapp_incoming(
     body = await request.body()
     client = WhatsAppClient()
     settings = get_settings()
-    has_secret = bool(client.settings.whatsapp_app_secret)
+
+    # SECURITY: the signature-enforcement decision must reflect the live
+    # environment, not a process-wide @lru_cache snapshot of settings. If the
+    # cached Settings were loaded before APP_ENV / WHATSAPP_APP_SECRET were set,
+    # relying on them would silently bypass the Meta-signature gate. Resolve
+    # both from os.environ first, falling back to the cached settings.
+    app_secret_env = os.environ.get("WHATSAPP_APP_SECRET")
+    settings_secret = settings.whatsapp_app_secret
+    has_secret = bool(app_secret_env) or bool(settings_secret)
+    app_env = (os.environ.get("APP_ENV") or settings.app_env or "").lower()
 
     # Staging/production with app secret: require valid Meta signature always.
-    if has_secret and settings.app_env in ("staging", "production"):
+    if has_secret and app_env in ("staging", "production"):
         if not x_hub_signature_256 or not client.verify_signature(body, x_hub_signature_256):
             logger.warning("whatsapp_missing_or_invalid_signature_strict_env")
             raise HTTPException(status_code=403, detail="missing_or_invalid_signature")
