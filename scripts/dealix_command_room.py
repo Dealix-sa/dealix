@@ -24,14 +24,24 @@ from __future__ import annotations
 import argparse
 import csv
 import html
+import sys
 from datetime import date
 from pathlib import Path
+
+sys.stdout.reconfigure(encoding="utf-8")
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LOG = REPO_ROOT / "data" / "outreach" / "outreach_log.csv"
 TEMPLATE_LOG = REPO_ROOT / "data" / "outreach" / "outreach_log.template.csv"
 OUTREACH_REPORTS = REPO_ROOT / "reports" / "outreach"
+OUTBOUND_DIR = REPO_ROOT / "data" / "outbound"
 OUT_HTML = REPO_ROOT / "reports" / "command_room" / "index.html"
+
+# Controlled Live Outbound CSV paths
+OUTBOUND_CONTACTS = OUTBOUND_DIR / "contacts.csv"
+OUTBOUND_MESSAGES = OUTBOUND_DIR / "messages.csv"
+OUTBOUND_EVENTS = OUTBOUND_DIR / "events.csv"
+OUTBOUND_PIPELINE = OUTBOUND_DIR / "deals_pipeline.csv"
 
 # Dealix brand colors (see brand/brand-colors.css and the visual identity guide).
 PRIMARY = "#1B5E3B"
@@ -104,9 +114,73 @@ def count_ready_drafts(drafts_dir: Path | None) -> int:
     )
 
 
+def read_csv_if_exists(path: Path) -> list[dict[str, str]]:
+    """Read a CSV file if it exists, otherwise return empty list."""
+    if not path.exists():
+        return []
+    with path.open(encoding="utf-8", newline="") as fh:
+        return list(csv.DictReader(fh))
+
+
+def compute_outbound_stats() -> dict[str, object]:
+    """Compute stats from the controlled live outbound CSV store."""
+    messages = read_csv_if_exists(OUTBOUND_MESSAGES)
+    events = read_csv_if_exists(OUTBOUND_EVENTS)
+    pipeline = read_csv_if_exists(OUTBOUND_PIPELINE)
+
+    stats: dict[str, int] = {
+        "queued": 0,
+        "sent": 0,
+        "failed": 0,
+        "replied": 0,
+        "opted_out": 0,
+        "draft": 0,
+        "approved": 0,
+    }
+    for msg in messages:
+        status = (msg.get("status") or "").lower()
+        if status in stats:
+            stats[status] += 1
+
+    for event in events:
+        event_type = (event.get("event_type") or "").lower()
+        if event_type == "reply":
+            stats["replied"] += 1
+        elif event_type == "opt_out":
+            stats["opted_out"] += 1
+
+    meetings = sum(1 for p in pipeline if (p.get("stage") or "").lower() == "meeting")
+    proposals = sum(1 for p in pipeline if (p.get("stage") or "").lower() == "proposal")
+    next_actions = [
+        {
+            "company": p.get("company_name", "—"),
+            "stage": p.get("stage", "—"),
+            "next_action": p.get("next_action", "—"),
+            "next_action_at": p.get("next_action_at", "—"),
+        }
+        for p in pipeline
+        if p.get("next_action")
+    ]
+
+    return {
+        **stats,
+        "meetings": meetings,
+        "proposals": proposals,
+        "next_actions": next_actions,
+        "limits": {
+            "email_daily_limit": 25,
+            "email_sent_today": stats["sent"],
+            "email_remaining": max(0, 25 - stats["sent"]),
+            "whatsapp_daily_limit": 10,
+            "whatsapp_sent_today": 0,  # tracked separately when live
+            "whatsapp_remaining": 10,
+        },
+    }
+
+
 def compute_kpis(rows: list[dict[str, str]], ready_drafts: int) -> dict[str, object]:
-    """Compute the Command Room KPIs from log rows + today's ready drafts."""
-    by_status: dict[str, int] = {s: 0 for s in STATUSES}
+    """Compute the Command Room KPIs from log rows + today's ready drafts + outbound store."""
+    by_status: dict[str, int] = dict.fromkeys(STATUSES, 0)
     by_sector: dict[str, dict[str, int]] = {}
     for row in rows:
         status = row["status"]
@@ -132,6 +206,8 @@ def compute_kpis(rows: list[dict[str, str]], ready_drafts: int) -> dict[str, obj
         "won": by_status["won"],
     }
 
+    outbound = compute_outbound_stats()
+
     return {
         "ready_drafts": ready_drafts,
         "total": len(rows),
@@ -144,6 +220,7 @@ def compute_kpis(rows: list[dict[str, str]], ready_drafts: int) -> dict[str, obj
         "by_status": by_status,
         "by_sector": by_sector,
         "funnel": funnel,
+        "outbound": outbound,
     }
 
 
@@ -193,11 +270,59 @@ def _sector_rows(by_sector: dict[str, dict[str, int]]) -> str:
     return "\n".join(out)
 
 
+def _outbound_status_cards(outbound: dict[str, object]) -> str:
+    cards = [
+        ("في الطابور / Queued", outbound.get("queued", 0), ACCENT),
+        ("أُرسلت / Sent", outbound.get("sent", 0), PRIMARY),
+        ("فاشلة / Failed", outbound.get("failed", 0), "#c44"),
+        ("ردود / Replies", outbound.get("replied", 0), ACCENT),
+        ("إلغاء اشتراك / Opt-outs", outbound.get("opted_out", 0), "#c44"),
+        ("اجتماعات / Meetings", outbound.get("meetings", 0), PRIMARY),
+        ("عروض / Proposals", outbound.get("proposals", 0), PRIMARY),
+    ]
+    return "\n".join(_kpi_card(label, value, color) for label, value, color in cards)
+
+
+def _limits_rows(limits: dict[str, int]) -> str:
+    email_pct = round((limits["email_sent_today"] / limits["email_daily_limit"]) * 100) if limits["email_daily_limit"] else 0
+    wa_pct = round((limits["whatsapp_sent_today"] / limits["whatsapp_daily_limit"]) * 100) if limits["whatsapp_daily_limit"] else 0
+    return f"""
+    <div class="limit-row">
+      <span>Email</span>
+      <span class="limit-bar"><span class="limit-fill" style="width:{email_pct}%"></span></span>
+      <span>{limits['email_sent_today']} / {limits['email_daily_limit']} ({limits['email_remaining']} remaining)</span>
+    </div>
+    <div class="limit-row">
+      <span>WhatsApp</span>
+      <span class="limit-bar"><span class="limit-fill" style="width:{wa_pct}%"></span></span>
+      <span>{limits['whatsapp_sent_today']} / {limits['whatsapp_daily_limit']} ({limits['whatsapp_remaining']} remaining)</span>
+    </div>
+    """
+
+
+def _next_action_rows(actions: list[dict[str, str]]) -> str:
+    if not actions:
+        return '<tr><td colspan="4" class="muted">لا توجد إجراءات قادمة / No upcoming actions</td></tr>'
+    out: list[str] = []
+    for action in actions[:10]:
+        out.append(
+            "<tr>"
+            f"<td>{html.escape(str(action.get('company', '—')))}</td>"
+            f"<td>{html.escape(str(action.get('stage', '—')))}</td>"
+            f"<td>{html.escape(str(action.get('next_action', '—')))}</td>"
+            f"<td>{html.escape(str(action.get('next_action_at', '—')))}</td>"
+            "</tr>"
+        )
+    return "\n".join(out)
+
+
 def render_html(kpis: dict[str, object], source_note: str) -> str:
     """Render the self-contained Command Room HTML page."""
     today = date.today().isoformat()
     by_sector = kpis["by_sector"]  # type: ignore[assignment]
     funnel = kpis["funnel"]  # type: ignore[assignment]
+    outbound = kpis["outbound"]  # type: ignore[assignment]
+    limits = outbound.get("limits", {})  # type: ignore[assignment]
 
     cards = "\n".join([
         _kpi_card("مسودات جاهزة اليوم / Ready today", kpis["ready_drafts"], ACCENT),
@@ -278,6 +403,11 @@ def render_html(kpis: dict[str, object], source_note: str) -> str:
   footer {{ text-align: center; padding: 18px; color: #7e9486; font-size: .8rem; }}
   .note {{ background: rgba(201,169,76,.1); border: 1px solid rgba(201,169,76,.3);
            border-radius: 10px; padding: 12px 14px; font-size: .85rem; margin-bottom: 22px; }}
+  .limit-row {{ display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }}
+  .limit-row > span:first-child {{ flex: 0 0 80px; font-size: .9rem; }}
+  .limit-bar {{ flex: 1; background: rgba(255,255,255,.08); border-radius: 8px; height: 18px; overflow: hidden; max-width: 320px; }}
+  .limit-fill {{ display: block; height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); }}
+  .limit-row > span:last-child {{ flex: 0 0 160px; font-size: .85rem; color: #b9c7bd; text-align: left; }}
   @media (max-width: 520px) {{
     .funnel-name {{ flex: 0 0 46%; font-size: .8rem; }}
     header h1 {{ font-size: 1.3rem; }}
@@ -312,6 +442,30 @@ def render_html(kpis: dict[str, object], source_note: str) -> str:
       </tbody>
     </table>
   </section>
+
+  <section>
+    <h2>الإرسال الخارجي المحكوم / Controlled Outbound</h2>
+    <div class="grid">
+      {_outbound_status_cards(outbound)}
+    </div>
+  </section>
+
+  <section>
+    <h2>حدود الإرسال اليومية / Daily Limits</h2>
+    {_limits_rows(limits)}
+  </section>
+
+  <section>
+    <h2>الإجراءات التالية / Next Actions</h2>
+    <table>
+      <thead>
+        <tr><th>الشركة / Company</th><th>المرحلة / Stage</th><th>الإجراء / Action</th><th>الموعد / Due</th></tr>
+      </thead>
+      <tbody>
+        {_next_action_rows(outbound.get("next_actions", []))}
+      </tbody>
+    </table>
+  </section>
 </main>
 <footer>
   Dealix — نظام تشغيل الإيرادات. كل المسودات تنتظر مراجعتك. لا إرسال تلقائي.<br>
@@ -324,6 +478,7 @@ def render_html(kpis: dict[str, object], source_note: str) -> str:
 
 def print_summary(kpis: dict[str, object], out_path: Path) -> None:
     """Print a short bilingual-leaning Arabic summary to stdout."""
+    outbound = kpis.get("outbound", {})
     print("غرفة القيادة — Dealix Command Room")
     print(f"  مسودات جاهزة اليوم: {kpis['ready_drafts']}")
     print(f"  إجمالي السجل:        {kpis['total']}")
@@ -332,6 +487,14 @@ def print_summary(kpis: dict[str, object], out_path: Path) -> None:
     print(f"  اجتماعات:             {kpis['meetings']}")
     print(f"  صفقات (won):          {kpis['won']}")
     print(f"  نسبة الرد:            {kpis['reply_rate']}%")
+    print("  — Controlled Outbound —")
+    print(f"    queued:    {outbound.get('queued', 0)}")
+    print(f"    sent:      {outbound.get('sent', 0)}")
+    print(f"    failed:    {outbound.get('failed', 0)}")
+    print(f"    replies:   {outbound.get('replied', 0)}")
+    print(f"    opt-outs:  {outbound.get('opted_out', 0)}")
+    print(f"    meetings:  {outbound.get('meetings', 0)}")
+    print(f"    proposals: {outbound.get('proposals', 0)}")
     print(f"  اللوحة: {out_path}")
 
 
