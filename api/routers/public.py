@@ -99,12 +99,14 @@ async def demo_request(req: Request) -> dict[str, Any]:
     except Exception:
         log.exception("lead_inbox_append_failed")
 
+    # No PII / no user-controlled strings in logs (non-negotiable #6 +
+    # CodeQL py/log-injection): record only lengths + a persisted flag.
     log.info(
-        "demo_request_accepted email=%s company=%s sector=%s lead_id=%s",
-        email,
-        company,
-        sector,
-        lead_id,
+        "demo_request_accepted email_len=%d company_len=%d sector_len=%d persisted=%s",
+        len(email),
+        len(company),
+        len(sector),
+        bool(lead_id),
     )
 
     # Wave 14B activation: fire transactional confirmation email — best-effort,
@@ -134,6 +136,138 @@ async def demo_request(req: Request) -> dict[str, Any]:
         "ok": True,
         "calendly_url": CALENDLY_URL,
         "message": "تم استلام طلبك — سنتواصل خلال 4 ساعات عمل",
+        "lead_id": lead_id,
+        "transactional_confirmation": transactional_status,
+        "governance_decision": "allow",
+    }
+
+
+@router.post("/custom-ai-request")
+async def custom_ai_request(req: Request) -> dict[str, Any]:
+    """Public Custom AI Service intake (commercial ladder Rung 4).
+
+    Captures a bespoke AI project request from the landing page and stores it
+    as a governed lead for founder review. No external action is taken without
+    approval — this only records the inquiry and returns a confirmation.
+
+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,
+           budget_band?, timeline?, description?, consent, website(honeypot)}
+    Returns: {ok, lead_id?, governance_decision: "allow"}
+    """
+    try:
+        body = await req.json()
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="invalid_json") from e
+
+    # Honeypot: if "website" field is filled, silently drop
+    if body.get("website"):
+        log.info("custom_ai_request_honeypot_triggered")
+        return {"ok": True, "governance_decision": "allow"}
+
+    name = str(body.get("name") or "").strip()
+    company = str(body.get("company") or "").strip()
+    email = str(body.get("email") or "").strip()
+    phone = str(body.get("phone") or "").strip()
+    sector = str(body.get("sector") or "").strip()
+    use_case = str(body.get("use_case") or "").strip()
+    data_readiness = str(body.get("data_readiness") or "").strip()
+    budget_band = str(body.get("budget_band") or "").strip()
+    timeline = str(body.get("timeline") or "").strip()
+    description = str(body.get("description") or "").strip()
+    consent = bool(body.get("consent"))
+
+    if not name or not company or "@" not in email or not phone:
+        raise HTTPException(status_code=422, detail="missing_required_fields")
+    if not consent:
+        raise HTTPException(status_code=422, detail="consent_required")
+
+    # Fire PostHog event (fire-and-forget — never blocks response)
+    try:
+        await capture_event(
+            "custom_ai_requested",
+            distinct_id=email,
+            properties={
+                "company": company,
+                "sector": sector,
+                "use_case": use_case[:120],
+                "budget_band": budget_band,
+                "timeline": timeline,
+                "data_readiness": data_readiness,
+                "description_len": len(description),
+                "source": "landing.custom_ai_form",
+            },
+        )
+    except Exception:
+        log.exception("posthog_capture_failed")
+
+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the
+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.
+    # Best-effort: failure never 5xx the public form.
+    lead_id: str | None = None
+    try:
+        from auto_client_acquisition import lead_inbox
+        rec = lead_inbox.append({
+            "name": name,
+            "company": company,
+            "email": email,
+            "phone": phone,
+            "sector": sector,
+            "message": description,
+            "consent": consent,
+            "source": str(body.get("source") or "landing.custom_ai_form"),
+            "ref": str(body.get("ref") or ""),
+            "offer_interest": "custom_ai",
+            "custom_ai": {
+                "use_case": use_case,
+                "data_readiness": data_readiness,
+                "budget_band": budget_band,
+                "timeline": timeline,
+            },
+        })
+        lead_id = rec.get("id")
+    except Exception:
+        log.exception("lead_inbox_append_failed")
+
+    # No PII / no user-controlled strings in logs (non-negotiable #6 +
+    # CodeQL py/log-injection): record only lengths + a persisted flag.
+    log.info(
+        "custom_ai_request_accepted email_len=%d company_len=%d sector_len=%d budget_len=%d persisted=%s",
+        len(email),
+        len(company),
+        len(sector),
+        len(budget_band),
+        bool(lead_id),
+    )
+
+    # Wave: transactional confirmation — best-effort, never blocks the 200.
+    # Reuses the whitelisted diagnostic-intake confirmation kind. No-ops if
+    # Gmail OAuth isn't configured. transactional_status is set on every
+    # path below (success or except), so no pre-initialization is needed.
+    try:
+        from auto_client_acquisition.email.transactional import (
+            render_diagnostic_intake_confirmation,
+            send_transactional,
+        )
+        subject, body_plain = render_diagnostic_intake_confirmation(
+            customer_name=name, sector=sector or "b2b_services"
+        )
+        send_result = await send_transactional(
+            kind="diagnostic_intake_confirmation",
+            to_email=email,
+            subject=subject,
+            body_plain=body_plain,
+        )
+        transactional_status = send_result.reason_code
+    except Exception:
+        log.exception("transactional_confirmation_failed")
+        transactional_status = "exception_caught"
+
+    return {
+        "ok": True,
+        "message": (
+            "تم استلام طلب مشروع AI المخصص — سنتواصل خلال 4 ساعات عمل / "
+            "Custom AI request received — we will contact you within 4 business hours"
+        ),
         "lead_id": lead_id,
         "transactional_confirmation": transactional_status,
         "governance_decision": "allow",

@@ -743,7 +743,7 @@ COMPANY_FILES = (
 
 
 def _run(script: str) -> int:
-    return subprocess.call(  # noqa: S603
+    return subprocess.call(
         [sys.executable, str(REPO / "scripts" / script)],
         cwd=REPO,
     )

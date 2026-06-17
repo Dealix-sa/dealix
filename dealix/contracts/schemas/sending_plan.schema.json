@@ -1,0 +1,156 @@
+{
+  "$defs": {
+    "RampStage": {
+      "additionalProperties": false,
+      "properties": {
+        "domain_age_days": {
+          "title": "Domain Age Days",
+          "type": "integer"
+        },
+        "label_ar": {
+          "title": "Label Ar",
+          "type": "string"
+        },
+        "label_en": {
+          "title": "Label En",
+          "type": "string"
+        },
+        "max_per_day": {
+          "title": "Max Per Day",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "domain_age_days",
+        "label_ar",
+        "label_en",
+        "max_per_day"
+      ],
+      "title": "RampStage",
+      "type": "object"
+    },
+    "SendingBatch": {
+      "additionalProperties": false,
+      "properties": {
+        "batch_id": {
+          "title": "Batch Id",
+          "type": "string"
+        },
+        "mailbox": {
+          "title": "Mailbox",
+          "type": "string"
+        },
+        "send_window": {
+          "title": "Send Window",
+          "type": "string"
+        },
+        "draft_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Draft Refs",
+          "type": "array"
+        },
+        "max_volume": {
+          "title": "Max Volume",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "batch_id",
+        "mailbox",
+        "send_window",
+        "draft_refs",
+        "max_volume"
+      ],
+      "title": "SendingBatch",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    },
+    "mailbox": {
+      "title": "Mailbox",
+      "type": "string"
+    },
+    "domain_health": {
+      "title": "Domain Health",
+      "type": "string"
+    },
+    "stage": {
+      "$ref": "#/$defs/RampStage"
+    },
+    "effective_daily_cap": {
+      "title": "Effective Daily Cap",
+      "type": "integer"
+    },
+    "eligible_count": {
+      "title": "Eligible Count",
+      "type": "integer"
+    },
+    "scheduled_count": {
+      "title": "Scheduled Count",
+      "type": "integer"
+    },
+    "blocked": {
+      "title": "Blocked",
+      "type": "boolean"
+    },
+    "blocked_reason_ar": {
+      "default": "",
+      "title": "Blocked Reason Ar",
+      "type": "string"
+    },
+    "blocked_reason_en": {
+      "default": "",
+      "title": "Blocked Reason En",
+      "type": "string"
+    },
+    "excluded": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "title": "Excluded",
+      "type": "object"
+    },
+    "batches": {
+      "items": {
+        "$ref": "#/$defs/SendingBatch"
+      },
+      "title": "Batches",
+      "type": "array"
+    },
+    "governance_decision": {
+      "default": "approval_required",
+      "title": "Governance Decision",
+      "type": "string"
+    },
+    "guardrails": {
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "title": "Guardrails",
+      "type": "object"
+    }
+  },
+  "required": [
+    "mailbox",
+    "domain_health",
+    "stage",
+    "effective_daily_cap",
+    "eligible_count",
+    "scheduled_count",
+    "blocked"
+  ],
+  "title": "SendingPlan",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/sending_plan.schema.json"
+}

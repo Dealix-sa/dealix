@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/ledgers/prospects.schema.json",
+  "title": "Dealix Prospects Ledger",
+  "description": "Founder-facing pipeline ledger. Identity-light by design (PDPL): track company, sector, stage, why-now, offer, and next action. Do NOT store raw personal contact data here — that lives in the CRM/event store. Never fabricate entries.",
+  "type": "object",
+  "required": ["ledger", "version", "records"],
+  "additionalProperties": false,
+  "properties": {
+    "ledger": { "const": "prospects" },
+    "version": { "type": "integer", "minimum": 1 },
+    "updated": { "type": "string", "description": "ISO date (YYYY-MM-DD) of last edit." },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/prospect" }
+    }
+  },
+  "$defs": {
+    "prospect": {
+      "type": "object",
+      "required": ["id", "company", "sector", "stage", "source", "created"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "pattern": "^PRO-[0-9]{4,}$" },
+        "company": { "type": "string", "minLength": 1 },
+        "sector": { "type": "string", "minLength": 1 },
+        "region": { "type": "string" },
+        "contact_role": { "type": "string", "description": "Role title only (e.g. 'Marketing Director'). No personal names/phones/emails." },
+        "stage": {
+          "type": "string",
+          "enum": ["identified", "qualified", "contacted", "meeting", "proposal", "won", "lost"]
+        },
+        "source": { "type": "string", "description": "How the signal entered (founder input, referral, inbound). No scraping." },
+        "why_now": { "type": "string" },
+        "offer": { "type": "string", "description": "Which rung of the offer ladder (see docs/OFFER_LADDER_AND_PRICING.md)." },
+        "next_action": { "type": "string" },
+        "next_action_date": { "type": "string" },
+        "owner": { "type": "string" },
+        "created": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

@@ -2,9 +2,49 @@
 
 import os
 from enum import Enum
-from typing import Literal
+from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
+
+
+def _env_first(*names: str, default: str = "") -> str:
+    for name in names:
+        value = os.getenv(name, "")
+        if value:
+            return value
+    return default
+
+
+def _env_first(*names: str, default: str = "") -> str:
+    for name in names:
+        value = os.getenv(name, "")
+        if value:
+            return value
+    return default
+
+
+def _env_first(*names: str, default: str = "") -> str:
+    for name in names:
+        value = os.getenv(name, "")
+        if value:
+            return value
+    return default
+
+
+def _env_first(*names: str, default: str = "") -> str:
+    for name in names:
+def _env_first(*keys: str, default: str = "") -> str:
+    for key in keys:
+        value = os.getenv(key, "").strip()
+        if value:
+            return value
+    return default
+
+
+        value = os.getenv(name, "")
+        if value:
+            return value
+    return default
 
 
 class ModelTier(str, Enum):
@@ -14,49 +54,49 @@ class ModelTier(str, Enum):
     FALLBACK = "fallback"
 
 
-class TaskType(str, Enum):
-    CODE_GENERATION = "code_generation"
-    AGENT_REASONING = "agent_reasoning"
-    POLICY_EVALUATION = "policy_evaluation"
-    EVIDENCE_SYNTHESIS = "evidence_synthesis"
-    DATA_ENRICHMENT = "data_enrichment"
-    CONTENT_CREATION = "content_creation"
-    COMPLIANCE_ANALYSIS = "compliance_analysis"
-    CLASSIFICATION = "classification"
+class TaskType(str, Enum):_env_first("PRIMARY_MODEL", "GEAR2_MODEL", "OPENROUTER_MODEL", default="minimax/minimax-m2.5"),
+        ModelTier.ARCHITECT: _env_first("ARCHITECT_MODEL", "GEAR3_MODEL", "OPENROUTER_MODEL", default="minimax/minimax-m2.7"),
+        ModelTier.LIGHT: _env_first("LIGHT_MODEL", "GEAR1_MODEL", "OPENROUTER_MODEL", default="deepseek/deepseek-chat"),
+        ModelTier.FALLBACK: _env_first("FALLBACK_MODEL", "LIGHT_MODEL", "GEAR1_MODEL", "OPENROUTER_MODEL", default="deepseek/deepseek-chat"),
+    }
 
-
+    _TIMEOUTS = {
+        ModelTier.PRIMARY: int(_env_first("PRIMARY_TIMEOUT", "GEAR2_TIMEOUT", "OPENROUTER_TIMEOUT", default="120")),
+        ModelTier.ARCHITECT: int(_env_first("ARCHITECT_TIMEOUT", "GEAR3_TIMEOUT", "OPENROUTER_TIMEOUT", default="180")),
+        ModelTier.LIGHT: int(_env_first("LIGHT_TIMEOUT", "GEAR1_TIMEOUT", "OPENROUTER_TIMEOUT", default="90")),
+        ModelTier.FALLBACK: int(_env_first("FALLBACK_TIMEOUT", "LIGHT_TIMEOUT", "GEAR1_TIMEOUT", "OPENROUTER_TIMEOUT", default=
 class ModelConfig(BaseModel):
     provider: Literal["openrouter"] = "openrouter"
     model_id: str
     timeout: int = Field(default=120, ge=30, le=300)
     max_retries: int = Field(default=2, ge=0, le=5)
-    reasoning_preserved: bool = True
+    reasoning_preserved: bo_env_first("GEAR2_MODEL", "PRIMARY_MODEL", default="minimax/minimax-m2.5"),
+        ModelTier.ARCHITECT: _env_first("GEAR3_MODEL", "ARCHITECT_MODEL", default="minimax/minimax-m2.7"),
+        ModelTier.LIGHT: _env_first("GEAR1_MODEL", "LIGHT_MODEL", "OPENROUTER_MODEL", default="deepseek/deepseek-chat"),
+        ModelTier.FALLBACK: _env_first("GEAR1_MODEL", "FALLBACK_MODEL", "OPENROUTER_MODEL", default="deepseek/deepseek-chat"),
+    }
 
-
-class LLMStrategyRouter:
-    _TASK_MAP = {
-        TaskType.CODE_GENERATION: [ModelTier.PRIMARY, ModelTier.ARCHITECT, ModelTier.FALLBACK],
-        TaskType.AGENT_REASONING: [ModelTier.PRIMARY, ModelTier.ARCHITECT, ModelTier.FALLBACK],
-        TaskType.POLICY_EVALUATION: [ModelTier.ARCHITECT, ModelTier.PRIMARY, ModelTier.FALLBACK],
-        TaskType.EVIDENCE_SYNTHESIS: [ModelTier.ARCHITECT, ModelTier.PRIMARY, ModelTier.FALLBACK],
-        TaskType.DATA_ENRICHMENT: [ModelTier.LIGHT, ModelTier.PRIMARY, ModelTier.FALLBACK],
-        TaskType.CLASSIFICATION: [ModelTier.LIGHT, ModelTier.PRIMARY, ModelTier.FALLBACK],
+    _TIMEOUTS = {
+        ModelTier.PRIMARY: int(_env_first("GEAR2_TIMEOUT", "PRIMARY_TIMEOUT", default="120")),
+        ModelTier.ARCHITECT: int(_env_first("GEAR3_TIMEOUT", "ARCHITECT_TIMEOUT", default="180")),
+        ModelTier.LIGHT: int(_env_first("GEAR1_TIMEOUT", "LIGHT_TIMEOUT", "OPENROUTER_TIMEOUT", default="90")),
+        ModelTier.FALLBACK: int(_env_first("GEAR1_TIMEOUT", "FALLBACK_TIMEOUT", "OPENROUTER_TIMEOUT", default=r.PRIMARY, ModelTier.FALLBACK],
         TaskType.CONTENT_CREATION: [ModelTier.PRIMARY, ModelTier.ARCHITECT, ModelTier.FALLBACK],
         TaskType.COMPLIANCE_ANALYSIS: [ModelTier.ARCHITECT, ModelTier.PRIMARY, ModelTier.FALLBACK],
     }
 
     _MODEL_IDS = {
-        ModelTier.PRIMARY: os.getenv("GEAR2_MODEL", "minimax/minimax-m2.5"),
-        ModelTier.ARCHITECT: os.getenv("GEAR3_MODEL", "minimax/minimax-m2.7"),
-        ModelTier.LIGHT: os.getenv("GEAR1_MODEL", "deepseek/deepseek-chat"),
-        ModelTier.FALLBACK: os.getenv("GEAR1_MODEL", "deepseek/deepseek-chat"),
+        ModelTier.PRIMARY: _env_first("GEAR2_MODEL", "PRIMARY_MODEL", default="minimax/minimax-m2.5"),
+        ModelTier.ARCHITECT: _env_first("GEAR3_MODEL", "ARCHITECT_MODEL", default="minimax/minimax-m2.7"),
+        ModelTier.LIGHT: _env_first("GEAR1_MODEL", "LIGHT_MODEL", "OPENROUTER_MODEL", default="deepseek/deepseek-chat"),
+        ModelTier.FALLBACK: _env_first("GEAR1_MODEL", "FALLBACK_MODEL", "OPENROUTER_MODEL", default="deepseek/deepseek-chat"),
     }
 
     _TIMEOUTS = {
-        ModelTier.PRIMARY: int(os.getenv("GEAR2_TIMEOUT", "120")),
-        ModelTier.ARCHITECT: int(os.getenv("GEAR3_TIMEOUT", "180")),
-        ModelTier.LIGHT: int(os.getenv("GEAR1_TIMEOUT", "90")),
-        ModelTier.FALLBACK: int(os.getenv("GEAR1_TIMEOUT", "90")),
+        ModelTier.PRIMARY: int(_env_first("GEAR2_TIMEOUT", "PRIMARY_TIMEOUT", default="120")),
+        ModelTier.ARCHITECT: int(_env_first("GEAR3_TIMEOUT", "ARCHITECT_TIMEOUT", default="180")),
+        ModelTier.LIGHT: int(_env_first("GEAR1_TIMEOUT", "LIGHT_TIMEOUT", "OPENROUTER_TIMEOUT", default="90")),
+        ModelTier.FALLBACK: int(_env_first("GEAR1_TIMEOUT", "FALLBACK_TIMEOUT", "OPENROUTER_TIMEOUT", default="90")),
     }
 
     def resolve(self, task: TaskType, prefer_cheap: bool = False):

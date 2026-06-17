@@ -1,0 +1,19 @@
+name: Dealix V16 Real Outreach Readiness
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 6 * * *'
+permissions:
+  contents: read
+jobs:
+  outreach-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: V16 readiness
+        run: python scripts/dealix_v16_readiness_check.py
+      - name: V16 daily run
+        run: python scripts/dealix_v16_daily_run.py

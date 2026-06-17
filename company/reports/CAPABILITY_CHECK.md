@@ -6,7 +6,7 @@
 | admin_api | MISSING | DEALIX_ADMIN_API_KEY, ADMIN_API_KEYS |
 | secret_scanning | MISSING | GITLEAKS_LICENSE |
 | web_lead_research | MISSING | GOOGLE_SEARCH_API_KEY, GOOGLE_SEARCH_CX |
-| places_lead_enrichment | MISSING | GOOGLE_MAPS_API_KEY |
+| places_lead_enrichment | READY | — |
 | crm_sync | MISSING | HUBSPOT_ACCESS_TOKEN |
 | whatsapp_green_api | MISSING | GREEN_API_INSTANCE_ID, GREEN_API_TOKEN |
 | whatsapp_twilio | MISSING | TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_WHATSAPP_FROM |
