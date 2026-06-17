@@ -29,10 +29,22 @@ env_file = Path(__file__).parent.parent / ".env.local"
 print("[2] .env.local: ", end="")
 if env_file.exists():
     content = env_file.read_text(encoding="utf-8")
-    has_key = "OPENROUTER_API_KEY=sk-or-v1-" in content
+    has_key = "OPENROUTER_API_KEY=" in content
     has_url = "OPENROUTER_BASE_URL" in content
-    has_g1 = "GEAR1_MODEL" in content
-    if has_key and has_url and has_g1:
+    has_model = any(k in content for k in [
+        "GEAR1_MODEL",
+        "GEAR2_MODEL",
+        "GEAR3_MODEL",
+        "PRIMARY_MODEL",
+        "ARCHITECT_MODEL",
+        "LIGHT_MODEL",
+        "FALLBACK_MODEL",
+        "OPENROUTER_MODEL",
+    ])
+    if has_key and has_url and has_model
+        for name in ["GEAR1_MODEL", "LIGHT_MODEL", "OPENROUTER_MODEL", "PRIMARY_MODEL", "ARCHITECT_MODEL"]
+    )
+    if has_key and has_url and has_model:
         print("[OK]")
         checks_passed += 1
     else:

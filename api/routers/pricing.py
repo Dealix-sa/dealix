@@ -7,7 +7,7 @@ Usage:
   POST /api/v1/webhooks/moyasar  — Moyasar payment webhook (status updates)
 
 Plans are intentionally NOT published on the public landing page; the checkout
-endpoint validates against `ALLOWED_PLANS` to prevent tampering.
+endpoint validates against the current pricing snapshot to prevent tampering.
 """
 
 from __future__ import annotations
@@ -179,6 +179,7 @@ def _build_plans() -> dict[str, dict[str, Any]]:
 
 
 PLANS: dict[str, dict[str, Any]] = _build_plans()
+ALLOWED_PLANS = frozenset(PLANS)
 
 
 @router.get("/api/v1/pricing/plans")
@@ -272,6 +273,61 @@ async def record_usage(req: Request) -> dict[str, Any]:
     }
 
 
+@router.get("/api/v1/pricing/menu")
+async def pricing_menu() -> dict[str, Any]:
+    """Return Dealix pricing menu with service catalog integration.
+
+    Combines service offering metadata with price and billing details so
+    a Saudi B2B sales flow can build a single product menu for qualified
+    prospects and enterprise buyers.
+    """
+    try:
+        from auto_client_acquisition.service_catalog import list_offerings
+    except Exception:
+        return {
+            "currency": "SAR",
+            "plans": {k: v for k, v in PLANS.items() if k != "pilot_1sar"},
+            "service_catalog": [],
+        }
+
+    offerings = list_offerings()
+    catalog = []
+    for offering in offerings:
+        plan = PLANS.get(offering.id, {})
+        catalog.append({
+            "plan_id": offering.id,
+            "name_en": offering.name_en,
+            "name_ar": offering.name_ar,
+            "price_sar": offering.price_sar,
+            "price_unit": offering.price_unit,
+            "price_sar_max": offering.price_sar_max,
+            "price_monthly_sar_min": offering.price_monthly_sar_min,
+            "price_monthly_sar_max": offering.price_monthly_sar_max,
+            "duration_days": offering.duration_days,
+            "deliverables": list(offering.deliverables),
+            "kpi_commitment_ar": offering.kpi_commitment_ar,
+            "kpi_commitment_en": offering.kpi_commitment_en,
+            "refund_policy_ar": offering.refund_policy_ar,
+            "refund_policy_en": offering.refund_policy_en,
+            "customer_journey_stage": offering.customer_journey_stage,
+            "is_estimate": offering.is_estimate,
+            "hard_gates": list(offering.hard_gates),
+            "action_modes_used": list(offering.action_modes_used),
+            "plan_metadata": {
+                "monthly": plan.get("monthly"),
+                "kind": plan.get("kind"),
+                "unit": plan.get("unit"),
+            },
+        })
+
+    return {
+        "currency": "SAR",
+        "plans": {k: v for k, v in PLANS.items() if k != "pilot_1sar"},
+        "service_catalog": catalog,
+        "sales_ready": True,
+    }
+
+
 @router.post("/api/v1/checkout")
 async def create_checkout(req: Request) -> dict[str, Any]:
     body = await req.json()
@@ -279,7 +335,7 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     email = str(body.get("email") or "").strip()
     lead_id = str(body.get("lead_id") or "")
 
-    if plan not in PLANS:
+    if plan not in ALLOWED_PLANS:
         raise HTTPException(status_code=400, detail=f"unknown_plan: {plan}")
     if "@" not in email:
         raise HTTPException(status_code=400, detail="invalid_email")
@@ -437,11 +493,14 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
                     f"💰 New Payment! {amount_sar:,.0f} SAR | {customer_name}"
                 )
                 if getattr(_settings, "whatsapp_allow_live_send", False):
-                    from integrations.whatsapp import send_whatsapp_message
-                    await send_whatsapp_message(
+                    from integrations.whatsapp import WhatsAppClient
+                    client = WhatsAppClient()
+                    result = await client.send_text(
                         to=getattr(_settings, "dealix_founder_phone", ""),
-                        message=msg,
+                        body=msg,
                     )
+                    if not result.success:
+                        log.warning("founder_whatsapp_notification_failed error=%s", result.error)
                 else:
                     log.info("founder_payment_alert_queued: %s", msg.replace("\n", " | "))
             except Exception as _wa_exc:

@@ -54,6 +54,27 @@ async def test_list_plans_includes_metered_laas(async_client):
 
 
 @pytest.mark.asyncio
+async def test_pricing_menu_exposes_service_catalog(async_client):
+    res = await async_client.get("/api/v1/pricing/menu")
+    assert res.status_code == 200
+    body = res.json()
+    assert body["currency"] == "SAR"
+    assert body["sales_ready"] is True
+    assert "plans" in body
+    assert "service_catalog" in body
+    assert isinstance(body["service_catalog"], list)
+    assert len(body["service_catalog"]) > 0
+    assert any(item["plan_id"] == "revenue_proof_sprint_499" for item in body["service_catalog"])
+
+
+@pytest.mark.asyncio
+async def test_pricing_menu_hides_test_plan(async_client):
+    res = await async_client.get("/api/v1/pricing/menu")
+    body = res.json()
+    assert "pilot_1sar" not in body["plans"]
+
+
+@pytest.mark.asyncio
 async def test_usage_record_requires_metered_plan(async_client):
     res = await async_client.post(
         "/api/v1/pricing/usage",
