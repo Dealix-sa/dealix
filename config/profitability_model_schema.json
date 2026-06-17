@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dealix Profitability Input (V10)",
+  "description": "One offer-level profitability record. All figures are EXAMPLE / MANUAL assumptions. No real revenue figures are stored in the repository.",
+  "type": "object",
+  "required": ["offer", "currency", "price", "delivery_cost", "is_assumption"],
+  "additionalProperties": false,
+  "properties": {
+    "offer": {
+      "type": "string",
+      "description": "Offer name from the 5-rung ladder.",
+      "enum": [
+        "free_diagnostic",
+        "sprint_499",
+        "data_pack_1500",
+        "managed_ops",
+        "custom_ai"
+      ]
+    },
+    "currency": { "type": "string", "enum": ["SAR"] },
+    "price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "List price for the offer (assumption)."
+    },
+    "delivery_cost": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated delivery cost (founder/contractor time + tools + rework) (assumption)."
+    },
+    "units": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 1,
+      "description": "Number of units assumed in the scenario."
+    },
+    "is_assumption": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true. Every figure is an explicit assumption, never real revenue."
+    },
+    "note": { "type": "string" }
+  }
+}

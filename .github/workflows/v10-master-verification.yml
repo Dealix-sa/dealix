@@ -1,0 +1,53 @@
+name: V10 Master Verification
+
+# Safe by design: read-only, artifact-only, no secrets, no external sending,
+# no commits. Verifies the V10 Institutional Scale & Market Domination OS.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Weekly, Monday 06:00 UTC
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  v10-verify:
+    runs-on: ubuntu-latest
+    env:
+      AUTO_SEND_ENABLED: "false"
+      EXTERNAL_OUTREACH_ENABLED: "false"
+      AGENT_APPROVAL_MODE: "required"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Run V10 per-OS verifiers
+        run: |
+          python scripts/institutional_scale_verify.py
+          python scripts/board_governance_verify.py
+          python scripts/market_domination_verify.py
+          python scripts/enterprise_sales_room_verify.py
+          python scripts/profitability_verify.py
+          python scripts/scope_control_verify.py
+          python scripts/localization_verify.py
+          python scripts/productization_verify.py
+          python scripts/operating_leverage_verify.py
+          python scripts/moat_metrics_verify.py
+          python scripts/ceo_cockpit_verify.py
+      - name: Run V10 aggregators
+        run: |
+          python scripts/company_utilization_verify.py
+          python scripts/startup_os_verify.py
+          python scripts/final_launch_control_verify.py
+      - name: Run V10 master verification
+        run: python scripts/v10_master_verification.py
+      - name: Upload verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v10-verification
+          path: outputs/v10_verification/
+          if-no-files-found: error

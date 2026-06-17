@@ -1,0 +1,25 @@
+{
+  "name": "FINAL_LAUNCH_CONTROL",
+  "verdict": "PASS",
+  "checked_os_count": 11,
+  "per_os": {
+    "institutional_scale": "PASS",
+    "board_governance": "PASS",
+    "market_domination": "PASS",
+    "enterprise_sales_room": "PASS",
+    "profitability": "PASS",
+    "scope_control": "PASS",
+    "localization": "PASS",
+    "productization": "PASS",
+    "operating_leverage": "PASS",
+    "moat_metrics": "PASS",
+    "ceo_cockpit": "PASS"
+  },
+  "safety": {
+    "no_external_send": true,
+    "no_secrets": true,
+    "no_scraping": true,
+    "no_live_ads": true,
+    "founder_approval_required": true
+  }
+}
