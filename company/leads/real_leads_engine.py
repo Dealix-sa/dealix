@@ -106,7 +106,7 @@ def score(row: dict[str, str]) -> int:
             value += 15
         elif count >= 30:
             value += 8
-    except Exception:
+    except (ValueError, TypeError):
         pass
     try:
         rating = float(row.get("rating") or 0)
@@ -114,7 +114,7 @@ def score(row: dict[str, str]) -> int:
             value += 10
         elif rating >= 4.5:
             value += 5
-    except Exception:
+    except (ValueError, TypeError):
         pass
     return min(value, 100)
 
