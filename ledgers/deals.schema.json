@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.me/schemas/ledgers/deals.schema.json",
+  "title": "Dealix Deals Ledger",
+  "description": "Founder-facing deals ledger. Amounts are in SAR. Never invent revenue numbers in automation — only the founder writes real deal values here (mirrors the 'never invent CRM numbers' rule in AGENTS.md).",
+  "type": "object",
+  "required": ["ledger", "version", "records"],
+  "additionalProperties": false,
+  "properties": {
+    "ledger": { "const": "deals" },
+    "version": { "type": "integer", "minimum": 1 },
+    "updated": { "type": "string" },
+    "records": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/deal" }
+    }
+  },
+  "$defs": {
+    "deal": {
+      "type": "object",
+      "required": ["id", "title", "offer", "stage", "currency", "opened"],
+      "additionalProperties": true,
+      "properties": {
+        "id": { "type": "string", "pattern": "^DEAL-[0-9]{4,}$" },
+        "prospect_id": { "type": "string", "pattern": "^PRO-[0-9]{4,}$" },
+        "title": { "type": "string", "minLength": 1 },
+        "offer": { "type": "string" },
+        "amount_sar": { "type": "number", "minimum": 0 },
+        "currency": { "const": "SAR" },
+        "stage": {
+          "type": "string",
+          "enum": ["diagnostic", "pilot", "proof", "proposal", "negotiation", "won", "lost"]
+        },
+        "probability": { "type": "number", "minimum": 0, "maximum": 1 },
+        "opened": { "type": "string" },
+        "expected_close": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["open", "won", "lost", "on_hold"]
+        },
+        "owner": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

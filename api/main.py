@@ -112,6 +112,10 @@ value_os_router = _import_optional_router("value_os", "api.routers.value_os")
 data_os_router = _import_optional_router("data_os", "api.routers.data_os")
 # Wave 14F — Agent OS
 agent_os_router = _import_optional_router("agent_os", "api.routers.agent_os")
+# WhatsApp Client OS — client-facing governed WhatsApp surface
+whatsapp_client_os_router = _import_optional_router(
+    "whatsapp_client_os", "api.routers.whatsapp_client_os"
+)
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
 from api.routers import commercial_map as commercial_map_router
 # Wave 15B — Commercial chain (diagnostic → warm-intro → pilot → proof → payment → upsell)
@@ -134,6 +138,8 @@ from api.routers import onboarding as onboarding_router
 from api.routers import kpi_dashboard as kpi_dashboard_router
 # Weekly business reports (admin-gated, approval-required)
 from api.routers import weekly_reports as weekly_reports_router
+# Revenue Execution OS — approval-first distribution (no external send / no charge)
+from api.routers import distribution as distribution_router
 
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
@@ -377,6 +383,9 @@ def create_app() -> FastAPI:
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:
         app.include_router(agent_os_router.router)
+    # WhatsApp Client OS — client-facing governed WhatsApp surface
+    if whatsapp_client_os_router is not None:
+        app.include_router(whatsapp_client_os_router.router)
     _strict_optional = _os.getenv("DEALIX_STRICT_OPTIONAL_ROUTERS", "").lower() in (
         "1", "true", "yes",
     )
@@ -423,6 +432,8 @@ def create_app() -> FastAPI:
     app.include_router(kpi_dashboard_router.router)
     # Weekly business reports — /api/v1/reports
     app.include_router(weekly_reports_router.router)
+    # Revenue Execution OS — /api/v1/distribution (approval-first; no external send)
+    app.include_router(distribution_router.router)
 
     # 90-day commercial plan — proposals export + website lead capture
     from api.routers.proposals_export import router as proposals_export_router

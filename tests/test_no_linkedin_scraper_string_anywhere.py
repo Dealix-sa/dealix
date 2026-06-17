@@ -32,6 +32,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 _ALLOWLIST_PATHS = frozenset({
     # The test itself (allowlisted by basename match — see _is_allowlisted)
     "tests/test_no_linkedin_scraper_string_anywhere.py",
+    # Enterprise-architecture TESTS_REQUIRED doc names this very test (the lock),
+    # so it references the forbidden literal only to describe the guard.
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # The Master Matrix audit doc records the historic finding
     "docs/DEALIX_MASTER_EXECUTION_MATRIX.md",
     "docs/DEALIX_MASTER_EXECUTION_EVIDENCE_TABLE.md",
@@ -41,6 +44,8 @@ _ALLOWLIST_PATHS = frozenset({
     "docs/FRONTEND_COHERENCE_AUDIT_REPORT.md",
     # Wave 10.8 PR triage doc references the historic finding
     "docs/PR_MERGE_TRIAGE_2026_05_09.md",
+    # Required-tests index names this lockdown test (documentation reference only)
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # Wave 11 evidence table — records the lockdown audit row by name
     "docs/WAVE11_FIRST3_PAID_PILOTS_EVIDENCE_TABLE.md",
     # Wave 11 E2E pytest — invokes the lockdown test by file path string

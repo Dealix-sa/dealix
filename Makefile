@@ -151,6 +151,19 @@ clean: ## Remove build artifacts, caches
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
 
+# ── Distribution / Revenue Execution OS ────────────────────────
+# Approval-first revenue execution. All read-only or draft-only — none of
+# these send anything externally or charge a customer.
+
+distribution-day: ## Founder morning command report (pending drafts, due follow-ups, queues)
+	$(PYTHON) scripts/distribution_day.py
+
+draft-quality: ## Draft Quality Gate — fail on guaranteed-outcome / forbidden-channel drafts
+	$(PYTHON) scripts/check_draft_quality.py
+
+distribution-metrics: ## Write the daily + weekly distribution KPI snapshot
+	$(PYTHON) scripts/distribution_metrics.py
+
 # ── v5 founder CLIs ────────────────────────────────────────────
 # These wrap the read-only Dealix v5 founder tooling. Each is safe
 # to run any time — none of them write to production or send anything.

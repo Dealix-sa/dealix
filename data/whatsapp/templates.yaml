@@ -1,0 +1,80 @@
+# WhatsApp Client OS — message template library (AR-first, Saudi B2B tone).
+# Rendered by auto_client_acquisition/whatsapp_client_os/templates.py.
+# Variables use {name}. Tone: short, clear, no hype, no guarantees.
+# These are templates for GOVERNED, consented conversations — never cold sends.
+schema_version: "1.0"
+templates:
+  welcome:
+    body_ar: |
+      أهلًا، أنا مساعد Dealix.
+      أقدر أساعدك في تشخيص المبيعات والمتابعة وتشغيل أول نظام داخل شركتك.
+      اختر الخطوة من القائمة.
+
+  assessment_start:
+    body_ar: |
+      تمام. بسأل أسئلة قصيرة وأقترح لك أفضل مسار.
+      الخطوة {step} من {total}.
+
+  assessment_result:
+    body_ar: |
+      جهّزت لك أفضل مسار بناءً على إجاباتك.
+      الجاهزية الكلية: {overall}/100.
+      التوصية: {offer_name_ar}.
+      أول خطوة: {next_action_ar}.
+
+  permission_request:
+    body_ar: |
+      نحتاج صلاحية واحدة لإكمال الربط: {system}.
+      الغرض: {purpose_ar}. الخطورة: {risk}. المدة: {duration_days} يوم.
+      لا ترسل المفتاح هنا — أكمل عبر الرابط الآمن إن لزم.
+
+  missing_input:
+    body_ar: |
+      ناقصنا مدخل بسيط لإكمال الخطوة: {input_ar}.
+      لأمان البيانات، ارفعه من الرابط الآمن.
+
+  draft_ready:
+    body_ar: |
+      جاهز Draft للمراجعة قبل أي إرسال:
+      «{draft_ar}»
+      اعتمد / عدّل / ارفض.
+
+  followup_due:
+    body_ar: |
+      تذكير: متابعة مستحقة مع {lead_ar}.
+      جهّزت لك مسودة — تحتاج موافقتك قبل الإرسال.
+
+  proposal_ready:
+    body_ar: |
+      جهّزت لك عرضًا مبدئيًا: {offer_name_ar}.
+      النطاق والسعر واضحان في الكرت — راجع واعتمد أو احجز مكالمة.
+
+  proof_pack_ready:
+    body_ar: |
+      جاهز Proof Pack: {proof_title_ar}.
+      كل رقم معه مستوى دليل — بدون مبالغة.
+
+  payment_handoff_ready:
+    body_ar: |
+      جاهز للدفع الآمن: {offer_name_ar}.
+      الدفع يتم عبر رابط آمن خارج الشات، بعد موافقتك.
+
+  onboarding_start:
+    body_ar: |
+      أهلًا بك كعميل Dealix.
+      نبدأ بإعداد بسيط: الصلاحيات، الملفات المطلوبة، ثم أول workflow.
+
+  weekly_report:
+    body_ar: |
+      تقريرك الأسبوعي جاهز: {period_ar}.
+      أهم تحسّن: {improvement_ar}. الخطوة القادمة: {next_ar}.
+
+  renewal_offer:
+    body_ar: |
+      اكتملت قيمة هذا الشهر.
+      أقترح الاستمرار/التوسعة بناءً على النتائج — بدون أي التزام تلقائي.
+
+  support_escalation:
+    body_ar: |
+      وصلت طلبك للدعم.
+      صنّفت المشكلة، وإذا تبغى نصعّدها لشخص الآن أخبرني.
