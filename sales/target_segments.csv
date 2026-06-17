@@ -1,0 +1,16 @@
+company_name,sector,city,decision_maker_title,why_now,lawful_source,status,next_action,notes
+,B2B management consulting,Riyadh,Managing Partner,Vision 2030 transformation demand is rising; pipeline outpaces follow-up capacity,Founder network / referral,to_source,Identify 2-3 fitting firms from your network,Leave company_name blank until sourced lawfully — never invent
+,Digital marketing services,Riyadh,Founder / GM,Runs paid campaigns but lead follow-up is weak; classic data-to-revenue gap,Chamber/association directory,to_source,Check published member directory for fit,Fits 499 Sprint then Data-to-Revenue Pack
+,Recruitment & staffing,Jeddah,Founder,High B2B lead volume; manual qualification bottleneck,Referral,to_source,Ask existing contacts for one intro,Confirm consent-to-contact basis before outreach
+,Corporate training providers,Riyadh,Founder,Repeat B2B program cycles; proposal follow-up lags,Inbound (site diagnostic),to_source,Watch dealix.me/diagnostic.html submissions,Inbound = consented contact
+,B2B SaaS (KSA-built),Riyadh,Co-founder / Head of Sales,Scaling sales team across dialects; qualification capacity strained,Founder network,to_source,Map mutual connections,Strong fit for Sprint + Command Sprint
+,Logistics & fulfillment services,Dammam,COO,B2B client onboarding pipeline scattered across spreadsheets,Event / conference contact,to_source,Follow up with people met in person,Record where you met in notes
+,Commercial real estate brokerage,Riyadh,Sales Director,Lead-heavy team; high-ticket opportunities slip without structured follow-up,Referral,to_source,Request warm intro from network,No cold outreach — referral basis only
+,IT & managed services,Khobar,GM,Recurring service contracts; renewal/upsell tracking manual,Chamber/association directory,to_source,Review published directory for fit,Fits Growth Ops after a proof Sprint
+,Event management agencies,Jeddah,Founder,Long proposal cycles; opportunity data fragmented,Founder network,to_source,Identify firms via your contacts,Case-safe pattern: organize opportunities first
+,B2B distribution / wholesale,Riyadh,Owner,Repeat wholesale order flow; quote-to-close tracking weak,Manual research (consent basis),to_source,Find fit then contact via public channel,Use their official contact form — never scrape
+,Architecture & engineering services,Riyadh,Partner,Project-based B2B pipeline; bid follow-up under-resourced,Referral,to_source,Ask for two intros from each contact,Confirm decision maker is present
+,Insurance brokerage (commercial),Jeddah,Director,Quote flow heavy; lead nurture inconsistent,Chamber/association directory,to_source,Check directory; verify lawful basis,Decision-maker access matters most
+,HR & payroll services,Riyadh,Founder,B2B sales cycle; lead qualification manual,Inbound (site diagnostic),to_source,Prioritize inbound diagnostic submissions,Inbound consented — fastest path
+,Accounting & advisory firms,Dammam,Managing Partner,Client acquisition tied to referrals; pipeline not systematized,Founder network / referral,to_source,Map warm paths first,Fits free diagnostic then Sprint
+,Facilities management services,Riyadh,GM,Contract renewals and B2B bids tracked manually,Event / conference contact,to_source,Reconnect with in-person contacts,Record consent-to-contact basis in notes
