@@ -117,6 +117,14 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     "diagnostic.html": {
         "cold": "NEGATION",
     },
+    # Command Sprint offer page (Wave 7) — the "حدود واضحة — ماذا لا نفعل"
+    # section enumerates what Dealix never does: "بدون تواصل بارد (no cold
+    # outreach)", "لا scraping", "لا نضمن نتائج". Pure NEGATION throughout.
+    "command-sprint.html": {
+        "cold": "NEGATION",
+        "scraping": "NEGATION",
+        "نضمن": "NEGATION",
+    },
     # Founder leads inbox — footer states "لا cold outreach من النظام"
     # as a privacy promise. Pure NEGATION.
     "founder-leads.html": {
