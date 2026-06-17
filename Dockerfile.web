@@ -1,11 +1,39 @@
-FROM node:22-bookworm-slim
+# ───────────────────────────────────────────────────────────────────
+# Dealix canonical public web app — Next.js (frontend/)
+# Build context = repo root. This deploys the bilingual commercial
+# funnel (home, services, pricing, custom-ai, diagnostic, trust-center).
+# The legacy platform-overview app under apps/web keeps its own
+# apps/web/Dockerfile if it ever needs a separate service.
+# ───────────────────────────────────────────────────────────────────
+FROM node:22-alpine AS deps
 WORKDIR /app
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV HOSTNAME=0.0.0.0
-COPY apps/web/package.json apps/web/package-lock.json* ./
-RUN npm ci
-COPY apps/web ./
+RUN apk add --no-cache libc6-compat
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+FROM node:22-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY frontend/ ./
+ARG NEXT_PUBLIC_API_URL=https://api.dealix.me
+ARG NEXT_PUBLIC_SITE_URL=https://dealix.me
+ARG NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=1
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \
+    NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
+    NEXT_PUBLIC_USE_DEALIX_OPS_PROXY=$NEXT_PUBLIC_USE_DEALIX_OPS_PROXY \
+    NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
+
+FROM node:22-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1
+RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+USER nextjs
 EXPOSE 3000
-CMD ["sh", "-c", "node_modules/.bin/next start -H 0.0.0.0 -p ${PORT:-3000}"]
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+CMD ["node", "server.js"]
