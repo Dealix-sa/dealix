@@ -15,6 +15,8 @@
 
 ### [🚀 Launch](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md) · [✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) · [💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) · [📡 Domain](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md) · [🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)
 
+### [🏗️ Business OS](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md) · [🗼 Control Tower](docs/00_platform_truth/LAUNCH_CONTROL_TOWER.md) · [⚡ Command Sprint](docs/01_go_to_market/COMMAND_SPRINT_OFFER.md) · [🧾 Module Status](docs/00_platform_truth/MODULE_STATUS_MAP.md)
+
 </div>
 
 ---
@@ -30,6 +32,29 @@ Dealix is a Saudi-first B2B revenue operating system with three core engines:
 It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operating rule is:
 
 > AI explores, analyzes, and recommends. Deterministic workflows execute. Humans approve critical external commitments.
+
+---
+
+## Business OS Launch System / نظام إطلاق الأعمال
+
+The bigger frame: **Dealix is a Saudi AI Business Operating System company** — a full operating system for the business (market, targeting, selling, delivery, proof, clients, support, finance, governance, data, partners, training). The targeting engine is just one of **14 Operating Systems**. The first commercial wedge is the **Command Sprint** — narrow the offer, win a customer, deliver Proof, convert to subscription, expand inside the customer.
+
+الإطار الأكبر: **Dealix شركة نظام تشغيل أعمال بالذكاء الاصطناعي**. محرك الاستهداف مجرد نظام واحد من **14 نظامًا**. أول وتد تجاري هو **Command Sprint** — نضيّق العرض، نكسب عميلًا، نسلّم Proof، نحوّله لاشتراك، ثم نوسّع داخل العميل.
+
+| Layer / الطبقة | Entry doc / الوثيقة |
+|---|---|
+| Platform truth — source of truth, architecture, product ladder, module status, control tower | [`docs/00_platform_truth/`](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md) |
+| Go-to-market — Command Sprint offer, market intelligence, targeting, sales playbook, pricing, partners | [`docs/01_go_to_market/`](docs/01_go_to_market/COMMAND_SPRINT_OFFER.md) |
+| Operating systems — the 14 OS specs (Command → Academy) | [`docs/02_operating_systems/`](docs/02_operating_systems/COMMAND_OS.md) |
+| Governance — approval policy, claims register, no-spam, retention, PDPL readiness, external actions | [`docs/03_governance/`](docs/03_governance/HUMAN_APPROVAL_POLICY.md) |
+| Delivery — 7-day Sprint runbook, customer folder, proof pack, acceptance criteria | [`docs/04_delivery/`](docs/04_delivery/COMMAND_SPRINT_DELIVERY_OS.md) |
+| Founder — daily command, weekly board review, CEO scorecard, launch go/no-go | [`docs/05_founder/`](docs/05_founder/FOUNDER_DAILY_COMMAND.md) |
+
+**Hard rules (non-negotiable):** no auto-send · no mass WhatsApp · no scraping behind login · no fake proof · no guaranteed revenue claims · no client name published without approval · no customer data used for model training · no external customer-facing action without founder approval · every target needs evidence · every paid customer needs a delivery folder and a proof pack.
+
+Public-launch status: **No-Go** until ≥3 paid Sprints + 3 Proof Packs + 1 case study + 0 trust incidents — see the [Launch Control Tower](docs/00_platform_truth/LAUNCH_CONTROL_TOWER.md).
+
+> These are operational targets, not guarantees. / هذه أهداف تشغيلية وليست ضمانًا للنتائج.
 
 ---
 
