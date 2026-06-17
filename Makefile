@@ -13,7 +13,15 @@
         v5-proof-pack v10-verify v10-reference \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
-        launch-content launch-pipeline launch-all-dry-runs test-launch
+        launch-content launch-pipeline launch-all-dry-runs test-launch \
+        outreach outreach-dry targets-merge outreach-f3 outreach-f7 \
+        command-room content daily proposal proposal-dry proposal-sectors \
+        weekly-review weekly-review-print meeting \
+        diagnostic reply-classify onboard contract contract-dry contract-tiers \
+        outreach-tracker outreach-tracker-summary outreach-tracker-list \
+        pilot-report customer-monthly-report \
+        renewal-check renewal-summary \
+        daily-ops
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3

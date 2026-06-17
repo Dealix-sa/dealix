@@ -1,0 +1,92 @@
+# Pain → offer mapping. Connects each buyer pain category to the offer that
+# resolves it, plus bundles, anti-patterns, and per-vertical pain priorities.
+# Product configuration data (no customer PII).
+
+# Every pain category has at least one mapped offer.
+primary_mapping:
+  - pain: lead_leakage
+    offer: revenue_sprint
+    rationale_ar: التقاط وتوزيع الـ leads قبل ما تضيع.
+  - pain: follow_up_chaos
+    offer: revenue_os
+    rationale_ar: متابعة منظّمة بدل العشوائية.
+  - pain: crm_data_disorder
+    offer: command_center
+    rationale_ar: توحيد بيانات العملاء في مكان واحد.
+  - pain: proposal_delay
+    offer: delivery_os
+    rationale_ar: تسريع توليد العروض والتسليم.
+  - pain: weak_reporting
+    offer: command_center
+    rationale_ar: تقارير KPI أسبوعية واضحة.
+  - pain: sales_team_inconsistency
+    offer: revenue_os
+    rationale_ar: قوالب وعمليات موحّدة للفريق.
+  - pain: support_overload
+    offer: delivery_os
+    rationale_ar: فرز ومسوّدات ردود للدعم.
+  - pain: no_proof_case_study_system
+    offer: review_os
+    rationale_ar: نظام أدلة وقصص نجاح موثّقة.
+  - pain: slow_onboarding
+    offer: delivery_os
+    rationale_ar: استقبال عملاء أسرع وأوضح.
+  - pain: weak_renewal_upsell
+    offer: monthly_optimization_retainer
+    rationale_ar: تجديد وتوسعة مبنية على القيمة المثبتة.
+
+# Bundles combine a primary offer with supporting sub-modules.
+bundles:
+  - name: growth_bundle
+    primary_offer: revenue_os
+    sub_modules:
+      - proposal_factory
+      - weekly_revenue_command
+  - name: proposal_acceleration
+    primary_offer: proposal_factory
+    sub_modules:
+      - proof_pack_factory
+  - name: support_scale
+    primary_offer: support_triage_draft_os
+    sub_modules:
+      - weekly_revenue_command
+
+# Anti-patterns the system must refuse — each has a scenario, risk, and action.
+anti_patterns:
+  - scenario: Prospect asks for guaranteed revenue or ranking.
+    risk: doctrine_violation
+    action: Decline the guarantee; offer the free diagnostic and evidence-based estimates only.
+  - scenario: Prospect wants cold WhatsApp or LinkedIn scraping automation.
+    risk: forbidden_channel
+    action: Refuse; explain the consent-first, no-scraping policy.
+  - scenario: Prospect pushes for a discount below the margin floor.
+    risk: margin_erosion
+    action: Hold the floor; route to founder for an explicit decision.
+
+# Per-vertical pain priority — ordered list per ICP segment. Keys must cover
+# every segment id in icp_segments.yaml.
+vertical_pain_priority:
+  real_estate:
+    - lead_leakage
+    - follow_up_chaos
+    - no_proof_case_study_system
+  clinic:
+    - follow_up_chaos
+    - no_proof_case_study_system
+    - weak_reporting
+  logistics:
+    - crm_data_disorder
+    - weak_reporting
+    - proposal_delay
+  training:
+    - slow_onboarding
+    - follow_up_chaos
+    - weak_renewal_upsell
+  marketing_agency:
+    - sales_team_inconsistency
+    - proposal_delay
+    - weak_reporting
+  b2b_services:
+    - lead_leakage
+    - proposal_delay
+    - weak_renewal_upsell

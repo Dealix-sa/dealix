@@ -9,6 +9,7 @@ dealix/config/founder_closure_intake.yaml
 !.env.example
 !.env.staging.example
 !.env.railway.example
+!frontend/.env.local.example
 *.pem
 *.key
 *.p12
@@ -43,6 +44,8 @@ lib/
 lib64/
 !apps/web/lib/
 !apps/web/lib/**
+!frontend/src/lib/
+!frontend/src/lib/**
 parts/
 sdist/
 var/
@@ -283,6 +286,7 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+!frontend/.env.local.example
 
 # Editors / OS
 .vscode/*
@@ -342,3 +346,27 @@ company/reports/*_MICRO_MASTER_CEO_REPORT.md
 
 # Dealix intake generated outputs
 company/runtime/intake/
+
+# Dealix outreach — real target list stays local (never committed)
+data/outreach/saudi_target_intake.csv
+# Real outreach log stays local; the .template.csv is tracked (allowlisted above).
+data/outreach/outreach_log.csv
+reports/outreach/
+reports/command_room/
+
+# Researched raw target lists stay local (not a committed scraped list)
+data/outreach/research/
+reports/content/
+
+# GTM generated docs — founder reviews before sharing; never committed
+reports/contracts/*
+reports/pilot_reports/*
+reports/customer_reports/*
+reports/meetings/*
+!reports/contracts/.gitkeep
+!reports/pilot_reports/.gitkeep
+!reports/customer_reports/.gitkeep
+!reports/meetings/.gitkeep
+
+# Contract log is tracked business data (like proposals/)
+# data/contracts/contract_log.csv is NOT ignored

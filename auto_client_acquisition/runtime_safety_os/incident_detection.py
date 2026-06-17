@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any, Optional
 
 import structlog
@@ -12,7 +12,7 @@ import structlog
 logger = structlog.get_logger(__name__)
 
 
-class IncidentSeverity(str, Enum):
+class IncidentSeverity(StrEnum):
     CRITICAL = "critical"
     HIGH = "high"
     MEDIUM = "medium"
@@ -33,7 +33,7 @@ class Incident:
     context: dict[str, Any] = field(default_factory=dict)
     acknowledged: bool = False
     resolved: bool = False
-    resolved_at: Optional[datetime] = None
+    resolved_at: datetime | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -230,8 +230,8 @@ class IncidentDetector:
 
 
 __all__ = [
+    "PATTERN_RULES",
     "Incident",
     "IncidentDetector",
     "IncidentSeverity",
-    "PATTERN_RULES",
 ]

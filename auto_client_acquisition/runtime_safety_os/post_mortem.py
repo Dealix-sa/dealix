@@ -44,10 +44,10 @@ class ActionItem:
     description: str
     owner: str = "unassigned"
     priority: str = "medium"
-    deadline: Optional[str] = None
+    deadline: str | None = None
     status: str = "open"
 
-    def to_dict(self) -> dict[str, Optional[str]]:
+    def to_dict(self) -> dict[str, str | None]:
         return {
             "description": self.description,
             "owner": self.owner,
@@ -321,7 +321,7 @@ class PostMortemGenerator:
             f"Post-mortem generated automatically."
         )
 
-    async def get_post_mortem(self, incident_id: str) -> Optional[PostMortem]:
+    async def get_post_mortem(self, incident_id: str) -> PostMortem | None:
         """Retrieve a generated post-mortem by incident ID."""
         for pm in self._generated:
             if pm.incident_id == incident_id:
