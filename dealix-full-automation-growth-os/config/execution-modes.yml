@@ -1,0 +1,52 @@
+# Execution mode definitions and routing rules
+execution_modes:
+  full_auto:
+    description: Fully automated, no human needed
+    use_when:
+      - inbound_lead
+      - opt_in_channel
+      - official_api_available
+      - approved_template
+      - clear_unsubscribe_path
+      - low_compliance_risk
+    channels: [google_leads, meta_leads, linkedin_lead_gen, tiktok_leads, whatsapp_opt_in, instagram_inbound, messenger_inbound, retargeting]
+
+  controlled_auto:
+    description: Automated with rate limits, suppression checks, and monitoring
+    use_when:
+      - outbound_email_to_business_address
+      - warm_lead
+      - known_business_contact
+      - rate_limits_configured
+      - suppression_checked
+    channels: [email, followup_sequences, partner_outreach, event_invites]
+
+  founder_approval:
+    description: Draft prepared, founder reviews and approves before send
+    use_when:
+      - high_value_account
+      - legal_finance_health_government_sector
+      - pricing_discussion
+      - proposal_send
+      - credentials_requested
+      - sensitive_message
+    channels: [email_tier_a, linkedin_manual, calls_tier_a]
+
+  draft_only:
+    description: Asset prepared, human executes
+    use_when:
+      - platform_prohibits_automation
+      - scraping_or_dm_automation_risk
+      - unclear_consent
+      - account_ban_risk
+    channels: [linkedin_outbound, website_contact_forms, community_posts]
+
+  blocked:
+    description: System refuses to execute
+    block_if:
+      - spam_behavior_detected
+      - fake_identity_request
+      - limit_circumvention
+      - misleading_links
+      - duplicate_mass_messaging
+      - captcha_bypass_request

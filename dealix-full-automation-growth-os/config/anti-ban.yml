@@ -1,0 +1,56 @@
+# Anti-ban guardrails and auto-throttle rules
+anti_ban_guard:
+
+  metrics_monitored:
+    - bounce_rate
+    - reply_rate
+    - positive_reply_rate
+    - spam_complaint_signal
+    - unsubscribe_rate
+    - block_rate
+    - dm_response_rate
+    - account_warnings
+    - api_errors
+    - rate_limit_errors
+    - duplicate_content_similarity_score
+
+  email_thresholds:
+    bounce_rate_above: "3%"
+    action: reduce_email_sends_by_50_percent
+    unsubscribe_rate_above: "2%"
+    action_unsubscribe: pause_segment_and_review_copy
+    spam_complaint_detected: true
+    action_spam: pause_inbox_immediately
+
+  linkedin_thresholds:
+    warning_detected: true
+    action: stop_all_linkedin_actions_immediately
+
+  whatsapp_thresholds:
+    quality_rating_drops: true
+    action: pause_templates_and_review_immediately
+
+  api_thresholds:
+    rate_limit_errors: true
+    action: exponential_backoff
+    backoff_sequence_seconds: [2, 4, 8, 16, 32]
+
+  similarity_guard:
+    enabled: true
+    max_similarity_score: 0.7
+    differentiation_variables:
+      - company_name
+      - sector
+      - pain_point
+      - offer
+      - buyer_title
+      - country
+      - language
+      - cta_variant
+    action_if_too_similar: regenerate_with_different_angle
+
+  warmup_required: true
+  warmup_days: 14
+  warmup_daily_start: 10
+  warmup_daily_increment: 10
+  warmup_max: 150

@@ -1,0 +1,52 @@
+# Persuasion frameworks and messaging principles
+persuasion:
+
+  core_message:
+    ar: "الذكاء الاصطناعي للعمليات المتكررة — لا للترفيه"
+    en: "AI for your repetitive operations — not entertainment"
+
+  value_pillars:
+    - name: time_savings
+      ar: توفير الوقت
+      proof: "متوسط توفير 8-12 ساعة أسبوعياً لكل موظف"
+    - name: error_reduction
+      ar: تقليل الأخطاء
+      proof: "تقليل أخطاء البيانات بنسبة تصل لـ 85%"
+    - name: cost_efficiency
+      ar: كفاءة التكلفة
+      proof: "ROI يتجاوز 300% خلال 90 يوماً"
+    - name: speed_to_market
+      ar: سرعة التنفيذ
+      proof: "workflow جاهز خلال 7 أيام"
+
+  opening_frameworks:
+    problem_first:
+      template: "لاحظنا أن شركات {sector} في {country} تقضي {X} ساعات أسبوعياً على {pain_point}."
+    insight_lead:
+      template: "{insight_about_sector} — وهذا ما جعلنا نبني {solution}."
+    social_proof:
+      template: "ساعدنا {similar_company_type} في {country} على {result}."
+    question_open:
+      template: "كيف يتعامل فريقكم حالياً مع {pain_point}؟"
+
+  cta_variants:
+    ar:
+      - احصل على تشخيصك المجاني (30 دقيقة)
+      - حجز مكالمة استكشافية
+      - اطّلع على نموذج العمل
+      - ابدأ بسبرينت 7 أيام
+    en:
+      - Get Your Free 30-min Diagnostic
+      - Book a Discovery Call
+      - See How It Works
+      - Start 7-Day Sprint
+
+  objection_handlers:
+    too_expensive:
+      ar: "البداية بالتشخيص المجاني — لا التزام مالي"
+    not_ready:
+      ar: "7 أيام فقط للحصول على خارطة واضحة لما يمكن أتمتته"
+    already_have_solution:
+      ar: "نكمّل ما لديكم ولا نستبدله — التكامل سهل"
+    not_sure_about_ai:
+      ar: "نبدأ بعملية واحدة، تقيسون النتيجة، ثم تقررون"
