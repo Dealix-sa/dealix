@@ -13,7 +13,7 @@ import pytest
 class TestScoringTools:
     def test_score_lead_returns_tier(self):
         from dealix.hermes.tools.scoring_tools import score_lead
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             score_lead("TechCo", "technology", 5_000_000, 50)
         )
         assert "icp_score" in result
@@ -22,17 +22,17 @@ class TestScoringTools:
 
     def test_score_lead_low_revenue_gives_lower_score(self):
         from dealix.hermes.tools.scoring_tools import score_lead
-        low = asyncio.get_event_loop().run_until_complete(
+        low = asyncio.run(
             score_lead("TinyShop", "other", 50_000, 2)
         )
-        high = asyncio.get_event_loop().run_until_complete(
+        high = asyncio.run(
             score_lead("BigTech", "technology", 10_000_000, 100)
         )
         assert high["icp_score"] > low["icp_score"]
 
     def test_score_account_health_healthy(self):
         from dealix.hermes.tools.scoring_tools import score_account_health
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             score_account_health("acct-1", 1, 20_000, 80)
         )
         assert r["risk_level"] == "healthy"
@@ -40,7 +40,7 @@ class TestScoringTools:
 
     def test_score_account_health_critical(self):
         from dealix.hermes.tools.scoring_tools import score_account_health
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             score_account_health("acct-2", 89, 0, -50)
         )
         assert r["risk_level"] == "critical"
@@ -51,19 +51,19 @@ class TestScoringTools:
             {"company": "A", "industry": "technology", "revenue_sar": 5_000_000, "employees": 50},
             {"company": "B", "industry": "other", "revenue_sar": 100_000, "employees": 3},
         ]
-        r = asyncio.get_event_loop().run_until_complete(prioritize_leads(leads))
+        r = asyncio.run(prioritize_leads(leads))
         assert r["total"] == 2
         assert r["ranked_leads"][0]["icp_score"] >= r["ranked_leads"][1]["icp_score"]
 
     def test_prioritize_leads_empty(self):
         from dealix.hermes.tools.scoring_tools import prioritize_leads
-        r = asyncio.get_event_loop().run_until_complete(prioritize_leads([]))
+        r = asyncio.run(prioritize_leads([]))
         assert r["total"] == 0
         assert r["ranked_leads"] == []
 
     def test_calculate_deal_probability_high_stage(self):
         from dealix.hermes.tools.scoring_tools import calculate_deal_probability
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             calculate_deal_probability({
                 "stage": "negotiation",
                 "has_demo": True,
@@ -77,7 +77,7 @@ class TestScoringTools:
 
     def test_calculate_deal_probability_early_stage(self):
         from dealix.hermes.tools.scoring_tools import calculate_deal_probability
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             calculate_deal_probability({"stage": "prospect", "age_days": 100, "last_activity_days": 30})
         )
         assert r["probability"] < 20
@@ -87,7 +87,7 @@ class TestDataTools:
     def test_score_data_quality_range(self):
         from dealix.hermes.tools.data_tools import score_data_quality
         records = [{"name": "A", "email": "a@b.com"}, {"name": "B", "email": None}]
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             score_data_quality(records, ["name", "email"])
         )
         assert 0 <= r["score"] <= 100
@@ -95,33 +95,33 @@ class TestDataTools:
 
     def test_score_data_quality_empty(self):
         from dealix.hermes.tools.data_tools import score_data_quality
-        r = asyncio.get_event_loop().run_until_complete(score_data_quality([], ["name"]))
+        r = asyncio.run(score_data_quality([], ["name"]))
         assert r["score"] == 0
         assert r["tier"] == "unusable"
 
     def test_detect_duplicates_finds_dupes(self):
         from dealix.hermes.tools.data_tools import detect_duplicates
         records = [{"company": "A"}, {"company": "A"}, {"company": "B"}]
-        r = asyncio.get_event_loop().run_until_complete(detect_duplicates(records, ["company"]))
+        r = asyncio.run(detect_duplicates(records, ["company"]))
         assert r["duplicate_count"] == 1
         assert r["unique_count"] == 2
 
     def test_detect_duplicates_no_dupes(self):
         from dealix.hermes.tools.data_tools import detect_duplicates
         records = [{"company": "A"}, {"company": "B"}, {"company": "C"}]
-        r = asyncio.get_event_loop().run_until_complete(detect_duplicates(records, ["company"]))
+        r = asyncio.run(detect_duplicates(records, ["company"]))
         assert r["duplicate_count"] == 0
 
     def test_calculate_tam_sam_som_ordering(self):
         from dealix.hermes.tools.data_tools import calculate_tam_sam_som
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             calculate_tam_sam_som("technology", "riyadh", "sme")
         )
         assert r["tam_sar"] > r["sam_sar"] > r["som_sar"]
 
     def test_generate_data_passport_structure(self):
         from dealix.hermes.tools.data_tools import generate_data_passport
-        r = asyncio.get_event_loop().run_until_complete(generate_data_passport("tenant-001"))
+        r = asyncio.run(generate_data_passport("tenant-001"))
         assert r["generated"] is True
         assert "passport" in r
         assert r["passport"]["tenant_id"] == "tenant-001"
@@ -131,19 +131,19 @@ class TestAnalysisTools:
     def test_analyze_revenue_trend_growth(self):
         from dealix.hermes.tools.analysis_tools import analyze_revenue_trend
         data = [{"month": f"2025-{i:02d}", "revenue_sar": 100_000 * i} for i in range(1, 7)]
-        r = asyncio.get_event_loop().run_until_complete(analyze_revenue_trend(data))
+        r = asyncio.run(analyze_revenue_trend(data))
         assert r["growth_rate_pct"] > 0
         assert len(r["forecast_3m"]) == 3
 
     def test_analyze_revenue_trend_empty(self):
         from dealix.hermes.tools.analysis_tools import analyze_revenue_trend
-        r = asyncio.get_event_loop().run_until_complete(analyze_revenue_trend([]))
+        r = asyncio.run(analyze_revenue_trend([]))
         assert r["status"] == "no_data"
         assert "insufficient_data" in r["alert_flags"]
 
     def test_calculate_ltv_cac_healthy(self):
         from dealix.hermes.tools.analysis_tools import calculate_ltv_cac
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             calculate_ltv_cac(
                 {"avg_mrr_sar": 5000, "churn_rate_monthly": 0.02, "gross_margin_pct": 0.70},
                 {"total_sales_marketing_sar": 10_000, "new_customers_acquired": 5},
@@ -154,7 +154,7 @@ class TestAnalysisTools:
 
     def test_calculate_ltv_cac_unhealthy(self):
         from dealix.hermes.tools.analysis_tools import calculate_ltv_cac
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             calculate_ltv_cac(
                 {"avg_mrr_sar": 100, "churn_rate_monthly": 0.5, "gross_margin_pct": 0.2},
                 {"total_sales_marketing_sar": 100_000, "new_customers_acquired": 1},
@@ -164,7 +164,7 @@ class TestAnalysisTools:
 
     def test_generate_executive_summary_rating(self):
         from dealix.hermes.tools.analysis_tools import generate_executive_summary
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             generate_executive_summary(
                 {"growth_rate_pct": 20, "nps": 60, "new_customers": 5},
                 "Q2 2026",
@@ -175,7 +175,7 @@ class TestAnalysisTools:
 
     def test_identify_growth_levers_no_crm(self):
         from dealix.hermes.tools.analysis_tools import identify_growth_levers
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             identify_growth_levers({"has_crm": False, "revenue_sar": 1_000_000, "employees": 20})
         )
         lever_names = [l["lever"] for l in r["growth_levers"]]
@@ -185,45 +185,45 @@ class TestAnalysisTools:
 class TestSaudiTools:
     def test_validate_cr_valid(self):
         from dealix.hermes.tools.saudi_tools import validate_cr_number
-        r = asyncio.get_event_loop().run_until_complete(validate_cr_number("1010012345"))
+        r = asyncio.run(validate_cr_number("1010012345"))
         assert r["is_valid"] is True
         assert r["region_hint"] == "riyadh_region"
 
     def test_validate_cr_invalid_length(self):
         from dealix.hermes.tools.saudi_tools import validate_cr_number
-        r = asyncio.get_event_loop().run_until_complete(validate_cr_number("12345"))
+        r = asyncio.run(validate_cr_number("12345"))
         assert r["is_valid"] is False
 
     def test_validate_cr_non_numeric(self):
         from dealix.hermes.tools.saudi_tools import validate_cr_number
-        r = asyncio.get_event_loop().run_until_complete(validate_cr_number("ABCD123456"))
+        r = asyncio.run(validate_cr_number("ABCD123456"))
         assert r["is_valid"] is False
 
     def test_validate_cr_invalid_first_digit(self):
         from dealix.hermes.tools.saudi_tools import validate_cr_number
-        r = asyncio.get_event_loop().run_until_complete(validate_cr_number("5010012345"))
+        r = asyncio.run(validate_cr_number("5010012345"))
         assert r["is_valid"] is False
 
     def test_validate_cr_western_region(self):
         from dealix.hermes.tools.saudi_tools import validate_cr_number
-        r = asyncio.get_event_loop().run_until_complete(validate_cr_number("2050012345"))
+        r = asyncio.run(validate_cr_number("2050012345"))
         assert r["is_valid"] is True
         assert r["region_hint"] == "western_region"
 
     def test_get_hijri_date_returns_date(self):
         from dealix.hermes.tools.saudi_tools import get_hijri_date
-        r = asyncio.get_event_loop().run_until_complete(get_hijri_date("2026-01-01"))
+        r = asyncio.run(get_hijri_date("2026-01-01"))
         assert "hijri" in r
         assert r["hijri_year"] > 1440
 
     def test_get_hijri_date_invalid(self):
         from dealix.hermes.tools.saudi_tools import get_hijri_date
-        r = asyncio.get_event_loop().run_until_complete(get_hijri_date("not-a-date"))
+        r = asyncio.run(get_hijri_date("not-a-date"))
         assert "error" in r
 
     def test_classify_vat_b2b(self):
         from dealix.hermes.tools.saudi_tools import classify_vat_treatment
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             classify_vat_treatment("b2b_service", 10_000)
         )
         assert r["vat_rate_pct"] == 15.0
@@ -231,7 +231,7 @@ class TestSaudiTools:
 
     def test_classify_vat_export_zero(self):
         from dealix.hermes.tools.saudi_tools import classify_vat_treatment
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             classify_vat_treatment("export", 10_000)
         )
         assert r["vat_rate_pct"] == 0.0
@@ -239,14 +239,14 @@ class TestSaudiTools:
 
     def test_classify_vat_healthcare_exempt(self):
         from dealix.hermes.tools.saudi_tools import classify_vat_treatment
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             classify_vat_treatment("healthcare", 5_000)
         )
         assert r["vat_category"] == "exempt"
 
     def test_get_saudi_market_context_technology(self):
         from dealix.hermes.tools.saudi_tools import get_saudi_market_context
-        r = asyncio.get_event_loop().run_until_complete(get_saudi_market_context("technology"))
+        r = asyncio.run(get_saudi_market_context("technology"))
         assert r["industry"] == "technology"
         ctx = r["context"]
         assert ctx["market_size_usd_b"] > 0
@@ -256,14 +256,14 @@ class TestSaudiTools:
 class TestCrmTools:
     def test_get_lead_profile_returns_profile(self):
         from dealix.hermes.tools.crm_tools import get_lead_profile
-        r = asyncio.get_event_loop().run_until_complete(get_lead_profile("lead-abc"))
+        r = asyncio.run(get_lead_profile("lead-abc"))
         assert r["found"] is True
         assert "lead" in r
         assert r["lead"]["lead_id"] == "lead-abc"
 
     def test_update_lead_stage_valid(self):
         from dealix.hermes.tools.crm_tools import update_lead_stage
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             update_lead_stage("lead-001", "qualified", "Great fit")
         )
         assert r["updated"] is True
@@ -271,14 +271,14 @@ class TestCrmTools:
 
     def test_update_lead_stage_invalid(self):
         from dealix.hermes.tools.crm_tools import update_lead_stage
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             update_lead_stage("lead-001", "invalid_stage")
         )
         assert r["updated"] is False
 
     def test_create_deal_returns_deal(self):
         from dealix.hermes.tools.crm_tools import create_deal
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             create_deal("ACME Corp", 50_000, "prospect")
         )
         assert r["created"] is True
@@ -286,20 +286,20 @@ class TestCrmTools:
 
     def test_list_open_deals_returns_list(self):
         from dealix.hermes.tools.crm_tools import list_open_deals
-        r = asyncio.get_event_loop().run_until_complete(list_open_deals(5))
+        r = asyncio.run(list_open_deals(5))
         assert "deals" in r
         assert len(r["deals"]) <= 5
 
     def test_log_activity_valid(self):
         from dealix.hermes.tools.crm_tools import log_activity
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             log_activity("entity-1", "call", "Discussed proposal")
         )
         assert r["logged"] is True
 
     def test_log_activity_invalid_type(self):
         from dealix.hermes.tools.crm_tools import log_activity
-        r = asyncio.get_event_loop().run_until_complete(
+        r = asyncio.run(
             log_activity("entity-1", "smoke_signal")
         )
         assert r["logged"] is False
@@ -328,30 +328,30 @@ class TestHermesMemory:
     def test_store_and_get(self):
         from dealix.hermes.memory import HermesMemory
         mem = HermesMemory()
-        asyncio.get_event_loop().run_until_complete(mem.store("s1", "key", "value"))
-        result = asyncio.get_event_loop().run_until_complete(mem.get("s1", "key"))
+        asyncio.run(mem.store("s1", "key", "value"))
+        result = asyncio.run(mem.get("s1", "key"))
         assert result == "value"
 
     def test_get_missing_returns_default(self):
         from dealix.hermes.memory import HermesMemory
         mem = HermesMemory()
-        result = asyncio.get_event_loop().run_until_complete(mem.get("no-session", "no-key", "default"))
+        result = asyncio.run(mem.get("no-session", "no-key", "default"))
         assert result == "default"
 
     def test_clear_session(self):
         from dealix.hermes.memory import HermesMemory
         mem = HermesMemory()
-        asyncio.get_event_loop().run_until_complete(mem.store("s2", "k", "v"))
-        asyncio.get_event_loop().run_until_complete(mem.clear_session("s2"))
-        result = asyncio.get_event_loop().run_until_complete(mem.get("s2", "k"))
+        asyncio.run(mem.store("s2", "k", "v"))
+        asyncio.run(mem.clear_session("s2"))
+        result = asyncio.run(mem.get("s2", "k"))
         assert result is None
 
     def test_list_sessions(self):
         from dealix.hermes.memory import HermesMemory
         mem = HermesMemory()
-        asyncio.get_event_loop().run_until_complete(mem.store("alpha", "k", "v"))
-        asyncio.get_event_loop().run_until_complete(mem.store("beta", "k", "v"))
-        sessions = asyncio.get_event_loop().run_until_complete(mem.list_sessions())
+        asyncio.run(mem.store("alpha", "k", "v"))
+        asyncio.run(mem.store("beta", "k", "v"))
+        sessions = asyncio.run(mem.list_sessions())
         assert "alpha" in sessions
         assert "beta" in sessions
 
@@ -412,7 +412,7 @@ class TestHermesEngine:
             engine = HermesEngine(config=cfg)
             # engine._client must be None because no key is set
             assert engine._client is None
-            result = asyncio.get_event_loop().run_until_complete(
+            result = asyncio.run(
                 engine.run_agent_loop("system", [{"role": "user", "content": "hi"}], [], 1)
             )
             text, history = result
@@ -434,7 +434,7 @@ class TestHermesAgentBase:
     def test_dispatch_unknown_tool_returns_error(self):
         from dealix.hermes.agents.lead_intelligence import LeadIntelligenceAgent
         agent = LeadIntelligenceAgent()
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             agent._dispatch_tool("nonexistent_tool", {})
         )
         import json
@@ -455,7 +455,7 @@ class TestHermesOrchestrator:
         from dealix.hermes.registry import HermesRegistry
         HermesRegistry._instance = None
         orch = HermesOrchestrator()
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             orch.run_pipeline("nonexistent_pipeline", {})
         )
         assert "error" in result
@@ -467,7 +467,7 @@ class TestHermesOrchestrator:
         HermesRegistry._instance = None
         HermesRegistry.build_all_agents()
         orch = HermesOrchestrator()
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             orch.run_parallel_agents(
                 ["diagnostic_agent", "governance"],
                 {"company_name": "TestCo", "tenant_id": "t1"},
@@ -483,7 +483,7 @@ class TestHermesOrchestrator:
         HermesRegistry._instance = None
         HermesRegistry.build_all_agents()
         orch = HermesOrchestrator()
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             orch.run_pipeline("free_diagnostic", {"company_name": "Demo"})
         )
         assert result["pipeline"] == "free_diagnostic"
@@ -497,7 +497,7 @@ class TestWatchdogLoop:
         HermesRegistry._instance = None
         HermesRegistry.build_all_agents()
         watchdog = WatchdogLoop()
-        result = asyncio.get_event_loop().run_until_complete(watchdog.run_once())
+        result = asyncio.run(watchdog.run_once())
         assert "status" in result
         assert result["status"] in ("healthy", "degraded", "critical")
         assert "checks" in result
@@ -508,7 +508,7 @@ class TestWatchdogLoop:
         HermesRegistry._instance = None
         HermesRegistry.build_all_agents()
         watchdog = WatchdogLoop()
-        result = asyncio.get_event_loop().run_until_complete(watchdog.run_once())
+        result = asyncio.run(watchdog.run_once())
         assert result["checks"]["agent_registry"]["ok"] is True
 
 
@@ -516,7 +516,7 @@ class TestLeadLoop:
     def test_run_once_empty(self):
         from dealix.hermes.loops.lead_loop import LeadLoop
         loop = LeadLoop()
-        result = asyncio.get_event_loop().run_until_complete(loop.run_once([]))
+        result = asyncio.run(loop.run_once([]))
         assert result["status"] == "no_leads"
 
     def test_run_once_with_leads(self):
@@ -525,7 +525,7 @@ class TestLeadLoop:
         HermesRegistry._instance = None
         HermesRegistry.build_all_agents()
         loop = LeadLoop()
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             loop.run_once([{"company": "A", "industry": "technology", "revenue_sar": 1_000_000, "employees": 20}])
         )
         assert result.get("batch_lead_count") == 1
@@ -572,7 +572,7 @@ class TestMiniMaxProvider:
         orig = os.environ.pop("MINIMAX_API_KEY", None)
         try:
             provider = MiniMaxProvider(api_key="")
-            result = asyncio.get_event_loop().run_until_complete(
+            result = asyncio.run(
                 provider.chat(system="sys", messages=[{"role": "user", "content": "hi"}])
             )
             assert "text" in result
@@ -592,7 +592,7 @@ class TestMiniMaxProvider:
             async def dummy_dispatcher(name, inp):
                 return "{}"
 
-            text, usage = asyncio.get_event_loop().run_until_complete(
+            text, usage = asyncio.run(
                 provider.run_agentic_loop(
                     system="sys",
                     user_msg="hi",
@@ -729,7 +729,7 @@ class TestCustomerAcquisitionAgent:
         from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
         agent = CustomerAcquisitionAgent()
         with patch.object(agent._engine, "_client", None):
-            result = asyncio.get_event_loop().run_until_complete(
+            result = asyncio.run(
                 agent.run({"leads": [], "max_drafts": 3})
             )
         assert result["status"] == "complete"
@@ -744,7 +744,7 @@ class TestCustomerAcquisitionAgent:
         from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
         agent = CustomerAcquisitionAgent()
         with patch.object(agent._engine, "_client", None):
-            result = asyncio.get_event_loop().run_until_complete(
+            result = asyncio.run(
                 agent.run({"leads": [], "max_drafts": 1})
             )
         raw = result.get("raw_response", "").lower()
@@ -752,7 +752,7 @@ class TestCustomerAcquisitionAgent:
 
     def test_score_lead_adapter_returns_tier(self):
         from dealix.hermes.agents.customer_acquisition import _score_lead_adapter
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             _score_lead_adapter(
                 lead_id="L001",
                 company_name="TechSA",
@@ -771,13 +771,13 @@ class TestCustomerAcquisitionAgent:
             {"company": "A", "industry": "technology", "revenue_sar": 5_000_000, "employees": 50},
             {"company": "B", "industry": "other", "revenue_sar": 50_000, "employees": 2},
         ]
-        result = asyncio.get_event_loop().run_until_complete(_prioritize_leads_adapter(leads))
+        result = asyncio.run(_prioritize_leads_adapter(leads))
         assert result["total"] == 2
         assert result["ranked_leads"][0]["icp_score"] >= result["ranked_leads"][1]["icp_score"]
 
     def test_get_saudi_market_context_adapter(self):
         from dealix.hermes.agents.customer_acquisition import _get_saudi_market_context_adapter
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             _get_saudi_market_context_adapter(sector="retail", city="Jeddah")
         )
         assert result["industry"] == "retail"
@@ -785,7 +785,7 @@ class TestCustomerAcquisitionAgent:
 
     def test_format_arabic_proposal_adapter(self):
         from dealix.hermes.agents.customer_acquisition import _format_arabic_proposal_adapter
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             _format_arabic_proposal_adapter(
                 company_name="TestCo",
                 pain_summary_ar="ارتفاع تكلفة الاكتساب",
@@ -798,14 +798,14 @@ class TestCustomerAcquisitionAgent:
 
     def test_get_lead_profile_adapter(self):
         from dealix.hermes.agents.customer_acquisition import _get_lead_profile_adapter
-        result = asyncio.get_event_loop().run_until_complete(
+        result = asyncio.run(
             _get_lead_profile_adapter(lead_id="test-lead-001")
         )
         assert result["found"] is True
 
     def test_list_open_deals_adapter(self):
         from dealix.hermes.agents.customer_acquisition import _list_open_deals_adapter
-        result = asyncio.get_event_loop().run_until_complete(_list_open_deals_adapter())
+        result = asyncio.run(_list_open_deals_adapter())
         assert "deals" in result
 
 
@@ -821,7 +821,7 @@ class TestDailyOutreachLoop:
         # Registry without customer_acquisition agent
         registry = HermesRegistry()
         loop = DailyOutreachLoop(registry=registry)
-        result = asyncio.get_event_loop().run_until_complete(loop.run_once(leads=[]))
+        result = asyncio.run(loop.run_once(leads=[]))
         assert result["status"] == "skipped"
 
     def test_run_once_with_agent_returns_complete(self):
@@ -833,7 +833,7 @@ class TestDailyOutreachLoop:
         agent = HermesRegistry.instance().get("customer_acquisition")
         with patch.object(agent._engine, "_client", None):
             loop = DailyOutreachLoop(registry=HermesRegistry.instance())
-            result = asyncio.get_event_loop().run_until_complete(loop.run_once(leads=[]))
+            result = asyncio.run(loop.run_once(leads=[]))
         assert result["status"] == "complete"
         assert result["agent"] == "customer_acquisition"
 
@@ -855,5 +855,5 @@ class TestDailyOutreachLoop:
         cfg = HermesConfig(minimax_outreach_max_per_day=3)
         with patch.object(agent._engine, "_client", None):
             loop = DailyOutreachLoop(registry=HermesRegistry.instance(), config=cfg)
-            result = asyncio.get_event_loop().run_until_complete(loop.run_once(leads=[]))
+            result = asyncio.run(loop.run_once(leads=[]))
         assert "drafts_queued" in result

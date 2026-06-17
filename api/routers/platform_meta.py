@@ -40,7 +40,11 @@ async def healthz(deep: bool = False) -> dict[str, object]:
         from api.routers.health import health_deep
 
         return await health_deep()
-    return {"status": "ok", "service": "dealix"}
+    return {
+        "status": "ok",
+        "service": "dealix",
+        "version": get_settings().app_version,
+    }
 
 
 @router.get("/ready", include_in_schema=False)

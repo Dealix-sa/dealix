@@ -137,7 +137,14 @@ def test_30day_plan_file_exists():
     """The plan file documents the Article 13 boundary; if it disappears,
     we lose the audit trail."""
     plan = Path("/root/.claude/plans/vivid-baking-quokka.md")
-    if not plan.exists():
+    # Path.exists() raises PermissionError (not False) when a parent directory
+    # denies traversal — e.g. CI runs as an unprivileged user that cannot enter
+    # /root. Treat any access error as "not present" and skip.
+    try:
+        present = plan.exists()
+    except OSError:
+        present = False
+    if not present:
         pytest.skip("Plan file not present in this environment")
     text = plan.read_text(encoding="utf-8")
     assert "Article 13" in text, "Plan file must reference Article 13"
