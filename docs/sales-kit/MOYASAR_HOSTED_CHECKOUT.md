@@ -45,7 +45,7 @@
 
 ```bash
 # Set your keys
-export MOYASAR_SECRET=sk_live_xxxxxxxxx   # من Moyasar Dashboard → API Keys
+export MOYASAR_SECRET=<your-moyasar-live-key>   # من Moyasar Dashboard → API Keys
 
 # Create an invoice for 1 SAR pilot
 curl -X POST https://api.moyasar.com/v1/invoices \
