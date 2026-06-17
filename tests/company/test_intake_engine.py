@@ -1,10 +1,5 @@
 """Tests for company.intake.intake_engine module."""
 
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parents[2]))
-
 from company.intake import intake_engine
 
 

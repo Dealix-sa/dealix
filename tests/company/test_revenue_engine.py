@@ -1,11 +1,5 @@
 """Tests for company.revenue_engine.revenue_engine_v2 module."""
 
-import sys
-from pathlib import Path
-
-# Import after ensuring path
-sys.path.insert(0, str(Path(__file__).parents[2]))
-
 from company.revenue_engine import revenue_engine_v2
 
 

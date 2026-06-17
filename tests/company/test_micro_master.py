@@ -1,13 +1,10 @@
 """Tests for company.micro.micro_master module."""
 
+import sys
 import tempfile
 from pathlib import Path
 
 import pytest
-
-# Import after ensuring path
-import sys
-sys.path.insert(0, str(Path(__file__).parents[2]))
 
 from company.micro import micro_master
 
