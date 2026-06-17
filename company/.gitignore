@@ -1,0 +1,20 @@
+# Generated daily operating outputs
+daily/*_daily_offer.md
+lead_research/*/
+reports/*_AUTONOMOUS_CEO_REPORT.md
+outbox/*_approval_queue.csv
+weekly/*_WEEKLY_BOARD_REPORT.md
+
+# Client/private operating files
+clients/*/assets/
+clients/*/private/
+clients/*/payments/
+clients/*/contracts_signed/
+clients/*/customer_data/
+
+# Keep templates and schemas
+!outbox/APPROVAL_QUEUE_SCHEMA.csv
+!reports/.gitkeep
+!daily/.gitkeep
+!lead_research/.gitkeep
+!weekly/.gitkeep
