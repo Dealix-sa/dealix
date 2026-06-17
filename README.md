@@ -42,8 +42,23 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 | Trust/compliance | PDPL-aware controls, no-overclaim register, Saudi compliance register, approval classes, and audit/evidence concepts. |
 | Operations | Docker, docker-compose, Makefile, CI, production readiness docs, deploy/runbook material. |
 | Commercial kit | Pricing, service catalog, onboarding, Saudi B2B accounts, outreach/channel material, and service packaging docs. |
+| V3 Commercial OS | Daily operator script, lead scoring, outreach drafts, proposal generator, founder dashboard, industry playbooks, and closing system. |
 
 ---
+
+## Daily Operator (V3)
+
+Run the full daily commercial sequence in one command:
+
+```bash
+# Demo mode — no external APIs needed
+python3 scripts/dealix_daily_operator.py --mode demo
+
+# Production mode — requires leads CSV
+python3 scripts/dealix_daily_operator.py --mode production --leads data/imports/leads.csv
+```
+
+Outputs: outreach drafts (pending review), prospect packs, CEO brief, pipeline report.
 
 ## Quick start
 

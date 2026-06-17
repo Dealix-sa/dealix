@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealix.me";
 
 const productAreas = [
@@ -7,7 +9,7 @@ const productAreas = [
     icon: "⚡",
     title: "Revenue OS",
     description: "Lead acquisition, ICP scoring, outreach pipeline visibility, and Saudi B2B growth workflows — all in one engine.",
-    href: "/control-plane",
+    href: "/revenue-machine",
     badge: "نشط"
   },
   {
@@ -31,6 +33,17 @@ const productAreas = [
     href: "/value-engine",
     badge: "Proof Pack"
   }
+];
+
+const commercialLinks = [
+  ["⚡ آلة المبيعات", "/sales-machine"],
+  ["🎯 محرك العملاء", "/lead-engine"],
+  ["📦 العروض", "/offers"],
+  ["💰 التسعير", "/pricing"],
+  ["📈 آلة الإيرادات", "/revenue-machine"],
+  ["🏢 غرفة القيادة", "/command-center"],
+  ["⚔️ غرفة الحرب", "/war-room"],
+  ["📍 خط الأنابيب", "/pipeline"],
 ];
 
 const stats = [
@@ -68,22 +81,22 @@ export default function HomePage() {
     <>
       {/* Navbar */}
       <nav className="navbar" aria-label="Primary navigation">
-        <a href="/" className="navbar-brand" aria-label="Dealix Home">
+        <Link href="/" className="navbar-brand" aria-label="Dealix Home">
           Dealix
-        </a>
+        </Link>
         <ul className="navbar-links" role="list">
-          <li><a href="/control-plane">Revenue OS</a></li>
-          <li><a href="/agents">Agents</a></li>
-          <li><a href="/safety">Safety</a></li>
-          <li><a href="/ar">العربية</a></li>
+          <li><Link href="/sales-machine">Revenue OS</Link></li>
+          <li><Link href="/offers">العروض</Link></li>
+          <li><Link href="/pricing">التسعير</Link></li>
+          <li><Link href="/book">احجز مراجعة</Link></li>
         </ul>
         <div className="actions" style={{ marginTop: 0 }}>
-          <a href="/ar" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
+          <Link href="/ar" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
             الموقع العربي
-          </a>
-          <a href="/control-plane" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
-            Open Platform →
-          </a>
+          </Link>
+          <Link href="/book" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
+            احجز مراجعة →
+          </Link>
         </div>
       </nav>
 
@@ -123,9 +136,9 @@ export default function HomePage() {
           </p>
 
           <div className="actions" aria-label="Primary actions">
-            <a href="/ar">الموقع العربي — P1 · P2 · P3</a>
-            <a href="/control-plane">Open control plane</a>
-            <a href="/safety">Review safety layer</a>
+            <Link href="/book">احجز مراجعة تشغيلية</Link>
+            <Link href="/sales-machine">اكتشف Revenue OS</Link>
+            <Link href="/safety">Review safety layer</Link>
           </div>
         </section>
 
@@ -168,31 +181,30 @@ export default function HomePage() {
                 </div>
                 <h3 style={{ color: "#fff", marginBottom: "var(--sp-2)" }}>{area.title}</h3>
                 <p style={{ fontSize: "0.9rem", marginBottom: "var(--sp-5)" }}>{area.description}</p>
-                <a
+                <Link
                   href={area.href}
                   className="btn btn-secondary"
                   style={{ fontSize: "0.82rem", minHeight: "36px", padding: "0 16px", borderRadius: "var(--radius-md)" }}
                 >
                   Open {area.title} →
-                </a>
+                </Link>
               </article>
             ))}
           </div>
         </section>
 
-        {/* ── Operational Surfaces ── */}
-        <section className="card" aria-labelledby="ops-title">
-          <p className="eyebrow">Internal surfaces</p>
-          <h2 id="ops-title">Operational surfaces</h2>
+        {/* ── Commercial Surfaces ── */}
+        <section className="card" aria-labelledby="commercial-title">
+          <p className="eyebrow">Commercial surfaces</p>
+          <h2 id="commercial-title">المسارات التجارية</h2>
           <p>
-            Use these internal surfaces to inspect agents, approvals, safety,
-            sandbox behavior, and value tracking.
+            استكشف أدوات Dealix التجارية: آلة المبيعات، العروض، التسعير، غرفة القيادة، والمزيد.
           </p>
           <div className="divider-gold" />
           <ul style={{ listStyle: "none", padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--sp-2)" }}>
-            {operationalLinks.map(([label, href]) => (
+            {commercialLinks.map(([label, href]) => (
               <li key={href} style={{ margin: 0 }}>
-                <a
+                <Link
                   href={href}
                   style={{
                     display: "flex",
@@ -222,7 +234,55 @@ export default function HomePage() {
                   }}
                 >
                   {label}
-                </a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* ── Operational Surfaces ── */}
+        <section className="card" aria-labelledby="ops-title">
+          <p className="eyebrow">Internal surfaces</p>
+          <h2 id="ops-title">Operational surfaces</h2>
+          <p>
+            Use these internal surfaces to inspect agents, approvals, safety,
+            sandbox behavior, and value tracking.
+          </p>
+          <div className="divider-gold" />
+          <ul style={{ listStyle: "none", padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--sp-2)" }}>
+            {operationalLinks.map(([label, href]) => (
+              <li key={href} style={{ margin: 0 }}>
+                <Link
+                  href={href}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "var(--sp-2)",
+                    padding: "var(--sp-3) var(--sp-4)",
+                    borderRadius: "var(--radius-md)",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                    color: "rgba(255,255,255,0.70)",
+                    fontSize: "0.88rem",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    transition: "all 0.2s"
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    el.style.borderColor = "rgba(212,175,55,0.35)";
+                    el.style.color = "var(--dealix-gold)";
+                    el.style.background = "rgba(212,175,55,0.06)";
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget as HTMLAnchorElement;
+                    el.style.borderColor = "rgba(255,255,255,0.07)";
+                    el.style.color = "rgba(255,255,255,0.70)";
+                    el.style.background = "rgba(255,255,255,0.04)";
+                  }}
+                >
+                  {label}
+                </Link>
               </li>
             ))}
           </ul>
@@ -233,9 +293,16 @@ export default function HomePage() {
           <p className="navbar-brand" style={{ justifyContent: "center", fontSize: "1.2rem", marginBottom: "var(--sp-3)" }}>
             Dealix
           </p>
+          <div style={{ display: "flex", justifyContent: "center", gap: "var(--sp-4)", marginBottom: "var(--sp-4)", flexWrap: "wrap" }}>
+            <Link href="/sales-machine" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>آلة المبيعات</Link>
+            <Link href="/offers" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>العروض</Link>
+            <Link href="/pricing" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>التسعير</Link>
+            <Link href="/book" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>احجز مراجعة</Link>
+            <Link href="/legal" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500, fontSize: "0.82rem" }}>الشروط</Link>
+          </div>
           <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.30)" }}>
             © 2026 Dealix · Saudi-first AI Revenue Operations ·{" "}
-            <a href="/safety" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500 }}>Safety</a>
+            <Link href="/safety" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500 }}>Safety</Link>
             {" · "}
             <a href="https://github.com/Dealix-sa/dealix" style={{ color: "rgba(255,255,255,0.40)", fontWeight: 500 }}>GitHub</a>
           </p>
