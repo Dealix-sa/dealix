@@ -130,20 +130,79 @@ primary_markets:
     recommended_entry_offer: "executive_command_center"
     alternative_entry: "sovereign_knowledge_rag"
 
+  legal_services:
+    description: "Law firms, legal departments, compliance teams"
+    description_ar: "مكاتب المحاماة والأقسام القانونية وفرق الامتثال"
+    primary_offer: legal_knowledge_document_os
+    ai_opportunity: "document intelligence, matter management, obligation extraction"
+    trust_barrier: "very high — require NDA before discovery, sample-data-only approach"
+    languages: ["arabic", "english"]
+    gcc_prevalence: "high in Saudi and UAE"
+
+  accounting_audit:
+    description: "Accounting firms, audit firms, finance departments"
+    description_ar: "شركات المحاسبة والمراجعة والأقسام المالية"
+    primary_offer: accounting_audit_workflow_ai
+    ai_opportunity: "workpaper automation, exception detection, regulatory checklists"
+    trust_barrier: "high — financial data sensitivity"
+    languages: ["arabic", "english"]
+    gcc_prevalence: "high in all GCC markets"
+
+  real_estate_property_management:
+    description: "Real estate asset management, property management companies"
+    description_ar: "شركات إدارة الأصول العقارية وإدارة الممتلكات"
+    primary_offer: property_operations_ai_os
+    ai_opportunity: "tenant communications, maintenance routing, lease intelligence"
+    trust_barrier: "medium — PDPL compliance for tenant data"
+    languages: ["arabic", "english"]
+    gcc_prevalence: "very high in Saudi (Vision 2030 real estate growth)"
+
+  international_gcc_companies:
+    description: "Multinational companies operating in GCC region"
+    description_ar: "الشركات متعددة الجنسيات العاملة في منطقة الخليج"
+    primary_offer: gcc_international_ai_pilot
+    ai_opportunity: "bilingual workflow automation, GCC compliance, regional rollout"
+    trust_barrier: "low-medium — English-first, familiar with AI"
+    languages: ["arabic", "english"]
+    gcc_prevalence: "concentrated in UAE and Saudi Arabia"
+
+  consulting_training:
+    description: "Management consulting, advisory, training centers"
+    description_ar: "الاستشارات الإدارية والتدريب المهني"
+    primary_offer: consulting_delivery_intelligence_os
+    ai_opportunity: "report drafting, knowledge reuse, content generation"
+    trust_barrier: "medium — IP and client data sensitivity"
+    languages: ["arabic", "english"]
+    gcc_prevalence: "high in Saudi, UAE, Qatar"
+
 geographic_focus:
-  primary:
-    - country: "Saudi Arabia"
-      cities: ["Riyadh", "Jeddah", "Dammam", "Khobar"]
-      why_priority: "Vision 2030 digitization push, large FM and contracting market"
-  secondary:
-    - country: "UAE"
-      cities: ["Dubai", "Abu Dhabi"]
-    - country: "Qatar"
-      cities: ["Doha"]
-  future:
-    - "Kuwait"
-    - "Bahrain"
-    - "Oman"
+  tier_1:
+    - country: Saudi Arabia
+      cities: [Riyadh, Jeddah, Dammam, Khobar]
+      priority: primary
+      rationale: "Vision 2030 digitization, largest GCC market, home base"
+    - country: UAE
+      cities: [Dubai, Abu Dhabi]
+      priority: primary
+      rationale: "International business hub, high AI adoption, English-friendly"
+  tier_2:
+    - country: Qatar
+      cities: [Doha]
+      priority: active
+    - country: Kuwait
+      cities: [Kuwait City]
+      priority: active
+    - country: Bahrain
+      cities: [Manama]
+      priority: active
+    - country: Oman
+      cities: [Muscat]
+      priority: active
+  international_gcc_companies:
+    description: "Multinational companies with GCC HQ or significant regional operations"
+    priority: active
+    preferred_language: english
+    entry_offer: gcc_international_ai_pilot
 
 company_size_targets:
   sweet_spot:

@@ -1,0 +1,195 @@
+# ANTI_BAN_GUARDIAN.yml
+# Dealix Anti-Ban Guardian — حارس مكافحة الحظر
+# Version: 1.0 | Owner: Founder | Last Updated: 2026-06-01
+# Purpose: Defines channel safety thresholds, enforcement logic, and escalation paths.
+# Cross-links: CHANNEL_ROUTER.yml | OMNI_CHANNEL_GROWTH_OS.md | ../06_APPROVAL_GATES.yml
+
+version: "1.0"
+
+# ─────────────────────────────────────────────
+# EMAIL DELIVERABILITY
+# ─────────────────────────────────────────────
+
+email:
+
+  domain_health:
+    # New sending domains must warm up before hitting volume targets.
+    warm_up_required: true
+    warm_up_days: 14
+    warm_up_ramp_schedule:
+      day_1_to_3:   10     # max sends per day during warm-up phase 1
+      day_4_to_7:   30
+      day_8_to_10:  75
+      day_11_to_14: 150
+    full_volume_after_day: 14
+    max_daily_sends_post_warmup: 200
+
+  thresholds:
+    # Google Postmaster / Yahoo limits — exceed these and deliverability collapses.
+    bounce_rate_warning:   0.03   # 3%  — trigger review
+    bounce_rate_pause:     0.05   # 5%  — automatic pause
+    spam_rate_warning:     0.0005 # 0.05% — trigger review
+    spam_rate_pause:       0.001  # 0.1% — automatic pause (Google threshold)
+    unsubscribe_rate_warn: 0.005  # 0.5% — review list quality
+
+  enforcement:
+    on_bounce_rate_exceeded:
+      action: pause_sending
+      notify: founder
+      log_event: true
+      review_required_before_resume: true
+
+    on_spam_rate_exceeded:
+      action: immediate_pause
+      notify: founder
+      audit_all_active_templates: true
+      resume_only_after: founder_approval
+
+    on_unsubscribe_spike:
+      action: flag_for_review
+      notify: founder
+      review_list_segment: true
+
+  monitoring_cadence:
+    bounce_check: daily
+    spam_rate_check: daily
+    list_health_audit: weekly
+    domain_reputation_review: weekly  # Check Google Postmaster Tools
+
+  list_hygiene:
+    # Remove hard bounces immediately. Remove soft bounces after 3 attempts.
+    remove_hard_bounce_after: 1
+    remove_soft_bounce_after: 3
+    # Any contact who has not engaged in 90 days moves to suppression list for review.
+    suppress_inactive_after_days: 90
+    # No email to contacts from purchased or scraped lists.
+    block_purchased_lists: true
+    block_scraped_lists: true
+
+# ─────────────────────────────────────────────
+# LINKEDIN MANUAL-ONLY MODE
+# ─────────────────────────────────────────────
+
+linkedin:
+
+  mode: assisted_manual
+  # All LinkedIn activity is human-operated. No browser extensions, no automation tools.
+  allowed_actions:
+    - manual_connection_request
+    - manual_direct_message_after_connection
+    - manual_post_engagement
+    - manual_profile_view
+
+  blocked_actions:
+    - auto_dm: true           # No automated DM tools
+    - scraping: true          # No data extraction tools
+    - bulk_connection: true   # No connection automation
+    - phantom_buster: true    # Named tool block — representative of automation class
+    - sales_nav_export: true  # No bulk export of Sales Navigator data
+
+  daily_limits:
+    manual_connection_requests: 20
+    # Exceeding 20 manual connections/day signals automation patterns to LinkedIn.
+    manual_messages_to_new_connections: 10
+
+  account_safety_rules:
+    # If account receives warning or restriction, stop all activity and notify founder.
+    on_account_warning:
+      action: stop_all_activity
+      notify: founder
+      do_not_resume_without: founder_approval
+
+    # Never use LinkedIn credentials in any automated system or shared environment.
+    credentials_in_automation: blocked
+
+  monitoring_cadence:
+    activity_log_review: weekly
+    account_health_check: weekly
+
+# ─────────────────────────────────────────────
+# WHATSAPP OPT-IN AND TEMPLATE POLICY
+# ─────────────────────────────────────────────
+
+whatsapp:
+
+  opt_in_requirements:
+    # Recipient must have explicitly opted in to receive WhatsApp messages from Dealix.
+    require_opt_in: true
+    opt_in_documentation: required   # Record of consent stored per contact
+    acceptable_opt_in_methods:
+      - website_form_checkbox
+      - in_person_verbal_confirmed_by_email
+      - inbound_whatsapp_initiated_by_contact
+
+  template_policy:
+    # Every WhatsApp message must use a founder-approved template.
+    require_approved_template: true
+    # Templates submitted to founder for approval before first use.
+    approval_required_before_first_send: true
+    # Template approval logged with date and approver.
+    log_template_approvals: true
+
+  blocked_behaviors:
+    broadcast_lists: true         # No one-to-many broadcast messages
+    bulk_messaging_tools: true    # No third-party bulk WhatsApp tools
+    unsolicited_first_contact: true  # Never initiate via WhatsApp without opt-in
+
+  template_approval_flow:
+    step_1: "Draft message template created by agent"
+    step_2: "Template submitted to founder for review"
+    step_3: "Founder approves or rejects with reason"
+    step_4: "Approved template stored with approval date and template_id"
+    step_5: "Template used only for the approved context/segment"
+    step_6: "Any modification to approved template requires re-approval"
+
+  monitoring_cadence:
+    opt_in_log_audit: monthly
+    template_registry_review: monthly
+
+# ─────────────────────────────────────────────
+# ESCALATION PROTOCOL
+# Any channel metric breach triggers this protocol.
+# ─────────────────────────────────────────────
+
+escalation_protocol:
+
+  trigger_conditions:
+    - email_bounce_rate_above_pause_threshold
+    - email_spam_rate_above_pause_threshold
+    - linkedin_automation_detected
+    - linkedin_account_warning_received
+    - whatsapp_non_opt_in_contact_attempted
+    - whatsapp_broadcast_list_attempted
+
+  response_steps:
+    step_1:
+      action: pause_affected_channel
+      timing: immediate
+
+    step_2:
+      action: notify_founder
+      method: priority_brief
+      content: "Channel: [NAME] | Metric: [VALUE] | Threshold: [LIMIT] | Recommended action: [ACTION]"
+      timing: within_1_hour
+
+    step_3:
+      action: document_incident
+      log_to: incident_register
+      fields: [channel, metric, value, timestamp, action_taken]
+
+    step_4:
+      action: root_cause_review
+      who: founder
+      deadline: within_24_hours
+
+    step_5:
+      action: resume_channel
+      condition: founder_explicit_approval_required
+      resume_at: reduced_volume_first_48_hours
+
+  non_negotiables:
+    # These actions require founder sign-off. No agent can override.
+    - resume_paused_channel
+    - approve_new_template_for_whatsapp
+    - increase_daily_send_limit
+    - whitelist_new_sending_domain
