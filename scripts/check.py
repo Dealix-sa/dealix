@@ -41,9 +41,6 @@ if env_file.exists():
         "FALLBACK_MODEL",
         "OPENROUTER_MODEL",
     ])
-    if has_key and has_url and has_model
-        for name in ["GEAR1_MODEL", "LIGHT_MODEL", "OPENROUTER_MODEL", "PRIMARY_MODEL", "ARCHITECT_MODEL"]
-    )
     if has_key and has_url and has_model:
         print("[OK]")
         checks_passed += 1

@@ -62,7 +62,7 @@ def score_row(row: dict[str, str]) -> int:
         score += 10
     try:
         score = max(score, int(float(row.get("priority_score", 0))))
-    except Exception:
+    except (ValueError, TypeError):
         pass
     return min(score, 100)
 
