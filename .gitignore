@@ -110,6 +110,8 @@ dumps/
 !data/demo/
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
+# Self-Growth & Distribution OS seed data — product data, no customer PII
+!data/growth/
 
 # ─────────────────────────────────────────────────────────────
 # 📝 Logs

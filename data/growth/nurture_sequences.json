@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "description": "Email nurture sequences for the Dealix Self-Growth & Distribution OS. Sequences are DRAFTS for founder approval — no message is sent automatically. No cold WhatsApp, no LinkedIn automation. Every message ends with exactly one CTA and carries the estimate disclaimer where it references value.",
+    "governance": "No external send without founder approval (non-negotiable #8). No guaranteed-revenue language (#5). No fake proof (#4).",
+    "version": 1
+  },
+  "sequences": [
+    {
+      "slug": "score-7day",
+      "name_ar": "تتبع 7 أيام بعد التشخيص",
+      "trigger": "free_tool_completed",
+      "audience": "ready (score < 70)",
+      "channel": "email",
+      "messages": [
+        {"day": 0, "subject_ar": "نتيجتك + الـ Score", "intent": "deliver-result", "cta": "اطّلع على نتيجتك الكاملة"},
+        {"day": 1, "subject_ar": "أكبر نقطة تسرب عندك", "intent": "explain-top-leak", "cta": "افهم كيف نعالجها"},
+        {"day": 2, "subject_ar": "هكذا يبدو المخرج (Sample Command Pack)", "intent": "show-sample-output", "cta": "شاهد نموذج Command Pack"},
+        {"day": 3, "subject_ar": "عندكم CRM؟ هذا لماذا لا يكفي", "intent": "objection-handling", "cta": "ابدأ تشخيص Dealix"},
+        {"day": 4, "subject_ar": "قصة case-safe: من الفوضى إلى وضوح", "intent": "proof-story", "cta": "ابدأ تشخيص Dealix"},
+        {"day": 5, "subject_ar": "هل نحجز تشخيص 7 أيام؟", "intent": "invite-diagnostic", "cta": "احجز التشخيص"},
+        {"day": 7, "subject_ar": "آخر تذكير — نقبل 3 Sprints فقط هذا الشهر", "intent": "final-prompt-honest-scarcity", "cta": "ابدأ Command Sprint"}
+      ]
+    },
+    {
+      "slug": "nurture-30day",
+      "name_ar": "تربية 30 يوم لغير الجاهزين",
+      "trigger": "free_tool_completed",
+      "audience": "not-ready (score 40-69)",
+      "channel": "email",
+      "messages": [
+        {"day": 0, "subject_ar": "نتيجتك + أين تبدأ", "intent": "deliver-result", "cta": "اطّلع على نتيجتك"},
+        {"day": 7, "subject_ar": "insight الأسبوع: operating rhythm", "intent": "weekly-insight", "cta": "اقرأ المقال"},
+        {"day": 10, "subject_ar": "قالب مجاني: Next Action Board", "intent": "template-magnet", "cta": "حمّل القالب"},
+        {"day": 14, "subject_ar": "دعوة: احجز تشخيص متى ما جهزت", "intent": "soft-invite", "cta": "احجز التشخيص"},
+        {"day": 21, "subject_ar": "تقرير قطاعي: أين تتعطل شركات مثلك", "intent": "sector-report", "cta": "اقرأ التقرير"},
+        {"day": 28, "subject_ar": "مثال case-safe + دعوة", "intent": "proof-and-invite", "cta": "احجز التشخيص"}
+      ]
+    }
+  ]
+}
