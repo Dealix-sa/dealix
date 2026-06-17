@@ -104,6 +104,12 @@ A commit is launch-ready only when:
 7. No-overclaim register has no stale customer-facing claims.
 8. Rollback instructions are available to the operator running the launch.
 
+## Known gaps (post-launch)
+
+- [ ] Invite delivery: `POST /api/v1/auth/invite` surfaces the invite token in the
+  API response for non-production envs only; transactional-email provider
+  integration (SendGrid/SES) to deliver the token is a tracked post-launch task.
+
 ## Arabic summary
 
 قبل أي إطلاق لازم يكون عندك: CI ناجح، أسرار سليمة، DNS/TLS صحيح، API health ناجح، قاعدة بيانات قابلة للترقية والرجوع، اختبارات دخان للإنتاج، إثبات للامتثال، وخطة rollback واضحة.

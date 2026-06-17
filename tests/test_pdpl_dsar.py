@@ -1,4 +1,5 @@
 """Tests for PDPL DSAR endpoints (W9.9)."""
+
 from __future__ import annotations
 
 import pytest
@@ -54,9 +55,7 @@ async def test_submit_response_never_includes_pii(async_client):
         json={"email": "secret@example.com", "request_type": "access"},
     )
     body_str = str(res.json())
-    assert "secret@example.com" not in body_str, (
-        "PII leak: submitted email echoed in response"
-    )
+    assert "secret@example.com" not in body_str, "PII leak: submitted email echoed in response"
 
 
 @pytest.mark.asyncio
@@ -98,7 +97,7 @@ async def test_erasure_spec_transparency(async_client):
     # ZATCA + PDPL retention bases must be named
     bases = body["retention_basis"]
     assert "audit_logs_5yr" in bases  # PDPL Art. 18
-    assert "payments_6yr" in bases    # ZATCA mandate
+    assert "payments_6yr" in bases  # ZATCA mandate
 
 
 @pytest.mark.asyncio
@@ -106,5 +105,33 @@ async def test_erasure_spec_documents_atomic_execution(async_client):
     """Spec must say "all-or-nothing" — never partial deletion state."""
     res = await async_client.get("/api/v1/pdpl/dsar/erasure-cascade-spec")
     body = res.json()
-    assert "transaction" in body["execution"].lower() or \
-           "atomic" in body["execution"].lower()
+    assert "transaction" in body["execution"].lower() or "atomic" in body["execution"].lower()
+
+
+@pytest.mark.asyncio
+async def test_submit_erase_request_returns_202(async_client):
+    """An 'erase' DSAR is accepted (202) and returns a stable request_id."""
+    res = await async_client.post(
+        "/api/v1/pdpl/dsar/request",
+        json={"email": "erase-me@example.com", "request_type": "erase"},
+    )
+    assert res.status_code == 202
+    body = res.json()
+    assert body["request_id"].startswith("dsar_")
+    assert body["request_type"] == "erase"
+
+
+@pytest.mark.asyncio
+async def test_erasure_cascade_spec_returns_expected_keys(async_client):
+    """The public erasure-cascade-spec exposes the documented top-level keys."""
+    res = await async_client.get("/api/v1/pdpl/dsar/erasure-cascade-spec")
+    assert res.status_code == 200
+    body = res.json()
+    for key in (
+        "what_gets_deleted",
+        "what_gets_anonymized_not_deleted",
+        "retention_basis",
+        "execution",
+        "confirmation",
+    ):
+        assert key in body

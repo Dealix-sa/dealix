@@ -45,6 +45,7 @@
 | GTM funnel (UI) | **`/[locale]`** صفحة بيع عامة · `/risk-score` · `/proof-pack` · `/dealix-diagnostic` · `/learn/[slug]` · `/partners` · ops `/ops/founder` |
 | [`../ops/REVENUE_WAR_ROOM_30_DAY_TRACKER.yaml`](../ops/REVENUE_WAR_ROOM_30_DAY_TRACKER.yaml) | 30-day commercial scorecard |
 | [MASTER_COMMERCIAL_OPERATING_PLAN_AR.md](MASTER_COMMERCIAL_OPERATING_PLAN_AR.md) | **4 — نقطة الدخول اليومية (5 دقائق)** — مراحل 0–5، SOAEN، Motions |
+| [DEALIX_90_DAY_ACTIVATION_PLAN_AR.md](DEALIX_90_DAY_ACTIVATION_PLAN_AR.md) | **خطة تفعيل تجاري 90 يوماً (3 مراحل):** Soft Pass → Sprints مدفوعة → تحويل Executive Growth OS — مع العرض من `pricing_catalog.py`، هدف North Star، وعقيدة كل مرحلة |
 | [operations/](operations/) | **حزمة التنفيذ:** مسار إغلاق، CSV أحداث، DoD أول دفع، Motion A، شركاء، AEO، scorecard، حوكمة |
 | [DEALIX_COMMERCIAL_SCALE_SYSTEM_AR.md](DEALIX_COMMERCIAL_SCALE_SYSTEM_AR.md) | **التصريف التجاري الكامل:** Commercial Control Tower، 4 Motions، Offer Matrix، معيار SOAEN، AEO/Objection/Partner Kit، Evidence Events |
 | [DEALIX_REVOPS_PACKAGES_AR.md](DEALIX_REVOPS_PACKAGES_AR.md) | أسعار ونطاق حزم الإيراد (Diagnostic، Sprint، Pilot، RevOps، Enterprise) |
