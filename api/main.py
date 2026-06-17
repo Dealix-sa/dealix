@@ -78,6 +78,7 @@ from api.routers import friction_log as friction_log_router
 from api.routers import integration_capability as integration_capability_router
 from api.routers import intelligence_layer as intelligence_layer_router
 from api.routers import service_catalog as service_catalog_router
+from api.routers import target_intelligence as target_intelligence_router
 
 # 90-day commercial activation — Wave 14B
 from api.routers import sprint_runner as sprint_runner_router
@@ -364,6 +365,8 @@ def create_app() -> FastAPI:
     app.include_router(customer_webhooks.router)
     # Wave 13 W13.7 — Revenue metrics dashboard (MRR/ARR/NRR/churn/cohort)
     app.include_router(revenue_metrics.router)
+    # Target Company Intelligence + Daily Targeting Brief (governed, draft-only)
+    app.include_router(target_intelligence_router.router)
     # Wave 13 W13.13 — Customer referral program (5K SAR per closed deal)
     app.include_router(referral_program.router)
     # Wave 13 W13.4 — NPS survey + detractor intervention
