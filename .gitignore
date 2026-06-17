@@ -9,6 +9,7 @@ dealix/config/founder_closure_intake.yaml
 !.env.example
 !.env.staging.example
 !.env.railway.example
+!frontend/.env.local.example
 *.pem
 *.key
 *.p12
@@ -283,6 +284,7 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+!frontend/.env.local.example
 
 # Editors / OS
 .vscode/*
