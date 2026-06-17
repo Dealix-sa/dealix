@@ -70,7 +70,7 @@ sudo bash scripts/server_bootstrap_ubuntu.sh
 ```bash
 sudo -iu dealix
 cd /srv/dealix
-git clone git@github.com:VoXc2/dealix.git .
+git clone git@github.com:Dealix-sa/dealix.git .
 cp .env.prod.example .env.prod
 nano .env.prod
 ```
