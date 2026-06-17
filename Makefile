@@ -224,3 +224,79 @@ launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score laun
 
 test-launch: ## Launch OS: run launch-specific test suite
 	pytest tests/launch/ -v --tb=short
+
+# ═══════════════════════════════════════════════════════════════
+# Company Operating System — launch controls
+# ═══════════════════════════════════════════════════════════════
+
+# ── Safety gates ───────────────────────────────────────────────
+company-check: no-auto-send-check large-file-check secret-check outreach-compliance-check ## Run all company launch safety checks
+	$(PYTHON) scripts/verify_company_launch_ready.py
+
+launch-check: company-check ## Alias for company-check
+
+no-auto-send-check: ## Verify no ungated auto external send patterns
+	$(PYTHON) scripts/verify_no_auto_external_send.py
+
+large-file-check: ## Verify no new forbidden large files / archives
+	$(PYTHON) scripts/verify_repo_large_files.py
+
+secret-check: ## Scan for suspicious secret patterns
+	$(PYTHON) scripts/verify_secret_patterns.py
+
+outreach-compliance-check: ## Verify outreach data has source_url, verification_status, opt-out
+	$(PYTHON) scripts/verify_outreach_compliance.py
+
+# ── Daily revenue machine ──────────────────────────────────────
+revenue-daily: ## Run the full daily revenue machine (dry-run, drafts only)
+	$(PYTHON) scripts/revenue/run_daily_revenue_machine.py
+
+outreach: ## Generate outreach drafts for today
+	$(PYTHON) scripts/revenue/generate_outreach.py
+
+followups: ## Generate follow-up drafts (day 3 / day 7)
+	$(PYTHON) scripts/revenue/generate_followups.py
+
+proposals: ## Generate one-page proposal briefs for hot leads
+	$(PYTHON) scripts/revenue/generate_proposal_brief.py
+
+revenue-report: ## Generate daily CEO revenue report
+	$(PYTHON) scripts/revenue/generate_daily_revenue_report.py
+
+# ── 100-company workflow ───────────────────────────────────────
+prepare-100: ## Prepare a 100-company research queue (default batch=10)
+	$(PYTHON) scripts/revenue/prepare_100_target_day.py --batch-size $(or $(BATCH_SIZE),10)
+
+validate-100: ## Validate the 100-company day before contact
+	$(PYTHON) scripts/revenue/validate_100_target_day.py
+
+batch-queue: ## Build batch outreach queue with cooldown + max follow-up gates
+	$(PYTHON) scripts/revenue/batch_outreach_queue.py --batch-size $(or $(BATCH_SIZE),10)
+
+# ── Gmail drafts (manual review required) ──────────────────────
+gmail-drafts-dry-run: ## Preview Gmail drafts without creating them
+	$(PYTHON) scripts/email/create_gmail_drafts_safe.py --dry-run
+
+gmail-drafts: ## Create Gmail drafts from generated outbox (requires env vars)
+	$(PYTHON) scripts/email/create_gmail_drafts_safe.py
+
+# ── Server readiness ───────────────────────────────────────────
+server-preflight: ## Run server preflight checks
+	$(PYTHON) scripts/server/server_preflight.py
+
+server-health: ## Run server healthcheck
+	bash scripts/server/server_healthcheck.sh
+
+company-production-smoke: ## Run company-focused production smoke tests
+	bash scripts/server/run_production_smoke.sh
+
+# ── Command center ─────────────────────────────────────────────
+command-room: ## Build the offline founder command room dashboard
+	$(PYTHON) scripts/command_room/build_command_room.py
+
+# ── One-command company day ────────────────────────────────────
+company-day: ## Run full company launch day pipeline
+	bash scripts/run_company_launch_day.sh
+
+
+.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day
