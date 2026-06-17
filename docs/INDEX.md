@@ -84,6 +84,7 @@
 3. `docs/reference/KNOWN_LIMITATIONS.md` — stubs catalog
 4. `docs/operations/DEALIX_COMPANY_OPERATIONAL_STATE.md` — current state
 5. `docs/COMMERCIAL_LAUNCH_MASTER_PLAN.md`
+5b. `docs/LAUNCH_30_DAY_MASTER_PLAN.md` — 30-day go-live + first paying customer (CEO sprint)
 6. `docs/BUSINESS_MODEL.md`
 7. `docs/COMPANY_SERVICE_LADDER.md` — 5-rung offer ladder
 8. `docs/UNIT_ECONOMICS_AND_MARGIN.md`
