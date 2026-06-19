@@ -40,11 +40,9 @@ async def healthz(deep: bool = False) -> dict[str, object]:
         from api.routers.health import health_deep
 
         return await health_deep()
-    return {
-        "status": "ok",
-        "service": "dealix",
-        "version": get_settings().app_version,
-    }
+    # Minimal liveness payload — version/identity live at /version (see
+    # test_health_deep::test_healthz_default_is_simple, which pins this shape).
+    return {"status": "ok", "service": "dealix"}
 
 
 @router.get("/ready", include_in_schema=False)
