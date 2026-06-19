@@ -1,30 +1,140 @@
-# Dealix Client Intake System
+# Dealix Client Intake System v2
 
-## Purpose
-Make every interested company enter Dealix through a structured intake process.
+**Version**: 2.0 | **Last updated**: 2026-06-10
 
-The client can provide data through:
-1. Website intake form
-2. WhatsApp intake bot/script
-3. Manual call intake
-4. Google Form linked to Google Sheet
+---
 
-## Why this matters
-Without intake, every lead becomes random consulting.
-With intake, every lead becomes:
-- scored
-- diagnosed
-- routed to the right offer
-- added to CRM
-- prepared for Diagnostic Sprint
-- ready for proposal
+## الهدف
 
-## Intake outputs
-- Company profile
-- Pain map
-- Recommended offer
-- Diagnostic Sprint fit
-- Proposal stub
-- Follow-up draft
-- CRM row
-- Presentation-ready company file
+تحويل كل شركة مهتمة إلى ملف مؤهل كامل يحتوي على:
+- درجة الملاءمة (Fit Score 0–100)
+- Tier التصنيف (A/B/C/D)
+- توصية العرض المناسب
+- خريطة التسرب (Leakage Map أولية)
+- مسودة رسالة واتساب
+- stub عرض جاهز للمراجعة
+- صف CRM محدّث
+
+**القاعدة الذهبية**: لا شيء يُرسل تلقائياً. كل مخرج هو مسودة تحتاج موافقة المؤسس.
+
+---
+
+## قنوات الاستقبال الأربعة
+
+| القناة | الوصف | الأداة |
+|--------|--------|--------|
+| **واتساب** | المؤسس يسأل أسئلة الـ intake يدوياً ويدوّن الإجابات في CSV | `WHATSAPP_INTAKE_BOT_SCRIPT.md` |
+| **استمارة الموقع** | صفحة `/ar/intake` تجمع البيانات وترسلها للمؤسس | Wave 4 (Next.js page) |
+| **مكالمة يدوية** | المؤسس يملأ `CLIENT_INTAKE_TEMPLATE.csv` أثناء المكالمة أو بعدها | أي تطبيق CSV |
+| **Google Form** | نموذج Google مرتبط بـ Google Sheet يُصدَّر إلى CSV | اختياري — يدوي |
+
+---
+
+## تدفق الـ Intake
+
+```
+شركة مهتمة
+     ↓
+مؤسس يجري محادثة (واتساب / مكالمة / موقع)
+     ↓
+يملأ CLIENT_INTAKE_TEMPLATE.csv
+     ↓
+يشغّل: python company/intake/intake_engine.py
+     ↓
+يقرأ: company/runtime/intake/YYYY-MM-DD/INTAKE_SUMMARY.md
+     ↓
+يراجع Tier A أولاً
+     ↓
+يتصل / يرسل مسودة واتساب (يدوياً)
+     ↓
+يحجز Discovery Call
+     ↓
+يقدم Diagnostic Sprint
+     ↓
+يحدّث CRM بالنتيجة
+```
+
+---
+
+## نظام التصنيف (Tiers)
+
+| Tier | الدرجة | المعنى | الإجراء | الوقت |
+|------|-------|--------|---------|-------|
+| **A** | 80–100 | أولوية قصوى — مؤهل تماماً | تصل اليوم | خلال 24 ساعة |
+| **B** | 60–79 | أولوية عالية — مؤهل جزئياً | أرسل ملخص وحدد موعد | خلال 48 ساعة |
+| **C** | 40–59 | مؤهلة — تحتاج تثقيف | أرسل overview وادخل قائمة nurture | خلال 5 أيام |
+| **D** | 0–39 | تحتاج تأهيل أو خارج ICP | أضف للقائمة البريدية | 14 يوم |
+
+---
+
+## عوامل الـ Scoring
+
+| العامل | النقاط | السبب |
+|--------|--------|-------|
+| حجم الاستفسارات الأسبوعية (100+) | +25 | حجم كبير = ألم أكبر = أولوية أعلى |
+| حجم الاستفسارات (30-99) | +18 | حجم متوسط |
+| حجم الاستفسارات (10-29) | +10 | حجم صغير |
+| وجود رقم واتساب | +8 | قابلية التواصل المباشر |
+| وضوح المشكلة الرئيسية | +10 | يسهّل التوصية |
+| وجود مشكلة ثانوية | +5 | ألم متعدد = عقد أكبر |
+| ميزانية 75k+ | +15 | جاهزية للنظام الكامل |
+| ميزانية 25k-75k | +10 | مناسب للـ Diagnostic Sprint |
+| صانع القرار مباشر | +8 | دورة مبيعات أقصر |
+| لا CRM | +5 | ألم واضح وحل واضح |
+| لا تقارير | +5 | ألم واضح وحل واضح |
+| وقت استجابة > 4 ساعات | +5 | تسرب واضح |
+| تقييمات منخفضة < 4.0 | +8 | ألم سمعة مؤثر |
+| البريد الإلكتروني | +4 | قناة إضافية |
+| اسم المسؤول | +3 | تخصيص التواصل |
+
+---
+
+## خريطة التسرب (Leakage Map)
+
+المحرك يكتشف تلقائياً مناطق التسرب التالية:
+
+| رمز التسرب | المعنى | الحل الموصى به |
+|------------|--------|----------------|
+| `no_crm` | لا يوجد CRM | WhatsApp Revenue OS أو AI Business Command Center |
+| `no_reports` | لا تقارير إدارية | AI Business Command Center |
+| `slow_response` | وقت استجابة > 4 ساعات | WhatsApp Revenue OS |
+| `low_review_score` | متوسط تقييم < 4.0 | Review Intelligence OS |
+| `medium_review_score` | متوسط تقييم 4.0-4.4 | Review Intelligence OS |
+| `unmanaged_reviews` | تقييمات غير مدارة | Review Intelligence OS |
+
+---
+
+## مخرجات المحرك (كلها في company/runtime/intake/YYYY-MM-DD/)
+
+| الملف | المحتوى |
+|-------|---------|
+| `CLIENT_INTAKE_TEMPLATE.csv` | قالب الإدخال الفارغ (مع صف مثال) |
+| `INTAKE_SUMMARY.md` | ملخص كل الـ intakes مرتبة بالـ Tier |
+| `INTAKE_WHATSAPP_DRAFTS.md` | مسودات واتساب لـ Tier A و B |
+| `INTAKE_PROPOSAL_STUBS.md` | ملخصات عروض لـ Tier A |
+| `INTAKE_PROCESSED.csv` | الـ intakes بعد التصنيف الكامل |
+
+---
+
+## ما لا يفعله هذا النظام
+
+- لا يرسل أي رسالة تلقائياً
+- لا يتصل بـ WhatsApp API
+- لا يتطلب backend أو قاعدة بيانات
+- لا يصدر فاتورة أو عقد
+- لا يحتاج Docker أو npm
+
+---
+
+## الأوامر اليومية
+
+```bash
+# تشغيل المحرك
+python company/intake/intake_engine.py
+
+# تشغيل يوم intake كامل
+./scripts/dealix_intake_day.sh
+
+# قراءة الملخص
+cat company/runtime/intake/$(date +%F)/INTAKE_SUMMARY.md
+```
