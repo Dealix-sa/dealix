@@ -4,6 +4,11 @@
 
 ### Added
 
+- **Custom AI Service intake (ladder Rung 4):** new bilingual `/custom-ai` page (`frontend/src/app/[locale]/custom-ai/`) and governed endpoint `POST /api/v1/public/custom-ai-request` that records bespoke AI-project requests as leads for founder review (honeypot + consent gate + transactional confirmation).
+- **Founder daily call sheet:** `scripts/dealix_call_sheet.py` turns the warm-contact list into an ICP-scored, qualified, rung-recommended bilingual call sheet — warm contacts only, manual dialing, no automation.
+- **Launch master plan:** `docs/LAUNCH_MASTER_PLAN.md` — comprehensive bilingual 30/60/90 plan (objectives, website + funnel, visual identity, sales/lead engine, readiness gates, obstacles & resolutions, KPI scorecard, risk register).
+- **Brand & GTM collateral:** `docs/brand/VISUAL_IDENTITY.md` (Navy + Gold guide), sector one-pagers (`docs/sectors/`), launch-week content calendar (`docs/launch/`), Custom AI proposal template (`sales/custom_ai/`), founder sales playbook (`sales/playbook/`), and first-10 warm outreach drafts (`data/templates/`).
+- Tests for the new surfaces: `tests/test_custom_ai_request.py`, `tests/test_call_sheet.py`.
 - Added a repository gap audit: `docs/architecture/REPO_GAP_AUDIT.md`.
 - Added a production readiness checklist: `docs/ops/PRODUCTION_READINESS_CHECKLIST.md`.
 - Added an environment contract checker: `scripts/check_env_contract.py`.
@@ -12,6 +17,9 @@
 
 ### Changed
 
+- **Security:** upgraded `next` 15.1.3 → 15.5.19 in `frontend/` to remediate CVE-2025-66478.
+- Services page "Custom AI" CTA now routes to the new `/custom-ai` intake; added a "Custom AI" link to the public site navigation.
+- `dealix-pm` agent now treats the in-repo `docs/LAUNCH_MASTER_PLAN.md` as the canonical 90-day plan.
 - Refreshed `README.md` to match the actual `VoXc2/dealix` repository and current operating workflow.
 - Consolidated CI into a single workflow with backend and web jobs.
 - CI now checks the environment template and verifies OpenAPI schema export.

@@ -1,0 +1,146 @@
+{
+  "$defs": {
+    "CardOption": {
+      "additionalProperties": false,
+      "description": "A single tappable option/button on a card.\n\n``intent`` is the deterministic intent the option maps to; ``id`` is the\nstable button id used in WhatsApp interactive payloads.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label_ar": {
+          "title": "Label Ar",
+          "type": "string"
+        },
+        "intent": {
+          "default": "unknown",
+          "enum": [
+            "welcome",
+            "diagnose",
+            "campaign_followup",
+            "connect_tools",
+            "review_report",
+            "support",
+            "not_sure",
+            "send_file_link",
+            "assessment_start",
+            "assessment_answer",
+            "approve",
+            "reject",
+            "edit",
+            "simplify",
+            "permission_grant",
+            "permission_deny",
+            "request_proposal",
+            "book_call",
+            "human_handoff",
+            "blocked_unsafe",
+            "unknown"
+          ],
+          "title": "Intent",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": true,
+          "title": "Payload",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "label_ar"
+      ],
+      "title": "CardOption",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "A logical card rendered to the client (menu / action / approval / …).\n\nEvery card carries an explicit ``requires_approval`` flag and an\n``evidence_level`` so no claim or external action escapes governance.",
+  "properties": {
+    "card_id": {
+      "title": "Card Id",
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "menu",
+        "action",
+        "approval",
+        "permission",
+        "recommendation",
+        "report"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "title_ar": {
+      "title": "Title Ar",
+      "type": "string"
+    },
+    "body_ar": {
+      "default": "",
+      "title": "Body Ar",
+      "type": "string"
+    },
+    "reason_ar": {
+      "default": "",
+      "title": "Reason Ar",
+      "type": "string"
+    },
+    "options": {
+      "items": {
+        "$ref": "#/$defs/CardOption"
+      },
+      "maxItems": 10,
+      "title": "Options",
+      "type": "array"
+    },
+    "risk": {
+      "default": "low",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Risk",
+      "type": "string"
+    },
+    "evidence_level": {
+      "default": "L0",
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5"
+      ],
+      "title": "Evidence Level",
+      "type": "string"
+    },
+    "requires_approval": {
+      "default": false,
+      "title": "Requires Approval",
+      "type": "boolean"
+    },
+    "catalog_ref": {
+      "default": "",
+      "title": "Catalog Ref",
+      "type": "string"
+    },
+    "safety_summary": {
+      "default": "no_live_send_no_secrets_in_chat",
+      "title": "Safety Summary",
+      "type": "string"
+    }
+  },
+  "required": [
+    "card_id",
+    "kind",
+    "title_ar"
+  ],
+  "title": "ClientCard",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/ClientCard.schema.json"
+}

@@ -45,7 +45,7 @@ def score(row: dict[str, str]) -> int:
             value += 15
         elif weekly >= 10:
             value += 8
-    except Exception:
+    except (ValueError, TypeError):
         pass
 
     if row.get("main_problem"):

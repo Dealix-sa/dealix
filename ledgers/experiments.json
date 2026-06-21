@@ -1,0 +1,18 @@
+{
+  "ledger": "experiments",
+  "version": 1,
+  "updated": "2026-06-02",
+  "records": [
+    {
+      "id": "EXP-0001",
+      "hypothesis": "If we add a thin, additive Founder-OS index (docs/FOUNDER_OS_INDEX.md) over the existing 393 scripts and 51 workflows, then founder time-to-first-action each morning drops because the right command is discoverable in one place.",
+      "metric": "founder_time_to_daily_action_minutes",
+      "status": "running",
+      "result": "pending",
+      "started": "2026-06-02",
+      "ended": "",
+      "learning": "",
+      "owner": "founder"
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 <div align="center">
 
-# 🏢 Dealix — Saudi B2B Revenue Engine
+# 🏢 Dealix — Saudi-first AI Business Operating System
 
-### AI revenue, growth, and compliance engine for Saudi B2B — PDPL-native, ZATCA-aware, approval-first.
-### محرّك إيرادات ونمو وامتثال بـ AI للشركات السعودية — PDPL أصلاً، ZATCA-aware، والموافقة أولاً.
+### Dealix is a Saudi-first AI Business Operating System. Its first commercial wedge is Revenue + Proof + Command, but its long-term architecture covers the operating core of the company: growth, customers, delivery, support, finance, governance, knowledge, and executive command.
+### PDPL-native, ZATCA-aware, approval-first. See the [Platform Source of Truth](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md).
 
 [![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -21,7 +21,7 @@
 
 ## What Dealix is
 
-Dealix is a Saudi-first B2B revenue operating system with three core engines:
+Dealix is a Saudi-first AI Business Operating System. Revenue OS is the first commercial wedge inside the broader Dealix Business OS — see the [Platform Source of Truth](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md). The platform delivers three core engines:
 
 1. **Lead Engine** — Saudi B2B lead discovery, enrichment, ICP scoring, duplicate suppression, and PDPL-aware usage controls.
 2. **Service Engine** — productized AI services for diagnostics, sales assistance, decision packs, customer health, proof curation, growth signals, and executive command.
@@ -42,8 +42,23 @@ It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operat
 | Trust/compliance | PDPL-aware controls, no-overclaim register, Saudi compliance register, approval classes, and audit/evidence concepts. |
 | Operations | Docker, docker-compose, Makefile, CI, production readiness docs, deploy/runbook material. |
 | Commercial kit | Pricing, service catalog, onboarding, Saudi B2B accounts, outreach/channel material, and service packaging docs. |
+| V3 Commercial OS | Daily operator script, lead scoring, outreach drafts, proposal generator, founder dashboard, industry playbooks, and closing system. |
 
 ---
+
+## Daily Operator (V3)
+
+Run the full daily commercial sequence in one command:
+
+```bash
+# Demo mode — no external APIs needed
+python3 scripts/dealix_daily_operator.py --mode demo
+
+# Production mode — requires leads CSV
+python3 scripts/dealix_daily_operator.py --mode production --leads data/imports/leads.csv
+```
+
+Outputs: outreach drafts (pending review), prospect packs, CEO brief, pipeline report.
 
 ## Quick start
 

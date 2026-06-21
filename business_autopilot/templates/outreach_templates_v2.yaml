@@ -1,0 +1,1015 @@
+# outreach_templates_v2.yaml
+# Version: 2.0 | Date: 2026-06-10
+# Policy: DRAFT ONLY — no automated sending. Every message requires founder approval before dispatch.
+# Governance refs:
+#   auto_client_acquisition/governance_os/rules/no_cold_whatsapp.yaml
+#   auto_client_acquisition/governance_os/rules/no_guaranteed_claims.yaml
+# Jinja2 variables: {company}, {contact}, {sector_label}, {city}
+# Disclosure: القيمة التقديرية ليست قيمة مُتحقَّقة / Estimated value is not Verified value.
+
+version: "2.0"
+policy_ar: "مسودة فقط — لا إرسال آلي. كل رسالة تحتاج موافقة المؤسس قبل الإرسال."
+policy_en: "DRAFT ONLY — no automated sending. Every message requires founder approval before dispatch."
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: real_estate | القطاع العقاري
+# ─────────────────────────────────────────────────────────────────────────────
+sectors:
+  real_estate:
+    angle_ar: >
+      كثير من الشركات العقارية في {city} تستقبل leads يومية عبر واتساب وانستقرام
+      لكنها تضيع بدون نظام متابعة — كل فرصة غير مُتابَعة تمثل إيرادًا خرج دون أن يُسجَّل.
+    angle_en: >
+      Real estate firms in {city} receive daily inbound leads across WhatsApp and Instagram
+      that go untracked — every uncontacted enquiry is revenue that left before it was recorded.
+
+    email:
+      ar:
+        subject: "نظام متابعة الفرص العقارية لـ {company} — تشخيص مجاني 30 دقيقة"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          أتواصل معك بخصوص نمط تشغيلي نراه بشكل متكرر في الشركات العقارية في {city}:
+          الاستفسارات تصل عبر واتساب وانستقرام والموقع — لكن لا يوجد pipeline مرئي
+          يُظهر كم فرصة دخلت، وأين توقفت، ومن يجب متابعته اليوم.
+
+          النتيجة: فريق مبيعات مشغول لكن الإدارة لا تعرف حجم التسرب الفعلي.
+
+          Dealix يبني نظام تشغيل للإيرادات خاص بـ {company} يربط:
+          - استقبال الاستفسارات من جميع القنوات في مكان واحد
+          - متابعة مُهيكَلة لكل فرصة مع مهام وتواريخ واضحة
+          - تقرير أسبوعي للإدارة: كم فرصة، وأين هي، وما القرار المطلوب
+
+          البداية: تشخيص مجاني 30 دقيقة نحدد فيه نقاط التسرب الثلاث الأكثر أثرًا
+          في {company} — أو Sprint تشغيلي بـ 499 ريال يُثبِت القيمة خلال 7 أيام.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Lead pipeline for {company} — free 30-min diagnostic"
+        body: |
+          Hi {contact},
+
+          I work with real estate firms in {city} on one recurring operational gap:
+          inbound enquiries arrive across WhatsApp, Instagram, and the website,
+          but there is no visible pipeline showing how many came in, where they
+          stalled, and who needs follow-up today.
+
+          The result: a busy sales team with no shared view of actual revenue leakage.
+
+          Dealix builds a Revenue OS for {company} that connects:
+          - All inbound channels into one structured intake
+          - Assigned follow-up tasks with clear owners and deadlines
+          - A weekly management report: volume, stage, and next decision required
+
+          Starting point: a free 30-min diagnostic call to identify the three highest-impact
+          leakage points at {company} — or a 499 SAR Sprint that proves value within 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        لاحظت أن كثير من الشركات العقارية في {city} مثل {company} تستقبل leads
+        يومية لكنها تضيع قبل المتابعة. الفرصة الواحدة الضائعة قد تكون صفقة كاملة.
+
+        نبني نظام تشغيل يربط جميع القنوات بـ pipeline مرئي وتقرير أسبوعي للإدارة.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث هذا الأسبوع؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: clinics | العيادات والمراكز الصحية
+# ─────────────────────────────────────────────────────────────────────────────
+  clinics:
+    angle_ar: >
+      العيادات في {city} تخسر حجوزات بسبب واتساب غير منظم وتقييمات جوجل
+      سلبية بدون ردود — كل موعد ضائع وكل تقييم غير مُجاب يُكلِّف المركز عملاء جدد.
+    angle_en: >
+      Clinics in {city} lose bookings through unmanaged WhatsApp channels and
+      unanswered Google reviews — every missed appointment and every unaddressed
+      review reduces new-patient volume from local search.
+
+    email:
+      ar:
+        subject: "تنظيم حجوزات وتقييمات {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في مراكز {sector_label} بـ {city} نرى نمطًا تشغيليًا متكررًا:
+          - المرضى يحجزون عبر واتساب دون تأكيد رسمي أو تذكير — فترتفع نسبة الغياب
+          - التقييمات على جوجل تتراكم دون ردود — فيتراجع الظهور في البحث المحلي
+          - لا يوجد تقرير موحد يُظهر عدد الحجوزات الجديدة مقابل الإلغاءات أسبوعيًا
+
+          Dealix يبني Review OS + WhatsApp Revenue لـ {company} يشمل:
+          - استقبال ومتابعة الحجوزات من جميع القنوات بشكل مُهيكَل
+          - رصد التقييمات الجديدة وتجهيز ردود احترافية للموافقة اليدوية
+          - تقرير أسبوعي للإدارة: حجوزات، إلغاءات، تقييمات، وفرص التحسين
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Booking and review management for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          Across {sector_label} centres in {city} we see the same operational pattern:
+          - Patients book via WhatsApp without confirmation or reminders — no-show rates climb
+          - Google reviews accumulate without responses — local search ranking suffers
+          - No unified weekly report shows new bookings versus cancellations
+
+          Dealix builds a Review OS + WhatsApp Revenue system for {company} covering:
+          - Structured intake and follow-up for bookings across all channels
+          - New-review monitoring with professionally drafted responses for manual approval
+          - Weekly management report: bookings, cancellations, reviews, and improvement signals
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} ومراكز {sector_label} بـ {city}، كثيرًا ما تضيع حجوزات
+        بسبب واتساب غير منظم، وتقييمات جوجل بدون ردود.
+
+        نبني نظام يربط الحجوزات والتقييمات بتقرير أسبوعي واضح للإدارة.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: training_centers | مراكز التدريب والأكاديميات
+# ─────────────────────────────────────────────────────────────────────────────
+  training_centers:
+    angle_ar: >
+      مراكز التدريب في {city} تخسر متدربين محتملين بسبب تسجيل يدوي بطيء
+      وغياب نظام متابعة leads — الاستفسار الذي لم يُرَد عليه في 24 ساعة يذهب للمنافس.
+    angle_en: >
+      Training centres in {city} lose prospective enrollments through slow manual
+      registration and no lead follow-up system — an enquiry not answered within
+      24 hours typically converts with a competitor.
+
+    email:
+      ar:
+        subject: "نظام تسجيل ومتابعة الدورات لـ {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في مراكز {sector_label} بـ {city} نرى ثلاثة تسربات تشغيلية متكررة:
+          1. الاستفسارات عن الدورات تصل عبر واتساب وانستقرام بدون تأهيل منظم
+          2. التسجيل اليدوي يستغرق وقتًا فيفقد المركز المتدرب لمنافس أسرع ردًا
+          3. لا يوجد تقرير يُظهر نسبة تحويل الاستفسارات لتسجيلات فعلية
+
+          Dealix يبني Growth Engine OS لـ {company} يشمل:
+          - pipeline واضح لاستفسارات التدريب من لحظة الوصول حتى التسجيل
+          - متابعة مُهيكَلة للمهتمين بالدورات بعد الموافقة اليدوية على كل خطوة
+          - تقرير أسبوعي للإدارة: leads، تسجيلات، إلغاءات، وفرص الدورات القادمة
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Enrollment pipeline for {company} — free 30-min diagnostic"
+        body: |
+          Hi {contact},
+
+          Across {sector_label} operations in {city} we see three recurring leakage points:
+          1. Course enquiries arrive via WhatsApp and Instagram with no structured qualification
+          2. Manual registration delays cause prospective students to convert elsewhere
+          3. No report shows the ratio of enquiries to actual enrollments
+
+          Dealix builds a Growth Engine OS for {company} covering:
+          - A clear pipeline from first enquiry to confirmed enrollment
+          - Structured follow-up sequences for interested prospects, activated after manual approval
+          - Weekly management report: leads, registrations, cancellations, and upcoming cohort fill rates
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        كثير من مراكز {sector_label} في {city} مثل {company} تخسر تسجيلات
+        بسبب ردود بطيئة وغياب نظام لمتابعة المهتمين بالدورات.
+
+        نبني Growth Engine OS يحوّل الاستفسارات لتسجيلات بـ pipeline واضح وتقرير أسبوعي.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت هذا الأسبوع؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: agencies | وكالات التسويق والإعلام
+# ─────────────────────────────────────────────────────────────────────────────
+  agencies:
+    angle_ar: >
+      وكالات التسويق في {city} تصرف وقتًا كبيرًا على تقارير العملاء اليدوية
+      وغياب Command Center موحد — والعميل الذي لا يرى نتائج واضحة يلغي العقد.
+    angle_en: >
+      Marketing agencies in {city} spend disproportionate time on manual client
+      reports and lack a unified Command Center — clients who cannot see clear
+      results cancel contracts before value is demonstrated.
+
+    email:
+      ar:
+        subject: "Client Command Center لـ {company} — تشخيص مجاني 30 دقيقة"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          نعمل مع وكالات {sector_label} في {city} على نمط تشغيلي واحد يُكلِّف كثيرًا:
+          - تقارير العملاء تُكتَب يدويًا كل أسبوع وتستهلك ساعات من فريق الحسابات
+          - لا يوجد Command Center موحد يُظهر أداء جميع الحسابات في مكان واحد
+          - leads الوكالة الجديدة لا تمر بـ pipeline تأهيل منظم فتضيع فرص النمو
+
+          Dealix يبني Client Command Center لـ {company} يشمل:
+          - لوحة قيادة موحدة لأداء جميع حسابات العملاء بتحديث دوري
+          - تقارير عملاء جاهزة للموافقة بدلًا من الإعداد اليدوي
+          - pipeline واضح لـ leads الوكالة: من الاستفسار حتى التوقيع
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Client Command Center for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          We work with {sector_label} agencies in {city} on one high-cost operational gap:
+          - Client reports are written manually every week, consuming account management hours
+          - No unified Command Center shows all account performance in one view
+          - New agency leads have no structured qualification pipeline — growth opportunities slip
+
+          Dealix builds a Client Command Center for {company} covering:
+          - A unified dashboard for all client account performance with scheduled data refreshes
+          - Client reports drafted ready for approval rather than built from scratch each week
+          - A structured lead pipeline for the agency itself: from enquiry to signed contract
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في وكالات مثل {company} في {city}، تقارير العملاء اليدوية والحسابات
+        الموزعة تستهلك وقت الفريق دون قيمة مضافة.
+
+        نبني Client Command Center يجمع الأداء والتقارير في مكان واحد.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: restaurants | المطاعم والكافيهات
+# ─────────────────────────────────────────────────────────────────────────────
+  restaurants:
+    angle_ar: >
+      المطاعم في {city} تواجه تقييمات جوجل سلبية بدون ردود منظمة وهدرًا في طلبات
+      التموين — كل تقييم بدون رد يُقلِّل الظهور في البحث، وكل طلب غير مدروس يُخفِّض الهامش.
+    angle_en: >
+      Restaurants in {city} face unanswered Google reviews and unmanaged supply
+      ordering — every unanswered review reduces local search visibility, and every
+      unanalysed procurement order compresses margins.
+
+    email:
+      ar:
+        subject: "إدارة تقييمات وعمليات {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في قطاع {sector_label} بـ {city} نرى تسربين تشغيليين يؤثران على الإيراد مباشرة:
+
+          أولًا: التقييمات — {company} تستقبل تقييمات جوجل وسناب وMaps يوميًا
+          لكن الرد عليها يدوي وغير منتظم، مما يُقلِّل التصنيف ويُحجِم العملاء الجدد.
+
+          ثانيًا: التموين والهدر — طلبات المشتريات اليومية لا تُربَط بمبيعات الفرع
+          الفعلية، فيتكرر إما الهدر أو النقص.
+
+          Dealix يبني Review OS + Ops Sprint لـ {company} يشمل:
+          - رصد التقييمات الجديدة وإعداد ردود احترافية للموافقة اليدوية
+          - تقرير عمليات أسبوعي يربط المبيعات بالمشتريات لتحديد الهدر
+          - لوحة أداء موحدة للفروع تُظهر أعلى وأدنى أداء أسبوعيًا
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Review management and ops reporting for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          In the {sector_label} sector across {city} we see two operational gaps
+          that directly affect revenue:
+
+          First — Reviews: {company} receives daily ratings on Google, Snap, and Maps
+          but responses are manual and inconsistent, which suppresses local search ranking
+          and reduces new customer conversion.
+
+          Second — Procurement waste: daily purchasing orders are not matched against
+          actual branch sales, creating recurring waste or shortage cycles.
+
+          Dealix builds a Review OS + Ops Sprint for {company} covering:
+          - New-review monitoring with professionally drafted responses for manual approval
+          - Weekly ops report linking sales to procurement to surface waste by branch
+          - Unified performance dashboard showing highest and lowest performing branches
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} وقطاع {sector_label} بـ {city}، التقييمات بدون ردود
+        وطلبات التموين غير المربوطة بالمبيعات تُكلِّف يوميًا.
+
+        نبني نظام يربط التقييمات والعمليات بتقرير أسبوعي واضح.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث هذا الأسبوع؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: logistics | اللوجستيات والشحن
+# ─────────────────────────────────────────────────────────────────────────────
+  logistics:
+    angle_ar: >
+      شركات الشحن في {city} تخسر عقودًا لأن RFQ يتأخر الرد عليه وleads الشحن
+      تضيع بدون pipeline واضح — العميل الذي لا يتلقى عرضًا خلال 24 ساعة يُبرم عقده مع المنافس.
+    angle_en: >
+      Logistics firms in {city} lose contracts because RFQ responses are delayed
+      and shipping leads have no visible pipeline — a client without a quote within
+      24 hours typically signs with a competitor.
+
+    email:
+      ar:
+        subject: "نظام pipeline للشحن والـ RFQ في {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في شركات {sector_label} بـ {city} نرى ثلاثة تسربات تشغيلية متكررة:
+          1. طلبات RFQ تصل عبر واتساب والإيميل بدون نظام استقبال يحدد مسؤولًا وموعدًا
+          2. leads الشحن الجديدة لا تمر بـ pipeline تأهيل فتضيع قبل إعداد العرض
+          3. عملاء التعاقد السنوي لا يُتابَعون قبيل انتهاء العقد فيذهبون للمنافسين
+
+          Dealix يبني Logistics Pipeline OS لـ {company} يشمل:
+          - نظام استقبال RFQ موحد مع تعيين مسؤول ومهلة رد واضحة
+          - pipeline لـ leads الشحن من الاستفسار حتى توقيع العقد
+          - تنبيهات تجديد العقود 30-60 يومًا قبل انتهائها
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "RFQ pipeline and contract renewals for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          Across {sector_label} companies in {city} we see three recurring revenue leaks:
+          1. RFQ requests arrive via WhatsApp and email with no intake system assigning owner and deadline
+          2. New shipping leads have no qualification pipeline — they are lost before a quote is prepared
+          3. Annual contract clients are not followed up before expiry — they renew with competitors
+
+          Dealix builds a Logistics Pipeline OS for {company} covering:
+          - A unified RFQ intake system with clear owner assignment and response deadlines
+          - A shipping lead pipeline from first enquiry to signed contract
+          - Contract renewal alerts triggered 30-60 days before expiry
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} وقطاع {sector_label} بـ {city}، RFQ بدون نظام متابعة
+        وعقود تنتهي دون تنبيه مسبق تُكلِّف عقودًا سنوياً.
+
+        نبني Logistics Pipeline OS يربط الـ RFQ والعقود بـ pipeline مرئي وتقارير دورية.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: b2b_services | الخدمات المهنية B2B
+# ─────────────────────────────────────────────────────────────────────────────
+  b2b_services:
+    angle_ar: >
+      شركات الخدمات المهنية في {city} تخسر فرصاً لأن عروض الأسعار تُكتَب يدويًا
+      وتستغرق وقتًا طويلًا — والعميل الذي انتظر أسبوعًا يبحث عن بديل.
+    angle_en: >
+      Professional services firms in {city} lose opportunities because proposals
+      are written manually and take too long — a client who waited a week
+      is already evaluating alternatives.
+
+    email:
+      ar:
+        subject: "تسريع عروض الأسعار وpipeline العملاء في {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في قطاع {sector_label} بـ {city} نرى نمطًا يُكلِّف فرصاً حقيقية:
+          - عروض الأسعار تُكتَب يدويًا من الصفر كل مرة وتستغرق أيامًا
+          - الاستفسارات الواردة لا تُصنَّف ولا تُتابَع بشكل منتظم
+          - فرص upsell للعملاء الحاليين لا تُحدَّد لغياب نظام متابعة الحسابات
+
+          Dealix يبني B2B Revenue Diagnostic لـ {company} يشمل:
+          - نظام proposal يُنتِج مسودات جاهزة للتخصيص بدلًا من البناء من الصفر
+          - pipeline استفسارات واضح مع تعيين مسؤول ومهلة رد لكل فرصة
+          - تقرير شهري يُظهر حسابات العملاء الأعلى قيمةً وفرص التوسع
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Faster proposals and client pipeline for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          In the {sector_label} sector in {city} we see a pattern that costs real revenue:
+          - Proposals are written manually from scratch each time and take days to send
+          - Inbound enquiries are not classified or followed up consistently
+          - Upsell opportunities with existing clients go unidentified without an account tracking system
+
+          Dealix builds a B2B Revenue Diagnostic for {company} covering:
+          - A proposal system that produces ready-to-customise drafts instead of building from scratch
+          - A clear enquiry pipeline with assigned owners and response deadlines per opportunity
+          - Monthly report showing highest-value client accounts and expansion opportunities
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} وخدمات {sector_label} بـ {city}، عروض الأسعار البطيئة
+        وغياب pipeline واضح للاستفسارات يُكلِّفان فرصاً حقيقية أسبوعياً.
+
+        نبني نظام يُسرِّع الـ proposals ويُنظِّم متابعة العملاء المحتملين.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: construction | المقاولات والإنشاءات
+# ─────────────────────────────────────────────────────────────────────────────
+  construction:
+    angle_ar: >
+      شركات المقاولات في {city} تخسر مشاريع لأن طلبات التسعير تتضيع بين الواتساب
+      والإيميل بدون مسؤول واضح — والعميل الذي لا يتلقى عرضًا في الوقت المناسب يمنح العقد لغيرك.
+    angle_en: >
+      Construction firms in {city} lose projects because pricing requests are
+      scattered across WhatsApp and email with no clear owner — a client who does
+      not receive a timely proposal awards the contract elsewhere.
+
+    email:
+      ar:
+        subject: "نظام تسعير المشاريع ومتابعتها في {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في شركات {sector_label} بـ {city} نرى ثلاثة تسربات تشغيلية تؤثر على العقود:
+          1. طلبات التسعير الواردة عبر واتساب والإيميل لا تُجمَع في مكان واحد
+          2. تغييرات نطاق العمل في المشاريع الجارية لا تُوثَّق فتُفقَد إيرادات التعديلات
+          3. تقارير تقدم المشاريع للعملاء تُعدَّ يدويًا وتستهلك وقت مديري المشاريع
+
+          Dealix يبني Construction Ops Sprint لـ {company} يشمل:
+          - نظام استقبال موحد لطلبات التسعير مع مسؤول ومهلة رد لكل طلب
+          - سجل تغييرات نطاق العمل مرتبط بالتسعير والفواتير
+          - قالب تقرير تقدم جاهز يُنتِج تقارير العملاء بدلًا من الإعداد اليدوي
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Project pricing and progress reporting for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          Across {sector_label} companies in {city} we see three operational leaks
+          that affect contract wins and project revenue:
+          1. Pricing requests arrive via WhatsApp and email with no unified intake or assigned owner
+          2. Scope changes on active projects are not documented — change-order revenue is lost
+          3. Client progress reports are built manually, consuming project manager time each week
+
+          Dealix builds a Construction Ops Sprint for {company} covering:
+          - A unified pricing request intake with owner assignment and response deadlines
+          - A scope-change log linked to pricing and invoicing
+          - A progress report template that produces client-ready updates without manual assembly
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} وقطاع {sector_label} بـ {city}، طلبات التسعير الموزعة
+        وغياب توثيق تغييرات نطاق العمل يُكلِّفان عقوداً وإيرادات أسبوعياً.
+
+        نبني Construction Ops Sprint يجمع التسعير والمشاريع في نظام واحد مرئي.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث هذا الأسبوع؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: hospitality | الضيافة والفنادق
+# ─────────────────────────────────────────────────────────────────────────────
+  hospitality:
+    angle_ar: >
+      الفنادق والمنتجعات في {city} تخسر حجوزات لأن leads الحجز والفعاليات
+      تحتاج ردًا فوريًا — التأخر ساعات يكفي لأن يحجز الضيف في المنشأة المنافسة.
+    angle_en: >
+      Hotels and resorts in {city} lose bookings because reservation and event
+      leads require immediate response — a delay of a few hours is enough for
+      the guest to confirm at a competing property.
+
+    email:
+      ar:
+        subject: "نظام متابعة الحجوزات والفعاليات في {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في منشآت {sector_label} بـ {city} نرى نمطًا يُؤثِّر مباشرة على الإشغال:
+          - استفسارات الحجز والفعاليات تصل عبر قنوات متعددة بدون pipeline مركزي
+          - التقييمات على Booking.com وجوجل لا تُرصَد ولا يُرد عليها بانتظام
+          - عملاء المجموعات والشركات لا يُتابَعون استباقيًا لتجديد الحجوزات
+
+          Dealix يبني Hospitality Revenue OS لـ {company} يشمل:
+          - pipeline موحد لاستفسارات الحجز والفعاليات مع مسؤول ومهلة رد لكل طلب
+          - رصد التقييمات وإعداد ردود احترافية للموافقة اليدوية
+          - نظام متابعة لعملاء المجموعات والشركات يُنبِّه الفريق قبل انتهاء العلاقة
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Reservation and events pipeline for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          Across {sector_label} properties in {city} we see a pattern that directly
+          suppresses occupancy:
+          - Booking and event enquiries arrive across multiple channels with no centralised pipeline
+          - Booking.com and Google reviews are not monitored or responded to consistently
+          - Corporate and group clients are not proactively followed up before booking windows close
+
+          Dealix builds a Hospitality Revenue OS for {company} covering:
+          - A unified pipeline for reservation and event enquiries with assigned owner and response deadline
+          - Review monitoring with professionally drafted responses for manual approval
+          - A proactive follow-up system for corporate and group clients before relationship expiry
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} ومنشآت {sector_label} بـ {city}، الاستفسارات بدون رد
+        فوري والتقييمات بدون متابعة تُؤثِّر مباشرة على الإشغال.
+
+        نبني Hospitality Revenue OS يربط الحجوزات والتقييمات بـ pipeline مرئي.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: saas | شركات البرمجيات والـ SaaS
+# ─────────────────────────────────────────────────────────────────────────────
+  saas:
+    angle_ar: >
+      شركات SaaS السعودية في {city} تستقبل inbound leads عربية وإنجليزية
+      بدون pipeline منظم — الـ lead الذي لم يُتابَع خلال 48 ساعة يلغي
+      نية الاشتراك في أغلب الحالات.
+    angle_en: >
+      Saudi SaaS companies in {city} receive Arabic and English inbound leads
+      but lack a structured pipeline — a lead not followed up within 48 hours
+      cancels purchase intent in most documented patterns.
+
+    email:
+      ar:
+        subject: "نظام pipeline للـ inbound leads في {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في شركات {sector_label} بـ {city} نرى أربعة تسربات تشغيلية متكررة:
+          1. Inbound leads من الموقع والإعلانات لا تُؤهَّل ولا تُعيَّن لمسؤول فوري
+          2. طلبات demo لا تُتابَع بعد الإرسال فيختفي المحتمل دون قرار
+          3. Free trials لا تُتابَع بـ onboarding منظم فلا تتحوَّل لاشتراك مدفوع
+          4. تجديد الاشتراكات السنوية لا يُتابَع استباقيًا فيُفاجأ الفريق بالإلغاء
+
+          Dealix يبني SaaS Growth Diagnostic لـ {company} يشمل:
+          - pipeline مرئي من أول لمسة حتى الاشتراك المدفوع مع مراحل واضحة
+          - متابعة مُهيكَلة لـ demos وtrials بخطوات onboarding محددة
+          - نظام تنبيه تجديد استباقي يُطلَق 30-60 يومًا قبل انتهاء الاشتراك
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Inbound lead pipeline and renewal tracking for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          Across {sector_label} companies in {city} we see four recurring revenue leaks:
+          1. Inbound leads from the website and ads are not auto-qualified or immediately assigned
+          2. Demo requests are not followed up after sending — prospects disappear without a decision
+          3. Free trials receive no structured onboarding and do not convert to paid subscriptions
+          4. Annual subscription renewals are not tracked proactively — teams are surprised by churn
+
+          Dealix builds a SaaS Growth Diagnostic for {company} covering:
+          - A visible pipeline from first touch to paid subscription with clearly defined stages
+          - Structured follow-up for demos and trials with defined onboarding milestones
+          - A proactive renewal alert system triggered 30-60 days before subscription expiry
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} وشركات {sector_label} بـ {city}، الـ inbound leads بدون
+        pipeline وتجديد الاشتراكات بدون تنبيه استباقي يُكلِّفان إيرادًا متكررًا.
+
+        نبني SaaS Growth Diagnostic يربط الـ leads والـ trials والتجديدات في نظام واحد.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: retail | التجزئة والمتاجر
+# ─────────────────────────────────────────────────────────────────────────────
+  retail:
+    angle_ar: >
+      متاجر التجزئة في {city} تواجه شكاوى وتقييمات بدون نظام متابعة منظم
+      — كل شكوى غير مُعالَجة تُكلِّف عميلًا قديمًا وتُبعِد عميلًا جديدًا.
+    angle_en: >
+      Retail businesses in {city} face complaints and reviews without a structured
+      follow-up system — every unresolved complaint costs an existing customer and
+      deters a prospective one.
+
+    email:
+      ar:
+        subject: "إدارة تقييمات وشكاوى {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في قطاع {sector_label} بـ {city} نرى نمطين يؤثران على الإيراد مباشرة:
+
+          أولًا: التقييمات والشكاوى — {company} تستقبل تقييمات وشكاوى عبر جوجل
+          وسناب وتويتر يوميًا لكن المعالجة يدوية وغير منتظمة، مما يُقلِّل الثقة
+          ويُنفِّر العملاء الجدد قبل زيارتهم الأولى.
+
+          ثانيًا: عملاء B2B والجملة — طلبات عملاء الجملة لا تُتابَع بشكل منتظم
+          ويتناقص حجم الطلبات بدون إشارة تحذيرية مبكرة.
+
+          Dealix يبني Retail Review OS لـ {company} يشمل:
+          - رصد التقييمات والشكاوى الجديدة مع ردود جاهزة للموافقة اليدوية
+          - نظام متابعة لعملاء الجملة مع تنبيهات تراجع حجم الطلبات
+          - تقرير شهري يُظهر أنماط الشكاوى وفرص تحسين الخدمة
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Review management and wholesale tracking for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          In the {sector_label} sector in {city} we see two patterns that directly
+          affect revenue:
+
+          First — Reviews and complaints: {company} receives ratings and complaints across
+          Google, Snap, and Twitter daily, but responses are manual and inconsistent, reducing
+          trust and deterring new customers before their first visit.
+
+          Second — B2B and wholesale clients: wholesale orders are not followed up consistently
+          and volume declines without early warning signals.
+
+          Dealix builds a Retail Review OS for {company} covering:
+          - New review and complaint monitoring with ready-to-approve response drafts
+          - A wholesale client follow-up system with order-volume decline alerts
+          - Monthly report showing complaint patterns and service improvement opportunities
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} وقطاع {sector_label} بـ {city}، التقييمات بدون ردود منظمة
+        والشكاوى المتكررة بدون تحليل تُكلِّفان عملاء قدامى وجدداً.
+
+        نبني Retail Review OS يربط التقييمات والشكاوى بتقرير تحسين شهري.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث هذا الأسبوع؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SECTOR: law_accounting | القانون والمحاسبة
+# ─────────────────────────────────────────────────────────────────────────────
+  law_accounting:
+    angle_ar: >
+      مكاتب القانون والمحاسبة في {city} تخسر عملاء جدداً لأن الاستفسارات تضيع
+      وعروض الأسعار تأتي بعد فوات الأوان — في هذا القطاع السرعة والمهنية معًا
+      هما معيار الاختيار الأول.
+    angle_en: >
+      Law and accounting firms in {city} lose prospective clients because enquiries
+      go unanswered and proposals arrive too late — in this sector, speed and
+      professionalism together are the primary selection criterion.
+
+    email:
+      ar:
+        subject: "نظام استفسارات العملاء والـ pipeline في {company} — تشخيص مجاني"
+        body: |
+          السلام عليكم {contact} في {company}،
+
+          في مكاتب {sector_label} بـ {city} نرى ثلاثة تسربات تشغيلية متكررة:
+          1. استفسارات العملاء الجدد لا تُصنَّف ولا تُحوَّل لاقتراح رسمي في الوقت المناسب
+          2. متابعة مواعيد الإقرارات الضريبية وتجديد العقود تتم يدويًا وعرضة للأخطاء
+          3. الملفات المُغلَقة لا تُستعرَض لتحديد فرص خدمات مستقبلية لنفس العملاء
+
+          Dealix يبني Legal Ops OS لـ {company} يشمل:
+          - pipeline استفسارات منظم مع مسؤول ومهلة رد وقالب proposal جاهز للتخصيص
+          - نظام تنبيه مواعيد يُنبِّه الفريق لمواعيد الإقرارات وتجديد العقود قبل 30 يومًا
+          - سجل حسابات عملاء يُظهر الفرص المحتملة للخدمات الإضافية
+
+          البداية: تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+          يرفق: عرض Dealix التفصيلي — dealix.me/assets/dealix_proposal_v2.pdf
+
+          القيمة التقديرية ليست قيمة مُتحقَّقة.
+
+          سامي العسيري | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [مسودة — تحتاج موافقة قبل الإرسال]
+
+      en:
+        subject: "Client enquiry pipeline and deadline management for {company} — free diagnostic"
+        body: |
+          Hi {contact},
+
+          Across {sector_label} firms in {city} we see three recurring operational gaps:
+          1. New client enquiries are not classified or converted into formal proposals promptly
+          2. Tax filing and contract renewal deadlines are tracked manually and are error-prone
+          3. Closed client files are not reviewed to surface future service opportunities
+
+          Dealix builds a Legal Ops OS for {company} covering:
+          - A structured enquiry pipeline with assigned owner, response deadline, and ready-to-customise proposal template
+          - A deadline alert system that notifies the team 30 days before filing and contract renewal dates
+          - A client account register that surfaces potential additional service opportunities
+
+          Starting point: free 30-min diagnostic call or a 499 SAR Sprint proving value in 7 days.
+
+          Attached: Dealix detailed proposal — dealix.me/assets/dealix_proposal_v2.pdf
+
+          Estimated value is not Verified value.
+
+          Sami Al-Assiri | Dealix
+          📅 calendly.com/sami-assiri11/dealix-demo
+
+          [DRAFT — requires approval before sending]
+
+    whatsapp:
+      ar: |
+        السلام عليكم {contact} — سامي من Dealix.
+
+        في {company} ومكاتب {sector_label} بـ {city}، الاستفسارات بدون
+        متابعة منظمة ومواعيد الإقرارات بدون تنبيه استباقي تُكلِّفان فرصاً وعلاقات.
+
+        نبني Legal Ops OS يربط الـ pipeline والمواعيد وفرص الـ upsell في نظام واحد.
+        البداية تشخيص مجاني 30 دقيقة أو Sprint بـ 499 ريال.
+
+        هل يناسبك وقت للحديث هذا الأسبوع؟
+
+        [مسودة — تحتاج موافقة قبل الإرسال]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# METADATA
+# ─────────────────────────────────────────────────────────────────────────────
+metadata:
+  version: "2.0"
+  created: "2026-06-10"
+  sectors_defined: 12
+  languages:
+    - ar
+    - en
+  variables:
+    - "{company}"
+    - "{contact}"
+    - "{sector_label}"
+    - "{city}"
+  governance:
+    - "No automated sending. All messages require founder approval before dispatch."
+    - "WhatsApp templates apply only where relationship_status is consented or existing_relationship."
+    - "Ref: auto_client_acquisition/governance_os/rules/no_cold_whatsapp.yaml"
+    - "Ref: auto_client_acquisition/governance_os/rules/no_guaranteed_claims.yaml"
+  disclosure_ar: "القيمة التقديرية ليست قيمة مُتحقَّقة"
+  disclosure_en: "Estimated value is not Verified value"
+  cta_options:
+    - "30-min free diagnostic call — calendly.com/sami-assiri11/dealix-demo"
+    - "499 SAR Sprint (7-day value proof)"
+  proposal_attachment: "dealix.me/assets/dealix_proposal_v2.pdf"

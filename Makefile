@@ -13,15 +13,7 @@
         v5-proof-pack v10-verify v10-reference \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
-        launch-content launch-pipeline launch-all-dry-runs test-launch \
-        outreach outreach-dry targets-merge outreach-f3 outreach-f7 \
-        command-room content daily proposal proposal-dry proposal-sectors \
-        weekly-review weekly-review-print meeting \
-        diagnostic reply-classify onboard contract contract-dry contract-tiers \
-        outreach-tracker outreach-tracker-summary outreach-tracker-list \
-        pilot-report customer-monthly-report \
-        renewal-check renewal-summary \
-        daily-ops
+        launch-content launch-pipeline launch-all-dry-runs test-launch
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -103,6 +95,9 @@ production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
 prod-verify: env-check security-smoke api-contract-check dependency-inventory release-manifest v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
 
+launch-engine: ## Run the full local launch machine + readiness audit (writes data/daily_ops/<date>/)
+	$(PYTHON) scripts/dealix_launch_engine.py
+
 # ── Tests ──────────────────────────────────────────────────────
 test: ## Run full test suite with coverage
 	pytest -v
@@ -158,6 +153,19 @@ clean: ## Remove build artifacts, caches
 	rm -rf build dist *.egg-info .pytest_cache .mypy_cache .ruff_cache htmlcov .coverage coverage.xml
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete
+
+# ── Distribution / Revenue Execution OS ────────────────────────
+# Approval-first revenue execution. All read-only or draft-only — none of
+# these send anything externally or charge a customer.
+
+distribution-day: ## Founder morning command report (pending drafts, due follow-ups, queues)
+	$(PYTHON) scripts/distribution_day.py
+
+draft-quality: ## Draft Quality Gate — fail on guaranteed-outcome / forbidden-channel drafts
+	$(PYTHON) scripts/check_draft_quality.py
+
+distribution-metrics: ## Write the daily + weekly distribution KPI snapshot
+	$(PYTHON) scripts/distribution_metrics.py
 
 # ── v5 founder CLIs ────────────────────────────────────────────
 # These wrap the read-only Dealix v5 founder tooling. Each is safe
@@ -233,9 +241,86 @@ launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score laun
 test-launch: ## Launch OS: run launch-specific test suite
 	pytest tests/launch/ -v --tb=short
 
-outreach: ## Outreach Kit: generate ready bilingual emails from your real target list (data/outreach/saudi_target_intake.csv)
-	$(PYTHON) scripts/dealix_outreach_kit.py
+# ═══════════════════════════════════════════════════════════════
+# Company Operating System — launch controls
+# ═══════════════════════════════════════════════════════════════
 
+# ── Safety gates ───────────────────────────────────────────────
+company-check: no-auto-send-check large-file-check secret-check outreach-compliance-check ## Run all company launch safety checks
+	$(PYTHON) scripts/verify_company_launch_ready.py
+
+launch-check: company-check ## Alias for company-check
+
+no-auto-send-check: ## Verify no ungated auto external send patterns
+	$(PYTHON) scripts/verify_no_auto_external_send.py
+
+large-file-check: ## Verify no new forbidden large files / archives
+	$(PYTHON) scripts/verify_repo_large_files.py
+
+secret-check: ## Scan for suspicious secret patterns
+	$(PYTHON) scripts/verify_secret_patterns.py
+
+outreach-compliance-check: ## Verify outreach data has source_url, verification_status, opt-out
+	$(PYTHON) scripts/verify_outreach_compliance.py
+
+# ── Daily revenue machine ──────────────────────────────────────
+revenue-daily: ## Run the full daily revenue machine (dry-run, drafts only)
+	$(PYTHON) scripts/revenue/run_daily_revenue_machine.py
+
+outreach: ## Generate outreach drafts for today
+	$(PYTHON) scripts/revenue/generate_outreach.py
+
+followups: ## Generate follow-up drafts (day 3 / day 7)
+	$(PYTHON) scripts/revenue/generate_followups.py
+
+proposals: ## Generate one-page proposal briefs for hot leads
+	$(PYTHON) scripts/revenue/generate_proposal_brief.py
+
+revenue-report: ## Generate daily CEO revenue report
+	$(PYTHON) scripts/revenue/generate_daily_revenue_report.py
+
+# ── 100-company workflow ───────────────────────────────────────
+prepare-100: ## Prepare a 100-company research queue (default batch=10)
+	$(PYTHON) scripts/revenue/prepare_100_target_day.py --batch-size $(or $(BATCH_SIZE),10)
+
+validate-100: ## Validate the 100-company day before contact
+	$(PYTHON) scripts/revenue/validate_100_target_day.py
+
+batch-queue: ## Build batch outreach queue with cooldown + max follow-up gates
+	$(PYTHON) scripts/revenue/batch_outreach_queue.py --batch-size $(or $(BATCH_SIZE),10)
+
+# ── Gmail drafts (manual review required) ──────────────────────
+gmail-drafts-dry-run: ## Preview Gmail drafts without creating them
+	$(PYTHON) scripts/email/create_gmail_drafts_safe.py --dry-run
+
+gmail-drafts: ## Create Gmail drafts from generated outbox (requires env vars)
+	$(PYTHON) scripts/email/create_gmail_drafts_safe.py
+
+# ── Server readiness ───────────────────────────────────────────
+server-preflight: ## Run server preflight checks
+	$(PYTHON) scripts/server/server_preflight.py
+
+server-health: ## Run server healthcheck
+	bash scripts/server/server_healthcheck.sh
+
+company-production-smoke: ## Run company-focused production smoke tests
+	bash scripts/server/run_production_smoke.sh
+
+# ── Command center ─────────────────────────────────────────────
+command-room: ## Build the offline founder command room dashboard
+	$(PYTHON) scripts/command_room/build_command_room.py
+
+# ── One-command company day ────────────────────────────────────
+company-day: ## Run full company launch day pipeline
+	bash scripts/run_company_launch_day.sh
+
+
+.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day
+
+# ═══════════════════════════════════════════════════════════════
+# PR #727 GTM kit — founder-led outreach/proposal/contract helpers
+# (non-overlapping with main's revenue machine; scripts under scripts/dealix_*.py)
+# ═══════════════════════════════════════════════════════════════
 outreach-dry: ## Outreach Kit: preview targets without writing files
 	$(PYTHON) scripts/dealix_outreach_kit.py --dry-run
 
@@ -247,9 +332,6 @@ outreach-f3: ## Outreach Kit: generate day-3 follow-up nudges
 
 outreach-f7: ## Outreach Kit: generate day-7 final follow-up nudges
 	$(PYTHON) scripts/dealix_outreach_kit.py --stage f7
-
-command-room: ## Command Room: render offline outreach dashboard to reports/command_room/index.html
-	$(PYTHON) scripts/dealix_command_room.py
 
 content: ## Content Engine: generate bilingual LinkedIn post drafts (one per sector) for inbound demand
 	$(PYTHON) scripts/dealix_content_engine.py

@@ -21,7 +21,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
     try:
         with path.open("r", encoding="utf-8-sig", newline="") as f:
             return list(csv.DictReader(f))
-    except Exception:
+    except (IOError, OSError, csv.Error, UnicodeDecodeError):
         return []
 
 def write_csv(path: Path, rows: list[dict[str, str]], fields: list[str]) -> None:
@@ -49,7 +49,7 @@ def score(row: dict[str, str]) -> int:
         s += 10
     try:
         s = max(s, int(float(pick(row, "priority_score") or 0)))
-    except Exception:
+    except (ValueError, TypeError):
         pass
     return min(s, 100)
 

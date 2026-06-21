@@ -1,139 +1,208 @@
-# Dealix Docs · فهرس التوثيق
+# Dealix System Documentation — Complete Index
 
-> 428+ مجلد/ملف في `docs/`. هذا الفهرس يجمعهم في 12 موضوع. لو ضعت → ابدأ من القسم المناسب لسؤالك.
->
-> **مبدأ:** كل قسم له ملف "بداية واحد" → اقرأه أولاً، ثم تعمّق.
+**Welcome, Sami.** This is your complete operating manual for building Dealix into a 20K+ SAR MRR company in 90 days.
 
 ---
 
-## 🚀 ابدأ من هنا (Start here)
+## 🎯 START HERE (5 minutes)
 
-| السؤال | الملف |
-|--------|------|
-| أول مرة أشغّل الريبو؟ | `docs/playbooks/QUICK_START.md` + `make first-setup` |
-| ماذا أفعل اليوم/الأسبوع؟ | `docs/playbooks/FOUNDER_NEXT_STEPS.md` |
-| ما هي doctrine الـ 11؟ | `/AGENTS.md` (sections "non-negotiables") |
-| كيف أنشر للإنتاج؟ | `docs/contributing/DEPLOYMENT.md` + `docs/DEPLOY_CHECKLIST.md` |
-| ما الـ stubs / NotImplementedError؟ | `docs/reference/KNOWN_LIMITATIONS.md` |
+**If you have 5 minutes:**
+→ Read: `DAY_1_SUCCESS_KIT.md` (just the beginning section)
 
----
+**If you have 20 minutes:**
+→ Read: `FOUNDER_QUICK_REFERENCE.txt` (printable, memorizable)
 
-## 1) Foundation / الدستور
-
-ابدأ بـ `docs/00_constitution/` و `docs/00_foundation/`. تحدد:
-- Mission, vision, ICP
-- 11 non-negotiables (doctrine)
-- Constitutional articles (Articles 4, 8, 11)
-
-ملفات مرتبطة: `DEALIX_OPERATING_CONSTITUTION.md`, `DEALIX_CONSTITUTION_TRUTH_AUDIT.md`.
-
-## 2) Category / Positioning
-
-`docs/01_category/`, `docs/01_category_creation/`, `docs/02_saudi_positioning/`, `docs/03_saudi_positioning/`.
-ملفات: `COMPETITIVE_POSITIONING.md`, `BRAND_PRESS_KIT.md`.
-
-## 3) Commercial / Product
-
-`docs/03_commercial_mvp/`, `docs/04_product_strategy/`, `docs/26_service_catalog/`, `docs/30_pricing/`.
-ملفات: `BUSINESS_MODEL.md`, `COMPANY_SERVICE_LADDER.md`, `DEALIX_PRODUCT_SIMPLIFICATION_MAP.md`.
-
-## 4) Data OS
-
-`docs/04_data_os/`, `docs/06_data_os/`. ملف: `DATA_MAP.md`.
-
-## 5) Client / Customer OS
-
-`docs/05_client_os/`, `docs/11_client_os/`. ملفات: `CUSTOMER_JOURNEYS.md`, `CUSTOMER_SUCCESS_PLAYBOOK.md`, `CUSTOMER_SUCCESS_SOP.md`.
-
-## 6) Governance & Compliance
-
-`docs/05_governance_os/`, `docs/07_governance/`, `docs/25_compliance_trust/`. ملفات: `DATA_RETENTION_POLICY.md`, `CROSS_BORDER_TRANSFER_ADDENDUM.md`.
-
-## 7) LLM Gateway & Agents
-
-`docs/06_llm_gateway/`, `docs/09_llm_gateway/`, `docs/10_agents/`, `docs/16_agents/`. ملفات: `AI_MODEL_ROUTING_STRATEGY.md`, `AI_OBSERVABILITY_AND_EVALS.md`, `AI_STACK_DECISIONS.md`.
-
-## 8) Proof / Value / Trust
-
-`docs/07_proof_os/`, `docs/08_value_os/`, `docs/14_proof/`, `docs/14_trust_os/`, `docs/15_value/`. ملف بداية: `BUSINESS_READINESS_EVIDENCE_TABLE.md`.
-
-## 9) Capital & Finance
-
-`docs/09_capital_os/`, `docs/16_capital/`, `docs/21_operating_finance/`, `docs/28_operating_finance/`, `docs/31_operating_finance/`. ملفات: `UNIT_ECONOMICS_AND_MARGIN.md`, `COST_OPTIMIZATION.md`, `BILLING_MOYASAR_RUNBOOK.md`.
-
-## 10) Sales & Operating Rhythm
-
-`docs/20_sales_os/`, `docs/29_sales_os/`, `docs/21_operating_rhythm/`. ملفات: `SALES_OPS_SOP.md`, `DAILY_LEAD_PREP_SETUP_GUIDE.md`, `DAY_1_LAUNCH_KIT.md`, `COMMERCIAL_LAUNCH_MASTER_PLAN.md`.
-
-## 11) Architecture / Operations / Runbooks
-
-`docs/36_architecture/`, `docs/ops/`. ملفات: `ARCHITECTURE_LAYER_MAP.md`, `BEAST_LEVEL_ARCHITECTURE.md`, `BACKEND_RELIABILITY_HARDENING_PLAN.md`, `BILLING_RUNBOOK.md`, جميع `docs/ops/*.md`.
-
-## 12) Compliance Saudi / PDPL / Risk
-
-`docs/24_risk_resilience/`, ملفات: `CROSS_BORDER_TRANSFER_ADDENDUM.md`, `DATA_RETENTION_POLICY.md`. Saudi-specific: `docs/37_saudi_layer/`.
+**If you have 1 hour:**
+→ Read in this order:
+1. `DAY_1_SUCCESS_KIT.md` (tactical + motivational)
+2. `README_FOUNDER_EXECUTION.md` (overview + big picture)
+3. `FOUNDER_DAILY_EXECUTION_PLAYBOOK.md` (your daily ritual)
 
 ---
 
-## 📋 Top-20 ملفات يقرأها الفاوندر مرة واحدة
+## 📚 COMPLETE DOCUMENTATION MAP
 
-(مرتبة حسب الأولوية)
+### TIER 1: Entry Point (Start Here)
 
-1. `/AGENTS.md` — doctrine + module layout
-2. `docs/playbooks/FOUNDER_NEXT_STEPS.md` — ماذا تفعل الآن
-3. `docs/reference/KNOWN_LIMITATIONS.md` — stubs catalog
-4. `docs/operations/DEALIX_COMPANY_OPERATIONAL_STATE.md` — current state
-5. `docs/COMMERCIAL_LAUNCH_MASTER_PLAN.md`
-6. `docs/BUSINESS_MODEL.md`
-7. `docs/COMPANY_SERVICE_LADDER.md` — 5-rung offer ladder
-8. `docs/UNIT_ECONOMICS_AND_MARGIN.md`
-9. `docs/SALES_OPS_SOP.md`
-10. `docs/CUSTOMER_SUCCESS_SOP.md`
-11. `docs/BILLING_MOYASAR_RUNBOOK.md`
-12. `docs/AI_MODEL_ROUTING_STRATEGY.md`
-13. `docs/ARCHITECTURE_LAYER_MAP.md`
-14. `docs/ops/FOUNDER_DAILY_OPERATING_RHYTHM.md`
-15. `docs/COMPETITIVE_POSITIONING.md`
-16. `docs/DATA_RETENTION_POLICY.md`
-17. `docs/DEALIX_OPERATING_CONSTITUTION.md`
-18. `docs/DEPLOY_CHECKLIST.md`
-19. `docs/DAY_1_LAUNCH_KIT.md`
-20. `docs/14_DAY_FIRST_REVENUE_PLAYBOOK.md`
+| Document | Purpose | Read Time | When |
+|----------|---------|-----------|------|
+| **DAY_1_SUCCESS_KIT.md** | Tactical guide for tomorrow morning | 20 min | Tonight, before bed |
+| **FOUNDER_QUICK_REFERENCE.txt** | Printable 1-page cheat sheet | 5 min | Print & keep on desk |
+| **README_FOUNDER_EXECUTION.md** | Project overview + architecture | 5 min | First thing tomorrow |
 
-## 📂 منظومة docs/ الجديدة (After cleanup)
-
-```
-docs/
-├── INDEX.md                    ← هذا الملف
-├── architecture/               ← AI_CONVENTIONS, PROMPTS
-├── contributing/               ← CONTRIBUTING, CODE_OF_CONDUCT, DEPLOYMENT
-├── operations/                 ← DEALIX_BUILD_TASK, COMPANY_OPERATIONAL_STATE, READINESS
-├── playbooks/                  ← FOUNDER_NEXT_STEPS, QUICK_START
-├── reference/                  ← KNOWN_LIMITATIONS
-├── archive/                    ← DEALIX_PHASE2_CHEAP_TASK
-└── 00_*, 01_*, ...             ← Constitution layers (428 subdirs)
-```
+**Total: 30 minutes**
 
 ---
 
-## ⚠️ ملاحظات على ترتيب docs/
+### TIER 2: Core Execution (Next Steps)
 
-- **ترقيم متضارب** (01_category vs 01_category_creation, 16_agents vs 16_capital): مقصود — كل فرع موضوعي رقمه الخاص ضمن باب أكبر. التفاصيل في `DEALIX_MASTER_LAYERS_MAP.md`.
-- **428 مجلد** = طبقة "Constitution" غنية. عادة الفاوندر يعمل مع 6-12 ملف فقط (انظر top-20 فوق).
-- **لا تنقل ملفات** بدون تحديث `DEALIX_MASTER_EXECUTION_MATRIX.md`.
-- **Frontend canonical:** `frontend/` (customer UI) + `apps/web/` (enterprise admin) كلاهما رسمي. لا تخلط.
+| Document | Purpose | Read Time | When |
+|----------|---------|-----------|------|
+| **FOUNDER_DAILY_EXECUTION_PLAYBOOK.md** | Your 45-min daily ritual + demo scripts | 20 min | Before Day 1 at 8 AM |
+| **FOUNDER_SYSTEM_OVERVIEW.md** | How the system works (architecture + troubleshooting) | 20 min | Day 2-3 (when questions arise) |
+| **FOUNDER_REVENUE_MANUAL.md** | 90-day strategy + revenue tactics | 30 min | Week 2 (strategic context) |
+| **WEEK_BY_WEEK_EXECUTION_PLAN.md** | Daily targets for Days 1-30 + Month 2-3 | 30 min | Week 1 (reference guide) |
+
+**Total: 100 minutes (1h 40min)**
 
 ---
 
-## 🔍 البحث السريع
+### TIER 3: Delivery & Tracking (Reference)
 
-```bash
-# ابحث في docs/ عن كلمة:
-grep -rl "moyasar" docs/
+| Document | Purpose | Read Time | When |
+|----------|---------|-----------|------|
+| **PILOT_DAY1_ONBOARDING.md** | Customer onboarding checklist | 15 min | When first pilot signs (Day 14-20) |
+| **FOUNDER_TRACKING_TEMPLATES.md** | 7 tracking templates (CSV, JSON, TXT) | 30 min | Week 1 (set up tracking) |
+| **SESSION_COMPLETION_SUMMARY.md** | Session summary + what was delivered | 10 min | Reference (review progress) |
 
-# اعرض شجرة عمق 1:
-ls docs/ | head -50
+**Total: 55 minutes**
 
-# 10 ملفات الأكبر (يحتمل تكون مهمة):
-find docs/ -type f -name "*.md" -exec wc -l {} + | sort -rn | head -10
-```
+---
+
+### TIER 4: Advanced (Future Phases)
+
+| Document | Purpose | Read Time | When |
+|----------|---------|-----------|------|
+| **PHASE_3_IMPLEMENTATION_GUIDE.md** | Semi-automation (WhatsApp + Moyasar) | 20 min | Week 2-3 (Phase 3 deployment) |
+| **SYSTEM_COMPLETE_REFERENCE.md** | 15-part complete system documentation | 45 min | Reference (comprehensive) |
+
+**Total: 65 minutes**
+
+---
+
+## 🚀 READING PATH BY TIMELINE
+
+### TONIGHT (Pre-Launch)
+- [ ] DAY_1_SUCCESS_KIT.md (first 90 minutes section)
+- [ ] FOUNDER_QUICK_REFERENCE.txt (entire)
+- [ ] FOUNDER_DAILY_EXECUTION_PLAYBOOK.md (just "The Ritual" section)
+- **Time:** 30 minutes
+- **Outcome:** Ready to execute tomorrow
+
+### TOMORROW MORNING (8:00 AM Start)
+- [ ] Follow DAY_1_SUCCESS_KIT.md (execution section)
+- **Time:** 45 minutes (the ritual)
+- **Outcome:** First WhatsApp sent, dashboards reviewed
+
+### WEEK 1 (Days 2-7)
+- [ ] README_FOUNDER_EXECUTION.md (full)
+- [ ] FOUNDER_SYSTEM_OVERVIEW.md (troubleshooting section)
+- [ ] WEEK_BY_WEEK_EXECUTION_PLAN.md (your week)
+- [ ] FOUNDER_TRACKING_TEMPLATES.md (set up tracking files)
+- **Time:** 1 hour total (15 min/day)
+- **Outcome:** Understand the system, establish routine
+
+### WEEK 2 (Days 8-14)
+- [ ] FOUNDER_REVENUE_MANUAL.md (full strategic context)
+- [ ] PHASE_3_IMPLEMENTATION_GUIDE.md (understand what's coming)
+- **Time:** 50 minutes total
+- **Outcome:** Understand revenue model, prepare for automation
+
+### WEEK 3-4 (Days 15-30)
+- [ ] PILOT_DAY1_ONBOARDING.md (when pilot #1 signs)
+- [ ] Continue referencing WEEK_BY_WEEK_EXECUTION_PLAN.md (daily targets)
+- **Time:** 15 minutes (as needed)
+- **Outcome:** Deliver first pilot, prepare Month 2
+
+### MONTH 2-3 (Days 31-90)
+- [ ] PHASE_3_IMPLEMENTATION_GUIDE.md (deploy semi-automation)
+- [ ] SYSTEM_COMPLETE_REFERENCE.md (comprehensive reference)
+- **Time:** As needed
+- **Outcome:** Scale to 12 pilots, achieve 20K+ SAR MRR
+
+---
+
+## 🎯 QUICK REFERENCE BY USE CASE
+
+### "I don't understand what to do tomorrow"
+→ Read: `DAY_1_SUCCESS_KIT.md`
+
+### "What's my daily ritual?"
+→ Read: `FOUNDER_DAILY_EXECUTION_PLAYBOOK.md` (section: "The Ritual")
+
+### "What do I say on diagnostic calls?"
+→ Read: `FOUNDER_DAILY_EXECUTION_PLAYBOOK.md` (section: "Demo Script")
+
+### "How do I handle objections?"
+→ Read: `FOUNDER_DAILY_EXECUTION_PLAYBOOK.md` (section: "Objection Responses")
+
+### "What are my targets this week?"
+→ Read: `WEEK_BY_WEEK_EXECUTION_PLAN.md` (your current week)
+
+### "How do I track progress?"
+→ Read: `FOUNDER_TRACKING_TEMPLATES.md`
+
+### "How do I set up customer delivery?"
+→ Read: `PILOT_DAY1_ONBOARDING.md`
+
+### "What's the 90-day revenue plan?"
+→ Read: `FOUNDER_REVENUE_MANUAL.md`
+
+### "How does the system work?"
+→ Read: `FOUNDER_SYSTEM_OVERVIEW.md` or `SYSTEM_COMPLETE_REFERENCE.md`
+
+### "What's coming in Phase 3?"
+→ Read: `PHASE_3_IMPLEMENTATION_GUIDE.md`
+
+### "I'm stuck / something broke"
+→ Read: `FOUNDER_SYSTEM_OVERVIEW.md` (Troubleshooting) or `DAY_1_SUCCESS_KIT.md` (Troubleshooting)
+
+---
+
+## 📊 DOCUMENTATION BY FILE TYPE
+
+### 📖 Strategy & Overview (Read-Once, Reference Many)
+- `README_FOUNDER_EXECUTION.md` — Project overview
+- `FOUNDER_REVENUE_MANUAL.md` — Revenue strategy
+- `FOUNDER_SYSTEM_OVERVIEW.md` — System architecture
+- `SYSTEM_COMPLETE_REFERENCE.md` — Comprehensive reference
+
+### 🎯 Tactical Execution (Read Daily)
+- `FOUNDER_DAILY_EXECUTION_PLAYBOOK.md` — Your ritual
+- `FOUNDER_QUICK_REFERENCE.txt` — Desk cheat sheet
+- `DAY_1_SUCCESS_KIT.md` — Tomorrow's execution
+- `WEEK_BY_WEEK_EXECUTION_PLAN.md` — Weekly targets
+
+### 📋 Templates & Tracking (Reference as Needed)
+- `FOUNDER_TRACKING_TEMPLATES.md` — 7 tracking file formats
+- `PILOT_DAY1_ONBOARDING.md` — Customer onboarding
+
+### 🔮 Future Phases (Read Before Phase Starts)
+- `PHASE_3_IMPLEMENTATION_GUIDE.md` — Semi-automation (Week 2-3)
+
+### 📝 Reference (Browse)
+- `SESSION_COMPLETION_SUMMARY.md` — What was delivered
+- `INDEX.md` — This file (you are here)
+
+---
+
+## 📲 PRINTING GUIDE
+
+**Print these and keep on your desk:**
+- [ ] FOUNDER_QUICK_REFERENCE.txt (1 page, laminate it)
+- [ ] FOUNDER_DAILY_EXECUTION_PLAYBOOK.md (demo scripts)
+- [ ] Daily Ritual Checklist (from DAY_1_SUCCESS_KIT.md)
+- [ ] Weekly targets (from WEEK_BY_WEEK_EXECUTION_PLAN.md)
+
+**Digital only:**
+- All other documents (reference in browser/PDF)
+
+---
+
+## ✅ NEXT ACTION
+
+**Right now:**
+1. Read this INDEX.md
+2. Open DAY_1_SUCCESS_KIT.md
+3. Follow its "TONIGHT" section (90 minutes)
+4. Go to bed
+5. Tomorrow at 8:00 AM, execute
+
+**That's it.** Everything else flows from there.
+
+---
+
+**Welcome to Dealix. Let's build something real.** 🚀
+
+**Ready? Let's go.** 💪
+
