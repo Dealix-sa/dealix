@@ -1,0 +1,88 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "# Pull Request\r\n\r\n## Summary | الملخص\r\n<!-- What does this PR change and why? -->\r\n\r\n## Type of change | نوع التغيير\r\n- [ ] 🐛 Bug fix\r\n- [ ] ✨ New feature\r\n- [ ] 💥 Breaking change\r\n- [ ] 📝 Docs only\r\n- [ ] ♻️ Refactor\r\n- [ ] 🔒 Security\r\n\r\n## Engineering cutover (only if env/backend persistence changes)\r\n\r\nIf this PR touches `PROOF_LEDGER_BACKEND`, `VALUE_LEDGER_BACKEND`, `DEALIX_OPERATIONAL_STREAM_BACKEND`, or `OTEL_CONTRACT_TRACE_EXPORT`:\r\n\r\n```text\r\nexternal_signal: <contract_signed|pilot_scope_locked|...>\r\ncontract_or_pilot_ref: <internal id or account name>\r\n```\r\n\r\nSee [docs/transformation/CUTOVER_PR_CHECKLIST_AR.md](docs/transformation/CUTOVER_PR_CHECKLIST_AR.md) and [docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md](docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md).\r\n\r\n## Checklist | قائمة التحقق\r\n- [ ] Tests added / updated\r\n- [ ] Docs updated (if needed)\r\n- [ ] No secrets committed (verified via `gitleaks`)\r\n- [ ] `make lint` passes\r\n- [ ] `make test` passes\r\n- [ ] Linked to an issue (if applicable)\r\n- [ ] Cutover PR body validated (`python3 scripts/verify_cutover_pr_body.py`) if applicable\r\n\r\n## How to test | كيف أختبر هذا\r\n<!-- Steps to verify -->\r\n\r\n## Screenshots / Logs (optional)\r\n",
+  "closedAt": "2026-06-17T01:36:37Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-10T08:40:59Z",
+      "authors": [
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude"
+        }
+      ],
+      "committedDate": "2026-06-10T08:40:59Z",
+      "messageBody": "Wave 1 — CEO Memory. Creates project-level operating instructions so every\nfuture Claude Code session understands Dealix positioning, safe execution rules,\ndaily commands, business model, sales offers, approval gates, and PR discipline.\n\nFiles added:\n- CLAUDE.md: master operating manual for Claude Code sessions\n- docs/CEO_OPERATING_CONTEXT.md: daily rhythm, sales motion, revenue targets\n- docs/DEALIX_BUSINESS_MODEL.md: offer ladder, unit economics, GTM strategy\n- docs/DEALIX_SAFE_EXECUTION_RULES.md: hard stops, script safety, data handling\n\nValidation: python 3.11 OK, bash -n OK, micro_master.py OK\n\nhttps://claude.ai/code/session_013o5KPdEBiqfZBRLbePom3Z",
+      "messageHeadline": "feat(wave-1): add CEO operating context and CLAUDE.md memory",
+      "oid": "902ce61b2303b35f946a381b97ab47ad5796d4ea"
+    },
+    {
+      "authoredDate": "2026-06-10T08:42:05Z",
+      "authors": [
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude"
+        }
+      ],
+      "committedDate": "2026-06-10T08:42:05Z",
+      "messageBody": "Patterns for *_micro_master_approval_queue.csv and *_MICRO_MASTER_CEO_REPORT.md\nwere missing; existing rules only covered the master_stable variants.\n\nhttps://claude.ai/code/session_013o5KPdEBiqfZBRLbePom3Z",
+      "messageHeadline": "fix(wave-1): extend .gitignore to cover micro_master generated outputs",
+      "oid": "69a85f21a5d9df0ea0e2a355b8e437faad11c40e"
+    }
+  ],
+  "createdAt": "2026-06-17T01:36:20Z",
+  "files": [
+    {
+      "path": ".gitignore",
+      "additions": 2,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "CLAUDE.md",
+      "additions": 127,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/CEO_OPERATING_CONTEXT.md",
+      "additions": 137,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/DEALIX_BUSINESS_MODEL.md",
+      "additions": 132,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/DEALIX_SAFE_EXECUTION_RULES.md",
+      "additions": 157,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "resolve-pr-709",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-17T01:36:37Z",
+  "number": 733,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "Resolve pr 709",
+  "updatedAt": "2026-06-17T01:36:37Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/733"
+}

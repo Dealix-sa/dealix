@@ -1,0 +1,968 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420804",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420804,
+    "node_id": "PRRC_kwDOR1eIic7ILW9E",
+    "diff_hunk": "@@ -0,0 +1,135 @@\n+#!/usr/bin/env python3\n+\"\"\"Static secret & risk scan over the launch-control surface.\n+\n+Scans new launch-control code, config, docs, and workflows for committed\n+secrets and external-send risks. Placeholders (.example, .template, obvious\n+dummies) are allowed. Writes outputs/final_launch_control/secret_risk_scan.json.\n+\n+Exit 0 if clean, 1 if any real secret / risk is found.\n+\n+Usage:\n+    python scripts/final_secret_and_risk_scan.py\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json\n+import re\n+import sys\n+from pathlib import Path\n+\n+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))\n+\n+from launch_os import paths  # noqa: E402\n+\n+# Secret patterns. Keys are labels; values are compiled regexes.\n+SECRET_PATTERNS: dict[str, str] = {\n+    \"anthropic_key\": r\"sk-ant-api\\d{2}-[A-Za-z0-9_\\-]{20,}\",\n+    \"openai_key\": r\"\\bsk-[A-Za-z0-9]{32,}\\b\",\n+    \"openai_proj_key\": r\"\\bsk-proj-[A-Za-z0-9_\\-]{20,}\",\n+    \"github_pat\": r\"\\bghp_[A-Za-z0-9]{36}\\b\",\n+    \"github_fine_pat\": r\"\\bgithub_pat_[A-Za-z0-9_]{60,}\",\n+    \"slack_token\": r\"\\bxox[baprs]-[A-Za-z0-9\\-]{10,}\",\n+    \"aws_access_key\": r\"\\bAKIA[0-9A-Z]{16}\\b\",\n+    \"google_api_key\": r\"\\bAIza[0-9A-Za-z_\\-]{35}\\b\",\n+    \"twilio_sid\": r\"\\bAC[a-f0-9]{32}\\b\",\n+    \"twilio_token_assign\": r\"(?i)twilio[_-]?(?:auth[_-]?)?token\\s*[:=]\\s*['\\\"][a-f0-9]{32}['\\\"]\",\n+    \"private_key_block\": r\"-----BEGIN (?:RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----\",\n+    \"smtp_password_assign\": r\"(?i)smtp[_-]?pass(?:word)?\\s*[:=]\\s*['\\\"][^'\\\"]{6,}['\\\"]\",\n+    \"railway_token_assign\": r\"(?i)railway[_-]?token\\s*[:=]\\s*['\\\"][^'\\\"]{12,}['\\\"]\",\n+    \"generic_secret_assign\": r\"(?i)(?:api[_-]?key|secret|access[_-]?token|password)\\s*[:=]\\s*['\\\"][A-Za-z0-9+/=_\\-]{20,}['\\\"]\",\n+}\n+\n+# Files / paths whose secrets are intentional placeholders.\n+ALLOW_SUBSTR = (\".example\", \".template\", \".sample\", \"/tests/\", \"test_\", \".secrets.baseline\", \".gitleaks\")\n+\n+# Placeholder values that are not real secrets.\n+PLACEHOLDER_RE = re.compile(\n+    r\"(?i)(your[_-]?|example|placeholder|change[_-]?me|dummy|xxxx|<[^>]+>|\\b(?:foo|bar|test)\\b|\\.\\.\\.|redacted)\"\n+)\n+\n+# What we scan: the launch-control surface we introduced.\n+SCAN_GLOBS = (\n+    \"launch_os/**/*.py\",\n+    \"scripts/commercial_*.py\",\n+    \"scripts/final_*.py\",\n+    \"scripts/media_social_*.py\",\n+    \"scripts/site_launch_*.py\",\n+    \"scripts/api_commercial_*.py\",\n+    \"config/*.json\",\n+    \"docs/launch-control/**/*.md\",\n+    \"docs/commercial-launch/**/*.md\",\n+    \"docs/media-social-os/**/*.md\",\n+    \"docs/site-launch/**/*.md\",\n+    \".github/workflows/final-launch-control.yml\",\n+    \".github/workflows/commercial-draft-factory.yml\",\n+    \".github/workflows/media-social-calendar.yml\",\n+    \".github/workflows/site-commercial-verify.yml\",\n+)\n+\n+\n+def _iter_files():\n+    seen = set()\n+    for g in SCAN_GLOBS:\n+        for p in paths.REPO_ROOT.glob(g):\n+            if p.is_file() and p not in seen:\n+                seen.add(p)\n+                yield p\n+\n+\n+def _is_allowlisted(path: Path) -> bool:\n+    s = path.as_posix()\n+    return any(a in s for a in ALLOW_SUBSTR)\n+\n+\n+def scan() -> dict:\n+    findings: list[dict] = []\n+    files_scanned = 0\n+    for path in _iter_files():\n+        files_scanned += 1\n+        allow = _is_allowlisted(path)\n+        try:\n+            text = path.read_text(encoding=\"utf-8\", errors=\"ignore\")\n+        except OSError:\n+            continue\n+        for label, pat in SECRET_PATTERNS.items():\n+            for m in re.finditer(pat, text):\n+                snippet = m.group(0)\n+                # Skip obvious placeholders / allowlisted files.\n+                if allow or PLACEHOLDER_RE.search(snippet):\n+                    continue\n+                line_no = text[: m.start()].count(\"\\n\") + 1\n+                findings.append(\n+                    {\n+                        \"file\": paths.rel(path),\n+                        \"line\": line_no,\n+                        \"type\": label,\n+                        \"match_preview\": snippet[:12] + \"…\",\n+                    }\n+                )\n+    clean = len(findings) == 0\n+    return {\n+        \"clean\": clean,\n+        \"files_scanned\": files_scanned,\n+        \"findings_count\": len(findings),\n+        \"findings\": findings,\n+        \"scanned_globs\": list(SCAN_GLOBS),\n+    }\n+\n+\n+def main() -> int:\n+    paths.ensure_dirs()\n+    result = scan()\n+    out = paths.FINAL_CONTROL_OUT / \"secret_risk_scan.json\"\n+    out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding=\"utf-8\")",
+    "path": "scripts/final_secret_and_risk_scan.py",
+    "commit_id": "3beb7ebc8dece1a7875816ddf37596620bf32845",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Clear-text storage of sensitive information\n\nThis expression stores [sensitive data (secret)](1) as clear text.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2336)",
+    "created_at": "2026-06-04T19:37:30Z",
+    "updated_at": "2026-06-04T19:37:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420804",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420804"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420804"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420804/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 124,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 124,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420832",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420832,
+    "node_id": "PRRC_kwDOR1eIic7ILW9g",
+    "diff_hunk": "@@ -0,0 +1,135 @@\n+#!/usr/bin/env python3\n+\"\"\"Static secret & risk scan over the launch-control surface.\n+\n+Scans new launch-control code, config, docs, and workflows for committed\n+secrets and external-send risks. Placeholders (.example, .template, obvious\n+dummies) are allowed. Writes outputs/final_launch_control/secret_risk_scan.json.\n+\n+Exit 0 if clean, 1 if any real secret / risk is found.\n+\n+Usage:\n+    python scripts/final_secret_and_risk_scan.py\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json\n+import re\n+import sys\n+from pathlib import Path\n+\n+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))\n+\n+from launch_os import paths  # noqa: E402\n+\n+# Secret patterns. Keys are labels; values are compiled regexes.\n+SECRET_PATTERNS: dict[str, str] = {\n+    \"anthropic_key\": r\"sk-ant-api\\d{2}-[A-Za-z0-9_\\-]{20,}\",\n+    \"openai_key\": r\"\\bsk-[A-Za-z0-9]{32,}\\b\",\n+    \"openai_proj_key\": r\"\\bsk-proj-[A-Za-z0-9_\\-]{20,}\",\n+    \"github_pat\": r\"\\bghp_[A-Za-z0-9]{36}\\b\",\n+    \"github_fine_pat\": r\"\\bgithub_pat_[A-Za-z0-9_]{60,}\",\n+    \"slack_token\": r\"\\bxox[baprs]-[A-Za-z0-9\\-]{10,}\",\n+    \"aws_access_key\": r\"\\bAKIA[0-9A-Z]{16}\\b\",\n+    \"google_api_key\": r\"\\bAIza[0-9A-Za-z_\\-]{35}\\b\",\n+    \"twilio_sid\": r\"\\bAC[a-f0-9]{32}\\b\",\n+    \"twilio_token_assign\": r\"(?i)twilio[_-]?(?:auth[_-]?)?token\\s*[:=]\\s*['\\\"][a-f0-9]{32}['\\\"]\",\n+    \"private_key_block\": r\"-----BEGIN (?:RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----\",\n+    \"smtp_password_assign\": r\"(?i)smtp[_-]?pass(?:word)?\\s*[:=]\\s*['\\\"][^'\\\"]{6,}['\\\"]\",\n+    \"railway_token_assign\": r\"(?i)railway[_-]?token\\s*[:=]\\s*['\\\"][^'\\\"]{12,}['\\\"]\",\n+    \"generic_secret_assign\": r\"(?i)(?:api[_-]?key|secret|access[_-]?token|password)\\s*[:=]\\s*['\\\"][A-Za-z0-9+/=_\\-]{20,}['\\\"]\",\n+}\n+\n+# Files / paths whose secrets are intentional placeholders.\n+ALLOW_SUBSTR = (\".example\", \".template\", \".sample\", \"/tests/\", \"test_\", \".secrets.baseline\", \".gitleaks\")\n+\n+# Placeholder values that are not real secrets.\n+PLACEHOLDER_RE = re.compile(\n+    r\"(?i)(your[_-]?|example|placeholder|change[_-]?me|dummy|xxxx|<[^>]+>|\\b(?:foo|bar|test)\\b|\\.\\.\\.|redacted)\"\n+)\n+\n+# What we scan: the launch-control surface we introduced.\n+SCAN_GLOBS = (\n+    \"launch_os/**/*.py\",\n+    \"scripts/commercial_*.py\",\n+    \"scripts/final_*.py\",\n+    \"scripts/media_social_*.py\",\n+    \"scripts/site_launch_*.py\",\n+    \"scripts/api_commercial_*.py\",\n+    \"config/*.json\",\n+    \"docs/launch-control/**/*.md\",\n+    \"docs/commercial-launch/**/*.md\",\n+    \"docs/media-social-os/**/*.md\",\n+    \"docs/site-launch/**/*.md\",\n+    \".github/workflows/final-launch-control.yml\",\n+    \".github/workflows/commercial-draft-factory.yml\",\n+    \".github/workflows/media-social-calendar.yml\",\n+    \".github/workflows/site-commercial-verify.yml\",\n+)\n+\n+\n+def _iter_files():\n+    seen = set()\n+    for g in SCAN_GLOBS:\n+        for p in paths.REPO_ROOT.glob(g):\n+            if p.is_file() and p not in seen:\n+                seen.add(p)\n+                yield p\n+\n+\n+def _is_allowlisted(path: Path) -> bool:\n+    s = path.as_posix()\n+    return any(a in s for a in ALLOW_SUBSTR)\n+\n+\n+def scan() -> dict:\n+    findings: list[dict] = []\n+    files_scanned = 0\n+    for path in _iter_files():\n+        files_scanned += 1\n+        allow = _is_allowlisted(path)\n+        try:\n+            text = path.read_text(encoding=\"utf-8\", errors=\"ignore\")\n+        except OSError:\n+            continue\n+        for label, pat in SECRET_PATTERNS.items():\n+            for m in re.finditer(pat, text):\n+                snippet = m.group(0)\n+                # Skip obvious placeholders / allowlisted files.\n+                if allow or PLACEHOLDER_RE.search(snippet):\n+                    continue\n+                line_no = text[: m.start()].count(\"\\n\") + 1\n+                findings.append(\n+                    {\n+                        \"file\": paths.rel(path),\n+                        \"line\": line_no,\n+                        \"type\": label,\n+                        \"match_preview\": snippet[:12] + \"…\",\n+                    }\n+                )\n+    clean = len(findings) == 0\n+    return {\n+        \"clean\": clean,\n+        \"files_scanned\": files_scanned,\n+        \"findings_count\": len(findings),\n+        \"findings\": findings,\n+        \"scanned_globs\": list(SCAN_GLOBS),\n+    }\n+\n+\n+def main() -> int:\n+    paths.ensure_dirs()\n+    result = scan()\n+    out = paths.FINAL_CONTROL_OUT / \"secret_risk_scan.json\"\n+    out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding=\"utf-8\")\n+    print(f\"[secrets] files scanned: {result['files_scanned']}\")",
+    "path": "scripts/final_secret_and_risk_scan.py",
+    "commit_id": "3beb7ebc8dece1a7875816ddf37596620bf32845",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Clear-text logging of sensitive information\n\nThis expression logs [sensitive data (secret)](1) as clear text.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2333)",
+    "created_at": "2026-06-04T19:37:30Z",
+    "updated_at": "2026-06-04T19:37:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420832",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420832"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420832"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420832/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 125,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 125,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420845",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420845,
+    "node_id": "PRRC_kwDOR1eIic7ILW9t",
+    "diff_hunk": "@@ -0,0 +1,135 @@\n+#!/usr/bin/env python3\n+\"\"\"Static secret & risk scan over the launch-control surface.\n+\n+Scans new launch-control code, config, docs, and workflows for committed\n+secrets and external-send risks. Placeholders (.example, .template, obvious\n+dummies) are allowed. Writes outputs/final_launch_control/secret_risk_scan.json.\n+\n+Exit 0 if clean, 1 if any real secret / risk is found.\n+\n+Usage:\n+    python scripts/final_secret_and_risk_scan.py\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json\n+import re\n+import sys\n+from pathlib import Path\n+\n+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))\n+\n+from launch_os import paths  # noqa: E402\n+\n+# Secret patterns. Keys are labels; values are compiled regexes.\n+SECRET_PATTERNS: dict[str, str] = {\n+    \"anthropic_key\": r\"sk-ant-api\\d{2}-[A-Za-z0-9_\\-]{20,}\",\n+    \"openai_key\": r\"\\bsk-[A-Za-z0-9]{32,}\\b\",\n+    \"openai_proj_key\": r\"\\bsk-proj-[A-Za-z0-9_\\-]{20,}\",\n+    \"github_pat\": r\"\\bghp_[A-Za-z0-9]{36}\\b\",\n+    \"github_fine_pat\": r\"\\bgithub_pat_[A-Za-z0-9_]{60,}\",\n+    \"slack_token\": r\"\\bxox[baprs]-[A-Za-z0-9\\-]{10,}\",\n+    \"aws_access_key\": r\"\\bAKIA[0-9A-Z]{16}\\b\",\n+    \"google_api_key\": r\"\\bAIza[0-9A-Za-z_\\-]{35}\\b\",\n+    \"twilio_sid\": r\"\\bAC[a-f0-9]{32}\\b\",\n+    \"twilio_token_assign\": r\"(?i)twilio[_-]?(?:auth[_-]?)?token\\s*[:=]\\s*['\\\"][a-f0-9]{32}['\\\"]\",\n+    \"private_key_block\": r\"-----BEGIN (?:RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----\",\n+    \"smtp_password_assign\": r\"(?i)smtp[_-]?pass(?:word)?\\s*[:=]\\s*['\\\"][^'\\\"]{6,}['\\\"]\",\n+    \"railway_token_assign\": r\"(?i)railway[_-]?token\\s*[:=]\\s*['\\\"][^'\\\"]{12,}['\\\"]\",\n+    \"generic_secret_assign\": r\"(?i)(?:api[_-]?key|secret|access[_-]?token|password)\\s*[:=]\\s*['\\\"][A-Za-z0-9+/=_\\-]{20,}['\\\"]\",\n+}\n+\n+# Files / paths whose secrets are intentional placeholders.\n+ALLOW_SUBSTR = (\".example\", \".template\", \".sample\", \"/tests/\", \"test_\", \".secrets.baseline\", \".gitleaks\")\n+\n+# Placeholder values that are not real secrets.\n+PLACEHOLDER_RE = re.compile(\n+    r\"(?i)(your[_-]?|example|placeholder|change[_-]?me|dummy|xxxx|<[^>]+>|\\b(?:foo|bar|test)\\b|\\.\\.\\.|redacted)\"\n+)\n+\n+# What we scan: the launch-control surface we introduced.\n+SCAN_GLOBS = (\n+    \"launch_os/**/*.py\",\n+    \"scripts/commercial_*.py\",\n+    \"scripts/final_*.py\",\n+    \"scripts/media_social_*.py\",\n+    \"scripts/site_launch_*.py\",\n+    \"scripts/api_commercial_*.py\",\n+    \"config/*.json\",\n+    \"docs/launch-control/**/*.md\",\n+    \"docs/commercial-launch/**/*.md\",\n+    \"docs/media-social-os/**/*.md\",\n+    \"docs/site-launch/**/*.md\",\n+    \".github/workflows/final-launch-control.yml\",\n+    \".github/workflows/commercial-draft-factory.yml\",\n+    \".github/workflows/media-social-calendar.yml\",\n+    \".github/workflows/site-commercial-verify.yml\",\n+)\n+\n+\n+def _iter_files():\n+    seen = set()\n+    for g in SCAN_GLOBS:\n+        for p in paths.REPO_ROOT.glob(g):\n+            if p.is_file() and p not in seen:\n+                seen.add(p)\n+                yield p\n+\n+\n+def _is_allowlisted(path: Path) -> bool:\n+    s = path.as_posix()\n+    return any(a in s for a in ALLOW_SUBSTR)\n+\n+\n+def scan() -> dict:\n+    findings: list[dict] = []\n+    files_scanned = 0\n+    for path in _iter_files():\n+        files_scanned += 1\n+        allow = _is_allowlisted(path)\n+        try:\n+            text = path.read_text(encoding=\"utf-8\", errors=\"ignore\")\n+        except OSError:\n+            continue\n+        for label, pat in SECRET_PATTERNS.items():\n+            for m in re.finditer(pat, text):\n+                snippet = m.group(0)\n+                # Skip obvious placeholders / allowlisted files.\n+                if allow or PLACEHOLDER_RE.search(snippet):\n+                    continue\n+                line_no = text[: m.start()].count(\"\\n\") + 1\n+                findings.append(\n+                    {\n+                        \"file\": paths.rel(path),\n+                        \"line\": line_no,\n+                        \"type\": label,\n+                        \"match_preview\": snippet[:12] + \"…\",\n+                    }\n+                )\n+    clean = len(findings) == 0\n+    return {\n+        \"clean\": clean,\n+        \"files_scanned\": files_scanned,\n+        \"findings_count\": len(findings),\n+        \"findings\": findings,\n+        \"scanned_globs\": list(SCAN_GLOBS),\n+    }\n+\n+\n+def main() -> int:\n+    paths.ensure_dirs()\n+    result = scan()\n+    out = paths.FINAL_CONTROL_OUT / \"secret_risk_scan.json\"\n+    out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding=\"utf-8\")\n+    print(f\"[secrets] files scanned: {result['files_scanned']}\")\n+    print(f\"[secrets] findings: {result['findings_count']}\")",
+    "path": "scripts/final_secret_and_risk_scan.py",
+    "commit_id": "3beb7ebc8dece1a7875816ddf37596620bf32845",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Clear-text logging of sensitive information\n\nThis expression logs [sensitive data (secret)](1) as clear text.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2334)",
+    "created_at": "2026-06-04T19:37:30Z",
+    "updated_at": "2026-06-04T19:37:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420845",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420845"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420845"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420845/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 126,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 126,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420861",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420861,
+    "node_id": "PRRC_kwDOR1eIic7ILW99",
+    "diff_hunk": "@@ -0,0 +1,135 @@\n+#!/usr/bin/env python3\n+\"\"\"Static secret & risk scan over the launch-control surface.\n+\n+Scans new launch-control code, config, docs, and workflows for committed\n+secrets and external-send risks. Placeholders (.example, .template, obvious\n+dummies) are allowed. Writes outputs/final_launch_control/secret_risk_scan.json.\n+\n+Exit 0 if clean, 1 if any real secret / risk is found.\n+\n+Usage:\n+    python scripts/final_secret_and_risk_scan.py\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json\n+import re\n+import sys\n+from pathlib import Path\n+\n+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))\n+\n+from launch_os import paths  # noqa: E402\n+\n+# Secret patterns. Keys are labels; values are compiled regexes.\n+SECRET_PATTERNS: dict[str, str] = {\n+    \"anthropic_key\": r\"sk-ant-api\\d{2}-[A-Za-z0-9_\\-]{20,}\",\n+    \"openai_key\": r\"\\bsk-[A-Za-z0-9]{32,}\\b\",\n+    \"openai_proj_key\": r\"\\bsk-proj-[A-Za-z0-9_\\-]{20,}\",\n+    \"github_pat\": r\"\\bghp_[A-Za-z0-9]{36}\\b\",\n+    \"github_fine_pat\": r\"\\bgithub_pat_[A-Za-z0-9_]{60,}\",\n+    \"slack_token\": r\"\\bxox[baprs]-[A-Za-z0-9\\-]{10,}\",\n+    \"aws_access_key\": r\"\\bAKIA[0-9A-Z]{16}\\b\",\n+    \"google_api_key\": r\"\\bAIza[0-9A-Za-z_\\-]{35}\\b\",\n+    \"twilio_sid\": r\"\\bAC[a-f0-9]{32}\\b\",\n+    \"twilio_token_assign\": r\"(?i)twilio[_-]?(?:auth[_-]?)?token\\s*[:=]\\s*['\\\"][a-f0-9]{32}['\\\"]\",\n+    \"private_key_block\": r\"-----BEGIN (?:RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----\",\n+    \"smtp_password_assign\": r\"(?i)smtp[_-]?pass(?:word)?\\s*[:=]\\s*['\\\"][^'\\\"]{6,}['\\\"]\",\n+    \"railway_token_assign\": r\"(?i)railway[_-]?token\\s*[:=]\\s*['\\\"][^'\\\"]{12,}['\\\"]\",\n+    \"generic_secret_assign\": r\"(?i)(?:api[_-]?key|secret|access[_-]?token|password)\\s*[:=]\\s*['\\\"][A-Za-z0-9+/=_\\-]{20,}['\\\"]\",\n+}\n+\n+# Files / paths whose secrets are intentional placeholders.\n+ALLOW_SUBSTR = (\".example\", \".template\", \".sample\", \"/tests/\", \"test_\", \".secrets.baseline\", \".gitleaks\")\n+\n+# Placeholder values that are not real secrets.\n+PLACEHOLDER_RE = re.compile(\n+    r\"(?i)(your[_-]?|example|placeholder|change[_-]?me|dummy|xxxx|<[^>]+>|\\b(?:foo|bar|test)\\b|\\.\\.\\.|redacted)\"\n+)\n+\n+# What we scan: the launch-control surface we introduced.\n+SCAN_GLOBS = (\n+    \"launch_os/**/*.py\",\n+    \"scripts/commercial_*.py\",\n+    \"scripts/final_*.py\",\n+    \"scripts/media_social_*.py\",\n+    \"scripts/site_launch_*.py\",\n+    \"scripts/api_commercial_*.py\",\n+    \"config/*.json\",\n+    \"docs/launch-control/**/*.md\",\n+    \"docs/commercial-launch/**/*.md\",\n+    \"docs/media-social-os/**/*.md\",\n+    \"docs/site-launch/**/*.md\",\n+    \".github/workflows/final-launch-control.yml\",\n+    \".github/workflows/commercial-draft-factory.yml\",\n+    \".github/workflows/media-social-calendar.yml\",\n+    \".github/workflows/site-commercial-verify.yml\",\n+)\n+\n+\n+def _iter_files():\n+    seen = set()\n+    for g in SCAN_GLOBS:\n+        for p in paths.REPO_ROOT.glob(g):\n+            if p.is_file() and p not in seen:\n+                seen.add(p)\n+                yield p\n+\n+\n+def _is_allowlisted(path: Path) -> bool:\n+    s = path.as_posix()\n+    return any(a in s for a in ALLOW_SUBSTR)\n+\n+\n+def scan() -> dict:\n+    findings: list[dict] = []\n+    files_scanned = 0\n+    for path in _iter_files():\n+        files_scanned += 1\n+        allow = _is_allowlisted(path)\n+        try:\n+            text = path.read_text(encoding=\"utf-8\", errors=\"ignore\")\n+        except OSError:\n+            continue\n+        for label, pat in SECRET_PATTERNS.items():\n+            for m in re.finditer(pat, text):\n+                snippet = m.group(0)\n+                # Skip obvious placeholders / allowlisted files.\n+                if allow or PLACEHOLDER_RE.search(snippet):\n+                    continue\n+                line_no = text[: m.start()].count(\"\\n\") + 1\n+                findings.append(\n+                    {\n+                        \"file\": paths.rel(path),\n+                        \"line\": line_no,\n+                        \"type\": label,\n+                        \"match_preview\": snippet[:12] + \"…\",\n+                    }\n+                )\n+    clean = len(findings) == 0\n+    return {\n+        \"clean\": clean,\n+        \"files_scanned\": files_scanned,\n+        \"findings_count\": len(findings),\n+        \"findings\": findings,\n+        \"scanned_globs\": list(SCAN_GLOBS),\n+    }\n+\n+\n+def main() -> int:\n+    paths.ensure_dirs()\n+    result = scan()\n+    out = paths.FINAL_CONTROL_OUT / \"secret_risk_scan.json\"\n+    out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding=\"utf-8\")\n+    print(f\"[secrets] files scanned: {result['files_scanned']}\")\n+    print(f\"[secrets] findings: {result['findings_count']}\")\n+    for f in result[\"findings\"]:\n+        print(f\"[secrets]   FAIL  {f['file']}:{f['line']} {f['type']}\")",
+    "path": "scripts/final_secret_and_risk_scan.py",
+    "commit_id": "3beb7ebc8dece1a7875816ddf37596620bf32845",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Clear-text logging of sensitive information\n\nThis expression logs [sensitive data (secret)](1) as clear text.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2335)",
+    "created_at": "2026-06-04T19:37:30Z",
+    "updated_at": "2026-06-04T19:37:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420861",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420861"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420861"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420861/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 128,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 128,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420877",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420877,
+    "node_id": "PRRC_kwDOR1eIic7ILW-N",
+    "diff_hunk": "@@ -0,0 +1,205 @@\n+\"\"\"The 400+ daily draft factory — review-only, never sends.\n+\n+Every draft is a *proposal for the founder to review*. The record carries\n+hard guard flags that the safety audit and verifier assert on:\n+\n+    send_allowed=False, external_send_blocked=True, no_auto_send=True,\n+    requires_founder_approval=True\n+\n+Drafts are written as JSONL (one per line) plus a human-readable founder\n+review markdown and a top-50 priority list.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json\n+import shutil\n+from datetime import datetime, timezone\n+from pathlib import Path\n+\n+from .compliance import find_forbidden_claims\n+from .leads import Lead, generate_leads\n+\n+# The 5-rung offer ladder (matched to ICP score bands).\n+OFFERS: tuple[dict[str, str], ...] = (\n+    {\"key\": \"free_diagnostic\", \"label_en\": \"Free Revenue Diagnostic\", \"label_ar\": \"تشخيص إيرادات مجاني\"},\n+    {\"key\": \"sprint_499\", \"label_en\": \"499 SAR Revenue Sprint\", \"label_ar\": \"سبرنت إيرادات 499 ريال\"},\n+    {\"key\": \"data_pack_1500\", \"label_en\": \"1,500 SAR Data Pack\", \"label_ar\": \"حزمة بيانات 1,500 ريال\"},\n+    {\"key\": \"managed_ops\", \"label_en\": \"Managed Ops Retainer\", \"label_ar\": \"تشغيل مُدار شهري\"},\n+    {\"key\": \"custom_ai\", \"label_en\": \"Custom AI Build\", \"label_ar\": \"بناء AI مخصص\"},\n+)\n+\n+\n+def _offer_for(score: int) -> dict[str, str]:\n+    if score >= 88:\n+        return OFFERS[3]\n+    if score >= 78:\n+        return OFFERS[2]\n+    if score >= 65:\n+        return OFFERS[1]\n+    return OFFERS[0]\n+\n+\n+def _priority(lead: Lead) -> int:\n+    \"\"\"Founder review priority — higher = review first.\"\"\"\n+    return min(100, lead.icp_score + (5 if lead.employees_band in (\"201-500\", \"500+\") else 0))\n+\n+\n+def build_draft(lead: Lead, ts: str) -> dict:\n+    \"\"\"Build a single review-only draft for a lead.\"\"\"\n+    offer = _offer_for(lead.icp_score)\n+    prio = _priority(lead)\n+\n+    subject_en = f\"A practical revenue idea for {lead.company.split(' #')[0]}\"\n+    subject_ar = f\"فكرة عملية لتحسين الإيراد لدى {lead.company_ar.split(' #')[0]}\"\n+\n+    body_en = (\n+        f\"Hello,\\n\\n\"\n+        f\"I work with {lead.vertical_name_en} companies in {lead.city} on turning \"\n+        f\"their existing sales and follow-up data into a practical Revenue OS — \"\n+        f\"without replacing anyone on the team. Based on public signals for firms \"\n+        f\"of your size, there is usually a concrete follow-up gap worth recovering.\\n\\n\"\n+        f\"Would a short, no-pressure {offer['label_en']} be useful? It is human-led \"\n+        f\"and you decide every next step.\\n\\nBest regards,\\nDealix\"\n+    )\n+    body_ar = (\n+        f\"السلام عليكم،\\n\\n\"\n+        f\"أعمل مع شركات {lead.vertical_name_ar} في {lead.city_ar} على تحويل بيانات \"\n+        f\"المبيعات والمتابعة الحالية إلى نظام إيراد عملي — دون استبدال أي شخص في \"\n+        f\"الفريق. عادةً توجد فجوة متابعة ملموسة يمكن استرجاعها.\\n\\n\"\n+        f\"هل يناسبك {offer['label_ar']} مختصر وبدون أي ضغط؟ بقيادة بشرية وأنت من \"\n+        f\"يقرر كل خطوة.\\n\\nتحياتي،\\nDealix\"\n+    )\n+\n+    # Defensive: never let an overclaim slip into a generated body.\n+    overclaim = find_forbidden_claims(body_en + \" \" + body_ar)\n+\n+    return {\n+        \"draft_id\": f\"DRAFT-{lead.lead_id.split('-')[1]}\",\n+        \"created_at\": ts,\n+        \"lead_id\": lead.lead_id,\n+        \"company\": lead.company,\n+        \"company_ar\": lead.company_ar,\n+        \"vertical\": lead.vertical,\n+        \"city\": lead.city,\n+        \"channel\": \"founder_review_queue\",\n+        \"offer\": offer[\"key\"],\n+        \"offer_label_en\": offer[\"label_en\"],\n+        \"offer_label_ar\": offer[\"label_ar\"],\n+        \"subject_en\": subject_en,\n+        \"subject_ar\": subject_ar,\n+        \"body_en\": body_en,\n+        \"body_ar\": body_ar,\n+        \"priority_score\": prio,\n+        \"icp_score\": lead.icp_score,\n+        # ── Hard guard flags (asserted by safety audit + verifier) ──\n+        \"send_allowed\": False,\n+        \"external_send_blocked\": True,\n+        \"no_auto_send\": True,\n+        \"requires_founder_approval\": True,\n+        \"status\": \"queued_for_review\",\n+        \"compliance\": {\n+            \"pdpl_ok\": True,\n+            \"no_sensitive_data\": True,\n+            \"no_overclaim\": len(overclaim) == 0,\n+            \"consent_required_before_send\": True,\n+            \"overclaim_hits\": overclaim,\n+        },\n+    }\n+\n+\n+def generate_drafts(target: int = 400) -> list[dict]:\n+    \"\"\"Generate at least ``target`` review-only drafts.\"\"\"\n+    ts = datetime.now(timezone.utc).strftime(\"%Y-%m-%dT%H:%M:%SZ\")\n+    # Generate a few extra leads to comfortably clear the target.\n+    leads = generate_leads(max(target + 20, target))\n+    drafts = [build_draft(lead, ts) for lead in leads]\n+    return drafts[: max(target + 20, len(drafts))]\n+\n+\n+def _run_dir(commercial_out: Path, ts_compact: str) -> Path:\n+    d = commercial_out / ts_compact\n+    d.mkdir(parents=True, exist_ok=True)\n+    return d\n+\n+\n+def write_run(drafts: list[dict], commercial_out: Path, latest_dir: Path) -> dict:\n+    \"\"\"Write draft_queue.jsonl, founder_review.md, top_50_priority.md.\n+\n+    Writes both a timestamped run directory and the stable ``latest`` copy.\n+    Returns a summary dict.\n+    \"\"\"\n+    ts_compact = datetime.now(timezone.utc).strftime(\"%Y%m%dT%H%M%SZ\")\n+    run_dir = _run_dir(commercial_out, ts_compact)\n+\n+    # 1) JSONL queue\n+    queue_path = run_dir / \"draft_queue.jsonl\"\n+    with queue_path.open(\"w\", encoding=\"utf-8\") as fh:\n+        for d in drafts:\n+            fh.write(json.dumps(d, ensure_ascii=False) + \"\\n\")\n+\n+    # 2) Founder review markdown\n+    review_path = run_dir / \"founder_review.md\"\n+    review_path.write_text(_render_founder_review(drafts), encoding=\"utf-8\")\n+\n+    # 3) Top 50 priority\n+    top_path = run_dir / \"top_50_priority.md\"\n+    top_path.write_text(_render_top50(drafts), encoding=\"utf-8\")\n+\n+    # 4) Mirror to latest/\n+    latest_dir.mkdir(parents=True, exist_ok=True)\n+    for name in (\"draft_queue.jsonl\", \"founder_review.md\", \"top_50_priority.md\"):\n+        shutil.copy2(run_dir / name, latest_dir / name)\n+\n+    return {\n+        \"run_dir\": run_dir,\n+        \"latest_dir\": latest_dir,\n+        \"count\": len(drafts),\n+        \"queue_path\": queue_path,\n+    }\n+\n+\n+def _render_founder_review(drafts: list[dict]) -> str:\n+    by_vertical: dict[str, int] = {}\n+    for d in drafts:\n+        by_vertical[d[\"vertical\"]] = by_vertical.get(d[\"vertical\"], 0) + 1\n+    lines = [\n+        \"# Founder Review Queue — Review-Only Drafts\",\n+        \"\",\n+        \"> ⛔ **None of these are sent.** Every draft is `send_allowed=false`, \"\n+        \"`no_auto_send=true`, `external_send_blocked=true`. The founder approves \"\n+        \"each one manually before any human-led outreach.\",",
+    "path": "launch_os/drafts.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Implicit string concatenation in a list\n\nImplicit string concatenation. Maybe missing a comma?\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2346)",
+    "created_at": "2026-06-04T19:37:30Z",
+    "updated_at": "2026-06-04T19:37:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420877",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420877"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420877"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420877/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": 169,
+    "start_side": "RIGHT",
+    "line": null,
+    "original_line": 171,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 171,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420882",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420882,
+    "node_id": "PRRC_kwDOR1eIic7ILW-S",
+    "diff_hunk": "@@ -0,0 +1,20 @@\n+\"\"\"API static check: launch-control routers have no external-send patterns.\"\"\"\n+\n+from __future__ import annotations\n+\n+from tests._lc_util import REPO_ROOT, load_script",
+    "path": "tests/test_api_commercial_static_check.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'REPO_ROOT' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2337)",
+    "created_at": "2026-06-04T19:37:30Z",
+    "updated_at": "2026-06-04T19:37:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420882",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420882"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420882"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420882/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 5,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420893",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420893,
+    "node_id": "PRRC_kwDOR1eIic7ILW-d",
+    "diff_hunk": "@@ -0,0 +1,49 @@\n+\"\"\"The draft factory produces >=400 review-only drafts with hard guard flags.\"\"\"\n+\n+from __future__ import annotations\n+\n+from tests._lc_util import REPO_ROOT  # noqa: F401  (ensures repo root on sys.path)\n+\n+from launch_os.drafts import generate_drafts, write_run, OFFERS\n+from launch_os import paths\n+\n+\n+def test_generates_at_least_400():\n+    drafts = generate_drafts(target=400)\n+    assert len(drafts) >= 400\n+\n+\n+def test_every_draft_is_review_only():\n+    drafts = generate_drafts(target=400)\n+    for d in drafts:\n+        assert d[\"send_allowed\"] is False\n+        assert d[\"external_send_blocked\"] is True\n+        assert d[\"no_auto_send\"] is True\n+        assert d[\"requires_founder_approval\"] is True\n+        assert d[\"status\"] == \"queued_for_review\"\n+        assert d[\"channel\"] == \"founder_review_queue\"\n+\n+\n+def test_offers_within_ladder():\n+    valid = {o[\"key\"] for o in OFFERS}\n+    for d in generate_drafts(target=400):\n+        assert d[\"offer\"] in valid\n+\n+\n+def test_write_run_creates_artifacts(tmp_path):\n+    drafts = generate_drafts(target=400)\n+    out = tmp_path / \"commercial_launch\"\n+    latest = out / \"latest\"\n+    summary = write_run(drafts, out, latest)\n+    assert summary[\"count\"] >= 400\n+    for name in (\"draft_queue.jsonl\", \"founder_review.md\", \"top_50_priority.md\"):\n+        assert (summary[\"run_dir\"] / name).exists()\n+        assert (latest / name).exists()\n+\n+\n+def test_cli_main_passes(tmp_path, monkeypatch):\n+    script = __import__(\"importlib\").import_module  # noqa",
+    "path": "tests/test_commercial_generate_400_drafts.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused local variable\n\nVariable script is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2345)",
+    "created_at": "2026-06-04T19:37:30Z",
+    "updated_at": "2026-06-04T19:37:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420893",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420893"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420893"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420893/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 45,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 45,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420903",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420903,
+    "node_id": "PRRC_kwDOR1eIic7ILW-n",
+    "diff_hunk": "@@ -0,0 +1,40 @@\n+\"\"\"Launch readiness scoring + daily metrics.\"\"\"\n+\n+from __future__ import annotations\n+\n+import json",
+    "path": "tests/test_commercial_launch_readiness.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'json' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2338)",
+    "created_at": "2026-06-04T19:37:31Z",
+    "updated_at": "2026-06-04T19:37:32Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420903",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420903"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420903"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420903/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 5,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420915",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420915,
+    "node_id": "PRRC_kwDOR1eIic7ILW-z",
+    "diff_hunk": "@@ -0,0 +1,42 @@\n+\"\"\"No external-send code exists anywhere in the launch-control surface.\"\"\"\n+\n+from __future__ import annotations\n+\n+from pathlib import Path",
+    "path": "tests/test_commercial_no_external_send.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'Path' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2339)",
+    "created_at": "2026-06-04T19:37:31Z",
+    "updated_at": "2026-06-04T19:37:32Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420915",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420915"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420915"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420915/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 5,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420925",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420925,
+    "node_id": "PRRC_kwDOR1eIic7ILW-9",
+    "diff_hunk": "@@ -0,0 +1,20 @@\n+\"\"\"CRM schema verifier passes: schema, stages, no send fields, seed leads.\"\"\"\n+\n+from __future__ import annotations\n+\n+from tests._lc_util import REPO_ROOT, load_script",
+    "path": "tests/test_crm_schema_verify.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'REPO_ROOT' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2340)",
+    "created_at": "2026-06-04T19:37:31Z",
+    "updated_at": "2026-06-04T19:37:32Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420925",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420925"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420925"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420925/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 5,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420934",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420934,
+    "node_id": "PRRC_kwDOR1eIic7ILW_G",
+    "diff_hunk": "@@ -0,0 +1,22 @@\n+\"\"\"Master verifier passes against a fresh, committed launch surface.\"\"\"\n+\n+from __future__ import annotations\n+\n+from tests._lc_util import REPO_ROOT, load_script, ensure_run",
+    "path": "tests/test_final_launch_control_verify.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'REPO_ROOT' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2341)",
+    "created_at": "2026-06-04T19:37:31Z",
+    "updated_at": "2026-06-04T19:37:32Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420934",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420934"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420934"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420934/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 5,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420948",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420948,
+    "node_id": "PRRC_kwDOR1eIic7ILW_U",
+    "diff_hunk": "@@ -0,0 +1,27 @@\n+\"\"\"Secret/risk scanner reports the launch surface clean and flags real secrets.\"\"\"\n+\n+from __future__ import annotations\n+\n+import re\n+\n+from tests._lc_util import REPO_ROOT, load_script",
+    "path": "tests/test_final_secret_and_risk_scan.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'REPO_ROOT' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2342)",
+    "created_at": "2026-06-04T19:37:31Z",
+    "updated_at": "2026-06-04T19:37:32Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420948",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420948"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420948"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420948/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 7,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 7,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420956",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420956,
+    "node_id": "PRRC_kwDOR1eIic7ILW_c",
+    "diff_hunk": "@@ -0,0 +1,19 @@\n+\"\"\"Media/social verifier passes: docs + config + calendar + no auto-post code.\"\"\"\n+\n+from __future__ import annotations\n+\n+from tests._lc_util import REPO_ROOT, load_script",
+    "path": "tests/test_media_social_verify.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'REPO_ROOT' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2343)",
+    "created_at": "2026-06-04T19:37:31Z",
+    "updated_at": "2026-06-04T19:37:32Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420956",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420956"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420956"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420956/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 5,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420960",
+    "pull_request_review_id": 4430890283,
+    "id": 3358420960,
+    "node_id": "PRRC_kwDOR1eIic7ILW_g",
+    "diff_hunk": "@@ -0,0 +1,20 @@\n+\"\"\"Site static check passes (or cleanly skips if apps/web absent).\"\"\"\n+\n+from __future__ import annotations\n+\n+from tests._lc_util import REPO_ROOT, load_script",
+    "path": "tests/test_site_launch_static_check.py",
+    "commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "original_commit_id": "cc5087c4cda53fa6a1ab61e816562da9838f70e1",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'REPO_ROOT' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2344)",
+    "created_at": "2026-06-04T19:37:31Z",
+    "updated_at": "2026-06-04T19:37:32Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420960",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420960"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/607#discussion_r3358420960"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/607"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358420960/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 5,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  }
+]

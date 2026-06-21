@@ -1,0 +1,209 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571961",
+    "pull_request_review_id": 4445303738,
+    "id": 3369571961,
+    "node_id": "PRRC_kwDOR1eIic7I15Z5",
+    "diff_hunk": "@@ -0,0 +1,148 @@\n+#!/usr/bin/env python3\n+\"\"\"Dealix margin calculator — حاسبة الهامش.\n+\n+Computes gross/net margin for an offer and checks it against the guardrails in\n+``os/config/margin_guardrails.yml``. Direct cost can be supplied explicitly or\n+estimated from ``finance/unit_economics.yml`` ratios by offer type.\n+\n+Usage:\n+  # explicit cost\n+  python scripts/calculate_margin.py --revenue 60000 --cost 21000 --kind pilot\n+\n+  # estimate cost from unit_economics ratios\n+  python scripts/calculate_margin.py --revenue 150000 --kind production --estimate\n+\n+  # JSON output (for other scripts / CI)\n+  python scripts/calculate_margin.py --revenue 15000 --kind subscription --estimate --json\n+\n+Terminal markers (grep-friendly):\n+  MARGIN_OK            -> margin meets guardrail\n+  MARGIN_BREACH        -> margin below guardrail (needs documented exception)\n+\n+Exit code 0 if margin meets the guardrail (or no guardrail applies), 1 on breach.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import json\n+import sys",
+    "path": "scripts/calculate_margin.py",
+    "commit_id": "4dfc36736c27106d1bceafc71a333e30ac701594",
+    "original_commit_id": "4dfc36736c27106d1bceafc71a333e30ac701594",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'sys' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2425)",
+    "created_at": "2026-06-07T15:05:12Z",
+    "updated_at": "2026-06-07T15:05:12Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/665#discussion_r3369571961",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/665",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571961"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/665#discussion_r3369571961"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/665"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571961/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 29,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 29,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571964",
+    "pull_request_review_id": 4445303738,
+    "id": 3369571964,
+    "node_id": "PRRC_kwDOR1eIic7I15Z8",
+    "diff_hunk": "@@ -0,0 +1,130 @@\n+\"\"\"Tests for the Dealix Pricing & Revenue Operating System.\n+\n+Pure unit tests — no network, no LLM, no DB. Validates the YAML single source of\n+truth (VAT, guardrails, ladder), the margin calculator, the quote generator\n+(drafts only), and the MRR forecast consistency.\n+\"\"\"\n+from __future__ import annotations\n+\n+from pathlib import Path\n+\n+import pytest\n+import yaml\n+\n+from scripts.calculate_margin import estimate_cost, evaluate, gross_margin\n+from scripts.generate_mrr_forecast import summarize as mrr_summarize\n+from scripts.generate_quote import build_quote, find_offer\n+\n+_REPO = Path(__file__).resolve().parents[1]\n+_CONFIG = _REPO / \"os\" / \"config\"",
+    "path": "tests/test_pricing_revenue_os.py",
+    "commit_id": "4dfc36736c27106d1bceafc71a333e30ac701594",
+    "original_commit_id": "4dfc36736c27106d1bceafc71a333e30ac701594",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused global variable\n\nThe global variable '_CONFIG' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2426)",
+    "created_at": "2026-06-07T15:05:12Z",
+    "updated_at": "2026-06-07T15:05:12Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/665#discussion_r3369571964",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/665",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571964"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/665#discussion_r3369571964"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/665"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571964/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 19,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 19,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571965",
+    "pull_request_review_id": 4445303738,
+    "id": 3369571965,
+    "node_id": "PRRC_kwDOR1eIic7I15Z9",
+    "diff_hunk": "@@ -0,0 +1,130 @@\n+\"\"\"Tests for the Dealix Pricing & Revenue Operating System.\n+\n+Pure unit tests — no network, no LLM, no DB. Validates the YAML single source of\n+truth (VAT, guardrails, ladder), the margin calculator, the quote generator\n+(drafts only), and the MRR forecast consistency.\n+\"\"\"\n+from __future__ import annotations\n+\n+from pathlib import Path\n+\n+import pytest\n+import yaml\n+\n+from scripts.calculate_margin import estimate_cost, evaluate, gross_margin\n+from scripts.generate_mrr_forecast import summarize as mrr_summarize\n+from scripts.generate_quote import build_quote, find_offer\n+\n+_REPO = Path(__file__).resolve().parents[1]\n+_CONFIG = _REPO / \"os\" / \"config\"\n+_FINANCE = _REPO / \"finance\"",
+    "path": "tests/test_pricing_revenue_os.py",
+    "commit_id": "4dfc36736c27106d1bceafc71a333e30ac701594",
+    "original_commit_id": "4dfc36736c27106d1bceafc71a333e30ac701594",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused global variable\n\nThe global variable '_FINANCE' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2427)",
+    "created_at": "2026-06-07T15:05:12Z",
+    "updated_at": "2026-06-07T15:05:12Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/665#discussion_r3369571965",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/665",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571965"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/665#discussion_r3369571965"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/665"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369571965/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 20,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 20,
+    "position": 1,
+    "subject_type": "line"
+  }
+]

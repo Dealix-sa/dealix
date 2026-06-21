@@ -1,0 +1,61 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "Closes final runtime and Docker blockers after PR #550 merge.\n\n## Fixes\n- Include platform_core in package discovery so OpenAPI import path works after pip install -e .\n- Keep apps/web/public present so Docker COPY does not fail.\n- Make apps/web Docker build resilient.\n- Include platform_core in compile check.\n\n## Validation\n- python scripts/check_openapi_contract.py\n- docker build -t dealix-apps-web-ci apps/web\n- docker build -t dealix-api-ci .\n- docker build -t dealix-worker-ci -f Dockerfile.worker .\n- docker build -t dealix-watchdog-ci -f Dockerfile.watchdog .",
+  "closedAt": "2026-06-08T18:08:03Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-08T17:47:07Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-08T17:47:07Z",
+      "messageBody": "",
+      "messageHeadline": "fix: close final launch blockers after platform merge",
+      "oid": "e3f6c4cc24414743241b5426be387231e55d5eab"
+    }
+  ],
+  "createdAt": "2026-06-08T17:47:16Z",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "additions": 1,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "apps/web/Dockerfile",
+      "additions": 1,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "apps/web/public/.gitkeep",
+      "additions": 1,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    }
+  ],
+  "headRefName": "fix/final-launch-blockers-after-pr550",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-08T18:08:03Z",
+  "number": 694,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "fix: close final launch blockers after platform merge",
+  "updatedAt": "2026-06-08T18:08:05Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/694"
+}

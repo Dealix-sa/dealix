@@ -1,0 +1,416 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901706",
+    "pull_request_review_id": 4431467235,
+    "id": 3358901706,
+    "node_id": "PRRC_kwDOR1eIic7INMXK",
+    "diff_hunk": "@@ -0,0 +1,73 @@\n+#!/usr/bin/env python3\n+\"\"\"Static check for the commercial API surface contract (no server, no network).\n+\n+The commercial/media-social API surface is documented as READ-ONLY. This check\n+verifies the QA doc exists and declares only GET endpoints, and that no\n+send/whatsapp/linkedin/smtp endpoint is declared. Read-only.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import re\n+import sys",
+    "path": "scripts/api_commercial_static_check.py",
+    "commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "original_commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'sys' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2363)",
+    "created_at": "2026-06-04T21:06:04Z",
+    "updated_at": "2026-06-04T21:06:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901706",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901706"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901706"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901706/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 12,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 12,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901712",
+    "pull_request_review_id": 4431467235,
+    "id": 3358901712,
+    "node_id": "PRRC_kwDOR1eIic7INMXQ",
+    "diff_hunk": "@@ -0,0 +1,75 @@\n+#!/usr/bin/env python3\n+\"\"\"Daily metrics summary -> daily_metrics.json.\n+\n+Aggregates counts from the daily queue and gates. No real revenue numbers are\n+invented; revenue/pipeline fields are placeholders for manual founder input.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import json\n+import sys\n+from pathlib import Path\n+\n+sys.path.insert(0, str(Path(__file__).resolve().parent / \"lib\"))\n+\n+from startup_os_common import now_iso, output_day_dir, read_jsonl, today_str, write_json  # noqa: E402\n+\n+\n+def run(day: str) -> dict:\n+    d = output_day_dir(day)\n+    drafts = read_jsonl(d / \"draft_queue.jsonl\") if (d / \"draft_queue.jsonl\").exists() else []\n+    rejected = read_jsonl(d / \"rejected_drafts.jsonl\") if (d / \"rejected_drafts.jsonl\").exists() else []\n+    needs_research = read_jsonl(d / \"needs_research.jsonl\") if (d / \"needs_research.jsonl\").exists() else []\n+\n+    quality = _load(d / \"quality_report.json\")\n+    compliance = _load(d / \"compliance_report.json\")",
+    "path": "scripts/commercial_metrics_summary.py",
+    "commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "original_commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused local variable\n\nVariable compliance is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2367)",
+    "created_at": "2026-06-04T21:06:04Z",
+    "updated_at": "2026-06-04T21:06:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901712",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901712"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901712"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901712/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 27,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 27,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901721",
+    "pull_request_review_id": 4431467235,
+    "id": 3358901721,
+    "node_id": "PRRC_kwDOR1eIic7INMXZ",
+    "diff_hunk": "@@ -0,0 +1,95 @@\n+#!/usr/bin/env python3\n+\"\"\"Final Launch Control verifier — runs the safety-critical spine and aggregates.\n+\n+Runs (as subprocesses, file-only):\n+  - draft factory (target 400) + safety audit\n+  - commercial launch readiness\n+  - media-social verify\n+  - site launch static check\n+  - crm schema verify\n+  - api commercial static check\n+  - secret & risk scan\n+  - startup_os_verify\n+\n+Aggregates pass/fail into outputs/startup_os/final_launch_control.{json,md}.\n+Exit 0 only if all critical checks pass. Read-only / file-only.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json",
+    "path": "scripts/final_launch_control_verify.py",
+    "commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "original_commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'json' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2364)",
+    "created_at": "2026-06-04T21:06:04Z",
+    "updated_at": "2026-06-04T21:06:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901721",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901721"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901721"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901721/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 20,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 20,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901735",
+    "pull_request_review_id": 4431467235,
+    "id": 3358901735,
+    "node_id": "PRRC_kwDOR1eIic7INMXn",
+    "diff_hunk": "@@ -0,0 +1,82 @@\n+#!/usr/bin/env python3\n+\"\"\"Static checks for the website launch readiness (no build, no network).\n+\n+Verifies SEO infrastructure exists in apps/web, the site-launch copy deck is\n+present and bilingual, and no exaggerated/guarantee claims appear in the copy.\n+Read-only.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import re",
+    "path": "scripts/site_launch_static_check.py",
+    "commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "original_commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 're' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2365)",
+    "created_at": "2026-06-04T21:06:04Z",
+    "updated_at": "2026-06-04T21:06:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901735",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901735"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901735"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901735/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 11,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 11,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901746",
+    "pull_request_review_id": 4431467235,
+    "id": 3358901746,
+    "node_id": "PRRC_kwDOR1eIic7INMXy",
+    "diff_hunk": "@@ -0,0 +1,82 @@\n+#!/usr/bin/env python3\n+\"\"\"Static checks for the website launch readiness (no build, no network).\n+\n+Verifies SEO infrastructure exists in apps/web, the site-launch copy deck is\n+present and bilingual, and no exaggerated/guarantee claims appear in the copy.\n+Read-only.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import re\n+import sys",
+    "path": "scripts/site_launch_static_check.py",
+    "commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "original_commit_id": "f43f49b2cae1a266f3ba509b30a7da5d2f7ccb69",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'sys' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2366)",
+    "created_at": "2026-06-04T21:06:04Z",
+    "updated_at": "2026-06-04T21:06:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901746",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901746"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358901746"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358901746/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 12,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 12,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358939506",
+    "pull_request_review_id": 4431509775,
+    "id": 3358939506,
+    "node_id": "PRRC_kwDOR1eIic7INVly",
+    "diff_hunk": "@@ -0,0 +1,101 @@\n+#!/usr/bin/env python3\n+\"\"\"Scan the Startup OS additions for committed secrets and risky patterns.\n+\n+Scope (by default): the files this initiative adds/owns — config/, data/,\n+docs/ (the OS trees), scripts/commercial_*, scripts/media_social_*,\n+scripts/site_launch_*, scripts/api_commercial_*, scripts/final_*,\n+scripts/startup_os_*, scripts/lib/startup_os_common.py, and the new workflows.\n+Flags real-looking secrets. Example/placeholder values are allowed.\n+\n+Read-only. Exit non-zero if a real secret is found.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import re\n+import sys",
+    "path": "scripts/final_secret_and_risk_scan.py",
+    "commit_id": "2fc5a71a8cecfeef13b5ef3b349138a4a7bb6296",
+    "original_commit_id": "2fc5a71a8cecfeef13b5ef3b349138a4a7bb6296",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'sys' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2368)",
+    "created_at": "2026-06-04T21:13:19Z",
+    "updated_at": "2026-06-04T21:13:19Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358939506",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358939506"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/611#discussion_r3358939506"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/611"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358939506/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 17,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 17,
+    "position": 1,
+    "subject_type": "line"
+  }
+]

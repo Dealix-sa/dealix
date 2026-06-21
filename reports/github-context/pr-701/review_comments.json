@@ -1,0 +1,209 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103510",
+    "pull_request_review_id": 4453118203,
+    "id": 3376103510,
+    "node_id": "PRRC_kwDOR1eIic7JO0BW",
+    "diff_hunk": "@@ -0,0 +1,272 @@\n+\"\"\"Transformation OS Proposal Generator — bilingual (AR+EN), governed, stateless.\n+\n+Builds an enterprise transformation proposal from the canonical service catalog\n+(`auto_client_acquisition.service_catalog`). It NEVER hardcodes prices (Article 11\n++ no_invented_crm_kpi) — every figure is read from the registry and stamped as an\n+estimate (Article 8). Output defaults to `approval_status=\"approval_required\"` and\n+is never auto-sent (NO_LIVE_SEND). Guaranteed-outcome language in the request is\n+rejected (doctrine: no_guaranteed_sales_claims).\n+\n+Input:  TransformationProposalRequest (company, sector, selected_system_ids, …)\n+Output: TransformationProposal (line items from catalog + bilingual markdown)\n+Gate:   approval_required — founder reviews before anything reaches a customer.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import hashlib\n+import json\n+import logging\n+from datetime import UTC, datetime\n+from typing import Any\n+\n+from pydantic import BaseModel, ConfigDict, Field\n+\n+from auto_client_acquisition.service_catalog import get_offering\n+\n+log = logging.getLogger(__name__)\n+\n+# Tokens that would turn a proposal into a forbidden guarantee (doctrine).\n+_FORBIDDEN_AR = (\"نضمن\", \"ضمان مؤكد\", \"مضمون\")\n+_FORBIDDEN_EN = (\"guarantee\", \"guaranteed\")\n+\n+_DISCLAIMER_AR = \"القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.\"\n+_APPROVAL_NOTE_AR = \"هذا العرض للمراجعة فقط — لن يُرسَل لأي عميل دون موافقة المؤسس.\"\n+_APPROVAL_NOTE_EN = \"This proposal is for review only — will not be sent without founder approval.\"\n+\n+\n+class TransformationProposalError(ValueError):\n+    \"\"\"Raised on doctrine violation or empty/invalid selection. Routers map → 400.\"\"\"\n+\n+\n+class TransformationProposalRequest(BaseModel):\n+    model_config = ConfigDict(extra=\"forbid\")\n+\n+    company_name: str = Field(..., min_length=1)\n+    sector: str = \"b2b_services\"\n+    selected_system_ids: list[str] = Field(default_factory=list)\n+    stakeholders: list[str] = Field(default_factory=list)  # e.g. CEO, CFO, CTO, COO\n+    pain_points: list[str] = Field(default_factory=list)\n+    notes: str = \"\"\n+\n+\n+class ProposalLineItem(BaseModel):\n+    system_id: str\n+    name_ar: str\n+    name_en: str\n+    price_unit: str\n+    setup_sar_min: float\n+    setup_sar_max: float | None = None\n+    monthly_sar_min: float | None = None\n+    monthly_sar_max: float | None = None\n+    deliverables: list[str] = Field(default_factory=list)\n+    is_estimate: bool = True\n+\n+\n+class TransformationProposal(BaseModel):\n+    proposal_id: str\n+    company_name: str\n+    sector: str\n+    generated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))\n+    stakeholders: list[str] = Field(default_factory=list)\n+    line_items: list[ProposalLineItem]\n+    unknown_system_ids: list[str] = Field(default_factory=list)\n+    total_setup_sar_min: float = 0.0\n+    total_setup_sar_max: float = 0.0\n+    total_monthly_sar_min: float = 0.0\n+    total_monthly_sar_max: float = 0.0\n+    markdown_ar_en: str = \"\"\n+    is_estimate: bool = True\n+    approval_status: str = \"approval_required\"\n+    governance_decision: str = \"pending\"  # pending | approved | rejected\n+\n+    def to_dict(self) -> dict[str, Any]:\n+        return json.loads(self.model_dump_json())\n+\n+\n+class TransformationProposalGenerator:\n+    \"\"\"Assembles a bilingual transformation proposal from catalog offerings.\"\"\"\n+\n+    def generate(self, req: TransformationProposalRequest) -> TransformationProposal:\n+        self._guard_no_guarantee(req)\n+\n+        if not req.selected_system_ids:\n+            raise TransformationProposalError(\n+                \"selected_system_ids is empty — اختر نظامًا واحدًا على الأقل من الكتالوج.\"\n+            )\n+\n+        line_items: list[ProposalLineItem] = []\n+        unknown: list[str] = []\n+        for sid in req.selected_system_ids:\n+            offering = get_offering(sid)\n+            # Only enterprise transformation systems are valid here.\n+            if offering is None or offering.customer_journey_stage != \"transformation\":\n+                unknown.append(sid)\n+                continue\n+            line_items.append(\n+                ProposalLineItem(\n+                    system_id=offering.id,\n+                    name_ar=offering.name_ar,\n+                    name_en=offering.name_en,\n+                    price_unit=offering.price_unit,\n+                    setup_sar_min=offering.price_sar,\n+                    setup_sar_max=offering.price_sar_max,\n+                    monthly_sar_min=offering.price_monthly_sar_min,\n+                    monthly_sar_max=offering.price_monthly_sar_max,\n+                    deliverables=list(offering.deliverables),\n+                )\n+            )\n+\n+        if not line_items:\n+            raise TransformationProposalError(\n+                \"No valid transformation systems selected — \"\n+                f\"unknown ids: {', '.join(unknown) or '(none)'}\"\n+            )\n+\n+        totals = self._totals(line_items)\n+        proposal_id = self._proposal_id(req)\n+        proposal = TransformationProposal(\n+            proposal_id=proposal_id,\n+            company_name=req.company_name,\n+            sector=req.sector,\n+            stakeholders=list(req.stakeholders),\n+            line_items=line_items,\n+            unknown_system_ids=unknown,\n+            **totals,\n+        )\n+        proposal.markdown_ar_en = self._render_markdown(req, proposal)\n+        log.info(\n+            \"transformation_proposal_generated proposal_id=%s company=%s systems=%d\",\n+            proposal_id,\n+            req.company_name,",
+    "path": "dealix/commercial/transformation_proposal.py",
+    "commit_id": "2be13325dd75041f14f4eb196d34aa0d68df38b0",
+    "original_commit_id": "68d2d57d36c26049b1ca8ebbf63478ce687bab82",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\nThis log entry depends on a [user-provided value](2).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2503)",
+    "created_at": "2026-06-08T20:20:17Z",
+    "updated_at": "2026-06-08T20:20:17Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/701#discussion_r3376103510",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/701",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103510"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/701#discussion_r3376103510"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/701"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103510/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 141,
+    "original_line": 141,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 141,
+    "position": 141,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103521",
+    "pull_request_review_id": 4453118203,
+    "id": 3376103521,
+    "node_id": "PRRC_kwDOR1eIic7JO0Bh",
+    "diff_hunk": "@@ -0,0 +1,272 @@\n+\"\"\"Transformation OS Proposal Generator — bilingual (AR+EN), governed, stateless.\n+\n+Builds an enterprise transformation proposal from the canonical service catalog\n+(`auto_client_acquisition.service_catalog`). It NEVER hardcodes prices (Article 11\n++ no_invented_crm_kpi) — every figure is read from the registry and stamped as an\n+estimate (Article 8). Output defaults to `approval_status=\"approval_required\"` and\n+is never auto-sent (NO_LIVE_SEND). Guaranteed-outcome language in the request is\n+rejected (doctrine: no_guaranteed_sales_claims).\n+\n+Input:  TransformationProposalRequest (company, sector, selected_system_ids, …)\n+Output: TransformationProposal (line items from catalog + bilingual markdown)\n+Gate:   approval_required — founder reviews before anything reaches a customer.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import hashlib\n+import json\n+import logging\n+from datetime import UTC, datetime\n+from typing import Any\n+\n+from pydantic import BaseModel, ConfigDict, Field\n+\n+from auto_client_acquisition.service_catalog import get_offering\n+\n+log = logging.getLogger(__name__)\n+\n+# Tokens that would turn a proposal into a forbidden guarantee (doctrine).\n+_FORBIDDEN_AR = (\"نضمن\", \"ضمان مؤكد\", \"مضمون\")\n+_FORBIDDEN_EN = (\"guarantee\", \"guaranteed\")\n+\n+_DISCLAIMER_AR = \"القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.\"\n+_APPROVAL_NOTE_AR = \"هذا العرض للمراجعة فقط — لن يُرسَل لأي عميل دون موافقة المؤسس.\"\n+_APPROVAL_NOTE_EN = \"This proposal is for review only — will not be sent without founder approval.\"\n+\n+\n+class TransformationProposalError(ValueError):\n+    \"\"\"Raised on doctrine violation or empty/invalid selection. Routers map → 400.\"\"\"\n+\n+\n+class TransformationProposalRequest(BaseModel):\n+    model_config = ConfigDict(extra=\"forbid\")\n+\n+    company_name: str = Field(..., min_length=1)\n+    sector: str = \"b2b_services\"\n+    selected_system_ids: list[str] = Field(default_factory=list)\n+    stakeholders: list[str] = Field(default_factory=list)  # e.g. CEO, CFO, CTO, COO\n+    pain_points: list[str] = Field(default_factory=list)\n+    notes: str = \"\"\n+\n+\n+class ProposalLineItem(BaseModel):\n+    system_id: str\n+    name_ar: str\n+    name_en: str\n+    price_unit: str\n+    setup_sar_min: float\n+    setup_sar_max: float | None = None\n+    monthly_sar_min: float | None = None\n+    monthly_sar_max: float | None = None\n+    deliverables: list[str] = Field(default_factory=list)\n+    is_estimate: bool = True\n+\n+\n+class TransformationProposal(BaseModel):\n+    proposal_id: str\n+    company_name: str\n+    sector: str\n+    generated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))\n+    stakeholders: list[str] = Field(default_factory=list)\n+    line_items: list[ProposalLineItem]\n+    unknown_system_ids: list[str] = Field(default_factory=list)\n+    total_setup_sar_min: float = 0.0\n+    total_setup_sar_max: float = 0.0\n+    total_monthly_sar_min: float = 0.0\n+    total_monthly_sar_max: float = 0.0\n+    markdown_ar_en: str = \"\"\n+    is_estimate: bool = True\n+    approval_status: str = \"approval_required\"\n+    governance_decision: str = \"pending\"  # pending | approved | rejected\n+\n+    def to_dict(self) -> dict[str, Any]:\n+        return json.loads(self.model_dump_json())\n+\n+\n+class TransformationProposalGenerator:\n+    \"\"\"Assembles a bilingual transformation proposal from catalog offerings.\"\"\"\n+\n+    def generate(self, req: TransformationProposalRequest) -> TransformationProposal:\n+        self._guard_no_guarantee(req)\n+\n+        if not req.selected_system_ids:\n+            raise TransformationProposalError(\n+                \"selected_system_ids is empty — اختر نظامًا واحدًا على الأقل من الكتالوج.\"\n+            )\n+\n+        line_items: list[ProposalLineItem] = []\n+        unknown: list[str] = []\n+        for sid in req.selected_system_ids:\n+            offering = get_offering(sid)\n+            # Only enterprise transformation systems are valid here.\n+            if offering is None or offering.customer_journey_stage != \"transformation\":\n+                unknown.append(sid)\n+                continue\n+            line_items.append(\n+                ProposalLineItem(\n+                    system_id=offering.id,\n+                    name_ar=offering.name_ar,\n+                    name_en=offering.name_en,\n+                    price_unit=offering.price_unit,\n+                    setup_sar_min=offering.price_sar,\n+                    setup_sar_max=offering.price_sar_max,\n+                    monthly_sar_min=offering.price_monthly_sar_min,\n+                    monthly_sar_max=offering.price_monthly_sar_max,\n+                    deliverables=list(offering.deliverables),\n+                )\n+            )\n+\n+        if not line_items:\n+            raise TransformationProposalError(\n+                \"No valid transformation systems selected — \"\n+                f\"unknown ids: {', '.join(unknown) or '(none)'}\"\n+            )\n+\n+        totals = self._totals(line_items)\n+        proposal_id = self._proposal_id(req)\n+        proposal = TransformationProposal(\n+            proposal_id=proposal_id,\n+            company_name=req.company_name,\n+            sector=req.sector,\n+            stakeholders=list(req.stakeholders),\n+            line_items=line_items,\n+            unknown_system_ids=unknown,\n+            **totals,\n+        )\n+        proposal.markdown_ar_en = self._render_markdown(req, proposal)\n+        log.info(\n+            \"transformation_proposal_generated proposal_id=%s company=%s systems=%d\",\n+            proposal_id,\n+            req.company_name,\n+            len(line_items),\n+        )\n+        return proposal\n+\n+    # ── helpers ──────────────────────────────────────────────────────────\n+\n+    def _guard_no_guarantee(self, req: TransformationProposalRequest) -> None:\n+        blob = \" \".join([req.notes, *req.pain_points]).lower()\n+        if any(tok in blob for tok in _FORBIDDEN_EN) or any(\n+            tok in (req.notes + \" \".join(req.pain_points)) for tok in _FORBIDDEN_AR\n+        ):\n+            raise TransformationProposalError(\n+                \"Guaranteed-outcome language is forbidden (no_guaranteed_sales_claims) — \"\n+                \"ممنوع وعود مبيعات مضمونة.\"\n+            )\n+\n+    @staticmethod\n+    def _proposal_id(req: TransformationProposalRequest) -> str:\n+        seed = f\"{req.company_name}{req.sector}{datetime.now(UTC).isoformat()}\"\n+        return \"txp_\" + hashlib.sha256(seed.encode()).hexdigest()[:16]\n+\n+    @staticmethod\n+    def _totals(items: list[ProposalLineItem]) -> dict[str, float]:\n+        setup_min = sum(i.setup_sar_min for i in items)\n+        # For the ceiling, fall back to the floor when a system has no max (custom).\n+        setup_max = sum(\n+            (i.setup_sar_max if i.setup_sar_max is not None else i.setup_sar_min) for i in items\n+        )\n+        monthly_min = sum((i.monthly_sar_min or 0.0) for i in items)\n+        monthly_max = sum(\n+            (i.monthly_sar_max if i.monthly_sar_max is not None else (i.monthly_sar_min or 0.0))\n+            for i in items\n+        )\n+        return {\n+            \"total_setup_sar_min\": float(setup_min),\n+            \"total_setup_sar_max\": float(setup_max),\n+            \"total_monthly_sar_min\": float(monthly_min),\n+            \"total_monthly_sar_max\": float(monthly_max),\n+        }\n+\n+    @staticmethod\n+    def _fmt_range(low: float | None, high: float | None) -> str:\n+        if not low and not high:\n+            return \"Custom / مخصص\"\n+        lo = f\"{int(low):,}\" if low else \"0\"\n+        if high is None or high == low:\n+            return f\"{lo} SAR\"\n+        return f\"{lo}–{int(high):,} SAR\"\n+\n+    def _render_markdown(\n+        self, req: TransformationProposalRequest, p: TransformationProposal\n+    ) -> str:\n+        now = p.generated_at.strftime(\"%Y-%m-%d\")\n+        lines: list[str] = [\n+            f\"# عرض التحول — {req.company_name}\",\n+            f\"**Dealix Transformation Proposal — {req.company_name}**\",\n+            \"\",\n+            f\"المعرف: `{p.proposal_id}` | التاريخ: {now} | الحالة: **يتطلب موافقة المؤسس**\",\n+            f\"ID: `{p.proposal_id}` | Date: {now} | Status: **approval_required**\",\n+            \"\",\n+            f\"القطاع / Sector: {req.sector}\",\n+        ]\n+        if req.stakeholders:\n+            lines.append(f\"أصحاب القرار / Stakeholders: {', '.join(req.stakeholders)}\")\n+        lines += [\n+            \"\",\n+            \"## ملخص تنفيذي / Executive Summary\",\n+            \"\",\n+            \"نصمّم نظام تشغيل أعمال AI-native يحوّل العمليات اليومية إلى workflows \"\n+            \"قابلة للقياس، مرتبطة بالمبيعات والتقارير والحوكمة وتجربة العميل.\",",
+    "path": "dealix/commercial/transformation_proposal.py",
+    "commit_id": "2be13325dd75041f14f4eb196d34aa0d68df38b0",
+    "original_commit_id": "68d2d57d36c26049b1ca8ebbf63478ce687bab82",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Implicit string concatenation in a list\n\nImplicit string concatenation. Maybe missing a comma?\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2504)",
+    "created_at": "2026-06-08T20:20:17Z",
+    "updated_at": "2026-06-08T20:20:17Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/701#discussion_r3376103521",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/701",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103521"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/701#discussion_r3376103521"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/701"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103521/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": 210,
+    "original_start_line": 210,
+    "start_side": "RIGHT",
+    "line": 211,
+    "original_line": 211,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 211,
+    "position": 211,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103524",
+    "pull_request_review_id": 4453118203,
+    "id": 3376103524,
+    "node_id": "PRRC_kwDOR1eIic7JO0Bk",
+    "diff_hunk": "@@ -0,0 +1,272 @@\n+\"\"\"Transformation OS Proposal Generator — bilingual (AR+EN), governed, stateless.\n+\n+Builds an enterprise transformation proposal from the canonical service catalog\n+(`auto_client_acquisition.service_catalog`). It NEVER hardcodes prices (Article 11\n++ no_invented_crm_kpi) — every figure is read from the registry and stamped as an\n+estimate (Article 8). Output defaults to `approval_status=\"approval_required\"` and\n+is never auto-sent (NO_LIVE_SEND). Guaranteed-outcome language in the request is\n+rejected (doctrine: no_guaranteed_sales_claims).\n+\n+Input:  TransformationProposalRequest (company, sector, selected_system_ids, …)\n+Output: TransformationProposal (line items from catalog + bilingual markdown)\n+Gate:   approval_required — founder reviews before anything reaches a customer.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import hashlib\n+import json\n+import logging\n+from datetime import UTC, datetime\n+from typing import Any\n+\n+from pydantic import BaseModel, ConfigDict, Field\n+\n+from auto_client_acquisition.service_catalog import get_offering\n+\n+log = logging.getLogger(__name__)\n+\n+# Tokens that would turn a proposal into a forbidden guarantee (doctrine).\n+_FORBIDDEN_AR = (\"نضمن\", \"ضمان مؤكد\", \"مضمون\")\n+_FORBIDDEN_EN = (\"guarantee\", \"guaranteed\")\n+\n+_DISCLAIMER_AR = \"القيمة التقديرية ليست قيمة مُتحقَّقة — Estimated value is not Verified value.\"\n+_APPROVAL_NOTE_AR = \"هذا العرض للمراجعة فقط — لن يُرسَل لأي عميل دون موافقة المؤسس.\"\n+_APPROVAL_NOTE_EN = \"This proposal is for review only — will not be sent without founder approval.\"\n+\n+\n+class TransformationProposalError(ValueError):\n+    \"\"\"Raised on doctrine violation or empty/invalid selection. Routers map → 400.\"\"\"\n+\n+\n+class TransformationProposalRequest(BaseModel):\n+    model_config = ConfigDict(extra=\"forbid\")\n+\n+    company_name: str = Field(..., min_length=1)\n+    sector: str = \"b2b_services\"\n+    selected_system_ids: list[str] = Field(default_factory=list)\n+    stakeholders: list[str] = Field(default_factory=list)  # e.g. CEO, CFO, CTO, COO\n+    pain_points: list[str] = Field(default_factory=list)\n+    notes: str = \"\"\n+\n+\n+class ProposalLineItem(BaseModel):\n+    system_id: str\n+    name_ar: str\n+    name_en: str\n+    price_unit: str\n+    setup_sar_min: float\n+    setup_sar_max: float | None = None\n+    monthly_sar_min: float | None = None\n+    monthly_sar_max: float | None = None\n+    deliverables: list[str] = Field(default_factory=list)\n+    is_estimate: bool = True\n+\n+\n+class TransformationProposal(BaseModel):\n+    proposal_id: str\n+    company_name: str\n+    sector: str\n+    generated_at: datetime = Field(default_factory=lambda: datetime.now(UTC))\n+    stakeholders: list[str] = Field(default_factory=list)\n+    line_items: list[ProposalLineItem]\n+    unknown_system_ids: list[str] = Field(default_factory=list)\n+    total_setup_sar_min: float = 0.0\n+    total_setup_sar_max: float = 0.0\n+    total_monthly_sar_min: float = 0.0\n+    total_monthly_sar_max: float = 0.0\n+    markdown_ar_en: str = \"\"\n+    is_estimate: bool = True\n+    approval_status: str = \"approval_required\"\n+    governance_decision: str = \"pending\"  # pending | approved | rejected\n+\n+    def to_dict(self) -> dict[str, Any]:\n+        return json.loads(self.model_dump_json())\n+\n+\n+class TransformationProposalGenerator:\n+    \"\"\"Assembles a bilingual transformation proposal from catalog offerings.\"\"\"\n+\n+    def generate(self, req: TransformationProposalRequest) -> TransformationProposal:\n+        self._guard_no_guarantee(req)\n+\n+        if not req.selected_system_ids:\n+            raise TransformationProposalError(\n+                \"selected_system_ids is empty — اختر نظامًا واحدًا على الأقل من الكتالوج.\"\n+            )\n+\n+        line_items: list[ProposalLineItem] = []\n+        unknown: list[str] = []\n+        for sid in req.selected_system_ids:\n+            offering = get_offering(sid)\n+            # Only enterprise transformation systems are valid here.\n+            if offering is None or offering.customer_journey_stage != \"transformation\":\n+                unknown.append(sid)\n+                continue\n+            line_items.append(\n+                ProposalLineItem(\n+                    system_id=offering.id,\n+                    name_ar=offering.name_ar,\n+                    name_en=offering.name_en,\n+                    price_unit=offering.price_unit,\n+                    setup_sar_min=offering.price_sar,\n+                    setup_sar_max=offering.price_sar_max,\n+                    monthly_sar_min=offering.price_monthly_sar_min,\n+                    monthly_sar_max=offering.price_monthly_sar_max,\n+                    deliverables=list(offering.deliverables),\n+                )\n+            )\n+\n+        if not line_items:\n+            raise TransformationProposalError(\n+                \"No valid transformation systems selected — \"\n+                f\"unknown ids: {', '.join(unknown) or '(none)'}\"\n+            )\n+\n+        totals = self._totals(line_items)\n+        proposal_id = self._proposal_id(req)\n+        proposal = TransformationProposal(\n+            proposal_id=proposal_id,\n+            company_name=req.company_name,\n+            sector=req.sector,\n+            stakeholders=list(req.stakeholders),\n+            line_items=line_items,\n+            unknown_system_ids=unknown,\n+            **totals,\n+        )\n+        proposal.markdown_ar_en = self._render_markdown(req, proposal)\n+        log.info(\n+            \"transformation_proposal_generated proposal_id=%s company=%s systems=%d\",\n+            proposal_id,\n+            req.company_name,\n+            len(line_items),\n+        )\n+        return proposal\n+\n+    # ── helpers ──────────────────────────────────────────────────────────\n+\n+    def _guard_no_guarantee(self, req: TransformationProposalRequest) -> None:\n+        blob = \" \".join([req.notes, *req.pain_points]).lower()\n+        if any(tok in blob for tok in _FORBIDDEN_EN) or any(\n+            tok in (req.notes + \" \".join(req.pain_points)) for tok in _FORBIDDEN_AR\n+        ):\n+            raise TransformationProposalError(\n+                \"Guaranteed-outcome language is forbidden (no_guaranteed_sales_claims) — \"\n+                \"ممنوع وعود مبيعات مضمونة.\"\n+            )\n+\n+    @staticmethod\n+    def _proposal_id(req: TransformationProposalRequest) -> str:\n+        seed = f\"{req.company_name}{req.sector}{datetime.now(UTC).isoformat()}\"\n+        return \"txp_\" + hashlib.sha256(seed.encode()).hexdigest()[:16]\n+\n+    @staticmethod\n+    def _totals(items: list[ProposalLineItem]) -> dict[str, float]:\n+        setup_min = sum(i.setup_sar_min for i in items)\n+        # For the ceiling, fall back to the floor when a system has no max (custom).\n+        setup_max = sum(\n+            (i.setup_sar_max if i.setup_sar_max is not None else i.setup_sar_min) for i in items\n+        )\n+        monthly_min = sum((i.monthly_sar_min or 0.0) for i in items)\n+        monthly_max = sum(\n+            (i.monthly_sar_max if i.monthly_sar_max is not None else (i.monthly_sar_min or 0.0))\n+            for i in items\n+        )\n+        return {\n+            \"total_setup_sar_min\": float(setup_min),\n+            \"total_setup_sar_max\": float(setup_max),\n+            \"total_monthly_sar_min\": float(monthly_min),\n+            \"total_monthly_sar_max\": float(monthly_max),\n+        }\n+\n+    @staticmethod\n+    def _fmt_range(low: float | None, high: float | None) -> str:\n+        if not low and not high:\n+            return \"Custom / مخصص\"\n+        lo = f\"{int(low):,}\" if low else \"0\"\n+        if high is None or high == low:\n+            return f\"{lo} SAR\"\n+        return f\"{lo}–{int(high):,} SAR\"\n+\n+    def _render_markdown(\n+        self, req: TransformationProposalRequest, p: TransformationProposal\n+    ) -> str:\n+        now = p.generated_at.strftime(\"%Y-%m-%d\")\n+        lines: list[str] = [\n+            f\"# عرض التحول — {req.company_name}\",\n+            f\"**Dealix Transformation Proposal — {req.company_name}**\",\n+            \"\",\n+            f\"المعرف: `{p.proposal_id}` | التاريخ: {now} | الحالة: **يتطلب موافقة المؤسس**\",\n+            f\"ID: `{p.proposal_id}` | Date: {now} | Status: **approval_required**\",\n+            \"\",\n+            f\"القطاع / Sector: {req.sector}\",\n+        ]\n+        if req.stakeholders:\n+            lines.append(f\"أصحاب القرار / Stakeholders: {', '.join(req.stakeholders)}\")\n+        lines += [\n+            \"\",\n+            \"## ملخص تنفيذي / Executive Summary\",\n+            \"\",\n+            \"نصمّم نظام تشغيل أعمال AI-native يحوّل العمليات اليومية إلى workflows \"\n+            \"قابلة للقياس، مرتبطة بالمبيعات والتقارير والحوكمة وتجربة العميل.\",\n+            \"\",\n+            \"We design an AI-native business operating system that turns daily operations \"\n+            \"into measurable workflows wired to sales, reporting, governance, and CX.\",",
+    "path": "dealix/commercial/transformation_proposal.py",
+    "commit_id": "2be13325dd75041f14f4eb196d34aa0d68df38b0",
+    "original_commit_id": "68d2d57d36c26049b1ca8ebbf63478ce687bab82",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Implicit string concatenation in a list\n\nImplicit string concatenation. Maybe missing a comma?\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2505)",
+    "created_at": "2026-06-08T20:20:17Z",
+    "updated_at": "2026-06-08T20:20:17Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/701#discussion_r3376103524",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/701",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103524"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/701#discussion_r3376103524"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/701"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3376103524/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": 213,
+    "original_start_line": 213,
+    "start_side": "RIGHT",
+    "line": 214,
+    "original_line": 214,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 214,
+    "position": 214,
+    "subject_type": "line"
+  }
+]

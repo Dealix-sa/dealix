@@ -1,0 +1,899 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585806",
+    "pull_request_review_id": 4445315713,
+    "id": 3369585806,
+    "node_id": "PRRC_kwDOR1eIic7I18yO",
+    "diff_hunk": "@@ -140,6 +140,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        email,",
+    "path": "api/routers/public.py",
+    "commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "original_commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2433)",
+    "created_at": "2026-06-07T15:15:08Z",
+    "updated_at": "2026-06-07T15:15:08Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585806",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585806"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585806"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585806/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 231,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 92,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585810",
+    "pull_request_review_id": 4445315713,
+    "id": 3369585810,
+    "node_id": "PRRC_kwDOR1eIic7I18yS",
+    "diff_hunk": "@@ -140,6 +140,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        email,\n+        company,",
+    "path": "api/routers/public.py",
+    "commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "original_commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2434)",
+    "created_at": "2026-06-07T15:15:08Z",
+    "updated_at": "2026-06-07T15:15:08Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585810",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585810"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585810"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585810/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 232,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 93,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585816",
+    "pull_request_review_id": 4445315713,
+    "id": 3369585816,
+    "node_id": "PRRC_kwDOR1eIic7I18yY",
+    "diff_hunk": "@@ -140,6 +140,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        email,\n+        company,\n+        sector,",
+    "path": "api/routers/public.py",
+    "commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "original_commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2435)",
+    "created_at": "2026-06-07T15:15:08Z",
+    "updated_at": "2026-06-07T15:15:08Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585816",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585816"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585816"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585816/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 233,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 94,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585818",
+    "pull_request_review_id": 4445315713,
+    "id": 3369585818,
+    "node_id": "PRRC_kwDOR1eIic7I18ya",
+    "diff_hunk": "@@ -140,6 +140,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        email,\n+        company,\n+        sector,\n+        budget_band,",
+    "path": "api/routers/public.py",
+    "commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "original_commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2436)",
+    "created_at": "2026-06-07T15:15:08Z",
+    "updated_at": "2026-06-07T15:15:08Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585818",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585818"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585818"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585818/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 234,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 95,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585820",
+    "pull_request_review_id": 4445315713,
+    "id": 3369585820,
+    "node_id": "PRRC_kwDOR1eIic7I18yc",
+    "diff_hunk": "@@ -140,6 +140,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        email,\n+        company,\n+        sector,\n+        budget_band,\n+        lead_id,\n+    )\n+\n+    # Wave: transactional confirmation — best-effort, never blocks the 200.\n+    # Reuses the whitelisted diagnostic-intake confirmation kind. No-ops if\n+    # Gmail OAuth isn't configured.\n+    transactional_status = \"skipped_not_configured\"",
+    "path": "api/routers/public.py",
+    "commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "original_commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Variable defined multiple times\n\nThis assignment to 'transactional_status' is unnecessary as it is [redefined](1) before this value is used.\nThis assignment to 'transactional_status' is unnecessary as it is [redefined](2) before this value is used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2437)",
+    "created_at": "2026-06-07T15:15:08Z",
+    "updated_at": "2026-06-07T15:15:08Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585820",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585820"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369585820"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369585820/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 241,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 102,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369598940",
+    "pull_request_review_id": 4445327086,
+    "id": 3369598940,
+    "node_id": "PRRC_kwDOR1eIic7I1__c",
+    "diff_hunk": "@@ -0,0 +1,464 @@\n+\"use client\";\n+\n+import { useLocale } from \"next-intl\";\n+import { useState } from \"react\";\n+import Link from \"next/link\";\n+import { Button } from \"@/components/ui/button\";\n+import { Input } from \"@/components/ui/input\";\n+import { Label } from \"@/components/ui/label\";\n+import { Card } from \"@/components/ui/card\";\n+import { Badge } from \"@/components/ui/badge\";\n+\n+/**\n+ * Custom AI Service intake — commercial ladder Rung 4 (5,000–25,000 SAR + 1,000/mo).\n+ * Captures a bespoke AI project request and posts it to the governed public\n+ * endpoint POST /api/v1/public/custom-ai-request, which stores it as a lead\n+ * for founder review. No external action happens without founder approval.\n+ */\n+\n+type Option = { value: string; ar: string; en: string };\n+\n+const SECTORS: Option[] = [\n+  { value: \"real_estate\", ar: \"عقارات\", en: \"Real Estate\" },\n+  { value: \"b2b_services\", ar: \"خدمات B2B\", en: \"B2B Services\" },\n+  { value: \"agency\", ar: \"وكالة تسويق\", en: \"Marketing Agency\" },\n+  { value: \"consulting\", ar: \"استشارات\", en: \"Consulting\" },\n+  { value: \"retail\", ar: \"تجزئة / تجارة\", en: \"Retail / Commerce\" },\n+  { value: \"finance\", ar: \"تمويل / بنوك\", en: \"Finance / Banking\" },\n+  { value: \"healthcare\", ar: \"رعاية صحية\", en: \"Healthcare\" },\n+  { value: \"other\", ar: \"أخرى\", en: \"Other\" },\n+];\n+\n+const USE_CASES: { id: string; icon: string; ar: { t: string; d: string }; en: { t: string; d: string } }[] = [\n+  {\n+    id: \"lead_intelligence\",\n+    icon: \"🎯\",\n+    ar: { t: \"ذكاء العملاء المحتملين\", d: \"تأهيل وترتيب وإثراء العملاء حسب ICP مع حوكمة PDPL\" },\n+    en: { t: \"Lead Intelligence\", d: \"ICP scoring, enrichment & qualification with PDPL governance\" },\n+  },\n+  {\n+    id: \"revenue_ops\",\n+    icon: \"📈\",\n+    ar: { t: \"أتمتة عمليات الإيراد\", d: \"Workflows حتمية للمتابعة والتسعير والقرارات بموافقة بشرية\" },\n+    en: { t: \"Revenue Ops Automation\", d: \"Deterministic follow-up, pricing & decision workflows with human approval\" },\n+  },\n+  {\n+    id: \"agent_copilot\",\n+    icon: \"🤖\",\n+    ar: { t: \"Copilot / وكيل مخصّص\", d: \"مساعد AI لفريقك يجيب من مصادرك فقط — لا إجابات بلا مصدر\" },\n+    en: { t: \"Custom Copilot / Agent\", d: \"An AI assistant grounded only in your sources — no source-less answers\" },\n+  },\n+  {\n+    id: \"doc_intelligence\",\n+    icon: \"📄\",\n+    ar: { t: \"ذكاء المستندات\", d: \"استخراج وتحليل العقود والفواتير والتقارير مع audit trail\" },\n+    en: { t: \"Document Intelligence\", d: \"Extract & analyze contracts, invoices & reports with an audit trail\" },\n+  },\n+  {\n+    id: \"compliance_engine\",\n+    icon: \"🛡️\",\n+    ar: { t: \"محرك امتثال\", d: \"فحوصات PDPL / ZATCA مدمجة في عملياتك مع أدلة لكل قرار\" },\n+    en: { t: \"Compliance Engine\", d: \"PDPL / ZATCA checks embedded in your ops with evidence per decision\" },\n+  },\n+  {\n+    id: \"other\",\n+    icon: \"✨\",\n+    ar: { t: \"شيء آخر\", d: \"صف فكرتك — نحوّلها إلى Scope موقَّع قبل أي تنفيذ\" },\n+    en: { t: \"Something else\", d: \"Describe your idea — we turn it into a signed Scope before any build\" },\n+  },\n+];\n+\n+const DATA_READINESS: Option[] = [\n+  { value: \"structured\", ar: \"بيانات منظّمة جاهزة (CRM / CSV / قاعدة بيانات)\", en: \"Structured data ready (CRM / CSV / database)\" },\n+  { value: \"partial\", ar: \"بيانات جزئية / متفرّقة\", en: \"Partial / scattered data\" },\n+  { value: \"none_yet\", ar: \"لا توجد بيانات منظّمة بعد\", en: \"No structured data yet\" },\n+  { value: \"unsure\", ar: \"غير متأكد\", en: \"Not sure\" },\n+];\n+\n+const BUDGET_BANDS: Option[] = [\n+  { value: \"5k_10k\", ar: \"5,000 – 10,000 ر.س\", en: \"5,000 – 10,000 SAR\" },\n+  { value: \"10k_25k\", ar: \"10,000 – 25,000 ر.س\", en: \"10,000 – 25,000 SAR\" },\n+  { value: \"25k_plus\", ar: \"أكثر من 25,000 ر.س (Enterprise)\", en: \"25,000+ SAR (Enterprise)\" },\n+  { value: \"exploring\", ar: \"ما زلت أستكشف\", en: \"Still exploring\" },\n+];\n+\n+const TIMELINES: Option[] = [\n+  { value: \"asap\", ar: \"في أقرب وقت\", en: \"As soon as possible\" },\n+  { value: \"1_3_months\", ar: \"خلال 1 – 3 أشهر\", en: \"Within 1 – 3 months\" },\n+  { value: \"3_6_months\", ar: \"خلال 3 – 6 أشهر\", en: \"Within 3 – 6 months\" },\n+  { value: \"exploring\", ar: \"أستكشف فقط\", en: \"Just exploring\" },\n+];\n+\n+export function CustomAiRequestForm() {\n+  const locale = useLocale();\n+  const isAr = locale === \"ar\";\n+\n+  const [form, setForm] = useState({\n+    name: \"\",\n+    company: \"\",\n+    email: \"\",\n+    phone: \"\",\n+    sector: \"\",\n+    use_case: \"lead_intelligence\",\n+    data_readiness: \"\",\n+    budget_band: \"\",\n+    timeline: \"\",\n+    description: \"\",\n+    consent: false,\n+    website: \"\", // honeypot\n+  });\n+  const [status, setStatus] = useState(\"\");\n+  const [busy, setBusy] = useState(false);\n+  const [submitted, setSubmitted] = useState(false);\n+  const [leadId, setLeadId] = useState(\"\");\n+\n+  function set<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {\n+    setForm((f) => ({ ...f, [key]: value }));\n+  }\n+\n+  async function submit(e: React.FormEvent) {\n+    e.preventDefault();\n+    if (!form.consent) {\n+      setStatus(isAr ? \"الموافقة مطلوبة للمتابعة.\" : \"Consent is required to proceed.\");\n+      return;\n+    }\n+    setBusy(true);\n+    setStatus(\"\");\n+    const base = process.env.NEXT_PUBLIC_API_URL || \"http://localhost:8000\";\n+    try {\n+      const res = await fetch(`${base}/api/v1/public/custom-ai-request`, {\n+        method: \"POST\",\n+        headers: { \"Content-Type\": \"application/json\" },\n+        body: JSON.stringify({ ...form, source: \"frontend.custom_ai_form\" }),\n+      });\n+      const data = await res.json();\n+      if (!res.ok) throw new Error(data.detail || \"failed\");\n+      setLeadId(data.lead_id || \"\");\n+      setSubmitted(true);\n+      setStatus(\n+        isAr\n+          ? \"تم استلام طلبك — سنتواصل خلال 4 ساعات عمل لتحديد الـ Scope.\"\n+          : \"Request received — we will contact you within 4 business hours to define the Scope.\"\n+      );\n+    } catch {\n+      setStatus(\n+        isAr\n+          ? \"تعذّر الإرسال — تحقق من الاتصال وحاول مجدداً، أو راسلنا مباشرة.\"\n+          : \"Submission failed — check your connection and retry, or contact us directly.\"\n+      );\n+    } finally {\n+      setBusy(false);\n+    }\n+  }\n+\n+  const useCases = USE_CASES;\n+\n+  return (\n+    <div className={`space-y-14 ${isAr ? \"text-right\" : \"text-left\"}`} dir={isAr ? \"rtl\" : \"ltr\"}>\n+      {/* Hero */}\n+      <header className=\"rounded-2xl bg-gradient-to-br from-[#001F3F] to-[#0a2040] text-white p-8\">\n+        <Badge className=\"mb-4 bg-amber-500/20 text-amber-300 border-amber-500/30\">\n+          {isAr ? \"مشروع AI مخصّص — الرتبة الرابعة\" : \"Custom AI Project — Rung 4\"}\n+        </Badge>\n+        <h1 className=\"text-4xl font-bold leading-tight md:text-5xl\">\n+          {isAr\n+            ? \"قل لنا ماذا تريد أن نبني — نحوّله إلى نظام AI موثّق\"\n+            : \"Tell us what you want built — we turn it into a governed AI system\"}\n+        </h1>\n+        <p className=\"mt-4 text-white/70 max-w-2xl leading-relaxed\">\n+          {isAr\n+            ? \"تطوير AI مخصّص لعملياتك، بـ Scope محدّد ومُوقَّع، وموافقة بشرية على كل خطوة، وProof Pack ختامي يثبت القيمة. مبني على نفس الحوكمة: لا scraping، لا إرسال آلي، أدلة لكل قرار.\"\n+            : \"Bespoke AI development for your operations — a defined, signed Scope, human approval at every step, and a final Proof Pack that documents the value. Built on the same governance: no scraping, no automated sending, evidence for every decision.\"}\n+        </p>\n+        <div className=\"mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3\">\n+          {[\n+            { v: isAr ? \"5K–25K ر.س\" : \"5K–25K SAR\", l: isAr ? \"نطاق المشروع\" : \"Project range\" },\n+            { v: isAr ? \"4–12 أسبوع\" : \"4–12 weeks\", l: isAr ? \"مدة التنفيذ\" : \"Delivery time\" },\n+            { v: isAr ? \"موافقة\" : \"Approval\", l: isAr ? \"قبل كل خطوة\" : \"Before every step\" },\n+            { v: \"Proof Pack\", l: isAr ? \"تسليم موثّق\" : \"Documented delivery\" },\n+          ].map((m) => (\n+            <div key={m.l} className=\"rounded-xl bg-white/5 border border-white/10 p-3 text-center\">\n+              <p className=\"text-lg font-bold text-amber-300\">{m.v}</p>\n+              <p className=\"text-xs text-white/50 mt-0.5\">{m.l}</p>\n+            </div>\n+          ))}\n+        </div>\n+      </header>\n+\n+      {/* What we build */}\n+      <section>\n+        <h2 className=\"text-2xl font-bold mb-2\">{isAr ? \"ماذا نبني لك؟\" : \"What we build for you\"}</h2>\n+        <p className=\"text-muted-foreground mb-6\">\n+          {isAr\n+            ? \"اختر الأقرب لاحتياجك — وإن لم تجده، اختر «شيء آخر» وصف فكرتك.\"\n+            : \"Pick the closest to your need — or choose “Something else” and describe your idea.\"}\n+        </p>\n+        <div className=\"grid gap-4 sm:grid-cols-2 lg:grid-cols-3\">\n+          {useCases.map((u) => {\n+            const c = isAr ? u.ar : u.en;\n+            const active = form.use_case === u.id;\n+            return (\n+              <Card\n+                key={u.id}\n+                className={`p-5 cursor-pointer transition-all border-2 ${\n+                  active\n+                    ? \"border-[#001F3F] dark:border-amber-500 shadow-md bg-primary/5\"\n+                    : \"border-border/40 bg-card/50 hover:border-border\"\n+                }`}\n+                onClick={() => set(\"use_case\", u.id)}\n+              >\n+                <div className=\"flex items-center gap-2 mb-2\">\n+                  <span className=\"text-2xl\">{u.icon}</span>\n+                  <p className=\"font-semibold text-sm\">{c.t}</p>\n+                </div>\n+                <p className=\"text-xs text-muted-foreground leading-relaxed\">{c.d}</p>\n+              </Card>\n+            );\n+          })}\n+        </div>\n+      </section>\n+\n+      {/* How it works */}\n+      <section>\n+        <h2 className=\"text-2xl font-bold mb-6\">{isAr ? \"كيف يعمل المشروع المخصّص\" : \"How a custom project works\"}</h2>\n+        <div className=\"grid gap-4 sm:grid-cols-4\">\n+          {(isAr\n+            ? [\n+                { n: \"١\", t: \"Scope موقَّع\", d: \"نحوّل فكرتك إلى وثيقة نطاق محدّدة ومُوقَّعة — لا مفاجآت\" },\n+                { n: \"٢\", t: \"بناء بموافقة\", d: \"تطوير مع Approval Center لكل خطوة وaudit trail كامل\" },\n+                { n: \"٣\", t: \"Proof Pack\", d: \"تسليم موثّق بالأدلة يثبت ما تم إنجازه\" },\n+                { n: \"٤\", t: \"Hand-off وتدريب\", d: \"تسليم النظام مع تدريب فريقك وتوثيق PDPL كامل\" },\n+              ]\n+            : [\n+                { n: \"1\", t: \"Signed Scope\", d: \"We turn your idea into a defined, signed scope document — no surprises\" },\n+                { n: \"2\", t: \"Approved Build\", d: \"Development with an Approval Center at every step and a full audit trail\" },\n+                { n: \"3\", t: \"Proof Pack\", d: \"Evidence-backed delivery that documents exactly what was built\" },\n+                { n: \"4\", t: \"Hand-off & Training\", d: \"System hand-off with team training and full PDPL documentation\" },\n+              ]\n+          ).map((s) => (\n+            <div key={s.n} className=\"flex flex-col items-center text-center p-5 rounded-xl border border-border/60 bg-card/50\">\n+              <div className=\"w-10 h-10 rounded-full bg-[#001F3F] text-white flex items-center justify-center font-bold text-sm mb-3\">\n+                {s.n}\n+              </div>\n+              <p className=\"font-semibold text-sm\">{s.t}</p>\n+              <p className=\"text-xs text-muted-foreground mt-1\">{s.d}</p>\n+            </div>\n+          ))}\n+        </div>\n+      </section>\n+\n+      {/* Intake form */}\n+      <section>\n+        <h2 className=\"text-2xl font-bold mb-2\">{isAr ? \"اطلب مشروعك المخصّص\" : \"Request your custom project\"}</h2>\n+        <p className=\"text-muted-foreground mb-6 text-sm\">\n+          {isAr\n+            ? \"مراجعة يدوية من المؤسس — لا أتمتة. كل طلب يُدرس بجدية ونرد خلال 4 ساعات عمل.\"\n+            : \"Manual review by the founder — no automation. Every request is taken seriously; we reply within 4 business hours.\"}\n+        </p>\n+\n+        {submitted ? (\n+          <Card className=\"p-8 text-center border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20\">\n+            <div className=\"text-4xl mb-3\">✅</div>\n+            <h3 className=\"text-xl font-bold text-emerald-700 dark:text-emerald-300\">\n+              {isAr ? \"تم استلام طلبك!\" : \"Request received!\"}\n+            </h3>\n+            <p className=\"text-muted-foreground mt-2\">{status}</p>\n+            {leadId ? <p className=\"text-xs text-muted-foreground mt-1\">{isAr ? \"رقم الطلب:\" : \"Request ID:\"} {leadId}</p> : null}\n+            <div className=\"mt-6 flex flex-wrap justify-center gap-3\">\n+              <Button asChild variant=\"outline\">\n+                <Link href={`/${locale}/proof-pack`}>{isAr ? \"شاهد عيّنة Proof Pack\" : \"View Proof Pack Sample\"}</Link>\n+              </Button>\n+              <Button asChild variant=\"outline\">\n+                <Link href={`/${locale}/services`}>{isAr ? \"كل الخدمات\" : \"All Services\"}</Link>\n+              </Button>\n+            </div>\n+          </Card>\n+        ) : (\n+          <form onSubmit={submit} className=\"max-w-2xl space-y-5\">\n+            {/* Honeypot — visually hidden */}\n+            <input\n+              type=\"text\"\n+              name=\"website\"\n+              tabIndex={-1}\n+              autoComplete=\"off\"\n+              value={form.website}\n+              onChange={(e) => set(\"website\", e.target.value)}\n+              className=\"absolute left-[-9999px] h-0 w-0 opacity-0\"\n+              aria-hidden=\"true\"\n+            />\n+\n+            <div className=\"grid gap-5 sm:grid-cols-2\">\n+              {([\n+                [\"name\", isAr ? \"الاسم الكامل *\" : \"Full Name *\", \"text\", true],\n+                [\"company\", isAr ? \"اسم الشركة *\" : \"Company Name *\", \"text\", true],\n+                [\"email\", isAr ? \"البريد الإلكتروني *\" : \"Email Address *\", \"email\", true],\n+                [\"phone\", isAr ? \"رقم الجوال *\" : \"Phone Number *\", \"tel\", true],\n+              ] as const).map(([k, label, type, required]) => (\n+                <div key={k}>\n+                  <Label htmlFor={k} className=\"text-sm font-medium\">{label}</Label>\n+                  <Input\n+                    id={k}\n+                    type={type}\n+                    required={required}\n+                    value={form[k]}\n+                    onChange={(e) => set(k, e.target.value)}\n+                    className=\"mt-1\"\n+                  />\n+                </div>\n+              ))}\n+            </div>\n+\n+            <div className=\"grid gap-5 sm:grid-cols-2\">\n+              <SelectField\n+                id=\"sector\"\n+                label={isAr ? \"القطاع\" : \"Sector\"}\n+                isAr={isAr}\n+                value={form.sector}\n+                onChange={(v) => set(\"sector\", v)}\n+                options={SECTORS}\n+                placeholder={isAr ? \"اختر القطاع\" : \"Select sector\"}\n+              />\n+              <SelectField\n+                id=\"data_readiness\"\n+                label={isAr ? \"جاهزية البيانات\" : \"Data Readiness\"}\n+                isAr={isAr}\n+                value={form.data_readiness}\n+                onChange={(v) => set(\"data_readiness\", v)}\n+                options={DATA_READINESS}\n+                placeholder={isAr ? \"اختر الحالة\" : \"Select status\"}\n+              />\n+              <SelectField\n+                id=\"budget_band\"\n+                label={isAr ? \"نطاق الميزانية\" : \"Budget Range\"}\n+                isAr={isAr}\n+                value={form.budget_band}\n+                onChange={(v) => set(\"budget_band\", v)}\n+                options={BUDGET_BANDS}\n+                placeholder={isAr ? \"اختر النطاق\" : \"Select range\"}\n+              />\n+              <SelectField\n+                id=\"timeline\"\n+                label={isAr ? \"الإطار الزمني\" : \"Timeline\"}\n+                isAr={isAr}\n+                value={form.timeline}\n+                onChange={(v) => set(\"timeline\", v)}\n+                options={TIMELINES}\n+                placeholder={isAr ? \"اختر الإطار\" : \"Select timeline\"}\n+              />\n+            </div>\n+\n+            <div>\n+              <Label htmlFor=\"description\" className=\"text-sm font-medium\">\n+                {isAr ? \"صف ما تريد بناءه *\" : \"Describe what you want built *\"}\n+              </Label>\n+              <textarea\n+                id=\"description\"\n+                rows={5}\n+                required\n+                value={form.description}\n+                onChange={(e) => set(\"description\", e.target.value)}\n+                className=\"mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\"\n+                placeholder={\n+                  isAr\n+                    ? \"مثال: نريد نظاماً يقرأ عقود الإيجار، يستخرج بنود التجديد، ويبني قائمة متابعة بموافقة قبل أي تواصل...\"\n+                    : \"e.g. We want a system that reads lease contracts, extracts renewal terms, and builds an approval-gated follow-up list...\"\n+                }\n+              />\n+            </div>\n+\n+            <label className=\"flex items-start gap-2 text-sm cursor-pointer\">\n+              <input\n+                type=\"checkbox\"\n+                checked={form.consent}\n+                onChange={(e) => set(\"consent\", e.target.checked)}\n+                className=\"mt-0.5 accent-primary\"\n+              />\n+              <span>\n+                {isAr\n+                  ? \"أوافق على مراجعة الطلب يدوياً والتواصل للمتابعة وفق نظام حماية البيانات (PDPL). لا outreach بارد آلي.\"\n+                  : \"I consent to manual review and PDPL-compliant follow-up contact. No automated cold outreach.\"}\n+              </span>\n+            </label>\n+\n+            <Button type=\"submit\" disabled={busy} size=\"lg\" className=\"w-full\">\n+              {busy ? (isAr ? \"جاري الإرسال...\" : \"Submitting...\") : isAr ? \"أرسل طلب المشروع المخصّص\" : \"Submit Custom Project Request\"}\n+            </Button>\n+\n+            {status && !submitted ? <p className=\"text-sm text-destructive\">{status}</p> : null}",
+    "path": "frontend/src/components/gtm/CustomAiRequestForm.tsx",
+    "commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "original_commit_id": "0973bdadbec1f7b11f9914d9488a924c60784e8a",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Useless conditional\n\nThis negation always evaluates to true.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2438)",
+    "created_at": "2026-06-07T15:25:22Z",
+    "updated_at": "2026-06-07T15:25:22Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369598940",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369598940"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369598940"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369598940/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 387,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 387,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667705",
+    "pull_request_review_id": 4445406024,
+    "id": 3369667705,
+    "node_id": "PRRC_kwDOR1eIic7I2Qx5",
+    "diff_hunk": "@@ -101,9 +112,9 @@\n \n     log.info(\n         \"demo_request_accepted email=%s company=%s sector=%s lead_id=%s\",\n-        email,\n-        company,\n-        sector,\n+        _safe_log(email),",
+    "path": "api/routers/public.py",
+    "commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "original_commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2447)",
+    "created_at": "2026-06-07T16:07:58Z",
+    "updated_at": "2026-06-07T16:07:59Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667705",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667705"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667705"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667705/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 115,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 25,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667715",
+    "pull_request_review_id": 4445406024,
+    "id": 3369667715,
+    "node_id": "PRRC_kwDOR1eIic7I2QyD",
+    "diff_hunk": "@@ -101,9 +112,9 @@\n \n     log.info(\n         \"demo_request_accepted email=%s company=%s sector=%s lead_id=%s\",\n-        email,\n-        company,\n-        sector,\n+        _safe_log(email),\n+        _safe_log(company),",
+    "path": "api/routers/public.py",
+    "commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "original_commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2448)",
+    "created_at": "2026-06-07T16:07:58Z",
+    "updated_at": "2026-06-07T16:07:59Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667715",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667715"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667715"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667715/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 116,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 26,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667719",
+    "pull_request_review_id": 4445406024,
+    "id": 3369667719,
+    "node_id": "PRRC_kwDOR1eIic7I2QyH",
+    "diff_hunk": "@@ -101,9 +112,9 @@\n \n     log.info(\n         \"demo_request_accepted email=%s company=%s sector=%s lead_id=%s\",\n-        email,\n-        company,\n-        sector,\n+        _safe_log(email),\n+        _safe_log(company),\n+        _safe_log(sector),",
+    "path": "api/routers/public.py",
+    "commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "original_commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2449)",
+    "created_at": "2026-06-07T16:07:58Z",
+    "updated_at": "2026-06-07T16:07:59Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667719",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667719"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667719"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667719/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 117,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 27,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667724",
+    "pull_request_review_id": 4445406024,
+    "id": 3369667724,
+    "node_id": "PRRC_kwDOR1eIic7I2QyM",
+    "diff_hunk": "@@ -140,6 +151,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        _safe_log(email),",
+    "path": "api/routers/public.py",
+    "commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "original_commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2450)",
+    "created_at": "2026-06-07T16:07:58Z",
+    "updated_at": "2026-06-07T16:07:59Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667724",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667724"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667724"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667724/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 242,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 123,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667728",
+    "pull_request_review_id": 4445406024,
+    "id": 3369667728,
+    "node_id": "PRRC_kwDOR1eIic7I2QyQ",
+    "diff_hunk": "@@ -140,6 +151,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        _safe_log(email),\n+        _safe_log(company),",
+    "path": "api/routers/public.py",
+    "commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "original_commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2451)",
+    "created_at": "2026-06-07T16:07:58Z",
+    "updated_at": "2026-06-07T16:07:59Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667728",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667728"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667728"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667728/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 243,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 124,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667730",
+    "pull_request_review_id": 4445406024,
+    "id": 3369667730,
+    "node_id": "PRRC_kwDOR1eIic7I2QyS",
+    "diff_hunk": "@@ -140,6 +151,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        _safe_log(email),\n+        _safe_log(company),\n+        _safe_log(sector),",
+    "path": "api/routers/public.py",
+    "commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "original_commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2452)",
+    "created_at": "2026-06-07T16:07:58Z",
+    "updated_at": "2026-06-07T16:07:59Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667730",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667730"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667730"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667730/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 244,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 125,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667735",
+    "pull_request_review_id": 4445406024,
+    "id": 3369667735,
+    "node_id": "PRRC_kwDOR1eIic7I2QyX",
+    "diff_hunk": "@@ -140,6 +151,136 @@\n     }\n \n \n+@router.post(\"/custom-ai-request\")\n+async def custom_ai_request(req: Request) -> dict[str, Any]:\n+    \"\"\"Public Custom AI Service intake (commercial ladder Rung 4).\n+\n+    Captures a bespoke AI project request from the landing page and stores it\n+    as a governed lead for founder review. No external action is taken without\n+    approval — this only records the inquiry and returns a confirmation.\n+\n+    Body: {name, company, email, phone, sector?, use_case?, data_readiness?,\n+           budget_band?, timeline?, description?, consent, website(honeypot)}\n+    Returns: {ok, lead_id?, governance_decision: \"allow\"}\n+    \"\"\"\n+    try:\n+        body = await req.json()\n+    except Exception as e:\n+        raise HTTPException(status_code=400, detail=\"invalid_json\") from e\n+\n+    # Honeypot: if \"website\" field is filled, silently drop\n+    if body.get(\"website\"):\n+        log.info(\"custom_ai_request_honeypot_triggered\")\n+        return {\"ok\": True, \"governance_decision\": \"allow\"}\n+\n+    name = str(body.get(\"name\") or \"\").strip()\n+    company = str(body.get(\"company\") or \"\").strip()\n+    email = str(body.get(\"email\") or \"\").strip()\n+    phone = str(body.get(\"phone\") or \"\").strip()\n+    sector = str(body.get(\"sector\") or \"\").strip()\n+    use_case = str(body.get(\"use_case\") or \"\").strip()\n+    data_readiness = str(body.get(\"data_readiness\") or \"\").strip()\n+    budget_band = str(body.get(\"budget_band\") or \"\").strip()\n+    timeline = str(body.get(\"timeline\") or \"\").strip()\n+    description = str(body.get(\"description\") or \"\").strip()\n+    consent = bool(body.get(\"consent\"))\n+\n+    if not name or not company or \"@\" not in email or not phone:\n+        raise HTTPException(status_code=422, detail=\"missing_required_fields\")\n+    if not consent:\n+        raise HTTPException(status_code=422, detail=\"consent_required\")\n+\n+    # Fire PostHog event (fire-and-forget — never blocks response)\n+    try:\n+        await capture_event(\n+            \"custom_ai_requested\",\n+            distinct_id=email,\n+            properties={\n+                \"company\": company,\n+                \"sector\": sector,\n+                \"use_case\": use_case[:120],\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+                \"data_readiness\": data_readiness,\n+                \"description_len\": len(description),\n+                \"source\": \"landing.custom_ai_form\",\n+            },\n+        )\n+    except Exception:\n+        log.exception(\"posthog_capture_failed\")\n+\n+    # Persist to local lead-inbox (gitignored var/lead-inbox.jsonl) so the\n+    # founder reviews every custom-AI inquiry in /api/v1/founder/leads.\n+    # Best-effort: failure never 5xx the public form.\n+    lead_id: str | None = None\n+    try:\n+        from auto_client_acquisition import lead_inbox\n+        rec = lead_inbox.append({\n+            \"name\": name,\n+            \"company\": company,\n+            \"email\": email,\n+            \"phone\": phone,\n+            \"sector\": sector,\n+            \"message\": description,\n+            \"consent\": consent,\n+            \"source\": str(body.get(\"source\") or \"landing.custom_ai_form\"),\n+            \"ref\": str(body.get(\"ref\") or \"\"),\n+            \"offer_interest\": \"custom_ai\",\n+            \"custom_ai\": {\n+                \"use_case\": use_case,\n+                \"data_readiness\": data_readiness,\n+                \"budget_band\": budget_band,\n+                \"timeline\": timeline,\n+            },\n+        })\n+        lead_id = rec.get(\"id\")\n+    except Exception:\n+        log.exception(\"lead_inbox_append_failed\")\n+\n+    log.info(\n+        \"custom_ai_request_accepted email=%s company=%s sector=%s budget=%s lead_id=%s\",\n+        _safe_log(email),\n+        _safe_log(company),\n+        _safe_log(sector),\n+        _safe_log(budget_band),",
+    "path": "api/routers/public.py",
+    "commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "original_commit_id": "7db5faae9a99798dc2ebac69416ad806bef1caf4",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Log Injection\n\nThis log entry depends on a [user-provided value](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2453)",
+    "created_at": "2026-06-07T16:07:58Z",
+    "updated_at": "2026-06-07T16:07:59Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667735",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667735"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/670#discussion_r3369667735"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/670"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369667735/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 245,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 126,
+    "position": 1,
+    "subject_type": "line"
+  }
+]

@@ -1,0 +1,71 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369699260",
+    "pull_request_review_id": 4445434557,
+    "id": 3369699260,
+    "node_id": "PRRC_kwDOR1eIic7I2Ye8",
+    "diff_hunk": "@@ -381,3 +381,77 @@\n         from fastapi import HTTPException\n         raise HTTPException(status_code=404, detail=\"lead_inbox_empty\")\n     return {\"ok\": True, \"change\": rec}\n+\n+\n+@router.get(\"/approvals\")\n+async def approvals(\n+    limit: int = 100,\n+    status: str | None = None,\n+) -> dict[str, Any]:\n+    \"\"\"Founder approval queue — the daily-draft loop writes here, the founder\n+    reviews here. This is the SINGLE queue for company-level outreach/proposal\n+    drafts awaiting sign-off.\n+\n+    Read-only. Backed by the durable draft queue\n+    (`auto_client_acquisition.commercial_orchestrator.draft_queue`, a JSON-Lines\n+    file at $DEALIX_DRAFT_QUEUE_PATH, default `var/draft-queue.jsonl`,\n+    gitignored). Nothing here has been sent — every item is\n+    `approval_required=True` until the founder approves it.\n+    \"\"\"\n+    from auto_client_acquisition.commercial_orchestrator import draft_queue\n+\n+    drafts = draft_queue.list_drafts(limit=limit, status=status)\n+    stats = draft_queue.stats()\n+    return {\n+        \"schema_version\": 1,\n+        \"generated_at\": datetime.now(UTC).isoformat(),\n+        \"pending\": stats.get(\"pending\", 0),\n+        \"drafts\": drafts,\n+        \"stats\": stats,\n+        \"generic_approvals\": _safe(_pending_approvals, default={\"count\": 0}),\n+        \"hard_gates\": {\n+            \"no_live_send\": True,\n+            \"approval_required_for_external_actions\": True,\n+            \"company_level_only\": True,\n+        },\n+        \"next_action_ar\": \"راجع كل مسوّدة، ثم اعتمد أو ارفض. لا يُرسل شيء قبل اعتمادك وتأكيد جهة التواصل.\",\n+        \"next_action_en\": \"Review each draft, then approve or reject. Nothing is sent until you approve and confirm the recipient.\",\n+    }",
+    "path": "api/routers/founder.py",
+    "commit_id": "c8d2f92d11c4e9a62b19e75959021d93b81c3681",
+    "original_commit_id": "c8d2f92d11c4e9a62b19e75959021d93b81c3681",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Information exposure through an exception\n\n[Stack trace information](1) flows to this location and may be exposed to an external user.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2443)",
+    "created_at": "2026-06-07T16:29:48Z",
+    "updated_at": "2026-06-07T16:29:48Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/681#discussion_r3369699260",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/681",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369699260"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/681#discussion_r3369699260"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/681"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369699260/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": 405,
+    "original_start_line": 405,
+    "start_side": "RIGHT",
+    "line": 419,
+    "original_line": 419,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 39,
+    "position": 39,
+    "subject_type": "line"
+  }
+]

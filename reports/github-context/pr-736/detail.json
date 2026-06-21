@@ -1,0 +1,673 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "# Pull Request\r\n\r\n## Summary | الملخص\r\n<!-- What does this PR change and why? -->\r\n\r\n## Type of change | نوع التغيير\r\n- [ ] 🐛 Bug fix\r\n- [ ] ✨ New feature\r\n- [ ] 💥 Breaking change\r\n- [ ] 📝 Docs only\r\n- [ ] ♻️ Refactor\r\n- [ ] 🔒 Security\r\n\r\n## Engineering cutover (only if env/backend persistence changes)\r\n\r\nIf this PR touches `PROOF_LEDGER_BACKEND`, `VALUE_LEDGER_BACKEND`, `DEALIX_OPERATIONAL_STREAM_BACKEND`, or `OTEL_CONTRACT_TRACE_EXPORT`:\r\n\r\n```text\r\nexternal_signal: <contract_signed|pilot_scope_locked|...>\r\ncontract_or_pilot_ref: <internal id or account name>\r\n```\r\n\r\nSee [docs/transformation/CUTOVER_PR_CHECKLIST_AR.md](docs/transformation/CUTOVER_PR_CHECKLIST_AR.md) and [docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md](docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md).\r\n\r\n## Checklist | قائمة التحقق\r\n- [ ] Tests added / updated\r\n- [ ] Docs updated (if needed)\r\n- [ ] No secrets committed (verified via `gitleaks`)\r\n- [ ] `make lint` passes\r\n- [ ] `make test` passes\r\n- [ ] Linked to an issue (if applicable)\r\n- [ ] Cutover PR body validated (`python3 scripts/verify_cutover_pr_body.py`) if applicable\r\n\r\n## How to test | كيف أختبر هذا\r\n<!-- Steps to verify -->\r\n\r\n## Screenshots / Logs (optional)\r\n",
+  "closedAt": "2026-06-17T02:24:53Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-11T02:14:04Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-11T02:14:04Z",
+      "messageBody": "",
+      "messageHeadline": "checkpoint: Dealix V3 Phase 0 — audit, branch, execution plan",
+      "oid": "c7d0d4e64eaa68455446259839d1d559e5ce0ab6"
+    },
+    {
+      "authoredDate": "2026-06-11T02:26:28Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-11T02:26:28Z",
+      "messageBody": "…nance, security, tests",
+      "messageHeadline": "checkpoint: Dealix V3 Phases 1-4, 6-7 — scripts, business docs, gover…",
+      "oid": "70972d2e8f18b2df9c49bf56703369cde22641bc"
+    },
+    {
+      "authoredDate": "2026-06-11T02:45:57Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-11T02:45:57Z",
+      "messageBody": "",
+      "messageHeadline": "feat: finalize Dealix V3 commercial operating system",
+      "oid": "445179cdcb37241949d63c18f9147dcf273104ac"
+    }
+  ],
+  "createdAt": "2026-06-17T01:37:47Z",
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "additions": 16,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "README.md",
+      "additions": 15,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "apps/web/app/api/company-os/founder-dashboard/route.ts",
+      "additions": 35,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/book/page.tsx",
+      "additions": 55,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/command-center/page.tsx",
+      "additions": 48,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/delivery-os/page.tsx",
+      "additions": 36,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/kpi-finance/page.tsx",
+      "additions": 28,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/lead-engine/page.tsx",
+      "additions": 36,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/legal/page.tsx",
+      "additions": 28,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/offers/page.tsx",
+      "additions": 39,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/operator/page.tsx",
+      "additions": 40,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/page.tsx",
+      "additions": 87,
+      "deletions": 20,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "apps/web/app/pipeline/page.tsx",
+      "additions": 43,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/pricing/page.tsx",
+      "additions": 56,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/revenue-machine/page.tsx",
+      "additions": 36,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/sales-machine/page.tsx",
+      "additions": 44,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/app/war-room/page.tsx",
+      "additions": 46,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/CTA.tsx",
+      "additions": 12,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/CommandPanel.tsx",
+      "additions": 10,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/ComparisonTable.tsx",
+      "additions": 26,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/Footer.tsx",
+      "additions": 26,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/MetricCard.tsx",
+      "additions": 10,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/Nav.tsx",
+      "additions": 33,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/OfferCard.tsx",
+      "additions": 21,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/PageShell.tsx",
+      "additions": 13,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/ProofPanel.tsx",
+      "additions": 17,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/components/SectionHeader.tsx",
+      "additions": 11,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "apps/web/tsconfig.json",
+      "additions": 5,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "business/closing/CLOSING_PLAYBOOK_AR.md",
+      "additions": 23,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/closing/CLOSING_PLAYBOOK_EN.md",
+      "additions": 23,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/closing/DEAL_DESK_RULES.md",
+      "additions": 22,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/closing/DISCOVERY_CALL_SCRIPT_AR.md",
+      "additions": 19,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/closing/DISCOVERY_CALL_SCRIPT_EN.md",
+      "additions": 19,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/closing/PRICING_NEGOTIATION_GUIDE.md",
+      "additions": 19,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/closing/RED_FLAGS_AND_DISQUALIFICATION.md",
+      "additions": 19,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/crm/exports/followup-queue-2026-06-11.json",
+      "additions": 16,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/crm/exports/leads-scored-2026-06-11.json",
+      "additions": 38,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/governance/AI_OUTPUT_RISK_CLASSES.md",
+      "additions": 26,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/governance/APPROVAL_MATRIX.md",
+      "additions": 13,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/governance/CLIENT_DATA_RETENTION_POLICY.md",
+      "additions": 24,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/governance/OUTREACH_REVIEW_GATE.md",
+      "additions": 22,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/industries/B2B_SERVICES_OS.md",
+      "additions": 37,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/industries/CLINICS_REPUTATION_OS.md",
+      "additions": 37,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/industries/CONSULTING_FIRMS_OS.md",
+      "additions": 37,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/industries/LOGISTICS_GROWTH_OS.md",
+      "additions": 37,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/industries/MARKETING_AGENCIES_OS.md",
+      "additions": 37,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/industries/REAL_ESTATE_REVENUE_OS.md",
+      "additions": 37,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/industries/RETAIL_OPERATIONS_OS.md",
+      "additions": 37,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/industries/TRAINING_COMPANIES_OS.md",
+      "additions": 37,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/offers/COMMAND_CENTER_OS_OFFER.md",
+      "additions": 28,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/offers/CUSTOM_ENTERPRISE_OS_OFFER.md",
+      "additions": 27,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/offers/DELIVERY_OS_OFFER.md",
+      "additions": 28,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/offers/DIAGNOSTIC_SPRINT_OFFER.md",
+      "additions": 26,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/offers/MANAGED_OS_RETAINER_OFFER.md",
+      "additions": 27,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/offers/REVENUE_OS_OFFER.md",
+      "additions": 29,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/offers/REVIEW_REPUTATION_OS_OFFER.md",
+      "additions": 28,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/persuasion/CTA_LIBRARY.json",
+      "additions": 24,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/persuasion/OBJECTION_TO_RESPONSE_MAP.json",
+      "additions": 24,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/persuasion/exports/outreach-drafts-2026-06-11.json",
+      "additions": 68,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/proposals/generated/proposal-demo-001-Revenue_OS-ar-2026-06-11.json",
+      "additions": 48,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/proposals/generated/proposal-demo-001-Revenue_OS-en-2026-06-11.json",
+      "additions": 48,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/proposals/generated/proposal-demo-test-Revenue_OS-en-2026-06-11.json",
+      "additions": 48,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/reports/exports/dealix-daily-ceo-brief-2026-06-11.txt",
+      "additions": 9,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/reports/exports/pipeline-report-2026-06-11.json",
+      "additions": 14,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/sales-machine/INDUSTRY_WEAKNESS_TAXONOMY.md",
+      "additions": 33,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/sales-machine/OFFER_MATCHING_RULES.md",
+      "additions": 16,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/sales-machine/exports/prospect-pack-2026-06-11.json",
+      "additions": 22,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business/scoring/LEAD_SCORING_MODEL.md",
+      "additions": 22,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "dealix/transformation/business_now_cache.yaml",
+      "additions": 2,
+      "deletions": 2,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "dealix/transformation/kpi_baselines.yaml",
+      "additions": 6,
+      "deletions": 6,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "docs/business/DEALIX_BUSINESS_NOW_AR.md",
+      "additions": 15,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "docs/business/DEALIX_COMMERCIAL_STRATEGY_AR.md",
+      "additions": 14,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "docs/business/evidence/business_now_latest.md",
+      "additions": 15,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "docs/business/evidence/commercial_strategy_latest.md",
+      "additions": 14,
+      "deletions": 4,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "docs/commercial/operations/soft_launch_meetings_tracker.yaml",
+      "additions": 11,
+      "deletions": 11,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "docs/deploy/ANALYTICS_AND_EVENTS_PLAN.md",
+      "additions": 25,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/deploy/DOMAIN_SETUP.md",
+      "additions": 22,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/deploy/ENVIRONMENT_VARIABLES.md",
+      "additions": 28,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/deploy/POST_DEPLOY_SMOKE_TEST.md",
+      "additions": 24,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/deploy/RAILWAY_BACKEND_DEPLOYMENT.md",
+      "additions": 18,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/deploy/VERCEL_FRONTEND_DEPLOYMENT.md",
+      "additions": 23,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/ops/DAILY_OPERATOR_COMMANDS.md",
+      "additions": 35,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/security/PRODUCTION_SECURITY_CHECKLIST.md",
+      "additions": 25,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/security/REPOSITORY_PUSH_SAFETY.md",
+      "additions": 18,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/execution/DEALIX_V3_EXECUTION_LOG.md",
+      "additions": 6,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/execution/DEALIX_V3_FINAL_SUMMARY.md",
+      "additions": 67,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/execution/DEALIX_V3_PR_BODY.md",
+      "additions": 61,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/operator/dealix-daily-operator-2026-06-11.md",
+      "additions": 32,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/ultimate-os-audit/COMMERCIAL_GAPS.md",
+      "additions": 12,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/ultimate-os-audit/IMPLEMENTATION_AUDIT.md",
+      "additions": 101,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/ultimate-os-audit/PRODUCTION_RISK_REGISTER.md",
+      "additions": 12,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/ultimate-os-audit/TECH_DEBT_REGISTER.md",
+      "additions": 14,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/v3/BROKEN_OR_WEAK_AREAS.md",
+      "additions": 39,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/v3/REPO_STATE_AUDIT.md",
+      "additions": 89,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "reports/v3/V3_EXECUTION_PLAN.md",
+      "additions": 65,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/dealix_daily_operator.py",
+      "additions": 166,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/dealix_no_crash_guard.sh",
+      "additions": 36,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/founder_market_day_safe.sh",
+      "additions": 46,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/generate_founder_dashboard_data.py",
+      "additions": 69,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/generate_outreach_drafts.py",
+      "additions": 92,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "resolve-pr-712",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-17T02:24:53Z",
+  "number": 736,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "Resolve pr 712",
+  "updatedAt": "2026-06-17T02:24:53Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/736"
+}

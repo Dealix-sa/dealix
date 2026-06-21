@@ -1,0 +1,140 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3411252009",
+    "pull_request_review_id": 4494704279,
+    "id": 3411252009,
+    "node_id": "PRRC_kwDOR1eIic7LU5Mp",
+    "diff_hunk": "@@ -0,0 +1,165 @@\n+\"\"\"Shared utilities for the Dealix revenue machine scripts.\"\"\"\n+from __future__ import annotations\n+\n+import csv\n+import json\n+import os\n+import re\n+from datetime import date, datetime, timedelta",
+    "path": "scripts/revenue/_lib.py",
+    "commit_id": "475279a2e0c4967bea0b4eb8f08f68d50e604fd1",
+    "original_commit_id": "2995f09e046516dddcbb8ecbc85094bcb8e1bd52",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'timedelta' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2718)",
+    "created_at": "2026-06-15T05:42:41Z",
+    "updated_at": "2026-06-15T05:42:41Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/728#discussion_r3411252009",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/728",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3411252009"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/728#discussion_r3411252009"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/728"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3411252009/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 8,
+    "original_line": 8,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 8,
+    "position": 8,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3411252013",
+    "pull_request_review_id": 4494704279,
+    "id": 3411252013,
+    "node_id": "PRRC_kwDOR1eIic7LU5Mt",
+    "diff_hunk": "@@ -0,0 +1,132 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Generate follow-up drafts for existing outbox emails.\n+Rules:\n+- Max 3 follow-ups per company.\n+- Day 3 and day 7 follow-ups only if no reply logged.\n+- Respect cooldown window.\n+\"\"\"\n+from __future__ import annotations\n+\n+import argparse\n+import os\n+import re\n+import sys\n+from pathlib import Path\n+\n+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))\n+from scripts.revenue._lib import (\n+    REPO_ROOT,\n+    load_csv,\n+    normalize_email,\n+    opt_out_line,\n+    today_str,\n+    parse_date,\n+)\n+\n+\n+def slugify(name: str) -> str:\n+    return re.sub(r\"[^\\w\\-]+\", \"-\", name).strip(\"-\").lower()[:50]\n+\n+\n+def company_from_filename(path: Path) -> str:\n+    name = path.stem.replace(\"_step1\", \"\").replace(\"_followup_d3\", \"\").replace(\"_followup_d7\", \"\")\n+    return name.replace(\"-\", \" \")\n+\n+\n+def count_followups(out_dir: Path, company_slug: str) -> int:\n+    count = 0\n+    for path in out_dir.glob(f\"{company_slug}_followup_*.md\"):\n+        if path.is_file():\n+            count += 1\n+    return count\n+\n+\n+def last_contact_date(out_dir: Path, company_slug: str) -> str | None:\n+    latest: str | None = None\n+    for pattern in (f\"{company_slug}_step1.md\", f\"{company_slug}_followup_d*.md\"):\n+        for path in out_dir.glob(pattern):\n+            if path.is_file():\n+                date_part = path.parent.name\n+                if latest is None or date_part > latest:\n+                    latest = date_part\n+    return latest\n+\n+\n+def build_followup(company: str, step: int, original_subject: str) -> str:\n+    if step == 3:\n+        hook = \"هل الفكرة واضحة؟ أرسل لكم ملخص صفحة واحدة لو تبغون.\"\n+    elif step == 7:\n+        hook = \"آخر رسالة. إذا التحديات التشغيلية ليست أولوية الآن أفهم تمامًا.\"\n+    else:\n+        hook = \"متابعة على رسالتي السابقة.\"\n+\n+    lines = [\n+        f\"Subject: Re: {original_subject}\",\n+        \"\",\n+        \"السلام عليكم،\",\n+        \"\",\n+        f\"متابعة سريعة لـ {company}.\",\n+        \"\",\n+        hook,\n+        \"\",\n+        \"تحياتي،\",\n+        \"فريق Dealix\",\n+        opt_out_line(\"ar\"),\n+    ]\n+    return \"\\n\".join(lines)\n+\n+\n+def main() -> int:\n+    parser = argparse.ArgumentParser(description=\"Generate follow-up drafts\")\n+    parser.add_argument(\"--outbox-dir\", default=None)\n+    parser.add_argument(\"--reply-log\", default=\"ledgers/reply_log.csv\")\n+    parser.add_argument(\"--max-followups\", type=int, default=3)\n+    parser.add_argument(\"--cooldown-days\", type=int, default=3)\n+    args = parser.parse_args()\n+\n+    from datetime import date\n+    out_dir = REPO_ROOT / \"outbox\" / os.environ.get(\"DEALIX_DATE\", date.today().isoformat()) if args.outbox_dir is None else REPO_ROOT / args.outbox_dir\n+    out_dir.mkdir(parents=True, exist_ok=True)\n+\n+    # Collect base emails sent in previous days\n+    base_emails: list[tuple[Path, str, str]] = []\n+    for day_dir in (REPO_ROOT / \"outbox\").iterdir():\n+        if not day_dir.is_dir():\n+            continue\n+        for path in day_dir.glob(\"*_step1.md\"):\n+            company = company_from_filename(path)\n+            text = path.read_text(encoding=\"utf-8\")\n+            subject_match = re.search(r\"^Subject:\\s*(.+)$\", text, re.MULTILINE)\n+            subject = subject_match.group(1).strip() if subject_match else \"متابعة\"\n+            base_emails.append((path, company, subject))\n+\n+    replies = load_csv(REPO_ROOT / args.reply_log)\n+    replied_companies = {normalize_email(r.get(\"email\", \"\")) for r in replies}",
+    "path": "scripts/revenue/generate_followups.py",
+    "commit_id": "475279a2e0c4967bea0b4eb8f08f68d50e604fd1",
+    "original_commit_id": "2995f09e046516dddcbb8ecbc85094bcb8e1bd52",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused local variable\n\nVariable replied_companies is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2719)",
+    "created_at": "2026-06-15T05:42:41Z",
+    "updated_at": "2026-06-15T05:42:41Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/728#discussion_r3411252013",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/728",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3411252013"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/728#discussion_r3411252013"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/728"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3411252013/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 105,
+    "original_line": 105,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 105,
+    "position": 105,
+    "subject_type": "line"
+  }
+]

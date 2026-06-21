@@ -1,0 +1,416 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185662",
+    "pull_request_review_id": 4440812381,
+    "id": 3366185662,
+    "node_id": "PRRC_kwDOR1eIic7Io-q-",
+    "diff_hunk": "@@ -0,0 +1,119 @@\n+#!/usr/bin/env python3\n+\"\"\"Create a Command Sprint customer workspace from the canonical template.\n+\n+Copies the full Command Sprint file set (``customers/_template/``) into a new\n+``customers/<slug>/`` folder so every account starts with the same governed\n+structure: intake → company intelligence → diagnostic → sprint scope →\n+revenue map → proof register → approval register → next-action board →\n+executive brief → delivery log → proof pack → upsell recommendation.\n+\n+Usage:\n+    python scripts/create_customer_workspace.py --name \"ACME Trading\"\n+    python scripts/create_customer_workspace.py --name \"dry-run-client\" --force\n+\n+Rules:\n+- Never overwrites an existing customer folder unless ``--force`` is passed.\n+- Touches only ``customers/<slug>/`` — no unrelated files.\n+- No external action of any kind; this is local scaffolding only.\n+\n+Terminal markers (grep-friendly):\n+    CUSTOMER_WORKSPACE_CREATED\n+    CUSTOMER_WORKSPACE_FILES=<n>\n+    CUSTOMER_WORKSPACE_EXISTS\n+\"\"\"\n+from __future__ import annotations\n+\n+import argparse\n+import re\n+import sys\n+from pathlib import Path\n+\n+REPO = Path(__file__).resolve().parents[1]\n+TEMPLATE_DIR = REPO / \"customers\" / \"_template\"\n+CUSTOMERS_DIR = REPO / \"customers\"\n+\n+# Canonical Command Sprint file set. The dry run and template are validated\n+# against this exact list.\n+COMMAND_SPRINT_FILES = (\n+    \"00_intake.md\",\n+    \"01_company_intelligence.md\",\n+    \"02_diagnostic_summary.md\",\n+    \"03_command_sprint_scope.md\",\n+    \"04_revenue_map.md\",\n+    \"05_proof_register.md\",\n+    \"06_approval_register.md\",\n+    \"07_next_action_board.md\",\n+    \"08_executive_command_brief.md\",\n+    \"09_delivery_log.md\",\n+    \"10_proof_pack.md\",\n+    \"11_upsell_recommendation.md\",\n+)\n+\n+\n+def slugify(name: str) -> str:\n+    slug = name.strip().lower()\n+    slug = re.sub(r\"[^a-z0-9]+\", \"-\", slug)\n+    return slug.strip(\"-\") or \"customer\"\n+\n+\n+def create_workspace(name: str, force: bool = False) -> tuple[Path, list[str]]:\n+    \"\"\"Create the workspace; return (path, list of file names written).\"\"\"\n+    if not TEMPLATE_DIR.is_dir():\n+        raise FileNotFoundError(f\"Template directory missing: {TEMPLATE_DIR}\")\n+\n+    slug = slugify(name)\n+    target = CUSTOMERS_DIR / slug\n+\n+    if target.exists() and not force:\n+        print(\"CUSTOMER_WORKSPACE_EXISTS\")\n+        raise FileExistsError(\n+            f\"Customer folder already exists: {target} (use --force to overwrite)\"\n+        )\n+\n+    target.mkdir(parents=True, exist_ok=True)\n+    written: list[str] = []\n+    for fname in COMMAND_SPRINT_FILES:\n+        src = TEMPLATE_DIR / fname\n+        if not src.is_file():\n+            raise FileNotFoundError(f\"Template file missing: {src}\")\n+        content = src.read_text(encoding=\"utf-8\").replace(\"<<COMPANY_NAME>>\", name)\n+        (target / fname).write_text(content, encoding=\"utf-8\")\n+        written.append(fname)\n+    return target, written\n+\n+\n+def main(argv: list[str] | None = None) -> int:\n+    try:\n+        sys.stdout.reconfigure(encoding=\"utf-8\")\n+    except (AttributeError, OSError):",
+    "path": "scripts/create_customer_workspace.py",
+    "commit_id": "0dbe6cb191df51d945402c0eb78bf895f6837363",
+    "original_commit_id": "745d89b3756733962581c8b1c14015d68a56bbc7",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2407)",
+    "created_at": "2026-06-06T01:15:03Z",
+    "updated_at": "2026-06-06T01:15:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185662",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185662"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185662"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185662/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 88,
+    "original_line": 88,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 88,
+    "position": 88,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185668",
+    "pull_request_review_id": 4440812381,
+    "id": 3366185668,
+    "node_id": "PRRC_kwDOR1eIic7Io-rE",
+    "diff_hunk": "@@ -0,0 +1,326 @@\n+#!/usr/bin/env python3\n+\"\"\"Dealix End-to-End Dry Run.\n+\n+Simulates the full revenue path on a fictional customer — from first target\n+to first Proof Pack and upsell — entirely locally, with no real external\n+action. Proves the system *flows*, stage by stage, and writes a PASS/FAIL\n+report to ``reports/verification/e2e_dry_run_latest.md``.\n+\n+Stages:\n+    1. Target\n+    2. Outreach Approval (founder approval required — never auto-sent)\n+    3. Diagnostic\n+    4. Offer\n+    5. Paid Sprint Simulation (SIMULATED status only — no real payment)\n+    6. Customer Workspace\n+    7. Proof Pack (skeleton — no fake result presented as real)\n+    8. Upsell\n+    9. Founder Daily Command\n+    + Governance gate (No External Action Without Approval)\n+\n+Hard rules enforced:\n+    - no real external sending\n+    - no fake proof presented as real\n+    - no guaranteed revenue\n+    - no customer name publishing\n+    - no WhatsApp automation\n+    - all external actions remain approval-required\n+\n+Usage:\n+    python scripts/run_dealix_e2e_dry_run.py\n+\n+Terminal markers:\n+    E2E_DRY_RUN_VERDICT=<verdict>\n+    DEALIX_E2E_DRY_RUN_OK=true|false\n+\"\"\"\n+from __future__ import annotations\n+\n+import csv\n+import sys\n+from dataclasses import dataclass, field\n+from datetime import date\n+from pathlib import Path\n+\n+REPO = Path(__file__).resolve().parents[1]\n+if str(REPO) not in sys.path:\n+    sys.path.insert(0, str(REPO))\n+\n+from scripts.create_customer_workspace import (  # noqa: E402\n+    COMMAND_SPRINT_FILES,\n+    create_workspace,\n+)\n+\n+DRY_RUN_CLIENT = \"dry-run-client\"\n+\n+\n+@dataclass\n+class Stage:\n+    key: str\n+    name: str\n+    core: bool\n+    passed: bool = False\n+    notes: list[str] = field(default_factory=list)\n+\n+    def fail(self, msg: str) -> None:\n+        self.passed = False\n+        self.notes.append(msg)\n+\n+    def ok(self, msg: str) -> None:\n+        self.passed = True\n+        self.notes.append(msg)\n+\n+\n+def _read(rel: str) -> str:\n+    fp = REPO / rel\n+    return fp.read_text(encoding=\"utf-8\", errors=\"ignore\") if fp.is_file() else \"\"\n+\n+\n+def stage_target() -> Stage:\n+    s = Stage(\"target\", \"Target\", core=True)\n+    fp = REPO / \"data/outreach/first_30_targets.csv\"\n+    if not fp.is_file():\n+        s.fail(\"data/outreach/first_30_targets.csv missing\")\n+        return s\n+    rows = list(csv.DictReader(fp.open(encoding=\"utf-8\", newline=\"\")))\n+    if not rows:\n+        s.fail(\"targets file has no rows\")\n+        return s\n+    s.ok(f\"target list present ({len(rows)} seed rows); simulated target = '{DRY_RUN_CLIENT}'\")\n+    return s\n+\n+\n+def stage_outreach_approval() -> Stage:\n+    s = Stage(\"outreach\", \"Outreach Approval\", core=True)\n+    fp = REPO / \"data/outreach/approval_queue.csv\"\n+    if not fp.is_file():\n+        s.fail(\"data/outreach/approval_queue.csv missing\")\n+        return s\n+    rows = list(csv.DictReader(fp.open(encoding=\"utf-8\", newline=\"\")))\n+    # Approval gate is real only if nothing is auto-approved/sent.\n+    sent = [r for r in rows if (r.get(\"founder_decision\") or \"\").strip().lower() in {\"sent\", \"auto\", \"auto-approved\", \"approved-auto\"}]\n+    if sent:\n+        s.fail(f\"{len(sent)} row(s) marked auto-sent/auto-approved — violates approval gate\")\n+        return s\n+    pending = [r for r in rows if (r.get(\"founder_decision\") or \"\").strip().lower() == \"pending\"]\n+    s.ok(f\"approval queue present; {len(pending)} draft(s) pending founder approval; none auto-sent\")\n+    return s\n+\n+\n+def stage_diagnostic(ws: Path) -> Stage:\n+    s = Stage(\"diagnostic\", \"Diagnostic\", core=True)\n+    f = ws / \"02_diagnostic_summary.md\"\n+    script = REPO / \"scripts/dealix_diagnostic.py\"\n+    if not f.is_file():\n+        s.fail(\"02_diagnostic_summary.md missing from workspace\")\n+        return s\n+    if not script.is_file():\n+        s.fail(\"scripts/dealix_diagnostic.py missing\")\n+        return s\n+    s.ok(\"diagnostic record present in workspace; diagnostic script available\")\n+    return s\n+\n+\n+def stage_offer(ws: Path) -> Stage:\n+    s = Stage(\"offer\", \"Offer\", core=True)\n+    scope = ws / \"03_command_sprint_scope.md\"\n+    offer_doc = REPO / \"docs/commercial/sales/P1_REVENUE_INTELLIGENCE_SPRINT_OFFER_AR.md\"\n+    if not scope.is_file():\n+        s.fail(\"03_command_sprint_scope.md missing from workspace\")\n+        return s\n+    if not offer_doc.is_file():\n+        s.fail(\"Command Sprint offer doc missing\")\n+        return s\n+    s.ok(\"Command Sprint scope present in workspace; offer doc available\")\n+    return s\n+\n+\n+def stage_paid_sim() -> Stage:\n+    s = Stage(\"paid\", \"Paid Sprint Simulation\", core=False)\n+    # In-memory simulated payment — explicitly NOT a real charge.\n+    simulated_status = \"SIMULATED-PAID (no real payment link, no charge)\"\n+    s.ok(f\"payment status simulated only: {simulated_status}\")\n+    return s\n+\n+\n+def stage_workspace(ws: Path) -> Stage:\n+    s = Stage(\"workspace\", \"Customer Workspace\", core=True)\n+    missing = [f for f in COMMAND_SPRINT_FILES if not (ws / f).is_file()]\n+    if missing:\n+        s.fail(f\"missing workspace files: {', '.join(missing)}\")\n+        return s\n+    s.ok(f\"all {len(COMMAND_SPRINT_FILES)} Command Sprint files present in customers/{DRY_RUN_CLIENT}/\")\n+    return s\n+\n+\n+def stage_proof_pack(ws: Path) -> Stage:\n+    s = Stage(\"proof\", \"Proof Pack\", core=True)\n+    f = ws / \"10_proof_pack.md\"\n+    if not f.is_file():\n+        s.fail(\"10_proof_pack.md missing\")\n+        return s\n+    text = f.read_text(encoding=\"utf-8\", errors=\"ignore\")\n+    # Guard: a skeleton must NOT present any verified/achieved result.\n+    if \"✅\" in text and \"Verified\" in text:\n+        s.fail(\"proof pack appears to present a verified result in a dry run (fake proof risk)\")\n+        return s\n+    if \"Skeleton\" not in text and \"skeleton\" not in text:\n+        s.notes.append(\"note: proof pack does not self-identify as a skeleton\")\n+    s.ok(\"proof pack skeleton present; no fabricated/verified result asserted\")\n+    return s\n+\n+\n+def stage_upsell(ws: Path) -> Stage:\n+    s = Stage(\"upsell\", \"Upsell\", core=False)\n+    f = ws / \"11_upsell_recommendation.md\"\n+    if not f.is_file():\n+        s.fail(\"11_upsell_recommendation.md missing\")\n+        return s\n+    s.ok(\"upsell recommendation present (A2 — founder review before offering)\")\n+    return s\n+\n+\n+def stage_daily_command() -> Stage:\n+    s = Stage(\"daily\", \"Founder Daily Command\", core=False)\n+    out = REPO / \"reports/founder/daily_command.md\"\n+    out.parent.mkdir(parents=True, exist_ok=True)\n+    out.write_text(render_daily_command(), encoding=\"utf-8\")\n+    s.ok(f\"founder daily command written: {out.relative_to(REPO)}\")\n+    return s\n+\n+\n+def stage_governance() -> Stage:\n+    s = Stage(\"governance\", \"Governance\", core=True)\n+    gate = REPO / \"docs/03_governance/NO_EXTERNAL_ACTION_WITHOUT_APPROVAL.md\"\n+    policy = REPO / \"docs/governance/APPROVAL_POLICY.md\"\n+    if not gate.is_file():\n+        s.fail(\"NO_EXTERNAL_ACTION_WITHOUT_APPROVAL.md missing\")\n+        return s\n+    if not policy.is_file():\n+        s.fail(\"docs/governance/APPROVAL_POLICY.md missing\")\n+        return s\n+    # The dry run itself performs zero external actions — assert that invariant.\n+    s.ok(\"No-External-Action gate present; dry run performed 0 external actions\")\n+    return s\n+\n+\n+def render_daily_command() -> str:\n+    today = date.today().isoformat()\n+    return f\"\"\"# Founder Daily Command — {today}\n+\n+_Refreshed by `scripts/run_dealix_e2e_dry_run.py`. The one screen to run the day._\n+\n+## 1. Today's single most important move\n+- [ ] _(decide one)_\n+\n+## 2. Awaiting your approval (A2/A3 — nothing sends without you)\n+- See `data/outreach/approval_queue.csv` — drafts pending founder approval.\n+\n+## 3. Pipeline at a glance\n+| Stage | Count | Next action |\n+| --- | --- | --- |\n+| Targets (seed) | see `data/outreach/first_30_targets.csv` | shortlist top 10 |\n+| Drafts pending approval | see approval queue | review + approve |\n+| Diagnostics booked | 0 | book first |\n+| Offers sent | 0 | — |\n+| Paid sprints | 0 | — |\n+| Proof packs delivered | 0 | — |\n+\n+## 4. Guardrails (always on)\n+- No auto-send. No cold WhatsApp. No guaranteed-revenue claims.\n+- No customer name published without written consent.\n+- Every external action is logged in the customer Approval Register.\n+\n+## 5. Next 5 founder actions\n+1. Review `reports/launch/private_launch_readiness.md`.\n+2. Confirm E2E dry run verdict in `reports/verification/e2e_dry_run_latest.md`.\n+3. Shortlist top 10 from the first-30 targets.\n+4. Approve up to 5 outreach drafts (manual send only).\n+5. Book the first diagnostic.\n+\"\"\"\n+\n+\n+def render_report(stages: list[Stage], verdict: str) -> str:\n+    today = date.today().isoformat()\n+    lines = [\n+        \"# Dealix E2E Dry Run\",\n+        \"\",\n+        f\"_Generated by `scripts/run_dealix_e2e_dry_run.py` on {today}. \"\n+        \"Simulation only — no real external action, no real payment, no published name._\",\n+        \"\",\n+    ]\n+    for i, s in enumerate(stages, start=1):\n+        status = \"PASS\" if s.passed else \"FAIL\"\n+        lines.append(f\"## Stage {i} — {s.name}\")\n+        lines.append(status)\n+        for n in s.notes:\n+            lines.append(f\"- {n}\")\n+        lines.append(\"\")\n+    lines.append(\"## Verdict\")\n+    lines.append(verdict)\n+    lines.append(\"\")\n+    lines.append(\"### Core stages (must PASS for Private Launch Ready)\")\n+    lines.append(\"Target · Outreach Approval · Diagnostic · Offer · Customer Workspace · Proof Pack · Governance\")\n+    return \"\\n\".join(lines) + \"\\n\"\n+\n+\n+def compute_verdict(stages: list[Stage]) -> str:\n+    core = [s for s in stages if s.core]\n+    if not all(s.passed for s in core):\n+        return \"No-Go\"\n+    if all(s.passed for s in stages):\n+        return \"Private Launch Ready\"\n+    return \"Internal Only\"\n+\n+\n+def main() -> int:\n+    try:\n+        sys.stdout.reconfigure(encoding=\"utf-8\")\n+    except (AttributeError, OSError):",
+    "path": "scripts/run_dealix_e2e_dry_run.py",
+    "commit_id": "0dbe6cb191df51d945402c0eb78bf895f6837363",
+    "original_commit_id": "745d89b3756733962581c8b1c14015d68a56bbc7",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2408)",
+    "created_at": "2026-06-06T01:15:03Z",
+    "updated_at": "2026-06-06T01:15:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185668",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185668"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185668"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185668/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 278,
+    "original_line": 278,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 278,
+    "position": 278,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185672",
+    "pull_request_review_id": 4440812381,
+    "id": 3366185672,
+    "node_id": "PRRC_kwDOR1eIic7Io-rI",
+    "diff_hunk": "@@ -0,0 +1,53 @@\n+#!/usr/bin/env python3\n+\"\"\"Verify Dealix growth assets exist (P2 launch-readiness inputs).\n+\n+Checks for the presence of the growth/distribution assets that back the P2\n+band of launch readiness: partner/referral program, growth scorecard,\n+sector/answer-library plans, and the warm-target seed lists.\n+\n+Terminal markers:\n+    GROWTH_ASSETS_PRESENT=<n>/<total>\n+    DEALIX_GROWTH_ASSETS_OK=true|false\n+\"\"\"\n+from __future__ import annotations\n+\n+import sys\n+from pathlib import Path\n+\n+REPO = Path(__file__).resolve().parents[1]\n+\n+# (label, candidate paths — present if ANY candidate exists)\n+GROWTH_ASSETS = (\n+    (\"partner_referral_plan\", (\"docs/growth/PARTNER_STRATEGY.md\", \"docs/AGENCY_PARTNER_PROGRAM.md\", \"docs/growth/AGENCY_RESELLER_PLAYBOOK.md\")),\n+    (\"growth_metrics_report\", (\"reports/company_os/weekly/GROWTH_SCORECARD.md\",)),\n+    (\"case_study_factory\", (\"docs/growth/CASE_STUDY_FACTORY.md\",)),\n+    (\"warm_target_seed\", (\"data/outreach/first_30_targets.csv\", \"docs/ops/lead_machine/TODAY_15_TARGETS.csv\")),\n+    (\"outreach_approval_queue\", (\"data/outreach/approval_queue.csv\",)),\n+)\n+\n+\n+def main() -> int:\n+    try:\n+        sys.stdout.reconfigure(encoding=\"utf-8\")\n+    except (AttributeError, OSError):",
+    "path": "scripts/verify_dealix_growth_assets.py",
+    "commit_id": "0dbe6cb191df51d945402c0eb78bf895f6837363",
+    "original_commit_id": "745d89b3756733962581c8b1c14015d68a56bbc7",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2409)",
+    "created_at": "2026-06-06T01:15:04Z",
+    "updated_at": "2026-06-06T01:15:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185672",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185672"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185672"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185672/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 32,
+    "original_line": 32,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 32,
+    "position": 32,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185679",
+    "pull_request_review_id": 4440812381,
+    "id": 3366185679,
+    "node_id": "PRRC_kwDOR1eIic7Io-rP",
+    "diff_hunk": "@@ -0,0 +1,264 @@\n+#!/usr/bin/env python3\n+\"\"\"Private Launch Readiness scorer for Dealix.\n+\n+Scores launch readiness out of 100 across three bands (P0 / P1 / P2),\n+prints the verdict and blockers, and (unless --no-write) refreshes\n+``reports/launch/private_launch_readiness.md``.\n+\n+Verdict bands:\n+    0–49   No-Go\n+    50–69  Internal Only\n+    70–84  Private Launch Ready\n+    85–100 Public Limited Ready\n+\n+Hard rule: any P0 blocker caps the verdict at \"Internal Only\" regardless\n+of the numeric score — you do not private-launch with a P0 gap.\n+\n+Terminal markers:\n+    LAUNCH_READINESS_SCORE=<n>\n+    LAUNCH_VERDICT=<verdict>\n+    DEALIX_LAUNCH_READINESS_OK=true|false\n+\"\"\"\n+from __future__ import annotations\n+\n+import argparse\n+import sys\n+from datetime import date\n+from pathlib import Path\n+\n+REPO = Path(__file__).resolve().parents[1]\n+if str(REPO) not in sys.path:\n+    sys.path.insert(0, str(REPO))\n+\n+from scripts._wave8_scan import scan_files  # noqa: E402\n+\n+CUSTOMER_TEMPLATE = REPO / \"customers\" / \"_template\"\n+COMMAND_SPRINT_FILES = (\n+    \"00_intake.md\", \"01_company_intelligence.md\", \"02_diagnostic_summary.md\",\n+    \"03_command_sprint_scope.md\", \"04_revenue_map.md\", \"05_proof_register.md\",\n+    \"06_approval_register.md\", \"07_next_action_board.md\",\n+    \"08_executive_command_brief.md\", \"09_delivery_log.md\", \"10_proof_pack.md\",\n+    \"11_upsell_recommendation.md\",\n+)\n+\n+# Documents scanned for unsafe claims / auto-send language.\n+SCAN_TARGETS = (\n+    \"docs/company/POSITIONING.md\",\n+    \"docs/commercial/POSITIONING_WHY_NOW_SAUDI_ONEPAGER_AR.md\",\n+    \"docs/commercial/sales/P1_REVENUE_INTELLIGENCE_SPRINT_OFFER_AR.md\",\n+    \"docs/sales/ONE_PAGER.md\",\n+    \"docs/sales-kit/START_HERE.md\",\n+    \"customers/_template/03_command_sprint_scope.md\",\n+    \"customers/_template/10_proof_pack.md\",\n+)\n+\n+UNSAFE_CLAIM_PATTERNS = (\n+    r\"guaranteed\\s+(revenue|results?|roi|return|income|sales)\",\n+    r\"guarantee\\s+(you|your)\\s+(revenue|results?|sales)\",\n+    r\"عائد\\s+مضمون\",\n+    r\"أرباح\\s+مضمونة\",\n+    r\"نضمن\\s+(لك\\s+)?(زيادة|أرباح|إيراد|نتائج|مبيعات)\",\n+)\n+AUTO_SEND_PATTERNS = (\n+    r\"auto[-\\s]?send\",\n+    r\"automatically\\s+send(s|ing)?\\b\",\n+    r\"cold\\s+whatsapp\\s+automation\",\n+    r\"linkedin\\s+automation\",\n+    r\"إرسال\\s+تلقائي\",\n+)\n+\n+\n+def exists(rel: str) -> bool:\n+    return (REPO / rel).is_file()\n+\n+\n+def any_exists(*rels: str) -> bool:\n+    return any(exists(r) for r in rels)\n+\n+\n+def template_complete() -> bool:\n+    return CUSTOMER_TEMPLATE.is_dir() and all(\n+        (CUSTOMER_TEMPLATE / f).is_file() for f in COMMAND_SPRINT_FILES\n+    )\n+\n+\n+def scan_hits(patterns: tuple[str, ...]) -> list[str]:\n+    return scan_files(REPO, SCAN_TARGETS, patterns)\n+\n+\n+def module_status_ok() -> bool:\n+    files = (\n+        \"docs/company/SERVICE_STATUS_RULES.md\",\n+        \"docs/company/SERVICE_REGISTRY.md\",\n+    )\n+    if not all(exists(f) for f in files):\n+        return False\n+    reg = (REPO / \"docs/company/SERVICE_REGISTRY.md\").read_text(encoding=\"utf-8\", errors=\"ignore\").lower()\n+    return any(tok in reg for tok in (\"live\", \"planned\", \"spec\", \"beta\", \"جاهز\", \"مخطط\"))\n+\n+\n+def build_checks() -> tuple[list[tuple[str, bool, str]], list[tuple[str, bool, str]], list[tuple[str, bool, str]], list[str], list[str]]:\n+    claim_hits = scan_hits(UNSAFE_CLAIM_PATTERNS)\n+    autosend_hits = scan_hits(AUTO_SEND_PATTERNS)\n+\n+    p0 = [\n+        (\"Command Sprint offer exists\", exists(\"docs/commercial/sales/P1_REVENUE_INTELLIGENCE_SPRINT_OFFER_AR.md\"), \"docs/commercial/sales/P1_REVENUE_INTELLIGENCE_SPRINT_OFFER_AR.md\"),\n+        (\"Start / Diagnostic path exists\", exists(\"docs/sales-kit/START_HERE.md\"), \"docs/sales-kit/START_HERE.md\"),\n+        (\"Sales one-pager exists\", any_exists(\"docs/sales/ONE_PAGER.md\", \"docs/sales-kit/dealix_onepager.md\"), \"docs/sales/ONE_PAGER.md\"),\n+        (\"Diagnostic script exists\", exists(\"scripts/dealix_diagnostic.py\"), \"scripts/dealix_diagnostic.py\"),\n+        (\"Customer workspace template complete\", template_complete(), \"customers/_template/ (12 files)\"),\n+        (\"Proof Pack template exists\", exists(\"customers/_template/10_proof_pack.md\"), \"customers/_template/10_proof_pack.md\"),\n+        (\"Claims Register exists\", exists(\"docs/governance/registers/CLAIMS_REGISTER.md\"), \"docs/governance/registers/CLAIMS_REGISTER.md\"),\n+        (\"Human Approval Policy exists\", any_exists(\"docs/governance/APPROVAL_POLICY.md\", \"docs/governance/HUMAN_IN_THE_LOOP_MATRIX.md\"), \"docs/governance/APPROVAL_POLICY.md\"),\n+        (\"No External Action gate exists\", exists(\"docs/03_governance/NO_EXTERNAL_ACTION_WITHOUT_APPROVAL.md\"), \"docs/03_governance/NO_EXTERNAL_ACTION_WITHOUT_APPROVAL.md\"),\n+        (\"No unsafe claims\", not claim_hits, f\"{len(claim_hits)} hit(s)\"),\n+        (\"No auto-send language\", not autosend_hits, f\"{len(autosend_hits)} hit(s)\"),\n+        (\"No future module presented as live\", module_status_ok(), \"docs/company/SERVICE_REGISTRY.md\"),\n+    ]\n+    p1 = [\n+        (\"Business OS Score exists / spec-ready\", any_exists(\"docs/company/OPERATING_SCORECARD.md\", \"reports/company_os/weekly/GROWTH_SCORECARD.md\"), \"docs/company/OPERATING_SCORECARD.md\"),\n+        (\"First 30 targets system exists\", exists(\"data/outreach/first_30_targets.csv\"), \"data/outreach/first_30_targets.csv\"),\n+        (\"Outreach approval queue exists\", exists(\"data/outreach/approval_queue.csv\"), \"data/outreach/approval_queue.csv\"),\n+        (\"Founder Daily Command exists\", exists(\"reports/founder/daily_command.md\"), \"reports/founder/daily_command.md\"),\n+        (\"Revenue pipeline files exist\", any_exists(\"reports/revenue/first_revenue_board.md\", \"reports/revenue/dealix_revenue_asset_index.md\"), \"reports/revenue/first_revenue_board.md\"),\n+    ]\n+    p2 = [\n+        (\"Answer Library plan exists\", any_exists(\"docs/services/company_brain_sprint/answer_schema.md\", \"docs/sales-kit/dealix_objection_handler.md\"), \"docs/services/company_brain_sprint/answer_schema.md\"),\n+        (\"Sector pages plan exists\", any_exists(\"sales/service_pages/revenue_os.md\", \"docs/sector-reports/b2b_services_sample.md\"), \"sales/service_pages/\"),\n+        (\"Partner/referral plan exists\", any_exists(\"docs/growth/PARTNER_STRATEGY.md\", \"docs/AGENCY_PARTNER_PROGRAM.md\"), \"docs/growth/PARTNER_STRATEGY.md\"),\n+        (\"Growth metrics report exists\", exists(\"reports/company_os/weekly/GROWTH_SCORECARD.md\"), \"reports/company_os/weekly/GROWTH_SCORECARD.md\"),\n+    ]\n+    return p0, p1, p2, claim_hits, autosend_hits\n+\n+\n+def verdict_for(score: int, p0_blockers: list[str]) -> str:\n+    if p0_blockers:\n+        # A P0 gap caps the verdict regardless of numeric score.\n+        return \"No-Go\" if score < 50 else \"Internal Only\"\n+    if score < 50:\n+        return \"No-Go\"\n+    if score < 70:\n+        return \"Internal Only\"\n+    if score < 85:\n+        return \"Private Launch Ready\"\n+    return \"Public Limited Ready\"\n+\n+\n+def render_report(score: int, verdict: str, p0, p1, p2, p0_blk, p1_blk, p2_imp, next_fixes) -> str:\n+    today = date.today().isoformat()\n+\n+    def rows(items):\n+        return \"\\n\".join(\n+            f\"| {'✅' if ok else '❌'} | {name} | `{detail}` |\" for name, ok, detail in items\n+        )\n+\n+    def bullets(items):\n+        return \"\\n\".join(f\"- {x}\" for x in items) if items else \"- _(none)_\"\n+\n+    return f\"\"\"# Dealix — Private Launch Readiness\n+\n+_Generated by `scripts/verify_dealix_launch_readiness.py` on {today}. Do not edit by hand._\n+\n+## Score: {score}/100 → **{verdict}**\n+\n+| Band | Decision |\n+| --- | --- |\n+| 0–49 | No-Go |\n+| 50–69 | Internal Only |\n+| 70–84 | Private Launch Ready |\n+| 85–100 | Public Limited Ready |\n+\n+> A P0 blocker caps the verdict at **Internal Only** regardless of score.\n+\n+## P0 — must pass\n+| | Check | Reference |\n+| --- | --- | --- |\n+{rows(p0)}\n+\n+## P1 — should pass\n+| | Check | Reference |\n+| --- | --- | --- |\n+{rows(p1)}\n+\n+## P2 — improvements\n+| | Check | Reference |\n+| --- | --- | --- |\n+{rows(p2)}\n+\n+## P0 blockers\n+{bullets(p0_blk)}\n+\n+## P1 blockers\n+{bullets(p1_blk)}\n+\n+## P2 improvements\n+{bullets(p2_imp)}\n+\n+## Next 10 fixes\n+{bullets(next_fixes)}\n+\"\"\"\n+\n+\n+def main(argv: list[str] | None = None) -> int:\n+    try:\n+        sys.stdout.reconfigure(encoding=\"utf-8\")\n+    except (AttributeError, OSError):",
+    "path": "scripts/verify_dealix_launch_readiness.py",
+    "commit_id": "0dbe6cb191df51d945402c0eb78bf895f6837363",
+    "original_commit_id": "745d89b3756733962581c8b1c14015d68a56bbc7",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2411)",
+    "created_at": "2026-06-06T01:15:04Z",
+    "updated_at": "2026-06-06T01:15:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185679",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185679"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185679"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185679/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 205,
+    "original_line": 205,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 205,
+    "position": 205,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185683",
+    "pull_request_review_id": 4440812381,
+    "id": 3366185683,
+    "node_id": "PRRC_kwDOR1eIic7Io-rT",
+    "diff_hunk": "@@ -0,0 +1,71 @@\n+#!/usr/bin/env python3\n+\"\"\"Verify Dealix module/service status truth: nothing unbuilt presented as live.\n+\n+Confirms the service-status governance docs exist and that the service\n+registry marks status explicitly (live vs planned/spec), so no future module\n+is presented as live.\n+\n+Terminal markers:\n+    MODULE_STATUS_FILES_PASS=true|false\n+    MODULE_STATUS_LABELLED_PASS=true|false\n+    DEALIX_MODULE_STATUS_OK=true|false\n+\"\"\"\n+from __future__ import annotations\n+\n+import re\n+import sys\n+from pathlib import Path\n+\n+REPO = Path(__file__).resolve().parents[1]\n+\n+STATUS_FILES = (\n+    \"docs/company/SERVICE_STATUS_RULES.md\",\n+    \"docs/company/SERVICE_REGISTRY.md\",\n+    \"docs/product/CAPABILITY_MATRIX.md\",\n+)\n+\n+# A status-bearing doc should distinguish live from planned. We look for at\n+# least one explicit status vocabulary token in the registry/matrix.\n+STATUS_TOKENS = (\n+    r\"\\blive\\b\",\n+    r\"\\bplanned\\b\",\n+    r\"\\bspec\\b\",\n+    r\"\\bbeta\\b\",\n+    r\"\\bجاهز\\b\",\n+    r\"\\bمخطط\\b\",\n+    r\"\\bقيد\\b\",\n+)\n+\n+\n+def main() -> int:\n+    try:\n+        sys.stdout.reconfigure(encoding=\"utf-8\")\n+    except (AttributeError, OSError):",
+    "path": "scripts/verify_dealix_module_status.py",
+    "commit_id": "0dbe6cb191df51d945402c0eb78bf895f6837363",
+    "original_commit_id": "745d89b3756733962581c8b1c14015d68a56bbc7",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2410)",
+    "created_at": "2026-06-06T01:15:04Z",
+    "updated_at": "2026-06-06T01:15:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185683",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185683"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185683"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185683/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 43,
+    "original_line": 43,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 43,
+    "position": 43,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185684",
+    "pull_request_review_id": 4440812381,
+    "id": 3366185684,
+    "node_id": "PRRC_kwDOR1eIic7Io-rU",
+    "diff_hunk": "@@ -0,0 +1,75 @@\n+#!/usr/bin/env python3\n+\"\"\"Verify Dealix positioning assets exist and carry no unsafe claims.\n+\n+Checks that the core positioning + offer + start-path documents are present\n+and that none of them contain guaranteed-outcome language or auto-send wording.\n+\n+Terminal markers:\n+    POSITIONING_FILES_PASS=true|false\n+    POSITIONING_CLAIMS_PASS=true|false\n+    DEALIX_POSITIONING_OK=true|false\n+\"\"\"\n+from __future__ import annotations\n+\n+import sys\n+from pathlib import Path\n+\n+REPO = Path(__file__).resolve().parents[1]\n+if str(REPO) not in sys.path:\n+    sys.path.insert(0, str(REPO))\n+\n+from scripts._wave8_scan import scan_files  # noqa: E402\n+\n+POSITIONING_FILES = (\n+    \"docs/company/POSITIONING.md\",\n+    \"docs/commercial/POSITIONING_WHY_NOW_SAUDI_ONEPAGER_AR.md\",\n+    \"docs/commercial/sales/P1_REVENUE_INTELLIGENCE_SPRINT_OFFER_AR.md\",\n+    \"docs/sales/ONE_PAGER.md\",\n+    \"docs/sales-kit/START_HERE.md\",\n+)\n+\n+# Unsafe claim patterns (guaranteed revenue / outcome) — English + Arabic.\n+UNSAFE_CLAIM_PATTERNS = (\n+    r\"guaranteed\\s+(revenue|results?|roi|return|income)\",\n+    r\"guarantee\\s+(you|your)\\s+(revenue|results?|sales)\",\n+    r\"\\bنضمن\\s+(لك\\s+)?(زيادة|أرباح|إيراد|نتائج|مبيعات)\",\n+    r\"عائد\\s+مضمون\",\n+    r\"أرباح\\s+مضمونة\",\n+)\n+\n+# Auto-send / automation patterns that must not appear in positioning copy.\n+AUTO_SEND_PATTERNS = (\n+    r\"auto[-\\s]?send\",\n+    r\"automatically\\s+send\",\n+    r\"cold\\s+whatsapp\\s+automation\",\n+    r\"linkedin\\s+automation\",\n+    r\"إرسال\\s+تلقائي\",\n+)\n+\n+\n+def main() -> int:\n+    try:\n+        sys.stdout.reconfigure(encoding=\"utf-8\")\n+    except (AttributeError, OSError):",
+    "path": "scripts/verify_dealix_positioning.py",
+    "commit_id": "0dbe6cb191df51d945402c0eb78bf895f6837363",
+    "original_commit_id": "745d89b3756733962581c8b1c14015d68a56bbc7",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2412)",
+    "created_at": "2026-06-06T01:15:04Z",
+    "updated_at": "2026-06-06T01:15:04Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185684",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185684"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/642#discussion_r3366185684"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/642"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3366185684/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 53,
+    "original_line": 53,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 53,
+    "position": 53,
+    "subject_type": "line"
+  }
+]

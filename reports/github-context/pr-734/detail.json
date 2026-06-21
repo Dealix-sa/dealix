@@ -1,0 +1,184 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "# Pull Request\r\n\r\n## Summary | الملخص\r\n<!-- What does this PR change and why? -->\r\n\r\n## Type of change | نوع التغيير\r\n- [ ] 🐛 Bug fix\r\n- [ ] ✨ New feature\r\n- [ ] 💥 Breaking change\r\n- [ ] 📝 Docs only\r\n- [ ] ♻️ Refactor\r\n- [ ] 🔒 Security\r\n\r\n## Engineering cutover (only if env/backend persistence changes)\r\n\r\nIf this PR touches `PROOF_LEDGER_BACKEND`, `VALUE_LEDGER_BACKEND`, `DEALIX_OPERATIONAL_STREAM_BACKEND`, or `OTEL_CONTRACT_TRACE_EXPORT`:\r\n\r\n```text\r\nexternal_signal: <contract_signed|pilot_scope_locked|...>\r\ncontract_or_pilot_ref: <internal id or account name>\r\n```\r\n\r\nSee [docs/transformation/CUTOVER_PR_CHECKLIST_AR.md](docs/transformation/CUTOVER_PR_CHECKLIST_AR.md) and [docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md](docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md).\r\n\r\n## Checklist | قائمة التحقق\r\n- [ ] Tests added / updated\r\n- [ ] Docs updated (if needed)\r\n- [ ] No secrets committed (verified via `gitleaks`)\r\n- [ ] `make lint` passes\r\n- [ ] `make test` passes\r\n- [ ] Linked to an issue (if applicable)\r\n- [ ] Cutover PR body validated (`python3 scripts/verify_cutover_pr_body.py`) if applicable\r\n\r\n## How to test | كيف أختبر هذا\r\n<!-- Steps to verify -->\r\n\r\n## Screenshots / Logs (optional)\r\n",
+  "closedAt": "2026-06-17T01:37:04Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-10T08:51:21Z",
+      "authors": [
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude"
+        }
+      ],
+      "committedDate": "2026-06-10T08:51:21Z",
+      "messageBody": "Add complete commercial execution layer for Dealix:\n\n## Core Engine\n- generate_daily_mass_drafts.py — produces 120 bilingual drafts/day across 12 Saudi\n  sectors (10 drafts per sector, AR+EN). Sector-interleaved distribution ensures all\n  12 verticals covered. All outputs DRAFT_ONLY, approval_required=true.\n\n## Data Assets\n- data/targets/saudi_sector_targets.csv — 154 Saudi B2B company targets across 12\n  sectors (real_estate, clinics, training, agencies, restaurants, logistics, b2b,\n  construction, hospitality, saas, retail, law_accounting) in 9 cities.\n- business_autopilot/templates/outreach_templates_v2.yaml — full bilingual (AR+EN)\n  templates for all 12 sectors: email subject+body, WhatsApp scripts, sector angles.\n  Every template includes PDF presentation link and DRAFT_ONLY disclaimer.\n\n## Website\n- landing/systems-catalog.html — RTL Arabic-first systems catalog (1,252 lines) showing\n  3 tiers (Light/Mid/Heavy) with pricing, 12-sector grid, and real export form that\n  POSTs to /api/v1/leads/website-inquiry.\n- landing/assets/dealix_proposal_v2.pdf — presentation PDF available for direct download.\n\n## API\n- api/routers/proposals_export.py — 4 endpoints:\n  POST /api/v1/proposals/render (bilingual Jinja2 proposal generation)\n  GET  /api/v1/proposals/pitch-pdf (FileResponse PDF download)\n  GET  /api/v1/leads/daily-export (CSV export of daily drafts)\n  POST /api/v1/leads/website-inquiry (website lead capture)\n- api/main.py — registers proposals_export_router\n\n## Automation\n- scripts/daily_commercial_autopilot.sh — single command runs full daily cycle.\n  Cron: 0 5 * * * (7am KSA). Generates drafts, exports leads, prints summary.\n\n## First Day Output\n- data/daily_drafts/2026-06-10/ — 120 drafts (60 AR + 60 EN), drafts_all.csv (93K),\n  gmail_queue.json (49K), summary.md. 10 companies × 12 sectors × 2 languages.\n\nhttps://claude.ai/code/session_011Bom667qipGNKjuffedk18",
+      "messageHeadline": "feat(commercial): daily mass draft engine + systems catalog + export API",
+      "oid": "32b321f6ae39a731710b5f2e33a33ab89b7a8f85"
+    },
+    {
+      "authoredDate": "2026-06-10T08:52:29Z",
+      "authors": [
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude"
+        }
+      ],
+      "committedDate": "2026-06-10T08:52:29Z",
+      "messageBody": "https://claude.ai/code/session_011Bom667qipGNKjuffedk18",
+      "messageHeadline": "chore: add gitkeep for daily_drafts directory",
+      "oid": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e"
+    },
+    {
+      "authoredDate": "2026-06-10T15:15:15Z",
+      "authors": [
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude"
+        }
+      ],
+      "committedDate": "2026-06-10T15:15:15Z",
+      "messageBody": "- Remove unused `import csv` from proposals_export.py\n- Remove unused `import io` and `import uuid` from generate_daily_mass_drafts.py\n- Add explanatory comment to bare except block (best-effort angle extraction)\n- Remove unused `creds_path` assignment in gmail-push path\n- Update docs/SEO_AUDIT_REPORT.json: total_pages 76→77 (systems-catalog.html)\n- Commit outreach_templates_v2.yaml with governance header added by linter\n\nhttps://claude.ai/code/session_011Bom667qipGNKjuffedk18",
+      "messageHeadline": "fix: resolve CodeQL unused-import warnings and update SEO audit report",
+      "oid": "29b89c8e0574cb8f2ae78324ed42c3ae235bc956"
+    },
+    {
+      "authoredDate": "2026-06-10T15:17:22Z",
+      "authors": [
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude"
+        }
+      ],
+      "committedDate": "2026-06-10T15:17:22Z",
+      "messageBody": "The YAML loader's except clause now has an explanatory comment so\nCodeQL's empty-except rule is satisfied for both bare except blocks.\n\nhttps://claude.ai/code/session_011Bom667qipGNKjuffedk18",
+      "messageHeadline": "fix: add comment to yaml-loader bare except block for CodeQL",
+      "oid": "03b52492c2cfd3c14027b33b2598fac4477c2a00"
+    }
+  ],
+  "createdAt": "2026-06-17T01:36:51Z",
+  "files": [
+    {
+      "path": ".gitignore",
+      "additions": 5,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "api/main.py",
+      "additions": 4,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "api/routers/proposals_export.py",
+      "additions": 270,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business_autopilot/templates/outreach_templates_v2.yaml",
+      "additions": 1015,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "data/daily_drafts/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "data/daily_drafts/2026-06-10/drafts_all.csv",
+      "additions": 1561,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "data/daily_drafts/2026-06-10/drafts_ar.md",
+      "additions": 1265,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "data/daily_drafts/2026-06-10/drafts_en.md",
+      "additions": 1265,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "data/daily_drafts/2026-06-10/gmail_queue.json",
+      "additions": 552,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "data/daily_drafts/2026-06-10/summary.md",
+      "additions": 28,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "data/targets/saudi_sector_targets.csv",
+      "additions": 155,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "docs/SEO_AUDIT_REPORT.json",
+      "additions": 17,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "landing/assets/dealix_proposal_v2.pdf",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "landing/systems-catalog.html",
+      "additions": 1252,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/daily_commercial_autopilot.sh",
+      "additions": 49,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/generate_daily_mass_drafts.py",
+      "additions": 702,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "resolve-pr-710",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-17T01:37:04Z",
+  "number": 734,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "Resolve pr 710",
+  "updatedAt": "2026-06-17T01:37:14Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/734"
+}

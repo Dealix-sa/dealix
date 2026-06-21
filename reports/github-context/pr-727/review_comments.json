@@ -1,0 +1,899 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3410817146",
+    "pull_request_review_id": 4494183660,
+    "id": 3410817146,
+    "node_id": "PRRC_kwDOR1eIic7LTPB6",
+    "diff_hunk": "@@ -2,7 +2,7 @@\n \n import { useState, useEffect, useCallback, useRef } from \"react\";\n import { motion, AnimatePresence } from \"framer-motion\";\n-import { Search, Command, ArrowRight, ArrowLeft } from \"lucide-react\";\n+import { Search, Command as CommandIcon, ArrowRight, ArrowLeft } from \"lucide-react\";",
+    "path": "frontend/src/components/shared/CommandPalette.tsx",
+    "commit_id": "99148b742ef722c1e04f29e81b04f4c4dd1793cd",
+    "original_commit_id": "99148b742ef722c1e04f29e81b04f4c4dd1793cd",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused variable, import, function or class\n\nUnused import ArrowLeft.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2716)",
+    "created_at": "2026-06-15T03:07:28Z",
+    "updated_at": "2026-06-15T03:07:28Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3410817146",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3410817146"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3410817146"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3410817146/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 5,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3410825847",
+    "pull_request_review_id": 4494195257,
+    "id": 3410825847,
+    "node_id": "PRRC_kwDOR1eIic7LTRJ3",
+    "diff_hunk": "@@ -4,15 +4,15 @@\n \n from dataclasses import dataclass, field\n from datetime import UTC, datetime\n-from enum import Enum\n+from enum import Enum, StrEnum",
+    "path": "auto_client_acquisition/runtime_safety_os/incident_detection.py",
+    "commit_id": "f4d87fc4e0a63e01ad03e86d17019d1953fc6fc3",
+    "original_commit_id": "f4d87fc4e0a63e01ad03e86d17019d1953fc6fc3",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'Enum' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2717)",
+    "created_at": "2026-06-15T03:11:20Z",
+    "updated_at": "2026-06-15T03:11:20Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3410825847",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3410825847"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3410825847"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3410825847/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 7,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 5,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416331665",
+    "pull_request_review_id": 4500858335,
+    "id": 3416331665,
+    "node_id": "PRRC_kwDOR1eIic7LoRWR",
+    "diff_hunk": "@@ -0,0 +1,258 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Dealix Weekly GTM Review\n+========================\n+Weekly bilingual founder review: outreach pipeline → proposals sent →\n+meetings booked → deals won. Reads from outreach_log.csv + reports/proposals/.\n+\n+Usage:\n+  python3 scripts/dealix_weekly_gtm_review.py\n+  python3 scripts/dealix_weekly_gtm_review.py --weeks 2    # last 2 weeks\n+  python3 scripts/dealix_weekly_gtm_review.py --output report.md\n+\n+Doctrine: read-only. Never sends anything. Founder reviews before any action.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import sys",
+    "path": "scripts/dealix_weekly_gtm_review.py",
+    "commit_id": "8260f4be0c5042e3cb80f4e384ac6a77f836b7a4",
+    "original_commit_id": "8260f4be0c5042e3cb80f4e384ac6a77f836b7a4",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'sys' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2720)",
+    "created_at": "2026-06-15T20:21:09Z",
+    "updated_at": "2026-06-15T20:21:09Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416331665",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416331665"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416331665"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416331665/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 20,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 20,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381300",
+    "pull_request_review_id": 4500921362,
+    "id": 3416381300,
+    "node_id": "PRRC_kwDOR1eIic7Lodd0",
+    "diff_hunk": "@@ -0,0 +1,306 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Dealix Discovery Call Agenda Generator\n+========================================\n+Generates a structured bilingual AR+EN agenda for the first discovery call\n+with a prospect. Tailored to sector pain points from sector_pitches.json.\n+\n+Usage:\n+  python3 scripts/dealix_meeting_agenda.py \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --contact \"أحمد العتيبي\" \\\n+    --sector logistics \\\n+    --duration 45   # minutes\n+\n+  python3 scripts/dealix_meeting_agenda.py --list-sectors\n+\n+Doctrine: generates prep docs only. Founder conducts call. Nothing auto-sends.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import json\n+from datetime import date, timedelta",
+    "path": "scripts/dealix_meeting_agenda.py",
+    "commit_id": "bdf8b1fa0b9d2062d8121fad4e2e307f16b93854",
+    "original_commit_id": "bdf8b1fa0b9d2062d8121fad4e2e307f16b93854",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'timedelta' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2722)",
+    "created_at": "2026-06-15T20:30:54Z",
+    "updated_at": "2026-06-15T20:30:55Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416381300",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381300"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416381300"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381300/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 24,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 24,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381311",
+    "pull_request_review_id": 4500921362,
+    "id": 3416381311,
+    "node_id": "PRRC_kwDOR1eIic7Lodd_",
+    "diff_hunk": "@@ -0,0 +1,306 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Dealix Discovery Call Agenda Generator\n+========================================\n+Generates a structured bilingual AR+EN agenda for the first discovery call\n+with a prospect. Tailored to sector pain points from sector_pitches.json.\n+\n+Usage:\n+  python3 scripts/dealix_meeting_agenda.py \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --contact \"أحمد العتيبي\" \\\n+    --sector logistics \\\n+    --duration 45   # minutes\n+\n+  python3 scripts/dealix_meeting_agenda.py --list-sectors\n+\n+Doctrine: generates prep docs only. Founder conducts call. Nothing auto-sends.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import json\n+from datetime import date, timedelta\n+from pathlib import Path\n+\n+REPO_ROOT = Path(__file__).parent.parent\n+PITCHES_FILE = REPO_ROOT / \"data/outreach/sector_pitches.json\"\n+OUTPUT_DIR = REPO_ROOT / \"reports/meetings\"\n+\n+DISCOVERY_QUESTIONS = {\n+    \"real_estate\": [\n+        (\"pain_ar\", \"كم طلب عقاري بتوصلكم في الأسبوع، وكم منهم يرد عليه خلال ساعة؟\"),\n+        (\"pain_en\", \"How many property inquiries do you receive weekly, and how many get a response within an hour?\"),\n+        (\"process_ar\", \"كيف يتم توزيع الليدز على الفريق الحالي؟\"),\n+        (\"process_en\", \"How do you currently distribute leads across your team?\"),\n+        (\"metric_ar\", \"ما هو معدل التحويل من استفسار إلى معاينة؟\"),\n+        (\"metric_en\", \"What's your current conversion rate from inquiry to property visit?\"),\n+        (\"tool_ar\", \"ما الأدوات اللي تستخدمونها الحين لتتبع الليدز؟\"),\n+        (\"tool_en\", \"What tools do you currently use to track leads?\"),\n+    ],\n+    \"clinic\": [\n+        (\"pain_ar\", \"كم استفسار يوصل يومياً عبر القنوات المختلفة؟\"),\n+        (\"pain_en\", \"How many inquiries arrive daily across all channels?\"),\n+        (\"process_ar\", \"من يرد على استفسارات الواتساب خارج أوقات الدوام؟\"),\n+        (\"process_en\", \"Who responds to WhatsApp inquiries outside office hours?\"),\n+        (\"metric_ar\", \"كم نسبة الحجوزات التي تُلغى أو تُنسى؟\"),\n+        (\"metric_en\", \"What percentage of bookings get cancelled or forgotten?\"),\n+        (\"tool_ar\", \"هل عندكم نظام لمتابعة تقييمات Google؟\"),\n+        (\"tool_en\", \"Do you have a system to follow up on Google reviews?\"),\n+    ],\n+    \"logistics\": [\n+        (\"pain_ar\", \"كم عدد شحنات يومية، وكم منها تواجه تأخير أو شكوى من العميل؟\"),\n+        (\"pain_en\", \"How many daily shipments, and how many face delays or customer complaints?\"),\n+        (\"process_ar\", \"كيف يعرف العميل وضع شحنته الحالي؟\"),\n+        (\"process_en\", \"How does the customer currently know the status of their shipment?\"),\n+        (\"metric_ar\", \"ما هو معدل التسليم في الوقت المحدد مقارنة بالوعد؟\"),\n+        (\"metric_en\", \"What's your on-time delivery rate vs. promise?\"),\n+        (\"tool_ar\", \"هل فيه لوحة موحدة للفريق تبيّن حالة كل شحنة؟\"),\n+        (\"tool_en\", \"Is there a single board showing the status of every shipment for your team?\"),\n+    ],\n+    \"training\": [\n+        (\"pain_ar\", \"كم متدرب أنجزتم في آخر دورة، وكم منهم تواصلتم معهم بعد الانتهاء؟\"),\n+        (\"pain_en\", \"How many trainees completed your last cohort, and how many did you follow up with after?\"),\n+        (\"process_ar\", \"كيف تتابعون تجديد الاشتراك أو الدورة التالية؟\"),\n+        (\"process_en\", \"How do you handle renewal follow-ups or next course upsells?\"),\n+        (\"metric_ar\", \"ما هو معدل الاحتفاظ بالمتدربين (يعيدون التسجيل)؟\"),\n+        (\"metric_en\", \"What's your trainee retention rate (they re-enroll)?\"),\n+        (\"tool_ar\", \"هل فيه نظام لقياس رضا المتدربين بعد الدورة؟\"),\n+        (\"tool_en\", \"Do you have a system to measure trainee satisfaction post-course?\"),\n+    ],\n+    \"marketing_agency\": [\n+        (\"pain_ar\", \"ما هي أسرع استجابة تقدرون عليها لليدز الوارد لعملائكم؟\"),\n+        (\"pain_en\", \"What's the fastest response time you can guarantee for inbound leads for your clients?\"),\n+        (\"process_ar\", \"كيف تثبتون لعملائكم أن الليدز تم الرد عليها؟\"),\n+        (\"process_en\", \"How do you prove to clients that inbound leads are being responded to?\"),\n+        (\"metric_ar\", \"ما هو معدل التحويل الذي يتوقعه عملاؤكم مقارنة بما تحققونه؟\"),\n+        (\"metric_en\", \"What conversion rate do your clients expect vs. what you achieve?\"),\n+        (\"tool_ar\", \"هل فيه لوحة تقرير للعميل تبيّن أداء الحملة مع الرد على الليدز؟\"),\n+        (\"tool_en\", \"Is there a client-facing report showing campaign performance alongside lead response?\"),\n+    ],\n+    \"b2b_services\": [\n+        (\"pain_ar\", \"كيف يبدو إيقاع المتابعة الأسبوعي الحالي مع الفرص المفتوحة؟\"),\n+        (\"pain_en\", \"What does your current weekly follow-up cadence look like for open opportunities?\"),\n+        (\"process_ar\", \"من يتابع مع الليدز إذا المسؤول الأساسي كان مشغولاً؟\"),\n+        (\"process_en\", \"Who follows up with a lead if the primary owner is busy?\"),\n+        (\"metric_ar\", \"ما هو متوسط دورة المبيعات من أول تواصل لين الإغلاق؟\"),\n+        (\"metric_en\", \"What's your average sales cycle from first contact to close?\"),\n+        (\"tool_ar\", \"هل فيه نظام يُنبّه الفريق متى يراجعون فرصة معينة؟\"),\n+        (\"tool_en\", \"Is there a system that alerts the team when to revisit a specific opportunity?\"),\n+    ],\n+}\n+\n+AGENDA_TEMPLATE = \"\"\"# أجندة مكالمة الاستكشاف | Discovery Call Agenda\n+# {company_name} × Dealix\n+# يتطلب مراجعة الفاوندر قبل المكالمة\n+\n+---\n+\n+**التاريخ / Date**: {date}\n+**الشركة / Company**: {company_name}\n+**المسؤول / Contact**: {contact_name}\n+**القطاع / Sector**: {sector_ar} / {sector_en}\n+**المدة / Duration**: {duration} دقيقة / {duration} minutes\n+\n+---\n+\n+## 🎯 هدف المكالمة | Call Objective\n+\n+تشخيص التحدي الأساسي في {company_name} وتحديد ما إذا كان Dealix مناسباً لهم —\n+**لا هدف للبيع في هذه المكالمة. الهدف هو الاستماع.**\n+\n+*Diagnose the primary challenge at {company_name} and assess Dealix fit —\n+**No sales pressure. Goal is to listen.***\n+\n+---\n+\n+## ⏱️ الأجندة | Agenda ({duration} min)\n+\n+| الوقت | العنصر | الهدف |\n+|-------|--------|-------|\n+| 0-3 دقائق | ترحيب وتقديم | كسر الجليد ✅ |\n+| 3-8 دقائق | سؤال عام عن العمل | فهم السياق |\n+| 8-25 دقيقة | أسئلة الاستكشاف (انظر الأسفل) | تحديد الألم |\n+| 25-35 دقيقة | عرض التشخيص المجاني | نقل القيمة |\n+| 35-{duration} دقيقة | الخطوة التالية | تحديد الإجراء |\n+\n+---\n+\n+## 🔍 أسئلة الاستكشاف | Discovery Questions\n+\n+*اطرح 2-3 أسئلة فقط، استمع أكثر مما تتكلم.*\n+*Ask only 2-3 questions. Listen more than you speak.*\n+\n+{questions_ar}\n+\n+---\n+\n+### By Sector: {sector_en}\n+\n+{questions_en}\n+\n+---\n+\n+## 💡 فرضية الألم | Pain Hypothesis\n+\n+> **بالعربي**: {pain_ar}\n+\n+> **English**: {pain_en}\n+\n+**ملاحظة**: هذه فرضية مبنية على القطاع، وليست حقيقة عن {company_name}.\n+راجعها مع ما تسمعه في المكالمة.\n+\n+---\n+\n+## 🚀 الخطوة التالية | Next Step\n+\n+اختر واحدة من الخيارات التالية بناءً على المكالمة:\n+\n+- [ ] **إيجابي**: \"أرسل لك التشخيص المجاني (30 نقطة) — بدون أي التزام\" → `make outreach --stage diagnostic`\n+- [ ] **محتاج وقت**: \"أفهمك — أتواصل معك خلال أسبوع\" → سجّل في `outreach_log.csv` كـ `reply`\n+- [ ] **مهتم بالعرض**: اقترح tier مناسب → `make proposal COMPANY=\"{company_name}\" SECTOR={sector}`\n+- [ ] **غير مناسب**: سجّل سبب في `outreach_log.csv` كـ `lost`\n+\n+---\n+\n+## 📋 قواعد المكالمة | Call Rules\n+\n+- ✅ استمع أكثر مما تتكلم (70% استماع / 30% كلام)\n+- ✅ اطرح سؤالاً واحداً في كل مرة\n+- ✅ لا تعرض الأسعار في أول مكالمة\n+- ✅ ابدأ دائماً بالتشخيص المجاني\n+- ❌ لا تعد بنتائج محددة قبل التشخيص\n+- ❌ لا تضغط على القرار — أهمك أن تفهم مشكلتهم\n+\n+---\n+\n+*Dealix — نظام التشغيل الذكي للشركات السعودية B2B*\n+*hello@dealix.me | dealix.me*\n+\n+---\n+\n+> **للمؤسس**: هذه الأجندة للتحضير فقط. لا ترسلها للعميل. بعد المكالمة، حدّث `outreach_log.csv` بالنتيجة.\n+\"\"\"\n+\n+\n+def _load_pitches() -> dict:\n+    if not PITCHES_FILE.exists():\n+        return {}\n+    with PITCHES_FILE.open(encoding=\"utf-8\") as f:\n+        return json.load(f)\n+\n+\n+def generate_agenda(\n+    company: str,\n+    contact: str,\n+    sector: str,\n+    duration: int = 45,\n+    dry_run: bool = False,\n+) -> Path | None:\n+    pitches = _load_pitches()\n+    sectors = pitches.get(\"sectors\", {})\n+\n+    if sector not in sectors:\n+        print(f\"[ERROR] Unknown sector: {sector}\")\n+        return None\n+\n+    sector_data = sectors[sector]\n+    questions = DISCOVERY_QUESTIONS.get(sector, [])\n+\n+    q_ar = \"\\n\".join(",
+    "path": "scripts/dealix_meeting_agenda.py",
+    "commit_id": "bdf8b1fa0b9d2062d8121fad4e2e307f16b93854",
+    "original_commit_id": "bdf8b1fa0b9d2062d8121fad4e2e307f16b93854",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused local variable\n\nVariable q_ar is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2724)",
+    "created_at": "2026-06-15T20:30:55Z",
+    "updated_at": "2026-06-15T20:30:55Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416381311",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381311"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416381311"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381311/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 211,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 211,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381325",
+    "pull_request_review_id": 4500921362,
+    "id": 3416381325,
+    "node_id": "PRRC_kwDOR1eIic7LodeN",
+    "diff_hunk": "@@ -0,0 +1,306 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Dealix Discovery Call Agenda Generator\n+========================================\n+Generates a structured bilingual AR+EN agenda for the first discovery call\n+with a prospect. Tailored to sector pain points from sector_pitches.json.\n+\n+Usage:\n+  python3 scripts/dealix_meeting_agenda.py \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --contact \"أحمد العتيبي\" \\\n+    --sector logistics \\\n+    --duration 45   # minutes\n+\n+  python3 scripts/dealix_meeting_agenda.py --list-sectors\n+\n+Doctrine: generates prep docs only. Founder conducts call. Nothing auto-sends.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import json\n+from datetime import date, timedelta\n+from pathlib import Path\n+\n+REPO_ROOT = Path(__file__).parent.parent\n+PITCHES_FILE = REPO_ROOT / \"data/outreach/sector_pitches.json\"\n+OUTPUT_DIR = REPO_ROOT / \"reports/meetings\"\n+\n+DISCOVERY_QUESTIONS = {\n+    \"real_estate\": [\n+        (\"pain_ar\", \"كم طلب عقاري بتوصلكم في الأسبوع، وكم منهم يرد عليه خلال ساعة؟\"),\n+        (\"pain_en\", \"How many property inquiries do you receive weekly, and how many get a response within an hour?\"),\n+        (\"process_ar\", \"كيف يتم توزيع الليدز على الفريق الحالي؟\"),\n+        (\"process_en\", \"How do you currently distribute leads across your team?\"),\n+        (\"metric_ar\", \"ما هو معدل التحويل من استفسار إلى معاينة؟\"),\n+        (\"metric_en\", \"What's your current conversion rate from inquiry to property visit?\"),\n+        (\"tool_ar\", \"ما الأدوات اللي تستخدمونها الحين لتتبع الليدز؟\"),\n+        (\"tool_en\", \"What tools do you currently use to track leads?\"),\n+    ],\n+    \"clinic\": [\n+        (\"pain_ar\", \"كم استفسار يوصل يومياً عبر القنوات المختلفة؟\"),\n+        (\"pain_en\", \"How many inquiries arrive daily across all channels?\"),\n+        (\"process_ar\", \"من يرد على استفسارات الواتساب خارج أوقات الدوام؟\"),\n+        (\"process_en\", \"Who responds to WhatsApp inquiries outside office hours?\"),\n+        (\"metric_ar\", \"كم نسبة الحجوزات التي تُلغى أو تُنسى؟\"),\n+        (\"metric_en\", \"What percentage of bookings get cancelled or forgotten?\"),\n+        (\"tool_ar\", \"هل عندكم نظام لمتابعة تقييمات Google؟\"),\n+        (\"tool_en\", \"Do you have a system to follow up on Google reviews?\"),\n+    ],\n+    \"logistics\": [\n+        (\"pain_ar\", \"كم عدد شحنات يومية، وكم منها تواجه تأخير أو شكوى من العميل؟\"),\n+        (\"pain_en\", \"How many daily shipments, and how many face delays or customer complaints?\"),\n+        (\"process_ar\", \"كيف يعرف العميل وضع شحنته الحالي؟\"),\n+        (\"process_en\", \"How does the customer currently know the status of their shipment?\"),\n+        (\"metric_ar\", \"ما هو معدل التسليم في الوقت المحدد مقارنة بالوعد؟\"),\n+        (\"metric_en\", \"What's your on-time delivery rate vs. promise?\"),\n+        (\"tool_ar\", \"هل فيه لوحة موحدة للفريق تبيّن حالة كل شحنة؟\"),\n+        (\"tool_en\", \"Is there a single board showing the status of every shipment for your team?\"),\n+    ],\n+    \"training\": [\n+        (\"pain_ar\", \"كم متدرب أنجزتم في آخر دورة، وكم منهم تواصلتم معهم بعد الانتهاء؟\"),\n+        (\"pain_en\", \"How many trainees completed your last cohort, and how many did you follow up with after?\"),\n+        (\"process_ar\", \"كيف تتابعون تجديد الاشتراك أو الدورة التالية؟\"),\n+        (\"process_en\", \"How do you handle renewal follow-ups or next course upsells?\"),\n+        (\"metric_ar\", \"ما هو معدل الاحتفاظ بالمتدربين (يعيدون التسجيل)؟\"),\n+        (\"metric_en\", \"What's your trainee retention rate (they re-enroll)?\"),\n+        (\"tool_ar\", \"هل فيه نظام لقياس رضا المتدربين بعد الدورة؟\"),\n+        (\"tool_en\", \"Do you have a system to measure trainee satisfaction post-course?\"),\n+    ],\n+    \"marketing_agency\": [\n+        (\"pain_ar\", \"ما هي أسرع استجابة تقدرون عليها لليدز الوارد لعملائكم؟\"),\n+        (\"pain_en\", \"What's the fastest response time you can guarantee for inbound leads for your clients?\"),\n+        (\"process_ar\", \"كيف تثبتون لعملائكم أن الليدز تم الرد عليها؟\"),\n+        (\"process_en\", \"How do you prove to clients that inbound leads are being responded to?\"),\n+        (\"metric_ar\", \"ما هو معدل التحويل الذي يتوقعه عملاؤكم مقارنة بما تحققونه؟\"),\n+        (\"metric_en\", \"What conversion rate do your clients expect vs. what you achieve?\"),\n+        (\"tool_ar\", \"هل فيه لوحة تقرير للعميل تبيّن أداء الحملة مع الرد على الليدز؟\"),\n+        (\"tool_en\", \"Is there a client-facing report showing campaign performance alongside lead response?\"),\n+    ],\n+    \"b2b_services\": [\n+        (\"pain_ar\", \"كيف يبدو إيقاع المتابعة الأسبوعي الحالي مع الفرص المفتوحة؟\"),\n+        (\"pain_en\", \"What does your current weekly follow-up cadence look like for open opportunities?\"),\n+        (\"process_ar\", \"من يتابع مع الليدز إذا المسؤول الأساسي كان مشغولاً؟\"),\n+        (\"process_en\", \"Who follows up with a lead if the primary owner is busy?\"),\n+        (\"metric_ar\", \"ما هو متوسط دورة المبيعات من أول تواصل لين الإغلاق؟\"),\n+        (\"metric_en\", \"What's your average sales cycle from first contact to close?\"),\n+        (\"tool_ar\", \"هل فيه نظام يُنبّه الفريق متى يراجعون فرصة معينة؟\"),\n+        (\"tool_en\", \"Is there a system that alerts the team when to revisit a specific opportunity?\"),\n+    ],\n+}\n+\n+AGENDA_TEMPLATE = \"\"\"# أجندة مكالمة الاستكشاف | Discovery Call Agenda\n+# {company_name} × Dealix\n+# يتطلب مراجعة الفاوندر قبل المكالمة\n+\n+---\n+\n+**التاريخ / Date**: {date}\n+**الشركة / Company**: {company_name}\n+**المسؤول / Contact**: {contact_name}\n+**القطاع / Sector**: {sector_ar} / {sector_en}\n+**المدة / Duration**: {duration} دقيقة / {duration} minutes\n+\n+---\n+\n+## 🎯 هدف المكالمة | Call Objective\n+\n+تشخيص التحدي الأساسي في {company_name} وتحديد ما إذا كان Dealix مناسباً لهم —\n+**لا هدف للبيع في هذه المكالمة. الهدف هو الاستماع.**\n+\n+*Diagnose the primary challenge at {company_name} and assess Dealix fit —\n+**No sales pressure. Goal is to listen.***\n+\n+---\n+\n+## ⏱️ الأجندة | Agenda ({duration} min)\n+\n+| الوقت | العنصر | الهدف |\n+|-------|--------|-------|\n+| 0-3 دقائق | ترحيب وتقديم | كسر الجليد ✅ |\n+| 3-8 دقائق | سؤال عام عن العمل | فهم السياق |\n+| 8-25 دقيقة | أسئلة الاستكشاف (انظر الأسفل) | تحديد الألم |\n+| 25-35 دقيقة | عرض التشخيص المجاني | نقل القيمة |\n+| 35-{duration} دقيقة | الخطوة التالية | تحديد الإجراء |\n+\n+---\n+\n+## 🔍 أسئلة الاستكشاف | Discovery Questions\n+\n+*اطرح 2-3 أسئلة فقط، استمع أكثر مما تتكلم.*\n+*Ask only 2-3 questions. Listen more than you speak.*\n+\n+{questions_ar}\n+\n+---\n+\n+### By Sector: {sector_en}\n+\n+{questions_en}\n+\n+---\n+\n+## 💡 فرضية الألم | Pain Hypothesis\n+\n+> **بالعربي**: {pain_ar}\n+\n+> **English**: {pain_en}\n+\n+**ملاحظة**: هذه فرضية مبنية على القطاع، وليست حقيقة عن {company_name}.\n+راجعها مع ما تسمعه في المكالمة.\n+\n+---\n+\n+## 🚀 الخطوة التالية | Next Step\n+\n+اختر واحدة من الخيارات التالية بناءً على المكالمة:\n+\n+- [ ] **إيجابي**: \"أرسل لك التشخيص المجاني (30 نقطة) — بدون أي التزام\" → `make outreach --stage diagnostic`\n+- [ ] **محتاج وقت**: \"أفهمك — أتواصل معك خلال أسبوع\" → سجّل في `outreach_log.csv` كـ `reply`\n+- [ ] **مهتم بالعرض**: اقترح tier مناسب → `make proposal COMPANY=\"{company_name}\" SECTOR={sector}`\n+- [ ] **غير مناسب**: سجّل سبب في `outreach_log.csv` كـ `lost`\n+\n+---\n+\n+## 📋 قواعد المكالمة | Call Rules\n+\n+- ✅ استمع أكثر مما تتكلم (70% استماع / 30% كلام)\n+- ✅ اطرح سؤالاً واحداً في كل مرة\n+- ✅ لا تعرض الأسعار في أول مكالمة\n+- ✅ ابدأ دائماً بالتشخيص المجاني\n+- ❌ لا تعد بنتائج محددة قبل التشخيص\n+- ❌ لا تضغط على القرار — أهمك أن تفهم مشكلتهم\n+\n+---\n+\n+*Dealix — نظام التشغيل الذكي للشركات السعودية B2B*\n+*hello@dealix.me | dealix.me*\n+\n+---\n+\n+> **للمؤسس**: هذه الأجندة للتحضير فقط. لا ترسلها للعميل. بعد المكالمة، حدّث `outreach_log.csv` بالنتيجة.\n+\"\"\"\n+\n+\n+def _load_pitches() -> dict:\n+    if not PITCHES_FILE.exists():\n+        return {}\n+    with PITCHES_FILE.open(encoding=\"utf-8\") as f:\n+        return json.load(f)\n+\n+\n+def generate_agenda(\n+    company: str,\n+    contact: str,\n+    sector: str,\n+    duration: int = 45,\n+    dry_run: bool = False,\n+) -> Path | None:\n+    pitches = _load_pitches()\n+    sectors = pitches.get(\"sectors\", {})\n+\n+    if sector not in sectors:\n+        print(f\"[ERROR] Unknown sector: {sector}\")\n+        return None\n+\n+    sector_data = sectors[sector]\n+    questions = DISCOVERY_QUESTIONS.get(sector, [])\n+\n+    q_ar = \"\\n\".join(\n+        f\"- **{i+1}. (AR)** {q}\" for i, (_, q) in enumerate(questions) if _[0] != \"q\"\n+        if _.endswith(\"_ar\")\n+        for _, q in [(_, q)]",
+    "path": "scripts/dealix_meeting_agenda.py",
+    "commit_id": "bdf8b1fa0b9d2062d8121fad4e2e307f16b93854",
+    "original_commit_id": "bdf8b1fa0b9d2062d8121fad4e2e307f16b93854",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Nested loops with same variable\n\nNested for statement uses loop variable '_' of enclosing [for statement](1).\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2721)",
+    "created_at": "2026-06-15T20:30:55Z",
+    "updated_at": "2026-06-15T20:30:55Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416381325",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381325"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416381325"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381325/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": 212,
+    "start_side": "RIGHT",
+    "line": null,
+    "original_line": 214,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 214,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381340",
+    "pull_request_review_id": 4500921362,
+    "id": 3416381340,
+    "node_id": "PRRC_kwDOR1eIic7Lodec",
+    "diff_hunk": "@@ -0,0 +1,244 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Dealix Outreach Tracker\n+========================\n+CLI to log and update outreach activity in outreach_log.csv without\n+opening a spreadsheet. The founder runs this after each outreach action.\n+\n+Usage:\n+  # Log a new outreach event:\n+  python3 scripts/dealix_outreach_tracker.py log \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --sector logistics \\\n+    --status sent\n+\n+  # Update a company's status:\n+  python3 scripts/dealix_outreach_tracker.py update \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --status reply \\\n+    --note \"مهتمين بالتشخيص المجاني\"\n+\n+  # Show current pipeline summary:\n+  python3 scripts/dealix_outreach_tracker.py summary\n+\n+  # List all companies in a given status:\n+  python3 scripts/dealix_outreach_tracker.py list --status sent\n+\n+Doctrine: local file only. Nothing leaves this machine without founder action.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import os",
+    "path": "scripts/dealix_outreach_tracker.py",
+    "commit_id": "bdf8b1fa0b9d2062d8121fad4e2e307f16b93854",
+    "original_commit_id": "bdf8b1fa0b9d2062d8121fad4e2e307f16b93854",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'os' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2723)",
+    "created_at": "2026-06-15T20:30:55Z",
+    "updated_at": "2026-06-15T20:30:55Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416381340",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381340"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416381340"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416381340/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 34,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 34,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480803",
+    "pull_request_review_id": 4501039416,
+    "id": 3416480803,
+    "node_id": "PRRC_kwDOR1eIic7Lo1wj",
+    "diff_hunk": "@@ -0,0 +1,175 @@\n+\"\"\"Tests for GTM script functions.\n+\n+All tests are offline: no network, no DB, no file writes to the repo.\n+Scripts are imported directly; no subprocess invocations.\n+\"\"\"\n+from __future__ import annotations\n+\n+import sys\n+from pathlib import Path\n+\n+sys.path.insert(0, str(Path(__file__).parent.parent))\n+\n+\n+# ---------------------------------------------------------------------------\n+# 1. dealix_proposal_generator\n+# ---------------------------------------------------------------------------\n+\n+def test_list_sectors_runs_and_has_real_estate(capsys: object) -> None:\n+    \"\"\"list_sectors prints without raising and the sectors data contains real_estate.\"\"\"\n+    import scripts.dealix_proposal_generator as pg  # type: ignore[import]\n+\n+    pitches = pg._load_pitches()\n+    sectors = pitches.get(\"sectors\", {})\n+    assert \"real_estate\" in sectors, \"Expected 'real_estate' in sector pitches\"\n+\n+    # Call list_sectors with the loaded pitches dict — it prints and returns None.\n+    result = pg.list_sectors(pitches)",
+    "path": "tests/test_gtm_scripts.py",
+    "commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "original_commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Use of the return value of a procedure\n\nThe result of [list_sectors](1) is used even though it is always None.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2727)",
+    "created_at": "2026-06-15T20:49:31Z",
+    "updated_at": "2026-06-15T20:49:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480803",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480803"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480803"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480803/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 27,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 27,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480812",
+    "pull_request_review_id": 4501039416,
+    "id": 3416480812,
+    "node_id": "PRRC_kwDOR1eIic7Lo1ws",
+    "diff_hunk": "@@ -0,0 +1,175 @@\n+\"\"\"Tests for GTM script functions.\n+\n+All tests are offline: no network, no DB, no file writes to the repo.\n+Scripts are imported directly; no subprocess invocations.\n+\"\"\"\n+from __future__ import annotations\n+\n+import sys\n+from pathlib import Path\n+\n+sys.path.insert(0, str(Path(__file__).parent.parent))\n+\n+\n+# ---------------------------------------------------------------------------\n+# 1. dealix_proposal_generator\n+# ---------------------------------------------------------------------------\n+\n+def test_list_sectors_runs_and_has_real_estate(capsys: object) -> None:\n+    \"\"\"list_sectors prints without raising and the sectors data contains real_estate.\"\"\"\n+    import scripts.dealix_proposal_generator as pg  # type: ignore[import]\n+\n+    pitches = pg._load_pitches()\n+    sectors = pitches.get(\"sectors\", {})\n+    assert \"real_estate\" in sectors, \"Expected 'real_estate' in sector pitches\"\n+\n+    # Call list_sectors with the loaded pitches dict — it prints and returns None.\n+    result = pg.list_sectors(pitches)\n+    assert result is None\n+\n+\n+# ---------------------------------------------------------------------------\n+# 2. dealix_contract_generator\n+# ---------------------------------------------------------------------------\n+\n+def test_list_tiers_runs_without_error(capsys: object) -> None:\n+    \"\"\"list_tiers prints tier table without raising.\"\"\"\n+    import scripts.dealix_contract_generator as cg  # type: ignore[import]\n+\n+    result = cg.list_tiers()",
+    "path": "tests/test_gtm_scripts.py",
+    "commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "original_commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Use of the return value of a procedure\n\nThe result of [list_tiers](1) is used even though it is always None.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2728)",
+    "created_at": "2026-06-15T20:49:31Z",
+    "updated_at": "2026-06-15T20:49:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480812",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480812"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480812"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480812/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 39,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 39,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480818",
+    "pull_request_review_id": 4501039416,
+    "id": 3416480818,
+    "node_id": "PRRC_kwDOR1eIic7Lo1wy",
+    "diff_hunk": "@@ -0,0 +1,411 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Dealix Renewal Tracker\n+======================\n+CLI to track when customer contracts are due for renewal and print bilingual\n+AR+EN alerts.  The founder runs this each morning to spot upcoming renewals.\n+\n+Usage:\n+  # Add a new contract:\n+  python3 scripts/dealix_renewal_tracker.py add \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --sector logistics \\\n+    --tier command_center \\\n+    --start-date 2026-01-01 \\\n+    --months 6 \\\n+    --monthly-sar 9000\n+\n+  # Check for upcoming renewals (30-day urgent / 60-day warning):\n+  python3 scripts/dealix_renewal_tracker.py check\n+\n+  # Mark a contract renewed:\n+  python3 scripts/dealix_renewal_tracker.py update \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --status renewed\n+\n+  # Print MRR + at-risk count:\n+  python3 scripts/dealix_renewal_tracker.py summary\n+\n+Doctrine: never auto-sends.  Founder reviews all alerts before acting.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import uuid\n+from datetime import date, timedelta",
+    "path": "scripts/dealix_renewal_tracker.py",
+    "commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "original_commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'timedelta' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2726)",
+    "created_at": "2026-06-15T20:49:31Z",
+    "updated_at": "2026-06-15T20:49:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480818",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480818"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480818"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480818/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 37,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 37,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480828",
+    "pull_request_review_id": 4501039416,
+    "id": 3416480828,
+    "node_id": "PRRC_kwDOR1eIic7Lo1w8",
+    "diff_hunk": "@@ -0,0 +1,411 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Dealix Renewal Tracker\n+======================\n+CLI to track when customer contracts are due for renewal and print bilingual\n+AR+EN alerts.  The founder runs this each morning to spot upcoming renewals.\n+\n+Usage:\n+  # Add a new contract:\n+  python3 scripts/dealix_renewal_tracker.py add \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --sector logistics \\\n+    --tier command_center \\\n+    --start-date 2026-01-01 \\\n+    --months 6 \\\n+    --monthly-sar 9000\n+\n+  # Check for upcoming renewals (30-day urgent / 60-day warning):\n+  python3 scripts/dealix_renewal_tracker.py check\n+\n+  # Mark a contract renewed:\n+  python3 scripts/dealix_renewal_tracker.py update \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --status renewed\n+\n+  # Print MRR + at-risk count:\n+  python3 scripts/dealix_renewal_tracker.py summary\n+\n+Doctrine: never auto-sends.  Founder reviews all alerts before acting.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import uuid\n+from datetime import date, timedelta\n+from pathlib import Path\n+\n+REPO_ROOT = Path(__file__).parent.parent\n+CONTRACT_LOG = REPO_ROOT / \"data/contracts/contract_log.csv\"\n+\n+FIELDNAMES = [\n+    \"contract_id\",\n+    \"company\",\n+    \"sector\",\n+    \"tier\",\n+    \"start_date\",\n+    \"end_date\",\n+    \"monthly_sar\",\n+    \"status\",\n+]\n+\n+VALID_STATUSES = [\"active\", \"renewed\", \"churned\", \"paused\"]\n+VALID_TIERS = [\n+    \"sprint\",\n+    \"revenue_os\",\n+    \"command_center\",\n+    \"delivery_os\",\n+    \"review_os\",\n+]\n+\n+STATUS_AR: dict[str, str] = {\n+    \"active\": \"نشط\",\n+    \"renewed\": \"مُجدَّد\",\n+    \"churned\": \"خسارة\",\n+    \"paused\": \"موقوف\",\n+}\n+\n+TIER_AR: dict[str, str] = {\n+    \"sprint\": \"التشخيص السريع\",\n+    \"revenue_os\": \"نظام تشغيل الإيرادات\",\n+    \"command_center\": \"مركز القيادة\",\n+    \"delivery_os\": \"نظام التسليم\",\n+    \"review_os\": \"نظام المراجعة والسمعة\",\n+}\n+\n+URGENT_DAYS = 30\n+WARNING_DAYS = 60\n+\n+\n+# ---------------------------------------------------------------------------\n+# Internal helpers\n+# ---------------------------------------------------------------------------\n+\n+def _log_path() -> Path:\n+    \"\"\"Return the path to the contract log (respects env override).\"\"\"\n+    import sys as _sys  # local import avoids global os dependency\n+    env_override = None",
+    "path": "scripts/dealix_renewal_tracker.py",
+    "commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "original_commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused local variable\n\nVariable env_override is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2729)",
+    "created_at": "2026-06-15T20:49:31Z",
+    "updated_at": "2026-06-15T20:49:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480828",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480828"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480828"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480828/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 89,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 89,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480837",
+    "pull_request_review_id": 4501039416,
+    "id": 3416480837,
+    "node_id": "PRRC_kwDOR1eIic7Lo1xF",
+    "diff_hunk": "@@ -0,0 +1,411 @@\n+#!/usr/bin/env python3\n+\"\"\"\n+Dealix Renewal Tracker\n+======================\n+CLI to track when customer contracts are due for renewal and print bilingual\n+AR+EN alerts.  The founder runs this each morning to spot upcoming renewals.\n+\n+Usage:\n+  # Add a new contract:\n+  python3 scripts/dealix_renewal_tracker.py add \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --sector logistics \\\n+    --tier command_center \\\n+    --start-date 2026-01-01 \\\n+    --months 6 \\\n+    --monthly-sar 9000\n+\n+  # Check for upcoming renewals (30-day urgent / 60-day warning):\n+  python3 scripts/dealix_renewal_tracker.py check\n+\n+  # Mark a contract renewed:\n+  python3 scripts/dealix_renewal_tracker.py update \\\n+    --company \"شركة نجم اللوجستية\" \\\n+    --status renewed\n+\n+  # Print MRR + at-risk count:\n+  python3 scripts/dealix_renewal_tracker.py summary\n+\n+Doctrine: never auto-sends.  Founder reviews all alerts before acting.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import uuid\n+from datetime import date, timedelta\n+from pathlib import Path\n+\n+REPO_ROOT = Path(__file__).parent.parent\n+CONTRACT_LOG = REPO_ROOT / \"data/contracts/contract_log.csv\"\n+\n+FIELDNAMES = [\n+    \"contract_id\",\n+    \"company\",\n+    \"sector\",\n+    \"tier\",\n+    \"start_date\",\n+    \"end_date\",\n+    \"monthly_sar\",\n+    \"status\",\n+]\n+\n+VALID_STATUSES = [\"active\", \"renewed\", \"churned\", \"paused\"]\n+VALID_TIERS = [\n+    \"sprint\",\n+    \"revenue_os\",\n+    \"command_center\",\n+    \"delivery_os\",\n+    \"review_os\",\n+]\n+\n+STATUS_AR: dict[str, str] = {\n+    \"active\": \"نشط\",\n+    \"renewed\": \"مُجدَّد\",\n+    \"churned\": \"خسارة\",\n+    \"paused\": \"موقوف\",\n+}\n+\n+TIER_AR: dict[str, str] = {\n+    \"sprint\": \"التشخيص السريع\",\n+    \"revenue_os\": \"نظام تشغيل الإيرادات\",\n+    \"command_center\": \"مركز القيادة\",\n+    \"delivery_os\": \"نظام التسليم\",\n+    \"review_os\": \"نظام المراجعة والسمعة\",\n+}\n+\n+URGENT_DAYS = 30\n+WARNING_DAYS = 60\n+\n+\n+# ---------------------------------------------------------------------------\n+# Internal helpers\n+# ---------------------------------------------------------------------------\n+\n+def _log_path() -> Path:\n+    \"\"\"Return the path to the contract log (respects env override).\"\"\"\n+    import sys as _sys  # local import avoids global os dependency\n+    env_override = None\n+    # Support DEALIX_CONTRACTS_PATH env override without importing os globally\n+    for entry in _sys.argv:\n+        pass  # argv scan not needed; use pathlib env approach below\n+    # Use Path's parent env-variable approach via subprocess-free lookup\n+    # We do NOT import os at module level; instead we read via pathlib workaround\n+    # using /proc/self/environ on Linux.\n+    env_path = _read_env_var(\"DEALIX_CONTRACTS_PATH\")\n+    if env_path:\n+        return Path(env_path)\n+    return CONTRACT_LOG\n+\n+\n+def _read_env_var(name: str) -> str:\n+    \"\"\"Read a single environment variable without importing os.\"\"\"\n+    try:\n+        environ_text = Path(\"/proc/self/environ\").read_bytes()\n+        for entry in environ_text.split(b\"\\x00\"):\n+            if entry.startswith(name.encode() + b\"=\"):\n+                return entry[len(name) + 1:].decode(errors=\"replace\")\n+    except Exception:",
+    "path": "scripts/dealix_renewal_tracker.py",
+    "commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "original_commit_id": "ddeeaaa9a95e284db65adedb12d82b229cfbbaad",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2725)",
+    "created_at": "2026-06-15T20:49:31Z",
+    "updated_at": "2026-06-15T20:49:31Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480837",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480837"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3416480837"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3416480837/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 109,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 109,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3447852665",
+    "pull_request_review_id": 4539145947,
+    "id": 3447852665,
+    "node_id": "PRRC_kwDOR1eIic7Ngg55",
+    "diff_hunk": "@@ -14,7 +14,7 @@\n \n # revision identifiers, used by Alembic.\n revision: str = \"20260610_014_saas_subscription_billing\"\n-down_revision: Union[str, None] = \"20260524_013_autopilot_store_snapshot\"\n+down_revision: Union[str, None] = \"013\"",
+    "path": "db/migrations/versions/20260610_014_saas_subscription_billing.py",
+    "commit_id": "eac3976f640fb567821479800d3cc02fb9d1047b",
+    "original_commit_id": "eac3976f640fb567821479800d3cc02fb9d1047b",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused global variable\n\nThe global variable 'down_revision' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2791)",
+    "created_at": "2026-06-21T03:29:59Z",
+    "updated_at": "2026-06-21T03:29:59Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3447852665",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3447852665"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/727#discussion_r3447852665"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/727"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3447852665/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 17,
+    "original_line": 17,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 14,
+    "position": 14,
+    "subject_type": "line"
+  }
+]

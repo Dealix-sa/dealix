@@ -1,0 +1,49 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "Adds a morning production and business operating command for Dealix.",
+  "closedAt": "2026-06-08T19:26:20Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-08T19:22:10Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-08T19:22:10Z",
+      "messageBody": "",
+      "messageHeadline": "chore: add Dealix morning ops command",
+      "oid": "1e11161da4e40f7268a490060f9ab1547e56a370"
+    }
+  ],
+  "createdAt": "2026-06-08T19:22:16Z",
+  "files": [
+    {
+      "path": "scripts/dealix_morning_ops.sh",
+      "additions": 32,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "chore/add-morning-ops-command",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-08T19:26:20Z",
+  "number": 699,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "chore: add Dealix morning ops command",
+  "updatedAt": "2026-06-08T19:26:23Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/699"
+}
