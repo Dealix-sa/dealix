@@ -1,0 +1,86 @@
+[
+  {
+    "draftId": "draft-demo-001-ar",
+    "accountId": "demo-001",
+    "language": "ar",
+    "channel": "whatsapp",
+    "opener": "السلام عليكم، شفت إن Pipeline عندكم ما عنده إيقاع أسبوعي. Dealix يركّب الإيقاع + تقرير إثبات أسبوعي.",
+    "review_status": "pending_review",
+    "disclaimer": "DRAFT — requires human review before send",
+    "safetyFlags": [
+      "no_roi_claim",
+      "no_fake_testimonial",
+      "no_pressure"
+    ]
+  },
+  {
+    "draftId": "draft-demo-001-en",
+    "accountId": "demo-001",
+    "language": "en",
+    "channel": "whatsapp",
+    "opener": "Hello, your pipeline doesn't have a weekly cadence. Dealix installs the cadence + a weekly proof report.",
+    "review_status": "pending_review",
+    "disclaimer": "DRAFT — requires human review before send",
+    "safetyFlags": [
+      "no_roi_claim",
+      "no_fake_testimonial",
+      "no_pressure"
+    ]
+  },
+  {
+    "draftId": "draft-demo-002-ar",
+    "accountId": "demo-002",
+    "language": "ar",
+    "channel": "whatsapp",
+    "opener": "السلام عليكم، أعرف إن تحديثات الشحنات عندكم يدوية. Dealix يبني غرفة قيادة بخمسة مؤشرات فقط.",
+    "review_status": "pending_review",
+    "disclaimer": "DRAFT — requires human review before send",
+    "safetyFlags": [
+      "no_roi_claim",
+      "no_fake_testimonial",
+      "no_pressure"
+    ]
+  },
+  {
+    "draftId": "draft-demo-002-en",
+    "accountId": "demo-002",
+    "language": "en",
+    "channel": "whatsapp",
+    "opener": "Hello, shipment updates are manual. Dealix builds a command center with five KPIs only.",
+    "review_status": "pending_review",
+    "disclaimer": "DRAFT — requires human review before send",
+    "safetyFlags": [
+      "no_roi_claim",
+      "no_fake_testimonial",
+      "no_pressure"
+    ]
+  },
+  {
+    "draftId": "draft-demo-003-ar",
+    "accountId": "demo-003",
+    "language": "ar",
+    "channel": "whatsapp",
+    "opener": "السلام عليكم، لاحظت إن دوراتكم قوية، بس المتابعة بعد الكورس ضعيفة. Dealix يبني نظام متابعة قابل للقياس.",
+    "review_status": "pending_review",
+    "disclaimer": "DRAFT — requires human review before send",
+    "safetyFlags": [
+      "no_roi_claim",
+      "no_fake_testimonial",
+      "no_pressure"
+    ]
+  },
+  {
+    "draftId": "draft-demo-003-en",
+    "accountId": "demo-003",
+    "language": "en",
+    "channel": "whatsapp",
+    "opener": "Hello, your courses are strong but post-course follow-up is light. Dealix builds a measurable retention flow.",
+    "review_status": "pending_review",
+    "disclaimer": "DRAFT — requires human review before send",
+    "safetyFlags": [
+      "no_roi_claim",
+      "no_fake_testimonial",
+      "no_pressure"
+    ]
+  }
+]
