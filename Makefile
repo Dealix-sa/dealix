@@ -306,6 +306,33 @@ server-health: ## Run server healthcheck
 company-production-smoke: ## Run company-focused production smoke tests
 	bash scripts/server/run_production_smoke.sh
 
+# ── Founder Revenue OS ─────────────────────────────────────────
+founder-day: ## Run full founder revenue day (drafts + reports + command room)
+	$(PYTHON) scripts/founder/run_founder_revenue_day.py
+
+founder-import: ## Import new targets into prospects ledger
+	$(PYTHON) scripts/founder/import_targets.py
+
+founder-score: ## Score all prospects with intake engine
+	$(PYTHON) scripts/founder/score_targets.py
+
+founder-validate: ## Validate prospects and enforce source_url requirement
+	$(PYTHON) scripts/founder/validate_targets.py --promote
+
+founder-drafts: ## Generate Arabic outreach drafts for ready prospects
+	$(PYTHON) scripts/founder/generate_outreach_drafts.py
+
+founder-verify: ## Verify no auto-send + controlled outbound policy tests
+	$(PYTHON) scripts/verify_no_auto_external_send.py
+	$(PYTHON) -m pytest -q -o addopts="" --noconftest tests/test_controlled_live_outbound_policy.py
+
+founder-p0: ## Run focused P0 safety and intake tests
+	$(PYTHON) -m pytest -q -o addopts="" --noconftest \
+	  tests/company/test_intake_engine.py \
+	  tests/company/test_micro_master.py \
+	  tests/test_no_auto_external_send.py \
+	  tests/test_controlled_live_outbound_policy.py
+
 # ── Command center ─────────────────────────────────────────────
 command-room: ## Build the offline founder command room dashboard
 	$(PYTHON) scripts/command_room/build_command_room.py
@@ -315,7 +342,7 @@ company-day: ## Run full company launch day pipeline
 	bash scripts/run_company_launch_day.sh
 
 
-.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day
+.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day founder-day founder-import founder-score founder-validate founder-drafts founder-verify founder-p0
 
 # ═══════════════════════════════════════════════════════════════
 # PR #727 GTM kit — founder-led outreach/proposal/contract helpers

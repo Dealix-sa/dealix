@@ -208,7 +208,7 @@ def score(row: dict) -> int:
         elif weekly >= 3:
             points += 5
     except (ValueError, TypeError):
-        pass
+        pass  # non-numeric weekly_leads silently treated as 0; scoring continues
     if row.get("main_problem"):
         points += 15
     if row.get("secondary_problem"):
