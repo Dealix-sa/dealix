@@ -146,7 +146,7 @@ def _log_usage(response: AIResponse) -> None:
         try:
             data = json.loads(USAGE_LOG.read_text())
         except Exception:
-            pass
+            pass  # corrupted or empty usage log — start fresh for this run
     data.setdefault("calls", []).append({
         "provider": response.provider,
         "model": response.model,

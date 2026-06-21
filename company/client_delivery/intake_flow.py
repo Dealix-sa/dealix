@@ -24,7 +24,7 @@ import argparse
 import json
 import re
 import sys
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -160,7 +160,7 @@ def list_clients() -> list[dict]:
         try:
             clients.append(json.loads(intake_file.read_text()))
         except Exception:
-            pass
+            pass  # skip corrupted intake files; log directory may have partial writes
     return sorted(clients, key=lambda c: c.get("intake_date", ""), reverse=True)
 
 

@@ -221,9 +221,12 @@ th{color:#8899cc;font-size:12px;text-transform:uppercase}
 """
 
     safety_color = "ok" if safety["gate"] == "PASS" else "warn"
+    def _fu_cell(r: dict) -> str:
+        return "⚠️ متأخر" if r["overdue"] else f"{r['days_until']} يوم"
+
     follow_up_rows = "".join(
         f"<tr><td>{r['company']}</td><td>{r['follow_up_date']}</td>"
-        f"<td>{'⚠️ متأخر' if r['overdue'] else f'{r[\"days_until\"]} يوم'}</td></tr>"
+        f"<td>{_fu_cell(r)}</td></tr>"
         for r in follow_ups[:10]
     ) or "<tr><td colspan='3'>لا متابعات مجدولة للفترة القادمة</td></tr>"
 

@@ -55,7 +55,7 @@ def load_suppression() -> set[str]:
                 if val:
                     suppressed.add(val)
     except Exception:
-        pass
+        pass  # suppression list absent or unreadable — proceed without it; no rows auto-suppressed
     return suppressed
 
 

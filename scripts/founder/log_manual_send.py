@@ -64,9 +64,8 @@ def main() -> int:
         if p.exists():
             preview = p.read_text(encoding="utf-8")[:200].replace("\n", " ")
 
-    now = datetime.now()
-    follow_up = (date.today().replace(day=date.today().day) if True else date.today())
     from datetime import timedelta
+    now = datetime.now()
     follow_up_date = (date.today() + timedelta(days=args.follow_up_days)).isoformat()
 
     row = {
