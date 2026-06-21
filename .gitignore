@@ -384,3 +384,7 @@ reports/meetings/*
 
 # Dealix real leads generated outputs
 company/runtime/places/
+dealix_local_test.db
+reports/runtime/
+ledgers/private/
+.env.production

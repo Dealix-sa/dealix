@@ -173,7 +173,7 @@ addopts = [
     # outbound call in CI) into a fast, deterministic failure instead of stalling
     # the whole suite until the job times out and the run is cancelled.
     "--timeout=120",
-    "--timeout-method=signal",
+    "--timeout-method=thread",
 ]
 markers = [
     "unit: unit tests",
@@ -197,3 +197,4 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
 ]
+
