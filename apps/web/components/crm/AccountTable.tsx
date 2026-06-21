@@ -32,7 +32,7 @@ export function AccountTable({ accounts }: { accounts: Account[] }) {
               <td className="px-4 py-3 text-neutral-600">{a.stage}</td>
               <td className="px-4 py-3 text-neutral-600">{a.reviewStatus}</td>
               <td className="px-4 py-3 text-neutral-600">{a.nextAction} <span className="text-neutral-400">({a.nextActionDate})</span></td>
-              <td className="px-4 py-3 text-neutral-600">{a.setupValue.toLocaleString()} / {a.monthlyValue.toLocaleString()}</td>
+              <td className="px-4 py-3 text-neutral-600">{(a.setupValue ?? 0).toLocaleString()} / {(a.monthlyValue ?? 0).toLocaleString()}</td>
             </tr>
           ))}
         </tbody>

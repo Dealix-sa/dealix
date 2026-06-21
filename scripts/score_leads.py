@@ -63,9 +63,9 @@ def score(account: dict) -> int:
 
 
 _DEMO_LEADS = [
-    {"id": "demo-001", "name": "شركة النور للاستشارات", "segment": "consulting", "fit": 35, "pain_clarity": 28, "budget_signal": 18, "urgency": 8},
-    {"id": "demo-002", "name": "مكتب الحلول اللوجستية", "segment": "logistics", "fit": 30, "pain_clarity": 22, "budget_signal": 15, "urgency": 6},
-    {"id": "demo-003", "name": "أكاديمية المهارات", "segment": "training", "fit": 28, "pain_clarity": 20, "budget_signal": 12, "urgency": 5},
+    {"id": "demo-001", "name": "شركة النور للاستشارات", "segment": "consulting", "city": "Riyadh", "sourceType": "manual_research", "sourceNote": "", "visibleSignal": "No weekly pipeline cadence", "weaknessHypothesis": "Pipeline without rhythm", "recommendedOffer": "revenue_os", "stage": "qualified", "owner": "Founder", "reviewStatus": "not_started", "demo": True, "createdAt": "2026-06-21", "nextAction": "Generate outreach draft", "nextActionDate": "2026-06-22", "monthlyValue": 4999, "setupValue": 15000, "fit": 35, "pain_clarity": 28, "budget_signal": 18, "urgency": 8},
+    {"id": "demo-002", "name": "مكتب الحلول اللوجستية", "segment": "logistics", "city": "Jeddah", "sourceType": "open_data", "sourceNote": "", "visibleSignal": "Manual shipment updates", "weaknessHypothesis": "No command center", "recommendedOffer": "command_center", "stage": "researched", "owner": "Founder", "reviewStatus": "not_started", "demo": True, "createdAt": "2026-06-21", "nextAction": "Qualify via call", "nextActionDate": "2026-06-23", "monthlyValue": 3999, "setupValue": 12000, "fit": 30, "pain_clarity": 22, "budget_signal": 15, "urgency": 6},
+    {"id": "demo-003", "name": "أكاديمية المهارات", "segment": "training", "city": "Dammam", "sourceType": "referral", "sourceNote": "", "visibleSignal": "Weak post-course retention", "weaknessHypothesis": "No cohort renewal system", "recommendedOffer": "delivery_os", "stage": "researched", "owner": "Founder", "reviewStatus": "not_started", "demo": True, "createdAt": "2026-06-21", "nextAction": "Send one-pager", "nextActionDate": "2026-06-24", "monthlyValue": 2999, "setupValue": 9000, "fit": 28, "pain_clarity": 20, "budget_signal": 12, "urgency": 5},
 ]
 
 
