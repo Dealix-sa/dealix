@@ -316,3 +316,15 @@ company-day: ## Run full company launch day pipeline
 
 
 .PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day
+
+website-install:
+	cd apps/website && npm install
+
+website-check:
+	cd apps/website && npm run check
+
+website-build:
+	cd apps/website && npm run build
+
+website-dev:
+	cd apps/website && npm run dev
