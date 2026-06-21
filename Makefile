@@ -342,7 +342,7 @@ company-day: ## Run full company launch day pipeline
 	bash scripts/run_company_launch_day.sh
 
 
-.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day founder-day founder-import founder-score founder-validate founder-drafts founder-verify founder-p0
+.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day founder-day founder-import founder-score founder-validate founder-drafts founder-verify founder-p0 client-intake client-diagnostic client-proposal client-plan ai-router-health railway-check railway-check-strict p0-full
 
 # ═══════════════════════════════════════════════════════════════
 # PR #727 GTM kit — founder-led outreach/proposal/contract helpers
@@ -483,3 +483,60 @@ renewal-summary: ## Show MRR and active customer summary
 
 daily-ops: ## Morning ops command — prioritized action list from all tracking data
 	$(PYTHON) scripts/dealix_daily_ops.py
+
+# ── Client Delivery OS ─────────────────────────────────────────
+# Safe, read-only or file-writing only. Never sends externally.
+
+client-intake: ## Client Delivery: create intake record (NAME=, SECTOR=, CONTACT=, PHONE=, EMAIL=, PACKAGE=)
+	$(PYTHON) company/client_delivery/intake_flow.py \
+	  --name "$(NAME)" \
+	  --sector "$(SECTOR)" \
+	  --contact "$(CONTACT)" \
+	  --phone "$(PHONE)" \
+	  --email "$(EMAIL)" \
+	  --package "$(or $(PACKAGE),diagnostic_sprint)" \
+	  $(if $(LEADS),--weekly-leads $(LEADS))
+
+client-diagnostic: ## Client Delivery: generate revenue leakage diagnostic (SLUG=, ...)
+	$(PYTHON) company/client_delivery/diagnostic_generator.py \
+	  --slug "$(SLUG)" \
+	  --leads-total "$(or $(LEADS),50)" \
+	  --leads-quoted "$(or $(QUOTED),25)" \
+	  --leads-closed "$(or $(CLOSED),8)" \
+	  --avg-deal "$(or $(DEAL),10000)" \
+	  --delay "$(or $(DELAY),3)"
+
+client-proposal: ## Client Delivery: generate proposal pack (SLUG=, PRICE=, PACKAGE=)
+	$(PYTHON) company/client_delivery/proposal_generator.py \
+	  --slug "$(SLUG)" \
+	  --package "$(or $(PACKAGE),diagnostic_sprint)" \
+	  --price "$(or $(PRICE),7500)"
+
+client-plan: ## Client Delivery: generate 14-day implementation plan (SLUG=, SYSTEM=)
+	$(PYTHON) company/client_delivery/implementation_plan.py \
+	  --slug "$(SLUG)" \
+	  --system "$(or $(SYSTEM),whatsapp_revenue_os)"
+
+# ── AI Router ──────────────────────────────────────────────────
+
+ai-router-health: ## AI Router: show which providers are configured and budget remaining
+	$(PYTHON) -c "from company.ai_router.router import health_check; import json; print(json.dumps(health_check(), indent=2, ensure_ascii=False))"
+
+# ── Railway env contract ───────────────────────────────────────
+
+railway-check: ## Railway: validate all required env vars for production deploy
+	$(PYTHON) scripts/railway/check_env_contract.py
+
+railway-check-strict: ## Railway: validate required + optional env vars
+	$(PYTHON) scripts/railway/check_env_contract.py --strict
+
+# ── Extended P0 gate (includes new modules) ───────────────────
+
+p0-full: ## Run full P0 safety gate including AI router + client delivery tests
+	$(PYTHON) -m pytest -q -o addopts="" --noconftest \
+	  tests/company/test_intake_engine.py \
+	  tests/company/test_micro_master.py \
+	  tests/test_no_auto_external_send.py \
+	  tests/test_controlled_live_outbound_policy.py \
+	  tests/company/test_ai_router.py \
+	  tests/company/test_client_delivery.py
