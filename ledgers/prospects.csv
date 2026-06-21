@@ -1,4 +1,2 @@
-company,contact_name,email,sector,city,website,pain,source,source_url,verification_status,confidence,status
-RoadLink,,example@company.com,logistics,Riyadh,https://road-link.sa,متابعة الطلبات وغرفة قيادة تشغيلية,manual,https://road-link.sa,placeholder,0.3,new
-شركة عقارية تجريبية,,sales@example.com,real_estate,Riyadh,https://example.com,leads كثيرة بدون متابعة منظمة,manual,https://example.com,placeholder,0.3,new
-عيادة تجريبية,,info@example.com,clinics,Jeddah,https://example.com,تقييمات ومواعيد ومتابعة مرضى,manual,https://example.com,placeholder,0.3,new
+company_name,sector,city,website,source_url,contact_page_url,public_email,phone,linkedin_url,verification_status,confidence,pain_hypothesis,dealix_angle,recommended_product,message_stage,next_action,owner_decision
+Example Clinic,healthcare,Riyadh,https://example.com,https://example.com/contact,https://example.com/contact,info@example.com,+966500000000,,ready_for_review,medium,المتابعات موزعة بين واتساب والفريق,Follow-up recovery,WhatsApp / Inbox Follow-up OS,draft,review_message,review
