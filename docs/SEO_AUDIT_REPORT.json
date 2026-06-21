@@ -902,6 +902,22 @@
       "missing_advisory": []
     },
     {
+      "path": "revenue-sprint.html",
+      "present": {
+        "title": true,
+        "meta_description": true,
+        "meta_viewport": true,
+        "html_lang": true,
+        "html_dir": true,
+        "canonical": true,
+        "og_title": true,
+        "og_description": true,
+        "twitter_card": true
+      },
+      "missing_required": [],
+      "missing_advisory": []
+    },
+    {
       "path": "roadmap.html",
       "present": {
         "title": true,

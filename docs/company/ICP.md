@@ -1,98 +1,22 @@
 # Ideal Customer Profile
-
-
-
-## Primary ICP
-
-
-
-Saudi B2B service companies, clinics, logistics, real estate, education, professional services, and multi-branch businesses.
-
-
-
-## Good fit
-
-
-
-- messy data
-
-- manual workflows
-
-- scattered knowledge
-
-- overloaded support
-
-- wants AI but lacks execution
-
-- has budget
-
-- has project owner / decision-maker access
-
-
-
-## Bad fit
-
-
-
-- wants spam automation
-
-- wants scraping without permission / clear compliance path
-
-- wants cold WhatsApp or LinkedIn automation at scale
-
-- wants guaranteed sales
-
-- has no data owner
-
-- has no budget
-
-- refuses approvals / lawful-basis clarity for personal data
-
-
-
-## Strong-fit sectors (detail)
-
-
-
-- B2B services
-
-- clinics
-
-- logistics
-
-- real estate
-
-- education and training
-
-- multi-branch retail
-
-- construction
-
-- professional services
-
-
-
-## Buying triggers
-
-
-
-- leads in spreadsheets
-
-- CRM not used
-
-- reports manual
-
-- customer support overloaded
-
-- knowledge scattered
-
-- employees using AI without policy
-
-
-
-## Disqualification (same as Bad fit)
-
-
-
-See **Bad fit** above — do not proceed as a standard engagement if any apply without a scoped diagnostic-only path.
-
+## Best-Fit Customers
+- Saudi B2B companies.
+- Service or software businesses.
+- Average deal size above 5,000 SAR.
+- Need outbound, partnerships, or enterprise leads.
+- Have a clear offer but weak lead generation.
+## Priority Sectors
+1. Marketing and digital agencies.
+2. ERP, CRM, and business software providers.
+3. Payments and invoicing solution providers.
+4. Cybersecurity firms.
+5. Logistics companies.
+6. Commercial real estate and contracting.
+7. B2B consulting firms.
+8. Corporate training companies.
+## Avoid Initially
+- B2C.
+- Very small retail.
+- Restaurants.
+- Low-ticket offers.
+- Businesses without a clear sales process.
