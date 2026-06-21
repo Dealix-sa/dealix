@@ -79,7 +79,15 @@ async def test_project_ask_semantic_notice(async_client):
     assert r.status_code == 200
     j = r.json()
     assert "semantic_status_ar" in j
-    assert "غير متصل" in j["semantic_status_ar"] or "not connected" in j["semantic_status_ar"].lower()
+    # The endpoint signals that full semantic search is not wired in one of two
+    # equally-valid ways: the explicit "غير متصل / not connected" note, or — once
+    # a local file scan succeeds — the "connect pgvector for full semantic" note.
+    status_ar = j["semantic_status_ar"]
+    assert (
+        "غير متصل" in status_ar
+        or "not connected" in status_ar.lower()
+        or "pgvector" in status_ar.lower()
+    )
 
 
 @pytest.mark.asyncio

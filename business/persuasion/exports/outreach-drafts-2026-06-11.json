@@ -1,0 +1,68 @@
+[
+  {
+    "account_id": "demo-001",
+    "company": "Acme Saudi",
+    "language": "ar",
+    "channel": "whatsapp",
+    "subject": null,
+    "body": "مرحباً Ahmed،\n\nلاحظنا أن Acme Saudi في قطاع B2B Services ينمو بشكل جيد. نرى فرصة لتحويل العمليات اليومية إلى نظام تشغيلي قابل للقياس.\n\nهل لديك ١٥ دقيقة هذا الأسبوع لمراجعة سريعة؟",
+    "review_status": "pending_review",
+    "generated_at": "2026-06-11T02:44:58.009088Z",
+    "disclaimer": "DRAFT — Do not send without human review."
+  },
+  {
+    "account_id": "demo-001",
+    "company": "Acme Saudi",
+    "language": "en",
+    "channel": "whatsapp",
+    "subject": null,
+    "body": "Hi Ahmed,\n\nWe noticed Acme Saudi is growing well in B2B Services. We see an opportunity to turn daily operations into a measurable operating system.\n\nDo you have 15 minutes this week for a quick review?",
+    "review_status": "pending_review",
+    "generated_at": "2026-06-11T02:44:58.009105Z",
+    "disclaimer": "DRAFT — Do not send without human review."
+  },
+  {
+    "account_id": "demo-002",
+    "company": "Beta Clinic",
+    "language": "ar",
+    "channel": "whatsapp",
+    "subject": null,
+    "body": "مرحباً Sara،\n\nلاحظنا أن Beta Clinic في قطاع Healthcare ينمو بشكل جيد. نرى فرصة لتحويل العمليات اليومية إلى نظام تشغيلي قابل للقياس.\n\nهل لديك ١٥ دقيقة هذا الأسبوع لمراجعة سريعة؟",
+    "review_status": "pending_review",
+    "generated_at": "2026-06-11T02:44:58.009114Z",
+    "disclaimer": "DRAFT — Do not send without human review."
+  },
+  {
+    "account_id": "demo-002",
+    "company": "Beta Clinic",
+    "language": "en",
+    "channel": "whatsapp",
+    "subject": null,
+    "body": "Hi Sara,\n\nWe noticed Beta Clinic is growing well in Healthcare. We see an opportunity to turn daily operations into a measurable operating system.\n\nDo you have 15 minutes this week for a quick review?",
+    "review_status": "pending_review",
+    "generated_at": "2026-06-11T02:44:58.009120Z",
+    "disclaimer": "DRAFT — Do not send without human review."
+  },
+  {
+    "account_id": "demo-003",
+    "company": "Gamma Logistics",
+    "language": "ar",
+    "channel": "whatsapp",
+    "subject": null,
+    "body": "مرحباً Khalid،\n\nلاحظنا أن Gamma Logistics في قطاع Logistics ينمو بشكل جيد. نرى فرصة لتحويل العمليات اليومية إلى نظام تشغيلي قابل للقياس.\n\nهل لديك ١٥ دقيقة هذا الأسبوع لمراجعة سريعة؟",
+    "review_status": "pending_review",
+    "generated_at": "2026-06-11T02:44:58.009125Z",
+    "disclaimer": "DRAFT — Do not send without human review."
+  },
+  {
+    "account_id": "demo-003",
+    "company": "Gamma Logistics",
+    "language": "en",
+    "channel": "whatsapp",
+    "subject": null,
+    "body": "Hi Khalid,\n\nWe noticed Gamma Logistics is growing well in Logistics. We see an opportunity to turn daily operations into a measurable operating system.\n\nDo you have 15 minutes this week for a quick review?",
+    "review_status": "pending_review",
+    "generated_at": "2026-06-11T02:44:58.009131Z",
+    "disclaimer": "DRAFT — Do not send without human review."
+  }
+]

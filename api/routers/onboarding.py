@@ -1,144 +1,155 @@
-"""Customer Onboarding API Router.
-
-Manages the client onboarding journey from payment to first value delivery.
-All actions require admin authentication.
-
-Prefix: /api/v1/onboarding
+"""
+Self-Serve Onboarding API — signup, wizard, invite.
 """
 
 from __future__ import annotations
 
-import logging
-import os
-from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, Header, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, EmailStr, Field
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from dealix.commercial.onboarding import OnboardingOrchestrator
+from db.session import get_db as get_db_session
+from api.security.auth_deps import get_current_user
+from dealix.onboarding.service import OnboardingService
 
-log = logging.getLogger(__name__)
-
-router = APIRouter(prefix="/api/v1/onboarding", tags=["Customers"])
-
-_ADMIN_KEY = os.getenv("DEALIX_ADMIN_API_KEY", "")
-_orchestrator = OnboardingOrchestrator()
-
-# In-memory store (replace with DB in production)
-_records: dict[str, Any] = {}
+router = APIRouter(prefix="/api/v1/onboarding", tags=["Onboarding"])
 
 
-def _require_admin(x_api_key: str = Header(default="", alias="X-Admin-API-Key")) -> None:
-    if not _ADMIN_KEY:
-        return
-    if x_api_key != _ADMIN_KEY:
-        raise HTTPException(status_code=401, detail="Invalid admin API key")
+# ── Schemas ──────────────────────────────────────────────────────
+
+class SignupRequest(BaseModel):
+    email: EmailStr
+    password: str = Field(..., min_length=8)
+    name: str = Field(..., min_length=2)
+    company_name: str = Field(..., min_length=2)
+    plan_slug: str = Field(default="free")
+    billing_cycle: str = Field(default="monthly", pattern="^(monthly|yearly)$")
 
 
-class CreateOnboardingRequest(BaseModel):
-    account_id: str
-    company_name: str
-    contact_name: str
-    contact_phone: str
-    service_tier: str
+class SignupOut(BaseModel):
+    tenant_id: str
+    user_id: str
+    subscription_id: str
+    plan_slug: str
+    requires_email_verification: bool
+    message: str
+    message_ar: str
 
 
-class AdvanceStageRequest(BaseModel):
-    completed_stage: str
-    notes: str = ""
+class WizardRequest(BaseModel):
+    sector: str | None = None
+    company_size: str | None = None
+    phone: str | None = None
+    website: str | None = None
 
 
-@router.post("/create")
-async def create_onboarding(
-    req: CreateOnboardingRequest,
-    _: None = Depends(_require_admin),
+class InviteRequest(BaseModel):
+    email: EmailStr
+    role_name: str = Field(default="viewer")
+
+
+class InviteOut(BaseModel):
+    user_id: str
+    invite_url: str
+    message: str
+    message_ar: str
+
+
+# ── Endpoints ────────────────────────────────────────────────────
+
+@router.post("/signup", response_model=SignupOut, status_code=status.HTTP_201_CREATED)
+async def signup(
+    req: SignupRequest,
+    session: AsyncSession = Depends(get_db_session),
 ) -> dict[str, Any]:
-    """Create a new onboarding record after payment confirmation.
-
-    Creates welcome drafts (AR+EN) that require founder approval before sending.
-    Returns 5-stage onboarding plan with SLA deadlines.
     """
-    record = _orchestrator.create_onboarding(
-        account_id=req.account_id,
-        company_name=req.company_name,
-        contact_name=req.contact_name,
-        contact_phone=req.contact_phone,
-        service_tier=req.service_tier,
+    Self-serve signup: creates tenant, user, role, and subscription.
+    """
+    svc = OnboardingService(session)
+    try:
+        result = await svc.signup(
+            email=str(req.email),
+            password=req.password,
+            name=req.name,
+            company_name=req.company_name,
+            plan_slug=req.plan_slug,
+            billing_cycle=req.billing_cycle,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+    await session.commit()
+    return {
+        "tenant_id": result["tenant"].id,
+        "user_id": result["user"].id,
+        "subscription_id": result["subscription"].id,
+        "plan_slug": req.plan_slug,
+        "requires_email_verification": result["requires_email_verification"],
+        "message": "Account created successfully. Please verify your email.",
+        "message_ar": "تم إنشاء الحساب بنجاح. يرجى التحقق من بريدك الإلكتروني.",
+    }
+
+
+@router.post("/wizard")
+async def complete_wizard(
+    req: WizardRequest,
+    session: AsyncSession = Depends(get_db_session),
+    current_user=Depends(get_current_user),
+) -> dict[str, Any]:
+    """
+    Complete onboarding wizard for the tenant.
+    """
+    tenant_id = current_user.tenant_id
+    if not tenant_id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No tenant")
+
+    svc = OnboardingService(session)
+    await svc.complete_onboarding_wizard(
+        tenant_id=tenant_id,
+        sector=req.sector,
+        company_size=req.company_size,
+        phone=req.phone,
+        website=req.website,
     )
-    _records[req.account_id] = record.to_dict()
+    await session.commit()
+
     return {
-        "onboarding_id": record.onboarding_id,
-        "current_stage": record.current_stage,
-        "steps": [s.model_dump() for s in record.steps],
-        "welcome_draft_ar": record.welcome_draft_ar,
-        "welcome_draft_en": record.welcome_draft_en,
-        "governance_note": "Welcome drafts require founder approval before sending",
-        "intake_form": _orchestrator.get_intake_form(),
+        "status": "completed",
+        "message": "Onboarding completed successfully.",
+        "message_ar": "تم إكمال الإعداد بنجاح.",
     }
 
 
-@router.get("/{account_id}")
-async def get_onboarding(
-    account_id: str,
-    _: None = Depends(_require_admin),
+@router.post("/invite", response_model=InviteOut)
+async def invite_team_member(
+    req: InviteRequest,
+    session: AsyncSession = Depends(get_db_session),
+    current_user=Depends(get_current_user),
 ) -> dict[str, Any]:
-    """Get onboarding status for a customer."""
-    record = _records.get(account_id)
-    if not record:
-        raise HTTPException(status_code=404, detail=f"No onboarding record for account: {account_id}")
-    return record
+    """
+    Invite a team member to the tenant.
+    """
+    tenant_id = current_user.tenant_id
+    if not tenant_id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No tenant")
 
+    svc = OnboardingService(session)
+    try:
+        result = await svc.invite_team_member(
+            tenant_id=tenant_id,
+            invited_by=current_user.id,
+            email=str(req.email),
+            role_name=req.role_name,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-@router.post("/{account_id}/advance")
-async def advance_onboarding_stage(
-    account_id: str,
-    req: AdvanceStageRequest,
-    _: None = Depends(_require_admin),
-) -> dict[str, Any]:
-    """Mark an onboarding stage as completed and advance to the next."""
-    record_dict = _records.get(account_id)
-    if not record_dict:
-        raise HTTPException(status_code=404, detail=f"No onboarding record for account: {account_id}")
-
-    from dealix.commercial.onboarding import OnboardingRecord
-    record = OnboardingRecord(**record_dict)
-    updated = _orchestrator.advance_stage(record, req.completed_stage)
-    _records[account_id] = updated.to_dict()
-
+    await session.commit()
     return {
-        "account_id": account_id,
-        "completed_stage": req.completed_stage,
-        "new_stage": updated.current_stage,
-        "is_on_track": updated.is_on_track(),
-        "updated_at": datetime.now(UTC).isoformat(),
+        "user_id": result["user"].id,
+        "invite_url": result["invite_url"],
+        "message": f"Invitation sent to {req.email}",
+        "message_ar": f"تم إرسال الدعوة إلى {req.email}",
     }
-
-
-@router.get("/{account_id}/overdue-check")
-async def check_overdue(
-    account_id: str,
-    _: None = Depends(_require_admin),
-) -> dict[str, Any]:
-    """Check for overdue onboarding steps and get action items."""
-    record_dict = _records.get(account_id)
-    if not record_dict:
-        raise HTTPException(status_code=404, detail=f"No onboarding record for account: {account_id}")
-
-    from dealix.commercial.onboarding import OnboardingRecord
-    record = OnboardingRecord(**record_dict)
-    overdue = _orchestrator.get_overdue_steps(record)
-
-    return {
-        "account_id": account_id,
-        "is_on_track": len(overdue) == 0,
-        "overdue_count": len(overdue),
-        "overdue_steps": [s.model_dump() for s in overdue],
-        "checked_at": datetime.now(UTC).isoformat(),
-    }
-
-
-@router.get("/intake-form/template")
-async def get_intake_template() -> dict[str, Any]:
-    """Returns the standard intake session question template."""
-    return _orchestrator.get_intake_form()

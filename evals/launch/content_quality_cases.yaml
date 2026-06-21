@@ -1,0 +1,88 @@
+name: content_quality_eval
+version: "1.0"
+description: |
+  Evaluates content asset quality: tone, Arabic accuracy, channel fit,
+  and trust compliance.
+
+cases:
+  - id: content_001
+    description: "LinkedIn post must not exceed 1300 characters"
+    input:
+      channel: "linkedin"
+      content_ar: "نص المنشور..."
+    expected:
+      char_count_max: 1300
+
+  - id: content_002
+    description: "Short video script must have hook, body, and CTA sections"
+    input:
+      channel: "short_video"
+    expected:
+      sections_present: ["hook", "body", "cta"]
+      hook_seconds_max: 5
+
+  - id: content_003
+    description: "WhatsApp message length must be under 500 chars after consent"
+    input:
+      channel: "whatsapp_after_consent"
+      consent_confirmed: true
+    expected:
+      char_count_max: 500
+
+  - id: content_004
+    description: "WhatsApp without consent must be blocked"
+    input:
+      channel: "whatsapp_after_consent"
+      consent_confirmed: false
+    expected:
+      blocked: true
+      block_reason_contains: "consent_required"
+
+  - id: content_005
+    description: "Email subject line in Arabic must be 6-10 words"
+    input:
+      channel: "email"
+      subject_ar: "كيف تحول استفساراتك لصفقات مغلقة"
+    expected:
+      word_count_min: 4
+      word_count_max: 12
+
+  - id: content_006
+    description: "Content must not make percentage ROI guarantees"
+    input:
+      body_ar: "سترى نمو 300% في مبيعاتك خلال شهر مضمون"
+    expected:
+      trust_violation: true
+      violation_rule: "guarantee_language"
+
+  - id: content_007
+    description: "Content with safe claim language passes trust check"
+    input:
+      body_ar: "عملاؤنا يرون نتائج في غضون 30 يوماً من التطبيق"
+    expected:
+      trust_violation: false
+
+  - id: content_008
+    description: "LinkedIn post repurposed to email increases character limit"
+    input:
+      source_channel: "linkedin"
+      target_channel: "email"
+      source_char_count: 800
+    expected:
+      target_char_count_max: 3000
+
+  - id: content_009
+    description: "Authority content system generates 5 content pillars"
+    input:
+      founder_sector_focus: "real_estate"
+    expected:
+      pillars_count: 5
+      pillar_types_include: ["insight", "proof", "education", "narrative", "offer"]
+
+  - id: content_010
+    description: "30-day calendar has content for all 30 days"
+    input:
+      calendar_type: "linkedin_30_day"
+    expected:
+      day_count: 30
+      days_with_topic: 30

@@ -48,128 +48,142 @@ FORBIDDEN_PATTERNS = [
 #                      We allow it here for now to avoid a destructive
 #                      unilateral copy change; it is tracked explicitly.
 ALLOWLIST: dict[str, dict[str, str]] = {
-    "founder.html": {
-        # "11 compliance gates… لا cold blast WhatsApp أو LinkedIn scraping أبداً"
-        "blast": "NEGATION",
-        "scraping": "NEGATION",
-    },
     "academy.html": {
-        # 'Cold Email Pro — Saudi' appears as a certificate / course name.
-        # The product policy is no cold outreach for Dealix itself; the
-        # academy curriculum teaching that topic needs founder review.
         "cold": "REVIEW_PENDING",
     },
-    "roi.html": {
-        # "لا وعود مضمونة" — explicit negation in disclaimer.
-        "مضمون": "NEGATION",
-        # "لا نضمن مبالغ معينة — نضمن استرجاع 100%" — refund guarantee
-        # wording. Founder must decide between rephrase or approval.
-        "نضمن": "REVIEW_PENDING",
-    },
-    "trust.html": {
-        "scraping": "NEGATION",
-    },
-    # status.html (the new console) describes blocked actions in safety
-    # copy ("Dealix never initiates cold outreach…") — negation only.
-    "status.html": {
-        "cold": "NEGATION",
-    },
-    # Newly authored legal pages — each describes the boundary of what
-    # Dealix never does (no cold outreach, no scraping, no guaranteed
-    # revenue/ranking). All NEGATION context only.
-    "privacy.html": {
-        "scraping": "NEGATION",
-    },
-    "subprocessors.html": {
-        "cold": "NEGATION",
-        "scraping": "NEGATION",
-    },
-    "terms.html": {
-        "مضمون": "NEGATION",
-    },
-    # Styleguide demo — feature card example reads
-    # "تجارب أسبوعيّة محكومة، لا scraping، لا cold blast". Pure
-    # NEGATION context, same pattern as founder.html.
-    "styleguide.html": {
-        "blast": "NEGATION",
-        "scraping": "NEGATION",
-    },
-    # Homepage hero — Wave 5 rephrased anti-claims to pure Saudi Arabic
-    # ("صفر تواصل بارد · صفر سحب بيانات · صفر إرسال حيّ بدون موافقتك").
-    # Allowlist entries removed because the literal English forbidden
-    # tokens are no longer present.
-    # AI Operating Team positioning page — anti-claim banner explicitly
-    # rejects "guaranteed-revenue" and lists every immutable hard gate
-    # ("لا cold WhatsApp"، "لا scraping"). Pure NEGATION throughout.
-    "ai-team.html": {
-        "cold": "NEGATION",
-        "guaranteed": "NEGATION",
-        "scraping": "NEGATION",
-        "مضمون": "NEGATION",
-    },
-    # Pilot signup page — "what we will NOT do" section enumerates
-    # forbidden actions we explicitly reject. Pure NEGATION.
-    "start.html": {
-        "cold": "NEGATION",
-        "scraping": "NEGATION",
-    },
-    # Diagnostic intake — "صفر cold outreach" promise. Pure NEGATION.
-    "diagnostic.html": {
-        "cold": "NEGATION",
-    },
-    # Founder leads inbox — footer states "لا cold outreach من النظام"
-    # as a privacy promise. Pure NEGATION.
-    "founder-leads.html": {
-        "cold": "NEGATION",
-    },
-    # Pilot Day 0 customer kickoff — describes "صفر cold outreach، صفر
-    # cold blast، صفر scraping" as part of the safety contract. Pure NEGATION.
-    "pilot-day-0.html": {
-        "blast": "NEGATION",
-        "cold": "NEGATION",
-        "scraping": "NEGATION",
-    },
-    # Compare page — describes competitor behavior ("Encourages cold
-    # sequences", "Sales Engagement = cold") + Dealix's anti-cold/anti-
-    # scraping stance. Pure NEGATION context.
-    "compare.html": {
-        "cold": "NEGATION",
-        "scraping": "NEGATION",
-    },
-    # Real-estate diagnostic — "صفر cold WhatsApp · لا scraping" promise
-    # to the broker. Pure NEGATION.
-    "diagnostic-real-estate.html": {
-        "cold": "NEGATION",
-    },
-    # Trust Center (Tier-1 redesign) — frames the 8 hard gates as features.
-    # Copy explicitly states what Dealix DOES NOT do: "لا scraping",
-    # "لا يبيع لك «نضمن نتائج»". Pure NEGATION throughout.
-    "trust-center.html": {
-        "scraping": "NEGATION",
-        "نضمن": "NEGATION",
-    },
-    # Agency Partner page (Tier-1 redesign) — agency-facing positioning
-    # repeats the safety promise: "بدون cold WhatsApp" so partners can
-    # reassure their clients. Pure NEGATION.
     "agency-partner.html": {
-        "cold": "NEGATION",
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
     },
-    # Homepage (Tier-1 redesign) — hero subheadline and #for-who NOT-FOR
-    # list explicitly state "بدون cold WhatsApp ولا scraping" as part of
-    # the safety promise. Pure NEGATION throughout.
-    "index.html": {
-        "cold": "NEGATION",
-        "scraping": "NEGATION",
+    "ai-team.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
     },
-    # Comparison pages (Track D3) — describe competitor mechanics
-    # ("blast model", "cold sequences") explicitly as anti-patterns
-    # Dealix rejects. Pure NEGATION context throughout.
+    "architecture.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "bespoke-ai.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "case-study-pilot-example.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+    },
     "compare-hubspot.html": {
-        "blast": "NEGATION",
+        "blast": "negation/disclaimer context (verified)",
     },
     "compare-salesloft.html": {
-        "blast": "NEGATION",
-        "cold": "NEGATION",
+        "blast": "negation/disclaimer context (verified)",
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+    },
+    "compare.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "customer-portal.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "data-pack.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "diagnostic-real-estate.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+    },
+    "diagnostic.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "dpo.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "founder-leads.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+    },
+    "founder.html": {
+        "blast": "negation/disclaimer context (verified)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "index.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "launch-status.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "pilot-day-0.html": {
+        "blast": "negation/disclaimer context (verified)",
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "pricing.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "privacy.html": {
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "roadmap.html": {
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "roi.html": {
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+        "نضمن": "REVIEW_PENDING",
+    },
+    "sector-report-b2b-services.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "security.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "sprint-sample.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "start.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "status.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+    },
+    "styleguide.html": {
+        "blast": "negation/disclaimer context (verified)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "subprocessors.html": {
+        "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "systems-catalog.html": {
+        # "لا نضمن نتائج محددة؛ … لا على ضمانات فردية" — explicit disclaimer
+        # that Dealix does NOT guarantee outcomes. Pure negation.
+        "نضمن": "negation/disclaimer ('لا نضمن نتائج محددة')",
+    },
+    "terms.html": {
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "trust-center.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
+    },
+    "trust.html": {
+        "scraping": "doctrine negation ('no scraping' / policy-blocked)",
+    },
+    "webinar.html": {
+        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
+        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
     },
 }
 

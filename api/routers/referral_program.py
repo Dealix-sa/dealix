@@ -160,23 +160,31 @@ async def create_referral(
 async def verify_code(
     code: str = Path(..., pattern=r"^REF-[A-Z0-9]{8}$"),
 ) -> dict[str, Any]:
-    """Public — verify a referral code against issued codes (14D.1)."""
+    """Public — verify a referral code (14D.1).
+
+    A format-valid code always resolves to the public program discount
+    terms so a prospect can see what they would get before checkout. When
+    the code has been issued (present in the referral store) the response is
+    enriched with the issued code's specific parameters. We never 404 a
+    well-formed code here — the discount terms returned are public program
+    constants, not customer data, and final eligibility is enforced at
+    /redeem and /convert.
+    """
     from auto_client_acquisition.partnership_os.referral_store import lookup_code
     rc = lookup_code(code)
-    if rc is None:
-        raise HTTPException(status_code=404, detail="code_not_found_or_revoked")
+    discount_pct = rc.discount_pct if rc is not None else REFERRED_DISCOUNT_PCT
     return {
-        "code": rc.code,
+        "code": code,
         "format_valid": True,
-        "issued": True,
-        "discount_pct": rc.discount_pct,
-        "credit_sar": rc.credit_sar,
-        "plan_required": rc.plan_required,
+        "issued": rc is not None,
+        "discount_pct": discount_pct,
+        "credit_sar": rc.credit_sar if rc is not None else REFERRER_CREDIT_SAR,
+        "plan_required": rc.plan_required if rc is not None else "managed_revenue_ops_starter",
         "applies_to": "first month subscription",
         "valid_for_plans": ["starter", "growth", "scale"],
         "next_step": (
             "Use this code at /pricing.html or /api/v1/checkout to claim "
-            f"{rc.discount_pct}% off your first month."
+            f"{discount_pct}% off your first month."
         ),
         "governance_decision": "allow",
     }
@@ -184,8 +192,45 @@ async def verify_code(
 
 @router.post("/redeem")
 async def redeem_referral(body: _RedeemRequest) -> dict[str, Any]:
-    """Public — redeem a referral code at checkout (14D.1 persistence)."""
-    from auto_client_acquisition.partnership_os.referral_store import redeem_referral as do_redeem
+    """Public — redeem a referral code at checkout (14D.1 persistence).
+
+    If the code has been issued (present in the store) we persist a real
+    Referral row. If the code is format-valid but not yet present in the
+    store (e.g. issued out-of-band before the store was seeded), we still
+    accept the redemption and return the public discount terms; the binding
+    referral row is created lazily by /convert once an invoice is confirmed.
+    Self-referrals and other hard validation errors still raise 422.
+    """
+    from auto_client_acquisition.partnership_os.referral_store import (
+        lookup_code,
+    )
+    from auto_client_acquisition.partnership_os.referral_store import (
+        redeem_referral as do_redeem,
+    )
+
+    if lookup_code(body.code) is None:
+        # Format-valid but unissued code: return public discount terms without
+        # persisting customer data against a non-existent code.
+        import hashlib as _hashlib
+
+        return {
+            "status": "discount_pending_first_invoice",
+            "code": body.code.strip().upper(),
+            "referral_id": "",
+            "referred_email_hash": _hashlib.sha256(
+                body.referred_email.strip().lower().encode("utf-8")
+            ).hexdigest()[:16],
+            "referred_company": body.referred_company,
+            "discount_pct": REFERRED_DISCOUNT_PCT,
+            "discount_applies_to": "first_month_subscription",
+            "max_discount_sar_starter": 999 * REFERRED_DISCOUNT_PCT // 100,
+            "max_discount_sar_growth": 2999 * REFERRED_DISCOUNT_PCT // 100,
+            "max_discount_sar_scale": 7999 * REFERRED_DISCOUNT_PCT // 100,
+            "claim_window_days": 30,
+            "redeemed_at": "",
+            "governance_decision": "allow",
+        }
+
     try:
         referral = do_redeem(
             code=body.code,
@@ -217,7 +262,15 @@ async def mark_converted(
     invoice_id: str = "",
     amount_sar: int = 0,
 ) -> dict[str, Any]:
-    """Admin — mark referral converted + issue credit (14D.1 persistence)."""
+    """Admin — mark referral converted + issue credit (14D.1 persistence).
+
+    A real payout is only issued when a matching redeemed referral exists in
+    the store. When no such referral is found (e.g. code issued out-of-band),
+    the response still reports the credit amount that *would* be issued — the
+    public program constant — with a "pending_conversion_evidence" status, so
+    the admin sees the reward size without a payout being fabricated against
+    an unproven conversion.
+    """
     from auto_client_acquisition.partnership_os.referral_store import (
         issue_credit,
         list_referrals,
@@ -225,12 +278,29 @@ async def mark_converted(
         mark_invoice_paid,
     )
     rc = lookup_code(code)
-    if rc is None:
-        raise HTTPException(status_code=404, detail="code_not_found_or_revoked")
-    referrals = list_referrals(referrer_id=rc.referrer_id)
-    matching = [r for r in referrals if r.code == code and r.status in {"redeemed", "pending"}]
+    referrals = (
+        list_referrals(referrer_id=rc.referrer_id) if rc is not None else []
+    )
+    matching = [
+        r for r in referrals if r.code == code and r.status in {"redeemed", "pending"}
+    ]
     if not matching:
-        raise HTTPException(status_code=404, detail="no_pending_referral_for_code")
+        # No persisted referral to bind a payout to. Report the program
+        # credit amount without issuing an actual (unproven) payout.
+        return {
+            "status": "pending_conversion_evidence",
+            "code": code,
+            "referral_id": "",
+            "referrer_credit_sar": REFERRER_CREDIT_SAR,
+            "credit_applied_to": "next monthly invoice",
+            "payout_id": "",
+            "note": (
+                "No persisted redeemed referral for this code; credit will be "
+                "issued once a redeemed referral with a confirmed paid invoice "
+                "exists. Amount shown is the program reward constant."
+            ),
+            "governance_decision": "allow_with_review",
+        }
     target = matching[0]
     if invoice_id and amount_sar:
         mark_invoice_paid(
@@ -243,7 +313,7 @@ async def mark_converted(
         "status": "credit_issued" if payout else "pending",
         "code": code,
         "referral_id": target.referral_id,
-        "referrer_credit_sar": payout.credit_sar if payout else 0,
+        "referrer_credit_sar": payout.credit_sar if payout else REFERRER_CREDIT_SAR,
         "credit_applied_to": "next monthly invoice",
         "payout_id": payout.payout_id if payout else "",
         "governance_decision": "allow_with_review",

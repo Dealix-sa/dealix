@@ -30,6 +30,7 @@ import {
   CreditCard,
   UserCog,
   Contact2,
+  Command,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -77,6 +78,7 @@ const navGroups: NavGroup[] = [
     items: [
       { key: "businessNow", href: "/business-now", icon: Briefcase },
       { key: "opsHub", href: "/ops", icon: Layers },
+      { key: "opsCommandRoom", href: "/ops/command-room", icon: Command },
       { key: "opsWarRoom", href: "/ops/war-room", icon: Briefcase },
       { key: "opsSales", href: "/ops/sales", icon: Layers },
       { key: "opsMarketing", href: "/ops/marketing", icon: Megaphone },

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -50,10 +50,18 @@ def test_count_evidence_events_today():
 
 
 def test_scope_requested_within_days():
-    rows = [{"event_date": "2026-05-10", "event_type": "scope_requested"}]
+    today = date.today()
+    rows = [
+        {
+            "event_date": (today - timedelta(days=10)).isoformat(),
+            "event_type": "scope_requested",
+        }
+    ]
     assert scope_requested_within_days(14, rows) is True
     assert scope_requested_within_days(3, rows) is False
 
+    old_rows = [{"event_date": old, "event_type": "scope_requested"}]
+    assert scope_requested_within_days(14, old_rows) is False
 
 def test_social_queue_has_posts():
     q = load_social_queue()
@@ -79,3 +87,11 @@ def test_digest_no_fake_revenue_claims():
     md = render_digest_markdown(digest)
     assert "is_estimate" in str(digest) or "Governed" in md
     assert "MRR" not in md or "placeholder" in md.lower() or True
+
+
+def test_scope_requested_outside_window_is_false():
+    from datetime import date, timedelta
+
+    old = (date.today() - timedelta(days=30)).isoformat()
+    rows = [{"event_date": old, "event_type": "scope_requested"}]
+    assert scope_requested_within_days(14, rows) is False

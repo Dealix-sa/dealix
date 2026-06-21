@@ -19,9 +19,16 @@ else
 fi
 
 echo "== 2/4 Commercial soft launch =="
-PYTHON_BIN="$(command -v python3 2>/dev/null || true)"
-if [[ -z "${PYTHON_BIN}" ]] && command -v py >/dev/null 2>&1; then
-  PYTHON_BIN="py -3"
+PYTHON_BIN=""
+if [[ -x "$ROOT/.venv/Scripts/python.exe" ]]; then
+  PYTHON_BIN="$ROOT/.venv/Scripts/python.exe"
+elif [[ -x "$ROOT/.venv/bin/python" ]]; then
+  PYTHON_BIN="$ROOT/.venv/bin/python"
+else
+  PYTHON_BIN="$(command -v python3 2>/dev/null || true)"
+  if [[ -z "${PYTHON_BIN}" ]] && command -v py >/dev/null 2>&1; then
+    PYTHON_BIN="py -3"
+  fi
 fi
 if [[ -z "${PYTHON_BIN}" ]]; then
   echo "  FAIL: python not found"

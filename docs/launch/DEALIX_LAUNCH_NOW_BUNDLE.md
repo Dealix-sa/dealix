@@ -81,7 +81,7 @@ APP_URL=https://dealix-production-XXXX.up.railway.app
 PUBLIC_BASE_URL=https://dealix-production-XXXX.up.railway.app
 
 # ── Moyasar (سنحدّثها في Phase 2) ────────────────────
-MOYASAR_SECRET_KEY=sk_live_REPLACE_IN_PHASE_2
+MOYASAR_SECRET_KEY=<your-moyasar-live-key>
 MOYASAR_WEBHOOK_SECRET=<الـ hex من الخطوة A>
 
 # ── PostHog (الـ key الجديد من Phase 0-B) ─────────────
@@ -138,8 +138,8 @@ curl -i https://<url>/api/v1/pricing/plans
    - **لا تلصق الـ secret هنا** — مباشرة إلى Railway
 
 3. **Railway → Variables → RAW Editor:**
-   - بدّل `MOYASAR_SECRET_KEY=sk_live_REPLACE_IN_PHASE_2`
-   - بالـ secret الحقيقي `sk_live_xxxxxxxxxxxxx`
+   - بدّل `MOYASAR_SECRET_KEY=<your-moyasar-live-key>`
+   - بالـ secret الحقيقي من Moyasar Dashboard → API Keys
    - احفظ → سيُعيد deploy تلقائياً
 
 4. **Moyasar Dashboard → Developers → Webhooks → Add Webhook:**

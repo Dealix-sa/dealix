@@ -1,0 +1,76 @@
+{
+  "segments": [
+    {
+      "id": "logistics",
+      "name_ar": "الخدمات اللوجستية والتوصيل",
+      "name_en": "Logistics & Delivery",
+      "pain_hypothesis": "Orders spread across WhatsApp and calls; no live SLA dashboard; delays not visible until complaint.",
+      "offer_angle": "Command Center OS: orders, drivers, SLAs, and WhatsApp follow-up in one screen.",
+      "signals": ["fleet >5 vehicles", "B2B deliveries", "website with contact form"],
+      "priority": 1
+    },
+    {
+      "id": "real_estate",
+      "name_ar": "العقارات والتطوير العقاري",
+      "name_en": "Real Estate",
+      "pain_hypothesis": "Many leads from property portals but slow/manual follow-up; no lead scoring.",
+      "offer_angle": "Lead Intelligence + WhatsApp Follow-up OS: capture, score, and nurture every inquiry.",
+      "signals": ["multi-project developer", "brokerage team", "property listings online"],
+      "priority": 1
+    },
+    {
+      "id": "clinics",
+      "name_ar": "العيادات والمراكز الصحية",
+      "name_en": "Clinics & Healthcare",
+      "pain_hypothesis": "Appointments, reviews, and patient follow-up managed manually; no-show rate high.",
+      "offer_angle": "Patient Operations OS: booking, reminders, reviews, and recall workflows.",
+      "signals": ["multi-doctor clinic", "online booking", "Google reviews"],
+      "priority": 1
+    },
+    {
+      "id": "restaurants",
+      "name_ar": "المطاعم والمقاهي",
+      "name_en": "Restaurants & Cafés",
+      "pain_hypothesis": "Delivery orders, reservations, and complaints scattered; no unified response SLA.",
+      "offer_angle": "Operations OS: unified inbox, reservation workflow, delivery SLA, review response.",
+      "signals": ["3+ branches", "delivery channels", "Instagram booking"],
+      "priority": 2
+    },
+    {
+      "id": "training",
+      "name_ar": "التدريب والتعليم",
+      "name_en": "Training & Education",
+      "pain_hypothesis": "Leads from campaigns lose interest before enrollment; manual follow-up inconsistent.",
+      "offer_angle": "Enrollment OS: lead capture, nurture sequence, and attendance/progress dashboard.",
+      "signals": ["B2B training", "course calendar", "corporate clients"],
+      "priority": 2
+    },
+    {
+      "id": "agency",
+      "name_ar": "وكالات التسويق",
+      "name_en": "Marketing Agencies",
+      "pain_hypothesis": "Managing client campaigns, reporting, and approvals across spreadsheets and chat.",
+      "offer_angle": "Agency Delivery OS: client workspaces, approval workflows, and live reporting.",
+      "signals": ["retainer clients", "reporting team", "multiple accounts"],
+      "priority": 2
+    },
+    {
+      "id": "ecommerce",
+      "name_ar": "التجارة الإلكترونية",
+      "name_en": "E-commerce",
+      "pain_hypothesis": "Abandoned carts, support tickets, and reviews not connected to revenue actions.",
+      "offer_angle": "Revenue Operations OS: cart recovery, support SLA, and review-to-action workflow.",
+      "signals": ["own store", "monthly orders", "Saudi market"],
+      "priority": 2
+    },
+    {
+      "id": "b2b_services",
+      "name_ar": "خدمات B2B",
+      "name_en": "B2B Services",
+      "pain_hypothesis": "Proposals, procurement, and renewals tracked in email threads; no pipeline visibility.",
+      "offer_angle": "Proposal & Renewal OS: pipeline, proposals, follow-ups, and renewal alerts.",
+      "signals": ["SME clients", "proposal-heavy sales", "annual renewals"],
+      "priority": 3
+    }
+  ]
+}

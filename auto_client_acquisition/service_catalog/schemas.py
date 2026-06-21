@@ -7,13 +7,14 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 CustomerJourneyStage = Literal[
-    "discovery",      # Free Mini Diagnostic
-    "first_paid",     # 499 Sprint
-    "expansion",      # Data-to-Revenue Pack
-    "monthly",        # Growth Ops Monthly
-    "executive",      # Executive Command Center
-    "support_addon",  # Support OS Add-on
-    "channel",        # Agency Partner OS
+    "discovery",       # Free Mini Diagnostic
+    "first_paid",      # 499 Sprint
+    "expansion",       # Data-to-Revenue Pack
+    "monthly",         # Growth Ops Monthly
+    "executive",       # Executive Command Center
+    "support_addon",   # Support OS Add-on
+    "channel",         # Agency Partner OS
+    "transformation",  # Enterprise Transformation OS systems (setup + monthly ranges)
 ]
 
 ActionMode = Literal[
@@ -48,3 +49,12 @@ class ServiceOffering(BaseModel):
     hard_gates: tuple[str, ...] = Field(..., min_length=1)
     customer_journey_stage: CustomerJourneyStage
     is_estimate: bool = True  # Article 8 — every numeric is an estimate
+
+    # Optional enterprise-transformation range fields. Default None so the
+    # core 7 offerings stay valid. For "transformation"-stage systems the
+    # setup fee is a *range* (price_sar = low end / billable floor; price_sar_max
+    # = high end) and there is also a recurring monthly range. All estimates.
+    price_sar_max: float | None = Field(default=None, ge=0)
+    price_monthly_sar_min: float | None = Field(default=None, ge=0)
+    price_monthly_sar_max: float | None = Field(default=None, ge=0)
+    setup_is_range: bool = False

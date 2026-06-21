@@ -1,0 +1,74 @@
+pageType: final
+background:
+  type: solid
+  color: "$dark"
+elements:
+  - elementId: bg-image
+    elementType: image
+    bounds: [0, 0, 1280, 720]
+    src: "/mnt/agents/output/dealix-marketing/brand/hero-bg-dark.jpg"
+    opacity: 0.3
+  - elementId: overlay
+    elementType: shape
+    bounds: [0, 0, 1280, 720]
+    shapeName: rectangle
+    fill:
+      type: gradient
+      colors: ["#1A1A1AF0", "#1A1A1AD0"]
+      angle: 180
+  - elementId: logo
+    elementType: image
+    bounds: [540, 180, 200, 200]
+    src: "/mnt/agents/output/dealix-marketing/brand/dealix-logo-primary.png"
+  - elementId: gold-line
+    elementType: shape
+    bounds: [540, 395, 200, 3]
+    shapeName: rectangle
+    fill:
+      type: solid
+      color: "$accent"
+  - elementId: title
+    elementType: text
+    bounds: [240, 415, 800, 60]
+    content:
+      fontSize: 36
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      align: center
+      wrap: false
+      text: |
+        <p>لنبدأ الرحلة</p>
+  - elementId: subtitle
+    elementType: text
+    bounds: [240, 480, 800, 40]
+    content:
+      fontSize: 20
+      color: "$accent"
+      fontFamily: "QuattrocentoSans, MiSans"
+      align: center
+      text: |
+        <p>احصل على تشخيص مجاني لأعمالك اليوم</p>
+  - elementId: website
+    elementType: text
+    bounds: [440, 550, 400, 30]
+    content:
+      fontSize: 16
+      color: "#FFFFFF66"
+      fontFamily: "Liter"
+      letterSpacing: 4
+      align: center
+      wrap: false
+      text: |
+        <p>DEALIX.ME</p>
+  - elementId: email
+    elementType: text
+    bounds: [440, 585, 400, 30]
+    content:
+      fontSize: 14
+      color: "#FFFFFF44"
+      fontFamily: "Liter"
+      letterSpacing: 2
+      align: center
+      wrap: false
+      text: |
+        <p>HELLO@DEALIX.ME</p>

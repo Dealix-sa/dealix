@@ -12,7 +12,7 @@ REPO = Path(__file__).resolve().parents[1]
 
 
 def _run_script(name: str) -> int:
-    return subprocess.call(  # noqa: S603
+    return subprocess.call(
         [sys.executable, str(REPO / "scripts" / name)],
         cwd=REPO,
     )

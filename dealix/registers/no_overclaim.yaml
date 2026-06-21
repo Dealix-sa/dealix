@@ -185,13 +185,31 @@ claims:
       - api/middleware/http_stack.py::RequestIDMiddleware
 
   - id: canonical_service_catalog
-    claim: "Seven canonical commercial offerings with KPI commitments, hard gates, and action modes in one code registry"
+    claim: "Seventeen canonical commercial offerings (7 core funnel + 10 Enterprise Transformation OS) with KPI commitments, hard gates, and action modes in one code registry"
     status: Production
     evidence:
       - auto_client_acquisition/service_catalog/registry.py
       - auto_client_acquisition/service_catalog/schemas.py
       - api/routers/service_catalog.py
       - tests/test_service_catalog.py
+
+  - id: transformation_os_catalog
+    claim: "Ten enterprise transformation systems modeled as governed catalog offerings; prices are estimate ranges; no live send/charge; proposal + ROI generators are approval-gated and estimate-stamped"
+    status: Partial
+    evidence:
+      - auto_client_acquisition/service_catalog/registry.py
+      - dealix/commercial/transformation_proposal.py
+      - dealix/commercial/roi_calculator.py
+      - api/routers/commercial.py
+      - api/routers/commercial_map.py
+      - tests/test_transformation_systems_catalog.py
+      - tests/unit/test_transformation_proposal.py
+      - tests/test_transformation_proposal_router.py
+      - docs/transformation/DEALIX_TRANSFORMATION_OS_MASTER_AR.md
+    gaps:
+      - "Per-system delivery runbooks are not all at Production"
+      - "ROI figures are estimates, not measured outcomes"
+      - "Transformation systems not yet added to the Service Readiness Matrix (roadmap)"
 
   - id: platform_reference_contracts
     claim: "Reference platform contracts for tenant, RLS, storage, and auth (no stack replacement)"

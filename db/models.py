@@ -330,6 +330,12 @@ class CompanyRecord(Base):
     name: Mapped[str] = mapped_column(String(255))
     website: Mapped[str | None] = mapped_column(String(255), nullable=True)
     industry: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    # Saudi B2B prospect-search facets (W9.8). All public-registry attributes,
+    # never PII — surfaced read-only by api.routers.saudi_prospect_search.
+    domain: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    region: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    size_band: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    founded_year: Mapped[int | None] = mapped_column(Integer, nullable=True)
     country: Mapped[str | None] = mapped_column(String(64), nullable=True)
     city: Mapped[str | None] = mapped_column(String(128), nullable=True)
     products: Mapped[str | None] = mapped_column(Text, nullable=True)

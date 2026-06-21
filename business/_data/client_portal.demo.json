@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "demo": true,
+  "workspaces": [
+    {
+      "id": "ws-demo-001",
+      "clientId": "demo-acc-001",
+      "clientName": "Demo Marketing Agency 001",
+      "offer": "Revenue OS",
+      "status": "active",
+      "startDate": "2026-05-15",
+      "nextReview": "2026-06-15",
+      "deliverables": [
+        {"id": "d-001", "title": "Workflow map", "status": "done", "completedAt": "2026-05-19"},
+        {"id": "d-002", "title": "Friction log", "status": "done", "completedAt": "2026-05-22"},
+        {"id": "d-003", "title": "Command Center setup", "status": "in_progress", "due": "2026-06-12"},
+        {"id": "d-004", "title": "First proof report", "status": "queued", "due": "2026-06-20"}
+      ],
+      "approvals": [
+        {"id": "a-001", "item": "Launch workflow v1", "status": "pending", "requestedAt": "2026-06-10"},
+        {"id": "a-002", "item": "Persuasion angles batch 1", "status": "approved", "decidedAt": "2026-06-08", "reviewer": "Client Demo"}
+      ],
+      "risks": [
+        {"id": "r-001", "title": "CRM access pending", "severity": "med", "openedAt": "2026-06-09"}
+      ],
+      "proofItems": [
+        {"id": "p-001", "title": "Lead response time dropped from 8h to 90min", "evidence": "internal metric", "date": "2026-06-05"}
+      ]
+    }
+  ]
+}

@@ -51,6 +51,11 @@ def strongest_plan_status() -> dict[str, Any]:
         if not (REPO_ROOT / rel).is_file():
             missing.append(rel)
 
+    # Daily-generated runtime outputs are gitignored (data/*) and absent in a
+    # fresh CI clone until a producer runs. They are wiring *outputs*, not wiring
+    # dependencies, so their absence must not fail the wiring check.
+    runtime_outputs = {"data/war_room_today.json"}
+
     for task in tasks:
         if not isinstance(task, dict):
             continue
@@ -59,6 +64,8 @@ def strongest_plan_status() -> dict[str, Any]:
             if not rel or rel.startswith("POST ") or rel.startswith("GET "):
                 continue
             if rel.startswith("/ar/"):
+                continue
+            if rel.rstrip("/") in runtime_outputs:
                 continue
             if rel.endswith("/"):
                 p = REPO_ROOT / rel.rstrip("/")

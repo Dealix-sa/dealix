@@ -1,0 +1,190 @@
+{
+  "$defs": {
+    "AssessmentAnswer": {
+      "additionalProperties": false,
+      "properties": {
+        "axis": {
+          "enum": [
+            "lead_flow",
+            "channel_chaos",
+            "follow_up",
+            "crm",
+            "decision_maker",
+            "offer_clarity",
+            "reporting",
+            "automation_readiness",
+            "compliance_privacy",
+            "urgency"
+          ],
+          "title": "Axis",
+          "type": "string"
+        },
+        "option_id": {
+          "title": "Option Id",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Score",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "axis",
+        "option_id",
+        "score"
+      ],
+      "title": "AssessmentAnswer",
+      "type": "object"
+    },
+    "ReadinessScore": {
+      "additionalProperties": false,
+      "description": "Three pillar sub-scores + overall, on a 0–100 scale.",
+      "properties": {
+        "revenue_readiness": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Revenue Readiness",
+          "type": "integer"
+        },
+        "follow_up_maturity": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Follow Up Maturity",
+          "type": "integer"
+        },
+        "automation_readiness": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Automation Readiness",
+          "type": "integer"
+        },
+        "overall": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Overall",
+          "type": "integer"
+        },
+        "risk": {
+          "default": "medium",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Risk",
+          "type": "string"
+        }
+      },
+      "required": [
+        "revenue_readiness",
+        "follow_up_maturity",
+        "automation_readiness",
+        "overall"
+      ],
+      "title": "ReadinessScore",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "A completed (or in-progress) readiness scan + its recommendation.",
+  "properties": {
+    "assessment_id": {
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "client_handle": {
+      "title": "Client Handle",
+      "type": "string"
+    },
+    "company_name": {
+      "default": "",
+      "title": "Company Name",
+      "type": "string"
+    },
+    "answers": {
+      "items": {
+        "$ref": "#/$defs/AssessmentAnswer"
+      },
+      "title": "Answers",
+      "type": "array"
+    },
+    "score": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ReadinessScore"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "recommended_offer": {
+      "default": "",
+      "title": "Recommended Offer",
+      "type": "string"
+    },
+    "recommended_offer_ar": {
+      "default": "",
+      "title": "Recommended Offer Ar",
+      "type": "string"
+    },
+    "rationale_ar": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Rationale Ar",
+      "type": "array"
+    },
+    "first_workflow_ar": {
+      "default": "",
+      "title": "First Workflow Ar",
+      "type": "string"
+    },
+    "required_permissions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Required Permissions",
+      "type": "array"
+    },
+    "next_action_ar": {
+      "default": "",
+      "title": "Next Action Ar",
+      "type": "string"
+    },
+    "evidence_level": {
+      "default": "L1",
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3",
+        "L4",
+        "L5"
+      ],
+      "title": "Evidence Level",
+      "type": "string"
+    },
+    "completed": {
+      "default": false,
+      "title": "Completed",
+      "type": "boolean"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "client_handle"
+  ],
+  "title": "ClientAssessment",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/ClientAssessment.schema.json"
+}

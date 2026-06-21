@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.local/schemas/launch/founder_daily_command.schema.json",
+  "title": "Dealix Founder Daily Command (launch bundle)",
+  "type": "object",
+  "required": ["command_date", "top_decision", "cash_action_today", "top_10_targets", "top_5_follow_ups", "drafts_waiting_approval", "meetings_to_book", "stuck_deals", "hot_opportunities", "proposals_to_prepare", "proof_gaps", "content_to_publish", "one_thing_to_stop", "one_thing_to_double_down", "next_24h_plan"],
+  "additionalProperties": false,
+  "properties": {
+    "command_date": { "type": "string", "format": "date" },
+    "top_decision": { "type": "string", "maxLength": 200 },
+    "cash_action_today": { "type": "string", "maxLength": 200 },
+    "top_10_targets": { "type": "array", "items": { "type": "object" } },
+    "top_5_follow_ups": { "type": "array", "items": { "type": "object" } },
+    "drafts_waiting_approval": { "type": "integer", "minimum": 0 },
+    "meetings_to_book": { "type": "integer", "minimum": 0 },
+    "stuck_deals": { "type": "array", "items": { "type": "string" } },
+    "hot_opportunities": { "type": "array", "items": { "type": "string" } },
+    "proposals_to_prepare": { "type": "integer", "minimum": 0 },
+    "proof_gaps": { "type": "integer", "minimum": 0 },
+    "content_to_publish": { "type": "integer", "minimum": 0 },
+    "one_thing_to_stop": { "type": "string", "maxLength": 200 },
+    "one_thing_to_double_down": { "type": "string", "maxLength": 200 },
+    "next_24h_plan": { "type": "array", "items": { "type": "string" } }
+  }
+}

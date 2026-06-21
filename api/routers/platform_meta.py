@@ -29,9 +29,20 @@ async def health() -> dict[str, object]:
 
 
 @router.get("/healthz", include_in_schema=False)
-async def healthz() -> dict[str, object]:
-    """Standard Railway/Kubernetes-compatible health alias."""
-    return await health()
+async def healthz(deep: bool = False) -> dict[str, object]:
+    """Standard Railway/Kubernetes-compatible health alias.
+
+    By default returns a tiny low-latency payload for liveness probes.
+    Pass ?deep=1 to get the full dependency-check payload (same shape as
+    /health/deep) — used by post-deploy smoke checks.
+    """
+    if deep:
+        from api.routers.health import health_deep
+
+        return await health_deep()
+    # Minimal liveness payload — version/identity live at /version (see
+    # test_health_deep::test_healthz_default_is_simple, which pins this shape).
+    return {"status": "ok", "service": "dealix"}
 
 
 @router.get("/ready", include_in_schema=False)

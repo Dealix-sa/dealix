@@ -1,0 +1,66 @@
+title: "Dealix — Company Profile"
+size: [1280, 720]
+theme:
+  colors:
+    primary: "#1B5E3B"
+    secondary: "#0D2818"
+    accent: "#C9A94C"
+    background: "#F5F3EF"
+    dark: "#1A1A1A"
+    text: "#1A1A1A"
+    muted: "#6B7280"
+    light: "#FAF8F5"
+    white: "#FFFFFF"
+  textStyles:
+    coverTitle:
+      fontSize: 56
+      color: "$white"
+      fontFamily: "Liter, alimamashuheiti"
+      letterSpacing: 2
+    title:
+      fontSize: 36
+      color: "$primary"
+      fontFamily: "Liter, alimamashuheiti"
+    subtitle:
+      fontSize: 22
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.4
+    body:
+      fontSize: 18
+      color: "$text"
+      fontFamily: "QuattrocentoSans, MiSans"
+      lineHeight: 1.6
+    bigNumber:
+      fontSize: 52
+      color: "$accent"
+      fontFamily: "Liter"
+      letterSpacing: 1
+    caption:
+      fontSize: 14
+      color: "$muted"
+      fontFamily: "QuattrocentoSans, MiSans"
+  tableStyles:
+    default:
+      headerFill: "$primary"
+      headerColor: "#FFFFFF"
+      headerBold: true
+      bodyFill: ["#FFFFFF", "#FAF8F5"]
+      bodyColor: "$text"
+      border:
+        style: solid
+        width: 1
+        color: "#E5E5E5"
+pages:
+  - pages/cover.page
+  - pages/about.page
+  - pages/market.page
+  - pages/products.page
+  - pages/edge.page
+  - pages/tech.page
+  - pages/sectors.page
+  - pages/revenue.page
+  - pages/milestones.page
+  - pages/team.page
+  - pages/contact.page
+  - pages/final.page

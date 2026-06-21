@@ -8,10 +8,7 @@ type PageProps = {
   params: Promise<{ locale: string; slug: string }>;
 };
 
-export async function generateStaticParams() {
-  const locales = ["ar", "en"];
-  return locales.flatMap((locale) => allSlugs().map((slug) => ({ locale, slug })));
-}
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;

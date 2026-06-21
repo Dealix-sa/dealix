@@ -80,7 +80,7 @@ jobs:
                 "call_scripts": ${{ github.event.inputs.call_scripts || 5 }},
                 "partner_intros": 5,
                 "approval_mode": "draft_only",
-                "create_in_gmail_drafts_in_inbox": ${{ github.event.inputs.create_in_gmail_inbox || 'true' }}
+                "create_gmail_drafts_in_inbox": ${{ github.event.inputs.create_in_gmail_inbox || 'true' }}
               }' -o revenue_run.json && break
             n=$((n+1)); echo "retry $n / 3"; sleep 30
           done

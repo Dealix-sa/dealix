@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dealix.sa/schemas/proof_pack.schema.json",
+  "title": "ProofPack",
+  "description": "A lightweight proof pack tied to an evidence level L0-L5.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "customer_id", "evidence_level"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^proof_[a-f0-9]+$" },
+    "customer_id": { "type": "string" },
+    "current_process": { "type": "string" },
+    "leakage_points": { "type": "array", "items": { "type": "string" } },
+    "quick_win": { "type": "string" },
+    "before_after": { "type": "string" },
+    "measurement_method": { "type": "string" },
+    "evidence_level": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "risk": { "type": "string", "enum": ["low", "medium", "high"] },
+    "recommended_pilot": { "type": "string" },
+    "created_at": { "type": "string" }
+  }
+}

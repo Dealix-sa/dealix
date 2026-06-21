@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dealix — الملف التعريفي | Company Profile</title>
+<style>
+  :root{
+    --emerald:#1B5E3B;
+    --forest:#0D2818;
+    --gold:#C9A94C;
+    --gold-light:#E8D5A3;
+    --cream:#F5F3EF;
+    --soft-cream:#FAF8F5;
+    --charcoal:#1A1A1A;
+    --gray:#6B7280;
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{
+    font-family:"Cairo","Noto Kufi Arabic","Tajawal","Segoe UI",system-ui,sans-serif;
+    color:#1A1A1A;
+    background:#d9d6cf;
+    line-height:1.7;
+    font-size:15px;
+  }
+  .en{
+    font-family:"Inter","Segoe UI",system-ui,sans-serif;
+    direction:ltr;
+    unicode-bidi:embed;
+  }
+  /* ---- Page shell (A4) ---- */
+  .page{
+    width:210mm;
+    min-height:297mm;
+    margin:8mm auto;
+    background:var(--white);
+    position:relative;
+    overflow:hidden;
+    padding:22mm 20mm;
+    box-shadow:0 4px 28px rgba(0,0,0,.18);
+  }
+  .page.dark{
+    background:var(--forest);
+    color:var(--white);
+  }
+  /* ---- Logo ---- */
+  .logo-wrap{display:flex;align-items:center;gap:10px;}
+  .logo-mark{
+    width:44px;height:44px;border-radius:11px;
+    background:var(--forest);
+    border:1.5px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--white);font-weight:700;font-size:20px;
+    font-family:"Inter",sans-serif;
+    flex:0 0 auto;
+  }
+  .logo-text{line-height:1.1;}
+  .logo-text .name{font-family:"Inter",sans-serif;font-weight:700;font-size:22px;color:var(--forest);letter-spacing:-.3px;}
+  .page.dark .logo-text .name{color:var(--white);}
+  .logo-text .sub{font-size:12px;color:var(--gray);font-weight:600;}
+  .page.dark .logo-text .sub{color:var(--gold-light);}
+
+  /* ---- Section header ---- */
+  .kicker{
+    display:inline-block;
+    font-family:"Inter",sans-serif;
+    font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold);
+    background:rgba(201,169,76,.12);
+    padding:4px 12px;border-radius:20px;
+    margin-bottom:14px;
+  }
+  h1.section{
+    font-size:34px;font-weight:700;color:var(--emerald);line-height:1.25;
+    margin-bottom:4px;
+  }
+  h1.section .en{display:block;font-size:18px;color:var(--gray);font-weight:600;margin-top:2px;}
+  .rule{height:3px;width:70px;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;margin:14px 0 26px;}
+  .lead{font-size:17px;color:#2c2c2c;margin-bottom:18px;max-width:62em;}
+  p{margin-bottom:12px;}
+
+  /* ---- Cards ---- */
+  .card{
+    background:var(--soft-cream);
+    border:1px solid #ece7dd;
+    border-right:4px solid var(--gold);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:14px;
+  }
+  .card h3{font-size:18px;color:var(--emerald);font-weight:700;margin-bottom:4px;}
+  .card h3 .en{font-size:13px;color:var(--gray);font-weight:600;}
+  .card p{margin:0;color:#444;font-size:14.5px;}
+
+  .grid2{display:flex;flex-wrap:wrap;gap:14px;}
+  .grid2 .card{flex:1 1 calc(50% - 7px);min-width:230px;margin-bottom:0;}
+
+  /* ---- Stat tiles ---- */
+  .stats{display:flex;flex-wrap:wrap;gap:14px;margin:6px 0 8px;}
+  .stat{
+    flex:1 1 calc(50% - 7px);min-width:200px;
+    background:var(--emerald);color:var(--white);
+    border-radius:10px;padding:18px 20px;
+    border-bottom:4px solid var(--gold);
+  }
+  .stat .num{font-family:"Inter",sans-serif;font-size:30px;font-weight:700;line-height:1.1;color:var(--gold-light);}
+  .stat .lbl{font-size:13.5px;margin-top:4px;opacity:.95;}
+
+  /* ---- Ladder ---- */
+  .ladder{margin-top:8px;}
+  .rung{
+    display:flex;align-items:stretch;gap:0;margin-bottom:12px;
+    border-radius:10px;overflow:hidden;
+    border:1px solid #e7e2d8;
+  }
+  .rung .step{
+    flex:0 0 64px;
+    background:var(--emerald);color:var(--gold-light);
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Inter",sans-serif;font-weight:700;font-size:24px;
+  }
+  .rung:nth-child(1) .step{background:#2f7a52;}
+  .rung:nth-child(2) .step{background:#246644;}
+  .rung:nth-child(3) .step{background:var(--emerald);}
+  .rung:nth-child(4) .step{background:var(--forest);}
+  .rung .body{flex:1;padding:14px 18px;background:var(--soft-cream);}
+  .rung .body h3{font-size:17px;color:var(--emerald);font-weight:700;margin-bottom:2px;}
+  .rung .body h3 .en{font-size:12px;color:var(--gray);font-weight:600;}
+  .rung .body p{margin:0;font-size:14px;color:#444;}
+  .rung .price{
+    flex:0 0 120px;display:flex;align-items:center;justify-content:center;
+    background:#fff;border-right:1px dashed #d8d2c5;
+    font-family:"Inter",sans-serif;font-weight:700;color:var(--emerald);font-size:13px;text-align:center;padding:0 8px;
+  }
+
+  /* ---- Sectors chips ---- */
+  .chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;}
+  .chip{
+    flex:1 1 calc(33.33% - 8px);min-width:160px;
+    background:var(--soft-cream);border:1px solid #ece7dd;
+    border-radius:10px;padding:18px 16px;text-align:center;
+  }
+  .chip .ico{font-size:24px;margin-bottom:6px;}
+  .chip h3{font-size:16px;color:var(--emerald);font-weight:700;margin-bottom:2px;}
+  .chip .en{font-size:12px;color:var(--gray);}
+
+  /* ---- Cover ---- */
+  .cover{
+    display:flex;flex-direction:column;justify-content:center;
+    background:linear-gradient(135deg,#0D2818 0%,#13351f 55%,#1B5E3B 100%);
+  }
+  .cover .deco{
+    position:absolute;top:-80px;left:-80px;width:340px;height:340px;border-radius:50%;
+    border:2px solid rgba(201,169,76,.22);
+  }
+  .cover .deco2{
+    position:absolute;bottom:-120px;right:-100px;width:420px;height:420px;border-radius:50%;
+    border:1.5px solid rgba(201,169,76,.14);
+  }
+  .cover-inner{position:relative;z-index:2;}
+  .cover .big{
+    font-family:"Inter",sans-serif;font-size:84px;font-weight:700;color:var(--white);letter-spacing:-1px;line-height:1;
+    margin:30px 0 10px;
+  }
+  .cover .big .dot{color:var(--gold);}
+  .cover .tag-ar{font-size:30px;color:var(--gold-light);font-weight:700;margin-bottom:6px;}
+  .cover .tag-en{font-size:19px;color:rgba(255,255,255,.82);font-weight:500;letter-spacing:.5px;}
+  .cover .cover-rule{height:3px;width:90px;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;margin:26px 0;}
+  .cover .meta{font-size:14px;color:rgba(255,255,255,.7);}
+  .cover .meta strong{color:var(--gold-light);}
+
+  /* ---- Final CTA ---- */
+  .final{
+    display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+    background:linear-gradient(135deg,#0D2818 0%,#1B5E3B 100%);
+  }
+  .final h1{font-size:46px;color:var(--white);font-weight:700;margin-bottom:14px;}
+  .final .sub{font-size:20px;color:var(--gold-light);margin-bottom:30px;}
+  .final .cta{
+    background:var(--gold);color:var(--forest);font-weight:700;font-size:18px;
+    padding:14px 38px;border-radius:40px;font-family:"Cairo",sans-serif;
+  }
+  .final .contact{margin-top:36px;color:rgba(255,255,255,.85);font-size:15px;line-height:2;}
+  .final .contact .en{color:var(--gold-light);}
+
+  /* ---- Contact ---- */
+  .contact-grid{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;}
+  .contact-grid .card{flex:1 1 calc(33.33% - 11px);min-width:200px;text-align:center;border-right:none;border-top:4px solid var(--gold);}
+  .contact-grid .card .ico{font-size:26px;margin-bottom:8px;}
+  .contact-grid .card .val{font-family:"Inter",sans-serif;font-weight:700;color:var(--emerald);font-size:16px;}
+
+  /* ---- Footer strip ---- */
+  .pfoot{
+    position:absolute;bottom:12mm;left:20mm;right:20mm;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:11px;color:var(--gray);
+    border-top:1px solid #ece7dd;padding-top:8px;
+  }
+  .pfoot .en{font-family:"Inter",sans-serif;}
+  .page.dark .pfoot{color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.12);}
+
+  .note{font-size:12px;color:var(--gray);margin-top:14px;font-style:italic;}
+
+  /* ---- Print ---- */
+  @page{size:A4;margin:0;}
+  @media print{
+    body{background:#fff;}
+    .page{margin:0;box-shadow:none;page-break-after:always;break-after:page;width:210mm;min-height:297mm;}
+    .page:last-child{page-break-after:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 — COVER ============ -->
+<section class="page dark cover">
+  <div class="deco"></div><div class="deco2"></div>
+  <div class="cover-inner">
+    <div class="logo-wrap">
+      <div class="logo-mark">D</div>
+      <div class="logo-text">
+        <div class="name">Dealix</div>
+        <div class="sub">ديليكس</div>
+      </div>
+    </div>
+    <div class="big">Dealix<span class="dot">.</span></div>
+    <div class="tag-ar">نظام تشغيل الإيرادات بالذكاء الاصطناعي</div>
+    <div class="tag-en en">AI Revenue Operating System</div>
+    <div class="cover-rule"></div>
+    <div class="meta">الملف التعريفي للشركة &nbsp;·&nbsp; <span class="en">Company Profile</span><br>
+      <strong>Riyadh, Saudi Arabia</strong> &nbsp;·&nbsp; <span class="en">dealix.me</span></div>
+  </div>
+</section>
+
+<!-- ============ PAGE 2 — ABOUT ============ -->
+<section class="page">
+  <span class="kicker en">About Us</span>
+  <h1 class="section">من نحن<span class="en">About Dealix</span></h1>
+  <div class="rule"></div>
+  <p class="lead">Dealix هي شركة سعودية متخصصة في بناء أنظمة تشغيل الإيرادات المدعومة بالذكاء الاصطناعي.
+    نساعد الشركات السعودية على تنمية إيراداتها، وبناء ثقة عملائها، والامتثال للأنظمة المحلية.</p>
+  <p style="color:#555;margin-bottom:24px;">A Saudi company building AI-powered revenue operating systems — helping local
+    businesses grow revenue, build customer trust, and stay compliant with national regulations.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>رسالتنا <span class="en">· Mission</span></h3>
+      <p>تمكين الشركات السعودية من تحقيق نمو مستدام بالذكاء الاصطناعي.</p>
+      <p class="en" style="color:#777;margin-top:6px;">Enabling Saudi businesses to achieve sustainable growth with AI.</p>
+    </div>
+    <div class="card">
+      <h3>رؤيتنا <span class="en">· Vision</span></h3>
+      <p>أن نكون المنصة السعودية الأولى لإدارة الإيرادات والنمو.</p>
+      <p class="en" style="color:#777;margin-top:6px;">To be Saudi Arabia's leading platform for revenue and growth management.</p>
+    </div>
+  </div>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">02 — About</span></div>
+</section>
+
+<!-- ============ PAGE 3 — MARKET ============ -->
+<section class="page">
+  <span class="kicker en">Market Opportunity</span>
+  <h1 class="section">السوق والفرصة<span class="en">Market Opportunity</span></h1>
+  <div class="rule"></div>
+  <p class="lead">يشهد السوق السعودي تحولاً رقمياً متسارعاً مدفوعاً برؤية 2030 والأطر التنظيمية الجديدة —
+    وهي بيئة مثالية لمنصة إيرادات سعودية متوافقة.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num en">15B SAR</div><div class="lbl">حجم سوق البرمجيات السعودي سنوياً · Annual Saudi software market</div></div>
+    <div class="stat"><div class="num en">67%</div><div class="lbl">نسبة التحول الرقمي في الشركات السعودية · Digital adoption among Saudi firms</div></div>
+    <div class="stat"><div class="num en">35%</div><div class="lbl">هدف مساهمة القطاع الخاص — رؤية 2030 · Private-sector target, Vision 2030</div></div>
+    <div class="stat"><div class="num en">PDPL</div><div class="lbl">إلزامي منذ 2024 — الحاجة لمنصات متوافقة · Mandatory since 2024, compliant platforms needed</div></div>
+  </div>
+  <p class="note">المصدر: مؤشرات السوق المذكورة في خطة المنتج. Market figures per internal product plan.</p>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">03 — Market</span></div>
+</section>
+
+<!-- ============ PAGE 4 — PRODUCTS / LADDER ============ -->
+<section class="page">
+  <span class="kicker en">Products &amp; Services</span>
+  <h1 class="section">المنتجات والخدمات<span class="en">Products &amp; Services</span></h1>
+  <div class="rule"></div>
+  <p class="lead">سلّم خدمات من أربع درجات يأخذ العميل من التشخيص المجاني إلى أنظمة مؤسسية مخصصة.</p>
+
+  <div class="ladder">
+    <div class="rung">
+      <div class="step">1</div>
+      <div class="body">
+        <h3>التشخيص المجاني <span class="en">· Free Diagnostic</span></h3>
+        <p>تقييم من 30 نقطة لأعمالك يكشف فرص نمو الإيرادات.</p>
+      </div>
+      <div class="price en">مجاني<br>Free</div>
+    </div>
+    <div class="rung">
+      <div class="step">2</div>
+      <div class="body">
+        <h3>البايلوت المدفوع <span class="en">· 7-Day Pilot</span></h3>
+        <p>سبعة أيام اختبار على أرض الواقع لإثبات القيمة.</p>
+      </div>
+      <div class="price en">2,500–5,000 SAR</div>
+    </div>
+    <div class="rung">
+      <div class="step">3</div>
+      <div class="body">
+        <h3>غرفة القيادة <span class="en">· Command Room</span></h3>
+        <p>المنصة الكاملة مع الدعم الشهري المستمر.</p>
+      </div>
+      <div class="price en">4,900–9,900 SAR/mo</div>
+    </div>
+    <div class="rung">
+      <div class="step">4</div>
+      <div class="body">
+        <h3>الأنظمة المؤسسية <span class="en">· Enterprise</span></h3>
+        <p>تطوير مخصص للشركات الكبرى وفق احتياجاتها.</p>
+      </div>
+      <div class="price en">100,000+ SAR/yr</div>
+    </div>
+  </div>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">04 — Products</span></div>
+</section>
+
+<!-- ============ PAGE 5 — COMPETITIVE EDGE ============ -->
+<section class="page">
+  <span class="kicker en">Competitive Edge</span>
+  <h1 class="section">المزايا التنافسية<span class="en">Competitive Edge</span></h1>
+  <div class="rule"></div>
+  <p class="lead">منصة سعودية بنيت من الأساس على الامتثال والذكاء الاصطناعي وفهم السوق المحلي.</p>
+
+  <div class="grid2" style="margin-bottom:14px;">
+    <div class="card"><h3>متوافقة مع PDPL وZATCA <span class="en">· Compliant</span></h3>
+      <p>مبنية لتلتزم بأنظمة حماية البيانات والفوترة الإلكترونية السعودية.</p></div>
+    <div class="card"><h3>مدعومة بالذكاء الاصطناعي <span class="en">· AI-Powered</span></h3>
+      <p>تحليلات متقدمة في الوقت الفعلي لقرارات إيرادات أذكى.</p></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>فريق محلي <span class="en">· Local Team</span></h3>
+      <p>فهم عميق للسوق السعودي وسياقه التنظيمي والثقافي.</p></div>
+    <div class="card"><h3>بنية مفتوحة للتكامل <span class="en">· Integration-Ready</span></h3>
+      <p>تكامل مع الأنظمة الموجودة عبر واجهات برمجية موثّقة.</p></div>
+  </div>
+
+  <h3 style="color:var(--emerald);font-size:16px;margin:22px 0 10px;">حقائق هندسية · Engineering facts</h3>
+  <div class="stats">
+    <div class="stat"><div class="num en">172</div><div class="lbl">نقطة API · API endpoints</div></div>
+    <div class="stat"><div class="num en">563</div><div class="lbl">اختبار تلقائي · automated tests</div></div>
+  </div>
+  <p class="note">أرقام هندسية من قاعدة الشيفرة، وليست مؤشرات أداء تجارية. Engineering metrics from the codebase — not commercial KPIs.</p>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">05 — Edge</span></div>
+</section>
+
+<!-- ============ PAGE 6 — TECHNICAL ARCHITECTURE ============ -->
+<section class="page">
+  <span class="kicker en">Technical Architecture</span>
+  <h1 class="section">البنية التقنية<span class="en">Technical Architecture</span></h1>
+  <div class="rule"></div>
+  <p class="lead">بنية حديثة قابلة للتوسع: FastAPI للواجهة الخلفية، Next.js للواجهة الأمامية،
+    PostgreSQL وRedis للبيانات والتخزين المؤقت.</p>
+
+  <div class="grid2" style="margin-bottom:14px;">
+    <div class="card"><h3 class="en">FastAPI + Next.js</h3><p>واجهة خلفية بايثون وواجهة أمامية حديثة.</p></div>
+    <div class="card"><h3 class="en">PostgreSQL + Redis</h3><p>قاعدة بيانات علائقية وطبقة تخزين مؤقت.</p></div>
+    <div class="card"><h3 class="en">Docker Containers</h3><p>حاويات قابلة للتوسع والنشر المتكرر.</p></div>
+    <div class="card"><h3>التشغيل الآمن <span class="en">· Graceful Degradation</span></h3><p>تعمل المنصة بثبات حتى دون مفاتيح API الخارجية.</p></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num en">2,587</div><div class="lbl">ملف Python · Python files</div></div>
+    <div class="stat"><div class="num en">60</div><div class="lbl">خط CI/CD · CI/CD pipelines</div></div>
+  </div>
+  <p class="note">أرقام مستخرجة من قاعدة الشيفرة. Counts measured from the codebase.</p>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">06 — Architecture</span></div>
+</section>
+
+<!-- ============ PAGE 7 — TARGET SECTORS ============ -->
+<section class="page">
+  <span class="kicker en">Target Sectors</span>
+  <h1 class="section">القطاعات المستهدفة<span class="en">Target Sectors</span></h1>
+  <div class="rule"></div>
+  <p class="lead">منصة قابلة للتكيّف مع احتياجات الإيرادات في القطاعات الرئيسية للاقتصاد السعودي.</p>
+
+  <div class="chips">
+    <div class="chip"><div class="ico">🏢</div><h3>العقارات</h3><div class="en">Real Estate</div></div>
+    <div class="chip"><div class="ico">🏥</div><h3>الرعاية الصحية</h3><div class="en">Healthcare</div></div>
+    <div class="chip"><div class="ico">🛍️</div><h3>التجارة والتجزئة</h3><div class="en">Commerce &amp; Retail</div></div>
+    <div class="chip"><div class="ico">💻</div><h3>التقنية</h3><div class="en">Technology</div></div>
+    <div class="chip"><div class="ico">🏭</div><h3>الصناعة</h3><div class="en">Manufacturing</div></div>
+    <div class="chip"><div class="ico">🧳</div><h3>السياحة والضيافة</h3><div class="en">Tourism &amp; Hospitality</div></div>
+  </div>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">07 — Sectors</span></div>
+</section>
+
+<!-- ============ PAGE 8 — REVENUE MODEL ============ -->
+<section class="page">
+  <span class="kicker en">Revenue Model</span>
+  <h1 class="section">نموذج الإيرادات<span class="en">Revenue Model</span></h1>
+  <div class="rule"></div>
+  <p class="lead">نموذج تصاعدي يحوّل التشخيص المجاني إلى اشتراكات متكررة وعقود مؤسسية.</p>
+
+  <div class="ladder">
+    <div class="rung"><div class="step">→</div><div class="body"><h3>تشخيص مجاني <span class="en">· Free Diagnostic</span></h3><p>نقطة الدخول لبناء الثقة.</p></div><div class="price en">Free</div></div>
+    <div class="rung"><div class="step">→</div><div class="body"><h3>بايلوت <span class="en">· Pilot</span></h3><p>إثبات القيمة خلال 7 أيام.</p></div><div class="price en">2,500–5,000 SAR</div></div>
+    <div class="rung"><div class="step">→</div><div class="body"><h3>اشتراك <span class="en">· Subscription</span></h3><p>إيراد شهري متكرر.</p></div><div class="price en">4,900–9,900 SAR/mo</div></div>
+    <div class="rung"><div class="step">→</div><div class="body"><h3>مؤسسي <span class="en">· Enterprise</span></h3><p>عقود سنوية مخصصة.</p></div><div class="price en">100,000+ SAR/yr</div></div>
+  </div>
+
+  <div class="stats" style="margin-top:18px;">
+    <div class="stat"><div class="num en">58,800 SAR</div><div class="lbl">القيمة الدائمة للعميل (اشتراك سنوي) · LTV (annual subscription)</div></div>
+    <div class="stat"><div class="num en">2,500 SAR</div><div class="lbl">تكلفة اكتساب العميل (بايلوت) · CAC (pilot)</div></div>
+  </div>
+  <div class="card" style="margin-top:14px;border-right-color:var(--emerald);">
+    <h3 class="en" style="color:var(--emerald);">LTV / CAC ≈ 23.5×</h3>
+    <p>نسبة الكفاءة الاقتصادية للنموذج. <span class="note" style="display:inline;">إسقاطات مبنية على نموذج التسعير أعلاه — وليست نتائج محققة. Projections from the pricing model above — not realized results.</span></p>
+  </div>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">08 — Revenue</span></div>
+</section>
+
+<!-- ============ PAGE 9 — MILESTONES ============ -->
+<section class="page">
+  <span class="kicker en">Milestones</span>
+  <h1 class="section">إنجازاتنا الهندسية<span class="en">Engineering Milestones</span></h1>
+  <div class="rule"></div>
+  <p class="lead">منصة مبنية ومختبَرة وجاهزة للتشغيل — هذه أرقام مستخرجة مباشرة من قاعدة الشيفرة.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num en">575</div><div class="lbl">commit في المستودع · repository commits</div></div>
+    <div class="stat"><div class="num en">6,816</div><div class="lbl">ملف في المشروع · project files</div></div>
+    <div class="stat"><div class="num en">172</div><div class="lbl">نقطة API · API endpoints</div></div>
+    <div class="stat"><div class="num en">563</div><div class="lbl">اختبار تلقائي · automated tests</div></div>
+    <div class="stat"><div class="num en">60</div><div class="lbl">خط CI/CD · CI/CD pipelines</div></div>
+    <div class="stat" style="background:var(--forest);"><div class="num en">Ready</div><div class="lbl">منصة جاهزة للتشغيل · platform ready to ship</div></div>
+  </div>
+  <p class="note">جميع الأرقام مقاسة من المستودع، وتمثل حقائق هندسية لا ادعاءات تجارية.
+    All figures measured from the repository — engineering facts, not commercial claims.</p>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">09 — Milestones</span></div>
+</section>
+
+<!-- ============ PAGE 10 — LEADERSHIP ============ -->
+<section class="page">
+  <span class="kicker en">Leadership</span>
+  <h1 class="section">فريق العمل<span class="en">Leadership</span></h1>
+  <div class="rule"></div>
+  <p class="lead">نخبة من الخبراء في الذكاء الاصطناعي والتقنية والأعمال في المملكة العربية السعودية —
+    فريق محلي يجمع بين العمق التقني وفهم السوق.</p>
+  <p style="color:#555;">A local team combining deep technical expertise in AI and engineering with hands-on
+    knowledge of the Saudi business landscape.</p>
+
+  <div class="grid2" style="margin-top:18px;">
+    <div class="card"><h3>الذكاء الاصطناعي والهندسة <span class="en">· AI &amp; Engineering</span></h3>
+      <p>بناء وتشغيل المنصة وأنظمة الذكاء الاصطناعي.</p></div>
+    <div class="card"><h3>الأعمال والنمو <span class="en">· Business &amp; Growth</span></h3>
+      <p>إستراتيجية السوق وعلاقات العملاء والامتثال.</p></div>
+  </div>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">10 — Leadership</span></div>
+</section>
+
+<!-- ============ PAGE 11 — CONTACT ============ -->
+<section class="page">
+  <span class="kicker en">Contact</span>
+  <h1 class="section">اتصل بنا<span class="en">Get in Touch</span></h1>
+  <div class="rule"></div>
+  <p class="lead">جاهزون لمساعدة شركتك على تنمية إيراداتها. تواصل معنا اليوم.</p>
+
+  <div class="contact-grid">
+    <div class="card"><div class="ico">✉️</div><div class="en val">hello@dealix.me</div><p style="color:#777;font-size:13px;">البريد الإلكتروني · Email</p></div>
+    <div class="card"><div class="ico">🌐</div><div class="en val">dealix.me</div><p style="color:#777;font-size:13px;">الموقع الإلكتروني · Website</p></div>
+    <div class="card"><div class="ico">📍</div><div class="val">الرياض</div><div class="en" style="font-weight:700;color:var(--emerald);">Riyadh, KSA</div><p style="color:#777;font-size:13px;">المقر · Location</p></div>
+  </div>
+
+  <div class="pfoot"><span>Dealix · الملف التعريفي</span><span class="en">11 — Contact</span></div>
+</section>
+
+<!-- ============ PAGE 12 — FINAL CTA ============ -->
+<section class="page dark final">
+  <div class="cover-inner" style="text-align:center;">
+    <div class="logo-wrap" style="justify-content:center;margin-bottom:30px;">
+      <div class="logo-mark">D</div>
+      <div class="logo-text"><div class="name">Dealix</div><div class="sub">ديليكس</div></div>
+    </div>
+    <h1>لنبدأ الرحلة</h1>
+    <div class="sub en" style="direction:rtl;">احصل على تشخيص مجاني لأعمالك اليوم</div>
+    <div class="cta">ابدأ التشخيص المجاني · Start your Free Diagnostic</div>
+    <div class="contact">
+      <span class="en">hello@dealix.me</span> &nbsp;·&nbsp; <span class="en">dealix.me</span><br>
+      Riyadh, Saudi Arabia
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
