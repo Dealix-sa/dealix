@@ -1,2 +1,1 @@
-company_name,sector,city,website,source_url,contact_page_url,public_email,phone,linkedin_url,verification_status,confidence,pain_hypothesis,dealix_angle,recommended_product,message_stage,next_action,owner_decision
-Example Clinic,healthcare,Riyadh,https://example.com,https://example.com/contact,https://example.com/contact,info@example.com,+966500000000,,ready_for_review,medium,المتابعات موزعة بين واتساب والفريق,Follow-up recovery,WhatsApp / Inbox Follow-up OS,draft,review_message,review
+company_name,sector,city,website,source_url,verification_status,owner_decision

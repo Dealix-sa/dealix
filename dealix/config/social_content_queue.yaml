@@ -1,5 +1,5 @@
 anchor_date: '2026-05-17'
-cycle_weeks: 24
+cycle_weeks: 28
 posts:
 - week: 1
   day: 0
@@ -310,7 +310,7 @@ posts:
     '
   cta_ar: MASTER Commercial Plan
   aeo_slug: daily-war-room
-  status: draft
+  status: approved
 - week: 6
   day: 1
   pillar: proof
