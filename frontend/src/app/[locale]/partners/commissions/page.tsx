@@ -83,7 +83,7 @@ export default function CommissionsPage() {
               {isRTL ? "سجل العمولات" : "Commission History"}
             </CardTitle>
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              {parties && parties.length > 0 && (
+              {partners && partners.length > 0 && (
                 <select
                   value={selectedPartner ?? ""}
                   onChange={(e) => setSelectedPartner(e.target.value || null)}
@@ -92,7 +92,7 @@ export default function CommissionsPage() {
                   <option value="">
                     {isRTL ? "جميع الشركاء" : "All Partners"}
                   </option>
-                  {parties.map((p) => (
+                  {partners.map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.company}
                     </option>

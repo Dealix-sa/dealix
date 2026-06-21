@@ -21,17 +21,13 @@ REPORT = REPO / "docs" / "SEO_AUDIT_REPORT.json"
 # copy on each page, remove its entry here. New pages must either
 # include those tags or be added to this list with a reason.
 #
-# As of 2026-05-04: every customer-facing landing page now carries
-# full canonical + og:title + og:description + twitter:card. The
-# only exemptions are internal/noindex pages (e.g. the founder
-# dashboard) that should not be discoverable.
-# Must match EXACTLY the set of pages the audit currently flags with an
-# advisory gap (founder-dashboard.html has since picked up its advisory tags).
-ADVISORY_EXEMPT: set[str] = {
-    "launch-status.html",  # internal launch console — advisory tags not required
-    "sector-report-b2b-services.html",  # gated sector report landing — advisory-exempt
-    "webinar.html",  # event landing page — advisory tags not required
-}
+# As of the #727 merge: every audited landing page — including the pages
+# main previously exempted (launch-status, sector-report-b2b-services,
+# webinar) — now carries the full advisory meta set (canonical + og:title +
+# og:description + twitter:card). The audit reports zero advisory gaps, so the
+# exempt set is empty. New pages must either include those tags or be added
+# here with a reason.
+ADVISORY_EXEMPT: set[str] = set()
 
 
 def _run_audit() -> dict:

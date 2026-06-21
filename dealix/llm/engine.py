@@ -10,34 +10,10 @@ from typing import Literal, Optional
 from pydantic import BaseModel, Field
 
 
-def _env_first(*names: str, default: str = "") -> str:
-    for name in names:
-        value = os.getenv(name, "")
-        if value:
-            return value
-    return default
-
-
-def _env_first(*names: str, default: str = "") -> str:
-    for name in names:
-        value = os.getenv(name, "")
-        if value:
-            return value
-    return default
-
-
 class Gear(str, Enum):
     """Three gear system for cost-optimized LLM routing."""
     DAILY = "daily"           # Gear 1: DeepSeek - cheap and fast
     POWER = "power"           # Gear 2: Minimax M2.5 - strong coding
-def _env_first(*keys: str, default: str = "") -> str:
-    for key in keys:
-        value = os.getenv(key, "").strip()
-        if value:
-            return value
-    return default
-
-
     ARCHITECT = "architect"   # Gear 3: Minimax M2.7 - deep reasoning
 
 
@@ -101,9 +77,25 @@ TASK_GEAR_MAP: dict[TaskType, Gear] = {
     TaskType.ARCHITECTURE: Gear.ARCHITECT,
 }
 
-_env_first("GEAR1_MOD_env_first("LIGHT_MODEL", "GEAR1_MODEL", "OPENROUTER_MODEL", default="deepseek/deepseek-chat"),
-            timeout=int(_env_first("LIGHT_TIMEOUT", "GEAR1_TIMEOUT", "OPENROUTER_TIMEOUT", default="90")),
-            max_tokens=int(_env_first("LIGHT_MAX_TOKENS", "GEAR1_MAX_TOKENS", default="4096")),
+
+class DealixEngine:
+    """
+    The brain that selects the right model for the right job.
+
+    Three Gear System:
+    - Gear 1 (Daily): DeepSeek - $0.02/$0.10 per 1M tokens
+    - Gear 2 (Power): Minimax M2.5 - $0.15/$1.15 per 1M tokens
+    - Gear 3 (Architect): Minimax M2.7 - $0.279/$1.20 per 1M tokens
+
+    Cost savings: 80-90% vs using Architect mode for all tasks.
+    """
+
+    _GEARS: dict[Gear, GearConfig] = {
+        Gear.DAILY: GearConfig(
+            gear=Gear.DAILY,
+            model_id=os.getenv("GEAR1_MODEL", "deepseek/deepseek-chat"),
+            timeout=int(os.getenv("GEAR1_TIMEOUT", "90")),
+            max_tokens=int(os.getenv("GEAR1_MAX_TOKENS", "4096")),
             cost_per_1m_input=0.02,
             cost_per_1m_output=0.10,
             use_for=["refactoring", "tests", "docs", "small fixes", "enrichment", "classification", "formatting"],
@@ -111,24 +103,8 @@ _env_first("GEAR1_MOD_env_first("LIGHT_MODEL", "GEAR1_MODEL", "OPENROUTER_MODEL"
         ),
         Gear.POWER: GearConfig(
             gear=Gear.POWER,
-            model_id=_env_first("PRIMARY_MODEL", "GEAR2_MODEL", "OPENROUTER_MODEL", default="minimax/minimax-m2.5"),
-            timeout=int(_env_first("PRIMARY_TIMEOUT", "GEAR2_TIMEOUT", "OPENROUTER_TIMEOUT", default="120")),
-            max_tokens=int(_env_first("PRIMARY_MAX_TOKENS", "GEAR2_MAX_TOKENS", default="8192")),
-            cost_per_1m_input=0.15,
-            cost_per_1m_output=1.15,
-            use_for=["new features", "pipeline logic", "agent code", "bug fixes", "API endpoints", "data models"],
-            risk_level="medium",
-        ),
-        Gear.ARCHITECT: GearConfig(
-            gear=Gear.ARCHITECT,
-            model_id=_env_first("ARCHITECT_MODEL", "GEAR3_MODEL", "OPENROUTER_MODEL", default="minimax/minimax-m2.7"),
-            timeout=int(_env_first("ARCHITECT_TIMEOUT", "GEAR3_TIMEOUT", "OPENROUTER_TIMEOUT", default="180")),
-            max_tokens=int(_env_first("ARCHITECT_MAX_TOKENS", "GEAR3_MAX_TOKENS", default=
-        ),
-        Gear.POWER: GearConfig(
-            gear=Gear.POWER,
-            model_id=_env_first("GEAR2_MODEL", "PRIMARY_MODEL", default="minimax/minimax-m2.5"),
-            timeout=int(_env_first("GEAR2_TIMEOUT", "PRIMARY_TIMEOUT", default="120")),
+            model_id=os.getenv("GEAR2_MODEL", "minimax/minimax-m2.5"),
+            timeout=int(os.getenv("GEAR2_TIMEOUT", "120")),
             max_tokens=int(os.getenv("GEAR2_MAX_TOKENS", "8192")),
             cost_per_1m_input=0.15,
             cost_per_1m_output=1.15,
@@ -137,8 +113,8 @@ _env_first("GEAR1_MOD_env_first("LIGHT_MODEL", "GEAR1_MODEL", "OPENROUTER_MODEL"
         ),
         Gear.ARCHITECT: GearConfig(
             gear=Gear.ARCHITECT,
-            model_id=_env_first("GEAR3_MODEL", "ARCHITECT_MODEL", default="minimax/minimax-m2.7"),
-            timeout=int(_env_first("GEAR3_TIMEOUT", "ARCHITECT_TIMEOUT", default="180")),
+            model_id=os.getenv("GEAR3_MODEL", "minimax/minimax-m2.7"),
+            timeout=int(os.getenv("GEAR3_TIMEOUT", "180")),
             max_tokens=int(os.getenv("GEAR3_MAX_TOKENS", "16384")),
             cost_per_1m_input=0.279,
             cost_per_1m_output=1.20,

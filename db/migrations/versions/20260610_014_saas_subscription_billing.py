@@ -2,7 +2,7 @@
 Add SaaS subscription billing tables.
 
 Revision ID: 20260610_014_saas_subscription_billing
-Revises: 20260524_013_autopilot_store_snapshot
+Revises: 013
 Create Date: 2026-06-10 08:52:33
 """
 
@@ -14,7 +14,7 @@ from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision: str = "20260610_014_saas_subscription_billing"
-down_revision: Union[str, None] = "20260524_013_autopilot_store_snapshot"
+down_revision: Union[str, None] = "013"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

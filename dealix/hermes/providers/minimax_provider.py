@@ -14,17 +14,9 @@ class MiniMaxProvider:
     """Async OpenAI-compatible client pointing at MiniMax's API."""
 
     def __init__(self, api_key: str = "", model: str = _DEFAULT_MODEL, base_url: str = _MINIMAX_BASE_URL) -> None:
-        self._api_key = ( or os.environ.get("OPENROUTER_API_KEY", "")
+        self._api_key = api_key or os.environ.get("MINIMAX_API_KEY", "")
         self._model = model
-        self._base_url = base_url or os.environ.get("MINIMAX_BASE_URL", "") or os.environ.get("OPENROUTER_BASE_URL", _MINIMAX_BASE_URL)NIMAX_API_KEY", "")
-            or os.environ.get("OPENROUTER_API_KEY", "")
-        )
-        self._model = model or os.environ.get("MINIMAX_MODEL", "") or os.environ.get("OPENROUTER_MODEL", "")
-        self._base_url = (
-            base_url
-            or os.environ.get("MINIMAX_BASE_URL", "")
-            or os.environ.get("OPENROUTER_BASE_URL", _MINIMAX_BASE_URL)
-        )
+        self._base_url = base_url
         self._client: Any = None
 
         if self._api_key:
@@ -35,7 +27,7 @@ class MiniMaxProvider:
             except ImportError:
                 logger.warning("minimax_provider_openai_missing", hint="pip install openai")
         else:
-            logger.warning("minimax_provider_no_api_key", hint="Set MINIMAX_API_KEY or OPENROUTER_API_KEY")
+            logger.warning("minimax_provider_no_api_key", hint="Set MINIMAX_API_KEY")
 
     async def chat(
         self,

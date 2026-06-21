@@ -165,6 +165,11 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
         "scraping": "doctrine negation ('no scraping' / policy-blocked)",
     },
+    "systems-catalog.html": {
+        # "لا نضمن نتائج محددة؛ … لا على ضمانات فردية" — explicit disclaimer
+        # that Dealix does NOT guarantee outcomes. Pure negation.
+        "نضمن": "negation/disclaimer ('لا نضمن نتائج محددة')",
+    },
     "terms.html": {
         "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
     },

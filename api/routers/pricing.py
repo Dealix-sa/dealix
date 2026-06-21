@@ -118,11 +118,17 @@ def _build_plans() -> dict[str, dict[str, Any]]:
         from auto_client_acquisition.service_catalog.registry import OFFERINGS
         plans: dict[str, dict[str, Any]] = {}
         for offering in OFFERINGS:
+            amount_halalas = int(offering.price_sar * 100)
+            # Free offerings (e.g. the mini diagnostic at 0 SAR) are not payable
+            # checkout plans — Moyasar never charges 0. They live in the service
+            # catalog, not in the payable PLANS registry.
+            if amount_halalas <= 0:
+                continue
             monthly = offering.price_unit in ("monthly", "per_month")
             plans[offering.id] = {
                 "name": offering.name_en,
                 "name_ar": offering.name_ar,
-                "amount_halalas": int(offering.price_sar * 100),
+                "amount_halalas": amount_halalas,
                 "monthly": monthly,
                 "kind": "subscription" if monthly else "one_off",
                 "deliverables": list(offering.deliverables),

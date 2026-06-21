@@ -1,0 +1,63 @@
+# Dealix product catalog — canonical offer list.
+# Product configuration data (no customer PII). Mirrors the 5-rung offer ladder
+# in business/pricing/OFFER_LADDER.md plus the free diagnostic and the
+# post-delivery retainer. Every non-excluded offer is mapped to a pain category
+# in pain_to_offer.yaml.
+offers:
+  - id: readiness_scan
+    label_ar: التشخيص المجاني (30 نقطة)
+    label_en: Free Readiness Scan
+    type: entry
+    setup_sar: 0
+    monthly_sar: 0
+    note: Free entry diagnostic — no pain mapping required.
+
+  - id: revenue_sprint
+    label_ar: سبرنت الإيرادات (7 أيام)
+    label_en: 7-Day Revenue Sprint
+    type: productized
+    setup_sar: 499
+    monthly_sar: 0
+
+  - id: revenue_os
+    label_ar: نظام تشغيل الإيرادات
+    label_en: Revenue OS
+    type: managed
+    setup_sar: 18000
+    monthly_sar: 5000
+
+  - id: command_center
+    label_ar: مركز القيادة
+    label_en: Command Center OS
+    type: managed
+    setup_sar: 35000
+    monthly_sar: 9000
+
+  - id: delivery_os
+    label_ar: نظام التسليم
+    label_en: Delivery OS
+    type: managed
+    setup_sar: 25000
+    monthly_sar: 6000
+
+  - id: review_os
+    label_ar: نظام المراجعة والسمعة
+    label_en: Review & Reputation OS
+    type: managed
+    setup_sar: 12000
+    monthly_sar: 3500
+
+  - id: monthly_optimization_retainer
+    label_ar: ريتينر التحسين الشهري
+    label_en: Monthly Optimization Retainer
+    type: retainer
+    setup_sar: 0
+    monthly_sar: 4000
+
+  - id: custom_company_os
+    label_ar: نظام مخصّص للشركة
+    label_en: Custom Company OS
+    type: custom
+    setup_sar: null
+    monthly_sar: null
+    note: Scoped per SOW — no fixed pain mapping.

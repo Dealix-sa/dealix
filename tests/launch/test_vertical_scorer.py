@@ -79,7 +79,7 @@ class TestSaudiVerticalsCatalogue:
 # ---------------------------------------------------------------------------
 
 class TestVerticalScoreFields:
-    @pytest.mark.parametrize("sector", list(EXPECTED_SECTORS))
+    @pytest.mark.parametrize("sector", sorted(EXPECTED_SECTORS))
     def test_sector_has_all_required_sub_score_fields(self, sector: str) -> None:
         vertical = next(v for v in SAUDI_VERTICALS if v.sector == sector)
         assert hasattr(vertical, "revenue_potential")
@@ -89,7 +89,7 @@ class TestVerticalScoreFields:
         assert hasattr(vertical, "competition_gap")
         assert hasattr(vertical, "total_score")
 
-    @pytest.mark.parametrize("sector", list(EXPECTED_SECTORS))
+    @pytest.mark.parametrize("sector", sorted(EXPECTED_SECTORS))
     def test_sector_total_score_equals_sum_of_sub_scores(self, sector: str) -> None:
         v = next(vert for vert in SAUDI_VERTICALS if vert.sector == sector)
         expected = (
@@ -101,7 +101,7 @@ class TestVerticalScoreFields:
         )
         assert v.total_score == expected
 
-    @pytest.mark.parametrize("sector", list(EXPECTED_SECTORS))
+    @pytest.mark.parametrize("sector", sorted(EXPECTED_SECTORS))
     def test_no_vertical_has_impossible_total_score(self, sector: str) -> None:
         v = next(vert for vert in SAUDI_VERTICALS if vert.sector == sector)
         assert 0 <= v.total_score <= 100, (

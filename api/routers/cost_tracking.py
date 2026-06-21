@@ -67,9 +67,12 @@ TIER_VARIABLE_COSTS = {
         "llm_inference": 60000,   # 600 SAR   (5000 leads, full agent workforce)
         "lead_adapters": 25000,   # 250 SAR
         "moyasar_fees":   2400,   # 24 SAR
-        "support_time":  30000,   # 300 SAR
+        # Support time per customer drops at scale: the AI workforce handles
+        # the added volume autonomously, so human CS time amortizes rather
+        # than growing linearly (economies of scale — see module docstring).
+        "support_time":   6000,   # 60 SAR
         "infra_share":    1725,   # 17 SAR
-        "total_per_month": 119125, # 1,191 SAR/mo
+        "total_per_month": 95125, # 951 SAR/mo
     },
 }
 

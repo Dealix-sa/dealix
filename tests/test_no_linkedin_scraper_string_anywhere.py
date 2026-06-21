@@ -79,6 +79,11 @@ _ALLOWLIST_PATHS = frozenset({
     "docs/WAVE17_FOUNDER_DAY1_LAUNCH_KIT.md",
     "docs/WAVE17_BRANCH_CLEANUP_LOG.md",
     "docs/WAVE17_VULNERABILITY_TRIAGE.md",
+    # Enterprise-architecture test index — lists this lockdown test by file
+    # path (Arabic prose describing what the test locks down)
+    "docs/enterprise_architecture/TESTS_REQUIRED.md",
+    # Agent 2 continuation audit — enumerates guardrail tests by file path
+    "reports/agent_2/AGENT_2_CONTINUATION_AUDIT.md",
     # The plan file lives outside the repo (in /root/.claude/plans/) so
     # never appears in git ls-files; no allowlist needed.
 })

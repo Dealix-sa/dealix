@@ -316,3 +316,143 @@ company-day: ## Run full company launch day pipeline
 
 
 .PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day
+
+# ═══════════════════════════════════════════════════════════════
+# PR #727 GTM kit — founder-led outreach/proposal/contract helpers
+# (non-overlapping with main's revenue machine; scripts under scripts/dealix_*.py)
+# ═══════════════════════════════════════════════════════════════
+outreach-dry: ## Outreach Kit: preview targets without writing files
+	$(PYTHON) scripts/dealix_outreach_kit.py --dry-run
+
+targets-merge: ## Outreach Kit: merge researched sector CSVs (data/outreach/research/*.csv) into the intake list
+	$(PYTHON) scripts/merge_research_targets.py
+
+outreach-f3: ## Outreach Kit: generate day-3 follow-up nudges
+	$(PYTHON) scripts/dealix_outreach_kit.py --stage f3
+
+outreach-f7: ## Outreach Kit: generate day-7 final follow-up nudges
+	$(PYTHON) scripts/dealix_outreach_kit.py --stage f7
+
+content: ## Content Engine: generate bilingual LinkedIn post drafts (one per sector) for inbound demand
+	$(PYTHON) scripts/dealix_content_engine.py
+
+daily: ## Founder morning routine — outreach emails + command room dashboard in one run
+	@$(PYTHON) scripts/dealix_outreach_kit.py || true
+	@$(PYTHON) scripts/dealix_command_room.py || true
+	@echo ""
+	@echo "✅ صباح الخير. الإيميلات في reports/outreach/<اليوم>/ — راجع وأرسل بنفسك."
+	@echo "📊 غرفة القيادة: reports/command_room/index.html"
+	@echo "📒 عند أي رد: business/playbooks/REPLY_PLAYBOOK.md"
+
+proposal: ## Generate a bilingual proposal (COMPANY=, CONTACT=, SECTOR=, TIER= optional)
+	$(PYTHON) scripts/dealix_proposal_generator.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(TIER),--tier $(TIER)) \
+	  $(if $(DRY_RUN),--dry-run)
+
+proposal-dry: ## Preview a proposal without writing files (COMPANY=, SECTOR=)
+	$(PYTHON) scripts/dealix_proposal_generator.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(TIER),--tier $(TIER)) \
+	  --dry-run
+
+proposal-sectors: ## List available sectors + recommended tiers
+	$(PYTHON) scripts/dealix_proposal_generator.py --list-sectors
+
+weekly-review: ## Weekly GTM review — bilingual pipeline snapshot for founder
+	$(PYTHON) scripts/dealix_weekly_gtm_review.py
+
+weekly-review-print: ## Print weekly GTM review to stdout
+	$(PYTHON) scripts/dealix_weekly_gtm_review.py --print
+
+meeting: ## Generate bilingual discovery call agenda (COMPANY=, SECTOR=, CONTACT= optional)
+	$(PYTHON) scripts/dealix_meeting_agenda.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(DURATION),--duration $(DURATION)) \
+	  $(if $(DRY_RUN),--dry-run)
+
+diagnostic: ## Free 30-point Diagnostic (COMPANY=, SECTOR=, REGION=, PIPELINE=)
+	$(PYTHON) scripts/dealix_diagnostic.py \
+	  --company "$(COMPANY)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(REGION),--region $(REGION)) \
+	  $(if $(PIPELINE),--pipeline-state "$(PIPELINE)")
+
+reply-classify: ## Classify a prospect reply and print the matching response (REPLY=)
+	$(PYTHON) scripts/dealix_reply_classifier.py "$(REPLY)"
+
+onboard: ## Run customer onboarding wizard (COMPANY=, SECTOR=, CONTACT=)
+	$(PYTHON) scripts/dealix_customer_onboarding_wizard.py \
+	  --company "$(COMPANY)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(CONTACT),--contact "$(CONTACT)")
+
+contract: ## Generate bilingual service contract (COMPANY=, CONTACT=, SECTOR=, TIER=, START=)
+	$(PYTHON) scripts/dealix_contract_generator.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  --tier "$(TIER)" \
+	  $(if $(START),--start-date $(START))
+
+contract-dry: ## Preview contract without writing file (COMPANY=, SECTOR=, TIER=)
+	$(PYTHON) scripts/dealix_contract_generator.py \
+	  --company "$(COMPANY)" \
+	  --contact "$(CONTACT)" \
+	  --sector "$(SECTOR)" \
+	  --tier "$(TIER)" \
+	  --dry-run
+
+contract-tiers: ## List available contract tiers and pricing
+	$(PYTHON) scripts/dealix_contract_generator.py --list-tiers
+
+outreach-tracker: ## Log a new outreach event (COMPANY=, SECTOR=, STATUS=, NOTE=)
+	$(PYTHON) scripts/dealix_outreach_tracker.py log \
+	  --company "$(COMPANY)" \
+	  $(if $(SECTOR),--sector $(SECTOR)) \
+	  --status $(or $(STATUS),sent) \
+	  $(if $(NOTE),--note "$(NOTE)")
+
+outreach-tracker-summary: ## Show outreach pipeline summary
+	$(PYTHON) scripts/dealix_outreach_tracker.py summary
+
+outreach-tracker-list: ## List companies by status (STATUS= optional)
+	$(PYTHON) scripts/dealix_outreach_tracker.py list $(if $(STATUS),--status $(STATUS))
+
+pilot-report: ## Generate 7-day pilot results report (COMPANY=, SECTOR=, LEADS_AFTER=, REPLIED=, MEETINGS=)
+	$(PYTHON) scripts/dealix_pilot_report.py \
+	  --company "$(COMPANY)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(LEADS_BEFORE),--leads-before $(LEADS_BEFORE)) \
+	  $(if $(LEADS_AFTER),--leads-after $(LEADS_AFTER)) \
+	  $(if $(REPLIED_AFTER),--replied-after $(REPLIED_AFTER)) \
+	  $(if $(MEETINGS_AFTER),--meetings-after $(MEETINGS_AFTER)) \
+	  $(if $(DRY_RUN),--dry-run)
+
+customer-monthly-report: ## Generate monthly customer success report (COMPANY=, SECTOR=, MONTH=, LEADS=, RESPONSE=, REPLY_PCT=, MEETINGS=)
+	$(PYTHON) scripts/dealix_customer_monthly_report.py \
+	  --company "$(COMPANY)" \
+	  --sector "$(SECTOR)" \
+	  $(if $(MONTH),--month $(MONTH)) \
+	  $(if $(LEADS),--leads-handled $(LEADS)) \
+	  $(if $(RESPONSE),--avg-response-min $(RESPONSE)) \
+	  $(if $(REPLY_PCT),--replied-pct $(REPLY_PCT)) \
+	  $(if $(MEETINGS),--meetings-booked $(MEETINGS)) \
+	  $(if $(DEALS),--deals-won $(DEALS)) \
+	  $(if $(REVENUE),--revenue-influenced $(REVENUE)) \
+	  $(if $(DRY_RUN),--dry-run)
+
+renewal-check: ## Check contracts due for renewal in next 30-60 days
+	$(PYTHON) scripts/dealix_renewal_tracker.py check
+
+renewal-summary: ## Show MRR and active customer summary
+	$(PYTHON) scripts/dealix_renewal_tracker.py summary
+
+daily-ops: ## Morning ops command — prioritized action list from all tracking data
+	$(PYTHON) scripts/dealix_daily_ops.py

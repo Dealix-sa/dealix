@@ -1,0 +1,7 @@
+company,sector,city,contact_name,contact_email,language,signal_note,priority
+# املأ هذا الملف بشركات حقيقية أنت تعرفها أو بحثت عنها. لا تخترع إيميلات.
+# sector لازم يكون أحد: real_estate | clinic | logistics | training | marketing_agency | b2b_services
+# language: ar | en | both    |    priority: 1 (الأعلى) .. 3
+# مثال (احذفه وحط شركاتك):
+شركة عقار المثال,real_estate,الرياض,أبو محمد,owner@example-realestate.sa,ar,حملات سناب مستمرة + رد بطيء على الواتساب,1
+Example Clinic,clinic,Jeddah,Dr. Sara,info@example-clinic.sa,both,Many Google reviews with no replies,2

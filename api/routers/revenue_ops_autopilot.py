@@ -247,7 +247,10 @@ class WarRoomImportPayload(BaseModel):
 class SocialMarkPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    week: int = Field(..., ge=1, le=4)
+    # Upper bound tracks social_content_queue.yaml `cycle_weeks` (currently 24);
+    # get_post_for_date can emit any week in 1..cycle_weeks, and mark must accept
+    # the same range it surfaces.
+    week: int = Field(..., ge=1, le=24)
     day: int = Field(..., ge=0, le=6)
     status: str = Field(..., pattern="^(approved|published)$")
 
