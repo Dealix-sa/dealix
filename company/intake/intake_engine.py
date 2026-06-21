@@ -101,8 +101,8 @@ LEAKAGE_SIGNALS = [
 
 # ─── Scoring ─────────────────────────────────────────────────────────────────
 
-def score(row: dict[str, str]) -> tuple[int, str, list[str]]:
-    """Returns (score 0-100, tier, leakage_areas)."""
+def _score_full(row: dict[str, str]) -> tuple[int, str, list[str]]:
+    """Internal: Returns (score 0-100, tier, leakage_areas)."""
     points = 30
     leakage: list[str] = []
 
@@ -194,6 +194,37 @@ def score(row: dict[str, str]) -> tuple[int, str, list[str]]:
     return final, tier, leakage
 
 
+def score(row: dict) -> int:
+    """Public contract: returns intake score 0-100 as int. Base is 40."""
+    points = 40
+    try:
+        weekly = int(row.get("weekly_leads") or 0)
+        if weekly >= 100:
+            points += 25
+        elif weekly >= 30:
+            points += 18
+        elif weekly >= 10:
+            points += 10
+        elif weekly >= 3:
+            points += 5
+    except (ValueError, TypeError):
+        pass
+    if row.get("main_problem"):
+        points += 15
+    if row.get("secondary_problem"):
+        points += 5
+    budget = row.get("budget_range", "")
+    if "75k+" in budget or "75k_plus" in budget:
+        points += 10
+    elif "25k" in budget:
+        points += 8
+    elif "10k" in budget:
+        points += 5
+    if row.get("whatsapp"):
+        points += 5
+    return min(points, 100)
+
+
 def recommend_offer(row: dict[str, str]) -> str:
     problem = (row.get("main_problem") or "").lower()
     sector = (row.get("sector") or "").lower()
@@ -206,7 +237,10 @@ def recommend_offer(row: dict[str, str]) -> str:
         if kw in sector:
             return offer
 
-    return "Transformation Diagnostic Sprint"
+    return "Diagnostic Sprint / Revenue Command Room OS"
+
+
+recommend = recommend_offer
 
 
 def recommend_price(row: dict[str, str]) -> str:
@@ -276,7 +310,7 @@ def process_file(path: Path) -> list[dict[str, str]]:
     try:
         with path.open("r", encoding="utf-8-sig", newline="") as f:
             for row in csv.DictReader(f):
-                fit, tier, leakage = score(row)
+                fit, tier, leakage = _score_full(row)
                 action, followup = next_action(fit, tier)
                 row["fit_score"] = str(fit)
                 row["tier"] = tier
