@@ -94,22 +94,34 @@ def render(account: dict, offer: str, lang: str, timeline: str) -> str:
     return "\n".join(lines)
 
 
+_DEMO_ACCOUNT = {
+    "id": "demo-test",
+    "name": "Demo Company",
+    "visibleSignal": "High inbound volume with slow follow-up",
+    "weaknessHypothesis": "No structured CRM cadence — leads going cold",
+}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--account-id", required=True)
     parser.add_argument("--offer", required=True)
     parser.add_argument("--lang", choices=["ar", "en", "both"], default="both")
     parser.add_argument("--timeline", default="21 days")
+    parser.add_argument("--mode", choices=["demo"], default=None)
     args = parser.parse_args()
 
-    if not LEADS_PATH.exists():
+    if args.mode == "demo" or args.account_id == "demo-test":
+        account = _DEMO_ACCOUNT
+    elif not LEADS_PATH.exists():
         print(f"missing: {LEADS_PATH}")
         return 1
-    data = json.loads(LEADS_PATH.read_text(encoding="utf-8"))
-    account = next((a for a in data.get("accounts", []) if a["id"] == args.account_id), None)
-    if not account:
-        print(f"account not found: {args.account_id}")
-        return 1
+    else:
+        data = json.loads(LEADS_PATH.read_text(encoding="utf-8"))
+        account = next((a for a in data.get("accounts", []) if a["id"] == args.account_id), None)
+        if not account:
+            print(f"account not found: {args.account_id}")
+            return 1
 
     body = render(account, args.offer, args.lang, args.timeline)
     today = dt.date.today().isoformat()

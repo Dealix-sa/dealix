@@ -13,6 +13,13 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCORED_PATH = REPO_ROOT / "business" / "_data" / "scored_leads.json"
 QUEUE_PATH = REPO_ROOT / "business" / "_data" / "outreach_review_queue.json"
+EXPORTS_DIR = REPO_ROOT / "business" / "persuasion" / "exports"
+
+_DEMO_ACCOUNTS = [
+    {"id": "demo-001", "name": "شركة النور للاستشارات", "segment": "consulting"},
+    {"id": "demo-002", "name": "مكتب الحلول اللوجستية", "segment": "logistics"},
+    {"id": "demo-003", "name": "أكاديمية المهارات", "segment": "training"},
+]
 
 
 AR_OPENERS = {
@@ -49,11 +56,37 @@ def load_queue() -> list[dict]:
 
 
 def main() -> int:
+    import datetime as _dt
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--top", type=int, default=10)
     parser.add_argument("--language", choices=["ar", "en", "both"], default="both")
     parser.add_argument("--channel", default="whatsapp")
+    parser.add_argument("--mode", choices=["demo"], default=None)
     args = parser.parse_args()
+
+    if args.mode == "demo":
+        EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        today = _dt.date.today().isoformat()
+        langs = ["ar", "en"] if args.language == "both" else [args.language]
+        demos: list[dict] = []
+        for acc in _DEMO_ACCOUNTS[: args.top]:
+            for lang in langs:
+                opener = (AR_OPENERS if lang == "ar" else EN_OPENERS).get(acc["segment"], "")
+                demos.append({
+                    "draftId": f"draft-{acc['id']}-{lang}",
+                    "accountId": acc["id"],
+                    "language": lang,
+                    "channel": args.channel,
+                    "opener": opener,
+                    "review_status": "pending_review",
+                    "disclaimer": "DRAFT — requires human review before send",
+                    "safetyFlags": ["no_roi_claim", "no_fake_testimonial", "no_pressure"],
+                })
+        out_file = EXPORTS_DIR / f"outreach-drafts-{today}.json"
+        out_file.write_text(json.dumps(demos, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"demo: wrote {len(demos)} drafts -> {out_file}")
+        return 0
 
     if not SCORED_PATH.exists():
         print(f"missing: {SCORED_PATH}")

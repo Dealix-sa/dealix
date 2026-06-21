@@ -1,10 +1,11 @@
 """Deterministic lead scoring.
 
 Usage:
-    python3 scripts/score_leads.py
+    python3 scripts/score_leads.py [--mode demo]
 """
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
@@ -27,6 +28,26 @@ SEGMENT_WEIGHT = {
 }
 
 
+def score_lead(lead: dict) -> dict:
+    """Score a lead by its dimension scores. Returns {score, tier}."""
+    total = (
+        lead.get("fit", 0)
+        + lead.get("pain_clarity", 0)
+        + lead.get("budget_signal", 0)
+        + lead.get("urgency", 0)
+    )
+    total = min(100, max(0, total))
+    if total >= 80:
+        tier = "A"
+    elif total >= 60:
+        tier = "B"
+    elif total >= 40:
+        tier = "C"
+    else:
+        tier = "D"
+    return {**lead, "score": total, "tier": tier}
+
+
 def score(account: dict) -> int:
     base = 30
     base += SEGMENT_WEIGHT.get(account.get("segment", ""), 5)
@@ -41,7 +62,28 @@ def score(account: dict) -> int:
     return min(100, max(0, base))
 
 
+_DEMO_LEADS = [
+    {"id": "demo-001", "name": "شركة النور للاستشارات", "segment": "consulting", "fit": 35, "pain_clarity": 28, "budget_signal": 18, "urgency": 8},
+    {"id": "demo-002", "name": "مكتب الحلول اللوجستية", "segment": "logistics", "fit": 30, "pain_clarity": 22, "budget_signal": 15, "urgency": 6},
+    {"id": "demo-003", "name": "أكاديمية المهارات", "segment": "training", "fit": 28, "pain_clarity": 20, "budget_signal": 12, "urgency": 5},
+]
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", choices=["demo"], default=None)
+    args = parser.parse_args()
+
+    if args.mode == "demo":
+        scored = [score_lead(lead) for lead in _DEMO_LEADS]
+        OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+        OUT_PATH.write_text(
+            json.dumps({"accounts": scored, "version": "1.0"}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(f"demo: scored {len(scored)} leads -> {OUT_PATH}")
+        return 0
+
     if not LEADS_PATH.exists():
         print(f"missing: {LEADS_PATH}")
         return 1
