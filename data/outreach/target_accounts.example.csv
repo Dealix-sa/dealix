@@ -1,0 +1,4 @@
+company,sector,city,website,email,phone,contact_name,pain,offer,language,email_opt_in,whatsapp_opt_in,source_url,status
+RoadLink,logistics,Riyadh,https://road-link.sa,example@company.com,+966500000000,Operations Manager,متابعة الطلبات وغرفة قيادة تشغيلية,Revenue Command Room Sprint,ar,true,false,https://road-link.sa,new
+شركة عقارية تجريبية,real_estate,Riyadh,https://example.com,example@company.com,+966500000001,Sales Manager,leads كثيرة بدون متابعة منظمة,Revenue Command Room Sprint,ar,true,false,https://example.com,new
+عيادة تجريبية,healthcare,Jeddah,https://exampleclinic.com,example@clinic.com,+966500000002,Clinic Manager,مواعيد ومتابعات المرضى,Client Follow-up Command Room,ar,true,false,https://exampleclinic.com,new

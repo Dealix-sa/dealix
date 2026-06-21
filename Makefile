@@ -456,3 +456,27 @@ renewal-summary: ## Show MRR and active customer summary
 
 daily-ops: ## Morning ops command — prioritized action list from all tracking data
 	$(PYTHON) scripts/dealix_daily_ops.py
+
+production-check:
+	python3 scripts/verify_company_launch_ready.py
+	python3 scripts/verify_no_auto_external_send.py
+
+daily-outreach:
+	PYTHONPATH=. python3 scripts/outreach/run_daily_outreach.py --targets data/outreach/target_accounts.example.csv
+
+daily-outreach-send-gated:
+	PYTHONPATH=. python3 scripts/outreach/run_daily_outreach.py --targets data/outreach/target_accounts.example.csv --send
+
+daily-outreach-review:
+	@echo "Outbox:" && find outbox -maxdepth 3 -type f | sort | tail -40
+	@echo "Reports:" && find reports/outreach -maxdepth 3 -type f | sort | tail -40
+	@echo "Approval queue:" && find data/outreach/approval_queue -maxdepth 4 -type f | sort | tail -40
+
+full-revenue-day:
+	bash scripts/run_company_launch_day.sh || true
+
+outbound-dry:
+	EXTERNAL_SEND_ENABLED=false EMAIL_SEND_ENABLED=false WHATSAPP_SEND_ENABLED=false WHATSAPP_ALLOW_LIVE_SEND=false SMS_SEND_ENABLED=false OUTBOUND_MODE=draft_only bash scripts/run_company_launch_day.sh || true
+
+channel-day:
+	python3 scripts/command_room/build_command_room.py || true

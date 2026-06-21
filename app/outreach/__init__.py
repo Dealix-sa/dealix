@@ -1,0 +1,1 @@
+"""Dealix daily outreach package."""
