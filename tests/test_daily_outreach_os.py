@@ -1,29 +1,46 @@
 from pathlib import Path
 import os
+import shutil
 import subprocess
 import sys
 
 
 def test_daily_outreach_generates_drafts_without_live_send():
-    result = subprocess.run(
-        [
-            sys.executable,
-            "scripts/outreach/run_daily_outreach.py",
-            "--targets",
-            "data/outreach/target_accounts.example.csv",
-            "--date",
-            "2099-01-01",
-        ],
-        text=True,
-        capture_output=True,
-        check=False,
-        env={**os.environ, "PYTHONPATH": "."},
-    )
+    test_date = "2099-01-01"
 
-    assert result.returncode == 0, result.stderr
-    assert Path("outbox/2099-01-01/roadlink_email_step1.md").exists()
-    assert Path("outbox/2099-01-01/roadlink_whatsapp_buttons.json").exists()
-    assert Path("reports/outreach/2099-01-01/daily_outreach_summary.md").exists()
+    generated_paths = [
+        Path(f"outbox/{test_date}"),
+        Path(f"reports/outreach/{test_date}"),
+        Path(f"data/outreach/approval_queue/{test_date}"),
+    ]
+
+    for path in generated_paths:
+        shutil.rmtree(path, ignore_errors=True)
+
+    try:
+        result = subprocess.run(
+            [
+                sys.executable,
+                "scripts/outreach/run_daily_outreach.py",
+                "--targets",
+                "data/outreach/target_accounts.example.csv",
+                "--date",
+                test_date,
+            ],
+            text=True,
+            capture_output=True,
+            check=False,
+            env={**os.environ, "PYTHONPATH": "."},
+        )
+
+        assert result.returncode == 0, result.stderr
+        assert Path(f"outbox/{test_date}/roadlink_email_step1.md").exists()
+        assert Path(f"outbox/{test_date}/roadlink_whatsapp_buttons.json").exists()
+        assert Path(f"reports/outreach/{test_date}/daily_outreach_summary.md").exists()
+        assert Path(f"data/outreach/approval_queue/{test_date}/roadlink_approval.json").exists()
+    finally:
+        for path in generated_paths:
+            shutil.rmtree(path, ignore_errors=True)
 
 
 def test_daily_outreach_whatsapp_blocks_without_opt_in(monkeypatch):
