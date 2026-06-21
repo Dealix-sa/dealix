@@ -1,0 +1,71 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386608776",
+    "pull_request_review_id": 4465859570,
+    "id": 3386608776,
+    "node_id": "PRRC_kwDOR1eIic7J24yI",
+    "diff_hunk": "@@ -0,0 +1,206 @@\n+#!/usr/bin/env python3\n+from __future__ import annotations\n+\n+import csv\n+import datetime as dt\n+from pathlib import Path\n+\n+ROOT = Path(__file__).resolve().parents[2]\n+TODAY = dt.date.today().isoformat()\n+\n+REPORTS = ROOT / \"company\" / \"reports\"\n+OUTBOX = ROOT / \"company\" / \"outbox\"\n+CRM = ROOT / \"company\" / \"crm\"\n+\n+for d in (REPORTS, OUTBOX, CRM):\n+    d.mkdir(parents=True, exist_ok=True)\n+\n+def read_csv(path: Path) -> list[dict[str, str]]:\n+    if not path.exists():\n+        return []\n+    try:\n+        with path.open(\"r\", encoding=\"utf-8-sig\", newline=\"\") as f:\n+            return list(csv.DictReader(f))\n+    except Exception:\n+        return []\n+\n+def write_csv(path: Path, rows: list[dict[str, str]], fields: list[str]) -> None:\n+    with path.open(\"w\", encoding=\"utf-8-sig\", newline=\"\") as f:\n+        w = csv.DictWriter(f, fieldnames=fields, extrasaction=\"ignore\")\n+        w.writeheader()\n+        w.writerows(rows)\n+\n+def pick(value: dict[str, str], *keys: str) -> str:\n+    for k in keys:\n+        v = value.get(k)\n+        if v:\n+            return str(v).strip()\n+    return \"\"\n+\n+def score(row: dict[str, str]) -> int:\n+    s = 40\n+    if pick(row, \"phone\", \"contact\"):\n+        s += 20\n+    if pick(row, \"website\", \"link\"):\n+        s += 15\n+    if pick(row, \"pain_angle\", \"snippet\", \"notes\"):\n+        s += 15\n+    if pick(row, \"recommended_offer\", \"core_offer\", \"offer\"):\n+        s += 10\n+    try:\n+        s = max(s, int(float(pick(row, \"priority_score\") or 0)))\n+    except Exception:",
+    "path": "company/micro/micro_master.py",
+    "commit_id": "bbf48cc2daef3afe7769022f7c081c8d30963395",
+    "original_commit_id": "bbf48cc2daef3afe7769022f7c081c8d30963395",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2511)",
+    "created_at": "2026-06-10T08:16:12Z",
+    "updated_at": "2026-06-10T08:16:12Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/706#discussion_r3386608776",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/706",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386608776"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/706#discussion_r3386608776"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/706"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386608776/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 52,
+    "original_line": 52,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 52,
+    "position": 52,
+    "subject_type": "line"
+  }
+]

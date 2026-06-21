@@ -1,0 +1,55 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "## Why\n\nThe repo was missing the last two files needed for the documented Claude Code + Codex integration \"final shape\". Direct inspection showed the rest of the checklist was already satisfied on the branch base — `AGENTS.md`, `pyproject.toml`, `requirements.txt`, `scripts/check_env_contract.py`, `.claudeignore`, and the `.claude/`, `.codex/`, `.cursor/` agent configs all already exist. Codex needs no new repo file (it reads `AGENTS.md`).\n\nOnly two files were genuinely absent — this PR adds them.\n\n## What\n\n- **`CLAUDE.md`** (new, repo root) — a lean (~250 words, under the repo's own <500-token hygiene rule in `token-optimizer/02-claude-md/`) context lookup table. Points to `AGENTS.md` as the source of truth, lists the doctrine guard tests (non-negotiables), and uses **corrected** paths/commands vs. the older template (`api/routers/` not `api/routes/`, `core/config/`, `APP_ENV=test pytest`, real `make` targets). Every path and test it references was verified to exist.\n- **`.github/workflows/claude-code.yml`** (new) — `anthropics/claude-code-action@v1` that responds to `@claude` on issues, issue comments, PR review comments, and PR reviews. Authenticates via a **GitHub App token** (`actions/create-github-app-token@v2` from `APP_ID` + `APP_PRIVATE_KEY`) plus `ANTHROPIC_API_KEY`. Mirrors `ci.yml` conventions (name, concurrency, timeout).\n\n## Required repo secrets (set in Settings → Secrets and variables → Actions)\n\nThe workflow only runs green once these exist:\n\n- `ANTHROPIC_API_KEY`\n- `APP_ID`\n- `APP_PRIVATE_KEY` (GitHub App with Contents / Issues / Pull requests = Read & Write)\n\nSetting secrets and installing the GitHub App are repo-settings actions performed in the GitHub UI — they cannot be committed.\n\n## Smoke test (after merge + secrets configured)\n\nOpen an issue titled **\"Claude smoke test\"** containing:\n\n> `@claude افحص الريبو بدون تعديل. قل لي فقط هل CLAUDE.md و AGENTS.md و GitHub Actions موجودة، وما هي أعلى 3 مخاطر P0.`\n\nExpected: the **Claude Code** workflow starts a run and Claude replies in the issue. The run should go green.\n\n## Verification done\n\n- `claude-code.yml` parses as valid YAML.\n- All paths and the six skill files referenced by `CLAUDE.md` exist.\n- All six doctrine guard tests referenced by `CLAUDE.md` exist.\n- Founder checklist now reports `OK` for `CLAUDE.md`, `AGENTS.md`, `.github/workflows/claude-code.yml`.\n\n## Pre-existing CI failures (NOT caused by this PR)\n\nTwo checks from `.github/workflows/repository-hardening.yml` (untouched by this PR) fail on every PR for environmental reasons — by maintainer decision they are left as-is here:\n\n- **Gitleaks secret scan** — `gitleaks-action@v2` requires a paid `GITLEAKS_LICENSE` org secret (`[Dealix-sa] is an organization. License key is required`).\n- **Trivy filesystem scan** — `aquasecurity/trivy-action@0.24.0` is pinned to a tag that no longer resolves.\n\nThese are tracked separately from this change.\n\nhttps://claude.ai/code/session_01JtuQhjxPpsGxUA95rhP6kk",
+  "closedAt": "2026-06-17T02:24:53Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-05T23:27:31Z",
+      "authors": [
+        {
+          "email": "noreply@anthropic.com",
+          "id": "MDQ6VXNlcjgxODQ3",
+          "login": "claude",
+          "name": "Claude"
+        }
+      ],
+      "committedDate": "2026-06-05T23:27:31Z",
+      "messageBody": "- CLAUDE.md: lean (<500 token) context lookup table pointing to AGENTS.md as\n  the source of truth, with corrected paths/commands and the doctrine guards.\n- .github/workflows/claude-code.yml: anthropics/claude-code-action@v1 that\n  responds to @claude on issues and PRs, authenticating via a GitHub App token\n  (APP_ID + APP_PRIVATE_KEY) plus ANTHROPIC_API_KEY.\n\nhttps://claude.ai/code/session_01JtuQhjxPpsGxUA95rhP6kk",
+      "messageHeadline": "Add CLAUDE.md and Claude Code GitHub Action workflow",
+      "oid": "7bd48995e1019c5516adf7998c5affdc54037f2b"
+    }
+  ],
+  "createdAt": "2026-06-05T23:28:00Z",
+  "files": [
+    {
+      "path": ".github/workflows/claude-code.yml",
+      "additions": 53,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "CLAUDE.md",
+      "additions": 42,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "claude/dealix-claude-codex-setup-q5VEp",
+  "isDraft": true,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-17T02:24:53Z",
+  "number": 640,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "Add CLAUDE.md and Claude Code GitHub Action workflow",
+  "updatedAt": "2026-06-17T02:24:53Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/640"
+}

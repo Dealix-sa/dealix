@@ -1,0 +1,115 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "Adds the Dealix Master Company OS: daily master operating script, frontend dev runner, diagnostic closing pack, CEO decision rules, generated-output safeguards, and scheduled master company workflow.",
+  "closedAt": "2026-06-17T01:50:40Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-08T21:24:24Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-08T21:24:24Z",
+      "messageBody": "",
+      "messageHeadline": "feat: add Dealix master company operating system",
+      "oid": "4a5fe0a0008c3b0879ee0dd312c70d7d540648ce"
+    }
+  ],
+  "createdAt": "2026-06-08T21:24:30Z",
+  "files": [
+    {
+      "path": ".github/workflows/master_company_day.yml",
+      "additions": 73,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/.gitignore",
+      "additions": 20,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/daily/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/lead_research/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/master/CEO_DECISION_RULES.md",
+      "additions": 38,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/master/DAILY_EXECUTION_MAP.md",
+      "additions": 29,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/master/MASTER_COMPANY_OPERATING_SYSTEM.md",
+      "additions": 67,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/reports/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/sales/DIAGNOSTIC_SPRINT_CLOSING_PACK.md",
+      "additions": 44,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/weekly/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/dealix_master_company_day.sh",
+      "additions": 93,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/dealix_web_dev.sh",
+      "additions": 12,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "feat/master-company-operating-system",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-17T01:50:40Z",
+  "number": 703,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "feat: add Dealix master company operating system",
+  "updatedAt": "2026-06-17T01:50:40Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/703"
+}

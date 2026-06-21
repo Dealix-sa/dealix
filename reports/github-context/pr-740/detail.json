@@ -1,0 +1,115 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "# Pull Request\r\n\r\n## Summary | الملخص\r\n<!-- What does this PR change and why? -->\r\n\r\n## Type of change | نوع التغيير\r\n- [ ] 🐛 Bug fix\r\n- [ ] ✨ New feature\r\n- [ ] 💥 Breaking change\r\n- [ ] 📝 Docs only\r\n- [ ] ♻️ Refactor\r\n- [ ] 🔒 Security\r\n\r\n## Engineering cutover (only if env/backend persistence changes)\r\n\r\nIf this PR touches `PROOF_LEDGER_BACKEND`, `VALUE_LEDGER_BACKEND`, `DEALIX_OPERATIONAL_STREAM_BACKEND`, or `OTEL_CONTRACT_TRACE_EXPORT`:\r\n\r\n```text\r\nexternal_signal: <contract_signed|pilot_scope_locked|...>\r\ncontract_or_pilot_ref: <internal id or account name>\r\n```\r\n\r\nSee [docs/transformation/CUTOVER_PR_CHECKLIST_AR.md](docs/transformation/CUTOVER_PR_CHECKLIST_AR.md) and [docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md](docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md).\r\n\r\n## Checklist | قائمة التحقق\r\n- [ ] Tests added / updated\r\n- [ ] Docs updated (if needed)\r\n- [ ] No secrets committed (verified via `gitleaks`)\r\n- [ ] `make lint` passes\r\n- [ ] `make test` passes\r\n- [ ] Linked to an issue (if applicable)\r\n- [ ] Cutover PR body validated (`python3 scripts/verify_cutover_pr_body.py`) if applicable\r\n\r\n## How to test | كيف أختبر هذا\r\n<!-- Steps to verify -->\r\n\r\n## Screenshots / Logs (optional)\r\n",
+  "closedAt": "2026-06-17T01:40:43Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-08T21:24:24Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-08T21:24:24Z",
+      "messageBody": "",
+      "messageHeadline": "feat: add Dealix master company operating system",
+      "oid": "4a5fe0a0008c3b0879ee0dd312c70d7d540648ce"
+    }
+  ],
+  "createdAt": "2026-06-17T01:40:33Z",
+  "files": [
+    {
+      "path": ".github/workflows/master_company_day.yml",
+      "additions": 73,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/.gitignore",
+      "additions": 20,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/daily/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/lead_research/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/master/CEO_DECISION_RULES.md",
+      "additions": 38,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/master/DAILY_EXECUTION_MAP.md",
+      "additions": 29,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/master/MASTER_COMPANY_OPERATING_SYSTEM.md",
+      "additions": 67,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/reports/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/sales/DIAGNOSTIC_SPRINT_CLOSING_PACK.md",
+      "additions": 44,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/weekly/.gitkeep",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/dealix_master_company_day.sh",
+      "additions": 93,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/dealix_web_dev.sh",
+      "additions": 12,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "resolve-pr-703",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-17T01:40:43Z",
+  "number": 740,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "feat: add Dealix master company operating system",
+  "updatedAt": "2026-06-17T01:43:27Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/740"
+}

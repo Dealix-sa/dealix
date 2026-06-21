@@ -1,0 +1,71 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358295412",
+    "pull_request_review_id": 4430734056,
+    "id": 3358295412,
+    "node_id": "PRRC_kwDOR1eIic7IK4V0",
+    "diff_hunk": "@@ -0,0 +1,45 @@\n+\"\"\"The no-external-send safety audit passes on the committed OS.\"\"\"\n+\n+from __future__ import annotations\n+\n+import json\n+\n+from scripts.commercial_launch_core import MANDATORY_FLAGS, generate_drafts, load_seed_leads\n+from scripts.commercial_safety_audit import run_safety_audit\n+\n+\n+def test_safety_audit_passes():\n+    generate_drafts(target=400, leads=load_seed_leads())\n+    report = run_safety_audit()\n+    assert report[\"pass\"] is True, report[\"violations\"]\n+\n+\n+def test_safety_audit_report_schema():\n+    report = run_safety_audit()\n+    for key in (\n+        \"pass\",\n+        \"files_scanned\",\n+        \"violations\",\n+        \"warnings\",\n+        \"blocked_terms_found\",\n+        \"recommended_fix\",\n+    ):\n+        assert key in report\n+    assert report[\"files_scanned\"] > 0\n+\n+\n+def test_safety_audit_detects_injected_violation(tmp_path, monkeypatch):\n+    \"\"\"A draft with an unsafe flag must be caught by the structural check.\"\"\"\n+    import scripts.commercial_safety_audit as audit",
+    "path": "tests/test_commercial_safety_audit.py",
+    "commit_id": "349d13b8a00e8336485065863b6e24f1b0425cc7",
+    "original_commit_id": "349d13b8a00e8336485065863b6e24f1b0425cc7",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Module is imported with 'import' and 'import from'\n\nModule 'scripts.commercial_safety_audit' is imported with both 'import' and 'import from'.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2324)",
+    "created_at": "2026-06-04T19:13:55Z",
+    "updated_at": "2026-06-04T19:13:55Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/605#discussion_r3358295412",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/605",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358295412"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/605#discussion_r3358295412"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/605"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358295412/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 33,
+    "original_line": 33,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 33,
+    "position": 33,
+    "subject_type": "line"
+  }
+]

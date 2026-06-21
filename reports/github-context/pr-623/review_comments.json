@@ -1,0 +1,347 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223617",
+    "pull_request_review_id": 4438175207,
+    "id": 3364223617,
+    "node_id": "PRRC_kwDOR1eIic7IhfqB",
+    "diff_hunk": "@@ -0,0 +1,97 @@\n+#!/usr/bin/env python3\n+\"\"\"Query factory — generates ALLOWED research queries (you run them manually).\n+\n+Dealix does not auto-search or scrape. This factory produces a list of honest,\n+robots-respecting search queries the founder (or a VA) runs by hand against\n+public sources: official sites, services/clients/case-study pages, jobs pages,\n+news, and public directories. The output is a checklist, not an automation.\n+\n+Queries are built by crossing sectors × cities × intent modifiers from the\n+targeting config.\n+\n+Usage:\n+    python scripts/targeting_query_factory.py --per-sector 6 --out data/targeting/out\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+from pathlib import Path\n+\n+from scripts.targeting_common import OUT_DIR, load_cities, load_sectors\n+\n+# Intent modifiers — phrasing that surfaces companies with observable signals,\n+# all from public, non-login sources.\n+INTENT_MODIFIERS = [\n+    (\"case studies\", \"دراسات حالة\"),\n+    (\"our clients\", \"عملاؤنا\"),\n+    (\"careers hiring\", \"وظائف توظيف\"),\n+    (\"services\", \"خدماتنا\"),\n+    (\"press news\", \"أخبار\"),\n+    (\"partners\", \"شركاء\"),\n+]\n+\n+\n+def generate_queries(per_sector: int = 6) -> list[dict[str, str]]:\n+    \"\"\"Cross sectors × cities × intent into a deduped query list.\"\"\"\n+    sectors = load_sectors()\n+    cities = load_cities()\n+    queries: list[dict[str, str]] = []\n+    seen: set[str] = set()\n+    for skey, sval in sectors.items():\n+        # Skip sensitive sectors in the default factory run — they need review.\n+        if sval.get(\"sensitive\"):\n+            continue\n+        sname = sval.get(\"name_en\", skey)\n+        count = 0\n+        for ckey, cval in cities.items():\n+            if ckey == \"other\":\n+                continue\n+            for mod_en, mod_ar in INTENT_MODIFIERS:\n+                if count >= per_sector:\n+                    break\n+                q = f'\"{sname}\" {cval.get(\"name_en\", ckey)} {mod_en} Saudi'\n+                if q in seen:\n+                    continue\n+                seen.add(q)\n+                queries.append(\n+                    {\n+                        \"sector\": skey,\n+                        \"city\": ckey,\n+                        \"query_en\": q,\n+                        \"query_ar\": f'{sval.get(\"name_ar\", skey)} {cval.get(\"name_ar\", ckey)} {mod_ar}',\n+                        \"source_note\": \"public web only — respect robots.txt, no login, no scraping\",\n+                    }\n+                )\n+                count += 1\n+            if count >= per_sector:\n+                break\n+    return queries\n+\n+\n+def main(argv: list[str] | None = None) -> int:\n+    ap = argparse.ArgumentParser(description=\"Dealix research query factory (manual run)\")\n+    ap.add_argument(\"--per-sector\", type=int, default=6)\n+    ap.add_argument(\"--out\", dest=\"outdir\", default=str(OUT_DIR))\n+    args = ap.parse_args(argv)\n+\n+    queries = generate_queries(args.per_sector)\n+    out_dir = Path(args.outdir)\n+    out_dir.mkdir(parents=True, exist_ok=True)\n+    path = out_dir / \"research_queries.md\"\n+    lines = [\n+        \"# Research Queries — RUN MANUALLY (no automation, no scraping)\\n\",\n+        \"> Respect robots.txt and source terms. Public pages only. \"\n+        \"Manual LinkedIn visits allowed; no LinkedIn automation.\\n\",",
+    "path": "scripts/targeting_query_factory.py",
+    "commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "original_commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Implicit string concatenation in a list\n\nImplicit string concatenation. Maybe missing a comma?\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2396)",
+    "created_at": "2026-06-05T17:16:43Z",
+    "updated_at": "2026-06-05T17:16:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223617",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223617"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223617"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223617/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": 84,
+    "start_side": "RIGHT",
+    "line": null,
+    "original_line": 85,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 85,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223633",
+    "pull_request_review_id": 4438175207,
+    "id": 3364223633,
+    "node_id": "PRRC_kwDOR1eIic7IhfqR",
+    "diff_hunk": "@@ -0,0 +1,176 @@\n+#!/usr/bin/env python3\n+\"\"\"Compliance gate — the first hard filter in the targeting pipeline.\n+\n+Every candidate company must pass this gate BEFORE it is scored, routed, or\n+drafted. The gate encodes the Dealix non-negotiables:\n+\n+  - No scraping behind login / no CAPTCHA bypass / no leaked datasets.\n+  - Respect robots.txt and source terms.\n+  - No personal phone numbers; an official channel is required.\n+  - Sensitive sectors (gov / health / finance) require governance review.\n+  - Enough independent evidence to justify outreach.\n+\n+Output: each company is classified as ``approved``, ``review_required``\n+(sensitive sector held for a human governance sign-off), or ``rejected`` with an\n+explicit reason. Nothing silently drops — every reject carries a reason so the\n+decision is auditable.\n+\n+Usage:\n+    python scripts/targeting_compliance_gate.py \\\\\n+        --in data/targeting/company_master.jsonl \\\\\n+        --out data/targeting/out\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import json\n+from pathlib import Path\n+from typing import Any\n+\n+from scripts.targeting_common import (\n+    COMPANY_MASTER,\n+    OUT_DIR,\n+    ensure_out_dir,\n+    load_blocked,\n+    load_companies,\n+)",
+    "path": "scripts/targeting_compliance_gate.py",
+    "commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "original_commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'ensure_out_dir' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2392)",
+    "created_at": "2026-06-05T17:16:44Z",
+    "updated_at": "2026-06-05T17:16:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223633",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223633"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223633"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223633/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": 32,
+    "original_start_line": 32,
+    "start_side": "RIGHT",
+    "line": 37,
+    "original_line": 38,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 38,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223643",
+    "pull_request_review_id": 4438175207,
+    "id": 3364223643,
+    "node_id": "PRRC_kwDOR1eIic7Ihfqb",
+    "diff_hunk": "@@ -0,0 +1,186 @@\n+#!/usr/bin/env python3\n+\"\"\"Draft Lab — builds tailored outreach drafts. It NEVER sends.\n+\n+Every draft is evidence-backed, names one CTA, makes no exaggerated promises, and\n+is stamped ``APPROVAL_REQUIRED: founder``. The Draft Lab is the line Dealix does\n+not cross automatically: drafts are queued for manual founder review and manual\n+send only.\n+\n+Draft rules (enforced in code by ``validate_draft``):\n+    - company name present\n+    - a stated reason for targeting (positive signal)\n+    - a respectfully-phrased weakness / opportunity\n+    - exactly one CTA\n+    - no auto-send, no guarantees\n+\n+Usage:\n+    python scripts/targeting_draft_lab.py \\\\\n+        --in data/targeting/company_master.jsonl \\\\\n+        --out data/targeting/out --limit 10\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+from pathlib import Path\n+from typing import Any\n+\n+from scripts.targeting_common import COMPANY_MASTER, OUT_DIR, ensure_out_dir, load_companies",
+    "path": "scripts/targeting_draft_lab.py",
+    "commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "original_commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'ensure_out_dir' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2393)",
+    "created_at": "2026-06-05T17:16:44Z",
+    "updated_at": "2026-06-05T17:16:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223643",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223643"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223643"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223643/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 28,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 28,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223653",
+    "pull_request_review_id": 4438175207,
+    "id": 3364223653,
+    "node_id": "PRRC_kwDOR1eIic7Ihfql",
+    "diff_hunk": "@@ -0,0 +1,108 @@\n+#!/usr/bin/env python3\n+\"\"\"Offer router — Company → Weakness → Dealix OS angle → Offer → Draft type.\n+\n+Once we know a company's primary weakness, the router picks the right first\n+commercial offer from the Dealix ladder. The default first offer is the\n+**Command Sprint** (Revenue + Proof + Command + Governance Lite, 7 days) — every\n+company can start there. Partner-potential leads route to a Partner Diagnostic\n+instead of a sell.\n+\n+Usage:\n+    python scripts/targeting_offer_router.py --in data/targeting/company_master.jsonl\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import json\n+from pathlib import Path\n+from typing import Any\n+\n+from scripts.targeting_common import COMPANY_MASTER, load_companies, load_sectors, load_signals",
+    "path": "scripts/targeting_offer_router.py",
+    "commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "original_commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'load_sectors' is not used.\nImport of 'load_signals' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2394)",
+    "created_at": "2026-06-05T17:16:44Z",
+    "updated_at": "2026-06-05T17:16:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223653",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223653"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223653"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223653/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 21,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 21,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223659",
+    "pull_request_review_id": 4438175207,
+    "id": 3364223659,
+    "node_id": "PRRC_kwDOR1eIic7Ihfqr",
+    "diff_hunk": "@@ -0,0 +1,298 @@\n+#!/usr/bin/env python3\n+\"\"\"Scoring engine — turns a company profile into an auditable score out of 100.\n+\n+Score = sum of axis points (each capped at its axis max) − penalties, clamped to\n+[0, 100]. Every point has a reason, so a founder can see *why* a company scored\n+what it did. The decision band (A+/A/B/C/D) and human action come from\n+data/targeting/scoring_weights.yml.\n+\n+Axes (max 100):\n+    icp_fit 25 · pain_signal 20 · timing_intent 15 · access 10 ·\n+    dealix_os_fit 10 · evidence_confidence 10 · strategic_value 10\n+\n+Penalties: single source, no website, no pain, sensitive sector, weak channel,\n+compliance risk (→ reject), generic-message risk.\n+\n+Usage:\n+    python scripts/targeting_scorecard.py \\\\\n+        --in data/targeting/company_master.jsonl \\\\\n+        --out data/targeting/out --top 80\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import json\n+from pathlib import Path\n+from typing import Any\n+\n+from scripts.targeting_common import (\n+    COMPANY_MASTER,\n+    OUT_DIR,\n+    ensure_out_dir,\n+    load_cities,\n+    load_companies,\n+    load_sectors,\n+    load_signals,\n+    load_weights,\n+)",
+    "path": "scripts/targeting_scorecard.py",
+    "commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "original_commit_id": "88dad9cca4e3456a36820221bbff41b06b229b35",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'ensure_out_dir' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2395)",
+    "created_at": "2026-06-05T17:16:44Z",
+    "updated_at": "2026-06-05T17:16:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223659",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223659"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/623#discussion_r3364223659"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/623"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3364223659/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": 30,
+    "original_start_line": 30,
+    "start_side": "RIGHT",
+    "line": 38,
+    "original_line": 39,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 39,
+    "position": 1,
+    "subject_type": "line"
+  }
+]

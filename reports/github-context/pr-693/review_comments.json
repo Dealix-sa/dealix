@@ -1,0 +1,1520 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945726",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945726,
+    "node_id": "PRRC_kwDOR1eIic7I3Up-",
+    "diff_hunk": "@@ -0,0 +1,27 @@\n+import argparse, json, datetime\n+from pathlib import Path\n+ap=argparse.ArgumentParser()\n+ap.add_argument('--account', required=True)\n+ap.add_argument('--vertical', default='training')\n+ap.add_argument('--employees', type=int, default=50)\n+ap.add_argument('--monthly_leads', type=int, default=100)\n+args=ap.parse_args()\n+score=0\n+if args.employees>=50: score+=25\n+if args.monthly_leads>=100: score+=35\n+if args.vertical in ['training','agencies','real_estate','clinics','professional_services']: score+=20\n+score+=20\n+plan={\n+ 'account':args.account,'vertical':args.vertical,'employees':args.employees,'monthly_leads':args.monthly_leads,\n+ 'enterprise_fit_score':min(score,100),\n+ 'stakeholders':['CEO/Founder','Sales Manager','Operations Manager','IT/Data reviewer'],\n+ 'hypothesis':'فرص تدخل من قنوات متعددة وتضيع بسبب المتابعة غير الموحدة',\n+ 'recommended_entry_offer':'Executive Diagnostic Workshop ثم Pilot 14 يوم',\n+ 'next_actions':['ابن business case','جهز demo room قطاعي','اكتب رسالة لصاحب القرار','سجل interaction في CRM'],\n+ 'created_at':datetime.datetime.utcnow().isoformat()+'Z'\n+}\n+out=Path('out/enterprise'); out.mkdir(parents=True, exist_ok=True)\n+fn=out/(args.account.replace(' ','_')+'_account_plan.json')\n+fn.write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')",
+    "path": "scripts/dealix_enterprise_account_planner.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Clear-text storage of sensitive information\n\nThis expression stores [sensitive data (private)](1) as clear text.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2455)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945726",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945726"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945726"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945726/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 25,
+    "original_line": 25,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 25,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945727",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945727,
+    "node_id": "PRRC_kwDOR1eIic7I3Up_",
+    "diff_hunk": "@@ -0,0 +1,27 @@\n+import argparse, json, datetime\n+from pathlib import Path\n+ap=argparse.ArgumentParser()\n+ap.add_argument('--account', required=True)\n+ap.add_argument('--vertical', default='training')\n+ap.add_argument('--employees', type=int, default=50)\n+ap.add_argument('--monthly_leads', type=int, default=100)\n+args=ap.parse_args()\n+score=0\n+if args.employees>=50: score+=25\n+if args.monthly_leads>=100: score+=35\n+if args.vertical in ['training','agencies','real_estate','clinics','professional_services']: score+=20\n+score+=20\n+plan={\n+ 'account':args.account,'vertical':args.vertical,'employees':args.employees,'monthly_leads':args.monthly_leads,\n+ 'enterprise_fit_score':min(score,100),\n+ 'stakeholders':['CEO/Founder','Sales Manager','Operations Manager','IT/Data reviewer'],\n+ 'hypothesis':'فرص تدخل من قنوات متعددة وتضيع بسبب المتابعة غير الموحدة',\n+ 'recommended_entry_offer':'Executive Diagnostic Workshop ثم Pilot 14 يوم',\n+ 'next_actions':['ابن business case','جهز demo room قطاعي','اكتب رسالة لصاحب القرار','سجل interaction في CRM'],\n+ 'created_at':datetime.datetime.utcnow().isoformat()+'Z'\n+}\n+out=Path('out/enterprise'); out.mkdir(parents=True, exist_ok=True)\n+fn=out/(args.account.replace(' ','_')+'_account_plan.json')\n+fn.write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')\n+print(f'Wrote {fn}')\n+print(json.dumps(plan,ensure_ascii=False,indent=2))",
+    "path": "scripts/dealix_enterprise_account_planner.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Clear-text logging of sensitive information\n\nThis expression logs [sensitive data (private)](1) as clear text.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2454)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945727",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945727"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945727"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945727/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 27,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 27,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945729",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945729,
+    "node_id": "PRRC_kwDOR1eIic7I3UqB",
+    "diff_hunk": "@@ -0,0 +1,39 @@\n+from pathlib import Path\n+import json, datetime, hashlib, argparse, re",
+    "path": "scripts/dealix_v16_readiness_check.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'hashlib' is not used.\nImport of 'argparse' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2484)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945729",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945729"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945729"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945729/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 2,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 2,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945730",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945730,
+    "node_id": "PRRC_kwDOR1eIic7I3UqC",
+    "diff_hunk": "@@ -0,0 +1,32 @@\n+from pathlib import Path\n+import json, datetime, hashlib, argparse, re",
+    "path": "scripts/dealix_v16_daily_run.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'hashlib' is not used.\nImport of 'argparse' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2483)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945730",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945730"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945730"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945730/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 2,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 2,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945733",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945733,
+    "node_id": "PRRC_kwDOR1eIic7I3UqF",
+    "diff_hunk": "@@ -0,0 +1,11 @@\n+import subprocess, sys",
+    "path": "scripts/dealix_v12_daily_run.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'sys' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2475)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945733",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945733"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945733"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945733/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 1,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 1,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945737",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945737,
+    "node_id": "PRRC_kwDOR1eIic7I3UqJ",
+    "diff_hunk": "@@ -0,0 +1,9 @@\n+import subprocess, sys",
+    "path": "scripts/dealix_v11_daily_run.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'sys' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2474)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945737",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945737"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945737"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945737/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 1,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 1,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945740",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945740,
+    "node_id": "PRRC_kwDOR1eIic7I3UqM",
+    "diff_hunk": "@@ -0,0 +1,33 @@\n+from pathlib import Path\n+import json, datetime, hashlib, argparse, re",
+    "path": "scripts/dealix_outreach_execution_dashboard.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'hashlib' is not used.\nImport of 'argparse' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2482)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945740",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945740"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945740"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945740/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 2,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 2,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945742",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945742,
+    "node_id": "PRRC_kwDOR1eIic7I3UqO",
+    "diff_hunk": "@@ -0,0 +1,14 @@\n+import argparse,csv\n+from pathlib import Path\n+p=argparse.ArgumentParser(); p.add_argument('--input',required=True); p.add_argument('--vertical',required=True); p.add_argument('--limit',type=int,default=10); a=p.parse_args()\n+tpl=Path('templates/messages/first_touch_whatsapp_ar.md').read_text(encoding='utf-8'); outdir=Path('out/outreach_drafts'); outdir.mkdir(parents=True,exist_ok=True); written=0\n+with open(a.input,encoding='utf-8') as f:\n+ for row in csv.DictReader(f):\n+  if written>=a.limit: break\n+  try: sc=int(row.get('fit_score') or 0)\n+  except: sc=0",
+    "path": "scripts/dealix_outreach_batch_drafter.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Except block handles 'BaseException'\n\nExcept block directly handles BaseException.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2445)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945742",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945742"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945742"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945742/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 9,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 9,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945744",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945744,
+    "node_id": "PRRC_kwDOR1eIic7I3UqQ",
+    "diff_hunk": "@@ -0,0 +1,28 @@\n+from pathlib import Path\n+import json, datetime, hashlib, argparse, re",
+    "path": "scripts/dealix_objection_followup_builder.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'hashlib' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2481)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945744",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945744"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945744"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945744/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 2,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 2,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945746",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945746,
+    "node_id": "PRRC_kwDOR1eIic7I3UqS",
+    "diff_hunk": "@@ -0,0 +1,33 @@\n+from pathlib import Path\n+import json, datetime, hashlib, argparse, re",
+    "path": "scripts/dealix_human_review_queue.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'hashlib' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2480)",
+    "created_at": "2026-06-07T19:25:43Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945746",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945746"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945746"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945746/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 2,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 2,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945748",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945748,
+    "node_id": "PRRC_kwDOR1eIic7I3UqU",
+    "diff_hunk": "@@ -0,0 +1,56 @@\n+import json, datetime\n+from pathlib import Path\n+# Ensure top tasks exist\n+try:\n+    top=Path('out/founder/top10_tasks.md').read_text(encoding='utf-8')\n+except FileNotFoundError:\n+    import subprocess, sys\n+    subprocess.run([sys.executable,'scripts/dealix_top10_task_ranker.py'], check=True)\n+    top=Path('out/founder/top10_tasks.md').read_text(encoding='utf-8')\n+clients=[]\n+for p in ['data/preview/preview_clients.json','data/revenue/first_5_clients.json']:\n+    if Path(p).exists():\n+        try:\n+            obj=json.loads(Path(p).read_text(encoding='utf-8'))\n+            if isinstance(obj, list): clients.extend(obj)\n+            elif isinstance(obj, dict): clients.extend(obj.get('clients',[]))\n+        except Exception: pass",
+    "path": "scripts/dealix_founder_command_brief.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2477)",
+    "created_at": "2026-06-07T19:25:44Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945748",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945748"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945748"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945748/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 17,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 17,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945752",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945752,
+    "node_id": "PRRC_kwDOR1eIic7I3UqY",
+    "diff_hunk": "@@ -0,0 +1,35 @@\n+from pathlib import Path\n+import datetime, json\n+out=Path('out/founder/daily_artifacts'); out.mkdir(parents=True, exist_ok=True)\n+clients=['شركة تدريب الرياض','مكتب عقار جدة']\n+if Path('data/preview/preview_clients.json').exists():\n+    try:\n+        data=json.loads(Path('data/preview/preview_clients.json').read_text(encoding='utf-8'))\n+        if isinstance(data, list): clients=[c.get('name') or c.get('client') for c in data if isinstance(c,dict)] or clients\n+        elif isinstance(data, dict): clients=[c.get('name') or c.get('client') for c in data.get('clients',[]) if isinstance(c,dict)] or clients\n+    except Exception: pass",
+    "path": "scripts/dealix_daily_artifact_generator.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2476)",
+    "created_at": "2026-06-07T19:25:44Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945752",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945752"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945752"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945752/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 10,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 10,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945754",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945754,
+    "node_id": "PRRC_kwDOR1eIic7I3Uqa",
+    "diff_hunk": "@@ -0,0 +1,35 @@\n+from pathlib import Path\n+import datetime, json",
+    "path": "scripts/dealix_daily_artifact_generator.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'datetime' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2478)",
+    "created_at": "2026-06-07T19:25:44Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945754",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945754"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945754"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945754/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 2,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 2,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945755",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945755,
+    "node_id": "PRRC_kwDOR1eIic7I3Uqb",
+    "diff_hunk": "@@ -0,0 +1,16 @@\n+#!/usr/bin/env python3\n+import argparse, json, re",
+    "path": "scripts/dealix_case_study_builder.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'json' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2441)",
+    "created_at": "2026-06-07T19:25:44Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945755",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945755"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945755"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945755/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 2,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 2,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945756",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945756,
+    "node_id": "PRRC_kwDOR1eIic7I3Uqc",
+    "diff_hunk": "@@ -0,0 +1,28 @@\n+from pathlib import Path\n+import json, datetime, hashlib, argparse, re",
+    "path": "scripts/dealix_call_prep_builder.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'hashlib' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2479)",
+    "created_at": "2026-06-07T19:25:44Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945756",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945756"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945756"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945756/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 2,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 2,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945757",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945757,
+    "node_id": "PRRC_kwDOR1eIic7I3Uqd",
+    "diff_hunk": "@@ -0,0 +1,12 @@\n+from pathlib import Path\n+import csv\n+leads=high=0\n+for p in Path('data/prospects').glob('*.csv'):\n+ with p.open(encoding='utf-8') as f:\n+  for r in csv.DictReader(f):\n+   leads+=1\n+   try: high += int(r.get('fit_score') or 0)>=70\n+   except: pass",
+    "path": "scripts/dealix_acquisition_dashboard.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2446)",
+    "created_at": "2026-06-07T19:25:44Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945757",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945757"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945757"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945757/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 9,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 9,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945760",
+    "pull_request_review_id": 4445668898,
+    "id": 3369945760,
+    "node_id": "PRRC_kwDOR1eIic7I3Uqg",
+    "diff_hunk": "@@ -0,0 +1,12 @@\n+from pathlib import Path\n+import csv\n+leads=high=0\n+for p in Path('data/prospects').glob('*.csv'):\n+ with p.open(encoding='utf-8') as f:\n+  for r in csv.DictReader(f):\n+   leads+=1\n+   try: high += int(r.get('fit_score') or 0)>=70\n+   except: pass",
+    "path": "scripts/dealix_acquisition_dashboard.py",
+    "commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "original_commit_id": "20d5cb42b78e35fe95ea4be104623f05b39bfb45",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Except block handles 'BaseException'\n\nExcept block directly handles BaseException.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2444)",
+    "created_at": "2026-06-07T19:25:44Z",
+    "updated_at": "2026-06-07T19:25:44Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945760",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945760"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369945760"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369945760/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 9,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 9,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976067",
+    "pull_request_review_id": 4445697529,
+    "id": 3369976067,
+    "node_id": "PRRC_kwDOR1eIic7I3cED",
+    "diff_hunk": "@@ -0,0 +1,26 @@\n+import argparse, json, datetime\n+from pathlib import Path\n+ap=argparse.ArgumentParser()\n+ap.add_argument('--account', required=True)\n+ap.add_argument('--vertical', default='training')\n+ap.add_argument('--employees', type=int, default=50)\n+ap.add_argument('--monthly_leads', type=int, default=100)\n+args=ap.parse_args()\n+score=0\n+if args.employees>=50: score+=25\n+if args.monthly_leads>=100: score+=35\n+if args.vertical in ['training','agencies','real_estate','clinics','professional_services']: score+=20\n+score+=20\n+plan={\n+ 'account':args.account,'vertical':args.vertical,'employees':args.employees,'monthly_leads':args.monthly_leads,\n+ 'enterprise_fit_score':min(score,100),\n+ 'stakeholders':['CEO/Founder','Sales Manager','Operations Manager','IT/Data reviewer'],\n+ 'hypothesis':'فرص تدخل من قنوات متعددة وتضيع بسبب المتابعة غير الموحدة',\n+ 'recommended_entry_offer':'Executive Diagnostic Workshop ثم Pilot 14 يوم',\n+ 'next_actions':['ابن business case','جهز demo room قطاعي','اكتب رسالة لصاحب القرار','سجل interaction في CRM'],\n+ 'created_at':datetime.datetime.utcnow().isoformat()+'Z'\n+}\n+out=Path('out/enterprise'); out.mkdir(parents=True, exist_ok=True)\n+fn=out/(args.account.replace(' ','_')+'_account_plan.json')\n+fn.write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')  # lgtm[py/clear-text-storage-of-sensitive-data]",
+    "path": "scripts/dealix_enterprise_account_planner.py",
+    "commit_id": "909600cf9cd7a873fe5377b88e357cda6dea3025",
+    "original_commit_id": "909600cf9cd7a873fe5377b88e357cda6dea3025",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Clear-text storage of sensitive information\n\nThis expression stores [sensitive data (private)](1) as clear text.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2486)",
+    "created_at": "2026-06-07T19:47:14Z",
+    "updated_at": "2026-06-07T19:47:14Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369976067",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976067"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369976067"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976067/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 25,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 25,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976070",
+    "pull_request_review_id": 4445697529,
+    "id": 3369976070,
+    "node_id": "PRRC_kwDOR1eIic7I3cEG",
+    "diff_hunk": "@@ -0,0 +1,12 @@\n+from pathlib import Path\n+import csv\n+leads=high=0\n+for p in Path('data/prospects').glob('*.csv'):\n+ with p.open(encoding='utf-8') as f:\n+  for r in csv.DictReader(f):\n+   leads+=1\n+   try: high += int(r.get('fit_score') or 0)>=70\n+   except (ValueError, TypeError): pass",
+    "path": "scripts/dealix_acquisition_dashboard.py",
+    "commit_id": "909600cf9cd7a873fe5377b88e357cda6dea3025",
+    "original_commit_id": "909600cf9cd7a873fe5377b88e357cda6dea3025",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2487)",
+    "created_at": "2026-06-07T19:47:14Z",
+    "updated_at": "2026-06-07T19:47:14Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369976070",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976070"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369976070"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976070/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 9,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 9,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976072",
+    "pull_request_review_id": 4445697529,
+    "id": 3369976072,
+    "node_id": "PRRC_kwDOR1eIic7I3cEI",
+    "diff_hunk": "@@ -0,0 +1,35 @@\n+from pathlib import Path\n+import json\n+out=Path('out/founder/daily_artifacts'); out.mkdir(parents=True, exist_ok=True)\n+clients=['شركة تدريب الرياض','مكتب عقار جدة']\n+if Path('data/preview/preview_clients.json').exists():\n+    try:\n+        data=json.loads(Path('data/preview/preview_clients.json').read_text(encoding='utf-8'))\n+        if isinstance(data, list): clients=[c.get('name') or c.get('client') for c in data if isinstance(c,dict)] or clients\n+        elif isinstance(data, dict): clients=[c.get('name') or c.get('client') for c in data.get('clients',[]) if isinstance(c,dict)] or clients\n+    except Exception:  # malformed JSON or missing keys — skip file",
+    "path": "scripts/dealix_daily_artifact_generator.py",
+    "commit_id": "909600cf9cd7a873fe5377b88e357cda6dea3025",
+    "original_commit_id": "909600cf9cd7a873fe5377b88e357cda6dea3025",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2488)",
+    "created_at": "2026-06-07T19:47:14Z",
+    "updated_at": "2026-06-07T19:47:14Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369976072",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976072"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369976072"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976072/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 10,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 10,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976076",
+    "pull_request_review_id": 4445697529,
+    "id": 3369976076,
+    "node_id": "PRRC_kwDOR1eIic7I3cEM",
+    "diff_hunk": "@@ -0,0 +1,56 @@\n+import json, datetime\n+from pathlib import Path\n+# Ensure top tasks exist\n+try:\n+    top=Path('out/founder/top10_tasks.md').read_text(encoding='utf-8')\n+except FileNotFoundError:\n+    import subprocess, sys\n+    subprocess.run([sys.executable,'scripts/dealix_top10_task_ranker.py'], check=True)\n+    top=Path('out/founder/top10_tasks.md').read_text(encoding='utf-8')\n+clients=[]\n+for p in ['data/preview/preview_clients.json','data/revenue/first_5_clients.json']:\n+    if Path(p).exists():\n+        try:\n+            obj=json.loads(Path(p).read_text(encoding='utf-8'))\n+            if isinstance(obj, list): clients.extend(obj)\n+            elif isinstance(obj, dict): clients.extend(obj.get('clients',[]))\n+        except Exception:  # malformed JSON or missing keys — skip file",
+    "path": "scripts/dealix_founder_command_brief.py",
+    "commit_id": "909600cf9cd7a873fe5377b88e357cda6dea3025",
+    "original_commit_id": "909600cf9cd7a873fe5377b88e357cda6dea3025",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2489)",
+    "created_at": "2026-06-07T19:47:14Z",
+    "updated_at": "2026-06-07T19:47:14Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369976076",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976076"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3369976076"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3369976076/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 17,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 17,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3370000961",
+    "pull_request_review_id": 4445729123,
+    "id": 3370000961,
+    "node_id": "PRRC_kwDOR1eIic7I3iJB",
+    "diff_hunk": "@@ -0,0 +1,26 @@\n+import argparse, json, datetime\n+from pathlib import Path\n+ap=argparse.ArgumentParser()\n+ap.add_argument('--company', required=True)\n+ap.add_argument('--vertical', default='training')\n+ap.add_argument('--employees', type=int, default=50)\n+ap.add_argument('--monthly_leads', type=int, default=100)\n+args=ap.parse_args()\n+score=0\n+if args.employees>=50: score+=25\n+if args.monthly_leads>=100: score+=35\n+if args.vertical in ['training','agencies','real_estate','clinics','professional_services']: score+=20\n+score+=20\n+plan={\n+ 'account':args.company,'vertical':args.vertical,'employees':args.employees,'monthly_leads':args.monthly_leads,\n+ 'enterprise_fit_score':min(score,100),\n+ 'stakeholders':['CEO/Founder','Sales Manager','Operations Manager','IT/Data reviewer'],\n+ 'hypothesis':'فرص تدخل من قنوات متعددة وتضيع بسبب المتابعة غير الموحدة',\n+ 'recommended_entry_offer':'Executive Diagnostic Workshop ثم Pilot 14 يوم',\n+ 'next_actions':['ابن business case','جهز demo room قطاعي','اكتب رسالة لصاحب القرار','سجل interaction في CRM'],\n+ 'created_at':datetime.datetime.utcnow().isoformat()+'Z'\n+}\n+out=Path('out/enterprise'); out.mkdir(parents=True, exist_ok=True)\n+fn=out/(args.company.replace(' ','_')+'_account_plan.json')\n+fn.write_text(json.dumps(plan,ensure_ascii=False,indent=2),encoding='utf-8')",
+    "path": "scripts/dealix_enterprise_account_planner.py",
+    "commit_id": "3d68530b756667b25797dd2153a5e3234eaac233",
+    "original_commit_id": "3ec7261201946f8df038b55be1c6fcb6c8f04930",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Clear-text storage of sensitive information\n\nThis expression stores [sensitive data (private)](1) as clear text.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2493)",
+    "created_at": "2026-06-07T20:04:20Z",
+    "updated_at": "2026-06-07T20:04:21Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3370000961",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3370000961"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/693#discussion_r3370000961"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/693"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3370000961/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": 25,
+    "original_line": 25,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 25,
+    "position": 25,
+    "subject_type": "line"
+  }
+]

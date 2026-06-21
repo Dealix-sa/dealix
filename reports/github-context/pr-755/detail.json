@@ -1,0 +1,49 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "# Pull Request\r\n\r\n## Summary | الملخص\r\n<!-- What does this PR change and why? -->\r\n\r\n## Type of change | نوع التغيير\r\n- [ ] 🐛 Bug fix\r\n- [ ] ✨ New feature\r\n- [ ] 💥 Breaking change\r\n- [ ] 📝 Docs only\r\n- [ ] ♻️ Refactor\r\n- [ ] 🔒 Security\r\n\r\n## Engineering cutover (only if env/backend persistence changes)\r\n\r\nIf this PR touches `PROOF_LEDGER_BACKEND`, `VALUE_LEDGER_BACKEND`, `DEALIX_OPERATIONAL_STREAM_BACKEND`, or `OTEL_CONTRACT_TRACE_EXPORT`:\r\n\r\n```text\r\nexternal_signal: <contract_signed|pilot_scope_locked|...>\r\ncontract_or_pilot_ref: <internal id or account name>\r\n```\r\n\r\nSee [docs/transformation/CUTOVER_PR_CHECKLIST_AR.md](docs/transformation/CUTOVER_PR_CHECKLIST_AR.md) and [docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md](docs/transformation/ENGINEERING_CUTOVER_RUNBOOK_AR.md).\r\n\r\n## Checklist | قائمة التحقق\r\n- [ ] Tests added / updated\r\n- [ ] Docs updated (if needed)\r\n- [ ] No secrets committed (verified via `gitleaks`)\r\n- [ ] `make lint` passes\r\n- [ ] `make test` passes\r\n- [ ] Linked to an issue (if applicable)\r\n- [ ] Cutover PR body validated (`python3 scripts/verify_cutover_pr_body.py`) if applicable\r\n\r\n## How to test | كيف أختبر هذا\r\n<!-- Steps to verify -->\r\n\r\n## Screenshots / Logs (optional)\r\n",
+  "closedAt": "2026-06-21T02:24:50Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-21T02:24:32Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-21T02:24:32Z",
+      "messageBody": "",
+      "messageHeadline": "Add files via upload",
+      "oid": "a307cd8f48811133b519e87063d5ebd3a3f1bc71"
+    }
+  ],
+  "createdAt": "2026-06-21T02:24:37Z",
+  "files": [
+    {
+      "path": "dealix_website_brand_company_min_patch.zip",
+      "additions": 0,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "VoXc2-patch-13",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-21T02:24:50Z",
+  "number": 755,
+  "reviewDecision": "",
+  "reviews": [],
+  "state": "MERGED",
+  "title": "Add files via upload",
+  "updatedAt": "2026-06-21T02:24:50Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/755"
+}

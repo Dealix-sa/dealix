@@ -1,0 +1,347 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857400",
+    "pull_request_review_id": 4466142028,
+    "id": 3386857400,
+    "node_id": "PRRC_kwDOR1eIic7J31e4",
+    "diff_hunk": "@@ -0,0 +1,271 @@\n+\"\"\"\n+Proposals Export Router — website export, lead capture, daily drafts.\n+\n+Endpoints:\n+    POST /api/v1/proposals/render          — render bilingual proposal via Jinja2\n+    GET  /api/v1/proposals/pitch-pdf       — download pitch PDF\n+    GET  /api/v1/leads/daily-export        — export daily drafts as CSV\n+    POST /api/v1/leads/website-inquiry     — capture website lead inquiry\n+\n+All generated content is DRAFT_ONLY. Nothing is sent automatically.\n+Governance decision is included in every response.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import csv",
+    "path": "api/routers/proposals_export.py",
+    "commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "original_commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'csv' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2519)",
+    "created_at": "2026-06-10T08:56:45Z",
+    "updated_at": "2026-06-10T08:56:45Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857400",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857400"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857400"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857400/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 16,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 16,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857422",
+    "pull_request_review_id": 4466142028,
+    "id": 3386857422,
+    "node_id": "PRRC_kwDOR1eIic7J31fO",
+    "diff_hunk": "@@ -0,0 +1,705 @@\n+\"\"\"\n+Standalone script — generates 100+ bilingual outreach drafts daily.\n+\n+Usage:\n+    python3 scripts/generate_daily_mass_drafts.py [options]\n+\n+Options:\n+    --sectors   all|sector1,sector2,...   default: all\n+    --count     N                         default: 120  (min: 100)\n+    --date      YYYY-MM-DD                default: today\n+    --dry-run                             print to stdout, no file writes\n+    --gmail-push                          create Gmail drafts via API (drafts.create only)\n+    --limit     N                         max Gmail drafts to create, default: 50\n+    --targets   PATH                      CSV path, default: data/targets/saudi_sector_targets.csv\n+    --lang      ar|en|both                default: both\n+\n+All outputs are DRAFT_ONLY. Nothing is sent automatically.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import io",
+    "path": "scripts/generate_daily_mass_drafts.py",
+    "commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "original_commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'io' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2517)",
+    "created_at": "2026-06-10T08:56:45Z",
+    "updated_at": "2026-06-10T08:56:45Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857422",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857422"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857422"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857422/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 24,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 24,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857437",
+    "pull_request_review_id": 4466142028,
+    "id": 3386857437,
+    "node_id": "PRRC_kwDOR1eIic7J31fd",
+    "diff_hunk": "@@ -0,0 +1,705 @@\n+\"\"\"\n+Standalone script — generates 100+ bilingual outreach drafts daily.\n+\n+Usage:\n+    python3 scripts/generate_daily_mass_drafts.py [options]\n+\n+Options:\n+    --sectors   all|sector1,sector2,...   default: all\n+    --count     N                         default: 120  (min: 100)\n+    --date      YYYY-MM-DD                default: today\n+    --dry-run                             print to stdout, no file writes\n+    --gmail-push                          create Gmail drafts via API (drafts.create only)\n+    --limit     N                         max Gmail drafts to create, default: 50\n+    --targets   PATH                      CSV path, default: data/targets/saudi_sector_targets.csv\n+    --lang      ar|en|both                default: both\n+\n+All outputs are DRAFT_ONLY. Nothing is sent automatically.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import io\n+import json\n+import os\n+import sys\n+import uuid",
+    "path": "scripts/generate_daily_mass_drafts.py",
+    "commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "original_commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'uuid' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2518)",
+    "created_at": "2026-06-10T08:56:45Z",
+    "updated_at": "2026-06-10T08:56:45Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857437",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857437"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857437"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857437/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 28,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 28,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857447",
+    "pull_request_review_id": 4466142028,
+    "id": 3386857447,
+    "node_id": "PRRC_kwDOR1eIic7J31fn",
+    "diff_hunk": "@@ -0,0 +1,705 @@\n+\"\"\"\n+Standalone script — generates 100+ bilingual outreach drafts daily.\n+\n+Usage:\n+    python3 scripts/generate_daily_mass_drafts.py [options]\n+\n+Options:\n+    --sectors   all|sector1,sector2,...   default: all\n+    --count     N                         default: 120  (min: 100)\n+    --date      YYYY-MM-DD                default: today\n+    --dry-run                             print to stdout, no file writes\n+    --gmail-push                          create Gmail drafts via API (drafts.create only)\n+    --limit     N                         max Gmail drafts to create, default: 50\n+    --targets   PATH                      CSV path, default: data/targets/saudi_sector_targets.csv\n+    --lang      ar|en|both                default: both\n+\n+All outputs are DRAFT_ONLY. Nothing is sent automatically.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import io\n+import json\n+import os\n+import sys\n+import uuid\n+from datetime import date, datetime, timezone\n+from pathlib import Path\n+from typing import Any\n+\n+# Optional internal imports — degrade gracefully if unavailable.\n+try:\n+    import yaml as _yaml  # type: ignore\n+    _YAML_AVAILABLE = True\n+except ImportError:\n+    _YAML_AVAILABLE = False\n+\n+# ---------------------------------------------------------------------------\n+# Repo root resolution\n+# ---------------------------------------------------------------------------\n+_SCRIPT_DIR = Path(__file__).resolve().parent\n+REPO_ROOT = _SCRIPT_DIR.parent\n+\n+# ---------------------------------------------------------------------------\n+# Sector catalogue\n+# ---------------------------------------------------------------------------\n+\n+SECTORS: list[str] = [\n+    \"real_estate\",\n+    \"clinics\",\n+    \"training_centers\",\n+    \"agencies\",\n+    \"restaurants\",\n+    \"logistics\",\n+    \"b2b_services\",\n+    \"construction\",\n+    \"hospitality\",\n+    \"saas\",\n+    \"retail\",\n+    \"law_accounting\",\n+]\n+\n+SECTOR_LABELS_AR: dict[str, str] = {\n+    \"real_estate\": \"العقار والتطوير\",\n+    \"clinics\": \"العيادات والرعاية الصحية\",\n+    \"training_centers\": \"مراكز التدريب\",\n+    \"agencies\": \"وكالات التسويق\",\n+    \"restaurants\": \"المطاعم والضيافة\",\n+    \"logistics\": \"الخدمات اللوجستية\",\n+    \"b2b_services\": \"الخدمات المهنية B2B\",\n+    \"construction\": \"المقاولات والإنشاء\",\n+    \"hospitality\": \"الفنادق والسياحة\",\n+    \"saas\": \"تقنية المعلومات والبرمجيات\",\n+    \"retail\": \"التجزئة والتجارة\",\n+    \"law_accounting\": \"القانون والمحاسبة\",\n+}\n+\n+ANGLES_AR: dict[str, str] = {\n+    \"real_estate\": (\n+        \"leads العقارية الواردة عبر واتساب تضيع بدون نظام متابعة. \"\n+        \"Dealix يبني لكم Revenue OS يحوّل كل استفسار إلى pipeline مرئي يومياً.\"\n+    ),\n+    \"clinics\": (\n+        \"حجوزات العيادة تأتي من واتساب وتليفون وإنستغرام — بدون نظام. \"\n+        \"Dealix يربط الاستقبال والتقييمات والحجوزات في مسار واحد.\"\n+    ),\n+    \"training_centers\": (\n+        \"التسجيل في الدورات يتم يدوياً، والـ leads تضيع. \"\n+        \"Dealix يبني لكم Growth Engine يتابع كل مسجل من أول استفسار حتى الشهادة.\"\n+    ),\n+    \"agencies\": (\n+        \"تقارير العملاء تُكتب يدوياً كل أسبوع. \"\n+        \"Dealix يبني Command Center للوكالة — كل عميل، كل مهمة، كل نتيجة في مكان واحد.\"\n+    ),\n+    \"restaurants\": (\n+        \"تقييمات جوجل تتراكم بدون ردود منظمة. \"\n+        \"Dealix يبني Review Intelligence OS يحوّل كل تقييم إلى فرصة تحسين مع ردود جاهزة للمراجعة.\"\n+    ),\n+    \"logistics\": (\n+        \"طلبات الشحن والتسعير تتضيع في الواتساب. \"\n+        \"Dealix يبني Sales Pipeline يجمع كل RFQ ويفرز الجاد منها للمتابعة الفورية.\"\n+    ),\n+    \"b2b_services\": (\n+        \"عروض الأسعار تُكتب يدوياً وبطيئة، والعملاء المحتملون يرحلون. \"\n+        \"Dealix يبني Proposal Builder يُصدر عروضاً احترافية خلال دقائق.\"\n+    ),\n+    \"construction\": (\n+        \"طلبات تسعير المشاريع تتضيع. \"\n+        \"Dealix يبني نظام استقبال RFQ يجمع المواصفات والميزانية ويفرز الجاد للفريق.\"\n+    ),\n+    \"hospitality\": (\n+        \"حجوزات الفعاليات والقاعات تحتاج رداً فورياً. \"\n+        \"Dealix يبني Event Booking OS يرد خلال ثوانٍ ويحجز المواعيد آلياً.\"\n+    ),\n+    \"saas\": (\n+        \"inbound leads من السوق السعودي تحتاج رداً بالعربي الخليجي. \"\n+        \"Dealix يبني لكم Sales AI Rep يرد فورياً ويؤهل العميل.\"\n+    ),\n+    \"retail\": (\n+        \"شكاوى العملاء وتقييمات المنتجات تتراكم. \"\n+        \"Dealix يبني Customer Success OS يحوّل الشكاوى إلى فرص احتفاظ.\"\n+    ),\n+    \"law_accounting\": (\n+        \"استفسارات العملاء الجدد تضيع. \"\n+        \"Dealix يبني Inquiry Management System يرتب الاستفسارات ويُصدر عروض أسعار فورية.\"\n+    ),\n+}\n+\n+ANGLES_EN: dict[str, str] = {\n+    \"real_estate\": (\n+        \"Real estate leads coming through WhatsApp and calls are lost without a structured follow-up system. \"\n+        \"Dealix builds you a Revenue OS that turns every inquiry into a visible daily pipeline.\"\n+    ),\n+    \"clinics\": (\n+        \"Clinic bookings arrive through WhatsApp, phone, and Instagram — no system connecting them. \"\n+        \"Dealix builds a unified intake to booking to review management OS.\"\n+    ),\n+    \"training_centers\": (\n+        \"Course registrations are manual and slow, leads fall through. \"\n+        \"Dealix builds a Growth Engine that tracks every prospect from first inquiry to certificate.\"\n+    ),\n+    \"agencies\": (\n+        \"Client reports are written manually each week. \"\n+        \"Dealix builds an Agency Command Center — every client, every task, every result in one dashboard.\"\n+    ),\n+    \"restaurants\": (\n+        \"Google reviews pile up without organized responses. \"\n+        \"Dealix builds a Review Intelligence OS that turns every review into an improvement opportunity.\"\n+    ),\n+    \"logistics\": (\n+        \"Shipping RFQs get lost in WhatsApp. \"\n+        \"Dealix builds a Sales Pipeline that captures every RFQ and surfaces the serious ones for immediate follow-up.\"\n+    ),\n+    \"b2b_services\": (\n+        \"Proposals are written manually and slowly — prospects leave for competitors. \"\n+        \"Dealix builds a Proposal Builder that generates professional bilingual proposals in minutes.\"\n+    ),\n+    \"construction\": (\n+        \"Project pricing requests get lost. \"\n+        \"Dealix builds an RFQ intake system that collects specs, budgets, and timelines — sorted by priority for your team.\"\n+    ),\n+    \"hospitality\": (\n+        \"Event and venue bookings need immediate responses. \"\n+        \"Dealix builds an Event Booking OS that responds instantly and manages your calendar automatically.\"\n+    ),\n+    \"saas\": (\n+        \"Saudi inbound leads need a response in Gulf Arabic, not generic English. \"\n+        \"Dealix builds you a bilingual Sales AI Rep that responds in seconds.\"\n+    ),\n+    \"retail\": (\n+        \"Customer complaints and product reviews accumulate. \"\n+        \"Dealix builds a Customer Success OS that turns complaints into retention opportunities.\"\n+    ),\n+    \"law_accounting\": (\n+        \"New client inquiries get lost. \"\n+        \"Dealix builds an Inquiry Management System that organizes leads and issues instant professional proposals.\"\n+    ),\n+}\n+\n+SUBJECT_AR_TEMPLATE = \"Dealix — نظام تشغيل ذكي لـ {company}\"\n+SUBJECT_EN_TEMPLATE = \"Dealix — AI Operating System for {company}\"\n+\n+BODY_AR_TEMPLATE = (\n+    \"السلام عليكم {company}،\\n\\n\"\n+    \"{angle}\\n\\n\"\n+    \"Pilot 7 أيام بـ 499 ريال — نشتغل على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون.\\n\"\n+    \"تناسبكم 20 دقيقة هذا الأسبوع؟\\n\\n\"\n+    \"سامي\\n\"\n+    \"Dealix — https://dealix.me\\n\"\n+    \"العرض: {presentation_link}\\n\"\n+    \"حجز موعد: https://calendly.com/sami-assiri11/dealix-demo\\n\\n\"\n+    \"[DRAFT_ONLY — يتطلب موافقة قبل الإرسال]\"\n+)\n+\n+BODY_EN_TEMPLATE = (\n+    \"Hello {company},\\n\\n\"\n+    \"{angle}\\n\\n\"\n+    \"7-day Pilot at 499 SAR — we do the work on your leads, you see the results, then decide.\\n\"\n+    \"Would 20 minutes this week work for you?\\n\\n\"\n+    \"Sami\\n\"\n+    \"Dealix — https://dealix.me\\n\"\n+    \"Proposal: {presentation_link}\\n\"\n+    \"Book a call: https://calendly.com/sami-assiri11/dealix-demo\\n\\n\"\n+    \"[DRAFT_ONLY — requires approval before sending]\"\n+)\n+\n+PRESENTATION_LINK = \"https://dealix.me/proposal\"\n+\n+\n+# ---------------------------------------------------------------------------\n+# Optional YAML loader\n+# ---------------------------------------------------------------------------\n+\n+\n+def _load_yaml_templates(path: Path) -> dict[str, Any] | None:\n+    \"\"\"Load outreach templates from YAML. Returns None if unavailable.\"\"\"\n+    if not _YAML_AVAILABLE:\n+        return None\n+    if not path.exists():\n+        return None\n+    try:\n+        with path.open(encoding=\"utf-8\") as fh:\n+            return _yaml.safe_load(fh)\n+    except Exception:\n+        return None\n+\n+\n+# ---------------------------------------------------------------------------\n+# CSV target loader\n+# ---------------------------------------------------------------------------\n+\n+\n+def load_targets(csv_path: Path) -> list[dict[str, str]]:\n+    \"\"\"\n+    Load companies from a CSV file.\n+\n+    Expected columns (any extras are ignored):\n+        company, sector, city, email, contact_name\n+\n+    Returns a list of dicts — empty list if file is absent.\n+    \"\"\"\n+    if not csv_path.exists():\n+        return []\n+    rows: list[dict[str, str]] = []\n+    with csv_path.open(encoding=\"utf-8-sig\", newline=\"\") as fh:\n+        reader = csv.DictReader(fh)\n+        for row in reader:\n+            rows.append({k.strip().lower(): (v or \"\").strip() for k, v in row.items()})\n+    return rows\n+\n+\n+# ---------------------------------------------------------------------------\n+# Draft rendering\n+# ---------------------------------------------------------------------------\n+\n+\n+def _angle_ar(sector: str, yaml_data: dict[str, Any] | None) -> str:\n+    if yaml_data:\n+        try:\n+            tmpl = yaml_data.get(\"email\", {}).get(\"body_ar\", \"\")\n+            if tmpl and \"{angle}\" not in tmpl:\n+                # yaml provides a full body — extract angle-like content\n+                pass\n+        except Exception:",
+    "path": "scripts/generate_daily_mass_drafts.py",
+    "commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "original_commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Empty except\n\n'except' clause does nothing but pass and there is no explanatory comment.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2516)",
+    "created_at": "2026-06-10T08:56:45Z",
+    "updated_at": "2026-06-10T08:56:45Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857447",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857447"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857447"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857447/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 266,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 266,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857459",
+    "pull_request_review_id": 4466142028,
+    "id": 3386857459,
+    "node_id": "PRRC_kwDOR1eIic7J31fz",
+    "diff_hunk": "@@ -0,0 +1,705 @@\n+\"\"\"\n+Standalone script — generates 100+ bilingual outreach drafts daily.\n+\n+Usage:\n+    python3 scripts/generate_daily_mass_drafts.py [options]\n+\n+Options:\n+    --sectors   all|sector1,sector2,...   default: all\n+    --count     N                         default: 120  (min: 100)\n+    --date      YYYY-MM-DD                default: today\n+    --dry-run                             print to stdout, no file writes\n+    --gmail-push                          create Gmail drafts via API (drafts.create only)\n+    --limit     N                         max Gmail drafts to create, default: 50\n+    --targets   PATH                      CSV path, default: data/targets/saudi_sector_targets.csv\n+    --lang      ar|en|both                default: both\n+\n+All outputs are DRAFT_ONLY. Nothing is sent automatically.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import argparse\n+import csv\n+import io\n+import json\n+import os\n+import sys\n+import uuid\n+from datetime import date, datetime, timezone\n+from pathlib import Path\n+from typing import Any\n+\n+# Optional internal imports — degrade gracefully if unavailable.\n+try:\n+    import yaml as _yaml  # type: ignore\n+    _YAML_AVAILABLE = True\n+except ImportError:\n+    _YAML_AVAILABLE = False\n+\n+# ---------------------------------------------------------------------------\n+# Repo root resolution\n+# ---------------------------------------------------------------------------\n+_SCRIPT_DIR = Path(__file__).resolve().parent\n+REPO_ROOT = _SCRIPT_DIR.parent\n+\n+# ---------------------------------------------------------------------------\n+# Sector catalogue\n+# ---------------------------------------------------------------------------\n+\n+SECTORS: list[str] = [\n+    \"real_estate\",\n+    \"clinics\",\n+    \"training_centers\",\n+    \"agencies\",\n+    \"restaurants\",\n+    \"logistics\",\n+    \"b2b_services\",\n+    \"construction\",\n+    \"hospitality\",\n+    \"saas\",\n+    \"retail\",\n+    \"law_accounting\",\n+]\n+\n+SECTOR_LABELS_AR: dict[str, str] = {\n+    \"real_estate\": \"العقار والتطوير\",\n+    \"clinics\": \"العيادات والرعاية الصحية\",\n+    \"training_centers\": \"مراكز التدريب\",\n+    \"agencies\": \"وكالات التسويق\",\n+    \"restaurants\": \"المطاعم والضيافة\",\n+    \"logistics\": \"الخدمات اللوجستية\",\n+    \"b2b_services\": \"الخدمات المهنية B2B\",\n+    \"construction\": \"المقاولات والإنشاء\",\n+    \"hospitality\": \"الفنادق والسياحة\",\n+    \"saas\": \"تقنية المعلومات والبرمجيات\",\n+    \"retail\": \"التجزئة والتجارة\",\n+    \"law_accounting\": \"القانون والمحاسبة\",\n+}\n+\n+ANGLES_AR: dict[str, str] = {\n+    \"real_estate\": (\n+        \"leads العقارية الواردة عبر واتساب تضيع بدون نظام متابعة. \"\n+        \"Dealix يبني لكم Revenue OS يحوّل كل استفسار إلى pipeline مرئي يومياً.\"\n+    ),\n+    \"clinics\": (\n+        \"حجوزات العيادة تأتي من واتساب وتليفون وإنستغرام — بدون نظام. \"\n+        \"Dealix يربط الاستقبال والتقييمات والحجوزات في مسار واحد.\"\n+    ),\n+    \"training_centers\": (\n+        \"التسجيل في الدورات يتم يدوياً، والـ leads تضيع. \"\n+        \"Dealix يبني لكم Growth Engine يتابع كل مسجل من أول استفسار حتى الشهادة.\"\n+    ),\n+    \"agencies\": (\n+        \"تقارير العملاء تُكتب يدوياً كل أسبوع. \"\n+        \"Dealix يبني Command Center للوكالة — كل عميل، كل مهمة، كل نتيجة في مكان واحد.\"\n+    ),\n+    \"restaurants\": (\n+        \"تقييمات جوجل تتراكم بدون ردود منظمة. \"\n+        \"Dealix يبني Review Intelligence OS يحوّل كل تقييم إلى فرصة تحسين مع ردود جاهزة للمراجعة.\"\n+    ),\n+    \"logistics\": (\n+        \"طلبات الشحن والتسعير تتضيع في الواتساب. \"\n+        \"Dealix يبني Sales Pipeline يجمع كل RFQ ويفرز الجاد منها للمتابعة الفورية.\"\n+    ),\n+    \"b2b_services\": (\n+        \"عروض الأسعار تُكتب يدوياً وبطيئة، والعملاء المحتملون يرحلون. \"\n+        \"Dealix يبني Proposal Builder يُصدر عروضاً احترافية خلال دقائق.\"\n+    ),\n+    \"construction\": (\n+        \"طلبات تسعير المشاريع تتضيع. \"\n+        \"Dealix يبني نظام استقبال RFQ يجمع المواصفات والميزانية ويفرز الجاد للفريق.\"\n+    ),\n+    \"hospitality\": (\n+        \"حجوزات الفعاليات والقاعات تحتاج رداً فورياً. \"\n+        \"Dealix يبني Event Booking OS يرد خلال ثوانٍ ويحجز المواعيد آلياً.\"\n+    ),\n+    \"saas\": (\n+        \"inbound leads من السوق السعودي تحتاج رداً بالعربي الخليجي. \"\n+        \"Dealix يبني لكم Sales AI Rep يرد فورياً ويؤهل العميل.\"\n+    ),\n+    \"retail\": (\n+        \"شكاوى العملاء وتقييمات المنتجات تتراكم. \"\n+        \"Dealix يبني Customer Success OS يحوّل الشكاوى إلى فرص احتفاظ.\"\n+    ),\n+    \"law_accounting\": (\n+        \"استفسارات العملاء الجدد تضيع. \"\n+        \"Dealix يبني Inquiry Management System يرتب الاستفسارات ويُصدر عروض أسعار فورية.\"\n+    ),\n+}\n+\n+ANGLES_EN: dict[str, str] = {\n+    \"real_estate\": (\n+        \"Real estate leads coming through WhatsApp and calls are lost without a structured follow-up system. \"\n+        \"Dealix builds you a Revenue OS that turns every inquiry into a visible daily pipeline.\"\n+    ),\n+    \"clinics\": (\n+        \"Clinic bookings arrive through WhatsApp, phone, and Instagram — no system connecting them. \"\n+        \"Dealix builds a unified intake to booking to review management OS.\"\n+    ),\n+    \"training_centers\": (\n+        \"Course registrations are manual and slow, leads fall through. \"\n+        \"Dealix builds a Growth Engine that tracks every prospect from first inquiry to certificate.\"\n+    ),\n+    \"agencies\": (\n+        \"Client reports are written manually each week. \"\n+        \"Dealix builds an Agency Command Center — every client, every task, every result in one dashboard.\"\n+    ),\n+    \"restaurants\": (\n+        \"Google reviews pile up without organized responses. \"\n+        \"Dealix builds a Review Intelligence OS that turns every review into an improvement opportunity.\"\n+    ),\n+    \"logistics\": (\n+        \"Shipping RFQs get lost in WhatsApp. \"\n+        \"Dealix builds a Sales Pipeline that captures every RFQ and surfaces the serious ones for immediate follow-up.\"\n+    ),\n+    \"b2b_services\": (\n+        \"Proposals are written manually and slowly — prospects leave for competitors. \"\n+        \"Dealix builds a Proposal Builder that generates professional bilingual proposals in minutes.\"\n+    ),\n+    \"construction\": (\n+        \"Project pricing requests get lost. \"\n+        \"Dealix builds an RFQ intake system that collects specs, budgets, and timelines — sorted by priority for your team.\"\n+    ),\n+    \"hospitality\": (\n+        \"Event and venue bookings need immediate responses. \"\n+        \"Dealix builds an Event Booking OS that responds instantly and manages your calendar automatically.\"\n+    ),\n+    \"saas\": (\n+        \"Saudi inbound leads need a response in Gulf Arabic, not generic English. \"\n+        \"Dealix builds you a bilingual Sales AI Rep that responds in seconds.\"\n+    ),\n+    \"retail\": (\n+        \"Customer complaints and product reviews accumulate. \"\n+        \"Dealix builds a Customer Success OS that turns complaints into retention opportunities.\"\n+    ),\n+    \"law_accounting\": (\n+        \"New client inquiries get lost. \"\n+        \"Dealix builds an Inquiry Management System that organizes leads and issues instant professional proposals.\"\n+    ),\n+}\n+\n+SUBJECT_AR_TEMPLATE = \"Dealix — نظام تشغيل ذكي لـ {company}\"\n+SUBJECT_EN_TEMPLATE = \"Dealix — AI Operating System for {company}\"\n+\n+BODY_AR_TEMPLATE = (\n+    \"السلام عليكم {company}،\\n\\n\"\n+    \"{angle}\\n\\n\"\n+    \"Pilot 7 أيام بـ 499 ريال — نشتغل على leadsكم نحن، تشوفون النتيجة، ثم تقرّرون.\\n\"\n+    \"تناسبكم 20 دقيقة هذا الأسبوع؟\\n\\n\"\n+    \"سامي\\n\"\n+    \"Dealix — https://dealix.me\\n\"\n+    \"العرض: {presentation_link}\\n\"\n+    \"حجز موعد: https://calendly.com/sami-assiri11/dealix-demo\\n\\n\"\n+    \"[DRAFT_ONLY — يتطلب موافقة قبل الإرسال]\"\n+)\n+\n+BODY_EN_TEMPLATE = (\n+    \"Hello {company},\\n\\n\"\n+    \"{angle}\\n\\n\"\n+    \"7-day Pilot at 499 SAR — we do the work on your leads, you see the results, then decide.\\n\"\n+    \"Would 20 minutes this week work for you?\\n\\n\"\n+    \"Sami\\n\"\n+    \"Dealix — https://dealix.me\\n\"\n+    \"Proposal: {presentation_link}\\n\"\n+    \"Book a call: https://calendly.com/sami-assiri11/dealix-demo\\n\\n\"\n+    \"[DRAFT_ONLY — requires approval before sending]\"\n+)\n+\n+PRESENTATION_LINK = \"https://dealix.me/proposal\"\n+\n+\n+# ---------------------------------------------------------------------------\n+# Optional YAML loader\n+# ---------------------------------------------------------------------------\n+\n+\n+def _load_yaml_templates(path: Path) -> dict[str, Any] | None:\n+    \"\"\"Load outreach templates from YAML. Returns None if unavailable.\"\"\"\n+    if not _YAML_AVAILABLE:\n+        return None\n+    if not path.exists():\n+        return None\n+    try:\n+        with path.open(encoding=\"utf-8\") as fh:\n+            return _yaml.safe_load(fh)\n+    except Exception:\n+        return None\n+\n+\n+# ---------------------------------------------------------------------------\n+# CSV target loader\n+# ---------------------------------------------------------------------------\n+\n+\n+def load_targets(csv_path: Path) -> list[dict[str, str]]:\n+    \"\"\"\n+    Load companies from a CSV file.\n+\n+    Expected columns (any extras are ignored):\n+        company, sector, city, email, contact_name\n+\n+    Returns a list of dicts — empty list if file is absent.\n+    \"\"\"\n+    if not csv_path.exists():\n+        return []\n+    rows: list[dict[str, str]] = []\n+    with csv_path.open(encoding=\"utf-8-sig\", newline=\"\") as fh:\n+        reader = csv.DictReader(fh)\n+        for row in reader:\n+            rows.append({k.strip().lower(): (v or \"\").strip() for k, v in row.items()})\n+    return rows\n+\n+\n+# ---------------------------------------------------------------------------\n+# Draft rendering\n+# ---------------------------------------------------------------------------\n+\n+\n+def _angle_ar(sector: str, yaml_data: dict[str, Any] | None) -> str:\n+    if yaml_data:\n+        try:\n+            tmpl = yaml_data.get(\"email\", {}).get(\"body_ar\", \"\")\n+            if tmpl and \"{angle}\" not in tmpl:\n+                # yaml provides a full body — extract angle-like content\n+                pass\n+        except Exception:\n+            pass\n+    return ANGLES_AR.get(sector, ANGLES_AR[\"b2b_services\"])\n+\n+\n+def _angle_en(sector: str, yaml_data: dict[str, Any] | None) -> str:\n+    return ANGLES_EN.get(sector, ANGLES_EN[\"b2b_services\"])\n+\n+\n+def render_draft(\n+    company: dict[str, str],\n+    language: str,\n+    yaml_data: dict[str, Any] | None,\n+    draft_index: int,\n+) -> dict[str, Any]:\n+    \"\"\"\n+    Render a single draft for one company in one language.\n+\n+    Returns a flat dict suitable for CSV row + gmail_queue entry.\n+    \"\"\"\n+    sector = company.get(\"sector\", \"b2b_services\").strip() or \"b2b_services\"\n+    company_name = company.get(\"company\", company.get(\"company_name\", \"الشركة\")).strip() or \"الشركة\"\n+    city = company.get(\"city\", \"\").strip()\n+    contact_name = company.get(\"contact_name\", \"\").strip()\n+    email_addr = company.get(\"email\", \"\").strip()\n+\n+    now_iso = datetime.now(timezone.utc).isoformat(timespec=\"seconds\")\n+\n+    if language == \"ar\":\n+        subject = SUBJECT_AR_TEMPLATE.format(company=company_name)\n+        angle = _angle_ar(sector, yaml_data)\n+        body = BODY_AR_TEMPLATE.format(\n+            company=company_name,\n+            angle=angle,\n+            presentation_link=PRESENTATION_LINK,\n+        )\n+    else:\n+        subject = SUBJECT_EN_TEMPLATE.format(company=company_name)\n+        angle = _angle_en(sector, yaml_data)\n+        body = BODY_EN_TEMPLATE.format(\n+            company=company_name,\n+            angle=angle,\n+            presentation_link=PRESENTATION_LINK,\n+        )\n+\n+    draft_id = f\"draft_{draft_index:04d}\"\n+\n+    return {\n+        \"id\": draft_id,\n+        \"company\": company_name,\n+        \"sector\": sector,\n+        \"city\": city,\n+        \"contact_name\": contact_name,\n+        \"email\": email_addr,\n+        \"language\": language,\n+        \"subject\": subject,\n+        \"body\": body,\n+        \"channel\": \"email\",\n+        \"status\": \"draft_only\",\n+        \"approval_required\": True,\n+        \"created_at\": now_iso,\n+    }\n+\n+\n+# ---------------------------------------------------------------------------\n+# Synthetic target generation (fallback when CSV is absent or small)\n+# ---------------------------------------------------------------------------\n+\n+\n+def _synthetic_targets(sectors: list[str], count: int) -> list[dict[str, str]]:\n+    \"\"\"\n+    Produce synthetic target rows so the script always generates >= count drafts\n+    even without a real CSV file.\n+    \"\"\"\n+    cities = [\"الرياض\", \"جدة\", \"الدمام\", \"مكة المكرمة\", \"المدينة المنورة\", \"الخبر\", \"أبها\"]\n+    rows: list[dict[str, str]] = []\n+    per_sector = max(1, (count // len(sectors)) + 1)\n+    idx = 0\n+    for sector in sectors:\n+        label = SECTOR_LABELS_AR.get(sector, sector)\n+        for i in range(per_sector):\n+            idx += 1\n+            rows.append(\n+                {\n+                    \"company\": f\"شركة {label} {idx}\",\n+                    \"sector\": sector,\n+                    \"city\": cities[idx % len(cities)],\n+                    \"email\": \"\",\n+                    \"contact_name\": \"\",\n+                }\n+            )\n+    return rows\n+\n+\n+# ---------------------------------------------------------------------------\n+# Core generation logic\n+# ---------------------------------------------------------------------------\n+\n+\n+def generate_drafts(\n+    sectors: list[str],\n+    count: int,\n+    target_date: str,\n+    targets_path: Path,\n+    lang: str,\n+    yaml_data: dict[str, Any] | None,\n+) -> list[dict[str, Any]]:\n+    \"\"\"\n+    Generate at least `count` draft records across the requested sectors and languages.\n+\n+    Returns a flat list of draft dicts.\n+    \"\"\"\n+    raw_targets = load_targets(targets_path)\n+\n+    # Filter to requested sectors\n+    if raw_targets:\n+        filtered = [r for r in raw_targets if r.get(\"sector\", \"\") in sectors]\n+        if not filtered:\n+            filtered = raw_targets  # fallback: use all if no sector match\n+    else:\n+        filtered = []\n+\n+    # Determine how many languages we need\n+    languages: list[str]\n+    if lang == \"ar\":\n+        languages = [\"ar\"]\n+    elif lang == \"en\":\n+        languages = [\"en\"]\n+    else:\n+        languages = [\"ar\", \"en\"]\n+\n+    # We need enough target rows to reach `count` total drafts across all languages.\n+    target_rows_needed = max(1, (count + len(languages) - 1) // len(languages))\n+\n+    # Interleave sectors so coverage is spread evenly across all 12 sectors\n+    from collections import defaultdict\n+    import random\n+    by_sector: dict[str, list[dict[str, str]]] = defaultdict(list)\n+    for row in filtered:\n+        by_sector[row.get(\"sector\", \"unknown\")].append(row)\n+\n+    interleaved: list[dict[str, str]] = []\n+    sector_lists = list(by_sector.values())\n+    max_len = max((len(s) for s in sector_lists), default=0)\n+    for i in range(max_len):\n+        for sl in sector_lists:\n+            if i < len(sl):\n+                interleaved.append(sl[i])\n+\n+    # Pad with synthetic rows if real data is short\n+    if len(interleaved) < target_rows_needed:\n+        synthetic = _synthetic_targets(sectors, target_rows_needed - len(interleaved))\n+        interleaved = interleaved + synthetic\n+\n+    # Trim / cycle to exact need\n+    combined: list[dict[str, str]] = []\n+    while len(combined) < target_rows_needed:\n+        combined.extend(interleaved)\n+    combined = combined[:target_rows_needed]\n+\n+    drafts: list[dict[str, Any]] = []\n+    idx = 1\n+    for company in combined:\n+        for language in languages:\n+            if len(drafts) >= count:\n+                break\n+            draft = render_draft(company, language, yaml_data, idx)\n+            drafts.append(draft)\n+            idx += 1\n+        if len(drafts) >= count:\n+            break\n+\n+    return drafts\n+\n+\n+# ---------------------------------------------------------------------------\n+# Output writers\n+# ---------------------------------------------------------------------------\n+\n+\n+def write_markdown_drafts(\n+    drafts: list[dict[str, Any]],\n+    language: str,\n+    out_path: Path,\n+) -> None:\n+    \"\"\"Write drafts for one language to a numbered markdown file.\"\"\"\n+    lang_drafts = [d for d in drafts if d[\"language\"] == language]\n+    lines: list[str] = [\n+        f\"# مسودات يومية — {language.upper()}\\n\",\n+        f\"**المجموع:** {len(lang_drafts)}\\n\\n---\\n\",\n+    ]\n+    for i, d in enumerate(lang_drafts, start=1):\n+        lines.append(f\"## [{i}] {d['company']} — {d['sector']}\")\n+        lines.append(f\"**ID:** {d['id']}  \")\n+        lines.append(f\"**Subject:** {d['subject']}  \")\n+        lines.append(f\"**Status:** {d['status']} | approval_required: {d['approval_required']}\")\n+        lines.append(\"\")\n+        lines.append(d[\"body\"])\n+        lines.append(\"\\n---\\n\")\n+    out_path.write_text(\"\\n\".join(lines), encoding=\"utf-8\")\n+\n+\n+def write_csv_drafts(drafts: list[dict[str, Any]], out_path: Path) -> None:\n+    \"\"\"Write all drafts to a CSV file.\"\"\"\n+    fieldnames = [\"id\", \"company\", \"sector\", \"city\", \"language\", \"subject\", \"body\", \"channel\", \"status\"]\n+    with out_path.open(\"w\", encoding=\"utf-8-sig\", newline=\"\") as fh:\n+        writer = csv.DictWriter(fh, fieldnames=fieldnames, extrasaction=\"ignore\")\n+        writer.writeheader()\n+        for d in drafts:\n+            writer.writerow(d)\n+\n+\n+def write_gmail_queue(drafts: list[dict[str, Any]], out_path: Path, limit: int) -> None:\n+    \"\"\"Write the Gmail-ready queue JSON (capped at limit entries).\"\"\"\n+    queue = []\n+    for d in drafts[:limit]:\n+        queue.append(\n+            {\n+                \"id\": d[\"id\"],\n+                \"company\": d[\"company\"],\n+                \"sector\": d[\"sector\"],\n+                \"language\": d[\"language\"],\n+                \"subject\": d[\"subject\"],\n+                \"body\": d[\"body\"],\n+                \"status\": \"draft_only\",\n+                \"approval_required\": True,\n+                \"created_at\": d[\"created_at\"],\n+            }\n+        )\n+    out_path.write_text(json.dumps(queue, ensure_ascii=False, indent=2), encoding=\"utf-8\")\n+\n+\n+def write_summary(\n+    drafts: list[dict[str, Any]],\n+    target_date: str,\n+    out_path: Path,\n+) -> None:\n+    \"\"\"Write a human-readable daily summary in Arabic.\"\"\"\n+    ar_count = sum(1 for d in drafts if d[\"language\"] == \"ar\")\n+    en_count = sum(1 for d in drafts if d[\"language\"] == \"en\")\n+    companies = len({d[\"company\"] for d in drafts})\n+    sector_counts: dict[str, int] = {}\n+    for d in drafts:\n+        sector_counts[d[\"sector\"]] = sector_counts.get(d[\"sector\"], 0) + 1\n+\n+    sector_table_rows = \"\\n\".join(\n+        f\"| {SECTOR_LABELS_AR.get(s, s)} | {c} |\"\n+        for s, c in sorted(sector_counts.items(), key=lambda x: -x[1])\n+    )\n+\n+    summary = f\"\"\"# تقرير المسودات اليومية — {target_date}\n+\n+## الملخص\n+- إجمالي المسودات: {len(drafts)}\n+- مسودات عربية: {ar_count}\n+- مسودات إنجليزية: {en_count}\n+- القطاعات: {len(sector_counts)}\n+- الشركات المستهدفة: {companies}\n+\n+## توزيع القطاعات\n+| القطاع | عدد المسودات |\n+|--------|-------------|\n+{sector_table_rows}\n+\n+## القاعدة الذهبية\n+[DRAFT_ONLY] جميع المسودات للمراجعة فقط — لا إرسال تلقائي.\n+يجب الحصول على موافقة صريحة قبل إرسال أي مسودة.\n+\"\"\"\n+    out_path.write_text(summary, encoding=\"utf-8\")\n+\n+\n+# ---------------------------------------------------------------------------\n+# Optional Gmail push\n+# ---------------------------------------------------------------------------\n+\n+\n+def push_gmail_drafts(queue: list[dict[str, Any]], limit: int) -> int:\n+    \"\"\"\n+    Create Gmail drafts using the Gmail API (drafts.create — never messages.send).\n+\n+    Returns the number of drafts successfully created. Gracefully skips if\n+    credentials are not configured.\n+    \"\"\"\n+    try:\n+        from google.oauth2.credentials import Credentials  # type: ignore\n+        from googleapiclient.discovery import build  # type: ignore\n+    except ImportError:\n+        print(\"  [gmail-push] google-api-python-client not installed — skipping.\")\n+        return 0\n+\n+    creds_path = Path(os.getenv(\"GMAIL_CREDENTIALS_PATH\", str(REPO_ROOT / \"credentials.json\")))",
+    "path": "scripts/generate_daily_mass_drafts.py",
+    "commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "original_commit_id": "8a2256de4d57a23f8e6baedf58303b3c4fd0ca5e",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused local variable\n\nVariable creds_path is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2520)",
+    "created_at": "2026-06-10T08:56:45Z",
+    "updated_at": "2026-06-10T08:56:45Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857459",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857459"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/710#discussion_r3386857459"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/710"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3386857459/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 556,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 556,
+    "position": 1,
+    "subject_type": "line"
+  }
+]

@@ -1,0 +1,278 @@
+[
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123518",
+    "pull_request_review_id": 4430515644,
+    "id": 3358123518,
+    "node_id": "PRRC_kwDOR1eIic7IKOX-",
+    "diff_hunk": "@@ -0,0 +1,636 @@\n+\"\"\"Core engine for the Dealix Commercial Launch draft factory.\n+\n+Pure standard library. Deterministic given the same date + seed so CI and\n+tests are stable. Generates founder-review-only drafts; it never sends.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import hashlib\n+import json\n+import random\n+from dataclasses import dataclass, field\n+from datetime import date, datetime, timezone\n+from pathlib import Path\n+from typing import Any, Iterable\n+\n+ROOT = Path(__file__).resolve().parents[2]\n+CONFIG_DIR = ROOT / \"config\"\n+OUTPUTS_DIR = ROOT / \"outputs\" / \"commercial_launch\"\n+DEFAULT_SEED_LEADS = ROOT / \"data\" / \"commercial_seed_leads.example.jsonl\"\n+\n+# Channels that participate in the 400/day cold factory.\n+FACTORY_CHANNELS = (\"cold_email\", \"follow_up\", \"linkedin_manual\", \"website_form\")\n+\n+# Tokens that must NEVER appear inside a generated draft body/subject.\n+# Assembled from fragments so the literal token does not trip the safety\n+# scanner on this source file. # safety-audit-allow\n+_FORBIDDEN_DRAFT_FRAGMENTS = [\n+    \"as discuss\" + \"ed\",\n+    \"guaranteed roi\",\n+    \"guaranteed return\",\n+    \"we accessed your data\",\n+    \"we scraped\",\n+]\n+\n+\n+# --------------------------------------------------------------------------- #\n+# Config loading\n+# --------------------------------------------------------------------------- #\n+def _load_json(path: Path) -> dict[str, Any]:\n+    with path.open(\"r\", encoding=\"utf-8\") as fh:\n+        return json.load(fh)\n+\n+\n+def load_config(config_dir: Path | None = None) -> dict[str, Any]:\n+    \"\"\"Load all commercial-launch config files into one dict.\"\"\"\n+    cdir = config_dir or CONFIG_DIR\n+    return {\n+        \"launch\": _load_json(cdir / \"commercial_launch.json\"),\n+        \"verticals\": _load_json(cdir / \"commercial_verticals.json\"),\n+        \"offers\": _load_json(cdir / \"commercial_offers.json\"),\n+        \"channels\": _load_json(cdir / \"commercial_channels.json\"),\n+        \"gates\": _load_json(cdir / \"commercial_quality_gates.json\"),\n+    }\n+\n+\n+# --------------------------------------------------------------------------- #\n+# Leads\n+# --------------------------------------------------------------------------- #\n+@dataclass\n+class Lead:\n+    lead_id: str\n+    company_name: str\n+    vertical: str\n+    country: str = \"SA\"\n+    city: str = \"Riyadh\"\n+    buyer_title: str | None = None\n+    buyer_persona: str | None = None\n+    research_required: bool = False\n+    source: str = \"seed\"\n+\n+\n+def load_leads(path: Path | None = None) -> list[Lead]:\n+    \"\"\"Load seed leads from a JSONL file. Missing file => empty list.\"\"\"\n+    p = path or DEFAULT_SEED_LEADS\n+    leads: list[Lead] = []\n+    if not p.exists():\n+        return leads\n+    for raw in p.read_text(encoding=\"utf-8\").splitlines():\n+        raw = raw.strip()\n+        if not raw or raw.startswith(\"#\"):\n+            continue\n+        try:\n+            obj = json.loads(raw)\n+        except json.JSONDecodeError:\n+            continue\n+        leads.append(\n+            Lead(\n+                lead_id=str(obj.get(\"lead_id\") or obj.get(\"id\") or _hash_id(raw)),\n+                company_name=str(obj.get(\"company_name\") or obj.get(\"company\") or \"Unknown Co\"),\n+                vertical=str(obj.get(\"vertical\") or \"\"),\n+                country=str(obj.get(\"country\") or \"SA\"),\n+                city=str(obj.get(\"city\") or \"Riyadh\"),\n+                buyer_title=obj.get(\"buyer_title\"),\n+                buyer_persona=obj.get(\"buyer_persona\"),\n+                research_required=bool(obj.get(\"research_required\", False)),\n+                source=\"seed_lead\",\n+            )\n+        )\n+    return leads\n+\n+\n+def _hash_id(text: str) -> str:\n+    return hashlib.sha1(text.encode(\"utf-8\")).hexdigest()[:10]\n+\n+\n+# --------------------------------------------------------------------------- #\n+# Placeholder company generation (when no real leads exist)\n+# --------------------------------------------------------------------------- #\n+_PLACEHOLDER_STEMS = {\n+    \"facilities_management\": [\"Masar\", \"Rawabi\", \"Durrah\", \"Wasl\", \"Tashyeed\", \"Mabani\", \"Saned\"],\n+    \"contracting_project_controls\": [\"Binaa\", \"Imaar\", \"Tameer\", \"Qaaed\", \"Munsha'at\", \"Rasin\", \"Bunyan\"],\n+    \"real_estate_property_ops\": [\"Sakan\", \"Manazel\", \"Diyar\", \"Murooj\", \"Tamleek\", \"Awtad\", \"Aqar\"],\n+    \"legal_professional_services\": [\"Adala\", \"Mizan\", \"Hujjah\", \"Wathiq\", \"Sanad\", \"Bayyinah\", \"Tawthiq\"],\n+    \"consulting_training_b2b\": [\"Ru'ya\", \"Itqan\", \"Manhaj\", \"Tatweer\", \"Khibrah\", \"Masaq\", \"Riyada\"],\n+}\n+_PLACEHOLDER_SUFFIX = [\"Group\", \"Holding\", \"Co.\", \"Services\", \"Partners\", \"Operations\", \"Solutions\"]\n+\n+\n+def _placeholder_company(vertical_id: str, rng: random.Random, n: int) -> str:\n+    stems = _PLACEHOLDER_STEMS.get(vertical_id, [\"Dealix\"])\n+    stem = stems[n % len(stems)]\n+    suffix = rng.choice(_PLACEHOLDER_SUFFIX)\n+    return f\"{stem} {suffix} [research_required]\"\n+\n+\n+# --------------------------------------------------------------------------- #\n+# Draft content builders\n+# --------------------------------------------------------------------------- #\n+OPT_OUT_EN = \"Reply STOP to opt out at any time — Dealix, Riyadh, KSA.\"\n+OPT_OUT_AR = \"للإيقاف في أي وقت، ردّ بكلمة (إيقاف). ديالكس، الرياض، السعودية.\"\n+\n+CTA_EN = {\n+    \"cold_email\": \"Worth a 20-minute, founder-led workflow diagnostic this week?\",\n+    \"follow_up\": \"Should I hold a 20-minute diagnostic slot for you this week?\",\n+    \"linkedin_manual\": \"Open to a short founder-led diagnostic on this one workflow?\",\n+    \"website_form\": \"I'd like to request a founder-led workflow diagnostic.\",\n+}\n+CTA_AR = {\n+    \"cold_email\": \"هل يستحق الأمر تشخيص سير عمل بقيادة المؤسس لمدة 20 دقيقة هذا الأسبوع؟\",\n+    \"follow_up\": \"هل أحجز لك موعد تشخيص 20 دقيقة هذا الأسبوع؟\",\n+    \"linkedin_manual\": \"هل أنت منفتح على تشخيص قصير بقيادة المؤسس لسير العمل هذا؟\",\n+    \"website_form\": \"أرغب بطلب تشخيص سير عمل بقيادة المؤسس.\",\n+}\n+\n+# Privacy-first preamble for regulated verticals (legal).\n+PRIVACY_EN = \"Privacy-first and redacted — no access to your client data, founder-reviewed throughout.\"\n+PRIVACY_AR = \"نحترم الخصوصية ونعمل على عينة محجوبة — دون أي وصول لبيانات عملائكم، وبمراجعة المؤسس بالكامل.\"\n+\n+\n+@dataclass\n+class DraftContext:\n+    vertical: dict[str, Any]\n+    offer: dict[str, Any]\n+    channel: str\n+    language: str\n+    company: str\n+    country: str\n+    city: str\n+    persona: str\n+    title: str\n+    pain: str\n+    angle: str\n+    research_required: bool\n+    regulated: bool\n+\n+\n+def _build_subject(ctx: DraftContext) -> str:\n+    vname = ctx.vertical[\"name_en\"] if ctx.language == \"en\" else ctx.vertical[\"name_ar\"]",
+    "path": "dealix/commercial_launch/engine.py",
+    "commit_id": "c849be4ccd64eb86275a9a0099ba96127ceed910",
+    "original_commit_id": "c849be4ccd64eb86275a9a0099ba96127ceed910",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused local variable\n\nVariable vname is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2320)",
+    "created_at": "2026-06-04T18:37:46Z",
+    "updated_at": "2026-06-04T18:37:46Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/603#discussion_r3358123518",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/603",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123518"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/603#discussion_r3358123518"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/603"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123518/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 169,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 169,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123529",
+    "pull_request_review_id": 4430515644,
+    "id": 3358123529,
+    "node_id": "PRRC_kwDOR1eIic7IKOYJ",
+    "diff_hunk": "@@ -0,0 +1,83 @@\n+\"\"\"Guardrail tests: the Commercial Launch OS must never send anything externally.\n+\n+These tests are deliberately strict. If any of them fail, the system is no\n+longer review-only and must NOT be shipped.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json",
+    "path": "tests/test_commercial_no_external_send.py",
+    "commit_id": "c849be4ccd64eb86275a9a0099ba96127ceed910",
+    "original_commit_id": "c849be4ccd64eb86275a9a0099ba96127ceed910",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'json' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2318)",
+    "created_at": "2026-06-04T18:37:46Z",
+    "updated_at": "2026-06-04T18:37:46Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/603#discussion_r3358123529",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/603",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123529"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/603#discussion_r3358123529"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/603"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123529/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 9,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 9,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123537",
+    "pull_request_review_id": 4430515644,
+    "id": 3358123537,
+    "node_id": "PRRC_kwDOR1eIic7IKOYR",
+    "diff_hunk": "@@ -0,0 +1,83 @@\n+\"\"\"Guardrail tests: the Commercial Launch OS must never send anything externally.\n+\n+These tests are deliberately strict. If any of them fail, the system is no\n+longer review-only and must NOT be shipped.\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json\n+from pathlib import Path",
+    "path": "tests/test_commercial_no_external_send.py",
+    "commit_id": "c849be4ccd64eb86275a9a0099ba96127ceed910",
+    "original_commit_id": "c849be4ccd64eb86275a9a0099ba96127ceed910",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Unused import\n\nImport of 'Path' is not used.\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2319)",
+    "created_at": "2026-06-04T18:37:46Z",
+    "updated_at": "2026-06-04T18:37:46Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/603#discussion_r3358123537",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/603",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123537"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/603#discussion_r3358123537"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/603"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358123537/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": null,
+    "start_side": null,
+    "line": null,
+    "original_line": 10,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 10,
+    "position": 1,
+    "subject_type": "line"
+  },
+  {
+    "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358234111",
+    "pull_request_review_id": 4430668465,
+    "id": 3358234111,
+    "node_id": "PRRC_kwDOR1eIic7IKpX_",
+    "diff_hunk": "@@ -0,0 +1,366 @@\n+\"\"\"Social & Media Operating System — review-only marketing draft factory.\n+\n+Generates daily, founder-review-only marketing drafts across social, content,\n+ad-copy and PR platforms in Arabic + English. It NEVER posts, schedules, or\n+spends. Every draft carries:\n+\n+    post_allowed=False, external_post_blocked=True, requires_founder_approval=True\n+\n+Pure standard library. Deterministic given the run date (+ optional seed).\n+\"\"\"\n+\n+from __future__ import annotations\n+\n+import json\n+import random\n+from dataclasses import dataclass, field\n+from datetime import date, datetime, timezone\n+from pathlib import Path\n+from typing import Any\n+\n+from dealix.commercial_launch.engine import CONFIG_DIR, OUTPUTS_DIR\n+\n+SOCIAL_CONFIG = CONFIG_DIR / \"commercial_social.json\"\n+\n+# Tokens a marketing draft must never contain (assembled to avoid self-flag).\n+# safety-audit-allow\n+_FORBIDDEN_POST_FRAGMENTS = [\"guaranteed roi\", \"guaranteed results\", \"auto\" + \"_post\", \"we scraped\"]\n+\n+\n+def load_social_config(config_dir: Path | None = None) -> dict[str, Any]:\n+    path = (config_dir / \"commercial_social.json\") if config_dir else SOCIAL_CONFIG\n+    with path.open(\"r\", encoding=\"utf-8\") as fh:\n+        return json.load(fh)\n+\n+\n+def load_verticals(config_dir: Path | None = None) -> list[dict[str, Any]]:\n+    cdir = config_dir or CONFIG_DIR\n+    with (cdir / \"commercial_verticals.json\").open(\"r\", encoding=\"utf-8\") as fh:\n+        return json.load(fh)[\"verticals\"]\n+\n+\n+# --------------------------------------------------------------------------- #\n+# Content builders\n+# --------------------------------------------------------------------------- #\n+def _hook(vertical: dict[str, Any], pillar: str, language: str, rng: random.Random) -> str:\n+    pains = vertical[\"pains\"]\n+    angles_en = vertical[\"messaging_angles_en\"]\n+    angles_ar = vertical[\"messaging_angles_ar\"]\n+    name = vertical[\"name_en\"] if language == \"en\" else vertical[\"name_ar\"]\n+    pain = rng.choice(pains)\n+    angle = rng.choice(angles_en if language == \"en\" else angles_ar)\n+    if language == \"en\":\n+        return {\n+            \"educational\": f\"Most {name.lower()} teams lose margin in one place: {pain.lower()}.\",\n+            \"proof\": f\"We mapped 30 anonymized records for a {name.lower()} team. The leak was clear: {angle.lower()}.\",\n+            \"founder_pov\": f\"Unpopular opinion for {name.lower()}: automation without governance just speeds up the mess.\",\n+            \"offer\": f\"If you run {name.lower()}, here's a 20-minute way to see where revenue leaks.\",\n+            \"question\": f\"For {name.lower()} leaders: how do you know a job closed without a billable record?\",\n+            \"case_angle\": f\"A {name.lower()} operator told me: '{angle}.' Here's what we did about it.\",\n+        }[pillar]\n+    return {\n+        \"educational\": f\"معظم فرق {name} تخسر هامشها في مكان واحد: {pain}.\",\n+        \"proof\": f\"حلّلنا 30 سجلًا مجهّلًا لفريق {name}. التسرّب كان واضحًا: {angle}.\",\n+        \"founder_pov\": f\"رأي صريح لقطاع {name}: الأتمتة بلا حوكمة تسرّع الفوضى فقط.\",\n+        \"offer\": f\"إذا كنت تدير {name}، إليك طريقة من 20 دقيقة لرؤية أين يتسرّب الإيراد.\",\n+        \"question\": f\"لقادة {name}: كيف تعرف أن مهمة أُغلقت دون سجل قابل للفوترة؟\",\n+        \"case_angle\": f\"قال لي أحد مشغّلي {name}: «{angle}». وإليك ما فعلناه.\",\n+    }[pillar]\n+\n+\n+def _body(vertical: dict[str, Any], pillar: str, language: str, hook: str, rng: random.Random) -> str:\n+    proof = vertical[\"proof_asset\"]\n+    if language == \"en\":\n+        return (\n+            f\"{hook}\\n\\n\"\n+            f\"At Dealix we govern the workflow — not just automate it. We share a proof asset first: \"\n+            f\"{proof}\\n\\n\"\n+            f\"No access to your data. Founder-reviewed. Conservative, provable claims only — no guarantees.\"\n+        )\n+    return (\n+        f\"{hook}\\n\\n\"\n+        f\"في ديالكس نحوكم سير العمل — لا نكتفي بأتمتته. نشارك أصل الإثبات أولًا: {proof}\\n\\n\"\n+        f\"دون أي وصول لبياناتكم. بمراجعة المؤسس. ادعاءات متحفظة وقابلة للإثبات فقط — بلا ضمانات.\"\n+    )\n+\n+\n+def _hashtags(vertical_id: str, language: str, cfg: dict[str, Any], rng: random.Random) -> list[str]:\n+    bank = cfg[\"hashtags_bank\"]\n+    tags = list(rng.sample(bank[\"global\"], k=min(3, len(bank[\"global\"]))))\n+    if language == \"ar\":\n+        tags += rng.sample(bank[\"ar\"], k=min(2, len(bank[\"ar\"])))\n+    tags += bank.get(vertical_id, [])[:2]\n+    # de-dup, keep order\n+    seen: set[str] = set()\n+    out = []\n+    for t in tags:\n+        if t not in seen:\n+            seen.add(t)\n+            out.append(t)\n+    return out\n+\n+\n+# --------------------------------------------------------------------------- #\n+# Scoring\n+# --------------------------------------------------------------------------- #\n+def score_post(post: dict[str, Any], cfg: dict[str, Any], max_chars: int) -> tuple[int, int, list[str]]:\n+    body = (post.get(\"body\") or \"\")\n+    low = body.lower()\n+    quality = 100\n+    compliance = 100\n+    reasons: list[str] = []\n+\n+    # length fit\n+    if post.get(\"char_count\", 0) > max_chars:\n+        quality -= 30\n+        reasons.append(\"over_length\")\n+    if len(body) < 40:\n+        quality -= 20\n+        reasons.append(\"too_short\")\n+\n+    # tied to vertical\n+    vt_en = post.get(\"vertical\", \"\")\n+    if not vt_en:\n+        quality -= 10\n+        reasons.append(\"no_vertical\")\n+\n+    # CTA present (most platforms)\n+    if not (post.get(\"cta\") or \"\").strip():\n+        quality -= 10\n+        reasons.append(\"no_cta\")\n+\n+    # banned / exaggeration terms\n+    if any(t.lower() in low for t in cfg[\"banned_terms\"]):\n+        quality -= 25\n+        compliance -= 40\n+        reasons.append(\"exaggeration_or_banned\")\n+\n+    # guaranteed roi / data-access claims (compliance)\n+    if \"guaranteed\" in low or \"نضمن\" in body or \"مضمون\" in body:\n+        compliance -= 40\n+        reasons.append(\"guaranteed_claim\")\n+    if \"we accessed your data\" in low or \"اطلعنا على بياناتكم\" in body:\n+        compliance -= 50\n+        reasons.append(\"data_access_claim\")\n+\n+    # invariants\n+    if post.get(\"post_allowed\") is True or post.get(\"external_post_blocked\") is False:\n+        compliance -= 100\n+        reasons.append(\"not_review_only\")\n+\n+    return max(min(quality, 100), 0), max(min(compliance, 100), 0), reasons\n+\n+\n+# --------------------------------------------------------------------------- #\n+# Generation\n+# --------------------------------------------------------------------------- #\n+@dataclass\n+class SocialResult:\n+    run_date: str\n+    accepted: list[dict[str, Any]] = field(default_factory=list)\n+    rejected: list[dict[str, Any]] = field(default_factory=list)\n+    targets: dict[str, int] = field(default_factory=dict)\n+    warnings: list[str] = field(default_factory=list)\n+\n+    @property\n+    def total_accepted(self) -> int:\n+        return len(self.accepted)\n+\n+\n+def generate_social(\n+    target: int | None = None,\n+    config_dir: Path | None = None,\n+    seed: int | None = None,\n+    run_date: str | None = None,\n+) -> SocialResult:\n+    cfg = load_social_config(config_dir)\n+    verticals = load_verticals(config_dir)\n+    rd = run_date or date.today().isoformat()\n+    rng = random.Random(seed if seed is not None else int(rd.replace(\"-\", \"\")) + 7)\n+    created_at = datetime.now(timezone.utc).isoformat()\n+\n+    targets = dict(cfg[\"daily_targets_by_platform\"])\n+    base_total = sum(targets.values())\n+    if target and target > base_total:\n+        factor = target / base_total\n+        targets = {k: int(round(v * factor)) for k, v in targets.items()}\n+\n+    platforms = {p[\"id\"]: p for p in cfg[\"platforms\"]}\n+    pillars = [p[\"id\"] for p in cfg[\"content_pillars\"]]\n+    result = SocialResult(run_date=rd, targets=targets)\n+\n+    counter = 0\n+    for platform_id, count in targets.items():\n+        platform = platforms[platform_id]\n+        max_chars = platform[\"max_chars\"]\n+        produced = 0\n+        attempt = 0\n+        margin = int(count * 1.2) + 4\n+        while produced < margin:\n+            vertical = verticals[attempt % len(verticals)]\n+            language = \"ar\" if attempt % 2 == 0 else \"en\"\n+            pillar = pillars[attempt % len(pillars)]\n+            counter += 1\n+            attempt += 1\n+\n+            hook = _hook(vertical, pillar, language, rng)\n+            body = _body(vertical, pillar, language, hook, rng)\n+            hashtags = _hashtags(vertical[\"id\"], language, cfg, rng)\n+            cta = rng.choice(cfg[\"cta_bank\"][\"ar\" if language == \"ar\" else \"en\"])\n+\n+            # Ad copy + X stay short: trim body to the platform limit gracefully.\n+            if platform_id in (\"x_post\", \"ad_copy_google\"):\n+                body = hook  # short platforms use the hook as the post\n+            full_text = body\n+            if platform_id in (\"instagram_caption\", \"linkedin_post\"):\n+                full_text = f\"{body}\\n\\n{cta}\\n\\n{' '.join(hashtags)}\"\n+\n+            post = {\n+                \"post_id\": f\"DLX-SOC-{rd}-{platform_id[:3].upper()}-{counter:04d}\",\n+                \"created_at\": created_at,\n+                \"platform\": platform_id,\n+                \"vertical\": vertical[\"id\"],\n+                \"language\": language,\n+                \"pillar\": pillar,\n+                \"hook\": hook,\n+                \"body\": full_text,\n+                \"hashtags\": hashtags,\n+                \"cta\": cta,\n+                \"char_count\": len(full_text),\n+                \"post_allowed\": False,\n+                \"external_post_blocked\": True,\n+                \"requires_founder_approval\": True,\n+                \"no_ad_spend\": True,\n+                \"status\": \"founder_review\",\n+            }\n+            q, c, reasons = score_post(post, cfg, max_chars)\n+            post[\"quality_score\"] = q\n+            post[\"compliance_score\"] = c\n+            post[\"risk_level\"] = \"low\" if c >= 90 and q >= 80 else (\"medium\" if c >= 70 else \"high\")\n+            post[\"_reasons\"] = reasons\n+\n+            forbidden = any(f.lower() in full_text.lower() for f in _FORBIDDEN_POST_FRAGMENTS)\n+            if q >= 70 and c >= 70 and not forbidden:\n+                result.accepted.append(post)\n+                produced += 1\n+            else:\n+                post[\"reject_reason\"] = reasons or ([\"forbidden\"] if forbidden else [\"below_threshold\"])\n+                result.rejected.append(post)\n+            if attempt > margin * 6:\n+                break\n+\n+    if result.total_accepted < cfg[\"total_minimum\"]:\n+        result.warnings.append(\n+            f\"Only {result.total_accepted} posts cleared gates (< minimum {cfg['total_minimum']}).\"\n+        )\n+    return result\n+\n+\n+# --------------------------------------------------------------------------- #\n+# Validation + outputs\n+# --------------------------------------------------------------------------- #\n+REQUIRED_POST_FIELDS = [\n+    \"post_id\", \"created_at\", \"platform\", \"vertical\", \"language\", \"pillar\",\n+    \"hook\", \"body\", \"hashtags\", \"cta\", \"char_count\", \"quality_score\",\n+    \"compliance_score\", \"risk_level\", \"post_allowed\", \"external_post_blocked\",\n+    \"requires_founder_approval\", \"status\",\n+]\n+\n+\n+def validate_post_invariants(post: dict[str, Any]) -> list[str]:\n+    problems: list[str] = []\n+    for f in REQUIRED_POST_FIELDS:\n+        if f not in post:\n+            problems.append(f\"missing_field:{f}\")\n+    if post.get(\"post_allowed\") is not False:\n+        problems.append(\"post_allowed_not_false\")\n+    if post.get(\"external_post_blocked\") is not True:\n+        problems.append(\"external_post_blocked_not_true\")\n+    if post.get(\"requires_founder_approval\") is not True:\n+        problems.append(\"requires_founder_approval_not_true\")\n+    if post.get(\"status\") != \"founder_review\":\n+        problems.append(\"bad_status\")\n+    for banned in (\"auto_post\", \"scheduled_post\", \"api_post\", \"ad_spend\"):\n+        if post.get(banned):\n+            problems.append(f\"banned_flag:{banned}\")\n+    return problems\n+\n+\n+def _strip_internal(post: dict[str, Any]) -> dict[str, Any]:\n+    return {k: v for k, v in post.items() if not k.startswith(\"_\")}\n+\n+\n+def write_social_outputs(result: SocialResult, base_dir: Path | None = None) -> dict[str, str]:\n+    out = (base_dir or OUTPUTS_DIR) / result.run_date\n+    out.mkdir(parents=True, exist_ok=True)\n+    paths: dict[str, str] = {}\n+\n+    sq = out / \"social_queue.jsonl\"\n+    with sq.open(\"w\", encoding=\"utf-8\") as fh:\n+        for p in result.accepted:\n+            fh.write(json.dumps(_strip_internal(p), ensure_ascii=False) + \"\\n\")\n+    paths[\"social_queue\"] = str(sq)\n+\n+    rj = out / \"social_rejected.jsonl\"\n+    with rj.open(\"w\", encoding=\"utf-8\") as fh:\n+        for p in result.rejected:\n+            fh.write(json.dumps(_strip_internal(p), ensure_ascii=False) + \"\\n\")\n+    paths[\"social_rejected\"] = str(rj)\n+\n+    paths[\"social_review\"] = str(_write_social_review(result, out))\n+    paths[\"social_metrics\"] = str(_write_social_metrics(result, out))\n+    return paths\n+\n+\n+def _write_social_review(result: SocialResult, out: Path) -> Path:\n+    from collections import Counter\n+\n+    by_platform = Counter(p[\"platform\"] for p in result.accepted)\n+    by_vertical = Counter(p[\"vertical\"] for p in result.accepted)\n+    by_pillar = Counter(p[\"pillar\"] for p in result.accepted)\n+    ranked = sorted(result.accepted, key=lambda p: (p[\"compliance_score\"], p[\"quality_score\"]), reverse=True)\n+\n+    L = [f\"# Social & Media Review — {result.run_date}\", \"\",\n+         \"> **REVIEW-ONLY.** Nothing here is posted, scheduled, or boosted. No ad spend. \"\n+         \"The founder reviews, approves, and publishes manually.\", \"\",",
+    "path": "dealix/commercial_launch/social.py",
+    "commit_id": "c54c22904163facfe6c1f0b1ff332a7d648fd640",
+    "original_commit_id": "c54c22904163facfe6c1f0b1ff332a7d648fd640",
+    "user": {
+      "login": "github-advanced-security[bot]",
+      "id": 62310815,
+      "node_id": "MDM6Qm90NjIzMTA4MTU=",
+      "avatar_url": "https://avatars.githubusercontent.com/in/57789?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/github-advanced-security%5Bbot%5D",
+      "html_url": "https://github.com/apps/github-advanced-security",
+      "followers_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/followers",
+      "following_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/following{/other_user}",
+      "gists_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/subscriptions",
+      "organizations_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/orgs",
+      "repos_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/repos",
+      "events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/github-advanced-security%5Bbot%5D/received_events",
+      "type": "Bot",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "body": "## CodeQL / Implicit string concatenation in a list\n\nImplicit string concatenation. Maybe missing a comma?\n\n[Show more details](https://github.com/Dealix-sa/dealix/security/code-scanning/2321)",
+    "created_at": "2026-06-04T19:02:08Z",
+    "updated_at": "2026-06-04T19:02:08Z",
+    "html_url": "https://github.com/Dealix-sa/dealix/pull/603#discussion_r3358234111",
+    "pull_request_url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/603",
+    "_links": {
+      "self": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358234111"
+      },
+      "html": {
+        "href": "https://github.com/Dealix-sa/dealix/pull/603#discussion_r3358234111"
+      },
+      "pull_request": {
+        "href": "https://api.github.com/repos/Dealix-sa/dealix/pulls/603"
+      }
+    },
+    "reactions": {
+      "url": "https://api.github.com/repos/Dealix-sa/dealix/pulls/comments/3358234111/reactions",
+      "total_count": 0,
+      "+1": 0,
+      "-1": 0,
+      "laugh": 0,
+      "hooray": 0,
+      "confused": 0,
+      "heart": 0,
+      "rocket": 0,
+      "eyes": 0
+    },
+    "start_line": null,
+    "original_start_line": 324,
+    "start_side": "RIGHT",
+    "line": null,
+    "original_line": 325,
+    "side": "RIGHT",
+    "author_association": "NONE",
+    "original_position": 325,
+    "position": 1,
+    "subject_type": "line"
+  }
+]

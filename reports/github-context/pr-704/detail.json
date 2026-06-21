@@ -1,0 +1,161 @@
+{
+  "author": {
+    "id": "U_kgDODzY2Rw",
+    "is_bot": false,
+    "login": "VoXc2",
+    "name": ""
+  },
+  "baseRefName": "main",
+  "body": "Adds a safe Master Stable OS that generates CEO report, approval queue, CRM updates, and daily operating outputs without heavy builds, Docker, sending, or recursive crashes.",
+  "closedAt": "2026-06-10T08:11:13Z",
+  "comments": [],
+  "commits": [
+    {
+      "authoredDate": "2026-06-08T22:30:53Z",
+      "authors": [
+        {
+          "email": "Sami.assiri11@gmail.com",
+          "id": "U_kgDODzY2Rw",
+          "login": "VoXc2",
+          "name": "VoXc2"
+        }
+      ],
+      "committedDate": "2026-06-08T22:30:53Z",
+      "messageBody": "",
+      "messageHeadline": "feat: add stable non-crashing master company OS",
+      "oid": "0ff20d528f2bd1b9fc4a048eb0fe749c0e0ffece"
+    }
+  ],
+  "createdAt": "2026-06-08T22:30:58Z",
+  "files": [
+    {
+      "path": ".github/workflows/master_stable_day.yml",
+      "additions": 52,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": ".gitignore",
+      "additions": 5,
+      "deletions": 0,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "business_autopilot/config/targeting_segments.yaml",
+      "additions": 104,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business_autopilot/manual_import/README.md",
+      "additions": 9,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business_autopilot/schemas/prospects_schema.csv",
+      "additions": 1,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "business_autopilot/templates/outreach_templates.yaml",
+      "additions": 76,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/crm/pipeline.csv",
+      "additions": 20,
+      "deletions": 1,
+      "changeType": "MODIFIED"
+    },
+    {
+      "path": "company/master_stable/APPROVAL_GATES.md",
+      "additions": 35,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/master_stable/MASTER_STABLE_OS.md",
+      "additions": 31,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/master_stable/master_stable_orchestrator.py",
+      "additions": 204,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/outbox/2026-06-08_approval_queue.csv",
+      "additions": 20,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/outbox/2026-06-08_master_lite_approval_queue.csv",
+      "additions": 20,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/reports/2026-06-08_AUTONOMOUS_CEO_REPORT.md",
+      "additions": 84,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/reports/2026-06-08_MASTER_LITE_CEO_REPORT.md",
+      "additions": 41,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "company/weekly/2026-06-08_WEEKLY_BOARD_REPORT.md",
+      "additions": 20,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "scripts/dealix_master_stable_day.sh",
+      "additions": 54,
+      "deletions": 0,
+      "changeType": "ADDED"
+    },
+    {
+      "path": "transformation_os/proposals/عيادات-سما_transformation_proposal.md",
+      "additions": 82,
+      "deletions": 0,
+      "changeType": "ADDED"
+    }
+  ],
+  "headRefName": "feat/master-stable-company-os",
+  "isDraft": false,
+  "mergeable": "UNKNOWN",
+  "mergedAt": "2026-06-10T08:11:13Z",
+  "number": 704,
+  "reviewDecision": "",
+  "reviews": [
+    {
+      "id": "PRR_kwDOR1eIic8AAAABCXi5iA",
+      "author": {
+        "login": "github-advanced-security"
+      },
+      "authorAssociation": "NONE",
+      "body": "",
+      "submittedAt": "2026-06-08T22:33:04Z",
+      "includesCreatedEdit": false,
+      "reactionGroups": [],
+      "state": "COMMENTED",
+      "commit": {
+        "oid": "0ff20d528f2bd1b9fc4a048eb0fe749c0e0ffece"
+      }
+    }
+  ],
+  "state": "MERGED",
+  "title": "feat: add stable non-crashing master company OS",
+  "updatedAt": "2026-06-10T08:11:17Z",
+  "url": "https://github.com/Dealix-sa/dealix/pull/704"
+}
