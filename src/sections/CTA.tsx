@@ -1,86 +1,84 @@
-import { ArrowLeft, Phone, MessageCircle } from 'lucide-react'
+import { ArrowLeft, MessageCircle, Phone } from "lucide-react";
+
+const sessionAgenda = [
+  "فهم نموذج الإيرادات الحالي ومسار الحجز أو المتابعة",
+  "تحديد أين يتعطل العمل بين lead وreply وmeeting وproposal",
+  "تقدير المسار الأنسب: Sprint أو Build أو Monthly Operating Partner",
+  "توضيح حدود البيانات، الحوكمة، وقنوات الإرسال الرسمية",
+];
 
 export default function CTA() {
   return (
-    <section id="cta" className="py-20 bg-[#F0F9F8]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#0A1F1E] rounded-3xl p-8 sm:p-12 lg:p-16 relative overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute top-0 left-0 w-64 h-64 bg-[#15807A] rounded-full blur-3xl opacity-10 -translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#15807A] rounded-full blur-3xl opacity-10 translate-x-1/3 translate-y-1/3" />
+    <section id="cta" className="bg-[#F0F9F8] py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-3xl bg-[#0A1F1E] p-8 sm:p-12 lg:p-16">
+          <div className="absolute -left-10 -top-10 h-64 w-64 rounded-full bg-[#15807A] opacity-10 blur-3xl" />
+          <div className="absolute -bottom-16 -right-8 h-80 w-80 rounded-full bg-[#15807A] opacity-10 blur-3xl" />
 
-          <div className="relative grid lg:grid-cols-2 gap-12 items-center">
+          <div className="relative grid items-center gap-12 lg:grid-cols-2">
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                جاهز تكشف وين تضيع فلوسك؟
+              <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                إذا كان لديك leads ومحادثات وقرارات متأخرة،
+                <br />
+                فهذه هي المكالمة الصحيحة للبدء.
               </h2>
-              <p className="text-[#8CB3B0] text-lg mb-8 leading-relaxed">
-                احجز Revenue Diagnostic Call مجاناً — 20 دقيقة نكشف فيها أكبر نقطة تسريب في نظام مبيعاتك ونحدد إذا كان Sprint مناسب لك.
+              <p className="mt-5 text-lg leading-8 text-[#B7D2D0]">
+                مكالمة تشخيص قصيرة نحدد فيها ما إذا كان Dealix مناسبًا
+                لمرحلتك الحالية، وما هو النظام الذي يجب بناؤه أولًا داخل الشركة.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
                 <a
                   href="/book-call"
-                  className="inline-flex items-center justify-center gap-2 bg-[#15807A] text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-[#0F5F5A] transition-all hover:scale-105"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#15807A] px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-[#0F5F5A]"
                 >
-                  <Phone className="w-5 h-5" />
-                  احجز تشخيص AI — 30 دقيقة
-                  <ArrowLeft className="w-5 h-5" />
+                  <Phone className="h-5 w-5" />
+                  احجز مكالمة التشخيص
+                  <ArrowLeft className="h-5 w-5" />
                 </a>
                 <a
-                  href="/dashboard"
-                  className="inline-flex items-center justify-center gap-2 border border-[#15807A]/40 text-[#E8F4F3] px-8 py-4 rounded-xl text-lg font-medium hover:bg-[#15807A]/10 transition-all"
+                  href="/command-room"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#15807A]/40 px-8 py-4 text-lg font-medium text-[#E8F4F3] transition-colors hover:bg-[#15807A]/10"
                 >
-                  <MessageCircle className="w-5 h-5" />
-                  دخول Command Room
+                  <MessageCircle className="h-5 w-5" />
+                  شاهد الواجهة التشغيلية
                 </a>
               </div>
 
-              <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-[#8CB3B0]">
-                <div className="flex items-center gap-1">
-                  <svg className="w-4 h-4 text-[#15807A]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>بدون commitment</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <svg className="w-4 h-4 text-[#15807A]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>بدون إرسال آلي</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <svg className="w-4 h-4 text-[#15807A]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>تحليل فوري</span>
-                </div>
+              <div className="mt-8 flex flex-wrap gap-3 text-sm text-[#B7D2D0]">
+                <span className="rounded-full bg-white/5 px-4 py-2">
+                  بدون التزام طويل
+                </span>
+                <span className="rounded-full bg-white/5 px-4 py-2">
+                  بدون live send افتراضي
+                </span>
+                <span className="rounded-full bg-white/5 px-4 py-2">
+                  مناسب للمؤسس أو الفريق التجاري
+                </span>
               </div>
             </div>
 
-            <div className="hidden lg:block">
-              <div className="bg-[#0F2E2C] rounded-2xl p-6 border border-[#15807A]/20">
-                <h4 className="text-white font-bold mb-4">ماذا تحصل في الجلسة؟</h4>
-                <ul className="space-y-3">
-                  {[
-                    'تشخيص سريع لأكبر نقطة تسريب إيرادات',
-                    'تقييم سرعة المتابعة لديك',
-                    'خريطة فرص واضحة',
-                    'عرض Sprint إذا كان مناسب',
-                  ].map((item, index) => (
-                    <li key={item} className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-[#15807A]/20 rounded-lg flex items-center justify-center text-[#15807A] font-bold text-sm">
-                        {index + 1}
-                      </div>
-                      <span className="text-[#E8F4F3]">{item}</span>
-                    </li>
-                  ))}
-                </ul>
+            <div className="rounded-3xl border border-[#15807A]/20 bg-[#0F2E2C] p-6">
+              <h3 className="text-xl font-bold text-white">
+                ماذا سنغطي في الجلسة؟
+              </h3>
+              <div className="mt-5 space-y-3">
+                {sessionAgenda.map((item, index) => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-3 rounded-2xl bg-white/5 p-3"
+                  >
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#15807A]/20 text-sm font-bold text-[#15807A]">
+                      {index + 1}
+                    </div>
+                    <p className="text-sm leading-7 text-[#E8F4F3]">{item}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

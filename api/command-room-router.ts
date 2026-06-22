@@ -1,7 +1,13 @@
 import { z } from "zod";
 import { createRouter, publicQuery } from "./middleware";
 import { getDb } from "./queries/connection";
-import { drafts, prospects } from "@db/schema";
+import {
+  drafts,
+  prospects,
+  whatsappConversations,
+  whatsappMessages,
+  whatsappTemplates,
+} from "@db/schema";
 import { desc, eq, count, and } from "drizzle-orm";
 
 export const commandRoomRouter = createRouter({
@@ -92,5 +98,31 @@ export const commandRoomRouter = createRouter({
       .where(eq(prospects.status, "discovery_booked"))
       .orderBy(desc(prospects.value))
       .limit(10);
+  }),
+
+  whatsappOverview: publicQuery.query(async () => {
+    const db = getDb();
+    const [conversations, openConversations, messages, pendingMessages, templates] =
+      await Promise.all([
+        db.select({ count: count() }).from(whatsappConversations),
+        db
+          .select({ count: count() })
+          .from(whatsappConversations)
+          .where(eq(whatsappConversations.status, "open")),
+        db.select({ count: count() }).from(whatsappMessages),
+        db
+          .select({ count: count() })
+          .from(whatsappMessages)
+          .where(eq(whatsappMessages.status, "pending")),
+        db.select({ count: count() }).from(whatsappTemplates),
+      ]);
+
+    return {
+      conversations: conversations[0]?.count ?? 0,
+      openConversations: openConversations[0]?.count ?? 0,
+      messages: messages[0]?.count ?? 0,
+      pendingMessages: pendingMessages[0]?.count ?? 0,
+      templates: templates[0]?.count ?? 0,
+    };
   }),
 });

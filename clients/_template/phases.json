@@ -1,1 +1,8 @@
-﻿@("draft")
+[
+  "00_intake",
+  "01_diagnosis",
+  "02_solution",
+  "03_delivery",
+  "04_training",
+  "05_proof"
+]

@@ -269,3 +269,68 @@ export const opportunityRegister = mysqlTable("opportunity_register", {
 
 export type OpportunityRegister = typeof opportunityRegister.$inferSelect;
 export type InsertOpportunityRegister = typeof opportunityRegister.$inferInsert;
+
+// ─── WhatsApp Templates ────────────────────────────────────
+export const whatsappTemplates = mysqlTable("whatsapp_templates", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  category: mysqlEnum("category", ["MARKETING", "UTILITY", "AUTHENTICATION"]).default("MARKETING").notNull(),
+  language: varchar("language", { length: 10 }).default("ar").notNull(),
+  status: mysqlEnum("wa_status", ["draft", "pending", "approved", "rejected"]).default("draft").notNull(),
+  content: text("content").notNull(),
+  header: varchar("header", { length: 255 }),
+  footer: varchar("footer", { length: 255 }),
+  buttons: json("buttons").$type<Array<{ type: string; text: string }>>(),
+  variables: int("variables").default(0),
+  approvedBy: bigint("approved_by", { mode: "number", unsigned: true }).references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type WhatsAppTemplate = typeof whatsappTemplates.$inferSelect;
+export type InsertWhatsAppTemplate = typeof whatsappTemplates.$inferInsert;
+
+// ─── WhatsApp Conversations ─────────────────────────────────
+export const whatsappConversations = mysqlTable("whatsapp_conversations", {
+  id: serial("id").primaryKey(),
+  prospectId: bigint("prospect_id", { mode: "number", unsigned: true }).references(() => prospects.id),
+  waId: varchar("wa_id", { length: 100 }).notNull(), // WhatsApp number
+  name: varchar("name", { length: 255 }),
+  lastMessageAt: timestamp("last_message_at"),
+  lastMessageDirection: mysqlEnum("msg_direction", ["inbound", "outbound"]).default("inbound"),
+  lastMessageBody: text("last_message_body"),
+  status: mysqlEnum("convo_status", ["open", "resolved", "archived"]).default("open").notNull(),
+  assignedTo: bigint("assigned_to", { mode: "number", unsigned: true }).references(() => users.id),
+  tags: json("tags").$type<string[]>(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type WhatsAppConversation = typeof whatsappConversations.$inferSelect;
+export type InsertWhatsAppConversation = typeof whatsappConversations.$inferInsert;
+
+// ─── WhatsApp Messages ─────────────────────────────────────
+export const whatsappMessages = mysqlTable("whatsapp_messages", {
+  id: serial("id").primaryKey(),
+  conversationId: bigint("conversation_id", { mode: "number", unsigned: true }).references(() => whatsappConversations.id).notNull(),
+  waMessageId: varchar("wa_message_id", { length: 255 }),
+  prospectId: bigint("prospect_id", { mode: "number", unsigned: true }).references(() => prospects.id),
+  direction: mysqlEnum("msg_direction", ["inbound", "outbound"]).notNull(),
+  type: mysqlEnum("msg_type", ["text", "template", "image", "document", "button_reply", "interactive"]).default("text").notNull(),
+  body: text("body"),
+  templateId: bigint("template_id", { mode: "number", unsigned: true }).references(() => whatsappTemplates.id),
+  templateName: varchar("template_name", { length: 255 }),
+  templateVariables: json("template_variables"),
+  mediaUrl: varchar("media_url", { length: 500 }),
+  status: mysqlEnum("msg_status", ["pending", "queued", "sent", "delivered", "read", "failed"]).default("pending").notNull(),
+  errorCode: varchar("error_code", { length: 100 }),
+  errorMessage: text("error_message"),
+  sentAt: timestamp("sent_at"),
+  deliveredAt: timestamp("delivered_at"),
+  readAt: timestamp("read_at"),
+  aiGenerated: boolean("ai_generated").default(false),
+  approved: boolean("approved").default(true),
+  approvedBy: bigint("approved_by", { mode: "number", unsigned: true }).references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type WhatsAppMessage = typeof whatsappMessages.$inferSelect;
+export type InsertWhatsAppMessage = typeof whatsappMessages.$inferInsert;

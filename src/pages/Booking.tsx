@@ -3,13 +3,12 @@ import { trpc } from "@/providers/trpc";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import {
   Select,
@@ -18,16 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CalendarClock, CheckCircle, ArrowLeft, BarChart3 } from "lucide-react";
+import { ArrowLeft, BarChart3, CalendarClock, CheckCircle } from "lucide-react";
 
 export default function Booking() {
   const [submitted, setSubmitted] = useState(false);
-
-  const form = trpc.booking.create.useMutation({
-    onSuccess: () => setSubmitted(true),
-  });
-
-  const [data, setData] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     company: "",
     role: "",
@@ -38,234 +32,283 @@ export default function Booking() {
     scheduledAt: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    form.mutate(data);
+  const booking = trpc.booking.create.useMutation({
+    onSuccess: () => setSubmitted(true),
+  });
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    booking.mutate(formData);
   };
 
   return (
     <div className="min-h-screen bg-[#F0F9F8]" dir="rtl">
-      {/* Top Bar */}
-      <nav className="bg-[#0A1F1E] border-b border-[#15807A]/20 px-6 py-4 flex items-center justify-between">
+      <nav className="flex items-center justify-between border-b border-[#15807A]/20 bg-[#0A1F1E] px-6 py-4">
         <a href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#15807A] rounded-lg flex items-center justify-center">
-            <BarChart3 className="w-5 h-5 text-white" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#15807A]">
+            <BarChart3 className="h-5 w-5 text-white" />
           </div>
           <span className="text-lg font-bold text-white">Dealix</span>
         </a>
         <a
           href="/"
-          className="text-sm text-[#E8F4F3] hover:text-white transition-colors flex items-center gap-1"
+          className="flex items-center gap-1 text-sm text-[#E8F4F3] transition-colors hover:text-white"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="h-4 w-4" />
           العودة للرئيسية
         </a>
       </nav>
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
-        <Card className="bg-white border-[#E8F4F3] shadow-sm">
-          <CardHeader className="text-center pb-2">
-            <div className="w-14 h-14 bg-[#E8F4F3] rounded-full flex items-center justify-center mx-auto mb-4">
-              <CalendarClock className="w-7 h-7 text-[#15807A]" />
-            </div>
-            <CardTitle className="text-2xl text-[#0A1F1E]">
-              احجز تشخيص AI Revenue
-            </CardTitle>
-            <CardDescription className="text-[#4A6B69] mt-2">
-              جلسة قصيرة (30 دقيقة) نسوي فيها Diagnostic سريع لإيرادات شركتك. بدون commitment، بدون إرسال آلي.
-            </CardDescription>
-          </CardHeader>
+      <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <Card className="border-[#E8F4F3] bg-white shadow-sm">
+            <CardHeader className="text-center">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#E8F4F3]">
+                <CalendarClock className="h-7 w-7 text-[#15807A]" />
+              </div>
+              <CardTitle className="text-2xl text-[#0A1F1E]">
+                احجز تشخيص Dealix
+              </CardTitle>
+              <CardDescription className="mt-2 text-[#4A6B69]">
+                جلسة تشخيص قصيرة لفهم وضع الإيرادات والمتابعة والـ WhatsApp
+                والقرار داخل الشركة قبل اقتراح المسار الأنسب.
+              </CardDescription>
+            </CardHeader>
 
-          {!submitted ? (
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Name */}
-                <div>
-                  <Label className="text-[#0A1F1E] text-sm">
-                    الاسم الكامل <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    required
-                    placeholder="أحمد آل راشد"
-                    value={data.name}
-                    onChange={(e) => setData({ ...data, name: e.target.value })}
-                    className="mt-1 border-[#E8F4F3] focus:border-[#15807A] focus:ring-[#15807A]"
-                  />
-                </div>
-
-                {/* Company + Role */}
-                <div className="grid md:grid-cols-2 gap-4">
+            {!submitted ? (
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <Label className="text-[#0A1F1E] text-sm">
-                      اسم الشركة <span className="text-red-500">*</span>
+                    <Label className="text-sm text-[#0A1F1E]">
+                      الاسم الكامل *
                     </Label>
                     <Input
                       required
-                      placeholder="مثال: Digital Rise Agency"
-                      value={data.company}
-                      onChange={(e) =>
-                        setData({ ...data, company: e.target.value })
+                      placeholder="أحمد آل راشد"
+                      value={formData.name}
+                      onChange={(event) =>
+                        setFormData({ ...formData, name: event.target.value })
                       }
-                      className="mt-1 border-[#E8F4F3] focus:border-[#15807A] focus:ring-[#15807A]"
+                      className="mt-1 border-[#E8F4F3]"
                     />
                   </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <Label className="text-sm text-[#0A1F1E]">
+                        اسم الشركة *
+                      </Label>
+                      <Input
+                        required
+                        placeholder="Example Co"
+                        value={formData.company}
+                        onChange={(event) =>
+                          setFormData({
+                            ...formData,
+                            company: event.target.value,
+                          })
+                        }
+                        className="mt-1 border-[#E8F4F3]"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm text-[#0A1F1E]">
+                        الدور الحالي *
+                      </Label>
+                      <Input
+                        required
+                        placeholder="Founder / CRO / CEO"
+                        value={formData.role}
+                        onChange={(event) =>
+                          setFormData({ ...formData, role: event.target.value })
+                        }
+                        className="mt-1 border-[#E8F4F3]"
+                      />
+                    </div>
+                  </div>
+
                   <div>
-                    <Label className="text-[#0A1F1E] text-sm">
-                      المسمى الوظيفي <span className="text-red-500">*</span>
+                    <Label className="text-sm text-[#0A1F1E]">
+                      الموقع الإلكتروني
                     </Label>
                     <Input
-                      required
-                      placeholder="مثال: مدير التسويق"
-                      value={data.role}
-                      onChange={(e) =>
-                        setData({ ...data, role: e.target.value })
+                      placeholder="https://example.sa"
+                      value={formData.website}
+                      onChange={(event) =>
+                        setFormData({
+                          ...formData,
+                          website: event.target.value,
+                        })
                       }
-                      className="mt-1 border-[#E8F4F3] focus:border-[#15807A] focus:ring-[#15807A]"
+                      className="mt-1 border-[#E8F4F3]"
                     />
                   </div>
-                </div>
 
-                {/* Website */}
-                <div>
-                  <Label className="text-[#0A1F1E] text-sm">
-                    الموقع الإلكتروني
-                  </Label>
-                  <Input
-                    placeholder="https://example.sa"
-                    value={data.website}
-                    onChange={(e) =>
-                      setData({ ...data, website: e.target.value })
-                    }
-                    className="mt-1 border-[#E8F4F3] focus:border-[#15807A] focus:ring-[#15807A]"
-                  />
-                </div>
+                  <div>
+                    <Label className="text-sm text-[#0A1F1E]">
+                      أين المشكلة الأكبر الآن؟
+                    </Label>
+                    <Select
+                      value={formData.pain}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, pain: value })
+                      }
+                    >
+                      <SelectTrigger className="mt-1 border-[#E8F4F3]">
+                        <SelectValue placeholder="اختر التحدي الرئيسي" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="leads">
+                          ضعف lead flow أو ضعف الوصول للفرص
+                        </SelectItem>
+                        <SelectItem value="followup">
+                          المتابعة تتأخر أو تضيع
+                        </SelectItem>
+                        <SelectItem value="reporting">
+                          لا توجد رؤية تشغيلية يومية واضحة
+                        </SelectItem>
+                        <SelectItem value="whatsapp">
+                          محادثات WhatsApp غير منظمة
+                        </SelectItem>
+                        <SelectItem value="brain">
+                          القرارات موزعة وغير موثقة
+                        </SelectItem>
+                        <SelectItem value="other">أخرى</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                {/* Main Pain */}
-                <div>
-                  <Label className="text-[#0A1F1E] text-sm">
-                    ألم رئيسي في التشغيل اليومي
-                  </Label>
-                  <Select
-                    value={data.pain}
-                    onValueChange={(v) => setData({ ...data, pain: v })}
+                  <div>
+                    <Label className="text-sm text-[#0A1F1E]">
+                      الأنظمة الحالية
+                    </Label>
+                    <Select
+                      value={formData.currentSystems}
+                      onValueChange={(value) =>
+                        setFormData({ ...formData, currentSystems: value })
+                      }
+                    >
+                      <SelectTrigger className="mt-1 border-[#E8F4F3]">
+                        <SelectValue placeholder="اختر النظام الحالي" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="excel">Excel / Sheets</SelectItem>
+                        <SelectItem value="crm">CRM</SelectItem>
+                        <SelectItem value="whatsapp_only">
+                          WhatsApp فقط
+                        </SelectItem>
+                        <SelectItem value="notion">Notion / Docs</SelectItem>
+                        <SelectItem value="mixed">
+                          أنظمة متفرقة غير مترابطة
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="consent"
+                      checked={formData.consentEmail}
+                      onChange={(event) =>
+                        setFormData({
+                          ...formData,
+                          consentEmail: event.target.checked,
+                        })
+                      }
+                      className="h-4 w-4 accent-[#15807A]"
+                    />
+                    <Label
+                      htmlFor="consent"
+                      className="cursor-pointer text-sm text-[#4A6B69]"
+                    >
+                      أوافق على تواصل Dealix معي بخصوص هذا الطلب فقط.
+                    </Label>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={booking.isPending}
+                    className="h-12 w-full bg-[#15807A] text-base hover:bg-[#0F5F5A]"
                   >
-                    <SelectTrigger className="mt-1 border-[#E8F4F3] focus:border-[#15807A] focus:ring-[#15807A]">
-                      <SelectValue placeholder="اختر التحدي الأساسي..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="leads">
-                        قلة العملاء المحتملين / صعوبة الوصول لهم
-                      </SelectItem>
-                      <SelectItem value="followup">
-                        المتابعة تتأخر أو تضيع
-                      </SelectItem>
-                      <SelectItem value="reporting">
-                        لا توجد تقارير واضحة للإيرادات
-                      </SelectItem>
-                      <SelectItem value="ai_workflows">
-                        نريد AI لكن لا ندري من أين نبدأ
-                      </SelectItem>
-                      <SelectItem value="internal_knowledge">
-                        المعرفة الداخلية مبعثرة
-                      </SelectItem>
-                      <SelectItem value="other">أخرى</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Current Systems */}
-                <div>
-                  <Label className="text-[#0A1F1E] text-sm">
-                    الأنظمة الحالية
-                  </Label>
-                  <Select
-                    value={data.currentSystems}
-                    onValueChange={(v) =>
-                      setData({ ...data, currentSystems: v })
-                    }
-                  >
-                    <SelectTrigger className="mt-1 border-[#E8F4F3] focus:border-[#15807A] focus:ring-[#15807A]">
-                      <SelectValue placeholder="اختر النظام الحالي..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="excel">Excel / Sheets</SelectItem>
-                      <SelectItem value="crm">CRM (HubSpot / Zoho / Salesforce)</SelectItem>
-                      <SelectItem value="whatsapp">WhatsApp فقط</SelectItem>
-                      <SelectItem value="notion">Notion / Confluence</SelectItem>
-                      <SelectItem value="erp">ERP (SAP / Oracle)</SelectItem>
-                      <SelectItem value="other">أخرى</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Consent */}
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="consent"
-                    checked={data.consentEmail}
-                    onChange={(e) =>
-                      setData({ ...data, consentEmail: e.target.checked })
-                    }
-                    className="w-4 h-4 accent-[#15807A]"
-                  />
-                  <Label
-                    htmlFor="consent"
-                    className="text-sm text-[#4A6B69] cursor-pointer"
-                  >
-                    أوافق على التواصل بالبريد الإلكتروني
-                  </Label>
-                </div>
-
-                {/* Submit */}
-                <Button
-                  type="submit"
-                  disabled={form.isPending}
-                  className="w-full bg-[#15807A] hover:bg-[#0F5F5A] text-white h-12 text-base"
-                >
-                  {form.isPending
-                    ? "جاري الحجز..."
-                    : "احجز جلسة التشخيص"}
-                </Button>
-
-                <p className="text-xs text-[#8CB3B0] text-center">
-                  بدون commitment. كل رسائل المتابعة تمر على مراجعة يدوية قبل الإرسال.
+                    {booking.isPending
+                      ? "جاري إرسال الطلب..."
+                      : "احجز جلسة التشخيص"}
+                  </Button>
+                </form>
+              </CardContent>
+            ) : (
+              <CardContent className="py-12 text-center">
+                <CheckCircle className="mx-auto mb-4 h-16 w-16 text-[#15807A]" />
+                <h3 className="mb-2 text-xl font-bold text-[#0A1F1E]">
+                  تم إرسال الطلب بنجاح
+                </h3>
+                <p className="mb-6 text-[#4A6B69]">
+                  سنراجع الطلب ونقترح المسار الأنسب: Sprint أو Build أو
+                  Operating Partner.
                 </p>
-              </form>
-            </CardContent>
-          ) : (
-            <CardContent className="text-center py-12">
-              <CheckCircle className="w-16 h-16 text-[#15807A] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-[#0A1F1E] mb-2">
-                تم إرسال طلب الحجز بنجاح
-              </h3>
-              <p className="text-[#4A6B69] mb-6">
-                سنراجع طلبك ونحدد موعد مناسب. ستصلك رسالة تأكيد في أقرب وقت.
-              </p>
-              <a href="/">
-                <Button className="bg-[#15807A] hover:bg-[#0F5F5A] text-white">
-                  العودة للرئيسية
-                </Button>
-              </a>
-            </CardContent>
-          )}
-        </Card>
+                <a href="/">
+                  <Button className="bg-[#15807A] text-white hover:bg-[#0F5F5A]">
+                    العودة للرئيسية
+                  </Button>
+                </a>
+              </CardContent>
+            )}
+          </Card>
 
-        {/* Trust signals */}
-        <div className="grid grid-cols-3 gap-4 mt-8">
-          {[
-            { label: "لا إرسال آلي", desc: "كل رسالة تمر على مراجعة" },
-            { label: "30 دقيقة فقط", desc: "Diagnostic سريع ومفيد" },
-            { label: "بدون commitment", desc: "قرارك الحر بعد الجلسة" },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="bg-white rounded-lg p-4 text-center border border-[#E8F4F3]"
-            >
-              <p className="font-bold text-[#0A1F1E] text-sm">{item.label}</p>
-              <p className="text-xs text-[#4A6B69] mt-1">{item.desc}</p>
-            </div>
-          ))}
+          <div className="space-y-6">
+            <Card className="border-[#E8F4F3] bg-white">
+              <CardHeader>
+                <CardTitle className="text-[#0A1F1E]">
+                  ماذا يحدث بعد الحجز؟
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-[#4A6B69]">
+                <div className="rounded-lg bg-[#F0F9F8] p-3">
+                  1. مراجعة الوضع الحالي والأنظمة الموجودة.
+                </div>
+                <div className="rounded-lg bg-[#F0F9F8] p-3">
+                  2. تحديد أكبر bottleneck في الإيرادات أو المتابعة.
+                </div>
+                <div className="rounded-lg bg-[#F0F9F8] p-3">
+                  3. اقتراح النظام الأنسب للبدء: Command Room أو Brain أو
+                  WhatsApp.
+                </div>
+                <div className="rounded-lg bg-[#F0F9F8] p-3">
+                  4. تقديم scope واضح بدون وعود مبالغ فيها.
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-[#E8F4F3] bg-white">
+              <CardHeader>
+                <CardTitle className="text-[#0A1F1E]">إشارات الثقة</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {[
+                  {
+                    label: "لا إرسال آلي",
+                    desc: "كل outbound يمر بمراجعة بشرية.",
+                  },
+                  {
+                    label: "قناة WhatsApp رسمية",
+                    desc: "Cloud API + webhooks + approvals.",
+                  },
+                  {
+                    label: "امتثال مدمج",
+                    desc: "PDPL + AI governance + auditability.",
+                  },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-lg bg-[#F0F9F8] p-3">
+                    <p className="text-sm font-bold text-[#0A1F1E]">
+                      {item.label}
+                    </p>
+                    <p className="mt-1 text-xs text-[#4A6B69]">{item.desc}</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

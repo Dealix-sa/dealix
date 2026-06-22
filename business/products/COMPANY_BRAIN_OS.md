@@ -1,40 +1,42 @@
 # Company Brain OS
 
-## النتيجة التجارية
-تحويل البيانات والمعرفة الداخلية إلى قرارات استراتيجية يومية واضحة.
+## Commercial Outcome
+Convert scattered observations and founder intuition into a structured decision system.
 
-## المحتوى
-1. **Company Brain Map** — رسم العلاقات بين القطاع، المنافسين، العملاء، والفرص.
-2. **Daily Decision Desk** — قرار موصى به كل يوم مع:
-   - Owner (صاحب القرار)
-   - Metric (القياس)
-   - Next Action (الخطوة التالية)
-   - Assumption (الفرضية)
-3. **Future Radar** — توقعات السوق مع مستويات الثقة (confidence levels)
-4. **Bottleneck Scanner** — كشف البطالنات التشغيلية تلقائيًا
+## What It Solves
+- important decisions living in chat threads and memory
+- weak ownership of next actions
+- no clear risk register
+- no opportunity register
+- no shared language for why a decision exists
 
-## المدة
-**7 أيام** (Sprint)
+## Core Modules
+1. Signals feed
+2. Decisions log
+3. Risk register
+4. Opportunity register
+5. Assumption discipline
+6. Operating review structure
 
-## السعر
-**7,500 SAR**
+## Recommended Use Case
+Best for companies with active sales, delivery, and leadership activity where many decisions are happening but not being captured or reviewed consistently.
 
-## ما يشمله
-- تجميع بيانات الشركة ( intake Interview)
-- بناء Brain Map
-- إعداد 5 قرارات يومية أولية
-- Future Radar (3 سيناريوهات)
-- Bottleneck Report
-- Proof Pack
+## Delivery Scope
+- brain interface
+- signal and decision workflows
+- risk and opportunity structure
+- owner and action discipline
+- governance-friendly decision records
 
-## Safety
-- لا توقعات مطلقة (absolute predictions)
-- كل توقع يحمل مستوى ثقة (confidence level)
-- كل قرار يحتاج إلى owner + metric + next action
-- لا fake ROI
+## Guardrails
+- AI can suggest, summarize, and structure
+- humans remain responsible for final decisions
+- no guaranteed prediction language
+- every major decision should have owner, metric, and next action
 
-## Proof Pack
-1. Before: قرارات مبنية على "حدس" (gut feeling)
-2. After: قرارات مبنية على "بيانات + فرضيات + قياس"
-3. مقارنة بين القرارات — Time-to-decision reduced
-4. Bottlenecks identified vs. previously hidden
+## Success Criteria
+- decisions are visible
+- risks are logged and reviewed
+- opportunities are prioritized
+- actions have owners
+- the founder can review the company state quickly

@@ -1,33 +1,40 @@
 # System Blueprint
 
+## Target System
+- Primary operating system:
+- Supporting systems:
+- Main users:
+
 ## Architecture
-```
-[Revenue Command Room OS] -> Pipeline + Follow-up
-[Company Brain OS] -> Decisions + Radar
+```text
+Lead / Booking Input
+  -> Command Room
+  -> Approval Queue
+  -> WhatsApp / Follow-up
+  -> Brain Registers
+  -> Reports / Proof Pack
 ```
 
 ## Workflow Map
-### Sprint 1 (Days 1-5)
-- Day 1-2: Intake + Diagnosis
-- Day 3: Pipeline setup
-- Day 4: Drafts + Approval queue
-- Day 5: CEO Report + Proof
+### Phase 1
+- intake and diagnosis
+- operating baseline
+- first queue and visibility layer
 
-### Sprint 2 (Days 6-10)
-- Day 6-7: Brain Map
-- Day 8: Decision Desk
-- Day 9: Future Radar
-- Day 10: Training + Handoff
+### Phase 2
+- approvals and controlled outbound
+- decision discipline
+- reporting and proof
 
 ## Acceptance Criteria
 | # | Criteria | Status |
-|---|----------|--------|
-| 1 | Pipeline visible | Pending |
-| 2 | Drafts generated | Pending |
-| 3 | CEO Report shows data | Pending |
-| 4 | Proof pack created | Pending |
+|---|---|---|
+| 1 | Daily cockpit usable | Pending |
+| 2 | Approval flow visible | Pending |
+| 3 | Key records reviewable | Pending |
+| 4 | Proof artifact generated | Pending |
 
-## Governance
-- [ ] `verify_no_auto_external_send.py` Passes
-- [ ] `OUTBOUND_MODE=draft_only`
-- [ ] All AI content tagged [AI]
+## Governance Requirements
+- [ ] outbound policy reviewed
+- [ ] reviewer identified
+- [ ] trust claims aligned with actual controls

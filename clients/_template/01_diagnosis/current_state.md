@@ -1,18 +1,24 @@
 # Current State Analysis
 
 ## Summary
-Brief summary of the current operational state.
+Describe the current commercial and operating situation in one concise paragraph.
 
 ## Bottlenecks
-| # | Bottleneck | Severity | Impact | Root Cause |
-|---|-----------|----------|--------|------------|
-| 1 | | High | | |
-| 2 | | Medium | | |
+| # | Bottleneck | Severity | Impact | Root Cause | Owner |
+|---|---|---|---|---|---|
+| 1 |  | High |  |  |  |
+| 2 |  | Medium |  |  |  |
 
 ## Opportunity Map
-| Opportunity | Potential Value | Confidence | Effort | Priority |
-|-------------|-----------------|------------|--------|----------|
-| | | | | |
+| Opportunity | Potential Value | Confidence | Effort | Priority | Next Action |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
 
-## Recommendation
-Recommended OS modules for first sprint.
+## System Recommendation
+- Recommended starting system:
+- Why this system first:
+- What should wait until phase two:
+
+## Delivery Risks
+- risk 1:
+- risk 2:

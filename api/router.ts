@@ -6,6 +6,7 @@ import { warRoomRouter } from "./warroom-router";
 import { brainRouter } from "./brain-router";
 import { commandRoomRouter } from "./command-room-router";
 import { bookingRouter } from "./booking-router";
+import { whatsappRouter } from "./whatsapp-router";
 import { createRouter, publicQuery } from "./middleware";
 
 export const appRouter = createRouter({
@@ -18,6 +19,7 @@ export const appRouter = createRouter({
   booking: bookingRouter,
   brain: brainRouter,
   commandRoom: commandRoomRouter,
+  whatsapp: whatsappRouter,
 });
 
 export type AppRouter = typeof appRouter;

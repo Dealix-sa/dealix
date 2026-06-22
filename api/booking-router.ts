@@ -48,7 +48,6 @@ export const bookingRouter = createRouter({
   stats: publicQuery.query(async () => {
     const db = getDb();
     const total = await db.select({ count: count() }).from(bookings);
-    const todayStr = new Date().toISOString().split("T")[0];
     const today = await db
       .select({ count: count() })
       .from(bookings)

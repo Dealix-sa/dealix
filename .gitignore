@@ -1,5 +1,12 @@
-node_modules
+﻿node_modules
 .env.local
 dist
 *.lock
-.pptd
+*.pptd
+company_os/outbox/
+reports/
+company_os/reports/*.html
+company_os/reports/LAUNCH_READINESS_REPORT.md
+scripts/__pycache__/
+*.pyc
+.dealix_allow_external_send

@@ -1,1 +1,6 @@
-﻿@{"client_slug":"_template","created_at":" + (Get-Date -Format o) + ","status":"template"}
+{
+  "client_slug": "_template",
+  "status": "template",
+  "owner": "Dealix",
+  "version": 1
+}

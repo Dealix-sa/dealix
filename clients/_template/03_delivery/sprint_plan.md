@@ -1,17 +1,22 @@
 # Sprint Plan
 
-## Deliverables
-| Day | Task | Owner | Status |
-|-----|------|-------|--------|
-| 1 | Intake + Diagnosis | Dealix + Client | |
-| 2 | Pipeline Setup | Dealix | |
-| 3 | Drafts + Sequences | Dealix | |
-| 4 | CEO Report + Testing | Dealix | |
-| 5 | Proof Pack + Handoff | Dealix + Client | |
+## Delivery Plan
+| Day | Task | Owner | Output |
+|---|---|---|---|
+| 1 | Intake and diagnosis | Dealix + Client | current state analysis |
+| 2 | System setup | Dealix | visible operating structure |
+| 3 | Queue and workflow build | Dealix | drafts / approvals / registers |
+| 4 | Review and adjustments | Dealix + Client | validated flow |
+| 5 | Handoff and proof | Dealix + Client | proof pack + next actions |
 
 ## Test Plan
-- [ ] Pipeline stages show correct data
-- [ ] Drafts tagged [AI]
-- [ ] Approval queue works
-- [ ] CEO report generates
-- [ ] No auto-send enabled
+- [ ] daily cockpit loads
+- [ ] booking flow works
+- [ ] approvals work
+- [ ] no auto-send is enabled by default
+- [ ] reports can be reviewed
+
+## Handoff Criteria
+- [ ] owner trained
+- [ ] next 30-day actions documented
+- [ ] risks and constraints documented

@@ -14,11 +14,16 @@
     "test": "vitest run",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
     "command-room": "python scripts/revenue_engine.py",
     "revenue-day": "python scripts/revenue_engine.py",
+    "full-revenue-day": "python scripts/revenue_engine.py && python scripts/outreach_engine.py && python scripts/generate_war_room.py",
     "company-day": "python scripts/verify_company_launch_ready.py && python scripts/revenue_engine.py && python scripts/generate_war_room.py",
     "production-check": "python scripts/verify_company_launch_ready.py && python scripts/verify_no_auto_external_send.py",
-    "client-day": "python scripts/client_delivery.py"
+    "outbound-dry": "python scripts/verify_no_auto_external_send.py",
+    "brain-day": "python scripts/governance_check.py && python scripts/revenue_scorecard.py",
+    "client-day": "python scripts/client_delivery.py",
+    "setup": "node -e \"const{execSync:e}=require('child_process');const s=process.platform==='win32'?'powershell -ExecutionPolicy Bypass -File scripts/setup_local.ps1':'bash scripts/setup_local.sh';e(s,{stdio:'inherit'});\""
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

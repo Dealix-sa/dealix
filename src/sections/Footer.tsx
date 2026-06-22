@@ -1,59 +1,70 @@
-import { BarChart3 } from 'lucide-react'
+import { BarChart3 } from "lucide-react";
+
+const productLinks = [
+  { label: "Revenue Command Room", href: "/command-room" },
+  { label: "Company Brain OS", href: "/brain" },
+  { label: "Booking", href: "/book-call" },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A1F1E] py-12 border-t border-[#15807A]/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-[#15807A] rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-white" />
+    <footer className="border-t border-[#15807A]/10 bg-[#0A1F1E] py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 grid gap-8 md:grid-cols-3">
+          <div className="md:col-span-1">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#15807A]">
+                <BarChart3 className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">Dealix</span>
+              <div>
+                <p className="text-xl font-bold text-white">Dealix</p>
+                <p className="text-xs text-[#8CB3B0]">
+                  AI Operating Systems for Saudi B2B
+                </p>
+              </div>
             </div>
-            <p className="text-[#8CB3B0] text-sm leading-relaxed max-w-md">
-              Dealix يساعد الشركات في السعودية والخليج على كشف ضياع الإيرادات، تنظيم المتابعات، تحسين المبيعات، وبناء War Room تشغيلي مدعوم بالذكاء الاصطناعي — مع حوكمة وموافقات وسجلات تناسب بيئة الأعمال المحلية.
+            <p className="max-w-md text-sm leading-7 text-[#8CB3B0]">
+              منصة تشغيل تربط الإيرادات، WhatsApp، القرارات، الحوكمة، وتسليم
+              العملاء داخل workflow واحد قابل للمراجعة اليومية.
             </p>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-4">الخدمات</h4>
+            <h4 className="mb-4 font-bold text-white">المنتج</h4>
             <ul className="space-y-2">
-              {['Revenue Intelligence Sprint', 'AI Sales Ops Retainer', 'War Room Weekly', 'AI Governance Setup'].map((item) => (
-                <li key={item}>
-                  <span className="text-[#8CB3B0] text-sm hover:text-[#15807A] transition-colors cursor-pointer">{item}</span>
+              {productLinks.map((item) => (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    className="text-sm text-[#8CB3B0] transition-colors hover:text-[#15807A]"
+                  >
+                    {item.label}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-4">القطاعات</h4>
-            <ul className="space-y-2">
-              {['وكالات التسويق', 'شركات التدريب', 'B2B Services', 'الشركات الناشئة'].map((item) => (
-                <li key={item}>
-                  <span className="text-[#8CB3B0] text-sm hover:text-[#15807A] transition-colors cursor-pointer">{item}</span>
-                </li>
-              ))}
+            <h4 className="mb-4 font-bold text-white">مبادئ التشغيل</h4>
+            <ul className="space-y-2 text-sm text-[#8CB3B0]">
+              <li>draft_only افتراضيًا</li>
+              <li>مراجعة بشرية قبل الإرسال الحساس</li>
+              <li>تقليل البيانات وسجل أحداث واضح</li>
+              <li>لا وعود ROI غير مثبتة</li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-[#15807A]/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-[#8CB3B0] text-sm">
+        <div className="flex flex-col gap-4 border-t border-[#15807A]/10 pt-8 md:flex-row md:items-center md:justify-between">
+          <p className="text-sm text-[#8CB3B0]">
             © 2026 Dealix. جميع الحقوق محفوظة.
-          </div>
-          <div className="flex items-center gap-6 text-[#8CB3B0] text-sm">
-            <span className="hover:text-[#15807A] transition-colors cursor-pointer">سياسة الخصوصية</span>
-            <span className="hover:text-[#15807A] transition-colors cursor-pointer">شروط الاستخدام</span>
-            <span className="hover:text-[#15807A] transition-colors cursor-pointer">الحوكمة</span>
-          </div>
-          <div className="text-[#8CB3B0] text-xs">
-            مُطابق لمعايير SDAIA للذكاء الاصطناعي وحماية البيانات
-          </div>
+          </p>
+          <p className="text-xs text-[#8CB3B0]">
+            يعتمد على human oversight وcompliance-friendly defaults.
+          </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

@@ -1,50 +1,54 @@
-# معايير الامتثال — هيئة الذكاء الاصطناعي السعودية (SDAIA)
+# SDAIA AI Compliance Operating Notes
 
-## المखलص
-Dealix تتبع معايير SDAIA في كل استخدام AI. هذا المستند يحدد ملف الـ compliance.
+## Purpose
+This document maps Dealix operating behavior to practical AI governance expectations for Saudi enterprise sales.
 
-## 1. الحوكمة (Governance)
-- [x] **Policy**: AI يوصي ويحلل، ولا يقرر بدلاً من الإنسان
-- [x] **Approval Queue**: كل إخراج AI في رسائل marketing يتطلب manual approval
-- [x] **Audit Trail**: كل قرار مرتبط بـ Owner + Date + Action
-- [x] **No Auto-Send Gate**: `verify_no_auto_external_send.py` — يعمل تلقائياً
+## Governance Position
+Dealix uses AI to analyze, suggest, structure, and draft.
+Dealix does not position AI as an autonomous decision-maker.
 
-## 2. الشفافية (Transparency)
-- [x] **AI Tag**: كل رسالة تولدها AI تحمل [AI] tag قبل الإرسال
-- [x] **Explanation**: AI يوضح سبب الترشيح (prospect score + rationale)
-- [x] **Documentation**: العميل يوضح كيف AI يعمل في الـ System Architecture
+## Required Operating Controls
 
-## 3. العدالة والحماية من التحيز (Fairness)
-- [x] **Non-Discrimination**: Prospect scoring يعتمد على data — وليس جنسة/عرق/كيانات
-- [x] **Equal Service**: كل prospects يُعطى access لنفس الأدوات
-- [x] **Data Integrity**: Source URLs required + verification status tracked
+### 1. Human Oversight
+- [x] Founder or reviewer approval before sensitive outbound
+- [x] Draft queues remain visible before send
+- [x] Brain outputs are framed as inputs to a human decision process
 
-## 4. الخصوصية وحماية البيانات (Privacy)
-- [x] **PDPL Compliance**: متوافق مع نظام حماية البيانات السعودية
-- [x] **Data Localization**: تُخزن في السعودية (Saudi-based hosting)
-- [x] **No Third Party Sharing**: لا مشاركة بيانات العملاء مع أطراف ثالثة
-- [x] **Anonymization**: PII (email, phone) مشفرة في DB + logs
-- [x] **Client Consent**: Opt-in required (consent_email) before any outreach
+### 2. Transparency
+- [x] AI-generated content is reviewable
+- [x] Decision context is visible through metrics, assumptions, and next actions
+- [x] Message templates and conversation flows are observable in the system
 
-## 5. الأمان والأمان (Security)
-- [x] **Encrypted Storage**: AES-256 للـ DB + backups
-- [x] **HTTPS/SSL**: كل communication مشفر (TLS 1.3)
-- [x] **API Keys**: .env secret — لا secrets مكشوفة في الـ repo
-- [x] **Rate Limiting**: API requests محددة لمنع abuse
+### 3. Accountability
+- [x] Decision and risk records can be tied to owners
+- [x] Approval actions are explicit
+- [x] System defaults bias toward control rather than automation
 
-## 6. الصلاحية والمسؤولية (Accountability)
-- [x] **Founder Ownership**: كل send يتطلب موافقة founder
-- [x] **Logging**: كل draft approved/sent يُسجل في Ledger
-- [x] **Recall**: توقف outreach ممكن في أي لحظة
-- [x] **Escalation**: كل خطأ خطير يرفع إلى founder مباشرة
+### 4. Risk Management
+- [x] Outbound defaults remain restricted
+- [x] Failed message and webhook events are trackable
+- [x] Operational risks can be logged in Brain OS
 
-## 7. إدارة المخاطر (Risk Management)
-- [x] **Risk Register**: كل risk AI يُسجل ويُتابع
-- [x] **Human-in-the-loop**: AI generates → Founder approves → System sends
-- [x] **Kill Switch**: `EXTERNAL_SEND_ENABLED=false` يوقف كل الإرسال
+### 5. Fairness and Appropriate Use
+- [x] Signals and scoring should focus on business context, not protected personal characteristics
+- [x] Teams should review prompts, drafts, and selection logic periodically
+- [x] No deceptive claims or fabricated outcomes
 
-## المستندات المرتبطة
-- `docs/pdpl/PDPL_CHECKLIST.md` — تفاصيل SDAIA-PDPL mapping
-- `scripts/verify_no_auto_external_send.py` — Safety gate
-- `api/middleware.ts` — Manual approval enforcement
-- `db/schema.ts` — Audit fields (`approved`, `sent`, `aiGenerated`)
+## WhatsApp Governance Notes
+- Use official Cloud API only
+- Keep webhook verification enabled
+- Keep template lifecycle visible
+- Do not enable live outbound broadly without documented approval policy
+
+## Commercial Guidance
+Describe Dealix as:
+- governed
+- reviewable
+- approval-gated
+- compliance-aware
+
+Do not describe Dealix as:
+- fully autonomous
+- guaranteed compliant
+- guaranteed ROI generating
+- replacing management judgment

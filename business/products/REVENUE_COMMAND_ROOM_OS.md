@@ -1,42 +1,43 @@
 # Revenue Command Room OS
 
-## النتيجة التجارية
-تحويل فوضى المبيعات والمتابعات إلى war room يومي للإيرادات.
+## Commercial Outcome
+Turn messy outreach, follow-up, and pipeline work into a daily founder operating room.
 
-## المحتوى
-1. **Pipeline Health** - رؤية واضحة لمراحل الصفقات
-2. **Top Prospects** - العملاء المحتملين مرتبًا بالأولوية
-3. **Outreach Drafts** - رسائل جاهزة للمراجعة (عربي + إنجليزي)
-4. **Follow-up Queue** - متابعات مجدولة
-5. **CEO Daily Report** - تقرير يومي للمؤسس
+## What It Solves
+- weak pipeline visibility
+- delayed follow-up
+- unreviewed outbound drafts
+- scattered daily priorities
+- poor conversion visibility between outreach and booked meetings
 
-## المدة
-**5 أيام** (Sprint)
+## Core Modules
+1. Pipeline health and stage visibility
+2. Approval queue for drafts
+3. WhatsApp and outreach queue visibility
+4. Founder daily actions
+5. Opportunity prioritization
+6. Daily scorecards and reports
 
-## السعر
-**5,000 SAR**
+## Recommended Use Case
+Best for Saudi B2B teams that already have leads, conversations, or partial CRM data but lack a reliable daily operating rhythm.
 
-## ما يشمله
-- إعداد Prospects pipeline
-- نظام تقييم أولوية (Priority Engine)
-- خمس رسائل outreach مخصصة
-- ثلاث رسائل متابعة تلقائية
-- Proof pack (before/after)
-- Command Room dashboard (HTML live)
+## Delivery Scope
+- pipeline setup or normalization
+- draft and approval flow
+- command room interface
+- booking visibility
+- founder action summary
+- proof artifact for progress review
 
-## ما لا يشمله
-- تكاملات CRM (HubSpot, Zoho) — ت demand خدمة منفصلة
-- إرسال خارجي (email/WhatsApp) — ت demand خدمة منفصلة
-- تخصيصات custom — تسعيرفردي
+## Guardrails
+- `OUTBOUND_MODE=draft_only`
+- human approval before sensitive outbound
+- no unreviewed AI send
+- no fabricated opportunity scoring claims
 
-## Safety
-- `OUTBOUND_MODE=draft_only` (default)
-- كل رسالة تُولد بواسطة AI تحمل إشارة [AI]
-- كل إرسال يتطلب موافقة founder
-- لا auto-send بدون explicit override file
-
-## إثبات القيمة (Proof Pack)
-1. خريطة Pipeline قبل وبعد
-2. متوسط سرعة الرد (before/after)
-3. عدد المتابعات المنجزة (before/after)
-4. تقرير Command Room اليومي
+## Success Criteria
+- the founder knows what to do today
+- approvals are visible
+- top follow-ups are visible
+- stage movement can be reviewed
+- WhatsApp channel health can be understood quickly

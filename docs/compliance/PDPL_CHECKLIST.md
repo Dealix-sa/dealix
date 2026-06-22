@@ -1,1 +1,59 @@
-# PDPL Compliance Checklist — Saudi Data Protection Law\n\n## المखलص\nDealix تلتزم بكامل نظام حماية البيانات الشخصية في السعودية (PDPL) الوارد في المرسوم الملكي رقم (م/19) بتاريخ 17/09/1443هـ.\n\n## 1. المبادئ العامة (General Principles)\n- [x] **قانونية المعالجة (Lawful Basis)**: أي بيانات شخصية تُجمع بموافقة صريحة أو باسب التعاقد\n- [x] **الغرض المحدد**: البيانات تُجمع فقط لغرض تشغيل Company OS + Revenue Command Room\n- [x] **الحد الأدنى**: لا نجمع بيانات غير ضرورية (data minimization)\n- [x] **الدقة**: نضمن تحديث البيانات + delete outdated\n- [x] **Storage Limitation**: بيانات العميل تُحذف بعد 5 سنوات ما لم يُطلب الاحتفاظ\n- [x] **المسؤولية**: عندك الحق تطلب حذف بياناتك في أي وقت (right to be forgotten)\n\n## 2. حقوق أصحاب البيانات (Data Subject Rights)\n- [x] Right to Access — استعراض أي بيانات تخصك\n- [x] Right to Rectification — تصحيح بياناتك\n- [x] Right to Erasure — طلب حذف بياناتك\n- [x] Right to Restriction — تقييد معالجة بياناتك\n- [x] Right to Data Portability — نقل بياناتك\n- [x] Right to Object — الاعتراض على المعالجة\n\n## 3. الأمان التقني والتنظيمي (Technical & Organizational Measures)\n- [x] **التشفير**: AES-256 للبيانات في rest + TLS 1.3 للبيانات في transit\n- [x] **Access Control**: فقط founder + system admin يمكنه الوصول\n- [x] **Logging**: كل access محسوب في audit log\n- [x] **Backup**: Backups encrypted + stored in KSA\n- [x] **Incident Response**: Procedure واضح لأي breach\n\n## 4. اتفاقية معالجة البيانات (DPA — Data Processing Agreement)\n- [x] **[x] We act as Data Processor**: Dealix تعالج البيانات نيابة عن العميل (Data Controller)\n- [x] **Sub-processors**: لا يوجد ^third-party processors\n- [x] **Audit Rights**: العميل ي حق تدقيق معالجة البيانات\n\n## 5. نقل البيانات الدولي (Cross-Border Transfer)\n- [x] **No Transfer**: لا نقل البيانات الشخصية خارج المملكة العربية السعودية\n- [x] **Hosting**: كل servers\Saudi-based datacenter\n\n## 6. حوكمة الشركات (GDPR-style / PDPL)\n- [x] تولينا لها شخص (DPO) أساسنا هو founder (Sami)\n- [x] **Privacy Policy**: واضحة على الموقع\n- [x] **Cookie Consent**: Opt-in cookies\n- [x] **Lead Generation**: Consent من booking form (consent_email checkbox)\n\n## 7. الامتثال التقني\n- [x] **Database**: MySQL encrypted-at-rest\n- [x] **API**: HTTPS فقط (no http)\n- [x] **Tokens**: JWT short-lived + httpOnly cookies\n- [x] **Secrets**: .env — لا secrets at code\n\n## المستندات المرتبطة\n- `docs/compliance/SDAIA_AI_COMPLIANCE.md` — إضافات AI\n- `src/pages/Booking.tsx` — Consent mechanism\n- `api/middleware.ts` — Auth + rate limiting\n- `docker-compose.yml` — Secure service configs\n
+# PDPL Checklist
+
+## Purpose
+This checklist defines the minimum privacy and data handling controls required for Dealix to operate in a Saudi B2B context.
+
+## Core Principles
+- Collect only data necessary to run the requested workflow
+- Keep a clear business purpose for every collected field
+- Avoid hidden secondary use of customer data
+- Make approval, review, and outbound activity auditable
+
+## Data Categories Used in Dealix
+- contact and booking data
+- company and prospect data
+- conversation and outbound draft data
+- decision, risk, and opportunity records
+- operational reports and proof artifacts
+
+## Required Controls
+
+### 1. Lawful Basis and Purpose
+- [x] Booking flow collects only relevant qualification inputs
+- [x] Outreach and follow-up are tied to explicit business purpose
+- [x] Consent signals are stored when applicable
+
+### 2. Data Minimization
+- [x] Default forms avoid unnecessary personal fields
+- [x] Internal ledgers focus on business context, not excess personal data
+- [x] Generated drafts are stored for review, not sprayed automatically
+
+### 3. Transparency
+- [x] Users can understand what the platform is doing
+- [x] AI-generated outbound is reviewable before send
+- [x] Decision and risk records are visible in the operating interface
+
+### 4. Retention and Review
+- [x] Reports and outbox artifacts should not be committed into Git
+- [x] Teams should define a retention window for conversations and drafts
+- [x] Stale sensitive data should be reviewed and removed periodically
+
+### 5. Security and Access
+- [x] Secrets remain outside the repository
+- [x] Outbound defaults are disabled unless explicitly enabled
+- [x] Sensitive operational changes require human review
+
+### 6. Data Subject and Client Requests
+- [x] Client delivery workflow must identify where data lives
+- [x] Teams should be able to locate booking, contact, and conversation records
+- [x] Deletion or export requests should be handled through controlled internal procedures
+
+## WhatsApp-Specific Controls
+- [x] Official WhatsApp Cloud API only
+- [x] Webhook verification token required
+- [x] No live send by default
+- [x] Template and message events should remain auditable
+
+## Operating Notes
+Dealix should describe itself as compliance-aware and reviewable.
+Dealix should not claim formal certification unless that certification actually exists.

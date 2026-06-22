@@ -1,56 +1,149 @@
-# Dealix — AI Operating Systems for Saudi B2B Companies
+# Dealix — AI Operating Systems for Saudi B2B
 
-**Arabic:** Dealix نبني أنظمة تشغيل (Operating Systems) مدعومة بالذكاء الاصطناعي لتشغيل الإيرادات والمتابعة والقرارات والحوكمة للشركات السعودية B2B.
-
----
-
-## Problem
-> 80% من القرارات التجارية اليومية لديها بيانات، لكن لا توجد لها workflows واضحة لتحويلها إلى نتائج موثقة.
-
-## Solution
-**Dealix = Operating Systems, not tools.**
-
-| # | System | Duration | Price (SAR) |
-|---|--------|----------|-------------|
-| 1 | Revenue Command Room OS | 5 days | 5,000 |
-| 2 | Company Brain OS | 7 days | 7,500 |
-| 3 | Client Delivery OS | 10 days | 10,000 |
-| 4 | AI Trust & Compliance OS | 7 days | 12,500 |
-| 5 | WhatsApp / Inbox Follow-up OS | 5 days | 15,000 |
-
-**Full Investment:** 50,000 SAR (35% discount)
+Dealix is a daily operating system for Saudi B2B founders and teams.
+It connects revenue, follow-up, decisions, compliance, and client delivery
+into one platform — replacing scattered tools with disciplined AI operations.
 
 ---
 
-## Getting Started
+## Quick Start (5 steps)
 
-### Prerequisites
-- Docker + Docker Compose
-- Node.js 20+
-- Python 3.11+
-- MySQL 8.0
+### Option A: Automated Setup
 
-### Install
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/Dealix-sa/dealix.git
+cd dealix
+powershell -ExecutionPolicy Bypass -File scripts/setup_local.ps1
+```
+
+**macOS / Linux:**
 ```bash
 git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
-cp .env.example .env
-npm install
+bash scripts/setup_local.sh
 ```
 
-### Run
+### Option B: Manual Setup
+
 ```bash
-# Start MySQL + Redis
-npm run services:up
+# 1. Clone and install
+git clone https://github.com/Dealix-sa/dealix.git
+cd dealix
+npm install
 
-# Run development
-npm run dev
+# 2. Configure environment
+#    Copy values from docs/ops/ENVIRONMENT_VARIABLES.md into .env
+#    Minimum: DATABASE_URL=mysql://dealix:dealix_pass_2026@localhost:3306/dealix
 
-# Generate company-day report
-npm run company-day
+# 3. Start MySQL (Docker)
+docker compose up -d mysql
 
-# Run safety checks
-npm run production-check
+# 4. Push database schema
+npm run db:push
+
+# 5. Verify everything
+npm run check && npm run build && npm run production-check
+```
+
+Expected result: `LAUNCH DECISION: GO`
+
+### Option C: Full Docker (no local Node/MySQL needed)
+
+```bash
+docker compose up --build
+```
+
+This starts MySQL + the production app on `http://localhost:3000`.
+
+---
+
+## Prerequisites
+
+| Tool | Version | Required |
+|------|---------|----------|
+| Node.js | 20+ | Yes |
+| Python | 3.11+ | For operational scripts |
+| Docker | 24+ | For containerized deployment |
+| MySQL | 8.0+ | Or use Docker Compose |
+
+---
+
+## Core Systems
+
+| System | What It Does |
+|--------|-------------|
+| **Revenue Command Room OS** | Pipeline, drafts, follow-ups, founder daily actions |
+| **Company Brain OS** | Signals, risks, decisions, opportunities with discipline |
+| **WhatsApp Follow-up OS** | WhatsApp Cloud API + templates + approval before send |
+| **AI Trust & Compliance OS** | PDPL + SDAIA + human review gates |
+| **Client Delivery OS** | intake -> diagnosis -> blueprint -> sprint -> proof |
+
+---
+
+## Safety Defaults
+
+All outbound communication is **draft-only** by default.
+No message leaves the system without human approval.
+
+```env
+EXTERNAL_SEND_ENABLED=false
+EMAIL_SEND_ENABLED=false
+WHATSAPP_SEND_ENABLED=false
+WHATSAPP_ALLOW_LIVE_SEND=false
+SMS_SEND_ENABLED=false
+OUTBOUND_MODE=draft_only
+WHATSAPP_AGENT_MODE=dry_run
+```
+
+To verify safety at any time:
+```bash
+npm run outbound-dry
+```
+
+---
+
+## Development
+
+```bash
+npm run dev        # Start dev server with HMR
+npm run check      # TypeScript type-check
+npm run build      # Production build
+npm run preview    # Preview production build locally
+```
+
+---
+
+## Daily Operations
+
+```bash
+npm run company-day        # Launch check + revenue engine + war room
+npm run command-room       # Revenue command room generation
+npm run full-revenue-day   # Revenue + outreach + war room sequence
+npm run brain-day          # Governance + revenue scorecard
+npm run client-day         # Client delivery workflow
+npm run outbound-dry       # Safety gate verification
+npm run production-check   # Full launch readiness check
+```
+
+---
+
+## Environment Variables
+
+Full reference: [`docs/ops/ENVIRONMENT_VARIABLES.md`](docs/ops/ENVIRONMENT_VARIABLES.md)
+
+**Required:**
+```env
+DATABASE_URL=mysql://dealix:dealix_pass_2026@localhost:3306/dealix
+NODE_ENV=development
+PORT=3000
+```
+
+**WhatsApp (when ready):**
+```env
+WHATSAPP_ACCESS_TOKEN=your_token
+WHATSAPP_PHONE_NUMBER_ID=your_phone_id
+WHATSAPP_WEBHOOK_VERIFY_TOKEN=your_verify_token
 ```
 
 ---
@@ -58,67 +151,105 @@ npm run production-check
 ## Project Structure
 
 ```
-dealix/
-├── api/                    # Hono + tRPC routers
-│   ├── auth-router.ts
-│   ├── brain-router.ts
-│   ├── booking-router.ts
-│   ├── command-room-router.ts
-│   ├── deal-router.ts
-│   ├── prospect-router.ts
-│   └── activity-router.ts
-├── src/                    # React + Vite + TailwindCSS
-│   ├── pages/
-│   │   ├── BrainOS.tsx
-│   │   ├── CommandRoom.tsx
-│   │   ├── Booking.tsx
-│   │   └── Dashboard.tsx
-│   └── sections/
-│       └── Hero.tsx
-├── db/
-│   ├── schema.ts            # MySQL + Drizzle ORM
-│   └── seed.ts
-├── scripts/
-│   ├── revenue_engine.py
-│   ├── outreach_engine.py
-│   ├── client_delivery.py
-│   ├── verify_no_auto_external_send.py
-│   └── verify_company_launch_ready.py
-├── docs/
-│   ├── brand/               # Brand OS, Voice, Positioning
-│   ├── company/             # Company OS
-│   └── compliance/          # SDAIA AI, PDPL
-├── business/
-│   └── products/            # Product specs
-├── sales/
-│   ├── ONE_PAGE_OFFER_AR.md
-│   ├── DISCOVERY_SCRIPT_AR.md
-│   ├── OBJECTION_HANDLING_AR.md
-│   └── FOLLOW_UP_SEQUENCE_AR.md
-├── clients/
-│   └── _template/           # Client Delivery template
-└── company_os/
-    ├── command_room/
-    ├── war_room/
-    ├── ledgers/
-    └── reports/
+api/                  Hono + tRPC backend
+  boot.ts             Server entry point
+  router.ts           Root tRPC router
+  booking-router.ts   Booking management
+  brain-router.ts     Brain OS operations
+  command-room-router.ts  Revenue command room
+  whatsapp-router.ts  WhatsApp integration
+src/                  React + Vite frontend
+  pages/              Main application pages
+  sections/           Homepage sections
+  components/ui/      shadcn/ui components
+db/                   Drizzle ORM schema
+scripts/              Operational engines and checks
+  setup_local.sh      Unix setup script
+  setup_local.ps1     Windows setup script
+docs/                 Brand, ops, compliance docs
+  ops/                Operational guides
+  compliance/         PDPL + SDAIA documentation
+business/products/    Product definitions and packaging
+clients/_template/    Client delivery templates
+company_os/           Reports, ledgers, operating artifacts
 ```
 
 ---
 
-## Safety
+## Deployment
 
-Every AI-generated message is tagged with **[AI]** and requires manual Founder approval before sending.
+### Docker Compose (Recommended)
 
-| Gate | Command |
-|------|---------|
-| No auto-send | `OUTBOUND_MODE=draft_only` |
-| Launch check | `npm run production-check` |
-| Safety gate | `python scripts/verify_no_auto_external_send.py` |
+```bash
+# Production with MySQL
+docker compose up --build -d
+
+# Check health
+docker compose ps
+docker compose logs app
+```
+
+### Manual Production
+
+```bash
+npm run build
+NODE_ENV=production node dist/boot.js
+```
+
+### Pre-deployment Checklist
+
+See [`docs/ops/GO_LIVE_CHECKLIST.md`](docs/ops/GO_LIVE_CHECKLIST.md) for the complete go-live checklist.
+
+---
+
+## Architecture
+
+```
+Browser
+  |
+  v
+React SPA (Vite) ---- Static assets (dist/public/)
+  |
+  v
+tRPC Client
+  |
+  v
+Hono Server + tRPC Router (dist/boot.js)
+  |
+  +---> booking-router     --> MySQL (Drizzle ORM)
+  +---> command-room-router --> MySQL (Drizzle ORM)
+  +---> brain-router        --> MySQL (Drizzle ORM)
+  +---> whatsapp-router     --> WhatsApp Cloud API (draft_only)
+  |
+  v
+MySQL 8.0 (PlanetScale compatible)
+```
+
+---
+
+## Compliance and Trust
+
+- [`docs/compliance/PDPL_CHECKLIST.md`](docs/compliance/PDPL_CHECKLIST.md) — Saudi Personal Data Protection Law
+- [`docs/compliance/SDAIA_AI_COMPLIANCE.md`](docs/compliance/SDAIA_AI_COMPLIANCE.md) — SDAIA AI Ethics
+
+Operating principles:
+- Human approval before all outbound communication
+- Minimal necessary data handling
+- Audit-friendly event logging
+- No fabricated ROI claims or testimonials
+
+---
+
+## Product Positioning
+
+Dealix is for B2B teams that already have leads, WhatsApp conversations,
+spreadsheets, and delivery workflows — but lack prioritization,
+reliable follow-up, decision visibility, and compliance-safe AI operations.
+
+See [`business/products/PRICING_AND_PACKAGING.md`](business/products/PRICING_AND_PACKAGING.md) for packaging details.
 
 ---
 
 ## License
-Proprietary — Dealix-sa
 
-*Built for Saudi Arabia with governance first.*
+Proprietary — Dealix-sa

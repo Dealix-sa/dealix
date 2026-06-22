@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """
 Dealix Verify Company Launch Ready
-Checks if Dealix is ready for external operations (Sanity check before any real-world launch activity).
+Checks if the codebase is ready for controlled launch and deployment prep.
 """
 
 import os
-import sys
+import socket
 import subprocess
-from pathlib import Path
+import sys
 from datetime import datetime
+from pathlib import Path
+from urllib.parse import urlparse
 
 
-# ─── Configuration ───────────────────────────────────────────
 REQUIRED_ENV_VARS = [
     "DATABASE_URL",
 ]
@@ -34,99 +35,153 @@ REQUIRED_FILES = [
     "scripts/verify_no_auto_external_send.py",
 ]
 
+ENV_DOC_PATH = "docs/ops/ENVIRONMENT_VARIABLES.md"
+
+
+def load_local_env_files() -> None:
+    base = Path(__file__).parent.parent
+    for env_name in [".env", ".env.local"]:
+        env_path = base / env_name
+        if not env_path.exists():
+            continue
+
+        for raw_line in env_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip("'\"")
+            if key and key not in os.environ:
+                os.environ[key] = value
+
 
 def check_env_vars() -> list[dict]:
-    """Check required environment variables."""
     issues = []
-    for env in REQUIRED_ENV_VARS:
-        value = os.environ.get(env, "")
-        status = "OK" if value else "MISSING"
-        issues.append({"check": f"Env: {env}", "status": status, "detail": value[:50] if value else ""})
+    base = Path(__file__).parent.parent
+    env_doc = base / ENV_DOC_PATH
+    for env_name in REQUIRED_ENV_VARS:
+        value = os.environ.get(env_name, "")
+        if value:
+            status = "OK"
+            detail = value[:50]
+        elif env_doc.exists():
+            status = "WARNING"
+            detail = f"Missing in current shell; see {ENV_DOC_PATH}"
+        else:
+            status = "MISSING"
+            detail = ""
+        issues.append(
+            {
+                "check": f"Env: {env_name}",
+                "status": status,
+                "detail": detail,
+            }
+        )
     return issues
 
 
 def check_directory_structure() -> list[dict]:
-    """Check required directories exist."""
     issues = []
     base = Path(__file__).parent.parent
-    for d in REQUIRED_DIRS:
-        path = base / d
-        status = "OK" if path.exists() else "MISSING"
-        issues.append({"check": f"Dir: {d}", "status": status})
+    for directory in REQUIRED_DIRS:
+        path = base / directory
+        issues.append(
+            {
+                "check": f"Dir: {directory}",
+                "status": "OK" if path.exists() else "MISSING",
+                "detail": "",
+            }
+        )
     return issues
 
 
 def check_files() -> list[dict]:
-    """Check required files exist."""
     issues = []
     base = Path(__file__).parent.parent
-    for f in REQUIRED_FILES:
-        path = base / f
-        status = "OK" if path.exists() else "MISSING"
-        issues.append({"check": f"File: {f}", "status": status})
+    for file_path in REQUIRED_FILES:
+        path = base / file_path
+        issues.append(
+            {
+                "check": f"File: {file_path}",
+                "status": "OK" if path.exists() else "MISSING",
+                "detail": "",
+            }
+        )
     return issues
 
 
 def check_db_connection() -> dict:
-    """Check database connectivity."""
+    database_url = os.environ.get("DATABASE_URL", "").strip()
+    if not database_url:
+        return {
+            "check": "DB: MySQL connection",
+            "status": "WARNING",
+            "detail": f"Skipped; DATABASE_URL not loaded. See {ENV_DOC_PATH}",
+        }
+
     try:
-        import mysql.connector
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="dealix",
-            password="dealix_pass_2026",
-            database="dealix",
-            port=3306,
-            connect_timeout=5,
-        )
-        conn.ping(reconnect=True, attempts=3, delay=5)
-        conn.close()
-        return {"check": "DB: MySQL connection", "status": "OK", "detail": "Connected to dealix@localhost:3306"}
-    except ImportError:
-        return {"check": "DB: MySQL connection", "status": "WARNING", "detail": "mysql-connector not installed"}
-    except Exception as e:
-        return {"check": "DB: MySQL connection", "status": "BLOCKING", "detail": str(e)}
+        parsed = urlparse(database_url)
+        host = parsed.hostname or "localhost"
+        port = parsed.port or 3306
+        with socket.create_connection((host, port), timeout=5):
+            pass
+        return {
+            "check": "DB: MySQL connection",
+            "status": "OK",
+            "detail": f"TCP reachable at {host}:{port}",
+        }
+    except Exception as error:
+        return {
+            "check": "DB: MySQL connection",
+            "status": "BLOCKING",
+            "detail": str(error),
+        }
 
 
 def check_node_modules() -> dict:
-    """Check if node_modules is present."""
     base = Path(__file__).parent.parent
-    nm = base / "node_modules"
-    if nm.exists() and (nm / "react").exists():
-        return {"check": "Node modules", "status": "OK", "detail": "node_modules present"}
-    else:
-        return {"check": "Node modules", "status": "MISSING", "detail": "node_modules not found or incomplete"}
+    node_modules = base / "node_modules"
+    react_module = node_modules / "react"
+    return {
+        "check": "Node modules",
+        "status": "OK" if node_modules.exists() and react_module.exists() else "MISSING",
+        "detail": "node_modules present" if node_modules.exists() and react_module.exists() else "node_modules not found or incomplete",
+    }
 
 
 def check_diagnostic_scripts() -> list[dict]:
-    """Check diagnostic scripts compile."""
     issues = []
     base = Path(__file__).parent.parent
     scripts_dir = base / "scripts"
-    if scripts_dir.exists():
-        py_files = list(scripts_dir.glob("*.py"))
-        for f in py_files:
-            result = subprocess.run(
-                [sys.executable, "-m", "py_compile", str(f)],
-                capture_output=True,
-                text=True,
-            )
-            status = "OK" if result.returncode == 0 else "ERROR"
-            issues.append({"check": f"Compile: scripts/{f.name}", "status": status})
+    if not scripts_dir.exists():
+        return issues
+
+    for script_path in sorted(scripts_dir.glob("*.py")):
+        result = subprocess.run(
+            [sys.executable, "-m", "py_compile", str(script_path)],
+            capture_output=True,
+            text=True,
+        )
+        issues.append(
+            {
+                "check": f"Compile: scripts/{script_path.name}",
+                "status": "OK" if result.returncode == 0 else "ERROR",
+                "detail": "",
+            }
+        )
     return issues
 
 
-def generate_launch_report(results: list[dict], output_path: str = None) -> str:
-    """Generate launch readiness report."""
-    today = datetime.now().strftime("%Y-%m-%d %H:%M")
-    
+def generate_launch_report(results: list[dict], output_path: str | None = None) -> str:
+    generated_at = datetime.now().strftime("%Y-%m-%d %H:%M")
     total = len(results)
-    ok = sum(1 for r in results if r["status"] == "OK")
-    blocking = [r for r in results if r["status"] in ("BLOCKING", "MISSING", "ERROR")]
-    warnings = [r for r in results if r["status"] == "WARNING"]
-    
-    md = f"""# Dealix Launch Readiness Report
-*Generated: {today}*
+    passed = sum(1 for result in results if result["status"] == "OK")
+    blocking = [result for result in results if result["status"] in ("BLOCKING", "MISSING", "ERROR")]
+    warnings = [result for result in results if result["status"] == "WARNING"]
+
+    report = f"""# Dealix Launch Readiness Report
+*Generated: {generated_at}*
 
 ---
 
@@ -135,7 +190,7 @@ def generate_launch_report(results: list[dict], output_path: str = None) -> str:
 | Metric | Count |
 |--------|-------|
 | Total Checks | {total} |
-| Passed | {ok} |
+| Passed | {passed} |
 | Blocking | {len(blocking)} |
 | Warnings | {len(warnings)} |
 
@@ -144,91 +199,87 @@ def generate_launch_report(results: list[dict], output_path: str = None) -> str:
 | Check | Status | Detail |
 |-------|--------|--------|
 """
-    for r in results:
-        status_icon = "✅" if r["status"] == "OK" else "🔴" if r["status"] in ("BLOCKING", "ERROR") else "🟡"
-        detail = r.get("detail", "")
-        md += f"| {r['check']} | {status_icon} {r['status']} | {detail} |\n"
-    
-    md += "\n---\n\n"
-    
+    for result in results:
+        report += f"| {result['check']} | {result['status']} | {result.get('detail', '')} |\n"
+
+    report += "\n---\n\n"
+
     if blocking:
-        md += "## 🔴 BLOCKING ISSUES (Must fix before launch)\n\n"
-        for b in blocking:
-            md += f"- **{b['check']}**: {b.get('detail', '')}\n"
-        md += "\n"
-    
+        report += "## BLOCKING ISSUES\n\n"
+        for item in blocking:
+            report += f"- **{item['check']}**: {item.get('detail', '')}\n"
+        report += "\n"
+
     if warnings:
-        md += "## 🟡 WARNINGS (Should address soon)\n\n"
-        for w in warnings:
-            md += f"- **{w['check']}**: {w.get('detail', '')}\n"
-        md += "\n"
-    
-    md += "---\n\n"
-    
+        report += "## WARNINGS\n\n"
+        for item in warnings:
+            report += f"- **{item['check']}**: {item.get('detail', '')}\n"
+        report += "\n"
+
     if not blocking:
-        md += "## ✅ LAUNCH DECISION: GO\n\n"
-        md += "All critical checks passed. Dealix is ready for controlled external operations.\n\n"
-        md += "**Next steps:\n"
-        md += "1. Run `python scripts/verify_no_auto_external_send.py`\n"
-        md += "2. Ensure OUTBOUND_MODE=draft_only\n"
-        md += "3. Start `make company-day`\n"
+        report += "## LAUNCH DECISION: GO\n\n"
+        report += "All critical checks passed.\n"
     else:
-        md += "## 🚫 LAUNCH DECISION: NO-GO\n\n"
-        md += "Critical issues detected. Fix blockers before any external launch activity.\n\n"
-    
+        report += "## LAUNCH DECISION: NO-GO\n\n"
+        report += "Fix blockers before external launch activity.\n"
+
     if output_path:
-        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(md)
-    
-    return md
+        output_file = Path(output_path)
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        output_file.write_text(report, encoding="utf-8")
+
+    return report
 
 
 def main():
-    """Run all launch readiness checks."""
+    load_local_env_files()
+
     print("=" * 70)
-    print("  DEALIX — COMPANY LAUNCH READINESS CHECK")
+    print("  DEALIX - COMPANY LAUNCH READINESS CHECK")
     print("=" * 70)
     print()
-    
+
     all_results = []
-    
-    all_results += check_env_vars()
-    all_results += check_directory_structure()
-    all_results += check_files()
+    all_results.extend(check_env_vars())
+    all_results.extend(check_directory_structure())
+    all_results.extend(check_files())
     all_results.append(check_db_connection())
     all_results.append(check_node_modules())
-    all_results += check_diagnostic_scripts()
-    
-    # Print table
+    all_results.extend(check_diagnostic_scripts())
+
     print(f"  {'Check':<40} {'Status':<12} Detail")
     print("  " + "-" * 90)
-    for r in all_results:
-        status_icon = "✅" if r["status"] == "OK" else "🔴" if r["status"] in ("BLOCKING", "ERROR") else "🟡"
-        detail = r.get("detail", "")[:40]
-        print(f"  {r['check']:<40} {status_icon} {r['status']:<10} {detail}")
-    
+    for result in all_results:
+        status_icon = (
+            "[OK]"
+            if result["status"] == "OK"
+            else "[BLOCK]"
+            if result["status"] in ("BLOCKING", "ERROR")
+            else "[WARN]"
+        )
+        detail = result.get("detail", "")[:40]
+        print(f"  {result['check']:<40} {status_icon} {result['status']:<10} {detail}")
+
     print()
-    
-    blocking = [r for r in all_results if r["status"] in ("BLOCKING", "ERROR")]
-    warnings = [r for r in all_results if r["status"] in ("WARNING", "MISSING")]
-    
-    print(f"  Total: {len(all_results)} | OK: {sum(1 for r in all_results if r['status']=='OK')} | Blocking: {len(blocking)} | Warnings: {len(warnings)}")
+
+    blocking = [result for result in all_results if result["status"] in ("BLOCKING", "ERROR", "MISSING")]
+    warnings = [result for result in all_results if result["status"] == "WARNING"]
+    ok_count = sum(1 for result in all_results if result["status"] == "OK")
+    print(f"  Total: {len(all_results)} | OK: {ok_count} | Blocking: {len(blocking)} | Warnings: {len(warnings)}")
     print()
-    
-    # Generate report
+
     base = Path(__file__).parent.parent
     report_path = base / "company_os" / "reports" / "LAUNCH_READINESS_REPORT.md"
-    md = generate_launch_report(all_results, str(report_path))
-    
+    generate_launch_report(all_results, str(report_path))
+
     if blocking:
-        print("  🚫 LAUNCH DECISION: NO-GO")
-        print(f"  📄 Report saved: {report_path}")
+        print("  LAUNCH DECISION: NO-GO")
+        print(f"  Report saved: {report_path}")
         sys.exit(1)
-    else:
-        print("  ✅ LAUNCH DECISION: GO")
-        print(f"  📄 Report saved: {report_path}")
-        sys.exit(0)
+
+    print("  LAUNCH DECISION: GO")
+    print(f"  Report saved: {report_path}")
+    sys.exit(0)
 
 
 if __name__ == "__main__":

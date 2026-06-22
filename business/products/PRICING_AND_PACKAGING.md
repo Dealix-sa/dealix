@@ -1,97 +1,76 @@
-# Pricing & Packaging — Dealix
+# Dealix Pricing and Packaging
 
-## Strategy
-فروق أسعارنا بناءً على:
-- **Complexity**: عدد الأنظمة المطلوبة
-- **Duration**: مدة التنفيذ
-- **Value-based**: السعر مبني على القيمة المتوقعة (ROI) لا على الساعات
-- **Risk-reversal**: Proof pack لكل مشروع
+## Positioning
+Dealix does not sell a chatbot.
+Dealix sells operating systems for Saudi B2B companies:
+- Revenue Command Room OS
+- Company Brain OS
+- WhatsApp Follow-up OS
+- AI Trust & Compliance OS
+- Client Delivery OS
 
-## المنتجات
+## Commercial Ladder
 
-### P1 — Revenue Command Room OS
-**السعر:** 5,000 SAR
-**المدة:** 5 أيام
-**القيمة:** 30% زيادة في الردود + رؤية Pipeline واضحة
-**المحتوى:**
-- Pipeline setup + Prospect scoring
-- 5 Outreach drafts (Arabic/English)
-- Follow-up sequence (Day 0, 3, 7, 14)
-- CEO Daily Report (HTML)
-- Command Room dashboard
-- Proof pack (before/after)
+### 1. Diagnostic Sprint
+- Price: 5,000 SAR
+- Duration: 3-5 business days
+- Best for: teams that know something is broken in follow-up, visibility, or founder decision flow
+- Includes:
+  - operating diagnosis
+  - revenue leakage review
+  - booking and follow-up audit
+  - priority recommendations
+  - suggested next operating system to build first
 
-### P2 — Company Brain OS
-**السعر:** 7,500 SAR
-**المدة:** 7 أيام
-**القيمة:** قرارات سريعة + رؤية استراتيجية واضحة
-**المحتوى:**
-- Company Brain Map
-- Daily Decision Desk
-- Future Radar (3 scenarios)
-- Bottleneck Scanner
-- Assumptions Log
-- Proof pack
+### 2. Command Room Build
+- Price: from 15,000 SAR
+- Duration: 1 foundational sprint
+- Best for: companies that need a usable revenue cockpit now
+- Includes:
+  - pipeline visibility
+  - approval queue
+  - draft workflows
+  - booking flow
+  - WhatsApp official integration path
+  - reporting and founder actions
 
-### P3 — Client Delivery OS
-**السعر:** 10,000 SAR
-**المدة:** 10 أيام
-**القيمة:** تسليم بـ حوكمة + Proof pack لكل مشروع
-**المحتوى:**
-- Intake system
-- Diagnosis report
-- Solution Blueprint
-- Delivery (5 phases)
-- Training docs
-- Proof Pack
+### 3. Company Brain Build
+- Price: from 12,500 SAR
+- Duration: 1 foundational sprint
+- Best for: teams with many decisions but weak decision discipline
+- Includes:
+  - signals map
+  - decisions register
+  - risk register
+  - opportunity register
+  - action ownership structure
 
-### P4 — AI Trust & Compliance OS
-**السعر:** 12,500 SAR
-**المدة:** 7 أيام
-**القيمة:** حوكمة AI + Audit trail + SDAIA/PDPL Compliance
-**المحتوى:**
-- AI Governance framework
-- Safety gates (verify scripts)
-- Audit-ready logs
-- PDPL compliance docs
-- SDAIA alignment
-- Manual approval flows
+### 4. Monthly Operating Partner
+- Price: from 8,000 SAR / month
+- Best for: teams that want ongoing operating support and optimization
+- Includes:
+  - weekly operating review
+  - draft and approval cadence
+  - KPI review
+  - proof packs
+  - compliance and governance review
 
-### P5 — WhatsApp / Inbox Follow-up OS
-**السعر:** 15,000 SAR
-**المدة:** 5 أيام
-**القيمة:** متابعات آلية بموافقة يدوية + إحصائيات
-**المحتوى:**
-- Multi-channel sequences
-- Approval queue
-- Performance analytics
-- Integration with CRM
-- Safety (No auto-send)
+## Product Packaging Notes
+- Start with the smallest credible scope that solves a real operating problem
+- Move to monthly support only after a usable operating system exists
+- Keep founder visibility high
+- Keep compliance claims conservative and provable
 
-### Full Dealix Stack
-**السعر:** 50,000 SAR (توفير 35%)
-**المدة:** 21 يوم
-**القيمة:** تحويل الشركة لنظام تشغيل AI كامل
-**المحتوى:** P1 + P2 + P3 + P4 + P5 + Continuous monitoring
+## Guardrails
+- No fake ROI claims
+- No fake testimonials
+- No live outbound by default
+- No compliance claims without supporting controls
+- Every sensitive outbound flow must remain approval-gated
 
-## المقارنة
-
-| Feature | P1 | P2 | P3 | Full |
-|---------|----|----|----|------|
-| Pipeline | ✅ | ✅ | ✅ | ✅ |
-| Outreach Drafts | ✅ | ✅ | ✅ | ✅ |
-| Follow-up | ✅ | ✅ | ✅ | ✅ |
-| Command Room | ✅ | ✅ | ✅ | ✅ |
-| Brain Map | ❌ | ✅ | ✅ | ✅ |
-| Decision Desk | ❌ | ✅ | ✅ | ✅ |
-| Future Radar | ❌ | ✅ | ✅ | ✅ |
-| Delivery OS | ❌ | ❌ | ✅ | ✅ |
-| Compliance | ✅ (basic) | ❌ | ❌ | ✅ |
-| 30-Day Support | ❌ | ✅ | ✅ | ✅ |
-| Dedicated PM | ❌ | ❌ | ✅ | ✅ |
-
-## Policy
-- **Payment**: 50% upfront, 50% on Proof acceptance
-- **Scope changes**: Extra sprint (5,000 SAR)
-- **Refund**: إذا لم يوجد Proof pack أو لم تكن النتيجة مرضية → Refund full
-- **Maintenance**: 10% من قيمة المشروع شهرياً (optional)
+## Sales Notes
+Use founder-led language:
+- We help you see what the company should do next
+- We reduce operational ambiguity
+- We create reviewable systems, not flashy automation
+- We keep control, trust, and auditability intact

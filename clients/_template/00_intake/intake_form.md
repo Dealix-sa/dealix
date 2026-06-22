@@ -1,33 +1,36 @@
 # Intake Form
 
 ## Client Information
-- **Client Name:**
-- **Company:**
-- **Role:**
-- **Email:**
-- **Phone:**
-- **Website:**
+- Client name:
+- Company:
+- Role:
+- Email:
+- Phone:
+- Website:
 
-## Current State
-- **Current tools:** (Excel, CRM, WhatsApp, Notion, etc.)
-- **Main pain:** (Leads missing, slow follow-up, no reporting, AI confusion)
-- **Revenue target (monthly):**
-- **Team size:**
-- **CRM used:**
+## Current Operating State
+- Current tools:
+- Current channels:
+- Current booking or pipeline process:
+- Current follow-up process:
+- Main operating bottleneck:
+- Revenue target:
+- Team size:
 
-## Goals
-| Goal | Priority | Timeline |
-|------|----------|----------|
-| | | |
+## Desired Outcome
+- What should improve in the next 30 days?
+- What should become visible that is currently hidden?
+- Which system should be built first?
 
-## Access & Permissions
-- [ ] Database access provided
-- [ ] CRM credentials shared
-- [ ] Analytics access
-- [ ] WhatsApp Business verified
-- [ ] Domain access
+## Access and Permissions
+- [ ] database access provided
+- [ ] CRM or spreadsheet access provided
+- [ ] WhatsApp Business details reviewed
+- [ ] analytics access reviewed
+- [ ] domain or email setup reviewed when relevant
 
-## Approval
-- [ ] Intake reviewed by Dealix
-- [ ] Client confirmed
-- [ ] Initial payment received (50%)
+## Trust and Compliance Notes
+- Sensitive data categories:
+- Approval owner:
+- Retention concerns:
+- Channel restrictions:
