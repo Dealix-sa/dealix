@@ -25,5 +25,25 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Split vendor dependencies into separate chunks
+          if (id.includes('node_modules')) {
+            if (id.includes('react-dom') || id.includes('react-router')) {
+              return 'vendor-react';
+            }
+            if (id.includes('recharts') || id.includes('d3')) {
+              return 'vendor-charts';
+            }
+            if (id.includes('@radix-ui') || id.includes('class-variance-authority') || id.includes('cmdk')) {
+              return 'vendor-ui';
+            }
+            return 'vendor-misc';
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
   },
 });
