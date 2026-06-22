@@ -27,6 +27,28 @@ SEGMENT_WEIGHT = {
 }
 
 
+SCORING_DIMENSIONS = ("fit", "pain_clarity", "budget_signal", "urgency")
+
+
+def score_lead(lead: dict) -> dict:
+    """Deterministic dimension-based scoring used by the V3 test bundle.
+
+    Sums ``fit`` + ``pain_clarity`` + ``budget_signal`` + ``urgency`` and
+    assigns a tier (A >= 80, B >= 60, C >= 40, D otherwise).
+    """
+    score = sum(int(lead.get(dim, 0)) for dim in SCORING_DIMENSIONS)
+    score = min(100, max(0, score))
+    if score >= 80:
+        tier = "A"
+    elif score >= 60:
+        tier = "B"
+    elif score >= 40:
+        tier = "C"
+    else:
+        tier = "D"
+    return {"score": score, "tier": tier}
+
+
 def score(account: dict) -> int:
     base = 30
     base += SEGMENT_WEIGHT.get(account.get("segment", ""), 5)
