@@ -30,6 +30,9 @@ import {
   Zap,
   RefreshCw,
   Plus,
+  CalendarClock,
+  Globe,
+  ArrowUpRight,
 } from "lucide-react";
 
 const statusColors: Record<string, string> = {
@@ -58,6 +61,8 @@ export default function Dashboard() {
   const prospectStats = trpc.prospect.stats.useQuery();
   const dealStats = trpc.deal.stats.useQuery();
   const activityStats = trpc.activity.stats.useQuery();
+  const bookingStats = trpc.booking.stats.useQuery();
+  const bookings = trpc.booking.list.useQuery();
   const seedMutation = trpc.warRoom.seed.useMutation();
 
   const seedData = async () => {
@@ -380,6 +385,65 @@ export default function Dashboard() {
               ))}
               {recentActivities.length === 0 && (
                 <p className="text-sm text-[#8CB3B0] text-center py-4">لا توجد أنشطة بعد</p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Website Inbox - Messages from Website Booking */}
+        <Card className="bg-white border-[#E8F4F3]">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-[#0A1F1E] text-lg flex items-center gap-2">
+              <Globe className="w-5 h-5 text-[#15807A]" />
+              Website Inbox — طلبات التشخيص
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3 mb-4">
+              <div className="bg-[#F0F9F8] rounded-lg p-4 text-center">
+                <CalendarClock className="w-6 h-6 text-[#15807A] mx-auto mb-2" />
+                <p className="text-2xl font-bold text-[#0A1F1E]">{bookingStats.data?.total ?? 0}</p>
+                <p className="text-xs text-[#4A6B69]">إجمالي الطلبات</p>
+              </div>
+              <div className="bg-[#F0F9F8] rounded-lg p-4 text-center">
+                <CalendarClock className="w-6 h-6 text-[#D4A843] mx-auto mb-2" />
+                <p className="text-2xl font-bold text-[#0A1F1E]">{bookingStats.data?.scheduled ?? 0}</p>
+                <p className="text-xs text-[#4A6B69]">في الانتظار</p>
+              </div>
+              <div className="bg-[#F0F9F8] rounded-lg p-4 text-center">
+                <ArrowUpRight className="w-6 h-6 text-[#2A9D8F] mx-auto mb-2" />
+                <p className="text-2xl font-bold text-[#0A1F1E]">
+                  {bookingStats.data && bookingStats.data.total > 0
+                    ? Math.round((bookingStats.data.scheduled / bookingStats.data.total) * 100)
+                    : 0}%
+                </p>
+                <p className="text-xs text-[#4A6B69]">نسبة التحويل</p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {bookings.data?.slice(0, 5).map((booking: any) => (
+                <div key={booking.id} className="flex items-center justify-between p-3 bg-[#F0F9F8] rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-[#15807A]/10 rounded-lg flex items-center justify-center">
+                      <CalendarClock className="w-5 h-5 text-[#15807A]" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-[#0A1F1E]">{booking.name}</p>
+                      <p className="text-xs text-[#4A6B69]">{booking.company} — {booking.role}</p>
+                    </div>
+                  </div>
+                  <div className="text-left">
+                    <Badge className={`${booking.status === "scheduled" ? "bg-yellow-100 text-yellow-700" : "bg-green-100 text-green-700"} text-[10px]`}>
+                      {booking.status === "scheduled" ? "في الانتظار" : booking.status}
+                    </Badge>
+                    {booking.pain && (
+                      <p className="text-[10px] text-[#8CB3B0] mt-1">التحدي: {booking.pain}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {(!bookings.data || bookings.data.length === 0) && (
+                <p className="text-sm text-[#8CB3B0] text-center py-4">لا توجد طلبات تشخيص حتى الآن.</p>
               )}
             </div>
           </CardContent>

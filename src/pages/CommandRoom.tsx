@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { trpc } from "@/providers/trpc";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -12,13 +14,18 @@ import {
   AlertTriangle,
   BarChart3,
   CheckCircle2,
+  ChevronDown,
+  ChevronUp,
   ClipboardCheck,
   FileCheck,
   Mail,
   MessageSquare,
+  Phone,
+  Plus,
   Send,
   ShieldCheck,
   Target,
+  X,
 } from "lucide-react";
 
 const stageLabels: Record<string, string> = {
@@ -46,6 +53,43 @@ export default function CommandRoom() {
   const whatsappMessageStats = trpc.whatsapp.messageStats.useQuery();
   const whatsappTemplates = trpc.whatsapp.templateList.useQuery();
 
+  // WhatsApp UI state
+  const [expandedConversation, setExpandedConversation] = useState<number | null>(null);
+  const [newMessage, setNewMessage] = useState("");
+  const [showNewMessageForm, setShowNewMessageForm] = useState<number | null>(null);
+
+  // Fetch messages when conversation is expanded
+  const conversationMessages = trpc.whatsapp.messageList.useQuery(
+    { conversationId: expandedConversation ?? 0 },
+    { enabled: expandedConversation !== null }
+  );
+
+  // WhatsApp mutations
+  const sendText = trpc.whatsapp.sendText.useMutation({
+    onSuccess: () => {
+      utils.whatsapp.conversationList.invalidate();
+      utils.whatsapp.messageList.invalidate();
+      utils.whatsapp.messageStats.invalidate();
+      utils.commandRoom.whatsappOverview.invalidate();
+      setNewMessage("");
+      setShowNewMessageForm(null);
+    },
+  });
+
+  const approveMessage = trpc.whatsapp.approveMessage.useMutation({
+    onSuccess: () => {
+      utils.whatsapp.messageList.invalidate();
+      utils.whatsapp.messageStats.invalidate();
+    },
+  });
+
+  const rejectMessage = trpc.whatsapp.rejectMessage.useMutation({
+    onSuccess: () => {
+      utils.whatsapp.messageList.invalidate();
+      utils.whatsapp.messageStats.invalidate();
+    },
+  });
+
   const approveDraft = trpc.commandRoom.approveDraft.useMutation({
     onSuccess: () => {
       utils.commandRoom.draftList.invalidate();
@@ -72,6 +116,27 @@ export default function CommandRoom() {
     if (priority >= 6) return "bg-amber-100 text-amber-700";
     if (priority >= 4) return "bg-blue-100 text-blue-700";
     return "bg-slate-100 text-slate-700";
+  };
+
+  const messageStatusBadge = (status: string) => {
+    const map: Record<string, string> = {
+      pending: "bg-yellow-100 text-yellow-700",
+      queued: "bg-blue-100 text-blue-700",
+      sent: "bg-green-100 text-green-700",
+      delivered: "bg-emerald-100 text-emerald-700",
+      read: "bg-purple-100 text-purple-700",
+      failed: "bg-red-100 text-red-700",
+    };
+    return map[status] || "bg-slate-100 text-slate-700";
+  };
+
+  const handleSendMessage = (conversationId: number, waId: string) => {
+    if (!newMessage.trim()) return;
+    sendText.mutate({
+      conversationId,
+      to: waId,
+      body: newMessage,
+    });
   };
 
   return (
@@ -276,32 +341,165 @@ export default function CommandRoom() {
                   WhatsApp Inbox
                 </CardTitle>
                 <CardDescription>
-                  محادثات القناة الرسمية، مع visibility على آخر الرسائل وحالة
-                  المحادثة.
+                  محادثات القناة الرسمية — انقر على محادثة لعرض الرسائل وإرسال/الموافقة على رسائل.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 {whatsappConversations.data?.slice(0, 8).map((conversation) => (
                   <div
                     key={conversation.id}
-                    className="rounded-xl border border-[#E8F4F3] bg-[#F0F9F8] p-4"
+                    className="rounded-xl border border-[#E8F4F3] bg-[#F0F9F8] overflow-hidden"
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="text-sm font-bold text-[#0A1F1E]">
-                          {conversation.name || conversation.waId}
-                        </p>
-                        <p className="text-xs text-[#4A6B69]">
-                          {conversation.waId}
-                        </p>
+                    {/* Conversation Header */}
+                    <div
+                      className="flex items-center justify-between p-4 cursor-pointer hover:bg-[#E8F4F3] transition-colors"
+                      onClick={() =>
+                        setExpandedConversation(
+                          expandedConversation === conversation.id ? null : conversation.id
+                        )
+                      }
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#15807A] text-white">
+                          <Phone className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-[#0A1F1E]">
+                            {conversation.name || conversation.waId}
+                          </p>
+                          <p className="text-xs text-[#4A6B69]">
+                            {conversation.waId}
+                          </p>
+                        </div>
                       </div>
-                      <Badge className="border-0 bg-[#15807A] text-[10px] text-white">
-                        {conversation.status}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge className="border-0 bg-[#15807A] text-[10px] text-white">
+                          {conversation.status}
+                        </Badge>
+                        {expandedConversation === conversation.id ? (
+                          <ChevronUp className="h-4 w-4 text-[#4A6B69]" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4 text-[#4A6B69]" />
+                        )}
+                      </div>
                     </div>
-                    <p className="mt-2 whitespace-pre-wrap text-xs text-[#4A6B69]">
-                      {conversation.lastMessageBody || "No recent message"}
-                    </p>
+
+                    {/* Last Message Preview */}
+                    <div className="px-4 pb-2">
+                      <p className="text-xs text-[#4A6B69] line-clamp-1">
+                        {conversation.lastMessageBody || "لا توجد رسائل"}
+                      </p>
+                    </div>
+
+                    {/* Expanded Messages View */}
+                    {expandedConversation === conversation.id && (
+                      <div className="border-t border-[#E8F4F3] bg-white">
+                        {/* Messages List */}
+                        <div className="max-h-64 overflow-y-auto p-3 space-y-2">
+                          {conversationMessages.isLoading && (
+                            <p className="text-xs text-[#8CB3B0] text-center py-2">جاري التحميل...</p>
+                          )}
+                          {conversationMessages.data?.length === 0 && (
+                            <p className="text-xs text-[#8CB3B0] text-center py-2">لا توجد رسائل في هذه المحادثة</p>
+                          )}
+                          {conversationMessages.data?.map((msg) => (
+                            <div
+                              key={msg.id}
+                              className={`rounded-lg p-2 text-xs ${
+                                msg.direction === "inbound"
+                                  ? "bg-[#F0F9F8] mr-4"
+                                  : "bg-[#15807A]/10 ml-4"
+                              }`}
+                            >
+                              <div className="flex items-center justify-between gap-2 mb-1">
+                                <Badge className={`${messageStatusBadge(msg.status)} border-0 text-[8px]`}>
+                                  {msg.direction === "inbound" ? "وارد" : "صادر"}
+                                </Badge>
+                                <Badge className={`${messageStatusBadge(msg.status)} border-0 text-[8px]`}>
+                                  {msg.status}
+                                </Badge>
+                                {msg.aiGenerated && (
+                                  <Badge className="bg-purple-100 text-purple-700 border-0 text-[8px]">AI</Badge>
+                                )}
+                              </div>
+                              <p className="text-[#0A1F1E]">{msg.body || msg.templateName || "—"}</p>
+                              <p className="text-[10px] text-[#8CB3B0] mt-1">
+                                {msg.createdAt ? new Date(msg.createdAt).toLocaleString("ar-SA") : ""}
+                              </p>
+
+                              {/* Message Actions - for pending outbound messages */}
+                              {msg.direction === "outbound" && msg.status === "pending" && !msg.approved && (
+                                <div className="flex gap-1 mt-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="h-6 text-[10px] border-green-200 text-green-700 hover:bg-green-50"
+                                    onClick={() => approveMessage.mutate({ messageId: msg.id, to: msg.waMessageId || conversation.waId })}
+                                  >
+                                    <CheckCircle2 className="h-3 w-3 ml-1" />
+                                    موافقة
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="h-6 text-[10px] border-red-200 text-red-700 hover:bg-red-50"
+                                    onClick={() => rejectMessage.mutate({ messageId: msg.id })}
+                                  >
+                                    <X className="h-3 w-3 ml-1" />
+                                    رفض
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Quick Reply / New Message Form */}
+                        {showNewMessageForm === conversation.id ? (
+                          <div className="border-t border-[#E8F4F3] p-3 space-y-2">
+                            <Textarea
+                              className="min-h-[80px] text-sm border-[#E8F4F3]"
+                              placeholder="اكتب رسالتك هنا..."
+                              value={newMessage}
+                              onChange={(e) => setNewMessage(e.target.value)}
+                            />
+                            <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                className="bg-[#15807A] hover:bg-[#0F5F5A]"
+                                onClick={() => handleSendMessage(conversation.id, conversation.waId)}
+                                disabled={sendText.isPending || !newMessage.trim()}
+                              >
+                                <Send className="h-3 w-3 ml-1" />
+                                {sendText.isPending ? "جاري..." : "إرسال"}
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => {
+                                  setShowNewMessageForm(null);
+                                  setNewMessage("");
+                                }}
+                              >
+                                إلغاء
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="border-t border-[#E8F4F3] p-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="w-full border-[#15807A]/30 text-[#15807A] hover:bg-[#15807A]/10"
+                              onClick={() => setShowNewMessageForm(conversation.id)}
+                            >
+                              <Plus className="h-3 w-3 ml-1" />
+                              رسالة جديدة
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ))}
 
