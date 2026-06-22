@@ -1,51 +1,70 @@
 """Generate bilingual outreach drafts for the top scored leads.
 
+Writes snake_case JSON to ``business/persuasion/exports/outreach-drafts-<date>.json``
+matching the review pipeline schema (``review_status`` / ``disclaimer`` / ``generated_at``).
+
 Usage:
-    python3 scripts/generate_outreach_drafts.py --top 10 --language both --channel whatsapp
+    python3 scripts/generate_outreach_drafts.py --top 10 --language both --channel whatsapp --mode demo
 """
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCORED_PATH = REPO_ROOT / "business" / "_data" / "scored_leads.json"
-QUEUE_PATH = REPO_ROOT / "business" / "_data" / "outreach_review_queue.json"
+EXPORT_DIR = REPO_ROOT / "business" / "persuasion" / "exports"
 
 
-AR_OPENERS = {
-    "marketing_agency": "مرحبًا، شفت إن وكالتكم تنشر حملات قوية، بس الاستجابة على الليدز الواردة تتأخر. Dealix يحلّه — مسوّدات مولّدة + مراجعة بشرية.",
-    "training": "السلام عليكم، لاحظت إن دوراتكم قوية، بس المتابعة بعد الكورس ضعيفة. Dealix يبني نظام متابعة قابل للقياس.",
-    "clinic": "السلام عليكم، لاحظت إن تقييماتكم على Google ما عليها متابعة. Dealix يبني نظام ردود بموافقة بشرية + تقرير شهري.",
-    "real_estate": "السلام عليكم، شفت إنكم تعلنون عن عقارات بشكل مستمر، بس المتابعة على الليدز مو منتظمة. Dealix ينسّق المتابعة على مستوى المكتب.",
-    "logistics": "السلام عليكم، أعرف إن تحديثات الشحنات عندكم يدوية. Dealix يبني غرفة قيادة بخمسة مؤشرات فقط.",
-    "consulting": "السلام عليكم، شفت إن Pipeline عندكم ما عنده إيقاع أسبوعي. Dealix يركّب الإيقاع + تقرير إثبات أسبوعي.",
-    "b2b_services": "السلام عليكم، شفت إن فريقكم يستقبل ليدز لكن المتابعة تأخذ وقت. Dealix يقفل نافذة الرد.",
-    "retail": "السلام عليكم، شفت إن عندكم فروع لكن التقارير مو موحّدة. Dealix يبني Command Center بسيط.",
-}
+AR_BODY = (
+    "مرحباً،\n\n"
+    "لاحظنا أن {company} في قطاع {segment} ينمو بشكل جيد. نرى فرصة لتحويل العمليات "
+    "اليومية إلى نظام تشغيلي قابل للقياس.\n\n"
+    "هل لديك ١٥ دقيقة هذا الأسبوع لمراجعة سريعة؟"
+)
+EN_BODY = (
+    "Hi,\n\n"
+    "We noticed {company} is growing well in {segment}. We see an opportunity to "
+    "turn daily operations into a measurable operating system.\n\n"
+    "Do you have 15 minutes this week for a quick review?"
+)
+DISCLAIMER = "DRAFT — Do not send without human review."
 
-EN_OPENERS = {
-    "marketing_agency": "Hi, I noticed your agency ships strong campaigns but inbound response is slow. Dealix closes that window with drafts + human review.",
-    "training": "Hello, your courses are strong but post-course follow-up is light. Dealix builds a measurable retention flow.",
-    "clinic": "Hello, your Google reviews need a steady response system. Dealix installs human-approved replies + a monthly report.",
-    "real_estate": "Hello, listings change fast but follow-up isn't consistent. Dealix coordinates follow-up across the office.",
-    "logistics": "Hello, shipment updates are manual. Dealix builds a command center with five KPIs only.",
-    "consulting": "Hello, your pipeline doesn't have a weekly cadence. Dealix installs the cadence + a weekly proof report.",
-    "b2b_services": "Hello, your team takes inbound leads but follow-up is slow. Dealix closes the response window.",
-    "retail": "Hello, your multi-branch reporting isn't unified. Dealix builds a simple Command Center.",
-}
+DEMO_ACCOUNTS = [
+    {"id": "demo-001", "name": "Acme Saudi", "segment": "B2B Services"},
+    {"id": "demo-002", "name": "Beta Clinic", "segment": "Healthcare"},
+    {"id": "demo-003", "name": "Gamma Logistics", "segment": "Logistics"},
+    {"id": "demo-004", "name": "Delta Marketing", "segment": "Marketing Agency"},
+    {"id": "demo-005", "name": "Epsilon Real Estate", "segment": "Real Estate"},
+]
 
 
-def load_queue() -> list[dict]:
-    if not QUEUE_PATH.exists():
-        return []
-    try:
-        data = json.loads(QUEUE_PATH.read_text(encoding="utf-8"))
-        return data.get("drafts", [])
-    except json.JSONDecodeError:
-        return []
+def load_accounts() -> list[dict]:
+    if SCORED_PATH.exists():
+        data = json.loads(SCORED_PATH.read_text(encoding="utf-8"))
+        return data.get("accounts", [])
+    return DEMO_ACCOUNTS
+
+
+def build_draft(account: dict, language: str, channel: str) -> dict:
+    company = account.get("name") or account.get("id", "unknown")
+    segment = account.get("segment", "")
+    body = (AR_BODY if language == "ar" else EN_BODY).format(
+        company=company, segment=segment
+    )
+    return {
+        "account_id": account.get("id", ""),
+        "company": company,
+        "language": language,
+        "channel": channel,
+        "subject": None,
+        "body": body,
+        "review_status": "pending_review",
+        "generated_at": dt.datetime.now(dt.UTC).isoformat().replace("+00:00", "Z"),
+        "disclaimer": DISCLAIMER,
+    }
 
 
 def main() -> int:
@@ -53,52 +72,24 @@ def main() -> int:
     parser.add_argument("--top", type=int, default=10)
     parser.add_argument("--language", choices=["ar", "en", "both"], default="both")
     parser.add_argument("--channel", default="whatsapp")
+    parser.add_argument("--mode", choices=["demo", "live"], default="demo")
     args = parser.parse_args()
 
-    if not SCORED_PATH.exists():
-        print(f"missing: {SCORED_PATH}")
+    accounts = load_accounts()[: args.top]
+    if not accounts:
+        print(f"no accounts available (looked at {SCORED_PATH})")
         return 1
-    data = json.loads(SCORED_PATH.read_text(encoding="utf-8"))
-    accounts = data.get("accounts", [])[: args.top]
 
-    queue = load_queue()
-    queue_ids = {d["draftId"] for d in queue}
-    added = 0
+    languages = ["ar", "en"] if args.language == "both" else [args.language]
+    drafts = [build_draft(a, lang, args.channel) for a in accounts for lang in languages]
 
-    for a in accounts:
-        seg = a.get("segment", "")
-        for lang in (["ar", "en"] if args.language == "both" else [args.language]):
-            draft_id = f"draft-{a['id']}-{lang}"
-            if draft_id in queue_ids:
-                continue
-            opener = (AR_OPENERS if lang == "ar" else EN_OPENERS).get(seg, "")
-            if not opener:
-                continue
-            queue.append(
-                {
-                    "draftId": draft_id,
-                    "accountId": a["id"],
-                    "language": lang,
-                    "channel": args.channel,
-                    "tone": "executive",
-                    "opener": opener,
-                    "followUp1": "لو تبغى مكالمة 20 دقيقة بدون التزام، اختر الوقت اللي يناسبك." if lang == "ar" else "Open to a 20-min diagnostic call?",
-                    "followUp2": "أقدر أرسل one-pager للفريق." if lang == "ar" else "I can send a one-pager to your team.",
-                    "reviewStatus": "draft_pending_human_review",
-                    "generatedAt": "2026-06-11",
-                    "reviewer": None,
-                    "reviewedAt": None,
-                    "rejectionReason": None,
-                    "safetyFlags": ["no_roi_claim", "no_fake_testimonial", "no_pressure"],
-                }
-            )
-            added += 1
-
-    QUEUE_PATH.write_text(
-        json.dumps({"drafts": queue, "version": "1.0"}, ensure_ascii=False, indent=2),
-        encoding="utf-8",
+    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+    today = dt.date.today().isoformat()
+    out_file = EXPORT_DIR / f"outreach-drafts-{today}.json"
+    out_file.write_text(
+        json.dumps(drafts, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    print(f"added {added} drafts to {QUEUE_PATH} (total in queue: {len(queue)})")
+    print(f"wrote {len(drafts)} drafts to {out_file} (mode={args.mode})")
     return 0
 
 
