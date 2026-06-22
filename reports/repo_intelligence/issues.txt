@@ -1,0 +1,75 @@
+661	OPEN	security: upgrade Next.js to clear Trivy CRITICAL/HIGH advisories (frontend)		2026-06-07T14:53:21Z
+647	OPEN	Security hardening backlog: triage pre-existing Gitleaks + Trivy findings		2026-06-06T08:22:49Z
+635	OPEN	Security: upgrade Next.js (15.1.3) to remediate CRITICAL/HIGH CVEs in apps/web + frontend	security, dependencies	2026-06-05T19:09:00Z
+516	OPEN	STRATEGIC OPPORTUNITY OS: Full founder leverage expansion	ops, strategy, founder-os, company-os, ai-governance	2026-05-27T13:35:50Z
+514	OPEN	COMPANY OS: Complete Execution Expansion Pack	ops, founder-os, launch-readiness, company-os	2026-05-27T10:26:33Z
+503	OPEN	FUTURE OS: Founder CEO Expansion System	strategy, founder-os, leadership, future-os	2026-05-27T07:19:54Z
+502	OPEN	Task 30 — 30-60-90 Post Launch Plan	ops, founder-os, launch-readiness, A2, leadership	2026-05-26T19:21:13Z
+501	OPEN	Task 29 — Go/No-Go Launch Gate	founder-os, A1, launch-readiness, leadership	2026-05-26T19:20:55Z
+500	OPEN	Task 28 — Launch Risk Register	founder-os, launch-readiness, A2, risk	2026-05-26T19:20:10Z
+499	OPEN	Task 27 — Launch War Room Setup	ops, founder-os, A1, launch-readiness	2026-05-26T19:18:57Z
+498	OPEN	Task 26 — Launch Assets Factory	founder-os, launch-readiness, A2, marketing, sales	2026-05-26T19:18:22Z
+497	OPEN	Task 25 — Launch Narrative Kit	founder-os, launch-readiness, positioning, A2, marketing	2026-05-26T19:18:11Z
+496	OPEN	Task 24 — Critical Hiring Plan	ops, founder-os, A3, hiring	2026-05-26T19:17:15Z
+495	OPEN	Task 23 — Executive RACI and Decision Rights	ops, founder-os, A2, leadership	2026-05-26T19:16:55Z
+494	OPEN	Task 22 — Contract Kit and Legal Readiness	ops, founder-os, A2, legal	2026-05-26T19:16:31Z
+493	OPEN	Task 21 — Unit Economics Gate	founder-os, gtm, A2, finance	2026-05-26T19:16:18Z
+492	OPEN	Task 20 — Financial Control Model 12 Months	ops, founder-os, A2, finance	2026-05-26T19:14:51Z
+491	OPEN	Task 19 — Partner Channel Starter Pack	founder-os, gtm, A3, partnerships	2026-05-26T19:14:32Z
+490	OPEN	Task 18 — Customer Retention Playbook	founder-os, A2, customer-success, retention	2026-05-26T19:14:04Z
+489	OPEN	Task 17 — Customer Health Score Matrix	founder-os, A2, customer-success, retention	2026-05-26T19:13:50Z
+488	OPEN	Task 16 — 7-Day Onboarding to Value	founder-os, A2, product, customer-success	2026-05-26T19:12:07Z
+487	OPEN	Task 15 — CRM Discipline and Pipeline Rules	founder-os, A2, sales, revops	2026-05-26T19:10:27Z
+486	OPEN	Task 14 — Sales Scripts and Talk Tracks	founder-os, gtm, A2, sales	2026-05-26T19:10:06Z
+485	OPEN	Task 13 — Build ICP100 Target Account List	founder-os, A1, gtm, sales	2026-05-26T19:09:47Z
+484	OPEN	Task 12 — Demand Sprint 14 Days	founder-os, gtm, A2, marketing	2026-05-26T19:09:21Z
+483	OPEN	Task 11 — Funnel Architecture	revenue, founder-os, A1, gtm	2026-05-26T19:08:59Z
+482	OPEN	Task 10 — Data/KPI Dictionary وقرار الأرقام	ops, founder-os, A2, data	2026-05-26T19:08:39Z
+481	OPEN	Task 09 — Security Baseline قبل الإطلاق	security, founder-os, launch-readiness, A2, engineering	2026-05-26T19:08:26Z
+480	OPEN	Task 08 — جاهزية الاعتمادية والمراقبة SLO	founder-os, launch-readiness, A2, engineering, reliability	2026-05-26T19:08:09Z
+479	OPEN	Task 07 — توثيق Golden User Journeys	founder-os, launch-readiness, A2, product	2026-05-26T19:07:48Z
+478	OPEN	Task 06 — تجميد نطاق الإطلاق Scope Freeze	founder-os, A1, launch-readiness, product	2026-05-26T19:07:12Z
+477	OPEN	Task 05 — بناء Proof Pack v1	founder-os, gtm, A2, proof	2026-05-26T19:06:41Z
+476	OPEN	Task 04 — تصميم الباقات والتسعير النهائي	founder-os, A1, gtm, pricing	2026-05-26T19:06:14Z
+475	OPEN	Task 03 — تحديد Wedge ICP وشريحة رأس الحربة	strategy, founder-os, A1, gtm	2026-05-26T19:05:49Z
+474	OPEN	Task 02 — قفل Thesis التجارية والتموضع الأساسي	strategy, founder-os, A1, positioning	2026-05-26T19:05:34Z
+473	OPEN	Task 01 — تثبيت North Star و KPIs التنفيذية	strategy, founder-os, A1, launch-readiness	2026-05-26T19:05:10Z
+472	OPEN	START TASKS: Founder Launch OS — Executive Program		2026-05-26T19:21:54Z
+471	OPEN	ops: run CI, Security, and Production Smoke workflows	P0, operations, ci	2026-05-26T19:15:00Z
+470	OPEN	ops: verify payment and webhook provider dashboards	P0, operations, payments, webhooks	2026-05-26T18:41:38Z
+469	OPEN	ops: verify live DNS and TLS for Dealix domains	P0, operations, domain	2026-05-26T18:40:24Z
+468	OPEN	ops: configure live production secrets	P0, security, operations	2026-05-26T15:49:15Z
+467	OPEN	ops: generate and commit apps/web/package-lock.json	P0, operations, frontend	2026-05-26T15:48:34Z
+232	OPEN	V11: Build compliant Saudi B2B Lead Engine and commercial revenue machine	strategy, v11, lead-engine, compliance	2026-06-18T18:09:26Z
+192	OPEN	🔴 Daily revenue machine failed — 2026-05-10	P0, ops	2026-05-10T06:39:17Z
+189	OPEN	🔴 Daily revenue machine failed — 2026-05-09	P0, ops	2026-05-09T06:23:10Z
+180	OPEN	🔴 Daily revenue machine failed — 2026-05-08	P0, ops	2026-05-08T06:04:39Z
+169	OPEN	🔴 Daily revenue machine failed — 2026-05-07	P0, ops	2026-05-07T06:45:13Z
+166	OPEN	🔴 Daily revenue machine failed — 2026-05-06	P0, ops	2026-05-06T06:37:47Z
+143	OPEN	🔴 Daily revenue machine failed — 2026-05-05	P0, ops	2026-05-05T06:24:41Z
+138	CLOSED	[Tracking] REVIEW_PENDING marketing strings + KNOWN_BROKEN_LINKS surfaced by closure tests	needs-founder-decision, tracking, perimeter	2026-05-24T13:55:20Z
+134	OPEN	🔴 Daily revenue machine failed — 2026-05-04	P0, ops	2026-05-04T06:47:03Z
+128	OPEN	🔴 Daily revenue machine failed — 2026-05-03	P0, ops	2026-05-03T06:32:47Z
+113	OPEN	[DAILY] End-of-Day Scorecard Update	ops, daily, recurring	2026-04-24T15:03:02Z
+112	OPEN	[FOLLOWUP Day+2] Lead 1 · Abdullah Al-Assiri	outreach, P2, followup	2026-04-24T15:03:01Z
+111	OPEN	[SENTRY] Create Sentry project + provide DSN	monitoring, P2	2026-04-24T15:03:00Z
+110	OPEN	[MOYASAR] Complete KYC or send sk_test_... key	P0, payment, blocked-by-sami	2026-04-24T15:02:58Z
+109	OPEN	[CONTENT] Publish Founder Launch Post on LinkedIn/X	P1, content	2026-04-24T15:02:57Z
+108	OPEN	[PARTNER 10/10] White-label pitch to Wavy Saudi	outreach, P1, partner, white-label	2026-04-24T15:02:56Z
+107	OPEN	[PARTNER 9/10] Agency DM to Qatar Digital	outreach, P1, partner	2026-04-24T15:02:55Z
+106	OPEN	[PARTNER 8/10] Agency DM to Brand Lounge	outreach, P1, partner	2026-04-24T15:02:54Z
+105	OPEN	[PARTNER 7/10] Agency DM to Digital8	outreach, P1, partner	2026-04-24T15:02:52Z
+104	OPEN	[PARTNER 6/10] Agency DM to Peak Content	outreach, P1, partner	2026-04-24T15:02:49Z
+103	OPEN	[OUTREACH 5/10] Send LinkedIn DM to Ibrahim Manna · BRKZ	outreach, P1, direct	2026-04-24T15:02:48Z
+102	OPEN	[OUTREACH 4/10] Send LinkedIn DM to Hisham Al-Falih · Lean Technologies	outreach, P1, direct	2026-04-24T15:02:46Z
+101	OPEN	[OUTREACH 3/10] Send message to Nawaf Hariri · Salla (Twitter preferred)	outreach, P1, direct	2026-04-24T15:02:45Z
+100	OPEN	[OUTREACH 2/10] Send LinkedIn DM to Ahmad Al-Zaini · Foodics	outreach, P1, direct	2026-04-24T15:02:44Z
+99	OPEN	[OUTREACH 1/10] Send LinkedIn DM to Abdullah Al-Assiri · Lucidya	outreach, P1, direct	2026-04-24T15:02:43Z
+90	OPEN	P1: Configure POSTHOG_KEY in landing pages	launch, P1, analytics	2026-04-24T12:23:34Z
+89	CLOSED	P1: Deploy landing pages to dealix.ai	launch, P1, website	2026-04-24T15:01:20Z
+88	OPEN	P1: Send first LinkedIn DM — Abdullah Asiri (Lucidya)	launch, outreach, P1	2026-04-24T13:18:11Z
+87	OPEN	P0: 1 SAR End-to-End Test Payment	launch, blocker, P0, revenue	2026-04-24T12:23:28Z
+86	CLOSED	P0: Sentry → Slack via /_test_sentry	launch, P0, monitoring	2026-04-24T15:01:19Z
+85	CLOSED	P0: UptimeRobot monitoring on /healthz	launch, P0, monitoring	2026-04-24T15:01:18Z
+84	OPEN	P0: Rotate Moyasar secret + configure webhook	launch, blocker, P0, security	2026-04-24T12:23:25Z
+83	CLOSED	P0: Deploy backend to Railway	launch, blocker, P0	2026-04-24T15:01:16Z

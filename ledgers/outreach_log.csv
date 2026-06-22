@@ -1,1 +1,1 @@
-date,company_name,channel,recipient,subject_or_template,status,owner_decision,sent_at,reply_status,next_action,notes
+date,company,company_name,email,sector,channel,recipient,subject_or_template,status,draft_path,owner_decision,sent_at,reply_status,next_action,notes

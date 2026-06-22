@@ -1,6 +1,0 @@
-.gitignore
-Makefile
-auto_client_acquisition/email/daily_targeting.py
-data/saudi_icp_targets.json
-scripts/gmail_daily_outreach.py
-tests/test_gmail_daily_outreach.py

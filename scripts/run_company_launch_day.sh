@@ -4,9 +4,12 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-PYTHON="${REPO_ROOT}/.venv/bin/python3"
+PYTHON="${REPO_ROOT}/.venv/Scripts/python.exe"
 if [ ! -x "$PYTHON" ]; then
   PYTHON="python3"
+fi
+if ! command -v "$PYTHON" > /dev/null 2>&1; then
+  PYTHON="python"
 fi
 
 export DEALIX_DATE="${DEALIX_DATE:-$(date +%Y-%m-%d)}"

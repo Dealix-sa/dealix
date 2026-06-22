@@ -1,0 +1,50 @@
+772	chore(deps): update pytest requirement from <9,>=8.3.0 to >=8.3.0,<10	dependabot/pip/pytest-gte-8.3.0-and-lt-10	OPEN	2026-06-22T06:11:26Z
+771	chore(deps): update types-pyyaml requirement from >=6.0 to >=6.0.12.20260518	dependabot/pip/types-pyyaml-gte-6.0.12.20260518	OPEN	2026-06-22T06:11:17Z
+770	chore(deps): update urllib3 requirement from <3,>=2.2.3 to >=2.7.0,<3	dependabot/pip/urllib3-gte-2.7.0-and-lt-3	OPEN	2026-06-22T06:11:13Z
+769	chore(deps): update fastapi requirement from <0.137,>=0.115.0 to >=0.115.0,<0.139	dependabot/pip/fastapi-gte-0.115.0-and-lt-0.139	OPEN	2026-06-22T06:11:06Z
+768	chore(deps): update langfuse requirement from <3,>=2.50.0 to >=2.50.0,<5	dependabot/pip/langfuse-gte-2.50.0-and-lt-5	OPEN	2026-06-22T06:10:59Z
+767	feat: Phases 3-8 — founder OS, AI router, client delivery OS, sales assets	claude/ecstatic-gates-4dy8uq	DRAFT	2026-06-21T06:40:37Z
+764	Fix daily outreach OS imports and operating targets	feat/daily-outreach-os-v1-20260621-055633	OPEN	2026-06-21T06:02:26Z
+757	Save public website brand OS work	feat/save-public-website-brand-os-20260621-050937	OPEN	2026-06-21T05:09:44Z
+739	feat(outreach): daily Arabic email targeting system — 30 Saudi ICPs +…	resolve-pr-726	OPEN	2026-06-17T01:40:11Z
+738	Resolve pr 713	resolve-pr-713	OPEN	2026-06-17T01:39:18Z
+732	Resolve pr 727	resolve-pr-727	OPEN	2026-06-17T01:28:29Z
+726	feat(outreach): daily Arabic email targeting system — 30 Saudi ICPs + Gmail runner	claude/hopeful-knuth-ebzxp8	DRAFT	2026-06-15T02:18:05Z
+713	feat: add Dealix V1-V5 commercial operating system	feature/dealix-v1-v5-review	OPEN	2026-06-11T02:51:14Z
+711	feat(wave-2): Revenue Engine v2 — daily commercial pack generation	feat/revenue-engine-v2	DRAFT	2026-06-10T15:22:38Z
+698	fix: resolve CI failures — standalone Dockerfile + Article 13 allowlist	claude/awesome-planck-hxli80	DRAFT	2026-06-08T19:17:25Z
+692	feat(launch): Dealix V15 — Founder Daily Execution Autopilot	claude/affectionate-lovelace-mkeDh	DRAFT	2026-06-07T18:12:55Z
+691	feat(launch): Dealix V14 — Controlled Preview Execution & Quality Assurance Layer	claude/exciting-lovelace-FloM9	DRAFT	2026-06-07T18:09:08Z
+690	feat(v13): Dealix Consolidation & Master Merge Kit	claude/amazing-ramanujan-0DFmQ	DRAFT	2026-06-07T17:24:17Z
+689	feat(launch): Dealix V12 — Scale & Operating Cadence Layer	claude/inspiring-allen-i3BcF	DRAFT	2026-06-07T17:18:54Z
+688	feat(v11): Live Customer Onboarding & First Revenue Sprint	claude/ecstatic-einstein-O5LCI	DRAFT	2026-06-07T17:15:13Z
+687	feat(v10): Production Implementation Bridge — جسر التنفيذ الإنتاجي	claude/sleepy-albattani-QZq1P	DRAFT	2026-06-07T16:36:28Z
+686	feat(v8): Proof, Trust & Investor Readiness Layer	claude/eager-hawking-BbCg5	DRAFT	2026-06-07T16:18:30Z
+685	feat: Activation Spine v1 — قِف الشركة وشغّلها يومياً	claude/determined-davinci-AsIeh	DRAFT	2026-06-07T16:14:55Z
+684	feat(launch): Dealix Enterprise Revenue & Service Factory V6	claude/wonderful-brahmagupta-JBqD8	DRAFT	2026-06-07T15:32:47Z
+683	feat(revenue): V3 Revenue Machine integration layer — governed UTM attribution + 7-layer wiring map	claude/admiring-hawking-nQanS	DRAFT	2026-06-07T15:28:51Z
+682	feat(v5): Dealix Acquisition Machine — آلة اكتساب العملاء الكاملة	claude/serene-shannon-QoIDm	DRAFT	2026-06-07T15:26:18Z
+681	feat(launch): Dealix commercial activation — real leads → daily drafts → founder approval (consolidated launch)	claude/cool-babbage-5oweV	DRAFT	2026-06-07T15:25:37Z
+680	Launch-safe website, custom-AI intake, and green official go-live gate	claude/funny-keller-hx6s5	DRAFT	2026-06-07T15:24:00Z
+679	تفعيل Dealix التجاري — المحرك اليومي + تصليب الإطلاق + الهوية (Commercial Activation)	claude/beautiful-knuth-4AFzc	DRAFT	2026-06-07T15:23:35Z
+678	Launch activation: public website, custom AI intake, working checkout, founder ops loop	claude/zen-mayer-TRJdJ	DRAFT	2026-06-07T15:22:03Z
+677	feat(activation): one-command daily ops pack + unified website offer ladder	claude/gracious-clarke-B0Equ	DRAFT	2026-06-07T15:21:36Z
+676	feat(launch): Dealix Production Growth V4 — deployment, DB schema, API, industries, partners, finance, observability	claude/great-babbage-xijmk	DRAFT	2026-06-07T15:19:02Z
+675	Reconcile external launch package: archive as reference + promote net-new compliant pieces	claude/admiring-gates-VOo2a	DRAFT	2026-06-07T15:16:17Z
+674	feat(v3): Dealix Revenue Machine V3 — نظام إيراد كامل	claude/quirky-hawking-27Vxa	DRAFT	2026-06-07T15:13:31Z
+673	feat(activation): تفعيل Dealix — موقع موحّد + هوية بصرية + محرك يومي + خطة أم + تنظيف عقيدة	claude/awesome-brahmagupta-gZasz	DRAFT	2026-06-07T15:12:54Z
+672	feat(gtm): موقع حقيقي وصادق — التقاط عملاء فعلي + صفحة حلول مخصصة + تواصل	claude/magical-edison-xufFb	DRAFT	2026-06-07T15:11:09Z
+671	feat: Dealix Now — daily founder operating console + deterministic engine	claude/cool-ptolemy-xL6kD	DRAFT	2026-06-07T15:10:35Z
+670	feat(launch): Custom AI intake + founder call sheet + launch master plan (+ Next security fix)	claude/sweet-shannon-NtdPL	DRAFT	2026-06-07T15:10:08Z
+669	إطلاق Dealix: موقع صادق وقوي + ماكينة تجارية حقيقية + نشر الواجهة المرجعية	claude/affectionate-bohr-Du2Ha	DRAFT	2026-06-07T15:09:01Z
+668	Dealix commercial activation: real lead engine, daily drafts, website elevation, launch readiness	claude/youthful-archimedes-ohFjT	DRAFT	2026-06-07T15:08:22Z
+667	feat(activation): Day-0 operator pack — one command stands the company up	claude/focused-heisenberg-Cym8H	DRAFT	2026-06-07T15:02:49Z
+666	feat(live): "Dealix يشتغل الآن / Dealix, Live" — unified governed operating website	claude/inspiring-turing-ApP8u	DRAFT	2026-06-07T15:00:51Z
+665	feat(pricing): Dealix Pricing & Revenue Operating System	claude/dealix-pricing-revenue-model-irZ6E	DRAFT	2026-06-07T15:00:24Z
+664	docs(acquisition): Dealix Acquisition OS v2 — governed acquisition package (AR)	claude/dealix-acquisition-os-v2-ddUaI	DRAFT	2026-06-07T14:59:09Z
+663	feat(pricing): Dealix high-touch Pricing OS v2.0 — configs, price books, quote + margin tooling	claude/lucid-dijkstra-LKx1o	DRAFT	2026-06-07T14:57:05Z
+662	feat(web): Services + Custom AI website + founder operating kit	claude/tender-ride-meZ9K	DRAFT	2026-06-07T14:55:57Z
+660	ci(security): fix Trivy filesystem scan — pin trivy-action to existing release v0.36.0	claude/fix-ci-trivy-action-pin	DRAFT	2026-06-07T14:45:49Z
+659	resources: add Dealix company OS resource vault + integration tooling	claude/dealix-resource-vault-vMw0b	DRAFT	2026-06-07T14:42:30Z
+658	feat(commercial): Packages & Marketer Enablement Kit — عدّة الحزم وتمكين المسوّق	claude/nice-brown-NMr4M	DRAFT	2026-06-07T14:14:00Z
+657	docs(acquisition): Dealix Client Acquisition Packs bundle	claude/dealix-acquisition-packs-zz9wN	DRAFT	2026-06-07T14:11:42Z

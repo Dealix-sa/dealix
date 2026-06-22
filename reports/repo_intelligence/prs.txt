@@ -1,0 +1,100 @@
+773	Add files via upload	VoXc2-patch-15	MERGED	2026-06-22T22:02:21Z
+772	chore(deps): update pytest requirement from <9,>=8.3.0 to >=8.3.0,<10	dependabot/pip/pytest-gte-8.3.0-and-lt-10	OPEN	2026-06-22T06:11:26Z
+771	chore(deps): update types-pyyaml requirement from >=6.0 to >=6.0.12.20260518	dependabot/pip/types-pyyaml-gte-6.0.12.20260518	OPEN	2026-06-22T06:11:17Z
+770	chore(deps): update urllib3 requirement from <3,>=2.2.3 to >=2.7.0,<3	dependabot/pip/urllib3-gte-2.7.0-and-lt-3	OPEN	2026-06-22T06:11:13Z
+769	chore(deps): update fastapi requirement from <0.137,>=0.115.0 to >=0.115.0,<0.139	dependabot/pip/fastapi-gte-0.115.0-and-lt-0.139	OPEN	2026-06-22T06:11:06Z
+768	chore(deps): update langfuse requirement from <3,>=2.50.0 to >=2.50.0,<5	dependabot/pip/langfuse-gte-2.50.0-and-lt-5	OPEN	2026-06-22T06:10:59Z
+767	feat: Phases 3-8 — founder OS, AI router, client delivery OS, sales assets	claude/ecstatic-gates-4dy8uq	DRAFT	2026-06-21T06:40:37Z
+766	Add founder revenue automation day runner	feat/founder-revenue-automation-os	MERGED	2026-06-21T06:23:28Z
+765	Fix intake engine public contract on Windows	fix/p0-windows-intake-launch-stabilization	MERGED	2026-06-21T06:23:16Z
+764	Fix daily outreach OS imports and operating targets	feat/daily-outreach-os-v1-20260621-055633	OPEN	2026-06-21T06:02:26Z
+763	Add CEO daily digest for launch execution	feat/daily-ceo-digest-20260621-054837	MERGED	2026-06-21T05:48:50Z
+762	Compare revenue PRs for canonical merge decision	feat/revenue-pr-comparison-20260621-054542	MERGED	2026-06-21T05:45:51Z
+761	Add executive merge policy and priority PR triage	feat/ceo-priority-control-20260621-053924	MERGED	2026-06-21T05:39:34Z
+760	Add controlled live outbound automation foundation	feat/founder-controlled-live-outbound-automation	CLOSED	2026-06-21T05:34:51Z
+759	Capture GitHub draft and PR context	feat/capture-github-comments-drafts-20260621-051726	MERGED	2026-06-21T05:27:49Z
+758	Add files via upload	VoXc2-patch-14	MERGED	2026-06-21T05:11:06Z
+757	Save public website brand OS work	feat/save-public-website-brand-os-20260621-050937	OPEN	2026-06-21T05:09:44Z
+756	Wave3 fix	wave3-fix	MERGED	2026-06-21T04:32:05Z
+755	Add files via upload	VoXc2-patch-13	MERGED	2026-06-21T02:24:37Z
+754	feat(wave-4): website conversion upgrade — 3 new pages + 2 improved	feat/website-conversion-upgrade	MERGED	2026-06-19T10:36:26Z
+753	feat(wave-3): Client Intake + Presentation OS — full expansion	feat/intake-presentation-os	MERGED	2026-06-19T10:29:26Z
+752	Add files via upload	VoXc2-patch-12	MERGED	2026-06-19T06:44:47Z
+751	COMPLETE: Dealix Founder Execution System (Phase 1+2+Toolkit)	claude/resolve-merge-conflicts-0c3evb	MERGED	2026-06-17T21:47:55Z
+750	Complete Founder Execution System: Phase 1+2 (Documentation + Core + Advanced Automation)	claude/resolve-merge-conflicts-0c3evb	MERGED	2026-06-17T19:29:37Z
+749	fix: improve exception handling with specific error types	feat/wave2-revenue-ops	MERGED	2026-06-17T02:56:13Z
+748	chore(deps): bump rollup from 4.55.1 to 4.62.0 in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/rollup-4.62.0	MERGED	2026-06-17T02:45:29Z
+747	chore(deps): bump minimatch, eslint and typescript-eslint in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/multi-f678f53a22	MERGED	2026-06-17T02:26:53Z
+746	chore(deps-dev): bump vite from 7.3.2 to 7.3.5 in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/vite-7.3.5	MERGED	2026-06-17T02:19:52Z
+745	chore(frontend-deps): bump form-data from 4.0.5 to 4.0.6 in /frontend	dependabot/npm_and_yarn/frontend/form-data-4.0.6	MERGED	2026-06-17T02:16:15Z
+744	chore(deps-dev): bump js-yaml from 4.1.1 to 4.2.0 in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/js-yaml-4.2.0	CLOSED	2026-06-17T02:16:12Z
+743	chore(frontend-deps): bump js-yaml from 4.1.1 to 4.2.0 in /frontend	dependabot/npm_and_yarn/frontend/js-yaml-4.2.0	MERGED	2026-06-17T02:12:33Z
+742	Resolve and merge 100+ PRs with conflict consolidation	claude/resolve-merge-conflicts-0c3evb	MERGED	2026-06-17T01:53:56Z
+741	Resolve pr 708	resolve-pr-708	MERGED	2026-06-17T01:41:05Z
+740	feat: add Dealix master company operating system	resolve-pr-703	MERGED	2026-06-17T01:40:33Z
+739	feat(outreach): daily Arabic email targeting system — 30 Saudi ICPs +…	resolve-pr-726	OPEN	2026-06-17T01:40:11Z
+738	Resolve pr 713	resolve-pr-713	OPEN	2026-06-17T01:39:18Z
+737	Resolve pr 711	resolve-pr-711	MERGED	2026-06-17T01:38:21Z
+736	Resolve pr 712	resolve-pr-712	MERGED	2026-06-17T01:37:47Z
+735	chore(deps-dev): bump postcss in /frontend/dealix-app	resolve-pr-724	MERGED	2026-06-17T01:37:20Z
+734	Resolve pr 710	resolve-pr-710	MERGED	2026-06-17T01:36:51Z
+733	Resolve pr 709	resolve-pr-709	MERGED	2026-06-17T01:36:20Z
+732	Resolve pr 727	resolve-pr-727	OPEN	2026-06-17T01:28:29Z
+731	Add files via upload	VoXc2-upload-1	MERGED	2026-06-17T01:17:33Z
+730	chore(web-deps): bump @tailwindcss/typography from 0.5.19 to 0.5.20 in /apps/web	dependabot/npm_and_yarn/apps/web/tailwindcss/typography-0.5.20	MERGED	2026-06-15T06:36:52Z
+729	chore(web-deps): bump tailwindcss from 3.4.19 to 4.3.1 in /apps/web	dependabot/npm_and_yarn/apps/web/tailwindcss-4.3.1	MERGED	2026-06-15T06:36:26Z
+728	launch: Dealix company operating system	launch/company-operating-system-20260615_042211	MERGED	2026-06-15T05:39:43Z
+727	feat(go-to-market): full Dealix revenue loop — targeting, outreach, follow-up, reply playbook, command room, company profile	claude/friendly-feynman-lujhdu	MERGED	2026-06-15T02:24:40Z
+726	feat(outreach): daily Arabic email targeting system — 30 Saudi ICPs + Gmail runner	claude/hopeful-knuth-ebzxp8	DRAFT	2026-06-15T02:18:05Z
+725	chore(deps): bump lodash from 4.17.21 to 4.18.1 in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/lodash-4.18.1	MERGED	2026-06-14T21:34:27Z
+724	chore(deps-dev): bump postcss from 8.5.6 to 8.5.15 in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/postcss-8.5.15	CLOSED	2026-06-14T21:34:20Z
+723	chore(deps): bump picomatch and tailwindcss in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/multi-f5a30a8a90	MERGED	2026-06-14T21:34:20Z
+722	chore(deps-dev): bump vite from 7.3.0 to 7.3.2 in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/vite-7.3.2	MERGED	2026-06-14T21:34:14Z
+721	chore(deps-dev): bump flatted from 3.3.3 to 3.4.2 in /frontend/dealix-app	dependabot/npm_and_yarn/frontend/dealix-app/flatted-3.4.2	MERGED	2026-06-14T21:34:10Z
+720	feat(merge): integrate Kimi Agent full package — brand, dashboard, presentations, docs	claude/inspiring-carson-nutl5v	MERGED	2026-06-14T21:27:38Z
+719	Add files via upload	VoXc2-patch-102	MERGED	2026-06-14T20:53:01Z
+718	feat(launch-os): GTM bundle integration + 4x expansion — full revenue intelligence OS	claude/funny-lamport-h9zo7b	MERGED	2026-06-13T00:02:26Z
+717	Add files via upload	VoXc2-patch-101	MERGED	2026-06-12T19:06:07Z
+716	Add files via upload	VoXc2-patch-11	MERGED	2026-06-12T07:11:42Z
+715	Add files via upload	VoXc2-patch-10	MERGED	2026-06-12T05:59:06Z
+714	Feature/dealix v10 v20 enterprise commercial os	feature/dealix-v10-v20-enterprise-commercial-os	MERGED	2026-06-11T03:51:32Z
+713	feat: add Dealix V1-V5 commercial operating system	feature/dealix-v1-v5-review	OPEN	2026-06-11T02:51:14Z
+712	feat: finalize Dealix V3 commercial operating system	feature/dealix-commercial-os-v3-final	MERGED	2026-06-11T02:46:18Z
+711	feat(wave-2): Revenue Engine v2 — daily commercial pack generation	feat/revenue-engine-v2	DRAFT	2026-06-10T15:22:38Z
+710	feat(commercial): daily mass draft engine + systems catalog + export API	claude/magical-mccarthy-zacgn7	MERGED	2026-06-10T08:52:05Z
+709	feat(wave-1): CEO Operating Context + CLAUDE.md memory	feat/ceo-operating-context	MERGED	2026-06-10T08:41:20Z
+708	feat: add real places leads engine for revenue day	feat/real-leads-engine	MERGED	2026-06-10T08:39:43Z
+707	feat: add client intake and presentation operating system	feat/intake-presentation-os	MERGED	2026-06-10T08:33:17Z
+706	feat: add micro master non-crashing business OS	feat/micro-master-os	MERGED	2026-06-10T08:13:26Z
+705	Add TestSprite MCP server configuration	claude/testsprite-mcp-setup-tx8e49	MERGED	2026-06-09T00:31:06Z
+704	feat: add stable non-crashing master company OS	feat/master-stable-company-os	MERGED	2026-06-08T22:30:58Z
+703	feat: add Dealix master company operating system	feat/master-company-operating-system	MERGED	2026-06-08T21:24:30Z
+702	feat: add autonomous executive operating system	feat/autonomous-executive-os	MERGED	2026-06-08T20:58:00Z
+701	feat(transformation-os): add 10 enterprise systems to canonical catalog + governed proposal/ROI engines	claude/clever-carson-ju59vs	MERGED	2026-06-08T20:17:30Z
+700	feat: add Dealix Transformation OS service factory	feat/dealix-transformation-os	MERGED	2026-06-08T19:35:33Z
+699	chore: add Dealix morning ops command	chore/add-morning-ops-command	MERGED	2026-06-08T19:22:16Z
+698	fix: resolve CI failures — standalone Dockerfile + Article 13 allowlist	claude/awesome-planck-hxli80	DRAFT	2026-06-08T19:17:25Z
+697	chore: fix Railway predeploy shell and add production check	chore/fix-railway-predeploy	MERGED	2026-06-08T18:53:49Z
+696	Claude/dealix platform build c yh x1	claude/dealix-platform-build-cYhX1	MERGED	2026-06-08T18:34:23Z
+695	feat: add Dealix business operating system	feat/business-operating-system	MERGED	2026-06-08T18:19:14Z
+694	fix: close final launch blockers after platform merge	fix/final-launch-blockers-after-pr550	MERGED	2026-06-08T17:47:16Z
+693	feat(launch): Dealix V16 — Real Outreach & Human-Reviewed Sales Execution	claude/clever-hypatia-2BTSW	MERGED	2026-06-07T18:19:42Z
+692	feat(launch): Dealix V15 — Founder Daily Execution Autopilot	claude/affectionate-lovelace-mkeDh	DRAFT	2026-06-07T18:12:55Z
+691	feat(launch): Dealix V14 — Controlled Preview Execution & Quality Assurance Layer	claude/exciting-lovelace-FloM9	DRAFT	2026-06-07T18:09:08Z
+690	feat(v13): Dealix Consolidation & Master Merge Kit	claude/amazing-ramanujan-0DFmQ	DRAFT	2026-06-07T17:24:17Z
+689	feat(launch): Dealix V12 — Scale & Operating Cadence Layer	claude/inspiring-allen-i3BcF	DRAFT	2026-06-07T17:18:54Z
+688	feat(v11): Live Customer Onboarding & First Revenue Sprint	claude/ecstatic-einstein-O5LCI	DRAFT	2026-06-07T17:15:13Z
+687	feat(v10): Production Implementation Bridge — جسر التنفيذ الإنتاجي	claude/sleepy-albattani-QZq1P	DRAFT	2026-06-07T16:36:28Z
+686	feat(v8): Proof, Trust & Investor Readiness Layer	claude/eager-hawking-BbCg5	DRAFT	2026-06-07T16:18:30Z
+685	feat: Activation Spine v1 — قِف الشركة وشغّلها يومياً	claude/determined-davinci-AsIeh	DRAFT	2026-06-07T16:14:55Z
+684	feat(launch): Dealix Enterprise Revenue & Service Factory V6	claude/wonderful-brahmagupta-JBqD8	DRAFT	2026-06-07T15:32:47Z
+683	feat(revenue): V3 Revenue Machine integration layer — governed UTM attribution + 7-layer wiring map	claude/admiring-hawking-nQanS	DRAFT	2026-06-07T15:28:51Z
+682	feat(v5): Dealix Acquisition Machine — آلة اكتساب العملاء الكاملة	claude/serene-shannon-QoIDm	DRAFT	2026-06-07T15:26:18Z
+681	feat(launch): Dealix commercial activation — real leads → daily drafts → founder approval (consolidated launch)	claude/cool-babbage-5oweV	DRAFT	2026-06-07T15:25:37Z
+680	Launch-safe website, custom-AI intake, and green official go-live gate	claude/funny-keller-hx6s5	DRAFT	2026-06-07T15:24:00Z
+679	تفعيل Dealix التجاري — المحرك اليومي + تصليب الإطلاق + الهوية (Commercial Activation)	claude/beautiful-knuth-4AFzc	DRAFT	2026-06-07T15:23:35Z
+678	Launch activation: public website, custom AI intake, working checkout, founder ops loop	claude/zen-mayer-TRJdJ	DRAFT	2026-06-07T15:22:03Z
+677	feat(activation): one-command daily ops pack + unified website offer ladder	claude/gracious-clarke-B0Equ	DRAFT	2026-06-07T15:21:36Z
+676	feat(launch): Dealix Production Growth V4 — deployment, DB schema, API, industries, partners, finance, observability	claude/great-babbage-xijmk	DRAFT	2026-06-07T15:19:02Z
+675	Reconcile external launch package: archive as reference + promote net-new compliant pieces	claude/admiring-gates-VOo2a	DRAFT	2026-06-07T15:16:17Z
+674	feat(v3): Dealix Revenue Machine V3 — نظام إيراد كامل	claude/quirky-hawking-27Vxa	DRAFT	2026-06-07T15:13:31Z

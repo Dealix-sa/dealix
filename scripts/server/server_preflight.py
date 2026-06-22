@@ -10,8 +10,12 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-VENV_PYTHON = REPO_ROOT / ".venv" / "bin" / "python3"
-PYTHON = str(VENV_PYTHON) if VENV_PYTHON.exists() else "python3"
+VENV_PYTHON = REPO_ROOT / ".venv" / "Scripts" / "python.exe"
+if VENV_PYTHON.exists():
+    PYTHON = str(VENV_PYTHON)
+else:
+    VENV_PYTHON = REPO_ROOT / ".venv" / "bin" / "python3"
+    PYTHON = str(VENV_PYTHON) if VENV_PYTHON.exists() else sys.executable
 
 REQUIRED_ENV = [
     ("APP_SECRET_KEY", "cryptographic signing"),

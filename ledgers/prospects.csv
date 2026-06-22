@@ -1,1 +1,4 @@
-company_name,sector,city,website,source_url,verification_status,owner_decision
+company,company_name,sector,city,website,email,source_url,verification_status,confidence,recommended_product,pain_hypothesis,owner_decision,status,last_contacted_at,followup_count
+مثال للخدمات اللوجستية,Example Logistics,logistics,Riyadh,https://example-logistics.sa,info@example-logistics.sa,https://example-logistics.sa/contact,verified_public,0.72,REVENUE_COMMAND_ROOM_OS,ضعف المتابعة مع العملاء المحتملين وغياب غرفة قيادة واضحة,review,ready,,
+مثال التقنية,Example Tech,fintech,Riyadh,https://example-tech.sa,hello@example-tech.sa,https://example-tech.sa/about,verified_public,0.68,COMPANY_BRAIN_OS,قرارات النمو تعتمد على تقارير يدوية ولا توجد خريطة قرار مركزية,review,ready,,
+مثال العقارات,Example Real Estate,real_estate,Jeddah,https://example-realestate.sa,sales@example-realestate.sa,https://example-realestate.sa/projects,partial,0.55,WHATSAPP_INBOX_FOLLOWUP_OS,فوضى رسائل العملاء عبر WhatsApp وعدم وجود نظام متابعة موحد,review,ready,,

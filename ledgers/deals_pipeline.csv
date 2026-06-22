@@ -1,1 +1,1 @@
-date,company_name,stage,value_sar,product,next_action,owner,close_probability,notes
+date,company,company_name,stage,product,value_sar,expected_value,probability,next_action,owner,close_probability,notes

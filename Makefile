@@ -315,7 +315,13 @@ company-day: ## Run full company launch day pipeline
 	bash scripts/run_company_launch_day.sh
 
 
-.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day
+.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day production-check full-revenue-day
+
+# Alias: production-check runs the same gate as company-check
+production-check: company-check ## Run production launch safety check
+
+# Alias: full-revenue-day runs the complete revenue machine (drafts only)
+full-revenue-day: revenue-daily ## Run full daily revenue machine
 
 # ═══════════════════════════════════════════════════════════════
 # PR #727 GTM kit — founder-led outreach/proposal/contract helpers

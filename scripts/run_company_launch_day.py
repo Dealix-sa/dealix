@@ -14,8 +14,8 @@ from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-VENV_PYTHON = REPO_ROOT / ".venv" / "bin" / "python3"
-PYTHON = str(VENV_PYTHON) if VENV_PYTHON.exists() else "python3"
+VENV_PYTHON = REPO_ROOT / ".venv" / "Scripts" / "python.exe"
+PYTHON = str(VENV_PYTHON) if VENV_PYTHON.exists() else sys.executable
 
 TODAY = os.environ.get("DEALIX_DATE", date.today().isoformat())
 
