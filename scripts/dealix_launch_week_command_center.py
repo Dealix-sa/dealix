@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 m=json.loads(Path('data/preview/launch_week_metrics.json').read_text(encoding='utf-8'))
 print('# Launch Week Command Center')
 for k,v in m.items():

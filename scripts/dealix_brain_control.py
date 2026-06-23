@@ -1,7 +1,13 @@
 from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+import urllib.request
+import uuid
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-from datetime import datetime, timezone
-import argparse, json, subprocess, sys, urllib.request, uuid
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data/company_os/control"
@@ -26,7 +32,7 @@ ASSETS = [
 ]
 
 def now():
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 def ensure():
     DATA.mkdir(parents=True, exist_ok=True)

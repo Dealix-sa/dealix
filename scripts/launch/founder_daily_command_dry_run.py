@@ -12,8 +12,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from dealix.launch_os.pipeline_tracker import PipelineTracker, PipelineStage
 from dealix.launch_os.founder_daily_command import generate_daily_command, render_brief
+from dealix.launch_os.pipeline_tracker import PipelineStage, PipelineTracker
 
 SAMPLE_ACCOUNTS = [
     {

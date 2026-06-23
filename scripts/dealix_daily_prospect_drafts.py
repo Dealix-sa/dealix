@@ -7,8 +7,8 @@ from __future__ import annotations
 
 import csv
 from dataclasses import dataclass
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 INPUT = ROOT / "data" / "prospects" / "icp_seed_accounts_saudi.csv"

@@ -18,7 +18,7 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from auto_client_acquisition.delivery_os.service_readiness import (  # noqa: E402
+from auto_client_acquisition.delivery_os.service_readiness import (
     compute_service_readiness_score,
 )
 
@@ -137,7 +137,7 @@ def _run_script(name: str, *, quiet: bool = True) -> bool:
     if quiet:
         kwargs["capture_output"] = True
         kwargs["text"] = True
-    proc = subprocess.run(  # noqa: S603
+    proc = subprocess.run(
         [sys.executable, str(REPO / "scripts" / name)],
         check=False,
         **kwargs,

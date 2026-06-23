@@ -1,4 +1,5 @@
 from pathlib import Path
+
 migrations=sorted(Path('db/migrations').glob('*.sql'))
 print('# Migration Plan')
 for i,m in enumerate(migrations,1):

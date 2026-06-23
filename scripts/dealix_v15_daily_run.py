@@ -1,4 +1,6 @@
-import subprocess, sys
+import subprocess
+import sys
+
 cmds=[
  ['scripts/dealix_v15_readiness_check.py'],
  ['scripts/dealix_top10_task_ranker.py'],

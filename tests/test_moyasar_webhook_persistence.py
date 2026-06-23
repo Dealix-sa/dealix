@@ -24,9 +24,9 @@ if not os.environ.get("DATABASE_URL"):
 PaymentRecord = pytest.importorskip("db.models").PaymentRecord  # type: ignore
 async_session_factory = pytest.importorskip("db.session").async_session_factory  # type: ignore
 
-from sqlalchemy import select  # noqa: E402
+from sqlalchemy import select
 
-from api.routers.pricing import _persist_payment_event  # noqa: E402
+from api.routers.pricing import _persist_payment_event
 
 
 @pytest_asyncio.fixture

@@ -1,5 +1,7 @@
-import argparse, re
+import argparse
+import re
 from pathlib import Path
+
 parser=argparse.ArgumentParser()
 parser.add_argument('--client', required=True)
 parser.add_argument('--package', default='pilot')

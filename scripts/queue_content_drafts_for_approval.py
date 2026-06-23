@@ -12,7 +12,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 WEEKLY_DIR = REPO_ROOT / "var/content_drafts"
 
@@ -88,7 +88,7 @@ def main() -> int:
                     "summary_en": f"slug={draft.get('slug')}",
                 }
             ).encode("utf-8")
-            req = urllib.request.Request(  # noqa: S310
+            req = urllib.request.Request(
                 f"{base}/api/v1/approvals/create",
                 data=body_json,
                 headers={
@@ -97,7 +97,7 @@ def main() -> int:
                 },
                 method="POST",
             )
-            with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310
+            with urllib.request.urlopen(req, timeout=30) as resp:
                 created.append(json.loads(resp.read().decode("utf-8")))
         else:
             created.append(_create_via_store(draft))

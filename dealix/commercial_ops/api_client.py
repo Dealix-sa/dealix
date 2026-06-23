@@ -24,7 +24,7 @@ def fetch_founder_dashboard(
         method="GET",
     )
     try:
-        with urlopen(req, timeout=20) as resp:  # noqa: S310
+        with urlopen(req, timeout=20) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError):
         return None
@@ -45,7 +45,7 @@ def fetch_war_room_today_pack(
         method="GET",
     )
     try:
-        with urlopen(req, timeout=25) as resp:  # noqa: S310
+        with urlopen(req, timeout=25) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError):
         return None
@@ -72,7 +72,7 @@ def import_war_room_targets_api(
         method="POST",
     )
     try:
-        with urlopen(req, timeout=60) as resp:  # noqa: S310
+        with urlopen(req, timeout=60) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError):
         return None
@@ -98,7 +98,7 @@ def trigger_daily_targeting(
         method="POST",
     )
     try:
-        with urlopen(req, timeout=60) as resp:  # noqa: S310
+        with urlopen(req, timeout=60) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError):
         return None

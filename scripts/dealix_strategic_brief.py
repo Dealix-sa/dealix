@@ -1,13 +1,13 @@
-from pathlib import Path
-from datetime import datetime, timezone
 import json
+from datetime import UTC, datetime, timezone
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "reports" / "company_os" / "daily"
 OUT.mkdir(parents=True, exist_ok=True)
 
 payload = {
-    "generated_at": datetime.now(timezone.utc).isoformat(),
+    "generated_at": datetime.now(UTC).isoformat(),
     "decision": "Sell P1 today. Do not build new features before outreach.",
     "targets": {
         "manual_messages": 5,

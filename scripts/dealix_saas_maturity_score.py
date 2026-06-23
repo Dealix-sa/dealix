@@ -1,4 +1,5 @@
 from pathlib import Path
+
 checks={
  'tenant schema': Path('db/migrations/0002_create_multi_tenant_saas.sql').exists(),
  'usage meter': Path('scripts/dealix_usage_meter.py').exists(),

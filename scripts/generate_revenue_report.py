@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.quote_engine import load_deals, load_quotes, load_invoices  # noqa: E402
+from lib.quote_engine import load_deals, load_invoices, load_quotes
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "reports" / "finance"
 

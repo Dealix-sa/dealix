@@ -1,4 +1,5 @@
 from pathlib import Path
+
 contracts=list(Path('prompts/contracts').glob('*.md'))
 if len(contracts)<8:
     print('Expected at least 8 prompt contracts, found', len(contracts)); raise SystemExit(1)

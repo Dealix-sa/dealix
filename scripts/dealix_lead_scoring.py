@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import argparse, csv
+import argparse
+import csv
 from pathlib import Path
 
 SECTOR_SCORE = {

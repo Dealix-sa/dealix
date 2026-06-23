@@ -12,9 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.ceo_master_plan import build_ceo_master_plan_snapshot  # noqa: E402
-from dealix.commercial_ops.founder_comprehensive_plan import analyze_phase_0_1_gate  # noqa: E402
-from dealix.commercial_ops.gtm_blitz_tracker import build_gtm_blitz_snapshot  # noqa: E402
+from dealix.commercial_ops.ceo_master_plan import build_ceo_master_plan_snapshot
+from dealix.commercial_ops.founder_comprehensive_plan import analyze_phase_0_1_gate
+from dealix.commercial_ops.gtm_blitz_tracker import build_gtm_blitz_snapshot
 
 OUT_DIR = ROOT / "data/founder_briefs"
 

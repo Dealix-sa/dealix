@@ -1,6 +1,9 @@
-import argparse, json, uuid
+import argparse
+import json
+import uuid
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-from datetime import datetime, timezone
+
 Q=Path('data/agents/task_queue.json')
 Q.parent.mkdir(parents=True, exist_ok=True)
 
@@ -15,7 +18,7 @@ def add(role, task, priority='medium'):
     items=load()
     item={
       'id':'task_'+uuid.uuid4().hex[:10],
-      'created_at':datetime.now(timezone.utc).isoformat(),
+      'created_at':datetime.now(UTC).isoformat(),
       'role':role,'priority':priority,'input':task,
       'status':'queued','output_path':None
     }

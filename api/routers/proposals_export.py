@@ -184,7 +184,7 @@ async def download_pitch_pdf() -> FileResponse:
 
 
 @router.get("/leads/daily-export")
-async def export_daily_drafts(date: Optional[str] = None) -> StreamingResponse:
+async def export_daily_drafts(date: str | None = None) -> StreamingResponse:
     """
     Stream the daily drafts CSV for the requested date (defaults to today).
 

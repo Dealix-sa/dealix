@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -86,7 +86,7 @@ def build_buckets(prs: list[dict]) -> dict[str, list[dict]]:
 
 
 def render_markdown(buckets: dict[str, list[dict]], total: int) -> str:
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     lines = ["# Open PR Triage", "", f"- Generated: `{now}`", f"- Open PRs: {total}", ""]
     lines.append("See policy: `docs/agents/PR_TRIAGE_POLICY.md`. Agents never merge.")
     lines.append("")
@@ -138,7 +138,7 @@ def main() -> int:
     )
     summary = {
         "status": "PASS",
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "generated_at_utc": datetime.now(UTC).isoformat(),
         "total_open": len(prs),
         "buckets": {name: len(items) for name, items in buckets.items()},
     }

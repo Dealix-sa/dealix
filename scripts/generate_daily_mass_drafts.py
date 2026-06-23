@@ -24,7 +24,7 @@ import csv
 import json
 import os
 import sys
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -287,7 +287,7 @@ def render_draft(
     contact_name = company.get("contact_name", "").strip()
     email_addr = company.get("email", "").strip()
 
-    now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    now_iso = datetime.now(UTC).isoformat(timespec="seconds")
 
     if language == "ar":
         subject = SUBJECT_AR_TEMPLATE.format(company=company_name)
@@ -396,8 +396,8 @@ def generate_drafts(
     target_rows_needed = max(1, (count + len(languages) - 1) // len(languages))
 
     # Interleave sectors so coverage is spread evenly across all 12 sectors
-    from collections import defaultdict
     import random
+    from collections import defaultdict
     by_sector: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in filtered:
         by_sector[row.get("sector", "unknown")].append(row)

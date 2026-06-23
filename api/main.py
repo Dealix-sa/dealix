@@ -78,10 +78,10 @@ from api.routers import friction_log as friction_log_router
 from api.routers import integration_capability as integration_capability_router
 from api.routers import intelligence_layer as intelligence_layer_router
 from api.routers import service_catalog as service_catalog_router
-from api.routers import target_intelligence as target_intelligence_router
 
 # 90-day commercial activation — Wave 14B
 from api.routers import sprint_runner as sprint_runner_router
+from api.routers import target_intelligence as target_intelligence_router
 from api.routers import (
     transformation_os as transformation_os_router,
 )
@@ -118,30 +118,32 @@ whatsapp_client_os_router = _import_optional_router(
     "whatsapp_client_os", "api.routers.whatsapp_client_os"
 )
 # Wave 14J — Commercial wiring map (source of truth for landing↔backend)
-from api.routers import commercial_map as commercial_map_router
+# Autonomous product distribution engine
+from api.routers import autonomous_distribution as autonomous_distribution_router
+
 # Wave 15B — Commercial chain (diagnostic → warm-intro → pilot → proof → payment → upsell)
 from api.routers import commercial as commercial_chain_router
+from api.routers import commercial_map as commercial_map_router
+
+# Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
+from api.routers import customer_health_scoring as customer_health_scoring_router
+
+# Revenue Execution OS — approval-first distribution (no external send / no charge)
+from api.routers import distribution as distribution_router
 
 # Wave 15 — Founder launch-status (single-pane production readiness)
 from api.routers import founder_launch_status as founder_launch_status_router
 
-# Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
-from api.routers import platform_foundation as platform_foundation_router
-# Autonomous product distribution engine
-from api.routers import autonomous_distribution as autonomous_distribution_router
-
-# Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
-from api.routers import customer_health_scoring as customer_health_scoring_router
+# 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
+from api.routers import kpi_dashboard as kpi_dashboard_router
 from api.routers import market_intelligence as market_intelligence_router
 from api.routers import onboarding as onboarding_router
 
-# 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
-from api.routers import kpi_dashboard as kpi_dashboard_router
+# Enterprise Foundation Core — platform_core enterprise-loop proof endpoints
+from api.routers import platform_foundation as platform_foundation_router
+
 # Weekly business reports (admin-gated, approval-required)
 from api.routers import weekly_reports as weekly_reports_router
-# Revenue Execution OS — approval-first distribution (no external send / no charge)
-from api.routers import distribution as distribution_router
-
 from api.security import APIKeyMiddleware, setup_rate_limit
 from core.config.settings import get_settings
 from core.errors import AICompanyError

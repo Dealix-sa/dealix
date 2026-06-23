@@ -8,8 +8,8 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from api.routers import (
-    agentic_enterprise,
     agent_governance,
+    agentic_enterprise,
     agents,
     ai_workforce,
     automation,

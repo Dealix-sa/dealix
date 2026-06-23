@@ -1,4 +1,5 @@
 from pathlib import Path
+
 required = [
  'product/SAAS_PRODUCTIZATION_MASTER_PLAN_AR.md',
  'product/TENANT_WORKSPACE_MODEL_AR.md',

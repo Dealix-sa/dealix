@@ -12,6 +12,8 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.utils import utcnow
+from db.models import TenantRecord
 from db.models_subscription import (
     FeatureFlagRecord,
     InvoiceRecord,
@@ -19,9 +21,6 @@ from db.models_subscription import (
     SubscriptionRecord,
     UsageRecord,
 )
-from db.models import TenantRecord
-from core.utils import utcnow
-
 
 PLAN_DEFAULTS: dict[str, dict[str, Any]] = {
     "free": {"trial_days": 0, "can_trial": False},

@@ -19,7 +19,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 AEO_PATH = REPO_ROOT / "docs/commercial/operations/AEO_CONTENT_CALENDAR_AR.md"
 OBJ_PATH = REPO_ROOT / "docs/commercial/operations/objection_engine_registry.yaml"

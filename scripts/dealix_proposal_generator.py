@@ -192,7 +192,7 @@ def generate_proposal(
     if tier_key != recommended:
         print()
         print(f"  ⚠️  Note: recommended tier for {sector} is '{recommended}'.")
-        print(f"     Selling the diagnostic first is always better.")
+        print("     Selling the diagnostic first is always better.")
     print()
     print("  NEXT STEPS (founder checklist):")
     print("  [ ] Review pain_ar and custom_kpi_ar — customize to the lead")

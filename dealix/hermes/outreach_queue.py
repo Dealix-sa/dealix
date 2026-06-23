@@ -1,9 +1,11 @@
 """Approval-gated outreach queue — drafts wait for founder approval before any send."""
 from __future__ import annotations
+
 import uuid
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
+
 import structlog
 
 logger = structlog.get_logger(__name__)

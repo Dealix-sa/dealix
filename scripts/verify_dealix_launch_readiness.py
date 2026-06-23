@@ -30,7 +30,7 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from scripts._wave8_scan import scan_files  # noqa: E402
+from scripts._wave8_scan import scan_files
 
 CUSTOMER_TEMPLATE = REPO / "customers" / "_template"
 COMMAND_SPRINT_FILES = (

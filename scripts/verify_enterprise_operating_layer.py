@@ -1,5 +1,5 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 required = [
     "docs/company_os/enterprise/ENTERPRISE_OPERATING_MODEL_AR.md",

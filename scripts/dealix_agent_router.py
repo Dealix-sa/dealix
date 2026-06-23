@@ -1,6 +1,9 @@
-import argparse, json, uuid
+import argparse
+import json
+import uuid
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-from datetime import datetime, timezone
+
 REG=Path('data/agents/agent_registry.json')
 RUNS=Path('data/agents/agent_runs.jsonl')
 OUT=Path('out/agents'); OUT.mkdir(parents=True, exist_ok=True)
@@ -28,7 +31,7 @@ if __name__=='__main__':
     output=produce(a.role,a.task)
     out_path=OUT/f'{run_id}_{a.role}.json'
     out_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding='utf-8')
-    record={'run_id':run_id,'task_id':a.task_id,'role':a.role,'started_at':datetime.now(timezone.utc).isoformat(),'finished_at':datetime.now(timezone.utc).isoformat(),'status':'needs_approval' if output.get('needs_human_review') else 'done','output_path':str(out_path),'risk_level':output.get('risk_level'),'approval_required':output.get('needs_human_review')}
+    record={'run_id':run_id,'task_id':a.task_id,'role':a.role,'started_at':datetime.now(UTC).isoformat(),'finished_at':datetime.now(UTC).isoformat(),'status':'needs_approval' if output.get('needs_human_review') else 'done','output_path':str(out_path),'risk_level':output.get('risk_level'),'approval_required':output.get('needs_human_review')}
     RUNS.parent.mkdir(parents=True, exist_ok=True)
     with RUNS.open('a',encoding='utf-8') as f: f.write(json.dumps(record, ensure_ascii=False)+'\n')
     print('Wrote', out_path)

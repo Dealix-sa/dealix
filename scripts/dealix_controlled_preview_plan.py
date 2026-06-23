@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 clients=json.loads(Path('data/preview/preview_clients.json').read_text(encoding='utf-8'))
 print('# Controlled Preview Plan')
 print(f'Clients tracked: {len(clients)}')

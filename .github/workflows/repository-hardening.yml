@@ -21,20 +21,22 @@ jobs:
     name: Gitleaks secret scan
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Run Gitleaks when license is available
-        if: ${{ secrets.GITLEAKS_LICENSE != '' }}
+        if: ${{ env.GITLEAKS_LICENSE != '' }}
         uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+          GITLEAKS_LICENSE: ${{ env.GITLEAKS_LICENSE }}
 
       - name: Skip Gitleaks Action when org license is unavailable
-        if: ${{ secrets.GITLEAKS_LICENSE == '' }}
+        if: ${{ env.GITLEAKS_LICENSE == '' }}
         run: |
           echo "GITLEAKS_LICENSE is not configured."
           echo "Skipping gitleaks/gitleaks-action to avoid blocking CI for organization repositories."

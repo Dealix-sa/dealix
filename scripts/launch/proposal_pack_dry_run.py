@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from dealix.launch_os.proposal_engine import build_proposal, render_markdown, VALID_TIERS
+from dealix.launch_os.proposal_engine import VALID_TIERS, build_proposal, render_markdown
 
 
 def main() -> None:

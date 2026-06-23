@@ -56,7 +56,7 @@ class RevenueOSBridge:
             cls._instance = cls()
         return cls._instance
 
-    async def wave_to_signal(self, wave_id: str, result: dict) -> Optional[MarketSignal]:
+    async def wave_to_signal(self, wave_id: str, result: dict) -> MarketSignal | None:
         """Convert wave completion to a Revenue OS MarketSignal."""
         signal_map = {
             "wave_3_distribution": self._distribution_to_signal,
@@ -74,7 +74,7 @@ class RevenueOSBridge:
         logger.debug("no_signal_handler_for_wave", wave_id=wave_id)
         return None
 
-    async def signal_to_wave_action(self, signal: MarketSignal) -> Optional[str]:
+    async def signal_to_wave_action(self, signal: MarketSignal) -> str | None:
         """Convert a Revenue OS signal to a Hermes wave action."""
         if signal.requires_decision_passport:
             logger.info("signal_requires_passport", signal_id=signal.signal_id)

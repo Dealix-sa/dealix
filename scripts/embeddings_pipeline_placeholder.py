@@ -11,7 +11,7 @@ _REPO = Path(__file__).resolve().parents[1]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from auto_client_acquisition.v3.project_intelligence import (  # noqa: E402
+from auto_client_acquisition.v3.project_intelligence import (
     build_index_summary,
     scan_project,
 )

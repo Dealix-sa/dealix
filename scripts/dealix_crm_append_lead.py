@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-import argparse, json, hashlib
+import argparse
+import hashlib
+import json
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-from datetime import datetime, timezone
 
 CRM = Path('data/crm')
 CRM.mkdir(parents=True, exist_ok=True)
@@ -26,10 +28,10 @@ def main():
     ap.add_argument('--email', default='')
     ap.add_argument('--phone', default='')
     args = ap.parse_args()
-    raw = f"{args.company}|{args.email}|{args.phone}|{datetime.now(timezone.utc).date()}"
+    raw = f"{args.company}|{args.email}|{args.phone}|{datetime.now(UTC).date()}"
     lead = {
         'id': 'lead_' + hashlib.sha1(raw.encode()).hexdigest()[:12],
-        'created_at': datetime.now(timezone.utc).isoformat(),
+        'created_at': datetime.now(UTC).isoformat(),
         'company': args.company,
         'sector': args.sector,
         'pain': args.pain,

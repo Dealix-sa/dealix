@@ -8,4 +8,4 @@ from dealix.hermes.loops.revenue_loop import RevenueLoop
 from dealix.hermes.loops.sprint_loop import SprintLoop
 from dealix.hermes.loops.watchdog_loop import WatchdogLoop
 
-__all__ = ["RevenueLoop", "LeadLoop", "SprintLoop", "WatchdogLoop", "DailyOutreachLoop"]
+__all__ = ["DailyOutreachLoop", "LeadLoop", "RevenueLoop", "SprintLoop", "WatchdogLoop"]

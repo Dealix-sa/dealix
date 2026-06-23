@@ -29,14 +29,14 @@ from dealix.launch_os.pipeline_tracker import (
     PipelineTracker,
 )
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
 def _fresh_tracker(path: Path | None = None) -> PipelineTracker:
     if path is None:
-        import tempfile, os
+        import os
+        import tempfile
         fd, tmp = tempfile.mkstemp(suffix=".jsonl")
         os.close(fd)
         os.unlink(tmp)

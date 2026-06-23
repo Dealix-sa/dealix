@@ -5,7 +5,7 @@ Feature Gating Middleware.
 
 from __future__ import annotations
 
-from typing import Awaitable, Callable
+from collections.abc import Awaitable, Callable
 
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -63,6 +63,7 @@ class FeatureGatingMiddleware(BaseHTTPMiddleware):
             token = auth.replace("Bearer ", "")
             try:
                 import jwt
+
                 from core.config.settings import get_settings
                 payload = jwt.decode(
                     token,

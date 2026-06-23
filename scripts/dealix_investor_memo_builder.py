@@ -1,4 +1,5 @@
 from pathlib import Path
+
 src=Path('investor/INVESTOR_MEMO_AR.md').read_text(encoding='utf-8')
 metrics=Path('out/board/board_metrics.md')
 metrics_text=metrics.read_text(encoding='utf-8') if metrics.exists() else 'Metrics not generated yet.'

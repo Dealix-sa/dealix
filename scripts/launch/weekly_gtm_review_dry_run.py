@@ -15,8 +15,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from dealix.launch_os.pipeline_tracker import PipelineTracker, PipelineStage
-from dealix.launch_os.vertical_scorer import top_wedge, rank_verticals
+from dealix.launch_os.pipeline_tracker import PipelineStage, PipelineTracker
+from dealix.launch_os.vertical_scorer import rank_verticals, top_wedge
 
 
 def week_range() -> tuple[date, date]:

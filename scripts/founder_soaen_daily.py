@@ -12,11 +12,11 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
 
-from dealix.commercial_ops.doctrine import (  # noqa: E402
+from dealix.commercial_ops.doctrine import (
     build_soaen_daily,
     format_doctrine_markdown,
 )
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 
 def main() -> int:

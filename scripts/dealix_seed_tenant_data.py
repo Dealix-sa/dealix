@@ -1,5 +1,8 @@
-import argparse, json, uuid
+import argparse
+import json
+import uuid
 from pathlib import Path
+
 parser=argparse.ArgumentParser()
 parser.add_argument('--tenant', required=True)
 args=parser.parse_args()

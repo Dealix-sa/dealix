@@ -16,7 +16,7 @@ import os
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,7 +66,7 @@ def run_command(cmd: list[str]) -> dict[str, object]:
 def founder_cycle() -> dict[str, object]:
     return {
         "service": "founder-os-worker",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "approval_mode": APPROVAL_MODE,
         "external_actions_allowed": False,
         "auto_send_enabled": os.getenv("AUTO_SEND_ENABLED", "false"),

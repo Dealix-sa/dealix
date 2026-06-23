@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
-from scripts.expand_agency_targets_seed import (  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
+from scripts.expand_agency_targets_seed import (
     DEFAULT_MIN_ROWS,
     WAVE2_TARGET_ROWS,
     WAVE3_TARGET_ROWS,

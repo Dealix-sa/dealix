@@ -301,6 +301,7 @@ async def sample_sprint() -> dict[str, Any]:
     redis_client = None
     try:
         from redis.asyncio import Redis as AsyncRedis
+
         from core.config.settings import get_settings
         settings = get_settings()
         redis_client = AsyncRedis.from_url(settings.redis_url, decode_responses=True, socket_connect_timeout=2)

@@ -237,9 +237,9 @@ async def log_activity(
 
 
 __all__ = [
-    "get_lead_profile",
-    "update_lead_stage",
     "create_deal",
+    "get_lead_profile",
     "list_open_deals",
     "log_activity",
+    "update_lead_stage",
 ]

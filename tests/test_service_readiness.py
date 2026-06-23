@@ -18,7 +18,7 @@ def test_flagship_services_officially_sellable() -> None:
 
 
 def test_verify_sellability_script_passes() -> None:
-    r = subprocess.run(  # noqa: S603
+    r = subprocess.run(
         [sys.executable, str(REPO / "scripts" / "verify_sellability.py")],
         cwd=REPO,
         check=False,

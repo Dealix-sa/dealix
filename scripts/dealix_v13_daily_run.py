@@ -1,4 +1,5 @@
-import subprocess, sys
+import subprocess
+import sys
 
 COMMANDS = [
     [sys.executable, 'scripts/dealix_v13_master_readiness.py'],

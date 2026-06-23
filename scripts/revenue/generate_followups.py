@@ -20,8 +20,8 @@ from scripts.revenue._lib import (
     load_csv,
     normalize_email,
     opt_out_line,
-    today_str,
     parse_date,
+    today_str,
 )
 
 

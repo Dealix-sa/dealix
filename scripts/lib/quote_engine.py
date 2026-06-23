@@ -21,7 +21,7 @@ _ID_RE = re.compile(r"(\d+)\s*$")
 
 def now() -> str:
     """UTC ISO-8601 timestamp (seconds precision)."""
-    return _dt.datetime.now(tz=_dt.timezone.utc).isoformat(timespec="seconds")
+    return _dt.datetime.now(tz=_dt.UTC).isoformat(timespec="seconds")
 
 
 def load_quotes() -> dict[str, Any]:

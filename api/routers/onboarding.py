@@ -10,8 +10,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.session import get_db as get_db_session
 from api.security.auth_deps import get_current_user
+from db.session import get_db as get_db_session
 from dealix.onboarding.service import OnboardingService
 
 router = APIRouter(prefix="/api/v1/onboarding", tags=["Onboarding"])

@@ -16,7 +16,7 @@ if str(ROOT) not in sys.path:
 
 os.environ.setdefault("PYTHONIOENCODING", "utf-8")
 
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 ensure_stdout_utf8()
 

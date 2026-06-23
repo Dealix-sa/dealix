@@ -1,8 +1,9 @@
-import pytest
 from typing import Dict, List
 
+import pytest
 
-def calculate_health_score(components: Dict[str, int]) -> float:
+
+def calculate_health_score(components: dict[str, int]) -> float:
     """
     Calculate health score from components.
     Weights: onboarding 15%, access 10%, delivery 15%, reports 10%,
@@ -19,12 +20,12 @@ def calculate_health_score(components: Dict[str, int]) -> float:
         "value_proof_level": 0.10,
         "stakeholder_engagement": 0.05
     }
-    
+
     total = 0.0
     for key, weight in weights.items():
         score = components.get(key, 0)
         total += score * weight
-    
+
     return round(total, 2)
 
 
@@ -41,7 +42,7 @@ def get_health_status(score: float) -> str:
 
 
 class TestClientHealthScore:
-    
+
     def test_healthy_score(self):
         """Test score in healthy range."""
         components = {
@@ -58,7 +59,7 @@ class TestClientHealthScore:
         score = calculate_health_score(components)
         assert score == 100.0
         assert get_health_status(score) == "healthy"
-    
+
     def test_watch_score(self):
         """Test score in watch range."""
         components = {
@@ -75,7 +76,7 @@ class TestClientHealthScore:
         score = calculate_health_score(components)
         assert score == 75.0
         assert get_health_status(score) == "watch"
-    
+
     def test_at_risk_score(self):
         """Test score in at_risk range."""
         components = {
@@ -92,7 +93,7 @@ class TestClientHealthScore:
         score = calculate_health_score(components)
         assert score == 50.0
         assert get_health_status(score) == "at_risk"
-    
+
     def test_blocked_score(self):
         """Test score in blocked range."""
         components = {
@@ -109,19 +110,19 @@ class TestClientHealthScore:
         score = calculate_health_score(components)
         assert score == 25.0
         assert get_health_status(score) == "blocked"
-    
+
     def test_missing_component_defaults_to_zero(self):
         """Test that missing components default to zero."""
         components = {}
         score = calculate_health_score(components)
         assert score == 0.0
-    
+
     def test_renewal_ready_status(self):
         """Test renewal_ready status is set for high scores."""
         score = 85.0
         status = get_health_status(score)
         assert status == "healthy"
-    
+
     def test_churn_risk_status(self):
         """Test churn_risk is blocked status."""
         score = 30.0

@@ -12,11 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.founder_full_autopilot import (  # noqa: E402
+from dealix.commercial_ops.founder_full_autopilot import (
     build_autopilot_snapshot,
     write_autopilot_brief,
 )
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 
 def _run(cmd: list[str]) -> int:

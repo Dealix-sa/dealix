@@ -15,7 +15,7 @@ from __future__ import annotations
 import json
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -314,7 +314,7 @@ def main() -> int:
     activation = _activation_priorities(rows)
     gov_risks = _governance_risks(rows)
 
-    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    ts = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     src = str(REGISTRY.relative_to(REPO)).replace("\\", "/")
 
     payload = {

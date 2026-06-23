@@ -1,4 +1,5 @@
 import subprocess
+
 cmds=[
  ['python','scripts/dealix_v11_readiness_check.py'],
  ['python','scripts/dealix_first_revenue_sprint.py'],

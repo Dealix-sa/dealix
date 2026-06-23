@@ -33,12 +33,12 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.diagnostic_engine import (  # noqa: E402
+from auto_client_acquisition.diagnostic_engine import (
     DiagnosticRequest,
     generate_diagnostic,
     list_supported_sectors,
 )
-from auto_client_acquisition.diagnostic_engine.engine import (  # noqa: E402
+from auto_client_acquisition.diagnostic_engine.engine import (
     SECTOR_BUNDLE_MAP as _SECTOR_DEFAULTS,
 )
 from auto_client_acquisition.diagnostic_engine.engine import (

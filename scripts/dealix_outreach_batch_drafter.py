@@ -1,5 +1,7 @@
-import argparse,csv
+import argparse
+import csv
 from pathlib import Path
+
 p=argparse.ArgumentParser(); p.add_argument('--input',required=True); p.add_argument('--vertical',required=True); p.add_argument('--limit',type=int,default=10); a=p.parse_args()
 tpl=Path('templates/messages/first_touch_whatsapp_ar.md').read_text(encoding='utf-8'); outdir=Path('out/outreach_drafts'); outdir.mkdir(parents=True,exist_ok=True); written=0
 with open(a.input,encoding='utf-8') as f:

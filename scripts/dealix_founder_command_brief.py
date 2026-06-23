@@ -1,10 +1,13 @@
-import json, datetime
+import datetime
+import json
 from pathlib import Path
+
 # Ensure top tasks exist
 try:
     top=Path('out/founder/top10_tasks.md').read_text(encoding='utf-8')
 except FileNotFoundError:
-    import subprocess, sys
+    import subprocess
+    import sys
     subprocess.run([sys.executable,'scripts/dealix_top10_task_ranker.py'], check=True)
     top=Path('out/founder/top10_tasks.md').read_text(encoding='utf-8')
 clients=[]

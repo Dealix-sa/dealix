@@ -11,6 +11,7 @@ from typing import Any
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.utils import utcnow
 from db.models_erp import (
     ActivityRecord,
     AttendanceRecord,
@@ -37,7 +38,6 @@ from db.models_erp import (
     TimeEntryRecord,
     WarehouseRecord,
 )
-from core.utils import utcnow
 
 
 class ERPService:

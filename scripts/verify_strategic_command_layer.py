@@ -1,5 +1,5 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 required = [
     "docs/company_os/STRATEGIC_COMMAND_LAYER_AR.md",

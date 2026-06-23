@@ -5,7 +5,6 @@ or similar forbidden claims.
 """
 from pathlib import Path
 
-
 FORBIDDEN_PHRASES = [
     "guaranteed revenue",
     "guaranteed roi",
@@ -129,7 +128,6 @@ def test_pricing_yaml_no_guaranteed():
 
 
 import re
-
 
 if __name__ == "__main__":
     test_no_guaranteed_in_proposal_docs()

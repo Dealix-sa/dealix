@@ -290,8 +290,8 @@ async def identify_growth_levers(company_data: dict[str, Any]) -> dict[str, Any]
 
 __all__ = [
     "analyze_revenue_trend",
-    "generate_cohort_analysis",
     "calculate_ltv_cac",
+    "generate_cohort_analysis",
     "generate_executive_summary",
     "identify_growth_levers",
 ]

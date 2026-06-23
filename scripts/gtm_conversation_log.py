@@ -16,8 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.gtm_blitz_tracker import build_gtm_blitz_snapshot  # noqa: E402
-from dealix.commercial_ops.paths import REPO_ROOT  # noqa: E402
+from dealix.commercial_ops.gtm_blitz_tracker import build_gtm_blitz_snapshot
+from dealix.commercial_ops.paths import REPO_ROOT
 
 CONV_CSV = REPO_ROOT / "docs/commercial/operations/gtm_conversation_tracker.csv"
 GTM_BLITZ = REPO_ROOT / "dealix/config/gtm_blitz_90d.yaml"

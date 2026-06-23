@@ -10,7 +10,7 @@ import json
 import os
 import time
 import urllib.request
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 
 API_URL = os.getenv("APP_URL") or os.getenv("DEALIX_API_URL") or "https://api.dealix.me"
 API_URL = API_URL.rstrip("/")
@@ -41,7 +41,7 @@ def check_health() -> dict[str, object]:
 def main() -> int:
     payload = {
         "service": "dealix-watchdog",
-        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "checked_at": datetime.now(UTC).isoformat(),
         "health_url": HEALTH_URL,
         "result": check_health(),
     }

@@ -43,7 +43,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.bottleneck_radar.computer import (  # noqa: E402
+from auto_client_acquisition.bottleneck_radar.computer import (
     compute_bottleneck,
     compute_founder_view,
 )

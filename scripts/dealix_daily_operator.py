@@ -12,7 +12,6 @@ import json
 import sys
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -22,7 +21,7 @@ def run_step(label: str, fn) -> bool:
         fn()
         print("  OK")
         return True
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         print(f"  FAIL: {exc}")
         return False
 

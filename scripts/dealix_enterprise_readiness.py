@@ -1,7 +1,7 @@
-from pathlib import Path
 import json
 import urllib.request
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -46,7 +46,7 @@ def main() -> int:
     score = round((passed / total) * 100, 2)
 
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "score": score,
         "passed": passed,
         "total": total,

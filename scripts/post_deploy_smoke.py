@@ -11,7 +11,6 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-
 PATHS = [
     "/",
     "/sales-machine",
@@ -56,7 +55,7 @@ def main() -> int:
                 status = resp.status
         except urllib.error.HTTPError as e:
             status = e.code
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             print(f"  {path:40s}  ERROR: {e}")
             failures.append(path)
             continue

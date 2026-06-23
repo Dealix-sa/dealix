@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.workspace_store import load, save, find  # noqa: E402
+from lib.workspace_store import find, load, save
 
 
 def main() -> int:
@@ -20,7 +20,7 @@ def main() -> int:
     data = load()
     w = find(data["workspaces"], args.client_id)
     if not w:
-        print(f"ERROR: workspace not found.", file=sys.stderr)
+        print("ERROR: workspace not found.", file=sys.stderr)
         return 1
     if args.deliverable_id == "latest":
         d = w["deliverables"][-1] if w["deliverables"] else None

@@ -11,7 +11,7 @@ from __future__ import annotations
 import json
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -59,7 +59,7 @@ def main() -> int:
         )
 
     payload = {
-        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "repo_root": ".",
         "docs_top_level_dir_count": len(entries),
         "skipped_top_level": sorted(SKIP_NAMES),

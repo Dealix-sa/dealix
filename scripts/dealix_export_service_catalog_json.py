@@ -35,7 +35,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from auto_client_acquisition.service_catalog.registry import list_offerings  # noqa: E402
+from auto_client_acquisition.service_catalog.registry import list_offerings
 
 _OUT_PATH = REPO_ROOT / "landing" / "assets" / "data" / "services-catalog.json"
 

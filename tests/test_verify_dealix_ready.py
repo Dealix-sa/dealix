@@ -10,7 +10,7 @@ REPO = Path(__file__).resolve().parents[1]
 
 
 def test_verify_dealix_ready_skip_tests_exits_zero() -> None:
-    code = subprocess.call(  # noqa: S603
+    code = subprocess.call(
         [sys.executable, str(REPO / "scripts" / "verify_dealix_ready.py"), "--skip-tests"],
         cwd=REPO,
     )
@@ -18,7 +18,7 @@ def test_verify_dealix_ready_skip_tests_exits_zero() -> None:
 
 
 def test_print_service_readiness_matrix_exits_zero() -> None:
-    code = subprocess.call(  # noqa: S603
+    code = subprocess.call(
         [sys.executable, str(REPO / "scripts" / "print_service_readiness_matrix.py")],
         cwd=REPO,
     )

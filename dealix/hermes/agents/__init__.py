@@ -13,15 +13,15 @@ from dealix.hermes.agents.sales_intelligence import SalesIntelligenceAgent
 from dealix.hermes.agents.sprint_orchestrator import SprintOrchestratorAgent
 
 __all__ = [
-    "LeadIntelligenceAgent",
-    "RevenueIntelligenceAgent",
-    "SprintOrchestratorAgent",
-    "DiagnosticAgent",
-    "DataArchitectAgent",
-    "ManagedOpsAgent",
-    "SalesIntelligenceAgent",
-    "MarketIntelAgent",
     "CompanyBrainAgent",
-    "GovernanceAgent",
     "CustomerAcquisitionAgent",
+    "DataArchitectAgent",
+    "DiagnosticAgent",
+    "GovernanceAgent",
+    "LeadIntelligenceAgent",
+    "ManagedOpsAgent",
+    "MarketIntelAgent",
+    "RevenueIntelligenceAgent",
+    "SalesIntelligenceAgent",
+    "SprintOrchestratorAgent",
 ]

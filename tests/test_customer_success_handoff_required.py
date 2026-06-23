@@ -2,8 +2,8 @@
 Test: Customer Success Handoff Required
 Ensures customer success handoff is required after delivery.
 """
-from pathlib import Path
 import json
+from pathlib import Path
 
 
 def test_cs_handoff_doc_exists():

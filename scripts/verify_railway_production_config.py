@@ -13,12 +13,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.railway_production import (  # noqa: E402
+from dealix.commercial_ops.railway_production import (
     analyze_railway_production,
     parse_railway_ui_drift_hint,
     parse_railway_ui_predeploy_drift,
 )
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 ensure_stdout_utf8()
 

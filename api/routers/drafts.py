@@ -775,7 +775,7 @@ async def gmail_drafts_create_batch(body: dict[str, Any] = Body(default={})) -> 
                     select(ContactRecord).where(
                         ContactRecord.account_id == r.lead_id,
                         ContactRecord.email.is_not(None),
-                        ContactRecord.opt_out == False,  # noqa: E712
+                        ContactRecord.opt_out == False,
                     ).limit(1)
                 )).scalar_one_or_none()
                 acc = (await session.execute(

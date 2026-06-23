@@ -1,62 +1,63 @@
+from typing import Any, Dict
+
 import pytest
-from typing import Dict, Any
 
 
-def validate_case_study(case_study: Dict[str, Any]) -> Dict[str, Any]:
+def validate_case_study(case_study: dict[str, Any]) -> dict[str, Any]:
     """
     Validate case study has permission.
     Returns dict with is_valid and errors.
     """
     errors = []
-    
+
     # Named case study requires explicit permission
     if case_study.get("is_named", False):
         if not case_study.get("permission_granted", False):
             errors.append("Named case study requires permission_granted=True")
-        
+
         if not case_study.get("permission_date"):
             errors.append("Named case study requires permission_date")
-        
+
         if not case_study.get("permission_signed_by"):
             errors.append("Named case study requires permission_signed_by")
-    
+
     # Anonymized case study requires accuracy check
     if case_study.get("is_anonymized", False):
         if not case_study.get("accuracy_verified", False):
             errors.append("Anonymized case study requires accuracy_verified=True")
-    
+
     # All case studies require evidence_level (None counts as missing)
     if case_study.get("evidence_level") is None:
         errors.append("All case studies require evidence_level")
     elif case_study["evidence_level"] < 1 or case_study["evidence_level"] > 5:
         errors.append("evidence_level must be 1-5")
-    
+
     return {
         "is_valid": len(errors) == 0,
         "errors": errors
     }
 
 
-def can_publish_case_study(case_study: Dict[str, Any]) -> bool:
+def can_publish_case_study(case_study: dict[str, Any]) -> bool:
     """Check if case study can be published."""
     result = validate_case_study(case_study)
-    
+
     if not result["is_valid"]:
         return False
-    
+
     # Named needs explicit permission
     if case_study.get("is_named"):
         return case_study.get("permission_granted", False)
-    
+
     # Anonymized needs accuracy verified
     if case_study.get("is_anonymized"):
         return case_study.get("accuracy_verified", False)
-    
+
     return True
 
 
 class TestCaseStudyRequiresPermission:
-    
+
     def test_named_case_study_with_permission_passes(self):
         """Test named case study with permission passes."""
         case_study = {
@@ -72,7 +73,7 @@ class TestCaseStudyRequiresPermission:
         result = validate_case_study(case_study)
         assert result["is_valid"] is True
         assert can_publish_case_study(case_study) is True
-    
+
     def test_named_case_study_without_permission_fails(self):
         """Test named case study without permission fails."""
         case_study = {
@@ -86,7 +87,7 @@ class TestCaseStudyRequiresPermission:
         assert result["is_valid"] is False
         assert "Named case study requires permission_granted=True" in result["errors"]
         assert can_publish_case_study(case_study) is False
-    
+
     def test_anonymized_case_study_requires_accuracy(self):
         """Test anonymized case study requires accuracy verification."""
         case_study = {
@@ -98,7 +99,7 @@ class TestCaseStudyRequiresPermission:
         }
         result = validate_case_study(case_study)
         assert result["is_valid"] is True
-    
+
     def test_anonymized_without_accuracy_fails(self):
         """Test anonymized case study without accuracy fails."""
         case_study = {
@@ -110,7 +111,7 @@ class TestCaseStudyRequiresPermission:
         }
         result = validate_case_study(case_study)
         assert result["is_valid"] is False
-    
+
     def test_missing_evidence_level_fails(self):
         """Test missing evidence_level fails."""
         case_study = {
@@ -122,7 +123,7 @@ class TestCaseStudyRequiresPermission:
         result = validate_case_study(case_study)
         assert result["is_valid"] is False
         assert "All case studies require evidence_level" in result["errors"]
-    
+
     def test_invalid_evidence_level_fails(self):
         """Test invalid evidence_level fails."""
         case_study = {

@@ -1,7 +1,10 @@
 """MiniMax LLM provider — OpenAI-compatible, used for high-volume daily tasks."""
 from __future__ import annotations
-import json, os
+
+import json
+import os
 from typing import Any
+
 import structlog
 
 logger = structlog.get_logger(__name__)

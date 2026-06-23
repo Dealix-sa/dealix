@@ -1,4 +1,6 @@
-import subprocess, sys
+import subprocess
+import sys
+
 cmds=[
  ['python','scripts/dealix_v14_readiness_check.py'],
  ['python','scripts/dealix_controlled_preview_plan.py'],

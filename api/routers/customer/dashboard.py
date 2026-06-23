@@ -11,11 +11,11 @@ from pydantic import BaseModel
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.session import get_db as get_db_session
 from api.security.auth_deps import get_current_user
+from db.models import DealRecord, LeadRecord, TaskRecord, TenantRecord
+from db.models_subscription import InvoiceRecord, SubscriptionRecord
+from db.session import get_db as get_db_session
 from dealix.billing.service import BillingService
-from db.models import LeadRecord, DealRecord, TaskRecord, TenantRecord
-from db.models_subscription import SubscriptionRecord, InvoiceRecord
 
 router = APIRouter(prefix="/api/v1/customer/dashboard", tags=["Customer Dashboard"])
 

@@ -10,7 +10,7 @@ REPO = Path(__file__).resolve().parents[1]
 
 
 def test_verify_project_done_script_passes() -> None:
-    r = subprocess.run(  # noqa: S603
+    r = subprocess.run(
         [sys.executable, str(REPO / "scripts" / "verify_project_done.py")],
         cwd=REPO,
         check=False,

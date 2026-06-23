@@ -4,11 +4,12 @@ from __future__ import annotations
 import uuid
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from api.security.jwt import create_access_token
 from db.models import RoleRecord, TenantRecord, UserRecord
 from db.models_subscription import PlanRecord
 from db.session import get_session
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def _create_plan(session: AsyncSession, slug: str, name_en: str, monthly: float, yearly: float) -> PlanRecord:

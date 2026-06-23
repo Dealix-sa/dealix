@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
+
 def generate_approvals_html() -> str:
     """Generate HTML approvals queue for founder review."""
     html = """<!DOCTYPE html>
