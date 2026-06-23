@@ -260,7 +260,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: frontend
+        working-directory: apps/web
 
     steps:
       - name: Checkout
@@ -271,15 +271,15 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: apps/web/package-lock.json
 
-      - name: Install frontend dependencies
+      - name: Install web dependencies
         run: npm ci
 
-      - name: Typecheck frontend
+      - name: Typecheck web
         run: npm run typecheck
 
-      - name: Build frontend
+      - name: Build web
         run: npm run build
 
   railway-docker-builds:
