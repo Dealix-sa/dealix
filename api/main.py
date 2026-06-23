@@ -452,6 +452,24 @@ def create_app() -> FastAPI:
         import logging as _logging
         _logging.getLogger(__name__).warning("hermes_router_skipped: %s", _hermes_exc)
 
+    # Outbound safety — /api/outbound/* (all blocked by default)
+    from api.routers.outbound_safety import router as outbound_safety_router
+    app.include_router(outbound_safety_router)
+
+    @app.get("/api/status", tags=["status"])
+    async def api_status() -> dict[str, object]:
+        """API status — safe, no secrets."""
+        import os as _os
+        return {
+            "status": "operational",
+            "service": settings.app_name,
+            "version": settings.app_version,
+            "env": settings.app_env,
+            "external_send_enabled": _os.getenv("EXTERNAL_SEND_ENABLED", "false").lower()
+            in ("true", "1", "yes"),
+            "outbound_mode": _os.getenv("OUTBOUND_MODE", "draft_only"),
+        }
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {

@@ -35,10 +35,15 @@ PUBLIC_PATHS: set[str] = {
     "/openapi.json",
     "/health",
     "/healthz",
+    "/readyz",
+    "/livez",
     "/health/live",
     "/health/ready",
     "/health/deep",
+    "/ready",
+    "/live",
     "/version",
+    "/api/status",
     "/api/v1/meta",
     # Public pricing list — prospects need to see plans without an API key.
     # Checkout + plan-specific tampering protection stays on /api/v1/checkout.
@@ -48,6 +53,7 @@ PUBLIC_PREFIXES: tuple[str, ...] = (
     "/docs",
     "/redoc",
     "/static",
+    "/api/outbound",
     "/api/v1/webhooks/",  # webhooks use signatures instead
     "/api/v1/public/",   # public landing endpoints (demo-request, health)
     "/api/v1/auth/",     # auth endpoints use JWT — no API key required

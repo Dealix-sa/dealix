@@ -162,6 +162,18 @@ async def healthz(deep: bool = False) -> dict[str, object]:
     }
 
 
+@router.get("/readyz", include_in_schema=False)
+async def readyz() -> dict[str, str]:
+    """Readiness probe for K8s/Railway."""
+    return {"status": "ready"}
+
+
+@router.get("/livez", include_in_schema=False)
+async def livez() -> dict[str, str]:
+    """Liveness probe for K8s/Railway."""
+    return {"status": "alive"}
+
+
 @router.get("/_test_sentry", include_in_schema=False)
 async def test_sentry() -> dict[str, str]:
     """Deliberate error to verify Sentry integration.
