@@ -300,10 +300,7 @@ jobs:
       - name: Verify watchdog Docker build
         run: docker build -t dealix-watchdog-ci -f Dockerfile.watchdog .
 
-      - name: Verify frontend Docker build
-        run: docker build -t dealix-frontend-ci frontend
-
-      - name: Verify apps web Docker build
+      - name: Verify apps/web Docker build
         run: docker build -t dealix-apps-web-ci apps/web
 
   live-railway-smoke:

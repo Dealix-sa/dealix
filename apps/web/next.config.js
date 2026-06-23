@@ -1,3 +1,5 @@
+const { withSentryConfig } = require("@sentry/nextjs");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
@@ -71,4 +73,18 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withSentryConfig(
+  nextConfig,
+  {
+    // Only print logs in production builds (not in dev)
+    silent: true,
+    // Disable Sentry webpack plugin in dev/local builds
+    org: process.env.SENTRY_ORG,
+    project: process.env.SENTRY_PROJECT,
+    // Only upload source maps when SENTRY_AUTH_TOKEN is set
+    authToken: process.env.SENTRY_AUTH_TOKEN,
+    // Don't upload source maps if no DSN is configured
+    disableServerWebpackPlugin: !process.env.SENTRY_DSN && !process.env.NEXT_PUBLIC_SENTRY_DSN,
+    disableClientWebpackPlugin: !process.env.SENTRY_DSN && !process.env.NEXT_PUBLIC_SENTRY_DSN,
+  },
+);

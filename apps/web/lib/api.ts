@@ -90,8 +90,8 @@ function processPending(token: string | null, error?: unknown) {
 }
 
 apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  (response: any) => response,
+  async (error: any) => {
     const original = error.config;
     if (error.response?.status !== 401 || original._retry) {
       return Promise.reject(error);
