@@ -67,7 +67,7 @@ def test_no_destructive_migration_keywords():
     destructive_keywords = ["DROP TABLE", "DROP COLUMN", "TRUNCATE"]
     issues = []
     for filepath in glob.glob(os.path.join(migration_dir, "*.py")):
-        with open(filepath, "r") as f:
+        with open(filepath) as f:
             content = f.read().upper()
             for kw in destructive_keywords:
                 if kw in content:

@@ -11,15 +11,15 @@ import pytest
 def test_os_models_importable():
     """All 9 OS model classes must be importable from db.models."""
     from db.models import (
-        ProspectRecord,
-        OutreachDraftRecord,
-        OutboundMessageRecord,
-        OutboundEventRecord,
-        DealsPipelineRecord,
-        ProposalRecord,
-        ClientRecord,
         ClientProjectRecord,
+        ClientRecord,
+        DealsPipelineRecord,
+        OutboundEventRecord,
+        OutboundMessageRecord,
+        OutreachDraftRecord,
         ProofReportRecord,
+        ProposalRecord,
+        ProspectRecord,
     )
     assert ProspectRecord.__tablename__ == "prospects"
     assert OutreachDraftRecord.__tablename__ == "outreach_drafts"
@@ -35,14 +35,14 @@ def test_os_models_importable():
 def test_existing_models_still_importable():
     """Existing core models must still be importable (no regression)."""
     from db.models import (
+        AuditLogRecord,
         Base,
-        TenantRecord,
-        UserRecord,
-        LeadRecord,
-        DealRecord,
         CompanyRecord,
         ContactRecord,
-        AuditLogRecord,
+        DealRecord,
+        LeadRecord,
+        TenantRecord,
+        UserRecord,
     )
     assert TenantRecord.__tablename__ == "tenants"
     assert UserRecord.__tablename__ == "users"
