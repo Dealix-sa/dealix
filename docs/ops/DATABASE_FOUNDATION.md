@@ -3,7 +3,10 @@
 ## Overview
 Dealix uses SQLAlchemy 2.0 async ORM with Postgres in production and SQLite for local tests.
 
-## Models (db/models/core.py)
+## Models (db/models.py)
+
+All models are defined in `db/models.py` (SQLAlchemy 2.0 declarative style).
+The app imports from `db.models` (the canonical module path).
 
 ### Core Models (existing)
 - TenantRecord — multi-tenant isolation
