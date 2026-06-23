@@ -40,6 +40,6 @@ jobs:
         run: python3 scripts/production_readiness_check.py
       - name: Pre-push guard
         run: python3 scripts/pre_push_guard.py
-      - name: Test: no auto-send
+      - name: "Test: no auto-send"
         run: |
           python3 -c "from tests.test_no_auto_send import test_no_auto_send; test_no_auto_send(); print('OK')"
