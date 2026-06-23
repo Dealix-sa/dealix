@@ -40,41 +40,6 @@ services:
           cpus: "0.50"
           memory: 512M
 
-  frontend:
-    build:
-      context: frontend
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.dealix.me}
-        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://dealix.me}
-        NEXT_PUBLIC_USE_DEALIX_OPS_PROXY: ${NEXT_PUBLIC_USE_DEALIX_OPS_PROXY:-1}
-    image: dealix-frontend:${IMAGE_TAG:-latest}
-    container_name: dealix-frontend
-    env_file:
-      - .env.prod
-    environment:
-      PORT: 3000
-      HOSTNAME: 0.0.0.0
-    expose:
-      - "3000"
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/healthz >/dev/null || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-    networks:
-      - dealix-public
-    deploy:
-      resources:
-        limits:
-          cpus: "1.0"
-          memory: 1G
-        reservations:
-          cpus: "0.25"
-          memory: 256M
-
   web:
     build:
       context: apps/web
@@ -242,7 +207,7 @@ services:
     environment:
       DEALIX_DOMAIN: ${DEALIX_DOMAIN:-dealix.me}
       DEALIX_API_DOMAIN: ${DEALIX_API_DOMAIN:-api.dealix.me}
-      DEALIX_FRONTEND_UPSTREAM: ${DEALIX_FRONTEND_UPSTREAM:-frontend:3000}
+      DEALIX_FRONTEND_UPSTREAM: ${DEALIX_FRONTEND_UPSTREAM:-web:3000}
     volumes:
       - ./ops/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
@@ -250,7 +215,7 @@ services:
     depends_on:
       api:
         condition: service_healthy
-      frontend:
+      web:
         condition: service_healthy
     restart: unless-stopped
     networks:
