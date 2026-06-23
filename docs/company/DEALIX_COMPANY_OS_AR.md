@@ -1,31 +1,20 @@
-# Dealix Company Operating System
+# نظام تشغيل شركة Dealix (Company OS)
 
-## ما هو؟
+## الغرض (Purpose)
 
-نظام تشغيل الشركة يجمع:
-- الاستراتيجية والقياس
-- المبيعات والإيرادات
-- التسليم والخدمة
-- الامتثال والثقة
-- التعلم والتحسين
+نظام تشغيل شركة Dealix هو المرجع الموحّد الذي يربط الاستراتيجية بالمبيعات والتسليم والامتثال والتعلم. يوضّح هذا الملف كيف تعمل الشركة كآلة واحدة موجّهة لخدمة شركات B2B في السوق السعودي بأنظمة ذكاء اصطناعي تشغيلية — وليس كأداة دردشة أو وكالة تسويق. يغطّي النظام: Revenue Command Room OS، Company Brain OS، WhatsApp/Inbox Follow-up OS، AI Outreach & Targeting OS، AI Trust & Compliance OS، Client Delivery OS، Controlled Live Outbound OS، Founder Decision Desk، Proposal+Contract+Payment OS، Executive Proof Pack OS، Offer Intelligence OS، Market & Competitor Watch OS، Customer Pain Radar، Operations Bottleneck Scanner.
 
-## ما الذي يتم تشغيله يوميًا
+## المالك (Owner)
 
-### الصباح (30 دقيقة)
-1. `make company-day`
-2. مراجعة `reports/command_room/index.html`
-3. مراجعة المسودات في `outbox/YYYY-MM-DD/`
+المؤسس / الرئيس التنفيذي (CEO). مسؤول يومي عن تحديث النظام والتزام الفريق به.
 
-### أثناء اليوم
-4. الإرسال اليدوي للمسودات المعتمدة.
-5. تحديث `ledgers/outreach_log.csv` بعد كل إرسال.
-6. تسجيل الردود في `ledgers/reply_log.csv`.
+## الاستخدام اليومي (Daily Usage)
 
-### المساء (15 دقيقة)
-7. تحديث `ledgers/deals_pipeline.csv`.
-8. مراجعة `reports/revenue/YYYY-MM-DD/daily_ceo_report.md`.
+- صباحًا (30 دقيقة): تشغيل `make company-day`، مراجعة غرفة القيادة، مراجعة مسودات اليوم في `outbox/YYYY-MM-DD/`.
+- أثناء اليوم: إرسال المسودات المعتمدة يدويًا، تحديث سجل الإرسال `ledgers/outreach_log.csv`، تسجيل الردود في `ledgers/reply_log.csv`.
+- مساءً (15 دقيقة): تحديث `ledgers/deals_pipeline.csv`، مراجعة تقرير اليوم `reports/revenue/YYYY-MM-DD/daily_ceo_report.md`.
 
-## ملفات المصدر
+## المُدخلات (Inputs)
 
 - `ledgers/prospects.csv` — الفرص
 - `ledgers/deals_pipeline.csv` — الأنابيب
@@ -34,34 +23,54 @@
 - `data/outreach/saudi_icp_segments.json` — شرائح ICP
 - `scripts/revenue/run_daily_revenue_machine.py` — الآلة اليومية
 
-## المخرجات
+## المخرجات (Outputs)
 
-- `outbox/YYYY-MM-DD/*.md` — مسودات
-- `reports/revenue/YYYY-MM-DD/` — تقارير
-- `reports/command_room/index.html` — لوحة القيادة
+- `outbox/YYYY-MM-DD/*.md` — مسودات معتمدة للإرسال اليدوي
+- `reports/revenue/YYYY-MM-DD/` — تقارير الإيرادات والتشغيل
+- `reports/command_room/index.html` — لوحة غرفة القيادة
+- قرارات تشغيلية موثّقة في سجل المؤسس
 
-## كيف نبيع
+## سير العمل (Workflow)
 
-1. نحدد الألم التشغيلي.
-2. نقدم Diagnostic Sprint 4,999 ريال.
-3. نقدم Pilot 14,999 ريال.
-4. ننتقل للاشتراك الشهري بعد نجاح Pilot.
+1. تشغيل الآلة اليومية لجمع البيانات وتوليد المسودات.
+2. مراجعة غرفة القيادة وتحديد أولويات اليوم.
+3. اعتماد المسودات يدويًا قبل أي إرسال (approval-first).
+4. إرسال يدوي عبر القنوات المعتمدة فقط.
+5. تسجيل كل رد وكل اجتماع وكل عرض.
+6. مساءً: تحديث الأنابيب وتقرير اليوم وتدوين blockers.
+7. أسبوعيًا: مراجعة استراتيجية وتحديث مصدر الحقيقة.
 
-## كيف نسلم
+## معايير القبول (Acceptance Criteria)
 
-- أسبوع 1: Discovery + بيانات.
-- أسبوع 2: بناء النظام الصغير.
-- أسبوع 3: اختبار + تعديل.
-- أسبوع 4: تقرير النجاح.
+- كل عملية إرسال موثّقة في `outreach_log.csv` قبل المغادرة.
+- لا توجد مسودة تُرسل دون اعتماد صريح.
+- غرفة القيادة تُبنى يوميًا دون أخطاء.
+- تقرير اليوم يُحفظ قبل نهاية اليوم.
+- كل صفقة في الأنابيب لها مالك وتاريخ إجراء تالي.
 
-## كيف نقيس
+## المخاطر (Risks)
 
-- baseline قبل Pilot.
-- after بعد Pilot.
-- فرق واضح موثق.
+- الاعتماد على إرسال آلي دون اعتماد بشري قد يضرّ العلامة والامتثال.
+- تراكم بيانات غير محدّثة في السجلات يؤدي لقرارات خاطئة.
+- تجاوز خطوات الاعتماد يكسر الثقة مع العميل والجهات التنظيمية.
+- فجوة بين الاستراتيجية والتسليم اليومي.
 
-## أخطاء تتجنبها
+## ما لا يجب فعله (What Not To Do)
 
-- لا وعود بنسب محددة.
-- لا تجميع بيانات حساسة.
-- لا إرسال تلقائي.
+- لا تُرسل أي مسودة دون اعتماد.
+- لا تدّعِ إيرادات مضمونة أو عوائد مؤكدة.
+- لا تستخدم شهادات أو نتائج ملفّقة.
+- لا تصف Dealix كأداة دردشة أو CRM أو وكالة تسويق.
+- لا تتجاوز متطلبات PDPL أو الاعتماد الأول (approval-first).
+
+## الإجراء التالي (Next Action)
+
+تشغيل `make company-day` ثم مراجعة `reports/command_room/index.html` وتحديد أصحاب الإجراءات لليوم.
+
+## الملفات المرتبطة (Related Files)
+
+- `docs/company/DEALIX_COMPANY_OS_EN.md`
+- `docs/company/COMMAND_ROOM_RUNBOOK_AR.md`
+- `docs/company/FOUNDER_OPERATING_SYSTEM_AR.md`
+- `docs/company/DEALIX_SOURCE_OF_TRUTH.md`
+- `docs/brand/DEALIX_BRAND_OS.md`
