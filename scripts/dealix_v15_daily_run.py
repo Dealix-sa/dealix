@@ -1,4 +1,6 @@
-import subprocess, sys
+import subprocess
+import sys
+
 cmds=[
  ['scripts/dealix_v15_readiness_check.py'],
  ['scripts/dealix_top10_task_ranker.py'],
@@ -7,4 +9,4 @@ cmds=[
  ['scripts/dealix_founder_autopilot_dashboard.py'],
 ]
 for c in cmds:
-    subprocess.run([sys.executable]+c, check=True)
+    subprocess.run([sys.executable, *c], check=True)

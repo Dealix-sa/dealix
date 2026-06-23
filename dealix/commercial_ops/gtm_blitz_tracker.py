@@ -55,7 +55,7 @@ def build_gtm_blitz_snapshot() -> dict[str, Any]:
     }
     done = sum(1 for v in checks.values() if v)
     total = len(checks) or 1
-    pct = int(round(100 * done / total))
+    pct = round(100 * done / total)
 
     return {
         "motion": cfg.get("motion"),

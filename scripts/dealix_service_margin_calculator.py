@@ -1,4 +1,5 @@
 import argparse
+
 p=argparse.ArgumentParser()
 p.add_argument('--price',type=float,default=499)
 p.add_argument('--hours',type=float,default=6)

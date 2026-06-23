@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import collections
 import time
 import uuid
 from typing import Any
@@ -56,7 +57,6 @@ def _get_orchestrator() -> HermesOrchestrator:
 # ---------------------------------------------------------------------------
 # In-memory usage tracker — keyed by agent name
 # ---------------------------------------------------------------------------
-import collections
 
 _usage_store: dict[str, dict] = collections.defaultdict(lambda: {
     "total_calls": 0,
@@ -440,4 +440,4 @@ async def run_daily_outreach(
     )
 
 
-__all__ = ["hermes_router", "HermesResponse"]
+__all__ = ["HermesResponse", "hermes_router"]

@@ -171,7 +171,7 @@ class SubscriptionManager:
         if not sub:
             raise ValueError(f"Subscription {subscription_id} not found")
 
-        now = utcnow()
+        utcnow()
         invoice = Invoice(
             id=generate_id("inv"),
             subscription_id=subscription_id,

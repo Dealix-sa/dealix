@@ -80,7 +80,7 @@ def test_proposal_sent_includes_engagement_id_and_price():
 
 
 def test_proof_pack_delivered_carries_tier():
-    subject, body = render_proof_pack_delivered(
+    _subject, body = render_proof_pack_delivered(
         customer_name="Alwaha",
         engagement_id="eng_001",
         proof_score=82.5,

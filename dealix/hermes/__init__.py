@@ -28,40 +28,40 @@ from dealix.hermes.outreach_queue import OutreachDraft, OutreachQueue
 from dealix.hermes.registry import HermesRegistry
 
 __all__ = [
-    # Core
-    "HermesEngine",
+    "CompanyBrainAgent",
+    "CustomerAcquisitionAgent",
+    "DailyOutreachLoop",
+    "DataArchitectAgent",
+    "DiagnosticAgent",
+    "GovernanceAgent",
     "HermesAgent",
     "HermesConfig",
-    "get_hermes_config",
-    "build_tool_schema",
+    # Core
+    "HermesEngine",
     # Memory + Registry
     "HermesMemory",
-    "SharedContext",
-    "HermesRegistry",
     # Orchestrator
     "HermesOrchestrator",
+    "HermesRegistry",
+    "HermesResponse",
     # Agents
     "LeadIntelligenceAgent",
-    "RevenueIntelligenceAgent",
-    "SprintOrchestratorAgent",
-    "DiagnosticAgent",
-    "DataArchitectAgent",
-    "ManagedOpsAgent",
-    "SalesIntelligenceAgent",
-    "MarketIntelAgent",
-    "CompanyBrainAgent",
-    "GovernanceAgent",
-    "CustomerAcquisitionAgent",
-    # Loops
-    "RevenueLoop",
     "LeadLoop",
-    "SprintLoop",
-    "WatchdogLoop",
-    "DailyOutreachLoop",
+    "ManagedOpsAgent",
+    "MarketIntelAgent",
+    "OutreachDraft",
     # Outreach queue
     "OutreachQueue",
-    "OutreachDraft",
+    "RevenueIntelligenceAgent",
+    # Loops
+    "RevenueLoop",
+    "SalesIntelligenceAgent",
+    "SharedContext",
+    "SprintLoop",
+    "SprintOrchestratorAgent",
+    "WatchdogLoop",
+    "build_tool_schema",
+    "get_hermes_config",
     # API
     "hermes_router",
-    "HermesResponse",
 ]

@@ -114,7 +114,7 @@ def main() -> int:
 
     ok = 0
     failed = 0
-    for (path, _), result in zip(parsed, results):
+    for (path, _), result in zip(parsed, results, strict=False):
         status = result.get("status")
         if status == "ok":
             print(f"  ✅ Draft created for {path.name}: id={result.get('draft_id')}")

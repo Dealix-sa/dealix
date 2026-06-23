@@ -1,5 +1,7 @@
-import argparse,csv
+import argparse
+import csv
 from pathlib import Path
+
 p=argparse.ArgumentParser(); p.add_argument('--vertical',required=True,choices=['training','agencies','real_estate','clinics','professional_services']); p.add_argument('--count',type=int,default=25); a=p.parse_args()
 out=Path(f'data/market/{a.vertical}_working_list.csv'); out.parent.mkdir(parents=True,exist_ok=True)
 header=['company_name','vertical','city','website_or_profile','source_url','suspected_pain','contact_channel','owner','status']

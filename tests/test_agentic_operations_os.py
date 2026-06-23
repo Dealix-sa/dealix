@@ -130,7 +130,7 @@ def test_handoff_valid() -> None:
         required_action="a",
         deadline="d",
     )
-    ok, err = handoff_valid(h)
+    ok, _err = handoff_valid(h)
     assert not ok
 
 

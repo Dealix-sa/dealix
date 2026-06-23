@@ -131,6 +131,7 @@ class TestMCPToolLogic:
         """get_doctrine_rules returns valid JSON even without fastmcp installed."""
         # Test the helper function logic directly
         import json
+
         from dealix.commercial_ops.doctrine import NON_NEGOTIABLE_RULES, SOAEN_CHECKLIST_AR
 
         result = {

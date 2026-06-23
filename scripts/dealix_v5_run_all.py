@@ -9,7 +9,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 STEPS = [
@@ -43,7 +42,7 @@ def main() -> int:
         if not path.exists():
             print(f"[{label}]  SKIP (file missing)")
             continue
-        cmd = [sys.executable, str(path)] + extra
+        cmd = [sys.executable, str(path), *extra]
         print(f"\n[{label}]")
         r = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
         if r.returncode == 0:

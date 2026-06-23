@@ -7,6 +7,8 @@ Pure unit tests — no network, no LLM, no DB. Each <2s.
 """
 from __future__ import annotations
 
+import itertools
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 
@@ -51,7 +53,7 @@ def test_geo_audit_top_priority_pages_returns_lowest_scoring():
     top = geo_aio_radar.top_priority_pages(limit=3)
     assert 1 <= len(top) <= 3
     # Sorted ascending by score
-    for a, b in zip(top, top[1:]):
+    for a, b in itertools.pairwise(top):
         assert a["score"] <= b["score"]
 
 
@@ -140,7 +142,7 @@ def test_internal_linking_status_html_has_inbound_links():
 
 def test_internal_linking_graph_records_outbound_count():
     g = internal_linking_planner.build_graph()
-    for name, info in g["graph"].items():
+    for _name, info in g["graph"].items():
         assert info["outbound_count"] == len(info["outbound"])
         assert isinstance(info["has_cta"], bool)
 

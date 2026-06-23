@@ -1,5 +1,5 @@
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
 out = ROOT / "reports" / "company_os" / "weekly"
@@ -7,7 +7,7 @@ out.mkdir(parents=True, exist_ok=True)
 
 text = f"""# Dealix Growth Scorecard
 
-Generated: {datetime.now(timezone.utc).isoformat()}
+Generated: {datetime.now(UTC).isoformat()}
 
 | Metric | Target |
 |---|---:|

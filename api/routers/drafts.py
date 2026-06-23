@@ -207,8 +207,10 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
     async with async_session_factory() as session:
         try:
             q = select(AccountRecord).where(AccountRecord.status.in_(["enriched", "new"]))
-            if sectors_filter: q = q.where(AccountRecord.sector.in_(sectors_filter))
-            if cities_filter: q = q.where(AccountRecord.city.in_(cities_filter))
+            if sectors_filter:
+                q = q.where(AccountRecord.sector.in_(sectors_filter))
+            if cities_filter:
+                q = q.where(AccountRecord.city.in_(cities_filter))
             q = q.order_by(AccountRecord.data_quality_score.desc()).limit(pool_size)
             accounts = (await session.execute(q)).scalars().all()
             ids = [a.id for a in accounts]
@@ -775,7 +777,7 @@ async def gmail_drafts_create_batch(body: dict[str, Any] = Body(default={})) -> 
                     select(ContactRecord).where(
                         ContactRecord.account_id == r.lead_id,
                         ContactRecord.email.is_not(None),
-                        ContactRecord.opt_out == False,  # noqa: E712
+                        ContactRecord.opt_out.is_(False),
                     ).limit(1)
                 )).scalar_one_or_none()
                 acc = (await session.execute(
@@ -893,12 +895,15 @@ async def dashboard_revenue_machine_history(days: int = 14) -> dict[str, Any]:
     for r in gmail_rows:
         d = r.created_at.date().isoformat()
         by_day[d]["gmail_drafts"] += 1
-        if r.status == "sent": by_day[d]["gmail_sent"] += 1
+        if r.status == "sent":
+            by_day[d]["gmail_sent"] += 1
     for r in linkedin_rows:
         d = r.created_at.date().isoformat()
         by_day[d]["linkedin_drafts"] += 1
-        if r.status == "sent": by_day[d]["linkedin_sent"] += 1
-        if r.reply_received_at: by_day[d]["linkedin_replied"] += 1
+        if r.status == "sent":
+            by_day[d]["linkedin_sent"] += 1
+        if r.reply_received_at:
+            by_day[d]["linkedin_replied"] += 1
 
     series = sorted(
         [{"date": d, **stats} for d, stats in by_day.items()],

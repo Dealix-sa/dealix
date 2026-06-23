@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 metrics_path = Path('data/scale/weekly_operating_metrics.json')
 metrics = json.loads(metrics_path.read_text(encoding='utf-8')) if metrics_path.exists() else {}
 score = 0

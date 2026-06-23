@@ -3,22 +3,22 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from enum import Enum
+from datetime import UTC, datetime, timezone
+from enum import Enum, StrEnum
 from typing import Any
 
 import structlog
 
 from dealix.hermes.orchestrators.wave_orchestrator import (
+    WAVE_CONFIGS,
     WaveOrchestrator,
     WaveStatus,
-    WAVE_CONFIGS,
 )
 
 logger = structlog.get_logger(__name__)
 
 
-class EmergencyLevel(str, Enum):
+class EmergencyLevel(StrEnum):
     CRITICAL = "critical"
     HIGH = "high"
     MEDIUM = "medium"
@@ -31,7 +31,7 @@ class EmergencyAction:
     action: str
     wave_id: str = ""
     error: str = ""
-    handled_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    handled_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     details: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

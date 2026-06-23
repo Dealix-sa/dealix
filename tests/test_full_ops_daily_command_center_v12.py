@@ -58,7 +58,7 @@ async def test_daily_command_center_aggregates_per_os_queue() -> None:
     assert body["sales_queue"]["count"] == 1
     assert body["support_queue"]["count"] == 1
     # p0 support item must surface in today_top_3_decisions
-    top_ids = [it["id"] for it in body["today_top_3_decisions"]]
+    [it["id"] for it in body["today_top_3_decisions"]]
     assert any("support" in it.get("os_type", "") for it in body["today_top_3_decisions"])
 
 

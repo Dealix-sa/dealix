@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -89,4 +89,4 @@ async def list_tasks(
 ) -> list[dict[str, Any]]:
     svc = ERPService(session)
     tasks = await svc.list_tasks(current_user.tenant_id, project_id)
-    return [{"id": t.id, "name": t.name, "status": t.status, "assigned_to": t.assigned_to} for t in tasks]
+    return [{"id": t.id, "name": t.name, "status": t.status, "priority": t.priority} for t in tasks]

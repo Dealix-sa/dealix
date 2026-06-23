@@ -44,9 +44,7 @@ def is_placeholder_evidence_row(row: dict[str, str]) -> bool:
     if not company or company in PLACEHOLDER_COMPANIES:
         return True
     notes = (row.get("notes") or "").strip().lower()
-    if notes.startswith("template_"):
-        return True
-    return False
+    return bool(notes.startswith("template_"))
 
 
 def real_evidence_rows(rows: list[dict[str, str]] | None = None) -> list[dict[str, str]]:
@@ -186,7 +184,7 @@ def sync_rows_to_api(
             method="POST",
         )
         try:
-            with urlopen(req, timeout=15) as resp:  # noqa: S310
+            with urlopen(req, timeout=15) as resp:
                 if 200 <= resp.status < 300:
                     synced += 1
                     if mark_csv:
@@ -221,7 +219,7 @@ def pull_events_from_api(
         method="GET",
     )
     try:
-        with urlopen(req, timeout=20) as resp:  # noqa: S310
+        with urlopen(req, timeout=20) as resp:
             payload = json.loads(resp.read().decode("utf-8"))
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError) as exc:
         return {"status": "error", "reason": str(exc), "appended": 0}

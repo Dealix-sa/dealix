@@ -550,7 +550,7 @@ class SprintOrchestrator:
         runner = _DAY_RUNNERS[day]
         try:
             return runner(context)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             return SprintDayResult(
                 day=day,
                 title_en=f"Day {day}",

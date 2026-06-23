@@ -214,7 +214,7 @@ def test_build_timeline_chronologically_ordered_and_pii_free():
     assert all(ev["id"] != "L_other" for ev in tl)
     assert [ev["id"] for ev in tl] == ["P1", "L1", "S1"]
     for ev in tl:
-        for k in ev.keys():
+        for k in ev:
             assert "email" not in k and "phone" not in k
 
 

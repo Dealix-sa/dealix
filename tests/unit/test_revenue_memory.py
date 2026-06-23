@@ -327,7 +327,7 @@ def test_apply_retention_tombstones_old_operational():
         occurred_at=n - timedelta(days=200),
         payload={"ip": "192.0.2.1"},
     )
-    kept, removed = apply_retention([old_op], now=n)
+    kept, _removed = apply_retention([old_op], now=n)
     assert len(kept) == 1
     assert kept[0].event_type.endswith(".tombstoned")
     assert kept[0].payload.get("_tombstoned") is True
@@ -336,7 +336,7 @@ def test_apply_retention_tombstones_old_operational():
 
 
 def test_retention_summary_counts():
-    n = _now()
+    _now()
     events = [
         make_event(event_type="message.opened", customer_id="c1", subject_type="message", subject_id="m"),
         make_event(event_type="lead.created", customer_id="c1", subject_type="account", subject_id="a"),

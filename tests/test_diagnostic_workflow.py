@@ -45,10 +45,7 @@ _FORBIDDEN_TOKENS: tuple[re.Pattern, ...] = (
 
 
 def _no_forbidden(text: str) -> bool:
-    for pat in _FORBIDDEN_TOKENS:
-        if pat.search(text):
-            return False
-    return True
+    return all(not pat.search(text) for pat in _FORBIDDEN_TOKENS)
 
 
 @pytest.fixture(scope="module")

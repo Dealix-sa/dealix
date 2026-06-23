@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import asyncio
-import pytest
 
+import pytest
 
 # ---------------------------------------------------------------------------
 # Tools
@@ -402,6 +402,7 @@ class TestHermesEngine:
 
     def test_mock_response_when_no_key(self):
         import os
+
         from dealix.hermes.config import HermesConfig
         from dealix.hermes.engine import HermesEngine
         # Create engine with an empty key override to force mock mode
@@ -415,7 +416,7 @@ class TestHermesEngine:
             result = asyncio.run(
                 engine.run_agent_loop("system", [{"role": "user", "content": "hi"}], [], 1)
             )
-            text, history = result
+            text, _history = result
             assert isinstance(text, str)
             assert "mock" in text or "No ANTHROPIC_API_KEY" in text
         finally:
@@ -539,6 +540,7 @@ class TestLeadLoop:
 class TestMiniMaxProvider:
     def test_is_available_without_key(self):
         import os
+
         from dealix.hermes.providers.minimax_provider import MiniMaxProvider
         orig = os.environ.pop("MINIMAX_API_KEY", None)
         try:
@@ -568,6 +570,7 @@ class TestMiniMaxProvider:
 
     def test_openrouter_env_falls_back_to_minimax_provider(self):
         import os
+
         from dealix.hermes.providers.minimax_provider import MiniMaxProvider
 
         orig_minimax = os.environ.pop("MINIMAX_API_KEY", None)
@@ -586,6 +589,7 @@ class TestMiniMaxProvider:
 
     def test_chat_without_client_returns_mock(self):
         import os
+
         from dealix.hermes.providers.minimax_provider import MiniMaxProvider
         orig = os.environ.pop("MINIMAX_API_KEY", None)
         try:
@@ -601,6 +605,7 @@ class TestMiniMaxProvider:
 
     def test_run_agentic_loop_no_tools_returns_text(self):
         import os
+
         from dealix.hermes.providers.minimax_provider import MiniMaxProvider
 
         orig = os.environ.pop("MINIMAX_API_KEY", None)
@@ -744,6 +749,7 @@ class TestCustomerAcquisitionAgent:
 
     def test_agent_run_no_leads_returns_complete(self):
         from unittest.mock import patch
+
         from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
         agent = CustomerAcquisitionAgent()
         with patch.object(agent._engine, "_client", None):
@@ -759,6 +765,7 @@ class TestCustomerAcquisitionAgent:
     def test_agent_run_result_never_auto_sends(self):
         """Doctrine guard: run() result must not indicate any send occurred."""
         from unittest.mock import patch
+
         from dealix.hermes.agents.customer_acquisition import CustomerAcquisitionAgent
         agent = CustomerAcquisitionAgent()
         with patch.object(agent._engine, "_client", None):
@@ -844,6 +851,7 @@ class TestDailyOutreachLoop:
 
     def test_run_once_with_agent_returns_complete(self):
         from unittest.mock import patch
+
         from dealix.hermes.loops.daily_outreach_loop import DailyOutreachLoop
         from dealix.hermes.registry import HermesRegistry
         HermesRegistry._instance = None
@@ -864,6 +872,7 @@ class TestDailyOutreachLoop:
 
     def test_run_once_respects_max_drafts_from_config(self):
         from unittest.mock import patch
+
         from dealix.hermes.config import HermesConfig
         from dealix.hermes.loops.daily_outreach_loop import DailyOutreachLoop
         from dealix.hermes.registry import HermesRegistry

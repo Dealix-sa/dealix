@@ -25,6 +25,7 @@ from core.errors import AgentError
 from core.llm import get_router
 from core.llm.base import Message
 from core.logging import get_logger
+from core.agents.tools import Tool
 from core.utils import generate_id, utcnow
 
 logger = get_logger(__name__)
@@ -70,7 +71,6 @@ class BaseAgent(ABC):
         self.memory = RevenueMemory()
 
         # ── Tool registry ─────────────────────────────────────────
-        from core.agents.tools import Tool
         self._tools: dict[str, Tool] = {}
 
         # ── Episodic conversation history ─────────────────────────

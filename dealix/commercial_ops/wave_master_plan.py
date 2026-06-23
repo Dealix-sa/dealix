@@ -66,7 +66,6 @@ def build_wave_master_plan_snapshot() -> dict[str, Any]:
         "case_study_engine": "auto_client_acquisition.case_study_engine",
     }
 
-    waves = [wave0_prod, wave0_rev, wave1_pg, wave1_repeat, wave2, wave3]
     code_ready = all(w.get("verdict") in {"PASS", "READY"} for w in [wave1_pg, wave2, wave3])
     overall = "IN_PROGRESS"
     if wave0_rev["verdict"] == "PASS" and wave0_prod["verdict"] == "PASS":

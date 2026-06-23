@@ -12,7 +12,6 @@ from typing import Any
 
 import pytest
 
-
 # ---------------------------------------------------------------------------
 # Account / lead fixtures
 # ---------------------------------------------------------------------------
@@ -163,7 +162,7 @@ def sample_pipeline(sample_accounts: list[dict[str, Any]]) -> Any:
 
     tracker = PipelineTracker()
     stages = ["RESEARCH", "OUTREACH", "DISCOVERY", "PROPOSAL", "WON"]
-    for account, stage in zip(sample_accounts, stages):
+    for account, stage in zip(sample_accounts, stages, strict=False):
         tracker.add(account_id=account["account_id"], company_name=account["company_name"], stage=stage)
     return tracker
 

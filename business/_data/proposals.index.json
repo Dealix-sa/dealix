@@ -318,6 +318,17 @@
       "monthlyPrice": 9000,
       "status": "draft",
       "createdAt": "2026-06-21"
+    },
+    {
+      "id": "prop-demo-acc-001-2026-06-23",
+      "accountId": "demo-acc-001",
+      "offer": "Revenue OS",
+      "lang": "en",
+      "timeline": "21 days",
+      "setupPrice": 18000,
+      "monthlyPrice": 5000,
+      "status": "draft",
+      "createdAt": "2026-06-23"
     }
   ],
   "version": "1.0"

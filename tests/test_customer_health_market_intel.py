@@ -5,18 +5,17 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 
 from dealix.commercial.customer_health import (
-    CustomerHealthEngine,
-    HealthInput,
     HEALTH_TIERS,
     SECTOR_BENCHMARKS,
+    CustomerHealthEngine,
+    HealthInput,
 )
 from dealix.commercial.market_intelligence import (
-    MarketIntelligenceEngine,
     SAUDI_MARKET_SIGNALS,
     SECTOR_INTELLIGENCE,
+    MarketIntelligenceEngine,
 )
 from dealix.commercial.onboarding import OnboardingOrchestrator
-
 
 # ── Customer Health Scoring ──────────────────────────────────────────
 
@@ -233,7 +232,7 @@ class TestMarketIntelligenceEngine:
         assert len(brief["ar"]) > 0
 
     def test_all_sector_data_valid(self):
-        for sector, intel in SECTOR_INTELLIGENCE.items():
+        for _sector, intel in SECTOR_INTELLIGENCE.items():
             assert 0 <= intel.ai_adoption_rate <= 100
             assert 0 <= intel.pain_intensity <= 10
             assert intel.avg_deal_value_sar > 0

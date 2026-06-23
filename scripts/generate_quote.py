@@ -15,8 +15,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.quote_engine import load_quotes, save_quotes, next_id, now  # noqa: E402
-
+from lib.quote_engine import load_quotes, next_id, now, save_quotes
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPORT_DIR = REPO_ROOT / "business" / "closing" / "exports"

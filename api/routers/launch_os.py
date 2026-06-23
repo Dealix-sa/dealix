@@ -8,8 +8,8 @@ admin-key gated. No external sends. No production data mutations.
 """
 from __future__ import annotations
 
-import tempfile
 import os
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -17,11 +17,11 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from api.security.api_key import require_admin_key
-from dealix.launch_os.icp_scorer import batch_score, score_account, tier_label, ICPScore
-from dealix.launch_os.vertical_scorer import rank_verticals, top_wedge, SAUDI_VERTICALS
-from dealix.launch_os.trust_preflight import run_preflight
-from dealix.launch_os.pipeline_tracker import PipelineTracker, PipelineStage
 from dealix.launch_os.founder_daily_command import generate_daily_command, render_brief
+from dealix.launch_os.icp_scorer import ICPScore, batch_score, score_account, tier_label
+from dealix.launch_os.pipeline_tracker import PipelineStage, PipelineTracker
+from dealix.launch_os.trust_preflight import run_preflight
+from dealix.launch_os.vertical_scorer import SAUDI_VERTICALS, rank_verticals, top_wedge
 
 router = APIRouter(prefix="/launch", tags=["launch"])
 
@@ -194,7 +194,7 @@ async def list_verticals() -> list[VerticalOut]:
 async def get_top_wedge() -> VerticalOut:
     """Return the highest-scored vertical — the recommended entry wedge."""
     v = top_wedge()
-    ranked = rank_verticals()
+    rank_verticals()
     return VerticalOut(
         rank=1,
         sector=v.sector,

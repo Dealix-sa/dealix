@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-from pathlib import Path
 import sys
+from pathlib import Path
+
 bad=[]
 public_roots=[Path('frontend/public'), Path('public'), Path('landing')]
 keywords=['DATABASE_URL','SECRET','API_KEY','TOKEN','PRIVATE KEY','password']

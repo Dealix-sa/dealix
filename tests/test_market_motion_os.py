@@ -79,6 +79,6 @@ def test_board_decision_for_zero_reply_after_batch() -> None:
     metrics = build_market_motion_metrics(events)
     assert recommend_board_action(metrics) == BoardDecisionAction.TEST_BATCH_2
 
-    with_followup = events + [ResponseEvent.NO_RESPONSE_AFTER_FOLLOW_UP]
+    with_followup = [*events, ResponseEvent.NO_RESPONSE_AFTER_FOLLOW_UP]
     metrics_followup = build_market_motion_metrics(with_followup)
     assert recommend_board_action(metrics_followup) == BoardDecisionAction.REVISE_MESSAGE

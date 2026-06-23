@@ -25,7 +25,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -186,7 +186,7 @@ def build_report() -> dict:
 
     return {
         "schema": "dealix.agent_team_audit/v1",
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "generated_at_utc": datetime.now(UTC).isoformat(),
         "verdict": verdict,
         "agent_surfaces": surfaces,
         "claude_agents": claude_agents,

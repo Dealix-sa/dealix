@@ -81,7 +81,7 @@ def _dns_resolves(host: str) -> bool:
 
 
 def _pct(score: float) -> int:
-    return max(0, min(100, int(round(score * 100))))
+    return max(0, min(100, round(score * 100)))
 
 
 def layer_0_dns_healthz(api_base: str) -> dict[str, Any]:
@@ -283,7 +283,7 @@ def build_production_layers(
     verdict = "PASS" if not critical and trust.get("ok") else ("WARN" if avg_pct >= 60 else "FAIL")
     return {
         "verdict": verdict,
-        "overall_pct": int(round(avg_pct)),
+        "overall_pct": round(avg_pct),
         "api_base": api_base,
         "frontend_base": frontend_base,
         "trust_layer": trust,

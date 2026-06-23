@@ -1,7 +1,10 @@
 from __future__ import annotations
+
+import csv
+import json
+import sys
+from datetime import UTC, datetime, timezone
 from pathlib import Path
-from datetime import datetime, timezone
-import csv, json, sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -12,7 +15,7 @@ DATA = ROOT / "data" / "company_os"
 REPORTS = ROOT / "reports" / "company_os"
 
 def now():
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 def write(path: Path, text: str):
     path.parent.mkdir(parents=True, exist_ok=True)

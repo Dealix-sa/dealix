@@ -35,7 +35,7 @@ def scan_text(text: str, patterns: tuple[str, ...], lookback: int = 6) -> list[s
         if not stripped:
             continue
         if any(rx.search(line) for rx in compiled):
-            window = nonempty_prev[-lookback:] + [line]
+            window = [*nonempty_prev[-lookback:], line]
             if not any(_has_cue(w) for w in window):
                 hits.append(stripped[:120])
         nonempty_prev.append(line)

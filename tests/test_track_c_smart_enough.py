@@ -109,7 +109,7 @@ class TestC3Watchdog:
             sys.path.pop(0)
 
     def test_run_all_returns_results(self, watchdog):
-        results, failed = watchdog.run_all()
+        results, _failed = watchdog.run_all()
         assert isinstance(results, list)
         assert len(results) == len(watchdog.CHECKS)
         for r in results:

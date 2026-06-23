@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.dealix_call_sheet import (  # noqa: E402
+from scripts.dealix_call_sheet import (
     DISCLAIMER,
     build_call_sheet,
     render_markdown,

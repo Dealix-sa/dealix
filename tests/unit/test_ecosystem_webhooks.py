@@ -82,7 +82,7 @@ def test_verify_rejects_stale_timestamp():
 
 
 def test_verify_rejects_malformed_header():
-    ok, err = verify_signature(secret="s", signature_header="garbage", body=b"x")
+    ok, _err = verify_signature(secret="s", signature_header="garbage", body=b"x")
     assert ok is False
 
 

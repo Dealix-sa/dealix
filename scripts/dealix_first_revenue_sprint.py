@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 clients_path=Path('data/revenue/first_5_clients.json')
 clients=json.loads(clients_path.read_text(encoding='utf-8')) if clients_path.exists() else []
 print('# First Revenue Sprint')

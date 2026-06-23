@@ -9,7 +9,6 @@ import datetime as dt
 import json
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPORT_DIR = REPO_ROOT / "business" / "sales-automation" / "exports"
 EXPORT_DIR.mkdir(parents=True, exist_ok=True)
@@ -60,11 +59,11 @@ def render_markdown(date: dt.date) -> str:
     lines.append(f"# Dealix Daily Sales Machine Pack — {date.isoformat()}")
     lines.append("")
     lines.append("## Lead sources")
-    for sid, label, guardrail in LEAD_SOURCES:
+    for _sid, label, guardrail in LEAD_SOURCES:
         lines.append(f"- **{label}** — {guardrail}")
     lines.append("")
     lines.append("## Persuasion angles")
-    for sid, title, signal in PERSUASION_ANGLES:
+    for _sid, title, signal in PERSUASION_ANGLES:
         lines.append(f"- **{title}** — signal: {signal}")
     lines.append("")
     lines.append("## Offer ladder")

@@ -50,7 +50,7 @@ RESEARCH_ALIGNMENT_AR = {
 def _run_script(rel: str, *args: str, timeout_s: int = 90) -> dict[str, Any]:
     cmd = [sys.executable, str(REPO_ROOT / rel), *args]
     try:
-        proc = subprocess.run(  # noqa: S603 — sys.executable; controlled script path
+        proc = subprocess.run(
             cmd,
             cwd=str(REPO_ROOT),
             capture_output=True,

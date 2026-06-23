@@ -294,10 +294,10 @@ class DiagnosticEngine:
         lines = [
             f"# تشخيص Dealix — {req.company_name}",
             f"**Dealix Diagnostic — {req.company_name}**",
-            f"",
+            "",
             f"المعرف: `{report_id}` | التاريخ: {now} | الحالة: **يتطلب موافقة المؤسس**",
             f"ID: `{report_id}` | Date: {now} | Status: **approval_required**",
-            f"",
+            "",
             "---",
             "",
         ]

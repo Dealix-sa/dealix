@@ -5,11 +5,11 @@ from auto_client_acquisition.sales_os.qualification import Decision, qualify
 
 
 def _all_yes() -> dict:
-    return dict(
-        pain_clear=True, owner_present=True, data_available=True,
-        accepts_governance=True, has_budget=True, wants_safe_methods=True,
-        proof_path_visible=True, retainer_path_visible=True,
-    )
+    return {
+        "pain_clear": True, "owner_present": True, "data_available": True,
+        "accepts_governance": True, "has_budget": True, "wants_safe_methods": True,
+        "proof_path_visible": True, "retainer_path_visible": True,
+    }
 
 
 def test_full_yes_accepts():

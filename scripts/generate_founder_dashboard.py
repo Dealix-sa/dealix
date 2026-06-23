@@ -6,6 +6,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
+
 def read_warm_intros() -> list[dict]:
     """Read warm intro targets from CSV."""
     csv_path = Path(__file__).parents[1] / "company" / "runtime" / "warm_intro_targets.csv"
@@ -14,10 +15,10 @@ def read_warm_intros() -> list[dict]:
         return []
 
     try:
-        with open(csv_path, 'r', encoding='utf-8') as f:
+        with open(csv_path, encoding='utf-8') as f:
             reader = csv.DictReader(f)
             return list(reader) if reader else []
-    except (IOError, OSError, csv.Error, UnicodeDecodeError):
+    except (OSError, csv.Error, UnicodeDecodeError):
         return []
 
 def calculate_metrics(targets: list[dict]) -> dict:

@@ -60,7 +60,7 @@ def test_scope_requested_within_days():
     assert scope_requested_within_days(14, rows) is True
     assert scope_requested_within_days(3, rows) is False
 
-    old_rows = [{"event_date": old, "event_type": "scope_requested"}]
+    old_rows = [{"event_date": "2020-01-01", "event_type": "scope_requested"}]
     assert scope_requested_within_days(14, old_rows) is False
 
 def test_social_queue_has_posts():

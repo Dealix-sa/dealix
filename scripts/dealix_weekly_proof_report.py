@@ -1,5 +1,8 @@
-import argparse,re,json
+import argparse
+import json
+import re
 from pathlib import Path
+
 parser=argparse.ArgumentParser(); parser.add_argument('--client',required=True); args=parser.parse_args()
 slug=re.sub(r'[^\w\u0600-\u06FF-]+','_',args.client).strip('_')
 out=Path('out/proof_reports'); out.mkdir(parents=True, exist_ok=True)

@@ -9,7 +9,6 @@ import argparse
 import json
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCORED_PATH = REPO_ROOT / "business" / "_data" / "scored_leads.json"
 QUEUE_PATH = REPO_ROOT / "business" / "_data" / "outreach_review_queue.json"
@@ -53,7 +52,23 @@ def main() -> int:
     parser.add_argument("--top", type=int, default=10)
     parser.add_argument("--language", choices=["ar", "en", "both"], default="both")
     parser.add_argument("--channel", default="whatsapp")
+    parser.add_argument(
+        "--mode",
+        choices=["demo", "live"],
+        default="demo",
+        help="demo (default) blocks live sending; live requires explicit env flags",
+    )
     args = parser.parse_args()
+
+    if args.mode == "live":
+        import os as _os
+
+        if _os.environ.get("EXTERNAL_SEND_ENABLED", "").lower() not in ("true", "1"):
+            print("live mode requires EXTERNAL_SEND_ENABLED=true")
+            return 2
+        if _os.environ.get("OUTBOUND_MODE", "").lower() != "controlled_live":
+            print("live mode requires OUTBOUND_MODE=controlled_live")
+            return 2
 
     if not SCORED_PATH.exists():
         print(f"missing: {SCORED_PATH}")

@@ -9,9 +9,9 @@ from typing import Any, Optional
 import structlog
 
 from dealix.hermes.orchestrators.wave_orchestrator import (
+    WAVE_CONFIGS,
     WaveOrchestrator,
     WaveStatus,
-    WAVE_CONFIGS,
 )
 
 logger = structlog.get_logger(__name__)
@@ -181,7 +181,7 @@ class CockpitStatus:
 class FounderCockpitV2:
     """لوحة قيادة المؤسس المطورة — تجمع بيانات حية من جميع الأنظمة"""
 
-    def __init__(self, orchestrator: Optional[WaveOrchestrator] = None) -> None:
+    def __init__(self, orchestrator: WaveOrchestrator | None = None) -> None:
         self.orchestrator = orchestrator or WaveOrchestrator()
 
     async def get_full_status(self) -> CockpitStatus:

@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.quote_engine import load_quotes, save_quotes, now  # noqa: E402
+from lib.quote_engine import load_quotes, now, save_quotes
 
 
 def main() -> int:

@@ -347,9 +347,9 @@ async def generate_data_passport(tenant_id: str) -> dict[str, Any]:
 
 
 __all__ = [
-    "score_data_quality",
+    "calculate_tam_sam_som",
     "detect_duplicates",
     "enrich_company_data",
-    "calculate_tam_sam_som",
     "generate_data_passport",
+    "score_data_quality",
 ]

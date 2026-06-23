@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-import argparse, re
-from pathlib import Path
+import argparse
+import re
 from datetime import date
+from pathlib import Path
+
 ap=argparse.ArgumentParser()
 ap.add_argument('--client-label', required=True)
 ap.add_argument('--sector', required=True)

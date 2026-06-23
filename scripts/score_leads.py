@@ -2,12 +2,13 @@
 
 Usage:
     python3 scripts/score_leads.py
+    python3 scripts/score_leads.py --mode demo
 """
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
-
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LEADS_PATH = REPO_ROOT / "business" / "_data" / "leads.json"
@@ -41,7 +42,53 @@ def score(account: dict) -> int:
     return min(100, max(0, base))
 
 
+def _tier(score: int) -> str:
+    if score >= 80:
+        return "A"
+    if score >= 60:
+        return "B"
+    if score >= 40:
+        return "C"
+    return "D"
+
+
+def score_lead(lead: dict) -> dict:
+    """Compatibility wrapper: accepts a lead dict with scoring dimensions
+    (fit, pain_clarity, budget_signal, urgency) or legacy account fields.
+    Returns ``{"score": int, "tier": str}``.
+    """
+    # New-style dimension-based scoring (tests/v3/test_scoring.py shape)
+    if any(k in lead for k in ("fit", "pain_clarity", "budget_signal", "urgency")):
+        total = (
+            int(lead.get("fit", 0))
+            + int(lead.get("pain_clarity", 0))
+            + int(lead.get("budget_signal", 0))
+            + int(lead.get("urgency", 0))
+        )
+        total = min(100, max(0, total))
+        return {"score": total, "tier": _tier(total)}
+    # Legacy account-based scoring
+    s = score(lead)
+    return {"score": s, "tier": _tier(s)}
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--mode",
+        choices=["demo", "live"],
+        default="demo",
+        help="demo (default) scores locally; live is a no-op placeholder for future pipeline",
+    )
+    args = parser.parse_args()
+
+    if args.mode == "live":
+        import os as _os
+
+        if _os.environ.get("EXTERNAL_SEND_ENABLED", "").lower() not in ("true", "1"):
+            print("live mode requires EXTERNAL_SEND_ENABLED=true")
+            return 2
+
     if not LEADS_PATH.exists():
         print(f"missing: {LEADS_PATH}")
         return 1

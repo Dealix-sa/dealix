@@ -11,6 +11,7 @@ from typing import Any
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.utils import utcnow
 from db.models_erp import (
     ActivityRecord,
     AttendanceRecord,
@@ -37,7 +38,6 @@ from db.models_erp import (
     TimeEntryRecord,
     WarehouseRecord,
 )
-from core.utils import utcnow
 
 
 class ERPService:
@@ -214,7 +214,7 @@ class ERPService:
     async def list_documents(self, tenant_id: str, folder_id: str | None = None) -> list[DocumentRecord]:
         stmt = select(DocumentRecord).where(
             DocumentRecord.tenant_id == tenant_id,
-            DocumentRecord.is_deleted == False,
+            not DocumentRecord.is_deleted,
         )
         if folder_id:
             stmt = stmt.where(DocumentRecord.folder_id == folder_id)
@@ -503,7 +503,7 @@ class ERPService:
     async def list_gl_accounts(self, tenant_id: str) -> list[GLAccountRecord]:
         stmt = select(GLAccountRecord).where(
             GLAccountRecord.tenant_id == tenant_id,
-            GLAccountRecord.is_active == True,
+            GLAccountRecord.is_active,
         ).order_by(GLAccountRecord.account_code)
         result = await self.session.execute(stmt)
         return list(result.scalars().all())
@@ -556,7 +556,7 @@ class ERPService:
     async def get_trial_balance(self, tenant_id: str) -> list[dict[str, Any]]:
         stmt = select(GLAccountRecord).where(
             GLAccountRecord.tenant_id == tenant_id,
-            GLAccountRecord.is_active == True,
+            GLAccountRecord.is_active,
         ).order_by(GLAccountRecord.account_code)
         result = await self.session.execute(stmt)
         accounts = result.scalars().all()

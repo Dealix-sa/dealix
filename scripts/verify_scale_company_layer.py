@@ -1,5 +1,5 @@
-from pathlib import Path
 import sys
+from pathlib import Path
 
 required = [
     "docs/data_room/DEALIX_COMPANY_ONE_PAGER_AR.md",

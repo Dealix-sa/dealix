@@ -344,7 +344,12 @@ async def dashboard_metrics() -> dict[str, Any]:
     }
 
 
-from db.models import CompanyRecord, CustomerRecord, OutreachQueueRecord, PartnerRecord
+from db.models import (
+    CompanyRecord,
+    CustomerRecord,
+    OutreachQueueRecord,
+    PartnerRecord,
+)
 
 # ── Companies (subscriber intake) ───────────────────────────────
 

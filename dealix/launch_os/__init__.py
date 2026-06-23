@@ -6,11 +6,35 @@ Exports the main classes and functions from each submodule so callers can do:
 """
 from __future__ import annotations
 
+from dealix.launch_os.founder_daily_command import (
+    DailyCommand,
+    generate_daily_command,
+    render_brief,
+)
 from dealix.launch_os.icp_scorer import (
     ICPScore,
     batch_score,
     score_account,
     tier_label,
+)
+from dealix.launch_os.outreach_factory import (
+    CHANNEL_TEMPLATES,
+    OutreachDraft,
+    build_draft,
+)
+from dealix.launch_os.pipeline_tracker import (
+    PipelineItem,
+    PipelineStage,
+    PipelineTracker,
+)
+from dealix.launch_os.proposal_engine import (
+    ProposalPack,
+    build_proposal,
+    render_markdown,
+)
+from dealix.launch_os.trust_preflight import (
+    TrustViolation,
+    run_preflight,
 )
 from dealix.launch_os.vertical_scorer import (
     SAUDI_VERTICALS,
@@ -18,59 +42,35 @@ from dealix.launch_os.vertical_scorer import (
     rank_verticals,
     top_wedge,
 )
-from dealix.launch_os.trust_preflight import (
-    TrustViolation,
-    run_preflight,
-)
-from dealix.launch_os.outreach_factory import (
-    CHANNEL_TEMPLATES,
-    OutreachDraft,
-    build_draft,
-)
-from dealix.launch_os.proposal_engine import (
-    ProposalPack,
-    build_proposal,
-    render_markdown,
-)
-from dealix.launch_os.pipeline_tracker import (
-    PipelineItem,
-    PipelineStage,
-    PipelineTracker,
-)
-from dealix.launch_os.founder_daily_command import (
-    DailyCommand,
-    generate_daily_command,
-    render_brief,
-)
 
 __all__ = [
-    # icp_scorer
-    "ICPScore",
-    "batch_score",
-    "score_account",
-    "tier_label",
-    # vertical_scorer
-    "SAUDI_VERTICALS",
-    "VerticalScore",
-    "rank_verticals",
-    "top_wedge",
-    # trust_preflight
-    "TrustViolation",
-    "run_preflight",
     # outreach_factory
     "CHANNEL_TEMPLATES",
+    # vertical_scorer
+    "SAUDI_VERTICALS",
+    # founder_daily_command
+    "DailyCommand",
+    # icp_scorer
+    "ICPScore",
     "OutreachDraft",
-    "build_draft",
-    # proposal_engine
-    "ProposalPack",
-    "build_proposal",
-    "render_markdown",
     # pipeline_tracker
     "PipelineItem",
     "PipelineStage",
     "PipelineTracker",
-    # founder_daily_command
-    "DailyCommand",
+    # proposal_engine
+    "ProposalPack",
+    # trust_preflight
+    "TrustViolation",
+    "VerticalScore",
+    "batch_score",
+    "build_draft",
+    "build_proposal",
     "generate_daily_command",
+    "rank_verticals",
     "render_brief",
+    "render_markdown",
+    "run_preflight",
+    "score_account",
+    "tier_label",
+    "top_wedge",
 ]

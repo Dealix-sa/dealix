@@ -111,8 +111,10 @@ async def _gather_compliance_inputs(
         try:
             sup_rows = (await session.execute(select(SuppressionRecord))).scalars().all()
             for r in sup_rows:
-                if r.email: sup_emails.add(r.email.lower())
-                if r.domain: sup_domains.add(r.domain.lower())
+                if r.email:
+                    sup_emails.add(r.email.lower())
+                if r.domain:
+                    sup_domains.add(r.domain.lower())
 
             if account_id:
                 acc = (await session.execute(
@@ -320,7 +322,7 @@ async def send_batch(body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
                     select(ContactRecord).where(
                         ContactRecord.account_id == r.lead_id,
                         ContactRecord.email.is_not(None),
-                        ContactRecord.opt_out == False,  # noqa: E712
+                        ContactRecord.opt_out.is_(False),
                     ).limit(1)
                 )).scalar_one_or_none()
                 acc = (await s2.execute(

@@ -11,10 +11,10 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 
-from dealix.commercial_ops.paths import AGENCY_TARGETS_CSV  # noqa: E402
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
-from dealix.commercial_ops.targeting_csv import TARGET_FIELDS, load_targets  # noqa: E402
-from dealix.commercial_ops.targeting_rotation import (  # noqa: E402
+from dealix.commercial_ops.paths import AGENCY_TARGETS_CSV
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
+from dealix.commercial_ops.targeting_csv import TARGET_FIELDS, load_targets
+from dealix.commercial_ops.targeting_rotation import (
     apply_rotation_touch_dates,
     select_daily_p0_targets,
 )

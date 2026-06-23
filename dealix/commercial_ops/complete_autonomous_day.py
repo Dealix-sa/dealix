@@ -86,7 +86,7 @@ def _py(script: str, *args: str) -> list[str]:
 
 def _run_subprocess(cmd: list[str], *, label: str, required: bool = False) -> dict[str, Any]:
     try:
-        proc = subprocess.run(cmd, cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=900)  # noqa: S603 — internal verify cmd
+        proc = subprocess.run(cmd, cwd=str(REPO_ROOT), capture_output=True, text=True, timeout=900)
         ok = proc.returncode == 0
         return {
             "label": label,

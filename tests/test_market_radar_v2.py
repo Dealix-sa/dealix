@@ -114,7 +114,7 @@ def test_detect_ramadan_prep_30_days_before() -> None:
 def test_detect_zatca_wave_24_window() -> None:
     """ZATCA Wave 24 window: April 1 - June 30, 2026 (highest confidence
     because dates are official ZATCA-published)."""
-    ctx = detect_saudi_season(on_date=date(2026, 5, 15))
+    detect_saudi_season(on_date=date(2026, 5, 15))
     # Note: May 15 also falls in eid_adha-adjacent timing; eid takes priority
     # if it overlaps. Test at a clear ZATCA-only date instead:
     ctx2 = detect_saudi_season(on_date=date(2026, 4, 15))

@@ -20,20 +20,20 @@ from auto_client_acquisition.company_brain_v6.service_matcher import (
 
 
 def _goal(**overrides) -> WorkforceGoal:
-    base = dict(
-        company_handle="ACME-SAUDI",
-        company_context="B2B services in KSA, founder-led.",
-        goal_ar="جذب عملاء جدد بدون أيّ إرسال آلي.",
-        goal_en="Acquire new customers without automated sending.",
-        desired_outcome="3 booked diagnostics next month",
-        available_assets=["case_study_01", "founder_linkedin_post"],
-        approved_channels=["warm_intro", "manual_email"],
-        blocked_channels=[],
-        budget_sar=2000.0,
-        urgency="medium",
-        language_preference="ar",
-        founder_mode=True,
-    )
+    base = {
+        "company_handle": "ACME-SAUDI",
+        "company_context": "B2B services in KSA, founder-led.",
+        "goal_ar": "جذب عملاء جدد بدون أيّ إرسال آلي.",
+        "goal_en": "Acquire new customers without automated sending.",
+        "desired_outcome": "3 booked diagnostics next month",
+        "available_assets": ["case_study_01", "founder_linkedin_post"],
+        "approved_channels": ["warm_intro", "manual_email"],
+        "blocked_channels": [],
+        "budget_sar": 2000.0,
+        "urgency": "medium",
+        "language_preference": "ar",
+        "founder_mode": True,
+    }
     base.update(overrides)
     return WorkforceGoal(**base)
 

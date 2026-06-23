@@ -1,4 +1,5 @@
 from pathlib import Path
+
 required = [
  'agents/AGENT_OPERATING_SYSTEM_AR.md',
  'agents/HUMAN_APPROVAL_GATE_AR.md',

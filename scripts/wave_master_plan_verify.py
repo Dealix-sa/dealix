@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.wave_master_plan import build_wave_master_plan_snapshot  # noqa: E402
+from dealix.commercial_ops.wave_master_plan import build_wave_master_plan_snapshot
 
 
 def main() -> int:

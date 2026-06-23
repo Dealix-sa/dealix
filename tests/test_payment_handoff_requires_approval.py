@@ -71,7 +71,7 @@ def test_pricing_yaml_doesnt_have_invoice_dispatch():
     # Should be data only, no logic
     assert "currency" in pricing
     # No send/dispatch/auto keys
-    for key in pricing.keys():
+    for key in pricing:
         assert "send" not in key.lower() or "refund" not in key.lower(), (
             f"pricing.yaml has suspicious key: {key}"
         )

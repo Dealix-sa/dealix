@@ -56,7 +56,7 @@ def compute_lead_score(fields: dict[str, Any]) -> tuple[int, dict[str, int]]:
         bd["no_company"] = -4
 
     crm_signals = ("crm", "salesforce", "hubspot", "zoho", "pipeline", "deals")
-    if any(sig in blob for sig in crm_signals + ("pipeline process",)):
+    if any(sig in blob for sig in (*crm_signals, "pipeline process")):
         bd["crm_workflow"] = 3
 
     ai_signals = (

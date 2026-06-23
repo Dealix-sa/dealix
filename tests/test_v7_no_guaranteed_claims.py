@@ -59,7 +59,6 @@ def test_landing_pages_have_no_unallowlisted_forbidden_claims():
         )
     except ImportError:  # pragma: no cover
         ALLOWLIST = {}
-        FORBIDDEN_PATTERNS = _FORBIDDEN
         helper_scan = _scan
 
     violations: list[str] = []

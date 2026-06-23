@@ -1,9 +1,9 @@
-from pathlib import Path
-from datetime import datetime, timezone
 import json
+from datetime import UTC, datetime, timezone
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-day = datetime.now(timezone.utc).date().isoformat()
+day = datetime.now(UTC).date().isoformat()
 out = ROOT / "reports" / "company_os" / "daily"
 out.mkdir(parents=True, exist_ok=True)
 

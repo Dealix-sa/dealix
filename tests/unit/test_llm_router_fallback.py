@@ -48,7 +48,7 @@ async def test_router_uses_primary_provider(mock_settings):
     """Router calls the primary provider and returns its response."""
     router = ModelRouter(settings=mock_settings)
 
-    primary_provider = list(router._clients.keys())[0]
+    primary_provider = next(iter(router._clients.keys()))
     mock_client = AsyncMock()
     mock_client.chat.return_value = _make_response(primary_provider, "primary response")
     router._clients[primary_provider] = mock_client
@@ -69,7 +69,7 @@ async def test_router_falls_back_on_provider_error(mock_settings):
     success_content = "fallback response"
     providers = list(router._clients.keys())
 
-    for i, provider in enumerate(providers[:-1]):
+    for _i, provider in enumerate(providers[:-1]):
         mock_fail = AsyncMock()
         mock_fail.chat.side_effect = Exception(f"Provider {provider} unavailable")
         router._clients[provider] = mock_fail

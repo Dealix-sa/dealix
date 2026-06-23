@@ -22,16 +22,16 @@ ALLOWLIST = {
     "api/routers/email_send.py",
     "api/routers/autonomous.py",
     "auto_client_acquisition/email/transactional.py",
+    # Scanner/verify scripts contain pattern strings for *detecting* auto-send,
+    # not actual auto-send logic.
+    "scripts/verify_no_auto_external_send.py",
 }
 
 def is_doc_or_test(path: Path) -> bool:
     parts = path.parts
     if "test" in path.name:
         return True
-    for p in parts:
-        if p in {"docs", "doc", "reports", "README.md", "README.ar.md"}:
-            return True
-    return False
+    return any(p in {"docs", "doc", "reports", "README.md", "README.ar.md"} for p in parts)
 
 def scan_python_file(path: Path) -> list:
     findings = []

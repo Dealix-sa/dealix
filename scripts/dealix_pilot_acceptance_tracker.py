@@ -1,5 +1,8 @@
-import argparse,json,datetime
+import argparse
+import datetime
+import json
 from pathlib import Path
+
 parser=argparse.ArgumentParser()
 parser.add_argument('--client',required=True)
 parser.add_argument('--milestone',required=True)

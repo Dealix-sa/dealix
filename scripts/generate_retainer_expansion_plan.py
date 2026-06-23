@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.workspace_store import load  # noqa: E402
+from lib.workspace_store import load
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "reports" / "customer_success"
 
@@ -31,7 +31,7 @@ def main() -> int:
             f"## {w['clientName']} ({w['clientId']})",
             f"- Current offer: {w['offer']}",
             f"- Proof items so far: {len(w.get('proofItems', []))}",
-            f"- Suggested next step: scope adjacent OS module + propose at next weekly review",
+            "- Suggested next step: scope adjacent OS module + propose at next weekly review",
             "",
         ])
     out = OUT_DIR / f"retainer-expansion-{date}.md"

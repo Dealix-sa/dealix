@@ -12,7 +12,6 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 # ---------------------------------------------------------------------------
 # Vocabulary
 # ---------------------------------------------------------------------------
@@ -85,7 +84,7 @@ _SOURCE_TYPE_WEIGHT: dict[str, float] = {
 class SourcePassportBuilder:
     """Deterministic builder — no LLM, no external calls."""
 
-    def build(self, sources: list[dict]) -> SourcePassport:  # noqa: PLR0912
+    def build(self, sources: list[dict]) -> SourcePassport:
         """Validate, score, and annotate a list of raw source dicts."""
         parsed: list[LeadSource] = []
         for raw in sources:

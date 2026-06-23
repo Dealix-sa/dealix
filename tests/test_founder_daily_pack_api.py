@@ -221,20 +221,3 @@ def test_founder_complete_autonomous_day_plan_endpoint(
     assert body.get("strongest_plan_wiring") is True
     assert body.get("task_count", 0) >= 138
     assert body.get("research_verdict_ar")
-
-
-def test_founder_complete_autonomous_day_plan_endpoint(
-    client: TestClient, monkeypatch
-) -> None:
-    monkeypatch.setenv("DEALIX_ADMIN_API_KEY", "test-admin-launch-key")
-    r = client.get(
-        "/api/v1/ops-autopilot/founder/complete-autonomous-day",
-        headers={"X-Admin-API-Key": "test-admin-launch-key"},
-    )
-    if r.status_code in (401, 403):
-        pytest.skip("admin key middleware uses different env in this build")
-    assert r.status_code == 200
-    body = r.json()
-    assert body.get("strongest_plan_wiring") is True
-    assert body.get("task_count", 0) >= 138
-    assert body.get("research_verdict_ar")

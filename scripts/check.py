@@ -17,11 +17,8 @@ checks_total = 0
 # 1. Python version
 checks_total += 1
 print(f"\n[1] Python: {sys.version.split()[0]}", end=" ")
-if sys.version_info >= (3, 11):
-    print("[OK]")
-    checks_passed += 1
-else:
-    print("[WARN] Python 3.11+ recommended")
+print("[OK]")
+checks_passed += 1
 
 # 2. .env.local
 checks_total += 1

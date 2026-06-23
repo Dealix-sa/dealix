@@ -96,7 +96,7 @@ def _offers_summary() -> list[dict[str, Any]]:
 def _run_verify_transformation() -> str:
     script = _REPO / "scripts" / "verify_global_ai_transformation.py"
     try:
-        proc = subprocess.run(  # noqa: S603 — internal script path; sys.executable is trusted
+        proc = subprocess.run(
             [sys.executable, str(script)],
             cwd=str(_REPO),
             capture_output=True,
@@ -117,8 +117,8 @@ def _run_verify_enterprise_control_plane() -> str:
     if not script.exists():
         return "UNKNOWN"
     try:
-        proc = subprocess.run(  # noqa: S603 — internal verify script; controlled args
-            ["bash", str(script)],  # noqa: S607 — PATH-resolved trusted tool
+        proc = subprocess.run(
+            ["bash", str(script)],
             cwd=str(_REPO),
             capture_output=True,
             text=True,
@@ -306,10 +306,7 @@ def build_business_now_snapshot(
     persist_cache: bool = False,
 ) -> dict[str, Any]:
     """Build full snapshot. run_verify=True for offline generator (slow)."""
-    if run_verify:
-        transformation_verdict = _run_verify_transformation()
-    else:
-        transformation_verdict = "SKIP"
+    transformation_verdict = _run_verify_transformation() if run_verify else "SKIP"
 
     if run_enterprise_cp or run_verify:
         enterprise_cp_verdict = _run_verify_enterprise_control_plane()

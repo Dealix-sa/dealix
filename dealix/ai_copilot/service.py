@@ -10,8 +10,8 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.models import DealRecord
-from dealix.erp.service import ERPService
 from dealix.billing.service import BillingService
+from dealix.erp.service import ERPService
 
 
 class AICopilotService:

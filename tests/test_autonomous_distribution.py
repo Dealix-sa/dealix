@@ -96,7 +96,7 @@ def test_product_to_dict_roundtrip() -> None:
 # core.memory imports sqlalchemy which is unavailable in the test environment,
 # so we inject a fake module via sys.modules before any agent is instantiated.
 @pytest.fixture
-def mock_router_agent(mock_llm_response: Any) -> Any:  # noqa: ANN401
+def mock_router_agent(mock_llm_response: Any) -> Any:
     import sys
     from unittest.mock import MagicMock
 

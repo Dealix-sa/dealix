@@ -20,7 +20,7 @@ class TestAgentCannotSendExternal:
 
     def test_email_send_blocked(self) -> None:
         """Email send requires human approval."""
-        risk, approval_type = approval_for_action("send email")
+        _risk, approval_type = approval_for_action("send email")
         assert "human" in approval_type.lower(), "Email send needs human"
 
     def test_whatsapp_send_blocked(self) -> None:
@@ -31,7 +31,7 @@ class TestAgentCannotSendExternal:
 
     def test_linkedin_send_blocked(self) -> None:
         """LinkedIn automation is blocked."""
-        risk, approval_type = approval_for_action("linkedin automation")
+        _risk, approval_type = approval_for_action("linkedin automation")
         assert approval_type == "blocked", "LinkedIn not blocked"
 
 
@@ -106,17 +106,17 @@ class TestAgentPermissionMatrix:
         from auto_client_acquisition.governance_os.approval_matrix import approval_for_action
 
         # Read operations are low risk
-        risk, approval_type = approval_for_action("read report")
+        risk, _approval_type = approval_for_action("read report")
         assert risk in ("low", "medium"), "Read not low/medium risk"
 
     def test_draft_tool_tier(self) -> None:
         """Draft tools are T2."""
-        risk, approval_type = approval_for_action("draft proposal")
+        risk, _approval_type = approval_for_action("draft proposal")
         assert risk in ("low", "medium"), "Draft not low/medium risk"
 
     def test_external_action_tier(self) -> None:
         """External actions are high/critical."""
-        risk, approval_type = approval_for_action("send external message")
+        risk, _approval_type = approval_for_action("send external message")
         assert risk in ("high", "critical"), "External action not high/critical"
 
 
@@ -126,7 +126,6 @@ class TestAgentCollisionPolicy:
     def test_no_simultaneous_write(self) -> None:
         """Two agents cannot write to same file simultaneously."""
         # Policy: Only one agent writes at a time
-        active_writers = []
         # When one agent starts writing, others are blocked
         agent_a_writing = True
         agent_b_blocked = agent_a_writing

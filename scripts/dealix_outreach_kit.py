@@ -219,7 +219,7 @@ def main() -> int:
         try:
             subject, body = render_email(t, pitches, stage=args.stage)
             written.append(write_target_file(out_dir, t, subject, body, pitches, stage=args.stage))
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             errors.append(f"{t.get('company')}: {exc}")
 
     digest = write_digest(out_dir, targets, pitches)

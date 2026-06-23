@@ -1,7 +1,10 @@
 """MiniMax LLM provider — OpenAI-compatible, used for high-volume daily tasks."""
 from __future__ import annotations
-import json, os
+
+import json
+import os
 from typing import Any
+
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -41,7 +44,7 @@ class MiniMaxProvider:
             return self._mock_response(system, messages)
 
         # Convert messages: prepend system as first user/system message
-        oai_messages = [{"role": "system", "content": system}] + messages
+        oai_messages = [{"role": "system", "content": system}, *messages]
 
         kwargs: dict[str, Any] = {
             "model": self._model,

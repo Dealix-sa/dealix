@@ -4,6 +4,8 @@ Pure unit tests — no network, no LLM, no DB.
 """
 from __future__ import annotations
 
+import itertools
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 
@@ -63,7 +65,7 @@ def test_daily_loop_seo_gap_pages_are_sorted_ascending():
     loop = daily_growth_loop.build_today()
     pages = loop["seo_gap_pages"]
     if len(pages) > 1:
-        for a, b in zip(pages, pages[1:]):
+        for a, b in itertools.pairwise(pages):
             assert a["score"] <= b["score"]
 
 
@@ -106,7 +108,7 @@ def test_proof_snippet_renders_internal_only_without_consent():
 
 
 def test_proof_snippet_anonymizes_customer_without_consent():
-    result = proof_snippet_engine.render(_GOOD_EVENT)
+    proof_snippet_engine.render(_GOOD_EVENT)
     # The anonymized handle (ACME-001) is fine; the customer_display_name
     # if present must NOT leak.
     event_with_name = dict(_GOOD_EVENT, customer_display_name="Real Co Ltd")

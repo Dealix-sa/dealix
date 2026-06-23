@@ -10,7 +10,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
-from dealix.commercial_ops.railway_launch import (  # noqa: E402
+from dealix.commercial_ops.railway_launch import (
     check_railway_api_env,
     check_railway_frontend_env,
 )

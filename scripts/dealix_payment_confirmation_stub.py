@@ -75,7 +75,7 @@ def cmd_invoice_intent(state: dict, args) -> tuple[bool, str]:
     state["state"] = "invoice_intent_created"
     state["customer_handle"] = args.customer
     state["amount_sar"] = float(args.amount_sar)
-    state["amount_halalah"] = int(round(float(args.amount_sar) * 100))
+    state["amount_halalah"] = round(float(args.amount_sar) * 100)
     state["service_type"] = args.service_type
     state["history"].append({
         "at": _now(),

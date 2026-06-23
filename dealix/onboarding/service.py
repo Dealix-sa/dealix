@@ -13,10 +13,10 @@ from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.models import TenantRecord, UserRecord, RoleRecord
+from core.utils import utcnow
+from db.models import RoleRecord, TenantRecord, UserRecord
 from db.models_subscription import PlanRecord, SubscriptionRecord
 from dealix.billing.service import BillingService
-from core.utils import utcnow
 
 _pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

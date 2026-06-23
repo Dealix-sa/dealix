@@ -289,6 +289,6 @@ def test_executor_failure_marks_task_failed_after_retries():
         workflow_id="short", name="Short", description="",
         steps=(WorkflowStep("1", "prospecting", "discover_leads"),),
     )
-    summary = orch.run_workflow(workflow=short_wf, customer_id="c1")
+    orch.run_workflow(workflow=short_wf, customer_id="c1")
     failed_events = [e for e in store._sorted_events() if e.event_type == "agent.action_failed"]
     assert len(failed_events) >= 1

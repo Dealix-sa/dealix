@@ -20,8 +20,8 @@ from scripts.revenue._lib import (
     load_csv,
     normalize_email,
     opt_out_line,
-    today_str,
     parse_date,
+    today_str,
 )
 
 
@@ -102,7 +102,7 @@ def main() -> int:
             base_emails.append((path, company, subject))
 
     replies = load_csv(REPO_ROOT / args.reply_log)
-    replied_companies = {normalize_email(r.get("email", "")) for r in replies}
+    {normalize_email(r.get("email", "")) for r in replies}
 
     generated = 0
     for path, company, subject in base_emails:

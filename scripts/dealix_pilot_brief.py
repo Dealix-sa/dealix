@@ -23,7 +23,7 @@ LIVE_DIR = Path("docs/wave6/live")
 
 def build_brief(*, company: str, sector: str, amount_sar: float,
                 diagnostic_summary: str | None = None) -> dict:
-    halalah = int(round(amount_sar * 100))
+    halalah = round(amount_sar * 100)
     return {
         "company": company,
         "sector": sector,

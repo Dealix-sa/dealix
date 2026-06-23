@@ -48,7 +48,7 @@ def test_arabic_readiness_high_for_full_saudi_signals() -> None:
 
 def test_arabic_readiness_zero_for_no_signals() -> None:
     """No Saudi signals → 0.0."""
-    score, notes = score_arabic_readiness({
+    score, _notes = score_arabic_readiness({
         "domain": "example.us",
         "country": "USA",
         "city": "New York",

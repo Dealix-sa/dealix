@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.founder_comprehensive_plan import analyze_phase_0_1_gate  # noqa: E402
+from dealix.commercial_ops.founder_comprehensive_plan import analyze_phase_0_1_gate
 
 
 def main() -> int:

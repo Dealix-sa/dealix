@@ -101,7 +101,7 @@ class AutoGraduationEngine:
 
         target_plan = PLAN_ORDER[current_idx + 1]
         eligibility.target_plan = target_plan
-        target_limits = PLAN_LIMITS[target_plan]
+        PLAN_LIMITS[target_plan]
 
         usage_pct = (eligibility.current_leads / eligibility.leads_limit * 100) if eligibility.leads_limit > 0 else 0
         near_limit = usage_pct >= 80

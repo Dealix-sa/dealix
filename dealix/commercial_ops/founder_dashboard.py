@@ -24,10 +24,7 @@ def _bridge_events_7d() -> int:
         if e.event_type != "external_lead_bridged":
             continue
         created = e.created_at
-        if created.tzinfo is None:
-            created = created.replace(tzinfo=UTC)
-        else:
-            created = created.astimezone(UTC)
+        created = created.replace(tzinfo=UTC) if created.tzinfo is None else created.astimezone(UTC)
         if created >= since_7:
             count += 1
     return count

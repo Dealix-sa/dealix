@@ -40,7 +40,7 @@ async def test_response_carries_x_request_id_header() -> None:
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         r = await client.get("/health")
     assert r.status_code == 200
-    assert "x-request-id" in {k.lower() for k in r.headers.keys()}
+    assert "x-request-id" in {k.lower() for k in r.headers}
     rid = r.headers.get("X-Request-ID")
     assert rid
     assert HEX12.match(rid), f"auto-generated request_id should be 12-char hex; got {rid!r}"
@@ -143,9 +143,9 @@ async def test_correlation_id_present_on_4xx_5xx_too() -> None:
         )
 
     # Both responses MUST have X-Request-ID set — even on failures.
-    assert "x-request-id" in {k.lower() for k in r.headers.keys()}, (
+    assert "x-request-id" in {k.lower() for k in r.headers}, (
         "404 responses must still carry X-Request-ID for tracing"
     )
-    assert "x-request-id" in {k.lower() for k in r2.headers.keys()}, (
+    assert "x-request-id" in {k.lower() for k in r2.headers}, (
         "422/4xx responses must still carry X-Request-ID for tracing"
     )

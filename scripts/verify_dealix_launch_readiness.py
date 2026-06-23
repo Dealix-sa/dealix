@@ -30,7 +30,7 @@ REPO = Path(__file__).resolve().parents[1]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-from scripts._wave8_scan import scan_files  # noqa: E402
+from scripts._wave8_scan import scan_files
 
 CUSTOMER_TEMPLATE = REPO / "customers" / "_template"
 COMMAND_SPRINT_FILES = (
@@ -229,9 +229,9 @@ def main(argv: list[str] | None = None) -> int:
 
     next_fixes = (p0_blk + p1_blk + p2_imp)[:10]
     if claim_hits:
-        next_fixes = (["Remove unsafe-claim phrasing: " + claim_hits[0]] + next_fixes)[:10]
+        next_fixes = (["Remove unsafe-claim phrasing: " + claim_hits[0], *next_fixes])[:10]
     if autosend_hits:
-        next_fixes = (["Remove auto-send phrasing: " + autosend_hits[0]] + next_fixes)[:10]
+        next_fixes = (["Remove auto-send phrasing: " + autosend_hits[0], *next_fixes])[:10]
 
     # Console summary.
     print("== Private Launch Readiness ==")

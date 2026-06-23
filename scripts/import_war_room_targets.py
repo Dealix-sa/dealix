@@ -38,7 +38,7 @@ def main() -> int:
 
     if args.dry_run:
         companies = [r.get("company", "").strip() for r in rows if r.get("company", "").strip()]
-        print(f"WAR_ROOM_IMPORT: unique_companies={len(set(c.lower() for c in companies))}")
+        print(f"WAR_ROOM_IMPORT: unique_companies={len({c.lower() for c in companies})}")
         print(json.dumps({"dry_run": True, "rows": len(rows)}, ensure_ascii=False))
         return 0
 
@@ -53,10 +53,7 @@ def main() -> int:
         print("WAR_ROOM_IMPORT: API skipped — falling back to local store", file=sys.stderr)
 
     orch = RevenueAutopilotOrchestrator()
-    if args.csv:
-        result = import_target_rows(rows, orch)
-    else:
-        result = import_default_csv(orch)
+    result = import_target_rows(rows, orch) if args.csv else import_default_csv(orch)
 
     print(json.dumps(result, ensure_ascii=False, indent=2))
     print(f"WAR_ROOM_IMPORT: OK imported={result.get('imported', 0)} skipped={result.get('skipped_duplicates', 0)}")

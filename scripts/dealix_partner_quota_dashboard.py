@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 items=json.loads(Path('data/partners/partner_scorecard.json').read_text(encoding='utf-8'))
 print('# Partner Quota Dashboard')
 for p in items:

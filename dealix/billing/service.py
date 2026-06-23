@@ -12,6 +12,8 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.utils import utcnow
+from db.models import TenantRecord
 from db.models_subscription import (
     FeatureFlagRecord,
     InvoiceRecord,
@@ -19,9 +21,6 @@ from db.models_subscription import (
     SubscriptionRecord,
     UsageRecord,
 )
-from db.models import TenantRecord
-from core.utils import utcnow
-
 
 PLAN_DEFAULTS: dict[str, dict[str, Any]] = {
     "free": {"trial_days": 0, "can_trial": False},
@@ -43,9 +42,9 @@ class BillingService:
     # ── Plans ──────────────────────────────────────────────────────
 
     async def list_plans(self, include_custom: bool = False) -> list[PlanRecord]:
-        stmt = select(PlanRecord).where(PlanRecord.is_public == True)
+        stmt = select(PlanRecord).where(PlanRecord.is_public)
         if not include_custom:
-            stmt = stmt.where(PlanRecord.is_custom == False)
+            stmt = stmt.where(not PlanRecord.is_custom)
         stmt = stmt.order_by(PlanRecord.sort_order)
         result = await self.session.execute(stmt)
         return list(result.scalars().all())
@@ -154,7 +153,7 @@ class BillingService:
         # Proration
         now = utcnow()
         days_remaining = (sub.current_period_end - now).days
-        total_days = (sub.current_period_end - sub.current_period_start).days or 30
+        (sub.current_period_end - sub.current_period_start).days or 30
 
         old_mrr = sub.mrr_sar
         new_mrr = new_plan.price_sar_yearly / 12 if new_cycle == "yearly" and new_plan.price_sar_yearly else new_plan.price_sar_monthly

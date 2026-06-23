@@ -1,9 +1,11 @@
 """Approval-gated outreach queue — drafts wait for founder approval before any send."""
 from __future__ import annotations
+
 import uuid
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
+
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -30,7 +32,7 @@ class OutreachDraft:
     rejection_reason: str = ""
 
     def to_dict(self) -> dict[str, Any]:
-        return {k: v for k, v in self.__dict__.items()}
+        return dict(self.__dict__.items())
 
 
 class OutreachQueue:

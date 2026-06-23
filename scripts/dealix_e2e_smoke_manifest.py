@@ -1,4 +1,5 @@
 from pathlib import Path
+
 items=[
     ('playwright.config.ts', Path('playwright.config.ts').exists()),
     ('tests/e2e/production-smoke.spec.ts', Path('tests/e2e/production-smoke.spec.ts').exists()),

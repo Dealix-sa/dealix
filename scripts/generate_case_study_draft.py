@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.workspace_store import load, find  # noqa: E402
+from lib.workspace_store import find, load
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "business" / "cases" / "drafts"
 

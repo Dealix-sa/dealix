@@ -1,5 +1,9 @@
-import argparse, json, time, uuid
+import argparse
+import json
+import time
+import uuid
 from pathlib import Path
+
 p=argparse.ArgumentParser(); p.add_argument('--tenant-id',required=True); p.add_argument('--event-type',required=True); p.add_argument('--quantity',type=float,default=1)
 a=p.parse_args()
 allowed={'lead_created','agent_run','offer_created','proof_item_added','report_generated'}

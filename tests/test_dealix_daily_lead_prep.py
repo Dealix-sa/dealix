@@ -120,7 +120,7 @@ def test_top_n_caps_returned_leads() -> None:
 def test_composite_score_formula_in_range() -> None:
     """Composite score is always in [0, 1]."""
     for src in ("warm_intro", "inbound_form", "cold_outreach", "unknown_source"):
-        c = LeadCandidate(name="X", source=src)
+        LeadCandidate(name="X", source=src)
         board = compute_saudi_score_board(
             {"name": "X", "source": src}, on_date=date(2026, 5, 15),
         )

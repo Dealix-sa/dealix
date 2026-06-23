@@ -13,8 +13,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from lib.ai_router import route  # noqa: E402
-from lib.ai_eval import check_no_banned_claims, check_no_autosend  # noqa: E402
+from lib.ai_eval import check_no_autosend, check_no_banned_claims
+from lib.ai_router import route
 
 ROOT = Path(__file__).resolve().parent.parent
 EVAL_DIR = ROOT / "business" / "ai" / "evals"

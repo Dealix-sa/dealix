@@ -236,7 +236,7 @@ class WarmIntroGenerator:
             },
             {
                 "tone": "story",
-                "subject_line": f"كيف أتمتنا 80% من عمليات المبيعات في 7 أيام | How we automated 80% of sales ops in 7 days",
+                "subject_line": "كيف أتمتنا 80% من عمليات المبيعات في 7 أيام | How we automated 80% of sales ops in 7 days",
                 "body_ar": (
                     f"مرحباً {name}،\n\n"
                     f"منذ 3 أشهر، واجهنا نفس التحديات في Dealix: فريق صغير، فرص كثيرة، ووقت محدود.\n"

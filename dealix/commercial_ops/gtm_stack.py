@@ -42,9 +42,7 @@ def is_placeholder_target(row: dict[str, str]) -> bool:
     if not company or company.startswith(REPLACE_PREFIX):
         return True
     notes = (row.get("notes") or "").lower()
-    if "مثال تدريبي" in notes or "training" in notes:
-        return True
-    return False
+    return bool("مثال تدريبي" in notes or "training" in notes)
 
 
 def score_abm_wave1_row(row: dict[str, str]) -> dict[str, Any]:
@@ -94,7 +92,7 @@ def score_abm_wave1_row(row: dict[str, str]) -> dict[str, Any]:
         return {"score": 0, "eligible": False, "reasons": ["closed_lost"]}
 
     next_action = (row.get("next_action") or "").strip()
-    next_date = (row.get("next_action_date") or "").strip()
+    (row.get("next_action_date") or "").strip()
     if not next_action:
         reasons.append("no_next_action")
 
@@ -104,7 +102,7 @@ def score_abm_wave1_row(row: dict[str, str]) -> dict[str, Any]:
         and bool(next_action)
     )
     return {
-        "score": int(round(score)),
+        "score": round(score),
         "eligible": eligible,
         "reasons": reasons,
         "priority": (row.get("priority") or "medium").strip().lower(),

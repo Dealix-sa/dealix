@@ -24,7 +24,7 @@ import httpx
 log = logging.getLogger(__name__)
 
 
-class FUNNEL_EVENTS:  # noqa: N801  (namespace constants)
+class FUNNEL_EVENTS:
     """Canonical funnel event names — [object] [verb] format."""
 
     LANDING_VIEW = "landing viewed"

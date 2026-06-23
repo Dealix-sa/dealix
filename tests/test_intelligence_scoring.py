@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import pytest
 
-
 # ===========================================================================
 # AI Lead Scorer tests
 # ===========================================================================
@@ -166,11 +165,11 @@ class TestAILeadScorer:
         """b2b_saas sector gets a higher multiplier than an unknown sector."""
         from dealix.intelligence.ai_lead_scorer import score_lead
 
-        common_kwargs = dict(
-            budget_sar=15_000,
-            has_decision_maker=True,
-            pain_score=0.6,
-        )
+        common_kwargs = {
+            "budget_sar": 15_000,
+            "has_decision_maker": True,
+            "pain_score": 0.6,
+        }
         lead_saas = self._make_lead(sector="b2b_saas", **common_kwargs)
         lead_unknown = self._make_lead(sector="unknown_sector_xyz", **common_kwargs)
 
@@ -762,7 +761,10 @@ class TestWeeklyReportGenerator:
         return base
 
     def test_generate_returns_weekly_report(self):
-        from dealix.commercial_ops.weekly_report_generator import WeeklyReport, WeeklyReportGenerator
+        from dealix.commercial_ops.weekly_report_generator import (
+            WeeklyReport,
+            WeeklyReportGenerator,
+        )
 
         gen = WeeklyReportGenerator()
         report = gen.generate(self._week_data())

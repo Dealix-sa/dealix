@@ -13,11 +13,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.motion_a_pipeline import (  # noqa: E402
+from dealix.commercial_ops.motion_a_pipeline import (
     build_motion_a_pipeline_plan,
     render_motion_a_markdown,
 )
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 BRIEFS = ROOT / "data/founder_briefs"
 

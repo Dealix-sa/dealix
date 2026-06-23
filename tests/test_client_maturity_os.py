@@ -23,15 +23,15 @@ from auto_client_acquisition.client_maturity_os.progression_playbooks import (
 
 
 def _dims(**kwargs: int) -> ClientMaturityDimensions:
-    base = dict(
-        leadership_alignment=50,
-        data_readiness=50,
-        workflow_ownership=50,
-        governance_coverage=50,
-        proof_discipline=50,
-        adoption=50,
-        operating_cadence=50,
-    )
+    base = {
+        "leadership_alignment": 50,
+        "data_readiness": 50,
+        "workflow_ownership": 50,
+        "governance_coverage": 50,
+        "proof_discipline": 50,
+        "adoption": 50,
+        "operating_cadence": 50,
+    }
     base.update(kwargs)
     return ClientMaturityDimensions(**base)
 

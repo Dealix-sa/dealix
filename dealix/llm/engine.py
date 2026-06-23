@@ -4,13 +4,13 @@ The brain that selects the right model for the right job.
 """
 
 import os
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
 
-class Gear(str, Enum):
+class Gear(StrEnum):
     """Three gear system for cost-optimized LLM routing."""
     DAILY = "daily"           # Gear 1: DeepSeek - cheap and fast
     POWER = "power"           # Gear 2: Minimax M2.5 - strong coding
@@ -30,7 +30,7 @@ class GearConfig(BaseModel):
     risk_level: str = "low"  # low, medium, high
 
 
-class TaskType(str, Enum):
+class TaskType(StrEnum):
     """Dealix task classifications for smart gear selection."""
     # Gear 1 tasks (cheap, fast)
     REFACTORING = "refactoring"

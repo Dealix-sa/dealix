@@ -1,20 +1,20 @@
 ﻿"""Dealix LLM Strategy - Fallback chains per task type."""
 
 import os
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Literal
 
 from pydantic import BaseModel, Field
 
 
-class ModelTier(str, Enum):
+class ModelTier(StrEnum):
     PRIMARY = "primary"
     ARCHITECT = "architect"
     LIGHT = "light"
     FALLBACK = "fallback"
 
 
-class TaskType(str, Enum):
+class TaskType(StrEnum):
     CODE_GENERATION = "code_generation"
     AGENT_REASONING = "agent_reasoning"
     POLICY_EVALUATION = "policy_evaluation"

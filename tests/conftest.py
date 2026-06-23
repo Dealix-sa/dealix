@@ -159,7 +159,7 @@ _CI_QUARANTINE: dict[str, str] = {
 }
 
 
-def pytest_collection_modifyitems(config, items):  # noqa: D401
+def pytest_collection_modifyitems(config, items):
     """Apply the CI quarantine xfail markers by exact node id."""
     for item in items:
         reason = _CI_QUARANTINE.get(item.nodeid)

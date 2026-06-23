@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """System health check — verify all founder execution infrastructure is operational."""
 
+import json
 import os
 import sys
-import json
 from datetime import datetime
 from pathlib import Path
 
@@ -42,7 +42,7 @@ class HealthCheck:
         """Print summary and return exit code."""
         print("")
         print("=" * 50)
-        print(f"Health Check Summary")
+        print("Health Check Summary")
         print(f"  ✅ Passed: {self.passed}")
         print(f"  ❌ Failed: {self.failed}")
         print(f"  ⚠️  Warnings: {self.warnings}")

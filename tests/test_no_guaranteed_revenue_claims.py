@@ -5,7 +5,6 @@ or similar forbidden claims.
 """
 from pathlib import Path
 
-
 FORBIDDEN_PHRASES = [
     "guaranteed revenue",
     "guaranteed roi",
@@ -68,10 +67,7 @@ def test_no_guaranteed_in_proposal_docs():
                         # Allow if the example shows a negative response (e.g., "Client asks for X, response: We don't...")
                         if "refuse" in context or "rejection" in context or "رفض" in context:
                             continue
-                        assert False, (
-                            f"{doc_path} contains non-forbidden context for '{phrase}': "
-                            f"...{context[:150]}..."
-                        )
+                        raise AssertionError(f"{doc_path} contains non-forbidden context for '{phrase}': " f"...{context[:150]}...")
 
 
 def test_claim_policy_yaml_structure():
@@ -125,11 +121,10 @@ def test_pricing_yaml_no_guaranteed():
         if phrase in content:
             # Check context
             if "no " + phrase not in content and "not " + phrase not in content:
-                assert False, f"pricing.yaml contains forbidden phrase: {phrase}"
+                raise AssertionError(f"pricing.yaml contains forbidden phrase: {phrase}")
 
 
 import re
-
 
 if __name__ == "__main__":
     test_no_guaranteed_in_proposal_docs()

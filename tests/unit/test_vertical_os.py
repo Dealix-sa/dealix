@@ -52,7 +52,7 @@ def test_clinics_kpis_include_no_show():
 
 def test_real_estate_message_targets_decision_maker():
     v = get_vertical("real_estate")
-    bodies = [t.body_ar for t in v.message_templates]
+    [t.body_ar for t in v.message_templates]
     assert any("first_name" in t.variables for t in v.message_templates)
 
 

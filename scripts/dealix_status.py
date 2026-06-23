@@ -90,7 +90,7 @@ def _open_founder_decisions() -> int:
     # Count "Options:" lines and check whether any ☑ appears for that
     # decision. Simpler proxy: count "☐" minus "☑" — in the v1 pack
     # all 10 decisions are unchecked.
-    unchecked = txt.count("☐")
+    txt.count("☐")
     checked = txt.count("☑")
     # Each decision has 3 options (3 ☐) but only one is meant to be
     # picked. Approximate "open" = decisions with zero ☑.

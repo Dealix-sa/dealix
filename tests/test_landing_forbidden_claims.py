@@ -228,7 +228,7 @@ def test_allowlist_entries_actually_present():
             continue
         html = path.read_text(encoding="utf-8")
         hits = _scan(html)
-        for token in tokens.keys():
+        for token in tokens:
             if token not in hits:
                 stale.append(f"{fname}: {token!r} allowlisted but no longer in page")
     assert not stale, "stale allowlist entries:\n" + "\n".join(stale)

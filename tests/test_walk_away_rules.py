@@ -81,8 +81,8 @@ def test_no_pii_in_logs():
     assert "name" in rule or "id" in rule, f"Rule must have name or id: {rule}"
     # Should forbid common PII fields
     pii_fields = ["phone", "email", "id_number", "address"]
-    content = str(rule).lower()
-    for field in pii_fields:
+    str(rule).lower()
+    for _field in pii_fields:
         # Either mentioned as forbidden, OR rule just defines the principle
         pass  # Flexible check
 

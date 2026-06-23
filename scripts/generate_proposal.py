@@ -10,7 +10,6 @@ import datetime as dt
 import json
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 LEADS_PATH = REPO_ROOT / "business" / "_data" / "leads.json"
 INDEX_PATH = REPO_ROOT / "business" / "_data" / "proposals.index.json"
@@ -100,7 +99,23 @@ def main() -> int:
     parser.add_argument("--offer", required=True)
     parser.add_argument("--lang", choices=["ar", "en", "both"], default="both")
     parser.add_argument("--timeline", default="21 days")
+    parser.add_argument(
+        "--mode",
+        choices=["demo", "live"],
+        default="demo",
+        help="demo (default) generates proposals without sending; live requires explicit env flags",
+    )
     args = parser.parse_args()
+
+    if args.mode == "live":
+        import os as _os
+
+        if _os.environ.get("EXTERNAL_SEND_ENABLED", "").lower() not in ("true", "1"):
+            print("live mode requires EXTERNAL_SEND_ENABLED=true")
+            return 2
+        if _os.environ.get("OUTBOUND_MODE", "").lower() != "controlled_live":
+            print("live mode requires OUTBOUND_MODE=controlled_live")
+            return 2
 
     if not LEADS_PATH.exists():
         print(f"missing: {LEADS_PATH}")

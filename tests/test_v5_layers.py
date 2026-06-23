@@ -31,7 +31,7 @@ from auto_client_acquisition.service_quality import (
 
 def test_list_states_returns_all_states_with_transitions():
     out = list_states()
-    assert out["states_total"] == len([s for s in JourneyState])
+    assert out["states_total"] == len(list(JourneyState))
     state_names = {s["state"] for s in out["states"]}
     assert "lead_intake" in state_names
     assert "blocked" in state_names

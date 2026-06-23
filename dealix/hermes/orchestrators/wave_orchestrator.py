@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any, Optional
 
 import structlog
@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 logger = structlog.get_logger(__name__)
 
 
-class WaveStatus(str, Enum):
+class WaveStatus(StrEnum):
     PENDING = "pending"
     IN_PROGRESS = "in_progress"
     COMPLETED = "completed"
@@ -40,15 +40,15 @@ class WaveTask(BaseModel):
     description: str
     status: WaveStatus = WaveStatus.PENDING
     created_at: datetime = Field(default_factory=datetime.now)
-    completed_at: Optional[datetime] = None
-    result: Optional[dict] = None
-    error: Optional[str] = None
+    completed_at: datetime | None = None
+    result: dict | None = None
+    error: str | None = None
 
 
 class TaskResult(BaseModel):
     success: bool
-    data: Optional[dict] = None
-    error: Optional[str] = None
+    data: dict | None = None
+    error: str | None = None
 
 
 WAVE_CONFIGS: dict[str, WaveConfig] = {
@@ -190,7 +190,7 @@ class WaveOrchestrator:
 
         return WaveStatus.IN_PROGRESS
 
-    async def get_wave_status(self, wave_id: str) -> Optional[WaveStatus]:
+    async def get_wave_status(self, wave_id: str) -> WaveStatus | None:
         """Get current status of a specific wave."""
         return self.active_waves.get(wave_id)
 
@@ -262,10 +262,10 @@ class WaveOrchestrator:
 
 
 __all__ = [
+    "WAVE_CONFIGS",
+    "TaskResult",
     "WaveConfig",
     "WaveOrchestrator",
     "WaveStatus",
     "WaveTask",
-    "TaskResult",
-    "WAVE_CONFIGS",
 ]

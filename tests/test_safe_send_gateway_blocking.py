@@ -105,5 +105,5 @@ def test_summarize_gates_returns_documentation() -> None:
     assert "consent_record_gate" in summary
     assert "quiet_hours_gate" in summary
     # All gate descriptions are non-empty strings
-    for gate, desc in summary.items():
+    for _gate, desc in summary.items():
         assert isinstance(desc, str) and len(desc) > 0

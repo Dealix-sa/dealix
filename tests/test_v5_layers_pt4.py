@@ -178,7 +178,7 @@ def test_draft_experiment_safe_text_passes():
 
 
 def test_draft_experiment_blocked_on_forbidden_vocabulary():
-    exp = draft_experiment(
+    draft_experiment(
         name="bad",
         hypothesis_ar="نضمن إيراد مضمون",  # forbidden
         hypothesis_en="we guarantee revenue",  # forbidden

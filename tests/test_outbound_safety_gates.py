@@ -13,10 +13,10 @@ from __future__ import annotations
 
 import pytest
 
+from auto_client_acquisition.compliance_trust_os.approval_engine import GovernanceDecision
 from auto_client_acquisition.governance_os import audit_draft_text
 from auto_client_acquisition.governance_os.claim_safety import audit_claim_safety
 from auto_client_acquisition.governance_os.draft_gate import audit_draft_text as draft_audit
-from auto_client_acquisition.compliance_trust_os.approval_engine import GovernanceDecision
 
 
 class TestOutboundNoFakeReplySubject:

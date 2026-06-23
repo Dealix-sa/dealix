@@ -23,7 +23,7 @@ class RouterMemory:
         self.path = Path(path) if path else DEFAULT_LOG
 
     def record(self, entry: dict[str, Any]) -> None:
-        payload = {"at": _dt.datetime.now(tz=_dt.timezone.utc).isoformat(timespec="seconds"), **entry}
+        payload = {"at": _dt.datetime.now(tz=_dt.UTC).isoformat(timespec="seconds"), **entry}
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self.path.open("a", encoding="utf-8") as fh:
             fh.write(json.dumps(payload, ensure_ascii=False) + "\n")

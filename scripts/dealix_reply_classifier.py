@@ -129,10 +129,7 @@ def classify(text: str) -> list[str]:
 
 
 def main():
-    if len(sys.argv) > 1:
-        text = " ".join(sys.argv[1:])
-    else:
-        text = sys.stdin.read()
+    text = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else sys.stdin.read()
     if not text.strip():
         print("usage: dealix_reply_classifier.py '<prospect reply text>'")
         sys.exit(1)

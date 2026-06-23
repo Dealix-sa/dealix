@@ -45,7 +45,6 @@ _ALLOWLIST_PATHS = frozenset({
     # Wave 10.8 PR triage doc references the historic finding
     "docs/PR_MERGE_TRIAGE_2026_05_09.md",
     # Required-tests index names this lockdown test (documentation reference only)
-    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # Wave 11 evidence table — records the lockdown audit row by name
     "docs/WAVE11_FIRST3_PAID_PILOTS_EVIDENCE_TABLE.md",
     # Wave 11 E2E pytest — invokes the lockdown test by file path string
@@ -81,7 +80,6 @@ _ALLOWLIST_PATHS = frozenset({
     "docs/WAVE17_VULNERABILITY_TRIAGE.md",
     # Enterprise-architecture test index — lists this lockdown test by file
     # path (Arabic prose describing what the test locks down)
-    "docs/enterprise_architecture/TESTS_REQUIRED.md",
     # Agent 2 continuation audit — enumerates guardrail tests by file path
     "reports/agent_2/AGENT_2_CONTINUATION_AUDIT.md",
     # The plan file lives outside the repo (in /root/.claude/plans/) so

@@ -93,9 +93,9 @@ async def create_leave(
     current_user=Depends(get_current_user),
 ) -> dict[str, Any]:
     svc = ERPService(session)
-    l = await svc.create_leave_request(current_user.tenant_id, req.dict(exclude_none=True))
+    leave = await svc.create_leave_request(current_user.tenant_id, req.dict(exclude_none=True))
     await session.commit()
-    return {"id": l.id, "status": l.status, "days_count": l.days_count}
+    return {"id": leave.id, "status": leave.status, "days_count": leave.days_count}
 
 
 @router.post("/payroll/run", dependencies=[Depends(FeatureGate("hr"))])
@@ -112,5 +112,5 @@ async def run_payroll(
         "id": pr.id,
         "period": f"{month}/{year}",
         "total_net_salary": pr.total_net_salary,
-        "employee_count": len([l for l in pr.lines]) if hasattr(pr, "lines") else 0,
+        "employee_count": len(list(pr.lines)) if hasattr(pr, "lines") else 0,
     }

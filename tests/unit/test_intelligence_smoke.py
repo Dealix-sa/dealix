@@ -170,7 +170,7 @@ def test_next_action_blocks_no_allowed_use():
 
 
 def test_next_action_p0_email_chooses_gmail():
-    na = decide(
+    decide(
         fit_score=40, intent_score=30, urgency_score=30, revenue_score=15,
         risk_score=0, has_business_email=True, has_phone=True,
         allowed_use="business_contact_research_only",

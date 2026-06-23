@@ -26,19 +26,19 @@ from auto_client_acquisition.ai_workforce import (
 
 
 def _draft_task(agent_id: str = "SaudiCopyAgent", **overrides) -> AgentTask:
-    base = dict(
-        agent_id=agent_id,
-        role_ar="ar",
-        role_en="en",
-        action_summary_ar="مسوّدة",
-        action_summary_en="draft",
-        output={"body_en": "safe content"},
-        action_mode="draft_only",
-        approval_status="approval_required",
-        risk_level=RiskLevel.MEDIUM.value,
-        cost_estimate_usd=0.5,
-        evidence_pointers=[],
-    )
+    base = {
+        "agent_id": agent_id,
+        "role_ar": "ar",
+        "role_en": "en",
+        "action_summary_ar": "مسوّدة",
+        "action_summary_en": "draft",
+        "output": {"body_en": "safe content"},
+        "action_mode": "draft_only",
+        "approval_status": "approval_required",
+        "risk_level": RiskLevel.MEDIUM.value,
+        "cost_estimate_usd": 0.5,
+        "evidence_pointers": [],
+    }
     base.update(overrides)
     return AgentTask(**base)
 

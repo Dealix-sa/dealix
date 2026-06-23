@@ -149,7 +149,11 @@ class CommercialBridge:
     ) -> dict[str, Any]:
         """Build a proof pack using the commercial ProofPackBuilder."""
         try:
-            from dealix.commercial.proof_builder import ProofBuildRequest, ProofEvent, ProofPackBuilder
+            from dealix.commercial.proof_builder import (
+                ProofBuildRequest,
+                ProofEvent,
+                ProofPackBuilder,
+            )
 
             proof_events = [ProofEvent(**e) for e in (events or [])]
             req = ProofBuildRequest(
@@ -247,7 +251,9 @@ class CommercialBridge:
     ) -> dict[str, Any]:
         """Get Saudi market intelligence from the existing market intel module."""
         try:
-            from dealix.commercial.market_intelligence import MarketIntelligenceEngine  # type: ignore[import]
+            from dealix.commercial.market_intelligence import (
+                MarketIntelligenceEngine,  # type: ignore[import]
+            )
             engine = MarketIntelligenceEngine()
             result = engine.get_sector_intel(sector=sector, city=city)
             logger.info("commercial_bridge_market_intel", sector=sector, city=city)

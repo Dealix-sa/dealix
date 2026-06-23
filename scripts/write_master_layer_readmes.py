@@ -59,7 +59,7 @@ LAYERS: list[tuple[str, str, str]] = [
 
         ## وعد الفئة
 
-        **From AI experiments to governed operating capabilities.**  
+        **From AI experiments to governed operating capabilities.**
         من تجارب AI إلى قدرات تشغيلية محكومة.
 
         ## روابط
@@ -954,10 +954,10 @@ LAYERS: list[tuple[str, str, str]] = [
 
         ## أولوية تنفيذ MVP (مراحل)
 
-        1. Core + Trust MVP: data/governance/llm/revenue/proof/value.  
-        2. Commercial MVP: diagnostic، sprint، draft pack، proof، client summary، trust pack.  
-        3. Retainer MVP: monthly value report، health، proof timeline، cadence، adoption review.  
-        4. Agent-safe MVP: identity، permissions، auditability card، runtime policy، kill switch، agent tests.  
+        1. Core + Trust MVP: data/governance/llm/revenue/proof/value.
+        2. Commercial MVP: diagnostic، sprint، draft pack، proof، client summary، trust pack.
+        3. Retainer MVP: monthly value report، health، proof timeline، cadence، adoption review.
+        4. Agent-safe MVP: identity، permissions، auditability card، runtime policy، kill switch، agent tests.
         5. Enterprise MVP: AI run ledger، evidence graph، approval engine، compliance report، trust dashboard، audit export.
 
         ## روابط

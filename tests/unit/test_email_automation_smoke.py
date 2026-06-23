@@ -140,47 +140,47 @@ def test_classify_unsubscribe_arabic():
 
 
 def test_classify_unsubscribe_english():
-    cat, conf = classify_rule_based("Please unsubscribe me")
+    cat, _conf = classify_rule_based("Please unsubscribe me")
     assert cat == "unsubscribe"
 
 
 def test_classify_interested():
-    cat, conf = classify_rule_based("نعم تجربة، نبدأ متى؟")
+    cat, _conf = classify_rule_based("نعم تجربة، نبدأ متى؟")
     assert cat == "interested"
 
 
 def test_classify_ask_price():
-    cat, conf = classify_rule_based("كم السعر؟")
+    cat, _conf = classify_rule_based("كم السعر؟")
     assert cat == "ask_price"
 
 
 def test_classify_ask_demo():
-    cat, conf = classify_rule_based("can we book a demo?")
+    cat, _conf = classify_rule_based("can we book a demo?")
     assert cat == "ask_demo"
 
 
 def test_classify_objection_budget():
-    cat, conf = classify_rule_based("غالي علينا، الميزانية محدودة")
+    cat, _conf = classify_rule_based("غالي علينا، الميزانية محدودة")
     assert cat == "objection_budget"
 
 
 def test_classify_objection_ai():
-    cat, conf = classify_rule_based("نبي إنسان حقيقي مو روبوت")
+    cat, _conf = classify_rule_based("نبي إنسان حقيقي مو روبوت")
     assert cat == "objection_ai"
 
 
 def test_classify_partnership():
-    cat, conf = classify_rule_based("نبي نكون شركاء توزيع")
+    cat, _conf = classify_rule_based("نبي نكون شركاء توزيع")
     assert cat == "partnership"
 
 
 def test_classify_unclear_for_empty():
-    cat, conf = classify_rule_based("")
+    cat, _conf = classify_rule_based("")
     assert cat == "unclear"
 
 
 def test_classify_already_has_crm():
-    cat, conf = classify_rule_based("عندنا HubSpot أصلاً، شكراً")
+    cat, _conf = classify_rule_based("عندنا HubSpot أصلاً، شكراً")
     assert cat == "already_has_crm"
 
 

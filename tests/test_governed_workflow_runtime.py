@@ -10,7 +10,6 @@ from auto_client_acquisition.workflow_engine.governed_runtime import (
     load_workflow_definition,
 )
 
-
 WORKFLOW_PATH = Path("workflows/sales/lead_qualification.workflow.yaml")
 
 

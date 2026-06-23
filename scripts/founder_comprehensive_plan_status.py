@@ -12,13 +12,13 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.commercial_ops.founder_comprehensive_plan import (  # noqa: E402
+from dealix.commercial_ops.founder_comprehensive_plan import (
     build_comprehensive_status,
 )
-from dealix.commercial_ops.founder_full_autopilot import (  # noqa: E402
+from dealix.commercial_ops.founder_full_autopilot import (
     build_autopilot_snapshot,
 )
-from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8  # noqa: E402
+from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 SECTIONS = ("anchors", "cadence", "phase", "gtm", "pdpl", "weekly", "backlog", "master", "all")
 
@@ -86,10 +86,7 @@ def main() -> int:
         "backlog": "max_ops_backlog",
         "master": "master_execution_phase",
     }
-    if args.section != "all":
-        out = {args.section: blob.get(key_map[args.section])}
-    else:
-        out = blob
+    out = {args.section: blob.get(key_map[args.section])} if args.section != "all" else blob
 
     if args.json:
         print(json.dumps(out, ensure_ascii=False, indent=2))

@@ -75,7 +75,7 @@ def compute_full_ops_health(
     cal_total = int(mstats.get("calendar_total") or 0)
     cal_ready = int(mstats.get("calendar_approved_or_published") or 0)
     cal_utm = int(mstats.get("calendar_with_utm_campaign") or 0)
-    utm_total = int(mstats.get("utm_links_total") or 0)
+    int(mstats.get("utm_links_total") or 0)
 
     calendar_ready_pct = _pct(float(cal_ready), float(cal_total)) if cal_total else None
     calendar_utm_coverage_pct = _pct(float(cal_utm), float(cal_total)) if cal_total else None

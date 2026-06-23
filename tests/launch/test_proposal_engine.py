@@ -29,7 +29,6 @@ from dealix.launch_os.proposal_engine import (
     render_markdown,
 )
 
-
 # ---------------------------------------------------------------------------
 # Canonical offer IDs from the catalogue
 # ---------------------------------------------------------------------------

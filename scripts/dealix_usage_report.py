@@ -1,6 +1,7 @@
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
+
 p=Path('data/billing/usage_events.jsonl')
 if not p.exists(): raise SystemExit('no usage file')
 counts=defaultdict(Counter)

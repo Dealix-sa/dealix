@@ -52,18 +52,18 @@ render_pack = _REND.render_pack
 
 
 def _make_pack(**overrides) -> ExecutivePackRecord:
-    base = dict(
-        pack_id="pack_t1",
-        customer_handle="acme-real-estate",
-        cadence="weekly",
-        week_label="2026-W19",
-        executive_summary_ar="هذا الأسبوع: 5 فرص جديدة و 3 موافقات معلّقة.",
-        executive_summary_en="This week: 5 new leads and 3 pending approvals.",
-        leads={"leads_total": 5, "leads_allowed": 4, "leads_blocked": 0,
+    base = {
+        "pack_id": "pack_t1",
+        "customer_handle": "acme-real-estate",
+        "cadence": "weekly",
+        "week_label": "2026-W19",
+        "executive_summary_ar": "هذا الأسبوع: 5 فرص جديدة و 3 موافقات معلّقة.",
+        "executive_summary_en": "This week: 5 new leads and 3 pending approvals.",
+        "leads": {"leads_total": 5, "leads_allowed": 4, "leads_blocked": 0,
                "leads_needs_review": 1, "drafts_created": 3},
-        support={"tickets_total": 2, "tickets_open": 1,
+        "support": {"tickets_total": 2, "tickets_open": 1,
                  "tickets_escalated": 0, "sla_breached_count": 0},
-        next_3_actions=[
+        "next_3_actions": [
             {"approval_id": "ap_1", "action_type": "draft_message",
              "channel": "whatsapp", "risk_level": "low",
              "summary_ar": "اعتمد رسالة الترحيب لشركة الأحمد"},
@@ -71,11 +71,11 @@ def _make_pack(**overrides) -> ExecutivePackRecord:
              "channel": "email", "risk_level": "medium",
              "summary_ar": "متابعة استفسار الخالدية"},
         ],
-        risks=[],
-        blockers=[],
-        decisions=[],
-        proof_events=[],
-    )
+        "risks": [],
+        "blockers": [],
+        "decisions": [],
+        "proof_events": [],
+    }
     base.update(overrides)
     return ExecutivePackRecord(**base)
 

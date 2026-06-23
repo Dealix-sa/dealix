@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 clients = json.loads(Path('data/portfolio/client_health.json').read_text(encoding='utf-8'))
 print('# Client Portfolio Review')
 for c in clients:

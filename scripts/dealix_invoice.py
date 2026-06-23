@@ -116,7 +116,7 @@ async def _create(args: argparse.Namespace) -> dict:
             "If this is intentional, run via the Moyasar dashboard."
         )
 
-    amount_halalas = int(round(args.amount_sar * 100))
+    amount_halalas = round(args.amount_sar * 100)
     metadata = {
         "customer_email": args.email,
         "customer_handle": args.customer_handle or "",
@@ -171,7 +171,7 @@ def main() -> int:
     args = parse_args()
 
     if args.dry_run:
-        amount_halalas = int(round(args.amount_sar * 100))
+        amount_halalas = round(args.amount_sar * 100)
         mode = _resolve_mode(args.allow_live)
         print("DRY_RUN=true")
         print(f"AMOUNT_SAR={args.amount_sar:g}")
@@ -217,7 +217,7 @@ def main() -> int:
     print(f"AMOUNT={amount_sar:g} SAR")
     # V11 expanded fields:
     print(f"AMOUNT_SAR={amount_sar:g}")
-    print(f"AMOUNT_HALALAH={int(amount_halalas) if amount_halalas else int(round(args.amount_sar*100))}")
+    print(f"AMOUNT_HALALAH={int(amount_halalas) if amount_halalas else round(args.amount_sar*100)}")
     print(f"MODE={mode}")
     print(f"PAYMENT_METHOD=moyasar_{mode}|bank_transfer|other_manual")
     print(f"DESCRIPTION={args.description}")

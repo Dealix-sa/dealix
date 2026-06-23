@@ -19,7 +19,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from auto_client_acquisition.whatsapp_client_os.schemas import (  # noqa: E402
+from auto_client_acquisition.whatsapp_client_os.schemas import (
     ClientAssessment,
     ClientCard,
     InboundMessage,

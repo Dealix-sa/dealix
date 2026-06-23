@@ -28,13 +28,13 @@ class TestPaymentHandoffRequiresApproval:
     def test_payment_needs_founder_approval(self) -> None:
         """All payment actions require founder approval."""
         for action in self.PAYMENT_ACTIONS:
-            risk, approval_type = approval_for_action(action)
+            risk, _approval_type = approval_for_action(action)
             assert risk in ("high", "critical"), f"{action} not high/critical risk"
 
     def test_no_autonomous_payment(self) -> None:
         """Agents cannot autonomously process payments."""
         # Payment requires human approval
-        risk, approval_type = approval_for_action("payment")
+        _risk, approval_type = approval_for_action("payment")
         assert "human" in approval_type.lower() or "founder" in approval_type.lower()
 
 
@@ -82,12 +82,12 @@ class TestContractTermsRequireHandoff:
     def test_contract_needs_human(self) -> None:
         """Contract actions require human/legal review."""
         for action in self.CONTRACT_ACTIONS:
-            risk, approval_type = approval_for_action(action)
+            risk, _approval_type = approval_for_action(action)
             assert risk in ("high", "critical"), f"{action} not high/critical risk"
 
     def test_no_autonomous_contract_generation(self) -> None:
         """Agents cannot autonomously generate final contract terms."""
-        risk, approval_type = approval_for_action("generate contract terms")
+        _risk, approval_type = approval_for_action("generate contract terms")
         assert "human" in approval_type.lower() or "legal" in approval_type.lower()
 
 

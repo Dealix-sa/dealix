@@ -12,14 +12,14 @@ from auto_client_acquisition.designops.brief_builder import (
 
 
 def _full_request(**overrides) -> BriefRequest:
-    base = dict(
-        skill_name="dealix-sales-email-draft",
-        customer_handle="Acme-Saudi-Pilot-EXAMPLE",
-        sector="fintech",
-        pipeline_state="diagnostic_delivered",
-        service_id="svc_diagnostic_v1",
-        proof_event_ids=["evt_diag_001"],
-    )
+    base = {
+        "skill_name": "dealix-sales-email-draft",
+        "customer_handle": "Acme-Saudi-Pilot-EXAMPLE",
+        "sector": "fintech",
+        "pipeline_state": "diagnostic_delivered",
+        "service_id": "svc_diagnostic_v1",
+        "proof_event_ids": ["evt_diag_001"],
+    }
     base.update(overrides)
     return BriefRequest(**base)
 

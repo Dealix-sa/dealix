@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+
 CASES=Path('data/agents/eval_cases.json')
 
 def fake_output(case):

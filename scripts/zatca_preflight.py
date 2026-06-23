@@ -121,7 +121,7 @@ def _api_reachability() -> bool:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--verbose", action="store_true")
-    args = parser.parse_args()
+    parser.parse_args()
 
     print("╔══════════════════════════════════════════════════════════════╗")
     print("║  Dealix — ZATCA Phase 2 pre-flight (Wave 15)                ║")

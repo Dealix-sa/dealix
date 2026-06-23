@@ -145,7 +145,7 @@ def run_rehearsal(handle: str = "test-rehearsal") -> dict:
 
     # Step 7: Wave 15 master verifier (regression — Wave 15 is on main)
     # Note: Wave 16 verifier added when PR #222 merges + becomes step 7.
-    wave15_path = REPO_ROOT / "scripts" / "dealix_wave15_customer_ops_verify.sh"
+    REPO_ROOT / "scripts" / "dealix_wave15_customer_ops_verify.sh"
     wave16_path = REPO_ROOT / "scripts" / "dealix_wave16_auto_source_verify.sh"
     verifier = "scripts/dealix_wave16_auto_source_verify.sh" if wave16_path.exists() else "scripts/dealix_wave15_customer_ops_verify.sh"
     steps.append(_run_step(
