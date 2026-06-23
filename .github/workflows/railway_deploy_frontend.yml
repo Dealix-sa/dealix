@@ -8,7 +8,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "frontend/**"
+      - "apps/web/**"
       - ".github/workflows/railway_deploy_frontend.yml"
   workflow_dispatch:
     inputs:
@@ -48,7 +48,7 @@ jobs:
 
       - name: Deploy frontend
         if: steps.check_token.outputs.token_present == 'true'
-        working-directory: frontend
+        working-directory: apps/web
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
