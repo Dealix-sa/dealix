@@ -26,6 +26,10 @@ paths = [
     # scanner on purpose (e.g. whatsapp_client_os_verify.py calls
     # scan_for_secrets("api_key = sk-...") to assert detection works).
     '''scripts/.*_verify\.py$''',
+    # reports/github-context/ are stale PR-context snapshots from past
+    # automation debugging; they contain redacted text that gitleaks flags
+    # as stripe-access-token / generic-api-key but no real secrets.
+    '''reports/github-context/.*''',
 ]
 
 regexes = [

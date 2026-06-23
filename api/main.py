@@ -444,10 +444,6 @@ def create_app() -> FastAPI:
     from api.routers.proposals_export import router as proposals_export_router
     app.include_router(proposals_export_router)
 
-    # 90-day commercial plan — proposals export + website lead capture
-    from api.routers.proposals_export import router as proposals_export_router
-    app.include_router(proposals_export_router)
-
     # Hermes Agents — /hermes/*
     try:
         from dealix.hermes.api.router import hermes_router

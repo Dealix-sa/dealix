@@ -43,7 +43,11 @@ def can_proceed_to_renewal(renewal: dict[str, Any]) -> bool:
         return False
 
     # Check at least one L3+ evidence
-    return any(proof.get("evidence_level", 0) >= 3 for proof in renewal.get("value_proof", []))
+    for proof in renewal.get("value_proof", []):
+        if proof.get("evidence_level", 0) >= 3:
+            return True
+
+    return False
 
 
 class TestRenewalRequiresValueProof:

@@ -411,5 +411,6 @@ reports/meetings/*
 company/runtime/places/
 dealix_local_test.db
 reports/runtime/
+reports/github-context/
 ledgers/private/
 .env.production
