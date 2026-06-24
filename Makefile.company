@@ -1,0 +1,10 @@
+.PHONY: day
+PYTHON ?= python3
+
+day:
+	$(PYTHON) scripts/commercial/commercial_readiness_check.py
+	$(PYTHON) scripts/commercial/generate_commercial_go_live_pack.py
+	$(PYTHON) scripts/commercial/generate_daily_targeting_plan.py
+	$(PYTHON) scripts/commercial/generate_company_brain_pack.py
+	$(PYTHON) scripts/ops/backend_launch_cleanliness_check.py
+	@echo "Company launch review complete."
