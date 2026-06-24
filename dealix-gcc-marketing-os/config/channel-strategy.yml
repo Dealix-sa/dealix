@@ -1,0 +1,60 @@
+channel_strategy:
+  decision_matrix:
+    international_companies:
+      primary: email
+      secondary: linkedin
+      avoid: whatsapp_business
+      notes: "Email for ops directors, LinkedIn for C-level"
+
+    local_arabic_sme:
+      primary: website_form
+      secondary: email
+      tertiary: whatsapp_business
+      notes: "Website forms preferred — less intrusive for local businesses"
+
+    law_firms:
+      primary: email
+      secondary: website_form
+      avoid: linkedin_inmails
+      notes: "Formal email or website form only. Referral is best channel."
+
+    consulting_firms:
+      primary: linkedin
+      secondary: email
+      notes: "LinkedIn natural for consulting sector relationships"
+
+    facilities_management:
+      primary: email
+      secondary: website_form
+      notes: "Direct to ops director or FM director"
+
+    family_businesses:
+      primary: referral
+      secondary: email
+      notes: "Relationship-first. Referral opens most doors."
+
+  draft_package_per_company:
+    standard:
+      - cold_email
+      - followup_1
+      - linkedin_short
+      - website_form_version
+    full:
+      - cold_email
+      - followup_1
+      - followup_2
+      - linkedin_short
+      - website_form_version
+      - whatsapp_business_short
+      - referral_ask
+      - one_pager_recommendation
+      - discovery_call_agenda
+      - proposal_seed
+
+  daily_channel_distribution:
+    email_drafts: 120
+    linkedin_drafts: 80
+    website_form_drafts: 50
+    whatsapp_business_drafts: 30
+    referral_intro_drafts: 20
+    total: 300

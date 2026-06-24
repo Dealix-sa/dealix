@@ -1,0 +1,68 @@
+scoring:
+  weights:
+    company_fit: 0.25
+    buyer_identified: 0.20
+    pain_specificity: 0.20
+    draft_quality: 0.15
+    compliance_clearance: 0.10
+    channel_match: 0.10
+
+  thresholds:
+    tier_a_priority: 85
+    tier_b_qualified: 70
+    tier_c_light: 55
+    reject_below: 55
+
+  company_fit_signals:
+    high_fit:
+      - clear_sector_match
+      - identifiable_buyer_title
+      - company_size_5_to_500
+      - active_business_presence
+      - pain_is_visible_in_public_info
+    low_fit:
+      - sole_proprietor_no_team
+      - no_identifiable_buyer
+      - sector_mismatch
+      - competitor_to_dealix
+
+  draft_quality_signals:
+    pass:
+      - company_specific_context
+      - single_pain_angle
+      - offer_clearly_stated
+      - cta_is_simple
+      - opt_out_included
+      - under_word_limit
+      - language_matches_company_type
+    fail:
+      - generic_ai_agency_language
+      - multiple_services_listed
+      - guaranteed_roi_claims
+      - poor_arabic_quality
+      - machine_translated_feel
+      - over_200_words_email
+      - missing_cta
+      - missing_opt_out
+
+  tiers:
+    tier_a:
+      label: "High Value — Deep Research"
+      daily_volume: 50
+      research_depth: deep
+      draft_types: ["email", "followup_1", "followup_2", "linkedin", "one_pager", "discovery_agenda"]
+      send_priority: highest
+
+    tier_b:
+      label: "Qualified — Sector Personalized"
+      daily_volume: 150
+      research_depth: standard
+      draft_types: ["email", "followup_1", "linkedin", "website_form"]
+      send_priority: high
+
+    tier_c:
+      label: "Light — Arabic Local or Small Business"
+      daily_volume: 300
+      research_depth: light
+      draft_types: ["email", "website_form", "whatsapp_business"]
+      send_priority: medium

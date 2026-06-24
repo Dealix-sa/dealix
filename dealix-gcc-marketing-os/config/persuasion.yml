@@ -1,0 +1,94 @@
+persuasion:
+  universal_rules:
+    - "Never sell generic AI — sell one specific workflow improvement"
+    - "Use company-specific context from research"
+    - "Name one pain angle only per draft"
+    - "Offer a low-risk audit or pilot as entry"
+    - "Keep human approval as trust signal in every draft"
+    - "Avoid guaranteed ROI claims"
+    - "Always include soft opt-out in every message"
+    - "Never pressure or urgency-bait"
+    - "Length: email max 180 words, LinkedIn max 100 words"
+    - "One clear CTA per message"
+
+  arabic_style:
+    local_sme:
+      tone: "محترم، مباشر، عملي"
+      avoid:
+        - "مصطلحات تقنية كثيرة"
+        - "مبالغة في النتائج"
+        - "كلام استشاري فارغ"
+        - "عربي مترجم حرفيًا من الإنجليزي"
+      prefer:
+        - "تقليل العمل اليدوي"
+        - "تسريع التقارير"
+        - "توضيح المتابعة للإدارة"
+        - "بداية بسيطة وآمنة"
+    legal:
+      tone: "رسمي، دقيق، ثقة وسرية"
+      avoid:
+        - "استبدال المحامي"
+        - "أتمتة كاملة"
+        - "بيانات حساسة"
+      prefer:
+        - "سرية الملفات"
+        - "القرار النهائي عند المحامي"
+        - "بيانات sample أو غير حساسة"
+        - "نظام داخلي وليس chatbot عام"
+    operations:
+      tone: "عملي وميداني"
+      avoid:
+        - "تعقيد تقني"
+        - "وعود كبيرة"
+      prefer:
+        - "بلاغات وتقارير الفنيين"
+        - "SLA"
+        - "الأعطال المتكررة"
+        - "متابعة العملاء"
+
+  english_style:
+    international:
+      tone: "executive, controlled, practical"
+      avoid:
+        - "generic AI agency language"
+        - "too many services listed"
+        - "fake certainty or guaranteed ROI"
+        - "long emails over 200 words"
+      prefer:
+        - "controlled workflow pilot"
+        - "human approval gates"
+        - "sample-data-first"
+        - "integration checklist"
+        - "Arabic/English handling"
+    professional_services:
+      tone: "expert-to-expert"
+      avoid:
+        - "oversimplification"
+        - "consumer AI references"
+      prefer:
+        - "knowledge reuse"
+        - "document intelligence"
+        - "delivery workflow efficiency"
+        - "client reporting quality"
+
+  ab_testing_angles:
+    legal:
+      angle_a: "document_search_and_retrieval"
+      angle_b: "deadline_and_obligation_extraction"
+      angle_c: "internal_knowledge_reuse"
+    facilities_management:
+      angle_a: "sla_visibility"
+      angle_b: "repeated_failure_analysis"
+      angle_c: "technician_report_summary"
+    consulting:
+      angle_a: "proposal_reuse"
+      angle_b: "project_delivery_tracking"
+      angle_c: "client_reporting_speed"
+    international_company:
+      angle_a: "gcc_localization"
+      angle_b: "arabic_english_workflow"
+      angle_c: "controlled_ai_pilot"
+    real_estate:
+      angle_a: "tenant_requests"
+      angle_b: "maintenance_followup"
+      angle_c: "owner_reports"
