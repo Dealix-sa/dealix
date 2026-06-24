@@ -1,0 +1,114 @@
+# Dealix Target Markets Configuration
+# GCC-focused B2B markets with operations-heavy workflows
+
+target_regions:
+  primary:
+    - Saudi Arabia
+    - UAE
+    - Kuwait
+    - Qatar
+    - Bahrain
+    - Oman
+  secondary:
+    - Egypt
+    - Jordan
+    - Lebanon
+
+target_sectors:
+  tier_1:  # Highest fit for Dealix
+    facilities_management:
+      keywords: ["صيانة", "فم", "facilities", "FM", "maintenance", "HVAC", "MEP", "SLA"]
+      company_size: "50-5000 employees"
+      data_intensity: high
+      operations_complexity: high
+
+    contracting_construction:
+      keywords: ["مقاولات", "إنشاء", "contracting", "construction", "projects", "EPC"]
+      company_size: "100-10000 employees"
+      data_intensity: high
+      operations_complexity: very_high
+
+    oil_gas_energy:
+      keywords: ["نفط", "غاز", "طاقة", "oil", "gas", "energy", "petrochemical"]
+      company_size: "500-50000 employees"
+      data_intensity: very_high
+      operations_complexity: very_high
+
+  tier_2:  # Good fit
+    b2b_services:
+      keywords: ["خدمات", "استشارات", "services", "consulting", "B2B"]
+      company_size: "20-500 employees"
+      data_intensity: medium
+      operations_complexity: medium
+
+    government_semigovernment:
+      keywords: ["حكومي", "شبه حكومي", "government", "authority", "municipality"]
+      company_size: "200-50000 employees"
+      data_intensity: high
+      operations_complexity: high
+
+    healthcare_operations:
+      keywords: ["صحة", "مستشفى", "مستوصف", "healthcare", "hospital", "clinic"]
+      company_size: "100-10000 employees"
+      data_intensity: high
+      operations_complexity: high
+
+    manufacturing_industrial:
+      keywords: ["تصنيع", "صناعة", "manufacturing", "industrial", "factory", "plant"]
+      company_size: "100-5000 employees"
+      data_intensity: high
+      operations_complexity: high
+
+  tier_3:  # Moderate fit
+    real_estate_property:
+      keywords: ["عقارات", "إدارة عقارات", "real estate", "property management", "REIT"]
+      company_size: "50-2000 employees"
+      data_intensity: medium
+      operations_complexity: medium
+
+    logistics_transport:
+      keywords: ["لوجستي", "نقل", "logistics", "transport", "fleet", "delivery"]
+      company_size: "100-5000 employees"
+      data_intensity: high
+      operations_complexity: high
+
+    retail_enterprise:
+      keywords: ["تجزئة", "متاجر", "retail", "chain", "franchise"]
+      company_size: "500-10000 employees"
+      data_intensity: medium
+      operations_complexity: medium
+
+scan_sources:
+  linkedin:
+    enabled: true
+    search_types: ["company pages", "job postings"]
+    note: "Manual scan — no automation of LinkedIn scraping"
+
+  company_directories:
+    - name: "Saudi Chamber of Commerce"
+      url_pattern: "chamber.org.sa"
+    - name: "UAE Business Directory"
+      url_pattern: "uaebusiness.ae"
+    - name: "Zawya"
+      url_pattern: "zawya.com"
+    - name: "Bloomberg Middle East"
+      url_pattern: "bloomberg.com/middle-east"
+
+  news_signals:
+    keywords:
+      - "expansion Saudi"
+      - "new project UAE"
+      - "digital transformation"
+      - "hiring operations manager"
+      - "تحول رقمي"
+      - "توسع"
+      - "مشروع جديد"
+
+  job_postings:
+    signals:
+      - "Operations Manager"
+      - "FM Director"
+      - "Project Controls"
+      - "Digital Transformation Lead"
+      - "مدير عمليات"
+      - "مدير صيانة"

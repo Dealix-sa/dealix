@@ -1,0 +1,118 @@
+# Dealix Buyer Personas
+# Who to reach, what they care about, how to talk to them
+
+personas:
+  operations_director:
+    title_ar: "مدير العمليات"
+    title_en: "Operations Director / VP Operations"
+    sectors: ["facilities_management", "contracting", "manufacturing", "logistics"]
+    core_pain: "Operations visibility and control at scale"
+    daily_challenges:
+      - "Too many reports, not enough insight"
+      - "SLA tracking is manual and reactive"
+      - "Escalations come too late"
+      - "Field team coordination overhead"
+    what_impresses_them:
+      - "You understand their specific operation"
+      - "Quick wins with low IT involvement"
+      - "Operational language, not tech speak"
+    preferred_tone: "founder_mode"
+    best_offer: "Maintenance Intelligence OS or Project Controls AI OS"
+    best_entry: "Agentic AI Workflow Audit"
+    key_phrases:
+      - "تقليل العمل اليدوي في التقارير"
+      - "ربط فريق الميدان بالإدارة"
+      - "كشف المشاكل قبل التصعيد"
+
+  fm_manager:
+    title_ar: "مدير الصيانة / مدير المرافق"
+    title_en: "FM Manager / Maintenance Manager"
+    sectors: ["facilities_management", "real_estate", "healthcare"]
+    core_pain: "SLA compliance and reactive-to-proactive shift"
+    daily_challenges:
+      - "SLA breaches discovered too late"
+      - "Technician report quality is inconsistent"
+      - "Repeat failures not tracked systematically"
+      - "Management reporting takes hours"
+    what_impresses_them:
+      - "Knowledge of FM workflows (PPM, corrective, reactive)"
+      - "SLA-specific language"
+      - "Integration with existing CMMS awareness"
+    preferred_tone: "builder_practical"
+    best_offer: "Maintenance Intelligence OS"
+    best_entry: "Agentic AI Workflow Audit"
+
+  project_controls_head:
+    title_ar: "مدير ضبط المشاريع / مدير التخطيط"
+    title_en: "Project Controls Manager / Planning Manager"
+    sectors: ["contracting_construction", "oil_gas_energy"]
+    core_pain: "Real-time project visibility and risk detection"
+    daily_challenges:
+      - "Weekly reports take 2 days to compile"
+      - "Risk items surface too late"
+      - "Multiple project formats, no single view"
+      - "Approval chains slow decision-making"
+    what_impresses_them:
+      - "P6 / MS Project awareness"
+      - "EPC project language"
+      - "Risk-first framing"
+    preferred_tone: "founder_mode"
+    best_offer: "Project Controls AI OS"
+    best_entry: "Agentic AI Workflow Audit"
+
+  digital_transformation_lead:
+    title_ar: "مدير التحول الرقمي"
+    title_en: "Digital Transformation Director / CIO"
+    sectors: ["government", "large_enterprise", "oil_gas_energy"]
+    core_pain: "Scaling AI adoption safely and measurably"
+    daily_challenges:
+      - "AI pilots that don't scale"
+      - "Shadow AI usage without governance"
+      - "Business units want AI but don't know where to start"
+      - "Board pressure for digital results"
+    what_impresses_them:
+      - "Governance-first framing"
+      - "Measurable pilot design"
+      - "Enterprise architecture awareness"
+    preferred_tone: "governance_first"
+    best_offer: "AI Governance & Adoption Pack or Sovereign Knowledge RAG"
+    best_entry: "AI Workflow Audit"
+
+  ceo_founder:
+    title_ar: "الرئيس التنفيذي / المؤسس"
+    title_en: "CEO / Founder / Managing Director"
+    sectors: ["b2b_services", "medium_companies", "holding"]
+    core_pain: "Business clarity and operational leverage"
+    daily_challenges:
+      - "Can't trust operational data in real-time"
+      - "Delegation bottlenecks"
+      - "Sales pipeline visibility"
+      - "Revenue leakage in operations"
+    what_impresses_them:
+      - "Business outcomes, not features"
+      - "Founder-to-founder respect"
+      - "Speed to value"
+    preferred_tone: "executive_value"
+    best_offer: "Executive AI Command Center or Revenue AI OS"
+    best_entry: "Agentic AI Workflow Audit"
+
+title_matching:
+  fuzzy_matches:
+    operations_director:
+      - "VP Operations"
+      - "Head of Operations"
+      - "Operations Manager"
+      - "مدير العمليات"
+      - "رئيس العمليات"
+    fm_manager:
+      - "Facilities Manager"
+      - "FM Director"
+      - "Maintenance Manager"
+      - "مدير الصيانة"
+      - "مدير المرافق"
+    project_controls_head:
+      - "Project Manager"
+      - "Planning Manager"
+      - "Project Controls Lead"
+      - "مدير المشاريع"
+      - "مدير التخطيط"
