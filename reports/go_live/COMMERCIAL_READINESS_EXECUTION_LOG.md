@@ -32,6 +32,18 @@ The commercial readiness layer was applied directly to `main` because branch cre
 - `scripts/ops/backend_launch_cleanliness_check.py`
 - `Makefile.launch`
 
+## Added service arsenal and sales agent system
+
+- `business/services/DEALIX_SERVICE_ARSENAL.md`
+- `business/company_brain/COMPANY_BRAIN_OS.md`
+- `sales/AI_SALES_AGENT_OPERATING_MANUAL_AR.md`
+- `sales/NEGOTIATION_PLAYBOOK_AR.md`
+- `data/commercial/pain_signal_library.json`
+- `scripts/commercial/generate_company_specific_sales_pack.py`
+- `scripts/commercial/generate_authorized_sales_agent_pack.py`
+- `apps/web/app/services/page.tsx`
+- `apps/web/app/sales-agent/page.tsx`
+
 ## Safety state
 
 This layer keeps Dealix in manual founder-led commercial mode:
@@ -49,6 +61,9 @@ This layer keeps Dealix in manual founder-led commercial mode:
 python scripts/commercial/commercial_readiness_check.py
 python scripts/commercial/generate_commercial_go_live_pack.py
 python scripts/commercial/generate_daily_targeting_plan.py
+python scripts/commercial/generate_company_brain_pack.py
+python scripts/commercial/generate_authorized_sales_agent_pack.py
+python scripts/commercial/generate_company_specific_sales_pack.py --company "Sample Riyadh B2B Company" --sector b2b_services --city Riyadh --source-url "manual_review_required"
 python scripts/ops/backend_launch_cleanliness_check.py
 bash scripts/commercial/run_commercial_day.sh
 make -f Makefile.launch day
@@ -61,6 +76,11 @@ make -f Makefile.launch day
 - `reports/commercial/latest.json`
 - `reports/commercial/daily_targeting_plan.md`
 - `reports/commercial/daily_targeting_plan.json`
+- `reports/commercial/company_brain_launch_pack.md`
+- `reports/commercial/company_brain_launch_pack.json`
+- `reports/commercial/sales_agent/authorized_sales_agent_pack.md`
+- `reports/commercial/sales_agent/authorized_sales_agent_policy.json`
+- `reports/commercial/sales_packs/sample_riyadh_b2b_company.md`
 - `reports/go_live/backend_launch_cleanliness.json`
 
 ## Important note
