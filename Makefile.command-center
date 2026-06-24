@@ -1,0 +1,8 @@
+.PHONY: command-center day
+PYTHON ?= python3
+
+command-center:
+	$(PYTHON) scripts/commercial/generate_strategic_command_center.py
+
+day: command-center
+	@echo "Dealix command center generated."
