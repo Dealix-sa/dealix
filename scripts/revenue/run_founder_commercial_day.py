@@ -23,7 +23,8 @@ ACTIONS = [
 
 def main() -> int:
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text("# Founder Commercial Day\n\n" + "\n".join(f"- {a}" for a in ACTIONS) + "\n", encoding="utf-8")
+    content = "# Founder Commercial Day\n\n" + "\n".join(f"- {action}" for action in ACTIONS)
+    OUT.write_text(content + "\n", encoding="utf-8")
     print("FOUNDER_COMMERCIAL_DAY_READY")
     print(OUT)
     return 0

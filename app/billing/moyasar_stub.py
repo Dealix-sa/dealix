@@ -7,7 +7,7 @@ secrets, webhook verification, tests, and compliance review.
 from __future__ import annotations
 
 
-def create_payment(*args, **kwargs):
+def create_payment() -> None:
     raise RuntimeError("live payment capture is disabled; use manual invoice mode")
 
 

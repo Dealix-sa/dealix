@@ -4,7 +4,14 @@ from __future__ import annotations
 
 ROLE_PERMISSIONS = {
     "owner": {"*"},
-    "admin": {"workspace:read", "workspace:write", "team:read", "team:write", "billing:read", "audit:read"},
+    "admin": {
+        "workspace:read",
+        "workspace:write",
+        "team:read",
+        "team:write",
+        "billing:read",
+        "audit:read",
+    },
     "operator": {"workspace:read", "workflow:run", "report:read"},
     "viewer": {"workspace:read", "report:read"},
     "billing_admin": {"billing:read", "billing:write"},

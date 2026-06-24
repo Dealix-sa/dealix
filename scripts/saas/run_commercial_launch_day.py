@@ -23,7 +23,18 @@ ACTIONS = [
 def main() -> int:
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc).isoformat()
-    lines = ["# Dealix Commercial Launch Day", "", f"Generated at: {now}", "", "## Safety", "", "No external sending. No live WhatsApp. No SMS. Manual review only.", "", "## Founder actions", ""]
+    lines = [
+        "# Dealix Commercial Launch Day",
+        "",
+        f"Generated at: {now}",
+        "",
+        "## Safety",
+        "",
+        "No external sending. No live WhatsApp. No SMS. Manual review only.",
+        "",
+        "## Founder actions",
+        "",
+    ]
     lines.extend(f"{i}. {action}" for i, action in enumerate(ACTIONS, 1))
     lines.extend(["", "## Verdict", "", "READY_FOR_FOUNDER_LED_COMMERCIAL_ACTION"])
     REPORT.write_text("\n".join(lines) + "\n", encoding="utf-8")
