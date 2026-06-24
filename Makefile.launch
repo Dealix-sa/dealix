@@ -1,0 +1,17 @@
+.PHONY: check pack plan backend day
+PYTHON ?= python3
+
+check:
+	$(PYTHON) scripts/commercial/commercial_readiness_check.py
+
+pack:
+	$(PYTHON) scripts/commercial/generate_commercial_go_live_pack.py
+
+plan:
+	$(PYTHON) scripts/commercial/generate_daily_targeting_plan.py
+
+backend:
+	$(PYTHON) scripts/ops/backend_launch_cleanliness_check.py
+
+day: check pack plan backend
+	@echo "Dealix launch day review complete."
