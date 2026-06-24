@@ -1,0 +1,122 @@
+{
+  "clinics": {
+    "buyer": "clinic owner or operations manager",
+    "pain_signals": [
+      "missed appointment follow-ups",
+      "WhatsApp conversations without owner",
+      "manual booking reminders",
+      "no daily view of hot inquiries"
+    ],
+    "best_offer": "Follow-up Recovery OS",
+    "discovery_questions": [
+      "How many booking inquiries arrive daily?",
+      "Who owns follow-up after the first reply?",
+      "Do you track lost or delayed patient conversations?",
+      "What makes a booking opportunity urgent?"
+    ],
+    "objections": {
+      "we already use WhatsApp": "Exactly. Dealix organizes the follow-up queue around WhatsApp instead of replacing it.",
+      "we do not want automation messaging patients": "The baseline is draft-first. Your team reviews before any patient-facing message."
+    }
+  },
+  "real_estate": {
+    "buyer": "brokerage owner or sales manager",
+    "pain_signals": [
+      "leads disappear after first inquiry",
+      "sales team follow-up is inconsistent",
+      "open offers are not reviewed daily",
+      "management lacks hot-lead visibility"
+    ],
+    "best_offer": "Revenue Command Room OS",
+    "discovery_questions": [
+      "How do you know which inquiry is hot today?",
+      "How many inquiries are followed up after 3 days?",
+      "Where are offers and buyer preferences tracked?",
+      "Who reviews stale opportunities?"
+    ],
+    "objections": {
+      "we have a CRM": "Great. Dealix can sit above the CRM as the daily action and follow-up command layer.",
+      "we need more leads": "More leads help, but first we stop leakage from existing inquiries and offers."
+    }
+  },
+  "logistics": {
+    "buyer": "commercial director or founder",
+    "pain_signals": [
+      "B2B proposals need structured follow-up",
+      "account ownership is unclear",
+      "management cannot see proposal risk",
+      "sales cycle is long and undocumented"
+    ],
+    "best_offer": "Revenue Command Room OS",
+    "discovery_questions": [
+      "How many open proposals do you have this month?",
+      "Who owns the next action for each account?",
+      "What signals show that an account is ready to move?",
+      "How do you escalate stuck proposals?"
+    ],
+    "objections": {
+      "our sales cycle is long": "That is exactly why a command room helps. It keeps next actions visible across a long cycle.",
+      "we need integration first": "We can start with a lightweight sprint before deeper integration."
+    }
+  },
+  "training_centers": {
+    "buyer": "center owner or admissions manager",
+    "pain_signals": [
+      "registration follow-up is manual",
+      "cohort pipeline is unclear",
+      "inquiries are not scored",
+      "late responses reduce conversion"
+    ],
+    "best_offer": "Follow-up Recovery OS",
+    "discovery_questions": [
+      "How many course inquiries arrive weekly?",
+      "How do you prioritize high-intent students or companies?",
+      "Who follows up before cohort start dates?",
+      "Do you track reasons for lost registrations?"
+    ],
+    "objections": {
+      "our team follows up manually": "Dealix does not remove the team. It gives them a daily queue and better drafted replies.",
+      "seasonality affects us": "A structured cohort pipeline helps exactly because demand is seasonal."
+    }
+  },
+  "marketing_agencies": {
+    "buyer": "agency owner or account director",
+    "pain_signals": [
+      "client reporting is manual",
+      "delivery proof is scattered",
+      "renewal conversations are late",
+      "scope and acceptance criteria drift"
+    ],
+    "best_offer": "Client Delivery OS",
+    "discovery_questions": [
+      "How do clients see what was delivered this week?",
+      "Where are acceptance criteria stored?",
+      "How do you prepare renewal proof?",
+      "Which client updates consume the most time?"
+    ],
+    "objections": {
+      "clients have different needs": "The OS keeps the structure consistent while allowing each client scope to be customized.",
+      "we already have project management tools": "Dealix focuses on proof, renewal, and executive clarity around delivery."
+    }
+  },
+  "b2b_services": {
+    "buyer": "founder or general manager",
+    "pain_signals": [
+      "pipeline is in memory or spreadsheets",
+      "follow-up depends on individual discipline",
+      "proposals do not have clear next actions",
+      "management lacks daily commercial visibility"
+    ],
+    "best_offer": "Revenue Command Room OS",
+    "discovery_questions": [
+      "Where do new opportunities live today?",
+      "How do you review open proposals?",
+      "What does the team check every morning?",
+      "Which accounts are stuck and why?"
+    ],
+    "objections": {
+      "we are still small": "That is the best time to install a simple operating rhythm before leakage becomes expensive.",
+      "we cannot change systems now": "We start as a layer above your current tools. No replacement required."
+    }
+  }
+}
