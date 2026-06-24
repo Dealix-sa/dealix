@@ -44,6 +44,15 @@ The commercial readiness layer was applied directly to `main` because branch cre
 - `apps/web/app/services/page.tsx`
 - `apps/web/app/sales-agent/page.tsx`
 
+## Added strategic command center
+
+- `docs/ops/STRATEGIC_COMMAND_CENTER_OS.md`
+- `data/commercial/strategic_command_center_template.json`
+- `scripts/commercial/generate_strategic_command_center.py`
+- `apps/web/app/command-center/page.tsx` was rebuilt as a full strategic control room.
+- `Makefile.command-center`
+- `docs/ops/CONTROLLED_COMMUNICATION_ROADMAP.md`
+
 ## Safety state
 
 This layer keeps Dealix in manual founder-led commercial mode:
@@ -64,9 +73,11 @@ python scripts/commercial/generate_daily_targeting_plan.py
 python scripts/commercial/generate_company_brain_pack.py
 python scripts/commercial/generate_authorized_sales_agent_pack.py
 python scripts/commercial/generate_company_specific_sales_pack.py --company "Sample Riyadh B2B Company" --sector b2b_services --city Riyadh --source-url "manual_review_required"
+python scripts/commercial/generate_strategic_command_center.py
 python scripts/ops/backend_launch_cleanliness_check.py
 bash scripts/commercial/run_commercial_day.sh
 make -f Makefile.launch day
+make -f Makefile.command-center day
 ```
 
 ## Generated outputs when run locally
@@ -81,6 +92,8 @@ make -f Makefile.launch day
 - `reports/commercial/sales_agent/authorized_sales_agent_pack.md`
 - `reports/commercial/sales_agent/authorized_sales_agent_policy.json`
 - `reports/commercial/sales_packs/sample_riyadh_b2b_company.md`
+- `reports/command_center/latest.md`
+- `reports/command_center/latest.json`
 - `reports/go_live/backend_launch_cleanliness.json`
 
 ## Important note
