@@ -4,9 +4,9 @@
 
 2026-06-24
 
-## What was applied first
+## Applied directly to main
 
-The commercial readiness layer was applied directly to `main` because branch creation through the connector was blocked while file writes to the repository were allowed.
+Branch creation through the connector was blocked while file writes were allowed, so the commercial readiness layer was applied directly to `main`.
 
 ## Added commercial files
 
@@ -23,7 +23,7 @@ The commercial readiness layer was applied directly to `main` because branch cre
 
 ## Added launch expansion files
 
-- `apps/web/app/page.tsx` was rewritten for commercial conversion.
+- `apps/web/app/page.tsx`
 - `docs/ops/LAUNCH_RESEARCH_DECISIONS_2026.md`
 - `docs/ops/BACKEND_LAUNCH_HARDENING.md`
 - `docs/website/FRONTEND_CONVERSION_STANDARD.md`
@@ -44,17 +44,14 @@ The commercial readiness layer was applied directly to `main` because branch cre
 - `apps/web/app/services/page.tsx`
 - `apps/web/app/sales-agent/page.tsx`
 
-## Added strategic command center
+## Added command center and APIs
 
 - `docs/ops/STRATEGIC_COMMAND_CENTER_OS.md`
 - `data/commercial/strategic_command_center_template.json`
 - `scripts/commercial/generate_strategic_command_center.py`
-- `apps/web/app/command-center/page.tsx` was rebuilt as a full strategic control room.
+- `apps/web/app/command-center/page.tsx`
 - `Makefile.command-center`
 - `docs/ops/CONTROLLED_COMMUNICATION_ROADMAP.md`
-
-## Added command center and sales agent APIs
-
 - `apps/web/lib/strategic-command-center.ts`
 - `apps/web/lib/sales-agent-draft.ts`
 - `apps/web/app/api/command-center/route.ts`
@@ -71,12 +68,16 @@ The commercial readiness layer was applied directly to `main` because branch cre
 - `apps/web/lib/hubspot-commercial-os.ts`
 - `apps/web/app/api/hubspot-os/readiness/route.ts`
 - `apps/web/app/hubspot-os/page.tsx`
-- daily runner now includes HubSpot OS report generation.
-- command center makefile now includes HubSpot OS report generation.
+
+## Added Founder Growth OS
+
+- `docs/ops/FOUNDER_GROWTH_OS_2026.md`
+- `data/commercial/founder_growth_os_2026.json`
+- `scripts/commercial/generate_founder_growth_os.py`
+- `apps/web/app/growth/page.tsx`
+- `docs/ops/COMMUNICATION_ACTIVATION_GATES.md`
 
 ## Safety state
-
-This layer keeps Dealix in controlled founder-led commercial mode:
 
 - live communication disabled
 - email sending disabled by default
@@ -97,6 +98,7 @@ python scripts/commercial/generate_authorized_sales_agent_pack.py
 python scripts/commercial/generate_company_specific_sales_pack.py --company "Sample Riyadh B2B Company" --sector b2b_services --city Riyadh --source-url "manual_review_required"
 python scripts/commercial/generate_strategic_command_center.py
 python scripts/commercial/generate_hubspot_commercial_os.py
+python scripts/commercial/generate_founder_growth_os.py
 python scripts/ops/backend_launch_cleanliness_check.py
 python scripts/ops/controlled_communication_readiness_check.py
 bash scripts/commercial/run_commercial_day.sh
@@ -120,6 +122,8 @@ make -f Makefile.command-center day
 - `reports/command_center/latest.json`
 - `reports/hubspot_os/latest.md`
 - `reports/hubspot_os/latest.json`
+- `reports/founder_growth_os/latest.md`
+- `reports/founder_growth_os/latest.json`
 - `reports/go_live/backend_launch_cleanliness.json`
 - `reports/go_live/controlled_communication_readiness.json`
 
@@ -127,6 +131,7 @@ make -f Makefile.command-center day
 
 - `/command-center`
 - `/hubspot-os`
+- `/growth`
 - `/services`
 - `/sales-agent`
 - `/sales-agent-lab`
@@ -139,8 +144,8 @@ make -f Makefile.command-center day
 
 ## HubSpot note
 
-The connected HubSpot account contains usable company groups and tasks. No CRM records were created or updated in this execution because CRM writes require explicit owner approval.
+The connected HubSpot account now contains created Dealix products and associated commercial tasks approved by the owner. No external messages were sent and no production communication flags were enabled.
 
 ## Important note
 
-PR #787 remains open and should not be force-merged while CI/guard workflows are failing. It is still important because it adds the canonical database models for prospects, drafts, outbound messages, pipeline, proposals, clients, projects, and proof reports.
+PR #787 remains open and should not be force-merged while CI or guard workflows are failing.
