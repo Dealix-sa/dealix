@@ -1,0 +1,88 @@
+{
+  "source": "HubSpot connected account orientation on 2026-06-25",
+  "mode": "read_only_seed",
+  "recommended_crm_objects": [
+    "companies",
+    "contacts",
+    "deals",
+    "tasks",
+    "notes",
+    "calls",
+    "emails",
+    "meetings",
+    "products",
+    "line_items"
+  ],
+  "target_groups_found": [
+    {
+      "name": "Clinics and Healthcare Operations Targets",
+      "industry": "HOSPITAL_HEALTH_CARE",
+      "recommended_sector": "clinics",
+      "recommended_offer": "Follow-up Recovery OS",
+      "pain_angle": "missed booking and patient follow-up discipline"
+    },
+    {
+      "name": "Saudi Real Estate Automation Targets",
+      "industry": "REAL_ESTATE",
+      "recommended_sector": "real_estate",
+      "recommended_offer": "Revenue Command Room OS",
+      "pain_angle": "lead leakage and proposal follow-up"
+    },
+    {
+      "name": "Logistics and Delivery Operations Targets",
+      "industry": "LOGISTICS_AND_SUPPLY_CHAIN",
+      "recommended_sector": "logistics",
+      "recommended_offer": "Revenue Command Room OS",
+      "pain_angle": "B2B proposal tracking and account ownership"
+    },
+    {
+      "name": "Training Centers Automation Targets",
+      "industry": "PROFESSIONAL_TRAINING_COACHING",
+      "recommended_sector": "training_centers",
+      "recommended_offer": "Follow-up Recovery OS",
+      "pain_angle": "registration follow-up and cohort pipeline visibility"
+    },
+    {
+      "name": "B2B Services and Agencies Targets",
+      "industry": "MANAGEMENT_CONSULTING",
+      "recommended_sector": "b2b_services",
+      "recommended_offer": "Revenue Command Room OS",
+      "pain_angle": "pipeline visibility and daily commercial next action"
+    },
+    {
+      "name": "Retail and Ecommerce Automation Targets",
+      "industry": "RETAIL",
+      "recommended_sector": "retail_ecommerce",
+      "recommended_offer": "Customer Follow-up and Recovery OS",
+      "pain_angle": "abandoned cart, support queue, and repeat purchase follow-up"
+    },
+    {
+      "name": "Construction and PMO Targets",
+      "industry": "CONSTRUCTION",
+      "recommended_sector": "construction_pmo",
+      "recommended_offer": "Client Delivery OS",
+      "pain_angle": "project visibility, approvals, and proof of work"
+    },
+    {
+      "name": "Government Contractor Operations Targets",
+      "industry": "GOVERNMENT_RELATIONS",
+      "recommended_sector": "government_contractors",
+      "recommended_offer": "AI Trust and Governance OS",
+      "pain_angle": "controlled documentation, proposal discipline, and approvals"
+    }
+  ],
+  "tasks_found": [
+    "Build HubSpot CRM OS delivery checklist",
+    "Prepare Private Company Brain proof bundle",
+    "Build Revenue Operations OS proposal",
+    "Package Dealix Lead Engine offer",
+    "Review weekly revenue dashboard"
+  ],
+  "write_back_policy": {
+    "stage_0": "read_only_intelligence",
+    "stage_1": "proposed_write_back",
+    "stage_2": "confirmed_tasks_and_notes",
+    "stage_3": "confirmed_deals_and_pipeline",
+    "stage_4": "controlled_communication_queue"
+  }
+}
