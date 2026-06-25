@@ -1,0 +1,68 @@
+{
+  "company": "Dealix",
+  "positioning": "Saudi B2B AI Operating Systems company",
+  "mode": "founder_led_review_first",
+  "products": [
+    {
+      "name": "Revenue Command Room OS",
+      "primary_pain": "scattered leads, proposals, follow-ups, and no daily commercial decision",
+      "ideal_sectors": ["real_estate", "logistics", "b2b_services", "marketing_agencies"],
+      "first_offer": "7-Day Revenue Command Room Sprint",
+      "setup_range_sar": "5000-12000",
+      "retainer_range_sar": "3000-12000",
+      "proof": "daily queue, proposal queue, next actions, weekly revenue memo"
+    },
+    {
+      "name": "Company Brain OS",
+      "primary_pain": "owners do not have a daily decision layer across revenue, clients, risks, and opportunities",
+      "ideal_sectors": ["b2b_services", "legal_accounting", "consulting", "agencies"],
+      "first_offer": "14-Day Company Brain Sprint",
+      "setup_range_sar": "15000-35000",
+      "retainer_range_sar": "8000-25000",
+      "proof": "daily decision, risk radar, opportunity register, board memo"
+    },
+    {
+      "name": "Follow-up Recovery OS",
+      "primary_pain": "WhatsApp, inbox, calls, and inquiries create missed follow-ups",
+      "ideal_sectors": ["clinics", "training_centers", "car_dealers", "ecommerce"],
+      "first_offer": "7-Day Follow-up Recovery Sprint",
+      "setup_range_sar": "5000-12000",
+      "retainer_range_sar": "3000-10000",
+      "proof": "classified follow-up queue, draft replies, overdue follow-ups, owner report"
+    },
+    {
+      "name": "Client Delivery OS",
+      "primary_pain": "delivery work is not visible, proof is weak, and renewals are late",
+      "ideal_sectors": ["marketing_agencies", "consulting", "b2b_services", "training_centers"],
+      "first_offer": "Client Success Sprint",
+      "setup_range_sar": "12000-25000",
+      "retainer_range_sar": "5000-15000",
+      "proof": "client workspace, delivery board, proof pack, renewal queue"
+    },
+    {
+      "name": "AI Trust and Governance OS",
+      "primary_pain": "AI is used without policy, review gates, privacy discipline, or approval workflow",
+      "ideal_sectors": ["healthcare", "legal_accounting", "government_contractors", "enterprise_b2b"],
+      "first_offer": "AI Trust Sprint",
+      "setup_range_sar": "15000-35000",
+      "retainer_range_sar": "5000-20000",
+      "proof": "AI usage policy, human review gates, data handling SOP, output review log"
+    }
+  ],
+  "daily_operating_targets": {
+    "researched_accounts": 100,
+    "verified_accounts": 40,
+    "sales_packs": 25,
+    "founder_reviews": 10,
+    "discovery_attempts": 3,
+    "scoped_proposals": 1
+  },
+  "safety_defaults": {
+    "EXTERNAL_SEND_ENABLED": "false",
+    "EMAIL_SEND_ENABLED": "false",
+    "WHATSAPP_SEND_ENABLED": "false",
+    "WHATSAPP_ALLOW_LIVE_SEND": "false",
+    "SMS_SEND_ENABLED": "false",
+    "OUTBOUND_MODE": "draft_only"
+  }
+}
