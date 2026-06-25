@@ -63,9 +63,20 @@ The commercial readiness layer was applied directly to `main` because branch cre
 - `docs/api/COMMAND_CENTER_AND_SALES_AGENT_API.md`
 - `scripts/ops/controlled_communication_readiness_check.py`
 
+## Added HubSpot Commercial OS
+
+- `docs/ops/HUBSPOT_FULL_AUTO_COMMERCIAL_OS.md`
+- `data/commercial/hubspot_commercial_os_seed.json`
+- `scripts/commercial/generate_hubspot_commercial_os.py`
+- `apps/web/lib/hubspot-commercial-os.ts`
+- `apps/web/app/api/hubspot-os/readiness/route.ts`
+- `apps/web/app/hubspot-os/page.tsx`
+- daily runner now includes HubSpot OS report generation.
+- command center makefile now includes HubSpot OS report generation.
+
 ## Safety state
 
-This layer keeps Dealix in manual founder-led commercial mode:
+This layer keeps Dealix in controlled founder-led commercial mode:
 
 - live communication disabled
 - email sending disabled by default
@@ -73,6 +84,7 @@ This layer keeps Dealix in manual founder-led commercial mode:
 - SMS sending disabled by default
 - outbound mode remains `draft_only`
 - new scripts do not call outside services
+- CRM write-back requires owner approval before execution
 
 ## How to run
 
@@ -84,6 +96,7 @@ python scripts/commercial/generate_company_brain_pack.py
 python scripts/commercial/generate_authorized_sales_agent_pack.py
 python scripts/commercial/generate_company_specific_sales_pack.py --company "Sample Riyadh B2B Company" --sector b2b_services --city Riyadh --source-url "manual_review_required"
 python scripts/commercial/generate_strategic_command_center.py
+python scripts/commercial/generate_hubspot_commercial_os.py
 python scripts/ops/backend_launch_cleanliness_check.py
 python scripts/ops/controlled_communication_readiness_check.py
 bash scripts/commercial/run_commercial_day.sh
@@ -105,12 +118,15 @@ make -f Makefile.command-center day
 - `reports/commercial/sales_packs/sample_riyadh_b2b_company.md`
 - `reports/command_center/latest.md`
 - `reports/command_center/latest.json`
+- `reports/hubspot_os/latest.md`
+- `reports/hubspot_os/latest.json`
 - `reports/go_live/backend_launch_cleanliness.json`
 - `reports/go_live/controlled_communication_readiness.json`
 
 ## Frontend routes
 
 - `/command-center`
+- `/hubspot-os`
 - `/services`
 - `/sales-agent`
 - `/sales-agent-lab`
@@ -118,7 +134,12 @@ make -f Makefile.command-center day
 ## API routes
 
 - `GET /api/command-center`
+- `GET /api/hubspot-os/readiness`
 - `POST /api/sales-agent/draft`
+
+## HubSpot note
+
+The connected HubSpot account contains usable company groups and tasks. No CRM records were created or updated in this execution because CRM writes require explicit owner approval.
 
 ## Important note
 
