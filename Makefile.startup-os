@@ -1,0 +1,24 @@
+PYTHON ?= python3
+
+.PHONY: startup-os-day startup-command founder-brief startup-proof startup-release-gate startup-web-verify startup-os-test
+
+startup-os-day:
+	$(PYTHON) scripts/commercial/run_startup_os_day.py
+
+startup-command:
+	$(PYTHON) scripts/commercial/generate_startup_command_center.py
+
+founder-brief:
+	$(PYTHON) scripts/commercial/generate_founder_daily_brief.py
+
+startup-proof:
+	$(PYTHON) scripts/commercial/generate_startup_proof_pack.py
+
+startup-release-gate:
+	$(PYTHON) scripts/commercial/verify_startup_os_release_gate.py
+
+startup-web-verify:
+	npm --prefix apps/web run verify || true
+
+startup-os-test:
+	$(PYTHON) -m pytest -q tests/saas/test_startup_command_center_assets.py tests/saas/test_startup_os_day_assets.py tests/saas/test_startup_os_release_gate.py
