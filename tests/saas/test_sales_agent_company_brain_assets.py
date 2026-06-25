@@ -1,5 +1,8 @@
 from app.commercial.sales_agent import build_sales_agent_pack
 from pathlib import Path
+import json
+import subprocess
+import sys
 
 
 def test_sales_agent_company_brain_assets_exist():
@@ -44,3 +47,19 @@ def test_sales_agent_pack_builder_is_review_first():
     assert "https://example.com" == data["source_url"]
     assert data["discovery_questions"]
     assert data["negotiation_notes"]
+
+
+def test_sales_agent_company_brain_day_runner_generates_latest_report():
+    result = subprocess.run(
+        [sys.executable, "scripts/commercial/run_sales_agent_company_brain_day.py"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    latest = Path("reports/commercial/sales_agent_company_brain/latest.json")
+    assert latest.exists()
+    data = json.loads(latest.read_text(encoding="utf-8"))
+    assert data["mode"] == "draft_only"
+    assert data["owner_review_required"] is True
+    assert data["packs_generated"] >= 1
