@@ -53,16 +53,26 @@ The commercial readiness layer was applied directly to `main` because branch cre
 - `Makefile.command-center`
 - `docs/ops/CONTROLLED_COMMUNICATION_ROADMAP.md`
 
+## Added command center and sales agent APIs
+
+- `apps/web/lib/strategic-command-center.ts`
+- `apps/web/lib/sales-agent-draft.ts`
+- `apps/web/app/api/command-center/route.ts`
+- `apps/web/app/api/sales-agent/draft/route.ts`
+- `apps/web/app/sales-agent-lab/page.tsx`
+- `docs/api/COMMAND_CENTER_AND_SALES_AGENT_API.md`
+- `scripts/ops/controlled_communication_readiness_check.py`
+
 ## Safety state
 
 This layer keeps Dealix in manual founder-led commercial mode:
 
-- live outbound disabled
+- live communication disabled
 - email sending disabled by default
 - WhatsApp sending disabled by default
 - SMS sending disabled by default
 - outbound mode remains `draft_only`
-- no external requests are made by the new scripts
+- new scripts do not call outside services
 
 ## How to run
 
@@ -75,6 +85,7 @@ python scripts/commercial/generate_authorized_sales_agent_pack.py
 python scripts/commercial/generate_company_specific_sales_pack.py --company "Sample Riyadh B2B Company" --sector b2b_services --city Riyadh --source-url "manual_review_required"
 python scripts/commercial/generate_strategic_command_center.py
 python scripts/ops/backend_launch_cleanliness_check.py
+python scripts/ops/controlled_communication_readiness_check.py
 bash scripts/commercial/run_commercial_day.sh
 make -f Makefile.launch day
 make -f Makefile.command-center day
@@ -95,6 +106,19 @@ make -f Makefile.command-center day
 - `reports/command_center/latest.md`
 - `reports/command_center/latest.json`
 - `reports/go_live/backend_launch_cleanliness.json`
+- `reports/go_live/controlled_communication_readiness.json`
+
+## Frontend routes
+
+- `/command-center`
+- `/services`
+- `/sales-agent`
+- `/sales-agent-lab`
+
+## API routes
+
+- `GET /api/command-center`
+- `POST /api/sales-agent/draft`
 
 ## Important note
 
