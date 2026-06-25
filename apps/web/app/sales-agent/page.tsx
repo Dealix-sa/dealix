@@ -29,6 +29,7 @@ export default function SalesAgentPage() {
           ويجهز drafts وnext actions، مع approval gates قبل أي التزام أو تواصل حساس.
         </p>
         <div className="actions" style={{ justifyContent: "center" }}>
+          <Link href="/sales-agent-lab">جرّب Sales Agent Lab</Link>
           <Link href="/book">ابنِ Sales Agent</Link>
           <Link href="/safety">راجع قواعد الأمان</Link>
         </div>
@@ -51,13 +52,23 @@ export default function SalesAgentPage() {
         </article>
       </section>
 
-      <section className="card">
-        <p className="eyebrow">Best use</p>
-        <h2>أفضل استخدام تجاري</h2>
-        <p>
-          ابدأه كـSales Copilot داخلي: يولد المسودات، يجهز الاعتراضات، يقترح التفاوض، ويكتب proposal brief.
-          بعد إثبات الجودة وضبط الهوية والقنوات، يمكن الانتقال إلى controlled live mode في PR مستقل.
-        </p>
+      <section className="grid-2">
+        <article className="card">
+          <p className="eyebrow">API surface</p>
+          <h2>جاهز للتكامل الداخلي</h2>
+          <p>
+            تم تجهيز API داخلي يولد مسودة حسب الشركة والقطاع بدون إرسال خارجي:
+          </p>
+          <pre>POST /api/sales-agent/draft</pre>
+        </article>
+        <article className="card">
+          <p className="eyebrow">Best use</p>
+          <h2>أفضل استخدام تجاري</h2>
+          <p>
+            ابدأه كـSales Copilot داخلي: يولد المسودات، يجهز الاعتراضات، يقترح التفاوض، ويكتب proposal brief.
+            بعد إثبات الجودة وضبط الهوية والقنوات، يمكن الانتقال إلى controlled live mode في PR مستقل.
+          </p>
+        </article>
       </section>
     </main>
   );
