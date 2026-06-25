@@ -1,11 +1,14 @@
-.PHONY: command-center communication-check day
+.PHONY: command-center hubspot-os communication-check day
 PYTHON ?= python3
 
 command-center:
 	$(PYTHON) scripts/commercial/generate_strategic_command_center.py
 
+hubspot-os:
+	$(PYTHON) scripts/commercial/generate_hubspot_commercial_os.py
+
 communication-check:
 	$(PYTHON) scripts/ops/controlled_communication_readiness_check.py
 
-day: command-center communication-check
-	@echo "Dealix command center generated and communication gates checked."
+day: command-center hubspot-os communication-check
+	@echo "Dealix command center, HubSpot OS, and communication gates generated."
