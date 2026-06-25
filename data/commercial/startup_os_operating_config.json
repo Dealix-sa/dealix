@@ -1,0 +1,59 @@
+{
+  "company": "Dealix",
+  "operating_mode": "founder_led_review_first",
+  "north_star": "qualified founder-led discovery calls from verified Saudi B2B accounts",
+  "departments": [
+    {
+      "name": "Founder Office",
+      "owner": "founder",
+      "daily_outputs": ["top decisions", "priority accounts", "proposal decision", "risk callouts"]
+    },
+    {
+      "name": "Revenue Machine",
+      "owner": "commercial operator",
+      "daily_outputs": ["target queue", "sales packs", "follow-up drafts", "proposal briefs"]
+    },
+    {
+      "name": "Company Brain",
+      "owner": "strategy operator",
+      "daily_outputs": ["daily decision", "risk radar", "opportunity register", "board memo seed"]
+    },
+    {
+      "name": "Delivery Machine",
+      "owner": "delivery operator",
+      "daily_outputs": ["client workspace", "scope cards", "proof packs", "next iteration"]
+    },
+    {
+      "name": "Trust Machine",
+      "owner": "trust operator",
+      "daily_outputs": ["approval gates", "claims review", "data handling notes", "safe-mode status"]
+    }
+  ],
+  "daily_flow": [
+    "load account pipeline",
+    "score accounts",
+    "generate sales and brain packs",
+    "prepare founder review actions",
+    "generate startup command center",
+    "generate founder daily brief",
+    "review top P1 accounts",
+    "prepare one scoped diagnostic proposal after qualification"
+  ],
+  "minimum_daily_metrics": {
+    "accounts_reviewed": 20,
+    "priority_accounts": 10,
+    "sales_packs": 10,
+    "founder_review_actions": 10,
+    "discovery_preparations": 3,
+    "scoped_proposals": 1
+  },
+  "hard_rules": [
+    "no fake ROI",
+    "no fake testimonials",
+    "no live outbound by default",
+    "source_url required",
+    "pain is hypothesis until verified",
+    "owner review before sensitive external action",
+    "proof pack after paid sprint"
+  ]
+}
