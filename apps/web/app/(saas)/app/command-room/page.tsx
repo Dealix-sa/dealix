@@ -1,78 +1,64 @@
-const dailyMetrics = [
-  ["100", "accounts researched", "بحث شركات يومي بدون إرسال عشوائي"],
-  ["40", "verified targets", "تحقق من source_url والقطاع"],
-  ["25", "sales packs", "مسودات وملاحظات تفاوض"],
-  ["10-15", "founder reviews", "مراجعة بشرية قبل أي خطوة"],
-  ["1-2", "discovery calls", "تأهيل حقيقي قبل proposal"],
-  ["1", "scoped proposal", "عرض واحد واضح بعد التأهيل"],
+const metrics = [
+  ["100", "research capacity"],
+  ["40", "source reviews"],
+  ["25", "AI packs"],
+  ["10", "founder queue"],
+  ["3", "discovery attempts"],
+  ["1", "scoped proposal"],
 ];
 
-const operatingLanes = [
-  {
-    title: "Pain Targeting",
-    body: "تحويل كل شركة إلى فرضية ألم، buyer persona، source_url، وnext action.",
-  },
-  {
-    title: "Sales Agent Packs",
-    body: "مسودات عربية، أسئلة discovery، اعتراضات، وحدود تفاوض لكل قطاع.",
-  },
-  {
-    title: "Company Brain",
-    body: "قرار يومي، فرص، مخاطر، bottlenecks، وخطة 30 يوم.",
-  },
-  {
-    title: "Pipeline Control",
-    body: "تشخيص، Sprint، proposal، retainer، وproof pack بعد التسليم.",
-  },
-  {
-    title: "Trust Gates",
-    body: "لا نتائج وهمية، لا إرسال غير مراجع، لا استخدام بيانات حساسة بلا ضوابط.",
-  },
-  {
-    title: "HubSpot OS",
-    body: "Products، tasks، notes، deals، وoperating queue بعد موافقة المؤسس.",
-  },
+const lanes = [
+  ["Pain Review", "Review sector, source, and pain hypothesis."],
+  ["Priority Queue", "Rank companies by fit and readiness."],
+  ["Sales Pack", "Draft, questions, and negotiation notes."],
+  ["Brain Decision", "Daily founder decision and next action."],
+  ["CRM Queue", "Tasks, notes, and deals after approval."],
+  ["Proof Pack", "What changed and what to do next."],
 ];
 
-const founderActions = [
-  "راجع أعلى 10 شركات مؤهلة اليوم.",
-  "اختر 3 شركات للاتصال أو مراجعة الرسالة.",
-  "جهز proposal واحد فقط بعد discovery واضح.",
-  "حدّث HubSpot task status بعد كل مكالمة.",
-  "لا توسع scope قبل ظهور proof pack.",
+const actions = [
+  "Open reports/commercial/sales_agent_company_brain/latest.md.",
+  "Review top P1 targets first.",
+  "Pick three companies for discovery preparation.",
+  "Prepare one proposal only after qualification.",
+  "Update HubSpot or the deal ledger after every action.",
+];
+
+const commands = [
+  "python scripts/commercial/run_sales_agent_company_brain_day.py",
+  "python scripts/saas/run_commercial_launch_day.py",
+  "python -m pytest -q tests/saas/test_sales_agent_company_brain_assets.py",
 ];
 
 export default function SaasCommandRoomPage() {
   return (
-    <main className="grid mx-auto max-w-7xl p-8" dir="rtl">
+    <main className="grid mx-auto max-w-7xl p-8">
       <section className="card card-gold dot-pattern">
         <p className="eyebrow">Dealix Strategic Command Room</p>
-        <h1>غرفة قيادة تجارية حقيقية للمؤسس</h1>
-        <p style={{ maxWidth: 860 }}>
-          هذه الصفحة تجمع الاستهداف، Sales Agent، Company Brain، HubSpot OS، والتفاوض في نظام تشغيل يومي واحد.
-          الهدف: تحويل كل يوم إلى فرص مؤهلة، مسودات مراجعة، قرارات واضحة، وعروض قابلة للبيع.
+        <h1>Founder commercial command room</h1>
+        <p style={{ maxWidth: 900 }}>
+          Daily operating room for target review, prioritization, Sales Agent packs, Company Brain decisions,
+          CRM queue, and proof work. Mode stays draft-only and founder-review-first.
         </p>
-        <p className="mt-3 font-semibold">Communication mode: draft and review first.</p>
       </section>
 
-      <section className="cards" aria-label="Daily command metrics">
-        {dailyMetrics.map(([value, label, note]) => (
+      <section className="cards" aria-label="Daily metrics">
+        {metrics.map(([value, label]) => (
           <article className="card" key={label}>
             <p className="stat-value">{value}</p>
             <p className="stat-label">{label}</p>
-            <p>{note}</p>
           </article>
         ))}
       </section>
 
       <section className="card" aria-labelledby="lanes-title">
         <p className="eyebrow">Operating lanes</p>
-        <h2 id="lanes-title">الطبقات التي تشغّل Dealix تجاريًا</h2>
+        <h2 id="lanes-title">From target review to founder decision</h2>
         <div className="cards" style={{ marginTop: "var(--sp-6)" }}>
-          {operatingLanes.map((lane) => (
-            <article className="card hover-gold" key={lane.title}>
-              <h3>{lane.title}</h3>
-              <p>{lane.body}</p>
+          {lanes.map(([title, body]) => (
+            <article className="card hover-gold" key={title}>
+              <h3>{title}</h3>
+              <p>{body}</p>
             </article>
           ))}
         </div>
@@ -80,20 +66,20 @@ export default function SaasCommandRoomPage() {
 
       <section className="grid-2">
         <article className="card card-gold">
-          <p className="eyebrow">Founder actions</p>
-          <h2>أهم إجراءات اليوم</h2>
+          <p className="eyebrow">Founder queue</p>
+          <h2>Today actions</h2>
           <ul>
-            {founderActions.map((action) => (
+            {actions.map((action) => (
               <li key={action}>{action}</li>
             ))}
           </ul>
         </article>
         <article className="card">
-          <p className="eyebrow">Run pack generator</p>
-          <h2>ولّد Sales Agent Pack لشركة محددة</h2>
-          <pre style={{ textAlign: "left", direction: "ltr" }}>
-            python scripts/commercial/generate_sales_agent_company_brain_pack.py --company "Sample Riyadh Company" --sector b2b_services --city Riyadh --source-url "manual_review_required"
-          </pre>
+          <p className="eyebrow">Run locally</p>
+          <h2>Commands</h2>
+          {commands.map((command) => (
+            <pre key={command} style={{ textAlign: "left" }}>{command}</pre>
+          ))}
         </article>
       </section>
     </main>
