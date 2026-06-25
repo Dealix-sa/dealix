@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Run a review-first Sales Agent + Company Brain commercial day.
 
-Reads the commercial lead pipeline template, generates company-specific packs,
+Reads the commercial account pipeline, generates company-specific packs,
 prioritizes accounts, and writes a daily command report. No external
 communication is performed.
 """
@@ -17,14 +17,16 @@ from app.commercial.prioritizer import queue as build_priority_queue
 from app.commercial.sales_agent import build_sales_agent_pack
 
 ROOT = Path(__file__).resolve().parents[2]
-PIPELINE = ROOT / "data" / "commercial" / "lead_pipeline_template.csv"
+PIPELINE = ROOT / "data" / "commercial" / "lead_pipeline.csv"
+FALLBACK_PIPELINE = ROOT / "data" / "commercial" / "lead_pipeline_template.csv"
 OUT_DIR = ROOT / "reports" / "commercial" / "sales_agent_company_brain"
 
 
 def load_rows() -> list[dict[str, str]]:
-    if not PIPELINE.exists():
-        raise FileNotFoundError(f"missing pipeline template: {PIPELINE}")
-    with PIPELINE.open("r", encoding="utf-8", newline="") as handle:
+    path = PIPELINE if PIPELINE.exists() else FALLBACK_PIPELINE
+    if not path.exists():
+        raise FileNotFoundError(f"missing pipeline file: {path}")
+    with path.open("r", encoding="utf-8", newline="") as handle:
         return list(csv.DictReader(handle))
 
 
@@ -101,22 +103,10 @@ def summary_markdown(packs: list[dict[str, object]], priority_queue: list[dict[s
         lines.append(
             f"| {item['priority']} | {item['priority_value']} | {item['company_name']} | {item['sector']} | {item['recommended_offer']} | {item['reason']} |"
         )
-    lines += [
-        "",
-        "## Founder actions",
-        "",
-    ]
+    lines += ["", "## Founder actions", ""]
     for item in priority_queue[:10]:
-        lines.append(
-            f"- Review {item['company_name']} — {item['recommended_offer']} — priority: {item['priority']}"
-        )
-    lines += [
-        "",
-        "## Generated packs",
-        "",
-        "| Company | Sector | Offer | Buyer | Source |",
-        "|---|---|---|---|---|",
-    ]
+        lines.append(f"- Review {item['company_name']} — {item['recommended_offer']} — priority: {item['priority']}")
+    lines += ["", "## Generated packs", "", "| Company | Sector | Offer | Buyer | Source |", "|---|---|---|---|---|"]
     for pack in packs:
         lines.append(
             f"| {pack['company_name']} | {pack['sector']} | {pack['recommended_offer']} | {pack['buyer_persona']} | {pack['source_url']} |"
@@ -149,6 +139,7 @@ def main() -> int:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "mode": "draft_only",
         "owner_review_required": True,
+        "source_pipeline": str(PIPELINE.relative_to(ROOT) if PIPELINE.exists() else FALLBACK_PIPELINE.relative_to(ROOT)),
         "targets_loaded": len(rows),
         "packs_generated": len(packs),
         "priority_queue": priority_queue,
