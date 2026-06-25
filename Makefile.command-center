@@ -1,4 +1,4 @@
-.PHONY: command-center hubspot-os founder-growth-os communication-check day
+.PHONY: command-center hubspot-os founder-growth-os growth-command-center communication-check day
 PYTHON ?= python3
 
 command-center:
@@ -10,8 +10,11 @@ hubspot-os:
 founder-growth-os:
 	$(PYTHON) scripts/commercial/generate_founder_growth_os.py
 
+growth-command-center:
+	$(PYTHON) scripts/commercial/generate_growth_command_center.py
+
 communication-check:
 	$(PYTHON) scripts/ops/controlled_communication_readiness_check.py
 
-day: command-center hubspot-os founder-growth-os communication-check
-	@echo "Dealix command center, HubSpot OS, Founder Growth OS, and communication gates generated."
+day: command-center hubspot-os founder-growth-os growth-command-center communication-check
+	@echo "Dealix command center, HubSpot OS, Founder Growth OS, Growth Command Center, and communication gates generated."
