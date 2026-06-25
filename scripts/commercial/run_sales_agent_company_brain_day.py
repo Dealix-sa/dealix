@@ -2,7 +2,8 @@
 """Run a review-first Sales Agent + Company Brain commercial day.
 
 Reads the commercial lead pipeline template, generates company-specific packs,
-and writes a daily command report. No external communication is sent.
+prioritizes accounts, and writes a daily command report. No external
+communication is performed.
 """
 
 from __future__ import annotations
@@ -12,6 +13,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from app.commercial.prioritizer import queue as build_priority_queue
 from app.commercial.sales_agent import build_sales_agent_pack
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -74,31 +76,43 @@ def pack_markdown(pack: dict[str, object]) -> str:
 """
 
 
-def summary_markdown(packs: list[dict[str, object]]) -> str:
+def summary_markdown(packs: list[dict[str, object]], priority_queue: list[dict[str, object]]) -> str:
     lines = [
         "# Sales Agent + Company Brain Day",
         "",
         "## Verdict",
         "",
-        "Daily commercial packs generated for founder review. No external communication was sent.",
+        "Daily commercial packs generated for founder review. No external communication was performed.",
         "",
         "## Metrics",
         "",
         f"- targets loaded: {len(packs)}",
         f"- packs generated: {len(packs)}",
+        f"- priority queue items: {len(priority_queue)}",
         "- communication mode: draft_only",
         "- owner review required: true",
+        "",
+        "## Priority queue",
+        "",
+        "| Priority | Score | Company | Sector | Offer | Reason |",
+        "|---|---:|---|---|---|---|",
+    ]
+    for item in priority_queue[:20]:
+        lines.append(
+            f"| {item['priority']} | {item['priority_value']} | {item['company_name']} | {item['sector']} | {item['recommended_offer']} | {item['reason']} |"
+        )
+    lines += [
         "",
         "## Founder actions",
         "",
     ]
-    for pack in packs[:10]:
+    for item in priority_queue[:10]:
         lines.append(
-            f"- Review {pack['company_name']} — {pack['recommended_offer']} — next action: {pack['next_action']}"
+            f"- Review {item['company_name']} — {item['recommended_offer']} — priority: {item['priority']}"
         )
     lines += [
         "",
-        "## Packs",
+        "## Generated packs",
         "",
         "| Company | Sector | Offer | Buyer | Source |",
         "|---|---|---|---|---|",
@@ -112,6 +126,7 @@ def summary_markdown(packs: list[dict[str, object]]) -> str:
 
 def main() -> int:
     rows = load_rows()
+    priority_queue = build_priority_queue(rows)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     packs: list[dict[str, object]] = []
@@ -136,9 +151,10 @@ def main() -> int:
         "owner_review_required": True,
         "targets_loaded": len(rows),
         "packs_generated": len(packs),
+        "priority_queue": priority_queue,
         "packs": packs,
     }
-    (OUT_DIR / "latest.md").write_text(summary_markdown(packs), encoding="utf-8")
+    (OUT_DIR / "latest.md").write_text(summary_markdown(packs, priority_queue), encoding="utf-8")
     (OUT_DIR / "latest.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("SALES_AGENT_COMPANY_BRAIN_DAY=reports/commercial/sales_agent_company_brain/latest.md")
     print(f"PACKS_GENERATED={len(packs)}")
