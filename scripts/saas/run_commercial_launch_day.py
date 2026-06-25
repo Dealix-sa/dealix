@@ -9,18 +9,21 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from pathlib import Path
 
+from scripts.commercial.run_sales_agent_company_brain_day import main as run_sales_agent_day
+
 ROOT = Path(__file__).resolve().parents[2]
 REPORT = ROOT / "reports" / "saas" / "COMMERCIAL_LAUNCH_DAY.md"
 ACTIONS = [
-    "Pick 20 Saudi B2B companies with visible follow-up or revenue pain.",
-    "Create 10 reviewed outreach drafts from sales/SAAS_BETA_OFFER_AR.md.",
-    "Send manually only after founder review.",
-    "Book 3 diagnostic calls.",
-    "Convert 1 call into a 7-Day Revenue Command Room Sprint proposal.",
+    "Review the generated Sales Agent + Company Brain packs.",
+    "Pick 10 Saudi B2B companies with a verified source_url and clear pain hypothesis.",
+    "Prepare 3 founder-reviewed discovery call attempts.",
+    "Create 1 scoped proposal only after qualification.",
+    "Update HubSpot or the deal ledger after every founder action.",
 ]
 
 
 def main() -> int:
+    run_sales_agent_day()
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     now = datetime.now(timezone.utc).isoformat()
     lines = [
@@ -31,6 +34,11 @@ def main() -> int:
         "## Safety",
         "",
         "No external sending. No live WhatsApp. No SMS. Manual review only.",
+        "",
+        "## Generated operating assets",
+        "",
+        "- reports/commercial/sales_agent_company_brain/latest.md",
+        "- reports/commercial/sales_agent_company_brain/latest.json",
         "",
         "## Founder actions",
         "",
