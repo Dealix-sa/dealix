@@ -1,8 +1,11 @@
-.PHONY: command-center day
+.PHONY: command-center communication-check day
 PYTHON ?= python3
 
 command-center:
 	$(PYTHON) scripts/commercial/generate_strategic_command_center.py
 
-day: command-center
-	@echo "Dealix command center generated."
+communication-check:
+	$(PYTHON) scripts/ops/controlled_communication_readiness_check.py
+
+day: command-center communication-check
+	@echo "Dealix command center generated and communication gates checked."
