@@ -52,19 +52,26 @@ def _safety_status() -> dict[str, Any]:
     mode = os.getenv("OUTBOUND_MODE", "draft_only")
 
     if external and mode != "controlled_live":
-        failures.append("EXTERNAL_SEND_ENABLED=true requires OUTBOUND_MODE=controlled_live")
+        failures.append(
+            "EXTERNAL_SEND_ENABLED=true requires OUTBOUND_MODE=controlled_live"
+        )
     if email and not external:
         failures.append("EMAIL_SEND_ENABLED=true requires EXTERNAL_SEND_ENABLED=true")
     if whatsapp and not external:
         failures.append("WHATSAPP_SEND_ENABLED=true requires EXTERNAL_SEND_ENABLED=true")
     if whatsapp and not whatsapp_live:
-        failures.append("WHATSAPP_SEND_ENABLED=true requires WHATSAPP_ALLOW_LIVE_SEND=true")
+        failures.append(
+            "WHATSAPP_SEND_ENABLED=true requires WHATSAPP_ALLOW_LIVE_SEND=true"
+        )
     if sms:
         failures.append("SMS_SEND_ENABLED=true is blocked by this control plane")
     if mode not in {"draft_only", "review_only", "controlled_live", "disabled"}:
         failures.append(f"Unsupported OUTBOUND_MODE={mode}")
     if mode == "controlled_live":
-        warnings.append("controlled_live requested; verify DNS, opt-out, suppression, approval, and channel-specific gates before any send")
+        warnings.append(
+            "controlled_live requested; verify DNS, opt-out, suppression, "
+            "approval, and channel-specific gates before any send"
+        )
 
     return {
         "status": "blocked" if failures else "safe",
@@ -82,7 +89,9 @@ def _build_founder_actions(registry: dict[str, Any]) -> list[dict[str, str]]:
             {
                 "owner": "founder",
                 "action": f"Prepare one sales proof note for {product['name']}",
-                "why": product.get("promise", "Commercial product requires proof language."),
+                "why": product.get(
+                    "promise", "Commercial product requires proof language."
+                ),
                 "mode": "manual_review",
             }
         )
@@ -100,7 +109,9 @@ def _build_founder_actions(registry: dict[str, Any]) -> list[dict[str, str]]:
 
 def _write_reports(payload: dict[str, Any]) -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    LATEST_JSON.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    LATEST_JSON.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
 
     safety = payload["safety"]
     lines = [
@@ -113,15 +124,24 @@ def _write_reports(payload: dict[str, Any]) -> None:
         "## Founder actions",
     ]
     for idx, action in enumerate(payload["founder_actions"], start=1):
-        lines.append(f"{idx}. **{action['action']}** — {action['why']} (`{action['mode']}`)")
+        lines.append(
+            f"{idx}. **{action['action']}** — {action['why']} "
+            f"(`{action['mode']}`)"
+        )
 
     lines.extend(["", "## Commercial products"])
     for product in payload["commercial_products"]:
-        lines.append(f"- **{product['name']}** (`{product['priority']}`): {product['promise']}")
+        lines.append(
+            f"- **{product['name']}** (`{product['priority']}`): "
+            f"{product['promise']}"
+        )
 
     lines.extend(["", "## Loops"])
     for loop in payload["loops"]:
-        lines.append(f"- `{loop['loop_id']}` — {loop['goal']} / stop: {loop['stop_condition']}")
+        lines.append(
+            f"- `{loop['loop_id']}` — {loop['goal']} / "
+            f"stop: {loop['stop_condition']}"
+        )
 
     if safety["failures"]:
         lines.extend(["", "## Safety failures"])
@@ -137,7 +157,8 @@ def _write_reports(payload: dict[str, Any]) -> None:
         [
             "",
             "## Next step",
-            "Review the generated actions manually. Do not send externally from this report.",
+            "Review the generated actions manually. "
+            "Do not send externally from this report.",
         ]
     )
     LATEST_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
