@@ -1,0 +1,1 @@
+"""Dealix application package."""
