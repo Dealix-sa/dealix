@@ -456,6 +456,10 @@ def create_app() -> FastAPI:
     from api.routers.outbound_safety import router as outbound_safety_router
     app.include_router(outbound_safety_router)
 
+    # Commercial day operations — /api/v1/commercial/*
+    from api.routers.commercial_day import router as commercial_day_router
+    app.include_router(commercial_day_router)
+
     @app.get("/api/status", tags=["status"])
     async def api_status() -> dict[str, object]:
         """API status — safe, no secrets."""
