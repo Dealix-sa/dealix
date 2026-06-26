@@ -4,10 +4,10 @@ import Link from "next/link";
 
 const links = [
   { href: "/", label: "الرئيسية" },
-  { href: "/sales-machine", label: "آلة المبيعات" },
-  { href: "/offers", label: "العروض" },
+  { href: "/about", label: "من نحن" },
+  { href: "/services", label: "الخدمات" },
   { href: "/pricing", label: "التسعير" },
-  { href: "/book", label: "احجز مراجعة" },
+  { href: "/contact", label: "تواصل" },
 ];
 
 export default function Nav() {

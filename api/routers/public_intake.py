@@ -1,11 +1,10 @@
 """
-Public intake endpoint — unauthenticated, rate-limited.
+Public intake endpoints — unauthenticated, rate-limited.
 
-POST /api/v1/public/custom-ai-request
-    body: CustomAIRequest
-    returns: {"status": "queued", "governance_decision": "queued_for_founder_review", "message": str}
+POST /api/v1/public/custom-ai-request  — Rung-4 custom AI intake
+POST /api/v1/public/contact            — General contact form
 
-Every submission is written to var/custom_ai_requests.jsonl for founder review.
+Every submission is written to var/ for founder review.
 No external action is taken automatically. Founder must approve before any follow-up.
 
 Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة
@@ -79,5 +78,50 @@ def submit_custom_ai_request(payload: CustomAIRequest) -> dict:
         "message": (
             "شكراً — تم استلام طلبك وسيُراجعه المؤسس قبل أي إجراء. "
             "Thank you — your request has been received and will be reviewed by the founder before any action."
+        ),
+    }
+
+
+class ContactRequest(BaseModel):
+    name: str = Field(..., min_length=2, max_length=100)
+    company: str = Field(..., min_length=2, max_length=100)
+    contact: str = Field(..., min_length=5, max_length=200, description="WhatsApp or email")
+    message: str = Field(..., min_length=10, max_length=2000)
+
+
+@router.post("/contact")
+def submit_contact(payload: ContactRequest) -> dict:
+    """
+    Accept a general contact form submission.
+    Writes to var/contact_requests.jsonl for founder review.
+    NO external action is taken automatically.
+    """
+    VAR_DIR.mkdir(parents=True, exist_ok=True)
+    record = {
+        "submitted_at": datetime.now(timezone.utc).isoformat(),
+        "name": payload.name,
+        "company": payload.company,
+        "contact_channel": payload.contact,
+        "governance_decision": "queued_for_founder_review",
+        "status": "pending_founder_review",
+        "disclaimer": "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة",
+    }
+    # message stored separately — not logged to keep PII out of log stream
+    message_record = {**record, "message": payload.message}
+    contact_file = VAR_DIR / "contact_requests.jsonl"
+    with contact_file.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(message_record, ensure_ascii=False) + "\n")
+
+    logger.info(
+        "contact_request queued company=%s",
+        payload.company,
+    )
+
+    return {
+        "status": "queued",
+        "governance_decision": "queued_for_founder_review",
+        "message": (
+            "وصلت رسالتك — سيراجعها المؤسس ويتواصل معك خلال 24 ساعة. "
+            "Your message was received — the founder will review and reach out within 24 hours."
         ),
     }
