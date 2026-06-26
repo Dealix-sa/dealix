@@ -12,7 +12,8 @@ PYTHON_BIN="${PYTHON:-python3}"
 "$PYTHON_BIN" scripts/commercial/generate_strategic_command_center.py
 "$PYTHON_BIN" scripts/commercial/generate_hubspot_commercial_os.py
 "$PYTHON_BIN" scripts/commercial/generate_founder_growth_os.py
+"$PYTHON_BIN" scripts/commercial/generate_growth_command_center.py
 "$PYTHON_BIN" scripts/ops/backend_launch_cleanliness_check.py
 "$PYTHON_BIN" scripts/ops/controlled_communication_readiness_check.py
 
-echo "Commercial day completed. Review reports/commercial, reports/command_center, reports/hubspot_os, reports/founder_growth_os, and reports/go_live."
+echo "Commercial day completed. Review reports/commercial, reports/command_center, reports/hubspot_os, reports/founder_growth_os, reports/growth_command_center, and reports/go_live."
