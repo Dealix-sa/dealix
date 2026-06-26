@@ -1,0 +1,49 @@
+{
+  "company": "Dealix",
+  "control_name": "Trust and Claims Control",
+  "purpose": "protect commercial launch quality by reviewing claims, data handling, proof language, and AI operating guardrails",
+  "checks": [
+    {
+      "name": "Claims Review",
+      "goal": "block fake ROI, fake testimonials, and guaranteed revenue language",
+      "evidence": ["claims guardrails", "approved proof language", "offer copy review"]
+    },
+    {
+      "name": "Data Handling Review",
+      "goal": "confirm the system asks only for data needed to deliver the agreed workflow",
+      "evidence": ["data request checklist", "access checklist", "client scope card"]
+    },
+    {
+      "name": "AI Review Gate",
+      "goal": "keep AI outputs under owner review for sensitive actions",
+      "evidence": ["human review rule", "decision log", "approval status"]
+    },
+    {
+      "name": "Proof Language",
+      "goal": "use before/after and operational evidence instead of unsupported claims",
+      "evidence": ["proof pack", "decision log", "weekly report"]
+    }
+  ],
+  "blocked_phrases": [
+    "guaranteed revenue",
+    "guaranteed ROI",
+    "fake testimonial",
+    "automatic live send",
+    "no approval needed"
+  ],
+  "approved_language": [
+    "pain hypothesis",
+    "founder review",
+    "proof pack",
+    "operational evidence",
+    "scoped diagnostic",
+    "measurable workflow"
+  ],
+  "required_guardrails": [
+    "no fake ROI",
+    "no fake testimonials",
+    "no guaranteed revenue claim",
+    "owner review required",
+    "proof pack required after every paid sprint"
+  ]
+}
