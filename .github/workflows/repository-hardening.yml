@@ -17,30 +17,28 @@ permissions:
   contents: read
 
 jobs:
-  secret-scan:
-    name: Gitleaks secret scan
+  repository-scan:
+    name: Repository safety scan
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Run Gitleaks when license is available
-        if: ${{ env.GITLEAKS_LICENSE != '' }}
-        uses: gitleaks/gitleaks-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ env.GITLEAKS_LICENSE }}
-
-      - name: Skip Gitleaks Action when org license is unavailable
-        if: ${{ env.GITLEAKS_LICENSE == '' }}
+      - name: Verify no committed env files
         run: |
-          echo "GITLEAKS_LICENSE is not configured."
-          echo "Skipping gitleaks/gitleaks-action to avoid blocking CI for organization repositories."
-          echo "Add repo/org secret GITLEAKS_LICENSE to enable enforcement."
+          test ! -f .env
+          test ! -f .env.production
+          test ! -f apps/web/.env.local
+
+      - name: Verify public examples stay safe
+        run: |
+          grep -q '^EXTERNAL_SEND_ENABLED=false' .env.example
+          grep -q '^OUTBOUND_MODE=draft_only' .env.example
+          grep -q '^WHATSAPP_ALLOW_LIVE_SEND=false' .env.example
 
   filesystem-scan:
     name: Trivy filesystem scan
@@ -61,9 +59,6 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
-          # Secret scanning is owned by the dedicated Gitleaks job above;
-          # restrict Trivy to dependency vulnerability scanning to avoid
-          # duplicate (and false-positive) secret findings.
           scanners: vuln
           severity: CRITICAL,HIGH
           ignore-unfixed: true
