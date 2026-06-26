@@ -1,0 +1,38 @@
+{
+  "name": "Full Commercial Launch Control",
+  "company": "Dealix",
+  "purpose": "single top-level review layer for founder-led commercial launch readiness",
+  "required_reports": [
+    "reports/startup_command_center/latest.json",
+    "reports/founder_daily_brief/latest.json",
+    "reports/startup_proof_pack/latest.json",
+    "reports/startup_release_gate/latest.json",
+    "reports/commercial_launch_control/latest.json",
+    "reports/client_delivery_control/latest.json",
+    "reports/trust_control/latest.json"
+  ],
+  "required_pages": [
+    "apps/web/app/(saas)/app/command-room/page.tsx",
+    "apps/web/app/(saas)/app/startup-command/page.tsx",
+    "apps/web/app/(saas)/app/founder-brief/page.tsx",
+    "apps/web/app/(saas)/app/commercial-launch/page.tsx",
+    "apps/web/app/(saas)/app/client-delivery/page.tsx",
+    "apps/web/app/(saas)/app/trust-control/page.tsx"
+  ],
+  "required_guardrails": [
+    "draft_only",
+    "no fake ROI",
+    "no fake testimonials",
+    "source_url required",
+    "proof pack required"
+  ],
+  "founder_actions": [
+    "run the startup operating day",
+    "run the release gate",
+    "generate commercial launch control",
+    "generate client delivery control",
+    "generate trust control",
+    "review conflicts before merge",
+    "prepare three discovery notes and one scoped proposal"
+  ]
+}
