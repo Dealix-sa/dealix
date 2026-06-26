@@ -60,6 +60,37 @@ export interface FounderPriority {
   blockedBy: string[];
 }
 
+export interface DailyKpi {
+  id: string;
+  label: string;
+  labelAr: string;
+  current: number;
+  target: number;
+  unit: string;
+  statusLabel: string;
+  statusLabelAr: string;
+  color: "orange" | "red" | "gray" | "amber" | "emerald";
+}
+
+export interface RiskItem {
+  id: string;
+  title: string;
+  titleAr: string;
+  severity: "critical" | "high" | "medium" | "low";
+  mitigation: string;
+  mitigationAr: string;
+}
+
+export interface SystemStatus {
+  id: string;
+  name: string;
+  nameAr: string;
+  status: "operational" | "building" | "blocked" | "planned";
+  description: string;
+  descriptionAr: string;
+  link: string;
+}
+
 export const ACQUISITION_FUNNEL: AcquisitionStep[] = [
   {
     id: "discover",
@@ -374,7 +405,7 @@ export const FOUNDER_PRIORITIES: FounderPriority[] = [
   {
     id: "ship_launch_brief",
     rank: 2,
-    title: "Generate today’s launch brief + CEO brief",
+    title: "Generate today's launch brief + CEO brief",
     titleAr: "ولّد ملخص الإطلاق اليومي + ملخص CEO",
     description: "Run the daily operator, then publish the launch brief to the founder channel.",
     descriptionAr: "شغّل المشغّل اليومي، ثم انشر ملخص الإطلاق في قناة المؤسس.",
@@ -410,6 +441,194 @@ export const FOUNDER_PRIORITIES: FounderPriority[] = [
     descriptionAr: "حوّل أعلى حساب تجريبي أولوية إلى عقد اشتراك مدفوع.",
     dueInDays: 14,
     blockedBy: ["first_100_leads", "deployment_readiness"],
+  },
+];
+
+// --- New exports for the war room and command room ---
+
+export const COMPANY_STATUS: Record<string, SystemStatus> = {
+  whatsapp_revenue_os: {
+    id: "whatsapp_revenue_os",
+    name: "WhatsApp Revenue OS",
+    nameAr: "نظام إيرادات واتساب",
+    status: "building",
+    description: "Automated lead qualification and follow-up via WhatsApp with human approval gates.",
+    descriptionAr: "تأهيل تلقائي للعملاء والمتابعة عبر واتساب مع بوابات موافقة بشرية.",
+    link: "/app/sales-machine",
+  },
+  review_intelligence_os: {
+    id: "review_intelligence_os",
+    name: "Review Intelligence OS",
+    nameAr: "نظام ذكاء التقييمات",
+    status: "building",
+    description: "Monitor, analyze, and respond to client reviews across platforms.",
+    descriptionAr: "رصد وتحليل والرد على تقييمات العملاء عبر المنصات.",
+    link: "/app/review-queue",
+  },
+  ai_command_center: {
+    id: "ai_command_center",
+    name: "AI Business Command Center",
+    nameAr: "مركز قيادة الأعمال بالذكاء الاصطناعي",
+    status: "operational",
+    description: "Unified operations dashboard for founders and delivery leads.",
+    descriptionAr: "لوحة تحكم موحدة لعمليات المؤسسين وقادة التسليم.",
+    link: "/app/command-room",
+  },
+  brand_intelligence_os: {
+    id: "brand_intelligence_os",
+    name: "Brand Intelligence OS",
+    nameAr: "نظام ذكاء العلامة التجارية",
+    status: "planned",
+    description: "Track brand signals, sentiment, and competitive positioning.",
+    descriptionAr: "تتبع إشارات العلامة التجارية والمشاعر والتموضع التنافسي.",
+    link: "/app/company-brain-os",
+  },
+  growth_engine_os: {
+    id: "growth_engine_os",
+    name: "Growth Engine OS",
+    nameAr: "نظام محرك النمو",
+    status: "building",
+    description: "Lead generation, scoring, and pipeline acceleration engine.",
+    descriptionAr: "محرك توليد العملاء المحتملين وتسجيل النقاط وتسريع خط المبيعات.",
+    link: "/app/lead-engine",
+  },
+  customer_experience_os: {
+    id: "customer_experience_os",
+    name: "Customer Experience OS",
+    nameAr: "نظام تجربة العميل",
+    status: "planned",
+    description: "End-to-end client journey orchestration and satisfaction tracking.",
+    descriptionAr: "تنسيق رحلة العميل الشاملة وتتبع الرضا.",
+    link: "/app/client-delivery",
+  },
+  ai_agent_workforce_os: {
+    id: "ai_agent_workforce_os",
+    name: "AI Agent Workforce OS",
+    nameAr: "نظام قوى عاملة الوكلاء الذكيين",
+    status: "planned",
+    description: "Deploy and manage AI agents across business functions with governance.",
+    descriptionAr: "نشر وإدارة وكلاء الذكاء الاصطناعي عبر وظائف الأعمال مع الحوكمة.",
+    link: "/app/agents",
+  },
+};
+
+export const DAILY_KPIS: DailyKpi[] = [
+  {
+    id: "pipeline_value",
+    label: "Pipeline Value",
+    labelAr: "قيمة خط المبيعات",
+    current: 0,
+    target: 50000,
+    unit: "SAR",
+    statusLabel: "BUILDING",
+    statusLabelAr: "قيد البناء",
+    color: "orange",
+  },
+  {
+    id: "active_clients",
+    label: "Active Clients",
+    labelAr: "العملاء النشطون",
+    current: 0,
+    target: 3,
+    unit: "",
+    statusLabel: "BUILDING",
+    statusLabelAr: "قيد البناء",
+    color: "orange",
+  },
+  {
+    id: "proposals_out",
+    label: "Proposals Out",
+    labelAr: "العروض المرسلة",
+    current: 0,
+    target: 2,
+    unit: "",
+    statusLabel: "ACTION NEEDED",
+    statusLabelAr: "يحتاج إجراء",
+    color: "red",
+  },
+  {
+    id: "proof_packs",
+    label: "Proof Packs",
+    labelAr: "حزم الإثبات",
+    current: 0,
+    target: 1,
+    unit: "",
+    statusLabel: "ACTION NEEDED",
+    statusLabelAr: "يحتاج إجراء",
+    color: "red",
+  },
+  {
+    id: "revenue_mtd",
+    label: "Revenue MTD",
+    labelAr: "الإيرادات حتى اليوم",
+    current: 0,
+    target: 0,
+    unit: "SAR",
+    statusLabel: "DAY ZERO",
+    statusLabelAr: "اليوم الصفري",
+    color: "gray",
+  },
+  {
+    id: "days_to_cash",
+    label: "Days to Cash",
+    labelAr: "أيام للتدفق النقدي",
+    current: 30,
+    target: 30,
+    unit: "days",
+    statusLabel: "TRACKING",
+    statusLabelAr: "تتبع",
+    color: "amber",
+  },
+];
+
+export const RISK_MATRIX: RiskItem[] = [
+  {
+    id: "review_queue_blocked",
+    title: "Review queue not cleared",
+    titleAr: "طابور المراجعة غير مُصفَّر",
+    severity: "critical",
+    mitigation: "Outreach stays as draft only. Founder clears queue before any send.",
+    mitigationAr: "التواصل يبقى مسوّدة فقط. المؤسس يصفّر الطابور قبل أي إرسال.",
+  },
+  {
+    id: "no_proposal_sent",
+    title: "No proposals in flight",
+    titleAr: "لا عروض قيد التنفيذ",
+    severity: "high",
+    mitigation: "Identify top 2 qualified leads and generate proposal drafts this week.",
+    mitigationAr: "تحديد أفضل 2 ليد مؤهل وتوليد مسوّدات عروض هذا الأسبوع.",
+  },
+  {
+    id: "zero_revenue",
+    title: "Zero revenue — pre-cash phase",
+    titleAr: "صفر إيرادات — مرحلة ما قبل النقد",
+    severity: "high",
+    mitigation: "Convert first diagnostic sprint to signed contract within 14 days.",
+    mitigationAr: "تحويل أول سبرينت تشخيصي إلى عقد موقّع خلال 14 يوماً.",
+  },
+  {
+    id: "proof_vault_empty",
+    title: "Proof vault underused",
+    titleAr: "خزانة الإثبات غير مستخدمة",
+    severity: "medium",
+    mitigation: "Log at least 3 proof items per week from live delivery work.",
+    mitigationAr: "سجّل 3 عناصر إثبات على الأقل أسبوعياً من عمل التسليم الحي.",
+  },
+  {
+    id: "deployment_not_live",
+    title: "Production not deployed yet",
+    titleAr: "الإنتاج لم ينشر بعد",
+    severity: "medium",
+    mitigation: "Complete Vercel + Railway deployment check before external outreach.",
+    mitigationAr: "أكمل فحص نشر Vercel + Railway قبل التواصل الخارجي.",
+  },
+  {
+    id: "no_cold_whatsapp",
+    title: "Cold WhatsApp is forbidden",
+    titleAr: "واتساب البارد محظور",
+    severity: "low",
+    mitigation: "All WhatsApp messages require prior relationship or explicit opt-in.",
+    mitigationAr: "جميع رسائل واتساب تتطلب علاقة سابقة أو موافقة صريحة.",
   },
 ];
 

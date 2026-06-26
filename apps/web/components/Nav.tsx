@@ -4,7 +4,9 @@ import Link from "next/link";
 
 const links = [
   { href: "/", label: "الرئيسية" },
-  { href: "/sales-machine", label: "آلة المبيعات" },
+  { href: "/war-room", label: "غرفة الحرب" },
+  { href: "/command-center", label: "Command Center" },
+  { href: "/services", label: "خدماتنا" },
   { href: "/offers", label: "العروض" },
   { href: "/pricing", label: "التسعير" },
   { href: "/book", label: "احجز مراجعة" },
