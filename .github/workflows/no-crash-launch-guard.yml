@@ -38,9 +38,8 @@ jobs:
       - name: Compile
         run: python -m compileall -q api dealix scripts tests
 
-      - name: Ruff no-crash runtime visibility
-        continue-on-error: true
-        run: ruff check api dealix scripts tests --select E999,F821
+      - name: Ruff
+        run: ruff check api dealix scripts tests
 
       - name: Commercial digest
         run: pytest -q tests/test_founder_commercial_digest.py
