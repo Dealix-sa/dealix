@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: startup-os-day startup-command founder-brief startup-proof startup-release-gate startup-web-verify startup-os-test
+.PHONY: startup-os-day startup-command founder-brief startup-proof startup-release-gate commercial-launch-control startup-web-verify startup-os-test commercial-launch-test commercial-launch-full
 
 startup-os-day:
 	$(PYTHON) scripts/commercial/run_startup_os_day.py
@@ -17,8 +17,17 @@ startup-proof:
 startup-release-gate:
 	$(PYTHON) scripts/commercial/verify_startup_os_release_gate.py
 
+commercial-launch-control:
+	$(PYTHON) scripts/commercial/generate_commercial_launch_control.py
+
 startup-web-verify:
 	npm --prefix apps/web run verify || true
 
 startup-os-test:
 	$(PYTHON) -m pytest -q tests/saas/test_startup_command_center_assets.py tests/saas/test_startup_os_day_assets.py tests/saas/test_startup_os_release_gate.py
+
+commercial-launch-test:
+	$(PYTHON) -m pytest -q tests/saas/test_commercial_launch_control_assets.py
+
+commercial-launch-full: startup-os-day startup-release-gate commercial-launch-control startup-os-test commercial-launch-test startup-web-verify
+	@echo "COMMERCIAL_LAUNCH_FULL_READY"
