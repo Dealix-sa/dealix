@@ -5,8 +5,6 @@ from db.models, and that no duplicate/conflicting model definitions
 exist.
 """
 
-import pytest
-
 
 def test_os_models_importable():
     """All 9 OS model classes must be importable from db.models."""
@@ -21,6 +19,7 @@ def test_os_models_importable():
         ProposalRecord,
         ProspectRecord,
     )
+
     assert ProspectRecord.__tablename__ == "prospects"
     assert OutreachDraftRecord.__tablename__ == "outreach_drafts"
     assert OutboundMessageRecord.__tablename__ == "outbound_messages"
@@ -36,7 +35,6 @@ def test_existing_models_still_importable():
     """Existing core models must still be importable (no regression)."""
     from db.models import (
         AuditLogRecord,
-        Base,
         CompanyRecord,
         ContactRecord,
         DealRecord,
@@ -44,6 +42,7 @@ def test_existing_models_still_importable():
         TenantRecord,
         UserRecord,
     )
+
     assert TenantRecord.__tablename__ == "tenants"
     assert UserRecord.__tablename__ == "users"
     assert LeadRecord.__tablename__ == "leads"
@@ -56,6 +55,7 @@ def test_existing_models_still_importable():
 def test_no_duplicate_table_names():
     """No two model classes should share the same __tablename__."""
     from db.models import Base
+
     table_names = []
     for mapper in Base.registry.mappers:
         table = mapper.local_table
@@ -68,11 +68,13 @@ def test_no_duplicate_table_names():
 def test_prospect_has_source_url():
     """ProspectRecord must have source_url field."""
     from db.models import ProspectRecord
+
     assert hasattr(ProspectRecord, "source_url")
 
 
 def test_outbound_message_has_safety_fields():
     """OutboundMessageRecord must have safety_check_passed and blocked_reason."""
     from db.models import OutboundMessageRecord
+
     assert hasattr(OutboundMessageRecord, "safety_check_passed")
     assert hasattr(OutboundMessageRecord, "blocked_reason")
