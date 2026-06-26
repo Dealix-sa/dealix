@@ -17,12 +17,30 @@ REPORT_DIR.mkdir(parents=True, exist_ok=True)
 LEDGERS_DIR.mkdir(parents=True, exist_ok=True)
 
 RIYADH_QUERIES = [
-    {"sector": "clinics", "query": "Riyadh clinics appointment follow up operations"},
-    {"sector": "real_estate", "query": "Riyadh real estate companies sales follow up"},
-    {"sector": "logistics", "query": "Riyadh logistics companies B2B operations"},
-    {"sector": "training", "query": "Riyadh training centers registration operations"},
-    {"sector": "marketing_agencies", "query": "Riyadh marketing agencies AI operations"},
-    {"sector": "b2b_services", "query": "Riyadh B2B service companies proposal operations"},
+    {
+        "sector": "clinics",
+        "query": "Riyadh clinics appointment follow up operations",
+    },
+    {
+        "sector": "real_estate",
+        "query": "Riyadh real estate companies sales follow up",
+    },
+    {
+        "sector": "logistics",
+        "query": "Riyadh logistics companies B2B operations",
+    },
+    {
+        "sector": "training",
+        "query": "Riyadh training centers registration operations",
+    },
+    {
+        "sector": "marketing_agencies",
+        "query": "Riyadh marketing agencies AI operations",
+    },
+    {
+        "sector": "b2b_services",
+        "query": "Riyadh B2B service companies proposal operations",
+    },
 ]
 
 FIELDS = [
@@ -44,19 +62,31 @@ FIELDS = [
 
 def _company_name(title: str, sector: str) -> str:
     title = (title or "").strip()
-    return title[:120] if title else f"Riyadh {sector.replace('_', ' ').title()} Research Item"
+    if title:
+        return title[:120]
+    sector_name = sector.replace("_", " ").title()
+    return f"Riyadh {sector_name} Research Item"
 
 
 def _pain(sector: str) -> str:
     values = {
         "clinics": "Appointment and inquiry follow-up need daily visibility.",
-        "real_estate": "Lead follow-up can fragment across portals, calls, and messages.",
+        "real_estate": (
+            "Lead follow-up can fragment across portals, calls, and messages."
+        ),
         "logistics": "B2B quote and operations follow-up need a command room.",
-        "training": "Registration inquiries need structured qualification and reminders.",
-        "marketing_agencies": "Teams need reusable AI operating systems for delivery and reporting.",
+        "training": (
+            "Registration inquiries need structured qualification and reminders."
+        ),
+        "marketing_agencies": (
+            "Teams need reusable AI operating systems for delivery and reporting."
+        ),
         "b2b_services": "Proposals and follow-up need one owner decision workflow.",
     }
-    return values.get(sector, "Operating visibility can improve with a review-first workflow.")
+    return values.get(
+        sector,
+        "Operating visibility can improve with a review-first workflow.",
+    )
 
 
 def _angle(sector: str) -> str:
@@ -79,41 +109,60 @@ def build_rows(exa: ExaConnector) -> tuple[list[dict[str, Any]], list[dict[str, 
         else:
             results = []
             mode = "dry_run"
-        evidence.append({"sector": sector, "city": "Riyadh", "query": query, "mode": mode, "results_count": len(results), "results": results[:10]})
+        evidence.append(
+            {
+                "sector": sector,
+                "city": "Riyadh",
+                "query": query,
+                "mode": mode,
+                "results_count": len(results),
+                "results": results[:10],
+            }
+        )
         if results:
             for result in results[:5]:
                 source_url = result.get("url", "")
-                rows.append({
-                    "company_name": _company_name(result.get("title", ""), sector),
+                rows.append(
+                    {
+                        "company_name": _company_name(result.get("title", ""), sector),
+                        "sector": sector,
+                        "city": "Riyadh",
+                        "website": source_url,
+                        "source_url": source_url,
+                        "verification_status": "needs_human_review",
+                        "confidence": "0.55",
+                        "pain_hypothesis": _pain(sector),
+                        "dealix_angle": _angle(sector),
+                        "recommended_product": "Data Intelligence OS",
+                        "message_stage": "research_only",
+                        "next_action": (
+                            "Founder reviews source and chooses the next step."
+                        ),
+                        "owner_decision": "pending_review",
+                    }
+                )
+        else:
+            sector_name = sector.replace("_", " ").title()
+            rows.append(
+                {
+                    "company_name": f"Riyadh {sector_name} Research Queue",
                     "sector": sector,
                     "city": "Riyadh",
-                    "website": source_url,
-                    "source_url": source_url,
-                    "verification_status": "needs_human_review",
-                    "confidence": "0.55",
+                    "website": "",
+                    "source_url": "manual_research_required",
+                    "verification_status": "dry_run_query_ready",
+                    "confidence": "0.00",
                     "pain_hypothesis": _pain(sector),
                     "dealix_angle": _angle(sector),
                     "recommended_product": "Data Intelligence OS",
                     "message_stage": "research_only",
-                    "next_action": "Founder reviews source and chooses the next step.",
+                    "next_action": (
+                        "Configure EXA_API_KEY to populate real Riyadh company "
+                        "sources."
+                    ),
                     "owner_decision": "pending_review",
-                })
-        else:
-            rows.append({
-                "company_name": f"Riyadh {sector.replace('_', ' ').title()} Research Queue",
-                "sector": sector,
-                "city": "Riyadh",
-                "website": "",
-                "source_url": "manual_research_required",
-                "verification_status": "dry_run_query_ready",
-                "confidence": "0.00",
-                "pain_hypothesis": _pain(sector),
-                "dealix_angle": _angle(sector),
-                "recommended_product": "Data Intelligence OS",
-                "message_stage": "research_only",
-                "next_action": "Configure EXA_API_KEY to populate real Riyadh company sources.",
-                "owner_decision": "pending_review",
-            })
+                }
+            )
     return rows, evidence
 
 
@@ -138,7 +187,10 @@ def main() -> int:
         "prospects_count": len(rows),
         "evidence": evidence,
     }
-    (REPORT_DIR / "latest.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    (REPORT_DIR / "latest.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
     md = [
         "# Dealix Data Intelligence Day — Riyadh",
         "",
@@ -155,7 +207,15 @@ def main() -> int:
     ]
     for item in RIYADH_QUERIES:
         md.append(f"- {item['sector']}: `{item['query']}`")
-    md.extend(["", "## Next actions", "- Review `ledgers/riyadh_exa_prospects.csv`.", "- Move approved rows into `ledgers/prospects.csv`.", "- Run `make revenue-daily` after founder approval."])
+    md.extend(
+        [
+            "",
+            "## Next actions",
+            "- Review `ledgers/riyadh_exa_prospects.csv`.",
+            "- Move approved rows into `ledgers/prospects.csv`.",
+            "- Run `make revenue-daily` after founder approval.",
+        ]
+    )
     (REPORT_DIR / "latest.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     print("DATA_INTELLIGENCE_DAY_READY")
     print(f"mode={payload['mode']}")
