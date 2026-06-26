@@ -59,6 +59,7 @@ from api.routers import (
     zatca,
 )
 from api.routers import audit_export as audit_export_router
+from api.routers import public_intake as public_intake_router  # Wave 4 — public intake
 
 # Wave 13 — Full Ops Productization routers
 from api.routers import bottleneck_radar as bottleneck_radar_router
@@ -345,6 +346,8 @@ def create_app() -> FastAPI:
         app.include_router(_autopilot_router)
     # Wave 7 W7.5 — Tenant theming: GET tenant theme.css + POST admin theme update
     app.include_router(tenant_theming.router)
+    # Wave 4 — Public intake: POST /api/v1/public/custom-ai-request (no auth, founder-reviewed)
+    app.include_router(public_intake_router.router)
     # Wave 7 W7.2 — Sector Intelligence (R4 productization)
     app.include_router(sector_intel.router)
     # Wave 7 W7.3 — Admin tenants: CRUD for tenant management (R6 enabler)
