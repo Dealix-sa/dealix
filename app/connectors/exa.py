@@ -39,8 +39,8 @@ class ExaConnector:
         self.default_type = os.getenv("EXA_DEFAULT_SEARCH_TYPE", "auto")
         self.deep_type = os.getenv("EXA_DEEP_SEARCH_TYPE", "deep")
         self.num_results = int(os.getenv("EXA_NUM_RESULTS", "10"))
-        self.allow_live_search = os.getenv("EXA_ALLOW_LIVE_SEARCH", "true").lower() in {"1", "true", "yes", "on"}
-        self.store_raw_text = os.getenv("EXA_STORE_RAW_TEXT", "false").lower() in {"1", "true", "yes", "on"}
+        self.allow_live_search = _env_true("EXA_ALLOW_LIVE_SEARCH", default=True)
+        self.store_raw_text = _env_true("EXA_STORE_RAW_TEXT", default=False)
 
     def configured(self) -> bool:
         return bool(self.api_key)
@@ -48,7 +48,13 @@ class ExaConnector:
     def can_search_live(self) -> bool:
         return self.configured() and self.allow_live_search
 
-    def dry_run_search(self, query: str, *, city: str = "Riyadh", sector: str = "Saudi B2B") -> dict[str, Any]:
+    def dry_run_search(
+        self,
+        query: str,
+        *,
+        city: str = "Riyadh",
+        sector: str = "Saudi B2B",
+    ) -> dict[str, Any]:
         return {
             "mode": "dry_run",
             "provider": "exa",
@@ -64,11 +70,17 @@ class ExaConnector:
             "delivery_enabled": False,
         }
 
-    def search(self, query: str, *, search_type: str | None = None, num_results: int | None = None) -> list[ExaSearchResult]:
+    def search(
+        self,
+        query: str,
+        *,
+        search_type: str | None = None,
+        num_results: int | None = None,
+    ) -> list[ExaSearchResult]:
         if not self.can_search_live():
             return []
 
-        body = {
+        body: dict[str, Any] = {
             "query": query,
             "type": search_type or self.default_type,
             "numResults": num_results or self.num_results,
@@ -103,3 +115,10 @@ class ExaConnector:
             highlights=[str(item).strip() for item in highlights if str(item).strip()],
             score=raw.get("score"),
         )
+
+
+def _env_true(name: str, *, default: bool) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
