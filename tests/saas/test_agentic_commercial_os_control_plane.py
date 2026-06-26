@@ -41,7 +41,10 @@ def test_commercial_products_block_fake_roi_and_uncontrolled_sends():
     data = json.loads(REGISTRY.read_text(encoding="utf-8"))
     products = data.get("commercial_products", [])
     assert products
-    flattened = "\n".join("\n".join(p.get("forbidden_outputs", [])) for p in products).lower()
+    forbidden = [
+        "\n".join(product.get("forbidden_outputs", [])) for product in products
+    ]
+    flattened = "\n".join(forbidden).lower()
     assert "fake roi" in flattened or "guaranteed revenue" in flattened
     assert "automatic" in flattened
 
