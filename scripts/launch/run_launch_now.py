@@ -43,7 +43,8 @@ def run_step(name: str, command: list[str], *, required: bool) -> StepResult:
     print(f"\n▶ {name}")
     env = os.environ.copy()
     env.update(SAFE_ENV)
-    result = subprocess.run(command, cwd=ROOT, env=env, check=False)
+    # Commands are static launch gates declared in this module; no user input is interpolated.
+    result = subprocess.run(command, cwd=ROOT, env=env, check=False)  # noqa: S603
     status = "pass" if result.returncode == 0 else "fail"
     print(f"{name}: {status}")
     return StepResult(name, command, required, result.returncode, status)
@@ -88,7 +89,9 @@ def write_report(results: list[StepResult], *, include_frontend: bool, include_d
         "|---|---:|---|---:|",
     ]
     for item in results:
-        lines.append(f"| {item.name} | {str(item.required).lower()} | {item.status} | {item.returncode} |")
+        lines.append(
+            f"| {item.name} | {str(item.required).lower()} | {item.status} | {item.returncode} |"
+        )
     if required_failed:
         lines.extend(["", "## Required blockers"])
         for item in required_failed:
@@ -118,9 +121,28 @@ def main() -> int:
     args = parser.parse_args()
 
     steps: list[tuple[str, list[str], bool]] = [
-        ("Compile Python surfaces", ["python", "-m", "compileall", "-q", "api", "dealix", "scripts", "tests", "app"], True),
-        ("Exa/Data Intelligence tests", ["python", "-m", "pytest", "-q", "tests/test_exa_data_intelligence_os.py", "tests/test_data_intelligence_no_live_outbound.py"], True),
-        ("Data Intelligence Day", ["python", "scripts/intelligence/run_data_intelligence_day.py"], True),
+        (
+            "Compile Python surfaces",
+            ["python", "-m", "compileall", "-q", "api", "dealix", "scripts", "tests", "app"],
+            True,
+        ),
+        (
+            "Exa/Data Intelligence tests",
+            [
+                "python",
+                "-m",
+                "pytest",
+                "-q",
+                "tests/test_exa_data_intelligence_os.py",
+                "tests/test_data_intelligence_no_live_outbound.py",
+            ],
+            True,
+        ),
+        (
+            "Data Intelligence Day",
+            ["python", "scripts/intelligence/run_data_intelligence_day.py"],
+            True,
+        ),
         ("Environment contract", ["python", "scripts/check_env_contract.py"], True),
         ("Company safety check", ["make", "company-check"], True),
         ("Revenue daily machine", ["make", "revenue-daily"], False),
