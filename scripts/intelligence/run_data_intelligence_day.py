@@ -4,7 +4,7 @@ from __future__ import annotations
 import csv
 import json
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -169,7 +169,7 @@ def build_rows(exa: ExaConnector) -> tuple[list[dict[str, Any]], list[dict[str, 
 def main() -> int:
     exa = ExaConnector()
     rows, evidence = build_rows(exa)
-    generated_at = datetime.now(timezone.utc).isoformat()
+    generated_at = datetime.now(UTC).isoformat()
     prospects_path = LEDGERS_DIR / "riyadh_exa_prospects.csv"
     with prospects_path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=FIELDS)
