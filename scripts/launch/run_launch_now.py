@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: S603, S607
 from __future__ import annotations
 
 import argparse
@@ -44,7 +45,7 @@ def run_step(name: str, command: list[str], *, required: bool) -> StepResult:
     env = os.environ.copy()
     env.update(SAFE_ENV)
     # Commands are static launch gates declared in this module; no user input is interpolated.
-    result = subprocess.run(command, cwd=ROOT, env=env, check=False)  # noqa: S603
+    result = subprocess.run(command, cwd=ROOT, env=env, check=False)
     status = "pass" if result.returncode == 0 else "fail"
     print(f"{name}: {status}")
     return StepResult(name, command, required, result.returncode, status)
