@@ -7,7 +7,7 @@ and returned as a string.
 from __future__ import annotations
 
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from typing import Any
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -31,7 +31,7 @@ def generate_30_day_action_plan(
     if focus_areas is None:
         focus_areas = (profile or {}).get("focus_areas") or ["growth", "product", "operations"]
 
-    today = datetime.now(timezone.utc).date()
+    today = datetime.now(UTC).date()
     lines: list[str] = []
     lines.append(f"# 30-Day Action Plan — {today.isoformat()}")
     lines.append("")

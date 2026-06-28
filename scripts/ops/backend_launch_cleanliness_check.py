@@ -7,7 +7,7 @@ shape. This script does not call external services.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -66,7 +66,7 @@ def main() -> int:
             warnings.append("db/models.py does not appear to define model classes")
 
     report = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "status": "blocked" if failures else "ready_for_launch_review",
         "failures": failures,
         "warnings": warnings,

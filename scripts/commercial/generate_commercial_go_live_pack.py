@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import csv
 import json
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -152,7 +152,7 @@ def main() -> int:
     md = build_markdown()
     (REPORT_DIR / "latest.md").write_text(md, encoding="utf-8")
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "status": "ready_for_founder_manual_execution",
         "products": DEFAULT_PRODUCTS,
         "target_sectors": DEFAULT_TARGETS,

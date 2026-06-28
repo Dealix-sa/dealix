@@ -14,7 +14,7 @@ from __future__ import annotations
 import csv
 import os
 import uuid
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from typing import Any
 
 from scripts.brain import DECISION_REQUIRED_FIELDS
@@ -50,7 +50,7 @@ def generate_daily_decision(
 
     record: dict[str, Any] = {
         "id": f"DEC-{uuid.uuid4().hex[:8].upper()}",
-        "date": datetime.now(timezone.utc).date().isoformat(),
+        "date": datetime.now(UTC).date().isoformat(),
         "decision": decision,
         "why_now": why_now,
         "assumption": assumption,
@@ -84,7 +84,7 @@ def _append_decision(record: dict[str, Any], path: str) -> None:
 
 def default_review_date(days: int = 14) -> str:
     """Return an ISO date string ``days`` from today — useful for review_date."""
-    return (datetime.now(timezone.utc).date() + timedelta(days=days)).isoformat()
+    return (datetime.now(UTC).date() + timedelta(days=days)).isoformat()
 
 
 if __name__ == "__main__":

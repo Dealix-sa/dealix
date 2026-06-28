@@ -7,7 +7,7 @@ it does not write to CRM. Use it to prepare founder-reviewed actions.
 from __future__ import annotations
 
 import json
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -87,7 +87,7 @@ def main() -> int:
     seed = load_seed()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "mode": "read_only_proposal",
         "seed": seed,
         "recommended_next_step": "Review proposed HubSpot write-back before creating tasks, notes, products, or deals.",

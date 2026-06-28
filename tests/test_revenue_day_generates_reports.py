@@ -29,8 +29,9 @@ def temp_revenue_workspace(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> P
     (tmp_path / "data" / "outreach").mkdir(parents=True)
 
     # Write empty ledger CSVs
-    from scripts.revenue._lib import LEDGER_SCHEMAS
     import csv
+
+    from scripts.revenue._lib import LEDGER_SCHEMAS
 
     for name, fields in LEDGER_SCHEMAS.items():
         with (tmp_path / "ledgers" / f"{name}.csv").open("w", encoding="utf-8-sig", newline="") as f:
@@ -50,7 +51,7 @@ def temp_revenue_workspace(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> P
 
 
 def test_run_revenue_day_generates_latest_md_and_json(temp_revenue_workspace: Path) -> None:
-    from scripts.revenue._lib import ensure_ledgers, REPO_ROOT
+    from scripts.revenue._lib import REPO_ROOT, ensure_ledgers
     ensure_ledgers()
 
     # Seed demo data so there are prospects to process
@@ -82,7 +83,7 @@ def test_run_revenue_day_generates_dated_folder(temp_revenue_workspace: Path) ->
     from scripts.revenue._lib import REPO_ROOT, ensure_ledgers, today_str
     ensure_ledgers()
 
-    from scripts.revenue import seed_demo_revenue_data, run_revenue_day
+    from scripts.revenue import run_revenue_day, seed_demo_revenue_data
     seed_demo_revenue_data.main()
     run_revenue_day.main()
 

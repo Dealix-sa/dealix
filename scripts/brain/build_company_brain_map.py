@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import csv
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import Any
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -39,7 +39,7 @@ def build_company_brain_map(profile: dict[str, Any] | None = None, ledgers_dir: 
         ledgers[key] = _read_csv(os.path.join(base, fname))
 
     brain_map: dict[str, Any] = {
-        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "profile": profile or {},
         "ledgers": ledgers,
         "counts": {k: len(v) for k, v in ledgers.items()},

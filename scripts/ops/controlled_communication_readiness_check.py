@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -66,7 +66,7 @@ def main() -> int:
         warnings.append("Controlled WhatsApp not ready: missing " + ", ".join(missing_whatsapp))
 
     report = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "status": "blocked" if failures else "draft_only_ready_controlled_live_not_enabled",
         "failures": failures,
         "warnings": warnings,

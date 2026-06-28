@@ -7,7 +7,7 @@ for founder review.
 from __future__ import annotations
 
 import json
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -115,7 +115,7 @@ def build_markdown() -> str:
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "services": SERVICES,
         "sector_angles": SECTOR_ANGLES,
         "status": "ready_for_founder_review",

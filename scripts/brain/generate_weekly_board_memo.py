@@ -10,11 +10,11 @@ language with confidence levels.
 from __future__ import annotations
 
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from typing import Any
 
-from scripts.brain.detect_bottlenecks import detect_bottlenecks
 from scripts.brain.build_company_brain_map import build_company_brain_map
+from scripts.brain.detect_bottlenecks import detect_bottlenecks
 from scripts.brain.generate_future_radar import generate_future_radar
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -30,7 +30,7 @@ def generate_weekly_board_memo(
     bottlenecks = detect_bottlenecks(bm)
     radar = generate_future_radar(profile=bm.get("profile", {}))
 
-    today = datetime.now(timezone.utc).date().isoformat()
+    today = datetime.now(UTC).date().isoformat()
     counts = bm.get("counts", {})
 
     lines: list[str] = []

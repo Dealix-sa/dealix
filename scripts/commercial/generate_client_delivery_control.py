@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -51,7 +51,7 @@ def main() -> int:
     file_status = [check_path(path) for path in manifest.get("client_files_required", [])]
     has_missing = any(item["status"] != "PASS" for item in file_status)
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "company": manifest.get("company", "Dealix"),
         "control_name": manifest.get("control_name", "Client Delivery Control"),
         "delivery_method": manifest.get("delivery_method", "Map, Design, Build, Operate, Scale"),
