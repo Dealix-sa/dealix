@@ -7,22 +7,23 @@ summary and the response stays draft-only.
 """
 from __future__ import annotations
 
-import os
-
 import pytest
-
-os.environ.setdefault("ADMIN_API_KEYS", "testkey")
-
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from api.routers.founder_command_room import router
 
 PATH = "/api/v1/founder/command-room"
+ADMIN_KEY = "founder-command-room-test-key"
 
 
 @pytest.fixture()
-def client() -> TestClient:
+def client(monkeypatch: pytest.MonkeyPatch) -> TestClient:
+    # Force a known admin key for this test regardless of any ADMIN_API_KEYS
+    # already set in the CI environment. require_admin_key reads the env at
+    # request time, so monkeypatch.setenv makes ADMIN_KEY the only valid key
+    # for the duration of the test (auto-restored afterwards).
+    monkeypatch.setenv("ADMIN_API_KEYS", ADMIN_KEY)
     app = FastAPI()
     app.include_router(router)
     return TestClient(app)
@@ -34,7 +35,7 @@ def test_requires_admin_key(client: TestClient) -> None:
 
 
 def test_snapshot_shape_and_launch_readiness(client: TestClient) -> None:
-    r = client.get(PATH, headers={"X-Admin-API-Key": "testkey"})
+    r = client.get(PATH, headers={"X-Admin-API-Key": ADMIN_KEY})
     assert r.status_code == 200
     j = r.json()
 
