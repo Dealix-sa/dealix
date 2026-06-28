@@ -103,6 +103,37 @@ def main() -> int:
             claim_ok = False
     check("no_blocked_claims_in_drafts", claim_ok)
 
+    # ── Living engagement layer ─────────────────────────────────────────────
+    from app.commercial.channels import normalise_buttons
+    from app.commercial.engagement_engine import run_engagement
+    from app.commercial.reasoning import HeuristicBrain, get_brain
+
+    # Default brain is the deterministic heuristic.
+    check("default_brain_is_heuristic", isinstance(get_brain(), HeuristicBrain))
+
+    eng = run_engagement(accounts, inbound_by_account=_load("inbound_events.sample.json", "inbound_by_account") if (DATA_DIR / "inbound_events.sample.json").exists() else {})
+    check("engagement_runs_safe", eng.safety_ok, ";".join(eng.safety_violations))
+    check("engagement_has_action_plan", len(eng.action_plan) > 0)
+
+    # Every prepared payload is a non-sendable draft.
+    payloads_ok = all(
+        p["requires_approval"] and p["send_status"] in ("draft", "blocked")
+        and not p["safety"].get("allowed", False)
+        for p in eng.payloads
+    )
+    check("engagement_payloads_all_draft", payloads_ok)
+
+    # WhatsApp interactive buttons are capped at 3.
+    buttons_ok = len(normalise_buttons([{"id": f"b{i}", "title": f"opt{i}"} for i in range(6)])) == 3
+    check("whatsapp_buttons_capped_at_3", buttons_ok)
+
+    # Opt-out account is told to stop, not contacted.
+    optout_actions = {a["account_id"]: a["recommended_action"] for a in eng.action_plan}
+    check(
+        "optout_account_honoured",
+        optout_actions.get("acct_005", "honour_optout") == "honour_optout",
+    )
+
     failed = [c for c in checks if not c[1]]
     for name, ok, detail in checks:
         status = "PASS" if ok else "FAIL"

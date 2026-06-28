@@ -1,0 +1,17 @@
+{
+  "inbound_by_account": {
+    "acct_001": [
+      { "text": "This is interesting, tell me more.", "button_intent": null },
+      { "text": "", "button_intent": "meeting_request" }
+    ],
+    "acct_002": [
+      { "text": "السعر غالي شوي على ميزانيتنا الحالية", "button_intent": null }
+    ],
+    "acct_004": [
+      { "text": "Interested in a partnership to serve shared clients.", "button_intent": null }
+    ],
+    "acct_005": [
+      { "text": "Please unsubscribe me, stop sending messages.", "button_intent": null }
+    ]
+  }
+}

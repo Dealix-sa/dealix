@@ -1,0 +1,20 @@
+{
+  "threads": [
+    {
+      "account_id": "acct_001",
+      "subject": "Quick idea for Najd Retail's lead follow-up",
+      "messages": [
+        { "direction": "outbound", "from": "dealix", "body": "Hi, we help organise WhatsApp lead follow-up. Worth a short call?" },
+        { "direction": "inbound", "from": "client", "body": "Sounds interesting, can you send more details and pricing?" }
+      ]
+    },
+    {
+      "account_id": "acct_002",
+      "subject": "Hijaz Logistics — commercial follow-up system",
+      "messages": [
+        { "direction": "outbound", "from": "dealix", "body": "Hi, a quick idea to stop losing opportunities across channels." },
+        { "direction": "inbound", "from": "client", "body": "It looks a bit expensive for our current budget." }
+      ]
+    }
+  ]
+}

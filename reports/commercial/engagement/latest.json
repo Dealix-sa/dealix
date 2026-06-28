@@ -1,0 +1,646 @@
+{
+  "generated_at": "2026-06-28T19:39:59.554549+00:00",
+  "summary": {
+    "accounts": 5,
+    "conversations": 5,
+    "payloads": 5,
+    "actions": 5,
+    "safety_posture": {
+      "outbound_mode": "draft_only",
+      "external_send_enabled": false,
+      "email_send_enabled": false,
+      "whatsapp_send_enabled": false,
+      "whatsapp_allow_live_send": false,
+      "sms_send_enabled": false,
+      "calendar_write_enabled": false,
+      "proposal_finalization_enabled": false
+    }
+  },
+  "action_plan": [
+    {
+      "account_id": "acct_003",
+      "company": "Unknown Source Co",
+      "conversation_id": "conv_acct_003_email",
+      "channel": "email",
+      "motion": "sales_prospecting",
+      "stage": "opted_out",
+      "recommended_action": "honour_optout",
+      "priority": 1,
+      "confidence": 1.0,
+      "rationale": [
+        "Contact opted out — stop all outreach immediately."
+      ],
+      "risk_level": "high",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safe_to_send_now": false
+    },
+    {
+      "account_id": "acct_005",
+      "company": "Opted Out Trading",
+      "conversation_id": "conv_acct_005_email",
+      "channel": "email",
+      "motion": "revival",
+      "stage": "opted_out",
+      "recommended_action": "honour_optout",
+      "priority": 1,
+      "confidence": 1.0,
+      "rationale": [
+        "Contact opted out — stop all outreach immediately."
+      ],
+      "risk_level": "high",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safe_to_send_now": false
+    },
+    {
+      "account_id": "acct_001",
+      "company": "Najd Retail Group",
+      "conversation_id": "conv_acct_001_email",
+      "channel": "email",
+      "motion": "sales_prospecting",
+      "stage": "booking",
+      "recommended_action": "propose_booking",
+      "priority": 1,
+      "confidence": 0.9,
+      "rationale": [
+        "Inbound intent 'meeting_request' → propose_booking."
+      ],
+      "risk_level": "low",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safe_to_send_now": false
+    },
+    {
+      "account_id": "acct_004",
+      "company": "Riyadh MedCare Clinics",
+      "conversation_id": "conv_acct_004_email",
+      "channel": "email",
+      "motion": "upsell",
+      "stage": "value",
+      "recommended_action": "advance_partnership",
+      "priority": 2,
+      "confidence": 0.9,
+      "rationale": [
+        "Inbound intent 'partnership_interest' → advance_partnership."
+      ],
+      "risk_level": "low",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safe_to_send_now": false
+    },
+    {
+      "account_id": "acct_002",
+      "company": "Hijaz Logistics",
+      "conversation_id": "conv_acct_002_email",
+      "channel": "email",
+      "motion": "partnership_outreach",
+      "stage": "negotiation",
+      "recommended_action": "handle_objection",
+      "priority": 2,
+      "confidence": 0.7,
+      "rationale": [
+        "Inbound intent 'price_objection' → handle_objection."
+      ],
+      "risk_level": "medium",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safe_to_send_now": false
+    }
+  ],
+  "conversations": [
+    {
+      "conversation_id": "conv_acct_001_email",
+      "account_id": "acct_001",
+      "motion": "sales_prospecting",
+      "channel": "email",
+      "stage": "booking",
+      "status": "active",
+      "turns": [
+        {
+          "turn_id": "t0",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "مرحباً Najd Retail Group، لاحظنا فرصة لتحسين Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. Leads you already pay to generate go cold without a follow-up system. A 20-minute call to map your current lead flow — no obligation. | Hi Najd Retail Group, we spotted an opportunity around Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. Leads you already pay to generate go cold without a follow-up system. A 20-minute call to map your current lead flow — no obligation.",
+          "buttons": [],
+          "intent": "send_opener",
+          "stage_before": "opener",
+          "stage_after": "qualifying",
+          "is_draft": true,
+          "reasoning": "High ICP fit (100) — prioritise opener. Persuasion angle: cost_of_inaction_vs_organised_followup.",
+          "created_at": "2026-06-28T19:39:59.554904+00:00"
+        },
+        {
+          "turn_id": "t1",
+          "direction": "inbound",
+          "channel": "email",
+          "text": "This is interesting, tell me more.",
+          "buttons": [],
+          "intent": "interested",
+          "stage_before": "qualifying",
+          "stage_after": "qualifying",
+          "is_draft": false,
+          "reasoning": "",
+          "created_at": "2026-06-28T19:39:59.555035+00:00"
+        },
+        {
+          "turn_id": "t2",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "ممتاز! أقترح ٣ مواعيد قصيرة لمكالمة حول Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. أي وقت يناسبك؟ | Great — I'll propose 3 short slots for a call about Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. Which suits you?",
+          "buttons": [],
+          "intent": "propose_booking",
+          "stage_before": "qualifying",
+          "stage_after": "booking",
+          "is_draft": true,
+          "reasoning": "Inbound intent 'interested' → propose_booking.",
+          "created_at": "2026-06-28T19:39:59.555165+00:00"
+        },
+        {
+          "turn_id": "t3",
+          "direction": "inbound",
+          "channel": "email",
+          "text": "",
+          "buttons": [],
+          "intent": "meeting_request",
+          "stage_before": "booking",
+          "stage_after": "booking",
+          "is_draft": false,
+          "reasoning": "",
+          "created_at": "2026-06-28T19:39:59.555199+00:00"
+        },
+        {
+          "turn_id": "t4",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "ممتاز! أقترح ٣ مواعيد قصيرة لمكالمة حول Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. أي وقت يناسبك؟ | Great — I'll propose 3 short slots for a call about Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. Which suits you?",
+          "buttons": [],
+          "intent": "propose_booking",
+          "stage_before": "booking",
+          "stage_after": "booking",
+          "is_draft": true,
+          "reasoning": "Inbound intent 'meeting_request' → propose_booking.",
+          "created_at": "2026-06-28T19:39:59.555273+00:00"
+        }
+      ],
+      "opt_in": false,
+      "opted_out": false,
+      "last_intent": "meeting_request",
+      "owner_decision": "pending",
+      "next_action": "propose_booking",
+      "risk_level": "low"
+    },
+    {
+      "conversation_id": "conv_acct_002_email",
+      "account_id": "acct_002",
+      "motion": "partnership_outreach",
+      "channel": "email",
+      "stage": "negotiation",
+      "status": "active",
+      "turns": [
+        {
+          "turn_id": "t0",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "مرحباً Hijaz Logistics، لاحظنا فرصة لتحسين Sales team loses track of opportunities across channels.. Your clients get added value; you don't build the system yourselves. A short call to pick one pilot account together. | Hi Hijaz Logistics, we spotted an opportunity around Sales team loses track of opportunities across channels.. Your clients get added value; you don't build the system yourselves. A short call to pick one pilot account together.",
+          "buttons": [],
+          "intent": "send_opener",
+          "stage_before": "opener",
+          "stage_after": "qualifying",
+          "is_draft": true,
+          "reasoning": "High ICP fit (88) — prioritise opener. Persuasion angle: shared_clients_mutual_value.",
+          "created_at": "2026-06-28T19:39:59.555536+00:00"
+        },
+        {
+          "turn_id": "t1",
+          "direction": "inbound",
+          "channel": "email",
+          "text": "السعر غالي شوي على ميزانيتنا الحالية",
+          "buttons": [],
+          "intent": "price_objection",
+          "stage_before": "qualifying",
+          "stage_after": "qualifying",
+          "is_draft": false,
+          "reasoning": "",
+          "created_at": "2026-06-28T19:39:59.555581+00:00"
+        },
+        {
+          "turn_id": "t2",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "أتفهّم تماماً. بدل الالتزام الكبير، نقترح بداية أصغر تناسب وضعكم الحالي حول Sales team loses track of opportunities across channels.. (Acknowledge the budget honestly, then offer a smaller scope (pilot / diagnostic-first) that fits it. Never offer a discount or a final price.) | Totally understand. Instead of a big commitment, we can start smaller around Sales team loses track of opportunities across channels. to fit where you are now.",
+          "buttons": [],
+          "intent": "handle_objection",
+          "stage_before": "qualifying",
+          "stage_after": "negotiation",
+          "is_draft": true,
+          "reasoning": "Inbound intent 'price_objection' → handle_objection.",
+          "created_at": "2026-06-28T19:39:59.555668+00:00"
+        }
+      ],
+      "opt_in": true,
+      "opted_out": false,
+      "last_intent": "price_objection",
+      "owner_decision": "pending",
+      "next_action": "handle_objection",
+      "risk_level": "medium"
+    },
+    {
+      "conversation_id": "conv_acct_003_email",
+      "account_id": "acct_003",
+      "motion": "sales_prospecting",
+      "channel": "email",
+      "stage": "opted_out",
+      "status": "opted_out",
+      "turns": [
+        {
+          "turn_id": "t0",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "تم إيقاف التواصل فوراً، ولن تصلك رسائل أخرى. شكراً لك. | Done — we've stopped outreach immediately. You won't receive further messages.",
+          "buttons": [],
+          "intent": "honour_optout",
+          "stage_before": "opener",
+          "stage_after": "opted_out",
+          "is_draft": true,
+          "reasoning": "Contact opted out — stop all outreach immediately.",
+          "created_at": "2026-06-28T19:39:59.555886+00:00"
+        }
+      ],
+      "opt_in": false,
+      "opted_out": true,
+      "last_intent": "",
+      "owner_decision": "pending",
+      "next_action": "honour_optout",
+      "risk_level": "high"
+    },
+    {
+      "conversation_id": "conv_acct_004_email",
+      "account_id": "acct_004",
+      "motion": "upsell",
+      "channel": "email",
+      "stage": "value",
+      "status": "active",
+      "turns": [
+        {
+          "turn_id": "t0",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "مرحباً Riyadh MedCare Clinics، لاحظنا فرصة لتحسين Existing client; ready for expansion into more branches.. Based on what we've actually delivered, here's a logical next step. A short review of results, then decide on expansion together. | Hi Riyadh MedCare Clinics, we spotted an opportunity around Existing client; ready for expansion into more branches.. Based on what we've actually delivered, here's a logical next step. A short review of results, then decide on expansion together.",
+          "buttons": [],
+          "intent": "send_opener",
+          "stage_before": "opener",
+          "stage_after": "qualifying",
+          "is_draft": true,
+          "reasoning": "High ICP fit (94) — prioritise opener. Persuasion angle: expand_on_proven_value.",
+          "created_at": "2026-06-28T19:39:59.556202+00:00"
+        },
+        {
+          "turn_id": "t1",
+          "direction": "inbound",
+          "channel": "email",
+          "text": "Interested in a partnership to serve shared clients.",
+          "buttons": [],
+          "intent": "partnership_interest",
+          "stage_before": "qualifying",
+          "stage_after": "qualifying",
+          "is_draft": false,
+          "reasoning": "",
+          "created_at": "2026-06-28T19:39:59.556285+00:00"
+        },
+        {
+          "turn_id": "t2",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "مرحباً Riyadh MedCare Clinics، أتابع معك بخصوص Existing client; ready for expansion into more branches.. A short review of results, then decide on expansion together. | Hi Riyadh MedCare Clinics, following up about Existing client; ready for expansion into more branches.. A short review of results, then decide on expansion together.",
+          "buttons": [],
+          "intent": "advance_partnership",
+          "stage_before": "qualifying",
+          "stage_after": "value",
+          "is_draft": true,
+          "reasoning": "Inbound intent 'partnership_interest' → advance_partnership.",
+          "created_at": "2026-06-28T19:39:59.556485+00:00"
+        }
+      ],
+      "opt_in": true,
+      "opted_out": false,
+      "last_intent": "partnership_interest",
+      "owner_decision": "pending",
+      "next_action": "advance_partnership",
+      "risk_level": "low"
+    },
+    {
+      "conversation_id": "conv_acct_005_email",
+      "account_id": "acct_005",
+      "motion": "revival",
+      "channel": "email",
+      "stage": "opted_out",
+      "status": "opted_out",
+      "turns": [
+        {
+          "turn_id": "t0",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "تم إيقاف التواصل فوراً، ولن تصلك رسائل أخرى. شكراً لك. | Done — we've stopped outreach immediately. You won't receive further messages.",
+          "buttons": [],
+          "intent": "honour_optout",
+          "stage_before": "opener",
+          "stage_after": "opted_out",
+          "is_draft": true,
+          "reasoning": "Contact opted out — stop all outreach immediately.",
+          "created_at": "2026-06-28T19:39:59.556707+00:00"
+        },
+        {
+          "turn_id": "t1",
+          "direction": "inbound",
+          "channel": "email",
+          "text": "Please unsubscribe me, stop sending messages.",
+          "buttons": [],
+          "intent": "unsubscribe",
+          "stage_before": "opted_out",
+          "stage_after": "opted_out",
+          "is_draft": false,
+          "reasoning": "",
+          "created_at": "2026-06-28T19:39:59.556754+00:00"
+        },
+        {
+          "turn_id": "t2",
+          "direction": "outbound",
+          "channel": "email",
+          "text": "تم إيقاف التواصل فوراً، ولن تصلك رسائل أخرى. شكراً لك. | Done — we've stopped outreach immediately. You won't receive further messages.",
+          "buttons": [],
+          "intent": "honour_optout",
+          "stage_before": "opted_out",
+          "stage_after": "opted_out",
+          "is_draft": true,
+          "reasoning": "Contact opted out — stop all outreach immediately.",
+          "created_at": "2026-06-28T19:39:59.556810+00:00"
+        }
+      ],
+      "opt_in": false,
+      "opted_out": true,
+      "last_intent": "unsubscribe",
+      "owner_decision": "pending",
+      "next_action": "honour_optout",
+      "risk_level": "high"
+    }
+  ],
+  "payloads": [
+    {
+      "payload_id": "em_conv_acct_001_email",
+      "conversation_id": "conv_acct_001_email",
+      "account_id": "acct_001",
+      "channel": "email",
+      "kind": "email",
+      "subject": "Dealix — a quick idea for your commercial follow-up",
+      "body_ar": "ممتاز! أقترح ٣ مواعيد قصيرة لمكالمة حول Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. أي وقت يناسبك؟\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "body_en": "Great — I'll propose 3 short slots for a call about Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. Which suits you?\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "buttons": [],
+      "headers": {
+        "List-Unsubscribe": "<mailto:unsubscribe@dealix.me>"
+      },
+      "to_ref": "redacted",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safety": {
+        "allowed": false,
+        "reason": "outbound_mode=draft_only (need controlled_live)",
+        "required_approvals": [
+          "founder_or_client_send_approval"
+        ],
+        "blocked_by": [
+          "outbound_mode=draft_only (need controlled_live)",
+          "EXTERNAL_SEND_ENABLED=false",
+          "EMAIL_SEND_ENABLED=false",
+          "message.status != approved",
+          "owner_decision not send/book"
+        ],
+        "audit_level": "critical",
+        "recommendation": {
+          "ref_id": "conv_acct_001_email",
+          "account_id": "acct_001",
+          "recommended_action": "propose_booking",
+          "motion": "sales_prospecting",
+          "channel": "email",
+          "rationale": [
+            "Inbound intent 'meeting_request' → propose_booking."
+          ],
+          "confidence": 0.9,
+          "priority": 1,
+          "persuasion_angle": "cost_of_inaction_vs_organised_followup",
+          "next_stage": "booking",
+          "risk_level": "low",
+          "requires_approval": true,
+          "source": "heuristic"
+        }
+      },
+      "manual_instructions": ""
+    },
+    {
+      "payload_id": "em_conv_acct_002_email",
+      "conversation_id": "conv_acct_002_email",
+      "account_id": "acct_002",
+      "channel": "email",
+      "kind": "email",
+      "subject": "Dealix — a quick idea for your commercial follow-up",
+      "body_ar": "أتفهّم تماماً. بدل الالتزام الكبير، نقترح بداية أصغر تناسب وضعكم الحالي حول Sales team loses track of opportunities across channels.. (Acknowledge the budget honestly, then offer a smaller scope (pilot / diagnostic-first) that fits it. Never offer a discount or a final price.)\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "body_en": "Totally understand. Instead of a big commitment, we can start smaller around Sales team loses track of opportunities across channels. to fit where you are now.\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "buttons": [],
+      "headers": {
+        "List-Unsubscribe": "<mailto:unsubscribe@dealix.me>"
+      },
+      "to_ref": "redacted",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safety": {
+        "allowed": false,
+        "reason": "outbound_mode=draft_only (need controlled_live)",
+        "required_approvals": [
+          "founder_or_client_send_approval"
+        ],
+        "blocked_by": [
+          "outbound_mode=draft_only (need controlled_live)",
+          "EXTERNAL_SEND_ENABLED=false",
+          "EMAIL_SEND_ENABLED=false",
+          "message.status != approved",
+          "owner_decision not send/book"
+        ],
+        "audit_level": "critical",
+        "recommendation": {
+          "ref_id": "conv_acct_002_email",
+          "account_id": "acct_002",
+          "recommended_action": "handle_objection",
+          "motion": "partnership_outreach",
+          "channel": "email",
+          "rationale": [
+            "Inbound intent 'price_objection' → handle_objection."
+          ],
+          "confidence": 0.7,
+          "priority": 2,
+          "persuasion_angle": "shared_clients_mutual_value",
+          "next_stage": "negotiation",
+          "risk_level": "medium",
+          "requires_approval": true,
+          "source": "heuristic"
+        }
+      },
+      "manual_instructions": ""
+    },
+    {
+      "payload_id": "em_conv_acct_003_email",
+      "conversation_id": "conv_acct_003_email",
+      "account_id": "acct_003",
+      "channel": "email",
+      "kind": "email",
+      "subject": "Dealix — a quick idea for your commercial follow-up",
+      "body_ar": "تم إيقاف التواصل فوراً، ولن تصلك رسائل أخرى. شكراً لك.\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "body_en": "Done — we've stopped outreach immediately. You won't receive further messages.\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "buttons": [],
+      "headers": {
+        "List-Unsubscribe": "<mailto:unsubscribe@dealix.me>"
+      },
+      "to_ref": "redacted",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safety": {
+        "allowed": false,
+        "reason": "outbound_mode=draft_only (need controlled_live)",
+        "required_approvals": [
+          "founder_or_client_send_approval"
+        ],
+        "blocked_by": [
+          "outbound_mode=draft_only (need controlled_live)",
+          "EXTERNAL_SEND_ENABLED=false",
+          "EMAIL_SEND_ENABLED=false",
+          "contact opted out / not contactable",
+          "account not verified",
+          "missing source_url",
+          "message.status != approved",
+          "owner_decision not send/book"
+        ],
+        "audit_level": "critical",
+        "recommendation": {
+          "ref_id": "conv_acct_003_email",
+          "account_id": "acct_003",
+          "recommended_action": "honour_optout",
+          "motion": "sales_prospecting",
+          "channel": "email",
+          "rationale": [
+            "Contact opted out — stop all outreach immediately."
+          ],
+          "confidence": 1.0,
+          "priority": 1,
+          "persuasion_angle": "",
+          "next_stage": "opted_out",
+          "risk_level": "high",
+          "requires_approval": false,
+          "source": "heuristic"
+        }
+      },
+      "manual_instructions": ""
+    },
+    {
+      "payload_id": "em_conv_acct_004_email",
+      "conversation_id": "conv_acct_004_email",
+      "account_id": "acct_004",
+      "channel": "email",
+      "kind": "email",
+      "subject": "Dealix — a quick idea for your commercial follow-up",
+      "body_ar": "مرحباً Riyadh MedCare Clinics، أتابع معك بخصوص Existing client; ready for expansion into more branches.. A short review of results, then decide on expansion together.\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "body_en": "Hi Riyadh MedCare Clinics, following up about Existing client; ready for expansion into more branches.. A short review of results, then decide on expansion together.\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "buttons": [],
+      "headers": {
+        "List-Unsubscribe": "<mailto:unsubscribe@dealix.me>"
+      },
+      "to_ref": "redacted",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safety": {
+        "allowed": false,
+        "reason": "outbound_mode=draft_only (need controlled_live)",
+        "required_approvals": [
+          "founder_or_client_send_approval"
+        ],
+        "blocked_by": [
+          "outbound_mode=draft_only (need controlled_live)",
+          "EXTERNAL_SEND_ENABLED=false",
+          "EMAIL_SEND_ENABLED=false",
+          "message.status != approved",
+          "owner_decision not send/book"
+        ],
+        "audit_level": "critical",
+        "recommendation": {
+          "ref_id": "conv_acct_004_email",
+          "account_id": "acct_004",
+          "recommended_action": "advance_partnership",
+          "motion": "upsell",
+          "channel": "email",
+          "rationale": [
+            "Inbound intent 'partnership_interest' → advance_partnership."
+          ],
+          "confidence": 0.9,
+          "priority": 2,
+          "persuasion_angle": "expand_on_proven_value",
+          "next_stage": "value",
+          "risk_level": "low",
+          "requires_approval": true,
+          "source": "heuristic"
+        }
+      },
+      "manual_instructions": ""
+    },
+    {
+      "payload_id": "em_conv_acct_005_email",
+      "conversation_id": "conv_acct_005_email",
+      "account_id": "acct_005",
+      "channel": "email",
+      "kind": "email",
+      "subject": "Dealix — a quick idea for your commercial follow-up",
+      "body_ar": "تم إيقاف التواصل فوراً، ولن تصلك رسائل أخرى. شكراً لك.\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "body_en": "Done — we've stopped outreach immediately. You won't receive further messages.\n\n— للإلغاء، ردّ بكلمة (إيقاف) / To unsubscribe, reply STOP.",
+      "buttons": [],
+      "headers": {
+        "List-Unsubscribe": "<mailto:unsubscribe@dealix.me>"
+      },
+      "to_ref": "redacted",
+      "requires_approval": true,
+      "send_status": "draft",
+      "safety": {
+        "allowed": false,
+        "reason": "outbound_mode=draft_only (need controlled_live)",
+        "required_approvals": [
+          "founder_or_client_send_approval"
+        ],
+        "blocked_by": [
+          "outbound_mode=draft_only (need controlled_live)",
+          "EXTERNAL_SEND_ENABLED=false",
+          "EMAIL_SEND_ENABLED=false",
+          "contact opted out / not contactable",
+          "message.status != approved",
+          "owner_decision not send/book"
+        ],
+        "audit_level": "critical",
+        "recommendation": {
+          "ref_id": "conv_acct_005_email",
+          "account_id": "acct_005",
+          "recommended_action": "honour_optout",
+          "motion": "revival",
+          "channel": "email",
+          "rationale": [
+            "Contact opted out — stop all outreach immediately."
+          ],
+          "confidence": 1.0,
+          "priority": 1,
+          "persuasion_angle": "",
+          "next_stage": "opted_out",
+          "risk_level": "high",
+          "requires_approval": false,
+          "source": "heuristic"
+        }
+      },
+      "manual_instructions": ""
+    }
+  ],
+  "safety_ok": true,
+  "safety_violations": []
+}

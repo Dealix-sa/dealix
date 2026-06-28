@@ -1,6 +1,6 @@
 {
   "snapshot": {
-    "generated_at": "2026-06-28T18:23:50.742477+00:00",
+    "generated_at": "2026-06-28T19:39:59.485789+00:00",
     "summary": {
       "accounts": 5,
       "cards": 5,
@@ -1054,7 +1054,7 @@
       "next_stage": "",
       "evidence": "sourced & validated",
       "owner": "sami",
-      "created_at": "2026-06-28T18:23:50.741999+00:00"
+      "created_at": "2026-06-28T19:39:59.485096+00:00"
     },
     {
       "event_id": "evt_acct_002_001",
@@ -1064,7 +1064,7 @@
       "next_stage": "",
       "evidence": "sourced & validated",
       "owner": "sami",
-      "created_at": "2026-06-28T18:23:50.742025+00:00"
+      "created_at": "2026-06-28T19:39:59.485142+00:00"
     },
     {
       "event_id": "evt_acct_003_002",
@@ -1074,7 +1074,7 @@
       "next_stage": "",
       "evidence": "sourced, pending verification",
       "owner": "unassigned",
-      "created_at": "2026-06-28T18:23:50.742028+00:00"
+      "created_at": "2026-06-28T19:39:59.485146+00:00"
     },
     {
       "event_id": "evt_acct_004_003",
@@ -1084,7 +1084,7 @@
       "next_stage": "",
       "evidence": "sourced & validated",
       "owner": "sami",
-      "created_at": "2026-06-28T18:23:50.742032+00:00"
+      "created_at": "2026-06-28T19:39:59.485150+00:00"
     },
     {
       "event_id": "evt_acct_005_004",
@@ -1094,7 +1094,7 @@
       "next_stage": "",
       "evidence": "sourced & validated",
       "owner": "sami",
-      "created_at": "2026-06-28T18:23:50.742034+00:00"
+      "created_at": "2026-06-28T19:39:59.485153+00:00"
     }
   ],
   "safety_ok": true,

@@ -14,7 +14,8 @@
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
         launch-content launch-pipeline launch-all-dry-runs test-launch \
-        commercial-growth-os commercial-growth-verify commercial-growth-test
+        commercial-growth-os commercial-growth-verify commercial-growth-test \
+        commercial-engagement commercial-whatsapp-sim commercial-engagement-test
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -254,6 +255,15 @@ commercial-growth-verify: ## Commercial Growth OS: verify safety posture + wirin
 
 commercial-growth-test: ## Commercial Growth OS: run the new safety/orchestrator tests
 	$(PYTHON) -m pytest -q tests/test_commercial_growth_os_safe_defaults.py tests/test_commercial_growth_os_orchestrator.py tests/test_commercial_no_live_send_by_default.py
+
+commercial-engagement: ## Commercial Growth OS: run the living multi-channel engagement loop (draft-only)
+	$(PYTHON) scripts/commercial/run_commercial_engagement.py
+
+commercial-whatsapp-sim: ## Commercial Growth OS: simulate a WhatsApp interactive-button conversation (no send)
+	$(PYTHON) scripts/commercial/simulate_whatsapp_conversation.py
+
+commercial-engagement-test: ## Commercial Growth OS: run the living-layer tests (brain/conversation/whatsapp/channels/email/engagement)
+	$(PYTHON) -m pytest -q tests/test_commercial_brain.py tests/test_commercial_conversation_engine.py tests/test_commercial_whatsapp_loop.py tests/test_commercial_channels.py tests/test_commercial_email_desk.py tests/test_commercial_engagement_engine.py tests/test_commercial_persuasion.py
 
 # ═══════════════════════════════════════════════════════════════
 # Company Operating System — launch controls

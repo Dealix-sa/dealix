@@ -1,6 +1,6 @@
 # Dealix Commercial Growth OS — Command Room
 
-_Generated: 2026-06-28T18:23:50.742477+00:00_
+_Generated: 2026-06-28T19:39:59.485789+00:00_
 
 ## Safety posture (fail-closed)
 
