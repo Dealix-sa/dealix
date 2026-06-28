@@ -73,6 +73,7 @@ from api.routers import deliverables as deliverables_router
 # Wave 12.7 — Intelligence Layer + Expansion Engine routers
 from api.routers import expansion_engine as expansion_engine_router
 from api.routers import founder_dashboard as founder_dashboard_router
+from api.routers.founder import command_room as founder_command_room_router
 
 # Wave 14 — Canonical Trust MVP + Retainer Engine (Phase 2)
 from api.routers import friction_log as friction_log_router
@@ -387,6 +388,8 @@ def create_app() -> FastAPI:
         app.include_router(data_os_router.router)
     app.include_router(sprint_runner_router.router)
     app.include_router(founder_dashboard_router.router)
+    # Founder Command Room — one aggregated, read-only snapshot (admin-gated)
+    app.include_router(founder_command_room_router.router)
     app.include_router(audit_export_router.router)
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:

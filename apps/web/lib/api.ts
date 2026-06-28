@@ -268,6 +268,12 @@ export const api = {
       headers: { "X-Admin-API-Key": adminApiKey },
     }),
 
+  // Founder Command Room — one aggregated, read-only snapshot.
+  getFounderCommandRoom: (adminApiKey: string) =>
+    apiClient.get("/api/v1/founder/command-room", {
+      headers: { "X-Admin-API-Key": adminApiKey },
+    }),
+
   patchWarRoom: (adminApiKey: string, leadId: string, body: Record<string, unknown>) =>
     apiClient.patch(`/api/v1/ops-autopilot/war-room/${encodeURIComponent(leadId)}`, body, {
       headers: { "X-Admin-API-Key": adminApiKey },
