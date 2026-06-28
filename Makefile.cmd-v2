@@ -1,0 +1,10 @@
+.PHONY: cmd-v2 cmd-v2-snapshot cmd-v2-test
+
+cmd-v2:
+	python scripts/leadership/run_cmd_v2.py
+
+cmd-v2-snapshot:
+	python scripts/leadership/generate_cmd_v2_snapshot.py
+
+cmd-v2-test:
+	python -m pytest -q tests/test_cmd_v2.py
