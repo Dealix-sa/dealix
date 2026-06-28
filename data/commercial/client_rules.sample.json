@@ -1,0 +1,19 @@
+{
+  "client_id": "sample_client",
+  "autonomy_level": "A0_DRAFT_ONLY",
+  "allowed_channels": ["email", "linkedin_manual", "phone"],
+  "whatsapp_requires_opt_in": true,
+  "email_requires_unsubscribe": true,
+  "prohibited_sources": ["scraped_private_data", "purchased_lists"],
+  "approval_required_for": [
+    "any_external_send",
+    "calendar_write",
+    "final_pricing",
+    "discounts",
+    "legal_terms",
+    "contract_acceptance",
+    "payment_commitments"
+  ],
+  "forbidden_claims": ["guaranteed_roi", "guaranteed_revenue", "fake_testimonials"],
+  "notes": "Default safe configuration. Live send stays disabled until explicitly authorised."
+}

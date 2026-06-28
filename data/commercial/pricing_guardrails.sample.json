@@ -1,0 +1,40 @@
+{
+  "currency": "SAR",
+  "final_price_requires_founder_approval": true,
+  "discounts_allowed_by_system": false,
+  "growth_card_sprint": {
+    "package_name": "7-Day Growth Card Sprint",
+    "range_sar": "5,000–12,000",
+    "timeline": "7 days",
+    "deliverables": [
+      "25–50 qualified Growth Cards",
+      "10–20 bilingual outreach drafts (draft-only)",
+      "5 proposal briefs",
+      "Booking option sets",
+      "Command-room proof report"
+    ]
+  },
+  "commercial_os_sprint": {
+    "package_name": "14-Day Commercial OS Sprint",
+    "range_sar": "15,000–35,000",
+    "timeline": "14 days",
+    "deliverables": [
+      "Full lead → pipeline workflow",
+      "Smart Reply desk",
+      "Negotiation guardrails",
+      "Proposal Factory",
+      "Command room"
+    ]
+  },
+  "managed_growth_os": {
+    "package_name": "Managed Growth OS (monthly)",
+    "range_sar": "5,000–25,000 / month",
+    "timeline": "Monthly, weekly operation",
+    "deliverables": [
+      "Weekly operation & follow-up",
+      "Proposal review",
+      "Pipeline updates",
+      "Growth reporting"
+    ]
+  }
+}

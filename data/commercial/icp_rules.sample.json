@@ -1,0 +1,23 @@
+{
+  "target_sectors": [
+    "retail",
+    "ecommerce",
+    "healthcare",
+    "real_estate",
+    "logistics",
+    "professional_services",
+    "education",
+    "hospitality"
+  ],
+  "target_cities": ["riyadh", "jeddah", "dammam", "khobar", "mecca", "medina"],
+  "weights": {
+    "sector_fit": 22,
+    "location_fit": 12,
+    "pain_signal": 20,
+    "contactability": 16,
+    "source_present": 14,
+    "motion_fit": 10,
+    "urgency_signal": 6
+  },
+  "risk_penalty": { "high": 18, "medium": 6, "low": 0 }
+}

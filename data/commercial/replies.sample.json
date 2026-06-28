@@ -1,0 +1,34 @@
+{
+  "replies": [
+    {
+      "reply_id": "reply_001",
+      "card_id": "card_acct_001_000",
+      "text": "This sounds interesting, tell me more. Can we schedule a call?"
+    },
+    {
+      "reply_id": "reply_002",
+      "card_id": "card_acct_002_001",
+      "text": "السعر غالي شوي على ميزانيتنا الحالية، في خيار أصغر؟"
+    },
+    {
+      "reply_id": "reply_003",
+      "card_id": "card_acct_004_003",
+      "text": "We'd want a contract and signed agreement before starting."
+    },
+    {
+      "reply_id": "reply_004",
+      "card_id": "card_acct_001_000",
+      "text": "Please unsubscribe me, stop sending messages."
+    },
+    {
+      "reply_id": "reply_005",
+      "card_id": "card_acct_002_001",
+      "text": "Not now, maybe next quarter. We are busy."
+    },
+    {
+      "reply_id": "reply_006",
+      "card_id": "card_acct_004_003",
+      "text": "Interested in a partnership to serve shared clients."
+    }
+  ]
+}
