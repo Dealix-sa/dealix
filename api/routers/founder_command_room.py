@@ -7,6 +7,10 @@ single, stable call.
 
 Doctrine-safe: read-only. It never sends anything and issues no invoices. The
 non-negotiables surface back to the UI via ``summary["risks"]``.
+
+Note: this lives as a standalone module (not under an ``api/routers/founder/``
+package) so it does not shadow the existing ``api/routers/founder.py`` module,
+which the admin domain imports as ``founder.router``.
 """
 
 from __future__ import annotations

@@ -44,18 +44,18 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # Reuse brand colours + render helpers from the original command room.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from dealix_command_room import (  # noqa: E402
+from dealix_command_room import (
     ACCENT,
     DARK,
     PRIMARY,
+    _funnel_rows,
+    _kpi_card,
+    _sector_rows,
     compute_kpis,
     count_ready_drafts,
     latest_drafts_dir,
     read_log,
     resolve_log,
-    _funnel_rows,
-    _kpi_card,
-    _sector_rows,
 )
 
 DEFAULT_LOG = REPO_ROOT / "data" / "outreach" / "outreach_log.csv"

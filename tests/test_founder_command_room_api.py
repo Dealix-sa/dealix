@@ -13,10 +13,10 @@ import pytest
 
 os.environ.setdefault("ADMIN_API_KEYS", "testkey")
 
-from fastapi import FastAPI  # noqa: E402
-from fastapi.testclient import TestClient  # noqa: E402
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
-from api.routers.founder.command_room import router  # noqa: E402
+from api.routers.founder_command_room import router
 
 PATH = "/api/v1/founder/command-room"
 
