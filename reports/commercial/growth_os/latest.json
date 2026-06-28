@@ -1,0 +1,1102 @@
+{
+  "snapshot": {
+    "generated_at": "2026-06-28T18:23:50.742477+00:00",
+    "summary": {
+      "accounts": 5,
+      "cards": 5,
+      "replies": 6,
+      "negotiation_drafts": 4,
+      "booking_options": 5,
+      "proposal_briefs": 5,
+      "followup_tasks": 9,
+      "delivery_handoffs": 5,
+      "decisions_required": 12,
+      "risks": 4,
+      "safety_posture": {
+        "outbound_mode": "draft_only",
+        "external_send_enabled": false,
+        "email_send_enabled": false,
+        "whatsapp_send_enabled": false,
+        "whatsapp_allow_live_send": false,
+        "sms_send_enabled": false,
+        "calendar_write_enabled": false,
+        "proposal_finalization_enabled": false
+      }
+    },
+    "accounts": [
+      {
+        "account_id": "acct_001",
+        "company_name": "Najd Retail Group",
+        "sector": "retail",
+        "city": "riyadh",
+        "website": "https://example-najd-retail.sa",
+        "source_url": "https://example-najd-retail.sa/contact",
+        "source_type": "public_website",
+        "verification_status": "verified",
+        "contactability_status": "contactable",
+        "public_email": "info@example-najd-retail.sa",
+        "whatsapp": "",
+        "phone": "+966500000001",
+        "linkedin_url": "https://linkedin.com/company/example-najd-retail",
+        "pain_hypothesis": "Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.",
+        "icp_score": 100.0,
+        "recommended_motion": "sales_prospecting",
+        "recommended_product": "commercial_os_sprint",
+        "owner": "sami",
+        "risk_level": "low",
+        "whatsapp_opt_in": false,
+        "email_opt_out": false
+      },
+      {
+        "account_id": "acct_002",
+        "company_name": "Hijaz Logistics",
+        "sector": "logistics",
+        "city": "jeddah",
+        "website": "https://example-hijaz-logistics.sa",
+        "source_url": "https://example-hijaz-logistics.sa/about",
+        "source_type": "client_provided",
+        "verification_status": "verified",
+        "contactability_status": "contactable",
+        "public_email": "sales@example-hijaz-logistics.sa",
+        "whatsapp": "+966500000002",
+        "phone": "",
+        "linkedin_url": "",
+        "pain_hypothesis": "Sales team loses track of opportunities across channels.",
+        "icp_score": 88.0,
+        "recommended_motion": "partnership_outreach",
+        "recommended_product": "managed_growth_os",
+        "owner": "sami",
+        "risk_level": "medium",
+        "whatsapp_opt_in": true,
+        "email_opt_out": false
+      },
+      {
+        "account_id": "acct_003",
+        "company_name": "Unknown Source Co",
+        "sector": "professional_services",
+        "city": "dammam",
+        "website": "",
+        "source_url": "",
+        "source_type": "",
+        "verification_status": "unverified",
+        "contactability_status": "blocked",
+        "public_email": "",
+        "whatsapp": "",
+        "phone": "",
+        "linkedin_url": "",
+        "pain_hypothesis": "",
+        "icp_score": 16.0,
+        "recommended_motion": "",
+        "recommended_product": "",
+        "owner": "unassigned",
+        "risk_level": "high",
+        "whatsapp_opt_in": false,
+        "email_opt_out": false
+      },
+      {
+        "account_id": "acct_004",
+        "company_name": "Riyadh MedCare Clinics",
+        "sector": "healthcare",
+        "city": "riyadh",
+        "website": "https://example-medcare.sa",
+        "source_url": "https://example-medcare.sa/contact",
+        "source_type": "public_website",
+        "verification_status": "verified",
+        "contactability_status": "contactable",
+        "public_email": "hello@example-medcare.sa",
+        "whatsapp": "+966500000004",
+        "phone": "+966500000040",
+        "linkedin_url": "https://linkedin.com/company/example-medcare",
+        "pain_hypothesis": "Existing client; ready for expansion into more branches.",
+        "icp_score": 94.0,
+        "recommended_motion": "upsell",
+        "recommended_product": "managed_growth_os",
+        "owner": "sami",
+        "risk_level": "low",
+        "whatsapp_opt_in": true,
+        "email_opt_out": false
+      },
+      {
+        "account_id": "acct_005",
+        "company_name": "Opted Out Trading",
+        "sector": "ecommerce",
+        "city": "khobar",
+        "website": "https://example-opted-out.sa",
+        "source_url": "https://example-opted-out.sa/contact",
+        "source_type": "client_provided",
+        "verification_status": "verified",
+        "contactability_status": "opted_out",
+        "public_email": "no@example-opted-out.sa",
+        "whatsapp": "",
+        "phone": "",
+        "linkedin_url": "",
+        "pain_hypothesis": "Previously engaged, asked to stop contact.",
+        "icp_score": 72.0,
+        "recommended_motion": "revival",
+        "recommended_product": "",
+        "owner": "sami",
+        "risk_level": "medium",
+        "whatsapp_opt_in": false,
+        "email_opt_out": true
+      }
+    ],
+    "cards": [
+      {
+        "card_id": "card_acct_001_000",
+        "account_id": "acct_001",
+        "motion": "sales_prospecting",
+        "recommended_channel": "email",
+        "draft_message_ar": "مرحباً Najd Retail Group، لاحظنا فرصة لتحسين Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. نقدّم نظام تشغيل تجاري يساعد فرق المبيعات على تنظيم الفرص ومتابعتها. هل نرتّب مكالمة قصيرة؟",
+        "draft_message_en": "Hi Najd Retail Group, we spotted an opportunity around Leads from WhatsApp go unanswered; no follow-up system. Urgent this quarter.. We build a commercial operating system that helps sales teams organise and follow up on opportunities. Open to a short call?",
+        "buttons": [
+          "احجز مكالمة",
+          "أرسل التفاصيل",
+          "ليس الآن"
+        ],
+        "owner_decision": "pending",
+        "approval_required": true,
+        "send_status": "draft",
+        "next_action": "Owner review → approve to queue (draft only, no auto-send)",
+        "risk_level": "low"
+      },
+      {
+        "card_id": "card_acct_002_001",
+        "account_id": "acct_002",
+        "motion": "partnership_outreach",
+        "recommended_channel": "email",
+        "draft_message_ar": "مرحباً Hijaz Logistics، نرى تكاملاً محتملاً بيننا لخدمة عملاء مشتركين. هل نستكشف نموذج شراكة؟",
+        "draft_message_en": "Hi Hijaz Logistics, we see a potential fit to serve shared clients together. Could we explore a partnership model?",
+        "buttons": [
+          "نناقش الشراكة",
+          "أرسل التفاصيل",
+          "ليس الآن"
+        ],
+        "owner_decision": "pending",
+        "approval_required": true,
+        "send_status": "draft",
+        "next_action": "Owner review → approve to queue (draft only, no auto-send)",
+        "risk_level": "medium"
+      },
+      {
+        "card_id": "card_acct_003_002",
+        "account_id": "acct_003",
+        "motion": "sales_prospecting",
+        "recommended_channel": "partner_referral",
+        "draft_message_ar": "مرحباً Unknown Source Co، لاحظنا فرصة لتحسين تحسين العمليات. نقدّم نظام تشغيل تجاري يساعد فرق المبيعات على تنظيم الفرص ومتابعتها. هل نرتّب مكالمة قصيرة؟",
+        "draft_message_en": "Hi Unknown Source Co, we spotted an opportunity around operations. We build a commercial operating system that helps sales teams organise and follow up on opportunities. Open to a short call?",
+        "buttons": [
+          "احجز مكالمة",
+          "أرسل التفاصيل",
+          "ليس الآن"
+        ],
+        "owner_decision": "pending",
+        "approval_required": true,
+        "send_status": "blocked",
+        "next_action": "Resolve source/verification before any outreach",
+        "risk_level": "high"
+      },
+      {
+        "card_id": "card_acct_004_003",
+        "account_id": "acct_004",
+        "motion": "upsell",
+        "recommended_channel": "email",
+        "draft_message_ar": "مرحباً Riyadh MedCare Clinics، بناءً على ما حققناه معكم، هناك خطوة توسعة منطقية حول Existing client; ready for expansion into more branches..",
+        "draft_message_en": "Hi Riyadh MedCare Clinics, based on our work together, there's a logical expansion step around Existing client; ready for expansion into more branches..",
+        "buttons": [
+          "نعم مهتم",
+          "أرسل التفاصيل",
+          "ليس الآن"
+        ],
+        "owner_decision": "pending",
+        "approval_required": true,
+        "send_status": "draft",
+        "next_action": "Owner review → approve to queue (draft only, no auto-send)",
+        "risk_level": "low"
+      },
+      {
+        "card_id": "card_acct_005_004",
+        "account_id": "acct_005",
+        "motion": "revival",
+        "recommended_channel": "website_form",
+        "draft_message_ar": "مرحباً Opted Out Trading، نتواصل لمتابعة نقاشنا السابق حول Previously engaged, asked to stop contact.. هل التوقيت مناسب الآن؟",
+        "draft_message_en": "Hi Opted Out Trading, following up on our earlier conversation about Previously engaged, asked to stop contact.. Is the timing better now?",
+        "buttons": [
+          "نعم مهتم",
+          "أرسل التفاصيل",
+          "ليس الآن"
+        ],
+        "owner_decision": "pending",
+        "approval_required": true,
+        "send_status": "blocked",
+        "next_action": "Resolve source/verification before any outreach",
+        "risk_level": "medium"
+      }
+    ],
+    "replies": [
+      {
+        "reply_id": "reply_001",
+        "card_id": "card_acct_001_000",
+        "reply_type": "meeting_request",
+        "sentiment": "positive",
+        "intent": "meeting_request",
+        "recommended_action": "Generate 3 booking options (no calendar write by default)",
+        "risk_level": "low"
+      },
+      {
+        "reply_id": "reply_002",
+        "card_id": "card_acct_002_001",
+        "reply_type": "price_objection",
+        "sentiment": "neutral",
+        "intent": "price_objection",
+        "recommended_action": "Route to Negotiation Desk (guardrailed, no discount authority)",
+        "risk_level": "medium"
+      },
+      {
+        "reply_id": "reply_003",
+        "card_id": "card_acct_004_003",
+        "reply_type": "contract_request",
+        "sentiment": "positive",
+        "intent": "contract_request",
+        "recommended_action": "ESCALATE: legal/pricing is A3-restricted, founder only",
+        "risk_level": "high"
+      },
+      {
+        "reply_id": "reply_004",
+        "card_id": "card_acct_001_000",
+        "reply_type": "unsubscribe",
+        "sentiment": "negative",
+        "intent": "unsubscribe",
+        "recommended_action": "Honour immediately: opt-out, suppress, stop all outreach",
+        "risk_level": "high"
+      },
+      {
+        "reply_id": "reply_005",
+        "card_id": "card_acct_002_001",
+        "reply_type": "not_now",
+        "sentiment": "neutral",
+        "intent": "not_now",
+        "recommended_action": "Schedule D7 nurture follow-up",
+        "risk_level": "low"
+      },
+      {
+        "reply_id": "reply_006",
+        "card_id": "card_acct_004_003",
+        "reply_type": "partnership_interest",
+        "sentiment": "positive",
+        "intent": "partnership_interest",
+        "recommended_action": "Route to partnership motion; draft partnership pitch",
+        "risk_level": "low"
+      }
+    ],
+    "negotiation_drafts": [
+      {
+        "negotiation_id": "nego_card_acct_002_001_000",
+        "card_id": "card_acct_002_001",
+        "objection_type": "price_objection",
+        "allowed_response": "Acknowledge budget. Offer a smaller paid pilot or diagnostic-first sprint to prove value before scaling. Do NOT offer a discount or a final price — propose a scope that fits the budget instead.",
+        "forbidden_commitments": [
+          "approve_discount",
+          "set_final_price",
+          "accept_legal_terms",
+          "guarantee_results",
+          "commit_delivery_date_without_capacity_check",
+          "sign_or_accept_contract",
+          "commit_payment_terms",
+          "promise_refund"
+        ],
+        "scope_adjustment_options": [
+          "smaller_pilot",
+          "diagnostic_first",
+          "phased_scope",
+          "lower_retainer_tier",
+          "proof_first_sprint"
+        ],
+        "approval_required": true
+      },
+      {
+        "negotiation_id": "nego_card_acct_004_003_001",
+        "card_id": "card_acct_004_003",
+        "objection_type": "contract_request",
+        "allowed_response": "ESCALATE to founder. Legal terms, contract acceptance and payment commitments are A3-restricted. Prepare a proposal brief only.",
+        "forbidden_commitments": [
+          "approve_discount",
+          "set_final_price",
+          "accept_legal_terms",
+          "guarantee_results",
+          "commit_delivery_date_without_capacity_check",
+          "sign_or_accept_contract",
+          "commit_payment_terms",
+          "promise_refund"
+        ],
+        "scope_adjustment_options": [
+          "phased_scope"
+        ],
+        "approval_required": true
+      },
+      {
+        "negotiation_id": "nego_card_acct_002_001_002",
+        "card_id": "card_acct_002_001",
+        "objection_type": "not_now",
+        "allowed_response": "Respect timing. Propose a lightweight proof-first sprint or a scheduled check-in. Keep the door open without pressure.",
+        "forbidden_commitments": [
+          "approve_discount",
+          "set_final_price",
+          "accept_legal_terms",
+          "guarantee_results",
+          "commit_delivery_date_without_capacity_check",
+          "sign_or_accept_contract",
+          "commit_payment_terms",
+          "promise_refund"
+        ],
+        "scope_adjustment_options": [
+          "proof_first_sprint",
+          "alternative_timeline",
+          "diagnostic_first"
+        ],
+        "approval_required": true
+      },
+      {
+        "negotiation_id": "nego_card_acct_004_003_003",
+        "card_id": "card_acct_004_003",
+        "objection_type": "partnership_interest",
+        "allowed_response": "Propose a partner model with a defined pilot scope. No revenue-share or exclusivity commitment without founder approval.",
+        "forbidden_commitments": [
+          "approve_discount",
+          "set_final_price",
+          "accept_legal_terms",
+          "guarantee_results",
+          "commit_delivery_date_without_capacity_check",
+          "sign_or_accept_contract",
+          "commit_payment_terms",
+          "promise_refund"
+        ],
+        "scope_adjustment_options": [
+          "partner_model",
+          "phased_scope",
+          "diagnostic_first"
+        ],
+        "approval_required": true
+      }
+    ],
+    "booking_options": [
+      {
+        "booking_id": "booking_card_acct_001_000_000",
+        "card_id": "card_acct_001_000",
+        "duration_minutes": 30,
+        "timezone": "Asia/Riyadh",
+        "suggested_slots": [
+          "2026-06-29 10:00 Asia/Riyadh",
+          "2026-06-29 13:00 Asia/Riyadh",
+          "2026-06-29 16:00 Asia/Riyadh"
+        ],
+        "agenda": [
+          "Confirm goals & success criteria",
+          "Walk through fit & scope",
+          "Agree next step"
+        ],
+        "attendees": [
+          "Dealix (founder/SDR)",
+          "Client decision-maker"
+        ],
+        "preparation_notes": [
+          "Review account ICP score & pain hypothesis",
+          "Bring relevant (truthful, non-fabricated) examples only",
+          "Prepare pricing RANGE — not a final price"
+        ],
+        "calendar_write_enabled": false,
+        "booking_status": "proposed"
+      },
+      {
+        "booking_id": "booking_card_acct_002_001_001",
+        "card_id": "card_acct_002_001",
+        "duration_minutes": 30,
+        "timezone": "Asia/Riyadh",
+        "suggested_slots": [
+          "2026-06-29 10:00 Asia/Riyadh",
+          "2026-06-29 13:00 Asia/Riyadh",
+          "2026-06-29 16:00 Asia/Riyadh"
+        ],
+        "agenda": [
+          "Mutual fit & shared clients",
+          "Partner model options",
+          "Pilot scope & next step"
+        ],
+        "attendees": [
+          "Dealix (founder/SDR)",
+          "Client decision-maker"
+        ],
+        "preparation_notes": [
+          "Review account ICP score & pain hypothesis",
+          "Bring relevant (truthful, non-fabricated) examples only",
+          "Prepare pricing RANGE — not a final price"
+        ],
+        "calendar_write_enabled": false,
+        "booking_status": "proposed"
+      },
+      {
+        "booking_id": "booking_card_acct_003_002_002",
+        "card_id": "card_acct_003_002",
+        "duration_minutes": 30,
+        "timezone": "Asia/Riyadh",
+        "suggested_slots": [
+          "2026-06-29 10:00 Asia/Riyadh",
+          "2026-06-29 13:00 Asia/Riyadh",
+          "2026-06-29 16:00 Asia/Riyadh"
+        ],
+        "agenda": [
+          "Confirm goals & success criteria",
+          "Walk through fit & scope",
+          "Agree next step"
+        ],
+        "attendees": [
+          "Dealix (founder/SDR)",
+          "Client decision-maker"
+        ],
+        "preparation_notes": [
+          "Review account ICP score & pain hypothesis",
+          "Bring relevant (truthful, non-fabricated) examples only",
+          "Prepare pricing RANGE — not a final price"
+        ],
+        "calendar_write_enabled": false,
+        "booking_status": "proposed"
+      },
+      {
+        "booking_id": "booking_card_acct_004_003_003",
+        "card_id": "card_acct_004_003",
+        "duration_minutes": 30,
+        "timezone": "Asia/Riyadh",
+        "suggested_slots": [
+          "2026-06-29 10:00 Asia/Riyadh",
+          "2026-06-29 13:00 Asia/Riyadh",
+          "2026-06-29 16:00 Asia/Riyadh"
+        ],
+        "agenda": [
+          "Review proposal brief",
+          "Scope, timeline & pricing range",
+          "Approval path & next step"
+        ],
+        "attendees": [
+          "Dealix (founder/SDR)",
+          "Client decision-maker"
+        ],
+        "preparation_notes": [
+          "Review account ICP score & pain hypothesis",
+          "Bring relevant (truthful, non-fabricated) examples only",
+          "Prepare pricing RANGE — not a final price"
+        ],
+        "calendar_write_enabled": false,
+        "booking_status": "proposed"
+      },
+      {
+        "booking_id": "booking_card_acct_005_004_004",
+        "card_id": "card_acct_005_004",
+        "duration_minutes": 30,
+        "timezone": "Asia/Riyadh",
+        "suggested_slots": [
+          "2026-06-29 10:00 Asia/Riyadh",
+          "2026-06-29 13:00 Asia/Riyadh",
+          "2026-06-29 16:00 Asia/Riyadh"
+        ],
+        "agenda": [
+          "Confirm goals & success criteria",
+          "Walk through fit & scope",
+          "Agree next step"
+        ],
+        "attendees": [
+          "Dealix (founder/SDR)",
+          "Client decision-maker"
+        ],
+        "preparation_notes": [
+          "Review account ICP score & pain hypothesis",
+          "Bring relevant (truthful, non-fabricated) examples only",
+          "Prepare pricing RANGE — not a final price"
+        ],
+        "calendar_write_enabled": false,
+        "booking_status": "proposed"
+      }
+    ],
+    "proposal_briefs": [
+      {
+        "proposal_id": "prop_card_acct_001_000_000",
+        "card_id": "card_acct_001_000",
+        "package_name": "7-Day Growth Card Sprint",
+        "scope": [
+          "Discovery & ICP confirmation",
+          "Account qualification & sourcing review",
+          "Draft outreach + reply/negotiation desk",
+          "Booking options + command-room reporting"
+        ],
+        "deliverables": [
+          "25–50 qualified Growth Cards",
+          "10–20 bilingual outreach drafts (draft-only)",
+          "5 proposal briefs",
+          "Booking option sets",
+          "Command-room proof report"
+        ],
+        "timeline": "7 days",
+        "pricing_range_sar": "5,000–12,000",
+        "out_of_scope": [
+          "Cold WhatsApp / unconsented messaging",
+          "Guaranteed revenue or ROI commitments",
+          "Final pricing, discounts or contract terms without founder approval",
+          "Sending any external message without explicit approval",
+          "Scraping prohibited or restricted sources"
+        ],
+        "acceptance_criteria": [
+          "Agreed scope document signed off (founder approval)",
+          "Client provides data & source access per kickoff checklist",
+          "Success metrics defined before kickoff"
+        ],
+        "final_price_allowed": false,
+        "approval_required": true,
+        "status": "draft"
+      },
+      {
+        "proposal_id": "prop_card_acct_002_001_001",
+        "card_id": "card_acct_002_001",
+        "package_name": "14-Day Commercial OS Sprint",
+        "scope": [
+          "Discovery & ICP confirmation",
+          "Account qualification & sourcing review",
+          "Draft outreach + reply/negotiation desk",
+          "Booking options + command-room reporting"
+        ],
+        "deliverables": [
+          "Full lead → pipeline workflow",
+          "Smart Reply desk",
+          "Negotiation guardrails",
+          "Proposal Factory",
+          "Command room"
+        ],
+        "timeline": "14 days",
+        "pricing_range_sar": "15,000–35,000",
+        "out_of_scope": [
+          "Cold WhatsApp / unconsented messaging",
+          "Guaranteed revenue or ROI commitments",
+          "Final pricing, discounts or contract terms without founder approval",
+          "Sending any external message without explicit approval",
+          "Scraping prohibited or restricted sources"
+        ],
+        "acceptance_criteria": [
+          "Agreed scope document signed off (founder approval)",
+          "Client provides data & source access per kickoff checklist",
+          "Success metrics defined before kickoff"
+        ],
+        "final_price_allowed": false,
+        "approval_required": true,
+        "status": "draft"
+      },
+      {
+        "proposal_id": "prop_card_acct_003_002_002",
+        "card_id": "card_acct_003_002",
+        "package_name": "7-Day Growth Card Sprint",
+        "scope": [
+          "Discovery & ICP confirmation",
+          "Account qualification & sourcing review",
+          "Draft outreach + reply/negotiation desk",
+          "Booking options + command-room reporting"
+        ],
+        "deliverables": [
+          "25–50 qualified Growth Cards",
+          "10–20 bilingual outreach drafts (draft-only)",
+          "5 proposal briefs",
+          "Booking option sets",
+          "Command-room proof report"
+        ],
+        "timeline": "7 days",
+        "pricing_range_sar": "5,000–12,000",
+        "out_of_scope": [
+          "Cold WhatsApp / unconsented messaging",
+          "Guaranteed revenue or ROI commitments",
+          "Final pricing, discounts or contract terms without founder approval",
+          "Sending any external message without explicit approval",
+          "Scraping prohibited or restricted sources"
+        ],
+        "acceptance_criteria": [
+          "Agreed scope document signed off (founder approval)",
+          "Client provides data & source access per kickoff checklist",
+          "Success metrics defined before kickoff"
+        ],
+        "final_price_allowed": false,
+        "approval_required": true,
+        "status": "draft"
+      },
+      {
+        "proposal_id": "prop_card_acct_004_003_003",
+        "card_id": "card_acct_004_003",
+        "package_name": "Managed Growth OS (monthly)",
+        "scope": [
+          "Discovery & ICP confirmation",
+          "Account qualification & sourcing review",
+          "Draft outreach + reply/negotiation desk",
+          "Booking options + command-room reporting"
+        ],
+        "deliverables": [
+          "Weekly operation & follow-up",
+          "Proposal review",
+          "Pipeline updates",
+          "Growth reporting"
+        ],
+        "timeline": "Monthly, weekly operation",
+        "pricing_range_sar": "5,000–25,000 / month",
+        "out_of_scope": [
+          "Cold WhatsApp / unconsented messaging",
+          "Guaranteed revenue or ROI commitments",
+          "Final pricing, discounts or contract terms without founder approval",
+          "Sending any external message without explicit approval",
+          "Scraping prohibited or restricted sources"
+        ],
+        "acceptance_criteria": [
+          "Agreed scope document signed off (founder approval)",
+          "Client provides data & source access per kickoff checklist",
+          "Success metrics defined before kickoff"
+        ],
+        "final_price_allowed": false,
+        "approval_required": true,
+        "status": "draft"
+      },
+      {
+        "proposal_id": "prop_card_acct_005_004_004",
+        "card_id": "card_acct_005_004",
+        "package_name": "7-Day Growth Card Sprint",
+        "scope": [
+          "Discovery & ICP confirmation",
+          "Account qualification & sourcing review",
+          "Draft outreach + reply/negotiation desk",
+          "Booking options + command-room reporting"
+        ],
+        "deliverables": [
+          "25–50 qualified Growth Cards",
+          "10–20 bilingual outreach drafts (draft-only)",
+          "5 proposal briefs",
+          "Booking option sets",
+          "Command-room proof report"
+        ],
+        "timeline": "7 days",
+        "pricing_range_sar": "5,000–12,000",
+        "out_of_scope": [
+          "Cold WhatsApp / unconsented messaging",
+          "Guaranteed revenue or ROI commitments",
+          "Final pricing, discounts or contract terms without founder approval",
+          "Sending any external message without explicit approval",
+          "Scraping prohibited or restricted sources"
+        ],
+        "acceptance_criteria": [
+          "Agreed scope document signed off (founder approval)",
+          "Client provides data & source access per kickoff checklist",
+          "Success metrics defined before kickoff"
+        ],
+        "final_price_allowed": false,
+        "approval_required": true,
+        "status": "draft"
+      }
+    ],
+    "followup_tasks": [
+      {
+        "task_id": "task_card_acct_001_000_d1",
+        "card_id": "card_acct_001_000",
+        "due_in_days": 1,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D1: gentle nudge — confirm the message landed; offer a quick call.",
+        "status": "open"
+      },
+      {
+        "task_id": "task_card_acct_001_000_d3",
+        "card_id": "card_acct_001_000",
+        "due_in_days": 3,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D3: add value — share one relevant, truthful insight (no claims).",
+        "status": "open"
+      },
+      {
+        "task_id": "task_card_acct_001_000_d7",
+        "card_id": "card_acct_001_000",
+        "due_in_days": 7,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D7: final touch — if no reply, move to nurture/hold. Do not chase.",
+        "status": "open"
+      },
+      {
+        "task_id": "task_card_acct_002_001_d1",
+        "card_id": "card_acct_002_001",
+        "due_in_days": 1,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D1: gentle nudge — confirm the message landed; offer a quick call.",
+        "status": "open"
+      },
+      {
+        "task_id": "task_card_acct_002_001_d3",
+        "card_id": "card_acct_002_001",
+        "due_in_days": 3,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D3: add value — share one relevant, truthful insight (no claims).",
+        "status": "open"
+      },
+      {
+        "task_id": "task_card_acct_002_001_d7",
+        "card_id": "card_acct_002_001",
+        "due_in_days": 7,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D7: final touch — if no reply, move to nurture/hold. Do not chase.",
+        "status": "open"
+      },
+      {
+        "task_id": "task_card_acct_004_003_d1",
+        "card_id": "card_acct_004_003",
+        "due_in_days": 1,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D1: gentle nudge — confirm the message landed; offer a quick call.",
+        "status": "open"
+      },
+      {
+        "task_id": "task_card_acct_004_003_d3",
+        "card_id": "card_acct_004_003",
+        "due_in_days": 3,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D3: add value — share one relevant, truthful insight (no claims).",
+        "status": "open"
+      },
+      {
+        "task_id": "task_card_acct_004_003_d7",
+        "card_id": "card_acct_004_003",
+        "due_in_days": 7,
+        "channel": "email",
+        "owner": "sami",
+        "draft_note": "D7: final touch — if no reply, move to nurture/hold. Do not chase.",
+        "status": "open"
+      }
+    ],
+    "delivery_handoffs": [
+      {
+        "handoff_id": "handoff_acct_001_000",
+        "account_id": "acct_001",
+        "proposal_id": "prop_card_acct_001_000_000",
+        "required_inputs": [
+          "Signed scope document (founder-approved)",
+          "Data / source access per kickoff checklist",
+          "Named client point-of-contact",
+          "Defined success metrics"
+        ],
+        "kickoff_agenda": [
+          "Confirm scope, timeline & success metrics",
+          "Walk through data handling & safety doctrine",
+          "Agree weekly cadence & command-room access"
+        ],
+        "acceptance_criteria": [
+          "Client confirms scope & out-of-scope",
+          "Baseline metrics captured before work starts",
+          "Proof-pack plan agreed"
+        ],
+        "proof_pack_plan": [
+          "Before/after metrics (truthful, sourced)",
+          "Sample Growth Cards & drafts produced",
+          "Command-room snapshot at milestone"
+        ],
+        "status": "pending_approval"
+      },
+      {
+        "handoff_id": "handoff_acct_002_001",
+        "account_id": "acct_002",
+        "proposal_id": "prop_card_acct_002_001_001",
+        "required_inputs": [
+          "Signed scope document (founder-approved)",
+          "Data / source access per kickoff checklist",
+          "Named client point-of-contact",
+          "Defined success metrics"
+        ],
+        "kickoff_agenda": [
+          "Confirm scope, timeline & success metrics",
+          "Walk through data handling & safety doctrine",
+          "Agree weekly cadence & command-room access"
+        ],
+        "acceptance_criteria": [
+          "Client confirms scope & out-of-scope",
+          "Baseline metrics captured before work starts",
+          "Proof-pack plan agreed"
+        ],
+        "proof_pack_plan": [
+          "Before/after metrics (truthful, sourced)",
+          "Sample Growth Cards & drafts produced",
+          "Command-room snapshot at milestone"
+        ],
+        "status": "pending_approval"
+      },
+      {
+        "handoff_id": "handoff_acct_003_002",
+        "account_id": "acct_003",
+        "proposal_id": "prop_card_acct_003_002_002",
+        "required_inputs": [
+          "Signed scope document (founder-approved)",
+          "Data / source access per kickoff checklist",
+          "Named client point-of-contact",
+          "Defined success metrics"
+        ],
+        "kickoff_agenda": [
+          "Confirm scope, timeline & success metrics",
+          "Walk through data handling & safety doctrine",
+          "Agree weekly cadence & command-room access"
+        ],
+        "acceptance_criteria": [
+          "Client confirms scope & out-of-scope",
+          "Baseline metrics captured before work starts",
+          "Proof-pack plan agreed"
+        ],
+        "proof_pack_plan": [
+          "Before/after metrics (truthful, sourced)",
+          "Sample Growth Cards & drafts produced",
+          "Command-room snapshot at milestone"
+        ],
+        "status": "pending_approval"
+      },
+      {
+        "handoff_id": "handoff_acct_004_003",
+        "account_id": "acct_004",
+        "proposal_id": "prop_card_acct_004_003_003",
+        "required_inputs": [
+          "Signed scope document (founder-approved)",
+          "Data / source access per kickoff checklist",
+          "Named client point-of-contact",
+          "Defined success metrics"
+        ],
+        "kickoff_agenda": [
+          "Confirm scope, timeline & success metrics",
+          "Walk through data handling & safety doctrine",
+          "Agree weekly cadence & command-room access"
+        ],
+        "acceptance_criteria": [
+          "Client confirms scope & out-of-scope",
+          "Baseline metrics captured before work starts",
+          "Proof-pack plan agreed"
+        ],
+        "proof_pack_plan": [
+          "Before/after metrics (truthful, sourced)",
+          "Sample Growth Cards & drafts produced",
+          "Command-room snapshot at milestone"
+        ],
+        "status": "pending_approval"
+      },
+      {
+        "handoff_id": "handoff_acct_005_004",
+        "account_id": "acct_005",
+        "proposal_id": "prop_card_acct_005_004_004",
+        "required_inputs": [
+          "Signed scope document (founder-approved)",
+          "Data / source access per kickoff checklist",
+          "Named client point-of-contact",
+          "Defined success metrics"
+        ],
+        "kickoff_agenda": [
+          "Confirm scope, timeline & success metrics",
+          "Walk through data handling & safety doctrine",
+          "Agree weekly cadence & command-room access"
+        ],
+        "acceptance_criteria": [
+          "Client confirms scope & out-of-scope",
+          "Baseline metrics captured before work starts",
+          "Proof-pack plan agreed"
+        ],
+        "proof_pack_plan": [
+          "Before/after metrics (truthful, sourced)",
+          "Sample Growth Cards & drafts produced",
+          "Command-room snapshot at milestone"
+        ],
+        "status": "pending_approval"
+      }
+    ],
+    "risks": [
+      {
+        "ref": "acct_003",
+        "risk": "missing_source_url",
+        "impact": "send blocked — unverified lead"
+      },
+      {
+        "ref": "acct_003",
+        "risk": "not_contactable",
+        "impact": "no outreach permitted"
+      },
+      {
+        "ref": "acct_005",
+        "risk": "not_contactable",
+        "impact": "no outreach permitted"
+      },
+      {
+        "ref": "card_acct_003_002",
+        "risk": "high_risk_card",
+        "impact": "manual review required before any action"
+      }
+    ],
+    "decision_queue": [
+      {
+        "type": "card_review",
+        "ref": "card_acct_001_000",
+        "ask": "Approve / hold / discard this Growth Card draft",
+        "risk": "low"
+      },
+      {
+        "type": "card_review",
+        "ref": "card_acct_002_001",
+        "ask": "Approve / hold / discard this Growth Card draft",
+        "risk": "medium"
+      },
+      {
+        "type": "card_review",
+        "ref": "card_acct_003_002",
+        "ask": "Approve / hold / discard this Growth Card draft",
+        "risk": "high"
+      },
+      {
+        "type": "card_review",
+        "ref": "card_acct_004_003",
+        "ask": "Approve / hold / discard this Growth Card draft",
+        "risk": "low"
+      },
+      {
+        "type": "card_review",
+        "ref": "card_acct_005_004",
+        "ask": "Approve / hold / discard this Growth Card draft",
+        "risk": "medium"
+      },
+      {
+        "type": "reply_escalation",
+        "ref": "reply_003",
+        "ask": "ESCALATE: legal/pricing is A3-restricted, founder only",
+        "risk": "high"
+      },
+      {
+        "type": "reply_escalation",
+        "ref": "reply_004",
+        "ask": "Honour immediately: opt-out, suppress, stop all outreach",
+        "risk": "high"
+      },
+      {
+        "type": "proposal_approval",
+        "ref": "prop_card_acct_001_000_000",
+        "ask": "Approve proposal brief (7-Day Growth Card Sprint) — pricing range only",
+        "risk": "medium"
+      },
+      {
+        "type": "proposal_approval",
+        "ref": "prop_card_acct_002_001_001",
+        "ask": "Approve proposal brief (14-Day Commercial OS Sprint) — pricing range only",
+        "risk": "medium"
+      },
+      {
+        "type": "proposal_approval",
+        "ref": "prop_card_acct_003_002_002",
+        "ask": "Approve proposal brief (7-Day Growth Card Sprint) — pricing range only",
+        "risk": "medium"
+      },
+      {
+        "type": "proposal_approval",
+        "ref": "prop_card_acct_004_003_003",
+        "ask": "Approve proposal brief (Managed Growth OS (monthly)) — pricing range only",
+        "risk": "medium"
+      },
+      {
+        "type": "proposal_approval",
+        "ref": "prop_card_acct_005_004_004",
+        "ask": "Approve proposal brief (7-Day Growth Card Sprint) — pricing range only",
+        "risk": "medium"
+      }
+    ],
+    "next_actions": [
+      "[card_review] Approve / hold / discard this Growth Card draft → card_acct_001_000",
+      "[card_review] Approve / hold / discard this Growth Card draft → card_acct_002_001",
+      "[card_review] Approve / hold / discard this Growth Card draft → card_acct_003_002",
+      "[card_review] Approve / hold / discard this Growth Card draft → card_acct_004_003",
+      "[card_review] Approve / hold / discard this Growth Card draft → card_acct_005_004",
+      "[reply_escalation] ESCALATE: legal/pricing is A3-restricted, founder only → reply_003",
+      "[reply_escalation] Honour immediately: opt-out, suppress, stop all outreach → reply_004",
+      "[followup] D1 email → card_acct_001_000",
+      "[followup] D3 email → card_acct_001_000",
+      "[followup] D7 email → card_acct_001_000"
+    ]
+  },
+  "proof_pack": {
+    "kind": "commercial_growth_os_proof_pack",
+    "claims_policy": "factual_only_no_fabrication",
+    "produced": {
+      "accounts": 5,
+      "growth_cards": 5,
+      "replies_classified": 6,
+      "booking_options": 5,
+      "proposal_briefs": 5,
+      "followup_tasks": 9,
+      "decisions_required": 12
+    },
+    "safety_posture": {
+      "outbound_mode": "draft_only",
+      "external_send_enabled": false,
+      "email_send_enabled": false,
+      "whatsapp_send_enabled": false,
+      "whatsapp_allow_live_send": false,
+      "sms_send_enabled": false,
+      "calendar_write_enabled": false,
+      "proposal_finalization_enabled": false
+    },
+    "guarantees": "none — Dealix does not promise guaranteed revenue or ROI",
+    "evidence_basis": "counts derived directly from this run's artefacts"
+  },
+  "pipeline_events": [
+    {
+      "event_id": "evt_acct_001_000",
+      "account_id": "acct_001",
+      "stage": "verified",
+      "previous_stage": "",
+      "next_stage": "",
+      "evidence": "sourced & validated",
+      "owner": "sami",
+      "created_at": "2026-06-28T18:23:50.741999+00:00"
+    },
+    {
+      "event_id": "evt_acct_002_001",
+      "account_id": "acct_002",
+      "stage": "verified",
+      "previous_stage": "",
+      "next_stage": "",
+      "evidence": "sourced & validated",
+      "owner": "sami",
+      "created_at": "2026-06-28T18:23:50.742025+00:00"
+    },
+    {
+      "event_id": "evt_acct_003_002",
+      "account_id": "acct_003",
+      "stage": "researched",
+      "previous_stage": "",
+      "next_stage": "",
+      "evidence": "sourced, pending verification",
+      "owner": "unassigned",
+      "created_at": "2026-06-28T18:23:50.742028+00:00"
+    },
+    {
+      "event_id": "evt_acct_004_003",
+      "account_id": "acct_004",
+      "stage": "verified",
+      "previous_stage": "",
+      "next_stage": "",
+      "evidence": "sourced & validated",
+      "owner": "sami",
+      "created_at": "2026-06-28T18:23:50.742032+00:00"
+    },
+    {
+      "event_id": "evt_acct_005_004",
+      "account_id": "acct_005",
+      "stage": "verified",
+      "previous_stage": "",
+      "next_stage": "",
+      "evidence": "sourced & validated",
+      "owner": "sami",
+      "created_at": "2026-06-28T18:23:50.742034+00:00"
+    }
+  ],
+  "safety_ok": true,
+  "safety_violations": []
+}

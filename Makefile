@@ -13,7 +13,8 @@
         v5-proof-pack v10-verify v10-reference \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
-        launch-content launch-pipeline launch-all-dry-runs test-launch
+        launch-content launch-pipeline launch-all-dry-runs test-launch \
+        commercial-growth-os commercial-growth-verify commercial-growth-test
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -240,6 +241,19 @@ launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score laun
 
 test-launch: ## Launch OS: run launch-specific test suite
 	pytest tests/launch/ -v --tb=short
+
+# ═══════════════════════════════════════════════════════════════
+# Commercial Growth OS v2 (safe, draft-only)
+# ═══════════════════════════════════════════════════════════════
+
+commercial-growth-os: ## Commercial Growth OS: run the full pipeline (draft-only)
+	$(PYTHON) scripts/commercial/run_commercial_growth_os.py
+
+commercial-growth-verify: ## Commercial Growth OS: verify safety posture + wiring
+	$(PYTHON) scripts/commercial/verify_commercial_growth_os.py
+
+commercial-growth-test: ## Commercial Growth OS: run the new safety/orchestrator tests
+	$(PYTHON) -m pytest -q tests/test_commercial_growth_os_safe_defaults.py tests/test_commercial_growth_os_orchestrator.py tests/test_commercial_no_live_send_by_default.py
 
 # ═══════════════════════════════════════════════════════════════
 # Company Operating System — launch controls
