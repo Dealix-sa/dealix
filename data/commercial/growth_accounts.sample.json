@@ -1,0 +1,41 @@
+[
+  {
+    "company_name": "شركة خدمات لوجستية تجريبية",
+    "sector": "logistics",
+    "city": "Riyadh",
+    "website": "https://example.com",
+    "source_url": "https://example.com/contact",
+    "verification_status": "ready_for_review",
+    "motion": "partnership",
+    "recommended_channel": "email",
+    "pain_hypothesis": "متابعات B2B كثيرة وعروض تحتاج دفع ومتابعة منظمة.",
+    "dealix_angle": "Revenue Command Room + Partnership follow-up queue.",
+    "recommended_product": "Revenue Command Room OS"
+  },
+  {
+    "company_name": "عيادة تجريبية متعددة الفروع",
+    "sector": "clinics",
+    "city": "Jeddah",
+    "website": "https://example-clinic.com",
+    "source_url": "https://example-clinic.com/contact",
+    "verification_status": "contact_page_found",
+    "motion": "sales",
+    "recommended_channel": "email",
+    "pain_hypothesis": "حجوزات واستفسارات واتساب قد تضيع بدون follow-up queue يومية.",
+    "dealix_angle": "WhatsApp / Inbox Follow-up OS + daily owner report.",
+    "recommended_product": "WhatsApp / Inbox Follow-up OS"
+  },
+  {
+    "company_name": "مركز تدريب تجريبي",
+    "sector": "training",
+    "city": "Dammam",
+    "website": "https://example-training.com",
+    "source_url": "https://example-training.com/programs",
+    "verification_status": "ready_for_review",
+    "motion": "proposal_push",
+    "recommended_channel": "linkedin_manual",
+    "pain_hypothesis": "الاستفسارات تتحول لعروض لكن المتابعة غير منتظمة قبل إغلاق التسجيل.",
+    "dealix_angle": "Growth Card OS for enrollment follow-up and proposal push.",
+    "recommended_product": "Growth Card Sprint"
+  }
+]
