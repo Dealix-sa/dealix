@@ -1,0 +1,28 @@
+export const cmdV2Snapshot = {
+  summary: {
+    lanes: 8,
+    actions: 14,
+    decision_cards: 8,
+    ceo_decisions: 2,
+    growth_actions: 2,
+    sales_negotiation_actions: 2,
+    partnership_actions: 2,
+    marketing_actions: 2,
+    trust_pricing_actions: 2,
+    whatsapp_routing_actions: 1,
+    ui_actions: 1,
+    approval_required: 14,
+    external_sends: 0,
+    final_commitments: 0,
+  },
+  decision_cards: [
+    { lane: 'ceo', owner: 'CEO', title: 'CEO daily command', actions: ['approve_top_decisions', 'review_escalations'] },
+    { lane: 'growth', owner: 'Growth Director', title: 'Growth daily command', actions: ['prepare_growth_experiment', 'prepare_reactivation_loop'] },
+    { lane: 'sales_negotiation', owner: 'Sales Director', title: 'Sales daily command', actions: ['prepare_proposal_push', 'prepare_objection_response'] },
+    { lane: 'partnerships', owner: 'Partnerships Director', title: 'Partnerships daily command', actions: ['prepare_referral_brief', 'prepare_integration_discovery'] },
+    { lane: 'marketing', owner: 'Marketing Director', title: 'Marketing daily command', actions: ['draft_founder_post', 'prepare_proof_asset'] },
+    { lane: 'trust_pricing', owner: 'Trust and Pricing Owner', title: 'Trust and pricing command', actions: ['review_safety_gates', 'review_pricing_ranges'] },
+    { lane: 'whatsapp_routing', owner: 'Operations Owner', title: 'WhatsApp routing command', actions: ['generate_role_cards'] },
+    { lane: 'command_room_ui', owner: 'Product Owner', title: 'Command room UI command', actions: ['generate_ui_snapshot'] },
+  ],
+} as const;
