@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import csv
 import os
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 LEDGER_PATH = os.path.join(

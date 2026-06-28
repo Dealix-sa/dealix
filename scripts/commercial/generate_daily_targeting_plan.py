@@ -6,7 +6,7 @@ This creates a plan only. It does not fetch targets and does not contact anyone.
 from __future__ import annotations
 
 import json
-from datetime import UTC, date, datetime, timezone
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]

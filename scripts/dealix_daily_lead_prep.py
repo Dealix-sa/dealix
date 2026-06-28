@@ -40,7 +40,7 @@ import csv
 import json
 import sys
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, date, datetime, timezone
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any, Literal
 

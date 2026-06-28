@@ -1,7 +1,7 @@
 import argparse
 import json
 import uuid
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 Q=Path('data/agents/task_queue.json')

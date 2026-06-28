@@ -7,7 +7,7 @@ it does not write to CRM. Use it to prepare founder-reviewed actions.
 from __future__ import annotations
 
 import json
-from datetime import UTC, date, datetime, timezone
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]

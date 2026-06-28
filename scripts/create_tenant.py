@@ -32,7 +32,7 @@ import os
 import re
 import sys
 import uuid
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 
 SLUG_RE = re.compile(r"^[a-z][a-z0-9_]{1,62}[a-z0-9]$")
 VALID_PLANS = {"pilot", "starter", "growth", "scale"}

@@ -6,7 +6,7 @@ This is a configuration and policy generator. It does not send messages.
 from __future__ import annotations
 
 import json
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from textwrap import dedent
 

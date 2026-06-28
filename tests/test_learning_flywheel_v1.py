@@ -10,7 +10,7 @@ All tests use ``tmp_path`` so production data/wave12/ never touched.
 """
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import pytest

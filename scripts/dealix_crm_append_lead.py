@@ -2,7 +2,7 @@
 import argparse
 import hashlib
 import json
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 CRM = Path('data/crm')

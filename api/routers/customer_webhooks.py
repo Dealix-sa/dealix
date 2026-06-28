@@ -42,7 +42,7 @@ import logging
 import re
 import secrets
 import time
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Path

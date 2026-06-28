@@ -11,7 +11,7 @@ IMPORTANT: This module must never emit statements like "X will happen" or
 """
 from __future__ import annotations
 
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 HORIZONS = (30, 90, 365)

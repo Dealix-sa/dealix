@@ -10,7 +10,7 @@ language with confidence levels.
 from __future__ import annotations
 
 import os
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from scripts.brain.build_company_brain_map import build_company_brain_map

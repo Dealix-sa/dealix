@@ -13,7 +13,7 @@ All tests pure-function — no I/O, no HTTP, deterministic.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime
 
 import pytest
 

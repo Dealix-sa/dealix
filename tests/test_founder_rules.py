@@ -347,7 +347,7 @@ def test_default_ttl_is_30_days(tmp_engine: FounderRuleEngine) -> None:
     rule = tmp_engine.create_rule(name="r", channel="email", min_confidence=0.0)
     # Verify expiry is roughly 30 days out
     assert DEFAULT_RULE_TTL_DAYS == 30
-    from datetime import datetime, timezone
+    from datetime import datetime
     exp = datetime.fromisoformat(rule.expires_at)
     created = datetime.fromisoformat(rule.created_at)
     delta_days = (exp - created).days
