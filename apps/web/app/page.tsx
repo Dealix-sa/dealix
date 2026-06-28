@@ -91,6 +91,7 @@ export default function HomePage() {
           <li><Link href="/revenue-machine">Revenue OS</Link></li>
           <li><Link href="/brain">Company Brain</Link></li>
           <li><Link href="/pricing">Pricing</Link></li>
+          <li><Link href="/founder/command-room">غرفة القيادة</Link></li>
           <li><Link href="/book">Book Review</Link></li>
         </ul>
         <div className="actions" style={{ marginTop: 0 }}>
