@@ -10,8 +10,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "delivery"))
 
-from client_proof import PROOF_FILES, proof_pack  # noqa: E402
-from create_client_workspace import create_workspace  # noqa: E402
+from client_proof import PROOF_FILES, proof_pack
+from create_client_workspace import create_workspace
 
 TEST_SLUG = "_test_delivery_proof"
 

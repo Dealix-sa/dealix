@@ -15,11 +15,11 @@ _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
+from scripts.brain.generate_30_day_action_plan import generate_30_day_action_plan
 from scripts.brain.generate_future_radar import (
     DETERMINISTIC_PHRASES,
     generate_future_radar,
 )
-from scripts.brain.generate_30_day_action_plan import generate_30_day_action_plan
 from scripts.brain.generate_weekly_board_memo import generate_weekly_board_memo
 from scripts.brain.run_brain_day import run_brain_day
 

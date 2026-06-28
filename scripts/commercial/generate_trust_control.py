@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -40,7 +40,7 @@ def markdown(payload: dict) -> str:
 def main() -> int:
     manifest = load_json(MANIFEST, {})
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "company": manifest.get("company", "Dealix"),
         "control_name": manifest.get("control_name", "Trust and Claims Control"),
         "purpose": manifest.get("purpose", "trust control"),

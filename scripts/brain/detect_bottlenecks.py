@@ -7,7 +7,7 @@ review, it does not prescribe a deterministic fix.
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 
@@ -19,7 +19,7 @@ def detect_bottlenecks(brain_map: dict[str, Any]) -> list[dict[str, Any]]:
     """
     bottlenecks: list[dict[str, Any]] = []
     ledgers = brain_map.get("ledgers", {})
-    today = datetime.now(timezone.utc).date()
+    today = datetime.now(UTC).date()
 
     # 1. Overdue decisions (review_date in the past, no recorded outcome)
     for dec in ledgers.get("decisions", []):

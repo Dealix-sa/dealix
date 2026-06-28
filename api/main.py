@@ -59,7 +59,6 @@ from api.routers import (
     zatca,
 )
 from api.routers import audit_export as audit_export_router
-from api.routers import public_intake as public_intake_router  # Wave 4 — public intake
 
 # Wave 13 — Full Ops Productization routers
 from api.routers import bottleneck_radar as bottleneck_radar_router
@@ -72,12 +71,14 @@ from api.routers import deliverables as deliverables_router
 
 # Wave 12.7 — Intelligence Layer + Expansion Engine routers
 from api.routers import expansion_engine as expansion_engine_router
+from api.routers import founder_command_room as founder_command_room_router
 from api.routers import founder_dashboard as founder_dashboard_router
 
 # Wave 14 — Canonical Trust MVP + Retainer Engine (Phase 2)
 from api.routers import friction_log as friction_log_router
 from api.routers import integration_capability as integration_capability_router
 from api.routers import intelligence_layer as intelligence_layer_router
+from api.routers import public_intake as public_intake_router  # Wave 4 — public intake
 from api.routers import service_catalog as service_catalog_router
 
 # 90-day commercial activation — Wave 14B
@@ -387,6 +388,8 @@ def create_app() -> FastAPI:
         app.include_router(data_os_router.router)
     app.include_router(sprint_runner_router.router)
     app.include_router(founder_dashboard_router.router)
+    # Founder Command Room — one aggregated, read-only snapshot (admin-gated)
+    app.include_router(founder_command_room_router.router)
     app.include_router(audit_export_router.router)
     # Wave 14F — Agent OS (admin-gated)
     if agent_os_router is not None:

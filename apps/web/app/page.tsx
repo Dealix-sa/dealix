@@ -55,7 +55,7 @@ const sectors = [
   "المكاتب المهنية",
 ];
 
-const process = [
+const processSteps = [
   ["01", "Map", "نفهم الإيراد، العملاء، القنوات، المتابعة، والبيانات الموجودة."],
   ["02", "Design", "نحوّل الألم إلى workflow واحد واضح، قبولاته محددة ومخاطره معروفة."],
   ["03", "Build", "نبني dashboard، ledgers، drafts، reports، وapproval gates بدون تعطيل أنظمتك الحالية."],
@@ -91,6 +91,7 @@ export default function HomePage() {
           <li><Link href="/revenue-machine">Revenue OS</Link></li>
           <li><Link href="/brain">Company Brain</Link></li>
           <li><Link href="/pricing">Pricing</Link></li>
+          <li><Link href="/founder/command-room">غرفة القيادة</Link></li>
           <li><Link href="/book">Book Review</Link></li>
         </ul>
         <div className="actions" style={{ marginTop: 0 }}>
@@ -204,7 +205,7 @@ export default function HomePage() {
           <p className="eyebrow">Delivery method</p>
           <h2 id="process-title">Map → Design → Build → Operate → Scale</h2>
           <div className="grid-3">
-            {process.map(([step, title, text]) => (
+            {processSteps.map(([step, title, text]) => (
               <article key={step} style={{ padding: "var(--sp-4)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "var(--r-lg)" }}>
                 <span className="badge badge-gold">{step}</span>
                 <h3 style={{ marginTop: "var(--sp-3)" }}>{title}</h3>

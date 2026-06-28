@@ -6,7 +6,7 @@ Local-only. No external requests and no outbound actions.
 from __future__ import annotations
 
 import json
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -23,7 +23,7 @@ def build_markdown(payload: dict) -> str:
     lines = [
         f"# Dealix Strategic Command Center — {today}",
         "",
-        f"## Executive verdict",
+        "## Executive verdict",
         "",
         payload["executive_verdict"],
         "",
@@ -76,7 +76,7 @@ def build_markdown(payload: dict) -> str:
 
 def main() -> int:
     payload = load_template()
-    payload["generated_at"] = datetime.now(timezone.utc).isoformat()
+    payload["generated_at"] = datetime.now(UTC).isoformat()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     (OUT_DIR / "latest.md").write_text(build_markdown(payload), encoding="utf-8")
     (OUT_DIR / "latest.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

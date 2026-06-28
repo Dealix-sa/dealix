@@ -17,13 +17,13 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from scripts.brain.build_company_brain_map import build_company_brain_map
 from scripts.brain.detect_bottlenecks import detect_bottlenecks
 from scripts.brain.generate_30_day_action_plan import generate_30_day_action_plan
-from scripts.brain.generate_daily_decision import generate_daily_decision, default_review_date
+from scripts.brain.generate_daily_decision import default_review_date, generate_daily_decision
 from scripts.brain.generate_future_radar import generate_future_radar
 from scripts.brain.generate_weekly_board_memo import generate_weekly_board_memo
 from scripts.brain.ingest_company_profile import ingest_company_profile
@@ -77,7 +77,7 @@ def run_brain_day(
     plan = generate_30_day_action_plan(profile=normalised_profile, reports_dir=out_dir)
 
     # 8. Write summary report
-    today = datetime.now(timezone.utc).date().isoformat()
+    today = datetime.now(UTC).date().isoformat()
     summary_path = os.path.join(out_dir, f"brain_day_{today}.md")
     summary_lines = [
         f"# Brain Day Summary — {today}",

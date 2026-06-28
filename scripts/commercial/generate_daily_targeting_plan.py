@@ -6,7 +6,7 @@ This creates a plan only. It does not fetch targets and does not contact anyone.
 from __future__ import annotations
 
 import json
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -102,7 +102,7 @@ def build_markdown() -> str:
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "status": "plan_only_no_contact",
         "research_total": sum(item["search_goal"] for item in SECTOR_WEDGES),
         "sector_wedges": SECTOR_WEDGES,

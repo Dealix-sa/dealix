@@ -4,7 +4,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = ROOT / "data" / "commercial" / "agentic_commercial_os_registry.json"
 DOCTRINE = ROOT / "docs" / "ops" / "DEALIX_LOOP_ENGINEERING_OS.md"

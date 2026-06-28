@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import os
 import subprocess
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from fastapi import APIRouter, Depends, Request

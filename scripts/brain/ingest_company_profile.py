@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import csv
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 LEDGER_PATH = os.path.join(
@@ -43,7 +43,7 @@ def ingest_company_profile(profile: dict[str, Any], ledger_path: str | None = No
         "revenue_band": profile.get("revenue_band"),
         "focus_areas": list(profile.get("focus_areas", [])),
         "key_metrics": dict(profile.get("key_metrics", {})),
-        "ingested_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "ingested_at": datetime.now(UTC).isoformat(timespec="seconds"),
     }
 
     signals = profile.get("signals", [])
@@ -73,7 +73,7 @@ def _append_signals(signals: list[dict[str, Any]], path: str) -> None:
         for sig in signals:
             row = {f: sig.get(f, "") for f in fieldnames}
             if not row.get("date"):
-                row["date"] = datetime.now(timezone.utc).date().isoformat()
+                row["date"] = datetime.now(UTC).date().isoformat()
             writer.writerow(row)
 
 

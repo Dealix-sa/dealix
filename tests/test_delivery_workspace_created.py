@@ -10,7 +10,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts" / "delivery"))
 
-from create_client_workspace import PHASES, create_workspace, template_complete  # noqa: E402
+from create_client_workspace import PHASES, create_workspace, template_complete
 
 CLIENTS_DIR = REPO_ROOT / "clients"
 TEST_SLUG = "_test_delivery_demo"

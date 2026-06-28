@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -168,7 +168,7 @@ def main() -> int:
     registry = _load_registry()
     safety = _safety_status()
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "company_positioning": registry.get("company_positioning"),
         "safety": safety,
         "commercial_products": registry.get("commercial_products", []),

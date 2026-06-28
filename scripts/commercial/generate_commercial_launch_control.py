@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -75,7 +75,7 @@ def main() -> int:
         verdict = "NEEDS_LOCAL_RELEASE_GATE_REVIEW"
 
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "company": manifest.get("company", "Dealix"),
         "release_name": manifest.get("release_name", "Commercial Launch Control"),
         "release_mode": manifest.get("release_mode", "founder_led_commercial_launch"),

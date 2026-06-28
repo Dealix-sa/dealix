@@ -16,7 +16,7 @@ os.environ.setdefault("ADMIN_API_KEYS", "admin")
 os.environ.setdefault("EXTERNAL_SEND_ENABLED", "false")
 os.environ.setdefault("OUTBOUND_MODE", "draft_only")
 
-from api.main import app  # noqa: E402
+from api.main import app
 
 client = TestClient(app, raise_server_exceptions=False)
 

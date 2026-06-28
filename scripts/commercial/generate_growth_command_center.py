@@ -7,7 +7,7 @@ review reports. It does not send messages, call external services, or mutate CRM
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -77,7 +77,7 @@ def main() -> int:
     ]
 
     payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "mode": data["mode"],
         "north_star": data["north_star"],
         "services_count": len(data["service_stack"]),

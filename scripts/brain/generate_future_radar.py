@@ -11,7 +11,7 @@ IMPORTANT: This module must never emit statements like "X will happen" or
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 HORIZONS = (30, 90, 365)
@@ -65,7 +65,7 @@ def generate_future_radar(
         focus_areas = (profile or {}).get("focus_areas") or ["growth", "product", "operations"]
 
     radar: dict[str, Any] = {
-        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "horizons": {},
         "note": (
             "Scenarios are structured hypotheses, not predictions. "

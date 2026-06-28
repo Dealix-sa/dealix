@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal
 
@@ -50,7 +50,7 @@ def submit_custom_ai_request(payload: CustomAIRequest) -> dict:
     """
     VAR_DIR.mkdir(parents=True, exist_ok=True)
     record = {
-        "submitted_at": datetime.now(timezone.utc).isoformat(),
+        "submitted_at": datetime.now(UTC).isoformat(),
         "sector": payload.sector,
         "use_case": payload.use_case,
         "data_volume": payload.data_volume,

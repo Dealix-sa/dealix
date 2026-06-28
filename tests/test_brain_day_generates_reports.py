@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -33,7 +33,7 @@ def test_run_brain_day_generates_reports(tmp_path):
     # The summary report should mention the date.
     with open(reports["summary"], encoding="utf-8") as fh:
         summary_text = fh.read()
-    today = datetime.now(timezone.utc).date().isoformat()
+    today = datetime.now(UTC).date().isoformat()
     assert today in summary_text, "Summary report should reference today's date"
 
 

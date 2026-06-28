@@ -80,7 +80,7 @@ def build_html() -> str:
     parts.append("</style>")
     parts.append("</head>")
     parts.append("<body>")
-    parts.append(f"<h1>Dealix Revenue Command Room</h1>")
+    parts.append("<h1>Dealix Revenue Command Room</h1>")
     parts.append(f"<p class='note'>Date: {today_str()} · Drafts only · No external send</p>")
 
     # Metrics row
@@ -96,7 +96,7 @@ def build_html() -> str:
 
     # Forecast
     parts.append('<div class="card">')
-    parts.append(f"<h2>Pipeline Forecast</h2>")
+    parts.append("<h2>Pipeline Forecast</h2>")
     parts.append(f"<p>Weighted forecast: <strong>{forecast:,.0f} SAR</strong></p>")
     parts.append("</div>")
 

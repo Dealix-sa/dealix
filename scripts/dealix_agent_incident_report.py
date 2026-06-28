@@ -1,7 +1,7 @@
 import argparse
 import json
 import uuid
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 P=Path('data/agents/agent_incidents.jsonl'); P.parent.mkdir(parents=True, exist_ok=True)

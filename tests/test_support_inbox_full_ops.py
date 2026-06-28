@@ -1,7 +1,7 @@
 """Phase 7 — Support Inbox webhook + state store + SLA monitor."""
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from httpx import ASGITransport, AsyncClient

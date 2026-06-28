@@ -20,7 +20,7 @@ os.environ.setdefault("WHATSAPP_SEND_ENABLED", "false")
 os.environ.setdefault("WHATSAPP_ALLOW_LIVE_SEND", "false")
 os.environ.setdefault("SMS_SEND_ENABLED", "false")
 
-from api.main import app  # noqa: E402
+from api.main import app
 
 client = TestClient(app, raise_server_exceptions=False)
 

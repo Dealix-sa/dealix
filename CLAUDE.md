@@ -45,6 +45,9 @@ python company/<module>/<script>.py  # dry-run python scripts
 ## Daily Operating Commands
 
 ```bash
+# One command: run all engines safely (draft-only) + build the Unified Command Room
+bash scripts/dealix_command_day.sh   # → reports/command_room/index.html
+
 # Morning CEO pack
 ./scripts/dealix_micro_day.sh
 

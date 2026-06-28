@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -80,7 +80,7 @@ def main() -> int:
         failures.append(f"OUTBOUND_MODE must be draft_only for this baseline, got {mode!r}")
 
     report = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "status": "blocked" if failures else "ready_for_manual_commercial_execution",
         "failures": failures,
         "warnings": warnings,
