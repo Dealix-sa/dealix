@@ -10,6 +10,13 @@ const links = [
   { href: "/book", label: "احجز مراجعة" },
 ];
 
+// Founder command room — live operational surfaces (admin-gated).
+const commandLinks = [
+  { href: "/founder/command-room", label: "غرفة القيادة" },
+  { href: "/approvals", label: "الموافقات" },
+  { href: "/evidence", label: "سجل الإثبات" },
+];
+
 export default function Nav() {
   return (
     <nav className="navbar" aria-label="Primary navigation">
@@ -22,8 +29,17 @@ export default function Nav() {
             <Link href={l.href}>{l.label}</Link>
           </li>
         ))}
+        <li aria-hidden="true" style={{ opacity: 0.35 }}>·</li>
+        {commandLinks.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href}>{l.label}</Link>
+          </li>
+        ))}
       </ul>
       <div className="actions" style={{ marginTop: 0 }}>
+        <Link href="/founder/command-room" className="btn btn-ghost" style={{ minHeight: 38, padding: "0 16px", fontSize: "0.82rem" }}>
+          غرفة القيادة
+        </Link>
         <Link href="/book" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
           احجز مراجعة تشغيلية
         </Link>
