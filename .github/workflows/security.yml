@@ -57,3 +57,11 @@ jobs:
 
       - name: Dependency review
         uses: actions/dependency-review-action@v4
+        with:
+          # Allowlist a single known-moderate advisory in the legacy, non-built
+          # frontend/ surface (next-intl prototype pollution via an experimental
+          # precompile path we do not use). The legacy app is never built or
+          # deployed in CI — apps/web is canonical — so this poses no runtime
+          # risk. The gate stays strict (blocks critical/high) for everything
+          # else, including apps/web and all Python dependencies.
+          allow-ghsas: GHSA-4c35-wcg5-mm9h
