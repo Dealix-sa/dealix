@@ -4,8 +4,8 @@
 # ═══════════════════════════════════════════════════════════════
 
 .PHONY: help install install-dev install-observability install-security install-evals install-docs \
-        setup first-setup test test-unit test-integration \
-        lint format type-check security security-smoke clean run demo cockpit doctor \
+        setup first-setup test test-unit test-integration full-repo-test \
+        lint format type-check security security-smoke security-smoke-ci clean run demo cockpit doctor \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
@@ -77,6 +77,9 @@ security: security-smoke ## Run security scans
 security-smoke: ## Run dependency-free repository security smoke checks
 	$(PYTHON) scripts/security_smoke.py
 
+security-smoke-ci: ## Run CI-safe security smoke checks for docs/tests synthetic fixtures
+	$(PYTHON) scripts/ops/security_smoke_ci.py
+
 env-check: ## Validate .env.example contract and duplicate keys
 	$(PYTHON) scripts/check_env_contract.py
 
@@ -97,6 +100,9 @@ production-smoke: ## Run production API smoke test (PRODUCTION_BASE_URL=...)
 
 prod-verify: env-check security-smoke api-contract-check dependency-inventory release-manifest v5-verify ## Canonical production-readiness verification bundle
 	@echo "✅ Dealix production verification bundle completed"
+
+full-repo-test: ## Run the full repo test matrix with TestSprite when TESTSPRITE_API_KEY is set
+	bash scripts/ops/run_full_repo_test_matrix.sh
 
 launch-engine: ## Run the full local launch machine + readiness audit (writes data/daily_ops/<date>/)
 	$(PYTHON) scripts/dealix_launch_engine.py
