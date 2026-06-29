@@ -13,6 +13,7 @@ These project-level skills tell coding agents how to work on Dealix safely and r
 | `dealix-client-delivery-os` | Deliver client work through intake, diagnosis, scope, blueprint, proof pack, and handoff |
 | `dealix-loop-operating-system` | Convert scripts into bounded operating loops with verifiers and reports |
 | `dealix-trust-and-outbound-safety` | Review claims, privacy, consent, opt-out, approval cards, and outbound policy gates |
+| `dealix-design-command-room` | Generate and review Dealix dashboards, decks, landing pages, proof packs, and prototypes through a design-system contract |
 
 ## Safety baseline
 
@@ -33,4 +34,5 @@ OUTBOUND_MODE=draft_only
 4. Use `dealix-company-brain-os` for daily decisions and board-level summaries.
 5. Use `dealix-client-growth-operator` for client growth actions.
 6. Use `dealix-client-delivery-os` for client implementation.
-7. Use `dealix-trust-and-outbound-safety` before any external communication or public claim.
+7. Use `dealix-design-command-room` for UI, dashboards, pages, decks, and proof-pack artifacts.
+8. Use `dealix-trust-and-outbound-safety` before any external communication or public claim.
