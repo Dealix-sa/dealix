@@ -1,0 +1,97 @@
+{
+  "status": {
+    "RCMAX_READY": 1,
+    "AUTO14_READY": 1,
+    "CLIENT_OPS_MAX_READY": 1,
+    "CONVERSATION_INTELLIGENCE_READY": 1,
+    "DEAL_STRATEGY_READY": 1,
+    "CLIENT_AUTOPILOT_READY": 1,
+    "LIVE_SENDS": 0,
+    "FINAL_COMMITMENTS": 0,
+    "DEALIX_SERVICE_OS_READY": 1
+  },
+  "errors": {
+    "rcmax": [],
+    "auto14": [],
+    "client_ops_max": [],
+    "conversation_intelligence": [],
+    "deal_strategy": [],
+    "client_autopilot": []
+  },
+  "rcmax_command": {
+    "account": "Riyadh Clinic Group",
+    "sector": "clinics",
+    "score": 94,
+    "offer": "7 day command sprint",
+    "why_now": "missed follow up",
+    "today_goal": "prepare one reviewed proposal folder and book one operating review",
+    "proof_target": "first daily command report",
+    "next_action": "run discovery, confirm inputs, and prepare proof-first sprint proposal",
+    "review_required": true,
+    "live": 0
+  },
+  "auto14_summary": {
+    "safe_auto_tasks": 10,
+    "approval_gates": 6,
+    "artifacts": 9,
+    "client_required_items": 4,
+    "system_company_items": 5,
+    "live_sends": 0,
+    "final_commitments": 0
+  },
+  "ops_summary": {
+    "lifecycle_stages": 7,
+    "deliverables": 9,
+    "daily_delivery_items": 7,
+    "sla_rules": 4,
+    "value_metrics": 5,
+    "approval_gates": 5,
+    "live_sends": 0,
+    "final_commitments": 0
+  },
+  "dci_summary": {
+    "messages_classified": 10,
+    "intents_detected": [
+      "ask_for_details",
+      "proposal_request",
+      "discount_request",
+      "not_interested",
+      "price_question",
+      "trust_objection",
+      "interested",
+      "legal_terms",
+      "unsubscribe",
+      "timing_objection"
+    ],
+    "live_sends": 0,
+    "final_commitments": 0,
+    "approval_gates_triggered": 4
+  },
+  "dsb_summary": {
+    "strategies_built": 5,
+    "live_sends": 0,
+    "final_commitments": 0,
+    "probability_bands": [
+      "medium",
+      "high",
+      "low",
+      "low",
+      "high"
+    ],
+    "offers_suggested": [
+      "micro_sprint_499_sar",
+      "transformation_diagnostic_sprint_7500_25000_sar",
+      "free_diagnostic",
+      "micro_sprint_499_sar",
+      "transformation_diagnostic_sprint_7500_25000_sar"
+    ]
+  },
+  "csa_summary": {
+    "auto_prepared_items": 13,
+    "approval_queue_items": 10,
+    "live_sends": 0,
+    "final_commitments": 0,
+    "lifecycle_stages": 7,
+    "deliverables": 9
+  }
+}
