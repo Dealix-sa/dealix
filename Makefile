@@ -9,6 +9,7 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
+        design-os-list design-os-generate design-os-all test-design-os \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
@@ -20,6 +21,8 @@ PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 OPENAPI_OUTPUT ?= docs/architecture/openapi.json
 PRODUCTION_BASE_URL ?= https://api.dealix.me
+TYPE ?= revenue-command-room
+CONTEXT ?= Dealix operating system launch and commercial command room.
 
 help: ## Show this help
 	@echo "🏢 Dealix — Available commands:"
@@ -97,6 +100,22 @@ prod-verify: env-check security-smoke api-contract-check dependency-inventory re
 
 launch-engine: ## Run the full local launch machine + readiness audit (writes data/daily_ops/<date>/)
 	$(PYTHON) scripts/dealix_launch_engine.py
+
+# ── Design Command Room OS ─────────────────────────────────────
+# Draft-only artifact generation. No external sends, no production mutations,
+# no runtime dependency changes. Outputs go to reports/design/.
+
+design-os-list: ## Design OS: list available artifact templates
+	$(PYTHON) scripts/design_command_room.py --list
+
+design-os-generate: ## Design OS: generate one draft artifact (TYPE=... CONTEXT=...)
+	$(PYTHON) scripts/design_command_room.py --type $(TYPE) --context "$(CONTEXT)"
+
+design-os-all: ## Design OS: generate all core draft artifacts
+	$(PYTHON) scripts/design_command_room.py --type all --context "$(CONTEXT)"
+
+test-design-os: ## Design OS: run focused generator tests
+	$(PYTHON) -m pytest -q tests/test_design_command_room.py
 
 # ── Tests ──────────────────────────────────────────────────────
 test: ## Run full test suite with coverage
@@ -237,222 +256,3 @@ launch-pipeline: ## Launch OS: print pipeline summary from sample data
 
 launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score launch-trust-preflight launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review launch-content ## Launch OS: run all dry-run scripts in sequence
 	@echo "✅ All Launch OS dry-runs completed"
-
-test-launch: ## Launch OS: run launch-specific test suite
-	pytest tests/launch/ -v --tb=short
-
-# ═══════════════════════════════════════════════════════════════
-# Company Operating System — launch controls
-# ═══════════════════════════════════════════════════════════════
-
-# ── Safety gates ───────────────────────────────────────────────
-company-check: no-auto-send-check large-file-check secret-check outreach-compliance-check ## Run all company launch safety checks
-	$(PYTHON) scripts/verify_company_launch_ready.py
-
-launch-check: company-check ## Alias for company-check
-
-no-auto-send-check: ## Verify no ungated auto external send patterns
-	$(PYTHON) scripts/verify_no_auto_external_send.py
-
-large-file-check: ## Verify no new forbidden large files / archives
-	$(PYTHON) scripts/verify_repo_large_files.py
-
-secret-check: ## Scan for suspicious secret patterns
-	$(PYTHON) scripts/verify_secret_patterns.py
-
-outreach-compliance-check: ## Verify outreach data has source_url, verification_status, opt-out
-	$(PYTHON) scripts/verify_outreach_compliance.py
-
-# ── Daily revenue machine ──────────────────────────────────────
-revenue-daily: ## Run the full daily revenue machine (dry-run, drafts only)
-	$(PYTHON) scripts/revenue/run_daily_revenue_machine.py
-
-outreach: ## Generate outreach drafts for today
-	$(PYTHON) scripts/revenue/generate_outreach.py
-
-followups: ## Generate follow-up drafts (day 3 / day 7)
-	$(PYTHON) scripts/revenue/generate_followups.py
-
-proposals: ## Generate one-page proposal briefs for hot leads
-	$(PYTHON) scripts/revenue/generate_proposal_brief.py
-
-revenue-report: ## Generate daily CEO revenue report
-	$(PYTHON) scripts/revenue/generate_daily_revenue_report.py
-
-# ── 100-company workflow ───────────────────────────────────────
-prepare-100: ## Prepare a 100-company research queue (default batch=10)
-	$(PYTHON) scripts/revenue/prepare_100_target_day.py --batch-size $(or $(BATCH_SIZE),10)
-
-validate-100: ## Validate the 100-company day before contact
-	$(PYTHON) scripts/revenue/validate_100_target_day.py
-
-batch-queue: ## Build batch outreach queue with cooldown + max follow-up gates
-	$(PYTHON) scripts/revenue/batch_outreach_queue.py --batch-size $(or $(BATCH_SIZE),10)
-
-# ── Gmail drafts (manual review required) ──────────────────────
-gmail-drafts-dry-run: ## Preview Gmail drafts without creating them
-	$(PYTHON) scripts/email/create_gmail_drafts_safe.py --dry-run
-
-gmail-drafts: ## Create Gmail drafts from generated outbox (requires env vars)
-	$(PYTHON) scripts/email/create_gmail_drafts_safe.py
-
-# ── Server readiness ───────────────────────────────────────────
-server-preflight: ## Run server preflight checks
-	$(PYTHON) scripts/server/server_preflight.py
-
-server-health: ## Run server healthcheck
-	bash scripts/server/server_healthcheck.sh
-
-company-production-smoke: ## Run company-focused production smoke tests
-	bash scripts/server/run_production_smoke.sh
-
-# ── Command center ─────────────────────────────────────────────
-command-room: ## Build the offline founder command room dashboard
-	$(PYTHON) scripts/command_room/build_command_room.py
-
-# ── One-command company day ────────────────────────────────────
-company-day: ## Run full company launch day pipeline
-	bash scripts/run_company_launch_day.sh
-
-
-.PHONY: company-check launch-check no-auto-send-check large-file-check secret-check outreach-compliance-check revenue-daily outreach followups proposals revenue-report prepare-100 validate-100 batch-queue gmail-drafts-dry-run gmail-drafts server-preflight server-health company-production-smoke command-room company-day
-
-# ═══════════════════════════════════════════════════════════════
-# PR #727 GTM kit — founder-led outreach/proposal/contract helpers
-# (non-overlapping with main's revenue machine; scripts under scripts/dealix_*.py)
-# ═══════════════════════════════════════════════════════════════
-outreach-dry: ## Outreach Kit: preview targets without writing files
-	$(PYTHON) scripts/dealix_outreach_kit.py --dry-run
-
-targets-merge: ## Outreach Kit: merge researched sector CSVs (data/outreach/research/*.csv) into the intake list
-	$(PYTHON) scripts/merge_research_targets.py
-
-outreach-f3: ## Outreach Kit: generate day-3 follow-up nudges
-	$(PYTHON) scripts/dealix_outreach_kit.py --stage f3
-
-outreach-f7: ## Outreach Kit: generate day-7 final follow-up nudges
-	$(PYTHON) scripts/dealix_outreach_kit.py --stage f7
-
-content: ## Content Engine: generate bilingual LinkedIn post drafts (one per sector) for inbound demand
-	$(PYTHON) scripts/dealix_content_engine.py
-
-daily: ## Founder morning routine — outreach emails + command room dashboard in one run
-	@$(PYTHON) scripts/dealix_outreach_kit.py || true
-	@$(PYTHON) scripts/dealix_command_room.py || true
-	@echo ""
-	@echo "✅ صباح الخير. الإيميلات في reports/outreach/<اليوم>/ — راجع وأرسل بنفسك."
-	@echo "📊 غرفة القيادة: reports/command_room/index.html"
-	@echo "📒 عند أي رد: business/playbooks/REPLY_PLAYBOOK.md"
-
-proposal: ## Generate a bilingual proposal (COMPANY=, CONTACT=, SECTOR=, TIER= optional)
-	$(PYTHON) scripts/dealix_proposal_generator.py \
-	  --company "$(COMPANY)" \
-	  --contact "$(CONTACT)" \
-	  --sector "$(SECTOR)" \
-	  $(if $(TIER),--tier $(TIER)) \
-	  $(if $(DRY_RUN),--dry-run)
-
-proposal-dry: ## Preview a proposal without writing files (COMPANY=, SECTOR=)
-	$(PYTHON) scripts/dealix_proposal_generator.py \
-	  --company "$(COMPANY)" \
-	  --contact "$(CONTACT)" \
-	  --sector "$(SECTOR)" \
-	  $(if $(TIER),--tier $(TIER)) \
-	  --dry-run
-
-proposal-sectors: ## List available sectors + recommended tiers
-	$(PYTHON) scripts/dealix_proposal_generator.py --list-sectors
-
-weekly-review: ## Weekly GTM review — bilingual pipeline snapshot for founder
-	$(PYTHON) scripts/dealix_weekly_gtm_review.py
-
-weekly-review-print: ## Print weekly GTM review to stdout
-	$(PYTHON) scripts/dealix_weekly_gtm_review.py --print
-
-meeting: ## Generate bilingual discovery call agenda (COMPANY=, SECTOR=, CONTACT= optional)
-	$(PYTHON) scripts/dealix_meeting_agenda.py \
-	  --company "$(COMPANY)" \
-	  --contact "$(CONTACT)" \
-	  --sector "$(SECTOR)" \
-	  $(if $(DURATION),--duration $(DURATION)) \
-	  $(if $(DRY_RUN),--dry-run)
-
-diagnostic: ## Free 30-point Diagnostic (COMPANY=, SECTOR=, REGION=, PIPELINE=)
-	$(PYTHON) scripts/dealix_diagnostic.py \
-	  --company "$(COMPANY)" \
-	  --sector "$(SECTOR)" \
-	  $(if $(REGION),--region $(REGION)) \
-	  $(if $(PIPELINE),--pipeline-state "$(PIPELINE)")
-
-reply-classify: ## Classify a prospect reply and print the matching response (REPLY=)
-	$(PYTHON) scripts/dealix_reply_classifier.py "$(REPLY)"
-
-onboard: ## Run customer onboarding wizard (COMPANY=, SECTOR=, CONTACT=)
-	$(PYTHON) scripts/dealix_customer_onboarding_wizard.py \
-	  --company "$(COMPANY)" \
-	  --sector "$(SECTOR)" \
-	  $(if $(CONTACT),--contact "$(CONTACT)")
-
-contract: ## Generate bilingual service contract (COMPANY=, CONTACT=, SECTOR=, TIER=, START=)
-	$(PYTHON) scripts/dealix_contract_generator.py \
-	  --company "$(COMPANY)" \
-	  --contact "$(CONTACT)" \
-	  --sector "$(SECTOR)" \
-	  --tier "$(TIER)" \
-	  $(if $(START),--start-date $(START))
-
-contract-dry: ## Preview contract without writing file (COMPANY=, SECTOR=, TIER=)
-	$(PYTHON) scripts/dealix_contract_generator.py \
-	  --company "$(COMPANY)" \
-	  --contact "$(CONTACT)" \
-	  --sector "$(SECTOR)" \
-	  --tier "$(TIER)" \
-	  --dry-run
-
-contract-tiers: ## List available contract tiers and pricing
-	$(PYTHON) scripts/dealix_contract_generator.py --list-tiers
-
-outreach-tracker: ## Log a new outreach event (COMPANY=, SECTOR=, STATUS=, NOTE=)
-	$(PYTHON) scripts/dealix_outreach_tracker.py log \
-	  --company "$(COMPANY)" \
-	  $(if $(SECTOR),--sector $(SECTOR)) \
-	  --status $(or $(STATUS),sent) \
-	  $(if $(NOTE),--note "$(NOTE)")
-
-outreach-tracker-summary: ## Show outreach pipeline summary
-	$(PYTHON) scripts/dealix_outreach_tracker.py summary
-
-outreach-tracker-list: ## List companies by status (STATUS= optional)
-	$(PYTHON) scripts/dealix_outreach_tracker.py list $(if $(STATUS),--status $(STATUS))
-
-pilot-report: ## Generate 7-day pilot results report (COMPANY=, SECTOR=, LEADS_AFTER=, REPLIED=, MEETINGS=)
-	$(PYTHON) scripts/dealix_pilot_report.py \
-	  --company "$(COMPANY)" \
-	  --sector "$(SECTOR)" \
-	  $(if $(LEADS_BEFORE),--leads-before $(LEADS_BEFORE)) \
-	  $(if $(LEADS_AFTER),--leads-after $(LEADS_AFTER)) \
-	  $(if $(REPLIED_AFTER),--replied-after $(REPLIED_AFTER)) \
-	  $(if $(MEETINGS_AFTER),--meetings-after $(MEETINGS_AFTER)) \
-	  $(if $(DRY_RUN),--dry-run)
-
-customer-monthly-report: ## Generate monthly customer success report (COMPANY=, SECTOR=, MONTH=, LEADS=, RESPONSE=, REPLY_PCT=, MEETINGS=)
-	$(PYTHON) scripts/dealix_customer_monthly_report.py \
-	  --company "$(COMPANY)" \
-	  --sector "$(SECTOR)" \
-	  $(if $(MONTH),--month $(MONTH)) \
-	  $(if $(LEADS),--leads-handled $(LEADS)) \
-	  $(if $(RESPONSE),--avg-response-min $(RESPONSE)) \
-	  $(if $(REPLY_PCT),--replied-pct $(REPLY_PCT)) \
-	  $(if $(MEETINGS),--meetings-booked $(MEETINGS)) \
-	  $(if $(DEALS),--deals-won $(DEALS)) \
-	  $(if $(REVENUE),--revenue-influenced $(REVENUE)) \
-	  $(if $(DRY_RUN),--dry-run)
-
-renewal-check: ## Check contracts due for renewal in next 30-60 days
-	$(PYTHON) scripts/dealix_renewal_tracker.py check
-
-renewal-summary: ## Show MRR and active customer summary
-	$(PYTHON) scripts/dealix_renewal_tracker.py summary
-
-daily-ops: ## Morning ops command — prioritized action list from all tracking data
-	$(PYTHON) scripts/dealix_daily_ops.py
