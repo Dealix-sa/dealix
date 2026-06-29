@@ -8,7 +8,6 @@ false positives from documented/test-only synthetic credentials.
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -64,14 +63,29 @@ SAFE_PLACEHOLDER_WORDS = (
     "dummy",
     "placeholder",
     "redacted",
+    "replace",
+    "change_me",
     "test",
     "synthetic",
     "sample",
+    "xxxxx",
+    "xxxx",
+    "<fill",
+    "<replace",
+    "<your",
 )
+
+SAFE_TEMPLATE_PATHS = {
+    "scripts/generate_production_env.sh",
+}
+
+
+def relpath(path: Path) -> str:
+    return path.relative_to(ROOT).as_posix()
 
 
 def is_skipped(path: Path) -> bool:
-    rel = path.relative_to(ROOT).as_posix()
+    rel = relpath(path)
     parts = set(rel.split("/"))
     if parts & SKIP_DIRS:
         return True
@@ -96,8 +110,8 @@ def line_is_placeholder(line: str) -> bool:
 
 
 def path_is_safe_context(path: Path) -> bool:
-    rel = path.relative_to(ROOT).as_posix()
-    return rel.startswith(SAFE_CONTEXT_PATHS)
+    rel = relpath(path)
+    return rel.startswith(SAFE_CONTEXT_PATHS) or rel in SAFE_TEMPLATE_PATHS
 
 
 def main() -> int:
@@ -108,7 +122,7 @@ def main() -> int:
         if not path.is_file() or is_skipped(path):
             continue
 
-        rel = path.relative_to(ROOT).as_posix()
+        rel = relpath(path)
 
         if path.name.startswith(".env") and not is_allowed_env_example(path):
             failures.append(f"Do not commit local env file: {rel}")
