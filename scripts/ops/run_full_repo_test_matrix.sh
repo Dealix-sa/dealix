@@ -68,7 +68,7 @@ run_step() {
 run_step "python-version" required python3 --version
 run_step "python-compileall-core-surfaces" required python3 -m compileall -q api app core db dealix scripts
 run_step "env-contract" required python3 scripts/check_env_contract.py
-run_step "security-smoke" required python3 scripts/security_smoke.py
+run_step "security-smoke" required python3 scripts/ops/security_smoke_ci.py
 run_step "no-auto-external-send" required python3 scripts/verify_no_auto_external_send.py
 run_step "company-launch-ready" required python3 scripts/verify_company_launch_ready.py
 run_step "pytest-full-suite" required python3 -m pytest -q
