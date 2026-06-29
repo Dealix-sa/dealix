@@ -65,3 +65,8 @@ bash scripts/ops/run_full_repo_test_matrix.sh
 ```
 
 Use rotated keys only and keep live customer data out of test runs.
+
+## Last GitHub Actions trigger
+
+- Triggered by ChatGPT on: 2026-06-29T18:29:00Z
+- Purpose: force a real `push` event for `.github/workflows/full-repo-test-matrix.yml` after adding the workflow and compatibility gates.
