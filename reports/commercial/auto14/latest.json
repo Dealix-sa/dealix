@@ -1,0 +1,285 @@
+{
+  "summary": {
+    "safe_auto_tasks": 10,
+    "approval_gates": 6,
+    "artifacts": 9,
+    "client_required_items": 4,
+    "system_company_items": 5,
+    "live_sends": 0,
+    "final_commitments": 0
+  },
+  "base_command": {
+    "account": "Riyadh Clinic Group",
+    "sector": "clinics",
+    "score": 94,
+    "offer": "7 day command sprint",
+    "why_now": "missed follow up",
+    "today_goal": "prepare one reviewed proposal folder and book one operating review",
+    "proof_target": "first daily command report",
+    "next_action": "run discovery, confirm inputs, and prepare proof-first sprint proposal",
+    "review_required": true,
+    "live": 0
+  },
+  "auto_runs": [
+    {
+      "task": "build_client_workspace",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "client_workspace"
+    },
+    {
+      "task": "prepare_intake_questions",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "intake_questions"
+    },
+    {
+      "task": "prepare_workflow_map_template",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "workflow_map_template"
+    },
+    {
+      "task": "prepare_owner_map_template",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "owner_map_template"
+    },
+    {
+      "task": "prepare_action_queue",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "action_queue"
+    },
+    {
+      "task": "prepare_proposal_folder",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "proposal_folder"
+    },
+    {
+      "task": "prepare_discovery_script",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "discovery_script"
+    },
+    {
+      "task": "prepare_proof_report_template",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "proof_report_template"
+    },
+    {
+      "task": "prepare_next_week_plan",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "next_week_plan"
+    },
+    {
+      "task": "prepare_internal_kpi_summary",
+      "status": "done",
+      "auto_run": true,
+      "artifact": "internal_kpi_summary"
+    }
+  ],
+  "approval_gates": [
+    {
+      "task": "external_email_send",
+      "status": "approval_required",
+      "auto_run": false,
+      "reason": "requires human review before external or final commitment"
+    },
+    {
+      "task": "whatsapp_send",
+      "status": "approval_required",
+      "auto_run": false,
+      "reason": "requires human review before external or final commitment"
+    },
+    {
+      "task": "calendar_invite_send",
+      "status": "approval_required",
+      "auto_run": false,
+      "reason": "requires human review before external or final commitment"
+    },
+    {
+      "task": "final_price_commitment",
+      "status": "approval_required",
+      "auto_run": false,
+      "reason": "requires human review before external or final commitment"
+    },
+    {
+      "task": "legal_terms_acceptance",
+      "status": "approval_required",
+      "auto_run": false,
+      "reason": "requires human review before external or final commitment"
+    },
+    {
+      "task": "contract_signature",
+      "status": "approval_required",
+      "auto_run": false,
+      "reason": "requires human review before external or final commitment"
+    }
+  ],
+  "artifacts": {
+    "client_workspace": {
+      "account": "Riyadh Clinic Group",
+      "sector": "clinics",
+      "offer": "7 day command sprint",
+      "status": "prepared"
+    },
+    "intake_questions": [
+      "channels",
+      "sample opportunities",
+      "owners",
+      "approval rules",
+      "proof target",
+      "weekly review time"
+    ],
+    "workflow_map": {
+      "sections": [
+        "current channels",
+        "handoffs",
+        "owners",
+        "approval points",
+        "missed follow ups"
+      ]
+    },
+    "owner_map": {
+      "owners": [
+        "Founder",
+        "Growth",
+        "Sales",
+        "Delivery",
+        "Client Owner"
+      ]
+    },
+    "action_queue": [
+      {
+        "action": "review client intake",
+        "owner": "Founder",
+        "status": "ready"
+      },
+      {
+        "action": "prepare account brief",
+        "owner": "Growth",
+        "status": "ready"
+      },
+      {
+        "action": "review matched offer",
+        "owner": "Sales",
+        "status": "ready"
+      },
+      {
+        "action": "prepare proof report",
+        "owner": "Delivery",
+        "status": "ready"
+      }
+    ],
+    "proposal_folder": {
+      "account": "Riyadh Clinic Group",
+      "sector": "clinics",
+      "one_page_offer": {
+        "sector": "clinics",
+        "headline": "Clinic Follow-up Command Sprint",
+        "problem": "missed inquiries, WhatsApp overload, and weak follow-up visibility",
+        "solution": "build a daily review system for inquiries, follow-ups, and proof",
+        "start_with": "7 day command sprint",
+        "proof_asset": "daily inquiry and follow-up command report",
+        "cta": "Book a short operating review",
+        "review_required": true
+      },
+      "proposal_template": {
+        "title": "Clinic Follow-up Command Sprint Proposal",
+        "scope": [
+          "map current flow",
+          "create command queue",
+          "prepare draft routes",
+          "produce proof report"
+        ],
+        "not_in_scope": [
+          "final legal terms",
+          "guaranteed revenue",
+          "unapproved live sending"
+        ],
+        "inputs_needed": [
+          "current channels",
+          "sample leads",
+          "owner list",
+          "approval rules"
+        ],
+        "timeline": "7 to 14 days depending on package",
+        "commercial_note": "final price requires scope review",
+        "sector": "clinics"
+      },
+      "discovery_script": [
+        "What happens after a new inquiry reaches your clinics team?",
+        "Who owns the next follow-up and how is it tracked?",
+        "Which channel creates the most missed opportunities?",
+        "What should leadership see every day to trust the process?",
+        "Would a small 7 day command sprint be a reasonable first step?"
+      ],
+      "drafts": {
+        "email_subject": "Quick idea for clinics follow-up operations",
+        "email_body": "I noticed many clinics teams lose value after the first inquiry. Dealix can start with a small 7 day command sprint to map follow-up, prepare a daily command queue, and produce a proof report before any larger rollout.",
+        "whatsapp_body": "Hi, quick idea: Dealix can help clinics teams organize follow-ups and proof using a small 7 day command sprint first. Happy to share a one-page view.",
+        "linkedin_manual_note": "Manual note only: ask if the team has a clear daily follow-up command report for clinics operations.",
+        "mode": "draft_only"
+      },
+      "mode": "draft_only"
+    },
+    "discovery_script": [
+      "What happens after a new inquiry reaches your clinics team?",
+      "Who owns the next follow-up and how is it tracked?",
+      "Which channel creates the most missed opportunities?",
+      "What should leadership see every day to trust the process?",
+      "Would a small 7 day command sprint be a reasonable first step?"
+    ],
+    "proof_template": {
+      "sections": [
+        "baseline",
+        "queue",
+        "owners",
+        "drafts",
+        "decisions",
+        "proof",
+        "next plan"
+      ]
+    },
+    "next_week_plan": [
+      "review proof",
+      "approve next actions",
+      "expand to managed command room"
+    ]
+  },
+  "client_side": {
+    "what_client_must_do": [
+      "approve access to sample data",
+      "confirm owners",
+      "approve external messages",
+      "review proof"
+    ],
+    "what_dealix_does_for_client": [
+      "prepare workspace",
+      "map workflow",
+      "prepare queue",
+      "prepare drafts",
+      "prepare proof",
+      "prepare next plan"
+    ],
+    "client_time_required": "30 to 45 minutes for first review plus approvals"
+  },
+  "company_side": {
+    "what_founder_must_do": [
+      "review approval gates",
+      "join review call",
+      "approve price scope"
+    ],
+    "what_system_does_for_founder": [
+      "select account",
+      "match offer",
+      "prepare service pack",
+      "prepare proof pack",
+      "prepare day plan"
+    ]
+  }
+}

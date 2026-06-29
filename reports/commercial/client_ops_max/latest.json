@@ -1,0 +1,201 @@
+{
+  "summary": {
+    "lifecycle_stages": 7,
+    "deliverables": 9,
+    "daily_delivery_items": 7,
+    "sla_rules": 4,
+    "value_metrics": 5,
+    "approval_gates": 5,
+    "live_sends": 0,
+    "final_commitments": 0
+  },
+  "lifecycle": [
+    "sale_ready",
+    "intake",
+    "diagnosis",
+    "setup",
+    "daily_ops",
+    "weekly_review",
+    "renewal"
+  ],
+  "deliverables": [
+    "client_intake_pack",
+    "workflow_diagnosis",
+    "owner_map",
+    "command_queue",
+    "draft_route_pack",
+    "daily_proof_note",
+    "weekly_proof_report",
+    "next_week_action_plan",
+    "renewal_or_expansion_brief"
+  ],
+  "daily_delivery": [
+    "review_open_opportunities",
+    "update_command_queue",
+    "prepare_draft_routes",
+    "record_proof_note",
+    "log_owner_activity",
+    "flag_blocked_items",
+    "update_stage"
+  ],
+  "sla_rules": [
+    "intake_completed_within_24h",
+    "first_proof_note_by_day_2",
+    "weekly_review_every_7_days",
+    "approval_gates_never_auto_run"
+  ],
+  "value_metrics": [
+    "opportunities_reviewed",
+    "owners_assigned",
+    "draft_routes_prepared",
+    "proof_items_delivered",
+    "decisions_recorded"
+  ],
+  "intake_pack": {
+    "account": "Demo Account",
+    "sector": "Real Estate",
+    "questions": [
+      "what channels do you use for client follow-up?",
+      "who is the owner of each commercial step?",
+      "what is your current close rate?",
+      "what proof would convince you the system works?",
+      "what is the biggest missed opportunity right now?",
+      "what approval rules should we follow?"
+    ],
+    "data_needed": [
+      "sample opportunities (last 30 days)",
+      "owner list",
+      "current workflow diagram or description"
+    ],
+    "approval_required": false,
+    "auto_send": false
+  },
+  "workflow_diagnosis": {
+    "channels_mapped": true,
+    "handoffs_identified": true,
+    "owners_confirmed": false,
+    "missed_follow_ups_scored": true,
+    "bottlenecks": [
+      "no daily queue",
+      "no draft system",
+      "no proof tracking"
+    ],
+    "sector": "Real Estate",
+    "score": "diagnosis_pending"
+  },
+  "owner_map": {
+    "owners": [
+      "Founder",
+      "Growth",
+      "Sales",
+      "Delivery",
+      "Client Owner"
+    ]
+  },
+  "command_queue": [
+    {
+      "action": "confirm owners",
+      "owner": "Founder",
+      "status": "pending",
+      "day": 1
+    },
+    {
+      "action": "map first workflow",
+      "owner": "Delivery",
+      "status": "pending",
+      "day": 1
+    },
+    {
+      "action": "review sample opportunities",
+      "owner": "Growth",
+      "status": "pending",
+      "day": 1
+    },
+    {
+      "action": "prepare first draft routes",
+      "owner": "Sales",
+      "status": "pending",
+      "day": 2
+    },
+    {
+      "action": "record first proof note",
+      "owner": "Delivery",
+      "status": "pending",
+      "day": 2
+    },
+    {
+      "action": "client review call",
+      "owner": "Founder",
+      "status": "pending",
+      "day": 3
+    },
+    {
+      "action": "Demo Account weekly review",
+      "owner": "Founder",
+      "status": "pending",
+      "day": 7
+    }
+  ],
+  "draft_route_pack": {
+    "mode": "draft_only",
+    "routes": []
+  },
+  "proof_report_template": {
+    "account": "Demo Account",
+    "sections": [
+      "baseline_state",
+      "opportunities_reviewed",
+      "owners_assigned",
+      "draft_routes_prepared",
+      "decisions_recorded",
+      "proof_items",
+      "next_plan"
+    ],
+    "mode": "template_only",
+    "live_sends": 0
+  },
+  "renewal_brief": {
+    "account": "Demo Account",
+    "trigger": "day_7_review",
+    "options": [
+      "managed_ops_monthly",
+      "expansion_sprint",
+      "custom_system"
+    ],
+    "pricing_range": "2999-25000 SAR",
+    "approval_required": true,
+    "auto_commit": false
+  },
+  "approval_gates": [
+    {
+      "gate": "external_send",
+      "auto_run": false,
+      "approval_required": true,
+      "reason": "requires founder review before execution"
+    },
+    {
+      "gate": "final_price_commitment",
+      "auto_run": false,
+      "approval_required": true,
+      "reason": "requires founder review before execution"
+    },
+    {
+      "gate": "legal_terms_acceptance",
+      "auto_run": false,
+      "approval_required": true,
+      "reason": "requires founder review before execution"
+    },
+    {
+      "gate": "contract_signature",
+      "auto_run": false,
+      "approval_required": true,
+      "reason": "requires founder review before execution"
+    },
+    {
+      "gate": "guaranteed_revenue_claim",
+      "auto_run": false,
+      "approval_required": true,
+      "reason": "requires founder review before execution"
+    }
+  ]
+}
