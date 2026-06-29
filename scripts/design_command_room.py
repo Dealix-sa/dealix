@@ -19,8 +19,6 @@ from pathlib import Path
 from textwrap import dedent
 
 DEFAULT_OUTPUT_DIR = Path("reports/design")
-LATEST_MARKDOWN = DEFAULT_OUTPUT_DIR / "latest.md"
-LATEST_JSON = DEFAULT_OUTPUT_DIR / "latest.json"
 
 SAFE_ENV_DEFAULTS = {
     "EXTERNAL_SEND_ENABLED": "false",
@@ -351,16 +349,19 @@ def write_artifact(artifact: DesignArtifact, output_dir: Path = DEFAULT_OUTPUT_D
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     markdown_path = output_dir / f"{artifact.artifact_key}-{timestamp}.md"
     json_path = output_dir / f"{artifact.artifact_key}-{timestamp}.json"
+    latest_markdown = output_dir / "latest.md"
+    latest_json = output_dir / "latest.json"
     markdown = render_markdown(artifact)
     blocked = review_claims(markdown)
     if blocked:
         artifact.risks.append("Blocked claims detected: " + ", ".join(blocked))
         artifact.safety_status = "needs_review_blocked_claims"
         markdown = render_markdown(artifact)
+    json_payload = json.dumps(asdict(artifact), ensure_ascii=False, indent=2)
     markdown_path.write_text(markdown, encoding="utf-8")
-    json_path.write_text(json.dumps(asdict(artifact), ensure_ascii=False, indent=2), encoding="utf-8")
-    LATEST_MARKDOWN.write_text(markdown, encoding="utf-8")
-    LATEST_JSON.write_text(json.dumps(asdict(artifact), ensure_ascii=False, indent=2), encoding="utf-8")
+    json_path.write_text(json_payload, encoding="utf-8")
+    latest_markdown.write_text(markdown, encoding="utf-8")
+    latest_json.write_text(json_payload, encoding="utf-8")
     return markdown_path, json_path
 
 
@@ -412,6 +413,7 @@ def main(argv: list[str] | None = None) -> int:
         generated = generate_all(args.context, output_dir)
         for markdown_path, json_path in generated:
             print(f"generated: {markdown_path} | {json_path}")
+        print(f"latest: {output_dir / 'latest.md'}")
         return 0
 
     template = TEMPLATES.get(artifact_type)
@@ -422,7 +424,7 @@ def main(argv: list[str] | None = None) -> int:
     markdown_path, json_path = write_artifact(artifact, output_dir)
     print(f"generated: {markdown_path}")
     print(f"generated: {json_path}")
-    print(f"latest: {LATEST_MARKDOWN}")
+    print(f"latest: {output_dir / 'latest.md'}")
     return 0
 
 
