@@ -10,19 +10,41 @@ If an API key was pasted into chat, logs, terminal history, or a GitHub issue/PR
 
 ## Local setup
 
-Copy the safe example into a local-only config file:
+Set the secret in your current shell or Codespaces secret store:
 
 ```bash
-cp .mcp.testsprite.example.json .mcp.json
+export TESTSPRITE_API_KEY="..."
 ```
 
-Edit `.mcp.json` locally and replace the placeholder:
+Validate that Dealix can see the secret without printing it:
 
-```json
-"API_KEY": "<TESTSPRITE_API_KEY>"
+```bash
+python scripts/ops/check_testsprite_mcp_env.py
+```
+
+Generate a local-only `.mcp.json` from the environment variable:
+
+```bash
+python scripts/ops/prepare_testsprite_mcp_local.py
 ```
 
 Do not commit `.mcp.json`.
+
+## Direct MCP smoke run
+
+Run a short MCP server smoke test:
+
+```bash
+bash scripts/ops/run_testsprite_mcp_smoke.sh
+```
+
+Expected safe result for a stdio MCP server:
+
+```text
+TESTSPRITE_MCP_SMOKE=SERVER_STAYED_ALIVE
+```
+
+This means the server started and did not crash during the timeout window.
 
 ## Recommended secret name
 
@@ -50,26 +72,30 @@ Some MCP clients require the key to be written into their local JSON config. If 
 }
 ```
 
-## Validation
+## Optional GitHub Actions workflow
 
-Run:
-
-```bash
-python scripts/ops/check_testsprite_mcp_env.py
-```
-
-Expected safe output when configured:
+A workflow template is provided at:
 
 ```text
-TESTSPRITE_MCP_ENV=READY
+docs/ops/testsprite-mcp-smoke.workflow.yml
 ```
 
-Expected output when not configured:
+To activate it, copy it to:
 
 ```text
-TESTSPRITE_MCP_ENV=MISSING
+.github/workflows/testsprite-mcp-smoke.yml
 ```
+
+Then add a GitHub repository secret named:
+
+```text
+TESTSPRITE_API_KEY
+```
+
+The workflow is manual-only via `workflow_dispatch`.
 
 ## Dealix operating rule
 
-TestSprite can be used to generate and run tests, but it must not receive production secrets, live customer records, raw outreach lists, private ledgers, or uncontrolled outbound credentials.
+TestSprite can be used to generate and run tests, inspect flows, and support quality gates, but it must not receive production secrets, live customer records, raw outreach lists, private ledgers, uncontrolled outbound credentials, or personal data that is not required for testing.
+
+Use synthetic demo data by default.
