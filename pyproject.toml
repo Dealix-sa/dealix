@@ -74,6 +74,7 @@ dev = [
     "pytest-cov>=6.0.0",
     "pytest-mock>=3.14.0",
     "pytest-xdist>=3.6",
+    "pytest-timeout>=2.3.1",
     "aiosqlite>=0.20.0",
     "httpx>=0.27.0",
     "ruff>=0.7.0",
@@ -197,4 +198,3 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
 ]
-
