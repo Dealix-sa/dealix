@@ -58,13 +58,13 @@ def test_write_artifact_outputs_markdown_and_json(
 ) -> None:
     module = load_design_command_room()
     set_safe_env(module, monkeypatch)
-    monkeypatch.setattr(module, "LATEST_MARKDOWN", tmp_path / "latest.md")
-    monkeypatch.setattr(module, "LATEST_JSON", tmp_path / "latest.json")
     template = module.TEMPLATES["client-proof-pack"]
     artifact = module.build_artifact(template, "Client delivery sprint")
     markdown_path, json_path = module.write_artifact(artifact, tmp_path)
     assert markdown_path.exists()
     assert json_path.exists()
+    assert (tmp_path / "latest.md").exists()
+    assert (tmp_path / "latest.json").exists()
     markdown = markdown_path.read_text(encoding="utf-8")
     assert "Approval state: draft" in markdown
     assert "Live sends: 0" in markdown
