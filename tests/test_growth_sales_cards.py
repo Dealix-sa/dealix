@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "commercial" / "generate_growth_sales_cards.py"
 spec = importlib.util.spec_from_file_location("generate_growth_sales_cards", SCRIPT)
 module = importlib.util.module_from_spec(spec)
 assert spec and spec.loader
+sys.modules[spec.name] = module
 spec.loader.exec_module(module)
 
 
