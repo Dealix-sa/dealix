@@ -23,7 +23,7 @@ jobs:
     name: 🔑 Validate Tokens
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with: { node-version: '20', cache: 'npm' }
       - name: Validate JSON tokens
@@ -60,7 +60,7 @@ jobs:
     name: 🔷 TypeScript Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - name: Check app exists
@@ -85,7 +85,7 @@ jobs:
     name: 🎨 CSS Validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - name: Install stylelint
@@ -108,7 +108,7 @@ jobs:
     name: ♿ Accessibility Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - name: Check color contrast ratios
