@@ -1,0 +1,427 @@
+{
+  "summary": {
+    "strategies_built": 5,
+    "live_sends": 0,
+    "final_commitments": 0,
+    "probability_bands": [
+      "medium",
+      "high",
+      "low",
+      "low",
+      "high"
+    ],
+    "offers_suggested": [
+      "micro_sprint_499_sar",
+      "transformation_diagnostic_sprint_7500_25000_sar",
+      "free_diagnostic",
+      "micro_sprint_499_sar",
+      "transformation_diagnostic_sprint_7500_25000_sar"
+    ]
+  },
+  "strategies": [
+    {
+      "account": "Alpha Trading",
+      "sector": "Retail",
+      "message": "كم السعر؟",
+      "conversation_intel": {
+        "message": "كم السعر؟",
+        "intent": "price_question",
+        "deal_stage": "interested",
+        "sentiment": "neutral",
+        "urgency": "low",
+        "objection_type": "none",
+        "missing_info": [
+          "scope_not_defined",
+          "budget_unknown"
+        ],
+        "recommended_response_angle": "share_pricing_range_with_scope_caveat",
+        "next_best_action": "ask_one_discovery_question_and_listen",
+        "approval_required": true,
+        "risk_flags": [
+          "no_final_price_without_scope",
+          "budget_not_qualified"
+        ],
+        "suggested_offer": "micro_sprint_499_sar",
+        "suggested_discovery_questions": [
+          "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+          "من يملك قرار هذا الموضوع؟",
+          "ما هو الهدف الرئيسي للربع القادم؟",
+          "كيف تقيسون النجاح حالياً؟"
+        ],
+        "live_send": false,
+        "final_commitment": false
+      },
+      "deal_score": 29,
+      "close_probability_band": "medium",
+      "best_offer": "micro_sprint_499_sar",
+      "pricing_range": "499 SAR",
+      "recommended_discount_policy": {
+        "max_discount_pct": 0,
+        "discount_requires_approval": true,
+        "never_discount_below_floor": true,
+        "floor_rule": "no discount without confirmed scope and owner",
+        "auto_commit": false
+      },
+      "negotiation_position": {
+        "stance": "discovery_mode",
+        "message": "Ask one focused question to uncover the real blocker.",
+        "concession_order": [
+          "information_sharing",
+          "free_diagnostic",
+          "pilot"
+        ],
+        "never_do": [
+          "mass_outreach",
+          "unqualified_proposal",
+          "final_commitment"
+        ]
+      },
+      "must_ask_questions": [
+        "ما هي الميزانية المتاحة تقريباً لهذا النوع من الحلول؟",
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟"
+      ],
+      "next_best_action": "ask_one_discovery_question_and_listen",
+      "do_not_do": [
+        "guaranteed_revenue",
+        "final_price_without_scope",
+        "fake_case_studies",
+        "legal_commitments",
+        "uncontrolled_outreach",
+        "commit_final_price_before_scope"
+      ],
+      "approval_gates": [
+        "external_send_requires_approval",
+        "discount_requires_founder_approval"
+      ],
+      "proof_to_show": [
+        "daily_command_report",
+        "opportunity_count",
+        "owner_map_sample"
+      ],
+      "live_sends": 0,
+      "final_commitments": 0
+    },
+    {
+      "account": "Beta Logistics",
+      "sector": "Logistics",
+      "message": "ارسل العرض",
+      "conversation_intel": {
+        "message": "ارسل العرض",
+        "intent": "proposal_request",
+        "deal_stage": "proposal",
+        "sentiment": "positive",
+        "urgency": "medium",
+        "objection_type": "none",
+        "missing_info": [
+          "scope_not_defined",
+          "budget_unknown",
+          "decision_maker_unknown"
+        ],
+        "recommended_response_angle": "prepare_proposal_folder_for_review",
+        "next_best_action": "prepare_proposal_folder_queue_for_founder_review",
+        "approval_required": true,
+        "risk_flags": [
+          "budget_not_qualified"
+        ],
+        "suggested_offer": "transformation_diagnostic_sprint_7500_25000_sar",
+        "suggested_discovery_questions": [
+          "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+          "من يملك قرار هذا الموضوع؟",
+          "ما هو الهدف الرئيسي للربع القادم؟",
+          "كيف تقيسون النجاح حالياً؟"
+        ],
+        "live_send": false,
+        "final_commitment": false
+      },
+      "deal_score": 66,
+      "close_probability_band": "high",
+      "best_offer": "transformation_diagnostic_sprint_7500_25000_sar",
+      "pricing_range": "7500-25000 SAR",
+      "recommended_discount_policy": {
+        "max_discount_pct": 5,
+        "discount_requires_approval": true,
+        "never_discount_below_floor": true,
+        "floor_rule": "no discount without confirmed scope and owner",
+        "auto_commit": false
+      },
+      "negotiation_position": {
+        "stance": "discovery_mode",
+        "message": "Ask one focused question to uncover the real blocker.",
+        "concession_order": [
+          "information_sharing",
+          "free_diagnostic",
+          "pilot"
+        ],
+        "never_do": [
+          "mass_outreach",
+          "unqualified_proposal",
+          "final_commitment"
+        ]
+      },
+      "must_ask_questions": [
+        "ما هي الميزانية المتاحة تقريباً لهذا النوع من الحلول؟",
+        "من يملك قرار الموافقة النهائية على هذا؟",
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟"
+      ],
+      "next_best_action": "prepare_proposal_folder_queue_for_founder_review",
+      "do_not_do": [
+        "guaranteed_revenue",
+        "final_price_without_scope",
+        "fake_case_studies",
+        "legal_commitments",
+        "uncontrolled_outreach"
+      ],
+      "approval_gates": [
+        "external_send_requires_approval",
+        "discount_requires_founder_approval",
+        "proposal_send_requires_review"
+      ],
+      "proof_to_show": [
+        "daily_command_report",
+        "opportunity_count",
+        "owner_map_sample",
+        "roi_model_draft",
+        "sample_proof_pack"
+      ],
+      "live_sends": 0,
+      "final_commitments": 0
+    },
+    {
+      "account": "Gamma Real Estate",
+      "sector": "Real Estate",
+      "message": "ما نحتاج",
+      "conversation_intel": {
+        "message": "ما نحتاج",
+        "intent": "not_interested",
+        "deal_stage": "closed_lost",
+        "sentiment": "negative",
+        "urgency": "low",
+        "objection_type": "none",
+        "missing_info": [],
+        "recommended_response_angle": "polite_close_or_low_touch_nurture",
+        "next_best_action": "send_polite_close_note_and_add_to_long_nurture",
+        "approval_required": false,
+        "risk_flags": [],
+        "suggested_offer": "free_diagnostic",
+        "suggested_discovery_questions": [
+          "ما هو التحدي الأكبر الذي تواجهونه الآن؟",
+          "هل هناك شيء محدد لم يناسبكم في ما عرضناه؟"
+        ],
+        "live_send": false,
+        "final_commitment": false
+      },
+      "deal_score": 0,
+      "close_probability_band": "low",
+      "best_offer": "free_diagnostic",
+      "pricing_range": "0 SAR",
+      "recommended_discount_policy": {
+        "max_discount_pct": 0,
+        "discount_requires_approval": true,
+        "never_discount_below_floor": true,
+        "floor_rule": "no discount without confirmed scope and owner",
+        "auto_commit": false
+      },
+      "negotiation_position": {
+        "stance": "discovery_mode",
+        "message": "Ask one focused question to uncover the real blocker.",
+        "concession_order": [
+          "information_sharing",
+          "free_diagnostic",
+          "pilot"
+        ],
+        "never_do": [
+          "mass_outreach",
+          "unqualified_proposal",
+          "final_commitment"
+        ]
+      },
+      "must_ask_questions": [
+        "ما هو التحدي الأكبر الذي تواجهونه الآن؟",
+        "هل هناك شيء محدد لم يناسبكم في ما عرضناه؟"
+      ],
+      "next_best_action": "send_polite_close_note_and_add_to_long_nurture",
+      "do_not_do": [
+        "guaranteed_revenue",
+        "final_price_without_scope",
+        "fake_case_studies",
+        "legal_commitments",
+        "uncontrolled_outreach"
+      ],
+      "approval_gates": [
+        "discount_requires_founder_approval"
+      ],
+      "proof_to_show": [
+        "daily_command_report",
+        "opportunity_count",
+        "owner_map_sample"
+      ],
+      "live_sends": 0,
+      "final_commitments": 0
+    },
+    {
+      "account": "Delta Healthcare",
+      "sector": "Healthcare",
+      "message": "we need more proof before deciding",
+      "conversation_intel": {
+        "message": "we need more proof before deciding",
+        "intent": "trust_objection",
+        "deal_stage": "interested",
+        "sentiment": "negative",
+        "urgency": "low",
+        "objection_type": "trust",
+        "missing_info": [],
+        "recommended_response_angle": "share_proof_pack_and_propose_pilot",
+        "next_best_action": "prepare_proof_pack_and_pilot_proposal",
+        "approval_required": false,
+        "risk_flags": [],
+        "suggested_offer": "micro_sprint_499_sar",
+        "suggested_discovery_questions": [
+          "ما هو الدليل الذي سيقنعكم بالمضي قدماً؟",
+          "هل تريدون التحدث مع عملاء سابقين؟",
+          "ما هي النتيجة التي ستثبت لكم أن النظام يعمل؟"
+        ],
+        "live_send": false,
+        "final_commitment": false
+      },
+      "deal_score": 13,
+      "close_probability_band": "low",
+      "best_offer": "micro_sprint_499_sar",
+      "pricing_range": "499 SAR",
+      "recommended_discount_policy": {
+        "max_discount_pct": 0,
+        "discount_requires_approval": true,
+        "never_discount_below_floor": true,
+        "floor_rule": "no discount without confirmed scope and owner",
+        "auto_commit": false
+      },
+      "negotiation_position": {
+        "stance": "proof_first",
+        "message": "Offer pilot or proof pack before any price concession.",
+        "concession_order": [
+          "free_pilot",
+          "case_study",
+          "reference_call"
+        ],
+        "never_do": [
+          "fake_testimonials",
+          "guaranteed_results",
+          "unverified_claims"
+        ]
+      },
+      "must_ask_questions": [
+        "ما هو الدليل الذي سيقنعكم بالمضي قدماً؟",
+        "هل تريدون التحدث مع عملاء سابقين؟",
+        "ما هي النتيجة التي ستثبت لكم أن النظام يعمل؟"
+      ],
+      "next_best_action": "prepare_proof_pack_and_pilot_proposal",
+      "do_not_do": [
+        "guaranteed_revenue",
+        "final_price_without_scope",
+        "fake_case_studies",
+        "legal_commitments",
+        "uncontrolled_outreach"
+      ],
+      "approval_gates": [
+        "discount_requires_founder_approval"
+      ],
+      "proof_to_show": [
+        "daily_command_report",
+        "opportunity_count",
+        "owner_map_sample",
+        "sector_case_highlight",
+        "pilot_scope_proposal"
+      ],
+      "live_sends": 0,
+      "final_commitments": 0
+    },
+    {
+      "account": "Epsilon Tech",
+      "sector": "Technology",
+      "message": "can you give us a discount?",
+      "conversation_intel": {
+        "message": "can you give us a discount?",
+        "intent": "discount_request",
+        "deal_stage": "negotiation",
+        "sentiment": "neutral",
+        "urgency": "low",
+        "objection_type": "price",
+        "missing_info": [
+          "scope_not_defined",
+          "budget_unknown"
+        ],
+        "recommended_response_angle": "anchor_value_before_price_reframe_scope",
+        "next_best_action": "review_scope_then_confirm_value_anchor",
+        "approval_required": true,
+        "risk_flags": [
+          "no_discount_without_founder_approval",
+          "budget_not_qualified"
+        ],
+        "suggested_offer": "transformation_diagnostic_sprint_7500_25000_sar",
+        "suggested_discovery_questions": [
+          "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+          "من يملك قرار هذا الموضوع؟",
+          "ما هو الهدف الرئيسي للربع القادم؟",
+          "كيف تقيسون النجاح حالياً؟"
+        ],
+        "live_send": false,
+        "final_commitment": false
+      },
+      "deal_score": 54,
+      "close_probability_band": "high",
+      "best_offer": "transformation_diagnostic_sprint_7500_25000_sar",
+      "pricing_range": "7500-25000 SAR",
+      "recommended_discount_policy": {
+        "max_discount_pct": 5,
+        "discount_requires_approval": true,
+        "never_discount_below_floor": true,
+        "floor_rule": "no discount without confirmed scope and owner",
+        "auto_commit": false
+      },
+      "negotiation_position": {
+        "stance": "anchor_value_first",
+        "message": "Present ROI calculation before discussing price adjustment.",
+        "concession_order": [
+          "scope_reduction",
+          "payment_terms",
+          "minor_discount"
+        ],
+        "never_do": [
+          "immediate_discount",
+          "guaranteed_roi",
+          "price_without_scope"
+        ]
+      },
+      "must_ask_questions": [
+        "ما هي الميزانية المتاحة تقريباً لهذا النوع من الحلول؟",
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟"
+      ],
+      "next_best_action": "review_scope_then_confirm_value_anchor",
+      "do_not_do": [
+        "guaranteed_revenue",
+        "final_price_without_scope",
+        "fake_case_studies",
+        "legal_commitments",
+        "uncontrolled_outreach"
+      ],
+      "approval_gates": [
+        "external_send_requires_approval",
+        "discount_requires_founder_approval",
+        "proposal_send_requires_review"
+      ],
+      "proof_to_show": [
+        "daily_command_report",
+        "opportunity_count",
+        "owner_map_sample",
+        "roi_model_draft",
+        "sample_proof_pack"
+      ],
+      "live_sends": 0,
+      "final_commitments": 0
+    }
+  ]
+}

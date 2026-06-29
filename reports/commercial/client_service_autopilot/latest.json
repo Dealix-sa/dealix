@@ -1,0 +1,371 @@
+{
+  "summary": {
+    "auto_prepared_items": 13,
+    "approval_queue_items": 10,
+    "live_sends": 0,
+    "final_commitments": 0,
+    "lifecycle_stages": 7,
+    "deliverables": 9
+  },
+  "client_workspace": {
+    "account": "Demo Account",
+    "sector": "Real Estate",
+    "offer": "7 day command sprint",
+    "status": "active",
+    "created": "today",
+    "folders": [
+      "intake",
+      "diagnosis",
+      "command_queue",
+      "drafts",
+      "proof",
+      "weekly_review",
+      "renewal"
+    ]
+  },
+  "intake_pack": {
+    "account": "Demo Account",
+    "sector": "Real Estate",
+    "questions": [
+      "what channels do you use for client follow-up?",
+      "who is the owner of each commercial step?",
+      "what is your current close rate?",
+      "what proof would convince you the system works?",
+      "what is the biggest missed opportunity right now?",
+      "what approval rules should we follow?"
+    ],
+    "data_needed": [
+      "sample opportunities (last 30 days)",
+      "owner list",
+      "current workflow diagram or description"
+    ],
+    "approval_required": false,
+    "auto_send": false
+  },
+  "conversation_readout": {
+    "message": "كم السعر؟",
+    "intent": "price_question",
+    "deal_stage": "interested",
+    "sentiment": "neutral",
+    "urgency": "low",
+    "objection_type": "none",
+    "missing_info": [
+      "scope_not_defined",
+      "budget_unknown"
+    ],
+    "recommended_response_angle": "share_pricing_range_with_scope_caveat",
+    "next_best_action": "ask_one_discovery_question_and_listen",
+    "approval_required": true,
+    "risk_flags": [
+      "no_final_price_without_scope",
+      "budget_not_qualified"
+    ],
+    "suggested_offer": "micro_sprint_499_sar",
+    "suggested_discovery_questions": [
+      "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+      "من يملك قرار هذا الموضوع؟",
+      "ما هو الهدف الرئيسي للربع القادم؟",
+      "كيف تقيسون النجاح حالياً؟"
+    ],
+    "live_send": false,
+    "final_commitment": false
+  },
+  "deal_strategy": {
+    "account": "Demo Account",
+    "sector": "Real Estate",
+    "message": "كم السعر؟",
+    "conversation_intel": {
+      "message": "كم السعر؟",
+      "intent": "price_question",
+      "deal_stage": "interested",
+      "sentiment": "neutral",
+      "urgency": "low",
+      "objection_type": "none",
+      "missing_info": [
+        "scope_not_defined",
+        "budget_unknown"
+      ],
+      "recommended_response_angle": "share_pricing_range_with_scope_caveat",
+      "next_best_action": "ask_one_discovery_question_and_listen",
+      "approval_required": true,
+      "risk_flags": [
+        "no_final_price_without_scope",
+        "budget_not_qualified"
+      ],
+      "suggested_offer": "micro_sprint_499_sar",
+      "suggested_discovery_questions": [
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟",
+        "كيف تقيسون النجاح حالياً؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    "deal_score": 29,
+    "close_probability_band": "medium",
+    "best_offer": "micro_sprint_499_sar",
+    "pricing_range": "499 SAR",
+    "recommended_discount_policy": {
+      "max_discount_pct": 0,
+      "discount_requires_approval": true,
+      "never_discount_below_floor": true,
+      "floor_rule": "no discount without confirmed scope and owner",
+      "auto_commit": false
+    },
+    "negotiation_position": {
+      "stance": "discovery_mode",
+      "message": "Ask one focused question to uncover the real blocker.",
+      "concession_order": [
+        "information_sharing",
+        "free_diagnostic",
+        "pilot"
+      ],
+      "never_do": [
+        "mass_outreach",
+        "unqualified_proposal",
+        "final_commitment"
+      ]
+    },
+    "must_ask_questions": [
+      "ما هي الميزانية المتاحة تقريباً لهذا النوع من الحلول؟",
+      "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+      "من يملك قرار هذا الموضوع؟",
+      "ما هو الهدف الرئيسي للربع القادم؟"
+    ],
+    "next_best_action": "ask_one_discovery_question_and_listen",
+    "do_not_do": [
+      "guaranteed_revenue",
+      "final_price_without_scope",
+      "fake_case_studies",
+      "legal_commitments",
+      "uncontrolled_outreach",
+      "commit_final_price_before_scope"
+    ],
+    "approval_gates": [
+      "external_send_requires_approval",
+      "discount_requires_founder_approval"
+    ],
+    "proof_to_show": [
+      "daily_command_report",
+      "opportunity_count",
+      "owner_map_sample"
+    ],
+    "live_sends": 0,
+    "final_commitments": 0
+  },
+  "proposal_folder": {
+    "account": "Riyadh Clinic Group",
+    "sector": "clinics",
+    "one_page_offer": {
+      "sector": "clinics",
+      "headline": "Clinic Follow-up Command Sprint",
+      "problem": "missed inquiries, WhatsApp overload, and weak follow-up visibility",
+      "solution": "build a daily review system for inquiries, follow-ups, and proof",
+      "start_with": "7 day command sprint",
+      "proof_asset": "daily inquiry and follow-up command report",
+      "cta": "Book a short operating review",
+      "review_required": true
+    },
+    "proposal_template": {
+      "title": "Clinic Follow-up Command Sprint Proposal",
+      "scope": [
+        "map current flow",
+        "create command queue",
+        "prepare draft routes",
+        "produce proof report"
+      ],
+      "not_in_scope": [
+        "final legal terms",
+        "guaranteed revenue",
+        "unapproved live sending"
+      ],
+      "inputs_needed": [
+        "current channels",
+        "sample leads",
+        "owner list",
+        "approval rules"
+      ],
+      "timeline": "7 to 14 days depending on package",
+      "commercial_note": "final price requires scope review",
+      "sector": "clinics"
+    },
+    "discovery_script": [
+      "What happens after a new inquiry reaches your clinics team?",
+      "Who owns the next follow-up and how is it tracked?",
+      "Which channel creates the most missed opportunities?",
+      "What should leadership see every day to trust the process?",
+      "Would a small 7 day command sprint be a reasonable first step?"
+    ],
+    "drafts": {
+      "email_subject": "Quick idea for clinics follow-up operations",
+      "email_body": "I noticed many clinics teams lose value after the first inquiry. Dealix can start with a small 7 day command sprint to map follow-up, prepare a daily command queue, and produce a proof report before any larger rollout.",
+      "whatsapp_body": "Hi, quick idea: Dealix can help clinics teams organize follow-ups and proof using a small 7 day command sprint first. Happy to share a one-page view.",
+      "linkedin_manual_note": "Manual note only: ask if the team has a clear daily follow-up command report for clinics operations.",
+      "mode": "draft_only"
+    },
+    "mode": "draft_only"
+  },
+  "daily_delivery_plan": {
+    "items": [
+      "review_open_opportunities",
+      "update_command_queue",
+      "prepare_draft_routes",
+      "record_proof_note",
+      "log_owner_activity",
+      "flag_blocked_items",
+      "update_stage"
+    ],
+    "auto_run": true,
+    "live_send": false
+  },
+  "weekly_review_pack": {
+    "account": "Demo Account",
+    "sections": [
+      "opportunities_reviewed",
+      "owners_confirmed",
+      "drafts_prepared",
+      "proof_delivered",
+      "decisions_recorded",
+      "blocked_items",
+      "next_week_plan"
+    ],
+    "cadence": "every_7_days",
+    "approval_required": false,
+    "auto_send": false
+  },
+  "proof_report_template": {
+    "account": "Demo Account",
+    "sections": [
+      "baseline_state",
+      "opportunities_reviewed",
+      "owners_assigned",
+      "draft_routes_prepared",
+      "decisions_recorded",
+      "proof_items",
+      "next_plan"
+    ],
+    "mode": "template_only",
+    "live_sends": 0
+  },
+  "approval_queue": [
+    {
+      "action": "external_email_send",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "system"
+    },
+    {
+      "action": "whatsapp_send",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "system"
+    },
+    {
+      "action": "calendar_invite_send",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "system"
+    },
+    {
+      "action": "final_price_commitment",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "system"
+    },
+    {
+      "action": "legal_terms_acceptance",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "system"
+    },
+    {
+      "action": "contract_signature",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "system"
+    },
+    {
+      "action": "guaranteed_revenue_claim",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "system"
+    },
+    {
+      "action": "public_claim_without_review",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "system"
+    },
+    {
+      "action": "external_send_requires_approval",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "deal_strategy"
+    },
+    {
+      "action": "discount_requires_founder_approval",
+      "status": "pending_approval",
+      "auto_run": false,
+      "triggered_by": "deal_strategy"
+    }
+  ],
+  "renewal_plan": {
+    "account": "Demo Account",
+    "trigger": "day_7_review",
+    "options": [
+      "managed_ops_monthly",
+      "expansion_sprint",
+      "custom_system"
+    ],
+    "pricing_range": "2999-25000 SAR",
+    "approval_required": true,
+    "auto_commit": false
+  },
+  "auto_prepared": [
+    "client_workspace",
+    "intake_pack",
+    "workflow_diagnosis",
+    "owner_map",
+    "command_queue",
+    "draft_route_pack",
+    "conversation_readout",
+    "deal_strategy",
+    "proposal_folder",
+    "daily_delivery_plan",
+    "weekly_review_pack",
+    "proof_report_template",
+    "renewal_plan"
+  ],
+  "rcmax_command": {
+    "account": "Riyadh Clinic Group",
+    "sector": "clinics",
+    "score": 94,
+    "offer": "7 day command sprint",
+    "why_now": "missed follow up",
+    "today_goal": "prepare one reviewed proposal folder and book one operating review",
+    "proof_target": "first daily command report",
+    "next_action": "run discovery, confirm inputs, and prepare proof-first sprint proposal",
+    "review_required": true,
+    "live": 0
+  },
+  "auto14_summary": {
+    "safe_auto_tasks": 10,
+    "approval_gates": 6,
+    "artifacts": 9,
+    "client_required_items": 4,
+    "system_company_items": 5,
+    "live_sends": 0,
+    "final_commitments": 0
+  },
+  "ops_summary": {
+    "lifecycle_stages": 7,
+    "deliverables": 9,
+    "daily_delivery_items": 7,
+    "sla_rules": 4,
+    "value_metrics": 5,
+    "approval_gates": 5,
+    "live_sends": 0,
+    "final_commitments": 0
+  }
+}

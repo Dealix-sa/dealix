@@ -1,0 +1,260 @@
+{
+  "summary": {
+    "messages_classified": 10,
+    "intents_detected": [
+      "ask_for_details",
+      "proposal_request",
+      "discount_request",
+      "not_interested",
+      "price_question",
+      "trust_objection",
+      "interested",
+      "legal_terms",
+      "unsubscribe",
+      "timing_objection"
+    ],
+    "live_sends": 0,
+    "final_commitments": 0,
+    "approval_gates_triggered": 4
+  },
+  "classifications": [
+    {
+      "message": "كم السعر؟",
+      "intent": "price_question",
+      "deal_stage": "interested",
+      "sentiment": "neutral",
+      "urgency": "low",
+      "objection_type": "none",
+      "missing_info": [
+        "scope_not_defined",
+        "budget_unknown"
+      ],
+      "recommended_response_angle": "share_pricing_range_with_scope_caveat",
+      "next_best_action": "ask_one_discovery_question_and_listen",
+      "approval_required": true,
+      "risk_flags": [
+        "no_final_price_without_scope",
+        "budget_not_qualified"
+      ],
+      "suggested_offer": "micro_sprint_499_sar",
+      "suggested_discovery_questions": [
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟",
+        "كيف تقيسون النجاح حالياً؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "ارسل العرض",
+      "intent": "proposal_request",
+      "deal_stage": "proposal",
+      "sentiment": "positive",
+      "urgency": "medium",
+      "objection_type": "none",
+      "missing_info": [
+        "scope_not_defined",
+        "budget_unknown",
+        "decision_maker_unknown"
+      ],
+      "recommended_response_angle": "prepare_proposal_folder_for_review",
+      "next_best_action": "prepare_proposal_folder_queue_for_founder_review",
+      "approval_required": true,
+      "risk_flags": [
+        "budget_not_qualified"
+      ],
+      "suggested_offer": "transformation_diagnostic_sprint_7500_25000_sar",
+      "suggested_discovery_questions": [
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟",
+        "كيف تقيسون النجاح حالياً؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "ما نحتاج",
+      "intent": "not_interested",
+      "deal_stage": "closed_lost",
+      "sentiment": "negative",
+      "urgency": "low",
+      "objection_type": "none",
+      "missing_info": [],
+      "recommended_response_angle": "polite_close_or_low_touch_nurture",
+      "next_best_action": "send_polite_close_note_and_add_to_long_nurture",
+      "approval_required": false,
+      "risk_flags": [],
+      "suggested_offer": "free_diagnostic",
+      "suggested_discovery_questions": [
+        "ما هو التحدي الأكبر الذي تواجهونه الآن؟",
+        "هل هناك شيء محدد لم يناسبكم في ما عرضناه؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "وقف التواصل",
+      "intent": "unsubscribe",
+      "deal_stage": "closed_lost",
+      "sentiment": "negative",
+      "urgency": "low",
+      "objection_type": "none",
+      "missing_info": [],
+      "recommended_response_angle": "mark_do_not_contact_and_comply",
+      "next_best_action": "mark_do_not_contact_immediately",
+      "approval_required": false,
+      "risk_flags": [],
+      "suggested_offer": "free_diagnostic",
+      "suggested_discovery_questions": [
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟",
+        "كيف تقيسون النجاح حالياً؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "what does it include?",
+      "intent": "ask_for_details",
+      "deal_stage": "discovery",
+      "sentiment": "neutral",
+      "urgency": "low",
+      "objection_type": "none",
+      "missing_info": [
+        "specific_area_of_interest_unclear"
+      ],
+      "recommended_response_angle": "send_one_page_offer_and_case_highlight",
+      "next_best_action": "run_discovery_questions_and_map_owner",
+      "approval_required": false,
+      "risk_flags": [],
+      "suggested_offer": "free_diagnostic",
+      "suggested_discovery_questions": [
+        "ما هو القسم أو العملية التي تهتمون بتحسينها أولاً؟",
+        "من هم الأشخاص المعنيون بهذا القرار؟",
+        "ما هو التوقع للنتائج في أول 30 يوم؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "we need more proof before deciding",
+      "intent": "trust_objection",
+      "deal_stage": "interested",
+      "sentiment": "negative",
+      "urgency": "low",
+      "objection_type": "trust",
+      "missing_info": [],
+      "recommended_response_angle": "share_proof_pack_and_propose_pilot",
+      "next_best_action": "prepare_proof_pack_and_pilot_proposal",
+      "approval_required": false,
+      "risk_flags": [],
+      "suggested_offer": "micro_sprint_499_sar",
+      "suggested_discovery_questions": [
+        "ما هو الدليل الذي سيقنعكم بالمضي قدماً؟",
+        "هل تريدون التحدث مع عملاء سابقين؟",
+        "ما هي النتيجة التي ستثبت لكم أن النظام يعمل؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "not now, maybe next quarter",
+      "intent": "timing_objection",
+      "deal_stage": "interested",
+      "sentiment": "negative",
+      "urgency": "low",
+      "objection_type": "timing",
+      "missing_info": [],
+      "recommended_response_angle": "discover_trigger_and_set_future_touchpoint",
+      "next_best_action": "ask_one_discovery_question_and_listen",
+      "approval_required": false,
+      "risk_flags": [],
+      "suggested_offer": "micro_sprint_499_sar",
+      "suggested_discovery_questions": [
+        "متى يكون التوقيت المناسب؟",
+        "ما الذي يجب أن يحدث أولاً قبل البدء؟",
+        "هل هناك حدث قادم يؤثر على القرار؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "send us the contract terms",
+      "intent": "legal_terms",
+      "deal_stage": "negotiation",
+      "sentiment": "neutral",
+      "urgency": "low",
+      "objection_type": "legal",
+      "missing_info": [],
+      "recommended_response_angle": "ask_discovery_question",
+      "next_best_action": "ask_one_discovery_question_and_listen",
+      "approval_required": true,
+      "risk_flags": [
+        "no_legal_commitment_without_review",
+        "legal_risk_review_required"
+      ],
+      "suggested_offer": "transformation_diagnostic_sprint_7500_25000_sar",
+      "suggested_discovery_questions": [
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟",
+        "كيف تقيسون النجاح حالياً؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "can you give us a discount?",
+      "intent": "discount_request",
+      "deal_stage": "negotiation",
+      "sentiment": "neutral",
+      "urgency": "low",
+      "objection_type": "price",
+      "missing_info": [
+        "scope_not_defined",
+        "budget_unknown"
+      ],
+      "recommended_response_angle": "anchor_value_before_price_reframe_scope",
+      "next_best_action": "review_scope_then_confirm_value_anchor",
+      "approval_required": true,
+      "risk_flags": [
+        "no_discount_without_founder_approval",
+        "budget_not_qualified"
+      ],
+      "suggested_offer": "transformation_diagnostic_sprint_7500_25000_sar",
+      "suggested_discovery_questions": [
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟",
+        "كيف تقيسون النجاح حالياً؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    },
+    {
+      "message": "we are interested, tell me more",
+      "intent": "interested",
+      "deal_stage": "interested",
+      "sentiment": "positive",
+      "urgency": "low",
+      "objection_type": "none",
+      "missing_info": [],
+      "recommended_response_angle": "ask_discovery_question",
+      "next_best_action": "ask_one_discovery_question_and_listen",
+      "approval_required": false,
+      "risk_flags": [],
+      "suggested_offer": "micro_sprint_499_sar",
+      "suggested_discovery_questions": [
+        "ما هو أكبر تحدٍّ تواجهونه الآن في المبيعات أو الخدمة؟",
+        "من يملك قرار هذا الموضوع؟",
+        "ما هو الهدف الرئيسي للربع القادم؟",
+        "كيف تقيسون النجاح حالياً؟"
+      ],
+      "live_send": false,
+      "final_commitment": false
+    }
+  ]
+}

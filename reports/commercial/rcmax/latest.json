@@ -1,0 +1,277 @@
+{
+  "summary": {
+    "target_companies": 30,
+    "first_10_companies": 10,
+    "materials_sectors": 4,
+    "top_account_score": 94,
+    "service_stages": 7,
+    "client_inputs": 6,
+    "client_outputs": 6,
+    "risk_gates": 4,
+    "live": 0
+  },
+  "command": {
+    "account": "Riyadh Clinic Group",
+    "sector": "clinics",
+    "score": 94,
+    "offer": "7 day command sprint",
+    "why_now": "missed follow up",
+    "today_goal": "prepare one reviewed proposal folder and book one operating review",
+    "proof_target": "first daily command report",
+    "next_action": "run discovery, confirm inputs, and prepare proof-first sprint proposal",
+    "review_required": true,
+    "live": 0
+  },
+  "operating_day": {
+    "morning": [
+      "review top account",
+      "review matched offer",
+      "confirm client problem"
+    ],
+    "midday": [
+      "prepare proposal folder",
+      "review draft outreach",
+      "prepare discovery questions"
+    ],
+    "afternoon": [
+      "book operating review",
+      "record outcome",
+      "update proof report"
+    ]
+  },
+  "service_blueprint": {
+    "service_name": "Dealix Growth Command Sprint",
+    "sector": "clinics",
+    "client_problem": "missed follow up",
+    "inputs_needed": [
+      "channels",
+      "sample opportunities",
+      "owners",
+      "approval rules",
+      "proof target",
+      "weekly review time"
+    ],
+    "stages": [
+      {
+        "stage": "intake",
+        "owner": "Founder",
+        "output": "client inputs collected"
+      },
+      {
+        "stage": "diagnosis",
+        "owner": "Delivery",
+        "output": "workflow and owner map"
+      },
+      {
+        "stage": "queue",
+        "owner": "Ops",
+        "output": "daily command queue"
+      },
+      {
+        "stage": "drafting",
+        "owner": "Sales",
+        "output": "reviewed draft routes"
+      },
+      {
+        "stage": "approval",
+        "owner": "Client Owner",
+        "output": "approved next actions"
+      },
+      {
+        "stage": "proof",
+        "owner": "Dealix",
+        "output": "proof report"
+      },
+      {
+        "stage": "expansion",
+        "owner": "Founder",
+        "output": "next plan or managed room offer"
+      }
+    ],
+    "client_outputs": [
+      "workflow map",
+      "owner map",
+      "action queue",
+      "draft routes",
+      "proof report",
+      "next plan"
+    ],
+    "success_metrics": [
+      "reviewed opportunities",
+      "owners assigned",
+      "draft routes prepared",
+      "proof items delivered"
+    ],
+    "risk_gates": [
+      "no live sending without review",
+      "no guaranteed revenue claim",
+      "no final legal terms",
+      "no final price without scope"
+    ]
+  },
+  "proposal_folder": {
+    "account": "Riyadh Clinic Group",
+    "sector": "clinics",
+    "one_page_offer": {
+      "sector": "clinics",
+      "headline": "Clinic Follow-up Command Sprint",
+      "problem": "missed inquiries, WhatsApp overload, and weak follow-up visibility",
+      "solution": "build a daily review system for inquiries, follow-ups, and proof",
+      "start_with": "7 day command sprint",
+      "proof_asset": "daily inquiry and follow-up command report",
+      "cta": "Book a short operating review",
+      "review_required": true
+    },
+    "proposal_template": {
+      "title": "Clinic Follow-up Command Sprint Proposal",
+      "scope": [
+        "map current flow",
+        "create command queue",
+        "prepare draft routes",
+        "produce proof report"
+      ],
+      "not_in_scope": [
+        "final legal terms",
+        "guaranteed revenue",
+        "unapproved live sending"
+      ],
+      "inputs_needed": [
+        "current channels",
+        "sample leads",
+        "owner list",
+        "approval rules"
+      ],
+      "timeline": "7 to 14 days depending on package",
+      "commercial_note": "final price requires scope review",
+      "sector": "clinics"
+    },
+    "discovery_script": [
+      "What happens after a new inquiry reaches your clinics team?",
+      "Who owns the next follow-up and how is it tracked?",
+      "Which channel creates the most missed opportunities?",
+      "What should leadership see every day to trust the process?",
+      "Would a small 7 day command sprint be a reasonable first step?"
+    ],
+    "drafts": {
+      "email_subject": "Quick idea for clinics follow-up operations",
+      "email_body": "I noticed many clinics teams lose value after the first inquiry. Dealix can start with a small 7 day command sprint to map follow-up, prepare a daily command queue, and produce a proof report before any larger rollout.",
+      "whatsapp_body": "Hi, quick idea: Dealix can help clinics teams organize follow-ups and proof using a small 7 day command sprint first. Happy to share a one-page view.",
+      "linkedin_manual_note": "Manual note only: ask if the team has a clear daily follow-up command report for clinics operations.",
+      "mode": "draft_only"
+    },
+    "mode": "draft_only"
+  },
+  "pricing_guidance": {
+    "offer": "7 day command sprint",
+    "suggested_range": "5000-12000 SAR",
+    "pricing_rule": "final price only after scope, channels, owners, and proof depth are reviewed",
+    "do_not_commit": [
+      "discount",
+      "guaranteed result",
+      "legal terms",
+      "live sending"
+    ]
+  },
+  "first_10_companies": [
+    {
+      "company_id": "gtm-001",
+      "name": "Clinics Prospect 01",
+      "sector": "clinics",
+      "priority": 99,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-002",
+      "name": "Agencies Prospect 02",
+      "sector": "agencies",
+      "priority": 98,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-003",
+      "name": "Training Prospect 03",
+      "sector": "training",
+      "priority": 97,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-004",
+      "name": "Logistics Prospect 04",
+      "sector": "logistics",
+      "priority": 96,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-005",
+      "name": "Clinics Prospect 05",
+      "sector": "clinics",
+      "priority": 95,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-006",
+      "name": "Agencies Prospect 06",
+      "sector": "agencies",
+      "priority": 94,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-007",
+      "name": "Training Prospect 07",
+      "sector": "training",
+      "priority": 93,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-008",
+      "name": "Logistics Prospect 08",
+      "sector": "logistics",
+      "priority": 92,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-009",
+      "name": "Clinics Prospect 09",
+      "sector": "clinics",
+      "priority": 91,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    },
+    {
+      "company_id": "gtm-010",
+      "name": "Agencies Prospect 10",
+      "sector": "agencies",
+      "priority": 90,
+      "status": "research_needed",
+      "owner": "Growth Director",
+      "next_step": "prepare_account_brief",
+      "review_required": true
+    }
+  ]
+}
