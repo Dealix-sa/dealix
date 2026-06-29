@@ -73,6 +73,6 @@ def test_write_artifact_outputs_markdown_and_json(
 
 def test_blocked_claims_are_detected() -> None:
     module = load_design_command_room()
-    blocked = module.review_claims("This guarantees revenue and guaranteed ROI.")
+    blocked = module.review_claims("This uses guaranteed revenue and guaranteed ROI.")
     assert "guaranteed revenue" in blocked
     assert "guaranteed roi" in blocked
