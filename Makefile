@@ -9,7 +9,7 @@
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
         env-check openapi-export api-contract-check dependency-inventory release-manifest production-smoke prod-verify \
-        design-os-list design-os-generate design-os-all test-design-os \
+        design-os-list design-os-generate design-os-all design-os-daily design-os-validate design-os-index design-os-html test-design-os \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
@@ -114,8 +114,20 @@ design-os-generate: ## Design OS: generate one draft artifact (TYPE=... CONTEXT=
 design-os-all: ## Design OS: generate all core draft artifacts
 	$(PYTHON) scripts/design_command_room.py --type all --context "$(CONTEXT)"
 
-test-design-os: ## Design OS: run focused generator tests
-	$(PYTHON) -m pytest -q tests/test_design_command_room.py
+design-os-daily: ## Design OS: generate daily pack + index + validation + HTML preview
+	$(PYTHON) scripts/design_os_suite.py daily-pack --context "$(CONTEXT)"
+
+design-os-validate: ## Design OS: validate generated draft artifacts
+	$(PYTHON) scripts/design_os_suite.py validate
+
+design-os-index: ## Design OS: build artifact index
+	$(PYTHON) scripts/design_os_suite.py index
+
+design-os-html: ## Design OS: render reports/design/latest.md to HTML preview
+	$(PYTHON) scripts/design_os_suite.py html
+
+test-design-os: ## Design OS: run focused generator and automation tests
+	$(PYTHON) -m pytest -q tests/test_design_command_room.py tests/test_design_os_suite.py
 
 # ── Tests ──────────────────────────────────────────────────────
 test: ## Run full test suite with coverage
