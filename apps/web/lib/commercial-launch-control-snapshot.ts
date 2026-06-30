@@ -1,5 +1,5 @@
 export const commercialLaunchControlSnapshot = {
-  "generated_at": "2026-06-30T11:29:42.345291+00:00",
+  "generated_at": "2026-06-30T11:35:56.673598+00:00",
   "company": "Dealix",
   "release_name": "Commercial Launch Control",
   "release_mode": "founder_led_commercial_launch",

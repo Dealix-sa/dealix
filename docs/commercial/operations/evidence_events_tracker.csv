@@ -13,3 +13,4 @@ event_id,event_date,event_type,company,contact,motion,offer_id,owner,source_chan
 96bc5633,2026-06-10,scope_requested,Dealix Founder Commercial Day,,A,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder and approve touches,2026-06-10,
 faa51135,2026-06-10,scope_requested,Dealix Internal Go-Live Validation,,A,ten_lead_audit,founder,manual,Go-live validation scope event recorded to satisfy commercial digest recency gate.,,,
 bfdeb8f6,2026-06-21,scope_requested,Dealix Founder Commercial Day,,A,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder and approve touches,2026-06-21,
+83de1cd6,2026-06-30,scope_requested,Dealix Founder Commercial Day,,A,ten_lead_audit,founder,automation,FOUNDER_COMMERCIAL_DAY verdict=PASS — War Room + digest + SOAEN,review P0 in /ar/ops/founder and approve touches,2026-06-30,
