@@ -270,6 +270,8 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "CI security smoke test defines sk_live_/ghp_ regex patterns to detect real secrets",
     "scripts/verify_secret_patterns.py":
         "secret-pattern verifier defines sk_live_/ghp_/AIza regex patterns as detection policy",
+    "scripts/dealix_startup_release_gate.py":
+        "startup release gate checks Moyasar key startswith('sk_live_') to detect live keys — policy guard, not a real secret",
 }
 
 
