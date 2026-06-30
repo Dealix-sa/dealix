@@ -40,6 +40,9 @@ on:
         default: "dealix"
         type: string
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: 🚂 Deploy to Railway
