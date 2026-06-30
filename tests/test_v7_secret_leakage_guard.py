@@ -171,8 +171,6 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "daily scorecard names the prefix in safety row",
     "docs/ops/moyasar_live_test.sh":
         "Moyasar test shell script names the prefix in placeholder env",
-    "docs/sales-kit/MOYASAR_HOSTED_CHECKOUT.md":
-        "sales-kit hosted-checkout doc names the prefix in policy copy",
     "docs/sales-kit/dealix_1_riyal_test.sh":
         "sales-kit 1-riyal test shell script names the prefix in env",
     # ── core safety / observability code (regex patterns = the policy) ──

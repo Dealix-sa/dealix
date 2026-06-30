@@ -21,6 +21,12 @@ os.environ.setdefault("DEEPSEEK_API_KEY", "test-deepseek-key")
 os.environ.setdefault("GROQ_API_KEY", "test-groq-key")
 os.environ.setdefault("GLM_API_KEY", "test-glm-key")
 os.environ.setdefault("GOOGLE_API_KEY", "test-google-key")
+# Empty API_KEYS → dev mode (middleware allows all requests without a key).
+# Module-level setdefault calls in individual test files become no-ops once
+# this is set first, preventing them from polluting the process environment
+# and causing 401 failures in tests that don't send an X-API-Key header.
+os.environ.setdefault("API_KEYS", "")
+os.environ.setdefault("ADMIN_API_KEYS", "")
 
 
 from core.llm.base import LLMResponse
