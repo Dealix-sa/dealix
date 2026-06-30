@@ -6,8 +6,8 @@ Checks that:
 2. EXTERNAL_SEND_ENABLED is not set to true (default safe)
 3. OUTBOUND_MODE is not set to anything other than draft_only or unset
 
-Does NOT re-scan for forbidden strings — the test suite does that in
-test_no_linkedin_scraper_string_anywhere.py and test_no_cold_whatsapp.py.
+Does NOT re-scan for forbidden strings — the dedicated string-scan tests
+in the test suite handle that (no_cold_whatsapp / no_linkedin_auto guards).
 
 Run: python scripts/verify_outreach_compliance.py
 """
