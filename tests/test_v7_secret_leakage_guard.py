@@ -257,6 +257,19 @@ _PREFIX_ALLOWLIST: dict[str, str] = {
         "tool-use security policy names the secret prefixes in scan copy",
     "docs/security/UNTRUSTED_INPUT_POLICY.md":
         "untrusted-input policy names the secret prefixes in redaction copy",
+    # ── trivy / container scanner config ──
+    ".trivyignore.yaml":
+        "trivy ignore file explicitly notes sk_live_xxxxx as placeholder token (not a real secret)",
+    # ── CI / docs referencing the quarantine entry ──
+    "docs/CI_QUARANTINE.md":
+        "CI quarantine doc quotes the sk_live_/ghp_/AIza prefix in the quarantine reason text",
+    # ── secret scanner scripts (patterns are the policy) ──
+    "scripts/check_no_secrets.py":
+        "secret-scan script defines AIza/sk_live_ regex patterns as the detection policy",
+    "scripts/ops/security_smoke_ci.py":
+        "CI security smoke test defines sk_live_/ghp_ regex patterns to detect real secrets",
+    "scripts/verify_secret_patterns.py":
+        "secret-pattern verifier defines sk_live_/ghp_/AIza regex patterns as detection policy",
 }
 
 
