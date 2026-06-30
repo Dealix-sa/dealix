@@ -54,7 +54,7 @@ jobs:
         run: ./scripts/dealix_autonomous_exec_day.sh
 
       - name: Upload operating artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: autonomous-executive-day
           path: |
