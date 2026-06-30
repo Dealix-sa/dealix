@@ -115,6 +115,12 @@ dumps/
 !data/workflows/
 # Demo data — synthetic only, no PII, committed for landing page + CI demos
 !data/demo/
+# Research & Targeting OS — track inputs (seed/queries/allowlist), ignore generated out/
+!data/targeting/
+data/targeting/out/
+!data/targeting/*.csv
+!data/targeting/*.txt
+!data/targeting/*.json
 # Commercial templates — bilingual AR+EN, no customer PII
 !data/templates/
 # Commercial product data — pain→offer map, catalog, ICP, pricing rules

@@ -1,0 +1,17 @@
+# Dealix Research & Targeting OS — discovery queries (allowlisted search only).
+# One query per line. Lines starting with # are ignored.
+# These read public search-result metadata (title/link/snippet) ONLY.
+# No scraping, no login, no robots.txt bypass — see PROSPECT_RESEARCH_COMPLIANCE_POLICY.
+
+# B2B consulting / agencies in Saudi (highest-fit wedge)
+b2b consulting Riyadh site:.sa
+marketing agency Saudi Arabia clients case studies
+"شركة استشارات" الرياض خدمات
+
+# SaaS / technology with expansion signals
+SaaS company Saudi Arabia hiring careers
+B2B technology Riyadh "نبحث عن" توظيف
+
+# Logistics / professional services
+logistics company Jeddah B2B services
+professional services firm Saudi Arabia projects

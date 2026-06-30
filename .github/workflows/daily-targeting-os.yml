@@ -1,0 +1,74 @@
+name: Daily Targeting OS
+
+# Dealix Research & Targeting OS — daily governed research loop.
+# 05:00 UTC = 08:00 Asia/Riyadh.
+#
+# This job RESEARCHES and SCORES only. It never sends a message, never charges a
+# card, and never bypasses robots.txt / login / CAPTCHA. Discovery via Google
+# Programmable Search runs only when GOOGLE_SEARCH_API_KEY + GOOGLE_SEARCH_CX
+# secrets are present; otherwise it runs seed-only. Outputs are uploaded as
+# artifacts for founder review — drafts are review-only and are NOT sent.
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+    inputs:
+      top:
+        description: "Short-list size"
+        default: "50"
+      discover:
+        description: "Enable allowlisted Google Programmable Search discovery (needs secrets)"
+        default: "false"
+
+concurrency:
+  group: dealix-daily-targeting-os
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  targeting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Targeting OS (seed-only or allowlisted discovery)
+        env:
+          GOOGLE_SEARCH_API_KEY: ${{ secrets.GOOGLE_SEARCH_API_KEY }}
+          GOOGLE_SEARCH_CX: ${{ secrets.GOOGLE_SEARCH_CX }}
+          TOP: ${{ github.event.inputs.top || '50' }}
+          DISCOVER: ${{ github.event.inputs.discover || 'false' }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/targeting/out
+          DISCOVER_FLAG=""
+          if [ "${DISCOVER}" = "true" ] && [ -n "${GOOGLE_SEARCH_API_KEY:-}" ] && [ -n "${GOOGLE_SEARCH_CX:-}" ]; then
+            DISCOVER_FLAG="--discover --queries-file data/targeting/queries.txt"
+            echo "Discovery: ENABLED (allowlisted search)."
+          else
+            echo "Discovery: OFF — running seed-only (safe default)."
+          fi
+          python3 scripts/research_targeting_os.py \
+            --seed data/targeting/company_seed_template.csv \
+            --allowlist data/targeting/source_allowlist.json \
+            --out data/targeting/out \
+            --top "${TOP}" \
+            ${DISCOVER_FLAG} \
+            --json | tee data/targeting/out/run_summary.json
+
+      - name: Upload targeting artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-targeting-os
+          path: data/targeting/out/
+          retention-days: 14
+          if-no-files-found: warn
