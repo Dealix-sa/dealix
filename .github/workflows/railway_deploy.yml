@@ -47,7 +47,7 @@ jobs:
     # Only run if RAILWAY_TOKEN is configured
     if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check for RAILWAY_TOKEN
         id: check_token
