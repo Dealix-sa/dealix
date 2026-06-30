@@ -13,7 +13,7 @@
     "@sentry/nextjs": "^10.59.0",
     "axios": "^1.18.1",
     "next": "15.5.19",
-    "posthog-js": "^1.392.0",
+    "posthog-js": "^1.395.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
