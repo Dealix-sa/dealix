@@ -304,21 +304,21 @@ def render_html(
   header .sub {{ color: var(--accent); margin-top: 6px; font-size: .95rem; }}
   main {{ max-width: 1040px; margin: 0 auto; padding: 20px; }}
   .banner {{ display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
-             background: #11331f; border: 1px solid var(--accent); border-radius: 14px;
+             background: #0a2440; border: 1px solid var(--accent); border-radius: 14px;
              padding: 14px 18px; margin-bottom: 22px; }}
-  .badge {{ color: #0D2818; font-weight: 800; padding: 4px 12px; border-radius: 999px; font-size: .85rem; }}
+  .badge {{ color: #001228; font-weight: 800; padding: 4px 12px; border-radius: 999px; font-size: .85rem; }}
   .banner-text {{ font-size: .9rem; }}
   .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
            gap: 14px; margin-bottom: 28px; }}
-  .card {{ background: #11331f; border: 1px solid rgba(201,169,76,.25); border-radius: 14px;
+  .card {{ background: #0a2440; border: 1px solid rgba(212,175,55,.25); border-radius: 14px;
            padding: 18px; text-align: center; }}
   .kpi {{ font-size: 1.9rem; font-weight: 800; }}
   .kpi-label {{ font-size: .82rem; color: #b9c7bd; margin-top: 4px; }}
   .cols {{ display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }}
-  section {{ background: #11331f; border: 1px solid rgba(201,169,76,.18); border-radius: 14px;
+  section {{ background: #0a2440; border: 1px solid rgba(212,175,55,.18); border-radius: 14px;
             padding: 20px; margin-bottom: 22px; }}
   section h2 {{ margin: 0 0 16px; font-size: 1.12rem; color: var(--accent);
-               border-bottom: 1px solid rgba(201,169,76,.2); padding-bottom: 8px; }}
+               border-bottom: 1px solid rgba(212,175,55,.2); padding-bottom: 8px; }}
   .funnel-row {{ display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }}
   .funnel-name {{ flex: 0 0 38%; font-size: .9rem; }}
   .funnel-bar {{ flex: 1; background: rgba(255,255,255,.08); border-radius: 8px; height: 18px; overflow: hidden; }}
@@ -333,11 +333,11 @@ def render_html(
   .ladder-row {{ display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
                  border-bottom: 1px solid rgba(255,255,255,.06); padding-bottom: 8px; }}
   .rung {{ flex: 0 0 26px; height: 26px; line-height: 26px; text-align: center; border-radius: 50%;
-           background: var(--accent); color: #0D2818; font-weight: 800; font-size: .85rem; }}
+           background: var(--accent); color: #001228; font-weight: 800; font-size: .85rem; }}
   .rung-name {{ flex: 1; font-weight: 600; }}
   .rung-detail {{ color: #9fb3a4; font-size: .82rem; }}
   .muted {{ color: #8aa192; text-align: center; }}
-  .note {{ background: rgba(201,169,76,.1); border: 1px solid rgba(201,169,76,.3);
+  .note {{ background: rgba(212,175,55,.1); border: 1px solid rgba(212,175,55,.3);
            border-radius: 10px; padding: 12px 14px; font-size: .85rem; margin-bottom: 22px; }}
   footer {{ text-align: center; padding: 18px; color: #7e9486; font-size: .8rem; }}
   @media (max-width: 720px) {{ .cols {{ grid-template-columns: 1fr; }} header h1 {{ font-size: 1.3rem; }} }}

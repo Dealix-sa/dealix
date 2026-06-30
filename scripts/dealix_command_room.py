@@ -34,9 +34,10 @@ OUTREACH_REPORTS = REPO_ROOT / "reports" / "outreach"
 OUT_HTML = REPO_ROOT / "reports" / "command_room" / "index.html"
 
 # Dealix brand colors (see brand/brand-colors.css and the visual identity guide).
-PRIMARY = "#1B5E3B"
-ACCENT = "#C9A94C"
-DARK = "#0D2818"
+# Dealix brand palette — aligned with apps/web (navy + gold + ocean accent).
+PRIMARY = "#0066FF"   # ocean blue accent (was green #1B5E3B)
+ACCENT = "#D4AF37"    # Dealix gold (matches apps/web --dealix-gold)
+DARK = "#001228"      # deep navy background (matches apps/web)
 
 STATUSES = ("drafted", "sent", "reply", "meeting", "won", "lost")
 FUNNEL = ("drafted", "sent", "reply", "meeting", "won")
@@ -244,8 +245,8 @@ def render_html(kpis: dict[str, object], source_note: str) -> str:
     margin-bottom: 28px;
   }}
   .card {{
-    background: #11331f;
-    border: 1px solid rgba(201,169,76,.25);
+    background: #0a2440;
+    border: 1px solid rgba(212,175,55,.25);
     border-radius: 14px;
     padding: 18px;
     text-align: center;
@@ -253,8 +254,8 @@ def render_html(kpis: dict[str, object], source_note: str) -> str:
   .kpi {{ font-size: 2.1rem; font-weight: 800; }}
   .kpi-label {{ font-size: .85rem; color: #b9c7bd; margin-top: 4px; }}
   section {{
-    background: #11331f;
-    border: 1px solid rgba(201,169,76,.18);
+    background: #0a2440;
+    border: 1px solid rgba(212,175,55,.18);
     border-radius: 14px;
     padding: 20px;
     margin-bottom: 22px;
@@ -263,7 +264,7 @@ def render_html(kpis: dict[str, object], source_note: str) -> str:
     margin: 0 0 16px;
     font-size: 1.15rem;
     color: var(--accent);
-    border-bottom: 1px solid rgba(201,169,76,.2);
+    border-bottom: 1px solid rgba(212,175,55,.2);
     padding-bottom: 8px;
   }}
   .funnel-row {{ display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }}
@@ -276,7 +277,7 @@ def render_html(kpis: dict[str, object], source_note: str) -> str:
   th {{ color: var(--accent); font-weight: 700; }}
   .muted {{ color: #8aa192; text-align: center; }}
   footer {{ text-align: center; padding: 18px; color: #7e9486; font-size: .8rem; }}
-  .note {{ background: rgba(201,169,76,.1); border: 1px solid rgba(201,169,76,.3);
+  .note {{ background: rgba(212,175,55,.1); border: 1px solid rgba(212,175,55,.3);
            border-radius: 10px; padding: 12px 14px; font-size: .85rem; margin-bottom: 22px; }}
   @media (max-width: 520px) {{
     .funnel-name {{ flex: 0 0 46%; font-size: .8rem; }}
