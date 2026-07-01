@@ -45,11 +45,17 @@ def _healthcheck() -> dict[str, Any]:
 
 
 def _trust_routes_registered(request: Request) -> dict[str, bool]:
-    paths = {getattr(route, "path", "") for route in request.app.routes}
+    def _route_exists(name: str) -> bool:
+        try:
+            request.app.url_path_for(name)
+            return True
+        except Exception:
+            return False
+
     return {
-        "version": "/version" in paths,
-        "api_v1_meta": "/api/v1/meta" in paths,
-        "healthz": "/healthz" in paths,
+        "version": _route_exists("version"),
+        "api_v1_meta": _route_exists("platform_meta"),
+        "healthz": _route_exists("healthz"),
     }
 
 

@@ -389,3 +389,33 @@ reports/runtime/
 reports/github-context/
 ledgers/private/
 .env.production
+
+# Startup release gate + commercial OS runtime reports (generated; never commit)
+reports/startup_release_gate/
+reports/startup_command_center/
+reports/startup_proof_pack/
+reports/founder_daily_brief/
+reports/founder_growth_os/
+reports/growth_command_center/
+reports/commercial_launch_control/
+reports/agentic_commercial_os/
+reports/agents/
+reports/ai/
+reports/commercial/
+reports/operator/
+reports/command_center/
+
+# Daily business exports (founder reviews before sharing; never committed)
+business/closing/exports/
+business/crm/exports/dealix-pipeline-report-*.md
+business/demo/exports/
+business/persuasion/exports/
+business/proposals/generated/
+business/reports/exports/
+
+# Generated server env / surface reports (daily; not committed)
+reports/server/env_contract.md
+reports/server/public_surfaces.json
+
+# Generated outreach batch files (CSV leads)
+data/outreach/ready_batch_*.csv

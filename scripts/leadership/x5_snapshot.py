@@ -1,9 +1,11 @@
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
+
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from app.leadership.x5 import run_x5
+
 payload = run_x5()
 out = Path('apps/web/lib/x5-snapshot.ts')
 out.parent.mkdir(parents=True, exist_ok=True)
