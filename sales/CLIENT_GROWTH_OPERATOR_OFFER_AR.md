@@ -1,5 +1,8 @@
 # عرض Dealix Client Growth Operator OS
 
+> **SUPERSEDED — هذا العرض غير نشط حاليًا.** الجاهز للبيع اليوم هو السُّلّم الخماسي الرسمي: [`docs/LAUNCH_MASTER_PLAN.md`](../docs/LAUNCH_MASTER_PLAN.md) و[`sales/playbook/FIVE_RUNG_RECOMMENDATION_GUIDE.md`](playbook/FIVE_RUNG_RECOMMENDATION_GUIDE.md). المحتوى أدناه أرشيفي (باقات وأسعار قديمة) ولا يجب استخدامه لعرض على عميل حالي.
+> **SUPERSEDED — this offer is not currently active.** The offer ready to sell today is the official 5-rung ladder: [`docs/LAUNCH_MASTER_PLAN.md`](../docs/LAUNCH_MASTER_PLAN.md) and [`sales/playbook/FIVE_RUNG_RECOMMENDATION_GUIDE.md`](playbook/FIVE_RUNG_RECOMMENDATION_GUIDE.md). The content below is archival (old packages and prices) and must not be used to pitch a current prospect.
+
 ## الفكرة ببساطة
 
 بدل ما تضيع فرص الشركة بين واتساب، الإيميل، لينكدإن، المواعيد، العروض، والمتابعات، Dealix يحولها إلى غرفة تشغيل يومية:

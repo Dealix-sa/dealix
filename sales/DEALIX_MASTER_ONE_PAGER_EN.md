@@ -26,9 +26,11 @@ Custom operating systems:
 
 ## Model
 
-- Diagnostic: SAR 4,999
-- One-month Pilot: SAR 14,999
-- Monthly subscription: scoped to usage
+- Free Diagnostic: SAR 0
+- 7-Day Sprint: SAR 499
+- Data-to-Revenue Pack: SAR 1,500
+- Managed Revenue Ops (monthly): SAR 2,999–4,999
+- Custom AI Service Setup: SAR 5,000–25,000 + SAR 1,000/mo
 
 ## Expected measurement areas
 
