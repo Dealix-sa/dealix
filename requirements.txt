@@ -16,6 +16,17 @@ jinja2>=3.1.0,<4
 aiohttp>=3.11.0,<4
 tenacity>=9.0.0,<10
 
+# Wave 16 — pure-Python PDF fallback for Proof Pack delivery
+# (auto_client_acquisition/proof_to_market/pdf_renderer.py). fpdf2 ships as
+# a py3-none-any wheel with zero native/system dependencies, so it works in
+# the existing minimal Docker runtime image with no Dockerfile changes —
+# unlike weasyprint (needs Pango/Cairo/GDK-Pixbuf) or pandoc (needs the
+# pandoc binary + a LaTeX engine), neither of which is installed in
+# production today. It is the third and final fallback tier; weasyprint
+# and pandoc are still preferred when present. See the module docstring
+# for the known Arabic/RTL rendering limitation of this fallback tier.
+fpdf2>=2.8.0,<3
+
 # Transitive dependencies pinned explicitly to override versions with
 # known CVEs. Without these pins, Dependabot flags vulnerable transitives
 # even though they're rarely imported directly. See W4.1 in playbook §18.
