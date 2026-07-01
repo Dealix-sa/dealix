@@ -1,5 +1,10 @@
 # قالب عرض الأسعار — ديليكس
 
+> **هذا هو المستند الرسمي القابل للإرسال للعميل** (بعد موافقة المؤسس). إذا كنت تبحث عن نموذج داخلي مختصر لتتبع نطاق ومقاييس سبرنت أثناء التنفيذ فقط، راجع [`PILOT_PROPOSAL_TEMPLATE_AR.md`](PILOT_PROPOSAL_TEMPLATE_AR.md) بدلاً من هذا الملف.
+> **This is the formal, send-ready customer document** (after founder approval). If you're looking for a short internal tracking template for a single Sprint's scope/metrics during delivery only, see [`PILOT_PROPOSAL_TEMPLATE_AR.md`](PILOT_PROPOSAL_TEMPLATE_AR.md) instead of this file.
+>
+> Founder-facing CLI available for rendering this proposal automatically: `python scripts/dealix_qualify_lead.py propose --customer-name ... --customer-handle ... --engagement-id ...` (writes `proposal.md` locally — founder review required before any send).
+
 **تعليمات الاستخدام:** استبدل كل [النص بين أقواس] بالمعلومات الفعلية للعميل.  
 **تذكير:** لا ترسل هذا العرض بدون مراجعة المؤسس (سامي عسيري).
 

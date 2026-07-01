@@ -1,5 +1,8 @@
 # نموذج عرض سبرنت
 
+> **الاستخدام:** هذا نموذج **داخلي مختصر** لتتبع نطاق ومقاييس سبرنت واحد أثناء التنفيذ — وليس مستنداً رسمياً يُرسل للعميل. للمستند الرسمي القابل للإرسال (بعد موافقة المؤسس)، استخدم [`PROPOSAL_TEMPLATE_AR.md`](PROPOSAL_TEMPLATE_AR.md) بدلاً من هذا الملف.
+> **Usage:** this is a **short internal tracking template** for a single Sprint's scope and measurement baseline during delivery — it is NOT the formal document to send to a customer. For the formal, send-ready proposal (after founder approval), use [`PROPOSAL_TEMPLATE_AR.md`](PROPOSAL_TEMPLATE_AR.md) instead of this file.
+
 **العميل:** [اسم الشركة]
 **التاريخ:** [YYYY-MM-DD]
 **مدة السبرنت:** 7 أيام
