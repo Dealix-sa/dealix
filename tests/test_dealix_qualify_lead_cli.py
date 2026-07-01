@@ -212,6 +212,29 @@ def test_propose_doctrine_trigger_refuses_to_render(tmp_path, capsys):
     assert not (out_dir / "proposal.md").exists()
     assert "DOCTRINE VIOLATION DETECTED" in out
     assert "Refusing to render a proposal" in out
+
+
+def test_propose_doctrine_paraphrase_guarantee_us_percentage_refuses_to_render(tmp_path, capsys):
+    """Regression test for the exact paraphrase found during manual
+    verification of this CLI ('guarantee us 30% revenue increase' did not
+    trip the original narrow trigger list). The underlying qualification
+    engine's phrase list has since been widened — this CLI must correctly
+    inherit that fix and refuse to render, not silently proceed."""
+    mod = _import_module()
+    out_dir = tmp_path / "refused_paraphrase_out"
+    rc = mod.main([
+        "propose",
+        "--customer-name", "Some Co",
+        "--customer-handle", "somecorp",
+        "--engagement-id", "eng_refused_002",
+        "--raw-request-text", "please guarantee us 30% revenue increase",
+        "--out-dir", str(out_dir),
+    ])
+    out = capsys.readouterr().out
+    assert rc == 0
+    assert not (out_dir / "proposal.md").exists()
+    assert "DOCTRINE VIOLATION DETECTED" in out
+    assert "guaranteed_sales" in out
     assert "guaranteed_sales" in out
 
 

@@ -69,25 +69,69 @@ _QUALIFY_WEIGHTS: dict[str, int] = {
 }
 
 # Doctrine triggers checked against the free-text request (English + Arabic).
+#
+# Each trigger is (label, phrases). A phrase match on the (lowercased) text
+# is a hit unless a negation guard from _NEGATION_GUARDS immediately
+# precedes it within _NEGATION_WINDOW_CHARS — this exists specifically so
+# the founder's OWN no-guarantee / no-scraping policy language (which
+# legitimately contains words like "guarantee" or "scrape" while REFUSING
+# them, e.g. sales/OBJECTION_HANDLING_AR.md's "لا نضمن نسبًا" — "we do not
+# guarantee percentages") is never mistaken for a prospect's doctrine-
+# violating request. Widening this list is a deliberate, tested trade-off
+# between recall (catching real paraphrases) and precision (not rejecting
+# a founder's own policy statements) — see tests/test_qualification.py and
+# tests/test_dealix_qualify_lead_cli.py for the calibration cases.
 _DOCTRINE_TEXT_TRIGGERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     (
         "cold_whatsapp",
-        ("cold whatsapp", "whatsapp blast", "blast leads", "واتساب"),
+        (
+            "cold whatsapp", "whatsapp blast", "blast leads", "bulk whatsapp",
+            "mass whatsapp", "automated whatsapp messages", "whatsapp automation",
+            "واتساب",
+        ),
     ),
     (
         "guaranteed_sales",
-        ("guarantee sales", "guaranteed sales", "guaranteed results",
-         "guaranteed roi", "ضمان المبيعات", "نضمن"),
+        (
+            "guarantee sales", "guaranteed sales", "guaranteed results",
+            "guaranteed roi", "guaranteed revenue", "guaranteed outcome",
+            "guaranteed outcomes", "guarantee a result", "guarantee results",
+            "guarantee us", "guarantee a specific", "guarantee an increase",
+            "promise a specific increase", "promise guaranteed",
+            "ضمان المبيعات", "ضمان النتائج", "ضمان الإيراد", "نضمن",
+        ),
     ),
     (
         "scraping",
-        ("scrape", "scraping", "web scrape", "harvest emails"),
+        (
+            "scrape", "scraping", "web scrape", "harvest emails",
+            "harvest contacts", "email harvesting", "data scraping",
+            "scrape linkedin", "scrape the web", "crawl and collect",
+            "سحب بيانات", "سحب البيانات",
+        ),
     ),
     (
         "linkedin_automation",
-        ("linkedin automation", "automate linkedin", "scrape linkedin"),
+        (
+            "linkedin automation", "automate linkedin", "scrape linkedin",
+            "auto-connect on linkedin", "automated linkedin", "linkedin bot",
+            "linkedin outreach automation", "أتمتة لينكدإن",
+        ),
     ),
 )
+
+# Negation guards — if one of these appears immediately before a matched
+# phrase (within _NEGATION_WINDOW_CHARS), the match is treated as the
+# SPEAKER REFUSING or DISCLAIMING the doctrine-violating behavior, not
+# requesting it, and is therefore NOT counted as a violation.
+_NEGATION_GUARDS_EN: tuple[str, ...] = (
+    "no ", "not ", "never ", "don't ", "do not ", "doesn't ", "does not ",
+    "won't ", "will not ", "without ", "no fake ", "we don't ",
+)
+_NEGATION_GUARDS_AR: tuple[str, ...] = (
+    "لا ", "لن ", "بدون ", "ما ",
+)
+_NEGATION_WINDOW_CHARS = 12
 
 
 @dataclass(frozen=True, slots=True)
@@ -104,12 +148,26 @@ class QualificationResult:
         return asdict(self)
 
 
+def _is_negated(lowered_text: str, match_start: int) -> bool:
+    """True if a negation guard (no/not/never/لا/لن/...) appears in the
+    short window immediately before ``match_start`` — i.e. the speaker is
+    refusing/disclaiming the behavior, not requesting it."""
+    window_start = max(0, match_start - _NEGATION_WINDOW_CHARS)
+    window = lowered_text[window_start:match_start]
+    return any(guard in window for guard in _NEGATION_GUARDS_EN) or any(
+        guard in window for guard in _NEGATION_GUARDS_AR
+    )
+
+
 def _scan_doctrine(text: str) -> list[str]:
     lowered = (text or "").lower()
     violations: list[str] = []
     for label, triggers in _DOCTRINE_TEXT_TRIGGERS:
-        if any(t in lowered for t in triggers):
-            violations.append(label)
+        for phrase in triggers:
+            idx = lowered.find(phrase)
+            if idx != -1 and not _is_negated(lowered, idx):
+                violations.append(label)
+                break
     return violations
 
 
