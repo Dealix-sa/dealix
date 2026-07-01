@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Dealix P1 — Revenue Intelligence Sprint | تشخيص الإيراد",
-  description: "خلال 5–7 أيام نكشف أين تضيع الإيرادات، ونرتب أول 20 فرصة، ونسلّم Proof Pack جاهز للتنفيذ. 3,500–15,000 ريال.",
+  description: "خلال 5–7 أيام نكشف أين تضيع الإيرادات، ونرتب أول 20 فرصة، ونسلّم Proof Pack جاهز للتنفيذ. 5,000–12,000 ريال (عرض تجريبي من سبرينت التشخيص التحولي).",
 };
 
 const deliverables = [
@@ -19,14 +19,14 @@ const deliverables = [
 const tiers = [
   {
     name: "Starter Diagnostic",
-    price: "3,500 – 7,500",
+    price: "5,000 – 7,500",
     duration: "5 أيام",
     desc: "مناسب لأول تشخيص مع عينة بيانات.",
     highlight: false,
   },
   {
     name: "Premium Proof Pack",
-    price: "8,000 – 15,000",
+    price: "8,000 – 12,000",
     duration: "7 أيام",
     desc: "بيانات أعمق، قنوات متعددة، تقرير تنفيذي كامل.",
     highlight: true,

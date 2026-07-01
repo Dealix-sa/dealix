@@ -3,6 +3,8 @@
 import PageShell from "@/components/PageShell";
 import SectionHeader from "@/components/SectionHeader";
 import CTA from "@/components/CTA";
+import WhatsAppCTA from "@/components/WhatsAppCTA";
+import { mailtoLink } from "@/lib/contact";
 
 export default function BookPage() {
   return (
@@ -44,10 +46,17 @@ export default function BookPage() {
           لا شيء معقد. فقط أجب عن هذا السؤال قبل الجلسة: ما أكبر شيء يستنزف وقت فريقك اليوم؟
         </p>
 
-        <CTA href="mailto:founder@dealix.sa?subject=طلب%20مراجعة%20تشغيلية" label="ارسل طلب مراجعة عبر البريد" />
+        <div className="actions" style={{ alignItems: "center" }}>
+          <CTA href={mailtoLink("طلب مراجعة تشغيلية")} label="ارسل طلب مراجعة عبر البريد" />
+          <WhatsAppCTA
+            message="السلام عليكم، أريد حجز مراجعة تشغيلية استراتيجية (20 دقيقة) مع Dealix."
+            label="راسلنا على واتساب"
+            fallbackSubject="طلب مراجعة تشغيلية"
+          />
+        </div>
 
         <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.40)", marginTop: "var(--sp-4)" }}>
-          أو تواصل معنا عبر واتساب على الرقم الموضح في صفحة التواصل. لا نستخدم حجز خارجي تلقائي.
+          أو عبر <a href="/contact" style={{ color: "rgba(255,255,255,0.65)" }}>صفحة التواصل</a>. لا نستخدم حجز خارجي تلقائي.
         </p>
       </section>
     </PageShell>

@@ -8,6 +8,7 @@ const links = [
   { href: "/offers", label: "العروض" },
   { href: "/pricing", label: "التسعير" },
   { href: "/book", label: "احجز مراجعة" },
+  { href: "/contact", label: "تواصل" },
 ];
 
 // Founder command room — live operational surfaces (admin-gated).

@@ -2,7 +2,7 @@ import { PREMIUM_OFFERS } from "@/lib/sales-machine/ultimate-sales-os";
 
 export const metadata = {
   title: "Offers — Dealix",
-  description: "Seven offers, from a free 20-min diagnostic to custom enterprise systems.",
+  description: "Six offers, from a free 30-min diagnostic to custom enterprise systems.",
 };
 
 export default function OffersPage() {
@@ -11,7 +11,7 @@ export default function OffersPage() {
       <div className="mx-auto max-w-6xl px-6 py-16">
         <header>
           <p className="text-xs uppercase tracking-[0.3em] text-amber-300/80">Offer Ladder</p>
-          <h1 className="mt-3 text-4xl font-semibold">سبع عروض، مسار واحد</h1>
+          <h1 className="mt-3 text-4xl font-semibold">ست عروض، مسار واحد</h1>
           <p className="mt-3 max-w-2xl text-sm text-white/70">
             كل عميل يدخل من التشخيص المجاني، ونقرر مع بعض أي عرض يناسبه. لا فخ تسعير، لا عقود
             طويلة قبل إثبات القيمة.

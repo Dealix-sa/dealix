@@ -16,30 +16,30 @@ const pains = [
 const steps = [
   {
     num: "01",
-    title: "P1 — تشخيص سريع في أسبوع",
-    body: "نأخذ عينة من بياناتك ونسلّم Proof Pack: خريطة تسرب الإيراد، أفضل 20 فرصة للمتابعة، مسودات رسائل جاهزة.",
-    price: "3,500–15,000 ريال",
-    href: "/ar/p1",
+    title: "التشخيص المجاني — 30 دقيقة",
+    body: "محادثة سريعة نحدد فيها أين تضيع الفرص في شركتك وما أول خطوة منطقية. لا التزامات ولا دفع مسبق.",
+    price: "مجاني",
+    href: "/ar/intake",
     color: "border-cyan-400/40 bg-cyan-400/5",
     tag: "text-cyan-300",
     cta: "bg-cyan-400 hover:bg-cyan-300",
   },
   {
     num: "02",
-    title: "P2 — تشغيل شهري بدون فريق",
-    body: "كل أسبوع: أولويات المتابعة، مسودات الرسائل، تحضير الاجتماعات، Scorecard قابل للقياس. أنت تراجع وترسل.",
-    price: "8,000–30,000 ريال/شهر",
-    href: "/ar/p2",
+    title: "تشخيص تحولي مدفوع — 3–7 أيام",
+    body: "نكتشف أين يتسرب إيرادك ونبني لك خارطة الحل: Workflow Map، Leakage Map، KPI Model، وعرض تنفيذ واضح.",
+    price: "7,500–25,000 ريال",
+    href: "/ar/diagnostic-sprint",
     color: "border-emerald-400/50 bg-emerald-400/10",
     tag: "text-emerald-300",
     cta: "bg-emerald-400 hover:bg-emerald-300",
   },
   {
     num: "03",
-    title: "P3 — غرفة قيادة تنفيذية",
-    body: "الإيراد، القرارات، المخاطر، وProof Packs في مكان واحد. Weekly Decision Brief للمؤسس بدون اجتماع إضافي.",
-    price: "20,000–60,000 ريال إعداد",
-    href: "/ar/p3",
+    title: "تشغيل AI شهري",
+    body: "نشغّل النظام يومياً ونسلمك تقرير أسبوعي بالنتائج والتوصيات. مسار موسع حتى 15,000 ريال/شهر حسب النطاق.",
+    price: "2,999–4,999 ريال/شهر",
+    href: "/ar/offers",
     color: "border-violet-400/40 bg-violet-400/5",
     tag: "text-violet-300",
     cta: "bg-violet-400 hover:bg-violet-300",
@@ -49,7 +49,7 @@ const steps = [
 const differentiators = [
   {
     title: "نبدأ بإثبات القيمة",
-    body: "P1 هو تشخيص مدفوع خلال أسبوع — لا عقد شهري، لا التزام طويل، فقط نتيجة أولاً.",
+    body: "نبدأ بتشخيص مجاني ثم تشخيص تحولي مدفوع خلال 3–7 أيام — لا عقد شهري، لا التزام طويل، نتيجة أولاً.",
   },
   {
     title: "AI يكتب، أنت ترسل",
@@ -82,10 +82,10 @@ export default function ArabicHomePage() {
         </p>
         <div className="mt-10 flex flex-wrap gap-4">
           <a
-            href="/ar/p1"
+            href="/ar/intake"
             className="rounded-2xl bg-cyan-400 px-8 py-4 text-lg font-black text-[#06111f] hover:bg-cyan-300"
           >
-            ابدأ تشخيص P1 — أسبوع واحد
+            ابدأ التشخيص المجاني — 30 دقيقة
           </a>
           <a
             href="/ar/pricing"
@@ -126,9 +126,9 @@ export default function ArabicHomePage() {
       {/* ── Product staircase ────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <p className="mb-3 text-sm text-slate-500">التسلسل الصحيح دائماً</p>
-        <h2 className="text-3xl font-black">ثلاثة منتجات. تسلسل واحد.</h2>
+        <h2 className="text-3xl font-black">سلم عروض واحد. تسلسل واضح.</h2>
         <p className="mt-3 max-w-2xl text-slate-400">
-          نبدأ بإثبات القيمة في P1. بعد الإثبات ننتقل لـ P2. عندما يحتاج المؤسس رؤية تنفيذية كاملة نضيف P3.
+          نبدأ بتشخيص مجاني. بعد الوضوح ننتقل للتشخيص التحولي المدفوع. وعندما يثبت النظام قيمته ننتقل للتشغيل الشهري.
         </p>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {steps.map((s) => (
@@ -174,14 +174,14 @@ export default function ArabicHomePage() {
         <div className="rounded-3xl border border-cyan-300/20 bg-cyan-400/5 p-10 md:p-14 text-center">
           <h2 className="text-3xl font-black md:text-4xl">جاهز تبدأ؟</h2>
           <p className="mt-4 text-lg text-slate-300">
-            P1 يبدأ خلال 24 ساعة من الاتفاق. لا عقد شهري. لا التزام طويل. فقط نتيجة.
+            التشخيص يبدأ خلال 24 ساعة من الاتفاق. لا عقد شهري. لا التزام طويل. فقط نتيجة.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a
-              href="mailto:hello@dealix.me?subject=أريد%20تشخيص%20P1"
+              href="/ar/intake"
               className="rounded-2xl bg-cyan-400 px-10 py-4 text-xl font-black text-[#06111f] hover:bg-cyan-300"
             >
-              احجز تشخيص P1
+              احجز التشخيص المجاني
             </a>
             <a
               href="/ar/demo"
@@ -198,13 +198,13 @@ export default function ArabicHomePage() {
         <div className="mx-auto max-w-6xl px-6 flex flex-wrap justify-between gap-6 text-sm text-slate-500">
           <span className="font-black text-white">Dealix</span>
           <nav className="flex flex-wrap gap-6">
-            <a href="/ar/p1" className="hover:text-cyan-300">P1 تشخيص</a>
-            <a href="/ar/p2" className="hover:text-emerald-300">P2 تشغيل شهري</a>
-            <a href="/ar/p3" className="hover:text-violet-300">P3 قيادة تنفيذية</a>
+            <a href="/ar/offers" className="hover:text-cyan-300">العروض</a>
+            <a href="/ar/diagnostic-sprint" className="hover:text-emerald-300">التشخيص التحولي</a>
+            <a href="/contact" className="hover:text-violet-300">تواصل</a>
             <a href="/ar/pricing" className="hover:text-white">الأسعار</a>
             <a href="/ar/demo" className="hover:text-white">الديمو</a>
             <a href="/ar/zatca-readiness" className="hover:text-amber-300">ZATCA</a>
-            <a href="mailto:hello@dealix.me" className="hover:text-white">تواصل معنا</a>
+            <a href="/contact" className="hover:text-white">تواصل معنا</a>
           </nav>
         </div>
       </footer>

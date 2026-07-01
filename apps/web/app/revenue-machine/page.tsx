@@ -51,7 +51,7 @@ export default function RevenueMachinePage() {
         <section className="mt-12">
           <h2 className="text-2xl font-semibold text-amber-300">Top 3 offers this quarter</h2>
           <ul className="mt-4 grid gap-3 md:grid-cols-3">
-            {PREMIUM_OFFERS.slice(1, 4).map((o) => (
+            {PREMIUM_OFFERS.slice(3, 6).map((o) => (
               <li key={o.id} className="rounded-2xl border border-white/10 bg-white/5 p-5">
                 <p className="font-medium">{o.name}</p>
                 <p className="text-xs text-white/60">{o.nameAr}</p>

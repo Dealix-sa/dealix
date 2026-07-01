@@ -1,4 +1,11 @@
-// Ultimate Sales OS — the single source of truth for premium pages
+// Ultimate Sales OS — premium-page data layer.
+// Offer pricing is derived from the canonical ladder in
+// lib/offers/canonical-offers.ts — edit prices there, not here.
+
+import {
+  CANONICAL_OFFERS,
+  type CanonicalOffer,
+} from "@/lib/offers/canonical-offers";
 
 export interface PremiumOffer {
   id: string;
@@ -11,78 +18,30 @@ export interface PremiumOffer {
   bestFor: string[];
 }
 
-export const PREMIUM_OFFERS: PremiumOffer[] = [
-  {
-    id: "diagnostic_sprint",
-    name: "Diagnostic Sprint",
-    nameAr: "سباق تشخيصي",
-    setup: "Free",
-    monthly: "—",
-    positioning: "20-min workflow review. No obligation, no spam.",
-    positioningAr: "مكالمة 20 دقيقة، بدون التزام، بدون spam.",
-    bestFor: ["first-touch", "warm-lead", "inbound"],
-  },
-  {
-    id: "revenue_os",
-    name: "Revenue OS",
-    nameAr: "نظام الإيراد",
-    setup: "SAR 18,000",
-    monthly: "SAR 5,000",
-    positioning: "Lead flow, outreach drafts, follow-up queues, and a weekly proof report.",
-    positioningAr: "تدفّق ليدز، مسوّدات تواصل، طوابير متابعة، تقرير إثبات أسبوعي.",
-    bestFor: ["agency", "b2b_services", "consulting"],
-  },
-  {
-    id: "command_center",
-    name: "Command Center OS",
-    nameAr: "نظام غرفة القيادة",
-    setup: "SAR 35,000",
-    monthly: "SAR 9,000",
-    positioning: "One-page decision view for the founder, refreshed daily with human-verified numbers.",
-    positioningAr: "صفحة قرار واحدة للمؤسس، تتحدث يومياً بأرقام محققة.",
-    bestFor: ["founder-led", "multi-entity", "20+ employees"],
-  },
-  {
-    id: "delivery_os",
-    name: "Delivery OS",
-    nameAr: "نظام التسليم",
-    setup: "SAR 25,000",
-    monthly: "SAR 6,000",
-    positioning: "Workflow map, automation build, retention engine, monthly review.",
-    positioningAr: "خريطة عمل، بناء أتمتة، محرك احتفاظ، مراجعة شهرية.",
-    bestFor: ["service-operator", "training", "logistics"],
-  },
-  {
-    id: "review_reputation",
-    name: "Review & Reputation OS",
-    nameAr: "نظام السمعة",
-    setup: "SAR 12,000",
-    monthly: "SAR 3,500",
-    positioning: "Review monitoring, reply drafts (human-approved), monthly report.",
-    positioningAr: "مراقبة تقييمات، مسوّدات رد (بموافقة بشرية)، تقرير شهري.",
-    bestFor: ["clinic", "real_estate", "local_service"],
-  },
-  {
-    id: "custom_enterprise",
-    name: "Custom Enterprise System",
-    nameAr: "نظام مؤسسي مخصص",
-    setup: "SAR 80,000+",
-    monthly: "SAR 18,000+",
-    positioning: "Architecture, security review, custom modules, dedicated ops lead.",
-    positioningAr: "هندسة معمارية، مراجعة أمان، وحدات مخصصة، مسؤول عمليات.",
-    bestFor: ["50+ employees", "group", "regulated"],
-  },
-  {
-    id: "managed_retainer",
-    name: "Managed OS Retainer",
-    nameAr: "اشتراك إدارة",
-    setup: "—",
-    monthly: "SAR 4,000–12,000",
-    positioning: "Ongoing ops, training, and quarterly reviews for clients who want a partner.",
-    positioningAr: "عمليات مستمرة، تدريب، مراجعات ربع سنوية، للعملاء اللي يبغون شريك.",
-    bestFor: ["existing-client", "expansion", "ongoing-partner"],
-  },
-];
+const POSITIONING_EN: Record<CanonicalOffer["id"], string> = {
+  free_diagnostic: "30-min workflow review. No obligation, no spam.",
+  micro_sprint: "One fast, tangible fix delivered in 1–2 days to prove capability.",
+  data_pack: "Qualified, classified prospect database ready for outreach.",
+  managed_ops: "Daily AI operations with a weekly proof report and monthly founder review.",
+  transformation_sprint:
+    "Workflow map, leakage map, KPI model, and an implementation quote in 3–7 days.",
+  custom_enterprise: "Custom-built AI system integrated with your team and tools.",
+};
+
+function toPremium(o: CanonicalOffer): PremiumOffer {
+  return {
+    id: o.id,
+    name: o.name,
+    nameAr: o.nameAr,
+    setup: o.billing === "monthly" ? "—" : o.priceEn,
+    monthly: o.billing === "monthly" ? o.priceEn : "—",
+    positioning: POSITIONING_EN[o.id],
+    positioningAr: o.description,
+    bestFor: o.bestFor,
+  };
+}
+
+export const PREMIUM_OFFERS: PremiumOffer[] = CANONICAL_OFFERS.map(toPremium);
 
 export interface IndustryPlay {
   id: string;
@@ -104,7 +63,7 @@ export const INDUSTRY_PLAYS: IndustryPlay[] = [
     industryAr: "وكالة تسويق",
     visibleSignals: ["Slow response to inbound", "Multiple ad accounts", "Founder approves every deliverable"],
     weaknesses: ["Lead response time", "Reporting cadence", "Capacity planning"],
-    bestOffer: "Revenue OS",
+    bestOffer: "Managed AI Operations (rung 4)",
     openerAr: "شفت إنكم تشتغلون على حملات قوية، بس الاستجابة على الليدز الواردة تتأخر. هذا اللي Dealix يحلّه.",
     openerEn: "I noticed you ship strong campaigns but inbound response is slow. Dealix closes that window.",
     proofAngle: "Weekly proof report on response time and qualified meetings.",
@@ -116,7 +75,7 @@ export const INDUSTRY_PLAYS: IndustryPlay[] = [
     industryAr: "تدريب / استشارات",
     visibleSignals: ["Public courses and events", "Speakers post content", "Trainers are the bottleneck"],
     weaknesses: ["Cohort follow-up", "Renewal cycle", "Trainer utilization"],
-    bestOffer: "Delivery OS",
+    bestOffer: "Transformation Diagnostic Sprint (rung 5)",
     openerAr: "لاحظت إن دوراتكم ممتازة، بس المتابعة بعد انتهاء الكورس ضعيفة. Dealix يبني نظام متابعة قابل للقياس.",
     openerEn: "Your courses are excellent, but post-course follow-up is light. Dealix builds a measurable retention flow.",
     proofAngle: "Renewal rate + NPS after first 60 days.",
@@ -128,7 +87,7 @@ export const INDUSTRY_PLAYS: IndustryPlay[] = [
     industryAr: "عيادة / خدمة محلية",
     visibleSignals: ["Google reviews", "Walk-in dominant", "Phone-first booking"],
     weaknesses: ["No-show rate", "Reputation response", "Recall cadence"],
-    bestOffer: "Review & Reputation OS",
+    bestOffer: "Micro Sprint → Managed AI Operations (rungs 2→4)",
     openerAr: "تقييماتكم على Google تحتاج متابعة منتظمة. Dealix يبني نظام ردود بموافقة بشرية + تقرير شهري.",
     openerEn: "Your Google reviews need a steady response system. Dealix installs human-approved replies + a monthly report.",
     proofAngle: "Average rating + response rate after 60 days.",
@@ -140,7 +99,7 @@ export const INDUSTRY_PLAYS: IndustryPlay[] = [
     industryAr: "وسطاء عقاريون",
     visibleSignals: ["Multiple listings", "Agent-only follow-up", "Heavy ad spend"],
     weaknesses: ["Lead-to-viewing ratio", "Agent consistency", "Listing promotion"],
-    bestOffer: "Revenue OS + Command Center",
+    bestOffer: "Transformation Diagnostic Sprint (rung 5)",
     openerAr: "لاحظت إن العقارات تتغير بسرعة، بس المتابعة على الليدز مو منتظمة. Dealix ينسّق المتابعة على مستوى المكتب.",
     openerEn: "Listings change fast but follow-up isn't consistent. Dealix coordinates follow-up across the office.",
     proofAngle: "Lead-to-viewing + agent response time.",
@@ -152,7 +111,7 @@ export const INDUSTRY_PLAYS: IndustryPlay[] = [
     industryAr: "لوجستيات / خدمات B2B",
     visibleSignals: ["B2B contracts", "Manual dispatch", "Phone + WhatsApp"],
     weaknesses: ["Dispatch visibility", "Customer updates", "SLA reporting"],
-    bestOffer: "Command Center OS",
+    bestOffer: "Managed AI Operations (rung 4)",
     openerAr: "أعرف إن التحديثات على الشحنات تكون يد. Dealix يبني غرفة قيادة بخمسة مؤشرات فقط.",
     openerEn: "I know shipment updates are manual. Dealix builds a command center with five KPIs only.",
     proofAngle: "On-time delivery + customer update SLA.",
@@ -164,7 +123,7 @@ export const INDUSTRY_PLAYS: IndustryPlay[] = [
     industryAr: "مكتب استشاري",
     visibleSignals: ["Senior-led", "Engagement-based", "Long sales cycle"],
     weaknesses: ["Pipeline visibility", "Engagement reporting", "Senior time allocation"],
-    bestOffer: "Command Center OS",
+    bestOffer: "Managed AI Operations (rung 4)",
     openerAr: "شفت إن Pipeline عندكم ما عنده إيقاع أسبوعي. Dealix يركّب الإيقاع + تقرير إثبات أسبوعي.",
     openerEn: "Your pipeline doesn't have a weekly cadence. Dealix installs the cadence + a weekly proof report.",
     proofAngle: "Pipeline velocity + senior utilization.",
