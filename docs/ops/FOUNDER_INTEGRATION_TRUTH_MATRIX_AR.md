@@ -20,7 +20,7 @@
 | --- | --- | --- | --- | --- |
 | Governed Revenue Ops Diagnostic | 4,999–15,000 | `POST /api/v1/service-setup/qualify` | qualify + proposal يدوي | yellow |
 | تشخيص مجاني | 0 | `POST /api/v1/company-growth-beast/diagnostic` | intake | green |
-| سبرنت 499 | 499 | `POST /api/v1/sprint/run` | golden chain smoke | green |
+| سبرنت 499 | 499 | `POST /api/v1/sprint/run` أو `python scripts/dealix_sprint_run.py` | golden chain smoke | green |
 | حزمة بيانات 1500 | 1,500 | `POST /api/v1/data-os/import-preview/upload` | data_os tests | green |
 | نمو شهرية 2999 | 2,999/شهر | `GET /api/v1/value/{handle}/report/monthly` | tenant يدوي | yellow |
 | دعم 1500 | 1,500/شهر | support_os | capability verify | yellow |

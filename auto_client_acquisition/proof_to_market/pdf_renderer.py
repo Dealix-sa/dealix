@@ -1,13 +1,35 @@
-"""Markdown → PDF renderer — Wave 14D.4.
+"""Markdown → PDF renderer — Wave 14D.4 (+ Wave 16 fpdf2 fallback).
 
-Thin wrapper. Prefers `weasyprint` if installed, falls back to `pandoc`
-subprocess if available, otherwise returns None + logs reason. The PDF
-endpoints in api/routers/*.py call this; if it returns None they fall
-back to returning the markdown directly with a Content-Type warning.
+Three-tier fallback, tried in order:
+  1. `weasyprint` — best fidelity (full CSS, proper Arabic/RTL shaping via
+     Pango), but needs native system libraries (Pango, Cairo, GDK-Pixbuf)
+     that are NOT currently installed in the production Docker image
+     (see Dockerfile runtime stage) — so this tier is normally unavailable
+     in production today.
+  2. `pandoc` subprocess (+ xelatex) — good fidelity, but needs the pandoc
+     binary and a LaTeX engine on PATH, also not currently installed in
+     the production image.
+  3. `fpdf2` — pure-Python (a `py3-none-any` wheel, zero native/system
+     dependencies), works out of the box in the existing minimal Docker
+     image with no Dockerfile changes. Basic layout only: headings and
+     body text render cleanly for ASCII/Latin-script content. fpdf2's
+     core fonts are latin-1 only, so this tier does NOT render Arabic
+     script at all — Arabic runs are collapsed to a short "[ar]"
+     placeholder (see `_latin1_safe`) rather than emitting a fabricated
+     or broken glyph. It is a "the founder gets a real, valid PDF file
+     today for the English content" safety net, not a substitute for
+     tier 1's bilingual typographic quality. When a customer-facing
+     Arabic PDF is required, the markdown export remains the correct
+     deliverable until weasyprint (or a proper Arabic-shaping tier) is
+     installed.
+
+The PDF endpoints in api/routers/*.py call this; if it returns None they
+fall back to returning the markdown directly with a Content-Type warning.
 """
 from __future__ import annotations
 
 import logging
+import re
 import shutil
 import subprocess
 import tempfile
@@ -96,6 +118,80 @@ def _try_pandoc(md: str, title: str) -> bytes | None:
         return None
 
 
+def _strip_markdown_lite(line: str) -> str:
+    """Strip the handful of markdown markers fpdf2's plain-text renderer
+    doesn't understand (#, **, `) so headings/bold/code don't show their
+    literal punctuation in the final PDF. Deliberately minimal — this is
+    a readability pass for the pure-Python fallback tier, not a full
+    markdown parser."""
+    text = line
+    while text.startswith("#"):
+        text = text[1:]
+    text = text.strip()
+    text = text.replace("**", "").replace("`", "")
+    return text
+
+
+def _latin1_safe(text: str) -> str:
+    """Make ``text`` safe for fpdf2's core (latin-1-only) fonts.
+
+    A naive ``encode("latin-1", errors="replace")`` turns every non-Latin
+    character (e.g. Arabic) into a lone ``?``, but a long unbroken run of
+    Arabic script (no ASCII spaces inside it) becomes a long unbroken run
+    of ``?`` with no break point — which can exceed the printable line
+    width and raise ``FPDFException: Not enough horizontal space``. Collapse
+    any run of 2+ consecutive replacement characters into a short, clearly
+    non-fabricated placeholder token instead, so word-wrap always has a
+    break point. This is a legibility/robustness measure only — it does
+    not attempt to render Arabic; see the module docstring for why this
+    fallback tier does not shape Arabic script.
+    """
+    replaced = text.encode("latin-1", errors="replace").decode("latin-1")
+    return re.sub(r"\?{2,}", "[ar]", replaced)
+
+
+def _try_fpdf2(md: str, title: str) -> bytes | None:
+    """Pure-Python fallback — no native/system dependencies. Renders plain
+    text with light heading emphasis; does not attempt full markdown
+    parsing or Arabic RTL shaping (see module docstring). Returns PDF
+    bytes or None if fpdf2 is not installed or rendering fails."""
+    try:
+        from fpdf import FPDF  # type: ignore
+    except ImportError:
+        log.debug("pdf_renderer: fpdf2 not installed")
+        return None
+    try:
+        pdf = FPDF()
+        pdf.set_title(title)
+        pdf.set_auto_page_break(auto=True, margin=15)
+        pdf.add_page()
+        pdf.set_font("Helvetica", size=11)
+        for raw_line in md.splitlines():
+            line = raw_line.rstrip()
+            if not line:
+                pdf.ln(4)
+                continue
+            is_heading = line.lstrip().startswith("#")
+            clean = _strip_markdown_lite(line)
+            if not clean:
+                continue
+            pdf.set_font("Helvetica", style="B" if is_heading else "", size=13 if is_heading else 11)
+            safe = _latin1_safe(clean)
+            # A short prior line (e.g. a "---" rule) can leave fpdf2's x
+            # cursor near the right margin instead of resetting it, which
+            # then starves the next multi_cell of horizontal space and
+            # raises FPDFException. Always start each line's cell at the
+            # left margin explicitly rather than relying on multi_cell to
+            # reset it.
+            pdf.set_x(pdf.l_margin)
+            pdf.multi_cell(0, 7, safe)
+        output = pdf.output()
+        return bytes(output)
+    except Exception:
+        log.exception("pdf_renderer_fpdf2_failed")
+        return None
+
+
 def render_markdown_to_pdf(md: str, title: str = "Dealix Document") -> bytes | None:
     """Render markdown to PDF bytes. Returns None if no renderer available.
 
@@ -108,7 +204,9 @@ def render_markdown_to_pdf(md: str, title: str = "Dealix Document") -> bytes | N
     if pdf is not None:
         return pdf
     pdf = _try_pandoc(md, title)
-    return pdf
+    if pdf is not None:
+        return pdf
+    return _try_fpdf2(md, title)
 
 
 def is_pdf_available() -> dict[str, bool]:
@@ -120,7 +218,18 @@ def is_pdf_available() -> dict[str, bool]:
     except ImportError:
         pass
     pandoc = bool(shutil.which("pandoc"))
-    return {"weasyprint": weasy, "pandoc": pandoc, "any": weasy or pandoc}
+    fpdf2 = False
+    try:
+        import fpdf  # noqa: F401
+        fpdf2 = True
+    except ImportError:
+        pass
+    return {
+        "weasyprint": weasy,
+        "pandoc": pandoc,
+        "fpdf2": fpdf2,
+        "any": weasy or pandoc or fpdf2,
+    }
 
 
 __all__ = ["is_pdf_available", "render_markdown_to_pdf"]

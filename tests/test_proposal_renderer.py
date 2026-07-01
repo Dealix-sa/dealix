@@ -98,3 +98,45 @@ def test_qualify_endpoint_rejects_cold_whatsapp():
     body = resp.json()
     assert body["decision"] == "reject"
     assert any("whatsapp" in v for v in body["doctrine_violations"])
+
+
+def test_qualify_endpoint_rejects_guarantee_paraphrase():
+    """The live API endpoint benefits from the same widened doctrine
+    phrase list as the qualify() function and the CLI — a paraphrased
+    guarantee request ('guarantee us X%') must be rejected here too, not
+    just when calling qualify() directly in a unit test."""
+    resp = client.post(
+        "/api/v1/service-setup/qualify",
+        json={
+            "pain_clear": True, "owner_present": True, "data_available": True,
+            "accepts_governance": True, "has_budget": True,
+            "wants_safe_methods": True, "proof_path_visible": True,
+            "retainer_path_visible": True,
+            "raw_request_text": "please guarantee us 30% revenue increase",
+        },
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["decision"] == "reject"
+    assert "guaranteed_sales" in body["doctrine_violations"]
+
+
+def test_qualify_endpoint_accepts_founders_own_no_guarantee_policy_text():
+    """Precision check on the live endpoint: the founder's own no-
+    guarantee policy language (which contains the word 'guarantee' while
+    refusing it) must not be misread as a prospect's doctrine-violating
+    request."""
+    resp = client.post(
+        "/api/v1/service-setup/qualify",
+        json={
+            "pain_clear": True, "owner_present": True, "data_available": True,
+            "accepts_governance": True, "has_budget": True,
+            "wants_safe_methods": True, "proof_path_visible": True,
+            "retainer_path_visible": True,
+            "raw_request_text": "We do not guarantee any specific revenue outcome.",
+        },
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["decision"] == "accept"
+    assert body["doctrine_violations"] == []
