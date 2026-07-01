@@ -19,6 +19,7 @@
 | يوم بيوم | [CUSTOMER_ONBOARDING_DAY_BY_DAY.md](CUSTOMER_ONBOARDING_DAY_BY_DAY.md) |
 | 14 خطوة | [FIRST_CUSTOMER_ONBOARDING.md](FIRST_CUSTOMER_ONBOARDING.md) |
 | API | `POST /api/v1/sprint/run` |
+| CLI محلي | `python scripts/dealix_sprint_run.py --engagement-id ... --customer-id ... --csv ...` |
 | وكيل | **dealix-delivery** |
 
 **مخرج:** Proof Pack 14 قسم — لا upsell قبل تسليمه

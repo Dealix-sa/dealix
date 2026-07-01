@@ -6,6 +6,27 @@
 
 ---
 
+## Quick path — single-command local run — المسار السريع: تشغيل محلي بأمر واحد
+
+```bash
+python scripts/dealix_sprint_run.py \
+  --engagement-id <engagement_id> \
+  --customer-id <customer_id> \
+  --csv path/to/customer_accounts.csv \
+  --source-passport-json path/to/passport.json \
+  --problem-summary "<the business question>"
+```
+
+This single command runs the automatable steps across Days 1–7 in one local pass — source passport check, DQ score, account scoring, draft outline governance review, Proof Pack assembly, capital asset registration, and retainer eligibility check — and writes the customer-facing Proof Pack (`proof_pack.md`, plus `proof_pack.pdf` if a PDF renderer is available) and an `email_cover_note.txt` for the founder to review. It does not send anything itself.
+
+يشغّل هذا الأمر الواحد الخطوات القابلة للأتمتة من اليوم الأول إلى السابع دفعة واحدة محليًا — فحص جواز المصدر، درجة جودة البيانات، ترتيب الحسابات، مراجعة حوكمة مسودات الرسائل، تجميع حزمة الإثبات، تسجيل الأصل الرأسمالي، وفحص جاهزية الاحتفاظ — ويكتب حزمة الإثبات الموجهة للعميل ومذكرة بريد إلكتروني تمهيدية ليراجعها المؤسس. لا يقوم هذا السكربت بإرسال أي شيء بنفسه.
+
+This local CLI run does not replace founder judgment at each checkpoint — Day 1 Source Passport sign-off, Day 3 top-10 review, Day 5 proof score gate all still apply. The CLI only does the mechanical work between checkpoints; the founder still reads, approves, and decides at each gate.
+
+هذا التشغيل المحلي لا يُلغي حكم المؤسس عند كل نقطة تفتيش — توقيع جواز المصدر في اليوم الأول، مراجعة أفضل 10 حسابات في اليوم الثالث، وبوابة درجة الإثبات في اليوم الخامس تبقى كلها سارية. السكربت ينفّذ العمل الميكانيكي بين نقاط التفتيش فقط.
+
+---
+
 ## Day 1 — Kickoff + Source Passport — اليوم الأول: الانطلاق وجواز المصدر
 
 **What runs:** Kickoff call (45 minutes) + `data_os.SourcePassport` draft.
@@ -32,6 +53,8 @@ python -m cli data import --passport <passport_id> --file client.csv --preview-o
 python -m cli data compute-dq --passport <passport_id> --out out/dq_<engagement_id>.json
 ```
 
+(all automated by `scripts/dealix_sprint_run.py` in one pass; see Quick Path above)
+
 **Founder checkpoint:** review the DQ score. A baseline DQ < 40 means the client has a data-readiness problem, not a sprint problem; pause the sprint and propose the 1,500 SAR Data Pack instead. DQ between 40 and 70 → proceed with documented caveats. DQ ≥ 70 → proceed clean.
 
 **Ledger entries:** `proof_ledger.dq_baseline = <score>`, `proof_ledger.import_preview_recorded = true`. No external action taken.
@@ -41,6 +64,8 @@ python -m cli data compute-dq --passport <passport_id> --out out/dq_<engagement_
 ## Day 3 — Account Scoring + Top 10 — اليوم الثالث: ترتيب الحسابات
 
 **What runs:** `revenue_os.account_scoring` over the imported, deduped, DQ-checked dataset. Output: a transparent, rubric-based ranking with explicit features (fit, signal strength, governance risk).
+
+(all automated by `scripts/dealix_sprint_run.py` in one pass; see Quick Path above)
 
 **Founder checkpoint:** read the top 10 explanations. Each ranked account must have a human-readable justification. If any explanation is opaque or unverifiable → demote it; do not ship "magic" rankings.
 
@@ -61,6 +86,8 @@ python -m cli data compute-dq --passport <passport_id> --out out/dq_<engagement_
 ## Day 5 — Proof Pack Assembly — اليوم الخامس: تجميع حزمة الإثبات
 
 **What runs:** `proof_os.assemble` builds the 14-section Proof Pack (intake, passport, DQ, dedupe, scoring, drafts, governance decisions, redactions, approvals, value-tier mapping, capital asset registration, limitations, methodology, signatures). Each section is required; missing sections fail the assembly.
+
+(all automated by `scripts/dealix_sprint_run.py` in one pass; see Quick Path above)
 
 **Founder checkpoint:** read the assembled Proof Pack end to end. Compute the proof score. A `proof_score < 70` cannot be delivered — escalate to either remediation (extra day) or partial-refund per [REFUND_SOP.md](../REFUND_SOP.md).
 
@@ -89,6 +116,8 @@ python -m cli data compute-dq --passport <passport_id> --out out/dq_<engagement_
 ## Day 7 — Capital Asset Registration + Case-Safe Summary — اليوم السابع: تسجيل الأصل وكتابة الملخص الآمن
 
 **What runs:** `capital_os.add_asset` registers at least one reusable asset (a scoring rule, draft template, governance rule, sector insight, productization signal, or proof example). Then the founder drafts a case-safe summary using the template in [docs/case-studies/](../case-studies/).
+
+(capital asset registration automated by `scripts/dealix_sprint_run.py` in one pass; see Quick Path above)
 
 **Founder checkpoint:** the capital asset must be genuinely reusable (not a one-off transformation). The case-safe summary must be anonymized: no client name, no identifying revenue figures, no sector + city + size combinations that would re-identify the client.
 
