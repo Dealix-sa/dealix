@@ -26,9 +26,14 @@ Custom operating systems:
 
 ## Model
 
-- Diagnostic: SAR 4,999
-- One-month Pilot: SAR 14,999
-- Monthly subscription: scoped to usage
+| Offer | Price |
+|-------|-------|
+| Free Diagnostic | Free (30 min) |
+| Micro Sprint | SAR 499 |
+| Data Intelligence Pack | SAR 1,500 |
+| Managed AI Operations | SAR 2,999–4,999/mo |
+| Transformation Diagnostic Sprint | SAR 7,500–25,000 |
+| Custom Enterprise System | SAR 25,000–100,000+ |
 
 ## Expected measurement areas
 
