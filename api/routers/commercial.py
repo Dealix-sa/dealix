@@ -11,11 +11,11 @@ Prefix: /api/v1/commercial
 
 from __future__ import annotations
 
-import logging
 import os
 from datetime import UTC, datetime
 from typing import Any
 
+import structlog
 from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi.responses import PlainTextResponse
 
@@ -37,7 +37,7 @@ from dealix.payments.payment_link import (
     create_payment_link,
 )
 
-log = logging.getLogger(__name__)
+log = structlog.get_logger(__name__)
 
 router = APIRouter(prefix="/api/v1/commercial", tags=["commercial"])
 
