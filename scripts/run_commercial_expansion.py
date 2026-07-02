@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -14,8 +15,15 @@ if str(ROOT) not in sys.path:
 
 
 def _run(cmd: list[str], *, label: str, fail_on_error: bool = True) -> int:
+    # Children here are whole orchestrations (expand_commercial_ops_all runs
+    # ~12 scripts itself), so the ceiling is much higher than the per-script one.
+    timeout_s = int(os.environ.get("DEALIX_ORCHESTRATOR_TIMEOUT", "1800"))
     print(f"\n== {label} ==")
-    proc = subprocess.run(cmd, cwd=ROOT)
+    try:
+        proc = subprocess.run(cmd, cwd=ROOT, timeout=timeout_s)
+    except subprocess.TimeoutExpired:
+        print(f"FAIL: {label} timed out after {timeout_s}s")
+        return 124
     if proc.returncode != 0:
         msg = f"FAIL: {label} exit={proc.returncode}"
         print(msg)

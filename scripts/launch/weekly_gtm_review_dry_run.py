@@ -28,8 +28,7 @@ def week_range() -> tuple[date, date]:
 
 def render_weekly_review(tracker: PipelineTracker) -> str:
     week_start, week_end = week_range()
-    # pipeline_summary() returns {stage: count}
-    by_stage = tracker.pipeline_summary()
+    by_stage = tracker.pipeline_summary()["by_stage"]
     all_items = tracker.list_all()
     total_deals = len(all_items)
     total_arr = sum(i.value_sar for i in all_items)
@@ -77,7 +76,7 @@ def render_weekly_review(tracker: PipelineTracker) -> str:
             lines.append(f"\n  [{stage}]")
             for item in stage_items:
                 lines.append(
-                    f"    - {item.company_name:<30} {item.value_sar:>8,} SAR"
+                    f"    - {item.account_name:<30} {item.value_sar:>8,} SAR"
                     f"  ICP:{item.icp_score}  -> {item.next_action}"
                 )
 
@@ -107,22 +106,22 @@ def main() -> None:
     try:
         tracker = PipelineTracker(path=tmp_path)
 
-        # Seed sample data using current API (account_id, company_name, ...)
-        tracker.add("riyadh_realty_01", "شركة الرياض للعقارات",
-                    offer_id="WHATSAPP_FOLLOWUP_OS", value_sar=2999, icp_score=84)
-        tracker.advance("riyadh_realty_01", to_stage=PipelineStage.PROPOSAL)
+        # Seed sample data using the current tracker API.
+        riyadh = tracker.add("شركة الرياض للعقارات",
+                             offer_id="WHATSAPP_FOLLOWUP_OS", value_sar=2999, icp_score=84)
+        tracker.update_stage(riyadh.id, PipelineStage.PROPOSAL)
 
-        tracker.add("faris_auto_01", "مجموعة الفارس للسيارات",
-                    offer_id="REVENUE_LEAK_AUDIT", value_sar=499, icp_score=72)
-        tracker.advance("faris_auto_01", to_stage=PipelineStage.OUTREACH)
+        faris = tracker.add("مجموعة الفارس للسيارات",
+                            offer_id="REVENUE_LEAK_AUDIT", value_sar=499, icp_score=72)
+        tracker.update_stage(faris.id, PipelineStage.OUTREACH)
 
-        tracker.add("modern_build_01", "مقاولات الإنشاء الحديث",
-                    offer_id="PROPOSAL_PROOF_PACK_OS", value_sar=1500, icp_score=78)
-        tracker.advance("modern_build_01", to_stage=PipelineStage.DISCOVERY)
+        modern = tracker.add("مقاولات الإنشاء الحديث",
+                             offer_id="PROPOSAL_PROOF_PACK_OS", value_sar=1500, icp_score=78)
+        tracker.update_stage(modern.id, PipelineStage.DISCOVERY)
 
-        tracker.add("dining_chain_01", "سلسلة مطاعم الذوق",
-                    offer_id="AI_OPERATING_SYSTEM_FOR_SMB", value_sar=3999, icp_score=75)
-        tracker.advance("dining_chain_01", to_stage=PipelineStage.NEGOTIATION)
+        dining = tracker.add("سلسلة مطاعم الذوق",
+                             offer_id="AI_OPERATING_SYSTEM_FOR_SMB", value_sar=3999, icp_score=75)
+        tracker.update_stage(dining.id, PipelineStage.NEGOTIATION)
 
         print(render_weekly_review(tracker))
 

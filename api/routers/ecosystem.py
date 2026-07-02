@@ -160,7 +160,7 @@ async def create_subscription(
     )
 
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             session.add(record)
             ok = await _safe_commit(session)
             if not ok:
@@ -201,7 +201,7 @@ async def list_subscriptions(
 ) -> dict[str, Any]:
     """List all subscriptions for a customer."""
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             stmt = select(WebhookSubscriptionRecord).where(
                 WebhookSubscriptionRecord.customer_id == customer_id
             )
@@ -223,7 +223,7 @@ async def list_subscriptions(
 @router.get("/webhooks/{sub_id}")
 async def get_subscription(sub_id: str) -> dict[str, Any]:
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             row = await session.get(WebhookSubscriptionRecord, sub_id)
             if not row:
                 raise HTTPException(status_code=404, detail="subscription not found")
@@ -249,7 +249,7 @@ async def update_subscription(
             raise HTTPException(status_code=400, detail=f"unknown events: {invalid}")
 
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             row = await session.get(WebhookSubscriptionRecord, sub_id)
             if not row:
                 raise HTTPException(status_code=404, detail="subscription not found")
@@ -275,7 +275,7 @@ async def update_subscription(
 @router.delete("/webhooks/{sub_id}")
 async def delete_subscription(sub_id: str) -> dict[str, Any]:
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             row = await session.get(WebhookSubscriptionRecord, sub_id)
             if not row:
                 raise HTTPException(status_code=404, detail="subscription not found")
@@ -300,7 +300,7 @@ async def test_subscription(
         raise HTTPException(status_code=400, detail=f"unknown event type: {event_type}")
 
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             row = await session.get(WebhookSubscriptionRecord, sub_id)
             if not row:
                 raise HTTPException(status_code=404, detail="subscription not found")
@@ -389,7 +389,7 @@ async def emit_event(
         raise HTTPException(status_code=400, detail=f"unknown event type: {event_type}")
 
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             stmt = select(WebhookSubscriptionRecord).where(
                 WebhookSubscriptionRecord.customer_id == customer_id,
                 WebhookSubscriptionRecord.enabled.is_(True),
@@ -468,7 +468,7 @@ async def list_deliveries(
         raise HTTPException(status_code=400, detail="cannot filter for both success and failed")
 
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             stmt = (
                 select(WebhookDeliveryRecord)
                 .where(WebhookDeliveryRecord.customer_id == customer_id)
@@ -514,7 +514,7 @@ async def ecosystem_stats(
     """Per-customer ecosystem stats — useful for portal display."""
     cutoff = _utcnow() - timedelta(days=period_days)
     try:
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             stmt = select(WebhookDeliveryRecord).where(
                 WebhookDeliveryRecord.customer_id == customer_id,
                 WebhookDeliveryRecord.created_at >= cutoff,

@@ -67,7 +67,7 @@ async def connect_gmail() -> dict[str, Any]:
 @router.get("/status")
 async def email_status() -> dict[str, Any]:
     today_start = _utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             sent_today = int((await session.execute(
                 select(func.count()).select_from(EmailSendLog).where(
@@ -101,7 +101,7 @@ async def _gather_compliance_inputs(
     *, to_email: str, account_id: str | None
 ) -> dict[str, Any]:
     """Pull suppression + contact + recent-send state needed for compliance gate."""
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         sup_emails: set[str] = set()
         sup_domains: set[str] = set()
         contact_opt_out = False
@@ -218,7 +218,7 @@ async def send_approved(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
     )
     if not chk.allowed:
         # Persist a compliance-blocked log row
-        async with async_session_factory() as session:
+        async with async_session_factory()() as session:
             session.add(EmailSendLog(
                 id=_new_id("es_"),
                 account_id=account_id, queue_id=queue_id,
@@ -245,7 +245,7 @@ async def send_approved(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
     )
 
     # Persist log
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         log_row = EmailSendLog(
             id=_new_id("es_"),
             account_id=account_id, queue_id=queue_id,
@@ -301,7 +301,7 @@ async def send_batch(body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
     sent: list[dict[str, Any]] = []
     blocked: list[dict[str, Any]] = []
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rows = (await session.execute(
                 select(OutreachQueueRecord).where(
@@ -314,7 +314,7 @@ async def send_batch(body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
 
     for r in rows:
         # Need to fetch contact email for the account
-        async with async_session_factory() as s2:
+        async with async_session_factory()() as s2:
             try:
                 contact = (await s2.execute(
                     select(ContactRecord).where(
@@ -402,7 +402,7 @@ async def replies_sync(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
 
     classification = await classify_reply(text)
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             log_row = None
             if body.get("original_send_log_id"):

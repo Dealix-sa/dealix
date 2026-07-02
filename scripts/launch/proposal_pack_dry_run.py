@@ -1,4 +1,4 @@
-"""Dry-run: build a sample proposal and render it to markdown.
+"""Dry-run: build sample proposals for every catalogue offer and render one to markdown.
 
 Usage:
     python scripts/launch/proposal_pack_dry_run.py
@@ -10,42 +10,48 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from dealix.launch_os.proposal_engine import VALID_TIERS, build_proposal, render_markdown
+from dealix.launch_os.proposal_engine import VALID_OFFER_IDS, build_proposal, render_markdown
+
+FEATURED_OFFER = "REVENUE_LEAK_AUDIT"
 
 
 def main() -> None:
     account = {
         "account_id": "riyadh_motors_01",
-        "company_name": "Riyadh Motors Group",
+        "account_name": "Riyadh Motors Group",
         "sector": "automotive",
+    }
+    discovery = {
         "pain_ar": (
             "فريق المبيعات يتلقى 200+ عميل محتمل شهرياً لكن 70% منهم لا يُتابعون "
             "بعد أول تواصل. لا يوجد نظام CRM فعّال."
         ),
+        "leakage_sar": 180_000,
     }
 
     print("=" * 65)
-    print("DEALIX — Proposal Pack Dry Run (3 Tiers)")
-    print("عرض الخدمة التجريبي — ثلاث باقات")
+    print(f"DEALIX — Proposal Pack Dry Run ({len(VALID_OFFER_IDS)} offers)")
+    print("عرض الخدمة التجريبي — سلم العروض الكامل")
     print("=" * 65)
 
-    for tier in sorted(VALID_TIERS):
-        pack = build_proposal(account, tier)
+    for offer_id in sorted(VALID_OFFER_IDS):
+        pack = build_proposal(account, offer_id, discovery)
         markdown = render_markdown(pack)
+        if pack.offer_id != offer_id or not markdown.strip():
+            raise SystemExit(f"empty render for {offer_id}")
 
-        print(f"\n--- Tier: {tier.upper()} ---")
+        print(f"\n--- Offer: {offer_id} ---")
         print(f"Proposal ID:   {pack.id}")
-        print(f"Tier:          {pack.offer_tier}")
-        print(f"Client:        {pack.company_name}")
+        print(f"Offer (AR):    {pack.offer_name_ar}")
+        print(f"Client:        {pack.account_name}")
         print(f"Timeline:      {pack.timeline_weeks} weeks")
         print(f"Investment:    {pack.investment_sar:,} SAR")
         print(f"Evidence:      {pack.evidence_level}")
-        print(f"Governance:    {pack.governance_status}")
+        print(f"Pricing:       {pack.pricing_status}")
         print(f"Markdown len:  {len(markdown)} chars")
 
-    print("\n--- Full Markdown for 'growth' tier ---")
-    growth_pack = build_proposal(account, "growth")
-    print(render_markdown(growth_pack))
+    print(f"\n--- Full Markdown for '{FEATURED_OFFER}' ---")
+    print(render_markdown(build_proposal(account, FEATURED_OFFER, discovery)))
     print("=" * 65)
 
 

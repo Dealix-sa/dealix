@@ -4,11 +4,27 @@ import { useState } from "react";
 
 export default function LandingPage() {
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "submitting" | "done" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setStatus("submitting");
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          company: "Landing signup",
+          sector: "website",
+          email,
+          message: "طلب تجربة من صفحة /landing",
+          language_pref: "ar",
+        }),
+      });
+      setStatus(res.ok ? "done" : "error");
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -162,10 +178,23 @@ export default function LandingPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <button type="submit" className="bg-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-800 transition">
-              {submitted ? "تم! راجع بريدك" : "ابدأ مجاناً"}
+            <button
+              type="submit"
+              disabled={status === "submitting"}
+              className="bg-slate-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-slate-800 transition disabled:opacity-60"
+            >
+              {status === "done"
+                ? "تم! نتواصل معك قريباً"
+                : status === "submitting"
+                  ? "جارٍ الإرسال..."
+                  : "ابدأ مجاناً"}
             </button>
           </form>
+          {status === "error" && (
+            <p className="mt-3 text-sm text-emerald-100">
+              حدث خطأ أثناء الإرسال — حاول مرة أخرى أو راسلنا مباشرة.
+            </p>
+          )}
         </div>
       </section>
 

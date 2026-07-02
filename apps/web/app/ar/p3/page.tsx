@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Dealix P3 — Executive Command Center | غرفة القيادة التنفيذية",
-  description: "غرفة قيادة للمؤسس: الإيراد، الفرص، المخاطر، القرارات، وProof Packs في مكان واحد. 20,000–60,000 ريال إعداد.",
+  description: "غرفة قيادة للمؤسس: الإيراد، الفرص، المخاطر، القرارات، وProof Packs في مكان واحد. 25,000–100,000+ ريال (نظام مؤسسي مخصص).",
 };
 
 const modules = [
@@ -86,8 +86,8 @@ export default function P3Page() {
           <h2 className="text-3xl font-black">الأسعار</h2>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {[
-              { label: "Setup", price: "20,000 – 60,000", unit: "ريال مرة واحدة", desc: "إعداد وتخصيص كامل حسب حجم الشركة." },
-              { label: "Monthly", price: "12,000 – 35,000", unit: "ريال/شهر", desc: "تشغيل وتحديث ومراجعة أسبوعية مستمرة." },
+              { label: "Setup", price: "25,000 – 100,000+", unit: "ريال مرة واحدة", desc: "إعداد وتخصيص كامل حسب حجم الشركة." },
+              { label: "Monthly", price: "3,000 – 15,000", unit: "ريال/شهر", desc: "مسار التشغيل الشهري حسب النطاق — تشغيل وتحديث ومراجعة مستمرة." },
               { label: "Enterprise", price: "Quote", unit: "حسب النطاق", desc: "تكاملات خاصة، أكثر من مسار، فريق موسع." },
             ].map((t) => (
               <article key={t.label} className="rounded-3xl border border-violet-400/30 bg-violet-400/5 p-8">

@@ -41,7 +41,7 @@ Retainer path: 3,000–15,000 SAR/month depending on scope.
 ```
 sales/ONE_PAGE_OFFER_AR.md
 sales/CEO_INTRO_MESSAGE_AR.md
-sales/DISCOVERY_SCRIPT_AR.md
+sales/DISCOVERY_CALL_SCRIPT_AR.md
 sales/OBJECTION_HANDLING_AR.md
 sales/FOLLOW_UP_SEQUENCE_AR.md
 sales/PROPOSAL_TEMPLATE_AR.md
