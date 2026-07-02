@@ -148,7 +148,7 @@ async def customers_daily_report(body: dict[str, Any] = Body(...)) -> dict[str, 
     notes = str(body.get("notes") or "")[:1000]
 
     # Persist as a TaskRecord with task_type=daily_report so it's auditable
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             task = TaskRecord(
                 id=_new_id("dr_"),
@@ -175,7 +175,7 @@ async def customers_daily_report(body: dict[str, Any] = Body(...)) -> dict[str, 
             return {"status": "skipped_db_unreachable", "error": str(exc)}
 
     # Optional: bump customer record metric counters
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             cust = (await session.execute(
                 select(CustomerRecord).where(CustomerRecord.id == customer_id)
@@ -212,7 +212,7 @@ async def partners_outreach(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
     message = str(body.get("message_summary") or "")[:1000]
     next_action = str(body.get("next_action") or "follow_up")[:64]
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             partner = (await session.execute(
                 select(PartnerRecord).where(PartnerRecord.id == partner_id)
@@ -252,7 +252,7 @@ async def partners_deal(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
     if not partner_id or not customer:
         raise HTTPException(400, "partner_id_and_customer_company_required")
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             partner = (await session.execute(
                 select(PartnerRecord).where(PartnerRecord.id == partner_id)

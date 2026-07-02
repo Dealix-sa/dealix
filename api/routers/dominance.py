@@ -181,7 +181,7 @@ _LEGACY_DEFAULT_OFFER = {
 @router.get("/signals/account/{account_id}")
 async def get_signals_for_account(account_id: str) -> dict[str, Any]:
     """Return persisted SignalRecord rows + freshly-detected signals."""
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             acc = (await session.execute(
                 select(AccountRecord).where(AccountRecord.id == account_id)
@@ -232,7 +232,7 @@ async def account_brief(account_id: str) -> dict[str, Any]:
     Full account brief: company_summary + pain_hypothesis + dealix_fit +
     expected_gain + best_offer + best_channel + objection_risks + risk_note.
     """
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             acc = (await session.execute(
                 select(AccountRecord).where(AccountRecord.id == account_id)
@@ -336,7 +336,7 @@ async def score_tuner_run(body: dict[str, Any] = Body(default={})) -> dict[str, 
     days = int(body.get("days") or 14)
     cutoff = _utcnow() - timedelta(days=days)
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             sends = (await session.execute(
                 select(EmailSendLog).where(
@@ -434,7 +434,7 @@ async def customer_proof_pack(customer_id: str) -> dict[str, Any]:
     Pulls real metrics from EmailSendLog if account_id is linked, else
     returns templates for manual fill-in.
     """
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             cust = (await session.execute(
                 select(CustomerRecord).where(CustomerRecord.id == customer_id)
@@ -499,7 +499,7 @@ async def partners_revenue_machine_run(body: dict[str, Any] = Body(default={})) 
     city = body.get("city")
     partner_sectors = ["marketing_agency", "consulting_firm"]
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             q = select(AccountRecord).where(
                 AccountRecord.sector.in_(partner_sectors),
@@ -572,7 +572,7 @@ async def dashboard_dominance() -> dict[str, Any]:
     today_start = _utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
     cutoff_14d = today_start - timedelta(days=14)
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             gmail_today = int((await session.execute(
                 select(func.count()).select_from(GmailDraftRecord).where(

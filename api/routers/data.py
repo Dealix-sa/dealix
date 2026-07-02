@@ -248,7 +248,7 @@ async def create_import(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
         for r in rows
     ]
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         ok = await _safe_commit(session, rec, *raw_rows)
         if not ok:
             return {
@@ -268,7 +268,7 @@ async def create_import(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
 # ── Normalize ─────────────────────────────────────────────────────
 @router.post("/import/{import_id}/normalize")
 async def normalize_import(import_id: str) -> dict[str, Any]:
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             imp_rec = (await session.execute(
                 select(RawLeadImport).where(RawLeadImport.id == import_id)
@@ -376,7 +376,7 @@ async def normalize_import(import_id: str) -> dict[str, Any]:
 @router.post("/import/{import_id}/dedupe")
 async def dedupe_import(import_id: str) -> dict[str, Any]:
     """Match accounts created by this import against the existing graph."""
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             imp_rec = (await session.execute(
                 select(RawLeadImport).where(RawLeadImport.id == import_id)
@@ -468,7 +468,7 @@ async def enrich_import(import_id: str, body: dict[str, Any] = Body(default={}))
     if max_accounts < 1 or max_accounts > 200:
         raise HTTPException(400, "max_accounts_out_of_range: 1..200")
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             new_accounts = (await session.execute(
                 select(AccountRecord).where(
@@ -587,7 +587,7 @@ async def enrich_import(import_id: str, body: dict[str, Any] = Body(default={}))
 # ── Report ────────────────────────────────────────────────────────
 @router.get("/import/{import_id}/report")
 async def import_report(import_id: str) -> dict[str, Any]:
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             imp = (await session.execute(
                 select(RawLeadImport).where(RawLeadImport.id == import_id)
@@ -651,7 +651,7 @@ async def add_suppression(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
         domain=str(domain).strip().lower() if domain else None,
         reason=str(body.get("reason") or "opt_out")[:128],
     )
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         ok = await _safe_commit(session, rec)
     return {
         "id": rec.id,
@@ -663,7 +663,7 @@ async def add_suppression(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
 
 @router.get("/suppression")
 async def list_suppression(limit: int = 200) -> dict[str, Any]:
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rows = (await session.execute(
                 select(SuppressionRecord).limit(min(1000, limit))
@@ -686,7 +686,7 @@ async def list_suppression(limit: int = 200) -> dict[str, Any]:
 # ── Listings ──────────────────────────────────────────────────────
 @router.get("/imports")
 async def list_imports(limit: int = 50) -> dict[str, Any]:
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rows = (await session.execute(
                 select(RawLeadImport).order_by(RawLeadImport.created_at.desc()).limit(min(500, limit))
@@ -716,7 +716,7 @@ async def list_accounts(
     status: str | None = None,
     priority: str | None = None,
 ) -> dict[str, Any]:
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             q = select(AccountRecord)
             if sector:
@@ -762,7 +762,7 @@ async def list_accounts(
 
 @router.get("/accounts/{account_id}")
 async def get_account(account_id: str) -> dict[str, Any]:
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             acc = (await session.execute(
                 select(AccountRecord).where(AccountRecord.id == account_id)
@@ -822,7 +822,7 @@ async def get_account(account_id: str) -> dict[str, Any]:
 @router.post("/accounts/{account_id}/score")
 async def score_account(account_id: str) -> dict[str, Any]:
     """Recompute score from current data in the graph."""
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             acc = (await session.execute(
                 select(AccountRecord).where(AccountRecord.id == account_id)

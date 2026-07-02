@@ -98,7 +98,7 @@ async def _auto_send_warm_gmail_batch(
     except ValueError:
         cap = 3
     results: list[dict[str, Any]] = []
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         for item in queue[:cap]:
             chk = check_outreach(
                 to_email=item["to_email"],
@@ -204,7 +204,7 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
     excluded = {"opt_out": 0, "suppressed": 0, "recently_contacted": 0,
                 "high_risk": 0, "no_allowed_use": 0, "no_business_contact": 0}
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             q = select(AccountRecord).where(AccountRecord.status.in_(["enriched", "new"]))
             if sectors_filter: q = q.where(AccountRecord.sector.in_(sectors_filter))
@@ -306,7 +306,7 @@ async def revenue_machine_run(body: dict[str, Any] = Body(default={})) -> dict[s
     linkedin_drafts_out: list[dict[str, Any]] = []
     call_scripts_out: list[dict[str, Any]] = []
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         # Gmail drafts
         for cand in gmail_picks:
             brief = await research_company_with_llm(cand)
@@ -518,7 +518,7 @@ async def gmail_drafts_create(body: dict[str, Any] = Body(...)) -> dict[str, Any
         else:
             record.discarded_reason = f"gmail_api: {result.error}"[:255]
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         session.add(record)
         try:
             await session.commit()
@@ -537,7 +537,7 @@ async def gmail_drafts_create(body: dict[str, Any] = Body(...)) -> dict[str, Any
 @router.get("/gmail/drafts/today")
 async def gmail_drafts_today() -> dict[str, Any]:
     today_start = _utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rows = (await session.execute(
                 select(GmailDraftRecord).where(
@@ -586,7 +586,7 @@ async def linkedin_drafts_create(body: dict[str, Any] = Body(...)) -> dict[str, 
         followup_day_7=body.get("followup_day_7"),
         status="draft",
     )
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         session.add(rec)
         try:
             await session.commit()
@@ -599,7 +599,7 @@ async def linkedin_drafts_create(body: dict[str, Any] = Body(...)) -> dict[str, 
 @router.get("/linkedin/drafts/today")
 async def linkedin_drafts_today() -> dict[str, Any]:
     today_start = _utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rows = (await session.execute(
                 select(LinkedInDraftRecord).where(
@@ -629,7 +629,7 @@ async def linkedin_drafts_today() -> dict[str, Any]:
 @router.patch("/linkedin/drafts/{draft_id}/mark-sent")
 async def linkedin_drafts_mark_sent(draft_id: str) -> dict[str, Any]:
     """Sami marks 'I sent this manually'. Updates status + sent_at."""
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rec = (await session.execute(
                 select(LinkedInDraftRecord).where(LinkedInDraftRecord.id == draft_id)
@@ -658,7 +658,7 @@ async def linkedin_drafts_manual_capture(
     reply = str(body.get("reply_text") or "").strip()
     if not reply:
         raise HTTPException(400, "reply_text_required")
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rec = (await session.execute(
                 select(LinkedInDraftRecord).where(LinkedInDraftRecord.id == draft_id)
@@ -690,7 +690,7 @@ async def linkedin_drafts_manual_capture(
 @router.get("/dashboard/revenue-machine/today")
 async def dashboard_revenue_machine_today() -> dict[str, Any]:
     today_start = _utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             gmail_total = int((await session.execute(
                 select(func.count()).select_from(GmailDraftRecord).where(
@@ -758,7 +758,7 @@ async def gmail_drafts_create_batch(body: dict[str, Any] = Body(default={})) -> 
     created: list[dict[str, Any]] = []
     failed: list[dict[str, Any]] = []
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rows = (await session.execute(
                 select(OutreachQueueRecord).where(
@@ -873,7 +873,7 @@ async def dashboard_revenue_machine_history(days: int = 14) -> dict[str, Any]:
     if days < 1 or days > 90:
         raise HTTPException(400, "days_out_of_range: 1..90")
     cutoff = _utcnow() - timedelta(days=days)
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             gmail_rows = (await session.execute(
                 select(GmailDraftRecord).where(GmailDraftRecord.created_at >= cutoff)
@@ -928,7 +928,7 @@ async def revenue_machine_export(format: str = "csv") -> dict[str, Any]:
         raise HTTPException(400, "format_must_be_csv_or_markdown")
     today_start = _utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             gmail_rows = (await session.execute(
                 select(GmailDraftRecord).where(

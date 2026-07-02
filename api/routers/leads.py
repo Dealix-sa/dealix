@@ -118,7 +118,7 @@ async def _persist_lead_row(
     meta["dedupe_hint"] = hint_dict
     if targeting_profile is not None:
         meta["targeting_profile"] = targeting_profile
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             session.add(
                 LeadRecord(
@@ -385,7 +385,7 @@ async def enrich_batch_endpoint(body: dict[str, Any] = Body(...)) -> dict[str, A
     if len(ids) > 100:
         raise HTTPException(400, "too_many: max 100 per batch")
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             accs = (await session.execute(
                 select(AccountRecord).where(AccountRecord.id.in_(ids))

@@ -120,7 +120,7 @@ SAMPLE_SIGNALS = [
 async def _purge_demo() -> int:
     """Delete only rows whose ID starts with 'demo_'."""
     count = 0
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         for model in [
             EmailSendLog, GmailDraftRecord, LinkedInDraftRecord,
             LeadScoreRecord, SignalRecord, ContactRecord,
@@ -161,7 +161,7 @@ async def main() -> int:
 
     now = _utcnow()
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         # Accounts
         for aid, name, domain, city, sector, dq in SAMPLE_ACCOUNTS:
             existing = (await session.execute(
