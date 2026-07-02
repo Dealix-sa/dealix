@@ -124,8 +124,8 @@ def generate_daily_command(
     research_items = pipeline.list_by_stage(PipelineStage.RESEARCH)
     outreach_queue = [
         {
-            "account_id": item.account_id,
-            "account_name": item.company_name,
+            "account_id": item.id,
+            "account_name": item.account_name,
             "offer_id": item.offer_id,
             "next_action": item.next_action,
         }
@@ -143,8 +143,8 @@ def generate_daily_command(
     for stage in review_stages:
         for item in pipeline.list_by_stage(stage):
             review_items.append({
-                "account_id": item.account_id,
-                "account_name": item.company_name,
+                "account_id": item.id,
+                "account_name": item.account_name,
                 "stage": item.stage,
                 "value_sar": item.value_sar,
                 "next_action": item.next_action,
