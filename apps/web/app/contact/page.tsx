@@ -1,5 +1,7 @@
 import LeadForm from "@/components/LeadForm";
 import WhatsAppCTA from "@/components/WhatsAppCTA";
+import ArNav from "@/components/ar/ArNav";
+import ArFooter from "@/components/ar/ArFooter";
 import { BOOKING_URL, CONTACT_EMAIL, mailtoLink } from "@/lib/contact";
 
 export const metadata = {
@@ -28,7 +30,9 @@ const channels = [
 
 export default function ContactPage() {
   return (
-    <main dir="rtl" className="min-h-screen bg-[#06111f] text-white">
+    <>
+      <ArNav />
+      <main dir="rtl" className="min-h-screen bg-[#06111f] text-white">
       <section className="mx-auto max-w-5xl px-6 py-20">
         <p className="mb-5 inline-flex rounded-full border border-cyan-300/30 px-4 py-2 text-sm text-cyan-100">
           تواصل معنا
@@ -107,6 +111,8 @@ export default function ContactPage() {
           </p>
         </div>
       </section>
-    </main>
+      </main>
+      <ArFooter />
+    </>
   );
 }

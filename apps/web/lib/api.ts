@@ -184,6 +184,9 @@ export const api = {
   getApprovalsPending: () =>
     apiClient.get("/api/v1/approvals/pending"),
 
+  getGrowthCardsLatest: () =>
+    apiClient.get("/api/v1/commercial/growth-cards/latest"),
+
   getApprovalsHistory: (limit = 50) =>
     apiClient.get("/api/v1/approvals/history", { params: { limit } }),
 

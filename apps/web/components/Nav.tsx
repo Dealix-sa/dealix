@@ -15,6 +15,7 @@ const links = [
 const commandLinks = [
   { href: "/founder/command-room", label: "غرفة القيادة" },
   { href: "/approvals", label: "الموافقات" },
+  { href: "/growth-cards", label: "كروت اليوم" },
   { href: "/evidence", label: "سجل الإثبات" },
 ];
 

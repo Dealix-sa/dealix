@@ -193,21 +193,6 @@ export default function ArabicHomePage() {
         </div>
       </section>
 
-      {/* ── Footer nav ───────────────────────────────────────────────── */}
-      <footer className="border-t border-white/5 py-10">
-        <div className="mx-auto max-w-6xl px-6 flex flex-wrap justify-between gap-6 text-sm text-slate-500">
-          <span className="font-black text-white">Dealix</span>
-          <nav className="flex flex-wrap gap-6">
-            <a href="/ar/offers" className="hover:text-cyan-300">العروض</a>
-            <a href="/ar/diagnostic-sprint" className="hover:text-emerald-300">التشخيص التحولي</a>
-            <a href="/contact" className="hover:text-violet-300">تواصل</a>
-            <a href="/ar/pricing" className="hover:text-white">الأسعار</a>
-            <a href="/ar/demo" className="hover:text-white">الديمو</a>
-            <a href="/ar/zatca-readiness" className="hover:text-amber-300">ZATCA</a>
-            <a href="/contact" className="hover:text-white">تواصل معنا</a>
-          </nav>
-        </div>
-      </footer>
 
     </main>
   );
