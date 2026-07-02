@@ -7,7 +7,9 @@ const { defineConfig, devices } = require("@playwright/test");
 
 module.exports = defineConfig({
   testDir: ".",
-  testMatch: "*.spec.js",
+  // Scoped to the landing-site suite; the Next.js funnel suite has its own
+  // config (playwright-next.config.js) so this CI job stays unchanged.
+  testMatch: "tier1_smoke.spec.js",
   timeout: 30000,
   expect: { timeout: 5000 },
   fullyParallel: true,
@@ -19,6 +21,11 @@ module.exports = defineConfig({
     baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:8765",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
+    // Sandboxes with a preinstalled Chromium can point here instead of
+    // downloading a version-matched browser (e.g. /opt/pw-browsers/chromium).
+    launchOptions: process.env.PW_EXECUTABLE_PATH
+      ? { executablePath: process.env.PW_EXECUTABLE_PATH }
+      : {},
   },
   // Confined to Chromium only — workflow installs `--with-deps chromium`.
   // Viewport-based emulation covers all 3 breakpoints without requiring
