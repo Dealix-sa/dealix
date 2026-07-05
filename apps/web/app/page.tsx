@@ -88,11 +88,10 @@ export default function HomePage() {
           Dealix
         </Link>
         <ul className="navbar-links" role="list">
-          <li><Link href="/revenue-machine">Revenue OS</Link></li>
-          <li><Link href="/brain">Company Brain</Link></li>
-          <li><Link href="/pricing">Pricing</Link></li>
+          <li><Link href="/revenue-machine">نظام الإيراد</Link></li>
+          <li><Link href="/brain">العقل التجاري</Link></li>
+          <li><Link href="/pricing">الأسعار</Link></li>
           <li><Link href="/founder/command-room">غرفة القيادة</Link></li>
-          <li><Link href="/book">Book Review</Link></li>
         </ul>
         <div className="actions" style={{ marginTop: 0 }}>
           <Link href="/ar" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
@@ -159,8 +158,10 @@ export default function HomePage() {
           ))}
         </section>
 
-        <section className="card" aria-labelledby="problem-title">
-          <p className="eyebrow">The real problem</p>
+        <section
+          aria-labelledby="problem-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
           <h2 id="problem-title">الشركة لا تحتاج أدوات أكثر؛ تحتاج نظام تشغيل يومي.</h2>
           <div className="grid-2">
             <div>
@@ -201,8 +202,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="card" aria-labelledby="process-title">
-          <p className="eyebrow">Delivery method</p>
+        <section
+          aria-labelledby="process-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
           <h2 id="process-title">Map → Design → Build → Operate → Scale</h2>
           <div className="grid-3">
             {processSteps.map(([step, title, text]) => (
@@ -216,7 +219,6 @@ export default function HomePage() {
         </section>
 
         <section className="card card-gold" aria-labelledby="sectors-title">
-          <p className="eyebrow">Saudi sectors</p>
           <h2 id="sectors-title">نبدأ من القطاعات التي يظهر فيها ألم المتابعة والإيراد بسرعة.</h2>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--sp-2)" }}>
             {sectors.map((sector) => (
@@ -225,8 +227,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="card" aria-labelledby="outbound-title">
-          <p className="eyebrow">High-velocity, not spam</p>
+        <section
+          aria-labelledby="outbound-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
           <h2 id="outbound-title">استهداف يومي قوي، لكن يحافظ على السمعة والدومين.</h2>
           <p>
             النظام الصحيح ليس إرسال عشوائي. النظام الصحيح: 100 شركة تُبحث يوميًا، 40 تُتحقق،
