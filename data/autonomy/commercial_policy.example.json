@@ -1,0 +1,45 @@
+{
+  "description": "Example policy for Dealix guarded commercial autonomy. Copy to data/autonomy/commercial_policy.json on the server and edit locally. Do not commit private customer data.",
+  "mode": "guarded_autonomy",
+  "autonomous_allowed": true,
+  "requires_contact_permission": true,
+  "daily_limits": {
+    "total_actions": 20,
+    "per_channel": 5,
+    "per_account": 2
+  },
+  "offer_catalog": [
+    {
+      "offer_id": "revenue-command-room-pilot",
+      "name": "Revenue Command Room Pilot",
+      "currency": "SAR",
+      "list_price": 7500,
+      "minimum_approved_price": 5000,
+      "maximum_discount_percent": 20,
+      "timeline_days": 21,
+      "allowed_scope": [
+        "diagnostic review",
+        "daily command report",
+        "follow-up queue",
+        "pilot proposal",
+        "proof pack"
+      ]
+    }
+  ],
+  "negotiation_rules": {
+    "can_offer_discount": true,
+    "can_accept_within_floor": true,
+    "can_schedule_discovery": true,
+    "can_send_proposal": true,
+    "can_answer_basic_objections": true,
+    "must_escalate_when": [
+      "price below floor",
+      "custom contract terms",
+      "legal or regulatory question",
+      "request for guarantee",
+      "complaint or opt-out",
+      "sensitive customer data",
+      "payment dispute"
+    ]
+  }
+}
