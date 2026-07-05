@@ -26,6 +26,17 @@ def run_step(label: str, fn) -> bool:
         return False
 
 
+def cmd_provider_radar():
+    import subprocess
+    import sys as _s
+    radar = REPO_ROOT / "scripts" / "ops" / "free_llm_provider_radar.py"
+    if not radar.exists():
+        print("  provider radar not installed; skipping")
+        return
+    for task in ("coding", "arabic", "batch", "sensitive"):
+        subprocess.check_call([_s.executable, str(radar), "--task", task, "--limit", "3"])
+
+
 def cmd_score():
     sys.path.insert(0, str(REPO_ROOT))
     import subprocess
@@ -95,7 +106,6 @@ def cmd_pipeline_report():
         except json.JSONDecodeError:
             accounts = []
     if not accounts:
-        # Use seed if exists
         seed = REPO_ROOT / "business" / "crm" / "prospects.seed.json"
         if seed.exists():
             accounts = json.loads(seed.read_text(encoding="utf-8")).get("accounts", [])
@@ -140,6 +150,7 @@ def main() -> int:
     print(f"Dealix Daily Operator — mode={args.mode}")
     bootstrap_leads()
     steps = [
+        ("0. Select AI provider radar", cmd_provider_radar),
         ("1. Score leads", cmd_score),
         ("2. Generate drafts", cmd_drafts),
         ("3. Generate follow-ups", cmd_followups),
@@ -170,6 +181,12 @@ def main() -> int:
 - `business/crm/exports/dealix-pipeline-report-{dt.date.today().isoformat()}.md`
 - `business/proposals/generated/...`
 - `business/reports/exports/dealix-daily-ceo-brief-{dt.date.today().isoformat()}.txt`
+
+## AI provider radar
+- The daily operator now runs the provider radar before commercial generation.
+- Free providers are used for non-confidential acceleration only.
+- Sensitive/customer/legal/production work must stay on approved paid, private, or local providers.
+- Daily value playbook: `docs/ops/FREE_LLM_DAILY_VALUE_LOOP.md`
 
 ## Safety reminder
 - No draft was sent.
