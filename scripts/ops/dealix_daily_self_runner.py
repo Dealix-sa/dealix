@@ -2,8 +2,8 @@
 """Dealix daily self runner.
 
 Runs the safe daily operating sequence without human prompting. The runner is
-read-only or draft-only: it prepares reports, drafts, queues, and checks, then
-stops for founder approval before any customer-facing action.
+read-only or draft-only by default. It can build a guarded dispatch manifest
+when a local consent registry and live flag are configured.
 """
 
 from __future__ import annotations
@@ -24,6 +24,7 @@ COMMANDS = [
     ["scripts/ops/free_llm_provider_radar.py", "--task", "sensitive", "--limit", "3"],
     ["scripts/dealix_daily_operator.py", "--mode", "demo"],
     ["scripts/ops/daily_commercial_draft_pack.py"],
+    ["scripts/ops/channel_dispatch_guard.py"],
     ["scripts/distribution_day.py"],
     ["scripts/check_draft_quality.py"],
     ["scripts/distribution_metrics.py"],
@@ -63,7 +64,7 @@ def write_report(results: list[dict[str, object]]) -> Path:
         f"Completed steps: {ok_count}/{len(results)}",
         "",
         "## Rule",
-        "This run prepares provider choices, reports, drafts, queues, and quality checks. It does not send customer-facing messages or approve commitments.",
+        "This run prepares provider choices, reports, drafts, queues, quality checks, and a guarded dispatch manifest. Live autonomous dispatch requires configured consent records and live flags.",
         "",
         "## Results",
         "",
@@ -79,7 +80,7 @@ def write_report(results: list[dict[str, object]]) -> Path:
     lines.extend(
         [
             "## Founder next action",
-            "Review generated drafts and queues, then approve only accurate, compliant, non-overclaiming commercial actions.",
+            "Review generated drafts, queues, and the dispatch manifest. Only contacts with consent or allowlist records can move to autonomous dispatch.",
         ]
     )
     path.write_text("\n".join(lines), encoding="utf-8")
