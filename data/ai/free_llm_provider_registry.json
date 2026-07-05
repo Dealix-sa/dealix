@@ -1,0 +1,119 @@
+{
+  "name": "Dealix Free LLM Provider Registry",
+  "adopted_from": "https://github.com/cheahjs/free-llm-api-resources",
+  "upstream_readme_sha_observed": "71cdfe17e4477f76e7283a7bba57ff55e41d61d1",
+  "last_reviewed": "2026-07-05",
+  "policy": {
+    "purpose": "Daily provider selection for non-confidential Dealix AI operations.",
+    "external_send_default": "draft_only",
+    "operator_note": "Respect provider limits and policies. Use these tiers for experimentation, draft work, coding assistance, and non-confidential automation."
+  },
+  "providers": [
+    {
+      "name": "OpenRouter",
+      "category": "free_provider",
+      "base_url": "https://openrouter.ai/api/v1",
+      "openai_compatible": true,
+      "free_or_trial": "free",
+      "limits_summary": "20 requests/minute, 50 requests/day; higher daily quota may require lifetime top-up.",
+      "recommended_models": ["qwen/qwen3-coder:free", "nvidia/nemotron-3-super-120b-a12b:free", "openai/gpt-oss-120b:free"],
+      "dealix_uses": ["coding", "planning", "draft_generation", "agent_fallback"],
+      "private_data": "do_not_send"
+    },
+    {
+      "name": "Google AI Studio",
+      "category": "free_provider",
+      "base_url": "https://generativelanguage.googleapis.com",
+      "openai_compatible": false,
+      "free_or_trial": "free",
+      "limits_summary": "Model-specific free limits; review current policy before operational use.",
+      "recommended_models": ["gemma-3-27b-it", "gemini-2.5-flash"],
+      "dealix_uses": ["arabic_drafts", "content", "summaries"],
+      "private_data": "do_not_send"
+    },
+    {
+      "name": "Groq",
+      "category": "free_provider",
+      "base_url": "https://api.groq.com/openai/v1",
+      "openai_compatible": true,
+      "free_or_trial": "free",
+      "limits_summary": "Model-specific free daily and token limits.",
+      "recommended_models": ["qwen/qwen3-32b", "llama-3.3-70b-versatile", "openai/gpt-oss-120b", "whisper-large-v3"],
+      "dealix_uses": ["fast_iteration", "coding", "transcription", "batch_drafts"],
+      "private_data": "do_not_send"
+    },
+    {
+      "name": "Cerebras",
+      "category": "free_provider",
+      "base_url": "https://api.cerebras.ai/v1",
+      "openai_compatible": true,
+      "free_or_trial": "free",
+      "limits_summary": "Fast free inference for selected models; verify current dashboard limits.",
+      "recommended_models": ["gpt-oss-120b", "llama-3.1-8b"],
+      "dealix_uses": ["fast_coding", "bulk_drafts", "daily_operator"],
+      "private_data": "do_not_send"
+    },
+    {
+      "name": "Mistral",
+      "category": "free_provider",
+      "base_url": "https://api.mistral.ai/v1",
+      "openai_compatible": true,
+      "free_or_trial": "free_experiment_plan",
+      "limits_summary": "Experiment/free access can require phone verification and data-training opt-in.",
+      "recommended_models": ["mistral-small-latest", "codestral-latest"],
+      "dealix_uses": ["coding", "structured_drafts", "agent_tools"],
+      "private_data": "do_not_send"
+    },
+    {
+      "name": "Cohere",
+      "category": "free_provider",
+      "base_url": "https://api.cohere.com/v2",
+      "openai_compatible": false,
+      "free_or_trial": "free",
+      "limits_summary": "Limited monthly quota shared across models.",
+      "recommended_models": ["command-r7b-arabic-02-2025", "command-r-08-2024"],
+      "dealix_uses": ["arabic_drafts", "translation", "customer_language_variants"],
+      "private_data": "do_not_send"
+    },
+    {
+      "name": "GitHub Models",
+      "category": "free_provider",
+      "base_url": "https://models.github.ai/inference",
+      "openai_compatible": true,
+      "free_or_trial": "copilot_tier_dependent",
+      "limits_summary": "Restrictive input/output limits; depends on Copilot tier.",
+      "recommended_models": ["openai/gpt-4.1-mini", "mistral-small-3.1", "llama-3.3-70b-instruct"],
+      "dealix_uses": ["github_native_prototyping", "repo_docs", "small_coding_tasks"],
+      "private_data": "do_not_send"
+    },
+    {
+      "name": "Cloudflare Workers AI",
+      "category": "free_provider",
+      "base_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run",
+      "openai_compatible": false,
+      "free_or_trial": "free_allocation",
+      "limits_summary": "Free daily allocation measured by provider-specific unit.",
+      "recommended_models": ["@cf/qwen/qwen3-30b-a3b-fp8", "@cf/zai-org/glm-5.2", "@cf/openai/gpt-oss-120b"],
+      "dealix_uses": ["edge_ai", "lightweight_batch", "worker_experiments"],
+      "private_data": "do_not_send"
+    },
+    {
+      "name": "NVIDIA NIM",
+      "category": "free_provider",
+      "base_url": "https://build.nvidia.com",
+      "openai_compatible": true,
+      "free_or_trial": "free",
+      "limits_summary": "Phone verification required; context can be limited.",
+      "recommended_models": ["various-open-models"],
+      "dealix_uses": ["model_comparison", "reasoning_drafts", "open_model_tests"],
+      "private_data": "do_not_send"
+    }
+  ],
+  "trial_credit_providers": [
+    {"name": "Fireworks", "credits_summary": "small sign-up credit", "dealix_use": "burst experiments only"},
+    {"name": "Baseten", "credits_summary": "trial credit", "dealix_use": "compute-backed model experiments"},
+    {"name": "AI21", "credits_summary": "time-limited credit", "dealix_use": "Jamba model testing"},
+    {"name": "SambaNova Cloud", "credits_summary": "time-limited credit", "dealix_use": "large open model comparison"},
+    {"name": "Scaleway Generative APIs", "credits_summary": "free token allocation", "dealix_use": "short evaluation window"}
+  ]
+}
