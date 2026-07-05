@@ -12,6 +12,7 @@
         design-os-list design-os-generate design-os-all design-os-daily design-os-validate design-os-index design-os-html test-design-os \
         v5-status v5-smoke v5-snapshot v5-diagnostic v5-verify v5-digest \
         v5-proof-pack v10-verify v10-reference \
+        ai-provider-radar ai-provider-radar-json ai-provider-coding ai-provider-arabic ai-provider-batch daily-value-loop \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
         launch-content launch-pipeline launch-all-dry-runs test-launch
@@ -109,6 +110,31 @@ full-repo-test: ## Run the full repo test matrix with TestSprite when TESTSPRITE
 
 launch-engine: ## Run the full local launch machine + readiness audit (writes data/daily_ops/<date>/)
 	$(PYTHON) scripts/dealix_launch_engine.py
+
+# ── Free LLM Provider Radar ────────────────────────────────────
+# Read-only/draft-only operating layer for choosing low-cost AI providers.
+# It never sends customer messages and never commits secrets.
+
+ai-provider-radar: ## Show daily provider choices for coding, Arabic, batch, and sensitive work
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task coding --limit 3
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task arabic --limit 3
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task batch --limit 3
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task sensitive --limit 3
+
+ai-provider-radar-json: ## Print machine-readable provider radar for coding
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task coding --json
+
+ai-provider-coding: ## Provider radar optimized for repo/code work
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task coding --limit 5
+
+ai-provider-arabic: ## Provider radar optimized for Arabic/Saudi draft work
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task arabic --limit 5
+
+ai-provider-batch: ## Provider radar optimized for daily batch drafting
+	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task batch --limit 5
+
+daily-value-loop: ai-provider-radar distribution-day ## Run provider radar then founder distribution day
+	@echo "✅ Daily value loop ready — review docs/ops/FREE_LLM_DAILY_VALUE_LOOP.md before external action"
 
 # ── Design Command Room OS ─────────────────────────────────────
 # Draft-only artifact generation. No external sends, no production mutations,
