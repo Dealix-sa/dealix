@@ -23,6 +23,7 @@ COMMANDS = [
     ["scripts/ops/free_llm_provider_radar.py", "--task", "batch", "--limit", "3"],
     ["scripts/ops/free_llm_provider_radar.py", "--task", "sensitive", "--limit", "3"],
     ["scripts/dealix_daily_operator.py", "--mode", "demo"],
+    ["scripts/ops/daily_commercial_draft_pack.py"],
     ["scripts/distribution_day.py"],
     ["scripts/check_draft_quality.py"],
     ["scripts/distribution_metrics.py"],
