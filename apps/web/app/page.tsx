@@ -1,41 +1,13 @@
 import Link from "next/link";
+import { PREMIUM_OFFERS } from "@/lib/sales-machine/ultimate-sales-os";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealix.me";
 
-const launchOffers = [
-  {
-    title: "Revenue Command Room OS",
-    pain: "الفرص والعروض والمتابعات موجودة، لكن لا تتحول إلى قرار يومي واضح.",
-    outcome: "غرفة قيادة تعرض العملاء الساخنين، المتابعات المتأخرة، العروض المفتوحة، وأول 10 إجراءات اليوم.",
-    timeline: "7 أيام",
-    price: "5k–12k SAR",
-    href: "/revenue-machine",
-  },
-  {
-    title: "Company Brain OS",
-    pain: "الإدارة ترى تقارير كثيرة لكن لا ترى القرار الأهم اليوم.",
-    outcome: "Daily CEO Decision + Future Radar + 30-Day Action Plan مبني على إشارات الإيراد والمتابعة والمخاطر.",
-    timeline: "14 يوم",
-    price: "15k–35k SAR",
-    href: "/brain",
-  },
-  {
-    title: "WhatsApp / Inbox Follow-up OS",
-    pain: "واتساب والإيميل يتحولون إلى مقبرة فرص ومحادثات بلا owner.",
-    outcome: "تصنيف المحادثات، queue متابعة، مسودات ردود، وتقرير يومي بدون إرسال تلقائي.",
-    timeline: "7–10 أيام",
-    price: "3k–9k SAR",
-    href: "/outreach-review",
-  },
-  {
-    title: "AI Trust & Compliance OS",
-    pain: "الشركة تستخدم AI بدون سياسة، صلاحيات، أو مراجعة بشرية واضحة.",
-    outcome: "AI usage policy، approval gates، data handling SOP، وسجل مراجعة للمخرجات الحساسة.",
-    timeline: "7 أيام",
-    price: "5k–15k SAR",
-    href: "/safety",
-  },
-];
+// Homepage shows a highlight subset of the same PREMIUM_OFFERS ladder that
+// drives /pricing, /offers, and /cases — the single source of truth for
+// pricing, so this page can never show a different number than those do.
+const homepageOfferIds = ["diagnostic_sprint", "revenue_os", "delivery_os", "custom_enterprise"];
+const launchOffers = PREMIUM_OFFERS.filter((o) => homepageOfferIds.includes(o.id));
 
 const proofBlocks = [
   ["No fake ROI", "لا نعد بدخل مضمون؛ نثبت الأثر بتقارير وقرارات وقياسات تشغيلية."],
@@ -190,15 +162,20 @@ export default function HomePage() {
           <h2 id="offers-title">باقات إطلاق قابلة للبيع خلال أيام، لا مشاريع ضخمة بلا proof.</h2>
           <div className="cards">
             {launchOffers.map((offer) => (
-              <article className="card" key={offer.title}>
-                <span className="badge badge-emerald">{offer.timeline}</span>
-                <h3 style={{ marginTop: "var(--sp-4)" }}>{offer.title}</h3>
-                <p><strong>الألم:</strong> {offer.pain}</p>
-                <p><strong>الناتج:</strong> {offer.outcome}</p>
-                <p className="text-gold" style={{ fontWeight: 800 }}>Suggested range: {offer.price}</p>
-                <Link href={offer.href} className="btn btn-secondary">افتح التفاصيل →</Link>
+              <article className="card" key={offer.id}>
+                <span className="badge badge-emerald">{offer.nameAr}</span>
+                <h3 style={{ marginTop: "var(--sp-4)" }}>{offer.name}</h3>
+                <p>{offer.positioningAr}</p>
+                <p className="text-gold" style={{ fontWeight: 800 }}>
+                  {offer.setup === "Free" ? "بدون تكلفة" : `Setup: ${offer.setup}`}
+                  {offer.monthly !== "—" ? ` · Monthly: ${offer.monthly}` : ""}
+                </p>
+                <Link href="/offers" className="btn btn-secondary">افتح التفاصيل →</Link>
               </article>
             ))}
+          </div>
+          <div className="actions">
+            <Link href="/offers">شاهد كل العروض السبعة →</Link>
           </div>
         </section>
 

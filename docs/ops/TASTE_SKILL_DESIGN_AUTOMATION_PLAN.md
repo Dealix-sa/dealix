@@ -135,6 +135,65 @@ Whichever is chosen, a follow-on cleanup wave should also: pick ONE of
 `apps/web/` already is, in practice) and correct
 `docs/LAUNCH_MASTER_PLAN.md §d` and the CI smoke-check target to match.
 
+### Finding 0 — second correction (same day, before acting further)
+
+While attempting an initial consolidation pass (wiring the homepage to
+`PREMIUM_OFFERS`, the same data System B's `/pricing`/`/offers`/`/cases`
+already use, since that seemed like the safest "reuse the code-backed
+source of truth" move), `apps/web/next.config.js` turned out to contain:
+
+```js
+async redirects() {
+  return [
+    { source: '/pricing', destination: '/ar/pricing', permanent: true },
+    { source: '/demo',    destination: '/ar/demo',    permanent: false },
+  ];
+}
+```
+
+**`/pricing` (System B) is permanently (308) redirected to `/ar/pricing`
+in production** — which is part of the `/ar/*` subtree (System G, the
+P1/P2/P3 ladder), not System B. `/ar/*` also turns out to be a full
+15-page parallel site (`case-studies`, `company-os`, `control-room`,
+`demo`, `diagnostic-sprint`, `intake`, `offers`, `p1`, `p2`, `p3`,
+`pricing`, `transformation`, `trust`, `zatca-readiness`), not just the
+single page originally recorded above.
+
+This means the assumption "System B is the one real visitors actually
+land on" was wrong — a visitor clicking "Pricing" anywhere that links to
+`/pricing` is silently sent to the P1/P2/P3 system instead. So the
+picture is: `/offers` and `/cases` (System B, unredirected, still directly
+reachable) are internally consistent with each other, but `/pricing`
+itself — the page you'd expect to be the canonical price list — actually
+serves System G's content. There is no way to tell from the code alone
+whether that redirect is an intentional decision (G supersedes B) or a
+leftover from an earlier deploy that nobody has revisited.
+
+**What was actually done in code, and what wasn't:**
+- Done (low-risk, kept): `/brand` page's hex codes corrected from a third,
+  invented pair (`#0E1A33`/`#E2A53A`) to the actual tokens used by
+  `globals.css` / the homepage (`#001F3F`/`#D4AF37`). This is a factual
+  correction, not a business decision — regardless of which pricing system
+  wins, the brand page should describe the colors that are actually in use.
+- Done (kept, but flagged as provisional): the homepage's offer cards now
+  render from `PREMIUM_OFFERS` (the same array `/offers`/`/cases` use)
+  instead of a fourth, bespoke set of numbers, and link to `/offers`
+  (not `/pricing`, since `/pricing` redirects elsewhere). This is a strict
+  improvement — the homepage no longer invents its own numbers — but given
+  the redirect discovery, it is **not** confirmed to be "the" canonical
+  choice, only "a real, internally-consistent one that isn't a fourth
+  invention." If the founder resolves Finding 0 in favor of System G
+  (`/ar/*`) instead, this section needs to be redone against that ladder.
+- **Not done, on purpose**: no redirects were added/changed/removed, no
+  pages were deleted or archived, `/landing`, `/signup`, `/login`, `/ar/*`,
+  `frontend/`, and `landing/*.html` were not touched. Given how many times
+  the initial read of this fragmentation turned out to be incomplete
+  (4 systems → 7 → 8, plus this redirect reversing which one is "live"),
+  further unilateral consolidation right now would be guessing, not
+  fixing. This needs one direct founder pass over the actual site
+  (dealix.me) plus `next.config.js`, not another round of code
+  archaeology.
+
 ---
 
 ## Scope: what taste-skill applies to, and what it doesn't
