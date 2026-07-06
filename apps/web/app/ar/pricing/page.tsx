@@ -1,88 +1,11 @@
-export const metadata = {
-  title: "Dealix — الأسعار | P1 · P2 · P3",
-  description: "أسعار Dealix الكاملة: P1 تشخيص الإيراد، P2 تشغيل المبيعات الشهري، P3 غرفة القيادة التنفيذية.",
-};
+import { CANONICAL_OFFERS } from "@/lib/offers/canonical-offers";
+import WhatsAppCTA from "@/components/WhatsAppCTA";
 
-const products = [
-  {
-    id: "p1",
-    label: "P1",
-    name: "Revenue Intelligence Sprint",
-    nameAr: "تشخيص الإيراد",
-    price: "3,500 – 15,000",
-    unit: "ريال · مرة واحدة",
-    duration: "5–7 أيام",
-    desc: "نكشف أين تضيع الإيرادات ونسلّم Proof Pack جاهز للتنفيذ.",
-    cta: "ابدأ P1",
-    href: "/ar/p1",
-    border: "border-cyan-400/40",
-    bg: "bg-cyan-400/5",
-    badge: "bg-cyan-400",
-    text: "text-cyan-300",
-    ctaBg: "bg-cyan-400 hover:bg-cyan-300",
-    best: false,
-    includes: [
-      "Revenue Leakage Map",
-      "Top 20 Follow-up List",
-      "Message Draft Pack",
-      "Objection Intelligence",
-      "30-Day Revenue Plan",
-      "Executive Proof Pack",
-    ],
-  },
-  {
-    id: "p2",
-    label: "P2",
-    name: "AI Sales Ops Assistant",
-    nameAr: "تشغيل المبيعات الشهري",
-    price: "8,000 – 30,000",
-    unit: "ريال/شهر",
-    duration: "تشغيل مستمر",
-    desc: "طبقة تشغيل أسبوعية تنتج أولويات ومسودات وscorecard بدون auto-send.",
-    cta: "اطلب عرض P2",
-    href: "/ar/p2",
-    border: "border-emerald-400/50",
-    bg: "bg-emerald-400/10",
-    badge: "bg-emerald-400",
-    text: "text-emerald-300",
-    ctaBg: "bg-emerald-400 hover:bg-emerald-300",
-    best: true,
-    includes: [
-      "Weekly Pipeline Review",
-      "Follow-up Priority List",
-      "Message Drafts (موافقة مطلوبة)",
-      "Meeting Prep Packs",
-      "Weekly Scorecard",
-      "Monthly Executive Summary",
-    ],
-  },
-  {
-    id: "p3",
-    label: "P3",
-    name: "Executive Command Center",
-    nameAr: "غرفة القيادة التنفيذية",
-    price: "20,000 – 60,000",
-    unit: "ريال إعداد + شهري",
-    duration: "إعداد + تشغيل",
-    desc: "غرفة قيادة للمؤسس: الإيراد، القرارات، المخاطر، وProof Packs في مكان واحد.",
-    cta: "اطلب عرض P3",
-    href: "/ar/p3",
-    border: "border-violet-400/40",
-    bg: "bg-violet-400/5",
-    badge: "bg-violet-400",
-    text: "text-violet-300",
-    ctaBg: "bg-violet-400 hover:bg-violet-300",
-    best: false,
-    includes: [
-      "Executive Cockpit",
-      "Weekly Decision Brief",
-      "KPI Registry",
-      "Pipeline Risk Map",
-      "Proof Pack Tracker",
-      "Decision Log + Governance",
-    ],
-  },
-];
+export const metadata = {
+  title: "Dealix — الأسعار | سلم العروض الكامل",
+  description:
+    "أسعار Dealix الكاملة: من تشخيص مجاني إلى نظام مؤسسي مخصص. ست مراحل واضحة حسب نضج شركتك.",
+};
 
 export default function PricingPage() {
   return (
@@ -97,40 +20,58 @@ export default function PricingPage() {
           ابدأ بإثبات القيمة. لا عقود طويلة.
         </h1>
         <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-          ثلاثة منتجات واضحة. تبدأ بـ P1 في أسبوع واحد، ثم تتحول لـ P2 إذا أثبتنا القيمة، ثم P3 عندما تحتاج رؤية تنفيذية كاملة.
+          سلم عروض واحد من ست مراحل. تبدأ بتشخيص مجاني، وتتطور بالخطوة المناسبة
+          لمرحلة شركتك — من حل سريع بـ 499 ريال إلى نظام مؤسسي كامل.
         </p>
 
-        {/* Products grid */}
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {products.map((p) => (
+        {/* Offers grid */}
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {CANONICAL_OFFERS.map((offer) => (
             <article
-              key={p.id}
-              className={`relative rounded-3xl border ${p.border} ${p.bg} p-8 flex flex-col`}
+              key={offer.tier}
+              className={`relative flex flex-col rounded-3xl border p-6 ${
+                offer.highlight
+                  ? "border-cyan-400/50 bg-cyan-400/[0.06] ring-1 ring-cyan-400/30"
+                  : "border-white/10 bg-white/[0.03]"
+              }`}
             >
-              {p.best && (
-                <span className={`absolute -top-3 right-8 rounded-full ${p.badge} px-4 py-1 text-xs font-black text-[#06111f]`}>
-                  الأكثر طلباً
-                </span>
+              {offer.highlight && (
+                <div className="absolute -top-3 right-6">
+                  <span className="rounded-full bg-cyan-400 px-3 py-1 text-xs font-black text-[#06111f]">
+                    الأكثر طلباً
+                  </span>
+                </div>
               )}
-              <p className={`text-xs font-black ${p.text} mb-2`}>{p.label}</p>
-              <h2 className="text-2xl font-black text-slate-100">{p.name}</h2>
-              <p className="text-sm text-slate-400">{p.nameAr}</p>
-              <p className={`mt-4 text-3xl font-black ${p.text}`}>{p.price}</p>
-              <p className="text-sm text-slate-400">{p.unit}</p>
-              <p className="mt-1 text-xs text-slate-500">{p.duration}</p>
-              <p className="mt-5 text-sm leading-6 text-slate-300">{p.desc}</p>
-              <ul className="mt-6 space-y-2 text-sm text-slate-400 flex-1">
-                {p.includes.map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <span className={p.text}>✓</span> {item}
+
+              <div className="flex items-start justify-between">
+                <span className={`rounded-full border px-3 py-1 text-xs ${offer.badgeColor}`}>
+                  {offer.badge}
+                </span>
+                <span className="text-sm text-slate-500">#{offer.tier}</span>
+              </div>
+
+              <h2 className="mt-4 text-2xl font-black">{offer.name}</h2>
+              <p className="text-sm text-slate-400">{offer.nameAr}</p>
+
+              <p className="mt-4 text-3xl font-black text-white">{offer.price}</p>
+              <p className="mt-1 text-sm text-slate-400">{offer.duration}</p>
+
+              <p className="mt-4 text-sm leading-7 text-slate-300">{offer.description}</p>
+
+              <ul className="mt-4 flex-1 space-y-2">
+                {offer.outputs.map((output) => (
+                  <li key={output} className="flex gap-2 text-sm text-slate-300">
+                    <span className="mt-0.5 text-cyan-400">✓</span>
+                    <span>{output}</span>
                   </li>
                 ))}
               </ul>
+
               <a
-                href={p.href}
-                className={`mt-8 block rounded-2xl ${p.ctaBg} px-6 py-3 text-center font-black text-[#06111f]`}
+                href={offer.ctaHref}
+                className={`mt-6 block rounded-2xl px-6 py-3 text-center text-sm font-bold transition-colors ${offer.ctaStyle}`}
               >
-                {p.cta}
+                {offer.cta}
               </a>
             </article>
           ))}
@@ -139,16 +80,23 @@ export default function PricingPage() {
         {/* Journey */}
         <section className="mt-20 rounded-3xl border border-white/10 bg-white/[0.03] p-8 md:p-12">
           <h2 className="text-3xl font-black">التسلسل الصحيح</h2>
-          <p className="mt-3 text-slate-400">لا نبدأ بـ P3. دائماً نبدأ بـ P1.</p>
+          <p className="mt-3 text-slate-400">لا نبدأ بمشروع كبير. دائماً نبدأ بتشخيص.</p>
           <div className="mt-8 flex flex-wrap items-center gap-4 text-lg font-black">
-            <a href="/ar/p1" className="text-cyan-300 hover:underline">P1 تشخيص</a>
+            <a href="/ar/intake" className="text-cyan-300 hover:underline">تشخيص مجاني</a>
             <span className="text-slate-600">→</span>
-            <a href="/ar/p2" className="text-emerald-300 hover:underline">P2 تشغيل شهري</a>
+            <a href="/ar/diagnostic-sprint" className="text-emerald-300 hover:underline">
+              تشخيص تحولي مدفوع
+            </a>
             <span className="text-slate-600">→</span>
-            <a href="/ar/p3" className="text-violet-300 hover:underline">P3 قيادة تنفيذية</a>
+            <a href="/ar/offers" className="text-violet-300 hover:underline">
+              تشغيل شهري أو نظام مؤسسي
+            </a>
           </div>
           <p className="mt-5 leading-7 text-slate-400">
-            P1 يثبت القيمة خلال أسبوع. P2 يحول الإثبات إلى تشغيل شهري ودخل متكرر. P3 يأتي عندما يريد المؤسس رؤية تنفيذية كاملة لشركته.
+            التشخيص المجاني يعطيك وضوحاً خلال 30 دقيقة. التشخيص التحولي المدفوع يحدد أين
+            يتسرب الإيراد ويسلمك خارطة الحل خلال 3–7 أيام. بعد الإثبات ننتقل للتشغيل
+            الشهري (2,999–4,999 ريال/شهر، مسار موسع حتى 15,000 حسب النطاق) أو نظام
+            مؤسسي مخصص.
           </p>
         </section>
 
@@ -175,13 +123,21 @@ export default function PricingPage() {
         {/* CTA */}
         <section className="mt-16 text-center">
           <h2 className="text-3xl font-black">ابدأ الأسبوع القادم</h2>
-          <p className="mt-3 text-slate-400">P1 يبدأ خلال 24 ساعة من الاتفاق.</p>
-          <a
-            href="mailto:hello@dealix.me?subject=أريد%20البدء%20مع%20Dealix"
-            className="mt-6 inline-block rounded-2xl bg-white px-10 py-4 text-xl font-black text-[#06111f] hover:bg-slate-100"
-          >
-            تواصل معنا الآن
-          </a>
+          <p className="mt-3 text-slate-400">التشخيص يبدأ خلال 24 ساعة من الاتفاق.</p>
+          <div className="mt-6 flex flex-wrap justify-center gap-4">
+            <a
+              href="/ar/intake"
+              className="inline-block rounded-2xl bg-white px-10 py-4 text-xl font-black text-[#06111f] hover:bg-slate-100"
+            >
+              ابدأ التشخيص المجاني
+            </a>
+            <WhatsAppCTA
+              message="السلام عليكم، أريد الاستفسار عن عروض Dealix وأسعارها."
+              label="راسلنا على واتساب"
+              fallbackSubject="استفسار عن الأسعار"
+              className="inline-block rounded-2xl border border-emerald-400/40 px-10 py-4 text-xl font-bold text-emerald-200 hover:bg-emerald-400/10"
+            />
+          </div>
         </section>
 
       </div>

@@ -54,7 +54,7 @@ async def compute_customer_health(customer_id: str) -> dict[str, Any]:
     """Compute live health score for a customer using last-30d signals."""
     cutoff_30d = _utcnow() - timedelta(days=30)
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             cust = (await session.execute(
                 select(CustomerRecord).where(CustomerRecord.id == customer_id)
@@ -115,7 +115,7 @@ async def compute_customer_health(customer_id: str) -> dict[str, Any]:
 @router.get("/at-risk")
 async def list_at_risk_customers() -> dict[str, Any]:
     """Return all customers in at_risk or critical buckets."""
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             customers = (await session.execute(select(CustomerRecord))).scalars().all()
         except Exception as exc:
@@ -149,7 +149,7 @@ async def generate_customer_qbr(customer_id: str, body: dict[str, Any] = Body(de
     period_days = int(body.get("period_days") or 30)
     cutoff = _utcnow() - timedelta(days=period_days)
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             cust = (await session.execute(
                 select(CustomerRecord).where(CustomerRecord.id == customer_id)
@@ -236,7 +236,7 @@ async def generate_customer_qbr(customer_id: str, body: dict[str, Any] = Body(de
 async def get_sector_benchmarks(sector: str, metric: str = "reply_rate") -> dict[str, Any]:
     """Sector percentiles. Requires >=5 customers in sector for privacy."""
     cutoff_30d = _utcnow() - timedelta(days=30)
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             accounts = (await session.execute(
                 select(AccountRecord).where(AccountRecord.sector == sector)
@@ -289,7 +289,7 @@ async def compare_to_sector(customer_id: str, body: dict[str, Any] = Body(defaul
     metric = str(body.get("metric") or "reply_rate")
     cutoff_30d = _utcnow() - timedelta(days=30)
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             cust = (await session.execute(
                 select(CustomerRecord).where(CustomerRecord.id == customer_id)
@@ -345,7 +345,7 @@ async def compare_to_sector(customer_id: str, body: dict[str, Any] = Body(defaul
 async def get_saudi_b2b_pulse() -> dict[str, Any]:
     """Public anonymized monthly report — works as a free lead magnet."""
     cutoff_30d = _utcnow() - timedelta(days=30)
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             accounts = (await session.execute(select(AccountRecord))).scalars().all()
             sector_to_ids: dict[str, list[str]] = defaultdict(list)

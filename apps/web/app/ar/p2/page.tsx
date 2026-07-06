@@ -1,6 +1,6 @@
 export const metadata = {
   title: "Dealix P2 — AI Sales Ops Assistant | تشغيل المبيعات الشهري",
-  description: "طبقة تشغيل شهرية تنتج أولويات المتابعة، مسودات الرسائل، تحضير الاجتماعات، وScorecard أسبوعي. 8,000–30,000 ريال/شهر.",
+  description: "طبقة تشغيل شهرية تنتج أولويات المتابعة، مسودات الرسائل، تحضير الاجتماعات، وScorecard أسبوعي. 2,999–4,999 ريال/شهر، بمسار موسع حتى 15,000 حسب النطاق.",
 };
 
 const weeklyOutputs = [
@@ -17,19 +17,19 @@ const weeklyOutputs = [
 const tiers = [
   {
     name: "Light",
-    price: "8,000 – 12,000",
+    price: "2,999 – 4,999",
     team: "فريق صغير 1–3 أشخاص",
     highlight: false,
   },
   {
     name: "Growth",
-    price: "15,000 – 25,000",
+    price: "5,000 – 9,999",
     team: "pipeline نشط + متابعات أسبوعية",
     highlight: true,
   },
   {
     name: "High Touch",
-    price: "30,000+",
+    price: "10,000 – 15,000",
     team: "تشغيل عميق + تدريب + governance",
     highlight: false,
   },

@@ -20,7 +20,8 @@ class WhatsAppAutomation:
         self.api_key = os.getenv("WHATSAPP_API_KEY", "")
         self.account_id = os.getenv("WHATSAPP_BUSINESS_ACCOUNT_ID", "")
         self.phone_number_id = os.getenv("WHATSAPP_PHONE_NUMBER_ID", "")
-        self.base_url = "https://graph.instagram.com/v18.0"
+        # WhatsApp Business Cloud API lives on graph.facebook.com.
+        self.base_url = "https://graph.facebook.com/v18.0"
 
     def is_configured(self) -> bool:
         """Check if WhatsApp API is properly configured."""

@@ -8,7 +8,7 @@ const launchOffers = [
     pain: "الفرص والعروض والمتابعات موجودة، لكن لا تتحول إلى قرار يومي واضح.",
     outcome: "غرفة قيادة تعرض العملاء الساخنين، المتابعات المتأخرة، العروض المفتوحة، وأول 10 إجراءات اليوم.",
     timeline: "7 أيام",
-    price: "5k–12k SAR",
+    price: "5,000–12,000 ريال",
     href: "/revenue-machine",
   },
   {
@@ -16,7 +16,7 @@ const launchOffers = [
     pain: "الإدارة ترى تقارير كثيرة لكن لا ترى القرار الأهم اليوم.",
     outcome: "Daily CEO Decision + Future Radar + 30-Day Action Plan مبني على إشارات الإيراد والمتابعة والمخاطر.",
     timeline: "14 يوم",
-    price: "15k–35k SAR",
+    price: "7,500–25,000 ريال",
     href: "/brain",
   },
   {
@@ -24,7 +24,7 @@ const launchOffers = [
     pain: "واتساب والإيميل يتحولون إلى مقبرة فرص ومحادثات بلا owner.",
     outcome: "تصنيف المحادثات، queue متابعة، مسودات ردود، وتقرير يومي بدون إرسال تلقائي.",
     timeline: "7–10 أيام",
-    price: "3k–9k SAR",
+    price: "5,000–12,000 ريال",
     href: "/outreach-review",
   },
   {
@@ -32,7 +32,7 @@ const launchOffers = [
     pain: "الشركة تستخدم AI بدون سياسة، صلاحيات، أو مراجعة بشرية واضحة.",
     outcome: "AI usage policy، approval gates، data handling SOP، وسجل مراجعة للمخرجات الحساسة.",
     timeline: "7 أيام",
-    price: "5k–15k SAR",
+    price: "7,500–25,000 ريال",
     href: "/safety",
   },
 ];

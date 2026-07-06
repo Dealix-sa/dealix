@@ -85,7 +85,7 @@ export default function RevenueCommandRoomOSPage() {
               نطاق التسعير
             </p>
             <p className="mt-2 text-sm text-white/80">
-              SAR 35,000 setup · SAR 9,000/شهر
+              بناء: 5,000–12,000 ريال (سبرينت 7 أيام) · تشغيل: 2,999–4,999 ريال/شهر
             </p>
             <p className="mt-1 text-xs text-white/50">
               تقديري، يُتأكد بعد التشخيص

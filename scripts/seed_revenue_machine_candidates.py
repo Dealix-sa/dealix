@@ -61,7 +61,7 @@ GTM_ACCOUNTS = [
 
 async def _purge() -> int:
     count = 0
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         for model in (LeadScoreRecord, ContactRecord, AccountRecord):
             rows = (await session.execute(
                 select(model).where(model.id.like(f"{_PREFIX}%"))
@@ -84,7 +84,7 @@ async def main() -> int:
         print(f"purged {n} gtm_seed_* rows")
 
     now = _utcnow()
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         for suffix, name, domain, city, sector, dq, local, priority in GTM_ACCOUNTS:
             aid = f"{_PREFIX}acc_{suffix}"
             cid = f"{_PREFIX}ct_{suffix}"

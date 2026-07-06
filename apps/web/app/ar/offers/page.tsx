@@ -1,139 +1,14 @@
+import { CANONICAL_OFFERS } from "@/lib/offers/canonical-offers";
+import WhatsAppCTA from "@/components/WhatsAppCTA";
+
 export const metadata = {
   title: "Dealix — عروض وأسعار | AI Business Transformation",
   description:
     "سلم عروض Dealix الكامل: من تشخيص مجاني إلى نظام مؤسسي مخصص. كل عرض مصمم لمرحلة مختلفة من نضج شركتك.",
 };
 
-const offers = [
-  {
-    tier: "1",
-    name: "Free Diagnostic",
-    nameAr: "التشخيص المجاني",
-    price: "مجاني",
-    duration: "30 دقيقة",
-    badge: "نقطة البداية",
-    badgeColor: "border-slate-400/40 text-slate-300",
-    highlight: false,
-    description:
-      "محادثة سريعة نحدد فيها أين تضيع الفرص في شركتك وما أول خطوة منطقية.",
-    outputs: [
-      "تحديد 3 نقاط تسرب رئيسية",
-      "توصية بأول نظام مناسب",
-      "وضوح هل Diagnostic Sprint مناسب أم لا",
-    ],
-    cta: "احجز محادثة مجانية",
-    ctaHref: "/ar/intake",
-    ctaStyle: "border border-white/20 hover:bg-white/10",
-  },
-  {
-    tier: "2",
-    name: "Micro Sprint",
-    nameAr: "سبرنت سريع",
-    price: "499 ريال",
-    duration: "1–2 يوم",
-    badge: "إثبات الكفاءة",
-    badgeColor: "border-blue-400/40 text-blue-300",
-    highlight: false,
-    description:
-      "نثبت قدرتنا بحل واحد سريع وملموس. مخرج حقيقي في يومين بسعر منخفض.",
-    outputs: [
-      "حل تشغيلي واحد مُنجز",
-      "توثيق الحل وطريقة الاستخدام",
-      "تقرير مبدئي بفرص إضافية",
-    ],
-    cta: "ابدأ Micro Sprint",
-    ctaHref: "/ar/intake",
-    ctaStyle: "border border-blue-400/40 text-blue-200 hover:bg-blue-400/10",
-  },
-  {
-    tier: "3",
-    name: "Data Intelligence Pack",
-    nameAr: "حزمة بيانات",
-    price: "1,500 ريال",
-    duration: "2–3 أيام",
-    badge: "أصل بيانات",
-    badgeColor: "border-purple-400/40 text-purple-300",
-    highlight: false,
-    description:
-      "نبني لك قاعدة بيانات عملاء مؤهلة، مصنفة، وجاهزة للتواصل.",
-    outputs: [
-      "قاعدة بيانات عملاء محتملين (100+ سجل)",
-      "تصنيف حسب القطاع والأولوية",
-      "تقرير جودة البيانات",
-      "خريطة التواصل الأولى",
-    ],
-    cta: "احصل على حزمة البيانات",
-    ctaHref: "/ar/intake",
-    ctaStyle: "border border-purple-400/40 text-purple-200 hover:bg-purple-400/10",
-  },
-  {
-    tier: "4",
-    name: "Managed AI Operations",
-    nameAr: "تشغيل AI شهري",
-    price: "2,999–4,999 ريال/شهر",
-    duration: "شهري مستمر",
-    badge: "علاقة مستمرة",
-    badgeColor: "border-amber-400/40 text-amber-300",
-    highlight: false,
-    description:
-      "نشغّل نظام AI يومياً ونسلمك تقرير أسبوعي بالنتائج والتوصيات.",
-    outputs: [
-      "تقرير أسبوعي بالأداء والتوصيات",
-      "تحديثات مستمرة على النظام",
-      "دعم واتساب مباشر",
-      "مراجعة شهرية مع المؤسس",
-    ],
-    cta: "ابدأ الإدارة الشهرية",
-    ctaHref: "/ar/intake",
-    ctaStyle: "border border-amber-400/40 text-amber-200 hover:bg-amber-400/10",
-  },
-  {
-    tier: "5",
-    name: "Transformation Diagnostic Sprint",
-    nameAr: "تشخيص تحولي مدفوع",
-    price: "7,500–25,000 ريال",
-    duration: "3–7 أيام",
-    badge: "نقطة الدخول الرئيسية",
-    badgeColor: "border-cyan-300/60 text-cyan-200",
-    highlight: true,
-    description:
-      "نكتشف أين يتسرب إيرادك ونبني لك خارطة الحل قبل أي التزام كبير.",
-    outputs: [
-      "Workflow Map — خريطة العمليات الحالية",
-      "Leakage Map — أين يتسرب الإيراد وكم يكلف",
-      "KPI Model — الأرقام التي يجب متابعتها",
-      "First System Recommendation — أول نظام يستحق البناء",
-      "Implementation Quote — السعر والجدول الزمني",
-      "14-Day Pilot Plan — كيف تبدأ خلال أسبوعين",
-    ],
-    cta: "ابدأ التشخيص الآن",
-    ctaHref: "/ar/diagnostic-sprint",
-    ctaStyle: "bg-cyan-400 text-[#06111f] hover:bg-cyan-300 font-black",
-  },
-  {
-    tier: "6",
-    name: "Custom Enterprise System",
-    nameAr: "نظام مؤسسي مخصص",
-    price: "25,000–100,000+ ريال",
-    duration: "4–12 أسبوع",
-    badge: "للمؤسسات",
-    badgeColor: "border-rose-400/40 text-rose-300",
-    highlight: false,
-    description:
-      "نظام AI مبني خصيصاً لعمليات شركتك، مدمج مع فريقك وأدواتك الحالية.",
-    outputs: [
-      "تحليل العمليات الكامل",
-      "تصميم النظام المخصص",
-      "بناء وتكامل كامل",
-      "تدريب الفريق",
-      "دعم 90 يوم بعد الإطلاق",
-      "توثيق كامل وتسليم الملكية",
-    ],
-    cta: "ناقش مشروعك",
-    ctaHref: "/ar/intake",
-    ctaStyle: "border border-rose-400/40 text-rose-200 hover:bg-rose-400/10",
-  },
-];
+const offers = CANONICAL_OFFERS;
+
 
 export default function OffersPage() {
   return (
@@ -234,17 +109,22 @@ export default function OffersPage() {
             ))}
           </div>
 
-          <div className="mt-12">
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/ar/diagnostic-sprint"
               className="rounded-2xl bg-cyan-400 px-10 py-4 text-lg font-black text-[#06111f] hover:bg-cyan-300"
             >
               ابدأ بتشخيص تحولي مدفوع
             </a>
-            <p className="mt-3 text-sm text-slate-500">
-              7,500 ريال · 3–7 أيام · بدون التزام بالتنفيذ بعده
-            </p>
+            <WhatsAppCTA
+              message="السلام عليكم، أريد البدء بالتشخيص التحولي المدفوع (Transformation Diagnostic Sprint) من Dealix."
+              label="تواصل عبر واتساب"
+              className="rounded-2xl border border-emerald-400/40 px-10 py-4 text-lg font-bold text-emerald-200 hover:bg-emerald-400/10"
+            />
           </div>
+          <p className="mt-3 text-sm text-slate-500">
+            7,500–25,000 ريال · 3–7 أيام · بدون التزام بالتنفيذ بعده
+          </p>
         </div>
       </section>
     </main>

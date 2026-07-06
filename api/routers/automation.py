@@ -73,7 +73,7 @@ async def compliance_check(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
     sup_emails: set[str] = set()
     sup_domains: set[str] = set()
     sup_phones: set[str] = set()
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             rows = (await session.execute(select(SuppressionRecord))).scalars().all()
             for r in rows:
@@ -126,7 +126,7 @@ async def run_daily_targeting(body: dict[str, Any] = Body(default={})) -> dict[s
         "opt_out": 0, "suppressed": 0, "recently_contacted": 0,
         "high_risk": 0, "no_allowed_use": 0, "personal_email_only": 0,
     }
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             q = select(AccountRecord).where(AccountRecord.status.in_(["enriched", "new"]))
             if sectors_filter:
@@ -246,7 +246,7 @@ async def run_daily_targeting(body: dict[str, Any] = Body(default={})) -> dict[s
 
     # 5. Persist queue rows (approval_required=True; no auto-send here)
     queued_count = 0
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         for o in selected_out:
             qr = OutreachQueueRecord(
                 id=_new_id("oq_"),
@@ -298,7 +298,7 @@ async def run_followups(body: dict[str, Any] = Body(default={})) -> dict[str, An
     now = _utcnow()
     created = 0
     skipped_replied = 0
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             sent_logs = (await session.execute(
                 select(EmailSendLog).where(
@@ -392,7 +392,7 @@ async def automation_status() -> dict[str, Any]:
     counts: dict[str, int] = {"sent_today": 0, "queued_total": 0,
                               "replied_today": 0, "bounced_today": 0,
                               "suppression_total": 0}
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             counts["sent_today"] = int(
                 (await session.execute(

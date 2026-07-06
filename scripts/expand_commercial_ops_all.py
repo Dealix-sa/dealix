@@ -26,8 +26,13 @@ from scripts.expand_agency_targets_seed import (
 
 
 def _run(cmd: list[str], *, label: str) -> int:
+    timeout_s = int(os.environ.get("DEALIX_CHILD_SCRIPT_TIMEOUT", "240"))
     print(f"\n== {label} ==")
-    proc = subprocess.run(cmd, cwd=ROOT)
+    try:
+        proc = subprocess.run(cmd, cwd=ROOT, timeout=timeout_s)
+    except subprocess.TimeoutExpired:
+        print(f"  WARN: {label} timed out after {timeout_s}s")
+        return 124
     if proc.returncode != 0:
         print(f"  WARN: {label} exit={proc.returncode}")
     return proc.returncode

@@ -79,7 +79,7 @@ async def _persist(
     meta["dedupe_hint"] = hint_dict
     if targeting_profile is not None:
         meta["targeting_profile"] = targeting_profile
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         session.add(
             LeadRecord(
                 id=lead.id,

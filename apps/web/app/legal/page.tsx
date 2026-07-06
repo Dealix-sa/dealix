@@ -1,6 +1,7 @@
 "use client";
 
 import PageShell from "@/components/PageShell";
+import { CONTACT_EMAIL, mailtoLink } from "@/lib/contact";
 
 export default function LegalPage() {
   return (
@@ -20,7 +21,8 @@ export default function LegalPage() {
         </ul>
         <h3>التواصل</h3>
         <p>
-          لأي استفسار قانوني: founder@dealix.sa
+          لأي استفسار قانوني:{" "}
+          <a href={mailtoLink("استفسار قانوني")} dir="ltr">{CONTACT_EMAIL}</a>
         </p>
       </section>
     </PageShell>

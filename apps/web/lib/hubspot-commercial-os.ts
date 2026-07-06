@@ -66,12 +66,12 @@ export const hubspotLaunchTasks = [
 ];
 
 export const hubspotServiceCatalog = [
-  ["Revenue Command Room Sprint", "12,000 SAR", "one-time then retainer"],
-  ["Company Brain Sprint", "25,000 SAR", "one-time then retainer"],
-  ["Follow-up Recovery Sprint", "9,000 SAR", "one-time then retainer"],
-  ["AI Sales Agent Setup", "15,000 SAR", "setup + monthly"],
-  ["AI Trust and Governance OS", "15,000 SAR", "setup + audit retainer"],
-  ["Client Delivery OS", "18,000 SAR", "setup + monthly"],
+  ["Revenue Command Room Sprint", "5,000–12,000 SAR", "one-time then retainer"],
+  ["Company Brain Sprint", "7,500–25,000 SAR", "one-time then retainer"],
+  ["Follow-up Recovery Sprint", "5,000–12,000 SAR", "one-time then retainer"],
+  ["AI Sales Agent Setup", "7,500–25,000 SAR", "setup + monthly"],
+  ["AI Trust and Governance OS", "7,500–25,000 SAR", "setup + audit retainer"],
+  ["Client Delivery OS", "7,500–25,000 SAR", "setup + monthly"],
 ];
 
 export const hubspotCommercialPayload = {

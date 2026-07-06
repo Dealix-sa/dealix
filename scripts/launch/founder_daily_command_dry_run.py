@@ -67,27 +67,25 @@ def main() -> None:
 
         # Seed sample pipeline.
         tracker.add(
-            "riyadh_motors_01", "Riyadh Motors Group",
+            "Riyadh Motors Group",
             offer_id="REVENUE_LEAK_AUDIT",
             value_sar=15_000, icp_score=82,
             next_action="Send intro email today",
         )
-        tracker.add(
-            "golden_realty_01", "Golden Realty Co",
+        golden = tracker.add(
+            "Golden Realty Co",
             offer_id="SALES_COMMAND_CENTER",
             value_sar=25_000, icp_score=70,
             next_action="Book discovery call",
         )
-        tracker.add(
-            "clinic_care_01", "Clinic Care Network",
+        clinic = tracker.add(
+            "Clinic Care Network",
             offer_id="WHATSAPP_FOLLOWUP_OS",
             value_sar=12_000, icp_score=60,
             next_action="Send proposal draft",
         )
-        tracker.advance("golden_realty_01", to_stage=PipelineStage.OUTREACH,
-                        next_action="Follow up on intro email")
-        tracker.advance("clinic_care_01", to_stage=PipelineStage.PROPOSAL,
-                        next_action="Get feedback on proposal")
+        tracker.update_stage(golden.id, PipelineStage.OUTREACH)
+        tracker.update_stage(clinic.id, PipelineStage.PROPOSAL)
 
         approval_queue = [
             {"item": "Email draft for Acme Motors (REVENUE_LEAK_AUDIT) — awaiting founder sign-off"},

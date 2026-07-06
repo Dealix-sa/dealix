@@ -22,19 +22,22 @@ PY="${PYTHON:-python3}"
 
 step() { printf '\n\033[1m▶ %s\033[0m\n' "$1"; }
 
-step "1/5 micro_master — حزمة المؤسس الصباحية / morning pack"
+step "1/6 micro_master — حزمة المؤسس الصباحية / morning pack"
 "$PY" company/micro/micro_master.py || true
 
-step "2/5 revenue_engine_v2 — خط الإيرادات (مسودات فقط) / draft-only pipeline"
+step "2/6 revenue_engine_v2 — خط الإيرادات (مسودات فقط) / draft-only pipeline"
 "$PY" company/revenue_engine/revenue_engine_v2.py || true
 
-step "3/5 intake_engine — تأهيل العملاء / client intake"
+step "3/6 intake_engine — تأهيل العملاء / client intake"
 "$PY" company/intake/intake_engine.py || true
 
-step "4/5 followup_engine — قائمة المتابعات / follow-up queue"
+step "4/6 followup_engine — قائمة المتابعات / follow-up queue"
 "$PY" company/crm/followup_engine.py || true
 
-step "5/5 Unified Command Room — غرفة القيادة الموحّدة"
+step "5/6 growth_sales_cards — كروت واتساب اليومية (مسودات بموافقتك)"
+"$PY" scripts/commercial/generate_growth_sales_cards.py || true
+
+step "6/6 Unified Command Room — غرفة القيادة الموحّدة"
 "$PY" scripts/dealix_unified_command_room.py || true
 
 printf '\n\033[1m✓ تم. افتح اللوحة:\033[0m reports/command_room/index.html\n'

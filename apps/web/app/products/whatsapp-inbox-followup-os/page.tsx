@@ -84,7 +84,7 @@ export default function WhatsAppInboxFollowupOSPage() {
               نطاق التسعير
             </p>
             <p className="mt-2 text-sm text-white/80">
-              SAR 12,000 setup · SAR 3,500/شهر
+              بناء: 5,000–12,000 ريال (سبرينت) · تشغيل: 2,999–4,999 ريال/شهر
             </p>
             <p className="mt-1 text-xs text-white/50">
               تقديري، يُتأكد بعد التشخيص

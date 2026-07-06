@@ -122,7 +122,7 @@ async def prepare_from_data(body: dict[str, Any] = Body(default={})) -> dict[str
     if max_accounts < 1 or max_accounts > 500:
         raise HTTPException(400, "max_accounts_out_of_range")
 
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             # Get enriched accounts with their latest scores
             accounts = (await session.execute(
@@ -268,7 +268,7 @@ async def prepare_from_data(body: dict[str, Any] = Body(default={})) -> dict[str
 
 @router.get("/queue")
 async def list_queue(status: str | None = None, limit: int = 100) -> dict[str, Any]:
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             q = select(OutreachQueueRecord).order_by(OutreachQueueRecord.due_at).limit(min(500, limit))
             if status:
@@ -293,7 +293,7 @@ async def list_queue(status: str | None = None, limit: int = 100) -> dict[str, A
 
 @router.post("/queue/{queue_id}/approve")
 async def approve_queue(queue_id: str) -> dict[str, Any]:
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             q = (await session.execute(
                 select(OutreachQueueRecord).where(OutreachQueueRecord.id == queue_id)
@@ -316,7 +316,7 @@ async def approve_queue(queue_id: str) -> dict[str, Any]:
 @router.post("/queue/{queue_id}/skip")
 async def skip_queue(queue_id: str, body: dict[str, Any] = Body(default={})) -> dict[str, Any]:
     reason = str(body.get("reason") or "manual_skip")[:255]
-    async with async_session_factory() as session:
+    async with async_session_factory()() as session:
         try:
             q = (await session.execute(
                 select(OutreachQueueRecord).where(OutreachQueueRecord.id == queue_id)
