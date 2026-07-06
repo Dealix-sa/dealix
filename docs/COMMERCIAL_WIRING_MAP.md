@@ -43,7 +43,7 @@ The registry is authoritative — any disagreement with this table means **the c
 - **Public landing:** `landing/start.html` (with `landing/sprint-sample.html` for live preview)
 - **Intake endpoint:** `POST /api/v1/service-setup/qualify` → `POST /api/v1/service-setup/proposal/{customer_id}`
 - **Checkout:** `landing/checkout.html?tier=sprint` → `POST /api/v1/payment-ops/invoice-intent`
-- **Delivery:** `auto_client_acquisition/delivery_factory/delivery_sprint.run_sprint` + `POST /api/v1/sprint/run` (10 steps)
+- **Delivery:** `auto_client_acquisition/delivery_factory/delivery_sprint.run_sprint` + `POST /api/v1/sprint/run` (10 steps) + `scripts/dealix_sprint_run.py` (founder-facing CLI, no server needed)
 - **Proof / report:** `auto_client_acquisition/proof_os/proof_pack.assemble` → 14-section ProofPack
 - **Founder dashboard surface:** `landing/founder-dashboard.html` + `GET /api/v1/founder/dashboard`
 - **Non-negotiables enforced:** all 7 hard_gates from `registry.py`
