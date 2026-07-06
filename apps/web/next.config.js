@@ -49,12 +49,37 @@ const nextConfig = {
   },
 
   // Redirects
+  //
+  // 2026-07-06: founder decision resolved a multi-system brand/pricing
+  // conflict in favor of the PREMIUM_OFFERS ladder (see docs/ops/
+  // TASTE_SKILL_DESIGN_AUTOMATION_PLAN.md, "Finding 0"). /pricing used to
+  // permanently redirect to /ar/pricing (a separate P1/P2/P3 system) --
+  // that redirect is removed so /pricing serves its own real page. The
+  // /ar/* subtree, /landing, and /signup represented the losing systems
+  // (the P1/P2/P3 ladder and a self-serve ERP-SaaS pivot); they now 301
+  // to their closest equivalent canonical page. Underlying page files
+  // are intentionally left in place for now (a redirect takes effect
+  // before the page renders either way) -- deleting them is a separate,
+  // lower-stakes cleanup, not required to fix the user-facing conflict.
   async redirects() {
     return [
-      // Redirect old English pricing page to Arabic
-      { source: '/pricing',   destination: '/ar/pricing',  permanent: true },
-      // Redirect /demo to Arabic demo
-      { source: '/demo',      destination: '/ar/demo',      permanent: false },
+      { source: '/landing',              destination: '/',          permanent: true },
+      { source: '/signup',               destination: '/book',      permanent: true },
+      { source: '/ar',                   destination: '/',          permanent: true },
+      { source: '/ar/pricing',           destination: '/pricing',   permanent: true },
+      { source: '/ar/offers',            destination: '/offers',    permanent: true },
+      { source: '/ar/p1',                destination: '/offers',    permanent: true },
+      { source: '/ar/p2',                destination: '/offers',    permanent: true },
+      { source: '/ar/p3',                destination: '/offers',    permanent: true },
+      { source: '/ar/diagnostic-sprint', destination: '/offers',    permanent: true },
+      { source: '/ar/demo',              destination: '/book',      permanent: true },
+      { source: '/ar/intake',            destination: '/book',      permanent: true },
+      { source: '/ar/case-studies',      destination: '/cases',    permanent: true },
+      { source: '/ar/company-os',        destination: '/brain',    permanent: true },
+      { source: '/ar/control-room',      destination: '/command-center', permanent: true },
+      { source: '/ar/transformation',    destination: '/services', permanent: true },
+      { source: '/ar/trust',             destination: '/safety',   permanent: true },
+      { source: '/ar/zatca-readiness',   destination: '/services', permanent: true },
     ];
   },
 

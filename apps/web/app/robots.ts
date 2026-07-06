@@ -9,13 +9,12 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: [
           "/",
-          "/ar/",
-          "/ar/p1",
-          "/ar/p2",
-          "/ar/p3",
-          "/ar/pricing",
-          "/ar/demo",
-          "/ar/zatca-readiness",
+          "/pricing",
+          "/offers",
+          "/services",
+          "/cases",
+          "/book",
+          "/products",
           "/status",
           "/revenue-os",
           "/go-to-market",
@@ -23,14 +22,16 @@ export default function robots(): MetadataRoute.Robots {
           "/safety",
           "/value-engine",
         ],
-        // Block internal ops surfaces from indexing
+        // Block internal ops surfaces from indexing. /ar/* is no longer
+        // listed here or in allow -- it 301s to the canonical pages
+        // above (next.config.js), so crawlers land on the redirect
+        // target and never need to index the old path directly.
         disallow: [
           "/control-plane",
           "/agents",
           "/approvals",
           "/sandbox",
           "/self-evolving",
-          "/ar/control-room",
           "/_next/",
           "/api/",
           "/healthz",
