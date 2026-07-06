@@ -1,7 +1,9 @@
 # Taste-Skill Design Automation Plan
 
 Owner: automated (Claude Code sessions on `claude/taste-skill-integration-nfapdx`)
-Founder decision needed on: Finding 0 below
+Founder decision on Finding 0: **RESOLVED 2026-07-06 — System B is canonical**
+(founder confirmed after checking dealix.me directly). See "Finding 0 —
+resolution and cleanup" below for what changed as a result.
 Status date: 2026-07-06 (updated — see "Finding 0 update" for a deeper
 audit by the dealix-pm agent that found the fragmentation is worse than
 first recorded)
@@ -193,6 +195,76 @@ leftover from an earlier deploy that nobody has revisited.
   fixing. This needs one direct founder pass over the actual site
   (dealix.me) plus `next.config.js`, not another round of code
   archaeology.
+
+### Finding 0 — resolution and cleanup (2026-07-06)
+
+The founder checked `dealix.me` directly and confirmed **System B is
+canonical**. Consolidation executed:
+
+- `apps/web/next.config.js`: removed the `/pricing` → `/ar/pricing`
+  redirect; added 301s from `/landing`, `/signup`, and all 15 `/ar/*`
+  pages to their closest System-B equivalent (see the commit for the
+  full mapping). Underlying page files intentionally left in place —
+  the redirect fires first either way, so this is instantly reversible;
+  deleting the dead files is separate, lower-stakes housekeeping.
+- `apps/web/app/sitemap.ts` + `robots.ts`: stopped promoting the
+  now-redirected `/ar/*` paths (previously priority 0.95, above most
+  canonical pages) and listed the actual canonical pages instead.
+- `/login` deliberately left untouched — generic multi-tenant auth, not
+  itself a source of the brand conflict, may still serve the client
+  portal under the current model.
+- **Follow-on founder instruction, same day**: stop publishing public
+  SAR figures at all; present offers as strategic engagements whose
+  scope/price is set after a diagnostic call. Executed: removed
+  setup/monthly numbers from the homepage offer cards, `/pricing`,
+  `/offers`, `/products`, and all 5 product subpages, replaced with
+  positioning copy and a consistent "book a diagnostic" CTA. This also
+  resolved the `/products` duplicate-price inconsistency (two products
+  sharing an identical "25,000+6,000" figure) without needing to
+  verify/invent individual numbers — there's nothing left to conflict
+  over. Verified against `tests/test_no_guaranteed_claims.py`,
+  `test_no_guaranteed_revenue_claims.py`, and
+  `test_v7_no_guaranteed_claims.py`.
+- `docs/LAUNCH_MASTER_PLAN.md` §d ("Website Plan"): added a correction
+  banner — that section describes the frozen `frontend/` directory with
+  a route table (`/[locale]/pricing`, `/[locale]/custom-ai`, etc.) that
+  doesn't match what's actually deployed. Not rewritten line-by-line
+  (would require re-verifying every claim in that section against
+  `apps/web`); flagged instead so nobody trusts it as current.
+- `frontend/README.md` and new `landing/README.md`: both directories
+  marked as **not the deployed app**, reference-only, with a pointer to
+  this document. Neither codebase's actual files were touched, deleted,
+  or merged — that remains separate, larger, lower-priority work (79
+  static HTML pages in `landing/`, a full parallel Next.js dashboard in
+  `frontend/`) that needs its own explicit scoping if the founder wants
+  it done.
+- `sales/ONE_PAGE_OFFER_AR.md`: had two contradictory pricing mentions
+  in one file (a "5,000–12,000 SAR sprint" pitch immediately followed by
+  the correct System-B ladder table). Removed the conflicting figure,
+  pointed the flagship-offer description at ladder item #5 instead.
+- `sales/PRICING_AND_OFFER_LADDER_AR.md`: a fifth, structurally
+  different ladder (Diagnostic Sprint 4,999 / Pilot 14,999 / Core OS
+  7,499mo / Growth OS 14,999mo / Enterprise custom). Not merged or
+  deleted — marked superseded with a banner pointing to the System-B
+  ladder, since it may still hold useful bundling ideas worth a founder
+  review rather than silent deletion.
+- **Ran, safely**: `scripts/commercial/run_negotiation_operator_day.py`
+  (the draft-only, approval-gated negotiation-response generator) — 3
+  sample plans generated, all `approval_required=True`,
+  `can_send_without_review=False`, zero live commitments. Output went to
+  the already-gitignored `reports/commercial/` path, nothing committed.
+  This is the one "external communication" system exercised in this
+  branch, and only in its explicit draft/demo mode — no send capability
+  exists in the code at all.
+
+**Still open, lower priority now that the conflict itself is resolved:**
+Wave 4 (unifying `/pricing`+`/offers`+`/cases`+`/brand`'s near-black/amber
+visual tokens onto `/`'s navy/gold `globals.css` tokens) is no longer
+blocked by an unresolved business decision, just not yet done. Deleting
+the now-dead `/ar/*`, `/landing`, `/signup` page files (vs. just
+redirecting them) is optional housekeeping. Consolidating or deleting
+`frontend/` and `landing/*.html` entirely is a separate, larger decision
+the founder should scope explicitly if wanted.
 
 ---
 
