@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { PREMIUM_OFFERS } from "@/lib/sales-machine/ultimate-sales-os";
 
 export const metadata = {
   title: "Offers — Dealix",
-  description: "Seven offers, from a free 20-min diagnostic to custom enterprise systems.",
+  description: "Seven strategic engagements, from a free diagnostic to a custom enterprise system.",
 };
 
 export default function OffersPage() {
@@ -11,10 +12,10 @@ export default function OffersPage() {
       <div className="mx-auto max-w-6xl px-6 py-16">
         <header>
           <p className="text-xs uppercase tracking-[0.3em] text-amber-300/80">Offer Ladder</p>
-          <h1 className="mt-3 text-4xl font-semibold">سبع عروض، مسار واحد</h1>
+          <h1 className="mt-3 text-4xl font-semibold">سبع عروض استراتيجية، ليست باقات عامة</h1>
           <p className="mt-3 max-w-2xl text-sm text-white/70">
-            كل عميل يدخل من التشخيص المجاني، ونقرر مع بعض أي عرض يناسبه. لا فخ تسعير، لا عقود
-            طويلة قبل إثبات القيمة.
+            كل عميل يدخل من التشخيص المجاني، ونقرر مع بعض أي عرض يناسب حجم شركته وحدة المشكلة
+            بالضبط. هذي ليست قائمة أسعار جاهزة — كل عرض هنا يستحق أن تفهمه قبل ما تفوّته.
           </p>
         </header>
 
@@ -24,14 +25,6 @@ export default function OffersPage() {
               <p className="text-xs uppercase tracking-widest text-amber-300/80">{o.id}</p>
               <h2 className="mt-2 text-xl font-semibold">{o.name}</h2>
               <p className="text-xs text-white/60">{o.nameAr}</p>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-2xl font-semibold text-amber-200">{o.setup}</span>
-                <span className="text-xs text-white/60">setup</span>
-              </div>
-              <div className="mt-1 flex items-baseline gap-2">
-                <span className="text-sm text-white/80">{o.monthly}</span>
-                <span className="text-xs text-white/60">monthly</span>
-              </div>
               <p className="mt-4 text-sm text-white/80">{o.positioning}</p>
               <p className="text-xs text-white/60">{o.positioningAr}</p>
               <ul className="mt-4 flex flex-wrap gap-2 text-[10px] text-white/60">
@@ -41,6 +34,12 @@ export default function OffersPage() {
                   </li>
                 ))}
               </ul>
+              <Link
+                href="/book"
+                className="mt-5 text-xs font-medium text-amber-300 hover:underline"
+              >
+                اعرف نطاقه وسعره الفعلي ←
+              </Link>
             </article>
           ))}
         </section>

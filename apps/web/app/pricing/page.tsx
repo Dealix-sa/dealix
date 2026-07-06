@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { PREMIUM_OFFERS } from "@/lib/sales-machine/ultimate-sales-os";
 
 export const metadata = {
   title: "Pricing — Dealix",
-  description: "Transparent pricing for every offer, with a free 20-min diagnostic as the entry point.",
+  description: "Seven strategic engagements, scoped to your company after a diagnostic call.",
 };
 
 export default function PricingPage() {
@@ -11,10 +12,11 @@ export default function PricingPage() {
       <div className="mx-auto max-w-6xl px-6 py-16">
         <header>
           <p className="text-xs uppercase tracking-[0.3em] text-amber-300/80">Pricing</p>
-          <h1 className="mt-3 text-4xl font-semibold">شفاف، بدون فخ</h1>
+          <h1 className="mt-3 text-4xl font-semibold">سبع أنظمة استراتيجية، ليست باقات جاهزة</h1>
           <p className="mt-3 max-w-2xl text-sm text-white/70">
-            سبع عروض، كل واحد له setup + monthly واضح. لا عقود طويلة، لا auto-renewals خفية، لا
-            رسوم إعداد مخفية.
+            كل نظام هنا مصمم لمشكلة تشغيلية حقيقية تُكلّف الشركة إيراداً أو وقتاً كل أسبوع تتأخر
+            فيه. النطاق والسعر يُحددان بعد تشخيص سريع لحجم شركتك وحدة المشكلة — لا رقم عام يصلح
+            للجميع، ولا شركة نجدها تحتاج نفس النطاق بالضبط.
           </p>
         </header>
 
@@ -23,9 +25,8 @@ export default function PricingPage() {
             <thead className="bg-white/5 text-xs uppercase tracking-widest text-amber-300/80">
               <tr>
                 <th className="px-4 py-3 text-left">Offer</th>
-                <th className="px-4 py-3 text-left">Setup (SAR)</th>
-                <th className="px-4 py-3 text-left">Monthly (SAR)</th>
-                <th className="px-4 py-3 text-left">Best for</th>
+                <th className="px-4 py-3 text-left">لماذا لا تفوّته</th>
+                <th className="px-4 py-3 text-left">الأنسب لـ</th>
               </tr>
             </thead>
             <tbody>
@@ -35,8 +36,7 @@ export default function PricingPage() {
                     <p className="font-medium">{o.name}</p>
                     <p className="text-xs text-white/60">{o.nameAr}</p>
                   </td>
-                  <td className="px-4 py-3 align-top">{o.setup}</td>
-                  <td className="px-4 py-3 align-top">{o.monthly}</td>
+                  <td className="px-4 py-3 align-top text-white/80">{o.positioningAr}</td>
                   <td className="px-4 py-3 align-top text-xs text-white/60">{o.bestFor.join(", ")}</td>
                 </tr>
               ))}
@@ -47,11 +47,19 @@ export default function PricingPage() {
         <section className="mt-8 rounded-2xl border border-amber-300/20 bg-amber-300/5 p-6 text-sm text-white/80">
           <p className="font-medium text-amber-200">قواعد التسعير</p>
           <ul className="mt-2 space-y-1">
-            <li>• ما في setup fee مخفي، وكل setup قابل للاسترداد خلال 14 يوم.</li>
-            <li>• الاشتراك الشهري قابل للإلغاء بإشعار 30 يوم.</li>
-            <li>• التوسعة (Command Center → Custom Enterprise) تتبع نفس قواعد الإلغاء.</li>
-            <li>• لا auto-renewal بصمت — نرسل تذكير قبل 14 يوم من تاريخ التجديد.</li>
+            <li>• لا رقم يُنشر بدون تشخيص — أي سعر مذكور خارج هذه الصفحة قبل مكالمة تشخيصية غير معتمد.</li>
+            <li>• كل setup قابل للاسترداد خلال 14 يوم إذا لم يثبت قيمته.</li>
+            <li>• الاشتراك الشهري قابل للإلغاء بإشعار 30 يوم، بدون auto-renewal بصمت.</li>
           </ul>
+        </section>
+
+        <section className="mt-8 text-center">
+          <Link
+            href="/book"
+            className="inline-block rounded-full bg-amber-300 px-8 py-3 text-sm font-semibold text-black transition hover:bg-amber-200"
+          >
+            احجز تشخيص واعرف السعر الفعلي لشركتك
+          </Link>
         </section>
       </div>
     </main>

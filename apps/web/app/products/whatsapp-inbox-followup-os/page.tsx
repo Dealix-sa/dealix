@@ -81,13 +81,11 @@ export default function WhatsAppInboxFollowupOSPage() {
           </div>
           <div className="rounded-2xl border border-amber-300/20 bg-amber-300/5 p-6">
             <p className="text-xs uppercase tracking-widest text-amber-300/80">
-              نطاق التسعير
+              لماذا لا تؤجله
             </p>
             <p className="mt-2 text-sm text-white/80">
-              SAR 12,000 setup · SAR 3,500/شهر
-            </p>
-            <p className="mt-1 text-xs text-white/50">
-              تقديري، يُتأكد بعد التشخيص
+              كل يوم بدون queue واضحة هو فرصة تضيع في واتساب أو إيميل بصمت.
+              النطاق والسعر يُحددان بعد تشخيص لحجم المحادثات عندك.
             </p>
           </div>
         </section>

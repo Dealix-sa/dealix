@@ -159,17 +159,13 @@ export default function HomePage() {
 
         <section aria-labelledby="offers-title">
           <p className="eyebrow">What we sell first</p>
-          <h2 id="offers-title">باقات إطلاق قابلة للبيع خلال أيام، لا مشاريع ضخمة بلا proof.</h2>
+          <h2 id="offers-title">أنظمة استراتيجية، ليست باقات عامة — لا تفوّت الأنسب لشركتك.</h2>
           <div className="cards">
             {launchOffers.map((offer) => (
               <article className="card" key={offer.id}>
                 <span className="badge badge-emerald">{offer.nameAr}</span>
                 <h3 style={{ marginTop: "var(--sp-4)" }}>{offer.name}</h3>
                 <p>{offer.positioningAr}</p>
-                <p className="text-gold" style={{ fontWeight: 800 }}>
-                  {offer.setup === "Free" ? "بدون تكلفة" : `Setup: ${offer.setup}`}
-                  {offer.monthly !== "—" ? ` · Monthly: ${offer.monthly}` : ""}
-                </p>
                 <Link href="/offers" className="btn btn-secondary">افتح التفاصيل →</Link>
               </article>
             ))}

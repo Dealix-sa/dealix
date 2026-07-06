@@ -82,13 +82,11 @@ export default function AITrustComplianceOSPage() {
           </div>
           <div className="rounded-2xl border border-amber-300/20 bg-amber-300/5 p-6">
             <p className="text-xs uppercase tracking-widest text-amber-300/80">
-              نطاق التسعير
+              لماذا لا تؤجله
             </p>
             <p className="mt-2 text-sm text-white/80">
-              SAR 25,000 setup · SAR 6,000/شهر
-            </p>
-            <p className="mt-1 text-xs text-white/50">
-              تقديري، يُتأكد بعد التشخيص
+              أول خروج AI بدون سياسة أو approval gate هو أول حادثة امتثال حقيقية.
+              هذا نظام حماية، لا رفاهية — والنطاق والسعر يُحددان بعد تشخيص سريع.
             </p>
           </div>
         </section>
