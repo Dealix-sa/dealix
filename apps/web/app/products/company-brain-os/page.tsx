@@ -82,13 +82,11 @@ export default function CompanyBrainOSPage() {
           </div>
           <div className="rounded-2xl border border-amber-300/20 bg-amber-300/5 p-6">
             <p className="text-xs uppercase tracking-widest text-amber-300/80">
-              نطاق التسعير
+              لماذا لا تؤجله
             </p>
             <p className="mt-2 text-sm text-white/80">
-              SAR 18,000 setup · SAR 5,000/شهر
-            </p>
-            <p className="mt-1 text-xs text-white/50">
-              تقديري، يُتأكد بعد التشخيص
+              كل يوم تتأخر فيه، معرفة أهم قرار في الشركة تبقى محبوسة برأس فرد
+              واحد. النطاق والسعر يُحددان بعد تشخيص لحجم شركتك.
             </p>
           </div>
         </section>

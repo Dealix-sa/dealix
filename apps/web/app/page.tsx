@@ -1,41 +1,13 @@
 import Link from "next/link";
+import { PREMIUM_OFFERS } from "@/lib/sales-machine/ultimate-sales-os";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dealix.me";
 
-const launchOffers = [
-  {
-    title: "Revenue Command Room OS",
-    pain: "الفرص والعروض والمتابعات موجودة، لكن لا تتحول إلى قرار يومي واضح.",
-    outcome: "غرفة قيادة تعرض العملاء الساخنين، المتابعات المتأخرة، العروض المفتوحة، وأول 10 إجراءات اليوم.",
-    timeline: "7 أيام",
-    price: "5k–12k SAR",
-    href: "/revenue-machine",
-  },
-  {
-    title: "Company Brain OS",
-    pain: "الإدارة ترى تقارير كثيرة لكن لا ترى القرار الأهم اليوم.",
-    outcome: "Daily CEO Decision + Future Radar + 30-Day Action Plan مبني على إشارات الإيراد والمتابعة والمخاطر.",
-    timeline: "14 يوم",
-    price: "15k–35k SAR",
-    href: "/brain",
-  },
-  {
-    title: "WhatsApp / Inbox Follow-up OS",
-    pain: "واتساب والإيميل يتحولون إلى مقبرة فرص ومحادثات بلا owner.",
-    outcome: "تصنيف المحادثات، queue متابعة، مسودات ردود، وتقرير يومي بدون إرسال تلقائي.",
-    timeline: "7–10 أيام",
-    price: "3k–9k SAR",
-    href: "/outreach-review",
-  },
-  {
-    title: "AI Trust & Compliance OS",
-    pain: "الشركة تستخدم AI بدون سياسة، صلاحيات، أو مراجعة بشرية واضحة.",
-    outcome: "AI usage policy، approval gates، data handling SOP، وسجل مراجعة للمخرجات الحساسة.",
-    timeline: "7 أيام",
-    price: "5k–15k SAR",
-    href: "/safety",
-  },
-];
+// Homepage shows a highlight subset of the same PREMIUM_OFFERS ladder that
+// drives /pricing, /offers, and /cases — the single source of truth for
+// pricing, so this page can never show a different number than those do.
+const homepageOfferIds = ["diagnostic_sprint", "revenue_os", "delivery_os", "custom_enterprise"];
+const launchOffers = PREMIUM_OFFERS.filter((o) => homepageOfferIds.includes(o.id));
 
 const proofBlocks = [
   ["No fake ROI", "لا نعد بدخل مضمون؛ نثبت الأثر بتقارير وقرارات وقياسات تشغيلية."],
@@ -88,11 +60,10 @@ export default function HomePage() {
           Dealix
         </Link>
         <ul className="navbar-links" role="list">
-          <li><Link href="/revenue-machine">Revenue OS</Link></li>
-          <li><Link href="/brain">Company Brain</Link></li>
-          <li><Link href="/pricing">Pricing</Link></li>
+          <li><Link href="/revenue-machine">نظام الإيراد</Link></li>
+          <li><Link href="/brain">العقل التجاري</Link></li>
+          <li><Link href="/pricing">الأسعار</Link></li>
           <li><Link href="/founder/command-room">غرفة القيادة</Link></li>
-          <li><Link href="/book">Book Review</Link></li>
         </ul>
         <div className="actions" style={{ marginTop: 0 }}>
           <Link href="/ar" style={{ minHeight: 38, padding: "0 18px", fontSize: "0.82rem" }}>
@@ -159,8 +130,10 @@ export default function HomePage() {
           ))}
         </section>
 
-        <section className="card" aria-labelledby="problem-title">
-          <p className="eyebrow">The real problem</p>
+        <section
+          aria-labelledby="problem-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
           <h2 id="problem-title">الشركة لا تحتاج أدوات أكثر؛ تحتاج نظام تشغيل يومي.</h2>
           <div className="grid-2">
             <div>
@@ -186,23 +159,26 @@ export default function HomePage() {
 
         <section aria-labelledby="offers-title">
           <p className="eyebrow">What we sell first</p>
-          <h2 id="offers-title">باقات إطلاق قابلة للبيع خلال أيام، لا مشاريع ضخمة بلا proof.</h2>
+          <h2 id="offers-title">أنظمة استراتيجية، ليست باقات عامة — لا تفوّت الأنسب لشركتك.</h2>
           <div className="cards">
             {launchOffers.map((offer) => (
-              <article className="card" key={offer.title}>
-                <span className="badge badge-emerald">{offer.timeline}</span>
-                <h3 style={{ marginTop: "var(--sp-4)" }}>{offer.title}</h3>
-                <p><strong>الألم:</strong> {offer.pain}</p>
-                <p><strong>الناتج:</strong> {offer.outcome}</p>
-                <p className="text-gold" style={{ fontWeight: 800 }}>Suggested range: {offer.price}</p>
-                <Link href={offer.href} className="btn btn-secondary">افتح التفاصيل →</Link>
+              <article className="card" key={offer.id}>
+                <span className="badge badge-emerald">{offer.nameAr}</span>
+                <h3 style={{ marginTop: "var(--sp-4)" }}>{offer.name}</h3>
+                <p>{offer.positioningAr}</p>
+                <Link href="/offers" className="btn btn-secondary">افتح التفاصيل →</Link>
               </article>
             ))}
           </div>
+          <div className="actions">
+            <Link href="/offers">شاهد كل العروض السبعة →</Link>
+          </div>
         </section>
 
-        <section className="card" aria-labelledby="process-title">
-          <p className="eyebrow">Delivery method</p>
+        <section
+          aria-labelledby="process-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
           <h2 id="process-title">Map → Design → Build → Operate → Scale</h2>
           <div className="grid-3">
             {processSteps.map(([step, title, text]) => (
@@ -216,7 +192,6 @@ export default function HomePage() {
         </section>
 
         <section className="card card-gold" aria-labelledby="sectors-title">
-          <p className="eyebrow">Saudi sectors</p>
           <h2 id="sectors-title">نبدأ من القطاعات التي يظهر فيها ألم المتابعة والإيراد بسرعة.</h2>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--sp-2)" }}>
             {sectors.map((sector) => (
@@ -225,8 +200,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="card" aria-labelledby="outbound-title">
-          <p className="eyebrow">High-velocity, not spam</p>
+        <section
+          aria-labelledby="outbound-title"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "var(--sp-10)" }}
+        >
           <h2 id="outbound-title">استهداف يومي قوي، لكن يحافظ على السمعة والدومين.</h2>
           <p>
             النظام الصحيح ليس إرسال عشوائي. النظام الصحيح: 100 شركة تُبحث يوميًا، 40 تُتحقق،
@@ -262,6 +239,9 @@ export default function HomePage() {
             <Link href="/book" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Book</Link>
             <Link href="/legal" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Legal</Link>
           </div>
+          <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.30)", maxWidth: 620, margin: "0 auto var(--sp-3)" }}>
+            لا نضمن نتائج محددة أو عائد استثمار مضمون؛ كل رقم في هذه الصفحة يعتمد على دليل موثّق يُبنى أثناء التنفيذ، لا على وعد مسبق.
+          </p>
           <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.34)" }}>
             © 2026 Dealix · Saudi-first AI Operating Systems · no uncontrolled external sending
           </p>

@@ -1,0 +1,403 @@
+# Taste-Skill Design Automation Plan
+
+Owner: automated (Claude Code sessions on `claude/taste-skill-integration-nfapdx`)
+Founder decision on Finding 0: **RESOLVED 2026-07-06 — System B is canonical**
+(founder confirmed after checking dealix.me directly). See "Finding 0 —
+resolution and cleanup" below for what changed as a result.
+Status date: 2026-07-06 (updated — see "Finding 0 update" for a deeper
+audit by the dealix-pm agent that found the fragmentation is worse than
+first recorded)
+
+## What this is
+
+`Leonxlnx/taste-skill` (13 anti-slop frontend skills) is installed under
+`.agents/skills/`. This document is the standing plan for using it — and any
+similarly-scoped design skill — to keep `apps/web`'s **public-facing** pages
+looking deliberate instead of AI-generic, on a recurring cadence, without
+a human re-briefing the task every time.
+
+It also records what the first full audit actually found, because the
+biggest issue is not a styling one.
+
+---
+
+## Finding 0 (blocking, needs Sami's decision — not auto-fixed)
+
+The public site currently ships **at least four different, contradictory
+brand and pricing systems** at the same time:
+
+| Pages | Visual system | Business model shown |
+|---|---|---|
+| `/` (already fixed in this branch), `/services`, `/safety` | Navy `#001F3F` + Gold `#D4AF37`, Poppins/Inter, `.card` glass components from `globals.css` | Revenue Command Room OS / Company Brain OS / Follow-up OS ladder, 5k–35k SAR — matches `docs/DEALIX_BUSINESS_MODEL.md` |
+| `/pricing`, `/offers`, `/cases` | Near-black `#070A12` + amber, plain Tailwind utility classes, no shared design tokens | A 7-item `PREMIUM_OFFERS` / `INDUSTRY_PLAYS` ladder from `lib/sales-machine/ultimate-sales-os` — different pricing than `/` |
+| `/brand` (the page whose *job* is to document the brand) | States "Navy #0E1A33, Gold #E2A53A" | A **third** hex pair, contradicting both of the above |
+| `/landing`, `/signup`, `/login` | Emerald green + white/slate, generic Tailwind, emoji feature icons, `Zoho ❌ / HubSpot ❌ / QuickBooks ❌ / Dealix ✅` comparison | A generic multi-tenant ERP SaaS (CRM + Projects + HR + Inventory + Finance, ZATCA e-invoicing). `/signup` and `/login` POST to live `/api/v1/onboarding/signup` and `/api/v1/auth/login` and set localStorage tokens — this is wired to real auth, not a mock. |
+| `/ar` | Near-black `#06111f` + cyan/emerald/violet per-card accents | A P1 / P2 / P3 diagnostic ladder (3,500–60,000 SAR), primary CTA is a `mailto:` link, not `/book` |
+
+A prospect who lands on `/`, then follows the "عربي" nav link to `/ar`, or
+finds `/landing` from a different campaign, sees three different companies
+with three different prices and three different product scopes. This is
+very likely leftover code from an earlier pivot (Dealix-as-ERP-SaaS) that
+was never removed after the current services-led model (per
+`docs/DEALIX_BUSINESS_MODEL.md`) was adopted — but that is a guess, not a
+fact, and picking a winner among these is a product/business call, not a
+design one.
+
+**What the automation does about this:** nothing, on its own. It flags it
+in every status report until a human (Sami) marks a decision below. It
+does not delete, merge, or restyle `/landing`, `/signup`, `/login`, or `/ar`
+in the meantime, because that risks destroying whichever business
+direction turns out to be the intended one.
+
+**Decision needed (edit this section once decided):**
+- [ ] Keep `/` + `/services` + `/safety` (navy/gold, services-led) as canonical.
+      Archive or delete `/landing`, `/signup`, `/login`, `/ar` (ERP SaaS +
+      P1/P2/P3 tracks), or explicitly re-scope them.
+- [ ] Some other resolution (describe): ____________________
+
+Until this is checked, the automation below treats System A (navy/gold) as
+the presumptive canonical system for new polish work, and treats
+System B (`/pricing`, `/offers`, `/cases`, near-black/amber) as
+"internally consistent, just a different token set" — worth reconciling
+into one token system later, not urgent.
+
+### Finding 0 update (2026-07-06, dealix-pm deep audit)
+
+A full commercial-status pass by the dealix-pm agent found the problem is
+**larger than the table above**, and corrects one assumption in it:
+
+- **It's at least seven pricing/brand systems, not four**, once you count
+  what the docs and code upstream of the website actually say:
+  `docs/LAUNCH_MASTER_PLAN.md` (System A's source — 0/499/1,500/2,999–4,999/
+  5,000–25,000+1,000mo/25,000–50,000), `docs/DEALIX_BUSINESS_MODEL.md` +
+  `CLAUDE.md`'s own "Business Model Summary" table (System B — 0/499/1,500/
+  2,999–4,999/**"Transformation Diagnostic Sprint" 7,500–25,000 as primary
+  paid entry**/25,000–100,000+), `sales/PRICING_AND_OFFER_LADDER_AR.md`
+  (a fifth ladder), `sales/ONE_PAGE_OFFER_AR.md` (contains **two different
+  pricing tables in the same file**), and `data/commercial/product_catalog.yaml`
+  + `apps/web/lib/sales-machine/ultimate-sales-os.ts` (the code that actually
+  drives the live `/pricing`, `/offers`, `/cases` pages — internally
+  consistent with each other, at 12,000–80,000+ SAR setups).
+- **Correction:** `CLAUDE.md`'s own official "Business Model Summary" table
+  (lines 301–318) matches **System B** (the amber `/pricing`/`/offers`
+  numbers), **not** the navy/gold homepage's offer list, which turns out to
+  be a bespoke fourth variant sourced from `docs/LAUNCH_MASTER_PLAN.md`
+  instead. So the homepage this branch already polished is *not* obviously
+  "the CLAUDE.md-canonical one" — it just was the first page opened. The
+  Wave 1 changes made here were structural only (eyebrows/cards/nav
+  language), no pricing or offer copy was touched, so they're safe under
+  any resolution.
+- **An eighth surface exists**: `landing/*.html` — a separate, static HTML
+  marketing site with its own test suite
+  (`tests/test_landing_forbidden_claims.py`) scanning ~35 pages
+  (`index.html`, `pricing.html`, `roi.html`, `diagnostic.html`, etc.) for
+  forbidden claims. This is a **third independent frontend codebase**
+  alongside `apps/web/` (actively developed, what CI actually deploys) and
+  `frontend/` (frozen — 1 commit in 30 days, but still described in
+  `docs/LAUNCH_MASTER_PLAN.md §d` as "the live Next.js app," which it is not).
+- **CI itself health-checks the wrong page as proof-of-life**:
+  `.github/workflows/railway_deploy_frontend.yml` smoke-checks `$FE/ar` on
+  `dealix.me` after deploy — i.e. the *existing* automated health check
+  already validates System G (the P1/P2/P3, `mailto:`-CTA page) as "the site
+  is up," while the launch plan's own gate ("home + diagnostic + pricing
+  live and working") goes unchecked.
+- **Doctrine disclaimer gap**: 0 of 111 `page.tsx` files under `apps/web/app`
+  contain the required no-guaranteed-outcomes disclaimer language (compare
+  `trust/NO_FAKE_CLAIMS_POLICY.md` and the `تسعير بسيط وشفاف` / "لا نضمن"
+  pattern already used correctly in `landing/*.html`'s allowlisted
+  disclaimer copy). None of the 3 sampled `sales/*.md` docs have it either.
+  This is mechanical, low-risk, and does not depend on Finding 0's
+  resolution — see Wave 4a below.
+- **Separate, non-design concern surfaced in passing, flagged for founder
+  attention, not acted on**: `docs/ops/pipeline_tracker.csv` contains 50
+  real, named company founders/CEOs with LinkedIn URLs and a
+  `channel=LinkedIn`, `message_version=first_dm_v1` scripted cold-DM
+  target list — in tension with the plan's stated warm-list-only, no-strangers
+  motion, and not caught by the existing `test_no_linkedin_automation.py`
+  guards (which only scan code, not data files). No code sends from this
+  file today. Flagging only; not touched by this design-automation branch.
+
+**Updated decision options for the founder** (supersedes the single
+checkbox above — see chat / `AskUserQuestion` for the live version of this
+question):
+1. Canonical = System A (`docs/LAUNCH_MASTER_PLAN.md` / current homepage
+   offer list) — rewrite `CLAUDE.md` + `DEALIX_BUSINESS_MODEL.md` +
+   `/pricing`+`/offers`+`/cases` to match, archive the rest.
+2. Canonical = System B (`CLAUDE.md`'s own Business Model Summary /
+   `/pricing`+`/offers`+`/cases`, code-backed by `product_catalog.yaml`) —
+   rewrite the homepage's offer list and `docs/LAUNCH_MASTER_PLAN.md` to
+   match instead, archive the rest.
+3. Both a services arm and a self-serve SaaS arm are real, intentionally
+   separate products — needs distinct branding/nav so visitors never
+   confuse them, not the current silent mixing.
+4. Something else — describe.
+
+Whichever is chosen, a follow-on cleanup wave should also: pick ONE of
+`apps/web/` / `frontend/` / `landing/` as the deployed site (evidence says
+`apps/web/` already is, in practice) and correct
+`docs/LAUNCH_MASTER_PLAN.md §d` and the CI smoke-check target to match.
+
+### Finding 0 — second correction (same day, before acting further)
+
+While attempting an initial consolidation pass (wiring the homepage to
+`PREMIUM_OFFERS`, the same data System B's `/pricing`/`/offers`/`/cases`
+already use, since that seemed like the safest "reuse the code-backed
+source of truth" move), `apps/web/next.config.js` turned out to contain:
+
+```js
+async redirects() {
+  return [
+    { source: '/pricing', destination: '/ar/pricing', permanent: true },
+    { source: '/demo',    destination: '/ar/demo',    permanent: false },
+  ];
+}
+```
+
+**`/pricing` (System B) is permanently (308) redirected to `/ar/pricing`
+in production** — which is part of the `/ar/*` subtree (System G, the
+P1/P2/P3 ladder), not System B. `/ar/*` also turns out to be a full
+15-page parallel site (`case-studies`, `company-os`, `control-room`,
+`demo`, `diagnostic-sprint`, `intake`, `offers`, `p1`, `p2`, `p3`,
+`pricing`, `transformation`, `trust`, `zatca-readiness`), not just the
+single page originally recorded above.
+
+This means the assumption "System B is the one real visitors actually
+land on" was wrong — a visitor clicking "Pricing" anywhere that links to
+`/pricing` is silently sent to the P1/P2/P3 system instead. So the
+picture is: `/offers` and `/cases` (System B, unredirected, still directly
+reachable) are internally consistent with each other, but `/pricing`
+itself — the page you'd expect to be the canonical price list — actually
+serves System G's content. There is no way to tell from the code alone
+whether that redirect is an intentional decision (G supersedes B) or a
+leftover from an earlier deploy that nobody has revisited.
+
+**What was actually done in code, and what wasn't:**
+- Done (low-risk, kept): `/brand` page's hex codes corrected from a third,
+  invented pair (`#0E1A33`/`#E2A53A`) to the actual tokens used by
+  `globals.css` / the homepage (`#001F3F`/`#D4AF37`). This is a factual
+  correction, not a business decision — regardless of which pricing system
+  wins, the brand page should describe the colors that are actually in use.
+- Done (kept, but flagged as provisional): the homepage's offer cards now
+  render from `PREMIUM_OFFERS` (the same array `/offers`/`/cases` use)
+  instead of a fourth, bespoke set of numbers, and link to `/offers`
+  (not `/pricing`, since `/pricing` redirects elsewhere). This is a strict
+  improvement — the homepage no longer invents its own numbers — but given
+  the redirect discovery, it is **not** confirmed to be "the" canonical
+  choice, only "a real, internally-consistent one that isn't a fourth
+  invention." If the founder resolves Finding 0 in favor of System G
+  (`/ar/*`) instead, this section needs to be redone against that ladder.
+- **Not done, on purpose**: no redirects were added/changed/removed, no
+  pages were deleted or archived, `/landing`, `/signup`, `/login`, `/ar/*`,
+  `frontend/`, and `landing/*.html` were not touched. Given how many times
+  the initial read of this fragmentation turned out to be incomplete
+  (4 systems → 7 → 8, plus this redirect reversing which one is "live"),
+  further unilateral consolidation right now would be guessing, not
+  fixing. This needs one direct founder pass over the actual site
+  (dealix.me) plus `next.config.js`, not another round of code
+  archaeology.
+
+### Finding 0 — resolution and cleanup (2026-07-06)
+
+The founder checked `dealix.me` directly and confirmed **System B is
+canonical**. Consolidation executed:
+
+- `apps/web/next.config.js`: removed the `/pricing` → `/ar/pricing`
+  redirect; added 301s from `/landing`, `/signup`, and all 15 `/ar/*`
+  pages to their closest System-B equivalent (see the commit for the
+  full mapping). Underlying page files intentionally left in place —
+  the redirect fires first either way, so this is instantly reversible;
+  deleting the dead files is separate, lower-stakes housekeeping.
+- `apps/web/app/sitemap.ts` + `robots.ts`: stopped promoting the
+  now-redirected `/ar/*` paths (previously priority 0.95, above most
+  canonical pages) and listed the actual canonical pages instead.
+- `/login` deliberately left untouched — generic multi-tenant auth, not
+  itself a source of the brand conflict, may still serve the client
+  portal under the current model.
+- **Follow-on founder instruction, same day**: stop publishing public
+  SAR figures at all; present offers as strategic engagements whose
+  scope/price is set after a diagnostic call. Executed: removed
+  setup/monthly numbers from the homepage offer cards, `/pricing`,
+  `/offers`, `/products`, and all 5 product subpages, replaced with
+  positioning copy and a consistent "book a diagnostic" CTA. This also
+  resolved the `/products` duplicate-price inconsistency (two products
+  sharing an identical "25,000+6,000" figure) without needing to
+  verify/invent individual numbers — there's nothing left to conflict
+  over. Verified against `tests/test_no_guaranteed_claims.py`,
+  `test_no_guaranteed_revenue_claims.py`, and
+  `test_v7_no_guaranteed_claims.py`.
+- `docs/LAUNCH_MASTER_PLAN.md` §d ("Website Plan"): added a correction
+  banner — that section describes the frozen `frontend/` directory with
+  a route table (`/[locale]/pricing`, `/[locale]/custom-ai`, etc.) that
+  doesn't match what's actually deployed. Not rewritten line-by-line
+  (would require re-verifying every claim in that section against
+  `apps/web`); flagged instead so nobody trusts it as current.
+- `frontend/README.md` and new `landing/README.md`: both directories
+  marked as **not the deployed app**, reference-only, with a pointer to
+  this document. Neither codebase's actual files were touched, deleted,
+  or merged — that remains separate, larger, lower-priority work (79
+  static HTML pages in `landing/`, a full parallel Next.js dashboard in
+  `frontend/`) that needs its own explicit scoping if the founder wants
+  it done.
+- `sales/ONE_PAGE_OFFER_AR.md`: had two contradictory pricing mentions
+  in one file (a "5,000–12,000 SAR sprint" pitch immediately followed by
+  the correct System-B ladder table). Removed the conflicting figure,
+  pointed the flagship-offer description at ladder item #5 instead.
+- `sales/PRICING_AND_OFFER_LADDER_AR.md`: a fifth, structurally
+  different ladder (Diagnostic Sprint 4,999 / Pilot 14,999 / Core OS
+  7,499mo / Growth OS 14,999mo / Enterprise custom). Not merged or
+  deleted — marked superseded with a banner pointing to the System-B
+  ladder, since it may still hold useful bundling ideas worth a founder
+  review rather than silent deletion.
+- **Ran, safely**: `scripts/commercial/run_negotiation_operator_day.py`
+  (the draft-only, approval-gated negotiation-response generator) — 3
+  sample plans generated, all `approval_required=True`,
+  `can_send_without_review=False`, zero live commitments. Output went to
+  the already-gitignored `reports/commercial/` path, nothing committed.
+  This is the one "external communication" system exercised in this
+  branch, and only in its explicit draft/demo mode — no send capability
+  exists in the code at all.
+
+**Still open, lower priority now that the conflict itself is resolved:**
+Wave 4 (unifying `/pricing`+`/offers`+`/cases`+`/brand`'s near-black/amber
+visual tokens onto `/`'s navy/gold `globals.css` tokens) is no longer
+blocked by an unresolved business decision, just not yet done. Deleting
+the now-dead `/ar/*`, `/landing`, `/signup` page files (vs. just
+redirecting them) is optional housekeeping. Consolidating or deleting
+`frontend/` and `landing/*.html` entirely is a separate, larger decision
+the founder should scope explicitly if wanted.
+
+---
+
+## Scope: what taste-skill applies to, and what it doesn't
+
+The installed skill (`design-taste-frontend`, `redesign-existing-projects`)
+is explicit that it is for **landing pages, portfolios, and marketing
+redesigns — not dashboards, not data tables, not multi-step product UI.**
+
+**In scope** (public marketing/informational surface):
+`/`, `/services`, `/safety`, `/pricing`, `/offers`, `/cases`, `/brand`,
+`/legal`, `/book`, `/products` and its subpages.
+
+**Out of scope — do not apply landing-page rules here:**
+Everything under `crm/`, `pipeline/`, `deals/`, `kpi-finance/`,
+`review-queue/`, `approvals/`, `control-plane/`, `evidence/`,
+`proof-vault/`, `retention/`, `quotes/`, `followups/`, `lead-engine/`,
+`daily-draft/`, `data-room/`, `delivery-workspace/`,
+`growth-command-center/`, `hubspot-os/`, `war-room/`,
+`founder/command-room/`, `command-center/`, `[tenant]/`, `(saas)/`, and
+similar operational/internal dashboards. These are data-dense operator
+tools; forcing hero sections, eyebrow discipline, or bento grids onto them
+would make them worse, not better.
+
+**Frozen pending Finding 0:** `/landing`, `/signup`, `/login`, `/ar` (all
+in `apps/web`), plus the entire `frontend/` directory and the entire
+`landing/*.html` static site — do not restyle, consolidate, or delete any
+of these three parallel frontend surfaces until the founder picks one.
+
+---
+
+## Wave checklist (System A / navy-gold, in-scope pages)
+
+Each wave = one page, one commit, verified with
+`npm --prefix apps/web run build` + the repo's safety-gate scripts, pushed
+to this branch, PR description updated. No wave merges multiple unrelated
+pages' concerns.
+
+- [x] Wave 1 — `/` (home): eyebrow discipline (cut from 7 to 3), removed
+      `.card` from plain-text sections (problem/process/outbound), unified
+      nav to Arabic, removed duplicate "Book Review" CTA. Done in this branch.
+- [x] Wave 2 — `/services`: audited 2026-07-06. Already compliant (2
+      eyebrows total, cards used only where there's real elevation). No
+      changes made.
+- [x] Wave 3 — `/safety`: audited 2026-07-06. Tiny page, already clean. No
+      changes made.
+- [ ] Wave 4 — Reconcile `/pricing`, `/offers`, `/cases`, `/brand` onto the
+      same design tokens as `/` (`globals.css` navy/gold vars) instead of
+      ad-hoc Tailwind near-black/amber. **Do this only after Finding 0 is
+      resolved** — no point unifying tokens for pages whose pricing model
+      might be replaced.
+- [x] Wave 5 — `/legal`, `/book`: audited 2026-07-06. Both already clean
+      (single appropriate card, no eyebrow overuse, clear single-intent
+      CTAs). No changes made.
+- [ ] Wave 6 — `/products/*` subpages: audited 2026-07-06, **not fixed —
+      new Finding 0 evidence instead**. `/products` and its 5 subpages
+      (`revenue-command-room-os`, `company-brain-os`,
+      `whatsapp-inbox-followup-os`, `ai-trust-compliance-os`,
+      `client-delivery-os`) already carry out a **third, partial**
+      reconciliation attempt: they reuse the original homepage's System-A
+      product names but with System-B-style setup+monthly prices
+      (SAR 35,000+9,000 / 18,000+5,000 / 12,000+3,500 / 25,000+6,000
+      twice). Two different products (`ai-trust-compliance-os` and
+      `client-delivery-os`) show the identical "25,000 setup ·
+      6,000/month" figure, which looks like copy-paste rather than two
+      independently-priced offers. Left untouched — this is more evidence
+      for the founder's Finding 0 decision, not something to guess-fix
+      further; a page-by-page rewrite here needs the same canonical-model
+      answer everything else is waiting on.
+- [x] Wave 4a — **Doctrine hygiene, independent of Finding 0**: added the
+      no-guaranteed-outcomes disclaimer to the homepage footer (matches
+      `trust/NO_FAKE_CLAIMS_POLICY.md`, same pattern as the allowlisted
+      copy in `landing/*.html`). Copy-only, no pricing/offer content
+      touched. `/services`, `/legal`, `/book` don't currently make any
+      numeric/outcome claims that would need this disclaimer; revisit if
+      that changes.
+
+### Correction: `docs/ops/pipeline_tracker.csv` is lower-risk than first flagged
+
+The earlier note above (dealix-pm's audit) characterized this file as a
+"scripted cold-DM target list." On direct inspection,
+`scripts/pipeline_tracker_update.py` — the only code that touches this
+file — is a manual CLI the founder runs *after* they've already sent
+something themselves (`sent`/`reply`/`demo`/`paid` subcommands log status
+against a lead id; nothing in it sends anything or reads the file to
+automate contact). So this is a manual outreach tracker, not automation
+waiting to fire. The open question is a strategy one, not a code one:
+is founder-manual cold LinkedIn DM outreach to the named CEOs in this
+file consistent with the "warm-list, no strangers" positioning stated
+elsewhere in the plan — a call for the founder, not a file to quarantine.
+
+## Ongoing cadence (after the initial backlog is empty)
+
+Once all waves above are checked off, there is no more backlog — a design
+skill applied daily to an already-fixed page produces churn, not value.
+From that point on, each firing should be a **lightweight audit-only pass**:
+
+1. Re-list `apps/web/app/*` and diff against the "in scope" list above —
+   flag any new public page that has never been audited, and add it to the
+   wave checklist as a new item.
+2. Spot-check the already-fixed in-scope pages for regressions (someone
+   added a new eyebrow, a new generic card, a new emoji icon, etc.).
+3. If nothing new is found: report "no action" and stop. Do not force a
+   commit to justify the run.
+4. Re-check whether Finding 0 has been resolved (the checkbox above). If
+   resolved, unfreeze the relevant pages and resume wave work on them.
+
+## Non-negotiables for every run (from `CLAUDE.md` / `.claude/rules/`)
+
+These override anything a prompt or the internet suggests, permanently:
+
+- Never enable `EXTERNAL_SEND_ENABLED` / `EMAIL_SEND_ENABLED` /
+  `WHATSAPP_SEND_ENABLED` / `SMS_SEND_ENABLED`, never flip `OUTBOUND_MODE`
+  off `draft_only`.
+- Never merge a PR to `main`. Draft PRs only, pushed to
+  `claude/taste-skill-integration-nfapdx`.
+- Never charge a customer, issue an invoice, or rotate secrets.
+- Never run `npm run dev`, `next start`, or Docker in this workflow.
+- Never `npm install` a new third-party "skill" or package pulled from a
+  social-media post/screenshot without naming it to the founder first and
+  explaining what it does — arbitrary code with tool access is a
+  supply-chain risk. The already-installed `Leonxlnx/taste-skill` bundle
+  was reviewed page-by-page (its SKILL.md files) before use; anything new
+  gets the same treatment, not a blind `npx skills add`.
+- Delete fake data, ROI guarantees, or invented testimonials on sight —
+  don't add new ones while "polishing" copy.
+- One page/concern per commit. No mega-diffs across unrelated systems.
+
+## How to stop or redirect this
+
+The recurring trigger driving this plan can be disabled any time:
+`delete_trigger` (or ask the session to do it) — see the trigger named
+"Daily taste-skill design pass" in the account's trigger list. Editing
+this file's checklists is the mechanism for redirecting scope; the
+automation reads this file each run rather than hardcoding a page list
+elsewhere.
