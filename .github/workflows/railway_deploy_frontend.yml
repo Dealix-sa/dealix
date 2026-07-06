@@ -1,8 +1,8 @@
 name: Deploy Frontend to Railway
 
 # Deploys Dealix Next.js frontend when RAILWAY_TOKEN is configured.
-# Setup: gh secret set RAILWAY_TOKEN --repo VoXc2/dealix
-# Optional: gh variable set RAILWAY_FRONTEND_SERVICE --repo VoXc2/dealix (default: web)
+# Setup: gh secret set RAILWAY_TOKEN --repo Dealix-sa/dealix
+# Optional: gh variable set RAILWAY_FRONTEND_SERVICE --repo Dealix-sa/dealix (default: web)
 
 on:
   push:
@@ -43,8 +43,8 @@ jobs:
       - name: Install Railway CLI
         if: steps.check_token.outputs.token_present == 'true'
         run: |
-          curl -fsSL https://railway.com/install.sh | sh
-          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+          npm install -g @railway/cli
+          railway --version
 
       - name: Deploy frontend
         if: steps.check_token.outputs.token_present == 'true'
