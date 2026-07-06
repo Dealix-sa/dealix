@@ -266,6 +266,9 @@ export default function HomePage() {
             <Link href="/book" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Book</Link>
             <Link href="/legal" style={{ color: "rgba(255,255,255,0.46)", fontWeight: 500, fontSize: "0.82rem" }}>Legal</Link>
           </div>
+          <p style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.30)", maxWidth: 620, margin: "0 auto var(--sp-3)" }}>
+            لا نضمن نتائج محددة أو عائد استثمار مضمون؛ كل رقم في هذه الصفحة يعتمد على دليل موثّق يُبنى أثناء التنفيذ، لا على وعد مسبق.
+          </p>
           <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.34)" }}>
             © 2026 Dealix · Saudi-first AI Operating Systems · no uncontrolled external sending
           </p>

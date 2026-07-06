@@ -2,7 +2,9 @@
 
 Owner: automated (Claude Code sessions on `claude/taste-skill-integration-nfapdx`)
 Founder decision needed on: Finding 0 below
-Status date: 2026-07-05
+Status date: 2026-07-06 (updated — see "Finding 0 update" for a deeper
+audit by the dealix-pm agent that found the fragmentation is worse than
+first recorded)
 
 ## What this is
 
@@ -57,6 +59,82 @@ System B (`/pricing`, `/offers`, `/cases`, near-black/amber) as
 "internally consistent, just a different token set" — worth reconciling
 into one token system later, not urgent.
 
+### Finding 0 update (2026-07-06, dealix-pm deep audit)
+
+A full commercial-status pass by the dealix-pm agent found the problem is
+**larger than the table above**, and corrects one assumption in it:
+
+- **It's at least seven pricing/brand systems, not four**, once you count
+  what the docs and code upstream of the website actually say:
+  `docs/LAUNCH_MASTER_PLAN.md` (System A's source — 0/499/1,500/2,999–4,999/
+  5,000–25,000+1,000mo/25,000–50,000), `docs/DEALIX_BUSINESS_MODEL.md` +
+  `CLAUDE.md`'s own "Business Model Summary" table (System B — 0/499/1,500/
+  2,999–4,999/**"Transformation Diagnostic Sprint" 7,500–25,000 as primary
+  paid entry**/25,000–100,000+), `sales/PRICING_AND_OFFER_LADDER_AR.md`
+  (a fifth ladder), `sales/ONE_PAGE_OFFER_AR.md` (contains **two different
+  pricing tables in the same file**), and `data/commercial/product_catalog.yaml`
+  + `apps/web/lib/sales-machine/ultimate-sales-os.ts` (the code that actually
+  drives the live `/pricing`, `/offers`, `/cases` pages — internally
+  consistent with each other, at 12,000–80,000+ SAR setups).
+- **Correction:** `CLAUDE.md`'s own official "Business Model Summary" table
+  (lines 301–318) matches **System B** (the amber `/pricing`/`/offers`
+  numbers), **not** the navy/gold homepage's offer list, which turns out to
+  be a bespoke fourth variant sourced from `docs/LAUNCH_MASTER_PLAN.md`
+  instead. So the homepage this branch already polished is *not* obviously
+  "the CLAUDE.md-canonical one" — it just was the first page opened. The
+  Wave 1 changes made here were structural only (eyebrows/cards/nav
+  language), no pricing or offer copy was touched, so they're safe under
+  any resolution.
+- **An eighth surface exists**: `landing/*.html` — a separate, static HTML
+  marketing site with its own test suite
+  (`tests/test_landing_forbidden_claims.py`) scanning ~35 pages
+  (`index.html`, `pricing.html`, `roi.html`, `diagnostic.html`, etc.) for
+  forbidden claims. This is a **third independent frontend codebase**
+  alongside `apps/web/` (actively developed, what CI actually deploys) and
+  `frontend/` (frozen — 1 commit in 30 days, but still described in
+  `docs/LAUNCH_MASTER_PLAN.md §d` as "the live Next.js app," which it is not).
+- **CI itself health-checks the wrong page as proof-of-life**:
+  `.github/workflows/railway_deploy_frontend.yml` smoke-checks `$FE/ar` on
+  `dealix.me` after deploy — i.e. the *existing* automated health check
+  already validates System G (the P1/P2/P3, `mailto:`-CTA page) as "the site
+  is up," while the launch plan's own gate ("home + diagnostic + pricing
+  live and working") goes unchecked.
+- **Doctrine disclaimer gap**: 0 of 111 `page.tsx` files under `apps/web/app`
+  contain the required no-guaranteed-outcomes disclaimer language (compare
+  `trust/NO_FAKE_CLAIMS_POLICY.md` and the `تسعير بسيط وشفاف` / "لا نضمن"
+  pattern already used correctly in `landing/*.html`'s allowlisted
+  disclaimer copy). None of the 3 sampled `sales/*.md` docs have it either.
+  This is mechanical, low-risk, and does not depend on Finding 0's
+  resolution — see Wave 4a below.
+- **Separate, non-design concern surfaced in passing, flagged for founder
+  attention, not acted on**: `docs/ops/pipeline_tracker.csv` contains 50
+  real, named company founders/CEOs with LinkedIn URLs and a
+  `channel=LinkedIn`, `message_version=first_dm_v1` scripted cold-DM
+  target list — in tension with the plan's stated warm-list-only, no-strangers
+  motion, and not caught by the existing `test_no_linkedin_automation.py`
+  guards (which only scan code, not data files). No code sends from this
+  file today. Flagging only; not touched by this design-automation branch.
+
+**Updated decision options for the founder** (supersedes the single
+checkbox above — see chat / `AskUserQuestion` for the live version of this
+question):
+1. Canonical = System A (`docs/LAUNCH_MASTER_PLAN.md` / current homepage
+   offer list) — rewrite `CLAUDE.md` + `DEALIX_BUSINESS_MODEL.md` +
+   `/pricing`+`/offers`+`/cases` to match, archive the rest.
+2. Canonical = System B (`CLAUDE.md`'s own Business Model Summary /
+   `/pricing`+`/offers`+`/cases`, code-backed by `product_catalog.yaml`) —
+   rewrite the homepage's offer list and `docs/LAUNCH_MASTER_PLAN.md` to
+   match instead, archive the rest.
+3. Both a services arm and a self-serve SaaS arm are real, intentionally
+   separate products — needs distinct branding/nav so visitors never
+   confuse them, not the current silent mixing.
+4. Something else — describe.
+
+Whichever is chosen, a follow-on cleanup wave should also: pick ONE of
+`apps/web/` / `frontend/` / `landing/` as the deployed site (evidence says
+`apps/web/` already is, in practice) and correct
+`docs/LAUNCH_MASTER_PLAN.md §d` and the CI smoke-check target to match.
+
 ---
 
 ## Scope: what taste-skill applies to, and what it doesn't
@@ -80,7 +158,10 @@ similar operational/internal dashboards. These are data-dense operator
 tools; forcing hero sections, eyebrow discipline, or bento grids onto them
 would make them worse, not better.
 
-**Frozen pending Finding 0:** `/landing`, `/signup`, `/login`, `/ar`.
+**Frozen pending Finding 0:** `/landing`, `/signup`, `/login`, `/ar` (all
+in `apps/web`), plus the entire `frontend/` directory and the entire
+`landing/*.html` static site — do not restyle, consolidate, or delete any
+of these three parallel frontend surfaces until the founder picks one.
 
 ---
 
@@ -106,6 +187,14 @@ pages' concerns.
       might be replaced.
 - [ ] Wave 5 — `/legal`, `/book`: quick audit once reached (both are small).
 - [ ] Wave 6 — `/products/*` subpages: audit for eyebrow/card overuse.
+- [ ] Wave 4a — **Doctrine hygiene, independent of Finding 0, safe to do
+      anytime**: add the no-guaranteed-outcomes disclaimer (per
+      `trust/NO_FAKE_CLAIMS_POLICY.md`, phrased like the existing allowlisted
+      copy in `landing/*.html`, e.g. "لا نضمن نتائج محددة أو عائد استثمار
+      مضمون؛ كل رقم مبني على دليل موثّق") to the footer of in-scope
+      `apps/web` pages that don't already carry it. This is copy-only,
+      does not touch pricing/offer content, and applies regardless of which
+      Finding 0 resolution is chosen.
 
 ## Ongoing cadence (after the initial backlog is empty)
 
