@@ -32,6 +32,30 @@ DEFAULT_BASE_URL = os.getenv("DEALIX_BASE_URL", "https://api.dealix.me")
 DEFAULT_TIMEOUT = float(os.getenv("DEALIX_SMOKE_TIMEOUT", "15"))
 
 
+def _first_configured_api_key() -> str:
+    """Return the first configured smoke/API key without logging it.
+
+    Production protects most /api/* endpoints with X-API-Key. The smoke test
+    therefore supports a dedicated smoke key while still falling back to the
+    existing API_KEYS secret shape used by the app. Values are intentionally
+    never rendered in reports or logs.
+    """
+    for env_name in ("DEALIX_SMOKE_API_KEY", "DEALIX_API_KEY", "API_KEY"):
+        value = os.getenv(env_name, "").strip()
+        if value:
+            return value
+
+    for value in os.getenv("API_KEYS", "").split(","):
+        value = value.strip()
+        if value:
+            return value
+
+    return ""
+
+
+DEFAULT_API_KEY = _first_configured_api_key()
+
+
 @dataclass
 class Check:
     name: str
@@ -165,11 +189,19 @@ CHECKS: list[Check] = [
 ]
 
 
-def _do_request(base_url: str, check: Check, timeout: float) -> CheckResult:
+def _do_request(
+    base_url: str,
+    check: Check,
+    timeout: float,
+    api_key: str = "",
+) -> CheckResult:
     url = f"{base_url.rstrip('/')}{check.path}"
     started = datetime.now(UTC)
     try:
-        req = urllib.request.Request(url, method=check.method)
+        headers: dict[str, str] = {}
+        if api_key:
+            headers["X-API-Key"] = api_key
+        req = urllib.request.Request(url, method=check.method, headers=headers)
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             body = resp.read().decode("utf-8", errors="replace")
             status = resp.status
@@ -244,8 +276,12 @@ def _do_request(base_url: str, check: Check, timeout: float) -> CheckResult:
     )
 
 
-def run(base_url: str, timeout: float = DEFAULT_TIMEOUT) -> dict[str, Any]:
-    results = [_do_request(base_url, c, timeout) for c in CHECKS]
+def run(
+    base_url: str,
+    timeout: float = DEFAULT_TIMEOUT,
+    api_key: str = "",
+) -> dict[str, Any]:
+    results = [_do_request(base_url, c, timeout, api_key=api_key) for c in CHECKS]
     passed = sum(1 for r in results if r.ok)
     failed_required = [r for r in results if not r.ok and r.required]
     return {
@@ -255,6 +291,7 @@ def run(base_url: str, timeout: float = DEFAULT_TIMEOUT) -> dict[str, Any]:
         "total": len(results),
         "passed": passed,
         "failed_required": len(failed_required),
+        "auth_header_configured": bool(api_key),
         "results": [r.to_dict() for r in results],
     }
 
@@ -264,6 +301,7 @@ def render_text(report: dict[str, Any]) -> str:
     lines.append("═════════════════════════════════════════════════════════════")
     lines.append(f" Dealix smoke test — {report['base_url']}")
     lines.append(f" generated_at: {report['generated_at']}")
+    lines.append(f" auth_header_configured: {report.get('auth_header_configured', False)}")
     lines.append("═════════════════════════════════════════════════════════════")
     for r in report["results"]:
         marker = "✅" if r["ok"] else ("❌" if r["required"] else "⚠️ ")
@@ -291,11 +329,13 @@ def main(argv: list[str] | None = None) -> int:
                    help="root URL of the deploy (default: %(default)s)")
     p.add_argument("--timeout", type=float, default=DEFAULT_TIMEOUT,
                    help="per-request timeout in seconds (default: %(default)s)")
+    p.add_argument("--api-key", default=DEFAULT_API_KEY,
+                   help="API key for protected /api/* smoke checks. Defaults to env.")
     p.add_argument("--json", action="store_true",
                    help="emit JSON report instead of the text dashboard")
     args = p.parse_args(argv)
 
-    report = run(args.base_url, timeout=args.timeout)
+    report = run(args.base_url, timeout=args.timeout, api_key=args.api_key)
 
     if args.json:
         print(json.dumps(report, indent=2, ensure_ascii=False))
