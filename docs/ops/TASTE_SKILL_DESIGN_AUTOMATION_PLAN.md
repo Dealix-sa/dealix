@@ -234,26 +234,55 @@ pages' concerns.
 - [x] Wave 1 — `/` (home): eyebrow discipline (cut from 7 to 3), removed
       `.card` from plain-text sections (problem/process/outbound), unified
       nav to Arabic, removed duplicate "Book Review" CTA. Done in this branch.
-- [ ] Wave 2 — `/services`: already close to compliant (2 eyebrows, cards
-      used only where there's real elevation). Low priority — re-check
-      after Finding 0 is resolved in case the offer list changes.
-- [ ] Wave 3 — `/safety`: tiny page, already clean. Leave as-is unless
-      Finding 0 resolution changes copy.
+- [x] Wave 2 — `/services`: audited 2026-07-06. Already compliant (2
+      eyebrows total, cards used only where there's real elevation). No
+      changes made.
+- [x] Wave 3 — `/safety`: audited 2026-07-06. Tiny page, already clean. No
+      changes made.
 - [ ] Wave 4 — Reconcile `/pricing`, `/offers`, `/cases`, `/brand` onto the
       same design tokens as `/` (`globals.css` navy/gold vars) instead of
       ad-hoc Tailwind near-black/amber. **Do this only after Finding 0 is
       resolved** — no point unifying tokens for pages whose pricing model
       might be replaced.
-- [ ] Wave 5 — `/legal`, `/book`: quick audit once reached (both are small).
-- [ ] Wave 6 — `/products/*` subpages: audit for eyebrow/card overuse.
-- [ ] Wave 4a — **Doctrine hygiene, independent of Finding 0, safe to do
-      anytime**: add the no-guaranteed-outcomes disclaimer (per
-      `trust/NO_FAKE_CLAIMS_POLICY.md`, phrased like the existing allowlisted
-      copy in `landing/*.html`, e.g. "لا نضمن نتائج محددة أو عائد استثمار
-      مضمون؛ كل رقم مبني على دليل موثّق") to the footer of in-scope
-      `apps/web` pages that don't already carry it. This is copy-only,
-      does not touch pricing/offer content, and applies regardless of which
-      Finding 0 resolution is chosen.
+- [x] Wave 5 — `/legal`, `/book`: audited 2026-07-06. Both already clean
+      (single appropriate card, no eyebrow overuse, clear single-intent
+      CTAs). No changes made.
+- [ ] Wave 6 — `/products/*` subpages: audited 2026-07-06, **not fixed —
+      new Finding 0 evidence instead**. `/products` and its 5 subpages
+      (`revenue-command-room-os`, `company-brain-os`,
+      `whatsapp-inbox-followup-os`, `ai-trust-compliance-os`,
+      `client-delivery-os`) already carry out a **third, partial**
+      reconciliation attempt: they reuse the original homepage's System-A
+      product names but with System-B-style setup+monthly prices
+      (SAR 35,000+9,000 / 18,000+5,000 / 12,000+3,500 / 25,000+6,000
+      twice). Two different products (`ai-trust-compliance-os` and
+      `client-delivery-os`) show the identical "25,000 setup ·
+      6,000/month" figure, which looks like copy-paste rather than two
+      independently-priced offers. Left untouched — this is more evidence
+      for the founder's Finding 0 decision, not something to guess-fix
+      further; a page-by-page rewrite here needs the same canonical-model
+      answer everything else is waiting on.
+- [x] Wave 4a — **Doctrine hygiene, independent of Finding 0**: added the
+      no-guaranteed-outcomes disclaimer to the homepage footer (matches
+      `trust/NO_FAKE_CLAIMS_POLICY.md`, same pattern as the allowlisted
+      copy in `landing/*.html`). Copy-only, no pricing/offer content
+      touched. `/services`, `/legal`, `/book` don't currently make any
+      numeric/outcome claims that would need this disclaimer; revisit if
+      that changes.
+
+### Correction: `docs/ops/pipeline_tracker.csv` is lower-risk than first flagged
+
+The earlier note above (dealix-pm's audit) characterized this file as a
+"scripted cold-DM target list." On direct inspection,
+`scripts/pipeline_tracker_update.py` — the only code that touches this
+file — is a manual CLI the founder runs *after* they've already sent
+something themselves (`sent`/`reply`/`demo`/`paid` subcommands log status
+against a lead id; nothing in it sends anything or reads the file to
+automate contact). So this is a manual outreach tracker, not automation
+waiting to fire. The open question is a strategy one, not a code one:
+is founder-manual cold LinkedIn DM outreach to the named CEOs in this
+file consistent with the "warm-list, no strangers" positioning stated
+elsewhere in the plan — a call for the founder, not a file to quarantine.
 
 ## Ongoing cadence (after the initial backlog is empty)
 
