@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import os
 import shutil
-import subprocess
+import subprocess  # noqa: S404 - pixelshot is an explicitly configured local evidence tool.
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -126,7 +126,7 @@ class VisualRAGAdapter:
             output_dir = job_dir / f"source_{index}"
             output_dir.mkdir(parents=True, exist_ok=True)
             cmd = [pixelshot, source.uri, "--output", str(output_dir)]
-            completed = subprocess.run(
+            completed = subprocess.run(  # noqa: S603 - binary is resolved by shutil.which above.
                 cmd,
                 check=False,
                 capture_output=True,
@@ -244,15 +244,17 @@ def _normalize_search_tiles(job_id: str, parsed: Any) -> list[VisualRAGTile]:
         items = []
 
     tiles: list[VisualRAGTile] = []
+    numeric_score_types = (int, float)
     for i, item in enumerate(items, start=1):
         if not isinstance(item, dict):
             continue
+        score = item.get("score")
         tiles.append(
             VisualRAGTile(
                 tile_id=str(item.get("tile_id") or item.get("id") or f"{job_id}:search:{i}"),
                 source_id=item.get("source_id") or item.get("doc_id") or item.get("url"),
                 page=item.get("page") if isinstance(item.get("page"), int) else None,
-                score=float(item["score"]) if isinstance(item.get("score"), int | float) else None,
+                score=float(score) if isinstance(score, numeric_score_types) else None,
                 image_path=item.get("image_path"),
                 image_url=item.get("image_url") or item.get("thumbnail_url"),
                 snippet=item.get("snippet") or item.get("text"),
