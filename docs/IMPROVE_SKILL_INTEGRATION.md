@@ -114,6 +114,16 @@ draft-only mode, with a Proof Pack as the deliverable — never auto-executed.
 executor implements. High-value judgment is billed; low-value typing is near-zero
 cost. That gap is the Diagnostic Sprint's gross margin.
 
+**Full commercial packaging** (so this is sellable, not just a good idea):
+- `docs/IMPROVE_COMMERCIAL_PLAYBOOK.md` — funnel, segment fit (be honest — digital
+  systems only), margin economics, trust-as-a-selling-point, and what NOT to sell.
+- `sales/IMPROVE_DIAGNOSTIC_DELIVERY_SOP_AR.md` — the repeatable delivery runbook:
+  each offer rung → exact `improve` command → artifact → the A1→A2 founder-review
+  gate → upsell trigger. Plugs into the funnel already in the repo
+  (`api/routers/diagnostic.py`, the diagnostic landing pages,
+  `customers/_template/02_diagnostic_summary.md`).
+- `sales/DIAGNOSTIC_REPORT_TEMPLATE_AR.md` — the customer-facing deliverable.
+
 ---
 
 ## 4. The other three references — in/out-of-policy verdict

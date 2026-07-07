@@ -259,6 +259,8 @@ See `docs/DEALIX_BUSINESS_MODEL.md` for full detail.
 | Improvement backlog | `plans/` (INDEX + seeded plans) |
 | Provider registry guard | `scripts/ops/check_provider_registry_freshness.py` |
 | Diagnostic report template | `sales/DIAGNOSTIC_REPORT_TEMPLATE_AR.md` |
+| improve delivery SOP (AR) | `sales/IMPROVE_DIAGNOSTIC_DELIVERY_SOP_AR.md` |
+| improve commercial playbook | `docs/IMPROVE_COMMERCIAL_PLAYBOOK.md` |
 | improve integration doc | `docs/IMPROVE_SKILL_INTEGRATION.md` |
 
 ---
