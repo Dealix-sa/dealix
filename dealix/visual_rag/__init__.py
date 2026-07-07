@@ -13,6 +13,10 @@ from dealix.visual_rag.contracts import (
     VisualRAGSource,
     VisualRAGSensitivity,
 )
+from dealix.visual_rag.proof_pack_bridge import (
+    attach_visual_evidence_to_proof_pack,
+    build_visual_evidence_section,
+)
 
 __all__ = [
     "VisualRAGAdapter",
@@ -21,4 +25,6 @@ __all__ = [
     "VisualRAGResult",
     "VisualRAGSource",
     "VisualRAGSensitivity",
+    "attach_visual_evidence_to_proof_pack",
+    "build_visual_evidence_section",
 ]
