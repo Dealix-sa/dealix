@@ -1,0 +1,32 @@
+name: Client Acquisition Queue
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'dealix/client_acquisition/**'
+      - 'scripts/commercial/run_client_acquisition_queue.py'
+      - 'scripts/commercial/verify_client_acquisition_queue.py'
+      - 'docs/commercial/CLIENT_ACQUISITION_QUEUE_LAYER.md'
+
+permissions:
+  contents: read
+
+jobs:
+  verify-client-acquisition-queue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify queue
+        run: python scripts/commercial/verify_client_acquisition_queue.py
+      - name: Upload queue artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-acquisition-queue
+          path: reports/client_acquisition/verify_queue.json
+          if-no-files-found: error
