@@ -1,0 +1,41 @@
+id: revenue_sprint
+name: Revenue Command Room Sprint
+objective_en: >-
+  Convert existing proof and warm relationships into booked Transformation
+  Diagnostic Sprints, with every external touch prepared as a draft for founder
+  approval.
+objective_ar: >-
+  تحويل الإثباتات والعلاقات الدافئة الحالية إلى حجوزات Sprint تشخيصية، مع تجهيز
+  كل تواصل خارجي كمسودة تنتظر موافقة المؤسس.
+language: ar
+enabled: true
+priority: 95
+kpis:
+  - qualified_leads
+  - proposals_drafted
+  - sprint_bookings
+guardrails:
+  - draft_only
+  - approval_first
+  - no_cold_outreach
+  - no_guaranteed_roi
+steps:
+  - action: draft_proof_pack
+    kind: internal
+    risk: 0.1
+    offer: transformation_diagnostic_sprint
+    output: proof_pack_draft
+    description: Assemble a bilingual proof pack draft from existing evidence.
+  - action: draft_sprint_proposal
+    kind: internal
+    risk: 0.2
+    offer: transformation_diagnostic_sprint
+    output: proposal_draft
+    description: Draft a scoped 7-day sprint proposal (price band 7,500-25,000 SAR).
+  - action: prepare_followup_drafts
+    kind: external_draft
+    channel: whatsapp
+    risk: 0.5
+    requires_approval: true
+    output: followup_drafts
+    description: Prepare per-account follow-up drafts for opted-in contacts only.

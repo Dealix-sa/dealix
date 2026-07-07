@@ -1,0 +1,49 @@
+name: Autonomous Growth OS (draft-only)
+
+# Draft-only autonomous cycle. Plans strategies, prepares drafts, and queues
+# every external action for founder approval. Never sends anything.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * *'  # 05:00 UTC daily
+
+permissions:
+  contents: read
+
+jobs:
+  autonomous-os-daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # Safety doctrine — draft-only is enforced regardless, set explicitly.
+      OUTBOUND_MODE: draft_only
+      EXTERNAL_SEND_ENABLED: "false"
+      EMAIL_SEND_ENABLED: "false"
+      WHATSAPP_SEND_ENABLED: "false"
+      WHATSAPP_ALLOW_LIVE_SEND: "false"
+      SMS_SEND_ENABLED: "false"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install minimal dependencies
+        run: python -m pip install pyyaml
+
+      - name: Verify no auto external send
+        run: python3 scripts/verify_no_auto_external_send.py
+
+      - name: Run Autonomous Growth OS (draft-only)
+        run: python3 scripts/autonomous_os_daily.py
+
+      - name: Upload draft artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: autonomous-os-daily
+          path: company/runtime/autonomous_os/
+          if-no-files-found: warn

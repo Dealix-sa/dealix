@@ -1,0 +1,35 @@
+id: technical_trust
+name: Technical Trust
+objective_en: >-
+  Continuously strengthen the trust surface (security posture notes, compliance
+  evidence drafts, architecture explainers) so commercial claims stay backed by
+  real, reviewable evidence.
+objective_ar: >-
+  تقوية سطح الثقة باستمرار (ملاحظات الوضع الأمني، مسودات أدلة الامتثال، شروحات
+  المعمارية) حتى تبقى الادعاءات التجارية مدعومة بأدلة حقيقية قابلة للمراجعة.
+language: en
+enabled: true
+priority: 60
+kpis:
+  - trust_assets_drafted
+  - compliance_gaps_flagged
+guardrails:
+  - draft_only
+  - approval_first
+  - no_unsourced_security_claims
+steps:
+  - action: draft_security_posture_note
+    kind: internal
+    risk: 0.2
+    output: trust_note_draft
+    description: Draft a sourced security-posture note (claims require evidence).
+  - action: draft_compliance_evidence_index
+    kind: internal
+    risk: 0.2
+    output: compliance_index_draft
+    description: Draft an index mapping compliance claims to evidence artifacts.
+  - action: flag_unsupported_claims
+    kind: internal
+    risk: 0.3
+    output: claim_review_draft
+    description: Review commercial copy and flag any claim lacking a source.

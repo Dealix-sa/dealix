@@ -1,0 +1,37 @@
+id: proof_pack
+name: Proof Pack Assembly
+objective_en: >-
+  Turn delivered work and internal evidence into review-ready Proof Packs that
+  power proposals and trust — assembled as drafts, finalised only on approval.
+objective_ar: >-
+  تحويل الأعمال المُسلّمة والأدلة الداخلية إلى Proof Packs جاهزة للمراجعة تدعم
+  العروض والثقة — تُجمّع كمسودات وتُعتمد فقط بموافقة.
+language: ar
+enabled: true
+priority: 65
+kpis:
+  - proof_packs_drafted
+  - proposals_supported
+guardrails:
+  - draft_only
+  - approval_first
+  - no_fabricated_metrics
+  - proof_pack_final_requires_approval
+steps:
+  - action: collect_evidence_index
+    kind: internal
+    risk: 0.1
+    output: evidence_index
+    description: Draft an index of available evidence artifacts.
+  - action: draft_proof_pack
+    kind: internal
+    risk: 0.2
+    offer: data_pack
+    output: proof_pack_draft
+    description: Assemble a bilingual Proof Pack draft from the evidence index.
+  - action: request_proof_pack_finalization
+    kind: external_draft
+    risk: 0.6
+    requires_approval: true
+    output: proof_pack_final_request
+    description: Submit the Proof Pack for founder finalisation (approval-gated).

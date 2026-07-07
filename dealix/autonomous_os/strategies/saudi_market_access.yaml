@@ -1,0 +1,38 @@
+id: saudi_market_access
+name: Saudi Market Access
+objective_en: >-
+  Build a compliant, opt-in Saudi B2B target map and sector insight drafts using
+  public research only — never scraping contacts or cold outreach.
+objective_ar: >-
+  بناء خريطة استهداف سعودية متوافقة قائمة على الإذن، مع مسودات رؤى قطاعية من بحث
+  عام فقط — بدون سحب جهات اتصال أو تواصل بارد.
+language: ar
+enabled: true
+priority: 80
+kpis:
+  - target_accounts_mapped
+  - sector_insights_drafted
+guardrails:
+  - draft_only
+  - approval_first
+  - no_cold_outreach
+  - no_scraping
+  - pdpl_compliant
+steps:
+  - action: research_sector_signals
+    kind: internal
+    risk: 0.2
+    output: sector_research_draft
+    description: Summarise public Saudi sector signals (no personal data).
+  - action: draft_target_account_map
+    kind: internal
+    risk: 0.3
+    output: target_map_draft
+    description: Draft an ICP-aligned account map from public sources only.
+  - action: draft_warm_intro_requests
+    kind: external_draft
+    channel: email
+    risk: 0.5
+    requires_approval: true
+    output: warm_intro_drafts
+    description: Draft warm-introduction requests to send only via existing network.

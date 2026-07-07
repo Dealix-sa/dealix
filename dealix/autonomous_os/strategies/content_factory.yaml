@@ -1,0 +1,36 @@
+id: content_factory
+name: Content Factory
+objective_en: >-
+  Keep a steady cadence of bilingual AR/EN proof-led content drafts (LinkedIn
+  posts, short explainers, case-study skeletons) queued for founder approval —
+  no auto-posting.
+objective_ar: >-
+  الحفاظ على إيقاع منتظم من مسودات محتوى ثنائية اللغة قائمة على الإثبات (منشورات
+  لينكدإن، شروحات قصيرة، هياكل دراسات حالة) بانتظار موافقة المؤسس — بدون نشر آلي.
+language: ar
+enabled: true
+priority: 55
+kpis:
+  - content_drafts
+  - engagement
+guardrails:
+  - draft_only
+  - approval_first
+  - no_auto_post
+  - no_fabricated_metrics
+steps:
+  - action: draft_linkedin_post
+    kind: internal
+    risk: 0.2
+    output: linkedin_draft
+    description: Draft a bilingual LinkedIn post grounded in a real proof asset.
+  - action: draft_case_study_skeleton
+    kind: internal
+    risk: 0.2
+    output: case_study_skeleton
+    description: Draft a case-study skeleton using hypothesis language only.
+  - action: schedule_review_reminder
+    kind: internal
+    risk: 0.1
+    output: review_reminder
+    description: Note a founder review reminder in the daily report (no send).
