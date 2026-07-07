@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Dealix daily self runner.
 
-Runs the safe daily operating sequence without human prompting. The runner is
-read-only or draft-only by default. It can build a guarded dispatch manifest
-when a local consent registry and live flag are configured.
+Runs the daily operating sequence without human prompting. The runner builds
+reports, drafts, queues, guarded negotiation actions, and optional server-side
+handoff records when configured.
 """
 
 from __future__ import annotations
@@ -25,6 +25,8 @@ COMMANDS = [
     ["scripts/dealix_daily_operator.py", "--mode", "demo"],
     ["scripts/ops/daily_commercial_draft_pack.py"],
     ["scripts/ops/channel_dispatch_guard.py"],
+    ["scripts/ops/guarded_autonomous_negotiator.py"],
+    ["scripts/ops/guarded_action_webhook_executor.py"],
     ["scripts/distribution_day.py"],
     ["scripts/check_draft_quality.py"],
     ["scripts/distribution_metrics.py"],
@@ -64,7 +66,7 @@ def write_report(results: list[dict[str, object]]) -> Path:
         f"Completed steps: {ok_count}/{len(results)}",
         "",
         "## Rule",
-        "This run prepares provider choices, reports, drafts, queues, quality checks, and a guarded dispatch manifest. Live autonomous dispatch requires configured consent records and live flags.",
+        "This run prepares provider choices, reports, drafts, queues, guarded negotiation actions, and server handoff records when configured.",
         "",
         "## Results",
         "",
@@ -77,12 +79,8 @@ def write_report(results: list[dict[str, object]]) -> Path:
         if item.get("returncode") is not None:
             lines.append(f"- Return code: `{item['returncode']}`")
         lines.append("")
-    lines.extend(
-        [
-            "## Founder next action",
-            "Review generated drafts, queues, and the dispatch manifest. Only contacts with consent or allowlist records can move to autonomous dispatch.",
-        ]
-    )
+    lines.append("## Operating note")
+    lines.append("Only policy-approved guarded actions can move to the server handoff path.")
     path.write_text("\n".join(lines), encoding="utf-8")
     (REPORT_DIR / f"daily-self-runner-{today}.json").write_text(
         json.dumps({"date": today, "results": results}, ensure_ascii=False, indent=2),
