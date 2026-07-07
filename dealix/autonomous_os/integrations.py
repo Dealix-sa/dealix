@@ -60,7 +60,8 @@ REGISTRY: tuple[Integration, ...] = (
     Integration("dify", "https://github.com/langgenius/dify", "orchestration",
                 "LLM app/workflow builder for internal drafting flows", "adapter_planned"),
     Integration("ollama", "https://github.com/ollama/ollama", "models",
-                "local-first inference; primary model provider", "adapter_planned"),
+                "local-first inference; primary model provider "
+                "(dealix/autonomous_os/adapters/ollama_adapter.py)", "wired"),
     Integration("open_webui", "https://github.com/open-webui/open-webui", "models",
                 "local chat UI over Ollama for founder review", "reference"),
     Integration("crewai", "https://github.com/crewAIInc/crewAI", "agents",
@@ -87,13 +88,15 @@ REGISTRY: tuple[Integration, ...] = (
                 "guarded browser automation for research only", "reference"),
     # Sales, CRM, WhatsApp & growth
     Integration("twenty", "https://github.com/twentyhq/twenty", "crm",
-                "self-hosted CRM as the pipeline system of record", "adapter_planned"),
+                "self-hosted CRM as the pipeline system of record, read-only "
+                "(dealix/autonomous_os/adapters/twenty_adapter.py)", "wired"),
     Integration("salesgpt", "https://github.com/filip-michalsky/SalesGPT", "sales",
                 "sales conversation patterns (draft-only)", "reference"),
     Integration("calcom", "https://github.com/calcom/cal.com", "scheduling",
                 "self-hosted booking for diagnostics/sprints", "adapter_planned"),
     Integration("evolution_api", "https://github.com/evolution-foundation/evolution-api",
-                "messaging", "WhatsApp API — DRAFT PREP ONLY, never auto-send", "adapter_planned"),
+                "messaging", "WhatsApp API — DRAFT PREP ONLY, no send capability "
+                "(dealix/autonomous_os/adapters/whatsapp_draft_adapter.py)", "wired"),
     Integration("moneyprinterturbo", "https://github.com/harry0703/MoneyPrinterTurbo", "content",
                 "short-form video draft generation", "reference"),
     Integration("openmontage", "https://github.com/calesthio/OpenMontage", "content",

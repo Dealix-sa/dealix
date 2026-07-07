@@ -27,7 +27,11 @@ from typing import Any
 
 from . import integrations
 from .action_queue import ActionQueue
+from .adapters import all_status as adapters_status
+from .adapters.twenty_adapter import TwentyCRMAdapter
+from .adapters.whatsapp_draft_adapter import WhatsAppDraftAdapter
 from .approval_queue import ApprovalQueue
+from .draft_composer import DraftComposer
 from .execution_planner import ExecutionPlanner, PlannedStep
 from .growth_engine import GrowthContext, GrowthEngine
 from .learning_loop import LearningLoop
@@ -56,31 +60,59 @@ class AutonomousOS:
         self.learning = LearningLoop(self.root, self.proofs)
         self.router = ModelRouter(env=env)
         self.growth = GrowthEngine()
+        self._env = env
+        self.composer = DraftComposer(env=env)
+        self.crm = TwentyCRMAdapter(env=env, local_snapshot=self.root / "crm_context.json")
+        self.whatsapp = WhatsAppDraftAdapter(env=env)
 
     # ---- dispatch helpers ----
-    def _dispatch_step(self, step: PlannedStep) -> str:
+    def _compose(self, step: PlannedStep, language: str) -> dict[str, Any]:
+        return self.composer.compose(
+            action=step.action,
+            strategy_id=step.strategy_id,
+            language=language,
+            offer=step.offer,
+            description=step.description,
+        )
+
+    def _dispatch_step(self, step: PlannedStep, language: str) -> str:
         if step.route == Route.AUTO_DRAFT.value:
+            composed = self._compose(step, language)
+            payload = {**step.to_dict(), "composed": composed}
             self.actions.enqueue(
                 strategy_id=step.strategy_id,
                 action=step.action,
                 summary=step.description or step.action,
                 offer=step.offer,
-                payload=step.to_dict(),
+                payload=payload,
             )
-            self.proofs.log("action_drafted", step.to_dict())
+            self.proofs.log("action_drafted", {**step.to_dict(), "mode": composed["generation_mode"]})
             return "drafted"
         if step.route == Route.APPROVAL.value:
+            composed = self._compose(step, language)
+            draft_text = str(composed["draft_text"])
+            payload: dict[str, Any] = {**step.to_dict(), "composed": composed}
+            # For WhatsApp steps, also attach a review-ready payload draft that
+            # is provably incapable of being sent.
+            if (step.channel or "").lower() == "whatsapp":
+                wa = self.whatsapp.build_draft(
+                    to_label=f"account:{step.strategy_id}",
+                    message=draft_text,
+                    account_id=None,
+                    consent_confirmed=False,
+                )
+                payload["whatsapp_draft"] = wa.data
             self.approvals.submit(
                 strategy_id=step.strategy_id,
                 action=step.action,
-                draft=step.description or f"Draft for '{step.action}' prepared for review.",
+                draft=draft_text,
                 reason=step.reason,
                 risk=step.risk,
                 channel=step.channel,
                 offer=step.offer,
-                payload=step.to_dict(),
+                payload=payload,
             )
-            self.proofs.log("approval_requested", step.to_dict())
+            self.proofs.log("approval_requested", {**step.to_dict(), "mode": composed["generation_mode"]})
             return "approval"
         # blocked
         self.proofs.log("step_blocked", step.to_dict())
@@ -108,14 +140,24 @@ class AutonomousOS:
             plan = self.planner.plan(strategy)
             self.proofs.log("plan_created", plan.to_dict())
             for step in plan.steps:
-                outcome = self._dispatch_step(step)
+                outcome = self._dispatch_step(step, strategy.language)
                 counters[outcome] += 1
             plans.append(plan.to_dict())
 
-        # Commercial recommendations from the growth engine.
-        ctx = GrowthContext.from_dict(growth_context)
+        # Commercial context: explicit override wins; otherwise pull from CRM
+        # adapter (which itself falls back to a local snapshot / zeros).
+        if growth_context:
+            ctx = GrowthContext.from_dict(growth_context)
+            ctx_source = "explicit"
+        else:
+            crm_result = self.crm.fetch_growth_context()
+            ctx = GrowthContext.from_dict(crm_result.data)
+            ctx_source = f"twenty_crm:{crm_result.mode}"
         recs = [a.to_dict() for a in self.growth.recommend(ctx)]
-        self.proofs.log("growth_recommendations", {"context": ctx.__dict__, "actions": recs})
+        self.proofs.log(
+            "growth_recommendations",
+            {"context": ctx.__dict__, "context_source": ctx_source, "actions": recs},
+        )
 
         # Reflect.
         learning = self.learning.run()
@@ -127,7 +169,9 @@ class AutonomousOS:
             "strategies_active": len(self.registry.active()),
             "counters": counters,
             "approval_stats": self.approvals.stats(),
+            "growth_context_source": ctx_source,
             "growth_recommendations": recs,
+            "adapters": adapters_status(self._env),
             "integrations": integrations.summary(),
             "learning": learning.get("totals", {}),
             "plans": plans,
@@ -163,6 +207,14 @@ class AutonomousOS:
                 f"- [{rec['priority']}] {rec['title']} "
                 f"→ {rec['offer_label']} ({rec['price_band_sar']} SAR)"
             )
+        lines += [
+            "",
+            f"_Commercial context source: {summary.get('growth_context_source', 'n/a')}_",
+            "",
+            "## Core-stack adapters",
+        ]
+        for ad in summary.get("adapters", []):
+            lines.append(f"- {ad['name']}: {ad['mode']} — {ad['detail']}")
         lines += [
             "",
             "## Approval queue",

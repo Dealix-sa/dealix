@@ -75,6 +75,25 @@ CI schedule: `.github/workflows/autonomous-os-daily.yml` runs it daily at
 
 Strategies are data. Edit the YAML to change behaviour — no code change needed.
 
+## Core-stack adapters (real, offline-safe, draft-only)
+
+`dealix/autonomous_os/adapters/` contains real connectors for the priority core
+stack. Each is **offline-safe** (degrades to a local fallback, never raises) and
+**draft-only** (none can send):
+
+| Adapter | Tool | Role | Offline behaviour |
+|---------|------|------|-------------------|
+| `ollama_adapter` | Ollama | local-first text generation (the "brain") | deterministic template draft |
+| `twenty_adapter` | Twenty CRM | read-only pipeline signals → GrowthContext (the "eyes") | local snapshot / zeros |
+| `whatsapp_draft_adapter` | Evolution/WhatsApp | formats review-ready payload drafts (the bound "hands") | always draft-only, **no send method exists** |
+
+`draft_composer.py` uses the model router + Ollama adapter to compose actual
+draft text for each queued item; when no model is present it falls back to a
+labelled template. The orchestrator pulls commercial context from the CRM
+adapter automatically when no explicit context is passed, and surfaces every
+adapter's status in the daily report. These adapters use only the standard
+library (`urllib`) — no extra install in CI/cron.
+
 ## Toolkit orchestration (honest status)
 
 `integrations.py` catalogues the external open-source tools this OS is *designed

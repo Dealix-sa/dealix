@@ -21,6 +21,11 @@ from dealix.autonomous_os import (
     StrategyRegistry,
 )
 from dealix.autonomous_os import integrations
+from dealix.autonomous_os.adapters import all_status
+from dealix.autonomous_os.adapters.ollama_adapter import OllamaAdapter
+from dealix.autonomous_os.adapters.twenty_adapter import TwentyCRMAdapter
+from dealix.autonomous_os.adapters.whatsapp_draft_adapter import WhatsAppDraftAdapter
+from dealix.autonomous_os.draft_composer import DraftComposer
 from dealix.autonomous_os.execution_planner import ExecutionPlanner
 from dealix.autonomous_os.growth_engine import GrowthContext, GrowthEngine
 from dealix.autonomous_os.safety_gate import Route
@@ -149,9 +154,81 @@ def test_approval_queue_submit_and_decide(tmp_path: Path):
 def test_integrations_registry_is_honest():
     summ = integrations.summary()
     assert summ["total"] >= 40
-    # No item falsely claims to be wired.
-    assert integrations.by_status("wired") == []
+    # Exactly the adapters that have real code are marked wired.
+    wired = {i.name for i in integrations.by_status("wired")}
+    assert wired == {"ollama", "twenty", "evolution_api"}
     assert "ollama" in summ["core_stack"]
+
+
+# --------------------------- Adapters -------------------------------------
+def test_ollama_adapter_offline_fallback_never_raises():
+    ad = OllamaAdapter(env={})  # not configured -> offline
+    assert not ad.is_available()
+    res = ad.generate("draft a short note", model="llama3.1")
+    assert res.ok
+    assert res.mode == "offline_fallback"
+    assert "DRAFT" in res.data
+
+
+def test_ollama_adapter_bad_host_degrades_gracefully():
+    # Configured but unreachable host must fall back, not raise.
+    ad = OllamaAdapter(env={"OLLAMA_HOST": "http://127.0.0.1:0"})
+    res = ad.generate("hi", model="llama3.1")
+    assert res.ok
+    assert res.mode == "offline_fallback"
+
+
+def test_twenty_adapter_offline_returns_zero_context():
+    ad = TwentyCRMAdapter(env={})
+    res = ad.fetch_growth_context()
+    assert res.ok and res.mode == "offline_fallback"
+    assert res.data["warm_leads"] == 0
+
+
+def test_twenty_adapter_reads_local_snapshot(tmp_path):
+    snap = tmp_path / "crm_context.json"
+    snap.write_text('{"warm_leads": 7, "proof_assets_ready": 2}', encoding="utf-8")
+    ad = TwentyCRMAdapter(env={}, local_snapshot=snap)
+    res = ad.fetch_growth_context()
+    assert res.data["warm_leads"] == 7
+    assert res.data["proof_assets_ready"] == 2
+
+
+def test_whatsapp_adapter_has_no_send_capability():
+    ad = WhatsAppDraftAdapter(env={})
+    # Provably no send method exists anywhere on the adapter.
+    for attr in dir(ad):
+        assert "send" not in attr.lower(), attr
+
+
+def test_whatsapp_draft_is_never_sendable():
+    ad = WhatsAppDraftAdapter(env={})
+    res = ad.build_draft(to_label="account:x", message="hello", consent_confirmed=True)
+    assert res.data["will_send"] is False
+    assert res.data["requires_founder_approval"] is True
+
+
+def test_whatsapp_draft_blocked_without_consent():
+    ad = WhatsAppDraftAdapter(env={})
+    res = ad.build_draft(to_label="account:x", message="hello", consent_confirmed=False)
+    assert res.data["status"] == "blocked"
+    assert res.data["will_send"] is False
+
+
+def test_draft_composer_offline_produces_draft():
+    composed = DraftComposer(env={}).compose(
+        action="draft_sprint_proposal", strategy_id="revenue_sprint", language="ar"
+    )
+    assert composed["is_draft"] and composed["will_send"] is False
+    assert composed["draft_text"]
+
+
+def test_all_status_reports_three_adapters():
+    statuses = all_status(env={})
+    names = {s["name"] for s in statuses}
+    assert names == {"ollama", "twenty_crm", "whatsapp_draft"}
+    wa = next(s for s in statuses if s["name"] == "whatsapp_draft")
+    assert wa["mode"] == "draft_only"
 
 
 # --------------------------- Full orchestrator ----------------------------
@@ -171,6 +248,17 @@ def test_orchestrator_full_cycle_is_draft_only(tmp_path: Path):
     assert any(e["event_type"] == "run_completed" for e in events)
     # Approval queue has real pending items; nothing was "sent".
     assert os_engine.approvals.stats()["pending"] >= 1
+    # Adapters status surfaced; nothing claims to be sending.
+    assert {a["name"] for a in summary["adapters"]} == {
+        "ollama",
+        "twenty_crm",
+        "whatsapp_draft",
+    }
+    # A WhatsApp external step carries a provably-unsendable draft payload.
+    pending = os_engine.approvals.list_pending()
+    wa_items = [p for p in pending if p.get("channel") == "whatsapp"]
+    assert wa_items, "expected at least one whatsapp approval item"
+    assert wa_items[0]["payload"]["whatsapp_draft"]["will_send"] is False
 
 
 def test_orchestrator_blocks_forbidden_strategy_step(tmp_path: Path):

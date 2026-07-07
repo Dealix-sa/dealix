@@ -32,6 +32,12 @@ from .proof_logger import ProofLogger  # noqa: F401
 from .learning_loop import LearningLoop  # noqa: F401
 from .model_router import ModelChoice, ModelRouter  # noqa: F401
 from .growth_engine import GrowthAction, GrowthEngine  # noqa: F401
+from .draft_composer import DraftComposer  # noqa: F401
+from .adapters import (  # noqa: F401
+    OllamaAdapter,
+    TwentyCRMAdapter,
+    WhatsAppDraftAdapter,
+)
 from .orchestrator import AutonomousOS  # noqa: F401
 
 __all__ = [
@@ -54,4 +60,8 @@ __all__ = [
     "ModelChoice",
     "GrowthEngine",
     "GrowthAction",
+    "DraftComposer",
+    "OllamaAdapter",
+    "TwentyCRMAdapter",
+    "WhatsAppDraftAdapter",
 ]
