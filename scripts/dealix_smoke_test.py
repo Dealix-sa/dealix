@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -32,28 +33,74 @@ DEFAULT_BASE_URL = os.getenv("DEALIX_BASE_URL", "https://api.dealix.me")
 DEFAULT_TIMEOUT = float(os.getenv("DEALIX_SMOKE_TIMEOUT", "15"))
 
 
-def _first_configured_api_key() -> str:
+@dataclass(frozen=True)
+class APIKeyCandidate:
+    value: str
+    source: str
+
+
+def _split_api_key_bundle(raw: str) -> list[str]:
+    """Parse comma/newline/semicolon/JSON API key bundles without logging values."""
+    raw = raw.strip()
+    if not raw:
+        return []
+
+    if raw.startswith("["):
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            parsed = None
+        if isinstance(parsed, list):
+            return [str(item).strip() for item in parsed if str(item).strip()]
+
+    if raw.startswith("{"):
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            parsed = None
+        if isinstance(parsed, dict):
+            likely_values = []
+            for key in ("API_KEYS", "api_keys", "keys", "values", "value"):
+                value = parsed.get(key)
+                if isinstance(value, list):
+                    likely_values.extend(str(item).strip() for item in value)
+                elif isinstance(value, str):
+                    likely_values.extend(_split_api_key_bundle(value))
+            return [value for value in likely_values if value]
+
+    return [part.strip() for part in re.split(r"[,;\n\r\t ]+", raw) if part.strip()]
+
+
+def _first_configured_api_key() -> APIKeyCandidate:
     """Return the first configured smoke/API key without logging it.
 
     Production protects most /api/* endpoints with X-API-Key. The smoke test
-    therefore supports a dedicated smoke key while still falling back to the
+    supports a dedicated smoke key, common production-key aliases, and the
     existing API_KEYS secret shape used by the app. Values are intentionally
     never rendered in reports or logs.
     """
-    for env_name in ("DEALIX_SMOKE_API_KEY", "DEALIX_API_KEY", "API_KEY"):
+    single_key_envs = (
+        "DEALIX_SMOKE_API_KEY",
+        "DEALIX_PRODUCTION_API_KEY",
+        "DEALIX_READ_API_KEY",
+        "DEALIX_API_KEY",
+        "API_KEY",
+    )
+    for env_name in single_key_envs:
         value = os.getenv(env_name, "").strip()
         if value:
-            return value
+            return APIKeyCandidate(value=value, source=env_name)
 
-    for value in os.getenv("API_KEYS", "").split(","):
-        value = value.strip()
-        if value:
-            return value
+    for env_name in ("API_KEYS", "DEALIX_API_KEYS"):
+        for value in _split_api_key_bundle(os.getenv(env_name, "")):
+            return APIKeyCandidate(value=value, source=env_name)
 
-    return ""
+    return APIKeyCandidate(value="", source="")
 
 
-DEFAULT_API_KEY = _first_configured_api_key()
+DEFAULT_API_KEY_CANDIDATE = _first_configured_api_key()
+DEFAULT_API_KEY = DEFAULT_API_KEY_CANDIDATE.value
+DEFAULT_API_KEY_SOURCE = DEFAULT_API_KEY_CANDIDATE.source
 
 
 @dataclass
@@ -276,14 +323,28 @@ def _do_request(
     )
 
 
+def _infer_auth_problem(results: list[CheckResult], api_key: str) -> str:
+    protected_results = [r for r in results if r.path.startswith("/api/")]
+    if not protected_results:
+        return ""
+    protected_401 = [r for r in protected_results if r.status == 401]
+    if len(protected_401) == len(protected_results):
+        if not api_key:
+            return "missing_smoke_api_key_secret"
+        return "configured_smoke_api_key_rejected"
+    return ""
+
+
 def run(
     base_url: str,
     timeout: float = DEFAULT_TIMEOUT,
     api_key: str = "",
+    api_key_source: str = "",
 ) -> dict[str, Any]:
     results = [_do_request(base_url, c, timeout, api_key=api_key) for c in CHECKS]
     passed = sum(1 for r in results if r.ok)
     failed_required = [r for r in results if not r.ok and r.required]
+    auth_problem = _infer_auth_problem(results, api_key)
     return {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),
@@ -292,6 +353,8 @@ def run(
         "passed": passed,
         "failed_required": len(failed_required),
         "auth_header_configured": bool(api_key),
+        "auth_key_source": api_key_source if api_key else "",
+        "auth_problem": auth_problem,
         "results": [r.to_dict() for r in results],
     }
 
@@ -302,6 +365,10 @@ def render_text(report: dict[str, Any]) -> str:
     lines.append(f" Dealix smoke test — {report['base_url']}")
     lines.append(f" generated_at: {report['generated_at']}")
     lines.append(f" auth_header_configured: {report.get('auth_header_configured', False)}")
+    if report.get("auth_key_source"):
+        lines.append(f" auth_key_source: {report['auth_key_source']}")
+    if report.get("auth_problem"):
+        lines.append(f" auth_problem: {report['auth_problem']}")
     lines.append("═════════════════════════════════════════════════════════════")
     for r in report["results"]:
         marker = "✅" if r["ok"] else ("❌" if r["required"] else "⚠️ ")
@@ -335,7 +402,14 @@ def main(argv: list[str] | None = None) -> int:
                    help="emit JSON report instead of the text dashboard")
     args = p.parse_args(argv)
 
-    report = run(args.base_url, timeout=args.timeout, api_key=args.api_key)
+    explicit_api_key = bool(args.api_key and args.api_key != DEFAULT_API_KEY)
+    api_key_source = "--api-key" if explicit_api_key else DEFAULT_API_KEY_SOURCE
+    report = run(
+        args.base_url,
+        timeout=args.timeout,
+        api_key=args.api_key,
+        api_key_source=api_key_source,
+    )
 
     if args.json:
         print(json.dumps(report, indent=2, ensure_ascii=False))
