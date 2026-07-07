@@ -16,7 +16,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from starlette.testclient import TestClient
 
-from api.security.api_key import PUBLIC_PATHS, APIKeyMiddleware
+from api.security.api_key import PUBLIC_PATHS, APIKeyMiddleware, verify_api_key
 
 
 @pytest.fixture()
@@ -38,6 +38,32 @@ def app_with_keys(monkeypatch: pytest.MonkeyPatch) -> FastAPI:
         return JSONResponse({"ok": True})
 
     return app
+
+
+@pytest.mark.parametrize(
+    ("raw", "valid_key"),
+    [
+        ("alpha,beta", "beta"),
+        ("alpha\nbeta", "beta"),
+        ("alpha;beta", "beta"),
+        ('["alpha", "beta"]', "beta"),
+        ('{"API_KEYS": ["alpha", "beta"]}', "beta"),
+        ('{"value": "alpha,beta"}', "beta"),
+    ],
+)
+def test_verify_api_key_accepts_production_secret_shapes(
+    monkeypatch: pytest.MonkeyPatch,
+    raw: str,
+    valid_key: str,
+) -> None:
+    monkeypatch.setenv("API_KEYS", raw)
+    assert verify_api_key(valid_key)
+
+
+def test_verify_api_key_accepts_dealix_alias(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("API_KEYS", raising=False)
+    monkeypatch.setenv("DEALIX_API_KEY", "alias-secret-key")
+    assert verify_api_key("alias-secret-key")
 
 
 def test_pricing_plans_is_public(app_with_keys: FastAPI) -> None:
