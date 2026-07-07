@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.client_acquisition import ClientCard, build_queue, write_queue_bundle
+from dealix.client_acquisition import ClientCard, build_queue, write_queue_bundle  # noqa: E402
 
 
 def sample_cards(limit: int) -> list[ClientCard]:
