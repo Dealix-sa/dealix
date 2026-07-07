@@ -4,7 +4,7 @@
 # ═══════════════════════════════════════════════════════════════
 
 .PHONY: help install install-dev install-observability install-security install-evals install-docs \
-        setup first-setup test test-unit test-integration full-repo-test railway-env-check \
+        setup first-setup test test-unit test-integration full-repo-test railway-env-check railway-config-verify \
         lint format type-check security security-smoke security-smoke-ci clean run demo cockpit doctor \
         docker-build docker-up docker-down docker-logs \
         pre-commit-install pre-commit-run db-init alembic-heads requirements \
@@ -86,6 +86,9 @@ env-check: ## Validate .env.example contract and duplicate keys
 
 railway-env-check: ## Validate Railway production env names without printing secret values
 	$(PYTHON) scripts/ops/check_railway_production_env.py
+
+railway-config-verify: ## Verify railway.toml/json/Dockerfile match the canonical config (repo-only)
+	$(PYTHON) scripts/verify_railway_production_config.py --skip-live
 
 openapi-export: ## Export FastAPI OpenAPI schema (OPENAPI_OUTPUT=...)
 	$(PYTHON) scripts/export_openapi.py --output $(OPENAPI_OUTPUT)

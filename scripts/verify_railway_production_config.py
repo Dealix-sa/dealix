@@ -22,6 +22,8 @@ from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
 ensure_stdout_utf8()
 
+CANONICAL_YAML_REL = "dealix/config/railway_ui_canonical.yaml"
+
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
@@ -63,6 +65,10 @@ def main() -> int:
             print(f"  WARN: {w}")
         for issue in repo.get("issues", []):
             print(f"  FAIL: {issue}")
+        canonical = repo.get("canonical") or {}
+        if canonical.get("canonical_loaded"):
+            state = "ok" if canonical.get("ok") else "DRIFT"
+            print(f"  canonical cross-check ({CANONICAL_YAML_REL}): {state}")
         if repo.get("ok"):
             print("  ok: repo railway config")
         live = blob["live_healthz"]

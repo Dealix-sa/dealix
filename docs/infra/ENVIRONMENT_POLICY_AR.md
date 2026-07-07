@@ -60,9 +60,9 @@
 - أسرار: **1Password vault** (`Dealix Production`)؛ لا أحد غير المؤسس
   يصل إليها.
 - نشر: عبر Railway `preDeployCommand` → `scripts/railway_predeploy.sh` →
-  `startCommand` `uvicorn api.main:app --workers 1`؛ **الموافقة يدوية
-  من المؤسس** في `railway_deploy.yml`.
-- تراجع: `restartPolicyType = "ON_FAILURE"` (10 محاولات)؛ rollback
+  بدء التشغيل من Dockerfile `CMD ["/app/start.sh"]` (بدون `startCommand`)؛
+  **الموافقة يدوية من المؤسس** في `railway_deploy.yml`.
+- تراجع: `restartPolicyType = "ON_FAILURE"` (3 محاولات، canonical)؛ rollback
   صريح عبر `scripts/railway_redeploy_checklist.py`.
 
 ## 4. القواعد العامة
