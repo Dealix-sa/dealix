@@ -1,0 +1,41 @@
+name: Dealix Autonomous Growth Daily
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: dealix-autonomous-growth-daily
+  cancel-in-progress: false
+
+jobs:
+  daily-draft-only:
+    name: Run draft-only daily strategy loop
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run draft-only strategy loop
+        run: |
+          python scripts/commercial/run_autonomous_growth_daily.py --autonomy-level 3 --mode draft-only --limit 50
+
+      - name: Upload daily artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: autonomous-growth-daily
+          path: reports/autonomous_growth/
+          if-no-files-found: error
