@@ -27,7 +27,7 @@ class ProofLogger:
         return self.root / f"proof-{day}.jsonl"
 
     def log(self, event_type: str, payload: dict[str, Any]) -> dict[str, Any]:
-        now = dt.datetime.now(dt.timezone.utc)
+        now = dt.datetime.now(dt.UTC)
         record = {
             "ts": now.isoformat(),
             "event_type": event_type,

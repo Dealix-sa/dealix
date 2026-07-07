@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.autonomous_os import AutonomousOS  # noqa: E402
+from dealix.autonomous_os import AutonomousOS
 
 
 def main() -> int:
@@ -39,7 +39,7 @@ def main() -> int:
     parser.add_argument(
         "--context",
         default="{}",
-        help="JSON growth context, e.g. '{\"warm_leads\": 12, \"proof_assets_ready\": 3}'.",
+        help='JSON growth context, e.g. \'{"warm_leads": 12, "proof_assets_ready": 3}\'.',
     )
     args = parser.parse_args()
 

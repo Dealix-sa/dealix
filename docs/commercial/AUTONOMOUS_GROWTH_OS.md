@@ -86,6 +86,8 @@ stack. Each is **offline-safe** (degrades to a local fallback, never raises) and
 | `ollama_adapter` | Ollama | local-first text generation (the "brain") | deterministic template draft |
 | `twenty_adapter` | Twenty CRM | read-only pipeline signals → GrowthContext (the "eyes") | local snapshot / zeros |
 | `whatsapp_draft_adapter` | Evolution/WhatsApp | formats review-ready payload drafts (the bound "hands") | always draft-only, **no send method exists** |
+| `firecrawl_adapter` | Firecrawl | compliant public market/web research | research skipped; **refuses contact/social scraping** |
+| `calcom_adapter` | Cal.com | prepares booking links for diagnostics/sprints | default/placeholder link; **never creates a booking** |
 
 `draft_composer.py` uses the model router + Ollama adapter to compose actual
 draft text for each queued item; when no model is present it falls back to a

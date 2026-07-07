@@ -51,7 +51,7 @@ class StrategyStep:
     description: str = ""
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "StrategyStep":
+    def from_dict(cls, d: dict[str, Any]) -> StrategyStep:
         return cls(
             action=str(d["action"]),
             kind=str(d.get("kind", "internal")),
@@ -78,7 +78,7 @@ class Strategy:
     steps: list[StrategyStep] = field(default_factory=list)
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Strategy":
+    def from_dict(cls, d: dict[str, Any]) -> Strategy:
         if not d.get("id"):
             raise ValueError("strategy is missing required 'id'")
         return cls(
@@ -102,7 +102,7 @@ class StrategyRegistry:
         self.dir = Path(strategies_dir) if strategies_dir else DEFAULT_STRATEGIES_DIR
         self._by_id: dict[str, Strategy] = {}
 
-    def load(self) -> "StrategyRegistry":
+    def load(self) -> StrategyRegistry:
         self._by_id.clear()
         if not self.dir.exists():
             return self

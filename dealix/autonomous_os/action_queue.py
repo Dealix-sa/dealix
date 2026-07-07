@@ -52,7 +52,7 @@ class ActionQueue:
         offer: str | None = None,
         payload: dict[str, Any] | None = None,
     ) -> Action:
-        now = dt.datetime.now(dt.timezone.utc)
+        now = dt.datetime.now(dt.UTC)
         item = Action(
             id=str(uuid.uuid4()),
             created_at=now.isoformat(),

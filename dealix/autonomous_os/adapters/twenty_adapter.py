@@ -87,7 +87,7 @@ class TwentyCRMAdapter(Adapter):
             )
         }
         body = json.dumps(query).encode("utf-8")
-        req = urllib.request.Request(  # noqa: S310 - operator-configured API URL
+        req = urllib.request.Request(
             self.api_url,
             data=body,
             headers={
@@ -97,7 +97,7 @@ class TwentyCRMAdapter(Adapter):
             method="POST",
         )
         try:
-            with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:  # noqa: S310
+            with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:
                 parsed = json.loads(resp.read().decode("utf-8"))
             d = (parsed or {}).get("data", {}) or {}
             ctx = {

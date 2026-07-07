@@ -86,7 +86,9 @@ class AutonomousOS:
                 offer=step.offer,
                 payload=payload,
             )
-            self.proofs.log("action_drafted", {**step.to_dict(), "mode": composed["generation_mode"]})
+            self.proofs.log(
+                "action_drafted", {**step.to_dict(), "mode": composed["generation_mode"]}
+            )
             return "drafted"
         if step.route == Route.APPROVAL.value:
             composed = self._compose(step, language)
@@ -112,7 +114,9 @@ class AutonomousOS:
                 offer=step.offer,
                 payload=payload,
             )
-            self.proofs.log("approval_requested", {**step.to_dict(), "mode": composed["generation_mode"]})
+            self.proofs.log(
+                "approval_requested", {**step.to_dict(), "mode": composed["generation_mode"]}
+            )
             return "approval"
         # blocked
         self.proofs.log("step_blocked", step.to_dict())

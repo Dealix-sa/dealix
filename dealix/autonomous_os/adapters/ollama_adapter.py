@@ -85,11 +85,11 @@ class OllamaAdapter(Adapter):
             payload["system"] = system
         body = json.dumps(payload).encode("utf-8")
         url = f"{self.host.rstrip('/')}/api/generate"
-        req = urllib.request.Request(  # noqa: S310 - fixed local host, not user URL
+        req = urllib.request.Request(
             url, data=body, headers={"Content-Type": "application/json"}, method="POST"
         )
         try:
-            with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:  # noqa: S310
+            with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT_SECONDS) as resp:
                 raw = resp.read().decode("utf-8")
             parsed = json.loads(raw)
             text = str(parsed.get("response", "")).strip()

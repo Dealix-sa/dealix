@@ -79,7 +79,7 @@ class ApprovalQueue:
     ) -> ApprovalItem:
         item = ApprovalItem(
             id=str(uuid.uuid4()),
-            created_at=dt.datetime.now(dt.timezone.utc).isoformat(),
+            created_at=dt.datetime.now(dt.UTC).isoformat(),
             strategy_id=strategy_id,
             action=action,
             channel=channel,
@@ -106,7 +106,7 @@ class ApprovalQueue:
                     ApprovalState.APPROVED.value if approved else ApprovalState.REJECTED.value
                 )
                 i["decided_by"] = decided_by
-                i["decided_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+                i["decided_at"] = dt.datetime.now(dt.UTC).isoformat()
                 i["note"] = note
                 changed = True
                 break

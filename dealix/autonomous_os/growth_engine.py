@@ -41,7 +41,7 @@ class GrowthContext:
     booked_sprints: int = 0
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any] | None) -> "GrowthContext":
+    def from_dict(cls, d: dict[str, Any] | None) -> GrowthContext:
         d = d or {}
         return cls(
             warm_leads=int(d.get("warm_leads", 0) or 0),

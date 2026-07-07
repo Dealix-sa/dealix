@@ -13,15 +13,17 @@ from pathlib import Path
 import pytest
 
 from dealix.autonomous_os import (
-    AutonomousOS,
     ApprovalQueue,
     ApprovalState,
+    AutonomousOS,
     ModelRouter,
     SafetyGate,
     StrategyRegistry,
+    integrations,
 )
-from dealix.autonomous_os import integrations
 from dealix.autonomous_os.adapters import all_status
+from dealix.autonomous_os.adapters.calcom_adapter import CalComAdapter
+from dealix.autonomous_os.adapters.firecrawl_adapter import FirecrawlAdapter
 from dealix.autonomous_os.adapters.ollama_adapter import OllamaAdapter
 from dealix.autonomous_os.adapters.twenty_adapter import TwentyCRMAdapter
 from dealix.autonomous_os.adapters.whatsapp_draft_adapter import WhatsAppDraftAdapter
@@ -156,7 +158,7 @@ def test_integrations_registry_is_honest():
     assert summ["total"] >= 40
     # Exactly the adapters that have real code are marked wired.
     wired = {i.name for i in integrations.by_status("wired")}
-    assert wired == {"ollama", "twenty", "evolution_api"}
+    assert wired == {"ollama", "twenty", "evolution_api", "firecrawl", "calcom"}
     assert "ollama" in summ["core_stack"]
 
 
@@ -223,12 +225,35 @@ def test_draft_composer_offline_produces_draft():
     assert composed["draft_text"]
 
 
-def test_all_status_reports_three_adapters():
+def test_all_status_reports_all_adapters():
     statuses = all_status(env={})
     names = {s["name"] for s in statuses}
-    assert names == {"ollama", "twenty_crm", "whatsapp_draft"}
+    assert names == {"ollama", "twenty_crm", "whatsapp_draft", "firecrawl", "calcom"}
     wa = next(s for s in statuses if s["name"] == "whatsapp_draft")
     assert wa["mode"] == "draft_only"
+
+
+def test_firecrawl_refuses_social_and_contact_sources():
+    fc = FirecrawlAdapter(env={"FIRECRAWL_API_KEY": "x"})
+    blocked = fc.scrape("https://www.linkedin.com/in/someone")
+    assert not blocked.ok and blocked.mode == "blocked"
+    q = fc.guard_query("find personal email of CFO")
+    assert not q.ok and q.mode == "blocked"
+
+
+def test_firecrawl_allows_public_research_query_and_offline():
+    fc = FirecrawlAdapter(env={})  # not configured
+    assert fc.guard_query("Saudi logistics sector trends 2026").ok
+    res = fc.scrape("https://example.com/market-report")
+    assert res.ok and res.mode == "offline_fallback"
+
+
+def test_calcom_offline_returns_booking_link_no_booking():
+    cal = CalComAdapter(env={"CALCOM_BOOKING_URL": "https://cal.com/dealix"})
+    res = cal.booking_link("diagnostic")
+    assert res.ok
+    assert res.data["creates_booking"] is False
+    assert res.data["booking_url"].endswith("/diagnostic")
 
 
 # --------------------------- Full orchestrator ----------------------------
@@ -253,6 +278,8 @@ def test_orchestrator_full_cycle_is_draft_only(tmp_path: Path):
         "ollama",
         "twenty_crm",
         "whatsapp_draft",
+        "firecrawl",
+        "calcom",
     }
     # A WhatsApp external step carries a provably-unsendable draft payload.
     pending = os_engine.approvals.list_pending()

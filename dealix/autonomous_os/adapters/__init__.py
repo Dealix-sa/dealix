@@ -19,10 +19,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from .base import Adapter, AdapterResult, AdapterStatus  # noqa: F401
-from .ollama_adapter import OllamaAdapter  # noqa: F401
-from .twenty_adapter import TwentyCRMAdapter  # noqa: F401
-from .whatsapp_draft_adapter import WhatsAppDraftAdapter  # noqa: F401
+from .base import Adapter, AdapterResult, AdapterStatus
+from .calcom_adapter import CalComAdapter
+from .firecrawl_adapter import FirecrawlAdapter
+from .ollama_adapter import OllamaAdapter
+from .twenty_adapter import TwentyCRMAdapter
+from .whatsapp_draft_adapter import WhatsAppDraftAdapter
 
 __all__ = [
     "Adapter",
@@ -31,6 +33,8 @@ __all__ = [
     "OllamaAdapter",
     "TwentyCRMAdapter",
     "WhatsAppDraftAdapter",
+    "FirecrawlAdapter",
+    "CalComAdapter",
     "all_status",
 ]
 
@@ -41,5 +45,7 @@ def all_status(env: dict[str, str] | None = None) -> list[dict[str, Any]]:
         OllamaAdapter(env=env),
         TwentyCRMAdapter(env=env),
         WhatsAppDraftAdapter(env=env),
+        FirecrawlAdapter(env=env),
+        CalComAdapter(env=env),
     ]
     return [a.status().to_dict() for a in adapters]
