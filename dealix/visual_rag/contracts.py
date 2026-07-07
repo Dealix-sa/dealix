@@ -10,7 +10,9 @@ from __future__ import annotations
 from enum import StrEnum
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, HttpUrl, model_validator
+from pydantic import BaseModel, Field, HttpUrl, TypeAdapter, model_validator
+
+_URL_ADAPTER = TypeAdapter(HttpUrl)
 
 
 class VisualRAGMode(StrEnum):
@@ -43,7 +45,7 @@ class VisualRAGSource(BaseModel):
     def validate_url_shape(self) -> "VisualRAGSource":
         if self.kind == "url":
             # Validate shape without coercing the stored value.
-            HttpUrl(self.uri)
+            _URL_ADAPTER.validate_python(self.uri)
         return self
 
 
