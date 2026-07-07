@@ -1,0 +1,11 @@
+name,website,country,city,sector,company_type,source,source_url,saudi_signal,signal_type,signal_date,buyer_persona,pain_hypothesis,offer_match,estimated_deal_size,consent_to_contact
+Sample Nordic Logistics SaaS,,Sweden,Stockholm,logistics saas,foreign,manual_seed,,Announced MENA expansion and Riyadh hiring,expansion_hiring,2026-06-01,VP International,No local pipeline or partner in Saudi,Saudi Expansion Radar,50k-90k SAR,false
+Sample UK Healthtech Platform,,United Kingdom,London,healthtech,foreign,manual_seed,,Exhibiting at a Riyadh health event,event_participation,2026-05-20,Head of Growth,Needs distributor and B2G readiness,Saudi Expansion Radar,35k SAR,false
+Sample German Industrial Supplier,,Germany,Munich,industrial supplier,foreign,manual_seed,,Looking for Saudi distributor,distributor_intent,2026-04-15,Export Director,No channel partner in KSA,Partner/distributor match,retainer,false
+Sample Riyadh Dental Clinic Group,,Saudi Arabia,Riyadh,clinics,saudi,manual_seed,,Scattered WhatsApp follow-up,revenue_leak,,Clinic Manager,Lost bookings and slow replies,Revenue Leak Scanner,5k-12k SAR,false
+Sample Jeddah Training Academy,,Saudi Arabia,Jeddah,training,saudi,manual_seed,,Inquiries not followed up,revenue_leak,,Founder,Registrations leak after first contact,Revenue Command Room,3k-8k SAR,false
+Sample Dammam B2B Services Co,,Saudi Arabia,Dammam,b2b service,saudi,manual_seed,,Proposals stall without follow-up,revenue_leak,,COO,Stalled proposals and weak pipeline ownership,Revenue Command Room,retainer,false
+Sample KSA Enterprise Integrator,,Saudi Arabia,Riyadh,system integrator,partner,manual_seed,,Wants co-delivery partners,partner_intent,,Partnerships Lead,Needs a proof-first delivery layer,Partner pilot,retainer,false
+Sample Gov-Adjacent Consultancy,,Saudi Arabia,Riyadh,consulting,government_related,manual_seed,,Bidding on public sector RFP,b2g_readiness,2026-07-01,Managing Partner,Needs readiness and evidence pack,B2G readiness,custom,false
+Sample Tourism Expo Supplier,,United Arab Emirates,Dubai,hospitality,foreign,manual_seed,,Exhibiting at a Saudi tourism expo,event_participation,2026-09-10,Regional Director,Timing-sensitive market entry,Saudi Expansion Radar,35k SAR,false
+Sample Curiosity Lead No Signal,,Unknown,,unknown,unknown,manual_seed,,,none,,,Vague interest only,,,false

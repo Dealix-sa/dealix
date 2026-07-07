@@ -424,3 +424,13 @@ reports/server/public_surfaces.json
 
 # Generated outreach batch files (CSV leads)
 data/outreach/ready_batch_*.csv
+
+# Saudi Opportunity Command Room — commit seed CSV, ignore generated runtime
+!data/opportunity_graph/
+!data/opportunity_graph/companies.seed.csv
+data/opportunity_graph/opportunities.json
+data/opportunity_graph/outreach_drafts.json
+data/opportunity_graph/approvals.json
+reports/opportunity_command/daily/*.md
+reports/opportunity_command/weekly/*.md
+!reports/opportunity_command/**/.gitkeep

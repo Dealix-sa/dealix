@@ -345,6 +345,10 @@ def create_app() -> FastAPI:
 
     for _autopilot_router in AUTOPILOT_ROUTERS:
         app.include_router(_autopilot_router)
+    # Saudi Opportunity Command Room — draft-first targeting (admin-key protected)
+    from api.routers import opportunity_command_room
+
+    app.include_router(opportunity_command_room.router)
     # Wave 7 W7.5 — Tenant theming: GET tenant theme.css + POST admin theme update
     app.include_router(tenant_theming.router)
     # Wave 4 — Public intake: POST /api/v1/public/custom-ai-request (no auth, founder-reviewed)
