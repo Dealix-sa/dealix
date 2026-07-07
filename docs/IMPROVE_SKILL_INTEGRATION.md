@@ -29,8 +29,20 @@ Dealix وربطناها بـ:
 | `.claude/skills/improve/SKILL.md` | The Dealix-native audit → vet → prioritize → plan → execute → reconcile loop |
 | `.claude/skills/improve/references/dealix-gates.md` | The **real** verification commands + protected safety surfaces |
 | `.claude/skills/improve/references/plan-template.md` | Executable plan format: self-contained, gated, STOP conditions |
-| `plans/` | Committed backlog of executable specs (not runtime output) |
-| `.gitignore` | Whitelists `.claude/skills/` so the skill is tracked |
+| `.claude/agents/improve-executor.md` | The cheap-model executor persona: implements one plan in a worktree, runs its gates/STOP conditions, never merges |
+| `plans/` | Committed backlog of executable specs — seeded by the first real audit (`INDEX.md` + 3 vetted plans) |
+| `scripts/ops/check_provider_registry_freshness.py` | Freshness guard so `execute` never dispatches to a stale free tier (`make ai-provider-registry-check`) |
+| `tests/test_provider_registry_freshness.py` | 7 tests pinning the guard |
+| `sales/DIAGNOSTIC_REPORT_TEMPLATE_AR.md` | Bilingual customer deliverable produced from an `improve` run (Free Diagnostic / Sprint) |
+| `.gitignore` | Fix: `.claude/*` so subdir whitelists work; tracks `.claude/skills/` |
+
+### The loop, run end-to-end (this PR is the worked example)
+The first audit against commit `2ec6a6c` produced `plans/INDEX.md` with three
+vetted findings and two recorded rejections (see the "Rejected findings" block —
+the `!scripts/lib/` gitignore negation looked like a bug but was verified
+by-design). Plan **002** was then executed for real: a provider-registry
+freshness guard + 7 passing tests + a `make` target — closing audit → plan →
+execute → verify inside one PR.
 
 **Wiring that makes it Dealix-native, not a generic drop-in:**
 - Every plan's done-criteria are Dealix gates (`make full-repo-test`,

@@ -56,6 +56,7 @@ OUTBOUND_MODE=draft_only
 Repo code is non-confidential — a cheap/free executor is fine. Pick via the radar:
 
 ```bash
+make ai-provider-registry-check                 # guard: fail if the registry is stale
 make ai-provider-radar
 python3 scripts/ops/free_llm_provider_radar.py --task coding --json
 ```

@@ -255,7 +255,10 @@ See `docs/DEALIX_BUSINESS_MODEL.md` for full detail.
 | Sales assets | `sales/` |
 | Agent rules | `.claude/rules/` |
 | Codebase advisor skill | `.claude/skills/improve/` |
-| Improvement backlog | `plans/` |
+| improve executor agent | `.claude/agents/improve-executor.md` |
+| Improvement backlog | `plans/` (INDEX + seeded plans) |
+| Provider registry guard | `scripts/ops/check_provider_registry_freshness.py` |
+| Diagnostic report template | `sales/DIAGNOSTIC_REPORT_TEMPLATE_AR.md` |
 | improve integration doc | `docs/IMPROVE_SKILL_INTEGRATION.md` |
 
 ---

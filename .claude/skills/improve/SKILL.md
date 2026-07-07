@@ -109,12 +109,15 @@ hard boundaries + STOP conditions).
 
 ### 6. Execute (optional — founder-gated)
 `/improve execute <plan>`:
+- Confirm the executor's model registry is fresh first:
+  `make ai-provider-registry-check` (guards against a stale free tier).
 - Pick a cheap, **non-confidential** executor model via the provider radar:
   `make ai-provider-radar` or `python3 scripts/ops/free_llm_provider_radar.py --task coding --json`.
   Repo code only — never route customer/PII/secret data to a free tier
   (`private data: do_not_send`).
-- Dispatch it in an **isolated git worktree** (already `.gitignore`d under
-  `.claude/`), hand it exactly the plan file, nothing else.
+- Dispatch the **`improve-executor` sub-agent** (`.claude/agents/improve-executor.md`)
+  in an **isolated git worktree** (already `.gitignore`d under `.claude/`), and
+  hand it exactly the plan file, nothing else.
 - Review the result like a tech lead: re-run every done-criterion command, check
   scope compliance, read the diff against intent. Verdict: **approve** (founder
   merges — never automatic), **revise** (max 2 rounds), or **block + refine the plan**.
