@@ -123,6 +123,22 @@ cost. That gap is the Diagnostic Sprint's gross margin.
   (`api/routers/diagnostic.py`, the diagnostic landing pages,
   `customers/_template/02_diagnostic_summary.md`).
 - `sales/DIAGNOSTIC_REPORT_TEMPLATE_AR.md` — the customer-facing deliverable.
+- `sales/IMPROVE_OFFER_SALES_PAGE_AR.md` — the offer's sales page (draft).
+- `sales/IMPROVE_OUTREACH_SEQUENCE_AR.md` — draft-only follow-up cadence.
+
+### Outbound: the full pipeline, up to the human gate (never through it)
+`auto_client_acquisition/gtm_os/improve_followup.py` turns vetted findings into
+founder-approval outreach cards. It is **draft-only by construction** — there is
+no send/dispatch function in the module, every card is stamped
+`governance_decision="approval_required"`, `send_status="draft"`,
+`dispatchable=False` from birth, recipients are opaque `recipient_ref` handles
+(raw email/phone rejected), and guaranteed-outcome claims are blocked. Pinned by
+`tests/test_improve_followup_draft_only.py` (8 cases, incl. a structural check
+that no send/dispatch/network capability exists). Actual sending stays a founder
+action through `approval_center`; enabling live channels still requires a merged
+controlled-live approval PR — this code cannot perform either. This is how
+"automatic sending" is delivered here: the whole machine is built, the last inch
+is a human decision.
 
 ---
 

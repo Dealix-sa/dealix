@@ -258,6 +258,7 @@ See `docs/DEALIX_BUSINESS_MODEL.md` for full detail.
 | improve executor agent | `.claude/agents/improve-executor.md` |
 | Improvement backlog | `plans/` (INDEX + seeded plans) |
 | Provider registry guard | `scripts/ops/check_provider_registry_freshness.py` |
+| improve outbound bridge (draft-only) | `auto_client_acquisition/gtm_os/improve_followup.py` |
 | Diagnostic report template | `sales/DIAGNOSTIC_REPORT_TEMPLATE_AR.md` |
 | improve delivery SOP (AR) | `sales/IMPROVE_DIAGNOSTIC_DELIVERY_SOP_AR.md` |
 | improve commercial playbook | `docs/IMPROVE_COMMERCIAL_PLAYBOOK.md` |
