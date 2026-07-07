@@ -15,7 +15,9 @@ Policy:
 from __future__ import annotations
 
 import hmac
+import json
 import os
+import re
 from collections.abc import Awaitable, Callable, Iterable
 
 from fastapi import Depends, HTTPException, Request, status
@@ -63,15 +65,72 @@ PUBLIC_PREFIXES: tuple[str, ...] = (
 _admin_key_header = APIKeyHeader(name="X-Admin-API-Key", auto_error=False)
 
 
+def _split_key_bundle(raw: str) -> list[str]:
+    """Parse common secret shapes without logging or exposing key values.
+
+    Production and CI have both used single keys, comma-separated strings,
+    whitespace/newline-separated values, and JSON secret bundles. The smoke
+    runner already accepts these shapes; the middleware should accept the same
+    configured values so protected-route smoke tests verify the real edge path.
+    """
+    raw = raw.strip()
+    if not raw:
+        return []
+
+    if raw.startswith("["):
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            parsed = None
+        if isinstance(parsed, list):
+            return [str(item).strip() for item in parsed if str(item).strip()]
+
+    if raw.startswith("{"):
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            parsed = None
+        if isinstance(parsed, dict):
+            values: list[str] = []
+            for key in ("API_KEYS", "api_keys", "keys", "values", "value"):
+                value = parsed.get(key)
+                if isinstance(value, list):
+                    values.extend(str(item).strip() for item in value)
+                elif isinstance(value, str):
+                    values.extend(_split_key_bundle(value))
+            return [value for value in values if value]
+
+    return [part.strip() for part in re.split(r"[,;\n\r\t ]+", raw) if part.strip()]
+
+
+def _dedupe_keys(values: Iterable[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        if not value or value in seen:
+            continue
+        seen.add(value)
+        result.append(value)
+    return result
+
+
 def _configured_keys() -> list[str]:
-    raw = os.getenv("API_KEYS", "")
-    return [k.strip() for k in raw.split(",") if k.strip()]
+    values: list[str] = []
+    for env_name in (
+        "API_KEYS",
+        "DEALIX_API_KEYS",
+        "DEALIX_API_KEY",
+        "DEALIX_PRODUCTION_API_KEY",
+        "DEALIX_SMOKE_API_KEY",
+    ):
+        values.extend(_split_key_bundle(os.getenv(env_name, "")))
+    return _dedupe_keys(values)
 
 
 def _configured_admin_keys() -> list[str]:
     """Return the list of valid admin API keys from ADMIN_API_KEYS env var."""
     raw = os.getenv("ADMIN_API_KEYS", "")
-    return [k.strip() for k in raw.split(",") if k.strip()]
+    return _split_key_bundle(raw)
 
 
 def verify_api_key(key: str | None, allowed: Iterable[str] | None = None) -> bool:
