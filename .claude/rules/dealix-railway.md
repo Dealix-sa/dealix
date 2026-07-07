@@ -15,12 +15,12 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"
+# NO startCommand — Dockerfile CMD (/app/start.sh) runs uvicorn and reads Railway's injected $PORT
 healthcheckPath = "/healthz"
 healthcheckTimeout = 300
 ```
 
-Do not change builder to NIXPACKS. Do not remove healthcheckPath.
+Do not change builder to NIXPACKS. Do not remove healthcheckPath. Do not add a `startCommand` (leave the Railway UI Start Command empty so Dockerfile CMD runs).
 
 ## Required Railway service variables
 

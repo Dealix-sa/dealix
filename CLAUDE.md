@@ -49,7 +49,7 @@ reports/      Runtime outputs (gitignored under reports/runtime/)
 Key files:
 - `api/main.py` — app factory; production secret guard at startup
 - `core/config/settings.py` — pydantic-settings; no hardcoded secrets
-- `railway.toml` — Dockerfile builder, uvicorn start, /healthz
+- `railway.toml` — Dockerfile builder, Dockerfile CMD start (no startCommand), /healthz
 - `Dockerfile` — multi-stage Python 3.12-slim, non-root, tini
 - `Makefile` — all canonical commands
 - `scripts/ops/run_full_repo_test_matrix.sh` — launch gate runner
@@ -141,7 +141,7 @@ Optional/diagnostic (failures are non-blocking):
 
 ## Railway Deployment Rules
 
-- `railway.toml` builder = DOCKERFILE, start = uvicorn api.main:app
+- `railway.toml` builder = DOCKERFILE, no startCommand (Dockerfile CMD `/app/start.sh` runs uvicorn)
 - Dockerfile = multi-stage Python 3.12-slim, non-root, tini
 - Health = `/healthz`, timeout = 300s
 - **Do not remove the production secret guard** in `api/main.py:_validate_production_secrets`
