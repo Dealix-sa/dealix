@@ -1,0 +1,5 @@
+interface:
+  display_name: "Dealix Autonomous Company OS"
+  short_description: "Run Dealix as a safe approval-first autonomous company operating system."
+  icon: "building-2"
+  primary_color: "#0F172A"
