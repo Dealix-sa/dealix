@@ -1,0 +1,16 @@
+{
+  "founder_name": "Sami Assiri",
+  "primary_email": "sami.assiri11@gmail.com",
+  "approved_sender_identity": "Sami — Dealix",
+  "email_policy": "Use only primary_email for founder identity. Ignore older or unknown Sami emails unless explicitly re-approved.",
+  "channels_enabled_for_drafts": [
+    "email",
+    "whatsapp",
+    "linkedin",
+    "call_script"
+  ],
+  "channels_enabled_for_live_send": [],
+  "external_send_rule": "Generate drafts only. Do not send, publish, book, charge, or mutate production without explicit approval for the exact action.",
+  "proof_rule": "Use only real evidence from Dealix reports, GitHub, customer-approved proof, or public pages. Never invent client names, revenue, partnerships, or government access.",
+  "tone": "direct, Saudi B2B, respectful, proof-first, low-pressure, practical"
+}
