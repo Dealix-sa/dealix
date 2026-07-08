@@ -1,0 +1,36 @@
+name: client-company-operating-os
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 5 * * *"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: client-company-operating-os-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  run-client-company-operating-os:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run client company operating OS in draft-only mode
+        run: |
+          python scripts/commercial/run_client_company_operating_os.py --mode draft-only
+
+      - name: Upload generated operating artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-company-operating-os-report
+          path: reports/client_company_operating_os/
+          if-no-files-found: error
