@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -86,8 +87,8 @@ def load_company_profile() -> Dict[str, Any]:
             data = json.loads(path.read_text(encoding="utf-8"))
             if isinstance(data, dict):
                 return {**DEFAULT_COMPANY_PROFILE, **data}
-        except json.JSONDecodeError:
-            pass
+        except json.JSONDecodeError as exc:
+            print(f"Warning: invalid company profile JSON ignored at {path}: {exc}", file=sys.stderr)
     return DEFAULT_COMPANY_PROFILE
 
 
