@@ -37,6 +37,7 @@ DATA_FILES = [
 REPORT_FILES = [
     "latest.json", "latest.md", "approval_queue.csv", "opportunity_graph.csv",
     "email_drafts.csv", "whatsapp_drafts.csv", "negotiation_playbooks.csv", "proof_pack.md",
+    "slack_brief.md",
 ]
 
 # Any other founder-looking email would be a leak. Add known-bad here if found.

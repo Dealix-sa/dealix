@@ -122,6 +122,7 @@ committed):
 - `email_drafts.csv` / `whatsapp_drafts.csv` — channel drafts
 - `negotiation_playbooks.csv` — per-target negotiation plans
 - `proof_pack.md` — proof-of-value packs
+- `slack_brief.md` — internal Slack brief draft for the founder (never posted)
 
 ## Safety
 

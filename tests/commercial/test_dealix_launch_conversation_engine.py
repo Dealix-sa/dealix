@@ -159,9 +159,15 @@ def test_runner_creates_expected_files(tmp_path, monkeypatch):
     for name in (
         "latest.json", "latest.md", "approval_queue.csv", "opportunity_graph.csv",
         "email_drafts.csv", "whatsapp_drafts.csv", "negotiation_playbooks.csv", "proof_pack.md",
+        "slack_brief.md",
     ):
         assert (tmp_path / name).is_file(), name
 
     payload = json.loads((tmp_path / "latest.json").read_text(encoding="utf-8"))
     assert payload["summary"]["live_send"] is False
     assert payload["verdict"] == "SAFE_TO_RUN_INTERNAL_DRAFT_ONLY"
+
+    # Slack brief is a draft only — it must state nothing is sent.
+    brief = (tmp_path / "slack_brief.md").read_text(encoding="utf-8")
+    assert "draft" in brief.lower()
+    assert "Nothing is sent" in brief

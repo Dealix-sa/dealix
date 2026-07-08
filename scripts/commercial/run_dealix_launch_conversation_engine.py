@@ -131,6 +131,37 @@ def _write_reports(payload: dict) -> None:
 
     (REPORT_DIR / "latest.md").write_text(_render_command_report(payload), encoding="utf-8")
     (REPORT_DIR / "proof_pack.md").write_text(_render_proof_pack(payload), encoding="utf-8")
+    (REPORT_DIR / "slack_brief.md").write_text(_render_slack_brief(payload), encoding="utf-8")
+
+
+def _render_slack_brief(payload: dict) -> str:
+    """Internal Slack brief draft for the founder — draft-only, never posted."""
+    s = payload.get("summary", {})
+    top = payload.get("opportunities", [])[:3]
+    lines = [
+        ":rocket: *Dealix Launch Brief (draft — internal only)*",
+        f"> verdict: `{payload.get('verdict')}` · mode: `{payload.get('mode')}`",
+        "",
+        f"*Highest-leverage action:* {payload.get('highest_leverage_action', '')}",
+        "",
+        "*Top opportunities:*",
+    ]
+    for o in top:
+        lines.append(
+            f"• {o.get('company')} — score {o.get('score')} ({o.get('band')}) → "
+            f"{o.get('offer_match', {}).get('primary_offer_id', '')}"
+        )
+    lines += [
+        "",
+        f"*Approval queue:* {s.get('approval_items', 0)} item(s) pending founder decision "
+        f"(approve/revise/reject/hold).",
+        f"*Drafts ready:* {s.get('email_drafts', 0)} email · {s.get('whatsapp_drafts', 0)} whatsapp "
+        f"(warm-only) · {s.get('negotiation_playbooks', 0)} negotiation playbook(s).",
+        "",
+        "_Nothing is sent. Review the approval queue before any outbound._",
+        "",
+    ]
+    return "\n".join(lines)
 
 
 def _render_command_report(payload: dict) -> str:
@@ -240,6 +271,7 @@ def main(argv: list[str] | None = None) -> int:
     print("reports/dealix_conversation_negotiation/whatsapp_drafts.csv")
     print("reports/dealix_conversation_negotiation/negotiation_playbooks.csv")
     print("reports/dealix_conversation_negotiation/proof_pack.md")
+    print("reports/dealix_conversation_negotiation/slack_brief.md")
     if not safe:
         for v in payload.get("safety", {}).get("violations", []):
             print("BLOCKED_BY_SAFETY_GUARD: " + v)
