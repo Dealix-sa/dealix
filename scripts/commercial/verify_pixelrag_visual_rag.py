@@ -6,14 +6,12 @@ that the adapter exists, defaults to disabled, blocks sensitive hosted jobs, and
 keeps PixelRAG optional for Dealix CI/Railway.
 """
 
-from __future__ import annotations
-
 from dealix.visual_rag import (
     VisualRAGAdapter,
     VisualRAGJob,
     VisualRAGMode,
-    VisualRAGSource,
     VisualRAGSensitivity,
+    VisualRAGSource,
 )
 
 
