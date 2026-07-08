@@ -42,7 +42,7 @@ class VisualRAGSource(BaseModel):
     source_id: str | None = None
 
     @model_validator(mode="after")
-    def validate_url_shape(self) -> "VisualRAGSource":
+    def validate_url_shape(self) -> VisualRAGSource:
         if self.kind == "url":
             # Validate shape without coercing the stored value.
             _URL_ADAPTER.validate_python(self.uri)
