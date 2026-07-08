@@ -44,6 +44,29 @@ FORBIDDEN_ACTIONS = frozenset(
     }
 )
 
+# Forbidden *fragments*: if any appears anywhere in an action name, the action
+# is refused. This catches descriptive variants loaded from editable strategy
+# YAML (e.g. "cold_outreach_sequence", "mass_send_campaign",
+# "linkedin_scrape_contacts") that an exact match would let slip through to the
+# approval queue. Fail-closed: when in doubt, block.
+# NB: fragments target automation/scraping/sending, NOT platform names. Drafting
+# a LinkedIn *post* for manual review is allowed (draft-only); "linkedin_scrape"
+# or "linkedin_automation" are not. So we match the harmful verb, not "linkedin".
+FORBIDDEN_FRAGMENTS = (
+    "cold_outreach",
+    "auto_send",
+    "mass_send",
+    "bulk_broadcast",
+    "linkedin_automation",
+    "linkedin_scrape",
+    "linkedin_outreach",
+    "linkedin_dm",
+    "scrape",
+    "buy_leads",
+    "auto_invoice",
+    "auto_charge",
+)
+
 # Channels considered external. Drafts for these always go to approval.
 EXTERNAL_CHANNELS = frozenset({"whatsapp", "email", "sms", "linkedin", "phone"})
 
@@ -97,7 +120,11 @@ class SafetyGate:
         return self._flag("EXTERNAL_SEND_ENABLED")
 
     def is_forbidden(self, action: str) -> bool:
-        return action.strip().lower() in FORBIDDEN_ACTIONS
+        act = action.strip().lower()
+        if act in FORBIDDEN_ACTIONS:
+            return True
+        # Substring match on forbidden fragments catches descriptive variants.
+        return any(fragment in act for fragment in FORBIDDEN_FRAGMENTS)
 
     def evaluate(
         self,

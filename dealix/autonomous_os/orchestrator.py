@@ -55,8 +55,10 @@ class AutonomousOS:
         self.registry = StrategyRegistry(strategies_dir=strategies_dir)
         self.planner = ExecutionPlanner(self.gate)
         self.actions = ActionQueue(self.root)
-        self.approvals = ApprovalQueue(self.root)
         self.proofs = ProofLogger(self.root)
+        # Approval queue logs founder decisions to the proof trail so the
+        # learning loop can count real approval/rejection outcomes.
+        self.approvals = ApprovalQueue(self.root, proof_logger=self.proofs)
         self.learning = LearningLoop(self.root, self.proofs)
         self.router = ModelRouter(env=env)
         self.growth = GrowthEngine()

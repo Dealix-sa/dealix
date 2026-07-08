@@ -25,6 +25,12 @@ controlled-live configuration.
 `linkedin_automation`, `linkedin_scrape`, `scrape_contacts`, `buy_leads`,
 `auto_invoice`, `auto_charge`.
 
+Matching is fail-closed on **fragments**, not just exact names, so descriptive
+variants loaded from editable strategy YAML (e.g. `cold_outreach_sequence`,
+`mass_send_campaign`, `linkedin_scrape_contacts`) are also refused. Fragments
+target the harmful verb (scrape / mass_send / auto_charge …), not platform names
+— drafting a LinkedIn *post* for manual review stays allowed (draft-only).
+
 These contradict the safety doctrine and cannot be enabled by configuration.
 
 ## External channels (always APPROVAL)

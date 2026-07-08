@@ -16,7 +16,6 @@ import json
 import os
 import urllib.error
 import urllib.request
-from typing import Any
 from urllib.parse import urlparse
 
 from .base import Adapter, AdapterResult, AdapterStatus

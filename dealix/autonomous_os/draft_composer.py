@@ -65,15 +65,26 @@ class DraftComposer:
             f"Intent: {description or action}.\n"
             "Produce a short, review-ready draft. Mark it clearly as a draft."
         )
-        result = self.ollama.generate(prompt, model=choice.model, system=_SYSTEM_PROMPT)
+        # Local-first, and *only* local: the composer never calls a public model
+        # endpoint (safety doctrine). If the router selected a hosted provider
+        # because no local model is available, we still generate locally/offline
+        # and report that honestly rather than naming a provider we never call.
+        if choice.is_local:
+            result = self.ollama.generate(prompt, model=choice.model, system=_SYSTEM_PROMPT)
+            generation_mode = result.mode
+            draft_text = result.data
+        else:
+            generation_mode = "local_unavailable_template"
+            draft_text = self.ollama._fallback_text(prompt)
         return {
             "action": action,
             "strategy_id": strategy_id,
             "language": language,
             "offer": offer,
             "model": choice.to_dict(),
-            "generation_mode": result.mode,
-            "draft_text": result.data,
+            "model_used_for_generation": choice.provider if choice.is_local else "none_local_only",
+            "generation_mode": generation_mode,
+            "draft_text": draft_text,
             "is_draft": True,
             "will_send": False,
         }

@@ -42,6 +42,20 @@ def test_gate_blocks_forbidden_actions():
         assert decision.blocked
 
 
+def test_gate_blocks_forbidden_action_variants():
+    # Descriptive variants from editable YAML must still be refused, not queued.
+    gate = SafetyGate(env={})
+    for action in (
+        "cold_outreach_sequence",
+        "mass_send_campaign",
+        "linkedin_scrape_contacts",
+        "buy_leads_from_vendor",
+        "auto_charge_customer",
+    ):
+        decision = gate.evaluate(action=action, kind="external_draft", channel="whatsapp", risk=0.9)
+        assert decision.route == Route.BLOCKED, action
+
+
 def test_gate_routes_external_channels_to_approval():
     gate = SafetyGate(env={})
     for channel in ("whatsapp", "email", "sms", "linkedin"):
@@ -152,6 +166,26 @@ def test_approval_queue_submit_and_decide(tmp_path: Path):
     assert q.stats()[ApprovalState.APPROVED.value] == 1
 
 
+def test_approval_decision_feeds_learning_loop(tmp_path: Path):
+    from dealix.autonomous_os.learning_loop import LearningLoop
+    from dealix.autonomous_os.proof_logger import ProofLogger
+
+    proofs = ProofLogger(tmp_path)
+    q = ApprovalQueue(tmp_path, proof_logger=proofs)
+    item = q.submit(
+        strategy_id="revenue_sprint",
+        action="prepare_followup_drafts",
+        draft="body",
+        reason="external channel",
+        channel="whatsapp",
+    )
+    q.decide(item.id, approved=True, decided_by="founder")
+    # The learning loop now sees a real approval outcome, not just volume.
+    summary = LearningLoop(tmp_path, proofs).compute()
+    assert summary["strategies"]["revenue_sprint"]["approved"] == 1
+    assert summary["strategies"]["revenue_sprint"]["approval_rate"] == 1.0
+
+
 # --------------------------- Integrations ---------------------------------
 def test_integrations_registry_is_honest():
     summ = integrations.summary()
@@ -222,6 +256,17 @@ def test_draft_composer_offline_produces_draft():
         action="draft_sprint_proposal", strategy_id="revenue_sprint", language="ar"
     )
     assert composed["is_draft"] and composed["will_send"] is False
+    assert composed["draft_text"]
+
+
+def test_draft_composer_never_calls_public_endpoint_for_hosted_choice():
+    # Hosted provider selected (no local Ollama) must NOT be used for generation;
+    # composition stays local/offline and says so honestly.
+    composed = DraftComposer(env={"DEEPSEEK_API_KEY": "present"}).compose(
+        action="draft_sprint_proposal", strategy_id="revenue_sprint", language="en"
+    )
+    assert composed["generation_mode"] == "local_unavailable_template"
+    assert composed["model_used_for_generation"] == "none_local_only"
     assert composed["draft_text"]
 
 

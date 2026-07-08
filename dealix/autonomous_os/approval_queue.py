@@ -49,10 +49,13 @@ class ApprovalItem:
 
 
 class ApprovalQueue:
-    def __init__(self, root: Path | str) -> None:
+    def __init__(self, root: Path | str, proof_logger: Any = None) -> None:
         self.root = Path(root) / "approvals"
         self.root.mkdir(parents=True, exist_ok=True)
         self.store = self.root / "approval_queue.json"
+        # Optional ProofLogger so founder decisions become learning signal.
+        # Kept as a duck-typed dependency to avoid an import cycle.
+        self._proof_logger = proof_logger
 
     def _read(self) -> list[dict[str, Any]]:
         if not self.store.exists():
@@ -100,6 +103,7 @@ class ApprovalQueue:
     def decide(self, item_id: str, *, approved: bool, decided_by: str, note: str = "") -> bool:
         items = self._read()
         changed = False
+        decided_item: dict[str, Any] | None = None
         for i in items:
             if i.get("id") == item_id and i.get("state") == ApprovalState.PENDING.value:
                 i["state"] = (
@@ -109,9 +113,22 @@ class ApprovalQueue:
                 i["decided_at"] = dt.datetime.now(dt.UTC).isoformat()
                 i["note"] = note
                 changed = True
+                decided_item = i
                 break
         if changed:
             self._write(items)
+            # Emit a proof event so LearningLoop can count real outcomes.
+            if self._proof_logger is not None and decided_item is not None:
+                self._proof_logger.log(
+                    "approval_decided",
+                    {
+                        "id": item_id,
+                        "strategy_id": decided_item.get("strategy_id", ""),
+                        "action": decided_item.get("action", ""),
+                        "approved": approved,
+                        "decided_by": decided_by,
+                    },
+                )
         return changed
 
     def stats(self) -> dict[str, int]:
