@@ -428,6 +428,12 @@ reports/money_now/*.json
 reports/money_now/*.md
 !reports/money_now/.gitkeep
 
+# Autonomous Company OS — Command Room outputs + private CRM memory.
+# (data/ is already ignored above; the engine recreates data/autonomous_company/
+# at runtime. Never commit CRM state or the lead inbox.)
+reports/autonomous_company/*
+!reports/autonomous_company/.gitkeep
+
 # Daily business exports (founder reviews before sharing; never committed)
 business/closing/exports/
 business/crm/exports/dealix-pipeline-report-*.md

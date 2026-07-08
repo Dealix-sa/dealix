@@ -53,6 +53,7 @@ def _docs_exist() -> tuple[str, bool]:
     required = [
         ROOT / "docs" / "commercial" / "MONEY_NOW_SPRINT.md",
         ROOT / "docs" / "commercial" / "AUTONOMOUS_GROWTH_EXECUTION_OS.md",
+        ROOT / "docs" / "commercial" / "AUTONOMOUS_COMPANY_OS.md",
     ]
     missing = [str(p.relative_to(ROOT)) for p in required if not p.exists()]
     if missing:
@@ -71,6 +72,7 @@ def main() -> int:
 
     results.append(_run(COMMERCIAL / "verify_money_now_sprint.py"))
     results.append(_run(COMMERCIAL / "verify_autonomous_growth.py"))
+    results.append(_run(COMMERCIAL / "verify_autonomous_company.py"))
     results.append(_docs_exist())
 
     all_ok = True

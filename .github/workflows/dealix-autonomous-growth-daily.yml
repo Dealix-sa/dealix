@@ -46,6 +46,9 @@ jobs:
           python3 scripts/commercial/run_autonomous_growth_daily.py \
             --autonomy-level 3 --mode draft-only --limit 50
 
+      - name: Autonomous Company cycle (stateful pipeline + Command Room)
+        run: python3 scripts/commercial/run_autonomous_company.py --seed-inbox --top 10
+
       - name: Verify foundation stays safe
         run: python3 scripts/commercial/verify_launch_foundation.py
 
@@ -57,5 +60,6 @@ jobs:
           path: |
             reports/autonomous_growth/
             reports/money_now/
+            reports/autonomous_company/
           retention-days: 14
           if-no-files-found: ignore
