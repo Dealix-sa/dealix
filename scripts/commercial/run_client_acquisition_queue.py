@@ -9,6 +9,7 @@ review queue from a seed JSON/CSV-free fallback.
 from __future__ import annotations
 
 import argparse
+import importlib
 import sys
 from pathlib import Path
 
@@ -16,12 +17,10 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from dealix.client_acquisition import ClientCard, build_queue, write_queue_bundle  # noqa: E402
 
-
-def sample_cards(limit: int) -> list[ClientCard]:
+def sample_cards(client_card_cls, limit: int) -> list:
     cards = [
-        ClientCard(
+        client_card_cls(
             company="Saudi service company",
             segment="local_b2b",
             signal="Needs clearer follow-up and opportunity tracking",
@@ -33,7 +32,7 @@ def sample_cards(limit: int) -> list[ClientCard]:
             trust_score=60,
             risk_score=20,
         ),
-        ClientCard(
+        client_card_cls(
             company="Foreign B2B SaaS",
             segment="foreign_market_access",
             signal="Potential Saudi expansion fit",
@@ -45,7 +44,7 @@ def sample_cards(limit: int) -> list[ClientCard]:
             trust_score=55,
             risk_score=30,
         ),
-        ClientCard(
+        client_card_cls(
             company="B2G-ready supplier",
             segment="b2g_readiness",
             signal="Needs readiness material and partner map",
@@ -62,6 +61,8 @@ def sample_cards(limit: int) -> list[ClientCard]:
 
 
 def main() -> int:
+    client_acquisition = importlib.import_module("dealix.client_acquisition")
+
     parser = argparse.ArgumentParser(description="Generate Dealix client acquisition queue")
     parser.add_argument("--mode", default="draft-only", choices=["draft-only"])
     parser.add_argument("--limit", type=int, default=10)
@@ -72,8 +73,11 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    bundle = build_queue(sample_cards(args.limit), mode=args.mode)
-    output_path = write_queue_bundle(bundle, Path(args.output))
+    bundle = client_acquisition.build_queue(
+        sample_cards(client_acquisition.ClientCard, args.limit),
+        mode=args.mode,
+    )
+    output_path = client_acquisition.write_queue_bundle(bundle, Path(args.output))
     print(f"CLIENT_ACQUISITION_QUEUE={output_path}")
     print(f"ITEMS={len(bundle.items)}")
     print("MODE=draft-only")
