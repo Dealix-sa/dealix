@@ -7,7 +7,7 @@ It writes internal files only.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -83,7 +83,7 @@ def build_queue(cards: Iterable[ClientCard], mode: str = "draft-only") -> QueueB
         )
     items.sort(key=lambda item: item.client.priority_score, reverse=True)
     return QueueBundle(
-        generated_at=datetime.now(timezone.utc).isoformat(),
+        generated_at=datetime.now(UTC).isoformat(),
         mode=mode,
         items=items,
         safeguards=SAFEGUARDS,
