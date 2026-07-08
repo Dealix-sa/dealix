@@ -1,19 +1,14 @@
 """Optional adapter for PixelRAG-compatible visual evidence retrieval.
 
 This adapter does not import PixelRAG by default. Dealix remains usable in CI,
-Railway, and Python 3.11 environments. PixelRAG can run separately as:
-
-- a screenshot CLI (`pixelshot`) available on PATH;
-- a private worker exposing a PixelRAG-compatible search API;
-- a hosted public search endpoint for public materials only.
+Railway, and Python 3.11 environments. PixelRAG should run separately as a
+private worker or hosted public endpoint.
 """
 
 from __future__ import annotations
 
 import json
 import os
-import shutil
-import subprocess  # noqa: S404 - pixelshot is an explicitly configured local evidence tool.
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -40,7 +35,7 @@ class VisualRAGAdapterConfig:
     request_timeout_seconds: int = 30
 
     @classmethod
-    def from_env(cls) -> "VisualRAGAdapterConfig":
+    def from_env(cls) -> VisualRAGAdapterConfig:
         return cls(
             hosted_search_url=os.getenv("DEALIX_PIXELRAG_HOSTED_SEARCH_URL"),
             private_worker_url=os.getenv("DEALIX_PIXELRAG_PRIVATE_WORKER_URL"),
@@ -84,7 +79,7 @@ class VisualRAGAdapter:
             )
 
         if job.mode == VisualRAGMode.SCREENSHOT_ONLY:
-            return self._run_pixelshot(job, warnings=list(decision.warnings))
+            return self._prepare_screenshot_job(job, warnings=list(decision.warnings))
 
         if job.mode == VisualRAGMode.HOSTED_SEARCH:
             return self._run_search(job, self.config.hosted_search_url, warnings=list(decision.warnings))
@@ -99,67 +94,25 @@ class VisualRAGAdapter:
             message=f"Unsupported VisualRAG mode: {job.mode}",
         )
 
-    def _run_pixelshot(self, job: VisualRAGJob, warnings: list[str]) -> VisualRAGResult:
-        pixelshot = shutil.which(self.config.pixelshot_bin)
-        if not pixelshot:
-            return VisualRAGResult(
-                job_id=job.job_id,
-                status="error",
-                mode=job.mode,
-                message="pixelshot CLI was not found on PATH.",
-                warnings=warnings,
-                next_actions=[
-                    "Install PixelRAG in an isolated Python 3.12 environment.",
-                    "Expose pixelshot through DEALIX_PIXELSHOT_BIN or PATH.",
-                ],
-            )
-
-        job_dir = self.config.output_root / job.job_id
-        job_dir.mkdir(parents=True, exist_ok=True)
-        tiles: list[VisualRAGTile] = []
-
-        for index, source in enumerate(job.sources, start=1):
-            if source.kind not in {"url", "local_file", "uploaded_file"}:
-                warnings.append(f"Skipping unsupported screenshot source kind: {source.kind}")
-                continue
-
-            output_dir = job_dir / f"source_{index}"
-            output_dir.mkdir(parents=True, exist_ok=True)
-            cmd = [pixelshot, source.uri, "--output", str(output_dir)]
-            completed = subprocess.run(  # noqa: S603 - binary is resolved by shutil.which above.
-                cmd,
-                check=False,
-                capture_output=True,
-                text=True,
-                timeout=self.config.request_timeout_seconds,
-            )
-            if completed.returncode != 0:
-                warnings.append(
-                    f"pixelshot failed for {source.uri}: {completed.stderr.strip() or completed.stdout.strip()}"
-                )
-                continue
-
-            for tile_path in sorted(output_dir.glob("*")):
-                if tile_path.is_file() and tile_path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}:
-                    tiles.append(
-                        VisualRAGTile(
-                            tile_id=f"{job.job_id}:{index}:{tile_path.name}",
-                            source_id=source.source_id or source.title or str(index),
-                            image_path=str(tile_path),
-                            metadata={"source_uri": source.uri, "mode": "screenshot_only"},
-                        )
-                    )
+    def _prepare_screenshot_job(self, job: VisualRAGJob, warnings: list[str]) -> VisualRAGResult:
+        """Prepare a screenshot job for an external worker instead of executing locally."""
 
         return VisualRAGResult(
             job_id=job.job_id,
-            status="ok" if tiles else "error",
+            status="pending_approval",
             mode=job.mode,
-            message=(
-                f"Captured {len(tiles)} visual evidence tiles." if tiles else "No tiles were captured."
-            ),
-            tiles=tiles,
+            message="Screenshot capture is prepared for a PixelRAG worker; main Dealix app does not execute local browser tooling.",
             warnings=warnings,
-            next_actions=["Review captured tiles before attaching them to a Dealix proof pack."],
+            next_actions=[
+                "Run the approved job on the private PixelRAG worker.",
+                "Store generated tiles under the configured visual evidence output path.",
+                "Attach reviewed tiles through the proof-pack bridge.",
+            ],
+            metadata={
+                "output_root": str(self.config.output_root),
+                "pixelshot_bin": self.config.pixelshot_bin,
+                "source_count": len(job.sources),
+            },
         )
 
     def _run_search(
