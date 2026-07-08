@@ -1,0 +1,36 @@
+name: business-owner-value-os
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 5 * * *"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: business-owner-value-os-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  run-business-owner-value-os:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run business owner value OS in draft-only mode
+        run: |
+          python scripts/commercial/run_business_owner_value_os.py --mode draft-only
+
+      - name: Upload generated value artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: business-owner-value-os-report
+          path: reports/business_owner_value_os/
+          if-no-files-found: error
