@@ -1,0 +1,61 @@
+name: Dealix Autonomous Growth Daily
+
+# Draft-only internal execution of the Autonomous Growth & Strategy Execution OS.
+# No external send, no publish, no deploy, no secrets. ~08:00 KSA (05:00 UTC).
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: dealix-autonomous-growth-daily-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  autonomous-growth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Force draft-only posture regardless of any repo-level defaults.
+    env:
+      OUTBOUND_MODE: draft_only
+      EXTERNAL_SEND_ENABLED: "false"
+      EMAIL_SEND_ENABLED: "false"
+      WHATSAPP_SEND_ENABLED: "false"
+      WHATSAPP_ALLOW_LIVE_SEND: "false"
+      SMS_SEND_ENABLED: "false"
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install minimal deps
+        run: pip install pyyaml
+
+      - name: Money Now Sprint (draft-only)
+        run: python3 scripts/commercial/run_money_now_sprint.py
+
+      - name: Autonomous Growth daily run (draft-only, internal execution)
+        run: |
+          python3 scripts/commercial/run_autonomous_growth_daily.py \
+            --autonomy-level 3 --mode draft-only --limit 50
+
+      - name: Verify foundation stays safe
+        run: python3 scripts/commercial/verify_launch_foundation.py
+
+      - name: Upload draft artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-autonomous-growth-${{ github.run_id }}
+          path: |
+            reports/autonomous_growth/
+            reports/money_now/
+          retention-days: 14
+          if-no-files-found: ignore
