@@ -1,0 +1,35 @@
+[
+  {
+    "company_name": "Warm inbound prospect",
+    "target_type": "inbound",
+    "sector": "Saudi B2B services",
+    "pain_hypothesis": "Follow-up and proposal leakage after customer inquiries.",
+    "source": "manual/warm",
+    "urgency": 90,
+    "accessibility": 85,
+    "value": 70,
+    "risk": 15
+  },
+  {
+    "company_name": "Local clinic or training center",
+    "target_type": "local_b2b",
+    "sector": "healthcare/training",
+    "pain_hypothesis": "WhatsApp and call leads are not consistently followed up.",
+    "source": "manual list",
+    "urgency": 80,
+    "accessibility": 75,
+    "value": 65,
+    "risk": 20
+  },
+  {
+    "company_name": "Foreign B2B SaaS entering KSA",
+    "target_type": "foreign_market_entry",
+    "sector": "software",
+    "pain_hypothesis": "Needs Saudi market access, partner mapping, Arabic pitch, and first pilots.",
+    "source": "approved public research",
+    "urgency": 75,
+    "accessibility": 60,
+    "value": 90,
+    "risk": 30
+  }
+]
