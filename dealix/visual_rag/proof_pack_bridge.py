@@ -5,8 +5,6 @@ source references. It does not call PixelRAG, send content, or publish client
 materials.
 """
 
-from __future__ import annotations
-
 from typing import Any
 
 from dealix.visual_rag.contracts import VisualRAGResult, VisualRAGTile
