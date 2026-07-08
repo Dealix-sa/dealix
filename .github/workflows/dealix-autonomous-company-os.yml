@@ -1,0 +1,41 @@
+name: dealix-autonomous-company-os
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  draft-only-company-os:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Dealix Autonomous Company OS in draft-only mode
+        env:
+          EXTERNAL_SEND_ENABLED: "false"
+          LIVE_OUTBOUND_ENABLED: "false"
+          WHATSAPP_AUTO_SEND: "false"
+          EMAIL_AUTO_SEND: "false"
+          SMS_AUTO_SEND: "false"
+          LINKEDIN_AUTO_SEND: "false"
+          AUTO_MERGE_ENABLED: "false"
+          AUTO_DEPLOY_ENABLED: "false"
+          LIVE_PAYMENT_CAPTURE_ENABLED: "false"
+        run: |
+          python scripts/commercial/run_dealix_autonomous_company_os.py --limit 4
+
+      - name: Upload operating packet
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-autonomous-company-os-packet
+          path: reports/dealix_autonomous_company_os/
