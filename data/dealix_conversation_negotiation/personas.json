@@ -1,0 +1,44 @@
+{
+  "personas": [
+    {
+      "id": "saudi_b2b_founder",
+      "title_ar": "مؤسس شركة B2B سعودية",
+      "segment": "saudi_b2b",
+      "pains": ["lost_followup", "unqualified_leads", "no_pipeline_clarity"],
+      "pain_hypothesis_ar": "الفريق يستقبل leads لكن المتابعة غير منظمة، وبعض الفرص تضيع بدون رد.",
+      "decision_style": "fast_practical",
+      "preferred_channels": ["whatsapp", "call"],
+      "preferred_offers": ["revenue_proof_sprint", "revenue_leak_diagnostic"]
+    },
+    {
+      "id": "saudi_sales_lead",
+      "title_ar": "قائد مبيعات في شركة سعودية",
+      "segment": "saudi_b2b",
+      "pains": ["weak_followup", "leaking_leads", "has_sales_team"],
+      "pain_hypothesis_ar": "فريق مبيعات موجود لكن لا يوجد وضوح لمن يُتابَع اليوم وما الرسالة المناسبة.",
+      "decision_style": "evidence_driven",
+      "preferred_channels": ["email", "call"],
+      "preferred_offers": ["revenue_leak_diagnostic", "revenue_command_room_retainer"]
+    },
+    {
+      "id": "foreign_market_entrant",
+      "title_ar": "شركة أجنبية تريد دخول السعودية",
+      "segment": "foreign",
+      "pains": ["market_entry", "needs_partners", "wants_segments"],
+      "pain_hypothesis_ar": "الشركة تريد دخول السوق السعودي لكن تفتقد خريطة شركاء وعملاء ورسالة واضحة.",
+      "decision_style": "structured",
+      "preferred_channels": ["email", "linkedin"],
+      "preferred_offers": ["saudi_opportunity_snapshot", "saudi_market_access_sprint"]
+    },
+    {
+      "id": "enterprise_readiness_lead",
+      "title_ar": "شركة تستهدف الفرص المؤسسية والشراكات",
+      "segment": "enterprise",
+      "pains": ["enterprise_readiness", "tenders", "partnerships"],
+      "pain_hypothesis_ar": "الشركة تريد رفع جاهزيتها المؤسسية للتقديم على فرص كبيرة بشكل منظم.",
+      "decision_style": "risk_averse",
+      "preferred_channels": ["email", "call"],
+      "preferred_offers": ["b2g_readiness_sprint", "revenue_command_room_retainer"]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "note": "Illustrative hypothesis targets for internal draft generation only. Not real customers. No real contact details. Founder replaces with real warm-list data before any approval.",
+  "targets": [
+    {
+      "company": "شركة توزيع مواد بناء (افتراضية)",
+      "contact_name": "أبو محمد",
+      "segment": "saudi_b2b",
+      "persona": "saudi_b2b_founder",
+      "signals": ["lost_followup", "unqualified_leads"],
+      "pain_hypothesis_ar": "يستقبلون طلبات أسعار كثيرة عبر الواتساب لكن المتابعة غير منظمة وبعضها يضيع.",
+      "source": "hypothesis"
+    },
+    {
+      "company": "مزود خدمات لوجستية (افتراضي)",
+      "contact_name": "مدير المبيعات",
+      "segment": "saudi_b2b",
+      "persona": "saudi_sales_lead",
+      "signals": ["has_sales_team", "weak_followup", "leaking_leads"],
+      "pain_hypothesis_ar": "فريق مبيعات نشط لكن لا يوجد وضوح يومي لمن يُتابَع وما الرسالة المناسبة.",
+      "source": "hypothesis"
+    },
+    {
+      "company": "شركة SaaS أوروبية (افتراضية)",
+      "contact_name": "Head of Expansion",
+      "segment": "foreign",
+      "persona": "foreign_market_entrant",
+      "signals": ["market_entry", "needs_partners"],
+      "pain_hypothesis_ar": "تريد دخول السوق السعودي وتفتقد خريطة شركاء وعملاء ورسالة دخول واضحة.",
+      "source": "hypothesis"
+    },
+    {
+      "company": "مقاول أنظمة تقنية (افتراضي)",
+      "contact_name": "الرئيس التنفيذي",
+      "segment": "enterprise",
+      "persona": "enterprise_readiness_lead",
+      "signals": ["enterprise_readiness", "tenders", "partnerships"],
+      "pain_hypothesis_ar": "يريدون رفع الجاهزية المؤسسية للتقديم على فرص كبيرة بشكل منظم وموثّق.",
+      "source": "hypothesis"
+    },
+    {
+      "company": "عيادة أعمال B2B (افتراضية)",
+      "contact_name": "المدير التجاري",
+      "segment": "saudi_b2b",
+      "persona": "saudi_b2b_founder",
+      "signals": ["lost_followup", "no_pipeline_clarity"],
+      "pain_hypothesis_ar": "استفسارات كثيرة لكن لا يوجد ترتيب أولويات ولا دليل على ما تم متابعته.",
+      "source": "hypothesis"
+    }
+  ]
+}

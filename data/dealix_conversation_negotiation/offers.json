@@ -1,0 +1,77 @@
+{
+  "offers": [
+    {
+      "id": "revenue_proof_sprint",
+      "name_en": "Revenue Proof Sprint",
+      "name_ar": "سبرنت إثبات الإيراد",
+      "price_sar": "499",
+      "price_display": "499 SAR",
+      "goal_ar": "إثبات قيمة سريع خلال أيام.",
+      "fit_signals": ["lost_followup", "unqualified_leads", "no_pipeline_clarity"],
+      "deliverables_ar": ["تقرير فرص", "رسائل متابعة جاهزة", "proof pack"],
+      "value_angle_ar": "نثبت أين تضيع الفرص خلال أيام قليلة، بدون تغيير نظامكم.",
+      "measure_ar": ["عدد الفرص المؤهلة", "عدد المتابعات المولّدة", "عدد الـleads المفقودة المكتشفة"]
+    },
+    {
+      "id": "saudi_opportunity_snapshot",
+      "name_en": "Saudi Opportunity Snapshot",
+      "name_ar": "لقطة فرص السوق السعودي",
+      "price_sar": "499-1500",
+      "price_display": "499–1,500 SAR",
+      "goal_ar": "فهم فرصة واضحة في السوق السعودي.",
+      "fit_signals": ["foreign_company", "market_entry", "wants_segments"],
+      "deliverables_ar": ["صفحة فرصة", "قطاعات مستهدفة", "عملاء محتملون", "pitch عربي/إنجليزي"],
+      "value_angle_ar": "نرسم لكم خريطة فرصة واحدة واضحة في السوق السعودي بدل التخمين.",
+      "measure_ar": ["عدد القطاعات المؤهلة", "عدد العملاء المحتملين المحددين", "وضوح رسالة الدخول"]
+    },
+    {
+      "id": "revenue_leak_diagnostic",
+      "name_en": "Revenue Leak Diagnostic",
+      "name_ar": "تشخيص تسرب الإيراد",
+      "price_sar": "4999",
+      "price_display": "4,999 SAR",
+      "goal_ar": "تشخيص أين يفقد الفريق العملاء بسبب ضعف المتابعة.",
+      "fit_signals": ["has_sales_team", "leaking_leads", "weak_followup"],
+      "deliverables_ar": ["تشخيص funnel", "قائمة إجراءات", "templates", "dashboard"],
+      "value_angle_ar": "نقيس التسرب في مسار المبيعات ونعطيكم قائمة إجراءات مرتبة حسب الأثر.",
+      "measure_ar": ["نقاط التسرب المكتشفة", "الوقت الموفّر", "وضوح الـpipeline"]
+    },
+    {
+      "id": "saudi_market_access_sprint",
+      "name_en": "Saudi Market Access Sprint",
+      "name_ar": "سبرنت دخول السوق السعودي",
+      "price_sar": "8000-20000",
+      "price_display": "8,000–20,000 SAR",
+      "goal_ar": "مساعدة شركة أجنبية على دخول السوق السعودي.",
+      "fit_signals": ["foreign_company", "market_entry", "needs_partners"],
+      "deliverables_ar": ["market map", "partner map", "messaging", "pilot plan"],
+      "value_angle_ar": "نجهز لكم خريطة دخول عملية: من الشركاء، من العملاء، وما الرسالة.",
+      "measure_ar": ["عدد الشركاء المحتملين", "عدد فرص الـpilot", "جاهزية خطة الدخول"]
+    },
+    {
+      "id": "b2g_readiness_sprint",
+      "name_en": "B2G Readiness Sprint",
+      "name_ar": "سبرنت الجاهزية المؤسسية",
+      "price_sar": "10000-50000",
+      "price_display": "10,000–50,000 SAR",
+      "goal_ar": "جاهزية مؤسسية للمناقصات والشراكات (بدون أي ادعاء وصول حكومي).",
+      "fit_signals": ["enterprise_readiness", "tenders", "partnerships"],
+      "deliverables_ar": ["capability statement", "proposal pack", "partner strategy"],
+      "value_angle_ar": "نرفع جاهزيتكم المؤسسية للتقديم على الفرص الكبيرة بشكل منظّم.",
+      "measure_ar": ["اكتمال ملف القدرات", "جاهزية حزمة العروض", "وضوح استراتيجية الشراكات"],
+      "forbidden_claims": ["government access", "guaranteed contracts"]
+    },
+    {
+      "id": "revenue_command_room_retainer",
+      "name_en": "Revenue Command Room Retainer",
+      "name_ar": "اشتراك غرفة قيادة الإيراد",
+      "price_sar": "monthly",
+      "price_display": "شهري",
+      "goal_ar": "تشغيل ومتابعة يومية للفريق.",
+      "fit_signals": ["needs_daily_ops", "ongoing_followup", "wants_command_room"],
+      "deliverables_ar": ["daily command report", "opportunity graph", "approval queue", "proof ledger"],
+      "value_angle_ar": "نشغّل لكم غرفة قيادة يومية: من نتابع، ماذا نقول، وما الخطوة التالية.",
+      "measure_ar": ["الفرص المتابعة يوميًا", "المتابعات المنفذة", "وضوح القرار اليومي"]
+    }
+  ]
+}

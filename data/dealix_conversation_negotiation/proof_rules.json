@@ -1,0 +1,42 @@
+{
+  "allowed_measures": [
+    "reply_rate",
+    "qualified_opportunities",
+    "followups_created",
+    "missed_leads_detected",
+    "time_saved",
+    "pipeline_clarity",
+    "meetings_booked_after_approval",
+    "proof_pack_delivered"
+  ],
+  "forbidden_claims": [
+    "guaranteed revenue",
+    "guaranteed ROI",
+    "مضمون",
+    "نضمن زيادة الإيرادات",
+    "government access",
+    "guaranteed contracts",
+    "fake testimonial",
+    "fabricated revenue"
+  ],
+  "hypothesis_language": [
+    "نتوقع",
+    "الهدف هو",
+    "سنقيس",
+    "we expect",
+    "the goal is",
+    "we will measure"
+  ],
+  "proof_pack_structure": [
+    "pain_hypothesis",
+    "evidence_source",
+    "opportunity_score",
+    "offer_match",
+    "draft_message",
+    "expected_outcome",
+    "what_we_will_measure",
+    "what_client_provides",
+    "what_dealix_delivers",
+    "next_approval_needed"
+  ]
+}

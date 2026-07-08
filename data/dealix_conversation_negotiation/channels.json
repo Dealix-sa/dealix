@@ -1,0 +1,28 @@
+{
+  "channels": {
+    "email": {
+      "allow_cold": true,
+      "requires_approval": true,
+      "parts": ["subject", "short_version", "detailed_version", "followup_1", "followup_2", "objection_response", "cta", "risk_flags"],
+      "notes_ar": "يبدأ بفائدة واضحة، ويستخدم الإيميل الرسمي فقط."
+    },
+    "whatsapp": {
+      "allow_cold": false,
+      "requires_approval": true,
+      "parts": ["opening_message", "short_value_message", "permission_cta", "followup", "objection_response"],
+      "notes_ar": "warm فقط بعد إذن أو علاقة سابقة. ممنوع cold WhatsApp أو أي ضغط/سبام."
+    },
+    "linkedin": {
+      "allow_cold": true,
+      "requires_approval": true,
+      "parts": ["connection_note", "dm_after_acceptance", "value_followup", "founder_post_draft"],
+      "notes_ar": "بدون scraping أو automation. DM يدوي بعد قبول الاتصال فقط."
+    },
+    "call": {
+      "allow_cold": true,
+      "requires_approval": true,
+      "parts": ["opening", "discovery_questions", "pain_confirmation", "value_pitch", "objection_handling", "close_next_step"],
+      "notes_ar": "سكربت مكالمة للمؤسس، بدون اتصال تلقائي."
+    }
+  }
+}

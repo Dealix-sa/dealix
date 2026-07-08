@@ -121,6 +121,10 @@ dumps/
 # (canonical product config, no customer PII)
 !data/commercial/
 !data/commercial/*
+# Launch Conversation & Negotiation Engine config — offers, personas,
+# objections, channels, proof rules, hypothesis seed targets (no customer PII)
+!data/dealix_conversation_negotiation/
+!data/dealix_conversation_negotiation/*
 # Outreach kit — sector pitches + intake template (NOT the real filled list)
 !data/outreach/
 !data/outreach/*
@@ -409,6 +413,7 @@ reports/ai/
 reports/commercial/
 reports/operator/
 reports/command_center/
+reports/dealix_conversation_negotiation/
 
 # Daily business exports (founder reviews before sharing; never committed)
 business/closing/exports/

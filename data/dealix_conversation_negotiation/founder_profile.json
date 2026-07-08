@@ -1,0 +1,20 @@
+{
+  "founder_name_en": "Sami Assiri",
+  "founder_name_ar": "سامي عسيري",
+  "company_name": "Dealix",
+  "company_positioning_ar": "Dealix يبني أنظمة تشغيل مدعومة بالذكاء الاصطناعي لشركات B2B السعودية: يحول المتابعة المبعثرة والعروض والواتساب والـCRM والعمليات وقرارات المؤسس إلى غرفة قيادة يومية.",
+  "company_positioning_en": "Dealix builds AI-native operating systems for Saudi B2B companies. It turns scattered follow-up, proposals, WhatsApp, CRM, operations, and founder decisions into a daily revenue command room.",
+  "canonical_email": "sami.assiri11@gmail.com",
+  "signature_en": "Sami — Dealix\nsami.assiri11@gmail.com",
+  "signature_ar": "سامي — Dealix\nsami.assiri11@gmail.com",
+  "city": "Riyadh",
+  "language_default_sales": "ar",
+  "language_default_technical": "en",
+  "claim_rules": [
+    "no guaranteed ROI",
+    "no fake testimonials",
+    "no fabricated revenue numbers",
+    "use hypothesis language: we expect / the goal is / we will measure",
+    "no government-access claims"
+  ]
+}

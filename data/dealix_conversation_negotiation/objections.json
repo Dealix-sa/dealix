@@ -1,0 +1,144 @@
+{
+  "objections": [
+    {
+      "id": "price_high",
+      "trigger_ar": "السعر غالي",
+      "understanding_ar": "العميل غير متأكد أن القيمة تساوي السعر بعد.",
+      "short_ar": "نبدأ بـ pilot صغير يثبت القيمة قبل أي التزام أكبر.",
+      "detailed_ar": "أفهم أن السعر مهم. نقترح نبدأ بنطاق صغير (pilot) يوضّح أين تضيع الفرص ونقيس التحسن، وبعد ما ترون النتيجة نقرر التوسّع. القيمة تُثبت أولاً.",
+      "followup_question_ar": "لو النطاق أصغر والسعر أقل، هل يناسب نبدأ بأسبوع تجريبي؟",
+      "negotiation_move": "reduce_scope_not_price",
+      "proof_needed": "sample_proof_pack"
+    },
+    {
+      "id": "what_exactly",
+      "trigger_ar": "وش تسوون بالضبط؟",
+      "understanding_ar": "العميل يحتاج وضوح عملي للمخرجات.",
+      "short_ar": "نرتب فرص المبيعات والمتابعة ونطلع تقرير يومي: من نتابع، ماذا نقول، وما الخطوة.",
+      "detailed_ar": "نأخذ الـleads والمحادثات الحالية، نرتبها حسب الأولوية، ونجهز رسائل متابعة جاهزة و proof pack يوضح أين الفرصة. المخرج تقرير عملي تقدرون تستخدمونه فورًا.",
+      "followup_question_ar": "هل أرسل لكم مثال صفحة واحدة توضح المخرجات؟",
+      "negotiation_move": "show_sample",
+      "proof_needed": "one_page_snapshot"
+    },
+    {
+      "id": "are_you_crm",
+      "trigger_ar": "هل أنتم CRM؟",
+      "understanding_ar": "العميل يخلط بيننا وبين نظام تخزين بيانات.",
+      "short_ar": "لا، لا نستبدل نظامكم. نضيف طبقة قرار فوق ما عندكم.",
+      "detailed_ar": "لسنا CRM. الـCRM يخزّن. نحن نحوّل بياناتكم إلى قرار يومي: من يُتابع، ما الرسالة، وما الدليل. نعمل فوق نظامكم الحالي بدون استبداله.",
+      "followup_question_ar": "أي نظام تستخدمون حاليًا حتى أوضح كيف نكمّله؟",
+      "negotiation_move": "position_as_layer",
+      "proof_needed": "integration_note"
+    },
+    {
+      "id": "like_salesforce",
+      "trigger_ar": "هل هذا مثل Salesforce؟",
+      "understanding_ar": "العميل يقارن بمنصة كبيرة معقّدة.",
+      "short_ar": "لا، نحن أخف وأسرع، ونركّز على القرار اليومي لا الإعداد الطويل.",
+      "detailed_ar": "Salesforce منصة تخزين وإعداد كبيرة. نحن نركز على مخرج واحد: غرفة قيادة يومية توضح الأولوية والرسالة. تبدأ خلال أيام لا أشهر.",
+      "followup_question_ar": "هل يناسب نبدأ بلقطة صغيرة قبل أي قرار كبير؟",
+      "negotiation_move": "start_small",
+      "proof_needed": "one_page_snapshot"
+    },
+    {
+      "id": "no_need_ai",
+      "trigger_ar": "ما نحتاج AI",
+      "understanding_ar": "العميل يخاف من التعقيد أو يشك في الجدوى.",
+      "short_ar": "المخرج ليس AI، المخرج وضوح: من نتابع وماذا نقول.",
+      "detailed_ar": "ما نبيع لكم AI، نبيع وضوح يومي. الذكاء الاصطناعي مجرد أداة داخلية. النتيجة تقرير بسيط تستخدمونه بدون أي تعقيد تقني.",
+      "followup_question_ar": "لو النتيجة صفحة واحدة واضحة، هل تستحق التجربة؟",
+      "negotiation_move": "focus_outcome_not_tech",
+      "proof_needed": "one_page_snapshot"
+    },
+    {
+      "id": "have_sales_team",
+      "trigger_ar": "عندنا فريق مبيعات",
+      "understanding_ar": "العميل يظن أننا بديل للفريق.",
+      "short_ar": "لا نستبدل فريقكم، نعطيه أولوية يومية أوضح.",
+      "detailed_ar": "فريقكم يبقى، ونحن نعطيه قائمة أولويات يومية ورسائل جاهزة حتى يركّز على الإغلاق بدل ترتيب البيانات.",
+      "followup_question_ar": "كم lead يستقبل الفريق أسبوعيًا حتى أقدّر الأثر؟",
+      "negotiation_move": "augment_not_replace",
+      "proof_needed": "followup_gap_estimate"
+    },
+    {
+      "id": "send_proposal",
+      "trigger_ar": "ارسل عرض",
+      "understanding_ar": "العميل مهتم لكن يريد وثيقة.",
+      "short_ar": "أجهز لكم عرض صفحة واحدة واضح بعد سؤالين سريعين.",
+      "detailed_ar": "بكل سرور. حتى يكون العرض دقيق، أحتاج أفهم حجم الـleads ونظامكم الحالي. بعدها أرسل عرض صفحة واحدة بالنطاق والسعر.",
+      "followup_question_ar": "كم عدد الـleads شهريًا وأي نظام متابعة تستخدمون؟",
+      "negotiation_move": "qualify_before_quote",
+      "proof_needed": "one_page_snapshot"
+    },
+    {
+      "id": "talk_later",
+      "trigger_ar": "كلمنا بعدين",
+      "understanding_ar": "التوقيت غير مناسب الآن.",
+      "short_ar": "تمام، أرسل لكم لقطة صغيرة وتراجعونها وقت ما يناسب.",
+      "detailed_ar": "أفهم أن التوقيت مهم. أجهز لكم لقطة صفحة واحدة بدون التزام، تراجعونها متى ناسبكم ونكمل لو كانت مفيدة.",
+      "followup_question_ar": "هل أرسلها هذا الأسبوع أو الأسبوع القادم؟",
+      "negotiation_move": "low_commitment_next_step",
+      "proof_needed": "one_page_snapshot"
+    },
+    {
+      "id": "no_budget",
+      "trigger_ar": "ما عندنا ميزانية",
+      "understanding_ar": "قيود مالية أو عدم قناعة بالأولوية.",
+      "short_ar": "نبدأ بأصغر نطاق بسعر منخفض يثبت القيمة أولاً.",
+      "detailed_ar": "نحترم الميزانية. نقترح Revenue Proof Sprint بسعر منخفض يثبت أين تضيع الفرص. لو أثبت قيمته، نوسّع لاحقًا.",
+      "followup_question_ar": "لو النطاق أصغر ومناسب للميزانية، هل يستحق التجربة؟",
+      "negotiation_move": "smallest_paid_entry",
+      "proof_needed": "sample_proof_pack"
+    },
+    {
+      "id": "prove_value",
+      "trigger_ar": "كيف تثبتون القيمة؟",
+      "understanding_ar": "العميل يريد دليل قبل الدفع.",
+      "short_ar": "نقيس نقاط التسرب والفرص المؤهلة خلال pilot، بدون ادعاء نتائج.",
+      "detailed_ar": "لا نعد بنتيجة مضمونة. نقيس أشياء واضحة: كم فرصة مؤهلة، كم متابعة مفقودة، كم وقت موفّر. proof pack يوثّق ما وجدناه فعليًا.",
+      "followup_question_ar": "أي مقياس أهم لكم: الفرص المؤهلة أم المتابعات المفقودة؟",
+      "negotiation_move": "measure_dont_promise",
+      "proof_needed": "proof_pack"
+    },
+    {
+      "id": "guarantee_results",
+      "trigger_ar": "هل تضمنون نتائج؟",
+      "understanding_ar": "العميل يريد ضمان إيراد.",
+      "short_ar": "لا نضمن إيرادًا. نثبت أين تضيع الفرص ونقيس التحسن.",
+      "detailed_ar": "لا نقدّم ضمانات إيراد — هذا غير مهني. ما نضمنه هو منهجية واضحة: نكشف نقاط التسرب ونقيس التحسن خلال الـpilot، والقرار يبقى لكم.",
+      "followup_question_ar": "هل يناسب نبدأ بـ pilot مقيس بدل الوعود؟",
+      "negotiation_move": "measure_dont_promise",
+      "proof_needed": "proof_pack"
+    },
+    {
+      "id": "vs_marketing_agency",
+      "trigger_ar": "وش الفرق بينكم وبين وكالة تسويق؟",
+      "understanding_ar": "العميل يخلط بيننا وبين إعلانات/محتوى.",
+      "short_ar": "الوكالة تجيب leads، نحن نحوّلها إلى متابعة وقرار وإغلاق.",
+      "detailed_ar": "الوكالة تركّز على جلب الـleads. نحن نركّز على ما بعدها: ترتيب المتابعة، الرسالة المناسبة، والدليل — حتى لا تضيع الفرص التي دفعتم لجلبها.",
+      "followup_question_ar": "هل التحدي عندكم في جلب الـleads أم في متابعتها؟",
+      "negotiation_move": "position_post_lead",
+      "proof_needed": "followup_gap_estimate"
+    },
+    {
+      "id": "data_permissions",
+      "trigger_ar": "هل تحتاجون صلاحيات على بياناتنا؟",
+      "understanding_ar": "قلق أمني وخصوصية.",
+      "short_ar": "نبدأ بعينة محدودة بموافقتكم، بدون وصول واسع.",
+      "detailed_ar": "نحترم الخصوصية وسياسة PDPL. نبدأ بعينة صغيرة تشاركونها بأنفسكم، بدون صلاحيات واسعة. أي وصول يكون بموافقة صريحة ومحدد النطاق.",
+      "followup_question_ar": "هل يناسب نبدأ بعينة 10 leads تشاركونها يدويًا؟",
+      "negotiation_move": "minimal_scoped_access",
+      "proof_needed": "data_handling_note"
+    },
+    {
+      "id": "send_on_our_behalf",
+      "trigger_ar": "هل ترسلون للعملاء نيابة عنا؟",
+      "understanding_ar": "العميل يسأل عن الإرسال التلقائي.",
+      "short_ar": "لا نرسل نيابة عنكم. نجهّز drafts وأنتم تعتمدون.",
+      "detailed_ar": "لا يوجد إرسال تلقائي. نجهّز drafts (واتساب/إيميل) وتصلكم في approval queue، وأنتم تعتمدون أو تعدّلون قبل أي إرسال. القرار بيدكم دائمًا.",
+      "followup_question_ar": "هل يناسبكم نموذج approval-first حيث تراجعون كل رسالة؟",
+      "negotiation_move": "approval_first_reassurance",
+      "proof_needed": "approval_policy_note"
+    }
+  ]
+}
