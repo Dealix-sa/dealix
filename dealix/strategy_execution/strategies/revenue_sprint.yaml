@@ -1,0 +1,38 @@
+# Dealix Strategy Execution OS — strategy definition
+# Draft-only. Level 5 (external execution) is blocked by the engine.
+name: Revenue Command Room
+goal: Convert first proof into a monthly Revenue Command Room retainer.
+target_customer: Clients who completed a Revenue Proof Sprint.
+priority: 3
+inputs:
+- proof pack
+- pipeline
+- follow-up cadence
+allowed_actions:
+- draft retainer proposal
+- prioritize accounts
+- build queue
+blocked_actions:
+- send proposal
+- issue invoice live
+steps:
+- Analyze accounts eligible for retainer
+- Draft retainer proposal brief
+- Build follow-up queue for decisions
+outputs:
+- retainer proposal brief
+- decision queue
+kpis:
+- retainers proposed
+- retainers signed
+approval_required_for:
+- send proposal
+- issue invoice
+stop_conditions:
+- No proof pack delivered for the account
+proof_required:
+- delivered proof pack reference
+learning_rule: Only pitch retainer after proof_pack_delivered exists.
+safety_notes: Draft-only. No auto-send, no publish, no charge. Human approves before
+  anything leaves.
+max_autonomy_level: 3

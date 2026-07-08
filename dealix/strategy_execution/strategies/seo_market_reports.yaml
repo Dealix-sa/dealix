@@ -1,0 +1,32 @@
+# Dealix Strategy Execution OS — strategy definition
+# Draft-only. Level 5 (external execution) is blocked by the engine.
+name: SEO Market Reports
+goal: Draft SEO-friendly Saudi market reports as inbound lead magnets.
+target_customer: Inbound searchers researching Saudi market entry.
+priority: 12
+inputs:
+- keyword themes
+- market data references
+allowed_actions:
+- draft market report
+- build content queue
+blocked_actions:
+- publish
+- fabricate data
+steps:
+- Draft an SEO market report outline
+- Build the report into the content queue
+outputs:
+- market report draft
+kpis:
+- organic snapshot requests
+approval_required_for:
+- publish
+stop_conditions:
+- Any fabricated data point
+proof_required:
+- cited real data source
+learning_rule: Expand topics that rank and convert to snapshot requests.
+safety_notes: Draft-only. No auto-send, no publish, no charge. Human approves before
+  anything leaves.
+max_autonomy_level: 3

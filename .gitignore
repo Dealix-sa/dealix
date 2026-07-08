@@ -410,6 +410,24 @@ reports/commercial/
 reports/operator/
 reports/command_center/
 
+# Autonomous Growth OS + Money Now runtime outputs (draft-only; founder reviews).
+# Ignore dated run artifacts but keep the folder structure via .gitkeep.
+reports/autonomous_growth/daily/*
+reports/autonomous_growth/actions/*
+reports/autonomous_growth/approvals/*
+reports/autonomous_growth/proof/*
+reports/autonomous_growth/content/*
+reports/autonomous_growth/learning/*
+!reports/autonomous_growth/daily/.gitkeep
+!reports/autonomous_growth/actions/.gitkeep
+!reports/autonomous_growth/approvals/.gitkeep
+!reports/autonomous_growth/proof/.gitkeep
+!reports/autonomous_growth/content/.gitkeep
+!reports/autonomous_growth/learning/.gitkeep
+reports/money_now/*.json
+reports/money_now/*.md
+!reports/money_now/.gitkeep
+
 # Daily business exports (founder reviews before sharing; never committed)
 business/closing/exports/
 business/crm/exports/dealix-pipeline-report-*.md

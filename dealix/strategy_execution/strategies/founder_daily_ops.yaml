@@ -1,0 +1,33 @@
+# Dealix Strategy Execution OS — strategy definition
+# Draft-only. Level 5 (external execution) is blocked by the engine.
+name: Founder Daily Ops
+goal: Give the founder one prioritized daily action list across all strategies.
+target_customer: Internal (founder operating rhythm).
+priority: 13
+inputs:
+- all strategy outputs
+- approval queue
+allowed_actions:
+- prioritize actions
+- draft daily report
+- build queue
+blocked_actions:
+- execute external actions
+steps:
+- Analyze all strategy outputs for the day
+- Prioritize the founder's top actions
+- Draft the daily founder action report
+outputs:
+- founder daily action report
+kpis:
+- actions completed per day
+approval_required_for:
+- any external action in the list
+stop_conditions:
+- Cannot determine whether an action is safe
+proof_required:
+- links to generated artifacts
+learning_rule: Surface the highest-leverage unblocking action first.
+safety_notes: Draft-only. No auto-send, no publish, no charge. Human approves before
+  anything leaves.
+max_autonomy_level: 3

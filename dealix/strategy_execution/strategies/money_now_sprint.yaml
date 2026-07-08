@@ -1,0 +1,45 @@
+# Dealix Strategy Execution OS — strategy definition
+# Draft-only. Level 5 (external execution) is blocked by the engine.
+name: Money Now Sprint
+goal: Get Dealix to first real paid revenue safely via the 499 SAR Revenue Proof Sprint.
+target_customer: Warm Saudi B2B SMEs and foreign firms entering Saudi.
+priority: 2
+inputs:
+- warm list
+- offer ladder
+- evidence events
+allowed_actions:
+- prioritize offer
+- draft outreach
+- build payment checklist
+- build queue
+blocked_actions:
+- send message
+- charge customer
+- issue invoice live
+steps:
+- Analyze today's most closeable offer
+- Prioritize up to 10 warm prospects
+- Draft a personalized message per prospect
+- Build manual payment and invoice checklist
+- Build follow-up queue
+outputs:
+- founder action list
+- draft messages
+- payment checklist
+kpis:
+- calls booked
+- invoices sent
+- payments received
+approval_required_for:
+- send message
+- issue invoice
+- charge customer
+stop_conditions:
+- A change would enable live outbound
+proof_required:
+- payment_received event before recognizing revenue
+learning_rule: Rank prospects that replied last cycle higher next cycle.
+safety_notes: Draft-only. No auto-send, no publish, no charge. Human approves before
+  anything leaves.
+max_autonomy_level: 3

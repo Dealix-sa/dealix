@@ -1,0 +1,32 @@
+# Dealix Strategy Execution OS — strategy definition
+# Draft-only. Level 5 (external execution) is blocked by the engine.
+name: Referral Loop
+goal: Draft referral prompts for satisfied clients (manual, opt-in).
+target_customer: Existing satisfied Dealix clients.
+priority: 11
+inputs:
+- delivered clients
+- referral template
+allowed_actions:
+- draft referral prompt
+- build queue
+blocked_actions:
+- send referral
+- spam
+steps:
+- Identify clients with delivered proof packs
+- Draft a referral prompt for founder approval
+outputs:
+- referral prompt drafts
+kpis:
+- referrals received
+approval_required_for:
+- send referral
+stop_conditions:
+- Client has no delivered proof pack yet
+proof_required:
+- proof_pack_delivered event
+learning_rule: Ask for referrals only after a delivered proof pack.
+safety_notes: Draft-only. No auto-send, no publish, no charge. Human approves before
+  anything leaves.
+max_autonomy_level: 3

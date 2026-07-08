@@ -1,0 +1,37 @@
+# Dealix Strategy Execution OS — strategy definition
+# Draft-only. Level 5 (external execution) is blocked by the engine.
+name: Saudi Market Access
+goal: Package Market Access Sprints for firms entering the Saudi market.
+target_customer: Foreign B2B companies wanting Saudi entry.
+priority: 4
+inputs:
+- sector list
+- market notes
+allowed_actions:
+- draft market snapshot
+- draft offer
+- build checklist
+blocked_actions:
+- claim government access
+- publish
+steps:
+- Analyze target sectors for entry demand
+- Draft a Saudi Opportunity Snapshot outline
+- Draft Market Access Sprint offer
+outputs:
+- snapshot outline
+- market access offer draft
+kpis:
+- snapshots requested
+- sprints sold
+approval_required_for:
+- publish
+- send offer
+stop_conditions:
+- Any government-influence claim appears
+proof_required:
+- real market data source reference
+learning_rule: Double down on sectors with the most snapshot requests.
+safety_notes: Draft-only. No auto-send, no publish, no charge. Human approves before
+  anything leaves.
+max_autonomy_level: 3

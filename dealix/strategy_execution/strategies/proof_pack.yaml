@@ -1,0 +1,32 @@
+# Dealix Strategy Execution OS — strategy definition
+# Draft-only. Level 5 (external execution) is blocked by the engine.
+name: Proof Pack
+goal: Assemble honest proof packs from real evidence events only.
+target_customer: Clients who paid and were delivered work.
+priority: 9
+inputs:
+- evidence events
+- delivery artifacts
+allowed_actions:
+- draft proof pack
+- build checklist
+blocked_actions:
+- fake proof
+- fabricate results
+steps:
+- Analyze available evidence events for the client
+- Draft a proof pack; mark missing evidence as missing
+outputs:
+- proof pack draft
+kpis:
+- proof packs delivered
+approval_required_for:
+- deliver proof pack
+stop_conditions:
+- Evidence is missing — mark missing, never fabricate
+proof_required:
+- payment_received and work_delivered events
+learning_rule: A proof pack is only valid with real payment + delivery events.
+safety_notes: Draft-only. No auto-send, no publish, no charge. Human approves before
+  anything leaves.
+max_autonomy_level: 3

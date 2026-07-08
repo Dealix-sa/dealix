@@ -1,0 +1,36 @@
+# Dealix Strategy Execution OS — strategy definition
+# Draft-only. Level 5 (external execution) is blocked by the engine.
+name: Local B2B Growth
+goal: 'Grow Saudi SME revenue ops: follow-up, pipeline clarity, proof.'
+target_customer: Saudi SMEs (clinics, training centers, agencies, logistics).
+priority: 6
+inputs:
+- local account list
+- pain radar
+allowed_actions:
+- draft leak scanner
+- draft outreach
+- build queue
+blocked_actions:
+- send message
+- cold whatsapp blast
+steps:
+- Analyze common revenue leaks by sector
+- Draft a Revenue Leak Scanner checklist
+- Draft warm outreach for local SMEs
+outputs:
+- leak scanner checklist
+- draft messages
+kpis:
+- scanners requested
+- sprints sold
+approval_required_for:
+- send message
+stop_conditions:
+- Any spam pattern requested
+proof_required:
+- real sector observation reference
+learning_rule: Reuse the highest-converting leak-scanner variant.
+safety_notes: Draft-only. No auto-send, no publish, no charge. Human approves before
+  anything leaves.
+max_autonomy_level: 3
