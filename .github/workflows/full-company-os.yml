@@ -1,0 +1,45 @@
+name: Full Company OS
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: full-company-os-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify draft-only Full Company OS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Full Company OS draft-only cycle
+        run: |
+          python scripts/commercial/run_full_company_os.py --client dealix --mode draft-only --limit 10 --json
+
+      - name: Verify Full Company OS safety and outputs
+        run: |
+          python scripts/commercial/verify_full_company_os.py
+
+      - name: Upload Full Company OS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-company-os-report
+          path: |
+            reports/full_company_os/latest.json
+            reports/full_company_os/latest.md
+            reports/full_company_os_verify/latest.json
+            reports/full_company_os_verify/latest.md
+          if-no-files-found: warn
