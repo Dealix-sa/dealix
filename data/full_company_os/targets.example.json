@@ -1,0 +1,55 @@
+{
+  "description": "Safe example targets for draft-only Dealix Full Company OS runs. These are illustrative seed cards, not scraped contacts and not approved outreach recipients.",
+  "targets": [
+    {
+      "company": "Riyadh Clinic Group",
+      "segment": "clinics_and_healthcare_admin",
+      "source": "founder_seed_example",
+      "source_confidence": 70,
+      "pain_hypothesis": "Patient inquiries and follow-ups may be spread across WhatsApp, calls, and front-desk notes.",
+      "buying_signal": "Local service business with recurring inquiries and appointment operations.",
+      "risk_level": "medium",
+      "proof_to_show": "Revenue leak checklist plus draft follow-up queue, not promised financial results."
+    },
+    {
+      "company": "Saudi Training Center",
+      "segment": "training_centers",
+      "source": "founder_seed_example",
+      "source_confidence": 68,
+      "pain_hypothesis": "Enrollment leads may lose momentum when follow-up is not structured by urgency and decision stage.",
+      "buying_signal": "Training businesses benefit from clear follow-up, scripts, and proof of activity.",
+      "risk_level": "low",
+      "proof_to_show": "Sample enrollment follow-up command report."
+    },
+    {
+      "company": "MENA SaaS Vendor",
+      "segment": "foreign_saas_market_entry",
+      "source": "founder_seed_example",
+      "source_confidence": 64,
+      "pain_hypothesis": "A foreign SaaS company may need Saudi market-entry targeting, partner mapping, and localized proof.",
+      "buying_signal": "International B2B software entering or testing GCC/Saudi expansion.",
+      "risk_level": "medium",
+      "proof_to_show": "Saudi opportunity snapshot and partner-readiness checklist."
+    },
+    {
+      "company": "Local B2B Services Firm",
+      "segment": "local_b2b_services",
+      "source": "founder_seed_example",
+      "source_confidence": 66,
+      "pain_hypothesis": "Sales follow-up and proposal tracking may be inconsistent across inboxes and spreadsheets.",
+      "buying_signal": "B2B services teams often need a daily command queue and proof of follow-up work.",
+      "risk_level": "low",
+      "proof_to_show": "Daily revenue command sample and approval queue."
+    },
+    {
+      "company": "Industrial Partner Candidate",
+      "segment": "partner_distributor_candidates",
+      "source": "founder_seed_example",
+      "source_confidence": 62,
+      "pain_hypothesis": "A distributor or partner candidate may need structured mapping, proposal preparation, and next-step clarity.",
+      "buying_signal": "Partner/distributor relationships benefit from fit scoring and proof-backed introductions.",
+      "risk_level": "medium",
+      "proof_to_show": "Partner fit checklist and draft introduction pack."
+    }
+  ]
+}
