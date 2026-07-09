@@ -33,6 +33,14 @@ jobs:
         run: |
           python scripts/commercial/verify_full_company_os.py
 
+      - name: Run first paid client manual path
+        run: |
+          python scripts/commercial/run_first_paid_client_path.py
+
+      - name: Verify first paid client revenue guardrails
+        run: |
+          python scripts/commercial/verify_first_paid_client_path.py
+
       - name: Upload Full Company OS artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -42,4 +50,8 @@ jobs:
             reports/full_company_os/latest.md
             reports/full_company_os_verify/latest.json
             reports/full_company_os_verify/latest.md
+            reports/full_company_os/revenue_path/first_paid_client_path.json
+            reports/full_company_os/revenue_path/first_paid_client_path.md
+            reports/full_company_os_first_paid_verify/first_paid_client_path.json
+            reports/full_company_os_first_paid_verify/first_paid_client_path.md
           if-no-files-found: warn
