@@ -1,0 +1,26 @@
+{
+  "description": "Safe example event chain for the first paid Dealix client path. This example intentionally stops before payment_received so the system cannot count fake revenue.",
+  "events": [
+    {
+      "event_type": "lead_selected",
+      "actor": "founder",
+      "evidence": "Founder selected a warm/manual candidate for the 499 SAR Revenue Proof Sprint.",
+      "source": "manual_founder_selection",
+      "amount_sar": null
+    },
+    {
+      "event_type": "offer_drafted",
+      "actor": "dealix_full_company_os",
+      "evidence": "Draft one-page 499 SAR Revenue Proof Sprint offer prepared for founder review.",
+      "source": "scripts/commercial/run_first_paid_client_path.py",
+      "amount_sar": 499
+    },
+    {
+      "event_type": "founder_approved",
+      "actor": "founder",
+      "evidence": "Founder approval placeholder. Replace with actual approval note before manual sending.",
+      "source": "manual_review_required",
+      "amount_sar": null
+    }
+  ]
+}
