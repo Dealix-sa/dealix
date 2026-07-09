@@ -20,8 +20,10 @@ REQUIRED_PATHS = [
     "dealix/full_company_os/__init__.py",
     "dealix/full_company_os/kernel.py",
     "scripts/commercial/run_full_company_os.py",
+    "scripts/commercial/render_full_company_os_issue.py",
     "docs/commercial/FULL_COMPANY_OS_IMPLEMENTATION.md",
     "docs/commercial/FULL_COMPANY_OS_EXECUTION_BASELINE.md",
+    "docs/commercial/DAILY_AUTONOMOUS_OPERATING_MODEL.md",
     "data/full_company_os/targets.example.json",
 ]
 
@@ -60,6 +62,7 @@ def verify_no_live_action_enablement() -> list[str]:
     scanned = [
         ROOT / "dealix" / "full_company_os" / "kernel.py",
         ROOT / "scripts" / "commercial" / "run_full_company_os.py",
+        ROOT / "scripts" / "commercial" / "render_full_company_os_issue.py",
     ]
     for path in scanned:
         text = read_text(path)
@@ -82,6 +85,21 @@ def run_cycle() -> tuple[int, str]:
         "--output-root",
         str(OUTPUT_ROOT.relative_to(ROOT)),
         "--json",
+    ]
+    proc = subprocess.run(cmd, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
+    return proc.returncode, proc.stdout
+
+
+def run_issue_renderer() -> tuple[int, str]:
+    cmd = [
+        sys.executable,
+        "scripts/commercial/render_full_company_os_issue.py",
+        "--company-os-json",
+        str((OUTPUT_ROOT / "latest.json").relative_to(ROOT)),
+        "--revenue-json",
+        "reports/full_company_os/revenue_path/first_paid_client_path.json",
+        "--output",
+        str((OUTPUT_ROOT / "daily_issue.md").relative_to(ROOT)),
     ]
     proc = subprocess.run(cmd, cwd=ROOT, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False)
     return proc.returncode, proc.stdout
@@ -114,6 +132,25 @@ def verify_outputs() -> list[str]:
     return errors
 
 
+def verify_daily_issue_output() -> list[str]:
+    errors: list[str] = []
+    issue_body = OUTPUT_ROOT / "daily_issue.md"
+    if not issue_body.exists():
+        return [f"missing_output:{issue_body.relative_to(ROOT)}"]
+    text = issue_body.read_text(encoding="utf-8")
+    required_phrases = [
+        "Dealix Daily Command",
+        "Drafts pending review",
+        "Approval queue",
+        "First paid client / Money Now",
+        "Safety lock",
+    ]
+    for phrase in required_phrases:
+        if phrase not in text:
+            errors.append(f"missing_issue_phrase:{phrase}")
+    return errors
+
+
 def main() -> int:
     errors: list[str] = []
     errors.extend(verify_required_paths())
@@ -125,10 +162,16 @@ def main() -> int:
         print(output)
         return fail("runner_failed")
     errors.extend(verify_outputs())
+    issue_rc, issue_output = run_issue_renderer()
+    if issue_rc != 0:
+        print(issue_output)
+        return fail("daily_issue_renderer_failed")
+    errors.extend(verify_daily_issue_output())
     if errors:
         print(output)
+        print(issue_output)
         return fail(" ".join(errors))
-    print("FULL_COMPANY_OS_VERIFY=PASS mode=draft-only external_send=false payment_capture=false production_mutation=false")
+    print("FULL_COMPANY_OS_VERIFY=PASS mode=draft-only external_send=false payment_capture=false production_mutation=false daily_issue=true")
     return 0
 
 
