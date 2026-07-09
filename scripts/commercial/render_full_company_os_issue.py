@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+"""Render a GitHub Issue body for the daily Dealix Company OS command."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def load_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def bullet(text: str) -> str:
+    return f"- {text}"
+
+
+def render_issue(company_os: dict[str, Any], revenue_path: dict[str, Any]) -> str:
+    generated_at = company_os.get("generated_at", "unknown")
+    config = company_os.get("config", {})
+    opportunities = company_os.get("opportunities", [])
+    drafts = company_os.get("drafts", [])
+    approvals = company_os.get("approvals", [])
+    proof = company_os.get("proof_log", [])
+    improvements = company_os.get("improvements", [])
+    revenue_status = revenue_path.get("status", {})
+
+    lines: list[str] = [
+        "# Dealix Daily Command",
+        "",
+        f"Generated: `{generated_at}`",
+        f"Client: `{config.get('client', 'dealix')}`",
+        f"Mode: `{config.get('mode', 'draft-only')}`",
+        "",
+        "## Executive status",
+        bullet(f"Opportunities scored: **{len(opportunities)}**"),
+        bullet(f"Drafts waiting founder review: **{len(drafts)}**"),
+        bullet(f"Approval queue items: **{len(approvals)}**"),
+        bullet(f"Proof events: **{len(proof)}**"),
+        bullet(f"Improvement items: **{len(improvements)}**"),
+        bullet(f"First paid client path: **{revenue_status.get('status', 'unknown')}**"),
+        bullet(f"Can count revenue: **{revenue_status.get('can_count_revenue', False)}**"),
+        bullet(f"Can mark closed-won: **{revenue_status.get('can_mark_closed_won', False)}**"),
+        "",
+        "## Top opportunities",
+    ]
+
+    if opportunities:
+        for index, item in enumerate(opportunities[:10], start=1):
+            lines.extend(
+                [
+                    f"{index}. **{item.get('company', 'Unknown')}** — score `{item.get('score')}` / bucket `{item.get('bucket')}`",
+                    f"   - Offer: `{item.get('offer_match')}`",
+                    f"   - Channel: `{item.get('recommended_channel')}`",
+                    f"   - Next action: {item.get('next_action')}",
+                    f"   - Risk: `{item.get('risk_level')}`",
+                ]
+            )
+    else:
+        lines.append("- No opportunities generated today.")
+
+    lines.extend(["", "## Drafts pending review"])
+    if drafts:
+        for draft in drafts[:10]:
+            lines.append(bullet(f"**{draft.get('company')}** — `{draft.get('channel')}` — {draft.get('subject')} — status `{draft.get('status')}`"))
+    else:
+        lines.append("- No drafts generated today.")
+
+    lines.extend(["", "## Approval queue"])
+    if approvals:
+        for item in approvals[:10]:
+            lines.append(bullet(f"**{item.get('company')}** — {item.get('summary')} — status `{item.get('status')}`"))
+    else:
+        lines.append("- No approvals waiting today.")
+
+    lines.extend(["", "## First paid client / Money Now"])
+    if revenue_status:
+        lines.extend(
+            [
+                bullet(f"Status: `{revenue_status.get('status')}`"),
+                bullet(f"Next required event: `{revenue_status.get('next_required_event')}`"),
+                bullet(f"Missing events: `{', '.join(revenue_status.get('missing_events', []))}`"),
+                bullet(f"Warnings: `{', '.join(revenue_status.get('warnings', [])) or 'none'}`"),
+            ]
+        )
+    else:
+        lines.append("- Revenue path report was not generated.")
+
+    lines.extend(["", "## Self-improvement"])
+    if improvements:
+        for item in improvements[:10]:
+            lines.append(bullet(f"**{item.get('area')} / {item.get('failure_type')}** — {item.get('recommended_improvement')}"))
+    else:
+        lines.append("- No improvement items generated today.")
+
+    lines.extend(
+        [
+            "",
+            "## Safety lock",
+            "- External sending is disabled by design.",
+            "- Payment capture is disabled by design.",
+            "- Production mutation is disabled by design.",
+            "- All external-facing drafts require founder approval.",
+            "- This issue is an internal GitHub command report, not an outbound client action.",
+            "",
+            "## Founder action checklist",
+            "- [ ] Review top 3 opportunities.",
+            "- [ ] Approve, edit, or reject each draft.",
+            "- [ ] Select one 499 SAR Revenue Proof Sprint target.",
+            "- [ ] Send only manually after approval.",
+            "- [ ] Add real payment evidence before counting revenue.",
+            "- [ ] Add proof pack evidence before closed-won.",
+            "",
+            "---",
+            "Generated by Dealix Full Company OS in draft-only mode.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Render Dealix daily command GitHub issue body.")
+    parser.add_argument("--company-os-json", default="reports/full_company_os/latest.json")
+    parser.add_argument("--revenue-json", default="reports/full_company_os/revenue_path/first_paid_client_path.json")
+    parser.add_argument("--output", default="reports/full_company_os/daily_issue.md")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    body = render_issue(load_json(ROOT / args.company_os_json), load_json(ROOT / args.revenue_json))
+    output = ROOT / args.output
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(body, encoding="utf-8")
+    print(f"DAILY_COMMAND_ISSUE_RENDER=PASS output={output.relative_to(ROOT)}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
