@@ -3,10 +3,11 @@ name: Full Company OS
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 5 * * *"
+    - cron: "17 5 * * *"
 
 permissions:
   contents: read
+  issues: write
 
 concurrency:
   group: full-company-os-${{ github.ref }}
@@ -41,6 +42,27 @@ jobs:
         run: |
           python scripts/commercial/verify_first_paid_client_path.py
 
+      - name: Render daily GitHub issue body
+        run: |
+          python scripts/commercial/render_full_company_os_issue.py --output reports/full_company_os/daily_issue.md
+
+      - name: Create or update daily command issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DAILY_TITLE: Dealix Daily Command - ${{ github.run_id }}
+        run: |
+          TODAY_TITLE="Dealix Daily Command - $(date -u +%F)"
+          gh label create daily-command --color ededed --description "Daily Dealix Company OS command reports" || true
+          gh label create dealix-os --color ededed --description "Dealix operating system work" || true
+          gh label create safe-draft --color ededed --description "Draft-only, approval-first automation" || true
+          EXISTING_ISSUE="$(gh issue list --state open --search "${TODAY_TITLE} in:title" --json number --jq '.[0].number // empty')"
+          if [ -n "$EXISTING_ISSUE" ]; then
+            gh issue edit "$EXISTING_ISSUE" --body-file reports/full_company_os/daily_issue.md --add-label daily-command --add-label dealix-os --add-label safe-draft
+            echo "Updated issue #${EXISTING_ISSUE}"
+          else
+            gh issue create --title "$TODAY_TITLE" --body-file reports/full_company_os/daily_issue.md --label daily-command --label dealix-os --label safe-draft
+          fi
+
       - name: Upload Full Company OS artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -48,6 +70,7 @@ jobs:
           path: |
             reports/full_company_os/latest.json
             reports/full_company_os/latest.md
+            reports/full_company_os/daily_issue.md
             reports/full_company_os_verify/latest.json
             reports/full_company_os_verify/latest.md
             reports/full_company_os/revenue_path/first_paid_client_path.json
