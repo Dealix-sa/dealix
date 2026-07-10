@@ -97,3 +97,18 @@ def test_only_one_scheduled_company_os_workflow_after_consolidation() -> None:
     assert "run_canonical_company_os.py" in canonical
     assert 'cron: "0 5 * * *"' in canonical
     assert not (ROOT / ".github" / "workflows" / "self-operating-company-os.yml").exists()
+
+
+def test_canonical_workflow_is_read_only_and_verified_before_merge() -> None:
+    canonical = (ROOT / ".github" / "workflows" / "dealix-autonomous-company-os.yml").read_text(
+        encoding="utf-8"
+    )
+
+    assert "pull_request:" in canonical
+    assert "push:" in canonical
+    assert "contents: read" in canonical
+    assert "issues: write" not in canonical
+    assert "pull-requests: write" not in canonical
+    assert "PRODUCTION_MUTATION_ENABLED: \"false\"" in canonical
+    assert "LIVE_PAYMENT_CAPTURE_ENABLED: \"false\"" in canonical
+    assert "if: always()" in canonical
