@@ -4,6 +4,24 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 5 * * *"
+  pull_request:
+    paths:
+      - ".github/workflows/dealix-autonomous-company-os.yml"
+      - "scripts/commercial/run_canonical_company_os.py"
+      - "scripts/commercial/run_self_operating_company_os.py"
+      - "scripts/verify_first_paid_diagnostic_tracker.py"
+      - "dealix/commercial_ops/first_paid_tracker.py"
+      - "tests/test_canonical_company_os.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/dealix-autonomous-company-os.yml"
+      - "scripts/commercial/run_canonical_company_os.py"
+      - "scripts/commercial/run_self_operating_company_os.py"
+      - "scripts/verify_first_paid_diagnostic_tracker.py"
+      - "dealix/commercial_ops/first_paid_tracker.py"
+      - "tests/test_canonical_company_os.py"
 
 permissions:
   contents: read
