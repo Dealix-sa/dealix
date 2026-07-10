@@ -23,6 +23,9 @@ from types import ModuleType
 from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 OUT_ROOT = ROOT / "reports" / "canonical_company_os"
 FEATURE_MODULE_PATH = ROOT / "scripts" / "commercial" / "run_self_operating_company_os.py"
 
