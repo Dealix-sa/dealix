@@ -59,8 +59,12 @@ jobs:
           AUTO_DEPLOY_ENABLED: "false"
           LIVE_PAYMENT_CAPTURE_ENABLED: "false"
           PRODUCTION_MUTATION_ENABLED: "false"
+        shell: bash
         run: |
-          python scripts/commercial/run_canonical_company_os.py --limit 50
+          set -o pipefail
+          mkdir -p reports/canonical_company_os
+          python -X dev scripts/commercial/run_canonical_company_os.py --limit 50 \
+            2>&1 | tee reports/canonical_company_os/runtime.log
 
       - name: Verify evidence-backed revenue tracker
         run: |
@@ -70,7 +74,8 @@ jobs:
         run: |
           python -m pytest -q --noconftest -o addopts='' tests/test_canonical_company_os.py
 
-      - name: Upload canonical operating packet
+      - name: Upload canonical operating packet and diagnostics
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: dealix-canonical-company-os-packet
