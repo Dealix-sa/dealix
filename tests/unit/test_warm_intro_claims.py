@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from dealix.commercial.warm_intro_generator import WarmIntroGenerator, WarmIntroRequest
+from dealix.commercial.warm_intro_generator import (
+    WarmIntroGenerator,
+    WarmIntroRequest,
+)
 
 
 FORBIDDEN = (
