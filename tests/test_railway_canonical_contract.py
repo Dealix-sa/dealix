@@ -30,11 +30,23 @@ def test_railway_config_matches_canonical_runtime_contract() -> None:
     assert re.search(r"(?m)^\s*startCommand\s*=", toml) is None
     assert railway_json["deploy"]["startCommand"] is None
 
+    assert 'builder = "DOCKERFILE"' in toml
+    assert railway_json["build"] == {
+        "builder": "DOCKERFILE",
+        "dockerfilePath": "Dockerfile",
+    }
+
     assert 'healthcheckPath = "/healthz"' in toml
     assert railway_json["deploy"]["healthcheckPath"] == "/healthz"
+    assert "healthcheckTimeout = 300" in toml
+    assert railway_json["deploy"]["healthcheckTimeout"] == 300
 
+    assert 'restartPolicyType = "ON_FAILURE"' in toml
+    assert railway_json["deploy"]["restartPolicyType"] == "ON_FAILURE"
     assert "restartPolicyMaxRetries = 3" in toml
     assert railway_json["deploy"]["restartPolicyMaxRetries"] == 3
+    assert "numReplicas = 1" in toml
+    assert railway_json["deploy"]["numReplicas"] == 1
 
     assert "/app/scripts/railway_predeploy.sh" in toml
     assert "/app/scripts/railway_predeploy.sh" in railway_json["deploy"]["preDeployCommand"]
