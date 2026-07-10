@@ -7,7 +7,6 @@ from dealix.commercial.warm_intro_generator import (
     WarmIntroRequest,
 )
 
-
 FORBIDDEN = (
     "80%",
     "حلّت هذه المشكلة لشركات مشابهة",
