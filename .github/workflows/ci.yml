@@ -178,29 +178,47 @@ jobs:
           git diff --exit-code -- docs/SEO_AUDIT_REPORT.json
 
       - name: Tests with coverage gate
+        shell: bash
         run: |
-          pip install pytest-timeout
-          # Whole-suite verifier aggregators (below) shell out to scripts that
-          # re-run large pytest subsets; excluded here and run serially after.
-          pytest -q -n auto --dist loadscope \
-            --timeout=120 --timeout-method=thread \
-            --ignore=tests/test_wave13_full_ops_master.py \
-            --ignore=tests/test_ultimate_upgrade_verify.py \
-            --ignore=tests/test_integration_upgrade_verify_script.py \
-            --ignore=tests/test_v11_customer_closure_verify.py \
-            --ignore=tests/test_founder_commercial_day_script.py \
-            --ignore=tests/test_dealix_smoke_test_cli.py \
-            --ignore=tests/test_wave6_revenue_activation_verify.py \
-            --cov=api --cov=core --cov=db --cov=integrations \
-            --cov-report=xml:coverage.xml \
-            --cov-report=term-missing \
-            --cov-fail-under=30
+          set -o pipefail
+          mkdir -p reports/ci
+          set +e
+          timeout --signal=TERM --kill-after=30s 35m \
+            pytest -vv -n 4 --dist loadscope \
+              --maxfail=1 \
+              --durations=30 \
+              --timeout=90 --timeout-method=signal \
+              --ignore=tests/test_wave13_full_ops_master.py \
+              --ignore=tests/test_ultimate_upgrade_verify.py \
+              --ignore=tests/test_integration_upgrade_verify_script.py \
+              --ignore=tests/test_v11_customer_closure_verify.py \
+              --ignore=tests/test_founder_commercial_day_script.py \
+              --ignore=tests/test_dealix_smoke_test_cli.py \
+              --ignore=tests/test_wave6_revenue_activation_verify.py \
+              --cov=api --cov=core --cov=db --cov=integrations \
+              --cov-report=xml:coverage.xml \
+              --cov-report=term-missing \
+              --cov-fail-under=30 \
+              2>&1 | tee reports/ci/coverage-gate.log
+          status=${PIPESTATUS[0]}
+          set -e
+          if [[ ${status} -eq 124 || ${status} -eq 137 ]]; then
+            echo "::error::Coverage gate exceeded 35 minutes. Inspect coverage-gate-diagnostics for the last running tests."
+          fi
+          exit ${status}
+
+      - name: Upload coverage gate diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-gate-diagnostics
+          path: |
+            reports/ci/coverage-gate.log
+            coverage.xml
+          if-no-files-found: warn
 
       - name: Verifier aggregators (serial — run whole-suite verify scripts)
         run: |
-          # These meta-tests shell out to verify scripts that themselves run
-          # large pytest subsets. Run them serially (no xdist oversubscription)
-          # with a generous per-test timeout so they are not falsely killed.
           pytest -q -p no:xdist --no-cov \
             --timeout=900 --timeout-method=thread \
             tests/test_wave13_full_ops_master.py \
@@ -241,7 +259,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "22"
           cache: npm
@@ -267,7 +285,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: "22"
           cache: npm
