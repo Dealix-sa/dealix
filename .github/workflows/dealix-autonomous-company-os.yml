@@ -25,8 +25,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install test dependency
-        run: python -m pip install pytest pytest-timeout
+      - name: Install isolated test dependency
+        run: python -m pip install pytest
 
       - name: Run canonical Dealix Company OS
         env:
@@ -48,9 +48,9 @@ jobs:
         run: |
           python scripts/verify_first_paid_diagnostic_tracker.py --json
 
-      - name: Run canonical Company OS tests
+      - name: Run isolated canonical Company OS tests
         run: |
-          python -m pytest tests/test_canonical_company_os.py -q --no-cov
+          python -m pytest -q --noconftest -o addopts='' tests/test_canonical_company_os.py
 
       - name: Upload canonical operating packet
         uses: actions/upload-artifact@v4
