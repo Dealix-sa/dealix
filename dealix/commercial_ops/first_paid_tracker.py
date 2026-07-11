@@ -19,4 +19,79 @@ REVENUE_LADDER_AR = (
 )
 
 
-def
+def _load_events() -> list[dict[str, str]]:
+    if not EVIDENCE.is_file():
+        return []
+    with EVIDENCE.open(encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def _company_key(row: dict[str, str]) -> str:
+    return " ".join((row.get("company") or "").strip().casefold().split())
+
+
+def _companies_by_key(rows: list[dict[str, str]]) -> dict[str, str]:
+    companies: dict[str, str] = {}
+    for row in rows:
+        key = _company_key(row)
+        if not key:
+            continue
+        companies.setdefault(key, (row.get("company") or "").strip())
+    return companies
+
+
+def analyze_first_paid_diagnostic() -> dict[str, Any]:
+    events = _load_events()
+    real = real_evidence_rows(events)
+    by_type: dict[str, list[dict[str, str]]] = {}
+    for row in real:
+        et = (row.get("event_type") or "").strip()
+        by_type.setdefault(et, []).append(row)
+
+    kpi_ok = KPI_YAML.is_file()
+    crm_pending = True
+    if kpi_ok:
+        text = KPI_YAML.read_text(encoding="utf-8")
+        crm_pending = "not_synced_yet" in text or "pending_founder_export" in text
+
+    paid_real = by_type.get("payment_received", [])
+    proof_real = by_type.get("proof_pack_delivered", [])
+    paid_companies = _companies_by_key(paid_real)
+    proof_companies = _companies_by_key(proof_real)
+
+    matching_keys = sorted(set(paid_companies) & set(proof_companies))
+    matching_close_companies = [paid_companies.get(key) or proof_companies[key] for key in matching_keys]
+    payment_without_proof_companies = [
+        paid_companies[key] for key in sorted(set(paid_companies) - set(proof_companies))
+    ]
+    proof_without_payment_companies = [
+        proof_companies[key] for key in sorted(set(proof_companies) - set(paid_companies))
+    ]
+
+    first_close_ready = bool(matching_close_companies and not crm_pending)
+    if first_close_ready:
+        verdict = "CLOSED"
+    elif paid_real or proof_real:
+        verdict = "IN_PROGRESS"
+    else:
+        verdict = "PIPELINE_OPEN"
+
+    return {
+        "evidence_path": str(EVIDENCE.relative_to(REPO_ROOT)).replace("\\", "/"),
+        "kpi_path": str(KPI_YAML.relative_to(REPO_ROOT)).replace("\\", "/") if kpi_ok else None,
+        "total_events": len(events),
+        "real_company_events": len(real),
+        "invoice_sent_real": len(by_type.get("invoice_sent", [])),
+        "payment_received_real": len(paid_real),
+        "proof_pack_delivered_real": len(proof_real),
+        "matching_close_real": len(matching_close_companies),
+        "matching_close_companies": matching_close_companies,
+        "payment_without_proof_companies": payment_without_proof_companies,
+        "proof_without_payment_companies": proof_without_payment_companies,
+        "crm_kpi_pending": crm_pending,
+        "first_close_ready": first_close_ready,
+        "dod_doc": str(DOD_DOC.relative_to(REPO_ROOT)).replace("\\", "/"),
+        "verdict": verdict,
+        "revenue_ladder_ar": REVENUE_LADDER_AR,
+        "soft_launch_tracker": str(SOFT_LAUNCH_TRACKER.relative_to(REPO_ROOT)).replace("\\", "/"),
+    }
