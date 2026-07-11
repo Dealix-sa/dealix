@@ -8,7 +8,7 @@ from __future__ import annotations
 import re
 from dataclasses import asdict, dataclass, field
 from enum import StrEnum
-from typing import Any
+from typing import Any, Iterable
 
 _ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{1,63}$")
 
@@ -45,12 +45,15 @@ def _strict_bool(value: Any, *, field_name: str) -> bool:
     raise TypeError(f"{field_name} must be a boolean")
 
 
-def _string_list(value: Any, *, field_name: str) -> tuple[str, ...]:
+def _string_tuple(value: Any, *, field_name: str) -> tuple[str, ...]:
     if value is None:
         return ()
-    if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
-        raise TypeError(f"{field_name} must be a list of strings")
-    return tuple(item.strip() for item in value if item.strip())
+    if isinstance(value, str) or not isinstance(value, Iterable):
+        raise TypeError(f"{field_name} must be a sequence of strings")
+    items = tuple(value)
+    if any(not isinstance(item, str) for item in items):
+        raise TypeError(f"{field_name} must contain strings only")
+    return tuple(item.strip() for item in items if item.strip())
 
 
 @dataclass(frozen=True)
@@ -67,34 +70,36 @@ class StrategyStep:
         action = self.action.strip().casefold()
         if not action:
             raise ValueError("step action is required")
-        if not 0.0 <= self.risk <= 1.0:
+        try:
+            kind = self.kind if isinstance(self.kind, ActionKind) else ActionKind(str(self.kind).strip().casefold())
+        except ValueError as exc:
+            raise ValueError(f"unsupported strategy step kind: {self.kind}") from exc
+        if isinstance(self.risk, bool) or not isinstance(self.risk, (int, float)):
+            raise TypeError("step risk must be numeric")
+        risk = float(self.risk)
+        if not 0.0 <= risk <= 1.0:
             raise ValueError("step risk must be between 0 and 1")
+        approval = _strict_bool(self.requires_approval, field_name="requires_approval")
+        if self.channel is not None and not isinstance(self.channel, str):
+            raise TypeError("channel must be a string or null")
+        if self.output is not None and not isinstance(self.output, str):
+            raise TypeError("output must be a string or null")
         object.__setattr__(self, "action", action)
+        object.__setattr__(self, "kind", kind)
+        object.__setattr__(self, "risk", risk)
+        object.__setattr__(self, "requires_approval", approval)
         object.__setattr__(self, "channel", self.channel.strip().casefold() if self.channel else None)
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "StrategyStep":
         if not isinstance(payload, dict):
             raise TypeError("strategy step must be an object")
-        try:
-            kind = ActionKind(str(payload.get("kind", ActionKind.ANALYZE.value)).strip().casefold())
-        except ValueError as exc:
-            raise ValueError(f"unsupported strategy step kind: {payload.get('kind')}") from exc
-        raw_risk = payload.get("risk", 0.0)
-        if isinstance(raw_risk, bool):
-            raise TypeError("step risk must be numeric")
-        try:
-            risk = float(raw_risk)
-        except (TypeError, ValueError) as exc:
-            raise TypeError("step risk must be numeric") from exc
-        raw_approval = payload.get("requires_approval", False)
-        approval = _strict_bool(raw_approval, field_name="requires_approval")
         return cls(
             action=str(payload.get("action") or ""),
-            kind=kind,
-            risk=risk,
+            kind=str(payload.get("kind", ActionKind.ANALYZE.value)),
+            risk=payload.get("risk", 0.0),
             channel=str(payload["channel"]) if payload.get("channel") else None,
-            requires_approval=approval,
+            requires_approval=payload.get("requires_approval", False),
             output=str(payload["output"]) if payload.get("output") else None,
             description=str(payload.get("description") or ""),
         )
@@ -125,19 +130,24 @@ class StrategyDefinition:
             raise ValueError("strategy name is required")
         if not self.goal.strip():
             raise ValueError("strategy goal is required")
+        enabled = _strict_bool(self.enabled, field_name="enabled")
         if isinstance(self.priority, bool) or not isinstance(self.priority, int):
             raise TypeError("strategy priority must be an integer")
         if not 0 <= self.priority <= 100:
             raise ValueError("strategy priority must be between 0 and 100")
-        if not self.steps:
+        steps = tuple(self.steps)
+        if not steps:
             raise ValueError("strategy must contain at least one step")
+        if any(not isinstance(step, StrategyStep) for step in steps):
+            raise TypeError("steps must contain StrategyStep objects")
         object.__setattr__(self, "strategy_id", strategy_id)
         object.__setattr__(self, "name", self.name.strip())
         object.__setattr__(self, "goal", self.goal.strip())
-        object.__setattr__(self, "guardrails", tuple(self.guardrails))
-        object.__setattr__(self, "kpis", tuple(self.kpis))
-        object.__setattr__(self, "stop_conditions", tuple(self.stop_conditions))
-        object.__setattr__(self, "steps", tuple(self.steps))
+        object.__setattr__(self, "enabled", enabled)
+        object.__setattr__(self, "guardrails", _string_tuple(self.guardrails, field_name="guardrails"))
+        object.__setattr__(self, "kpis", _string_tuple(self.kpis, field_name="kpis"))
+        object.__setattr__(self, "stop_conditions", _string_tuple(self.stop_conditions, field_name="stop_conditions"))
+        object.__setattr__(self, "steps", steps)
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "StrategyDefinition":
@@ -150,8 +160,6 @@ class StrategyDefinition:
             priority = int(raw_priority)
         except (TypeError, ValueError) as exc:
             raise TypeError("strategy priority must be an integer") from exc
-        raw_enabled = payload.get("enabled", True)
-        enabled = _strict_bool(raw_enabled, field_name="enabled")
         raw_steps = payload.get("steps")
         if not isinstance(raw_steps, list):
             raise TypeError("strategy steps must be a list")
@@ -159,11 +167,11 @@ class StrategyDefinition:
             strategy_id=str(payload.get("id") or payload.get("strategy_id") or ""),
             name=str(payload.get("name") or ""),
             goal=str(payload.get("goal") or payload.get("objective_ar") or payload.get("objective_en") or ""),
-            enabled=enabled,
+            enabled=payload.get("enabled", True),
             priority=priority,
-            guardrails=_string_list(payload.get("guardrails"), field_name="guardrails"),
-            kpis=_string_list(payload.get("kpis"), field_name="kpis"),
-            stop_conditions=_string_list(payload.get("stop_conditions"), field_name="stop_conditions"),
+            guardrails=_string_tuple(payload.get("guardrails"), field_name="guardrails"),
+            kpis=_string_tuple(payload.get("kpis"), field_name="kpis"),
+            stop_conditions=_string_tuple(payload.get("stop_conditions"), field_name="stop_conditions"),
             steps=tuple(StrategyStep.from_dict(step) for step in raw_steps),
         )
 
