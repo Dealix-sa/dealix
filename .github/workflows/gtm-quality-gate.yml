@@ -94,7 +94,7 @@ jobs:
           python3 scripts/gtm_daily_command.py --domain-age-days 10 --domain-health healthy
 
       - name: Upload GTM reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: gtm-quality-reports-${{ github.run_id }}
           path: reports/gtm/*.md

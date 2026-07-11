@@ -35,7 +35,7 @@ jobs:
           python scripts/commercial/run_dealix_autonomous_company_os.py --limit 4
 
       - name: Upload operating packet
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dealix-autonomous-company-os-packet
           path: reports/dealix_autonomous_company_os/
