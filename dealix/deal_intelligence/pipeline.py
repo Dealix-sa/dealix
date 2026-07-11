@@ -98,11 +98,20 @@ def analyze_deal(deal: DealRecord, today: date) -> DealSnapshot:
 
     for _, _, event in chronological_events:
         event_type = event.event_type
+
+        if lost:
+            anomalies.append(f"event_after_lost:{event_type}")
+            continue
+
         if event_type == "lost":
+            if valid_payment:
+                anomalies.append("lost_after_valid_payment")
             lost = True
             continue
+
         if event_type in _EXTERNAL_EVIDENCE and not deal.contact_permission_confirmed:
             anomalies.append(f"commercial_event_without_permission:{event_type}")
+
         if event_type in {"message_sent_manual", "message_sent"}:
             if deal.contact_permission_confirmed:
                 stage = _advance(stage, DealStage.CONTACTED)
@@ -110,11 +119,13 @@ def analyze_deal(deal: DealRecord, today: date) -> DealSnapshot:
             if deal.contact_permission_confirmed:
                 stage = _advance(stage, DealStage.ENGAGED)
         elif event_type == "invoice_sent":
-            seen_invoice = True
             if deal.contact_permission_confirmed:
+                seen_invoice = True
                 stage = _advance(stage, DealStage.PROPOSED)
         elif event_type == "payment_received":
-            if not seen_invoice:
+            if not deal.contact_permission_confirmed:
+                anomalies.append("payment_without_permission")
+            elif not seen_invoice:
                 anomalies.append("payment_before_invoice")
             else:
                 valid_payment = True
@@ -169,7 +180,11 @@ def next_action(snapshot: DealSnapshot) -> NextAction:
     """Return the next internal/approval step without generating or sending copy."""
 
     if snapshot.stage == DealStage.LOST:
-        key, rationale, approval = "archive_lost", "Deal is terminally lost.", False
+        if snapshot.anomalies:
+            key, rationale = "repair_evidence_chain", "; ".join(snapshot.anomalies)
+        else:
+            key, rationale = "archive_lost", "Deal is terminally lost."
+        approval = False
     elif snapshot.anomalies:
         key, rationale, approval = "repair_evidence_chain", "; ".join(snapshot.anomalies), False
     elif not snapshot.contact_permission_confirmed:
@@ -205,7 +220,11 @@ def next_action(snapshot: DealSnapshot) -> NextAction:
 
 def compute_portfolio(deals: list[DealRecord], today: date) -> tuple[list[DealSnapshot], PortfolioMetrics]:
     snapshots = [analyze_deal(deal, today) for deal in deals]
-    recognized = sum(snapshot.value_sar for snapshot in snapshots if snapshot.valid_payment)
+    recognized = sum(
+        snapshot.value_sar
+        for snapshot in snapshots
+        if snapshot.valid_payment and snapshot.stage != DealStage.LOST
+    )
     open_pipeline = sum(
         snapshot.value_sar
         for snapshot in snapshots
