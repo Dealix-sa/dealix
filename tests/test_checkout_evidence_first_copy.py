@@ -34,7 +34,8 @@ def test_checkout_is_explicitly_a_test_request_not_live_revenue() -> None:
     assert "REQUEST ≠ INVOICE ≠ REVENUE" in text
     assert "إنشاء طلب بدء تجريبي" in text
     assert "إنشاء الفاتورة" not in text
-    assert "payment_received" not in text.casefold() or "PAYMENT_RECEIVED_REQUIRED" in text
+    assert "لا يُسجل الإيراد قبل دليل payment_received حقيقي" in text
+    assert "تم استلام الدفع" not in text
 
 
 def test_success_page_does_not_claim_invoice_payment_or_service_start() -> None:
