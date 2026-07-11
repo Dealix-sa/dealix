@@ -8,7 +8,7 @@ name: Deploy to Railway
 #   3. Copy the token
 #   4. Go to the Dealix-sa/dealix repository Actions secrets
 #   5. Add New repository secret: RAILWAY_TOKEN = <paste token>
-#   6. Optional: Add RAILWAY_SERVICE_NAME = dealix (if service name differs)
+#   6. Optional: Add repository variable RAILWAY_SERVICE_NAME if the service name differs
 #
 # After setup: every matching push to main auto-deploys, OR trigger manually
 # via Actions tab → "Deploy to Railway" → Run workflow.
@@ -18,6 +18,7 @@ on:
     branches:
       - main
     paths:
+      - ".github/workflows/railway_deploy.yml"
       - "api/**"
       - "core/**"
       - "dealix/**"
@@ -44,7 +45,6 @@ jobs:
   deploy:
     name: 🚂 Deploy to Railway
     runs-on: ubuntu-latest
-    # Only run if RAILWAY_TOKEN is configured
     if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v4
@@ -56,14 +56,14 @@ jobs:
         run: |
           if [ -z "$RAILWAY_TOKEN" ]; then
             echo "::warning::RAILWAY_TOKEN secret is not configured. Skipping deploy."
-            echo "token_present=false" >> $GITHUB_OUTPUT
+            echo "token_present=false" >> "$GITHUB_OUTPUT"
             echo ""
             echo "To enable auto-deploy:"
             echo "1. Get token from https://railway.app/account/tokens"
             echo "2. Add as GitHub secret: RAILWAY_TOKEN"
             exit 0
           fi
-          echo "token_present=true" >> $GITHUB_OUTPUT
+          echo "token_present=true" >> "$GITHUB_OUTPUT"
 
       - name: Install Railway CLI
         if: steps.check_token.outputs.token_present == 'true'
@@ -78,19 +78,48 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          railway whoami || echo "Auth check failed — token may be invalid"
+          set -euo pipefail
+          railway whoami
 
       - name: Deploy to Railway
+        id: railway_deploy
         if: steps.check_token.outputs.token_present == 'true'
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          SERVICE="${{ inputs.service || 'dealix' }}"
-          echo "Deploying to service: $SERVICE"
-          railway up --service "$SERVICE" --detach || {
-            echo "::error::Railway deploy failed. Check service name and token."
-            exit 1
-          }
+          set -uo pipefail
+          mkdir -p reports/ci
+          LOG="reports/ci/railway-deploy.log"
+          SERVICE="${{ inputs.service || vars.RAILWAY_SERVICE_NAME || 'dealix' }}"
+
+          {
+            echo "commit=${GITHUB_SHA}"
+            echo "service=${SERVICE}"
+            echo "railway_version=$(railway --version 2>&1 | head -1)"
+            echo "== pre-deploy status =="
+            railway status || true
+            echo "== railway up =="
+          } 2>&1 | tee "$LOG"
+
+          set +e
+          railway up --service "$SERVICE" --detach 2>&1 | tee -a "$LOG"
+          rc=${PIPESTATUS[0]}
+          set -e
+
+          echo "railway_up_exit_code=$rc" | tee -a "$LOG"
+          if [ "$rc" -ne 0 ]; then
+            echo "::error::Railway deploy failed; inspect the railway-deploy-diagnostics artifact."
+            exit "$rc"
+          fi
+
+      - name: Upload Railway deploy diagnostics
+        if: always() && steps.check_token.outputs.token_present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: railway-deploy-diagnostics
+          path: reports/ci/railway-deploy.log
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Wait for deployment to become active
         if: steps.check_token.outputs.token_present == 'true'
@@ -134,7 +163,6 @@ jobs:
           curl -fsS --max-time 10 "$BASE_URL/api/v1/pricing/plans" | head -c 400; echo
 
           echo "→ /api/v1/prospect/search-diag"
-          # Tier readiness is informational; non-fatal if optional providers are absent
           curl -fsS --max-time 10 "$BASE_URL/api/v1/prospect/search-diag" \
             | python3 -c "import sys,json; d=json.load(sys.stdin); print('tier1=', d.get('tier1_ready'), 'tier2=', d.get('tier2_ready'))"
 
