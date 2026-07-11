@@ -65,6 +65,7 @@ def test_invalid_runtime_targets_force_nonempty_seed_packet(
     (data_root / "targets.json").write_text(raw_targets, encoding="utf-8")
     feature.DATA_ROOT = data_root
 
+    monkeypatch.setattr(module, "ROOT", tmp_path)
     monkeypatch.setattr(module, "load_feature_module", lambda: feature)
     monkeypatch.setattr(module, "load_revenue_status", _revenue_status)
 
@@ -95,6 +96,7 @@ def test_valid_runtime_targets_remain_runtime_data(
     )
     feature.DATA_ROOT = data_root
 
+    monkeypatch.setattr(module, "ROOT", tmp_path)
     monkeypatch.setattr(module, "load_feature_module", lambda: feature)
     monkeypatch.setattr(module, "load_revenue_status", _revenue_status)
 
