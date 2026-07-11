@@ -56,14 +56,17 @@ def test_unverified_capacity_sla_and_automation_claims_are_absent() -> None:
         assert claim.casefold() not in combined.casefold()
 
 
-def test_bank_transfer_is_manual_and_does_not_call_invoice_intent() -> None:
+def test_bank_transfer_is_manual_validated_and_does_not_call_invoice_intent() -> None:
     text = _text(CHECKOUT)
     manual_start = text.index("if(method==='bank_transfer_manual')")
     test_request_start = text.index("btn.disabled=true", manual_start)
     manual_block = text[manual_start:test_request_start]
 
+    assert "form.reportValidity()" in text
     assert "طلب تعليمات التحويل" in manual_block
     assert "No payment has been made" in manual_block
+    assert "Email: " in manual_block
+    assert "Phone: " in manual_block
     assert "mailto:sales@dealix.sa" in manual_block
     assert "/api/v1/payment-ops/invoice-intent" not in manual_block
 
