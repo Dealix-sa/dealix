@@ -18,10 +18,31 @@ _SCORE_FIELDS = (
     "risk_score",
 )
 
+CONTACTABLE_SOURCES = frozenset(
+    {
+        "manual_approved",
+        "warm",
+        "inbound",
+        "referral",
+        "existing_permission",
+        "opt_in",
+        "customer_request",
+    }
+)
+RESEARCH_ONLY_SOURCES = frozenset(
+    {
+        "manual_research",
+        "public_web_research",
+        "seed",
+        "unknown",
+    }
+)
+ALLOWED_SOURCES = CONTACTABLE_SOURCES | RESEARCH_ONLY_SOURCES
+
 
 @dataclass(frozen=True)
 class ClientCard:
-    """Evidence-aware profile for one warm, inbound, referral, or approved target."""
+    """Evidence-aware profile for one warm, inbound, referral, or research target."""
 
     company: str
     contact: str = ""
@@ -39,14 +60,27 @@ class ClientCard:
     notes: str = ""
 
     def __post_init__(self) -> None:
-        if not self.company.strip():
+        company = self.company.strip()
+        source = self.source.strip().casefold()
+        if not company:
             raise ValueError("company is required")
+        if source not in ALLOWED_SOURCES:
+            allowed = ", ".join(sorted(ALLOWED_SOURCES))
+            raise ValueError(f"source must be one of: {allowed}")
+        object.__setattr__(self, "company", company)
+        object.__setattr__(self, "source", source)
         for field_name in _SCORE_FIELDS:
             value = getattr(self, field_name)
             if isinstance(value, bool) or not isinstance(value, int):
                 raise TypeError(f"{field_name} must be an integer")
             if not 0 <= value <= 100:
                 raise ValueError(f"{field_name} must be between 0 and 100")
+
+    @property
+    def contact_permission_confirmed(self) -> bool:
+        """Return whether the recorded source permits preparing outreach for review."""
+
+        return self.source in CONTACTABLE_SOURCES
 
     @property
     def priority_score(self) -> int:
@@ -60,6 +94,7 @@ class ClientCard:
 
     def to_dict(self) -> dict[str, Any]:
         payload = asdict(self)
+        payload["contact_permission_confirmed"] = self.contact_permission_confirmed
         payload["priority_score"] = self.priority_score
         return payload
 
