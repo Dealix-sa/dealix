@@ -13,25 +13,43 @@
 
 هذه الطبقة ليست CRM مستقلًا، ولا runner يوميًا، ولا نظام إرسال. هي مكتبة صغيرة تُستهلك لاحقًا من Canonical Company OS بعد دمج العمود الموحد.
 
-## المدخلات المسموحة
+## سياسة المصدر والإذن
 
-- Inbound lead.
-- Warm introduction.
-- Referral.
-- Existing CRM record with permission.
-- Target explicitly approved by the founder.
+المصادر القابلة لإعداد مسودة تواصل للمراجعة فقط:
 
-لا تدخل قوائم scraped أو أرقام واتساب باردة أو ادعاءات غير موثقة.
+- `inbound`
+- `warm`
+- `referral`
+- `existing_permission`
+- `opt_in`
+- `customer_request`
+- `manual_approved`
+
+مصادر البحث فقط:
+
+- `manual_research`
+- `public_web_research`
+- `seed`
+- `unknown`
+
+مصدر البحث فقط يبقى `research_hold` مهما ارتفع score، ويكون:
+
+- `recommended_channel=none_research_only`
+- `suggested_copy` فارغًا
+- الإجراء التالي: إثبات الإذن أو الحصول على warm introduction
+
+لا تدخل قوائم scraped أو أرقام واتساب باردة أو مصادر غير معروفة للنظام. أي source خارج allowlist يُرفض بدل تمريره بصمت.
 
 ## المخرجات
 
 كل Queue Item يحتوي:
 
 - priority score وسبب ترتيبه؛
+- حالة الإذن `confirmed` أو `research_only` داخل سبب الترتيب؛
 - status: `needs_founder_review` أو `research_hold`؛
-- قناة يدوية بعد الموافقة؛
+- قناة يدوية بعد الموافقة للمصادر المصرح بها فقط؛
 - زاوية سعودية/قطاعية؛
-- مسودة غير مرسلة؛
+- مسودة غير مرسلة للمصادر المصرح بها فقط؛
 - اعتراض متوقع؛
 - proof to show؛
 - `approval_required=true`؛
@@ -45,6 +63,8 @@
 4. لا تُستخدم claims بدون proof.
 5. السعر والنطاق والتسليم تحتاج موافقة.
 6. أي قناة خارجية تبقى يدوية حتى اعتماد action محدد.
+7. score مرتفع لا يتجاوز غياب الإذن.
+8. research source لا يتحول تلقائيًا إلى outreach source.
 
 ## ترتيب الدمج
 
