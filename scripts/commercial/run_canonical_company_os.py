@@ -75,6 +75,22 @@ def load_revenue_status() -> dict[str, Any]:
     return analyze_first_paid_diagnostic()
 
 
+def _is_valid_runtime_target(item: Any) -> bool:
+    if not isinstance(item, dict):
+        return False
+    company_name = item.get("company_name")
+    if not isinstance(company_name, str) or not company_name.strip():
+        return False
+    for field in ("urgency", "accessibility", "value", "risk"):
+        if field not in item:
+            continue
+        try:
+            int(item[field])
+        except (TypeError, ValueError):
+            return False
+    return True
+
+
 def _runtime_target_mode(targets_file: Path) -> str:
     if not targets_file.is_file():
         return "safe_seed_only"
@@ -82,9 +98,20 @@ def _runtime_target_mode(targets_file: Path) -> str:
         data = json.loads(targets_file.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
         return "safe_seed_only"
-    if not isinstance(data, list) or not data or not all(isinstance(item, dict) for item in data):
+    if not isinstance(data, list) or not data or not all(_is_valid_runtime_target(item) for item in data):
         return "safe_seed_only"
     return "runtime_data"
+
+
+def _validated_targets(feature: ModuleType, targets_file: Path) -> tuple[str, list[dict[str, Any]]]:
+    mode = _runtime_target_mode(targets_file)
+    if mode != "runtime_data":
+        return "safe_seed_only", [dict(item) for item in feature.SEED_TARGETS]
+    try:
+        data = json.loads(targets_file.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return "safe_seed_only", [dict(item) for item in feature.SEED_TARGETS]
+    return "runtime_data", [dict(item) for item in data]
 
 
 def revenue_next_action(status: dict[str, Any]) -> str:
@@ -235,8 +262,9 @@ def run(limit: int = 50, output_root: Path = OUT_ROOT) -> dict[str, Any]:
 
     feature = load_feature_module()
     targets_file = feature.DATA_ROOT / "targets.json"
-    target_mode = _runtime_target_mode(targets_file)
+    target_mode, validated_targets = _validated_targets(feature, targets_file)
 
+    feature.load_targets = lambda: list(validated_targets)
     cards = feature.build_target_cards(max(1, limit))
     actions = feature.build_actions()
     approvals = feature.build_approval_queue(cards)
@@ -251,6 +279,12 @@ def run(limit: int = 50, output_root: Path = OUT_ROOT) -> dict[str, Any]:
             "event": "canonical_cycle_generated",
             "evidence": f"{len(cards)} opportunities, {len(actions)} internal actions, {len(approvals)} approval items",
             "source": "scripts/commercial/run_canonical_company_os.py",
+            "risk": "low",
+        },
+        {
+            "event": "target_input_validated",
+            "evidence": f"target_mode={target_mode}; effective_targets={len(validated_targets)}",
+            "source": str(targets_file.relative_to(ROOT)).replace("\\", "/"),
             "risk": "low",
         },
         {
