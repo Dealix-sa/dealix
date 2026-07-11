@@ -12,6 +12,7 @@ from .models import ClientCard, QueueBundle, QueueItem
 DRAFT_ONLY_MODE = "draft-only"
 SAFEGUARDS = [
     "warm_inbound_referral_or_explicitly_approved_targets_only",
+    "research_only_sources_never_receive_outreach_drafts",
     "founder_review_required",
     "external_execution_disabled",
     "review_before_price_scope_or_delivery_commitment",
@@ -38,13 +39,17 @@ def _priority_reason(card: ClientCard) -> str:
         "trust": card.trust_score,
     }
     strongest = max(drivers, key=drivers.get)
+    permission = "confirmed" if card.contact_permission_confirmed else "research_only"
     return (
         f"score={card.priority_score}; strongest_driver={strongest}; "
-        f"risk={card.risk_score}; signal={card.signal or 'not_recorded'}"
+        f"risk={card.risk_score}; permission={permission}; "
+        f"signal={card.signal or 'not_recorded'}"
     )
 
 
 def _next_action_for(card: ClientCard) -> str:
+    if not card.contact_permission_confirmed:
+        return "Verify permission or obtain a warm introduction before drafting outreach."
     if card.priority_score >= 80:
         return "Prepare a one-page evidence-first offer for founder review."
     if card.priority_score >= 60:
@@ -53,6 +58,8 @@ def _next_action_for(card: ClientCard) -> str:
 
 
 def _copy_for(card: ClientCard) -> str:
+    if not card.contact_permission_confirmed:
+        return ""
     return (
         f"السلام عليكم، أعددت فرضية أولية حول {card.company} مرتبطة بـ"
         f" {card.likely_pain or 'مسار الفرص والمتابعة'}. "
@@ -62,6 +69,8 @@ def _copy_for(card: ClientCard) -> str:
 
 
 def _objection_for(card: ClientCard) -> str:
+    if not card.contact_permission_confirmed:
+        return "Permission or consent has not been established; do not contact yet."
     if card.risk_score >= 60:
         return "Privacy, proof quality, scope boundaries, or permission to use the data."
     if card.intent_score < 50:
@@ -84,20 +93,25 @@ def build_queue(cards: Iterable[ClientCard], mode: str = DRAFT_ONLY_MODE) -> Que
     if mode != DRAFT_ONLY_MODE:
         raise ValueError("client acquisition queue only supports draft-only mode")
 
-    items = [
-        QueueItem(
-            client=card,
-            status="needs_founder_review" if card.priority_score >= 60 else "research_hold",
-            priority_reason=_priority_reason(card),
-            recommended_channel="manual_email_or_linkedin_after_approval",
-            local_angle=_angle_for(card),
-            next_action=_next_action_for(card),
-            suggested_copy=_copy_for(card),
-            objection_to_expect=_objection_for(card),
-            proof_to_show=_proof_for(card),
+    items = []
+    for card in cards:
+        contactable = card.contact_permission_confirmed
+        status = "needs_founder_review" if contactable and card.priority_score >= 60 else "research_hold"
+        channel = "manual_email_or_linkedin_after_approval" if contactable else "none_research_only"
+        items.append(
+            QueueItem(
+                client=card,
+                status=status,
+                priority_reason=_priority_reason(card),
+                recommended_channel=channel,
+                local_angle=_angle_for(card),
+                next_action=_next_action_for(card),
+                suggested_copy=_copy_for(card),
+                objection_to_expect=_objection_for(card),
+                proof_to_show=_proof_for(card),
+            )
         )
-        for card in cards
-    ]
+
     items.sort(key=lambda item: item.client.priority_score, reverse=True)
     return QueueBundle(
         generated_at=datetime.now(UTC).isoformat(),
