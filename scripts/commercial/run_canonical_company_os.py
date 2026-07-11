@@ -75,14 +75,41 @@ def load_revenue_status() -> dict[str, Any]:
     return analyze_first_paid_diagnostic()
 
 
+def _runtime_target_mode(targets_file: Path) -> str:
+    if not targets_file.is_file():
+        return "safe_seed_only"
+    try:
+        data = json.loads(targets_file.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return "safe_seed_only"
+    if not isinstance(data, list) or not data or not all(isinstance(item, dict) for item in data):
+        return "safe_seed_only"
+    return "runtime_data"
+
+
 def revenue_next_action(status: dict[str, Any]) -> str:
     if int(status.get("payment_received_real", 0)) == 0:
         return "Select one real warm target, approve the 499 SAR offer, and collect verifiable payment evidence."
-    if int(status.get("proof_pack_delivered_real", 0)) == 0:
-        return "Deliver the paid proof pack and append a real proof_pack_delivered evidence event."
+
+    matching = list(status.get("matching_close_companies") or [])
+    if not matching:
+        unpaid_proof = list(status.get("proof_without_payment_companies") or [])
+        payment_without_proof = list(status.get("payment_without_proof_companies") or [])
+        if payment_without_proof:
+            return (
+                "Deliver and log the proof pack for the same paying company: "
+                f"{payment_without_proof[0]}."
+            )
+        if unpaid_proof:
+            return (
+                "Collect and log payment evidence for the same company that received proof: "
+                f"{unpaid_proof[0]}."
+            )
+        return "Match payment and proof-pack delivery evidence to one real company before expansion."
+
     if bool(status.get("crm_kpi_pending", True)):
-        return "Sync the real close into the canonical CRM/KPI import without changing the payment evidence."
-    return "First paid close is evidenced; convert the proof into the next Revenue Command Pilot opportunity."
+        return "Sync the matching real close into the canonical CRM/KPI import without changing the payment evidence."
+    return "First paid close is evidenced for one company; convert the proof into the next Revenue Command Pilot opportunity."
 
 
 def build_priorities(revenue_status: dict[str, Any], target_mode: str) -> list[dict[str, str]]:
@@ -176,6 +203,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
             f"- Invoice sent: {revenue['invoice_sent_real']}",
             f"- Payment received: {revenue['payment_received_real']}",
             f"- Proof pack delivered: {revenue['proof_pack_delivered_real']}",
+            f"- Matching paid-and-delivered companies: {revenue.get('matching_close_real', 0)}",
             f"- CRM/KPI pending: {revenue['crm_kpi_pending']}",
             f"- Next exact action: {payload['revenue_next_action']}",
             "",
@@ -194,7 +222,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
             "- No payment capture or invented revenue.",
             "- No production mutation or secret printing.",
             "- Revenue is counted only from real `payment_received` evidence.",
-            "- Closed status requires payment, proof delivery, and KPI synchronization.",
+            "- Closed status requires payment and proof delivery for the same company plus KPI synchronization.",
         ]
     )
     return "\n".join(lines) + "\n"
@@ -207,7 +235,7 @@ def run(limit: int = 50, output_root: Path = OUT_ROOT) -> dict[str, Any]:
 
     feature = load_feature_module()
     targets_file = feature.DATA_ROOT / "targets.json"
-    target_mode = "runtime_data" if targets_file.is_file() else "safe_seed_only"
+    target_mode = _runtime_target_mode(targets_file)
 
     cards = feature.build_target_cards(max(1, limit))
     actions = feature.build_actions()
@@ -230,6 +258,7 @@ def run(limit: int = 50, output_root: Path = OUT_ROOT) -> dict[str, Any]:
             "evidence": (
                 f"payment_received={revenue_status['payment_received_real']}; "
                 f"proof_pack_delivered={revenue_status['proof_pack_delivered_real']}; "
+                f"matching_close={revenue_status.get('matching_close_real', 0)}; "
                 f"verdict={revenue_status['verdict']}"
             ),
             "source": str(revenue_status.get("evidence_path", "")),
@@ -253,7 +282,7 @@ def run(limit: int = 50, output_root: Path = OUT_ROOT) -> dict[str, Any]:
             "positioning": "Saudi AI Business Operating System / Company OS, not a CRM clone.",
             "first_offer": "499 SAR Revenue Proof Sprint for a real warm or approved target.",
             "expansion_path": "Revenue Command Pilot -> monthly Revenue Command Room -> AI Company OS setup.",
-            "proof_rule": "No revenue without payment_received; no closed-won without proof delivery and KPI sync.",
+            "proof_rule": "No revenue without payment_received; no closed-won without same-company proof delivery and KPI sync.",
         },
         "priorities": build_priorities(revenue_status, target_mode),
         "opportunity_graph": [asdict(card) for card in cards],
