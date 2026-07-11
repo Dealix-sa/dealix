@@ -37,6 +37,8 @@ closed_won
 closed_lost
 ```
 
+`closed_won` حالة اختيارية للتوثيق النهائي وليست شرطًا للاعتراف بالدفع. إذا سُجلت، يجب أن تأتي بعد `payment_received` و`proof_pack_delivered` لنفس الشركة؛ وإلا يفشل verifier.
+
 الحالات الخارجية أو الحساسة تحتاج موافقة بشرية. لا يرسل هذا النظام فاتورة أو تعليمات دفع أو رسالة للعميل تلقائيًا.
 
 ## التسلسل التنفيذي
@@ -112,6 +114,7 @@ python scripts/commercial/verify_manual_close_path.py --json
 - `invoice_sent` لشركة A و`payment_received` لشركة B لا يصنعان close.
 - `payment_received` لشركة A و`proof_pack_delivered` لشركة B لا يصنعان close.
 - `proof_pack_delivered` بلا دفع سابق لنفس الشركة فشل حوكمة.
+- `closed_won` قبل الدفع وProof لنفس الشركة فشل حوكمة.
 - الصفوف الفارغة أو الداخلية أو أمثلة seed لا تعتبر عملاء مدفوعين.
 
 ## بيانات ممنوع تخزينها في الريبو
@@ -131,6 +134,7 @@ python scripts/commercial/verify_manual_close_path.py --json
 - [ ] `payment_received` مسجل بعد تحقق مستقل لنفس الشركة.
 - [ ] Proof Pack سلّم فعليًا لنفس الشركة.
 - [ ] `proof_pack_delivered` مسجل.
+- [ ] أي `closed_won` مسجل بعد الدفع وProof لنفس الشركة.
 - [ ] KPI/CRM متزامن.
 - [ ] لا أسرار أو بيانات دفع حساسة في GitHub.
 - [ ] verifier يمر.
