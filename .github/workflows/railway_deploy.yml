@@ -6,11 +6,11 @@ name: Deploy to Railway
 #   1. Go to https://railway.app/account/tokens
 #   2. Create a new token named "github-deploy"
 #   3. Copy the token
-#   4. Go to https://github.com/VoXc2/dealix/settings/secrets/actions
+#   4. Go to the Dealix-sa/dealix repository Actions secrets
 #   5. Add New repository secret: RAILWAY_TOKEN = <paste token>
 #   6. Optional: Add RAILWAY_SERVICE_NAME = dealix (if service name differs)
 #
-# After setup: every push to main auto-deploys, OR trigger manually
+# After setup: every matching push to main auto-deploys, OR trigger manually
 # via Actions tab → "Deploy to Railway" → Run workflow.
 
 on:
@@ -68,8 +68,10 @@ jobs:
       - name: Install Railway CLI
         if: steps.check_token.outputs.token_present == 'true'
         run: |
-          curl -fsSL https://railway.com/install.sh | sh
-          echo "$HOME/.railway/bin" >> $GITHUB_PATH
+          set -euo pipefail
+          bash <(curl -fsSL https://railway.com/install.sh) -y
+          echo "$HOME/.railway/bin" >> "$GITHUB_PATH"
+          "$HOME/.railway/bin/railway" --version
 
       - name: Verify Railway auth
         if: steps.check_token.outputs.token_present == 'true'
