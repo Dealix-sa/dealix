@@ -1,17 +1,8 @@
 name: Deploy to Railway
 
 # Deploys Dealix backend to Railway using Railway CLI.
-#
-# Setup (one-time, by Sami):
-#   1. Go to https://railway.app/account/tokens
-#   2. Create a new token named "github-deploy"
-#   3. Copy the token
-#   4. Go to the Dealix-sa/dealix repository Actions secrets
-#   5. Add New repository secret: RAILWAY_TOKEN = <paste token>
-#   6. Optional: Add repository variable RAILWAY_SERVICE_NAME if the service name differs
-#
-# After setup: every matching push to main auto-deploys, OR trigger manually
-# via Actions tab → "Deploy to Railway" → Run workflow.
+# Project tokens use RAILWAY_TOKEN. Account/workspace tokens use
+# RAILWAY_API_TOKEN. Values remain sealed in GitHub Actions secrets.
 
 on:
   push:
@@ -45,25 +36,27 @@ jobs:
   deploy:
     name: 🚂 Deploy to Railway
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check for RAILWAY_TOKEN
+      - name: Check Railway credential mode
         id: check_token
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
         run: |
-          if [ -z "$RAILWAY_TOKEN" ]; then
-            echo "::warning::RAILWAY_TOKEN secret is not configured. Skipping deploy."
+          set -euo pipefail
+          if [ -n "$RAILWAY_TOKEN" ]; then
+            echo "token_present=true" >> "$GITHUB_OUTPUT"
+            echo "token_mode=project" >> "$GITHUB_OUTPUT"
+          elif [ -n "$RAILWAY_API_TOKEN" ]; then
+            echo "token_present=true" >> "$GITHUB_OUTPUT"
+            echo "token_mode=account_or_workspace" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Neither RAILWAY_TOKEN nor RAILWAY_API_TOKEN is configured."
             echo "token_present=false" >> "$GITHUB_OUTPUT"
-            echo ""
-            echo "To enable auto-deploy:"
-            echo "1. Get token from https://railway.app/account/tokens"
-            echo "2. Add as GitHub secret: RAILWAY_TOKEN"
-            exit 0
+            echo "token_mode=none" >> "$GITHUB_OUTPUT"
           fi
-          echo "token_present=true" >> "$GITHUB_OUTPUT"
 
       - name: Install Railway CLI
         if: steps.check_token.outputs.token_present == 'true'
@@ -73,42 +66,58 @@ jobs:
           echo "$HOME/.railway/bin" >> "$GITHUB_PATH"
           "$HOME/.railway/bin/railway" --version
 
-      - name: Verify Railway auth
-        if: steps.check_token.outputs.token_present == 'true'
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          set -euo pipefail
-          railway whoami
-
       - name: Deploy to Railway
         id: railway_deploy
         if: steps.check_token.outputs.token_present == 'true'
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+          TOKEN_MODE: ${{ steps.check_token.outputs.token_mode }}
+          INPUT_SERVICE: ${{ inputs.service }}
+          CONFIG_SERVICE: ${{ vars.RAILWAY_SERVICE_NAME }}
+          PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
+          ENVIRONMENT_NAME: ${{ vars.RAILWAY_ENVIRONMENT_NAME }}
         run: |
           set -uo pipefail
           mkdir -p reports/ci
           LOG="reports/ci/railway-deploy.log"
-          SERVICE="${{ inputs.service || vars.RAILWAY_SERVICE_NAME || 'dealix' }}"
+          SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
+
+          cmd=(railway up --service "$SERVICE" --detach --verbose)
+          if [ -n "$PROJECT_ID" ]; then
+            cmd+=(--project "$PROJECT_ID")
+          fi
+          if [ -n "$ENVIRONMENT_NAME" ]; then
+            cmd+=(--environment "$ENVIRONMENT_NAME")
+          fi
 
           {
             echo "commit=${GITHUB_SHA}"
+            echo "token_mode=${TOKEN_MODE}"
             echo "service=${SERVICE}"
+            echo "project_flag_configured=$([ -n "$PROJECT_ID" ] && echo true || echo false)"
+            echo "environment_flag_configured=$([ -n "$ENVIRONMENT_NAME" ] && echo true || echo false)"
             echo "railway_version=$(railway --version 2>&1 | head -1)"
             echo "== pre-deploy status =="
-            railway status || true
+            railway status --json || true
+            if [ "$TOKEN_MODE" = "account_or_workspace" ]; then
+              echo "== account/workspace identity =="
+              railway whoami || true
+            else
+              echo "== identity check =="
+              echo "Skipped account-level whoami for project-scoped RAILWAY_TOKEN."
+            fi
             echo "== railway up =="
           } 2>&1 | tee "$LOG"
 
           set +e
-          railway up --service "$SERVICE" --detach 2>&1 | tee -a "$LOG"
+          "${cmd[@]}" 2>&1 | tee -a "$LOG"
           rc=${PIPESTATUS[0]}
           set -e
 
           echo "railway_up_exit_code=$rc" | tee -a "$LOG"
           if [ "$rc" -ne 0 ]; then
-            echo "::error::Railway deploy failed; inspect the railway-deploy-diagnostics artifact."
+            echo "::error::Railway deploy failed; inspect railway-deploy-diagnostics."
             exit "$rc"
           fi
 
@@ -122,17 +131,18 @@ jobs:
           retention-days: 7
 
       - name: Wait for deployment to become active
-        if: steps.check_token.outputs.token_present == 'true'
+        if: steps.railway_deploy.outcome == 'success'
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
         run: |
           echo "Waiting 60 seconds for deployment to start..."
           sleep 60
-          railway status || true
+          railway status --json || true
 
       - name: Smoke test /healthz
         id: healthz
-        if: steps.check_token.outputs.token_present == 'true'
+        if: steps.railway_deploy.outcome == 'success'
         run: |
           URL="${{ vars.RAILWAY_PUBLIC_URL || 'https://api.dealix.me' }}"
           echo "url=$URL" >> "$GITHUB_OUTPUT"
@@ -150,11 +160,11 @@ jobs:
             sleep 15
           done
 
-          echo "::error::Trust layer not ready after 3 minutes (/version /api/v1/meta /healthz version field)."
+          echo "::error::Trust layer not ready after 3 minutes."
           exit 1
 
       - name: Post-deploy smoke pack
-        if: steps.check_token.outputs.token_present == 'true'
+        if: steps.healthz.outcome == 'success'
         env:
           BASE_URL: ${{ steps.healthz.outputs.url }}
         run: |
@@ -177,5 +187,4 @@ jobs:
             exit 1
           fi
           echo "✓ webhook rejected bad signature"
-
           echo "✅ post-deploy smoke pack passed"
