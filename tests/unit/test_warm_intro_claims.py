@@ -72,3 +72,27 @@ def test_personal_phone_is_not_embedded_in_public_drafts(monkeypatch) -> None:
         WarmIntroRequest(prospect_name="نورة", company_name="شركة اختبار")
     )
     assert "private-test-value" not in _all_text(result)
+
+
+def test_user_supplied_claim_markers_use_safe_templates_without_500(monkeypatch) -> None:
+    generator = WarmIntroGenerator()
+
+    def fail_if_called(_request):
+        raise AssertionError("LLM path must not run for claim-like user context")
+
+    monkeypatch.setattr(generator, "_llm_whatsapp", fail_if_called)
+    monkeypatch.setattr(generator, "_llm_email", fail_if_called)
+
+    result = generator.generate(
+        WarmIntroRequest(
+            prospect_name="Dana",
+            company_name="80% Studio",
+            pain_context="ZATCA Wave 24 appears in the supplied discovery notes",
+        )
+    )
+
+    text = _all_text(result)
+    assert "80% Studio" in text
+    assert "ZATCA Wave 24" in text
+    assert result.llm_used is False
+    assert result.approval_status == "approval_required"
