@@ -10,10 +10,13 @@ from .models import ActionKind, Route, SafetyDecision, StrategyStep
 AUTO_RISK_CEILING = 0.40
 EXTERNAL_CHANNELS = frozenset({"email", "whatsapp", "sms", "linkedin", "phone", "social"})
 BLOCKED_ACTION_PATTERNS = (
-    "cold_whatsapp_blast",
-    "cold_outreach_blast",
+    "cold_whatsapp",
+    "cold_outreach",
+    "auto_send",
     "mass_send",
     "bulk_broadcast",
+    "linkedin_automation",
+    "linkedin_scrape",
     "scrape_contacts",
     "buy_leads",
     "bypass_consent",
