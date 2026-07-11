@@ -45,6 +45,8 @@ class DealEvent:
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "DealEvent":
+        if not isinstance(payload, dict):
+            raise TypeError("deal event must be an object")
         return cls(
             event_type=str(payload.get("event_type") or payload.get("event") or ""),
             occurred_at=str(payload.get("occurred_at") or payload.get("at") or ""),
@@ -77,6 +79,8 @@ class DealRecord:
             raise TypeError("value_sar must be an integer")
         if self.value_sar < 0:
             raise ValueError("value_sar must be non-negative")
+        if any(not isinstance(event, DealEvent) for event in self.events):
+            raise TypeError("events must contain DealEvent objects")
         object.__setattr__(self, "deal_id", deal_id)
         object.__setattr__(self, "account_name", account_name)
         object.__setattr__(self, "source", source)
@@ -102,20 +106,31 @@ class DealRecord:
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "DealRecord":
+        if not isinstance(payload, dict):
+            raise TypeError("deal record must be an object")
         raw_events = payload.get("events") or []
         if not isinstance(raw_events, list):
             raise ValueError("events must be a list")
+        if any(not isinstance(item, dict) for item in raw_events):
+            raise ValueError("events must contain objects only")
+        raw_value = payload.get("value_sar", 499)
+        if isinstance(raw_value, bool):
+            raise TypeError("value_sar must not be boolean")
+        try:
+            value_sar = int(raw_value)
+        except (TypeError, ValueError) as exc:
+            raise TypeError("value_sar must be an integer") from exc
         return cls(
             deal_id=str(payload.get("deal_id") or payload.get("id") or ""),
             account_name=str(payload.get("account_name") or ""),
             source=str(payload.get("source") or "unknown"),
             offer_name=str(payload.get("offer_name") or payload.get("offer") or "Revenue Proof Sprint"),
-            value_sar=int(payload.get("value_sar", 499)),
+            value_sar=value_sar,
             created_at=str(payload.get("created_at") or ""),
             last_touch_at=str(payload.get("last_touch_at") or ""),
             owner=str(payload.get("owner") or "founder"),
             notes=str(payload.get("notes") or ""),
-            events=tuple(DealEvent.from_dict(item) for item in raw_events if isinstance(item, dict)),
+            events=tuple(DealEvent.from_dict(item) for item in raw_events),
         )
 
 
