@@ -6,6 +6,17 @@ from datetime import date, datetime
 
 from .models import DealRecord, DealSnapshot, DealStage, NextAction, PortfolioMetrics
 
+_STAGE_RANK: dict[DealStage, int] = {
+    DealStage.RESEARCH_HOLD: 0,
+    DealStage.NEW: 1,
+    DealStage.CONTACTED: 2,
+    DealStage.ENGAGED: 3,
+    DealStage.PROPOSED: 4,
+    DealStage.PAID: 5,
+    DealStage.PROOF_DELIVERED: 6,
+    DealStage.REFERRAL: 7,
+    DealStage.LOST: 8,
+}
 STAGE_PROBABILITY: dict[DealStage, float] = {
     DealStage.RESEARCH_HOLD: 0.0,
     DealStage.NEW: 0.05,
@@ -27,6 +38,14 @@ STAGE_STALE_DAYS: dict[DealStage, int] = {
     DealStage.PROOF_DELIVERED: 21,
     DealStage.REFERRAL: 30,
 }
+_EXTERNAL_EVIDENCE = {
+    "message_sent_manual",
+    "message_sent",
+    "reply_received",
+    "call_booked",
+    "demo_booked",
+    "invoice_sent",
+}
 
 
 def _parse_date(value: str) -> date | None:
@@ -38,6 +57,10 @@ def _parse_date(value: str) -> date | None:
         return None
 
 
+def _advance(current: DealStage, candidate: DealStage) -> DealStage:
+    return candidate if _STAGE_RANK[candidate] > _STAGE_RANK[current] else current
+
+
 def _days_since_touch(deal: DealRecord, today: date) -> tuple[int, list[str]]:
     raw = deal.last_touch_at or deal.created_at
     parsed = _parse_date(raw)
@@ -45,7 +68,9 @@ def _days_since_touch(deal: DealRecord, today: date) -> tuple[int, list[str]]:
         return 0, ["missing_touch_date"]
     if parsed is None:
         return 0, ["invalid_touch_date"]
-    return max(0, (today - parsed).days), []
+    if parsed > today:
+        return 0, ["future_touch_date"]
+    return (today - parsed).days, []
 
 
 def analyze_deal(deal: DealRecord, today: date) -> DealSnapshot:
@@ -53,45 +78,53 @@ def analyze_deal(deal: DealRecord, today: date) -> DealSnapshot:
 
     stage = DealStage.NEW if deal.contact_permission_confirmed else DealStage.RESEARCH_HOLD
     anomalies: list[str] = []
+    chronological_events = []
+    for index, event in enumerate(deal.events):
+        parsed = _parse_date(event.occurred_at)
+        if parsed is None:
+            anomalies.append(f"invalid_event_date:{event.event_type}")
+            continue
+        if parsed > today:
+            anomalies.append(f"future_event_date:{event.event_type}")
+            continue
+        chronological_events.append((parsed, index, event))
+    chronological_events.sort(key=lambda item: (item[0], item[1]))
+
     seen_invoice = False
     valid_payment = False
     proof_delivered = False
     close_ready = False
     lost = False
 
-    for event in deal.events:
+    for _, _, event in chronological_events:
         event_type = event.event_type
-        if _parse_date(event.occurred_at) is None:
-            anomalies.append(f"invalid_event_date:{event_type}")
-            continue
         if event_type == "lost":
             lost = True
             continue
+        if event_type in _EXTERNAL_EVIDENCE and not deal.contact_permission_confirmed:
+            anomalies.append(f"commercial_event_without_permission:{event_type}")
         if event_type in {"message_sent_manual", "message_sent"}:
-            if not deal.contact_permission_confirmed:
-                anomalies.append("contact_without_permission")
-            else:
-                stage = max(stage, DealStage.CONTACTED, key=lambda item: list(DealStage).index(item))
+            if deal.contact_permission_confirmed:
+                stage = _advance(stage, DealStage.CONTACTED)
         elif event_type in {"reply_received", "call_booked", "demo_booked"}:
             if deal.contact_permission_confirmed:
-                stage = DealStage.ENGAGED
-            else:
-                anomalies.append("engagement_without_recorded_permission")
+                stage = _advance(stage, DealStage.ENGAGED)
         elif event_type == "invoice_sent":
             seen_invoice = True
-            stage = DealStage.PROPOSED
+            if deal.contact_permission_confirmed:
+                stage = _advance(stage, DealStage.PROPOSED)
         elif event_type == "payment_received":
             if not seen_invoice:
                 anomalies.append("payment_before_invoice")
             else:
                 valid_payment = True
-                stage = DealStage.PAID
+                stage = _advance(stage, DealStage.PAID)
         elif event_type == "proof_pack_delivered":
             if not valid_payment:
                 anomalies.append("proof_before_valid_payment")
             else:
                 proof_delivered = True
-                stage = DealStage.PROOF_DELIVERED
+                stage = _advance(stage, DealStage.PROOF_DELIVERED)
         elif event_type == "closed_won":
             if valid_payment and proof_delivered:
                 close_ready = True
@@ -99,12 +132,14 @@ def analyze_deal(deal: DealRecord, today: date) -> DealSnapshot:
                 anomalies.append("closed_won_before_payment_and_proof")
         elif event_type in {"referral_requested", "referral_received"}:
             if proof_delivered:
-                stage = DealStage.REFERRAL
+                stage = _advance(stage, DealStage.REFERRAL)
             else:
                 anomalies.append("referral_before_proof")
 
     if valid_payment and proof_delivered:
         close_ready = True
+    if not deal.contact_permission_confirmed and not valid_payment and not lost:
+        stage = DealStage.RESEARCH_HOLD
     if lost:
         stage = DealStage.LOST
         close_ready = False
@@ -135,14 +170,14 @@ def next_action(snapshot: DealSnapshot) -> NextAction:
 
     if snapshot.stage == DealStage.LOST:
         key, rationale, approval = "archive_lost", "Deal is terminally lost.", False
+    elif snapshot.anomalies:
+        key, rationale, approval = "repair_evidence_chain", "; ".join(snapshot.anomalies), False
     elif not snapshot.contact_permission_confirmed:
         key, rationale, approval = (
             "obtain_permission_or_warm_intro",
             "Contact permission is not confirmed; scoring cannot override consent.",
             False,
         )
-    elif snapshot.anomalies:
-        key, rationale, approval = "repair_evidence_chain", "; ".join(snapshot.anomalies), False
     elif snapshot.stage == DealStage.NEW:
         key, rationale, approval = "prepare_first_touch_draft", "Permitted lead has no recorded contact.", True
     elif snapshot.stage == DealStage.CONTACTED:
