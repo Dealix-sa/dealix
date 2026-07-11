@@ -1,8 +1,8 @@
-"""Warm Intro Generator — draft outreach for Saudi B2B prospects.
+"""Warm Intro Generator — approval-gated Saudi B2B outreach drafts.
 
-Produces 5 WhatsApp variants + 3 email variants per prospect.
-Constitutional gate: NO_LIVE_SEND — all drafts stored as approval_required.
-Never triggers any external message send.
+Produces WhatsApp and email variants for warm, inbound, referral, or otherwise
+approved prospects. It never sends messages and never permits fabricated proof,
+guaranteed outcomes, stale deadlines, or access claims.
 """
 
 from __future__ import annotations
@@ -17,7 +17,20 @@ from pydantic import BaseModel, Field
 
 log = logging.getLogger(__name__)
 
-_NO_LIVE_SEND = True  # hard constitutional gate — never set to False
+_NO_LIVE_SEND = True
+_DEFAULT_FOUNDER_NAME = "سامي محمد عسيري"
+_FORBIDDEN_CLAIM_MARKERS = (
+    "80%",
+    "حلّت هذه المشكلة لشركات مشابهة",
+    "solved this for similar companies",
+    "zatca wave 24",
+    "30 يونيو 2026",
+    "june 30, 2026",
+    "نتائج مضمونة",
+    "guaranteed results",
+    "وصول حكومي",
+    "government access",
+)
 
 
 class WarmIntroRequest(BaseModel):
@@ -26,17 +39,17 @@ class WarmIntroRequest(BaseModel):
     sector: str = "b2b_services"
     pain_context: str = ""
     previous_interaction: str = ""
-    founder_name: str = "سامي"
+    founder_name: str = _DEFAULT_FOUNDER_NAME
     language: str = "ar"
 
 
 class OutreachDraft(BaseModel):
-    channel: str  # "whatsapp" | "email"
+    channel: str
     variant: int
     subject_line: str = ""
     body_ar: str
     body_en: str
-    tone: str  # "direct" | "empathetic" | "urgency" | "social_proof" | "question"
+    tone: str
     character_count: int = 0
     approval_status: str = "approval_required"
 
@@ -49,40 +62,94 @@ class OutreachDraftBundle(BaseModel):
     whatsapp_drafts: list[OutreachDraft]
     email_drafts: list[OutreachDraft]
     approval_status: str = "approval_required"
-    governance_decision: str = "pending"  # pending | approved | rejected
+    governance_decision: str = "pending"
     llm_used: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return json.loads(self.model_dump_json())
 
 
+def _contains_forbidden_claim(text: str) -> bool:
+    normalized = text.casefold()
+    return any(marker.casefold() in normalized for marker in _FORBIDDEN_CLAIM_MARKERS)
+
+
+def _request_context_values(req: WarmIntroRequest) -> list[str]:
+    values = (
+        req.prospect_name,
+        req.company_name,
+        req.sector,
+        req.pain_context,
+        req.previous_interaction,
+        req.founder_name,
+    )
+    return sorted({value.strip() for value in values if value.strip()}, key=len, reverse=True)
+
+
+def _request_context_contains_forbidden_marker(req: WarmIntroRequest) -> bool:
+    return any(_contains_forbidden_claim(value) for value in _request_context_values(req))
+
+
+def _without_user_context(text: str, req: WarmIntroRequest) -> str:
+    cleaned = text
+    for value in _request_context_values(req):
+        cleaned = cleaned.replace(value, "[USER_CONTEXT]")
+    return cleaned
+
+
+def _drafts_are_safe(drafts: list[OutreachDraft], req: WarmIntroRequest | None = None) -> bool:
+    for draft in drafts:
+        text = "\n".join((draft.subject_line, draft.body_ar, draft.body_en))
+        if req is not None:
+            text = _without_user_context(text, req)
+        if _contains_forbidden_claim(text):
+            return False
+    return True
+
+
 class WarmIntroGenerator:
-    """Generates bilingual warm intro drafts — approval required before use."""
+    """Generate bilingual warm-intro drafts; founder approval is mandatory."""
 
     def generate(self, req: WarmIntroRequest) -> OutreachDraftBundle:
         assert _NO_LIVE_SEND, "NO_LIVE_SEND constitutional gate violated"
 
         import hashlib
+
         bundle_id = hashlib.sha256(
             f"{req.company_name}{req.prospect_name}{datetime.now(UTC).date()}".encode()
         ).hexdigest()[:16]
 
-        llm_used = False
-        wa_drafts = self._llm_whatsapp(req)
-        email_drafts = self._llm_email(req)
-        if wa_drafts and email_drafts:
-            llm_used = True
-        else:
-            wa_drafts = self._template_whatsapp(req)
-            email_drafts = self._template_email(req)
+        context_requires_templates = _request_context_contains_forbidden_marker(req)
+        whatsapp: list[OutreachDraft] = []
+        email: list[OutreachDraft] = []
+        if not context_requires_templates:
+            whatsapp = self._llm_whatsapp(req)
+            email = self._llm_email(req)
 
+        llm_used = bool(whatsapp and email)
+        if not llm_used:
+            whatsapp = self._template_whatsapp(req)
+            email = self._template_email(req)
+
+        assert _drafts_are_safe(whatsapp + email, req), "Unsupported commercial claim detected"
         return OutreachDraftBundle(
             bundle_id=bundle_id,
             prospect_name=req.prospect_name,
             company_name=req.company_name,
-            whatsapp_drafts=wa_drafts,
-            email_drafts=email_drafts,
+            whatsapp_drafts=whatsapp,
+            email_drafts=email,
             llm_used=llm_used,
+        )
+
+    @staticmethod
+    def _llm_rules(req: WarmIntroRequest) -> str:
+        context = req.previous_interaction or "warm/inbound/referral context not specified"
+        return (
+            "This is a draft-only warm outreach task. Do not claim past client results, "
+            "percentages, guaranteed ROI, government access, certifications, deadlines, "
+            "or customer proof unless explicitly supplied in the request. Do not invent facts. "
+            "Offer a practical 499 SAR Revenue Proof Sprint or a one-page opportunity snapshot. "
+            f"Previous interaction: {context}. Founder: {req.founder_name}."
         )
 
     def _llm_whatsapp(self, req: WarmIntroRequest) -> list[OutreachDraft]:
@@ -91,16 +158,15 @@ class WarmIntroGenerator:
             return []
         try:
             import anthropic
+
             client = anthropic.Anthropic(api_key=api_key)
             prompt = (
-                f"أنت مستشار مبيعات B2B سعودي. اكتب 5 رسائل واتساب للتواصل مع "
-                f"'{req.prospect_name}' من شركة '{req.company_name}' في قطاع '{req.sector}'. "
-                f"السياق: {req.pain_context or 'لا سياق محدد'}. "
-                f"المرسل: {req.founder_name}.\n\n"
-                f"كل رسالة: 3 أسطر حد أقصى، واتساب-فريندلي، عربي-أول.\n"
-                f"النبرات: [direct, empathetic, urgency, social_proof, question]\n"
-                f"أرجع JSON مصفوفة من 5 كائنات: "
-                f"{{tone, body_ar, body_en}}"
+                f"اكتب 5 مسودات واتساب قصيرة لـ {req.prospect_name} من شركة "
+                f"{req.company_name} في قطاع {req.sector}. المشكلة المحتملة: "
+                f"{req.pain_context or 'تحتاج اكتشافًا أوليًا'}.\n"
+                f"{self._llm_rules(req)}\n"
+                "النبرات: direct, discovery, evidence_first, snapshot, pilot. "
+                "أرجع JSON فقط: [{tone, body_ar, body_en}]."
             )
             msg = client.messages.create(
                 model="claude-sonnet-4-6",
@@ -113,17 +179,18 @@ class WarmIntroGenerator:
                 if raw.startswith("json"):
                     raw = raw[4:]
             data = json.loads(raw)
-            return [
+            drafts = [
                 OutreachDraft(
                     channel="whatsapp",
-                    variant=i + 1,
-                    body_ar=d.get("body_ar", ""),
-                    body_en=d.get("body_en", ""),
-                    tone=d.get("tone", "direct"),
-                    character_count=len(d.get("body_ar", "")),
+                    variant=index + 1,
+                    body_ar=item.get("body_ar", ""),
+                    body_en=item.get("body_en", ""),
+                    tone=item.get("tone", "direct"),
+                    character_count=len(item.get("body_ar", "")),
                 )
-                for i, d in enumerate(data[:5])
+                for index, item in enumerate(data[:5])
             ]
+            return drafts if _drafts_are_safe(drafts, req) else []
         except Exception as exc:
             log.warning("warm_intro_llm_failed error=%s", exc)
             return []
@@ -134,12 +201,14 @@ class WarmIntroGenerator:
             return []
         try:
             import anthropic
+
             client = anthropic.Anthropic(api_key=api_key)
             prompt = (
-                f"اكتب 3 رسائل بريد إلكتروني للتواصل مع '{req.prospect_name}' "
-                f"من '{req.company_name}'. النبرات: [professional, story, direct_ask]. "
-                f"كل رسالة: عنوان + جسم (5-6 جمل). عربي-أول مع ترجمة إنجليزية. "
-                f"أرجع JSON: [{{tone, subject_ar, subject_en, body_ar, body_en}}]"
+                f"اكتب 3 مسودات بريد لـ {req.prospect_name} من {req.company_name}. "
+                f"السياق: {req.pain_context or 'اكتشاف فجوة المتابعة والإيراد'}.\n"
+                f"{self._llm_rules(req)}\n"
+                "النبرات: professional, evidence_first, direct_ask. "
+                "أرجع JSON فقط: [{tone, subject_ar, body_ar, body_en}]."
             )
             msg = client.messages.create(
                 model="claude-sonnet-4-6",
@@ -152,132 +221,140 @@ class WarmIntroGenerator:
                 if raw.startswith("json"):
                     raw = raw[4:]
             data = json.loads(raw)
-            return [
+            drafts = [
                 OutreachDraft(
                     channel="email",
-                    variant=i + 1,
-                    subject_line=d.get("subject_ar", ""),
-                    body_ar=d.get("body_ar", ""),
-                    body_en=d.get("body_en", ""),
-                    tone=d.get("tone", "professional"),
-                    character_count=len(d.get("body_ar", "")),
+                    variant=index + 1,
+                    subject_line=item.get("subject_ar", ""),
+                    body_ar=item.get("body_ar", ""),
+                    body_en=item.get("body_en", ""),
+                    tone=item.get("tone", "professional"),
+                    character_count=len(item.get("body_ar", "")),
                 )
-                for i, d in enumerate(data[:3])
+                for index, item in enumerate(data[:3])
             ]
+            return drafts if _drafts_are_safe(drafts, req) else []
         except Exception as exc:
             log.warning("warm_intro_email_llm_failed error=%s", exc)
             return []
 
-    def _template_whatsapp(self, req: WarmIntroRequest) -> list[OutreachDraft]:
+    @staticmethod
+    def _template_whatsapp(req: WarmIntroRequest) -> list[OutreachDraft]:
         name = req.prospect_name
         company = req.company_name
         founder = req.founder_name
+        pain = req.pain_context or "ترتيب المتابعة وتحويل الفرص"
         templates = [
-            {
-                "tone": "direct",
-                "body_ar": f"أهلاً {name}،\nأنا {founder} من Dealix — نساعد شركات {req.sector} على أتمتة عمليات الإيراد.\nهل لديك 10 دقائق هذا الأسبوع؟",
-                "body_en": f"Hi {name},\nI'm {founder} from Dealix — we help {req.sector} companies automate revenue ops.\nDo you have 10 mins this week?",
-            },
-            {
-                "tone": "empathetic",
-                "body_ar": f"السلام عليكم {name}،\nأتفهم تحديات {req.sector} — خاصة في جانب {req.pain_context or 'الإيراد'}.\nDealix حلّت هذه المشكلة لشركات مشابهة. هل تريد تشخيصاً مجانياً؟",
-                "body_en": f"Hello {name},\nI understand {req.sector} challenges — especially around {req.pain_context or 'revenue'}.\nDealix solved this for similar companies. Want a free diagnostic?",
-            },
-            {
-                "tone": "urgency",
-                "body_ar": f"مرحباً {name} —\nموعد ZATCA Wave 24 قادم (30 يونيو 2026).\nشركات مثل {company} تحتاج التجهيز الآن.\nأرسل لك تقييماً مجانياً؟",
-                "body_en": f"Hi {name} —\nZATCA Wave 24 deadline is approaching (June 30, 2026).\nCompanies like {company} need to prepare now.\nShall I send you a free assessment?",
-            },
-            {
-                "tone": "social_proof",
-                "body_ar": f"أهلاً {name}،\nDealix بنت نظام تشغيل الإيراد الخاص بها من الصفر باستخدام أدواتنا.\nنفس النظام متاح لـ {company}.\nمهتم تشوف كيف؟",
-                "body_en": f"Hi {name},\nDealix built its own revenue OS from scratch using our tools.\nThe same system is available for {company}.\nInterested to see how?",
-            },
-            {
-                "tone": "question",
-                "body_ar": f"مرحباً {name}،\nسؤال مباشر: ما أكبر تحدي يواجهه فريق المبيعات في {company} الآن؟\nنسأل لأن معظم شركات {req.sector} تواجه نفس 3 تحديات — وعندنا حلول جاهزة.",
-                "body_en": f"Hi {name},\nDirect question: what's the biggest challenge facing {company}'s sales team right now?\nWe ask because most {req.sector} companies face the same 3 challenges — and we have ready solutions.",
-            },
+            (
+                "direct",
+                f"السلام عليكم {name}، أنا {founder} مؤسس Dealix.\n"
+                f"نرتب للشركات مسار الفرص والمتابعة بشكل عملي. هل أرسل لك ملخصًا من صفحة واحدة يناسب {company}؟",
+                f"Hi {name}, I am {founder}, founder of Dealix.\n"
+                f"We structure opportunity and follow-up operations. May I send a one-page snapshot for {company}?",
+            ),
+            (
+                "discovery",
+                f"أهلًا {name}، سؤال مباشر: أين تضيع أكثر الفرص عند {company}—الرد، المتابعة، أم العرض؟\n"
+                f"أنا {founder} من Dealix، وأجهز تشخيصًا مبنيًا على الواقع بدون تغيير أنظمتكم.",
+                f"Hi {name}, a direct question: where do opportunities leak most at {company}—response, follow-up, or proposals?\n"
+                f"I am {founder} from Dealix; we prepare a practical diagnostic without replacing your systems.",
+            ),
+            (
+                "evidence_first",
+                f"مرحبًا {name}، أعمل على Revenue Proof Sprint بقيمة 499 ريال لقياس فجوة واحدة فعلية خلال مدة قصيرة.\n"
+                f"هل {pain} أولوية حالية لدى {company}؟",
+                f"Hi {name}, I run a 499 SAR Revenue Proof Sprint to measure one real operating gap in a short cycle.\n"
+                f"Is {pain} a current priority for {company}?",
+            ),
+            (
+                "snapshot",
+                f"السلام عليكم {name}، أقدر أجهز لـ {company} لقطة مختصرة توضح: أين تضيع الفرص، ما الإجراء التالي، وما الدليل المطلوب.\n"
+                "هل أرسلها لك للمراجعة؟",
+                f"Hi {name}, I can prepare a short snapshot for {company}: where opportunities leak, the next action, and required proof.\n"
+                "Should I send it for review?",
+            ),
+            (
+                "pilot",
+                f"أهلًا {name}، Dealix تعمل فوق الأدوات الحالية مثل CRM وواتساب بدل استبدالها.\n"
+                f"إذا كان مناسبًا، نبدأ مع {company} بألم واحد ونتيجة قابلة للقياس.",
+                f"Hi {name}, Dealix works over existing tools such as CRM and WhatsApp rather than replacing them.\n"
+                f"For {company}, we can start with one pain point and a measurable outcome.",
+            ),
         ]
         return [
             OutreachDraft(
                 channel="whatsapp",
-                variant=i + 1,
-                body_ar=t["body_ar"],
-                body_en=t["body_en"],
-                tone=t["tone"],
-                character_count=len(t["body_ar"]),
+                variant=index + 1,
+                body_ar=body_ar,
+                body_en=body_en,
+                tone=tone,
+                character_count=len(body_ar),
             )
-            for i, t in enumerate(templates)
+            for index, (tone, body_ar, body_en) in enumerate(templates)
         ]
 
-    def _template_email(self, req: WarmIntroRequest) -> list[OutreachDraft]:
+    @staticmethod
+    def _template_email(req: WarmIntroRequest) -> list[OutreachDraft]:
         name = req.prospect_name
         company = req.company_name
         founder = req.founder_name
+        pain = req.pain_context or "فجوة المتابعة وتحويل الفرص"
         templates = [
             {
                 "tone": "professional",
-                "subject_line": f"تشخيص مجاني لعمليات {company} | Free Diagnostic for {company}",
+                "subject_line": f"لقطة عملية لمسار الفرص في {company}",
                 "body_ar": (
-                    f"السلام عليكم {name}،\n\n"
-                    f"اسمي {founder}، مؤسس Dealix — نظام تشغيل الإيراد للشركات السعودية B2B.\n"
-                    f"نساعد شركات {req.sector} على اكتشاف فجوات الإيراد وأتمتة عمليات المبيعات.\n\n"
-                    f"أودّ تقديم تشخيص مجاني لـ {company} (30 دقيقة) لاكتشاف أكبر 3 فرص نمو.\n\n"
-                    f"هل تناسبك هذا الأسبوع؟\n\nمع التحية،\n{founder}"
+                    f"السلام عليكم {name}،\n\nأنا {founder}، مؤسس Dealix. "
+                    f"نساعد فرق B2B على ترتيب الفرص والمتابعة فوق أدواتهم الحالية.\n\n"
+                    f"أستطيع تجهيز ملخص من صفحة واحدة لـ {company} يوضح الفجوة المحتملة، الإجراء التالي، والدليل المطلوب قبل أي التزام.\n\n"
+                    f"هل أرسله لك؟\n\nمع التحية،\n{founder}"
                 ),
                 "body_en": (
-                    f"Dear {name},\n\n"
-                    f"My name is {founder}, founder of Dealix — the Revenue OS for Saudi B2B companies.\n"
-                    f"We help {req.sector} companies discover revenue gaps and automate sales operations.\n\n"
-                    f"I'd like to offer {company} a free diagnostic (30 minutes) to uncover the top 3 growth opportunities.\n\n"
-                    f"Does this week work for you?\n\nBest regards,\n{founder}"
+                    f"Dear {name},\n\nI am {founder}, founder of Dealix. We help B2B teams structure opportunities and follow-up over their existing tools.\n\n"
+                    f"I can prepare a one-page snapshot for {company} showing the likely gap, next action, and evidence required before any commitment.\n\n"
+                    f"May I send it?\n\nBest regards,\n{founder}"
                 ),
             },
             {
-                "tone": "story",
-                "subject_line": "كيف أتمتنا 80% من عمليات المبيعات في 7 أيام | How we automated 80% of sales ops in 7 days",
+                "tone": "evidence_first",
+                "subject_line": f"Revenue Proof Sprint بقيمة 499 ريال لـ {company}",
                 "body_ar": (
-                    f"مرحباً {name}،\n\n"
-                    f"منذ 3 أشهر، واجهنا نفس التحديات في Dealix: فريق صغير، فرص كثيرة، ووقت محدود.\n"
-                    f"قررنا بناء نظامنا الخاص — والنتيجة: 80% من المهام المتكررة أصبحت تلقائية.\n\n"
-                    f"اليوم، هذا النظام متاح لشركات مثل {company}.\n"
-                    f"هل ترغب في رؤية كيف؟\n\n{founder}"
+                    f"مرحبًا {name}،\n\nDealix تقدم Revenue Proof Sprint بقيمة 499 ريال لاختبار مشكلة واحدة فعلية خلال دورة قصيرة. "
+                    f"بالنسبة لـ {company}، الفرضية الأولية هي: {pain}.\n\n"
+                    "لا نعد بنتيجة قبل القياس؛ المخرج هو تقرير واضح بما حدث وما يستحق التوسع.\n\n"
+                    f"هل يناسبك ملخص النطاق؟\n\n{founder}"
                 ),
                 "body_en": (
-                    f"Hi {name},\n\n"
-                    f"3 months ago, Dealix faced the same challenges: small team, many opportunities, limited time.\n"
-                    f"We decided to build our own system — result: 80% of repetitive tasks became automated.\n\n"
-                    f"Today, this system is available for companies like {company}.\n"
-                    f"Would you like to see how?\n\n{founder}"
+                    f"Hi {name},\n\nDealix offers a 499 SAR Revenue Proof Sprint to test one real operating problem in a short cycle. "
+                    f"For {company}, the initial hypothesis is: {pain}.\n\n"
+                    "We do not promise an outcome before measurement; the deliverable is a clear report on what happened and whether expansion is justified.\n\n"
+                    f"May I send the scope summary?\n\n{founder}"
                 ),
             },
             {
                 "tone": "direct_ask",
-                "subject_line": f"طلب: 15 دقيقة لـ {company} | Request: 15 mins for {company}",
+                "subject_line": f"سؤال واحد عن المتابعة في {company}",
                 "body_ar": (
-                    f"أهلاً {name}،\n\n"
-                    f"لن أطيل — Dealix تحل مشكلة {req.pain_context or 'الإيراد'} لشركات {req.sector}.\n"
-                    f"أطلب 15 دقيقة فقط لأريك كيف.\n"
-                    f"متاح الاثنين أو الثلاثاء القادم؟\n\n{founder}"
+                    f"أهلًا {name}،\n\nسؤال واحد: هل أكبر فجوة لدى {company} الآن في سرعة الرد، انتظام المتابعة، أم تحويل العرض إلى قرار؟\n\n"
+                    "أبني توصية فقط بعد معرفة الإجابة، وبدون تغيير CRM الحالي.\n\n"
+                    f"تحياتي،\n{founder}"
                 ),
                 "body_en": (
-                    f"Hi {name},\n\n"
-                    f"I'll be brief — Dealix solves {req.pain_context or 'revenue'} for {req.sector} companies.\n"
-                    f"I'm asking for just 15 minutes to show you how.\n"
-                    f"Are you available next Monday or Tuesday?\n\n{founder}"
+                    f"Hi {name},\n\nOne question: is {company}'s biggest gap currently response speed, follow-up consistency, or converting proposals into decisions?\n\n"
+                    "I only prepare a recommendation after understanding the answer, without replacing the current CRM.\n\n"
+                    f"Regards,\n{founder}"
                 ),
             },
         ]
         return [
             OutreachDraft(
                 channel="email",
-                variant=i + 1,
-                subject_line=t["subject_line"],
-                body_ar=t["body_ar"],
-                body_en=t["body_en"],
-                tone=t["tone"],
-                character_count=len(t["body_ar"]),
+                variant=index + 1,
+                subject_line=item["subject_line"],
+                body_ar=item["body_ar"],
+                body_en=item["body_en"],
+                tone=item["tone"],
+                character_count=len(item["body_ar"]),
             )
-            for i, t in enumerate(templates)
+            for index, item in enumerate(templates)
         ]
