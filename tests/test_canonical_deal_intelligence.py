@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import date
 from pathlib import Path
 
@@ -40,7 +41,6 @@ def _deal(*events: str, source: str = "inbound", value_sar: int = 499) -> DealRe
 
 def test_valid_evidence_chain_reaches_proof_and_recognizes_revenue() -> None:
     deal = _deal("invoice_sent", "payment_received", "proof_pack_delivered")
-
     snapshot = analyze_deal(deal, TODAY)
     _, metrics = compute_portfolio([deal], TODAY)
 
@@ -60,6 +60,43 @@ def test_payment_cannot_jump_over_missing_invoice() -> None:
     assert snapshot.stage == DealStage.NEW
     assert "payment_before_invoice" in snapshot.anomalies
     assert next_action(snapshot).action_key == "repair_evidence_chain"
+
+
+def test_events_are_ordered_by_timestamp_not_input_position() -> None:
+    deal = DealRecord(
+        deal_id="unordered",
+        account_name="Unordered Client",
+        source="inbound",
+        created_at="2026-07-01",
+        last_touch_at="2026-07-10",
+        events=(
+            DealEvent("proof_pack_delivered", "2026-07-05"),
+            DealEvent("payment_received", "2026-07-04"),
+            DealEvent("invoice_sent", "2026-07-03"),
+        ),
+    )
+
+    snapshot = analyze_deal(deal, TODAY)
+
+    assert snapshot.stage == DealStage.PROOF_DELIVERED
+    assert snapshot.valid_payment is True
+    assert snapshot.anomalies == ()
+
+
+def test_late_lower_stage_event_never_downgrades_a_deal() -> None:
+    deal = DealRecord(
+        deal_id="monotonic",
+        account_name="Monotonic Client",
+        source="referral",
+        created_at="2026-07-01",
+        last_touch_at="2026-07-10",
+        events=(
+            DealEvent("invoice_sent", "2026-07-03"),
+            DealEvent("reply_received", "2026-07-04"),
+        ),
+    )
+
+    assert analyze_deal(deal, TODAY).stage == DealStage.PROPOSED
 
 
 def test_cross_company_or_external_evidence_is_not_combined() -> None:
@@ -83,10 +120,7 @@ def test_cross_company_or_external_evidence_is_not_combined() -> None:
 
 
 def test_high_value_research_target_stays_non_contactable() -> None:
-    snapshot = analyze_deal(
-        _deal(source="public_web_research", value_sar=100_000),
-        TODAY,
-    )
+    snapshot = analyze_deal(_deal(source="public_web_research", value_sar=100_000), TODAY)
     action = next_action(snapshot)
 
     assert snapshot.stage == DealStage.RESEARCH_HOLD
@@ -98,13 +132,11 @@ def test_high_value_research_target_stays_non_contactable() -> None:
 
 
 def test_contact_event_without_permission_is_an_anomaly_not_progress() -> None:
-    snapshot = analyze_deal(
-        _deal("message_sent_manual", source="manual_research"),
-        TODAY,
-    )
+    snapshot = analyze_deal(_deal("message_sent_manual", source="manual_research"), TODAY)
 
     assert snapshot.stage == DealStage.RESEARCH_HOLD
-    assert "contact_without_permission" in snapshot.anomalies
+    assert "commercial_event_without_permission:message_sent_manual" in snapshot.anomalies
+    assert next_action(snapshot).action_key == "repair_evidence_chain"
 
 
 def test_weighted_forecast_excludes_paid_and_lost_deals() -> None:
@@ -181,4 +213,29 @@ def test_atomic_store_round_trip_and_malformed_state_fails_loudly(tmp_path: Path
 
     path.write_text("{not-json", encoding="utf-8")
     with pytest.raises(DealBookError, match="valid deal book"):
+        load_book(path)
+
+
+def test_store_rejects_non_object_events_and_boolean_value(tmp_path: Path) -> None:
+    path = tmp_path / "bad-book.json"
+    path.write_text(
+        json.dumps(
+            {
+                "schema": "dealix.deal_intelligence.book.v1",
+                "deals": [
+                    {
+                        "deal_id": "bad",
+                        "account_name": "Bad Client",
+                        "source": "inbound",
+                        "value_sar": True,
+                        "events": ["not-an-object"],
+                    }
+                ],
+                "history": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(DealBookError, match="invalid deal record"):
         load_book(path)
