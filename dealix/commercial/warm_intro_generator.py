@@ -74,13 +74,37 @@ def _contains_forbidden_claim(text: str) -> bool:
     return any(marker.casefold() in normalized for marker in _FORBIDDEN_CLAIM_MARKERS)
 
 
-def _drafts_are_safe(drafts: list[OutreachDraft]) -> bool:
-    return all(
-        not _contains_forbidden_claim(
-            "\n".join((draft.subject_line, draft.body_ar, draft.body_en))
-        )
-        for draft in drafts
+def _request_context_values(req: WarmIntroRequest) -> list[str]:
+    values = (
+        req.prospect_name,
+        req.company_name,
+        req.sector,
+        req.pain_context,
+        req.previous_interaction,
+        req.founder_name,
     )
+    return sorted({value.strip() for value in values if value.strip()}, key=len, reverse=True)
+
+
+def _request_context_contains_forbidden_marker(req: WarmIntroRequest) -> bool:
+    return any(_contains_forbidden_claim(value) for value in _request_context_values(req))
+
+
+def _without_user_context(text: str, req: WarmIntroRequest) -> str:
+    cleaned = text
+    for value in _request_context_values(req):
+        cleaned = cleaned.replace(value, "[USER_CONTEXT]")
+    return cleaned
+
+
+def _drafts_are_safe(drafts: list[OutreachDraft], req: WarmIntroRequest | None = None) -> bool:
+    for draft in drafts:
+        text = "\n".join((draft.subject_line, draft.body_ar, draft.body_en))
+        if req is not None:
+            text = _without_user_context(text, req)
+        if _contains_forbidden_claim(text):
+            return False
+    return True
 
 
 class WarmIntroGenerator:
@@ -95,14 +119,19 @@ class WarmIntroGenerator:
             f"{req.company_name}{req.prospect_name}{datetime.now(UTC).date()}".encode()
         ).hexdigest()[:16]
 
-        whatsapp = self._llm_whatsapp(req)
-        email = self._llm_email(req)
+        context_requires_templates = _request_context_contains_forbidden_marker(req)
+        whatsapp: list[OutreachDraft] = []
+        email: list[OutreachDraft] = []
+        if not context_requires_templates:
+            whatsapp = self._llm_whatsapp(req)
+            email = self._llm_email(req)
+
         llm_used = bool(whatsapp and email)
         if not llm_used:
             whatsapp = self._template_whatsapp(req)
             email = self._template_email(req)
 
-        assert _drafts_are_safe(whatsapp + email), "Unsupported commercial claim detected"
+        assert _drafts_are_safe(whatsapp + email, req), "Unsupported commercial claim detected"
         return OutreachDraftBundle(
             bundle_id=bundle_id,
             prospect_name=req.prospect_name,
@@ -161,7 +190,7 @@ class WarmIntroGenerator:
                 )
                 for index, item in enumerate(data[:5])
             ]
-            return drafts if _drafts_are_safe(drafts) else []
+            return drafts if _drafts_are_safe(drafts, req) else []
         except Exception as exc:
             log.warning("warm_intro_llm_failed error=%s", exc)
             return []
@@ -204,7 +233,7 @@ class WarmIntroGenerator:
                 )
                 for index, item in enumerate(data[:3])
             ]
-            return drafts if _drafts_are_safe(drafts) else []
+            return drafts if _drafts_are_safe(drafts, req) else []
         except Exception as exc:
             log.warning("warm_intro_email_llm_failed error=%s", exc)
             return []
