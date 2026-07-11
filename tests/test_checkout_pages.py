@@ -50,7 +50,8 @@ def test_checkout_html_has_no_live_charge_banner():
 
 def test_checkout_html_defers_vat_to_approved_invoice_path():
     html = _read("checkout.html")
-    assert "الضريبة تؤكدان في المسار المعتمد" in html
+    assert "السعر والضريبة" in html
+    assert "المسار المعتمد" in html
     assert "VAT 15% مُحتسب" not in html
     assert "الفاتورة جاهزة" not in html
 
