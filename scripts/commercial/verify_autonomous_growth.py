@@ -28,7 +28,7 @@ from dealix.strategy_execution.safety_gate import (
     assert_no_live_send_enabled,
     clamp_autonomy,
 )
-from dealix.strategy_execution.schemas import AutonomyLevel, MAX_ENABLED_AUTONOMY_LEVEL
+from dealix.strategy_execution.schemas import MAX_ENABLED_AUTONOMY_LEVEL, AutonomyLevel
 
 ENGINE_DIR = ROOT / "dealix" / "strategy_execution"
 
@@ -111,8 +111,8 @@ def main() -> int:
     failures = verify()
     if failures:
         print("AUTONOMOUS_GROWTH_VERIFY=FAIL")
-        for f in failures:
-            print(f"FAIL: {f}")
+        for failure in failures:
+            print(f"FAIL: {failure}")
         return 1
     print("AUTONOMOUS_GROWTH_VERIFY=PASS")
     return 0
