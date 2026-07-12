@@ -18,10 +18,7 @@ from dealix.strategy_execution import (
 )
 from dealix.strategy_execution.money_now import EvidenceEvent
 from dealix.strategy_execution.safety_gate import clamp_autonomy
-from dealix.strategy_execution.schemas import (
-    AutonomyLevel,
-    MAX_ENABLED_AUTONOMY_LEVEL,
-)
+from dealix.strategy_execution.schemas import MAX_ENABLED_AUTONOMY_LEVEL, AutonomyLevel
 
 
 def test_all_required_strategies_present() -> None:
