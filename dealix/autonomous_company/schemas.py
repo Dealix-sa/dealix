@@ -73,7 +73,7 @@ class DealEvent:
         return {"event": self.event, "at": self.at, "detail": self.detail}
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "DealEvent":
+    def from_dict(cls, d: dict[str, Any]) -> DealEvent:
         return cls(event=str(d.get("event", "")), at=str(d.get("at", "")), detail=str(d.get("detail", "")))
 
 
@@ -116,7 +116,7 @@ class Deal:
         }
 
     @classmethod
-    def from_dict(cls, d: dict[str, Any]) -> "Deal":
+    def from_dict(cls, d: dict[str, Any]) -> Deal:
         try:
             stage = DealStage(str(d.get("stage", "new")))
         except ValueError:
