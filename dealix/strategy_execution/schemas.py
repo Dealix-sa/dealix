@@ -82,7 +82,7 @@ class Strategy:
     source_file: str = ""
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any], source_file: str = "") -> "Strategy":
+    def from_dict(cls, data: dict[str, Any], source_file: str = "") -> Strategy:
         return cls(
             name=str(data.get("name", "")).strip(),
             goal=str(data.get("goal", "")).strip(),
