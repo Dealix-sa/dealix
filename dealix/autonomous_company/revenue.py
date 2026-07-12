@@ -6,7 +6,7 @@ from __future__ import annotations
 from datetime import date
 
 from . import pipeline
-from .schemas import STAGE_PROBABILITY, Deal, DealStage, KPIs, REVENUE_EVENT
+from .schemas import Deal, DealStage, KPIs, REVENUE_EVENT, STAGE_PROBABILITY
 
 
 def recognized_revenue(deals: list[Deal]) -> int:
