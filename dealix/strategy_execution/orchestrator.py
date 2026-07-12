@@ -16,9 +16,16 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from . import action_queue, execution_planner, growth_engine, proof_logger
-from . import learning_loop, safety_gate, strategy_registry
-from .schemas import Action, ApprovalItem, MAX_ENABLED_AUTONOMY_LEVEL, ProofEvent
+from . import (
+    action_queue,
+    execution_planner,
+    growth_engine,
+    learning_loop,
+    proof_logger,
+    safety_gate,
+    strategy_registry,
+)
+from .schemas import MAX_ENABLED_AUTONOMY_LEVEL, Action, ApprovalItem, ProofEvent
 
 ROOT = Path(__file__).resolve().parents[2]
 REPORTS_DIR = ROOT / "reports" / "autonomous_growth"
