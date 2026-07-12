@@ -14,7 +14,7 @@ Hard safety line (inherited from the Strategy Execution OS):
 
 from __future__ import annotations
 
+from .company_os import CycleResult, run_cycle
 from .schemas import Deal, DealStage, KPIs
-from .company_os import run_cycle, CycleResult
 
 __all__ = ["Deal", "DealStage", "KPIs", "run_cycle", "CycleResult"]
