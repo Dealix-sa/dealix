@@ -35,7 +35,7 @@ def test_permitted_account_maps_to_pending_canonical_partner_action() -> None:
 
     request = to_approval_request(record, envelope)
 
-    assert request.status is QueueStatus.PENDING
+    assert request.status == QueueStatus.PENDING
     assert request.action_mode == "approval_required"
     assert request.action_type == "partner_intro"
     assert request.object_type == "commercial_account"
@@ -56,7 +56,7 @@ def test_blocked_research_account_is_terminal_in_canonical_queue() -> None:
 
     request = to_approval_request(record, envelope)
 
-    assert request.status is QueueStatus.BLOCKED
+    assert request.status == QueueStatus.BLOCKED
     assert request.action_mode == "blocked"
     assert request.action_type == "draft_email"
 
