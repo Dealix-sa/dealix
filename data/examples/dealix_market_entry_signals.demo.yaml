@@ -1,0 +1,113 @@
+schema_version: "1.0"
+as_of: "2026-07-15T09:30:00Z"
+mode: demo_fail_closed
+
+# This is intentionally incomplete. Replace it with a gitignored founder
+# snapshot whose pass/fail values each have a timestamp and evidence reference.
+signals:
+  founder_offer_approved:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+  pilot_delivery_dry_run:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+  approval_queue_dry_run:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+  external_execution_default_off:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+  pdpl_intake_reviewed:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+  production_health:
+    status: fail
+    observed_at: "2026-07-15T08:00:00Z"
+    evidence_ref: "https://github.com/Dealix-sa/dealix/issues/914"
+  ci_required_checks_green:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+  production_secrets_rotated:
+    status: fail
+    observed_at: "2026-07-15T08:00:00Z"
+    evidence_ref: "https://github.com/Dealix-sa/dealix/issues/914"
+  payment_path_approved:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+  pilot_contract_and_dpa_approved:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+  incident_and_refund_runbook_verified:
+    status: unknown
+    observed_at: ""
+    evidence_ref: ""
+
+metrics:
+  warm_permissioned_accounts:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  paid_pilots_completed:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  signed_proof_packs:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  consented_case_studies:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  active_retainer_customers:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  gross_margin_samples:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  pilot_gross_margin_rate:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  delivery_capacity_per_month:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  on_time_delivery_samples:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  on_time_delivery_rate:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  median_time_to_first_value_days:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  retainer_renewal_samples:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  retainer_renewal_rate:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  cac_samples:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
+  cac_payback_months:
+    value: 0
+    observed_at: ""
+    evidence_ref: ""
