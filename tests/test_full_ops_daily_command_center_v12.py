@@ -1,14 +1,29 @@
 """V12 Phase 3 — Daily Command Center umbrella endpoint tests."""
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 
+from api.security.auth_deps import get_current_user
 from auto_client_acquisition.full_ops import (
     WorkItem,
     get_default_queue,
 )
 from auto_client_acquisition.full_ops.work_queue import _reset
+
+
+@pytest.fixture(autouse=True)
+def _authenticated_full_ops_user():
+    from api.main import app
+
+    async def _current_user():
+        return SimpleNamespace(tenant_id="dealix")
+
+    app.dependency_overrides[get_current_user] = _current_user
+    yield
+    app.dependency_overrides.pop(get_current_user, None)
 
 
 @pytest.mark.asyncio
