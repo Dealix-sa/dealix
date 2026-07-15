@@ -476,6 +476,17 @@ def create_app() -> FastAPI:
             "outbound_mode": _os.getenv("OUTBOUND_MODE", "draft_only"),
         }
 
+    # ── Comprehensive AI Layers stack (embeddings, RAG, NER, PII,
+    # forecasting, anomaly, safety, moderation, KG, memory, feedback…).
+    # Self-prefixes /api/v1/ai-layers. Read-only + in-memory; honors
+    # Dealix doctrine (no live send / no live charge / no secrets out).
+    try:
+        from api.routers import ai_layers as ai_layers_router
+
+        app.include_router(ai_layers_router.router)
+    except Exception as exc:  # noqa: BLE001
+        get_logger(__name__).warning("ai_layers_router_skipped", error=repr(exc))
+
     @app.get("/", tags=["root"])
     async def root() -> dict[str, object]:
         return {
@@ -497,6 +508,9 @@ def create_app() -> FastAPI:
             "revenue_intelligence_import": "/api/v1/revenue-intelligence/{eid}/import",
             "proof_pack_generate": "/api/v1/proof-pack/{eid}/generate",
             "diagnostic_intent": "/api/v1/diagnostic/intent",
+            "ai_layers_index": "/api/v1/ai-layers/",
+            "ai_layers_status": "/api/v1/ai-layers/status",
+            "ai_layers_rag_ask": "/api/v1/ai-layers/rag/ask",
         }
 
     return app
