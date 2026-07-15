@@ -1,0 +1,166 @@
+/* ============================================================
+ * Dealix Brand — Design Tokens (CSS Custom Properties)
+ * ------------------------------------------------------------
+ * Source of truth (machine):  design-systems/dealix-brand/tokens.json
+ * Source of truth (human):    docs/brand/DESIGN_TOKENS.md
+ *
+ * Drop this file into any page that renders Dealix brand surfaces:
+ *
+ *   <link rel="stylesheet" href="/design-systems/dealix-brand/tokens.css">
+ *
+ * Default theme is DARK (the brand's canonical surface). Pages that need a
+ * light context can set `data-theme="light"` on <html> or any container.
+ *
+ * Arabic line-height is auto-bumped by ×1.10 for diacritic safety via the
+ * [lang="ar"] selector at the bottom of this file.
+ * ============================================================ */
+
+:root,
+[data-theme="dark"] {
+  /* --- Brand anchors ------------------------------------------- */
+  --color-brand-navy:    #0B1220;
+  --color-brand-teal:    #00D1A1;
+  --color-brand-silver:  #B2BBC6;
+  --color-brand-slate:   #0F1726;
+  --color-brand-white:   #FFFFFF;
+  --color-brand-teal-ink: #007A5C;
+
+  /* --- Functional extensions ----------------------------------- */
+  --color-text-muted-light: #6B7480;
+  --color-surface-tint-navy: #E8EBF1;
+
+  /* --- State --------------------------------------------------- */
+  --color-state-success: #10B981;
+  --color-state-warn:    #F59E0B;
+  --color-state-danger:  #EF4444;
+  --color-state-info:    #60A5FA;
+
+  /* --- Sanctioned gradient ------------------------------------- */
+  --gradient-brand-teal: linear-gradient(135deg, #00D1A1 0%, #00A37C 100%);
+
+  /* --- Semantic (dark) ----------------------------------------- */
+  --bg:           var(--color-brand-navy);
+  --bg-alt:       var(--color-brand-slate);
+  --text:         var(--color-brand-white);
+  --text-muted:   var(--color-brand-silver);
+  --accent:       var(--color-brand-teal);
+  --on-accent:    var(--color-brand-navy);
+  --divider:      rgba(178, 187, 198, 0.18);
+
+  /* --- Font families ------------------------------------------- */
+  --font-display: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-ui:      "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-ar:      "IBM Plex Sans Arabic", system-ui, "Geeza Pro", "Tahoma", sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", monospace;
+
+  /* --- Type scale (size / line-height / weight) ---------------- */
+  --type-display-xl-size: 4rem;     --type-display-xl-lh: 1.05; --type-display-xl-weight: 700;
+  --type-display-l-size:  3rem;     --type-display-l-lh:  1.10; --type-display-l-weight:  700;
+  --type-display-m-size:  2.25rem;  --type-display-m-lh:  1.15; --type-display-m-weight:  600;
+  --type-heading-l-size:  1.75rem;  --type-heading-l-lh:  1.25; --type-heading-l-weight:  600;
+  --type-heading-m-size:  1.375rem; --type-heading-m-lh:  1.30; --type-heading-m-weight:  600;
+  --type-heading-s-size:  1.125rem; --type-heading-s-lh:  1.35; --type-heading-s-weight:  600;
+  --type-body-l-size:     1.125rem; --type-body-l-lh:     1.55; --type-body-l-weight:     400;
+  --type-body-m-size:     1rem;     --type-body-m-lh:     1.55; --type-body-m-weight:     400;
+  --type-body-s-size:     0.875rem; --type-body-s-lh:     1.50; --type-body-s-weight:     400;
+  --type-mono-m-size:     0.875rem; --type-mono-m-lh:     1.50; --type-mono-m-weight:     500;
+
+  /* --- Spacing (4px base) -------------------------------------- */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* --- Radius -------------------------------------------------- */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-full: 9999px;
+
+  /* --- Shadow -------------------------------------------------- */
+  --shadow-sm:        0 1px 2px rgba(0, 0, 0, 0.20);
+  --shadow-md:        0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-lg:        0 16px 40px rgba(0, 0, 0, 0.35);
+  --shadow-glow-teal: 0 0 24px rgba(0, 209, 161, 0.25);
+
+  /* --- Motion -------------------------------------------------- */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --easing-entrance: cubic-bezier(0.0, 0, 0.2, 1);
+  --easing-exit:     cubic-bezier(0.4, 0, 1, 1);
+
+  /* --- Breakpoints (for JS / container-query reference) -------- */
+  --bp-sm:  560px;
+  --bp-md:  720px;
+  --bp-lg:  1024px;
+  --bp-xl:  1280px;
+  --bp-2xl: 1536px;
+
+  /* --- Z-index ------------------------------------------------- */
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 20;
+  --z-overlay:  30;
+  --z-modal:    40;
+  --z-toast:    50;
+  --z-tooltip:  60;
+}
+
+/* ============================================================
+ * Light theme — opt-in via data-theme="light"
+ * ============================================================ */
+
+[data-theme="light"] {
+  --bg:         var(--color-brand-white);
+  --bg-alt:     var(--color-surface-tint-navy);
+  --text:       var(--color-brand-navy);
+  --text-muted: var(--color-text-muted-light);
+  --accent:     var(--color-brand-teal-ink);
+  --on-accent:  var(--color-brand-white);
+  --divider:    rgba(11, 18, 32, 0.10);
+
+  /* Lighten shadows on light backgrounds — pure black at 0.2 looks
+     muddy on white. Use cooler navy shadow tint. */
+  --shadow-sm: 0 1px 2px rgba(11, 18, 32, 0.08);
+  --shadow-md: 0 4px 12px rgba(11, 18, 32, 0.10);
+  --shadow-lg: 0 16px 40px rgba(11, 18, 32, 0.14);
+}
+
+/* ============================================================
+ * Arabic — diacritic-safe line-height bump
+ * ============================================================ */
+
+[lang="ar"],
+[lang="ar"] * {
+  font-family: var(--font-ar);
+}
+
+[lang="ar"] {
+  /* +10% line-height for any body text under an Arabic root */
+  --type-body-l-lh: 1.705;
+  --type-body-m-lh: 1.705;
+  --type-body-s-lh: 1.650;
+}
+
+/* ============================================================
+ * Reduced motion — respect user OS preference
+ * ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-theme="dark"],
+  [data-theme="light"] {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+}
