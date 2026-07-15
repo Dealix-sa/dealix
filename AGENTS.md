@@ -75,6 +75,14 @@ APP_ENV=development uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
 - [docs/SLO.md](docs/SLO.md) — أهداف التوفر والزمن
 - [docs/ON_CALL.md](docs/ON_CALL.md) — تغطية الطوارئ
 
+### Level Max System Spec (sovereign control plane)
+
+- **Spec (AR — canonical):** [docs/level_max/DEALIX_LEVEL_MAX_SYSTEM_SPEC_AR.md](docs/level_max/DEALIX_LEVEL_MAX_SYSTEM_SPEC_AR.md)
+- **Spec (EN mirror):** [docs/level_max/DEALIX_LEVEL_MAX_SYSTEM_SPEC_EN.md](docs/level_max/DEALIX_LEVEL_MAX_SYSTEM_SPEC_EN.md)
+- **Python kernel:** [`dealix/control_plane/`](dealix/control_plane/) — implements §§51–80 (sovereignty, identity, tenants, data classification, context feed, memory, policy, approvals, audit/evidence, agent + tool runtimes, MCP gateway, security modes, incidents, money/offer/asset/graph/scale-kill, customer/partner/venture loops, API/marketplace readiness, health, commercial packaging, ControlPlane facade).
+- **HTTP surface:** `GET /api/v1/control-plane/{snapshot,sovereignty,security-mode,commercial-packaging,health-flags,scale-kill-board,money-snapshot,intelligence-graph/summary,public-api-readiness,marketplace-readiness}` (read-only — kernel mutates only in-process until S4 launch gate is approved).
+- **Tests:** `python -m pytest tests/control_plane/ --no-cov` (41 tests covering sovereignty, identity, data classification, policy/approval/audit, security modes, incidents, agent/tool runtime, MCP gateway, money/offer/asset/loops/readiness, ControlPlane facade end-to-end).
+
 ### Business NOW (all pillars — today)
 
 - **Doc:** [docs/business/DEALIX_BUSINESS_NOW_AR.md](docs/business/DEALIX_BUSINESS_NOW_AR.md)
