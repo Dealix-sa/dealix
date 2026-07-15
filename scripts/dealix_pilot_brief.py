@@ -73,8 +73,8 @@ def build_brief(*, company: str, sector: str, amount_sar: float,
         },
         "kpi_commitment": {
             "type": "commitment_not_guarantee",
-            "rule_ar": "لو ما تحقّق +٢٠٪ على المؤشّر المتّفق عليه، أشتغل مجّاناً حتى يتحقّق",
-            "rule_en": "If +20% lift on agreed KPI not achieved, founder works free until met",
+            "rule_ar": "نقيس المؤشر المتفق عليه من baseline العميل؛ أي تصحيح أو استرداد يعتمد في أمر العمل ولا توجد نتيجة مضمونة",
+            "rule_en": "Measure the agreed KPI from the customer baseline; remedies are defined in the order form and no outcome is guaranteed",
         },
         "refund_policy": {
             "window_days": 14,
