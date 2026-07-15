@@ -41,6 +41,7 @@ dependencies = [
     "typer>=0.13.0",
     "rich>=13.9.0",
     "click>=8.1.0",
+    "defusedxml>=0.7.1,<1",
     "python-dotenv>=1.0.1",
     "python-multipart>=0.0.17",
     "email-validator>=2.2.0",
