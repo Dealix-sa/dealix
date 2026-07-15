@@ -21,7 +21,7 @@ def test_complete_with_router_calls_router_run_for_single_provider() -> None:
     )
 
     async def exercise() -> tuple[str, str]:
-        with patch("core.llm.inference.get_router", return_value=router):
+        with patch("core.llm.router.get_router", return_value=router):
             return await complete_with_router("system", "user")
 
     content, model = asyncio.run(exercise())
@@ -40,7 +40,7 @@ def test_complete_with_router_blocks_without_provider() -> None:
     router.available_providers.return_value = []
 
     async def exercise() -> None:
-        with patch("core.llm.inference.get_router", return_value=router):
+        with patch("core.llm.router.get_router", return_value=router):
             await complete_with_router("system", "user")
 
     with pytest.raises(NoLLMProviderConfigured, match="no_llm_provider_configured"):

@@ -11,8 +11,8 @@ from __future__ import annotations
 import asyncio
 
 from core.config.models import Provider, Task
+from core.llm import router as llm_router
 from core.llm.base import Message
-from core.llm.router import get_router
 
 
 class NoLLMProviderConfigured(RuntimeError):
@@ -35,12 +35,20 @@ async def complete_with_router(
     usable even when OpenAI is absent from the task's default fallback chain.
     """
 
-    router = get_router()
-    providers = router.available_providers()
-    if not providers:
-        raise NoLLMProviderConfigured("no_llm_provider_configured")
-
-    preferred = Provider.GLM if Provider.GLM in providers else providers[0]
+    # Resolve the factory at call time.  Besides avoiding a stale singleton
+    # reference, this preserves the long-standing patch seam used by command
+    # bus contract tests and by deployments that replace the router factory.
+    router = llm_router.get_router()
+    provider_probe = getattr(router, "available_providers", None)
+    if callable(provider_probe):
+        providers = provider_probe()
+        if not providers:
+            raise NoLLMProviderConfigured("no_llm_provider_configured")
+        preferred = Provider.GLM if Provider.GLM in providers else providers[0]
+    else:
+        # Backward-compatible seam for legacy/custom routers that implement
+        # only ``run``. The production ModelRouter always exposes the probe.
+        preferred = None
     response = await asyncio.wait_for(
         router.run(
             task=task,
