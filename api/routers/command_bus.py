@@ -17,7 +17,6 @@ Hard rules:
 
 from __future__ import annotations
 
-import asyncio
 import logging
 import re
 import time
@@ -74,27 +73,17 @@ def _check_cold_intent(text: str) -> str | None:
 
 async def _call_llm(system_prompt: str, user_input: str) -> tuple[str, str]:
     try:
-        from core.config.models import Task
-        from core.llm.base import Message
-        from core.llm.router import get_router
+        from core.llm.inference import complete_with_router
     except ImportError as exc:
         raise RuntimeError(f"LLM router unavailable: {exc}") from exc
 
-    router_obj = get_router()
-    messages = [
-        Message(role="user", content=user_input),
-    ]
-    response = await asyncio.wait_for(
-        router_obj.run(
-            Task.ARABIC_TASKS,
-            messages=messages,
-            system=system_prompt,
-            max_tokens=MAX_OUTPUT_TOKENS,
-            temperature=0.4,
-        ),
-        timeout=LLM_TIMEOUT_SECONDS,
+    return await complete_with_router(
+        system_prompt,
+        user_input,
+        max_tokens=MAX_OUTPUT_TOKENS,
+        temperature=0.4,
+        timeout_seconds=LLM_TIMEOUT_SECONDS,
     )
-    return response.content, getattr(response, "model", "unknown")
 
 
 def _parse_llm_json(text: str) -> dict[str, Any]:

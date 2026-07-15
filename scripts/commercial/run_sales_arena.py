@@ -42,6 +42,14 @@ def _markdown(payload: dict) -> str:
         "",
     ]
     for index, turn in enumerate(payload["turns"], start=1):
+        structured = turn["structured_output"]
+        facts = structured.get("facts") or []
+        inferences = structured.get("inferences") or []
+        unknowns = structured.get("unknowns") or []
+        negotiation = structured.get("negotiation") or {}
+        concessions = negotiation.get("concessions") or []
+        next_action = structured.get("next_action") or {}
+        escalations = structured.get("escalations") or []
         lines.extend(
             [
                 f"## {index}. {turn['challenge_id']}",
@@ -55,8 +63,37 @@ def _markdown(payload: dict) -> str:
                 "",
                 f"**النموذج:** {turn['provider']} / {turn['model']}",
                 "",
+                f"**الإجراءات الخارجية:** {turn['external_actions_performed']}",
+                "",
             ]
         )
+        lines.append("**الحقائق ومصادرها:**")
+        lines.append("")
+        for fact in facts:
+            if isinstance(fact, dict):
+                lines.append(
+                    f"- [{fact.get('source_ref', '')}] {fact.get('claim', '')}"
+                )
+        lines.extend(["", "**الاستنتاجات:**", ""])
+        lines.extend(f"- {item}" for item in inferences)
+        lines.extend(["", "**المعلومات المجهولة:**", ""])
+        lines.extend(f"- {item}" for item in unknowns)
+        lines.extend(["", "**استراتيجية التفاوض وgive/get:**", ""])
+        lines.append(f"- BATNA: {negotiation.get('batna', '')}")
+        for concession in concessions:
+            if isinstance(concession, dict):
+                lines.append(
+                    f"- give: {concession.get('give', '')} | "
+                    f"get: {concession.get('get', '')} | "
+                    f"approval: {concession.get('approval_required', False)}"
+                )
+        lines.extend(["", "**ما يحتاج موافقة الموظف:**", ""])
+        lines.append(
+            f"- next_action.approval_required: "
+            f"{next_action.get('approval_required', False)}"
+        )
+        lines.extend(f"- {item}" for item in escalations)
+        lines.append("")
         if turn["critical_failures"]:
             lines.append(
                 "**إخفاقات حرجة:** " + ", ".join(turn["critical_failures"])
