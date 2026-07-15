@@ -1,0 +1,21 @@
+Metric,Arabic Name,Owner,Frequency,Baseline,Day 30 Target,Day 60 Target,Day 90 Target,Evidence Source,Decision Rule
+Production health,صحة الإنتاج,Platform,Daily,Missing,100% launch-critical checks,Maintain,Maintain,Smoke run URL,Pause outreach on P0 failure
+Qualified discoveries,اجتماعات اكتشاف مؤهلة,Founder,Weekly,0,3,6,8,CRM/meeting notes,Change channel if no weekly movement
+Paid pilots,برامج تجريبية مدفوعة,Founder,Weekly,0,1,2,3,Payment+contract,Do not count free usage
+Paid pilot rate,نسبة التحويل إلى Pilot,Founder,Weekly,Missing,Measure,Measure,>=30% hypothesis,Qualified opportunities,Revisit offer after 5 qualified losses
+Activation time,زمن التفعيل,Implementation,Per pilot,Missing,<=5 business days,<=4,<=3,Onboarding timestamps,Fix onboarding before adding customers
+Time to first evidence,زمن أول دليل,Implementation,Per pilot,Missing,<=10 days,<=8,<=7,Proof ledger,Rescope if evidence is delayed
+Weekly active decision makers,نشاط أصحاب القرار,Customer Success,Weekly,Missing,1 per pilot,>=80%,>=80%,Command review attendance,Escalate low executive adoption
+Approval turnaround,زمن الموافقات,Customer Owner,Weekly,Missing,Measure,<=2 business days,<=1 business day,Approval ledger,Clarify owner/SLA
+Draft acceptance rate,قبول المسودات,Product,Weekly,Missing,Measure,>=50% hypothesis,>=60% hypothesis,Approved/rejected drafts,Improve context before volume
+Data quality pass rate,جودة البيانات,Data,Weekly,Missing,>=80%,>=90%,>=95%,Validation report,Do not automate on poor data
+Manual hours per pilot,الساعات اليدوية,Implementation,Weekly,Missing,Measure,-15% vs first,-25% vs first,Time log,Productize repeated tasks
+Provider cost per pilot,تكلفة الموفرين,Finance,Weekly,Missing,Measure,Within budget,Within budget,Provider invoices,Route/limit models if margin erodes
+Pilot contribution margin,هامش مساهمة Pilot,Finance,Per pilot,Missing,Measure,Positive,>=50% hypothesis,Pilot P&L,Raise price or reduce scope
+Pilot to recurring,تحويل Pilot لاشتراك,Founder,Monthly,0,Not due,1,2,Contract+invoice,No expansion without verified value
+90-day logo retention,الاحتفاظ بالعملاء,Founder,Monthly,Not due,Not due,Not due,Measure,Subscription records,Diagnose churn before acquisition spend
+Verified value events,أحداث القيمة المثبتة,Customer Success,Weekly,0,>=3 per pilot,>=5 per pilot,>=8 per pilot,Proof ledger,Do not publish unverified claims
+Referenceable customers,عملاء قابلون كمرجع,Founder,Monthly,0,0,0,1,Written consent,No case study without permission
+Severe incidents,حوادث شديدة,Platform,Daily,0,0,0,0,Incident log,Pause launch
+Opt-out/complaint rate,الانسحاب والشكاوى,Compliance,Weekly,0,Measure,Within approved threshold,Within approved threshold,Suppression log,Pause affected channel on spike
+Cash runway,مدة السيولة,Founder,Monthly,Missing,Measure,>=6 months hypothesis,>=6 months hypothesis,Bank+forecast,Cut non-core spend
