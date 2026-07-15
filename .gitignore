@@ -424,3 +424,13 @@ reports/server/public_surfaces.json
 
 # Generated outreach batch files (CSV leads)
 data/outreach/ready_batch_*.csv
+
+# Company directory targeting artifacts stay local. The source terms for the
+# provided directory are unverified and this repository is public. Commit the
+# importer, schemas, tests, and runbooks — never the derived company dataset.
+outputs/company_targeting/
+reports/company_targeting/
+reports/company_launch/
+reports/revenue/*/daily_ceo_report.json
+reports/revenue/*/daily_ceo_report.md
+reports/revenue/*/score_summary.json
