@@ -9,13 +9,13 @@
   "use strict";
 
   var DATA_URL = "assets/data/service-readiness.json";
-  // Track B1: live-first fetch. Falls back to static JSON if API unreachable.
+  // Track B1: API-first fetch. Falls back to static JSON if API unreachable.
   // Source: api/routers/self_growth.py::get_service_activation_payload
   var LIVE_API_URL = (window.DEALIX_API_BASE || "https://api.dealix.me") +
                      "/api/v1/self-growth/service-activation";
 
   var STATUS_LABELS = {
-    live:    { ar: "حيّ",         en: "Live"    },
+    live:    { ar: "جاهز للكود",  en: "Code-ready" },
     pilot:   { ar: "تجربة شريك",  en: "Pilot"   },
     partial: { ar: "قيد الاستكمال", en: "Partial" },
     target:  { ar: "في خارطة الطريق", en: "Target"  },
@@ -26,7 +26,7 @@
   var STATUS_ORDER = ["live", "pilot", "partial", "target", "blocked", "backlog"];
 
   var STATUS_CTA = {
-    live:    { label_ar: "جرّب الآن",                    label_en: "Try it now",         href: "/#pilot" },
+    live:    { label_ar: "اطلب بايلوت",                  label_en: "Request a pilot",    href: "/#pilot" },
     pilot:   { label_ar: "اختبر مع مؤسس Dealix",          label_en: "Pilot with the founder", href: "/#pilot" },
     partial: { label_ar: "شاهد خطة التفعيل",              label_en: "See the activation plan", href: null },
     target:  { label_ar: "في خارطة الطريق",                label_en: "On the roadmap",      href: null },
@@ -301,7 +301,7 @@
     if (!container) return;
     var c = payload.counts || {};
     var rows = [
-      { label_ar: "حيّ",            label_en: "Live",    value: c.live    || 0, mod: "live" },
+      { label_ar: "جاهز للكود",     label_en: "Code-ready", value: c.live || 0, mod: "live" },
       { label_ar: "تجربة شريك",      label_en: "Pilot",   value: c.pilot   || 0, mod: "pilot" },
       { label_ar: "قيد الاستكمال",   label_en: "Partial", value: c.partial || 0, mod: "partial" },
       { label_ar: "في خارطة الطريق", label_en: "Target",  value: c.target  || 0, mod: "target" },
