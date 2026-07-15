@@ -15,7 +15,6 @@ from core.config.models import Task
 from core.llm.base import Message
 from dealix.company_os.capability_evaluation import evaluate_employee_output
 
-
 ARENA_VERSION = "sales_arena_v1"
 
 

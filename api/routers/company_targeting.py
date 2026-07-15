@@ -17,13 +17,13 @@ from db.models_company_targeting import (
     CompanyDirectoryEntryRecord,
 )
 from db.session import async_session_factory
-from dealix.company_os.capability_evaluation import (
-    benchmark_scenarios,
-    evaluate_employee_output,
-)
 from dealix.company_os.campaign_planner import (
     ContactPermission,
     build_campaign_plan,
+)
+from dealix.company_os.capability_evaluation import (
+    benchmark_scenarios,
+    evaluate_employee_output,
 )
 from dealix.company_os.company_directory import DirectoryCandidate
 from dealix.company_os.negotiation_engine import (
@@ -358,7 +358,7 @@ async def preview_campaign(
     if not plan.items:
         raise HTTPException(404, "no_candidates_for_campaign_preview")
     plan_record_id = "ccp_" + hashlib.sha256(
-        f"{tenant_id}|{plan.id}".encode("utf-8")
+        f"{tenant_id}|{plan.id}".encode()
     ).hexdigest()[:32]
     directory_ids = {
         candidate.id: record.id for candidate, record in zip(candidates, records)
@@ -402,7 +402,7 @@ async def preview_campaign(
             )
             for item in plan.items:
                 item_id = "cci_" + hashlib.sha256(
-                    f"{tenant_id}|{item.id}".encode("utf-8")
+                    f"{tenant_id}|{item.id}".encode()
                 ).hexdigest()[:32]
                 session.add(
                     CommercialCampaignItemRecord(

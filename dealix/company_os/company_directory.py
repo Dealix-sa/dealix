@@ -16,7 +16,9 @@ from collections.abc import Iterator
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
-from xml.etree import ElementTree as ET
+from xml.etree.ElementTree import Element
+
+from defusedxml import ElementTree
 
 from auto_client_acquisition.pipelines.normalize import (
     normalize_company_name,
@@ -98,7 +100,7 @@ def _shared_strings(archive: zipfile.ZipFile) -> list[str]:
         return []
     strings: list[str] = []
     with raw:
-        for _event, element in ET.iterparse(raw, events=("end",)):
+        for _event, element in ElementTree.iterparse(raw, events=("end",)):
             if element.tag.endswith("}si"):
                 text = "".join(
                     node.text or ""
@@ -111,8 +113,10 @@ def _shared_strings(archive: zipfile.ZipFile) -> list[str]:
 
 
 def _sheet_target(archive: zipfile.ZipFile, sheet_name: str) -> str:
-    workbook = ET.fromstring(archive.read("xl/workbook.xml"))
-    relationships = ET.fromstring(archive.read("xl/_rels/workbook.xml.rels"))
+    workbook = ElementTree.fromstring(archive.read("xl/workbook.xml"))
+    relationships = ElementTree.fromstring(
+        archive.read("xl/_rels/workbook.xml.rels")
+    )
     targets = {
         relation.attrib["Id"]: relation.attrib["Target"].lstrip("/")
         for relation in relationships.findall("pr:Relationship", _NS)
@@ -126,7 +130,7 @@ def _sheet_target(archive: zipfile.ZipFile, sheet_name: str) -> str:
     raise ValueError(f"sheet_not_found:{sheet_name}")
 
 
-def _cell_text(cell: ET.Element, shared_strings: list[str]) -> str:
+def _cell_text(cell: Element, shared_strings: list[str]) -> str:
     cell_type = cell.attrib.get("t", "")
     if cell_type == "inlineStr":
         return "".join(
@@ -153,7 +157,7 @@ def iter_xlsx_directory_rows(
         target = _sheet_target(archive, sheet_name)
         headers: list[str] = []
         with archive.open(target) as raw:
-            for _event, element in ET.iterparse(raw, events=("end",)):
+            for _event, element in ElementTree.iterparse(raw, events=("end",)):
                 if not element.tag.endswith("}row"):
                     continue
                 row_number = int(element.attrib.get("r", "0") or 0)

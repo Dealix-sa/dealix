@@ -117,7 +117,7 @@ def build_campaign_plan(
             "والأولوية وصاحب القرار. هذه مسودة داخلية وليست رسالة مرسلة."
         )
         item_id = hashlib.sha256(
-            f"{candidate.id}|{candidate.recommended_offer_id}|{channel}".encode("utf-8")
+            f"{candidate.id}|{candidate.recommended_offer_id}|{channel}".encode()
         ).hexdigest()[:20]
         items.append(
             CampaignItem(

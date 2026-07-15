@@ -74,8 +74,8 @@ def _check_cold_intent(text: str) -> str | None:
 
 async def _call_llm(system_prompt: str, user_input: str) -> tuple[str, str]:
     try:
-        from core.llm.base import Message
         from core.config.models import Task
+        from core.llm.base import Message
         from core.llm.router import get_router
     except ImportError as exc:
         raise RuntimeError(f"LLM router unavailable: {exc}") from exc
