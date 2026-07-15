@@ -1,0 +1,16 @@
+# Dealix 24/7 Growth Factory
+# Install with: crontab deploy/cron/dealix_crontab.example
+# Adjust paths as required for your server.
+PRIVATE_OPS=/opt/dealix-ops-private
+
+# Every hour: update lead queues and scoring
+0 * * * * cd /opt/dealix && /usr/bin/python3 scripts/run_growth_hourly.py --private-ops $PRIVATE_OPS >> /var/log/dealix/hourly.log 2>&1
+
+# Every 4 hours: generate approval queues and follow-ups
+15 */4 * * * cd /opt/dealix && /usr/bin/python3 scripts/run_growth_4h.py --private-ops $PRIVATE_OPS >> /var/log/dealix/4h.log 2>&1
+
+# Every day at 8am: CEO report
+0 8 * * * cd /opt/dealix && /usr/bin/python3 scripts/run_growth_daily.py --private-ops $PRIVATE_OPS >> /var/log/dealix/daily.log 2>&1
+
+# Every Friday at 16:00: weekly close
+0 16 * * 5 cd /opt/dealix && make week-close PRIVATE_OPS=$PRIVATE_OPS >> /var/log/dealix/weekly.log 2>&1
