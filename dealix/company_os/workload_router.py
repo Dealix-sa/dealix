@@ -552,7 +552,7 @@ def route_company_workload(request: CompanyWorkloadRequest) -> WorkloadRoute:
         missing_inputs.append("whatsapp_opt_in_evidence")
 
     digest = hashlib.sha256(
-        f"{request.tenant_id}|{request.customer_id or ''}|{primary}|{title}".encode("utf-8")
+        f"{request.tenant_id}|{request.customer_id or ''}|{primary}|{title}".encode()
     ).hexdigest()[:16]
     route_id = f"wi_{digest}"
     return WorkloadRoute(
