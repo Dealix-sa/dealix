@@ -5,6 +5,9 @@
 ### Dealix is a Saudi-first AI Business Operating System. Its first commercial wedge is Revenue + Proof + Command, but its long-term architecture covers the operating core of the company: growth, customers, delivery, support, finance, governance, knowledge, and executive command.
 ### PDPL-native, ZATCA-aware, approval-first. See the [Platform Source of Truth](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md).
 
+> **Brand v2 — Navy + Emerald Teal · "Intelligent Deals. Real Growth."**
+> All new visual artefacts (decks, proposals, landing, dashboard) follow [`design-systems/dealix/brand-v2/BRAND.md`](design-systems/dealix/brand-v2/BRAND.md). Historical assets may still reference v1 (Deep Green + Gold) until migrated.
+
 [![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)

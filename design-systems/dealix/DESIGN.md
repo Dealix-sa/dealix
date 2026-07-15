@@ -1,5 +1,7 @@
 # Dealix Design System — DESIGN.md
 
+> ⚠️ **Palette superseded** by [`brand-v2/BRAND.md`](./brand-v2/BRAND.md) (Navy + Emerald Teal). The RTL principles, forbidden-copy list, spacing scale, and status-chip names in this document remain canonical and are referenced from v2.
+
 > Bilingual specification for the Dealix DesignOps surface.
 > Saudi-first, Arabic-primary, English-secondary, evidence-first,
 > approval-gated, no marketing claims that the service registry cannot prove.

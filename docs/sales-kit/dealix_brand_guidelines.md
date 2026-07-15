@@ -1,8 +1,11 @@
-# Dealix — Brand Guidelines
+# Dealix — Brand Guidelines (v1 · legacy)
+
+> ⚠️ **Superseded for new work** by [`design-systems/dealix/brand-v2/BRAND.md`](../../design-systems/dealix/brand-v2/BRAND.md) (Navy + Emerald Teal, May 2026).
+> This document remains canonical for already-shipped v1 artefacts (Deep Green + Gold) until each is migrated.
 
 > دليل الهوية البصرية الكامل لـ Dealix. كل assets لازم تتبع هذا الدليل.
 
-**آخر تحديث**: أبريل 2026 | **الإصدار**: 1.0
+**آخر تحديث**: أبريل 2026 | **الإصدار**: 1.0 (legacy)
 
 ---
 
