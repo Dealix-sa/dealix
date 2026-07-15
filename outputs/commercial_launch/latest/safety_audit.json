@@ -1,0 +1,13 @@
+{
+  "audited_at": "2026-06-04T19:50:02.500684+00:00",
+  "draft_count": 400,
+  "pass": true,
+  "checks": {
+    "draft_count_ok": true,
+    "send_allowed_true_count": 0,
+    "external_send_blocked_false_count": 0,
+    "no_auto_send_false_count": 0,
+    "no_forbidden_claims": true
+  },
+  "claim_violations": []
+}
