@@ -121,6 +121,9 @@ dumps/
 # (canonical product config, no customer PII)
 !data/commercial/
 !data/commercial/*
+# Governed Commercial Intelligence seeds — policy/config only, never tenant data
+!data/commercial_intelligence/
+!data/commercial_intelligence/*
 # Outreach kit — sector pitches + intake template (NOT the real filled list)
 !data/outreach/
 !data/outreach/*

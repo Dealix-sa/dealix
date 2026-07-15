@@ -9,6 +9,7 @@ from fastapi import APIRouter
 
 from api.routers import (
     case_study_engine,
+    commercial_intelligence,
     company_targeting,
     dominance,
     email_send,
@@ -55,6 +56,7 @@ from api.routers import (
 
 _ROUTERS = [
     company_targeting.router,
+    commercial_intelligence.router,
     decision_passport_router.router,
     revenue_os_catalog_router.router,
     commercial_readiness_router.router,

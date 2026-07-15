@@ -33,9 +33,6 @@ google-generativeai>=0.8.0
 sqlalchemy[asyncio]>=2.0.35,<3
 asyncpg>=0.30.0
 psycopg[binary]>=3.2,<4
-# aiosqlite: async SQLite driver — backs the in-memory event-store test fixtures
-# (tests/test_pg_event_store.py) that CI runs from requirements.txt.
-aiosqlite>=0.20.0
 alembic>=1.13.0
 redis[hiredis]>=5.1.0
 motor>=3.6.0
@@ -104,14 +101,3 @@ numpy>=1.26.0,<3
 # Saudi market — Hijri calendar (Um Al-Qura: no wheel for py3.11; integrations/saudi_market.py falls back gracefully)
 
 # MCP Server dependency lives in mcp_server/requirements-mcp.txt (optional — not needed for API)
-
-# Path-filtered GitHub workflows (Business NOW snapshot, etc.)
-pytest>=8.3.0,<9
-pytest-asyncio>=0.24.0,<1
-pytest-cov>=6.0.0,<7
-# pytest-xdist: parallel test execution to keep the 4726-test coverage gate within CI timeout
-pytest-xdist>=3.6,<4
-# pytest-timeout: hard per-test ceiling so a single hung test (e.g. a blocked
-# outbound call under CI's network) can never stall the coverage gate until the
-# job wall-clock and gets cancelled — the root cause of the red/cancelled CI.
-pytest-timeout>=2.3,<3

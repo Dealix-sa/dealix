@@ -21,6 +21,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 # Import Base so all models are registered
 from db.models import Base  # noqa: F401 — registers all mapped classes
 import db.models_company_targeting  # noqa: F401 — targeting/evaluation tables
+import db.models_commercial_intelligence  # noqa: F401 — commercial intelligence graph
 
 # ── Alembic Config ─────────────────────────────────────────────────
 config = context.config

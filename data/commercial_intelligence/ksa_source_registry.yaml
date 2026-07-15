@@ -1,0 +1,147 @@
+version: "1.0"
+reviewed_at: "2026-07-15"
+default_mode: research_only
+external_action_allowed: false
+
+# This is a governance seed, not a scraper configuration.  Every source still
+# requires dataset-level terms review and purpose validation before collection.
+sources:
+  - id: src_first_party_crm
+    name: Customer-authorized CRM
+    kind: crm
+    url: null
+    policy_status: approved
+    allowed_use: customer_authorized_revenue_operations
+    authority_score: 95
+    verifiability_score: 95
+    freshness_days: 7
+    retention_days: 365
+    terms_review_required: true
+
+  - id: src_inbound_forms
+    name: Dealix inbound forms
+    kind: owned
+    url: https://dealix.me
+    policy_status: approved
+    allowed_use: respond_to_explicit_inbound_request
+    authority_score: 95
+    verifiability_score: 90
+    freshness_days: 30
+    retention_days: 365
+    terms_review_required: false
+
+  - id: src_partner_referral
+    name: Documented partner referral
+    kind: partner
+    url: null
+    policy_status: approved
+    allowed_use: referral_introduction_with_recorded_scope
+    authority_score: 85
+    verifiability_score: 85
+    freshness_days: 30
+    retention_days: 365
+    terms_review_required: true
+
+  - id: src_company_website
+    name: Organization official website
+    kind: company_website
+    url: null
+    policy_status: research_only
+    allowed_use: organization_research_and_hypothesis_only
+    authority_score: 80
+    verifiability_score: 75
+    freshness_days: 30
+    retention_days: 180
+    terms_review_required: true
+
+  - id: src_monshaat_reports
+    name: Monsha'at reports
+    kind: public_registry
+    url: https://www.monshaat.gov.sa/en/monshaat-reports
+    policy_status: research_only
+    allowed_use: aggregate_market_research_with_attribution
+    authority_score: 95
+    verifiability_score: 95
+    freshness_days: 90
+    retention_days: 730
+    terms_review_required: true
+
+  - id: src_monshaat_q2_2025
+    name: Monsha'at Q2 2025 SME Monitor
+    kind: public_registry
+    url: https://www.monshaat.gov.sa/sites/default/files/2025-09/V5.0%20Monsha%27at%20SMEM%20Report%20-%20Q2-25.pdf
+    policy_status: research_only
+    allowed_use: aggregate_market_research_with_page_attribution
+    authority_score: 95
+    verifiability_score: 95
+    freshness_days: 365
+    retention_days: 730
+    terms_review_required: true
+
+  - id: src_monshaat_digital_transformation
+    name: Monsha'at Digital Transformation for SMEs
+    kind: public_registry
+    url: https://www.monshaat.gov.sa/sites/default/files/2024-11/DIGITAL_TRANSFORMATION%D9%80FOR%D9%80SMEs%D9%80%D9%80EN.pdf
+    policy_status: research_only
+    allowed_use: aggregate_market_research_with_page_attribution
+    authority_score: 95
+    verifiability_score: 95
+    freshness_days: 365
+    retention_days: 730
+    terms_review_required: true
+
+  - id: src_saudi_open_data
+    name: Saudi Open Data Platform
+    kind: open_data
+    url: https://open.data.gov.sa/en
+    policy_status: review_required
+    allowed_use: dataset_specific_after_license_and_metadata_review
+    authority_score: 95
+    verifiability_score: 90
+    freshness_days: 90
+    retention_days: 365
+    terms_review_required: true
+
+  - id: src_saudi_laws_portal
+    name: Saudi Bureau of Experts laws portal
+    kind: public_registry
+    url: https://laws.boe.gov.sa
+    policy_status: research_only
+    allowed_use: compliance_reference_with_human_legal_verification
+    authority_score: 100
+    verifiability_score: 100
+    freshness_days: 30
+    retention_days: 365
+    terms_review_required: true
+
+  - id: src_jobs_signal
+    name: Organization official careers page
+    kind: jobs
+    url: null
+    policy_status: research_only
+    allowed_use: organization_growth_hypothesis_only
+    authority_score: 70
+    verifiability_score: 65
+    freshness_days: 14
+    retention_days: 90
+    terms_review_required: true
+
+  - id: src_news_signal
+    name: Reputable business news
+    kind: news
+    url: null
+    policy_status: review_required
+    allowed_use: corroborated_market_signal_only
+    authority_score: 65
+    verifiability_score: 60
+    freshness_days: 14
+    retention_days: 90
+    terms_review_required: true
+
+blocked_patterns:
+  - bought_contact_lists
+  - scraped_personal_profiles
+  - private_or_leaked_datasets
+  - bypassed_paywalls_or_access_controls
+  - unknown_license_bulk_exports
+  - inferred_whatsapp_consent

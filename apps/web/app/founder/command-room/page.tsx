@@ -243,6 +243,7 @@ export default function FounderCommandRoomPage() {
               <div className="actions">
                 <a href="/war-room">غرفة الحرب · War Room</a>
                 <a href="/operator">لوحة المشغّل · Operator</a>
+                <a href="/commercial-intelligence">الذكاء التجاري · Intelligence</a>
               </div>
             </article>
 
