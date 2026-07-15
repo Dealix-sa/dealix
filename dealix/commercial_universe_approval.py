@@ -10,8 +10,10 @@ from __future__ import annotations
 
 from auto_client_acquisition.approval_center.schemas import (
     ApprovalRequest,
-    ApprovalStatus as QueueApprovalStatus,
     is_canonical_action_type,
+)
+from auto_client_acquisition.approval_center.schemas import (
+    ApprovalStatus as QueueApprovalStatus,
 )
 from dealix.commercial_universe import (
     ApprovalEnvelope,
