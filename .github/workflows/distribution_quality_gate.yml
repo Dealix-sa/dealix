@@ -54,7 +54,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest pytest-asyncio pytest-cov httpx aiosqlite jsonschema
+          pip install pytest pytest-asyncio pytest-cov pytest-timeout httpx aiosqlite jsonschema
           if [ -f pyproject.toml ]; then pip install -e .; fi
 
       - name: Compile check (distribution_os + router + scripts)
