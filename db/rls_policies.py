@@ -40,6 +40,11 @@ RLS_POLICIES: dict[str, str] = {
     "payments": "tenant_id = current_setting('app.tenant_id', true)",
     "proof_ledger": "tenant_id = current_setting('app.tenant_id', true)",
     "value_ledger": "tenant_id = current_setting('app.tenant_id', true)",
+    "company_directory_imports": "tenant_id = current_setting('app.tenant_id', true)",
+    "company_directory_entries": "tenant_id = current_setting('app.tenant_id', true)",
+    "agent_capability_evaluations": "tenant_id = current_setting('app.tenant_id', true)",
+    "commercial_campaign_plans": "tenant_id = current_setting('app.tenant_id', true)",
+    "commercial_campaign_items": "tenant_id = current_setting('app.tenant_id', true)",
 }
 
 # Tables that should NOT have RLS (global/system tables)
