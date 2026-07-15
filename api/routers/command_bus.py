@@ -74,6 +74,7 @@ def _check_cold_intent(text: str) -> str | None:
 
 async def _call_llm(system_prompt: str, user_input: str) -> tuple[str, str]:
     try:
+        from core.config.models import Task
         from core.llm.base import Message
         from core.llm.router import get_router
     except ImportError as exc:
@@ -81,12 +82,13 @@ async def _call_llm(system_prompt: str, user_input: str) -> tuple[str, str]:
 
     router_obj = get_router()
     messages = [
-        Message(role="system", content=system_prompt),
         Message(role="user", content=user_input),
     ]
     response = await asyncio.wait_for(
-        router_obj.complete(
+        router_obj.run(
+            Task.ARABIC_TASKS,
             messages=messages,
+            system=system_prompt,
             max_tokens=MAX_OUTPUT_TOKENS,
             temperature=0.4,
         ),
