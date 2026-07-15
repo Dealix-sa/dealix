@@ -1,7 +1,7 @@
 """Safe application-facing entry point for routed LLM inference.
 
 Application code must call ``ModelRouter.run`` rather than a provider-client
-method.  Keeping this adapter in one place also gives operators an explicit,
+method. Keeping this adapter in one place also gives operators an explicit,
 machine-readable failure when no provider is configured; callers must not
 replace that failure with canned text presented as model output.
 """
@@ -30,10 +30,9 @@ async def complete_with_router(
 ) -> tuple[str, str]:
     """Run one completion through the configured model router.
 
-    The preferred provider is GLM for Arabic work when available.  Otherwise
-    the first configured provider is selected explicitly, ensuring an
-    OpenAI-only or other single-provider deployment remains usable even when
-    it is not present in the task's default fallback chain.
+    Prefer GLM for Arabic work when available. Otherwise select the first
+    configured provider explicitly, so an OpenAI-only deployment remains
+    usable even when OpenAI is absent from the task's default fallback chain.
     """
 
     router = get_router()
