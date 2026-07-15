@@ -1,9 +1,9 @@
 from dealix.commercial_command_center import build_command_center
 from dealix.commercial_universe import (
+    CommercialAccount,
     DepartmentObjective,
     PermissionState,
     RelationshipType,
-    CommercialAccount,
     create_approval_envelope,
 )
 
