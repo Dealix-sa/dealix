@@ -168,3 +168,44 @@ def test_get_offering_lookup_works():
     # SERVICE_IDS frozenset must match
     for o in OFFERINGS:
         assert o.id in SERVICE_IDS
+
+
+# ── Commercial trust regression ──────────────────────────────────────
+def test_no_open_ended_outcome_or_free_work_promises():
+    """#917: catalog language must not guarantee customer outcomes or endless credits."""
+    forbidden = [
+        re.compile(r"work for free", re.IGNORECASE),
+        re.compile(r"work until we do", re.IGNORECASE),
+        re.compile(r"free months?", re.IGNORECASE),
+        re.compile(r"نشتغل بدون مقابل"),
+        re.compile(r"نواصل العمل حتى"),
+        re.compile(r"اشتراكان مجانيان"),
+        re.compile(r"شهر مجاني"),
+        re.compile(r"\+20% reply-rate", re.IGNORECASE),
+        re.compile(r"40%\+ of decision time", re.IGNORECASE),
+        re.compile(r"\+٢٠٪"),
+        re.compile(r"٤٠٪\+"),
+    ]
+    catalog_text = "\n".join(
+        " ".join(
+            (
+                offering.kpi_commitment_ar,
+                offering.kpi_commitment_en,
+                offering.refund_policy_ar,
+                offering.refund_policy_en,
+            )
+        )
+        for offering in OFFERINGS
+    )
+    repo_root = Path(__file__).resolve().parent.parent
+    public_snapshots = "\n".join(
+        (repo_root / path).read_text(encoding="utf-8")
+        for path in (
+            "apps/web/lib/service-catalog-snapshot.ts",
+            "landing/assets/data/services-catalog.json",
+            "scripts/dealix_pilot_brief.py",
+        )
+    )
+    for pattern in forbidden:
+        assert pattern.search(catalog_text) is None, pattern.pattern
+        assert pattern.search(public_snapshots) is None, pattern.pattern
