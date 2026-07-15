@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import os
+from importlib import import_module
 from logging.config import fileConfig
 
 from alembic import context
@@ -18,10 +19,15 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 # ── Load app metadata ──────────────────────────────────────────────
-# Import Base so all models are registered
-from db.models import Base  # noqa: F401 — registers all mapped classes
-import db.models_company_targeting  # noqa: F401 — targeting/evaluation tables
-import db.models_commercial_intelligence  # noqa: F401 — commercial intelligence graph
+# Import Base and load model modules for their SQLAlchemy registration side
+# effects. import_module makes that Alembic contract explicit to static tools.
+from db.models import Base
+
+for _model_module in (
+    "db.models_company_targeting",
+    "db.models_commercial_intelligence",
+):
+    import_module(_model_module)
 
 # ── Alembic Config ─────────────────────────────────────────────────
 config = context.config
