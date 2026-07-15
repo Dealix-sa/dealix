@@ -1,0 +1,61 @@
+name: Dealix Launch Conversation Engine
+
+# Draft-only. Runs the Launch Conversation & Negotiation Engine, verifies its
+# outputs, and uploads the generated drafts/reports as a workflow artifact.
+# Nothing is ever sent — the founder approves every external message manually.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 06:00 UTC (= 09:00 KSA), daily.
+    - cron: "0 6 * * *"
+
+# Read-only — the workflow only produces an artifact, never pushes and never
+# sends. Outbound safety flags stay at their draft-only defaults.
+permissions:
+  contents: read
+
+concurrency:
+  group: dealix-launch-conversation-engine
+  cancel-in-progress: false
+
+jobs:
+  run-engine:
+    name: Generate drafts and verify (draft-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      OUTBOUND_MODE: draft_only
+      EXTERNAL_SEND_ENABLED: "false"
+      EMAIL_SEND_ENABLED: "false"
+      WHATSAPP_SEND_ENABLED: "false"
+      WHATSAPP_ALLOW_LIVE_SEND: "false"
+      SMS_SEND_ENABLED: "false"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run engine (draft-only)
+        run: |
+          set -e
+          python3 scripts/commercial/run_dealix_launch_conversation_engine.py \
+            --mode draft-only --limit 25
+
+      - name: Verify engine outputs
+        run: |
+          set -e
+          python3 scripts/commercial/verify_dealix_launch_conversation_engine.py
+
+      - name: Upload draft reports as artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: dealix-conversation-negotiation-reports
+          path: reports/dealix_conversation_negotiation/
+          retention-days: 30
+          if-no-files-found: error
