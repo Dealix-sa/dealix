@@ -4,8 +4,9 @@ Truth registry. Backend + portal + WhatsApp + landing pages all read from here.
 
 Constitution:
 - Article 4: action_modes never include 'live_send' or 'live_charge'.
-- Article 8: KPI language is commitment ("نشتغل بدون مقابل لو لم يتحقق…"),
-  not guarantee ("نضمن"). All `is_estimate=True`.
+- Article 8: KPI language covers controllable delivery and measurement only.
+  Customer outcomes require a first-party baseline; no open-ended free-work promise.
+  All `is_estimate=True`.
 - Article 11: pricing changes are 1-line edits to this file (no engine code).
 
 Core funnel ladder (ascending for paid one-time services):
@@ -87,8 +88,8 @@ _REVENUE_PROOF_SPRINT = ServiceOffering(
         "7 deliverables in 7 days. If we don't surface ≥10 opportunities, "
         "we work for free until we do."
     ),
-    refund_policy_ar="استرداد كامل ١٠٠٪ خلال ١٤ يومًا، بدون أسئلة.",
-    refund_policy_en="Full 100% refund within 14 days, no questions asked.",
+    refund_policy_ar="تُحدد شروط الاسترداد أو رصيد الخدمة في أمر عمل معتمد؛ لا ضمان نتيجة تلقائي.",
+    refund_policy_en="Refund or service-credit terms are defined in the approved order form; no automatic outcome guarantee applies.",
     action_modes_used=(
         "suggest_only",
         "draft_only",
@@ -133,8 +134,8 @@ _DATA_TO_REVENUE_PACK = ServiceOffering(
         "Clean 400+ rows in 14 days. If we don't surface 20 approved "
         "opportunities, we work until we do."
     ),
-    refund_policy_ar="استرداد ٧٥٪ إذا لم يتحقق التزام KPI خلال ٢١ يومًا.",
-    refund_policy_en="75% refund if KPI commitment unmet within 21 days.",
+    refund_policy_ar="تُحدد معالجة عدم تسليم النطاق في أمر العمل المعتمد، ولا ترتبط بنتيجة تجارية غير مضمونة.",
+    refund_policy_en="Remedies for undelivered scope are defined in the approved order form and are not tied to an unguaranteed business outcome.",
     action_modes_used=(
         "suggest_only",
         "draft_only",
@@ -178,8 +179,8 @@ _GROWTH_OPS_MONTHLY = ServiceOffering(
         "Commit to +20% reply-rate lift in 4 months. "
         "If not reached, we work for free until reached."
     ),
-    refund_policy_ar="استرداد تناسبي للأشهر غير المستخدمة عند عدم تحقيق KPI.",
-    refund_policy_en="Pro-rata refund of unused months if KPI commitment unmet.",
+    refund_policy_ar="تُحدد الإلغاء والاسترداد ورصيد الخدمة في العقد المعتمد وفق النطاق المسلّم.",
+    refund_policy_en="Cancellation, refund, and service-credit terms are defined in the approved contract against delivered scope.",
     action_modes_used=(
         "suggest_only",
         "draft_only",
@@ -224,8 +225,8 @@ _SUPPORT_OS_ADDON = ServiceOffering(
         "Reduce first-response time to ≤30 min business hours. "
         "If unmet, 2 free months."
     ),
-    refund_policy_ar="استرداد ١٠٠٪ في الشهر الأول إذا لم يلتزم KPI.",
-    refund_policy_en="100% refund in month 1 if KPI commitment unmet.",
+    refund_policy_ar="تُحدد معالجة إخفاق التسليم في أمر العمل؛ أهداف الخدمة تحتاج baseline واعتمادًا صريحًا.",
+    refund_policy_en="Remedies for delivery failure are defined in the order form; service targets require a baseline and explicit approval.",
     action_modes_used=(
         "suggest_only",
         "draft_only",
