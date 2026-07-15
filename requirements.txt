@@ -92,11 +92,9 @@ qrcode[pil]>=7.4.2,<8
 # Async Task Queue (ARQ — async Redis queue for background LLM processing)
 arq>=0.28.0
 
-# Numeric / vector ops (cosine similarity for Revenue Memory)
-# Held at 1.26 series — bumping to numpy 2.x cascades through embedding
-# code paths (dealix/caching/) and requires verification of float64
-# behavior. Schedule bump as separate PR after customer #1.
-numpy>=1.26.0,<3
+# Semantic-cache vector math uses the standard library.  The optional
+# sentence-transformers extra brings its own numeric stack when enabled on a
+# dedicated worker, keeping the Vercel API bundle lean.
 
 # Saudi market — Hijri calendar (Um Al-Qura: no wheel for py3.11; integrations/saudi_market.py falls back gracefully)
 
