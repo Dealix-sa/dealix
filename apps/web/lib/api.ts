@@ -289,6 +289,15 @@ export const api = {
       params: { limit },
     }),
 
+  postCommercialIntelligenceBuyerDecisionPlan: (
+    opportunityId: string,
+    body: Record<string, unknown> = {},
+  ) =>
+    apiClient.post(
+      `/api/v1/commercial-intelligence/opportunities/${encodeURIComponent(opportunityId)}/buyer-decision-plan`,
+      body,
+    ),
+
   patchWarRoom: (adminApiKey: string, leadId: string, body: Record<string, unknown>) =>
     apiClient.patch(`/api/v1/ops-autopilot/war-room/${encodeURIComponent(leadId)}`, body, {
       headers: { "X-Admin-API-Key": adminApiKey },

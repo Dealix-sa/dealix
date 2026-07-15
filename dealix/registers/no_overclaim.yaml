@@ -211,6 +211,22 @@ claims:
       - "ROI figures are estimates, not measured outcomes"
       - "Transformation systems not yet added to the Service Readiness Matrix (roadmap)"
 
+  - id: evidence_governed_buyer_decision_spine
+    claim: "Internal buyer-committee persuasion plans are generated from source-bound evidence, hide unapproved prices, and never send or make a commercial commitment"
+    status: Pilot
+    last_reviewed: "2026-07-15"
+    evidence:
+      - dealix/commercial_persuasion.py
+      - api/routers/commercial_intelligence.py
+      - dealix/config/first_launch_offer_gate.yaml
+      - tests/test_commercial_persuasion.py
+      - tests/test_commercial_intelligence_contract.py
+      - docs/01_go_to_market/DEALIX_FOUNDER_LAUNCH_PERSUASION_SYSTEM_AR.md
+    gaps:
+      - "No real tenant opportunity or publishable Dealix outcome proof was loaded in the founder cycle"
+      - "First-launch price and public catalogue remain blocked by GitHub issue #917"
+      - "Model-generated responses remain in Sales Arena shadow mode until the live evaluation gate passes"
+
   - id: platform_reference_contracts
     claim: "Reference platform contracts for tenant, RLS, storage, and auth (no stack replacement)"
     status: Production

@@ -57,6 +57,33 @@ interface Opportunity {
   external_action_allowed: boolean;
 }
 
+interface BuyerDecisionPlan {
+  plan_id: string;
+  opportunity_id: string;
+  mode: string;
+  persuasion_thesis_ar: string;
+  offer_architecture: {
+    recommended_motion: string;
+    duration_days: number;
+    price_status: string;
+    price_sar: number | null;
+  };
+  buying_committee: Array<{
+    role: string;
+    decision_question_ar: string;
+    value_frame_ar: string;
+    proof_required: string;
+  }>;
+  approval_queue: Array<{
+    id: string;
+    owner: string;
+    question_ar: string;
+  }>;
+  blockers: string[];
+  price_included: boolean;
+  external_action_allowed: boolean;
+}
+
 const POLICY_LABELS: Record<string, string> = {
   approved: "معتمد · Approved",
   research_only: "بحث فقط · Research only",
@@ -79,6 +106,8 @@ export default function CommercialIntelligencePage() {
   const [objectives, setObjectives] = useState<Objective[]>([]);
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [planLoadingId, setPlanLoadingId] = useState("");
+  const [decisionPlan, setDecisionPlan] = useState<BuyerDecisionPlan | null>(null);
   const [error, setError] = useState<"auth" | "load" | null>(null);
   const [refreshedAt, setRefreshedAt] = useState("");
 
@@ -109,6 +138,23 @@ export default function CommercialIntelligencePage() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  const buildDecisionPlan = useCallback(async (opportunityId: string) => {
+    setPlanLoadingId(opportunityId);
+    setError(null);
+    try {
+      const response = await api.postCommercialIntelligenceBuyerDecisionPlan(
+        opportunityId,
+        {},
+      );
+      setDecisionPlan(response.data as BuyerDecisionPlan);
+    } catch (reason: unknown) {
+      const status = (reason as { response?: { status?: number } })?.response?.status;
+      setError(status === 401 || status === 403 ? "auth" : "load");
+    } finally {
+      setPlanLoadingId("");
+    }
+  }, []);
 
   return (
     <main>
@@ -246,6 +292,7 @@ export default function CommercialIntelligencePage() {
                         "الدرجة",
                         "الإجراء التالي",
                         "الاعتماد",
+                        "مسار القرار",
                       ].map((label) => (
                         <th key={label} style={{ textAlign: "right", padding: 12, borderBottom: "1px solid rgba(255,255,255,.12)" }}>
                           {label}
@@ -269,6 +316,15 @@ export default function CommercialIntelligencePage() {
                             {opportunity.approval_required ? "موافقة مطلوبة" : "—"}
                           </span>
                         </td>
+                        <td style={{ padding: 12 }}>
+                          <button
+                            className="btn btn-ghost"
+                            onClick={() => void buildDecisionPlan(opportunity.id)}
+                            disabled={planLoadingId === opportunity.id}
+                          >
+                            {planLoadingId === opportunity.id ? "يبني…" : "بناء الحجة"}
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -276,6 +332,50 @@ export default function CommercialIntelligencePage() {
               </div>
             )}
           </section>
+
+          {decisionPlan && (
+            <section className="card card-gold" aria-live="polite">
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                <div>
+                  <p className="eyebrow">Buyer Decision Spine · Internal draft</p>
+                  <h3>مسار قرار لجنة الشراء</h3>
+                </div>
+                <span className="badge badge-amber">
+                  {decisionPlan.offer_architecture.duration_days} يوماً · السعر محجوب
+                </span>
+              </div>
+              <p>{decisionPlan.persuasion_thesis_ar}</p>
+              <div className="grid-3" style={{ marginTop: "var(--sp-4)" }}>
+                {decisionPlan.buying_committee.map((member) => (
+                  <article className="card" key={member.role}>
+                    <span className="badge badge-gold">{member.role}</span>
+                    <h4>{member.decision_question_ar}</h4>
+                    <p>{member.value_frame_ar}</p>
+                    <p className="stat-label">الدليل: {member.proof_required}</p>
+                  </article>
+                ))}
+              </div>
+              <div className="grid-2" style={{ marginTop: "var(--sp-4)" }}>
+                <article>
+                  <h4>ما يمنع الانتقال</h4>
+                  <ul>
+                    {decisionPlan.blockers.map((blocker) => <li key={blocker}>{blocker}</li>)}
+                  </ul>
+                </article>
+                <article>
+                  <h4>طابور الموافقات</h4>
+                  <ul>
+                    {decisionPlan.approval_queue.map((item) => (
+                      <li key={item.id}>{item.question_ar} · {item.owner}</li>
+                    ))}
+                  </ul>
+                </article>
+              </div>
+              <p className="stat-label">
+                لا سعر، لا إرسال، ولا التزام خارجي من هذه الشاشة. كل مخرج مسودة داخلية.
+              </p>
+            </section>
+          )}
         </>
       )}
     </main>

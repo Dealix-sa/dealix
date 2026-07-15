@@ -38,6 +38,14 @@ from dealix.commercial_intelligence import (
     score_opportunity,
     score_source,
 )
+from dealix.commercial_persuasion import (
+    DEFAULT_BUYER_ROLES,
+    BuyerDecisionContext,
+    BuyerRole,
+    PersuasionEvidence,
+    PricingDecision,
+    build_buyer_decision_plan,
+)
 
 router = APIRouter(prefix="/api/v1/commercial-intelligence", tags=["Sales"])
 
@@ -115,6 +123,13 @@ class OpportunityBody(_StrictBody):
     proof_target: str = Field(min_length=1, max_length=5000)
 
 
+class BuyerDecisionPlanBody(_StrictBody):
+    buyer_roles: list[BuyerRole] = Field(default_factory=list, max_length=6)
+    known_objections: list[str] = Field(default_factory=list, max_length=20)
+    requested_discount_pct: float = Field(default=0, ge=0, le=100)
+    non_standard_terms_requested: bool = False
+
+
 def _tenant_id(current_user: Any) -> str:
     value = (
         current_user.get("tenant_id")
@@ -190,6 +205,7 @@ async def status() -> dict[str, Any]:
             "strategic_relationships",
             "opportunity_graph",
             "source_scorecards",
+            "buyer_decision_spine",
         ],
     }
 
@@ -383,7 +399,11 @@ async def create_opportunity(
             OpportunityStage.APPROVAL
             if opportunity_score.score >= 75
             and evidence_level
-            in {EvidenceLevel.L3_FIRST_PARTY, EvidenceLevel.L4_VERIFIED, EvidenceLevel.L5_MEASURED_OUTCOME}
+            in {
+                EvidenceLevel.L3_FIRST_PARTY,
+                EvidenceLevel.L4_VERIFIED,
+                EvidenceLevel.L5_MEASURED_OUTCOME,
+            }
             else OpportunityStage.QUALIFY
             if opportunity_score.score >= 50
             else OpportunityStage.RESEARCH
@@ -429,6 +449,119 @@ async def create_opportunity(
         "blockers": record.blockers_json,
         "external_side_effect": False,
     }
+
+
+@router.post("/opportunities/{opportunity_id}/buyer-decision-plan")
+async def build_opportunity_buyer_decision_plan(
+    opportunity_id: str,
+    body: BuyerDecisionPlanBody,
+    current_user: Any = Depends(get_current_user),
+) -> dict[str, Any]:
+    """Build an internal persuasion plan without price, send, or commitment."""
+    tenant_id = _tenant_id(current_user)
+    async with async_session_factory()() as session:
+        opportunity = await session.get(CommercialOpportunityRecord, opportunity_id)
+        if (
+            opportunity is None
+            or opportunity.tenant_id != tenant_id
+            or opportunity.status != "active"
+        ):
+            raise HTTPException(404, "tenant_commercial_opportunity_not_found")
+        objective = await session.get(
+            DepartmentObjectiveRecord,
+            opportunity.department_objective_id,
+        )
+        if objective is None or objective.tenant_id != tenant_id:
+            raise HTTPException(409, "opportunity_objective_integrity_error")
+        relationship = None
+        if opportunity.relationship_id:
+            relationship = await session.get(
+                StrategicRelationshipRecord,
+                opportunity.relationship_id,
+            )
+            if relationship is None or relationship.tenant_id != tenant_id:
+                raise HTTPException(409, "opportunity_relationship_integrity_error")
+
+        signal_records = (
+            (
+                await session.execute(
+                    select(CommercialSignalRecord).where(
+                        CommercialSignalRecord.tenant_id == tenant_id,
+                        CommercialSignalRecord.id.in_(opportunity.source_signal_ids_json),
+                        CommercialSignalRecord.status == "active",
+                    )
+                )
+            )
+            .scalars()
+            .all()
+        )
+        source_ids = {record.source_id for record in signal_records}
+        source_records = (
+            (
+                await session.execute(
+                    select(CommercialSourceRecord).where(
+                        CommercialSourceRecord.tenant_id == tenant_id,
+                        CommercialSourceRecord.id.in_(source_ids),
+                    )
+                )
+            )
+            .scalars()
+            .all()
+        )
+        source_policy = {
+            record.id: (
+                record.policy_status if record.active else SourcePolicyStatus.BLOCKED.value
+            )
+            for record in source_records
+        }
+
+    evidence = tuple(
+        PersuasionEvidence(
+            claim=record.claim,
+            signal_type=record.signal_type,
+            evidence_ref=record.evidence_ref,
+            evidence_level=EvidenceLevel(record.evidence_level),
+            confidence=record.confidence,
+            source_policy_status=SourcePolicyStatus(
+                source_policy.get(record.source_id, SourcePolicyStatus.BLOCKED.value)
+            ),
+            publication_consent_ref=(
+                str((record.payload_json or {}).get("publication_consent_ref"))
+                if (record.payload_json or {}).get("publication_consent_ref")
+                else None
+            ),
+            stale=bool(record.expires_at and record.expires_at <= datetime.now(UTC)),
+        )
+        for record in signal_records
+    )
+    current_signals = [
+        _signal_domain(record)
+        for record in signal_records
+        if not record.expires_at or record.expires_at > datetime.now(UTC)
+    ]
+    context = BuyerDecisionContext(
+        opportunity_id=opportunity.id,
+        account_name=opportunity.company_name,
+        opportunity_title=opportunity.title,
+        offer_id=opportunity.offer_id,
+        objective=objective.objective,
+        metric=objective.metric,
+        proof_target=opportunity.proof_target,
+        evidence_level=highest_evidence_level(current_signals),
+        opportunity_score=opportunity.score,
+        evidence=evidence,
+        buyer_roles=tuple(dict.fromkeys(body.buyer_roles)) or DEFAULT_BUYER_ROLES,
+        known_objections=tuple(
+            objection.strip() for objection in body.known_objections if objection.strip()
+        ),
+        relationship_permission_state=(
+            relationship.permission_state if relationship else "research_only"
+        ),
+        pricing_decision=PricingDecision.CATALOG_RECONCILIATION_REQUIRED,
+        requested_discount_pct=body.requested_discount_pct,
+        non_standard_terms_requested=body.non_standard_terms_requested,
+    )
+    return build_buyer_decision_plan(context).to_dict()
 
 
 @router.get("/snapshot")
