@@ -1,23 +1,10 @@
-"""Canonical Company OS feature modules.
+"""Governed Company OS targeting and evaluation capabilities.
 
-The daily runner remains the single runtime.  Modules in this package add
-capabilities to that runtime without creating a second queue, approval centre,
-or proof ledger.
+Keep package imports limited to the stable targeting surface.  Runtime and
+workload-routing adapters are imported from their concrete modules so optional
+commercial integrations cannot break the core package at import time.
 """
 
-from dealix.company_os.revenue_execution import (
-    CompanyRecord,
-    build_revenue_execution,
-    load_company_records,
-)
-
-__all__ = ["CompanyRecord", "build_revenue_execution", "load_company_records"]
-from dealix.company_os.workload_router import (
-    CompanyWorkloadRequest,
-    WorkloadRoute,
-    capability_map,
-    route_company_workload,
-)
 from dealix.company_os.capability_evaluation import (
     benchmark_scenarios,
     evaluate_employee_output,
@@ -27,10 +14,6 @@ from dealix.company_os.company_directory import analyze_company_directory
 from dealix.company_os.negotiation_engine import build_negotiation_plan
 
 __all__ = [
-    "CompanyWorkloadRequest",
-    "WorkloadRoute",
-    "capability_map",
-    "route_company_workload",
     "analyze_company_directory",
     "benchmark_scenarios",
     "build_campaign_plan",
