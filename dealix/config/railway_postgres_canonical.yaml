@@ -1,0 +1,57 @@
+# Canonical Railway Postgres (postgres-ssl template) — VoXc2/dealix production.
+# Matches Railway UI: ghcr.io/railwayapp-templates/postgres-ssl
+# Human doc: docs/ops/RAILWAY_POSTGRES_SSL_AR.md
+
+source_image: ghcr.io/railwayapp-templates/postgres-ssl
+recommended_tags:
+  - "18.4"   # pin minor (production)
+  - "18"     # latest 18.x on template
+  - "16.14"  # template latest on :16 line
+listen_port_inside_container: 5432  # fixed by template; not PGPORT override
+
+# Railway-injected (typical — names from service Variables tab)
+variables_railway_injects:
+  - PGDATA
+  - PGDATABASE
+  - PGHOST
+  - PGPASSWORD
+  - PGPORT
+  - PGUSER
+  - POSTGRES_DB
+  - POSTGRES_PASSWORD
+  - POSTGRES_USER
+  - RAILWAY_DEPLOYMENT_DRAINING_SECONDS
+  - SSL_CERT_DAYS
+
+# Optional template tuning (postgres-ssl README)
+optional:
+  SSL_CERT_DAYS: 820
+  # PITR (opt-in) — only when WAL_ARCHIVE_BUCKET is set; see template README
+  WAL_ARCHIVE_BUCKET: ""
+  WAL_ARCHIVE_ENDPOINT: ""
+  WAL_ARCHIVE_REGION: ""
+  WAL_ARCHIVE_KEY: ""
+  WAL_ARCHIVE_SECRET: ""
+
+networking:
+  private_dns: postgres.railway.internal
+  private_alias: postgres
+  # Public TCP proxy (example shape — host/port change per deploy):
+  public_tcp_proxy_example:
+    host: shinkansen.proxy.rlwy.net
+    port: 18087
+    maps_to_container_port: 5432
+
+api_service_reference:
+  # On dealix API service — Variable Reference (not copy/paste URL):
+  DATABASE_URL: "${{Postgres.DATABASE_URL}}"
+  # If Postgres service is renamed, use: ${{<ServiceName>.DATABASE_URL}}
+  note: "Dealix normalizes postgresql:// → postgresql+asyncpg:// in settings"
+
+connect_from_api:
+  preferred: private_network  # postgres.railway.internal via DATABASE_URL reference
+  external_tools: public_tcp_proxy  # psql / GUI only; rotate if exposed
+
+upgrade:
+  minor_available_example: "18 → 18.4"
+  disconnect_source_image: false  # use Railway UI minor update when offered
