@@ -1,5 +1,4 @@
 from auto_client_acquisition.approval_center.schemas import ApprovalStatus as QueueStatus
-
 from dealix.commercial_universe import (
     CommercialAccount,
     DepartmentObjective,
