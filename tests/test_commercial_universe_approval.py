@@ -1,10 +1,11 @@
 from auto_client_acquisition.approval_center.schemas import ApprovalStatus as QueueStatus
+
 from dealix.commercial_universe import (
+    CommercialAccount,
     DepartmentObjective,
     PermissionState,
     RelationshipType,
     create_approval_envelope,
-    CommercialAccount,
 )
 from dealix.commercial_universe_approval import to_approval_request
 
