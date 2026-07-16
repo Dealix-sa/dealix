@@ -89,7 +89,7 @@ def test_bilingual_names_present():
 
 # ── Test 4 ────────────────────────────────────────────────────────────
 def test_no_guaranteed_language_anywhere():
-    """Article 8: forbidden tokens 'guaranteed', 'نضمن', 'ROI guaranteed'."""
+    """Article 8: block outcome guarantees in truth and public snapshots."""
     forbidden = [
         re.compile(r"\bguaranteed?\b", re.IGNORECASE),
         re.compile(r"\bguarantee\b", re.IGNORECASE),
@@ -104,6 +104,20 @@ def test_no_guaranteed_language_anywhere():
         for pat in forbidden:
             m = pat.search(text_to_scan)
             assert m is None, f"{o.id}: forbidden token '{m.group(0)}' present"
+
+    repo_root = Path(__file__).resolve().parent.parent
+    public_snapshots = (
+        "apps/web/lib/service-catalog-snapshot.ts",
+        "landing/assets/data/services-catalog.json",
+        "scripts/dealix_pilot_brief.py",
+    )
+    for relative_path in public_snapshots:
+        snapshot = (repo_root / relative_path).read_text(encoding="utf-8")
+        for pat in forbidden:
+            m = pat.search(snapshot)
+            assert m is None, (
+                f"{relative_path}: forbidden token '{m.group(0)}' present"
+            )
 
 
 # ── Test 5 ────────────────────────────────────────────────────────────

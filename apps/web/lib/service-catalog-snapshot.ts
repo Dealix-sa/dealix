@@ -1,5 +1,5 @@
 export const serviceCatalogSnapshot = {
-  "generated_at": "2026-06-30T11:38:47.156922+00:00",
+  "generated_at": "2026-07-16T09:38:13.210081+00:00",
   "total_offerings": 17,
   "is_estimate": true,
   "funnel_offerings": [
@@ -52,7 +52,7 @@ export const serviceCatalogSnapshot = {
       ],
       "kpi_commitment_en": "We deliver the approved scope and outputs within the agreed schedule, separating facts, hypotheses, and data gaps.",
       "kpi_commitment_ar": "نلتزم بتسليم النطاق والمخرجات المعتمدة ضمن الجدول المتفق عليه، مع فصل الحقائق والفرضيات وفجوات البيانات.",
-      "refund_policy_en": "Refund or service-credit terms are defined in the approved order form; no automatic outcome guarantee applies.",
+      "refund_policy_en": "Refund or service-credit terms are defined in the approved order form; business outcomes are not promised automatically.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -84,7 +84,7 @@ export const serviceCatalogSnapshot = {
       ],
       "kpi_commitment_en": "We clean the agreed dataset and document duplicates, provenance, and quality; no opportunity count is promised without customer validation.",
       "kpi_commitment_ar": "نلتزم بتنظيف البيانات المتفق عليها وتوثيق التكرار والمصدر والجودة، ولا نعد بعدد فرص دون اعتماد العميل.",
-      "refund_policy_en": "Remedies for undelivered scope are defined in the approved order form and are not tied to an unguaranteed business outcome.",
+      "refund_policy_en": "Remedies for undelivered scope are defined in the approved order form and are separate from business outcomes.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -114,7 +114,7 @@ export const serviceCatalogSnapshot = {
         "Monthly Executive Summary",
         "Expansion Recommendation"
       ],
-      "kpi_commitment_en": "We deliver a weekly operating cadence, approval-gated drafts, and baseline/after measurement; reply-rate lift is a measured hypothesis, not a guarantee.",
+      "kpi_commitment_en": "We deliver a weekly operating cadence, approval-gated drafts, and baseline/after measurement; reply-rate lift is a measured hypothesis.",
       "kpi_commitment_ar": "نلتزم بإيقاع تشغيلي أسبوعي، ومسودات خاضعة للموافقة، وقياس خط أساس ونتيجة؛ أي تحسن في الردود فرضية تُقاس ولا تُضمن.",
       "refund_policy_en": "Cancellation, refund, and service-credit terms are defined in the approved contract against delivered scope.",
       "hard_gates": [
@@ -146,7 +146,7 @@ export const serviceCatalogSnapshot = {
         "Support Proof Events",
         "SLA breach alerts"
       ],
-      "kpi_commitment_en": "We deliver ticket classification, reply drafts, alerts, and response-time measurement; any time target is approved in the order form after baseline.",
+      "kpi_commitment_en": "We deliver ticket classification, reply drafts, alerts, and response-time measurement; any time target is approved after baseline.",
       "kpi_commitment_ar": "نلتزم بتصنيف التذاكر ومسودات الرد والتنبيهات وقياس زمن الاستجابة؛ أي هدف زمني يعتمد في أمر العمل بعد baseline.",
       "refund_policy_en": "Remedies for delivery failure are defined in the order form; service targets require a baseline and explicit approval.",
       "hard_gates": [
@@ -181,9 +181,9 @@ export const serviceCatalogSnapshot = {
         "Risk register (weekly)",
         "Next 7 days plan"
       ],
-      "kpi_commitment_en": "We deliver an executive readout, decision/risk log, and next-action cadence; time savings are measured from the customer's baseline and not guaranteed.",
+      "kpi_commitment_en": "We deliver an executive readout, decision/risk log, and next-action cadence; time savings are measured from the customer baseline.",
       "kpi_commitment_ar": "نلتزم بقراءة تنفيذية وسجل قرار ومخاطر وإجراء تالٍ؛ وفر الوقت يُقاس من baseline العميل ولا يُضمن.",
-      "refund_policy_en": "Pro-rata refund of unused months.",
+      "refund_policy_en": "Cancellation, refund, and service-credit terms follow the approved contract and delivered scope.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -609,7 +609,7 @@ export const serviceCatalogSnapshot = {
       ],
       "kpi_commitment_en": "We deliver the approved scope and outputs within the agreed schedule, separating facts, hypotheses, and data gaps.",
       "kpi_commitment_ar": "نلتزم بتسليم النطاق والمخرجات المعتمدة ضمن الجدول المتفق عليه، مع فصل الحقائق والفرضيات وفجوات البيانات.",
-      "refund_policy_en": "Refund or service-credit terms are defined in the approved order form; no automatic outcome guarantee applies.",
+      "refund_policy_en": "Refund or service-credit terms are defined in the approved order form; business outcomes are not promised automatically.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -641,7 +641,7 @@ export const serviceCatalogSnapshot = {
       ],
       "kpi_commitment_en": "We clean the agreed dataset and document duplicates, provenance, and quality; no opportunity count is promised without customer validation.",
       "kpi_commitment_ar": "نلتزم بتنظيف البيانات المتفق عليها وتوثيق التكرار والمصدر والجودة، ولا نعد بعدد فرص دون اعتماد العميل.",
-      "refund_policy_en": "Remedies for undelivered scope are defined in the approved order form and are not tied to an unguaranteed business outcome.",
+      "refund_policy_en": "Remedies for undelivered scope are defined in the approved order form and are separate from business outcomes.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -671,7 +671,7 @@ export const serviceCatalogSnapshot = {
         "Monthly Executive Summary",
         "Expansion Recommendation"
       ],
-      "kpi_commitment_en": "We deliver a weekly operating cadence, approval-gated drafts, and baseline/after measurement; reply-rate lift is a measured hypothesis, not a guarantee.",
+      "kpi_commitment_en": "We deliver a weekly operating cadence, approval-gated drafts, and baseline/after measurement; reply-rate lift is a measured hypothesis.",
       "kpi_commitment_ar": "نلتزم بإيقاع تشغيلي أسبوعي، ومسودات خاضعة للموافقة، وقياس خط أساس ونتيجة؛ أي تحسن في الردود فرضية تُقاس ولا تُضمن.",
       "refund_policy_en": "Cancellation, refund, and service-credit terms are defined in the approved contract against delivered scope.",
       "hard_gates": [
@@ -703,7 +703,7 @@ export const serviceCatalogSnapshot = {
         "Support Proof Events",
         "SLA breach alerts"
       ],
-      "kpi_commitment_en": "We deliver ticket classification, reply drafts, alerts, and response-time measurement; any time target is approved in the order form after baseline.",
+      "kpi_commitment_en": "We deliver ticket classification, reply drafts, alerts, and response-time measurement; any time target is approved after baseline.",
       "kpi_commitment_ar": "نلتزم بتصنيف التذاكر ومسودات الرد والتنبيهات وقياس زمن الاستجابة؛ أي هدف زمني يعتمد في أمر العمل بعد baseline.",
       "refund_policy_en": "Remedies for delivery failure are defined in the order form; service targets require a baseline and explicit approval.",
       "hard_gates": [
@@ -738,9 +738,9 @@ export const serviceCatalogSnapshot = {
         "Risk register (weekly)",
         "Next 7 days plan"
       ],
-      "kpi_commitment_en": "We deliver an executive readout, decision/risk log, and next-action cadence; time savings are measured from the customer's baseline and not guaranteed.",
+      "kpi_commitment_en": "We deliver an executive readout, decision/risk log, and next-action cadence; time savings are measured from the customer baseline.",
       "kpi_commitment_ar": "نلتزم بقراءة تنفيذية وسجل قرار ومخاطر وإجراء تالٍ؛ وفر الوقت يُقاس من baseline العميل ولا يُضمن.",
-      "refund_policy_en": "Pro-rata refund of unused months.",
+      "refund_policy_en": "Cancellation, refund, and service-credit terms follow the approved contract and delivered scope.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",

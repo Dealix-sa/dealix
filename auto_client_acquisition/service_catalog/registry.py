@@ -89,7 +89,10 @@ _REVENUE_PROOF_SPRINT = ServiceOffering(
         "separating facts, hypotheses, and data gaps."
     ),
     refund_policy_ar="تُحدد شروط الاسترداد أو رصيد الخدمة في أمر عمل معتمد؛ لا ضمان نتيجة تلقائي.",
-    refund_policy_en="Refund or service-credit terms are defined in the approved order form; no automatic outcome guarantee applies.",
+    refund_policy_en=(
+        "Refund or service-credit terms are defined in the approved order form; "
+        "business outcomes are not promised automatically."
+    ),
     action_modes_used=(
         "suggest_only",
         "draft_only",
@@ -135,7 +138,10 @@ _DATA_TO_REVENUE_PACK = ServiceOffering(
         "quality; no opportunity count is promised without customer validation."
     ),
     refund_policy_ar="تُحدد معالجة عدم تسليم النطاق في أمر العمل المعتمد، ولا ترتبط بنتيجة تجارية غير مضمونة.",
-    refund_policy_en="Remedies for undelivered scope are defined in the approved order form and are not tied to an unguaranteed business outcome.",
+    refund_policy_en=(
+        "Remedies for undelivered scope are defined in the approved order form "
+        "and are separate from business outcomes."
+    ),
     action_modes_used=(
         "suggest_only",
         "draft_only",
