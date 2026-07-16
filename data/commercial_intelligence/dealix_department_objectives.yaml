@@ -1,0 +1,103 @@
+version: "1.0"
+tenant: dealix
+reviewed_at: "2026-07-15"
+measurement_rule: real_baseline_and_source_ref_required
+objectives:
+  - department: founder
+    objective: Close the first attributable paid proof engagement without unsupported claims.
+    metric: paid_proof_engagements
+    target_value: null
+    target_unit: count
+    horizon: quarter
+    priority: 100
+    evidence_required: l5_measured_outcome
+    owner_role: founder
+
+  - department: sales
+    objective: Convert evidence-backed conversations into tightly scoped pilots.
+    metric: qualified_pilot_conversations
+    target_value: null
+    target_unit: count
+    horizon: month
+    priority: 95
+    evidence_required: l3_first_party
+    owner_role: sales_owner
+
+  - department: partnerships
+    objective: Build warm, mutual-value routes into priority Saudi sectors.
+    metric: partner_qualified_introductions
+    target_value: null
+    target_unit: count
+    horizon: quarter
+    priority: 90
+    evidence_required: l3_first_party
+    owner_role: partnerships_owner
+
+  - department: delivery
+    objective: Produce attributable before/after proof for every paid pilot.
+    metric: pilot_proof_completeness
+    target_value: 100
+    target_unit: percent
+    horizon: pilot
+    priority: 100
+    evidence_required: l5_measured_outcome
+    owner_role: delivery_owner
+
+  - department: marketing
+    objective: Turn verified operating insight into founder-reviewed market education.
+    metric: evidence_backed_content_to_conversation
+    target_value: null
+    target_unit: ratio
+    horizon: month
+    priority: 75
+    evidence_required: l3_first_party
+    owner_role: marketing_owner
+
+  - department: product
+    objective: Prioritize only recurring customer problems supported by evidence.
+    metric: roadmap_items_with_evidence
+    target_value: 100
+    target_unit: percent
+    horizon: quarter
+    priority: 85
+    evidence_required: l3_first_party
+    owner_role: product_owner
+
+  - department: customer_success
+    objective: Detect adoption, risk, renewal, and expansion signals before review dates.
+    metric: accounts_with_current_health_evidence
+    target_value: 100
+    target_unit: percent
+    horizon: month
+    priority: 80
+    evidence_required: l3_first_party
+    owner_role: customer_success_owner
+
+  - department: finance
+    objective: Protect contribution margin and cash collection before accepting custom scope.
+    metric: engagements_with_approved_unit_economics
+    target_value: 100
+    target_unit: percent
+    horizon: engagement
+    priority: 95
+    evidence_required: l4_verified
+    owner_role: finance_owner
+
+  - department: governance
+    objective: Preserve source, purpose, consent, approval, and retention evidence for every action.
+    metric: governed_commercial_actions
+    target_value: 100
+    target_unit: percent
+    horizon: continuous
+    priority: 100
+    evidence_required: l4_verified
+    owner_role: governance_owner
+  - department: governance
+    objective: Prevent external commercial action without the required human approval.
+    metric: unauthorized_external_actions
+    target_value: 0
+    target_unit: count
+    horizon: continuous
+    priority: 100
+    evidence_required: l4_verified
+    owner_role: governance_owner

@@ -274,6 +274,30 @@ export const api = {
       headers: { "X-Admin-API-Key": adminApiKey },
     }),
 
+  // Tenant-scoped, evidence-governed commercial intelligence (read-only UI).
+  getCommercialIntelligenceSnapshot: () =>
+    apiClient.get("/api/v1/commercial-intelligence/snapshot"),
+
+  getCommercialIntelligenceSourceScorecards: () =>
+    apiClient.get("/api/v1/commercial-intelligence/source-scorecards"),
+
+  getCommercialIntelligenceObjectives: () =>
+    apiClient.get("/api/v1/commercial-intelligence/objectives"),
+
+  getCommercialIntelligenceOpportunities: (limit = 50) =>
+    apiClient.get("/api/v1/commercial-intelligence/opportunities", {
+      params: { limit },
+    }),
+
+  postCommercialIntelligenceBuyerDecisionPlan: (
+    opportunityId: string,
+    body: Record<string, unknown> = {},
+  ) =>
+    apiClient.post(
+      `/api/v1/commercial-intelligence/opportunities/${encodeURIComponent(opportunityId)}/buyer-decision-plan`,
+      body,
+    ),
+
   patchWarRoom: (adminApiKey: string, leadId: string, body: Record<string, unknown>) =>
     apiClient.patch(`/api/v1/ops-autopilot/war-room/${encodeURIComponent(leadId)}`, body, {
       headers: { "X-Admin-API-Key": adminApiKey },

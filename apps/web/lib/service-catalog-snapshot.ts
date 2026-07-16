@@ -50,9 +50,9 @@ export const serviceCatalogSnapshot = {
         "Proof Pack",
         "Next Best Offer recommendation"
       ],
-      "kpi_commitment_en": "7 deliverables in 7 days. If we don't surface ≥10 opportunities, we work for free until we do.",
-      "kpi_commitment_ar": "نسلّم ٧ مخرجات في ٧ أيام. إذا لم يصل عدد الفرص ≥١٠، نشتغل بدون مقابل حتى نوصل.",
-      "refund_policy_en": "Full 100% refund within 14 days, no questions asked.",
+      "kpi_commitment_en": "We deliver the approved scope and outputs within the agreed schedule, separating facts, hypotheses, and data gaps.",
+      "kpi_commitment_ar": "نلتزم بتسليم النطاق والمخرجات المعتمدة ضمن الجدول المتفق عليه، مع فصل الحقائق والفرضيات وفجوات البيانات.",
+      "refund_policy_en": "Refund or service-credit terms are defined in the approved order form; no automatic outcome guarantee applies.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -82,9 +82,9 @@ export const serviceCatalogSnapshot = {
         "Follow-up Plan",
         "Decision Passports for top 5"
       ],
-      "kpi_commitment_en": "Clean 400+ rows in 14 days. If we don't surface 20 approved opportunities, we work until we do.",
-      "kpi_commitment_ar": "تنظيف ٤٠٠+ سطر في ١٤ يومًا. إذا لم نصل لـ٢٠ فرصة معتمدة، نواصل العمل حتى نوصل.",
-      "refund_policy_en": "75% refund if KPI commitment unmet within 21 days.",
+      "kpi_commitment_en": "We clean the agreed dataset and document duplicates, provenance, and quality; no opportunity count is promised without customer validation.",
+      "kpi_commitment_ar": "نلتزم بتنظيف البيانات المتفق عليها وتوثيق التكرار والمصدر والجودة، ولا نعد بعدد فرص دون اعتماد العميل.",
+      "refund_policy_en": "Remedies for undelivered scope are defined in the approved order form and are not tied to an unguaranteed business outcome.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -114,9 +114,9 @@ export const serviceCatalogSnapshot = {
         "Monthly Executive Summary",
         "Expansion Recommendation"
       ],
-      "kpi_commitment_en": "Commit to +20% reply-rate lift in 4 months. If not reached, we work for free until reached.",
-      "kpi_commitment_ar": "نلتزم بزيادة معدل الردود +٢٠٪ خلال ٤ أشهر. إن لم يتحقق، نشتغل بدون مقابل حتى يتحقق.",
-      "refund_policy_en": "Pro-rata refund of unused months if KPI commitment unmet.",
+      "kpi_commitment_en": "We deliver a weekly operating cadence, approval-gated drafts, and baseline/after measurement; reply-rate lift is a measured hypothesis, not a guarantee.",
+      "kpi_commitment_ar": "نلتزم بإيقاع تشغيلي أسبوعي، ومسودات خاضعة للموافقة، وقياس خط أساس ونتيجة؛ أي تحسن في الردود فرضية تُقاس ولا تُضمن.",
+      "refund_policy_en": "Cancellation, refund, and service-credit terms are defined in the approved contract against delivered scope.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -146,9 +146,9 @@ export const serviceCatalogSnapshot = {
         "Support Proof Events",
         "SLA breach alerts"
       ],
-      "kpi_commitment_en": "Reduce first-response time to ≤30 min business hours. If unmet, 2 free months.",
-      "kpi_commitment_ar": "نقلّل وقت الرد الأول إلى ≤٣٠ دقيقة في ساعات العمل. إن لم يتحقق، اشتراكان مجانيان.",
-      "refund_policy_en": "100% refund in month 1 if KPI commitment unmet.",
+      "kpi_commitment_en": "We deliver ticket classification, reply drafts, alerts, and response-time measurement; any time target is approved in the order form after baseline.",
+      "kpi_commitment_ar": "نلتزم بتصنيف التذاكر ومسودات الرد والتنبيهات وقياس زمن الاستجابة؛ أي هدف زمني يعتمد في أمر العمل بعد baseline.",
+      "refund_policy_en": "Remedies for delivery failure are defined in the order form; service targets require a baseline and explicit approval.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -181,8 +181,8 @@ export const serviceCatalogSnapshot = {
         "Risk register (weekly)",
         "Next 7 days plan"
       ],
-      "kpi_commitment_en": "Save executive 40%+ of decision time in 4 months. If unmet, 1 free month.",
-      "kpi_commitment_ar": "نوفر للإدارة ٤٠٪+ من وقت اتخاذ القرار خلال ٤ أشهر. إن لم يتحقق، شهر مجاني.",
+      "kpi_commitment_en": "We deliver an executive readout, decision/risk log, and next-action cadence; time savings are measured from the customer's baseline and not guaranteed.",
+      "kpi_commitment_ar": "نلتزم بقراءة تنفيذية وسجل قرار ومخاطر وإجراء تالٍ؛ وفر الوقت يُقاس من baseline العميل ولا يُضمن.",
       "refund_policy_en": "Pro-rata refund of unused months.",
       "hard_gates": [
         "no_live_send",
@@ -607,9 +607,9 @@ export const serviceCatalogSnapshot = {
         "Proof Pack",
         "Next Best Offer recommendation"
       ],
-      "kpi_commitment_en": "7 deliverables in 7 days. If we don't surface ≥10 opportunities, we work for free until we do.",
-      "kpi_commitment_ar": "نسلّم ٧ مخرجات في ٧ أيام. إذا لم يصل عدد الفرص ≥١٠، نشتغل بدون مقابل حتى نوصل.",
-      "refund_policy_en": "Full 100% refund within 14 days, no questions asked.",
+      "kpi_commitment_en": "We deliver the approved scope and outputs within the agreed schedule, separating facts, hypotheses, and data gaps.",
+      "kpi_commitment_ar": "نلتزم بتسليم النطاق والمخرجات المعتمدة ضمن الجدول المتفق عليه، مع فصل الحقائق والفرضيات وفجوات البيانات.",
+      "refund_policy_en": "Refund or service-credit terms are defined in the approved order form; no automatic outcome guarantee applies.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -639,9 +639,9 @@ export const serviceCatalogSnapshot = {
         "Follow-up Plan",
         "Decision Passports for top 5"
       ],
-      "kpi_commitment_en": "Clean 400+ rows in 14 days. If we don't surface 20 approved opportunities, we work until we do.",
-      "kpi_commitment_ar": "تنظيف ٤٠٠+ سطر في ١٤ يومًا. إذا لم نصل لـ٢٠ فرصة معتمدة، نواصل العمل حتى نوصل.",
-      "refund_policy_en": "75% refund if KPI commitment unmet within 21 days.",
+      "kpi_commitment_en": "We clean the agreed dataset and document duplicates, provenance, and quality; no opportunity count is promised without customer validation.",
+      "kpi_commitment_ar": "نلتزم بتنظيف البيانات المتفق عليها وتوثيق التكرار والمصدر والجودة، ولا نعد بعدد فرص دون اعتماد العميل.",
+      "refund_policy_en": "Remedies for undelivered scope are defined in the approved order form and are not tied to an unguaranteed business outcome.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -671,9 +671,9 @@ export const serviceCatalogSnapshot = {
         "Monthly Executive Summary",
         "Expansion Recommendation"
       ],
-      "kpi_commitment_en": "Commit to +20% reply-rate lift in 4 months. If not reached, we work for free until reached.",
-      "kpi_commitment_ar": "نلتزم بزيادة معدل الردود +٢٠٪ خلال ٤ أشهر. إن لم يتحقق، نشتغل بدون مقابل حتى يتحقق.",
-      "refund_policy_en": "Pro-rata refund of unused months if KPI commitment unmet.",
+      "kpi_commitment_en": "We deliver a weekly operating cadence, approval-gated drafts, and baseline/after measurement; reply-rate lift is a measured hypothesis, not a guarantee.",
+      "kpi_commitment_ar": "نلتزم بإيقاع تشغيلي أسبوعي، ومسودات خاضعة للموافقة، وقياس خط أساس ونتيجة؛ أي تحسن في الردود فرضية تُقاس ولا تُضمن.",
+      "refund_policy_en": "Cancellation, refund, and service-credit terms are defined in the approved contract against delivered scope.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -703,9 +703,9 @@ export const serviceCatalogSnapshot = {
         "Support Proof Events",
         "SLA breach alerts"
       ],
-      "kpi_commitment_en": "Reduce first-response time to ≤30 min business hours. If unmet, 2 free months.",
-      "kpi_commitment_ar": "نقلّل وقت الرد الأول إلى ≤٣٠ دقيقة في ساعات العمل. إن لم يتحقق، اشتراكان مجانيان.",
-      "refund_policy_en": "100% refund in month 1 if KPI commitment unmet.",
+      "kpi_commitment_en": "We deliver ticket classification, reply drafts, alerts, and response-time measurement; any time target is approved in the order form after baseline.",
+      "kpi_commitment_ar": "نلتزم بتصنيف التذاكر ومسودات الرد والتنبيهات وقياس زمن الاستجابة؛ أي هدف زمني يعتمد في أمر العمل بعد baseline.",
+      "refund_policy_en": "Remedies for delivery failure are defined in the order form; service targets require a baseline and explicit approval.",
       "hard_gates": [
         "no_live_send",
         "no_live_charge",
@@ -738,8 +738,8 @@ export const serviceCatalogSnapshot = {
         "Risk register (weekly)",
         "Next 7 days plan"
       ],
-      "kpi_commitment_en": "Save executive 40%+ of decision time in 4 months. If unmet, 1 free month.",
-      "kpi_commitment_ar": "نوفر للإدارة ٤٠٪+ من وقت اتخاذ القرار خلال ٤ أشهر. إن لم يتحقق، شهر مجاني.",
+      "kpi_commitment_en": "We deliver an executive readout, decision/risk log, and next-action cadence; time savings are measured from the customer's baseline and not guaranteed.",
+      "kpi_commitment_ar": "نلتزم بقراءة تنفيذية وسجل قرار ومخاطر وإجراء تالٍ؛ وفر الوقت يُقاس من baseline العميل ولا يُضمن.",
       "refund_policy_en": "Pro-rata refund of unused months.",
       "hard_gates": [
         "no_live_send",

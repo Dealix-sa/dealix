@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements-dev.txt
       - name: Pytest business NOW
         run: pytest tests/test_business_now_snapshot.py tests/test_business_now_cache.py tests/test_commercial_strategy_snapshot.py tests/test_commercial_strategy_simulate.py -q --no-cov
       - name: Generate snapshot (no fail on verify timeout)
