@@ -31,7 +31,7 @@ def test_data_flow_register_has_required_governance_columns() -> None:
     assert required <= set(rows[0])
     assert all(row["Owner"] for row in rows)
     assert any("US West" in row["Current Region"] for row in rows)
-    assert not any("approved" == row["Status"].strip().lower() for row in rows)
+    assert not any(row["Status"].strip().lower() == "approved" for row in rows)
 
 
 def test_privacy_pack_is_fail_closed_and_source_bound() -> None:
