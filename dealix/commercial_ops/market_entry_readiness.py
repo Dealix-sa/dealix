@@ -69,7 +69,16 @@ def _evidence_ref(row: dict[str, Any]) -> str:
 
 
 def _observed_at(row: dict[str, Any]) -> str:
-    return str(row.get("observed_at") or "").strip()
+    value = str(row.get("observed_at") or "").strip()
+    if not value:
+        return ""
+    try:
+        observed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return ""
+    if observed.tzinfo is None:
+        return ""
+    return observed.astimezone(UTC).isoformat().replace("+00:00", "Z")
 
 
 def _signal(payload: dict[str, Any], key: str) -> tuple[str, str]:
@@ -185,8 +194,13 @@ def _metric_max_gate(
 
 
 def audit_pilot_pricing(repo_root: Path | None = None) -> dict[str, Any]:
-    """Confirm the 499 SAR pilot contract across canonical machine sources."""
+    """Audit the founder-governed launch offer without promoting legacy pricing."""
     root = repo_root or _repo_root()
+    offer_gate_path = root / "dealix/config/first_launch_offer_gate.yaml"
+    offer_gate = yaml.safe_load(offer_gate_path.read_text(encoding="utf-8")) or {}
+    primary = offer_gate.get("primary_motion") or {}
+    pricing = offer_gate.get("pricing_experiment") or {}
+
     tier = get_pricing_tier("growth_starter_pilot")
     product_catalog = yaml.safe_load(
         (root / "data/commercial/product_catalog.yaml").read_text(encoding="utf-8")
@@ -196,24 +210,59 @@ def audit_pilot_pricing(repo_root: Path | None = None) -> dict[str, Any]:
     )
     product = next(item for item in product_catalog["offers"] if item["id"] == "revenue_sprint")
     price_range = pricing_rules["base_ranges"]["revenue_sprint"]
-    observed = {
+    legacy_observed = {
         "finance_catalog": float(tier["price_sar"]),
         "product_catalog": float(product["setup_sar"]),
         "pricing_rules_min": float(price_range["min"]),
         "pricing_rules_max": float(price_range["max"]),
     }
-    values = set(observed.values())
+
+    raw_amount = pricing.get("public_amount_sar")
+    try:
+        approved_amount = float(raw_amount) if raw_amount is not None else None
+    except (TypeError, ValueError):
+        approved_amount = None
+    pricing_status = str(pricing.get("status") or "unknown")
+    publication_status = str(offer_gate.get("status") or "unknown")
+    amount_state_ok = (
+        approved_amount is not None
+        and approved_amount > 0
+        and pricing_status == "approved"
+        and publication_status == "approved"
+    ) if pricing_status == "approved" else raw_amount is None
+    governance_ok = all(
+        (
+            bool(primary.get("id")),
+            bool(primary.get("name_en")),
+            int(primary.get("duration_days") or 0) > 0,
+            primary.get("public") is False,
+            primary.get("checkout_enabled") is False,
+            primary.get("external_quote_requires_founder_approval") is True,
+            str(pricing.get("currency") or "") == "SAR",
+            amount_state_ok,
+        )
+    )
+
     return {
-        "ok": len(values) == 1 and values == {499.0},
+        "ok": governance_ok,
         "currency": "SAR",
-        "pilot_price": 499.0 if len(values) == 1 else None,
-        "observed": observed,
+        "offer_id": primary.get("id"),
+        "offer_name": primary.get("name_en"),
+        "offer_name_ar": primary.get("name_ar"),
+        "duration_days": primary.get("duration_days"),
+        "pilot_price": approved_amount if pricing_status == "approved" else None,
+        "observed": legacy_observed,
+        "legacy_price_consistent": set(legacy_observed.values()) == {499.0},
+        "legacy_offer_public": False,
         "sources": [
+            "dealix/config/first_launch_offer_gate.yaml",
             "auto_client_acquisition/finance_os/pricing_catalog.py",
             "data/commercial/product_catalog.yaml",
             "data/commercial/pricing_rules.yaml",
         ],
-        "publication_status": "founder_approval_required",
+        "publication_status": publication_status,
+        "pricing_status": pricing_status,
+        "decision_issue": offer_gate.get("decision_issue"),
     }
 
 
@@ -476,11 +525,17 @@ def build_market_entry_snapshot(
     external_status, external_evidence = _signal(payload, "external_execution_default_off")
     if external_status == "fail":
         stage = "blocked"
-        safety_blocker = {
-            "gate_id": "external_execution_default_off",
-            "evidence": external_evidence,
-            "reason_ar": "التنفيذ الخارجي ليس مغلقًا افتراضيًا.",
-        }
+        safety_blocker = asdict(
+            _repo_gate(
+                "external_execution_default_off",
+                "blocked",
+                "safety",
+                False,
+                external_evidence,
+                "التنفيذ الخارجي ليس مغلقًا افتراضيًا.",
+                "أوقف التنفيذ الخارجي افتراضيًا ووثّق الاختبار قبل أي استئناف.",
+            )
+        )
     else:
         safety_blocker = None
         stage = "evidence_required"
@@ -820,6 +875,10 @@ def _render_markdown(snapshot: dict[str, Any]) -> str:
         )
         or "- لا توجد بوابات ناقصة للمرحلة التالية."
     )
+    pricing = snapshot["pricing_audit"]
+    approved_price = pricing.get("pilot_price")
+    price_label = "غير معتمد" if approved_price is None else f"{approved_price:g} SAR"
+    offer_label = pricing.get("offer_name_ar") or pricing.get("offer_name") or "غير محدد"
     return f"""# قرار دخول Dealix للسوق — Founder Market Entry
 
 ## القرار الآن
@@ -833,7 +892,10 @@ def _render_markdown(snapshot: dict[str, Any]) -> str:
 - التنفيذ الخارجي المنفذ: **{snapshot['external_actions_executed']}**
 - السماح بادعاءات إطلاق عام: **{str(snapshot['public_claims_authorized']).lower()}**
 - السماح بالتوسع: **{str(snapshot['scale_authorized']).lower()}**
-- سعر Pilot في المصادر الكانونية: **{snapshot['pricing_audit']['pilot_price']} SAR**
+- عرض الدخول المحكوم: **{offer_label}** (`{pricing.get('offer_id')}`)
+- السعر العام المعتمد: **{price_label}**
+- حالة العرض/السعر: **{pricing.get('publication_status')} / {pricing.get('pricing_status')}**
+- عرض 7 أيام/499 ر.س. تراثي داخلي وغير معتمد للنشر أو الاقتباس أو Checkout.
 - نشر السعر أو تغييره يحتاج موافقة المؤسس.
 
 ## أهم البوابات التالية
