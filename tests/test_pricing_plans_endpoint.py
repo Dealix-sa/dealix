@@ -75,9 +75,11 @@ async def test_1sar_plan_is_impossible_in_production(
     monkeypatch.setenv("DEALIX_CHECKOUT_ENABLED", "true")
     monkeypatch.setenv("DEALIX_ENABLE_1SAR_CHECKOUT", "true")
     monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("API_KEYS", "test-production-api-key")
     res = await async_client.post(
         "/api/v1/checkout",
         json={"plan": "pilot_1sar", "email": "founder@example.com"},
+        headers={"X-API-Key": "test-production-api-key"},
     )
     assert res.status_code == 400
     assert res.json()["detail"] == "test_plan_disabled"
