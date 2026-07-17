@@ -5,7 +5,7 @@ Revises: 20260715_016_company_targeting
 Create Date: 2026-07-15
 """
 
-from typing import Sequence, Union
+from typing import Sequence
 
 import sqlalchemy as sa
 from alembic import op
