@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import uuid
 from datetime import UTC, datetime, timedelta
+from decimal import Decimal
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -15,9 +16,15 @@ from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
-from api.security.auth_deps import get_current_user
+from api.security.auth_deps import (
+    get_current_user,
+    require_sales_manager,
+    require_tenant_admin,
+)
 from auto_client_acquisition.service_catalog import SERVICE_IDS
+from db.models import AuditLogRecord
 from db.models_commercial_intelligence import (
+    CommercialFinanceCaseRecord,
     CommercialOpportunityRecord,
     CommercialOpportunitySignalRecord,
     CommercialSignalRecord,
@@ -26,6 +33,13 @@ from db.models_commercial_intelligence import (
     StrategicRelationshipRecord,
 )
 from db.session import async_session_factory
+from dealix.commercial_finance import (
+    CommercialFinanceDecision,
+    CommercialFinanceInputs,
+    FinancePricingStatus,
+    OfferEconomicsClass,
+    evaluate_commercial_finance,
+)
 from dealix.commercial_intelligence import (
     CommercialSignal,
     EvidenceLevel,
@@ -130,6 +144,37 @@ class BuyerDecisionPlanBody(_StrictBody):
     non_standard_terms_requested: bool = False
 
 
+class FinanceCaseBody(_StrictBody):
+    offer_class: OfferEconomicsClass
+    list_price_sar: Decimal = Field(gt=0, max_digits=14, decimal_places=2)
+    proposed_price_sar: Decimal = Field(gt=0, max_digits=14, decimal_places=2)
+    delivery_cost_sar: Decimal = Field(ge=0, max_digits=14, decimal_places=2)
+    acquisition_cost_sar: Decimal = Field(ge=0, max_digits=14, decimal_places=2)
+    upfront_cash_exposure_sar: Decimal = Field(
+        ge=0, max_digits=14, decimal_places=2
+    )
+    payment_terms_days: int = Field(ge=0, le=365)
+    capacity_required_pct: Decimal = Field(ge=0, le=100, max_digits=5, decimal_places=2)
+    source_refs: dict[str, str] = Field(min_length=1, max_length=32)
+    close_probability_low: Decimal | None = Field(default=None, ge=0, le=1)
+    close_probability_base: Decimal | None = Field(default=None, ge=0, le=1)
+    close_probability_high: Decimal | None = Field(default=None, ge=0, le=1)
+    close_probability_source_ref: str | None = Field(default=None, max_length=1000)
+    close_probability_evidence_level: EvidenceLevel | None = None
+    close_probability_cohort_size: int | None = Field(default=None, ge=1)
+    customer_roi_hypothesis_sar: Decimal | None = Field(
+        default=None, ge=0, max_digits=14, decimal_places=2
+    )
+    customer_roi_source_ref: str | None = Field(default=None, max_length=1000)
+
+
+class PriceApprovalBody(_StrictBody):
+    confirmed_proposed_price_sar: Decimal = Field(
+        gt=0, max_digits=14, decimal_places=2
+    )
+    approval_ref: str = Field(min_length=1, max_length=128)
+
+
 def _tenant_id(current_user: Any) -> str:
     value = (
         current_user.get("tenant_id")
@@ -139,6 +184,20 @@ def _tenant_id(current_user: Any) -> str:
     if not value:
         raise HTTPException(403, "authenticated_tenant_required")
     return str(value)
+
+
+def _user_id(current_user: Any) -> str:
+    value = (
+        current_user.get("id")
+        if isinstance(current_user, dict)
+        else getattr(current_user, "id", None)
+    )
+    if not value:
+        raise HTTPException(403, "authenticated_user_id_required")
+    clean = str(value)
+    if len(clean) > 64:
+        raise HTTPException(403, "authenticated_user_id_invalid")
+    return clean
 
 
 def _aware(value: datetime, field: str) -> datetime:
@@ -191,6 +250,85 @@ async def _commit(session: Any, *, conflict: str) -> None:
         raise HTTPException(503, "commercial_intelligence_not_persisted") from exc
 
 
+def _add_audit(
+    session: Any,
+    *,
+    tenant_id: str,
+    user_id: str,
+    action: str,
+    entity_id: str,
+    diff: dict[str, Any],
+) -> None:
+    session.add(
+        AuditLogRecord(
+            id=f"audit_{uuid.uuid4().hex}",
+            tenant_id=tenant_id,
+            user_id=user_id,
+            action=action,
+            entity_type="commercial_finance_case",
+            entity_id=entity_id,
+            diff=diff,
+            status="ok",
+        )
+    )
+
+
+def _finance_case_response(record: CommercialFinanceCaseRecord) -> dict[str, Any]:
+    return {
+        "id": record.id,
+        "opportunity_id": record.opportunity_id,
+        "parent_case_id": record.parent_case_id,
+        "offer_id": record.offer_id,
+        "offer_class": record.offer_class,
+        "pricing_status": record.pricing_status,
+        "decision": record.decision,
+        "currency": record.currency,
+        "proposed_price_sar": str(record.proposed_price_sar),
+        "gross_margin_pct": str(record.gross_margin_pct),
+        "contribution_margin_pct": str(record.contribution_margin_pct),
+        "readiness_score": record.readiness_score,
+        "approval_required": True,
+        "price_approved": record.pricing_status == FinancePricingStatus.FOUNDER_APPROVED.value,
+        "approval_ref": record.approval_ref,
+        "approved_at": record.approved_at,
+        "assessment": record.assessment_json,
+        "external_action_allowed": False,
+    }
+
+
+def _build_finance_inputs(
+    opportunity: CommercialOpportunityRecord,
+    body: FinanceCaseBody,
+    *,
+    pricing_status: FinancePricingStatus,
+) -> CommercialFinanceInputs:
+    try:
+        return CommercialFinanceInputs(
+            opportunity_id=opportunity.id,
+            offer_id=opportunity.offer_id,
+            offer_class=body.offer_class,
+            list_price_sar=body.list_price_sar,
+            proposed_price_sar=body.proposed_price_sar,
+            delivery_cost_sar=body.delivery_cost_sar,
+            acquisition_cost_sar=body.acquisition_cost_sar,
+            upfront_cash_exposure_sar=body.upfront_cash_exposure_sar,
+            payment_terms_days=body.payment_terms_days,
+            capacity_required_pct=body.capacity_required_pct,
+            source_refs=body.source_refs,
+            pricing_status=pricing_status,
+            close_probability_low=body.close_probability_low,
+            close_probability_base=body.close_probability_base,
+            close_probability_high=body.close_probability_high,
+            close_probability_source_ref=body.close_probability_source_ref,
+            close_probability_evidence_level=body.close_probability_evidence_level,
+            close_probability_cohort_size=body.close_probability_cohort_size,
+            customer_roi_hypothesis_sar=body.customer_roi_hypothesis_sar,
+            customer_roi_source_ref=body.customer_roi_source_ref,
+        )
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+
 @router.get("/status")
 async def status() -> dict[str, Any]:
     return {
@@ -206,6 +344,8 @@ async def status() -> dict[str, Any]:
             "opportunity_graph",
             "source_scorecards",
             "buyer_decision_spine",
+            "commercial_finance_gate",
+            "append_only_price_approval",
         ],
     }
 
@@ -213,7 +353,7 @@ async def status() -> dict[str, Any]:
 @router.post("/sources", status_code=201)
 async def create_source(
     body: SourceBody,
-    current_user: Any = Depends(get_current_user),
+    current_user: Any = Depends(require_tenant_admin),
 ) -> dict[str, Any]:
     tenant_id = _tenant_id(current_user)
     if body.terms_reviewed_at:
@@ -242,7 +382,7 @@ async def create_source(
 @router.post("/signals", status_code=201)
 async def create_signal(
     body: SignalBody,
-    current_user: Any = Depends(get_current_user),
+    current_user: Any = Depends(require_sales_manager),
 ) -> dict[str, Any]:
     tenant_id = _tenant_id(current_user)
     observed_at = _aware(body.observed_at, "observed_at")
@@ -282,7 +422,7 @@ async def create_signal(
 @router.post("/objectives", status_code=201)
 async def create_objective(
     body: ObjectiveBody,
-    current_user: Any = Depends(get_current_user),
+    current_user: Any = Depends(require_sales_manager),
 ) -> dict[str, Any]:
     tenant_id = _tenant_id(current_user)
     record = DepartmentObjectiveRecord(
@@ -308,7 +448,7 @@ async def create_objective(
 @router.post("/relationships", status_code=201)
 async def create_relationship(
     body: RelationshipBody,
-    current_user: Any = Depends(get_current_user),
+    current_user: Any = Depends(require_sales_manager),
 ) -> dict[str, Any]:
     tenant_id = _tenant_id(current_user)
     record = StrategicRelationshipRecord(
@@ -335,7 +475,7 @@ async def create_relationship(
 @router.post("/opportunities", status_code=201)
 async def create_opportunity(
     body: OpportunityBody,
-    current_user: Any = Depends(get_current_user),
+    current_user: Any = Depends(require_sales_manager),
 ) -> dict[str, Any]:
     tenant_id = _tenant_id(current_user)
     if body.offer_id not in SERVICE_IDS:
@@ -451,6 +591,208 @@ async def create_opportunity(
     }
 
 
+@router.post("/opportunities/{opportunity_id}/finance-cases", status_code=201)
+async def create_finance_case(
+    opportunity_id: str,
+    body: FinanceCaseBody,
+    current_user: Any = Depends(require_sales_manager),
+) -> dict[str, Any]:
+    """Append an internal Dealix-economics case; never approve its own price."""
+    tenant_id = _tenant_id(current_user)
+    user_id = _user_id(current_user)
+    async with async_session_factory()() as session:
+        opportunity = await session.get(CommercialOpportunityRecord, opportunity_id)
+        if (
+            opportunity is None
+            or opportunity.tenant_id != tenant_id
+            or opportunity.status != "active"
+        ):
+            raise HTTPException(404, "tenant_commercial_opportunity_not_found")
+        inputs = _build_finance_inputs(
+            opportunity,
+            body,
+            pricing_status=FinancePricingStatus.DRAFT,
+        )
+        assessment = evaluate_commercial_finance(inputs)
+        assessment_json = assessment.to_dict()
+        record = CommercialFinanceCaseRecord(
+            id=f"fin_{uuid.uuid4().hex}",
+            tenant_id=tenant_id,
+            opportunity_id=opportunity.id,
+            parent_case_id=None,
+            offer_id=opportunity.offer_id,
+            offer_class=inputs.offer_class.value,
+            pricing_status=FinancePricingStatus.DRAFT.value,
+            decision=assessment.decision.value,
+            currency=assessment.currency,
+            proposed_price_sar=inputs.proposed_price_sar,
+            gross_margin_pct=assessment.gross_margin_pct,
+            contribution_margin_pct=assessment.contribution_margin_pct,
+            readiness_score=assessment.readiness_score,
+            approval_required=True,
+            external_action_allowed=False,
+            created_by_user_id=user_id,
+            approved_by_user_id=None,
+            approval_ref=None,
+            approved_at=None,
+            inputs_json=inputs.to_dict(),
+            assessment_json=assessment_json,
+        )
+        session.add(record)
+        _add_audit(
+            session,
+            tenant_id=tenant_id,
+            user_id=user_id,
+            action="commercial_finance.case.create",
+            entity_id=record.id,
+            diff={
+                "opportunity_id": opportunity.id,
+                "decision": assessment.decision.value,
+                "pricing_status": FinancePricingStatus.DRAFT.value,
+                "external_action_allowed": False,
+            },
+        )
+        await _commit(session, conflict="commercial_finance_case_conflict")
+    return {
+        "status": "created",
+        "finance_case": _finance_case_response(record),
+        "external_side_effect": False,
+    }
+
+
+@router.get("/opportunities/{opportunity_id}/finance-cases")
+async def list_finance_cases(
+    opportunity_id: str,
+    limit: int = Query(default=50, ge=1, le=200),
+    current_user: Any = Depends(get_current_user),
+) -> dict[str, Any]:
+    tenant_id = _tenant_id(current_user)
+    async with async_session_factory()() as session:
+        opportunity = await session.get(CommercialOpportunityRecord, opportunity_id)
+        if opportunity is None or opportunity.tenant_id != tenant_id:
+            raise HTTPException(404, "tenant_commercial_opportunity_not_found")
+        records = (
+            await session.execute(
+                select(CommercialFinanceCaseRecord)
+                .where(
+                    CommercialFinanceCaseRecord.tenant_id == tenant_id,
+                    CommercialFinanceCaseRecord.opportunity_id == opportunity_id,
+                )
+                .order_by(
+                    CommercialFinanceCaseRecord.created_at.desc(),
+                    CommercialFinanceCaseRecord.id.desc(),
+                )
+                .limit(limit)
+            )
+        ).scalars().all()
+    return {
+        "count": len(records),
+        "items": [_finance_case_response(record) for record in records],
+        "external_action_allowed": False,
+    }
+
+
+@router.post(
+    "/opportunities/{opportunity_id}/finance-cases/{case_id}/approve-price",
+    status_code=201,
+)
+async def approve_finance_case_price(
+    opportunity_id: str,
+    case_id: str,
+    body: PriceApprovalBody,
+    current_user: Any = Depends(require_tenant_admin),
+) -> dict[str, Any]:
+    """Create an immutable approved child case after an exact-price check."""
+    tenant_id = _tenant_id(current_user)
+    user_id = _user_id(current_user)
+    async with async_session_factory()() as session:
+        opportunity = await session.get(CommercialOpportunityRecord, opportunity_id)
+        if (
+            opportunity is None
+            or opportunity.tenant_id != tenant_id
+            or opportunity.status != "active"
+        ):
+            raise HTTPException(404, "tenant_commercial_opportunity_not_found")
+        source_case = await session.get(CommercialFinanceCaseRecord, case_id)
+        if (
+            source_case is None
+            or source_case.tenant_id != tenant_id
+            or source_case.opportunity_id != opportunity_id
+        ):
+            raise HTTPException(404, "tenant_commercial_finance_case_not_found")
+        if (
+            source_case.parent_case_id is not None
+            or source_case.pricing_status != FinancePricingStatus.DRAFT.value
+        ):
+            raise HTTPException(409, "only_root_draft_finance_case_can_be_approved")
+        if Decimal(str(source_case.proposed_price_sar)) != body.confirmed_proposed_price_sar:
+            raise HTTPException(409, "confirmed_price_does_not_match_finance_case")
+        if source_case.offer_id != opportunity.offer_id:
+            raise HTTPException(409, "finance_case_offer_integrity_error")
+        try:
+            approved_inputs = CommercialFinanceInputs.from_dict(
+                source_case.inputs_json,
+                pricing_status=FinancePricingStatus.FOUNDER_APPROVED,
+            )
+            if (
+                approved_inputs.opportunity_id != opportunity_id
+                or approved_inputs.offer_id != opportunity.offer_id
+            ):
+                raise ValueError("finance case lineage does not match opportunity")
+            assessment = evaluate_commercial_finance(approved_inputs)
+        except (KeyError, TypeError, ValueError) as exc:
+            raise HTTPException(409, "finance_case_inputs_corrupt") from exc
+        if assessment.decision is not CommercialFinanceDecision.PURSUE:
+            raise HTTPException(409, "finance_case_not_eligible_for_price_approval")
+
+        approved_at = datetime.now(UTC)
+        approval_ref = body.approval_ref.strip()
+        record = CommercialFinanceCaseRecord(
+            id=f"fin_{uuid.uuid4().hex}",
+            tenant_id=tenant_id,
+            opportunity_id=opportunity.id,
+            parent_case_id=source_case.id,
+            offer_id=opportunity.offer_id,
+            offer_class=approved_inputs.offer_class.value,
+            pricing_status=FinancePricingStatus.FOUNDER_APPROVED.value,
+            decision=assessment.decision.value,
+            currency=assessment.currency,
+            proposed_price_sar=approved_inputs.proposed_price_sar,
+            gross_margin_pct=assessment.gross_margin_pct,
+            contribution_margin_pct=assessment.contribution_margin_pct,
+            readiness_score=assessment.readiness_score,
+            approval_required=True,
+            external_action_allowed=False,
+            created_by_user_id=user_id,
+            approved_by_user_id=user_id,
+            approval_ref=approval_ref,
+            approved_at=approved_at,
+            inputs_json=approved_inputs.to_dict(),
+            assessment_json=assessment.to_dict(),
+        )
+        session.add(record)
+        _add_audit(
+            session,
+            tenant_id=tenant_id,
+            user_id=user_id,
+            action="commercial_finance.price.approve",
+            entity_id=record.id,
+            diff={
+                "parent_case_id": source_case.id,
+                "approval_ref": approval_ref,
+                "pricing_status": FinancePricingStatus.FOUNDER_APPROVED.value,
+                "decision": assessment.decision.value,
+                "external_action_allowed": False,
+            },
+        )
+        await _commit(session, conflict="commercial_finance_price_approval_conflict")
+    return {
+        "status": "approved_record_created",
+        "finance_case": _finance_case_response(record),
+        "external_side_effect": False,
+    }
+
+
 @router.post("/opportunities/{opportunity_id}/buyer-decision-plan")
 async def build_opportunity_buyer_decision_plan(
     opportunity_id: str,
@@ -514,6 +856,25 @@ async def build_opportunity_buyer_decision_plan(
             )
             for record in source_records
         }
+        finance_records = (
+            (
+                await session.execute(
+                    select(CommercialFinanceCaseRecord)
+                    .where(
+                        CommercialFinanceCaseRecord.tenant_id == tenant_id,
+                        CommercialFinanceCaseRecord.opportunity_id == opportunity.id,
+                    )
+                    .order_by(
+                        CommercialFinanceCaseRecord.created_at.desc(),
+                        CommercialFinanceCaseRecord.id.desc(),
+                    )
+                    .limit(1)
+                )
+            )
+            .scalars()
+            .all()
+        )
+        latest_finance_case = finance_records[0] if finance_records else None
 
     evidence = tuple(
         PersuasionEvidence(
@@ -557,7 +918,15 @@ async def build_opportunity_buyer_decision_plan(
         relationship_permission_state=(
             relationship.permission_state if relationship else "research_only"
         ),
-        pricing_decision=PricingDecision.CATALOG_RECONCILIATION_REQUIRED,
+        pricing_decision=(
+            PricingDecision.FOUNDER_APPROVED
+            if latest_finance_case is not None
+            and getattr(latest_finance_case, "pricing_status", None)
+            == FinancePricingStatus.FOUNDER_APPROVED.value
+            and getattr(latest_finance_case, "decision", None)
+            == CommercialFinanceDecision.PURSUE.value
+            else PricingDecision.CATALOG_RECONCILIATION_REQUIRED
+        ),
         requested_discount_pct=body.requested_discount_pct,
         non_standard_terms_requested=body.non_standard_terms_requested,
     )
@@ -574,6 +943,7 @@ async def snapshot(current_user: Any = Depends(get_current_user)) -> dict[str, A
         StrategicRelationshipRecord,
         CommercialOpportunityRecord,
         CommercialOpportunitySignalRecord,
+        CommercialFinanceCaseRecord,
     )
     async with async_session_factory()() as session:
         try:
@@ -596,6 +966,45 @@ async def snapshot(current_user: Any = Depends(get_current_user)) -> dict[str, A
                 )
                 or 0
             )
+            ranked_finance_cases = (
+                select(
+                    CommercialFinanceCaseRecord.opportunity_id.label("opportunity_id"),
+                    CommercialFinanceCaseRecord.decision.label("decision"),
+                    CommercialFinanceCaseRecord.pricing_status.label("pricing_status"),
+                    func.row_number()
+                    .over(
+                        partition_by=CommercialFinanceCaseRecord.opportunity_id,
+                        order_by=(
+                            CommercialFinanceCaseRecord.created_at.desc(),
+                            CommercialFinanceCaseRecord.id.desc(),
+                        ),
+                    )
+                    .label("row_number"),
+                )
+                .where(CommercialFinanceCaseRecord.tenant_id == tenant_id)
+                .subquery()
+            )
+            finance_summary = (
+                await session.execute(
+                    select(
+                        func.count().label("latest_cases"),
+                        func.count()
+                        .filter(
+                            ranked_finance_cases.c.decision
+                            == CommercialFinanceDecision.PURSUE.value
+                        )
+                        .label("pursue_cases"),
+                        func.count()
+                        .filter(
+                            ranked_finance_cases.c.pricing_status
+                            == FinancePricingStatus.FOUNDER_APPROVED.value
+                        )
+                        .label("approved_price_cases"),
+                    )
+                    .select_from(ranked_finance_cases)
+                    .where(ranked_finance_cases.c.row_number == 1)
+                )
+            ).one()
         except Exception as exc:
             raise HTTPException(503, "commercial_intelligence_database_unreachable") from exc
     return {
@@ -610,11 +1019,18 @@ async def snapshot(current_user: Any = Depends(get_current_user)) -> dict[str, A
                     "relationships",
                     "opportunities",
                     "opportunity_signal_edges",
+                    "finance_cases",
                 ),
                 counts,
             )
         ),
         "high_priority_opportunities": high_priority,
+        "finance_latest": {
+            "cases": int(finance_summary.latest_cases or 0),
+            "pursue": int(finance_summary.pursue_cases or 0),
+            "price_approved": int(finance_summary.approved_price_cases or 0),
+            "latest_case_only": True,
+        },
         "external_action_allowed": False,
     }
 
@@ -792,6 +1208,42 @@ async def list_opportunities(
                 query.order_by(CommercialOpportunityRecord.score.desc()).limit(limit)
             )
         ).scalars().all()
+        opportunity_ids = [record.id for record in records]
+        latest_finance_by_opportunity: dict[str, CommercialFinanceCaseRecord] = {}
+        if opportunity_ids:
+            ranked_finance_ids = (
+                select(
+                    CommercialFinanceCaseRecord.id.label("case_id"),
+                    CommercialFinanceCaseRecord.opportunity_id.label("opportunity_id"),
+                    func.row_number()
+                    .over(
+                        partition_by=CommercialFinanceCaseRecord.opportunity_id,
+                        order_by=(
+                            CommercialFinanceCaseRecord.created_at.desc(),
+                            CommercialFinanceCaseRecord.id.desc(),
+                        ),
+                    )
+                    .label("row_number"),
+                )
+                .where(
+                    CommercialFinanceCaseRecord.tenant_id == tenant_id,
+                    CommercialFinanceCaseRecord.opportunity_id.in_(opportunity_ids),
+                )
+                .subquery()
+            )
+            latest_finance_records = (
+                await session.execute(
+                    select(CommercialFinanceCaseRecord)
+                    .join(
+                        ranked_finance_ids,
+                        ranked_finance_ids.c.case_id == CommercialFinanceCaseRecord.id,
+                    )
+                    .where(ranked_finance_ids.c.row_number == 1)
+                )
+            ).scalars().all()
+            latest_finance_by_opportunity = {
+                record.opportunity_id: record for record in latest_finance_records
+            }
     return {
         "count": len(records),
         "items": [
@@ -811,6 +1263,11 @@ async def list_opportunities(
                 "next_action": item.next_action,
                 "proof_target": item.proof_target,
                 "approval_required": item.approval_required,
+                "latest_finance_case": (
+                    _finance_case_response(latest_finance_by_opportunity[item.id])
+                    if item.id in latest_finance_by_opportunity
+                    else None
+                ),
                 "external_action_allowed": False,
             }
             for item in records

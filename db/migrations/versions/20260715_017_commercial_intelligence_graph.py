@@ -12,9 +12,9 @@ from alembic import op
 from sqlalchemy.dialects.postgresql import JSONB
 
 revision: str = "20260715_017_commercial_intelligence"
-down_revision: Union[str, None] = "20260715_016_company_targeting"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = "20260715_016_company_targeting"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -194,7 +194,7 @@ def upgrade() -> None:
         ("ix_commercial_intelligence_opportunities_tenant_id", ["tenant_id"]),
         ("ix_commercial_intelligence_opportunities_account_id", ["account_id"]),
         ("ix_commercial_intelligence_opportunities_company_name", ["company_name"]),
-        ("ix_commercial_intelligence_opportunities_department_objective_id", ["department_objective_id"]),
+        ("ix_commercial_intel_opportunity_objective_id", ["department_objective_id"]),
         ("ix_commercial_intelligence_opportunities_relationship_id", ["relationship_id"]),
         ("ix_commercial_intelligence_opportunities_offer_id", ["offer_id"]),
         ("ix_commercial_intelligence_opportunities_stage", ["stage"]),
@@ -238,8 +238,105 @@ def upgrade() -> None:
         ["tenant_id", "opportunity_id"],
     )
 
+    op.create_table(
+        "commercial_opportunity_finance_cases",
+        sa.Column("id", sa.String(64), primary_key=True),
+        sa.Column("tenant_id", sa.String(64), nullable=False),
+        sa.Column(
+            "opportunity_id",
+            sa.String(64),
+            sa.ForeignKey("commercial_intelligence_opportunities.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
+        sa.Column(
+            "parent_case_id",
+            sa.String(64),
+            sa.ForeignKey("commercial_opportunity_finance_cases.id", ondelete="RESTRICT"),
+            nullable=True,
+        ),
+        sa.Column("offer_id", sa.String(64), nullable=False),
+        sa.Column("offer_class", sa.String(32), nullable=False),
+        sa.Column("pricing_status", sa.String(32), nullable=False),
+        sa.Column("decision", sa.String(32), nullable=False),
+        sa.Column("currency", sa.String(8), nullable=False, server_default="SAR"),
+        sa.Column("proposed_price_sar", sa.Numeric(14, 2), nullable=False),
+        sa.Column("gross_margin_pct", sa.Numeric(7, 2), nullable=False),
+        sa.Column("contribution_margin_pct", sa.Numeric(7, 2), nullable=False),
+        sa.Column("readiness_score", sa.Integer(), nullable=False),
+        sa.Column("approval_required", sa.Boolean(), nullable=False, server_default=sa.true()),
+        sa.Column(
+            "external_action_allowed",
+            sa.Boolean(),
+            nullable=False,
+            server_default=sa.false(),
+        ),
+        sa.Column(
+            "created_by_user_id",
+            sa.String(64),
+            sa.ForeignKey("users.id", ondelete="RESTRICT"),
+            nullable=False,
+        ),
+        sa.Column(
+            "approved_by_user_id",
+            sa.String(64),
+            sa.ForeignKey("users.id", ondelete="RESTRICT"),
+            nullable=True,
+        ),
+        sa.Column("approval_ref", sa.String(128), nullable=True),
+        sa.Column("approved_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("inputs_json", JSONB, nullable=False),
+        sa.Column("assessment_json", JSONB, nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
+        sa.UniqueConstraint(
+            "tenant_id", "parent_case_id",
+            name="uq_commercial_finance_parent_case",
+        ),
+        sa.UniqueConstraint(
+            "tenant_id", "approval_ref",
+            name="uq_commercial_finance_approval_ref",
+        ),
+        sa.CheckConstraint(
+            "readiness_score >= 0 AND readiness_score <= 100",
+            name="ck_commercial_finance_readiness_score",
+        ),
+        sa.CheckConstraint(
+            "approval_required IS TRUE",
+            name="ck_commercial_finance_approval_required",
+        ),
+        sa.CheckConstraint(
+            "external_action_allowed IS FALSE",
+            name="ck_commercial_finance_no_external_action",
+        ),
+        sa.CheckConstraint(
+            "pricing_status IN ('draft', 'founder_approved')",
+            name="ck_commercial_finance_pricing_status",
+        ),
+        sa.CheckConstraint(
+            "decision IN ('pursue', 'review', 'stop')",
+            name="ck_commercial_finance_decision",
+        ),
+    )
+    for name, columns in (
+        ("ix_commercial_finance_tenant_id", ["tenant_id"]),
+        ("ix_commercial_finance_opportunity_id", ["opportunity_id"]),
+        ("ix_commercial_finance_parent_case_id", ["parent_case_id"]),
+        ("ix_commercial_finance_offer_id", ["offer_id"]),
+        ("ix_commercial_finance_offer_class", ["offer_class"]),
+        ("ix_commercial_finance_pricing_status", ["pricing_status"]),
+        ("ix_commercial_finance_decision", ["decision"]),
+        ("ix_commercial_finance_created_by", ["created_by_user_id"]),
+        ("ix_commercial_finance_approved_by", ["approved_by_user_id"]),
+    ):
+        op.create_index(name, "commercial_opportunity_finance_cases", columns)
+    op.create_index(
+        "ix_commercial_finance_latest_case",
+        "commercial_opportunity_finance_cases",
+        ["tenant_id", "opportunity_id", "created_at"],
+    )
+
 
 def downgrade() -> None:
+    op.drop_table("commercial_opportunity_finance_cases")
     op.drop_table("commercial_opportunity_signals")
     op.drop_table("commercial_intelligence_opportunities")
     op.drop_table("commercial_strategic_relationships")

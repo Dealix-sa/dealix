@@ -15,8 +15,34 @@ interface Snapshot {
     relationships: number;
     opportunities: number;
     opportunity_signal_edges: number;
+    finance_cases: number;
   };
   high_priority_opportunities: number;
+  finance_latest: {
+    cases: number;
+    pursue: number;
+    price_approved: number;
+    latest_case_only: boolean;
+  };
+  external_action_allowed: boolean;
+}
+
+interface FinanceCase {
+  id: string;
+  pricing_status: "draft" | "founder_approved";
+  decision: "pursue" | "review" | "stop";
+  proposed_price_sar: string;
+  readiness_score: number;
+  price_approved: boolean;
+  approval_ref: string | null;
+  assessment: {
+    gross_margin_pct: string;
+    contribution_margin_pct: string;
+    blockers: string[];
+    evidence_gaps: string[];
+    customer_roi_used_in_decision: boolean;
+    external_action_allowed: boolean;
+  };
   external_action_allowed: boolean;
 }
 
@@ -54,6 +80,7 @@ interface Opportunity {
   next_action: string;
   proof_target: string;
   approval_required: boolean;
+  latest_finance_case: FinanceCase | null;
   external_action_allowed: boolean;
 }
 
@@ -221,9 +248,14 @@ export default function CommercialIntelligencePage() {
             <MetricCard value={String(snapshot.counts.objectives)} label="أهداف إدارات · Objectives" />
             <MetricCard value={String(snapshot.counts.relationships)} label="علاقات استراتيجية · Relationships" />
             <MetricCard value={String(snapshot.counts.opportunities)} label="فرص حقيقية · Opportunities" />
+            <MetricCard value={String(snapshot.counts.finance_cases)} label="حالات مالية · Finance cases" />
             <MetricCard
               value={String(snapshot.high_priority_opportunities)}
               label="أولوية عالية · High priority"
+            />
+            <MetricCard
+              value={String(snapshot.finance_latest.price_approved)}
+              label="أسعار معتمدة · Approved prices"
             />
           </section>
 
@@ -292,6 +324,7 @@ export default function CommercialIntelligencePage() {
                         "الدرجة",
                         "الإجراء التالي",
                         "الاعتماد",
+                        "القرار المالي",
                         "مسار القرار",
                       ].map((label) => (
                         <th key={label} style={{ textAlign: "right", padding: 12, borderBottom: "1px solid rgba(255,255,255,.12)" }}>
@@ -315,6 +348,28 @@ export default function CommercialIntelligencePage() {
                           <span className="badge badge-amber">
                             {opportunity.approval_required ? "موافقة مطلوبة" : "—"}
                           </span>
+                        </td>
+                        <td style={{ padding: 12, minWidth: 210 }}>
+                          {opportunity.latest_finance_case ? (
+                            <div>
+                              <span
+                                className={`badge ${
+                                  opportunity.latest_finance_case.decision === "pursue"
+                                    ? "badge-emerald"
+                                    : "badge-amber"
+                                }`}
+                              >
+                                {opportunity.latest_finance_case.decision} · جاهزية {opportunity.latest_finance_case.readiness_score}/100
+                              </span>
+                              <div className="stat-label" style={{ marginTop: 6 }}>
+                                هامش إجمالي {opportunity.latest_finance_case.assessment.gross_margin_pct}% · {opportunity.latest_finance_case.price_approved
+                                  ? `سعر معتمد بسجل ${opportunity.latest_finance_case.approval_ref ?? "موثق"}`
+                                  : "السعر مسودة داخلية وغير قابل للنشر"}
+                              </div>
+                            </div>
+                          ) : (
+                            <span className="stat-label">لم تُسجل حالة مالية بعد</span>
+                          )}
                         </td>
                         <td style={{ padding: 12 }}>
                           <button
@@ -372,7 +427,8 @@ export default function CommercialIntelligencePage() {
                 </article>
               </div>
               <p className="stat-label">
-                لا سعر، لا إرسال، ولا التزام خارجي من هذه الشاشة. كل مخرج مسودة داخلية.
+                لا إرسال ولا التزام خارجي من هذه الشاشة. لا يُعامل السعر كمعتمد إلا إذا كانت أحدث حالة مالية
+                pursue وتحمل اعتماد founder/tenant-admin مستقلًا؛ ROI العميل لا يدخل قرار اقتصاد Dealix.
               </p>
             </section>
           )}

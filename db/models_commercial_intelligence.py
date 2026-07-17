@@ -3,15 +3,18 @@
 from __future__ import annotations
 
 from datetime import datetime
+from decimal import Decimal
 
 from sqlalchemy import (
     JSON,
     Boolean,
+    CheckConstraint,
     DateTime,
     Float,
     ForeignKey,
     Index,
     Integer,
+    Numeric,
     String,
     Text,
     UniqueConstraint,
@@ -157,7 +160,6 @@ class CommercialOpportunityRecord(Base):
     title: Mapped[str] = mapped_column(String(255))
     department_objective_id: Mapped[str] = mapped_column(
         ForeignKey("commercial_department_objectives.id", ondelete="RESTRICT"),
-        index=True,
     )
     relationship_id: Mapped[str | None] = mapped_column(
         ForeignKey("commercial_strategic_relationships.id", ondelete="RESTRICT"),
@@ -191,6 +193,10 @@ class CommercialOpportunityRecord(Base):
             "ix_commercial_intel_opportunity_queue",
             "tenant_id", "status", "stage", "score",
         ),
+        Index(
+            "ix_commercial_intel_opportunity_objective_id",
+            "department_objective_id",
+        ),
     )
 
 
@@ -219,7 +225,90 @@ class CommercialOpportunitySignalRecord(Base):
     )
 
 
+class CommercialFinanceCaseRecord(Base):
+    """Immutable, evidence-bound Dealix economics case for an opportunity."""
+
+    __tablename__ = "commercial_opportunity_finance_cases"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    tenant_id: Mapped[str] = mapped_column(String(64), index=True)
+    opportunity_id: Mapped[str] = mapped_column(
+        ForeignKey("commercial_intelligence_opportunities.id", ondelete="CASCADE"),
+        index=True,
+    )
+    parent_case_id: Mapped[str | None] = mapped_column(
+        ForeignKey("commercial_opportunity_finance_cases.id", ondelete="RESTRICT"),
+        nullable=True,
+        index=True,
+    )
+    offer_id: Mapped[str] = mapped_column(String(64), index=True)
+    offer_class: Mapped[str] = mapped_column(String(32), index=True)
+    pricing_status: Mapped[str] = mapped_column(String(32), index=True)
+    decision: Mapped[str] = mapped_column(String(32), index=True)
+    currency: Mapped[str] = mapped_column(String(8), default="SAR")
+    proposed_price_sar: Mapped[Decimal] = mapped_column(Numeric(14, 2))
+    gross_margin_pct: Mapped[Decimal] = mapped_column(Numeric(7, 2))
+    contribution_margin_pct: Mapped[Decimal] = mapped_column(Numeric(7, 2))
+    readiness_score: Mapped[int] = mapped_column(Integer)
+    approval_required: Mapped[bool] = mapped_column(Boolean, default=True)
+    external_action_allowed: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_by_user_id: Mapped[str] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"),
+        index=True,
+    )
+    approved_by_user_id: Mapped[str | None] = mapped_column(
+        ForeignKey("users.id", ondelete="RESTRICT"),
+        nullable=True,
+        index=True,
+    )
+    approval_ref: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    approved_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    inputs_json: Mapped[dict] = mapped_column(JSON)
+    assessment_json: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+    __table_args__ = (
+        UniqueConstraint(
+            "tenant_id", "parent_case_id",
+            name="uq_commercial_finance_parent_case",
+        ),
+        UniqueConstraint(
+            "tenant_id", "approval_ref",
+            name="uq_commercial_finance_approval_ref",
+        ),
+        CheckConstraint(
+            "readiness_score >= 0 AND readiness_score <= 100",
+            name="ck_commercial_finance_readiness_score",
+        ),
+        CheckConstraint(
+            "approval_required IS TRUE",
+            name="ck_commercial_finance_approval_required",
+        ),
+        CheckConstraint(
+            "external_action_allowed IS FALSE",
+            name="ck_commercial_finance_no_external_action",
+        ),
+        CheckConstraint(
+            "pricing_status IN ('draft', 'founder_approved')",
+            name="ck_commercial_finance_pricing_status",
+        ),
+        CheckConstraint(
+            "decision IN ('pursue', 'review', 'stop')",
+            name="ck_commercial_finance_decision",
+        ),
+        Index(
+            "ix_commercial_finance_latest_case",
+            "tenant_id",
+            "opportunity_id",
+            "created_at",
+        ),
+    )
+
+
 __all__ = [
+    "CommercialFinanceCaseRecord",
     "CommercialOpportunityRecord",
     "CommercialOpportunitySignalRecord",
     "CommercialSignalRecord",

@@ -51,6 +51,7 @@ RLS_POLICIES: dict[str, str] = {
     "commercial_strategic_relationships": "tenant_id = current_setting('app.tenant_id', true)",
     "commercial_intelligence_opportunities": "tenant_id = current_setting('app.tenant_id', true)",
     "commercial_opportunity_signals": "tenant_id = current_setting('app.tenant_id', true)",
+    "commercial_opportunity_finance_cases": "tenant_id = current_setting('app.tenant_id', true)",
 }
 
 # Tables that should NOT have RLS (global/system tables)

@@ -24,7 +24,7 @@ class _ScalarResult:
 
 
 class _Session:
-    def __init__(self) -> None:
+    def __init__(self, finance_case: object | None = None) -> None:
         now = datetime.now(UTC)
         self.opportunity = SimpleNamespace(
             id="opp_1",
@@ -70,6 +70,7 @@ class _Session:
             policy_status="approved",
             active=True,
         )
+        self.finance_case = finance_case
         self.execute_calls = 0
 
     async def __aenter__(self) -> "_Session":
@@ -88,7 +89,11 @@ class _Session:
 
     async def execute(self, _: object) -> _ScalarResult:
         self.execute_calls += 1
-        return _ScalarResult([self.signal] if self.execute_calls == 1 else [self.source])
+        if self.execute_calls == 1:
+            return _ScalarResult([self.signal])
+        if self.execute_calls == 2:
+            return _ScalarResult([self.source])
+        return _ScalarResult([self.finance_case] if self.finance_case else [])
 
 
 @pytest.mark.asyncio
@@ -114,3 +119,49 @@ async def test_buyer_decision_endpoint_is_tenant_scoped_and_fail_closed(
     assert result["external_action_allowed"] is False
     assert result["external_commitment_made"] is False
     assert any(item["id"] == "approve_commercial_exception" for item in result["approval_queue"])
+
+
+@pytest.mark.asyncio
+async def test_buyer_decision_only_accepts_latest_pursue_and_approved_finance_case(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    session = _Session(
+        SimpleNamespace(
+            pricing_status="founder_approved",
+            decision="pursue",
+        )
+    )
+    monkeypatch.setattr(router_module, "async_session_factory", lambda: lambda: session)
+
+    result = await router_module.build_opportunity_buyer_decision_plan(
+        "opp_1",
+        BuyerDecisionPlanBody(),
+        current_user={"tenant_id": "tenant-a"},
+    )
+
+    assert result["offer_architecture"]["price_status"] == "founder_approved"
+    assert result["offer_architecture"]["price_sar"] is None
+    assert result["external_action_allowed"] is False
+    assert result["external_commitment_made"] is False
+
+
+@pytest.mark.asyncio
+async def test_buyer_decision_rejects_approved_price_when_latest_finance_says_stop(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    session = _Session(
+        SimpleNamespace(
+            pricing_status="founder_approved",
+            decision="stop",
+        )
+    )
+    monkeypatch.setattr(router_module, "async_session_factory", lambda: lambda: session)
+
+    result = await router_module.build_opportunity_buyer_decision_plan(
+        "opp_1",
+        BuyerDecisionPlanBody(),
+        current_user={"tenant_id": "tenant-a"},
+    )
+
+    assert result["offer_architecture"]["price_status"] == "catalog_reconciliation_required"
+    assert result["price_included"] is False

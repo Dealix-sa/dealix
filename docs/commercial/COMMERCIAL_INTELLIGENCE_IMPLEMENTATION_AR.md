@@ -7,6 +7,7 @@
 - `dealix/commercial_universe.py` يعرّف الحساب والعلاقة والهدف والموافقة.
 - `dealix/company_os/company_directory.py` يحلل دليل الشركات دون تخزين القيم الخام للاتصال.
 - `dealix/commercial_intelligence.py` يقيّم المصدر والإشارة والفرصة مع Evidence Caps.
+- `dealix/commercial_finance.py` يقيّم اقتصاد Dealix نفسه بهوامش وتكلفة واستهلاك قدرة ودليل مصدر.
 - `db/models_commercial_intelligence.py` يحفظ الرسم التجاري متعدد المستأجرين.
 - `api/routers/commercial_intelligence.py` يوفّر قراءة وكتابة داخلية محمية بالمستخدم والمستأجر.
 - Approval Center الحالي يبقى المسار الوحيد لأي قرار خارجي.
@@ -21,6 +22,7 @@
 | `commercial_strategic_relationships` | نوع العلاقة والقيمة المتبادلة والإذن | البيانات العامة لا تعني consent |
 | `commercial_intelligence_opportunities` | العقدة التجارية المربوطة بكل ما سبق | `external_action_allowed=false` دائمًا |
 | `commercial_opportunity_signals` | حواف Evidence فعلية بين الإشارة والفرصة | لا Opportunity Graph قائم على JSON فقط |
+| `commercial_opportunity_finance_cases` | حالات مالية immutable وسلسلة اعتماد السعر | لا تعديل للحالة ولا اعتماد ذاتي ولا فعل خارجي |
 
 Alembic:
 
@@ -42,6 +44,19 @@ Alembic:
 
 الدرجة ليست احتمال إغلاق ولا ضمان إيراد. هي أولوية بحث/تشغيل مقيدة بقوة الدليل.
 
+## Commercial Finance Gate
+
+هذه البوابة لا تستخدم Opportunity Score كاحتمال إغلاق ولا تخلط اقتصاد Dealix مع عائد العميل:
+
+- Gross margin وContribution margin وMargin-floor price.
+- حد الخصم، Payment terms، Upfront cash exposure، واستهلاك القدرة.
+- Break-even وRisk-adjusted contribution.
+- Expected Value لا يُحسب إلا عند توفر low/base/high مع مرجع مصدر، دليل L3 على الأقل، وعينة من خمس حالات على الأقل.
+- الصيغة الوحيدة: `P(close) * gross_profit_if_won - acquisition_cost`.
+- أي Customer ROI يبقى فرضية مستقلة بمرجع مستقل و`customer_roi_used_in_decision=false`.
+
+حالة Finance الأساسية `draft`. لا يستطيع جسم الطلب إرسال `founder_approved`. اعتماد السعر endpoint مستقل بصلاحية `tenant_admin`، يطابق السعر حرفيًا، ثم ينشئ child case غير قابل للتعديل مع approver وapproval reference وAudit Log. حتى الحالة المعتمدة تبقي `approval_required=true` و`external_action_allowed=false` لأن اعتماد السعر لا يساوي إذن إرسال أو تعاقد أو تحصيل.
+
 ## API
 
 Prefix: `/api/v1/commercial-intelligence`
@@ -56,6 +71,7 @@ Prefix: `/api/v1/commercial-intelligence`
 - `GET /relationships`
 - `GET /opportunities`
 - `GET /graph`
+- `GET /opportunities/{opportunity_id}/finance-cases`
 
 كتابة داخلية، tenant-scoped:
 
@@ -64,6 +80,14 @@ Prefix: `/api/v1/commercial-intelligence`
 - `POST /objectives`
 - `POST /relationships`
 - `POST /opportunities`
+- `POST /opportunities/{opportunity_id}/finance-cases` (`sales_manager` أو أعلى)
+- `POST /opportunities/{opportunity_id}/finance-cases/{case_id}/approve-price` (`tenant_admin` أو أعلى)
+
+صلاحيات الكتابة:
+
+- تسجيل مصدر أو اعتماد سعر: `tenant_admin`.
+- تسجيل إشارة أو هدف أو علاقة أو فرصة أو Finance draft: `sales_manager`.
+- جميع القراءات معزولة حسب tenant.
 
 لا يوجد endpoint باسم send، publish، charge، deploy، أو mutate CRM.
 
@@ -85,6 +109,7 @@ python scripts/check_alembic_single_head.py
 - الفرص عالية الأولوية.
 - جودة المصادر وstaleness.
 - أعلى فرص مرتبة مع مستوى الدليل والبلوكيرات.
+- أحدث حالة مالية فقط لكل فرصة: القرار، readiness، gross margin، وحالة اعتماد السعر.
 
 لا تعرض قيم اتصال خام ولا تسمح بإرسال من اللوحة.
 
@@ -97,4 +122,6 @@ python scripts/check_alembic_single_head.py
 - public signals capped at L2.
 - blocked sources rejected.
 - no external side effect path.
+- immutable finance lineage + exact-price approval + audit trail.
+- all PostgreSQL identifiers <= 63 characters.
 - domain, migration, router, runner, and dashboard contract tests pass.

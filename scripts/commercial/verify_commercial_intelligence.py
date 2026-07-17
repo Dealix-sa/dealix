@@ -5,12 +5,20 @@ from __future__ import annotations
 
 import sys
 from datetime import UTC, datetime
+from decimal import Decimal
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from dealix.commercial_finance import (
+    REQUIRED_ECONOMIC_SOURCE_KEYS,
+    CommercialFinanceDecision,
+    CommercialFinanceInputs,
+    OfferEconomicsClass,
+    evaluate_commercial_finance,
+)
 from dealix.commercial_intelligence import (
     EvidenceLevel,
     GovernedSource,
@@ -23,6 +31,7 @@ from dealix.commercial_intelligence import (
 
 REQUIRED = (
     "dealix/commercial_intelligence.py",
+    "dealix/commercial_finance.py",
     "db/models_commercial_intelligence.py",
     "db/migrations/versions/20260715_017_commercial_intelligence_graph.py",
     "api/routers/commercial_intelligence.py",
@@ -69,8 +78,34 @@ def main() -> int:
     if opportunity.external_action_allowed or opportunity.score < 75:
         print("COMMERCIAL_INTELLIGENCE_FOUNDATION=FAIL")
         return 1
+    finance = evaluate_commercial_finance(
+        CommercialFinanceInputs(
+            opportunity_id="opp_verify",
+            offer_id="revenue_proof_sprint",
+            offer_class=OfferEconomicsClass.PRODUCTIZED,
+            list_price_sar=Decimal("10000"),
+            proposed_price_sar=Decimal("9000"),
+            delivery_cost_sar=Decimal("3000"),
+            acquisition_cost_sar=Decimal("500"),
+            upfront_cash_exposure_sar=Decimal("500"),
+            payment_terms_days=30,
+            capacity_required_pct=Decimal("10"),
+            source_refs={
+                key: f"evidence://verification/{key}"
+                for key in REQUIRED_ECONOMIC_SOURCE_KEYS
+            },
+        )
+    )
+    if (
+        finance.decision is not CommercialFinanceDecision.PURSUE
+        or finance.external_action_allowed
+        or finance.customer_roi_used_in_decision
+    ):
+        print("COMMERCIAL_INTELLIGENCE_FOUNDATION=FAIL")
+        return 1
     print("COMMERCIAL_INTELLIGENCE_FOUNDATION=PASS")
-    print("PERSISTENCE_TABLES=6")
+    print("PERSISTENCE_TABLES=7")
+    print(f"COMMERCIAL_FINANCE_DECISION={finance.decision.value}")
     print("EXTERNAL_ACTIONS_EXECUTED=0")
     return 0
 

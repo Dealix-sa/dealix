@@ -22,12 +22,25 @@ EXCLUDED_DIRS = {
     "tests",
 }
 EXCLUDED_SUFFIXES = {".pyc", ".tar.xz", ".zip"}
+LOCAL_ONLY_DIR_NAMES = {
+    ".mypy_cache",
+    ".next",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "__pycache__",
+    "node_modules",
+    "venv",
+}
 SOURCE_BUDGET_BYTES = 60 * 1024 * 1024
 
 
 def _relative_directory_is_excluded(path: Path) -> bool:
-    relative = path.relative_to(ROOT).as_posix()
-    return any(relative == item or relative.startswith(f"{item}/") for item in EXCLUDED_DIRS)
+    relative_path = path.relative_to(ROOT)
+    relative = relative_path.as_posix()
+    return any(part in LOCAL_ONLY_DIR_NAMES for part in relative_path.parts) or any(
+        relative == item or relative.startswith(f"{item}/") for item in EXCLUDED_DIRS
+    )
 
 
 def _suffix_is_excluded(path: Path) -> bool:
