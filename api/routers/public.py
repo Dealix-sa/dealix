@@ -27,6 +27,35 @@ CALENDLY_URL = os.getenv(
 )
 
 
+def _is_free_diagnostic_source(source: str) -> bool:
+    """Return True only for the canonical free-diagnostic intake surfaces."""
+    normalized = source.strip().lower().replace("_", "-")
+    return normalized in {"landing/diagnostic", "landing/free-diagnostic"}
+
+
+def _intake_response(
+    *, source: str, lead_id: str | None, transactional_status: str
+) -> dict[str, Any]:
+    """Keep the free-first funnel explicit and machine-verifiable."""
+    free_diagnostic = _is_free_diagnostic_source(source)
+    return {
+        "ok": True,
+        "calendly_url": None if free_diagnostic else CALENDLY_URL,
+        "message": (
+            "تم استلام الفحص المجاني للمراجعة البشرية — لا دفع أو تفعيل تلقائي"
+            if free_diagnostic
+            else "تم استلام طلبك للمراجعة خلال ساعات العمل"
+        ),
+        "lead_id": lead_id,
+        "transactional_confirmation": transactional_status,
+        "funnel_stage": "free_diagnostic" if free_diagnostic else "demo_request",
+        "next_step": "human_review" if free_diagnostic else "optional_booking",
+        "payment_required": False,
+        "external_action_allowed": False,
+        "governance_decision": "allow",
+    }
+
+
 @router.post("/demo-request")
 async def demo_request(req: Request) -> dict[str, Any]:
     """Public landing form — captures demo request and returns Calendly booking URL."""
@@ -35,10 +64,16 @@ async def demo_request(req: Request) -> dict[str, Any]:
     except Exception as e:
         raise HTTPException(status_code=400, detail="invalid_json") from e
 
+    source = str(body.get("source") or "landing.demo_form")
+
     # Honeypot: if "website" field is filled, silently drop
     if body.get("website"):
         log.info("demo_request_honeypot_triggered")
-        return {"ok": True, "calendly_url": CALENDLY_URL}
+        return _intake_response(
+            source=source,
+            lead_id=None,
+            transactional_status="skipped_honeypot",
+        )
 
     name = str(body.get("name") or "").strip()
     company = str(body.get("company") or "").strip()
@@ -56,12 +91,13 @@ async def demo_request(req: Request) -> dict[str, Any]:
 
     # Fire PostHog event (fire-and-forget — never blocks response)
     try:
+        event = (
+            FUNNEL_EVENTS.DIAGNOSTIC_REQUESTED
+            if _is_free_diagnostic_source(source)
+            else FUNNEL_EVENTS.DEMO_REQUESTED
+        )
         await capture_event(
-            (
-                FUNNEL_EVENTS.DEMO_REQUESTED
-                if hasattr(FUNNEL_EVENTS, "DEMO_REQUESTED")
-                else "demo_requested"
-            ),
+            event,
             distinct_id=email,
             properties={
                 "name": name,
@@ -71,7 +107,7 @@ async def demo_request(req: Request) -> dict[str, Any]:
                 "sector": sector,
                 "size": size,
                 "message_len": len(message),
-                "source": "landing.demo_form",
+                "source": source,
             },
         )
     except Exception:
@@ -92,7 +128,7 @@ async def demo_request(req: Request) -> dict[str, Any]:
             "size": size,
             "message": message,
             "consent": consent,
-            "source": str(body.get("source") or "landing.demo_form"),
+            "source": source,
             "ref": str(body.get("ref") or ""),
         })
         lead_id = rec.get("id")
@@ -132,14 +168,11 @@ async def demo_request(req: Request) -> dict[str, Any]:
         log.exception("transactional_confirmation_failed")
         transactional_status = "exception_caught"
 
-    return {
-        "ok": True,
-        "calendly_url": CALENDLY_URL,
-        "message": "تم استلام طلبك — سنتواصل خلال 4 ساعات عمل",
-        "lead_id": lead_id,
-        "transactional_confirmation": transactional_status,
-        "governance_decision": "allow",
-    }
+    return _intake_response(
+        source=source,
+        lead_id=lead_id,
+        transactional_status=transactional_status,
+    )
 
 
 @router.post("/custom-ai-request")

@@ -54,3 +54,33 @@ The Vercel placeholder-secret failure is real, but it is not evidence that the R
 - No DNS or domain binding was changed.
 - No price, checkout, payment, outbound message, public proof, or customer commitment was changed.
 - No merge to `main` was performed.
+
+## Founder commercial decision — 2026-07-17
+
+The public entry point is now **free diagnostic first**. This is a funnel and trust decision, not approval of a paid offer:
+
+1. a visitor submits the free preliminary diagnostic without a card, payment, password, system connection, or sensitive permission;
+2. the system returns research hypotheses and evidence gaps, not verified prospects or promised outcomes;
+3. a human reviews source quality, fit, risk, and the first-party baseline;
+4. a paid scope may be drafted only when fit exists and both parties separately approve price, duration, data, permissions, success criteria, and stop conditions.
+
+The decision deliberately removes the public shortcut from intake to a 499 SAR / seven-day pilot. It does not choose a replacement paid price or duration. That commercial contract remains unresolved until the production pricing endpoint, PR #923, and founder approval converge on one source of truth.
+
+## Controls added in this change
+
+- Every primary landing CTA routes to `/diagnostic.html`; the public demo and live-prospector forms are removed from the homepage.
+- Free-diagnostic intake returns `funnel_stage=free_diagnostic`, `next_step=human_review`, `payment_required=false`, and `external_action_allowed=false`.
+- Free-diagnostic intake never returns an automatic Calendly handoff.
+- The prospect demo uses synthetic companies, zero scores, no URLs or decision-maker identities, and explicit source-validation and approval gates.
+- Generated prospect outputs are labelled `research_hypotheses` and cannot represent externally actionable leads without validation.
+- The diagnostic page no longer calls the automatic qualification endpoint, exposes a public paid price, or links directly to checkout or paid activation.
+- Server-returned diagnostic plan text is escaped before HTML rendering.
+- Regression contracts cover the public copy, free-first funnel, synthetic demo, URL handling, and forbidden claims.
+
+## Remaining decision gates
+
+- Approve one canonical paid offer, price, and duration before publishing any paid commitment.
+- Reconcile that decision with PR #923 and the live pricing API.
+- Require human legal/security review before client data, integrations, payment, or external sending.
+- Keep this pull request in Draft until GitHub checks and commercial copy review are complete.
+- Merge and production deployment remain separate founder-authorized actions.

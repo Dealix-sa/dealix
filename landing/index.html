@@ -70,8 +70,8 @@
   <div class="announce" role="region" aria-label="حالة المنتج">
     <div class="container announce__inner">
       <span class="pulse" aria-hidden="true"></span>
-      <span data-claim-id="CLM-012">في مرحلة البايلوت — نبحث عن ٥ شركاء تأسيسيين من المؤسسات</span>
-      <a href="#pilot" class="announce__cta">انضم للبايلوت ←</a>
+      <span data-claim-id="CLM-012">ابدأ بفحص مجاني مبدئي — بلا دفع أو ربط أنظمة أو التزام</span>
+      <a href="/diagnostic.html" class="announce__cta">ابدأ الفحص المجاني ←</a>
     </div>
   </div>
 
@@ -136,7 +136,7 @@
 
       <div class="nav__actions">
         <button class="icon-btn" data-theme-toggle aria-label="تبديل الوضع"></button>
-        <a href="/diagnostic.html" class="btn btn--primary btn--sm" data-analytics="cta_nav_diagnostic">ابدأ التشخيص المجّاني</a>
+        <a href="/diagnostic.html" class="btn btn--primary btn--sm" data-analytics="cta_nav_diagnostic">ابدأ الفحص المجاني</a>
         <button class="icon-btn icon-btn--menu" data-menu-toggle aria-label="القائمة" aria-expanded="false">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
         </button>
@@ -165,11 +165,11 @@
           والقرارات تتمّ من واتساب. عربي أوّلاً، بدون cold WhatsApp ولا scraping ولا إرسال حيّ بدون موافقتك.
         </p>
         <div class="hero__ctas">
-          <a href="/diagnostic.html" class="btn btn--primary btn--lg" data-analytics="cta_hero_diagnostic">ابدأ Mini Diagnostic مجّاني</a>
+          <a href="/diagnostic.html" class="btn btn--primary btn--lg" data-analytics="cta_hero_diagnostic">ابدأ الفحص المجاني المبدئي</a>
           <a href="/customer-portal.html" class="btn btn--ghost btn--lg" data-analytics="cta_hero_portal">شاهد لوحة العميل</a>
         </div>
         <p style="margin-top:var(--space-3);font-size:var(--fs-xs);color:var(--text-muted);text-align:center;">
-          ٢ دقيقة · بدون بطاقة ائتمان · المؤسس يراجع شخصياً
+          بدون بطاقة أو دفع · بدون ربط أنظمتك أو منح صلاحيات حساسة · مراجعة بشرية قبل أي عرض مدفوع
         </p>
 
         <!-- Marketing-friendly trust bar — internal service taxonomy moved to /investor.html (founder-gated). -->
@@ -225,7 +225,7 @@
             </div>
             <div class="chat-demo__foot">
               <span class="chat-demo__badge">سيناريو توضيحي · ليس نتيجة عميل أو وعد أداء</span>
-              <a href="#pilot" class="chat-demo__cta">جرّب على شركتك ←</a>
+              <a href="/diagnostic.html" class="chat-demo__cta">ابدأ بالفحص المجاني ←</a>
             </div>
           </div>
         </div>
@@ -402,73 +402,26 @@
       </div>
     </section>
 
-    <!-- ============ PROSPECTOR MACHINE (LIVE) ============ -->
+    <!-- ============ FREE DIAGNOSTIC ENTRY ============ -->
     <section id="prospector" class="section section--muted">
       <div class="container">
         <header class="section__head">
-          <span class="kicker">ماكينة البحث</span>
-          <h2 class="section__title">جرّب ماكينة Dealix للبحث عن leads مباشرة</h2>
-          <p class="section__lead">اكتب وصف العميل المثالي بالعربي — وماكينة Dealix تبحث وتُخرج لك قائمة leads حقيقية مع إشارات الشراء وسطر افتتاحي مخصص. مجاناً، بدون تسجيل.</p>
+          <span class="kicker">البداية التجارية الآمنة</span>
+          <h2 class="section__title">ابدأ بفحص مجاني قبل أي بايلوت أو دفع</h2>
+          <p class="section__lead">نحوّل إجاباتك إلى فرضيات بحثية أولية ومسودة عربية للمراجعة. لا ندّعي أنها leads حقيقية، ولا نسمح بالتواصل الخارجي قبل توثيق المصادر والموافقة البشرية.</p>
         </header>
 
         <div class="prospector" id="prospector-app">
-          <form class="prospector__form" id="prospector-form" autocomplete="off">
-            <div class="prospector__field">
-              <label for="prospector-icp">وصف العميل المثالي (ICP)</label>
-              <textarea
-                id="prospector-icp"
-                name="icp"
-                rows="4"
-                minlength="20"
-                maxlength="2000"
-                required
-                placeholder="مثال: شركات SaaS سعودية B2B بحجم 20-100 موظف تبيع للمطاعم، أحد المؤسسين تعلن عن جولة تمويل في آخر 12 شهر."
-              ></textarea>
-            </div>
-
-            <div class="prospector__row">
-              <div class="prospector__field">
-                <label for="prospector-usecase">حالة الاستخدام</label>
-                <select id="prospector-usecase" name="use_case">
-                  <option value="sales">مبيعات B2B</option>
-                  <option value="partnership">شراكات استراتيجية</option>
-                  <option value="collaboration">تعاون / محتوى</option>
-                  <option value="investor">مستثمرون / VC</option>
-                  <option value="b2c_audience">جمهور B2C</option>
-                </select>
-              </div>
-
-              <div class="prospector__field">
-                <label for="prospector-count">عدد النتائج</label>
-                <select id="prospector-count" name="count">
-                  <option value="5">5</option>
-                  <option value="10" selected>10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                </select>
-              </div>
-
-              <div class="prospector__field prospector__field--submit">
-                <button type="submit" class="btn btn--primary" id="prospector-submit">
-                  ابحث الآن
-                </button>
-              </div>
-            </div>
-
-            <p class="prospector__note">
-              ⚡ نتائج حقيقية من محرك ذكاء اصطناعي — بدون اختلاق أسماء. قد يستغرق 15-45 ثانية.
-            </p>
-          </form>
-
-          <div class="prospector__status" id="prospector-status" hidden></div>
-
-          <div class="prospector__results" id="prospector-results" hidden>
-            <header class="prospector__results-head">
-              <h3>النتائج</h3>
-              <span class="prospector__count" id="prospector-count-out"></span>
-            </header>
-            <div class="prospector__grid" id="prospector-grid"></div>
-            <p class="prospector__notes" id="prospector-notes"></p>
+          <div class="prospector__form" aria-label="مخرجات الفحص المجاني">
+            <h3>ما الذي تحصل عليه مبدئيًا؟</h3>
+            <ul class="plan__list">
+              <li>تلخيص المشكلة والفرص كفرضيات تحتاج تحققًا، لا كحقائق مكتملة أو وعود بنتائج.</li>
+              <li>فجوات البيانات والأسئلة التي يجب حسمها قبل اقتراح نطاق مدفوع.</li>
+              <li>٣ فرص بحثية مرتبة، وكل فرصة تتطلب مصدرًا عامًا وتحققًا بشريًا.</li>
+              <li>مسودة عربية داخلية فقط مع القناة والمخاطرة والخطوة التالية.</li>
+            </ul>
+            <p class="prospector__note">لا بطاقة أو دفع، ولا نطلب كلمة مرور أو ربط CRM أو صلاحية بريد أو واتساب. الإرسال الحي غير مفعّل افتراضيًا، ولا إرسال خارجي في هذه الخطوة.</p>
+            <a href="/diagnostic.html" class="btn btn--primary btn--block" data-analytics="cta_free_diagnostic_static">ابدأ الفحص المجاني</a>
           </div>
         </div>
       </div>
@@ -712,59 +665,59 @@
     <section id="pricing" class="section section--muted">
       <div class="container">
         <header class="section__head">
-          <span class="kicker">الباقات</span>
-          <h2 class="section__title">تسعير متدرّج — أسعار البايلوت قيد الاتفاق</h2>
-          <p class="section__lede">كل باقة تبدأ من نفس القاعدة: نظام قرار موثّق. الاختلاف في الحجم والخدمات.</p>
+          <span class="kicker">ابدأ مجانًا</span>
+          <h2 class="section__title">لا تختَر باقة قبل أن نثبت الملاءمة</h2>
+          <p class="section__lede">المسار التجاري يبدأ بفحص مجاني، ثم مراجعة بشرية، ثم نطاق مدفوع فقط إذا ظهرت ملاءمة واتفق الطرفان على السعر والمدة وحدود التنفيذ.</p>
         </header>
 
         <div class="plans">
           <article class="plan">
-            <h3>Starter</h3>
-            <p class="plan__desc">فريق صغير · مؤسسات ناشئة · صفقات محدودة</p>
+            <h3>١. فحص مجاني</h3>
+            <p class="plan__desc">بدون بطاقة أو دفع أو ربط أنظمة</p>
             <ul class="plan__list">
-              <li>مسار صفقات واحد موثّق</li>
-              <li>تنبيهات تجديد تلقائية</li>
-              <li>تقرير أسبوعي للمؤسس</li>
+              <li>فرضيات أولية قابلة للمراجعة</li>
+              <li>فجوات الأدلة والبيانات</li>
+              <li>خطوة تالية آمنة</li>
             </ul>
-            <a href="#pilot" class="btn btn--ghost btn--block">تواصل معنا</a>
+            <a href="/diagnostic.html" class="btn btn--ghost btn--block">ابدأ مجانًا</a>
           </article>
           <article class="plan plan--highlight">
-            <div class="plan__badge">الأكثر طلباً</div>
-            <h3>Growth</h3>
-            <p class="plan__desc">SaaS B2B · مؤسسات بين 20–200 موظف</p>
+            <div class="plan__badge">بوابة الثقة</div>
+            <h3>٢. مراجعة بشرية</h3>
+            <p class="plan__desc">تثبيت المصدر والملاءمة والمخاطر</p>
             <ul class="plan__list">
-              <li>كل ما في Starter</li>
-              <li>سلسلة موافقات متعددة المستويات</li>
-              <li>تكامل CRM / ERP عبر API</li>
-              <li>مسودات واتساب بعد consent وبموافقة بشرية؛ الإرسال الحي غير مفعّل افتراضيًا</li>
+              <li>فحص الادعاءات والافتراضات</li>
+              <li>تحديد baseline قابل للقياس</li>
+              <li>قرار: توقف أو متابعة</li>
+              <li>لا إرسال أو التزام أو شحن بدون الموافقة المطلوبة</li>
             </ul>
-            <a href="#pilot" class="btn btn--primary btn--block">تواصل معنا</a>
+            <a href="/diagnostic.html" class="btn btn--primary btn--block">ابدأ بالفحص المجاني</a>
           </article>
           <article class="plan">
-            <h3>Scale</h3>
-            <p class="plan__desc">المؤسسات متعددة الفرق · +200 موظف</p>
+            <h3>٣. نطاق مدفوع اختياري</h3>
+            <p class="plan__desc">فقط عند ثبوت الملاءمة وموافقة الطرفين</p>
             <ul class="plan__list">
-              <li>كل ما في Growth</li>
-              <li>Partnership OS كامل</li>
-              <li>Executive Control Room</li>
-              <li>SLA مخصص</li>
+              <li>سعر ومدة ونطاق مكتوبة بوضوح</li>
+              <li>معايير نجاح وإيقاف متفق عليها</li>
+              <li>صلاحيات محدودة وقابلة للإلغاء</li>
+              <li>لا دفع تلقائي من الفحص</li>
             </ul>
-            <a href="#pilot" class="btn btn--ghost btn--block">تواصل معنا</a>
+            <a href="/diagnostic.html" class="btn btn--ghost btn--block">ابدأ بالفحص المجاني</a>
           </article>
           <article class="plan">
             <h3>Enterprise</h3>
-            <p class="plan__desc">بنوك · جهات منظّمة · قطاع حكومي</p>
+            <p class="plan__desc">تقييم قانوني وأمني إضافي قبل بيانات العميل</p>
             <ul class="plan__list">
-              <li>كل ما في Scale</li>
               <li>تقييم خيار استضافة داخل KSA ضمن النطاق والعقد</li>
               <li>Data Processing Agreement مخصص</li>
               <li>مراجعة قانونية مشتركة</li>
+              <li>اعتماد الصلاحيات والتكاملات قبل التفعيل</li>
             </ul>
-            <a href="#pilot" class="btn btn--ghost btn--block">تواصل معنا</a>
+            <a href="/diagnostic.html" class="btn btn--ghost btn--block">ابدأ بالفحص المجاني</a>
           </article>
         </div>
 
-        <p class="plans__note" data-claim-id="CLM-012">أسعار البايلوت خاصة للشركاء التأسيسيين الخمسة الأوائل مع تأثير مباشر على خارطة المنتج.</p>
+        <p class="plans__note" data-claim-id="CLM-012">لا يوجد التزام مدفوع في الخطوة الأولى. لا يُعتمد سعر أو مدة أو بايلوت إلا بعد الفحص والمراجعة والاتفاق الصريح.</p>
       </div>
     </section>
 
@@ -772,16 +725,16 @@
     <section id="proof" class="section">
       <div class="container proof">
         <div class="proof__content">
-          <span class="kicker">مرحلة البايلوت</span>
+          <span class="kicker">مرحلة التحقق</span>
           <h2 class="proof__title">لا شعارات مزيفة. لا شهادات مزوّرة. لا حالات استعانة وهمية.</h2>
           <p class="proof__lede">نحن في مرحلة بناء وتحقّق — ونبحث عن <strong>٥ شركاء تأسيسيين</strong> من مؤسسات الخليج يريدون تشكيل المنتج معنا.</p>
           <ul class="proof__list">
-            <li>سعر خاص للمبكّرين</li>
+            <li>الفحص الأول مجاني بلا التزام</li>
             <li>تأثير مباشر على خارطة الطريق</li>
             <li>أولوية في الدعم</li>
             <li>نطاق Pilot محدد + شرط إيقاف واضح</li>
           </ul>
-          <a href="#pilot" class="btn btn--primary">قدّم للبايلوت ←</a>
+          <a href="/diagnostic.html" class="btn btn--primary">ابدأ بالفحص المجاني ←</a>
         </div>
         <aside class="proof__card">
           <div class="proof__card-head">
@@ -824,6 +777,10 @@
         </header>
 
         <div class="faq__list">
+          <details class="faq__item"><summary>ما الخطوة الأولى؟ وهل هي مجانية فعلًا؟</summary><p>نعم. البداية فحص مجاني مبدئي بلا بطاقة أو دفع. لا نطلب كلمة مرور أو ربط CRM أو منح صلاحيات للبريد أو واتساب. يراجع الإنسان المخرجات، وإذا لم تظهر ملاءمة نتوقف بلا التزام.</p></details>
+
+          <details class="faq__item"><summary>هل يبدأ بايلوت أو اشتراك تلقائيًا بعد الفحص؟</summary><p>لا. الفحص لا ينشئ حجزًا أو دفعًا أو عقدًا أو إرسالًا خارجيًا. أي نطاق مدفوع يحتاج مراجعة بشرية واتفاقًا صريحًا منفصلًا على السعر والمدة والبيانات والصلاحيات.</p></details>
+
           <details class="faq__item"><summary>عندنا CRM — لماذا نحتاج Dealix؟</summary><p data-claim-id="CLM-007">Dealix لا يحل محل CRM — يجلس فوقه ويُشغّل القرارات التي CRM لا يستطيع اتخاذها: مَن وافق على هذا الخصم؟ لماذا هذا العقد لم يُجدَّد؟ ما القرارات المعلقة؟ هذه أسئلة نظام تشغيل، ليس CRM.</p></details>
 
           <details class="faq__item"><summary>عندنا Power BI / Tableau — كيف يختلف Dealix؟</summary><p>BI يُخبركم بما حدث — Dealix يُنفّذ ما يجب أن يحدث قبل الحدث وأثناءه. ينبّه قبل انتهاء العقد، يوقف خصماً تجاوز الحد، يُطلق workflow الاعتماد.</p></details>
@@ -838,7 +795,7 @@
 
           <details class="faq__item"><summary>السعر — كيف تحسبون القيمة؟</summary><p>نحسب سيناريو ROI من baseline يوافق عليه العميل: عدد القرارات، قيمة الصفقات، الخصومات، زمن الدورة وتكلفة التنفيذ. أي رقم قبل ربط هذه المدخلات بمرجع العميل هو مثال حسابي فقط، وليس نتيجة متحققة أو وعد أداء. سعر البايلوت لا يُعتمد إلا بعد اتفاق النطاق.</p></details>
 
-          <details class="faq__item"><summary>ليس لديكم مراجع محلية بعد — لماذا نبدأ معكم؟</summary><p data-claim-id="CLM-012">صحيح — نحن في مرحلة Pilot. نُقدّم شروط الشريك التأسيسي: سعر خاص، تأثير على المنتج، أولوية الدعم. النطاق محدد وشرط الإيقاف واضح. الخطر محدود والعائد محدد.</p></details>
+          <details class="faq__item"><summary>ليس لديكم مراجع محلية بعد — لماذا نبدأ معكم؟</summary><p data-claim-id="CLM-012">صحيح — نحن في مرحلة تحقق. لذلك نبدأ بفحص مجاني، نُظهر الفرضيات ومصادرها وحدودها، ونضع شرط إيقاف واضحًا قبل أي التزام. لا ندّعي نتيجة عميل غير موثقة ولا نعد بعائد محدد.</p></details>
 
           <details class="faq__item"><summary>هل أنتم شركاء SAMA معتمدون؟</summary><p data-claim-id="CLM-008">لا — لا ندّعي اعتماد SAMA. نحن مُصمَّمون وفق متطلبات SAMA و SDAIA و NCA و ZATCA في التصميم التقني. الاعتماد الرسمي في خارطة الطريق.</p></details>
 
@@ -847,95 +804,26 @@
       </div>
     </section>
 
-    <!-- ============ CTA / PILOT FORM ============ -->
+    <!-- ============ FREE DIAGNOSTIC CTA ============ -->
     <section id="pilot" class="section cta-section">
       <div class="container cta">
         <div class="cta__copy">
-          <span class="kicker kicker--invert">احجز جلسة تعريف</span>
-          <h2 class="cta__title">٣٠ دقيقة — نفهم وضعكم الحالي ونريكم النظام على بياناتكم</h2>
-          <p class="cta__lede">لا عرض بيع ممل. نبدأ بخمسة أسئلة تكشف أين القيمة الحقيقية في مؤسستكم — ثم نريكم Dealix على سيناريو فعلي من واقعكم.</p>
+          <span class="kicker kicker--invert">ابدأ مجانًا</span>
+          <h2 class="cta__title">أرسل الفحص المبدئي قبل أي مكالمة أو التزام</h2>
+          <p class="cta__lede">ستجيب عن أسئلة قصيرة عن الشركة والمشكلة. يعرض النظام تشخيصًا أوليًا، ثم يراجع الإنسان الملاءمة والأدلة قبل اقتراح أي خطوة مدفوعة.</p>
           <ul class="cta__bullets">
-            <li>تُراجع الطلبات في ساعات العمل ويُقاس زمن الرد الفعلي</li>
-            <li>مراسل واحد مخصص — لا سلاسل فرق مبيعات</li>
-            <li>شرط الإيقاف والالتزامات المالية يُحددان بوضوح في نطاق الـ Pilot قبل البدء</li>
+            <li>لا بطاقة، لا دفع، ولا اشتراك تلقائي</li>
+            <li>لا نطلب كلمات مرور أو ربط أنظمة أو صلاحيات حساسة</li>
+            <li>لا إرسال خارجي، ولا نعد بنتيجة محددة</li>
           </ul>
         </div>
 
-        <form class="cta-form" id="demoForm" novalidate aria-labelledby="cta-form-title">
-          <h3 id="cta-form-title" class="cta-form__title">طلب تجربة</h3>
-
-          <div class="field">
-            <label for="f-name">الاسم الكامل <span aria-hidden="true">*</span></label>
-            <input id="f-name" name="name" type="text" required autocomplete="name" placeholder="مثال: محمد السبيعي" />
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="f-company">الشركة <span aria-hidden="true">*</span></label>
-              <input id="f-company" name="company" type="text" required autocomplete="organization" placeholder="اسم الشركة" />
-            </div>
-            <div class="field">
-              <label for="f-size">الحجم</label>
-              <select id="f-size" name="size">
-                <option value="">اختر الحجم</option>
-                <option value="1-20">1–20 موظف</option>
-                <option value="21-100">21–100 موظف</option>
-                <option value="101-500">101–500 موظف</option>
-                <option value="501-2000">501–2000 موظف</option>
-                <option value="2000+">+2000 موظف</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="f-sector">القطاع <span aria-hidden="true">*</span></label>
-              <select id="f-sector" name="sector" required>
-                <option value="">اختر القطاع</option>
-                <option value="saas">SaaS B2B</option>
-                <option value="banking">بنوك وخدمات مالية</option>
-                <option value="enterprise">مؤسسة كبيرة متعددة الفرق</option>
-                <option value="distribution">توزيع وسلاسل إمداد</option>
-                <option value="government">حكومي / شبه حكومي</option>
-                <option value="other">أخرى</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="f-phone">رقم الجوال <span aria-hidden="true">*</span></label>
-              <input id="f-phone" name="phone" type="tel" required inputmode="tel" autocomplete="tel" placeholder="+966 5X XXX XXXX" pattern="^\+?966\s?5\d{1}\s?\d{3}\s?\d{4}$" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="f-email">البريد الإلكتروني <span aria-hidden="true">*</span></label>
-            <input id="f-email" name="email" type="email" required autocomplete="email" placeholder="you@company.sa" />
-          </div>
-
-          <div class="field">
-            <label for="f-msg">ما أبرز ألم تشغيلي عندكم الآن؟ <span class="optional">(اختياري)</span></label>
-            <textarea id="f-msg" name="message" rows="3" placeholder="مثال: موافقات الخصومات تضيع بين واتساب وإيميل — لا نعرف مَن وافق على ماذا"></textarea>
-          </div>
-
-          <!-- Honeypot (hidden) -->
-          <div class="hp" aria-hidden="true">
-            <label for="f-website">لا تملأ هذا الحقل</label>
-            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" />
-          </div>
-
-          <!-- Consent -->
-          <label class="consent">
-            <input type="checkbox" id="f-consent" name="consent" required />
-            <span>أوافق على معالجة بياناتي وفق سياسة الخصوصية — متوافق مع PDPL.</span>
-          </label>
-
-          <button type="submit" class="btn btn--primary btn--lg btn--block" id="submitBtn">
-            <span class="btn__label">أرسل الطلب</span>
-            <span class="btn__spinner" aria-hidden="true"></span>
-          </button>
-
-          <p id="formResponse" class="form-response" role="status" aria-live="polite"></p>
-          <p class="form-foot">تُراجع الطلبات في ساعات العمل. لا spam. لا سلاسل بريدية.</p>
-        </form>
+        <div class="cta-form" aria-labelledby="cta-form-title">
+          <h3 id="cta-form-title" class="cta-form__title">الفحص المجاني المبدئي</h3>
+          <p>ابدأ من الصفحة المخصصة لتوضيح الغرض من البيانات والمخرجات وحدودها قبل الإرسال.</p>
+          <a href="/diagnostic.html" class="btn btn--primary btn--lg btn--block" data-analytics="cta_final_diagnostic">ابدأ الفحص المجاني</a>
+          <p class="form-foot">لا دفع الآن. لا إرسال خارجي. لا نعد بنتيجة محددة.</p>
+        </div>
       </div>
     </section>
   </main>
@@ -958,7 +846,7 @@
         <div><h4>المنتج</h4><ul><li><a href="#pillars">لماذا Dealix</a></li><li><a href="#how">كيف يعمل</a></li><li><a href="#pricing">الباقات</a></li><li><a href="/status.html">حالة الخدمات</a></li></ul></div>
         <div><h4>قطاعات</h4><ul><li><a href="#sector-saas">SaaS B2B</a></li><li><a href="#sector-banking">البنوك والتمويل</a></li><li><a href="#sector-enterprise">المؤسسات الكبيرة</a></li><li><a href="#sector-government">الحكومي</a></li></ul></div>
         <div><h4>الثقة والامتثال</h4><ul><li><a href="#trust">PDPL · SAMA · NCA</a></li><li><a href="/status.html">Service Readiness Matrix</a></li><li><a href="/privacy.html">سياسة الخصوصية</a></li><li><a href="/terms.html">الشروط</a></li><li><a href="/subprocessors.html">المزوّدون الفرعيّون</a></li><li><a href="/trust-center.html">مركز الامتثال</a></li></ul></div>
-        <div><h4>تواصل</h4><ul><li><a href="mailto:sami.assiri11@gmail.com">sami.assiri11@gmail.com</a></li><li><a href="#pilot">احجز تجربة</a></li></ul></div>
+        <div><h4>تواصل</h4><ul><li><a href="mailto:sami.assiri11@gmail.com">sami.assiri11@gmail.com</a></li><li><a href="/diagnostic.html">ابدأ الفحص المجاني</a></li></ul></div>
       </div>
     </div>
     <div class="container footer__bottom">
