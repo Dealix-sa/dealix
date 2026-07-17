@@ -89,7 +89,7 @@ def test_bilingual_names_present():
 
 # ── Test 4 ────────────────────────────────────────────────────────────
 def test_no_guaranteed_language_anywhere():
-    """Article 8: forbidden tokens 'guaranteed', 'نضمن', 'ROI guaranteed'."""
+    """Article 8: block outcome guarantees in truth and public snapshots."""
     forbidden = [
         re.compile(r"\bguaranteed?\b", re.IGNORECASE),
         re.compile(r"\bguarantee\b", re.IGNORECASE),
@@ -104,6 +104,20 @@ def test_no_guaranteed_language_anywhere():
         for pat in forbidden:
             m = pat.search(text_to_scan)
             assert m is None, f"{o.id}: forbidden token '{m.group(0)}' present"
+
+    repo_root = Path(__file__).resolve().parent.parent
+    public_snapshots = (
+        "apps/web/lib/service-catalog-snapshot.ts",
+        "landing/assets/data/services-catalog.json",
+        "scripts/dealix_pilot_brief.py",
+    )
+    for relative_path in public_snapshots:
+        snapshot = (repo_root / relative_path).read_text(encoding="utf-8")
+        for pat in forbidden:
+            m = pat.search(snapshot)
+            assert m is None, (
+                f"{relative_path}: forbidden token '{m.group(0)}' present"
+            )
 
 
 # ── Test 5 ────────────────────────────────────────────────────────────
@@ -168,3 +182,44 @@ def test_get_offering_lookup_works():
     # SERVICE_IDS frozenset must match
     for o in OFFERINGS:
         assert o.id in SERVICE_IDS
+
+
+# ── Commercial trust regression ──────────────────────────────────────
+def test_no_open_ended_outcome_or_free_work_promises():
+    """#917: catalog language must not guarantee customer outcomes or endless credits."""
+    forbidden = [
+        re.compile(r"work for free", re.IGNORECASE),
+        re.compile(r"work until we do", re.IGNORECASE),
+        re.compile(r"free months?", re.IGNORECASE),
+        re.compile(r"نشتغل بدون مقابل"),
+        re.compile(r"نواصل العمل حتى"),
+        re.compile(r"اشتراكان مجانيان"),
+        re.compile(r"شهر مجاني"),
+        re.compile(r"\+20% reply-rate", re.IGNORECASE),
+        re.compile(r"40%\+ of decision time", re.IGNORECASE),
+        re.compile(r"\+٢٠٪"),
+        re.compile(r"٤٠٪\+"),
+    ]
+    catalog_text = "\n".join(
+        " ".join(
+            (
+                offering.kpi_commitment_ar,
+                offering.kpi_commitment_en,
+                offering.refund_policy_ar,
+                offering.refund_policy_en,
+            )
+        )
+        for offering in OFFERINGS
+    )
+    repo_root = Path(__file__).resolve().parent.parent
+    public_snapshots = "\n".join(
+        (repo_root / path).read_text(encoding="utf-8")
+        for path in (
+            "apps/web/lib/service-catalog-snapshot.ts",
+            "landing/assets/data/services-catalog.json",
+            "scripts/dealix_pilot_brief.py",
+        )
+    )
+    for pattern in forbidden:
+        assert pattern.search(catalog_text) is None, pattern.pattern
+        assert pattern.search(public_snapshots) is None, pattern.pattern

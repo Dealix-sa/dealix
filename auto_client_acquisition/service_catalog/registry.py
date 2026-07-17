@@ -4,8 +4,9 @@ Truth registry. Backend + portal + WhatsApp + landing pages all read from here.
 
 Constitution:
 - Article 4: action_modes never include 'live_send' or 'live_charge'.
-- Article 8: KPI language is commitment ("نشتغل بدون مقابل لو لم يتحقق…"),
-  not guarantee ("نضمن"). All `is_estimate=True`.
+- Article 8: KPI language covers controllable delivery and measurement only.
+  Customer outcomes require a first-party baseline; no open-ended free-work promise.
+  All `is_estimate=True`.
 - Article 11: pricing changes are 1-line edits to this file (no engine code).
 
 Core funnel ladder (ascending for paid one-time services):
@@ -80,15 +81,18 @@ _REVENUE_PROOF_SPRINT = ServiceOffering(
         "Next Best Offer recommendation",
     ),
     kpi_commitment_ar=(
-        "نسلّم ٧ مخرجات في ٧ أيام. إذا لم يصل عدد الفرص ≥١٠، "
-        "نشتغل بدون مقابل حتى نوصل."
+        "نلتزم بتسليم النطاق والمخرجات المعتمدة ضمن الجدول المتفق عليه، "
+        "مع فصل الحقائق والفرضيات وفجوات البيانات."
     ),
     kpi_commitment_en=(
-        "7 deliverables in 7 days. If we don't surface ≥10 opportunities, "
-        "we work for free until we do."
+        "We deliver the approved scope and outputs within the agreed schedule, "
+        "separating facts, hypotheses, and data gaps."
     ),
-    refund_policy_ar="استرداد كامل ١٠٠٪ خلال ١٤ يومًا، بدون أسئلة.",
-    refund_policy_en="Full 100% refund within 14 days, no questions asked.",
+    refund_policy_ar="تُحدد شروط الاسترداد أو رصيد الخدمة في أمر عمل معتمد؛ لا ضمان نتيجة تلقائي.",
+    refund_policy_en=(
+        "Refund or service-credit terms are defined in the approved order form; "
+        "business outcomes are not promised automatically."
+    ),
     action_modes_used=(
         "suggest_only",
         "draft_only",
@@ -126,15 +130,18 @@ _DATA_TO_REVENUE_PACK = ServiceOffering(
         "Decision Passports for top 5",
     ),
     kpi_commitment_ar=(
-        "تنظيف ٤٠٠+ سطر في ١٤ يومًا. إذا لم نصل لـ٢٠ فرصة معتمدة، "
-        "نواصل العمل حتى نوصل."
+        "نلتزم بتنظيف البيانات المتفق عليها وتوثيق التكرار والمصدر والجودة، "
+        "ولا نعد بعدد فرص دون اعتماد العميل."
     ),
     kpi_commitment_en=(
-        "Clean 400+ rows in 14 days. If we don't surface 20 approved "
-        "opportunities, we work until we do."
+        "We clean the agreed dataset and document duplicates, provenance, and "
+        "quality; no opportunity count is promised without customer validation."
     ),
-    refund_policy_ar="استرداد ٧٥٪ إذا لم يتحقق التزام KPI خلال ٢١ يومًا.",
-    refund_policy_en="75% refund if KPI commitment unmet within 21 days.",
+    refund_policy_ar="تُحدد معالجة عدم تسليم النطاق في أمر العمل المعتمد، ولا ترتبط بنتيجة تجارية غير مضمونة.",
+    refund_policy_en=(
+        "Remedies for undelivered scope are defined in the approved order form "
+        "and are separate from business outcomes."
+    ),
     action_modes_used=(
         "suggest_only",
         "draft_only",
@@ -171,15 +178,15 @@ _GROWTH_OPS_MONTHLY = ServiceOffering(
         "Expansion Recommendation",
     ),
     kpi_commitment_ar=(
-        "نلتزم بزيادة معدل الردود +٢٠٪ خلال ٤ أشهر. "
-        "إن لم يتحقق، نشتغل بدون مقابل حتى يتحقق."
+        "نلتزم بإيقاع تشغيلي أسبوعي، ومسودات خاضعة للموافقة، وقياس خط أساس "
+        "ونتيجة؛ أي تحسن في الردود فرضية تُقاس ولا تُضمن."
     ),
     kpi_commitment_en=(
-        "Commit to +20% reply-rate lift in 4 months. "
-        "If not reached, we work for free until reached."
+        "We deliver a weekly operating cadence, approval-gated drafts, and "
+        "baseline/after measurement; reply-rate lift is a measured hypothesis."
     ),
-    refund_policy_ar="استرداد تناسبي للأشهر غير المستخدمة عند عدم تحقيق KPI.",
-    refund_policy_en="Pro-rata refund of unused months if KPI commitment unmet.",
+    refund_policy_ar="تُحدد الإلغاء والاسترداد ورصيد الخدمة في العقد المعتمد وفق النطاق المسلّم.",
+    refund_policy_en="Cancellation, refund, and service-credit terms are defined in the approved contract against delivered scope.",
     action_modes_used=(
         "suggest_only",
         "draft_only",
@@ -217,15 +224,15 @@ _SUPPORT_OS_ADDON = ServiceOffering(
         "SLA breach alerts",
     ),
     kpi_commitment_ar=(
-        "نقلّل وقت الرد الأول إلى ≤٣٠ دقيقة في ساعات العمل. "
-        "إن لم يتحقق، اشتراكان مجانيان."
+        "نلتزم بتصنيف التذاكر ومسودات الرد والتنبيهات وقياس زمن الاستجابة؛ "
+        "أي هدف زمني يعتمد في أمر العمل بعد baseline."
     ),
     kpi_commitment_en=(
-        "Reduce first-response time to ≤30 min business hours. "
-        "If unmet, 2 free months."
+        "We deliver ticket classification, reply drafts, alerts, and response-time "
+        "measurement; any time target is approved after baseline."
     ),
-    refund_policy_ar="استرداد ١٠٠٪ في الشهر الأول إذا لم يلتزم KPI.",
-    refund_policy_en="100% refund in month 1 if KPI commitment unmet.",
+    refund_policy_ar="تُحدد معالجة إخفاق التسليم في أمر العمل؛ أهداف الخدمة تحتاج baseline واعتمادًا صريحًا.",
+    refund_policy_en="Remedies for delivery failure are defined in the order form; service targets require a baseline and explicit approval.",
     action_modes_used=(
         "suggest_only",
         "draft_only",
@@ -265,15 +272,15 @@ _EXECUTIVE_COMMAND_CENTER = ServiceOffering(
         "Next 7 days plan",
     ),
     kpi_commitment_ar=(
-        "نوفر للإدارة ٤٠٪+ من وقت اتخاذ القرار خلال ٤ أشهر. "
-        "إن لم يتحقق، شهر مجاني."
+        "نلتزم بقراءة تنفيذية وسجل قرار ومخاطر وإجراء تالٍ؛ وفر الوقت يُقاس "
+        "من baseline العميل ولا يُضمن."
     ),
     kpi_commitment_en=(
-        "Save executive 40%+ of decision time in 4 months. "
-        "If unmet, 1 free month."
+        "We deliver an executive readout, decision/risk log, and next-action "
+        "cadence; time savings are measured from the customer baseline."
     ),
-    refund_policy_ar="استرداد تناسبي للأشهر غير المستخدمة.",
-    refund_policy_en="Pro-rata refund of unused months.",
+    refund_policy_ar="تُحدد الإلغاء والاسترداد ورصيد الخدمة في العقد المعتمد وفق النطاق المسلّم.",
+    refund_policy_en="Cancellation, refund, and service-credit terms follow the approved contract and delivered scope.",
     action_modes_used=(
         "suggest_only",
         "draft_only",

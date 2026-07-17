@@ -10,9 +10,10 @@ const links = [
   { href: "/book", label: "احجز مراجعة" },
 ];
 
-// Founder command room — live operational surfaces (admin-gated).
+// Live operational surfaces (admin- or tenant-authenticated by route).
 const commandLinks = [
   { href: "/founder/command-room", label: "غرفة القيادة" },
+  { href: "/commercial-intelligence", label: "الذكاء التجاري" },
   { href: "/approvals", label: "الموافقات" },
   { href: "/evidence", label: "سجل الإثبات" },
 ];

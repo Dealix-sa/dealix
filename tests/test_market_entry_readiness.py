@@ -60,12 +60,17 @@ def test_demo_snapshot_fails_closed_without_fake_market_readiness() -> None:
     assert snapshot["external_actions_executed"] == 0
 
 
-def test_pilot_price_is_consistent_across_machine_sources() -> None:
+def test_primary_offer_is_governed_and_legacy_price_stays_internal() -> None:
     audit = audit_pilot_pricing(ROOT)
     assert audit["ok"] is True
-    assert audit["pilot_price"] == 499.0
-    assert set(audit["observed"].values()) == {499.0}
+    assert audit["offer_id"] == "revenue_command_pilot_30d"
+    assert audit["duration_days"] == 30
+    assert audit["pilot_price"] is None
+    assert audit["pricing_status"] == "no_public_amount_until_validation"
     assert audit["publication_status"] == "founder_approval_required"
+    assert audit["legacy_price_consistent"] is True
+    assert audit["legacy_offer_public"] is False
+    assert set(audit["observed"].values()) == {499.0}
 
 
 def test_positive_metric_without_evidence_is_not_accepted() -> None:
@@ -86,6 +91,18 @@ def test_positive_metric_without_evidence_is_not_accepted() -> None:
     assert "غير موثق" in gate["reason_ar"]
 
 
+def test_invalid_observed_at_is_not_accepted_as_evidence() -> None:
+    payload = _evidenced_payload()
+    payload["signals"]["founder_offer_approved"]["observed_at"] = "not-a-timestamp"
+    snapshot = build_market_entry_snapshot(payload, repo_root=ROOT)
+    assert snapshot["stage"] == "evidence_required"
+    gate = next(
+        row for row in snapshot["gates"] if row["gate_id"] == "founder_offer_approved"
+    )
+    assert gate["ok"] is False
+    assert "missing timestamp" in gate["evidence"]
+
+
 def test_all_evidenced_gates_reach_scale_ready() -> None:
     snapshot = build_market_entry_snapshot(_evidenced_payload(), repo_root=ROOT)
     assert snapshot["stage"] == "scale_ready"
@@ -100,6 +117,22 @@ def test_explicit_external_execution_failure_blocks_all_stages() -> None:
     assert snapshot["stage"] == "blocked"
     assert snapshot["public_claims_authorized"] is False
     assert snapshot["external_actions_executed"] == 0
+    blocker = snapshot["next_stage_blockers"][0]
+    assert blocker["gate_id"] == "external_execution_default_off"
+    assert blocker["remediation_ar"]
+
+
+def test_blocked_snapshot_still_writes_fail_closed_report(tmp_path: Path) -> None:
+    payload = _evidenced_payload()
+    payload["signals"]["external_execution_default_off"]["status"] = "fail"
+    snapshot = build_market_entry_snapshot(payload, repo_root=ROOT)
+    written = write_market_entry_artifacts(snapshot, tmp_path)
+    assert len(written) == 12
+    brief = (tmp_path / "founder_market_entry_brief_ar.md").read_text(
+        encoding="utf-8"
+    )
+    assert "external_execution_default_off" in brief
+    assert "أوقف التنفيذ الخارجي افتراضيًا" in brief
 
 
 def test_private_pilot_does_not_require_public_production_gates() -> None:
@@ -137,3 +170,13 @@ def test_input_payload_is_not_mutated() -> None:
     original = deepcopy(payload)
     build_market_entry_snapshot(payload, repo_root=ROOT)
     assert payload == original
+
+def test_market_entry_runbook_matches_founder_offer_decision() -> None:
+    runbook = (ROOT / "docs/commercial/FOUNDER_MARKET_ENTRY_EXECUTION_AR.md").read_text(
+        encoding="utf-8"
+    )
+    assert "Revenue Command Pilot" in runbook
+    assert "30 يومًا" in runbook
+    assert "السعر العام غير معتمد" in runbook
+    assert "السعر الكانوني الفعلي في الكود اليوم" not in runbook
+

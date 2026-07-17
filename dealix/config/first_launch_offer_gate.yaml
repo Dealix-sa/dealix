@@ -1,0 +1,80 @@
+# Governance checkpoint for Dealix's first paid launch motion.
+# This file is not a pricing catalogue and cannot authorize checkout or a quote.
+
+version: "1.0"
+updated: "2026-07-15"
+status: founder_approval_required
+decision_issue: "https://github.com/Dealix-sa/dealix/issues/917"
+
+primary_motion:
+  id: revenue_command_pilot_30d
+  name_ar: "تجربة مركز قيادة الإيرادات — 30 يوماً"
+  name_en: "Revenue Command Pilot — 30 days"
+  duration_days: 30
+  launch_stage: evidence_required
+  public: false
+  checkout_enabled: false
+  external_quote_requires_founder_approval: true
+  scope:
+    - one_icp
+    - one_revenue_workflow
+    - one_first_party_baseline
+    - one_measured_operating_target
+    - weekly_executive_readout
+    - final_proof_pack
+    - stop_expand_or_redesign_decision
+  excluded:
+    - guaranteed_revenue_or_roi
+    - autonomous_external_send
+    - cold_whatsapp_or_linkedin_automation
+    - unapproved_system_or_data_access
+    - open_ended_custom_transformation
+
+icp_hypothesis:
+  status: validate_with_first_five_qualified_conversations
+  segment: "Saudi B2B service businesses with an existing sales tool and weak post-lead operating visibility"
+  operating_signals:
+    - opportunities_without_verified_owner_or_next_action
+    - inconsistent_follow_up_or_response_time
+    - executive_reporting_assembled_manually
+    - existing_crm_without_evidence_governance
+  likely_buyers:
+    - founder_or_general_manager
+    - revenue_or_sales_leader
+  phase_one_exclusions:
+    - public_sector_procurement_without_readiness_review
+    - highly_regulated_workloads_without_legal_and_security_review
+
+pricing_experiment:
+  currency: SAR
+  status: no_public_amount_until_validation
+  public_amount_sar: null
+  qualified_conversations_required: 5
+  canonical_price_source_after_approval: auto_client_acquisition/service_catalog/registry.py
+  approval_owner: founder
+  margin_floor_review_required: true
+  tax_and_einvoice_review_required: true
+
+known_conflicts:
+  - surface: docs/01_go_to_market/COMMAND_SPRINT_OFFER.md
+    observed_offer: "7-day sprint at SAR 499-1,500"
+  - surface: auto_client_acquisition/service_catalog/registry.py
+    observed_offer: "Revenue Proof Sprint at SAR 499"
+  - surface: dealix/config/pricing.yaml
+    observed_offer: "Governed diagnostic from SAR 4,999"
+  - surface: broader_product_catalogues
+    observed_offer: "setup and monthly ranges for Revenue OS and Command Center"
+
+successor_motion:
+  id: monthly_revenue_governance
+  status: quote_only_after_pilot_proof
+  entry_condition: client_accepts_proof_pack_and_expansion_case
+
+hard_gates:
+  - no_public_price_before_founder_approval
+  - no_checkout_before_catalog_contract_test
+  - no_numeric_outcome_claim_without_source_or_estimate_label
+  - no_case_study_without_client_publication_consent
+  - every_external_draft_requires_approval
+  - pdpl_data_map_and_purpose_review_before_customer_data_access
+  - zatca_einvoice_owner_and_acceptance_test_before_live_charge

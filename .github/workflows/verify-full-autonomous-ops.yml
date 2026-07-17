@@ -27,8 +27,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install API deps for smoke import
-        run: pip install -r requirements.txt
+      - name: Install API and test deps for smoke import
+        run: pip install -r requirements-dev.txt
 
       - name: Verify full autonomous ops stack
         env:

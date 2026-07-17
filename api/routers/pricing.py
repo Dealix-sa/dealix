@@ -185,7 +185,41 @@ def _build_plans() -> dict[str, dict[str, Any]]:
 
 
 PLANS: dict[str, dict[str, Any]] = _build_plans()
-ALLOWED_PLANS = frozenset(PLANS)
+
+# Commercial trust gate (#917): test-only plans can never become normal
+# checkout plans merely because they exist in the in-memory catalogue.
+TEST_ONLY_PLANS = frozenset({"pilot_1sar"})
+ALLOWED_PLANS = frozenset(set(PLANS) - TEST_ONLY_PLANS)
+_TRUE_VALUES = frozenset({"1", "true", "yes", "on"})
+
+
+def _flag_enabled(name: str) -> bool:
+    return os.getenv(name, "").strip().lower() in _TRUE_VALUES
+
+
+def _checkout_enabled() -> bool:
+    """Checkout is fail-closed until the founder approves the launch offer."""
+    return _flag_enabled("DEALIX_CHECKOUT_ENABLED")
+
+
+def _test_checkout_enabled() -> bool:
+    """Allow the 1 SAR smoke plan only through an explicit non-production gate."""
+    return (
+        os.getenv("APP_ENV", "").strip().lower() != "production"
+        and _flag_enabled("DEALIX_ENABLE_1SAR_CHECKOUT")
+    )
+
+
+def _public_plan_ids() -> frozenset[str]:
+    """Return explicitly approved public plans; empty is the safe default."""
+    if not _flag_enabled("DEALIX_PUBLIC_PRICING_ENABLED"):
+        return frozenset()
+    requested = {
+        value.strip()
+        for value in os.getenv("DEALIX_PUBLIC_PLAN_IDS", "").split(",")
+        if value.strip()
+    }
+    return frozenset(requested & ALLOWED_PLANS)
 
 
 @router.get("/api/v1/pricing/plans")
@@ -195,10 +229,10 @@ async def list_plans() -> dict[str, Any]:
     Hides `pilot_1sar` (E2E test plan only). Surfaces all other plans including
     one-off pilot, metered LaaS plans, and recurring subscriptions.
     """
-    hidden = {"pilot_1sar"}
+    public_plan_ids = _public_plan_ids()
     plans = {}
     for k, v in PLANS.items():
-        if k in hidden:
+        if k not in public_plan_ids:
             continue
         entry = {
             "name": v["name"],
@@ -209,7 +243,12 @@ async def list_plans() -> dict[str, Any]:
         if v.get("unit"):
             entry["unit"] = v["unit"]
         plans[k] = entry
-    return {"currency": "SAR", "plans": plans}
+    return {
+        "currency": "SAR",
+        "plans": plans,
+        "public_pricing_enabled": bool(public_plan_ids),
+        "status": "approved" if public_plan_ids else "founder_approval_required",
+    }
 
 
 @router.post("/api/v1/pricing/usage")
@@ -330,7 +369,8 @@ async def pricing_menu() -> dict[str, Any]:
         "currency": "SAR",
         "plans": {k: v for k, v in PLANS.items() if k != "pilot_1sar"},
         "service_catalog": catalog,
-        "sales_ready": True,
+        "sales_ready": _checkout_enabled(),
+        "checkout_status": "enabled" if _checkout_enabled() else "founder_approval_required",
     }
 
 
@@ -341,7 +381,12 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     email = str(body.get("email") or "").strip()
     lead_id = str(body.get("lead_id") or "")
 
-    if plan not in ALLOWED_PLANS:
+    if not _checkout_enabled():
+        raise HTTPException(status_code=503, detail="checkout_not_founder_approved")
+    if plan in TEST_ONLY_PLANS:
+        if not _test_checkout_enabled():
+            raise HTTPException(status_code=400, detail="test_plan_disabled")
+    elif plan not in ALLOWED_PLANS:
         raise HTTPException(status_code=400, detail=f"unknown_plan: {plan}")
     if "@" not in email:
         raise HTTPException(status_code=400, detail="invalid_email")

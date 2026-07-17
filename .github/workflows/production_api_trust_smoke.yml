@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml pytest
+      - run: pip install pyyaml pytest pytest-timeout
       - name: Railway config + live trust probes
         run: |
           python scripts/verify_railway_production_config.py --api-base https://api.dealix.me

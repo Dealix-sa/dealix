@@ -65,3 +65,59 @@ disallowed:
   - discount_for_guaranteed_results
   - autonomous_final_price_by_agent
   - price_change_without_approval
+
+# Evidence-bound Commercial Finance Gate. These are internal decision limits,
+# not public prices. A passing case still needs a separate tenant-admin/founder
+# approval record before Buyer Decision may treat its price as approved.
+finance_decision_rules:
+  expected_value_formula: "P(close) * gross_profit_if_won - acquisition_cost"
+  expected_value_evidence:
+    minimum_level: l3_first_party
+    minimum_cohort_size: 5
+    low_base_high_required_together: true
+  required_source_refs:
+    - offer_class
+    - list_price_sar
+    - proposed_price_sar
+    - delivery_cost_sar
+    - acquisition_cost_sar
+    - upfront_cash_exposure_sar
+    - payment_terms_days
+    - capacity_required_pct
+  customer_roi:
+    separate_from_dealix_economics: true
+    used_in_commercial_finance_decision: false
+    source_ref_required_when_present: true
+  offer_classes:
+    productized:
+      gross_margin_floor: 0.55
+      contribution_margin_floor: 0.35
+      max_discount_percent: 20
+      max_upfront_cash_exposure_sar: 5000
+      max_payment_terms_days: 30
+      max_capacity_required_percent: 20
+    managed:
+      gross_margin_floor: 0.50
+      contribution_margin_floor: 0.30
+      max_discount_percent: 20
+      max_upfront_cash_exposure_sar: 15000
+      max_payment_terms_days: 45
+      max_capacity_required_percent: 35
+    retainer:
+      gross_margin_floor: 0.60
+      contribution_margin_floor: 0.40
+      max_discount_percent: 15
+      max_upfront_cash_exposure_sar: 10000
+      max_payment_terms_days: 30
+      max_capacity_required_percent: 30
+    custom:
+      gross_margin_floor: 0.45
+      contribution_margin_floor: 0.25
+      max_discount_percent: 10
+      max_upfront_cash_exposure_sar: 25000
+      max_payment_terms_days: 45
+      max_capacity_required_percent: 40
+  invariants:
+    approval_required: true
+    external_action_allowed: false
+    publish_price_from_draft_case: false

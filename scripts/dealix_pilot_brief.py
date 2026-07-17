@@ -72,9 +72,9 @@ def build_brief(*, company: str, sector: str, amount_sar: float,
             "founder_must_confirm_manually": True,
         },
         "kpi_commitment": {
-            "type": "commitment_not_guarantee",
-            "rule_ar": "لو ما تحقّق +٢٠٪ على المؤشّر المتّفق عليه، أشتغل مجّاناً حتى يتحقّق",
-            "rule_en": "If +20% lift on agreed KPI not achieved, founder works free until met",
+            "type": "evidence_based_commitment",
+            "rule_ar": "نقيس المؤشر المتفق عليه من baseline العميل؛ أي تصحيح أو استرداد يعتمد في أمر العمل ولا توجد نتيجة مضمونة",
+            "rule_en": "Measure the agreed KPI from the customer baseline; remedies are defined in the order form, and outcomes are not assured.",
         },
         "refund_policy": {
             "window_days": 14,
@@ -94,7 +94,7 @@ def build_brief(*, company: str, sector: str, amount_sar: float,
             "Documented Proof Pack delivered on Day 7."
         ),
         "no_revenue_claim": True,
-        "no_guaranteed_claim": True,
+        "no_outcome_promise": True,
         "is_template_based": True,
         "source": "wave6_phase4_pilot_brief_generator",
     }

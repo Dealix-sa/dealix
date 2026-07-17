@@ -1,77 +1,101 @@
-"""Tests for the /api/v1/pricing/plans listing + LaaS usage recording.
+"""Commercial trust tests for public pricing, checkout, and usage recording.
 
-These tests exercise the public plans endpoint to verify:
-  - pilot_1sar is hidden (test-only plan)
-  - all customer-facing plans are listed (subscription, one_off, metered)
-  - LaaS plans surface their `kind=metered` and `unit` fields
-  - usage recording is idempotent per event_id
-
-They run synchronously via httpx ASGITransport — no real DB or Redis required.
+The launch surfaces fail closed until the founder approves #917. No real
+database, Redis, or payment-provider call is required.
 """
 from __future__ import annotations
 
 import pytest
 
+from api.routers.pricing import ALLOWED_PLANS
+
 
 @pytest.mark.asyncio
-async def test_list_plans_hides_pilot_1sar(async_client):
+async def test_public_pricing_fails_closed_by_default(async_client):
     res = await async_client.get("/api/v1/pricing/plans")
     assert res.status_code == 200
     body = res.json()
-    assert body["currency"] == "SAR"
+    assert body == {
+        "currency": "SAR",
+        "plans": {},
+        "public_pricing_enabled": False,
+        "status": "founder_approval_required",
+    }
+
+
+@pytest.mark.asyncio
+async def test_public_pricing_requires_explicit_approved_ids(
+    async_client, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.setenv("DEALIX_PUBLIC_PRICING_ENABLED", "true")
+    monkeypatch.setenv(
+        "DEALIX_PUBLIC_PLAN_IDS",
+        "starter,pilot_1sar,unknown_plan",
+    )
+    res = await async_client.get("/api/v1/pricing/plans")
+    body = res.json()
+    assert body["public_pricing_enabled"] is True
+    assert body["status"] == "approved"
+    assert set(body["plans"]) == {"starter"}
     assert "pilot_1sar" not in body["plans"]
 
 
-@pytest.mark.asyncio
-async def test_list_plans_includes_subscription_tiers(async_client):
-    res = await async_client.get("/api/v1/pricing/plans")
-    plans = res.json()["plans"]
-    for key in ("starter", "growth", "scale"):
-        assert key in plans, f"missing subscription plan: {key}"
-        assert plans[key]["kind"] == "subscription"
-        assert plans[key]["amount_sar"] > 0
+def test_test_plan_is_never_a_normal_checkout_plan():
+    assert "pilot_1sar" not in ALLOWED_PLANS
 
 
 @pytest.mark.asyncio
-async def test_list_plans_includes_managed_pilot(async_client):
-    res = await async_client.get("/api/v1/pricing/plans")
-    plans = res.json()["plans"]
-    assert "pilot_managed" in plans
-    assert plans["pilot_managed"]["kind"] == "one_off"
-    assert plans["pilot_managed"]["amount_sar"] == 499.0
+async def test_checkout_fails_closed_before_provider_call(async_client):
+    res = await async_client.post(
+        "/api/v1/checkout",
+        json={"plan": "starter", "email": "founder@example.com"},
+    )
+    assert res.status_code == 503
+    assert res.json()["detail"] == "checkout_not_founder_approved"
 
 
 @pytest.mark.asyncio
-async def test_list_plans_includes_metered_laas(async_client):
-    res = await async_client.get("/api/v1/pricing/plans")
-    plans = res.json()["plans"]
-    assert "laas_per_reply" in plans
-    assert plans["laas_per_reply"]["kind"] == "metered"
-    assert plans["laas_per_reply"]["unit"] == "arabic_replied_lead"
-    assert plans["laas_per_reply"]["amount_sar"] == 25.0
-    assert "laas_per_demo" in plans
-    assert plans["laas_per_demo"]["amount_sar"] == 150.0
+async def test_1sar_plan_requires_separate_nonproduction_gate(
+    async_client, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.setenv("DEALIX_CHECKOUT_ENABLED", "true")
+    monkeypatch.delenv("DEALIX_ENABLE_1SAR_CHECKOUT", raising=False)
+    res = await async_client.post(
+        "/api/v1/checkout",
+        json={"plan": "pilot_1sar", "email": "founder@example.com"},
+    )
+    assert res.status_code == 400
+    assert res.json()["detail"] == "test_plan_disabled"
 
 
 @pytest.mark.asyncio
-async def test_pricing_menu_exposes_service_catalog(async_client):
+async def test_1sar_plan_is_impossible_in_production(
+    async_client, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.setenv("DEALIX_CHECKOUT_ENABLED", "true")
+    monkeypatch.setenv("DEALIX_ENABLE_1SAR_CHECKOUT", "true")
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("API_KEYS", "test-production-api-key")
+    res = await async_client.post(
+        "/api/v1/checkout",
+        json={"plan": "pilot_1sar", "email": "founder@example.com"},
+        headers={"X-API-Key": "test-production-api-key"},
+    )
+    assert res.status_code == 400
+    assert res.json()["detail"] == "test_plan_disabled"
+
+
+@pytest.mark.asyncio
+async def test_pricing_menu_reports_not_sales_ready_by_default(async_client):
     res = await async_client.get("/api/v1/pricing/menu")
     assert res.status_code == 200
     body = res.json()
     assert body["currency"] == "SAR"
-    assert body["sales_ready"] is True
-    assert "plans" in body
-    assert "service_catalog" in body
+    assert body["sales_ready"] is False
+    assert body["checkout_status"] == "founder_approval_required"
+    assert "pilot_1sar" not in body["plans"]
     assert isinstance(body["service_catalog"], list)
-    assert len(body["service_catalog"]) > 0
-    assert any(item["plan_id"] == "revenue_proof_sprint_499" for item in body["service_catalog"])
-
-
-@pytest.mark.asyncio
-async def test_pricing_menu_hides_test_plan(async_client):
-    res = await async_client.get("/api/v1/pricing/menu")
-    body = res.json()
-    assert "pilot_1sar" not in body["plans"]
+    assert body["service_catalog"]
 
 
 @pytest.mark.asyncio
@@ -104,9 +128,7 @@ async def test_usage_record_idempotent(async_client):
     res1 = await async_client.post("/api/v1/pricing/usage", json=payload)
     assert res1.status_code == 200
     assert res1.json()["status"] == "recorded"
-    # Same event_id replay → marked duplicate, not double-charged
     res2 = await async_client.post("/api/v1/pricing/usage", json=payload)
     assert res2.status_code == 200
     assert res2.json()["status"] == "duplicate"
-    # Amount fields remain consistent across both calls (auditability)
     assert res1.json()["amount_halalas"] == res2.json()["amount_halalas"]

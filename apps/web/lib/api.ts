@@ -274,6 +274,55 @@ export const api = {
       headers: { "X-Admin-API-Key": adminApiKey },
     }),
 
+  // Tenant-scoped, evidence-governed commercial intelligence (read-only UI).
+  getCommercialIntelligenceSnapshot: () =>
+    apiClient.get("/api/v1/commercial-intelligence/snapshot"),
+
+  getCommercialIntelligenceSourceScorecards: () =>
+    apiClient.get("/api/v1/commercial-intelligence/source-scorecards"),
+
+  getCommercialIntelligenceObjectives: () =>
+    apiClient.get("/api/v1/commercial-intelligence/objectives"),
+
+  getCommercialIntelligenceOpportunities: (limit = 50) =>
+    apiClient.get("/api/v1/commercial-intelligence/opportunities", {
+      params: { limit },
+    }),
+
+  postCommercialIntelligenceBuyerDecisionPlan: (
+    opportunityId: string,
+    body: Record<string, unknown> = {},
+  ) =>
+    apiClient.post(
+      `/api/v1/commercial-intelligence/opportunities/${encodeURIComponent(opportunityId)}/buyer-decision-plan`,
+      body,
+    ),
+
+  postCommercialIntelligenceFinanceCase: (
+    opportunityId: string,
+    body: Record<string, unknown>,
+  ) =>
+    apiClient.post(
+      `/api/v1/commercial-intelligence/opportunities/${encodeURIComponent(opportunityId)}/finance-cases`,
+      body,
+    ),
+
+  getCommercialIntelligenceFinanceCases: (opportunityId: string, limit = 50) =>
+    apiClient.get(
+      `/api/v1/commercial-intelligence/opportunities/${encodeURIComponent(opportunityId)}/finance-cases`,
+      { params: { limit } },
+    ),
+
+  postCommercialIntelligencePriceApproval: (
+    opportunityId: string,
+    financeCaseId: string,
+    body: { confirmed_proposed_price_sar: string; approval_ref: string },
+  ) =>
+    apiClient.post(
+      `/api/v1/commercial-intelligence/opportunities/${encodeURIComponent(opportunityId)}/finance-cases/${encodeURIComponent(financeCaseId)}/approve-price`,
+      body,
+    ),
+
   patchWarRoom: (adminApiKey: string, leadId: string, body: Record<string, unknown>) =>
     apiClient.patch(`/api/v1/ops-autopilot/war-room/${encodeURIComponent(leadId)}`, body, {
       headers: { "X-Admin-API-Key": adminApiKey },

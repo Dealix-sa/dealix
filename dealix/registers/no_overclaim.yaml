@@ -13,7 +13,7 @@
 # ═══════════════════════════════════════════════════════════════════
 
 schema_version: "1.0"
-last_reviewed: "2026-04-21"
+last_reviewed: "2026-07-15"
 
 claims:
   # ───────────── Core platform ─────────────
@@ -193,6 +193,20 @@ claims:
       - api/routers/service_catalog.py
       - tests/test_service_catalog.py
 
+  - id: first_launch_checkout_fail_closed
+    claim: "Public pricing and checkout remain disabled until an explicit founder-approved launch configuration; the 1 SAR smoke plan is impossible in Production"
+    status: Production
+    last_reviewed: "2026-07-15"
+    evidence:
+      - api/routers/pricing.py
+      - tests/test_pricing_plans_endpoint.py
+      - tests/integration/test_full_customer_journey.py
+      - docs/BILLING_MOYASAR_RUNBOOK.md
+      - dealix/config/first_launch_offer_gate.yaml
+    gaps:
+      - "The founder has not yet approved a public first-launch price under #917"
+      - "Moyasar sandbox, VAT, ZATCA e-invoice, refund, and reconciliation evidence remain required before enabling checkout"
+
   - id: transformation_os_catalog
     claim: "Ten enterprise transformation systems modeled as governed catalog offerings; prices are estimate ranges; no live send/charge; proposal + ROI generators are approval-gated and estimate-stamped"
     status: Partial
@@ -210,6 +224,22 @@ claims:
       - "Per-system delivery runbooks are not all at Production"
       - "ROI figures are estimates, not measured outcomes"
       - "Transformation systems not yet added to the Service Readiness Matrix (roadmap)"
+
+  - id: evidence_governed_buyer_decision_spine
+    claim: "Internal buyer-committee persuasion plans are generated from source-bound evidence, hide unapproved prices, and never send or make a commercial commitment"
+    status: Pilot
+    last_reviewed: "2026-07-15"
+    evidence:
+      - dealix/commercial_persuasion.py
+      - api/routers/commercial_intelligence.py
+      - dealix/config/first_launch_offer_gate.yaml
+      - tests/test_commercial_persuasion.py
+      - tests/test_commercial_intelligence_contract.py
+      - docs/01_go_to_market/DEALIX_FOUNDER_LAUNCH_PERSUASION_SYSTEM_AR.md
+    gaps:
+      - "No real tenant opportunity or publishable Dealix outcome proof was loaded in the founder cycle"
+      - "First-launch price and public catalogue remain blocked by GitHub issue #917"
+      - "Model-generated responses remain in Sales Arena shadow mode until the live evaluation gate passes"
 
   - id: platform_reference_contracts
     claim: "Reference platform contracts for tenant, RLS, storage, and auth (no stack replacement)"
