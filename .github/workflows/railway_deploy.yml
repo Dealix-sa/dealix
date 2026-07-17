@@ -123,7 +123,7 @@ jobs:
 
       - name: Upload Railway deploy diagnostics
         if: always() && steps.check_token.outputs.token_present == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: railway-deploy-diagnostics
           path: reports/ci/railway-deploy.log

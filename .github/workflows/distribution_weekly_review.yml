@@ -54,7 +54,7 @@ jobs:
           PY
 
       - name: Upload weekly artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: distribution-weekly-review
           path: reports/distribution/*.md
