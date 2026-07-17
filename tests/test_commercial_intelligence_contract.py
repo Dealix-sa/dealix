@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from pathlib import Path
@@ -89,6 +90,10 @@ def test_vercel_payload_excludes_local_dependency_and_cache_directories() -> Non
     for directory in (".venv", "venv", "node_modules", ".pytest_cache", ".ruff_cache"):
         assert f'"{directory}"' in script
         assert directory in config
+
+    parsed_config = json.loads(config)
+    exclude_files = parsed_config["functions"]["api/**/*.py"]["excludeFiles"]
+    assert len(exclude_files) <= 256
 
 
 def test_vercel_source_input_is_within_budget() -> None:
