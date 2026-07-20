@@ -1,0 +1,50 @@
+name: Final Trust Workflow Contracts
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/founder_commercial_daily.yml"
+      - ".github/workflows/production_api_trust_smoke.yml"
+      - ".github/workflows/founder_weekly_verify.yml"
+      - ".github/workflows/commercial-expand-weekly.yml"
+      - ".github/workflows/founder_autonomous_ops_weekly.yml"
+      - ".github/workflows/final_trust_workflow_contracts.yml"
+      - "scripts/run_dealix_full_autonomous_ops.py"
+      - "scripts/run_dealix_full_autonomous_ops.ps1"
+      - "scripts/dealix_pilot_brief.py"
+      - "tests/test_final_trust_workflow_contracts.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/founder_commercial_daily.yml"
+      - ".github/workflows/production_api_trust_smoke.yml"
+      - ".github/workflows/founder_weekly_verify.yml"
+      - ".github/workflows/commercial-expand-weekly.yml"
+      - ".github/workflows/founder_autonomous_ops_weekly.yml"
+      - ".github/workflows/final_trust_workflow_contracts.yml"
+      - "scripts/run_dealix_full_autonomous_ops.py"
+      - "scripts/run_dealix_full_autonomous_ops.ps1"
+      - "scripts/dealix_pilot_brief.py"
+      - "tests/test_final_trust_workflow_contracts.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: final-trust-workflow-contracts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  workflow-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install contract-test dependencies
+        run: python -m pip install pytest pyyaml
+      - name: Verify workflow and script contracts
+        run: python -m pytest tests/test_final_trust_workflow_contracts.py -q --no-cov
