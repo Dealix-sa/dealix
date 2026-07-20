@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "evaluated_at": "2026-07-20",
+  "evaluated_release": "v0.1.11",
+  "source_repository": "https://github.com/oblien/openship",
+  "decision": "pilot_only",
+  "rationale": "Use OpenShip to test deployment portability, rollback, backup and MCP operations without moving Dealix production or customer data onto an immature control plane.",
+  "production_migration": "blocked",
+  "mail_server": "blocked",
+  "client_data": "blocked",
+  "external_dns_cutover": "blocked",
+  "allowed_environments": [
+    "local",
+    "isolated_vps"
+  ],
+  "allowed_data_classes": [
+    "synthetic",
+    "public_repository"
+  ],
+  "compose_deployment_allowed": false,
+  "required_repo_contracts": {
+    "runtime_entrypoint": "/app/start.sh",
+    "healthcheck_path": "/healthz",
+    "railway_start_command": null,
+    "non_root_runtime": true
+  },
+  "pilot_gates": [
+    "install_on_disposable_host",
+    "deploy_from_exact_commit_sha",
+    "verify_healthcheck",
+    "verify_rollback_to_previous_sha",
+    "verify_backup_and_restore",
+    "verify_tls_and_domain_isolation",
+    "verify_secret_redaction",
+    "verify_audit_logs",
+    "verify_mcp_read_only_first",
+    "verify_security_update_process",
+    "record_monthly_cost_baseline",
+    "record_operational_recovery_time",
+    "document_data_residency",
+    "founder_approval_before_any_production_cutover"
+  ]
+}
