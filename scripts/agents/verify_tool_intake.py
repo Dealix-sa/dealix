@@ -14,7 +14,6 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-
 ALLOWED_DECISIONS = {
     "adopt_now",
     "pilot",
