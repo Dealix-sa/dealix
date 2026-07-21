@@ -154,7 +154,7 @@ flowchart TD
 
 - `dealix/registers/tool_intake_july_2026.json`
 - `scripts/agents/verify_tool_intake.py`
-- `tests/test_tool_intake.py`
+- `tests/test_tool_intake_july_2026.py`
 - `docs/research/JULY_2026_OPEN_SOURCE_RADAR_AR.md`
 
 **الحقول الأساسية:** `source`, `license`, `license_source`, `signal_date/date_basis`, `decision`, `priority`, `dealix_surfaces`, `integration`, `gates`.
