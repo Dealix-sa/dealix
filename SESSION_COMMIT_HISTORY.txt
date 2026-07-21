@@ -1,0 +1,99 @@
+cec6f89 $(cat <<'EOF'
+06aae76 $(cat << 'EOF'
+e731cf0 add: complete launch documentation and marketing materials
+5786396 finalize: production-ready launch package
+0e5af85 polish: code-splitting, improve Login/NotFound pages
+e5f7503 add: complete client delivery lifecycle templates (6 phases + README)
+7f105a9 ship: complete startup-ready platform with deployment package - Dockerfile.prod, docker-compose enhanced, setup scripts, comprehensive README, GO_LIVE_CHECKLIST, typed routers, commercial narrative, compliance docs, delivery templates. LAUNCH DECISION: GO
+a4c092c feat: Unified Dashboard + Pricing + Client Delivery template + README
+35d0a76 feat: Brain OS + Command Room + Outreach Engine + Compliance + Client Delivery template
+ade3383 $(cat << 'EOF'
+b1b40d7 add: scripts/revenue_scorecard.py
+8f5f239 add: scripts/governance_check.py
+1ee18e9 add: scripts/generate_war_room.py
+7dc861a add: scripts/generate_proof_pack.py
+395e1ff add: scripts/generate_outreach_queue.py
+2453175 add: company_os/war_room/WEEKLY_CEO_BRIEF.md
+5c791b6 add: company_os/war_room/SCORECARD_REPORT.md
+cb13112 add: company_os/war_room/RISKS.md
+330afdb add: company_os/war_room/REVENUE_WAR_ROOM_TODAY.md
+2792644 add: company_os/revenue/pipeline.json
+2cf43a4 add: company_os/revenue/outreach_queue.json
+433136f add: company_os/revenue/objections.json
+8a6ff6d add: company_os/revenue/followups.json
+6db7d35 add: company_os/revenue/prospects.csv
+42114a1 add: company_os/revenue/proposals.json
+e3387be add: company_os/marketing/one_pagers/one_pager_arabic.md
+bb8f259 add: company_os/marketing/linkedin_posts/post_04.md
+1d02382 add: company_os/marketing/linkedin_posts/post_03.md
+29b5fe4 add: company_os/marketing/linkedin_posts/post_02.md
+0fb21b1 add: company_os/marketing/linkedin_posts/post_01.md
+0dd93e9 add: company_os/marketing/pitch_deck/pages/10_economics.page
+bf98799 add: company_os/marketing/pitch_deck/pages/05_market.page
+33acc03 add: company_os/marketing/pitch_deck/pages/07_revenue.page
+bb9e9de add: company_os/marketing/pitch_deck/pages/08_roadmap.page
+ddf571a add: company_os/marketing/pitch_deck/pages/06_advantage.page
+18fb004 add: company_os/marketing/pitch_deck/pages/02_problem.page
+db2c13c add: company_os/marketing/pitch_deck/pages/01_cover.page
+954e8c8 add: company_os/marketing/pitch_deck/pages/11_final.page
+a63f3ac add: company_os/marketing/pitch_deck/pages/09_governance.page
+3afdb00 add: company_os/marketing/pitch_deck/pages/04_product.page
+da516a7 add: company_os/marketing/pitch_deck/pages/03_solution.page
+a9c25f2 add: company_os/marketing/pitch_deck/dealix_pitch.pptd
+5fb1fb3 add: company_os/marketing/pitch_deck/outline.md
+15d826e add: company_os/marketing/pitch_deck/design.md
+d6b4ebe add: company_os/governance/pdpl_checklist.md
+b721c98 add: company_os/governance/data_handling_checklist.md
+3dc1c3d add: company_os/governance/approval_queue.json
+fe926ff add: company_os/governance/ai_action_ledger.jsonl
+78a60ff add: company_os/governance/agent_permissions.md
+3ef082a add: company_os/finance/revenue_scorecard.csv
+afde093 add: company_os/finance/invoices_tracker.csv
+57297f4 add: company_os/finance/unit_economics.md
+aa91811 add: company_os/delivery/proof_pack_template.md
+3340128 add: company_os/delivery/p1_intake_template.md
+8e71e2f add: company_os/delivery/p1_delivery_sop.md
+139ed7e add: company_os/delivery/client_success_plan.md
+40acc01 add: src/providers/trpc.tsx
+7e88513 add: src/pages/NotFound.tsx
+448b6c8 add: src/pages/Login.tsx
+903aee3 add: src/pages/Home.tsx
+9efd7f5 add: src/lib/utils.ts
+0a83145 add: src/hooks/useAuth.ts
+4774ee0 add: src/hooks/use-mobile.ts
+23769ac add: src/sections/Deliverables.tsx
+14201ce add: src/sections/HowItWorks.tsx
+9214c79 add: src/sections/CTA.tsx
+4805ecb add: src/sections/Proof.tsx
+8ebce8f add: src/sections/Hero.tsx
+7b08128 add: src/sections/Pricing.tsx
+44c3aac add: src/sections/Footer.tsx
+70cfe8f add: src/sections/Features.tsx
+d7858cc add: src/sections/Sectors.tsx
+07bc0f3 add: src/components/AuthLayout.tsx
+d46d496 add: src/components/AuthLayoutSkeleton.tsx
+a0f65a2 add: src/index.css
+0fa1e4c add: src/main.tsx
+4ec7a0f add: src/const.ts
+2d6c60f add: src/App.tsx
+1e50dfb add: src/App.css
+52581ce add: vite.config.ts
+2ef65e7 add: drizzle.config.ts
+68ce524 add: .prettierignore
+748765e add: postcss.config.js
+9ec80d0 add: index.html
+b615727 add: tsconfig.server.json
+2b1ae26 add: tsconfig.node.json
+7731b8b add: tsconfig.json
+c97b3f4 add: .backend-features.json
+5897cfc add: info.md
+f1ada6b add: eslint.config.js
+e7b970a add: tailwind.config.js
+cad1253 add: tsconfig.app.json
+c53cf61 add: package.json
+c5988b6 add: vitest.config.ts
+12fa1ca add: components.json
+660809e add: .prettierrc
+ff2791e add: src/pages/Dashboard.tsx
+a27fabd backend: tRPC routers, Drizzle ORM, database schema, auth system
+1a8fa94 chore: Docker, CI/CD, README
