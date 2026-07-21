@@ -111,6 +111,13 @@ class TestMCPServerStructure:
         assert "allowed_hosts=list(binding.allowed_hosts)" in content
         assert "allowed_origins=list(binding.allowed_origins)" in content
 
+    def test_tool_manifest_has_timeout_rate_limit_and_metadata_only_audit(self):
+        content = (_REPO / "mcp_server" / "dealix_mcp.py").read_text()
+        assert "timeout_seconds" in content
+        assert "rate_limit_per_minute" in content
+        assert "DEALIX_MCP_AUDIT" in content
+        assert "never log tool arguments, results, or secrets" in content
+
     def test_no_cold_whatsapp_in_channel_choices(self):
         content = (_REPO / "mcp_server" / "dealix_mcp.py").read_text()
         assert '"linkedin", "email"' in content or "'linkedin', 'email'" in content
