@@ -5,7 +5,6 @@ from __future__ import annotations
 import collections
 import pathlib
 import re
-
 import tomllib
 
 PYPROJECT = pathlib.Path(__file__).resolve().parents[1] / "pyproject.toml"
