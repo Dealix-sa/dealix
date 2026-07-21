@@ -160,13 +160,22 @@ def summary(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def default_registry_path() -> Path:
+    """Resolve the registry in both the Dealix repo and standalone bundle."""
+    script = Path(__file__).resolve()
+    repo_candidate = script.parents[2] / "dealix" / "registers" / "tool_intake_july_2026.json"
+    if repo_candidate.exists():
+        return repo_candidate
+    return script.with_name("dealix_july_2026_tool_radar.json")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "registry",
         nargs="?",
         type=Path,
-        default=Path(__file__).with_name("dealix_july_2026_tool_radar.json"),
+        default=default_registry_path(),
     )
     args = parser.parse_args()
     payload = json.loads(args.registry.read_text(encoding="utf-8"))
