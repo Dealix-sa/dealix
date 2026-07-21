@@ -149,9 +149,10 @@ async def advance_sequence(sequence_id: str, payload: ApprovalActionRequest) -> 
 @router.get("/sequence/{sequence_id}")
 async def get_sequence(sequence_id: str, lang: LanguageCode = Depends(get_lang)) -> dict[str, Any]:
     # Simple load via internal method not exposed; return stored sequences search
-    from intelligence.communication_hub import CommunicationSequence
     # Reconstruct from file for read-only
     import json
+
+    from intelligence.communication_hub import CommunicationSequence
     raw = json.loads(_hub.SEQUENCE_PATH.read_text(encoding="utf-8"))
     for r in raw:
         if r.get("sequence_id") == sequence_id:

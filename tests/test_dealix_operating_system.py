@@ -9,6 +9,8 @@
 
 from __future__ import annotations
 
+from datetime import UTC
+
 import pytest
 
 from intelligence import (
@@ -24,7 +26,6 @@ from intelligence import (
     list_packages,
     validate_sku,
 )
-
 
 # ── Governance tests ───────────────────────────────────────────────
 
@@ -105,6 +106,7 @@ def test_available_sources_safe():
 def test_knowledge_ingest_and_search(tmp_path):
     acc = KnowledgeAccumulator(store_path=tmp_path / "knowledge.json")
     from datetime import datetime, timezone
+
     from intelligence.bilingual import BilingualRenderer
     from intelligence.knowledge_accumulator import KnowledgeEntry
 
@@ -118,7 +120,7 @@ def test_knowledge_ingest_and_search(tmp_path):
         company=None,
         tags=["test"],
         confidence=0.9,
-        created_at=datetime.now(timezone.utc).isoformat(),
+        created_at=datetime.now(UTC).isoformat(),
         expires_at=None,
     )
     acc.ingest(entry)
