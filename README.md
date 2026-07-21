@@ -1,9 +1,10 @@
 <div align="center">
 
-# 🏢 Dealix — Saudi-first AI Business Operating System
+# Dealix — Saudi-first AI Business Operating System
 
-### Dealix is a Saudi-first AI Business Operating System. Its first commercial wedge is Revenue + Proof + Command, but its long-term architecture covers the operating core of the company: growth, customers, delivery, support, finance, governance, knowledge, and executive command.
-### PDPL-native, ZATCA-aware, approval-first. See the [Platform Source of Truth](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md).
+**Revenue + Proof + Command for Saudi companies.**
+
+PDPL-native · ZATCA-aware · Approval-first
 
 [![CI](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -13,7 +14,7 @@
 
 **[العربية](README.ar.md)** · **English**
 
-### [🚀 Launch](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md) · [✅ Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) · [💼 Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) · [📡 Domain](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md) · [🧭 Gap Audit](docs/architecture/REPO_GAP_AUDIT.md)
+[Launch](docs/ops/LAUNCH_OPERATOR_RUNBOOK.md) · [Production](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) · [Go-Live](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) · [Domain](docs/ops/DOMAIN_OPERATIONS_RUNBOOK.md)
 
 </div>
 
@@ -30,6 +31,17 @@ Dealix is a Saudi-first AI Business Operating System. Revenue OS is the first co
 It is **not** a generic CRM, chatbot, or blind sales automation tool. Its operating rule is:
 
 > AI explores, analyzes, and recommends. Deterministic workflows execute. Humans approve critical external commitments.
+
+---
+
+## Commercial readiness
+
+| Gate | Status | Link |
+|---|---|---|
+| Production readiness | Tracked | [Checklist](docs/ops/PRODUCTION_READINESS_CHECKLIST.md) |
+| Commercial go-live | Tracked | [Gate](docs/ops/COMMERCIAL_GO_LIVE_GATE.md) |
+| Trust & evidence | Active | [Trust docs](trust/) |
+| Saudi compliance | Native | [PDPL integration](integrations/pdpl.py) |
 
 ---
 

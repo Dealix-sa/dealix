@@ -437,3 +437,17 @@ reports/company_launch/
 reports/revenue/*/daily_ceo_report.json
 reports/revenue/*/daily_ceo_report.md
 reports/revenue/*/score_summary.json
+
+# ─────────────────────────────────────────────────────────────
+# 💼 Commercial Package Archives — never commit bundles
+# ─────────────────────────────────────────────────────────────
+*.zip
+*.tar.xz
+*.tar.gz
+*.rar
+*.7z
+*_BUNDLE*
+*_EXPORT*
+*_PATCH*
+*_PACK*
+
