@@ -6,7 +6,6 @@ import json
 import unittest
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "verify_tool_radar.py"
 REGISTRY = ROOT / "dealix_july_2026_tool_radar.json"
