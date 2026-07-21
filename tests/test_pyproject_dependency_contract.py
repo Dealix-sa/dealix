@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
+import collections
+import pathlib
 import re
 import tomllib
-from collections import Counter
-from pathlib import Path
 
 
-PYPROJECT = Path(__file__).resolve().parents[1] / "pyproject.toml"
+PYPROJECT = pathlib.Path(__file__).resolve().parents[1] / "pyproject.toml"
 REQUIREMENT_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*")
 
 
@@ -21,7 +21,7 @@ def _canonical_requirement_name(requirement: str) -> str:
 
 def _duplicate_requirement_names(requirements: list[str]) -> list[str]:
     names = [_canonical_requirement_name(requirement) for requirement in requirements]
-    return sorted(name for name, count in Counter(names).items() if count > 1)
+    return sorted(name for name, count in collections.Counter(names).items() if count > 1)
 
 
 def test_pyproject_dependency_groups_do_not_repeat_packages() -> None:
