@@ -434,10 +434,19 @@ def create_app() -> FastAPI:
     # Autonomous product distribution — /api/v1/autonomous-distribution/*
     app.include_router(autonomous_distribution_router.router)
 
-    # Wave 16 — Customer Intelligence + Market Intelligence + Onboarding
+    # Wave 16 — Customer Intelligence + Market Intelligence + Onboarding + CEO Brief + Lead Ingestion
+    from api.routers import ceo_brief as ceo_brief_router
+    from api.routers import customer_onboarding as customer_onboarding_router
+    from api.routers import intelligence_health as intelligence_health_router
+    from api.routers import lead_ingestion as lead_ingestion_router
+
     app.include_router(customer_health_scoring_router.router)
     app.include_router(market_intelligence_router.router)
     app.include_router(onboarding_router.router)
+    app.include_router(ceo_brief_router.router)
+    app.include_router(customer_onboarding_router.router)
+    app.include_router(intelligence_health_router.router)
+    app.include_router(lead_ingestion_router.router)
 
     # 90-day commercial plan — KPI Dashboard (admin-gated comprehensive metrics)
     app.include_router(kpi_dashboard_router.router)

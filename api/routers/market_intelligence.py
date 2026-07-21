@@ -187,6 +187,29 @@ async def get_top_opportunities() -> dict[str, Any]:
 
 # ── Deterministic AI scoring endpoints ───────────────────────────────
 
+@router.get("/intelligence-snapshot")
+async def get_intelligence_snapshot() -> dict[str, Any]:
+    """Return a deterministic snapshot of commercial intelligence."""
+    engine = RevenueIntelligenceEngine()
+    engine.load_deals([])
+    result = engine.analyze()
+
+    market_intel = SaudiMarketIntelligence()
+    top_sectors = [
+        {"sector": s, "momentum": market_intel.sector_momentum(s).value}
+        for s in ["fintech", "logistics", "software", "healthcare_tech", "proptech"]
+    ]
+
+    return {
+        "pipeline_health": result.pipeline_health,
+        "total_pipeline_sar": result.total_pipeline_sar,
+        "weighted_pipeline_sar": result.weighted_pipeline_sar,
+        "revenue_at_risk_sar": result.revenue_at_risk_sar,
+        "recommended_actions": result.recommended_actions,
+        "top_sector_signals": top_sectors,
+    }
+
+
 @router.post("/score-prospect", response_model=ICPScoreResponse)
 async def score_prospect(payload: ProspectRequest) -> ICPScoreResponse:
     """Score a Saudi B2B prospect against the Dealix ICP."""
