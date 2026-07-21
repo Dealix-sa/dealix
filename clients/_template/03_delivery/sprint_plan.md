@@ -1,21 +1,51 @@
 # Sprint Plan
 
-## Sprint 1 (Days 1–7): Setup & Integration
-- [ ] Access confirmed for all systems
-- [ ] Data pipeline connected
-- [ ] Draft output reviewed with founder
+> Delivery happens in sprints. Each sprint ends with something the client can see and sign.
 
-## Sprint 2 (Days 8–14): Core Build
-- [ ] Core automation implemented
-- [ ] Internal UAT completed
-- [ ] Edge cases handled
+## Engagement overview
 
-## Sprint 3 (Days 15–21): Pilot
-- [ ] Live pilot with real data
-- [ ] Proof metrics captured
-- [ ] Adjustments made based on feedback
+- **Total sprints planned:**
+- **Sprint length:** weeks
+- **Sprint cadence:** kickoff Monday, demo Friday
+- **Definition of sprint ready:** acceptance criteria signed, access granted, data available
 
-## Sprint 4 (Days 22–30): Handover
-- [ ] Team trained
-- [ ] SOPs documented
-- [ ] Proof Pack assembled
+## Sprint backlog
+
+### Sprint 0 — Setup & diagnosis closure
+- [ ] Workspace created
+- [ ] Access confirmed
+- [ ] Diagnosis signed by sponsor
+- [ ] Acceptance criteria signed
+- **Demo:** diagnosis walkthrough + signed scope card
+
+### Sprint 1 — First usable slice
+- [ ]
+- [ ]
+- **Demo:** [first usable output]
+- **Acceptance check:** which criteria this sprint advances
+
+### Sprint 2 —
+- [ ]
+- [ ]
+- **Demo:**
+- **Acceptance check:**
+
+### Sprint 3 —
+- [ ]
+- [ ]
+- **Demo:**
+- **Acceptance check:**
+
+## Sprint exit gate
+
+Each sprint exits only when:
+- [ ] Demo delivered to sponsor
+- [ ] Acceptance criteria progress documented
+- [ ] Risks updated
+- [ ] Next sprint backlog confirmed
+
+## Dependencies (cross-sprint)
+
+| Dependency | Owner | Needed by sprint | Status |
+|------------|-------|-------------------|--------|
+|            |       |                   |        |

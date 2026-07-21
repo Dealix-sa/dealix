@@ -144,7 +144,7 @@ bash dealix_1_riyal_test.sh
 - **Railway Project:** https://railway.com/project/54bb60b4-d059-4dd1-af57-bc44c702b9f0
 - **Moyasar Dashboard:** https://dashboard.moyasar.com
 - **Calendly:** https://calendly.com/sami-assiri11/dealix-demo
-- **GitHub Repo:** https://github.com/VoXc2/dealix
+- **GitHub Repo:** https://github.com/Dealix-sa/dealix
 - **Landing:** (سينشر في PR قادم)
 
 ---

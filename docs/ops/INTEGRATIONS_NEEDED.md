@@ -112,11 +112,11 @@ Missing: automated multi-channel outreach + automated payment + monitoring accou
 ### 10. Domain: dealix.sa or dealix.ai
 | Item | Detail |
 |------|--------|
-| **Purpose** | Professional URL instead of voxc2.github.io/dealix |
+| **Purpose** | Professional URL instead of dealix-sa.github.io/dealix |
 | **Current status** | Landing runs on github.io subdomain |
 | **Registrars** | dealix.sa: via SaudiNIC (requires CR) · dealix.ai: any registrar (~$80/year) |
 | **Cost** | `.sa`: 120 SAR/year (CR required) · `.ai`: $60-100/year · `.com`: $15/year |
-| **DNS** | Point to voxc2.github.io via CNAME + GitHub Pages custom domain setting |
+| **DNS** | Point to dealix-sa.github.io via CNAME + GitHub Pages custom domain setting |
 | **Time** | 30 min (once domain purchased) |
 
 ### 11. GitHub Actions Secrets
@@ -124,7 +124,7 @@ Missing: automated multi-channel outreach + automated payment + monitoring accou
 |------|--------|
 | **Purpose** | Enable auto-deploy workflow `.github/workflows/railway_deploy.yml` |
 | **Current status** | Workflow exists but inactive (needs RAILWAY_TOKEN as secret) |
-| **How** | https://github.com/VoXc2/dealix/settings/secrets/actions → Add `RAILWAY_TOKEN` |
+| **How** | https://github.com/Dealix-sa/dealix/settings/secrets/actions → Add `RAILWAY_TOKEN` |
 | **Value** | The Railway API token you already provided |
 | **Time** | 1 minute |
 | **Benefit** | Every main push auto-deploys to Railway with smoke test |
@@ -200,7 +200,7 @@ Design proper Dealix logo, case study graphics, pitch deck visuals.
 4. I verify via env-var query (masked) and test integration
 
 ### For GitHub secrets:
-1. Open https://github.com/VoXc2/dealix/settings/secrets/actions
+1. Open https://github.com/Dealix-sa/dealix/settings/secrets/actions
 2. Add secret → paste value → Save
 3. I trigger workflow to verify
 

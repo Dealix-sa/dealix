@@ -2,7 +2,7 @@
 
 ## Executive decision
 
-This repository is the main Dealix project repository, so Dealix agent skills should live here as **project-level operating instructions**, not only in the standalone `VoXc2/skills` CLI repository.
+This repository is the main Dealix project repository, so Dealix agent skills should live here as **project-level operating instructions**, not only in the standalone `Dealix-sa/skills` CLI repository.
 
 The purpose of this pack is to give Claude Code, Codex, Cursor, Kimi Code, OpenCode, Roo, Continue, and similar agents a consistent way to work on Dealix without re-explaining the entire project every time.
 

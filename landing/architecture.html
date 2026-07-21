@@ -266,7 +266,7 @@
     <p><strong>Production:</strong> Railway (Postgres + Redis + Python service) في region me-south-1 (Bahrain GCC).</p>
     <p><strong>Deploy flow:</strong> merge to main → Railway auto-deploys → migrate via Alembic pre-deploy hook
     → health check on /health → traffic shifted. Runbook في
-    <a href="https://github.com/VoXc2/dealix/blob/main/docs/ops/DEPLOY_RUNBOOK.md"><code>DEPLOY_RUNBOOK.md</code></a>.</p>
+    <a href="https://github.com/Dealix-sa/dealix/blob/main/docs/ops/DEPLOY_RUNBOOK.md"><code>DEPLOY_RUNBOOK.md</code></a>.</p>
 
     <p><strong>Rollback:</strong> Railway UI redeploy of last-green takes ~30s. If migration corrupted data:
     <code>alembic downgrade -1</code> after backup verification.</p>

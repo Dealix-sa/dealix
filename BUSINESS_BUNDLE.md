@@ -132,7 +132,7 @@ For the canonical "one command" routine: [`docs/FOUNDER_START_HERE_AR.md`](docs/
 
 ```bash
 # Clone + setup
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env

@@ -1,6 +1,6 @@
 # إعدادات إنتاج Railway — مرجع المؤسس (api.dealix.me)
 
-**المستودع:** `VoXc2/dealix` · **الفرع:** `main` · **Config-as-code:** [`railway.toml`](../../railway.toml) · [`railway.json`](../../railway.json) · **قائمة نسخ:** [`dealix/config/railway_ui_canonical.yaml`](../../dealix/config/railway_ui_canonical.yaml)
+**المستودع:** `Dealix-sa/dealix` · **الفرع:** `main` · **Config-as-code:** [`railway.toml`](../../railway.toml) · [`railway.json`](../../railway.json) · **قائمة نسخ:** [`dealix/config/railway_ui_canonical.yaml`](../../dealix/config/railway_ui_canonical.yaml)
 
 **تحقق محلي (مع محاكاة خطأ UI):**
 

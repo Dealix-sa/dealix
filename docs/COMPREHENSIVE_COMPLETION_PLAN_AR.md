@@ -8,7 +8,7 @@
 
 ## 0) الحقيقة عن هذا الريبو مقابل «23 مرحلة»
 
-بعض أوامر الـ closure prompts تفترض سكربتات واختبارات **غير موجودة** في `VoXc2/dealix` الحالي، مثل:
+بعض أوامر الـ closure prompts تفترض سكربتات واختبارات **غير موجودة** في `Dealix-sa/dealix` الحالي، مثل:
 
 - `scripts/repo_architecture_audit.py`
 - `scripts/forbidden_claims_audit.py`

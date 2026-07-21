@@ -118,9 +118,9 @@ ai-company = "cli:app"
 
 [project.urls]
 Homepage = "https://dealix.me"
-Repository = "https://github.com/VoXc2/dealix"
-Documentation = "https://github.com/VoXc2/dealix/tree/main/docs"
-Issues = "https://github.com/VoXc2/dealix/issues"
+Repository = "https://github.com/Dealix-sa/dealix"
+Documentation = "https://github.com/Dealix-sa/dealix/tree/main/docs"
+Issues = "https://github.com/Dealix-sa/dealix/issues"
 
 [tool.setuptools.packages.find]
 include = ["core*", "auto_client_acquisition*", "autonomous_growth*", "integrations*", "api*", "dashboard*", "db*", "dealix*", "platform_core*"]

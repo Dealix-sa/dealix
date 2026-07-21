@@ -1,16 +1,49 @@
 # User Guide
 
-## Daily Workflow
-Step-by-step instructions for the team's daily interaction with the system.
+> Written for the person who will use the system every day. Short sentences. Real examples.
 
-## How to Review AI Drafts
-1. Open the approval queue
-2. Review each draft
-3. Approve, edit, or reject
+## Who this is for
 
-## Common Questions
-Q: What if the AI output is wrong?
-A: Use the override button and note the issue in the feedback form.
+- **Role:**
+- **What they need to do:**
 
-Q: Who do I contact for support?
-A: WhatsApp Dealix support: [number]
+## Getting started
+
+- **Login:**
+- **First thing to do:**
+
+## Core tasks
+
+### Task 1: [name]
+- **When to do it:**
+- **Steps:**
+  1.
+  2.
+  3.
+- **Expected result:**
+- **If something goes wrong:**
+
+### Task 2: [name]
+- **When to do it:**
+- **Steps:**
+  1.
+  2.
+- **Expected result:**
+- **If something goes wrong:**
+
+## Daily routine
+
+- **Start of day:**
+- **During day:**
+- **End of day:**
+
+## Tips
+
+- -
+- -
+
+## Getting help
+
+- **Internal support contact:**
+- **Dealix support:**
+- **SLA:**

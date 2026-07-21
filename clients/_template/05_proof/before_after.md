@@ -1,17 +1,44 @@
-# Before / After Proof Pack
+# Before / After
 
-## Before
+> Proof is a delta, not a feature list. Show what changed, with evidence.
 
-Describe the starting workflow, delay, risk, or lost opportunity.
+## Engagement
 
-## After
+- **Client:**
+- **Engagement type:**
+- **Period:** start → end
 
-Describe what changed after Dealix.
+## Metrics delta
 
-## Evidence
+| Metric | Definition | Before (baseline) | After | Delta | Source | Evidence |
+|--------|------------|-------------------|-------|-------|--------|----------|
+|        |            |                   |       |       |        |          |
+|        |            |                   |       |       |        |          |
 
-Use logs, drafts, reports, response times, or decision records.
+## Qualitative before / after
 
-## Next iteration
+### Before
+- **Sponsor quote:**
+- **Operator quote:**
+- **Observed pain:**
 
-What should improve in the next 30 days?
+### After
+- **Sponsor quote:**
+- **Operator quote:**
+- **Observed improvement:**
+
+## What we changed (causal chain)
+
+1. **Diagnosis finding:**
+   **Intervention:**
+   **Measured result:**
+
+2. **Diagnosis finding:**
+   **Intervention:**
+   **Measured result:**
+
+## What did NOT change (honesty)
+
+- **Expected but not achieved:**
+- **Why:**
+- **Next step:**

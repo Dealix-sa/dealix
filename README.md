@@ -5,7 +5,7 @@
 ### Dealix is a Saudi-first AI Business Operating System. Its first commercial wedge is Revenue + Proof + Command, but its long-term architecture covers the operating core of the company: growth, customers, delivery, support, finance, governance, knowledge, and executive command.
 ### PDPL-native, ZATCA-aware, approval-first. See the [Platform Source of Truth](docs/00_platform_truth/PLATFORM_SOURCE_OF_TRUTH.md).
 
-[![CI](https://github.com/VoXc2/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/VoXc2/dealix/actions/workflows/ci.yml)
+[![CI](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml/badge.svg)](https://github.com/Dealix-sa/dealix/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)](https://fastapi.tiangolo.com/)
@@ -63,7 +63,7 @@ Outputs: outreach drafts (pending review), prospect packs, CEO brief, pipeline r
 ## Quick start
 
 ```bash
-git clone https://github.com/VoXc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 make setup
 cp .env.example .env

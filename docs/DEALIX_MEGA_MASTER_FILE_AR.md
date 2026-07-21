@@ -838,7 +838,7 @@ docs/
 | الخدمة | الرابط |
 |--------|-------|
 | **Production** | https://dealix.sa |
-| **GitHub** | https://github.com/VoXc2/dealix |
+| **GitHub** | https://github.com/Dealix-sa/dealix |
 | **Railway** | https://railway.com/project/54bb60b4-d059-4dd1-af57-bc44c702b9f0 |
 | **Moyasar Dashboard** | https://dashboard.moyasar.com |
 | **ZATCA** | https://zatca.gov.sa |
