@@ -2,7 +2,8 @@
 
 **نافذة البحث:** 1–21 يوليو 2026 (UTC)  
 **تاريخ القطع:** 21 يوليو 2026  
-**مرجع المشروع:** `Dealix-sa/dealix@984c0d1883a24c70bec34bdd215c4239b0286367`  
+**مرجع التدقيق المعماري:** `Dealix-sa/dealix@984c0d1883a24c70bec34bdd215c4239b0286367`  
+**رأس main عند التسليم:** `20cea2ca837d0ec0483e9478302aa36c19874744`  
 **حالة التنفيذ:** تحليل + سجل آلي + اختبارات + خطة دمج؛ لا تثبيت حزم، لا نشر إنتاجي، لا إرسال خارجي، لا دمج إلى `main`.
 
 ## الخلاصة التنفيذية
@@ -72,7 +73,7 @@
 - `scripts/agents/external_agent_stack_radar.py`: رادار سابق dependency-free، ويمكن تحويل سجل يوليو الجديد إلى مصدره المتجدد.
 - `docs/v10/DEPENDENCY_DECISION_RECORD.md`: أي dependency حقيقية تتطلب شروط أهلية وتوقيع المؤسس.
 
-الحالة المرصودة للـhead: Railway وVercel ناجحان. توجد PRs متراكبة، أهمها #927 لتنظيف الهوية/الأرشيف، و#924 لمسار التشخيص المجاني. لهذا توضع حزمة يوليو في PR وثائقي/registry مستقل ولا تُخلط مع تسعير #924 أو تنظيف #927.
+الحالة المرصودة لمرجع التدقيق: Railway وVercel ناجحان. أثناء تجهيز التسليم دُمج تنظيف الهوية/الأرشيف إلى `main` في `20cea2c`، وبقي #924 لمسار التشخيص المجاني. لذلك وُضعت حزمة يوليو في PR وثائقي/registry مستقل ولا تختلط مع التسعير أو التنفيذ التجاري.
 
 ## طبقة القرار المقترحة
 
@@ -276,7 +277,8 @@ Observation (immutable source event)
 | fair-code/hybrid/proprietary/unverified | 5 |
 | validator | PASS |
 | unit tests | 5/5 PASS |
-| repo head | `984c0d1883a24c70bec34bdd215c4239b0286367` |
+| مرجع التدقيق المعماري | `984c0d1883a24c70bec34bdd215c4239b0286367` |
+| رأس main عند التسليم | `20cea2ca837d0ec0483e9478302aa36c19874744` |
 | deployment statuses observed | Railway success؛ Vercel success |
 | archive duplicate | 03 = 05 بالـSHA-256 |
 | external actions | 0 |
