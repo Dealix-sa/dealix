@@ -451,3 +451,10 @@ reports/revenue/*/score_summary.json
 *_PATCH*
 *_PACK*
 
+# ─────────────────────────────────────────────────────────────
+# 📝 Session export artifacts
+# ─────────────────────────────────────────────────────────────
+SESSION_COMMIT_HISTORY.txt
+SESSION_COMPLETION_SUMMARY.md
+PR_DESCRIPTION_*.md
+
