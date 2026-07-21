@@ -20,10 +20,14 @@ Environment variables:
 
 from __future__ import annotations
 
+import inspect
 import json
+import logging
 import os
 import sys
+import time
 from datetime import UTC, datetime
+from functools import wraps
 from pathlib import Path
 from typing import Any
 
@@ -36,10 +40,13 @@ from fastmcp import FastMCP
 
 from mcp_server.trust_gate import (
     ToolPolicy,
+    ToolRateLimiter,
     build_tool_manifest,
     register_tool_policy,
     validate_http_binding,
 )
+
+logger = logging.getLogger(__name__)
 
 mcp = FastMCP(
     name="Dealix Business OS",
@@ -53,6 +60,29 @@ mcp = FastMCP(
 )
 
 _TOOL_POLICIES: dict[str, ToolPolicy] = {}
+_TOOL_RATE_LIMITER = ToolRateLimiter()
+
+
+def _audit_tool_call(
+    policy: ToolPolicy,
+    *,
+    status: str,
+    started_at: float,
+    error_type: str | None = None,
+) -> None:
+    """Emit metadata-only proof; never log tool arguments, results, or secrets."""
+    event = {
+        "event": "dealix.mcp.tool_call",
+        "tool": policy.name,
+        "capability": policy.capability,
+        "approval_required": policy.approval_required,
+        "status": status,
+        "duration_ms": round((time.perf_counter() - started_at) * 1000, 3),
+        "timeout_seconds": policy.timeout_seconds,
+        "error_type": error_type,
+        "timestamp": datetime.now(UTC).isoformat(),
+    }
+    logger.info("DEALIX_MCP_AUDIT %s", json.dumps(event, sort_keys=True))
 
 
 def governed_tool(
@@ -60,6 +90,8 @@ def governed_tool(
     capability: str = "read",
     data_classes: tuple[str, ...] = ("internal",),
     approval_required: bool = False,
+    timeout_seconds: int = 30,
+    rate_limit_per_minute: int = 60,
 ):
     """Register least privilege before exposing a function through FastMCP."""
 
@@ -70,9 +102,48 @@ def governed_tool(
             data_classes=data_classes,
             approval_required=approval_required,
             external_side_effects=False,
+            timeout_seconds=timeout_seconds,
+            rate_limit_per_minute=rate_limit_per_minute,
         )
         register_tool_policy(_TOOL_POLICIES, policy)
-        return mcp.tool(func)
+        if inspect.iscoroutinefunction(func):
+            @wraps(func)
+            async def async_wrapper(*args, **kwargs):
+                _TOOL_RATE_LIMITER.enforce(policy)
+                started_at = time.perf_counter()
+                try:
+                    result = await func(*args, **kwargs)
+                except Exception as exc:
+                    _audit_tool_call(
+                        policy,
+                        status="error",
+                        started_at=started_at,
+                        error_type=type(exc).__name__,
+                    )
+                    raise
+                _audit_tool_call(policy, status="success", started_at=started_at)
+                return result
+
+            return mcp.tool(async_wrapper)
+
+        @wraps(func)
+        def sync_wrapper(*args, **kwargs):
+            _TOOL_RATE_LIMITER.enforce(policy)
+            started_at = time.perf_counter()
+            try:
+                result = func(*args, **kwargs)
+            except Exception as exc:
+                _audit_tool_call(
+                    policy,
+                    status="error",
+                    started_at=started_at,
+                    error_type=type(exc).__name__,
+                )
+                raise
+            _audit_tool_call(policy, status="success", started_at=started_at)
+            return result
+
+        return mcp.tool(sync_wrapper)
 
     return decorator
 
@@ -443,7 +514,12 @@ def get_war_room_lead_stages() -> str:
 # ── write/action tools (all require explicit approval) ────────────────────
 
 
-@governed_tool(capability="local_draft", approval_required=True)
+@governed_tool(
+    capability="local_draft",
+    approval_required=True,
+    timeout_seconds=45,
+    rate_limit_per_minute=10,
+)
 def draft_warm_intro(
     company_name: str,
     contact_role: str,
@@ -485,7 +561,12 @@ def draft_warm_intro(
         return _safe_json({"error": str(exc)})
 
 
-@governed_tool(capability="local_draft", approval_required=True)
+@governed_tool(
+    capability="local_draft",
+    approval_required=True,
+    timeout_seconds=45,
+    rate_limit_per_minute=10,
+)
 def run_diagnostic_report(
     company_name: str,
     industry: str,
