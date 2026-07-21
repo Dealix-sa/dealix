@@ -63,6 +63,9 @@ rollback_plan:
 
 The runtime-enforced subset is registered through `@governed_tool` and includes tool
 name, capability, data classes, approval requirement, and external-side-effect status.
+It also carries a bounded timeout and per-minute rate limit. The server enforces the rate
+limit in-process and emits a metadata-only audit event for every success or error; tool
+arguments and results are never written to that event.
 Import fails on conflicting or unsafe declarations. `get_mcp_trust_manifest` returns the
 sorted runtime manifest plus a deterministic SHA-256, so permission drift is reviewable.
 A new tool that bypasses the governed decorator is a release blocker.
