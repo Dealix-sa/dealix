@@ -8,8 +8,11 @@
   },
   "project_baseline": {
     "repository": "Dealix-sa/dealix",
-    "head_sha": "984c0d1883a24c70bec34bdd215c4239b0286367",
-    "head_date": "2026-07-17",
+    "audited_sha": "984c0d1883a24c70bec34bdd215c4239b0286367",
+    "audited_sha_date": "2026-07-17",
+    "main_sha_at_delivery": "20cea2ca837d0ec0483e9478302aa36c19874744",
+    "main_sha_at_delivery_date": "2026-07-21",
+    "delivery_note": "Main advanced during delivery through the commercial polish, organization migration, and archive cleanup commit; the audited architecture surfaces remain applicable.",
     "production_checks_observed": ["Railway: success", "Vercel: success"],
     "non_negotiables": [
       "No external send without founder approval",
