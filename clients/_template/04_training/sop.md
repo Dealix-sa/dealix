@@ -1,19 +1,52 @@
-# Standard Operating Procedures (SOP)
+# Standard Operating Procedure (SOP)
 
-## Morning Routine
-1. Review overnight AI activity report
-2. Approve or reject queued outreach drafts
-3. Check pipeline for new high-priority leads
+> An SOP is the single source of truth for a repeated process. If it is not written, it is not repeatable.
 
-## Weekly Routine
-1. Review weekly command report
-2. Update lead statuses
-3. Send Dealix weekly check-in
+## Process name
 
-## Monthly Routine
-1. Review proof metrics with Dealix
-2. Approve or pause automations for next month
-3. Document wins for case study
+- **Purpose:**
+- **Owner:**
+- **Frequency:**
+- **Systems involved:**
 
-## Exception Handling
-What to do when something unexpected happens.
+## Pre-conditions
+
+- [ ]
+- [ ]
+
+## Steps
+
+1.
+2.
+3.
+4.
+5.
+
+## Outputs
+
+- **Primary output:**
+- **Where it goes:**
+- **Who consumes it:**
+
+## Quality checks
+
+- **What must be true before the output is accepted:**
+- **Who checks:**
+
+## Exception handling
+
+| Condition | Action | Escalate to |
+|-----------|--------|-------------|
+|           |        |             |
+
+## Metrics
+
+- **Metric this SOP supports:**
+- **Target:**
+- **Where measured:**
+
+## Revision history
+
+| Date | Change | Author |
+|------|--------|--------|
+|      |        |        |

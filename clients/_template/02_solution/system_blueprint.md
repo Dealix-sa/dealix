@@ -1,25 +1,61 @@
 # System Blueprint
 
-## Workflow
+> The blueprint is the bridge between diagnosis and build. It says what we will build, why, and how it fits together — before a line of production code.
 
-Map the client request into a daily workflow.
+## Design principle
 
-## Inputs
+> Map → Design → Build → Operate → Scale. Start from the business outcome, not the tool.
 
-What data enters the system?
+## Outcome anchored to diagnosis
 
-## Outputs
+- **Pain addressed:**
+- **Opportunity seized:**
+- **Primary metric this moves:**
+- **Baseline → target:**
 
-What report, draft, action, or proof pack is generated?
+## System overview
 
-## AI role
+- **One-paragraph description:**
+- **Primary users:**
+- **Primary inputs:**
+- **Primary outputs:**
+- **Boundaries (what this system is NOT):**
 
-What AI can draft or recommend.
+## Components
 
-## Human review
+| Component | Purpose | Build / buy / configure | Owner | Depends on |
+|-----------|---------|--------------------------|-------|-------------|
+|           |         |                          |       |             |
 
-What must be approved manually.
+## Data flow
 
-## Acceptance criteria
+```
+[source] → [ingest] → [transform] → [store] → [serve/act] → [measure]
+```
 
-Define done in operational terms.
+- **Text narrative:**
+
+## Integration points
+
+| System | Direction | Data exchanged | Mode | Auth | Notes |
+|--------|-----------|----------------|------|------|-------|
+|        | in / out  |                | batch / real-time |      |       |
+
+## Non-functional requirements
+
+- **Performance (target latency / throughput):**
+- **Reliability (target uptime):**
+- **Security posture:**
+- **Data residency:**
+- **Observability:**
+- **Maintainability:**
+
+## Build vs buy vs configure decision log
+
+| Need | Option A | Option B | Chosen | Why |
+|------|----------|----------|--------|-----|
+|      |          |          |        |     |
+
+## Acceptance hook
+
+This blueprint is not complete until `02_solution/acceptance_criteria.md` is signed.

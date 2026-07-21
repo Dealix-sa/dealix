@@ -1,25 +1,46 @@
 # Client Intake Form
 
-## Business outcome
+> Map → Design → Build → Operate → Scale. Start from the business outcome, not the tool.
 
-What measurable outcome should this system improve?
+## Client
 
-## Current pain
+- **Legal name:**
+- **Trading name:**
+- **Sector:**
+- **HQ / primary market:**
+- **Website:**
 
-Where does work or revenue get stuck?
+## Engagement
 
-## Data sources
+- **Sponsor (executive owner):**
+- **Day-to-day contact:**
+- **Engagement type:** Diagnostic | Pilot | Build | Operate | Scale
+- **Target business outcome (one sentence):**
+- **Success metric (quantifiable):**
+- **Baseline value today:**
+- **Target value + date:**
+- **Budget band:**
+- **Currency:**
+- **Start date:**
+- **Target go-live:**
 
-WhatsApp, CRM, Excel, email, website forms, manual notes.
+## Context
 
-## Users
+- **Why now?** (trigger event, board mandate, market pressure):
+- **What breaks if nothing changes in 90 days?**
+- **Prior attempts / vendors / tools tried:**
+- **Constraints:** regulatory | data residency | language | culture | time
 
-Who uses this daily?
+## Scope card
 
-## Human approval
+- **In scope:**
+- **Out of scope:**
+- **Assumptions:**
+- **Dependencies on client:**
 
-Who approves external messages, reports, or decisions?
+## Acceptance signals
 
-## Success criteria
-
-How do we know the sprint worked?
+- **Definition of done (client-visible):**
+- **Evidence required:** screenshots | exports | signed UAT | metrics delta
+- **Who signs off:**
+- **Who pays:**

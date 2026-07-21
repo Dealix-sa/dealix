@@ -8,7 +8,7 @@
 ## 🎯 Preconditions (already true)
 
 - Backend live: `https://web-dealix.up.railway.app/healthz` returns 200
-- Landing live: `https://voxc2.github.io/dealix/`
+- Landing live: `https://dealix-sa.github.io/dealix/`
 - Moyasar dashboard accessible (KYC may still be pending — doesn't matter)
 - Bank app / STC Pay on phone for manual confirmation
 - `pipeline_tracker.csv` open in editor

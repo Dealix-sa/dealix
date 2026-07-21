@@ -10,7 +10,7 @@ $required = @(
 )
 
 Write-Host "== GitHub Actions production secrets ==" -ForegroundColor Cyan
-$list = gh secret list --repo VoXc2/dealix 2>$null
+$list = gh secret list --repo Dealix-sa/dealix 2>$null
 $missing = @()
 foreach ($s in $required) {
     $present = $list -match $s.Name
@@ -24,9 +24,9 @@ foreach ($s in $required) {
 
 Write-Host ""
 Write-Host "Set missing secrets (one-time):" -ForegroundColor Cyan
-Write-Host '  gh secret set RAILWAY_TOKEN --repo VoXc2/dealix'
-Write-Host '  gh secret set DEALIX_ADMIN_API_KEY --repo VoXc2/dealix'
-Write-Host '  gh variable set DEALIX_FRONTEND_BASE --repo VoXc2/dealix --body "https://dealix.me"'
+Write-Host '  gh secret set RAILWAY_TOKEN --repo Dealix-sa/dealix'
+Write-Host '  gh secret set DEALIX_ADMIN_API_KEY --repo Dealix-sa/dealix'
+Write-Host '  gh variable set DEALIX_FRONTEND_BASE --repo Dealix-sa/dealix --body "https://dealix.me"'
 
 Write-Host ""
 Write-Host "Workflows enabled on push/dispatch:" -ForegroundColor Cyan

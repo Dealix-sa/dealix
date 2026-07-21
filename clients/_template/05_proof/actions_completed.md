@@ -1,17 +1,27 @@
 # Actions Completed
 
-## Sprint 1
-- [ ]
-- [ ]
+> Evidence that work happened. Not a to-do list — a done list.
 
-## Sprint 2
-- [ ]
-- [ ]
+## Completed actions
 
-## Sprint 3
-- [ ]
-- [ ]
+| # | Date | Action | Workflow / sprint | Evidence | Owner |
+|---|------|--------|-------------------|----------|-------|
+| 1 |      |        |                   |          |       |
+| 2 |      |        |                   |          |       |
 
-## Sprint 4
-- [ ]
-- [ ]
+## Deliverables shipped
+
+| Deliverable | Linked acceptance criterion | Evidence | Date |
+|-------------|------------------------------|----------|------|
+|             |                              |          |      |
+
+## Hours / effort
+
+| Week | Planned hours | Actual hours | Variance | Reason |
+|------|---------------|-------------|----------|--------|
+|      |               |             |          |        |
+
+## What we learned completing these
+
+- -
+-

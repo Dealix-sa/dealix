@@ -69,7 +69,7 @@ echo -e "${YELLOW}[2/8] Setting up working directory...${NC}"
 WORK_DIR="${TMPDIR:-/tmp}/dealix_launch_$$"
 mkdir -p "$WORK_DIR"
 cd "$WORK_DIR"
-git clone https://github.com/VoXc2/dealix.git 2>&1 | tail -2
+git clone https://github.com/Dealix-sa/dealix.git 2>&1 | tail -2
 cd dealix
 echo -e "${GREEN}✅ Repo cloned${NC}"
 
@@ -165,7 +165,7 @@ echo "  3. Schedule followup reminders"
 echo ""
 
 echo -e "${GREEN}🎉 GitHub launch closure complete.${NC}"
-echo -e "${GREEN}   Repo: https://github.com/VoXc2/dealix${NC}"
+echo -e "${GREEN}   Repo: https://github.com/Dealix-sa/dealix${NC}"
 echo -e "${GREEN}   Next: Execute Steps A-E above. Total ~80 minutes.${NC}"
 echo ""
 

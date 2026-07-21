@@ -1,19 +1,53 @@
 # Weekly Command Report
 
-## Week: [DATE]
+> One page. The sponsor reads this in 60 seconds. Truth over comfort.
 
-## KPIs This Week
-| Metric | Target | Actual | Status |
-|---|---|---|---|
-| | | | |
+## Week of
 
-## AI Actions Taken
-- Drafts generated:
-- Approved and sent:
-- Rejected:
+- **Week # :**
+- **Sprint:**
+- **Owner:**
 
-## Revenue Impact
-New revenue attributed to Dealix system:
+## Headline (one sentence)
 
-## Issues & Risks
-Any blockers or concerns for next week.
+-
+
+## Green / amber / red
+
+- **Status:** green / amber / red
+- **Why:**
+
+## Done this week
+
+- [ ]
+- [ ]
+- [ ]
+
+## Planned next week
+
+- [ ]
+- [ ]
+
+## Acceptance criteria progress
+
+| Criterion | Status | Evidence |
+|-----------|--------|----------|
+|           |        |          |
+
+## Risks (top 3)
+
+1.
+2.
+3.
+
+## Decisions needed from sponsor
+
+| Decision | Why now | Options | Recommendation | By when |
+|----------|---------|---------|----------------|---------|
+|          |         |         |                |         |
+
+## Budget / scope watch
+
+- **Budget consumed:**
+- **Budget remaining:**
+- **Scope changes this week:**

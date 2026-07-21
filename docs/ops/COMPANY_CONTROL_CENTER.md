@@ -15,7 +15,7 @@ Last updated: 2026-04-24 · Keep this file fresh — update it before/after ever
 | Area | State | Evidence |
 |------|-------|----------|
 | Backend | ✅ LIVE | `curl https://web-dealix.up.railway.app/healthz` → 200 |
-| Landing | ✅ LIVE | https://voxc2.github.io/dealix |
+| Landing | ✅ LIVE | https://dealix-sa.github.io/dealix |
 | Demo form | ✅ VERIFIED | POST → `{ok: true, calendly_url, message}` |
 | Partner form | ✅ VERIFIED | POST → `{ok: true, message}` |
 | Pricing API | ✅ LIVE | Returns 3 plans JSON |
@@ -34,7 +34,7 @@ Last updated: 2026-04-24 · Keep this file fresh — update it before/after ever
 | Purpose | URL |
 |---------|-----|
 | **Homepage (custom domain)** | **https://dealix.me** ✅ SSL live |
-| Homepage (fallback) | https://voxc2.github.io/dealix/ |
+| Homepage (fallback) | https://dealix-sa.github.io/dealix/ |
 | Marketers page | https://dealix.me/marketers.html |
 | Pricing page | https://dealix.me/pricing.html |
 | Partners page | https://dealix.me/partners.html |
@@ -42,7 +42,7 @@ Last updated: 2026-04-24 · Keep this file fresh — update it before/after ever
 | Backend API (fallback) | https://web-dealix.up.railway.app |
 | Backend docs | https://web-dealix.up.railway.app/docs |
 | Book demo | https://calendly.com/sami-assiri11/dealix-demo |
-| Repo | https://github.com/VoXc2/dealix |
+| Repo | https://github.com/Dealix-sa/dealix |
 
 ---
 

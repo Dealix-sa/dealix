@@ -229,8 +229,8 @@
 
 ## 📦 الأصول على GitHub
 
-- **Repo**: [github.com/VoXc2/dealix](https://github.com/VoXc2/dealix)
-- **Sales Kit**: [docs/sales-kit/](https://github.com/VoXc2/dealix/tree/main/docs/sales-kit)
+- **Repo**: [github.com/Dealix-sa/dealix](https://github.com/Dealix-sa/dealix)
+- **Sales Kit**: [docs/sales-kit/](https://github.com/Dealix-sa/dealix/tree/main/docs/sales-kit)
 - **CI**: GitHub Actions (pytest + black + flake8)
 - **Deploy**: Railway (production) + Moyasar (payments)
 
@@ -272,7 +272,7 @@
 ## 📞 جهات الاتصال الداخلية
 
 - **Founder**: Sami Al-Assiri (sami.assiri11@gmail.com)
-- **GitHub**: VoXc2
+- **GitHub**: Dealix-sa
 - **Calendly**: https://calendly.com/sami-assiri11/dealix-demo
 
 ---

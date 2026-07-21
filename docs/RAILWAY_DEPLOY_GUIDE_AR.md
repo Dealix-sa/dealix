@@ -15,13 +15,13 @@
 
 ### 1. إنشاء الحساب
 
-افتح [railway.com](https://railway.com) → **Login with GitHub** (بحسابك VoXc2).
+افتح [railway.com](https://railway.com) → **Login with GitHub** (بحسابك Dealix-sa).
 
 ### 2. إنشاء المشروع
 
 - اضغط **New Project**
 - اختر **Deploy from GitHub repo**
-- اختر `VoXc2/dealix`
+- اختر `Dealix-sa/dealix`
 - Railway يكتشف Dockerfile تلقائياً ويبدأ البناء
 
 ### 3. إضافة PostgreSQL

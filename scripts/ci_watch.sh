@@ -20,7 +20,7 @@ INTERVAL="${2:-60}"
 
 if ! command -v gh >/dev/null 2>&1; then
     echo "⚠ gh CLI not installed — cannot watch CI from terminal."
-    echo "  Open https://github.com/VoXc2/dealix/actions?query=branch%3A$BRANCH"
+    echo "  Open https://github.com/Dealix-sa/dealix/actions?query=branch%3A$BRANCH"
     echo "  to inspect CI manually."
     exit 0
 fi

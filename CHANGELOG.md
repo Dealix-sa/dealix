@@ -20,7 +20,7 @@
 - **Security:** upgraded `next` 15.1.3 → 15.5.19 in `frontend/` to remediate CVE-2025-66478.
 - Services page "Custom AI" CTA now routes to the new `/custom-ai` intake; added a "Custom AI" link to the public site navigation.
 - `dealix-pm` agent now treats the in-repo `docs/LAUNCH_MASTER_PLAN.md` as the canonical 90-day plan.
-- Refreshed `README.md` to match the actual `VoXc2/dealix` repository and current operating workflow.
+- Refreshed `README.md` to match the actual `Dealix-sa/dealix` repository and current operating workflow.
 - Consolidated CI into a single workflow with backend and web jobs.
 - CI now checks the environment template and verifies OpenAPI schema export.
 - Cleaned `.env.example` to remove duplicate admin key definitions.

@@ -1,16 +1,41 @@
 # Client Feedback
 
-## Week 1
-Collected via: WhatsApp / call / form
-Rating: /5
-Comments:
+> Capture what the client said, not what we wish they said. Both positive and critical.
 
-## Week 2
-Collected via:
-Rating: /5
-Comments:
+## Feedback sessions
 
-## Final Feedback
-NPS Score:
-Testimonial (with permission):
-Case study approved: [ ] Yes  [ ] No
+| Date | Format (1:1 / survey / retro) | Attendees | Facilitator |
+|------|-------------------------------|-----------|-------------|
+|      |                               |           |             |
+
+## What worked (in their words)
+
+- **Quote:**
+- **Quote:**
+
+## What did not work (in their words)
+
+- **Quote:**
+- **Quote:**
+
+## Net promoter / satisfaction signal
+
+- **Would recommend?** yes / no / unsure
+- **Satisfaction (1-5):**
+- **Verbatim reason:**
+
+## What they want next
+
+-
+-
+
+## What they would change about how we worked
+
+-
+-
+
+## Action taken on feedback
+
+| Feedback | Action | Owner | Status |
+|----------|--------|-------|--------|
+|          |        |       |        |

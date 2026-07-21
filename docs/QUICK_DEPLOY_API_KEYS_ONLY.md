@@ -33,7 +33,7 @@ intentionally not required to boot.
 ## 1. Clone + provision (10 min)
 
 ```sh
-git clone https://github.com/voxc2/dealix.git
+git clone https://github.com/Dealix-sa/dealix.git
 cd dealix
 ```
 
