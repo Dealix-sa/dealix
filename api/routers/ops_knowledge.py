@@ -5,6 +5,7 @@ Accumulate, search, and retrieve intelligence over time.
 
 from __future__ import annotations
 
+from datetime import UTC
 from typing import Any
 
 from fastapi import APIRouter, Depends
@@ -38,6 +39,7 @@ class KnowledgeBatchRequest(BaseModel):
 @router.post("/ingest")
 async def ingest(payload: KnowledgeIngestRequest, lang: LanguageCode = Depends(get_lang)) -> dict[str, Any]:
     from datetime import datetime, timezone
+
     from core.utils import generate_id
 
     entry = KnowledgeEntry(
@@ -50,7 +52,7 @@ async def ingest(payload: KnowledgeIngestRequest, lang: LanguageCode = Depends(g
         company=payload.company,
         tags=payload.tags,
         confidence=payload.confidence,
-        created_at=datetime.now(timezone.utc).isoformat(),
+        created_at=datetime.now(UTC).isoformat(),
         expires_at=payload.expires_at,
     )
     _accumulator.ingest(entry)
@@ -60,6 +62,7 @@ async def ingest(payload: KnowledgeIngestRequest, lang: LanguageCode = Depends(g
 @router.post("/ingest-batch")
 async def ingest_batch(payload: KnowledgeBatchRequest) -> dict[str, Any]:
     from datetime import datetime, timezone
+
     from core.utils import generate_id
     from intelligence.bilingual import BilingualRenderer
 
@@ -74,7 +77,7 @@ async def ingest_batch(payload: KnowledgeBatchRequest) -> dict[str, Any]:
             company=e.company,
             tags=e.tags,
             confidence=e.confidence,
-            created_at=datetime.now(timezone.utc).isoformat(),
+            created_at=datetime.now(UTC).isoformat(),
             expires_at=e.expires_at,
         )
         for e in payload.entries

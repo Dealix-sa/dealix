@@ -95,7 +95,6 @@ from api.routers.domains import analytics as analytics_domain
 from api.routers.domains import compliance as compliance_domain
 from api.routers.domains import customers as customers_domain
 from api.routers.domains import deprecated as deprecated_domain
-ops_domain = _import_optional_router("ops", "api.routers.domains.ops")
 from api.routers.domains import sales as sales_domain
 from api.routers.domains import webhooks as webhooks_domain
 
@@ -112,6 +111,7 @@ def _import_optional_router(name: str, module_path: str):
         return None
 
 
+ops_domain = _import_optional_router("ops", "api.routers.domains.ops")
 value_os_router = _import_optional_router("value_os", "api.routers.value_os")
 data_os_router = _import_optional_router("data_os", "api.routers.data_os")
 # Wave 14F — Agent OS
