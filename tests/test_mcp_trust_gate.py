@@ -19,6 +19,7 @@ sys.modules[_SPEC.name] = _MODULE
 _SPEC.loader.exec_module(_MODULE)
 
 ToolPolicy = _MODULE.ToolPolicy
+ToolRateLimiter = _MODULE.ToolRateLimiter
 build_tool_manifest = _MODULE.build_tool_manifest
 revalidate_mcp_endpoint = _MODULE.revalidate_mcp_endpoint
 validate_http_binding = _MODULE.validate_http_binding
@@ -46,7 +47,12 @@ def _resolver(*addresses: str):
 def test_manifest_is_deterministic_and_denies_external_authority() -> None:
     policies = [
         ToolPolicy(name="read_status", capability="read"),
-        ToolPolicy(name="draft_intro", capability="local_draft", approval_required=True),
+        ToolPolicy(
+            name="draft_intro",
+            capability="local_draft",
+            approval_required=True,
+            timeout_seconds=45,
+        ),
     ]
 
     first = build_tool_manifest(policies)
@@ -57,6 +63,9 @@ def test_manifest_is_deterministic_and_denies_external_authority() -> None:
     assert first["external_send"] is False
     assert first["payment"] is False
     assert "shell" in first["denied_capabilities"]
+    tools = {item["name"]: item for item in first["tools"]}
+    assert tools["draft_intro"]["timeout_seconds"] == 45
+    assert tools["draft_intro"]["rate_limit_per_minute"] == 60
 
 
 def test_manifest_rejects_unsafe_or_duplicate_tools() -> None:
@@ -71,6 +80,24 @@ def test_manifest_rejects_unsafe_or_duplicate_tools() -> None:
         )
     with pytest.raises(ValueError, match="data classes are not allowed"):
         build_tool_manifest([ToolPolicy(name="read_secret", capability="read", data_classes=("secret",))])
+    with pytest.raises(ValueError, match="timeout_seconds"):
+        build_tool_manifest([ToolPolicy(name="slow", capability="read", timeout_seconds=0)])
+    with pytest.raises(ValueError, match="rate_limit_per_minute"):
+        build_tool_manifest([ToolPolicy(name="burst", capability="read", rate_limit_per_minute=0)])
+
+
+def test_rate_limit_is_enforced_and_recovers_after_window() -> None:
+    now = [100.0]
+    limiter = ToolRateLimiter(clock=lambda: now[0])
+    policy = ToolPolicy(name="read_status", capability="read", rate_limit_per_minute=2)
+
+    limiter.enforce(policy)
+    limiter.enforce(policy)
+    with pytest.raises(RuntimeError, match="rate limit exceeded"):
+        limiter.enforce(policy)
+
+    now[0] += 60.1
+    limiter.enforce(policy)
 
 
 def test_endpoint_blocks_private_resolution_even_when_host_is_allowed() -> None:
@@ -203,5 +230,7 @@ def test_server_import_registers_every_tool_under_policy(
     assert len(policies) == 21
     assert policies["draft_warm_intro"]["capability"] == "local_draft"
     assert policies["draft_warm_intro"]["approval_required"] is True
+    assert policies["draft_warm_intro"]["timeout_seconds"] == 45
+    assert policies["draft_warm_intro"]["rate_limit_per_minute"] == 10
     assert policies["run_diagnostic_report"]["approval_required"] is True
     assert all(item["external_side_effects"] is False for item in policies.values())
