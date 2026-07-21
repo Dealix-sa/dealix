@@ -123,5 +123,7 @@ No external messages are sent automatically. Founder approval is required for ev
 Every tool is registered through `@governed_tool`. Import fails if a tool requests an
 undeclared capability, secret access, external side effects, or draft authority without
 an approval requirement. The runtime manifest SHA-256 changes whenever permissions drift.
+Each policy also declares a bounded timeout and rate limit. Rate limits are enforced per
+process, and every call emits a metadata-only audit record without arguments or results.
 
 See `get_doctrine_rules()` for the full list of non-negotiables.
