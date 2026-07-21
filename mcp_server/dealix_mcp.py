@@ -34,6 +34,13 @@ if str(_REPO) not in sys.path:
 
 from fastmcp import FastMCP
 
+from mcp_server.trust_gate import (
+    ToolPolicy,
+    build_tool_manifest,
+    register_tool_policy,
+    validate_http_binding,
+)
+
 mcp = FastMCP(
     name="Dealix Business OS",
     instructions=(
@@ -44,6 +51,30 @@ mcp = FastMCP(
         "outreach or commit to customers without human confirmation."
     ),
 )
+
+_TOOL_POLICIES: dict[str, ToolPolicy] = {}
+
+
+def governed_tool(
+    *,
+    capability: str = "read",
+    data_classes: tuple[str, ...] = ("internal",),
+    approval_required: bool = False,
+):
+    """Register least privilege before exposing a function through FastMCP."""
+
+    def decorator(func):
+        policy = ToolPolicy(
+            name=func.__name__,
+            capability=capability,
+            data_classes=data_classes,
+            approval_required=approval_required,
+            external_side_effects=False,
+        )
+        register_tool_policy(_TOOL_POLICIES, policy)
+        return mcp.tool(func)
+
+    return decorator
 
 # ── helpers ────────────────────────────────────────────────────────────────
 
@@ -79,18 +110,32 @@ def _load_json_file(path: Path) -> Any:
         return None
 
 
+def _env_flag(name: str) -> bool:
+    return os.getenv(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_list(name: str) -> tuple[str, ...]:
+    return tuple(item.strip() for item in os.getenv(name, "").split(",") if item.strip())
+
+
 # ── read tools ─────────────────────────────────────────────────────────────
 
 
-@mcp.tool
+@governed_tool()
+def get_mcp_trust_manifest() -> str:
+    """Return the fingerprinted permission manifest for every registered tool."""
+    return _safe_json(build_tool_manifest(_TOOL_POLICIES.values()))
+
+
+@governed_tool()
 def get_war_room_today() -> str:
     """
     Returns today's War Room snapshot: top 10 P0 leads with their outreach status,
     pain hypothesis, next action, and urgency. Read-only — requires no approval.
     """
     try:
-        from dealix.commercial_ops.targeting_csv import build_war_room_today
         from dealix.commercial_ops.paths import REPO_ROOT
+        from dealix.commercial_ops.targeting_csv import build_war_room_today
 
         leads = build_war_room_today(top_n=10)
         result = {
@@ -104,7 +149,7 @@ def get_war_room_today() -> str:
         return _safe_json({"error": str(exc), "hint": "Run 'bash scripts/run_founder_commercial_day.sh' first"})
 
 
-@mcp.tool
+@governed_tool()
 def get_kpi_snapshot() -> str:
     """
     Returns the current KPI snapshot across platform + commercial dimensions.
@@ -119,7 +164,7 @@ def get_kpi_snapshot() -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_business_now() -> str:
     """
     Returns the 8-pillar Business NOW snapshot: commercial, GTM, delivery, product,
@@ -133,7 +178,7 @@ def get_business_now() -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_commercial_strategy() -> str:
     """
     Returns the commercial strategy snapshot: offer ladder (Diagnostic → Sprint 499 →
@@ -151,7 +196,7 @@ def get_commercial_strategy() -> str:
         return _safe_json({"commercial_strategy": strategy, "source": "cache"})
 
 
-@mcp.tool
+@governed_tool()
 def get_doctrine_rules() -> str:
     """
     Returns the 11 non-negotiable doctrine rules: no cold WhatsApp, no LinkedIn automation,
@@ -168,7 +213,7 @@ def get_doctrine_rules() -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_founder_cockpit(mode: str = "morning") -> str:
     """
     Returns the founder's operational cockpit for the day.
@@ -187,7 +232,7 @@ def get_founder_cockpit(mode: str = "morning") -> str:
         return _safe_json({"error": str(exc), "mode": mode})
 
 
-@mcp.tool
+@governed_tool()
 def get_expansion_status(abm_top_n: int = 10) -> str:
     """
     Returns GTM expansion status: targeting pool size, ABM wave readiness,
@@ -205,7 +250,7 @@ def get_expansion_status(abm_top_n: int = 10) -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_outreach_drafts(n: int = 5) -> str:
     """
     Returns pending outreach drafts waiting for founder approval.
@@ -229,7 +274,7 @@ def get_outreach_drafts(n: int = 5) -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_evidence_summary() -> str:
     """
     Returns commercial evidence summary: number of events by tier
@@ -245,7 +290,7 @@ def get_evidence_summary() -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_commercial_digest() -> str:
     """
     Returns the daily commercial digest: evidence, KPIs, social draft, P0 targets,
@@ -262,7 +307,7 @@ def get_commercial_digest() -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_ceo_master_plan_status() -> str:
     """
     Returns the CEO 90-day master plan status: 138 tasks across 30/60/90-day milestones,
@@ -276,7 +321,7 @@ def get_ceo_master_plan_status() -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_platform_kpi_baselines() -> str:
     """
     Returns platform KPI baselines: p99 latency, uptime target, token cost,
@@ -287,7 +332,7 @@ def get_platform_kpi_baselines() -> str:
     return _safe_json(data or {"note": "kpi_baselines.yaml not found"})
 
 
-@mcp.tool
+@governed_tool()
 def get_todo_registry() -> str:
     """
     Returns the current task registry with pending, in-progress, and done items.
@@ -298,7 +343,7 @@ def get_todo_registry() -> str:
     return _safe_json(data or {"note": "todo_registry.yaml not found"})
 
 
-@mcp.tool
+@governed_tool()
 def get_risk_register() -> str:
     """
     Returns the current risk register: open risks by severity, owner, and mitigation status.
@@ -308,7 +353,7 @@ def get_risk_register() -> str:
     return _safe_json(data or {"note": "risk_register.yaml not found"})
 
 
-@mcp.tool
+@governed_tool()
 def get_targeting_pool(top_n: int = 20, motion: str = "all") -> str:
     """
     Returns the active targeting pool from agency_accounts_seed.csv.
@@ -334,7 +379,7 @@ def get_targeting_pool(top_n: int = 20, motion: str = "all") -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_social_content_queue(weeks: int = 4) -> str:
     """
     Returns pending social content (LinkedIn posts) from the queue.
@@ -359,7 +404,7 @@ def get_social_content_queue(weeks: int = 4) -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_company_policy() -> str:
     """
     Returns the current company policy: auto_send_enabled (always false),
@@ -378,14 +423,14 @@ def get_company_policy() -> str:
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool()
 def get_war_room_lead_stages() -> str:
     """
     Returns the complete War Room funnel stages and outreach status transitions.
     Shows allowed stage progressions and which events are critical tracking points.
     """
     try:
-        from dealix.revenue_ops_autopilot.war_room import OUTREACH_ORDER, CRITICAL_OUTREACH_EVENTS
+        from dealix.revenue_ops_autopilot.war_room import CRITICAL_OUTREACH_EVENTS, OUTREACH_ORDER
         return _safe_json({
             "outreach_order": list(OUTREACH_ORDER),
             "critical_events": CRITICAL_OUTREACH_EVENTS,
@@ -398,7 +443,7 @@ def get_war_room_lead_stages() -> str:
 # ── write/action tools (all require explicit approval) ────────────────────
 
 
-@mcp.tool
+@governed_tool(capability="local_draft", approval_required=True)
 def draft_warm_intro(
     company_name: str,
     contact_role: str,
@@ -440,7 +485,7 @@ def draft_warm_intro(
         return _safe_json({"error": str(exc)})
 
 
-@mcp.tool
+@governed_tool(capability="local_draft", approval_required=True)
 def run_diagnostic_report(
     company_name: str,
     industry: str,
@@ -589,7 +634,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Dealix MCP Server")
     parser.add_argument(
         "--transport",
-        choices=["stdio", "http", "sse"],
+        choices=["stdio", "http"],
         default="stdio",
         help="Transport protocol (default: stdio)",
     )
@@ -599,5 +644,21 @@ if __name__ == "__main__":
 
     if args.transport == "stdio":
         mcp.run()
-    elif args.transport in ("http", "sse"):
-        mcp.run(transport=args.transport, host=args.host, port=args.port)
+    elif args.transport == "http":
+        binding = validate_http_binding(
+            transport=args.transport,
+            bind_host=args.host,
+            allowed_hosts=_env_list("DEALIX_MCP_ALLOWED_HOSTS"),
+            allowed_origins=_env_list("DEALIX_MCP_ALLOWED_ORIGINS"),
+            remote_enabled=_env_flag("DEALIX_MCP_REMOTE_HTTP_ENABLED"),
+            trusted_ingress_auth=_env_flag("DEALIX_MCP_TRUSTED_INGRESS_AUTH"),
+        )
+        if not binding.allowed:
+            parser.error(f"MCP trust gate blocked HTTP startup: {binding.reason}")
+        mcp.run(
+            transport=args.transport,
+            host=args.host,
+            port=args.port,
+            allowed_hosts=list(binding.allowed_hosts) or None,
+            allowed_origins=list(binding.allowed_origins) or None,
+        )
