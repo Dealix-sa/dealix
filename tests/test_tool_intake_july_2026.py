@@ -8,7 +8,13 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("verify_tool_radar", ROOT / "verify_tool_radar.py")
+SCRIPT = ROOT / "verify_tool_radar.py"
+REGISTRY = ROOT / "dealix_july_2026_tool_radar.json"
+if not SCRIPT.exists():
+    SCRIPT = ROOT / "scripts" / "agents" / "verify_tool_intake.py"
+    REGISTRY = ROOT / "dealix" / "registers" / "tool_intake_july_2026.json"
+
+SPEC = importlib.util.spec_from_file_location("verify_tool_radar", SCRIPT)
 assert SPEC and SPEC.loader
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
@@ -18,7 +24,7 @@ class ToolRadarValidationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.payload = json.loads(
-            (ROOT / "dealix_july_2026_tool_radar.json").read_text(encoding="utf-8")
+            REGISTRY.read_text(encoding="utf-8")
         )
 
     def test_current_registry_is_valid(self) -> None:
