@@ -12,6 +12,9 @@ import hashlib
 import ipaddress
 import json
 import socket
+import threading
+import time
+from collections import deque
 from dataclasses import asdict, dataclass
 from typing import Any, Callable, Iterable, Literal
 from urllib.parse import urlparse
@@ -45,6 +48,8 @@ class ToolPolicy:
     data_classes: tuple[str, ...] = ("internal",)
     approval_required: bool = False
     external_side_effects: bool = False
+    timeout_seconds: int = 30
+    rate_limit_per_minute: int = 60
 
 
 @dataclass(frozen=True, slots=True)
@@ -64,6 +69,26 @@ class BindingDecision:
     allowed_origins: tuple[str, ...] = ()
 
 
+class ToolRateLimiter:
+    """Small per-process sliding-window limiter for local MCP defense in depth."""
+
+    def __init__(self, clock: Callable[[], float] = time.monotonic) -> None:
+        self._clock = clock
+        self._events: dict[str, deque[float]] = {}
+        self._lock = threading.Lock()
+
+    def enforce(self, policy: ToolPolicy) -> None:
+        now = self._clock()
+        cutoff = now - 60.0
+        with self._lock:
+            events = self._events.setdefault(policy.name, deque())
+            while events and events[0] <= cutoff:
+                events.popleft()
+            if len(events) >= policy.rate_limit_per_minute:
+                raise RuntimeError(f"MCP rate limit exceeded for tool {policy.name!r}")
+            events.append(now)
+
+
 def validate_tool_policy(policy: ToolPolicy) -> list[str]:
     errors: list[str] = []
     if not policy.name or not policy.name.replace("_", "").isalnum():
@@ -79,6 +104,10 @@ def validate_tool_policy(policy: ToolPolicy) -> list[str]:
     invalid_data_classes = sorted(set(policy.data_classes) - ALLOWED_DATA_CLASSES)
     if invalid_data_classes:
         errors.append(f"data classes are not allowed: {', '.join(invalid_data_classes)}")
+    if not 1 <= policy.timeout_seconds <= 120:
+        errors.append("timeout_seconds must be between 1 and 120")
+    if not 1 <= policy.rate_limit_per_minute <= 600:
+        errors.append("rate_limit_per_minute must be between 1 and 600")
     return errors
 
 
