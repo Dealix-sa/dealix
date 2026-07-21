@@ -18,13 +18,14 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel, Field
+
 from api.security.api_key import require_admin_key
 from dealix.revenue_ops_autopilot.store import get_autopilot_store
 from dealix.revenue_ops_autopilot.war_room import build_daily_summary
-from fastapi import APIRouter, Depends
 from intelligence import Deal, RevenueIntelligenceEngine
 from intelligence.saudi_market_intelligence import SaudiMarketIntelligence
-from pydantic import BaseModel, Field
 
 router = APIRouter(
     prefix="/api/v1/founder",
