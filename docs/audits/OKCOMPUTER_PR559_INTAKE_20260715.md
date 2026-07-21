@@ -46,3 +46,33 @@ Preserve the uploaded packages as reference evidence without introducing a secon
 - P0 production trust items remain explicit approval items.
 - Any later extraction proves a missing capability, has tests, and uses Dealix v3 architecture.
 
+## Verification addendum — 2026-07-21
+
+A repaired, reference-only standalone artifact was produced from upload 03. Upload 05 was excluded as its byte-for-byte duplicate. This artifact is evidence and recovery material; it is not a candidate for wholesale integration into Dealix v3.
+
+### Remediation completed in the standalone reference
+
+- Replaced the MySQL driver and schema dialect with PostgreSQL.
+- Replaced router-wide anonymous procedures with authenticated procedures and admin-only destructive/approval actions.
+- Added process liveness, database readiness, Railway configuration, and a clean-database migration.
+- Split OAuth and JWT secrets, removed unsafe initialization paths, fixed typed API/UI defects, and added unit tests.
+- Upgraded vulnerable runtime dependencies and made CI fail on lint, tests, audit, and build failures.
+- Corrected documentation so implemented foundations are not represented as production-active operations.
+
+### Verification evidence
+
+- `make full-verify`: passed.
+- Configuration validation: 15 YAML files, 11 JSON files, and 9 JSON schemas passed.
+- Python: 9 tests passed.
+- Web/API: TypeScript check, ESLint, 2 Vitest tests, and production build passed.
+- Production dependency audit: 0 known vulnerabilities.
+- Drizzle migration consistency check: passed.
+- Built-server smoke: `/health` returned 200; `/ready` returned a sanitized 503 when the database was intentionally unreachable.
+- Consolidated artifact SHA-256: `feda3ec8d94a1904ffb0734335d16241407bfdc4de2cdc1c77cb198263068fbe`.
+
+### Limits and decision
+
+- No live PostgreSQL integration test was possible in the isolated verification environment.
+- No migration was applied to an existing database.
+- No production configuration, deployment, domain binding, external message, or secret was changed.
+- The source-of-truth decision remains `HOLD`: do not introduce the standalone runtime into Dealix v3. Extract a capability only after proving it is absent in v3, then implement it natively with focused tests.
