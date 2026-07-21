@@ -15,7 +15,8 @@
         ai-provider-radar ai-provider-radar-json ai-provider-coding ai-provider-arabic ai-provider-batch daily-value-loop \
         launch-validate launch-vertical-score launch-icp-score launch-trust-preflight \
         launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review \
-        launch-content launch-pipeline launch-all-dry-runs test-launch
+        launch-content launch-pipeline launch-all-dry-runs test-launch \
+        score-prospect score-batch analyze-pipeline intelligence-test
 
 # Python binary (override with PYTHON=python3.12 make ...)
 PYTHON ?= python3
@@ -303,3 +304,17 @@ launch-pipeline: ## Launch OS: print pipeline summary from sample data
 
 launch-all-dry-runs: launch-validate launch-vertical-score launch-icp-score launch-trust-preflight launch-outreach-drafts launch-proposal launch-founder-command launch-weekly-review launch-content ## Launch OS: run all dry-run scripts in sequence
 	@echo "✅ All Launch OS dry-runs completed"
+
+# ── Commercial Intelligence CLI ─────────────────────────────────
+
+score-prospect: ## CI: score one Saudi prospect
+	$(PYTHON) -m cli.sales_strategist --company "$(COMPANY)" --sector "$(SECTOR)" --city "$(CITY)" --employees $(EMPLOYEES) --website "$(WEBSITE)"
+
+score-batch: ## CI: score a batch of prospects from JSON
+	$(PYTHON) -m cli.sales_strategist --batch $(BATCH_FILE)
+
+analyze-pipeline: ## CI: analyze a pipeline CSV and print recommendations
+	$(PYTHON) scripts/analyze_pipeline.py --input $(PIPELINE_CSV)
+
+intelligence-test: ## CI: run the new intelligence layer tests
+	$(PYTHON) -m pytest tests/test_intelligence_layer.py tests/test_sales_strategist_agent.py -q

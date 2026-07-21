@@ -24,6 +24,8 @@ from pydantic import BaseModel, Field
 from api.security.api_key import require_admin_key
 from dealix.revenue_ops_autopilot.store import get_autopilot_store
 from dealix.revenue_ops_autopilot.war_room import build_daily_summary
+from intelligence import RevenueIntelligenceEngine, Deal
+from intelligence.saudi_market_intelligence import SaudiMarketIntelligence
 
 router = APIRouter(
     prefix="/api/v1/founder",
@@ -76,6 +78,39 @@ async def founder_command_room() -> dict[str, Any]:
     store = get_autopilot_store()
     summary = build_daily_summary(store.list_leads(limit=600))
     paid = int(summary.get("revenue", {}).get("paid", 0) or 0)
+
+    # Build intelligence snapshot from current pipeline data
+    leads = store.list_leads(limit=600)
+    engine = RevenueIntelligenceEngine()
+    deals = []
+    now = datetime.now(UTC)
+    for lead in leads:
+        stage = lead.get("stage", "lead")
+        value = float(lead.get("estimated_value_sar", 2500) or 2500)
+        last_activity = lead.get("last_activity_at")
+        if last_activity is None:
+            last_activity = now
+        elif isinstance(last_activity, str):
+            last_activity = datetime.fromisoformat(last_activity.replace("Z", "+00:00"))
+        deals.append(Deal(
+            deal_id=lead.get("id", "unknown"),
+            company_name=lead.get("company_name", "Unknown"),
+            stage=stage,
+            value_sar=value,
+            created_at=now,
+            last_activity_at=last_activity,
+            activities_count=lead.get("activities_count", 0),
+            days_in_stage=lead.get("days_in_stage", 0),
+        ))
+    engine.load_deals(deals)
+    intel = engine.analyze()
+
+    market_intel = SaudiMarketIntelligence()
+    top_sectors = [
+        {"sector": s, "momentum": market_intel.sector_momentum(s).value}
+        for s in ["fintech", "logistics", "software", "healthcare_tech", "proptech"]
+    ]
+
     return {
         "generated_at": datetime.now(UTC).isoformat(),
         "mode": "draft_only",
@@ -86,5 +121,14 @@ async def founder_command_room() -> dict[str, Any]:
             "founder_actions": FOUNDER_ACTIONS,
         },
         "offer_ladder": OFFER_LADDER,
+        "intelligence": {
+            "pipeline_health": intel.pipeline_health,
+            "total_pipeline_sar": intel.total_pipeline_sar,
+            "weighted_pipeline_sar": intel.weighted_pipeline_sar,
+            "revenue_at_risk_sar": intel.revenue_at_risk_sar,
+            "recommended_actions": intel.recommended_actions,
+            "top_sector_signals": top_sectors,
+        },
         "summary": summary,
     }
+

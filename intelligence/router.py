@@ -127,6 +127,46 @@ class IntelligenceRouter:
             requires_json, 0.25,
         )
 
+    async def execute(
+        self,
+        task_type: TaskType,
+        messages: list[dict[str, str]],
+        system: str | None = None,
+        urgency: Urgency = Urgency.NORMAL,
+        requires_saudi_context: bool = False,
+        requires_json: bool = False,
+        max_tokens: int = 2048,
+    ) -> str:
+        """Route AND execute a task through the core Dealix LLM router."""
+        decision = self.route(
+            task_type=task_type,
+            urgency=urgency,
+            requires_saudi_context=requires_saudi_context,
+            requires_json=requires_json,
+        )
+
+        # Map our task type to core Task enum
+        task_map = {
+            TaskType.REASONING: Task.REASONING,
+            TaskType.GENERATION: Task.PROPOSAL,
+            TaskType.EXTRACTION: Task.SOURCE_ANALYSIS,
+            TaskType.CLASSIFICATION: Task.CLASSIFICATION,
+            TaskType.SUMMARIZATION: Task.SUMMARY,
+            TaskType.CODE: Task.CODE,
+        }
+        core_task = task_map.get(task_type, Task.REASONING)
+
+        router = get_router()
+        response = await router.run(
+            core_task,
+            messages=[Message(role=m["role"], content=m["content"]) for m in messages],
+            system=system,
+            max_tokens=max_tokens,
+            temperature=decision.temperature,
+            force_json=requires_json,
+        )
+        return response.content
+
     def _decide(
         self,
         provider: str,
