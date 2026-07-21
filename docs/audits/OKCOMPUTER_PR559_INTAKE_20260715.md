@@ -36,7 +36,7 @@ Preserve the uploaded packages as reference evidence without introducing a secon
 - No secret values in GitHub, logs, or comments.
 - No production mutation without explicit approval.
 - No live outbound.
-- No merge to `main` from this intake record.
+- No wholesale standalone-runtime merge to `main` from this intake record; documentation evidence may merge after review.
 
 ## Definition of done
 
