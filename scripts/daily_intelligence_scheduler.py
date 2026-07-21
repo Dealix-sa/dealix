@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from intelligence import RevenueIntelligenceEngine, SaudiMarketIntelligence
 from intelligence.saudi_market_intelligence import SaudiCompanyProfile
 
+
 PROSPECTS_PATH = Path("data/commercial/saudi_prospects_sample.json")
 PIPELINE_PATH = Path("data/commercial/pipeline_sample.json")
 OUTPUT_DIR = Path("reports/daily_intelligence")

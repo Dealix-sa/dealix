@@ -68,6 +68,29 @@ from intelligence.saudi_market_intelligence import (
     SectorSignal,
 )
 
+# Operating System modules
+from intelligence.bilingual import BilingualRenderer, BilingualText
+from intelligence.communication_hub import CommunicationHub
+from intelligence.customer_success_ops import CustomerSuccessOperatingSystem
+from intelligence.deep_research import DeepResearchEngine
+from intelligence.growth_ops import GrowthOperatingSystem
+from intelligence.knowledge_accumulator import KnowledgeAccumulator, KnowledgeEntry
+from intelligence.negotiation_engine import NegotiationEngine
+from intelligence.ops_adapters import (
+    BattlecardsAdapter,
+    CSScorecard,
+    ForecastingAdapter,
+    GTMAdapter,
+    LeadMachineAdapter,
+    PLGAdapter,
+    PricingAdapter,
+    ProposalsAdapter,
+    list_packages,
+    validate_sku,
+)
+from intelligence.sales_ops import SalesOperatingSystem
+from intelligence.send_gate import SendGate, SendGateViolation
+
 __all__ = [
     "CompetitorBattlecards",
     "ContractAnalysis",
@@ -110,4 +133,27 @@ __all__ = [
     "SaudiCompanyProfile",
     "SaudiMarketIntelligence",
     "SectorSignal",
-]
+    # OS symbols
+    "BilingualRenderer",
+    "BilingualText",
+    "CommunicationHub",
+    "CustomerSuccessOperatingSystem",
+    "DeepResearchEngine",
+    "GrowthOperatingSystem",
+    "KnowledgeAccumulator",
+    "KnowledgeEntry",
+    "NegotiationEngine",
+    "SalesOperatingSystem",
+    "SendGate",
+    "SendGateViolation",
+    "BattlecardsAdapter",
+    "CSScorecard",
+    "ForecastingAdapter",
+    "GTMAdapter",
+    "LeadMachineAdapter",
+    "PLGAdapter",
+    "PricingAdapter",
+    "ProposalsAdapter",
+    "list_packages",
+    "validate_sku",
+] 

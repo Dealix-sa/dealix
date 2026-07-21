@@ -1,9 +1,8 @@
 """Tests for the Dealix Sales Strategist Agent."""
 
 import json
-from unittest.mock import AsyncMock, MagicMock
-
 import pytest
+from unittest.mock import AsyncMock, MagicMock
 
 from agents.sales_agent.sales_strategist import SalesStrategistAgent
 from intelligence import SaudiCompanyProfile

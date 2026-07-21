@@ -95,6 +95,7 @@ from api.routers.domains import analytics as analytics_domain
 from api.routers.domains import compliance as compliance_domain
 from api.routers.domains import customers as customers_domain
 from api.routers.domains import deprecated as deprecated_domain
+ops_domain = _import_optional_router("ops", "api.routers.domains.ops")
 from api.routers.domains import sales as sales_domain
 from api.routers.domains import webhooks as webhooks_domain
 
@@ -311,6 +312,8 @@ def create_app() -> FastAPI:
         webhooks_domain,
         deprecated_domain,
     ]
+    if ops_domain:
+        _DOMAIN_GROUPS.append(ops_domain)
     for domain in _DOMAIN_GROUPS:
         for router in domain.get_routers():
             app.include_router(router)
