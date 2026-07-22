@@ -10,7 +10,7 @@
     "verify": "npm run typecheck && npm run build"
   },
   "dependencies": {
-    "@sentry/nextjs": "^10.59.0",
+    "@sentry/nextjs": "^10.62.0",
     "axios": "^1.18.1",
     "next": "15.5.19",
     "posthog-js": "^1.392.0",
