@@ -33,7 +33,7 @@ jobs:
     name: Lighthouse (10 Tier-1 pages)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -72,7 +72,7 @@ jobs:
     name: Pa11y a11y (10 Tier-1 pages)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
