@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 """Security regression tests for Communication OS storage.
 
 Validates path traversal prevention, input sanitization, and fail-closed behavior.
 """
 
-from __future__ import annotations
-
+import datetime
 
 import pytest
 from sqlalchemy import create_engine
@@ -64,14 +65,13 @@ class TestInputValidation:
 
     def test_namespace_validation_rejects_special_chars(self):
         engine = create_engine("sqlite+pysqlite:///:memory:", future=True)
-        # These should all fail validation (after strip where applicable)
         bad_cases = [
-            "ns;drop table",      # semicolon injection
-            "ns/../../../etc",    # path traversal in namespace
-            "123start",           # must start with letter
-            "a/b",                # slash not allowed
-            "a.b",                # dot not allowed  
-            "a space",            # space not allowed (strip won't help middle spaces)
+            "ns;drop table",
+            "ns/../../../etc",
+            "123start",
+            "a/b",
+            "a.b",
+            "a space",
         ]
         for bad in bad_cases:
             with pytest.raises(ValueError, match="namespace"):
