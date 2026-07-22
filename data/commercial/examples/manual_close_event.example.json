@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "example_only": true,
+  "client_name": "REPLACE_WITH_APPROVED_CLIENT_NAME",
+  "client_contact_channel": "approved_email_or_other_opt_in_channel",
+  "offer_name": "Revenue Proof Sprint",
+  "offer_price_sar": 499,
+  "state": "payment_instruction_drafted",
+  "payment_method": "manual_transfer",
+  "invoice_or_transfer_reference": "",
+  "payment_received_at": "",
+  "proof_pack_path": "",
+  "founder_approval_id": "REQUIRED_BEFORE_EXTERNAL_ACTION",
+  "notes": "Example only. Never commit IBAN, account numbers, card data, API keys, receipts with personal data, or real customer secrets."
+}
