@@ -23,28 +23,56 @@ class ServerlessCommunicationHub(CommunicationHub):
     """
 
     def __init__(self, storage: CommunicationStorage | None = None) -> None:
-        self.storage = storage or build_communication_storage()
+        super().__init__()
+        self._storage = storage
 
-    def _storage_key(self, path: Path) -> str:
-        if path == self.LOG_PATH:
-            return CONTACT_LOG_KEY
-        if path == self.SEQUENCE_PATH:
-            return SEQUENCES_KEY
-        raise ValueError(f"Unsupported communication path: {path}")
+    @classmethod
+    def from_environment(
+        cls,
+        *,
+        app_env: str | None = None,
+        backend: str | None = None,
+        file_root: Path | str | None = None,
+        database_url: str | None = None,
+        namespace: str = "dealix",
+    ) -> "ServerlessCommunicationHub":
+        """Create a hub backed by storage derived from environment variables."""
+        storage = build_communication_storage(
+            app_env=app_env,
+            backend=backend,
+            file_root=file_root,
+            database_url=database_url,
+            namespace=namespace,
+        )
+        return cls(storage=storage)
 
-    def _ensure_files(self) -> None:
-        """Compatibility no-op; storage initialization is adapter-owned."""
+    # --- persistence adapter ---
 
-    def _read_json(self, path: Path) -> list[dict[str, Any]]:
-        return self.storage.read_list(self._storage_key(path))
+    async def _get_state(self, key: str) -> list[dict[str, Any]]:
+        if self._storage is None:
+            return []
+        return await self._storage.read_list(key)
 
-    def _write_json(self, path: Path, data: list[dict[str, Any]]) -> None:
-        self.storage.write_list(self._storage_key(path), data)
+    async def _set_state(self, key: str, value: list[dict[str, Any]]) -> None:
+        if self._storage is None:
+            return
+        await self._storage.write_list(key, value)
 
-    def readiness(self) -> dict[str, Any]:
-        """Return a secret-free storage readiness result."""
+    async def _delete_state(self, key: str) -> None:
+        if self._storage is None:
+            return
+        await self._storage.delete(key)
 
-        return self.storage.readiness()
+    # --- aliases used by communication_hub.py ---
 
+    async def get_contact_log(self) -> list[dict[str, Any]]:
+        return await self._get_state(CONTACT_LOG_KEY)
 
-__all__ = ["ServerlessCommunicationHub"]
+    async def set_contact_log(self, value: list[dict[str, Any]]) -> None:
+        await self._set_state(CONTACT_LOG_KEY, value)
+
+    async def get_sequences(self) -> list[dict[str, Any]]:
+        return await self._get_state(SEQUENCES_KEY)
+
+    async def set_sequences(self, value: list[dict[str, Any]]) -> None:
+        await self._set_state(SEQUENCES_KEY, value)
