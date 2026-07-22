@@ -116,9 +116,10 @@ class CommunicationHub:
     _log_lock = threading.Lock()
     _seq_lock = threading.Lock()
 
-    def __init__(self) -> None:
-        self.LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-        self._ensure_files()
+    def __init__(self, *, skip_fs_init: bool = False) -> None:
+        if not skip_fs_init:
+            self.LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+            self._ensure_files()
 
     def _ensure_files(self) -> None:
         for path in (self.LOG_PATH, self.SEQUENCE_PATH):

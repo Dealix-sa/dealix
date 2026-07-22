@@ -23,7 +23,7 @@ class ServerlessCommunicationHub(CommunicationHub):
     """
 
     def __init__(self, storage: CommunicationStorage | None = None) -> None:
-        super().__init__()
+        super().__init__(skip_fs_init=True)
         self._storage = storage
 
     @classmethod
@@ -45,6 +45,12 @@ class ServerlessCommunicationHub(CommunicationHub):
             namespace=namespace,
         )
         return cls(storage=storage)
+
+    def readiness(self) -> dict[str, Any]:
+        """Return readiness state from the injected storage adapter."""
+        if self._storage is None:
+            return {"backend": "none", "production_safe": False}
+        return self._storage.readiness()
 
     # --- persistence adapter ---
 
