@@ -53,7 +53,7 @@ def test_serverless_hub_uses_injected_storage(tmp_path):
 
     history = hub.get_contact_history("contact-1", "both")
     assert entry.direction == "inbound"
-    assert history["data"]["count"] == 1
+    assert history["count"] == 1
 
 
 def test_production_rejects_file_or_tmp_storage(tmp_path):
