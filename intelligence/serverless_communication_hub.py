@@ -33,16 +33,12 @@ class ServerlessCommunicationHub(CommunicationHub):
         app_env: str | None = None,
         backend: str | None = None,
         file_root: Path | str | None = None,
-        database_url: str | None = None,
-        namespace: str = "dealix",
     ) -> "ServerlessCommunicationHub":
         """Create a hub backed by storage derived from environment variables."""
         storage = build_communication_storage(
             app_env=app_env,
             backend=backend,
             file_root=file_root,
-            database_url=database_url,
-            namespace=namespace,
         )
         return cls(storage=storage)
 
