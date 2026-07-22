@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 from typing import Any, Protocol, runtime_checkable
 
@@ -34,6 +35,9 @@ from core.utils import utcnow
 CONTACT_LOG_KEY = "contact_log"
 SEQUENCES_KEY = "sequences"
 _ALLOWED_KEYS = frozenset({CONTACT_LOG_KEY, SEQUENCES_KEY})
+
+# Security: restrict namespace to safe characters only
+_NAMESPACE_PATTERN = re.compile(r"^[a-zA-Z][a-zA-Z0-9_-]{0,62}$")
 
 
 class CommunicationStorageUnavailable(RuntimeError):
@@ -63,6 +67,18 @@ def _validated_key(key: str) -> str:
     return key
 
 
+def _safe_namespace(namespace: str) -> str:
+    """Validate namespace to prevent injection and path traversal."""
+    ns = namespace.strip()
+    if not ns or not _NAMESPACE_PATTERN.match(ns):
+        raise ValueError(
+            "Communication storage namespace must start with a letter, "
+            "contain only alphanumeric characters, hyphens, and underscores, "
+            "and be between 1 and 63 characters long."
+        )
+    return ns
+
+
 class FileCommsStorage:
     """Explicit local/test adapter backed by JSON files.
 
@@ -75,10 +91,20 @@ class FileCommsStorage:
     durable = False
 
     def __init__(self, root: Path | str = Path("data/comms")) -> None:
-        self.root = Path(root)
+        self.root = Path(root).resolve()
 
     def _path(self, key: str) -> Path:
-        return self.root / f"{_validated_key(key)}.json"
+        """Resolve storage path, preventing path traversal outside root."""
+        validated = _validated_key(key)
+        target = (self.root / f"{validated}.json").resolve()
+        # Security: ensure resolved path is within root directory
+        try:
+            target.relative_to(self.root)
+        except ValueError as exc:
+            raise CommunicationStorageUnavailable(
+                "Communication storage path is outside the allowed root directory"
+            ) from exc
+        return target
 
     def read_list(self, key: str) -> list[dict[str, Any]]:
         path = self._path(key)
@@ -94,10 +120,20 @@ class FileCommsStorage:
             raise CommunicationStorageUnavailable(
                 "Communication file storage contains invalid state"
             )
+        # Validate list items are dicts (defense against deserialization issues)
+        if not all(isinstance(item, dict) for item in raw):
+            raise CommunicationStorageUnavailable(
+                "Communication file storage contains non-dict entries"
+            )
         return raw
 
     def write_list(self, key: str, data: list[dict[str, Any]]) -> None:
         path = self._path(key)
+        # Validate data before writing
+        if not isinstance(data, list) or not all(isinstance(item, dict) for item in data):
+            raise CommunicationStorageUnavailable(
+                "Cannot write non-dict entries to communication storage"
+            )
         try:
             path.parent.mkdir(parents=True, exist_ok=True)
             tmp_path = path.with_suffix(path.suffix + ".tmp")
@@ -138,11 +174,8 @@ class PostgresCommsStorage:
     durable = True
 
     def __init__(self, engine: Engine, *, namespace: str = "dealix") -> None:
-        namespace = namespace.strip()
-        if not namespace:
-            raise ValueError("Communication storage namespace cannot be empty")
+        self.namespace = _safe_namespace(namespace)
         self._engine = engine
-        self.namespace = namespace
 
     @classmethod
     def from_database_url(
@@ -188,9 +221,19 @@ class PostgresCommsStorage:
             raise CommunicationStorageUnavailable(
                 "Durable communication storage contains invalid state"
             )
+        # Validate list items are dicts
+        if not all(isinstance(item, dict) for item in payload):
+            raise CommunicationStorageUnavailable(
+                "Durable communication storage contains non-dict entries"
+            )
         return payload
 
     def write_list(self, key: str, data: list[dict[str, Any]]) -> None:
+        # Validate data before writing
+        if not isinstance(data, list) or not all(isinstance(item, dict) for item in data):
+            raise CommunicationStorageUnavailable(
+                "Cannot write non-dict entries to communication storage"
+            )
         now = utcnow()
         try:
             with self._engine.begin() as connection:
