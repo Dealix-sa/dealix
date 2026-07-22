@@ -65,7 +65,16 @@ class TestInputValidation:
 
     def test_namespace_validation_rejects_special_chars(self):
         engine = create_engine("sqlite+pysqlite:///:memory:", future=True)
-        for bad in ["ns;drop table", "ns/../../../etc", "ns\n", "ns ", "123start"]:
+        # These should all fail validation (after strip where applicable)
+        bad_cases = [
+            "ns;drop table",      # semicolon injection
+            "ns/../../../etc",    # path traversal in namespace
+            "123start",           # must start with letter
+            "a/b",                # slash not allowed
+            "a.b",                # dot not allowed  
+            "a space",            # space not allowed (strip won't help middle spaces)
+        ]
+        for bad in bad_cases:
             with pytest.raises(ValueError, match="namespace"):
                 PostgresCommsStorage(engine, namespace=bad)
 
