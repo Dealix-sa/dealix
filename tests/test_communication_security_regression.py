@@ -5,7 +5,7 @@ Validates path traversal prevention, input sanitization, and fail-closed behavio
 
 from __future__ import annotations
 
-import os
+
 import pytest
 from sqlalchemy import create_engine
 
@@ -18,7 +18,6 @@ from intelligence.comms_storage import (
     build_communication_storage,
     communication_state_metadata,
 )
-from intelligence.serverless_communication_hub import ServerlessCommunicationHub
 
 
 class TestPathTraversalPrevention:
