@@ -1,20 +1,49 @@
 """Communication OS API.
 
 Approval-first company-to-client communication hub. No endpoint sends externally.
+The hub is resolved lazily so importing the FastAPI application never writes to
+its deployment filesystem.
 """
 
 from __future__ import annotations
 
+import threading
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
 from intelligence.bilingual import LanguageCode, get_lang
-from intelligence.communication_hub import CommunicationHub
+from intelligence.comms_storage import CommunicationStorageUnavailable
+from intelligence.serverless_communication_hub import ServerlessCommunicationHub
 
 router = APIRouter(prefix="/api/v1/ops/comms", tags=["Communication OS"])
-_hub = CommunicationHub()
+
+_hub: ServerlessCommunicationHub | None = None
+_hub_lock = threading.Lock()
+
+
+def _get_hub() -> ServerlessCommunicationHub:
+    """Create the configured hub only when a route actually needs it."""
+
+    global _hub
+    if _hub is not None:
+        return _hub
+    with _hub_lock:
+        if _hub is None:
+            _hub = ServerlessCommunicationHub()
+    return _hub
+
+
+def _storage_unavailable(exc: Exception) -> HTTPException:
+    return HTTPException(
+        status_code=503,
+        detail={
+            "code": "communication_storage_unavailable",
+            "message": "Communication storage is unavailable; write actions remain blocked.",
+            "error_type": type(exc).__name__,
+        },
+    )
 
 
 class DraftRequest(BaseModel):
@@ -52,10 +81,23 @@ class ApprovalActionRequest(BaseModel):
     reason: str | None = None
 
 
+@router.get("/readiness")
+async def communication_readiness() -> dict[str, Any]:
+    """Expose storage readiness without leaking connection details."""
+
+    try:
+        result = _get_hub().readiness()
+    except (CommunicationStorageUnavailable, RuntimeError, ValueError) as exc:
+        raise _storage_unavailable(exc) from exc
+    if not result.get("ready"):
+        raise HTTPException(status_code=503, detail=result)
+    return result
+
+
 @router.post("/draft")
 async def create_draft(payload: DraftRequest) -> dict[str, Any]:
     try:
-        entry = _hub.create_draft(
+        entry = _get_hub().create_draft(
             contact_id=payload.contact_id,
             company_name=payload.company_name,
             contact_name=payload.contact_name,
@@ -66,6 +108,8 @@ async def create_draft(payload: DraftRequest) -> dict[str, Any]:
             body_ar=payload.body_ar,
             tags=payload.tags,
         )
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return {"draft": entry.to_dict(payload.lang), "lang": payload.lang}
@@ -73,7 +117,10 @@ async def create_draft(payload: DraftRequest) -> dict[str, Any]:
 
 @router.post("/{entry_id}/submit")
 async def submit_for_approval(entry_id: str, payload: ApprovalActionRequest) -> dict[str, Any]:
-    result = _hub.submit_for_approval(entry_id, payload.actor)
+    try:
+        result = _get_hub().submit_for_approval(entry_id, payload.actor)
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
     if not result:
         raise HTTPException(status_code=404, detail="Draft not found")
     return {"entry": result.to_dict("both")}
@@ -81,7 +128,10 @@ async def submit_for_approval(entry_id: str, payload: ApprovalActionRequest) -> 
 
 @router.post("/{entry_id}/approve")
 async def approve_draft(entry_id: str, payload: ApprovalActionRequest) -> dict[str, Any]:
-    result = _hub.approve_draft(entry_id, payload.actor)
+    try:
+        result = _get_hub().approve_draft(entry_id, payload.actor)
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
     if not result:
         raise HTTPException(status_code=404, detail="Draft not found")
     return {"entry": result.to_dict("both")}
@@ -89,7 +139,10 @@ async def approve_draft(entry_id: str, payload: ApprovalActionRequest) -> dict[s
 
 @router.post("/{entry_id}/reject")
 async def reject_draft(entry_id: str, payload: ApprovalActionRequest) -> dict[str, Any]:
-    result = _hub.reject_draft(entry_id, payload.reason or "")
+    try:
+        result = _get_hub().reject_draft(entry_id, payload.reason or "")
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
     if not result:
         raise HTTPException(status_code=404, detail="Draft not found")
     return {"entry": result.to_dict("both")}
@@ -97,7 +150,10 @@ async def reject_draft(entry_id: str, payload: ApprovalActionRequest) -> dict[st
 
 @router.post("/{entry_id}/mark-sent")
 async def mark_sent_externally(entry_id: str, payload: ApprovalActionRequest) -> dict[str, Any]:
-    result = _hub.mark_sent_externally(entry_id, payload.actor)
+    try:
+        result = _get_hub().mark_sent_externally(entry_id, payload.actor)
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
     if not result:
         raise HTTPException(status_code=400, detail="Entry not found or not approved")
     return {"entry": result.to_dict("both")}
@@ -105,75 +161,92 @@ async def mark_sent_externally(entry_id: str, payload: ApprovalActionRequest) ->
 
 @router.post("/log-inbound")
 async def log_inbound(payload: InboundLogRequest) -> dict[str, Any]:
-    entry = _hub.log_inbound(
-        contact_id=payload.contact_id,
-        company_name=payload.company_name,
-        contact_name=payload.contact_name,
-        channel=payload.channel,  # type: ignore[arg-type]
-        body_en=payload.body_en,
-        body_ar=payload.body_ar,
-        tags=payload.tags,
-    )
+    try:
+        entry = _get_hub().log_inbound(
+            contact_id=payload.contact_id,
+            company_name=payload.company_name,
+            contact_name=payload.contact_name,
+            channel=payload.channel,  # type: ignore[arg-type]
+            body_en=payload.body_en,
+            body_ar=payload.body_ar,
+            tags=payload.tags,
+        )
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
     return {"entry": entry.to_dict("both")}
 
 
 @router.get("/contact/{contact_id}/history")
-async def contact_history(contact_id: str, lang: LanguageCode = Depends(get_lang)) -> dict[str, Any]:
-    return _hub.get_contact_history(contact_id, lang)
+async def contact_history(
+    contact_id: str,
+    lang: LanguageCode = Depends(get_lang),
+) -> dict[str, Any]:
+    try:
+        return _get_hub().get_contact_history(contact_id, lang)
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
 
 
 @router.get("/pending-approvals")
 async def pending_approvals(lang: LanguageCode = Depends(get_lang)) -> dict[str, Any]:
-    return _hub.get_pending_approvals(lang)
+    try:
+        return _get_hub().get_pending_approvals(lang)
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
 
 
 @router.post("/sequence")
 async def create_sequence(payload: SequenceRequest) -> dict[str, Any]:
-    sequence = _hub.create_sequence(
-        name=payload.name,
-        contact_id=payload.contact_id,
-        company_name=payload.company_name,
-        steps=payload.steps,
-    )
+    try:
+        sequence = _get_hub().create_sequence(
+            name=payload.name,
+            contact_id=payload.contact_id,
+            company_name=payload.company_name,
+            steps=payload.steps,
+        )
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
     return {"sequence": sequence.to_dict("both")}
 
 
 @router.post("/sequence/{sequence_id}/advance")
-async def advance_sequence(sequence_id: str, payload: ApprovalActionRequest) -> dict[str, Any]:
+async def advance_sequence(
+    sequence_id: str,
+    payload: ApprovalActionRequest,
+) -> dict[str, Any]:
     try:
-        return _hub.advance_sequence(sequence_id, payload.actor)
+        return _get_hub().advance_sequence(sequence_id, payload.actor)
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @router.get("/sequence/{sequence_id}")
-async def get_sequence(sequence_id: str, lang: LanguageCode = Depends(get_lang)) -> dict[str, Any]:
-    # Simple load via internal method not exposed; return stored sequences search
-    # Reconstruct from file for read-only
-    import json
-
-    from intelligence.communication_hub import CommunicationSequence
-    raw = json.loads(_hub.SEQUENCE_PATH.read_text(encoding="utf-8"))
-    for r in raw:
-        if r.get("sequence_id") == sequence_id:
-            seq = CommunicationSequence(
-                sequence_id=r["sequence_id"],
-                name=r["name"],
-                contact_id=r["contact_id"],
-                company_name=r["company_name"],
-                steps=[_hub._step_from_dict(s) for s in r.get("steps", [])],
-                current_step=r.get("current_step", 0),
-                status=r.get("status", "active"),
-            )
-            return {"sequence": seq.to_dict(lang), "lang": lang}
-    raise HTTPException(status_code=404, detail="Sequence not found")
+async def get_sequence(
+    sequence_id: str,
+    lang: LanguageCode = Depends(get_lang),
+) -> dict[str, Any]:
+    try:
+        sequence = _get_hub()._load_sequence(sequence_id)
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
+    if sequence is None:
+        raise HTTPException(status_code=404, detail="Sequence not found")
+    return {"sequence": sequence.to_dict(lang), "lang": lang}
 
 
 @router.get("/search")
 async def search_communications(q: str, limit: int = 20) -> dict[str, Any]:
-    return _hub.search_communications(q, limit)
+    try:
+        return _get_hub().search_communications(q, limit)
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
 
 
 @router.get("/stats")
 async def comms_stats() -> dict[str, Any]:
-    return _hub.stats()
+    try:
+        return _get_hub().stats()
+    except CommunicationStorageUnavailable as exc:
+        raise _storage_unavailable(exc) from exc
