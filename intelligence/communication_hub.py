@@ -6,16 +6,17 @@ exists. All outbound paths call SendGate.assert_blocked() as defense-in-depth.
 
 from __future__ import annotations
 
-import json
-import logging
-import threading
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
-from pathlib import Path
 from typing import Any, Literal
 
 from intelligence.bilingual import BilingualRenderer, BilingualText, LanguageCode
+from intelligence.communication_storage import (
+    CommunicationCollection,
+    CommunicationStorage,
+    get_communication_storage,
+)
 from intelligence.ops_adapters import get_price_book
 from intelligence.send_gate import SendGate
 
@@ -111,28 +112,14 @@ class CommunicationSequence:
 class CommunicationHub:
     """Approval-first communication management."""
 
-    LOG_PATH = Path("data/comms/contact_log.json")
-    SEQUENCE_PATH = Path("data/comms/sequences.json")
-    _log_lock = threading.Lock()
-    _seq_lock = threading.Lock()
+    def __init__(self, storage: CommunicationStorage | None = None) -> None:
+        self._storage = storage or get_communication_storage()
 
-    def __init__(self) -> None:
-        self.LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-        self._ensure_files()
-
-    def _ensure_files(self) -> None:
-        for path in (self.LOG_PATH, self.SEQUENCE_PATH):
-            if not path.exists():
-                path.write_text("[]", encoding="utf-8")
-
-    def _read_json(self, path: Path) -> list[dict[str, Any]]:
-        try:
-            return json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
-            return []
-
-    def _write_json(self, path: Path, data: list[dict[str, Any]]) -> None:
-        path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    def _read_json(
+        self,
+        collection: CommunicationCollection,
+    ) -> list[dict[str, Any]]:
+        return self._storage.read(collection)
 
     def _bt_to_dict(self, text: BilingualText) -> dict[str, Any]:
         return {"en": text.en, "ar": text.ar, "ar_available": text.ar_available}
@@ -213,7 +200,7 @@ class CommunicationHub:
         subject = BilingualRenderer.bt(subject_en, subject_ar)
         body = BilingualRenderer.bt(body_en, body_ar)
         entry = ContactLogEntry(
-            entry_id=f"msg-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
+            entry_id=f"msg-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}",
             contact_id=contact_id,
             company_name=company_name,
             contact_name=contact_name,
@@ -222,17 +209,18 @@ class CommunicationHub:
             subject=subject,
             body=body,
             status=SendStatus.DRAFT,
-            created_at=datetime.now(timezone.utc).isoformat(),
+            created_at=datetime.now(UTC).isoformat(),
             approved_at=None,
             approved_by=None,
             rejection_reason=None,
             policy_snapshot=self._policy_snapshot(body),
             tags=tags or [],
         )
-        data = self._read_json(self.LOG_PATH)
-        data.append(self._entry_to_dict(entry))
-        with self._log_lock:
-            self._write_json(self.LOG_PATH, data)
+
+        def _append(data: list[dict[str, Any]]) -> None:
+            data.append(self._entry_to_dict(entry))
+
+        self._storage.mutate("contact_log", _append)
         SendGate.audit_log("draft_created", actor="system", draft_id=entry.entry_id)
         return entry
 
@@ -241,16 +229,16 @@ class CommunicationHub:
         entry_id: str,
         updater: Any,
     ) -> ContactLogEntry | None:
-        data = self._read_json(self.LOG_PATH)
-        for i, raw in enumerate(data):
-            if raw.get("entry_id") == entry_id:
-                entry = self._entry_from_dict(raw)
-                updater(entry)
-                data[i] = self._entry_to_dict(entry)
-                with self._log_lock:
-                    self._write_json(self.LOG_PATH, data)
-                return entry
-        return None
+        def _update(data: list[dict[str, Any]]) -> ContactLogEntry | None:
+            for i, raw in enumerate(data):
+                if raw.get("entry_id") == entry_id:
+                    entry = self._entry_from_dict(raw)
+                    updater(entry)
+                    data[i] = self._entry_to_dict(entry)
+                    return entry
+            return None
+
+        return self._storage.mutate("contact_log", _update)
 
     def submit_for_approval(self, entry_id: str, actor: str) -> ContactLogEntry | None:
         def _set_pending(entry: ContactLogEntry) -> None:
@@ -267,7 +255,7 @@ class CommunicationHub:
             if entry.status not in (SendStatus.DRAFT, SendStatus.PENDING_APPROVAL):
                 raise ValueError("Only draft or pending entries can be approved")
             entry.status = SendStatus.APPROVED
-            entry.approved_at = datetime.now(timezone.utc).isoformat()
+            entry.approved_at = datetime.now(UTC).isoformat()
             entry.approved_by = approved_by
         result = self._update_entry(entry_id, _set_approved)
         if result:
@@ -307,7 +295,7 @@ class CommunicationHub:
     ) -> ContactLogEntry:
         body = BilingualRenderer.bt(body_en, body_ar)
         entry = ContactLogEntry(
-            entry_id=f"inbound-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
+            entry_id=f"inbound-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}",
             contact_id=contact_id,
             company_name=company_name,
             contact_name=contact_name,
@@ -316,21 +304,26 @@ class CommunicationHub:
             subject=BilingualRenderer.bt("Inbound message", "رسالة واردة"),
             body=body,
             status=SendStatus.SENT_EXTERNALLY,
-            created_at=datetime.now(timezone.utc).isoformat(),
+            created_at=datetime.now(UTC).isoformat(),
             approved_at=None,
             approved_by=None,
             rejection_reason=None,
             policy_snapshot={"send_gate": "n/a", "review_required": False},
             tags=tags or [],
         )
-        data = self._read_json(self.LOG_PATH)
-        data.append(self._entry_to_dict(entry))
-        with self._log_lock:
-            self._write_json(self.LOG_PATH, data)
+
+        def _append(data: list[dict[str, Any]]) -> None:
+            data.append(self._entry_to_dict(entry))
+
+        self._storage.mutate("contact_log", _append)
         return entry
 
     def get_contact_history(self, contact_id: str, lang: LanguageCode = "both") -> dict[str, Any]:
-        entries = [self._entry_from_dict(raw) for raw in self._read_json(self.LOG_PATH) if raw.get("contact_id") == contact_id]
+        entries = [
+            self._entry_from_dict(raw)
+            for raw in self._read_json("contact_log")
+            if raw.get("contact_id") == contact_id
+        ]
         return BilingualRenderer.wrap(
             {
                 "contact_id": contact_id,
@@ -343,7 +336,7 @@ class CommunicationHub:
     def get_pending_approvals(self, lang: LanguageCode = "both") -> dict[str, Any]:
         entries = [
             self._entry_from_dict(raw)
-            for raw in self._read_json(self.LOG_PATH)
+            for raw in self._read_json("contact_log")
             if raw.get("status") in (SendStatus.DRAFT.value, SendStatus.PENDING_APPROVAL.value)
         ]
         return BilingualRenderer.wrap(
@@ -362,7 +355,7 @@ class CommunicationHub:
         steps: list[dict[str, Any]],
     ) -> CommunicationSequence:
         sequence = CommunicationSequence(
-            sequence_id=f"seq-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
+            sequence_id=f"seq-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}",
             name=name,
             contact_id=contact_id,
             company_name=company_name,
@@ -377,18 +370,21 @@ class CommunicationHub:
                 for i, s in enumerate(steps)
             ],
         )
-        data = self._read_json(self.SEQUENCE_PATH)
-        data.append({
-            "sequence_id": sequence.sequence_id,
-            "name": sequence.name,
-            "contact_id": sequence.contact_id,
-            "company_name": sequence.company_name,
-            "steps": [self._step_to_dict(s) for s in sequence.steps],
-            "current_step": sequence.current_step,
-            "status": sequence.status,
-        })
-        with self._seq_lock:
-            self._write_json(self.SEQUENCE_PATH, data)
+
+        def _append(data: list[dict[str, Any]]) -> None:
+            data.append(
+                {
+                    "sequence_id": sequence.sequence_id,
+                    "name": sequence.name,
+                    "contact_id": sequence.contact_id,
+                    "company_name": sequence.company_name,
+                    "steps": [self._step_to_dict(s) for s in sequence.steps],
+                    "current_step": sequence.current_step,
+                    "status": sequence.status,
+                }
+            )
+
+        self._storage.mutate("sequences", _append)
         return sequence
 
     def _step_to_dict(self, step: SequenceStep) -> dict[str, Any]:
@@ -409,7 +405,7 @@ class CommunicationHub:
         )
 
     def _load_sequence(self, sequence_id: str) -> CommunicationSequence | None:
-        for raw in self._read_json(self.SEQUENCE_PATH):
+        for raw in self._read_json("sequences"):
             if raw.get("sequence_id") == sequence_id:
                 return CommunicationSequence(
                     sequence_id=raw["sequence_id"],
@@ -423,21 +419,25 @@ class CommunicationHub:
         return None
 
     def _save_sequence(self, sequence: CommunicationSequence) -> None:
-        data = self._read_json(self.SEQUENCE_PATH)
-        for i, raw in enumerate(data):
-            if raw.get("sequence_id") == sequence.sequence_id:
-                data[i] = {
-                    "sequence_id": sequence.sequence_id,
-                    "name": sequence.name,
-                    "contact_id": sequence.contact_id,
-                    "company_name": sequence.company_name,
-                    "steps": [self._step_to_dict(s) for s in sequence.steps],
-                    "current_step": sequence.current_step,
-                    "status": sequence.status,
-                }
-                break
-        with self._seq_lock:
-            self._write_json(self.SEQUENCE_PATH, data)
+        def _save(data: list[dict[str, Any]]) -> None:
+            for i, raw in enumerate(data):
+                if raw.get("sequence_id") == sequence.sequence_id:
+                    data[i] = {
+                        "sequence_id": sequence.sequence_id,
+                        "name": sequence.name,
+                        "contact_id": sequence.contact_id,
+                        "company_name": sequence.company_name,
+                        "steps": [self._step_to_dict(s) for s in sequence.steps],
+                        "current_step": sequence.current_step,
+                        "status": sequence.status,
+                    }
+                    break
+
+        self._storage.mutate("sequences", _save)
+
+    def get_sequence(self, sequence_id: str) -> CommunicationSequence | None:
+        """Return one sequence without exposing storage implementation details."""
+        return self._load_sequence(sequence_id)
 
     def advance_sequence(self, sequence_id: str, actor: str) -> dict[str, Any]:
         SendGate.assert_blocked("sequence_advance_guard")
@@ -464,7 +464,9 @@ class CommunicationHub:
 
     def search_communications(self, query: str, limit: int = 20) -> dict[str, Any]:
         q = query.lower()
-        entries = [self._entry_from_dict(raw) for raw in self._read_json(self.LOG_PATH)]
+        entries = [
+            self._entry_from_dict(raw) for raw in self._read_json("contact_log")
+        ]
         results = [
             e for e in entries
             if q in (e.company_name or "").lower()
@@ -482,7 +484,9 @@ class CommunicationHub:
         )
 
     def stats(self) -> dict[str, Any]:
-        entries = [self._entry_from_dict(raw) for raw in self._read_json(self.LOG_PATH)]
+        entries = [
+            self._entry_from_dict(raw) for raw in self._read_json("contact_log")
+        ]
         status_counts: dict[str, int] = {}
         for e in entries:
             status_counts[e.status.value] = status_counts.get(e.status.value, 0) + 1
@@ -490,3 +494,7 @@ class CommunicationHub:
             "total_entries": len(entries),
             "status_counts": status_counts,
         }
+
+    def storage_readiness(self) -> dict[str, Any]:
+        """Expose a safe readiness signal without storage credentials or paths."""
+        return self._storage.readiness()
