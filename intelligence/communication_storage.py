@@ -317,8 +317,8 @@ def get_communication_storage(
         or ("postgres" if environment in {"staging", "production"} else "file")
     )
 
-    if environment == "production" and selected_backend != "postgres":
-        return UnavailableCommunicationStorage("production_requires_postgres")
+    if environment in {"staging", "production"} and selected_backend != "postgres":
+        return UnavailableCommunicationStorage(f"{environment}_requires_postgres")
     if selected_backend == "file":
         return FileCommunicationStorage(file_base_path)
     if selected_backend != "postgres":
