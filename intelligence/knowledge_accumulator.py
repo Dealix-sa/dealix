@@ -199,6 +199,7 @@ class KnowledgeAccumulator:
                             removed += 1
                             continue
                     except Exception:
+                        # Retain malformed legacy expiry values; purge must fail safe.
                         pass
                 kept.append(raw)
             data[:] = kept
