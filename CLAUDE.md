@@ -254,6 +254,28 @@ See `docs/DEALIX_BUSINESS_MODEL.md` for full detail.
 | Safe execution | `docs/DEALIX_SAFE_EXECUTION_RULES.md` |
 | Sales assets | `sales/` |
 | Agent rules | `.claude/rules/` |
+| Codebase advisor skill | `.claude/skills/improve/` |
+| improve executor agent | `.claude/agents/improve-executor.md` |
+| Improvement backlog | `plans/` (INDEX + seeded plans) |
+| Provider registry guard | `scripts/ops/check_provider_registry_freshness.py` |
+| improve outbound bridge (draft-only) | `auto_client_acquisition/gtm_os/improve_followup.py` |
+| Diagnostic report template | `sales/DIAGNOSTIC_REPORT_TEMPLATE_AR.md` |
+| improve delivery SOP (AR) | `sales/IMPROVE_DIAGNOSTIC_DELIVERY_SOP_AR.md` |
+| improve commercial playbook | `docs/IMPROVE_COMMERCIAL_PLAYBOOK.md` |
+| improve integration doc | `docs/IMPROVE_SKILL_INTEGRATION.md` |
+
+---
+
+## Codebase Advisor Skill (`improve`)
+
+`.claude/skills/improve/` — adapted from `shadcn/improve` (MIT). Run `/improve`
+(or `/improve quick`, `/improve branch`, `/improve <category>`) to audit the repo
+and produce **executable plans** in `plans/`. It uses the expensive model to
+advise and hands execution to a cheap executor (via the free-LLM provider radar)
+in a disposable worktree. It **never edits source, never mutates the tree, never
+weakens a guard** — the only writes go to `plans/`, and merging stays a founder
+approval gate. Doubles as the delivery engine for the Free Diagnostic and
+Transformation Diagnostic Sprint offers — see `docs/IMPROVE_SKILL_INTEGRATION.md`.
 
 ---
 

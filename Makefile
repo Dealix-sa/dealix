@@ -125,6 +125,9 @@ ai-provider-radar: ## Show daily provider choices for coding, Arabic, batch, and
 ai-provider-radar-json: ## Print machine-readable provider radar for coding
 	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task coding --json
 
+ai-provider-registry-check: ## Guard: fail if the free-LLM provider registry is stale (improve executor safety)
+	$(PYTHON) scripts/ops/check_provider_registry_freshness.py
+
 ai-provider-coding: ## Provider radar optimized for repo/code work
 	$(PYTHON) scripts/ops/free_llm_provider_radar.py --task coding --limit 5
 
