@@ -1,0 +1,3 @@
+entry_id,identifier_hash,channel,reason,source_type,permanent,opted_out_at,note
+DNC-0001,sha256:9f1c...redacted,whatsapp,opt_out_requested,public,true,2026-06-07T10:15:00+03:00,replied stop word
+DNC-0002,sha256:4ab2...redacted,all,complaint,public,true,2026-06-07T14:40:00+03:00,governance review no raw PII

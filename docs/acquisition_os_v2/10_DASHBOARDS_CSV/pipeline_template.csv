@@ -1,0 +1,3 @@
+deal_id,company_name,sector,stage,rung,gap_signal,last_touch_date,last_channel,consent_status,next_step,next_step_date,proof_status,owner
+D-0001,Example Trading Co,wholesale,qualified,free_diagnostic,unstructured_whatsapp,2026-06-07,whatsapp_optin,opted_in,send_mini_audit,2026-06-08,not_started,founder
+D-0002,Sample Training Center,training,discovery_call,sprint,weak_followup,2026-06-06,email,opted_in,schedule_call,2026-06-09,not_started,marketer1
