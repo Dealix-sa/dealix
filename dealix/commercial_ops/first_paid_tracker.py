@@ -26,6 +26,20 @@ def _load_events() -> list[dict[str, str]]:
         return list(csv.DictReader(f))
 
 
+def _company_key(row: dict[str, str]) -> str:
+    return " ".join((row.get("company") or "").strip().casefold().split())
+
+
+def _companies_by_key(rows: list[dict[str, str]]) -> dict[str, str]:
+    companies: dict[str, str] = {}
+    for row in rows:
+        key = _company_key(row)
+        if not key:
+            continue
+        companies.setdefault(key, (row.get("company") or "").strip())
+    return companies
+
+
 def analyze_first_paid_diagnostic() -> dict[str, Any]:
     events = _load_events()
     real = real_evidence_rows(events)
@@ -42,8 +56,20 @@ def analyze_first_paid_diagnostic() -> dict[str, Any]:
 
     paid_real = by_type.get("payment_received", [])
     proof_real = by_type.get("proof_pack_delivered", [])
+    paid_companies = _companies_by_key(paid_real)
+    proof_companies = _companies_by_key(proof_real)
 
-    if paid_real and proof_real and not crm_pending:
+    matching_keys = sorted(set(paid_companies) & set(proof_companies))
+    matching_close_companies = [paid_companies.get(key) or proof_companies[key] for key in matching_keys]
+    payment_without_proof_companies = [
+        paid_companies[key] for key in sorted(set(paid_companies) - set(proof_companies))
+    ]
+    proof_without_payment_companies = [
+        proof_companies[key] for key in sorted(set(proof_companies) - set(paid_companies))
+    ]
+
+    first_close_ready = bool(matching_close_companies and not crm_pending)
+    if first_close_ready:
         verdict = "CLOSED"
     elif paid_real or proof_real:
         verdict = "IN_PROGRESS"
@@ -58,8 +84,12 @@ def analyze_first_paid_diagnostic() -> dict[str, Any]:
         "invoice_sent_real": len(by_type.get("invoice_sent", [])),
         "payment_received_real": len(paid_real),
         "proof_pack_delivered_real": len(proof_real),
+        "matching_close_real": len(matching_close_companies),
+        "matching_close_companies": matching_close_companies,
+        "payment_without_proof_companies": payment_without_proof_companies,
+        "proof_without_payment_companies": proof_without_payment_companies,
         "crm_kpi_pending": crm_pending,
-        "first_close_ready": bool(paid_real and proof_real and not crm_pending),
+        "first_close_ready": first_close_ready,
         "dod_doc": str(DOD_DOC.relative_to(REPO_ROOT)).replace("\\", "/"),
         "verdict": verdict,
         "revenue_ladder_ar": REVENUE_LADDER_AR,

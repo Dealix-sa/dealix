@@ -1,16 +1,39 @@
-name: dealix-autonomous-company-os
+name: dealix-canonical-company-os
 
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 5 * * *"
+  pull_request:
+    paths:
+      - ".github/workflows/dealix-autonomous-company-os.yml"
+      - "scripts/commercial/run_canonical_company_os.py"
+      - "scripts/commercial/run_self_operating_company_os.py"
+      - "scripts/verify_first_paid_diagnostic_tracker.py"
+      - "dealix/commercial_ops/first_paid_tracker.py"
+      - "tests/test_canonical_company_os.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/dealix-autonomous-company-os.yml"
+      - "scripts/commercial/run_canonical_company_os.py"
+      - "scripts/commercial/run_self_operating_company_os.py"
+      - "scripts/verify_first_paid_diagnostic_tracker.py"
+      - "dealix/commercial_ops/first_paid_tracker.py"
+      - "tests/test_canonical_company_os.py"
 
 permissions:
   contents: read
 
+concurrency:
+  group: dealix-canonical-company-os-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  draft-only-company-os:
+  canonical-company-os:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,10 +43,14 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run Dealix Autonomous Company OS in draft-only mode
+      - name: Install isolated runtime and test dependencies
+        run: python -m pip install pytest PyYAML
+
+      - name: Run canonical Dealix Company OS
         env:
           EXTERNAL_SEND_ENABLED: "false"
           LIVE_OUTBOUND_ENABLED: "false"
+          AUTO_SEND_ENABLED: "false"
           WHATSAPP_AUTO_SEND: "false"
           EMAIL_AUTO_SEND: "false"
           SMS_AUTO_SEND: "false"
@@ -31,11 +58,26 @@ jobs:
           AUTO_MERGE_ENABLED: "false"
           AUTO_DEPLOY_ENABLED: "false"
           LIVE_PAYMENT_CAPTURE_ENABLED: "false"
+          PRODUCTION_MUTATION_ENABLED: "false"
+        shell: bash
         run: |
-          python scripts/commercial/run_dealix_autonomous_company_os.py --limit 4
+          set -o pipefail
+          mkdir -p reports/canonical_company_os
+          python -X dev scripts/commercial/run_canonical_company_os.py --limit 50 \
+            2>&1 | tee reports/canonical_company_os/runtime.log
 
-      - name: Upload operating packet
+      - name: Verify evidence-backed revenue tracker
+        run: |
+          python scripts/verify_first_paid_diagnostic_tracker.py --json
+
+      - name: Run isolated canonical Company OS tests
+        run: |
+          python -m pytest -q --noconftest -o addopts='' tests/test_canonical_company_os.py
+
+      - name: Upload canonical operating packet and diagnostics
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: dealix-autonomous-company-os-packet
-          path: reports/dealix_autonomous_company_os/
+          name: dealix-canonical-company-os-packet
+          path: reports/canonical_company_os/
+          if-no-files-found: error
