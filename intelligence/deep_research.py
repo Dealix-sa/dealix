@@ -1,7 +1,8 @@
 """Deep Research Engine.
 
-Multi-source research with safe fallback when no API keys are configured.
-Never fails; always returns a valid ResearchBundle.
+Provider failures use a structured fallback. Durable knowledge persistence
+failures surface to the API so research results are never presented as saved
+when the backing store is unavailable.
 """
 
 from __future__ import annotations
@@ -9,9 +10,10 @@ from __future__ import annotations
 import logging
 import os
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
-from typing import Any, Protocol
+from typing import Any, Literal, Protocol
+from uuid import uuid4
 
 from intelligence.bilingual import BilingualRenderer, BilingualText, LanguageCode
 from intelligence.knowledge_accumulator import KnowledgeAccumulator, KnowledgeEntry
@@ -112,8 +114,8 @@ class _InternalKnowledgeProvider:
     name = "internal_knowledge"
     requires_keys = False
 
-    def __init__(self) -> None:
-        self.knowledge = KnowledgeAccumulator()
+    def __init__(self, knowledge: KnowledgeAccumulator) -> None:
+        self.knowledge = knowledge
 
     def is_configured(self) -> bool:
         return True
@@ -146,7 +148,9 @@ class _WebSearchProvider:
         # Live call would go here; we return a structured placeholder.
         return [
             ResearchFinding(
-                title=BilingualRenderer.bt(en=f"Web results for {query}", ar=f"نتائج الويب لـ {query}"),
+                title=BilingualRenderer.bt(
+                    en=f"Web results for {query}", ar=f"نتائج الويب لـ {query}"
+                ),
                 summary=BilingualRenderer.bt(
                     en="Live web search results would appear here when SERPER_API_KEY is configured.",
                     ar="ستظهر نتائج البحث المباشر عند تكوين SERPER_API_KEY.",
@@ -196,7 +200,9 @@ class _SaudiRegistryProvider:
             return []
         return [
             ResearchFinding(
-                title=BilingualRenderer.bt(en=f"Saudi registry data for {query}", ar=f"بيانات السجل السعودي لـ {query}"),
+                title=BilingualRenderer.bt(
+                    en=f"Saudi registry data for {query}", ar=f"بيانات السجل السعودي لـ {query}"
+                ),
                 summary=BilingualRenderer.bt(
                     en="Official Saudi registry data would appear here when WATHQ_API_KEY is configured.",
                     ar="ستظهر بيانات السجل الرسمي السعودي عند تكوين WATHQ_API_KEY.",
@@ -232,15 +238,15 @@ class DeepResearchEngine:
 
     SAFE_MODE: bool = True
 
-    def __init__(self) -> None:
+    def __init__(self, knowledge: KnowledgeAccumulator | None = None) -> None:
+        self.knowledge = knowledge or KnowledgeAccumulator()
         self._providers: list[ResearchProvider] = [
             _MarketSignalsProvider(),
-            _InternalKnowledgeProvider(),
+            _InternalKnowledgeProvider(self.knowledge),
             _WebSearchProvider(),
             _NewsProvider(),
             _SaudiRegistryProvider(),
         ]
-        self.knowledge = KnowledgeAccumulator()
 
     def available_sources(self) -> list[dict[str, Any]]:
         return [
@@ -299,17 +305,23 @@ class DeepResearchEngine:
                     sources_used.append(provider.name)
             except Exception as exc:
                 warnings.append(f"{provider.name} search failed: {exc}")
-                logging.getLogger(__name__).warning("research_provider_failed", provider=provider.name, error=str(exc))
+                logging.getLogger(__name__).warning(
+                    "research_provider_failed provider=%s error_type=%s",
+                    provider.name,
+                    type(exc).__name__,
+                )
 
         if not findings:
             findings = self._fallback_findings(query, lang)
             warnings.append("No live sources returned results; used offline fallback")
 
-        # Persist findings to knowledge accumulator
-        for f in findings:
-            self.knowledge.ingest(
+        # Persist the complete result atomically so a partial research snapshot
+        # is never reported as durable.
+        now = datetime.now(UTC)
+        self.knowledge.ingest_batch(
+            [
                 KnowledgeEntry(
-                    entry_id=f"research-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}-{id(f)}",
+                    entry_id=f"research-{uuid4().hex}",
                     category="research_finding",
                     title=f.title,
                     content=f.summary,
@@ -318,12 +330,16 @@ class DeepResearchEngine:
                     company=query if " " in query else None,
                     tags=["research", f.source.value],
                     confidence=f.relevance_score,
-                    created_at=datetime.now(timezone.utc).isoformat(),
+                    created_at=now.isoformat(),
                     expires_at=None,
                 )
-            )
+                for f in findings
+            ]
+        )
 
-        confidence = round(min(0.95, sum(f.relevance_score for f in findings) / max(len(findings), 1)), 2)
+        confidence = round(
+            min(0.95, sum(f.relevance_score for f in findings) / max(len(findings), 1)), 2
+        )
         return ResearchBundle(
             query=query,
             findings=findings[:limit],
@@ -331,7 +347,7 @@ class DeepResearchEngine:
             keys_missing=keys_missing,
             warnings=warnings,
             confidence=confidence,
-            retrieved_at=datetime.now(timezone.utc).isoformat(),
+            retrieved_at=datetime.now(UTC).isoformat(),
         )
 
     def company_dossier(self, company_name: str, lang: LanguageCode = "both") -> dict[str, Any]:
@@ -359,3 +375,8 @@ class DeepResearchEngine:
             },
             lang,
         )
+
+    def storage_readiness(self) -> dict[str, Any]:
+        """Return the shared Knowledge OS storage readiness signal."""
+
+        return self.knowledge.storage_readiness()

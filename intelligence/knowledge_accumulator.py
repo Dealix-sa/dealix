@@ -1,26 +1,26 @@
-"""Knowledge Accumulator — Daily Intelligence Container.
-
-Persistent, searchable store for accumulated commercial intelligence.
-v1 uses a JSON file with simple locking; production can migrate to SQLModel.
-"""
+"""Knowledge Accumulator — durable, searchable commercial intelligence."""
 
 from __future__ import annotations
 
-import json
 import logging
-import threading
-from dataclasses import asdict, dataclass, field
-from datetime import datetime, timedelta, timezone
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any, Literal
 
 from intelligence.bilingual import BilingualRenderer, BilingualText, LanguageCode
+from intelligence.knowledge_storage import (
+    KnowledgeStorage,
+    get_knowledge_storage,
+)
 
 
 @dataclass
 class KnowledgeEntry:
     entry_id: str
-    category: Literal["market_signal", "competitor_intel", "deal_insight", "research_finding", "user_note"]
+    category: Literal[
+        "market_signal", "competitor_intel", "deal_insight", "research_finding", "user_note"
+    ]
     title: BilingualText
     content: BilingualText
     source: str
@@ -51,29 +51,21 @@ class KnowledgeAccumulator:
     """Accumulates, searches, and retrieves intelligence entries."""
 
     STORE_PATH = Path("data/knowledge/accumulated_intel.json")
-    _lock = threading.Lock()
 
-    def __init__(self, store_path: Path | None = None) -> None:
-        self.store_path = store_path or self.STORE_PATH
-        self.store_path.parent.mkdir(parents=True, exist_ok=True)
-        self._ensure_store()
-
-    def _ensure_store(self) -> None:
-        if not self.store_path.exists():
-            self._write([])
+    def __init__(
+        self,
+        store_path: Path | None = None,
+        storage: KnowledgeStorage | None = None,
+    ) -> None:
+        if store_path is not None and storage is not None:
+            raise ValueError("Pass either store_path or storage, not both")
+        self._storage = storage or get_knowledge_storage(
+            backend="file" if store_path is not None else None,
+            file_store_path=store_path or self.STORE_PATH,
+        )
 
     def _read(self) -> list[dict[str, Any]]:
-        try:
-            return json.loads(self.store_path.read_text(encoding="utf-8"))
-        except Exception:
-            return []
-
-    def _write(self, data: list[dict[str, Any]]) -> None:
-        with self._lock:
-            self.store_path.write_text(
-                json.dumps(data, indent=2, ensure_ascii=False),
-                encoding="utf-8",
-            )
+        return self._storage.read()
 
     def _entry_from_dict(self, raw: dict[str, Any]) -> KnowledgeEntry:
         return KnowledgeEntry(
@@ -92,22 +84,37 @@ class KnowledgeAccumulator:
 
     def _entry_to_dict(self, entry: KnowledgeEntry) -> dict[str, Any]:
         data = asdict(entry)
-        data["title"] = {"en": entry.title.en, "ar": entry.title.ar, "ar_available": entry.title.ar_available}
-        data["content"] = {"en": entry.content.en, "ar": entry.content.ar, "ar_available": entry.content.ar_available}
+        data["title"] = {
+            "en": entry.title.en,
+            "ar": entry.title.ar,
+            "ar_available": entry.title.ar_available,
+        }
+        data["content"] = {
+            "en": entry.content.en,
+            "ar": entry.content.ar,
+            "ar_available": entry.content.ar_available,
+        }
         return data
 
     def ingest(self, entry: KnowledgeEntry) -> str:
-        data = self._read()
-        data.append(self._entry_to_dict(entry))
-        self._write(data)
-        logging.getLogger(__name__).info("knowledge_ingested", entry_id=entry.entry_id, category=entry.category)
+        def _append(data: list[dict[str, Any]]) -> None:
+            data.append(self._entry_to_dict(entry))
+
+        self._storage.mutate(_append)
+        logging.getLogger(__name__).info(
+            "knowledge_ingested entry_id=%s category=%s",
+            entry.entry_id,
+            entry.category,
+        )
         return entry.entry_id
 
     def ingest_batch(self, entries: list[KnowledgeEntry]) -> int:
-        data = self._read()
-        for entry in entries:
-            data.append(self._entry_to_dict(entry))
-        self._write(data)
+        serialized = [self._entry_to_dict(entry) for entry in entries]
+
+        def _append_all(data: list[dict[str, Any]]) -> None:
+            data.extend(serialized)
+
+        self._storage.mutate(_append_all)
         return len(entries)
 
     def search(
@@ -154,7 +161,7 @@ class KnowledgeAccumulator:
         return None
 
     def list_recent(self, days: int = 7, limit: int = 50) -> list[KnowledgeEntry]:
-        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+        cutoff = datetime.now(UTC) - timedelta(days=days)
         entries: list[KnowledgeEntry] = []
         for raw in self._read():
             entry = self._entry_from_dict(raw)
@@ -170,7 +177,7 @@ class KnowledgeAccumulator:
         recent = self.list_recent(days=1, limit=50)
         return BilingualRenderer.wrap(
             {
-                "date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                "date": datetime.now(UTC).strftime("%Y-%m-%d"),
                 "total_entries": len(self._read()),
                 "recent_24h_count": len(recent),
                 "entries": [e.to_dict(lang) for e in recent],
@@ -179,43 +186,59 @@ class KnowledgeAccumulator:
         )
 
     def purge_expired(self) -> int:
-        now = datetime.now(timezone.utc)
-        data = self._read()
-        kept = []
-        removed = 0
-        for raw in data:
-            expires = raw.get("expires_at")
-            if expires:
-                try:
-                    if datetime.fromisoformat(expires) < now:
-                        removed += 1
-                        continue
-                except Exception:
-                    pass
-            kept.append(raw)
-        self._write(kept)
-        return removed
+        now = datetime.now(UTC)
+
+        def _purge(data: list[dict[str, Any]]) -> int:
+            kept: list[dict[str, Any]] = []
+            removed = 0
+            for raw in data:
+                expires = raw.get("expires_at")
+                if expires:
+                    try:
+                        if datetime.fromisoformat(expires) < now:
+                            removed += 1
+                            continue
+                    except Exception:
+                        pass
+                kept.append(raw)
+            data[:] = kept
+            return removed
+
+        return self._storage.mutate(_purge)
 
     def stats(self) -> dict[str, Any]:
         data = self._read()
         categories: dict[str, int] = {}
         for raw in data:
-            categories[raw.get("category", "unknown")] = categories.get(raw.get("category", "unknown"), 0) + 1
+            categories[raw.get("category", "unknown")] = (
+                categories.get(raw.get("category", "unknown"), 0) + 1
+            )
         return {
             "total_entries": len(data),
             "categories": categories,
-            "store_path": str(self.store_path),
+            "backend": self._storage.backend_name,
+            "durable": self._storage.durable,
         }
 
     def redact(self, entry_id: str, fields: list[str]) -> bool:
-        data = self._read()
-        for raw in data:
-            if raw.get("entry_id") == entry_id:
-                for field in fields:
-                    if field in ("title", "content"):
-                        raw[field] = {"en": "[redacted]", "ar": "[محذوف]", "ar_available": True}
-                    elif field in raw:
-                        raw[field] = "[redacted]"
-                self._write(data)
-                return True
-        return False
+        def _redact(data: list[dict[str, Any]]) -> bool:
+            for raw in data:
+                if raw.get("entry_id") == entry_id:
+                    for field in fields:
+                        if field in ("title", "content"):
+                            raw[field] = {
+                                "en": "[redacted]",
+                                "ar": "[محذوف]",
+                                "ar_available": True,
+                            }
+                        elif field in raw:
+                            raw[field] = "[redacted]"
+                    return True
+            return False
+
+        return self._storage.mutate(_redact)
+
+    def storage_readiness(self) -> dict[str, Any]:
+        """Expose a non-secret readiness signal for Knowledge and Research OS."""
+
+        return self._storage.readiness()
