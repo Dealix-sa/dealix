@@ -6,6 +6,7 @@
 #   bash scripts/railway_ui_alignment.sh
 #   bash scripts/railway_ui_alignment.sh --with-smoke
 #   RAILWAY_UI_START_COMMAND='./start.sh' RAILWAY_UI_PREDEPLOY='echo "no migration needed"' \
+#     RAILWAY_UI_RESTART_MAX_RETRIES='10' \
 #     bash scripts/railway_ui_alignment.sh
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -21,6 +22,7 @@ done
 API_BASE="${DEALIX_API_BASE:-https://api.dealix.me}"
 UI_START="${RAILWAY_UI_START_COMMAND:-}"
 UI_PREDEPLOY="${RAILWAY_UI_PREDEPLOY:-}"
+UI_RESTART_MAX_RETRIES="${RAILWAY_UI_RESTART_MAX_RETRIES:-}"
 
 echo "== Railway UI alignment (api.dealix.me) =="
 echo "  canonical: dealix/config/railway_ui_canonical.yaml"
@@ -38,6 +40,9 @@ if [[ -n "$UI_START" ]]; then
 fi
 if [[ -n "$UI_PREDEPLOY" ]]; then
   ARGS+=(--ui-predeploy "$UI_PREDEPLOY")
+fi
+if [[ -n "$UI_RESTART_MAX_RETRIES" ]]; then
+  ARGS+=(--ui-restart-max-retries "$UI_RESTART_MAX_RETRIES")
 fi
 
 $PY "${ARGS[@]}"
