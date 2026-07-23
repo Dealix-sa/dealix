@@ -7,6 +7,8 @@
 | `SENTRY_DSN` | أخطاء واستثناءات |
 | `LANGFUSE_PUBLIC_KEY` / `LANGFUSE_SECRET_KEY` | تتبع prompts وتقييم |
 | `LANGFUSE_HOST` | افتراضي `https://cloud.langfuse.com` |
+| `DEALIX_LANGFUSE_EXPORT_ENABLED` | مغلق افتراضيًا؛ فعّله صراحةً بعد مراجعة PDPL |
+| `DEALIX_LANGFUSE_ALLOWED_HOSTS` | قائمة egress دقيقة؛ الافتراضي `cloud.langfuse.com` فقط |
 
 ## مبدأ
 
