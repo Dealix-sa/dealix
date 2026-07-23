@@ -70,16 +70,14 @@ test.describe("Pricing → Checkout flow", () => {
     await expect(checkoutLink).toBeVisible();
   });
 
-  test("checkout page renders tier summary + NO_LIVE_CHARGE banner", async ({ page }) => {
+  test("checkout page renders tier summary + request-only trust contract", async ({ page }) => {
     await page.goto("/checkout.html?tier=sprint");
-    // Static-HTML-only assertions (do not depend on JS swap of #tier-name).
-    // The page markup is the source of truth; JS animations / dynamic
-    // labels are checked separately in unit tests.
     const body = await page.content();
     expect(body).toContain("NO_LIVE_CHARGE");
-    expect(body).toContain("VAT");
-    expect(body).toContain("15%");
-    // The page MUST have the tier dispatcher dictionary baked into source
+    expect(body).toContain("REQUEST ≠ INVOICE ≠ REVENUE");
+    expect(body).toContain("السعر والضريبة");
+    expect(body).toContain("المسار المعتمد");
+    expect(body).not.toContain("VAT 15% مُحتسب");
     expect(body).toMatch(/Sprint/);
     expect(body).toMatch(/499/);
   });
