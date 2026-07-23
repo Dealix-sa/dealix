@@ -19,6 +19,7 @@ export function PublicLaunchShell({ children, compactNav = false }: { children: 
           <Link href={base}><BrandLogo variant="full" priority className="h-8" /></Link>
           {!compactNav ? (
             <nav className="flex flex-wrap items-center gap-3 text-sm">
+              <Link href={`${base}/live`} className="font-medium text-[var(--dealix-gold)] hover:opacity-80">{isAr ? "تشتغل الآن" : "Live"}</Link>
               <Link href={`${base}/services`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "الخدمات" : "Services"}</Link>
               <Link href={`${base}/pricing`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{isAr ? "التسعير" : "Pricing"}</Link>
               <Link href={`${base}/learn`} className="text-muted-foreground hover:text-[var(--dealix-deep-green)]">{t("navLearn")}</Link>

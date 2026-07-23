@@ -1,0 +1,192 @@
+{
+  "_meta": {
+    "purpose": "Bilingual (AR primary + EN) marketing copy for the public 'Dealix يشتغل الآن / Dealix, Live' website surface. Sourced from os/03_OFFERS.yml. Covers eight headline offers for operations-heavy GCC/Saudi B2B.",
+    "non_negotiable": "no fabricated metrics, no pricing, approval-gated",
+    "source": "os/03_OFFERS.yml",
+    "disclosure": "Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة"
+  },
+
+  "ai_workflow_audit": {
+    "headline_ar": "ابدأ بخريطة واضحة، لا بمقامرة",
+    "headline_en": "Start With A Map, Not A Gamble",
+    "subhead_ar": "نأخذ مساراً تشغيلياً واحداً ونخرج بخريطة كاملة لفرص الـ AI Agents فيه خلال أسبوع.",
+    "subhead_en": "We take one operational workflow and return a full map of where AI agents fit, within a week.",
+    "value_props_ar": [
+      "نقطة دخول منخفضة المخاطر قبل أي التزام كبير",
+      "خريطة للمسار الحالي ونقاط الهدر والتكرار",
+      "خطة pilot لثلاثين يوماً مع الخطوة التالية الواضحة"
+    ],
+    "value_props_en": [
+      "A low-risk entry point before any large commitment",
+      "A map of your current workflow, waste, and repetition",
+      "A 30-day pilot plan with a clear next step"
+    ],
+    "who_for_ar": "للفرق التشغيلية الكثيفة العمل اليدوي التي تريد تحديد أين يبدأ الذكاء الاصطناعي فعلاً.",
+    "who_for_en": "For operations-heavy teams that need to pinpoint where AI actually starts.",
+    "proof_angle_ar": "نسلّمكم خريطة مكتوبة لمسار عملكم الحالي ونقاط ألمه قبل اقتراح أي بناء، فتقررون على أساس أدلة من بياناتكم.",
+    "proof_angle_en": "We hand over a written map of your current workflow and its pain points before proposing any build, so you decide on evidence from your own data.",
+    "cta_ar": "احجز التدقيق",
+    "cta_en": "Book the audit"
+  },
+
+  "revenue_ai_os": {
+    "headline_ar": "فريق المبيعات يقفل، والذكاء يتابع",
+    "headline_en": "Your Team Closes, AI Follows Up",
+    "subhead_ar": "نظام يتولى البحث عن العملاء وصياغة التواصل والمتابعة وتحديث الـ CRM، ليبقى فريقكم على ما يجيده.",
+    "subhead_en": "A system that handles lead research, outreach drafting, follow-up, and CRM updates, so your team stays on what it does best.",
+    "value_props_ar": [
+      "بحث عن العملاء وصياغة رسائل تواصل جاهزة للمراجعة",
+      "تسلسل متابعة منظّم لا يترك فرصة تنسى",
+      "تحديث الـ CRM ومسودات العروض دون عمل يدوي"
+    ],
+    "value_props_en": [
+      "Lead research and outreach drafts ready for review",
+      "An organized follow-up sequence so no opportunity is forgotten",
+      "CRM updates and proposal drafts without manual effort"
+    ],
+    "who_for_ar": "لشركات B2B التي لديها فريق مبيعات وتتعثر في توليد العملاء المحتملين ومتابعتهم.",
+    "who_for_en": "For B2B companies with a sales team that struggles with lead generation and follow-up.",
+    "proof_angle_ar": "كل رسالة تواصل تمر على موافقة بشرية قبل الإرسال، ويبقى أثر المتابعة مسجلاً في الـ CRM لتراجعوه متى شئتم.",
+    "proof_angle_en": "Every outreach message passes a human approval before sending, and the follow-up trail stays logged in your CRM for you to review anytime.",
+    "cta_ar": "اعرض المسار",
+    "cta_en": "See the workflow"
+  },
+
+  "maintenance_intelligence_os": {
+    "headline_ar": "كل بلاغ له SLA ومتابعة لا تنام",
+    "headline_en": "Every Ticket Has An SLA, Tracked",
+    "subhead_ar": "نظام متكامل يستقبل بلاغات الصيانة ويصنّفها ويعيّن الفني ويتابع الـ SLA ويولّد التقارير.",
+    "subhead_en": "An integrated system that receives maintenance tickets, classifies them, assigns the technician, tracks the SLA, and generates reports.",
+    "value_props_ar": [
+      "كل بلاغ له SLA واضح ومتابعة تلقائية حتى الإغلاق",
+      "كشف الأعطال المتكررة قبل أن تتحول إلى أزمة",
+      "تقارير الفنيين ولوحة الإدارة تُحدّث نفسها"
+    ],
+    "value_props_en": [
+      "Every ticket gets a clear SLA tracked automatically to closure",
+      "Repeated failures detected before they turn into a crisis",
+      "Technician reports and a management dashboard that update themselves"
+    ],
+    "who_for_ar": "لشركات إدارة المرافق ومقاولي الصيانة وفرق الخدمة الميدانية وشركات المرافق العامة.",
+    "who_for_en": "For facilities management firms, maintenance contractors, field service teams, and utilities.",
+    "proof_angle_ar": "تظهر حالة كل بلاغ وزمن استجابته على لوحة واحدة، فتقارنون أداء الصيانة قبل النظام وبعده على بياناتكم.",
+    "proof_angle_en": "The status and response time of every ticket surface on one dashboard, so you compare maintenance performance before and after on your own data.",
+    "cta_ar": "اطلب عرضاً تشغيلياً",
+    "cta_en": "Request a walkthrough"
+  },
+
+  "project_controls_ai_os": {
+    "headline_ar": "مخاطر مرصودة وتقارير تكتب نفسها",
+    "headline_en": "Risks Tracked, Reports That Write Themselves",
+    "subhead_ar": "نظام لمتابعة المشاريع يرصد المخاطر، ويتابع الموافقات، ويولّد تقارير التقدم، ويتتبع الـ change requests.",
+    "subhead_en": "A project controls system that tracks risks, chases approvals, generates progress reports, and follows change requests.",
+    "value_props_ar": [
+      "رصد المخاطر وتنبيه الإدارة قبل أن تتفاقم",
+      "تقارير التقدم الأسبوعية تُولَّد دون جمع يدوي",
+      "تتبع الموافقات المعلقة وطلبات التغيير من البداية للنهاية"
+    ],
+    "value_props_en": [
+      "Risk tracking that alerts management before issues escalate",
+      "Weekly progress reports generated without manual compilation",
+      "Pending approvals and change requests tracked end to end"
+    ],
+    "who_for_ar": "للمقاولين وفرق الـ PMO ومكاتب الهندسة والمؤسسات كثيفة المشاريع.",
+    "who_for_en": "For contractors, PMO teams, engineering firms, and project-heavy organizations.",
+    "proof_angle_ar": "كل مخاطرة وموافقة وطلب تغيير له سجل مؤرّخ في النظام، فيظل القرار قابلاً للمراجعة والتدقيق لاحقاً.",
+    "proof_angle_en": "Every risk, approval, and change request carries a timestamped record in the system, keeping each decision auditable later.",
+    "cta_ar": "اطلب عرضاً تشغيلياً",
+    "cta_en": "Request a walkthrough"
+  },
+
+  "sovereign_knowledge_rag": {
+    "headline_ar": "مساعد يجيب من وثائقكم، داخل بيئتكم",
+    "headline_en": "An Assistant On Your Docs, Inside Your Walls",
+    "subhead_ar": "مساعد داخلي يجيب من سياساتكم ووثائقكم، وبياناتكم لا تغادر بيئتكم.",
+    "subhead_en": "An internal assistant that answers from your policies and documents, with your data never leaving your environment.",
+    "value_props_ar": [
+      "إجابات فورية من سياساتكم بدل البحث اليدوي في آلاف الوثائق",
+      "البيانات تبقى عندكم ولا تدريب عليها",
+      "صلاحيات حسب الدور وسجل تدقيق لكل استعلام"
+    ],
+    "value_props_en": [
+      "Instant answers from your policies instead of manual search across thousands of documents",
+      "Data stays with you and is never used for training",
+      "Role-based access and an audit log for every query"
+    ],
+    "who_for_ar": "للمؤسسات الكبيرة والجهات شبه الحكومية والمنظمات كثيفة السياسات وفرق الامتثال والمكاتب القانونية.",
+    "who_for_en": "For large enterprises, government-adjacent entities, policy-heavy organizations, compliance teams, and law firms.",
+    "proof_angle_ar": "كل استعلام يُسجَّل في سجل تدقيق، وكل إجابة تشير إلى مصدرها من وثائقكم، فتتحققون منها بأنفسكم.",
+    "proof_angle_en": "Every query is recorded in an audit log, and every answer cites its source in your documents, so you can verify it yourself.",
+    "cta_ar": "ناقش متطلبات السيادة",
+    "cta_en": "Discuss data sovereignty"
+  },
+
+  "executive_command_center": {
+    "headline_ar": "كل الأقسام في لوحة قرار واحدة",
+    "headline_en": "Every Department On One Decision Board",
+    "subhead_ar": "لوحة تنفيذية تجمع المخاطر والأداء وتقارير الأقسام، وتقترح الإجراء التالي.",
+    "subhead_en": "An executive board that consolidates risks, performance, and department reports, and proposes the next action.",
+    "value_props_ar": [
+      "لوحة تنفيذية تحدّث نفسها بأبرز ما يحتاجه القرار",
+      "أبرز المخاطر من جميع الأقسام في مكان واحد",
+      "تقارير الأقسام تُجمَّع تلقائياً مع اقتراح الخطوة التالية"
+    ],
+    "value_props_en": [
+      "An executive board that updates itself with what the decision needs",
+      "Top risks from every department in one place",
+      "Department reports consolidated automatically with a proposed next step"
+    ],
+    "who_for_ar": "لمكاتب الرؤساء التنفيذيين والشركات القابضة والمؤسسات الكبيرة متعددة الأقسام.",
+    "who_for_en": "For CEO offices, holding companies, and large multi-department organizations.",
+    "proof_angle_ar": "كل رقم على اللوحة يعود إلى مصدره في القسم المعني، فتتتبعون أي مؤشر حتى أصله متى احتجتم.",
+    "proof_angle_en": "Every figure on the board traces back to its source in the relevant department, so you can drill any metric down to its origin.",
+    "cta_ar": "اطلب عرضاً للإدارة",
+    "cta_en": "Request an exec briefing"
+  },
+
+  "ai_governance_pack": {
+    "headline_ar": "ذكاء اصطناعي آمن وقابل للمراجعة",
+    "headline_en": "AI That Is Safe And Auditable",
+    "subhead_ar": "إطار حوكمة يضع سياسة الاستخدام والصلاحيات ونقاط الموافقة البشرية وضوابط المخاطر.",
+    "subhead_en": "A governance framework covering usage policy, permissions, human approval gates, and risk controls.",
+    "value_props_ar": [
+      "سياسة استخدام للذكاء الاصطناعي بالعربية والإنجليزية",
+      "مصفوفة صلاحيات وأدوار ونقاط موافقة بشرية واضحة",
+      "إطار ضبط مخاطر ومتطلبات سجل تدقيق تدعم الامتثال"
+    ],
+    "value_props_en": [
+      "An AI usage policy in Arabic and English",
+      "A permission and role matrix with clear human approval gates",
+      "A risk control framework and audit log requirements that support compliance"
+    ],
+    "who_for_ar": "للشركات المترددة بسبب المخاطر، والقطاعات المنظَّمة، ومن يحتاج توافقاً مع نظام حماية البيانات الشخصية.",
+    "who_for_en": "For companies hesitant due to risk, regulated industries, and those needing PDPL alignment.",
+    "proof_angle_ar": "تخرجون بوثائق حوكمة مكتوبة وقابلة للمراجعة الداخلية، تُعرض على فريقكم القانوني قبل أي تشغيل.",
+    "proof_angle_en": "You leave with written, internally reviewable governance documents that your legal team can examine before anything goes live.",
+    "cta_ar": "راجع إطار الحوكمة",
+    "cta_en": "Review the framework"
+  },
+
+  "ai_ops_retainer": {
+    "headline_ar": "نظامكم يتحسّن كل شهر",
+    "headline_en": "Your System Improves Every Month",
+    "subhead_ar": "دعم ومراقبة وتحسينات وتوسعة مستمرة تبقي النظام صحياً ومتقدماً بعد التسليم.",
+    "subhead_en": "Ongoing support, monitoring, improvements, and expansion that keep the system healthy and advancing after handover.",
+    "value_props_ar": [
+      "مراقبة وفحص صحة للنظام مع دعم ذي أولوية",
+      "إصلاحات وتحسينات شهرية متواصلة",
+      "تقرير استخدام شهري وتخطيط للتوسعة"
+    ],
+    "value_props_en": [
+      "Monitoring and health checks with priority support",
+      "Continuous monthly fixes and improvements",
+      "A monthly usage report and expansion planning"
+    ],
+    "who_for_ar": "للعملاء الذين سلّمنا لهم نظاماً ويريدون إبقاءه حياً ومتطوراً.",
+    "who_for_en": "For clients with a delivered system who want to keep it alive and evolving.",
+    "proof_angle_ar": "تقرير استخدام شهري مكتوب يبيّن ما جرى إصلاحه وتحسينه، فيظل أثر الخدمة موثّقاً أمامكم.",
+    "proof_angle_en": "A written monthly usage report shows what was fixed and improved, keeping the service trail documented in front of you.",
+    "cta_ar": "ابدأ الدعم المستمر",
+    "cta_en": "Start the retainer"
+  }
+}
