@@ -1,0 +1,25 @@
+name: Dealix Daily Growth OS
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * 0-4" # 7AM Asia/Riyadh, Sunday-Thursday
+
+permissions:
+  contents: read
+
+jobs:
+  daily-growth-queue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Generate approval-first prospect queue
+        run: python scripts/dealix_daily_prospect_drafts.py
+      - name: Upload daily queue
+        uses: actions/upload-artifact@v4
+        with:
+          name: dealix-daily-growth-queue
+          path: reports/daily_growth/*.csv
