@@ -1,0 +1,13 @@
+id,priority,action,owner,estimate,external_impact,approval_required,done_gate,status
+JR-01,P0,"Add July registry, validator, tests, and Arabic report",Engineering,0.5d,none,no,"validator pass; 5 unit tests; CI green",ready_in_draft_pr
+JR-02,P0,"Design and implement Langfuse pre-network redaction, bounded queue, retry, and egress policy",Trust+Engineering,1d,telemetry_export,yes_before_enable,"security review; feature flag off by default; failure non-blocking",proposed
+JR-03,P0,"Extend MCP manifest and add SSRF, DNS-rebinding, origin, timeout, and rate-limit cases",Security,1d,none,no,"fake-data suite; no production DB; audit event",proposed
+JR-04,P0,"Pilot Playwright MCP against preview with a disposable browser profile",QA,0.5d,preview_read_only,yes_if_credentials,"allowlisted domain; evidence pack; no customer session",proposed
+JR-05,P0,"Build one resumable approval-bound commercial workflow spike",Company OS,1-2d,none,no,"resume pass; idempotency pass; duplicate side effects zero",proposed
+JR-06,P1,"Benchmark GPT-5.6 vs current GLM/local routes on 30 Arabic commercial cases",AI Platform,1d,paid_api,yes,"budget cap; quality latency cost report; no default switch",blocked_approval
+JR-07,P1,"Regression-test stable Ollama 0.32.1 with current 7B route",AI Platform,0.5d,none,no,"RAM ceiling; structured output; Arabic/code eval; rollback",proposed
+JR-08,P1,"Prepare Nango ELv2, tenant-isolation, egress, vault, and DPA decision brief",Connectors,0.5d,none,no,"legal/security decision; no runtime install",proposed
+JR-09,P1,"Write clean-room ADR for observation-entity-claim-freshness graph",Intelligence,0.5d,none,no,"legal note; schema; migration and provenance tests",proposed
+JR-10,P1,"Run VulnHunter verifier-only isolated lab on an explicitly authorized target",Security,0.5-1d,security_scan,yes,"read-only first; independent reproduction; no issue auto-create",blocked_approval
+JR-11,P2,"Track MCP TypeScript SDK 2 until stable",MCP Owner,monthly,none,no,"stable release plus migration/security tests",watch
+JR-12,P2,"Record and close duplicate-runtime proposals unless a measured gap exists",Architecture,ongoing,none,no,"dependency decision record with evidence",ongoing
