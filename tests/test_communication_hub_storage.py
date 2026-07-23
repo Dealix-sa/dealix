@@ -96,20 +96,21 @@ def test_postgres_adapter_persists_across_hub_instances() -> None:
     }
 
 
-def test_production_rejects_file_and_ephemeral_storage() -> None:
-    storage = get_communication_storage(
-        environment="production",
-        backend="file",
-        file_base_path="/tmp/communication-os",
-    )
+def test_staging_and_production_reject_file_and_ephemeral_storage() -> None:
+    for environment in ("staging", "production"):
+        storage = get_communication_storage(
+            environment=environment,
+            backend="file",
+            file_base_path="/tmp/communication-os",
+        )
 
-    assert storage.readiness() == {
-        "status": "degraded",
-        "backend": "unavailable",
-        "durable": False,
-        "write_ready": False,
-        "reason": "production_requires_postgres",
-    }
+        assert storage.readiness() == {
+            "status": "degraded",
+            "backend": "unavailable",
+            "durable": False,
+            "write_ready": False,
+            "reason": f"{environment}_requires_postgres",
+        }
 
 
 def test_missing_migration_degrades_and_mutations_fail_closed() -> None:
@@ -126,6 +127,7 @@ def test_missing_migration_degrades_and_mutations_fail_closed() -> None:
 
 
 def test_router_stays_registered_and_returns_safe_degraded_signal(monkeypatch) -> None:
+    monkeypatch.setenv("ADMIN_API_KEYS", "test-admin")
     unavailable = UnavailableCommunicationStorage("test_database_unavailable")
     monkeypatch.setattr(
         ops_communication,
@@ -140,13 +142,15 @@ def test_router_stays_registered_and_returns_safe_degraded_signal(monkeypatch) -
     assert "/api/v1/ops/comms/readiness" in route_paths
     assert "/api/v1/ops/comms/log-inbound" in route_paths
 
-    readiness = client.get("/api/v1/ops/comms/readiness")
+    headers = {"X-Admin-API-Key": "test-admin"}
+    readiness = client.get("/api/v1/ops/comms/readiness", headers=headers)
     assert readiness.status_code == 200
     assert readiness.json()["status"] == "degraded"
     assert readiness.json()["reason"] == "test_database_unavailable"
 
     response = client.post(
         "/api/v1/ops/comms/log-inbound",
+        headers=headers,
         json={
             "contact_id": "contact-3",
             "company_name": "Example Company",
@@ -159,3 +163,66 @@ def test_router_stays_registered_and_returns_safe_degraded_signal(monkeypatch) -
     )
     assert response.status_code == 503
     assert response.json()["detail"]["code"] == "communication_storage_unavailable"
+
+
+def test_router_never_echoes_internal_exception_details(monkeypatch) -> None:
+    monkeypatch.setenv("ADMIN_API_KEYS", "test-admin")
+    sensitive_marker = "postgresql://user:secret@example.invalid/dealix"
+
+    class ExplodingHub:
+        def create_draft(self, **_: object) -> None:
+            raise ValueError(sensitive_marker)
+
+        def advance_sequence(self, *_: object) -> None:
+            raise RuntimeError(sensitive_marker)
+
+    monkeypatch.setattr(ops_communication, "_hub", ExplodingHub())
+    app = FastAPI()
+    app.include_router(ops_communication.router)
+    client = TestClient(app, raise_server_exceptions=False)
+    headers = {"X-Admin-API-Key": "test-admin"}
+
+    draft = client.post(
+        "/api/v1/ops/comms/draft",
+        headers=headers,
+        json={
+            "contact_id": "contact-4",
+            "company_name": "Example Company",
+            "contact_name": "Example Contact",
+            "channel": "email",
+            "subject_en": "Draft",
+            "subject_ar": "مسودة",
+            "body_en": "Approval required.",
+            "body_ar": "الموافقة مطلوبة.",
+            "tags": [],
+            "lang": "both",
+        },
+    )
+    advance = client.post(
+        "/api/v1/ops/comms/sequence/sequence-1/advance",
+        headers=headers,
+        json={"actor": "reviewer"},
+    )
+
+    for response in (draft, advance):
+        assert response.status_code == 400
+        assert response.json()["detail"]["code"] == "communication_operation_rejected"
+        assert sensitive_marker not in response.text
+
+
+def test_router_requires_admin_key_until_storage_is_tenant_scoped(
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("ADMIN_API_KEYS", "test-admin")
+    app = FastAPI()
+    app.include_router(ops_communication.router)
+    client = TestClient(app, raise_server_exceptions=False)
+
+    missing = client.get("/api/v1/ops/comms/readiness")
+    invalid = client.get(
+        "/api/v1/ops/comms/readiness",
+        headers={"X-Admin-API-Key": "wrong-admin"},
+    )
+
+    assert missing.status_code == 401
+    assert invalid.status_code == 403
