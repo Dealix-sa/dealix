@@ -39,13 +39,13 @@ class Settings(BaseSettings):
     app_host: str = "0.0.0.0"  # noqa: S104 — intentional for containerized deploy
     app_port: int = 8000
     # Surfaced on /health so closure/smoke checks can record the deployed
-    # commit. Reads (in order): GIT_SHA (Dockerfile ARG → ENV),
-    # VERCEL_GIT_COMMIT_SHA (Vercel system env), or RAILWAY_GIT_COMMIT_SHA
-    # (Railway-provided). Defaults to "unknown".
+    # commit. Prefer platform-managed runtime identity over the generic
+    # Docker build fallback so a stale GIT_SHA cannot mask the deployed
+    # Vercel/Railway commit. Defaults to "unknown".
     git_sha: str = Field(
         default="unknown",
         validation_alias=AliasChoices(
-            "GIT_SHA", "VERCEL_GIT_COMMIT_SHA", "RAILWAY_GIT_COMMIT_SHA"
+            "VERCEL_GIT_COMMIT_SHA", "RAILWAY_GIT_COMMIT_SHA", "GIT_SHA"
         ),
     )
     app_timezone: str = "Asia/Riyadh"
