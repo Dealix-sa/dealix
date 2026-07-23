@@ -8,13 +8,19 @@ from __future__ import annotations
 from datetime import UTC
 from typing import Any
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
-from intelligence.bilingual import LanguageCode, get_lang
+from api.security.api_key import require_admin_key
+from intelligence.bilingual import BilingualRenderer, LanguageCode, get_lang
 from intelligence.knowledge_accumulator import KnowledgeAccumulator, KnowledgeEntry
+from intelligence.knowledge_storage import KnowledgeStorageUnavailable
 
-router = APIRouter(prefix="/api/v1/ops/knowledge", tags=["Knowledge OS"])
+router = APIRouter(
+    prefix="/api/v1/ops/knowledge",
+    tags=["Knowledge OS"],
+    dependencies=[Depends(require_admin_key)],
+)
 _accumulator = KnowledgeAccumulator()
 
 
@@ -36,17 +42,36 @@ class KnowledgeBatchRequest(BaseModel):
     entries: list[KnowledgeIngestRequest]
 
 
+def _raise_storage_unavailable(exc: KnowledgeStorageUnavailable) -> None:
+    raise HTTPException(
+        status_code=503,
+        detail={
+            "code": "knowledge_storage_unavailable",
+            "message": "Knowledge OS durable storage is unavailable; operations fail closed.",
+        },
+    ) from exc
+
+
+@router.get("/readiness")
+async def knowledge_storage_readiness() -> dict[str, Any]:
+    """Return a non-secret readiness signal without dropping the router."""
+
+    return _accumulator.storage_readiness()
+
+
 @router.post("/ingest")
-async def ingest(payload: KnowledgeIngestRequest, lang: LanguageCode = Depends(get_lang)) -> dict[str, Any]:
-    from datetime import datetime, timezone
+async def ingest(
+    payload: KnowledgeIngestRequest, lang: LanguageCode = Depends(get_lang)
+) -> dict[str, Any]:
+    from datetime import datetime
 
     from core.utils import generate_id
 
     entry = KnowledgeEntry(
         entry_id=generate_id("knl"),
         category=payload.category,
-        title=__import__("intelligence.bilingual", fromlist=["BilingualRenderer"]).BilingualRenderer.bt(payload.title_en, payload.title_ar),
-        content=__import__("intelligence.bilingual", fromlist=["BilingualRenderer"]).BilingualRenderer.bt(payload.content_en, payload.content_ar),
+        title=BilingualRenderer.bt(payload.title_en, payload.title_ar),
+        content=BilingualRenderer.bt(payload.content_en, payload.content_ar),
         source=payload.source,
         sector=payload.sector,
         company=payload.company,
@@ -55,16 +80,18 @@ async def ingest(payload: KnowledgeIngestRequest, lang: LanguageCode = Depends(g
         created_at=datetime.now(UTC).isoformat(),
         expires_at=payload.expires_at,
     )
-    _accumulator.ingest(entry)
+    try:
+        _accumulator.ingest(entry)
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
     return {"entry_id": entry.entry_id, "status": "ingested", "lang": lang}
 
 
 @router.post("/ingest-batch")
 async def ingest_batch(payload: KnowledgeBatchRequest) -> dict[str, Any]:
-    from datetime import datetime, timezone
+    from datetime import datetime
 
     from core.utils import generate_id
-    from intelligence.bilingual import BilingualRenderer
 
     entries = [
         KnowledgeEntry(
@@ -82,7 +109,10 @@ async def ingest_batch(payload: KnowledgeBatchRequest) -> dict[str, Any]:
         )
         for e in payload.entries
     ]
-    count = _accumulator.ingest_batch(entries)
+    try:
+        count = _accumulator.ingest_batch(entries)
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
     return {"ingested": count}
 
 
@@ -95,7 +125,16 @@ async def search(
     limit: int = 20,
     lang: LanguageCode = Depends(get_lang),
 ) -> dict[str, Any]:
-    results = _accumulator.search(q, category=category, sector=sector, company=company, limit=limit)
+    try:
+        results = _accumulator.search(
+            q,
+            category=category,
+            sector=sector,
+            company=company,
+            limit=limit,
+        )
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
     return {
         "query": q,
         "count": len(results),
@@ -106,7 +145,10 @@ async def search(
 
 @router.get("/entry/{entry_id}")
 async def get_entry(entry_id: str, lang: LanguageCode = Depends(get_lang)) -> dict[str, Any]:
-    entry = _accumulator.get(entry_id)
+    try:
+        entry = _accumulator.get(entry_id)
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
     if not entry:
         return {"error": "entry not found"}
     return {"entry": entry.to_dict(lang), "lang": lang}
@@ -118,27 +160,42 @@ async def recent(
     limit: int = 50,
     lang: LanguageCode = Depends(get_lang),
 ) -> dict[str, Any]:
-    entries = _accumulator.list_recent(days=days, limit=limit)
+    try:
+        entries = _accumulator.list_recent(days=days, limit=limit)
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
     return {"count": len(entries), "entries": [e.to_dict(lang) for e in entries], "lang": lang}
 
 
 @router.get("/digest")
 async def digest(lang: LanguageCode = Depends(get_lang)) -> dict[str, Any]:
-    return _accumulator.daily_digest(lang)
+    try:
+        return _accumulator.daily_digest(lang)
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
 
 
 @router.delete("/purge-expired")
 async def purge_expired() -> dict[str, Any]:
-    removed = _accumulator.purge_expired()
+    try:
+        removed = _accumulator.purge_expired()
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
     return {"removed": removed}
 
 
 @router.get("/stats")
 async def stats() -> dict[str, Any]:
-    return _accumulator.stats()
+    try:
+        return _accumulator.stats()
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
 
 
 @router.post("/redact/{entry_id}")
 async def redact(entry_id: str, fields: list[str]) -> dict[str, Any]:
-    ok = _accumulator.redact(entry_id, fields)
+    try:
+        ok = _accumulator.redact(entry_id, fields)
+    except KnowledgeStorageUnavailable as exc:
+        _raise_storage_unavailable(exc)
     return {"entry_id": entry_id, "redacted": ok}
