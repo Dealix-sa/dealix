@@ -17,6 +17,7 @@ from dealix.commercial_ops.railway_production import (
     analyze_railway_production,
     parse_railway_ui_drift_hint,
     parse_railway_ui_predeploy_drift,
+    parse_railway_ui_restart_retries_drift,
 )
 from dealix.commercial_ops.stdio_utf8 import ensure_stdout_utf8
 
@@ -42,9 +43,14 @@ def main() -> int:
         default=os.getenv("RAILWAY_UI_PREDEPLOY", ""),
         help="Pass current Railway UI pre-deploy command to detect drift",
     )
+    p.add_argument(
+        "--ui-restart-max-retries",
+        default=os.getenv("RAILWAY_UI_RESTART_MAX_RETRIES", ""),
+        help="Pass current Railway UI max restart retries to detect drift",
+    )
     args = p.parse_args()
 
-    api_base = None if args.skip_live else (args.api_base or "").strip()
+    api_base = False if args.skip_live else (args.api_base or "").strip()
     blob = analyze_railway_production(api_base=api_base)
 
     drift = parse_railway_ui_drift_hint(args.ui_start_command)
@@ -53,6 +59,13 @@ def main() -> int:
     predeploy_drift = parse_railway_ui_predeploy_drift(args.ui_predeploy)
     if predeploy_drift:
         blob["ui_predeploy_drift"] = predeploy_drift
+    restart_retries_drift = parse_railway_ui_restart_retries_drift(
+        args.ui_restart_max_retries
+    )
+    if restart_retries_drift:
+        blob["ui_restart_max_retries_drift"] = restart_retries_drift
+    if any((drift, predeploy_drift, restart_retries_drift)) and blob["verdict"] == "PASS":
+        blob["verdict"] = "WARN"
 
     if args.json:
         print(json.dumps(blob, ensure_ascii=False, indent=2))
@@ -82,6 +95,8 @@ def main() -> int:
             print(f"  FOUNDER_ACTION (start): {drift}")
         if predeploy_drift:
             print(f"  FOUNDER_ACTION (predeploy): {predeploy_drift}")
+        if restart_retries_drift:
+            print(f"  FOUNDER_ACTION (restart): {restart_retries_drift}")
         print(f"  settings: {blob['settings_doc']}")
 
     print(f"RAILWAY_PRODUCTION_CONFIG_VERDICT={blob['verdict']}")

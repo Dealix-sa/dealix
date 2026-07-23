@@ -6,7 +6,7 @@ import re
 import urllib.error
 import urllib.request
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from dealix.commercial_ops.paths import REPO_ROOT
 
@@ -25,6 +25,7 @@ def _read(path: Path) -> str:
 CANONICAL_PREDEPLOY = "sh /app/scripts/railway_predeploy.sh"
 CANONICAL_PREDEPLOY_MARKER = "/app/scripts/railway_predeploy.sh"
 CANONICAL_START = "/app/start.sh"
+CANONICAL_RESTART_MAX_RETRIES = 3
 BAD_UI_PREDEPLOY_SNIPPETS = (
     "no migration needed",
     'echo "no migration needed"',
@@ -140,9 +141,11 @@ def probe_trust_layer(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any
     }
 
 
-def analyze_railway_production(*, api_base: str | None = None) -> dict[str, Any]:
+def analyze_railway_production(
+    *, api_base: str | None | Literal[False] = None
+) -> dict[str, Any]:
     repo = check_repo_railway_config()
-    base = (api_base or DEFAULT_API_BASE) if api_base is not False else ""
+    base = "" if api_base is False else (api_base or DEFAULT_API_BASE)
     live = probe_healthz(base) if base else {"probed": False}
     trust = probe_trust_layer(base) if base else {"probed": False}
     verdict = "PASS" if repo["ok"] else "FAIL"
@@ -156,6 +159,7 @@ def analyze_railway_production(*, api_base: str | None = None) -> dict[str, Any]
         "live_trust_layer": trust,
         "canonical_start_command": CANONICAL_START,
         "canonical_predeploy": CANONICAL_PREDEPLOY,
+        "canonical_restart_max_retries": CANONICAL_RESTART_MAX_RETRIES,
         "verdict": verdict,
         "settings_doc": str(SETTINGS_DOC.relative_to(REPO_ROOT)).replace("\\", "/"),
     }
@@ -195,3 +199,23 @@ def parse_railway_ui_drift_hint(start_command: str) -> str | None:
     if "uvicorn" in cmd and "$PORT" not in cmd and "${PORT" not in cmd:
         return "لا تضع uvicorn مباشرة في Start Command — استخدم /app/start.sh"
     return "امسح Start Command في Railway UI لاستخدام Dockerfile CMD"
+
+
+def parse_railway_ui_restart_retries_drift(value: str | int | None) -> str | None:
+    """Return Arabic hint when Railway UI restart retries drift from config-as-code."""
+    raw = "" if value is None else str(value).strip()
+    if not raw:
+        return None
+    try:
+        retries = int(raw)
+    except ValueError:
+        return (
+            "قيمة Max restart retries غير صالحة؛ "
+            f"اضبطها على {CANONICAL_RESTART_MAX_RETRIES} لتطابق railway.toml"
+        )
+    if retries == CANONICAL_RESTART_MAX_RETRIES:
+        return None
+    return (
+        f"اضبط Max restart retries في Railway UI من {retries} "
+        f"إلى {CANONICAL_RESTART_MAX_RETRIES} لتطابق railway.toml"
+    )
