@@ -48,10 +48,18 @@ def build_growth_diagnostic(profile: CompanyProfile) -> dict:
     sector = profile.sector or "tbd"
     problem = profile.biggest_problem or "unknown"
     return {
+        "status": "preliminary_diagnostic",
+        "funnel_stage": "free_diagnostic",
+        "requires_human_review": True,
+        "requires_source_validation": True,
+        "payment_required": False,
+        "external_action_allowed": False,
         "company_handle": profile.company_handle,
         "current_situation_ar": f"الشركة في {sector}، المشكلة المعلنة: {problem}",
         "current_situation_en": f"Company in {sector}; declared problem: {problem}",
-        "biggest_opportunity": f"focus on {problem} via 7-day proof sprint",
+        "biggest_opportunity": (
+            f"validate a first-party baseline for {problem} before selecting paid scope"
+        ),
         "biggest_risk": "scope creep without proof events",
         "safest_channel": "warm_intro / inbound / partner_intro",
         "seven_day_plan": [
@@ -68,7 +76,7 @@ def build_growth_diagnostic(profile: CompanyProfile) -> dict:
             "guaranteed revenue", "auto-send", "cold WhatsApp",
             "scraping", "fake testimonials",
         ],
-        "next_step": "approve diagnostic + start 7-day pilot",
+        "next_step": "human_review_fit_before_any_paid_scope",
         "action_mode": "approval_required",
     }
 
