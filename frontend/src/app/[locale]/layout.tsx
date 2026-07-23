@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ThemeProvider } from "next-themes";
 import { routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/hooks/useAuth";
+import { AttributionTracker } from "@/components/analytics/AttributionTracker";
 import { Toaster } from "sonner";
 
 interface LocaleLayoutProps {
@@ -39,6 +40,7 @@ export default async function LocaleLayout({
         >
           <NextIntlClientProvider messages={messages}>
             <AuthProvider>
+              <AttributionTracker />
               {children}
               <Toaster
                 position={isRTL ? "bottom-left" : "bottom-right"}

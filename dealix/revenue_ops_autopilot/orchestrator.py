@@ -7,6 +7,7 @@ from typing import Any
 
 from auto_client_acquisition.approval_center import get_default_approval_store
 from auto_client_acquisition.approval_center.schemas import ApprovalRequest
+from dealix.revenue_ops_autopilot.attribution import attribution_summary, sanitize_attribution
 from dealix.revenue_ops_autopilot.outreach_templates import build_outreach_draft
 from dealix.revenue_ops_autopilot.schemas import EvidenceEvent, FunnelLeadRecord
 from dealix.revenue_ops_autopilot.scoring import compute_lead_score, suggested_stage_from_score
@@ -43,6 +44,8 @@ class RevenueAutopilotOrchestrator:
         hold_stage = bool(payload.get("hold_stage"))
         if hold_stage:
             stage = "new_lead"
+
+        attribution = sanitize_attribution(payload.get("attribution"))
 
         segment = str(payload.get("segment") or payload.get("industry") or "").strip()
         if not segment and any(x in src_lc for x in ("partner", "referral", "agency")):
@@ -81,6 +84,7 @@ class RevenueAutopilotOrchestrator:
             urgency=str(payload.get("urgency") or "").strip(),
             consent_marketing=bool(payload.get("consent_marketing")),
             consent_proof_pack=bool(payload.get("consent_proof_pack")),
+            attribution=attribution,
             lead_score=score,
             score_breakdown=bd,
             stage=stage,
@@ -101,9 +105,13 @@ class RevenueAutopilotOrchestrator:
         )
 
         self.store.upsert_lead(lead)
+        attr_note = attribution_summary(attribution)
         self._log(
             event_type="lead_captured",
-            summary=f"score={score} stage={lead.stage}",
+            summary=(
+                f"score={score} stage={lead.stage}"
+                + (f" attribution={attr_note}" if attr_note else "")
+            ),
             entity_type="funnel_lead",
             entity_id=lead.id,
         )

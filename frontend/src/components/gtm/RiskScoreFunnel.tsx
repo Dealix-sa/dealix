@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "@/lib/api";
+import { getAttribution } from "@/lib/utm";
 
 type ScoreResult = {
   score: number;
@@ -76,6 +77,7 @@ export function RiskScoreFunnel() {
         ...form,
         source: "risk_score_funnel",
         hold_stage: false,
+        attribution: getAttribution(),
       });
       setLeadId(String(data.lead_id));
     } catch {
