@@ -98,20 +98,21 @@ def test_postgres_adapter_persists_batch_redaction_and_expiry() -> None:
     assert second.stats()["total_entries"] == 1
 
 
-def test_production_rejects_file_and_ephemeral_storage() -> None:
-    storage = get_knowledge_storage(
-        environment="production",
-        backend="file",
-        file_store_path="/tmp/knowledge-os.json",
-    )
+def test_staging_and_production_reject_file_and_ephemeral_storage() -> None:
+    for environment in ("staging", "production"):
+        storage = get_knowledge_storage(
+            environment=environment,
+            backend="file",
+            file_store_path="/tmp/knowledge-os.json",
+        )
 
-    assert storage.readiness() == {
-        "status": "degraded",
-        "backend": "unavailable",
-        "durable": False,
-        "write_ready": False,
-        "reason": "production_requires_postgres",
-    }
+        assert storage.readiness() == {
+            "status": "degraded",
+            "backend": "unavailable",
+            "durable": False,
+            "write_ready": False,
+            "reason": f"{environment}_requires_postgres",
+        }
 
 
 def test_missing_migration_degrades_and_mutations_fail_closed() -> None:
@@ -130,6 +131,7 @@ def test_missing_migration_degrades_and_mutations_fail_closed() -> None:
 def test_router_readiness_survives_and_writes_return_sanitized_503(
     monkeypatch,
 ) -> None:
+    monkeypatch.setenv("ADMIN_API_KEYS", "test-admin")
     unavailable = UnavailableKnowledgeStorage("test_database_unavailable")
     accumulator = KnowledgeAccumulator(storage=unavailable)
     monkeypatch.setattr(ops_knowledge, "_accumulator", accumulator)
@@ -148,12 +150,14 @@ def test_router_readiness_survives_and_writes_return_sanitized_503(
     assert "/api/v1/ops/knowledge/readiness" in route_paths
     assert "/api/v1/ops/research/readiness" in route_paths
 
-    readiness = client.get("/api/v1/ops/knowledge/readiness")
+    headers = {"X-Admin-API-Key": "test-admin"}
+    readiness = client.get("/api/v1/ops/knowledge/readiness", headers=headers)
     assert readiness.status_code == 200
     assert readiness.json()["reason"] == "test_database_unavailable"
 
     ingest = client.post(
         "/api/v1/ops/knowledge/ingest",
+        headers=headers,
         json={
             "category": "market_signal",
             "title_en": "Signal",
@@ -168,6 +172,7 @@ def test_router_readiness_survives_and_writes_return_sanitized_503(
 
     research = client.post(
         "/api/v1/ops/research/query",
+        headers=headers,
         json={
             "query": "Saudi fintech",
             "sources": ["market_signals"],
@@ -175,6 +180,26 @@ def test_router_readiness_survives_and_writes_return_sanitized_503(
     )
     assert research.status_code == 503
     assert research.json()["detail"]["code"] == "knowledge_storage_unavailable"
+
+
+def test_knowledge_and_research_require_admin_key_until_tenant_scoped(
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("ADMIN_API_KEYS", "test-admin")
+    app = FastAPI()
+    app.include_router(ops_knowledge.router)
+    app.include_router(ops_research.router)
+    client = TestClient(app, raise_server_exceptions=False)
+
+    for path in (
+        "/api/v1/ops/knowledge/readiness",
+        "/api/v1/ops/research/readiness",
+    ):
+        missing = client.get(path)
+        invalid = client.get(path, headers={"X-Admin-API-Key": "wrong-admin"})
+
+        assert missing.status_code == 401
+        assert invalid.status_code == 403
 
 
 def test_research_uses_one_injected_accumulator_and_persists_atomically(

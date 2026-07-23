@@ -10,11 +10,16 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
+from api.security.api_key import require_admin_key
 from intelligence.bilingual import LanguageCode, get_lang
 from intelligence.deep_research import DeepResearchEngine, ResearchSource
 from intelligence.knowledge_storage import KnowledgeStorageUnavailable
 
-router = APIRouter(prefix="/api/v1/ops/research", tags=["Research OS"])
+router = APIRouter(
+    prefix="/api/v1/ops/research",
+    tags=["Research OS"],
+    dependencies=[Depends(require_admin_key)],
+)
 _engine = DeepResearchEngine()
 
 

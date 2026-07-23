@@ -11,11 +11,16 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
+from api.security.api_key import require_admin_key
 from intelligence.bilingual import BilingualRenderer, LanguageCode, get_lang
 from intelligence.knowledge_accumulator import KnowledgeAccumulator, KnowledgeEntry
 from intelligence.knowledge_storage import KnowledgeStorageUnavailable
 
-router = APIRouter(prefix="/api/v1/ops/knowledge", tags=["Knowledge OS"])
+router = APIRouter(
+    prefix="/api/v1/ops/knowledge",
+    tags=["Knowledge OS"],
+    dependencies=[Depends(require_admin_key)],
+)
 _accumulator = KnowledgeAccumulator()
 
 

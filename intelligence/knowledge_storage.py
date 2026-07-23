@@ -282,8 +282,8 @@ def get_knowledge_storage(
         or ("postgres" if environment in {"staging", "production"} else "file")
     )
 
-    if environment == "production" and selected_backend != "postgres":
-        return UnavailableKnowledgeStorage("production_requires_postgres")
+    if environment in {"staging", "production"} and selected_backend != "postgres":
+        return UnavailableKnowledgeStorage(f"{environment}_requires_postgres")
     if selected_backend == "file":
         return FileKnowledgeStorage(file_store_path)
     if selected_backend != "postgres":
