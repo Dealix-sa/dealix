@@ -46,6 +46,8 @@ class OnboardingService:
         billing_cycle: str = "monthly",
     ) -> dict[str, Any]:
         """Create a tenant, canonical roles, first admin, and subscription."""
+        email = email.strip().lower()
+        company_name = company_name.strip()
         stmt = select(UserRecord).where(UserRecord.email == email)
         result = await self.session.execute(stmt)
         if result.scalar_one_or_none():
@@ -109,7 +111,7 @@ class OnboardingService:
             tenant_id=tenant_id,
             role_id=admin_role.id,
             email=email,
-            name=name,
+            name=name.strip(),
             hashed_password=_pwd_ctx.hash(password),
             is_active=True,
             # The canonical /auth/register flow currently verifies the first
@@ -170,6 +172,7 @@ class OnboardingService:
         role_name: str = Role.VIEWER.value,
     ) -> dict[str, Any]:
         """Create a canonical, single-use invitation without sending it."""
+        email = email.strip().lower()
         role_name = role_name.strip().lower()
         if role_name not in _VALID_ROLE_NAMES:
             raise ValueError(f"Unsupported role: {role_name}")
@@ -205,6 +208,7 @@ class OnboardingService:
                 UserRecord.is_active.is_(True),
             )
         )
+        now_naive = utcnow().replace(tzinfo=None)
         pending_invites = await self.session.scalar(
             select(func.count())
             .select_from(UserInviteRecord)
@@ -212,7 +216,7 @@ class OnboardingService:
                 UserInviteRecord.tenant_id == tenant_id,
                 UserInviteRecord.email != email,
                 UserInviteRecord.accepted_at.is_(None),
-                UserInviteRecord.expires_at > utcnow(),
+                UserInviteRecord.expires_at > now_naive,
             )
         )
         if int(active_users or 0) + int(pending_invites or 0) >= plan.max_users:
@@ -255,7 +259,7 @@ class OnboardingService:
             invited_by=invited_by,
             token_hash=hash_token(invite_token),
             expires_at=(
-                expires_at.replace(tzinfo=None) if expires_at is not None else utcnow()
+                expires_at.replace(tzinfo=None) if expires_at is not None else now_naive
             ),
         )
         self.session.add(invite)
