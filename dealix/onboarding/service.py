@@ -83,7 +83,12 @@ class OnboardingService:
 
         roles: dict[str, RoleRecord] = {}
         for role_definition in DEFAULT_TENANT_ROLES:
-            role_name = str(role_definition["name"])
+            role_definition_name = role_definition["name"]
+            role_name = (
+                role_definition_name.value
+                if isinstance(role_definition_name, Role)
+                else str(role_definition_name)
+            )
             role = RoleRecord(
                 id=f"rol_{uuid.uuid4().hex[:12]}",
                 tenant_id=tenant_id,
