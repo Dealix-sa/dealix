@@ -36,6 +36,7 @@ def evaluate(root: Path) -> dict[str, object]:
     auth = _read(root, "api/routers/auth.py")
     onboarding_router = _read(root, "api/routers/onboarding.py")
     onboarding_service = _read(root, "dealix/onboarding/service.py")
+    invite_email = _read(root, "core/email/invites.py")
 
     invite_section = onboarding_service.split("async def invite_team_member", 1)[1]
     checks = [
@@ -77,6 +78,15 @@ def evaluate(root: Path) -> dict[str, object]:
             and 'hashed_password=""' not in invite_section
             and "Depends(require_tenant_admin)" in onboarding_router,
             "single-use hashed invites; no placeholder users; admin-gated",
+        ),
+        Check(
+            "policy_gated_invite_delivery",
+            'os.getenv("EMAIL_ALLOW_LIVE_SEND", "false")' in invite_email
+            and "if not live_invite_email_enabled():" in invite_email
+            and "blocked_by_policy=True" in invite_email
+            and "await send_invite_email(" in onboarding_router
+            and "manual_share_required" in onboarding_router,
+            "invite email is fail-closed with a manual recovery path",
         ),
         Check(
             "auth_lifecycle",
