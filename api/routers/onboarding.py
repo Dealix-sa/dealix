@@ -1,5 +1,5 @@
 """
-Self-Serve Onboarding API — signup, wizard, invite.
+Self-Serve Onboarding API — signup, wizard, and approval-first team invite.
 """
 
 from __future__ import annotations
@@ -10,14 +10,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.security.auth_deps import get_current_user
+from api.security.auth_deps import get_current_user, require_tenant_admin
 from db.session import get_db as get_db_session
 from dealix.onboarding.service import OnboardingService
 
 router = APIRouter(prefix="/api/v1/onboarding", tags=["Onboarding"])
 
-
-# ── Schemas ──────────────────────────────────────────────────────
 
 class SignupRequest(BaseModel):
     email: EmailStr
@@ -51,22 +49,19 @@ class InviteRequest(BaseModel):
 
 
 class InviteOut(BaseModel):
-    user_id: str
+    invite_id: str
     invite_url: str
+    delivery_status: str
     message: str
     message_ar: str
 
-
-# ── Endpoints ────────────────────────────────────────────────────
 
 @router.post("/signup", response_model=SignupOut, status_code=status.HTTP_201_CREATED)
 async def signup(
     req: SignupRequest,
     session: AsyncSession = Depends(get_db_session),
 ) -> dict[str, Any]:
-    """
-    Self-serve signup: creates tenant, user, role, and subscription.
-    """
+    """Create the tenant, canonical admin identity, and SaaS subscription."""
     svc = OnboardingService(session)
     try:
         result = await svc.signup(
@@ -77,8 +72,8 @@ async def signup(
             plan_slug=req.plan_slug,
             billing_cycle=req.billing_cycle,
         )
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
     await session.commit()
     return {
@@ -87,8 +82,8 @@ async def signup(
         "subscription_id": result["subscription"].id,
         "plan_slug": req.plan_slug,
         "requires_email_verification": result["requires_email_verification"],
-        "message": "Account created successfully. Please verify your email.",
-        "message_ar": "تم إنشاء الحساب بنجاح. يرجى التحقق من بريدك الإلكتروني.",
+        "message": "Account and workspace created successfully.",
+        "message_ar": "تم إنشاء الحساب ومساحة العمل بنجاح.",
     }
 
 
@@ -98,9 +93,7 @@ async def complete_wizard(
     session: AsyncSession = Depends(get_db_session),
     current_user=Depends(get_current_user),
 ) -> dict[str, Any]:
-    """
-    Complete onboarding wizard for the tenant.
-    """
+    """Complete the tenant onboarding profile."""
     tenant_id = current_user.tenant_id
     if not tenant_id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No tenant")
@@ -122,14 +115,17 @@ async def complete_wizard(
     }
 
 
-@router.post("/invite", response_model=InviteOut)
+@router.post("/invite", response_model=InviteOut, status_code=status.HTTP_201_CREATED)
 async def invite_team_member(
     req: InviteRequest,
     session: AsyncSession = Depends(get_db_session),
-    current_user=Depends(get_current_user),
+    current_user=Depends(require_tenant_admin),
 ) -> dict[str, Any]:
     """
-    Invite a team member to the tenant.
+    Create a single-use team invitation for manual, founder-approved delivery.
+
+    This endpoint does not send email or WhatsApp. It returns the invite link to
+    the authenticated tenant administrator, who controls the external action.
     """
     tenant_id = current_user.tenant_id
     if not tenant_id:
@@ -143,13 +139,14 @@ async def invite_team_member(
             email=str(req.email),
             role_name=req.role_name,
         )
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
     await session.commit()
     return {
-        "user_id": result["user"].id,
+        "invite_id": result["invite"].id,
         "invite_url": result["invite_url"],
-        "message": f"Invitation sent to {req.email}",
-        "message_ar": f"تم إرسال الدعوة إلى {req.email}",
+        "delivery_status": result["delivery_status"],
+        "message": "Invitation created for manual sharing. Nothing was sent.",
+        "message_ar": "تم إنشاء الدعوة للمشاركة اليدوية. لم يتم إرسال أي رسالة.",
     }
