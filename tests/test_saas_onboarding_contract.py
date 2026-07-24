@@ -59,8 +59,8 @@ def test_invite_email_transport_is_fail_closed_by_default() -> None:
     )[0]
     assert "EmailClient" not in blocked_section
     assert "blocked_by_policy=True" in blocked_section
-    assert "recipient_domain" in source
-    assert "to_email" not in source.split("logger.info(", 1)[1].split(")", 1)[0]
+    assert "recipient_domain=" in blocked_section
+    assert 'logger.info("invite_email_blocked_by_policy"' not in source
 
 
 def test_signup_response_matches_current_verification_contract() -> None:
