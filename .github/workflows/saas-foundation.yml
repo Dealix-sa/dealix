@@ -10,6 +10,7 @@ on:
       - 'api/routers/auth.py'
       - 'api/routers/onboarding.py'
       - 'api/security/**'
+      - 'core/email/**'
       - 'db/models.py'
       - 'db/models_subscription.py'
       - 'dealix/onboarding/**'
@@ -23,6 +24,7 @@ on:
       - 'api/routers/auth.py'
       - 'api/routers/onboarding.py'
       - 'api/security/**'
+      - 'core/email/**'
       - 'db/models.py'
       - 'db/models_subscription.py'
       - 'dealix/onboarding/**'
@@ -61,6 +63,8 @@ jobs:
         run: |
           python -m py_compile \
             api/routers/onboarding.py \
+            core/email/__init__.py \
+            core/email/invites.py \
             dealix/onboarding/service.py \
             scripts/verify_saas_foundation.py \
             tests/test_saas_onboarding_contract.py \
