@@ -4,6 +4,7 @@ Self-Serve Onboarding API — signup, wizard, and approval-first team invite.
 
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -11,6 +12,7 @@ from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.security.auth_deps import get_current_user, require_tenant_admin
+from core.email import send_invite_email
 from db.session import get_db as get_db_session
 from dealix.onboarding.service import OnboardingService
 
@@ -122,10 +124,11 @@ async def invite_team_member(
     current_user=Depends(require_tenant_admin),
 ) -> dict[str, Any]:
     """
-    Create a single-use team invitation for manual, founder-approved delivery.
+    Create a single-use team invitation and attempt policy-gated delivery.
 
-    This endpoint does not send email or WhatsApp. It returns the invite link to
-    the authenticated tenant administrator, who controls the external action.
+    External email remains fail-closed unless ``EMAIL_ALLOW_LIVE_SEND`` is
+    explicitly enabled by an operator. A manual link is always returned to the
+    authenticated tenant administrator as the recovery path.
     """
     tenant_id = current_user.tenant_id
     if not tenant_id:
@@ -142,11 +145,34 @@ async def invite_team_member(
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
+    # Persist the invitation before any optional external delivery attempt.
     await session.commit()
+
+    web_base_url = os.getenv("DEALIX_WEB_URL", "https://dealix.me").rstrip("/")
+    invite_url = f"{web_base_url}{result['invite_url']}"
+    delivery = await send_invite_email(
+        to_email=str(req.email),
+        invited_by_name=current_user.name or current_user.email or "Dealix admin",
+        accept_url=invite_url,
+    )
+
+    if delivery.delivered:
+        delivery_status = "delivered"
+        message = "Invitation created and delivered."
+        message_ar = "تم إنشاء الدعوة وإرسالها."
+    elif delivery.blocked_by_policy:
+        delivery_status = "manual_share_required"
+        message = "Invitation created for manual sharing. Nothing was sent."
+        message_ar = "تم إنشاء الدعوة للمشاركة اليدوية. لم يتم إرسال أي رسالة."
+    else:
+        delivery_status = "delivery_failed_manual_share_required"
+        message = "Invitation created, but delivery failed. Share the link manually."
+        message_ar = "تم إنشاء الدعوة، لكن تعذر الإرسال. شارك الرابط يدويًا."
+
     return {
         "invite_id": result["invite"].id,
-        "invite_url": result["invite_url"],
-        "delivery_status": result["delivery_status"],
-        "message": "Invitation created for manual sharing. Nothing was sent.",
-        "message_ar": "تم إنشاء الدعوة للمشاركة اليدوية. لم يتم إرسال أي رسالة.",
+        "invite_url": invite_url,
+        "delivery_status": delivery_status,
+        "message": message,
+        "message_ar": message_ar,
     }
