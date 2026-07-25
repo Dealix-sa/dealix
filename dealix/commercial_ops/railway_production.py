@@ -60,7 +60,7 @@ def check_repo_railway_config() -> dict[str, Any]:
     docker = _read(DOCKERFILE)
     if "/app/start.sh" not in docker:
         issues.append("Dockerfile must CMD /app/start.sh")
-    if 'healthz' not in docker and '/health' in docker:
+    if "healthz" not in docker and "/health" in docker:
         warnings.append("Dockerfile HEALTHCHECK should prefer /healthz")
 
     if not PREDEPLOY_SH.is_file():
@@ -142,7 +142,7 @@ def probe_trust_layer(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any
 
 
 def analyze_railway_production(
-    *, api_base: str | None | Literal[False] = None
+    *, api_base: str | Literal[False] | None = None
 ) -> dict[str, Any]:
     repo = check_repo_railway_config()
     base = "" if api_base is False else (api_base or DEFAULT_API_BASE)
