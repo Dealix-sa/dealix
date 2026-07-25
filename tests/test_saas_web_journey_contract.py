@@ -32,11 +32,23 @@ def test_login_and_dashboard_use_canonical_runtime_api() -> None:
 
     assert 'apiUrl("/api/v1/auth/login")' in login
     assert "persistSession(data" in login
-    assert 'apiUrl("/api/v1/customer/dashboard/")' in dashboard
-    assert "Authorization: `Bearer ${token}`" in dashboard
+    assert 'authenticatedFetch("/api/v1/customer/dashboard/")' in dashboard
+    assert 'authenticatedFetch("/api/v1/auth/me")' in entry
     assert '"x-tenant-id"' not in dashboard.lower()
-    assert 'apiUrl("/api/v1/auth/me")' in entry
     assert "profile.tenant_id" in entry
+
+
+def test_runtime_helper_rotates_refresh_tokens_once() -> None:
+    source = _read("apps/web/lib/runtime-api.ts")
+
+    assert 'apiUrl("/api/v1/auth/refresh")' in source
+    assert "body: JSON.stringify({ refresh_token: refreshToken })" in source
+    assert "persistSession(tokens, user)" in source
+    assert "if (firstResponse.status !== 401) return firstResponse;" in source
+    assert "const rotatedAccessToken = await rotateSession()" in source
+    assert "clearSession()" in source
+    assert "X-API-Key" not in source
+    assert "ADMIN_API" not in source
 
 
 def test_next_config_keeps_signup_active_and_proxies_api() -> None:
@@ -48,15 +60,15 @@ def test_next_config_keeps_signup_active_and_proxies_api() -> None:
     assert 'source: "/signup"' not in source
 
 
-def test_runtime_helper_never_embeds_platform_api_key() -> None:
+def test_runtime_helper_preserves_session_compatibility() -> None:
     source = _read("apps/web/lib/runtime-api.ts")
 
     assert "NEXT_PUBLIC_DEALIX_API_BASE" in source
     assert "NEXT_PUBLIC_API_URL" in source
     assert "dealix_access_token" in source
     assert "dealix_refresh_token" in source
-    assert "X-API-Key" not in source
-    assert "ADMIN_API" not in source
+    assert "JSON.stringify(tokens.access_token)" in source
+    assert "JSON.stringify(tokens.refresh_token)" in source
 
 
 def test_backend_exposes_self_serve_plans_and_jwt_customer_paths() -> None:
