@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
+from core.config.deployment_identity import resolve_deployment_git_sha
 from core.config.settings import get_settings
 from dealix.commercial_ops.gtm_public_surfaces import build_gtm_public_surfaces_snapshot
 
@@ -24,7 +25,7 @@ async def health() -> dict[str, object]:
         "service": "dealix-api",
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": resolve_deployment_git_sha(settings.git_sha),
     }
 
 
@@ -66,7 +67,7 @@ async def version() -> dict[str, object]:
         "status": "ok",
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": resolve_deployment_git_sha(settings.git_sha),
         "health": "/healthz",
         "docs": "/docs",
         "meta": "/api/v1/meta",
@@ -82,7 +83,7 @@ async def platform_meta() -> dict[str, object]:
         "service": settings.app_name,
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": resolve_deployment_git_sha(settings.git_sha),
         "surfaces": surfaces,
         "canonical_links": {
             "healthz": "/healthz",
