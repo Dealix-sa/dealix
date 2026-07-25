@@ -37,6 +37,9 @@ def evaluate(root: Path) -> dict[str, object]:
     onboarding_router = _read(root, "api/routers/onboarding.py")
     onboarding_service = _read(root, "dealix/onboarding/service.py")
     invite_email = _read(root, "core/email/invites.py")
+    deploy_identity = _read(root, "core/config/deployment_identity.py")
+    health_router = _read(root, "api/routers/health.py")
+    platform_meta = _read(root, "api/routers/platform_meta.py")
 
     invite_section = onboarding_service.split("async def invite_team_member", 1)[1]
     checks = [
@@ -76,17 +79,29 @@ def evaluate(root: Path) -> dict[str, object]:
             "UserInviteRecord(" in invite_section
             and "hash_token(invite_token)" in invite_section
             and 'hashed_password=""' not in invite_section
-            and "Depends(require_tenant_admin)" in onboarding_router,
-            "single-use hashed invites; no placeholder users; admin-gated",
+            and "Depends(require_tenant_admin)" in onboarding_router
+            and "_VALID_ROLE_NAMES = {role.value for role in Role}" in onboarding_service,
+            "single-use hashed invites; tenant-role constrained; no placeholder users",
         ),
         Check(
-            "policy_gated_invite_delivery",
+            "approval_first_invite_delivery",
             'os.getenv("EMAIL_ALLOW_LIVE_SEND", "false")' in invite_email
             and "if not live_invite_email_enabled():" in invite_email
             and "blocked_by_policy=True" in invite_email
+            and "send_email: bool = False" in onboarding_router
+            and "if not req.send_email:" in onboarding_router
             and "await send_invite_email(" in onboarding_router
             and "manual_share_required" in onboarding_router,
-            "invite email is fail-closed with a manual recovery path",
+            "invite email requires per-action approval plus operator policy; manual fallback remains",
+        ),
+        Check(
+            "deployment_identity",
+            "VERCEL_GIT_COMMIT_SHA" in deploy_identity
+            and "RAILWAY_GIT_COMMIT_SHA" in deploy_identity
+            and "GIT_SHA" in deploy_identity
+            and "resolve_deployment_git_sha" in health_router
+            and "resolve_deployment_git_sha" in platform_meta,
+            "health and metadata prefer platform-managed deployment identity",
         ),
         Check(
             "auth_lifecycle",
