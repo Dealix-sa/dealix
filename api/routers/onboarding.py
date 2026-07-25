@@ -1,5 +1,10 @@
 """
 Self-Serve Onboarding API — signup, wizard, and approval-first team invite.
+
+The canonical invitation implementation lives here. A compatibility installer
+replaces the older ``/api/v1/auth/invite`` route before the FastAPI app includes
+the auth router, so both public paths share the same tenant, seat, token, and
+delivery safety contracts.
 """
 
 from __future__ import annotations
@@ -53,12 +58,25 @@ class InviteRequest(BaseModel):
     send_email: bool = False
 
 
+class LegacyInviteRequest(BaseModel):
+    """Backward-compatible request shape for ``/api/v1/auth/invite``."""
+
+    email: EmailStr
+    role: str = Field(default="sales_rep")
+    send_email: bool = False
+
+
 class InviteOut(BaseModel):
     invite_id: str
     invite_url: str
     delivery_status: str
     message: str
     message_ar: str
+
+
+class LegacyInviteOut(InviteOut):
+    email: EmailStr
+    role: str
 
 
 @router.post("/signup", response_model=SignupOut, status_code=status.HTTP_201_CREATED)
@@ -120,31 +138,29 @@ async def complete_wizard(
     }
 
 
-@router.post("/invite", response_model=InviteOut, status_code=status.HTTP_201_CREATED)
-async def invite_team_member(
-    req: InviteRequest,
-    session: AsyncSession = Depends(get_db_session),
-    current_user=Depends(require_tenant_admin),
+async def _create_invite_response(
+    *,
+    email: str,
+    role_name: str,
+    send_email: bool,
+    session: AsyncSession,
+    current_user: Any,
 ) -> dict[str, Any]:
-    """
-    Create a single-use invitation with explicit, policy-gated delivery.
+    """Create an invite and optionally perform one explicitly approved delivery."""
 
-    A tenant administrator must opt in for this specific email through
-    ``send_email=true``. The provider is contacted only when that approval and
-    the operator-level ``EMAIL_ALLOW_LIVE_SEND`` policy are both enabled. A
-    manual link is always returned as the recovery path.
-    """
     tenant_id = current_user.tenant_id
     if not tenant_id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No tenant")
 
+    normalized_email = email.strip().lower()
+    normalized_role = role_name.strip().lower()
     svc = OnboardingService(session)
     try:
         result = await svc.invite_team_member(
             tenant_id=tenant_id,
             invited_by=current_user.id,
-            email=str(req.email),
-            role_name=req.role_name,
+            email=normalized_email,
+            role_name=normalized_role,
         )
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
@@ -155,13 +171,13 @@ async def invite_team_member(
     web_base_url = os.getenv("DEALIX_WEB_URL", "https://dealix.me").rstrip("/")
     invite_url = f"{web_base_url}{result['invite_url']}"
 
-    if not req.send_email:
+    if not send_email:
         delivery_status = "manual_share_required"
         message = "Invitation created for manual sharing. Nothing was sent."
         message_ar = "تم إنشاء الدعوة للمشاركة اليدوية. لم يتم إرسال أي رسالة."
     else:
         delivery = await send_invite_email(
-            to_email=str(req.email),
+            to_email=normalized_email,
             invited_by_name=current_user.name or current_user.email or "Dealix admin",
             accept_url=invite_url,
         )
@@ -186,3 +202,67 @@ async def invite_team_member(
         "message": message,
         "message_ar": message_ar,
     }
+
+
+@router.post("/invite", response_model=InviteOut, status_code=status.HTTP_201_CREATED)
+async def invite_team_member(
+    req: InviteRequest,
+    session: AsyncSession = Depends(get_db_session),
+    current_user=Depends(require_tenant_admin),
+) -> dict[str, Any]:
+    """Create a single-use invitation with explicit, policy-gated delivery."""
+
+    return await _create_invite_response(
+        email=str(req.email),
+        role_name=req.role_name,
+        send_email=req.send_email,
+        session=session,
+        current_user=current_user,
+    )
+
+
+async def legacy_auth_invite(
+    req: LegacyInviteRequest,
+    session: AsyncSession = Depends(get_db_session),
+    current_user=Depends(require_tenant_admin),
+) -> dict[str, Any]:
+    """Compatibility endpoint backed by the canonical safe invite flow."""
+
+    response = await _create_invite_response(
+        email=str(req.email),
+        role_name=req.role,
+        send_email=req.send_email,
+        session=session,
+        current_user=current_user,
+    )
+    return {**response, "email": str(req.email).strip().lower(), "role": req.role.strip().lower()}
+
+
+def _install_auth_invite_compatibility() -> None:
+    """Replace the legacy false-claim route before ``auth.router`` is included.
+
+    ``api.main`` imports the auth module before this onboarding module and only
+    includes routers afterwards, making this deterministic and avoiding a
+    duplicate route in both runtime dispatch and OpenAPI.
+    """
+
+    from api.routers import auth as auth_module
+
+    retained_routes = []
+    for route_item in auth_module.router.routes:
+        methods = set(getattr(route_item, "methods", set()) or set())
+        if getattr(route_item, "path", None) == "/invite" and "POST" in methods:
+            continue
+        retained_routes.append(route_item)
+    auth_module.router.routes = retained_routes
+    auth_module.router.add_api_route(
+        "/invite",
+        legacy_auth_invite,
+        methods=["POST"],
+        status_code=status.HTTP_201_CREATED,
+        response_model=LegacyInviteOut,
+        name="legacy_auth_invite_compatibility",
+    )
+
+
+_install_auth_invite_compatibility()
