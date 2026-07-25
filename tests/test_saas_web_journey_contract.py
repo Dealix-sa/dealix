@@ -71,13 +71,15 @@ def test_runtime_helper_preserves_session_compatibility() -> None:
     assert "JSON.stringify(tokens.refresh_token)" in source
 
 
-def test_backend_exposes_self_serve_plans_and_jwt_customer_paths() -> None:
+def test_backend_exposes_only_audited_browser_customer_path() -> None:
     onboarding = _read("api/routers/onboarding.py")
     middleware = _read("api/security/api_key.py")
 
     assert 'SELF_SERVE_PLAN_SLUGS = ("free", "starter", "growth")' in onboarding
     assert '@router.get("/plans"' in onboarding
     assert '"tenant_slug": result["tenant"].slug' in onboarding
-    assert '"/api/v1/customer/",' in middleware
+    assert '"/api/v1/customer/dashboard/",' in middleware
+    assert '"/api/v1/customer/",' not in middleware
+    assert "Do not broaden this to /api/v1/customer/" in middleware
     assert "current_user=Depends(get_current_user)" in onboarding
     assert "current_user=Depends(require_tenant_admin)" in onboarding
