@@ -5,6 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from api.schemas import HealthResponse
+from core.config.deployment_identity import resolve_deployment_git_sha
 from core.config.settings import get_settings
 from core.llm import get_router as get_model_router
 
@@ -21,7 +22,7 @@ async def health() -> HealthResponse:
         version=settings.app_version,
         env=settings.app_env,
         providers=providers,
-        git_sha=settings.git_sha,
+        git_sha=resolve_deployment_git_sha(settings.git_sha),
     )
 
 
@@ -67,7 +68,10 @@ async def health_deep() -> dict[str, object]:
         if dsn:
             with psycopg.connect(dsn, connect_timeout=3) as conn, conn.cursor() as cur:
                 cur.execute("SELECT 1")
-            checks["postgres"] = {"status": "ok", "ms": round((time.perf_counter() - t0) * 1000, 1)}
+            checks["postgres"] = {
+                "status": "ok",
+                "ms": round((time.perf_counter() - t0) * 1000, 1),
+            }
         else:
             checks["postgres"] = {"status": "skip", "reason": "no DATABASE_URL"}
     except Exception as e:  # pragma: no cover
@@ -82,9 +86,16 @@ async def health_deep() -> dict[str, object]:
 
         url = os.getenv("REDIS_URL")
         if url:
-            redis_client = redis.from_url(url, socket_timeout=3, decode_responses=True)
+            redis_client = redis.from_url(
+                url,
+                socket_timeout=3,
+                decode_responses=True,
+            )
             redis_client.ping()
-            checks["redis"] = {"status": "ok", "ms": round((time.perf_counter() - t0) * 1000, 1)}
+            checks["redis"] = {
+                "status": "ok",
+                "ms": round((time.perf_counter() - t0) * 1000, 1),
+            }
         else:
             checks["redis"] = {"status": "skip", "reason": "no REDIS_URL"}
     except Exception as e:  # pragma: no cover
@@ -117,10 +128,12 @@ async def health_deep() -> dict[str, object]:
     # Sentry status (DSN configured & sentry_sdk importable)
     try:
         import sentry_sdk  # type: ignore
+
         dsn = os.getenv("SENTRY_DSN", "")
         # Validate DSN structure to match preflight R8 logic
         if dsn:
             from urllib.parse import urlparse
+
             host = (urlparse(dsn).hostname or "").lower()
             sentry_ok = host == "ingest.sentry.io" or host.endswith(".ingest.sentry.io")
             checks["sentry"] = {
@@ -135,7 +148,10 @@ async def health_deep() -> dict[str, object]:
 
     # LLM providers
     providers = [p.value for p in get_model_router().available_providers()]
-    checks["llm_providers"] = {"status": "ok" if providers else "fail", "providers": providers}
+    checks["llm_providers"] = {
+        "status": "ok" if providers else "fail",
+        "providers": providers,
+    }
     if not providers:
         overall = "degraded"
 
@@ -158,7 +174,7 @@ async def healthz(deep: bool = False) -> dict[str, object]:
         "service": "dealix",
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": resolve_deployment_git_sha(settings.git_sha),
     }
 
 
