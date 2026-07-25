@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SERVICE_PATH = ROOT / "dealix" / "onboarding" / "service.py"
 ROUTER_PATH = ROOT / "api" / "routers" / "onboarding.py"
 INVITE_EMAIL_PATH = ROOT / "core" / "email" / "invites.py"
+API_KEY_PATH = ROOT / "api" / "security" / "api_key.py"
 MAIN_PATH = ROOT / "api" / "main.py"
 
 
@@ -61,6 +62,21 @@ def test_team_invite_is_admin_gated_and_has_manual_recovery() -> None:
     assert "لم يتم إرسال أي رسالة" in source
 
 
+def test_self_serve_onboarding_bypasses_platform_key_but_keeps_jwt_guards() -> None:
+    middleware = _source(API_KEY_PATH)
+    router_source = _source(ROUTER_PATH)
+
+    assert '"/api/v1/onboarding/",' in middleware
+    assert "path.startswith(PUBLIC_PREFIXES)" in middleware
+    assert "current_user=Depends(get_current_user)" in router_source
+    assert "current_user=Depends(require_tenant_admin)" in router_source
+    signup_section = router_source.split('@router.post("/signup"', 1)[1].split(
+        '@router.post("/wizard")', 1
+    )[0]
+    assert "Depends(get_current_user)" not in signup_section
+    assert "Depends(require_tenant_admin)" not in signup_section
+
+
 def test_legacy_auth_invite_is_replaced_by_canonical_safe_flow() -> None:
     source = _source(ROUTER_PATH)
     main = _source(MAIN_PATH)
@@ -68,7 +84,7 @@ def test_legacy_auth_invite_is_replaced_by_canonical_safe_flow() -> None:
     # Import order must remain auth first, onboarding second, app inclusion last.
     assert main.index("    auth,") < main.index("from api.routers import onboarding as onboarding_router")
     assert main.index("from api.routers import onboarding as onboarding_router") < main.index(
-        "app.include_router(auth.router, prefix=\"/api/v1\")"
+        'app.include_router(auth.router, prefix="/api/v1")'
     )
     assert "def _install_auth_invite_compatibility()" in source
     assert 'getattr(route_item, "path", None) == "/invite"' in source
