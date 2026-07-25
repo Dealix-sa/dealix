@@ -42,6 +42,12 @@ def evaluate(root: Path) -> dict[str, object]:
     deploy_identity = _read(root, "core/config/deployment_identity.py")
     health_router = _read(root, "api/routers/health.py")
     platform_meta = _read(root, "api/routers/platform_meta.py")
+    signup_page = _read(root, "apps/web/app/signup/page.tsx")
+    login_page = _read(root, "apps/web/app/login/page.tsx")
+    dashboard_page = _read(root, "apps/web/app/[tenant]/dashboard/page.tsx")
+    dashboard_entry = _read(root, "apps/web/app/dashboard/page.tsx")
+    runtime_api = _read(root, "apps/web/lib/runtime-api.ts")
+    next_config = _read(root, "apps/web/next.config.js")
 
     invite_section = onboarding_service.split("async def invite_team_member", 1)[1]
     checks = [
@@ -73,9 +79,12 @@ def evaluate(root: Path) -> dict[str, object]:
         Check(
             "self_serve_signup",
             '@router.post("/signup"' in onboarding_router
+            and '@router.get("/plans"' in onboarding_router
+            and 'SELF_SERVE_PLAN_SLUGS = ("free", "starter", "growth")'
+            in onboarding_router
             and "Role.TENANT_ADMIN.value" in onboarding_service
             and '"/api/v1/onboarding/",' in api_key,
-            "signup is reachable before credentials and creates a canonical tenant administrator",
+            "plans/signup are reachable before credentials and create a canonical tenant administrator",
         ),
         Check(
             "protected_onboarding_operations",
@@ -138,6 +147,44 @@ def evaluate(root: Path) -> dict[str, object]:
             "login, token rotation, logout, MFA, and password reset exist",
         ),
         Check(
+            "browser_signup_session",
+            'apiUrl("/api/v1/onboarding/plans")' in signup_page
+            and 'apiUrl("/api/v1/onboarding/signup")' in signup_page
+            and 'apiUrl("/api/v1/auth/login")' in signup_page
+            and "persistSession(tokens" in signup_page
+            and "signup.tenant_slug" in signup_page
+            and "const plans = [" not in signup_page,
+            "browser signup uses canonical plans, creates the tenant, and establishes the JWT session",
+        ),
+        Check(
+            "browser_refresh_rotation",
+            'apiUrl("/api/v1/auth/refresh")' in runtime_api
+            and "body: JSON.stringify({ refresh_token: refreshToken })" in runtime_api
+            and "persistSession(tokens, user)" in runtime_api
+            and "if (firstResponse.status !== 401) return firstResponse;" in runtime_api
+            and "const rotatedAccessToken = await rotateSession()" in runtime_api,
+            "browser retries one authenticated request after refresh-token rotation",
+        ),
+        Check(
+            "browser_tenant_isolation",
+            'authenticatedFetch("/api/v1/customer/dashboard/")' in dashboard_page
+            and 'authenticatedFetch("/api/v1/auth/me")' in dashboard_entry
+            and '"x-tenant-id"' not in dashboard_page.lower()
+            and '"/api/v1/customer/",' in api_key,
+            "customer browser paths use JWT tenant context without a client-supplied tenant header",
+        ),
+        Check(
+            "frontend_api_boundary",
+            "NEXT_PUBLIC_DEALIX_API_BASE" in runtime_api
+            and "NEXT_PUBLIC_DEALIX_API_BASE" in next_config
+            and 'source: "/api/v1/:path*"' in next_config
+            and 'source: "/signup"' not in next_config
+            and "X-API-Key" not in runtime_api
+            and "ADMIN_API" not in runtime_api
+            and 'apiUrl("/api/v1/auth/login")' in login_page,
+            "Next.js uses the canonical API boundary, keeps signup active, and embeds no platform key",
+        ),
+        Check(
             "audit_and_pdpl",
             "class AuditLogRecord" in models
             and "class ConsentRequestRecord" in models
@@ -175,12 +222,13 @@ def evaluate(root: Path) -> dict[str, object]:
             },
             {
                 "issue": 894,
-                "action": "complete Vercel frontend / Railway API domain cutover",
+                "action": "create the Next.js frontend project and complete frontend/API domain cutover",
             },
         ],
         "claim_boundary": (
-            "READY proves repository SaaS foundations only; production-ready requires "
-            "migrations, deployment, protected-route smoke, and domain evidence."
+            "READY proves repository SaaS foundations and browser journey contracts only; "
+            "production-ready requires migrations, deployment, protected-route smoke, domains, "
+            "and disposable-tenant evidence."
         ),
     }
 
