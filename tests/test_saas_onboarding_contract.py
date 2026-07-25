@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SERVICE_PATH = ROOT / "dealix" / "onboarding" / "service.py"
 ROUTER_PATH = ROOT / "api" / "routers" / "onboarding.py"
 INVITE_EMAIL_PATH = ROOT / "core" / "email" / "invites.py"
+MAIN_PATH = ROOT / "api" / "main.py"
 
 
 def _source(path: Path) -> str:
@@ -52,12 +53,29 @@ def test_team_invite_is_admin_gated_and_has_manual_recovery() -> None:
     assert "Depends(require_tenant_admin)" in source
     assert "await session.commit()" in source
     assert "send_email: bool = False" in source
-    assert "if not req.send_email:" in source
+    assert "if not send_email:" in source
     assert "await send_invite_email(" in source
     assert "manual_share_required" in source
     assert "delivery_failed_manual_share_required" in source
     assert "Nothing was sent." in source
     assert "لم يتم إرسال أي رسالة" in source
+
+
+def test_legacy_auth_invite_is_replaced_by_canonical_safe_flow() -> None:
+    source = _source(ROUTER_PATH)
+    main = _source(MAIN_PATH)
+
+    # Import order must remain auth first, onboarding second, app inclusion last.
+    assert main.index("    auth,") < main.index("from api.routers import onboarding as onboarding_router")
+    assert main.index("from api.routers import onboarding as onboarding_router") < main.index(
+        "app.include_router(auth.router, prefix=\"/api/v1\")"
+    )
+    assert "def _install_auth_invite_compatibility()" in source
+    assert 'getattr(route_item, "path", None) == "/invite"' in source
+    assert "auth_module.router.routes = retained_routes" in source
+    assert "legacy_auth_invite" in source
+    assert 'name="legacy_auth_invite_compatibility"' in source
+    assert "return await _create_invite_response(" in source
 
 
 def test_invite_email_transport_is_fail_closed_by_default() -> None:
@@ -76,8 +94,8 @@ def test_invite_email_transport_is_fail_closed_by_default() -> None:
 
 def test_signup_response_matches_current_verification_contract() -> None:
     service = _source(SERVICE_PATH)
-    router = _source(ROUTER_PATH)
+    router_source = _source(ROUTER_PATH)
 
     assert "is_verified=True" in service
     assert '"requires_email_verification": False' in service
-    assert '"requires_email_verification": result["requires_email_verification"]' in router
+    assert '"requires_email_verification": result["requires_email_verification"]' in router_source
