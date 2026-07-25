@@ -38,14 +38,17 @@ def test_login_and_dashboard_use_canonical_runtime_api() -> None:
     assert "profile.tenant_id" in entry
 
 
-def test_runtime_helper_rotates_refresh_tokens_once() -> None:
+def test_runtime_helper_rotates_refresh_tokens_single_flight() -> None:
     source = _read("apps/web/lib/runtime-api.ts")
 
     assert 'apiUrl("/api/v1/auth/refresh")' in source
     assert "body: JSON.stringify({ refresh_token: refreshToken })" in source
     assert "persistSession(tokens, user)" in source
     assert "if (firstResponse.status !== 401) return firstResponse;" in source
-    assert "const rotatedAccessToken = await rotateSession()" in source
+    assert "let refreshInFlight: Promise<string | null> | null = null;" in source
+    assert "async function rotateSessionSingleFlight()" in source
+    assert "refreshInFlight = rotateSession().finally" in source
+    assert "const rotatedAccessToken = await rotateSessionSingleFlight()" in source
     assert "clearSession()" in source
     assert "X-API-Key" not in source
     assert "ADMIN_API" not in source
