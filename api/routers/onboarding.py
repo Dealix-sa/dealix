@@ -48,6 +48,9 @@ class WizardRequest(BaseModel):
 class InviteRequest(BaseModel):
     email: EmailStr
     role_name: str = Field(default="viewer")
+    # Per-action approval. Even when provider delivery is globally enabled, a
+    # tenant administrator must explicitly request an email for this invite.
+    send_email: bool = False
 
 
 class InviteOut(BaseModel):
@@ -124,11 +127,12 @@ async def invite_team_member(
     current_user=Depends(require_tenant_admin),
 ) -> dict[str, Any]:
     """
-    Create a single-use team invitation and attempt policy-gated delivery.
+    Create a single-use invitation with explicit, policy-gated delivery.
 
-    External email remains fail-closed unless ``EMAIL_ALLOW_LIVE_SEND`` is
-    explicitly enabled by an operator. A manual link is always returned to the
-    authenticated tenant administrator as the recovery path.
+    A tenant administrator must opt in for this specific email through
+    ``send_email=true``. The provider is contacted only when that approval and
+    the operator-level ``EMAIL_ALLOW_LIVE_SEND`` policy are both enabled. A
+    manual link is always returned as the recovery path.
     """
     tenant_id = current_user.tenant_id
     if not tenant_id:
@@ -150,24 +154,30 @@ async def invite_team_member(
 
     web_base_url = os.getenv("DEALIX_WEB_URL", "https://dealix.me").rstrip("/")
     invite_url = f"{web_base_url}{result['invite_url']}"
-    delivery = await send_invite_email(
-        to_email=str(req.email),
-        invited_by_name=current_user.name or current_user.email or "Dealix admin",
-        accept_url=invite_url,
-    )
 
-    if delivery.delivered:
-        delivery_status = "delivered"
-        message = "Invitation created and delivered."
-        message_ar = "تم إنشاء الدعوة وإرسالها."
-    elif delivery.blocked_by_policy:
+    if not req.send_email:
         delivery_status = "manual_share_required"
         message = "Invitation created for manual sharing. Nothing was sent."
         message_ar = "تم إنشاء الدعوة للمشاركة اليدوية. لم يتم إرسال أي رسالة."
     else:
-        delivery_status = "delivery_failed_manual_share_required"
-        message = "Invitation created, but delivery failed. Share the link manually."
-        message_ar = "تم إنشاء الدعوة، لكن تعذر الإرسال. شارك الرابط يدويًا."
+        delivery = await send_invite_email(
+            to_email=str(req.email),
+            invited_by_name=current_user.name or current_user.email or "Dealix admin",
+            accept_url=invite_url,
+        )
+
+        if delivery.delivered:
+            delivery_status = "delivered"
+            message = "Invitation created and delivered."
+            message_ar = "تم إنشاء الدعوة وإرسالها."
+        elif delivery.blocked_by_policy:
+            delivery_status = "manual_share_required"
+            message = "Invitation created for manual sharing. Nothing was sent."
+            message_ar = "تم إنشاء الدعوة للمشاركة اليدوية. لم يتم إرسال أي رسالة."
+        else:
+            delivery_status = "delivery_failed_manual_share_required"
+            message = "Invitation created, but delivery failed. Share the link manually."
+            message_ar = "تم إنشاء الدعوة، لكن تعذر الإرسال. شارك الرابط يدويًا."
 
     return {
         "invite_id": result["invite"].id,
