@@ -32,6 +32,7 @@ EN_BODY = (
 )
 DISCLAIMER = "DRAFT — Do not send without human review."
 REVIEW_STATUS = "draft_pending_human_review"
+LEGACY_REVIEW_STATUS = "pending_review"
 
 DEMO_ACCOUNTS = [
     {"id": "demo-001", "name": "Acme Saudi", "segment": "B2B Services"},
@@ -49,7 +50,12 @@ def load_accounts() -> list[dict]:
     return DEMO_ACCOUNTS
 
 
-def build_draft(account: dict, language: str, channel: str, generated_at: str | None = None) -> dict:
+def build_draft(
+    account: dict,
+    language: str,
+    channel: str,
+    generated_at: str | None = None,
+) -> dict:
     company = account.get("name") or account.get("id", "unknown")
     segment = account.get("segment", "")
     body = (AR_BODY if language == "ar" else EN_BODY).format(
@@ -73,12 +79,17 @@ def build_draft(account: dict, language: str, channel: str, generated_at: str | 
         "rejectionReason": None,
         "demo": bool(account.get("demo", True)),
         "disclaimer": DISCLAIMER,
-        "safetyFlags": ["no_roi_claim", "no_fake_testimonial", "no_pressure", "human_review_required"],
+        "safetyFlags": [
+            "no_roi_claim",
+            "no_fake_testimonial",
+            "no_pressure",
+            "human_review_required",
+        ],
     }
 
 
 def _compatibility_draft(draft: dict) -> dict:
-    """Preserve the previous snake_case export without making it canonical."""
+    """Preserve the previous snake_case contract without making it canonical."""
     return {
         "account_id": draft["accountId"],
         "company": draft["company"],
@@ -86,13 +97,17 @@ def _compatibility_draft(draft: dict) -> dict:
         "channel": draft["channel"],
         "subject": draft["subject"],
         "body": draft["body"],
-        "review_status": draft["reviewStatus"],
+        "review_status": LEGACY_REVIEW_STATUS,
         "generated_at": draft["createdAt"],
         "disclaimer": draft["disclaimer"],
     }
 
 
-def write_outputs(drafts: list[dict], mode: str, date: dt.date | None = None) -> tuple[Path, Path]:
+def write_outputs(
+    drafts: list[dict],
+    mode: str,
+    date: dt.date | None = None,
+) -> tuple[Path, Path]:
     today = (date or dt.date.today()).isoformat()
     CANONICAL_QUEUE_PATH.parent.mkdir(parents=True, exist_ok=True)
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
@@ -110,7 +125,11 @@ def write_outputs(drafts: list[dict], mode: str, date: dt.date | None = None) ->
 
     compatibility_path = EXPORT_DIR / f"outreach-drafts-{today}.json"
     compatibility_path.write_text(
-        json.dumps([_compatibility_draft(draft) for draft in drafts], ensure_ascii=False, indent=2),
+        json.dumps(
+            [_compatibility_draft(draft) for draft in drafts],
+            ensure_ascii=False,
+            indent=2,
+        ),
         encoding="utf-8",
     )
     return CANONICAL_QUEUE_PATH, compatibility_path
@@ -130,7 +149,11 @@ def main() -> int:
         return 1
 
     languages = ["ar", "en"] if args.language == "both" else [args.language]
-    drafts = [build_draft(account, language, args.channel) for account in accounts for language in languages]
+    drafts = [
+        build_draft(account, language, args.channel)
+        for account in accounts
+        for language in languages
+    ]
     canonical_path, compatibility_path = write_outputs(drafts, args.mode)
     print(f"wrote {len(drafts)} governed drafts to {canonical_path} (mode={args.mode})")
     print(f"wrote compatibility export to {compatibility_path}")
