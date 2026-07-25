@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import {
-  apiUrl,
+  authenticatedFetch,
   clearSession,
-  getAccessToken,
   parseApiError,
 } from "../../lib/runtime-api";
 
@@ -17,20 +16,8 @@ export default function DashboardEntryPage() {
   useEffect(() => {
     let active = true;
     const resolveWorkspace = async () => {
-      const token = getAccessToken();
-      if (!token) {
-        router.replace("/login");
-        return;
-      }
-
       try {
-        const response = await fetch(apiUrl("/api/v1/auth/me"), {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          cache: "no-store",
-        });
+        const response = await authenticatedFetch("/api/v1/auth/me");
         if (response.status === 401 || response.status === 403) {
           clearSession();
           router.replace("/login");
