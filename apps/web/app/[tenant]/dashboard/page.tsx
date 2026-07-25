@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+
+import {
+  apiUrl,
+  clearSession,
+  getAccessToken,
+  parseApiError,
+} from "../../../lib/runtime-api";
 
 interface KPICard {
   label: string;
@@ -10,46 +17,109 @@ interface KPICard {
   icon: string;
 }
 
+interface DashboardAction {
+  id: string;
+  label: string;
+  label_ar?: string;
+  href: string;
+}
+
+interface DashboardNotification {
+  type: string;
+  title: string;
+  title_ar?: string;
+  action?: {
+    label: string;
+    label_ar?: string;
+    href: string;
+  };
+}
+
+interface DashboardActivity {
+  title: string;
+  title_ar?: string;
+  timestamp?: string | null;
+}
+
 interface DashboardData {
   tenant_name: string;
   plan_name: string;
   subscription_status: string;
   kpi_cards: KPICard[];
-  quick_actions: any[];
-  recent_activity: any[];
-  notifications: any[];
+  quick_actions: DashboardAction[];
+  recent_activity: DashboardActivity[];
+  notifications: DashboardNotification[];
 }
 
 export default function DashboardPage() {
   const params = useParams();
-  const tenant = params.tenant as string;
+  const router = useRouter();
+  const tenant = String(params.tenant || "workspace");
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("/api/v1/customer/dashboard/", {
-      headers: { "x-tenant-id": tenant },
-    })
-      .then((r) => r.json())
-      .then((d) => {
-        setData(d);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [tenant]);
+    let active = true;
+    const loadDashboard = async () => {
+      const token = getAccessToken();
+      if (!token) {
+        router.replace("/login");
+        return;
+      }
+
+      try {
+        const response = await fetch(apiUrl("/api/v1/customer/dashboard/"), {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          cache: "no-store",
+        });
+        if (response.status === 401 || response.status === 403) {
+          clearSession();
+          router.replace("/login");
+          return;
+        }
+        if (!response.ok) throw new Error(await parseApiError(response));
+        const payload: DashboardData = await response.json();
+        if (active) setData(payload);
+      } catch (err: unknown) {
+        if (active) {
+          setError(err instanceof Error ? err.message : "تعذر تحميل لوحة الشركة");
+        }
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+
+    void loadDashboard();
+    return () => {
+      active = false;
+    };
+  }, [router]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-emerald-600 text-xl font-semibold">جاري التحميل...</div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center" dir="rtl">
+        <div className="text-emerald-600 text-xl font-semibold">جاري تحميل لوحة الشركة...</div>
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-red-500">فشل تحميل البيانات</div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4" dir="rtl">
+        <div className="max-w-md bg-white rounded-xl border border-red-100 p-6 text-center">
+          <p className="text-red-600 mb-4">{error || "تعذر تحميل بيانات الشركة"}</p>
+          <button
+            type="button"
+            onClick={() => router.replace("/login")}
+            className="px-4 py-2 bg-slate-900 text-white rounded-lg"
+          >
+            العودة لتسجيل الدخول
+          </button>
+        </div>
       </div>
     );
   }
@@ -62,21 +132,23 @@ export default function DashboardPage() {
     package: "📦",
   };
 
+  const workspaceHref = (path: string) =>
+    `/${encodeURIComponent(tenant)}${path.startsWith("/") ? path : `/${path}`}`;
+
   return (
     <div className="min-h-screen bg-slate-50" dir="rtl">
-      {/* Sidebar + Main */}
       <div className="flex">
-        {/* Sidebar */}
         <aside className="w-64 bg-white border-l border-slate-200 min-h-screen p-6 hidden lg:block">
-          <div className="text-2xl font-bold text-emerald-600 mb-8">Dealix</div>
+          <div className="text-2xl font-bold text-emerald-600 mb-2">Dealix</div>
+          <p className="text-xs text-slate-400 mb-8">Saudi B2B AI Company OS</p>
           <nav className="space-y-2">
             {[
-              { label: "الرئيسية", href: `/${tenant}/dashboard` },
-              { label: "CRM", href: `/${tenant}/crm` },
-              { label: "المشاريع", href: `/${tenant}/projects` },
-              { label: "الدعم", href: `/${tenant}/support` },
-              { label: "المستندات", href: `/${tenant}/documents` },
-              { label: "الإعدادات", href: `/${tenant}/settings/billing` },
+              { label: "الرئيسية", href: workspaceHref("/dashboard") },
+              { label: "العملاء والفرص", href: workspaceHref("/crm") },
+              { label: "المشاريع", href: workspaceHref("/projects") },
+              { label: "الدعم", href: workspaceHref("/support") },
+              { label: "المستندات", href: workspaceHref("/documents") },
+              { label: "الإعدادات", href: workspaceHref("/settings/billing") },
             ].map((item) => (
               <a
                 key={item.label}
@@ -89,8 +161,7 @@ export default function DashboardPage() {
           </nav>
         </aside>
 
-        {/* Main */}
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 md:p-8">
           <header className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-2xl font-bold text-slate-900">
@@ -103,39 +174,40 @@ export default function DashboardPage() {
                     data.subscription_status === "active"
                       ? "bg-emerald-100 text-emerald-700"
                       : data.subscription_status === "trialing"
-                      ? "bg-amber-100 text-amber-700"
-                      : "bg-red-100 text-red-700"
+                        ? "bg-amber-100 text-amber-700"
+                        : "bg-red-100 text-red-700"
                   }`}
                 >
                   {data.subscription_status === "active"
                     ? "نشط"
                     : data.subscription_status === "trialing"
-                    ? "تجريبي"
-                    : data.subscription_status}
+                      ? "تجريبي"
+                      : data.subscription_status}
                 </span>
               </p>
             </div>
           </header>
 
-          {/* Notifications */}
           {data.notifications.length > 0 && (
             <div className="mb-6 space-y-3">
-              {data.notifications.map((n, i) => (
+              {data.notifications.map((notification, index) => (
                 <div
-                  key={i}
+                  key={`${notification.type}-${index}`}
                   className={`p-4 rounded-xl border-r-4 ${
-                    n.type === "warning"
+                    notification.type === "warning"
                       ? "bg-amber-50 border-amber-500"
                       : "bg-red-50 border-red-500"
                   }`}
                 >
-                  <p className="font-semibold text-slate-800">{n.title_ar || n.title}</p>
-                  {n.action && (
+                  <p className="font-semibold text-slate-800">
+                    {notification.title_ar || notification.title}
+                  </p>
+                  {notification.action && (
                     <a
-                      href={n.action.href}
+                      href={workspaceHref(notification.action.href)}
                       className="text-emerald-600 text-sm font-medium mt-1 inline-block hover:underline"
                     >
-                      {n.action.label_ar || n.action.label} →
+                      {notification.action.label_ar || notification.action.label} →
                     </a>
                   )}
                 </div>
@@ -143,15 +215,14 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* KPI Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
-            {data.kpi_cards.map((kpi, i) => (
+            {data.kpi_cards.map((kpi, index) => (
               <div
-                key={i}
+                key={`${kpi.label}-${index}`}
                 className="bg-white p-6 rounded-xl shadow-sm border border-slate-100"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-2xl">{iconMap[kpi.icon] || "📊"}</span>
+                  <span className="text-2xl" aria-hidden="true">{iconMap[kpi.icon] || "📊"}</span>
                 </div>
                 <p className="text-slate-500 text-sm">{kpi.label_ar}</p>
                 <p className="text-2xl font-bold text-slate-900">{kpi.value}</p>
@@ -159,14 +230,13 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {/* Quick Actions */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 mb-8">
             <h2 className="text-lg font-bold text-slate-900 mb-4">إجراءات سريعة</h2>
             <div className="flex flex-wrap gap-3">
               {data.quick_actions.map((action) => (
                 <a
                   key={action.id}
-                  href={action.href}
+                  href={workspaceHref(action.href)}
                   className="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg font-medium hover:bg-emerald-100 transition"
                 >
                   {action.label_ar || action.label}
@@ -175,25 +245,24 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Recent Activity */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
             <h2 className="text-lg font-bold text-slate-900 mb-4">آخر النشاطات</h2>
             {data.recent_activity.length === 0 ? (
               <p className="text-slate-400">لا توجد نشاطات حديثة</p>
             ) : (
               <div className="space-y-3">
-                {data.recent_activity.map((act, i) => (
+                {data.recent_activity.map((activity, index) => (
                   <div
-                    key={i}
+                    key={`${activity.title}-${index}`}
                     className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
                   >
                     <div>
                       <p className="font-medium text-slate-800">
-                        {act.title_ar || act.title}
+                        {activity.title_ar || activity.title}
                       </p>
                       <p className="text-xs text-slate-400">
-                        {act.timestamp
-                          ? new Date(act.timestamp).toLocaleDateString("ar-SA")
+                        {activity.timestamp
+                          ? new Date(activity.timestamp).toLocaleDateString("ar-SA")
                           : ""}
                       </p>
                     </div>
