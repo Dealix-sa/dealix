@@ -34,6 +34,7 @@ def evaluate(root: Path) -> dict[str, object]:
     models = _read(root, "db/models.py")
     subscription_models = _read(root, "db/models_subscription.py")
     auth = _read(root, "api/routers/auth.py")
+    main = _read(root, "api/main.py")
     onboarding_router = _read(root, "api/routers/onboarding.py")
     onboarding_service = _read(root, "dealix/onboarding/service.py")
     invite_email = _read(root, "core/email/invites.py")
@@ -89,10 +90,21 @@ def evaluate(root: Path) -> dict[str, object]:
             and "if not live_invite_email_enabled():" in invite_email
             and "blocked_by_policy=True" in invite_email
             and "send_email: bool = False" in onboarding_router
-            and "if not req.send_email:" in onboarding_router
+            and "if not send_email:" in onboarding_router
             and "await send_invite_email(" in onboarding_router
             and "manual_share_required" in onboarding_router,
             "invite email requires per-action approval plus operator policy; manual fallback remains",
+        ),
+        Check(
+            "canonical_legacy_invite",
+            "def _install_auth_invite_compatibility()" in onboarding_router
+            and 'getattr(route_item, "path", None) == "/invite"' in onboarding_router
+            and "auth_module.router.routes = retained_routes" in onboarding_router
+            and 'name="legacy_auth_invite_compatibility"' in onboarding_router
+            and main.index("    auth,")
+            < main.index("from api.routers import onboarding as onboarding_router")
+            < main.index('app.include_router(auth.router, prefix="/api/v1")'),
+            "legacy auth invite is replaced before router inclusion and delegates to canonical flow",
         ),
         Check(
             "deployment_identity",
