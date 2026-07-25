@@ -170,8 +170,9 @@ def evaluate(root: Path) -> dict[str, object]:
             'authenticatedFetch("/api/v1/customer/dashboard/")' in dashboard_page
             and 'authenticatedFetch("/api/v1/auth/me")' in dashboard_entry
             and '"x-tenant-id"' not in dashboard_page.lower()
-            and '"/api/v1/customer/",' in api_key,
-            "customer browser paths use JWT tenant context without a client-supplied tenant header",
+            and '"/api/v1/customer/dashboard/",' in api_key
+            and '"/api/v1/customer/",' not in api_key,
+            "only the audited dashboard path bypasses the platform key and uses JWT tenant context",
         ),
         Check(
             "frontend_api_boundary",
