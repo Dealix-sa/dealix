@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import {
-  apiUrl,
+  authenticatedFetch,
   clearSession,
-  getAccessToken,
   parseApiError,
 } from "../../../lib/runtime-api";
 
@@ -62,20 +61,8 @@ export default function DashboardPage() {
   useEffect(() => {
     let active = true;
     const loadDashboard = async () => {
-      const token = getAccessToken();
-      if (!token) {
-        router.replace("/login");
-        return;
-      }
-
       try {
-        const response = await fetch(apiUrl("/api/v1/customer/dashboard/"), {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          cache: "no-store",
-        });
+        const response = await authenticatedFetch("/api/v1/customer/dashboard/");
         if (response.status === 401 || response.status === 403) {
           clearSession();
           router.replace("/login");
