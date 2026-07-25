@@ -2,9 +2,9 @@
 Self-Serve Onboarding API — plans, signup, wizard, and approval-first invites.
 
 The canonical invitation implementation lives here. A compatibility installer
-replaces the older ``/api/v1/auth/invite`` route before the FastAPI app includes
-the auth router, so both public paths share the same tenant, seat, token, and
-delivery safety contracts.
+replaces the older ``/api/v1/auth/invite`` creation and acceptance routes before
+the FastAPI app includes the auth router, so both public paths share the same
+tenant, seat, token, delivery, and single-use safety contracts.
 """
 
 from __future__ import annotations
@@ -12,13 +12,16 @@ from __future__ import annotations
 import os
 from typing import Any, Literal
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from jose import JWTError
 from pydantic import BaseModel, EmailStr, Field
-from sqlalchemy import select
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.security.auth_deps import get_current_user, require_tenant_admin
+from api.security.jwt import decode_invite_token, hash_token
 from core.email import send_invite_email
+from db.models import RoleRecord, UserInviteRecord, UserRecord
 from db.models_subscription import PlanRecord
 from db.session import get_db as get_db_session
 from dealix.onboarding.service import OnboardingService
@@ -85,6 +88,12 @@ class LegacyInviteRequest(BaseModel):
     email: EmailStr
     role: str = Field(default="sales_rep")
     send_email: bool = False
+
+
+class InviteAcceptRequest(BaseModel):
+    token: str = Field(..., min_length=20)
+    name: str = Field(..., min_length=2)
+    password: str = Field(..., min_length=8)
 
 
 class InviteOut(BaseModel):
@@ -299,20 +308,120 @@ async def legacy_auth_invite(
     return {**response, "email": str(req.email).strip().lower(), "role": req.role.strip().lower()}
 
 
-def _install_auth_invite_compatibility() -> None:
-    """Replace the legacy false-claim route before ``auth.router`` is included.
+async def legacy_auth_invite_accept(
+    req: InviteAcceptRequest,
+    request: Request,
+    session: AsyncSession = Depends(get_db_session),
+) -> Any:
+    """Redeem an invite using the persisted record as the authority.
 
-    ``api.main`` imports the auth module before this onboarding module and only
-    includes routers afterwards, making this deterministic and avoiding a
-    duplicate route in both runtime dispatch and OpenAPI.
+    The row lock makes concurrent redemption deterministic. The role comes from
+    the stored invite and must belong to the same tenant; the signed JWT role is
+    treated as a consistency check, not the authorization source.
     """
 
     from api.routers import auth as auth_module
 
+    try:
+        payload = decode_invite_token(req.token)
+    except JWTError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired invite token",
+        ) from exc
+
+    email = str(payload.get("sub") or "").strip().lower()
+    tenant_id = str(payload.get("tid") or "").strip()
+    token_role_id = payload.get("rid")
+    if not email or not tenant_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid invite token claims",
+        )
+
+    invite_result = await session.execute(
+        select(UserInviteRecord)
+        .where(
+            and_(
+                UserInviteRecord.tenant_id == tenant_id,
+                UserInviteRecord.email == email,
+                UserInviteRecord.token_hash == hash_token(req.token),
+                UserInviteRecord.accepted_at.is_(None),
+                UserInviteRecord.expires_at > auth_module._utcnow(),
+            )
+        )
+        .with_for_update()
+    )
+    invite = invite_result.scalar_one_or_none()
+    if invite is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invite not found, expired, or already used",
+        )
+
+    if not invite.role_id or invite.role_id != token_role_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invite role mismatch",
+        )
+
+    role_result = await session.execute(
+        select(RoleRecord).where(
+            RoleRecord.id == invite.role_id,
+            RoleRecord.tenant_id == tenant_id,
+        )
+    )
+    role = role_result.scalar_one_or_none()
+    if role is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invite role is no longer valid",
+        )
+
+    existing_result = await session.execute(
+        select(UserRecord).where(
+            UserRecord.tenant_id == tenant_id,
+            UserRecord.email == email,
+        )
+    )
+    if existing_result.scalar_one_or_none() is not None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email already registered for this tenant",
+        )
+
+    user = UserRecord(
+        id=auth_module._new_id("usr_"),
+        tenant_id=tenant_id,
+        role_id=invite.role_id,
+        email=email,
+        name=req.name.strip(),
+        hashed_password=auth_module._hash_password(req.password),
+        is_active=True,
+        is_verified=True,
+    )
+    session.add(user)
+    invite.accepted_at = auth_module._utcnow()
+    await session.flush()
+
+    return await auth_module._issue_tokens(user, session, request)
+
+
+def _install_auth_invite_compatibility() -> None:
+    """Replace legacy invite routes before ``auth.router`` is included.
+
+    ``api.main`` imports the auth module before this onboarding module and only
+    includes routers afterwards, making this deterministic and avoiding
+    duplicate runtime and OpenAPI routes.
+    """
+
+    from api.routers import auth as auth_module
+
+    replaced_paths = {"/invite", "/invite/accept"}
     retained_routes = []
     for route_item in auth_module.router.routes:
         methods = set(getattr(route_item, "methods", set()) or set())
-        if getattr(route_item, "path", None) == "/invite" and "POST" in methods:
+        if getattr(route_item, "path", None) in replaced_paths and "POST" in methods:
             continue
         retained_routes.append(route_item)
     auth_module.router.routes = retained_routes
@@ -323,6 +432,14 @@ def _install_auth_invite_compatibility() -> None:
         status_code=status.HTTP_201_CREATED,
         response_model=LegacyInviteOut,
         name="legacy_auth_invite_compatibility",
+    )
+    auth_module.router.add_api_route(
+        "/invite/accept",
+        legacy_auth_invite_accept,
+        methods=["POST"],
+        status_code=status.HTTP_201_CREATED,
+        response_model=auth_module.TokenResponse,
+        name="legacy_auth_invite_accept_compatibility",
     )
 
 
