@@ -36,6 +36,25 @@ function decodeStoredString(value: string | null): string | null {
   }
 }
 
+function getStoredUser(): DealixSessionUser | null {
+  if (typeof window === "undefined") return null;
+  const raw = localStorage.getItem(USER_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || typeof parsed.email !== "string") {
+      return null;
+    }
+    return {
+      email: parsed.email,
+      tenant_slug:
+        typeof parsed.tenant_slug === "string" ? parsed.tenant_slug : undefined,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function getAccessToken(): string | null {
   if (typeof window === "undefined") return null;
   return decodeStoredString(localStorage.getItem(TOKEN_KEY));
@@ -60,6 +79,8 @@ export function persistSession(
       "dealix_expires_at",
       String(Date.now() + tokens.expires_in * 1000),
     );
+  } else {
+    localStorage.removeItem("dealix_expires_at");
   }
 }
 
@@ -74,6 +95,68 @@ export function clearSession(): void {
 export function bearerHeaders(): Record<string, string> {
   const token = getAccessToken();
   return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+function withBearer(init: RequestInit, token: string): RequestInit {
+  const headers = new Headers(init.headers || {});
+  headers.set("Authorization", `Bearer ${token}`);
+  if (!headers.has("Accept")) headers.set("Accept", "application/json");
+  return { ...init, headers };
+}
+
+async function rotateSession(): Promise<string | null> {
+  const refreshToken = getRefreshToken();
+  const user = getStoredUser();
+  if (!refreshToken || !user) return null;
+
+  const response = await fetch(apiUrl("/api/v1/auth/refresh"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ refresh_token: refreshToken }),
+    cache: "no-store",
+  });
+  if (!response.ok) return null;
+
+  const tokens: DealixSessionTokens = await response.json();
+  if (!tokens.access_token || !tokens.refresh_token) return null;
+  persistSession(tokens, user);
+  return tokens.access_token;
+}
+
+/**
+ * Fetch a JWT-protected customer endpoint and rotate the refresh token once on
+ * HTTP 401. The backend revokes the previous refresh token during rotation, so
+ * only the newest pair is persisted. A failed rotation clears the local session.
+ */
+export async function authenticatedFetch(
+  path: string,
+  init: RequestInit = {},
+): Promise<Response> {
+  const accessToken = getAccessToken();
+  if (!accessToken) {
+    return new Response(null, { status: 401, statusText: "Missing session" });
+  }
+
+  const firstResponse = await fetch(
+    apiUrl(path),
+    withBearer({ ...init, cache: init.cache || "no-store" }, accessToken),
+  );
+  if (firstResponse.status !== 401) return firstResponse;
+
+  try {
+    const rotatedAccessToken = await rotateSession();
+    if (!rotatedAccessToken) {
+      clearSession();
+      return firstResponse;
+    }
+    return await fetch(
+      apiUrl(path),
+      withBearer({ ...init, cache: init.cache || "no-store" }, rotatedAccessToken),
+    );
+  } catch {
+    clearSession();
+    return firstResponse;
+  }
 }
 
 export async function parseApiError(response: Response): Promise<string> {
