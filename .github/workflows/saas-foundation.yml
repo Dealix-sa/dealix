@@ -95,7 +95,8 @@ jobs:
             scripts/verify_saas_foundation.py \
             tests/test_deployment_identity_runtime.py \
             tests/test_saas_onboarding_contract.py \
-            tests/test_saas_foundation_verifier.py
+            tests/test_saas_foundation_verifier.py \
+            tests/test_saas_web_journey_contract.py
 
       - name: Verify repository SaaS contracts
         run: python scripts/verify_saas_foundation.py --json
@@ -105,7 +106,8 @@ jobs:
           pytest -q --no-cov \
             tests/test_deployment_identity_runtime.py \
             tests/test_saas_onboarding_contract.py \
-            tests/test_saas_foundation_verifier.py
+            tests/test_saas_foundation_verifier.py \
+            tests/test_saas_web_journey_contract.py
 
   web:
     name: Verify SaaS web journey
