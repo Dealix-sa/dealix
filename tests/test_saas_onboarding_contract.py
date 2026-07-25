@@ -37,11 +37,22 @@ def test_team_invite_uses_single_use_invite_record() -> None:
     assert "UserRecord(" not in source.split("async def invite_team_member", 1)[1]
 
 
+def test_team_invite_restricts_roles_to_tenant_rbac() -> None:
+    source = _source(SERVICE_PATH)
+
+    assert "_VALID_ROLE_NAMES = {role.value for role in Role}" in source
+    assert "if role_name not in _VALID_ROLE_NAMES:" in source
+    assert "RoleRecord.tenant_id == tenant_id" in source
+    assert "RoleRecord.name == role_name" in source
+
+
 def test_team_invite_is_admin_gated_and_has_manual_recovery() -> None:
     source = _source(ROUTER_PATH)
 
     assert "Depends(require_tenant_admin)" in source
     assert "await session.commit()" in source
+    assert "send_email: bool = False" in source
+    assert "if not req.send_email:" in source
     assert "await send_invite_email(" in source
     assert "manual_share_required" in source
     assert "delivery_failed_manual_share_required" in source
