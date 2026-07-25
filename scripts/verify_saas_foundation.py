@@ -35,6 +35,7 @@ def evaluate(root: Path) -> dict[str, object]:
     subscription_models = _read(root, "db/models_subscription.py")
     auth = _read(root, "api/routers/auth.py")
     main = _read(root, "api/main.py")
+    api_key = _read(root, "api/security/api_key.py")
     onboarding_router = _read(root, "api/routers/onboarding.py")
     onboarding_service = _read(root, "dealix/onboarding/service.py")
     invite_email = _read(root, "core/email/invites.py")
@@ -72,8 +73,15 @@ def evaluate(root: Path) -> dict[str, object]:
         Check(
             "self_serve_signup",
             '@router.post("/signup"' in onboarding_router
-            and "Role.TENANT_ADMIN.value" in onboarding_service,
-            "self-serve signup creates a canonical tenant administrator",
+            and "Role.TENANT_ADMIN.value" in onboarding_service
+            and '"/api/v1/onboarding/",' in api_key,
+            "signup is reachable before credentials and creates a canonical tenant administrator",
+        ),
+        Check(
+            "protected_onboarding_operations",
+            "current_user=Depends(get_current_user)" in onboarding_router
+            and "current_user=Depends(require_tenant_admin)" in onboarding_router,
+            "wizard and invitations remain JWT/RBAC protected after API-key bypass",
         ),
         Check(
             "safe_team_invites",
