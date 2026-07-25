@@ -77,7 +77,7 @@ def test_self_serve_onboarding_bypasses_platform_key_but_keeps_jwt_guards() -> N
     assert "Depends(require_tenant_admin)" not in signup_section
 
 
-def test_legacy_auth_invite_is_replaced_by_canonical_safe_flow() -> None:
+def test_legacy_auth_invite_routes_are_replaced_by_canonical_safe_flow() -> None:
     source = _source(ROUTER_PATH)
     main = _source(MAIN_PATH)
 
@@ -87,11 +87,31 @@ def test_legacy_auth_invite_is_replaced_by_canonical_safe_flow() -> None:
         'app.include_router(auth.router, prefix="/api/v1")'
     )
     assert "def _install_auth_invite_compatibility()" in source
-    assert 'getattr(route_item, "path", None) == "/invite"' in source
+    assert 'replaced_paths = {"/invite", "/invite/accept"}' in source
     assert "auth_module.router.routes = retained_routes" in source
     assert "legacy_auth_invite" in source
+    assert "legacy_auth_invite_accept" in source
     assert 'name="legacy_auth_invite_compatibility"' in source
+    assert 'name="legacy_auth_invite_accept_compatibility"' in source
     assert "return await _create_invite_response(" in source
+
+
+def test_invite_acceptance_uses_persisted_role_and_row_lock() -> None:
+    source = _source(ROUTER_PATH)
+    accept_section = source.split("async def legacy_auth_invite_accept", 1)[1].split(
+        "def _install_auth_invite_compatibility", 1
+    )[0]
+
+    assert ".with_for_update()" in accept_section
+    assert "UserInviteRecord.token_hash == hash_token(req.token)" in accept_section
+    assert "UserInviteRecord.accepted_at.is_(None)" in accept_section
+    assert "UserInviteRecord.expires_at > auth_module._utcnow()" in accept_section
+    assert "invite.role_id != token_role_id" in accept_section
+    assert "RoleRecord.id == invite.role_id" in accept_section
+    assert "RoleRecord.tenant_id == tenant_id" in accept_section
+    assert "role_id=invite.role_id" in accept_section
+    assert "invite.accepted_at = auth_module._utcnow()" in accept_section
+    assert "role_id=token_role_id" not in accept_section
 
 
 def test_invite_email_transport_is_fail_closed_by_default() -> None:
