@@ -1,5 +1,5 @@
 """
-Self-Serve Onboarding API — signup, wizard, and approval-first team invite.
+Self-Serve Onboarding API — plans, signup, wizard, and approval-first invites.
 
 The canonical invitation implementation lives here. A compatibility installer
 replaces the older ``/api/v1/auth/invite`` route before the FastAPI app includes
@@ -10,18 +10,38 @@ delivery safety contracts.
 from __future__ import annotations
 
 import os
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.security.auth_deps import get_current_user, require_tenant_admin
 from core.email import send_invite_email
+from db.models_subscription import PlanRecord
 from db.session import get_db as get_db_session
 from dealix.onboarding.service import OnboardingService
 
 router = APIRouter(prefix="/api/v1/onboarding", tags=["Onboarding"])
+SELF_SERVE_PLAN_SLUGS = ("free", "starter", "growth")
+SelfServePlanSlug = Literal["free", "starter", "growth"]
+
+
+class PlanOut(BaseModel):
+    slug: str
+    name_ar: str
+    name_en: str
+    price_sar_monthly: float
+    price_sar_yearly: float | None
+    max_users: int
+    max_leads_per_month: int
+    features: dict[str, Any]
+
+
+class PlansOut(BaseModel):
+    currency: str = "SAR"
+    plans: list[PlanOut]
 
 
 class SignupRequest(BaseModel):
@@ -29,12 +49,13 @@ class SignupRequest(BaseModel):
     password: str = Field(..., min_length=8)
     name: str = Field(..., min_length=2)
     company_name: str = Field(..., min_length=2)
-    plan_slug: str = Field(default="free")
+    plan_slug: SelfServePlanSlug = "free"
     billing_cycle: str = Field(default="monthly", pattern="^(monthly|yearly)$")
 
 
 class SignupOut(BaseModel):
     tenant_id: str
+    tenant_slug: str
     user_id: str
     subscription_id: str
     plan_slug: str
@@ -79,6 +100,45 @@ class LegacyInviteOut(InviteOut):
     role: str
 
 
+@router.get("/plans", response_model=PlansOut)
+async def list_self_serve_plans(
+    session: AsyncSession = Depends(get_db_session),
+) -> dict[str, Any]:
+    """Return only plans approved for unattended self-serve signup.
+
+    The explicit slug allowlist avoids leaking custom/enterprise plans and also
+    remains reliable for databases seeded by older migrations where
+    ``is_public`` may be NULL because the seed used raw SQL.
+    """
+
+    result = await session.execute(
+        select(PlanRecord)
+        .where(PlanRecord.slug.in_(SELF_SERVE_PLAN_SLUGS))
+        .order_by(PlanRecord.sort_order, PlanRecord.price_sar_monthly)
+    )
+    by_slug = {plan.slug: plan for plan in result.scalars().all()}
+    plans = []
+    for slug in SELF_SERVE_PLAN_SLUGS:
+        plan = by_slug.get(slug)
+        if plan is None:
+            continue
+        plans.append(
+            {
+                "slug": plan.slug,
+                "name_ar": plan.name_ar,
+                "name_en": plan.name_en,
+                "price_sar_monthly": float(plan.price_sar_monthly or 0),
+                "price_sar_yearly": (
+                    float(plan.price_sar_yearly) if plan.price_sar_yearly is not None else None
+                ),
+                "max_users": int(plan.max_users or 1),
+                "max_leads_per_month": int(plan.max_leads_per_month or 0),
+                "features": dict(plan.features or {}),
+            }
+        )
+    return {"currency": "SAR", "plans": plans}
+
+
 @router.post("/signup", response_model=SignupOut, status_code=status.HTTP_201_CREATED)
 async def signup(
     req: SignupRequest,
@@ -101,6 +161,7 @@ async def signup(
     await session.commit()
     return {
         "tenant_id": result["tenant"].id,
+        "tenant_slug": result["tenant"].slug,
         "user_id": result["user"].id,
         "subscription_id": result["subscription"].id,
         "plan_slug": req.plan_slug,
