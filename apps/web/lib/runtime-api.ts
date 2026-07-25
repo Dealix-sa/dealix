@@ -8,6 +8,7 @@ export const DEALIX_API_BASE = configuredApiBase.replace(/\/$/, "");
 const TOKEN_KEY = "dealix_access_token";
 const REFRESH_KEY = "dealix_refresh_token";
 const USER_KEY = "dealix_user";
+let refreshInFlight: Promise<string | null> | null = null;
 
 export interface DealixSessionTokens {
   access_token: string;
@@ -123,10 +124,20 @@ async function rotateSession(): Promise<string | null> {
   return tokens.access_token;
 }
 
+async function rotateSessionSingleFlight(): Promise<string | null> {
+  if (!refreshInFlight) {
+    refreshInFlight = rotateSession().finally(() => {
+      refreshInFlight = null;
+    });
+  }
+  return refreshInFlight;
+}
+
 /**
  * Fetch a JWT-protected customer endpoint and rotate the refresh token once on
  * HTTP 401. The backend revokes the previous refresh token during rotation, so
- * only the newest pair is persisted. A failed rotation clears the local session.
+ * only the newest pair is persisted. Concurrent callers share one rotation.
+ * A failed rotation clears the local session.
  */
 export async function authenticatedFetch(
   path: string,
@@ -144,7 +155,7 @@ export async function authenticatedFetch(
   if (firstResponse.status !== 401) return firstResponse;
 
   try {
-    const rotatedAccessToken = await rotateSession();
+    const rotatedAccessToken = await rotateSessionSingleFlight();
     if (!rotatedAccessToken) {
       clearSession();
       return firstResponse;
