@@ -11,20 +11,22 @@ import sqlalchemy as sa
 from alembic import op
 from sqlalchemy.dialects.postgresql import JSONB
 
+__all__ = (
+    "revision",
+    "down_revision",
+    "branch_labels",
+    "depends_on",
+    "upgrade",
+    "downgrade",
+)
+
 revision: str = "20260723_019_knowledge_accumulator_storage"
 down_revision: str | None = "20260723_018_communication_hub_storage"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
 
-def _consume_alembic_metadata() -> None:
-    """Mark Alembic's module-level runtime contract as intentionally consumed."""
-
-    _ = (revision, down_revision, branch_labels, depends_on)
-
-
 def upgrade() -> None:
-    _consume_alembic_metadata()
     op.create_table(
         "knowledge_accumulator_snapshots",
         sa.Column("collection", sa.String(32), primary_key=True),
@@ -57,5 +59,4 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    _consume_alembic_metadata()
     op.drop_table("knowledge_accumulator_snapshots")
