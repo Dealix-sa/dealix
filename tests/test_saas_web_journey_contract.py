@@ -49,10 +49,15 @@ def test_company_command_is_evidence_backed_and_draft_safe() -> None:
     assert "data.notifications.length" in command
     assert "data.quick_actions.length" in command
     assert "data.recent_activity.length" in command
+    assert "explicitAttentionType(notification.type)" in command
+    assert 'return "إشعار"' in command
+    assert '"تنبيهات حالية"' in command
+    assert '"قرارات معلقة"' not in command
+    assert 'notification.type === "warning" ? "مراجعة" : "عالي"' not in command
     assert "لا تنفذ إرسالًا أو دفعًا أو تغيير إنتاج" in command
     assert "setInterval(" not in command
     assert "Math.random(" not in command
-    assert "fetch(\"/local-runtime/" not in command
+    assert 'fetch("/local-runtime/' not in command
 
 
 def test_runtime_helper_rotates_refresh_tokens_single_flight() -> None:
