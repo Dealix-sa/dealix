@@ -196,7 +196,20 @@ def main(argv: list[str]) -> int:
     # unrelated edits that shift lines do not spuriously fail the gate.
     keys = {f"{rel}::{model}" for rel, _line, model in found}
 
+    # Baseline bookkeeping is only meaningful over the full default scope. A
+    # partial scan sees none of the other entries and would otherwise call
+    # them fixed — regenerating from that would silently drop live findings.
+    scanned = {path.relative_to(REPO_ROOT).as_posix() for path in files}
+    full_scope = not [a for a in argv[1:] if not a.startswith("--")]
+
     if "--write-baseline" in argv:
+        if not full_scope:
+            print(
+                "refusing to write the baseline from a partial scan: run with "
+                "no path arguments so every tracked entry is re-checked.",
+                file=sys.stderr,
+            )
+            return 1
         BASELINE_PATH.write_text(
             "# Pre-existing unscoped tenant queries — see issue #974.\n"
             "# This list may shrink. It must never grow: a new entry means a\n"
@@ -210,7 +223,12 @@ def main(argv: list[str]) -> int:
 
     baseline = load_baseline()
     new = sorted(keys - baseline)
-    fixed = sorted(baseline - keys)
+    # Only an entry whose file this run actually scanned can be called fixed.
+    fixed = sorted(
+        entry
+        for entry in baseline - keys
+        if entry.split("::", 1)[0] in scanned
+    )
 
     for rel, line, model in sorted(found):
         if f"{rel}::{model}" not in new:

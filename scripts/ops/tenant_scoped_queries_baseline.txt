@@ -5,7 +5,6 @@
 api/routers/auth.py::RefreshTokenRecord
 api/routers/auth.py::RoleRecord
 api/routers/automation.py::ContactRecord
-api/routers/autonomous.py::DealRecord
 api/routers/data.py::ContactRecord
 api/routers/dominance.py::ContactRecord
 api/routers/drafts.py::ContactRecord
