@@ -11,26 +11,31 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
 from sqlalchemy import func, select
 
 from api.security.auth_deps import get_current_user
-from api.security.tenant_scope import TenantScopeDenied, resolve_tenant_for_user
+from api.security.tenant_scope import TenantScopeDenied, resolve_tenant_for_request
 from db.models import ConversationRecord, DealRecord, LeadRecord, TaskRecord
 from db.session import async_session_factory
 
 router = APIRouter(prefix="/api/v1", tags=["autonomous"])
 
 
-def _tenant_scope(user: Any, declared_tenant_id: str | None = None) -> str:
+def _tenant_scope(
+    request: Request, user: Any, declared_tenant_id: str | None = None
+) -> str:
     """Resolve the tenant for a deal request, or raise 403.
 
     Deals carry amounts and stage — including the transition to ``paid`` —
     so the tenant comes from the authenticated user. A tenant or deal id
-    named in the body is a request, never authorisation.
+    named in the body is a request, never authorisation. A super admin may
+    target a tenant with the X-Tenant-ID header.
     """
     try:
-        tenant_id, _source = resolve_tenant_for_user(user, declared_tenant_id)
+        tenant_id, _source = resolve_tenant_for_request(
+            request, user, declared_tenant_id
+        )
     except TenantScopeDenied as denied:
         raise HTTPException(
             status_code=403,
@@ -138,19 +143,29 @@ async def list_conversations(
 # ── Deals (POST + PATCH) ────────────────────────────────────────
 
 @router.post("/deals")
-async def create_deal(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
+async def create_deal(
+    request: Request,
+    body: dict[str, Any] = Body(...),
+    user: Any = Depends(get_current_user),
+) -> dict[str, Any]:
     """
     Create a deal record (e.g., when prospect verbally agrees + invoice issued).
     Body: {lead_id, stage?, amount?, currency?, hubspot_deal_id?}
+
+    The new deal is stamped with the caller's tenant. Without that it would
+    be created with a NULL tenant and immediately invisible to every read
+    path on this router.
     """
     lead_id = str(body.get("lead_id") or "").strip()
     if not lead_id:
         raise HTTPException(status_code=400, detail="lead_id_required")
+    tenant_id = _tenant_scope(request, user, body.get("tenant_id"))
 
     deal_id = _new_id("deal")
     async with async_session_factory()() as session:
         deal = DealRecord(
             id=deal_id,
+            tenant_id=tenant_id,
             lead_id=lead_id,
             hubspot_deal_id=body.get("hubspot_deal_id") or None,
             hubspot_contact_id=body.get("hubspot_contact_id") or None,
@@ -165,6 +180,7 @@ async def create_deal(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
 @router.patch("/deals/{deal_id}")
 async def update_deal(
     deal_id: str,
+    request: Request,
     body: dict[str, Any] = Body(...),
     user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
@@ -175,7 +191,7 @@ async def update_deal(
     Scoped to the caller's tenant — a deal owned by another tenant is
     reported as not found rather than refused.
     """
-    tenant_id = _tenant_scope(user, body.get("tenant_id"))
+    tenant_id = _tenant_scope(request, user, body.get("tenant_id"))
     async with async_session_factory()() as session:
         result = await session.execute(
             select(DealRecord).where(
@@ -200,12 +216,13 @@ async def update_deal(
 
 @router.get("/deals")
 async def list_deals(
+    request: Request,
     stage: str | None = None,
     limit: int = 20,
     user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """List the caller's own deals. Never spans tenants."""
-    tenant_id = _tenant_scope(user)
+    tenant_id = _tenant_scope(request, user)
     limit = max(1, min(100, limit))
     async with async_session_factory()() as session:
         stmt = (
@@ -583,6 +600,7 @@ async def update_queue_item(queue_id: str, body: dict[str, Any] = Body(...)) -> 
 
 @router.post("/payments/manual-request")
 async def manual_payment_request(
+    request: Request,
     body: dict[str, Any] = Body(...),
     user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
@@ -590,7 +608,7 @@ async def manual_payment_request(
     deal_id = str(body.get("deal_id") or "").strip()
     if not deal_id:
         raise HTTPException(status_code=400, detail="deal_id_required")
-    tenant_id = _tenant_scope(user, body.get("tenant_id"))
+    tenant_id = _tenant_scope(request, user, body.get("tenant_id"))
     method = body.get("method") or "bank_transfer"
 
     async with async_session_factory()() as session:
@@ -631,6 +649,7 @@ async def manual_payment_request(
 
 @router.post("/payments/mark-paid")
 async def mark_paid(
+    request: Request,
     body: dict[str, Any] = Body(...),
     user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
@@ -639,7 +658,7 @@ async def mark_paid(
     amount = float(body.get("amount") or 0)
     if not deal_id:
         raise HTTPException(status_code=400, detail="deal_id_required")
-    tenant_id = _tenant_scope(user, body.get("tenant_id"))
+    tenant_id = _tenant_scope(request, user, body.get("tenant_id"))
 
     async with async_session_factory()() as session:
         result = await session.execute(

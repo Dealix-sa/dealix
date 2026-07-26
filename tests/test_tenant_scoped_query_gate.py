@@ -7,6 +7,7 @@ than no scanner, because it reads as a green light.
 
 from __future__ import annotations
 
+import importlib
 import subprocess
 import sys
 from pathlib import Path
@@ -113,7 +114,7 @@ def test_baseline_is_absent_or_carries_real_entries():
 
 def test_a_violation_fails_when_no_baseline_holds_it(tmp_path, monkeypatch):
     """With the backlog cleared, any finding must fail the gate outright."""
-    import scripts.ops.check_tenant_scoped_queries as gate
+    gate = importlib.import_module("scripts.ops.check_tenant_scoped_queries")
 
     probe = tmp_path / "probe_router.py"
     probe.write_text(UNSCOPED, encoding="utf-8")

@@ -139,6 +139,72 @@ async def test_declaring_the_victim_tenant_does_not_widen_access(engine):
 
 
 @pytest.mark.asyncio
+async def test_created_deal_is_visible_to_its_creator(engine):
+    """A deal created through the API must be readable by the same tenant.
+
+    The create handler previously omitted tenant_id, so once the read paths
+    gained a tenant predicate every newly created deal became invisible to
+    everyone. Seeding the database directly would not have caught that —
+    this drives the real create -> list -> patch round trip.
+    """
+    async with _client(_User(ATTACKER_TENANT)) as client:
+        created = await client.post(
+            "/api/v1/deals", json={"lead_id": "lead_of_a", "amount": 500}
+        )
+        assert created.status_code == 200
+        deal_id = created.json()["id"]
+
+        listed = await client.get("/api/v1/deals")
+        assert deal_id in [item["id"] for item in listed.json()["items"]]
+
+        patched = await client.patch(
+            f"/api/v1/deals/{deal_id}", json={"stage": "payment_requested"}
+        )
+        assert patched.status_code == 200
+
+    async with engine() as session:
+        deal = await session.get(DealRecord, deal_id)
+        assert deal.tenant_id == ATTACKER_TENANT
+
+
+@pytest.mark.asyncio
+async def test_a_created_deal_stays_invisible_to_other_tenants(engine):
+    async with _client(_User(ATTACKER_TENANT)) as client:
+        created = await client.post("/api/v1/deals", json={"lead_id": "lead_of_a"})
+        deal_id = created.json()["id"]
+
+    async with _client(_User(VICTIM_TENANT)) as client:
+        response = await client.patch(
+            f"/api/v1/deals/{deal_id}", json={"stage": "paid"}
+        )
+
+    assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_super_admin_may_target_a_tenant_with_the_header(engine):
+    """A super admin must name the target; the header is the canonical way."""
+    admin = _User("tenant_admin_home", system_role="super_admin")
+
+    async with _client(admin) as client:
+        denied = await client.get("/api/v1/deals")
+        assert denied.status_code == 403
+
+    app = FastAPI()
+    app.include_router(autonomous.router)
+    app.dependency_overrides[get_current_user] = lambda: admin
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
+        allowed = await client.get(
+            "/api/v1/deals", headers={"X-Tenant-ID": VICTIM_TENANT}
+        )
+
+    assert allowed.status_code == 200
+    assert [item["id"] for item in allowed.json()["items"]] == [VICTIM_DEAL]
+
+
+@pytest.mark.asyncio
 async def test_listing_never_spans_tenants(engine):
     async with _client(_User(ATTACKER_TENANT)) as client:
         response = await client.get("/api/v1/deals")
@@ -153,6 +219,7 @@ def test_deal_routes_require_authentication():
         ("GET", "/api/v1/deals"),
         ("POST", "/api/v1/payments/manual-request"),
         ("POST", "/api/v1/payments/mark-paid"),
+        ("POST", "/api/v1/deals"),
     }
     found = {}
     for route in autonomous.router.routes:

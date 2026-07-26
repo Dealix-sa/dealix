@@ -252,6 +252,15 @@ def main(argv: list[str]) -> int:
                 file=sys.stderr,
             )
             return 1
+        if not keys:
+            # Nothing left to hold back. A comment-only file would read as
+            # though a ratchet were still in place, so remove it instead.
+            if BASELINE_PATH.exists():
+                BASELINE_PATH.unlink()
+                print(f"backlog empty — removed {BASELINE_PATH.name}")
+            else:
+                print("backlog empty — no baseline needed")
+            return 0
         BASELINE_PATH.write_text(
             "# Pre-existing unscoped tenant queries — see issue #974.\n"
             "# This list may shrink. It must never grow: a new entry means a\n"

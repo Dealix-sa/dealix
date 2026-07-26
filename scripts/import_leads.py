@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -58,7 +59,22 @@ def main() -> int:
     ap.add_argument("--notes", default="")
     ap.add_argument("--auto-pipeline", action="store_true",
                     help="After import, also call normalize → dedupe → enrich")
+    ap.add_argument("--admin-key", default=None,
+                    help="Platform-admin key for /api/v1/data/* "
+                         "(defaults to $DEALIX_ADMIN_API_KEY)")
     args = ap.parse_args()
+
+    # /api/v1/data/* is founder-internal tooling and sits behind the
+    # platform-admin credential, so the CLI must present it.
+    admin_key = args.admin_key or os.environ.get("DEALIX_ADMIN_API_KEY", "")
+    if not admin_key:
+        print(
+            "missing platform-admin key: pass --admin-key or set "
+            "DEALIX_ADMIN_API_KEY. The data import endpoints require it.",
+            file=sys.stderr,
+        )
+        return 2
+    headers = {"X-Admin-API-Key": admin_key}
 
     p = Path(args.file)
     if not p.exists():
@@ -83,7 +99,7 @@ def main() -> int:
     }
     api = args.api.rstrip("/")
     print(f"→ POST {api}/api/v1/data/import  rows={len(rows)}")
-    with httpx.Client(timeout=60) as client:
+    with httpx.Client(timeout=60, headers=headers) as client:
         r = client.post(f"{api}/api/v1/data/import", json=payload)
         r.raise_for_status()
         out = r.json()
