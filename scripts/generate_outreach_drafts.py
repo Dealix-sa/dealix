@@ -1,7 +1,7 @@
 """Generate bilingual outreach drafts for the top scored leads.
 
-Writes snake_case JSON to ``business/persuasion/exports/outreach-drafts-<date>.json``
-matching the review pipeline schema (``review_status`` / ``disclaimer`` / ``generated_at``).
+Writes the canonical review queue to ``business/_data/outreach_review_queue.json``
+and a compatibility export to ``business/persuasion/exports``.
 
 Usage:
     python3 scripts/generate_outreach_drafts.py --top 10 --language both --channel whatsapp --mode demo
@@ -15,8 +15,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCORED_PATH = REPO_ROOT / "business" / "_data" / "scored_leads.json"
+CANONICAL_QUEUE_PATH = REPO_ROOT / "business" / "_data" / "outreach_review_queue.json"
 EXPORT_DIR = REPO_ROOT / "business" / "persuasion" / "exports"
-
 
 AR_BODY = (
     "مرحباً،\n\n"
@@ -31,6 +31,9 @@ EN_BODY = (
     "Do you have 15 minutes this week for a quick review?"
 )
 DISCLAIMER = "DRAFT — Do not send without human review."
+REVIEW_STATUS = "draft_pending_human_review"
+LEGACY_REVIEW_STATUS = "pending_review"
+PENDING_REVIEW_STATUSES = {None, REVIEW_STATUS, LEGACY_REVIEW_STATUS}
 
 DEMO_ACCOUNTS = [
     {"id": "demo-001", "name": "Acme Saudi", "segment": "B2B Services"},
@@ -48,23 +51,147 @@ def load_accounts() -> list[dict]:
     return DEMO_ACCOUNTS
 
 
-def build_draft(account: dict, language: str, channel: str) -> dict:
+def build_draft(
+    account: dict,
+    language: str,
+    channel: str,
+    generated_at: str | None = None,
+) -> dict:
     company = account.get("name") or account.get("id", "unknown")
     segment = account.get("segment", "")
     body = (AR_BODY if language == "ar" else EN_BODY).format(
-        company=company, segment=segment
+        company=company,
+        segment=segment,
     )
+    account_id = str(account.get("id", ""))
+    timestamp = generated_at or dt.datetime.now(dt.UTC).isoformat().replace("+00:00", "Z")
+    draft_id = f"draft-{account_id}-{language}"
     return {
-        "account_id": account.get("id", ""),
+        "id": draft_id,
+        "draftId": draft_id,
+        "accountId": account_id,
         "company": company,
         "language": language,
         "channel": channel,
         "subject": None,
         "body": body,
-        "review_status": "pending_review",
-        "generated_at": dt.datetime.now(dt.UTC).isoformat().replace("+00:00", "Z"),
+        "createdAt": timestamp,
+        "reviewStatus": REVIEW_STATUS,
+        "reviewer": None,
+        "reviewedAt": None,
+        "decidedAt": None,
+        "rejectionReason": None,
+        "demo": bool(account.get("demo", True)),
         "disclaimer": DISCLAIMER,
+        "safetyFlags": [
+            "no_roi_claim",
+            "no_fake_testimonial",
+            "no_pressure",
+            "human_review_required",
+        ],
     }
+
+
+def _draft_identifier(draft: dict) -> str:
+    return str(draft.get("draftId") or draft.get("id") or "")
+
+
+def _preserved_decision(record: dict, identifier: str) -> dict:
+    preserved = dict(record)
+    preserved.setdefault("id", identifier)
+    preserved.setdefault("draftId", identifier)
+    return preserved
+
+
+def _merge_existing_decisions(drafts: list[dict]) -> list[dict]:
+    """Preserve decided records instead of resetting human review on refresh.
+
+    Pending records may be regenerated from current source data. A decided record is
+    retained in full so changed copy cannot inherit an earlier approval implicitly.
+    Decided records that fall outside the refreshed top-N input remain in the queue as
+    immutable review evidence.
+    """
+    if not CANONICAL_QUEUE_PATH.exists():
+        return drafts
+
+    try:
+        existing_payload = json.loads(CANONICAL_QUEUE_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return drafts
+
+    existing_by_id = {
+        identifier: record
+        for record in existing_payload.get("drafts", [])
+        if isinstance(record, dict) and (identifier := _draft_identifier(record))
+    }
+
+    merged: list[dict] = []
+    generated_ids: set[str] = set()
+    for draft in drafts:
+        identifier = _draft_identifier(draft)
+        generated_ids.add(identifier)
+        existing = existing_by_id.get(identifier)
+        if existing and existing.get("reviewStatus") not in PENDING_REVIEW_STATUSES:
+            merged.append(_preserved_decision(existing, identifier))
+        else:
+            merged.append(draft)
+
+    for identifier, existing in existing_by_id.items():
+        if identifier in generated_ids:
+            continue
+        if existing.get("reviewStatus") in PENDING_REVIEW_STATUSES:
+            continue
+        merged.append(_preserved_decision(existing, identifier))
+
+    return merged
+
+
+def _compatibility_draft(draft: dict) -> dict:
+    """Preserve the previous snake_case contract without making it canonical."""
+    return {
+        "account_id": draft["accountId"],
+        "company": draft["company"],
+        "language": draft["language"],
+        "channel": draft["channel"],
+        "subject": draft["subject"],
+        "body": draft["body"],
+        "review_status": LEGACY_REVIEW_STATUS,
+        "generated_at": draft["createdAt"],
+        "disclaimer": draft["disclaimer"],
+    }
+
+
+def write_outputs(
+    drafts: list[dict],
+    mode: str,
+    date: dt.date | None = None,
+) -> tuple[Path, Path]:
+    today = (date or dt.date.today()).isoformat()
+    CANONICAL_QUEUE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+
+    governed_drafts = _merge_existing_decisions(drafts)
+    canonical_payload = {
+        "version": "1.2",
+        "mode": mode,
+        "notice": "Draft only. Human approval is required before any external send.",
+        "drafts": governed_drafts,
+    }
+    CANONICAL_QUEUE_PATH.write_text(
+        json.dumps(canonical_payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    compatibility_path = EXPORT_DIR / f"outreach-drafts-{today}.json"
+    compatibility_path.write_text(
+        json.dumps(
+            [_compatibility_draft(draft) for draft in governed_drafts],
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    return CANONICAL_QUEUE_PATH, compatibility_path
 
 
 def main() -> int:
@@ -81,15 +208,14 @@ def main() -> int:
         return 1
 
     languages = ["ar", "en"] if args.language == "both" else [args.language]
-    drafts = [build_draft(a, lang, args.channel) for a in accounts for lang in languages]
-
-    EXPORT_DIR.mkdir(parents=True, exist_ok=True)
-    today = dt.date.today().isoformat()
-    out_file = EXPORT_DIR / f"outreach-drafts-{today}.json"
-    out_file.write_text(
-        json.dumps(drafts, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    print(f"wrote {len(drafts)} drafts to {out_file} (mode={args.mode})")
+    drafts = [
+        build_draft(account, language, args.channel)
+        for account in accounts
+        for language in languages
+    ]
+    canonical_path, compatibility_path = write_outputs(drafts, args.mode)
+    print(f"wrote {len(drafts)} governed drafts to {canonical_path} (mode={args.mode})")
+    print(f"wrote compatibility export to {compatibility_path}")
     return 0
 
 
