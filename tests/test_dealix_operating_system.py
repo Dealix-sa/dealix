@@ -80,22 +80,28 @@ def test_deal_strategy_rejects_invalid_sku():
 
 # ── Research tests ─────────────────────────────────────────────────
 
-def test_research_without_api_keys():
-    engine = DeepResearchEngine()
+def test_research_without_api_keys(tmp_path):
+    engine = DeepResearchEngine(
+        knowledge=KnowledgeAccumulator(store_path=tmp_path / "research.json")
+    )
     result = engine.research("Saudi fintech market", sector="fintech", lang="both")
     assert result.findings
     assert result.confidence > 0
 
 
-def test_company_dossier_returns_data():
-    engine = DeepResearchEngine()
+def test_company_dossier_returns_data(tmp_path):
+    engine = DeepResearchEngine(
+        knowledge=KnowledgeAccumulator(store_path=tmp_path / "dossier.json")
+    )
     dossier = engine.company_dossier("Acme Saudi", lang="both")
     assert dossier["company_name"] == "Acme Saudi"
     assert "icp_score" in dossier
 
 
-def test_available_sources_safe():
-    engine = DeepResearchEngine()
+def test_available_sources_safe(tmp_path):
+    engine = DeepResearchEngine(
+        knowledge=KnowledgeAccumulator(store_path=tmp_path / "sources.json")
+    )
     sources = engine.available_sources()
     assert len(sources) > 0
     assert all("configured" in s for s in sources)
