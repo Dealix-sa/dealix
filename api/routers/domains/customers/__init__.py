@@ -21,10 +21,10 @@ from api.routers import (
     executive_pack_per_customer,
     support_os,
 )
-from api.routers import customer_dashboard as customer_dashboard_router
 from api.routers import (
     customer_brain as customer_brain_router,
 )
+from api.routers import customer_dashboard as customer_dashboard_router
 from api.routers import (
     service_sessions as service_sessions_router,
 )
