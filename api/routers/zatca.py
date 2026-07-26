@@ -20,6 +20,8 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.security.auth_deps import get_current_user
+from api.security.tenant_scope import TenantScopeDenied, resolve_tenant_for_user
 from core.config.settings import get_settings
 from core.logging import get_logger
 from core.utils import utcnow
@@ -52,6 +54,24 @@ def _get_zatca_credentials() -> tuple[str, str, bool]:
     return csid, secret, sandbox
 
 
+def _tenant_scope(user: Any, declared_tenant_id: str | None) -> str:
+    """Resolve the tenant for a ZATCA request, or raise 403.
+
+    Invoices carry buyer identity, VAT numbers and amounts, and submission
+    reports to the tax authority. The tenant therefore comes from the
+    authenticated user; a tenant named in the body or query string is a
+    request, never authorisation.
+    """
+    try:
+        tenant_id, _source = resolve_tenant_for_user(user, declared_tenant_id)
+    except TenantScopeDenied as denied:
+        raise HTTPException(
+            status_code=403,
+            detail={"error": denied.reason, "message": denied.detail},
+        ) from denied
+    return tenant_id
+
+
 async def _audit(
     db: AsyncSession,
     action: str,
@@ -76,6 +96,7 @@ async def _audit(
 async def generate_invoice(
     payload: dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Generate a ZATCA Phase 2 compliant e-invoice (UBL 2.1 XML + QR code).
@@ -90,7 +111,7 @@ async def generate_invoice(
     Optional:
       - deal_id, customer_id, previous_invoice_hash, notes
     """
-    tenant_id = payload.get("tenant_id", "default")
+    tenant_id = _tenant_scope(user, payload.get("tenant_id"))
     invoice_number = payload.get("invoice_number", "")
     invoice_type = payload.get("invoice_type", "simplified")
 
@@ -185,6 +206,7 @@ async def generate_invoice(
 async def submit_invoice(
     invoice_id: str,
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Submit a draft invoice to ZATCA Fatoorah API for clearance/reporting.
@@ -193,8 +215,12 @@ async def submit_invoice(
     - standard invoices  → clearance endpoint (real-time, blocking)
     - simplified invoices → reporting endpoint (within 24h)
     """
+    tenant_id = _tenant_scope(user, None)
     result = await db.execute(
-        select(ZATCAInvoiceRecord).where(ZATCAInvoiceRecord.id == invoice_id)
+        select(ZATCAInvoiceRecord).where(
+            ZATCAInvoiceRecord.id == invoice_id,
+            ZATCAInvoiceRecord.tenant_id == tenant_id,
+        )
     )
     record = result.scalar_one_or_none()
     if not record:
@@ -264,13 +290,18 @@ async def submit_invoice(
 async def invoice_status(
     invoice_id: str,
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Get the current ZATCA clearance/reporting status of an invoice.
     يجلب حالة التخليص الحالية للفاتورة.
     """
+    tenant_id = _tenant_scope(user, None)
     result = await db.execute(
-        select(ZATCAInvoiceRecord).where(ZATCAInvoiceRecord.id == invoice_id)
+        select(ZATCAInvoiceRecord).where(
+            ZATCAInvoiceRecord.id == invoice_id,
+            ZATCAInvoiceRecord.tenant_id == tenant_id,
+        )
     )
     record = result.scalar_one_or_none()
     if not record:
@@ -298,16 +329,18 @@ async def invoice_status(
 
 @router.get("/invoices", summary="List ZATCA invoices for a tenant")
 async def list_invoices(
-    tenant_id: str = Query(..., description="Tenant ID"),
+    tenant_id: str | None = Query(None, description="Tenant ID (super admin only)"),
     status: str | None = Query(None, description="Filter by status"),
     limit: int = Query(50, le=200),
     offset: int = Query(0),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     List all e-invoices for a tenant with optional status filter.
     يسرد جميع الفواتير الإلكترونية لمستأجر معين مع فلترة اختيارية.
     """
+    tenant_id = _tenant_scope(user, tenant_id)
     q = select(ZATCAInvoiceRecord).where(ZATCAInvoiceRecord.tenant_id == tenant_id)
     if status:
         q = q.where(ZATCAInvoiceRecord.zatca_status == status)

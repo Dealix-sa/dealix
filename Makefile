@@ -82,6 +82,9 @@ security-smoke: ## Run dependency-free repository security smoke checks
 security-smoke-ci: ## Run CI-safe security smoke checks for docs/tests synthetic fixtures
 	$(PYTHON) scripts/ops/security_smoke_ci.py
 
+tenant-scope-check: ## Fail on tenant-owned records queried by id without a tenant filter
+	$(PYTHON) scripts/ops/check_tenant_scoped_queries.py
+
 env-check: ## Validate .env.example contract and duplicate keys
 	$(PYTHON) scripts/check_env_contract.py
 
