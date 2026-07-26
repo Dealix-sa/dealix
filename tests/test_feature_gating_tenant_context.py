@@ -16,6 +16,7 @@ D4  the middleware verified tokens with the wrong secret and read a
 
 from __future__ import annotations
 
+import importlib
 import inspect
 
 import pytest
@@ -119,7 +120,7 @@ def test_gate_depends_on_authenticated_user_and_db_session():
 
 def test_gate_does_not_import_a_nonexistent_session_helper():
     """D2 — regression guard on the exact broken import."""
-    import db.session as session_module
+    session_module = importlib.import_module("db.session")
 
     source = inspect.getsource(FeatureGate)
     assert "get_db_session" not in source
