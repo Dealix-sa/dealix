@@ -138,13 +138,7 @@ def test_router_stays_registered_and_returns_safe_degraded_signal(monkeypatch) -
     app.include_router(ops_communication.router)
     client = TestClient(app, raise_server_exceptions=False)
 
-    # FastAPI may retain internal router metadata entries alongside routes.
-    route_paths = {
-        route.path for route in app.routes if getattr(route, "path", None) is not None
-    }
-    assert "/api/v1/ops/comms/readiness" in route_paths
-    assert "/api/v1/ops/comms/log-inbound" in route_paths
-
+    # Exercise the public ASGI behavior instead of FastAPI's private route layout.
     headers = {"X-Admin-API-Key": "test-admin"}
     readiness = client.get("/api/v1/ops/comms/readiness", headers=headers)
     assert readiness.status_code == 200
