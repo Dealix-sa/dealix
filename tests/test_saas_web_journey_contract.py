@@ -38,6 +38,26 @@ def test_login_and_dashboard_use_canonical_runtime_api() -> None:
     assert "profile.tenant_id" in entry
 
 
+def test_customer_dashboard_router_is_registered() -> None:
+    customer_domain = _read("api/routers/domains/customers/__init__.py")
+
+    assert "from api.routers import customer_dashboard as customer_dashboard_router" in customer_domain
+    assert "customer_dashboard_router.router" in customer_domain
+
+
+def test_invite_delivery_has_a_browser_redemption_route() -> None:
+    onboarding = _read("api/routers/onboarding.py")
+    accept_page = _read("apps/web/app/accept-invite/page.tsx")
+
+    assert 'web_base_url = os.getenv("DEALIX_WEB_URL", "https://dealix.me")' in onboarding
+    assert 'apiUrl("/api/v1/auth/invite/accept")' in accept_page
+    assert 'new URLSearchParams(window.location.search).get("token")' in accept_page
+    assert 'window.history.replaceState({}, document.title, "/accept-invite")' in accept_page
+    assert "persistSession(tokens, { email })" in accept_page
+    assert 'router.replace("/dashboard")' in accept_page
+    assert "localStorage.setItem" not in accept_page
+
+
 def test_runtime_helper_rotates_refresh_tokens_single_flight() -> None:
     source = _read("apps/web/lib/runtime-api.ts")
 
@@ -54,13 +74,15 @@ def test_runtime_helper_rotates_refresh_tokens_single_flight() -> None:
     assert "ADMIN_API" not in source
 
 
-def test_next_config_keeps_signup_active_and_proxies_api() -> None:
-    source = _read("apps/web/next.config.js")
+def test_browser_api_calls_stay_same_origin_behind_rewrite() -> None:
+    runtime = _read("apps/web/lib/runtime-api.ts")
+    config = _read("apps/web/next.config.js")
 
-    assert "NEXT_PUBLIC_DEALIX_API_BASE" in source
-    assert 'source: "/api/v1/:path*"' in source
-    assert "destination: `${dealixApiBase}/api/v1/:path*`" in source
-    assert 'source: "/signup"' not in source
+    assert 'if (typeof window !== "undefined") return normalizedPath;' in runtime
+    assert 'source: "/api/v1/:path*"' in config
+    assert "destination: `${dealixApiBase}/api/v1/:path*`" in config
+    assert "NEXT_PUBLIC_DEALIX_API_BASE" in config
+    assert 'source: "/signup"' not in config
 
 
 def test_runtime_helper_preserves_session_compatibility() -> None:
