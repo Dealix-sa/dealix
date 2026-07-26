@@ -96,11 +96,20 @@ def _draft_identifier(draft: dict) -> str:
     return str(draft.get("draftId") or draft.get("id") or "")
 
 
+def _preserved_decision(record: dict, identifier: str) -> dict:
+    preserved = dict(record)
+    preserved.setdefault("id", identifier)
+    preserved.setdefault("draftId", identifier)
+    return preserved
+
+
 def _merge_existing_decisions(drafts: list[dict]) -> list[dict]:
     """Preserve decided records instead of resetting human review on refresh.
 
     Pending records may be regenerated from current source data. A decided record is
     retained in full so changed copy cannot inherit an earlier approval implicitly.
+    Decided records that fall outside the refreshed top-N input remain in the queue as
+    immutable review evidence.
     """
     if not CANONICAL_QUEUE_PATH.exists():
         return drafts
@@ -117,16 +126,23 @@ def _merge_existing_decisions(drafts: list[dict]) -> list[dict]:
     }
 
     merged: list[dict] = []
+    generated_ids: set[str] = set()
     for draft in drafts:
         identifier = _draft_identifier(draft)
+        generated_ids.add(identifier)
         existing = existing_by_id.get(identifier)
         if existing and existing.get("reviewStatus") not in PENDING_REVIEW_STATUSES:
-            preserved = dict(existing)
-            preserved.setdefault("id", identifier)
-            preserved.setdefault("draftId", identifier)
-            merged.append(preserved)
+            merged.append(_preserved_decision(existing, identifier))
         else:
             merged.append(draft)
+
+    for identifier, existing in existing_by_id.items():
+        if identifier in generated_ids:
+            continue
+        if existing.get("reviewStatus") in PENDING_REVIEW_STATUSES:
+            continue
+        merged.append(_preserved_decision(existing, identifier))
+
     return merged
 
 
