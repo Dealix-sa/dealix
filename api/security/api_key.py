@@ -5,6 +5,9 @@ API key authentication middleware and dependency.
 Policy:
   * Requests to /health* and /docs*, /openapi.json, / are public.
   * Webhook endpoints use webhook signatures (see webhook_signatures.py).
+  * Browser-facing auth, onboarding, and explicitly audited customer paths
+    bypass the platform API key; protected operations still enforce JWT/RBAC
+    dependencies at route level.
   * All other /api/* endpoints require a valid X-API-Key header
     that matches one of the secrets in settings.api_keys (comma separated).
   * Admin endpoints (/api/v1/admin/*) additionally require a valid
@@ -56,7 +59,14 @@ PUBLIC_PREFIXES: tuple[str, ...] = (
     "/api/outbound",
     "/api/v1/webhooks/",  # webhooks use signatures instead
     "/api/v1/public/",   # public landing endpoints (demo-request, health)
-    "/api/v1/auth/",     # auth endpoints use JWT — no API key required
+    "/api/v1/auth/",     # auth endpoints use JWT — no platform API key
+    # Signup/plans must be reachable before a customer owns credentials.
+    # Wizard and invite routes remain protected by JWT/RBAC dependencies.
+    "/api/v1/onboarding/",
+    # Only the audited browser dashboard surface bypasses the shared platform
+    # key. Do not broaden this to /api/v1/customer/ without auditing every
+    # customer router for JWT and tenant-isolation dependencies.
+    "/api/v1/customer/dashboard/",
 )
 
 # FastAPI security scheme header (for OpenAPI schema generation)

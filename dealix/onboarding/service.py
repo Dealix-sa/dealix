@@ -6,24 +6,30 @@ Self-Serve Onboarding Service.
 from __future__ import annotations
 
 import uuid
-from datetime import datetime
 from typing import Any
 
 from passlib.context import CryptContext
-from sqlalchemy import select
+from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.security.jwt import create_invite_token, hash_token, token_expires_at
+from api.security.rbac import DEFAULT_TENANT_ROLES, Role
 from core.utils import utcnow
-from db.models import RoleRecord, TenantRecord, UserRecord
-from db.models_subscription import PlanRecord, SubscriptionRecord
+from db.models import RoleRecord, TenantRecord, UserInviteRecord, UserRecord
 from dealix.billing.service import BillingService
 
 _pwd_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
+_VALID_ROLE_NAMES = {role.value for role in Role}
 
 
 class OnboardingService:
     """
-    Orchestrates the self-serve signup → tenant → plan → payment → wizard flow.
+    Orchestrates the self-serve signup → tenant → plan → subscription → wizard flow.
+
+    The service deliberately reuses the canonical authentication contracts:
+    every tenant receives the standard RBAC roles and every invitation is stored
+    as a single-use hashed token in ``user_invites``. It never creates a blank-
+    password placeholder user.
     """
 
     def __init__(self, session: AsyncSession):
@@ -39,16 +45,9 @@ class OnboardingService:
         plan_slug: str = "free",
         billing_cycle: str = "monthly",
     ) -> dict[str, Any]:
-        """
-        Full signup flow:
-        1. Check email uniqueness
-        2. Create tenant
-        3. Create owner user
-        4. Create role
-        5. Create subscription
-        6. Return tenant + user + subscription
-        """
-        # Check existing user
+        """Create a tenant, canonical roles, first admin, and subscription."""
+        email = email.strip().lower()
+        company_name = company_name.strip()
         stmt = select(UserRecord).where(UserRecord.email == email)
         result = await self.session.execute(stmt)
         if result.scalar_one_or_none():
@@ -61,10 +60,11 @@ class OnboardingService:
         now = utcnow()
         tenant_id = f"tnt_{uuid.uuid4().hex[:12]}"
         user_id = f"usr_{uuid.uuid4().hex[:12]}"
-        role_id = f"rol_{uuid.uuid4().hex[:12]}"
 
-        # Create tenant
-        slug_base = company_name.lower().replace(" ", "-")[:30] or tenant_id
+        slug_base = "".join(
+            char if char.isalnum() else "-" for char in company_name.lower()
+        ).strip("-")[:30]
+        slug_base = slug_base or tenant_id
         tenant = TenantRecord(
             id=tenant_id,
             name=company_name,
@@ -77,42 +77,53 @@ class OnboardingService:
             max_users=plan.max_users,
             max_leads_per_month=plan.max_leads_per_month,
             features=plan.features,
+            meta_json={"onboarding_status": "account_created"},
             created_at=now,
             updated_at=now,
         )
         self.session.add(tenant)
 
-        # Create owner role
-        owner_role = RoleRecord(
-            id=role_id,
-            tenant_id=tenant_id,
-            name="owner",
-            permissions=[
-                "*:*",  # Full access
-            ],
-            description="Tenant owner — full access",
-            is_system=True,
-            created_at=now,
-        )
-        self.session.add(owner_role)
+        roles: dict[str, RoleRecord] = {}
+        for role_definition in DEFAULT_TENANT_ROLES:
+            role_definition_name = role_definition["name"]
+            role_name = (
+                role_definition_name.value
+                if isinstance(role_definition_name, Role)
+                else str(role_definition_name)
+            )
+            role = RoleRecord(
+                id=f"rol_{uuid.uuid4().hex[:12]}",
+                tenant_id=tenant_id,
+                name=role_name,
+                permissions=list(role_definition["permissions"]),
+                description=role_definition["description"],
+                is_system=bool(role_definition["is_system"]),
+                created_at=now,
+            )
+            self.session.add(role)
+            roles[role_name] = role
 
-        # Create user
+        await self.session.flush()
+        admin_role = roles[Role.TENANT_ADMIN.value]
+
         user = UserRecord(
             id=user_id,
             tenant_id=tenant_id,
-            role_id=role_id,
+            role_id=admin_role.id,
             email=email,
-            name=name,
+            name=name.strip(),
             hashed_password=_pwd_ctx.hash(password),
             is_active=True,
-            is_verified=False,  # Email verification pending
+            # The canonical /auth/register flow currently verifies the first
+            # tenant administrator at account creation. Keep both signup paths
+            # aligned until a dedicated email-verification record is introduced.
+            is_verified=True,
             created_at=now,
             updated_at=now,
         )
         self.session.add(user)
 
-        # Create subscription
-        sub = await self.billing.create_subscription(
+        subscription = await self.billing.create_subscription(
             tenant_id=tenant_id,
             plan_id=plan.id,
             billing_cycle=billing_cycle,
@@ -120,12 +131,11 @@ class OnboardingService:
         )
 
         await self.session.flush()
-
         return {
             "tenant": tenant,
             "user": user,
-            "subscription": sub,
-            "requires_email_verification": True,
+            "subscription": subscription,
+            "requires_email_verification": False,
         }
 
     async def complete_onboarding_wizard(
@@ -140,141 +150,124 @@ class OnboardingService:
         if tenant is None:
             raise ValueError("Tenant not found")
 
-        if sector:
-            # Update metadata with onboarding info
-            meta = dict(tenant.meta_json or {})
-            meta["onboarding"] = {
-                "sector": sector,
-                "company_size": company_size,
-                "phone": phone,
-                "website": website,
-                "completed_at": utcnow().isoformat(),
-            }
-            tenant.meta_json = meta
-
+        meta = dict(tenant.meta_json or {})
+        meta["onboarding"] = {
+            "sector": sector,
+            "company_size": company_size,
+            "phone": phone,
+            "website": website,
+            "completed_at": utcnow().isoformat(),
+        }
+        meta["onboarding_status"] = "completed"
+        tenant.meta_json = meta
         tenant.updated_at = utcnow()
         await self.session.flush()
         return tenant
-
-    async def resend_verification_email(self, user_id: str) -> None:
-        # Placeholder — actual email sending would integrate with Resend
-        pass
-
-    async def verify_email(self, token: str) -> UserRecord:
-        # Placeholder — actual verification would decode JWT token
-        raise NotImplementedError("Email verification token decoding not yet implemented")
 
     async def invite_team_member(
         self,
         tenant_id: str,
         invited_by: str,
         email: str,
-        role_name: str = "viewer",
+        role_name: str = Role.VIEWER.value,
     ) -> dict[str, Any]:
-        """
-        Invite a team member to the tenant.
-        """
-        # Check tenant seat limit
+        """Create a canonical, single-use invitation without sending it."""
+        email = email.strip().lower()
+        role_name = role_name.strip().lower()
+        if role_name not in _VALID_ROLE_NAMES:
+            raise ValueError(f"Unsupported role: {role_name}")
+
         tenant = await self.session.get(TenantRecord, tenant_id)
         if tenant is None:
             raise ValueError("Tenant not found")
 
-        sub = await self.billing.get_active_subscription_for_tenant(tenant_id)
-        if sub is None:
+        subscription = await self.billing.get_active_subscription_for_tenant(tenant_id)
+        if subscription is None:
             raise ValueError("No active subscription")
 
-        plan = await self.billing.get_plan(sub.plan_id)
+        plan = await self.billing.get_plan(subscription.plan_id)
         if plan is None:
             raise ValueError("Plan not found")
 
-        # Count current users
-        stmt = select(UserRecord).where(
-            UserRecord.tenant_id == tenant_id,
-            UserRecord.deleted_at.is_(None),
+        existing_user = await self.session.execute(
+            select(UserRecord).where(
+                UserRecord.tenant_id == tenant_id,
+                UserRecord.email == email,
+                UserRecord.deleted_at.is_(None),
+            )
         )
-        result = await self.session.execute(stmt)
-        current_users = len(result.scalars().all())
+        if existing_user.scalar_one_or_none():
+            raise ValueError("User already in tenant")
 
-        if current_users >= plan.max_users:
+        active_users = await self.session.scalar(
+            select(func.count())
+            .select_from(UserRecord)
+            .where(
+                UserRecord.tenant_id == tenant_id,
+                UserRecord.deleted_at.is_(None),
+                UserRecord.is_active.is_(True),
+            )
+        )
+        now_naive = utcnow().replace(tzinfo=None)
+        pending_invites = await self.session.scalar(
+            select(func.count())
+            .select_from(UserInviteRecord)
+            .where(
+                UserInviteRecord.tenant_id == tenant_id,
+                UserInviteRecord.email != email,
+                UserInviteRecord.accepted_at.is_(None),
+                UserInviteRecord.expires_at > now_naive,
+            )
+        )
+        if int(active_users or 0) + int(pending_invites or 0) >= plan.max_users:
             raise ValueError(
                 f"Seat limit reached ({plan.max_users}). Upgrade plan to add more users."
             )
 
-        # Check if email already invited/registered
-        stmt = select(UserRecord).where(
-            UserRecord.tenant_id == tenant_id,
-            UserRecord.email == email,
-        )
-        result = await self.session.execute(stmt)
-        if result.scalar_one_or_none():
-            raise ValueError("User already in tenant")
-
-        # Create role if not exists
-        stmt = select(RoleRecord).where(
-            RoleRecord.tenant_id == tenant_id,
-            RoleRecord.name == role_name,
-        )
-        result = await self.session.execute(stmt)
-        role = result.scalar_one_or_none()
-
-        if role is None:
-            role = RoleRecord(
-                id=f"rol_{uuid.uuid4().hex[:12]}",
-                tenant_id=tenant_id,
-                name=role_name,
-                permissions=self._default_permissions_for_role(role_name),
-                is_system=False,
-                created_at=utcnow(),
+        role_result = await self.session.execute(
+            select(RoleRecord).where(
+                RoleRecord.tenant_id == tenant_id,
+                RoleRecord.name == role_name,
             )
-            self.session.add(role)
-            await self.session.flush()
-
-        # Create invite token
-        invite_token = f"inv_{uuid.uuid4().hex[:24]}"
-
-        # For now, create the user as pending
-        user = UserRecord(
-            id=f"usr_{uuid.uuid4().hex[:12]}",
-            tenant_id=tenant_id,
-            role_id=role.id,
-            email=email,
-            name="",
-            hashed_password="",  # Will be set on first login
-            is_active=False,
-            is_verified=False,
-            created_at=utcnow(),
-            updated_at=utcnow(),
         )
-        self.session.add(user)
+        role = role_result.scalar_one_or_none()
+        if role is None:
+            raise ValueError(f"Canonical role not found: {role_name}")
+
+        # A renewed invitation replaces the previous pending token so the
+        # database unique constraint remains deterministic.
+        await self.session.execute(
+            delete(UserInviteRecord).where(
+                UserInviteRecord.tenant_id == tenant_id,
+                UserInviteRecord.email == email,
+                UserInviteRecord.accepted_at.is_(None),
+            )
+        )
+
+        invite_token = create_invite_token(
+            tenant_id=tenant_id,
+            email=email,
+            role_id=role.id,
+            invited_by=invited_by,
+        )
+        expires_at = token_expires_at(invite_token)
+        invite = UserInviteRecord(
+            id=f"inv_{uuid.uuid4().hex[:24]}",
+            tenant_id=tenant_id,
+            email=email,
+            role_id=role.id,
+            invited_by=invited_by,
+            token_hash=hash_token(invite_token),
+            expires_at=(
+                expires_at.replace(tzinfo=None) if expires_at is not None else now_naive
+            ),
+        )
+        self.session.add(invite)
         await self.session.flush()
 
         return {
-            "user": user,
+            "invite": invite,
             "invite_token": invite_token,
             "invite_url": f"/accept-invite?token={invite_token}",
+            "delivery_status": "manual_share_required",
         }
-
-    def _default_permissions_for_role(self, role_name: str) -> list[str]:
-        defaults = {
-            "owner": ["*:*"],
-            "admin": [
-                "leads:*", "deals:*", "contacts:*",
-                "projects:*", "tasks:*",
-                "users:read", "users:write", "settings:*",
-                "reports:*", "billing:read",
-            ],
-            "sales_rep": [
-                "leads:*", "deals:*", "contacts:*",
-                "tasks:read", "tasks:write",
-                "reports:read",
-            ],
-            "viewer": [
-                "leads:read", "deals:read", "contacts:read",
-                "tasks:read", "reports:read",
-            ],
-            "agent_operator": [
-                "leads:read", "deals:read",
-                "agents:run", "drafts:read", "drafts:write",
-            ],
-        }
-        return defaults.get(role_name, ["leads:read"])
