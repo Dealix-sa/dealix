@@ -13,6 +13,7 @@ from typing import Any
 import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
+from app.outbound.egress import guarded_egress
 from core.config.settings import get_settings
 from core.logging import get_logger
 
@@ -53,6 +54,14 @@ class EmailClient:
         return EmailResult(success=False, provider=provider, error="Unknown provider")
 
     # ── Resend ──────────────────────────────────────────────────
+    # Guard sits above @retry so a blocked send fails once instead of
+    # being retried three times against a closed gate.
+    @guarded_egress(
+        "email",
+        on_blocked=lambda reason: EmailResult(
+            success=False, provider="resend", error=reason
+        ),
+    )
     @retry(
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=2, max=10),
@@ -102,6 +111,12 @@ class EmailClient:
         return EmailResult(success=True, provider="resend", message_id=message_id)
 
     # ── SendGrid ────────────────────────────────────────────────
+    @guarded_egress(
+        "email",
+        on_blocked=lambda reason: EmailResult(
+            success=False, provider="sendgrid", error=reason
+        ),
+    )
     @retry(
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=1, min=2, max=10),
@@ -160,6 +175,12 @@ class EmailClient:
         return EmailResult(success=True, provider="sendgrid", message_id=message_id)
 
     # ── SMTP (fallback) ─────────────────────────────────────────
+    @guarded_egress(
+        "email",
+        on_blocked=lambda reason: EmailResult(
+            success=False, provider="smtp", error=reason
+        ),
+    )
     async def _send_smtp(
         self,
         to: str | list[str],

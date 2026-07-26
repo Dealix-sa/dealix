@@ -243,6 +243,15 @@ async def send_approved(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
         body_plain=final_body,
         sender_name=body.get("sender_name") or "Sami | Dealix",
     )
+    if result.status == "blocked_policy":
+        # The transport-layer kill switch refused. This is the expected state
+        # while OUTBOUND_MODE=draft_only, not an error: the row stays approved
+        # and unsent, so it goes out once outbound is deliberately enabled.
+        return {
+            "status": "blocked_policy",
+            "channel": "email",
+            "reason": result.error,
+        }
 
     # Persist log
     async with async_session_factory() as session:

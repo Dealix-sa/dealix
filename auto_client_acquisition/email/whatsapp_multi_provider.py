@@ -36,6 +36,8 @@ from typing import Any
 
 import httpx
 
+from app.outbound.egress import guarded_egress
+
 log = logging.getLogger(__name__)
 
 _NON_DIGIT = re.compile(r"\D+")
@@ -70,6 +72,7 @@ def _normalize_phone(phone: str) -> str:
 
 
 # ── Provider implementations ──────────────────────────────────────
+@guarded_egress("whatsapp", on_blocked=lambda _reason: None)
 async def _send_via_green_api(
     client: httpx.AsyncClient, phone: str, message: str
 ) -> WhatsAppSendResult | None:
@@ -96,6 +99,7 @@ async def _send_via_green_api(
     )
 
 
+@guarded_egress("whatsapp", on_blocked=lambda _reason: None)
 async def _send_via_ultramsg(
     client: httpx.AsyncClient, phone: str, message: str
 ) -> WhatsAppSendResult | None:
@@ -123,6 +127,7 @@ async def _send_via_ultramsg(
     )
 
 
+@guarded_egress("whatsapp", on_blocked=lambda _reason: None)
 async def _send_via_fonnte(
     client: httpx.AsyncClient, phone: str, message: str
 ) -> WhatsAppSendResult | None:
@@ -151,6 +156,7 @@ async def _send_via_fonnte(
     )
 
 
+@guarded_egress("whatsapp", on_blocked=lambda _reason: None)
 async def _send_via_meta_cloud(
     client: httpx.AsyncClient, phone: str, message: str
 ) -> WhatsAppSendResult | None:

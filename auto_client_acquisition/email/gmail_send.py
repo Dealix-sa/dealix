@@ -32,6 +32,8 @@ from typing import Any
 
 import httpx
 
+from app.outbound.egress import guarded_egress
+
 log = logging.getLogger(__name__)
 
 OAUTH_TOKEN_URL = "https://oauth2.googleapis.com/token"
@@ -110,6 +112,10 @@ def _build_rfc822(
     return msg.as_bytes()
 
 
+@guarded_egress(
+    "email",
+    on_blocked=lambda reason: GmailSendResult(status="blocked_policy", error=reason),
+)
 async def send_email(
     *,
     to_email: str,

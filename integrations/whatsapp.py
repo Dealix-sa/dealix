@@ -15,6 +15,7 @@ from typing import Any
 import httpx
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
+from app.outbound.egress import guarded_egress
 from core.config.settings import get_settings
 from core.errors import IntegrationError
 from core.logging import get_logger
@@ -62,6 +63,10 @@ class WhatsAppClient:
         retry=retry_if_exception_type((httpx.TimeoutException, httpx.HTTPStatusError)),
         reraise=True,
     )
+    @guarded_egress(
+        "whatsapp",
+        on_blocked=lambda reason: WhatsAppMessageResult(success=False, error=reason),
+    )
     async def send_text(self, to: str, body: str) -> WhatsAppMessageResult:
         """Send a plain-text WhatsApp message."""
         if not self.configured:
@@ -98,6 +103,10 @@ class WhatsAppClient:
             logger.exception("whatsapp_send_error", error=str(e))
             return WhatsAppMessageResult(success=False, error=str(e))
 
+    @guarded_egress(
+        "whatsapp",
+        on_blocked=lambda reason: WhatsAppMessageResult(success=False, error=reason),
+    )
     async def send_template(
         self,
         to: str,
