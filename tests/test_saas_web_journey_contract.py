@@ -51,14 +51,15 @@ def test_customer_dashboard_router_is_registered_and_tenant_derived() -> None:
     assert '@router.get("/", response_model=DashboardOut)' in customer_dashboard
     assert "current_user: UserRecord = Depends(get_current_user)" in customer_dashboard
     assert "tenant_id = current_user.tenant_id" in customer_dashboard
+    assert "UserRecord.tenant_id == tenant_id" in customer_dashboard
     assert "LeadRecord.tenant_id == tenant_id" in customer_dashboard
     assert "DealRecord.tenant_id == tenant_id" in customer_dashboard
-    assert "TaskRecord.tenant_id == tenant_id" in customer_dashboard
     assert "InvoiceRecord.tenant_id == tenant_id" in customer_dashboard
     assert "get_active_subscription_for_tenant(tenant_id)" in customer_dashboard
     assert "plan.name_en if plan else tenant.plan" in customer_dashboard
     assert '"type": "warning"' in customer_dashboard
     assert '"label": "Review invoice"' in customer_dashboard
+    assert "TaskRecord.tenant_id" not in customer_dashboard
     assert "X-Tenant-ID" not in customer_dashboard
     assert "Math.random" not in customer_dashboard
 
