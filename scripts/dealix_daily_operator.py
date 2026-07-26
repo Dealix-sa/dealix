@@ -45,11 +45,12 @@ def cmd_score():
     subprocess.check_call([sys.executable, str(REPO_ROOT / "scripts" / "score_leads.py")])
 
 
-def cmd_drafts():
+def cmd_drafts(operator_mode: str = "demo"):
     import subprocess
     import sys as _s
 
     _s.path.insert(0, str(REPO_ROOT))
+    generator_mode = "live" if operator_mode == "production" else "demo"
     subprocess.check_call(
         [
             _s.executable,
@@ -61,7 +62,7 @@ def cmd_drafts():
             "--channel",
             "whatsapp",
             "--mode",
-            "demo",
+            generator_mode,
         ]
     )
 
@@ -169,7 +170,7 @@ def main() -> int:
     steps = [
         ("0. Select AI provider radar", cmd_provider_radar),
         ("1. Score leads", cmd_score),
-        ("2. Generate governed drafts", cmd_drafts),
+        ("2. Generate governed drafts", lambda: cmd_drafts(args.mode)),
         ("3. Generate follow-ups", cmd_followups),
         ("4. Generate prospect pack", cmd_prospect_pack),
         ("5. Generate proposal (demo account)", cmd_proposal),
