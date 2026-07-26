@@ -115,13 +115,15 @@ def evaluate(root: Path) -> dict[str, object]:
         Check(
             "canonical_legacy_invite",
             "def _install_auth_invite_compatibility()" in onboarding_router
-            and 'getattr(route_item, "path", None) == "/invite"' in onboarding_router
+            and 'replaced_paths = {"/invite", "/invite/accept"}' in onboarding_router
+            and 'getattr(route_item, "path", None) in replaced_paths' in onboarding_router
             and "auth_module.router.routes = retained_routes" in onboarding_router
             and 'name="legacy_auth_invite_compatibility"' in onboarding_router
+            and 'name="legacy_auth_invite_accept_compatibility"' in onboarding_router
             and main.index("    auth,")
             < main.index("from api.routers import onboarding as onboarding_router")
             < main.index('app.include_router(auth.router, prefix="/api/v1")'),
-            "legacy auth invite is replaced before router inclusion and delegates to canonical flow",
+            "both legacy auth invite routes are replaced before router inclusion and delegate to the canonical flow",
         ),
         Check(
             "deployment_identity",
@@ -161,9 +163,13 @@ def evaluate(root: Path) -> dict[str, object]:
             'apiUrl("/api/v1/auth/refresh")' in runtime_api
             and "body: JSON.stringify({ refresh_token: refreshToken })" in runtime_api
             and "persistSession(tokens, user)" in runtime_api
+            and "async function rotateSessionSingleFlight()" in runtime_api
+            and "refreshInFlight = rotateSession().finally(" in runtime_api
             and "if (firstResponse.status !== 401) return firstResponse;" in runtime_api
-            and "const rotatedAccessToken = await rotateSession()" in runtime_api,
-            "browser retries one authenticated request after refresh-token rotation",
+            and "const rotatedAccessToken = await rotateSessionSingleFlight()" in runtime_api
+            and "withBearer({ ...init, cache: init.cache || \"no-store\" }, rotatedAccessToken)"
+            in runtime_api,
+            "browser retries one authenticated request after single-flight refresh-token rotation",
         ),
         Check(
             "browser_tenant_isolation",
