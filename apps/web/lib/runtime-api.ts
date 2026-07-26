@@ -23,6 +23,10 @@ export interface DealixSessionUser {
 
 export function apiUrl(path: string): string {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  // Browser calls stay same-origin and flow through the audited Next.js rewrite.
+  // This avoids widening CSP/CORS whenever preview or staging uses a different
+  // backend origin. Server-side callers may still use the configured base.
+  if (typeof window !== "undefined") return normalizedPath;
   return DEALIX_API_BASE ? `${DEALIX_API_BASE}${normalizedPath}` : normalizedPath;
 }
 
