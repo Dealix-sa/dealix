@@ -6,6 +6,7 @@ on:
       - main
       - 'feat/**'
       - 'fix/**'
+      - 'docs/**'
     paths:
       - 'api/routers/auth.py'
       - 'api/routers/health.py'
@@ -13,6 +14,8 @@ on:
       - 'api/routers/platform_meta.py'
       - 'api/security/**'
       - 'apps/web/app/dashboard/**'
+      - 'apps/web/app/[tenant]/dashboard/**'
+      - 'apps/web/app/[tenant]/command/**'
       - 'apps/web/app/login/**'
       - 'apps/web/app/signup/**'
       - 'apps/web/lib/runtime-api.ts'
@@ -28,6 +31,7 @@ on:
       - 'tests/test_deployment_identity_runtime.py'
       - 'tests/test_saas_*.py'
       - 'docs/ops/SAAS_ACTIVATION_RUNBOOK.md'
+      - 'docs/product/MERIDIAN_COMPANY_OS_PATTERN_ADOPTION_AR.md'
       - '.github/workflows/saas-foundation.yml'
   pull_request:
     branches: [main]
@@ -38,6 +42,8 @@ on:
       - 'api/routers/platform_meta.py'
       - 'api/security/**'
       - 'apps/web/app/dashboard/**'
+      - 'apps/web/app/[tenant]/dashboard/**'
+      - 'apps/web/app/[tenant]/command/**'
       - 'apps/web/app/login/**'
       - 'apps/web/app/signup/**'
       - 'apps/web/lib/runtime-api.ts'
@@ -53,6 +59,7 @@ on:
       - 'tests/test_deployment_identity_runtime.py'
       - 'tests/test_saas_*.py'
       - 'docs/ops/SAAS_ACTIVATION_RUNBOOK.md'
+      - 'docs/product/MERIDIAN_COMPANY_OS_PATTERN_ADOPTION_AR.md'
       - '.github/workflows/saas-foundation.yml'
   workflow_dispatch:
 
