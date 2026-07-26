@@ -92,16 +92,35 @@ async def leak(contact_id, db):
     assert len(_scan(nested, tmp_path)) == 1
 
 
-def test_baseline_exists_and_is_documented():
-    assert BASELINE.is_file(), "the ratchet needs its baseline committed"
+def test_baseline_is_absent_or_carries_real_entries():
+    """The backlog is cleared, so there should be no baseline file at all.
+
+    An empty baseline is worse than none: it reads as "a ratchet is holding
+    something back" when nothing is. If entries ever return, they must be
+    real and point at their tracking issue.
+    """
+    if not BASELINE.is_file():
+        return
     text = BASELINE.read_text(encoding="utf-8")
-    assert "#974" in text, "the baseline must point at the tracking issue"
     entries = [
         line for line in text.splitlines() if line.strip() and not line.startswith("#")
     ]
-    assert entries, "an empty baseline should be deleted, not committed"
+    assert entries, "delete the baseline file rather than committing it empty"
+    assert "#974" in text, "the baseline must point at the tracking issue"
     for entry in entries:
         assert "::" in entry, f"malformed baseline entry: {entry!r}"
+
+
+def test_a_violation_fails_when_no_baseline_holds_it(tmp_path, monkeypatch):
+    """With the backlog cleared, any finding must fail the gate outright."""
+    import scripts.ops.check_tenant_scoped_queries as gate
+
+    probe = tmp_path / "probe_router.py"
+    probe.write_text(UNSCOPED, encoding="utf-8")
+    monkeypatch.setattr(gate, "BASELINE_PATH", tmp_path / "absent_baseline.txt")
+    monkeypatch.setattr(gate, "REPO_ROOT", tmp_path)
+
+    assert gate.main(["check", str(probe)]) == 1
 
 
 @pytest.mark.timeout(180)

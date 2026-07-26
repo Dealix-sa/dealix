@@ -56,6 +56,48 @@ ALLOWLIST: dict[tuple[str, str], str] = {
         "Self-scoped: the user id comes from an already-verified refresh "
         "token, so the lookup can only reach the token's own user."
     ),
+    (
+        "api/routers/auth.py",
+        "RefreshTokenRecord",
+    ): (
+        "Self-scoped: keyed on the hash of the presented token plus the user "
+        "id from that same verified token. The token is the credential — "
+        "holding it is what the query checks."
+    ),
+    (
+        "api/routers/auth.py",
+        "RoleRecord",
+    ): (
+        "Self-scoped: the role id comes from the loaded user's own role_id, "
+        "and only the role name is returned."
+    ),
+    (
+        "api/routers/pricing.py",
+        "PaymentRecord",
+    ): (
+        "Provider-keyed idempotency: reached only from the Moyasar webhook "
+        "after verify_webhook(), and keyed on the provider's globally unique "
+        "payment id. No caller-supplied handle is involved."
+    ),
+    # Founder-internal tooling. These routers read and write the whole
+    # prospecting graph across tenants by design, and are gated at the router
+    # by require_admin_key — the platform-admin credential, not a tenant one.
+    # A tenant predicate here would be meaningless; the guard is the auth.
+    **{
+        (f"api/routers/{module}.py", "ContactRecord"): (
+            "Cross-tenant by design; gated at the router by require_admin_key "
+            "(platform-admin only, verified in "
+            "tests/test_founder_tools_admin_gate.py)."
+        )
+        for module in (
+            "automation",
+            "data",
+            "dominance",
+            "drafts",
+            "email_send",
+            "outreach",
+        )
+    },
 }
 
 
