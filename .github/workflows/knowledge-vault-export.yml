@@ -41,13 +41,13 @@ jobs:
       - name: Run focused safety tests
         run: python -m pytest tests/test_knowledge_vault_exporter.py -q --no-cov
 
-      - name: Export source-cited vault
+      - name: Export public repository sources only
         run: |
           python scripts/knowledge/export_dealix_knowledge_vault.py \
             --output artifacts/dealix-knowledge-vault \
             --clean
 
-      - name: Verify proof contract
+      - name: Verify proof and data-minimization contract
         run: |
           python - <<'PY'
           import json
@@ -57,14 +57,19 @@ jobs:
           manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
           proof = json.loads((root / "proof-log.json").read_text(encoding="utf-8"))
           assert manifest["counts"]["repository_sources"] > 0
+          assert manifest["counts"]["knowledge_entries"] == 0
+          assert manifest["knowledge_json"] is None
+          assert manifest["knowledge_json_opt_in"] is False
+          assert proof["knowledge_json_opt_in"] is False
           assert proof["network_calls"] == 0
           assert proof["external_actions"] == 0
+          assert (root / ".dealix-knowledge-vault.json").exists()
           assert (root / "HOME.md").exists()
           assert (root / "CLAUDE.md").exists()
           print(json.dumps(manifest["counts"], indent=2))
           PY
 
-      - name: Upload vault artifact
+      - name: Upload repository-only vault artifact
         uses: actions/upload-artifact@v4
         with:
           name: dealix-knowledge-vault
