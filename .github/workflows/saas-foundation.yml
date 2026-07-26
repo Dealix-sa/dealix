@@ -15,6 +15,7 @@ on:
       - 'api/routers/domains/customers/**'
       - 'api/security/**'
       - 'apps/web/app/**/dashboard/**'
+      - 'apps/web/app/**/command/**'
       - 'apps/web/app/accept-invite/**'
       - 'apps/web/app/login/**'
       - 'apps/web/app/signup/**'
@@ -31,6 +32,8 @@ on:
       - 'tests/test_deployment_identity*.py'
       - 'tests/test_saas_*.py'
       - 'docs/ops/SAAS_ACTIVATION_RUNBOOK.md'
+      - 'docs/product/DEALIX_LOOP_GRAPH_ENGINEERING_CONTRACT_AR.md'
+      - 'docs/product/MERIDIAN_COMPANY_OS_PATTERN_ADOPTION_AR.md'
       - '.github/workflows/saas-foundation.yml'
   pull_request:
     branches: [main]
@@ -43,6 +46,7 @@ on:
       - 'api/routers/domains/customers/**'
       - 'api/security/**'
       - 'apps/web/app/**/dashboard/**'
+      - 'apps/web/app/**/command/**'
       - 'apps/web/app/accept-invite/**'
       - 'apps/web/app/login/**'
       - 'apps/web/app/signup/**'
@@ -59,6 +63,8 @@ on:
       - 'tests/test_deployment_identity*.py'
       - 'tests/test_saas_*.py'
       - 'docs/ops/SAAS_ACTIVATION_RUNBOOK.md'
+      - 'docs/product/DEALIX_LOOP_GRAPH_ENGINEERING_CONTRACT_AR.md'
+      - 'docs/product/MERIDIAN_COMPANY_OS_PATTERN_ADOPTION_AR.md'
       - '.github/workflows/saas-foundation.yml'
   workflow_dispatch:
 
