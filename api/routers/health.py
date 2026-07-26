@@ -5,10 +5,16 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from api.schemas import HealthResponse
+from core.config.deployment_identity import resolve_deployment_git_sha
 from core.config.settings import get_settings
 from core.llm import get_router as get_model_router
 
 router = APIRouter(tags=["health"])
+
+
+def _deployment_git_sha() -> str:
+    settings = get_settings()
+    return resolve_deployment_git_sha(settings.git_sha)
 
 
 @router.get("/health", response_model=HealthResponse)
@@ -21,7 +27,7 @@ async def health() -> HealthResponse:
         version=settings.app_version,
         env=settings.app_env,
         providers=providers,
-        git_sha=settings.git_sha,
+        git_sha=_deployment_git_sha(),
     )
 
 
@@ -158,7 +164,7 @@ async def healthz(deep: bool = False) -> dict[str, object]:
         "service": "dealix",
         "version": settings.app_version,
         "env": settings.app_env,
-        "git_sha": settings.git_sha,
+        "git_sha": _deployment_git_sha(),
     }
 
 
