@@ -26,6 +26,7 @@ from api.middleware import (
     RateLimitHeadersMiddleware,
     RequestIDMiddleware,
     SecurityHeadersMiddleware,
+    TenantContextMiddleware,
 )
 from api.routers import (
     admin_tenants,
@@ -273,6 +274,10 @@ def create_app() -> FastAPI:
     app.add_middleware(ETagMiddleware)
     app.add_middleware(AuditLogMiddleware)
     app.add_middleware(RequestIDMiddleware)
+    # Resolves request.state.tenant_context. Defaults to shadow mode: it
+    # records the tenant and never alters a response, so the resolver can be
+    # observed against real traffic before anything depends on it.
+    app.add_middleware(TenantContextMiddleware)
     app.add_middleware(APIKeyMiddleware)
     setup_rate_limit(app)
 

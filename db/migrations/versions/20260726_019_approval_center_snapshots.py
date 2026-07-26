@@ -14,13 +14,19 @@ Revises: 20260723_018_communication_hub_storage
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 import sqlalchemy as sa
 from alembic import op
 
-revision: str = "20260726_019_approval_center_snapshots"
-down_revision: str | None = "20260723_018_communication_hub_storage"
-branch_labels: str | None = None
-depends_on: str | None = None
+# These four are Alembic's contract for a migration script. Static analysis
+# reports them as unused globals because nothing in this file reads them —
+# Alembic's script loader does, by introspection. Removing them would break
+# the migration graph. Same annotation as migrations 006 and 007.
+revision: str = "20260726_019_approval_center_snapshots"  # noqa: F841 — read by Alembic via introspection
+down_revision: str | None = "20260723_018_communication_hub_storage"  # noqa: F841
+branch_labels: str | Sequence[str] | None = None  # noqa: F841
+depends_on: str | Sequence[str] | None = None  # noqa: F841
 
 TABLE_NAME = "approval_center_snapshots"
 

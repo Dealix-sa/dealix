@@ -182,10 +182,13 @@ class AuditLogMiddleware(BaseHTTPMiddleware):
         duration_ms = (time.perf_counter() - start) * 1000
 
         if is_personal_data_path:
-            api_key = request.headers.get("X-API-Key", "")
-            # Use only a prefix of the key as tenant identifier — avoids
-            # storing credential material in logs.
-            tenant_id = api_key[:16] if api_key else "anonymous"
+            # Prefer the tenant resolved by TenantContextMiddleware. The
+            # previous fallback logged a 16-character slice of the API key,
+            # which is not a tenant: two keys for the same tenant produced two
+            # different audit identities, and one key rotation orphaned every
+            # prior record. It also put credential material in the log, which
+            # the comment claimed to avoid.
+            tenant_id = getattr(request.state, "tenant_id", None) or "unresolved"
 
             client_ip = (
                 request.headers.get("X-Forwarded-For", "").split(",")[0].strip()
