@@ -40,7 +40,10 @@ def _resolve_payment_lead(payment: dict[str, Any]) -> Any | None:
                 if (record.email or "").strip().casefold() == email.casefold():
                     return record
     except Exception as exc:
-        log.warning("moyasar_lead_resolution_failed lead=%s error=%s", lead_id, exc)
+        log.warning(
+            "moyasar_lead_resolution_failed error_type=%s",
+            type(exc).__name__,
+        )
     return None
 
 
@@ -79,7 +82,10 @@ def sync_paid_payment_to_hubspot(
         out = sync_lead_to_hubspot(record, store=store)
         return {"hubspot": out, "lead_id": record.id}
     except Exception as exc:
-        log.warning("moyasar_hubspot_sync_failed lead=%s error=%s", record.id, exc)
+        log.warning(
+            "moyasar_hubspot_sync_failed error_type=%s",
+            type(exc).__name__,
+        )
         return {"hubspot": {"synced": False, "reason": str(exc)}, "lead_id": record.id}
 
 
@@ -124,7 +130,10 @@ def append_payment_evidence(
             "lead_id": str(getattr(lead, "id", "") or meta.get("lead_id") or ""),
         }
     except Exception as exc:
-        log.warning("moyasar_evidence_append_failed error=%s", exc)
+        log.warning(
+            "moyasar_evidence_append_failed error_type=%s",
+            type(exc).__name__,
+        )
         return {"skipped": True, "reason": str(exc)}
 
 
