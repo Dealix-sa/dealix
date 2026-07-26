@@ -11,6 +11,7 @@ on:
       - 'api/routers/health.py'
       - 'api/routers/onboarding.py'
       - 'api/routers/platform_meta.py'
+      - 'api/routers/customer_dashboard.py'
       - 'api/routers/domains/customers/**'
       - 'api/security/**'
       - 'apps/web/app/**/dashboard/**'
@@ -38,6 +39,7 @@ on:
       - 'api/routers/health.py'
       - 'api/routers/onboarding.py'
       - 'api/routers/platform_meta.py'
+      - 'api/routers/customer_dashboard.py'
       - 'api/routers/domains/customers/**'
       - 'api/security/**'
       - 'apps/web/app/**/dashboard/**'
@@ -92,6 +94,7 @@ jobs:
             api/routers/health.py \
             api/routers/onboarding.py \
             api/routers/platform_meta.py \
+            api/routers/customer_dashboard.py \
             api/routers/domains/customers/__init__.py \
             api/security/api_key.py \
             core/config/deployment_identity.py \
