@@ -80,7 +80,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install focused test dependency
-        run: python -m pip install --disable-pip-version-check pytest
+        run: python -m pip install --disable-pip-version-check pytest pytest-cov
 
       - name: Compile changed Python surfaces
         run: |
