@@ -21,7 +21,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from api.routers import jobs
 from api.security.auth_deps import get_current_user
-from db.models import Base, BackgroundJobRecord
+from db.models import BackgroundJobRecord, Base
 from db.session import get_db
 
 ATTACKER_TENANT = "tenant_a"
