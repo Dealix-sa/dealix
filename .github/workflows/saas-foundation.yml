@@ -68,7 +68,7 @@ jobs:
   verify:
     name: Verify SaaS backend foundation
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -78,14 +78,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: pip
 
-      - name: Install focused test dependencies
-        run: |
-          python -m pip install --disable-pip-version-check \
-            pytest \
-            pytest-asyncio \
-            pytest-cov \
-            pytest-timeout
+      - name: Install repository test environment
+        run: python -m pip install --disable-pip-version-check -e ".[dev]"
 
       - name: Compile changed Python surfaces
         run: |
@@ -127,8 +123,7 @@ jobs:
 
       - name: Enforce repository SaaS contracts
         shell: bash
-        run: |
-          test "${{ steps.foundation.outputs.status }}" -eq 0
+        run: test "${{ steps.foundation.outputs.status }}" -eq 0
 
       - name: Run focused regressions with diagnostics
         id: focused
@@ -157,8 +152,7 @@ jobs:
 
       - name: Enforce focused regressions
         shell: bash
-        run: |
-          test "${{ steps.focused.outputs.status }}" -eq 0
+        run: test "${{ steps.focused.outputs.status }}" -eq 0
 
   web:
     name: Verify SaaS web journey
