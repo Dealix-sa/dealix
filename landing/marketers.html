@@ -3,352 +3,139 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Dealix للمسوقين وفرق النمو: تشغيل محكوم بالموافقة يجمع الفرص والمسودات والقرارات والأدلة في مسار واحد خلال بايلوت محدود النطاق." />
+  <title>Dealix للمسوقين وفرق النمو — بايلوت محكوم بالموافقة</title>
+  <meta name="description" content="Dealix للمسوقين وفرق النمو: غرفة قيادة مُدارة ترتب الفرص والمتابعات وتجهز المسودات والأدلة ضمن مرحلة بايلوت محدودة وApproval-first." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://dealix.me/marketers.html" />
-  <title>Dealix للمسوقين وفرق النمو — بايلوت محكوم بالموافقة</title>
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dealix.me/marketers.html" />
+  <meta property="og:title" content="Dealix للمسوقين — غرفة قيادة Pilot محكومة بالموافقة" />
+  <meta property="og:description" content="فرص مرتبة، مسودات قابلة للمراجعة، وProof Pack واضح قبل أي إجراء خارجي." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Dealix للمسوقين — Pilot محكوم بالموافقة" />
+  <meta name="twitter:description" content="تشغيل Draft-first وApproval-first لفرق التسويق والنمو." />
   <style>
     :root {
       color-scheme: dark;
       --bg: #090909;
-      --surface: #111111;
-      --surface-2: #181818;
-      --border: #2b2b2b;
-      --text: #f6f6f3;
-      --muted: #b6b6ae;
-      --accent: #d6b66a;
-      --accent-strong: #f0d68e;
-      --safe: #8ed1a8;
-      --danger: #f2a1a1;
-      --radius: 20px;
-      --shadow: 0 22px 70px rgba(0, 0, 0, 0.36);
+      --surface: #131313;
+      --surface-2: #191919;
+      --border: #2d2d2d;
+      --text: #f6f4ed;
+      --muted: #b8b6ae;
+      --gold: #d9bb72;
+      --safe: #8fd4aa;
+      --danger: #efaaaa;
     }
-
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(214, 182, 106, 0.12), transparent 34rem),
-        var(--bg);
-      color: var(--text);
-      line-height: 1.75;
-    }
-
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif; background: radial-gradient(circle at 12% 0%, rgba(217,187,114,.14), transparent 34rem), var(--bg); color: var(--text); line-height: 1.8; }
     a { color: inherit; }
-    .container { width: min(1120px, calc(100% - 32px)); margin-inline: auto; }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      background: rgba(9, 9, 9, 0.9);
-      backdrop-filter: blur(14px);
-    }
-
-    .nav {
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-    }
-
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--accent);
-      border-radius: 10px;
-      color: var(--accent-strong);
-    }
-
-    .nav-links { display: flex; align-items: center; gap: 18px; color: var(--muted); font-size: 0.94rem; }
-    .nav-links a { text-decoration: none; }
-    .nav-links a:hover { color: var(--text); }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 22px;
-      border-radius: 999px;
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #15120b;
-      text-decoration: none;
-      font-weight: 800;
-      transition: transform 160ms ease, background 160ms ease;
-    }
-
-    .button:hover { transform: translateY(-1px); background: var(--accent-strong); }
+    .container { width: min(1100px, calc(100% - 32px)); margin-inline: auto; }
+    header { position: sticky; top: 0; z-index: 5; background: rgba(9,9,9,.92); border-bottom: 1px solid var(--border); backdrop-filter: blur(14px); }
+    nav { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { text-decoration: none; font-size: 1.25rem; font-weight: 900; }
+    .brand span { color: var(--gold); }
+    .links { display: flex; gap: 18px; color: var(--muted); }
+    .links a { text-decoration: none; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid var(--gold); background: var(--gold); color: #17130b; text-decoration: none; font-weight: 900; }
     .button.secondary { background: transparent; color: var(--text); border-color: var(--border); }
-
-    .hero { padding: 92px 0 64px; }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 13px;
-      border: 1px solid rgba(214, 182, 106, 0.36);
-      border-radius: 999px;
-      color: var(--accent-strong);
-      background: rgba(214, 182, 106, 0.08);
-      font-size: 0.88rem;
-      font-weight: 700;
-    }
-
-    h1 {
-      max-width: 900px;
-      margin: 24px 0 18px;
-      font-size: clamp(2.5rem, 7vw, 5.7rem);
-      line-height: 1.04;
-      letter-spacing: -0.045em;
-    }
-
-    .lead { max-width: 780px; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.3rem); }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-    .microcopy { margin-top: 15px; color: var(--muted); font-size: 0.9rem; }
-
-    .proof-strip {
-      margin-top: 48px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: var(--surface);
-      box-shadow: var(--shadow);
-    }
-
-    .proof-item { padding: 22px; border-inline-start: 1px solid var(--border); }
-    .proof-item:first-child { border-inline-start: 0; }
-    .proof-item strong { display: block; color: var(--accent-strong); margin-bottom: 4px; }
-    .proof-item span { color: var(--muted); font-size: 0.9rem; }
-
+    .hero { padding: 96px 0 72px; }
+    .badge { display: inline-flex; padding: 7px 13px; border: 1px solid rgba(217,187,114,.4); border-radius: 999px; color: var(--gold); background: rgba(217,187,114,.08); font-weight: 800; }
+    h1 { max-width: 900px; margin: 24px 0 18px; font-size: clamp(2.6rem, 7vw, 5.5rem); line-height: 1.05; letter-spacing: -.04em; }
+    .lead { max-width: 780px; color: var(--muted); font-size: 1.2rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .micro { color: var(--muted); font-size: .92rem; margin-top: 14px; }
     section { padding: 72px 0; }
-    .section-kicker { color: var(--accent-strong); font-weight: 800; margin-bottom: 8px; }
-    h2 { margin: 0 0 16px; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.15; letter-spacing: -0.025em; }
-    .section-intro { max-width: 760px; color: var(--muted); margin-bottom: 30px; }
-
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .card {
-      padding: 28px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, var(--surface-2), var(--surface));
-    }
-    .card h3 { margin: 0 0 10px; font-size: 1.25rem; }
+    .section-title { margin: 0 0 14px; font-size: clamp(2rem, 4vw, 3.1rem); }
+    .section-copy { color: var(--muted); max-width: 760px; margin-bottom: 30px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { padding: 26px; border: 1px solid var(--border); border-radius: 20px; background: linear-gradient(180deg, var(--surface-2), var(--surface)); }
+    .card strong { color: var(--gold); }
+    .card h3 { margin: 12px 0 8px; }
     .card p { margin: 0; color: var(--muted); }
-    .card-number { color: var(--accent-strong); font-weight: 900; font-size: 0.9rem; margin-bottom: 20px; }
-
     .workflow { display: grid; gap: 12px; }
-    .workflow-row {
-      display: grid;
-      grid-template-columns: 64px 1fr auto;
-      gap: 18px;
-      align-items: center;
-      padding: 20px 22px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface);
-    }
-    .workflow-row .step { color: var(--accent-strong); font-weight: 900; }
-    .workflow-row h3 { margin: 0 0 2px; font-size: 1.05rem; }
-    .workflow-row p { margin: 0; color: var(--muted); font-size: 0.92rem; }
-    .status { color: var(--safe); font-weight: 800; font-size: 0.86rem; white-space: nowrap; }
-
-    .safety {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-    .guard-list { display: grid; gap: 10px; margin-top: 20px; }
-    .guard {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      padding: 14px 16px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: rgba(255,255,255,0.02);
-    }
-    .guard b { color: var(--safe); }
-    .guard span { color: var(--muted); }
-    .boundary { border-color: rgba(242, 161, 161, 0.3); }
-    .boundary h3 { color: var(--danger); }
-
-    .pilot-box {
-      padding: clamp(28px, 5vw, 54px);
-      border: 1px solid rgba(214, 182, 106, 0.45);
-      border-radius: 28px;
-      background: linear-gradient(135deg, rgba(214,182,106,0.13), rgba(255,255,255,0.025));
-      box-shadow: var(--shadow);
-    }
-    .pilot-box ul { color: var(--muted); padding-right: 20px; }
-    .pilot-box li + li { margin-top: 8px; }
-
-    footer { padding: 42px 0 54px; border-top: 1px solid var(--border); color: var(--muted); }
+    .row { display: grid; grid-template-columns: 56px 1fr auto; gap: 16px; align-items: center; padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+    .step { color: var(--gold); font-weight: 900; }
+    .row h3 { margin: 0; }
+    .row p { margin: 3px 0 0; color: var(--muted); }
+    .status { color: var(--safe); font-weight: 800; }
+    .boundary { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .boundary .card:last-child { border-color: rgba(239,170,170,.35); }
+    .boundary .card:last-child h3 { color: var(--danger); }
+    .pilot { padding: clamp(28px, 5vw, 52px); border: 1px solid rgba(217,187,114,.45); border-radius: 26px; background: linear-gradient(135deg, rgba(217,187,114,.13), rgba(255,255,255,.02)); }
+    .pilot ul { color: var(--muted); }
+    footer { padding: 38px 0 50px; border-top: 1px solid var(--border); color: var(--muted); }
     .footer-row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-    .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
-
-    @media (max-width: 820px) {
-      .nav-links { display: none; }
-      .proof-strip, .grid-3, .safety { grid-template-columns: 1fr; }
-      .proof-item { border-inline-start: 0; border-top: 1px solid var(--border); }
-      .proof-item:first-child { border-top: 0; }
-      .workflow-row { grid-template-columns: 46px 1fr; }
-      .workflow-row .status { grid-column: 2; }
-    }
+    .footer-links { display: flex; gap: 16px; }
+    @media (max-width: 820px) { .links { display: none; } .grid, .boundary { grid-template-columns: 1fr; } .row { grid-template-columns: 44px 1fr; } .status { grid-column: 2; } }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container nav">
-      <a class="brand" href="/" aria-label="Dealix الرئيسية">
-        <span class="brand-mark">D</span>
-        <span>Dealix</span>
-      </a>
-      <nav class="nav-links" aria-label="التنقل الرئيسي">
-        <a href="#value">القيمة</a>
-        <a href="#workflow">طريقة العمل</a>
-        <a href="#safety">الضوابط</a>
-        <a href="#pilot">البايلوت</a>
-      </nav>
-      <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20Mini%20Diagnostic%20لفريق%20التسويق">اطلب تشخيصًا مصغرًا</a>
-    </div>
+  <header>
+    <nav class="container">
+      <a class="brand" href="/">Dealix<span>.</span></a>
+      <div class="links"><a href="#value">القيمة</a><a href="#workflow">طريقة العمل</a><a href="#governance">الضوابط</a><a href="#pilot">البايلوت</a></div>
+      <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20Mini%20Diagnostic%20لفريق%20التسويق">اطلب Mini Diagnostic</a>
+    </nav>
   </header>
 
   <main>
     <section class="hero">
       <div class="container">
-        <div class="eyebrow">مرحلة بايلوت · Saudi-first · Approval-first</div>
+        <div class="badge">مرحلة بايلوت · Saudi-first · Approval-first</div>
         <h1>حوّل عمل التسويق من محادثات متفرقة إلى قرارات ومسودات وأدلة قابلة للمراجعة.</h1>
-        <p class="lead">
-          Dealix طبقة تشغيل لفرق التسويق والنمو في الشركات التي تبيع لشركات أخرى. تجمع الفرص،
-          مسودات التواصل، الموافقات، المتابعة، ودليل ما تم — من دون استبدال أدواتكم الحالية.
-        </p>
-        <div class="hero-actions">
+        <p class="lead">Dealix طبقة تشغيل فوق أدوات فريقك الحالية. يرتب الفرص والمتابعات، يجهز الرسائل والعروض، ويجمع الدليل في مسار واحد من دون استبدال CRM أو تنفيذ خارجي غير معتمد.</p>
+        <div class="actions">
           <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20Mini%20Diagnostic%20لفريق%20التسويق">ابدأ Mini Diagnostic مجانياً</a>
           <a class="button secondary" href="#pilot">شاهد نطاق البايلوت</a>
         </div>
-        <p class="microcopy">لا بطاقة ائتمان · لا إرسال حي · يبدأ أي تنفيذ خارجي فقط بعد موافقة صريحة ونطاق مكتوب.</p>
-
-        <div class="proof-strip" aria-label="حدود المنتج">
-          <div class="proof-item"><strong>Draft-first</strong><span>المخرجات تبدأ كمسودات قابلة للمراجعة.</span></div>
-          <div class="proof-item"><strong>Approval-first</strong><span>الإنسان يقرر قبل أي إجراء خارجي.</span></div>
-          <div class="proof-item"><strong>Proof-backed</strong><span>الحالة ترتبط بمصدر ودليل، لا بادعاء.</span></div>
-          <div class="proof-item"><strong>Pilot scope</strong><span>قدرات محددة تُثبت قبل التوسع.</span></div>
-        </div>
+        <p class="micro">لا بطاقة ائتمان · لا إرسال حيّ · لا يوجد ضمان لنتيجة تجارية · يبدأ أي تنفيذ خارجي فقط بعد موافقة صريحة ونطاق مكتوب.</p>
       </div>
     </section>
 
     <section id="value">
       <div class="container">
-        <div class="section-kicker">القيمة العملية</div>
-        <h2>غرفة تشغيل واحدة بدل تشتت الـExcel والرسائل والمتابعات.</h2>
-        <p class="section-intro">نبدأ من ألم واحد قابل للقياس، ثم نبني مسارًا قصيرًا يمكن لفريقك مراجعته وإيقافه وتدقيقه.</p>
-        <div class="grid-3">
-          <article class="card">
-            <div class="card-number">01</div>
-            <h3>ترتيب الفرص</h3>
-            <p>قائمة فرص موحدة مع المصدر، سبب الأولوية، المرحلة، والخطوة التالية بدل قوائم مبعثرة.</p>
-          </article>
-          <article class="card">
-            <div class="card-number">02</div>
-            <h3>مسودات محكومة</h3>
-            <p>رسائل وعروض أولية مرتبطة بسياق الفرصة، تبقى معلقة حتى يراجعها صاحب الصلاحية.</p>
-          </article>
-          <article class="card">
-            <div class="card-number">03</div>
-            <h3>تقرير قرار وأدلة</h3>
-            <p>ملخص تنفيذي يوضح ما حدث، ما يحتاج قرارًا، وما يمكن إثباته من المصادر المتاحة.</p>
-          </article>
+        <h2 class="section-title">مخرجات تشغيلية يمكن مراجعتها</h2>
+        <p class="section-copy">القيمة هنا ليست وعد أداء؛ هي وضوح أفضل في الأولويات، جودة أعلى للمسودات، وسجل قرار قابل للتدقيق.</p>
+        <div class="grid">
+          <article class="card"><strong>01</strong><h3>Daily Command</h3><p>أهم الفرص والمتابعات والمخاطر وما ينتظر قرار الفريق.</p></article>
+          <article class="card"><strong>02</strong><h3>Draft Queue</h3><p>رسائل وعروض وخيارات متابعة تبقى Draft-first حتى اعتمادها.</p></article>
+          <article class="card"><strong>03</strong><h3>Proof Pack</h3><p>مصادر وقرارات ومخرجات ونتائج فعلية، مع فصل الحقائق عن الافتراضات.</p></article>
         </div>
       </div>
     </section>
 
     <section id="workflow">
       <div class="container">
-        <div class="section-kicker">المسار التجريبي</div>
-        <h2>من التشخيص إلى قرار قابل للتنفيذ.</h2>
-        <p class="section-intro">لا نفترض أن التكامل أو البيانات أو النتائج موجودة. كل مرحلة لها مدخل واضح ومخرج قابل للمراجعة.</p>
+        <h2 class="section-title">طريقة العمل</h2>
         <div class="workflow">
-          <div class="workflow-row">
-            <div class="step">01</div>
-            <div><h3>Mini Diagnostic</h3><p>تحديد الألم، الأدوات الحالية، مصدر البيانات، والقرار الذي تريد تحسينه.</p></div>
-            <div class="status">مجاني</div>
-          </div>
-          <div class="workflow-row">
-            <div class="step">02</div>
-            <div><h3>نطاق بايلوت مكتوب</h3><p>حالة استخدام واحدة، مسؤوليات واضحة، معايير نجاح وحدود توقف.</p></div>
-            <div class="status">يتطلب اعتمادًا</div>
-          </div>
-          <div class="workflow-row">
-            <div class="step">03</div>
-            <div><h3>تشغيل Draft-only</h3><p>فرص ومسودات وموافقات داخلية دون إرسال أو التزام خارجي.</p></div>
-            <div class="status">محكوم</div>
-          </div>
-          <div class="workflow-row">
-            <div class="step">04</div>
-            <div><h3>Proof Review</h3><p>مقارنة المخرجات بمعايير النجاح، وتوثيق الفجوات قبل التوسع.</p></div>
-            <div class="status">قابل للتدقيق</div>
-          </div>
+          <article class="row"><div class="step">1</div><div><h3>تشخيص محدود</h3><p>نختار ألمًا واحدًا ومعيار نجاح يمكن إثباته.</p></div><div class="status">Scope</div></article>
+          <article class="row"><div class="step">2</div><div><h3>تشغيل داخلي</h3><p>تحليل وترتيب ومسودات وتقارير من البيانات المصرح بها.</p></div><div class="status">Internal</div></article>
+          <article class="row"><div class="step">3</div><div><h3>Approval Queue</h3><p>كل رسالة أو عرض أو تغيير خارجي يتوقف عند الشخص المسؤول.</p></div><div class="status">Review</div></article>
+          <article class="row"><div class="step">4</div><div><h3>مراجعة دليل</h3><p>نقارن ما تم فعليًا بمعيار النجاح ونقرر التوسع أو التعديل أو التوقف.</p></div><div class="status">Proof</div></article>
         </div>
       </div>
     </section>
 
-    <section id="safety">
-      <div class="container safety">
-        <article class="card">
-          <div class="section-kicker">ضوابط التشغيل</div>
-          <h2>التحكم عندكم، وليس عند الأتمتة.</h2>
-          <div class="guard-list">
-            <div class="guard"><b>✓</b><span>لا إرسال حيّ إلى أي طرف خارجي دون موافقة محددة.</span></div>
-            <div class="guard"><b>✓</b><span>لا جمع بيانات أو إثراء دون مصدر مشروع وسياسة واضحة.</span></div>
-            <div class="guard"><b>✓</b><span>لا عرض أرقام متوقعة كأنها إيراد أو نتيجة محققة.</span></div>
-            <div class="guard"><b>✓</b><span>لا استخدام شعار عميل أو شهادة أو اقتباس دون إذن.</span></div>
-            <div class="guard"><b>✓</b><span>يمكن إيقاف البايلوت أو تضييق نطاقه عند ظهور مخاطرة.</span></div>
-          </div>
-        </article>
-
-        <aside class="card boundary">
-          <h3>حدود ما نعرضه الآن</h3>
-          <p>هذه صفحة بايلوت وليست إعلانًا عن منصة مكتملة ذاتية الخدمة. التكاملات، مدد الاستجابة، الاستضافة، الفوترة، والقدرات التنظيمية تُحدد وتُتحقق لكل نطاق على حدة.</p>
-          <p>لا يوجد ضمان لنتيجة تجارية. الهدف هو إثبات مسار تشغيل أفضل بأدلة واضحة، ثم اتخاذ قرار التوسع.</p>
-        </aside>
+    <section id="governance">
+      <div class="container">
+        <h2 class="section-title">حدود واضحة قبل التنفيذ</h2>
+        <div class="boundary">
+          <article class="card"><h3>ينفذ داخليًا</h3><p>تجميع السياق، ترتيب الفرص، إنشاء المسودات، تجهيز التقارير، وتوثيق المصادر.</p></article>
+          <article class="card"><h3>يتوقف عند الموافقة</h3><p>الإرسال والنشر وتغيير الحملات والأسعار والأنظمة والإجراءات الحساسة.</p></article>
+        </div>
+        <p class="section-copy" style="margin-top:24px">أي سعر أو مدة أو تكامل أو SLA أو التزام أمني أو تنظيمي لا يصبح التزامًا إلا داخل اتفاق مكتوب ومعتمد. هذه الصفحة ليست إعلانًا عن منصة مكتملة ذاتية الخدمة.</p>
       </div>
     </section>
 
     <section id="pilot">
       <div class="container">
-        <div class="pilot-box">
-          <div class="section-kicker">ابدأ من الواقع</div>
-          <h2>أرسل لنا ألمًا واحدًا في التسويق أو النمو.</h2>
-          <p class="section-intro">نرجع لك بتشخيص مختصر يوضح ملاءمة Dealix، البيانات المطلوبة، المخاطر، ونطاق بايلوت مقترح. أي سعر أو مدة أو تكامل لا يصبح التزامًا إلا داخل اتفاق مكتوب ومعتمد.</p>
-          <ul>
-            <li>لا نطلب صلاحيات حساسة في التشخيص الأولي.</li>
-            <li>لا ننفذ تواصلاً باسم شركتك خلال التشخيص.</li>
-            <li>لا نستخدم بياناتك كحالة عميل دون موافقة منفصلة.</li>
-          </ul>
-          <div class="hero-actions">
-            <a class="button" href="mailto:sami.assiri11@gmail.com?subject=Mini%20Diagnostic%20-%20Marketing%20Team&body=اسم%20الشركة:%0Aحجم%20الفريق:%0Aأكبر%20ألم%20تشغيلي:%0Aالأدوات%20الحالية:%0A">اطلب التشخيص المجاني</a>
-            <a class="button secondary" href="/trust-center.html">راجع مركز الثقة</a>
-          </div>
+        <div class="pilot">
+          <h2 class="section-title">ابدأ بمشكلة واحدة قابلة للإثبات</h2>
+          <p class="section-copy">نحدد المشكلة، البيانات المتاحة، حدود الصلاحيات، والمخرجات المطلوبة قبل أي التزام. بعد المراجعة تحصل على قرار واضح: نستمر، نعدّل، أو نتوقف.</p>
+          <ul><li>Company Brain مختصر</li><li>قائمة فرص ومتابعات مرتبة</li><li>مسودات Approval-first</li><li>Proof Review نهائي</li></ul>
+          <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20Pilot%20لفريق%20التسويق">ناقش Pilot محدود</a>
         </div>
       </div>
     </section>
@@ -356,12 +143,8 @@
 
   <footer>
     <div class="container footer-row">
-      <div>© Dealix · بايلوت محكوم بالموافقة للشركات السعودية.</div>
-      <div class="footer-links">
-        <a href="/">الرئيسية</a>
-        <a href="/trust-center.html">مركز الثقة</a>
-        <a href="/privacy.html">الخصوصية</a>
-      </div>
+      <div>© 2026 Dealix · تشغيل مُدار · Draft-first · Approval-first</div>
+      <div class="footer-links"><a href="/trust-center.html">مركز الثقة</a><a href="/privacy.html">الخصوصية</a><a href="mailto:sami.assiri11@gmail.com">تواصل</a></div>
     </div>
   </footer>
 </body>
