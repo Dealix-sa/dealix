@@ -30,7 +30,7 @@ jobs:
         run: bash scripts/dealix_founder_business_day.sh
 
       - name: Upload founder business pack
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: founder-business-pack
           path: founder_os/output/

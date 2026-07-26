@@ -29,7 +29,7 @@ jobs:
           python scripts/commercial/run_self_operating_company_os.py --mode draft-only --limit 50
 
       - name: Upload generated operating artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: self-operating-company-os-report
           path: reports/self_operating_company_os/
