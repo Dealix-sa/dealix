@@ -131,6 +131,7 @@ export default function DashboardPage() {
           <nav className="space-y-2">
             {[
               { label: "الرئيسية", href: workspaceHref("/dashboard") },
+              { label: "غرفة القيادة", href: workspaceHref("/command") },
               { label: "العملاء والفرص", href: workspaceHref("/crm") },
               { label: "المشاريع", href: workspaceHref("/projects") },
               { label: "الدعم", href: workspaceHref("/support") },
