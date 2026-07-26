@@ -38,11 +38,23 @@ def test_login_and_dashboard_use_canonical_runtime_api() -> None:
     assert "profile.tenant_id" in entry
 
 
-def test_customer_dashboard_router_is_registered() -> None:
+def test_customer_dashboard_router_is_registered_and_tenant_derived() -> None:
     customer_domain = _read("api/routers/domains/customers/__init__.py")
+    customer_dashboard = _read("api/routers/customer_dashboard.py")
 
     assert "from api.routers import customer_dashboard as customer_dashboard_router" in customer_domain
     assert "customer_dashboard_router.router" in customer_domain
+    assert 'router = APIRouter(prefix="/api/v1/customer"' in customer_dashboard
+    assert '@router.get("/dashboard/")' in customer_dashboard
+    assert "current_user: UserRecord = Depends(get_current_user)" in customer_dashboard
+    assert "tenant_id = current_user.tenant_id" in customer_dashboard
+    assert "TenantRecord.id == tenant_id" in customer_dashboard
+    assert "SubscriptionRecord.tenant_id == tenant_id" in customer_dashboard
+    assert "LeadRecord.tenant_id == tenant_id" in customer_dashboard
+    assert "DealRecord.tenant_id == tenant_id" in customer_dashboard
+    assert "AuditLogRecord.tenant_id == tenant_id" in customer_dashboard
+    assert "X-Tenant-ID" not in customer_dashboard
+    assert "Math.random" not in customer_dashboard
 
 
 def test_invite_delivery_has_a_browser_redemption_route() -> None:
