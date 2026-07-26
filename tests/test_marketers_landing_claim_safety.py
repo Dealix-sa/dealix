@@ -1,19 +1,20 @@
-"""Regression contract for the public marketers landing page."""
+"""Regression contracts for public pilot-stage landing surfaces."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGE = ROOT / "landing" / "marketers.html"
+MARKETERS_PAGE = ROOT / "landing" / "marketers.html"
+SERVICES_PAGE = ROOT / "landing" / "services.html"
 
 
-def _page() -> str:
-    return PAGE.read_text(encoding="utf-8")
+def _read(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
 
 
 def test_marketers_page_is_explicitly_pilot_stage_and_approval_first() -> None:
-    html = _page()
+    html = _read(MARKETERS_PAGE)
 
     required_contracts = (
         "مرحلة بايلوت",
@@ -29,7 +30,7 @@ def test_marketers_page_is_explicitly_pilot_stage_and_approval_first() -> None:
 
 
 def test_marketers_page_does_not_publish_unverified_prices_or_capability_claims() -> None:
-    lowered = _page().lower()
+    lowered = _read(MARKETERS_PAGE).lower()
 
     forbidden_claims = (
         "ابدأ بـ 1 ريال",
@@ -62,12 +63,49 @@ def test_marketers_page_does_not_publish_unverified_prices_or_capability_claims(
         assert claim.lower() not in lowered
 
 
-def test_marketers_page_does_not_capture_or_send_data_directly() -> None:
-    lowered = _page().lower()
+def test_services_page_is_a_governed_offer_ladder_not_a_public_price_sheet() -> None:
+    html = _read(SERVICES_PAGE)
+    lowered = html.lower()
 
-    assert "<form" not in lowered
-    assert "fetch(" not in lowered
-    assert "xmlhttprequest" not in lowered
-    assert "mailto:" in lowered
-    assert "/trust-center.html" in lowered
-    assert "/privacy.html" in lowered
+    required_contracts = (
+        "ابدأ بألم واحد",
+        "سلّم العروض",
+        "نطاق مكتوب",
+        "تشغيل داخلي",
+        "مراجعة دليل",
+        "لا أسعار عامة أو Refund أو SLA غير معتمدة تعاقديًا",
+        "هذه خريطة عروض Pilot وليست قائمة أسعار أو عقد خدمة أو ضمان أداء",
+    )
+    for contract in required_contracts:
+        assert contract in html
+
+    forbidden_commitments = (
+        "499 ر.س",
+        "٤٩٩ ر.س",
+        "1500 sar/mo",
+        "١٬٥٠٠ ر.س",
+        "7500 sar/mo",
+        "٧٬٥٠٠ ر.س",
+        "5,000–25,000",
+        "30% عمولة",
+        "٣٠٪ عمولة",
+        "استرداد كامل",
+        "استرداد شهر",
+        "أقل من ٣٠ دقيقة",
+        "٤ أشهر التزام",
+        "٨ صباحًا ksa",
+        "refund:",
+    )
+    for claim in forbidden_commitments:
+        assert claim.lower() not in lowered
+
+
+def test_public_pilot_pages_do_not_capture_or_send_data_directly() -> None:
+    for page in (MARKETERS_PAGE, SERVICES_PAGE):
+        lowered = _read(page).lower()
+        assert "<form" not in lowered
+        assert "fetch(" not in lowered
+        assert "xmlhttprequest" not in lowered
+        assert "mailto:" in lowered
+        assert "/trust-center.html" in lowered
+        assert "/privacy.html" in lowered
