@@ -5,7 +5,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+# Direct execution sets sys.path[0] to scripts/knowledge rather than the
+# repository root. Bootstrap the checkout root so the documented one-command
+# invocation works without requiring PYTHONPATH or an editable install.
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
+if str(REPOSITORY_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPOSITORY_ROOT))
 
 from dealix.knowledge_vault.exporter import (
     DEFAULT_KNOWLEDGE_JSON,
