@@ -38,6 +38,28 @@ def test_login_and_dashboard_use_canonical_runtime_api() -> None:
     assert "profile.tenant_id" in entry
 
 
+def test_company_command_is_evidence_backed_and_draft_safe() -> None:
+    dashboard = _read("apps/web/app/[tenant]/dashboard/page.tsx")
+    command = _read("apps/web/app/[tenant]/command/page.tsx")
+
+    assert 'workspaceHref("/command")' in dashboard
+    assert 'authenticatedFetch("/api/v1/customer/dashboard/")' in command
+    assert '"x-tenant-id"' not in command.lower()
+    assert "DEALIX COMPANY COMMAND" in command
+    assert "data.notifications.length" in command
+    assert "data.quick_actions.length" in command
+    assert "data.recent_activity.length" in command
+    assert "explicitAttentionType(notification.type)" in command
+    assert 'return "إشعار"' in command
+    assert '"تنبيهات حالية"' in command
+    assert '"قرارات معلقة"' not in command
+    assert 'notification.type === "warning" ? "مراجعة" : "عالي"' not in command
+    assert "لا تنفذ إرسالًا أو دفعًا أو تغيير إنتاج" in command
+    assert "setInterval(" not in command
+    assert "Math.random(" not in command
+    assert 'fetch("/local-runtime/' not in command
+
+
 def test_customer_dashboard_router_is_registered() -> None:
     customer_domain = _read("api/routers/domains/customers/__init__.py")
 
