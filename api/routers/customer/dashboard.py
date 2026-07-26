@@ -11,13 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.security.auth_deps import get_current_user
 from core.utils import utcnow
-from db.models import (
-    DealRecord,
-    LeadRecord,
-    TaskRecord,
-    TenantRecord,
-    UserRecord,
-)
+from db.models import DealRecord, LeadRecord, TenantRecord, UserRecord
 from db.models_subscription import InvoiceRecord
 from db.session import get_db as get_db_session
 from dealix.billing.service import BillingService
@@ -71,6 +65,15 @@ async def get_dashboard(
     subscription = await billing.get_active_subscription_for_tenant(tenant_id)
     plan = await billing.get_plan(subscription.plan_id) if subscription else None
 
+    users_result = await session.execute(
+        select(func.count(UserRecord.id)).where(
+            UserRecord.tenant_id == tenant_id,
+            UserRecord.is_active.is_(True),
+            UserRecord.deleted_at.is_(None),
+        )
+    )
+    active_users = int(users_result.scalar() or 0)
+
     leads_result = await session.execute(
         select(func.count(LeadRecord.id)).where(
             LeadRecord.tenant_id == tenant_id,
@@ -95,21 +98,18 @@ async def get_dashboard(
     )
     pipeline_value = float(value_result.scalar() or 0.0)
 
-    tasks_result = await session.execute(
-        select(func.count(TaskRecord.id)).where(
-            TaskRecord.tenant_id == tenant_id,
-            TaskRecord.status == "pending",
-            TaskRecord.deleted_at.is_(None),
-        )
-    )
-    pending_tasks = int(tasks_result.scalar() or 0)
-
     kpi_cards = [
+        KPICard(
+            label="Active Users",
+            label_ar="المستخدمون النشطون",
+            value=active_users,
+            icon="users",
+        ),
         KPICard(
             label="Total Leads",
             label_ar="إجمالي العملاء المحتملين",
             value=total_leads,
-            icon="users",
+            icon="trending-up",
         ),
         KPICard(
             label="Deals",
@@ -121,12 +121,6 @@ async def get_dashboard(
             label="Pipeline Value",
             label_ar="قيمة خط الأنابيب",
             value=f"SAR {pipeline_value:,.0f}",
-            icon="trending-up",
-        ),
-        KPICard(
-            label="Pending Tasks",
-            label_ar="المهام المعلقة",
-            value=pending_tasks,
             icon="check-circle",
         ),
     ]
