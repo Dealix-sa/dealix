@@ -22,7 +22,7 @@ def test_marketers_page_is_explicitly_pilot_stage_and_approval_first() -> None:
         "لا إرسال حيّ",
         "لا يوجد ضمان لنتيجة تجارية",
         "لا يصبح التزامًا إلا داخل اتفاق مكتوب ومعتمد",
-        "لا تصبح إعلانًا عن منصة مكتملة ذاتية الخدمة",
+        "ليست إعلانًا عن منصة مكتملة ذاتية الخدمة",
     )
     for contract in required_contracts:
         assert contract in html
