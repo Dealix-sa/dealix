@@ -15,6 +15,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.lib.repo_scan import iter_candidate_files
+
 IGNORED_DIRS = {
     ".git",
     ".venv",
@@ -26,8 +31,9 @@ IGNORED_DIRS = {
     ".ruff_cache",
     "dist",
     "build",
-    "reports/runtime",
 }
+
+IGNORED_PATH_PREFIXES = ("reports/runtime",)
 
 TEXT_SUFFIXES = {
     ".env",
@@ -86,11 +92,9 @@ def rel(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
 
-def iter_text_files() -> list[Path]:
+def iter_text_files(root: Path = ROOT) -> list[Path]:
     files: list[Path] = []
-    for path in ROOT.rglob("*"):
-        if any(part in IGNORED_DIRS for part in path.parts):
-            continue
+    for path in iter_candidate_files(root, IGNORED_DIRS, IGNORED_PATH_PREFIXES):
         if not path.is_file():
             continue
         if path.name.startswith(".env") or path.suffix in TEXT_SUFFIXES:
