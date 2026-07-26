@@ -1,9 +1,9 @@
 """Deterministic, local-only export of Dealix knowledge into an Obsidian vault.
 
 The exporter intentionally avoids network calls, plugin downloads, automatic commits,
-and live production reads. It mirrors approved repository Markdown and optional
-KnowledgeAccumulator JSON snapshots into a source-cited vault that Claude Code or
-another local coding agent can inspect directly.
+and live production reads. It mirrors approved repository Markdown and explicitly
+selected KnowledgeAccumulator JSON snapshots into a source-cited vault that Claude
+Code or another local coding agent can inspect directly.
 """
 
 from __future__ import annotations
@@ -32,6 +32,8 @@ DEFAULT_SOURCE_ROOTS = (
 )
 DEFAULT_KNOWLEDGE_JSON = "data/knowledge/accumulated_intel.json"
 MAX_MARKDOWN_BYTES = 2 * 1024 * 1024
+MAX_KNOWLEDGE_JSON_BYTES = 5 * 1024 * 1024
+VAULT_MARKER = ".dealix-knowledge-vault.json"
 EXCLUDED_PARTS = {
     ".git",
     ".venv",
@@ -85,12 +87,16 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _has_excluded_part(path: Path) -> bool:
+    return any(part.casefold() in EXCLUDED_PARTS for part in path.parts)
+
+
 def _is_safe_source(path: Path, repo_root: Path) -> bool:
     try:
         relative = path.resolve().relative_to(repo_root.resolve())
     except ValueError:
         return False
-    if any(part in EXCLUDED_PARTS for part in relative.parts):
+    if _has_excluded_part(relative):
         return False
     if path.suffix.lower() != ".md":
         return False
@@ -125,13 +131,86 @@ def _write_text(path: Path, content: str) -> None:
     path.write_text(content.rstrip() + "\n", encoding="utf-8")
 
 
+def _write_marker(vault_root: Path) -> None:
+    marker = {
+        "schema_version": 1,
+        "owner": "dealix_knowledge_vault_exporter",
+        "purpose": "generated_read_only_projection",
+    }
+    _write_text(
+        vault_root / VAULT_MARKER,
+        json.dumps(marker, ensure_ascii=False, indent=2),
+    )
+
+
+def _marker_is_owned(vault_root: Path) -> bool:
+    marker_path = vault_root / VAULT_MARKER
+    if not marker_path.is_file():
+        return False
+    try:
+        marker = json.loads(marker_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return False
+    return (
+        isinstance(marker, dict)
+        and marker.get("schema_version") == 1
+        and marker.get("owner") == "dealix_knowledge_vault_exporter"
+    )
+
+
 def _safe_clean(vault_root: Path, repo_root: Path) -> None:
+    if vault_root.is_symlink():
+        raise ValueError(f"Refusing to clean symlinked vault path: {vault_root}")
     resolved = vault_root.resolve()
     forbidden = {Path("/").resolve(), Path.home().resolve(), repo_root.resolve()}
     if resolved in forbidden or len(resolved.parts) < 3:
         raise ValueError(f"Refusing to clean unsafe vault path: {resolved}")
-    if resolved.exists():
-        shutil.rmtree(resolved)
+    if not resolved.exists():
+        return
+    if not resolved.is_dir() or not _marker_is_owned(resolved):
+        raise ValueError(f"Refusing to clean unowned vault path: {resolved}")
+    shutil.rmtree(resolved)
+
+
+def _validate_output_location(
+    *,
+    repo_root: Path,
+    vault_root: Path,
+    source_roots: Iterable[str],
+) -> None:
+    if vault_root == repo_root:
+        raise ValueError("Vault output cannot be the repository root")
+    for raw_root in source_roots:
+        source = (repo_root / raw_root).resolve()
+        if source.is_file():
+            continue
+        if vault_root == source or vault_root.is_relative_to(source):
+            raise ValueError(
+                f"Vault output cannot be inside a configured source root: {source}"
+            )
+
+
+def _resolve_knowledge_json(
+    repo_root: Path,
+    knowledge_json: Path | None,
+) -> Path | None:
+    if knowledge_json is None:
+        return None
+    candidate = knowledge_json
+    if not candidate.is_absolute():
+        candidate = repo_root / candidate
+    resolved = candidate.resolve()
+    try:
+        relative = resolved.relative_to(repo_root)
+    except ValueError as exc:
+        raise ValueError("Knowledge JSON must stay inside the Dealix repository") from exc
+    if _has_excluded_part(relative):
+        raise ValueError("Knowledge JSON cannot come from a private or excluded path")
+    if resolved.suffix.lower() != ".json":
+        raise ValueError("Knowledge input must be a JSON file")
+    if resolved.exists() and resolved.stat().st_size > MAX_KNOWLEDGE_JSON_BYTES:
+        raise ValueError("Knowledge JSON exceeds the bounded export size")
+    return resolved
 
 
 def _render_vault_readme(generated_at: str) -> str:
@@ -140,7 +219,8 @@ def _render_vault_readme(generated_at: str) -> str:
 Generated at: `{generated_at}`
 
 This vault is a **read-only knowledge projection**, not a second production database.
-It mirrors approved Dealix Markdown and an optional KnowledgeAccumulator JSON snapshot.
+It mirrors approved Dealix Markdown and, only when explicitly selected, a bounded
+KnowledgeAccumulator JSON snapshot.
 
 ## Open it
 
@@ -154,6 +234,7 @@ It mirrors approved Dealix Markdown and an optional KnowledgeAccumulator JSON sn
 - Cite the exact `dealix_source_path` or knowledge `source` for every factual answer.
 - Treat generated links and summaries as navigation aids, not independent evidence.
 - Do not place secrets, `.env` files, customer credentials, or production dumps here.
+- Knowledge JSON is opt-in and is never included by CI or scheduled export by default.
 - This exporter performs no network calls, plugin downloads, auto-commits, sends, or deploys.
 """
 
@@ -234,8 +315,8 @@ def _export_repository_sources(
     return records
 
 
-def _load_knowledge_entries(path: Path) -> list[dict[str, Any]]:
-    if not path.exists():
+def _load_knowledge_entries(path: Path | None) -> list[dict[str, Any]]:
+    if path is None or not path.exists():
         return []
     raw = json.loads(path.read_text(encoding="utf-8"))
     if isinstance(raw, dict):
@@ -266,9 +347,17 @@ def _export_knowledge_entries(
     records: list[dict[str, Any]] = []
     by_company: dict[str, list[str]] = {}
     by_sector: dict[str, list[str]] = {}
+    used_slugs: dict[str, str] = {}
     root = vault_root / "wiki" / "sources" / "knowledge"
     for index, entry in enumerate(entries, start=1):
         entry_id = str(entry.get("entry_id") or f"entry-{index}")
+        slug = _slug(entry_id)
+        prior = used_slugs.get(slug)
+        if prior is not None and prior != entry_id:
+            raise ValueError(
+                f"Knowledge entry identifiers collide after normalization: {prior!r} and {entry_id!r}"
+            )
+        used_slugs[slug] = entry_id
         title = _bilingual_text(entry.get("title")) or entry_id
         content = _bilingual_text(entry.get("content"))
         company = str(entry.get("company") or "").strip()
@@ -277,7 +366,7 @@ def _export_knowledge_entries(
         category = str(entry.get("category") or "unknown")
         tags = entry.get("tags") if isinstance(entry.get("tags"), list) else []
         confidence = entry.get("confidence", 0.5)
-        destination = root / f"{_slug(entry_id)}.md"
+        destination = root / f"{slug}.md"
         metadata = {
             "dealix_type": "knowledge_entry",
             "entry_id": entry_id,
@@ -318,8 +407,16 @@ def _write_map_pages(
     generated_at: str,
 ) -> int:
     count = 0
+    used_slugs: dict[str, str] = {}
     for name, targets in sorted(mapping.items(), key=lambda item: item[0].casefold()):
-        destination = vault_root / "wiki" / directory / f"{_slug(name)}.md"
+        slug = _slug(name)
+        prior = used_slugs.get(slug)
+        if prior is not None and prior != name:
+            raise ValueError(
+                f"{page_type.title()} names collide after normalization: {prior!r} and {name!r}"
+            )
+        used_slugs[slug] = name
+        destination = vault_root / "wiki" / directory / f"{slug}.md"
         links = "\n".join(f"- [[{target}]]" for target in sorted(set(targets)))
         body = f"# {name}\n\n## Linked knowledge\n\n{links or '_No linked knowledge._'}"
         _write_text(
@@ -410,10 +507,22 @@ def export_knowledge_vault(
     """Export approved Dealix knowledge into an Obsidian-compatible local vault."""
 
     repo_root = repo_root.resolve()
+    if vault_root.is_symlink():
+        raise ValueError(f"Vault output cannot be a symlink: {vault_root}")
     vault_root = vault_root.resolve()
+    source_roots = tuple(source_roots)
+    _validate_output_location(
+        repo_root=repo_root,
+        vault_root=vault_root,
+        source_roots=source_roots,
+    )
+    selected_knowledge_json = _resolve_knowledge_json(repo_root, knowledge_json)
+    if selected_knowledge_json is not None and selected_knowledge_json.is_relative_to(vault_root):
+        raise ValueError("Knowledge JSON cannot be read from the generated vault")
     if clean:
         _safe_clean(vault_root, repo_root)
     vault_root.mkdir(parents=True, exist_ok=True)
+    _write_marker(vault_root)
     generated_at = datetime.now(UTC).isoformat()
 
     _write_obsidian_config(vault_root)
@@ -423,7 +532,6 @@ def export_knowledge_vault(
     source_records = _export_repository_sources(
         repo_root, vault_root, source_roots, generated_at
     )
-    selected_knowledge_json = knowledge_json or (repo_root / DEFAULT_KNOWLEDGE_JSON)
     entries = _load_knowledge_entries(selected_knowledge_json)
     knowledge_records, by_company, by_sector = _export_knowledge_entries(
         entries, vault_root, generated_at
@@ -438,12 +546,18 @@ def export_knowledge_vault(
     _write_index_page(vault_root, "concepts", "Sectors")
     _write_navigation(vault_root, source_records, knowledge_records, generated_at)
 
+    knowledge_json_manifest = (
+        selected_knowledge_json.relative_to(repo_root).as_posix()
+        if selected_knowledge_json is not None
+        else None
+    )
     manifest = {
         "schema_version": 1,
         "generated_at": generated_at,
-        "repo_root": repo_root.as_posix(),
+        "repo_root": ".",
         "source_roots": list(source_roots),
-        "knowledge_json": selected_knowledge_json.as_posix(),
+        "knowledge_json": knowledge_json_manifest,
+        "knowledge_json_opt_in": selected_knowledge_json is not None,
         "counts": {
             "repository_sources": len(source_records),
             "knowledge_entries": len(knowledge_records),
@@ -472,6 +586,7 @@ def export_knowledge_vault(
         "action": "dealix_knowledge_vault_export",
         "network_calls": 0,
         "external_actions": 0,
+        "knowledge_json_opt_in": selected_knowledge_json is not None,
         "files": hashed_files,
     }
     proof_log_path = vault_root / "proof-log.json"
