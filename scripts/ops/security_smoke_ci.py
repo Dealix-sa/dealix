@@ -7,12 +7,18 @@ false positives from documented/test-only synthetic credentials.
 
 from __future__ import annotations
 
-import os
 import re
+import sys
 from collections.abc import Iterator
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.lib.repo_scan import is_pruned_dir
+from scripts.lib.repo_scan import iter_candidate_files as _iter_files
 
 # Directory names pruned anywhere in the tree. These hold caches, build output
 # or vendored third-party code — never Dealix-authored source — so scanning
@@ -98,40 +104,14 @@ def relpath(path: Path, root: Path = ROOT) -> str:
     return path.relative_to(root).as_posix()
 
 
-def is_virtualenv(directory: Path) -> bool:
-    """Detect a Python virtualenv by its marker file rather than by name.
-
-    Name matching alone only caught ``.venv``/``venv``; any other name
-    (``.venv-audit``, ``venv312``, ``env``) leaked vendored dependency code
-    into the scan and produced false failures.
-    """
-    return (directory / "pyvenv.cfg").is_file()
-
-
 def is_skipped_dir(directory: Path, rel: str) -> bool:
-    """Return True when a directory must be pruned from the scan."""
-    name = directory.name
-    if name in SKIP_DIR_NAMES or name.endswith(".egg-info"):
-        return True
-    if rel.startswith(SKIP_PATH_PREFIXES):
-        return True
-    return is_virtualenv(directory)
+    """Return True when a directory must be pruned from this gate's scan."""
+    return is_pruned_dir(directory, rel, SKIP_DIR_NAMES, SKIP_PATH_PREFIXES)
 
 
 def iter_candidate_files(root: Path = ROOT) -> Iterator[Path]:
     """Walk the repo, pruning excluded directories instead of descending them."""
-    for dirpath, dirnames, filenames in os.walk(root):
-        current = Path(dirpath)
-        rel_dir = relpath(current, root)
-        kept: list[str] = []
-        for name in sorted(dirnames):
-            child = current / name
-            child_rel = name if rel_dir == "." else f"{rel_dir}/{name}"
-            if not is_skipped_dir(child, child_rel):
-                kept.append(name)
-        dirnames[:] = kept
-        for name in sorted(filenames):
-            yield current / name
+    return _iter_files(root, SKIP_DIR_NAMES, SKIP_PATH_PREFIXES)
 
 
 def is_text_candidate(path: Path) -> bool:

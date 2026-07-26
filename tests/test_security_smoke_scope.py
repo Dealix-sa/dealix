@@ -123,3 +123,53 @@ def test_repo_scan_passes_on_current_tree(scanner):
     failures, _ = scanner.scan(REPO_ROOT)
 
     assert failures == [], failures
+
+
+# --- scripts/security_smoke.py: the same scope, via the shared mechanism ---
+
+
+@pytest.fixture(scope="module")
+def standalone_gate():
+    spec = importlib.util.spec_from_file_location(
+        "security_smoke", REPO_ROOT / "scripts" / "security_smoke.py"
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_standalone_gate_prunes_virtualenvs(standalone_gate, tmp_path):
+    venv = tmp_path / "venv312"
+    _write(venv / "pyvenv.cfg", "home = /usr/local/bin\n")
+    _write(venv / "lib" / "site-packages" / "vendor.py", f'K = "{FAKE_AWS_KEY}"\n')
+
+    assert standalone_gate.iter_text_files(tmp_path) == []
+
+
+def test_standalone_gate_prunes_reports_runtime(standalone_gate, tmp_path):
+    _write(tmp_path / "reports" / "runtime" / "daily.md", f"token: {FAKE_AWS_KEY}\n")
+
+    assert standalone_gate.iter_text_files(tmp_path) == []
+
+
+def test_standalone_gate_still_scans_github_workflows(standalone_gate, tmp_path):
+    """This gate deliberately covers .github/, unlike the CI gate.
+
+    Consolidating the two exclusion sets would have silently dropped workflow
+    files from the scan, so the difference is pinned here.
+    """
+    _write(tmp_path / ".github" / "workflows" / "deploy.yml", "key: value\n")
+
+    scanned = {p.name for p in standalone_gate.iter_text_files(tmp_path)}
+
+    assert "deploy.yml" in scanned
+
+
+def test_shared_walk_prunes_egg_info_and_pycache():
+    from scripts.lib.repo_scan import VENDORED_DIR_NAMES, is_pruned_dir
+
+    assert "site-packages" in VENDORED_DIR_NAMES
+    assert is_pruned_dir(Path("/x/pkg.egg-info"), "pkg.egg-info", set())
+    assert is_pruned_dir(Path("/x/__pycache__"), "__pycache__", set())
+    assert not is_pruned_dir(Path("/x/core"), "core", set())
