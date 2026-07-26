@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+"""Export Dealix knowledge into an Obsidian-compatible source-cited vault."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+from dealix.knowledge_vault.exporter import (
+    DEFAULT_KNOWLEDGE_JSON,
+    DEFAULT_SOURCE_ROOTS,
+    export_knowledge_vault,
+)
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Build a local-only Obsidian vault from approved Dealix Markdown and "
+            "an optional KnowledgeAccumulator JSON snapshot."
+        )
+    )
+    parser.add_argument(
+        "--repo-root",
+        type=Path,
+        default=Path.cwd(),
+        help="Dealix repository root (default: current directory)",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("artifacts/dealix-knowledge-vault"),
+        help="Vault output directory",
+    )
+    parser.add_argument(
+        "--source-root",
+        action="append",
+        dest="source_roots",
+        help="Approved Markdown file/directory relative to repo root; repeatable",
+    )
+    parser.add_argument(
+        "--knowledge-json",
+        type=Path,
+        help=f"KnowledgeAccumulator JSON snapshot (default: {DEFAULT_KNOWLEDGE_JSON})",
+    )
+    parser.add_argument(
+        "--clean",
+        action="store_true",
+        help="Delete only the selected output directory before export",
+    )
+    return parser
+
+
+def main() -> int:
+    args = build_parser().parse_args()
+    repo_root = args.repo_root.resolve()
+    output = args.output
+    if not output.is_absolute():
+        output = repo_root / output
+    knowledge_json = args.knowledge_json
+    if knowledge_json is not None and not knowledge_json.is_absolute():
+        knowledge_json = repo_root / knowledge_json
+
+    result = export_knowledge_vault(
+        repo_root=repo_root,
+        vault_root=output,
+        source_roots=tuple(args.source_roots or DEFAULT_SOURCE_ROOTS),
+        knowledge_json=knowledge_json,
+        clean=args.clean,
+    )
+    summary = {
+        "status": "ok",
+        "vault_root": result.vault_root.as_posix(),
+        "source_documents": result.source_documents,
+        "knowledge_entries": result.knowledge_entries,
+        "company_pages": result.company_pages,
+        "sector_pages": result.sector_pages,
+        "manifest": result.manifest_path.as_posix(),
+        "proof_log": result.proof_log_path.as_posix(),
+        "network_calls": 0,
+        "external_actions": 0,
+    }
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
