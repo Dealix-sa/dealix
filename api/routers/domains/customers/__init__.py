@@ -24,13 +24,13 @@ from api.routers import (
 from api.routers import (
     customer_brain as customer_brain_router,
 )
-from api.routers.customer import dashboard as customer_dashboard_router
 from api.routers import (
     service_sessions as service_sessions_router,
 )
 from api.routers import (
     support_journey as support_journey_router,
 )
+from api.routers.customer import dashboard as customer_dashboard_router
 
 _ROUTERS = [
     company_brain_mvp_router.router,
