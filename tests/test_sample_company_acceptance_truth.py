@@ -7,8 +7,10 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import subprocess
 from pathlib import Path
 
+from scripts import dealix_daily_operator as daily_operator
 from scripts import generate_daily_ceo_brief as ceo_brief
 from scripts import generate_outreach_drafts as outreach
 
@@ -32,6 +34,7 @@ def test_generated_draft_matches_canonical_review_contract() -> None:
     )
 
     assert draft["id"] == "draft-sample-logistics-001-ar"
+    assert draft["draftId"] == draft["id"]
     assert draft["accountId"] == "sample-logistics-001"
     assert draft["reviewStatus"] == "draft_pending_human_review"
     assert draft["demo"] is True
@@ -64,9 +67,85 @@ def test_write_outputs_keeps_one_canonical_queue_and_compatibility_export(
     compatibility_payload = json.loads(compatibility_path.read_text(encoding="utf-8"))
 
     assert canonical_payload["drafts"][0]["reviewStatus"] == "draft_pending_human_review"
+    assert canonical_payload["drafts"][0]["draftId"] == "draft-sample-001-en"
     assert canonical_payload["notice"].startswith("Draft only")
     assert compatibility_payload[0]["review_status"] == "pending_review"
     assert canonical_path.name == "outreach_review_queue.json"
+
+
+def test_write_outputs_preserves_human_decisions_and_orphaned_evidence(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    canonical = tmp_path / "business" / "_data" / "outreach_review_queue.json"
+    exports = tmp_path / "business" / "persuasion" / "exports"
+    monkeypatch.setattr(outreach, "CANONICAL_QUEUE_PATH", canonical)
+    monkeypatch.setattr(outreach, "EXPORT_DIR", exports)
+
+    approved = outreach.build_draft(
+        {"id": "sample-001", "name": "Approved Co", "segment": "services"},
+        "en",
+        "email",
+        generated_at="2026-07-24T12:00:00Z",
+    )
+    approved.update(
+        {
+            "reviewStatus": "approved",
+            "reviewer": "Sami",
+            "reviewedAt": "2026-07-24",
+            "body": "Human-reviewed approved copy",
+        }
+    )
+    rejected_orphan = outreach.build_draft(
+        {"id": "sample-002", "name": "Rejected Co", "segment": "logistics"},
+        "ar",
+        "whatsapp",
+        generated_at="2026-07-24T13:00:00Z",
+    )
+    rejected_orphan.update(
+        {
+            "reviewStatus": "rejected",
+            "reviewer": "Sami",
+            "reviewedAt": "2026-07-24",
+            "rejectionReason": "Not specific enough",
+        }
+    )
+    _write_json(canonical, {"drafts": [approved, rejected_orphan]})
+
+    regenerated = outreach.build_draft(
+        {"id": "sample-001", "name": "Approved Co", "segment": "new-segment"},
+        "en",
+        "email",
+        generated_at="2026-07-25T12:00:00Z",
+    )
+    canonical_path, _ = outreach.write_outputs(
+        [regenerated],
+        "demo",
+        date=dt.date(2026, 7, 25),
+    )
+
+    payload = json.loads(canonical_path.read_text(encoding="utf-8"))
+    by_id = {draft["draftId"]: draft for draft in payload["drafts"]}
+
+    assert by_id[approved["draftId"]]["reviewStatus"] == "approved"
+    assert by_id[approved["draftId"]]["body"] == "Human-reviewed approved copy"
+    assert by_id[approved["draftId"]]["reviewer"] == "Sami"
+    assert by_id[rejected_orphan["draftId"]]["reviewStatus"] == "rejected"
+    assert by_id[rejected_orphan["draftId"]]["rejectionReason"] == "Not specific enough"
+
+
+def test_daily_operator_maps_production_to_live_draft_mode(monkeypatch) -> None:
+    calls: list[list[str]] = []
+    monkeypatch.setattr(subprocess, "check_call", lambda command: calls.append(command))
+
+    daily_operator.cmd_drafts("production")
+    daily_operator.cmd_drafts("demo")
+
+    production_command, demo_command = calls
+    production_mode = production_command[production_command.index("--mode") + 1]
+    demo_mode = demo_command[demo_command.index("--mode") + 1]
+    assert production_mode == "live"
+    assert demo_mode == "demo"
 
 
 def test_ceo_brief_uses_runtime_queue_and_followup_counts(
