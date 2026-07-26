@@ -350,6 +350,28 @@ def get_enforcement_mode(env: Any = None) -> str:
     return mode if mode in {OFF, SHADOW, ENFORCE} else SHADOW
 
 
+def is_tenant_exempt_path(path: str) -> bool:
+    """Paths that must answer without a resolvable tenant, even under enforce.
+
+    Health probes, webhooks and the public funnel legitimately carry no tenant:
+    Railway's healthcheck sends no headers at all, webhooks authenticate by
+    signature, and a prospect filling the public form has no tenant yet. On top
+    of that, ``_parse_tenant_from_host`` deliberately rejects the canonical
+    hosts (``api``/``www``/``app``/``admin``), so even a correctly configured
+    deployment resolves no tenant for its own domain.
+
+    Without this, flipping TENANT_ENFORCEMENT=enforce would 403 the healthcheck
+    and fail the deploy — the enforcement path would be unusable, which makes
+    the whole shadow-then-enforce rollout a dead end.
+
+    Reuses the API-key middleware's public lists rather than starting a second
+    one: two lists of "what is public" drift, and the drift is a security bug.
+    """
+    from api.security.api_key import PUBLIC_PATHS, PUBLIC_PREFIXES
+
+    return path in PUBLIC_PATHS or path.startswith(PUBLIC_PREFIXES)
+
+
 class TenantContextMiddleware(BaseHTTPMiddleware):
     """Resolve the tenant for each request and attach it to ``request.state``.
 
@@ -387,7 +409,7 @@ class TenantContextMiddleware(BaseHTTPMiddleware):
         except CrossTenantAccessDenied:
             request.state.tenant_context = None
             request.state.tenant_id = None
-            if mode == ENFORCE:
+            if mode == ENFORCE and not is_tenant_exempt_path(request.url.path):
                 return JSONResponse(
                     status_code=403,
                     content={"detail": "tenant_could_not_be_resolved"},

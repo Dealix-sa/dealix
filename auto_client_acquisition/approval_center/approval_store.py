@@ -298,19 +298,46 @@ def resolve_backend_name(env: Mapping[str, str] | None = None) -> str:
     return "postgres" if (e.get("DATABASE_URL") or "").strip() else "in_memory"
 
 
+#: The sync Postgres driver this repository actually installs.
+#: requirements.txt and pyproject.toml pin ``psycopg[binary]>=3.2,<4`` — psycopg
+#: 3, whose SQLAlchemy dialect is ``psycopg``. psycopg2 is not installed, so
+#: emitting a ``postgresql+psycopg2://`` URL raises ModuleNotFoundError inside
+#: create_engine() and the store silently falls back to memory.
+SYNC_POSTGRES_DRIVER = "postgresql+psycopg"
+
+
 def _sync_database_url(raw: str) -> str:
-    """Convert an async SQLAlchemy URL to the sync driver this store uses.
+    """Convert a database URL to the sync driver this store uses.
 
     The app runs on asyncpg/aiosqlite, but PostgresApprovalStore is synchronous;
     handing it an async URL raises at connect time.
+
+    Bare ``postgres://`` and ``postgresql://`` are normalised too. Without that
+    they reach create_engine() with SQLAlchemy's default Postgres dialect —
+    psycopg2 — which is equally absent, so the durable backend would still fail
+    for anyone whose DATABASE_URL is not explicitly asyncpg.
     """
+    url = raw.strip()
+    if not url:
+        return url
+
+    # Heroku-style scheme SQLAlchemy no longer accepts.
+    if url.startswith("postgres://"):
+        url = url.replace("postgres://", "postgresql://", 1)
+
     for async_driver, sync_driver in (
-        ("postgresql+asyncpg", "postgresql+psycopg2"),
+        ("postgresql+asyncpg", SYNC_POSTGRES_DRIVER),
         ("sqlite+aiosqlite", "sqlite"),
     ):
-        if raw.startswith(async_driver):
-            return raw.replace(async_driver, sync_driver, 1)
-    return raw
+        if url.startswith(async_driver):
+            return url.replace(async_driver, sync_driver, 1)
+
+    # postgresql:// with no driver → pin the installed one explicitly rather
+    # than inherit psycopg2 by default.
+    if url.startswith("postgresql://"):
+        return url.replace("postgresql://", f"{SYNC_POSTGRES_DRIVER}://", 1)
+
+    return url
 
 
 def get_default_approval_store() -> Any:
@@ -337,8 +364,14 @@ def get_default_approval_store() -> Any:
             )
             return _DEFAULT
         except Exception as exc:  # broad by design: must not break the surface
-            log.warning(
-                "approval_store_postgres_unavailable falling_back_to_memory error=%s",
+            # Logged at error level, not warning. A durable backend that was
+            # asked for and did not materialise means approvals are being lost
+            # on every restart — this exact fallback hid a psycopg2/psycopg3
+            # driver mismatch that made the durable store unreachable while
+            # everything appeared to work.
+            log.error(
+                "approval_store_postgres_unavailable falling_back_to_memory "
+                "approvals_will_not_survive_restart error=%s",
                 exc,
             )
 

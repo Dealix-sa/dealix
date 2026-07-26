@@ -263,6 +263,76 @@ def test_async_database_urls_are_converted_to_a_sync_driver():
     """The app runs asyncpg/aiosqlite; this store is synchronous."""
     from auto_client_acquisition.approval_center.approval_store import _sync_database_url
 
-    assert _sync_database_url("postgresql+asyncpg://u@h/d") == "postgresql+psycopg2://u@h/d"
+    assert _sync_database_url("postgresql+asyncpg://u@h/d") == "postgresql+psycopg://u@h/d"
     assert _sync_database_url("sqlite+aiosqlite:///./x.db") == "sqlite:///./x.db"
-    assert _sync_database_url("postgresql://u@h/d") == "postgresql://u@h/d"
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        "postgresql+asyncpg://u:p@h:5432/d",
+        "postgresql://u:p@h:5432/d",
+        "postgres://u:p@h:5432/d",
+        "postgresql+psycopg://u:p@h:5432/d",
+    ],
+)
+def test_converted_url_actually_builds_an_engine(raw):
+    """The test that was missing, and the reason the first fix did nothing.
+
+    Asserting the converted *string* looks right proves nothing: the original
+    implementation emitted ``postgresql+psycopg2://`` while this repository
+    installs psycopg 3 (``psycopg[binary]`` in requirements.txt). create_engine
+    raised ModuleNotFoundError, the broad except in get_default_approval_store
+    swallowed it, and the store silently returned to memory — so the durability
+    fix was inert in production while every string assertion passed.
+
+    This builds a real engine with the drivers actually installed. It does not
+    connect, so no database is required.
+    """
+    from sqlalchemy import create_engine
+
+    from auto_client_acquisition.approval_center.approval_store import _sync_database_url
+
+    engine = create_engine(_sync_database_url(raw), future=True)
+
+    assert engine.dialect.driver == "psycopg", (
+        f"{raw} resolved to driver {engine.dialect.driver!r}; this repo installs "
+        "psycopg 3 only, so anything else fails at create_engine time."
+    )
+
+
+def test_psycopg2_is_not_installed_so_must_never_be_emitted():
+    """Pins the fact that made the original conversion wrong."""
+    import importlib.util
+
+    from auto_client_acquisition.approval_center.approval_store import (
+        SYNC_POSTGRES_DRIVER,
+        _sync_database_url,
+    )
+
+    assert importlib.util.find_spec("psycopg2") is None, (
+        "psycopg2 is now installed — re-evaluate SYNC_POSTGRES_DRIVER."
+    )
+    assert SYNC_POSTGRES_DRIVER == "postgresql+psycopg"
+    assert "psycopg2" not in _sync_database_url("postgresql+asyncpg://u@h/d")
+
+
+def test_production_with_a_real_database_url_selects_the_durable_backend(
+    monkeypatch, tmp_path
+):
+    """End-to-end: the factory must not quietly land on memory.
+
+    This is the assertion the earlier work lacked — it checked which backend was
+    *intended*, never which one was *constructed*.
+    """
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("DATABASE_URL", f"sqlite:///{tmp_path/'prod.db'}")
+    monkeypatch.delenv("APPROVAL_STORE_BACKEND", raising=False)
+    reset_default_approval_store()
+    try:
+        store = get_default_approval_store()
+        assert type(store).__name__ == "PostgresApprovalStore", (
+            "factory fell back to memory — approvals would not survive restart"
+        )
+    finally:
+        reset_default_approval_store()

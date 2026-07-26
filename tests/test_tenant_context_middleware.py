@@ -173,3 +173,73 @@ def test_row_level_security_is_defined_but_not_applied():
         "change — it belongs in a reviewed migration, and this test should be "
         "replaced with one that verifies the policies actually take effect."
     )
+
+
+# ── Enforce mode must not break public surfaces ─────────────────────────────
+
+
+def test_public_paths_are_exempt_from_tenant_enforcement():
+    """Health probes, webhooks and the public funnel carry no tenant by design."""
+    from api.middleware.tenant_isolation import is_tenant_exempt_path
+
+    for path in ("/healthz", "/health", "/ready", "/livez", "/version", "/api/v1/meta"):
+        assert is_tenant_exempt_path(path), path
+    for path in ("/api/v1/public/custom-ai-request", "/api/v1/webhooks/whatsapp"):
+        assert is_tenant_exempt_path(path), path
+
+
+def test_tenant_scoped_paths_are_not_exempt():
+    """The exemption must stay narrow, or enforcement means nothing."""
+    from api.middleware.tenant_isolation import is_tenant_exempt_path
+
+    for path in ("/api/v1/leads", "/api/v1/founder/dashboard", "/api/v1/approvals/pending"):
+        assert not is_tenant_exempt_path(path), path
+
+
+def test_exemption_reuses_the_api_key_public_lists():
+    """One definition of 'public'. Two would drift, and drift is a security bug."""
+    from api.middleware.tenant_isolation import is_tenant_exempt_path
+    from api.security.api_key import PUBLIC_PATHS
+
+    for path in PUBLIC_PATHS:
+        assert is_tenant_exempt_path(path), path
+
+
+@pytest.mark.asyncio
+async def test_enforce_mode_still_serves_a_health_probe():
+    """The regression that would have failed every Railway deploy.
+
+    Without the exemption, TENANT_ENFORCEMENT=enforce returns 403 to the
+    healthcheck — the container never goes healthy and the deploy rolls back.
+    """
+    app = FastAPI()
+    app.add_middleware(TenantContextMiddleware, mode=ENFORCE)
+
+    @app.get("/healthz")
+    async def healthz() -> JSONResponse:
+        return JSONResponse({"status": "ok"})
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.get("/healthz")
+
+    assert response.status_code == 200, (
+        "enforce mode 403'd the health probe — deploys would fail"
+    )
+
+
+@pytest.mark.asyncio
+async def test_enforce_mode_still_rejects_a_tenant_scoped_path():
+    """Positive control: the exemption must not disable enforcement."""
+    app = FastAPI()
+    app.add_middleware(TenantContextMiddleware, mode=ENFORCE)
+
+    @app.get("/api/v1/leads")
+    async def leads() -> JSONResponse:
+        return JSONResponse({"leads": []})
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.get("/api/v1/leads")
+
+    assert response.status_code == 403

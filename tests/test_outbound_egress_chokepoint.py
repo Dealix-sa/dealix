@@ -52,6 +52,7 @@ ALL_ON = {
 KNOWN_EGRESS_MODULES = {
     "auto_client_acquisition/email/gmail_send.py",
     "auto_client_acquisition/email/whatsapp_multi_provider.py",
+    "company/automation/whatsapp_automation.py",
     "integrations/email.py",
     "integrations/whatsapp.py",
 }
@@ -63,13 +64,46 @@ INTENTIONALLY_UNGUARDED = {
     "create_draft": "drafts are the safe path and must work while outbound is disabled",
 }
 
+#: Every messaging-provider endpoint present in this repository.
+#:
+#: The first version of this list held five entries and missed three real
+#: senders, because it was written from the providers I happened to be looking
+#: at rather than from the repository. graph.instagram.com in particular was
+#: missed because the sibling constant said graph.facebook.com — one character
+#: class apart, and the structural scan silently covered nothing in that file.
+#: It also meant whatsapp_multi_provider's green-api/ultramsg/fonnte senders
+#: were guarded by luck rather than verified.
+#:
+#: Derived by grepping the tree for provider hostnames, not from memory:
+#:   grep -rhoE "https://[a-z0-9.-]*(twilio|unifonic|resend|...)" --include=*.py
 PROVIDER_MARKERS = (
-    "gmail.googleapis.com",
+    "api.fonnte.com",
+    "api.green-api.com",
     "api.resend.com",
     "api.sendgrid.com",
+    "api.twilio.com",
+    "api.ultramsg.com",
+    "api.unifonic.com",
+    "gmail.googleapis.com",
     "graph.facebook.com",
+    "graph.instagram.com",
     "smtplib.SMTP",
 )
+
+#: Modules that send messages but are deliberately outside the commercial kill
+#: switch, each with the reason. This is a narrow, argued list — not a place to
+#: park anything inconvenient.
+MESSAGING_EXEMPT_MODULES = {
+    "api/security/mfa.py": (
+        "MFA one-time codes are transactional security messages, sent to the "
+        "user's own verified device in direct response to their own login "
+        "attempt. EXTERNAL_SEND_ENABLED / SMS_SEND_ENABLED govern commercial "
+        "outbound; gating MFA on them would lock every user out of their "
+        "account the moment outbound is disabled — an outage we would be "
+        "inflicting on ourselves, not a safety win. Exempt by decision, and "
+        "recorded here so it stays a decision."
+    ),
+}
 
 #: Modules that mention a provider endpoint without calling it. Each needs a
 #: reason, so "it's fine" is never assumed — a wrong entry here is how a real
@@ -233,7 +267,11 @@ def test_no_unknown_module_reaches_a_provider():
         rel = path.relative_to(REPO_ROOT).as_posix()
         if rel.startswith(("tests/", "scripts/", ".venv")) or "/.venv" in rel:
             continue
-        if rel in KNOWN_EGRESS_MODULES or rel in NON_EGRESS_REFERENCES:
+        if (
+            rel in KNOWN_EGRESS_MODULES
+            or rel in NON_EGRESS_REFERENCES
+            or rel in MESSAGING_EXEMPT_MODULES
+        ):
             continue
         try:
             source = path.read_text(encoding="utf-8", errors="ignore")
@@ -286,8 +324,15 @@ def transports_that_explode(monkeypatch):
             attempts.append("smtplib.SMTP")
             raise AssertionError("egress attempted: smtplib.SMTP was constructed")
 
+    def recording_requests_post(*_args, **_kwargs):
+        attempts.append("requests.post")
+        raise AssertionError("egress attempted: requests.post reached the network")
+
     monkeypatch.setattr("httpx.AsyncClient.post", recording_post)
     monkeypatch.setattr("smtplib.SMTP", RecordingSMTP)
+    # requests is a third transport. Patching only httpx and smtplib meant a
+    # sender using requests could reach the network with every test green.
+    monkeypatch.setattr("requests.post", recording_requests_post)
     return attempts
 
 
@@ -431,3 +476,90 @@ def test_draft_path_is_unaffected_by_the_kill_switch(monkeypatch):
         "create_draft is guarded; draft_only mode would produce nothing."
     )
     assert getattr(gmail_send.send_email, "__egress_channel__", None) == "email"
+
+
+# ── Regression: the three senders the first version of this file missed ─────
+
+
+def test_every_messaging_provider_in_the_repo_is_a_known_marker():
+    """The marker list must come from the tree, not from memory.
+
+    The first version listed five hosts and missed three live senders. This
+    re-derives the set from source so a newly integrated provider fails here
+    instead of quietly bypassing the kill switch.
+    """
+    import re
+
+    pattern = re.compile(
+        r"https://([a-z0-9.-]*(?:twilio|unifonic|resend|sendgrid|mailgun|postmark"
+        r"|graph\.facebook|graph\.instagram|green-api|ultramsg|fonnte"
+        r"|gmail\.googleapis)[a-z0-9.-]*)"
+    )
+    found: set[str] = set()
+    for directory in ("api", "app", "auto_client_acquisition", "dealix", "integrations", "company", "core"):
+        for path in (REPO_ROOT / directory).rglob("*.py"):
+            found.update(pattern.findall(path.read_text(encoding="utf-8", errors="ignore")))
+
+    unlisted = {host for host in found if host not in PROVIDER_MARKERS}
+
+    assert not unlisted, (
+        f"Messaging providers not in PROVIDER_MARKERS: {sorted(unlisted)}. "
+        "Add them and confirm every sender using them carries @guarded_egress."
+    )
+
+
+def test_mfa_exemption_is_recorded_with_a_reason():
+    """The exemption must be a decision on the record, not an oversight."""
+    assert "api/security/mfa.py" in MESSAGING_EXEMPT_MODULES
+    assert len(MESSAGING_EXEMPT_MODULES["api/security/mfa.py"]) > 100, (
+        "an exemption from the outbound kill switch needs an argued reason"
+    )
+
+
+@pytest.mark.asyncio
+async def test_whatsapp_automation_is_blocked_when_outbound_is_disabled(
+    outbound_disabled, transports_that_explode, monkeypatch
+):
+    """company/automation reaches the network via requests, not httpx.
+
+    This sender was missed entirely by the first version: its host was not in
+    PROVIDER_MARKERS and its transport was not patched, so it could have sent
+    while every test passed.
+    """
+    monkeypatch.setenv("WHATSAPP_API_KEY", "placeholder-key")
+    monkeypatch.setenv("WHATSAPP_BUSINESS_ACCOUNT_ID", "placeholder-account")
+    monkeypatch.setenv("WHATSAPP_PHONE_NUMBER_ID", "placeholder-phone")
+
+    from company.automation.whatsapp_automation import WhatsAppAutomation
+
+    result = WhatsAppAutomation().send_message(
+        recipient_phone="+966500000000", message_ar="مرحبا"
+    )
+
+    assert result["status"] == "blocked_policy"
+    assert transports_that_explode == [], (
+        f"reached the network while outbound was disabled: {transports_that_explode}"
+    )
+
+
+def test_whatsapp_automation_proceeds_when_outbound_is_enabled(
+    outbound_fully_enabled, transports_that_explode, monkeypatch
+):
+    """Positive control — the guard must be a gate, not a wall."""
+    monkeypatch.setenv("WHATSAPP_API_KEY", "placeholder-key")
+    monkeypatch.setenv("WHATSAPP_BUSINESS_ACCOUNT_ID", "placeholder-account")
+    monkeypatch.setenv("WHATSAPP_PHONE_NUMBER_ID", "placeholder-phone")
+
+    from company.automation.whatsapp_automation import WhatsAppAutomation
+
+    # Unlike the gmail and smtp senders, this one does not swallow transport
+    # errors, so the recorder's AssertionError propagates.
+    with pytest.raises(AssertionError, match="egress attempted"):
+        WhatsAppAutomation().send_message(
+            recipient_phone="+966500000000", message_ar="مرحبا"
+        )
+
+    assert "requests.post" in transports_that_explode, (
+        "requests.post was never reached with outbound fully enabled — the "
+        "guard is blocking unconditionally."
+    )

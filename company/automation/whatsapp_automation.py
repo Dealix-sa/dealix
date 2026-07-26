@@ -3,13 +3,26 @@
 
 import json
 import os
-import requests
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+import requests
+
+from app.outbound.egress import guarded_egress
+
 ROOT = Path(__file__).resolve().parents[2]
 RUNTIME_DIR = ROOT / "company" / "runtime"
+
+
+# NOTE — pre-existing, deliberately not changed here: this posts a
+# `messaging_product: whatsapp` payload to the Instagram Graph host. The
+# WhatsApp Cloud API lives at graph.facebook.com, so this endpoint looks wrong
+# and sends here have probably never succeeded. Left alone because correcting a
+# live provider endpoint is a behaviour change that deserves its own review and
+# a way to verify against the real account — not a silent edit inside an
+# outbound-safety fix. Raised so it is on the record.
+API_BASE_URL = "https://graph.instagram.com/v18.0"
 
 
 class WhatsAppAutomation:
@@ -20,12 +33,20 @@ class WhatsAppAutomation:
         self.api_key = os.getenv("WHATSAPP_API_KEY", "")
         self.account_id = os.getenv("WHATSAPP_BUSINESS_ACCOUNT_ID", "")
         self.phone_number_id = os.getenv("WHATSAPP_PHONE_NUMBER_ID", "")
-        self.base_url = "https://graph.instagram.com/v18.0"
+        self.base_url = API_BASE_URL
 
     def is_configured(self) -> bool:
         """Check if WhatsApp API is properly configured."""
         return bool(self.api_key and self.account_id and self.phone_number_id)
 
+    @guarded_egress(
+        "whatsapp",
+        on_blocked=lambda reason: {
+            "status": "blocked_policy",
+            "error": reason,
+            "message_id": None,
+        },
+    )
     def send_message(
         self,
         recipient_phone: str,
