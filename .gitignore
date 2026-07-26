@@ -66,6 +66,10 @@ env/
 ENV/
 .venv/
 .env/
+# Suffixed virtualenvs (.venv-audit, venv312, ...) — same class of directory,
+# and the security-smoke gate prunes them by their pyvenv.cfg marker too.
+.venv*/
+venv*/
 
 # PyInstaller
 *.manifest
