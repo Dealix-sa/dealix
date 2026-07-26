@@ -1,565 +1,247 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dealix Services Catalog — كتالوج الخدمات</title>
-<meta name="description" content="كتالوج Dealix الكامل: 7 خدمات Saudi-AI-first من التشخيص المجاني إلى Executive Command Center. كل خدمة لها مخرجات واضحة، التزام KPI، وسياسة استرداد. PDPL-compliant، WhatsApp-aware، Article 4 hard gates immutable." />
-<link rel="canonical" href="https://dealix.me/services.html" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Dealix Services Catalog — 7 Sellable Offerings" />
-<meta property="og:description" content="From free diagnostic to Executive Command Center. Every offering shows deliverables, KPI commitment, refund policy, and action modes used. Saudi-first." />
-<meta property="og:url" content="https://dealix.me/services.html" />
-<meta property="og:locale" content="ar_SA" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content="#0f172a" />
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" />
-
-<link rel="stylesheet" href="/styles.css" />
-<link rel="stylesheet" href="/assets/css/design-system.css" />
-<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-
-<style>
-  body {
-    background:
-      radial-gradient(900px 500px at 80% -10%, rgba(34, 197, 94, 0.14), transparent 60%),
-      radial-gradient(900px 500px at 0% 10%, rgba(34, 197, 200, 0.12), transparent 60%),
-      linear-gradient(180deg, #050816 0%, #0b1124 60%, #0f172a 100%);
-    color: var(--text);
-    min-height: 100vh;
-    margin: 0;
-    font-family: var(--font-ar);
-  }
-  main { padding: var(--space-6) var(--space-5) var(--space-9); max-width: 1200px; margin: 0 auto; }
-
-  .hero { text-align: center; padding: var(--space-7) 0 var(--space-5); }
-  .hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: var(--space-3); }
-  .hero p { color: var(--text-muted); max-width: 720px; margin: 0 auto var(--space-3); }
-  .hero .badges { display: flex; flex-wrap: wrap; gap: var(--space-2); justify-content: center; margin-top: var(--space-3); }
-  .hero .badges .badge { background: rgba(34, 197, 94, 0.12); color: #4ade80; padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.85rem; border: 1px solid rgba(34, 197, 94, 0.3); }
-
-  /* Service cards grid */
-  .svc-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: var(--space-4);
-    margin-top: var(--space-5);
-  }
-  .svc-card {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .svc-card:hover { border-color: rgba(34, 197, 94, 0.4); transform: translateY(-2px); }
-  .svc-card[data-tier="free"] { border-color: rgba(96, 165, 250, 0.3); }
-  .svc-card[data-tier="sprint"] { border-color: rgba(34, 197, 94, 0.4); background: rgba(15, 23, 42, 0.8); }
-  .svc-card[data-tier="ecc"] { border-color: rgba(168, 85, 247, 0.4); }
-
-  .svc-card h3 { margin: 0; font-size: 1.25rem; }
-  .svc-card .sub-en { color: var(--text-muted); font-size: 0.9rem; font-family: var(--font-en); }
-  .svc-card .price {
-    display: flex; align-items: baseline; gap: 0.5rem;
-    margin-top: var(--space-2);
-  }
-  .svc-card .price .amount { font-size: 1.75rem; font-weight: 700; color: #4ade80; }
-  .svc-card .price .unit { color: var(--text-muted); font-size: 0.9rem; }
-  .svc-card .duration { color: var(--text-muted); font-size: 0.85rem; }
-  .svc-card .deliv-title { color: #94a3b8; font-size: 0.85rem; margin-top: var(--space-2); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  .svc-card ul { padding: 0 1.2rem 0 0; margin: 0; font-size: 0.9rem; color: var(--text); }
-  .svc-card ul li { margin-bottom: 0.3rem; }
-  .svc-card .kpi-box {
-    background: rgba(34, 197, 94, 0.06);
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-    margin-top: var(--space-3);
-  }
-  .svc-card .kpi-box .kpi-label { color: #4ade80; font-size: 0.8rem; font-weight: 600; }
-  .svc-card .kpi-box .kpi-ar { font-size: 0.92rem; margin: 0.3rem 0; }
-  .svc-card .kpi-box .kpi-en { font-size: 0.82rem; color: var(--text-muted); font-family: var(--font-en); }
-  .svc-card .refund {
-    color: var(--text-muted); font-size: 0.82rem; margin-top: var(--space-2);
-    padding-top: var(--space-2); border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
-  .svc-card .gates {
-    display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: var(--space-2);
-  }
-  .svc-card .gates .gate { font-size: 0.7rem; color: #94a3b8; background: rgba(255, 255, 255, 0.05); padding: 0.2rem 0.5rem; border-radius: 999px; font-family: var(--font-en); }
-  .svc-card .cta-row {
-    display: flex; gap: 0.6rem; margin-top: auto; padding-top: var(--space-3);
-  }
-  .svc-card .btn { flex: 1; text-align: center; }
-
-  /* When to pick — comparison strip */
-  .compare-strip {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    margin: var(--space-7) 0 var(--space-5);
-  }
-  .compare-strip h2 { text-align: center; margin-top: 0; }
-  .compare-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: var(--space-3);
-    margin-top: var(--space-4);
-  }
-  .compare-cell {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-  }
-  .compare-cell strong { color: #4ade80; display: block; margin-bottom: 0.4rem; }
-  .compare-cell p { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
-
-  /* Hard rules section */
-  .rules {
-    background: rgba(15, 23, 42, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    margin-top: var(--space-5);
-  }
-  .rules h2 { margin-top: 0; }
-  .rules ul { padding-right: 1.2rem; }
-  .rules li { margin-bottom: 0.4rem; color: var(--text); }
-  .rules li strong { color: #4ade80; }
-
-  .footer-cta {
-    text-align: center; margin-top: var(--space-7); padding: var(--space-5);
-    background: rgba(34, 197, 94, 0.06);
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    border-radius: var(--radius-lg);
-  }
-  .footer-cta p { color: var(--text-muted); margin: var(--space-2) 0; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="عروض Dealix التجريبية للشركات السعودية: تشخيص، إثبات إيراد، غرفة قيادة، دخول سوق، وإعداد AI Company OS ضمن نطاق مكتوب ومحكوم بالموافقة." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://dealix.me/services.html" />
+  <title>عروض Dealix — من التشخيص إلى غرفة القيادة</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090909;
+      --surface: #121212;
+      --surface-2: #191919;
+      --border: #2b2b2b;
+      --text: #f5f5f0;
+      --muted: #b7b7af;
+      --accent: #d5b66c;
+      --accent-2: #f0d995;
+      --safe: #91d0a9;
+      --radius: 20px;
+      --shadow: 0 24px 70px rgba(0,0,0,.34);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+      background: radial-gradient(circle at 10% 0%, rgba(213,182,108,.12), transparent 32rem), var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+    }
+    a { color: inherit; }
+    .container { width: min(1140px, calc(100% - 32px)); margin-inline: auto; }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(9,9,9,.9);
+      backdrop-filter: blur(14px);
+    }
+    .nav { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 900; }
+    .mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--accent); border-radius: 10px; color: var(--accent-2); }
+    nav { display: flex; gap: 18px; color: var(--muted); font-size: .93rem; }
+    nav a { text-decoration: none; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #17130b;
+      text-decoration: none;
+      font-weight: 900;
+    }
+    .button.secondary { background: transparent; color: var(--text); border-color: var(--border); }
+    .hero { padding: 88px 0 56px; }
+    .eyebrow { display: inline-block; padding: 7px 13px; border: 1px solid rgba(213,182,108,.38); border-radius: 999px; color: var(--accent-2); background: rgba(213,182,108,.08); font-weight: 800; font-size: .88rem; }
+    h1 { max-width: 920px; margin: 22px 0 16px; font-size: clamp(2.5rem, 6.7vw, 5.5rem); line-height: 1.04; letter-spacing: -.045em; }
+    .lead { max-width: 800px; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.28rem); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .note { color: var(--muted); font-size: .9rem; margin-top: 14px; }
+    section { padding: 70px 0; }
+    .kicker { color: var(--accent-2); font-weight: 900; margin-bottom: 8px; }
+    h2 { margin: 0 0 16px; font-size: clamp(2rem, 4vw, 3.15rem); line-height: 1.15; letter-spacing: -.025em; }
+    .intro { max-width: 780px; color: var(--muted); margin-bottom: 30px; }
+    .offer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .offer {
+      display: flex;
+      flex-direction: column;
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--surface-2), var(--surface));
+      box-shadow: var(--shadow);
+    }
+    .offer small { color: var(--accent-2); font-weight: 900; }
+    .offer h3 { margin: 10px 0 8px; font-size: 1.42rem; }
+    .offer p { color: var(--muted); margin: 0 0 18px; }
+    .offer ul { margin: 0 0 22px; padding-right: 20px; color: var(--muted); }
+    .offer li + li { margin-top: 7px; }
+    .offer .fit { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--border); color: var(--safe); font-weight: 800; }
+    .process { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .step { padding: 22px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); }
+    .step b { color: var(--accent-2); }
+    .step h3 { margin: 12px 0 6px; font-size: 1.08rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .boundary { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
+    .panel { padding: 30px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+    .checks { display: grid; gap: 10px; margin-top: 18px; }
+    .check { display: flex; gap: 10px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 13px; color: var(--muted); }
+    .check b { color: var(--safe); }
+    .cta { padding: clamp(30px, 5vw, 54px); border: 1px solid rgba(213,182,108,.46); border-radius: 28px; background: linear-gradient(135deg, rgba(213,182,108,.14), rgba(255,255,255,.025)); box-shadow: var(--shadow); }
+    footer { padding: 42px 0 54px; border-top: 1px solid var(--border); color: var(--muted); }
+    .footer { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .links { display: flex; gap: 16px; flex-wrap: wrap; }
+    @media (max-width: 850px) {
+      nav { display: none; }
+      .offer-grid, .boundary, .process { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-<main>
-
-  <section class="hero">
-    <h1>كتالوج الخدمات الكامل · Services Catalog</h1>
-    <p>٧ خدمات Saudi-AI-first، من التشخيص المجاني إلى Executive Command Center. كل خدمة لها مخرجات واضحة، التزام KPI، وسياسة استرداد. كل القرارات الخارجية تمر عبر موافقة المؤسس — Article 4 hard gates immutable.</p>
-    <p style="font-family: var(--font-en); font-size: 0.9rem;">7 Saudi-AI-first offerings, from free diagnostic to Executive Command Center. Every offering shows deliverables, KPI commitment, refund policy, and action modes used.</p>
-    <div class="badges">
-      <span class="badge">PDPL Compliant</span>
-      <span class="badge">Arabic-First</span>
-      <span class="badge">WhatsApp-Aware</span>
-      <span class="badge">8/8 Hard Gates Immutable</span>
-      <span class="badge">Approval-First</span>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="/"><span class="mark">D</span><span>Dealix</span></a>
+      <nav aria-label="التنقل الرئيسي">
+        <a href="#offers">العروض</a>
+        <a href="#process">طريقة البدء</a>
+        <a href="#boundaries">الحدود</a>
+      </nav>
+      <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20Mini%20Diagnostic">ابدأ التشخيص</a>
     </div>
-  </section>
+  </header>
 
-  <!-- The 7 service cards — source of truth: auto_client_acquisition/service_catalog/registry.py -->
-  <section class="svc-grid">
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow">Pilot-stage · Saudi-first · Approval-first</span>
+        <h1>ابدأ بألم واحد. أثبت مسارًا واحدًا. توسّع فقط بعد الدليل.</h1>
+        <p class="lead">عروض Dealix ليست قائمة مزايا مفتوحة. كل عرض يبدأ بنطاق مكتوب، مصادر بيانات معروفة، موافقات بشرية، ومعيار نجاح يمكن تدقيقه.</p>
+        <div class="actions">
+          <a class="button" href="mailto:sami.assiri11@gmail.com?subject=طلب%20تشخيص%20Dealix&body=اسم%20الشركة:%0Aأكبر%20ألم%20تشغيلي:%0Aالأدوات%20الحالية:%0Aالنتيجة%20المطلوبة:%0A">اطلب Mini Diagnostic مجانياً</a>
+          <a class="button secondary" href="/trust-center.html">راجع مركز الثقة</a>
+        </div>
+        <p class="note">لا بطاقة ائتمان · لا إرسال حي · لا سعر أو SLA أو تكامل يصبح التزامًا قبل اتفاق مكتوب ومعتمد.</p>
+      </div>
+    </section>
 
-    <!-- 1. Free Mini Diagnostic -->
-    <article class="svc-card" data-tier="free" data-service-id="free_mini_diagnostic">
-      <header>
-        <h3>التشخيص المجاني المختصر</h3>
-        <p class="sub-en">Free Mini Diagnostic</p>
-      </header>
-      <div class="price"><span class="amount">٠ ر.س</span><span class="unit">/ مرة واحدة</span></div>
-      <div class="duration">⏱ يوم واحد · 1 day</div>
-      <div class="deliv-title">المخرجات · Deliverables</div>
-      <ul>
-        <li>تحليل ملاءمة قطاعك (صفحة واحدة) · 1-page sector-fit analysis</li>
-        <li>٣ فرص مرتّبة بالأولوية · 3 ranked opportunities</li>
-        <li>مسودة رسالة عربية واحدة · 1 Arabic message draft</li>
-        <li>أفضل قناة موصى بها · Best channel recommendation</li>
-        <li>خطر واحد لتجنّبه · 1 risk to avoid</li>
-        <li>Decision Passport للخطوة القادمة</li>
-      </ul>
-      <div class="kpi-box">
-        <div class="kpi-label">التزام KPI · Commitment</div>
-        <p class="kpi-ar">نسلّم خلال ٢٤ ساعة من تعبئة النموذج.</p>
-        <p class="kpi-en">Delivered within 24 hours of form submission.</p>
-      </div>
-      <p class="refund">سياسة الاسترداد · Refund: مجاني — لا يوجد دفع.</p>
-      <div class="gates">
-        <span class="gate">suggest_only</span>
-        <span class="gate">draft_only</span>
-      </div>
-      <div class="cta-row">
-        <a href="/diagnostic.html" class="btn btn--primary">ابدأ التشخيص →</a>
-      </div>
-    </article>
+    <section id="offers">
+      <div class="container">
+        <div class="kicker">سلّم العروض</div>
+        <h2>من تشخيص قصير إلى نظام تشغيل محكوم.</h2>
+        <p class="intro">نختار العرض حسب المشكلة والدليل المتاح، لا حسب أكبر باقة. الأسعار والمدد والتكاملات تُحدد بعد التشخيص والمراجعة الفنية.</p>
+        <div class="offer-grid">
+          <article class="offer">
+            <small>01 · Entry</small>
+            <h3>Saudi Opportunity Snapshot</h3>
+            <p>لقطة مختصرة لفهم المشكلة والفرصة قبل الالتزام بأي تنفيذ.</p>
+            <ul><li>ملخص المشكلة والسياق</li><li>البيانات المطلوبة والمفقودة</li><li>مخاطر وحواجز القرار</li><li>توصية Go / No-Go للبايلوت</li></ul>
+            <div class="fit">مناسب: عندما لا يزال الألم أو النطاق غير واضح.</div>
+          </article>
 
-    <!-- 2. 499 SAR Revenue Proof Sprint -->
-    <article class="svc-card" data-tier="sprint" data-service-id="revenue_proof_sprint_499">
-      <header>
-        <h3>سبرنت إثبات الإيرادات</h3>
-        <p class="sub-en">Revenue Proof Sprint · 499 SAR</p>
-      </header>
-      <div class="price"><span class="amount">٤٩٩ ر.س</span><span class="unit">/ مرة واحدة</span></div>
-      <div class="duration">⏱ ٧ أيام · 7 days · ١٠٠٪ قابلة للاسترداد</div>
-      <div class="deliv-title">المخرجات · Deliverables (٩)</div>
-      <ul>
-        <li>Company Brain v1 — ذاكرة شركتك</li>
-        <li>Top 10 Opportunities (ranked)</li>
-        <li>Decision Passports لأهم ٣ فرص</li>
-        <li>Arabic Draft Pack — ٥ رسائل جاهزة للموافقة اليدوية</li>
-        <li>Follow-up Plan لـ ٧ أيام</li>
-        <li>خريطة المخاطر + اعتراضات العملاء</li>
-        <li>Executive Pack أسبوعي</li>
-        <li>Proof Pack نهائي</li>
-        <li>توصية Next Best Offer</li>
-      </ul>
-      <div class="kpi-box">
-        <div class="kpi-label">التزام KPI · Commitment</div>
-        <p class="kpi-ar">نسلّم ٧ مخرجات في ٧ أيام. إذا لم يصل عدد الفرص ≥١٠، نشتغل بدون مقابل حتى نوصل.</p>
-        <p class="kpi-en">7 deliverables in 7 days. If we don't surface ≥10 opportunities, we work for free until we do.</p>
-      </div>
-      <p class="refund">سياسة الاسترداد · Refund: استرداد كامل ١٠٠٪ خلال ١٤ يومًا، بدون أسئلة.</p>
-      <div class="gates">
-        <span class="gate">suggest_only</span>
-        <span class="gate">draft_only</span>
-        <span class="gate">approval_required</span>
-        <span class="gate">approved_manual</span>
-      </div>
-      <div class="cta-row">
-        <a href="/start.html" class="btn btn--primary">ابدأ السبرنت →</a>
-      </div>
-    </article>
+          <article class="offer">
+            <small>02 · Proof</small>
+            <h3>Revenue Proof Sprint</h3>
+            <p>اختبار محدود لمسار إيراد أو متابعة واحد دون ادعاء زيادة مضمونة.</p>
+            <ul><li>قائمة فرص ومصادرها</li><li>مسودات محكومة بالموافقة</li><li>متابعة داخلية قابلة للتدقيق</li><li>Proof Review في نهاية النطاق</li></ul>
+            <div class="fit">مناسب: لإثبات أن الفريق يستطيع رؤية الفرص واتخاذ القرار أسرع.</div>
+          </article>
 
-    <!-- 3. Data-to-Revenue Pack -->
-    <article class="svc-card" data-service-id="data_to_revenue_pack_1500">
-      <header>
-        <h3>حزمة البيانات إلى الإيراد</h3>
-        <p class="sub-en">Data-to-Revenue Pack · 1500 SAR</p>
-      </header>
-      <div class="price"><span class="amount">١٬٥٠٠ ر.س</span><span class="unit">/ مرة واحدة</span></div>
-      <div class="duration">⏱ ١٤ يومًا · 14 days</div>
-      <div class="deliv-title">المخرجات · Deliverables</div>
-      <ul>
-        <li>تدقيق Lead/Market — ٣٠ شركة محتملة</li>
-        <li>٣ فرص مرتّبة بالأولوية مع why-now</li>
-        <li>Arabic Draft Pack مفصّل (١٠ رسائل)</li>
-        <li>Decision Passports كاملة</li>
-        <li>Sector Benchmark — مقارنة بالقطاع</li>
-        <li>خطة ٣٠ يومًا</li>
-      </ul>
-      <div class="kpi-box">
-        <div class="kpi-label">التزام KPI · Commitment</div>
-        <p class="kpi-ar">٣ فرص ذات أولوية عالية ومسودات عربية موافقة-جاهزة في ١٤ يومًا.</p>
-        <p class="kpi-en">3 high-priority opportunities + approval-ready Arabic drafts in 14 days.</p>
-      </div>
-      <p class="refund">سياسة الاسترداد · Refund: استرداد جزئي عند تسليم أقل من ٥٠٪ من المخرجات.</p>
-      <div class="gates">
-        <span class="gate">suggest_only</span>
-        <span class="gate">draft_only</span>
-        <span class="gate">approval_required</span>
-      </div>
-      <div class="cta-row">
-        <a href="/data-pack.html" class="btn btn--primary">اطلب Data Pack →</a>
-      </div>
-    </article>
+          <article class="offer">
+            <small>03 · Command</small>
+            <h3>Revenue Command Pilot</h3>
+            <p>غرفة قيادة محدودة تجمع الفرص والموافقات والخطوات التالية ودليل التنفيذ.</p>
+            <ul><li>لوحة حالة واحدة</li><li>Approval Queue</li><li>CEO Daily Brief</li><li>Proof Ledger ومراجعة أسبوعية</li></ul>
+            <div class="fit">مناسب: للشركات التي تتشتت قراراتها بين واتساب وإيميل وجداول.</div>
+          </article>
 
-    <!-- 4. Growth Ops Monthly -->
-    <article class="svc-card" data-service-id="growth_ops_monthly_2999">
-      <header>
-        <h3>عمليات النمو الشهرية</h3>
-        <p class="sub-en">Growth Ops Monthly · 2999 SAR/mo</p>
-      </header>
-      <div class="price"><span class="amount">٢٬٩٩٩ ر.س</span><span class="unit">/ شهر · ٤ أشهر التزام</span></div>
-      <div class="duration">⏱ ١٢٠ يومًا (٤ أشهر)</div>
-      <div class="deliv-title">المخرجات · Deliverables (شهريًا)</div>
-      <ul>
-        <li>Pipeline Audit أسبوعي</li>
-        <li>Draft Pack أسبوعي — ٥ رسائل عربية موافقة-جاهزة</li>
-        <li>Executive Pack شهري للقرارات</li>
-        <li>Bottleneck Radar يومي</li>
-        <li>Customer Success Scores (٥ مؤشرات)</li>
-        <li>مكالمة استراتيجية شهرية مع المؤسس</li>
-      </ul>
-      <div class="kpi-box">
-        <div class="kpi-label">التزام KPI · Commitment</div>
-        <p class="kpi-ar">٤ فرص مرتّبة + مسودات عربية موافقة-جاهزة كل أسبوع.</p>
-        <p class="kpi-en">4 ranked opportunities + approval-ready Arabic drafts every week.</p>
-      </div>
-      <p class="refund">سياسة الاسترداد · Refund: استرداد تناسبي إن لم نسلّم KPI لشهرين متتاليين.</p>
-      <div class="gates">
-        <span class="gate">draft_only</span>
-        <span class="gate">approval_required</span>
-        <span class="gate">approved_manual</span>
-      </div>
-      <div class="cta-row">
-        <a href="/pricing.html#growth" class="btn btn--primary">احجز Growth Ops →</a>
-      </div>
-    </article>
+          <article class="offer">
+            <small>04 · Market</small>
+            <h3>Saudi Market Access Sprint</h3>
+            <p>مسار بحث وترتيب للفرص والشركاء المحتملين داخل السوق السعودي ضمن مصادر مشروعة.</p>
+            <ul><li>تعريف ICP وشرائح الأولوية</li><li>Opportunity Graph</li><li>Partner/Contact Radar للمصادر المسموحة</li><li>حزمة رسائل Draft-only</li></ul>
+            <div class="fit">مناسب: لدخول قطاع أو قناة شراكة جديدة دون outreach عشوائي.</div>
+          </article>
 
-    <!-- 5. Support OS Add-on -->
-    <article class="svc-card" data-service-id="support_os_addon_1500">
-      <header>
-        <h3>دعم Support OS</h3>
-        <p class="sub-en">Support OS Add-on · 1500 SAR/mo</p>
-      </header>
-      <div class="price"><span class="amount">١٬٥٠٠ ر.س</span><span class="unit">/ شهر</span></div>
-      <div class="duration">⏱ ٣٠ يومًا متجدّد</div>
-      <div class="deliv-title">المخرجات · Deliverables</div>
-      <ul>
-        <li>تصنيف تذاكر الدعم (١٢ فئة بايلنغوال)</li>
-        <li>SLA monitoring (P0–P3)</li>
-        <li>Sentiment classification + escalation</li>
-        <li>مسودات ردود (draft_only, موافقة المؤسس)</li>
-        <li>تقرير أسبوعي لاتجاهات الدعم</li>
-      </ul>
-      <div class="kpi-box">
-        <div class="kpi-label">التزام KPI · Commitment</div>
-        <p class="kpi-ar">كل تذكرة P0/P1 تحصل على رد مسودة في أقل من ٣٠ دقيقة (موافقة المؤسس قبل الإرسال).</p>
-        <p class="kpi-en">Every P0/P1 ticket gets a draft response in &lt;30 minutes (founder approval before send).</p>
-      </div>
-      <p class="refund">سياسة الاسترداد · Refund: استرداد شهر إن لم يصل SLA P0 إلى ٩٠٪.</p>
-      <div class="gates">
-        <span class="gate">draft_only</span>
-        <span class="gate">approval_required</span>
-        <span class="gate">no_live_send</span>
-      </div>
-      <div class="cta-row">
-        <a href="/checkout.html?tier=support_addon" class="btn btn--primary">أضف Support OS →</a>
-      </div>
-    </article>
+          <article class="offer">
+            <small>05 · Setup</small>
+            <h3>AI Company OS Setup</h3>
+            <p>إعداد طبقة تشغيل فوق أدوات الشركة الحالية مع صلاحيات وحدود وموافقات واضحة.</p>
+            <ul><li>خريطة الأنظمة والبيانات</li><li>مسار قرار واحد أولًا</li><li>أدوار وصلاحيات وتدقيق</li><li>خطة تكامل وترحيل قابلة للرجوع</li></ul>
+            <div class="fit">مناسب: بعد نجاح البايلوت وثبوت الحاجة للتوسع.</div>
+          </article>
 
-    <!-- 5b. Bespoke AI — Custom AI Service Setup (Wave 14J Gap H: 5th card) -->
-    <article class="svc-card" data-service-id="bespoke_ai_custom">
-      <header>
-        <h3>Bespoke AI — تخصيص حسب الطلب</h3>
-        <p class="sub-en">Custom AI Service Setup</p>
-      </header>
-      <div class="price"><span class="amount">5,000–25,000 ر.س</span><span class="unit">setup + 1,000/mo</span></div>
-      <div class="duration">⏱ 1–12 أسبوع حسب التعقيد · 1–12 weeks by complexity</div>
-      <div class="deliv-title">المخرجات · Deliverables</div>
-      <ul>
-        <li>AI agent مخصّص لحالة استخدامك (Sales / Support / Ops / Compliance / Analytics)</li>
-        <li>Integrations مع أنظمتك (CRM، Email، WhatsApp، …)</li>
-        <li>Approval-first deployment — كلّ إجراء خارجي بموافقة المؤسس</li>
-        <li>Founder review + deterministic price estimate قبل البدء</li>
-        <li>Monthly retainer للصيانة والتحسين</li>
-      </ul>
-      <div class="kpi-box">
-        <div class="kpi-label">التزام KPI · Commitment</div>
-        <p class="kpi-ar">تقدير setup + monthly فوري عند تعبئة النموذج. القرار النهائي بموافقة المؤسس خلال 48 ساعة.</p>
-        <p class="kpi-en">Live setup + monthly estimate on form change. Final decision by founder within 48h.</p>
+          <article class="offer">
+            <small>06 · Partner</small>
+            <h3>Partner / Distributor Desk</h3>
+            <p>تشغيل داخلي للشراكات والموزعين مع حالة واضحة لكل طرف وخطوة تالية.</p>
+            <ul><li>Partner Pipeline</li><li>عقود وموافقات معلقة</li><li>متابعة الالتزامات</li><li>تقارير دليل وتعلم</li></ul>
+            <div class="fit">مناسب: عندما تكون القناة غير المباشرة مهمة لكن إدارتها متناثرة.</div>
+          </article>
+        </div>
       </div>
-      <p class="refund">سياسة الاسترداد · Refund: عقد مخصّص بشروط استرداد مكتوبة قبل التوقيع.</p>
-      <div class="gates">
-        <span class="gate">approval_required</span>
-        <span class="gate">draft_only</span>
-        <span class="gate">no_live_send</span>
-      </div>
-      <div class="cta-row">
-        <a href="/bespoke-ai.html" class="btn btn--primary">اطلب تقديراً مخصصاً →</a>
-      </div>
-    </article>
+    </section>
 
-    <!-- 6. Executive Command Center -->
-    <article class="svc-card" data-tier="ecc" data-service-id="executive_command_center_7500">
-      <header>
-        <h3>غرفة قيادة الإدارة</h3>
-        <p class="sub-en">Executive Command Center · 7500 SAR/mo</p>
-      </header>
-      <div class="price"><span class="amount">٧٬٥٠٠ ر.س</span><span class="unit">/ شهر · ٤ أشهر التزام</span></div>
-      <div class="duration">⏱ ١٢٠ يومًا (٤ أشهر)</div>
-      <div class="deliv-title">المخرجات · Deliverables</div>
-      <ul>
-        <li>WhatsApp Daily Brief للمؤسس (٨ صباحًا KSA)</li>
-        <li>Founder Bottleneck Radar — أهم ٣ قرارات اليوم</li>
-        <li>Approval Center — قرارات بالأولوية</li>
-        <li>Weekly Executive Pack مع Market Context</li>
-        <li>Monthly Board Pack للإدارة</li>
-        <li>Customer Success Intelligence (٥ مؤشرات / عميل)</li>
-        <li>Business Metrics Board للمؤسس</li>
-        <li>مكالمة استراتيجية أسبوعية</li>
-      </ul>
-      <div class="kpi-box">
-        <div class="kpi-label">التزام KPI · Commitment</div>
-        <p class="kpi-ar">المؤسس يعرف "وش يعيق الإيراد" في رسالة واحدة على WhatsApp يوميًا.</p>
-        <p class="kpi-en">Founder knows "what's blocking revenue" in ONE daily WhatsApp message.</p>
+    <section id="process">
+      <div class="container">
+        <div class="kicker">طريقة البدء</div>
+        <h2>أربع بوابات قبل أي التزام.</h2>
+        <div class="process">
+          <article class="step"><b>01</b><h3>تشخيص</h3><p>نحدد الألم والقرار والبيانات وحدود النجاح.</p></article>
+          <article class="step"><b>02</b><h3>نطاق مكتوب</h3><p>مخرجات ومسؤوليات ومخاطر وشرط توقف.</p></article>
+          <article class="step"><b>03</b><h3>تشغيل داخلي</h3><p>Draft-only أولًا؛ لا إجراء خارجي دون موافقة.</p></article>
+          <article class="step"><b>04</b><h3>مراجعة دليل</h3><p>نقيس ما حدث فعلاً قبل قرار التوسع أو الإيقاف.</p></article>
+        </div>
       </div>
-      <p class="refund">سياسة الاسترداد · Refund: استرداد تناسبي عند عدم وصول KPI الشهري.</p>
-      <div class="gates">
-        <span class="gate">suggest_only</span>
-        <span class="gate">draft_only</span>
-        <span class="gate">approval_required</span>
-        <span class="gate">approved_manual</span>
-      </div>
-      <div class="cta-row">
-        <a href="mailto:hello@dealix.me?subject=Executive%20Command%20Center" class="btn btn--primary">احجز ECC →</a>
-      </div>
-    </article>
+    </section>
 
-    <!-- 7. Agency Partner OS -->
-    <article class="svc-card" data-service-id="agency_partner_os">
-      <header>
-        <h3>نظام شريك الوكالة</h3>
-        <p class="sub-en">Agency Partner OS · Custom</p>
-      </header>
-      <div class="price"><span class="amount">سعر مخصص</span><span class="unit">— بالاتفاق</span></div>
-      <div class="duration">⏱ شراكة سنوية · annual</div>
-      <div class="deliv-title">المخرجات · Deliverables</div>
-      <ul>
-        <li>White-label للوكالة (تحت علامتها التجارية)</li>
-        <li>٣٠٪ عمولة على أول سنة لكل عميل محال</li>
-        <li>Partner Portal + dashboards</li>
-        <li>تدريب فريق الوكالة على المنهجية</li>
-        <li>إحالات متبادلة (Cross-referrals)</li>
-      </ul>
-      <div class="kpi-box">
-        <div class="kpi-label">التزام KPI · Commitment</div>
-        <p class="kpi-ar">٣٠٪ عمولة على أول سنة لكل عميل محال. لا ننشر Proof بدون توقيع موافقة العميل.</p>
-        <p class="kpi-en">30% commission for first paid year per referred customer. Never publish proof without signed consent.</p>
+    <section id="boundaries">
+      <div class="container boundary">
+        <article class="panel">
+          <div class="kicker">ما نلتزم به الآن</div>
+          <h2>الصدق التشغيلي قبل البيع.</h2>
+          <div class="checks">
+            <div class="check"><b>✓</b><span>لا ادعاء نتيجة عميل دون مصدر وموافقة.</span></div>
+            <div class="check"><b>✓</b><span>لا إرسال أو نشر أو دفع دون موافقة محددة.</span></div>
+            <div class="check"><b>✓</b><span>لا أسعار عامة أو Refund أو SLA غير معتمدة تعاقديًا.</span></div>
+            <div class="check"><b>✓</b><span>لا ادعاء شهادة امتثال لم تُحصل فعليًا.</span></div>
+            <div class="check"><b>✓</b><span>لا تكامل يُعلن Live قبل اختبار بيئته الفعلية.</span></div>
+          </div>
+        </article>
+        <aside class="panel">
+          <h3>حدود هذه الصفحة</h3>
+          <p class="intro">هذه خريطة عروض Pilot وليست قائمة أسعار أو عقد خدمة أو ضمان أداء. السعر والمدة وSLA والتكاملات ومنطقة الاستضافة والفوترة تُحسم لكل نطاق بعد مراجعة فنية وتجارية مكتوبة.</p>
+          <p class="intro">أي نتيجة متوقعة تبقى فرضية حتى تصبح مدعومة ببيانات العميل وأحداث Proof موثقة.</p>
+        </aside>
       </div>
-      <p class="refund">سياسة الاسترداد · Refund: عقد رسمي بشروط الإلغاء — يتم بمراجعة قانونية.</p>
-      <div class="gates">
-        <span class="gate">approval_required</span>
-        <span class="gate">no_blast</span>
-        <span class="gate">no_cold_whatsapp</span>
-      </div>
-      <div class="cta-row">
-        <a href="mailto:partners@dealix.me?subject=Agency%20Partner%20OS" class="btn btn--secondary">شراكة وكالة →</a>
-      </div>
-    </article>
+    </section>
 
-  </section>
+    <section>
+      <div class="container cta">
+        <div class="kicker">الخطوة الآمنة الأولى</div>
+        <h2>ابدأ بتشخيص مجاني، لا باقة مجهولة.</h2>
+        <p class="intro">أرسل الألم التشغيلي والأدوات الحالية والقرار الذي تريد تحسينه. نرجع لك بملاءمة العرض، البيانات المطلوبة، المخاطر، ونطاق مقترح قابل للرفض أو التعديل.</p>
+        <div class="actions">
+          <a class="button" href="mailto:sami.assiri11@gmail.com?subject=Mini%20Diagnostic%20-%20Dealix%20Service&body=اسم%20الشركة:%0Aالقطاع:%0Aأكبر%20ألم:%0Aالأدوات%20الحالية:%0A">اطلب التشخيص المجاني</a>
+          <a class="button secondary" href="/marketers.html">عرض فرق التسويق والنمو</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  <!-- When to pick which service -->
-  <section class="compare-strip">
-    <h2>أيّها أختار؟ · Which One Should I Pick?</h2>
-    <div class="compare-grid">
-      <div class="compare-cell">
-        <strong>لم أجرّب بعد · Haven't tried yet</strong>
-        <p>ابدأ بـ <a href="/diagnostic.html" style="color: #4ade80;">التشخيص المجاني</a>. ٢٤ ساعة، صفر مخاطرة، رؤية واضحة لقطاعك.</p>
-      </div>
-      <div class="compare-cell">
-        <strong>أريد إثبات سريع · I want quick proof</strong>
-        <p><a href="/start.html" style="color: #4ade80;">Sprint ٤٩٩ ر.س</a> — ٧ أيام، ٩ مخرجات، استرداد كامل ١٠٠٪ خلال ١٤ يومًا.</p>
-      </div>
-      <div class="compare-cell">
-        <strong>عندي بيانات وأريد إيراد · I have data, need revenue</strong>
-        <p>Data-to-Revenue Pack ١٬٥٠٠ ر.س — ١٤ يومًا، تركيز على فرص محدّدة.</p>
-      </div>
-      <div class="compare-cell">
-        <strong>أريد عمليات شهرية · Want monthly ops</strong>
-        <p>Growth Ops Monthly ٢٬٩٩٩ ر.س/شهر — ٤ أشهر التزام، KPI شهري.</p>
-      </div>
-      <div class="compare-cell">
-        <strong>عندي فريق دعم · I have a support team</strong>
-        <p>Support OS Add-on ١٬٥٠٠ ر.س/شهر — يتكامل مع أي خدمة شهرية.</p>
-      </div>
-      <div class="compare-cell">
-        <strong>مؤسس يريد قرارات يومية · Founder wants daily decisions</strong>
-        <p>Executive Command Center ٧٬٥٠٠ ر.س/شهر — WhatsApp daily brief + Bottleneck Radar.</p>
-      </div>
-      <div class="compare-cell">
-        <strong>وكالة تسويق · Marketing agency</strong>
-        <p>Agency Partner OS — ٣٠٪ عمولة + white-label. تواصل: partners@dealix.me</p>
-      </div>
+  <footer>
+    <div class="container footer">
+      <div>© Dealix · عروض تجريبية محكومة بالموافقة.</div>
+      <div class="links"><a href="/">الرئيسية</a><a href="/trust-center.html">مركز الثقة</a><a href="/privacy.html">الخصوصية</a></div>
     </div>
-  </section>
-
-  <!-- Hard rules immutable -->
-  <section class="rules">
-    <h2>القواعد الصلبة · Hard Rules (Immutable)</h2>
-    <p style="color: var(--text-muted);">كل خدمة في Dealix تحترم القواعد الـ ٨ التالية. لا استثناءات، لا إعدادات لتعطيلها.</p>
-    <ul>
-      <li><strong>NO_LIVE_SEND</strong> — لا نرسل تلقائيًا. كل رسالة تنتظر موافقة المؤسس اليدوية.</li>
-      <li><strong>NO_LIVE_CHARGE</strong> — لا نسحب أموال تلقائيًا. الدفع يتم بعد إثبات الفاتورة.</li>
-      <li><strong>NO_COLD_WHATSAPP</strong> — لا نراسل WhatsApp بدون موافقة مسبقة موثّقة.</li>
-      <li><strong>NO_LINKEDIN_AUTO</strong> — البحث في LinkedIn يدوي وبموافقة المؤسس لكل حساب.</li>
-      <li><strong>NO_SCRAPING</strong> — لا نسحب بيانات بدون إذن من المصدر.</li>
-      <li><strong>NO_FAKE_PROOF</strong> — Proof Pack يحتوي فقط أحداث L3+ موثّقة + موافقة العميل.</li>
-      <li><strong>NO_FAKE_REVENUE</strong> — الإيراد المعتمد فقط من <code>payment_confirmed</code>. invoice_intent ≠ revenue.</li>
-      <li><strong>NO_BLAST</strong> — حدّ يومي ٥ رسائل warm-intro، استشارة المؤسس لكل تجاوز.</li>
-    </ul>
-  </section>
-
-  <!-- Wave 14D.5 + 14I.1 — Data Pack CSV upload widget -->
-  <section style="margin: var(--space-6) 0; padding: var(--space-5); border: 1px solid var(--border, #ddd); border-radius: 12px; background: #fafafa;">
-    <h2 style="margin-top: 0;">جرب Data Pack مباشرة · Try the Data Pack live</h2>
-    <p>
-      حمّل ملف CSV (يحتوي على company_name, sector, city, relationship_status على الأقل) لتحصل
-      على Data Quality Score + قرار حوكمة فوري — بدون تخزين، بدون أي إرسال خارجي، بدون أي ادعاءات.
-      <br>
-      <em>Upload a CSV with at least these columns and get an instant DQ score +
-      governance decision. No retention, no external send, no claims.</em>
-    </p>
-
-    <form id="dq-upload-form" enctype="multipart/form-data" style="display:flex; flex-direction:column; gap: var(--space-3);">
-      <label for="dq-handle"><strong>اسم الشركة / Company handle</strong></label>
-      <input id="dq-handle" name="customer_handle" type="text" required
-             placeholder="acme_test"
-             style="padding: var(--space-2); border:1px solid #ccc; border-radius: 6px;">
-      <label for="dq-file"><strong>ملف CSV / CSV file (UTF-8, ≤5MB)</strong></label>
-      <input id="dq-file" name="file" type="file" accept=".csv,text/csv" required>
-      <button type="submit" class="btn btn--primary">احسب درجة الجودة الآن · Compute DQ Score</button>
-    </form>
-
-    <pre id="dq-result" style="margin-top: var(--space-3); padding: var(--space-3); background: #1e1e1e; color: #f5f5f5; border-radius: 8px; overflow-x: auto; min-height: 60px; white-space: pre-wrap;"></pre>
-
-    <p style="font-size: 0.875em; color: var(--text-muted, #666); margin-top: var(--space-2);">
-      <em>Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة.</em>
-    </p>
-
-    <script>
-      (function() {
-        const form = document.getElementById('dq-upload-form');
-        const out = document.getElementById('dq-result');
-        if (!form || !out) return;
-        form.addEventListener('submit', async function(e) {
-          e.preventDefault();
-          out.textContent = '… جارٍ الحساب …';
-          const fd = new FormData(form);
-          try {
-            const resp = await fetch('/api/v1/data-os/import-preview/upload', {
-              method: 'POST',
-              body: fd,
-            });
-            const text = await resp.text();
-            try {
-              const body = JSON.parse(text);
-              const summary = {
-                customer_handle: body.customer_handle,
-                row_count: body.preview && body.preview.row_count,
-                dq_overall: body.data_quality_score && body.data_quality_score.overall,
-                pii_columns: body.preview && body.preview.pii_columns,
-                governance_decision: body.governance_decision,
-                next_step_recommendation: body.next_step_recommendation,
-              };
-              out.textContent = JSON.stringify(summary, null, 2);
-            } catch (_e) {
-              out.textContent = text;
-            }
-          } catch (err) {
-            out.textContent = 'فشل / failed: ' + err.message;
-          }
-        });
-      })();
-    </script>
-  </section>
-
-  <section class="footer-cta">
-    <h2 style="margin-top: 0;">جاهز نبدأ؟ · Ready to start?</h2>
-    <p>ابدأ بالتشخيص المجاني (٢٤ ساعة)، أو احجز سبرنت ٤٩٩ ر.س مع استرداد كامل خلال ١٤ يومًا.</p>
-    <p>Start with the free diagnostic (24 hours), or book the 499 SAR Sprint with full 100% refund within 14 days.</p>
-    <div style="display: flex; justify-content: center; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-4);">
-      <a href="/diagnostic.html" class="btn btn--primary btn--lg">ابدأ التشخيص →</a>
-      <a href="/start.html" class="btn btn--secondary btn--lg">احجز سبرنت ٤٩٩ ر.س →</a>
-    </div>
-  </section>
-
-</main>
-
-<script>
-  if (window.lucide) window.lucide.createIcons();
-</script>
+  </footer>
 </body>
 </html>
