@@ -33,6 +33,7 @@ EN_BODY = (
 DISCLAIMER = "DRAFT — Do not send without human review."
 REVIEW_STATUS = "draft_pending_human_review"
 LEGACY_REVIEW_STATUS = "pending_review"
+PENDING_REVIEW_STATUSES = {None, REVIEW_STATUS, LEGACY_REVIEW_STATUS}
 
 DEMO_ACCOUNTS = [
     {"id": "demo-001", "name": "Acme Saudi", "segment": "B2B Services"},
@@ -64,8 +65,10 @@ def build_draft(
     )
     account_id = str(account.get("id", ""))
     timestamp = generated_at or dt.datetime.now(dt.UTC).isoformat().replace("+00:00", "Z")
+    draft_id = f"draft-{account_id}-{language}"
     return {
-        "id": f"draft-{account_id}-{language}",
+        "id": draft_id,
+        "draftId": draft_id,
         "accountId": account_id,
         "company": company,
         "language": language,
@@ -75,6 +78,7 @@ def build_draft(
         "createdAt": timestamp,
         "reviewStatus": REVIEW_STATUS,
         "reviewer": None,
+        "reviewedAt": None,
         "decidedAt": None,
         "rejectionReason": None,
         "demo": bool(account.get("demo", True)),
@@ -86,6 +90,44 @@ def build_draft(
             "human_review_required",
         ],
     }
+
+
+def _draft_identifier(draft: dict) -> str:
+    return str(draft.get("draftId") or draft.get("id") or "")
+
+
+def _merge_existing_decisions(drafts: list[dict]) -> list[dict]:
+    """Preserve decided records instead of resetting human review on refresh.
+
+    Pending records may be regenerated from current source data. A decided record is
+    retained in full so changed copy cannot inherit an earlier approval implicitly.
+    """
+    if not CANONICAL_QUEUE_PATH.exists():
+        return drafts
+
+    try:
+        existing_payload = json.loads(CANONICAL_QUEUE_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return drafts
+
+    existing_by_id = {
+        identifier: record
+        for record in existing_payload.get("drafts", [])
+        if isinstance(record, dict) and (identifier := _draft_identifier(record))
+    }
+
+    merged: list[dict] = []
+    for draft in drafts:
+        identifier = _draft_identifier(draft)
+        existing = existing_by_id.get(identifier)
+        if existing and existing.get("reviewStatus") not in PENDING_REVIEW_STATUSES:
+            preserved = dict(existing)
+            preserved.setdefault("id", identifier)
+            preserved.setdefault("draftId", identifier)
+            merged.append(preserved)
+        else:
+            merged.append(draft)
+    return merged
 
 
 def _compatibility_draft(draft: dict) -> dict:
@@ -112,11 +154,12 @@ def write_outputs(
     CANONICAL_QUEUE_PATH.parent.mkdir(parents=True, exist_ok=True)
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
 
+    governed_drafts = _merge_existing_decisions(drafts)
     canonical_payload = {
-        "version": "1.1",
+        "version": "1.2",
         "mode": mode,
         "notice": "Draft only. Human approval is required before any external send.",
-        "drafts": drafts,
+        "drafts": governed_drafts,
     }
     CANONICAL_QUEUE_PATH.write_text(
         json.dumps(canonical_payload, ensure_ascii=False, indent=2),
@@ -126,7 +169,7 @@ def write_outputs(
     compatibility_path = EXPORT_DIR / f"outreach-drafts-{today}.json"
     compatibility_path.write_text(
         json.dumps(
-            [_compatibility_draft(draft) for draft in drafts],
+            [_compatibility_draft(draft) for draft in governed_drafts],
             ensure_ascii=False,
             indent=2,
         ),
