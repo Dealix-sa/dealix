@@ -98,8 +98,31 @@ jobs:
             tests/test_saas_foundation_verifier.py \
             tests/test_saas_web_journey_contract.py
 
-      - name: Verify repository SaaS contracts
-        run: python scripts/verify_saas_foundation.py --json
+      - name: Generate repository SaaS contract report
+        id: foundation
+        shell: bash
+        run: |
+          mkdir -p reports/saas
+          set +e
+          python scripts/verify_saas_foundation.py --json > reports/saas/foundation.json
+          status=$?
+          set -e
+          cat reports/saas/foundation.json
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload SaaS foundation diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saas-foundation-diagnostics
+          path: reports/saas/foundation.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Enforce repository SaaS contracts
+        shell: bash
+        run: |
+          test "${{ steps.foundation.outputs.status }}" -eq 0
 
       - name: Run focused regressions
         run: |
