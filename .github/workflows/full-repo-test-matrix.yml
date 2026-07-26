@@ -41,7 +41,7 @@ jobs:
       TESTSPRITE_API_KEY: ${{ secrets.TESTSPRITE_API_KEY }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -63,7 +63,7 @@ jobs:
 
       - name: Upload matrix reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: full-repo-test-matrix
           path: reports/runtime/full_repo_test_matrix/

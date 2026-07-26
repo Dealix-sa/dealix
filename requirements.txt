@@ -3,7 +3,7 @@
 # ═══════════════════════════════════════════════════════════════
 
 # Core framework
-fastapi>=0.115.0,<0.137
+fastapi>=0.115.0,<0.141
 uvicorn[standard]>=0.32.0,<0.33
 pydantic[email]>=2.9.0,<3
 pydantic-settings>=2.6.0,<3
@@ -26,7 +26,7 @@ idna>=3.7
 
 # LLM SDKs (optional — router falls back gracefully if missing)
 anthropic>=0.40.0
-openai>=1.54.0,<2
+openai>=1.54.0,<3
 google-generativeai>=0.8.0
 
 # Data
@@ -82,7 +82,7 @@ pyyaml>=6.0.2
 # CVEs (CVE-2024-33663, CVE-2024-33664) that affected 3.3.x.
 # cryptography pinned to >=44 explicitly (was implicit transitive).
 python-jose[cryptography]>=3.5.0,<4
-cryptography>=44.0.0,<46
+cryptography>=49.0.0,<50
 cffi>=1.17.1,<2
 passlib[bcrypt]>=1.7.4,<2
 bcrypt>=4.2.0,<5

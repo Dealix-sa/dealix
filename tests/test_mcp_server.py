@@ -55,6 +55,7 @@ class TestMCPServerStructure:
     def test_mcp_server_has_read_tools(self):
         content = (_REPO / "mcp_server" / "dealix_mcp.py").read_text()
         required_tools = [
+            "get_mcp_trust_manifest",
             "get_war_room_today",
             "get_kpi_snapshot",
             "get_business_now",
@@ -98,6 +99,24 @@ class TestMCPServerStructure:
     def test_draft_only_no_auto_send(self):
         content = (_REPO / "mcp_server" / "dealix_mcp.py").read_text()
         assert "draft_only" in content or "DOES NOT SEND" in content
+
+    def test_every_tool_uses_governed_decorator(self):
+        content = (_REPO / "mcp_server" / "dealix_mcp.py").read_text()
+        assert "@mcp.tool" not in content
+        assert content.count("@governed_tool") >= 21
+
+    def test_remote_http_passes_exact_host_origin_policy(self):
+        content = (_REPO / "mcp_server" / "dealix_mcp.py").read_text()
+        assert "DEALIX_MCP_TRUSTED_INGRESS_AUTH" in content
+        assert "allowed_hosts=list(binding.allowed_hosts)" in content
+        assert "allowed_origins=list(binding.allowed_origins)" in content
+
+    def test_tool_manifest_has_timeout_rate_limit_and_metadata_only_audit(self):
+        content = (_REPO / "mcp_server" / "dealix_mcp.py").read_text()
+        assert "timeout_seconds" in content
+        assert "rate_limit_per_minute" in content
+        assert "DEALIX_MCP_AUDIT" in content
+        assert "never log tool arguments, results, or secrets" in content
 
     def test_no_cold_whatsapp_in_channel_choices(self):
         content = (_REPO / "mcp_server" / "dealix_mcp.py").read_text()

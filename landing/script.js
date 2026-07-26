@@ -10,7 +10,7 @@
       themeLight: 'التبديل إلى الوضع الفاتح',
       themeDark:  'التبديل إلى الوضع الداكن',
       formSending: 'جاري الإرسال…',
-      formSuccess: 'تم — سنتواصل خلال ٤ ساعات (كما تنص اتفاقيتنا الداخلية)',
+      formSuccess: 'تم الاستلام للمراجعة البشرية خلال ساعات العمل — بلا تفعيل أو دفع تلقائي',
       formErrorGeneric: 'تعذّر الإرسال. جرّب مرة أخرى أو تواصل مباشرة عبر البريد: ',
       formErrorEmail:   'البريد الإلكتروني غير صالح.',
       formErrorPhone:   'رقم الجوال يجب أن يكون بصيغة سعودية (+966 5XXXXXXXX).',
@@ -22,9 +22,7 @@
   const L = I18N.ar;
 
   // ---- Config ----
-  // Backend URL — set to Railway production URL once deployed.
-  // Example: 'https://dealix-api.up.railway.app/api/v1/public/demo-request'
-  // Falls back to relative path for local dev / same-origin deployments.
+  // Canonical API base is injected by the page; same-origin remains the local fallback.
   const API_BASE = (window.DEALIX_API_BASE || '').replace(/\/$/, '');
   const CONFIG = {
     apiEndpoint: (API_BASE || '') + '/api/v1/public/demo-request',
@@ -293,7 +291,7 @@
     }
 
     function buildMailto(d) {
-      const subj = encodeURIComponent('طلب تجربة Dealix — ' + (d.company || ''));
+      const subj = encodeURIComponent('طلب فحص مجاني Dealix — ' + (d.company || ''));
       const body = encodeURIComponent(
         'الاسم: ' + d.name + '\n' +
         'الشركة: ' + d.company + '\n' +
@@ -451,6 +449,15 @@
     }[c]));
   }
 
+  function safeHttpUrl(value) {
+    try {
+      const url = new URL(String(value || ''));
+      return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : '';
+    } catch (_) {
+      return '';
+    }
+  }
+
   function renderCard(lead) {
     const openings = lead.outreach_opening
       ? `<div class="prospector-card__section">
@@ -463,8 +470,10 @@
     const signals = (lead.signals || []).filter(Boolean);
 
     const links = [];
-    if (lead.website) links.push(`<a href="${esc(lead.website)}" target="_blank" rel="noopener">موقع</a>`);
-    if (lead.linkedin) links.push(`<a href="${esc(lead.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>`);
+    const website = safeHttpUrl(lead.website);
+    const linkedin = safeHttpUrl(lead.linkedin);
+    if (website) links.push(`<a href="${esc(website)}" target="_blank" rel="noopener noreferrer">موقع</a>`);
+    if (linkedin) links.push(`<a href="${esc(linkedin)}" target="_blank" rel="noopener noreferrer">LinkedIn</a>`);
 
     return `
       <article class="prospector-card">

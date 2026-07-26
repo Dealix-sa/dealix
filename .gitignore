@@ -196,12 +196,15 @@ traces/
 # ─────────────────────────────────────────────────────────────
 # 🤖 Claude Code agent worktrees + runtime ledger artifacts
 # ─────────────────────────────────────────────────────────────
-.claude/
+.claude/*
 # Project rules and agent definitions are part of the codebase
 !.claude/rules/
 !.claude/rules/**
 !.claude/agents/
 !.claude/agents/**
+# Agent skills are part of the codebase (SKILL.md + references, no runtime output)
+!.claude/skills/
+!.claude/skills/**
 
 # Proof ledger runtime artifacts (template + schema + readme stay tracked)
 docs/proof-events/*.jsonl

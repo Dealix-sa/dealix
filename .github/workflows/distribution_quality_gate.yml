@@ -41,7 +41,7 @@ jobs:
       APP_SECRET_KEY: ci_only_secret_key_0123456789abcdef0123456789abcdef
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5

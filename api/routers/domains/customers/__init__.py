@@ -30,6 +30,7 @@ from api.routers import (
 from api.routers import (
     support_journey as support_journey_router,
 )
+from api.routers.customer import dashboard as customer_dashboard_router
 
 _ROUTERS = [
     company_brain_mvp_router.router,
@@ -39,6 +40,7 @@ _ROUTERS = [
     customer_data_plane.router,
     customer_brain_router.router,
     customer_company_portal.router,
+    customer_dashboard_router.router,
     customer_inbox_v10.router,
     crm_v10.router,
     executive_pack_per_customer.router,
