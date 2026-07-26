@@ -11,7 +11,7 @@ on:
       - 'api/routers/health.py'
       - 'api/routers/onboarding.py'
       - 'api/routers/platform_meta.py'
-      - 'api/routers/customer_dashboard.py'
+      - 'api/routers/customer/**'
       - 'api/routers/domains/customers/**'
       - 'api/security/**'
       - 'apps/web/app/**/dashboard/**'
@@ -39,7 +39,7 @@ on:
       - 'api/routers/health.py'
       - 'api/routers/onboarding.py'
       - 'api/routers/platform_meta.py'
-      - 'api/routers/customer_dashboard.py'
+      - 'api/routers/customer/**'
       - 'api/routers/domains/customers/**'
       - 'api/security/**'
       - 'apps/web/app/**/dashboard/**'
@@ -86,15 +86,15 @@ jobs:
           cache: pip
 
       - name: Install repository test environment
-        run: python -m pip install --disable-pip-version-check -e ".[dev]"
+        run: python3 -m pip install --disable-pip-version-check -e ".[dev]"
 
       - name: Compile changed Python surfaces
         run: |
-          python -m py_compile \
+          python3 -m py_compile \
             api/routers/health.py \
             api/routers/onboarding.py \
             api/routers/platform_meta.py \
-            api/routers/customer_dashboard.py \
+            api/routers/customer/dashboard.py \
             api/routers/domains/customers/__init__.py \
             api/security/api_key.py \
             core/config/deployment_identity.py \
@@ -113,7 +113,7 @@ jobs:
         run: |
           mkdir -p reports/saas
           set +e
-          python scripts/verify_saas_foundation.py --json > reports/saas/foundation.json
+          python3 scripts/verify_saas_foundation.py --json > reports/saas/foundation.json
           status=$?
           set -e
           cat reports/saas/foundation.json
@@ -138,7 +138,7 @@ jobs:
         run: |
           mkdir -p reports/saas
           set +e
-          pytest -q --no-cov \
+          python3 -m pytest -q --no-cov \
             tests/test_deployment_identity.py \
             tests/test_saas_onboarding_contract.py \
             tests/test_saas_foundation_verifier.py \
