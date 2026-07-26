@@ -38,6 +38,23 @@ def test_login_and_dashboard_use_canonical_runtime_api() -> None:
     assert "profile.tenant_id" in entry
 
 
+def test_company_command_is_evidence_backed_and_draft_safe() -> None:
+    dashboard = _read("apps/web/app/[tenant]/dashboard/page.tsx")
+    command = _read("apps/web/app/[tenant]/command/page.tsx")
+
+    assert 'workspaceHref("/command")' in dashboard
+    assert 'authenticatedFetch("/api/v1/customer/dashboard/")' in command
+    assert '"x-tenant-id"' not in command.lower()
+    assert "DEALIX COMPANY COMMAND" in command
+    assert "data.notifications.length" in command
+    assert "data.quick_actions.length" in command
+    assert "data.recent_activity.length" in command
+    assert "لا تنفذ إرسالًا أو دفعًا أو تغيير إنتاج" in command
+    assert "setInterval(" not in command
+    assert "Math.random(" not in command
+    assert "fetch(\"/local-runtime/" not in command
+
+
 def test_runtime_helper_rotates_refresh_tokens_single_flight() -> None:
     source = _read("apps/web/lib/runtime-api.ts")
 
