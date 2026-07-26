@@ -1,13 +1,23 @@
-"""In-memory, thread-safe ApprovalStore.
+"""Thread-safe in-memory ApprovalStore, and the default-store factory.
 
-This is the v6 stopgap before a Redis-backed store ships. The public
-methods (``create``, ``approve``, ``reject``, ``edit``, ``list_pending``,
-``list_history``, ``get``) form the contract that the Redis variant will
-implement verbatim.
+The in-memory store below is the reference implementation and remains the
+backend for tests and for runs with no database. ``get_default_approval_store``
+now prefers the durable Postgres backend whenever ``DATABASE_URL`` is set: the
+queue previously lived only in process memory, so every restart or deploy
+silently discarded pending approvals.
+
+The public methods (``create``, ``approve``, ``reject``, ``edit``,
+``list_pending``, ``list_history``, ``get``, ``bulk_approve``,
+``expire_overdue``, ``create_with_founder_rules``, ``clear``) are the contract
+both backends implement; ``tests/test_approval_store_durability.py`` pins that
+they stay in step.
 """
 from __future__ import annotations
 
+import logging
+import os
 import threading
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from typing import Any
 
@@ -21,6 +31,8 @@ from auto_client_acquisition.approval_center.schemas import (
     ApprovalRequest,
     ApprovalStatus,
 )
+
+log = logging.getLogger(__name__)
 
 
 class ApprovalStore:
@@ -254,11 +266,93 @@ class ApprovalStore:
 
 
 # Module-level singleton (process-scoped).
-_DEFAULT: ApprovalStore | None = None
+_DEFAULT: Any | None = None
 
 
-def get_default_approval_store() -> ApprovalStore:
+def resolve_backend_name(env: Mapping[str, str] | None = None) -> str:
+    """Decide which backend the default store should use.
+
+    Postgres whenever a database is configured, because an approval queue that
+    loses its contents on restart is not an approval queue — a founder who
+    approved a batch before a deploy would find the queue empty afterwards and
+    have no way to tell whether the work went out.
+
+    ``APPROVAL_STORE_BACKEND`` overrides the decision in either direction.
+
+    Test runs stay in memory even with a database configured. The sync URL
+    derived from ``DATABASE_URL`` points at a shared file, so a durable default
+    would leak approvals between tests and between runs — order-dependent
+    failures in the approval path are a poor trade for durability that no test
+    is asserting. Tests that need the durable store build it directly.
+    """
+    e = env if env is not None else os.environ
+    explicit = (e.get("APPROVAL_STORE_BACKEND") or "").strip().lower()
+    if explicit in {"memory", "in_memory"}:
+        return "in_memory"
+    if explicit in {"postgres", "postgresql", "sql"}:
+        return "postgres"
+
+    if (e.get("APP_ENV") or "").strip().lower() == "test":
+        return "in_memory"
+
+    return "postgres" if (e.get("DATABASE_URL") or "").strip() else "in_memory"
+
+
+def _sync_database_url(raw: str) -> str:
+    """Convert an async SQLAlchemy URL to the sync driver this store uses.
+
+    The app runs on asyncpg/aiosqlite, but PostgresApprovalStore is synchronous;
+    handing it an async URL raises at connect time.
+    """
+    for async_driver, sync_driver in (
+        ("postgresql+asyncpg", "postgresql+psycopg2"),
+        ("sqlite+aiosqlite", "sqlite"),
+    ):
+        if raw.startswith(async_driver):
+            return raw.replace(async_driver, sync_driver, 1)
+    return raw
+
+
+def get_default_approval_store() -> Any:
+    """Return the process-wide approval store.
+
+    Falls back to the in-memory store if the Postgres backend cannot be
+    constructed. That is a deliberate availability choice: losing durability is
+    bad, but refusing to boot the approval surface entirely would be worse —
+    and the degraded backend is reported by ``/api/v1/approvals/status`` rather
+    than hidden.
+    """
     global _DEFAULT
-    if _DEFAULT is None:
-        _DEFAULT = ApprovalStore()
+    if _DEFAULT is not None:
+        return _DEFAULT
+
+    if resolve_backend_name() == "postgres":
+        try:
+            from auto_client_acquisition.approval_center.postgres_store import (
+                PostgresApprovalStore,
+            )
+
+            _DEFAULT = PostgresApprovalStore(
+                database_url=_sync_database_url(os.environ.get("DATABASE_URL", ""))
+            )
+            return _DEFAULT
+        except Exception as exc:  # broad by design: must not break the surface
+            log.warning(
+                "approval_store_postgres_unavailable falling_back_to_memory error=%s",
+                exc,
+            )
+
+    _DEFAULT = ApprovalStore()
     return _DEFAULT
+
+
+def reset_default_approval_store() -> None:
+    """Drop the cached singleton. Used by tests to simulate a process restart."""
+    global _DEFAULT
+    _DEFAULT = None
+
+
+def describe_default_backend() -> str:
+    """Report the backend actually in use, not the one that was intended."""
+    store = get_default_approval_store()
+    return "postgres" if type(store).__name__ == "PostgresApprovalStore" else "in_memory"

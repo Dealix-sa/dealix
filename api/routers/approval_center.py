@@ -29,9 +29,18 @@ log = get_logger(__name__)
 
 @router.get("/status")
 async def status() -> dict[str, Any]:
+    from auto_client_acquisition.approval_center.approval_store import (
+        describe_default_backend,
+    )
+
+    backend = describe_default_backend()
     return {
         "module": "approval_center",
-        "backend": "in_memory",
+        # Reported from the live store, not hardcoded: this previously always
+        # claimed "in_memory", so a Postgres cutover would have been invisible
+        # and a silent fallback to memory equally so.
+        "backend": backend,
+        "durable": backend == "postgres",
         "swappable_to_redis": True,
         "guardrails": {
             "no_live_send": True,
