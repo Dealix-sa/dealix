@@ -24,6 +24,7 @@ from api.routers import (
 from api.routers import (
     customer_brain as customer_brain_router,
 )
+from api.routers import customer_dashboard as customer_dashboard_router
 from api.routers import (
     service_sessions as service_sessions_router,
 )
@@ -39,6 +40,7 @@ _ROUTERS = [
     customer_data_plane.router,
     customer_brain_router.router,
     customer_company_portal.router,
+    customer_dashboard_router.router,
     customer_inbox_v10.router,
     crm_v10.router,
     executive_pack_per_customer.router,
