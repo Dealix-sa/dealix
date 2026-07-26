@@ -11,8 +11,10 @@ on:
       - 'api/routers/health.py'
       - 'api/routers/onboarding.py'
       - 'api/routers/platform_meta.py'
+      - 'api/routers/domains/customers/**'
       - 'api/security/**'
-      - 'apps/web/app/dashboard/**'
+      - 'apps/web/app/**/dashboard/**'
+      - 'apps/web/app/accept-invite/**'
       - 'apps/web/app/login/**'
       - 'apps/web/app/signup/**'
       - 'apps/web/lib/runtime-api.ts'
@@ -36,8 +38,10 @@ on:
       - 'api/routers/health.py'
       - 'api/routers/onboarding.py'
       - 'api/routers/platform_meta.py'
+      - 'api/routers/domains/customers/**'
       - 'api/security/**'
-      - 'apps/web/app/dashboard/**'
+      - 'apps/web/app/**/dashboard/**'
+      - 'apps/web/app/accept-invite/**'
       - 'apps/web/app/login/**'
       - 'apps/web/app/signup/**'
       - 'apps/web/lib/runtime-api.ts'
@@ -89,6 +93,7 @@ jobs:
             api/routers/health.py \
             api/routers/onboarding.py \
             api/routers/platform_meta.py \
+            api/routers/domains/customers/__init__.py \
             api/security/api_key.py \
             core/config/deployment_identity.py \
             core/email/__init__.py \
