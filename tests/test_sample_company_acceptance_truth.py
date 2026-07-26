@@ -65,7 +65,7 @@ def test_write_outputs_keeps_one_canonical_queue_and_compatibility_export(
 
     assert canonical_payload["drafts"][0]["reviewStatus"] == "draft_pending_human_review"
     assert canonical_payload["notice"].startswith("Draft only")
-    assert compatibility_payload[0]["review_status"] == "draft_pending_human_review"
+    assert compatibility_payload[0]["review_status"] == "pending_review"
     assert canonical_path.name == "outreach_review_queue.json"
 
 
