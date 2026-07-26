@@ -1,12 +1,22 @@
-"""
-Public intake endpoint — unauthenticated, rate-limited.
+"""DEPRECATED — superseded by the governed intake in ``api/routers/public.py``.
 
-POST /api/v1/public/custom-ai-request
-    body: CustomAIRequest
-    returns: {"status": "queued", "governance_decision": "queued_for_founder_review", "message": str}
+This module is no longer registered in ``api/main.py``.
 
-Every submission is written to var/custom_ai_requests.jsonl for founder review.
-No external action is taken automatically. Founder must approve before any follow-up.
+It defined ``POST /api/v1/public/custom-ai-request`` and wrote each submission
+to ``var/custom_ai_requests.jsonl``. ``api/routers/public.py`` defines the same
+path, is registered first, and therefore served every request — so this file
+never handled a single submission. The two also disagreed on where the data
+went: the reachable one records a governed lead in the database and adds
+consent and honeypot checks, while this one appended to a file that nothing
+reads (verified: no reference to ``custom_ai_requests`` anywhere else in the
+repository, and ``tests/test_custom_ai_request.py`` imports ``api.routers.public``).
+
+Un-shadowing it would have created two competing intake paths writing to two
+different stores, so it is retired rather than re-pathed.
+
+Kept in place for one release rather than deleted, per the deletion protocol:
+zero importers is one condition, not the whole bar. Remove once a release has
+shipped without it.
 
 Estimated value is not Verified value / القيمة التقديرية ليست قيمة مُتحقَّقة
 """

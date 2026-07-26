@@ -144,9 +144,16 @@ def _subscription_summary() -> dict[str, Any]:
         return {"due_count": 0, "due_mrr_sar": 0, "note": "renewal_scheduler_unavailable"}
 
 
-@router.get("/dashboard", dependencies=[Depends(require_admin_key)])
-async def founder_dashboard() -> dict[str, Any]:
-    """Single consolidated founder view. Admin-key gated."""
+# Previously mounted at /dashboard, where api/routers/founder.py — registered
+# first with the same prefix — shadowed it, so this admin-gated view was
+# unreachable. The two return different payloads (founder.py serves the cached
+# v10 snapshot; this one serves approvals, renewals and capital), so the fix is
+# to give this one its own path rather than replace the other. founder.py's
+# /dashboard is deliberately left exactly as it was: changing the auth on a live
+# endpoint is a separate decision, not a side effect of a de-duplication.
+@router.get("/operations-dashboard", dependencies=[Depends(require_admin_key)])
+async def founder_operations_dashboard() -> dict[str, Any]:
+    """Consolidated founder operations view. Admin-key gated."""
     friction = _friction_last_7d()
     return {
         "generated_at": datetime.now(UTC).isoformat(),

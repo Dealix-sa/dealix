@@ -44,8 +44,29 @@ def test_version_and_meta_public() -> None:
     assert "surfaces" in meta.json()
 
 
-def test_healthz_includes_version() -> None:
+def test_healthz_is_a_minimal_liveness_payload() -> None:
+    """/healthz answers liveness only; identity lives at /version.
+
+    This previously asserted that /healthz returns a "version" field, which
+    production never did. ``_trust_layer_app`` above includes health.router
+    before platform_meta.router — the reverse of api/main.py — so the test app
+    resolved /healthz to a richer implementation that the real app always
+    shadowed. It also contradicted
+    ``test_health_deep::test_healthz_default_is_simple``, which pins the
+    minimal shape; both passed only because they built different apps.
+
+    The duplicate definition has since been removed, so this now asserts the
+    contract Railway's healthcheck actually receives.
+    """
     client = TestClient(_trust_layer_app())
+
     hz = client.get("/healthz")
+
     assert hz.status_code == 200
-    assert hz.json().get("version")
+    body = hz.json()
+    assert body["status"] == "ok"
+    assert body["service"] == "dealix"
+    assert "version" not in body, (
+        "/healthz must stay a low-latency liveness probe — version and build "
+        "identity belong to /version (see test_version_and_meta_public)."
+    )

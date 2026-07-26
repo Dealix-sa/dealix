@@ -4,39 +4,21 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from api.schemas import HealthResponse
 from core.config.settings import get_settings
 from core.llm import get_router as get_model_router
 
 router = APIRouter(tags=["health"])
 
 
-@router.get("/health", response_model=HealthResponse)
-async def health() -> HealthResponse:
-    """Liveness + config summary."""
-    settings = get_settings()
-    providers = [p.value for p in get_model_router().available_providers()]
-    return HealthResponse(
-        status="ok",
-        version=settings.app_version,
-        env=settings.app_env,
-        providers=providers,
-        git_sha=settings.git_sha,
-    )
-
-
-@router.get("/ready")
-async def ready() -> dict[str, str]:
-    """Readiness probe."""
-    return {"status": "ready"}
-
-
-@router.get("/live")
-async def live() -> dict[str, str]:
-    """Liveness probe."""
-    return {"status": "alive"}
-
-
+# /health, /healthz, /live and /ready are served by api/routers/platform_meta.py,
+# which is registered first. The duplicate definitions that used to live here
+# were unreachable — FastAPI resolves the first matching route — so they are
+# removed rather than left as an accidental fallback. Which implementation
+# answers a probe is now a decision in the code, not a side effect of
+# registration order.
+#
+# This module still owns /health/deep, /readyz and /livez. platform_meta
+# delegates its ?deep=1 branch to health_deep() below, so that stays here.
 @router.get("/health/deep")
 async def health_deep() -> dict[str, object]:
     """Deep health check — verifies DB, Redis, LLM providers, DLQ depths, Sentry.
@@ -140,26 +122,6 @@ async def health_deep() -> dict[str, object]:
         overall = "degraded"
 
     return {"status": overall, "checks": checks, "version": get_settings().app_version}
-
-
-@router.get("/healthz", include_in_schema=False)
-async def healthz(deep: bool = False) -> dict[str, object]:
-    """Standard healthz alias for UptimeRobot/K8s probes.
-
-    By default returns a tiny payload for low-latency liveness probes.
-    Pass ?deep=1 to get the same payload as /health/deep — useful for
-    post-deploy smoke checks (deploy runbook Phase 4).
-    """
-    if deep:
-        return await health_deep()
-    settings = get_settings()
-    return {
-        "status": "ok",
-        "service": "dealix",
-        "version": settings.app_version,
-        "env": settings.app_env,
-        "git_sha": settings.git_sha,
-    }
 
 
 @router.get("/readyz", include_in_schema=False)
