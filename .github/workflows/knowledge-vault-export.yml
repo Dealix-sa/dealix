@@ -52,6 +52,7 @@ jobs:
       - name: Verify proof and data-minimization contract
         run: |
           python - <<'PY'
+          import hashlib
           import json
           from pathlib import Path
 
@@ -66,8 +67,15 @@ jobs:
           assert proof["network_calls"] == 0
           assert proof["external_actions"] == 0
           assert (root / ".dealix-knowledge-vault.json").exists()
+          assert (root / ".obsidian" / "app.json").exists()
+          assert (root / ".obsidian" / "graph.json").exists()
           assert (root / "HOME.md").exists()
           assert (root / "CLAUDE.md").exists()
+          for item in proof["files"]:
+              path = root / item["path"]
+              assert path.is_file(), item["path"]
+              assert path.stat().st_size == item["bytes"], item["path"]
+              assert hashlib.sha256(path.read_bytes()).hexdigest() == item["sha256"], item["path"]
           print(json.dumps(manifest["counts"], indent=2))
           PY
 
@@ -76,5 +84,6 @@ jobs:
         with:
           name: dealix-knowledge-vault
           path: artifacts/dealix-knowledge-vault
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 14
