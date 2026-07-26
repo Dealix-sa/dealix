@@ -100,6 +100,18 @@ def test_reports_outside_runtime_are_still_scanned(scanner, tmp_path):
     assert any("reports/committed.md" in item for item in failures), failures
 
 
+def test_runtime_prefix_does_not_hide_sibling_directory(scanner, tmp_path):
+    """Path-prefix matching must not prune similarly named sibling paths."""
+    _write(
+        tmp_path / "reports" / "runtime-old" / "committed.md",
+        f"token: {FAKE_AWS_KEY}\n",
+    )
+
+    failures, _ = scanner.scan(tmp_path)
+
+    assert any("reports/runtime-old/committed.md" in item for item in failures), failures
+
+
 def test_local_env_file_is_still_rejected(scanner, tmp_path):
     """Committed local env files remain a hard failure."""
     _write(tmp_path / ".env", "APP_SECRET_KEY=whatever\n")
@@ -153,6 +165,17 @@ def test_standalone_gate_prunes_reports_runtime(standalone_gate, tmp_path):
     assert standalone_gate.iter_text_files(tmp_path) == []
 
 
+def test_standalone_gate_scans_runtime_prefix_sibling(standalone_gate, tmp_path):
+    _write(
+        tmp_path / "reports" / "runtime-old" / "committed.md",
+        f"token: {FAKE_AWS_KEY}\n",
+    )
+
+    scanned = {p.relative_to(tmp_path).as_posix() for p in standalone_gate.iter_text_files(tmp_path)}
+
+    assert "reports/runtime-old/committed.md" in scanned
+
+
 def test_standalone_gate_still_scans_github_workflows(standalone_gate, tmp_path):
     """This gate deliberately covers .github/, unlike the CI gate.
 
@@ -173,3 +196,9 @@ def test_shared_walk_prunes_egg_info_and_pycache():
     assert is_pruned_dir(Path("/x/pkg.egg-info"), "pkg.egg-info", set())
     assert is_pruned_dir(Path("/x/__pycache__"), "__pycache__", set())
     assert not is_pruned_dir(Path("/x/core"), "core", set())
+    assert not is_pruned_dir(
+        Path("/x/reports/runtime-old"),
+        "reports/runtime-old",
+        set(),
+        ("reports/runtime",),
+    )
