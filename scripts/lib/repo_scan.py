@@ -46,6 +46,12 @@ def is_virtualenv(directory: Path) -> bool:
     return (directory / "pyvenv.cfg").is_file()
 
 
+def _matches_path_prefix(rel: str, prefix: str) -> bool:
+    """Match one repo-relative path or a descendant, never a sibling prefix."""
+    normalized = prefix.rstrip("/")
+    return rel == normalized or rel.startswith(f"{normalized}/")
+
+
 def is_pruned_dir(
     directory: Path,
     rel: str,
@@ -56,14 +62,15 @@ def is_pruned_dir(
 
     ``rel`` is the directory's repo-relative POSIX path, which is what makes
     nested prefixes like ``reports/runtime`` match correctly — a plain name
-    lookup can never see them.
+    lookup can never see them. Prefixes are path-segment aware, so excluding
+    ``reports/runtime`` does not accidentally exclude ``reports/runtime-old``.
     """
     name = directory.name
     if name in VENDORED_DIR_NAMES or name in skip_dir_names:
         return True
     if name.endswith(".egg-info"):
         return True
-    if skip_path_prefixes and rel.startswith(skip_path_prefixes):
+    if any(_matches_path_prefix(rel, prefix) for prefix in skip_path_prefixes):
         return True
     return is_virtualenv(directory)
 
