@@ -63,6 +63,7 @@ concurrency:
   group: saas-foundation-${{ github.ref }}
   cancel-in-progress: true
 
+# Preserve the verifier JSON before enforcing the gate so failures are diagnosable.
 jobs:
   verify:
     name: Verify SaaS backend foundation
