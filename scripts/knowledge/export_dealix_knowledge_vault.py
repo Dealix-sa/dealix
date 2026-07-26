@@ -17,8 +17,9 @@ from dealix.knowledge_vault.exporter import (
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Build a local-only Obsidian vault from approved Dealix Markdown and "
-            "an optional KnowledgeAccumulator JSON snapshot."
+            "Build a local-only Obsidian vault from approved Dealix Markdown. "
+            "A bounded KnowledgeAccumulator JSON snapshot is included only when "
+            "--knowledge-json is supplied explicitly."
         )
     )
     parser.add_argument(
@@ -42,12 +43,18 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--knowledge-json",
         type=Path,
-        help=f"KnowledgeAccumulator JSON snapshot (default: {DEFAULT_KNOWLEDGE_JSON})",
+        help=(
+            "Opt-in KnowledgeAccumulator JSON snapshot inside the repository; "
+            f"for example {DEFAULT_KNOWLEDGE_JSON}. Omit for repository-only export."
+        ),
     )
     parser.add_argument(
         "--clean",
         action="store_true",
-        help="Delete only the selected output directory before export",
+        help=(
+            "Replace only an output directory previously marked as owned by the "
+            "Dealix knowledge-vault exporter"
+        ),
     )
     return parser
 
@@ -76,6 +83,7 @@ def main() -> int:
         "knowledge_entries": result.knowledge_entries,
         "company_pages": result.company_pages,
         "sector_pages": result.sector_pages,
+        "knowledge_json_opt_in": knowledge_json is not None,
         "manifest": result.manifest_path.as_posix(),
         "proof_log": result.proof_log_path.as_posix(),
         "network_calls": 0,
