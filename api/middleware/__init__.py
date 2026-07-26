@@ -32,8 +32,10 @@ from api.middleware.http_stack import (
     RequestIDMiddleware,
     SecurityHeadersMiddleware,
 )
+from api.middleware.tenant_isolation import TenantContextMiddleware
 
 __all__ = [
+    "TenantContextMiddleware",
     "AuditLogMiddleware",
     "ETagMiddleware",
     "RateLimitHeadersMiddleware",

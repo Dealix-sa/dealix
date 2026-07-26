@@ -25,6 +25,8 @@ credentials/
 !docs/wave8/customer_credentials.example.env
 # The secret scanner itself — code, not a secret (CI: "V3 — No secrets check")
 !scripts/check_no_secrets.py
+# The production secret guard's tests — code about secrets, not secrets
+!tests/test_production_secret_guard.py
 service-account*.json
 google-credentials*.json
 
@@ -66,6 +68,10 @@ env/
 ENV/
 .venv/
 .env/
+# Suffixed virtualenvs (.venv-audit, venv312, ...) — same class of directory,
+# and the security-smoke gate prunes them by their pyvenv.cfg marker too.
+.venv*/
+venv*/
 
 # PyInstaller
 *.manifest

@@ -22,6 +22,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Literal
 
+from fastapi import Request
+from fastapi.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
+
+from core.logging import get_logger
+
+log = get_logger(__name__)
+
 
 class CrossTenantAccessDenied(Exception):
     """Raised when a request attempts to access data outside its tenant.
@@ -314,3 +322,81 @@ def _parse_tenant_from_host(host: str) -> str | None:
     if len(subdomain) > 64:
         return None
     return subdomain
+
+
+# ── Request-scoped resolution ────────────────────────────────────────────────
+
+
+TENANT_ENFORCEMENT_ENV = "TENANT_ENFORCEMENT"
+SHADOW = "shadow"
+ENFORCE = "enforce"
+OFF = "off"
+
+
+def get_enforcement_mode(env: Any = None) -> str:
+    """Return ``off``, ``shadow`` or ``enforce``.
+
+    Defaults to ``shadow``: resolve and record the tenant on every request,
+    but never change a response. The resolver has never run against real
+    traffic, so switching straight to enforcement would risk 403-ing valid
+    requests whose tenant simply cannot be derived yet. Shadow mode produces
+    the evidence needed to make that call — and until that evidence exists,
+    the honest position is that tenant isolation is *not* enforced.
+    """
+    import os
+
+    e = env if env is not None else os.environ
+    mode = (e.get(TENANT_ENFORCEMENT_ENV) or SHADOW).strip().lower()
+    return mode if mode in {OFF, SHADOW, ENFORCE} else SHADOW
+
+
+class TenantContextMiddleware(BaseHTTPMiddleware):
+    """Resolve the tenant for each request and attach it to ``request.state``.
+
+    ``resolve_tenant_context`` and ``assert_tenant_match`` existed but nothing
+    called them, so ``request.state.tenant_context`` was never populated and
+    every per-object guard that reads it had nothing to compare against. This
+    wires the resolver in.
+
+    In ``shadow`` mode an unresolvable tenant is logged and the request
+    proceeds unchanged. In ``enforce`` mode it is rejected. Enforcement stays
+    opt-in until shadow logs show the resolver succeeds on real traffic.
+    """
+
+    def __init__(self, app: Any, mode: str | None = None) -> None:
+        super().__init__(app)
+        self._explicit_mode = mode
+
+    @property
+    def mode(self) -> str:
+        return self._explicit_mode or get_enforcement_mode()
+
+    async def dispatch(self, request: Request, call_next: Any) -> Any:
+        mode = self.mode
+        if mode == OFF:
+            return await call_next(request)
+
+        try:
+            context = resolve_tenant_context(
+                header_tenant_id=request.headers.get("X-Tenant-ID"),
+                api_key=request.headers.get("X-API-Key"),
+                host=request.headers.get("Host"),
+            )
+            request.state.tenant_context = context
+            request.state.tenant_id = context.tenant_id
+        except CrossTenantAccessDenied:
+            request.state.tenant_context = None
+            request.state.tenant_id = None
+            if mode == ENFORCE:
+                return JSONResponse(
+                    status_code=403,
+                    content={"detail": "tenant_could_not_be_resolved"},
+                )
+            log.info(
+                "tenant_unresolved_shadow",
+                path=request.url.path,
+                has_api_key=bool(request.headers.get("X-API-Key")),
+                has_tenant_header=bool(request.headers.get("X-Tenant-ID")),
+            )
+
+        return await call_next(request)

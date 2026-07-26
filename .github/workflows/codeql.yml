@@ -22,7 +22,11 @@ jobs:
       - uses: github/codeql-action/init@v4
         with:
           languages: python
-          queries: +security-and-quality
+          # Shared with security.yml. This job previously inlined its own query
+          # set and ignored the config file, so the two CodeQL scans that run on
+          # every PR applied different rules and different path exclusions, and
+          # reported the same findings twice under different check names.
+          config-file: ./.github/codeql/codeql-config.yml
       - uses: github/codeql-action/autobuild@v4
       - uses: github/codeql-action/analyze@v4
         with:

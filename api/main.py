@@ -26,6 +26,7 @@ from api.middleware import (
     RateLimitHeadersMiddleware,
     RequestIDMiddleware,
     SecurityHeadersMiddleware,
+    TenantContextMiddleware,
 )
 from api.routers import (
     admin_tenants,
@@ -78,7 +79,6 @@ from api.routers import founder_dashboard as founder_dashboard_router
 from api.routers import friction_log as friction_log_router
 from api.routers import integration_capability as integration_capability_router
 from api.routers import intelligence_layer as intelligence_layer_router
-from api.routers import public_intake as public_intake_router  # Wave 4 — public intake
 from api.routers import service_catalog as service_catalog_router
 
 # 90-day commercial activation — Wave 14B
@@ -273,6 +273,10 @@ def create_app() -> FastAPI:
     app.add_middleware(ETagMiddleware)
     app.add_middleware(AuditLogMiddleware)
     app.add_middleware(RequestIDMiddleware)
+    # Resolves request.state.tenant_context. Defaults to shadow mode: it
+    # records the tenant and never alters a response, so the resolver can be
+    # observed against real traffic before anything depends on it.
+    app.add_middleware(TenantContextMiddleware)
     app.add_middleware(APIKeyMiddleware)
     setup_rate_limit(app)
 
@@ -351,7 +355,6 @@ def create_app() -> FastAPI:
     # Wave 7 W7.5 — Tenant theming: GET tenant theme.css + POST admin theme update
     app.include_router(tenant_theming.router)
     # Wave 4 — Public intake: POST /api/v1/public/custom-ai-request (no auth, founder-reviewed)
-    app.include_router(public_intake_router.router)
     # Wave 7 W7.2 — Sector Intelligence (R4 productization)
     app.include_router(sector_intel.router)
     # Wave 7 W7.3 — Admin tenants: CRUD for tenant management (R6 enabler)
