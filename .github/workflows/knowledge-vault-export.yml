@@ -39,7 +39,9 @@ jobs:
           pytest pytest-asyncio pytest-cov pytest-timeout
 
       - name: Run focused safety tests
-        run: python -m pytest tests/test_knowledge_vault_exporter.py -q --no-cov
+        run: >-
+          python -m pytest tests/test_knowledge_vault_exporter.py
+          -q --no-cov --noconftest
 
       - name: Export public repository sources only
         run: |
