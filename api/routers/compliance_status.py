@@ -41,6 +41,28 @@ def _module_present(name: str) -> bool:
         return False
 
 
+def _entitlement_tenant_context_enforced() -> bool:
+    """Return True only if the feature gate derives its tenant from identity.
+
+    Checks the live dependency signature rather than the presence of a file,
+    so the compliance surface cannot report an isolation guarantee that no
+    request path actually enforces.
+    """
+    try:
+        import inspect
+
+        from api.security.auth_deps import get_current_user
+        from dealix.feature_gating.service import FeatureGate
+
+        params = inspect.signature(FeatureGate("__probe__").__call__).parameters
+        return any(
+            getattr(param.default, "dependency", None) is get_current_user
+            for param in params.values()
+        )
+    except Exception:
+        return False
+
+
 def _pdpl_status() -> dict[str, Any]:
     """Inspect actual PDPL implementation surfaces."""
     return {
@@ -122,8 +144,19 @@ def _security_status() -> dict[str, Any]:
                         "/api/v1/admin/* routes",
         },
         "tenant_isolation": {
-            "implemented": _module_present("api.middleware.tenant_isolation"),
-            "evidence": "api.middleware.tenant_isolation middleware",
+            # Reports enforcement wiring, not module importability: a module
+            # that no request path calls proves nothing about isolation.
+            "entitlement_context_enforced": _entitlement_tenant_context_enforced(),
+            "helpers_available": _module_present("api.middleware.tenant_isolation"),
+            "evidence": (
+                "dealix.feature_gating.service:FeatureGate resolves the tenant "
+                "from the authenticated user (never X-Tenant-ID) via "
+                "dealix.feature_gating.tenant_context:resolve_entitlement_tenant_id; "
+                "tenant-scoped routes read current_user.tenant_id. "
+                "api.middleware.tenant_isolation provides repository-layer "
+                "assertion helpers. "
+                "Tests: tests/test_feature_gating_tenant_context.py"
+            ),
         },
         "rate_limiting": {
             "implemented": _module_present("slowapi"),
