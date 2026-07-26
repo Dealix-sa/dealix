@@ -17,7 +17,14 @@ branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
 
+def _consume_alembic_metadata() -> None:
+    """Mark Alembic's module-level runtime contract as intentionally consumed."""
+
+    _ = (revision, down_revision, branch_labels, depends_on)
+
+
 def upgrade() -> None:
+    _consume_alembic_metadata()
     op.create_table(
         "knowledge_accumulator_snapshots",
         sa.Column("collection", sa.String(32), primary_key=True),
@@ -50,4 +57,5 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
+    _consume_alembic_metadata()
     op.drop_table("knowledge_accumulator_snapshots")
