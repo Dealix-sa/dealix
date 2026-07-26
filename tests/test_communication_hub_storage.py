@@ -1,107 +1,116 @@
+"""Communication OS durable-storage and serverless-safety regression tests."""
+
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
-import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 
 from api.routers import ops_communication
-from dealix.communication_hub import CommunicationHub
-from dealix.communication_storage import (
+from intelligence.communication_hub import CommunicationHub
+from intelligence.communication_storage import (
     CommunicationStorageUnavailable,
     FileCommunicationStorage,
     PostgresCommunicationStorage,
     UnavailableCommunicationStorage,
-    build_communication_storage,
+    get_communication_storage,
 )
 
 
-def test_file_storage_is_explicitly_local_only(monkeypatch, tmp_path: Path) -> None:
-    monkeypatch.setenv("APP_ENV", "test")
-    monkeypatch.setenv("COMMUNICATION_HUB_STORAGE_BACKEND", "file")
-    monkeypatch.setenv("COMMUNICATION_HUB_DATA_DIR", str(tmp_path))
-
-    storage = build_communication_storage()
-
-    assert isinstance(storage, FileCommunicationStorage)
-    assert storage.readiness()["status"] == "ready"
-
-
-def test_production_rejects_file_storage(monkeypatch, tmp_path: Path) -> None:
-    monkeypatch.setenv("APP_ENV", "production")
-    monkeypatch.setenv("COMMUNICATION_HUB_STORAGE_BACKEND", "file")
-    monkeypatch.setenv("COMMUNICATION_HUB_DATA_DIR", str(tmp_path))
-
-    with pytest.raises(CommunicationStorageUnavailable):
-        build_communication_storage()
+def _sequence_steps() -> list[dict[str, object]]:
+    return [
+        {
+            "channel": "email",
+            "delay_days": 0,
+            "subject_en": "Draft",
+            "subject_ar": "مسودة",
+            "body_en": "Approval required.",
+            "body_ar": "الموافقة مطلوبة.",
+        }
+    ]
 
 
-def test_postgres_storage_round_trip_and_readiness() -> None:
-    engine = create_engine("sqlite:///:memory:", future=True)
-    storage = PostgresCommunicationStorage(engine=engine, create_tables=True)
+def test_file_adapter_is_lazy_and_round_trips(tmp_path: Path) -> None:
+    base_path = tmp_path / "comms"
+    storage = FileCommunicationStorage(base_path)
+    hub = CommunicationHub(storage)
 
-    assert storage.readiness()["status"] == "ready"
-    assert storage.load("contact_log") == []
+    assert not base_path.exists()
+    assert hub.storage_readiness()["status"] == "ready"
+    assert not base_path.exists()
 
-    storage.mutate(
-        "contact_log",
-        lambda rows: rows.append(
-            {
-                "contact_id": "contact-1",
-                "company_name": "Example Company",
-                "contact_name": "Example Contact",
-                "channel": "email",
-                "body_en": "Hello",
-                "body_ar": "مرحبًا",
-                "direction": "inbound",
-                "status": "received",
-                "tags": [],
-            }
-        ),
+    entry = hub.log_inbound(
+        contact_id="contact-1",
+        company_name="Example Company",
+        contact_name="Example Contact",
+        channel="email",
+        body_en="Inbound",
+        body_ar="وارد",
+    )
+    sequence = hub.create_sequence(
+        name="Approval-first follow-up",
+        contact_id="contact-1",
+        company_name="Example Company",
+        steps=_sequence_steps(),
     )
 
-    records = storage.load("contact_log")
-    assert len(records) == 1
-    assert records[0]["contact_id"] == "contact-1"
+    assert base_path.exists()
+    assert hub.get_contact_history("contact-1")["count"] == 1
+    assert hub.get_sequence(sequence.sequence_id) is not None
+    assert entry.direction == "inbound"
 
 
-def test_postgres_storage_redacts_json_snapshot() -> None:
+def test_postgres_adapter_persists_across_hub_instances() -> None:
     engine = create_engine("sqlite:///:memory:", future=True)
     storage = PostgresCommunicationStorage(engine=engine, create_tables=True)
+    first_hub = CommunicationHub(storage)
 
-    payload = {
-        "token": "secret-value",
-        "nested": {"api_key": "key-value", "safe": "ok"},
+    first_hub.log_inbound(
+        contact_id="contact-2",
+        company_name="Example Company",
+        contact_name="Example Contact",
+        channel="meeting",
+        body_en="Meeting note",
+        body_ar="ملاحظة اجتماع",
+    )
+    sequence = first_hub.create_sequence(
+        name="Durable sequence",
+        contact_id="contact-2",
+        company_name="Example Company",
+        steps=_sequence_steps(),
+    )
+
+    second_hub = CommunicationHub(
+        PostgresCommunicationStorage(engine=engine, create_tables=False)
+    )
+    assert second_hub.get_contact_history("contact-2")["count"] == 1
+    assert second_hub.get_sequence(sequence.sequence_id) is not None
+    assert second_hub.storage_readiness() == {
+        "status": "ready",
+        "backend": "postgres",
+        "durable": True,
+        "write_ready": True,
+        "reason": "postgres_available",
     }
-    storage.mutate("contact_log", lambda rows: rows.append(payload))
-
-    stored = storage.load("contact_log")[0]
-    assert stored["token"] == "[REDACTED]"
-    assert stored["nested"]["api_key"] == "[REDACTED]"
-    assert stored["nested"]["safe"] == "ok"
 
 
-def test_postgres_storage_rejects_unknown_collection() -> None:
-    engine = create_engine("sqlite:///:memory:", future=True)
-    storage = PostgresCommunicationStorage(engine=engine, create_tables=True)
+def test_staging_and_production_reject_file_and_ephemeral_storage() -> None:
+    for environment in ("staging", "production"):
+        storage = get_communication_storage(
+            environment=environment,
+            backend="file",
+            file_base_path="/tmp/communication-os",
+        )
 
-    with pytest.raises(ValueError, match="unsupported collection"):
-        storage.load("unknown")
-
-
-def test_file_storage_preserves_legacy_shape(monkeypatch, tmp_path: Path) -> None:
-    monkeypatch.setenv("APP_ENV", "test")
-    monkeypatch.setenv("COMMUNICATION_HUB_STORAGE_BACKEND", "file")
-    monkeypatch.setenv("COMMUNICATION_HUB_DATA_DIR", str(tmp_path))
-    legacy = tmp_path / "contact_log.json"
-    legacy.write_text(json.dumps([{"contact_id": "legacy"}]), encoding="utf-8")
-
-    storage = build_communication_storage()
-
-    assert storage.load("contact_log") == [{"contact_id": "legacy"}]
+        assert storage.readiness() == {
+            "status": "degraded",
+            "backend": "unavailable",
+            "durable": False,
+            "write_ready": False,
+            "reason": f"{environment}_requires_postgres",
+        }
 
 
 def test_missing_migration_degrades_and_mutations_fail_closed() -> None:
@@ -129,8 +138,7 @@ def test_router_stays_registered_and_returns_safe_degraded_signal(monkeypatch) -
     app.include_router(ops_communication.router)
     client = TestClient(app, raise_server_exceptions=False)
 
-    # Newer FastAPI versions retain internal router metadata entries alongside
-    # concrete routes. Only route objects are expected to expose ``path``.
+    # FastAPI may retain internal router metadata entries alongside routes.
     route_paths = {
         route.path for route in app.routes if getattr(route, "path", None) is not None
     }
@@ -158,3 +166,66 @@ def test_router_stays_registered_and_returns_safe_degraded_signal(monkeypatch) -
     )
     assert response.status_code == 503
     assert response.json()["detail"]["code"] == "communication_storage_unavailable"
+
+
+def test_router_never_echoes_internal_exception_details(monkeypatch) -> None:
+    monkeypatch.setenv("ADMIN_API_KEYS", "test-admin")
+    sensitive_marker = "postgresql://user:secret@example.invalid/dealix"
+
+    class ExplodingHub:
+        def create_draft(self, **_: object) -> None:
+            raise ValueError(sensitive_marker)
+
+        def advance_sequence(self, *_: object) -> None:
+            raise RuntimeError(sensitive_marker)
+
+    monkeypatch.setattr(ops_communication, "_hub", ExplodingHub())
+    app = FastAPI()
+    app.include_router(ops_communication.router)
+    client = TestClient(app, raise_server_exceptions=False)
+    headers = {"X-Admin-API-Key": "test-admin"}
+
+    draft = client.post(
+        "/api/v1/ops/comms/draft",
+        headers=headers,
+        json={
+            "contact_id": "contact-4",
+            "company_name": "Example Company",
+            "contact_name": "Example Contact",
+            "channel": "email",
+            "subject_en": "Draft",
+            "subject_ar": "مسودة",
+            "body_en": "Approval required.",
+            "body_ar": "الموافقة مطلوبة.",
+            "tags": [],
+            "lang": "both",
+        },
+    )
+    advance = client.post(
+        "/api/v1/ops/comms/sequence/sequence-1/advance",
+        headers=headers,
+        json={"actor": "reviewer"},
+    )
+
+    for response in (draft, advance):
+        assert response.status_code == 400
+        assert response.json()["detail"]["code"] == "communication_operation_rejected"
+        assert sensitive_marker not in response.text
+
+
+def test_router_requires_admin_key_until_storage_is_tenant_scoped(
+    monkeypatch,
+) -> None:
+    monkeypatch.setenv("ADMIN_API_KEYS", "test-admin")
+    app = FastAPI()
+    app.include_router(ops_communication.router)
+    client = TestClient(app, raise_server_exceptions=False)
+
+    missing = client.get("/api/v1/ops/comms/readiness")
+    invalid = client.get(
+        "/api/v1/ops/comms/readiness",
+        headers={"X-Admin-API-Key": "wrong-admin"},
+    )
+
+    assert missing.status_code == 401
+    assert invalid.status_code == 403
