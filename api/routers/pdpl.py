@@ -23,6 +23,8 @@ from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from api.security.auth_deps import get_current_user
+from api.security.tenant_scope import TenantScopeDenied, resolve_tenant_for_user
 from auto_client_acquisition import consent_table
 from core.logging import get_logger
 from core.utils import utcnow
@@ -49,6 +51,23 @@ log = get_logger(__name__)
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────
+
+def _tenant_scope(user: Any, declared_tenant_id: str | None) -> str:
+    """Resolve the tenant for a PDPL request, or raise 403.
+
+    PDPL endpoints move personal data — export, erasure, audit history — so
+    the tenant is taken from the authenticated user. A tenant named in the
+    query string or body is only a request, never authorisation.
+    """
+    try:
+        tenant_id, _source = resolve_tenant_for_user(user, declared_tenant_id)
+    except TenantScopeDenied as denied:
+        raise HTTPException(
+            status_code=403,
+            detail={"error": denied.reason, "message": denied.detail},
+        ) from denied
+    return tenant_id
+
 
 async def _write_audit(
     db: AsyncSession,
@@ -77,6 +96,7 @@ async def _write_audit(
 async def request_consent(
     payload: dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Send a PDPL Art. 5 consent request via email and/or WhatsApp.
@@ -86,7 +106,7 @@ async def request_consent(
     Optional: contact_name, contact_email, contact_phone, locale
     """
     contact_id = payload.get("contact_id", "")
-    tenant_id = payload.get("tenant_id", "default")
+    tenant_id = _tenant_scope(user, payload.get("tenant_id"))
     purpose = payload.get("purpose", "legitimate_interest")
     consent_url = payload.get("consent_url", "")
     contact_name = payload.get("contact_name", "عزيزي العميل")
@@ -161,6 +181,7 @@ async def request_consent(
 async def grant_consent(
     payload: dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Record an explicit consent grant for a (contact, channel, purpose) pair.
@@ -169,7 +190,7 @@ async def grant_consent(
     contact_id = payload.get("contact_id", "")
     channel = payload.get("channel", "email")
     purpose = payload.get("purpose", "explicit_consent")
-    tenant_id = payload.get("tenant_id", "default")
+    tenant_id = _tenant_scope(user, payload.get("tenant_id"))
     source = payload.get("source", "api")
     proof_url = payload.get("proof_url", "")
 
@@ -206,6 +227,7 @@ async def grant_consent(
 async def revoke_consent(
     payload: dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Record a permanent consent revocation.
@@ -214,7 +236,7 @@ async def revoke_consent(
     contact_id = payload.get("contact_id", "")
     channel = payload.get("channel", "email")
     purpose = payload.get("purpose", "explicit_consent")
-    tenant_id = payload.get("tenant_id", "default")
+    tenant_id = _tenant_scope(user, payload.get("tenant_id"))
     source = payload.get("source", "subject_request")
 
     if not contact_id:
@@ -251,10 +273,11 @@ async def revoke_consent(
 @router.delete("/data/{contact_id}", summary="PDPL Art. 13 — Data erasure (cascade soft-delete)")
 async def erase_data(
     contact_id: str,
-    tenant_id: str = Query(...),
+    tenant_id: str | None = Query(None),
     requesting_user_id: str | None = Query(None),
     reason: str = Query("subject_request"),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Execute PDPL Art. 13 data erasure for a contact.
@@ -266,11 +289,19 @@ async def erase_data(
       3. Mark pdpl_erased_at
       4. Soft-delete associated LeadRecords (if tenant_id matches)
       5. Write cascade audit log entry
+
+    The contact must belong to the caller's tenant. Erasure is destructive
+    and irreversible, so a contact outside the tenant is reported as 404 —
+    the same answer as a contact that does not exist, which keeps the
+    endpoint from confirming that an ID exists elsewhere.
     """
-    # Find contact
+    tenant_id = _tenant_scope(user, tenant_id)
+
+    # Find contact — scoped to the caller's tenant
     result = await db.execute(
         select(ContactRecord).where(
             ContactRecord.id == contact_id,
+            ContactRecord.tenant_id == tenant_id,
             ContactRecord.deleted_at.is_(None),
         )
     )
@@ -370,16 +401,25 @@ async def erase_data(
 @router.get("/data/{contact_id}/export", summary="PDPL Art. 14 — Data portability export")
 async def export_data(
     contact_id: str,
-    tenant_id: str = Query(...),
+    tenant_id: str | None = Query(None),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Export all personal data for a contact — PDPL Art. 14 data portability.
     تصدير جميع البيانات الشخصية لجهة اتصال — المادة 14 قابلية نقل البيانات.
+
+    The export carries the full contact PII record, so the contact must
+    belong to the caller's tenant. A contact outside it is reported as 404.
     """
-    # Fetch contact
+    tenant_id = _tenant_scope(user, tenant_id)
+
+    # Fetch contact — scoped to the caller's tenant
     result = await db.execute(
-        select(ContactRecord).where(ContactRecord.id == contact_id)
+        select(ContactRecord).where(
+            ContactRecord.id == contact_id,
+            ContactRecord.tenant_id == tenant_id,
+        )
     )
     contact = result.scalar_one_or_none()
     if not contact:
@@ -398,9 +438,14 @@ async def export_data(
         "created_at": contact.created_at.isoformat() if contact.created_at else None,
     }
 
-    # Fetch audit records for this contact
+    # Fetch audit records for this contact — scoped to the caller's tenant
     audit_result = await db.execute(
-        select(AuditLogRecord).where(AuditLogRecord.entity_id == contact_id).limit(500)
+        select(AuditLogRecord)
+        .where(
+            AuditLogRecord.entity_id == contact_id,
+            AuditLogRecord.tenant_id == tenant_id,
+        )
+        .limit(500)
     )
     audit_records = [
         {
@@ -445,14 +490,20 @@ async def export_data(
 
 @router.get("/audit/report", summary="PDPL Art. 18 — Monthly audit report")
 async def monthly_audit_report(
-    tenant_id: str = Query(...),
+    tenant_id: str | None = Query(None),
     report_month: str = Query(..., description="Format: YYYY-MM e.g. 2024-01"),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Generate a PDPL Art. 18 monthly compliance audit report.
     يُنشئ تقرير التدقيق الشهري للامتثال وفق المادة 18 من PDPL.
+
+    Scoped to the caller's tenant — the audit log records who touched whose
+    personal data, so it is not readable across tenants.
     """
+    tenant_id = _tenant_scope(user, tenant_id)
+
     # Validate month format
     try:
         datetime.strptime(report_month, "%Y-%m")
@@ -518,26 +569,31 @@ async def monthly_audit_report(
 
 @router.get("/consent/dashboard", summary="Consent management dashboard")
 async def consent_dashboard(
-    tenant_id: str = Query(...),
+    tenant_id: str | None = Query(None),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Get consent management dashboard data for a tenant.
     يجلب بيانات لوحة إدارة الموافقات لمستأجر معين.
-    """
-    all_records = consent_table.stats()
-    # For now return aggregate stats; production would filter by tenant_id
-    records_raw = [
-        {
-            "contact_id": r.contact_id,
-            "channel": r.channel,
-            "purpose": r.purpose,
-            "kind": r.kind,
-            "occurred_at": r.occurred_at,
-        }
-        for r in consent_table._all_records()
-    ]
 
-    dashboard = build_consent_dashboard(tenant_id=tenant_id, consent_records=records_raw)
+    The consent store (``auto_client_acquisition.consent_table``) is a
+    process-global table with no tenant column, so its records cannot be
+    partitioned by tenant. Returning them under a tenant label would both
+    leak other tenants' ``contact_id`` values and misreport the numbers, so
+    this endpoint serves an empty record set and says so, rather than
+    serving another tenant's data. Scoping it properly needs a tenant column
+    on the consent store — tracked separately.
+    """
+    tenant_id = _tenant_scope(user, tenant_id)
+
+    dashboard = build_consent_dashboard(tenant_id=tenant_id, consent_records=[])
+    dashboard["tenant_scoped"] = False
+    dashboard["records_available"] = False
+    dashboard["note"] = (
+        "Consent records are not tenant-partitioned yet, so none are "
+        "returned. Counts here are not a statement that this tenant has no "
+        "consent activity."
+    )
     return dashboard
 
 
@@ -547,12 +603,13 @@ async def consent_dashboard(
 async def breach_notification(
     payload: dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_db),
+    user: Any = Depends(get_current_user),
 ) -> dict[str, Any]:
     """
     Generate a PDPL Art. 21 data breach notification package.
     يُنشئ حزمة إشعار خرق البيانات — يجب الإبلاغ لـ SDAIA خلال 72 ساعة.
     """
-    tenant_id = payload.get("tenant_id", "default")
+    tenant_id = _tenant_scope(user, payload.get("tenant_id"))
     notification = build_breach_notification(
         tenant_id=tenant_id,
         breach_description=payload.get("description", ""),

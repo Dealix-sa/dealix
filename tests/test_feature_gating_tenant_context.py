@@ -75,7 +75,7 @@ def test_cross_tenant_header_is_denied_not_silently_ignored():
         resolve_entitlement_tenant_id(
             user_tenant_id=TENANT_A, system_role="user", requested_tenant_id=TENANT_B
         )
-    assert exc.value.reason == "cross_tenant_entitlement_denied"
+    assert exc.value.reason == "cross_tenant_access_denied"
 
 
 def test_user_without_tenant_is_denied():
