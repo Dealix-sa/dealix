@@ -21,6 +21,29 @@ def _metadata(payment: dict[str, Any]) -> dict[str, Any]:
     return raw if isinstance(raw, dict) else {}
 
 
+def _resolve_payment_lead(payment: dict[str, Any]) -> Any | None:
+    """Resolve a paid event to the canonical lead without inventing identity."""
+    meta = _metadata(payment)
+    lead_id = str(meta.get("lead_id") or "").strip()
+    email = str(meta.get("email") or payment.get("source", {}).get("email") or "").strip()
+
+    from dealix.revenue_ops_autopilot.store import get_autopilot_store
+
+    try:
+        store = get_autopilot_store()
+        if lead_id:
+            record = store.get_lead(lead_id)
+            if record is not None:
+                return record
+        if email:
+            for record in store.list_leads():
+                if (record.email or "").strip().casefold() == email.casefold():
+                    return record
+    except Exception as exc:
+        log.warning("moyasar_lead_resolution_failed lead=%s error=%s", lead_id, exc)
+    return None
+
+
 def sync_paid_payment_to_hubspot(
     *,
     payment: dict[str, Any],
@@ -40,19 +63,11 @@ def sync_paid_payment_to_hubspot(
     from dealix.revenue_ops_autopilot.store import get_autopilot_store
 
     store = get_autopilot_store()
-    record: FunnelLeadRecord | None = None
-    if lead_id:
-        record = store.get_lead(lead_id)
-    if record is None and email:
-        for lead in store.list_leads():
-            if (lead.email or "").lower() == email.lower():
-                record = lead
-                break
-
+    record = _resolve_payment_lead(payment)
     if record is None:
         record = FunnelLeadRecord(
             id=lead_id or f"pay_{email or company or 'unknown'}",
-            company=company or email or "Unknown",
+            company=company,
             email=email,
             stage="invoice_paid",
             source="moyasar_webhook",
@@ -78,29 +93,36 @@ def append_payment_evidence(
         return {"skipped": True, "reason": "not_paid_status"}
 
     meta = _metadata(payment)
-    company = str(meta.get("company") or meta.get("company_name") or "").strip()
-    email = str(meta.get("email") or "").strip()
+    explicit_company = str(meta.get("company") or meta.get("company_name") or "").strip()
+    email = str(meta.get("email") or payment.get("source", {}).get("email") or "").strip()
     plan = str(meta.get("plan") or "diagnostic").strip()
     amount_halalas = int(payment.get("amount") or 0)
     amount_sar = amount_halalas / 100 if amount_halalas else 0
 
-    if not company and not email:
-        return {"skipped": True, "reason": "no_company_or_email_in_metadata"}
+    lead = _resolve_payment_lead(payment)
+    resolved_company = str(getattr(lead, "company", "") or "").strip()
+    company = resolved_company or explicit_company
+    if not company:
+        return {"skipped": True, "reason": "no_resolved_company_identity"}
 
     from dealix.commercial_ops.evidence_append import append_evidence_row
 
     try:
         row = append_evidence_row(
             event_type="payment_received",
-            company=company or email,
-            contact=email,
+            company=company,
+            contact=email or str(getattr(lead, "email", "") or "").strip(),
             motion="A",
             offer_id=plan,
             source_channel="moyasar_webhook",
             notes=f"moyasar paid {amount_sar:.2f} SAR plan={plan}",
             war_room_status="invoice_paid",
         )
-        return {"evidence": row}
+        return {
+            "evidence": row,
+            "identity_source": "lead_record" if resolved_company else "metadata_company",
+            "lead_id": str(getattr(lead, "id", "") or meta.get("lead_id") or ""),
+        }
     except Exception as exc:
         log.warning("moyasar_evidence_append_failed error=%s", exc)
         return {"skipped": True, "reason": str(exc)}
