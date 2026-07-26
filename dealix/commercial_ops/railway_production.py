@@ -142,7 +142,7 @@ def probe_trust_layer(api_base: str, timeout_sec: float = 12.0) -> dict[str, Any
 
 
 def analyze_railway_production(
-    *, api_base: str | None | Literal[False] = None
+    *, api_base: str | Literal[False] | None = None
 ) -> dict[str, Any]:
     repo = check_repo_railway_config()
     base = "" if api_base is False else (api_base or DEFAULT_API_BASE)
