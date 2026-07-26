@@ -63,7 +63,7 @@ concurrency:
   group: saas-foundation-${{ github.ref }}
   cancel-in-progress: true
 
-# Preserve the verifier JSON before enforcing the gate so failures are diagnosable.
+# Preserve verifier and focused-test diagnostics before enforcing either gate.
 jobs:
   verify:
     name: Verify SaaS backend foundation
@@ -125,13 +125,35 @@ jobs:
         run: |
           test "${{ steps.foundation.outputs.status }}" -eq 0
 
-      - name: Run focused regressions
+      - name: Run focused regressions with diagnostics
+        id: focused
+        shell: bash
         run: |
+          mkdir -p reports/saas
+          set +e
           pytest -q --no-cov \
             tests/test_deployment_identity_runtime.py \
             tests/test_saas_onboarding_contract.py \
             tests/test_saas_foundation_verifier.py \
-            tests/test_saas_web_journey_contract.py
+            tests/test_saas_web_journey_contract.py \
+            2>&1 | tee reports/saas/focused-tests.log
+          status=${PIPESTATUS[0]}
+          set -e
+          echo "status=${status}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload SaaS focused-test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saas-focused-test-diagnostics
+          path: reports/saas/focused-tests.log
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Enforce focused regressions
+        shell: bash
+        run: |
+          test "${{ steps.focused.outputs.status }}" -eq 0
 
   web:
     name: Verify SaaS web journey
