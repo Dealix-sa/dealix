@@ -10,3 +10,16 @@ paths-ignore:
   - .next
   - dist
   - build
+
+query-filters:
+  # Alembic migration scripts declare revision / down_revision / branch_labels /
+  # depends_on at module level. Nothing in the file reads them — Alembic's script
+  # loader does, by introspection — so this query reports all four on every
+  # migration. That is 4 findings x 19 migrations of pure noise, and the
+  # "fix" it implies (deleting them) would break the migration graph.
+  #
+  # Scoped as narrowly as CodeQL allows: this excludes one code-quality query.
+  # Every security query still runs, and still runs over db/migrations/, which
+  # is why the migration directory is NOT added to paths-ignore above.
+  - exclude:
+      id: py/unused-global-variable
