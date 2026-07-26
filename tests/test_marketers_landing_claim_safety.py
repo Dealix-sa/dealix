@@ -7,10 +7,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MARKETERS_PAGE = ROOT / "landing" / "marketers.html"
 SERVICES_PAGE = ROOT / "landing" / "services.html"
+NO_OVERCLAIM_REGISTER = ROOT / "dealix" / "registers" / "no_overclaim.yaml"
 
 
 def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
+
+
+def test_existing_no_overclaim_register_blocks_unapproved_public_pricing() -> None:
+    register = _read(NO_OVERCLAIM_REGISTER)
+
+    assert "first_launch_checkout_fail_closed" in register
+    assert "Public pricing and checkout remain disabled" in register
+    assert "The founder has not yet approved a public first-launch price" in register
 
 
 def test_marketers_page_is_explicitly_pilot_stage_and_approval_first() -> None:
