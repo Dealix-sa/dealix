@@ -97,8 +97,6 @@ ALLOWLIST: dict[str, dict[str, str]] = {
     },
     "diagnostic.html": {
         "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
-        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
-        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
     },
     "dpo.html": {
         "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",

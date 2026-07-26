@@ -28,6 +28,7 @@ class FUNNEL_EVENTS:  # noqa: N801  (namespace constants)
     """Canonical funnel event names — [object] [verb] format."""
 
     LANDING_VIEW = "landing viewed"
+    DIAGNOSTIC_REQUESTED = "diagnostic requested"
     DEMO_REQUESTED = "demo requested"
     LEAD_CAPTURED = "lead captured"
     LEAD_QUALIFIED = "lead qualified"
