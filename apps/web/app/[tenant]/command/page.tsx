@@ -53,13 +53,38 @@ interface DashboardData {
 const subscriptionLabel = (status: string) => {
   if (status === "active") return "نشط";
   if (status === "trialing") return "تجريبي";
+  if (status === "past_due") return "متأخر";
+  if (status === "unpaid") return "غير مدفوع";
+  if (status === "canceled") return "ملغي";
   return status || "غير معروف";
 };
 
 const subscriptionTone = (status: string) => {
   if (status === "active") return "bg-emerald-100 text-emerald-800 border-emerald-200";
   if (status === "trialing") return "bg-amber-100 text-amber-800 border-amber-200";
-  return "bg-red-100 text-red-800 border-red-200";
+  if (["past_due", "unpaid", "canceled"].includes(status)) {
+    return "bg-red-100 text-red-800 border-red-200";
+  }
+  return "bg-slate-800 text-slate-300 border-slate-700";
+};
+
+const explicitAttentionType = (type: string) =>
+  ["warning", "error", "critical"].includes(type.toLowerCase());
+
+const notificationLabel = (type: string) => {
+  const normalized = type.toLowerCase();
+  if (["error", "critical"].includes(normalized)) return "عالي";
+  if (normalized === "warning") return "مراجعة";
+  return "إشعار";
+};
+
+const notificationTone = (type: string) => {
+  const normalized = type.toLowerCase();
+  if (["error", "critical"].includes(normalized)) {
+    return "border-red-800 text-red-300";
+  }
+  if (normalized === "warning") return "border-amber-700 text-amber-300";
+  return "border-slate-700 text-slate-400";
 };
 
 export default function CompanyCommandPage() {
@@ -103,17 +128,27 @@ export default function CompanyCommandPage() {
   const commandState = useMemo(() => {
     if (!data) return null;
 
-    const pendingDecisions = data.notifications.length;
+    const currentAlerts = data.notifications.length;
+    const urgentAlerts = data.notifications.filter((notification) =>
+      explicitAttentionType(notification.type),
+    ).length;
     const availableMoves = data.quick_actions.length;
     const recentSignals = data.recent_activity.length;
-    const needsAttention = pendingDecisions > 0 || data.subscription_status === "past_due";
+    const subscriptionNeedsAttention = ["past_due", "unpaid", "canceled"].includes(
+      data.subscription_status,
+    );
+    const needsAttention = urgentAlerts > 0 || subscriptionNeedsAttention;
+
+    let headline = "التشغيل مستقر ولا توجد تنبيهات عاجلة";
+    if (needsAttention) headline = "توجد نقاط تحتاج انتباهك";
+    else if (currentAlerts > 0) headline = "توجد إشعارات حالية دون تصنيف عاجل";
 
     return {
-      pendingDecisions,
+      currentAlerts,
       availableMoves,
       recentSignals,
       needsAttention,
-      headline: needsAttention ? "توجد نقاط تحتاج قرارك" : "التشغيل مستقر ولا توجد قرارات عاجلة",
+      headline,
     };
   }, [data]);
 
@@ -167,7 +202,9 @@ export default function CompanyCommandPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <span className={`border px-3 py-1 text-xs font-semibold ${subscriptionTone(data.subscription_status)}`}>
+              <span
+                className={`border px-3 py-1 text-xs font-semibold ${subscriptionTone(data.subscription_status)}`}
+              >
                 {subscriptionLabel(data.subscription_status)}
               </span>
               <span className="border border-slate-700 bg-slate-950 px-3 py-1 text-xs text-slate-300">
@@ -184,20 +221,24 @@ export default function CompanyCommandPage() {
         </header>
 
         <section className="mb-4 grid gap-4 xl:grid-cols-[1.6fr_1fr]">
-          <div className={`border p-5 ${commandState.needsAttention ? "border-amber-700 bg-amber-950/20" : "border-emerald-800 bg-emerald-950/20"}`}>
+          <div
+            className={`border p-5 ${commandState.needsAttention ? "border-amber-700 bg-amber-950/20" : "border-emerald-800 bg-emerald-950/20"}`}
+          >
             <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-              <span className={`h-2 w-2 rounded-full ${commandState.needsAttention ? "bg-amber-400" : "bg-emerald-400"}`} />
+              <span
+                className={`h-2 w-2 rounded-full ${commandState.needsAttention ? "bg-amber-400" : "bg-emerald-400"}`}
+              />
               حالة المشغل
             </div>
             <h2 className="text-xl font-semibold text-white">{commandState.headline}</h2>
             <p className="mt-2 text-sm leading-6 text-slate-400">
-              تم اشتقاق هذه الحالة من التنبيهات الحالية، حالة الاشتراك، والأعمال المتاحة في بيانات العميل الفعلية فقط.
+              تم اشتقاق هذه الحالة من نوع التنبيه الصريح، حالة الاشتراك، والأعمال المتاحة في بيانات العميل الفعلية فقط.
             </p>
           </div>
 
           <div className="grid grid-cols-3 border border-slate-800 bg-slate-900/70">
             {[
-              ["قرارات معلقة", commandState.pendingDecisions],
+              ["تنبيهات حالية", commandState.currentAlerts],
               ["حركات متاحة", commandState.availableMoves],
               ["إشارات حديثة", commandState.recentSignals],
             ].map(([label, value]) => (
@@ -211,7 +252,10 @@ export default function CompanyCommandPage() {
 
         <section className="mb-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {data.kpi_cards.map((kpi) => (
-            <article key={`${kpi.label}-${kpi.label_ar}`} className="border border-slate-800 bg-slate-900/70 p-4">
+            <article
+              key={`${kpi.label}-${kpi.label_ar}`}
+              className="border border-slate-800 bg-slate-900/70 p-4"
+            >
               <div className="mb-5 text-xs uppercase tracking-[0.16em] text-slate-500">
                 {kpi.label}
               </div>
@@ -224,12 +268,14 @@ export default function CompanyCommandPage() {
         <section className="grid gap-4 xl:grid-cols-[1.1fr_1fr_1fr]">
           <article className="border border-slate-800 bg-slate-900/70">
             <div className="border-b border-slate-800 px-4 py-3">
-              <h2 className="font-semibold text-white">رادار المخاطر والقرارات</h2>
-              <p className="mt-1 text-xs text-slate-500">العناصر التي تحتاج تدخلك قبل أن تصبح إجراءً خارجيًا.</p>
+              <h2 className="font-semibold text-white">التنبيهات ومسارات المراجعة</h2>
+              <p className="mt-1 text-xs text-slate-500">
+                لا تُرفع الخطورة إلا عندما يعيد المصدر نوعًا صريحًا يستدعي المراجعة.
+              </p>
             </div>
             <div className="divide-y divide-slate-800">
               {data.notifications.length === 0 ? (
-                <div className="p-5 text-sm text-slate-500">لا توجد تنبيهات معلقة في البيانات الحالية.</div>
+                <div className="p-5 text-sm text-slate-500">لا توجد تنبيهات حالية في البيانات.</div>
               ) : (
                 data.notifications.map((notification, index) => (
                   <div key={`${notification.type}-${index}`} className="p-4">
@@ -237,8 +283,10 @@ export default function CompanyCommandPage() {
                       <span className="text-sm font-semibold text-slate-200">
                         {notification.title_ar || notification.title}
                       </span>
-                      <span className={`border px-2 py-0.5 text-[11px] ${notification.type === "warning" ? "border-amber-700 text-amber-300" : "border-red-800 text-red-300"}`}>
-                        {notification.type === "warning" ? "مراجعة" : "عالي"}
+                      <span
+                        className={`border px-2 py-0.5 text-[11px] ${notificationTone(notification.type)}`}
+                      >
+                        {notificationLabel(notification.type)}
                       </span>
                     </div>
                     {notification.action && (
