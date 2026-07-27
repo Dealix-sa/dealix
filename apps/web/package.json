@@ -14,7 +14,7 @@
     "axios": "^1.18.1",
     "next": "15.5.19",
     "posthog-js": "^1.395.0",
-    "react": "^19.0.0",
+    "react": "^19.2.8",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
