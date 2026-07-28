@@ -185,6 +185,25 @@ def test_validator_rejects_credential_overlap_and_missing_frontend_key(
     assert validate.main() == 1
 
 
+def test_validator_rejects_stale_service_alias_after_rotation() -> None:
+    validate = _load_script("validate_railway_generated_env")
+    api = {
+        "API_KEYS": "service-new,service-next",
+        "ADMIN_API_KEYS": "admin-new,admin-next",
+        "DEALIX_API_KEY": "service-old",
+        "DEALIX_ADMIN_API_KEY": "admin-new",
+    }
+    frontend = {
+        "DEALIX_API_KEY": "service-old",
+        "DEALIX_ADMIN_API_KEY": "admin-new",
+    }
+
+    issues = validate._alias_membership_issues(api, frontend)
+
+    assert "api: DEALIX_API_KEY is not in API_KEYS" in issues
+    assert "frontend: DEALIX_API_KEY is not in API_KEYS" in issues
+
+
 def test_ops_proxy_forwards_both_server_side_credentials() -> None:
     proxy = (
         ROOT

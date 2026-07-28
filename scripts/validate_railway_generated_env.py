@@ -126,6 +126,33 @@ def _credential_overlap(api_env: dict[str, str]) -> set[str]:
     return service & admin
 
 
+def _alias_membership_issues(
+    api_env: dict[str, str],
+    frontend_env: dict[str, str],
+) -> list[str]:
+    issues: list[str] = []
+    service = {
+        item.strip()
+        for item in api_env.get("API_KEYS", "").split(",")
+        if item.strip()
+    }
+    admin = {
+        item.strip()
+        for item in api_env.get("ADMIN_API_KEYS", "").split(",")
+        if item.strip()
+    }
+    for label, env in (("api", api_env), ("frontend", frontend_env)):
+        service_alias = env.get("DEALIX_API_KEY", "").strip()
+        admin_alias = env.get("DEALIX_ADMIN_API_KEY", "").strip()
+        if service_alias and service_alias not in service:
+            issues.append(f"{label}: DEALIX_API_KEY is not in API_KEYS")
+        if admin_alias and admin_alias not in admin:
+            issues.append(
+                f"{label}: DEALIX_ADMIN_API_KEY is not in ADMIN_API_KEYS"
+            )
+    return issues
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument(
@@ -143,11 +170,14 @@ def main() -> int:
     # missing frontend requirements through the process environment.
     issues = _check_file(api, REQUIRED_API)
     issues.extend(_check_file(fe, REQUIRED_FE))
-    overlap = _credential_overlap(_parse(api))
+    api_env = _parse(api)
+    frontend_env = _parse(fe)
+    overlap = _credential_overlap(api_env)
     if overlap:
         issues.append(
             f"{api.name}: service and admin credential sets overlap"
         )
+    issues.extend(_alias_membership_issues(api_env, frontend_env))
 
     print("== validate_railway_generated_env ==")
     if issues:
