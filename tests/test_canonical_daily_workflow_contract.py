@@ -1,0 +1,42 @@
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+WORKFLOWS = ROOT / ".github" / "workflows"
+CANONICAL = WORKFLOWS / "governed-full-ops-daily.yml"
+LEGACY_DAILY_PATHS = (
+    WORKFLOWS / "founder_commercial_daily.yml",
+    WORKFLOWS / "daily_snapshot.yml",
+    WORKFLOWS / "dealix-autonomous-company-os.yml",
+    WORKFLOWS / "self-operating-company-os.yml",
+)
+
+
+def _text(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+
+
+def test_governed_full_ops_is_the_only_scheduled_company_os_path() -> None:
+    assert "schedule:" in _text(CANONICAL)
+    for path in LEGACY_DAILY_PATHS:
+        content = _text(path)
+        assert "workflow_dispatch:" in content, path
+        assert "schedule:" not in content, path
+
+
+def test_ubuntu_workflows_do_not_use_windows_python_launcher() -> None:
+    for path in (CANONICAL, *LEGACY_DAILY_PATHS):
+        assert "py -3" not in _text(path), path
+
+
+def test_cryptography_and_cffi_constraints_are_compatible() -> None:
+    requirements = _text(ROOT / "requirements.txt")
+    project = _text(ROOT / "pyproject.toml")
+    assert "cryptography>=49.0.0,<50" in requirements
+    assert "cffi>=2.0.0,<3" in requirements
+    assert '"cffi>=2.0.0,<3"' in project
+
+
+def test_production_trust_smoke_installs_asyncio_plugin() -> None:
+    smoke = _text(WORKFLOWS / "production_api_trust_smoke.yml")
+    assert "pytest-asyncio" in smoke
