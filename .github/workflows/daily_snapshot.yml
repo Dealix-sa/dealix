@@ -1,19 +1,11 @@
 name: Daily Snapshot
 
-# Writes a silent daily audit-trail snapshot of system state.
-# Wave 10.8 §29.3: snapshot is uploaded as a workflow artifact
-# (90-day retention) instead of committed to main, because
-# branch protection (correctly) refuses bot pushes to main.
-# Founders can fetch any past snapshot via `gh run download <run-id>`.
-# Runs at 5AM UTC (= 8AM KSA) — one hour after the founder digest
-# at 4AM UTC to avoid contention.
+# Manual audit-trail utility. The scheduled daily owner is
+# governed-full-ops-daily.yml (issue #883).
 
 on:
-  schedule:
-    - cron: "0 5 * * *"
   workflow_dispatch:
 
-# Read-only — the workflow only produces an artifact, never pushes.
 permissions:
   contents: read
 
@@ -37,10 +29,10 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Install minimal deps
+      - name: Install minimal compatible deps
         run: |
           python3 -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python3 -m pip install -r requirements.txt
 
       - name: Build snapshot
         id: build
@@ -50,14 +42,9 @@ jobs:
           python3 scripts/dealix_snapshot.py
           DATE="$(date -u +%Y-%m-%d)"
           FILE="docs/snapshots/${DATE}.json"
-          # Wave 10.8.1 fix (Codex P2 review on PR #190):
-          # the build step MUST fail when the snapshot file is missing,
-          # so a silent dropout in scripts/dealix_snapshot.py doesn't
-          # produce a green workflow with no audit-trail artifact.
           if [ ! -f "$FILE" ]; then
             echo "❌ snapshot file missing: $FILE"
             echo "    scripts/dealix_snapshot.py exited cleanly but produced no output."
-            echo "    This is a regression in snapshot generation — investigate immediately."
             exit 1
           fi
           echo "snapshot_path=$FILE" >> "$GITHUB_OUTPUT"
@@ -67,8 +54,6 @@ jobs:
       - name: Upload snapshot as workflow artifact
         uses: actions/upload-artifact@v7
         with:
-          # Wave 10.8 §29.3: 90-day retention is enough audit-trail signal
-          # for forensics; queryable via `gh run download <run-id>`.
           name: dealix-daily-snapshot-${{ steps.build.outputs.snapshot_date }}
           path: ${{ steps.build.outputs.snapshot_path }}
           retention-days: 90

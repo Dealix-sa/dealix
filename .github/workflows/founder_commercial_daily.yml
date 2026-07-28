@@ -1,10 +1,9 @@
 name: Founder Commercial Daily
 
-# Sovereign GTM morning digest (no external send). ~08:00 KSA (05:00 UTC Sun-Thu).
+# Legacy/manual compatibility path only. The scheduled daily owner is
+# governed-full-ops-daily.yml (issue #883).
 
 on:
-  schedule:
-    - cron: "0 5 * * 0-4"
   workflow_dispatch:
 
 concurrency:
@@ -26,7 +25,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install minimal deps
-        run: pip install pyyaml
+        run: python3 -m pip install pyyaml
 
       # Required repo secrets for live War Room + evidence sync:
       # DEALIX_API_BASE, DEALIX_ADMIN_API_KEY, optional DEALIX_SYNC_EVIDENCE=1
@@ -38,7 +37,7 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: |
           chmod +x scripts/run_founder_commercial_day.sh scripts/run_dealix_daily_ops.py
-          py -3 scripts/run_dealix_unified_founder_day.py --quick
+          python3 scripts/run_dealix_unified_founder_day.py --quick
           python3 scripts/run_founder_full_autopilot.py --mode brief-only
           python3 scripts/run_full_commercial_ops_autopilot.py --execute --no-scripts
 
@@ -64,6 +63,5 @@ jobs:
             data/war_room_today.json
             data/founder_briefs/autopilot_*.md
             data/founder_briefs/autonomous_ops_last_run.json
-          # includes value_plan_*.json, motion_a_*.md, weekly_scorecard_*.md
           retention-days: 14
           if-no-files-found: ignore
