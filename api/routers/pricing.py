@@ -212,17 +212,29 @@ def _build_plans() -> dict[str, dict[str, Any]]:
         }
         return plans
     except Exception:
-        # Fallback to hardcoded if registry unavailable
-        return {
-            "revenue_proof_sprint_499": {"name": "499 SAR Revenue Proof Sprint", "name_ar": "سبرنت إثبات الإيرادات", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
-            "data_to_revenue_1500": {"name": "Data-to-Revenue Pack", "name_ar": "حزمة البيانات والإيرادات", "amount_halalas": 150000, "monthly": False, "kind": "one_off"},
-            "growth_ops_monthly_2999": {"name": "Growth Ops Monthly", "name_ar": "Managed Ops النمو", "amount_halalas": 299900, "monthly": True, "kind": "subscription"},
-            "pilot_managed": {"name": "Managed Pilot (7 days)", "name_ar": "برنامج الأسبوع المكثف", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
-            "pilot_1sar": {"name": "Pilot (1 SAR)", "name_ar": "اختبار", "amount_halalas": 100, "monthly": False, "kind": "one_off"},
-            "laas_per_reply": {"name": "LaaS Per Reply", "name_ar": "قيادة كخدمة", "amount_halalas": 2500, "monthly": False, "kind": "metered", "unit": "arabic_replied_lead"},
-            "laas_per_demo": {"name": "LaaS Per Demo", "name_ar": "قيادة كخدمة", "amount_halalas": 15000, "monthly": False, "kind": "metered", "unit": "booked_demo"},
-        }
+        # The registry is the single source of truth for what a customer is
+        # charged. This used to fall back to a hardcoded copy of the ladder,
+        # silently and without a log line — so an import failure swapped the
+        # catalogue for a stale one and checkout carried on selling. The copy
+        # had already drifted: its Data-to-Revenue key was
+        # `data_to_revenue_1500` against the registry's
+        # `data_to_revenue_pack_1500`, the 7,500 SAR Executive Command Center
+        # and every transformation offering were missing, and so were the
+        # `starter` / `growth` / `scale` aliases. Keeping a second copy in step
+        # by hand is the failure mode, not the fix.
+        #
+        # An empty catalogue makes the outage visible: reads report
+        # `catalog_status: "unavailable"` and checkout returns 503 instead of
+        # charging a price nobody approved. Quoting the wrong number is worse
+        # than quoting none.
+        global _PLANS_SOURCE
+        _PLANS_SOURCE = "unavailable"
+        log.exception("pricing_catalog_unavailable — service_catalog.registry did not import")
+        return {}
 
+
+# Set by _build_plans(); "registry" when the canonical catalogue loaded.
+_PLANS_SOURCE = "registry"
 
 PLANS: dict[str, dict[str, Any]] = _build_plans()
 
@@ -235,6 +247,15 @@ _TRUE_VALUES = frozenset({"1", "true", "yes", "on"})
 
 def _flag_enabled(name: str) -> bool:
     return os.getenv(name, "").strip().lower() in _TRUE_VALUES
+
+
+def catalog_available() -> bool:
+    """True when prices came from the canonical registry.
+
+    False means the catalogue could not be loaded, so no price on this service
+    is authoritative and nothing may be sold from it.
+    """
+    return _PLANS_SOURCE == "registry" and bool(PLANS)
 
 
 def _checkout_enabled() -> bool:
@@ -288,6 +309,9 @@ async def list_plans() -> dict[str, Any]:
         "plans": plans,
         "public_pricing_enabled": bool(public_plan_ids),
         "status": "approved" if public_plan_ids else "founder_approval_required",
+        # Distinguishes "no plans approved for public display" from "the price
+        # catalogue failed to load" — the second must never read as the first.
+        "catalog_status": "registry" if catalog_available() else "unavailable",
     }
 
 
@@ -415,8 +439,17 @@ async def pricing_menu() -> dict[str, Any]:
         "currency": "SAR",
         "plans": {k: v for k, v in PLANS.items() if k != "pilot_1sar"},
         "service_catalog": catalog,
-        "sales_ready": _checkout_enabled(),
-        "checkout_status": "enabled" if _checkout_enabled() else "founder_approval_required",
+        # A menu built from a catalogue that failed to load is not sellable,
+        # whatever the founder-approval flag says.
+        "sales_ready": _checkout_enabled() and catalog_available(),
+        "catalog_status": "registry" if catalog_available() else "unavailable",
+        "checkout_status": (
+            "enabled"
+            if _checkout_enabled() and catalog_available()
+            else "unavailable"
+            if not catalog_available()
+            else "founder_approval_required"
+        ),
     }
 
 
@@ -427,6 +460,10 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     email = str(body.get("email") or "").strip()
     lead_id = str(body.get("lead_id") or "")
 
+    # Checked before the plan lookup so the caller is told the catalogue is
+    # down, rather than getting `unknown_plan` for a plan that exists.
+    if not catalog_available():
+        raise HTTPException(status_code=503, detail="pricing_catalog_unavailable")
     if not _checkout_enabled():
         raise HTTPException(status_code=503, detail="checkout_not_founder_approved")
     if plan in TEST_ONLY_PLANS:
