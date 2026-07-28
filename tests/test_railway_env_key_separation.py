@@ -106,6 +106,85 @@ def test_sync_rejects_legacy_admin_derived_service_alias(
     assert "DEALIX_API_KEY" not in api
 
 
+def test_sync_rejects_overlap_in_any_rotated_key(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    sync = _load_script("sync_railway_generated_env")
+    api_env = tmp_path / ".env.railway.generated"
+    frontend_env = tmp_path / ".env.railway.frontend.generated"
+    api_env.write_text(
+        "API_KEYS=service-key,shared-key\n"
+        "ADMIN_API_KEYS=admin-key,shared-key\n",
+        encoding="utf-8",
+    )
+    frontend_env.write_text("DEALIX_ADMIN_API_KEY=admin-key\n", encoding="utf-8")
+    monkeypatch.setattr(sync, "API_ENV", api_env)
+    monkeypatch.setattr(sync, "FE_ENV", frontend_env)
+    monkeypatch.setattr(sys, "argv", ["sync_railway_generated_env.py"])
+
+    assert sync.main() == 1
+
+
+def test_closure_preserves_full_rotated_key_lists(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    apply_env = _load_script("apply_founder_closure_env")
+    source = tmp_path / ".env.founder.closure.local"
+    source.write_text(
+        "API_KEYS=service-one,service-two\n"
+        "ADMIN_API_KEYS=admin-one,admin-two\n",
+        encoding="utf-8",
+    )
+    target_api = tmp_path / ".env.railway.generated"
+    target_fe = tmp_path / ".env.railway.frontend.generated"
+    monkeypatch.setattr(apply_env, "SOURCE_FILES", (source,))
+    monkeypatch.setattr(apply_env, "TARGET_API", target_api)
+    monkeypatch.setattr(apply_env, "TARGET_FE", target_fe)
+
+    sources = apply_env._collect_sources()
+    api_updates = {key: sources[key] for key in ("API_KEYS", "ADMIN_API_KEYS")}
+    apply_env._write_merged(target_api, api_updates)
+
+    parsed = _parse_env(target_api)
+    assert parsed["API_KEYS"] == "service-one,service-two"
+    assert parsed["ADMIN_API_KEYS"] == "admin-one,admin-two"
+
+
+def test_validator_rejects_credential_overlap_and_missing_frontend_key(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    validate = _load_script("validate_railway_generated_env")
+    api_env = tmp_path / ".env.railway.generated"
+    frontend_env = tmp_path / ".env.railway.frontend.generated"
+    api_env.write_text(
+        "\n".join(
+            f"{key}=value-{key}"
+            for key in validate.REQUIRED_API
+        )
+        + "\nCALENDLY_WEBHOOK_SECRET=cal-secret\n"
+        + "API_KEYS=service-key,shared-key\n"
+        + "DEALIX_API_KEY=service-key\n"
+        + "ADMIN_API_KEYS=admin-key,shared-key\n",
+        encoding="utf-8",
+    )
+    frontend_env.write_text(
+        "\n".join(
+            f"{key}=value-{key}"
+            for key in validate.REQUIRED_FE
+            if key != "DEALIX_API_KEY"
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(validate, "ROOT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["validate_railway_generated_env.py", "--from-railway-env"])
+
+    assert validate.main() == 1
+
+
 def test_ops_proxy_forwards_both_server_side_credentials() -> None:
     proxy = (
         ROOT

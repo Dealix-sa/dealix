@@ -108,6 +108,24 @@ def _check_file(path: Path, required: tuple[str, ...]) -> list[str]:
     return issues
 
 
+def _credential_overlap(api_env: dict[str, str]) -> set[str]:
+    service = {
+        item.strip()
+        for item in api_env.get("API_KEYS", "").split(",")
+        if item.strip()
+    }
+    admin = {
+        item.strip()
+        for item in api_env.get("ADMIN_API_KEYS", "").split(",")
+        if item.strip()
+    }
+    if api_env.get("DEALIX_API_KEY"):
+        service.add(api_env["DEALIX_API_KEY"].strip())
+    if api_env.get("DEALIX_ADMIN_API_KEY"):
+        admin.add(api_env["DEALIX_ADMIN_API_KEY"].strip())
+    return service & admin
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument(
@@ -120,15 +138,16 @@ def main() -> int:
     api = ROOT / ".env.railway.generated"
     fe = ROOT / ".env.railway.frontend.generated"
 
-    if args.from_railway_env:
-        n = _load_dotenv(api) + _load_dotenv(fe)
-        if n:
-            print(f"  loaded {n} keys from railway generated files (not printed)")
-        issues = _check_env(REQUIRED_API, label="api")
-        issues.extend(_check_env(REQUIRED_FE, label="frontend"))
-    else:
-        issues = _check_file(api, REQUIRED_API)
-        issues.extend(_check_file(fe, REQUIRED_FE))
+    # Generated deployment files are separate trust boundaries. Validate each
+    # file directly even in compatibility mode so backend values cannot satisfy
+    # missing frontend requirements through the process environment.
+    issues = _check_file(api, REQUIRED_API)
+    issues.extend(_check_file(fe, REQUIRED_FE))
+    overlap = _credential_overlap(_parse(api))
+    if overlap:
+        issues.append(
+            f"{api.name}: service and admin credential sets overlap"
+        )
 
     print("== validate_railway_generated_env ==")
     if issues:
