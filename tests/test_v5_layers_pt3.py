@@ -356,7 +356,7 @@ async def test_finance_pricing_endpoint():
 
 
 @pytest.mark.asyncio
-async def test_finance_invoice_draft_endpoint():
+async def test_finance_invoice_draft_rejects_quote_only_pilot():
     from api.main import app
 
     transport = ASGITransport(app=app)
@@ -364,15 +364,15 @@ async def test_finance_invoice_draft_endpoint():
         r = await client.post(
             "/api/v1/finance/invoice/draft",
             json={
-                "tier_id": "growth_starter_pilot",
+                "tier_id": "revenue_command_pilot_30d",
                 "customer_email": "x@y.sa",
                 "customer_handle": "ACME-001",
             },
         )
-    assert r.status_code == 200
+    assert r.status_code == 400
     payload = r.json()
-    assert payload["amount_sar"] == 499.0
-    assert payload["approval_status"] == "approval_required"
+    assert "quote-only" in payload["detail"]
+    assert "amount_sar" not in payload
 
 
 @pytest.mark.asyncio
