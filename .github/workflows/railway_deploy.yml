@@ -167,11 +167,19 @@ jobs:
           SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
           echo "Waiting for the Railway deployment created by this run for service '$SERVICE'..."
 
+          # `deployment list` has no --project option in Railway CLI 5.x.
+          # Link once when an explicit project is configured, then poll using
+          # only the options supported by the list subcommand.
+          if [ -n "$PROJECT_ID" ]; then
+            link_cmd=(railway link --project "$PROJECT_ID" --service "$SERVICE" --json)
+            if [ -n "$ENVIRONMENT_NAME" ]; then
+              link_cmd+=(--environment "$ENVIRONMENT_NAME")
+            fi
+            "${link_cmd[@]}" > /tmp/railway-link.json
+          fi
+
           for i in {1..80}; do
             cmd=(railway deployment list --service "$SERVICE" --limit 100 --json)
-            if [ -n "$PROJECT_ID" ]; then
-              cmd+=(--project "$PROJECT_ID")
-            fi
             if [ -n "$ENVIRONMENT_NAME" ]; then
               cmd+=(--environment "$ENVIRONMENT_NAME")
             fi
