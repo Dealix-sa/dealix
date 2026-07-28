@@ -18,9 +18,10 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy import func, select
 
+from api.security.api_key import require_admin_key
 from auto_client_acquisition.email.compliance import (
     append_opt_out_line,
     check_outreach,
@@ -48,7 +49,12 @@ from db.models import (
 )
 from db.session import async_session_factory
 
-router = APIRouter(prefix="/api/v1", tags=["automation"])
+# Founder-internal cross-tenant tooling must stay behind the admin plane.
+router = APIRouter(
+    prefix="/api/v1",
+    tags=["automation"],
+    dependencies=[Depends(require_admin_key)],
+)
 log = logging.getLogger(__name__)
 
 
