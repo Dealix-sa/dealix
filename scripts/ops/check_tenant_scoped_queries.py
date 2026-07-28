@@ -56,6 +56,48 @@ ALLOWLIST: dict[tuple[str, str], str] = {
         "Self-scoped: the user id comes from an already-verified refresh "
         "token, so the lookup can only reach the token's own user."
     ),
+    (
+        "api/routers/auth.py",
+        "RefreshTokenRecord",
+    ): (
+        "Self-scoped: keyed on the hash of the presented token plus the user "
+        "id from that same verified token. The token is the credential — "
+        "holding it is what the query checks."
+    ),
+    (
+        "api/routers/auth.py",
+        "RoleRecord",
+    ): (
+        "Self-scoped: the role id comes from the loaded user's own role_id, "
+        "and only the role name is returned."
+    ),
+    (
+        "api/routers/pricing.py",
+        "PaymentRecord",
+    ): (
+        "Provider-keyed idempotency: reached only from the Moyasar webhook "
+        "after verify_webhook(), and keyed on the provider's globally unique "
+        "payment id. No caller-supplied handle is involved."
+    ),
+    # Founder-internal tooling. These routers read and write the whole
+    # prospecting graph across tenants by design, and are gated at the router
+    # by require_admin_key — the platform-admin credential, not a tenant one.
+    # A tenant predicate here would be meaningless; the guard is the auth.
+    **{
+        (f"api/routers/{module}.py", "ContactRecord"): (
+            "Cross-tenant by design; gated at the router by require_admin_key "
+            "(platform-admin only, verified in "
+            "tests/test_founder_tools_admin_gate.py)."
+        )
+        for module in (
+            "automation",
+            "data",
+            "dominance",
+            "drafts",
+            "email_send",
+            "outreach",
+        )
+    },
 }
 
 
@@ -196,7 +238,29 @@ def main(argv: list[str]) -> int:
     # unrelated edits that shift lines do not spuriously fail the gate.
     keys = {f"{rel}::{model}" for rel, _line, model in found}
 
+    # Baseline bookkeeping is only meaningful over the full default scope. A
+    # partial scan sees none of the other entries and would otherwise call
+    # them fixed — regenerating from that would silently drop live findings.
+    scanned = {path.relative_to(REPO_ROOT).as_posix() for path in files}
+    full_scope = not [a for a in argv[1:] if not a.startswith("--")]
+
     if "--write-baseline" in argv:
+        if not full_scope:
+            print(
+                "refusing to write the baseline from a partial scan: run with "
+                "no path arguments so every tracked entry is re-checked.",
+                file=sys.stderr,
+            )
+            return 1
+        if not keys:
+            # Nothing left to hold back. A comment-only file would read as
+            # though a ratchet were still in place, so remove it instead.
+            if BASELINE_PATH.exists():
+                BASELINE_PATH.unlink()
+                print(f"backlog empty — removed {BASELINE_PATH.name}")
+            else:
+                print("backlog empty — no baseline needed")
+            return 0
         BASELINE_PATH.write_text(
             "# Pre-existing unscoped tenant queries — see issue #974.\n"
             "# This list may shrink. It must never grow: a new entry means a\n"
@@ -210,7 +274,12 @@ def main(argv: list[str]) -> int:
 
     baseline = load_baseline()
     new = sorted(keys - baseline)
-    fixed = sorted(baseline - keys)
+    # Only an entry whose file this run actually scanned can be called fixed.
+    fixed = sorted(
+        entry
+        for entry in baseline - keys
+        if entry.split("::", 1)[0] in scanned
+    )
 
     for rel, line, model in sorted(found):
         if f"{rel}::{model}" not in new:

@@ -15,11 +15,17 @@ async def test_public_pricing_fails_closed_by_default(async_client):
     res = await async_client.get("/api/v1/pricing/plans")
     assert res.status_code == 200
     body = res.json()
+    # Exact equality on purpose: a new key here would be a new fact leaking to
+    # an unauthenticated caller, so adding one should have to be deliberate.
+    # `catalog_status` distinguishes "no plans approved for display" from "the
+    # price catalogue failed to load" — without it the second reads as the
+    # first, which is how a pricing outage becomes an invisible one.
     assert body == {
         "currency": "SAR",
         "plans": {},
         "public_pricing_enabled": False,
         "status": "founder_approval_required",
+        "catalog_status": "registry",
     }
 
 

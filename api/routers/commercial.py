@@ -3,7 +3,7 @@
 Aggregates the complete Dealix commercial chain:
   Diagnostic → Warm Intro → Pilot → Proof → Payment → Upsell
 
-All endpoints are admin-gated (X-API-Key). All write operations return
+All endpoints are admin-gated (X-Admin-API-Key). All write operations return
 approval_status: "approval_required" — nothing auto-sends or auto-charges.
 
 Prefix: /api/v1/commercial
@@ -16,9 +16,10 @@ import os
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
 
+from api.security.api_key import require_founder_admin_key
 from dealix.commercial.case_study_generator import CaseStudyGenerator, CaseStudyRequest
 from dealix.commercial.diagnostic_engine import DiagnosticEngine, DiagnosticRequest
 from dealix.commercial.pilot_delivery import PilotDeliveryKit, PilotStartRequest
@@ -41,14 +42,13 @@ log = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/commercial", tags=["commercial"])
 
-_ADMIN_KEY = os.getenv("DEALIX_ADMIN_API_KEY", "")
-
-
-def _require_admin(x_api_key: str = Header(default="")) -> None:
-    if not _ADMIN_KEY:
-        return  # dev mode — no key configured
-    if x_api_key != _ADMIN_KEY:
-        raise HTTPException(status_code=401, detail="Invalid API key")
+# Shared gate — see api/security/api_key.py. Two fixes over the local guard
+# this replaces: it fails closed in production, and it reads the admin header.
+# The old parameter was declared `x_api_key: str = Header(default="")` with no
+# alias, so FastAPI derived the header name `x-api-key` and compared the
+# *service* credential against the *admin* key — a comparison that cannot
+# succeed now that the two key sets are required to be disjoint.
+_require_admin = require_founder_admin_key
 
 
 # ---------------------------------------------------------------------------
