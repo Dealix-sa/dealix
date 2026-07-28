@@ -38,7 +38,11 @@ export default function ServiceCatalogPage() {
               <h3>{o.name_en}</h3>
               <p style={{ fontSize: "0.8rem", color: "var(--color-text-muted)" }}>{o.name_ar}</p>
               <p className="stat-value" style={{ fontSize: "1.4rem" }}>
-                {o.price_sar === 0 ? "Free" : `${o.price_sar.toLocaleString()} SAR`}
+                {o.commercial_status === "quote_only"
+                  ? "Quote after discovery"
+                  : o.commercial_status === "free_entry"
+                    ? "Free"
+                    : "Internal experiment"}
               </p>
               <p style={{ fontSize: "0.8rem" }}>{o.kpi_commitment_en}</p>
             </article>
