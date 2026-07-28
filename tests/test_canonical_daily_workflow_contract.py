@@ -16,7 +16,10 @@ def _text(path: Path) -> str:
 
 
 def test_governed_full_ops_is_the_only_scheduled_company_os_path() -> None:
-    assert "schedule:" in _text(CANONICAL)
+    canonical = _text(CANONICAL)
+    assert "schedule:" in canonical
+    assert "python3 scripts/dealix_snapshot.py" in canonical
+    assert "docs/snapshots/*.json" in canonical
     for path in LEGACY_DAILY_PATHS:
         content = _text(path)
         assert "workflow_dispatch:" in content, path
