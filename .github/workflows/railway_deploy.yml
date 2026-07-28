@@ -32,6 +32,12 @@ on:
         default: "dealix"
         type: string
 
+# Serialize deployments per backend service so each waiter can only observe
+# the deployment initiated by its own run.
+concurrency:
+  group: railway-backend-${{ inputs.service || vars.RAILWAY_SERVICE_NAME || 'dealix' }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     name: 🚂 Deploy to Railway
