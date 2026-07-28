@@ -175,6 +175,7 @@ jobs:
           PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
           ENVIRONMENT_NAME: ${{ vars.RAILWAY_ENVIRONMENT_NAME }}
           BASELINE_DEPLOYMENT_ID: ${{ steps.deployment_baseline.outputs.deployment_id }}
+          EXPECTED_GIT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
@@ -189,16 +190,30 @@ jobs:
               cmd+=(--environment "$ENVIRONMENT_NAME")
             fi
             "${cmd[@]}" > /tmp/railway-deployments.json
-            read -r deployment_id deployment_status < <(
+            read -r deployment_id deployment_status deployment_sha < <(
               python3 - <<'PY'
           import json
           from pathlib import Path
 
           deployments = json.loads(Path("/tmp/railway-deployments.json").read_text())
           if not deployments:
-              print("MISSING MISSING")
+              print("MISSING MISSING MISSING")
           else:
-              print(deployments[0].get("id", "MISSING"), deployments[0].get("status", "MISSING"))
+              deployment = deployments[0]
+              metadata = deployment.get("meta") or {}
+              commit_sha = next(
+                  (
+                      str(metadata[key]).strip().lower()
+                      for key in ("commitHash", "commitSha", "sourceCommitHash")
+                      if metadata.get(key)
+                  ),
+                  "MISSING",
+              )
+              print(
+                  deployment.get("id", "MISSING"),
+                  deployment.get("status", "MISSING"),
+                  commit_sha,
+              )
           PY
             )
             if [ "$deployment_id" = "$BASELINE_DEPLOYMENT_ID" ]; then
@@ -206,14 +221,19 @@ jobs:
               sleep 15
               continue
             fi
-            echo "Attempt $i: new deployment status=$deployment_status"
+            if [ "$deployment_sha" != "${EXPECTED_GIT_SHA,,}" ]; then
+              echo "Attempt $i: latest deployment is not the requested commit."
+              sleep 15
+              continue
+            fi
+            echo "Attempt $i: requested deployment status=$deployment_status"
 
             case "$deployment_status" in
               SUCCESS)
                 echo "✅ Railway reports the new deployment as successful."
                 exit 0
                 ;;
-              FAILED|CRASHED|REMOVED)
+              FAILED|CRASHED|REMOVED|SKIPPED)
                 echo "::error::Railway deployment reached terminal status: $deployment_status"
                 exit 1
                 ;;
@@ -258,7 +278,7 @@ jobs:
             if [ "$ver" = "200" ] \
               && [ "$meta" = "200" ] \
               && [ -n "$live_sha" ] \
-              && { [[ "$GITHUB_SHA" == "$live_sha"* ]] || [[ "$live_sha" == "$GITHUB_SHA"* ]]; }; then
+              && [ "${GITHUB_SHA,,}" = "${live_sha,,}" ]; then
               echo "✅ trust layer proves the requested SHA: $live_sha"
               exit 0
             fi
@@ -288,21 +308,24 @@ jobs:
             exit 1
           fi
 
-          echo "→ protected prospect diagnostic"
-          if [ -n "$DEALIX_API_KEY" ]; then
-            curl -fsS --max-time 10 \
-              -H "X-API-Key: $DEALIX_API_KEY" \
-              "$BASE_URL/api/v1/prospect/search-diag" \
-              | python3 -c "import sys,json; d=json.load(sys.stdin); print('tier1=', d.get('tier1_ready'), 'tier2=', d.get('tier2_ready'))"
-          else
-            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 \
-              "$BASE_URL/api/v1/prospect/search-diag")
-            if [ "$code" != "401" ] && [ "$code" != "403" ]; then
-              echo "::error::Protected diagnostic returned $code without an admin credential."
-              exit 1
-            fi
-            echo "✓ protected diagnostic rejects anonymous access"
+          echo "→ protected prospect diagnostic rejects anonymous access"
+          code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 \
+            "$BASE_URL/api/v1/prospect/search-diag")
+          if [ "$code" != "401" ] && [ "$code" != "403" ]; then
+            echo "::error::Protected diagnostic returned $code anonymously."
+            exit 1
           fi
+          echo "✓ protected diagnostic rejects anonymous access"
+
+          echo "→ protected prospect diagnostic accepts the service credential"
+          if [ -z "$DEALIX_API_KEY" ]; then
+            echo "::error::DEALIX_API_KEY is required for the positive protected smoke."
+            exit 1
+          fi
+          curl -fsS --max-time 10 \
+            -H "X-API-Key: $DEALIX_API_KEY" \
+            "$BASE_URL/api/v1/prospect/search-diag" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); print('tier1=', d.get('tier1_ready'), 'tier2=', d.get('tier2_ready'))"
 
           echo "→ auth boundary rejects anonymous session access"
           auth_code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 \
