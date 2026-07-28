@@ -17,9 +17,10 @@ import logging
 import os
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
 
+from api.security.api_key import require_founder_admin_key
 from dealix.payments import MoyasarClient, verify_webhook
 from dealix.reliability.dlq import DLQ, WEBHOOKS_DLQ
 from dealix.reliability.idempotency import IdempotencyStore
@@ -33,6 +34,45 @@ def _fingerprint(value: str) -> str:
     if not value:
         return ""
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:12]
+
+
+def _dedupe_key(body: dict[str, Any]) -> str:
+    """Stable idempotency key for a Moyasar webhook event.
+
+    The dedupe used to be conditional on a top-level ``id``:
+
+        if event_id and not idem.claim(event_id, ...):
+
+    so an event without one skipped the check entirely and every provider
+    retry re-ran the side effects — a second receipt email to the customer, a
+    second founder alert, and a **second ZATCA e-invoice** for one payment.
+    Moyasar retries whenever it does not get a 2xx, so a slow response was
+    enough to trigger it. A dedupe that only protects the well-formed case
+    protects nothing.
+
+    Falls back through progressively weaker identifiers, and always returns
+    one:
+
+    1. the event ``id``;
+    2. the payment ID plus its status — successive status transitions on the
+       same payment are genuinely distinct events, so the status has to be
+       part of the key or a later ``paid`` would be swallowed as a duplicate
+       of an earlier ``initiated``;
+    3. a hash of the whole body, which two genuinely different events cannot
+       share.
+    """
+    event_id = str(body.get("id") or "").strip()
+    if event_id:
+        return event_id
+
+    data = body.get("data")
+    if isinstance(data, dict):
+        payment_id = str(data.get("id") or "").strip()
+        if payment_id:
+            status = str(data.get("status") or body.get("type") or "").strip()
+            return f"payment:{payment_id}:{status}"
+
+    return f"body:{IdempotencyStore.hash_payload(body)}"
 
 
 async def _persist_payment_event(
@@ -251,9 +291,15 @@ async def list_plans() -> dict[str, Any]:
     }
 
 
-@router.post("/api/v1/pricing/usage")
+@router.post("/api/v1/pricing/usage", dependencies=[Depends(require_founder_admin_key)])
 async def record_usage(req: Request) -> dict[str, Any]:
     """Record a metered-billing usage event for LaaS R3 plans.
+
+    Admin-gated: this endpoint decides what a customer is billed, and it takes
+    the ``customer_handle`` from the request body. Behind the shared platform
+    key alone, any service-key holder could add billable events to any
+    customer's account. ``docs/ops/LAAS_INVOICING_SOP.md`` has always
+    documented it as admin-only; the code did not enforce it.
 
     Body:
       {
@@ -448,7 +494,7 @@ async def moyasar_webhook(req: Request) -> dict[str, Any]:
     event_type = str(body.get("type") or "")
     event_fp = _fingerprint(event_id)
     idem = IdempotencyStore(prefix="idem:moyasar:")
-    if event_id and not idem.claim(event_id, ttl_seconds=7 * 86400):
+    if not idem.claim(_dedupe_key(body), ttl_seconds=7 * 86400):
         log.info("moyasar_webhook_duplicate event_fp=%s", event_fp)
         return {"status": "duplicate", "id": event_id}
 
