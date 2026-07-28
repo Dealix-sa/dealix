@@ -93,6 +93,7 @@ jobs:
           INPUT_SERVICE: ${{ inputs.service }}
           CONFIG_SERVICE: ${{ vars.RAILWAY_FRONTEND_SERVICE }}
           BASELINE_DEPLOYMENT_ID: ${{ steps.deployment_baseline.outputs.deployment_id }}
+          EXPECTED_GIT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-web}}"
@@ -100,7 +101,7 @@ jobs:
           for i in {1..80}; do
             railway deployment list --service "$SERVICE" --limit 1 --json \
               > /tmp/railway-frontend-deployments.json
-            read -r deployment_id deployment_status < <(
+            read -r deployment_id deployment_status deployment_sha < <(
               python3 - <<'PY'
           import json
           from pathlib import Path
@@ -109,9 +110,23 @@ jobs:
               Path("/tmp/railway-frontend-deployments.json").read_text()
           )
           if not deployments:
-              print("MISSING MISSING")
+              print("MISSING MISSING MISSING")
           else:
-              print(deployments[0].get("id", "MISSING"), deployments[0].get("status", "MISSING"))
+              deployment = deployments[0]
+              metadata = deployment.get("meta") or {}
+              commit_sha = next(
+                  (
+                      str(metadata[key]).strip().lower()
+                      for key in ("commitHash", "commitSha", "sourceCommitHash")
+                      if metadata.get(key)
+                  ),
+                  "MISSING",
+              )
+              print(
+                  deployment.get("id", "MISSING"),
+                  deployment.get("status", "MISSING"),
+                  commit_sha,
+              )
           PY
             )
             if [ "$deployment_id" = "$BASELINE_DEPLOYMENT_ID" ]; then
@@ -119,14 +134,19 @@ jobs:
               sleep 15
               continue
             fi
-            echo "Attempt $i: latest deployment status=$deployment_status"
+            if [ "$deployment_sha" != "${EXPECTED_GIT_SHA,,}" ]; then
+              echo "Attempt $i: latest frontend deployment is not the requested commit."
+              sleep 15
+              continue
+            fi
+            echo "Attempt $i: requested frontend deployment status=$deployment_status"
 
             case "$deployment_status" in
               SUCCESS)
                 echo "✅ Railway reports the frontend deployment as successful."
                 exit 0
                 ;;
-              FAILED|CRASHED|REMOVED)
+              FAILED|CRASHED|REMOVED|SKIPPED)
                 echo "::error::Frontend deployment reached terminal status: $deployment_status"
                 exit 1
                 ;;
