@@ -3,9 +3,9 @@ from dealix.visual_rag import (
     VisualRAGJob,
     VisualRAGMode,
     VisualRAGResult,
+    VisualRAGSensitivity,
     VisualRAGSource,
     VisualRAGTile,
-    VisualRAGSensitivity,
     attach_visual_evidence_to_proof_pack,
 )
 
