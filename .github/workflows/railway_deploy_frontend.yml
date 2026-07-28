@@ -21,6 +21,12 @@ on:
 permissions:
   contents: read
 
+# Serialize deployments per frontend service so concurrent runs cannot
+# accept one another's deployment evidence.
+concurrency:
+  group: railway-frontend-${{ inputs.service || vars.RAILWAY_FRONTEND_SERVICE || 'web' }}
+  cancel-in-progress: false
+
 jobs:
   deploy-frontend:
     name: Deploy Frontend
