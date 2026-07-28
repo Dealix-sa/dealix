@@ -254,15 +254,27 @@ jobs:
 
           for i in {1..12}; do
             hz=$(curl -sS --max-time 10 "$URL/healthz" || echo "")
-            ver=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 "$URL/version" || echo "000")
-            meta=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 "$URL/api/v1/meta" || echo "000")
-            live_sha=$(
-              HEALTH_JSON="$hz" python3 - <<'PY'
+            version_json=$(curl -sS --max-time 10 "$URL/version" || echo "")
+            ver=$(
+              VERSION_JSON="$version_json" python3 - <<'PY'
           import json
           import os
 
           try:
-              print(json.loads(os.environ["HEALTH_JSON"]).get("git_sha", ""))
+              payload = json.loads(os.environ["VERSION_JSON"])
+              print("200" if payload.get("status") == "ok" else "000")
+          except (json.JSONDecodeError, TypeError):
+              print("000")
+          PY
+            )
+            meta=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 10 "$URL/api/v1/meta" || echo "000")
+            live_sha=$(
+              VERSION_JSON="$version_json" python3 - <<'PY'
+          import json
+          import os
+
+          try:
+              print(json.loads(os.environ["VERSION_JSON"]).get("git_sha", ""))
           except (json.JSONDecodeError, TypeError):
               print("")
           PY
