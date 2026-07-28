@@ -12,6 +12,10 @@ API_ENV = ROOT / ".env.railway.generated"
 FE_ENV = ROOT / ".env.railway.frontend.generated"
 
 
+def _key_list(value: str) -> list[str]:
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
 def _parse(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
     if not path.is_file():
@@ -64,35 +68,34 @@ def main() -> int:
         print("RAILWAY_ENV_SYNC=SKIP (no .env.railway.*.generated)")
         return 0
 
+    admin_values = set(_key_list(api.get("ADMIN_API_KEYS", "")))
+    admin_values.update(
+        value
+        for value in (
+            fe.get("DEALIX_ADMIN_API_KEY"),
+            api.get("DEALIX_ADMIN_API_KEY"),
+        )
+        if value
+    )
+    service_values = set(_key_list(api.get("API_KEYS", "")))
+    if api.get("DEALIX_API_KEY"):
+        service_values.add(api["DEALIX_API_KEY"])
     admin = (
         fe.get("DEALIX_ADMIN_API_KEY")
         or api.get("DEALIX_ADMIN_API_KEY")
-        or api.get("ADMIN_API_KEYS", "").split(",")[0].strip()
+        or next(iter(_key_list(api.get("ADMIN_API_KEYS", ""))), "")
     )
     service = (
-        api.get("API_KEYS", "").split(",")[0].strip()
+        next(iter(_key_list(api.get("API_KEYS", ""))), "")
         or api.get("DEALIX_API_KEY")
     )
-    admin_values = {
-        value
-        for value in (
-            admin,
-            fe.get("DEALIX_ADMIN_API_KEY"),
-            api.get("DEALIX_ADMIN_API_KEY"),
-            *(
-                value.strip()
-                for value in api.get("ADMIN_API_KEYS", "").split(",")
-            ),
-        )
-        if value
-    }
     changes: list[str] = []
     api_remove_keys: set[str] = set()
     public_admin_key = "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY"
     if public_admin_key in fe:
         del fe[public_admin_key]
         changes.append(f"FE:REMOVE_{public_admin_key}")
-    invalid_service = bool(service and service in admin_values)
+    invalid_service = bool(service_values & admin_values)
     if invalid_service:
         for key in ("API_KEYS", "DEALIX_API_KEY"):
             if key in api:
