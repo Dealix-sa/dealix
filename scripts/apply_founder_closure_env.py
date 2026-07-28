@@ -43,6 +43,7 @@ FE_KEYS = (
     "NEXT_PUBLIC_SITE_URL",
     "NEXT_PUBLIC_USE_DEALIX_OPS_PROXY",
     "DEALIX_ADMIN_API_KEY",
+    "DEALIX_API_KEY",
 )
 
 SOURCE_FILES = (
@@ -117,15 +118,26 @@ def main() -> int:
 
     api_updates = {k: sources[k] for k in ENV_KEYS if k in sources}
     fe_updates = {k: sources[k] for k in FE_KEYS if k in sources}
+    for key in (
+        "API_KEYS",
+        "ADMIN_API_KEYS",
+        "DEALIX_API_KEY",
+        "DEALIX_ADMIN_API_KEY",
+    ):
+        api_updates.pop(key, None)
+    for key in ("DEALIX_API_KEY", "DEALIX_ADMIN_API_KEY"):
+        fe_updates.pop(key, None)
 
     admin = (
         sources.get("DEALIX_ADMIN_API_KEY")
         or sources.get("ADMIN_API_KEYS", "").split(",")[0].strip()
     )
     service = (
-        sources.get("DEALIX_API_KEY")
-        or sources.get("API_KEYS", "").split(",")[0].strip()
+        sources.get("API_KEYS", "").split(",")[0].strip()
+        or sources.get("DEALIX_API_KEY")
     )
+    if service and admin and service == admin:
+        service = ""
     if admin:
         api_updates.setdefault("ADMIN_API_KEYS", admin)
         api_updates.setdefault("DEALIX_ADMIN_API_KEY", admin)
@@ -133,6 +145,7 @@ def main() -> int:
     if service:
         api_updates.setdefault("API_KEYS", service)
         api_updates.setdefault("DEALIX_API_KEY", service)
+        fe_updates.setdefault("DEALIX_API_KEY", service)
 
     api_updates.setdefault("NEXT_PUBLIC_API_URL", "https://api.dealix.me")
     fe_updates.setdefault("NEXT_PUBLIC_API_URL", "https://api.dealix.me")
