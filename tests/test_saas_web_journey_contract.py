@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -113,6 +114,18 @@ def test_runtime_helper_preserves_session_compatibility() -> None:
     assert "dealix_refresh_token" in source
     assert "JSON.stringify(tokens.access_token)" in source
     assert "JSON.stringify(tokens.refresh_token)" in source
+
+
+def test_vercel_frontend_contract_is_explicit_and_secret_free() -> None:
+    config = json.loads(_read("apps/web/vercel.json"))
+    env_example = _read("apps/web/.env.example")
+
+    assert config["framework"] == "nextjs"
+    assert "NEXT_PUBLIC_DEALIX_API_BASE=https://api.dealix.me" in env_example
+    assert "NEXT_PUBLIC_API_URL=https://api.dealix.me" in env_example
+    assert "APP_SECRET_KEY" not in env_example
+    assert "ADMIN_API_KEYS" not in env_example
+    assert "API_KEYS=" not in env_example
 
 
 def test_backend_exposes_only_audited_browser_customer_path() -> None:
