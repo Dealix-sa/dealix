@@ -72,41 +72,6 @@ jobs:
           echo "$HOME/.railway/bin" >> "$GITHUB_PATH"
           "$HOME/.railway/bin/railway" --version
 
-      - name: Capture current Railway deployment
-        id: deployment_baseline
-        if: steps.check_token.outputs.token_present == 'true'
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          INPUT_SERVICE: ${{ inputs.service }}
-          CONFIG_SERVICE: ${{ vars.RAILWAY_SERVICE_NAME }}
-          PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
-          ENVIRONMENT_NAME: ${{ vars.RAILWAY_ENVIRONMENT_NAME }}
-        run: |
-          set -euo pipefail
-          SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
-          cmd=(railway deployment list --service "$SERVICE" --limit 1 --json)
-          if [ -n "$PROJECT_ID" ]; then
-            cmd+=(--project "$PROJECT_ID")
-          fi
-          if [ -n "$ENVIRONMENT_NAME" ]; then
-            cmd+=(--environment "$ENVIRONMENT_NAME")
-          fi
-          "${cmd[@]}" > /tmp/railway-deployments-before.json
-          deployment_id=$(
-            python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          deployments = json.loads(
-              Path("/tmp/railway-deployments-before.json").read_text()
-          )
-          print(deployments[0]["id"] if deployments else "")
-          PY
-          )
-          echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
-          echo "Captured the current deployment identity without exposing metadata."
-
       - name: Deploy to Railway
         id: railway_deploy
         if: steps.check_token.outputs.token_present == 'true'
@@ -124,7 +89,7 @@ jobs:
           LOG="reports/ci/railway-deploy.log"
           SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
 
-          cmd=(railway up --service "$SERVICE" --detach --verbose)
+          cmd=(railway up --service "$SERVICE" --detach --json)
           if [ -n "$PROJECT_ID" ]; then
             cmd+=(--project "$PROJECT_ID")
           fi
@@ -152,8 +117,8 @@ jobs:
           } 2>&1 | tee "$LOG"
 
           set +e
-          "${cmd[@]}" 2>&1 | tee -a "$LOG"
-          rc=${PIPESTATUS[0]}
+          "${cmd[@]}" > /tmp/railway-up.json 2> >(tee -a "$LOG" >&2)
+          rc=$?
           set -e
 
           echo "railway_up_exit_code=$rc" | tee -a "$LOG"
@@ -161,6 +126,21 @@ jobs:
             echo "::error::Railway deploy failed; inspect railway-deploy-diagnostics."
             exit "$rc"
           fi
+
+          deployment_id=$(
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("/tmp/railway-up.json").read_text())
+          deployment_id = payload.get("deploymentId")
+          if not deployment_id:
+              raise SystemExit("railway up did not return deploymentId")
+          print(deployment_id)
+          PY
+          )
+          echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
+          echo "Captured the deployment identity returned by railway up."
 
       - name: Upload Railway deploy diagnostics
         if: always() && steps.check_token.outputs.token_present == 'true'
@@ -180,15 +160,15 @@ jobs:
           CONFIG_SERVICE: ${{ vars.RAILWAY_SERVICE_NAME }}
           PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
           ENVIRONMENT_NAME: ${{ vars.RAILWAY_ENVIRONMENT_NAME }}
-          BASELINE_DEPLOYMENT_ID: ${{ steps.deployment_baseline.outputs.deployment_id }}
+          TARGET_DEPLOYMENT_ID: ${{ steps.railway_deploy.outputs.deployment_id }}
           EXPECTED_GIT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
-          echo "Waiting for a new Railway deployment for service '$SERVICE'..."
+          echo "Waiting for the Railway deployment created by this run for service '$SERVICE'..."
 
           for i in {1..80}; do
-            cmd=(railway deployment list --service "$SERVICE" --limit 1 --json)
+            cmd=(railway deployment list --service "$SERVICE" --limit 100 --json)
             if [ -n "$PROJECT_ID" ]; then
               cmd+=(--project "$PROJECT_ID")
             fi
@@ -202,10 +182,17 @@ jobs:
           from pathlib import Path
 
           deployments = json.loads(Path("/tmp/railway-deployments.json").read_text())
-          if not deployments:
+          deployment = next(
+              (
+                  item
+                  for item in deployments
+                  if item.get("id") == "${TARGET_DEPLOYMENT_ID}"
+              ),
+              None,
+          )
+          if deployment is None:
               print("MISSING MISSING MISSING")
           else:
-              deployment = deployments[0]
               metadata = deployment.get("meta") or {}
               commit_sha = next(
                   (
@@ -222,8 +209,8 @@ jobs:
               )
           PY
             )
-            if [ "$deployment_id" = "$BASELINE_DEPLOYMENT_ID" ]; then
-              echo "Attempt $i: Railway still reports the pre-upload deployment."
+            if [ "$deployment_id" != "$TARGET_DEPLOYMENT_ID" ]; then
+              echo "Attempt $i: Railway has not listed this run's deployment yet."
               sleep 15
               continue
             fi
