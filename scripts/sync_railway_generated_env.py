@@ -70,14 +70,36 @@ def main() -> int:
         or api.get("ADMIN_API_KEYS", "").split(",")[0].strip()
     )
     service = (
-        api.get("DEALIX_API_KEY")
-        or api.get("API_KEYS", "").split(",")[0].strip()
+        api.get("API_KEYS", "").split(",")[0].strip()
+        or api.get("DEALIX_API_KEY")
     )
+    admin_values = {
+        value
+        for value in (
+            admin,
+            fe.get("DEALIX_ADMIN_API_KEY"),
+            api.get("DEALIX_ADMIN_API_KEY"),
+            *(
+                value.strip()
+                for value in api.get("ADMIN_API_KEYS", "").split(",")
+            ),
+        )
+        if value
+    }
     changes: list[str] = []
+    api_remove_keys: set[str] = set()
     public_admin_key = "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY"
     if public_admin_key in fe:
         del fe[public_admin_key]
         changes.append(f"FE:REMOVE_{public_admin_key}")
+    invalid_service = bool(service and service in admin_values)
+    if invalid_service:
+        for key in ("API_KEYS", "DEALIX_API_KEY"):
+            if key in api:
+                del api[key]
+                api_remove_keys.add(key)
+                changes.append(f"API:REMOVE_{key}")
+        service = ""
     if admin:
         if not fe.get("DEALIX_ADMIN_API_KEY"):
             fe["DEALIX_ADMIN_API_KEY"] = admin
@@ -89,9 +111,12 @@ def main() -> int:
         if not api.get("API_KEYS"):
             api["API_KEYS"] = service
             changes.append("API:API_KEYS")
-        if not api.get("DEALIX_API_KEY"):
+        if api.get("DEALIX_API_KEY") != service:
             api["DEALIX_API_KEY"] = service
             changes.append("API:DEALIX_API_KEY")
+        if fe.get("DEALIX_API_KEY") != service:
+            fe["DEALIX_API_KEY"] = service
+            changes.append("FE:DEALIX_API_KEY")
 
     for key, val in (
         ("NEXT_PUBLIC_API_URL", "https://api.dealix.me"),
@@ -116,8 +141,14 @@ def main() -> int:
     if fe:
         _write(FE_ENV, fe, remove_keys=frozenset({public_admin_key}))
     if api:
-        _write(API_ENV, api)
+        _write(API_ENV, api, remove_keys=frozenset(api_remove_keys))
     print(f"  wrote: {API_ENV.name}, {FE_ENV.name}")
+    if invalid_service:
+        print(
+            "RAILWAY_ENV_SYNC=INCOMPLETE "
+            "(service credential matched an admin credential)"
+        )
+        return 1
     return 0
 
 
