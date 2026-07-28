@@ -32,6 +32,7 @@ ENV_KEYS = (
     "APP_SECRET_KEY",
     "ENVIRONMENT",
     "CORS_ORIGINS",
+    "API_KEYS",
     "ADMIN_API_KEYS",
     "DEALIX_ADMIN_API_KEY",
     "DEALIX_API_KEY",
@@ -41,7 +42,6 @@ FE_KEYS = (
     "NEXT_PUBLIC_API_URL",
     "NEXT_PUBLIC_SITE_URL",
     "NEXT_PUBLIC_USE_DEALIX_OPS_PROXY",
-    "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY",
     "DEALIX_ADMIN_API_KEY",
 )
 
@@ -121,14 +121,18 @@ def main() -> int:
     admin = (
         sources.get("DEALIX_ADMIN_API_KEY")
         or sources.get("ADMIN_API_KEYS", "").split(",")[0].strip()
-        or sources.get("DEALIX_API_KEY")
+    )
+    service = (
+        sources.get("DEALIX_API_KEY")
+        or sources.get("API_KEYS", "").split(",")[0].strip()
     )
     if admin:
         api_updates.setdefault("ADMIN_API_KEYS", admin)
         api_updates.setdefault("DEALIX_ADMIN_API_KEY", admin)
-        api_updates.setdefault("DEALIX_API_KEY", admin)
-        fe_updates.setdefault("NEXT_PUBLIC_DEALIX_ADMIN_API_KEY", admin)
         fe_updates.setdefault("DEALIX_ADMIN_API_KEY", admin)
+    if service:
+        api_updates.setdefault("API_KEYS", service)
+        api_updates.setdefault("DEALIX_API_KEY", service)
 
     api_updates.setdefault("NEXT_PUBLIC_API_URL", "https://api.dealix.me")
     fe_updates.setdefault("NEXT_PUBLIC_API_URL", "https://api.dealix.me")
