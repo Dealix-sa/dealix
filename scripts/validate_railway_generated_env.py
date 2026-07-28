@@ -23,6 +23,10 @@ REQUIRED_API = (
     "API_KEYS",
     "DEALIX_API_KEY",
     "ADMIN_API_KEYS",
+    # Backend routers read this alias directly and fail OPEN when it is
+    # empty (see api/routers/weekly_reports.py:_require_admin), so an
+    # omitted alias silently drops their admin check. Require it here.
+    "DEALIX_ADMIN_API_KEY",
     "MOYASAR_SECRET_KEY",
     "MOYASAR_WEBHOOK_SECRET",
     "POSTHOG_API_KEY",
@@ -144,9 +148,16 @@ def _alias_membership_issues(
     for label, env in (("api", api_env), ("frontend", frontend_env)):
         service_alias = env.get("DEALIX_API_KEY", "").strip()
         admin_alias = env.get("DEALIX_ADMIN_API_KEY", "").strip()
-        if service_alias and service_alias not in service:
+        # An absent alias must be an issue, not a skipped check: backend
+        # admin guards fail open on an empty value, so silence here would
+        # report OK for an environment that has no admin boundary at all.
+        if not service_alias:
+            issues.append(f"{label}: DEALIX_API_KEY is missing")
+        elif service_alias not in service:
             issues.append(f"{label}: DEALIX_API_KEY is not in API_KEYS")
-        if admin_alias and admin_alias not in admin:
+        if not admin_alias:
+            issues.append(f"{label}: DEALIX_ADMIN_API_KEY is missing")
+        elif admin_alias not in admin:
             issues.append(
                 f"{label}: DEALIX_ADMIN_API_KEY is not in ADMIN_API_KEYS"
             )

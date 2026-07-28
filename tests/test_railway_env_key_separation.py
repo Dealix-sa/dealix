@@ -219,3 +219,52 @@ def test_ops_proxy_forwards_both_server_side_credentials() -> None:
     assert 'process.env.DEALIX_API_KEY || ""' in proxy
     assert '"X-API-Key": SERVICE_KEY' in proxy
     assert '"X-Admin-API-Key": ADMIN_KEY' in proxy
+
+
+def test_validator_rejects_a_missing_backend_admin_alias() -> None:
+    """An absent alias must fail, not skip the check.
+
+    Backend admin guards read DEALIX_ADMIN_API_KEY directly and return
+    early when it is empty (api/routers/weekly_reports.py:_require_admin,
+    customer_health_scoring.py, commercial.py). An environment that omits
+    the alias therefore has no admin boundary on those routers at all, so
+    reporting OK for it would be fail-open validation.
+    """
+    validate = _load_script("validate_railway_generated_env")
+    api = {
+        "API_KEYS": "service-key",
+        "ADMIN_API_KEYS": "admin-key",
+        "DEALIX_API_KEY": "service-key",
+        # DEALIX_ADMIN_API_KEY deliberately absent
+    }
+    frontend = {
+        "DEALIX_API_KEY": "service-key",
+        "DEALIX_ADMIN_API_KEY": "admin-key",
+    }
+
+    issues = validate._alias_membership_issues(api, frontend)
+
+    assert "api: DEALIX_ADMIN_API_KEY is missing" in issues
+
+
+def test_validator_requires_the_backend_admin_alias_to_be_present() -> None:
+    """The alias must also be a declared requirement of the backend file."""
+    validate = _load_script("validate_railway_generated_env")
+    assert "DEALIX_ADMIN_API_KEY" in validate.REQUIRED_API
+
+
+def test_validator_rejects_a_missing_service_alias() -> None:
+    validate = _load_script("validate_railway_generated_env")
+    api = {
+        "API_KEYS": "service-key",
+        "ADMIN_API_KEYS": "admin-key",
+        "DEALIX_ADMIN_API_KEY": "admin-key",
+    }
+    frontend = {
+        "DEALIX_API_KEY": "service-key",
+        "DEALIX_ADMIN_API_KEY": "admin-key",
+    }
+
+    issues = validate._alias_membership_issues(api, frontend)
+
+    assert "api: DEALIX_API_KEY is missing" in issues
