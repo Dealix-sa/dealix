@@ -58,7 +58,7 @@ def test_pricing_mentions_all_seven_tiers() -> None:
     blob = art["markdown"] + "\n" + art["html"]
     expected = [
         "Free Diagnostic",
-        "499 SAR 7-Day Growth Proof Sprint",
+        "Revenue Command Pilot — 30 days",
         "Growth Starter",
         "Data to Revenue",
         "Executive Growth OS",
