@@ -146,7 +146,7 @@ def test_router_readiness_survives_and_writes_return_sanitized_503(
     app.include_router(ops_research.router)
     client = TestClient(app, raise_server_exceptions=False)
 
-    route_paths = {route.path for route in app.routes}
+    route_paths = {route.path for route in app.routes if hasattr(route, "path")}
     assert "/api/v1/ops/knowledge/readiness" in route_paths
     assert "/api/v1/ops/research/readiness" in route_paths
 
