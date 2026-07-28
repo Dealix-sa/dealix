@@ -83,7 +83,9 @@ pyyaml>=6.0.2
 # cryptography pinned to >=44 explicitly (was implicit transitive).
 python-jose[cryptography]>=3.5.0,<4
 cryptography>=49.0.0,<50
-cffi>=1.17.1,<2
+# cffi lower bound follows cryptography: 49 requires cffi>=2.0.0, so the
+# previous <2 ceiling made requirements.txt unresolvable.
+cffi>=2.0.0,<3
 passlib[bcrypt]>=1.7.4,<2
 bcrypt>=4.2.0,<5
 pyotp>=2.9.0,<3

@@ -25,7 +25,12 @@ def _parse(path: Path) -> dict[str, str]:
     return out
 
 
-def _write(path: Path, data: dict[str, str]) -> None:
+def _write(
+    path: Path,
+    data: dict[str, str],
+    *,
+    remove_keys: frozenset[str] = frozenset(),
+) -> None:
     lines: list[str] = []
     if path.is_file():
         for raw in path.read_text(encoding="utf-8").splitlines():
@@ -34,6 +39,8 @@ def _write(path: Path, data: dict[str, str]) -> None:
                 lines.append(raw.rstrip())
                 continue
             key = line.partition("=")[0].strip()
+            if key in remove_keys:
+                continue
             if key in data:
                 lines.append(f"{key}={data[key]}")
                 del data[key]
@@ -59,23 +66,31 @@ def main() -> int:
 
     admin = (
         fe.get("DEALIX_ADMIN_API_KEY")
-        or fe.get("NEXT_PUBLIC_DEALIX_ADMIN_API_KEY")
         or api.get("DEALIX_ADMIN_API_KEY")
         or api.get("ADMIN_API_KEYS", "").split(",")[0].strip()
     )
+    service = (
+        api.get("DEALIX_API_KEY")
+        or api.get("API_KEYS", "").split(",")[0].strip()
+    )
     changes: list[str] = []
+    public_admin_key = "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY"
+    if public_admin_key in fe:
+        del fe[public_admin_key]
+        changes.append(f"FE:REMOVE_{public_admin_key}")
     if admin:
-        if not fe.get("NEXT_PUBLIC_DEALIX_ADMIN_API_KEY"):
-            fe["NEXT_PUBLIC_DEALIX_ADMIN_API_KEY"] = admin
-            changes.append("FE:NEXT_PUBLIC_DEALIX_ADMIN_API_KEY")
         if not fe.get("DEALIX_ADMIN_API_KEY"):
             fe["DEALIX_ADMIN_API_KEY"] = admin
             changes.append("FE:DEALIX_ADMIN_API_KEY")
         if not api.get("DEALIX_ADMIN_API_KEY"):
             api["DEALIX_ADMIN_API_KEY"] = admin
             changes.append("API:DEALIX_ADMIN_API_KEY")
+    if service:
+        if not api.get("API_KEYS"):
+            api["API_KEYS"] = service
+            changes.append("API:API_KEYS")
         if not api.get("DEALIX_API_KEY"):
-            api["DEALIX_API_KEY"] = admin
+            api["DEALIX_API_KEY"] = service
             changes.append("API:DEALIX_API_KEY")
 
     for key, val in (
@@ -99,7 +114,7 @@ def main() -> int:
         return 0
 
     if fe:
-        _write(FE_ENV, fe)
+        _write(FE_ENV, fe, remove_keys=frozenset({public_admin_key}))
     if api:
         _write(API_ENV, api)
     print(f"  wrote: {API_ENV.name}, {FE_ENV.name}")
