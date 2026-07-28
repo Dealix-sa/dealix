@@ -57,8 +57,8 @@ def test_diagnostic_markdown_includes_bilingual_sections(capsys):
     assert "Executive summary (English)" in out
     # Company name preserved verbatim
     assert "ACME Saudi Co." in out
-    # Pricing visible
-    assert "499" in out
+    # Quote-only commercial contract is visible; pricing follows discovery.
+    assert "documented quote after discovery" in out
     # Hard rules surfaced — both languages
     assert "no scraping" in out.lower() or "scraping" in out.lower()
     assert "موافقة" in out or "موافقتكم" in out  # consent language
