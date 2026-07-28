@@ -49,10 +49,7 @@ from db.models import (
 )
 from db.session import async_session_factory
 
-# Founder-internal tooling: these handlers read and write the whole
-# prospecting graph (accounts, contacts, scores) across tenants by design.
-# That is only safe behind the platform-admin credential, so the guard is
-# applied at the router so no future route in this file can miss it.
+# Founder-internal cross-tenant tooling must stay behind the admin plane.
 router = APIRouter(
     prefix="/api/v1",
     tags=["automation"],
@@ -364,9 +361,9 @@ def _followup_template(step: int, prev_subject: str) -> str:
         )
     if step == 5:
         return (
-            "أرسل لكم مثال سريع: عميل عقاري في الرياض شغّل Pilot أسبوع، رد على 23 lead، "
-            "حجز 4 demos، صفقة واحدة من الأسبوع الأول. تجربتكم غالباً مشابهة.\n\n"
-            "تبغوا تجربة 7 أيام بـ 499 ريال؟\n\n"
+            "متابعة أخيرة بخصوص التشخيص المختصر لمسار الإيراد. "
+            "بعد discovery نجهّز نطاق Pilot لمدة 30 يومًا وquote موثقًا فقط إذا كان مناسبًا.\n\n"
+            "هل يناسبكم وقت قصير للمراجعة؟\n\n"
             "سامي\n— لإلغاء الاستلام: ردّ بـ STOP."
         )
     if step == 10:

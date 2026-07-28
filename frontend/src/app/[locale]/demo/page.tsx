@@ -137,7 +137,7 @@ export default function DemoPage() {
                 <div className="flex-1 flex justify-end">
                   <Button asChild size="sm">
                     <Link href={`/${locale}/offer/lead-intelligence-sprint`}>
-                      {isAr ? "ابدأ Sprint 499 SAR ←" : "Start Sprint 499 SAR →"}
+                      {isAr ? "احجز جلسة الاكتشاف ←" : "Book discovery →"}
                     </Link>
                   </Button>
                 </div>
@@ -257,13 +257,13 @@ export default function DemoPage() {
               </h2>
               <p className="text-muted-foreground text-sm mb-6">
                 {isAr
-                  ? "٧ أيام · Proof Pack PDF ثنائي اللغة · Company Brain v1 · ٤٩٩ ر.س فقط"
-                  : "7 days · Bilingual PDF Proof Pack · Company Brain v1 · Only 499 SAR"}
+                  ? "30 يومًا · Proof Pack أسبوعي · Company Brain v1 · السعر بعد جلسة الاكتشاف"
+                  : "30 days · Weekly Proof Pack · Company Brain v1 · Quote after discovery"}
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
                 <Button asChild size="lg" className="font-semibold">
                   <Link href={`/${locale}/offer/lead-intelligence-sprint`}>
-                    {isAr ? "ابدأ Sprint الآن — ٤٩٩ ر.س" : "Start Sprint Now — 499 SAR"}
+                    {isAr ? "راجع نطاق التجربة بعد discovery" : "Review the post-discovery pilot scope"}
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">

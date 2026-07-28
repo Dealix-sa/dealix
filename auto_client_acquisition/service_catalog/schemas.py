@@ -25,6 +25,14 @@ ActionMode = Literal[
     "blocked",
 ]
 
+CommercialStatus = Literal[
+    "free_entry",
+    "quote_only",
+    "internal_experiment",
+    "future",
+    "public_approved",
+]
+
 
 class ServiceOffering(BaseModel):
     """One priced offering in Dealix's catalog.
@@ -49,6 +57,7 @@ class ServiceOffering(BaseModel):
     hard_gates: tuple[str, ...] = Field(..., min_length=1)
     customer_journey_stage: CustomerJourneyStage
     is_estimate: bool = True  # Article 8 — every numeric is an estimate
+    commercial_status: CommercialStatus = "internal_experiment"
 
     # Optional enterprise-transformation range fields. Default None so the
     # core 7 offerings stay valid. For "transformation"-stage systems the

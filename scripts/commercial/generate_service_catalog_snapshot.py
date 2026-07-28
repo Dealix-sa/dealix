@@ -35,12 +35,13 @@ def main() -> int:
             "price_unit": o.price_unit,
             "duration_days": o.duration_days,
             "customer_journey_stage": o.customer_journey_stage,
+            "commercial_status": o.commercial_status,
             "deliverables": list(o.deliverables),
             "kpi_commitment_en": o.kpi_commitment_en,
             "kpi_commitment_ar": o.kpi_commitment_ar,
             "refund_policy_en": o.refund_policy_en,
             "hard_gates": list(o.hard_gates),
-            "is_estimate": True,
+            "is_estimate": o.is_estimate,
         }
         if hasattr(o, "price_sar_max") and o.price_sar_max is not None:
             entry["price_sar_max"] = o.price_sar_max

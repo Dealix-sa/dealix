@@ -9,10 +9,10 @@ Constitution:
   All `is_estimate=True`.
 - Article 11: pricing changes are 1-line edits to this file (no engine code).
 
-Core funnel ladder (ascending for paid one-time services):
-  Free Diagnostic (0) → Sprint (499) → Data-to-Revenue (1500)
-  → Growth Ops (2999/mo) → Support Add-on (1500/mo) → ECC (7500/mo)
-  → Agency Partner OS (custom)
+First-launch motion:
+  Free Diagnostic → Revenue Command Pilot (30 days, quote-only after discovery).
+  Every other price remains an internal experiment or future catalogue entry
+  until a separate approval changes ``commercial_status``.
 
 Enterprise Transformation OS (customer_journey_stage="transformation"): 10
 higher-value systems sold to enterprises that need measurable transformation
@@ -59,39 +59,37 @@ _FREE_DIAGNOSTIC = ServiceOffering(
         "no_fake_proof",
     ),
     customer_journey_stage="discovery",
+    commercial_status="free_entry",
 )
 
 
-_REVENUE_PROOF_SPRINT = ServiceOffering(
-    id="revenue_proof_sprint_499",
-    name_ar="سبرنت إثبات الإيرادات (٤٩٩ ر.س)",
-    name_en="499 SAR Revenue Proof Sprint",
-    price_sar=499.0,
-    price_unit="one_time",
-    duration_days=7,
+_REVENUE_COMMAND_PILOT = ServiceOffering(
+    id="revenue_command_pilot_30d",
+    name_ar="تجربة مركز قيادة الإيرادات — 30 يومًا",
+    name_en="Revenue Command Pilot — 30 days",
+    price_sar=0.0,
+    price_unit="custom",
+    duration_days=30,
     deliverables=(
         "Company Brain v1",
-        "Top 10 Opportunities (ranked)",
-        "Decision Passports for top 3",
-        "Arabic Draft Pack (5 messages)",
-        "Follow-up Plan (7-day timeline)",
-        "Risk + Objection Map",
-        "Executive Pack",
-        "Proof Pack",
-        "Next Best Offer recommendation",
+        "One ICP",
+        "One revenue workflow",
+        "One approval queue",
+        "One operational baseline",
+        "Weekly proof pack",
+        "End-of-pilot stop, extend, or redesign decision",
     ),
     kpi_commitment_ar=(
-        "نلتزم بتسليم النطاق والمخرجات المعتمدة ضمن الجدول المتفق عليه، "
-        "مع فصل الحقائق والفرضيات وفجوات البيانات."
+        "نلتزم بتسليم النطاق المكتوب بعد جلسة الاكتشاف وقياس خط أساس تشغيلي؛ "
+        "الإيراد وعدد المبيعات خارج نطاق الالتزام."
     ),
     kpi_commitment_en=(
-        "We deliver the approved scope and outputs within the agreed schedule, "
-        "separating facts, hypotheses, and data gaps."
+        "We deliver the written post-discovery scope and an operational baseline; "
+        "revenue and sales counts are outside the commitment."
     ),
-    refund_policy_ar="تُحدد شروط الاسترداد أو رصيد الخدمة في أمر عمل معتمد؛ لا ضمان نتيجة تلقائي.",
+    refund_policy_ar="السعر والنطاق وشروط المعالجة تحدد في عرض موثق بعد الاكتشاف.",
     refund_policy_en=(
-        "Refund or service-credit terms are defined in the approved order form; "
-        "business outcomes are not promised automatically."
+        "Price, scope, and remedy terms are documented in a quote after discovery."
     ),
     action_modes_used=(
         "suggest_only",
@@ -109,6 +107,7 @@ _REVENUE_PROOF_SPRINT = ServiceOffering(
         "no_fake_revenue",
     ),
     customer_journey_stage="first_paid",
+    commercial_status="quote_only",
 )
 
 
@@ -771,7 +770,7 @@ _CUSTOM_ENTERPRISE_SYSTEM = ServiceOffering(
 # Core funnel (7) first, then Enterprise Transformation OS (10).
 OFFERINGS: tuple[ServiceOffering, ...] = (
     _FREE_DIAGNOSTIC,
-    _REVENUE_PROOF_SPRINT,
+    _REVENUE_COMMAND_PILOT,
     _DATA_TO_REVENUE_PACK,
     _GROWTH_OPS_MONTHLY,
     _SUPPORT_OS_ADDON,

@@ -12,12 +12,13 @@ offers:
     monthly_sar: 0
     note: Free entry diagnostic — no pain mapping required.
 
-  - id: revenue_sprint
-    label_ar: سبرنت الإيرادات (7 أيام)
-    label_en: 7-Day Revenue Sprint
-    type: productized
-    setup_sar: 499
+  - id: revenue_command_pilot_30d
+    label_ar: تجربة مركز قيادة الإيرادات (30 يومًا)
+    label_en: Revenue Command Pilot — 30 days
+    type: quote_only_after_discovery
+    setup_sar:
     monthly_sar: 0
+    note: No public or draft amount before five qualified design-partner conversations and a documented quote.
 
   - id: revenue_os
     label_ar: نظام تشغيل الإيرادات

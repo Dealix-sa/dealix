@@ -47,7 +47,7 @@ FOUNDER_ACTIONS: list[dict[str, str]] = [
 # The 6-rung offer ladder (docs/DEALIX_BUSINESS_MODEL.md).
 OFFER_LADDER: list[dict[str, str]] = [
     {"name": "التشخيص المجاني / Free Diagnostic", "detail": "مغناطيس عملاء · 30 دقيقة"},
-    {"name": "Micro Sprint", "detail": "499 SAR · إثبات سريع"},
+    {"name": "Revenue Command Pilot", "detail": "30 يومًا · Quote بعد discovery"},
     {"name": "Data Pack", "detail": "1,500 SAR · أصل بيانات لمرة واحدة"},
     {"name": "Managed Ops", "detail": "2,999–4,999 SAR/شهر"},
     {"name": "Transformation Diagnostic Sprint", "detail": "7,500–25,000 SAR · المدخل المدفوع الأساسي"},
@@ -80,11 +80,7 @@ def _lead_field(lead: Any, name: str, default: Any = None) -> Any:
 
 
 def _as_utc(value: Any, fallback: datetime) -> datetime:
-    """Coerce a stored timestamp to an aware UTC datetime.
-
-    Records may carry naive datetimes or ISO strings; the scoring engine
-    subtracts them from ``now``, which is aware, so a naive value raises.
-    """
+    """Coerce a stored timestamp to an aware UTC datetime."""
     if isinstance(value, str):
         try:
             value = datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -108,10 +104,6 @@ async def founder_command_room() -> dict[str, Any]:
     deals = []
     now = datetime.now(UTC)
     for lead in leads:
-        # ``store.list_leads()`` yields FunnelLeadRecord models, not dicts.
-        # Read through a helper so either shape works, and map to the fields
-        # the record actually carries: it has ``company`` and ``updated_at``,
-        # not ``company_name`` or ``last_activity_at``.
         deals.append(Deal(
             deal_id=_lead_field(lead, "id", "unknown"),
             company_name=_lead_field(lead, "company") or "Unknown",
@@ -151,4 +143,3 @@ async def founder_command_room() -> dict[str, Any]:
         },
         "summary": summary,
     }
-
