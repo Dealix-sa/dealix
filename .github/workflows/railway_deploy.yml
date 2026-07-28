@@ -186,7 +186,7 @@ jobs:
               (
                   item
                   for item in deployments
-                  if item.get("id") == "${TARGET_DEPLOYMENT_ID}"
+                  if item.get("id") == __import__("os").environ["TARGET_DEPLOYMENT_ID"]
               ),
               None,
           )
