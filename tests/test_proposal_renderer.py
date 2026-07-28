@@ -59,12 +59,14 @@ def test_proposal_endpoint_returns_bilingual_markdown():
             "sector": "b2b_services",
             "city": "Riyadh",
             "engagement_id": "eng_001",
-            "price_sar": 499,
+            "quote_id": "quote_after_discovery_001",
+            "price_sar": 1234,
         },
     )
     assert resp.status_code == 200, resp.text
     body = resp.json()
     assert body["customer_id"] == "alwaha"
+    assert body["quote_id"] == "quote_after_discovery_001"
     assert "Revenue Intelligence" in body["proposal_markdown"]
     assert body["governance_decision"] == "allow_with_review"
 
@@ -81,6 +83,18 @@ def test_proposal_endpoint_rejects_mismatched_handle():
         },
     )
     assert resp.status_code == 400
+
+
+def test_proposal_endpoint_requires_documented_quote():
+    resp = client.post(
+        "/api/v1/service-setup/proposal/alwaha",
+        json={
+            "customer_name": "Alwaha Consulting",
+            "customer_handle": "alwaha",
+            "engagement_id": "eng_003",
+        },
+    )
+    assert resp.status_code == 409
 
 
 def test_qualify_endpoint_rejects_cold_whatsapp():

@@ -13,7 +13,7 @@
 # ═══════════════════════════════════════════════════════════════════
 
 schema_version: "1.0"
-last_reviewed: "2026-07-15"
+last_reviewed: "2026-07-27"
 
 claims:
   # ───────────── Core platform ─────────────
@@ -194,17 +194,18 @@ claims:
       - tests/test_service_catalog.py
 
   - id: first_launch_checkout_fail_closed
-    claim: "Public pricing and checkout remain disabled until an explicit founder-approved launch configuration; the 1 SAR smoke plan is impossible in Production"
+    claim: "The 30-day Revenue Command Pilot is quote-only after discovery; public pricing and checkout remain disabled, and the 1 SAR smoke plan is impossible in Production"
     status: Production
-    last_reviewed: "2026-07-15"
+    last_reviewed: "2026-07-27"
     evidence:
       - api/routers/pricing.py
       - tests/test_pricing_plans_endpoint.py
       - tests/integration/test_full_customer_journey.py
       - docs/BILLING_MOYASAR_RUNBOOK.md
       - dealix/config/first_launch_offer_gate.yaml
+      - tests/test_revenue_watch_offer_contract.py
     gaps:
-      - "The founder has not yet approved a public first-launch price under #917"
+      - "Five qualified design-partner conversations have not yet been documented under #864/#917"
       - "Moyasar sandbox, VAT, ZATCA e-invoice, refund, and reconciliation evidence remain required before enabling checkout"
 
   - id: transformation_os_catalog

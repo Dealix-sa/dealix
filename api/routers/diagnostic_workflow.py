@@ -8,8 +8,8 @@ Endpoints under /api/v1/diagnostic-workflow/:
     POST /pilot-offer       — IntakeRequest -> PilotOffer
     POST /proof-plan        — IntakeRequest -> ProofPlan
 
-Pure local composition. No LLM, no live send, no charge. Pilot price
-is fixed at 499 SAR via the schema.
+Pure local composition. No LLM, no live send, no charge. Pilot scope
+is quote-only after discovery via the schema.
 """
 from __future__ import annotations
 
@@ -42,7 +42,7 @@ async def workflow_status() -> dict[str, Any]:
             "no_live_sends": True,
             "no_external_http": True,
             "no_raw_email_or_phone": True,
-            "pilot_price_locked_499_sar": True,
+            "pilot_quote_only_after_discovery": True,
             "approval_required_on_every_step": True,
             "pdpl_aware": True,
         },

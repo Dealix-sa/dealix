@@ -40,14 +40,15 @@ async def test_public_pricing_requires_explicit_approved_ids(
     )
     res = await async_client.get("/api/v1/pricing/plans")
     body = res.json()
-    assert body["public_pricing_enabled"] is True
-    assert body["status"] == "approved"
-    assert set(body["plans"]) == {"starter"}
+    assert body["public_pricing_enabled"] is False
+    assert body["status"] == "founder_approval_required"
+    assert body["plans"] == {}
     assert "pilot_1sar" not in body["plans"]
 
 
 def test_test_plan_is_never_a_normal_checkout_plan():
     assert "pilot_1sar" not in ALLOWED_PLANS
+    assert frozenset() == ALLOWED_PLANS
 
 
 @pytest.mark.asyncio

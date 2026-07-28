@@ -51,11 +51,17 @@ def test_each_offer_has_wiring():
 def test_paid_offers_have_checkout_or_founder_issued():
     body = client.get("/api/v1/commercial-map").json()
     for offer in body["offers"]:
-        if offer["price_sar"] > 0 and offer["price_unit"] != "custom":
+        price_sar = offer["price_sar"]
+        if price_sar is not None and price_sar > 0 and offer["price_unit"] != "custom":
             wiring = offer["wiring"]
             assert wiring.get("checkout_url") or wiring.get("checkout_endpoint"), (
                 f"paid offer {offer['service_id']} missing checkout"
             )
+        if offer.get("commercial_status") == "quote_only":
+            wiring = offer["wiring"]
+            assert price_sar is None
+            assert wiring.get("checkout_url") is None
+            assert wiring.get("checkout_endpoint") is None
 
 
 def test_every_offer_has_non_negotiables():
@@ -84,6 +90,7 @@ def test_markdown_endpoint_is_bilingual():
     # Includes all service_ids
     for sid in SERVICE_IDS:
         assert sid in body, f"markdown missing service_id={sid}"
+    assert "Quote after discovery" in body
 
 
 def test_referral_persistence_offer_links_to_partnership_module():
@@ -100,6 +107,9 @@ def test_growth_ops_links_to_workspace_endpoint():
 
 def test_sprint_offer_links_to_sample_preview():
     body = client.get("/api/v1/commercial-map").json()
-    sprint = next(o for o in body["offers"] if o["service_id"] == "revenue_proof_sprint_499")
+    sprint = next(o for o in body["offers"] if o["service_id"] == "revenue_command_pilot_30d")
     assert sprint["wiring"]["sample_endpoint"] == "GET /api/v1/sprint/sample"
     assert sprint["wiring"]["preview_url"] == "/sprint-sample.html"
+    assert sprint["price_sar"] is None
+    assert sprint["wiring"]["checkout_url"] is None
+    assert sprint["wiring"]["checkout_endpoint"] is None

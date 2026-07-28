@@ -115,13 +115,13 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     sections: {
       ar: [
         { heading: "المدخلات", body: "قائمة leads حقيقية (تصدير CRM أو جدول) — بدون scraping. ملاحظة: نعمل فقط مع leads موجودة، لا نجلب leads جديدة." },
-        { heading: "المخرجات", body: "مالك لكل lead، فجوات أدلة، مسودة Proof، خطوة تالية واحدة. السعر: 499 ر.س. الوقت: 48 ساعة." },
+        { heading: "المخرجات", body: "مالك لكل lead، فجوات أدلة، مسودة Proof، خطوة تالية واحدة. أي Pilot لاحق يُسعّر بعد discovery ونطاق مكتوب." },
         { heading: "الخطوة التالية", body: "Agency Proof Pack (1,500 ر.س) أو Governed Diagnostic 7 أيام (من 4,999 ر.س) حسب الجاهزية والحجم." },
         { heading: "لمن هو مناسب", body: "وكالات تسويق تريد إثبات قيمة لعميلها. فرق مبيعات B2B تريد تنظيف pipeline. مؤسسون يريدون فهم سبب ضعف التحويل." },
       ],
       en: [
         { heading: "Inputs", body: "A real lead list (CRM export or sheet) — no scraping. Note: we work with existing leads only, we do not generate new leads." },
-        { heading: "Outputs", body: "Owner per lead, evidence gaps, Proof draft, one next action. Price: 499 SAR. Time: 48 hours." },
+        { heading: "Outputs", body: "Owner per lead, evidence gaps, Proof draft, and one next action. Any later pilot is quoted after discovery and a written scope." },
         { heading: "Next step", body: "Agency Proof Pack (1,500 SAR) or 7-Day Governed Diagnostic (from 4,999 SAR) based on readiness and scale." },
         { heading: "Who is it for", body: "Marketing agencies proving value to clients. B2B sales teams wanting to clean their pipeline. Founders wanting to understand why conversion is low." },
       ],
@@ -244,7 +244,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
         { heading: "أنواع التسريبات الشائعة في السعودية", body: "لوجستيات: تأخّر فواتير بسبب عدم الامتثال لـ ZATCA. خدمات B2B: leads من LinkedIn لا تُتابَع خلال 24 ساعة. عقارات: عروض أسعار غير موثّقة تُفقَد. مقاولات: تعديلات scope بدون أوامر تغيير رسمية." },
         { heading: "كيف يكشف Dealix التسريبات", body: "Diagnostic 7 أيام يحلّل: 1) كل مرحلة في pipeline ومعدل التحويل. 2) زمن الاستجابة لكل lead. 3) الصفقات المُغلَقة الخاسرة وأسبابها. 4) الفواتير غير المُحصَّلة. يُنتج: خريطة تسريبات ذات أولويات + الإجراءات الـ 3 الأعلى أثراً." },
         { heading: "خطوات الإصلاح", body: "1) حدّد أكبر نقطة تسريب (عادة follow-up أو الفواتير). 2) عيّن مالكاً واضحاً لكل leads. 3) أضف SLA 24 ساعة لأول رد. 4) وثّق سبب كل صفقة خاسرة. 5) ابنِ Proof Pack لقياس التحسّن." },
-        { heading: "كم يُكلّف عدم الإصلاح؟", body: "شركة بإيراد 2M ر.س/سنة مع تسريب 15% = 300,000 ر.س سنوياً مفقودة. تشخيص Dealix يبدأ من 499 ر.س. العائد المحتمل على الاستثمار يتجاوز 100x في أول شهر." },
+        { heading: "كم يُكلّف عدم الإصلاح؟", body: "التكلفة لا تُفترض من متوسطات عامة. نبدأ بخط أساس من بيانات العميل المصرح بها، ثم نوثق الفجوة والفرصة دون وعد بعائد." },
       ],
       en: [
         { heading: "What is revenue leakage?", body: "Revenue leakage is the gap between potential revenue and actual revenue. Caused by: un-followed leads, delayed deals without reason, undocumented discounts, unrenewed client contracts, and invoicing errors." },
@@ -252,7 +252,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
         { heading: "Common leakage types in Saudi Arabia", body: "Logistics: delayed invoices due to ZATCA non-compliance. B2B services: LinkedIn leads not followed up within 24 hours. Real estate: undocumented price quotes lost. Construction: scope changes without formal change orders." },
         { heading: "How Dealix detects leakages", body: "7-day Diagnostic analyzes: 1) Every pipeline stage and conversion rate. 2) Response time per lead. 3) Lost deals and their reasons. 4) Uncollected invoices. Produces: prioritized leakage map + top 3 highest-impact actions." },
         { heading: "Fix steps", body: "1) Identify the biggest leakage point (usually follow-up or invoicing). 2) Assign a clear owner for all leads. 3) Add 24-hour SLA for first response. 4) Document reason for every lost deal. 5) Build Proof Pack to measure improvement." },
-        { heading: "What does not fixing cost?", body: "A company with 2M SAR/year revenue and 15% leakage = 300,000 SAR lost annually. Dealix diagnostic starts from 499 SAR. Potential ROI exceeds 100x in the first month." },
+        { heading: "What does not fixing cost?", body: "Cost is not inferred from generic benchmarks. We start from an authorized first-party baseline, then document the gap and opportunity without an ROI promise." },
       ],
     },
   },

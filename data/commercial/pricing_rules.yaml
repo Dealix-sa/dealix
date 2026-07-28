@@ -5,9 +5,11 @@
 currency: SAR
 
 base_ranges:
-  revenue_sprint:
-    min: 499
-    max: 499
+  revenue_command_pilot_30d:
+    status: quote_only_after_discovery
+    min:
+    max:
+    qualified_design_partner_conversations_required: 5
   revenue_os:
     setup_min: 15000
     setup_max: 22000

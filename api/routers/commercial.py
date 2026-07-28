@@ -112,7 +112,7 @@ async def pilot_start(
     req: PilotStartRequest,
     _: None = Depends(_require_admin),
 ) -> dict[str, Any]:
-    """Start a 7-day 499 SAR pilot — returns day-by-day delivery plan."""
+    """Legacy delivery-kit endpoint; not a pricing or checkout source."""
     kit = PilotDeliveryKit()
     plan = kit.create_pilot_plan(req)
     log.info(

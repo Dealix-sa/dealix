@@ -79,7 +79,6 @@ def test_backwards_compat_aliases_charge_the_canonical_amount():
     from api.routers.pricing import PLANS
 
     for alias, canonical in (
-        ("pilot_managed", "revenue_proof_sprint_499"),
         ("growth", "growth_ops_monthly_2999"),
         ("scale", "executive_command_center_7500"),
         ("starter", "growth_ops_monthly_2999"),
@@ -88,6 +87,8 @@ def test_backwards_compat_aliases_charge_the_canonical_amount():
         assert PLANS[alias]["amount_halalas"] == PLANS[canonical]["amount_halalas"], (
             f"{alias} charges a different amount from {canonical}"
         )
+    assert "pilot_managed" not in PLANS
+    assert "revenue_proof_sprint_499" not in PLANS
 
 
 def test_no_payable_plan_is_free_or_negative():
@@ -149,15 +150,15 @@ def test_menu_is_not_sales_ready_when_the_catalog_is_down(
     assert body["checkout_status"] == "unavailable"
 
 
-def test_healthy_catalog_still_reports_sales_ready(client, monkeypatch):
+def test_healthy_quote_only_catalog_stays_not_sales_ready(client, monkeypatch):
     monkeypatch.setenv("DEALIX_CHECKOUT_ENABLED", "1")
 
     resp = client.get("/api/v1/pricing/menu")
 
     body = resp.json()
     assert body["catalog_status"] == "registry"
-    assert body["sales_ready"] is True
-    assert body["checkout_status"] == "enabled"
+    assert body["sales_ready"] is False
+    assert body["checkout_status"] == "founder_approval_required"
 
 
 def test_checkout_stays_founder_gated_with_a_healthy_catalog(client, monkeypatch):
