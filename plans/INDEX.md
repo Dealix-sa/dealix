@@ -10,7 +10,7 @@ before listing). This is a living backlog — refresh with `/improve reconcile`.
 |---|------|----------|--------|-----------|------|--------|
 | 002 | [Provider registry freshness guard](002-provider-registry-freshness-guard.md) | doctrine/DX | S | HIGH | maintenance | ✅ DONE (this PR) |
 | 003 | [Catalog the verify_*.py scripts](003-verify-scripts-catalog.md) | docs/DX | S | HIGH | maintenance | ✅ DONE |
-| 001 | [`__future__` annotations on governance rule mirrors](001-governance-rules-future-annotations.md) | tech-debt | S | MED | maintenance | 📋 TODO |
+| 001 | [`__future__` annotations on governance rule mirrors](001-governance-rules-future-annotations.md) | tech-debt | S | MED | maintenance | ✅ DONE |
 
 ## Dependency notes
 - All three are independent; each can be executed on its own branch.
@@ -22,6 +22,11 @@ before listing). This is a living backlog — refresh with `/improve reconcile`.
   the glob dynamically so the drift didn't block execution, just updated the
   count. See `scripts/ops/build_verify_catalog.py` +
   `docs/ops/VERIFY_SCRIPTS_CATALOG.md` + `tests/test_verify_catalog.py`.
+- 001 landed on `claude/dealix-continuation-checkpoint-nxtihl`: mechanical,
+  no behavior change — the 4 doctrine guard tests it names
+  (`test_no_cold_whatsapp.py`, `test_no_guaranteed_claims.py`,
+  `test_no_linkedin_automation.py`, `test_no_scraping_engine.py`) still pass
+  unchanged.
 
 ## Rejected findings (recorded so they don't resurface)
 - **[GI-01] `!scripts/lib/` / `!apps/web/lib/` gitignore negations** — looked like
