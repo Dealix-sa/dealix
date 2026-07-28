@@ -27,12 +27,12 @@ _NEXT_ACTIONS_AR: dict[JourneyState, list[str]] = {
     ],
     JourneyState.DIAGNOSTIC_SENT: [
         "تابَع رد العميل خلال 48 ساعة (مرّة فقط، لا spam).",
-        "إذا اهتمّ، انتقل لـ Pilot offer مع 499 ريال.",
+        "إذا اهتمّ، جهّز نطاق Pilot لمدة 30 يومًا وquote موثقًا بعد discovery.",
         "وثّق التقييم في docs/proof-events/<slug>.json.",
     ],
     JourneyState.PILOT_OFFERED: [
-        "انشئ فاتورة Moyasar test_mode عبر scripts/dealix_invoice.py.",
-        "أرسل رابط الفاتورة يدوياً للعميل.",
+        "لا تنشئ فاتورة قبل اعتماد quote ومسار الدفع.",
+        "لا ترسل رابط دفع قبل اكتمال بوابات الخصوصية والدفع.",
         "اكتب تذكير للمتابعة بعد 72 ساعة.",
     ],
     JourneyState.PAYMENT_PENDING: [
@@ -90,12 +90,12 @@ _NEXT_ACTIONS_EN: dict[JourneyState, list[str]] = {
     ],
     JourneyState.DIAGNOSTIC_SENT: [
         "Follow up once within 48h (single touch, never spam).",
-        "If interested, advance to Pilot offer at 499 SAR.",
+        "If interested, prepare a 30-day Pilot scope and documented quote after discovery.",
         "Record the assessment in docs/proof-events/<slug>.json.",
     ],
     JourneyState.PILOT_OFFERED: [
-        "Create a Moyasar test-mode invoice via scripts/dealix_invoice.py.",
-        "Send the hosted-payment URL manually.",
+        "Do not create an invoice before quote and payment-path approval.",
+        "Do not send a payment URL before privacy and payment gates are cleared.",
         "Set a 72h follow-up reminder.",
     ],
     JourneyState.PAYMENT_PENDING: [

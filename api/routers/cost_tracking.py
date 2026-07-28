@@ -43,9 +43,9 @@ TIER_VARIABLE_COSTS = {
     "pilot": {
         "llm_inference":   500,   # 5 SAR     (50 LLM calls × 0.10 SAR avg)
         "lead_adapters":   500,   # 5 SAR     (Hunter quota share + Maps + Firecrawl)
-        "moyasar_fees":    100,   # 1 SAR     (transaction fees on 499 pilot)
+        "moyasar_fees":    100,   # Legacy test-mode transaction-cost assumption.
         "support_time":   2000,   # 20 SAR    (founder time amortized)
-        "total_per_pilot": 3100,  # 31 SAR    per 7-day pilot
+        "total_per_pilot": 3100,  # Internal cost model; not a public offer price.
     },
     "starter": {
         "llm_inference":  3000,   # 30 SAR    (200 leads × 0.15 SAR scoring + replies)
