@@ -224,11 +224,11 @@ def test_ops_proxy_forwards_both_server_side_credentials() -> None:
 def test_validator_rejects_a_missing_backend_admin_alias() -> None:
     """An absent alias must fail, not skip the check.
 
-    Backend admin guards read DEALIX_ADMIN_API_KEY directly and return
-    early when it is empty (api/routers/weekly_reports.py:_require_admin,
-    customer_health_scoring.py, commercial.py). An environment that omits
-    the alias therefore has no admin boundary on those routers at all, so
-    reporting OK for it would be fail-open validation.
+    DEALIX_ADMIN_API_KEY is the single-key alias the founder scripts and the
+    ops proxy present as X-Admin-API-Key. An environment that omits it leaves
+    those callers with no admin credential, and skipping the check on an
+    absent value would report OK for exactly that state — fail-open
+    validation.
     """
     validate = _load_script("validate_railway_generated_env")
     api = {

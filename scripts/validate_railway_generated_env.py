@@ -23,9 +23,11 @@ REQUIRED_API = (
     "API_KEYS",
     "DEALIX_API_KEY",
     "ADMIN_API_KEYS",
-    # Backend routers read this alias directly and fail OPEN when it is
-    # empty (see api/routers/weekly_reports.py:_require_admin), so an
-    # omitted alias silently drops their admin check. Require it here.
+    # The single-key alias the founder scripts and the ops proxy export to
+    # *call* the admin surface (scripts/run_founder_commercial_day.sh,
+    # verify_commercial_launch_ready.py). The server-side gate accepts it as
+    # well as ADMIN_API_KEYS, so requiring it here keeps the two in step —
+    # an environment that omits it leaves those tools with no credential.
     "DEALIX_ADMIN_API_KEY",
     "MOYASAR_SECRET_KEY",
     "MOYASAR_WEBHOOK_SECRET",
