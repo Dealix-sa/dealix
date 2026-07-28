@@ -9,7 +9,7 @@ before listing). This is a living backlog — refresh with `/improve reconcile`.
 | # | Plan | Category | Effort | Confidence | Wave | Status |
 |---|------|----------|--------|-----------|------|--------|
 | 002 | [Provider registry freshness guard](002-provider-registry-freshness-guard.md) | doctrine/DX | S | HIGH | maintenance | ✅ DONE (this PR) |
-| 003 | [Catalog the 57 verify_*.py scripts](003-verify-scripts-catalog.md) | docs/DX | S | HIGH | maintenance | 📋 TODO |
+| 003 | [Catalog the verify_*.py scripts](003-verify-scripts-catalog.md) | docs/DX | S | HIGH | maintenance | ✅ DONE |
 | 001 | [`__future__` annotations on governance rule mirrors](001-governance-rules-future-annotations.md) | tech-debt | S | MED | maintenance | 📋 TODO |
 
 ## Dependency notes
@@ -17,6 +17,11 @@ before listing). This is a living backlog — refresh with `/improve reconcile`.
 - 002 landed directly in this PR (see `scripts/ops/check_provider_registry_freshness.py`
   + `tests/test_provider_registry_freshness.py`). Kept here as the canonical
   worked example of a closed audit→plan→execute→verify loop.
+- 003 landed on `claude/dealix-continuation-checkpoint-nxtihl`: repo had drifted
+  to 58 `verify_*.py` scripts (not 57 as originally audited) — the builder scans
+  the glob dynamically so the drift didn't block execution, just updated the
+  count. See `scripts/ops/build_verify_catalog.py` +
+  `docs/ops/VERIFY_SCRIPTS_CATALOG.md` + `tests/test_verify_catalog.py`.
 
 ## Rejected findings (recorded so they don't resurface)
 - **[GI-01] `!scripts/lib/` / `!apps/web/lib/` gitignore negations** — looked like
