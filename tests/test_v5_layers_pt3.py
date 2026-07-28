@@ -161,15 +161,15 @@ def test_pricing_catalog_returns_5_tiers():
     cat = pricing_catalog()
     ids = {t["tier_id"] for t in cat}
     assert ids == {
-        "diagnostic", "growth_starter_pilot", "data_to_revenue",
+        "diagnostic", "revenue_command_pilot_30d", "data_to_revenue",
         "executive_growth_os", "partnership_growth",
     }
 
 
-def test_pilot_price_is_499():
-    tier = get_pricing_tier("growth_starter_pilot")
-    assert tier["price_sar"] == 499.0
-    assert tier["pricing_basis"] == "one_shot"
+def test_pilot_is_quote_only_after_discovery():
+    tier = get_pricing_tier("revenue_command_pilot_30d")
+    assert tier["price_sar"] is None
+    assert tier["pricing_basis"] == "quote_only"
 
 
 def test_diagnostic_is_free():
@@ -189,18 +189,13 @@ def test_unknown_tier_raises():
         get_pricing_tier("__not_real__")
 
 
-def test_draft_invoice_uses_catalog_price():
-    draft = draft_invoice(
-        tier_id="growth_starter_pilot",
-        customer_email="ahmad@example.sa",
-        customer_handle="ACME-001",
-    )
-    assert draft.amount_sar == 499.0
-    assert draft.tier_id == "growth_starter_pilot"
-    assert draft.approval_status == "approval_required"
-    args = draft.to_cli_args()
-    assert "--amount-sar" in args
-    assert "499" in args
+def test_draft_invoice_refuses_quote_only_tier_before_documented_quote():
+    with pytest.raises(ValueError, match="quote-only"):
+        draft_invoice(
+            tier_id="revenue_command_pilot_30d",
+            customer_email="ahmad@example.sa",
+            customer_handle="ACME-001",
+        )
 
 
 def test_draft_invoice_refuses_free_tier():

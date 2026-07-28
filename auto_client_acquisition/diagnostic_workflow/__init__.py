@@ -5,7 +5,7 @@ offer -> delivery plan -> proof plan into a single module the founder
 calls when a warm intro lands.
 
 Pure local composition. No LLM, no live send, no charge. The pilot
-price is FIXED at 499 SAR (Literal[499] in the schema).
+the commercial offer is quote-only after discovery.
 
 Public API:
     from auto_client_acquisition.diagnostic_workflow import (

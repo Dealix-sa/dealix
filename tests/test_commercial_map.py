@@ -100,6 +100,9 @@ def test_growth_ops_links_to_workspace_endpoint():
 
 def test_sprint_offer_links_to_sample_preview():
     body = client.get("/api/v1/commercial-map").json()
-    sprint = next(o for o in body["offers"] if o["service_id"] == "revenue_proof_sprint_499")
+    sprint = next(o for o in body["offers"] if o["service_id"] == "revenue_command_pilot_30d")
     assert sprint["wiring"]["sample_endpoint"] == "GET /api/v1/sprint/sample"
     assert sprint["wiring"]["preview_url"] == "/sprint-sample.html"
+    assert sprint["price_sar"] is None
+    assert sprint["wiring"]["checkout_url"] is None
+    assert sprint["wiring"]["checkout_endpoint"] is None

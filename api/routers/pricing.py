@@ -134,10 +134,10 @@ def _build_plans() -> dict[str, dict[str, Any]]:
                 "deliverables": list(offering.deliverables),
                 "kpi_commitment_en": offering.kpi_commitment_en,
                 "kpi_commitment_ar": offering.kpi_commitment_ar,
+                "commercial_status": offering.commercial_status,
             }
         # Backwards-compat aliases so existing checkout links still work
         aliases = {
-            "pilot_managed": "revenue_proof_sprint_499",
             "growth": "growth_ops_monthly_2999",
             "scale": "executive_command_center_7500",
             "starter": "growth_ops_monthly_2999",
@@ -172,16 +172,8 @@ def _build_plans() -> dict[str, dict[str, Any]]:
         }
         return plans
     except Exception:
-        # Fallback to hardcoded if registry unavailable
-        return {
-            "revenue_proof_sprint_499": {"name": "499 SAR Revenue Proof Sprint", "name_ar": "سبرنت إثبات الإيرادات", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
-            "data_to_revenue_1500": {"name": "Data-to-Revenue Pack", "name_ar": "حزمة البيانات والإيرادات", "amount_halalas": 150000, "monthly": False, "kind": "one_off"},
-            "growth_ops_monthly_2999": {"name": "Growth Ops Monthly", "name_ar": "Managed Ops النمو", "amount_halalas": 299900, "monthly": True, "kind": "subscription"},
-            "pilot_managed": {"name": "Managed Pilot (7 days)", "name_ar": "برنامج الأسبوع المكثف", "amount_halalas": 49900, "monthly": False, "kind": "one_off"},
-            "pilot_1sar": {"name": "Pilot (1 SAR)", "name_ar": "اختبار", "amount_halalas": 100, "monthly": False, "kind": "one_off"},
-            "laas_per_reply": {"name": "LaaS Per Reply", "name_ar": "قيادة كخدمة", "amount_halalas": 2500, "monthly": False, "kind": "metered", "unit": "arabic_replied_lead"},
-            "laas_per_demo": {"name": "LaaS Per Demo", "name_ar": "قيادة كخدمة", "amount_halalas": 15000, "monthly": False, "kind": "metered", "unit": "booked_demo"},
-        }
+        # Fail closed: registry failure must never resurrect historical prices.
+        return {}
 
 
 PLANS: dict[str, dict[str, Any]] = _build_plans()
@@ -189,7 +181,12 @@ PLANS: dict[str, dict[str, Any]] = _build_plans()
 # Commercial trust gate (#917): test-only plans can never become normal
 # checkout plans merely because they exist in the in-memory catalogue.
 TEST_ONLY_PLANS = frozenset({"pilot_1sar"})
-ALLOWED_PLANS = frozenset(set(PLANS) - TEST_ONLY_PLANS)
+ALLOWED_PLANS = frozenset(
+    plan_id
+    for plan_id, plan in PLANS.items()
+    if plan_id not in TEST_ONLY_PLANS
+    and plan.get("commercial_status") == "public_approved"
+)
 _TRUE_VALUES = frozenset({"1", "true", "yes", "on"})
 
 
@@ -331,23 +328,31 @@ async def pricing_menu() -> dict[str, Any]:
     except Exception:
         return {
             "currency": "SAR",
-            "plans": {k: v for k, v in PLANS.items() if k != "pilot_1sar"},
+            "plans": {},
             "service_catalog": [],
+            "sales_ready": False,
+            "checkout_status": "founder_approval_required",
         }
 
     offerings = list_offerings()
     catalog = []
     for offering in offerings:
         plan = PLANS.get(offering.id, {})
+        amount_is_public = offering.commercial_status == "public_approved"
         catalog.append({
             "plan_id": offering.id,
             "name_en": offering.name_en,
             "name_ar": offering.name_ar,
-            "price_sar": offering.price_sar,
+            "price_sar": offering.price_sar if amount_is_public else None,
             "price_unit": offering.price_unit,
-            "price_sar_max": offering.price_sar_max,
-            "price_monthly_sar_min": offering.price_monthly_sar_min,
-            "price_monthly_sar_max": offering.price_monthly_sar_max,
+            "price_sar_max": offering.price_sar_max if amount_is_public else None,
+            "price_monthly_sar_min": (
+                offering.price_monthly_sar_min if amount_is_public else None
+            ),
+            "price_monthly_sar_max": (
+                offering.price_monthly_sar_max if amount_is_public else None
+            ),
+            "commercial_status": offering.commercial_status,
             "duration_days": offering.duration_days,
             "deliverables": list(offering.deliverables),
             "kpi_commitment_ar": offering.kpi_commitment_ar,
@@ -367,10 +372,14 @@ async def pricing_menu() -> dict[str, Any]:
 
     return {
         "currency": "SAR",
-        "plans": {k: v for k, v in PLANS.items() if k != "pilot_1sar"},
+        "plans": {k: PLANS[k] for k in sorted(_public_plan_ids())},
         "service_catalog": catalog,
-        "sales_ready": _checkout_enabled(),
-        "checkout_status": "enabled" if _checkout_enabled() else "founder_approval_required",
+        "sales_ready": _checkout_enabled() and bool(ALLOWED_PLANS),
+        "checkout_status": (
+            "enabled"
+            if _checkout_enabled() and bool(ALLOWED_PLANS)
+            else "founder_approval_required"
+        ),
     }
 
 
