@@ -46,6 +46,33 @@ jobs:
           npm install -g @railway/cli
           railway --version
 
+      - name: Capture current frontend deployment
+        id: deployment_baseline
+        if: steps.check_token.outputs.token_present == 'true'
+        working-directory: apps/web
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          INPUT_SERVICE: ${{ inputs.service }}
+          CONFIG_SERVICE: ${{ vars.RAILWAY_FRONTEND_SERVICE }}
+        run: |
+          set -euo pipefail
+          SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-web}}"
+          railway deployment list --service "$SERVICE" --limit 1 --json \
+            > /tmp/railway-frontend-before.json
+          deployment_id=$(
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          deployments = json.loads(
+              Path("/tmp/railway-frontend-before.json").read_text()
+          )
+          print(deployments[0]["id"] if deployments else "")
+          PY
+          )
+          echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
+          echo "Captured the current frontend deployment identity."
+
       - name: Deploy frontend
         id: railway_deploy
         if: steps.check_token.outputs.token_present == 'true'
@@ -65,33 +92,33 @@ jobs:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           INPUT_SERVICE: ${{ inputs.service }}
           CONFIG_SERVICE: ${{ vars.RAILWAY_FRONTEND_SERVICE }}
+          BASELINE_DEPLOYMENT_ID: ${{ steps.deployment_baseline.outputs.deployment_id }}
         run: |
           set -euo pipefail
           SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-web}}"
 
           for i in {1..80}; do
-            railway status --json > /tmp/railway-frontend-status.json
-            deployment_status=$(
-              SERVICE="$SERVICE" python3 - <<'PY'
+            railway deployment list --service "$SERVICE" --limit 1 --json \
+              > /tmp/railway-frontend-deployments.json
+            read -r deployment_id deployment_status < <(
+              python3 - <<'PY'
           import json
-          import os
           from pathlib import Path
 
-          payload = json.loads(Path("/tmp/railway-frontend-status.json").read_text())
-          wanted = os.environ["SERVICE"]
-
-          for environment_edge in payload.get("environments", {}).get("edges", []):
-              environment = environment_edge.get("node", {})
-              for instance_edge in environment.get("serviceInstances", {}).get("edges", []):
-                  instance = instance_edge.get("node", {})
-                  if instance.get("serviceName") == wanted:
-                      deployment = instance.get("latestDeployment") or {}
-                      print(deployment.get("status", "MISSING"))
-                      raise SystemExit(0)
-
-          print("SERVICE_NOT_FOUND")
+          deployments = json.loads(
+              Path("/tmp/railway-frontend-deployments.json").read_text()
+          )
+          if not deployments:
+              print("MISSING MISSING")
+          else:
+              print(deployments[0].get("id", "MISSING"), deployments[0].get("status", "MISSING"))
           PY
             )
+            if [ "$deployment_id" = "$BASELINE_DEPLOYMENT_ID" ]; then
+              echo "Attempt $i: Railway still reports the pre-upload deployment."
+              sleep 15
+              continue
+            fi
             echo "Attempt $i: latest deployment status=$deployment_status"
 
             case "$deployment_status" in

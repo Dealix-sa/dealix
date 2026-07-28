@@ -66,6 +66,41 @@ jobs:
           echo "$HOME/.railway/bin" >> "$GITHUB_PATH"
           "$HOME/.railway/bin/railway" --version
 
+      - name: Capture current Railway deployment
+        id: deployment_baseline
+        if: steps.check_token.outputs.token_present == 'true'
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+          INPUT_SERVICE: ${{ inputs.service }}
+          CONFIG_SERVICE: ${{ vars.RAILWAY_SERVICE_NAME }}
+          PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
+          ENVIRONMENT_NAME: ${{ vars.RAILWAY_ENVIRONMENT_NAME }}
+        run: |
+          set -euo pipefail
+          SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
+          cmd=(railway deployment list --service "$SERVICE" --limit 1 --json)
+          if [ -n "$PROJECT_ID" ]; then
+            cmd+=(--project "$PROJECT_ID")
+          fi
+          if [ -n "$ENVIRONMENT_NAME" ]; then
+            cmd+=(--environment "$ENVIRONMENT_NAME")
+          fi
+          "${cmd[@]}" > /tmp/railway-deployments-before.json
+          deployment_id=$(
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          deployments = json.loads(
+              Path("/tmp/railway-deployments-before.json").read_text()
+          )
+          print(deployments[0]["id"] if deployments else "")
+          PY
+          )
+          echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
+          echo "Captured the current deployment identity without exposing metadata."
+
       - name: Deploy to Railway
         id: railway_deploy
         if: steps.check_token.outputs.token_present == 'true'
@@ -137,35 +172,41 @@ jobs:
           RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
           INPUT_SERVICE: ${{ inputs.service }}
           CONFIG_SERVICE: ${{ vars.RAILWAY_SERVICE_NAME }}
+          PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
+          ENVIRONMENT_NAME: ${{ vars.RAILWAY_ENVIRONMENT_NAME }}
+          BASELINE_DEPLOYMENT_ID: ${{ steps.deployment_baseline.outputs.deployment_id }}
         run: |
           set -euo pipefail
           SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
-          echo "Waiting for Railway service '$SERVICE' to reach a terminal state..."
+          echo "Waiting for a new Railway deployment for service '$SERVICE'..."
 
           for i in {1..80}; do
-            railway status --json > /tmp/railway-status.json
-            deployment_status=$(
-              SERVICE="$SERVICE" python3 - <<'PY'
+            cmd=(railway deployment list --service "$SERVICE" --limit 1 --json)
+            if [ -n "$PROJECT_ID" ]; then
+              cmd+=(--project "$PROJECT_ID")
+            fi
+            if [ -n "$ENVIRONMENT_NAME" ]; then
+              cmd+=(--environment "$ENVIRONMENT_NAME")
+            fi
+            "${cmd[@]}" > /tmp/railway-deployments.json
+            read -r deployment_id deployment_status < <(
+              python3 - <<'PY'
           import json
-          import os
           from pathlib import Path
 
-          payload = json.loads(Path("/tmp/railway-status.json").read_text())
-          wanted = os.environ["SERVICE"]
-
-          for environment_edge in payload.get("environments", {}).get("edges", []):
-              environment = environment_edge.get("node", {})
-              for instance_edge in environment.get("serviceInstances", {}).get("edges", []):
-                  instance = instance_edge.get("node", {})
-                  if instance.get("serviceName") == wanted:
-                      deployment = instance.get("latestDeployment") or {}
-                      print(deployment.get("status", "MISSING"))
-                      raise SystemExit(0)
-
-          print("SERVICE_NOT_FOUND")
+          deployments = json.loads(Path("/tmp/railway-deployments.json").read_text())
+          if not deployments:
+              print("MISSING MISSING")
+          else:
+              print(deployments[0].get("id", "MISSING"), deployments[0].get("status", "MISSING"))
           PY
             )
-            echo "Attempt $i: latest deployment status=$deployment_status"
+            if [ "$deployment_id" = "$BASELINE_DEPLOYMENT_ID" ]; then
+              echo "Attempt $i: Railway still reports the pre-upload deployment."
+              sleep 15
+              continue
+            fi
+            echo "Attempt $i: new deployment status=$deployment_status"
 
             case "$deployment_status" in
               SUCCESS)
@@ -231,20 +272,26 @@ jobs:
         if: steps.healthz.outcome == 'success'
         env:
           BASE_URL: ${{ steps.healthz.outputs.url }}
-          DEALIX_ADMIN_API_KEY: ${{ secrets.DEALIX_ADMIN_API_KEY }}
+          DEALIX_API_KEY: ${{ secrets.DEALIX_API_KEY }}
         run: |
           set -euo pipefail
           echo "→ public pricing must not expose the retired 499 offer"
-          pricing=$(curl -sS --max-time 10 "$BASE_URL/api/v1/pricing/plans")
+          pricing=$(curl -fsS --max-time 10 "$BASE_URL/api/v1/pricing/plans")
+          PRICING_JSON="$pricing" python3 - <<'PY'
+          import json
+          import os
+
+          json.loads(os.environ["PRICING_JSON"])
+          PY
           if echo "$pricing" | grep -Eiq '(^|[^0-9])499(\.0)?([^0-9]|$)|Managed Pilot \(7 days\)'; then
             echo "::error::Production still exposes the retired 499 / 7-day offer."
             exit 1
           fi
 
           echo "→ protected prospect diagnostic"
-          if [ -n "$DEALIX_ADMIN_API_KEY" ]; then
+          if [ -n "$DEALIX_API_KEY" ]; then
             curl -fsS --max-time 10 \
-              -H "X-Admin-API-Key: $DEALIX_ADMIN_API_KEY" \
+              -H "X-API-Key: $DEALIX_API_KEY" \
               "$BASE_URL/api/v1/prospect/search-diag" \
               | python3 -c "import sys,json; d=json.load(sys.stdin); print('tier1=', d.get('tier1_ready'), 'tier2=', d.get('tier2_ready'))"
           else
