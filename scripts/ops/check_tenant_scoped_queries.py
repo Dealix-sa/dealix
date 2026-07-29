@@ -121,6 +121,24 @@ ALLOWLIST: dict[tuple[str, str], str] = {
         "both required and safe."
     ),
     (
+        "dealix/billing/service.py",
+        "SubscriptionRecord",
+    ): (
+        "Internal primitive, never reached with a caller-supplied id: every "
+        "route in api/routers/billing.py resolves the subscription through "
+        "get_active_subscription_for_tenant(tenant_id) first and passes that "
+        "record's own id. Re-check this entry if a router ever accepts a "
+        "subscription_id from a request."
+    ),
+    (
+        "platform_core/stores.py",
+        "RoleRecord",
+    ): (
+        "Rollback of fixtures the same enterprise-loop run created: the "
+        "role_ids are threaded in alongside the tenant_id being rolled back, "
+        "not read from a request. Cleanup path, not a handler."
+    ),
+    (
         "core/queue/tasks.py",
         "BackgroundJobRecord",
     ): (
@@ -284,7 +302,50 @@ def scan_file(path: Path, models: set[str]) -> list[tuple[int, str]]:
                 continue
             violations.add((statement.lineno, model))
 
+    # `session.get(Model, some_id)` is the same fetch-by-ID with none of the
+    # syntax the rule above looks for — no select(), no .where() — so it was
+    # invisible to this gate entirely. It cannot carry a tenant predicate, so
+    # the check has to follow the call, as api/routers/billing.py:pay_invoice
+    # does: `if invoice is None or invoice.tenant_id != tenant_id: 404`.
+    #
+    # The rule is therefore function-scoped and deliberately loose: any
+    # mention of `.tenant_id` anywhere in the enclosing function counts as the
+    # guard. A tighter rule would flag correct code, and a gate that cries
+    # wolf gets disabled — the same reasoning as the narrowness of the select
+    # rule above.
+    for node in ast.walk(tree):
+        if not (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "get"
+            and node.args
+        ):
+            continue
+        first = node.args[0]
+        model = first.id if isinstance(first, ast.Name) else None
+        if model not in models:
+            continue
+
+        function = _enclosing_function(node, parent)
+        if function is not None and any(
+            isinstance(child, ast.Attribute) and child.attr == "tenant_id"
+            for child in ast.walk(function)
+        ):
+            continue
+        violations.add((node.lineno, model))
+
     return sorted(violations)
+
+
+def _enclosing_function(
+    node: ast.AST, parent: dict[int, ast.AST]
+) -> ast.FunctionDef | ast.AsyncFunctionDef | None:
+    current: ast.AST | None = node
+    while current is not None:
+        current = parent.get(id(current))
+        if isinstance(current, ast.FunctionDef | ast.AsyncFunctionDef):
+            return current
+    return None
 
 
 def load_baseline() -> set[str]:
@@ -390,8 +451,8 @@ def main(argv: list[str]) -> int:
         if f"{rel}::{model}" not in new:
             continue
         print(
-            f"{rel}:{line}: select({model}) is filtered by id with no "
-            f"{model}.tenant_id predicate — an ID from another tenant "
+            f"{rel}:{line}: {model} is fetched by id with no "
+            f"{model}.tenant_id check — an ID from another tenant "
             f"would reach this row."
         )
 

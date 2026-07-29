@@ -237,3 +237,52 @@ def test_scope_reaches_past_the_http_surface():
             f"{required!r} dropped from the scan scope — whole subsystems "
             f"would stop being checked without the gate ever going red"
         )
+
+
+# ── session.get(Model, id) — the shape the rule above cannot see ───────────
+
+UNGUARDED_GET = """
+from db.models import ContactRecord
+
+
+async def leak(contact_id, session):
+    return await session.get(ContactRecord, contact_id)
+"""
+
+GUARDED_GET = """
+from db.models import ContactRecord
+
+
+async def safe(contact_id, tenant_id, session):
+    contact = await session.get(ContactRecord, contact_id)
+    if contact is None or contact.tenant_id != tenant_id:
+        return None
+    return contact
+"""
+
+
+def test_flags_an_unguarded_session_get(tmp_path):
+    """`session.get(Model, id)` fetches by id with none of the select syntax.
+
+    No `select()`, no `.where()` — so the original rule was blind to it, and
+    20 call sites across the repo were never checked. It cannot carry a
+    tenant predicate, so the check has to follow the call.
+    """
+    assert _scan(UNGUARDED_GET, tmp_path), "session.get by id was not flagged"
+
+
+def test_accepts_a_session_get_followed_by_an_ownership_check(tmp_path):
+    """The correct shape, as api/routers/billing.py:pay_invoice uses it."""
+    assert not _scan(GUARDED_GET, tmp_path)
+
+
+def test_session_get_on_an_untenanted_model_is_ignored(tmp_path):
+    """The rule must stay narrow — a model with no tenant_id has no boundary."""
+    source = """
+from db.models import AccountRecord
+
+
+async def fine(account_id, session):
+    return await session.get(AccountRecord, account_id)
+"""
+    assert not _scan(source, tmp_path)
