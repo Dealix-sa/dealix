@@ -36,14 +36,16 @@ jobs:
           if [ -f pyproject.toml ]; then pip install -e ".[dev]" || pip install -e .; fi
 
       - name: Compile
-        run: python -m compileall -q api dealix scripts tests
+        run: python -m compileall -q api core dealix scripts tests
 
       - name: Ruff
         shell: bash
         run: |
           set -o pipefail
           mkdir -p reports/ci
-          ruff check api dealix scripts tests 2>&1 | tee reports/ci/no-crash-ruff.log
+          # `core` was outside this scope, which is why a B005 bug in
+          # core/nlp/sentiment.py sat unflagged. It is clean now; keep it here.
+          ruff check api core dealix scripts tests 2>&1 | tee reports/ci/no-crash-ruff.log
 
       - name: Upload Ruff diagnostics
         if: always()

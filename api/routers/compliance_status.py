@@ -41,6 +41,53 @@ def _module_present(name: str) -> bool:
         return False
 
 
+def _caller_declared_tenant_rejected() -> bool:
+    """Return True only if a mismatching declared tenant is actually denied.
+
+    Exercises the canonical resolver instead of asserting that a module can be
+    imported. A compliance surface that reports "isolation: available" because
+    a file is on disk is worse than one that reports nothing — it converts an
+    unverified claim into an auditable statement.
+
+    The probe is the attack: a normal user whose own tenant is A declares B.
+    """
+    try:
+        from api.security.tenant_scope import (
+            TenantScopeDenied,
+            resolve_request_tenant_id,
+        )
+
+        try:
+            resolve_request_tenant_id(
+                user_tenant_id="__probe_tenant_a__",
+                system_role="member",
+                requested_tenant_id="__probe_tenant_b__",
+            )
+        except TenantScopeDenied as denied:
+            return denied.reason == "cross_tenant_access_denied"
+        return False
+    except Exception:
+        return False
+
+
+def _repository_assertions_available() -> bool:
+    """Return True if the fail-closed per-object helpers are importable.
+
+    Narrower than it used to be, and narrower than it sounds: this says the
+    helpers exist, not that any call site uses them. The enforcement claim is
+    `caller_declared_tenant_rejected` above, which runs the real resolver.
+    """
+    try:
+        from api.middleware.tenant_isolation import (
+            assert_tenant_match,
+            filter_tenant_scoped_list,
+        )
+
+        return True
+    except Exception:
+        return False
+
+
 def _entitlement_tenant_context_enforced() -> bool:
     """Return True only if the feature gate derives its tenant from identity.
 
@@ -147,15 +194,23 @@ def _security_status() -> dict[str, Any]:
             # Reports enforcement wiring, not module importability: a module
             # that no request path calls proves nothing about isolation.
             "entitlement_context_enforced": _entitlement_tenant_context_enforced(),
-            "helpers_available": _module_present("api.middleware.tenant_isolation"),
+            # Runs the real resolver against the real attack rather than
+            # checking that a file imports.
+            "caller_declared_tenant_rejected": _caller_declared_tenant_rejected(),
+            "repository_assertions_available": _repository_assertions_available(),
             "evidence": (
-                "dealix.feature_gating.service:FeatureGate resolves the tenant "
-                "from the authenticated user (never X-Tenant-ID) via "
-                "dealix.feature_gating.tenant_context:resolve_entitlement_tenant_id; "
-                "tenant-scoped routes read current_user.tenant_id. "
-                "api.middleware.tenant_isolation provides repository-layer "
-                "assertion helpers. "
-                "Tests: tests/test_feature_gating_tenant_context.py"
+                "api.security.tenant_scope:resolve_request_tenant_id is the "
+                "single resolver: it derives the tenant from verified identity "
+                "and denies a mismatching declared tenant, honouring "
+                "X-Tenant-ID only for a super admin who names the target "
+                "explicitly. dealix.feature_gating.service:FeatureGate and "
+                "tenant-scoped routes both read it. "
+                "api.middleware.tenant_isolation supplies fail-closed "
+                "per-object assertions for defence in depth; its own "
+                "header-based resolver was removed rather than left available "
+                "to be wired up. "
+                "Tests: tests/test_feature_gating_tenant_context.py, "
+                "tests/test_tenant_isolation_helpers.py"
             ),
         },
         "rate_limiting": {
