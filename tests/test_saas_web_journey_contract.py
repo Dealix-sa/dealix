@@ -125,6 +125,7 @@ def test_vercel_frontend_contract_is_explicit_and_secret_free() -> None:
     assert "NEXT_PUBLIC_API_URL=https://api.dealix.me" in env_example
     assert "APP_SECRET_KEY" not in env_example
     assert "ADMIN_API_KEYS" not in env_example
+    assert "NEXT_PUBLIC_DEALIX_ADMIN_API_KEY" not in env_example
     assert "API_KEYS=" not in env_example
 
 
