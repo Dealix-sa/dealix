@@ -142,3 +142,98 @@ def test_matrix_runs_the_gate_as_required():
         encoding="utf-8"
     )
     assert 'run_step "tenant-scoped-queries" required' in script
+
+
+# ── A file the scanner cannot read has not been checked ───────────────────
+
+
+def test_unparseable_file_raises_instead_of_being_skipped(tmp_path):
+    """Silently skipping a file turns PASS into a claim about unread code.
+
+    Four files under ``dealix/`` carried a UTF-8 BOM. Under plain ``utf-8``
+    the BOM decodes to U+FEFF, ``ast.parse`` rejects it on line 1, and the
+    scanner printed a warning and returned no findings — so the gate reported
+    PASS over files it had never actually read.
+    """
+    from scripts.ops.check_tenant_scoped_queries import (
+        UnparseableSource,
+        scan_file,
+        tenant_owned_models,
+    )
+
+    target = tmp_path / "broken.py"
+    target.write_text("def (:\n", encoding="utf-8")
+
+    with pytest.raises(UnparseableSource):
+        scan_file(target, tenant_owned_models())
+
+
+def test_byte_order_mark_does_not_hide_a_violation(tmp_path):
+    """The exact shape that was being skipped: a BOM in front of real code."""
+    from scripts.ops.check_tenant_scoped_queries import scan_file, tenant_owned_models
+
+    target = tmp_path / "bom.py"
+    target.write_bytes(b"\xef\xbb\xbf" + UNSCOPED.encode("utf-8"))
+
+    findings = scan_file(target, tenant_owned_models())
+
+    assert findings, "a BOM in front of the file hid an unscoped query"
+
+
+def test_gate_fails_on_an_unparseable_file(tmp_path, monkeypatch):
+    """End to end: an unreadable file must be a red gate, not a stderr note."""
+    broken = tmp_path / "broken.py"
+    broken.write_text("def (:\n", encoding="utf-8")
+
+    proc = subprocess.run(
+        [sys.executable, str(SCRIPT), str(broken)],
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+    )
+
+    assert proc.returncode == 1, proc.stdout + proc.stderr
+    assert "unparseable=1" in proc.stdout
+    assert "TENANT_SCOPED_QUERY_GATE=FAIL" in proc.stdout
+
+
+def test_no_tracked_python_file_carries_a_byte_order_mark():
+    """Keeps the four stripped files from quietly coming back.
+
+    A BOM also breaks other AST-based tooling, so this is worth holding
+    repo-wide rather than only over the gate's own scan scope.
+    """
+    tracked = subprocess.run(
+        ["git", "ls-files", "*.py"],
+        capture_output=True,
+        text=True,
+        cwd=ROOT,
+        check=True,
+    ).stdout.split()
+
+    with_bom = [
+        name
+        for name in tracked
+        if (ROOT / name).exists() and (ROOT / name).read_bytes().startswith(b"\xef\xbb\xbf")
+    ]
+
+    assert not with_bom, f"UTF-8 BOM would hide these from AST tooling: {with_bom}"
+
+
+# ── Scan scope ────────────────────────────────────────────────────────────
+
+
+def test_scope_reaches_past_the_http_surface():
+    """A request id does not stop being caller-controlled off the HTTP path.
+
+    The gate began at ``api/routers`` alone. Widening it is what surfaced the
+    cross-tenant write in ``core/memory/embedding_service.py``, which is
+    reached through a background-job payload rather than a URL.
+    """
+    from scripts.ops.check_tenant_scoped_queries import DEFAULT_PATHS
+
+    for required in ("api", "core", "dealix"):
+        assert required in DEFAULT_PATHS, (
+            f"{required!r} dropped from the scan scope — whole subsystems "
+            f"would stop being checked without the gate ever going red"
+        )

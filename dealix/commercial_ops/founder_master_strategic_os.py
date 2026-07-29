@@ -1,4 +1,4 @@
-﻿"""Founder Master Strategic OS — waves A→F orchestrator."""
+"""Founder Master Strategic OS — waves A→F orchestrator."""
 
 from __future__ import annotations
 
