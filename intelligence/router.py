@@ -17,6 +17,10 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
+from core.config.models import Task
+from core.llm import get_router
+from core.llm.base import Message
+
 
 class TaskType(str, Enum):
     REASONING = "reasoning"           # complex multi-step decisions

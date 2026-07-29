@@ -7,9 +7,9 @@ all approval-first and never auto-published.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
 
 from intelligence.bilingual import BilingualRenderer, BilingualText, LanguageCode
 from intelligence.ops_adapters import GTMAdapter, LeadMachineAdapter, PLGAdapter
@@ -160,7 +160,7 @@ class GrowthOperatingSystem:
         baseline: float | None = None,
     ) -> dict[str, Any]:
         experiment = GrowthExperiment(
-            experiment_id=f"exp-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
+            experiment_id=f"exp-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}",
             hypothesis=BilingualRenderer.bt(hypothesis_en, hypothesis_ar),
             channel=channel,
             metric=metric,
@@ -189,7 +189,7 @@ class GrowthOperatingSystem:
         if isinstance(content_type, str):
             content_type = ContentType(content_type)
         brief = ContentBrief(
-            brief_id=f"brief-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
+            brief_id=f"brief-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}",
             topic=BilingualRenderer.bt(topic_en, topic_ar),
             target_sector=target_sector,
             content_type=content_type,
@@ -213,7 +213,7 @@ class GrowthOperatingSystem:
         lang: LanguageCode = "both",
     ) -> dict[str, Any]:
         asset = SocialProofAsset(
-            asset_id=f"sp-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}",
+            asset_id=f"sp-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}",
             asset_type=asset_type,
             content=BilingualRenderer.bt(content_en, content_ar),
             company_name=company_name,

@@ -6,7 +6,7 @@ Success plans, renewal forecasting, expansion signals, and health dashboards.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta, timezone
 from typing import Any, Literal
 
 from intelligence.bilingual import BilingualRenderer, BilingualText, LanguageCode
@@ -110,7 +110,7 @@ class CustomerSuccessOperatingSystem:
         renewal_date: str | None = None,
         lang: LanguageCode = "both",
     ) -> dict[str, Any]:
-        plan_id = f"csp-{datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')}"
+        plan_id = f"csp-{datetime.now(UTC).strftime('%Y%m%d%H%M%S')}"
         goals = [BilingualRenderer.bt(en, ar) for en, ar in zip(goals_en, goals_ar)]
         milestones = [
             SuccessMilestone(
