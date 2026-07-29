@@ -46,7 +46,7 @@
 
 - **tenant_id**: كل وصول يُقيَّد بـ `tenant_id`.
 - **لا تسريب**: لا يمكن لمستأجر الوصول لبيانات مستأجر آخر.
-- **اختبار**: `tests/test_tenant_isolation_v1.py`،
+- **اختبار**: `tests/test_tenant_isolation_helpers.py`،
   `tests/test_tenant_isolation_systems_26_35.py`.
 
 ### 4. سجلات التدقيق
@@ -87,7 +87,7 @@
 
 ## الاختبارات ذات الصلة
 
-- `tests/test_tenant_isolation_v1.py`
+- `tests/test_tenant_isolation_helpers.py`
 - `tests/test_tenant_isolation_systems_26_35.py`
 - `tests/test_agent_permission_safety.py`
 - `tests/test_agent_security_gate.py`

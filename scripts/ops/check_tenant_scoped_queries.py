@@ -41,8 +41,25 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-# Default scan scope: the HTTP surface, where an attacker-supplied ID lands.
-DEFAULT_PATHS = ("api/routers",)
+# Scan scope. This began as `api/routers` alone — the HTTP surface, where an
+# attacker-supplied ID lands. That was too narrow: a request-supplied id does
+# not stop being attacker-controlled when it is handed to a background worker
+# or a service layer. Widening it surfaced a live cross-tenant *write* in
+# core/memory/embedding_service.py, reached through a job payload rather than
+# a URL, which no amount of router coverage would ever have caught.
+#
+# `db/` is deliberately absent: model definitions and migrations are where the
+# tenant columns are declared, not where rows are fetched by id.
+DEFAULT_PATHS = (
+    "api",
+    "core",
+    "dealix",
+    "company",
+    "auto_client_acquisition",
+    "autonomous_growth",
+    "integrations",
+    "platform_core",
+)
 
 BASELINE_PATH = Path(__file__).with_name("tenant_scoped_queries_baseline.txt")
 
@@ -70,6 +87,67 @@ ALLOWLIST: dict[tuple[str, str], str] = {
     ): (
         "Self-scoped: the role id comes from the loaded user's own role_id, "
         "and only the role name is returned."
+    ),
+    (
+        "api/security/auth_deps.py",
+        "UserRecord",
+    ): (
+        "Identity establishment: the user id is the `sub` claim of an "
+        "already-verified JWT, not a caller-supplied handle. This query is "
+        "how the request's tenant is discovered, so requiring a tenant "
+        "predicate on it would be circular — there is no tenant yet."
+    ),
+    (
+        "api/security/auth_deps.py",
+        "RoleRecord",
+    ): (
+        "Self-scoped: the role id comes from the loaded user's own role_id, "
+        "and only the role name is returned. Same shape as the entry for "
+        "api/routers/auth.py."
+    ),
+    (
+        "core/memory/embedding_service.py",
+        "AccountEmbeddingRecord",
+    ): (
+        "No tenant boundary exists to enforce: account_embeddings.account_id "
+        "is unique, so there is exactly one row per account platform-wide, "
+        "and the accounts table carries no tenant_id at all. tenant_id here "
+        "records who indexed the row, not who owns it. Adding the predicate "
+        "would make a second tenant's upsert miss the row and violate the "
+        "unique constraint. The gap is in the schema — an embedding table "
+        "with tenant_id over a base table without one — and belongs to a "
+        "migration, not to this query. Contrast index_conversation in the "
+        "same file, where conversation_id is NOT unique and the predicate is "
+        "both required and safe."
+    ),
+    (
+        "dealix/billing/service.py",
+        "SubscriptionRecord",
+    ): (
+        "Internal primitive, never reached with a caller-supplied id: every "
+        "route in api/routers/billing.py resolves the subscription through "
+        "get_active_subscription_for_tenant(tenant_id) first and passes that "
+        "record's own id. Re-check this entry if a router ever accepts a "
+        "subscription_id from a request."
+    ),
+    (
+        "platform_core/stores.py",
+        "RoleRecord",
+    ): (
+        "Rollback of fixtures the same enterprise-loop run created: the "
+        "role_ids are threaded in alongside the tenant_id being rolled back, "
+        "not read from a request. Cleanup path, not a handler."
+    ),
+    (
+        "core/queue/tasks.py",
+        "BackgroundJobRecord",
+    ): (
+        "Worker-side status writer: the job id is the one the queue handed "
+        "this worker, not an id from a request, and the write only sets "
+        "status/output/error/timestamps on that same row. There is no user "
+        "identity in a worker context to scope by; the tenant boundary for "
+        "jobs is enforced where they are created and read "
+        "(api/routers/jobs.py, tests/test_jobs_tenant_isolation.py)."
     ),
     (
         "api/routers/pricing.py",
@@ -146,13 +224,44 @@ def _selected_models(node: ast.AST, models: set[str]) -> set[str]:
     return out
 
 
-def scan_file(path: Path, models: set[str]) -> list[tuple[int, str]]:
-    """Return ``(line, model)`` for each unscoped tenant-owned query."""
+def _rel(path: Path) -> str:
+    """Repo-relative path, falling back to the absolute one.
+
+    The script accepts arbitrary paths on the command line, so a target
+    outside the repository is a supported invocation. ``relative_to`` raises
+    for those, which turned an ordinary ad-hoc scan into a traceback.
+    """
     try:
-        tree = ast.parse(path.read_text(encoding="utf-8"))
-    except SyntaxError as exc:  # pragma: no cover - surfaced to the operator
-        print(f"{path}: could not parse: {exc}", file=sys.stderr)
-        return []
+        return path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+class UnparseableSource(Exception):
+    """A file in scope could not be parsed, so it was never actually checked."""
+
+
+def scan_file(path: Path, models: set[str]) -> list[tuple[int, str]]:
+    """Return ``(line, model)`` for each unscoped tenant-owned query.
+
+    Raises:
+        UnparseableSource: the file could not be parsed. A file that cannot be
+            parsed has not been checked, and a guard that reports PASS over
+            files it never read is worse than no guard — so this is raised
+            rather than warned about. Four files in ``dealix/`` carry a UTF-8
+            BOM and used to land here silently.
+    """
+    # utf-8-sig, not utf-8: a leading BOM decodes to U+FEFF under plain utf-8
+    # and ast.parse rejects it as a non-printable character on line 1.
+    try:
+        source = path.read_text(encoding="utf-8-sig")
+    except (OSError, UnicodeDecodeError) as exc:
+        raise UnparseableSource(f"{path}: could not read: {exc}") from exc
+
+    try:
+        tree = ast.parse(source)
+    except SyntaxError as exc:
+        raise UnparseableSource(f"{path}: could not parse: {exc}") from exc
 
     parent: dict[int, ast.AST] = {}
     for node in ast.walk(tree):
@@ -193,7 +302,50 @@ def scan_file(path: Path, models: set[str]) -> list[tuple[int, str]]:
                 continue
             violations.add((statement.lineno, model))
 
+    # `session.get(Model, some_id)` is the same fetch-by-ID with none of the
+    # syntax the rule above looks for — no select(), no .where() — so it was
+    # invisible to this gate entirely. It cannot carry a tenant predicate, so
+    # the check has to follow the call, as api/routers/billing.py:pay_invoice
+    # does: `if invoice is None or invoice.tenant_id != tenant_id: 404`.
+    #
+    # The rule is therefore function-scoped and deliberately loose: any
+    # mention of `.tenant_id` anywhere in the enclosing function counts as the
+    # guard. A tighter rule would flag correct code, and a gate that cries
+    # wolf gets disabled — the same reasoning as the narrowness of the select
+    # rule above.
+    for node in ast.walk(tree):
+        if not (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "get"
+            and node.args
+        ):
+            continue
+        first = node.args[0]
+        model = first.id if isinstance(first, ast.Name) else None
+        if model not in models:
+            continue
+
+        function = _enclosing_function(node, parent)
+        if function is not None and any(
+            isinstance(child, ast.Attribute) and child.attr == "tenant_id"
+            for child in ast.walk(function)
+        ):
+            continue
+        violations.add((node.lineno, model))
+
     return sorted(violations)
+
+
+def _enclosing_function(
+    node: ast.AST, parent: dict[int, ast.AST]
+) -> ast.FunctionDef | ast.AsyncFunctionDef | None:
+    current: ast.AST | None = node
+    while current is not None:
+        current = parent.get(id(current))
+        if isinstance(current, ast.FunctionDef | ast.AsyncFunctionDef):
+            return current
+    return None
 
 
 def load_baseline() -> set[str]:
@@ -207,15 +359,29 @@ def load_baseline() -> set[str]:
     }
 
 
-def collect(files: list[Path], models: set[str]) -> list[tuple[str, int, str]]:
+def collect(
+    files: list[Path], models: set[str]
+) -> tuple[list[tuple[str, int, str]], list[str]]:
+    """Scan ``files``; return ``(findings, unparseable)``.
+
+    Unparseable files are returned rather than swallowed so the caller can fail
+    on them. Previously they were printed to stderr and the gate still exited
+    0, which meant PASS could be reported over files nobody had read.
+    """
     found: list[tuple[str, int, str]] = []
+    unparseable: list[str] = []
     for path in files:
-        rel = path.relative_to(REPO_ROOT).as_posix()
-        for line, model in scan_file(path, models):
+        rel = _rel(path)
+        try:
+            hits = scan_file(path, models)
+        except UnparseableSource as exc:
+            unparseable.append(str(exc))
+            continue
+        for line, model in hits:
             if (rel, model) in ALLOWLIST:
                 continue
             found.append((rel, line, model))
-    return found
+    return found, unparseable
 
 
 def _resolve_files(argv: list[str]) -> list[Path]:
@@ -232,7 +398,7 @@ def main(argv: list[str]) -> int:
     sys.path.insert(0, str(REPO_ROOT))
     models = tenant_owned_models()
     files = _resolve_files(argv)
-    found = collect(files, models)
+    found, unparseable = collect(files, models)
 
     # A violation is identified by file and model, not by line number, so
     # unrelated edits that shift lines do not spuriously fail the gate.
@@ -241,7 +407,7 @@ def main(argv: list[str]) -> int:
     # Baseline bookkeeping is only meaningful over the full default scope. A
     # partial scan sees none of the other entries and would otherwise call
     # them fixed — regenerating from that would silently drop live findings.
-    scanned = {path.relative_to(REPO_ROOT).as_posix() for path in files}
+    scanned = {_rel(path) for path in files}
     full_scope = not [a for a in argv[1:] if not a.startswith("--")]
 
     if "--write-baseline" in argv:
@@ -285,16 +451,27 @@ def main(argv: list[str]) -> int:
         if f"{rel}::{model}" not in new:
             continue
         print(
-            f"{rel}:{line}: select({model}) is filtered by id with no "
-            f"{model}.tenant_id predicate — an ID from another tenant "
+            f"{rel}:{line}: {model} is fetched by id with no "
+            f"{model}.tenant_id check — an ID from another tenant "
             f"would reach this row."
         )
 
+    for message in unparseable:
+        print(message, file=sys.stderr)
+
     print(
-        f"TENANT_SCOPED_QUERY_GATE={'FAIL' if new else 'PASS'} "
+        f"TENANT_SCOPED_QUERY_GATE="
+        f"{'FAIL' if (new or unparseable) else 'PASS'} "
         f"files={len(files)} new={len(new)} baseline={len(baseline)} "
-        f"fixed_since_baseline={len(fixed)}"
+        f"fixed_since_baseline={len(fixed)} unparseable={len(unparseable)}"
     )
+    if unparseable:
+        print(
+            "A file in scope could not be parsed, so it was not checked. "
+            "Reporting PASS over unread files is how a guard goes quietly "
+            "blind — fix the file rather than narrowing the scan.",
+            file=sys.stderr,
+        )
     if fixed:
         print(
             "Fixed since the baseline was written — remove from the baseline "
@@ -310,7 +487,7 @@ def main(argv: list[str]) -> int:
             "silence it.",
             file=sys.stderr,
         )
-    return 1 if new else 0
+    return 1 if (new or unparseable) else 0
 
 
 if __name__ == "__main__":

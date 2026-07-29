@@ -543,10 +543,26 @@ class ERPService:
             total_debit += line.get("debit", 0.0)
             total_credit += line.get("credit", 0.0)
 
-            # Update account balance
+            # Update account balance — only on an account this tenant owns.
+            #
+            # `account_id` comes straight from the caller's journal-entry
+            # payload. Without the ownership check, posting an entry that
+            # names another tenant's GL account silently moved that tenant's
+            # balance: a cross-tenant write into accounting records, where it
+            # is least likely to be noticed and hardest to unwind.
+            #
+            # Refusing the whole entry rather than skipping the line is
+            # deliberate: a journal entry is atomic, and dropping one line
+            # would post an unbalanced entry, which is a worse outcome than
+            # rejecting an invalid one. Not reachable over HTTP today —
+            # api/routers/erp/finance.py is not mounted — but the guard
+            # belongs with the write, not with whoever mounts it later.
             account = await self.session.get(GLAccountRecord, line["account_id"])
-            if account:
-                account.current_balance += line.get("debit", 0.0) - line.get("credit", 0.0)
+            if account is None or account.tenant_id != tenant_id:
+                raise ValueError(
+                    f"unknown GL account for this tenant: {line['account_id']}"
+                )
+            account.current_balance += line.get("debit", 0.0) - line.get("credit", 0.0)
 
         je.total_debit = total_debit
         je.total_credit = total_credit

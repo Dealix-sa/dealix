@@ -4,6 +4,14 @@ Billing API — subscriptions, invoices, plans, upgrades.
 
 from __future__ import annotations
 
+# `datetime` is used in the response models below. Under
+# `from __future__ import annotations` those annotations are strings, so
+# pydantic resolves them at schema-build time and raises
+# `PydanticUserError: ... is not fully defined` without this import. The
+# module never hit that because it was never mounted — nothing built its
+# schemas. Mounting it is what surfaced the missing import.
+import os
+from datetime import datetime
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -232,14 +240,22 @@ async def pay_invoice(
     if invoice is None or invoice.tenant_id != tenant_id:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invoice not found")
 
-    # Create Moyasar payment link
+    # Create Moyasar payment link.
+    #
+    # `callback_url` is where Moyasar sends the paying customer's *browser*
+    # after checkout — not where it posts the webhook. This used to be the
+    # relative string "/api/v1/webhooks/moyasar", which is wrong twice over: a
+    # relative URL is not a destination Moyasar can redirect to, and the
+    # webhook endpoint is a POST-only JSON API, so a customer who paid would
+    # have landed on an error. Matches api/routers/pricing.py:create_checkout.
+    callback_base = os.getenv("APP_URL", "https://dealix.me").rstrip("/")
     link = await create_moyasar_payment_link(
         PaymentLinkRequest.model_validate(
             {
                 "amount_halalas": int(invoice.total_sar * 100),
                 "customer_name": getattr(current_user, "name", "Dealix Customer") or "Dealix Customer",
                 "customer_email": getattr(current_user, "email", "") or "",
-                "callback_url": "/api/v1/webhooks/moyasar",
+                "callback_url": f"{callback_base}/checkout/return",
                 "description": f"Dealix Invoice {invoice.invoice_number}",
             }
         )  # type: ignore[arg-type]

@@ -204,6 +204,7 @@ async def grant_consent(
             purpose=purpose,
             source=source,
             proof_url=proof_url,
+            tenant_id=tenant_id,
         )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
@@ -248,6 +249,7 @@ async def revoke_consent(
             channel=channel,
             purpose=purpose,
             source=source,
+            tenant_id=tenant_id,
         )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
@@ -374,12 +376,18 @@ async def erase_data(
     for channel in ("email", "whatsapp", "phone", "sms", "linkedin"):
         for purpose in consent_table.ALLOWED_PURPOSES:
             try:
-                if consent_table.is_consented(contact_id=contact_id, channel=channel, purpose=purpose):
+                if consent_table.is_consented(
+                    contact_id=contact_id,
+                    channel=channel,
+                    purpose=purpose,
+                    tenant_id=tenant_id,
+                ):
                     consent_table.revoke(
                         contact_id=contact_id,
                         channel=channel,
                         purpose=purpose,
                         source="pdpl_erasure",
+                        tenant_id=tenant_id,
                     )
             except Exception:
                 pass
@@ -465,7 +473,7 @@ async def export_data(
             "occurred_at": r.occurred_at,
             "source": r.source,
         }
-        for r in consent_table.records_for(contact_id)
+        for r in consent_table.records_for(contact_id, tenant_id)
     ]
 
     export = build_data_export(
