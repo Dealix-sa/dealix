@@ -23,11 +23,12 @@ from __future__ import annotations
 
 import pytest
 
-from api.middleware.tenant_isolation import (
-    CrossTenantAccessDenied,
-    assert_tenant_match,
-    filter_tenant_scoped_list,
-)
+from api.middleware import tenant_isolation
+from api.security import tenant_scope
+
+CrossTenantAccessDenied = tenant_isolation.CrossTenantAccessDenied
+assert_tenant_match = tenant_isolation.assert_tenant_match
+filter_tenant_scoped_list = tenant_isolation.filter_tenant_scoped_list
 
 # ── The unsafe resolver must not come back ────────────────────────────────
 
@@ -39,9 +40,7 @@ from api.middleware.tenant_isolation import (
 )
 def test_header_based_resolution_is_gone(name):
     """Each of these treated a caller-supplied value as the tenant."""
-    import api.middleware.tenant_isolation as module
-
-    assert not hasattr(module, name), (
+    assert not hasattr(tenant_isolation, name), (
         f"{name} is back — tenant resolution belongs to "
         f"api/security/tenant_scope.py, which denies a declared tenant"
     )
@@ -49,10 +48,8 @@ def test_header_based_resolution_is_gone(name):
 
 def test_the_canonical_resolver_denies_a_declared_tenant():
     """The behaviour the deleted resolver got wrong, pinned where it lives."""
-    from api.security.tenant_scope import TenantScopeDenied, resolve_request_tenant_id
-
-    with pytest.raises(TenantScopeDenied) as denied:
-        resolve_request_tenant_id(
+    with pytest.raises(tenant_scope.TenantScopeDenied) as denied:
+        tenant_scope.resolve_request_tenant_id(
             user_tenant_id="tenant_a",
             system_role="member",
             requested_tenant_id="tenant_b",
@@ -152,11 +149,12 @@ def test_compliance_probe_runs_the_real_resolver():
 
 def test_compliance_probe_would_fail_if_the_resolver_stopped_denying(monkeypatch):
     """Proves the probe measures behaviour rather than importability."""
-    import api.security.tenant_scope as scope
     from api.routers import compliance_status
 
     monkeypatch.setattr(
-        scope, "resolve_request_tenant_id", lambda **_kw: ("tenant_b", "override")
+        tenant_scope,
+        "resolve_request_tenant_id",
+        lambda **_kw: ("tenant_b", "override"),
     )
 
     assert compliance_status._caller_declared_tenant_rejected() is False
