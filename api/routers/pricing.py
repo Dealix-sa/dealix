@@ -501,13 +501,25 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     # The client may supply `idempotency_key` to scope the window itself;
     # otherwise buyer + plan is the natural key, since that pair *is* the
     # order being placed.
+    #
+    # A client-supplied key is hashed rather than used raw: it is an
+    # unvalidated string from the request body, and it would otherwise become
+    # an unbounded store key. Hashing bounds the length and makes the content
+    # irrelevant, and nothing ever needs to read it back.
     idem = IdempotencyStore(prefix="idem:checkout:")
-    idem_key = str(body.get("idempotency_key") or "").strip() or (
-        f"{plan}:{_fingerprint(email.lower())}"
+    client_key = str(body.get("idempotency_key") or "").strip()
+    idem_key = (
+        f"client:{_fingerprint(client_key)}"
+        if client_key
+        else f"{plan}:{_fingerprint(email.lower())}"
     )
     remembered = idem.recall(idem_key)
     if isinstance(remembered, dict) and remembered.get("payment_url"):
-        log.info("checkout_idempotent_replay plan=%s email_fp=%s", plan, _fingerprint(email))
+        # Logs the key fingerprint, not the request values. `plan` is
+        # allowlist-constrained a few lines above so it could not carry a
+        # newline, but a hash makes that independent of the check staying
+        # where it is — and correlates the replay with its original.
+        log.info("checkout_idempotent_replay key_fp=%s", _fingerprint(idem_key))
         return {**remembered, "idempotent_replay": True}
 
     plan_info = PLANS[plan]

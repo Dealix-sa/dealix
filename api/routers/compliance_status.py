@@ -88,6 +88,25 @@ def _repository_assertions_available() -> bool:
         return False
 
 
+def _rate_limiting_enforced() -> bool:
+    """Return True only if the rate-limit middleware is on the running app.
+
+    Reads the live middleware stack rather than asking whether slowapi can be
+    imported. The two differ exactly when it matters: a deployment missing the
+    library still serves ``X-RateLimit-*`` headers, so importability would
+    report a throttle that nothing enforces.
+    """
+    try:
+        from api.main import app
+
+        return any(
+            middleware.cls.__name__ == "SlowAPIMiddleware"
+            for middleware in app.user_middleware
+        )
+    except Exception:
+        return False
+
+
 def _entitlement_tenant_context_enforced() -> bool:
     """Return True only if the feature gate derives its tenant from identity.
 
@@ -214,9 +233,20 @@ def _security_status() -> dict[str, Any]:
             ),
         },
         "rate_limiting": {
-            "implemented": _module_present("slowapi"),
-            "evidence": "slowapi-based per-IP + per-route limits (see "
-                        "PRODUCTION_ENV_TEMPLATE.md P8)",
+            # Was `_module_present("slowapi")` — importability, not
+            # enforcement. RateLimitHeadersMiddleware advertises
+            # X-RateLimit-* regardless of whether anything honours them, so
+            # "the library is installed" was the least informative thing this
+            # field could report.
+            "enforced": _rate_limiting_enforced(),
+            "evidence": (
+                "api.security.rate_limit:setup_rate_limit installs "
+                "SlowAPIMiddleware; this field reports whether that "
+                "middleware is actually on the running app, not whether "
+                "slowapi can be imported. setup_rate_limit refuses to start "
+                "in production when slowapi is missing. "
+                "Tests: tests/test_rate_limit_enforced.py"
+            ),
         },
     }
 
