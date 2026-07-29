@@ -14,7 +14,10 @@ from auto_client_acquisition.platform.agent_governance import (
     AgentGovernanceStatus,
     assess_agent_governance,
 )
-from auto_client_acquisition.platform.agent_lifecycle import AgentLifecycleState, lifecycle_transition_allowed
+from auto_client_acquisition.platform.agent_lifecycle import (
+    AgentLifecycleState,
+    lifecycle_transition_allowed,
+)
 from auto_client_acquisition.platform.agent_registry import (
     AgentRegistration,
     get_agent,
@@ -28,7 +31,10 @@ from auto_client_acquisition.platform.executive_os import (
     build_executive_insight_pack,
 )
 from auto_client_acquisition.platform.memory_governance import MemoryRecord, MemorySensitivity
-from auto_client_acquisition.platform.org_intelligence import OrgIntelligenceReport, build_org_intelligence
+from auto_client_acquisition.platform.org_intelligence import (
+    OrgIntelligenceReport,
+    build_org_intelligence,
+)
 from auto_client_acquisition.platform.runtime_governance import (
     RuntimeActionRequest,
     RuntimeActionResult,

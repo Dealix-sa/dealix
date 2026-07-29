@@ -36,16 +36,18 @@ jobs:
           if [ -f pyproject.toml ]; then pip install -e ".[dev]" || pip install -e .; fi
 
       - name: Compile
-        run: python -m compileall -q api core dealix scripts tests
+        run: python -m compileall -q api auto_client_acquisition core dealix scripts tests
 
       - name: Ruff
         shell: bash
         run: |
           set -o pipefail
           mkdir -p reports/ci
-          # `core` was outside this scope, which is why a B005 bug in
-          # core/nlp/sentiment.py sat unflagged. It is clean now; keep it here.
-          ruff check api core dealix scripts tests 2>&1 | tee reports/ci/no-crash-ruff.log
+          # `core` and `auto_client_acquisition` were outside this scope,
+          # which is why a B005 bug in core/nlp/sentiment.py and an
+          # UnboundLocalError in the revenue event store both sat unflagged.
+          # Both are clean now; keep them here.
+          ruff check api auto_client_acquisition core dealix scripts tests 2>&1 | tee reports/ci/no-crash-ruff.log
 
       - name: Upload Ruff diagnostics
         if: always()
