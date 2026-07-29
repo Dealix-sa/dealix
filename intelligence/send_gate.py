@@ -8,7 +8,7 @@ external communication MUST call SendGate.assert_blocked() in draft paths.
 from __future__ import annotations
 
 import logging
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 
