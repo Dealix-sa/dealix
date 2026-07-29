@@ -153,8 +153,9 @@ vercel deploy --prebuilt
 
 Vercel production is accepted only when:
 
-- `/health` returns `env=production`.
-- `/health` returns a non-unknown git SHA.
+- frontend `/healthz` returns `service=dealix-web`.
+- Railway backend `/healthz` returns `status=ok`.
+- Railway backend `/version` returns a non-unknown `git_sha`.
 - runtime error scan is clean.
 - Vercel public frontend points to the Railway API base.
 - outbound remains draft-only by default.
