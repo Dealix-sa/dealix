@@ -25,7 +25,7 @@ import os
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 log = logging.getLogger(__name__)
 
@@ -88,20 +88,22 @@ def _repository_assertions_available() -> bool:
         return False
 
 
-def _rate_limiting_enforced() -> bool:
+def _rate_limiting_enforced(app: Any) -> bool:
     """Return True only if the rate-limit middleware is on the running app.
 
     Reads the live middleware stack rather than asking whether slowapi can be
-    imported. The two differ exactly when it matters: a deployment missing the
-    library still serves ``X-RateLimit-*`` headers, so importability would
+    imported. The two differ exactly where it matters: a deployment missing
+    the library still serves ``X-RateLimit-*`` headers, so importability would
     report a throttle that nothing enforces.
+
+    The app is passed in rather than imported. ``api.main`` imports this
+    router, so importing it back — even lazily inside the function — closes a
+    cycle; ``request.app`` is the same object without one.
     """
     try:
-        from api.main import app
-
         return any(
             middleware.cls.__name__ == "SlowAPIMiddleware"
-            for middleware in app.user_middleware
+            for middleware in getattr(app, "user_middleware", [])
         )
     except Exception:
         return False
@@ -187,7 +189,7 @@ def _zatca_status() -> dict[str, Any]:
     }
 
 
-def _security_status() -> dict[str, Any]:
+def _security_status(app: Any = None) -> dict[str, Any]:
     return {
         "sentry_pii_scrubber": {
             "implemented": _module_present("dealix.observability.sentry"),
@@ -238,7 +240,7 @@ def _security_status() -> dict[str, Any]:
             # X-RateLimit-* regardless of whether anything honours them, so
             # "the library is installed" was the least informative thing this
             # field could report.
-            "enforced": _rate_limiting_enforced(),
+            "enforced": _rate_limiting_enforced(app),
             "evidence": (
                 "api.security.rate_limit:setup_rate_limit installs "
                 "SlowAPIMiddleware; this field reports whether that "
@@ -278,15 +280,19 @@ def _audit_trail_status() -> dict[str, Any]:
 
 
 @router.get("/status")
-async def compliance_status() -> dict[str, Any]:
+async def compliance_status(request: Request) -> dict[str, Any]:
     """Live compliance posture. Public read-only.
 
     Each section returns truthful state computed from actual module
     presence + env config, not hardcoded badges.
+
+    ``request.app`` is threaded into the security section so it can read the
+    running middleware stack without importing ``api.main``, which imports
+    this router back.
     """
     pdpl = _pdpl_status()
     zatca = _zatca_status()
-    security = _security_status()
+    security = _security_status(request.app)
 
     # Compute overall posture from sub-statuses
     pdpl_articles_implemented = sum(

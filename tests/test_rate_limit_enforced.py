@@ -78,21 +78,22 @@ def test_a_missing_limiter_is_treated_as_missing_slowapi(monkeypatch):
 
 def test_the_probe_reads_the_middleware_stack_not_the_import():
     """It must agree with the app, whichever way that falls in this env."""
-    from api.main import app
+    import api.main
     from api.routers.compliance_status import _rate_limiting_enforced
 
     installed = any(
         middleware.cls.__name__ == "SlowAPIMiddleware"
-        for middleware in app.user_middleware
+        for middleware in api.main.app.user_middleware
     )
 
-    assert _rate_limiting_enforced() is installed
+    assert _rate_limiting_enforced(api.main.app) is installed
 
 
 def test_importability_alone_no_longer_counts_as_the_control():
+    import api.main
     from api.routers import compliance_status
 
-    payload = compliance_status._security_status()
+    payload = compliance_status._security_status(api.main.app)
 
     assert "implemented" not in payload["rate_limiting"], (
         "module presence is back as evidence of rate limiting"
@@ -100,18 +101,47 @@ def test_importability_alone_no_longer_counts_as_the_control():
     assert "enforced" in payload["rate_limiting"]
 
 
-def test_the_probe_is_false_when_the_middleware_is_absent(monkeypatch):
+def test_the_probe_is_false_when_the_middleware_is_absent():
     """Proves it measures the stack rather than always answering True."""
     from api.routers.compliance_status import _rate_limiting_enforced
 
     class _Stub:
         user_middleware: list = []
 
-    import api.main
+    assert _rate_limiting_enforced(_Stub()) is False
 
-    monkeypatch.setattr(api.main, "app", _Stub())
 
-    assert _rate_limiting_enforced() is False
+def test_the_endpoint_does_not_import_api_main():
+    """`api.main` imports this router; importing it back closes a cycle.
+
+    CodeQL flagged it even as a lazy in-function import. `request.app` is the
+    same object with no cycle.
+
+    Asserted over the AST rather than the file text: the docstrings in that
+    module name ``api.main`` to explain why it is not imported, and a
+    substring check would match those.
+    """
+    import ast
+    from pathlib import Path
+
+    tree = ast.parse(
+        (
+            Path(__file__).resolve().parents[1] / "api/routers/compliance_status.py"
+        ).read_text(encoding="utf-8")
+    )
+
+    imported = {
+        alias.name
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Import)
+        for alias in node.names
+    } | {
+        node.module
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom) and node.module
+    }
+
+    assert "api.main" not in imported, "the import cycle is back"
 
 
 # ── The header half of the pair ───────────────────────────────────────────
@@ -126,8 +156,8 @@ def test_headers_are_advertised_on_an_ordinary_response():
     """
     from fastapi.testclient import TestClient
 
-    from api.main import app
+    import api.main
 
-    resp = TestClient(app).get("/healthz")
+    resp = TestClient(api.main.app).get("/healthz")
 
     assert "X-RateLimit-Limit" in resp.headers
