@@ -161,7 +161,6 @@ jobs:
           PROJECT_ID: ${{ vars.RAILWAY_PROJECT_ID }}
           ENVIRONMENT_NAME: ${{ vars.RAILWAY_ENVIRONMENT_NAME }}
           TARGET_DEPLOYMENT_ID: ${{ steps.railway_deploy.outputs.deployment_id }}
-          EXPECTED_GIT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
           SERVICE="${INPUT_SERVICE:-${CONFIG_SERVICE:-dealix}}"
@@ -176,7 +175,7 @@ jobs:
               cmd+=(--environment "$ENVIRONMENT_NAME")
             fi
             "${cmd[@]}" > /tmp/railway-deployments.json
-            read -r deployment_id deployment_status deployment_sha < <(
+            read -r deployment_id deployment_status < <(
               python3 - <<'PY'
           import json
           from pathlib import Path
@@ -191,31 +190,16 @@ jobs:
               None,
           )
           if deployment is None:
-              print("MISSING MISSING MISSING")
+              print("MISSING MISSING")
           else:
-              metadata = deployment.get("meta") or {}
-              commit_sha = next(
-                  (
-                      str(metadata[key]).strip().lower()
-                      for key in ("commitHash", "commitSha", "sourceCommitHash")
-                      if metadata.get(key)
-                  ),
-                  "MISSING",
-              )
               print(
                   deployment.get("id", "MISSING"),
                   deployment.get("status", "MISSING"),
-                  commit_sha,
               )
           PY
             )
             if [ "$deployment_id" != "$TARGET_DEPLOYMENT_ID" ]; then
               echo "Attempt $i: Railway has not listed this run's deployment yet."
-              sleep 15
-              continue
-            fi
-            if [ "$deployment_sha" != "${EXPECTED_GIT_SHA,,}" ]; then
-              echo "Attempt $i: latest deployment is not the requested commit."
               sleep 15
               continue
             fi
@@ -243,6 +227,9 @@ jobs:
           echo "::error::Railway deployment did not become successful within 20 minutes."
           exit 1
 
+      # CLI uploads may not expose Git commit metadata in `railway deployment list`.
+      # The exact deployment ID above proves which upload became active; the live
+      # /version check below is the authoritative commit-identity proof.
       - name: Smoke test /healthz
         id: healthz
         if: steps.railway_deploy.outcome == 'success'
