@@ -6,7 +6,7 @@ Success plans, renewal forecasting, expansion signals, and health dashboards.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, datetime
 from typing import Any, Literal
 
 from intelligence.bilingual import BilingualRenderer, BilingualText, LanguageCode
