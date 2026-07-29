@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 # Country code to ISO country mapping
 GULF_COUNTRY_CODES: dict[str, str] = {
@@ -84,7 +84,7 @@ class PhoneValidation:
     is_saudi: bool = False
     carrier: str = ""
     formatted_international: str = ""
-    errors: list[str] = list()
+    errors: list[str] = field(default_factory=list)
 
     def format_whatsapp(self) -> str:
         """Format number for WhatsApp (no + prefix)."""
