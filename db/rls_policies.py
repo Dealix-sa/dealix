@@ -2,10 +2,13 @@
 Row-Level Security (RLS) policies for PostgreSQL multi-tenant isolation.
 سياسات أمان مستوى الصف (RLS) لعزل المستأجرين في PostgreSQL.
 
-Enforces tenant isolation at the database level. Every query automatically
-filters by tenant_id using the app.tenant_id session variable.
+Defines tenant isolation at the database level. These policies are currently
+inactive: application request sessions do not yet use ``tenant_session()``,
+and no runtime caller invokes ``apply_rls()``.
 
-Usage: Run apply_rls() after Alembic migrations create the tables.
+Do not run ``apply_rls()`` until transaction-scoped binding has passed the
+PostgreSQL tests in ``tests/test_tenant_session_binding.py`` and request
+sessions have been migrated to the bound dependency.
 Ref: https://www.postgresql.org/docs/16/ddl-rowsecurity.html
 """
 
@@ -18,8 +21,9 @@ from db.session import get_session
 
 log = get_logger(__name__)
 
-# Maps table name -> policy expression using PostgreSQL current_setting
-# The app sets app.tenant_id at the start of each request via middleware
+# Maps table name -> policy expression using PostgreSQL current_setting.
+# db.tenant_session provides the prerequisite binding, but is not wired into
+# request handling yet; the policies must remain inactive until it is.
 RLS_POLICIES: dict[str, str] = {
     "leads": "tenant_id = current_setting('app.tenant_id', true)",
     "deals": "tenant_id = current_setting('app.tenant_id', true)",
@@ -65,14 +69,12 @@ RLS_EXEMPT_TABLES: list[str] = [
 async def apply_rls() -> None:
     """Enable RLS on all tenant-scoped tables and create policies.
 
-    Idempotent: uses IF NOT EXISTS for policy creation.
-    Should be called once after migrations, typically from a startup script.
+    This is a production schema/security operation, not an app-startup hook.
+    It requires a reviewed migration and green PostgreSQL binding tests.
 
-    The app sets ``app.tenant_id`` at middleware level using:
-        SET app.tenant_id = '<tenant_id>';
-
-    Super admin users bypass RLS by not setting the session variable
-    (set it to an empty string or skip the SET command).
+    Missing/empty ``app.tenant_id`` denies every protected row. A super admin
+    does not bypass these policies by omitting the setting; they must target
+    and bind an explicit tenant unless the database role itself has BYPASSRLS.
     """
     async with get_session() as session:
         for table_name, policy_expr in RLS_POLICIES.items():
