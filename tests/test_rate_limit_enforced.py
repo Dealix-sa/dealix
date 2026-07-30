@@ -30,6 +30,8 @@ below assert the *mechanism*, not a fixed answer, so they hold either way.
 
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 
 from api.security import rate_limit
@@ -40,7 +42,9 @@ def test_production_refuses_to_start_without_slowapi(monkeypatch):
     from fastapi import FastAPI
 
     monkeypatch.setattr(rate_limit, "_HAS_SLOWAPI", False)
-    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setattr(
+        rate_limit, "get_settings", lambda: SimpleNamespace(is_production=True)
+    )
 
     with pytest.raises(RuntimeError) as raised:
         rate_limit.setup_rate_limit(FastAPI())
@@ -56,6 +60,9 @@ def test_dev_and_test_tolerate_a_missing_slowapi(monkeypatch, env):
     from fastapi import FastAPI
 
     monkeypatch.setattr(rate_limit, "_HAS_SLOWAPI", False)
+    monkeypatch.setattr(
+        rate_limit, "get_settings", lambda: SimpleNamespace(is_production=False)
+    )
     monkeypatch.setenv("APP_ENV", env)
 
     rate_limit.setup_rate_limit(FastAPI())  # must not raise
@@ -67,10 +74,30 @@ def test_a_missing_limiter_is_treated_as_missing_slowapi(monkeypatch):
 
     monkeypatch.setattr(rate_limit, "_HAS_SLOWAPI", True)
     monkeypatch.setattr(rate_limit, "limiter", None)
-    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setattr(
+        rate_limit, "get_settings", lambda: SimpleNamespace(is_production=True)
+    )
 
     with pytest.raises(RuntimeError):
         rate_limit.setup_rate_limit(FastAPI())
+
+
+@pytest.mark.parametrize("alias", ["APP_ENV", "ENVIRONMENT", "VERCEL_ENV"])
+def test_every_supported_production_alias_fails_closed(monkeypatch, alias):
+    """Platform-standard env aliases must not silently disable the guard."""
+    from fastapi import FastAPI
+
+    from core.config.settings import Settings
+
+    for name in ("APP_ENV", "ENVIRONMENT", "VERCEL_ENV"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv(alias, "production")
+    monkeypatch.setattr(rate_limit, "_HAS_SLOWAPI", False)
+    monkeypatch.setattr(rate_limit, "get_settings", Settings)
+
+    with pytest.raises(RuntimeError):
+        rate_limit.setup_rate_limit(FastAPI())
+
 
 
 # ── The compliance surface ────────────────────────────────────────────────
@@ -142,6 +169,27 @@ def test_the_endpoint_does_not_import_api_main():
     }
 
     assert "api.main" not in imported, "the import cycle is back"
+
+
+@pytest.mark.asyncio
+async def test_enforced_control_counts_as_active_in_endpoint(monkeypatch):
+    """The public posture must count enforcement, not under-report it."""
+    from api.routers import compliance_status
+
+    monkeypatch.setattr(compliance_status, "_pdpl_status", lambda: {})
+    monkeypatch.setattr(compliance_status, "_zatca_status", lambda: {})
+    monkeypatch.setattr(
+        compliance_status,
+        "_security_status",
+        lambda app: {"rate_limiting": {"enforced": True}},
+    )
+
+    payload = await compliance_status.compliance_status(
+        SimpleNamespace(app=object())
+    )
+
+    assert payload["overall_posture"]["security_controls"] == "1/1 active"
+
 
 
 # ── The header half of the pair ───────────────────────────────────────────
