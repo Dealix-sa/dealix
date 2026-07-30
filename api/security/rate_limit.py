@@ -28,6 +28,8 @@ from typing import Any
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
+from core.config.settings import get_settings
+
 # Patch Starlette's Config reader so .env files are read as UTF-8 on Windows.
 # This prevents slowapi from crashing when .env contains Arabic comments.
 try:
@@ -151,7 +153,10 @@ def setup_rate_limit(app: FastAPI) -> None:
     rather than run insecure.
     """
     if not _HAS_SLOWAPI or limiter is None:
-        if os.getenv("APP_ENV", "").lower() == "production":
+        # Use the canonical Settings aliases (APP_ENV, ENVIRONMENT,
+        # VERCEL_ENV). Reading APP_ENV directly would fail open on Railway or
+        # Vercel deployments that set only their platform-standard alias.
+        if get_settings().is_production:
             raise RuntimeError(
                 "SECURITY: slowapi is not installed, so no rate limiting is "
                 "enforced while X-RateLimit-* headers claim otherwise. "
