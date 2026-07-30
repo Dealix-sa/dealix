@@ -60,6 +60,7 @@ def test_scope_requested_within_days():
     assert scope_requested_within_days(14, rows) is True
     assert scope_requested_within_days(3, rows) is False
 
+    old = (today - timedelta(days=40)).isoformat()
     old_rows = [{"event_date": old, "event_type": "scope_requested"}]
     assert scope_requested_within_days(14, old_rows) is False
 
