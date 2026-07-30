@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ast
+import inspect
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -19,6 +20,7 @@ from db.tenant_session import (
     assert_safe_tenant_id,
     bind_tenant,
     current_bound_tenant,
+    tenant_session,
 )
 
 POSTGRES_URL = os.getenv("TEST_POSTGRES_URL", "")
@@ -114,6 +116,11 @@ def test_application_runtime_does_not_apply_rls():
                 callers.append(path.relative_to(repo).as_posix())
 
     assert callers == []
+
+
+def test_tenant_session_is_a_fastapi_yield_dependency():
+    """FastAPI only enters undecorated async-generator dependencies."""
+    assert inspect.isasyncgenfunction(tenant_session)
 
 
 @pytest.mark.asyncio
