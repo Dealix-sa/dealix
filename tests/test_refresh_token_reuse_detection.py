@@ -83,7 +83,18 @@ async def client(db_session, monkeypatch):
     from db.session import get_db
 
     monkeypatch.setenv("API_KEYS", "")
-    app.dependency_overrides[get_db] = lambda: db_session
+
+    async def _transactional_db():
+        # Match db.session:get_db exactly: a raised HTTPException rolls back.
+        # This catches security writes that were only flushed before the 401.
+        try:
+            yield db_session
+            await db_session.commit()
+        except Exception:
+            await db_session.rollback()
+            raise
+
+    app.dependency_overrides[get_db] = _transactional_db
     try:
         async with AsyncClient(
             transport=ASGITransport(app=app), base_url="http://test"
