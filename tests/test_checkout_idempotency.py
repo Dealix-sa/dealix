@@ -165,6 +165,28 @@ def test_the_email_is_matched_case_insensitively(client, moyasar):
     assert again.json()["idempotent_replay"] is True
 
 
+@pytest.mark.parametrize(
+    "changed",
+    [
+        {"email": "someone.else@example.com"},
+        {"plan": "scale"},
+    ],
+)
+def test_client_key_cannot_replay_another_order(client, moyasar, changed):
+    """A reused caller key must never disclose another order's invoice."""
+    first = client.post(PATH, json=_order(idempotency_key="shared-client-key"))
+    other = client.post(
+        PATH,
+        json=_order(idempotency_key="shared-client-key", **changed),
+    )
+
+    assert first.status_code == 200, first.text
+    assert other.status_code == 200, other.text
+    assert len(moyasar) == 2
+    assert other.json()["invoice_id"] != first.json()["invoice_id"]
+    assert other.json()["payment_url"] != first.json()["payment_url"]
+
+
 # ── The guards in front of it still fire ──────────────────────────────────
 
 
