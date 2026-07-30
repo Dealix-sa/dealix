@@ -165,13 +165,14 @@ async def test_replaying_a_rotated_token_is_refused(client, user):
 @pytest.mark.asyncio
 async def test_reuse_revokes_every_session(client, user, db_session):
     """The defect: only the replayed token died, so the thief kept theirs."""
+    user_id = user.id
     first = await _login(client)
     await _refresh(client, first["refresh_token"])
-    assert await _live_token_count(db_session, user.id) == 1
+    assert await _live_token_count(db_session, user_id) == 1
 
     await _refresh(client, first["refresh_token"])  # the replay
 
-    assert await _live_token_count(db_session, user.id) == 0, (
+    assert await _live_token_count(db_session, user_id) == 0, (
         "a live session survived a detected token reuse"
     )
 
@@ -218,6 +219,7 @@ async def test_reuse_does_not_touch_another_users_sessions(client, user, db_sess
     )
     db_session.add(other)
     await db_session.commit()
+    other_id = other.id
 
     bystander = await client.post(
         "/api/v1/auth/login",
@@ -229,7 +231,7 @@ async def test_reuse_does_not_touch_another_users_sessions(client, user, db_sess
     await _refresh(client, first["refresh_token"])
     await _refresh(client, first["refresh_token"])  # trigger detection
 
-    assert await _live_token_count(db_session, other.id) == 1, (
+    assert await _live_token_count(db_session, other_id) == 1, (
         "another user's session was revoked by an unrelated reuse"
     )
     still_valid = await _refresh(client, bystander.json()["refresh_token"])
@@ -242,8 +244,9 @@ async def test_reuse_does_not_touch_another_users_sessions(client, user, db_sess
 @pytest.mark.asyncio
 async def test_a_forged_token_does_not_revoke_anything(client, user, db_session):
     """Otherwise anyone could log a user out by posting garbage."""
+    user_id = user.id
     await _login(client)
-    assert await _live_token_count(db_session, user.id) == 1
+    assert await _live_token_count(db_session, user_id) == 1
 
     from api.security.jwt import create_refresh_token
 
@@ -251,6 +254,6 @@ async def test_a_forged_token_does_not_revoke_anything(client, user, db_session)
     resp = await _refresh(client, unknown)
 
     assert resp.status_code == 401
-    assert await _live_token_count(db_session, user.id) == 1, (
+    assert await _live_token_count(db_session, user_id) == 1, (
         "a token that was never issued revoked a live session"
     )
