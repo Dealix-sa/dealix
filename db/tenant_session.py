@@ -10,8 +10,7 @@ This module provides that prerequisite only. It does not enable any policy.
 from __future__ import annotations
 
 import re
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from collections.abc import AsyncGenerator
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -62,9 +61,13 @@ async def current_bound_tenant(session: AsyncSession) -> str | None:
     return str(value) if value else None
 
 
-@asynccontextmanager
-async def tenant_session(tenant_id: str) -> AsyncIterator[AsyncSession]:
-    """Yield a database session already bound to ``tenant_id``."""
+async def tenant_session(tenant_id: str) -> AsyncGenerator[AsyncSession, None]:
+    """FastAPI yield dependency for a session already bound to ``tenant_id``.
+
+    Keep this function as an undecorated async generator.  Decorating it with
+    ``asynccontextmanager`` would make FastAPI inject the context-manager
+    wrapper instead of entering the generator and yielding ``AsyncSession``.
+    """
     safe = assert_safe_tenant_id(tenant_id)
     async with async_session_factory()() as session:
         try:
