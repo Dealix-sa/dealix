@@ -16,6 +16,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from sqlalchemy import text
+
 from core.logging import get_logger
 from db.session import get_session
 
@@ -103,7 +105,7 @@ async def apply_rls() -> None:
 
             for sql in sqls:
                 try:
-                    await session.execute(sql)
+                    await session.execute(text(sql))
                 except Exception as exc:
                     if "does not exist" in str(exc).lower():
                         log.warning(
@@ -136,7 +138,7 @@ async def disable_rls(table_name: str | None = None) -> None:
         for tbl in tables:
             try:
                 await session.execute(
-                    f"ALTER TABLE IF EXISTS {tbl} DISABLE ROW LEVEL SECURITY;"
+                    text(f"ALTER TABLE IF EXISTS {tbl} DISABLE ROW LEVEL SECURITY;")
                 )
                 log.info("rls_disabled", table=tbl)
             except Exception as exc:
@@ -155,7 +157,10 @@ async def verify_rls() -> dict[str, Any]:
         for table_name in tables:
             try:
                 result = await session.execute(
-                    "SELECT relrowsecurity FROM pg_class WHERE relname = :table_name",
+                    text(
+                        "SELECT relrowsecurity FROM pg_class "
+                        "WHERE relname = :table_name"
+                    ),
                     {"table_name": table_name},
                 )
                 row = result.scalar_one_or_none()

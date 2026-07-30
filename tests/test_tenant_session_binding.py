@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import ast
 import os
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 import pytest
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.sql.elements import TextClause
 
 from db.rls_policies import RLS_POLICIES
 from db.tenant_session import (
@@ -112,6 +114,43 @@ def test_application_runtime_does_not_apply_rls():
                 callers.append(path.relative_to(repo).as_posix())
 
     assert callers == []
+
+
+@pytest.mark.asyncio
+async def test_rls_admin_helpers_use_sqlalchemy_executable_clauses(monkeypatch):
+    """SQLAlchemy 2 refuses raw SQL strings before they reach PostgreSQL."""
+    from db import rls_policies
+
+    statements: list[TextClause] = []
+
+    class _Result:
+        @staticmethod
+        def scalar_one_or_none():
+            return True
+
+    class _Session:
+        async def execute(self, statement, params=None):
+            statements.append(statement)
+            return _Result()
+
+    @asynccontextmanager
+    async def _session():
+        yield _Session()
+
+    monkeypatch.setattr(rls_policies, "get_session", _session)
+    monkeypatch.setattr(
+        rls_policies,
+        "RLS_POLICIES",
+        {"leads": f"tenant_id = current_setting('{TENANT_SETTING}', true)"},
+    )
+
+    await rls_policies.apply_rls()
+    await rls_policies.disable_rls("leads")
+    status = await rls_policies.verify_rls()
+
+    assert status["enabled"] == ["leads"]
+    assert statements
+    assert all(isinstance(statement, TextClause) for statement in statements)
 
 
 @requires_postgres
