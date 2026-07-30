@@ -6,7 +6,7 @@ Pipeline playbooks, deal reviews, battlecards, forecasting, and sales coaching.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Literal
 
 from intelligence.bilingual import BilingualBlock, BilingualRenderer, BilingualText, LanguageCode
@@ -293,8 +293,8 @@ class SalesOperatingSystem:
                 company_name=d.get("company_name", "unknown"),
                 stage=d.get("stage", "lead"),
                 value_sar=d.get("value_sar", 0),
-                created_at=datetime.fromisoformat(d["created_at"]) if "created_at" in d else datetime.now(timezone.utc),
-                last_activity_at=datetime.fromisoformat(d["last_activity_at"]) if "last_activity_at" in d else datetime.now(timezone.utc),
+                created_at=datetime.fromisoformat(d["created_at"]) if "created_at" in d else datetime.now(UTC),
+                last_activity_at=datetime.fromisoformat(d["last_activity_at"]) if "last_activity_at" in d else datetime.now(UTC),
                 activities_count=d.get("activities_count", 0),
                 days_in_stage=d.get("days_in_stage", 0),
             )
@@ -305,7 +305,7 @@ class SalesOperatingSystem:
         forecast = self.forecasting.forecast(deal_objs, period_days=90)
         return BilingualRenderer.wrap(
             {
-                "week_of": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                "week_of": datetime.now(UTC).strftime("%Y-%m-%d"),
                 "pipeline_health": intel.pipeline_health,
                 "total_pipeline_sar": intel.total_pipeline_sar,
                 "weighted_pipeline_sar": intel.weighted_pipeline_sar,

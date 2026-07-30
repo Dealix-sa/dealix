@@ -25,7 +25,7 @@ import os
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 log = logging.getLogger(__name__)
 
@@ -84,6 +84,27 @@ def _repository_assertions_available() -> bool:
         )
 
         return True
+    except Exception:
+        return False
+
+
+def _rate_limiting_enforced(app: Any) -> bool:
+    """Return True only if the rate-limit middleware is on the running app.
+
+    Reads the live middleware stack rather than asking whether slowapi can be
+    imported. The two differ exactly where it matters: a deployment missing
+    the library still serves ``X-RateLimit-*`` headers, so importability would
+    report a throttle that nothing enforces.
+
+    The app is passed in rather than imported. ``api.main`` imports this
+    router, so importing it back — even lazily inside the function — closes a
+    cycle; ``request.app`` is the same object without one.
+    """
+    try:
+        return any(
+            middleware.cls.__name__ == "SlowAPIMiddleware"
+            for middleware in getattr(app, "user_middleware", [])
+        )
     except Exception:
         return False
 
@@ -168,7 +189,7 @@ def _zatca_status() -> dict[str, Any]:
     }
 
 
-def _security_status() -> dict[str, Any]:
+def _security_status(app: Any = None) -> dict[str, Any]:
     return {
         "sentry_pii_scrubber": {
             "implemented": _module_present("dealix.observability.sentry"),
@@ -214,9 +235,20 @@ def _security_status() -> dict[str, Any]:
             ),
         },
         "rate_limiting": {
-            "implemented": _module_present("slowapi"),
-            "evidence": "slowapi-based per-IP + per-route limits (see "
-                        "PRODUCTION_ENV_TEMPLATE.md P8)",
+            # Was `_module_present("slowapi")` — importability, not
+            # enforcement. RateLimitHeadersMiddleware advertises
+            # X-RateLimit-* regardless of whether anything honours them, so
+            # "the library is installed" was the least informative thing this
+            # field could report.
+            "enforced": _rate_limiting_enforced(app),
+            "evidence": (
+                "api.security.rate_limit:setup_rate_limit installs "
+                "SlowAPIMiddleware; this field reports whether that "
+                "middleware is actually on the running app, not whether "
+                "slowapi can be imported. setup_rate_limit refuses to start "
+                "in production when slowapi is missing. "
+                "Tests: tests/test_rate_limit_enforced.py"
+            ),
         },
     }
 
@@ -248,15 +280,19 @@ def _audit_trail_status() -> dict[str, Any]:
 
 
 @router.get("/status")
-async def compliance_status() -> dict[str, Any]:
+async def compliance_status(request: Request) -> dict[str, Any]:
     """Live compliance posture. Public read-only.
 
     Each section returns truthful state computed from actual module
     presence + env config, not hardcoded badges.
+
+    ``request.app`` is threaded into the security section so it can read the
+    running middleware stack without importing ``api.main``, which imports
+    this router back.
     """
     pdpl = _pdpl_status()
     zatca = _zatca_status()
-    security = _security_status()
+    security = _security_status(request.app)
 
     # Compute overall posture from sub-statuses
     pdpl_articles_implemented = sum(
@@ -266,7 +302,9 @@ async def compliance_status() -> dict[str, Any]:
         1 for v in zatca.values() if isinstance(v, dict) and v.get("implemented")
     )
     security_controls_implemented = sum(
-        1 for v in security.values() if v.get("implemented") or v.get("configured")
+        1
+        for v in security.values()
+        if v.get("implemented") or v.get("configured") or v.get("enforced")
     )
 
     return {

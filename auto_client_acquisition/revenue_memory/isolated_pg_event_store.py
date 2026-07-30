@@ -130,7 +130,20 @@ def _worker_main() -> None:
 
 def get_isolated_sync_postgres_store() -> IsolatedSyncPostgresEventStore:
     """Singleton sync facade; safe for ``Orchestrator`` and sync HTTP handlers."""
+    # `_worker_loop`, `_worker_engine` and `_worker_inner` belong here too:
+    # they are assigned in the reset block below, and without the declaration
+    # those assignments made them *local*, which had two consequences.
+    #
+    # The read at `_worker_loop is not None` then raised UnboundLocalError —
+    # but only from the second call onward, because `and` short-circuits while
+    # `_store_singleton` is still None. So the singleton accessor worked once
+    # and crashed on every later call: green in a smoke test, broken on the
+    # second request.
+    #
+    # And the reset itself never reached the module state, so restarting the
+    # worker left the old loop, engine and store in place.
     global _worker_thread, _store_singleton
+    global _worker_loop, _worker_engine, _worker_inner
 
     with _state_lock:
         if (

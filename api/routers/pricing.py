@@ -489,6 +489,40 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     if "@" not in email:
         raise HTTPException(status_code=400, detail="invalid_email")
 
+    # Idempotency: a retry must return the invoice the first attempt created,
+    # not mint a second one and not fail.
+    #
+    # A checkout retry is ordinary — the customer double-clicks, or their
+    # connection drops after Moyasar answered but before the response landed.
+    # Without this, each attempt created another invoice against the same
+    # buyer and plan. Refusing the retry with 409 would be worse: it stops
+    # someone paying, which costs more than a stray unpaid invoice.
+    #
+    # The client may supply `idempotency_key` to scope the window itself;
+    # otherwise buyer + plan is the natural key, since that pair *is* the
+    # order being placed.
+    #
+    # A client-supplied key is hashed rather than used raw: it is an
+    # unvalidated string from the request body, and it would otherwise become
+    # an unbounded store key. Hashing bounds the length and makes the content
+    # irrelevant, and nothing ever needs to read it back.
+    idem = IdempotencyStore(prefix="idem:checkout:")
+    client_key = str(body.get("idempotency_key") or "").strip()
+    order_fingerprint = f"{plan}:{_fingerprint(email.lower())}"
+    idem_key = (
+        f"client:{_fingerprint(client_key)}:{order_fingerprint}"
+        if client_key
+        else order_fingerprint
+    )
+    remembered = idem.recall(idem_key)
+    if isinstance(remembered, dict) and remembered.get("payment_url"):
+        # Logs the key fingerprint, not the request values. `plan` is
+        # allowlist-constrained a few lines above so it could not carry a
+        # newline, but a hash makes that independent of the check staying
+        # where it is — and correlates the replay with its original.
+        log.info("checkout_idempotent_replay key_fp=%s", _fingerprint(idem_key))
+        return {**remembered, "idempotent_replay": True}
+
     plan_info = PLANS[plan]
     callback_base = os.getenv("APP_URL", "https://dealix.me")
     callback_url = f"{callback_base}/checkout/return"
@@ -518,13 +552,18 @@ async def create_checkout(req: Request) -> dict[str, Any]:
             detail="payment_provider_error",
         ) from exc
 
-    return {
+    result = {
         "invoice_id": invoice.get("id"),
         "status": invoice.get("status"),
         "amount_sar": plan_info["amount_halalas"] / 100,
         "payment_url": invoice.get("url"),
         "plan": plan,
     }
+    # 24 hours: long enough to cover a customer returning to a link later the
+    # same day, short enough that a genuine second purchase of the same plan
+    # the next day is not answered with a stale invoice.
+    idem.remember(idem_key, result, ttl_seconds=24 * 3600)
+    return result
 
 
 @router.post("/api/v1/webhooks/moyasar")

@@ -8,14 +8,14 @@ no "guaranteed"/"نضمن".
 Article 11: thin data registry — no business logic.
 """
 
+from auto_client_acquisition.service_catalog.governed_revenue_ai_ops import (
+    build_governed_revenue_ai_ops_blueprint,
+)
 from auto_client_acquisition.service_catalog.registry import (
     OFFERINGS,
     SERVICE_IDS,
     get_offering,
     list_offerings,
-)
-from auto_client_acquisition.service_catalog.governed_revenue_ai_ops import (
-    build_governed_revenue_ai_ops_blueprint,
 )
 from auto_client_acquisition.service_catalog.schemas import ServiceOffering
 
