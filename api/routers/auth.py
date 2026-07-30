@@ -412,7 +412,11 @@ async def refresh_tokens(
             )
             .values(revoked_at=_utcnow())
         )
-        await db.flush()
+        # This endpoint deliberately raises 401 after revocation. The normal
+        # get_db dependency rolls back on every exception, including
+        # HTTPException, so flush() would make the security update disappear.
+        # Commit the revocation before returning the denial.
+        await db.commit()
         log.warning(
             "refresh_token_reuse_detected user_id=%s — all sessions revoked",
             user_id,
