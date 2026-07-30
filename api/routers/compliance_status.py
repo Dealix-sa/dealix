@@ -302,7 +302,9 @@ async def compliance_status(request: Request) -> dict[str, Any]:
         1 for v in zatca.values() if isinstance(v, dict) and v.get("implemented")
     )
     security_controls_implemented = sum(
-        1 for v in security.values() if v.get("implemented") or v.get("configured")
+        1
+        for v in security.values()
+        if v.get("implemented") or v.get("configured") or v.get("enforced")
     )
 
     return {
