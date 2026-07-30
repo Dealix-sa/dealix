@@ -372,23 +372,50 @@ async def refresh_tokens(
     user_id = payload.get("sub")
     token_hash = hash_token(body.refresh_token)
 
-    # Look the token up *without* filtering on revoked_at, so an
-    # already-rotated token is distinguishable from one that never existed.
-    # Both used to collapse into the same 401, which threw away the only
-    # signal that a token had been stolen.
-    result = await db.execute(
-        select(RefreshTokenRecord).where(
+    # Atomically claim the token by revoking it. A SELECT followed by an
+    # assignment lets two concurrent refresh requests both observe a live
+    # token and both mint replacements. This conditional UPDATE permits
+    # exactly one winner on PostgreSQL (and on every supported SQL database).
+    claimed_at = _utcnow()
+    claimed = await db.execute(
+        update(RefreshTokenRecord)
+        .where(
             and_(
                 RefreshTokenRecord.user_id == user_id,
                 RefreshTokenRecord.token_hash == token_hash,
+                RefreshTokenRecord.revoked_at.is_(None),
+                RefreshTokenRecord.expires_at > claimed_at,
             )
         )
+        .values(revoked_at=claimed_at)
+        .returning(RefreshTokenRecord.id)
     )
-    stored = result.scalar_one_or_none()
-    if not stored:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Refresh token not found or revoked")
+    if claimed.scalar_one_or_none() is None:
+        # The claim failed. Read without filtering on revoked_at so a replay
+        # is distinguishable from a token that was forged or simply expired.
+        result = await db.execute(
+            select(RefreshTokenRecord).where(
+                and_(
+                    RefreshTokenRecord.user_id == user_id,
+                    RefreshTokenRecord.token_hash == token_hash,
+                )
+            )
+        )
+        stored = result.scalar_one_or_none()
+        if not stored:
+            raise HTTPException(
+                status.HTTP_401_UNAUTHORIZED,
+                "Refresh token not found or revoked",
+            )
 
-    if stored.revoked_at is not None:
+        if stored.revoked_at is None:
+            # A matching unrevoked row can only have failed the atomic claim
+            # because it expired.
+            raise HTTPException(
+                status.HTTP_401_UNAUTHORIZED,
+                "Refresh token not found or revoked",
+            )
+
         # Reuse detection. A rotated token should never be presented again, so
         # seeing one means two parties hold it: whoever rotated it legitimately
         # and whoever kept a copy.
@@ -425,13 +452,6 @@ async def refresh_tokens(
             status.HTTP_401_UNAUTHORIZED,
             "Refresh token reuse detected — all sessions have been revoked",
         )
-
-    if stored.expires_at <= _utcnow():
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Refresh token not found or revoked")
-
-    # Revoke old token (rotation)
-    stored.revoked_at = _utcnow()
-    await db.flush()
 
     user_result = await db.execute(select(UserRecord).where(UserRecord.id == user_id))
     user = user_result.scalar_one_or_none()

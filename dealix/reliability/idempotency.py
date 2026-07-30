@@ -50,6 +50,11 @@ def _local_seen(key: str) -> bool:
         return exp is not None and exp > now
 
 
+def _local_release(key: str) -> None:
+    with _LOCAL_LOCK:
+        _LOCAL_STORE.pop(key, None)
+
+
 # Values recorded alongside the claim flags above. Separate map because
 # `_LOCAL_STORE` holds only expiries and is read by the claim path on a hot
 # loop; mixing payloads into it would make every claim carry them.
@@ -109,6 +114,10 @@ class IdempotencyStore:
     def _key(self, key: str) -> str:
         return f"{self.prefix}{key}"
 
+    def _value_key(self, key: str) -> str:
+        """Keep replay payloads separate from atomic claim flags."""
+        return f"{self.prefix}value:{key}"
+
     def seen(self, key: str) -> bool:
         if not self._redis:
             return _local_seen(self._key(key))
@@ -135,6 +144,23 @@ class IdempotencyStore:
         False means duplicate — skip processing."""
         return self.mark(key, ttl_seconds=ttl_seconds)
 
+    def release(self, key: str) -> None:
+        """Release a failed claim so another attempt can safely retry."""
+        full_key = self._key(key)
+        if self._redis:
+            try:
+                self._redis.delete(full_key)
+            except Exception as exc:  # pragma: no cover - network dependent
+                key_fp = hashlib.sha256(key.encode("utf-8")).hexdigest()[:12]
+                log.warning(
+                    "idem_release_failed key_fp=%s err_type=%s",
+                    key_fp,
+                    type(exc).__name__,
+                )
+        # A Redis failure may have made claim() fall back to the local store.
+        # Clearing both is harmless and ensures that fallback claim is released.
+        _local_release(full_key)
+
     # ── Value memory ───────────────────────────────────────────────────
     #
     # `claim` answers "have I already handled this?" — a flag. That is enough
@@ -151,15 +177,16 @@ class IdempotencyStore:
         turn a successful operation into an error for the caller.
         """
         payload = json.dumps(value, ensure_ascii=False)
+        value_key = self._value_key(key)
         if not self._redis:
-            _local_remember(self._key(key), payload, ttl_seconds)
+            _local_remember(value_key, payload, ttl_seconds)
             return
         try:
-            self._redis.set(self._key(key), payload, ex=ttl_seconds)
+            self._redis.set(value_key, payload, ex=ttl_seconds)
         except Exception as exc:  # pragma: no cover - network dependent
             key_fp = hashlib.sha256(key.encode("utf-8")).hexdigest()[:12]
             log.warning("idem_remember_failed key_fp=%s err=%s", key_fp, type(exc).__name__)
-            _local_remember(self._key(key), payload, ttl_seconds)
+            _local_remember(value_key, payload, ttl_seconds)
 
     def recall(self, key: str) -> Any | None:
         """The value recorded for ``key``, or None.
@@ -169,13 +196,14 @@ class IdempotencyStore:
         an error.
         """
         raw: str | None
+        value_key = self._value_key(key)
         if not self._redis:
-            raw = _local_recall(self._key(key))
+            raw = _local_recall(value_key)
         else:
             try:
-                raw = self._redis.get(self._key(key))
+                raw = self._redis.get(value_key)
             except Exception:  # pragma: no cover - network dependent
-                raw = _local_recall(self._key(key))
+                raw = _local_recall(value_key)
         if not raw:
             return None
         try:

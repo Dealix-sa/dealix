@@ -17,6 +17,8 @@ not enough to **answer** one. ``remember``/``recall`` were added for this.
 
 from __future__ import annotations
 
+import asyncio
+
 import pytest
 
 PATH = "/api/v1/checkout"
@@ -236,6 +238,58 @@ def test_a_provider_failure_is_not_remembered_as_success(client, monkeypatch):
     assert recovered.json()["invoice_id"] == "inv_after_recovery"
 
 
+@pytest.mark.asyncio
+async def test_overlapping_requests_wait_for_and_share_one_invoice(
+    monkeypatch,
+    approved_plans,
+):
+    """Two requests in flight together must not both reach Moyasar."""
+    from httpx import ASGITransport, AsyncClient
+
+    from api.main import app
+    from api.routers import pricing
+
+    monkeypatch.setenv("DEALIX_CHECKOUT_ENABLED", "1")
+    monkeypatch.setenv("APP_URL", "https://api.dealix.me")
+    started = asyncio.Event()
+    release_provider = asyncio.Event()
+    calls: list[dict] = []
+
+    class _BlockingClient:
+        async def create_invoice(self, **kwargs):
+            calls.append(kwargs)
+            started.set()
+            await release_provider.wait()
+            return {
+                "id": "inv_only",
+                "status": "initiated",
+                "url": "https://moyasar.test/pay/only",
+            }
+
+    monkeypatch.setattr(pricing, "MoyasarClient", _BlockingClient)
+
+    async with AsyncClient(
+        transport=ASGITransport(app=app),
+        base_url="http://test",
+    ) as ac:
+        first_task = asyncio.create_task(ac.post(PATH, json=_order()))
+        await asyncio.wait_for(started.wait(), timeout=2)
+        second_task = asyncio.create_task(ac.post(PATH, json=_order()))
+
+        # Give the duplicate enough time to reach the reservation. Without the
+        # atomic claim it enters create_invoice and increments calls here.
+        await asyncio.sleep(0.1)
+        assert len(calls) == 1
+
+        release_provider.set()
+        first, second = await asyncio.gather(first_task, second_task)
+
+    assert first.status_code == second.status_code == 200
+    assert first.json()["invoice_id"] == second.json()["invoice_id"] == "inv_only"
+    assert second.json()["idempotent_replay"] is True
+    assert len(calls) == 1
+
+
 # ── The store primitive ───────────────────────────────────────────────────
 
 
@@ -268,3 +322,47 @@ def test_value_memory_is_separate_from_the_claim_flag():
         "start dropping first-time events"
     )
     assert store.recall("shared") == {"v": 1}
+
+
+def test_redis_value_memory_is_separate_from_the_claim_flag():
+    """The production Redis path needs the same separation as local memory."""
+    from dealix.reliability.idempotency import IdempotencyStore
+
+    class _Redis:
+        def __init__(self):
+            self.data: dict[str, str] = {}
+
+        def set(self, key, value, *, nx=False, ex=None):
+            if nx and key in self.data:
+                return None
+            self.data[key] = value
+            return True
+
+        def get(self, key):
+            return self.data.get(key)
+
+        def exists(self, key):
+            return key in self.data
+
+        def delete(self, key):
+            return int(self.data.pop(key, None) is not None)
+
+    redis = _Redis()
+    store = IdempotencyStore(prefix="test:redis:", redis_client=redis)
+    store.remember("shared", {"v": 1}, ttl_seconds=60)
+
+    assert store.claim("shared", ttl_seconds=60) is True
+    assert store.recall("shared") == {"v": 1}
+    assert set(redis.data) == {"test:redis:shared", "test:redis:value:shared"}
+
+
+def test_release_allows_retry_after_a_failed_owner():
+    from dealix.reliability.idempotency import IdempotencyStore
+
+    store = IdempotencyStore(prefix="test:release:")
+    assert store.claim("order", ttl_seconds=60) is True
+    assert store.claim("order", ttl_seconds=60) is False
+
+    store.release("order")
+
+    assert store.claim("order", ttl_seconds=60) is True

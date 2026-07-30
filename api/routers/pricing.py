@@ -12,6 +12,7 @@ endpoint validates against the current pricing snapshot to prevent tampering.
 
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import logging
 import os
@@ -514,14 +515,32 @@ async def create_checkout(req: Request) -> dict[str, Any]:
         if client_key
         else order_fingerprint
     )
-    remembered = idem.recall(idem_key)
-    if isinstance(remembered, dict) and remembered.get("payment_url"):
-        # Logs the key fingerprint, not the request values. `plan` is
-        # allowlist-constrained a few lines above so it could not carry a
-        # newline, but a hash makes that independent of the check staying
-        # where it is — and correlates the replay with its original.
-        log.info("checkout_idempotent_replay key_fp=%s", _fingerprint(idem_key))
-        return {**remembered, "idempotent_replay": True}
+    # Reserve before calling Moyasar. A recall-only check lets two overlapping
+    # requests both observe a miss and both create an invoice. The atomic claim
+    # elects one creator; competitors wait for and replay its result.
+    wait_deadline = asyncio.get_running_loop().time() + 20
+    while True:
+        remembered = idem.recall(idem_key)
+        if isinstance(remembered, dict) and remembered.get("payment_url"):
+            # Logs the key fingerprint, not the request values. `plan` is
+            # allowlist-constrained a few lines above so it could not carry a
+            # newline, but a hash makes that independent of the check staying
+            # where it is — and correlates the replay with its original.
+            log.info("checkout_idempotent_replay key_fp=%s", _fingerprint(idem_key))
+            return {**remembered, "idempotent_replay": True}
+
+        # Moyasar has a 15-second request timeout. A 30-second reservation
+        # outlives that call while still self-healing if a process dies.
+        if idem.claim(idem_key, ttl_seconds=30):
+            break
+
+        if asyncio.get_running_loop().time() >= wait_deadline:
+            raise HTTPException(
+                status_code=409,
+                detail="checkout_in_progress",
+                headers={"Retry-After": "2"},
+            )
+        await asyncio.sleep(0.05)
 
     plan_info = PLANS[plan]
     callback_base = os.getenv("APP_URL", "https://dealix.me")
@@ -542,6 +561,9 @@ async def create_checkout(req: Request) -> dict[str, Any]:
             },
         )
     except Exception as exc:
+        # Do not poison the order key when the provider fails: one waiting
+        # request (or the customer's next retry) may become the new owner.
+        idem.release(idem_key)
         log.exception(
             "moyasar_invoice_failed plan=%s email_fp=%s",
             plan,

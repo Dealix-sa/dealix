@@ -26,6 +26,7 @@ PostgreSQL is needed.
 
 from __future__ import annotations
 
+import asyncio
 import uuid
 
 import pytest
@@ -147,6 +148,84 @@ async def test_the_new_token_works(client, user):
     third = await _refresh(client, second["refresh_token"])
 
     assert third.status_code == 200, third.text
+
+
+@pytest.mark.asyncio
+async def test_concurrent_refresh_has_one_winner_and_revokes_the_race(
+    tmp_path,
+    monkeypatch,
+):
+    """The token claim is atomic across independent database sessions."""
+    from api.main import app
+    from api.routers.auth import _hash_password
+    from db.session import get_db
+
+    engine = create_async_engine(
+        f"sqlite+aiosqlite:///{tmp_path / 'refresh-race.db'}",
+        connect_args={"timeout": 10},
+    )
+    async with engine.begin() as conn:
+        await conn.run_sync(
+            Base.metadata.create_all,
+            tables=[
+                TenantRecord.__table__,
+                RoleRecord.__table__,
+                UserRecord.__table__,
+                RefreshTokenRecord.__table__,
+            ],
+        )
+    factory = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+    user_id = f"usr_{uuid.uuid4().hex[:12]}"
+    async with factory() as seed:
+        seed.add_all(
+            [
+                TenantRecord(id=TENANT, name="Race Co", slug="race-co"),
+                UserRecord(
+                    id=user_id,
+                    tenant_id=TENANT,
+                    email="race@example.com",
+                    name="Race",
+                    hashed_password=_hash_password(PASSWORD),
+                    is_active=True,
+                ),
+            ]
+        )
+        await seed.commit()
+
+    async def _independent_db():
+        async with factory() as session:
+            try:
+                yield session
+                await session.commit()
+            except Exception:
+                await session.rollback()
+                raise
+
+    monkeypatch.setenv("API_KEYS", "")
+    app.dependency_overrides[get_db] = _independent_db
+    try:
+        async with AsyncClient(
+            transport=ASGITransport(app=app),
+            base_url="http://test",
+        ) as ac:
+            login = await ac.post(
+                "/api/v1/auth/login",
+                json={"email": "race@example.com", "password": PASSWORD},
+            )
+            assert login.status_code == 200, login.text
+            token = login.json()["refresh_token"]
+
+            first, second = await asyncio.gather(
+                _refresh(ac, token),
+                _refresh(ac, token),
+            )
+
+        assert sorted([first.status_code, second.status_code]) == [200, 401]
+        async with factory() as verify:
+            assert await _live_token_count(verify, user_id) == 0
+    finally:
+        app.dependency_overrides.clear()
+        await engine.dispose()
 
 
 # ── Reuse detection ───────────────────────────────────────────────────────
