@@ -508,10 +508,11 @@ async def create_checkout(req: Request) -> dict[str, Any]:
     # irrelevant, and nothing ever needs to read it back.
     idem = IdempotencyStore(prefix="idem:checkout:")
     client_key = str(body.get("idempotency_key") or "").strip()
+    order_fingerprint = f"{plan}:{_fingerprint(email.lower())}"
     idem_key = (
-        f"client:{_fingerprint(client_key)}"
+        f"client:{_fingerprint(client_key)}:{order_fingerprint}"
         if client_key
-        else f"{plan}:{_fingerprint(email.lower())}"
+        else order_fingerprint
     )
     remembered = idem.recall(idem_key)
     if isinstance(remembered, dict) and remembered.get("payment_url"):
