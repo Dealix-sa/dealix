@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 AUTHORITY_SURFACES = [
+    ROOT / "landing/index.html",
     ROOT / "landing/llms.txt",
     ROOT / "landing/pricing.html",
     ROOT / ".claude/agents/dealix-sales.md",
@@ -56,6 +56,34 @@ def test_retired_commercial_terms_are_absent_from_authority_surfaces() -> None:
         text = _read(path)
         for retired_text in RETIRED_OR_UNSUPPORTED_TEXT:
             assert retired_text not in text, f"{path}: {retired_text}"
+
+
+def test_public_homepage_has_current_paths_and_no_private_contact_or_retired_links() -> None:
+    text = _read(ROOT / "landing/index.html")
+
+    assert "Free Mini Diagnostic" in text
+    assert "Revenue Command Pilot — 30 days" in text
+    assert "href=\"/diagnostic.html\"" in text
+    assert "href=\"/pricing.html\"" in text
+    assert "sami.assiri11@gmail.com" not in text
+
+    retired_links = [
+        "/roi.html",
+        "/compare.html",
+        "/launchpad.html",
+        "/case-study.html",
+    ]
+    for retired_link in retired_links:
+        assert retired_link not in text
+
+    unsupported_homepage_claims = [
+        "5 وكلاء AI جاهزين",
+        "8 بوّابات أمان مقفلة",
+        "PDPL Saudi-first",
+        "امتثال + لغة سعوديّة",
+    ]
+    for claim in unsupported_homepage_claims:
+        assert claim not in text
 
 
 def test_public_llms_surface_is_quote_only_and_evidence_bounded() -> None:
