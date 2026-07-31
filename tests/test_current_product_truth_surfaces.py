@@ -120,6 +120,15 @@ def test_public_pricing_has_only_current_entry_path() -> None:
     assert "لا يوجد سعر عام ثابت" in text
 
 
+def test_lighthouse_tier1_excludes_public_checkout() -> None:
+    config = _read(ROOT / "lighthouserc.js")
+
+    assert "pricing.html" in config
+    assert "diagnostic.html" in config
+    assert "privacy.html" in config
+    assert "checkout.html" not in config
+
+
 def test_sales_and_pm_agents_name_canonical_commercial_sources() -> None:
     for relative_path in [
         ".claude/agents/dealix-sales.md",
