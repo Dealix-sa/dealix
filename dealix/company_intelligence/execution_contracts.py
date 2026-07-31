@@ -50,7 +50,7 @@ class CanonicalOpportunity(BaseModel):
     external_action_allowed: bool = False
 
     @model_validator(mode="after")
-    def deny_unapproved_external_action(self) -> "CanonicalOpportunity":
+    def deny_unapproved_external_action(self) -> CanonicalOpportunity:
         if self.external_action_allowed and self.approval_required:
             raise ValueError("external action cannot be allowed while approval is required")
         return self
@@ -83,7 +83,7 @@ class CanonicalDraft(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     @model_validator(mode="after")
-    def enforce_channel_safety(self) -> "CanonicalDraft":
+    def enforce_channel_safety(self) -> CanonicalDraft:
         if self.execution_allowed:
             raise ValueError("canonical drafts never authorize execution")
         if not self.approval_required:
@@ -122,7 +122,7 @@ class CanonicalApproval(BaseModel):
     execution_allowed: bool = False
 
     @model_validator(mode="after")
-    def require_explicit_execution_decision(self) -> "CanonicalApproval":
+    def require_explicit_execution_decision(self) -> CanonicalApproval:
         if self.execution_allowed and self.status != "approved":
             raise ValueError("execution requires approved status")
         return self
