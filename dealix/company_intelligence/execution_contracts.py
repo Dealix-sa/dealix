@@ -5,12 +5,21 @@ replacing their storage. Drafts remain approval-first and execution-disabled.
 """
 from __future__ import annotations
 
+import json
 from datetime import UTC, datetime
 from enum import StrEnum
 from hashlib import sha256
-from typing import Any
+from typing import Annotated, Any
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StringConstraints,
+    model_validator,
+)
+
+NonEmptyString = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 
 
 class DraftChannel(StrEnum):
@@ -28,31 +37,74 @@ class LawfulContactBasis(StrEnum):
     NOT_APPLICABLE = "not_applicable"
 
 
+def _normalize_evidence(source_evidence: list[str]) -> list[str]:
+    """Return deterministic, non-empty, de-duplicated evidence references."""
+
+    evidence = sorted({item.strip() for item in source_evidence if item.strip()})
+    if not evidence:
+        raise ValueError("source_evidence requires at least one non-empty reference")
+    return evidence
+
+
+def _draft_digest(
+    *,
+    tenant_id: str,
+    action_id: str,
+    opportunity_id: str,
+    channel: DraftChannel,
+    content: str,
+    lawful_contact_basis: LawfulContactBasis,
+    source_evidence: list[str],
+    risk_level: str,
+    is_manual_task: bool,
+) -> str:
+    """Hash content together with every safety-significant draft attribute."""
+
+    payload = {
+        "action_id": action_id.strip(),
+        "channel": channel.value,
+        "content": content.strip(),
+        "is_manual_task": is_manual_task,
+        "lawful_contact_basis": lawful_contact_basis.value,
+        "opportunity_id": opportunity_id.strip(),
+        "risk_level": risk_level.strip(),
+        "source_evidence": _normalize_evidence(source_evidence),
+        "tenant_id": tenant_id.strip(),
+    }
+    canonical = json.dumps(
+        payload,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+    return sha256(canonical.encode("utf-8")).hexdigest()
+
+
 class CanonicalOpportunity(BaseModel):
     """Read-only normalized view over the existing opportunity owner."""
 
     model_config = ConfigDict(extra="forbid")
 
-    tenant_id: str = Field(..., min_length=1)
-    opportunity_id: str = Field(..., min_length=1)
-    company_id: str = Field(..., min_length=1)
+    tenant_id: NonEmptyString
+    opportunity_id: NonEmptyString
+    company_id: NonEmptyString
     company_name: str = ""
-    offer_id: str = Field(..., min_length=1)
-    stage: str = Field(..., min_length=1)
+    offer_id: NonEmptyString
+    stage: NonEmptyString
     score: int = Field(..., ge=0, le=100)
     score_reasons: dict[str, Any] = Field(default_factory=dict)
     signal_ids: list[str] = Field(default_factory=list)
     confidence_band: str = "low"
     blockers: list[str] = Field(default_factory=list)
-    next_action: str = Field(..., min_length=1)
-    proof_target: str = Field(..., min_length=1)
+    next_action: NonEmptyString
+    proof_target: NonEmptyString
     approval_required: bool = True
     external_action_allowed: bool = False
 
     @model_validator(mode="after")
-    def deny_unapproved_external_action(self) -> CanonicalOpportunity:
-        if self.external_action_allowed and self.approval_required:
-            raise ValueError("external action cannot be allowed while approval is required")
+    def deny_external_execution_authority(self) -> CanonicalOpportunity:
+        if self.external_action_allowed:
+            raise ValueError("canonical opportunities never authorize external execution")
         return self
 
 
@@ -66,16 +118,16 @@ class CanonicalDraft(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    tenant_id: str = Field(..., min_length=1)
-    draft_id: str = Field(..., min_length=1)
-    action_id: str = Field(..., min_length=1)
-    opportunity_id: str = Field(..., min_length=1)
+    tenant_id: NonEmptyString
+    draft_id: NonEmptyString
+    action_id: NonEmptyString
+    opportunity_id: NonEmptyString
     channel: DraftChannel
-    content: str = Field(..., min_length=1)
+    content: NonEmptyString
     content_hash: str = Field(..., pattern=r"^[a-f0-9]{64}$")
     lawful_contact_basis: LawfulContactBasis
-    source_evidence: list[str] = Field(..., min_length=1)
-    risk_level: str = "medium"
+    source_evidence: list[NonEmptyString] = Field(..., min_length=1)
+    risk_level: NonEmptyString = "medium"
     approval_required: bool = True
     execution_allowed: bool = False
     is_manual_task: bool = False
@@ -83,7 +135,7 @@ class CanonicalDraft(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     @model_validator(mode="after")
-    def enforce_channel_safety(self) -> CanonicalDraft:
+    def enforce_channel_safety_and_integrity(self) -> CanonicalDraft:
         if self.execution_allowed:
             raise ValueError("canonical drafts never authorize execution")
         if not self.approval_required:
@@ -99,6 +151,25 @@ class CanonicalDraft(BaseModel):
                 raise ValueError("LinkedIn drafts must be manual-research-only")
             if not self.is_manual_task:
                 raise ValueError("LinkedIn automation is forbidden")
+
+        normalized_evidence = _normalize_evidence(self.source_evidence)
+        if self.source_evidence != normalized_evidence:
+            raise ValueError("source_evidence must be sorted and unique")
+        expected_hash = _draft_digest(
+            tenant_id=self.tenant_id,
+            action_id=self.action_id,
+            opportunity_id=self.opportunity_id,
+            channel=self.channel,
+            content=self.content,
+            lawful_contact_basis=self.lawful_contact_basis,
+            source_evidence=self.source_evidence,
+            risk_level=self.risk_level,
+            is_manual_task=self.is_manual_task,
+        )
+        if self.content_hash != expected_hash:
+            raise ValueError("content_hash does not match the canonical draft payload")
+        if self.draft_id != f"draft_{expected_hash[:16]}":
+            raise ValueError("draft_id does not match content_hash")
         return self
 
 
@@ -107,16 +178,16 @@ class CanonicalApproval(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    tenant_id: str = Field(..., min_length=1)
-    approval_id: str = Field(..., min_length=1)
-    action_id: str = Field(..., min_length=1)
-    object_type: str = Field(..., min_length=1)
-    object_id: str = Field(..., min_length=1)
-    action_type: str = Field(..., min_length=1)
+    tenant_id: NonEmptyString
+    approval_id: NonEmptyString
+    action_id: NonEmptyString
+    object_type: NonEmptyString
+    object_id: NonEmptyString
+    action_type: NonEmptyString
     channel: str | None = None
     risk_level: str = "low"
     status: str = "pending"
-    proof_target: str = Field(..., min_length=1)
+    proof_target: NonEmptyString
     audit_ref: str | None = None
     decision_at: datetime | None = None
     execution_allowed: bool = False
@@ -194,20 +265,28 @@ def build_draft(
 ) -> CanonicalDraft:
     """Build a deterministic, idempotent, execution-disabled draft."""
 
-    canonical = "\n".join(
-        [tenant_id, action_id, opportunity_id, channel.value, content.strip()]
+    normalized_evidence = _normalize_evidence(source_evidence)
+    digest = _draft_digest(
+        tenant_id=tenant_id,
+        action_id=action_id,
+        opportunity_id=opportunity_id,
+        channel=channel,
+        content=content,
+        lawful_contact_basis=lawful_contact_basis,
+        source_evidence=normalized_evidence,
+        risk_level=risk_level,
+        is_manual_task=is_manual_task,
     )
-    digest = sha256(canonical.encode("utf-8")).hexdigest()
     return CanonicalDraft(
         tenant_id=tenant_id,
         draft_id=f"draft_{digest[:16]}",
         action_id=action_id,
         opportunity_id=opportunity_id,
         channel=channel,
-        content=content.strip(),
+        content=content,
         content_hash=digest,
         lawful_contact_basis=lawful_contact_basis,
-        source_evidence=source_evidence,
+        source_evidence=normalized_evidence,
         risk_level=risk_level,
         approval_required=True,
         execution_allowed=False,
