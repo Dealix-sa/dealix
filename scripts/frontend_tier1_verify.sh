@@ -45,12 +45,26 @@ check_absent() {
   fi
 }
 
-# 1. Hero H1 remains short and focused.
-H1=$(awk '
-  /<h1[^>]*class="hero__title"/{capture=1; next}
-  capture && /<\/h1>/{capture=0; exit}
-  capture{print}
-' "$LANDING/index.html" | tr -d '\n' | sed -E 's/<[^>]+>//g; s/^[[:space:]]+//; s/[[:space:]]+$//')
+# 1. Hero H1 remains short and focused. Parse HTML independently of line layout.
+H1=$(python3 - "$LANDING/index.html" <<'PY'
+from __future__ import annotations
+
+import html
+import re
+import sys
+from pathlib import Path
+
+text = Path(sys.argv[1]).read_text(encoding="utf-8")
+match = re.search(
+    r'<h1[^>]*class="[^"]*\bhero__title\b[^"]*"[^>]*>(.*?)</h1>',
+    text,
+    flags=re.IGNORECASE | re.DOTALL,
+)
+if match:
+    value = re.sub(r"<[^>]+>", " ", match.group(1))
+    print(" ".join(html.unescape(value).split()))
+PY
+)
 if [[ -n "$H1" ]]; then
   WORDS=$(echo "$H1" | wc -w | tr -d ' ')
   if (( WORDS <= 8 )); then
