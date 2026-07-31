@@ -5,6 +5,8 @@ Admin domain — health, config, founder ops, executive reporting, roles.
 
 from __future__ import annotations
 
+from typing import Any
+
 from fastapi import APIRouter
 
 from api.routers import (
@@ -40,6 +42,29 @@ from api.routers import (
 from api.routers import (
     founder_command_summary as founder_command_summary_router,
 )
+
+
+def _retired_auto_send_gate(_approval_mode: str) -> bool:
+    """Auto-send is retired; external email requires explicit approved execution."""
+
+    return False
+
+
+async def _blocked_auto_send_adapter(**_kwargs: Any) -> None:
+    """Defense in depth if legacy auto-send code is called directly."""
+
+    raise RuntimeError(
+        "auto_send_low_risk_retired: use /api/v1/email/send-approved after approval"
+    )
+
+
+# The legacy revenue-machine module still contains an exploratory auto-send
+# branch. The production application registers it only through this domain, so
+# bind the current product doctrine before exposing the router. This preserves
+# draft generation while making the env flag incapable of granting send power.
+drafts._auto_send_low_risk_enabled = _retired_auto_send_gate
+drafts.gmail_send_email = _blocked_auto_send_adapter
+
 
 _ROUTERS = [
     health.router,
