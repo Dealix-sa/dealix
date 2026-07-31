@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+from html.parser import HTMLParser
 from pathlib import Path
 
 CUSTOMER_FACING = [
@@ -10,6 +11,37 @@ CUSTOMER_FACING = [
     "landing/launchpad.html",
     "landing/index.html",
 ]
+
+
+class _VisibleTextParser(HTMLParser):
+    """Collect declarative page text while ignoring non-visible and FAQ prompts."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self._suppressed_depth = 0
+        self.parts: list[str] = []
+
+    def handle_starttag(
+        self, tag: str, attrs: list[tuple[str, str | None]]
+    ) -> None:
+        del attrs
+        if tag.casefold() in {"script", "style", "summary"}:
+            self._suppressed_depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.casefold() in {"script", "style", "summary"}:
+            self._suppressed_depth = max(0, self._suppressed_depth - 1)
+
+    def handle_data(self, data: str) -> None:
+        if self._suppressed_depth == 0:
+            self.parts.append(data)
+
+
+def _visible_declarative_text(html: str) -> str:
+    parser = _VisibleTextParser()
+    parser.feed(html)
+    parser.close()
+    return "\n".join(parser.parts)
 
 
 def test_all_customer_facing_have_mobile_meta() -> None:
@@ -68,26 +100,7 @@ def test_no_forbidden_claims_in_customer_pages() -> None:
         if not path.exists():
             continue
         html = path.read_text(encoding="utf-8")
-        html_visible = re.sub(
-            r"<script[^>]*>.*?</script>",
-            "",
-            html,
-            flags=re.DOTALL | re.IGNORECASE,
-        )
-        html_visible = re.sub(
-            r"<style[^>]*>.*?</style>",
-            "",
-            html_visible,
-            flags=re.DOTALL | re.IGNORECASE,
-        )
-        html_visible = re.sub(r"<!--.*?-->", "", html_visible, flags=re.DOTALL)
-        # FAQ questions are prompts, not assertions. Their answers remain scanned.
-        html_visible = re.sub(
-            r"<summary[^>]*>.*?</summary>",
-            "",
-            html_visible,
-            flags=re.DOTALL | re.IGNORECASE,
-        )
+        html_visible = _visible_declarative_text(html)
         # Explicit negation is not a positive outcome claim.
         html_visible = re.sub(
             r"[^\n<]*(not guaranteed outcomes|ليست نتائج مضمونة)[^\n>]*",
