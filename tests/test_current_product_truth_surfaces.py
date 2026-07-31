@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 AUTHORITY_SURFACES = [
     ROOT / "landing/llms.txt",
+    ROOT / "landing/pricing.html",
     ROOT / ".claude/agents/dealix-sales.md",
     ROOT / ".claude/agents/dealix-pm.md",
     ROOT / ".claude/agents/dealix-delivery.md",
@@ -13,8 +14,13 @@ AUTHORITY_SURFACES = [
 
 RETIRED_OR_UNSUPPORTED_TEXT = [
     "499 SAR",
+    "499 <small>",
     "1,500 SAR",
+    "1,500 <small>",
     "2,999 SAR",
+    "2,999 <small>",
+    "7,999 <small>",
+    "12,000 <small>",
     "2,999-4,999",
     "2,999–4,999",
     "5,000-25,000",
@@ -24,10 +30,12 @@ RETIRED_OR_UNSUPPORTED_TEXT = [
     "7-Day Revenue",
     "7-day Revenue",
     "full refund",
+    "استرجاع كامل",
     "10-20-30%",
     "8-15K SAR MRR",
     "50/50 payment terms",
     "claude/dealix-layers-40-200-HSWI8",
+    "/checkout.html",
 ]
 
 
@@ -69,6 +77,18 @@ def test_public_llms_surface_is_quote_only_and_evidence_bounded() -> None:
     ]
     for claim in unsupported_public_claims:
         assert claim not in text
+
+
+def test_public_pricing_has_only_current_entry_path() -> None:
+    text = _read(ROOT / "landing/pricing.html")
+
+    assert "Free Mini Diagnostic" in text
+    assert "free_entry" in text
+    assert "Revenue Command Pilot — 30 days" in text
+    assert "quote_only" in text
+    assert "عرض سعر بعد الاكتشاف" in text
+    assert "/checkout.html" not in text
+    assert "لا يوجد سعر عام ثابت" in text
 
 
 def test_sales_and_pm_agents_name_canonical_commercial_sources() -> None:
