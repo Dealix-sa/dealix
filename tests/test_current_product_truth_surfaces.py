@@ -67,15 +67,16 @@ def test_public_llms_surface_is_quote_only_and_evidence_bounded() -> None:
     assert "Revenue requires payment evidence" in text
     assert "Completed delivery requires proof evidence" in text
 
-    unsupported_public_claims = [
-        "KSA data residency",
-        "TLS 1.3",
-        "AES-256",
+    unsupported_positive_claims = [
+        "built on Saudi Cloud",
+        "TLS 1.3 in transit",
+        "AES-256 at rest",
         "HSM key management",
         "Pricing is transparent",
         "6-tier transparent ladder",
+        "data residency inside KSA",
     ]
-    for claim in unsupported_public_claims:
+    for claim in unsupported_positive_claims:
         assert claim not in text
 
 
