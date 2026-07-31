@@ -1,5 +1,12 @@
 # 004 — Refresh CLAUDE.md's stale "Known Launch Status" block
 
+> **Revised 2026-07-31 (Founder-360 reconciliation):** Step 1 below now
+> points at plan 019's SHA-parity check
+> (`.github/workflows/production-smoke.yml`, scheduled every 6 hours) as
+> the re-verify mechanism, instead of a hand-written curl command with no
+> pass/fail criterion. Land plan 019 first — 004's revised step assumes
+> `--expect-git-sha` already exists in `scripts/dealix_smoke_test.py`.
+
 - **Finding:** `CLAUDE.md:282-289` freezes a "Known Launch Status (2026-06-30)"
   block claiming Railway billing is past due and the production API is not
   live. `CLAUDE.md` itself was last edited 2026-07-26 (commit `1e441fe`,
@@ -50,8 +57,12 @@ git rev-parse HEAD   # if != aae97bcefcf73e74aef8c75ac593238dc1ed690e, re-read C
     this block; do not assume it still holds.
 
     - **Repo matrix:** PASS as of last verification (all required gates green)
-    - **Railway:** Billing past due as of last verification — founder must
-      pay to redeploy. Re-check: `curl -fsS https://api.dealix.me/healthz`
+    - **Railway / production SHA parity:** Billing past due as of last
+      verification — founder must pay to redeploy. Re-check by reading the
+      latest scheduled "Production Smoke" workflow run (every 6 hours,
+      `.github/workflows/production-smoke.yml`) — it fails loudly with a
+      SHA mismatch if Railway drifts from `main` (see plan 019); a green
+      run there is the authoritative signal, not a one-off curl.
     - **Frontend:** `npm --prefix apps/web run verify` PASS as of last verification
     - **Production API:** Not yet live as of last verification (Railway billing issue)
     - **Live outbound:** DISABLED (draft-only default) — verify via

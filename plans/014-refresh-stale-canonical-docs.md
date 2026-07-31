@@ -1,13 +1,21 @@
 # 014 — Refresh stale canonical docs and retire the conflicting legacy reference
 
-- **Finding:** Two docs CLAUDE.md names as canonical context
-  (`docs/CEO_OPERATING_CONTEXT.md`, `docs/DEALIX_BUSINESS_MODEL.md`) are
-  frozen at 2026-06-10 (`docs/DEALIX_BUSINESS_MODEL.md:4`: "**Last
-  updated**: 2026-06-10"; `docs/CEO_OPERATING_CONTEXT.md:41`: "## Current
-  Confirmed State (as of Wave 1)") while the repo has since produced
-  Wave 3 through Wave 17 artifacts under `docs/` (20+ `WAVE*_EVIDENCE_TABLE.md`
-  / `_CURRENT_REALITY.md` files) — these two "current state" docs are 7+
-  weeks and ~16 Waves out of date. Separately, `SYSTEM_COMPLETE_REFERENCE.md`
+> **Revised 2026-07-31 (Founder-360 reconciliation):** the original Step 2
+> below (a staleness-stamp patch to `docs/DEALIX_BUSINESS_MODEL.md`) is
+> dropped. PR #1011 (open, branch `ops/founder-360-market-truth-20260731`)
+> already fully rewrites that file into a "Market Validation Edition
+> v2.0-draft" — a staleness-stamp patch on top of the *old* content would
+> be immediately obsoleted once #1011 merges, or would conflict with it if
+> applied first. Everything else in this plan (`CEO_OPERATING_CONTEXT.md`,
+> `SYSTEM_COMPLETE_REFERENCE.md`, the `00_constitution`/`00_foundation`
+> duplicate cleanup) is untouched by #1011 and remains in scope unchanged.
+
+- **Finding:** `docs/CEO_OPERATING_CONTEXT.md` is frozen at 2026-06-10
+  (`docs/CEO_OPERATING_CONTEXT.md:41`: "## Current Confirmed State (as of
+  Wave 1)") while the repo has since produced Wave 3 through Wave 17
+  artifacts under `docs/` (20+ `WAVE*_EVIDENCE_TABLE.md` /
+  `_CURRENT_REALITY.md` files) — this "current state" doc is 7+ weeks and
+  ~16 Waves out of date. Separately, `SYSTEM_COMPLETE_REFERENCE.md`
   (root, 45KB) describes an entirely different, older architecture — a
   "5-Layer Automation Stack" (Lead Research → Lead Qualification → Sales
   Qualification Agent → Approval Queue UI → Pilot Delivery Orchestrator)
@@ -34,8 +42,10 @@ git rev-parse HEAD   # if != aae97bcefcf73e74aef8c75ac593238dc1ed690e, re-read t
 
 ## Context (inlined)
 - Files in scope: `docs/CEO_OPERATING_CONTEXT.md`,
-  `docs/DEALIX_BUSINESS_MODEL.md`, `SYSTEM_COMPLETE_REFERENCE.md`,
-  `docs/00_constitution/`, `docs/00_foundation/`.
+  `SYSTEM_COMPLETE_REFERENCE.md`, `docs/00_constitution/`,
+  `docs/00_foundation/`.
+- `docs/DEALIX_BUSINESS_MODEL.md` is explicitly **out of scope** — see the
+  revision note at the top of this file. Do not touch it; PR #1011 owns it.
 - This plan does not ask the executor to invent new business facts (e.g.
   a real customer count) — it asks for date-stamp/staleness-marker fixes
   and one structural cleanup (duplicate dirs, orphaned legacy doc), the
@@ -54,13 +64,7 @@ git rev-parse HEAD   # if != aae97bcefcf73e74aef8c75ac593238dc1ed690e, re-read t
    context (do not fabricate a specific "verified" claim about business
    facts — only date the doc itself).
    **Gate:** `grep -n "Last reviewed" docs/CEO_OPERATING_CONTEXT.md` → 1 match.
-2. Apply the same "Last reviewed" stamp fix to
-   `docs/DEALIX_BUSINESS_MODEL.md` (replace the static "Last updated:
-   2026-06-10" framing with an instruction to re-verify against
-   `CLAUDE.md`'s Business Model Summary, which plan 005 makes the single
-   source of truth for pricing).
-   **Gate:** `grep -n "CLAUDE.md" docs/DEALIX_BUSINESS_MODEL.md` → at least 1 match pointing readers at the canonical pricing table.
-3. Run `diff -rq docs/00_constitution/ docs/00_foundation/` to confirm
+2. Run `diff -rq docs/00_constitution/ docs/00_foundation/` to confirm
    which files are byte-identical duplicates. For each exact duplicate,
    keep the copy under `docs/00_constitution/` (it sorts first,
    alphabetically the more likely intended canonical location — confirm by
@@ -75,7 +79,7 @@ git rev-parse HEAD   # if != aae97bcefcf73e74aef8c75ac593238dc1ed690e, re-read t
    **Gate:** `diff -rq docs/00_constitution/ docs/00_foundation/` on the
    still-present files shows only expected pointer-file differences, not
    silently lost content.
-4. For `SYSTEM_COMPLETE_REFERENCE.md`, add a prominent banner at the very
+3. For `SYSTEM_COMPLETE_REFERENCE.md`, add a prominent banner at the very
    top of the file marking it as a legacy/historical architecture
    description superseded by `CLAUDE.md`'s "Architecture Summary":
     ```markdown
@@ -90,21 +94,24 @@ git rev-parse HEAD   # if != aae97bcefcf73e74aef8c75ac593238dc1ed690e, re-read t
    **Gate:** `head -5 SYSTEM_COMPLETE_REFERENCE.md | grep -q "Historical document"` → true.
 
 ## Done criteria (machine-checkable)
-- [ ] `grep -n "Last reviewed" docs/CEO_OPERATING_CONTEXT.md docs/DEALIX_BUSINESS_MODEL.md` → 1 match each
+- [ ] `grep -n "Last reviewed" docs/CEO_OPERATING_CONTEXT.md` → 1 match
 - [ ] `head -5 SYSTEM_COMPLETE_REFERENCE.md | grep -q "Historical document"` → true
 - [ ] `make full-repo-test` → all required gates PASS (docs-only change, must not alter behavior/tests)
 
 ## Out of scope (do not touch)
+- Do not touch `docs/DEALIX_BUSINESS_MODEL.md` — owned by PR #1011 (see
+  revision note at the top of this file).
 - Do not attempt to reorganize the full `docs/` tree (3,163 files, 93
   numeric-prefixed dirs) in this plan — that is a much larger structural
   project needing its own dedicated, founder-sequenced plan; this plan
   only fixes the specific stale/conflicting docs named above.
 - Do not delete `SYSTEM_COMPLETE_REFERENCE.md` or rewrite its body content.
 - Do not merge `docs/00_constitution/` and `docs/00_foundation/` beyond the
-  exact-duplicate files confirmed by `diff -rq` in step 3.
+  exact-duplicate files confirmed by `diff -rq` in step 2.
 - Do not fabricate any new business fact, customer count, or metric while
-  "updating" either stale doc — only fix staleness framing and cross-
-  references, per the doctrine rules in `.claude/rules/dealix-commercial-os.md`.
+  "updating" `docs/CEO_OPERATING_CONTEXT.md` — only fix staleness framing
+  and cross-references, per the doctrine rules in
+  `.claude/rules/dealix-commercial-os.md`.
 
 ## STOP conditions
 - If any file pair in `docs/00_constitution/` vs `docs/00_foundation/`

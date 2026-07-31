@@ -1,86 +1,41 @@
-# 005 — Reconcile contradictory offer-ladder pricing across canonical docs
+# 005 — RETIRED → see 017
 
-- **Finding:** Three docs state three different prices/models for the entry
-  paid offer, with no cross-reference or reconciliation:
-  - `CLAUDE.md:104-111` (canonical "Business Model Summary"): Micro Sprint =
-    499 SAR; Transformation Diagnostic Sprint = 7,500–25,000 SAR (primary
-    paid entry, per `CLAUDE.md:14`).
-  - `COMMERCIAL_IDENTITY.md:69`: `| Pilot | First paid engagement, typically
-    SAR 2,500–7,500. |`
-  - `README_FOUNDER_EXECUTION.md:15`: "Clear pricing model (499 SAR pilots →
-    3,999 SAR/month recurring)" — a different recurring price than
-    `CLAUDE.md`'s Managed Ops tier (2,999–4,999 SAR/mo).
-  A founder or salesperson pulling a price from any one of these three docs
-  could quote a customer a figure that contradicts what's in the other two —
-  this is a direct commercial risk, not just a docs nit.
-- **Category:** doctrine
-- **Wave:** maintenance
-- **Effort:** S   **Confidence:** HIGH
-- **Written against commit:** aae97bcefcf73e74aef8c75ac593238dc1ed690e
+**Status:** 🗄️ Retired 2026-07-31 during the Founder-360 reconciliation pass.
+Not deleted — kept for audit-trail continuity, same convention used when
+PRs #1006-#1008 were closed as superseded rather than erased.
 
-## Drift check (run first)
-```bash
-git rev-parse HEAD   # if != aae97bcefcf73e74aef8c75ac593238dc1ed690e, re-read the files below before editing
-```
+## Why this plan was retired
 
-## Context (inlined)
-- Files in scope: `COMMERCIAL_IDENTITY.md`, `README_FOUNDER_EXECUTION.md`
-- Canonical source of truth (do not change): `CLAUDE.md:98-111`
-    ```markdown
-    ## Business Model Summary
+This plan was written against the offer-ladder table then visible in
+`main`'s `CLAUDE.md:98-111` (the old 6-rung fixed-price ladder: Free
+Diagnostic / Micro Sprint 499 SAR / Data Pack 1,500 SAR / Managed Ops
+2,999–4,999 SAR/mo / Transformation Diagnostic Sprint 7,500–25,000 SAR /
+Custom Enterprise 25,000–100,000+ SAR), and proposed pointing
+`COMMERCIAL_IDENTITY.md` and `README_FOUNDER_EXECUTION.md` at that table.
 
-    | # | Offer | Price |
-    |---|-------|-------|
-    | 1 | Free Diagnostic | Free |
-    | 2 | Micro Sprint | 499 SAR |
-    | 3 | Data Pack | 1,500 SAR |
-    | 4 | Managed Ops | 2,999–4,999 SAR/mo |
-    | 5 | Transformation Diagnostic Sprint | 7,500–25,000 SAR |
-    | 6 | Custom Enterprise System | 25,000–100,000+ SAR |
-    ```
-- `COMMERCIAL_IDENTITY.md:69` (current, to be fixed):
-    ```markdown
-    | Pilot | First paid engagement, typically SAR 2,500–7,500. |
-    ```
-- `README_FOUNDER_EXECUTION.md:15` (current, to be fixed):
-    ```markdown
-    - ✅ Clear pricing model (499 SAR pilots → 3,999 SAR/month recurring)
-    ```
+During the Founder-360 reconciliation pass (2026-07-31) it became clear
+that table is itself stale and about to be replaced: **PR #1005** (open,
+not yet merged as of this writing) rewrites `CLAUDE.md`'s Business Model
+Summary and `.claude/rules/dealix-commercial-os.md`'s offer ladder to match
+the 2-offer model already live in code
+(`auto_client_acquisition/service_catalog/registry.py`'s `commercial_status`
+field: `free_mini_diagnostic` = `free_entry`, `revenue_command_pilot_30d` =
+`quote_only`, 15 other catalogued offerings = `internal_experiment`).
 
-## Steps
-1. In `COMMERCIAL_IDENTITY.md`, change the `Pilot` row (line 69) to point at
-   the canonical ladder instead of restating a number, e.g.:
-   `| Pilot | First paid engagement — see the offer ladder in CLAUDE.md
-   ("Business Model Summary") for current pricing. |`
-   **Gate:** `grep -n "2,500–7,500" COMMERCIAL_IDENTITY.md` → no output.
-2. In `README_FOUNDER_EXECUTION.md:15`, replace the hardcoded figures with a
-   reference to the canonical ladder, e.g.:
-   `- ✅ Clear pricing model — see CLAUDE.md "Business Model Summary" for
-   current offer/price mapping (Free Diagnostic → Micro Sprint → Data Pack
-   → Managed Ops → Transformation Diagnostic Sprint → Custom Enterprise)`
-   **Gate:** `grep -n "3,999 SAR/month" README_FOUNDER_EXECUTION.md` → no output.
-3. Grep the rest of the repo (excluding `plans/`, `docs/`, `sales/`, test
-   fixtures) for any other hardcoded price figures that duplicate the
-   ladder and aren't already flagged by another plan, and apply the same
-   "point at CLAUDE.md" fix if found:
-   `grep -rn "SAR" --include="*.md" -l . | grep -v -E "plans/|docs/|sales/|CLAUDE.md"`
-   **Gate:** manually confirm each hit either matches the canonical ladder
-   or is fixed to reference it.
+Executing this plan as originally written would have pointed two docs at a
+table that PR #1005 is about to delete — creating fresh inconsistency
+instead of fixing it.
 
-## Done criteria (machine-checkable)
-- [ ] `grep -rn "2,500–7,500\|3,999 SAR" COMMERCIAL_IDENTITY.md README_FOUNDER_EXECUTION.md` → no output
-- [ ] `make full-repo-test` → all required gates PASS
+## What replaced it
 
-## Out of scope (do not touch)
-- Do not change `CLAUDE.md`'s Business Model Summary — it is the canonical
-  source these two docs must defer to.
-- Do not touch `sales/` templates or `docs/DEALIX_BUSINESS_MODEL.md` — those
-  are handled by a separate docs-refresh plan (see 014).
+**`plans/017-reconcile-pricing-docs-to-registry.md`** covers the same two
+target files (`COMMERCIAL_IDENTITY.md`, `README_FOUNDER_EXECUTION.md`),
+retargeted to inline the canonical table directly from
+`auto_client_acquisition/service_catalog/registry.py` (the actual source of
+truth) instead of from `CLAUDE.md`, so it isn't blocked on PR #1005
+merging and won't go stale again if the registry changes independently of
+that PR. It also explicitly excludes `CLAUDE.md` from its scope — that file
+belongs to PR #1005's branch.
 
-## STOP conditions
-- If `CLAUDE.md`'s Business Model Summary table has changed from the
-  excerpt above → STOP, re-derive the correct reference text from the new
-  table before editing the other two files.
-- If a price figure elsewhere in the repo is tied to a signed contract or
-  live customer quote (not just a doc/playbook) → STOP, escalate to founder
-  rather than silently changing a number that may be contractually binding.
+See `plans/INDEX.md`'s "Founder-360 reconciliation (2026-07-31)" section
+for the full cross-reference.
