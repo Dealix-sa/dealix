@@ -3,7 +3,6 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
-
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts/verify_company_intelligence_entity_ownership.py"
 SPEC = importlib.util.spec_from_file_location("entity_ownership_verifier", SCRIPT)
 assert SPEC and SPEC.loader
@@ -19,7 +18,7 @@ def test_registry_is_valid() -> None:
 def test_registry_covers_required_execution_spine() -> None:
     data = MODULE.load_registry()
     names = {entity["name"] for entity in data["entities"]}
-    assert MODULE.REQUIRED_CANONICAL_ENTITIES <= names
+    assert names >= MODULE.REQUIRED_CANONICAL_ENTITIES
 
 
 def test_external_tools_cannot_be_source_of_truth() -> None:
