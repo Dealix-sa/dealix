@@ -9,9 +9,9 @@ from __future__ import annotations
 import re
 from pathlib import Path
 from urllib.parse import urlsplit
-from xml.etree import ElementTree
 
 import pytest
+from defusedxml import ElementTree
 
 LANDING = Path(__file__).resolve().parents[1] / "landing"
 SITEMAP_NAMESPACE = {"sitemap": "http://www.sitemaps.org/schemas/sitemap/0.9"}
