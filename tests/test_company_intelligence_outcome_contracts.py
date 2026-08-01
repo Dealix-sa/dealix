@@ -10,6 +10,7 @@ from dealix.company_intelligence.outcome_contracts import (
     EvidenceState,
     LearningEventType,
     OutcomeEventType,
+    ProofSourceEventType,
     ProofType,
     build_daily_command,
     build_learning_event,
@@ -66,6 +67,11 @@ def test_payment_and_delivery_proof_cannot_be_synthetic() -> None:
                 entity_id="opp-1",
                 proof_type=proof_type,
                 evidence_ref="synthetic:fixture",
+                source_event_type=(
+                    ProofSourceEventType.PAYMENT_CONFIRMED
+                    if proof_type == ProofType.PAYMENT_EVIDENCE
+                    else ProofSourceEventType.DELIVERY_TASK_COMPLETED
+                ),
                 verified_at=NOW,
                 verifier="test-suite",
                 is_synthetic=True,
@@ -167,6 +173,7 @@ def test_daily_command_recognizes_only_payment_and_delivery_proof() -> None:
         entity_id="opp-1",
         proof_type=ProofType.PAYMENT_EVIDENCE,
         evidence_ref="bank:receipt-1",
+        source_event_type=ProofSourceEventType.PAYMENT_CONFIRMED,
         verified_at=NOW,
         verifier="operator-a",
     )
@@ -176,6 +183,7 @@ def test_daily_command_recognizes_only_payment_and_delivery_proof() -> None:
         entity_id="eng-1",
         proof_type=ProofType.DELIVERY_EVIDENCE,
         evidence_ref="artifact:proof-pack-1",
+        source_event_type=ProofSourceEventType.DELIVERY_TASK_COMPLETED,
         verified_at=NOW,
         verifier="operator-a",
     )
@@ -206,6 +214,33 @@ def test_daily_command_recognizes_only_payment_and_delivery_proof() -> None:
     assert first.delivery_state == EvidenceState.DELIVERY_EVIDENCED
     assert first.delivery_completed is True
     assert first.delivery_proof_ids == [delivery.proof_id]
+
+
+def test_direct_financial_and_delivery_proofs_require_matching_source_events() -> None:
+    with pytest.raises(ValueError, match="requires source event payment_confirmed"):
+        build_proof_event(
+            tenant_id="tenant-a",
+            entity_type="opportunity",
+            entity_id="opp-1",
+            proof_type=ProofType.PAYMENT_EVIDENCE,
+            evidence_ref="bank:receipt-1",
+            verified_at=NOW,
+            verifier="operator-a",
+        )
+
+    with pytest.raises(
+        ValueError, match="requires source event delivery_task_completed"
+    ):
+        build_proof_event(
+            tenant_id="tenant-a",
+            entity_type="engagement",
+            entity_id="eng-1",
+            proof_type=ProofType.DELIVERY_EVIDENCE,
+            evidence_ref="artifact:proof-pack-1",
+            verified_at=NOW,
+            verifier="operator-a",
+            source_event_type=ProofSourceEventType.PAYMENT_CONFIRMED,
+        )
 
 
 def test_direct_command_cannot_claim_revenue_without_referenced_payment_proof() -> None:

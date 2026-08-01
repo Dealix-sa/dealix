@@ -6,6 +6,7 @@ from typing import Any
 from auto_client_acquisition.proof_ledger.schemas import ProofEventType
 from dealix.company_intelligence.outcome_contracts import (
     CanonicalProofEvent,
+    ProofSourceEventType,
     ProofType,
     build_proof_event,
 )
@@ -78,6 +79,13 @@ def normalize_proof_event(
         entity_id=entity_id,
         proof_type=proof_type,
         evidence_ref=evidence_source,
+        source_event_type=(
+            ProofSourceEventType.PAYMENT_CONFIRMED
+            if proof_type == ProofType.PAYMENT_EVIDENCE
+            else ProofSourceEventType.DELIVERY_TASK_COMPLETED
+            if proof_type == ProofType.DELIVERY_EVIDENCE
+            else None
+        ),
         verified_at=record.created_at,
         verifier=verifier,
         source_outcome_id=source_outcome_id,

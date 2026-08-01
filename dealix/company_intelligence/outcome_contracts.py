@@ -36,6 +36,13 @@ class ProofType(StrEnum):
     TECHNICAL_VERIFICATION = "technical_verification"
 
 
+class ProofSourceEventType(StrEnum):
+    """Ledger events allowed to establish financial or delivery truth."""
+
+    PAYMENT_CONFIRMED = "payment_confirmed"
+    DELIVERY_TASK_COMPLETED = "delivery_task_completed"
+
+
 class LearningEventType(StrEnum):
     TARGETING = "targeting"
     MESSAGE = "message"
@@ -126,6 +133,7 @@ class CanonicalProofEvent(BaseModel):
     entity_id: NonEmptyString
     proof_type: ProofType
     evidence_ref: NonEmptyString
+    source_event_type: ProofSourceEventType | None = None
     verified_at: datetime
     source_outcome_id: str | None = None
     verifier: NonEmptyString
@@ -135,6 +143,15 @@ class CanonicalProofEvent(BaseModel):
 
     @model_validator(mode="after")
     def enforce_integrity(self) -> CanonicalProofEvent:
+        required_source = {
+            ProofType.PAYMENT_EVIDENCE: ProofSourceEventType.PAYMENT_CONFIRMED,
+            ProofType.DELIVERY_EVIDENCE: ProofSourceEventType.DELIVERY_TASK_COMPLETED,
+        }.get(self.proof_type)
+        if required_source is not None and self.source_event_type != required_source:
+            raise ValueError(
+                f"{self.proof_type.value} requires source event "
+                f"{required_source.value}"
+            )
         if self.is_synthetic and self.proof_type in {
             ProofType.PAYMENT_EVIDENCE,
             ProofType.DELIVERY_EVIDENCE,
@@ -147,6 +164,9 @@ class CanonicalProofEvent(BaseModel):
                 "entity_type": self.entity_type,
                 "evidence_ref": self.evidence_ref,
                 "proof_type": self.proof_type.value,
+                "source_event_type": self.source_event_type.value
+                if self.source_event_type is not None
+                else None,
                 "source_outcome_id": self.source_outcome_id,
                 "tenant_id": self.tenant_id,
                 "verified_at": self.verified_at.isoformat(),
@@ -326,6 +346,7 @@ def build_proof_event(
     evidence_ref: str,
     verified_at: datetime,
     verifier: str,
+    source_event_type: ProofSourceEventType | None = None,
     source_outcome_id: str | None = None,
     confidence: float = 1.0,
     is_synthetic: bool = False,
@@ -338,6 +359,9 @@ def build_proof_event(
             "entity_type": entity_type.strip(),
             "evidence_ref": evidence_ref.strip(),
             "proof_type": proof_type.value,
+            "source_event_type": source_event_type.value
+            if source_event_type is not None
+            else None,
             "source_outcome_id": source_outcome_id,
             "tenant_id": tenant_id.strip(),
             "verified_at": verified_at.isoformat(),
@@ -351,41 +375,13 @@ def build_proof_event(
         entity_id=entity_id,
         proof_type=proof_type,
         evidence_ref=evidence_ref,
+        source_event_type=source_event_type,
         verified_at=verified_at,
         verifier=verifier,
         source_outcome_id=source_outcome_id,
         confidence=confidence,
         is_synthetic=is_synthetic,
         publication_approved=publication_approved,
-    )
-
-
-def normalize_proof_event(
-    record: Any,
-    *,
-    tenant_id: str,
-    entity_type: str,
-    entity_id: str,
-    proof_type: ProofType,
-    verifier: str,
-    source_outcome_id: str | None = None,
-) -> CanonicalProofEvent:
-    """Adapt the existing proof-ledger record without replacing its storage."""
-
-    if not record.evidence_source:
-        raise ValueError("proof-ledger record requires evidence_source")
-    return build_proof_event(
-        tenant_id=tenant_id,
-        entity_type=entity_type,
-        entity_id=entity_id,
-        proof_type=proof_type,
-        evidence_ref=record.evidence_source,
-        verified_at=record.created_at,
-        verifier=verifier,
-        source_outcome_id=source_outcome_id,
-        confidence=record.confidence,
-        is_synthetic=False,
-        publication_approved=record.is_publishable(),
     )
 
 
