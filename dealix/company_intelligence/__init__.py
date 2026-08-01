@@ -1,5 +1,6 @@
 """Canonical Company Intelligence contracts and compatibility adapters."""
 
+import dealix.company_intelligence.outcome_contracts as _outcome_contracts
 from dealix.company_intelligence.company_brain import (
     CanonicalCompanyBrain,
     build_customer_company_brain,
@@ -29,8 +30,11 @@ from dealix.company_intelligence.outcome_contracts import (
     build_learning_event,
     build_outcome_event,
     build_proof_event,
-    normalize_proof_event,
 )
+from dealix.company_intelligence.proof_adapter import normalize_proof_event
+
+# Keep direct imports from the compatibility module on the same fail-closed adapter.
+_outcome_contracts.normalize_proof_event = normalize_proof_event
 
 __all__ = [
     "CanonicalApproval",
