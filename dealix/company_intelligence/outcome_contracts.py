@@ -231,6 +231,9 @@ class CanonicalDailyCommand(BaseModel):
     command_date: date
     priorities: list[NonEmptyString] = Field(default_factory=list)
     approval_items: list[NonEmptyString] = Field(default_factory=list)
+    # Keep the typed proof objects with the command so deserialization cannot
+    # promote an arbitrary string ID into recognized revenue or delivery.
+    proofs: list[CanonicalProofEvent] = Field(default_factory=list)
     proof_ids: list[NonEmptyString] = Field(default_factory=list)
     payment_proof_ids: list[NonEmptyString] = Field(default_factory=list)
     delivery_proof_ids: list[NonEmptyString] = Field(default_factory=list)
@@ -260,8 +263,34 @@ class CanonicalDailyCommand(BaseModel):
         if not set(self.delivery_proof_ids).issubset(proof_ids):
             raise ValueError("delivery_proof_ids must be included in proof_ids")
 
-        has_payment = bool(self.payment_proof_ids)
-        has_delivery = bool(self.delivery_proof_ids)
+        typed_proof_ids = sorted({proof.proof_id for proof in self.proofs})
+        typed_payment_ids = sorted(
+            {
+                proof.proof_id
+                for proof in self.proofs
+                if proof.proof_type == ProofType.PAYMENT_EVIDENCE
+                and not proof.is_synthetic
+            }
+        )
+        typed_delivery_ids = sorted(
+            {
+                proof.proof_id
+                for proof in self.proofs
+                if proof.proof_type == ProofType.DELIVERY_EVIDENCE
+                and not proof.is_synthetic
+            }
+        )
+        if self.proofs and any(proof.tenant_id != self.tenant_id for proof in self.proofs):
+            raise ValueError("cross-tenant proof is forbidden")
+        if self.proof_ids != typed_proof_ids:
+            raise ValueError("proof_ids must match typed proof objects")
+        if self.payment_proof_ids != typed_payment_ids:
+            raise ValueError("payment_proof_ids must reference typed payment proofs")
+        if self.delivery_proof_ids != typed_delivery_ids:
+            raise ValueError("delivery_proof_ids must reference typed delivery proofs")
+
+        has_payment = bool(typed_payment_ids)
+        has_delivery = bool(typed_delivery_ids)
         expected_revenue_state = (
             EvidenceState.PAYMENT_EVIDENCED
             if has_payment
@@ -488,6 +517,7 @@ def build_daily_command(
         command_date=command_date,
         priorities=normalized_priorities,
         approval_items=normalized_approvals,
+        proofs=proofs,
         proof_ids=proof_ids,
         payment_proof_ids=payment_proof_ids,
         delivery_proof_ids=delivery_proof_ids,
