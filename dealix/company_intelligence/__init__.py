@@ -1,5 +1,6 @@
 """Canonical Company Intelligence contracts and compatibility adapters."""
 
+from . import outcome_contracts as _outcome_contracts
 from dealix.company_intelligence.company_brain import (
     CanonicalCompanyBrain,
     build_customer_company_brain,
@@ -17,8 +18,6 @@ from dealix.company_intelligence.execution_contracts import (
     normalize_opportunity,
 )
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
-
-from . import outcome_contracts as _outcome_contracts
 
 CanonicalDailyCommand = _outcome_contracts.CanonicalDailyCommand
 CanonicalLearningEvent = _outcome_contracts.CanonicalLearningEvent
