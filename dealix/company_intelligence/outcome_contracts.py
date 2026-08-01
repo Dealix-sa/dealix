@@ -59,6 +59,10 @@ def _normalized_refs(refs: Iterable[str]) -> list[str]:
     return normalized
 
 
+def _sorted_unique(values: Iterable[str]) -> list[str]:
+    return sorted({item.strip() for item in values if item.strip()})
+
+
 def _stable_id(prefix: str, payload: dict[str, Any]) -> str:
     canonical = json.dumps(
         payload,
@@ -208,6 +212,8 @@ class CanonicalDailyCommand(BaseModel):
     priorities: list[NonEmptyString] = Field(default_factory=list)
     approval_items: list[NonEmptyString] = Field(default_factory=list)
     proof_ids: list[NonEmptyString] = Field(default_factory=list)
+    payment_proof_ids: list[NonEmptyString] = Field(default_factory=list)
+    delivery_proof_ids: list[NonEmptyString] = Field(default_factory=list)
     learning_ids: list[NonEmptyString] = Field(default_factory=list)
     revenue_state: EvidenceState = EvidenceState.NOT_EVIDENCED
     delivery_state: EvidenceState = EvidenceState.NOT_EVIDENCED
@@ -217,21 +223,53 @@ class CanonicalDailyCommand(BaseModel):
 
     @model_validator(mode="after")
     def enforce_evidence_states(self) -> CanonicalDailyCommand:
-        if self.recognized_revenue != (
-            self.revenue_state is EvidenceState.PAYMENT_EVIDENCED
+        for name, values in (
+            ("priorities", self.priorities),
+            ("approval_items", self.approval_items),
+            ("proof_ids", self.proof_ids),
+            ("payment_proof_ids", self.payment_proof_ids),
+            ("delivery_proof_ids", self.delivery_proof_ids),
+            ("learning_ids", self.learning_ids),
         ):
-            raise ValueError("recognized revenue requires payment evidence")
-        if self.delivery_completed != (
-            self.delivery_state is EvidenceState.DELIVERY_EVIDENCED
+            if values != _sorted_unique(values):
+                raise ValueError(f"{name} must be sorted and unique")
+
+        proof_ids = set(self.proof_ids)
+        if not set(self.payment_proof_ids).issubset(proof_ids):
+            raise ValueError("payment_proof_ids must be included in proof_ids")
+        if not set(self.delivery_proof_ids).issubset(proof_ids):
+            raise ValueError("delivery_proof_ids must be included in proof_ids")
+
+        has_payment = bool(self.payment_proof_ids)
+        has_delivery = bool(self.delivery_proof_ids)
+        expected_revenue_state = (
+            EvidenceState.PAYMENT_EVIDENCED
+            if has_payment
+            else EvidenceState.NOT_EVIDENCED
+        )
+        expected_delivery_state = (
+            EvidenceState.DELIVERY_EVIDENCED
+            if has_delivery
+            else EvidenceState.NOT_EVIDENCED
+        )
+        if self.revenue_state != expected_revenue_state or (
+            self.recognized_revenue != has_payment
         ):
-            raise ValueError("completed delivery requires delivery evidence")
+            raise ValueError("recognized revenue requires referenced payment proof")
+        if self.delivery_state != expected_delivery_state or (
+            self.delivery_completed != has_delivery
+        ):
+            raise ValueError("completed delivery requires referenced delivery proof")
+
         expected_id = _stable_id(
             "command",
             {
                 "approval_items": self.approval_items,
                 "command_date": self.command_date.isoformat(),
+                "delivery_proof_ids": self.delivery_proof_ids,
                 "delivery_state": self.delivery_state.value,
                 "learning_ids": self.learning_ids,
+                "payment_proof_ids": self.payment_proof_ids,
                 "priorities": self.priorities,
                 "proof_ids": self.proof_ids,
                 "revenue_state": self.revenue_state.value,
@@ -404,21 +442,29 @@ def build_daily_command(
     if any(event.tenant_id != tenant_id for event in learning_events):
         raise ValueError("cross-tenant learning is forbidden")
 
-    normalized_priorities = sorted({item.strip() for item in priorities if item.strip()})
-    normalized_approvals = sorted(
-        {item.strip() for item in approval_items if item.strip()}
-    )
+    normalized_priorities = _sorted_unique(priorities)
+    normalized_approvals = _sorted_unique(approval_items)
     proof_ids = sorted({proof.proof_id for proof in proofs})
+    payment_proof_ids = sorted(
+        {
+            proof.proof_id
+            for proof in proofs
+            if proof.proof_type == ProofType.PAYMENT_EVIDENCE
+            and not proof.is_synthetic
+        }
+    )
+    delivery_proof_ids = sorted(
+        {
+            proof.proof_id
+            for proof in proofs
+            if proof.proof_type == ProofType.DELIVERY_EVIDENCE
+            and not proof.is_synthetic
+        }
+    )
     learning_ids = sorted({event.learning_id for event in learning_events})
 
-    has_payment = any(
-        proof.proof_type is ProofType.PAYMENT_EVIDENCE and not proof.is_synthetic
-        for proof in proofs
-    )
-    has_delivery = any(
-        proof.proof_type is ProofType.DELIVERY_EVIDENCE and not proof.is_synthetic
-        for proof in proofs
-    )
+    has_payment = bool(payment_proof_ids)
+    has_delivery = bool(delivery_proof_ids)
     revenue_state = (
         EvidenceState.PAYMENT_EVIDENCED if has_payment else EvidenceState.NOT_EVIDENCED
     )
@@ -430,8 +476,10 @@ def build_daily_command(
         {
             "approval_items": normalized_approvals,
             "command_date": command_date.isoformat(),
+            "delivery_proof_ids": delivery_proof_ids,
             "delivery_state": delivery_state.value,
             "learning_ids": learning_ids,
+            "payment_proof_ids": payment_proof_ids,
             "priorities": normalized_priorities,
             "proof_ids": proof_ids,
             "revenue_state": revenue_state.value,
@@ -445,6 +493,8 @@ def build_daily_command(
         priorities=normalized_priorities,
         approval_items=normalized_approvals,
         proof_ids=proof_ids,
+        payment_proof_ids=payment_proof_ids,
+        delivery_proof_ids=delivery_proof_ids,
         learning_ids=learning_ids,
         revenue_state=revenue_state,
         delivery_state=delivery_state,
