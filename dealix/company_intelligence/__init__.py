@@ -1,6 +1,7 @@
 """Canonical Company Intelligence contracts and compatibility adapters."""
 
-import dealix.company_intelligence.outcome_contracts as _outcome_contracts
+import sys
+
 from dealix.company_intelligence.company_brain import (
     CanonicalCompanyBrain,
     build_customer_company_brain,
@@ -33,8 +34,12 @@ from dealix.company_intelligence.outcome_contracts import (
 )
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
 
-# Keep direct imports from the compatibility module on the same fail-closed adapter.
-_outcome_contracts.normalize_proof_event = normalize_proof_event
+# Preserve the legacy direct-import path while routing it to the fail-closed
+# compatibility adapter. The module is already loaded by the imports above, so
+# this avoids importing the same module with both ``import`` and ``from``.
+_outcome_module = sys.modules.get(f"{__name__}.outcome_contracts")
+if _outcome_module is not None:
+    setattr(_outcome_module, "normalize_proof_event", normalize_proof_event)
 
 __all__ = [
     "CanonicalApproval",
