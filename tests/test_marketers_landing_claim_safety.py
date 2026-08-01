@@ -110,11 +110,21 @@ def test_services_page_is_a_governed_offer_ladder_not_a_public_price_sheet() -> 
 
 
 def test_public_pilot_pages_do_not_capture_or_send_data_directly() -> None:
-    for page in (MARKETERS_PAGE, SERVICES_PAGE):
-        lowered = _read(page).lower()
-        assert "<form" not in lowered
-        assert "fetch(" not in lowered
-        assert "xmlhttprequest" not in lowered
-        assert "mailto:" in lowered
-        assert "/trust-center.html" in lowered
-        assert "/privacy.html" in lowered
+    marketers = _read(MARKETERS_PAGE).lower()
+    services = _read(SERVICES_PAGE).lower()
+
+    for html in (marketers, services):
+        assert "<form" not in html
+        assert "fetch(" not in html
+        assert "xmlhttprequest" not in html
+        assert "/trust-center.html" in html
+        assert "/privacy.html" in html
+
+    # The retired segment page must use the governed diagnostic path rather
+    # than exposing the founder's personal mailbox as a public acquisition API.
+    assert "/diagnostic.html" in marketers
+    assert "mailto:" not in marketers
+
+    # The existing services reference page still has an explicit manual
+    # contact path; this test only proves it is not a form or automated send.
+    assert "mailto:" in services
