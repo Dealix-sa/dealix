@@ -1,4 +1,4 @@
-"""Public launch copy must distinguish code readiness from production proof."""
+"""Public launch copy must distinguish bounded demos from production proof."""
 
 from pathlib import Path
 
@@ -12,14 +12,20 @@ def test_homepage_has_no_unproved_speed_or_customer_result() -> None:
     assert "سيناريو حقيقي" not in html
     assert "محادثة حقيقية" not in html
     assert "موظف مبيعات AI حقيقي" not in html
-    assert "سيناريو توضيحي" in html
+
+    # The current authority surface labels the example directly instead of
+    # relying on an older Arabic scenario marker.
+    assert "DEMO · SYNTHETIC" in html
+    assert "مثال صناعي يوضح شكل القرار" in html
+    assert "DEMO only · no live send · no customer activity" in html
 
 
-def test_homepage_explains_code_ready_boundary() -> None:
+def test_homepage_explains_live_execution_boundary() -> None:
     html = (ROOT / "landing" / "index.html").read_text(encoding="utf-8")
     assert "خدمات Live" not in html
-    assert "قدرات اجتازت بوابات الكود" in html
-    assert "لا تعني أن تكاملات المزوّدين مفعّلة" in html
+    assert "لا تنفيذ خارجي من دون المسار والموافقة المناسبين" in html
+    assert "المتغيرات البيئية لا تمنح سلطة إرسال عام" in html
+    assert "لا fake proof" in html
 
 
 def test_status_console_uses_code_ready_public_label() -> None:
