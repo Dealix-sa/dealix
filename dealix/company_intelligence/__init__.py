@@ -39,7 +39,7 @@ from dealix.company_intelligence.proof_adapter import normalize_proof_event
 # this avoids importing the same module with both ``import`` and ``from``.
 _outcome_module = sys.modules.get(f"{__name__}.outcome_contracts")
 if _outcome_module is not None:
-    setattr(_outcome_module, "normalize_proof_event", normalize_proof_event)
+    _outcome_module.normalize_proof_event = normalize_proof_event
 
 __all__ = [
     "CanonicalApproval",
