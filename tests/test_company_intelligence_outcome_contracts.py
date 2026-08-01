@@ -243,6 +243,57 @@ def test_direct_financial_and_delivery_proofs_require_matching_source_events() -
         )
 
 
+def test_direct_command_rejects_untyped_payment_reference() -> None:
+    with pytest.raises(ValueError, match="typed payment proofs"):
+        CanonicalDailyCommand(
+            tenant_id="tenant-a",
+            command_id="forged-command",
+            command_date=date(2026, 7, 31),
+            priorities=[],
+            approval_items=[],
+            proofs=[],
+            proof_ids=["proof_fabricated"],
+            payment_proof_ids=["proof_fabricated"],
+            delivery_proof_ids=[],
+            learning_ids=[],
+            revenue_state=EvidenceState.PAYMENT_EVIDENCED,
+            delivery_state=EvidenceState.NOT_EVIDENCED,
+            recognized_revenue=True,
+            delivery_completed=False,
+            generated_at=NOW,
+        )
+
+
+def test_direct_command_rejects_outcome_proof_laundered_as_payment() -> None:
+    outcome_proof = build_proof_event(
+        tenant_id="tenant-a",
+        entity_type="opportunity",
+        entity_id="opp-1",
+        proof_type=ProofType.OUTCOME_EVIDENCE,
+        evidence_ref="crm:reply-1",
+        verified_at=NOW,
+        verifier="operator-a",
+    )
+    with pytest.raises(ValueError, match="typed payment proofs"):
+        CanonicalDailyCommand(
+            tenant_id="tenant-a",
+            command_id="forged-command",
+            command_date=date(2026, 7, 31),
+            priorities=[],
+            approval_items=[],
+            proofs=[outcome_proof],
+            proof_ids=[outcome_proof.proof_id],
+            payment_proof_ids=[outcome_proof.proof_id],
+            delivery_proof_ids=[],
+            learning_ids=[],
+            revenue_state=EvidenceState.PAYMENT_EVIDENCED,
+            delivery_state=EvidenceState.NOT_EVIDENCED,
+            recognized_revenue=True,
+            delivery_completed=False,
+            generated_at=NOW,
+        )
+
+
 def test_direct_command_cannot_claim_revenue_without_referenced_payment_proof() -> None:
     with pytest.raises(
         ValueError,
