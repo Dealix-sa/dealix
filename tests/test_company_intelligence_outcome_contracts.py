@@ -243,8 +243,8 @@ def test_direct_financial_and_delivery_proofs_require_matching_source_events() -
         )
 
 
-def test_direct_command_rejects_untyped_payment_reference() -> None:
-    with pytest.raises(ValueError, match="typed payment proofs"):
+def test_direct_command_rejects_untyped_proof_reference() -> None:
+    with pytest.raises(ValueError, match="typed proof objects"):
         CanonicalDailyCommand(
             tenant_id="tenant-a",
             command_id="forged-command",
