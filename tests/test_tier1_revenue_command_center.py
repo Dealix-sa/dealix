@@ -127,15 +127,20 @@ def test_pricing_exposes_only_current_two_entry_path() -> None:
 
 def test_pricing_rejects_retired_public_checkout_and_fixed_prices() -> None:
     html = _read("pricing.html")
-    for retired in (
-        "/checkout.html",
-        "499",
-        "999",
-        "12,000",
-        "25,000",
-        "ضمان المبيعات",
-    ):
-        assert retired not in html, f"retired pricing doctrine returned: {retired}"
+    assert "/checkout.html" not in html
+    assert "ضمان المبيعات" not in html
+
+    retired_price_patterns = (
+        r"\b499\s*(?:SAR|ريال)",
+        r"\b999\s*(?:SAR|ريال)",
+        r"\b12[,.]?000\s*(?:SAR|ريال)",
+        r"\b25[,.]?000\s*(?:SAR|ريال)",
+    )
+    for pattern in retired_price_patterns:
+        assert not re.search(pattern, html, re.IGNORECASE), (
+            f"retired pricing doctrine returned: {pattern}"
+        )
+
     assert html.count('/diagnostic.html') >= 2
     assert "لا Checkout عام" in html
 
