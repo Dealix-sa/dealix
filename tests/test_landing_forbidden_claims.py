@@ -123,10 +123,6 @@ ALLOWLIST: dict[str, dict[str, str]] = {
         "cold": "doctrine negation ('no/zero cold outreach', PDPL-safe)",
         "scraping": "doctrine negation ('no scraping' / policy-blocked)",
     },
-    "pricing.html": {
-        "guaranteed": "negation/disclaimer ('not guaranteed' outcomes footer)",
-        "مضمون": "negation/disclaimer ('نتائج غير مضمونة')",
-    },
     "privacy.html": {
         "scraping": "doctrine negation ('no scraping' / policy-blocked)",
     },
