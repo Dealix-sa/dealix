@@ -211,14 +211,20 @@
       </div>
     </section>
 
-    <section id="wadl" class="section wadl ds-wadl">
-      <div class="container">
+    <section id="wadl" class="section wadl">
+      <div class="container ds-wadl">
         <div class="section__head"><h2>Decision Layer — DEMO</h2><p>مثال صناعي يوضح شكل القرار، وليس نشاط عميل أو إرسالاً فعلياً.</p></div>
-        <div class="demo">
-          <span class="demo__tag">DEMO · SYNTHETIC</span>
-          <div class="demo__row"><strong>Opportunity:</strong> مشكلة متابعة موثّقة من مصدر مسموح، score reasons ظاهرة، والتنفيذ الخارجي محجوب.</div>
-          <div class="demo__row"><strong>Draft:</strong> مسودة بريد مرتبطة بالأدلة وأساس التواصل، execution_allowed=false.</div>
-          <div class="demo__row"><strong>Approval:</strong> يحتاج المسؤول مراجعة النص والهدف والمخاطر قبل أي تنفيذ.</div>
+        <div class="demo ds-wadl__phone">
+          <span class="demo__tag ds-wadl__demo-pill">DEMO · SYNTHETIC</span>
+          <div class="demo__row ds-wadl__msg ds-wadl__msg--inbound"><strong>Opportunity:</strong> مشكلة متابعة موثّقة من مصدر مسموح، score reasons ظاهرة، والتنفيذ الخارجي محجوب.</div>
+          <div class="demo__row ds-wadl__msg ds-wadl__msg--inbound"><strong>Draft:</strong> مسودة بريد مرتبطة بالأدلة وأساس التواصل، execution_allowed=false.</div>
+          <div class="demo__row ds-wadl__msg ds-wadl__msg--inbound"><strong>Approval:</strong> يحتاج المسؤول مراجعة النص والهدف والمخاطر قبل أي تنفيذ.</div>
+          <div class="ds-wadl__flow" aria-label="خيارات الموافقة التجريبية">
+            <button class="ds-wadl__chip" type="button">✓ موافق</button>
+            <button class="ds-wadl__chip ds-wadl__chip--edit" type="button">✎ تعديل</button>
+            <button class="ds-wadl__chip ds-wadl__chip--reject" type="button">✕ رفض</button>
+          </div>
+          <div class="demo__row ds-wadl__msg ds-wadl__msg--system">DEMO only · no live send · no customer activity</div>
         </div>
       </div>
     </section>
