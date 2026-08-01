@@ -101,11 +101,13 @@ def test_no_forbidden_claims_in_customer_pages() -> None:
             continue
         html = path.read_text(encoding="utf-8")
         html_visible = _visible_declarative_text(html)
-        # Explicit negation is not a positive outcome claim.
-        html_visible = re.sub(
-            r"[^\n<]*(not guaranteed outcomes|ليست نتائج مضمونة)[^\n>]*",
-            "",
-            html_visible,
+        # Explicit negation is not a positive outcome claim. Filter parsed
+        # visible-text lines instead of applying regexes to raw HTML.
+        html_visible = "\n".join(
+            line
+            for line in html_visible.splitlines()
+            if "not guaranteed outcomes" not in line.casefold()
+            and "ليست نتائج مضمونة" not in line
         )
         for pattern in forbidden:
             assert not pattern.search(html_visible), (
