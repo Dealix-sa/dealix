@@ -1,0 +1,454 @@
+"""Canonical outcome, proof, learning, and executive-command contracts.
+
+The models are persistence-neutral and contain no transport, storage, or
+external-execution capability. Financial and delivery state is derived only
+from non-synthetic proof events.
+"""
+from __future__ import annotations
+
+import json
+from datetime import UTC, date, datetime
+from enum import StrEnum
+from hashlib import sha256
+from typing import Annotated, Any, Iterable
+
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
+
+NonEmptyString = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+
+
+class OutcomeEventType(StrEnum):
+    PROSPECT_REPLIED = "prospect_replied"
+    NO_REPLY = "no_reply"
+    OBJECTION_RECORDED = "objection_recorded"
+    MEETING_BOOKED = "meeting_booked"
+    PROPOSAL_REVIEWED = "proposal_reviewed"
+    PAYMENT_RECEIVED = "payment_received"
+    DELIVERY_COMPLETED = "delivery_completed"
+    TECHNICAL_FAILURE = "technical_failure"
+    TECHNICAL_FIX_VERIFIED = "technical_fix_verified"
+
+
+class ProofType(StrEnum):
+    OUTCOME_EVIDENCE = "outcome_evidence"
+    PAYMENT_EVIDENCE = "payment_evidence"
+    DELIVERY_EVIDENCE = "delivery_evidence"
+    TECHNICAL_VERIFICATION = "technical_verification"
+
+
+class LearningEventType(StrEnum):
+    TARGETING = "targeting"
+    MESSAGE = "message"
+    NEGOTIATION = "negotiation"
+    OFFER = "offer"
+    DELIVERY = "delivery"
+    TECHNICAL = "technical"
+    DATA_QUALITY = "data_quality"
+
+
+class EvidenceState(StrEnum):
+    NOT_EVIDENCED = "not_evidenced"
+    PAYMENT_EVIDENCED = "payment_evidenced"
+    DELIVERY_EVIDENCED = "delivery_evidenced"
+
+
+def _normalized_refs(refs: Iterable[str]) -> list[str]:
+    normalized = sorted({item.strip() for item in refs if item.strip()})
+    if not normalized:
+        raise ValueError("at least one non-empty evidence reference is required")
+    return normalized
+
+
+def _stable_id(prefix: str, payload: dict[str, Any]) -> str:
+    canonical = json.dumps(
+        payload,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+        default=str,
+    )
+    return f"{prefix}_{sha256(canonical.encode('utf-8')).hexdigest()[:16]}"
+
+
+class CanonicalOutcomeEvent(BaseModel):
+    """A real or explicitly synthetic result linked to one internal action."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    tenant_id: NonEmptyString
+    outcome_id: NonEmptyString
+    action_id: NonEmptyString
+    event_type: OutcomeEventType
+    occurred_at: datetime
+    evidence_refs: list[NonEmptyString] = Field(..., min_length=1)
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    is_synthetic: bool = False
+    notes: str = ""
+
+    @model_validator(mode="after")
+    def enforce_integrity(self) -> CanonicalOutcomeEvent:
+        normalized = _normalized_refs(self.evidence_refs)
+        if self.evidence_refs != normalized:
+            raise ValueError("evidence_refs must be sorted and unique")
+        if self.is_synthetic and self.event_type in {
+            OutcomeEventType.PAYMENT_RECEIVED,
+            OutcomeEventType.DELIVERY_COMPLETED,
+        }:
+            raise ValueError("synthetic financial or delivery outcomes are forbidden")
+        expected_id = _stable_id(
+            "outcome",
+            {
+                "action_id": self.action_id,
+                "event_type": self.event_type.value,
+                "evidence_refs": self.evidence_refs,
+                "is_synthetic": self.is_synthetic,
+                "occurred_at": self.occurred_at.isoformat(),
+                "tenant_id": self.tenant_id,
+            },
+        )
+        if self.outcome_id != expected_id:
+            raise ValueError("outcome_id does not match the canonical payload")
+        return self
+
+
+class CanonicalProofEvent(BaseModel):
+    """Verified evidence used for value, payment, delivery, or technical truth."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    tenant_id: NonEmptyString
+    proof_id: NonEmptyString
+    entity_type: NonEmptyString
+    entity_id: NonEmptyString
+    proof_type: ProofType
+    evidence_ref: NonEmptyString
+    verified_at: datetime
+    source_outcome_id: str | None = None
+    verifier: NonEmptyString
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    is_synthetic: bool = False
+    publication_approved: bool = False
+
+    @model_validator(mode="after")
+    def enforce_integrity(self) -> CanonicalProofEvent:
+        if self.is_synthetic and self.proof_type in {
+            ProofType.PAYMENT_EVIDENCE,
+            ProofType.DELIVERY_EVIDENCE,
+        }:
+            raise ValueError("synthetic payment or delivery proof is forbidden")
+        expected_id = _stable_id(
+            "proof",
+            {
+                "entity_id": self.entity_id,
+                "entity_type": self.entity_type,
+                "evidence_ref": self.evidence_ref,
+                "proof_type": self.proof_type.value,
+                "source_outcome_id": self.source_outcome_id,
+                "tenant_id": self.tenant_id,
+                "verified_at": self.verified_at.isoformat(),
+                "verifier": self.verifier,
+            },
+        )
+        if self.proof_id != expected_id:
+            raise ValueError("proof_id does not match the canonical payload")
+        return self
+
+
+class CanonicalLearningEvent(BaseModel):
+    """Evidence-bounded improvement proposal that cannot mutate policy itself."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    tenant_id: NonEmptyString
+    learning_id: NonEmptyString
+    event_type: LearningEventType
+    evidence_refs: list[NonEmptyString] = Field(..., min_length=1)
+    confidence: float = Field(..., ge=0.0, le=1.0)
+    recommended_change: NonEmptyString
+    hypothesis_only: bool = True
+    approval_required: bool = True
+    applied: bool = False
+    official_policy_change_allowed: bool = False
+    created_at: datetime
+
+    @model_validator(mode="after")
+    def enforce_governance(self) -> CanonicalLearningEvent:
+        normalized = _normalized_refs(self.evidence_refs)
+        if self.evidence_refs != normalized:
+            raise ValueError("evidence_refs must be sorted and unique")
+        if not self.approval_required:
+            raise ValueError("learning recommendations require approval")
+        if self.applied:
+            raise ValueError("canonical learning events are proposals, not mutations")
+        if self.official_policy_change_allowed:
+            raise ValueError("learning cannot grant official policy authority")
+        expected_id = _stable_id(
+            "learning",
+            {
+                "created_at": self.created_at.isoformat(),
+                "event_type": self.event_type.value,
+                "evidence_refs": self.evidence_refs,
+                "recommended_change": self.recommended_change,
+                "tenant_id": self.tenant_id,
+            },
+        )
+        if self.learning_id != expected_id:
+            raise ValueError("learning_id does not match the canonical payload")
+        return self
+
+
+class CanonicalDailyCommand(BaseModel):
+    """One deterministic executive readout for a tenant and calendar date."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    tenant_id: NonEmptyString
+    command_id: NonEmptyString
+    command_date: date
+    priorities: list[NonEmptyString] = Field(default_factory=list)
+    approval_items: list[NonEmptyString] = Field(default_factory=list)
+    proof_ids: list[NonEmptyString] = Field(default_factory=list)
+    learning_ids: list[NonEmptyString] = Field(default_factory=list)
+    revenue_state: EvidenceState = EvidenceState.NOT_EVIDENCED
+    delivery_state: EvidenceState = EvidenceState.NOT_EVIDENCED
+    recognized_revenue: bool = False
+    delivery_completed: bool = False
+    generated_at: datetime
+
+    @model_validator(mode="after")
+    def enforce_evidence_states(self) -> CanonicalDailyCommand:
+        if self.recognized_revenue != (
+            self.revenue_state is EvidenceState.PAYMENT_EVIDENCED
+        ):
+            raise ValueError("recognized revenue requires payment evidence")
+        if self.delivery_completed != (
+            self.delivery_state is EvidenceState.DELIVERY_EVIDENCED
+        ):
+            raise ValueError("completed delivery requires delivery evidence")
+        expected_id = _stable_id(
+            "command",
+            {
+                "approval_items": self.approval_items,
+                "command_date": self.command_date.isoformat(),
+                "delivery_state": self.delivery_state.value,
+                "learning_ids": self.learning_ids,
+                "priorities": self.priorities,
+                "proof_ids": self.proof_ids,
+                "revenue_state": self.revenue_state.value,
+                "tenant_id": self.tenant_id,
+            },
+        )
+        if self.command_id != expected_id:
+            raise ValueError("command_id does not match the canonical payload")
+        return self
+
+
+def build_outcome_event(
+    *,
+    tenant_id: str,
+    action_id: str,
+    event_type: OutcomeEventType,
+    occurred_at: datetime,
+    evidence_refs: list[str],
+    confidence: float = 1.0,
+    is_synthetic: bool = False,
+    notes: str = "",
+) -> CanonicalOutcomeEvent:
+    normalized = _normalized_refs(evidence_refs)
+    outcome_id = _stable_id(
+        "outcome",
+        {
+            "action_id": action_id.strip(),
+            "event_type": event_type.value,
+            "evidence_refs": normalized,
+            "is_synthetic": is_synthetic,
+            "occurred_at": occurred_at.isoformat(),
+            "tenant_id": tenant_id.strip(),
+        },
+    )
+    return CanonicalOutcomeEvent(
+        tenant_id=tenant_id,
+        outcome_id=outcome_id,
+        action_id=action_id,
+        event_type=event_type,
+        occurred_at=occurred_at,
+        evidence_refs=normalized,
+        confidence=confidence,
+        is_synthetic=is_synthetic,
+        notes=notes,
+    )
+
+
+def build_proof_event(
+    *,
+    tenant_id: str,
+    entity_type: str,
+    entity_id: str,
+    proof_type: ProofType,
+    evidence_ref: str,
+    verified_at: datetime,
+    verifier: str,
+    source_outcome_id: str | None = None,
+    confidence: float = 1.0,
+    is_synthetic: bool = False,
+    publication_approved: bool = False,
+) -> CanonicalProofEvent:
+    proof_id = _stable_id(
+        "proof",
+        {
+            "entity_id": entity_id.strip(),
+            "entity_type": entity_type.strip(),
+            "evidence_ref": evidence_ref.strip(),
+            "proof_type": proof_type.value,
+            "source_outcome_id": source_outcome_id,
+            "tenant_id": tenant_id.strip(),
+            "verified_at": verified_at.isoformat(),
+            "verifier": verifier.strip(),
+        },
+    )
+    return CanonicalProofEvent(
+        tenant_id=tenant_id,
+        proof_id=proof_id,
+        entity_type=entity_type,
+        entity_id=entity_id,
+        proof_type=proof_type,
+        evidence_ref=evidence_ref,
+        verified_at=verified_at,
+        verifier=verifier,
+        source_outcome_id=source_outcome_id,
+        confidence=confidence,
+        is_synthetic=is_synthetic,
+        publication_approved=publication_approved,
+    )
+
+
+def normalize_proof_event(
+    record: Any,
+    *,
+    tenant_id: str,
+    entity_type: str,
+    entity_id: str,
+    proof_type: ProofType,
+    verifier: str,
+    source_outcome_id: str | None = None,
+) -> CanonicalProofEvent:
+    """Adapt the existing proof-ledger record without replacing its storage."""
+
+    if not record.evidence_source:
+        raise ValueError("proof-ledger record requires evidence_source")
+    return build_proof_event(
+        tenant_id=tenant_id,
+        entity_type=entity_type,
+        entity_id=entity_id,
+        proof_type=proof_type,
+        evidence_ref=record.evidence_source,
+        verified_at=record.created_at,
+        verifier=verifier,
+        source_outcome_id=source_outcome_id,
+        confidence=record.confidence,
+        is_synthetic=False,
+        publication_approved=record.is_publishable(),
+    )
+
+
+def build_learning_event(
+    *,
+    tenant_id: str,
+    event_type: LearningEventType,
+    evidence_refs: list[str],
+    confidence: float,
+    recommended_change: str,
+    created_at: datetime,
+    hypothesis_only: bool = True,
+) -> CanonicalLearningEvent:
+    normalized = _normalized_refs(evidence_refs)
+    learning_id = _stable_id(
+        "learning",
+        {
+            "created_at": created_at.isoformat(),
+            "event_type": event_type.value,
+            "evidence_refs": normalized,
+            "recommended_change": recommended_change.strip(),
+            "tenant_id": tenant_id.strip(),
+        },
+    )
+    return CanonicalLearningEvent(
+        tenant_id=tenant_id,
+        learning_id=learning_id,
+        event_type=event_type,
+        evidence_refs=normalized,
+        confidence=confidence,
+        recommended_change=recommended_change,
+        hypothesis_only=hypothesis_only,
+        approval_required=True,
+        applied=False,
+        official_policy_change_allowed=False,
+        created_at=created_at,
+    )
+
+
+def build_daily_command(
+    *,
+    tenant_id: str,
+    command_date: date,
+    priorities: list[str],
+    approval_items: list[str],
+    proofs: list[CanonicalProofEvent],
+    learning_events: list[CanonicalLearningEvent],
+    generated_at: datetime | None = None,
+) -> CanonicalDailyCommand:
+    """Build a deterministic command; generated_at is metadata, not identity."""
+
+    if any(proof.tenant_id != tenant_id for proof in proofs):
+        raise ValueError("cross-tenant proof is forbidden")
+    if any(event.tenant_id != tenant_id for event in learning_events):
+        raise ValueError("cross-tenant learning is forbidden")
+
+    normalized_priorities = sorted({item.strip() for item in priorities if item.strip()})
+    normalized_approvals = sorted(
+        {item.strip() for item in approval_items if item.strip()}
+    )
+    proof_ids = sorted({proof.proof_id for proof in proofs})
+    learning_ids = sorted({event.learning_id for event in learning_events})
+
+    has_payment = any(
+        proof.proof_type is ProofType.PAYMENT_EVIDENCE and not proof.is_synthetic
+        for proof in proofs
+    )
+    has_delivery = any(
+        proof.proof_type is ProofType.DELIVERY_EVIDENCE and not proof.is_synthetic
+        for proof in proofs
+    )
+    revenue_state = (
+        EvidenceState.PAYMENT_EVIDENCED if has_payment else EvidenceState.NOT_EVIDENCED
+    )
+    delivery_state = (
+        EvidenceState.DELIVERY_EVIDENCED if has_delivery else EvidenceState.NOT_EVIDENCED
+    )
+    command_id = _stable_id(
+        "command",
+        {
+            "approval_items": normalized_approvals,
+            "command_date": command_date.isoformat(),
+            "delivery_state": delivery_state.value,
+            "learning_ids": learning_ids,
+            "priorities": normalized_priorities,
+            "proof_ids": proof_ids,
+            "revenue_state": revenue_state.value,
+            "tenant_id": tenant_id.strip(),
+        },
+    )
+    return CanonicalDailyCommand(
+        tenant_id=tenant_id,
+        command_id=command_id,
+        command_date=command_date,
+        priorities=normalized_priorities,
+        approval_items=normalized_approvals,
+        proof_ids=proof_ids,
+        learning_ids=learning_ids,
+        revenue_state=revenue_state,
+        delivery_state=delivery_state,
+        recognized_revenue=has_payment,
+        delivery_completed=has_delivery,
+        generated_at=generated_at or datetime.now(UTC),
+    )
