@@ -1,7 +1,18 @@
+"""Regression tests for read-only PR portfolio triage signals."""
+
+from __future__ import annotations
+
+import importlib.util
 from datetime import UTC, datetime
+from pathlib import Path
 
-from scripts import triage_open_prs as triage
+ROOT = Path(__file__).resolve().parents[1]
+MODULE_PATH = ROOT / "scripts" / "triage_open_prs.py"
 
+_spec = importlib.util.spec_from_file_location("triage_open_prs", MODULE_PATH)
+assert _spec and _spec.loader
+triage = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(triage)
 
 NOW = datetime(2026, 8, 2, tzinfo=UTC)
 
