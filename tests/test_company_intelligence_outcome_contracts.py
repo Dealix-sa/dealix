@@ -6,6 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from dealix.company_intelligence.outcome_contracts import (
+    CanonicalDailyCommand,
     EvidenceState,
     LearningEventType,
     OutcomeEventType,
@@ -151,10 +152,12 @@ def test_daily_command_never_recognizes_revenue_without_payment_proof() -> None:
         generated_at=NOW,
     )
 
-    assert command.revenue_state is EvidenceState.NOT_EVIDENCED
+    assert command.revenue_state == EvidenceState.NOT_EVIDENCED
     assert command.recognized_revenue is False
-    assert command.delivery_state is EvidenceState.NOT_EVIDENCED
+    assert command.payment_proof_ids == []
+    assert command.delivery_state == EvidenceState.NOT_EVIDENCED
     assert command.delivery_completed is False
+    assert command.delivery_proof_ids == []
 
 
 def test_daily_command_recognizes_only_payment_and_delivery_proof() -> None:
@@ -197,10 +200,55 @@ def test_daily_command_recognizes_only_payment_and_delivery_proof() -> None:
     )
 
     assert first.command_id == second.command_id
-    assert first.revenue_state is EvidenceState.PAYMENT_EVIDENCED
+    assert first.revenue_state == EvidenceState.PAYMENT_EVIDENCED
     assert first.recognized_revenue is True
-    assert first.delivery_state is EvidenceState.DELIVERY_EVIDENCED
+    assert first.payment_proof_ids == [payment.proof_id]
+    assert first.delivery_state == EvidenceState.DELIVERY_EVIDENCED
     assert first.delivery_completed is True
+    assert first.delivery_proof_ids == [delivery.proof_id]
+
+
+def test_direct_command_cannot_claim_revenue_without_referenced_payment_proof() -> None:
+    with pytest.raises(
+        ValueError,
+        match="recognized revenue requires referenced payment proof",
+    ):
+        CanonicalDailyCommand(
+            tenant_id="tenant-a",
+            command_id="forged-command",
+            command_date=date(2026, 7, 31),
+            priorities=[],
+            approval_items=[],
+            proof_ids=[],
+            payment_proof_ids=[],
+            delivery_proof_ids=[],
+            learning_ids=[],
+            revenue_state=EvidenceState.PAYMENT_EVIDENCED,
+            delivery_state=EvidenceState.NOT_EVIDENCED,
+            recognized_revenue=True,
+            delivery_completed=False,
+            generated_at=NOW,
+        )
+
+
+def test_typed_proof_ids_must_exist_in_command_proof_ids() -> None:
+    with pytest.raises(ValueError, match="payment_proof_ids must be included"):
+        CanonicalDailyCommand(
+            tenant_id="tenant-a",
+            command_id="forged-command",
+            command_date=date(2026, 7, 31),
+            priorities=[],
+            approval_items=[],
+            proof_ids=[],
+            payment_proof_ids=["proof-payment-1"],
+            delivery_proof_ids=[],
+            learning_ids=[],
+            revenue_state=EvidenceState.PAYMENT_EVIDENCED,
+            delivery_state=EvidenceState.NOT_EVIDENCED,
+            recognized_revenue=True,
+            delivery_completed=False,
+            generated_at=NOW,
+        )
 
 
 def test_daily_command_rejects_cross_tenant_evidence() -> None:
