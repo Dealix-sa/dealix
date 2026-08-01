@@ -8,10 +8,13 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from urllib.parse import urlsplit
+from xml.etree import ElementTree
 
 import pytest
 
 LANDING = Path(__file__).resolve().parents[1] / "landing"
+SITEMAP_NAMESPACE = {"sitemap": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 
 
 def _read(name: str) -> str:
@@ -163,26 +166,40 @@ def test_diagnostic_describes_bounded_outputs() -> None:
 # Canonical sitemap and public-surface retirement
 
 def test_sitemaps_use_canonical_domain_and_current_surfaces_only() -> None:
+    expected_paths = {
+        "/",
+        "/pricing.html",
+        "/diagnostic.html",
+        "/proof.html",
+        "/trust-center.html",
+        "/privacy.html",
+        "/terms.html",
+    }
+    retired_paths = {
+        "/checkout.html",
+        "/launchpad.html",
+        "/compare.html",
+        "/roi.html",
+        "/case-study.html",
+    }
+
     for name in ("sitemap.xml", "sitemap_dealix.xml"):
-        sitemap = _read(name)
-        assert "https://dealix.me/" in sitemap
-        for current in (
-            "/pricing.html",
-            "/diagnostic.html",
-            "/proof.html",
-            "/trust-center.html",
-            "/privacy.html",
-            "/terms.html",
-        ):
-            assert current in sitemap
-        for retired in (
-            "/checkout.html",
-            "/launchpad.html",
-            "/compare.html",
-            "/roi.html",
-            "/case-study.html",
-        ):
-            assert retired not in sitemap
+        root = ElementTree.fromstring(_read(name))
+        locations = [
+            element.text.strip()
+            for element in root.findall("sitemap:url/sitemap:loc", SITEMAP_NAMESPACE)
+            if element.text
+        ]
+        assert locations, f"{name} contains no sitemap locations"
+
+        urls = [urlsplit(location) for location in locations]
+        assert all(url.scheme == "https" for url in urls), name
+        assert all(url.hostname == "dealix.me" for url in urls), name
+        assert all(url.port is None and not url.query and not url.fragment for url in urls), name
+
+        paths = {url.path for url in urls}
+        assert paths == expected_paths, f"{name} has unexpected canonical paths: {paths}"
+        assert paths.isdisjoint(retired_paths), name
 
 
 @pytest.mark.parametrize("page", ["agency-partner.html", "trust-center.html"])
