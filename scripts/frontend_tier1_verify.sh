@@ -163,7 +163,100 @@ else
 fi
 
 # 9. Sitemap uses canonical domain and excludes retired claim pages.
-if grep -q 'https://dealix.me/' "$LANDING/sitemap.xml"; then
+if grep -qE '^[[:space:]]*<loc>https://dealix\.me(/[^<]*)?</loc>[[:space:]]*
+  emit "SITEMAP_CANONICAL_DOMAIN" PASS
+else
+  emit "SITEMAP_CANONICAL_DOMAIN" FAIL
+fi
+SITEMAP_RETIRED=""
+for retired in roi.html case-study.html compare.html launchpad.html; do
+  if grep -q "$retired" "$LANDING/sitemap.xml"; then
+    SITEMAP_RETIRED="$SITEMAP_RETIRED $retired"
+  fi
+done
+if [[ -z "$SITEMAP_RETIRED" ]]; then
+  emit "SITEMAP_RETIRED_PAGES_EXCLUDED" PASS
+else
+  emit "SITEMAP_RETIRED_PAGES_EXCLUDED" FAIL "present:$SITEMAP_RETIRED"
+fi
+
+# 10. Required homepage anchors remain stable.
+ANCHORS=(pillars for-who sectors how trust proof pricing faq pilot)
+MISSING_ANCHORS=""
+for anchor in "${ANCHORS[@]}"; do
+  if ! grep -q "id=\"$anchor\"" "$LANDING/index.html"; then
+    MISSING_ANCHORS="$MISSING_ANCHORS #$anchor"
+  fi
+done
+if [[ -z "$MISSING_ANCHORS" ]]; then
+  emit "ANCHOR_IDS_PRESERVED" PASS
+else
+  emit "ANCHOR_IDS_PRESERVED" FAIL "removed:$MISSING_ANCHORS"
+fi
+
+# 11. RTL and customer-safe language.
+RTL_FAIL=""
+for page in index.html customer-portal.html pricing.html proof.html trust-center.html diagnostic.html agency-partner.html; do
+  if ! grep -qE 'lang="ar"[^>]*dir="rtl"|dir="rtl"[^>]*lang="ar"' "$LANDING/$page"; then
+    RTL_FAIL="$RTL_FAIL $page"
+  fi
+done
+if [[ -z "$RTL_FAIL" ]]; then
+  emit "RTL_LANG_DIR" PASS
+else
+  emit "RTL_LANG_DIR" FAIL "missing:$RTL_FAIL"
+fi
+
+INTERNAL_TERMS='(\bv1[0-2]\b|growth_beast|stacktrace)'
+INTERNAL_FAIL=""
+for page in index.html customer-portal.html pricing.html proof.html trust-center.html agency-partner.html; do
+  STRIPPED=$(sed -E 's/<script[^>]*>.*?<\/script>//g; s/href="[^"]*"//g' "$LANDING/$page")
+  if echo "$STRIPPED" | grep -qiE "$INTERNAL_TERMS"; then
+    INTERNAL_FAIL="$INTERNAL_FAIL $page"
+  fi
+done
+if [[ -z "$INTERNAL_FAIL" ]]; then
+  emit "NO_INTERNAL_TERMS" PASS
+else
+  emit "NO_INTERNAL_TERMS" FAIL "pages:$INTERNAL_FAIL"
+fi
+
+# 12. Mobile target and forbidden visible claims.
+if grep -qE 'min-height:\s*44px' "$LANDING/assets/css/design-system.css"; then
+  emit "MOBILE_TAP_TARGETS" PASS
+else
+  emit "MOBILE_TAP_TARGETS" FAIL
+fi
+FORBIDDEN_FAIL=""
+for page in index.html agency-partner.html trust-center.html pricing.html proof.html customer-portal.html diagnostic.html; do
+  if grep -qE '\bguarantee[d]?\b|\bblast\b' "$LANDING/$page"; then
+    FORBIDDEN_FAIL="$FORBIDDEN_FAIL $page"
+  fi
+done
+if [[ -z "$FORBIDDEN_FAIL" ]]; then
+  emit "NO_FORBIDDEN_TOKENS_SHELL" PASS
+else
+  emit "NO_FORBIDDEN_TOKENS_SHELL" FAIL "pages:$FORBIDDEN_FAIL"
+fi
+
+if (( FAILS == 0 )); then
+  VERDICT="PASS"
+elif (( FAILS <= 3 )); then
+  VERDICT="PARTIAL"
+else
+  VERDICT="FAIL"
+fi
+emit "DEALIX_FRONTEND_TIER1_VERDICT" "$VERDICT" "$FAILS check(s) failed"
+
+if (( QUIET == 0 )); then
+  printf '%s\n' "${OUTPUT[@]}"
+fi
+
+if [[ "$VERDICT" == "PASS" ]]; then
+  exit 0
+fi
+exit 1
+ "$LANDING/sitemap.xml"; then
   emit "SITEMAP_CANONICAL_DOMAIN" PASS
 else
   emit "SITEMAP_CANONICAL_DOMAIN" FAIL
