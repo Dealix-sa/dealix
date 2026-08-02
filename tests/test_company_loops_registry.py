@@ -59,6 +59,14 @@ def test_external_effects_are_approval_gated() -> None:
                 assert "Approval" in stage["outputs"] or "Approval" in stage["inputs"]
 
 
+def test_every_executable_proof_requirement_emits_a_proof_event() -> None:
+    registry = _load(LOOPS_PATH)
+    for loop in registry["loops"]:
+        for stage in loop.get("stages", []):
+            if stage["proof_requirements"]:
+                assert "ProofEvent" in stage["outputs"]
+
+
 def test_revenue_and_delivery_claims_require_proof() -> None:
     registry = _load(LOOPS_PATH)
     lead_to_cash = next(loop for loop in registry["loops"] if loop["id"] == "lead_to_cash")
