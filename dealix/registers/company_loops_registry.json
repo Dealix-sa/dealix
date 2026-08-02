@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "source_issue": 1028,
+  "purpose": "Connect canonical Dealix Company Intelligence entities into governed, evidence-backed, cross-department operating loops.",
+  "canonical_entity_registry": "dealix/registers/company_intelligence_entity_ownership.json",
+  "rules": {
+    "dealix_is_source_of_truth": true,
+    "external_tools_are_adapters_only": true,
+    "draft_only_default": true,
+    "external_effect_requires_approval": true,
+    "public_data_does_not_imply_consent": true,
+    "revenue_requires_payment_proof": true,
+    "delivery_requires_completion_proof": true,
+    "closed_loop_requires_outcome_learning_and_command": true,
+    "synthetic_runs_must_be_marked": true
+  },
+  "required_p0_loops": ["lead_to_cash", "customer_to_value"],
+  "loops": [
+    {
+      "id": "lead_to_cash",
+      "name": "Lead-to-Cash",
+      "priority": "P0",
+      "status": "executable_synthetic",
+      "business_goal": "Turn an evidence-backed market signal into collected payment, delivered value, proof, and expansion learning.",
+      "departments": ["market_intelligence", "sales", "commercial_approvals", "operations", "finance", "customer_success", "executive"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stages": [
+        {"id": "context_ready", "order": 10, "name": "Company context and offer authority ready", "owner_department": "executive", "inputs": ["Tenant", "CompanyBrain", "Offer", "Persona", "ConsentBasis"], "outputs": ["DepartmentPlan"], "event_type": "strategy_selected", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "signal_qualified", "order": 20, "name": "Signal and account qualification", "owner_department": "market_intelligence", "inputs": ["Source", "Company", "Contact", "Signal", "ConsentBasis", "DepartmentPlan"], "outputs": ["Opportunity", "Action"], "event_type": "opportunity_qualified", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "discovery_prepared", "order": 30, "name": "Discovery brief and contact draft prepared", "owner_department": "sales", "inputs": ["Opportunity", "CompanyBrain", "Action"], "outputs": ["Draft", "Action"], "event_type": "discovery_draft_created", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "discovery_contact_approved", "order": 40, "name": "External discovery contact approved", "owner_department": "commercial_approvals", "inputs": ["Action", "Draft", "ConsentBasis"], "outputs": ["Approval", "OutcomeEvent"], "event_type": "external_contact_approved", "external_effect": true, "approval_required": true, "autonomy_level": 4, "proof_requirements": [], "recognition_effects": []},
+        {"id": "discovery_outcome_recorded", "order": 50, "name": "Discovery outcome recorded", "owner_department": "sales", "inputs": ["Approval", "Opportunity", "OutcomeEvent"], "outputs": ["OutcomeEvent", "Action"], "event_type": "discovery_outcome_recorded", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "proposal_prepared", "order": 60, "name": "Evidence-safe proposal prepared", "owner_department": "sales", "inputs": ["Opportunity", "OutcomeEvent", "Offer", "CompanyBrain"], "outputs": ["Proposal", "Draft", "Action"], "event_type": "proposal_prepared", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "proposal_approved", "order": 70, "name": "Proposal and commercial terms approved", "owner_department": "commercial_approvals", "inputs": ["Proposal", "Draft", "Action"], "outputs": ["Approval", "OutcomeEvent"], "event_type": "proposal_approved", "external_effect": true, "approval_required": true, "autonomy_level": 4, "proof_requirements": [], "recognition_effects": []},
+        {"id": "commitment_recorded", "order": 80, "name": "Commercial commitment recorded", "owner_department": "sales", "inputs": ["Approval", "Proposal", "Opportunity"], "outputs": ["OutcomeEvent", "ProofEvent", "Action"], "event_type": "commercial_commitment_recorded", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["commercial_commitment"], "recognition_effects": []},
+        {"id": "delivery_handoff", "order": 90, "name": "Delivery handoff and capacity plan", "owner_department": "operations", "inputs": ["Opportunity", "OutcomeEvent", "ProofEvent"], "outputs": ["DepartmentPlan", "Action", "OutcomeEvent"], "event_type": "delivery_handoff_created", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []},
+        {"id": "invoice_approved", "order": 100, "name": "Invoice or payment request approved", "owner_department": "finance", "inputs": ["OutcomeEvent", "ProofEvent", "Action"], "outputs": ["Draft", "Approval", "OutcomeEvent"], "event_type": "invoice_request_approved", "external_effect": true, "approval_required": true, "autonomy_level": 4, "proof_requirements": ["invoice_issued"], "recognition_effects": []},
+        {"id": "payment_evidence_recorded", "order": 110, "name": "Payment evidence recorded", "owner_department": "finance", "inputs": ["Approval", "OutcomeEvent", "Opportunity"], "outputs": ["ProofEvent", "OutcomeEvent"], "event_type": "payment_received", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["payment_received"], "recognition_effects": ["revenue_recognized"]},
+        {"id": "delivery_completed", "order": 120, "name": "Delivery completion and value evidence recorded", "owner_department": "operations", "inputs": ["DepartmentPlan", "Action", "OutcomeEvent"], "outputs": ["ProofEvent", "OutcomeEvent"], "event_type": "delivery_completed", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": ["delivery_completed"], "recognition_effects": ["delivery_claim_allowed"]},
+        {"id": "expansion_learning", "order": 130, "name": "Renewal, expansion, and playbook learning", "owner_department": "customer_success", "inputs": ["Opportunity", "OutcomeEvent", "ProofEvent"], "outputs": ["LearningEvent", "PlaybookVersion", "DailyCommand"], "event_type": "expansion_learning_recorded", "external_effect": false, "approval_required": false, "autonomy_level": 3, "proof_requirements": [], "recognition_effects": []}
+      ]
+    },
+    {
+      "id": "customer_to_value",
+      "name": "Customer-to-Value and Renewal",
+      "priority": "P0",
+      "status": "contract_planned",
+      "business_goal": "Move a committed customer through onboarding, adoption, measurable value, renewal, and expansion.",
+      "departments": ["operations", "customer_success", "support", "finance", "executive"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stage_outline": ["onboarding_plan", "activation", "adoption_monitoring", "value_proof", "renewal_approval", "expansion_learning"]
+    },
+    {
+      "id": "incident_to_resolution",
+      "name": "Incident-to-Resolution",
+      "priority": "P1",
+      "status": "contract_planned",
+      "business_goal": "Detect, contain, resolve, prove, and prevent operational or technical incidents.",
+      "departments": ["support", "operations", "engineering", "security", "executive"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stage_outline": ["incident_detected", "triage", "remediation_plan", "sensitive_change_approval", "resolution_proof", "prevention_learning"]
+    },
+    {
+      "id": "source_to_pay",
+      "name": "Source-to-Pay",
+      "priority": "P1",
+      "status": "contract_planned",
+      "business_goal": "Move an approved need through supplier selection, delivery evidence, and controlled payment.",
+      "departments": ["operations", "procurement", "finance", "executive"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stage_outline": ["need_identified", "supplier_assessment", "purchase_approval", "delivery_proof", "payment_approval", "supplier_learning"]
+    },
+    {
+      "id": "idea_to_release",
+      "name": "Idea-to-Release",
+      "priority": "P1",
+      "status": "contract_planned",
+      "business_goal": "Turn evidence-backed customer or operating signals into tested releases and adoption learning.",
+      "departments": ["product", "engineering", "security", "customer_success", "executive"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stage_outline": ["problem_validation", "prioritization", "specification", "implementation", "verification", "release_approval", "adoption_learning"]
+    },
+    {
+      "id": "plan_to_performance",
+      "name": "Plan-to-Performance",
+      "priority": "P1",
+      "status": "contract_planned",
+      "business_goal": "Translate goals into bounded department actions, outcomes, proof, and executive learning.",
+      "departments": ["executive", "all_departments"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stage_outline": ["goal_translation", "department_plan", "action_generation", "execution", "performance_proof", "learning", "daily_command"]
+    },
+    {
+      "id": "hire_to_productivity",
+      "name": "Hire-to-Productivity",
+      "priority": "P2",
+      "status": "contract_planned",
+      "business_goal": "Move a verified capacity gap through controlled hiring, onboarding, productivity proof, and learning.",
+      "departments": ["executive", "people", "operations", "finance"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stage_outline": ["capacity_gap", "role_definition", "hiring_approval", "onboarding", "productivity_proof", "workforce_learning"]
+    },
+    {
+      "id": "record_to_report",
+      "name": "Record-to-Report",
+      "priority": "P2",
+      "status": "contract_planned",
+      "business_goal": "Turn source records into reconciled, approved, evidence-backed management reporting.",
+      "departments": ["finance", "operations", "executive"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stage_outline": ["record_capture", "reconciliation", "close_approval", "management_report", "report_learning"]
+    },
+    {
+      "id": "signal_to_partnership",
+      "name": "Signal-to-Partnership",
+      "priority": "P2",
+      "status": "contract_planned",
+      "business_goal": "Turn market-access or capability signals into governed partnerships with evidence and learning.",
+      "departments": ["market_intelligence", "partnerships", "commercial_approvals", "operations", "executive"],
+      "closure_targets": ["OutcomeEvent", "ProofEvent", "LearningEvent", "DailyCommand"],
+      "stage_outline": ["partner_signal", "partner_scoring", "partnership_proposal", "approval", "value_proof", "partnership_learning"]
+    }
+  ]
+}
