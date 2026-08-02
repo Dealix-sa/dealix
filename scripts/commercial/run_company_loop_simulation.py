@@ -33,7 +33,6 @@ def run_loop(
     loop_id: str,
     *,
     mode: str = "synthetic",
-    approve_external: bool = False,
     registry_path: Path = DEFAULT_REGISTRY,
 ) -> dict[str, Any]:
     if mode not in {"synthetic", "draft_only"}:
@@ -63,7 +62,7 @@ def run_loop(
     }
 
     for stage in sorted(loop["stages"], key=lambda item: item["order"]):
-        if stage["external_effect"] and mode == "draft_only" and not approve_external:
+        if stage["external_effect"] and mode == "draft_only":
             result["status"] = "blocked_pending_approval"
             result["blocked_stage"] = stage["id"]
             result["stages"].append(
@@ -148,14 +147,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--loop", default="lead_to_cash")
     parser.add_argument("--mode", choices=("synthetic", "draft_only"), default="synthetic")
-    parser.add_argument("--approve-external", action="store_true")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     result = run_loop(
         args.loop,
         mode=args.mode,
-        approve_external=args.approve_external,
     )
     rendered = json.dumps(result, indent=2, sort_keys=True)
     if args.output:
