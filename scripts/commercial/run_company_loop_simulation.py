@@ -59,7 +59,6 @@ def _canonical_outcome(
     tenant_id: str,
     run_id: str,
     stage: dict[str, Any],
-    mode: str,
 ):
     event_type = _OUTCOME_TYPE_BY_STAGE.get(stage["id"])
     if event_type is None:
@@ -72,7 +71,7 @@ def _canonical_outcome(
         occurred_at=SYNTHETIC_TIME,
         evidence_refs=[evidence_ref],
         confidence=0.5,
-        is_synthetic=mode == "synthetic",
+        is_synthetic=True,
         notes=f"Synthetic company-loop checkpoint for {stage['id']}",
     )
 
@@ -82,7 +81,6 @@ def _canonical_non_financial_proofs(
     tenant_id: str,
     run_id: str,
     stage: dict[str, Any],
-    mode: str,
 ):
     proofs = []
     for requirement in stage["proof_requirements"]:
@@ -100,7 +98,7 @@ def _canonical_non_financial_proofs(
                 verified_at=SYNTHETIC_TIME,
                 verifier="company_loop_simulator",
                 confidence=0.5,
-                is_synthetic=mode == "synthetic",
+                is_synthetic=True,
                 publication_approved=False,
             )
         )
@@ -133,7 +131,7 @@ def run_loop(
         "tenant_id": tenant_id,
         "loop_id": loop_id,
         "mode": mode,
-        "is_synthetic": mode == "synthetic",
+        "is_synthetic": True,
         "external_actions_executed": 0,
         "status": "running",
         "stages": [],
@@ -163,11 +161,9 @@ def run_loop(
                 {
                     "id": _record_id(run_id, stage["id"], "approval"),
                     "stage_id": stage["id"],
-                    "status": (
-                        "approved_synthetic" if mode == "synthetic" else "approved_input"
-                    ),
+                    "status": "approved_synthetic",
                     "risk_level": "controlled_external_effect",
-                    "is_synthetic": mode == "synthetic",
+                    "is_synthetic": True,
                 }
             )
 
@@ -176,7 +172,6 @@ def run_loop(
                 tenant_id=tenant_id,
                 run_id=run_id,
                 stage=stage,
-                mode=mode,
             )
             if outcome is not None:
                 canonical_outcomes.append(outcome)
@@ -196,7 +191,6 @@ def run_loop(
             tenant_id=tenant_id,
             run_id=run_id,
             stage=stage,
-            mode=mode,
         )
         canonical_proofs.extend(stage_proofs)
         result["proof_events"].extend(
@@ -246,7 +240,7 @@ def run_loop(
         result["stages"].append(
             {
                 "stage_id": stage["id"],
-                "status": "completed_synthetic" if mode == "synthetic" else "completed",
+                "status": "completed_synthetic",
                 "event_type": stage["event_type"],
                 "external_effect_simulated": bool(
                     stage["external_effect"] and mode == "synthetic"
@@ -254,7 +248,7 @@ def run_loop(
             }
         )
     else:
-        result["status"] = "completed_synthetic" if mode == "synthetic" else "completed"
+        result["status"] = "completed_synthetic"
 
     return result
 
