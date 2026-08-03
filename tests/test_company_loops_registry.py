@@ -95,16 +95,37 @@ def test_every_loop_closes_with_outcome_learning_and_command() -> None:
             assert "DailyCommand" in outputs
 
 
-def test_synthetic_lead_to_cash_completes_without_external_execution() -> None:
+def test_synthetic_lead_to_cash_completes_without_external_execution_or_fake_value() -> None:
     runner = _load_runner()
     result = runner.run_loop("lead_to_cash", mode="synthetic", registry_path=LOOPS_PATH)
 
     assert result["status"] == "completed_synthetic"
     assert result["external_actions_executed"] == 0
     assert result["daily_command"] is not None
-    assert any(proof["proof_type"] == "payment_received" for proof in result["proof_events"])
-    assert any(proof["proof_type"] == "delivery_completed" for proof in result["proof_events"])
+
+    withheld = {item["claim"] for item in result["withheld_claims"]}
+    assert withheld == {"payment_received", "delivery_completed"}
+
+    assert all(
+        proof["proof_type"] not in {"payment_evidence", "delivery_evidence"}
+        for proof in result["proof_events"]
+    )
+    assert all(
+        outcome["event_type"] not in {"payment_received", "delivery_completed"}
+        for outcome in result["outcome_events"]
+    )
+
+    command = result["daily_command"]
+    assert command["recognized_revenue"] is False
+    assert command["delivery_completed"] is False
+    assert command["revenue_state"] == "not_evidenced"
+    assert command["delivery_state"] == "not_evidenced"
+    assert command["payment_proof_ids"] == []
+    assert command["delivery_proof_ids"] == []
+
     assert result["learning_events"]
+    assert all(event["approval_required"] is True for event in result["learning_events"])
+    assert all(event["applied"] is False for event in result["learning_events"])
     assert all(approval["is_synthetic"] for approval in result["approvals"])
 
 
