@@ -15,7 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from dealix.company_intelligence.outcome_contracts import (  # noqa: E402
+from dealix.company_intelligence.outcome_contracts import (
     LearningEventType,
     OutcomeEventType,
     ProofType,
