@@ -60,3 +60,27 @@ def test_contract_rejects_empty_tenant_id() -> None:
         assert "tenant_id" in str(exc)
     else:
         raise AssertionError("empty tenant_id must be rejected")
+
+
+def test_company_brain_router_serves_canonical_facade() -> None:
+    """The API router must route the canonical view through the facade,
+    not redefine CompanyBrain truth independently (consolidation map
+    docs/company/COMPANY_INTELLIGENCE_CONSOLIDATION_MAP_2026-07-31.md)."""
+    from fastapi.testclient import TestClient
+
+    from api.main import create_app
+
+    client = TestClient(create_app())
+
+    resp = client.get("/api/v1/company-brain/canonical")
+    assert resp.status_code == 200
+    body = resp.json()
+
+    expected = build_internal_company_brain(tenant_id="dealix").model_dump(mode="json")
+    volatile_fields = {"generated_at", "provenance"}
+    assert {k: v for k, v in body.items() if k not in volatile_fields} == {
+        k: v for k, v in expected.items() if k not in volatile_fields
+    }
+    assert body["source"] == CompanyBrainSource.INTERNAL_SNAPSHOT.value
+    assert body["tenant_id"] == "dealix"
+    assert body["guardrails"]["approval_required_for_external_actions"] is True

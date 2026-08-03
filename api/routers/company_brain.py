@@ -4,6 +4,7 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from auto_client_acquisition.company_brain import build_company_brain
+from dealix.company_intelligence import build_internal_company_brain
 
 router = APIRouter(prefix="/api/v1/company-brain", tags=["company-brain"])
 
@@ -25,3 +26,13 @@ async def status() -> dict:
 @router.get("/")
 async def get_brain() -> dict:
     return build_company_brain().as_dict()
+
+
+@router.get("/canonical")
+async def get_canonical_brain() -> dict:
+    """Normalized view via the canonical Company Intelligence facade.
+
+    Additive alongside `/` (legacy shape); does not replace it until callers
+    migrate per docs/company/COMPANY_INTELLIGENCE_CONSOLIDATION_MAP_2026-07-31.md.
+    """
+    return build_internal_company_brain().model_dump(mode="json")
