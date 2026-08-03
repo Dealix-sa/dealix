@@ -54,7 +54,8 @@ def _customer_profile(customer_handle: str) -> dict[str, Any]:
             if isinstance(raw, dict):
                 profile = raw
     except Exception:
-        pass
+        # The compatibility source is optional; fail closed to an empty profile.
+        profile = {}
     return {
         "client_name": _safe_text(profile.get("company_name")) or customer_handle,
         "sector": _safe_text(profile.get("sector")),
