@@ -110,7 +110,7 @@ def normalize_proof_event(
         evidence_ref=evidence_ref,
         source_event_type=_SOURCE_EVENT_TYPES.get(proof_type),
         source_outcome_id=source_outcome_id,
-        verified_at=getattr(record, "created_at"),
+        verified_at=record.created_at,
         verifier=verifier,
         confidence=confidence,
         is_synthetic=is_synthetic,
