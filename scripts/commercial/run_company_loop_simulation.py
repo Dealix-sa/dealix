@@ -6,11 +6,32 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
+from dealix.company_intelligence.outcome_contracts import (
+    LearningEventType,
+    OutcomeEventType,
+    ProofType,
+    build_daily_command,
+    build_learning_event,
+    build_outcome_event,
+    build_proof_event,
+)
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REGISTRY = REPO_ROOT / "dealix/registers/company_loops_registry.json"
+SYNTHETIC_TIME = datetime(2026, 8, 2, 12, 0, tzinfo=UTC)
+
+_OUTCOME_TYPE_BY_STAGE = {
+    "discovery_contact_approved": OutcomeEventType.PROSPECT_REPLIED,
+    "discovery_outcome_recorded": OutcomeEventType.PROSPECT_REPLIED,
+    "proposal_approved": OutcomeEventType.PROPOSAL_REVIEWED,
+    "commitment_recorded": OutcomeEventType.PROPOSAL_REVIEWED,
+    "delivery_handoff": OutcomeEventType.PROPOSAL_REVIEWED,
+    "invoice_approved": OutcomeEventType.PROPOSAL_REVIEWED,
+}
 
 
 def load_registry(path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
@@ -29,6 +50,57 @@ def _record_id(run_id: str, stage_id: str, record_type: str) -> str:
     return digest[:16]
 
 
+def _canonical_outcome(
+    *,
+    tenant_id: str,
+    run_id: str,
+    stage: dict[str, Any],
+    mode: str,
+):
+    event_type = _OUTCOME_TYPE_BY_STAGE.get(stage["id"])
+    if event_type is None:
+        return None
+    evidence_ref = f"synthetic://company-loop/{run_id}/{stage['id']}"
+    return build_outcome_event(
+        tenant_id=tenant_id,
+        action_id=f"action_{_record_id(run_id, stage['id'], 'action')}",
+        event_type=event_type,
+        occurred_at=SYNTHETIC_TIME,
+        evidence_refs=[evidence_ref],
+        confidence=0.5,
+        is_synthetic=mode == "synthetic",
+        notes=f"Synthetic company-loop checkpoint for {stage['id']}",
+    )
+
+
+def _canonical_non_financial_proofs(
+    *,
+    tenant_id: str,
+    run_id: str,
+    stage: dict[str, Any],
+    mode: str,
+):
+    proofs = []
+    for requirement in stage["proof_requirements"]:
+        if requirement in {"payment_received", "delivery_completed"}:
+            continue
+        proofs.append(
+            build_proof_event(
+                tenant_id=tenant_id,
+                entity_type="company_loop_stage",
+                entity_id=stage["id"],
+                proof_type=ProofType.OUTCOME_EVIDENCE,
+                evidence_ref=f"synthetic://company-loop/{run_id}/{stage['id']}/{requirement}",
+                verified_at=SYNTHETIC_TIME,
+                verifier="company_loop_simulator",
+                confidence=0.5,
+                is_synthetic=mode == "synthetic",
+                publication_approved=False,
+            )
+        )
+    return proofs
+
+
 def run_loop(
     loop_id: str,
     *,
@@ -43,11 +115,16 @@ def run_loop(
     if loop["status"] != "executable_synthetic":
         raise ValueError(f"loop is not executable yet: {loop_id}")
 
-    run_id = hashlib.sha256(f"dealix:{loop_id}:{mode}:v1".encode()).hexdigest()[:20]
+    run_id = hashlib.sha256(f"dealix:{loop_id}:{mode}:v2".encode()).hexdigest()[:20]
+    tenant_id = "synthetic-tenant"
+    canonical_outcomes = []
+    canonical_proofs = []
+    canonical_learning = []
+    withheld_claims = []
     result: dict[str, Any] = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "run_id": run_id,
-        "tenant_id": "synthetic-tenant",
+        "tenant_id": tenant_id,
         "loop_id": loop_id,
         "mode": mode,
         "is_synthetic": mode == "synthetic",
@@ -58,6 +135,7 @@ def run_loop(
         "outcome_events": [],
         "proof_events": [],
         "learning_events": [],
+        "withheld_claims": withheld_claims,
         "daily_command": None,
     }
 
@@ -85,49 +163,75 @@ def run_loop(
                 }
             )
 
-        outcome_id = _record_id(run_id, stage["id"], "outcome")
         if "OutcomeEvent" in stage["outputs"]:
-            result["outcome_events"].append(
-                {
-                    "id": outcome_id,
-                    "stage_id": stage["id"],
-                    "event_type": stage["event_type"],
-                    "is_synthetic": mode == "synthetic",
-                }
+            outcome = _canonical_outcome(
+                tenant_id=tenant_id,
+                run_id=run_id,
+                stage=stage,
+                mode=mode,
             )
+            if outcome is not None:
+                canonical_outcomes.append(outcome)
+                result["outcome_events"].append(outcome.model_dump(mode="json"))
+            elif stage["event_type"] in {"payment_received", "delivery_completed"}:
+                withheld_claims.append(
+                    {
+                        "stage_id": stage["id"],
+                        "claim": stage["event_type"],
+                        "reason": "synthetic financial and delivery outcomes are forbidden",
+                    }
+                )
 
-        for proof_type in stage["proof_requirements"]:
-            result["proof_events"].append(
-                {
-                    "id": _record_id(run_id, stage["id"], f"proof:{proof_type}"),
-                    "stage_id": stage["id"],
-                    "proof_type": proof_type,
-                    "verified": True,
-                    "is_synthetic": mode == "synthetic",
-                }
-            )
+        stage_proofs = _canonical_non_financial_proofs(
+            tenant_id=tenant_id,
+            run_id=run_id,
+            stage=stage,
+            mode=mode,
+        )
+        canonical_proofs.extend(stage_proofs)
+        result["proof_events"].extend(
+            proof.model_dump(mode="json") for proof in stage_proofs
+        )
 
         if "LearningEvent" in stage["outputs"]:
-            result["learning_events"].append(
+            evidence_refs = sorted(
                 {
-                    "id": _record_id(run_id, stage["id"], "learning"),
-                    "stage_id": stage["id"],
-                    "event_type": stage["event_type"],
-                    "confidence": 0.5,
-                    "status": "hypothesis",
-                    "is_synthetic": mode == "synthetic",
+                    *(
+                        outcome.evidence_refs[0]
+                        for outcome in canonical_outcomes
+                        if outcome.evidence_refs
+                    ),
+                    *(
+                        proof.evidence_ref
+                        for proof in canonical_proofs
+                    ),
                 }
+            ) or [f"synthetic://company-loop/{run_id}/no-recognized-value"]
+            learning = build_learning_event(
+                tenant_id=tenant_id,
+                event_type=LearningEventType.OFFER,
+                evidence_refs=evidence_refs,
+                confidence=0.5,
+                recommended_change=(
+                    "Keep the loop approval-first and require real payment and delivery "
+                    "evidence before recognizing value."
+                ),
+                created_at=SYNTHETIC_TIME,
             )
+            canonical_learning.append(learning)
+            result["learning_events"].append(learning.model_dump(mode="json"))
 
         if "DailyCommand" in stage["outputs"]:
-            result["daily_command"] = {
-                "id": _record_id(run_id, stage["id"], "daily-command"),
-                "loop_id": loop_id,
-                "status": "synthetic_complete" if mode == "synthetic" else "complete",
-                "approval_count": len(result["approvals"]),
-                "proof_count": len(result["proof_events"]),
-                "learning_count": len(result["learning_events"]),
-            }
+            command = build_daily_command(
+                tenant_id=tenant_id,
+                command_date=date(2026, 8, 2),
+                priorities=["collect real payment evidence", "collect real delivery evidence"],
+                approval_items=["approve any external execution separately"],
+                proofs=canonical_proofs,
+                learning_events=canonical_learning,
+                generated_at=SYNTHETIC_TIME,
+            )
+            result["daily_command"] = command.model_dump(mode="json")
 
         result["stages"].append(
             {
