@@ -2,7 +2,7 @@
 
 The models are persistence-neutral and contain no transport, storage, or
 external-execution capability. Financial and delivery state is derived only
-from non-synthetic proof events.
+from fully revalidated, non-synthetic proof events.
 """
 from __future__ import annotations
 
@@ -84,7 +84,7 @@ def _stable_id(prefix: str, payload: dict[str, Any]) -> str:
 class CanonicalOutcomeEvent(BaseModel):
     """A real or explicitly synthetic result linked to one internal action."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", frozen=True)
 
     tenant_id: NonEmptyString
     outcome_id: NonEmptyString
@@ -125,7 +125,7 @@ class CanonicalOutcomeEvent(BaseModel):
 class CanonicalProofEvent(BaseModel):
     """Verified evidence used for value, payment, delivery, or technical truth."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", frozen=True)
 
     tenant_id: NonEmptyString
     proof_id: NonEmptyString
@@ -149,8 +149,7 @@ class CanonicalProofEvent(BaseModel):
         }.get(self.proof_type)
         if required_source is not None and self.source_event_type != required_source:
             raise ValueError(
-                f"{self.proof_type.value} requires source event "
-                f"{required_source.value}"
+                f"{self.proof_type.value} requires source event {required_source.value}"
             )
         if self.is_synthetic and self.proof_type in {
             ProofType.PAYMENT_EVIDENCE,
@@ -164,9 +163,11 @@ class CanonicalProofEvent(BaseModel):
                 "entity_type": self.entity_type,
                 "evidence_ref": self.evidence_ref,
                 "proof_type": self.proof_type.value,
-                "source_event_type": self.source_event_type.value
-                if self.source_event_type is not None
-                else None,
+                "source_event_type": (
+                    self.source_event_type.value
+                    if self.source_event_type is not None
+                    else None
+                ),
                 "source_outcome_id": self.source_outcome_id,
                 "tenant_id": self.tenant_id,
                 "verified_at": self.verified_at.isoformat(),
@@ -181,7 +182,7 @@ class CanonicalProofEvent(BaseModel):
 class CanonicalLearningEvent(BaseModel):
     """Evidence-bounded improvement proposal that cannot mutate policy itself."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", frozen=True)
 
     tenant_id: NonEmptyString
     learning_id: NonEmptyString
@@ -221,18 +222,22 @@ class CanonicalLearningEvent(BaseModel):
         return self
 
 
+def _revalidate_proof(proof: CanonicalProofEvent) -> CanonicalProofEvent:
+    """Re-run every proof invariant from raw values at a recognition boundary."""
+
+    return CanonicalProofEvent.model_validate(proof.model_dump(mode="python"))
+
+
 class CanonicalDailyCommand(BaseModel):
     """One deterministic executive readout for a tenant and calendar date."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", frozen=True)
 
     tenant_id: NonEmptyString
     command_id: NonEmptyString
     command_date: date
     priorities: list[NonEmptyString] = Field(default_factory=list)
     approval_items: list[NonEmptyString] = Field(default_factory=list)
-    # Keep the typed proof objects with the command so deserialization cannot
-    # promote an arbitrary string ID into recognized revenue or delivery.
     proofs: list[CanonicalProofEvent] = Field(default_factory=list)
     proof_ids: list[NonEmptyString] = Field(default_factory=list)
     payment_proof_ids: list[NonEmptyString] = Field(default_factory=list)
@@ -263,25 +268,32 @@ class CanonicalDailyCommand(BaseModel):
         if not set(self.delivery_proof_ids).issubset(proof_ids):
             raise ValueError("delivery_proof_ids must be included in proof_ids")
 
-        typed_proof_ids = sorted({proof.proof_id for proof in self.proofs})
+        validated_proofs = [_revalidate_proof(proof) for proof in self.proofs]
+        if validated_proofs and any(
+            proof.tenant_id != self.tenant_id for proof in validated_proofs
+        ):
+            raise ValueError("cross-tenant proof is forbidden")
+
+        typed_proof_ids = sorted({proof.proof_id for proof in validated_proofs})
         typed_payment_ids = sorted(
             {
                 proof.proof_id
-                for proof in self.proofs
+                for proof in validated_proofs
                 if proof.proof_type == ProofType.PAYMENT_EVIDENCE
+                and proof.source_event_type == ProofSourceEventType.PAYMENT_CONFIRMED
                 and not proof.is_synthetic
             }
         )
         typed_delivery_ids = sorted(
             {
                 proof.proof_id
-                for proof in self.proofs
+                for proof in validated_proofs
                 if proof.proof_type == ProofType.DELIVERY_EVIDENCE
+                and proof.source_event_type
+                == ProofSourceEventType.DELIVERY_TASK_COMPLETED
                 and not proof.is_synthetic
             }
         )
-        if self.proofs and any(proof.tenant_id != self.tenant_id for proof in self.proofs):
-            raise ValueError("cross-tenant proof is forbidden")
         if self.proof_ids != typed_proof_ids:
             raise ValueError("proof_ids must match typed proof objects")
         if self.payment_proof_ids != typed_payment_ids:
@@ -388,9 +400,9 @@ def build_proof_event(
             "entity_type": entity_type.strip(),
             "evidence_ref": evidence_ref.strip(),
             "proof_type": proof_type.value,
-            "source_event_type": source_event_type.value
-            if source_event_type is not None
-            else None,
+            "source_event_type": (
+                source_event_type.value if source_event_type is not None else None
+            ),
             "source_outcome_id": source_outcome_id,
             "tenant_id": tenant_id.strip(),
             "verified_at": verified_at.isoformat(),
@@ -460,29 +472,33 @@ def build_daily_command(
     learning_events: list[CanonicalLearningEvent],
     generated_at: datetime | None = None,
 ) -> CanonicalDailyCommand:
-    """Build a deterministic command; generated_at is metadata, not identity."""
+    """Build a deterministic command after revalidating all supplied proof truth."""
 
-    if any(proof.tenant_id != tenant_id for proof in proofs):
+    validated_proofs = [_revalidate_proof(proof) for proof in proofs]
+    if any(proof.tenant_id != tenant_id for proof in validated_proofs):
         raise ValueError("cross-tenant proof is forbidden")
     if any(event.tenant_id != tenant_id for event in learning_events):
         raise ValueError("cross-tenant learning is forbidden")
 
     normalized_priorities = _sorted_unique(priorities)
     normalized_approvals = _sorted_unique(approval_items)
-    proof_ids = sorted({proof.proof_id for proof in proofs})
+    proof_ids = sorted({proof.proof_id for proof in validated_proofs})
     payment_proof_ids = sorted(
         {
             proof.proof_id
-            for proof in proofs
+            for proof in validated_proofs
             if proof.proof_type == ProofType.PAYMENT_EVIDENCE
+            and proof.source_event_type == ProofSourceEventType.PAYMENT_CONFIRMED
             and not proof.is_synthetic
         }
     )
     delivery_proof_ids = sorted(
         {
             proof.proof_id
-            for proof in proofs
+            for proof in validated_proofs
             if proof.proof_type == ProofType.DELIVERY_EVIDENCE
+            and proof.source_event_type
+            == ProofSourceEventType.DELIVERY_TASK_COMPLETED
             and not proof.is_synthetic
         }
     )
@@ -517,7 +533,7 @@ def build_daily_command(
         command_date=command_date,
         priorities=normalized_priorities,
         approval_items=normalized_approvals,
-        proofs=proofs,
+        proofs=validated_proofs,
         proof_ids=proof_ids,
         payment_proof_ids=payment_proof_ids,
         delivery_proof_ids=delivery_proof_ids,
