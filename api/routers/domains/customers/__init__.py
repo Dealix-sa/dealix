@@ -9,6 +9,7 @@ from fastapi import APIRouter
 
 from api.routers import (
     billing,
+    client_value_room,
     crm_v10,
     customer_company_portal,
     customer_data_plane,
@@ -48,6 +49,7 @@ _ROUTERS = [
     customer_data_plane.router,
     customer_brain_router.router,
     customer_company_portal.router,
+    client_value_room.router,
     customer_dashboard_router.router,
     customer_inbox_v10.router,
     crm_v10.router,
