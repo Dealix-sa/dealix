@@ -24,6 +24,8 @@ Company Brain
 
 This slice adds the missing loop registry and a deterministic synthetic runner. It does not add a second Company Brain, CRM, ERP, scheduler, Approval Center, Proof Ledger, or agent framework.
 
+The implementation is deliberately stacked on the canonical Outcome, Proof, Learning, and Daily Command contracts from PR #1023. The loop runner consumes those typed contracts rather than producing a parallel dictionary-based event model.
+
 ## Why Lead-to-Cash is first
 
 Lead-to-Cash is the shortest loop that proves Dealix can coordinate multiple departments and produce a result a company values:
@@ -32,17 +34,17 @@ Lead-to-Cash is the shortest loop that proves Dealix can coordinate multiple dep
 - Sales qualifies and prepares discovery.
 - Commercial governance approves external contact and terms.
 - Operations receives a bounded delivery handoff.
-- Finance records invoice and payment evidence.
-- Customer success records value and expansion learning.
-- Executive reporting receives a proof-backed command summary.
+- Finance identifies the evidence still required for payment recognition.
+- Customer success records evidence-bounded learning.
+- Executive reporting receives a typed command summary.
 
 It also exercises the hardest trust gates:
 
 - consent and channel eligibility;
 - external-action approval;
 - commercial-term approval;
-- payment evidence before revenue recognition;
-- delivery evidence before completion claims;
+- real payment evidence before revenue recognition;
+- real delivery evidence before completion claims;
 - learning from verified outcomes rather than invented metrics.
 
 ## Repository additions
@@ -77,14 +79,16 @@ python scripts/commercial/run_company_loop_simulation.py \
 
 The runner:
 
-- creates deterministic IDs;
-- marks every record synthetic;
+- creates deterministic typed canonical events;
+- marks synthetic outcomes and evidence explicitly;
 - simulates approvals without sending anything;
-- records OutcomeEvent and ProofEvent objects;
-- refuses to recognize revenue without `payment_received` proof;
-- refuses to claim completed delivery without `delivery_completed` proof;
-- emits a LearningEvent and DailyCommand-ready summary;
+- creates only non-financial synthetic Outcome and Proof events permitted by the canonical contracts;
+- withholds synthetic `payment_received` and `delivery_completed` claims rather than fabricating them;
+- produces a canonical LearningEvent that remains approval-required and unapplied;
+- produces a canonical DailyCommand with revenue and delivery in `not_evidenced` state;
 - executes zero external actions.
+
+A successful synthetic run therefore proves the **gate**, not payment, revenue, delivery, or customer value. Recognized revenue and completed delivery remain false until real, non-synthetic typed evidence exists.
 
 Draft-only mode demonstrates the real safety behavior:
 
@@ -100,7 +104,7 @@ It must stop at the first external-effect stage until approval is provided.
 
 | Priority | Loop | Departments | Product value |
 |---|---|---|---|
-| P0 | Lead-to-Cash | Market intelligence, sales, approvals, operations, finance, customer success, executive | Converts opportunities into collected payment and proof |
+| P0 | Lead-to-Cash | Market intelligence, sales, approvals, operations, finance, customer success, executive | Governs opportunities through evidence requirements without inventing payment or delivery |
 | P0 | Customer-to-Value and Renewal | Operations, support, customer success, finance, executive | Proves adoption, value, renewal, and expansion |
 | P1 | Incident-to-Resolution | Support, operations, engineering, security, executive | Resolves problems and prevents recurrence |
 | P1 | Source-to-Pay | Operations, procurement, finance, executive | Controls supplier selection, delivery, and payment |
@@ -162,12 +166,13 @@ External systems may not:
 
 ## Phase sequence
 
-### Phase 1 — Contract and synthetic proof
+### Phase 1 — Contract and synthetic gate proof
 
 - Merge no production dependency.
 - Validate registry ownership and gates.
+- Consume the canonical #1023 contracts.
 - Run Lead-to-Cash with synthetic data.
-- Produce deterministic proof output.
+- Prove that synthetic runs cannot establish payment, revenue, or completed delivery.
 
 ### Phase 2 — Dealix-on-Dealix draft-only
 
@@ -203,9 +208,10 @@ Only after three real pilots:
 - Loop registry references only canonical entities.
 - Lead-to-Cash stages are ordered and unique.
 - Every external-effect stage is approval-gated.
-- Revenue recognition requires payment proof.
-- Delivery claims require completion proof.
-- Every loop closes through Outcome, Learning, and Daily Command.
-- Synthetic Lead-to-Cash completes with zero external actions.
+- The runner uses the typed canonical Outcome, Proof, Learning, and Daily Command contracts.
+- Synthetic payment and delivery truth is withheld.
+- Synthetic DailyCommand keeps revenue and delivery `not_evidenced`.
+- Learning remains approval-required and unapplied.
 - Draft-only Lead-to-Cash blocks before external contact.
+- External actions executed remain zero.
 - No production, dependency, migration, secret, customer data, sending, payment, or deployment change.
