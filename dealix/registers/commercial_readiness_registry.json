@@ -1,0 +1,177 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Provide one governed source of truth for turning Dealix capabilities into a qualified, quote-only, evidence-backed sale.",
+  "commercial_doctrine": {
+    "public_fixed_price_forbidden": true,
+    "checkout_before_discovery_forbidden": true,
+    "quote_requires_discovery": true,
+    "proposal_requires_scope_and_approval": true,
+    "revenue_claim_requires_payment_proof": true,
+    "delivery_claim_requires_delivery_proof": true,
+    "value_claim_requires_baseline_and_value_evidence": true,
+    "guaranteed_outcomes_forbidden": true,
+    "customer_data_in_demo_forbidden": true
+  },
+  "qualification": {
+    "required": [
+      "named_company",
+      "named_business_problem",
+      "economic_or_operational_impact",
+      "responsible_owner",
+      "access_to_relevant_process_or_data",
+      "willingness_to_run_a_bounded_pilot"
+    ],
+    "disqualifiers": [
+      "anonymous_or_unverifiable_company",
+      "request_for_uncontrolled_mass_outbound",
+      "request_for_guaranteed_revenue",
+      "no_owner_or_no_access",
+      "illegal_or_non_compliant_use_case",
+      "custom_build_without_bounded_outcome"
+    ],
+    "decision": {
+      "qualified": "discovery_and_diagnostic",
+      "uncertain": "mini_diagnostic_only",
+      "not_qualified": "decline_or_refer"
+    }
+  },
+  "buyer_personas": [
+    {
+      "id": "founder_ceo",
+      "primary_outcomes": ["revenue_visibility", "execution_control", "faster_decisions", "proof_of_progress"],
+      "common_pains": ["fragmented_tools", "unclear_pipeline", "founder_bottleneck", "no_operating_rhythm"],
+      "best_entry_offer": "saudi_opportunity_snapshot"
+    },
+    {
+      "id": "head_of_sales",
+      "primary_outcomes": ["pipeline_quality", "next_action_discipline", "proposal_velocity", "forecast_evidence"],
+      "common_pains": ["weak_qualification", "stale_opportunities", "manual_follow_up", "no_proof_of_conversion_drivers"],
+      "best_entry_offer": "revenue_command_pilot"
+    },
+    {
+      "id": "operations_leader",
+      "primary_outcomes": ["controlled_handoffs", "delivery_visibility", "exception_management", "customer_acceptance"],
+      "common_pains": ["handoff_failures", "unclear_owners", "missed_checkpoints", "delivery_claims_without_evidence"],
+      "best_entry_offer": "ai_company_os_setup"
+    },
+    {
+      "id": "customer_success_leader",
+      "primary_outcomes": ["onboarding_speed", "adoption_health", "value_proof", "renewal_readiness"],
+      "common_pains": ["no_baseline", "late_risk_detection", "subjective_health_scores", "renewal_surprises"],
+      "best_entry_offer": "revenue_command_room_retainer"
+    },
+    {
+      "id": "technology_or_data_leader",
+      "primary_outcomes": ["governed_ai", "source_quality", "approval_boundaries", "integration_safety"],
+      "common_pains": ["shadow_automation", "unclear_data_authority", "unsafe_external_actions", "weak_auditability"],
+      "best_entry_offer": "revenue_proof_sprint"
+    },
+    {
+      "id": "market_access_or_partnerships_leader",
+      "primary_outcomes": ["saudi_market_mapping", "partner_scoring", "controlled_outreach", "evidence_backed_expansion"],
+      "common_pains": ["weak_local_context", "unqualified_partners", "slow_market_entry", "unclear_next_actions"],
+      "best_entry_offer": "saudi_market_access_sprint"
+    }
+  ],
+  "offers": [
+    {
+      "id": "saudi_opportunity_snapshot",
+      "stage": "entry",
+      "use_when": ["problem_is_broad", "buyer_needs_clarity", "limited_initial_access"],
+      "outputs": ["company_context", "opportunity_map", "top_risks", "recommended_next_step"],
+      "success_gate": "buyer_agrees_on_one_bounded_priority"
+    },
+    {
+      "id": "revenue_proof_sprint",
+      "stage": "diagnostic",
+      "use_when": ["revenue_leakage_is_suspected", "data_or_workflow_truth_is_unclear"],
+      "outputs": ["baseline", "workflow_map", "evidence_gaps", "approval_map", "proof_pack", "pilot_recommendation"],
+      "success_gate": "one_measurable_problem_and_one_safe_intervention_are_validated"
+    },
+    {
+      "id": "revenue_command_pilot",
+      "stage": "pilot",
+      "use_when": ["qualified_problem", "named_owner", "bounded_data_access", "approval_to_run_controlled_workflow"],
+      "outputs": ["daily_command", "opportunity_graph", "action_queue", "approval_queue", "outcomes", "proof_pack"],
+      "success_gate": "agreed_operating_metric_improves_or_a_clear_no_go_is_proven"
+    },
+    {
+      "id": "saudi_market_access_sprint",
+      "stage": "pilot",
+      "use_when": ["market_entry", "partner_search", "saudi_localization"],
+      "outputs": ["segment_map", "account_or_partner_universe", "qualification", "draft_outreach", "approval_queue"],
+      "success_gate": "qualified_local_path_and_next_actions_are_evidenced"
+    },
+    {
+      "id": "ai_company_os_setup",
+      "stage": "implementation",
+      "use_when": ["repeatable_cross_department_workflow", "need_for_approval_and_proof_controls"],
+      "outputs": ["company_brain", "company_loops", "roles", "approval_boundaries", "proof_ledger_adapter", "daily_command"],
+      "success_gate": "one_company_loop_runs_end_to_end_under_governance"
+    },
+    {
+      "id": "revenue_command_room_retainer",
+      "stage": "recurring",
+      "use_when": ["pilot_value_proven", "workflow_repeats", "owner_accepts_operating_rhythm"],
+      "outputs": ["weekly_command", "pipeline_and_delivery_risk", "approval_management", "proof_and_learning", "renewal_readiness"],
+      "success_gate": "recurring_governed_execution_and_evidence_review"
+    },
+    {
+      "id": "b2g_readiness_sprint",
+      "stage": "specialized",
+      "use_when": ["government_or_regulated_buyer_readiness"],
+      "outputs": ["requirements_map", "evidence_gaps", "approval_and_claim_controls", "readiness_actions"],
+      "success_gate": "readiness_gaps_are_evidenced_without_claiming_government_access"
+    },
+    {
+      "id": "partner_distributor_desk",
+      "stage": "specialized",
+      "use_when": ["channel_strategy", "distributor_or_partner_motion"],
+      "outputs": ["partner_scoring", "commercial_model", "enablement_pack", "approval_queue", "partner_proof"],
+      "success_gate": "qualified_partner_motion_with_clear_economics_and_owners"
+    }
+  ],
+  "pilot_design": {
+    "required_fields": [
+      "business_problem",
+      "baseline",
+      "target_metric",
+      "scope_in",
+      "scope_out",
+      "data_sources",
+      "owner",
+      "approval_boundaries",
+      "delivery_checkpoints",
+      "acceptance_criteria",
+      "proof_requirements",
+      "rollback_or_stop_rule"
+    ],
+    "default_duration": "30_days_or_less_when_scope_allows",
+    "must_be_bounded": true
+  },
+  "quote_guardrails": {
+    "quote_only_after_discovery": true,
+    "required_cost_inputs": ["delivery_hours", "specialist_hours", "third_party_costs", "risk_buffer", "support_load"],
+    "required_value_inputs": ["current_loss_or_cost", "frequency", "affected_volume", "decision_value", "time_to_value"],
+    "discount_requires_approval": true,
+    "scope_change_requires_requote": true,
+    "payment_terms_require_approval": true,
+    "no_margin_or_roi_claim_without_inputs": true
+  },
+  "sale_ready_pack": {
+    "required_sections": [
+      "account_context",
+      "buyer_persona",
+      "problem_statement",
+      "impact_hypothesis",
+      "recommended_offer",
+      "qualification_result",
+      "pilot_scope",
+      "success_metrics",
+      "proof_plan",
+      "risks_and_assumptions",
+      "approval_items",
+      "next_step"
+    ]
+  }
+}

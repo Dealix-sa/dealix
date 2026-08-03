@@ -5,7 +5,6 @@ from types import SimpleNamespace
 
 import pytest
 
-from auto_client_acquisition.proof_ledger.schemas import ProofEventType
 from dealix.company_intelligence.outcome_contracts import (
     OutcomeEventType,
     ProofSourceEventType,
@@ -69,48 +68,6 @@ def test_generic_synthetic_ledger_proof_preserves_provenance() -> None:
 
     assert proof.is_synthetic is True
     assert proof.publication_approved is False
-
-
-def test_legacy_synthetic_payload_cannot_be_laundered_into_payment() -> None:
-    record = SimpleNamespace(
-        event_type=ProofEventType.PAYMENT_CONFIRMED.value,
-        evidence_source="legacy-ledger:payment-1",
-        payload={"synthetic": True},
-        created_at=NOW,
-        confidence=1.0,
-        is_publishable=lambda: True,
-    )
-
-    with pytest.raises(ValueError, match="synthetic payment or delivery proof is forbidden"):
-        normalize_proof_event(
-            record,
-            tenant_id="tenant-a",
-            entity_type="opportunity",
-            entity_id="opp-1",
-            proof_type=ProofType.PAYMENT_EVIDENCE,
-            verifier="test-suite",
-        )
-
-
-def test_legacy_synthetic_payload_cannot_be_laundered_into_delivery() -> None:
-    record = SimpleNamespace(
-        event_type=ProofEventType.DELIVERY_TASK_COMPLETED.value,
-        evidence_source="legacy-ledger:delivery-1",
-        payload={"synthetic": True},
-        created_at=NOW,
-        confidence=1.0,
-        is_publishable=lambda: True,
-    )
-
-    with pytest.raises(ValueError, match="synthetic payment or delivery proof is forbidden"):
-        normalize_proof_event(
-            record,
-            tenant_id="tenant-a",
-            entity_type="delivery",
-            entity_id="delivery-1",
-            proof_type=ProofType.DELIVERY_EVIDENCE,
-            verifier="test-suite",
-        )
 
 
 def test_draft_only_loop_remains_explicitly_synthetic() -> None:

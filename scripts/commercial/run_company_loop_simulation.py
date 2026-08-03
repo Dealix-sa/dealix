@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a deterministic, network-free synthetic Dealix company loop."""
+"""Run deterministic, network-free Dealix company loops."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ from dealix.company_intelligence.outcome_contracts import (
 )
 
 DEFAULT_REGISTRY = REPO_ROOT / "dealix/registers/company_loops_registry.json"
-SYNTHETIC_TIME = datetime(2026, 8, 2, 12, 0, tzinfo=UTC)
+SYNTHETIC_TIME = datetime(2026, 8, 3, 6, 0, tzinfo=UTC)
 
 _OUTCOME_TYPE_BY_STAGE = {
     "discovery_contact_approved": OutcomeEventType.PROSPECT_REPLIED,
@@ -35,6 +35,39 @@ _OUTCOME_TYPE_BY_STAGE = {
     "commitment_recorded": OutcomeEventType.PROPOSAL_REVIEWED,
     "delivery_handoff": OutcomeEventType.PROPOSAL_REVIEWED,
     "invoice_approved": OutcomeEventType.PROPOSAL_REVIEWED,
+    "baseline_defined": OutcomeEventType.PROPOSAL_REVIEWED,
+    "onboarding_kickoff_approved": OutcomeEventType.MEETING_BOOKED,
+    "access_readiness_validated": OutcomeEventType.TECHNICAL_FIX_VERIFIED,
+    "activation_checkpoint": OutcomeEventType.TECHNICAL_FIX_VERIFIED,
+    "adoption_health_measured": OutcomeEventType.PROPOSAL_REVIEWED,
+    "risk_exception_triaged": OutcomeEventType.OBJECTION_RECORDED,
+    "customer_acceptance_approved": OutcomeEventType.PROPOSAL_REVIEWED,
+    "renewal_extension_approved": OutcomeEventType.PROPOSAL_REVIEWED,
+}
+
+_RECOGNITION_SENSITIVE_EVENT_TYPES = {
+    "payment_received",
+    "delivery_completed",
+    "customer_value_proven",
+}
+
+_RECOGNITION_SENSITIVE_REQUIREMENTS = {
+    "payment_received",
+    "delivery_completed",
+    "customer_acceptance",
+    "customer_value_evidence",
+}
+
+_LOOP_PRIORITIES = {
+    "lead_to_cash": [
+        "collect real payment evidence",
+        "collect real delivery evidence",
+    ],
+    "customer_to_value": [
+        "complete the approved onboarding plan",
+        "resolve customer adoption and delivery risks",
+        "collect real acceptance and value evidence",
+    ],
 }
 
 
@@ -84,7 +117,7 @@ def _canonical_non_financial_proofs(
 ):
     proofs = []
     for requirement in stage["proof_requirements"]:
-        if requirement in {"payment_received", "delivery_completed"}:
+        if requirement in _RECOGNITION_SENSITIVE_REQUIREMENTS:
             continue
         proofs.append(
             build_proof_event(
@@ -105,6 +138,28 @@ def _canonical_non_financial_proofs(
     return proofs
 
 
+def _withheld_claims_for_stage(stage: dict[str, Any]) -> list[dict[str, str]]:
+    withheld: list[dict[str, str]] = []
+    if stage["event_type"] in _RECOGNITION_SENSITIVE_EVENT_TYPES:
+        withheld.append(
+            {
+                "stage_id": stage["id"],
+                "claim": stage["event_type"],
+                "reason": "synthetic financial, delivery, or customer-value truth is forbidden",
+            }
+        )
+    for requirement in stage["proof_requirements"]:
+        if requirement in _RECOGNITION_SENSITIVE_REQUIREMENTS:
+            withheld.append(
+                {
+                    "stage_id": stage["id"],
+                    "claim": requirement,
+                    "reason": "real source evidence is required before recognition",
+                }
+            )
+    return withheld
+
+
 def run_loop(
     loop_id: str,
     *,
@@ -119,14 +174,14 @@ def run_loop(
     if loop["status"] != "executable_synthetic":
         raise ValueError(f"loop is not executable yet: {loop_id}")
 
-    run_id = hashlib.sha256(f"dealix:{loop_id}:{mode}:v2".encode()).hexdigest()[:20]
+    run_id = hashlib.sha256(f"dealix:{loop_id}:{mode}:v3".encode()).hexdigest()[:20]
     tenant_id = "synthetic-tenant"
     canonical_outcomes = []
     canonical_proofs = []
     canonical_learning = []
-    withheld_claims = []
+    withheld_claims: list[dict[str, str]] = []
     result: dict[str, Any] = {
-        "schema_version": "2.0",
+        "schema_version": "3.0",
         "run_id": run_id,
         "tenant_id": tenant_id,
         "loop_id": loop_id,
@@ -167,6 +222,8 @@ def run_loop(
                 }
             )
 
+        withheld_claims.extend(_withheld_claims_for_stage(stage))
+
         if "OutcomeEvent" in stage["outputs"]:
             outcome = _canonical_outcome(
                 tenant_id=tenant_id,
@@ -176,16 +233,6 @@ def run_loop(
             if outcome is not None:
                 canonical_outcomes.append(outcome)
                 result["outcome_events"].append(outcome.model_dump(mode="json"))
-            elif stage["event_type"] in {"payment_received", "delivery_completed"}:
-                withheld_claims.append(
-                    {
-                        "stage_id": stage["id"],
-                        "claim": stage["event_type"],
-                        "reason": (
-                            "synthetic financial and delivery outcomes are forbidden"
-                        ),
-                    }
-                )
 
         stage_proofs = _canonical_non_financial_proofs(
             tenant_id=tenant_id,
@@ -210,12 +257,16 @@ def run_loop(
             ) or [f"synthetic://company-loop/{run_id}/no-recognized-value"]
             learning = build_learning_event(
                 tenant_id=tenant_id,
-                event_type=LearningEventType.OFFER,
+                event_type=(
+                    LearningEventType.DELIVERY
+                    if loop_id == "customer_to_value"
+                    else LearningEventType.OFFER
+                ),
                 evidence_refs=evidence_refs,
                 confidence=0.5,
                 recommended_change=(
-                    "Keep the loop approval-first and require real payment and delivery "
-                    "evidence before recognizing value."
+                    "Keep execution approval-first and require real acceptance, payment, "
+                    "delivery, and value evidence before recognized claims."
                 ),
                 created_at=SYNTHETIC_TIME,
             )
@@ -225,12 +276,9 @@ def run_loop(
         if "DailyCommand" in stage["outputs"]:
             command = build_daily_command(
                 tenant_id=tenant_id,
-                command_date=date(2026, 8, 2),
-                priorities=[
-                    "collect real payment evidence",
-                    "collect real delivery evidence",
-                ],
-                approval_items=["approve any external execution separately"],
+                command_date=date(2026, 8, 3),
+                priorities=_LOOP_PRIORITIES.get(loop_id, ["collect real outcome evidence"]),
+                approval_items=["approve each external execution separately"],
                 proofs=canonical_proofs,
                 learning_events=canonical_learning,
                 generated_at=SYNTHETIC_TIME,
