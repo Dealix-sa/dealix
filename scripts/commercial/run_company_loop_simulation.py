@@ -6,11 +6,16 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import sys
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
-from dealix.company_intelligence.outcome_contracts import (
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from dealix.company_intelligence.outcome_contracts import (  # noqa: E402
     LearningEventType,
     OutcomeEventType,
     ProofType,
@@ -20,7 +25,6 @@ from dealix.company_intelligence.outcome_contracts import (
     build_proof_event,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REGISTRY = REPO_ROOT / "dealix/registers/company_loops_registry.json"
 SYNTHETIC_TIME = datetime(2026, 8, 2, 12, 0, tzinfo=UTC)
 
@@ -90,7 +94,9 @@ def _canonical_non_financial_proofs(
                 entity_type="company_loop_stage",
                 entity_id=stage["id"],
                 proof_type=ProofType.OUTCOME_EVIDENCE,
-                evidence_ref=f"synthetic://company-loop/{run_id}/{stage['id']}/{requirement}",
+                evidence_ref=(
+                    f"synthetic://company-loop/{run_id}/{stage['id']}/{requirement}"
+                ),
                 verified_at=SYNTHETIC_TIME,
                 verifier="company_loop_simulator",
                 confidence=0.5,
@@ -157,7 +163,9 @@ def run_loop(
                 {
                     "id": _record_id(run_id, stage["id"], "approval"),
                     "stage_id": stage["id"],
-                    "status": "approved_synthetic" if mode == "synthetic" else "approved_input",
+                    "status": (
+                        "approved_synthetic" if mode == "synthetic" else "approved_input"
+                    ),
                     "risk_level": "controlled_external_effect",
                     "is_synthetic": mode == "synthetic",
                 }
@@ -178,7 +186,9 @@ def run_loop(
                     {
                         "stage_id": stage["id"],
                         "claim": stage["event_type"],
-                        "reason": "synthetic financial and delivery outcomes are forbidden",
+                        "reason": (
+                            "synthetic financial and delivery outcomes are forbidden"
+                        ),
                     }
                 )
 
@@ -201,10 +211,7 @@ def run_loop(
                         for outcome in canonical_outcomes
                         if outcome.evidence_refs
                     ),
-                    *(
-                        proof.evidence_ref
-                        for proof in canonical_proofs
-                    ),
+                    *(proof.evidence_ref for proof in canonical_proofs),
                 }
             ) or [f"synthetic://company-loop/{run_id}/no-recognized-value"]
             learning = build_learning_event(
@@ -225,7 +232,10 @@ def run_loop(
             command = build_daily_command(
                 tenant_id=tenant_id,
                 command_date=date(2026, 8, 2),
-                priorities=["collect real payment evidence", "collect real delivery evidence"],
+                priorities=[
+                    "collect real payment evidence",
+                    "collect real delivery evidence",
+                ],
                 approval_items=["approve any external execution separately"],
                 proofs=canonical_proofs,
                 learning_events=canonical_learning,
@@ -238,7 +248,9 @@ def run_loop(
                 "stage_id": stage["id"],
                 "status": "completed_synthetic" if mode == "synthetic" else "completed",
                 "event_type": stage["event_type"],
-                "external_effect_simulated": bool(stage["external_effect"] and mode == "synthetic"),
+                "external_effect_simulated": bool(
+                    stage["external_effect"] and mode == "synthetic"
+                ),
             }
         )
     else:
@@ -250,7 +262,9 @@ def run_loop(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--loop", default="lead_to_cash")
-    parser.add_argument("--mode", choices=("synthetic", "draft_only"), default="synthetic")
+    parser.add_argument(
+        "--mode", choices=("synthetic", "draft_only"), default="synthetic"
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
