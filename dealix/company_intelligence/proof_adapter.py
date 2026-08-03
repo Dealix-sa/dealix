@@ -41,8 +41,10 @@ def _payload(record: Any) -> dict[str, Any]:
 def _is_synthetic_record(record: Any) -> bool:
     evidence_source = str(getattr(record, "evidence_source", "")).strip().lower()
     payload = _payload(record)
-    return bool(payload.get("is_synthetic")) or evidence_source.startswith(
-        _SYNTHETIC_PREFIXES
+    return (
+        bool(payload.get("is_synthetic"))
+        or bool(payload.get("synthetic"))
+        or evidence_source.startswith(_SYNTHETIC_PREFIXES)
     )
 
 
