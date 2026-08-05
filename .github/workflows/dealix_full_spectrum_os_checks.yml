@@ -1,0 +1,27 @@
+name: Dealix Full Spectrum OS Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  full-spectrum:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify full spectrum OS
+        run: python scripts/verify_full_spectrum_os.py
+
+      - name: Verify trust boundary terms
+        run: python scripts/verify_trust_boundary_terms.py
+
+      - name: Compile
+        run: python -m compileall scripts
