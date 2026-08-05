@@ -21,7 +21,6 @@ from dealix.company_intelligence.action_contracts import (
     ActionType,
     AutonomyLevel,
     CanonicalAction,
-    RiskLevel,
     build_action,
     compute_priority_score,
     is_valid_transition,
