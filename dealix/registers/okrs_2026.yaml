@@ -1,0 +1,168 @@
+# ═══════════════════════════════════════════════════════════════════
+# Dealix OKRs — 2026 (6-Month Compressed Plan, AI-First Parallel)
+# ═══════════════════════════════════════════════════════════════════
+# 4 Company OKRs aligned to the 180-day Comprehensive Build-Out Plan.
+# Each KR has a measurable target, owner, evidence path, and gate day.
+# Reviewed weekly by founder + monthly by board (cadence compressed).
+# ═══════════════════════════════════════════════════════════════════
+
+schema_version: "1.0"
+period: "H1-2026 (May–Nov 2026)"
+plan_horizon_days: 180
+last_reviewed: "2026-05-24"
+owner: "founder"
+
+objectives:
+  - id: O1
+    title: "Reach 1.5M SAR ARR (Commercial: 0 → 60+ customers)"
+    track: "Track 2 — Commercial"
+    why: "Revenue is the oxygen. 1.5M ARR triggers Series A close and proves Saudi B2B AI thesis."
+    key_results:
+      - id: KR1.1
+        name: "First paying customer signed + Proof Pack delivered"
+        target: "1 customer"
+        gate_day: 14
+        evidence: "Contract PDF + payment ID + Proof Pack URL"
+        owner: "founder"
+        status: pending
+      - id: KR1.2
+        name: "10 paying customers (Series A trigger)"
+        target: "10 customers · 250K ARR · 12mo runway"
+        gate_day: 60
+        evidence: "Customer roster + ARR statement + cap table"
+        owner: "founder"
+        status: pending
+      - id: KR1.3
+        name: "1.5M SAR ARR achieved"
+        target: "1,500,000 SAR ARR"
+        gate_day: 180
+        evidence: "Audited ARR statement + 60+ customer roster"
+        owner: "founder"
+        status: pending
+      - id: KR1.4
+        name: "Multi-PSP coverage (Moyasar + Hyperpay + Tap)"
+        target: "3 active processors"
+        gate_day: 60
+        evidence: "Successful test charges on all 3 + psp_router live"
+        owner: "founder"
+        status: pending
+
+  - id: O2
+    title: "All 12 AI Tiers Implemented to Production (Track 5)"
+    track: "Track 5 — AI / Decision Plane"
+    why: "AI maturity is the moat. 12 tiers cover caching, RAG, eval, guardrails, bilingual, tool-use, orchestration, cost, self-improvement, observability, multi-modal."
+    key_results:
+      - id: KR2.1
+        name: "Tier 1-2 PASS (caching + streaming + DecisionOutput everywhere)"
+        target: "2 tiers PASS"
+        gate_day: 14
+        evidence: "scripts/ai_tier_burndown.py output + CI green"
+        owner: "founder"
+        status: pending
+      - id: KR2.2
+        name: "Tier 3-5 + 11 PASS (RAG + Eval + Guardrails + Observability)"
+        target: "4 more tiers PASS (cumulative 6)"
+        gate_day: 30
+        evidence: "Tier verification scripts + Langfuse trace URL"
+        owner: "founder"
+        status: pending
+      - id: KR2.3
+        name: "Tier 6-7 PASS (Bilingual depth + Tool-use)"
+        target: "2 more tiers PASS (cumulative 8)"
+        gate_day: 60
+        evidence: "Khaleeji eval results + tool ledger sample"
+        owner: "founder"
+        status: pending
+      - id: KR2.4
+        name: "All 12 tiers PASS"
+        target: "12/12 tiers verified"
+        gate_day: 180
+        evidence: "All 12 tier verification scripts green + manual audit"
+        owner: "ai_lead"
+        status: pending
+
+  - id: O3
+    title: "Compliance Production Status (PDPL + NCA + ZATCA)"
+    track: "Track 6 — Compliance"
+    why: "Compliance is the wedge against translated US tools. Saudi enterprises will not buy without PDPL/ZATCA/NCA evidence."
+    key_results:
+      - id: KR3.1
+        name: "DPO appointed + Breach runbook published"
+        target: "Owner named + on-call rotation"
+        gate_day: 14
+        evidence: "dpo_appointment.yaml + BREACH_RUNBOOK.md"
+        owner: "founder"
+        status: pending
+      - id: KR3.2
+        name: "ROPA + Lawful Basis + DSAR endpoints live"
+        target: "PDPL Art. 5/6/7/18/21 operational"
+        gate_day: 30
+        evidence: "ropa.yaml populated + /api/v1/privacy/* endpoints"
+        owner: "dpo"
+        status: pending
+      - id: KR3.3
+        name: "NCA ECC 2-2024 full control mapping + Retention enforced"
+        target: "All 114 controls mapped"
+        gate_day: 60
+        evidence: "compliance_saudi.yaml NCA section complete + retention cron live"
+        owner: "dpo"
+        status: pending
+      - id: KR3.4
+        name: "SDAIA submitted + ZATCA cert rotation automated"
+        target: "Filing receipt + cron live"
+        gate_day: 120
+        evidence: "SDAIA submission receipt + ZATCA cron logs"
+        owner: "dpo"
+        status: pending
+
+  - id: O4
+    title: "Trust Plane to Production (Postgres-backed + OPA + OTel)"
+    track: "Track 3 — Platform"
+    why: "Trust Plane is non-bypassable per Constitution. In-memory state is unacceptable for PDPL S3 data."
+    key_results:
+      - id: KR4.1
+        name: "Postgres audit log + approval store + tool verification ledger live"
+        target: "3 Pilot claims → Production"
+        gate_day: 14
+        evidence: "Migration files + no_overclaim.yaml diff"
+        owner: "founder"
+        status: pending
+      - id: KR4.2
+        name: "OTel gen_ai.* + Langfuse live (Tier 11 dependency)"
+        target: "Every LLM call traced"
+        gate_day: 30
+        evidence: "Langfuse dashboard URL + sample trace screenshot"
+        owner: "founder"
+        status: pending
+      - id: KR4.3
+        name: "OPA/Rego per-tenant policies + Temporal MVP"
+        target: "Closes policy_evaluator Pilot + workflow durability"
+        gate_day: 60
+        evidence: "OPA decision logs + Temporal replay test"
+        owner: "cto"
+        status: pending
+      - id: KR4.4
+        name: "All no_overclaim.yaml claims at Production (zero Pilot/Partial/Planned)"
+        target: "~50 claims, 100% Production"
+        gate_day: 180
+        evidence: "no_overclaim.yaml full diff"
+        owner: "cto"
+        status: pending
+
+# ═══════════════════════════════════════════════════════════════════
+# Cross-OKR dependencies
+# ═══════════════════════════════════════════════════════════════════
+dependencies:
+  - "O4.KR4.1 (Postgres trust plane) blocks O3.KR3.2 (DSAR endpoints need audit log)"
+  - "O4.KR4.2 (OTel + Langfuse) blocks O2.KR2.2 (other AI tiers need trace data to verify)"
+  - "O1.KR1.4 (multi-PSP) is independent of all other tracks (revenue path uncoupled)"
+  - "Tier 11 (Observability) ships first in O2 so other tiers can verify"
+
+# ═══════════════════════════════════════════════════════════════════
+# Review cadence
+# ═══════════════════════════════════════════════════════════════════
+review:
+  daily: "Founder brief checks pipeline + new customers"
+  weekly: "AI tier burndown + commercial pipeline review (Monday)"
+  monthly: "CEO monthly review aggregates ARR/funnel/NPS/compliance/cost (1st)"
+  monthly_board: "Board cadence Day 60-180 (compressed); quarterly post-Series A"

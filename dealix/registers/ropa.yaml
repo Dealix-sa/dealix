@@ -1,0 +1,207 @@
+# ═══════════════════════════════════════════════════════════════════
+# Record of Processing Activities (ROPA) — PDPL Art. 7
+# سجل أنشطة معالجة البيانات
+# ═══════════════════════════════════════════════════════════════════
+# Required by PDPL. Every personal-data processing activity at Dealix
+# must be listed here with: purpose, lawful basis, categories of data
+# subjects, categories of data, recipients, retention, cross-border
+# transfers, and security measures.
+#
+# This register is the substrate for: DSAR responses, breach impact
+# assessment, vendor risk register, cross-border transfer decisions,
+# and SDAIA registration.
+#
+# Reviewed by DPO monthly. Updated within 7 days of any new processing
+# activity entering production.
+# ═══════════════════════════════════════════════════════════════════
+
+schema_version: "1.0"
+last_reviewed: "2026-05-24"
+controller: "Dealix (Saudi B2B Revenue Engine)"
+processor_register: "auto_client_acquisition/compliance_os/vendor_registry.py"
+review_cadence: "monthly by DPO"
+
+activities:
+  - id: ACT-001
+    name: "Lead intake from public forms (demo-request, partner-application)"
+    purpose: "Process incoming business inquiries"
+    purpose_ar: "معالجة استفسارات الأعمال الواردة"
+    lawful_basis: "consent + legitimate interest"  # PDPL Art. 5
+    pdpl_article: 5
+    data_subject_categories: ["prospect", "business_contact"]
+    data_categories:
+      - "Name (full)"
+      - "Email (business)"
+      - "Phone (KSA mobile)"
+      - "Company name + sector + region"
+      - "Stated budget + message content"
+    sensitivity_class: "S2"  # business-identifiable
+    recipients:
+      - "Internal: founder, sales agent"
+      - "External: HubSpot CRM (US-based, controller agreement required)"
+      - "External: Calendly (US-based, controller agreement required)"
+    retention_period: "12 months from last activity"
+    retention_basis: "Legitimate interest for follow-up; aligns with PDPL Art. 30"
+    cross_border_transfer: true
+    cross_border_mitigation: "Standard contractual clauses + SDAIA-aligned safeguards"
+    security_measures:
+      - "TLS in transit"
+      - "Postgres encryption at rest (Railway)"
+      - "BOPLA redaction middleware on LLM boundary"
+      - "Audit log immutable"
+    automated_decision_making: false
+    profile_decision_making: true  # ICP scoring used for prioritization
+    data_subject_rights_implementation:
+      - "Access: GET /api/v1/privacy/my-data (Day 30)"
+      - "Erasure: POST /api/v1/privacy/data-subject-request (Day 30)"
+      - "Rectification: same endpoint"
+      - "Portability: JSON export"
+      - "Objection: opt-out flag in CRM"
+    review_due: "2026-06-24"
+
+  - id: ACT-002
+    name: "ICP scoring and account qualification (Phase 8 pipeline)"
+    purpose: "Score lead fit against Ideal Customer Profile for prioritization"
+    purpose_ar: "تقييم ملاءمة العميل المحتمل للأولوية"
+    lawful_basis: "legitimate interest"
+    pdpl_article: 5
+    data_subject_categories: ["prospect", "qualified_lead"]
+    data_categories:
+      - "Company name + sector + region + size estimate"
+      - "Stated budget"
+      - "Pain points extracted from message"
+      - "Public signals (website, news — if enriched)"
+    sensitivity_class: "S2"
+    recipients:
+      - "Internal: scoring agent, founder, sales"
+      - "External: LLM provider (Anthropic / OpenAI for embedding) — cross-border"
+    retention_period: "Score result: 12 months; raw inputs: same as ACT-001"
+    cross_border_transfer: true
+    cross_border_mitigation: "S3 data NOT sent; only de-identified scoring features"
+    security_measures: ["PII redaction before LLM call (Tier 5 Day 30)", "Per-tenant memory isolation"]
+    automated_decision_making: false  # human reviews scores before action
+    profile_decision_making: true
+    data_subject_rights_implementation: "Same as ACT-001"
+    review_due: "2026-06-24"
+
+  - id: ACT-003
+    name: "Outbound personalized messaging (Outreach + Follow-up agents)"
+    purpose: "Generate compliant personalized outreach for qualified prospects"
+    purpose_ar: "توليد رسائل خارجية مخصصة ومتوافقة للعملاء المحتملين المؤهلين"
+    lawful_basis: "consent (post-opt-in) + legitimate interest (warm intros only)"
+    pdpl_article: 5
+    data_subject_categories: ["qualified_lead"]
+    data_categories: ["all from ACT-001 + ACT-002"]
+    sensitivity_class: "S2"
+    recipients:
+      - "Internal: outreach agent (recommends, does not send)"
+      - "Founder approval gate (per NO_LIVE_SEND doctrine)"
+      - "External (post-approval): WhatsApp Business / Email / LinkedIn (founder-personal manual)"
+    retention_period: "Message + delivery status: 24 months"
+    cross_border_transfer: false  # message generation happens in KSA-hosted backend
+    security_measures:
+      - "safe_send_gateway enforces approval check"
+      - "channel_policy_gateway enforces NO_COLD_WHATSAPP + NO_LINKEDIN_AUTO"
+      - "Audit log immutable"
+    automated_decision_making: false  # founder approves every send
+    profile_decision_making: true
+    data_subject_rights_implementation: "Same as ACT-001 + opt-out on every message"
+    review_due: "2026-06-24"
+
+  - id: ACT-004
+    name: "Customer relationship management post-conversion (HubSpot sync)"
+    purpose: "Manage customer accounts, contacts, deals, lifecycle"
+    purpose_ar: "إدارة حسابات العملاء وجهات الاتصال والصفقات ودورة الحياة"
+    lawful_basis: "contract"  # PDPL Art. 5
+    pdpl_article: 5
+    data_subject_categories: ["customer", "business_contact"]
+    data_categories:
+      - "Name, email, phone, role, company"
+      - "Contract terms, payment history, support tickets"
+      - "Usage telemetry, NPS scores"
+    sensitivity_class: "S2"  # commercial-sensitive, not S3
+    recipients:
+      - "Internal: founder, CSM (post-hire), CRM agent"
+      - "External: HubSpot (US, controller agreement)"
+      - "External: Moyasar / Hyperpay / Tap (KSA-based PSPs, processor agreement)"
+    retention_period: "Active customer + 7 years post-termination (ZATCA invoice retention)"
+    cross_border_transfer: true
+    cross_border_mitigation: "HubSpot DPA + PDPL-aligned safeguards"
+    security_measures:
+      - "RLS by tenant in Postgres"
+      - "Encrypted at rest"
+      - "Audit log per data access"
+    automated_decision_making: false
+    profile_decision_making: true  # customer health scoring
+    data_subject_rights_implementation: "Same as ACT-001"
+    review_due: "2026-06-24"
+
+  - id: ACT-005
+    name: "Decision Passport + Proof Pack generation (Customer deliverables)"
+    purpose: "Produce structured AI deliverables with evidence trail"
+    purpose_ar: "إنتاج مخرجات منظمة من الذكاء الاصطناعي مع سلسلة الأدلة"
+    lawful_basis: "contract"
+    pdpl_article: 5
+    data_subject_categories: ["customer", "customer's_prospects_indirectly"]
+    data_categories:
+      - "Customer-supplied data (CRM exports, lead lists)"
+      - "Customer-supplied documents (RFPs, contracts) — Multi-modal Tier 12"
+      - "Generated content (Proof Pack memo, Decision Passport)"
+    sensitivity_class: "Up to S3"  # may include third-party PII supplied by customer
+    recipients:
+      - "Internal: agents (pain extractor, ICP, market research)"
+      - "Internal: founder (approval gate before delivery)"
+      - "External: LLM providers (de-identified after PII redaction)"
+    retention_period: "7 years (ZATCA + customer audit window)"
+    cross_border_transfer: true
+    cross_border_mitigation: "BOPLA redaction on all inputs going to non-KSA LLMs; S3 data flagged and routed to KSA-permissible model only"
+    security_measures:
+      - "HMAC-signed deliverable (proof_ledger/hmac_signing.py)"
+      - "Evidence Pack cites every source"
+      - "Customer-tenant isolation via RLS"
+    automated_decision_making: false  # founder approves every Proof Pack
+    profile_decision_making: true
+    data_subject_rights_implementation: "Per ACT-001; customer assumes controller role for their own customers' data"
+    review_due: "2026-06-24"
+
+  - id: ACT-006
+    name: "Payment processing (Moyasar / Hyperpay / Tap)"
+    purpose: "Process customer payments and issue ZATCA-compliant invoices"
+    purpose_ar: "معالجة مدفوعات العملاء وإصدار فواتير متوافقة مع زاتكا"
+    lawful_basis: "contract + legal obligation (ZATCA)"
+    pdpl_article: 5
+    data_subject_categories: ["customer", "billing_contact"]
+    data_categories:
+      - "Payment method (tokenized by PSP)"
+      - "Invoice line items"
+      - "VAT 15% records"
+      - "ZATCA Phase 2 e-invoice payload"
+    sensitivity_class: "S2"  # not S3 (card data is tokenized at PSP)
+    recipients:
+      - "Internal: payment orchestrator, reconciliation"
+      - "External: PSPs (Moyasar / Hyperpay / Tap — KSA-based)"
+      - "External: ZATCA (regulator)"
+    retention_period: "7 years (ZATCA mandate)"
+    cross_border_transfer: false  # PSPs are KSA-based
+    security_measures:
+      - "PCI-DSS by PSP (Dealix does not store card data)"
+      - "HMAC webhook verification"
+      - "Idempotency on payment events"
+    automated_decision_making: false
+    profile_decision_making: false
+    data_subject_rights_implementation: "Erasure restricted by ZATCA retention; rectification available"
+    review_due: "2026-06-24"
+
+# ═══════════════════════════════════════════════════════════════════
+# Cross-border transfer register pointer
+# ═══════════════════════════════════════════════════════════════════
+cross_border_register: "dealix/registers/cross_border_transfers.yaml"  # to be created
+
+# ═══════════════════════════════════════════════════════════════════
+# Adding a new activity
+# ═══════════════════════════════════════════════════════════════════
+# 1. Open PR with new entry following template
+# 2. DPO reviews + signs off (PR check)
+# 3. If S3 data involved, DPIA required (docs/25_compliance_trust/DPIA_TEMPLATE.md)
+# 4. If cross-border, update cross_border_transfers.yaml
+# 5. Merge after DPO approval

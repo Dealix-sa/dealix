@@ -1,0 +1,94 @@
+# ═══════════════════════════════════════════════════════════════════
+# Data Protection Officer (DPO) Appointment Register
+# سجل تعيين مسؤول حماية البيانات
+# ═══════════════════════════════════════════════════════════════════
+# PDPL requires a named DPO when an organization:
+#   - Processes personal data at scale
+#   - Processes data of public-entity subjects
+#   - Engages in core processing as part of business
+#
+# Dealix meets all three triggers; DPO must be appointed by Day 14
+# per the Comprehensive Build-Out Plan.
+# ═══════════════════════════════════════════════════════════════════
+
+schema_version: "1.0"
+last_reviewed: "2026-05-24"
+status: "appointment_pending"  # transitions to "appointed" when filled
+appointment_target_day: 14
+
+# ───────────────────── Appointment ─────────────────────
+dpo:
+  appointed: false
+  name: null            # FILL: full name (Arabic + English)
+  name_ar: null
+  name_en: null
+  contact_email: null   # FILL: dedicated email, NOT founder email
+  contact_phone: null   # FILL: KSA mobile +966
+  appointment_letter_path: null  # FILL: docs/25_compliance_trust/DPO_APPOINTMENT_LETTER.pdf
+  start_date: null
+  reporting_to: "founder + board"  # PDPL requires independence from operational lines
+  training_certification: null    # FILL: e.g., IAPP CIPP/M, PDPL-certified
+
+# ───────────────────── Responsibilities (PDPL Art. 32) ─────────────────────
+responsibilities:
+  - "Monitor compliance with PDPL across all processing activities"
+  - "Advise on data protection impact assessments (DPIAs)"
+  - "Serve as point of contact for SDAIA inquiries"
+  - "Serve as point of contact for data subjects exercising rights (DSAR)"
+  - "Maintain Record of Processing Activities (ROPA)"
+  - "Review and approve cross-border data transfers"
+  - "Manage breach response (72-hour SDAIA notification window)"
+  - "Train staff on PDPL obligations"
+  - "Maintain vendor risk register for sub-processors"
+
+# ───────────────────── Escalation Path ─────────────────────
+escalation:
+  - level: 1
+    role: "DPO"
+    resolves: "Day-to-day PDPL queries, DSAR responses, ROPA updates"
+  - level: 2
+    role: "Founder (CEO)"
+    resolves: "Cross-functional conflicts, breach-of-72h-window risk, sub-processor approval"
+  - level: 3
+    role: "Board"
+    resolves: "Material PDPL violation, SDAIA enforcement action, regulatory fine"
+
+# ───────────────────── On-call rotation ─────────────────────
+on_call:
+  primary: null       # FILL: DPO mobile when appointed
+  secondary: "founder"  # founder is backup until CTO co-founder appointed (Day 60)
+  rotation_doc: "docs/25_compliance_trust/ON_CALL_ROTATION.md"  # FILL when DPO appointed
+  alert_channels:
+    - "SMS (UptimeRobot integration)"
+    - "Email (Sentry alerts)"
+    - "WhatsApp (founder-personal)"
+
+# ───────────────────── Drills ─────────────────────
+drills:
+  schedule: "Monthly Day 60-180 (compressed cadence); quarterly post-Series A"
+  scenarios:
+    - "Breach detection → 72h SDAIA notification (timer drill)"
+    - "DSAR request → 30-day response (compressing to 72h)"
+    - "Sub-processor failure → vendor switchover"
+    - "Cross-border transfer violation → containment + report"
+  last_drill: null
+  next_drill_due: "2026-07-24"
+
+# ───────────────────── Authority ─────────────────────
+authority:
+  can_veto:
+    - "Processing activity without lawful basis"
+    - "Cross-border transfer without adequate safeguards"
+    - "Vendor onboarding without DPIA"
+    - "Marketing communication without consent ledger entry"
+  cannot:
+    - "Make business decisions outside compliance scope"
+    - "Approve external commitments (per Constitution Art. II)"
+
+# ───────────────────── SDAIA Registration ─────────────────────
+sdaia_registration:
+  required: true  # Dealix qualifies under multiple triggers
+  filing_target_day: 120
+  filing_status: pending
+  controller_or_processor: "Both (controller for customer data; processor for sub-processor data)"
+  dpo_registered_with_sdaia: false  # transitions when filed
