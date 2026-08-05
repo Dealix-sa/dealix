@@ -13,16 +13,13 @@ from datetime import UTC, date, datetime
 
 import pytest
 
+from dealix import company_intelligence as ci_module
 from dealix.company_intelligence import (
-    # Entity types and enums
     ActionStatus,
     ActionType,
     AutonomyLevel,
-    # Canonical models
     CanonicalAction,
-    CanonicalApproval,
     CanonicalCompany,
-    CanonicalCompanyBrain,
     CanonicalConsentBasis,
     CanonicalContact,
     CanonicalDailyCommand,
@@ -41,45 +38,35 @@ from dealix.company_intelligence import (
     CanonicalSignal,
     CanonicalSource,
     CanonicalTenant,
-    CompanyBrainSource,
     CompanyStatus,
     ConsentBasisStatus,
     ConsentBasisType,
     ConsentChannel,
-    ContactRole,
     ContactStatus,
     Department,
     DraftChannel,
     EntityType,
-    EvidenceState,
     LawfulContactBasis,
     LearningEventType,
     OfferApprovalPolicy,
-    OfferPriceUnit,
     OfferStatus,
     OutcomeEventType,
     PartnershipStage,
     PartnershipType,
     PersonaStatus,
-    PlanPriority,
     PlanStatus,
     PlaybookApprovalStatus,
     ProofSourceEventType,
     ProofType,
     ProposalStatus,
     RelationshipStatus,
-    RelationshipStrength,
     RelationshipType,
     RiskLevel,
-    SignalSensitivity,
     SignalStatus,
     SignalType,
-    SourcePolicyStatus,
     SourceStatus,
     SourceType,
-    TenantPlan,
     TenantStatus,
-    # Builders
     build_action,
     build_company,
     build_consent_basis,
@@ -99,23 +86,7 @@ from dealix.company_intelligence import (
     build_signal,
     build_source,
     build_tenant,
-    # Transition helpers
-    is_valid_company_transition,
-    is_valid_consent_transition,
-    is_valid_contact_transition,
-    is_valid_partnership_transition,
-    is_valid_persona_transition,
-    is_valid_plan_transition,
-    is_valid_playbook_transition,
-    is_valid_proposal_transition,
-    is_valid_relationship_transition,
-    is_valid_signal_transition,
-    is_valid_source_transition,
-    is_valid_tenant_transition,
-    is_valid_transition,
-    # Adapters
     normalize_catalog,
-    normalize_service_offering,
     transition_action,
     transition_company,
     transition_consent_basis,
@@ -143,18 +114,14 @@ class TestExportCompleteness:
     """Verify all __all__ exports are importable and non-None."""
 
     def test_all_exports_are_importable(self) -> None:
-        import dealix.company_intelligence as ci
-
-        for name in ci.__all__:
-            obj = getattr(ci, name)
+        for name in ci_module.__all__:
+            obj = getattr(ci_module, name)
             assert obj is not None, f"{name} exported as None"
 
     def test_all_count(self) -> None:
-        import dealix.company_intelligence as ci
-
         # All 22 entities have contracts; 13 have state machines with 3 helpers each
         # plus builders, adapters, enums, utilities
-        assert len(ci.__all__) > 100
+        assert len(ci_module.__all__) > 100
 
 
 # ---------------------------------------------------------------------------
