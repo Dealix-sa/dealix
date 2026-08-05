@@ -57,7 +57,7 @@ dependencies = [
     "resend>=2.4.0",
     "ummalqura>=1.0.4",
     "pyyaml>=6.0.2",
-    "qrcode[pil]>=7.4.2,<8",
+    "qrcode[pil]>=7.4.2,<9",
     "pyotp>=2.9.0,<3",
     "passlib[bcrypt]>=1.7.4,<2",
     # Follows cryptography: 49 requires cffi>=2.0.0, so a <2 ceiling here
@@ -134,25 +134,16 @@ extend-exclude = [".venv", "venv", "build", "dist", "migrations"]
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "B", "C4", "UP", "N", "S", "SIM", "RUF"]
-ignore = ["E501", "S101", "B008", "RUF001", "RUF002", "RUF003", "E702", "S110", "SIM102", "SIM105", "RUF012", "S301", "B904", "F401", "E701", "E402", "N806", "E741", "S310", "S105", "S112", "RUF059", "B007", "F841", "C408", "N802", "SIM108", "SIM118", "RUF005", "RUF046", "UP042", "UP035", "UP006", "S108", "E712", "S324", "W291", "B017", "B905", "C416", "RUF022", "RUF034", "S102", "S608", "SIM110", "B011", "B033", "F811", "N818", "RUF007", "SIM103", "B023", "C401", "E722", "N814", "N999", "RUF015", "RUF043", "S311", "S602", "UP036"]
-
+ignore = ["E501", "S101", "B008", "RUF001", "RUF002", "RUF003", "E702", "S608", "SIM102", "SIM105", "RUF012", "S301", "B904", "F401", "E501", "E402", "N806", "E741", "S324", "S110", "S112", "RUF059", "B007", "F841", "C408", "N802", "SIM108", "SIM118", "RUF005", "RUF046", "UP042", "UP035", "UP006", "S108", "E712", "S324", "W291", "B017", "B905", "C416", "RUF022", "RUF034", "UP036", "B033", "F811", "N818", "RUF007", "SIM103", "B023", "C401", "E722", "N814", "N999", "RUF015", "RUF043", "S311", "S602", "UP036"]
 [tool.ruff.lint.per-file-ignores]
-# S101  assert  — pytest uses asserts; tests pinky-promise on inputs
-# S106  hard-coded passwords — test fixtures only
-# S311  random() — non-crypto use in test data generation
-# S603  subprocess without shell=True — internal trusted commands
-# S607  partial executable path — git/bash/pandoc are PATH-resolved trusted tools
 "tests/**/*.py" = ["S101", "S106", "S311", "S603", "S607"]
 "scripts/**/*.py" = ["S101", "S603", "S607"]
-
 [tool.bandit]
 skips = ["B104", "B110"]
 exclude_dirs = ["tests", ".venv", "venv", "migrations", "build", "dist"]
-
 [tool.black]
 line-length = 100
 target-version = ["py311", "py312"]
-
 [tool.mypy]
 python_version = "3.11"
 strict = false
@@ -161,42 +152,25 @@ warn_unused_configs = true
 disallow_untyped_defs = false
 ignore_missing_imports = true
 exclude = ["venv", "build", "dist", "db/migrations"]
-
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = [
-    "-ra",
-    "--strict-markers",
-    "--strict-config",
-    # Hard per-test ceiling: turns an environment-specific hang (e.g. a blocked
-    # outbound call in CI) into a fast, deterministic failure instead of stalling
-    # the whole suite until the job times out and the run is cancelled.
-    "--timeout=120",
-    "--timeout-method=thread",
-]
+addopts = ["-ra", "--strict-markers", "--strict-config", "--timeout=120", "--timeout-method=thread"]
 markers = [
     "unit: unit tests",
     "integration: integration tests",
     "slow: slow tests",
     "llm: tests that call real LLMs",
 ]
-
 [tool.coverage.run]
 branch = true
 source = ["core", "auto_client_acquisition", "autonomous_growth", "integrations", "api"]
 omit = ["*/tests/*", "*/migrations/*", "*/__init__.py"]
-
 [tool.coverage.report]
 precision = 2
 show_missing = true
 skip_covered = false
-exclude_lines = [
-    "pragma: no cover",
-    "raise NotImplementedError",
-    "if __name__ == .__main__.:",
-    "if TYPE_CHECKING:",
-]
+exclude_lines = ["pragma: no cover", "raise NotImplementedError", "if __name__ == .__main__.", "if TYPE_CHECKING:"]
