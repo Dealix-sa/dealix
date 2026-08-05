@@ -162,6 +162,70 @@ class CanonicalPlaybookVersion(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# State machine
+# ---------------------------------------------------------------------------
+
+_PLAYBOOK_TRANSITIONS: dict[
+    PlaybookApprovalStatus, frozenset[PlaybookApprovalStatus]
+] = {
+    PlaybookApprovalStatus.PROPOSED: frozenset(
+        {PlaybookApprovalStatus.UNDER_REVIEW, PlaybookApprovalStatus.REJECTED}
+    ),
+    PlaybookApprovalStatus.UNDER_REVIEW: frozenset(
+        {PlaybookApprovalStatus.APPROVED, PlaybookApprovalStatus.REJECTED}
+    ),
+    PlaybookApprovalStatus.APPROVED: frozenset(
+        {PlaybookApprovalStatus.SUPERSEDED}
+    ),
+    PlaybookApprovalStatus.REJECTED: frozenset(),  # terminal
+    PlaybookApprovalStatus.SUPERSEDED: frozenset(),  # terminal
+}
+
+
+def valid_playbook_transitions_from(
+    status: PlaybookApprovalStatus,
+) -> frozenset[PlaybookApprovalStatus]:
+    """Return the set of valid target states from *status*."""
+    return _PLAYBOOK_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_playbook_transition(
+    from_status: PlaybookApprovalStatus,
+    to_status: PlaybookApprovalStatus,
+) -> bool:
+    """Check whether *from_status* → *to_status* is a valid transition."""
+    return to_status in valid_playbook_transitions_from(from_status)
+
+
+def transition_playbook(
+    playbook: CanonicalPlaybookVersion,
+    *,
+    to_status: PlaybookApprovalStatus,
+    approved_at: datetime | None = None,
+) -> CanonicalPlaybookVersion:
+    """Return a new CanonicalPlaybookVersion with *to_status* applied.
+
+    Raises ValueError on invalid transitions. The original is never mutated.
+    When transitioning to APPROVED, approved_at is set automatically if not
+    provided.
+    """
+    if not is_valid_playbook_transition(playbook.approval_status, to_status):
+        raise ValueError(
+            f"invalid playbook transition: "
+            f"{playbook.approval_status.value} → {to_status.value}"
+        )
+    updates: dict[str, Any] = {"approval_status": to_status}
+    if to_status == PlaybookApprovalStatus.APPROVED:
+        updates["approved_at"] = approved_at or datetime.now(UTC)
+    return playbook.model_copy(update=updates)
+
+
+# ---------------------------------------------------------------------------
+# Builder
+# ---------------------------------------------------------------------------
+
+
 def build_playbook_version(
     *,
     tenant_id: str,

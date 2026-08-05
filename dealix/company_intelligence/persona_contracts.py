@@ -132,6 +132,52 @@ class CanonicalPersona(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# State machine
+# ---------------------------------------------------------------------------
+
+_PERSONA_TRANSITIONS: dict[PersonaStatus, frozenset[PersonaStatus]] = {
+    PersonaStatus.DRAFT: frozenset({PersonaStatus.ACTIVE, PersonaStatus.RETIRED}),
+    PersonaStatus.ACTIVE: frozenset({PersonaStatus.UNDER_REVIEW, PersonaStatus.RETIRED}),
+    PersonaStatus.UNDER_REVIEW: frozenset({PersonaStatus.ACTIVE, PersonaStatus.RETIRED}),
+    PersonaStatus.RETIRED: frozenset(),  # terminal
+}
+
+
+def valid_persona_transitions_from(status: PersonaStatus) -> frozenset[PersonaStatus]:
+    """Return the set of valid target states from *status*."""
+    return _PERSONA_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_persona_transition(
+    from_status: PersonaStatus,
+    to_status: PersonaStatus,
+) -> bool:
+    """Check whether *from_status* → *to_status* is a valid transition."""
+    return to_status in valid_persona_transitions_from(from_status)
+
+
+def transition_persona(
+    persona: CanonicalPersona,
+    *,
+    to_status: PersonaStatus,
+) -> CanonicalPersona:
+    """Return a new CanonicalPersona with *to_status* applied.
+
+    Raises ValueError on invalid transitions. The original is never mutated.
+    """
+    if not is_valid_persona_transition(persona.status, to_status):
+        raise ValueError(
+            f"invalid persona transition: {persona.status.value} → {to_status.value}"
+        )
+    return persona.model_copy(update={"status": to_status})
+
+
+# ---------------------------------------------------------------------------
+# Builder
+# ---------------------------------------------------------------------------
+
+
 def build_persona(
     *,
     tenant_id: str,

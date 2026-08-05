@@ -167,6 +167,64 @@ class CanonicalRelationship(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# State machine
+# ---------------------------------------------------------------------------
+
+_RELATIONSHIP_TRANSITIONS: dict[RelationshipStatus, frozenset[RelationshipStatus]] = {
+    RelationshipStatus.DISCOVERED: frozenset(
+        {RelationshipStatus.CONFIRMED, RelationshipStatus.DISSOLVED}
+    ),
+    RelationshipStatus.CONFIRMED: frozenset(
+        {RelationshipStatus.ACTIVE, RelationshipStatus.DISSOLVED}
+    ),
+    RelationshipStatus.ACTIVE: frozenset(
+        {RelationshipStatus.INACTIVE, RelationshipStatus.DISSOLVED}
+    ),
+    RelationshipStatus.INACTIVE: frozenset(
+        {RelationshipStatus.ACTIVE, RelationshipStatus.DISSOLVED}
+    ),
+    RelationshipStatus.DISSOLVED: frozenset(),  # terminal
+}
+
+
+def valid_relationship_transitions_from(
+    status: RelationshipStatus,
+) -> frozenset[RelationshipStatus]:
+    """Return the set of valid target states from *status*."""
+    return _RELATIONSHIP_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_relationship_transition(
+    from_status: RelationshipStatus,
+    to_status: RelationshipStatus,
+) -> bool:
+    """Check whether *from_status* → *to_status* is a valid transition."""
+    return to_status in valid_relationship_transitions_from(from_status)
+
+
+def transition_relationship(
+    relationship: CanonicalRelationship,
+    *,
+    to_status: RelationshipStatus,
+) -> CanonicalRelationship:
+    """Return a new CanonicalRelationship with *to_status* applied.
+
+    Raises ValueError on invalid transitions. The original is never mutated.
+    """
+    if not is_valid_relationship_transition(relationship.status, to_status):
+        raise ValueError(
+            f"invalid relationship transition: "
+            f"{relationship.status.value} → {to_status.value}"
+        )
+    return relationship.model_copy(update={"status": to_status})
+
+
+# ---------------------------------------------------------------------------
+# Builder
+# ---------------------------------------------------------------------------
+
+
 def build_relationship(
     *,
     tenant_id: str,

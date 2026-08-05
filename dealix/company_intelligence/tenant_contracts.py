@@ -145,6 +145,57 @@ class CanonicalTenant(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# State machine
+# ---------------------------------------------------------------------------
+
+_TENANT_TRANSITIONS: dict[TenantStatus, frozenset[TenantStatus]] = {
+    TenantStatus.ACTIVE: frozenset({TenantStatus.SUSPENDED, TenantStatus.CHURNED}),
+    TenantStatus.SUSPENDED: frozenset({TenantStatus.ACTIVE, TenantStatus.CHURNED}),
+    TenantStatus.CHURNED: frozenset(),  # terminal
+}
+
+
+def valid_tenant_transitions_from(status: TenantStatus) -> frozenset[TenantStatus]:
+    """Return the set of valid target states from *status*."""
+    return _TENANT_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_tenant_transition(
+    from_status: TenantStatus,
+    to_status: TenantStatus,
+) -> bool:
+    """Check whether *from_status* → *to_status* is a valid transition."""
+    return to_status in valid_tenant_transitions_from(from_status)
+
+
+def transition_tenant(
+    tenant: CanonicalTenant,
+    *,
+    to_status: TenantStatus,
+    suspended_at: datetime | None = None,
+) -> CanonicalTenant:
+    """Return a new CanonicalTenant with *to_status* applied.
+
+    Raises ValueError on invalid transitions. The original is never mutated.
+    """
+    if not is_valid_tenant_transition(tenant.status, to_status):
+        raise ValueError(
+            f"invalid tenant transition: {tenant.status.value} → {to_status.value}"
+        )
+    updates: dict[str, Any] = {"status": to_status}
+    if to_status == TenantStatus.SUSPENDED:
+        updates["suspended_at"] = suspended_at or datetime.now(UTC)
+    elif to_status == TenantStatus.ACTIVE:
+        updates["suspended_at"] = None
+    return tenant.model_copy(update=updates)
+
+
+# ---------------------------------------------------------------------------
+# Builder
+# ---------------------------------------------------------------------------
+
+
 def build_tenant(
     *,
     handle: str,

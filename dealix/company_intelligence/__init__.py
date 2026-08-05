@@ -89,11 +89,17 @@ from dealix.company_intelligence.persona_contracts import (
     CanonicalPersona,
     PersonaStatus,
     build_persona,
+    is_valid_persona_transition,
+    transition_persona,
+    valid_persona_transitions_from,
 )
 from dealix.company_intelligence.playbook_contracts import (
     CanonicalPlaybookVersion,
     PlaybookApprovalStatus,
     build_playbook_version,
+    is_valid_playbook_transition,
+    transition_playbook,
+    valid_playbook_transitions_from,
 )
 from dealix.company_intelligence.proof_adapter import normalize_proof_event
 from dealix.company_intelligence.proposal_contracts import (
@@ -110,6 +116,9 @@ from dealix.company_intelligence.relationship_contracts import (
     RelationshipStatus,
     RelationshipType,
     build_relationship,
+    is_valid_relationship_transition,
+    transition_relationship,
+    valid_relationship_transitions_from,
 )
 from dealix.company_intelligence.signal_contracts import (
     CanonicalSignal,
@@ -140,6 +149,9 @@ from dealix.company_intelligence.tenant_contracts import (
     TenantPlan,
     TenantStatus,
     build_tenant,
+    is_valid_tenant_transition,
+    transition_tenant,
+    valid_tenant_transitions_from,
 )
 
 from . import outcome_contracts as _outcome_contracts
@@ -259,10 +271,14 @@ __all__ = [
     "is_valid_consent_transition",
     "is_valid_contact_transition",
     "is_valid_partnership_transition",
+    "is_valid_persona_transition",
     "is_valid_plan_transition",
+    "is_valid_playbook_transition",
     "is_valid_proposal_transition",
+    "is_valid_relationship_transition",
     "is_valid_signal_transition",
     "is_valid_source_transition",
+    "is_valid_tenant_transition",
     "is_valid_transition",
     "normalize_approval",
     "normalize_catalog",
@@ -274,17 +290,25 @@ __all__ = [
     "transition_consent_basis",
     "transition_contact",
     "transition_partnership",
+    "transition_persona",
     "transition_plan",
+    "transition_playbook",
     "transition_proposal",
+    "transition_relationship",
     "transition_signal",
     "transition_source",
+    "transition_tenant",
     "valid_company_transitions_from",
     "valid_consent_transitions_from",
     "valid_contact_transitions_from",
     "valid_partnership_transitions_from",
+    "valid_persona_transitions_from",
     "valid_plan_transitions_from",
+    "valid_playbook_transitions_from",
     "valid_proposal_transitions_from",
+    "valid_relationship_transitions_from",
     "valid_signal_transitions_from",
     "valid_source_transitions_from",
+    "valid_tenant_transitions_from",
     "valid_transitions_from",
 ]
