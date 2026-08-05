@@ -29,7 +29,6 @@ from dealix.company_intelligence.action_contracts import (
     valid_transitions_from,
 )
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
