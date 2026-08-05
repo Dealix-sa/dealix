@@ -10,7 +10,6 @@ No database, network, or LLM calls.
 from __future__ import annotations
 
 from auto_client_acquisition.service_catalog.schemas import ServiceOffering
-
 from dealix.company_intelligence.offer_contracts import (
     CanonicalOffer,
     OfferApprovalPolicy,

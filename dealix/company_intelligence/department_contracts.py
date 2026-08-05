@@ -193,6 +193,75 @@ class CanonicalDepartmentPlan(BaseModel):
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# DepartmentPlan state machine
+# ---------------------------------------------------------------------------
+
+
+_PLAN_TRANSITIONS: dict[PlanStatus, frozenset[PlanStatus]] = {
+    PlanStatus.DRAFT: frozenset({
+        PlanStatus.ACTIVE,
+        PlanStatus.ARCHIVED,
+    }),
+    PlanStatus.ACTIVE: frozenset({
+        PlanStatus.UNDER_REVIEW,
+        PlanStatus.PAUSED,
+        PlanStatus.COMPLETED,
+        PlanStatus.ARCHIVED,
+    }),
+    PlanStatus.UNDER_REVIEW: frozenset({
+        PlanStatus.ACTIVE,
+        PlanStatus.ARCHIVED,
+    }),
+    PlanStatus.PAUSED: frozenset({
+        PlanStatus.ACTIVE,
+        PlanStatus.ARCHIVED,
+    }),
+    # Terminal states
+    PlanStatus.COMPLETED: frozenset({
+        PlanStatus.ARCHIVED,
+    }),
+    PlanStatus.ARCHIVED: frozenset(),
+}
+
+
+def valid_plan_transitions_from(
+    status: PlanStatus,
+) -> frozenset[PlanStatus]:
+    """Return the set of valid next statuses from the given plan status."""
+    return _PLAN_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_plan_transition(
+    from_status: PlanStatus,
+    to_status: PlanStatus,
+) -> bool:
+    """Check whether a plan status transition is valid."""
+    return to_status in valid_plan_transitions_from(from_status)
+
+
+def transition_plan(
+    plan: CanonicalDepartmentPlan,
+    *,
+    to_status: PlanStatus,
+) -> CanonicalDepartmentPlan:
+    """Return a new DepartmentPlan with an updated status after validating the transition.
+
+    The returned plan is a new frozen instance — the original is unchanged.
+    """
+    if not is_valid_plan_transition(plan.status, to_status):
+        raise ValueError(
+            f"invalid plan transition: "
+            f"{plan.status.value} → {to_status.value}"
+        )
+    return plan.model_copy(update={"status": to_status})
+
+
+# ---------------------------------------------------------------------------
+# Builder
+# ---------------------------------------------------------------------------
+
+
 def build_department_plan(
     *,
     tenant_id: str,

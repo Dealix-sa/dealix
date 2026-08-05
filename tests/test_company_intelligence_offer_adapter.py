@@ -19,7 +19,6 @@ from dealix.company_intelligence.offer_contracts import (
     OfferStatus,
 )
 
-
 # ---------------------------------------------------------------------------
 # Individual offering normalization
 # ---------------------------------------------------------------------------

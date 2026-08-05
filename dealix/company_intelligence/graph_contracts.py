@@ -306,6 +306,135 @@ def build_company(
     )
 
 
+# ---------------------------------------------------------------------------
+# Company state machine
+# ---------------------------------------------------------------------------
+
+
+_COMPANY_TRANSITIONS: dict[CompanyStatus, frozenset[CompanyStatus]] = {
+    CompanyStatus.DISCOVERED: frozenset({
+        CompanyStatus.RESEARCHED,
+        CompanyStatus.PARKED,
+    }),
+    CompanyStatus.RESEARCHED: frozenset({
+        CompanyStatus.QUALIFIED,
+        CompanyStatus.PARKED,
+    }),
+    CompanyStatus.QUALIFIED: frozenset({
+        CompanyStatus.ACTIVE,
+        CompanyStatus.PARKED,
+    }),
+    CompanyStatus.ACTIVE: frozenset({
+        CompanyStatus.CHURNED,
+        CompanyStatus.PARKED,
+    }),
+    # Recoverable states
+    CompanyStatus.CHURNED: frozenset({
+        CompanyStatus.DISCOVERED,
+    }),
+    CompanyStatus.PARKED: frozenset({
+        CompanyStatus.DISCOVERED,
+    }),
+}
+
+
+def valid_company_transitions_from(
+    status: CompanyStatus,
+) -> frozenset[CompanyStatus]:
+    """Return the set of valid next statuses from the given company status."""
+    return _COMPANY_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_company_transition(
+    from_status: CompanyStatus,
+    to_status: CompanyStatus,
+) -> bool:
+    """Check whether a company status transition is valid."""
+    return to_status in valid_company_transitions_from(from_status)
+
+
+def transition_company(
+    company: CanonicalCompany,
+    *,
+    to_status: CompanyStatus,
+) -> CanonicalCompany:
+    """Return a new Company with an updated status after validating the transition.
+
+    The returned Company is a new frozen instance — the original is unchanged.
+    """
+    if not is_valid_company_transition(company.status, to_status):
+        raise ValueError(
+            f"invalid company transition: "
+            f"{company.status.value} → {to_status.value}"
+        )
+    return company.model_copy(update={"status": to_status})
+
+
+# ---------------------------------------------------------------------------
+# Contact state machine
+# ---------------------------------------------------------------------------
+
+
+_CONTACT_TRANSITIONS: dict[ContactStatus, frozenset[ContactStatus]] = {
+    ContactStatus.IDENTIFIED: frozenset({
+        ContactStatus.VERIFIED,
+        ContactStatus.OPTED_OUT,
+    }),
+    ContactStatus.VERIFIED: frozenset({
+        ContactStatus.ENGAGED,
+        ContactStatus.INACTIVE,
+        ContactStatus.OPTED_OUT,
+    }),
+    ContactStatus.ENGAGED: frozenset({
+        ContactStatus.INACTIVE,
+        ContactStatus.OPTED_OUT,
+    }),
+    ContactStatus.INACTIVE: frozenset({
+        ContactStatus.VERIFIED,
+        ContactStatus.OPTED_OUT,
+    }),
+    # Terminal — opted-out contacts can never be re-engaged
+    ContactStatus.OPTED_OUT: frozenset(),
+}
+
+
+def valid_contact_transitions_from(
+    status: ContactStatus,
+) -> frozenset[ContactStatus]:
+    """Return the set of valid next statuses from the given contact status."""
+    return _CONTACT_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_contact_transition(
+    from_status: ContactStatus,
+    to_status: ContactStatus,
+) -> bool:
+    """Check whether a contact status transition is valid."""
+    return to_status in valid_contact_transitions_from(from_status)
+
+
+def transition_contact(
+    contact: CanonicalContact,
+    *,
+    to_status: ContactStatus,
+) -> CanonicalContact:
+    """Return a new Contact with an updated status after validating the transition.
+
+    The returned Contact is a new frozen instance — the original is unchanged.
+    """
+    if not is_valid_contact_transition(contact.status, to_status):
+        raise ValueError(
+            f"invalid contact transition: "
+            f"{contact.status.value} → {to_status.value}"
+        )
+    return contact.model_copy(update={"status": to_status})
+
+
+# ---------------------------------------------------------------------------
+# Builders
+# ---------------------------------------------------------------------------
+
+
 def build_contact(
     *,
     tenant_id: str,

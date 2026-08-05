@@ -225,6 +225,65 @@ def is_source_stale(source: CanonicalSource, *, now: datetime | None = None) -> 
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# Source state machine
+# ---------------------------------------------------------------------------
+
+
+_SOURCE_TRANSITIONS: dict[SourceStatus, frozenset[SourceStatus]] = {
+    SourceStatus.ACTIVE: frozenset({
+        SourceStatus.STALE,
+        SourceStatus.BLOCKED,
+        SourceStatus.RETIRED,
+    }),
+    SourceStatus.STALE: frozenset({
+        SourceStatus.ACTIVE,
+        SourceStatus.BLOCKED,
+        SourceStatus.RETIRED,
+    }),
+    # Terminal states
+    SourceStatus.RETIRED: frozenset(),
+    SourceStatus.BLOCKED: frozenset(),
+}
+
+
+def valid_source_transitions_from(
+    status: SourceStatus,
+) -> frozenset[SourceStatus]:
+    """Return the set of valid next statuses from the given source status."""
+    return _SOURCE_TRANSITIONS.get(status, frozenset())
+
+
+def is_valid_source_transition(
+    from_status: SourceStatus,
+    to_status: SourceStatus,
+) -> bool:
+    """Check whether a source status transition is valid."""
+    return to_status in valid_source_transitions_from(from_status)
+
+
+def transition_source(
+    source: CanonicalSource,
+    *,
+    to_status: SourceStatus,
+) -> CanonicalSource:
+    """Return a new Source with an updated status after validating the transition.
+
+    The returned Source is a new frozen instance — the original is unchanged.
+    """
+    if not is_valid_source_transition(source.status, to_status):
+        raise ValueError(
+            f"invalid source transition: "
+            f"{source.status.value} → {to_status.value}"
+        )
+    return source.model_copy(update={"status": to_status})
+
+
+# ---------------------------------------------------------------------------
+# Builder
+# ---------------------------------------------------------------------------
+
+
 def build_source(
     *,
     tenant_id: str,
